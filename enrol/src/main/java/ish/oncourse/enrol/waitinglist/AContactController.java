@@ -82,14 +82,14 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 		specialNeeds = contact.getStudent() != null ? contact.getStudent().getSpecialNeeds(): null;
 
 		if (contact.getObjectId().isTemporary()) {
-			if (contactFieldHelper.hasVisibleFields(contact)) {
+			if (contactFieldHelper.hasVisibleFields(contact) || contactFieldHelper.hasVisibleCustomFields(contact)) {
 				visibleFields = contactFieldHelper.getVisibleFields(contact, false);
 				state = State.EDIT_CONTACT;
 			} else {
 				saveContact();
 			}
 		} else {
-			isFillRequiredProperties = !(contactFieldHelper.isAllRequiredFieldFilled(contact));
+			isFillRequiredProperties = !(contactFieldHelper.isAllRequiredFieldFilled(contact) && contactFieldHelper.isAllRequiredCustomFieldFilled(contact));
 			if (isFillRequiredProperties) {
 				visibleFields = contactFieldHelper.getVisibleFields(contact, true);
 				state = State.EDIT_CONTACT;
@@ -263,13 +263,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	@Override
 	public CustomFieldHolder getCustomFieldHolder() {
 		if (customFieldHolder == null) {
-			customFieldHolder = new CustomFieldHolder(getContactFieldHelper());
-			customFieldHolder.addAll(contact.getCollege().getCustomFieldTypes());
-			for (CustomField customField : contact.getCustomFields()) {
-				if (contactFieldHelper.isCustomFieldTypeVisible(customField.getCustomFieldType())) {
-					customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
-				}
-			}
+			customFieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, isFillRequiredProperties);
 		}
 		return customFieldHolder;
 	}

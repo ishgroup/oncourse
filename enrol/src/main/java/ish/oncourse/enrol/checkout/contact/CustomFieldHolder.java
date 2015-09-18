@@ -3,6 +3,8 @@
  */
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.CustomField;
 import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.model.Pair;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -20,16 +22,7 @@ public class CustomFieldHolder {
 
 	private HashMap<String, Pair<CustomFieldType, String>> fieldContainer = new HashMap<>();
 
-	public CustomFieldHolder(ContactFieldHelper contactFieldHelper) {
-		this.contactFieldHelper = contactFieldHelper;
-	}
-	
-	public void addAll(List<CustomFieldType> customFieldTypes) {
-		for (CustomFieldType type : customFieldTypes) {
-			if (contactFieldHelper.isCustomFieldTypeVisible(type)) {
-				addType(type.getName(), type, null);
-			}
-		}
+	private CustomFieldHolder(){
 	}
 
 	private void addType(String fieldName, CustomFieldType type, String value) {
@@ -60,5 +53,31 @@ public class CustomFieldHolder {
 	
 	public boolean isCustomFieldRequared(String name) {
 		return contactFieldHelper.isCustomFieldTypeRequired(fieldContainer.get(name).getFirst());
+	}
+	
+	public void setContactFieldHelper(ContactFieldHelper contactFieldHelper) {
+		this.contactFieldHelper = contactFieldHelper;
+	}
+	
+	public static CustomFieldHolder valueOf(ContactFieldHelper contactFieldHelper, Contact contact, boolean fillRequaredFieldOnly) {
+		CustomFieldHolder fieldHolder = new CustomFieldHolder();
+		fieldHolder.setContactFieldHelper(contactFieldHelper);
+
+		if (fillRequaredFieldOnly) {
+			for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
+				if (contactFieldHelper.isCustomFieldTypeRequired(fieldType) &&
+						CustomField.CUSTOM_FIELD_TYPE.eq(fieldType).andExp(CustomField.VALUE.isNotNull()).filterObjects(contact.getCustomFields()).isEmpty()) {
+					fieldHolder.addType(fieldType.getName(), fieldType, null);
+				}
+			}
+		} else {
+			for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
+				if (contactFieldHelper.isCustomFieldTypeVisible(fieldType)) {
+					fieldHolder.addType(fieldType.getName(), fieldType, null);
+				}
+			}
+		}
+
+		return fieldHolder;
 	}
 }

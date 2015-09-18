@@ -1,6 +1,7 @@
 package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.ACheckoutTest;
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.CustomField;
@@ -120,12 +121,13 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 	private void prepareData() {
 		ObjectContext context = mock(ObjectContext.class);
+		College college = mock(College.class);
 		contact = spy(new Contact());
 		Country country = new Country();
 		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
 
 		when(contact.getCountry()).thenReturn(country);
-
+		when(contact.getCollege()).thenReturn(college);
 		//the code emulates Contact.postAdd method
 		when(contact.getIsMarketingViaEmailAllowed()).thenReturn(Boolean.TRUE);
 		when(contact.getIsMarketingViaPostAllowed()).thenReturn(Boolean.TRUE);
@@ -149,7 +151,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(customFieldType.getRequireForEnrolment()).thenReturn("Show");
 		when(customFieldType.getRequireForMailingList()).thenReturn("Show");
 		when(customFieldType.getRequireForWaitingList()).thenReturn("Show");
-
+		when(college.getCustomFieldTypes()).thenReturn(Collections.singletonList(customFieldType));
+		
 		CustomField customField = mock(CustomField.class);
 		when(customField.getObjectContext()).thenReturn(context);
 		when(customField.getCustomFieldType()).thenReturn(customFieldType);
@@ -178,8 +181,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
 		when(messages.get(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old)).
 			thenReturn(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old);
-		customFieldHolder = new CustomFieldHolder(contactFieldHelper);
-		customFieldHolder.addAll(Arrays.asList(customFieldType));
+		customFieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, false);
 		customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
 	}
 
@@ -281,8 +283,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		ICountryService countryService = getService(ICountryService.class);
 
 		ContactFieldHelper contactFieldHelper = new ContactFieldHelper(preferenceController, enrolment);
-		CustomFieldHolder fieldHolder = new CustomFieldHolder(contactFieldHelper);
-		fieldHolder.addAll(contact.getCollege().getCustomFieldTypes());
+		CustomFieldHolder fieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, false);
 
 		Request request = mock(Request.class);
 		when(request.getParameter(Contact.DATE_OF_BIRTH.getName())).thenReturn("11/11/2011");

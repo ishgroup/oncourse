@@ -67,9 +67,16 @@ public abstract class AAddContactAction extends APurchaseAction {
     }
 
     private void initEditContact() {
-        boolean isAllRequiredFieldFilled = new ContactFieldHelper(getController().getPreferenceController(), enrolment).isAllRequiredFieldFilled(contact);
-        if (contact.getObjectId().isTemporary() || !isAllRequiredFieldFilled) {
-            prepareContactEditor(!isAllRequiredFieldFilled);
+		ContactFieldHelper fieldHelper = new ContactFieldHelper(getController().getPreferenceController(), enrolment);
+		
+        boolean isAllRequiredFieldFilled = fieldHelper.isAllRequiredFieldFilled(contact);
+		boolean isAllRequiredCustomFieldFilled = fieldHelper.isAllRequiredCustomFieldFilled(contact);
+		boolean hasVisibleFields = fieldHelper.hasVisibleFields(contact);
+		boolean hasVisibleCustomFields =  fieldHelper.hasVisibleCustomFields(contact);
+		
+        if ((contact.getObjectId().isTemporary() && (hasVisibleFields || hasVisibleCustomFields))
+				|| !isAllRequiredFieldFilled || !isAllRequiredCustomFieldFilled) {
+            prepareContactEditor(!(isAllRequiredFieldFilled && isAllRequiredCustomFieldFilled));
             getController().setState(editContact);
         } else {
             commitContact();
@@ -88,7 +95,7 @@ public abstract class AAddContactAction extends APurchaseAction {
         contactEditorController.setContactFieldSet(enrolment);
         contactEditorController.setAddAction(getAddAction());
         contactEditorController.setCancelAction(getCancelAction());
-        if (!contact.getObjectId().isTemporary() && fillRequiredProperties)
+        if (!contact.getObjectId().isTemporary() && (fillRequiredProperties))
             contactEditorController.setFillRequiredProperties(fillRequiredProperties);
         getController().setContactEditorDelegate(contactEditorController);
     }

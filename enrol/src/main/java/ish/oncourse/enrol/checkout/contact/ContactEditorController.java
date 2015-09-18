@@ -69,8 +69,6 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		if (visibleFields == null) {
 			visibleFields = getContactFieldHelper().getVisibleFields(contact, isFillRequiredProperties());
 		}
-		if (visibleFields.size() < 1)
-			throw new IllegalArgumentException();
 		return visibleFields;
 	}
 
@@ -137,14 +135,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 	@Override
 	public CustomFieldHolder getCustomFieldHolder() {
 		if (customFieldHolder == null) {
-			customFieldHolder = new CustomFieldHolder(contactFieldHelper);
-			customFieldHolder.addAll(contact.getCollege().getCustomFieldTypes());
-			for (CustomField customField : contact.getCustomFields()) {
-				if (contactFieldHelper.isCustomFieldTypeVisible(customField.getCustomFieldType())) {
-					customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
-				}
-			}
-			
+			customFieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, fillRequiredProperties);
 		}
 		return customFieldHolder;
 	}

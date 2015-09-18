@@ -52,7 +52,7 @@ public class WaitingListController extends AContactController {
 
 
 		if (getContact().getObjectId().isTemporary()) {
-			if (getContactFieldHelper().hasVisibleFields(contact)) {
+			if (getContactFieldHelper().hasVisibleFields(contact) || getContactFieldHelper().hasVisibleCustomFields(contact)) {
 				setVisibleFields(getContactFieldHelper().getVisibleFields(contact, false));
 				setState(State.EDIT_CONTACT);
 			} else {
@@ -65,7 +65,7 @@ public class WaitingListController extends AContactController {
 				return;
 			}
 
-			setFillRequiredProperties(!(getContactFieldHelper().isAllRequiredFieldFilled(contact)));
+			setFillRequiredProperties(!(getContactFieldHelper().isAllRequiredFieldFilled(contact) && getContactFieldHelper().isAllRequiredCustomFieldFilled(contact)));
 			if (isFillRequiredProperties()) {
                 setVisibleFields(getContactFieldHelper().getVisibleFields(contact, true));
 				setState(State.EDIT_CONTACT);

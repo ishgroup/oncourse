@@ -47,6 +47,15 @@ public class ContactFieldHelper {
 		return false;
 	}
 
+	public boolean hasVisibleCustomFields(Contact contact) {
+		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
+			if (isCustomFieldTypeRequired(fieldType) || isCustomFieldTypeVisible(fieldType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	public boolean isAllRequiredFieldFilled(Contact contact) {
 
@@ -64,6 +73,17 @@ public class ContactFieldHelper {
 		return true;
 	}
 
+	public boolean isAllRequiredCustomFieldFilled(Contact contact) {
+
+		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
+			if (isCustomFieldTypeRequired(fieldType) &&
+				CustomField.CUSTOM_FIELD_TYPE.eq(fieldType).andExp(CustomField.VALUE.isNotNull()).filterObjects(contact.getCustomFields()).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private boolean isShowField(FieldDescriptor fieldDescriptor, Contact contact) {
 		if (!isValid(fieldDescriptor, contact))
 			return false;
@@ -86,8 +106,6 @@ public class ContactFieldHelper {
 			if (isVisible(fieldDescriptor, contact, isFillRequiredProperties))
 				visibleFields.add(fieldDescriptor.name());
 		}
-		if (visibleFields.size() < 1)
-			throw new IllegalArgumentException();
 		return visibleFields;
 	}
 
