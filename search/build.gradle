@@ -27,8 +27,10 @@ dependencies {
 }
 
 test {
-	systemProperty 'testDatabaseUri', searchTestDatabaseUri
-	systemProperty 'testDatabaseDriver', searchTestDatabaseDriver
+	if (project.hasProperty('searchTestDatabaseUri')) {
+		systemProperty 'testDatabaseUri', searchTestDatabaseUri
+		systemProperty 'testDatabaseDriver', searchTestDatabaseDriver
+	}
 }
 
 war {
