@@ -3,6 +3,7 @@
  */
 package ish.oncourse.solr;
 
+import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import ish.math.MoneyType;
 import ish.oncourse.test.InitialContextFactoryMock;
 import org.apache.cayenne.ObjectContext;
@@ -144,7 +145,8 @@ public class SearchContextUtils {
 		return dataSource;
 	}
 
-	public static void shutdownDataSources() {
+	public static void shutdownDataSources() throws Exception {
 		cayenneRuntime.shutdown();
+		AbandonedConnectionCleanupThread.shutdown();
 	}
 }
