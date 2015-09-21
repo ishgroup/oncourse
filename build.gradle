@@ -12,12 +12,12 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.9'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
 		classpath 'org.apache.cayenne:cayenne-tools:4.0.M2'
 	}
 }
 
-apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates'
+apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates -Drevision=release'
 
 allprojects {
 	apply plugin: 'java'
