@@ -21,7 +21,7 @@ import java.util.Date;
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class USIVerificationServiceTest extends RealWSTransportTest {
+public class V10USIVerificationServiceTest extends RealWSTransportTest {
     @Test
     public void testUSI() throws Exception {
 
