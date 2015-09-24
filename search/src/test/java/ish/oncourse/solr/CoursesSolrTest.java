@@ -4,139 +4,182 @@
 package ish.oncourse.solr;
 
 import com.google.gson.Gson;
-import ish.common.types.CourseEnrolmentType;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Course;
+import ish.oncourse.model.*;
 import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.services.search.SolrQueryBuilder;
-import ish.oncourse.test.ContextUtils;
-import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.ObjectContext;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.common.params.MapSolrParams;
 import org.apache.solr.request.LocalSolrQueryRequest;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
-public class CoursesSolrTest extends SolrTest {
-	
-	@BeforeClass
-	public static void setupAll() throws Exception {
-		initSolr("src/main/resources/solr", "courses");
-	}
+public class CoursesSolrTest extends AbstractSolrTest {
 
-	@Before
-	public void setup() throws Exception {
-		InputStream st = CoursesSolrTest.class.getClassLoader().getResourceAsStream("ish/oncourse/solr/SolrCourseCoreTestDataSet.xml");
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
+    @BeforeClass
+    public static void setupAll() throws Exception {
+        initSolr("src/main/resources/solr", "courses");
+    }
 
-		DataSource dataSource = ContextUtils.getDataSource("jdbc/oncourse");
-		DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null);
-		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
+    @Override
+    protected String getDataSetResource() {
+        return "ish/oncourse/solr/SolrCourseCoreTestDataSet.xml";
+    }
 
-		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
-	}
-	
-	@Test
-	public void testFullImport() throws Exception {
-		Gson gson = new Gson();
+    @Test
+    public void testFullImport() throws Exception {
+        Map response = fullImport();
 
-		Map<String, String> params = new HashMap<>();
-		params.put("command", "full-import");
-		params.put("wt", "json");
+        assertEquals("2", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+    }
 
-		h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params)));
+    @Test
+    public void testDeltaImport() throws Exception {
 
-		Map response = gson.fromJson(h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params))), Map.class);
+        Map response = fullImport();
 
-		while ("busy".equals(response.get("status"))) {
-			Thread.sleep(5000);
-			response = gson.fromJson(h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params))), Map.class);
-		}
+        assertEquals("2", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
 
-		assertEquals("2", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
-	}
+        Gson gson = new Gson();
 
-	@Test
-	public void testDeltaImport() throws Exception {
-		Gson gson = new Gson();
+        SolrQuery query = SolrQueryBuilder.valueOf(new SearchParams(), "10", 0, 10).build().addFilterQuery("course_code: AAV");
+        response = gson.fromJson(JQ(new LocalSolrQueryRequest(h.getCore(), query)), Map.class);
 
-		Map<String, String> params = new HashMap<>();
-		params.put("command", "full-import");
-		params.put("wt", "json");
+        assertEquals(1.0, ((Map) response.get("response")).get("numFound"));
 
-		h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params)));
+        response = gson.fromJson(JQ(new LocalSolrQueryRequest(h.getCore(),
+                        SolrQueryBuilder.valueOf(new SearchParams(), "10", 0, 10).build().addFilterQuery("course_code: BBB"))),
+                Map.class);
 
-		Map response = gson.fromJson(h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params))), Map.class);
+        assertEquals(0.0, ((Map) response.get("response")).get("numFound"));
 
-		while ("busy".equals(response.get("status"))) {
-			Thread.sleep(5000);
-			response = gson.fromJson(h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params))), Map.class);
-		}
+        Course course = testCourseAdd(gson);
+        testCourseModified(course);
 
-		assertEquals("2", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+        CourseClass courseClass = testCourseClassAdd(course);
+        testCourseClassModified(courseClass);
+        testCourseClassEndDate(courseClass);
 
-		SolrQuery query = SolrQueryBuilder.valueOf(new SearchParams(), "10", 0, 10).build().addFilterQuery("course_code: AAV");
-		response = gson.fromJson(JQ(new LocalSolrQueryRequest(h.getCore(), query)), Map.class);
+        Session session = testSessionAdd(courseClass);
+        testSessionModified(session);
+    }
 
-		assertEquals(1.0, ((Map) response.get("response")).get("numFound"));
+    @Test
+    public void testSite() throws Exception {
+        Course course = modelBuilder.createCourse();
+        CourseClass courseClass = modelBuilder.createCourseClass(course);
+        Session session = modelBuilder.createSession(courseClass);
+        fullImport();
 
-		response = gson.fromJson(JQ(new LocalSolrQueryRequest(h.getCore(),
-				SolrQueryBuilder.valueOf(new SearchParams(), "10", 0, 10).build().addFilterQuery("course_code: BBB"))),
-				Map.class);
+        Site site1 = testSiteAdd(courseClass);
+        Site site2 = testSiteAdd(session);
 
-		assertEquals(0.0, ((Map) response.get("response")).get("numFound"));
+        site1.setModified(new Date());
+        site1.getObjectContext().commitChanges();
 
-		ObjectContext context = SearchContextUtils.createObjectContext();
+        assertDeltaImport();
 
-		Date now = new Date();
+        site2.setModified(new Date());
+        site2.getObjectContext().commitChanges();
 
-		College college = Cayenne.objectForPK(context, College.class, 10);
+        assertDeltaImport();
+    }
 
-		Course course = context.newObject(Course.class);
-		course.setCollege(college);
-		course.setCode("BBB");
-		course.setName("BBB test course");
-		course.setIsWebVisible(true);
-		course.setIsVETCourse(false);
-		course.setIsSufficientForQualification(false);
-		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
-		course.setCreated(now);
-		course.setModified(now);
+    @Test
+    public void testTag() throws Exception {
+        Course course = modelBuilder.createCourse();
+        CourseClass courseClass = modelBuilder.createCourseClass(course);
+        Session session = modelBuilder.createSession(courseClass);
+        Site site1 = modelBuilder.createSiteForSession(session);
+        Site site2 = modelBuilder.createSiteForCourseClass(courseClass);
+        fullImport();
 
-		context.commitChanges();
+        Tag tag = modelBuilder.createTag();
+        TaggableTag taggableTag = modelBuilder.linkTagToCourse(course, tag);
 
-		params = new HashMap<>();
-		params.put("command", "delta-import");
-		params.put("wt", "json");
+        assertDeltaImport();
 
-		h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params)));
+        taggableTag.getTaggable().setModified(new Date());
+        taggableTag.getObjectContext().commitChanges();
 
-		response = gson.fromJson(h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params))), Map.class);
+        assertDeltaImport();
 
-		while ("busy".equals(response.get("status"))) {
-			Thread.sleep(5000);
-			response = gson.fromJson(h.query("/dataimport", new LocalSolrQueryRequest(h.getCore(), new MapSolrParams(params))), Map.class);
-		}
 
-		assertEquals("1", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+    }
 
-		response = gson.fromJson(JQ(new LocalSolrQueryRequest(h.getCore(),
-						SolrQueryBuilder.valueOf(new SearchParams(), "10", 0, 10).build().addFilterQuery("course_code: BBB"))),
-				Map.class);
 
-		assertEquals(1.0, ((Map) response.get("response")).get("numFound"));
-	}
+    private Site testSiteAdd(Session session) throws Exception {
+        Site site = modelBuilder.createSiteForSession(session);
+        assertDeltaImport();
+        return site;
+    }
+
+    private Site testSiteAdd(CourseClass courseClass) throws Exception {
+        Site site = modelBuilder.createSiteForCourseClass(courseClass);
+        assertDeltaImport();
+        return site;
+    }
+
+    private Session testSessionAdd(CourseClass courseClass) throws Exception {
+        Session session = modelBuilder.createSession(courseClass);
+
+        assertDeltaImport();
+
+        return session;
+    }
+
+
+    private Session testSessionModified(Session session) throws Exception {
+        session.setModified(new Date());
+        session.getObjectContext().commitChanges();
+
+        assertDeltaImport();
+        return session;
+    }
+
+    private void testCourseClassModified(CourseClass courseClass) throws Exception {
+        courseClass.setModified(new Date());
+        courseClass.getObjectContext().commitChanges();
+        assertDeltaImport();
+    }
+
+    private void testCourseClassEndDate(CourseClass courseClass) throws Exception {
+        courseClass.setEndDate(new Date());
+        courseClass.getObjectContext().commitChanges();
+        Thread.sleep(2000);
+        assertDeltaImport();
+    }
+
+    private CourseClass testCourseClassAdd(Course course) throws Exception {
+
+        CourseClass courseClass = modelBuilder.createCourseClass(course);
+
+        assertDeltaImport();
+        return courseClass;
+    }
+
+
+    private void testCourseModified(Course course) throws Exception {
+        course.setModified(new Date());
+        course.getObjectContext().commitChanges();
+        assertDeltaImport();
+    }
+
+    private Course testCourseAdd(Gson gson) throws Exception {
+        Course course = modelBuilder.createCourse();
+
+        Map response = deltaImport();
+
+        assertEquals("1", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+
+        response = gson.fromJson(JQ(new LocalSolrQueryRequest(h.getCore(),
+                        SolrQueryBuilder.valueOf(new SearchParams(), "10", 0, 10).build().addFilterQuery("course_code: " + course.getCode()))),
+                Map.class);
+
+        assertEquals(1.0, ((Map) response.get("response")).get("numFound"));
+        assertDeltaImportEmpty();
+
+        return course;
+    }
 }

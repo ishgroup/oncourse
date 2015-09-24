@@ -12,13 +12,13 @@
             isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
             created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
             allowWaitingList="1" name="Managerial Accounting"
-			enrolmentType="1"/>
+            enrolmentType="1"/>
 
     <Course id="11" collegeId="10" angelId="11" code="AAV2"
             isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
             created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
             allowWaitingList="1" name="Managerial Accounting"
-			enrolmentType="1"/>
+            enrolmentType="1"/>
 
     <Site id="10" collegeId="10" angelId="10" isWebVisible="0"
           created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
@@ -62,7 +62,7 @@
                  deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
 
     <Session id="10"  collegeId="10" courseClassId="10" roomId="10" angelId="10" startDate="[START_DATE]"
-            endDate="[END_DATE]" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+             endDate="[END_DATE]" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
 
     <Session id="11"  collegeId="10" courseClassId="12" roomId="10" angelId="11" startDate="[START_DATE]"
              endDate="[END_DATE]" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>

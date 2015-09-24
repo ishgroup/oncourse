@@ -11,6 +11,15 @@
         <Root level="warn">
             <AppenderRef ref="STDOUT"/>
         </Root>
+        <!--<Logger name="org.apache.solr.handler.dataimport.DocBuilder" level="debug">-->
+            <!--<AppenderRef ref="STDOUT"/>-->
+        <!--</Logger>-->
+        <!--<Logger name="org.apache.solr.handler.dataimport.SqlEntityProcessor" level="debug">-->
+            <!--<AppenderRef ref="STDOUT"/>-->
+        <!--</Logger>-->
+        <!--<Logger name="org.apache.cayenne.log" level="warn">-->
+            <!--<AppenderRef ref="STDOUT"/>-->
+        <!--</Logger>-->
         <Logger name="ish.oncourse" level="debug">
             <AppenderRef ref="STDOUT"/>
         </Logger>
