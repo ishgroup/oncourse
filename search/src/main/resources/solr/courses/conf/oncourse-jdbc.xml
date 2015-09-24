@@ -29,7 +29,7 @@
 			left join College co on cc.collegeId=co.id
 			/*we may index only not canceled and web visible classes*/
 			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
-			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (2,3))
+			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (0,2,3))
 		) as startDate
 		from Course c where c.isWebVisible=1"
 		deltaImportQuery="
@@ -46,24 +46,13 @@
 			left join Site si on ro.siteId=si.id
 			left join College co on cc.collegeId=co.id
 			where cc.courseId=c.id and cc.isWebVisible=1 and cc.isCancelled=0
-			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (2,3))
+			and cc.maximumPlaces &gt; (select count(e.id) from Enrolment e where e.courseClassId=cc.id and e.status in (0,2,3))
 		) as startDate
 		from Course c where c.id='${dataimporter.delta.id}'"
 		deltaQuery="
 		select distinct c.id
 		from Course c
-		left join CourseClass cc on cc.courseId=c.id
-		left join Enrolment e on e.courseClassId=cc.id
-		left join Session se on se.courseClassId=cc.id
-		where c.isWebVisible=1 and (
-		/* check is course modified */
-		c.modified &gt;='${dataimporter.last_index_time}'
-		/* check is course class modified or finished */
-		or cc.modified &gt;='${dataimporter.last_index_time}' or (cc.endDate &gt;= '${dataimporter.last_index_time}' and cc.endDate &lt; NOW())
-		/* check is enrolments linked to course class  modified */
-		or e.modified &gt;='${dataimporter.last_index_time}'
-		/* check is sessions linked to course class  modified */
-		or se.modified &gt;='${dataimporter.last_index_time}')"
+		where c.isWebVisible=1 and c.modified &gt;='${dataimporter.last_index_time}'"
 		pk="id" transformer="HTMLStripTransformer">
 
 			<field name="id" column="id" />
@@ -142,9 +131,9 @@
 				    left join Site si on ro.siteId=si.id
 				    left join College co on cc.collegeId=co.id
 				where cc.id='${dataimporter.delta.id}'"
-				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}' or endDate &lt; CURDATE()"
-				parentDeltaQuery="select id from Course where id='{courseClass.courseId}'"
-				deletedPkQuery="select id from CourseClass where endDate &lt; NOW()">
+				deltaQuery="select id from CourseClass where isWebVisible=1 and modified &gt;='${dataimporter.last_index_time}'"
+				parentDeltaQuery="select courseId as id from CourseClass where id='${courseClass.id}'"
+				deletedPkQuery="select id from CourseClass where endDate &lt; NOW() and endDate &gt;= '${dataimporter.last_index_time}'" processor="SqlEntityProcessor">
 				<field name="id" column="id" />
 				<field name="price" column="pr" />
 				<field name="class_code" column="code" template="${course.code}\-${courseClass.code}"/>
@@ -173,7 +162,7 @@
 
                 <!--if course class isDistantLearningCourse we should mark it as (Monday Tuesday Wednesday Thursday Friday Saturday Sunday, weekend weekday, daytime evening)-->
 				<entity name="course_session" dataSource="onCourseDS" pk="id" transformer="TemplateTransformer"
-					query="select distinct
+					query="select distinct s.id,
                         IF (cc.isDistantLearningCourse = 0,
                             lower(
                                 dayname(
@@ -254,13 +243,13 @@
                             ),
                             'daytime evening'
                         ) as time
-					    from CourseClass cc
-					        left join Session s on s.courseClassId=cc.id
+					    from Session s
+					        inner join CourseClass cc on s.courseClassId=cc.id
 					        left join Room ro on cc.roomId=ro.id
 					        left join Site si on ro.siteId=si.id
 					        left join College co on cc.collegeId=co.id
 					    where cc.id='${courseClass.id}'"
-                	deltaImportQuery="select distinct
+                	deltaImportQuery="select distinct s.id,
                         IF (cc.isDistantLearningCourse = 0,
                             lower(
                                 dayname(
@@ -341,13 +330,13 @@
                             ),
                             'daytime evening'
                         ) as time
-					    from CourseClass cc
-					        left join Session s on s.courseClassId=cc.id
+					    from Session s
+					        inner join CourseClass cc on s.courseClassId=cc.id
 					        left join Room ro on cc.roomId=ro.id
 					        left join Site si on ro.siteId=si.id
 					        left join College co on cc.collegeId=co.id
-					    where cc.id='${dataimporter.delta.id}'"
-					deltaQuery="select distinct courseClassId as id from Session where modified &gt; '${dataimporter.last_index_time}'"
+					    where s.id='${dataimporter.delta.id}'"
+					deltaQuery="select distinct id as id from Session where modified &gt; '${dataimporter.last_index_time}'"
 					parentDeltaQuery="select distinct cc.id as id from Session s inner join CourseClass cc on s.courseClassId = cc.id where s.id='${course_session.id}'">
 					<field name="id" column="id"/>
 					<field name="dayName" column="dayName" />
@@ -403,7 +392,7 @@
 				    inner join Taggable tg on tgt.taggableId = tg.id
 				    where t.isWebVisible=1 and tg.entityIdentifier = 'Course' and
 				        (t.modified &gt; '${dataimporter.last_index_time}' or tg.modified &gt; '${dataimporter.last_index_time}')"
-				parentDeltaQuery="select distinct tg.id as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.id=${coursetag.id}" processor="SqlEntityProcessor">
+				parentDeltaQuery="select distinct tg.entityWillowId as id from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.id=${coursetag.id}" processor="SqlEntityProcessor">
 				<field name="id" column="id"/>
 				<field name="tagId" column="tagId"/>
 			</entity>
