@@ -82,6 +82,7 @@
 			<xs:element name="emailTemplate" type="tns:emailTemplateStub"/>
 			<xs:element name="courseClassPaymentPlanLine" type="tns:courseClassPaymentPlanLineStub"/>
 			<xs:element name="invoiceDueDate" type="tns:invoiceDueDateStub"/>
+			<xs:element name="corporatePassDiscount" type="tns:corporatePassDiscountStub"/>
 			<xs:element name="hollow" type="tns:hollowStub" />
 			<xs:element name="deleted" type="tns:deletedStub" />
 			<xs:element name="confirmExecution" type="tns:confirmExecution" />
@@ -1417,6 +1418,17 @@
 							<xs:element name="invoiceId" type="xs:long"/>
 							<xs:element name="amount" type="xs:decimal"/>
 							<xs:element name="dueDate" type="xs:dateTime"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="corporatePassDiscountStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="corporatePassId" type="xs:long"/>
+							<xs:element name="discountId" type="xs:long"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>

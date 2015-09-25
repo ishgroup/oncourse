@@ -80,6 +80,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     MessageTemplateStub.class,
     CertificateOutcomeStub.class,
     PaymentInLineStub.class,
+    CorporatePassDiscountStub.class,
     DocumentVersionStub.class,
     ContactRelationStub.class,
     ContactStub.class,
