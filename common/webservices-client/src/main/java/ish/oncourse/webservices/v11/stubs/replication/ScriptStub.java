@@ -1,4 +1,3 @@
-
 package ish.oncourse.webservices.v11.stubs.replication;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,6 +26,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="script" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="triggerType" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="onCourseEventType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -44,7 +45,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "name",
     "result",
     "script",
-    "triggerType"
+    "triggerType",
+    "description",
+    "onCourseEventType"
 })
 public class ScriptStub
     extends ReplicationStub
@@ -72,6 +75,12 @@ public class ScriptStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer triggerType;
+    @XmlElement(required = true)
+    protected String description;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer onCourseEventType;
 
     /**
      * Gets the value of the schedule property.
@@ -263,6 +272,54 @@ public class ScriptStub
      */
     public void setTriggerType(Integer value) {
         this.triggerType = value;
+    }
+
+    /**
+     * Gets the value of the description property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the value of the description property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDescription(String value) {
+        this.description = value;
+    }
+
+    /**
+     * Gets the value of the onCourseEventType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getOnCourseEventType() {
+        return onCourseEventType;
+    }
+
+    /**
+     * Sets the value of the onCourseEventType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setOnCourseEventType(Integer value) {
+        this.onCourseEventType = value;
     }
 
 }

@@ -1,4 +1,3 @@
-
 package ish.oncourse.webservices.v11.stubs.replication;
 
 import java.math.BigDecimal;
@@ -37,6 +36,7 @@ import ish.oncourse.webservices.util.GenericPaymentInStub;
  *         &lt;element name="creditCardType" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="dateBanked" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="billingId" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -61,7 +61,8 @@ import ish.oncourse.webservices.util.GenericPaymentInStub;
     "creditCardNumber",
     "creditCardType",
     "dateBanked",
-    "confirmationStatus"
+    "confirmationStatus",
+    "billingId"
 })
 public class PaymentInStub
     extends ReplicationStub
@@ -108,6 +109,8 @@ public class PaymentInStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer confirmationStatus;
+    @XmlElement(required = true)
+    protected String billingId;
 
     /**
      * Gets the value of the amount property.
@@ -467,6 +470,30 @@ public class PaymentInStub
      */
     public void setConfirmationStatus(Integer value) {
         this.confirmationStatus = value;
+    }
+
+    /**
+     * Gets the value of the billingId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBillingId() {
+        return billingId;
+    }
+
+    /**
+     * Sets the value of the billingId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBillingId(String value) {
+        this.billingId = value;
     }
 
 }

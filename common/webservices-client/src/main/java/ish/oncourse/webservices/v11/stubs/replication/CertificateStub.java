@@ -1,4 +1,3 @@
-
 package ish.oncourse.webservices.v11.stubs.replication;
 
 import java.util.Date;
@@ -32,6 +31,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="studentFirstName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="studentLastName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="issued" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *         &lt;element name="awarded" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -53,7 +54,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "revokedWhen",
     "studentFirstName",
     "studentLastName",
-    "studentId"
+    "studentId",
+    "issued",
+    "awarded"
 })
 public class CertificateStub
     extends ReplicationStub
@@ -99,6 +102,14 @@ public class CertificateStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long studentId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlSchemaType(name = "dateTime")
+    protected Date issued;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlSchemaType(name = "dateTime")
+    protected Date awarded;
 
     /**
      * Gets the value of the certificateNumber property.
@@ -386,6 +397,54 @@ public class CertificateStub
      */
     public void setStudentId(Long value) {
         this.studentId = value;
+    }
+
+    /**
+     * Gets the value of the issued property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Date getIssued() {
+        return issued;
+    }
+
+    /**
+     * Sets the value of the issued property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setIssued(Date value) {
+        this.issued = value;
+    }
+
+    /**
+     * Gets the value of the awarded property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Date getAwarded() {
+        return awarded;
+    }
+
+    /**
+     * Sets the value of the awarded property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAwarded(Date value) {
+        this.awarded = value;
     }
 
 }

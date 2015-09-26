@@ -286,6 +286,8 @@
 							<xs:element name="studentFirstName" type="xs:string" />
 							<xs:element name="studentLastName" type="xs:string" />
 							<xs:element name="studentId" type="xs:long" nillable="false" />
+							<xs:element name="issued" type="xs:dateTime" />
+							<xs:element name="awarded" type="xs:dateTime" />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -798,7 +800,6 @@
 							<xs:element name="courseScore" type="xs:int" />
 							<xs:element name="tutorScore" type="xs:int" />
 							<xs:element name="venueScore" type="xs:int" />
-							<xs:element name="uniqueCode" type="xs:string" />
 							<xs:element name="enrolmentId" type="xs:long" />
 							<xs:element name="publicComment" type="xs:boolean"/>
 						</xs:sequence>
@@ -936,6 +937,7 @@
 							<xs:element name="contactId" type="xs:long" />
 							<xs:element name="corporatePassId" type="xs:long" />
 							<xs:element name="confirmationStatus" type="xs:int"/>
+							<xs:element name="authorisedRebillingCardId" type="xs:long"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -1074,6 +1076,7 @@
 							<xs:element name="creditCardType" type="xs:string" />
 							<xs:element name="dateBanked" type="xs:dateTime" />
 							<xs:element name="confirmationStatus" type="xs:int"/>
+							<xs:element name="billingId" type="xs:string" />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -1380,6 +1383,8 @@
 							<xs:element name="result" type="xs:string"/>
 							<xs:element name="script" type="xs:string"/>
 							<xs:element name="triggerType" type="xs:int"/>
+							<xs:element name="description" type="xs:string"/>
+							<xs:element name="onCourseEventType" type="xs:int"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>

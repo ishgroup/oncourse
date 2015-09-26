@@ -1,4 +1,3 @@
-
 package ish.oncourse.webservices.v11.stubs.replication;
 
 import java.math.BigDecimal;
@@ -39,6 +38,7 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
  *         &lt;element name="contactId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="corporatePassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="authorisedRebillingCardId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -65,7 +65,8 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
     "totalGst",
     "contactId",
     "corporatePassId",
-    "confirmationStatus"
+    "confirmationStatus",
+    "authorisedRebillingCardId"
 })
 public class InvoiceStub
     extends ReplicationStub
@@ -118,6 +119,10 @@ public class InvoiceStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer confirmationStatus;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long authorisedRebillingCardId;
 
     /**
      * Gets the value of the amountOwing property.
@@ -525,6 +530,30 @@ public class InvoiceStub
      */
     public void setConfirmationStatus(Integer value) {
         this.confirmationStatus = value;
+    }
+
+    /**
+     * Gets the value of the authorisedRebillingCardId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getAuthorisedRebillingCardId() {
+        return authorisedRebillingCardId;
+    }
+
+    /**
+     * Sets the value of the authorisedRebillingCardId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAuthorisedRebillingCardId(Long value) {
+        this.authorisedRebillingCardId = value;
     }
 
 }

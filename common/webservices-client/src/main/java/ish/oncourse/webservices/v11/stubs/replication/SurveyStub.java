@@ -1,4 +1,3 @@
-
 package ish.oncourse.webservices.v11.stubs.replication;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,7 +22,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="courseScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="tutorScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="venueScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="publicComment" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
@@ -40,7 +38,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "courseScore",
     "tutorScore",
     "venueScore",
-    "uniqueCode",
     "enrolmentId",
     "publicComment"
 })
@@ -62,8 +59,6 @@ public class SurveyStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer venueScore;
-    @XmlElement(required = true)
-    protected String uniqueCode;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
@@ -167,30 +162,6 @@ public class SurveyStub
      */
     public void setVenueScore(Integer value) {
         this.venueScore = value;
-    }
-
-    /**
-     * Gets the value of the uniqueCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUniqueCode() {
-        return uniqueCode;
-    }
-
-    /**
-     * Sets the value of the uniqueCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setUniqueCode(String value) {
-        this.uniqueCode = value;
     }
 
     /**
