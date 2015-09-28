@@ -11,6 +11,7 @@ import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.math.MoneyRounding;
 import ish.oncourse.model.College;
+import ish.oncourse.model.CorporatePassDiscount;
 import ish.oncourse.model.DiscountConcessionType;
 import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.DiscountMembership;
@@ -75,6 +76,8 @@ public abstract class _Discount extends CayenneDataObject {
     @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
     @Deprecated
+    public static final String CORPORATE_PASS_DISCOUNTS_PROPERTY = "corporatePassDiscounts";
+    @Deprecated
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
     @Deprecated
     public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
@@ -109,6 +112,7 @@ public abstract class _Discount extends CayenneDataObject {
     public static final Property<Date> VALID_FROM = new Property<Date>("validFrom");
     public static final Property<Date> VALID_TO = new Property<Date>("validTo");
     public static final Property<College> COLLEGE = new Property<College>("college");
+    public static final Property<List<CorporatePassDiscount>> CORPORATE_PASS_DISCOUNTS = new Property<List<CorporatePassDiscount>>("corporatePassDiscounts");
     public static final Property<List<DiscountConcessionType>> DISCOUNT_CONCESSION_TYPES = new Property<List<DiscountConcessionType>>("discountConcessionTypes");
     public static final Property<List<DiscountCourseClass>> DISCOUNT_COURSE_CLASSES = new Property<List<DiscountCourseClass>>("discountCourseClasses");
     public static final Property<List<DiscountMembership>> DISCOUNT_MEMBERSHIP_PRODUCTS = new Property<List<DiscountMembership>>("discountMembershipProducts");
@@ -281,6 +285,18 @@ public abstract class _Discount extends CayenneDataObject {
 
     public College getCollege() {
         return (College)readProperty("college");
+    }
+
+
+    public void addToCorporatePassDiscounts(CorporatePassDiscount obj) {
+        addToManyTarget("corporatePassDiscounts", obj, true);
+    }
+    public void removeFromCorporatePassDiscounts(CorporatePassDiscount obj) {
+        removeToManyTarget("corporatePassDiscounts", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CorporatePassDiscount> getCorporatePassDiscounts() {
+        return (List<CorporatePassDiscount>)readProperty("corporatePassDiscounts");
     }
 
 

@@ -8,6 +8,7 @@ import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CorporatePassDiscount;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Invoice;
 
@@ -38,6 +39,8 @@ public abstract class _CorporatePass extends CayenneDataObject {
     @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
     @Deprecated
+    public static final String CORPORATE_PASS_DISCOUNTS_PROPERTY = "corporatePassDiscounts";
+    @Deprecated
     public static final String INVOICE_PROPERTY = "invoice";
     @Deprecated
     public static final String VALID_CLASSES_PROPERTY = "validClasses";
@@ -52,6 +55,7 @@ public abstract class _CorporatePass extends CayenneDataObject {
     public static final Property<String> PASSWORD = new Property<String>("password");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Contact> CONTACT = new Property<Contact>("contact");
+    public static final Property<List<CorporatePassDiscount>> CORPORATE_PASS_DISCOUNTS = new Property<List<CorporatePassDiscount>>("corporatePassDiscounts");
     public static final Property<List<Invoice>> INVOICE = new Property<List<Invoice>>("invoice");
     public static final Property<List<CourseClass>> VALID_CLASSES = new Property<List<CourseClass>>("validClasses");
 
@@ -112,6 +116,18 @@ public abstract class _CorporatePass extends CayenneDataObject {
 
     public Contact getContact() {
         return (Contact)readProperty("contact");
+    }
+
+
+    public void addToCorporatePassDiscounts(CorporatePassDiscount obj) {
+        addToManyTarget("corporatePassDiscounts", obj, true);
+    }
+    public void removeFromCorporatePassDiscounts(CorporatePassDiscount obj) {
+        removeToManyTarget("corporatePassDiscounts", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CorporatePassDiscount> getCorporatePassDiscounts() {
+        return (List<CorporatePassDiscount>)readProperty("corporatePassDiscounts");
     }
 
 

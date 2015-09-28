@@ -365,7 +365,6 @@ public class QueueableLifecycleListenerTest extends ServiceTest {
         survey.setTutorScore(3);
         survey.setCollege(Cayenne.objectForPK(context, College.class, 1));
         survey.setComment("comment");
-        survey.setUniqueCode("12345678");
         survey.setEnrolment(Cayenne.objectForPK(context, Enrolment.class, enrolment.getId()));
         context.commitChanges();
 

@@ -14,6 +14,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.InvoiceDueDate;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.WebSite;
 
@@ -62,6 +63,8 @@ public abstract class _Invoice extends CayenneDataObject {
     @Deprecated
     public static final String TOTAL_GST_PROPERTY = "totalGst";
     @Deprecated
+    public static final String AUTHORISED_REBILLING_CARD_PROPERTY = "authorisedRebillingCard";
+    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
     @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
@@ -95,6 +98,7 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
     public static final Property<Money> TOTAL_EX_GST = new Property<Money>("totalExGst");
     public static final Property<Money> TOTAL_GST = new Property<Money>("totalGst");
+    public static final Property<PaymentIn> AUTHORISED_REBILLING_CARD = new Property<PaymentIn>("authorisedRebillingCard");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Contact> CONTACT = new Property<Contact>("contact");
     public static final Property<CorporatePass> CORPORATE_PASS_USED = new Property<CorporatePass>("corporatePassUsed");
@@ -221,6 +225,15 @@ public abstract class _Invoice extends CayenneDataObject {
     public Money getTotalGst() {
         return (Money)readProperty("totalGst");
     }
+
+    public void setAuthorisedRebillingCard(PaymentIn authorisedRebillingCard) {
+        setToOneTarget("authorisedRebillingCard", authorisedRebillingCard, true);
+    }
+
+    public PaymentIn getAuthorisedRebillingCard() {
+        return (PaymentIn)readProperty("authorisedRebillingCard");
+    }
+
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);

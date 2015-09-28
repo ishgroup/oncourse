@@ -6,6 +6,7 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.EntityEvent;
+import ish.common.types.SystemEventType;
 import ish.common.types.TriggerType;
 import ish.oncourse.model.College;
 
@@ -24,6 +25,8 @@ public abstract class _Script extends CayenneDataObject {
     @Deprecated
     public static final String CREATED_PROPERTY = "created";
     @Deprecated
+    public static final String DESCRIPTION_PROPERTY = "description";
+    @Deprecated
     public static final String ENABLED_PROPERTY = "enabled";
     @Deprecated
     public static final String ENTITY_CLASS_PROPERTY = "entityClass";
@@ -40,6 +43,8 @@ public abstract class _Script extends CayenneDataObject {
     @Deprecated
     public static final String SCRIPT_PROPERTY = "script";
     @Deprecated
+    public static final String SYSTEM_EVENT_TYPE_PROPERTY = "systemEventType";
+    @Deprecated
     public static final String TRIGGER_TYPE_PROPERTY = "triggerType";
     @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
@@ -48,6 +53,7 @@ public abstract class _Script extends CayenneDataObject {
 
     public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
     public static final Property<Date> CREATED = new Property<Date>("created");
+    public static final Property<String> DESCRIPTION = new Property<String>("description");
     public static final Property<Boolean> ENABLED = new Property<Boolean>("enabled");
     public static final Property<String> ENTITY_CLASS = new Property<String>("entityClass");
     public static final Property<EntityEvent> ENTITY_EVENT_TYPE = new Property<EntityEvent>("entityEventType");
@@ -56,6 +62,7 @@ public abstract class _Script extends CayenneDataObject {
     public static final Property<String> RESULT = new Property<String>("result");
     public static final Property<String> SCHEDULE = new Property<String>("schedule");
     public static final Property<String> SCRIPT = new Property<String>("script");
+    public static final Property<SystemEventType> SYSTEM_EVENT_TYPE = new Property<SystemEventType>("systemEventType");
     public static final Property<TriggerType> TRIGGER_TYPE = new Property<TriggerType>("triggerType");
     public static final Property<College> COLLEGE = new Property<College>("college");
 
@@ -71,6 +78,13 @@ public abstract class _Script extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
+    }
+
+    public void setDescription(String description) {
+        writeProperty("description", description);
+    }
+    public String getDescription() {
+        return (String)readProperty("description");
     }
 
     public void setEnabled(Boolean enabled) {
@@ -127,6 +141,13 @@ public abstract class _Script extends CayenneDataObject {
     }
     public String getScript() {
         return (String)readProperty("script");
+    }
+
+    public void setSystemEventType(SystemEventType systemEventType) {
+        writeProperty("systemEventType", systemEventType);
+    }
+    public SystemEventType getSystemEventType() {
+        return (SystemEventType)readProperty("systemEventType");
     }
 
     public void setTriggerType(TriggerType triggerType) {

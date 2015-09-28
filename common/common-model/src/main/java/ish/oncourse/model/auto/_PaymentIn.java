@@ -14,6 +14,7 @@ import ish.common.types.PaymentType;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.model.Student;
@@ -34,6 +35,8 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public static final String AMOUNT_PROPERTY = "amount";
     @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
+    @Deprecated
+    public static final String BILLING_ID_PROPERTY = "billingId";
     @Deprecated
     public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
     @Deprecated
@@ -67,6 +70,8 @@ public abstract class _PaymentIn extends CayenneDataObject {
     @Deprecated
     public static final String TYPE_PROPERTY = "type";
     @Deprecated
+    public static final String AUTHORISED_INVOICES_PROPERTY = "authorisedInvoices";
+    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
     @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
@@ -85,6 +90,7 @@ public abstract class _PaymentIn extends CayenneDataObject {
 
     public static final Property<Money> AMOUNT = new Property<Money>("amount");
     public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
+    public static final Property<String> BILLING_ID = new Property<String>("billingId");
     public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = new Property<ConfirmationStatus>("confirmationStatus");
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<String> CREDIT_CARD_CVV = new Property<String>("creditCardCVV");
@@ -101,6 +107,7 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public static final Property<PaymentStatus> STATUS = new Property<PaymentStatus>("status");
     public static final Property<String> STATUS_NOTES = new Property<String>("statusNotes");
     public static final Property<PaymentType> TYPE = new Property<PaymentType>("type");
+    public static final Property<List<Invoice>> AUTHORISED_INVOICES = new Property<List<Invoice>>("authorisedInvoices");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Contact> CONTACT = new Property<Contact>("contact");
     public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = new Property<List<PaymentInLine>>("paymentInLines");
@@ -121,6 +128,13 @@ public abstract class _PaymentIn extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
+    }
+
+    public void setBillingId(String billingId) {
+        writeProperty("billingId", billingId);
+    }
+    public String getBillingId() {
+        return (String)readProperty("billingId");
     }
 
     public void setConfirmationStatus(ConfirmationStatus confirmationStatus) {
@@ -234,6 +248,18 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public PaymentType getType() {
         return (PaymentType)readProperty("type");
     }
+
+    public void addToAuthorisedInvoices(Invoice obj) {
+        addToManyTarget("authorisedInvoices", obj, true);
+    }
+    public void removeFromAuthorisedInvoices(Invoice obj) {
+        removeToManyTarget("authorisedInvoices", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Invoice> getAuthorisedInvoices() {
+        return (List<Invoice>)readProperty("authorisedInvoices");
+    }
+
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);

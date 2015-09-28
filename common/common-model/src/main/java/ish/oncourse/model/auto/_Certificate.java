@@ -24,6 +24,8 @@ public abstract class _Certificate extends CayenneDataObject {
     @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
     @Deprecated
+    public static final String AWARDED_PROPERTY = "awarded";
+    @Deprecated
     public static final String CERTIFICATE_NUMBER_PROPERTY = "certificateNumber";
     @Deprecated
     public static final String CREATED_PROPERTY = "created";
@@ -33,6 +35,8 @@ public abstract class _Certificate extends CayenneDataObject {
     public static final String FUNDING_SOURCE_PROPERTY = "fundingSource";
     @Deprecated
     public static final String IS_QUALIFICATION_PROPERTY = "isQualification";
+    @Deprecated
+    public static final String ISSUED_PROPERTY = "issued";
     @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
     @Deprecated
@@ -59,11 +63,13 @@ public abstract class _Certificate extends CayenneDataObject {
     public static final String ID_PK_COLUMN = "id";
 
     public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
+    public static final Property<Date> AWARDED = new Property<Date>("awarded");
     public static final Property<Long> CERTIFICATE_NUMBER = new Property<Long>("certificateNumber");
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<Date> END_DATE = new Property<Date>("endDate");
     public static final Property<Integer> FUNDING_SOURCE = new Property<Integer>("fundingSource");
     public static final Property<Boolean> IS_QUALIFICATION = new Property<Boolean>("isQualification");
+    public static final Property<Date> ISSUED = new Property<Date>("issued");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<Date> PRINTED_WHEN = new Property<Date>("printedWhen");
     public static final Property<String> PRIVATE_NOTES = new Property<String>("privateNotes");
@@ -81,6 +87,13 @@ public abstract class _Certificate extends CayenneDataObject {
     }
     public Long getAngelId() {
         return (Long)readProperty("angelId");
+    }
+
+    public void setAwarded(Date awarded) {
+        writeProperty("awarded", awarded);
+    }
+    public Date getAwarded() {
+        return (Date)readProperty("awarded");
     }
 
     public void setCertificateNumber(Long certificateNumber) {
@@ -116,6 +129,13 @@ public abstract class _Certificate extends CayenneDataObject {
     }
     public Boolean getIsQualification() {
         return (Boolean)readProperty("isQualification");
+    }
+
+    public void setIssued(Date issued) {
+        writeProperty("issued", issued);
+    }
+    public Date getIssued() {
+        return (Date)readProperty("issued");
     }
 
     public void setModified(Date modified) {

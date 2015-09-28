@@ -22,6 +22,8 @@ public class CertificateStubBuilder extends AbstractWillowStubBuilder<Certificat
         stub.setStudentLastName(entity.getStudentLastName());
         stub.setStudentId(entity.getStudent().getId());
         stub.setModified(entity.getModified());
+		stub.setIssued(entity.getIssued());
+		stub.setAwarded(entity.getAwarded());
         return stub;
     }
 }

@@ -4,6 +4,7 @@
 package ish.oncourse.webservices.replication.v11.updaters;
 
 import ish.common.types.EntityEvent;
+import ish.common.types.SystemEventType;
 import ish.common.types.TriggerType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Script;
@@ -27,6 +28,10 @@ public class ScriptUpdater extends AbstractWillowUpdater<ScriptStub, Script> {
 		
 		if (stub.getEntityEventType() != null) {
 			entity.setEntityEventType(TypesUtil.getEnumForDatabaseValue(stub.getEntityEventType(), EntityEvent.class));
+		}
+		entity.setDescription(stub.getDescription());
+		if (stub.getSystemEventType() != null) {
+			entity.setSystemEventType(TypesUtil.getEnumForDatabaseValue(stub.getSystemEventType(), SystemEventType.class));
 		}
 	}
 }

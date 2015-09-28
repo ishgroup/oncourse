@@ -43,6 +43,7 @@ public class PaymentInStubBuilder extends AbstractWillowStubBuilder<PaymentIn, P
 		if (entity.getConfirmationStatus() != null) {
 			stub.setConfirmationStatus(entity.getConfirmationStatus().getDatabaseValue());
 		}
+		stub.setBillingId(entity.getBillingId());
 		return stub;
 	}
 }

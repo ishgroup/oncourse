@@ -33,8 +33,6 @@ public abstract class _Survey extends CayenneDataObject {
     @Deprecated
     public static final String TUTOR_SCORE_PROPERTY = "tutorScore";
     @Deprecated
-    public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
-    @Deprecated
     public static final String VENUE_SCORE_PROPERTY = "venueScore";
     @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
@@ -50,7 +48,6 @@ public abstract class _Survey extends CayenneDataObject {
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<Boolean> PUBLIC_COMMENT = new Property<Boolean>("publicComment");
     public static final Property<Integer> TUTOR_SCORE = new Property<Integer>("tutorScore");
-    public static final Property<String> UNIQUE_CODE = new Property<String>("uniqueCode");
     public static final Property<Integer> VENUE_SCORE = new Property<Integer>("venueScore");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Enrolment> ENROLMENT = new Property<Enrolment>("enrolment");
@@ -102,13 +99,6 @@ public abstract class _Survey extends CayenneDataObject {
     }
     public Integer getTutorScore() {
         return (Integer)readProperty("tutorScore");
-    }
-
-    public void setUniqueCode(String uniqueCode) {
-        writeProperty("uniqueCode", uniqueCode);
-    }
-    public String getUniqueCode() {
-        return (String)readProperty("uniqueCode");
     }
 
     public void setVenueScore(Integer venueScore) {

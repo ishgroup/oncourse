@@ -28,5 +28,7 @@ public class CertificateUpdater extends AbstractWillowUpdater<CertificateStub, C
 		entity.setStudent(callback.updateRelationShip(stub.getStudentId(), Student.class));
 		entity.setStudentFirstName(stub.getStudentFirstName());
 		entity.setStudentLastName(stub.getStudentLastName());
+		entity.setIssued(stub.getIssued());
+		entity.setAwarded(stub.getAwarded());
 	}
 }

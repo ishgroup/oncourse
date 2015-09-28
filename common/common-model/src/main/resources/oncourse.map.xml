@@ -64,6 +64,7 @@
 	</db-entity>
 	<db-entity name="Certificate">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="awarded" type="TIMESTAMP"/>
 		<db-attribute name="certificateNumber" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
@@ -71,6 +72,7 @@
 		<db-attribute name="fundingSource" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isQualification" type="BIT"/>
+		<db-attribute name="issued" type="TIMESTAMP"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="printedWhen" type="TIMESTAMP"/>
 		<db-attribute name="privateNotes" type="VARCHAR" length="1000"/>
@@ -200,6 +202,15 @@
 		<db-attribute name="corporatePassId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="courseClassId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="CorporatePass_Discount">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="corporatePassId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="discountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
@@ -499,6 +510,7 @@
 	<db-entity name="Invoice">
 		<db-attribute name="amountOwing" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="authorisedRebillingCardId" type="BIGINT"/>
 		<db-attribute name="billToAddress" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
@@ -681,6 +693,7 @@
 	<db-entity name="PaymentIn">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
+		<db-attribute name="billingId" type="VARCHAR" length="256"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="confirmationStatus" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="contactId" type="BIGINT" length="19"/>
@@ -867,6 +880,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="description" type="LONGVARCHAR"/>
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entityClass" type="VARCHAR" length="128"/>
 		<db-attribute name="entityEventType" type="INTEGER"/>
@@ -876,6 +890,7 @@
 		<db-attribute name="result" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="schedule" type="VARCHAR" length="512"/>
 		<db-attribute name="script" type="LONGVARCHAR" isMandatory="true" length="16777215"/>
+		<db-attribute name="systemEventType" type="INTEGER"/>
 		<db-attribute name="triggerType" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Session">
@@ -996,7 +1011,6 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="publicComment" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="tutorScore" type="INTEGER" isMandatory="true" length="10"/>
-		<db-attribute name="uniqueCode" type="VARCHAR" isMandatory="true" length="8"/>
 		<db-attribute name="venueScore" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="SystemUser">
@@ -1326,11 +1340,13 @@
 	</obj-entity>
 	<obj-entity name="Certificate" className="ish.oncourse.model.Certificate" dbEntityName="Certificate">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="awarded" type="java.util.Date" db-attribute-path="awarded"/>
 		<obj-attribute name="certificateNumber" type="java.lang.Long" db-attribute-path="certificateNumber"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 		<obj-attribute name="fundingSource" type="java.lang.Integer" db-attribute-path="fundingSource"/>
 		<obj-attribute name="isQualification" type="java.lang.Boolean" db-attribute-path="isQualification"/>
+		<obj-attribute name="issued" type="java.util.Date" db-attribute-path="issued"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="printedWhen" type="java.util.Date" db-attribute-path="printedWhen"/>
 		<obj-attribute name="privateNotes" type="java.lang.String" db-attribute-path="privateNotes"/>
@@ -1434,6 +1450,11 @@
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
 	</obj-entity>
 	<obj-entity name="CorporatePassCourseClass" className="ish.oncourse.model.CorporatePassCourseClass" dbEntityName="CorporatePass_CourseClass">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
+	<obj-entity name="CorporatePassDiscount" className="ish.oncourse.model.CorporatePassDiscount" dbEntityName="CorporatePass_Discount">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1831,6 +1852,7 @@
 	<obj-entity name="PaymentIn" className="ish.oncourse.model.PaymentIn" dbEntityName="PaymentIn">
 		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="billingId" type="java.lang.String" db-attribute-path="billingId"/>
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="creditCardCVV" type="java.lang.String" db-attribute-path="creditCardCVV"/>
@@ -2012,6 +2034,7 @@
 	<obj-entity name="Script" className="ish.oncourse.model.Script" dbEntityName="Script">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="enabled" type="java.lang.Boolean" db-attribute-path="enabled"/>
 		<obj-attribute name="entityClass" type="java.lang.String" db-attribute-path="entityClass"/>
 		<obj-attribute name="entityEventType" type="ish.common.types.EntityEvent" db-attribute-path="entityEventType"/>
@@ -2020,6 +2043,7 @@
 		<obj-attribute name="result" type="java.lang.String" db-attribute-path="result"/>
 		<obj-attribute name="schedule" type="java.lang.String" db-attribute-path="schedule"/>
 		<obj-attribute name="script" type="java.lang.String" db-attribute-path="script"/>
+		<obj-attribute name="systemEventType" type="ish.common.types.SystemEventType" db-attribute-path="systemEventType"/>
 		<obj-attribute name="triggerType" type="ish.common.types.TriggerType" db-attribute-path="triggerType"/>
 	</obj-entity>
 	<obj-entity name="Session" className="ish.oncourse.model.Session" dbEntityName="Session">
@@ -2113,7 +2137,6 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="publicComment" type="java.lang.Boolean" db-attribute-path="publicComment"/>
 		<obj-attribute name="tutorScore" type="java.lang.Integer" db-attribute-path="tutorScore"/>
-		<obj-attribute name="uniqueCode" type="java.lang.String" db-attribute-path="uniqueCode"/>
 		<obj-attribute name="venueScore" type="java.lang.Integer" db-attribute-path="venueScore"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
@@ -2424,6 +2447,9 @@
 	<db-relationship name="corporatePassCourseClasses" source="College" target="CorporatePass_CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="corporatePassDiscounts" source="College" target="CorporatePass_Discount" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="corporatePasses" source="College" target="CorporatePass" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2688,6 +2714,9 @@
 	<db-relationship name="corporatePassCourseClass" source="CorporatePass" target="CorporatePass_CourseClass" toMany="true">
 		<db-attribute-pair source="id" target="corporatePassId"/>
 	</db-relationship>
+	<db-relationship name="corporatePassDiscounts" source="CorporatePass" target="CorporatePass_Discount" toMany="true">
+		<db-attribute-pair source="id" target="corporatePassId"/>
+	</db-relationship>
 	<db-relationship name="invoice" source="CorporatePass" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="corporatePassId"/>
 	</db-relationship>
@@ -2699,6 +2728,15 @@
 	</db-relationship>
 	<db-relationship name="courseClass" source="CorporatePass_CourseClass" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="CorporatePass_Discount" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="corporatePass" source="CorporatePass_Discount" target="CorporatePass" toMany="false">
+		<db-attribute-pair source="corporatePassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="discount" source="CorporatePass_Discount" target="Discount" toMany="false">
+		<db-attribute-pair source="discountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contacts" source="Country" target="Contact" toMany="true">
 		<db-attribute-pair source="id" target="countryId"/>
@@ -2798,6 +2836,9 @@
 	</db-relationship>
 	<db-relationship name="college" source="Discount" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="corporatePassDiscounts" source="Discount" target="CorporatePass_Discount" toMany="true">
+		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
 	<db-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
@@ -2934,6 +2975,9 @@
 	<db-relationship name="instruction" source="InstructionParameter" target="Instruction" toMany="false">
 		<db-attribute-pair source="instruction_id" target="id"/>
 	</db-relationship>
+	<db-relationship name="authorisedRebillingCard" source="Invoice" target="PaymentIn" toMany="false">
+		<db-attribute-pair source="authorisedRebillingCardId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="Invoice" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -3053,6 +3097,9 @@
 	</db-relationship>
 	<db-relationship name="module" source="Outcome" target="Module" toMany="false">
 		<db-attribute-pair source="moduleId" target="id"/>
+	</db-relationship>
+	<db-relationship name="authorisedInvoices" source="PaymentIn" target="Invoice" toMany="true">
+		<db-attribute-pair source="id" target="authorisedRebillingCardId"/>
 	</db-relationship>
 	<db-relationship name="college" source="PaymentIn" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3629,11 +3676,15 @@
 	<obj-relationship name="membeshipDiscountRelations" source="ContactRelationType" target="DiscountMembershipRelationType" deleteRule="Deny" db-relationship-path="membeshipDiscountRelations"/>
 	<obj-relationship name="college" source="CorporatePass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="CorporatePass" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="corporatePassDiscounts" source="CorporatePass" target="CorporatePassDiscount" deleteRule="Deny" db-relationship-path="corporatePassDiscounts"/>
 	<obj-relationship name="invoice" source="CorporatePass" target="Invoice" deleteRule="Deny" db-relationship-path="invoice"/>
 	<obj-relationship name="validClasses" source="CorporatePass" target="CourseClass" deleteRule="Deny" db-relationship-path="corporatePassCourseClass.courseClass"/>
 	<obj-relationship name="college" source="CorporatePassCourseClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="corporatePass" source="CorporatePassCourseClass" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePass"/>
 	<obj-relationship name="courseClass" source="CorporatePassCourseClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="college" source="CorporatePassDiscount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="corporatePass" source="CorporatePassDiscount" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePass"/>
+	<obj-relationship name="discount" source="CorporatePassDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="applications" source="Course" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
@@ -3668,6 +3719,7 @@
 	<obj-relationship name="college" source="CustomFieldType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFields" source="CustomFieldType" target="CustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="corporatePassDiscounts" source="Discount" target="CorporatePassDiscount" deleteRule="Deny" db-relationship-path="corporatePassDiscounts"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
 	<obj-relationship name="discountMembershipProducts" source="Discount" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discount_membershipProducts"/>
@@ -3707,6 +3759,7 @@
 	<obj-relationship name="college" source="Instruction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="parameters" source="Instruction" target="InstructionParameter" deleteRule="Cascade" db-relationship-path="parameters"/>
 	<obj-relationship name="instruction" source="InstructionParameter" target="Instruction" deleteRule="Nullify" db-relationship-path="instruction"/>
+	<obj-relationship name="authorisedRebillingCard" source="Invoice" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
 	<obj-relationship name="college" source="Invoice" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
@@ -3747,6 +3800,7 @@
 	<obj-relationship name="college" source="Outcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="Outcome" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="module" source="Outcome" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
+	<obj-relationship name="authorisedInvoices" source="PaymentIn" target="Invoice" deleteRule="Deny" db-relationship-path="authorisedInvoices"/>
 	<obj-relationship name="college" source="PaymentIn" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="PaymentIn" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="paymentInLines" source="PaymentIn" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>

@@ -34,5 +34,6 @@ public class PaymentInUpdater extends AbstractWillowUpdater<PaymentInStub, Payme
 		if (stub.getConfirmationStatus() != null) {
 			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
 		}
+		entity.setBillingId(stub.getBillingId());
 	}
 }

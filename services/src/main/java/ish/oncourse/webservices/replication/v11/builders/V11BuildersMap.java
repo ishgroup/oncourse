@@ -75,5 +75,6 @@ private Map<String, IWillowStubBuilder> builderMap;
 		builderMap.put(getEntityName(Script.class), new ScriptStubBuilder());
 		builderMap.put(getEntityName(CourseClassPaymentPlanLine.class), new CourseClassPaymentPlanLineStubBuilder());
 		builderMap.put(getEntityName(InvoiceDueDate.class), new InvoiceDueDateStubBuilder());
+		builderMap.put(getEntityName(CorporatePassDiscount.class), new CorporatePassDiscountStubBuilder());
     }
 }

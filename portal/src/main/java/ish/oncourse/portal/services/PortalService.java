@@ -815,7 +815,6 @@ public class PortalService implements IPortalService {
         Survey survey = context.newObject(Survey.class);
         survey.setCollege(context.localObject(getContact().getCollege()));
         survey.setEnrolment(context.localObject(getEnrolmentBy(getContact().getStudent(), courseClass)));
-        survey.setUniqueCode(SecurityUtil.generateRandomPassword(8));
         return survey;
     }
 
