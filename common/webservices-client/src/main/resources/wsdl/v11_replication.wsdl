@@ -554,6 +554,8 @@
 							<xs:element name="discountType" type="xs:int" />
 							<xs:element name="hideOnWeb" type="xs:boolean"/>
 							<xs:element name="availableOnWeb" type="xs:boolean"/>
+							<xs:element name="minEnrolments" type="xs:int"/>
+							<xs:element name="minValue" type="xs:decimal"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>

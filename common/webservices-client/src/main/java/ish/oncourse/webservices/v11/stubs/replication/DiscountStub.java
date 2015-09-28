@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="discountType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="hideOnWeb" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="availableOnWeb" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="minEnrolments" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="minValue" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -66,7 +68,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "validTo",
     "discountType",
     "hideOnWeb",
-    "availableOnWeb"
+    "availableOnWeb",
+    "minEnrolments",
+    "minValue"
 })
 public class DiscountStub
     extends ReplicationStub
@@ -126,6 +130,12 @@ public class DiscountStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean availableOnWeb;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer minEnrolments;
+    @XmlElement(required = true)
+    protected BigDecimal minValue;
 
     /**
      * Gets the value of the code property.
@@ -557,6 +567,54 @@ public class DiscountStub
      */
     public void setAvailableOnWeb(Boolean value) {
         this.availableOnWeb = value;
+    }
+
+    /**
+     * Gets the value of the minEnrolments property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getMinEnrolments() {
+        return minEnrolments;
+    }
+
+    /**
+     * Sets the value of the minEnrolments property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMinEnrolments(Integer value) {
+        this.minEnrolments = value;
+    }
+
+    /**
+     * Gets the value of the minValue property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getMinValue() {
+        return minValue;
+    }
+
+    /**
+     * Sets the value of the minValue property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setMinValue(BigDecimal value) {
+        this.minValue = value;
     }
 
 }
