@@ -436,7 +436,7 @@
     </lst>
     <lst name="slave">
       <str name="enable">${solr.slave.enable:false}</str>
-      <str name="masterUrl">http://${solr.master.url}/${solr.core.name}/replication</str>
+      <str name="masterUrl">http://${solr.master.url}/${solr.core.name}</str>
       <str name="pollInterval">${solr.poll}</str>
     </lst>
   </requestHandler>
