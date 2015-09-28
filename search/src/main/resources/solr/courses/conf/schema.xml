@@ -182,6 +182,9 @@
 		<field name="class_code" type="exacttext" indexed="true" stored="true"
 			multiValued="true" omitNorms="false"/>
 
+		<field name="tutorId" type="long" indexed="true"
+			   omitNorms="false" stored="true" multiValued="true" omitTermFreqAndPositions="true"/>
+
 		<field name="tutor" type="text" indexed="true" stored="true"
 			omitNorms="false" multiValued="true"/>
 

@@ -19,22 +19,20 @@ public class ModelBuilder {
 
     public Session createSession(CourseClass courseClass) {
         Session session = context.newObject(Session.class);
-        session.setCollege(college);
+        fillCommonProperties(session);
         session.setCourseClass(courseClass);
         session.setStartDate(DateUtils.addDays(new Date(), 2));
         session.setEndDate(DateUtils.addDays(new Date(), 3));
-        session.setCreated(new Date());
-        session.setModified(new Date());
+        courseClass.setStartDate(session.getStartDate());
+        courseClass.setEndDate(session.getEndDate());
         context.commitChanges();
         return session;
     }
 
     public Site createSite() {
         Site site = context.newObject(Site.class);
-        site.setName("Site " + RandomStringUtils.random(5));
-        site.setCollege(college);
-        site.setModified(new Date());
-        site.setCreated(new Date());
+        fillCommonProperties(site);
+        site.setName("Site " + RandomStringUtils.randomAscii(5));
         site.setIsWebVisible(true);
         site.setIsVirtual(false);
         site.setLatitude(BigDecimal.valueOf(-RandomUtils.nextDouble(31.8, 31.9)));
@@ -44,11 +42,9 @@ public class ModelBuilder {
 
     public Room createRoom(Site site) {
         Room room = context.newObject(Room.class);
-        room.setCollege(college);
-        room.setModified(new Date());
-        room.setCreated(new Date());
+        fillCommonProperties(room);
         room.setCapacity(10);
-        room.setName("Room " + RandomStringUtils.random(5));
+        room.setName("Room " + RandomStringUtils.randomAscii(5));
         room.setSite(site);
         return room;
     }
@@ -61,33 +57,66 @@ public class ModelBuilder {
         return site;
     }
 
+    public TutorRole attachTutorToCourseClass(Tutor tutor, CourseClass courseClass) {
+        TutorRole tutorRole = context.newObject(TutorRole.class);
+        fillCommonProperties(tutorRole);
+        tutorRole.setInPublicity(true);
+        tutorRole.setIsConfirmed(true);
+        tutorRole.setTutor(tutor);
+        tutorRole.setCourseClass(courseClass);
+        context.commitChanges();
+        return tutorRole;
+    }
+
+    public Tutor createTutor(Contact contact) {
+        Tutor tutor = context.newObject(Tutor.class);
+        fillCommonProperties(tutor);
+        tutor.setContact(contact);
+        context.commitChanges();
+        tutor.setAngelId(tutor.getId());
+        context.commitChanges();
+        return tutor;
+    }
+
+    private void fillCommonProperties(Queueable queueable) {
+        queueable.setCollege(college);
+        queueable.setModified(new Date());
+        queueable.setCreated(new Date());
+    }
+
+    public Contact createContact() {
+        Contact contact = context.newObject(Contact.class);
+        fillCommonProperties(contact);
+        contact.setGivenName(RandomStringUtils.randomAlphanumeric(5));
+        contact.setFamilyName(RandomStringUtils.randomAlphanumeric(5));
+        context.commitChanges();
+        return contact;
+    }
+
+
     public CourseClass createCourseClass(Course course) {
         CourseClass courseClass = context.newObject(CourseClass.class);
-        courseClass.setCollege(college);
+        fillCommonProperties(courseClass);
         courseClass.setCode(RandomStringUtils.randomAlphanumeric(5));
         courseClass.setCourse(course);
         courseClass.setIsWebVisible(true);
         courseClass.setIsActive(true);
         courseClass.setMaximumPlaces(5);
         courseClass.setIsDistantLearningCourse(false);
-        courseClass.setModified(new Date());
-        courseClass.setCreated(new Date());
+        courseClass.setCancelled(false);
         context.commitChanges();
         return courseClass;
     }
 
     public Course createCourse() throws InterruptedException {
-        Date now = new Date();
         Course course = context.newObject(Course.class);
-        course.setCollege(college);
+        fillCommonProperties(course);
         course.setCode(RandomStringUtils.randomAlphabetic(10));
         course.setName("Course" + RandomStringUtils.randomAlphabetic(10) + "name");
         course.setIsWebVisible(true);
         course.setIsVETCourse(false);
         course.setIsSufficientForQualification(false);
         course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
-        course.setCreated(now);
-        course.setModified(now);
 
         context.commitChanges();
         return course;
@@ -103,9 +132,7 @@ public class ModelBuilder {
 
     public Tag createTag() {
         Tag tag = context.newObject(Tag.class);
-        tag.setCollege(college);
-        tag.setModified(new Date());
-        tag.setCreated(new Date());
+        fillCommonProperties(tag);
         tag.setName(RandomStringUtils.randomAlphabetic(10));
         tag.setIsWebVisible(true);
         tag.setDetail(RandomStringUtils.randomAlphabetic(255));
@@ -116,16 +143,12 @@ public class ModelBuilder {
 
     public TaggableTag linkTagToCourse(Course course, Tag tag) {
         Taggable taggable = context.newObject(Taggable.class);
-        taggable.setCollege(college);
-        taggable.setCreated(new Date());
-        taggable.setModified(new Date());
+        fillCommonProperties(taggable);
         taggable.setEntityWillowId(course.getId());
         taggable.setEntityIdentifier("Course");
 
         TaggableTag taggableTag = context.newObject(TaggableTag.class);
-        taggableTag.setCollege(college);
-        taggableTag.setCreated(new Date());
-        taggableTag.setModified(new Date());
+        fillCommonProperties(taggableTag);
         taggableTag.setTag(tag);
         taggableTag.setTaggable(taggable);
 

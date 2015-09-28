@@ -108,6 +108,28 @@ public class CoursesSolrTest extends AbstractSolrTest {
 
     }
 
+    @Test
+    public void testTutor() throws Exception {
+        Course course = modelBuilder.createCourse();
+        CourseClass courseClass = modelBuilder.createCourseClass(course);
+        Session session = modelBuilder.createSession(courseClass);
+        Site site1 = modelBuilder.createSiteForSession(session);
+        Site site2 = modelBuilder.createSiteForCourseClass(courseClass);
+        Contact contact = modelBuilder.createContact();
+        Tutor tutor = modelBuilder.createTutor(contact);
+        modelBuilder.attachTutorToCourseClass(tutor, courseClass);
+        Map response = fullImport();
+
+        assertEquals("3", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+
+        SolrQuery query = SolrQueryBuilder.valueOf(new SearchParams(), "10", 0, 10).build().addFilterQuery("tutorId: " + tutor.getAngelId());
+
+        Gson gson = new Gson();
+        response = gson.fromJson(JQ(new LocalSolrQueryRequest(h.getCore(), query)), Map.class);
+        assertEquals(1.0, ((Map) response.get("response")).get("numFound"));
+    }
+
+
 
     private Site testSiteAdd(Session session) throws Exception {
         Site site = modelBuilder.createSiteForSession(session);
