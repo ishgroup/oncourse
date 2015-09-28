@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="script" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="triggerType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="onCourseEventType" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="systemEventType" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "script",
     "triggerType",
     "description",
-    "onCourseEventType"
+    "systemEventType"
 })
 public class ScriptStub
     extends ReplicationStub
@@ -80,7 +80,7 @@ public class ScriptStub
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
-    protected Integer onCourseEventType;
+    protected Integer systemEventType;
 
     /**
      * Gets the value of the schedule property.
@@ -299,27 +299,27 @@ public class ScriptStub
     }
 
     /**
-     * Gets the value of the onCourseEventType property.
+     * Gets the value of the systemEventType property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public Integer getOnCourseEventType() {
-        return onCourseEventType;
+    public Integer getSystemEventType() {
+        return systemEventType;
     }
 
     /**
-     * Sets the value of the onCourseEventType property.
+     * Sets the value of the systemEventType property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setOnCourseEventType(Integer value) {
-        this.onCourseEventType = value;
+    public void setSystemEventType(Integer value) {
+        this.systemEventType = value;
     }
 
 }

@@ -1384,7 +1384,7 @@
 							<xs:element name="script" type="xs:string"/>
 							<xs:element name="triggerType" type="xs:int"/>
 							<xs:element name="description" type="xs:string"/>
-							<xs:element name="onCourseEventType" type="xs:int"/>
+							<xs:element name="systemEventType" type="xs:int"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
