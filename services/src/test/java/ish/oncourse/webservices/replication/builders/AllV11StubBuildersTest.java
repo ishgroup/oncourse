@@ -72,7 +72,7 @@ public class AllV11StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testDiscountStubBuilder() {
-		this.testStubBuilder(Discount.class, new DiscountStubBuilder(), "codeRequired");
+		this.testStubBuilder(Discount.class, new DiscountStubBuilder(), "codeRequired", "minEnrolments", "minValue");
 	}
 
 	@Test

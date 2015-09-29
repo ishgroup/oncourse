@@ -197,6 +197,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		discountParameters.add(new ReplicationStubFieldParameter("discountType", Integer.class));
 		discountParameters.add(new ReplicationStubFieldParameter("hideOnWeb", Boolean.class));
 		discountParameters.add(new ReplicationStubFieldParameter("availableOnWeb", Boolean.class));
+		discountParameters.add(new ReplicationStubFieldParameter("minValue", BigDecimal.class));
+		discountParameters.add(new ReplicationStubFieldParameter("minEnrolments", Integer.class));
 		stubsPropertyMap.put(getStubName(DiscountStub.class), discountParameters);
 
 		List<ReplicationStubFieldParameter> enrolmentParameters = fillDefaultReplicationStubFields();
@@ -612,8 +614,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		stubsPropertyMap.put(getStubName(InvoiceDueDateStub.class), invoiceDueDateParameters);
 
 		List<ReplicationStubFieldParameter> corporatePassDiscountParameters = fillDefaultReplicationStubFields();
-		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
-		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("discounId", Long.class));
+		corporatePassDiscountParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
+		corporatePassDiscountParameters.add(new ReplicationStubFieldParameter("discountId", Long.class));
 		stubsPropertyMap.put(getStubName(CorporatePassDiscountStub.class), corporatePassDiscountParameters);
 
 		//TODO: add new stubs here
