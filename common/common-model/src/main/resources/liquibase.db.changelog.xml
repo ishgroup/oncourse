@@ -3483,7 +3483,7 @@
 			ALTER TABLE postcode_db ADD COLUMN typeTemp INTEGER;
 			UPDATE postcode_db set typeTemp = 1 where type='Delivery Area';
 			UPDATE postcode_db set typeTemp = 2 where type='Post Office Boxes';
-			UPDATE postcode_db set typeTemp = 3 where type='VLR';
+			UPDATE postcode_db set typeTemp = 3 where type='LVR';
 			ALTER TABLE postcode_db DROP COLUMN type;
 			ALTER TABLE postcode_db CHANGE COLUMN typeTemp type INTEGER NOT NULL;
 		</sql>
