@@ -173,7 +173,7 @@ public class AllV8StubBuildersTest extends AbstractAllStubBuildersTest {
 
     @Test
     public void testSurveyStubBuilder() {
-        this.testStubBuilder(Survey.class, new SurveyStubBuilder());
+        this.testStubBuilder(Survey.class, new SurveyStubBuilder(), "uniqueCode");
     }
 
     @Test

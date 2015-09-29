@@ -167,12 +167,37 @@
 	<CorporatePass_CourseClass id="1" angelId="2" collegeId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
 				corporatePassId="1" courseClassId="1"/>
 
+	<PaymentIn
+			amount="1.11"
+			angelId="2"
+			collegeId="3"
+			contactId="1"
+			created="2011-09-20 11:14:54"
+			creditCardCVV="QWER"
+			creditCardExpiry="creditCardExpiry"
+			creditCardName="creditCardName"
+			creditCardNumber="creditCardNumberX"
+			creditCardType="VISA"
+			dateBanked="2011-09-20 11:14:54"
+			gatewayReference="gatewayReference"
+			gatewayResponse="gatewayResponse"
+			id="1"
+			modified="2011-09-20 11:14:54"
+			sessionId="sessionId"
+			source="W"
+			status="1"
+			statusNotes="statusNotes"
+			studentId="1"
+			type="1" confirmationStatus="1"
+			billingId="qwertyuiopasdfghjklzxcvbnm123456"/>
+
     <Invoice id="1" angelId="2" billToAddress="billToAddress" source="W" amountOwing="100.00" contactId="1"
              collegeId="3" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
              totalGst="10.91" created="2011-09-10 11:14:54"
              customerReference="customerReference" modified="2011-09-10 11:14:54"
-             publicNotes="publicNotes" shippingAddress="shippingAddress" corporatePassId="1" confirmationStatus="1"/>
+             publicNotes="publicNotes" shippingAddress="shippingAddress" corporatePassId="1" confirmationStatus="1"
+			 authorisedRebillingCardId="1"/>
 
 
     <InvoiceLine id="1" angelId="2000" collegeId="3" enrolmentId="1"
@@ -257,29 +282,6 @@
             dateBanked="2011-09-20 11:14:54"
             gatewayReference="gatewayReference"
             gatewayResponse="gatewayResponse"
-            id="1"
-            modified="2011-09-20 11:14:54"
-            sessionId="sessionId"
-            source="W"
-            status="1"
-            statusNotes="statusNotes"
-            studentId="1"
-            type="1" confirmationStatus="1"/>
-
-    <PaymentIn
-            amount="1.11"
-            angelId="2"
-            collegeId="3"
-            contactId="1"
-            created="2011-09-20 11:14:54"
-            creditCardCVV="QWER"
-            creditCardExpiry="creditCardExpiry"
-            creditCardName="creditCardName"
-            creditCardNumber="creditCardNumberX"
-            creditCardType="VISA"
-            dateBanked="2011-09-20 11:14:54"
-            gatewayReference="gatewayReference"
-            gatewayResponse="gatewayResponse"
             id="2"
             modified="2011-09-20 11:14:54"
             sessionId="sessionId"
@@ -287,7 +289,8 @@
             status="10"
             statusNotes="statusNotes"
             studentId="1"
-            type="1" confirmationStatus="1"/>
+            type="1" confirmationStatus="1"
+			billingId="qwertyuiopasdfghjklzxcvbnm123456"/>/>
 
     <PaymentOut
             angelId="2"
@@ -468,6 +471,8 @@
                  studentFirstName="studentFirstName"
                  studentId="1"
                  studentLastName="studentLastName"
+				 issued="2011-09-20 11:14:54"
+				 awarded="2011-09-20 11:14:54"
             />
 
     <CertificateOutcome certificateId="1" angelId="2" collegeId="3" created="2011-09-20 11:14:54" id="1" modified="2011-09-20 11:14:54" outcomeId="1"/>
@@ -476,7 +481,7 @@
     	idKey="123" redeemedCoursesCount="1" redemptionValue="1.0" source="W" status="1" contactId="1" redeemedInvoiceLineId="1"/-->
 
     <Survey id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
-            comment="comment" courseScore="1" enrolmentId="1" tutorScore="2" uniqueCode="uniqueCo" venueScore="3" publicComment="1"/>
+            comment="comment" courseScore="1" enrolmentId="1" tutorScore="2" venueScore="3" publicComment="1"/>
 
     <EntityRelation
             id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
@@ -523,7 +528,8 @@
 		voucher.setConfirmationStatus(ConfirmationStatus.SENT)&#xA;
 		args.context.commitChanges()&#xA;
 	}&#xA;
-	}"/>
+	}"
+			description="description" systemEventType="1"/>
 
 	<EmailTemplate id="1" angelId="1" collegeId="3" name="Voucher Email" subject="Voucher" bodyPlain="test" bodyHtml="test" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" entity="Application"/>
 	
@@ -546,5 +552,7 @@
 			amount="100.00"
 			dueDate="2016-09-20 11:14:54"
 			invoiceId="1"/>
+	
+	<CorporatePass_Discount id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" corporatePassId="1" discountId="1"/>
 	
 </dataset>

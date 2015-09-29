@@ -257,6 +257,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		invoiceParameters.add(new ReplicationStubFieldParameter("contactId", Long.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
+		invoiceParameters.add(new ReplicationStubFieldParameter("authorisedRebillingCardId", Long.class));
 		stubsPropertyMap.put(getStubName(InvoiceStub.class), invoiceParameters);
 		final List<ReplicationStubFieldParameter> messagePersonParameters = fillDefaultReplicationStubFields();
 		messagePersonParameters.add(new ReplicationStubFieldParameter("destinationAddress", String.class));
@@ -302,6 +303,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		paymentInParameters.add(new ReplicationStubFieldParameter("creditCardType", String.class));
 		paymentInParameters.add(new ReplicationStubFieldParameter("dateBanked", Date.class));
 		paymentInParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
+		paymentInParameters.add(new ReplicationStubFieldParameter("billingId", String.class));
 		stubsPropertyMap.put(getStubName(PaymentInStub.class), paymentInParameters);
 		final List<ReplicationStubFieldParameter> paymentOutParameters = fillDefaultReplicationStubFields();
 		paymentOutParameters.add(new ReplicationStubFieldParameter("amount", BigDecimal.class));
@@ -433,6 +435,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		certificateParameters.add(new ReplicationStubFieldParameter("studentFirstName", String.class));
 		certificateParameters.add(new ReplicationStubFieldParameter("studentLastName", String.class));
 		certificateParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
+		certificateParameters.add(new ReplicationStubFieldParameter("issued", Date.class));
+		certificateParameters.add(new ReplicationStubFieldParameter("awarded", Date.class));
 		stubsPropertyMap.put(getStubName(CertificateStub.class), certificateParameters);
 		final List<ReplicationStubFieldParameter> certificateOutcomeParameters = fillDefaultReplicationStubFields();
 		certificateOutcomeParameters.add(new ReplicationStubFieldParameter("certificateId", Long.class));
@@ -503,7 +507,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		surveyParameters.add(new ReplicationStubFieldParameter("courseScore", Integer.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("tutorScore", Integer.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("venueScore", Integer.class));
-		surveyParameters.add(new ReplicationStubFieldParameter("uniqueCode", String.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("enrolmentId", Long.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("publicComment", Boolean.class));
 		stubsPropertyMap.put(getStubName(SurveyStub.class), surveyParameters);
@@ -584,6 +587,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		scriptParameters.add(new ReplicationStubFieldParameter("result", String.class));
 		scriptParameters.add(new ReplicationStubFieldParameter("script", String.class));
 		scriptParameters.add(new ReplicationStubFieldParameter("triggerType", Integer.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("description", String.class));
+		scriptParameters.add(new ReplicationStubFieldParameter("systemEventType", Integer.class));
 		stubsPropertyMap.put(getStubName(ScriptStub.class), scriptParameters);
 
 		List<ReplicationStubFieldParameter> emailTemplateParameters = fillDefaultReplicationStubFields();
@@ -605,6 +610,11 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("dueDate", Date.class));
 		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("invoiceId", Long.class));
 		stubsPropertyMap.put(getStubName(InvoiceDueDateStub.class), invoiceDueDateParameters);
+
+		List<ReplicationStubFieldParameter> corporatePassDiscountParameters = fillDefaultReplicationStubFields();
+		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
+		invoiceDueDateParameters.add(new ReplicationStubFieldParameter("discounId", Long.class));
+		stubsPropertyMap.put(getStubName(CorporatePassDiscountStub.class), corporatePassDiscountParameters);
 
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
@@ -966,6 +976,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testInvoiceDueDateStub() {
 		GenericReplicationStub stub = new InvoiceDueDateStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testCorporatePassDiscountStub() {
+		GenericReplicationStub stub = new CorporatePassDiscountStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	

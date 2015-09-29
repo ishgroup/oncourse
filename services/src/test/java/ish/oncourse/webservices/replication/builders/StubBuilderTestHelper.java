@@ -200,6 +200,9 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 			if (propertyName.equals(Script.TRIGGER_TYPE_PROPERTY)) {
 				return ((Script) entity).getTriggerType().getDatabaseValue();
 			}
+			if (propertyName.equals(Script.SYSTEM_EVENT_TYPE_PROPERTY)) {
+				return ((Script) entity).getSystemEventType().getDatabaseValue();
+			}
 		}
 
 

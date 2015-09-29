@@ -272,4 +272,9 @@ public class AllV11StubBuildersTest extends AbstractAllStubBuildersTest {
 	public void testInvoiceDueDateStubBuilder() {
 		this.testStubBuilder(InvoiceDueDate.class, new InvoiceDueDateStubBuilder());
 	}
+
+	@Test
+	public void testCorporatePassDiscountStubBuilder() {
+		this.testStubBuilder(CorporatePassDiscount.class, new CorporatePassDiscountStubBuilder());
+	}
 }
