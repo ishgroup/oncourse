@@ -3448,5 +3448,47 @@
 
 		<addUniqueConstraint tableName="CorporatePass_Discount" columnNames="angelId,collegeId" constraintName="angelId_college_unique"/>
 	</changeSet>
+
+	<changeSet id="222" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="postcode_db" columnName="ishVersion"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE postcode_db DROP PRIMARY KEY;
+			
+			ALTER TABLE postcode_db ADD COLUMN id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY;
+
+			ALTER TABLE  postcode_db ADD UNIQUE postcode_suburb_unique (suburb, postcode);
+
+			ALTER TABLE  postcode_db ADD COLUMN ishVersion BIGINT;
+
+			update postcode_db set ishVersion = (select max(ishVersion) + 1 from ((select ishVersion from `Language`) union
+			(select ishVersion from `Module`) union
+			(select ishVersion from Qualification) union
+			(select ishVersion from Country) union
+			(select ishVersion from TrainingPackage)) as IshUnion);
+
+			ALTER TABLE postcode_db MODIFY COLUMN ishVersion BIGINT NOT NULL;
+		</sql>
+	</changeSet>
+
+
+	<changeSet id="223" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+				<columnExists tableName="postcode_db" columnName="type"/>
+		</preConditions>
+		<sql>
+			ALTER TABLE postcode_db ADD COLUMN typeTemp INTEGER;
+			UPDATE postcode_db set typeTemp = 1 where type='Delivery Area';
+			UPDATE postcode_db set typeTemp = 2 where type='Post Office Boxes';
+			UPDATE postcode_db set typeTemp = 3 where type='VLR';
+			ALTER TABLE postcode_db DROP COLUMN type;
+			ALTER TABLE postcode_db CHANGE COLUMN typeTemp type INTEGER NOT NULL;
+		</sql>
+		
+	</changeSet>
 	
+
 </databaseChangeLog>
