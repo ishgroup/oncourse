@@ -28,12 +28,12 @@ public enum PostcodeType implements DisplayableExtendedEnumeration<Integer> {
 	POST_OFFICE_BOXES(2, "Post Office Boxes"),
 	
 	/**
-	 * Large Volume Receivers
+	 * Large Volume Receiver
 	 * Database value: 3
 	 *
 	 * @PublicApi
 	 */
-	LARGE_VOLUME_RECEIVER(3, "Large Volume Receivers");
+	LARGE_VOLUME_RECEIVER(3, "Large Volume Receiver");
 	
 
 	private int value;
