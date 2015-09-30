@@ -924,7 +924,6 @@
 						<xs:sequence>
 							<xs:element name="amountOwing" type="xs:decimal" />
 							<xs:element name="billToAddress" type="xs:string" />
-							<xs:element name="customerPO" type="xs:string" />
 							<xs:element name="customerReference" type="xs:string" />
 							<xs:element name="dateDue" type="xs:dateTime" />
 							<xs:element name="description" type="xs:string" />

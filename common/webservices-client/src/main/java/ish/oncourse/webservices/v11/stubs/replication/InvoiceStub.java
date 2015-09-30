@@ -23,7 +23,6 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
  *       &lt;sequence>
  *         &lt;element name="amountOwing" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *         &lt;element name="billToAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="customerPO" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="customerReference" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="dateDue" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -51,7 +50,6 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
 @XmlType(name = "invoiceStub", propOrder = {
     "amountOwing",
     "billToAddress",
-    "customerPO",
     "customerReference",
     "dateDue",
     "description",
@@ -77,8 +75,6 @@ public class InvoiceStub
     protected BigDecimal amountOwing;
     @XmlElement(required = true)
     protected String billToAddress;
-    @XmlElement(required = true)
-    protected String customerPO;
     @XmlElement(required = true)
     protected String customerReference;
     @XmlElement(required = true, type = String.class)
@@ -170,30 +166,6 @@ public class InvoiceStub
      */
     public void setBillToAddress(String value) {
         this.billToAddress = value;
-    }
-
-    /**
-     * Gets the value of the customerPO property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCustomerPO() {
-        return customerPO;
-    }
-
-    /**
-     * Sets the value of the customerPO property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCustomerPO(String value) {
-        this.customerPO = value;
     }
 
     /**
