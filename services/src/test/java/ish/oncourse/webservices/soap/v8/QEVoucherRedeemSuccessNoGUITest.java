@@ -8,7 +8,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v8.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -63,7 +63,8 @@ public abstract class QEVoucherRedeemSuccessNoGUITest extends QEVoucherRedeemNoG
 	}
 
 	protected final void checkAsyncReplicationForVoucherNoGUI(ObjectContext context) {
-		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
+				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 9 records.", 9, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,

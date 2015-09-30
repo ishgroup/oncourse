@@ -12,7 +12,7 @@ import ish.oncourse.webservices.v8.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v8.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v8.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
@@ -94,8 +94,8 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 
 	@Override
 	protected void checkAsyncReplication(ObjectContext context) {
-		@SuppressWarnings("unchecked")
-		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
+				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,

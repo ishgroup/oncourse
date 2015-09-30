@@ -16,7 +16,7 @@ import ish.oncourse.webservices.v10.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v10.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v10.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Test;
 
 import java.util.List;
@@ -36,7 +36,8 @@ public class QESuccessPaymentForPartiallyCanceledTest extends QEPaymentProcess8C
 	@Override
 	protected void checkAsyncReplication(ObjectContext context) {
 		@SuppressWarnings("unchecked")
-		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
+				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 14 records.", 14, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,

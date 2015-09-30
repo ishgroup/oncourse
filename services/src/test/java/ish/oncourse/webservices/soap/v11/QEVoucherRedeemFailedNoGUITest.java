@@ -8,7 +8,7 @@ import ish.oncourse.webservices.v11.stubs.replication.VoucherPaymentInStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,7 +31,8 @@ public abstract class QEVoucherRedeemFailedNoGUITest extends QEVoucherRedeemNoGU
 	}
 
 	protected void checkAsyncReplicationForVoucherNoGUIFailed(ObjectContext context) {
-		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
+				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 16 records.", 16, queuedRecords.size());
 

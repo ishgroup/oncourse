@@ -26,7 +26,7 @@ import ish.oncourse.webservices.v11.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
@@ -113,7 +113,8 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 	}
 
 	protected final void checkAsyncReplicationForVoucherAndCreditCardPayment(ObjectContext context) {
-		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
+				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,
@@ -149,7 +150,8 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 	}
 
 	protected final void checkAsyncReplicationForVoucherAndCreditCardReverseInvoicePayment(ObjectContext context) {
-		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
+				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 19 records.", 11, queuedRecords.size());
 

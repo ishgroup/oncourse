@@ -12,7 +12,7 @@ import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.v11.stubs.replication.VoucherStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
@@ -65,7 +65,8 @@ public class QEVoucherValidationRequestTest extends RealWSTransportTest {
 		Voucher voucherInUse = Cayenne.objectForPK(context, Voucher.class, 1);
 		assertTrue(voucherInUse.isInUse());
 
-		List<Voucher> allVouchers = context.performQuery(new SelectQuery(Voucher.class));
+		List<Voucher> allVouchers = ObjectSelect.query(Voucher.class)
+				.select(context);
 		assertEquals(4, allVouchers.size());
 
 		GenericTransactionGroup request = PortHelper.createTransactionGroup(getSupportedVersion());

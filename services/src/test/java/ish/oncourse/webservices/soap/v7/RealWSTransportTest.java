@@ -8,7 +8,7 @@ import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v7.stubs.replication.TransactionGroup;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.test.PageTester;
 import org.dbunit.database.DatabaseConfig;
@@ -158,8 +158,9 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	@Override
 	protected Long getCommunicationKey() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		@SuppressWarnings("unchecked")
-		List<College> colleges = context.performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l)));
+		List<College> colleges = ObjectSelect.query(College.class)
+				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l))
+				.select(context);
 		assertFalse("colleges should not be empty", colleges.isEmpty());
 		assertTrue("Only 1 college should have id=1", colleges.size() == 1);
 		College college = colleges.get(0);
@@ -170,8 +171,9 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	@Override
 	protected String getSecurityCode() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		@SuppressWarnings("unchecked")
-		List<College> colleges = context.performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l)));
+		List<College> colleges = ObjectSelect.query(College.class)
+				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l))
+				.select(context);
 		assertFalse("colleges should not be empty", colleges.isEmpty());
 		assertTrue("Only 1 college should have id=1", colleges.size() == 1);
 		College college = colleges.get(0);

@@ -9,7 +9,7 @@ import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -73,8 +73,10 @@ public class MergeContactTest extends ServiceTest {
 			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
 			assertNotNull("student 1 linked with the contact 2", student1.getContact());
 			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
-			contact1 = (Contact) objectContext.performQuery(
-				new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))).get(0);
+			contact1 = ObjectSelect.query(Contact.class)
+					.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))
+					.selectOne(objectContext);
+
 			assertNull("contact 1 have no link to students", contact1.getStudent());
 		} finally {
 			objectContext.rollbackChanges();
@@ -110,8 +112,9 @@ public class MergeContactTest extends ServiceTest {
 			assertTrue("Contact 2 have link to student 1", contact2.getStudent().equals(student1));
 			assertNotNull("student 1 linked with the contact 2", student1.getContact());
 			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
-			contact1 = (Contact) objectContext.performQuery(
-					new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 3L))).get(0);
+			contact1 = ObjectSelect.query(Contact.class)
+					.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 3L))
+					.selectOne(objectContext);
 			assertNotNull("contact 1 have no link to students", contact1.getStudent());
 			assertTrue("Student 1 have link with the contact 2 only", contact1.getStudent().getContact().equals(contact1));
 			assertTrue("Student 1 have link with the contact 2", contact1.getStudent().equals(student2));
@@ -179,8 +182,9 @@ public class MergeContactTest extends ServiceTest {
 			assertNotNull("student 1 linked with the contact 2", student1.getContact());
 			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
 			assertNull("contact 1 have no link to students", contact1.getStudent());
-			contact1 = (Contact) objectContext.performQuery(
-				new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))).get(0);
+			contact1 = ObjectSelect.query(Contact.class)
+					.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))
+					.selectOne(objectContext);
 			assertNull("contact 1 have no link to students", contact1.getStudent());
 		} finally {
 			objectContext.rollbackChanges();
@@ -266,8 +270,9 @@ public class MergeContactTest extends ServiceTest {
 			assertTrue("Student 1 have link with the contact 2", student1.getContact().equals(contact2));
 			assertNull("contact 1 have no link to students", contact1.getStudent());
 			//without the reloading student2 will have the link to contact2
-			student2 = (Student) objectContext.performQuery(
-				new SelectQuery(Student.class, ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 4L))).get(0);
+			student2 = ObjectSelect.query(Student.class)
+					.where(ExpressionFactory.matchDbExp(Student.ID_PK_COLUMN, 4L))
+					.selectOne(objectContext);
 			assertNull("student 2 should have no link to contacts", student2.getContact());
 		} finally {
 			objectContext.rollbackChanges();
@@ -307,10 +312,13 @@ public class MergeContactTest extends ServiceTest {
 	}
 	
 	private List<Contact> getFirstTwoContacts(final ObjectContext objectContext) {
-		Contact contact1 = (Contact) objectContext.performQuery(
-			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))).get(0);		
-		Contact contact2 = (Contact) objectContext.performQuery(
-			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
+		Contact contact1 = ObjectSelect.query(Contact.class)
+				.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 2L))
+				.selectOne(objectContext);
+		Contact contact2 = ObjectSelect.query(Contact.class)
+				.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))
+				.selectOne(objectContext);
+
 		assertNotNull("contact 1 have no link to student", contact1.getStudent());
 		assertNull("contact 1 have no link to tutor", contact1.getTutor());
 		assertNull("contact 2 have no link to student", contact2.getStudent());
@@ -322,10 +330,13 @@ public class MergeContactTest extends ServiceTest {
 	}
 	
 	private List<Contact> getSecondTwoContacts(final ObjectContext objectContext) {
-		Contact contact1 = (Contact) objectContext.performQuery(
-			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 3L))).get(0);		
-		Contact contact2 = (Contact) objectContext.performQuery(
-			new SelectQuery(Contact.class, ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 4L))).get(0);
+		Contact contact1 = ObjectSelect.query(Contact.class)
+				.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 3L))
+				.selectOne(objectContext);
+		Contact contact2 = ObjectSelect.query(Contact.class)
+				.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 4L))
+				.selectOne(objectContext);
+
 		assertNotNull("contact 1 have no link to student", contact1.getStudent());
 		assertNull("contact 1 have no link to tutor", contact1.getTutor());
 		assertNotNull("contact 2 have no link to student", contact2.getStudent());

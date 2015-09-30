@@ -7,7 +7,7 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.dom.Document;
 import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
@@ -324,12 +324,13 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 	}
 
 	protected final void checkQueueBeforeProcessing(ObjectContext context) {
-		assertTrue("Queue should be empty before processing", context.performQuery(new SelectQuery(QueuedRecord.class)).isEmpty());
+		assertTrue("Queue should be empty before processing", ObjectSelect.query(QueuedRecord.class).select(context).isEmpty());
 	}
 
 	protected final void checkQueueAfterProcessing(ObjectContext context) {
 
-		List<QueuedRecord> queuedRecords = context.performQuery(new SelectQuery(QueuedRecord.class));
+		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
+				.select(context);;
 
 		//Set up sessionId for Invoice.
 		//only Invoices can be added to replication queue
