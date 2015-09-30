@@ -1,14 +1,14 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.webservices.soap.v5;
+package ish.oncourse.webservices.soap.v6;
 
 
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import ish.oncourse.webservices.util.SupportedVersions;
-import ish.oncourse.webservices.v5.stubs.reference.ReferenceResult;
+import ish.oncourse.webservices.v6.stubs.reference.ReferenceResult;
 import org.apache.cayenne.Persistent;
 import org.apache.cxf.annotations.EndpointProperty;
 import org.apache.log4j.Logger;
@@ -54,15 +54,15 @@ import java.util.List;
  *
  * @author Marek Wawrzyczny
  */
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.v5.ReferencePortType",
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.v6.ReferencePortType",
 		serviceName = "ReferenceService",
-		portName = "ReferencePort", targetNamespace="http://ref.v5.soap.webservices.oncourse.ish/")
+		portName = "ReferencePort", targetNamespace="http://ref.v6.soap.webservices.oncourse.ish/")
 @EndpointProperty(key = "soap.no.validate.parts", value = "true")
 public class ReferencePortTypeImpl implements ReferencePortType {
 
 	@Inject
 	@Autowired
-	private ish.oncourse.services.reference.V5ReferenceService referenceService;
+	private ish.oncourse.services.reference.V6ReferenceService referenceService;
 
 	@Inject
 	@Autowired
@@ -97,7 +97,7 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 
 		for (Persistent p: records) {
 			try {
-				GenericReferenceStub stub = stubBuilder.convert(p, SupportedVersions.V5);
+				GenericReferenceStub stub = stubBuilder.convert(p, SupportedVersions.V6);
 				stubs.add(stub);
 			} catch (BuilderNotFoundException e) {
 				LOGGER.error("Exception while converting records to stubs", e);

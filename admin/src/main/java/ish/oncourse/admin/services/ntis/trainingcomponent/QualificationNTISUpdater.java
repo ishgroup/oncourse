@@ -9,7 +9,7 @@ import ish.common.types.QualificationType;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.reference.ReferenceService;
+import ish.oncourse.services.reference.V6ReferenceService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +25,7 @@ public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdat
 	public QualificationNTISUpdater(
 			ITrainingComponentService trainingService,
 			ICayenneService cayenneService,
-			ReferenceService referenceService,
+			V6ReferenceService referenceService,
 			DateTimeOffset from,
 			DateTimeOffset to) {
 		super(trainingService, cayenneService, referenceService, from, to);

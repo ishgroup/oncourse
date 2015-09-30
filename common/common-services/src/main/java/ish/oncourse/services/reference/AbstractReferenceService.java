@@ -75,7 +75,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 
 		Long max = null;
 
-		String sql = "select max(ishVersion) as MAXV from " + getEntityClass().getSimpleName();
+		String sql = "select max(ishVersion) as MAXV from " + getDbEntityName();
 		SQLTemplate query = new SQLTemplate(getEntityClass(), sql);
 		query.setFetchingDataRows(true);
 
@@ -100,7 +100,7 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 	@Override
 	public Long getNumberOfRecordsForIshVersion(Long ishVersion) {
 		
-		String sql = String.format("select count(*) as number from %s where ishVersion=%s", getEntityClass().getSimpleName(), ishVersion);
+		String sql = String.format("select count(*) as number from %s where ishVersion=%s", getDbEntityName(), ishVersion);
 		SQLTemplate query = new SQLTemplate(getEntityClass(), sql);
 		query.setFetchingDataRows(true);
 
@@ -118,5 +118,9 @@ public abstract class AbstractReferenceService<T extends Persistent> extends Bas
 		}
 
 		return number;
+	}
+	
+	public String getDbEntityName() {
+		return getEntityClass().getSimpleName();
 	}
 }

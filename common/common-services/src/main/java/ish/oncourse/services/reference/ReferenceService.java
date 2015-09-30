@@ -3,6 +3,7 @@ package ish.oncourse.services.reference;
 import org.apache.cayenne.Persistent;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
@@ -14,28 +15,12 @@ import java.util.TreeSet;
  * 
  */
 
-public class ReferenceService {
+public abstract class ReferenceService {
 	
 	/**
 	 * The list with all reference services.
 	 */
-	private List<IReferenceService<? extends Persistent>> allServices;
-
-	/**
-	 * Initialize all services for providing way to enumerate through.
-	 * 
-	 * @return
-	 */
-	@Inject
-	public ReferenceService(ICountryService countryService, ILanguageService languageService, IQualificationService qualificationService,
-			IModuleService moduleService, ITrainingPackageService trainingPackageService) {
-		allServices = new LinkedList<>();
-		allServices.add(countryService);
-		allServices.add(languageService);
-		allServices.add(trainingPackageService);
-		allServices.add(moduleService);
-		allServices.add(qualificationService);
-	}
+	protected List<IReferenceService<? extends Persistent>> allServices;
 
 	/**
 	 * Combines the results accross all reference services for ishVersion.

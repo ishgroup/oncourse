@@ -124,7 +124,8 @@ public class ServiceModule {
 		logger.info("Registering Willow Common Services");
 
 		// Tapestry and environment specific services
-		binder.bind(ReferenceService.class);
+		binder.bind(V5ReferenceService.class);
+		binder.bind(V6ReferenceService.class);
 
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
 		binder.bind(ICookiesService.class, CookiesService.class);
@@ -175,6 +176,7 @@ public class ServiceModule {
 		binder.bind(IModuleService.class, ModuleService.class).withId("ModuleService");
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
+		binder.bind(IPostcodeService.class, PostcodeService.class).withId("PostcodeService");
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
 

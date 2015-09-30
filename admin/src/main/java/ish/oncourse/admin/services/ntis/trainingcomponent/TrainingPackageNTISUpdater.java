@@ -10,7 +10,7 @@ import au.gov.training.services.trainingcomponent.TrainingComponentSummary;
 import au.gov.training.services.trainingcomponent.TrainingComponentTypeFilter;
 import ish.oncourse.model.TrainingPackage;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.reference.ReferenceService;
+import ish.oncourse.services.reference.V6ReferenceService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
@@ -20,7 +20,7 @@ public class TrainingPackageNTISUpdater extends AbstractTrainingComponentNTISUpd
 	public TrainingPackageNTISUpdater(
 			ITrainingComponentService trainingService,
 			ICayenneService cayenneService,
-			ReferenceService referenceService,
+			V6ReferenceService referenceService,
 			DateTimeOffset from,
 			DateTimeOffset to) {
 		super(trainingService, cayenneService, referenceService, from, to);

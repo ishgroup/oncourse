@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.soap.v4;
 
-import ish.oncourse.services.reference.ReferenceService;
+import ish.oncourse.services.reference.V5ReferenceService;
 import ish.oncourse.webservices.exception.BuilderNotFoundException;
 import ish.oncourse.webservices.reference.services.ReferenceStubBuilder;
 import ish.oncourse.webservices.util.GenericReferenceStub;
@@ -60,7 +60,7 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 
 	@Inject
 	@Autowired
-	private ReferenceService referenceService;
+	private V5ReferenceService referenceService;
 	
 	@Inject
 	@Autowired
