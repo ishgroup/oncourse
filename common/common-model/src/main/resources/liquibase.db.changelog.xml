@@ -3500,6 +3500,27 @@
 		</sql>
 
 	</changeSet>
-	
+
+	<changeSet id="225" author="dzmitry" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Discount" columnName="minEnrolments"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Discount ADD COLUMN minEnrolments INTEGER NOT NULL DEFAULT 1;
+		</sql>
+	</changeSet>
+
+	<changeSet id="226" author="dzmitry" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Discount" columnName="minValue"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Discount ADD COLUMN minValue DECIMAL(10,2) NOT NULL DEFAULT 0;
+		</sql>
+	</changeSet>
 
 </databaseChangeLog>

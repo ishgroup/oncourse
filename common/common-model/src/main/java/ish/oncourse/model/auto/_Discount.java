@@ -50,6 +50,10 @@ public abstract class _Discount extends CayenneDataObject {
     @Deprecated
     public static final String MAXIMUM_DISCOUNT_PROPERTY = "maximumDiscount";
     @Deprecated
+    public static final String MIN_ENROLMENTS_PROPERTY = "minEnrolments";
+    @Deprecated
+    public static final String MIN_VALUE_PROPERTY = "minValue";
+    @Deprecated
     public static final String MINIMUM_DISCOUNT_PROPERTY = "minimumDiscount";
     @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
@@ -99,6 +103,8 @@ public abstract class _Discount extends CayenneDataObject {
     public static final Property<Boolean> HIDE_ON_WEB = new Property<Boolean>("hideOnWeb");
     public static final Property<Boolean> IS_AVAILABLE_ON_WEB = new Property<Boolean>("isAvailableOnWeb");
     public static final Property<Money> MAXIMUM_DISCOUNT = new Property<Money>("maximumDiscount");
+    public static final Property<Integer> MIN_ENROLMENTS = new Property<Integer>("minEnrolments");
+    public static final Property<Money> MIN_VALUE = new Property<Money>("minValue");
     public static final Property<Money> MINIMUM_DISCOUNT = new Property<Money>("minimumDiscount");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<String> NAME = new Property<String>("name");
@@ -193,6 +199,20 @@ public abstract class _Discount extends CayenneDataObject {
     }
     public Money getMaximumDiscount() {
         return (Money)readProperty("maximumDiscount");
+    }
+
+    public void setMinEnrolments(Integer minEnrolments) {
+        writeProperty("minEnrolments", minEnrolments);
+    }
+    public Integer getMinEnrolments() {
+        return (Integer)readProperty("minEnrolments");
+    }
+
+    public void setMinValue(Money minValue) {
+        writeProperty("minValue", minValue);
+    }
+    public Money getMinValue() {
+        return (Money)readProperty("minValue");
     }
 
     public void setMinimumDiscount(Money minimumDiscount) {

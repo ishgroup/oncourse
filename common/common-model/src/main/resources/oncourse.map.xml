@@ -342,6 +342,8 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isAvailableOnWeb" type="SMALLINT"/>
 		<db-attribute name="maximumDiscount" type="DECIMAL" length="14" scale="2"/>
+		<db-attribute name="minEnrolments" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="minValue" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="minimumDiscount" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="512"/>
@@ -1574,6 +1576,8 @@
 		<obj-attribute name="hideOnWeb" type="java.lang.Boolean" db-attribute-path="hideOnWeb"/>
 		<obj-attribute name="isAvailableOnWeb" type="java.lang.Boolean" db-attribute-path="isAvailableOnWeb"/>
 		<obj-attribute name="maximumDiscount" type="ish.math.Money" db-attribute-path="maximumDiscount"/>
+		<obj-attribute name="minEnrolments" type="java.lang.Integer" db-attribute-path="minEnrolments"/>
+		<obj-attribute name="minValue" type="ish.math.Money" db-attribute-path="minValue"/>
 		<obj-attribute name="minimumDiscount" type="ish.math.Money" db-attribute-path="minimumDiscount"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>

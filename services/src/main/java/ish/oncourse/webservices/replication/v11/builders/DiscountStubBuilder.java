@@ -47,6 +47,10 @@ public class DiscountStubBuilder extends AbstractWillowStubBuilder<Discount, Dis
 		stub.setValidTo(entity.getValidTo());
 		stub.setHideOnWeb(entity.getHideOnWeb());
 		stub.setAvailableOnWeb(entity.getIsAvailableOnWeb());
+		stub.setMinEnrolments(entity.getMinEnrolments());
+		if (entity.getMinValue() != null) {
+			stub.setMinValue(entity.getMinValue().toBigDecimal());
+		}
 		return stub;
 	}
 
