@@ -17,6 +17,7 @@ public class CreatePaymentPlanInvoiceNode {
 	private WebSite webSite;
 	private PaymentIn paymentIn;
 	private List<Discount> actualPromotions;
+	private List<Invoice> invoices;
 	private College college;
 	private IInvoiceProcessingService invoiceProcessingService;
 
@@ -26,7 +27,7 @@ public class CreatePaymentPlanInvoiceNode {
 
 		Invoice invoice = CreateInvoice.valueOf(college, contact, webSite, objectContext).create();
 
-		InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, actualPromotions);
+		InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, actualPromotions, invoices);
 		invoiceLine.setInvoice(invoice);
 		invoiceLine.setEnrolment(enrolment);
 
@@ -52,6 +53,7 @@ public class CreatePaymentPlanInvoiceNode {
 		result.webSite = purchaseController.getModel().getWebSite();
 		result.paymentIn = purchaseController.getModel().getPayment();
 		result.actualPromotions = purchaseController.getDiscounts();
+		result.invoices = purchaseController.getModel().getNewInvoices();
 		result.college = purchaseController.getModel().getCollege();
 		result.objectContext = purchaseController.getModel().getObjectContext();
 		result.invoiceProcessingService = purchaseController.getInvoiceProcessingService();

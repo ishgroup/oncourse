@@ -15,7 +15,8 @@ public class ActionEnableEnrolment extends APurchaseAction {
         getModel().enableEnrolment(enrolment);
 
         if (enrolment.getCourseClass().getPaymentPlanLines().isEmpty() || !getController().isSupportPaymentPlan()) {
-            InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForEnrolment(enrolment, getModel().getDiscounts());
+            InvoiceLine il = getController().getInvoiceProcessingService()
+					.createInvoiceLineForEnrolment(enrolment, getModel().getDiscounts(), getModel().getNewInvoices());
             il.setInvoice(getModel().getInvoice());
             il.setEnrolment(getEnrolment());
         } else {

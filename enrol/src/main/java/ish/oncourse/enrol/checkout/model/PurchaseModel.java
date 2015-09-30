@@ -375,6 +375,17 @@ public class PurchaseModel {
 		return new ArrayList<>(discounts);
 	}
 
+	public List<Invoice> getNewInvoices() {
+		List<Invoice> invoices = new ArrayList<>();
+		invoices.add(getInvoice());
+
+		for (InvoiceNode invoiceNode : getPaymentPlanInvoices()) {
+			invoices.add(invoiceNode.getInvoice());
+		}
+
+		return Collections.unmodifiableList(invoices);
+	}
+
 	public void setDiscounts(List<Discount> discounts) {
 		this.discounts = discounts;
 	}

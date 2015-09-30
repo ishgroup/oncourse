@@ -228,7 +228,8 @@ public class PurchaseController {
 				}
 				model.getObjectContext().deleteObjects(invoiceLines);
 
-				InvoiceLine newInvoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, model.getDiscounts());
+				InvoiceLine newInvoiceLine = invoiceProcessingService
+						.createInvoiceLineForEnrolment(enrolment, model.getDiscounts(), model.getNewInvoices());
 				newInvoiceLine.setInvoice(model.getInvoice());
 				newInvoiceLine.setEnrolment(enrolment);
 			}

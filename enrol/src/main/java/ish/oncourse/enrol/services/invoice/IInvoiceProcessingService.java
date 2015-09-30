@@ -37,7 +37,7 @@ public interface IInvoiceProcessingService {
 	 * @param actualPromotions the actual promotions list
 	 * @return invoiceLine object created
 	 */
-	InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, List<Discount> actualPromotions);
+	InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, List<Discount> actualPromotions, List<Invoice> invoices);
 	
 	/**
 	 * Creates the {@link InvoiceLine} object for the given voucher.
@@ -53,9 +53,10 @@ public interface IInvoiceProcessingService {
 	 * Sets the discounted values to the given invoiceLine for the given enrolment.
 	 * @param enrolment
 	 * @param invoiceLine
-	 * @param actualPromotions 
+	 * @param actualPromotions
+	 * @param invoices
 	 */
-	void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine, List<Discount> actualPromotions);
+	void setupDiscounts(Enrolment enrolment, InvoiceLine invoiceLine, List<Discount> actualPromotions, List<Invoice> invoices);
 
     /**
      *

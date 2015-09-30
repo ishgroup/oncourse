@@ -58,6 +58,8 @@ public abstract class AbstractDiscountPolicyTest {
 		combDiscountWithAmount.setCombinationType(true);
 		combDiscountWithAmount.setCode("code1");
 		combDiscountWithAmount.setHideOnWeb(false);
+		combDiscountWithAmount.setMinEnrolments(0);
+		combDiscountWithAmount.setMinValue(Money.ZERO);
 
 		singleDiscountWithRate = new Discount();
 		singleDiscountWithRate.setDiscountRate(new BigDecimal(0.2));
@@ -65,6 +67,8 @@ public abstract class AbstractDiscountPolicyTest {
 		singleDiscountWithRate.setMinimumDiscount(Money.ZERO);
 		singleDiscountWithRate.setCombinationType(false);
 		singleDiscountWithRate.setHideOnWeb(false);
+		singleDiscountWithRate.setMinEnrolments(0);
+		singleDiscountWithRate.setMinValue(Money.ZERO);
 
 		combDiscountWithRateMax = new Discount();
 		combDiscountWithRateMax.setDiscountRate(new BigDecimal(0.2));
@@ -72,6 +76,8 @@ public abstract class AbstractDiscountPolicyTest {
 		combDiscountWithRateMax.setCombinationType(true);
 		combDiscountWithRateMax.setCode("code2");
 		combDiscountWithRateMax.setHideOnWeb(false);
+		combDiscountWithRateMax.setMinEnrolments(0);
+		combDiscountWithRateMax.setMinValue(Money.ZERO);
 
 		singleDiscountWithRateMin = new Discount();
 		singleDiscountWithRateMin.setDiscountRate(new BigDecimal(0.1));
@@ -79,11 +85,15 @@ public abstract class AbstractDiscountPolicyTest {
 		singleDiscountWithRateMin.setCombinationType(false);
 		singleDiscountWithRateMin.setCode("code3");
 		singleDiscountWithRateMin.setHideOnWeb(false);
+		singleDiscountWithRateMin.setMinEnrolments(0);
+		singleDiscountWithRateMin.setMinValue(Money.ZERO);
 		
 		hiddenDiscountWithAmount = new Discount();
 		hiddenDiscountWithAmount.setDiscountAmount(new Money(BigDecimal.TEN));
 		hiddenDiscountWithAmount.setCombinationType(true);
 		hiddenDiscountWithAmount.setHideOnWeb(true);
+		hiddenDiscountWithAmount.setMinEnrolments(0);
+		hiddenDiscountWithAmount.setMinValue(Money.ZERO);
 		
 		nonAvailableDiscountWithAmount = new Discount();
 		nonAvailableDiscountWithAmount.setDiscountAmount(new Money(BigDecimal.TEN));
@@ -91,6 +101,8 @@ public abstract class AbstractDiscountPolicyTest {
 		nonAvailableDiscountWithAmount.setCode("unavail_code");
 		nonAvailableDiscountWithAmount.setHideOnWeb(false);
 		nonAvailableDiscountWithAmount.setIsAvailableOnWeb(false);
+		nonAvailableDiscountWithAmount.setMinEnrolments(0);
+		nonAvailableDiscountWithAmount.setMinValue(Money.ZERO);
 		
 		promotions = new ArrayList<>();
 		promotions.add(combDiscountWithAmount);

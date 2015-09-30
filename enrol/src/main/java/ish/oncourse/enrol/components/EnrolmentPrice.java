@@ -47,6 +47,8 @@ public class EnrolmentPrice {
 	@Property
 	private Format numberFormat;
 
+	@Parameter
+	@Property
 	private List<Discount> discounts;
 	
 	private Application application;
@@ -64,10 +66,6 @@ public class EnrolmentPrice {
 
 		numberFormat = new DecimalFormat("0.00");
 		application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
-		if (!isOverriden() && !isInvoiced()) {
-			discounts = enrolment.getCourseClass().getDiscountsToApply(
-					new RealDiscountsPolicy(discountService.getPromotions(), enrolment.getStudent()));
-		}
 	}
 
 	public String getFeeClass() {

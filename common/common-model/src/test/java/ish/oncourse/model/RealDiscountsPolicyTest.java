@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
+import ish.math.Money;
 import ish.oncourse.model.auto._Discount;
 import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;
@@ -89,7 +90,8 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		// initial values for discount
 		discount = context.newObject(Discount.class);
 		discount.setDiscountRate(new BigDecimal("0.25"));
-
+		discount.setMinEnrolments(0);
+		discount.setMinValue(Money.ZERO);
 	}
 
 	/**
@@ -330,7 +332,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void getApplicableByPolicySmokeTest() {
-		discountPolicy = new RealDiscountsPolicy(promotions, student);
+		discountPolicy = new RealDiscountsPolicy(promotions, student, new ArrayList<Invoice>());
 		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(Arrays.asList(discount,
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin, 
 				hiddenDiscountWithAmount, nonAvailableDiscountWithAmount));
@@ -352,7 +354,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void filterDiscountsSmokeTest() {
-		discountPolicy = new RealDiscountsPolicy(promotions, student);
+		discountPolicy = new RealDiscountsPolicy(promotions, student, new ArrayList<Invoice>());
 		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(discount,
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin),
 				FEE_EX_GST, new BigDecimal(0.1));

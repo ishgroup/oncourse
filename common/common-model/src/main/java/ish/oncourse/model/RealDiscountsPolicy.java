@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
+import ish.math.Money;
 import ish.oncourse.utils.MembershipDiscountHelper;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -30,6 +31,8 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 	 */
 	private Student student;
 
+	private List<Invoice> invoices;
+
 	/**
 	 * Default constructor for the {@link RealDiscountsPolicy}. Gets the
 	 * user-defined promotions, and the student to consider eligibility.
@@ -37,9 +40,10 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 	 * @param promotions
 	 * @param student
 	 */
-	public RealDiscountsPolicy(List<Discount> promotions, Student student) {
+	public RealDiscountsPolicy(List<Discount> promotions, Student student, List<Invoice> invoices) {
 		this(promotions);
 		this.student = student;
+		this.invoices = invoices;
 	}
 
 	public RealDiscountsPolicy(List<Discount> promotions) {
@@ -60,7 +64,7 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 				if (discount.isPromotion() && !isPromotionAdded(discount)) {
 					continue;
 				}
-				if (isStudentEligibile(student, discount)) {
+				if (isStudentEligibile(student, discount) && satisfiesMinEnrolmentCountAndValue(discount, invoices)) {
 					result.add(discount);
 				}
 			}
@@ -165,4 +169,23 @@ public class RealDiscountsPolicy extends DiscountPolicy {
         return membershipDiscountHelper.isEligibile();
 	}
 
+	private boolean satisfiesMinEnrolmentCountAndValue(Discount discount, List<Invoice> invoices) {
+		int enrolmentsCount = 0;
+		Money totalValue = Money.ZERO;
+
+		for (Invoice invoice : invoices) {
+			for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+				if (invoiceLine.getEnrolment() != null) {
+					CourseClass courseClass = invoiceLine.getEnrolment().getCourseClass();
+
+					if (courseClass.getDiscounts().contains(discount)) {
+						enrolmentsCount++;
+						totalValue = totalValue.add(invoiceLine.getFinalPriceToPayIncTax());
+					}
+				}
+			}
+		}
+
+		return enrolmentsCount >= discount.getMinEnrolments() && !totalValue.isLessThan(discount.getMinValue());
+	}
 }

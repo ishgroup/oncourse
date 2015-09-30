@@ -69,8 +69,9 @@ public class EnrolmentList {
             @Override
             public List<Discount> getDiscounts() {
                 return enrolment.getCourseClass().getDiscountsToApply(
-                        new RealDiscountsPolicy(purchaseController.getModel().getDiscounts(), enrolment.getStudent()));
+                        new RealDiscountsPolicy(purchaseController.getModel().getDiscounts(),
+								enrolment.getStudent(), purchaseController.getModel().getNewInvoices()));
             }
-        };
+		};
     }
 }
