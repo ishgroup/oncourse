@@ -244,7 +244,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		final List<ReplicationStubFieldParameter> invoiceParameters = fillDefaultReplicationStubFields();
 		invoiceParameters.add(new ReplicationStubFieldParameter("amountOwing", BigDecimal.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("billToAddress", String.class));
-		invoiceParameters.add(new ReplicationStubFieldParameter("customerPO", String.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("customerReference", String.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("dateDue", Date.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("description", String.class));

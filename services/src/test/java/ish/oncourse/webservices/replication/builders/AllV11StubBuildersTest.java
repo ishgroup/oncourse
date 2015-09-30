@@ -98,7 +98,7 @@ public class AllV11StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testInvoiceStubBuilder() {
-		this.testStubBuilder(Invoice.class, new InvoiceStubBuilder(), "status", "customerPO");
+		this.testStubBuilder(Invoice.class, new InvoiceStubBuilder(), "status");
 	}
 
 	@Test

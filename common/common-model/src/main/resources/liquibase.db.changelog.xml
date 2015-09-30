@@ -3489,6 +3489,17 @@
 		</sql>
 		
 	</changeSet>
+
+	<changeSet id="224" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Invoice" columnName="customerPO"/>
+		</preConditions>
+		<sql>
+			ALTER TABLE Invoice DROP INDEX customerPO_idx;
+			ALTER TABLE Invoice DROP column customerPO;
+		</sql>
+
+	</changeSet>
 	
 
 </databaseChangeLog>
