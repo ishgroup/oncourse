@@ -78,6 +78,7 @@ public class SolrQueryBuilder {
 
     public SolrQuery build() {
         SolrQuery q = new SolrQuery();
+        q.set("defType", "edismax");
 
         fillCommons(q);
 
