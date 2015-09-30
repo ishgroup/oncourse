@@ -64,7 +64,8 @@ public class DiscountUpdaterTest extends ServiceTest {
         discountStub.setValidTo(Calendar.getInstance().getTime());
         discountStub.setAvailableOnWeb(true);
         discountStub.setHideOnWeb(false);
-
+		discountStub.setMinEnrolments(1);
+		discountStub.setMinValue(BigDecimal.ZERO);
 
         TestDiscountUpdater discountUpdater = new TestDiscountUpdater();
 

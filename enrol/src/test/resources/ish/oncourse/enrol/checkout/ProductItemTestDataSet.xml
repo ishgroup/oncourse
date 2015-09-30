@@ -216,7 +216,9 @@
             validFrom="2011-09-12 00:56:00.0"
             validTo="2111-09-12 00:56:00.0"
             hideOnWeb="0"
-            isAvailableOnWeb="1"/>
+			isAvailableOnWeb="1"
+			minEnrolments="1"
+			minValue="0"/>
 
     <Discount
             id="2"
@@ -235,7 +237,9 @@
             validFrom="2011-09-12 00:56:00.0"
             validTo="2111-09-12 00:56:00.0"
             hideOnWeb="0"
-            isAvailableOnWeb="1"/>
+			isAvailableOnWeb="1"
+			minEnrolments="1"
+			minValue="0"/>
 
     <DiscountConcessionType id="1" discountId="2" concessionTypeId="1" collegeId="1"/>
 

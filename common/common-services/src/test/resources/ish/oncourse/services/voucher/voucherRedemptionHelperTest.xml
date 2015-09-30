@@ -97,7 +97,9 @@
             validFrom="[null]"
             validTo="[null]"
             hideOnWeb="0"
-            isAvailableOnWeb="1"/>
+            isAvailableOnWeb="1"
+			minEnrolments="1"
+			minValue="0"/>
 
     <DiscountCourseClass id="1" angelId="1" collegeId="1" courseClassId="1"
                          created="2011-09-12 00:56:00.0"
