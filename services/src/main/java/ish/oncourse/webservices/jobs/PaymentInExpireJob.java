@@ -13,9 +13,8 @@ import ish.oncourse.util.payment.PaymentInModelFromSessionIdBuilder;
 import ish.oncourse.utils.PaymentInUtil;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.PrefetchTreeNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -122,24 +121,19 @@ public class PaymentInExpireJob implements Job {
 	private List<PaymentIn> getNotCompletedPaymentsFromDate(ObjectContext newContext, Date date) {
 		// Not completed means older than EXPIRE_INTERVAL and with statuses
 		// CARD_DETAILS_REQUIRED and IN_TRANSACTION, regardless of sessionId.
-		Expression expr = ExpressionFactory.lessExp(PaymentIn.MODIFIED_PROPERTY, date);
-		
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
-		expr = expr.andExp(ExpressionFactory.greaterExp(PaymentIn.CREATED_PROPERTY, calendar.getTime()));
-		
-		expr = expr.andExp(ExpressionFactory.matchExp(PaymentIn.TYPE_PROPERTY, PaymentType.CREDIT_CARD));
-		expr = expr.andExp(ExpressionFactory.inExp(PaymentIn.STATUS_PROPERTY, PaymentStatus.CARD_DETAILS_REQUIRED,
-				PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW));
-		
+		calendar.add(Calendar.MONTH, - PaymentIn.EXPIRE_TIME_WINDOW);
 
-		SelectQuery notCompletedQuery = new SelectQuery(PaymentIn.class, expr);
-		notCompletedQuery.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY);
-		notCompletedQuery.addPrefetch(PaymentIn.PAYMENT_IN_LINES_PROPERTY + "." + PaymentInLine.INVOICE_PROPERTY);
-		
-		notCompletedQuery.setFetchLimit(FETCH_LIMIT);
+		List<PaymentIn> notCompletedPayments = ObjectSelect.query(PaymentIn.class)
+				.where(PaymentIn.MODIFIED.lt(date))
+				.and(PaymentIn.CREATED.gt(calendar.getTime()))
+				.and(PaymentIn.TYPE.eq(PaymentType.CREDIT_CARD))
+				.and(PaymentIn.STATUS.in(PaymentStatus.CARD_DETAILS_REQUIRED, PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW))
+				.addPrefetch(PaymentIn.PAYMENT_IN_LINES.getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
+				.addPrefetch(PaymentIn.PAYMENT_IN_LINES.dot(PaymentInLine.INVOICE).getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
+				.limit(FETCH_LIMIT)
+				.select(newContext);
 
-		List<PaymentIn> notCompletedPayments = newContext.performQuery(notCompletedQuery);
 		logger.info("<getNotCompletedPaymentsFromDate> the number of expired PaymentIn: {}", notCompletedPayments.size());
 		
 		for (PaymentIn p : notCompletedPayments) {

@@ -15,8 +15,7 @@ import ish.oncourse.webservices.v6.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v6.stubs.replication.EnrolmentStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -208,13 +207,18 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         }
 
 		ObjectContext context = cayenneService.newContext();
-		
-		BinaryInfo binaryInfo = (BinaryInfo) Cayenne.objectForQuery(context, 
-				new SelectQuery(BinaryInfo.class, ExpressionFactory.matchExp(BinaryInfo.ANGEL_ID_PROPERTY, 422l)));
-		Document document = (Document) Cayenne.objectForQuery(context,
-				new SelectQuery(DocumentVersion.class, ExpressionFactory.matchExp(Document.ANGEL_ID_PROPERTY, 422l)));
-        DocumentVersion documentVersion = (DocumentVersion) Cayenne.objectForQuery(context,
-				new SelectQuery(DocumentVersion.class, ExpressionFactory.matchExp(DocumentVersion.ANGEL_ID_PROPERTY, 422l)));
+
+        BinaryInfo binaryInfo = ObjectSelect.query(BinaryInfo.class)
+                .where(BinaryInfo.ANGEL_ID.eq(422l))
+                .selectOne(context);
+
+        Document document = ObjectSelect.query(Document.class)
+                .where(Document.ANGEL_ID.eq(422l))
+                .selectOne(context);
+
+        DocumentVersion documentVersion = ObjectSelect.query(DocumentVersion.class)
+                .where(DocumentVersion.ANGEL_ID.eq(422l))
+                .selectOne(context);
 		
         assertNull("BinaryInfo is null", binaryInfo);
 		assertNull(document);

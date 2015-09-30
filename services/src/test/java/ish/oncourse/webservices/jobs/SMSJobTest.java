@@ -10,7 +10,7 @@ import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.sms.ISMSService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -137,12 +137,10 @@ public class SMSJobTest extends ServiceTest {
 	}
 
 	private void updateCreatedDate() {
-
-		SelectQuery q = new SelectQuery(MessagePerson.class);
-
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		@SuppressWarnings("unchecked")
-		List<MessagePerson> list = context.performQuery(q);
+
+		List<MessagePerson> list = ObjectSelect.query(MessagePerson.class)
+				.select(context);
 
 		Date today = new Date();
 

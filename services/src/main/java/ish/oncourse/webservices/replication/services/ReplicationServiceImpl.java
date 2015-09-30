@@ -9,8 +9,7 @@ import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -222,14 +221,11 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 			for (GenericReplicatedRecord record : request.getReplicatedRecord()) {
 
-				SelectQuery q = new SelectQuery(QueuedRecord.class);
-
-				q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_WILLOW_ID_PROPERTY, record.getStub().getWillowId()));
-				q.andQualifier(ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, record.getStub().getEntityIdentifier()));
-				q.andQualifier(ExpressionFactory.greaterExp(QueuedRecord.NUMBER_OF_ATTEMPTS_PROPERTY, 0));
-
-				@SuppressWarnings("unchecked")
-				List<QueuedRecord> list = ctx.performQuery(q);
+				List<QueuedRecord> list = ObjectSelect.query(QueuedRecord.class)
+						.where(QueuedRecord.ENTITY_WILLOW_ID.eq(record.getStub().getWillowId()))
+						.and(QueuedRecord.ENTITY_IDENTIFIER.eq(record.getStub().getEntityIdentifier()))
+						.and(QueuedRecord.NUMBER_OF_ATTEMPTS.gt(0))
+						.select(ctx);
 
 				for (QueuedRecord queuedRecord : list) {
 					try {

@@ -8,10 +8,8 @@ import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.util.GenericBinaryDataStub;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,10 +66,9 @@ public class AttachmentProcessor {
     }
 
 	public DocumentVersion getDocumentVersionByBinaryInfo(BinaryInfo binaryInfo) {
-		SelectQuery query = new SelectQuery(DocumentVersion.class,
-				ExpressionFactory.matchExp(DocumentVersion.ANGEL_ID_PROPERTY, binaryInfo.getAngelId())
-						.andExp(ExpressionFactory.matchExp(DocumentVersion.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())));
-
-		return (DocumentVersion) Cayenne.objectForQuery(binaryInfo.getObjectContext(), query);
+		return ObjectSelect.query(DocumentVersion.class)
+                .where(DocumentVersion.ANGEL_ID.eq(binaryInfo.getAngelId()))
+                .and(DocumentVersion.COLLEGE.eq(webSiteService.getCurrentCollege()))
+                .selectOne(binaryInfo.getObjectContext());
 	}
 }

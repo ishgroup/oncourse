@@ -7,7 +7,7 @@ import ish.oncourse.webservices.soap.v4.ReplicationPortTypeTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -33,9 +33,11 @@ public class PaymentServiceImplTest extends ServiceTest {
 
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);
 		service = getService(ICayenneService.class);
-		@SuppressWarnings("unchecked")
-		List<College> colleges = service.sharedContext().performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l)));
-		service.sharedContext().performQuery(new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l)));
+
+		List<College> colleges = ObjectSelect.query(College.class)
+				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l))
+				.select(service.sharedContext());
+
 		college = colleges.isEmpty() ? null : colleges.get(0);
 	}
 	

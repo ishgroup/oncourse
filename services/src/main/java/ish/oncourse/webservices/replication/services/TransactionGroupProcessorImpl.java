@@ -18,7 +18,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.map.DeleteRule;
 import org.apache.cayenne.map.ObjRelationship;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.reflect.ArcProperty;
 import org.apache.cayenne.reflect.ClassDescriptor;
 import org.apache.logging.log4j.LogManager;
@@ -397,10 +397,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 */
 	@SuppressWarnings("unchecked")
 	private List<Queueable> objectsByAngelId(Long angelId, String entityName) {
-		SelectQuery q = new SelectQuery(getEntityClass(atomicContext, entityName));
-		q.andQualifier(ExpressionFactory.matchDbExp("angelId", angelId));
-		q.andQualifier(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
-		return atomicContext.performQuery(q);
+		return (List<Queueable>) ObjectSelect.query(getEntityClass(atomicContext, entityName))
+				.where(ExpressionFactory.matchDbExp("angelId", angelId))
+				.and(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()))
+				.select(atomicContext);
 	}
 
 	/**
@@ -413,10 +413,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	private List<Queueable> objectsByWillowId(Long willowId, String entityName) {
 		List<Queueable> records = Collections.emptyList();
 		if (willowId != null) {
-			SelectQuery q = new SelectQuery(getEntityClass(atomicContext, entityName));
-			q.andQualifier(ExpressionFactory.matchDbExp("id", willowId));
-			q.andQualifier(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()));
-			records = atomicContext.performQuery(q);
+			records = (List<Queueable>) ObjectSelect.query(getEntityClass(atomicContext, entityName))
+					.where(ExpressionFactory.matchDbExp("id", willowId))
+					.and(ExpressionFactory.matchExp("college", webSiteService.getCurrentCollege()))
+					.select(atomicContext);
 		}
 		return records;
 	}

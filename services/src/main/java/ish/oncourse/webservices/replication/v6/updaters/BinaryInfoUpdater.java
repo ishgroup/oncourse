@@ -9,10 +9,8 @@ import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v6.stubs.replication.BinaryInfoStub;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, BinaryInfo> {
 
@@ -67,10 +65,9 @@ public class BinaryInfoUpdater extends AbstractWillowUpdater<BinaryInfoStub, Bin
 	}
 
 	private DocumentVersion getExistingDocumentVersion(Long angelId, College college, ObjectContext context) {
-		SelectQuery query = new SelectQuery(DocumentVersion.class,
-				ExpressionFactory.matchExp(DocumentVersion.ANGEL_ID_PROPERTY, angelId)
-						.andExp(ExpressionFactory.matchExp(DocumentVersion.COLLEGE_PROPERTY, college)));
-
-		return (DocumentVersion) Cayenne.objectForQuery(context, query);
+		return ObjectSelect.query(DocumentVersion.class)
+				.where(DocumentVersion.ANGEL_ID.eq(angelId))
+				.and(DocumentVersion.COLLEGE.eq(college))
+				.selectOne(context);
 	}
 }

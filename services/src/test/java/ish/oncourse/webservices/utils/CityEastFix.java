@@ -4,7 +4,7 @@ import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.Date;
 import java.util.List;
@@ -17,13 +17,13 @@ public class CityEastFix extends AbstractUtil{
 
 	public void fixEnrolments()
 	{
-		SelectQuery q = new SelectQuery(Enrolment.class);
-		q.andQualifier(ExpressionFactory.noMatchDbExp(Enrolment.ANGEL_ID_PROPERTY, null));
-		q.andQualifier(ExpressionFactory.matchDbExp(Enrolment.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, 338));
-		q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
-
 		ObjectContext context = cayenneRuntime.getContext();
-		List<Enrolment> list = context.performQuery(q);
+
+		List<Enrolment> list = ObjectSelect.query(Enrolment.class)
+				.where(Enrolment.ANGEL_ID.isNotNull())
+				.and(ExpressionFactory.matchDbExp(Enrolment.COLLEGE.dot(College.ID_PK_COLUMN).getName(), 338))
+				.and(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED.getName(), "2013-03-20 00:00:00"))
+				.select(context);
 		for (Enrolment enrolment : list) {
 			QueuedTransactionCreator creator = new QueuedTransactionCreator();
 			creator.setObjectContext(context);
@@ -38,13 +38,13 @@ public class CityEastFix extends AbstractUtil{
 
 	public void fixContacts()
 	{
-		SelectQuery q = new SelectQuery(Contact.class);
-		q.andQualifier(ExpressionFactory.noMatchDbExp(Enrolment.ANGEL_ID_PROPERTY, null));
-		q.andQualifier(ExpressionFactory.matchDbExp(Enrolment.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, 338));
-		q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
-
 		ObjectContext context = cayenneRuntime.getContext();
-		List<Contact> list = context.performQuery(q);
+
+		List<Contact> list = ObjectSelect.query(Contact.class)
+				.where(Contact.ANGEL_ID.isNotNull())
+				.and(ExpressionFactory.matchDbExp(Contact.COLLEGE.dot(College.ID_PK_COLUMN).getName(), 338))
+				.and(ExpressionFactory.greaterOrEqualDbExp(Contact.CREATED.getName(), "2013-03-20 00:00:00"))
+				.select(context);
 		for (Contact contact : list) {
 			QueuedTransactionCreator creator = new QueuedTransactionCreator();
 			creator.setObjectContext(context);
@@ -59,13 +59,12 @@ public class CityEastFix extends AbstractUtil{
 
 	public void fixCourseClasses()
 	{
-		SelectQuery q = new SelectQuery(CourseClass.class);
-		q.andQualifier(ExpressionFactory.noMatchDbExp(Enrolment.ANGEL_ID_PROPERTY, null));
-		q.andQualifier(ExpressionFactory.matchDbExp(Enrolment.COLLEGE_PROPERTY + "." + College.ID_PK_COLUMN, 338));
-		q.andQualifier(ExpressionFactory.greaterOrEqualDbExp(Enrolment.CREATED_PROPERTY, "2013-03-20 00:00:00"));
-
 		ObjectContext context = cayenneRuntime.getContext();
-		List<CourseClass> list = context.performQuery(q);
+		List<CourseClass> list = ObjectSelect.query(CourseClass.class)
+				.where(CourseClass.ANGEL_ID.isNotNull())
+				.and(ExpressionFactory.matchDbExp(CourseClass.COLLEGE.dot(College.ID_PK_COLUMN).getName(), 338))
+				.and(ExpressionFactory.greaterOrEqualDbExp(CourseClass.CREATED.getName(), "2013-03-20 00:00:00"))
+				.select(context);
 		for (CourseClass courseClass : list) {
 			QueuedTransactionCreator creator = new QueuedTransactionCreator();
 			creator.setObjectContext(context);

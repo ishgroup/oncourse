@@ -6,8 +6,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -51,18 +49,14 @@ public class WillowQueueService implements IWillowQueueService {
 	 *      int)
 	 */
 	public List<QueuedTransaction> getReplicationQueue(int fromTransaction, int numberOfTransactions) {
-		
-		Expression qualifier = ExpressionFactory.lessExp(QueuedTransaction.QUEUED_RECORDS_PROPERTY + "." + QueuedRecord.NUMBER_OF_ATTEMPTS_PROPERTY,
-				QueuedRecord.MAX_NUMBER_OF_RETRY);
-		qualifier = qualifier.andExp(ExpressionFactory.matchExp(QueuedTransaction.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-		
-		SelectQuery q = new SelectQuery(QueuedTransaction.class, qualifier);
-		q.addOrdering(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING));
-		q.setPageSize(numberOfTransactions);
-		q.setFetchOffset(fromTransaction);
+		List<QueuedTransaction> list = ObjectSelect.query(QueuedTransaction.class)
+				.where(QueuedTransaction.QUEUED_RECORDS.dot(QueuedRecord.NUMBER_OF_ATTEMPTS).lt(QueuedRecord.MAX_NUMBER_OF_RETRY))
+				.and(QueuedTransaction.COLLEGE.eq(webSiteService.getCurrentCollege()))
+				.addOrderBy(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING))
+				.pageSize(numberOfTransactions)
+				.offset(fromTransaction)
+				.select(cayenneService.sharedContext());
 
-		@SuppressWarnings("unchecked")
-		List<QueuedTransaction> list = cayenneService.sharedContext().performQuery(q);
 		List<QueuedTransaction> result = new ArrayList<>(numberOfTransactions);
 
 		int maxNumber = (list.size() < numberOfTransactions) ? list.size() : numberOfTransactions;

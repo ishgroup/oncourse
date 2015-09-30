@@ -8,8 +8,7 @@ import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,11 +47,11 @@ public class QueuedStatisticProcessor {
         if (receivedTimestamp == null)
             return;
 
-        SelectQuery q = new SelectQuery(QueuedStatistic.class);
-        q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-        q.andQualifier(ExpressionFactory.lessExp(QueuedStatistic.RECEIVED_TIMESTAMP_PROPERTY, receivedTimestamp));
-        @SuppressWarnings("unchecked")
-		List<QueuedStatistic> statisticForDelete = atomicContext.performQuery(q);
+		List<QueuedStatistic> statisticForDelete = ObjectSelect.query(QueuedStatistic.class)
+                .where(QueuedStatistic.COLLEGE.eq(webSiteService.getCurrentCollege()))
+                .and(QueuedStatistic.RECEIVED_TIMESTAMP.lt(receivedTimestamp))
+                .select(atomicContext);
+
         if (!statisticForDelete.isEmpty()) {
             atomicContext.deleteObjects(statisticForDelete);
             atomicContext.commitChanges();
@@ -64,12 +63,11 @@ public class QueuedStatisticProcessor {
         receivedTimestamp = null;
     }
 
-    @SuppressWarnings("unchecked")
 	private List<QueuedStatistic> statisticByEntity(final String entityName) {
-        SelectQuery q = new SelectQuery(QueuedStatistic.class);
-        q.andQualifier(ExpressionFactory.matchDbExp(QueuedStatistic.ENTITY_IDENTIFIER_PROPERTY, entityName));
-        q.andQualifier(ExpressionFactory.matchExp(QueuedStatistic.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()));
-        return atomicContext.performQuery(q);
+        return ObjectSelect.query(QueuedStatistic.class)
+                .where(QueuedStatistic.COLLEGE.eq(webSiteService.getCurrentCollege()))
+                .and(QueuedStatistic.ENTITY_IDENTIFIER.eq(entityName))
+                .select(atomicContext);
     }
 
 

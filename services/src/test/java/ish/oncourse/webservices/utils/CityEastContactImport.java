@@ -6,9 +6,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.services.AppModule;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -146,13 +144,12 @@ public class CityEastContactImport extends AbstractUtil {
     }
 
     private void updateContact(String[] values) {
+        List<Contact> contacts = ObjectSelect.query(Contact.class)
+                .where(Contact.GIVEN_NAME.eq(values[0]))
+                .and(Contact.FAMILY_NAME.eq(values[1]))
+                .and(Contact.EMAIL_ADDRESS.eq(values[3]))
+                .select(context);
 
-        Expression exp = ExpressionFactory.matchExp(Contact.GIVEN_NAME_PROPERTY, values[0]);
-        exp = exp.andExp(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, values[1]));
-        exp = exp.andExp(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, values[3]));
-
-        SelectQuery q = new SelectQuery(Contact.class, exp);
-        List<Contact> contacts = context.performQuery(q);
         if (contacts.isEmpty())
             System.out.println(String.format("Cannot find %s %s %s", values[0], values[1], values[7]));
         if (contacts.size() > 1)

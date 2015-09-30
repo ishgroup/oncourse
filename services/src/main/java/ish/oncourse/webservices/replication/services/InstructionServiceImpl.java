@@ -6,9 +6,9 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.PrefetchTreeNode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,12 +42,13 @@ public class InstructionServiceImpl implements IInstructionService {
 	}
 
 	@Override
-	public void confirmExecution(Long instrucitonId, String response) {
-		Expression expr = ExpressionFactory.matchDbExp(Instruction.ID_PK_COLUMN, instrucitonId);
-		SelectQuery q = new SelectQuery(Instruction.class, expr);
+	public void confirmExecution(Long instructionId, String response) {
 		ObjectContext objectContext = takeCayenneService().newNonReplicatingContext();
-		@SuppressWarnings("unchecked")
-		List<Instruction> list = objectContext.performQuery(q);		
+
+		List<Instruction> list = ObjectSelect.query(Instruction.class)
+				.where(ExpressionFactory.matchDbExp(Instruction.ID_PK_COLUMN, instructionId))
+				.select(objectContext);
+
 		if (!list.isEmpty()) {
 			Instruction instruction = list.get(0);
 			instruction.setExecuted(new Date());
@@ -59,13 +60,15 @@ public class InstructionServiceImpl implements IInstructionService {
 	@Override
 	public List<GenericInstructionStub> getInstructions(SupportedVersions version) {
 		List<GenericInstructionStub> result = new ArrayList<>();
-		Expression expr = ExpressionFactory.matchExp(Instruction.COLLEGE_PROPERTY, takeWebSiteService().getCurrentCollege()).andExp(
-			ExpressionFactory.matchExp(Instruction.EXECUTED_PROPERTY, null));
-		SelectQuery q = new SelectQuery(Instruction.class, expr);
-		q.addPrefetch(Instruction.PARAMETERS_PROPERTY);
+
 		ObjectContext objectContext = takeCayenneService().newNonReplicatingContext();
-		@SuppressWarnings("unchecked")
-		List<Instruction> list = objectContext.performQuery(q);
+
+		List<Instruction> list = ObjectSelect.query(Instruction.class)
+				.where(Instruction.COLLEGE.eq(takeWebSiteService().getCurrentCollege()))
+				.and(Instruction.EXECUTED.isNull())
+				.addPrefetch(Instruction.PARAMETERS.getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
+				.select(objectContext);
+
 		for (Instruction inst : list) {
 			GenericInstructionStub stub = PortHelper.createInstructionStub(version);
 			stub.setId(inst.getId());
