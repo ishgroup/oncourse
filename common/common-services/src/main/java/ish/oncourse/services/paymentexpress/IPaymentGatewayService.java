@@ -21,6 +21,8 @@ public interface IPaymentGatewayService {
 	 * @param model the given paymentModel for processing.
 	 */
 	void performGatewayOperation(PaymentInModel model);
+
+	void performGatewayOperation(PaymentInModel model, String billingId);
 	
 	void performGatewayOperation(PaymentOut paymentOut);
 }

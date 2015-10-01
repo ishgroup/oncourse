@@ -164,7 +164,7 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getAmount()).thenReturn(SUCCESS_PAYMENT_AMOUNT);
 		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
 		
-		TransactionResult2 tr = gatewayService.doTransaction(payment);
+		TransactionResult2 tr = gatewayService.doTransaction(payment, null);
 		LOG.info("PaymentExpressResponse: " + tr.getMerchantHelpText());
 		
 		assertNotNull("Transaction result should be not empty for successfull payment", tr);
@@ -214,7 +214,7 @@ public class PaymentExpressGatewayServiceTest {
 		when(payment.getCreditCardNumber()).thenReturn(DECLINED_CARD_NUMBER);
 		when(payment.getAmount()).thenReturn(FAILTURE_PAYMENT_AMOUNT);
 		
-		TransactionResult2 tr = gatewayService.doTransaction(payment);
+		TransactionResult2 tr = gatewayService.doTransaction(payment, null);
 		LOG.debug("PaymentExpressResponse: " + tr.getMerchantHelpText());
 		
 		assertFalse(PaymentExpressUtil.translateFlag(tr.getAuthorized()));
@@ -587,6 +587,39 @@ public class PaymentExpressGatewayServiceTest {
 
         assertGetStatusResult(submitResult, getStatusResult);
     }
+
+	@Test
+	public void testBillingId() throws ServiceException {
+		when(payment.getCreditCardNumber()).thenReturn(VALID_CARD_NUMBER);
+		when(payment.getAmount()).thenReturn(new Money("200.00"));
+		when(payment.getPaymentTransactions()).thenReturn(Collections.singletonList(paymentTransaction));
+		
+		TransactionResult2 tr = gatewayService.doTransaction(payment, null);
+		assertNotNull("Transaction result should be not empty for successfull payment", tr);
+		boolean isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
+		assertTrue("Check if authorized.", isAuthorized);
+		
+		String billingId = tr.getDpsBillingId();
+		assertTrue(billingId != null);
+
+
+		when(payment.getCreditCardNumber()).thenReturn(null);
+		when(payment.getCreditCardExpiry()).thenReturn(null);
+		when(payment.getCreditCardName()).thenReturn(null);
+		when(payment.getCreditCardCVV()).thenReturn(null);
+		when(payment.getCreditCardType()).thenReturn(null);
+		when(payment.getAmount()).thenReturn(new Money("300.00"));
+
+		//supply billingId from previous CC payment 
+		tr = gatewayService.doTransaction(payment, billingId);
+		assertNotNull("Transaction result should be not empty for successfull payment", tr);
+		isAuthorized = PaymentExpressUtil.translateFlag(tr.getAuthorized());
+		assertTrue("Check if authorized.", isAuthorized);
+
+		//billings for both transactions should be identical
+		assertEquals(billingId, tr.getDpsBillingId());
+
+	}
 
     private void assertGetStatusResult(TransactionResult2 submitResult, TransactionResult2 getStatusResult) {
         assertEquals("Test getAuthorized",submitResult.getAuthorized(), getStatusResult.getAuthorized());

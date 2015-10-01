@@ -59,7 +59,12 @@ public class PaymentOutSupport implements IPaymentSupport<PaymentOut, PaymentOut
         return details;
     }
 
-    @Override
+	@Override
+	public TransactionDetails getTransactionDetails(String billingId) {
+		throw new IllegalArgumentException();
+	}
+
+	@Override
     public PaymentOutTransaction createTransaction() {
         ObjectContext newObjectContext = cayenneService.newNonReplicatingContext();
         currentTransaction = newObjectContext.newObject(PaymentOutTransaction.class);

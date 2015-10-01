@@ -12,6 +12,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInSucceed;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -62,48 +63,48 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
         this.cayenneService = cayenneService;
     }
 
-    /**
-     * {@inheritDoc} Performs Payment Express gateway.
-     *
-     * @see AbstractPaymentGatewayService#processGateway(ish.oncourse.util.payment.PaymentInModel)
-     */
-    @Override
-    protected void processGateway(PaymentInModel model) {
+	/**
+	 * {@inheritDoc} Performs Payment Express gateway.
+	 *
+	 * @see AbstractPaymentGatewayService#processGateway(ish.oncourse.util.payment.PaymentInModel, java.lang.String)
+	 */
+	@Override
+	public void processGateway(PaymentInModel model, String billingId) {
 		PaymentIn payment = model.getPaymentIn();
-        try {
-            TransactionResult2 tr = doTransaction(payment);
+		try {
+			TransactionResult2 tr = doTransaction(payment, billingId);
 
-            StringBuilder resultDetails = new StringBuilder();
+			StringBuilder resultDetails = new StringBuilder();
 
-            if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
-                resultDetails.append(SUCCESS_PAYMENT_IN);
-                payment.setStatusNotes(SUCCESS_PAYMENT_IN);
+			if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
+				resultDetails.append(SUCCESS_PAYMENT_IN);
+				payment.setStatusNotes(SUCCESS_PAYMENT_IN);
 				PaymentInSucceed.valueOf(model).perform();
-                payment.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
-            } else {
-                resultDetails.append(FAILED_PAYMENT_IN);
-                payment.setStatusNotes(FAILED_PAYMENT_IN);
-                payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
+				payment.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
+			} else {
+				resultDetails.append(FAILED_PAYMENT_IN);
+				payment.setStatusNotes(FAILED_PAYMENT_IN);
+				payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
 				PaymentInFail.valueOf(model).perform();
-            }
+			}
 
-            resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:").append(tr.getAuthorized())
-                    .append(", cardHolderHelpText:").append(tr.getCardHolderHelpText()).append(", cardHolderName:")
-                    .append(tr.getCardHolderName()).append(", cardHolderResponseDescription:")
-                    .append(tr.getCardHolderResponseDescription()).append(", currencyRate:").append(tr.getCurrencyRate())
-                    .append(", currencyType:").append(tr.getCurrencyName()).append(", ourTransactionRef:").append(tr.getTxnRef())
-                    .append(", responseCode:").append(tr.getReco()).append(", responseText:").append(tr.getResponseText())
-                    .append(", retry:").append(tr.getRetry()).append(", settlementDate:").append(tr.getDateSettlement())
-                    .append(", statusRequired:").append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
-                    .append(", transactionRef:").append(tr.getDpsTxnRef());
-            logger.debug(resultDetails);
-        } catch (Exception e) {
-            logger.error("PaymentIn id: {} failed with exception.", payment.getId(), e);
-            payment.setStatusNotes("PaymentIn failed with exception.");
+			resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:").append(tr.getAuthorized())
+					.append(", cardHolderHelpText:").append(tr.getCardHolderHelpText()).append(", cardHolderName:")
+					.append(tr.getCardHolderName()).append(", cardHolderResponseDescription:")
+					.append(tr.getCardHolderResponseDescription()).append(", currencyRate:").append(tr.getCurrencyRate())
+					.append(", currencyType:").append(tr.getCurrencyName()).append(", ourTransactionRef:").append(tr.getTxnRef())
+					.append(", responseCode:").append(tr.getReco()).append(", responseText:").append(tr.getResponseText())
+					.append(", retry:").append(tr.getRetry()).append(", settlementDate:").append(tr.getDateSettlement())
+					.append(", statusRequired:").append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
+					.append(", transactionRef:").append(tr.getDpsTxnRef());
+			logger.debug(resultDetails);
+		} catch (Exception e) {
+			logger.error("PaymentIn id: {} failed with exception.", payment.getId(), e);
+			payment.setStatusNotes("PaymentIn failed with exception.");
 			PaymentInFail.valueOf(model).perform();
-        }
-    }
-
+		}
+	}
+	
     @Override
     protected void processGateway(PaymentOut paymentOut) {
 
@@ -160,11 +161,18 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @return the result of submitted transaction.
      * @throws Exception
      */
-    TransactionResult2 doTransaction(@SuppressWarnings("rawtypes") IPaymentSupport paymentSupport) throws ServiceException {
+    TransactionResult2 doTransaction(@SuppressWarnings("rawtypes") IPaymentSupport paymentSupport, String billingId) throws ServiceException {
 
         PaymentExpressWSSoap12Stub stub = soapClientStub();
 
-        TransactionDetails transactionDetails = paymentSupport.getTransactionDetails();
+        TransactionDetails transactionDetails;
+		
+		if (StringUtils.trimToNull(billingId) != null) {
+			transactionDetails = paymentSupport.getTransactionDetails(billingId);
+		} else {
+			transactionDetails =  paymentSupport.getTransactionDetails();
+		}
+		
         String username = paymentSupport.getCollege().getPaymentGatewayAccount();
         String password = paymentSupport.getCollege().getPaymentGatewayPass();
 
@@ -221,8 +229,8 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @return the result of submitted transaction.
      * @throws Exception
      */
-    public TransactionResult2 doTransaction(PaymentIn payment) throws ServiceException {
-        return this.doTransaction(new PaymentInSupport(payment, cayenneService));
+    public TransactionResult2 doTransaction(PaymentIn payment, String billingId) throws ServiceException {
+        return this.doTransaction(new PaymentInSupport(payment, cayenneService), billingId);
     }
 
     /**
@@ -233,7 +241,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @throws Exception
      */
     public TransactionResult2 doTransaction(PaymentOut paymentOut) throws Exception {
-        return this.doTransaction(new PaymentOutSupport(paymentOut, cayenneService));
+        return this.doTransaction(new PaymentOutSupport(paymentOut, cayenneService), null);
     }
 
     /**

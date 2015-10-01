@@ -24,6 +24,11 @@ public class DisabledPaymentGatewayService implements IPaymentGatewayService {
 	}
 
 	@Override
+	public void performGatewayOperation(PaymentInModel model, String billingId) {
+		throw new IllegalArgumentException();
+	}
+
+	@Override
 	public void performGatewayOperation(PaymentOut paymentOut) {
         throw new IllegalArgumentException();
     }

@@ -6,6 +6,7 @@ import ish.oncourse.model.PaymentOutTransaction;
 import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInSucceed;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,19 +33,24 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 */
 	@Override
 	public void performGatewayOperation(ish.oncourse.util.payment.PaymentInModel model) {
+		performGatewayOperation(model, null);
+	}
+
+	@Override
+	public void performGatewayOperation(PaymentInModel model, String billingId) {
 		PaymentIn payment = model.getPaymentIn();
 		if (payment.isZeroPayment()) {
 			PaymentInSucceed.valueOf(model).perform();
 		} else {
 			if (performPaymentValidation(payment)) {
 				LOG.debug("Payment details validation succeed.");
-				processGateway(model);
+				processGateway(model, billingId);
 			} else {
 				LOG.debug("Payment details validation failed.");
 				payment.setStatusNotes("Validation failed");
 				PaymentInFail.valueOf(model).perform();
 			}
-		}	
+		}
 	}
 
 	/**
@@ -69,7 +75,7 @@ public abstract class AbstractPaymentGatewayService implements IPaymentGatewaySe
 	 * 
 	 * @param payment
 	 */
-	protected abstract void processGateway(PaymentInModel payment);
+	protected abstract void processGateway(PaymentInModel payment, String billingId);
 
 	/**
 	 * Performs actual gateway process if the validation method

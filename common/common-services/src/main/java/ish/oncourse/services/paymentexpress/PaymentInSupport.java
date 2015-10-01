@@ -66,12 +66,44 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
         details.setTxnType(PaymentExpressUtil.PAYMENT_EXPRESS_TXN_TYPE);
         transactionDetails.append(", transaction type: ").append(details.getTxnType());
 
+		details.setEnableAddBillCard("1");
         logger.debug(transactionDetails);
 
         return details;
     }
 
-    @Override
+	@Override
+	public TransactionDetails getTransactionDetails(String billingId) {
+		TransactionDetails details = new TransactionDetails();
+
+		StringBuilder transactionDetails = new StringBuilder("Preparing payment transaction data. ");
+
+		details.setAmount(PaymentExpressUtil.translateInputAmountAsDecimalString(paymentIn.getAmount().toBigDecimal()));
+		transactionDetails.append("amount: ").append(details.getAmount());
+
+		details.setDpsBillingId(billingId);
+
+		// TODO use other currencies
+		details.setInputCurrency("AUD");
+		transactionDetails.append(", currency: ").append(details.getInputCurrency());
+
+		String ref = paymentIn.getClientReference();
+
+		details.setMerchantReference(ref);
+		transactionDetails.append(", merchantReference: ").append(details.getMerchantReference());
+
+		details.setTxnRef(ref);
+		transactionDetails.append(", transactionReference: ").append(details.getTxnRef());
+
+		details.setTxnType(PaymentExpressUtil.PAYMENT_EXPRESS_TXN_TYPE);
+		transactionDetails.append(", transaction type: ").append(details.getTxnType());
+
+		logger.debug(transactionDetails);
+
+		return details;
+	}
+
+	@Override
     public PaymentTransaction createTransaction() {
         ObjectContext newObjectContext = cayenneService.newNonReplicatingContext();
         currentTransaction = newObjectContext.newObject(PaymentTransaction.class);
@@ -104,5 +136,6 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
     public void adjustPayment(TransactionResult2 result) {
         paymentIn.setGatewayResponse(result.getResponseText());
         paymentIn.setGatewayReference(result.getDpsTxnRef());
+		paymentIn.setBillingId(result.getDpsBillingId());
     }
 }

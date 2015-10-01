@@ -19,6 +19,8 @@ public interface IPaymentSupport<P extends Queueable, T extends CayenneDataObjec
 
     TransactionDetails getTransactionDetails();
 
+	TransactionDetails getTransactionDetails(String billingId);
+	
     T createTransaction();
     void adjustTransaction(TransactionResult2 result);
     void commitTransaction();

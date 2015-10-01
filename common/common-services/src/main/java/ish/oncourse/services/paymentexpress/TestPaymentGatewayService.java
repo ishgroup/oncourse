@@ -9,6 +9,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInSucceed;
+import ish.util.SecurityUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -154,6 +155,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
             if (result.isSuccess()) {
                 paymentTransaction.setResponse(result.getStatusNotes());
 
+				payment.setBillingId(SecurityUtil.generateRandomPassword(16));
                 payment.setGatewayResponse(result.getStatusNotes());
                 payment.setStatusNotes(SUCCESS_PAYMENT_IN);
                 payment.setGatewayReference(paymentTransaction.getTxnReference());
@@ -173,7 +175,37 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
         }
     }
 
-    @Override
+	@Override
+	public void performGatewayOperation(PaymentInModel model, String billingId) {
+		PaymentIn payment = model.getPaymentIn();
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		
+		if (payment.isZeroPayment()) {
+			PaymentInSucceed.valueOf(model).perform();
+		} else {
+			PaymentTransaction paymentTransaction = context.newObject(PaymentTransaction.class);
+			paymentTransaction.setTxnReference(payment.getClientReference());
+			context.commitChanges();
+
+			PaymentIn local = context.localObject(payment);
+			paymentTransaction.setPayment(local);
+
+			paymentTransaction.setResponse(result.getStatusNotes());
+
+			payment.setBillingId(billingId);
+			payment.setGatewayResponse(result.getStatusNotes());
+			payment.setStatusNotes(SUCCESS_PAYMENT_IN);
+			payment.setGatewayReference(paymentTransaction.getTxnReference());
+
+			PaymentInSucceed.valueOf(model).perform();
+			
+			paymentTransaction.setIsFinalised(true);
+			
+			context.commitChanges();
+		}
+	}
+
+	@Override
     public void performGatewayOperation(PaymentOut paymentOut) {
         if (paymentOut.getTotalAmount().longValue() < 1000) {
             paymentOut.succeed();
