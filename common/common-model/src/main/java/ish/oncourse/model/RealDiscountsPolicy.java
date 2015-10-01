@@ -64,7 +64,7 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 				if (discount.isPromotion() && !isPromotionAdded(discount)) {
 					continue;
 				}
-				if (isStudentEligibile(student, discount) && satisfiesMinEnrolmentCountAndValue(discount, invoices)) {
+				if (isStudentEligibile(student, discount)) {
 					result.add(discount);
 				}
 			}
@@ -169,6 +169,7 @@ public class RealDiscountsPolicy extends DiscountPolicy {
         return membershipDiscountHelper.isEligibile();
 	}
 
+	// TODO: discount minEnrolments/minValue logic was disabled for 8.2 release
 	private boolean satisfiesMinEnrolmentCountAndValue(Discount discount, List<Invoice> invoices) {
 		int enrolmentsCount = 0;
 		Money totalValue = Money.ZERO;
