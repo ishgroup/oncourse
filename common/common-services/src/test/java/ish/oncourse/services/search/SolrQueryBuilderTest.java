@@ -25,11 +25,11 @@ public class SolrQueryBuilderTest {
 	private static final String TAG2_QUERY = "(tagId:5 || tagId:6 || tagId:7 || tagId:8 || tagId:9 || tagId:10)";
 
 
-    private static final String GEOFILTER_QUERY = "qt=standard&fl=id,name,course_loc,score&start=5&rows=10&fq=+collegeId:2 +doctype:course end:[NOW TO *]&" +
+    private static final String GEOFILTER_QUERY = "qt=edismax&fl=id,name,course_loc,score&start=5&rows=10&fq=+collegeId:2 +doctype:course end:[NOW TO *]&" +
     	"fq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&q={!boost b=$boostfunction v=$qq}&" +
     	"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&" +
     	"qq=(*:*)&sort=score desc,startDate asc,name asc&debugQuery=false";
-	private static final String EXPECTED_RESULT_VALUE = "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
+	private static final String EXPECTED_RESULT_VALUE = "qt=edismax&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
 		"end:[NOW TO *]&fq=%s" +
 		"&fq=%s" +
 		"&fq=%s&q={!boost b=$boostfunction v=$qq}" +
@@ -88,7 +88,7 @@ public class SolrQueryBuilderTest {
         SolrQueryBuilder solrQueryBuilder = SolrQueryBuilder.valueOf(searchParams, "1", 0, 100);
         String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 
-        assertEquals("Commons parameters", "qt=standard&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
+        assertEquals("Commons parameters", "qt=edismax&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
 				"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
 
@@ -240,7 +240,7 @@ public class SolrQueryBuilderTest {
 		SolrQueryBuilder solrQueryBuilder =  SolrQueryBuilder.valueOf(searchParams,"1",null,null);
 		String value = URLDecoder.decode(solrQueryBuilder.build().toString(), "UTF-8");
 
-		assertEquals("Commons parameters",  "qt=standard&fl=id,name,course_loc,score&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
+		assertEquals("Commons parameters",  "qt=edismax&fl=id,name,course_loc,score&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
 				"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
 	}
@@ -248,7 +248,7 @@ public class SolrQueryBuilderTest {
 
 	@Test
 	public void testDayParameter() throws UnsupportedEncodingException {
-		String template = "qt=standard&" +
+		String template = "qt=edismax&" +
 				"fl=id,name,course_loc,score&" +
 				"fq=+collegeId:1 +doctype:course end:[NOW TO *]&" +
 				"q={!boost b=$boostfunction v=$qq}&" +
