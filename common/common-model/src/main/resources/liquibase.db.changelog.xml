@@ -3476,8 +3476,10 @@
 
 
 	<changeSet id="223" author="artyom" runOnChange="false" runAlways="false" context="production">
-		<preConditions onFail="MARK_RAN">
-				<columnExists tableName="postcode_db" columnName="type"/>
+		<preConditions>
+			<sqlCheck expectedResult="0">
+				SELECT count(*) FROM postcode_db WHERE type not in ('Delivery Area', 'Post Office Boxes', 'LVR')
+			</sqlCheck>
 		</preConditions>
 		<sql>
 			ALTER TABLE postcode_db ADD COLUMN typeTemp INTEGER;
@@ -3487,7 +3489,6 @@
 			ALTER TABLE postcode_db DROP COLUMN type;
 			ALTER TABLE postcode_db CHANGE COLUMN typeTemp type INTEGER NOT NULL;
 		</sql>
-		
 	</changeSet>
 
 	<changeSet id="224" author="artyom" runOnChange="false" runAlways="false" context="production">
