@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.CourseEnrolmentType;
+import ish.math.Money;
 import ish.oncourse.test.ContextUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.validation.ValidationException;
@@ -45,6 +46,8 @@ public class DiscountCourseClassTest {
         discount = context.newObject(Discount.class);
         discount.setCollege(college);
         discount.setHideOnWeb(false);
+		discount.setMinEnrolments(0);
+		discount.setMinValue(Money.ZERO);
         context.commitChanges();
         /**
          * Instance of any Course entity.

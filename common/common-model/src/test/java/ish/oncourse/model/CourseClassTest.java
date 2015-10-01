@@ -117,6 +117,8 @@ public class CourseClassTest {
 		currentPromotion.setCollege(college);
 		currentPromotion.setCode("currentPromotion");
 		currentPromotion.setIsAvailableOnWeb(true);
+		currentPromotion.setMinEnrolments(1);
+		currentPromotion.setMinValue(Money.ZERO);
 		
 		// two days ago
 		date.add(Calendar.DATE, -2);
@@ -136,6 +138,8 @@ public class CourseClassTest {
 		currentConcession.setName("name");
 		currentConcession.setHideOnWeb(false);
 		currentConcession.setIsAvailableOnWeb(true);
+		currentConcession.setMinEnrolments(1);
+		currentConcession.setMinValue(Money.ZERO);
 
 		ConcessionType ct = context.newObject(ConcessionType.class);
 		ct.setName("name");
@@ -154,6 +158,8 @@ public class CourseClassTest {
 		concessionEmpty.setCollege(college);
 		concessionEmpty.setHideOnWeb(false);
 		concessionEmpty.setIsAvailableOnWeb(true);
+		concessionEmpty.setMinEnrolments(1);
+		concessionEmpty.setMinValue(Money.ZERO);
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(concessionEmpty);
 		dcc.setCourseClass(firstClass);
@@ -164,6 +170,8 @@ public class CourseClassTest {
 		futureDicount.setValidFrom(date.getTime());
 		futureDicount.setHideOnWeb(false);
 		futureDicount.setIsAvailableOnWeb(true);
+		futureDicount.setMinEnrolments(1);
+		futureDicount.setMinValue(Money.ZERO);
 		dcc = context.newObject(DiscountCourseClass.class);
 		dcc.setDiscount(futureDicount);
 		dcc.setCourseClass(firstClass);
@@ -177,6 +185,8 @@ public class CourseClassTest {
 		
 		pastSecondClassDiscount = context.newObject(Discount.class);
 		pastSecondClassDiscount.setCollege(college);
+		pastSecondClassDiscount.setMinEnrolments(1);
+		pastSecondClassDiscount.setMinValue(Money.ZERO);
 		
 		// almost one month ago
 		date.add(Calendar.MONTH, -2);
@@ -200,6 +210,8 @@ public class CourseClassTest {
 		concessionEmptyCode.setCode(StringUtils.EMPTY);
 		concessionEmptyCode.setHideOnWeb(false);
 		concessionEmptyCode.setIsAvailableOnWeb(true);
+		concessionEmptyCode.setMinEnrolments(1);
+		concessionEmptyCode.setMinValue(Money.ZERO);
 		ConcessionType ctype = context.newObject(ConcessionType.class);
 		ctype.setName("name");
 		ctype.setIsEnabled(true);
@@ -225,6 +237,8 @@ public class CourseClassTest {
 		disabledDiscount.setCode(StringUtils.EMPTY);
 		disabledDiscount.setHideOnWeb(false);
 		disabledDiscount.setIsAvailableOnWeb(false);
+		disabledDiscount.setMinEnrolments(1);
+		disabledDiscount.setMinValue(Money.ZERO);
 		
 		ConcessionType cctype = context.newObject(ConcessionType.class);
 		cctype.setName("name");
