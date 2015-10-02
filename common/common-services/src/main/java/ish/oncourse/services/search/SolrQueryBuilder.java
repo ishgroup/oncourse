@@ -17,7 +17,7 @@ public class SolrQueryBuilder {
     private static final String SPACE_REPLACEMENT_CHARACTER = " ";
     private static final String SOLR_SYNTAX_CHARACTERS_STRING = "[\\!\\^\\(\\)\\{\\}\\[\\]\\:\"\\?\\+\\~\\*\\|\\&\\;\\\\]";
 
-    static final String QUERY_TYPE = "standard";
+    static final String QUERY_TYPE = "edismax";
 
     static final String PARAMETER_fl = "fl";
     static final String PARAMETER_geofq = "geofq";
@@ -78,7 +78,6 @@ public class SolrQueryBuilder {
 
     public SolrQuery build() {
         SolrQuery q = new SolrQuery();
-        q.set("defType", "edismax");
 
         fillCommons(q);
 
