@@ -807,6 +807,10 @@ public class PurchaseController {
 		for (Application application : getModel().getAllEnabledApplications()) {
 			application.setConfirmationStatus(confirmationStatus);
 		}
+		
+		for (InvoiceNode node : getModel().getPaymentPlanInvoices()) {
+			node.getInvoice().setConfirmationStatus(confirmationStatus);
+		}
 	}
 
 	public void commitApplications() {
