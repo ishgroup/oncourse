@@ -9,6 +9,7 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.site.IWebSiteService;
@@ -238,7 +239,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
             boolean shouldWait = false;
 
             for (PaymentIn p : pList) {
-                if (!p.isAsyncReplicationAllowed()) {
+                if (!p.isAsyncReplicationAllowed() && !PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(p.getStatusNotes())) {
                     shouldWait = true;
                     break;
                 } else {

@@ -8,6 +8,7 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.PaymentInUtil;
 import org.apache.cayenne.Cayenne;
@@ -206,6 +207,8 @@ public class PaymentProcessController {
         		paymentProcessFuture.get(100, TimeUnit.MILLISECONDS);
             if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS)) {
                 changeProcessState(SUCCESS);
+            } else if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION)) {
+                changeProcessState(ERROR);
             } else {
                 changeProcessState(FAILED);
             }
@@ -281,7 +284,8 @@ public class PaymentProcessController {
 
     public PaymentIn performGatewayOperation() {
     		paymentGatewayService.performGatewayOperation(paymentInModel);
-    		if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS))
+    		if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS) || 
+					(paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(paymentInModel.getPaymentIn().getStatusNotes())))
     			commitChanges();
     		return paymentInModel.getPaymentIn();
     }
@@ -321,6 +325,10 @@ public class PaymentProcessController {
 	{
 		return PaymentProcessState.isProcessingState(currentState);
 	}
+
+    public boolean isWrongPaymentExpressResult() {
+        return paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && currentState == ERROR;
+    }
 
 	public ICayenneService getCayenneService() {
 		return cayenneService;

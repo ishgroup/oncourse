@@ -1,7 +1,10 @@
 package ish.oncourse.services.paymentexpress;
 
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.util.payment.PaymentInModel;
+
+import javax.xml.rpc.ServiceException;
 
 /**
  * Service for payment gateway processing.
@@ -12,6 +15,7 @@ public interface IPaymentGatewayService {
 	
 	public static final String SUCCESS_PAYMENT_IN = "Payment successful.";
 	public static final String FAILED_PAYMENT_IN = "Payment failed. Card declined.";
+	public static final String UNKNOW_RESULT_PAYMENT_IN = "PaymentExpress response is not valid";
 	public static final String SUCCESS_PAYMENT_OUT = "PaymentOut successful.";
 	public static final String FAILED_PAYMENT_OUT = "PaymentOut failed. Declined by paymentExpress.";
 	public static final String FAILED_PAYMENT_OUT_NULL_RESPONSE ="PaymentOut failed with null transaction response.";
@@ -25,4 +29,6 @@ public interface IPaymentGatewayService {
 	void performGatewayOperation(PaymentInModel model, String billingId);
 	
 	void performGatewayOperation(PaymentOut paymentOut);
+
+	TransactionResult checkPaymentTransaction(PaymentIn p) throws ServiceException;
 }

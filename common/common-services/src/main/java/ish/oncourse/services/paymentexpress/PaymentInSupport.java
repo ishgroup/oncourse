@@ -114,11 +114,20 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
 
 
     @Override
-    public void adjustTransaction(TransactionResult2 result) {
-        currentTransaction.setSoapResponse(result.getMerchantHelpText());
-        currentTransaction.setResponse(result.getResponseText());
-        currentTransaction.setTxnReference(result.getTxnRef());
-        currentTransaction.setIsFinalised(true);// in any case, this transaction is completed
+    public void adjustTransaction(TransactionResult result) {
+		if (result.getResult2() != null) {
+			currentTransaction.setSoapResponse(result.getResult2().getMerchantHelpText());
+			currentTransaction.setResponse(result.getResult2().getResponseText());
+			currentTransaction.setTxnReference(result.getResult2().getTxnRef());
+
+			if (PaymentExpressUtil.isValidResult(result)) {
+				currentTransaction.setIsFinalised(true);
+			} else {
+				currentTransaction.setIsFinalised(false);
+			}
+		} else if (TransactionResult.ResultStatus.UNKNOWN.equals(result.getStatus())) {
+			currentTransaction.setIsFinalised(false);
+		}
     }
 
     @Override
@@ -133,9 +142,11 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
     }
 
     @Override
-    public void adjustPayment(TransactionResult2 result) {
-        paymentIn.setGatewayResponse(result.getResponseText());
-        paymentIn.setGatewayReference(result.getDpsTxnRef());
-		paymentIn.setBillingId(result.getDpsBillingId());
+    public void adjustPayment(TransactionResult result) {
+		if (result.getResult2() != null) {
+			paymentIn.setGatewayResponse(result.getResult2().getResponseText());
+			paymentIn.setGatewayReference(result.getResult2().getDpsTxnRef());
+			paymentIn.setBillingId(result.getResult2().getDpsBillingId());
+		}
     }
 }

@@ -12,10 +12,15 @@
 					</p:else>
 				</t:if>
 				<p:else>
-                    <h2>This payment was cancelled.</h2>
-					<script type="text/javascript">
-						setTimeout("window.location.href='${coursesLink}'", 5000);
-					</script>
+					<t:if test="delegate.wrongPaymentExpressResult">
+						<h2>The banking system is experiencing a problem at the moment. We'll continue to try and process this payment and let you know if there is a problem.</h2>
+						<p:else>
+							<h2>This payment was cancelled.</h2>
+							<script type="text/javascript">
+								setTimeout("window.location.href='${coursesLink}'", 5000);
+							</script>
+						</p:else>
+					</t:if>
 				</p:else>
 			</t:if>
 			<p:else>

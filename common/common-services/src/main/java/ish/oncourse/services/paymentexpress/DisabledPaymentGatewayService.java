@@ -1,7 +1,10 @@
 package ish.oncourse.services.paymentexpress;
 
+import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.util.payment.PaymentInModel;
+
+import javax.xml.rpc.ServiceException;
 
 /**
  * Stub that indicated that payment gateway processing is disabled. Normally,
@@ -32,4 +35,9 @@ public class DisabledPaymentGatewayService implements IPaymentGatewayService {
 	public void performGatewayOperation(PaymentOut paymentOut) {
         throw new IllegalArgumentException();
     }
+
+	@Override
+	public TransactionResult checkPaymentTransaction(PaymentIn p) throws ServiceException {
+		throw new IllegalArgumentException();
+	}
 }

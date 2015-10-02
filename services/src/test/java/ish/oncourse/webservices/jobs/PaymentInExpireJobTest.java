@@ -9,6 +9,7 @@ import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.PaymentInSupport;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
@@ -38,6 +39,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 
 	private PaymentInExpireJob job;
 	private ICayenneService cayenneService;
+	private PreferenceControllerFactory prefFactory;
 
 	@Before
 	public void setup() throws Exception {
@@ -51,7 +53,8 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
 
 		this.cayenneService = getService(ICayenneService.class);
-		this.job = new PaymentInExpireJob(cayenneService, getService(IPaymentService.class));
+		this.prefFactory = getService(PreferenceControllerFactory.class);
+		this.job = new PaymentInExpireJob(cayenneService, getService(IPaymentService.class), prefFactory);
 	}
 
 	@Test

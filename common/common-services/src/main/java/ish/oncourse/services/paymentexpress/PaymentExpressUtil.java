@@ -1,5 +1,7 @@
 package ish.oncourse.services.paymentexpress;
 
+import com.paymentexpress.stubs.TransactionResult2;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +26,8 @@ public class PaymentExpressUtil {
 
 	public static final DecimalFormat DECIMAL_AMOUNT_FORMATTER;
 	public static final DecimalFormat IN_CENTS_AMOUNT_FORMATTER;
+	
+	public static final String[] INVALID_RESPONCES = {"ConnectErr", "ConnectTimeout", "csdSend Select Err", "TRANSMISSION ERROR"}; 
 
 	static {
 		DECIMAL_AMOUNT_FORMATTER = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
@@ -103,5 +107,20 @@ public class PaymentExpressUtil {
 		}
 
 		return date;
+	}
+
+	public static boolean isValidResult(TransactionResult result) {
+		if (result.getResult2() == null || TransactionResult.ResultStatus.UNKNOWN.equals(result.getStatus())) {
+			return false;
+		} else if (StringUtils.trimToNull(result.getResult2().getResponseText()) != null) {
+			
+			for (String pref : INVALID_RESPONCES) {
+				if (result.getResult2().getResponseText().startsWith(pref)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 }

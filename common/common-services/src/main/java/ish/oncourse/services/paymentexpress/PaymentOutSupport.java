@@ -76,10 +76,12 @@ public class PaymentOutSupport implements IPaymentSupport<PaymentOut, PaymentOut
     }
 
     @Override
-    public void adjustTransaction(TransactionResult2 result) {
-        currentTransaction.setSoapResponse(result.getMerchantHelpText());
-        currentTransaction.setResponse(result.getResponseText());
-        currentTransaction.setTxnReference(result.getTxnRef());
+    public void adjustTransaction(TransactionResult result) {
+		if (result.getResult2() != null) {
+			currentTransaction.setSoapResponse(result.getResult2().getMerchantHelpText());
+			currentTransaction.setResponse(result.getResult2().getResponseText());
+			currentTransaction.setTxnReference(result.getResult2().getTxnRef());
+		}
         currentTransaction.setIsFinalised(true);// in any case, this transaction is completed
     }
 
@@ -95,6 +97,6 @@ public class PaymentOutSupport implements IPaymentSupport<PaymentOut, PaymentOut
     }
 
     @Override
-    public void adjustPayment(TransactionResult2 result) {
+    public void adjustPayment(TransactionResult result) {
     }
 }

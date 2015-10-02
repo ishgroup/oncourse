@@ -1,5 +1,6 @@
 package ish.oncourse.services.paymentexpress;
 
+import com.paymentexpress.stubs.TransactionResult2;
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
@@ -15,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.xml.rpc.ServiceException;
 import java.util.Date;
 
 /**
@@ -133,7 +135,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
         if (payment.isZeroPayment()) {
 			PaymentInSucceed.valueOf(model).perform();
         } else {
-
+			
             PaymentTransaction paymentTransaction = context.newObject(PaymentTransaction.class);
             paymentTransaction.setTxnReference(payment.getClientReference());
             context.commitChanges();
@@ -149,7 +151,15 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
             } catch (InterruptedException e) {
                 LOG.debug(e);
             }
-
+			
+			if (payment.getCreditCardName().equalsIgnoreCase("DPS unknown result")) {
+				paymentTransaction.setIsFinalised(false);
+				payment.setStatus(PaymentStatus.IN_TRANSACTION);
+				payment.setStatusNotes(UNKNOW_RESULT_PAYMENT_IN);
+				context.commitChanges();
+				return;
+			}
+			
             result = verifyPayment(payment);
 
             if (result.isSuccess()) {
@@ -220,6 +230,15 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 
     }
 
+	@Override
+	public TransactionResult checkPaymentTransaction(PaymentIn p) throws ServiceException {
+		TransactionResult tr = new TransactionResult();
+		tr.setStatus(TransactionResult.ResultStatus.SUCCESS);
+		TransactionResult2 result2 = new TransactionResult2();
+		result2.setResponseText("APPROVED.");
+		tr.setResult2(result2);
+		return tr;
+	}
 
     /**
      * Inner class for verification payment data.

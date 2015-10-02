@@ -1,22 +1,40 @@
 package ish.oncourse.webservices.jobs;
 
+import com.paymentexpress.stubs.PaymentExpressWSLocator;
+import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
+import ish.oncourse.model.PaymentTransaction;
+import ish.oncourse.paymentexpress.customization.PaymentExpressWSLocatorWithSoapResponseHandle;
 import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.GetStatusOperation;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
+import ish.oncourse.services.paymentexpress.PaymentExpressUtil;
+import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.PaymentInSupport;
+import ish.oncourse.services.paymentexpress.TransactionResult;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
+import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
 import ish.oncourse.util.payment.PaymentInModelFromSessionIdBuilder;
+import ish.oncourse.util.payment.PaymentInSucceed;
 import ish.oncourse.utils.PaymentInUtil;
+import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.PrefetchTreeNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -46,10 +64,13 @@ public class PaymentInExpireJob implements Job {
 	
 	private IPaymentService paymentService;
 
-	public PaymentInExpireJob(ICayenneService cayenneService, IPaymentService paymentService) {
+	private final PreferenceControllerFactory prefFactory;
+
+	public PaymentInExpireJob(ICayenneService cayenneService, IPaymentService paymentService, PreferenceControllerFactory prefFactory) {
 		super();
 		this.cayenneService = cayenneService;
 		this.paymentService = paymentService;
+		this.prefFactory = prefFactory;
 	}
 
 	/**
@@ -83,32 +104,81 @@ public class PaymentInExpireJob implements Job {
 	}
 
     private void processPayment(PaymentIn p) {
-        //we need the try-catch block to continue processing other payments even if we get an excption
-        //in the method.
-        try {
-            // do not fail payments for which we haven't got final transaction response from gateway
-            if (paymentService.isProcessedByGateway(p)) {
-                //web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
-                boolean isWebSourse = PaymentSource.SOURCE_WEB.equals(p.getSource());
-                p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
-				if (isWebSourse) {
-					PaymentInUtil.abandonPayment(p, true);
-				} else {
-					try {
-						PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(p.getSessionId(), p.getObjectContext()).build().getModel();
-						PaymentInAbandon.valueOf(model, true).perform();
-						p.getObjectContext().commitChanges();
-					} catch (final CayenneRuntimeException ce) {
-						logger.debug("Unable to cancel payment with id:{} and status:{}.", p.getId(), p.getStatus(), ce);
-						p.getObjectContext().rollbackChanges();
-					}
+		//we need the try-catch block to continue processing other payments even if we get an excption
+		//in the method.
+		try {
+			// do not fail payments for which we haven't got final transaction response from gateway
+			if (paymentService.isProcessedByGateway(p)) {
+				p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
+				abandonPayment(p);
+			} else if (PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(p.getStatusNotes())) {
+				if (p.getPaymentTransactions().isEmpty()) {
+					logger.warn("PaymentIn with id:{} has no related not finished transactions", p.getId());
+					return;
 				}
-            }
-        } catch (Exception e) {
+
+				PreferenceController pref = prefFactory.getPreferenceController(p.getCollege());
+				IPaymentGatewayService gatewayService = new PaymentGatewayServiceBuilder(pref, cayenneService).buildService();
+				TransactionResult result = gatewayService.checkPaymentTransaction(p);
+
+				if (PaymentExpressUtil.isValidResult(result)) {
+					if (TransactionResult.ResultStatus.SUCCESS.equals(result.getStatus())) {
+						p.setStatusNotes(PaymentExpressGatewayService.SUCCESS_PAYMENT_IN);
+
+						PaymentInModel model;
+						if (PaymentSource.SOURCE_ONCOURSE.equals(p.getSource())) {
+							model = PaymentInModelFromSessionIdBuilder.valueOf(p.getSessionId(), p.getObjectContext()).build().getModel();
+						} else {
+							model = PaymentInModelFromPaymentInBuilder.valueOf(p).build().getModel();
+						}
+
+						PaymentInSucceed.valueOf(model).perform();
+
+					} else {
+						p.setStatusNotes(PaymentExpressGatewayService.FAILED_PAYMENT_IN);
+						abandonPayment(p);
+					}
+
+					p.setGatewayResponse(result.getResult2().getResponseText());
+					p.setGatewayReference(result.getResult2().getDpsTxnRef());
+					p.setBillingId(result.getResult2().getDpsBillingId());
+
+					PaymentTransaction transaction = p.getPaymentTransactions().get(0);
+					transaction.setIsFinalised(true);
+					transaction.setSoapResponse(result.getResult2().getMerchantHelpText());
+					transaction.setSoapResponse(result.getResult2().getResponseText());
+					transaction.setSoapResponse(result.getResult2().getTxnRef());
+				} else {
+					return;
+				}
+			}
+			
+			try {
+				p.getObjectContext().commitChanges();
+			} catch (final CayenneRuntimeException ce) {
+				logger.debug("Unable to cancel payment with id:{} and status:{}.", p.getId(), p.getStatus(), ce);
+				p.getObjectContext().rollbackChanges();
+			}
+		}
+        catch (Exception e) {
 	        logger.catching(e);
         }
     }
+	
+	private void abandonPayment(PaymentIn p) {
 
+		//web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.
+		boolean isWebSourse = PaymentSource.SOURCE_WEB.equals(p.getSource());
+		PaymentInModel model;
+		if (isWebSourse) {
+			model = PaymentInModelFromPaymentInBuilder.valueOf(p).build().getModel();
+			PaymentInAbandon.valueOf(model,  PaymentInUtil.hasSuccessEnrolments(p) || PaymentInUtil.hasSuccessProductItems(p)).perform();
+		} else {
+			model = PaymentInModelFromSessionIdBuilder.valueOf(p.getSessionId(), p.getObjectContext()).build().getModel();
+			PaymentInAbandon.valueOf(model, true).perform();
+		}
+	}
+	
     /**
 	 * Fetch payments which were not completed (not success nor failed, expired
 	 * they were in not completed state for more than PaymentIn.EXPIRE_INTERVAL)

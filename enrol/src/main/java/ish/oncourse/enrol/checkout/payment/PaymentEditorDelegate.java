@@ -8,40 +8,41 @@ import java.util.Map;
 
 
 public interface PaymentEditorDelegate {
-	public void makePayment();
-    public void changePayer();
-    public void addPayer(Boolean isCompany);
+	void makePayment();
+    void changePayer();
+    void addPayer(Boolean isCompany);
 
-	public Map<String,String> addCorporatePass(String corporatePass);
+	Map<String,String> addCorporatePass(String corporatePass);
 
-	public void tryAgain();
-	public void abandon();
-	public List<Contact> getContacts();
+	void tryAgain();
+	void abandon();
+	List<Contact> getContacts();
 
-	public PaymentIn getPaymentIn();
+	PaymentIn getPaymentIn();
 
-	public Invoice getInvoice();
+	Invoice getInvoice();
 
-	public Map<String, String> getErrors();
+	Map<String, String> getErrors();
 
-	public void setErrors(Map<String, String> errors);
+	void setErrors(Map<String, String> errors);
 
-	public boolean isNeedConcessionReminder();
-	public boolean isEnrolmentFailedNoPlaces();
-	public boolean isPaymentSuccess();
-	public boolean isProcessFinished();
+	boolean isNeedConcessionReminder();
+	boolean isEnrolmentFailedNoPlaces();
+	boolean isPaymentSuccess();
+	boolean isProcessFinished();
+	boolean isWrongPaymentExpressResult();
 
-	public boolean isFinalState();
+	boolean isFinalState();
 
-	public boolean isCorporatePass();
+	boolean isCorporatePass();
 	
-	public boolean isEmptyInvoice();
+	boolean isEmptyInvoice();
 	
-	public boolean isZeroPayment();
+	boolean isZeroPayment();
 
-	public List<Application> getApplications();
-	
-	public Transaction getAnalyticsTransaction();
+	List<Application> getApplications();
+
+	Transaction getAnalyticsTransaction();
 
 
     void updatePaymentStatus();

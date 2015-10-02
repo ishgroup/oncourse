@@ -72,54 +72,59 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 	public void processGateway(PaymentInModel model, String billingId) {
 		PaymentIn payment = model.getPaymentIn();
 		try {
-			TransactionResult2 tr = doTransaction(payment, billingId);
+			TransactionResult tr = doTransaction(payment, billingId);
 
-			StringBuilder resultDetails = new StringBuilder();
+            StringBuilder resultDetails = new StringBuilder();
 
-			if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
-				resultDetails.append(SUCCESS_PAYMENT_IN);
-				payment.setStatusNotes(SUCCESS_PAYMENT_IN);
-				PaymentInSucceed.valueOf(model).perform();
-				payment.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
-			} else {
-				resultDetails.append(FAILED_PAYMENT_IN);
-				payment.setStatusNotes(FAILED_PAYMENT_IN);
-				payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
-				PaymentInFail.valueOf(model).perform();
+            if (PaymentExpressUtil.isValidResult(tr)) {
+                if (TransactionResult.ResultStatus.SUCCESS.equals(tr.getStatus())) {
+                    resultDetails.append(SUCCESS_PAYMENT_IN);
+                    payment.setStatusNotes(SUCCESS_PAYMENT_IN);
+                    PaymentInSucceed.valueOf(model).perform();
+                    payment.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getResult2().getDateSettlement()));
+                } else {
+                    resultDetails.append(FAILED_PAYMENT_IN);
+                    payment.setStatusNotes(FAILED_PAYMENT_IN);
+                    payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
+                    PaymentInFail.valueOf(model).perform();
+                }
+            } else {
+				payment.setStatus(PaymentStatus.IN_TRANSACTION);
+				payment.setStatusNotes(UNKNOW_RESULT_PAYMENT_IN);
 			}
 
-			resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:").append(tr.getAuthorized())
-					.append(", cardHolderHelpText:").append(tr.getCardHolderHelpText()).append(", cardHolderName:")
-					.append(tr.getCardHolderName()).append(", cardHolderResponseDescription:")
-					.append(tr.getCardHolderResponseDescription()).append(", currencyRate:").append(tr.getCurrencyRate())
-					.append(", currencyType:").append(tr.getCurrencyName()).append(", ourTransactionRef:").append(tr.getTxnRef())
-					.append(", responseCode:").append(tr.getReco()).append(", responseText:").append(tr.getResponseText())
-					.append(", retry:").append(tr.getRetry()).append(", settlementDate:").append(tr.getDateSettlement())
-					.append(", statusRequired:").append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
-					.append(", transactionRef:").append(tr.getDpsTxnRef());
-			logger.debug(resultDetails);
-		} catch (Exception e) {
-			logger.error("PaymentIn id: {} failed with exception.", payment.getId(), e);
-			payment.setStatusNotes("PaymentIn failed with exception.");
-			PaymentInFail.valueOf(model).perform();
-		}
-	}
-	
+			if (tr.getResult2() != null) {
+				resultDetails.append(" authCode:").append(tr.getResult2().getAuthCode()).append(", authorized:").append(tr.getResult2().getAuthorized())
+						.append(", cardHolderHelpText:").append(tr.getResult2().getCardHolderHelpText()).append(", cardHolderName:")
+						.append(tr.getResult2().getCardHolderName()).append(", cardHolderResponseDescription:")
+						.append(tr.getResult2().getCardHolderResponseDescription()).append(", currencyRate:").append(tr.getResult2().getCurrencyRate())
+						.append(", currencyType:").append(tr.getResult2().getCurrencyName()).append(", ourTransactionRef:").append(tr.getResult2().getTxnRef())
+						.append(", responseCode:").append(tr.getResult2().getReco()).append(", responseText:").append(tr.getResult2().getResponseText())
+						.append(", retry:").append(tr.getResult2().getRetry()).append(", settlementDate:").append(tr.getResult2().getDateSettlement())
+						.append(", statusRequired:").append(tr.getResult2().getStatusRequired()).append(", testMode:").append(tr.getResult2().getTestMode())
+						.append(", transactionRef:").append(tr.getResult2().getDpsTxnRef());
+				logger.debug(resultDetails);
+			}
+        } catch (Exception e) {
+            logger.error("PaymentIn id: {} failed with exception.", payment.getId(), e);
+        }
+    }
+
     @Override
     protected void processGateway(PaymentOut paymentOut) {
 
-        TransactionResult2 tr;
+        TransactionResult tr;
 
         try {
             tr = doTransaction(paymentOut);
 
             StringBuilder resultDetails = new StringBuilder();
-            if (tr != null) {
-                if (PaymentExpressUtil.translateFlag(tr.getAuthorized())) {
+            if (tr != null && tr.getResult2() != null) {
+                if (TransactionResult.ResultStatus.SUCCESS.equals(tr.getStatus())) {
                     resultDetails.append(SUCCESS_PAYMENT_OUT);
                     paymentOut.setStatusNotes(SUCCESS_PAYMENT_OUT);
                     paymentOut.succeed();
-                    paymentOut.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getDateSettlement()));
+                    paymentOut.setDateBanked(PaymentExpressUtil.translateSettlementDate(tr.getResult2().getDateSettlement()));
                     paymentOut.setDatePaid(new Date());
                 } else {
                     // TODO set statusNotes="cardDeclined" to payment here
@@ -129,15 +134,15 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
                     paymentOut.failed();
                 }
 
-                resultDetails.append(" authCode:").append(tr.getAuthCode()).append(", authorized:").append(tr.getAuthorized())
-                        .append(", cardHolderHelpText:").append(tr.getCardHolderHelpText()).append(", cardHolderName:")
-                        .append(tr.getCardHolderName()).append(", cardHolderResponseDescription:")
-                        .append(tr.getCardHolderResponseDescription()).append(", currencyRate:").append(tr.getCurrencyRate())
-                        .append(", currencyType:").append(tr.getCurrencyName()).append(", ourTransactionRef:").append(tr.getTxnRef())
-                        .append(", responseCode:").append(tr.getReco()).append(", responseText:").append(tr.getResponseText())
-                        .append(", retry:").append(tr.getRetry()).append(", settlementDate:").append(tr.getDateSettlement())
-                        .append(", statusRequired:").append(tr.getStatusRequired()).append(", testMode:").append(tr.getTestMode())
-                        .append(", transactionRef:").append(tr.getDpsTxnRef());
+				resultDetails.append(" authCode:").append(tr.getResult2().getAuthCode()).append(", authorized:").append(tr.getResult2().getAuthorized())
+						.append(", cardHolderHelpText:").append(tr.getResult2().getCardHolderHelpText()).append(", cardHolderName:")
+						.append(tr.getResult2().getCardHolderName()).append(", cardHolderResponseDescription:")
+						.append(tr.getResult2().getCardHolderResponseDescription()).append(", currencyRate:").append(tr.getResult2().getCurrencyRate())
+						.append(", currencyType:").append(tr.getResult2().getCurrencyName()).append(", ourTransactionRef:").append(tr.getResult2().getTxnRef())
+						.append(", responseCode:").append(tr.getResult2().getReco()).append(", responseText:").append(tr.getResult2().getResponseText())
+						.append(", retry:").append(tr.getResult2().getRetry()).append(", settlementDate:").append(tr.getResult2().getDateSettlement())
+						.append(", statusRequired:").append(tr.getResult2().getStatusRequired()).append(", testMode:").append(tr.getResult2().getTestMode())
+						.append(", transactionRef:").append(tr.getResult2().getDpsTxnRef());
             } else {
                 resultDetails.append(FAILED_PAYMENT_OUT_NULL_RESPONSE);
                 paymentOut.setStatusNotes(FAILED_PAYMENT_OUT_NULL_RESPONSE);
@@ -161,7 +166,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @return the result of submitted transaction.
      * @throws Exception
      */
-    TransactionResult2 doTransaction(@SuppressWarnings("rawtypes") IPaymentSupport paymentSupport, String billingId) throws ServiceException {
+    TransactionResult doTransaction(@SuppressWarnings("rawtypes") IPaymentSupport paymentSupport, String billingId) throws ServiceException {
 
         PaymentExpressWSSoap12Stub stub = soapClientStub();
 
@@ -181,7 +186,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
 
         int n = 0;
 
-        TransactionResult2 result;
+        TransactionResult result;
 
         while (n < NUMBER_OF_ATTEMPTS) {
 
@@ -198,7 +203,13 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
                 result = submitTransactionOperation.getResult();
                 paymentSupport.adjustTransaction(result);
 
-                boolean shouldRetry = PaymentExpressUtil.translateFlag(result.getRetry());
+				if (result.getResult2() == null && TransactionResult.ResultStatus.UNKNOWN.equals(result.getStatus())) {
+					return result;
+				} else if (result.getResult2() == null) {
+					throw new IllegalStateException(String.format("Cannot SubmitTransaction for payment with id: %d", paymentSupport.getPayment().getId()));
+				}
+
+                boolean shouldRetry = PaymentExpressUtil.translateFlag(result.getResult2().getRetry());
 
                 if (shouldRetry) {
                     n++;
@@ -208,9 +219,12 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
                         logger.warn("InterruptedException is thrown on SubmitTransaction for payment with id: {}", paymentSupport.getPayment().getId(), e);
                     }
                 } else {
-                    if (PaymentExpressUtil.translateFlag(result.getAuthorized())) {
+                    if (PaymentExpressUtil.translateFlag(result.getResult2().getAuthorized())) {
+						result.setStatus(TransactionResult.ResultStatus.SUCCESS);
                         paymentSupport.adjustPayment(result);
-                    }
+                    } else {
+						result.setStatus(TransactionResult.ResultStatus.FAILED);
+					}
                     return result;
                 }
             } finally {
@@ -229,7 +243,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @return the result of submitted transaction.
      * @throws Exception
      */
-    public TransactionResult2 doTransaction(PaymentIn payment, String billingId) throws ServiceException {
+    public TransactionResult doTransaction(PaymentIn payment, String billingId) throws ServiceException {
         return this.doTransaction(new PaymentInSupport(payment, cayenneService), billingId);
     }
 
@@ -240,7 +254,7 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      * @return the result of submitted transaction.
      * @throws Exception
      */
-    public TransactionResult2 doTransaction(PaymentOut paymentOut) throws Exception {
+    public TransactionResult doTransaction(PaymentOut paymentOut) throws Exception {
         return this.doTransaction(new PaymentOutSupport(paymentOut, cayenneService), null);
     }
 
@@ -257,4 +271,45 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
         stub.setTimeout(TIMEOUT);
         return stub;
     }
+	
+	public TransactionResult checkPaymentTransaction(PaymentIn p) throws ServiceException {
+
+		PaymentExpressWSSoap12Stub stub = soapClientStub();
+
+		GetStatusOperation operation = new GetStatusOperation(p.getCollege().getPaymentGatewayAccount(),
+				p.getCollege().getPaymentGatewayPass(),
+				p.getClientReference(),
+				stub);
+
+		int n = 0;
+		TransactionResult result = null;
+
+		while (n < NUMBER_OF_ATTEMPTS) {
+			result = operation.getResult();
+
+			if (result.getResult2() == null && TransactionResult.ResultStatus.UNKNOWN.equals(result.getStatus())) {
+				return result;
+			}
+
+			if (PaymentExpressUtil.translateFlag(result.getResult2().getRetry())) {
+				n++;
+				try {
+					Thread.sleep(RETRY_INTERVAL);
+				} catch (InterruptedException e) {
+					logger.warn("InterruptedException is thrown on SubmitTransaction for payment with id: {}", p.getId(), e);
+				}
+			} else {
+				if (PaymentExpressUtil.translateFlag(result.getResult2().getAuthorized())) {
+					result.setStatus(TransactionResult.ResultStatus.SUCCESS);
+				} else {
+					result.setStatus(TransactionResult.ResultStatus.FAILED);
+				}
+				return result;
+			}
+		}
+
+		result = new TransactionResult();
+		result.setStatus(TransactionResult.ResultStatus.UNKNOWN);
+		return result;
+	}
 }

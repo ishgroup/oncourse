@@ -41,9 +41,13 @@ public class PaymentResult {
         return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.SUCCESS);
     }
 
-   public boolean isPaymentStatusNodeNullTransactionResponse() {
-		return "Null transaction response".equals(paymentPage.getPaymentProcessController().getPaymentIn().getStatusNotes());
-	}
+    public boolean isPaymentStatusNodeNullTransactionResponse() {
+        return "Null transaction response".equals(paymentPage.getPaymentProcessController().getPaymentIn().getStatusNotes());
+    }
+
+    public boolean isWrongPaymentExpressResult() {
+        return paymentPage.getPaymentProcessController().isWrongPaymentExpressResult();
+    }
 
 	@OnEvent(component = "tryOtherCard", value = "selected")
 	void submitTryOtherCard() {

@@ -2,7 +2,6 @@ package ish.oncourse.services.paymentexpress;
 
 import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionDetails;
-import com.paymentexpress.stubs.TransactionResult2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,10 +23,12 @@ public class SubmitTransactionOperation {
         this.paymentExpressSoapStub = paymentExpressSoapStub;
     }
 
-    public TransactionResult2 getResult()
+    public TransactionResult getResult()
     {
         try {
-            return paymentExpressSoapStub.submitTransaction(postUsername, postPassword, transactionDetails);
+			TransactionResult result = new TransactionResult();
+            result.setResult2(paymentExpressSoapStub.submitTransaction(postUsername, postPassword, transactionDetails));
+			return result;
         } catch (RemoteException e) {
             logger.warn("Cannot submitTransaction for payment with txnRef: {}", transactionDetails.getTxnRef(), e);
             /**

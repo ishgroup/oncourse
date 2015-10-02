@@ -77,6 +77,10 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         return  isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
     }
 
+	public boolean isWrongPaymentExpressResult() {
+		return paymentProcessController.isWrongPaymentExpressResult();
+	}
+
     public void updatePaymentStatus() {
         paymentProcessController.processAction(PaymentProcessController.PaymentAction.UPDATE_PAYMENT_GATEWAY_STATUS);
         if (paymentProcessController.isFinalState()) {
