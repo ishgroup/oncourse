@@ -3524,4 +3524,33 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="227" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="CustomFee"/>
+			</not>
+		</preConditions>
+		<createTable tableName="CustomFee">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="collegeId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="code" type="VARCHAR(256)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="name" type="LONGVARCHAR"/>
+			<column name="paidUntil" type="DATETIME"/>
+			<column name="fee" type="DECIMAL(10,2)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint constraintName="fk_CustomFee_College"  baseTableName="CustomFee" baseColumnNames="collegeId" referencedTableName="College" referencedColumnNames="id"/>
+		<createIndex tableName="CustomFee" indexName="CustomFee_code">
+			<column name="code"/>
+		</createIndex>
+	</changeSet>
+
 </databaseChangeLog>

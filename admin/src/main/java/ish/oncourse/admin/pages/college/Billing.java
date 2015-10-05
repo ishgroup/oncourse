@@ -15,6 +15,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SelectById;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -23,6 +24,7 @@ import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -38,6 +40,10 @@ public class Billing {
 	@Property
 	private Form billingForm;
 
+	@InjectComponent
+	@Property
+	private Form newCustomFeeForm;
+	
 	@Property
 	@Persist
 	private College college;
@@ -49,12 +55,31 @@ public class Billing {
 	private int feeIndex;
 
 	@Property
+	private int customFeeIndex;
+
+	@Property
 	@Persist
 	private List<WebSite> webSites;
 
 	@Property
 	@Persist
 	private List<LicenseFee> collegeLicenseFees;
+
+	@Property
+	private String newCode;
+
+	@Property
+	private String newName;
+
+	@Property
+	private String newPaidUntil;
+
+	@Property
+	private BigDecimal newFee;
+
+	@Property
+	@Persist
+	private List<CustomFee> collegeCustomFees;
 
 	@Property
 	private boolean webPaymentEnabled;
@@ -126,6 +151,8 @@ public class Billing {
 		Expression collegeFeesExp = ExpressionFactory.matchExp(LicenseFee.WEB_SITE_PROPERTY, null);
 		this.collegeLicenseFees = collegeFeesExp.filterObjects(college.getLicenseFees());
 		Ordering.orderList(collegeLicenseFees, Arrays.asList(new Ordering(LicenseFee.KEY_CODE_PROPERTY, SortOrder.ASCENDING)));
+		
+		this.collegeCustomFees = college.getCustomFees();
 		
 		List<Preference> prefs = ObjectSelect.query(Preference.class).where(Preference.COLLEGE.eq(college)).select(context);
 		for (Preference p : prefs) {
@@ -332,6 +359,10 @@ public class Billing {
 		return collegeLicenseFees.get(feeIndex);
 	}
 
+	public CustomFee getCurrentCustomFee() {
+		return collegeCustomFees.get(customFeeIndex);
+	}
+	
 	public String getCurrentPaidUntil() {
 		return getFeePaidUntil(getCurrentLicenseFee());
 	}
@@ -416,6 +447,87 @@ public class Billing {
 			}
 		}
 		licenseFee.setPlanName(planName);
+	}
+	
+	public String getCurrentCustomFeeCode() {
+		return getCurrentCustomFee().getCode();
+	}
+
+	public void setCurrentCustomFeeCode(String code) {
+		getCurrentCustomFee().setCode(code);
+	}
+
+	public String getCurrentCustomFeeName() {
+		return getCurrentCustomFee().getName();
+	}
+
+	public void setCurrentCustomFeeName(String name) {
+		getCurrentCustomFee().setName(name);
+	}
+
+	public String getCurrentCustomFeePauidUntil() {
+		Date paidUntil = getCurrentCustomFee().getPaidUntil();
+		if (paidUntil != null) {
+			return dateFormat.format(paidUntil);
+		}
+
+		return StringUtils.EMPTY;
+	}
+
+	public void setCurrentCustomFeePauidUntil(String paidUntil) {
+		if (paidUntil != null) {
+			try {
+				Date date = dateFormat.parse(paidUntil);
+				if (date != null) {
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(date);
+					cal.set(Calendar.DAY_OF_MONTH, 1);
+					getCurrentCustomFee().setPaidUntil(cal.getTime());
+				}
+			} catch (ParseException e) {
+				billingForm.recordError("Paid until date not valid.");
+			}
+		} else {
+			getCurrentCustomFee().setPaidUntil(null);
+		}
+	}
+
+	Object onActionFromDeleteCustomFee(Long id) {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+
+		CustomFee customFee = SelectById.query(CustomFee.class, id).selectOne(context);
+		
+
+		context.deleteObjects(customFee);
+		context.commitChanges();
+		return null;
+	}
+
+	@OnEvent(component = "newCustomFeeForm", value = "validate")
+	void validateCustomFee() {
+
+		if (newPaidUntil != null) {
+			try {
+				Date date = dateFormat.parse(newPaidUntil);
+			} catch (ParseException e) {
+				newCustomFeeForm.recordError("Paid until date not valid.");
+			}
+		}
+	}
+	
+	@OnEvent(component="newCustomFeeForm", value="success")
+	void addCustomFee() throws ParseException {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+
+		CustomFee customFee = context.newObject(CustomFee.class);
+		customFee.setCollege(context.localObject(college));
+
+		customFee.setCode(newCode);
+		customFee.setName(newName);
+
+		customFee.setPaidUntil(dateFormat.parse(newPaidUntil));
+		customFee.setFee(newFee);
+		context.commitChanges();
 	}
 
 }

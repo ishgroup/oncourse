@@ -3,6 +3,7 @@ package ish.oncourse.admin.pages;
 import ish.math.Country;
 import ish.oncourse.admin.services.billing.IBillingDataService;
 import ish.oncourse.model.College;
+import ish.oncourse.model.CustomFee;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.system.ICollegeService;
@@ -46,6 +47,9 @@ public class Billing {
 
 	@Property
 	private College college;
+
+	@Property
+	private CustomFee customFee;
 
 	@Property
 	private int webSiteIndex;
@@ -165,6 +169,24 @@ public class Billing {
 		return false;
 	}
 
+	public String getCustomFeePaidUntil(CustomFee customFee) {
+		Object supportPaidUntil = customFee.getPaidUntil();
+		return supportPaidUntil == null ? "" : dateFormat.format(supportPaidUntil);
+	}
+
+	public String getFormattedFee(CustomFee customFee) {
+		return moneyFormat.format(customFee.getFee());
+	}
+
+	public String getCustomFeePayMonth(CustomFee customFee) {
+		if (customFee.getPaidUntil() == null || DateUtils.truncatedCompareTo(customFee.getPaidUntil(), fromMonth, Calendar.MONTH) <= 0) {
+			return moneyFormat.format(customFee.getFee());
+		} else {
+			return moneyFormat.format(0.0);
+		}
+	}
+	
+	
 	public String getSupportPaidUntil() {
 		Object supportPaidUntil = licenseData.get(college.getId()).get(null).get("support-paidUntil");
 		return supportPaidUntil == null ? "" : dateFormat.format(supportPaidUntil);

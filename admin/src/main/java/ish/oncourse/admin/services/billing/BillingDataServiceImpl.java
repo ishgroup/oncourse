@@ -221,7 +221,11 @@ public class BillingDataServiceImpl implements IBillingDataService {
 		text.append(new SupportExportLineBuilder(college, null, from, billingData, licenseData).buildLine());
 		text.append(new SMSExportLineBuilder(college, null, from, billingData, licenseData).buildLine());
 		text.append(new OfficeCCExportLineBuilder(college, null, from, billingData, licenseData).buildLine());
-
+		
+		for (CustomFee customFee : college.getCustomFees()) {
+			text.append(new CustomFeeExportLineBuilder(college, from, customFee).buildLine());
+		}
+				
 		for (WebSite webSite : college.getWebSites()) {
 			text.append(new HostingExportLineBuilder(college, webSite, from, billingData, licenseData).buildLine());
 			text.append(new WebCCExportLineBuilder(college, webSite, from, billingData, licenseData).buildLine());

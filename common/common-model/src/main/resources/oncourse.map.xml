@@ -305,6 +305,14 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="moduleId" type="BIGINT" isMandatory="true" length="19"/>
 	</db-entity>
+	<db-entity name="CustomFee">
+		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="256"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="fee" type="DECIMAL" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="name" type="LONGVARCHAR"/>
+		<db-attribute name="paidUntil" type="DATE"/>
+	</db-entity>
 	<db-entity name="CustomField">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
@@ -1545,6 +1553,12 @@
 	<obj-entity name="CourseProductRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseProductRelation">
 		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 2)]]></qualifier>
 	</obj-entity>
+	<obj-entity name="CustomFee" className="ish.oncourse.model.CustomFee" dbEntityName="CustomFee">
+		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
+		<obj-attribute name="fee" type="java.math.BigDecimal" db-attribute-path="fee"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="paidUntil" type="java.util.Date" db-attribute-path="paidUntil"/>
+	</obj-entity>
 	<obj-entity name="CustomField" className="ish.oncourse.model.CustomField" dbEntityName="CustomField">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2469,6 +2483,9 @@
 	<db-relationship name="courses" source="College" target="Course" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="customFees" source="College" target="CustomFee" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="customFieldTypes" source="College" target="CustomFieldType" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2825,6 +2842,9 @@
 	</db-relationship>
 	<db-relationship name="module" source="CourseModule" target="Module" toMany="false">
 		<db-attribute-pair source="moduleId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="CustomFee" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="CustomField" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3610,6 +3630,7 @@
 	<obj-relationship name="courseClasses" source="College" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="College" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
 	<obj-relationship name="courses" source="College" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
+	<obj-relationship name="customFees" source="College" target="CustomFee" deleteRule="Deny" db-relationship-path="customFees"/>
 	<obj-relationship name="customFieldTypes" source="College" target="CustomFieldType" deleteRule="Deny" db-relationship-path="customFieldTypes"/>
 	<obj-relationship name="discountConcessionTypes" source="College" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="College" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discountCourseClasses"/>
@@ -3720,6 +3741,7 @@
 	<obj-relationship name="module" source="CourseModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
 	<obj-relationship name="course" source="CourseProductRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
 	<obj-relationship name="product" source="CourseProductRelation" target="Product" deleteRule="Nullify" db-relationship-path="relationToProduct"/>
+	<obj-relationship name="college" source="CustomFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="CustomField" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFieldType" source="CustomField" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="customFieldType"/>
 	<obj-relationship name="relatedObject" source="CustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedObject"/>

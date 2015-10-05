@@ -1,6 +1,7 @@
 package ish.oncourse.admin.services.billing;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.CustomFee;
 import ish.oncourse.model.WebSite;
 import org.apache.commons.lang.StringUtils;
 
@@ -24,6 +25,7 @@ public abstract class AbstractExportLineBuilder implements MWExportLineBuilder {
 	protected Date from;
 	protected Map<Long, Map<Long, Map<String, Object>>> billingData;
 	protected Map<Long, Map<Long, Map<String, Object>>> licenseData;
+	protected CustomFee customFee;
 
 	public AbstractExportLineBuilder(
 			College college,
@@ -36,6 +38,12 @@ public abstract class AbstractExportLineBuilder implements MWExportLineBuilder {
 		this.from = from;
 		this.billingData = billingData;
 		this.licenseData = licenseData;
+	}
+
+	public AbstractExportLineBuilder(College college,  Date from, CustomFee customFee) {
+		this.college = college;
+		this.from = from;
+		this.customFee = customFee;
 	}
 
 	public String buildLine() {
