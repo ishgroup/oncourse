@@ -3464,11 +3464,7 @@
 
 			ALTER TABLE  postcode_db ADD COLUMN ishVersion BIGINT;
 
-			update postcode_db set ishVersion = (select max(ishVersion) + 1 from ((select ishVersion from `Language`) union
-			(select ishVersion from `Module`) union
-			(select ishVersion from Qualification) union
-			(select ishVersion from Country) union
-			(select ishVersion from TrainingPackage)) as IshUnion);
+			update postcode_db set ishVersion = 1529;
 
 			ALTER TABLE postcode_db MODIFY COLUMN ishVersion BIGINT NOT NULL;
 		</sql>
