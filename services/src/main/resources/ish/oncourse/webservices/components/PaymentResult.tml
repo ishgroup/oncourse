@@ -50,8 +50,7 @@
                 <h2 class="page-title">This payment failed because the banking system is offline. Please try again
                     later.</h2>
                 <p:else>
-                    <h2 class="page-title">This payment failed because the card was expired, invalid or does not have
-                        sufficient funds.</h2>
+					<h2 class="page-title">This payment failed because the card was expired, invalid or does not have sufficient funds.</h2>
                 </p:else>
             </t:if>
             <div class="pay-message">
