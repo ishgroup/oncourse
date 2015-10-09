@@ -587,7 +587,15 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 99
 	 * @PublicApi
 	 */
-	MESSAGE(99, "Message");
+	MESSAGE(99, "Message"),
+
+	/**
+	 * Ability to edit quality rules
+	 *
+	 * Database value: 100
+	 * @PublicApi
+	 */
+	QUALITY_RULE(100, "Quality rule");
 	
 
 	private int value;
