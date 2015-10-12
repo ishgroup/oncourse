@@ -1,5 +1,7 @@
 apply plugin: 'cayenne'
 apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+apply plugin: 'apidoc'
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
@@ -11,43 +13,42 @@ dependencies {
 	compile project(':common')
 	compile ("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
 
-        exclude group: 'javax.xml.soap'
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-ws-metadata_2.0_spec'
+		exclude group: 'javax.xml.soap'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-ws-metadata_2.0_spec'
 
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-stax-api_1.0_spec'
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jaxws_2.2_spec'
-        exclude group: 'antlr'
-        exclude group: 'org.apache.xmlbeans'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-stax-api_1.0_spec'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jaxws_2.2_spec'
+		exclude group: 'antlr'
+		exclude group: 'org.apache.xmlbeans'
 
-        exclude group: 'javax.xml.bind'
+		exclude group: 'javax.xml.bind'
 
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-activation_1.1_spec'
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-annotation_1.0_spec'
-        exclude group: 'org.eclipse.jetty'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-activation_1.1_spec'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-annotation_1.0_spec'
+		exclude group: 'org.eclipse.jetty'
 
-        exclude group: 'org.slf4j'
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_1.1_spec'
-        exclude group: 'aopalliance'
-        exclude group: 'org.springframework'
+		exclude group: 'org.slf4j'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_1.1_spec'
+		exclude group: 'aopalliance'
+		exclude group: 'org.springframework'
 
-        exclude group: 'com.sun.xml.messaging.saaj'
-        exclude group: 'org.jvnet.mimepull'
-        exclude group: 'rhino'
-        exclude group: 'javax.ws.rs'
-        exclude group: 'net.oauth.core'
-        exclude group: 'net.sf.ehcache'
-        exclude group: 'org.apache.ws.security'
+		exclude group: 'com.sun.xml.messaging.saaj'
+		exclude group: 'org.jvnet.mimepull'
+		exclude group: 'rhino'
+		exclude group: 'javax.ws.rs'
+		exclude group: 'net.oauth.core'
+		exclude group: 'net.sf.ehcache'
+		exclude group: 'org.apache.ws.security'
 
-        exclude group: 'org.opensaml'
-        exclude group: 'org.apache.santuario'
+		exclude group: 'org.opensaml'
+		exclude group: 'org.apache.santuario'
 
-        exclude group: 'joda-time'
-        exclude group: 'commons-logging'
-        exclude group: 'xalan'
-        
-    }
-    
+		exclude group: 'joda-time'
+		exclude group: 'commons-logging'
+		exclude group: 'xalan'
+	}
+
 	compile 'org.apache.cayenne:cayenne-lifecycle:4.0.M2'
 
 	compile 'foxtrot:foxtrot-core:4.0'
@@ -57,42 +58,42 @@ dependencies {
 
 	compile 'org.apache.derby:derbyclient:10.11.1.1'
 	compile 'org.apache.derby:derbynet:10.11.1.1'
-    
-    // can't go above 2.0.5 due to the bug in liquibase [https://liquibase.jira.com/browse/CORE-2265]
+
+	// can't go above 2.0.5 due to the bug in liquibase [https://liquibase.jira.com/browse/CORE-2265]
 	compile 'org.liquibase:liquibase-core:2.0.5-fix'
 
 	compile 'net.sourceforge.jtds:jtds:1.3.1'
 	compile 'mysql:mysql-connector-java:5.1.36'
 
 	compile 'org.quartz-scheduler:quartz:2.2.2'
-    //log4j2 to slf4j1.7 bridge
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.3'
+	//log4j2 to slf4j1.7 bridge
+	compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.3'
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-    compile ('net.sf.jasperreports:jasperreports:6.1.1') {
-        exclude group: 'org.apache.poi', module: 'poi-ooxml'
+	compile ('net.sf.jasperreports:jasperreports:6.1.1') {
+		exclude group: 'org.apache.poi', module: 'poi-ooxml'
 
-        exclude group:'org.codehaus.castor'
-        exclude group:'com.fasterxml.jackson.core'
-        exclude group:'org.apache.lucene'
-        exclude group:'org.olap4j'
-    }
+		exclude group:'org.codehaus.castor'
+		exclude group:'com.fasterxml.jackson.core'
+		exclude group:'org.apache.lucene'
+		exclude group:'org.olap4j'
+	}
 
-    compile ('org.bouncycastle:bctsp-jdk14:1.46') {
-    	exclude group: 'org.bouncycastle', module: 'bcmail-jdk14'
-    }
-	
+	compile ('org.bouncycastle:bctsp-jdk14:1.46') {
+		exclude group: 'org.bouncycastle', module: 'bcmail-jdk14'
+	}
+
 	compile 'org.codehaus.groovy:groovy-all:2.4.5'
 	compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 	compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
 
 	compile 'com.warrenstrange:googleauth:0.4.5'
 	compile 'net.glxn.qrgen:javase:2.0'
-	
+
 	compile 'net.sf.supercsv:super-csv:2.3.1'
 
 	compile 'org.reflections:reflections:0.9.10'
-	
+
 	testCompile 'org.mockito:mockito-core:1.10.17'
 	testCompile 'org.apache.derby:derbytools:10.11.1.1'
 	testCompile "org.eclipse.jetty:test-jetty-servlet:$jettyVersion"
@@ -116,46 +117,51 @@ sourceSets {
   }
 }
 
-configurations {
-	apiDocs
-}
-
-dependencies {
-	apiDocs "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
-}
-
 configurations.all {
 	// this is the last MPL version of iText, so we can't go past this
 	resolutionStrategy.force 'com.lowagie:itext:2.1.7.js2'
 }
 
-if (JavaVersion.current().isJava8Compatible()) {
-    tasks.withType(Javadoc) {
-        // disable the crazy super-strict doclint tool in Java 8
-        options.addStringOption('Xdoclint:none', '-quiet')
-    }
+configurations {
+	apidoc
 }
 
-task scriptApiDocs(type: Javadoc) {
-	source = sourceSets.main.allJava.plus(zipTree(configurations.apiDocs.find { 
-		it.name.startsWith("waCommon") 
-	})).matching {
-		include '**/*.java'
-	}
-	destinationDir = reporting.file("script-api-docs")
-	failOnError = false
-	classpath = configurations.compile
+dependencies {
+	apidoc 'org.fusesource.jansi:jansi:1.11'
 
-	options {
-		// this is ugly but it seems like there is no other way to get to the buildSrc jars
-		docletpath = rootProject.files('buildSrc/script-api-doclet/build/libs/script-api-doclet.jar').asList()
-		doclet = "ish.tools.ScriptApiDoclet"
-		stylesheetFile = rootProject.file('buildSrc/script-api-doclet/src/main/resources/javadocs.css')
-		windowTitle = "onCourse scripting API"
-		noDeprecated = true
-		noDeprecatedList = true
-		noTree = true
-		noSince = true
+	// FIXME: is there a way to properly reference buildSrc project dependency?
+	apidoc rootProject.files('buildSrc/apidoc/build/libs/apidoc.jar')
+}
+
+apiDocs {
+	source = sourceSets.main.groovy
+	classpath = configurations.compile.plus(configurations.apidoc)
+	groovyClasspath = configurations.compile
+	destinationDir = reporting.file("api-docs")
+}
+
+// TODO need to make this depend on apiDocs
+task apidocsBundle(type: Jar) {
+	from reporting.file("api-docs")
+	classifier "apidocs"
+}
+
+// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
+publishing {
+	repositories {
+		maven {
+			url "http://repo.ish.com.au/content/repositories/ish-snapshots"
+			name 'internal-snapshots'
+			credentials {
+				username = nexusUsername
+				password = nexusPassword
+			}
+		}
+	}
+	publications {
+		apidocs(MavenPublication) {
+			artifact apidocsBundle
+		}
 	}
 }
 
@@ -225,35 +231,35 @@ cayenne {
 }
 
 appBundler {
-    distributionPath = project.file("${distsDir}/macosx/")
-    appName = "onCourseServer"
-    appIdentifier = "ish.oncourse"
-    mainClassName = "ish.oncourse.server.AngelServer"
-    iconFile = new File(projectDir, "src/packaging/macosx/onCourseServer.icns")
-    jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
-    keychain = project.osxKeychain
-    certIdentity = project.osxKeychainIdentity
+	distributionPath = project.file("${distsDir}/macosx/")
+	appName = "onCourseServer"
+	appIdentifier = "ish.oncourse"
+	mainClassName = "ish.oncourse.server.AngelServer"
+	iconFile = new File(projectDir, "src/packaging/macosx/onCourseServer.icns")
+	jars = configurations.runtime.plus(configurations.runtime.artifacts.files)
+	keychain = project.osxKeychain
+	certIdentity = project.osxKeychainIdentity
 
-    documentTypes = [[
-             extensions: "iocdata",
-             icon      : "onCourseDocument.icns",
-             name      : "onCourse server data file",
-             role      : "Editor",
-             isPackage : "true"
-    ]]
+	documentTypes = [[
+			 extensions: "iocdata",
+			 icon      : "onCourseDocument.icns",
+			 name      : "onCourse server data file",
+			 role      : "Editor",
+			 isPackage : "true"
+	]]
 
-    jvmOptions = [
-            "-Dapple.awt.textantialiasing=true",
-            "-DJFileChooser.appBundleIsTraversable=true",
-            "-DJFileChooser.packageIsTraversable=true",
-            "-Dapple.awt.antialiasing=true",
-            "-Dapple.awt.showGrowBox=true",
-            "-Xmx${project.maxmemoryServer}"
-    ]
+	jvmOptions = [
+			"-Dapple.awt.textantialiasing=true",
+			"-DJFileChooser.appBundleIsTraversable=true",
+			"-DJFileChooser.packageIsTraversable=true",
+			"-Dapple.awt.antialiasing=true",
+			"-Dapple.awt.showGrowBox=true",
+			"-Xmx${project.maxmemoryServer}"
+	]
 }
 
 task installer_osx(dependsOn: [prepareKeychains, codeSign], type: au.com.ish.DmgTask) {
-    description "Create the OSX application executable and installer (which is just a dmg file)."
+	description "Create the OSX application executable and installer (which is just a dmg file)."
 }
 
 task bundle_win(dependsOn: jar, type: au.com.ish.Exe4JTask) {

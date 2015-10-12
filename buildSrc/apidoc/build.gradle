@@ -1,0 +1,50 @@
+apply plugin: 'groovy'
+
+configurations {
+	antlr
+}
+
+dependencies {
+	compile localGroovy()
+	compile gradleApi()
+	compile 'com.google.guava:guava-jdk5:17.0'
+	compile "antlr:antlr:2.7.7"
+	testCompile 'junit:junit:4.11'
+
+    compile 'org.codehaus.groovy:groovy-groovydoc:2.4.3'
+    compile 'org.codehaus.groovy:groovy-ant:2.4.3'
+    compile 'org.fusesource.jansi:jansi:1.11'
+	compile 'org.apache.ant:ant-antlr:1.9.3'
+}
+
+repositories {
+	mavenCentral()
+}
+
+task generateGrammar {
+	description = 'Ensure all the Antlr generated files are up to date.'
+	ext.antlrDirectory = "$projectDir/src/main/java/au/com/ish/docs/antlr"
+	ext.javaParserDirectory = "$ext.antlrDirectory"
+	ext.genPath = "$ext.antlrDirectory"
+	ext.groovyOutDir = "$ext.genPath/groovy"
+	ext.javaOutDir = "$ext.genPath/java"
+	inputs.dir(antlrDirectory)
+	outputs.dir(groovyOutDir)
+	outputs.dir(javaOutDir)
+	doFirst {
+		new File(groovyOutDir).mkdirs()
+		new File(javaOutDir).mkdirs()
+		ant {
+			taskdef(name: 'antlr',
+					classname: 'org.apache.tools.ant.taskdefs.optional.ANTLR',
+					classpath: configurations.antlr.asPath)
+
+			antlr(target: "$ext.antlrDirectory/groovy.g", outputdirectory: ext.groovyOutDir) {
+				classpath path: configurations.compile.asPath
+			}
+			antlr(target: "$ext.javaParserDirectory/java.g", outputdirectory: ext.javaOutDir) {
+				classpath path: configurations.compile.asPath
+			}
+		}
+	}
+}
