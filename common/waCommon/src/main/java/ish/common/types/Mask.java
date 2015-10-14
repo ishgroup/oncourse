@@ -4,59 +4,61 @@
  */
 package ish.common.types;
 
+import ish.oncourse.API;
+
 /**
  * For each access key, a role may be given certain access levels.
  * 
- * @PublicApi
  */
+@API
 public final class Mask {
 	/**
 	 * No access to whatever is controlled by this key.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final int NONE = 0;
 	
 	/**
 	 * Records may be viewed by the holder of a key with this mask.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final int VIEW = 1;
 	
 	/**
 	 * New records may be created by the holder of a key with this mask.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final int CREATE = 2;
 	
 	/**
 	 * Records may be edited by the holder of a key with this mask.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final int EDIT = 4;
 	
 	/**
 	 * Records may be deleted by the holder of a key with this mask.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final int DELETE = 8;
 	
 	/**
 	 * Records may be printed by the holder of a key with this mask.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final int PRINT = 16;
 	
 	/**
 	 * Mask for all access allowed.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final int ALL = 255;
 
 	private Mask() {}

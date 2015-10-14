@@ -5,59 +5,60 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum AvetmissStudentLabourStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	// AVETMISS - page 48
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 	
 	/**
-	 * @PublicApi
 	 */
+	@API
 	FULL_TIME(1, "Full-time employee"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	PART_TIME(2, "Part-time employee"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	SELF_EMPLOYED(3, "Self-employed, not employing others"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	EMPLOYER(4, "Employer"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	UNPAID_FAMILY_WORKER(5, "Employed - unpaid in family business"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	UNEMPLOYED_SEEKING_FULL_TIME(6, "Unemployed - seeking full-time work"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	UNEMPLOYED_SEEKING_PART_TIME(7, "Unemployed - seeking part-time work"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	UNEMPLOYED_NOT_SEEKING(8, "Not employed - not seeking employment");
 
 	private String displayName;

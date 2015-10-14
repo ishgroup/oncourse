@@ -5,6 +5,7 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +16,8 @@ import java.util.List;
  * Do not change the state of enrolments directly since enrolment state has important ramifications throughout onCourse.
  * Changing state without also adjusting invoice lines, outcomes and other objects may create broken data relationships.
  * 
- * @PublicApi
  */
+@API
 public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	
 	// payment and invoice statuses
@@ -32,80 +33,80 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * 
 	 * Database value: 0
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	NEW(0, "Not processed"),
 	
 	/**
 	 * Indicates a payment or enrolment that was unable to retrieve a result from willow on first attempt (i.e., on post-persist from quick enrol) and is as such queued for later processing by a server-side thread.
 	 * 
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	QUEUED(1, "Awaiting confirmation"),
 
 	/**
 	 * Indicates current processing of a payment. E.g., the user has agreed to pay and all details are valid. However, all payments with STATUS_QUEUED will move again to a state of STATUS_IN_TRANSACTION prior to attempting subsequent processing. It has this definite meaning: We are about to process the payment by contacting the payment gateway. Used by willow
 	 * 
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	IN_TRANSACTION(2, "In transaction"),
 	
 	/**
 	 * Indicates successful and confirmed completion of a payment or enrolment.
 	 * 
 	 * Database value: 3
-	 * @PublicApi
 	 */
+	@API
 	SUCCESS(3, "Active"),
 	
 	/**
 	 * Indicates a failed response due to an error.
 	 * 
 	 * Database value: 4
-	 * @PublicApi
 	 */
+	@API
 	FAILED(4, "Failed"),
 	
 	/**
 	 * Indicates a failed response given by the credit card gateway. Used by angel and willow
 	 * 
 	 * Database value: 6
-	 * @PublicApi
 	 */
+	@API
 	FAILED_CARD_DECLINED(6, "Card declined"),
 	
 	/**
 	 * Indicates that the enrolment and payment could not be accepted because there were no enrolment places left.
 	 * 
 	 * Database value: 7
-	 * @PublicApi
 	 */
+	@API
 	FAILED_NO_PLACES(7, "Failed - no places"),
 	
 	/**
 	 * Indicates that an enrolment that was previously successful has been cancelled due to the student pulling out.
 	 * 
 	 * Database value: 8
-	 * @PublicApi
 	 */
+	@API
 	CANCELLED(8, "Cancelled"),
 	
 	/**
 	 * Indicates an equivalent status to that of {@link #CANCELLED} but that a credit note was also created for the student in the system.
 	 * 
 	 * Database value: 9
-	 * @PublicApi
 	 */
+	@API
 	REFUNDED(9, "Credited");
 
 	/**
 	 * The complete list of statuses that may be returned from the WillowServices soap gateway.
 	 * <b>Note:</b> The list is made up of both transient and final statuses.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final List<EnrolmentStatus> STATUSES_GATEWAY = Arrays.asList(EnrolmentStatus.CORRUPTED,
             EnrolmentStatus.QUEUED,
             EnrolmentStatus.SUCCESS,
@@ -118,8 +119,8 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * <b>IMPORTANT:</b> It should be considered unsafe to cancel an enrolment via the client gui if the status is transient unless you can guarantee that another thread is not already waiting a response from the gateway. That's a challenge that's hard to overcome in a three tier application.
 	 * <b>Note:</b> The list is made up of both transient and final statuses.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final List<EnrolmentStatus> STATUSES_LEGIT = Arrays.asList(EnrolmentStatus.NEW,
             EnrolmentStatus.QUEUED,
             EnrolmentStatus.IN_TRANSACTION,
@@ -129,8 +130,8 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * The complete list of statuses that indicate non-success.
 	 * <b>Note:</b> Each failed status is a final status so far as the runtime is concerned.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final List<EnrolmentStatus> STATUSES_FAILED = Arrays.asList(EnrolmentStatus.FAILED,
             EnrolmentStatus.FAILED_NO_PLACES,
             EnrolmentStatus.FAILED_CARD_DECLINED,
@@ -139,16 +140,16 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * The list of statuses that indicate a prior enrolment of status {@link PaymentStatus#SUCCESS} into a class where the student has either cancelled and optionally been refunded their fees.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final List<EnrolmentStatus> STATUSES_CANCELLATIONS = Arrays.asList(EnrolmentStatus.CANCELLED, EnrolmentStatus.REFUNDED);
 	
 	/**
 	 * The complete list of statuses that are final or otherwise set in stone.
 	 * <b>Note:</b> Corrupted status should of course, require investigation, as it has occurred due to a duplicate or conflicting record being found. Each of the other statuses is the result of a known and expected path of logic discounting bugs.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final List<EnrolmentStatus> STATUSES_FINAL = Arrays.asList(EnrolmentStatus.SUCCESS,
             EnrolmentStatus.FAILED,
             EnrolmentStatus.FAILED_NO_PLACES,

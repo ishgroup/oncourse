@@ -5,83 +5,84 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NOT_SET(0, "Not Set", 0),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	CLASSROOM(1, "Classroom-based (10)", 10),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ELECTRONIC(2, "Electronic-based (20)", 20),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	EMPLOYMENT(3, "Employment-based (30)", 30),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	OTHER(4, "Other delivery (40)", 40),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NA(9, "Not applicable - recognition of prior learning/credit transfer (90)", 90),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WA_LOCAL_CLASS(11, "WA: Local Class (1)", 1),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WA_REMOTE_CLASS(12, "WA: Remote Class - Live Conferencing (2)", 2),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WA_SELF_PACED_SCHEDULED(13, "WA: Self Paced - Scheduled (3)", 3),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WA_SELF_PACED_UNSCHEDULED(14, "WA: Self Paced - Unscheduled (4)", 4),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WA_EXTERNAL(15, "WA: External - Correspondence (5)", 5),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WA_WORKPLACE(16, "WA: Workplace (6)", 6),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WA_VIDEO_LEARNING(18, "WA: Video/Television Learning (8)", 8),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WA_INTERNET_SITE(19, "WA: Internet Site - Online Learning (9)", 9);
 
 	private String displayName;

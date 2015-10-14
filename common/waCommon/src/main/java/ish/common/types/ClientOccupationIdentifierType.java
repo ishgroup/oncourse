@@ -5,58 +5,59 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting for Victoria only.
  * Consult the AVETMISS documentation for more detail about these options.
  *
- * @PublicApi
  */
+@API
 public enum ClientOccupationIdentifierType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NOT_SET(0, "Not Stated", 0),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	MANAGER(1, "Manager (1)", 1),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	PROFESSIONALS(2, "Professionals (2)", 2),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	TECHNICIANS(3, "Technicians and Trades Workers (3)", 3),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	COMMUNITY(4, "Community and personal Service Workers (4)", 4),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	CLERICAL(5, "Clerical and Administrative Workers (5)", 5),
 	
 	/**
-	 * @PublicApi
 	 */
+	@API
 	SALES(6, "Sales Workers (6)", 6),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	MACHINERY(7, "Machinery Operators and Drivers (7)", 7),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	LABOURERS(8, "Labourers (8)", 8);
 		
 

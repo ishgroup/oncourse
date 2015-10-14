@@ -5,6 +5,7 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,45 +13,45 @@ import java.util.List;
 /**
  * General ledger accounts have a type that defines their behaviour.
  * 
- * @PublicApi
  */
+@API
 public enum AccountType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	ASSET(1, "asset"),
 
 	/**
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	LIABILITY(2, "liability"),
 
 	/**
 	 * Database value: 3
-	 * @PublicApi
 	 */
+	@API
 	EQUITY(3, "equity"),
 
 	/**
 	 * Database value: 4
-	 * @PublicApi
 	 */
+	@API
 	INCOME(4, "income"),
 
 	/**
 	 * Database value: 5
 	 * 
 	 * COS is a type of expense.
-	 * @PublicApi
 	 */
+	@API
 	COS(5, "COS"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	EXPENSE(6, "expense");
 
 	public static final List<AccountType> DEBIT_TYPES = Arrays.asList(ASSET, COS, EQUITY, EXPENSE);

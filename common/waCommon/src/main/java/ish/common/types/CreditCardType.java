@@ -5,24 +5,25 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Credit cards accepted by onCourse.
  * 
- * @PublicApi
  */
+@API
 public enum CreditCardType implements DisplayableExtendedEnumeration<String> {
 	// JCB("J", "JCB"),
 	/**
 	 * Database value: V
-	 * @PublicApi
 	 */
+	@API
 	VISA("V", "VISA"),
 
 	/**
 	 * Database value: M
-	 * @PublicApi
 	 */
+	@API
 	MASTERCARD("M", "Mastercard"),
 
 
@@ -31,8 +32,8 @@ public enum CreditCardType implements DisplayableExtendedEnumeration<String> {
 
 	/**
 	 * Database value: A
-	 * @PublicApi
 	 */
+	@API
 	AMEX("A", "Amex");
 	// CARTE_BLANCHE("CB", "Carte Blanche"),
 	// DISCOVER_NOVUS("DN", "Discover Novus"),

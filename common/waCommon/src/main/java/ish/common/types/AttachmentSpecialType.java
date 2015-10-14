@@ -4,12 +4,13 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A special type of attachment. This will result in special behaviour inside onCourse.
  * 
- * @PublicApi
  */
+@API
 public enum AttachmentSpecialType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
@@ -18,8 +19,8 @@ public enum AttachmentSpecialType implements DisplayableExtendedEnumeration<Inte
 	 * 
 	 * Database value: 0
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	PROFILE_PICTURE(0, "Profile picture");
 	
 	private int value;

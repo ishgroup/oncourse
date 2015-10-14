@@ -5,28 +5,29 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Products are implemented in the database using vertical inheritance and require this discriminator column
  * to identify the type of entity.
  * 
- * @PublicApi
  */
+@API
 public enum ProductType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ARTICLE(1, "Product"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	MEMBERSHIP(2, "Membership"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	VOUCHER(3, "Voucher");
 
 	private String displayName;

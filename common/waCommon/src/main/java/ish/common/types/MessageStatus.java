@@ -5,28 +5,29 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Each MessagePerson object (the delivery record) starts as queued and then
  * is processed by a special process which wakes up every few seconds.
  * 
- * @PublicApi
  */
+@API
 public enum MessageStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	QUEUED(1, "queued"),
 	
 	/**
-	 * @PublicApi
 	 */
+	@API
 	SENT(2, "sent"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	FAILED(3, "failed");
 
 	private String displayName;

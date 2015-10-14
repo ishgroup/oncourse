@@ -1,26 +1,27 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Courses and products can be related to other courses and products.
  * This type points to what sort of record to expect at the other end
  * of the polymorphic join.
  * 
- * @PublicApi
  */
+@API
 public enum EntityRelationType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	COURSE(1, "Course"),
 
 	/**
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	PRODUCT(2, "Product");
 
 	private String displayName;

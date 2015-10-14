@@ -5,78 +5,79 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum AvetmissStudentDisabilityType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 0
-	 * @PublicApi
 	 */
+	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 
 	/**
 	 * Database value: 100
-	 * @PublicApi
 	 */
+	@API
 	NONE(100, "none"),
 
 	/**
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	HEARING(1, "Hearing/Deaf"),
 
 	/**Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	PHYSICAL(2, "Physical"),
 
 	/**
 	 * Database value: 3
-	 * @PublicApi
 	 */
+	@API
 	INTELLECTUAL(3, "Intellectual"),
 
 	/**
 	 * Database value: 4
-	 * @PublicApi
 	 */
+	@API
 	LEARNING(4, "Learning"),
 
 	/**
 	 * Database value: 5
-	 * @PublicApi
 	 */
+	@API
 	MENTAL(5, "Mental illness"),
 
 	/**
 	 * Database value: 6
-	 * @PublicApi
 	 */
+	@API
 	BRAIN_IMPAIRMENT(6, "Acquired brain impairment"),
 
 	/**
 	 * Database value: 7
-	 * @PublicApi
 	 */
+	@API
 	VISION(7, "Vision"),
 
 	/**
 	 * Database value: 8
-	 * @PublicApi
 	 */
+	@API
 	MEDICAL_CONDITION(8, "Medical condition"),
 
 	/**
 	 * Database value: 9
-	 * @PublicApi
 	 */
+	@API
 	OTHER(9, "Other");
 
 	private String displayName;

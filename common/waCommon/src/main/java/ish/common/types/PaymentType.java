@@ -5,28 +5,29 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Different types of payment
  * 
- * @PublicApi
  */
+@API
 public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Payments made in cash. These payments will need to be manually banked.
 	 * Database value: 0
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	CASH(0, "Cash"),
 	
 	/**
 	 * Payments made with cheque.  These payments will need to be manually banked.
 	 * Database value: 1
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	CHEQUE(1, "Cheque"),
 	
 	/**
@@ -35,40 +36,40 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	 * the gateway is available and the payment is successful.
 	 * Database value: 2
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	CREDIT_CARD(2, "Credit card"),
 	
 	/**
 	 * Payments made by any means of electronic fund transfer (bank transfer etc.).  These payments will need to be manually banked.
 	 * Database value: 3
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	
 	EFT(3, "EFT"),
 	/**
 	 * payments made using b-pay.  These payments will need to be manually banked.
 	 * Database value: 4
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	BPAY(4, "B-Pay"),
 	
 	/**
 	 * A zero dollar payment which can be created for $0 invoices under some circumstances.
 	 * Database value: 5
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	INTERNAL(5, "Zero"),
 	
 	/**
 	 * Other types of payment (internal accounts transfer etc).  These payments will need to be manually banked.
 	 * Database value: 6
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	OTHER(6, "Other"),
 	
 	/**
@@ -76,24 +77,24 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	 * payments but represent a link between an invoice and a credit note where payment from one was applied to the other.
 	 * Database value: 7
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	CONTRA(7, "Contra"),
 	
 	/**
 	 * special payment type created during voucher redemption. Banking is not needed.
 	 * Database value: 8
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	VOUCHER(8, "Voucher"),
 	
 	/**
 	 * payments using paypal.  These payments will need to be manually banked.
 	 * Database value: 9
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	PAYPAL(9, "PayPal"),
 	
 	/**
@@ -102,16 +103,16 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	 * or some other transaction processing error.
 	 * Database value: 10
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	REVERSE(10, "Reverse"),
 	
 	/**
 	 * EFTPOS payments.  These payments will need to be manually banked.
 	 * Database value: 11
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	EFTPOS(11, "EFTPOS");
 
 	private String displayName;

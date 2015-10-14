@@ -5,44 +5,45 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Attendance of a student or tutor at a session can be given a status.
  * 
- * @PublicApi
  */
+@API
 public enum AttendanceType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * This attendance record has not yet been marked.
 	 * 
 	 * Database value: 0
-	 * @PublicApi
 	 */
+	@API
 	UNMARKED(0, "Unmarked"),
 	
 	/**
 	 * The student or tutor attended the session in full.
 	 * 
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	ATTENDED(1, "Attended"),
 
 	/**
 	 * The student or tutor was absent and gave a suitable reason.
 	 * 
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	DID_NOT_ATTEND_WITH_REASON(2, "Absent with reason"),
 
 	/**
 	 * The student or tutor was absent without good cause.
 	 * 
 	 * Database value: 3
-	 * @PublicApi
 	 */
+	@API
 	DID_NOT_ATTEND_WITHOUT_REASON(3, "Absent without reason"),
 
 	/**
@@ -50,8 +51,8 @@ public enum AttendanceType implements DisplayableExtendedEnumeration<Integer> {
 	 * duration can be stored in another attribute in the Attendance record.
 	 * 
 	 * Database value: 4
-	 * @PublicApi
 	 */
+	@API
 	PARTIAL(4, "Partial");
 
 	private final int value;

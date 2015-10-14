@@ -1,12 +1,13 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * choices for attachment visibility
  * 
- * @PublicApi
  */
+@API
 public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
@@ -15,8 +16,8 @@ public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<I
 	 * 
 	 * Database value: 0
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	PRIVATE(0, "Private"),
 
 	/**
@@ -24,8 +25,8 @@ public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<I
 	 * 
 	 * Database value: 1
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	PUBLIC(1, "Public"),
 
 	/**
@@ -37,8 +38,8 @@ public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<I
 	 * 
 	 * Database value: 2
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	STUDENTS(2, "Tutors and enrolled students"),
 
 	/**
@@ -50,8 +51,8 @@ public enum AttachmentInfoVisibility implements DisplayableExtendedEnumeration<I
 	 *
 	 * Database value: 3
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	TUTORS(3, "Tutors only");
 
 	private final int value;

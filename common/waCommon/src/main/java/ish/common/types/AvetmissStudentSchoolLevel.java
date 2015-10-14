@@ -5,49 +5,50 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum AvetmissStudentSchoolLevel implements DisplayableExtendedEnumeration<Integer> {
 
 	// AVETMISS - page 31
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 	
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DID_NOT_GO_TO_SCHOOL(1, "Did not go to school"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	COMPLETED_YEAR_8_OR_BELOW(2, "Year 8 or below"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	COMPLETED_YEAR_9(3, "Year 9"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	COMPLETED_YEAR_10(4, "Year 10"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	COMPLETED_YEAR_11(5, "Year 11"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	COMPLETED_YEAR_12(6, "Year 12");
 
 	private String displayName;

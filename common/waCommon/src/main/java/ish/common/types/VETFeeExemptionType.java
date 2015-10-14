@@ -5,113 +5,114 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum VETFeeExemptionType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	UNSET(-1, "Not set"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NO(0, "No (N)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	YES(1, "Yes (Y)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	C(9, "QLD only: Concessional Participant (C)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	D(11, "WA only: Pensioner Concession Card (D)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	E(12, "WA only: Repatriation Health Benefits Cards (E)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	F(13, "WA only: Fee Exempt (F)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	G(2, "VIC: VCE Scholarship, WA: AUSTUDY/ABSTUDY (G)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	H(3, "VIC only: Health Care Card (H)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	I(14, "WA only: Health Care Card Youth Allowance - Job seeker (Fee Free) (I)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	J(15, "WA only: Job Network Card (Fee Free) (J)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	L(16, "WA only: Under 18 Years of Age (L)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	M(4, "VIC only: Prisoner (M)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	N(10, "QLD: Non-concessional participant, WA: Health Care Card (N)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	O(5, "VIC: Other, WA: Youth Allowance (O)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	P(6, "VIC only: Pensioner concession card (P)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	Q(17, "WA only: Custodial Institution Inmates (Prison Inmates) (Q)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	S(18, "WA only: Health Care Card - New Start (Fee Free) (S)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	V(7, "VIC: Veteran gold card concession, WA: Fees Waived (due to severe financial hardship) (V)"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	Z(8, "VIC: None, WA: No Concession  (Z)");
 
 	private final Integer value;

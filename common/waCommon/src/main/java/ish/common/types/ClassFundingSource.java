@@ -5,43 +5,44 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum ClassFundingSource implements DisplayableExtendedEnumeration<Integer>, AvetmissReportingEnum {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	COMMONWEALTH_AND_STATE_GENERAL(0, "Commonwealth and state - general recurrent", "11"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	COMMONWEALTH_SPECIFIC(1, "Commonwealth - specific", "13"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	STATE_SPECIFIC(2, "State - specific", "15"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DOMESTIC_FULL_FEE(3, "Domestic full fee paying student", "20"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	INTERNATIONAL_FULL_FEE(4, "International full fee paying student", "30"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	REVENUE_FROM_OTHER_TO(5, "Revenue from other RTO", "80");
 
 	private String displayName;

@@ -1,31 +1,32 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Voucher verification status enumeration are set by onCourse Web when processing voucher payments coming from 
  * onCourse and used to display appropriate user message.
  * 
- * @PublicApi
  */
+@API
 public enum VoucherPaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 0
-	 * @PublicApi
 	 */
+	@API
 	APPROVED(0, "Approved"),
 	
 	/**
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	BUSY(1, "Busy"),
 
 	/**
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	INCONSISTENT(2, "Inconsistent");
 	
 	private int value;

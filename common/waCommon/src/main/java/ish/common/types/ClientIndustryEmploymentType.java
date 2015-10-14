@@ -5,108 +5,109 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting for Victoria only.
  * Consult the AVETMISS documentation for more detail about these options.
  *
- * @PublicApi
  */
+@API
 public enum ClientIndustryEmploymentType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NOT_SET(0, "Not Stated", ""),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	AGRICULTURE(1, "Agriculture, Forestry and Fishing (A)", "A"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	MINING(2, "Mining (B)", "B"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	MANUFACTURING(3, "Manufacturing (C)", "C"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ELECTRICITY(4, "Electricity, Gas, Water and Waste Services (D)", "D"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	CONSTRUCTION(5, "Construction (E)", "E"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WHOLESALE(6, "Wholesale Trade (F)", "F"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	RETAIL(7, "Retail Trade (G)", "G"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ACCOMODATION(8, "Accommodation and Feed Services (H)", "H"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	TRANSPORT(9, "Transport, Postal and Warehousing (I)", "I"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	MEDIA(10, "Information Media and telecommunications (J)", "J"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	FINANCIAL(11, "Financial and Insurance Services (K)", "K"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	RENTAL(12, "Rental, Hiring and real Estate Services (L)", "L"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	PROFESSIONAL(13, "Professional, Scientific and Technical Services - Administrative and Support Services (M)", "M"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ADMIN(14, "Public Administration and Safety (N)", "N"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	EDUCATION(15, "Education and Training (O)", "O"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	HEALTH(16, "Health Care and Social Assistance (P)", "P"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ARTS(17, "Arts and recreation Services (Q)", "Q"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	OTHER(18, "Other Services (R)", "R");
 
 

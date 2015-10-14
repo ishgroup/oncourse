@@ -5,12 +5,13 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Available discount types
  * 
- * @PublicApi
  */
+@API
 public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
@@ -19,8 +20,8 @@ public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 	 * Tax value will be calculated after the discounted price is calculated.
 	 * 
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	PERCENT(1, "Percent"),
 	
 	/**
@@ -28,8 +29,8 @@ public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 	 * Tax value will be calculated after the discounted price is calculated.
 	 * 
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	DOLLAR(2, "Dollar"),
 	
 	/**
@@ -37,8 +38,8 @@ public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 	 * Tax, if applicable, will be added to the defined dollar value.
 	 * 
 	 * Database value: 3
-	 * @PublicApi
 	 */
+	@API
 	FEE_OVERRIDE(3, "Fee override");
 
 	private String displayName;

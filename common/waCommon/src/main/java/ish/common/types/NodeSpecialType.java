@@ -5,21 +5,22 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Some tags have a special meaning. Because tags were originally called "nodes" in onCourse, some of the old
  * terminology still lingers.
  * 
- * @PublicApi
  */
+@API
 public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * There can only be one tag group called "subjects" and there must always be one.
 	 * It has special meaning in an onCourse website.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	SUBJECTS(1, "Subjects"),
 
 	@Deprecated
@@ -29,15 +30,15 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	 * Tag groups which are of type mailing list appear in a special place in the user interface
 	 * but are still just a flag against a contact showing they are part of a mailing list.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	MAILING_LISTS(3, "Mailing lists"),
 
 	/**
 	 * Wage intervals are a tag group used to designate pay cycles. 
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	PAYROLL_WAGE_INTERVALS(4, "Payroll wage intervals");
 
 	private String displayName;

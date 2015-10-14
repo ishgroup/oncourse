@@ -5,52 +5,53 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Qualifications must be one of these types as per the AVETMISS standard
  * 
- * @PublicApi
  */
+@API
 public enum QualificationType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Qualification.
 	 * 
 	 * Database value: 0
-	 * @PublicApi
 	 */
+	@API
 	QUALIFICATION_TYPE(0, "Qualification"),
 
 	/**
 	 * Accredited course.
 	 * 
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	COURSE_TYPE(1, "Accredited course"),
 	
 	/**
 	 * Skill set.
 	 * 
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	SKILLSET_TYPE(2, "Skill set"),
 
 	/**
 	 * Local skill set.
 	 * 
 	 * Database value: 3
-	 * @PublicApi
 	 */
+	@API
 	SKILLSET_LOCAL_TYPE(3, "Local skill set"),
 
 	/**
 	 * Higher education.
 	 * 
 	 * Database value: 4
-	 * @PublicApi
 	 */
+	@API
 	HIGHER_TYPE(4, "Higher education");
 
 	private String displayName;

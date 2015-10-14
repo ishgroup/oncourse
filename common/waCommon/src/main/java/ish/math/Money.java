@@ -5,6 +5,7 @@
 
 package ish.math;
 
+import ish.oncourse.API;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,8 +18,8 @@ import java.text.NumberFormat;
  * 
  * Most importantly, this class properly handles rounding at all times.
  * 
- * @PublicApi
  */
+@API
 public class Money extends Number implements Comparable<Money> {
 
 	private static final long serialVersionUID = 1L;
@@ -51,8 +52,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * Construct a new money instance. If null or empty string is passed, then a Money.ZERO amount will be created.
 	 * 
 	 * @param val value to create
-	 * @PublicApi   
 	 */
+	@API
 	public Money(String val) {
 		if (val == null || val.length() == 0) {
 			setValue(BigDecimal.ZERO);
@@ -66,8 +67,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param dollars
 	 * @param cents
-	 * @PublicApi
 	 */
+	@API
 	public Money(int dollars, int cents) {
 		setValue(BigDecimal.valueOf(dollars).add(BigDecimal.valueOf(cents, DEFAULT_SCALE)));
 	}
@@ -77,8 +78,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val to be added to this money object
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money add(Money val) {
 		if (val == null) {
 			logger.info("Money.add() called with null argument, assuming zero value");
@@ -92,8 +93,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val to be added to this money object
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money add(BigDecimal val) {
 		if (val == null) {
 			logger.info("Money.add() called with null argument, assuming zero value");
@@ -107,8 +108,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val divisor
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money divide(Money val) {
 		if (val == null) {
 			logger.info("Money.divide() called with null argument, assuming value of 1");
@@ -122,8 +123,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val divisor
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money divide(BigDecimal val) {
 		if (val == null) {
 			logger.info("Money.divide() called with null argument, assuming value of 1");
@@ -139,8 +140,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * @param val divisor
 	 * @param roundingUp rounded up to the nearest dollar
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money divide(BigDecimal val, boolean roundingUp) {
 		if (val == null) {
 			logger.info("Money.divide() called with null argument, assuming value of 1");
@@ -160,8 +161,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * @param val divisor
 	 * @param roundingUp rounded up to the nearest dollar
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money divide(Money val, boolean roundingUp) {
 		if (val == null) {
 			logger.info("Money.divide() called with null argument, assuming value of 1");
@@ -175,8 +176,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val subtrahend
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money subtract(Money val) {
 		if (val == null) {
 			return new Money(this.decimalValue);
@@ -202,8 +203,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val factor
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money multiply(long val) {
 		return multiply(BigDecimal.valueOf(val));
 	}
@@ -223,8 +224,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * 
 	 * @param val factor
 	 * @return new money object
-	 * @PublicApi
 	 */
+	@API
 	public Money multiply(BigDecimal val) {
 		if (val == null) {
 			return new Money(this.decimalValue);
@@ -287,8 +288,8 @@ public class Money extends Number implements Comparable<Money> {
 	/**
 	 * 
 	 * @return a big decimal representation
-	 * @PublicApi
 	 */
+	@API
 	public BigDecimal toBigDecimal() {
 		return this.decimalValue;
 	}
@@ -347,8 +348,8 @@ public class Money extends Number implements Comparable<Money> {
 	 *
 	 * @return a string representation skipping currency sign
 	 * $25 -> "25.00"
-	 * @PublicApi
 	 */
+	@API
 	public String toPlainString() {
 		return new MoneyDecimalFormatter().valueToString(this, DEFAULT_SCALE);
 	}

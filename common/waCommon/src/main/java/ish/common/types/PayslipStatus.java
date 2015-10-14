@@ -5,44 +5,45 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Payslips go through a workflow set of statuses.
  * 
- * @PublicApi
  */
+@API
 public enum PayslipStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * These payslips are still being edited.
 	 * Database value: 1
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	HOLLOW(1, "New"),
 	
 	/**
 	 * These payslips are marked as complete and ready to be approved.
 	 * Database value: 2
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	COMPLETED(2, "Completed"),
 
 	/**
 	 * Once approved by an onCourse user with sufficient permissions, the payslip is ready to be exported.
 	 * Database value: 3
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	APPROVED(3, "Approved"),
 
 	/**
 	 * Once exported, payslips may no longer be edited.
 	 * Database value: 4
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	FINALISED(4, "Paid/Exported");
 
 	private String displayName;

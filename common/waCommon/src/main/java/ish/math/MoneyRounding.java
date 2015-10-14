@@ -5,32 +5,33 @@
 package ish.math;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * enumeration of options for rounding money fields.
  * 
- * @PublicApi
  */
+@API
 public enum MoneyRounding implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ROUNDING_NONE(0, "No Rounding"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ROUNDING_10C(1, "Nearest 10 cents"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ROUNDING_50C(2, "Nearest 50 cents"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ROUNDING_1D(3, "Nearest dollar");
 
 	private String displayName;

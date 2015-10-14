@@ -5,27 +5,28 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A USI can be validated against the government verification service
  * 
- * @PublicApi
  */
+@API
 public enum UsiStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DEFAULT_NOT_SUPPLIED(0, "Not supplied"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NON_VERIFIED(1, "Not verified"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	VERIFIED(2, "Verified");
 
 	private String displayName;

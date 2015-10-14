@@ -1,41 +1,42 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Products can have a status reflecting the sale. Since products include both real goods ({@see Articles}) and {@see Vouchers} some statuses only apply to specific types of products.
- * @PublicApi
  */
+@API
 public enum ProductStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 0
-	 * @PublicApi
 	 */
+	@API
 	ACTIVE(0, "Active"),
 	
 	/**
 	 * A product sale which is cancelled but not reversed.
 	 * 
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	CANCELLED(1, "Cancelled"),
 
 	/**
 	 * When a product sale has been reversed.
 	 * 
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	CREDITED(2, "Credited"),
 
 	/**
 	 * A voucher which has been sold and also redeemed. Doesn't apply to other types of products.
 	 * 
 	 * Database value: 3
-	 * @PublicApi
 	 */
+	@API
 	REDEEMED(3, "Redeemed"),
 	
 	/**
@@ -43,20 +44,20 @@ public enum ProductStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * This status will transition to another status soon. You should not set this status ordinarily.
 	 * 
 	 * Database value: 4
-	 * @PublicApi
 	 */
+	@API
 	NEW(4, "New"),
 
 	/**
 	 * Database value: 5
-	 * @PublicApi
 	 */
+	@API
 	EXPIRED(5, "Expired"),
 
 	/**
 	 * Database value: 6
-	 * @PublicApi
 	 */
+	@API
 	DELIVERED(6, "Delivered");
 	
 	private int value;

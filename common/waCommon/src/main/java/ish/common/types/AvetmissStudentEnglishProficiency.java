@@ -5,38 +5,39 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum AvetmissStudentEnglishProficiency implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	VERY_WELL(1, "Very Well"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	WELL(2, "Well"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NOT_WELL(3, "Not Well"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NOT_AT_ALL(4, "Not at all");
 
 	private String displayName;

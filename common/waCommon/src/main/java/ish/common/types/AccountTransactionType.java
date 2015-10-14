@@ -5,48 +5,49 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * GL transactions have a 'type' depending on which entity created them.
  * 
- * @PublicApi
  */
+@API
 public enum AccountTransactionType implements DisplayableExtendedEnumeration<String> {
 
 	/**
 	 * Database value: I
-	 * @PublicApi
 	 */
+	@API
 	INVOICE_LINE("I", "Invoice line"),
 
 	/**
 	 * Database value: P
-	 * @PublicApi
 	 */
+	@API
 	PAYMENT_IN_LINE("P", "Payment in line"),
 
 	/**
 	 * Database value: O
-	 * @PublicApi
 	 */
+	@API
 	PAYMENT_OUT_LINE("O", "Payment out line"),
 
 	/**
 	 * Database value: U
-	 * @PublicApi
 	 */
+	@API
 	PURCHASE_LINE("U", "Purchase line"),
 
 	/**
 	 * Database value: D
-	 * @PublicApi
 	 */
+	@API
 	DEPRECIATION("D", "Depreciation"),
 
 	/**
 	 * Database value: J
-	 * @PublicApi
 	 */
+	@API
 	JOURNAL("J", "Journal");
 
 	private String displayName;

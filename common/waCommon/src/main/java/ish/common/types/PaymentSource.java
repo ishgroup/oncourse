@@ -1,29 +1,30 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Payment can be made in onCourse (office) or from the onCourse website (web).
  * Although named "PaymentSource" this enumeration is used for enrolments and other entities to mark where they were originated.
  * 
- * @PublicApi
  */
+@API
 public enum PaymentSource implements DisplayableExtendedEnumeration<String> {
 
 	/**
 	 * all payments made from onCourse will have this source
 	 * 
 	 * Database value: O
-	 * @PublicApi
 	 */
+	@API
 	SOURCE_ONCOURSE("O", "office"),
 	
 	/**
 	 * all payments made from onCourse website will have this source
 	 * 
 	 * Database value: W
-	 * @PublicApi
 	 */
+	@API
 	SOURCE_WEB("W", "web");
 
 	private PaymentSource(String value, String displayName) {

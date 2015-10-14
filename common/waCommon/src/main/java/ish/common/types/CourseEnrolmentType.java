@@ -4,28 +4,29 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Courses can either be applied for {@see Application}, or its classes can be directly enrolled in.
  * 
- * @PublicApi
  */
+@API
 public enum CourseEnrolmentType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Allow students to enrol directly in classes for this course.
 	 * 
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	OPEN_FOR_ENROLMENT(1, "Open enrolment"),
 
 	/**
 	 * Allow students to only apply to be allowed to enrol.
 	 * 
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	ENROLMENT_BY_APPLICATION(2, "Enrolment by application");
 
 	private String displayName;

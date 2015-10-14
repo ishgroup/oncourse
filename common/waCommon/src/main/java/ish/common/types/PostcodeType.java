@@ -4,35 +4,36 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * Australian postcodes range 
- * @PublicApi
  */
+@API
 public enum PostcodeType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * Delivery Area
 	 * Database value: 1
 	 *
-	 * @PublicApi
 	 */
+	@API
 	DELIVERY_AREA(1, "Delivery Area"),
 	
 	/**
 	 * Post Office Boxes
 	 * Database value: 2
 	 *
-	 * @PublicApi
 	 */
+	@API
 	POST_OFFICE_BOXES(2, "Post Office Boxes"),
 	
 	/**
 	 * Large Volume Receiver
 	 * Database value: 3
 	 *
-	 * @PublicApi
 	 */
+	@API
 	LARGE_VOLUME_RECEIVER(3, "Large Volume Receiver");
 	
 

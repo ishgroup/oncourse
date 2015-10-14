@@ -4,6 +4,7 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A basic workflow for applications. Each application moves through the statuses, resulting in
@@ -11,38 +12,38 @@ import ish.common.util.DisplayableExtendedEnumeration;
  * 
  * Tags can be used for more detailed workflow and tracking of progress.
  * 
- * @PublicApi
  */
+@API
 public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 0
-	 * @PublicApi
 	 */
+	@API
 	NEW(0, "New"),
 
 	/**
 	 * Database value: 1
-	 * @PublicApi
 	 */
+	@API
 	OFFERED(1, "Offered"),
 
 	/**
 	 * Database value: 2
-	 * @PublicApi
 	 */
+	@API
 	ACCEPTED(2, "Accepted"),
 
 	/**
 	 * Database value: 3
-	 * @PublicApi
 	 */
+	@API
 	REJECTED(3, "Rejected"),
 
 	/**
 	 * Database value: 4
-	 * @PublicApi
 	 */
+	@API
 	WITHDRAWN(4, "Withdrawn");
 
 	private String displayName;

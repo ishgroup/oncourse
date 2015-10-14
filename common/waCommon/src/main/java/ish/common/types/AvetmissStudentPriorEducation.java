@@ -5,63 +5,64 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum AvetmissStudentPriorEducation implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	BACHELOR(1, "Bachelor degree or higher degree level"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ADVANCED_DIPLOMA(2, "Advanced diploma or associate degree level"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DIPLOMA(3, "Diploma level"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	CERTIFICATE_IV(4, "Certificate IV"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	CERTIFICATE_III(5, "Certificate III"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	CERTIFICATE_II(6, "Certificate II"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	CERTIFICATE_I(7, "Certificate I"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	MISC(8, "Miscellaneous education"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NONE(100, "None");
 
 	private String displayName;

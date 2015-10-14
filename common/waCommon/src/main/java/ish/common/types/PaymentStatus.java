@@ -5,6 +5,7 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.List;
  * Payments pass through a number of statuses as the enrolment or sale is completed and the credit card is processed.
  * Once a final state is reached, the status may not be changed again.
  * 
- * @PublicApi
  */
+@API
 public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	
 	// payment and invoice statuses
@@ -39,8 +40,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * server-side post-persist to update the status to success according to the logic of whether willow returned success, or willow is not involved, or if the
 	 * gateway is disabled. Something to think about. Used by angel and willow
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	NEW(0, "Not processed"), // FIXME: it would appear that the usage of this
 								// status is not consistent with its meaning.
 
@@ -48,8 +49,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * Indicates a payment or enrolment that was unable to retrieve a result on first attempt (i.e., on post-persist from quick enrol) and is as
 	 * such queued for later processing by a server-side thread.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	QUEUED(1, "Queued"),
 
 	/**
@@ -57,43 +58,43 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * again to a state of STATUS_IN_TRANSACTION prior to attempting subsequent processing. It has this definite meaning: We are about to process the payment by
 	 * contacting the payment gateway.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	IN_TRANSACTION(2, "In transaction"),
 
 	/**
 	 * Indicates successful and confirmed completion of a payment or enrolment.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	SUCCESS(3, "Success"),
 
 	/**
 	 * Indicates a failed response due to an error.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	FAILED(4, "Failed"),
 
 	/**
 	 * Indicates a failed response given by the credit card gateway.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	FAILED_CARD_DECLINED(6, "Card declined"),
 
 	/**
 	 * Indicates that the enrolment and payment could not be accepted because there were no enrolment places left.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	FAILED_NO_PLACES(7, "Rejected - no places available"),
 
 	/**
 	 * Indicates that payment was saved in onCourse Web, but user needs to provide credit card details.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	CARD_DETAILS_REQUIRED(10, "Credit card details required");
 
 	/**
@@ -122,8 +123,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * <p>
 	 * <b>Note:</b> The list is made up of both transient and final statuses.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final List<PaymentStatus> STATUSES_LEGIT = Arrays
 			.asList(PaymentStatus.NEW, PaymentStatus.QUEUED, PaymentStatus.SUCCESS);
 	/**
@@ -131,8 +132,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * <p>
 	 * <b>Note:</b> Each failed status is a final status so far as the runtime is concerned.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final List<PaymentStatus> STATUSES_FAILED = Arrays.asList(PaymentStatus.FAILED,
             PaymentStatus.FAILED_CARD_DECLINED,
             PaymentStatus.FAILED_NO_PLACES,
@@ -140,8 +141,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * The complete list of statuses that are final and cannot be modified.
 	 * 
-	 * @PublicApi
 	 */
+	@API
 	public static final List<PaymentStatus> STATUSES_FINAL = Arrays.asList(PaymentStatus.SUCCESS,
             PaymentStatus.FAILED,
             PaymentStatus.FAILED_CARD_DECLINED,

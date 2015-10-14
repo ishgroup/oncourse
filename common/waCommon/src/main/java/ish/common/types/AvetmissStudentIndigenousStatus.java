@@ -5,38 +5,39 @@
 package ish.common.types;
 
 import ish.common.util.DisplayableExtendedEnumeration;
+import ish.oncourse.API;
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
- * @PublicApi
  */
+@API
 public enum AvetmissStudentIndigenousStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ABORIGINAL(1, "Aboriginal"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	TORRES(2, "Torres Strait Islander"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	ABORIGINAL_AND_TORRES(3, "Aboriginal and Torres Strait Islander"),
 
 	/**
-	 * @PublicApi
 	 */
+	@API
 	NEITHER(4, "Neither");
 
 	private String displayName;
