@@ -11,13 +11,14 @@ public class Constants {
      * Template for record of  "Export to Moneyworks" report
      */
     public static final String TEMPLATE = "DI\t" +
-    		"{0}\t" +
+			"{0}\t" +
     		"{1}\t" +
     		"{2}\t" +
     		"{3}\t" +
-    		"{4, number,0.000}\t" +
-    		"{5}\t" +
-    		"{6}\n";
+    		"{4}\t" +
+    		"{5, number,0.000}\t" +
+    		"{6}\t" +
+    		"{7}\n";
 
     /**
      * Key for support-value of licenseData

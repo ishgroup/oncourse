@@ -110,6 +110,7 @@
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="paymentGatewayAccount" type="VARCHAR" length="32"/>
 		<db-attribute name="paymentGatewayPass" type="VARCHAR" length="16"/>
+		<db-attribute name="purchaseOrder" type="VARCHAR" length="256"/>
 		<db-attribute name="requiresAvetmiss" type="BIT" isMandatory="true"/>
 		<db-attribute name="timeZone" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="webServicesSecurityCode" type="VARCHAR" length="16"/>
@@ -1389,6 +1390,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="paymentGatewayAccount" type="java.lang.String" db-attribute-path="paymentGatewayAccount"/>
 		<obj-attribute name="paymentGatewayPass" type="java.lang.String" db-attribute-path="paymentGatewayPass"/>
+		<obj-attribute name="purchaseOrder" type="java.lang.String" db-attribute-path="purchaseOrder"/>
 		<obj-attribute name="requiresAvetmiss" type="java.lang.Boolean" db-attribute-path="requiresAvetmiss"/>
 		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 		<obj-attribute name="webServicesSecurityCode" type="java.lang.String" db-attribute-path="webServicesSecurityCode"/>

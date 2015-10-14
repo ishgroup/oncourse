@@ -188,7 +188,7 @@ public class BillingDataServiceImpl implements IBillingDataService {
 	}
 
     public String getBillingDataExport(List<College> colleges, Date month) {
-		String exportData = "Type\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.StockQty\tDetail.UnitPrice\tDescription\tTransactionDate\n";
+		String exportData = "Type\tTheirRef\tNameCode\tDetail.StockCode\tDetail.Description\tDetail.StockQty\tDetail.UnitPrice\tDescription\tTransactionDate\n";
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(month);

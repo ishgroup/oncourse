@@ -26,6 +26,10 @@
 			<td>Billing code</td>
 			<td><t:textfield t:id="billingCode" value="billingCode" validate="required"/></td>
 		</tr>
+		<tr>
+			<td>Purchase order</td>
+			<td><t:textfield t:id="purchaseOrder" value="purchaseOrder"/></td>
+		</tr>
 	</table>
 
 	<label class="checkbox">

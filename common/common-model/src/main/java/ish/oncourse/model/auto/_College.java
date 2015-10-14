@@ -51,6 +51,8 @@ public abstract class _College extends CayenneDataObject {
     @Deprecated
     public static final String PAYMENT_GATEWAY_PASS_PROPERTY = "paymentGatewayPass";
     @Deprecated
+    public static final String PURCHASE_ORDER_PROPERTY = "purchaseOrder";
+    @Deprecated
     public static final String REQUIRES_AVETMISS_PROPERTY = "requiresAvetmiss";
     @Deprecated
     public static final String TIME_ZONE_PROPERTY = "timeZone";
@@ -197,6 +199,7 @@ public abstract class _College extends CayenneDataObject {
     public static final Property<String> NAME = new Property<String>("name");
     public static final Property<String> PAYMENT_GATEWAY_ACCOUNT = new Property<String>("paymentGatewayAccount");
     public static final Property<String> PAYMENT_GATEWAY_PASS = new Property<String>("paymentGatewayPass");
+    public static final Property<String> PURCHASE_ORDER = new Property<String>("purchaseOrder");
     public static final Property<Boolean> REQUIRES_AVETMISS = new Property<Boolean>("requiresAvetmiss");
     public static final Property<String> TIME_ZONE = new Property<String>("timeZone");
     public static final Property<String> WEB_SERVICES_SECURITY_CODE = new Property<String>("webServicesSecurityCode");
@@ -372,6 +375,13 @@ public abstract class _College extends CayenneDataObject {
     }
     public String getPaymentGatewayPass() {
         return (String)readProperty("paymentGatewayPass");
+    }
+
+    public void setPurchaseOrder(String purchaseOrder) {
+        writeProperty("purchaseOrder", purchaseOrder);
+    }
+    public String getPurchaseOrder() {
+        return (String)readProperty("purchaseOrder");
     }
 
     public void setRequiresAvetmiss(Boolean requiresAvetmiss) {

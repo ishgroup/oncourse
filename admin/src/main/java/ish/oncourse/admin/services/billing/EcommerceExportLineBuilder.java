@@ -3,6 +3,7 @@ package ish.oncourse.admin.services.billing;
 import ish.math.Country;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -65,6 +66,7 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 
 				tasmaniaLines += MessageFormat.format(
 						Constants.TEMPLATE,
+						college.getPurchaseOrder() != null ? college.getPurchaseOrder() : StringUtils.EMPTY,
 						college.getBillingCode(),
 						getStockCode(),
 						getTasmaniaEcommerceKeyDescription(key, tasmaniaEcommerceFees),
@@ -77,6 +79,7 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 			if (totalFee < TASMANIA_MIN_FEE) {
 				tasmaniaLines += MessageFormat.format(
 						Constants.TEMPLATE,
+						college.getPurchaseOrder() != null ? college.getPurchaseOrder() : StringUtils.EMPTY,
 						college.getBillingCode(),
 						getStockCode(),
 						TASMANIA_ECOMMERCE_MIN_FEE_DESC,

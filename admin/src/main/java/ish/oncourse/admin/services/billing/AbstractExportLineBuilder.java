@@ -53,7 +53,8 @@ public abstract class AbstractExportLineBuilder implements MWExportLineBuilder {
 		}
 		
 		return MessageFormat.format(
-				Constants.TEMPLATE, 
+				Constants.TEMPLATE,
+				college.getPurchaseOrder() != null ? college.getPurchaseOrder() : StringUtils.EMPTY,
 				college.getBillingCode(), 
 				getStockCode(),
 				buildDetailedDescription(),

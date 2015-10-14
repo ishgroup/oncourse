@@ -3549,4 +3549,14 @@
 		</createIndex>
 	</changeSet>
 
+	<changeSet id="228" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="College" columnName="purchaseOrder"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE College ADD COLUMN purchaseOrder VARCHAR(256);
+		</sql>
+	</changeSet>
 </databaseChangeLog>
