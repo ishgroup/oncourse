@@ -7,7 +7,9 @@
                 <p>Assessments are made against units of competency from the ${qualification.title} <a href="http://training.gov.au/Training/Details/${qualification.nationalCode}" target="_blank"> ${qualification.nationalCode}</a>.</p>
             </t:if>
             <t:unless test="qualification">
-                <p>${getDefaultTitle()}</p>
+				<t:if test="!hasModules">
+					<p>${message:notLinkedToComponents}</p>
+				</t:if>
             </t:unless>
 
             <t:loop source="enrolments" value="enrolment">

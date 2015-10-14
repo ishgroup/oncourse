@@ -22,8 +22,6 @@ import java.util.List;
  */
 public class ClassResults {
 
-	private static final String KEY_withoutQualification = "withoutQualification";
-	private static final String KEY_notLinkedToComponents = "notLinkedToComponents";
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -112,11 +110,6 @@ public class ClassResults {
     public boolean isHasModules(){
         return !courseClass.getCourse().getModules().isEmpty();
     }
-
-	public String getDefaultTitle() {
-
-		return isHasModules() ? messages.get(KEY_withoutQualification) : messages.get(KEY_notLinkedToComponents);
-	}
 
 	public boolean isNotSetStatus() {
 
