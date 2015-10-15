@@ -496,17 +496,29 @@ public class PortalService implements IPortalService {
         if (authenticationService.isTutor()) {
             ObjectContext sharedContext = cayenneService.sharedContext();
 
-            SelectQuery query = new SelectQuery(Document.class, ExpressionFactory.matchExp(
-                    Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.TUTORS).andExp(
-                    ExpressionFactory.matchExp(Document.COLLEGE_PROPERTY, webSiteService.getCurrentCollege())).andExp(
-                    ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "+." + BinaryInfoRelation.CREATED_PROPERTY, null)));
-
-            return (List<Document>) sharedContext.performQuery(query);
+			return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.TUTORS))
+					.and(Document.IS_REMOVED.isFalse())
+					.and(Document.COLLEGE.eq(webSiteService.getCurrentCollege()))
+					.and(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.CREATED).isNull()).select(sharedContext);
         } else {
             return Collections.emptyList();
         }
 
     }
+	
+	@Override
+	public List<Document> getStudentAndTutorCommonResources() {
+		if (getContact().getTutor() != null || getContact().getStudent() != null) {
+			ObjectContext sharedContext = cayenneService.sharedContext();
+
+			return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.STUDENTS))
+					.and(Document.IS_REMOVED.isFalse())
+					.and(Document.COLLEGE.eq(webSiteService.getCurrentCollege()))
+					.and(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.CREATED).isNull()).select(sharedContext);
+		} else {
+			return Collections.emptyList();
+		}
+	}
 
     public List<Enrolment> getEnrolments() {
         Student student = getContact().getStudent();
@@ -554,6 +566,7 @@ public class PortalService implements IPortalService {
         ObjectContext sharedContext = cayenneService.sharedContext();
 		
 		return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.STUDENTS))
+				.and(Document.IS_REMOVED.isFalse())
 				.and((Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
 					.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getCourse().getId())))
 					.orExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(CourseClass.class.getSimpleName())
@@ -564,6 +577,7 @@ public class PortalService implements IPortalService {
         ObjectContext sharedContext = cayenneService.sharedContext();
 
 		return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.in(AttachmentInfoVisibility.TUTORS, AttachmentInfoVisibility.STUDENTS))
+				.and(Document.IS_REMOVED.isFalse())
 				.and((Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
 					.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getCourse().getId())))
 					.orExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(CourseClass.class.getSimpleName())
@@ -573,6 +587,7 @@ public class PortalService implements IPortalService {
     public List<Document> getResources() {
         List<Document> resources = new ArrayList<>();
         resources.addAll(getTutorCommonResources());
+		resources.addAll(getStudentAndTutorCommonResources());
 
         List<PCourseClass> courseClasses = fillCourseClassSessions(CourseClassFilter.CURRENT);
 

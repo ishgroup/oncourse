@@ -57,6 +57,12 @@ public class Resources {
     @Property
     private Document tutorsMaterial;
 
+	@Property
+	private List<Document> sudentAndTutorsMaterials;
+
+	@Property
+	private Document sudentAndTutorsMaterial;
+
     @Inject
     private Request request;
 
@@ -76,6 +82,9 @@ public class Resources {
         if (portalService.getContact().getTutor() != null) {
             tutorsMaterials = portalService.getTutorCommonResources();
         }
+		if (portalService.getContact().getStudent() != null) {
+			sudentAndTutorsMaterials = portalService.getStudentAndTutorCommonResources();
+		}
 
         courseClasses = portalService.getContactCourseClasses(CourseClassFilter.CURRENT);
     }
@@ -116,15 +125,15 @@ public class Resources {
         return lastLoginDate == null || material.after(lastLoginDate);
     }
 
-    public String getTutorsMaterialUrl() {
-        return binaryDataService.getUrl(tutorsMaterial);
+    public String getMaterialUrl(Document document) {
+        return binaryDataService.getUrl(document);
     }
 
     public String getUrl() {
         return portalService.getUrlBy(courseClass);
     }
 
-    public String getSize() {
-        return FileUtils.byteCountToDisplaySize(tutorsMaterial.getCurrentVersion().getByteSize());
+    public String getSize(Document document) {
+        return FileUtils.byteCountToDisplaySize(document.getCurrentVersion().getByteSize());
     }
 }
