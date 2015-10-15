@@ -24,13 +24,21 @@
                                 <span>${courseClass.course.name}</span>
                             </t:unless>
                             <t:if test="needResult()">
-                                <strong class="${getOutComeClass()} tooltip-info pull-right" title="" data-original-title="${getOutComeDisplayName()}">
-                                    ${getOutComeResult()}
-                                    <t:if test="isNew()">
-                                        <span class="label label-primary">NEW</span>
-                                    </t:if>
-                                </strong>
-                            </t:if>
+								<div class="pull-right">
+									<div class="pull-right">
+										<strong class="${getOutComeClass()} tooltip-info" title="">
+											${getOutComeResult()}
+											<t:if test="isNew()">
+												<span class="label label-primary">NEW</span>
+											</t:if>
+										</strong>
+									</div>
+									<br/>
+									<div class="pull-right">
+										<small class="text-muted">${getOutComeDisplayName()}</small>
+									</div>
+								</div>
+							</t:if>
                        </li>
                     </t:loop>
                 </ul>
