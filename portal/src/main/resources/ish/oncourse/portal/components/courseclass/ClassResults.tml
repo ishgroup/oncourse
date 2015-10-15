@@ -26,7 +26,7 @@
                             <t:if test="needResult()">
 								<div class="pull-right">
 									<div class="pull-right">
-										<strong class="${getOutComeClass()} tooltip-info" title="">
+										<strong class="${getOutComeClass()}">
 											${getOutComeResult()}
 											<t:if test="isNew()">
 												<span class="label label-primary">NEW</span>
