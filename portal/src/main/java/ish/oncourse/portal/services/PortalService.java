@@ -27,6 +27,7 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
@@ -529,11 +530,9 @@ public class PortalService implements IPortalService {
         contact = sharedContext.localObject(contact);
 
         if (contact.getTutor() != null) {
-            SelectQuery query = new SelectQuery(TutorRole.class, ExpressionFactory.matchExp(
-                    TutorRole.COURSE_CLASS_PROPERTY, courseClass).andExp(
-                    ExpressionFactory.matchExp(TutorRole.TUTOR_PROPERTY, contact.getTutor())));
-            List<TutorRole> tutorRole = sharedContext.performQuery(query);
-            if (!tutorRole.isEmpty()) {
+			List<TutorRole> tutorRole = ObjectSelect.query(TutorRole.class).where(TutorRole.COURSE_CLASS.eq(courseClass)).and(TutorRole.TUTOR.eq(contact.getTutor())).select(sharedContext);
+
+			if (!tutorRole.isEmpty()) {
                 return getAttachedFilesForTutor(courseClass);
             }
         }
@@ -548,42 +547,27 @@ public class PortalService implements IPortalService {
     private List<Document> getAttachedFilesForStudent(Student student, CourseClass courseClass) {
 
         // only students with active enrolments can view class attachments
-        Expression filter = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student);
-
-        if (filter.filterObjects(courseClass.getValidEnrolments()).isEmpty()) {
+        if (Enrolment.STUDENT.eq(student).filterObjects(courseClass.getValidEnrolments()).isEmpty()) {
             return Collections.emptyList();
         }
 
         ObjectContext sharedContext = cayenneService.sharedContext();
-        ArrayList<Document> result = new ArrayList<>();
-
-        Expression exp = ExpressionFactory.inExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PUBLIC)
-                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
-                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
-        result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
-
-        exp = ExpressionFactory.inExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.STUDENTS, AttachmentInfoVisibility.PUBLIC)
-                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
-                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
-        result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
-        return result;
+		
+		return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.STUDENTS))
+				.and((Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
+					.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getCourse().getId())))
+					.orExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(CourseClass.class.getSimpleName())
+					.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getId())))).select(sharedContext);
     }
 
     private List<Document> getAttachedFilesForTutor(CourseClass courseClass) {
         ObjectContext sharedContext = cayenneService.sharedContext();
-        ArrayList<Document> result = new ArrayList<>();
 
-        Expression exp = ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE)
-                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getCourse().getId()))
-                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, Course.class.getSimpleName()));
-        result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
-
-        exp = ExpressionFactory.noMatchExp(Document.WEB_VISIBILITY_PROPERTY, AttachmentInfoVisibility.PRIVATE)
-                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_WILLOW_ID_PROPERTY, courseClass.getId()))
-                .andExp(ExpressionFactory.matchExp(Document.BINARY_INFO_RELATIONS_PROPERTY + "." + BinaryInfoRelation.ENTITY_IDENTIFIER_PROPERTY, courseClass.getClass().getSimpleName()));
-        result.addAll(sharedContext.performQuery(new SelectQuery(Document.class, exp)));
-
-        return result;
+		return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.in(AttachmentInfoVisibility.TUTORS, AttachmentInfoVisibility.STUDENTS))
+				.and((Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
+					.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getCourse().getId())))
+					.orExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(CourseClass.class.getSimpleName())
+					.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getId())))).select(sharedContext);
     }
 
     public List<Document> getResources() {
