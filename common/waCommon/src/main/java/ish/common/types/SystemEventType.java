@@ -11,7 +11,8 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum SystemEventType implements DisplayableExtendedEnumeration<Integer> {
 
 	ENROLMENT_SUCCESSFUL(1, "Enrolment successful"),
-	ENROLMENT_CANCELLED(2, "Enrolment cancelled");
+	ENROLMENT_CANCELLED(2, "Enrolment cancelled"),
+	CLASS_CANCELLED(3, "Class cancelled");
 
 	private int value;
 	private String displayName;
