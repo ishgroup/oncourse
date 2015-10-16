@@ -202,7 +202,7 @@ public class PortalServiceTest extends ServiceTest {
 
 		List<Document> tutorClassResources = service.getResourcesBy(courseClass);
 
-		assertEquals(3, tutorClassResources.size());
+		assertEquals(2, tutorClassResources.size());
 		assertFalse(tutorClassResources.contains(privateResource));
 	}
 	
@@ -221,7 +221,7 @@ public class PortalServiceTest extends ServiceTest {
 
 		List<Document> tutorClassResources = service.getResourcesBy(courseClass);
 
-		assertEquals(2, tutorClassResources.size());
+		assertEquals(1, tutorClassResources.size());
 		assertFalse(tutorClassResources.contains(privateResource));
 		
 		CourseClass notEnrolledIntoClass = Cayenne.objectForPK(objectContext, CourseClass.class, 5);
