@@ -855,7 +855,7 @@ public class PortalService implements IPortalService {
         result.setTutorScore(0);
         for (Survey survey : surveys) {
             result.setCourseScore(result.getCourseScore() + survey.getCourseScore());
-            result.setVenueScore(result.getCourseScore() + survey.getVenueScore());
+            result.setVenueScore(result.getVenueScore() + survey.getVenueScore());
             result.setTutorScore(result.getTutorScore() + survey.getTutorScore());
         }
 

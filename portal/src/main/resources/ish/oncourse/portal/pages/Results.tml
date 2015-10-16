@@ -6,18 +6,24 @@
         </div>
         <ul class="list-unstyled result-content">
             <t:loop source="courseClasses" value="courseClass">
-
-            <t:if test="hasResult()">
-            <li>
-                <h6>
-                    <t:pagelink page="class" context="courseClass.id">${courseClass.course.name}</t:pagelink>
-                    <small> (${courseClass.uniqueIdentifier})</small>
-                </h6>
-                <p><small class="text-muted">${date}</small></p>
-                <t:courseclass.classresults courseClass="courseClass"/>
-            </li>
-             </t:if>
-
+				<t:if test="hasResult()">
+					<li>
+						<h6>
+							<t:pagelink page="class" context="courseClass.id">${courseClass.course.name}</t:pagelink>
+							<small> (${courseClass.uniqueIdentifier})</small>
+						</h6>
+						<p><small class="text-muted">${date}</small></p>
+						<t:courseclass.classresults courseClass="courseClass"/>
+						<t:if test="showSurveys()">
+							<h6>Rate your class
+								<span class="rating rate-inline rate-class">
+									<input type="hidden" name="score"/>
+								</span>
+							</h6>
+							<t:surveys.surveys courseClass="courseClass" isTutor="false"/>
+						</t:if>
+					</li>
+				</t:if>
             </t:loop>
         </ul>
     </t:if>

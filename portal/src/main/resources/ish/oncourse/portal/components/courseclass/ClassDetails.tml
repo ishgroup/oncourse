@@ -9,6 +9,11 @@
         </div>
 
         <t:if test="showSurveys()">
+			<h4>Class rating
+            <span class="rating rate-inline rate-class">
+                <input type="hidden" name="score"/>
+            </span>
+			</h4>
             <t:surveys.surveys courseClass="courseClass" isTutor="isTutor"/>
         </t:if>
 

@@ -13,6 +13,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -70,5 +71,9 @@ public class Results {
 
 	public String getUrl() {
 		return portalService.getUrlBy(courseClass);
+	}
+
+	public boolean showSurveys() {
+		return courseClass.getEndDate() == null || courseClass.getEndDate().before(new Date());
 	}
 }

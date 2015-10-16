@@ -6,11 +6,13 @@ goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
-    Survey = function () {
-    };
+   function Survey(id) {
+        this.id=id;
+    }
 
 Survey.prototype = {
     survey: 0,
+    id:0,
     initAverageRating: function (score) {
         $j('.rating').raty({
             half: false,
@@ -45,58 +47,63 @@ Survey.prototype = {
         this.loadSurvey();
         var self = this;
 
-        this.initRate($j(".venue-rate"), this.survey.venueScore, this.survey.readOnly);
-        this.initRate($j(".tutor-rate"), this.survey.tutorScore, this.survey.readOnly);
-        this.initRate($j(".course-rate"), this.survey.courseScore, this.survey.readOnly);
+        this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate"), this.survey.venueScore, this.survey.readOnly);
+        this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate"), this.survey.tutorScore, this.survey.readOnly);
+        this.initRate($j("div[data='" + self.id + "'].class-reviews").find("span.course-rate"), this.survey.courseScore, this.survey.readOnly);
 
-        $j('.rate-submit').click(function () {
+        $j("div[data='" + self.id + "'].class-reviews").find("button.rate-submit").click(function () {
             self.saveSurvey();
         });
 
-        $j('.rate-class').click(function () {
+        $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").click(function () {
             self.slideSurveys()
         });
         this.fillSurvey();
 
         if (self.survey.readOnly) {
-            $j('.rate-class').tooltip({ content: 'Click here to see reviews' });
+            $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to see reviews' });
         }
         else {
-            $j('.rate-class').tooltip({ content: 'Click here to provide reviews' });
+            $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to provide reviews' });
         }
 
     },
     //slide survey form
     slideSurveys: function () {
         var self = this;
-        $j('#class-reviews').slideToggle("fast", function () {
+        $j("div[data='" + self.id + "'].class-reviews").slideToggle("fast", function () {
             self.loadSurvey();
             self.fillSurvey();
         });
     },
 
     refreshAverageRating: function () {
-        this.initAverageRating(Math.floor(($j(".venue-rate").raty("score") +
-            $j(".tutor-rate").raty("score") +
-            $j(".course-rate").raty("score")) / 3));
+        var self = this;
+        this.initAverageRating(Math.floor(
+           ($j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score") +
+            $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score") +
+            $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score")) / 3));
     },
+    
     fillSurvey: function () {
-        $j(".venue-rate").raty("score", this.survey.venueScore);
-        $j(".tutor-rate").raty("score", this.survey.tutorScore);
-        $j(".course-rate").raty("score", this.survey.courseScore);
-        $j(".survey-comment").val(this.survey.comment);
+        var self = this;
+        $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score", this.survey.venueScore);
+        $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score", this.survey.tutorScore);
+        $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score", this.survey.courseScore);
+        $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").val(this.survey.comment);
         this.refreshAverageRating();
     },
 
     //commit surfey changes
     saveSurvey: function () {
         var self = this;
-        var actionLink = "/portal/class.classdetails.surveys:saveSurvey";
-        var data = {
-            "comment": $j(".survey-comment").val(),
-            "courseScore": $j(".course-rate").find('input[name=score]').val(),
-            "tutorScore": $j(".tutor-rate").find('input[name=score]').val(),
-            "venueScore": $j(".venue-rate").find('input[name=score]').val()
+        var actionLink = "/portal/class.classdetails.surveys:saveSurvey/" + self.id;
+        var data = {            
+            
+            "comment": $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").val(),
+            "courseScore": $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").find('input[name=score]').val(),
+            "tutorScore": $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").find('input[name=score]').val(),
+            "venueScore": $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").find('input[name=score]').val()
         };
         $j.ajax({
             url: actionLink,
@@ -115,7 +122,7 @@ Survey.prototype = {
     loadSurvey: function () {
         var self = this;
         //get json survey and fill controls
-        var actionLink = "/portal/class.classdetails.surveys:getSurvey";
+        var actionLink = "/portal/class.classdetails.surveys:getSurvey/" + self.id;
         $j.ajax({
 
             url: actionLink,
@@ -133,7 +140,9 @@ Survey.prototype = {
 
 
 $j('document').ready(function () {
-    if ($j('#class-reviews').length != 0) {
-        new Survey().initializeSurveys();
+    if ($j('.class-reviews').length != 0) {
+        $j('.class-reviews').each(function (index, element) {
+            new Survey($j(element).attr("data")).initializeSurveys();
+        });
     }
 });

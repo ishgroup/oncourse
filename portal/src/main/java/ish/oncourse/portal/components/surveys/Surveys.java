@@ -26,6 +26,7 @@ public class Surveys {
     private Request request;
 
     @Parameter(required = true)
+	@Property
     private CourseClass courseClass;
 
     @Parameter(required = true)
@@ -33,19 +34,19 @@ public class Surveys {
     private boolean isTutor;
 
     @OnEvent(value = "getSurvey")
-    public TextStreamResponse getSurvey() throws IOException {
+    public TextStreamResponse getSurvey(Long id) throws IOException {
         if (!request.isXHR())
             return null;
 
         Survey survey;
         //we should check at fist that the current contact is a student and try to load survey for student
-        boolean isTutor  = portalService.getContact().getTutor() != null && portalService.isTutorFor(courseClass);
+        boolean isTutor  = portalService.getContact().getTutor() != null && portalService.isTutorFor(portalService.getCourseClassBy(id));
         if (isTutor) {
-            survey = portalService.getAverageSurveyFor(courseClass);
+            survey = portalService.getAverageSurveyFor(portalService.getCourseClassBy(id));
         } else {
-            survey = portalService.getStudentSurveyFor(courseClass);
+            survey = portalService.getStudentSurveyFor(portalService.getCourseClassBy(id));
             if (survey == null)
-                survey = portalService.createStudentSurveyFor(courseClass);
+                survey = portalService.createStudentSurveyFor(portalService.getCourseClassBy(id));
         }
 
         //adds readonly for tutor
@@ -55,13 +56,13 @@ public class Surveys {
     }
 
     @OnEvent(value = "saveSurvey")
-    public void saveSurvey() throws IOException {
+    public void saveSurvey(Long id) throws IOException {
         if (!request.isXHR())
             return;
 
-        Survey survey = portalService.getStudentSurveyFor(courseClass);
+        Survey survey = portalService.getStudentSurveyFor(portalService.getCourseClassBy(id));
         if (survey == null) {
-            survey = portalService.createStudentSurveyFor(courseClass);
+            survey = portalService.createStudentSurveyFor(portalService.getCourseClassBy(id));
         }
 
         String value = StringUtils.trimToNull(request.getParameter(Survey.TUTOR_SCORE_PROPERTY));
