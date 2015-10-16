@@ -14,7 +14,7 @@ public class BillingDataServiceImplTest {
 	@Test
 	public void testHostingFormat()
 	{
-		String original = "DI\tCHERSON01\tOCW-21\tCherson Website standard web plan: 1 month (contract until March, 2013)\t1\t1234567.890\tonCourse March, 2012\t31/03/2012\n";
+		String original = "DI\t1234\tCHERSON01\tOCW-21\tCherson Website standard web plan: 1 month (contract until March, 2013)\t1\t1234567.890\tonCourse March, 2012\t31/03/2012\n";
 		Map<Long, Map<Long, Map<String, Object>>> licenseData = new HashMap<>();
 		Map<Long, Map<String,Object>> cData = new HashMap<>();
 		cData.put(1L, new HashMap<String, Object>());
@@ -60,6 +60,12 @@ public class BillingDataServiceImplTest {
 			public List<WebSite> getWebSites() {
 				return Arrays.asList(webSite);
 			}
+			
+			@Override
+			public String getPurchaseOrder() {
+				return "1234";
+			}
+
 		};
 
 		Calendar calendar = Calendar.getInstance();
@@ -83,7 +89,7 @@ public class BillingDataServiceImplTest {
 	@Test
 	public void testSupportFormat()
 	{
-		String original = "DI\tCHERSON01\tOCW-21\tStandard plan for Cherson: 1 month (contract until March, 2013)\t1\t1234567.890\tonCourse March, 2012\t31/03/2012\n";
+		String original = "DI\t1234\tCHERSON01\tOCW-21\tStandard plan for Cherson: 1 month (contract until March, 2013)\t1\t1234567.890\tonCourse March, 2012\t31/03/2012\n";
 		Map<Long, Map<Long, Map<String, Object>>> licenseData = new HashMap<>();
 		Map<Long, Map<String,Object>> cData = new HashMap<>();
 		cData.put(1L, new HashMap<String, Object>());
@@ -128,6 +134,11 @@ public class BillingDataServiceImplTest {
 			@Override
 			public List<WebSite> getWebSites() {
 				return Arrays.asList(webSite);
+			}
+
+			@Override
+			public String getPurchaseOrder() {
+				return "1234";
 			}
 		};
 
