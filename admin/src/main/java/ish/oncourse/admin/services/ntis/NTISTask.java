@@ -91,7 +91,7 @@ public class NTISTask implements Runnable {
 		ntisData.add("Update finished.");
 		ntisData.add(String.format("END_%s", preferenceController.getNTISLastUpdate()));
 
-		sendResultEmail();
+//		sendResultEmail();
 	}
 
 	private void sendResultEmail() {
