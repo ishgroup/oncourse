@@ -161,6 +161,7 @@ publishing {
 	publications {
 		apidocs(MavenPublication) {
 			artifact apidocsBundle
+            version '99-SNAPSHOT' // gradle has a bug where it cannot find SNAPSHOTS without a version
 		}
 	}
 }
