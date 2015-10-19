@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		cayenneVersion = '4.0.M2'
-		log4j2Version = '2.3'
+		log4j2Version = '2.4.1'
         waCommonWebservicesClientVersion = '8.2.8'
 	}
 
@@ -17,7 +17,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.apache.cayenne:cayenne-tools:$cayenneVersion"
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.7'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
 		classpath 'org.gradle.plugins:gradle-compass:1.0.10'
 		classpath 'com.eriwen:gradle-js-plugin:1.12.1'
 	}
