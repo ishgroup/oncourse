@@ -32,6 +32,7 @@ test {
 	if (project.hasProperty('searchTestDatabaseUri')) {
 		systemProperty 'testDatabaseUri', searchTestDatabaseUri
 		systemProperty 'testDatabaseDriver', searchTestDatabaseDriver
+		systemProperty 'testCreateTables', searchTestCreateTables
 	}
 }
 

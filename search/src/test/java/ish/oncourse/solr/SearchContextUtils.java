@@ -33,6 +33,7 @@ public class SearchContextUtils {
 	private static Mysql mysql;
 	private static boolean createSchema = false;
 	private static boolean dropSchema = false;
+	private static boolean createTables = false;
 
 	private static ServerRuntime cayenneRuntime;
 
@@ -78,7 +79,7 @@ public class SearchContextUtils {
 
 		DataDomain domain = cayenneRuntime.getDataDomain();
 
-		if (createSchema) {
+		if (createTables) {
 			createTablesForDataSourceByParams(oncourse, domain.getDataMap("oncourse"), params);
 		}
 
@@ -145,6 +146,7 @@ public class SearchContextUtils {
 
 		String databaseUri = System.getProperty("testDatabaseUri");
 		String driverClass = System.getProperty("testDatabaseDriver");
+		createTables = Boolean.valueOf(System.getProperty("testCreateTables"));
 
 		mysql = Mysql.valueOf(databaseUri);
 
