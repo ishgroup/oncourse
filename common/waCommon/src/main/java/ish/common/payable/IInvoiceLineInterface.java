@@ -8,8 +8,6 @@ import java.math.BigDecimal;
  * Common interface for angel and willow, that introduce common InvoiceLine features. <br/>
  * Provides definitions of methods used to calculate various types of totals and subtotals associated with price, discount and taxes for a invoice line (payable
  * line in the future).
- * 
- * @author ksenia, marcin
  */
 public interface IInvoiceLineInterface extends PayableLineInterface {
 

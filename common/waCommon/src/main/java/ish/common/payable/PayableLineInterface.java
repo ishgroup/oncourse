@@ -11,8 +11,6 @@ import java.math.BigDecimal;
 
 /**
  * interface uniting InvoiceLine and PayLine between server and client
- * 
- * @author marcin
  */
 public interface PayableLineInterface extends Serializable {
 

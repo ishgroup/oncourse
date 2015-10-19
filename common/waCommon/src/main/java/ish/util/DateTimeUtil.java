@@ -8,8 +8,9 @@ import java.util.Date;
 /**
  * Set of basic, utility methods for java.util.Date and java.util.Calendar classes. Sometimes wonder why those methods are not a part of java itself.
  * 
- * @author marcin
+ * Deprecated since we moved to the new time classes in Java 8
  */
+@Deprecated
 public final class DateTimeUtil {
 
 	private static final double MILISECONDS_PER_DAY = 24 * 60 * 60 * 1000d;

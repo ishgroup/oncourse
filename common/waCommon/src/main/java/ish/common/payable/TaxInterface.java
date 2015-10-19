@@ -6,8 +6,6 @@ package ish.common.payable;
 
 /**
  * Common interface for Tax entity
- * 
- * @author ldeck
  */
 public interface TaxInterface {
 	public static final String DESCRIPTION_KEY = "description";

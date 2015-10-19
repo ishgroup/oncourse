@@ -11,7 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * General ledger accounts have a type that defines their behaviour.
+ * General ledger accounts have a type that defines their behaviour. This has two main effects:
+ * 
+ * * filtering the accounts so they are only available in appropriate places (eg. income for student fee)
+ * * ensuring negative and positive signs are applied properly to balanced transaction pairs
  * 
  */
 @API

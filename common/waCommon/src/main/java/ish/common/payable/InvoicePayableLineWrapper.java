@@ -7,8 +7,6 @@ import java.math.RoundingMode;
 
 /**
  * Wrapper that implements the behavior of InvoiceLine-specific methods
- * 
- * @author ksenia
  */
 public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 	private static final long serialVersionUID = 1L;

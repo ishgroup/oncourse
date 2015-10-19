@@ -3,10 +3,19 @@
  */
 package ish.common.types;
 
-public enum  USIFieldStatus {
+/**
+ * 
+ */
+public enum USIFieldStatus {
 
+	/**
+	 * 
+	 */
 	MATCH("Match"),
 
+	/**
+	 * 
+	 */
 	NO_MATCH("NoMatch");
 
 	private String stringValue;

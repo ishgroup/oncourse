@@ -4,7 +4,7 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
- * choices for attachment visibility
+ * Choices for Document Attachment visibility. This is an access right for tutors and students.
  * 
  */
 @API

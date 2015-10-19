@@ -8,8 +8,7 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
- * A USI can be validated against the government verification service
- * 
+ * A USI can be validated against the government verification service.
  */
 @API
 public enum UsiStatus implements DisplayableExtendedEnumeration<Integer> {

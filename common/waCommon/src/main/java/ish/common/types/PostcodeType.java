@@ -21,7 +21,7 @@ public enum PostcodeType implements DisplayableExtendedEnumeration<Integer> {
 	DELIVERY_AREA(1, "Delivery Area"),
 	
 	/**
-	 * Post Office Boxes
+	 * Post Office Boxes. These types of postcodes cannot be used for AVETMISS reporting.
 	 * Database value: 2
 	 *
 	 */

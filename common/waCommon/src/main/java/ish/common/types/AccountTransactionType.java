@@ -8,7 +8,7 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
- * GL transactions have a 'type' depending on which entity created them.
+ * General ledger Account Transactions have a 'type' depending on which entity created them.
  * 
  */
 @API

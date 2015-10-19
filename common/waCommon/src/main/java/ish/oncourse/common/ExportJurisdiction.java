@@ -7,8 +7,8 @@ package ish.oncourse.common;
 import ish.common.util.DisplayableExtendedEnumeration;
 
 /**
- * The AVETMISS export can run in one of several modes, depending on the state it is exported to. It isn't so much a standard as a collection of mutually
- * incompatible standards.
+ * The AVETMISS export can run in one of several modes, depending on the state it is exported to.
+ * It isn't so much a standard as a collection of mutually incompatible standards.
  */
 public enum ExportJurisdiction implements DisplayableExtendedEnumeration<Integer> {
 	PLAIN(1, "AVETMISS standard"),
