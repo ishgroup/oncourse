@@ -111,10 +111,8 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 	}
 
 	private BigDecimal getEcommerceFree() {
-		BigDecimal ecommerceFree = (BigDecimal) licenseData.get(college.getId()).get(getWebSiteId()).get(ECOMMERCE_FREE_KEY);
-		ecommerceFree = ecommerceFree == null ? new BigDecimal(0.0) : ecommerceFree;
-
-		return ecommerceFree;
+		Integer ecommerceFree = (Integer) licenseData.get(college.getId()).get(getWebSiteId()).get(ECOMMERCE_FREE_KEY);
+		return ecommerceFree == null ? new BigDecimal(0.0) : new BigDecimal(ecommerceFree);
 	}
 	
 	private BigDecimal getWebValue() {
