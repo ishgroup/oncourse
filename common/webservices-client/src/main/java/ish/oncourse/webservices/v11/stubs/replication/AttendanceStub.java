@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *     &lt;extension base="{http://repl.v11.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
  *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="markerId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="durationMinutes" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
@@ -39,7 +38,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "attendanceStub", propOrder = {
     "attendanceType",
-    "markerId",
     "sessionId",
     "studentId",
     "durationMinutes",
@@ -55,10 +53,6 @@ public class AttendanceStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer attendanceType;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
-    @XmlSchemaType(name = "long")
-    protected Long markerId;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
@@ -103,30 +97,6 @@ public class AttendanceStub
      */
     public void setAttendanceType(Integer value) {
         this.attendanceType = value;
-    }
-
-    /**
-     * Gets the value of the markerId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Long getMarkerId() {
-        return markerId;
-    }
-
-    /**
-     * Sets the value of the markerId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMarkerId(Long value) {
-        this.markerId = value;
     }
 
     /**
