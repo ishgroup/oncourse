@@ -150,7 +150,7 @@ public class SearchContextUtils {
 
 		mysql = Mysql.valueOf(databaseUri);
 
-		truncateAllTables();
+		truncateAllTables(createTables);
 
 		if (createSchema) {
 			createMysqlSchema(databaseUri);
@@ -187,7 +187,7 @@ public class SearchContextUtils {
 		connection.close();
 	}
 
-	public static void truncateAllTables() throws SQLException {
+	public static void truncateAllTables(boolean dropTables) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement  = null;
 		Statement statement = null;
@@ -199,9 +199,8 @@ public class SearchContextUtils {
 
 			statement = connection.createStatement();
 			statement.addBatch("SET FOREIGN_KEY_CHECKS=0;");
-			while (resultSet.next())
-            {
-                statement.addBatch(String.format("TRUNCATE TABLE %s;", resultSet.getString(1)));
+			while (resultSet.next()) {
+                statement.addBatch(String.format(dropTables ? "DROP TABLE %s;": "TRUNCATE TABLE %s;", resultSet.getString(1)));
             }
 			statement.addBatch("SET FOREIGN_KEY_CHECKS=1;");
 			statement.executeBatch();

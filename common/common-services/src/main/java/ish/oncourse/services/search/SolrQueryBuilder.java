@@ -5,6 +5,7 @@ import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
+import org.apache.solr.common.params.CommonParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +112,6 @@ public class SolrQueryBuilder {
         q.addSort(FIELD_score, ORDER.desc);
         q.addSort(FIELD_startDate, ORDER.asc);
         q.addSort(FIELD_name, ORDER.asc);
-        q.setShowDebugInfo(params.getDebugQuery());
 
         if (appendFacet) {
             appendFacet(q);
@@ -178,6 +178,10 @@ public class SolrQueryBuilder {
         q.setStart(start);
         q.setRows(rows);
         q.setIncludeScore(true);
+        if (params.getDebugQuery() != null && params.getDebugQuery()) {
+            q.setShowDebugInfo(params.getDebugQuery());
+            q.set(CommonParams.EXPLAIN_STRUCT, String.valueOf(true));
+        }
         q.addFilterQuery(String.format(FILTER_TEMPLATE_collegeId, collegeId));
     }
 

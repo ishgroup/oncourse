@@ -45,7 +45,7 @@ public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
 
         ReplacementDataSet rDataSet = initReplacement(dataSet);
 
-        SearchContextUtils.truncateAllTables();
+        SearchContextUtils.truncateAllTables(false);
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, rDataSet);
 
 
