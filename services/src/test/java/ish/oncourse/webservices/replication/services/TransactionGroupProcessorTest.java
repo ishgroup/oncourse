@@ -9,10 +9,10 @@ import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v6.stubs.replication.BinaryDataStub;
-import ish.oncourse.webservices.v6.stubs.replication.BinaryInfoStub;
-import ish.oncourse.webservices.v6.stubs.replication.DeletedStub;
-import ish.oncourse.webservices.v6.stubs.replication.EnrolmentStub;
+import ish.oncourse.webservices.v11.stubs.replication.BinaryDataStub;
+import ish.oncourse.webservices.v11.stubs.replication.BinaryInfoStub;
+import ish.oncourse.webservices.v11.stubs.replication.DeletedStub;
+import ish.oncourse.webservices.v11.stubs.replication.EnrolmentStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -102,12 +102,12 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     }
 
     @Test
-    public void testDeleteV6Object() throws Exception {
+    public void testDeleteV11Object() throws Exception {
     	setup();
         /**
          * Transaction with one Contact delete.
          */
-    	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V6);
+    	GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V11);
         List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
         assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
@@ -115,7 +115,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         /**
          * Transaction with one Student delete.
          */
-        transactionGroup = getTransactionGroup(1, SupportedVersions.V6);
+        transactionGroup = getTransactionGroup(1, SupportedVersions.V11);
         replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
         assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
@@ -123,7 +123,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         /**
          * Transaction with Merge Student 1 to 2  delete.
          */
-        transactionGroup = getTransactionGroup(2, SupportedVersions.V6);
+        transactionGroup = getTransactionGroup(2, SupportedVersions.V11);
         List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
         /**
          * Adjust relationships as the angel side does it.
@@ -150,7 +150,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
     @Test
     public void testBinaryDataProcessing() {
-        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V6);
+        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V11);
         transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
         BinaryInfoStub binaryInfoStub = new BinaryInfoStub();
         binaryInfoStub.setEntityIdentifier("AttachmentInfo");
@@ -196,7 +196,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         deletedStubBD.setEntityIdentifier("AttachmentData");
 
 
-        transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V6);
+        transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V11);
         transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBI);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBD);
