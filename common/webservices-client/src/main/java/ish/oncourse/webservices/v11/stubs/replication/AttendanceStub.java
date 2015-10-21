@@ -1,6 +1,7 @@
 
 package ish.oncourse.webservices.v11.stubs.replication;
 
+import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -25,6 +26,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="durationMinutes" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *         &lt;element name="note" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="markedByTutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="markedByTutorDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -40,7 +43,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "sessionId",
     "studentId",
     "durationMinutes",
-    "note"
+    "note",
+    "markedByTutorId",
+    "markedByTutorDate"
 })
 public class AttendanceStub
     extends ReplicationStub
@@ -67,6 +72,14 @@ public class AttendanceStub
     @XmlSchemaType(name = "int")
     protected Integer durationMinutes;
     protected String note;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long markedByTutorId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlSchemaType(name = "dateTime")
+    protected Date markedByTutorDate;
 
     /**
      * Gets the value of the attendanceType property.
@@ -210,6 +223,54 @@ public class AttendanceStub
      */
     public void setNote(String value) {
         this.note = value;
+    }
+
+    /**
+     * Gets the value of the markedByTutorId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getMarkedByTutorId() {
+        return markedByTutorId;
+    }
+
+    /**
+     * Sets the value of the markedByTutorId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMarkedByTutorId(Long value) {
+        this.markedByTutorId = value;
+    }
+
+    /**
+     * Gets the value of the markedByTutorDate property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Date getMarkedByTutorDate() {
+        return markedByTutorDate;
+    }
+
+    /**
+     * Sets the value of the markedByTutorDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMarkedByTutorDate(Date value) {
+        this.markedByTutorDate = value;
     }
 
 }

@@ -30,6 +30,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="priorLearningId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="markedByTutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="markedByTutorDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -48,7 +51,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "moduleId",
     "startDate",
     "endDate",
-    "status"
+    "status",
+    "priorLearningId",
+    "markedByTutorId",
+    "markedByTutorDate"
 })
 public class OutcomeStub
     extends ReplicationStub
@@ -88,6 +94,18 @@ public class OutcomeStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer status;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long priorLearningId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long markedByTutorId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlSchemaType(name = "dateTime")
+    protected Date markedByTutorDate;
 
     /**
      * Gets the value of the deliveryMode property.
@@ -303,6 +321,78 @@ public class OutcomeStub
      */
     public void setStatus(Integer value) {
         this.status = value;
+    }
+
+    /**
+     * Gets the value of the priorLearningId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getPriorLearningId() {
+        return priorLearningId;
+    }
+
+    /**
+     * Sets the value of the priorLearningId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPriorLearningId(Long value) {
+        this.priorLearningId = value;
+    }
+
+    /**
+     * Gets the value of the markedByTutorId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getMarkedByTutorId() {
+        return markedByTutorId;
+    }
+
+    /**
+     * Sets the value of the markedByTutorId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMarkedByTutorId(Long value) {
+        this.markedByTutorId = value;
+    }
+
+    /**
+     * Gets the value of the markedByTutorDate property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Date getMarkedByTutorDate() {
+        return markedByTutorDate;
+    }
+
+    /**
+     * Sets the value of the markedByTutorDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMarkedByTutorDate(Date value) {
+        this.markedByTutorDate = value;
     }
 
 }

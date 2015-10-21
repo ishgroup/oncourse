@@ -83,6 +83,7 @@
 			<xs:element name="courseClassPaymentPlanLine" type="tns:courseClassPaymentPlanLineStub"/>
 			<xs:element name="invoiceDueDate" type="tns:invoiceDueDateStub"/>
 			<xs:element name="corporatePassDiscount" type="tns:corporatePassDiscountStub"/>
+			<xs:element name="priorLearning" type="tns:priorLearningStub"/>
 			<xs:element name="hollow" type="tns:hollowStub" />
 			<xs:element name="deleted" type="tns:deletedStub" />
 			<xs:element name="confirmExecution" type="tns:confirmExecution" />
@@ -265,6 +266,8 @@
 							<xs:element name="studentId" type="xs:long" nillable="false" />
 							<xs:element name="durationMinutes" type="xs:int" minOccurs="0" />
 							<xs:element name="note" type="xs:string" minOccurs="0" />
+							<xs:element name="markedByTutorId" type="xs:long" />
+							<xs:element name="markedByTutorDate" type="xs:dateTime" />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -1048,6 +1051,9 @@
 							<xs:element name="startDate" type="xs:dateTime" />
 							<xs:element name="endDate" type="xs:dateTime" />
 							<xs:element name="status" type="xs:int" />
+							<xs:element name="priorLearningId" type="xs:long" />
+							<xs:element name="markedByTutorId" type="xs:long" />
+							<xs:element name="markedByTutorDate" type="xs:dateTime" />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -1435,6 +1441,21 @@
 						<xs:sequence>
 							<xs:element name="corporatePassId" type="xs:long"/>
 							<xs:element name="discountId" type="xs:long"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="priorLearningStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="externalRef" type="xs:string"/>
+							<xs:element name="notes" type="xs:string"/>
+							<xs:element name="outcomeIdTrainingOrg" type="xs:string"/>
+							<xs:element name="qualificationId" type="xs:long"/>
+							<xs:element name="studentId" type="xs:long"/>
+							<xs:element name="title" type="xs:string"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>

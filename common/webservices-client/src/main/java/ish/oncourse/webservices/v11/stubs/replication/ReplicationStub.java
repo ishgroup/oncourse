@@ -55,6 +55,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     CourseClassTutorStub.class,
     ScriptStub.class,
     EnrolmentStub.class,
+    PriorLearningStub.class,
     BinaryDataStub.class,
     ContactRelationTypeStub.class,
     CustomFieldTypeStub.class,
