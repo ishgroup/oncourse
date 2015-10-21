@@ -102,6 +102,11 @@ public class SearchParamsParser
                     case site:
                         searchParams.setSiteId(parseLong(parameter));
                         value = searchParams.getSiteId();
+                        break;
+                    case tutorId:
+                        searchParams.setTutorId(parseLong(parameter));
+                        value = searchParams.getTutorId();
+                        break;
                     default:
                         logger.warn("Parser is not defined for SearchParam {}", name);
                 }

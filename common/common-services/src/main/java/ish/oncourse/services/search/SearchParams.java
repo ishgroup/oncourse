@@ -18,6 +18,7 @@ public class SearchParams {
     private Date before;
     private List<Suburb> suburbs = new ArrayList<>();
     private Long siteId;
+    private Long tutorId;
     private Boolean debugQuery = Boolean.FALSE;
     private TimeZone clientTimezone;
 	private List<Tag> tags = new ArrayList<>();
@@ -127,5 +128,13 @@ public class SearchParams {
                 subject == null &&
                 after == null &&
                 before == null;
+    }
+
+    public Long getTutorId() {
+        return tutorId;
+    }
+
+    public void setTutorId(Long tutorId) {
+        this.tutorId = tutorId;
     }
 }

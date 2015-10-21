@@ -50,6 +50,7 @@ public class SolrQueryBuilder {
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
     static final String FILTER_TEMPLATE_siteId = "siteId:%d";
+    static final String FILTER_TEMPLATE_tutorId = "tutorId:%d";
     static final String FILTER_TEMPLATE_between = FIELD_class_start + ":[%s TO %s]";
 
     static final String FILTER_TEMPLATE_geofilt = "{!score=distance}%s";
@@ -101,6 +102,9 @@ public class SolrQueryBuilder {
         appendFilterSiteId(filters);
         appendAnd(filters);
 
+        appendFilterTutorId(filters);
+        appendAnd(filters);
+
         appendFilterTag(q);
 
         clearLastAnd(filters);
@@ -117,6 +121,13 @@ public class SolrQueryBuilder {
             appendFacet(q);
         }
         return q;
+    }
+
+    private void appendFilterTutorId(ArrayList<String> filters) {
+        if (params.getTutorId() != null) {
+            Long tutorId = params.getTutorId();
+            filters.add(String.format(FILTER_TEMPLATE_tutorId, tutorId));
+        }
     }
 
     private void appendFacet(SolrQuery q) {
