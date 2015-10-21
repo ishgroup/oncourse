@@ -18,6 +18,7 @@ public class UpdateAmountOwingJob implements Job{
 
     private static final String SQL  = "select i.id as ID, i.angelId as ANGELID, i.collegeId as COLLEGEID\n" +
             "from Invoice i \n" +
+			"inner join College c on c.id = i.collegeId \n" +
             "inner join PaymentInLine pil on pil.invoiceId = i.id\n" +
             "inner join PaymentIn p on p.id = pil.paymentInId\n" +
             "left join InvoiceLine il on i.id = il.invoiceId\n" +
@@ -26,6 +27,8 @@ public class UpdateAmountOwingJob implements Job{
             "and i.amountOwing = (select sum(il.priceEachExTax - il.discountEachExTax + il.taxEach) from InvoiceLine il where il.invoiceId = i.id)\n" +
             "and 0 = (select count(p1.id) from PaymentInLine pl1 inner join PaymentIn p1 on pl1.paymentInId = p1.id where pl1.invoiceId = i.id and pl1.amount < 0 and p1.type in (7,10,5))\n" +
             "and (e.id is null or e.status = 3)\n" +
+			"and c.billingCode is not null\n" +
+			"and c.lastRemoteAuthentication > now()-interval 1 day\n" +
             "order by i.collegeId, i.created";
 
     private ICayenneService cayenneService;
