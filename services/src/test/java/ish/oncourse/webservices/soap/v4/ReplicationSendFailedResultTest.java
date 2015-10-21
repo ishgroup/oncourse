@@ -33,30 +33,6 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV6SendResultsStatusFail() throws Exception {
-		IReplicationService service = getService(IReplicationService.class);
-		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V6);
-		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V6);
-		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {
-			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
-				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);
-				confirmedRecord.setMessage("Record replicated.");
-				StubUtils.setFailedStatus(confirmedRecord);
-				result.getGenericReplicatedRecord().add(confirmedRecord);
-			}
-		}
-		service.sendResults(result);
-		DatabaseConnection dbUnitConnection = new DatabaseConnection(getDataSource("jdbc/oncourse").getConnection(), null);
-		ITable actualData = dbUnitConnection.createQueryTable("QueuedRecord",
-				String.format("select * from QueuedRecord where entityWillowId = 1 or entityWillowId = 1482"));
-		assertEquals("Expecting two queuable records.", actualData.getRowCount(), 2);
-		for (int i = 0; i < actualData.getRowCount(); i++) {
-			Integer numberOfAttempts = (Integer) actualData.getValue(i, "numberOfAttempts");
-			assertTrue("Expecting numberOfAttempts=1.", numberOfAttempts.equals(1));
-		}
-	}
-	
-	@Test
 	public void testV7SendResultsStatusFail() throws Exception {
 		IReplicationService service = getService(IReplicationService.class);
 		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V7);

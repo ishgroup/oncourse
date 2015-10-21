@@ -51,7 +51,6 @@ public class UpdateAmountOwingJob implements Job{
                 String instruction = String.format("queue:instructWithRelationships:Invoice:%d", angelId);
                 SQLSelect.dataRowQuery("INSERT INTO Instruction (collegeId, created, message) VALUES(#bind($collegeId), #bind($date), #bind($instruction))")
                         .paramsArray(collegeId, new Date(), instruction).select(objectContext);
-                //objectContext.commitChanges();
                 logger.warn("Update amount owing instruction was added for invoice: {}, college: {}", angelId, collegeId);
             } catch (Exception e) {
                 logger.error("Unexpected exception. DataRow: {}", dataRow, e);
