@@ -3576,7 +3576,7 @@
 			externalRef VARCHAR(80) NULL, 
 			id BIGINT NOT NULL AUTO_INCREMENT, 
 			modified DATETIME NOT NULL, 
-			notes VARCHAR(32000) NULL, 
+			notes TEXT NULL, 
 			outcomeIdTrainingOrg VARCHAR(12) NULL, 
 			qualificationId BIGINT NULL, 
 			studentId BIGINT NOT NULL, 

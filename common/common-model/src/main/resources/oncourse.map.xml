@@ -797,7 +797,7 @@
 		<db-attribute name="externalRef" type="VARCHAR" length="80"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="notes" type="VARCHAR" length="32000"/>
+		<db-attribute name="notes" type="LONGVARCHAR" length="32000"/>
 		<db-attribute name="outcomeIdTrainingOrg" type="VARCHAR" length="12"/>
 		<db-attribute name="qualificationId" type="BIGINT"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true"/>
