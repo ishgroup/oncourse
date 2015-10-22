@@ -85,6 +85,7 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(getEntityName(CourseClassPaymentPlanLine.class), new CourseClassPaymentPlanLineUpdater());
 		updaterMap.put(getEntityName(InvoiceDueDate.class), new InvoiceDueDateUpdater());
 		updaterMap.put(getEntityName(CorporatePassDiscount.class), new CorporatePassDiscountUpdater());
+		updaterMap.put(getEntityName(PriorLearning.class), new PriorLearningUpdater());
     }
 
 	/**

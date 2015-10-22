@@ -3559,4 +3559,90 @@
 			ALTER TABLE College ADD COLUMN purchaseOrder VARCHAR(256);
 		</sql>
 	</changeSet>
+
+
+
+	<changeSet id="229" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="PriorLearning"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE PriorLearning (
+			angelId BIGINT NULL, 
+			collegeId BIGINT NOT NULL, 
+			created DATETIME NOT NULL, 
+			externalRef VARCHAR(80) NULL, 
+			id BIGINT NOT NULL AUTO_INCREMENT, 
+			modified DATETIME NOT NULL, 
+			notes VARCHAR(32000) NULL, 
+			outcomeIdTrainingOrg VARCHAR(12) NULL, 
+			qualificationId BIGINT NULL, 
+			studentId BIGINT NOT NULL, 
+			title VARCHAR(200) NULL, 
+			PRIMARY KEY (id));
+
+			ALTER TABLE PriorLearning ADD CONSTRAINT fk_priorLearning_college FOREIGN KEY (collegeId) REFERENCES College (id);
+
+			ALTER TABLE PriorLearning ADD CONSTRAINT fk_priorLearning_qualification FOREIGN KEY (qualificationId) REFERENCES Qualification (id);
+
+			ALTER TABLE PriorLearning ADD CONSTRAINT fk_priorLearning_student FOREIGN KEY (studentId) REFERENCES Student (id);
+
+			ALTER TABLE PriorLearning ADD UNIQUE priorLearning_collegeId_angelId_unique (collegeId, angelId);
+		</sql>
+	</changeSet>
+
+	<changeSet id="230" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<not>
+					<foreignKeyConstraintExists foreignKeyName="fk_outcome_priorLearning" foreignKeyTableName="Outcome" />
+				</not>
+				<columnExists tableName="Outcome" columnName="priorLearningId"/>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE Outcome MODIFY COLUMN enrolmentId BIGINT NULL;
+			ALTER TABLE Outcome ADD CONSTRAINT fk_outcome_priorLearning FOREIGN KEY (priorLearningId) REFERENCES PriorLearning (id);
+		</sql>
+	</changeSet>
+
+
+	<changeSet id="231" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Outcome" columnName="markedByTutorId"/>
+			</not>
+		</preConditions>
+		<sql>
+
+			ALTER TABLE Outcome ADD COLUMN markedByTutorId BIGINT NULL;
+
+			ALTER TABLE Outcome ADD COLUMN markedByTutorDate DATETIME NULL;
+
+			ALTER TABLE Outcome ADD CONSTRAINT fk_outcome_markedByTutorId FOREIGN KEY (markedByTutorId) REFERENCES Tutor (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="232" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Attendance" columnName="markedByTutorDate"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Attendance DROP FOREIGN KEY Attendance_ibfk_4;
+
+			ALTER TABLE Attendance CHANGE COLUMN markerId markedByTutorId BIGINT NULL;
+			
+			ALTER TABLE Attendance ADD COLUMN markedByTutorDate DATETIME NULL;
+
+			ALTER TABLE Attendance ADD CONSTRAINT fk_attendance_markedByTutorId FOREIGN KEY (markedByTutorId) REFERENCES Tutor (id);
+
+		</sql>
+	</changeSet>
+	
+	
+
 </databaseChangeLog>

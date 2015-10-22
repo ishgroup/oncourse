@@ -23,6 +23,7 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PriorLearning;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.WaitingList;
 
@@ -101,6 +102,8 @@ public abstract class _Student extends CayenneDataObject {
     @Deprecated
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
     @Deprecated
+    public static final String PRIOR_LEARNINGS_PROPERTY = "priorLearnings";
+    @Deprecated
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
     @Deprecated
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
@@ -139,6 +142,7 @@ public abstract class _Student extends CayenneDataObject {
     public static final Property<Language> LANGUAGE_HOME = new Property<Language>("languageHome");
     public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = new Property<List<MessagePerson>>("messagePeople");
     public static final Property<List<PaymentIn>> PAYMENTS_IN = new Property<List<PaymentIn>>("paymentsIn");
+    public static final Property<List<PriorLearning>> PRIOR_LEARNINGS = new Property<List<PriorLearning>>("priorLearnings");
     public static final Property<List<StudentConcession>> STUDENT_CONCESSIONS = new Property<List<StudentConcession>>("studentConcessions");
     public static final Property<List<WaitingList>> WAITING_LISTS = new Property<List<WaitingList>>("waitingLists");
 
@@ -403,6 +407,18 @@ public abstract class _Student extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<PaymentIn> getPaymentsIn() {
         return (List<PaymentIn>)readProperty("paymentsIn");
+    }
+
+
+    public void addToPriorLearnings(PriorLearning obj) {
+        addToManyTarget("priorLearnings", obj, true);
+    }
+    public void removeFromPriorLearnings(PriorLearning obj) {
+        removeToManyTarget("priorLearnings", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<PriorLearning> getPriorLearnings() {
+        return (List<PriorLearning>)readProperty("priorLearnings");
     }
 
 

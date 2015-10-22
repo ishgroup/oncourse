@@ -5,6 +5,8 @@ import ish.common.types.TypesUtil;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Outcome;
+import ish.oncourse.model.PriorLearning;
+import ish.oncourse.model.Tutor;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v11.stubs.replication.OutcomeStub;
@@ -22,12 +24,24 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		entity.setDeliveryMode(stub.getDeliveryMode());
 		entity.setStartDate(stub.getStartDate());
 		entity.setEndDate(stub.getEndDate());
-		Enrolment enrolment = callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class);
-		if (enrolment != null) {
-			entity.setEnrolment(enrolment);
-		} else {
-			logger.error("Can not find enrolment by angelId: {}", stub.getEnrolmentId());
+		
+		
+		if (stub.getEnrolmentId() != null) {
+			Enrolment enrolment = callback.updateRelationShip(stub.getEnrolmentId(), Enrolment.class);
+			if (enrolment != null) {
+				entity.setEnrolment(enrolment);
+			} else {
+				logger.error("Can not find enrolment by angelId: {}", stub.getEnrolmentId());
+			}
+		} else if (stub.getPriorLearningId() != null) {
+			PriorLearning priorLearning = callback.updateRelationShip(stub.getPriorLearningId(), PriorLearning.class);
+			if (priorLearning != null) {
+				entity.setPriorLearning(priorLearning);
+			} else {
+				logger.error("Can not find priorLearning by angelId: {}", stub.getPriorLearningId());
+			}
 		}
+		
 		entity.setFundingSource(stub.getFundingSource());
 		if (stub.getModuleId() != null) {
 			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
@@ -40,6 +54,15 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		} else {
 			entity.setStatus(OutcomeStatus.STATUS_NOT_SET);
 		}
+		
+		if (stub.getMarkedByTutorDate() != null) {
+			entity.setMarkedByTutorDate(stub.getMarkedByTutorDate());
+		}
+
+		if (stub.getMarkedByTutorId() != null) {
+			entity.setMarkedByTutor(callback.updateRelationShip(stub.getMarkedByTutorId(), Tutor.class));
+		}
+		
 	}
 
 }

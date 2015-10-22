@@ -15,7 +15,13 @@ public class OutcomeStubBuilder extends AbstractWillowStubBuilder<Outcome, Outco
 		if (entity.getDeliveryMode() != null) {
 			stub.setDeliveryMode(entity.getDeliveryMode());
 		}
-		stub.setEnrolmentId(entity.getEnrolment().getId());
+		
+		if (entity.getEnrolment() != null) {
+			stub.setEnrolmentId(entity.getEnrolment().getId());
+		} else if (entity.getPriorLearning() != null) {
+			stub.setEnrolmentId(entity.getPriorLearning().getId());
+		}
+		
 		if (entity.getFundingSource() != null) {
 			stub.setFundingSource(entity.getFundingSource());
 		}
@@ -27,6 +33,13 @@ public class OutcomeStubBuilder extends AbstractWillowStubBuilder<Outcome, Outco
 			stub.setStatus(entity.getStatus().getDatabaseValue());
 		}
 		stub.setReportableHours(new BigDecimal(entity.getReportableHours()));
+
+		stub.setMarkedByTutorDate(entity.getMarkedByTutorDate());
+		
+		if (entity.getMarkedByTutor() != null) {
+			stub.setMarkedByTutorId(entity.getMarkedByTutor().getId());
+		}
+		
 		return stub;
 	}
 

@@ -15,16 +15,6 @@ public class AttendanceUpdater extends AbstractWillowUpdater<AttendanceStub, Att
 	protected void updateEntity(AttendanceStub stub, Attendance entity, RelationShipCallback callback) {
 		entity.setAttendanceType(stub.getAttendanceType());
 		entity.setCreated(stub.getCreated());
-		Long markerId = stub.getMarkerId();
-		if (markerId != null) {
-			Contact contact = callback.updateRelationShip(markerId, Contact.class);
-            if (contact == null) {
-                throw new UpdaterException(String.format("Contact cannot be null for Attendance angelId: %s and markerId: %s" , stub.getAngelId(), markerId));
-            }
-			if (contact.getTutor() != null) {
-				entity.setMarker(contact.getTutor());
-			}
-		}
 		entity.setModified(stub.getModified());
 		entity.setSession(callback.updateRelationShip(stub.getSessionId(), Session.class));
 		entity.setStudent(callback.updateRelationShip(stub.getStudentId(), Student.class));

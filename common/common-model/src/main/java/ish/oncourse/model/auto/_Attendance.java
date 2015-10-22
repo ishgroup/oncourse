@@ -29,13 +29,15 @@ public abstract class _Attendance extends CayenneDataObject {
     @Deprecated
     public static final String DURATION_MINUTES_PROPERTY = "durationMinutes";
     @Deprecated
+    public static final String MARKED_BY_TUTOR_DATE_PROPERTY = "markedByTutorDate";
+    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
     @Deprecated
     public static final String NOTE_PROPERTY = "note";
     @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
     @Deprecated
-    public static final String MARKER_PROPERTY = "marker";
+    public static final String MARKED_BY_TUTOR_PROPERTY = "markedByTutor";
     @Deprecated
     public static final String SESSION_PROPERTY = "session";
     @Deprecated
@@ -47,10 +49,11 @@ public abstract class _Attendance extends CayenneDataObject {
     public static final Property<Integer> ATTENDANCE_TYPE = new Property<Integer>("attendanceType");
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<Integer> DURATION_MINUTES = new Property<Integer>("durationMinutes");
+    public static final Property<Date> MARKED_BY_TUTOR_DATE = new Property<Date>("markedByTutorDate");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<String> NOTE = new Property<String>("note");
     public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Tutor> MARKER = new Property<Tutor>("marker");
+    public static final Property<Tutor> MARKED_BY_TUTOR = new Property<Tutor>("markedByTutor");
     public static final Property<Session> SESSION = new Property<Session>("session");
     public static final Property<Student> STUDENT = new Property<Student>("student");
 
@@ -82,6 +85,13 @@ public abstract class _Attendance extends CayenneDataObject {
         return (Integer)readProperty("durationMinutes");
     }
 
+    public void setMarkedByTutorDate(Date markedByTutorDate) {
+        writeProperty("markedByTutorDate", markedByTutorDate);
+    }
+    public Date getMarkedByTutorDate() {
+        return (Date)readProperty("markedByTutorDate");
+    }
+
     public void setModified(Date modified) {
         writeProperty("modified", modified);
     }
@@ -105,12 +115,12 @@ public abstract class _Attendance extends CayenneDataObject {
     }
 
 
-    public void setMarker(Tutor marker) {
-        setToOneTarget("marker", marker, true);
+    public void setMarkedByTutor(Tutor markedByTutor) {
+        setToOneTarget("markedByTutor", markedByTutor, true);
     }
 
-    public Tutor getMarker() {
-        return (Tutor)readProperty("marker");
+    public Tutor getMarkedByTutor() {
+        return (Tutor)readProperty("markedByTutor");
     }
 
 

@@ -139,6 +139,8 @@ public abstract class _College extends CayenneDataObject {
     @Deprecated
     public static final String PREFERENCES_PROPERTY = "preferences";
     @Deprecated
+    public static final String PRIOR_LEARNINGS_PROPERTY = "priorLearnings";
+    @Deprecated
     public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
     @Deprecated
     public static final String PRODUCTS_PROPERTY = "products";
@@ -243,6 +245,7 @@ public abstract class _College extends CayenneDataObject {
     public static final Property<List<PaymentIn>> PAYMENTS_IN = new Property<List<PaymentIn>>("paymentsIn");
     public static final Property<List<PaymentOut>> PAYMENTS_OUT = new Property<List<PaymentOut>>("paymentsOut");
     public static final Property<List<Preference>> PREFERENCES = new Property<List<Preference>>("preferences");
+    public static final Property<List<PriorLearning>> PRIOR_LEARNINGS = new Property<List<PriorLearning>>("priorLearnings");
     public static final Property<List<ProductItem>> PRODUCT_ITEMS = new Property<List<ProductItem>>("productItems");
     public static final Property<List<Product>> PRODUCTS = new Property<List<Product>>("products");
     public static final Property<List<QueuedRecord>> QUEUED_RECORDS = new Property<List<QueuedRecord>>("queuedRecords");
@@ -882,6 +885,18 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Preference> getPreferences() {
         return (List<Preference>)readProperty("preferences");
+    }
+
+
+    public void addToPriorLearnings(PriorLearning obj) {
+        addToManyTarget("priorLearnings", obj, true);
+    }
+    public void removeFromPriorLearnings(PriorLearning obj) {
+        removeToManyTarget("priorLearnings", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<PriorLearning> getPriorLearnings() {
+        return (List<PriorLearning>)readProperty("priorLearnings");
     }
 
 
