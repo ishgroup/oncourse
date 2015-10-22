@@ -20,7 +20,7 @@ public class AllV11StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testAttendanceStubBuilder() {
-		this.testStubBuilder(Attendance.class, new AttendanceStubBuilder());
+		this.testStubBuilder(Attendance.class, new AttendanceStubBuilder(), "markerId");
 	}
 
 	@Test
@@ -276,5 +276,10 @@ public class AllV11StubBuildersTest extends AbstractAllStubBuildersTest {
 	@Test
 	public void testCorporatePassDiscountStubBuilder() {
 		this.testStubBuilder(CorporatePassDiscount.class, new CorporatePassDiscountStubBuilder());
+	}
+	
+	@Test
+	public void testPriorLearningStubBuilder() {
+		this.testStubBuilder(PriorLearning.class, new PriorLearningStubBuilder());
 	}
 }

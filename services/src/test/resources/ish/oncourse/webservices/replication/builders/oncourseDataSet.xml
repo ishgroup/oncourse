@@ -556,5 +556,7 @@
 			invoiceId="1"/>
 	
 	<CorporatePass_Discount id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" corporatePassId="1" discountId="1"/>
+
+	<PriorLearning id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" title="title" notes="notes" qualificationId="1" studentId="1" externalRef="externalRef" outcomeIdTrainingOrg="1234"/>
 	
 </dataset>
