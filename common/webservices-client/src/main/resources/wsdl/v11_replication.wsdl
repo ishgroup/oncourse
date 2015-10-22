@@ -105,6 +105,8 @@
 			<xs:element name="getRecordsResponse" type="tns:replicationRecords"/>
 			<xs:element name="resultsRequest" type="tns:replicationResult"/>
 			<xs:element name="resultsResponse" type="xs:int"/>
+			<xs:element name="instructionRequest"  type="xs:string"/>
+			<xs:element name="instructionResponse"  type="tns:transactionGroup"/>
 			<xs:element name="usiRequest" type="tns:ParametersMap"/>
 			<xs:element name="usiResponse" type="tns:ParametersMap"/>
 			<xs:element name="authSecurityCode" type="xs:string"/>
@@ -1634,6 +1636,14 @@
 		<wsdl:part element="tns:getUnreplicatedEntitiesResponse" name="parameters" />
 	</wsdl:message>
 
+	<wsdl:message name="recordByInstructionRequest">
+		<wsdl:part name="instructionRequest" element="tns:instructionRequest"/>
+	</wsdl:message>
+
+	<wsdl:message name="recordByInstructionResponse">
+		<wsdl:part name="instructionResponse" element="tns:instructionResponse"/>
+	</wsdl:message>
+
 	<wsdl:message name="verifyUSIRequest">
 		<wsdl:part name="verificationRequest" element="tns:usiRequest"/>
 	</wsdl:message>
@@ -1686,6 +1696,12 @@
 		<wsdl:operation name="getUnreplicatedEntities">
 			<wsdl:input message="tns:getUnreplicatedEntities" name="getUnreplicatedEntities" />
 			<wsdl:output message="tns:getUnreplicatedEntitiesResponse" name="getUnreplicatedEntitiesResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getRecordByInstruction">
+			<wsdl:input message="tns:recordByInstructionRequest" name="recordByInstructionRequest"/>
+			<wsdl:output message="tns:recordByInstructionResponse" name="recordByInstructionResponse"/>
+			<wsdl:fault name="fault" message="tns:replicationFault"/>
 		</wsdl:operation>
 
 	</wsdl:portType>
@@ -1803,6 +1819,19 @@
 			</wsdl:output>
 		</wsdl:operation>
 
+		<wsdl:operation name="getRecordByInstruction">
+			<soap:operation soapAction="getRecordByInstruction" style="document"/>
+			<wsdl:input name="recordByInstructionRequest">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="recordByInstructionResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+		
 	</wsdl:binding>
 
 	<wsdl:binding name="PaymentServiceSoapBinding" type="tns:PaymentPortType">
