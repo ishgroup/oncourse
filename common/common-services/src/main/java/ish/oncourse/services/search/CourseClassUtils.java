@@ -1,8 +1,8 @@
 package ish.oncourse.services.search;
 
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Site;
+import ish.oncourse.model.*;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
@@ -204,8 +204,16 @@ public class CourseClassUtils {
                 }
             }
 
-
-
+			if (searchParams.getTutorId() != null) {
+				Tutor tutor = ObjectSelect.query(Tutor.class)
+						.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Tutor.class.getSimpleName())
+						.and(Tutor.TUTOR_ROLES.dot(TutorRole.COURSE_CLASS).eq(courseClass))
+						.and(Tutor.ANGEL_ID.eq(searchParams.getTutorId()))
+						.selectFirst(courseClass.getObjectContext());
+				if (tutor == null) {
+					return 0.0f;
+				}
+			}
             return daysMatch * timeMatch * priceMatch * nearMatch * afterMatch * beforeMatch;
 		}
 
