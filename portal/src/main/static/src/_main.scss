@@ -55,14 +55,15 @@
 		margin: 13px 0 0 0;
 		/*float: left;*/
     padding-bottom: 5px;
-		
 		> a {
-			white-space: nowrap;
-      width: 350px;
+			white-space: normal;
+      		width: auto;
 			overflow: hidden;
 			display: inline-block;
 			text-overflow: ellipsis;
 			vertical-align: middle;
+		  	font-size: 90%;
+		  	padding-right: 10px;
 		}
 		
 		span {
