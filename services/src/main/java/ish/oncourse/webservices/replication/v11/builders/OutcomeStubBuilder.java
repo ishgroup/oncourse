@@ -19,7 +19,7 @@ public class OutcomeStubBuilder extends AbstractWillowStubBuilder<Outcome, Outco
 		if (entity.getEnrolment() != null) {
 			stub.setEnrolmentId(entity.getEnrolment().getId());
 		} else if (entity.getPriorLearning() != null) {
-			stub.setEnrolmentId(entity.getPriorLearning().getId());
+			stub.setPriorLearningId(entity.getPriorLearning().getId());
 		}
 		
 		if (entity.getFundingSource() != null) {

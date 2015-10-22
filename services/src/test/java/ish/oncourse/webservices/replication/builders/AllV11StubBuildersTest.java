@@ -119,7 +119,8 @@ public class AllV11StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testOutcomeStubBuilder() {
-		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(), "endDate", "hoursAttended", "startDate");
+		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(), 1l, "endDate", "hoursAttended", "startDate", "priorLearningId");
+		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(), 2l, "endDate", "hoursAttended", "startDate", "enrolmentId");
 	}
 
 	@Test
