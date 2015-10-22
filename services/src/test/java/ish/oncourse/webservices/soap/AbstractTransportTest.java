@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.soap;
 
-import ish.oncourse.webservices.v6.stubs.reference.ReferenceStub;
+import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
