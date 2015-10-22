@@ -7,7 +7,10 @@ import org.apache.cayenne.query.SQLSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /*
@@ -28,7 +31,7 @@ public class UpdateAmountOwingJob implements Job{
             "and 0 = (select count(p1.id) from PaymentInLine pl1 inner join PaymentIn p1 on pl1.paymentInId = p1.id where pl1.invoiceId = i.id and pl1.amount < 0 and p1.type in (7,10,5))\n" +
             "and (e.id is null or e.status = 3)\n" +
 			"and c.billingCode is not null\n" +
-			"and c.lastRemoteAuthentication > now()-interval 1 day\n" +
+			"and c.lastRemoteAuthentication > '%s'\n" +
             "order by i.collegeId, i.created";
 
     private ICayenneService cayenneService;
@@ -43,7 +46,13 @@ public class UpdateAmountOwingJob implements Job{
     public void execute() {
         ObjectContext objectContext = this.cayenneService.newNonReplicatingContext();
 
-        List<DataRow> rows =  SQLSelect.dataRowQuery(SQL).select(objectContext);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DATE, -1);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
+				
+        List<DataRow> rows =  SQLSelect.dataRowQuery(String.format(SQL, dateFormat.format(calendar.getTime()))).select(objectContext);
         for (DataRow dataRow : rows) {
             try {
                 Long angelId = (Long) dataRow.get("ANGELID");

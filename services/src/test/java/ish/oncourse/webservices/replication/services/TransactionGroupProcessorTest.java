@@ -12,6 +12,8 @@ import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v11.stubs.replication.BinaryDataStub;
 import ish.oncourse.webservices.v11.stubs.replication.BinaryInfoStub;
 import ish.oncourse.webservices.v11.stubs.replication.DeletedStub;
+import ish.oncourse.webservices.v11.stubs.replication.DocumentStub;
+import ish.oncourse.webservices.v11.stubs.replication.DocumentVersionStub;
 import ish.oncourse.webservices.v11.stubs.replication.EnrolmentStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -152,20 +154,40 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     public void testBinaryDataProcessing() {
         GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V11);
         transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
-        BinaryInfoStub binaryInfoStub = new BinaryInfoStub();
-        binaryInfoStub.setEntityIdentifier("AttachmentInfo");
-        binaryInfoStub.setAngelId(422l);
-        binaryInfoStub.setWebVisible(0);
-        binaryInfoStub.setByteSize(464609L);
-        binaryInfoStub.setMimeType("application/pdf");
-        binaryInfoStub.setName("Presenter's Guide");
+		
+		DocumentStub documentStub = new DocumentStub();
+		documentStub.setDescription("Presenter's Guide");
+		documentStub.setName("Presenter's Guide");
+		documentStub.setFileUUID("1234567890");
+		documentStub.setWebVisible(0);
+		documentStub.setEntityIdentifier("Document");
+		documentStub.setRemoved(false);
+		documentStub.setShared(true);
+		documentStub.setAngelId(422l);
+		
+		DocumentVersionStub documentVersionStub = new DocumentVersionStub();
+		documentVersionStub.setEntityIdentifier("DocumentVersion");
+		documentVersionStub.setAngelId(422l);
+		documentVersionStub.setByteSize(464609L);
+		documentVersionStub.setMimeType("application/pdf");
+		documentVersionStub.setDocumentId(422l);
 
+		BinaryInfoStub binaryInfoStub = new BinaryInfoStub();
+		binaryInfoStub.setEntityIdentifier("AttachmentInfo");
+		binaryInfoStub.setAngelId(422l);
+		binaryInfoStub.setWebVisible(0);
+		binaryInfoStub.setByteSize(464609L);
+		binaryInfoStub.setMimeType("application/pdf");
+		binaryInfoStub.setName("Presenter's Guide");
+		
         BinaryDataStub binaryDataStub = new BinaryDataStub();
         binaryDataStub.setEntityIdentifier("AttachmentData");
         binaryDataStub.setAngelId(422l);
         binaryDataStub.setContent("AttachmentData".getBytes());
         binaryDataStub.setBinaryInfoId(422l);
 
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(documentStub);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(documentVersionStub);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryInfoStub);
         transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryDataStub);
         java.util.List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
