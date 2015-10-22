@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.soap.v11.stubs;
 
+import ish.oncourse.model.PriorLearning;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.util.GenericDeletedStub;
 import ish.oncourse.webservices.util.GenericInstructionStub;
@@ -67,11 +68,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	public void setupDataSet() throws Exception {
 		final List<ReplicationStubFieldParameter> attendanceParameters = fillDefaultReplicationStubFields();
 		attendanceParameters.add(new ReplicationStubFieldParameter("attendanceType", Integer.class));
-		attendanceParameters.add(new ReplicationStubFieldParameter("markerId", Long.class));
 		attendanceParameters.add(new ReplicationStubFieldParameter("sessionId", Long.class));
 		attendanceParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
         attendanceParameters.add(new ReplicationStubFieldParameter("durationMinutes", Integer.class,false));
         attendanceParameters.add(new ReplicationStubFieldParameter("note", String.class, false));
+		attendanceParameters.add(new ReplicationStubFieldParameter("markedByTutorId", Long.class));
+		attendanceParameters.add(new ReplicationStubFieldParameter("markedByTutorDate", Date.class));
 		stubsPropertyMap.put(getStubName(AttendanceStub.class), attendanceParameters);
 		final List<ReplicationStubFieldParameter> binaryDataParameters = fillDefaultReplicationStubFields();
 		binaryDataParameters.add(new ReplicationStubFieldParameter("binaryInfoId", Long.class));
@@ -282,6 +284,9 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		outcomeParameters.add(new ReplicationStubFieldParameter("startDate", Date.class));
 		outcomeParameters.add(new ReplicationStubFieldParameter("endDate", Date.class));
 		outcomeParameters.add(new ReplicationStubFieldParameter("status", Integer.class));
+		outcomeParameters.add(new ReplicationStubFieldParameter("priorLearningId", Long.class));
+		outcomeParameters.add(new ReplicationStubFieldParameter("markedByTutorId", Long.class));
+		outcomeParameters.add(new ReplicationStubFieldParameter("markedByTutorDate", Date.class));
 		stubsPropertyMap.put(getStubName(OutcomeStub.class), outcomeParameters);
 		final List<ReplicationStubFieldParameter> paymentInLineParameters = fillDefaultReplicationStubFields();
 		paymentInLineParameters.add(new ReplicationStubFieldParameter("amount", BigDecimal.class));
@@ -616,6 +621,15 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		corporatePassDiscountParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
 		corporatePassDiscountParameters.add(new ReplicationStubFieldParameter("discountId", Long.class));
 		stubsPropertyMap.put(getStubName(CorporatePassDiscountStub.class), corporatePassDiscountParameters);
+
+		List<ReplicationStubFieldParameter> priorLearningParameters = fillDefaultReplicationStubFields();
+		priorLearningParameters.add(new ReplicationStubFieldParameter("title", String.class));
+		priorLearningParameters.add(new ReplicationStubFieldParameter("notes", String.class));
+		priorLearningParameters.add(new ReplicationStubFieldParameter("qualificationId", Long.class));
+		priorLearningParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
+		priorLearningParameters.add(new ReplicationStubFieldParameter("externalRef", String.class));
+		priorLearningParameters.add(new ReplicationStubFieldParameter("outcomeIdTrainingOrg", String.class));
+		stubsPropertyMap.put(getStubName(PriorLearningStub.class), priorLearningParameters);
 
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
@@ -983,6 +997,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testCorporatePassDiscountStub() {
 		GenericReplicationStub stub = new CorporatePassDiscountStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testPriorLearningStub() {
+		GenericReplicationStub stub = new PriorLearningStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
