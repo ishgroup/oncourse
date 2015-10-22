@@ -778,13 +778,13 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
-		<db-attribute name="explanation" type="VARCHAR" length="10000"/>
+		<db-attribute name="explanation" type="LONGVARCHAR" length="10000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="sqlType" type="INTEGER" length="10"/>
 		<db-attribute name="value" type="LONGVARBINARY" length="65535"/>
-		<db-attribute name="value_string" type="VARCHAR" length="32000"/>
+		<db-attribute name="value_string" type="LONGVARCHAR" length="32000"/>
 	</db-entity>
 	<db-entity name="Product">
 		<db-attribute name="angelId" type="BIGINT"/>
