@@ -2,9 +2,12 @@ package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.webservices.util.GenericReplicationRecords;
 import ish.oncourse.webservices.util.GenericReplicationResult;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.SupportedVersions;
 
 public interface IReplicationService {
+	
+	GenericTransactionGroup getRecordByInstruction(String instruction, SupportedVersions version) throws InternalReplicationFault;
 	
 	GenericReplicationResult sendRecords(GenericReplicationRecords req) throws InternalReplicationFault;
 	

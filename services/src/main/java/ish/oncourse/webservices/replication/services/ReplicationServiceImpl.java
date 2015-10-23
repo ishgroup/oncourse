@@ -2,6 +2,7 @@ package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
@@ -9,6 +10,7 @@ import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +20,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.*;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.GENERIC_EXCEPTION;
+import static ish.oncourse.webservices.replication.services.ReplicationUtils.getEntityClass;
 
 /**
  * Main version 4 synchronous replication implementation.
@@ -47,6 +50,15 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private IWebSiteService webSiteService;
+
+
+	@Override
+	public GenericTransactionGroup getRecordByInstruction(String instruction, SupportedVersions version) throws InternalReplicationFault {
+		return PortHelper.createTransactionGroup(version);
+	}
 
 	/**
 	 * Process transaction groups from angel for replication.

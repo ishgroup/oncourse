@@ -59,6 +59,17 @@ public class TestReplicationPortTypeImpl implements ReplicationPortType {
 		return new ArrayList<>();
 	}
 
+	@Override
+	public TransactionGroup getRecordByInstruction(String s) throws ReplicationFault {
+		TransactionGroup transactionGroup = null;
+		try {
+			transactionGroup = AbstractTransportTest.createTransactionGroupWithAllStubs();
+		} catch (Throwable throwable) {
+			throw new ReplicationFault("",throwable);
+		}
+		return transactionGroup;
+	}
+
 	//@Override
 	public void logout(@WebParam(partName = "communicationKey", name = "communicationKey", targetNamespace = "") long l) {
 		assertEquals(Long.MAX_VALUE, l);

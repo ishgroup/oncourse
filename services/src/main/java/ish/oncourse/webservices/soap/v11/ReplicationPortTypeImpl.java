@@ -20,6 +20,7 @@ import ish.oncourse.webservices.v11.stubs.replication.FaultReason;
 import ish.oncourse.webservices.v11.stubs.replication.InstructionStub;
 import ish.oncourse.webservices.v11.stubs.replication.ReplicationRecords;
 import ish.oncourse.webservices.v11.stubs.replication.ReplicationResult;
+import ish.oncourse.webservices.v11.stubs.replication.TransactionGroup;
 import ish.oncourse.webservices.v11.stubs.replication.UnreplicatedEntitiesStub;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,6 +171,16 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@WebMethod(operationName = "getUnreplicatedEntities")
 	public List<UnreplicatedEntitiesStub> getUnreplicatedEntities() {
 		return new ArrayList<>();
+	}
+
+	@Override
+	@WebMethod(operationName = "getRecordByInstruction")
+	public TransactionGroup getRecordByInstruction(String s) throws ReplicationFault {
+		try {
+			return PortHelper.getV11TransactionGroup(replicationService.getRecordByInstruction(s, SupportedVersions.V11));
+		} catch (InternalReplicationFault e) {
+			throw createReplicationFaultForException(e);
+		}
 	}
 
 	static ReplicationFault createReplicationFaultForException(final InternalReplicationFault exception) {
