@@ -77,4 +77,5 @@ war {
 task generateSources(type: Copy) {
     from 'src/templates'
     into 'src/main/generated'
+    expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
 }

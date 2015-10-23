@@ -25,26 +25,16 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	/**
 	 * Willow updaters mappings
 	 */
-	private Map<String, IWillowUpdater> v7updaterMap = new HashMap<>();
-	private Map<String, IWillowUpdater> v8updaterMap = new HashMap<>();
-	private Map<String, IWillowUpdater> v9updaterMap = new HashMap<>();
-	private Map<String, IWillowUpdater> v10updaterMap = new HashMap<>();
-	private Map<String, IWillowUpdater> v11updaterMap = new HashMap<>();
-	
+<% replicationVersions.each { v -> %> 
+	private Map<String, IWillowUpdater> v${v}updaterMap = new HashMap<>();
+<% } %>
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
 
-		V7UpdatersMap v7map = new V7UpdatersMap();
-		v7map.initMap(textileConverter);
-		v7updaterMap = v7map.getUpdaterMap();
-		V9UpdatersMap v9map = new V9UpdatersMap();
-		v9map.initMap(textileConverter);
-		v9updaterMap = v9map.getUpdaterMap();
-		V10UpdatersMap v10map = new V10UpdatersMap();
-		v10map.initMap(textileConverter);
-		v10updaterMap = v10map.getUpdaterMap();
-		V11UpdatersMap v11map = new V11UpdatersMap();
-		v11map.initMap(textileConverter);
-		v11updaterMap = v11map.getUpdaterMap();
+<% replicationVersions.each { v -> %>
+		V${v}UpdatersMap v${v}map = new V${v}UpdatersMap();
+		v${v}map.initMap(textileConverter);
+		v${v}updaterMap = v${v}map.getUpdaterMap();
+<% } %>
 	}
 
 	@Override
@@ -56,18 +46,11 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		String key = EntityMapping.getWillowEntityIdentifer(stub.getEntityIdentifier());
 		final IWillowUpdater updater;
 		switch (version) {
-			case V7:
-				updater = v7updaterMap.get(key);
+<% replicationVersions.each { v -> %>
+			case V${v}:
+				updater = v${v}updaterMap.get(key);
 				break;
-			case V9:
-				updater = v9updaterMap.get(key);
-				break;
-			case V10:
-				updater = v10updaterMap.get(key);
-				break;
-			case V11:
-				updater = v11updaterMap.get(key);
-				break;
+<% } %>
 			default:
 				updater = null;
 		}
