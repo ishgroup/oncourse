@@ -59,9 +59,22 @@ dependencies {
 sourceSets.test.compileClasspath = sourceSets.test.compileClasspath + configurations.tapestryTest
 sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + configurations.tapestryTest
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/generated'
+        }
+    }
+}
+    
 war {
 	archiveName = 'services.war'
 	manifest {
 		from sharedManifest
 	}
+}
+
+task generateSources(type: Copy) {
+    from 'src/templates'
+    into 'src/main/generated'
 }

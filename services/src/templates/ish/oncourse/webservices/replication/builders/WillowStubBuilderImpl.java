@@ -16,7 +16,6 @@ import java.util.Map;
 public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
 	private Map<String, IWillowStubBuilder> v7builderMap = new HashMap<>();
-	private Map<String, IWillowStubBuilder> v8builderMap = new HashMap<>();
 	private Map<String, IWillowStubBuilder> v9builderMap = new HashMap<>();
 	private Map<String, IWillowStubBuilder> v10builderMap = new HashMap<>();
 	private Map<String, IWillowStubBuilder> v11builderMap = new HashMap<>();
