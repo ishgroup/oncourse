@@ -23,6 +23,17 @@ buildscript {
 	}
 }
 
+ext {
+    replicationVersions = [7,   // introduced in onCourse 5.1
+                           9,   // introduced in onCourse 7.1
+                           10,  // introduced in onCourse 7.4
+                           11   // introduced in onCourse 8.2
+    ]
+    referenceVersions = [   4,  // introduced in onCourse 5.1
+                            5,  // introduced in onCourse 7.4
+                            6   // introduced in onCourse 8.2
+    ]
+}
 
 allprojects {
 	apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates -Drevision=release'

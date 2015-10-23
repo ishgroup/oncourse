@@ -25,30 +25,24 @@ dependencies{
         "log4j:log4j:1.2.17"
 }
 
-project.ext {
-    wsdlDir = file("${projectDir}/src/main/resources/wsdl")
-    generatedWsdlDir = file("${projectDir}/src/main/java")
-    wsdlsToGenerate = [
-        ['-xjc', '-xjc-Xinheritance',
-		 	'-wsdlLocation', "/wsdl/v11_replication.wsdl",
-		 	'-p', 'ish.oncourse.webservices.v11.stubs.replication',
-		 	'-b', "$wsdlDir/replication11_binding.xml",
-		 	"$wsdlDir/v11_replication.wsdl"],
-    ]
-}
-
 task wsdl2Java() {
+    def wsdlDir = file("${projectDir}/src/main/resources/wsdl")
+    def generatedWsdlDir = file("${projectDir}/src/main/java")
+            
     inputs.files wsdlDir.listFiles()
     outputs.files generatedWsdlDir
-
+    
     doLast {
-        wsdlsToGenerate.each { argsin ->
-            argsin.add(argsin.size - 1, '-d')
-            argsin.add(argsin.size - 1, generatedWsdlDir)
+        replicationVersions.each { v ->
             javaexec {
                 classpath configurations.ws
                 main = 'org.apache.cxf.tools.wsdlto.WSDLToJava'
-                args = argsin
+                args = ['-xjc', '-xjc-Xinheritance',
+                        '-wsdlLocation', "/wsdl/v${v}_replication.wsdl",
+                        '-p', "ish.oncourse.webservices.v${v}.stubs.replication",
+                        '-b', "${wsdlDir}/replication${v}_binding.xml",
+                        '-d', generatedWsdlDir,
+                        "${wsdlDir}/v${v}_replication.wsdl"]
                 systemProperties = ['exitOnFinish':'TRUE']
             }
         }
