@@ -28,14 +28,14 @@ public class SolrQueryBuilderTest {
 	private static final String GEOFILTER_QUERY = "qt=edismax&fl=id,name,course_loc,score&start=5&rows=10&fq=+collegeId:2 +doctype:course end:[NOW TO *]&" +
 			"fq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&q={!boost b=$boostfunction v=$qq}&" +
 			"boostfunction=recip(query($geofq),1,10,5)&geofq={!score=distance}{!geofilt sfield=course_loc pt=-1.1,2.2 d=0.9044289887579477}&" +
-			"qq=(*:*)&sort=score desc,startDate asc,name asc&debugQuery=false";
+			"qq=(*:*)&sort=score desc,startDate asc,name asc";
 	private static final String EXPECTED_RESULT_VALUE = "qt=edismax&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course " +
 			"end:[NOW TO *]&fq=%s" +
 			"&fq=%s" +
 			"&fq=%s&q={!boost b=$boostfunction v=$qq}" +
 			"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
 			"AND price:[* TO 1999.99] AND when:Monday AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] AND siteId:1000)" +
-			"&sort=score desc,startDate asc,name asc&debugQuery=false";
+			"&sort=score desc,startDate asc,name asc";
 	private static final String EXPECTED_AFTER_REPLACEMENT_S_PARAM = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
 	private static final String DIGITS_SEPARATED_BY_ALL_REPLACED_SOLR_SYNTAX_CHARACTERS = "1!2^3(4)5{6}7[8]9:10\"11?12+13~14*15|16&17;18\\19";
 
@@ -90,7 +90,7 @@ public class SolrQueryBuilderTest {
 
 		assertEquals("Commons parameters", "qt=edismax&fl=id,name,course_loc,score&start=0&rows=100&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
-				"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
+				"&sort=score desc,startDate asc,name asc", value);
 
 		searchParams.setAfter(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));
 		searchParams.setBefore(FormatUtils.getDateFormat(DATE_FORMAT_FOR_AFTER_BEFORE, "UTC").parse("20120101"));
@@ -241,7 +241,7 @@ public class SolrQueryBuilderTest {
 
 		assertEquals("Commons parameters", "qt=edismax&fl=id,name,course_loc,score&fq=+collegeId:1 +doctype:course end:[NOW TO *]" +
 				"&q={!boost b=$boostfunction v=$qq}&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(*:*)" +
-				"&sort=score desc,startDate asc,name asc&debugQuery=false", value);
+				"&sort=score desc,startDate asc,name asc", value);
 	}
 
 
@@ -253,8 +253,7 @@ public class SolrQueryBuilderTest {
 				"q={!boost b=$boostfunction v=$qq}&" +
 				"boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&" +
 				"qq=(when:%s)&" +
-				"sort=score desc,startDate asc,name asc&" +
-				"debugQuery=false";
+				"sort=score desc,startDate asc,name asc";
 
 		SearchParams searchParams = new SearchParams();
 		for (DayOption dayOption : DayOption.values()) {
