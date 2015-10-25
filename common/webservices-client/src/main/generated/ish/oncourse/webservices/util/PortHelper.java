@@ -21,6 +21,7 @@ public class PortHelper {
 		return (ish.oncourse.webservices.v11.stubs.replication.ReplicationRecords) replicationRecords;
 	}
 
+
 	public static ish.oncourse.webservices.v7.stubs.replication.TransactionGroup getV7TransactionGroup(final GenericTransactionGroup transactionGroup) {
 		return (ish.oncourse.webservices.v7.stubs.replication.TransactionGroup) transactionGroup;
 	}
@@ -37,6 +38,7 @@ public class PortHelper {
 		return (ish.oncourse.webservices.v11.stubs.replication.TransactionGroup) transactionGroup;
 	}
 
+
 	public static ish.oncourse.webservices.v7.stubs.replication.ReplicationResult getV7ReplicationResult(final GenericReplicationResult replicationResult) {
 		return (ish.oncourse.webservices.v7.stubs.replication.ReplicationResult) replicationResult;
 	}
@@ -52,147 +54,212 @@ public class PortHelper {
 	public static ish.oncourse.webservices.v11.stubs.replication.ReplicationResult getV11ReplicationResult(final GenericReplicationResult replicationResult) {
 		return (ish.oncourse.webservices.v11.stubs.replication.ReplicationResult) replicationResult;
 	}
-	
+
 	public static GenericReplicationResult createReplicationResult(final GenericReplicationRecords replicationRecords) {
+
 		if (replicationRecords instanceof ish.oncourse.webservices.v7.stubs.replication.ReplicationRecords) {
 			return new ish.oncourse.webservices.v7.stubs.replication.ReplicationResult();
-		} else if (replicationRecords instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords) {
+		}
+
+		if (replicationRecords instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords) {
 			return new ish.oncourse.webservices.v9.stubs.replication.ReplicationResult();
-		} else if (replicationRecords instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicationRecords) {
+		}
+
+		if (replicationRecords instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicationRecords) {
 			return new ish.oncourse.webservices.v10.stubs.replication.ReplicationResult();
-		} else if (replicationRecords instanceof ish.oncourse.webservices.v11.stubs.replication.ReplicationRecords) {
+		}
+
+		if (replicationRecords instanceof ish.oncourse.webservices.v11.stubs.replication.ReplicationRecords) {
 			return new ish.oncourse.webservices.v11.stubs.replication.ReplicationResult();
 		}
+
 		return null;
 	}
 
 	public static GenericTransactionGroup createTransactionGroup(final SupportedVersions version) {
 		switch (version) {
+
 			case V7:
 				return new ish.oncourse.webservices.v7.stubs.replication.TransactionGroup();
+
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.TransactionGroup();
+
 			case V10:
 				return new ish.oncourse.webservices.v10.stubs.replication.TransactionGroup();
+
 			case V11:
 				return new ish.oncourse.webservices.v11.stubs.replication.TransactionGroup();
+
 			default:
 				return null;
 		}
 	}
 
 	public static SupportedVersions getVersionByTransactionGroup(final GenericTransactionGroup group) {
+
 		if (group instanceof ish.oncourse.webservices.v7.stubs.replication.TransactionGroup) {
 			return SupportedVersions.V7;
-		} else if (group instanceof ish.oncourse.webservices.v9.stubs.replication.TransactionGroup) {
+		}
+
+		if (group instanceof ish.oncourse.webservices.v9.stubs.replication.TransactionGroup) {
 			return SupportedVersions.V9;
-		} else if (group instanceof ish.oncourse.webservices.v10.stubs.replication.TransactionGroup) {
+		}
+
+		if (group instanceof ish.oncourse.webservices.v10.stubs.replication.TransactionGroup) {
 			return SupportedVersions.V10;
-		} else if (group instanceof ish.oncourse.webservices.v11.stubs.replication.TransactionGroup) {
+		}
+
+		if (group instanceof ish.oncourse.webservices.v11.stubs.replication.TransactionGroup) {
 			return SupportedVersions.V11;
 		}
+
 		return null;
 	}
-	
+
 	public static SupportedVersions getVersionByReplicationStub(final GenericReplicationStub stub) {
+ 
 		if (stub instanceof ish.oncourse.webservices.v7.stubs.replication.ReplicationStub) {
 			return SupportedVersions.V7;
-		} else if (stub instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicationStub) {
+		}
+ 
+		if (stub instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicationStub) {
 			return SupportedVersions.V9;
-		} else if (stub instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicationStub) {
+		}
+ 
+		if (stub instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicationStub) {
 			return SupportedVersions.V10;
-		} else if (stub instanceof ish.oncourse.webservices.v11.stubs.replication.ReplicationStub) {
+		}
+ 
+		if (stub instanceof ish.oncourse.webservices.v11.stubs.replication.ReplicationStub) {
 			return SupportedVersions.V11;
 		}
+
 		return null;
 	}
-	
+
 	public static SupportedVersions getVersionByInstructionStub(final GenericInstructionStub stub) {
+
 		if (stub instanceof ish.oncourse.webservices.v7.stubs.replication.InstructionStub) {
 			return SupportedVersions.V7;
-		} else if (stub instanceof ish.oncourse.webservices.v9.stubs.replication.InstructionStub) {
+		}
+
+		if (stub instanceof ish.oncourse.webservices.v9.stubs.replication.InstructionStub) {
 			return SupportedVersions.V9;
-		} else if (stub instanceof ish.oncourse.webservices.v10.stubs.replication.InstructionStub) {
+		}
+
+		if (stub instanceof ish.oncourse.webservices.v10.stubs.replication.InstructionStub) {
 			return SupportedVersions.V10;
-		} else if (stub instanceof ish.oncourse.webservices.v11.stubs.replication.InstructionStub) {
+		}
+
+		if (stub instanceof ish.oncourse.webservices.v11.stubs.replication.InstructionStub) {
 			return SupportedVersions.V11;
 		}
-		
+
 		throw new IllegalArgumentException("This version of InstructionStub is not supported.");
 	}
-	
+
 	public static SupportedVersions getVersionByReplicatedRecord(final GenericReplicatedRecord record) {
+
 		if (record instanceof ish.oncourse.webservices.v7.stubs.replication.ReplicatedRecord) {
 			return SupportedVersions.V7;
-		} else if (record instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicatedRecord) {
+		}
+
+		if (record instanceof ish.oncourse.webservices.v9.stubs.replication.ReplicatedRecord) {
 			return SupportedVersions.V9;
-		} else if (record instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord) {
+		}
+
+		if (record instanceof ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord) {
 			return SupportedVersions.V10;
-		} else if (record instanceof ish.oncourse.webservices.v11.stubs.replication.ReplicatedRecord) {
+		}
+
+		if (record instanceof ish.oncourse.webservices.v11.stubs.replication.ReplicatedRecord) {
 			return SupportedVersions.V11;
 		}
-		
+
 		throw new IllegalArgumentException("This version of ReplicatedRecord is not supported.");
 	}
-	
+
 	public static SupportedVersions getVersionByParametersMap(GenericParametersMap parametersMap) {
+
 		if (parametersMap instanceof ish.oncourse.webservices.v7.stubs.replication.ParametersMap) {
 			return SupportedVersions.V7;
-		} else if (parametersMap instanceof ish.oncourse.webservices.v9.stubs.replication.ParametersMap) {
+		}
+
+		if (parametersMap instanceof ish.oncourse.webservices.v9.stubs.replication.ParametersMap) {
 			return SupportedVersions.V9;
-		} else if (parametersMap instanceof ish.oncourse.webservices.v10.stubs.replication.ParametersMap) {
+		}
+
+		if (parametersMap instanceof ish.oncourse.webservices.v10.stubs.replication.ParametersMap) {
 			return SupportedVersions.V10;
-		} else if (parametersMap instanceof ish.oncourse.webservices.v11.stubs.replication.ParametersMap) {
+		}
+
+		if (parametersMap instanceof ish.oncourse.webservices.v11.stubs.replication.ParametersMap) {
 			return SupportedVersions.V11;
 		}
-		
+
 		throw new IllegalArgumentException("This version of ParametersMap is not supported");
 	}
 
 	public static GenericTransactionGroup createTransactionGroup(final GenericTransactionGroup group) {
 		return createTransactionGroup(getVersionByTransactionGroup(group));
 	}
-	
+
 	public static GenericReplicationStub createDeleteStub(final SupportedVersions version) {
 		switch (version) {
-		case V7:
-			return new ish.oncourse.webservices.v7.stubs.replication.DeletedStub();
-		case V9:
-			return new ish.oncourse.webservices.v9.stubs.replication.DeletedStub();
-		case V10:
-			return new ish.oncourse.webservices.v10.stubs.replication.DeletedStub();
-		case V11:
-			return new ish.oncourse.webservices.v11.stubs.replication.DeletedStub();
-		default:
-			return null;
+
+			case V7:
+				return new ish.oncourse.webservices.v7.stubs.replication.DeletedStub();
+
+			case V9:
+				return new ish.oncourse.webservices.v9.stubs.replication.DeletedStub();
+
+			case V10:
+				return new ish.oncourse.webservices.v10.stubs.replication.DeletedStub();
+
+			case V11:
+				return new ish.oncourse.webservices.v11.stubs.replication.DeletedStub();
+
+			default:
+				return null;
 		}
 	}
 
 	public static GenericReplicationRecords createReplicationRecords(final SupportedVersions version) {
 		switch (version) {
+
 			case V7:
 				return new ish.oncourse.webservices.v7.stubs.replication.ReplicationRecords();
+
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.ReplicationRecords();
+
 			case V10:
 				return new ish.oncourse.webservices.v10.stubs.replication.ReplicationRecords();
+
 			case V11:
 				return new ish.oncourse.webservices.v11.stubs.replication.ReplicationRecords();
+
 			default:
 				return null;
 		}
 	}
-	
+
 	public static GenericReplicationResult createReplicationResult(final SupportedVersions version) {
 		switch (version) {
+
 			case V7:
 				return new ish.oncourse.webservices.v7.stubs.replication.ReplicationResult();
+
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.ReplicationResult();
+
 			case V10:
 				return new ish.oncourse.webservices.v10.stubs.replication.ReplicationResult();
+
 			case V11:
 				return new ish.oncourse.webservices.v11.stubs.replication.ReplicationResult();
+
 			default:
 				return null;
 		}
@@ -200,14 +267,19 @@ public class PortHelper {
 
 	public static GenericInstructionStub createInstructionStub(final SupportedVersions version) {
 		switch (version) {
+
 			case V7:
 				return new ish.oncourse.webservices.v7.stubs.replication.InstructionStub();
+
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.InstructionStub();
+
 			case V10:
 				return new ish.oncourse.webservices.v10.stubs.replication.InstructionStub();
+
 			case V11:
 				return new ish.oncourse.webservices.v11.stubs.replication.InstructionStub();
+
 			default:
 				return null;
 		}
@@ -215,14 +287,19 @@ public class PortHelper {
 
 	public static GenericParametersMap createParametersMap(final SupportedVersions version) {
 		switch (version) {
+
 			case V7:
 				return new ish.oncourse.webservices.v7.stubs.replication.ParametersMap();
+
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.ParametersMap();
+
 			case V10:
 				return new ish.oncourse.webservices.v10.stubs.replication.ParametersMap();
+
 			case V11:
 				return new ish.oncourse.webservices.v11.stubs.replication.ParametersMap();
+
 			default:
 				return null;
 		}
@@ -230,14 +307,19 @@ public class PortHelper {
 
 	public static GenericParameterEntry createParameterEntry(final SupportedVersions version) {
 		switch (version) {
+
 			case V7:
 				return new ish.oncourse.webservices.v7.stubs.replication.ParameterEntry();
+
 			case V9:
 				return new ish.oncourse.webservices.v9.stubs.replication.ParameterEntry();
+
 			case V10:
 				return new ish.oncourse.webservices.v10.stubs.replication.ParameterEntry();
+
 			case V11:
 				return new ish.oncourse.webservices.v11.stubs.replication.ParameterEntry();
+
 			default:
 				return null;
 		}
@@ -254,7 +336,7 @@ public class PortHelper {
 		}
 		return result;
 	}
-	
+
 	public static List<ish.oncourse.webservices.v9.stubs.replication.InstructionStub> convertV9InstructionsList(final List<GenericInstructionStub> list) {
 		final List<ish.oncourse.webservices.v9.stubs.replication.InstructionStub> result = new ArrayList<>(list.size());
 		for (GenericInstructionStub stub : list) {
@@ -266,7 +348,7 @@ public class PortHelper {
 		}
 		return result;
 	}
-	
+
 	public static List<ish.oncourse.webservices.v10.stubs.replication.InstructionStub> convertV10InstructionsList(final List<GenericInstructionStub> list) {
 		final List<ish.oncourse.webservices.v10.stubs.replication.InstructionStub> result = new ArrayList<>(list.size());
 		for (GenericInstructionStub stub : list) {
@@ -290,4 +372,5 @@ public class PortHelper {
 		}
 		return result;
 	}
+
 }
