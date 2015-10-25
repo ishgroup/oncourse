@@ -15,24 +15,16 @@ import java.util.Map;
 
 public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
-	private Map<String, IWillowStubBuilder> v7builderMap = new HashMap<>();
-	private Map<String, IWillowStubBuilder> v9builderMap = new HashMap<>();
-	private Map<String, IWillowStubBuilder> v10builderMap = new HashMap<>();
-	private Map<String, IWillowStubBuilder> v11builderMap = new HashMap<>();
+<% replicationVersions.each { v -> %>
+	private Map<String, IWillowStubBuilder> v${v}builderMap = new HashMap<>();
+<% } %>
 
 	public WillowStubBuilderImpl() {
-		V7BuildersMap v7map = new V7BuildersMap();
-		v7map.initMap();
-		v7builderMap = v7map.getBuilderMap();
-		V9BuildersMap v9map = new V9BuildersMap();
-		v9map.initMap();
-		v9builderMap = v9map.getBuilderMap();
-		V10BuildersMap v10map = new V10BuildersMap();
-		v10map.initMap();
-		v10builderMap = v10map.getBuilderMap();
-		V11BuildersMap v11map = new V11BuildersMap();
-		v11map.initMap();
-		v11builderMap = v11map.getBuilderMap();
+<% replicationVersions.each { v -> %>
+		V${v}BuildersMap v${v}map = new V${v}BuildersMap();
+		v${v}map.initMap();
+		v${v}builderMap = v${v}map.getBuilderMap();
+<% } %>
     }
 
 	@Override
@@ -41,18 +33,11 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
 		final IWillowStubBuilder builder;
 		switch (version) {
-			case V7:
-				builder = v7builderMap.get(key);
+<% replicationVersions.each { v -> %>
+			case V${v}:
+				builder = v${v}builderMap.get(key);
 				break;
-			case V9:
-				builder = v9builderMap.get(key);
-				break;
-			case V10:
-				builder = v10builderMap.get(key);
-				break;
-			case V11:
-				builder = v11builderMap.get(key);
-				break;
+<% } %>
 			default:
 				builder = null;
 				break;
@@ -72,18 +57,11 @@ public class WillowStubBuilderImpl implements IWillowStubBuilder {
 
 		final IWillowStubBuilder builder;
 		switch (version) {
-			case V7:
-				builder = v7builderMap.get(key);
+<% replicationVersions.each { v -> %>
+			case V${v}:
+				builder = v${v}builderMap.get(key);
 				break;
-			case V9:
-				builder = v9builderMap.get(key);
-				break;
-			case V10:
-				builder = v10builderMap.get(key);
-				break;
-			case V11:
-				builder = v11builderMap.get(key);
-				break;
+<% } %>
 			default:
 				builder = null;
 				break;

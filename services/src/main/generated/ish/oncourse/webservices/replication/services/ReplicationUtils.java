@@ -17,8 +17,6 @@ import java.util.*;
 
 /**
  * Supplimentary replication methods.
- * 
- * @author anton
  */
 public class ReplicationUtils {
 
@@ -54,26 +52,31 @@ public class ReplicationUtils {
 	public static GenericReplicatedRecord toReplicatedRecord(final GenericReplicationStub stub, final boolean setWillowId) {
 		final SupportedVersions version = PortHelper.getVersionByReplicationStub(stub);
 		switch (version) {
+
 		case V7:
 			ish.oncourse.webservices.v7.stubs.replication.ReplicatedRecord replV7Record = new ish.oncourse.webservices.v7.stubs.replication.ReplicatedRecord();
 			StubUtils.setSuccessStatus(replV7Record);
 			replV7Record.setStub(toV7Hollow(stub, setWillowId));
 			return replV7Record;
+
 		case V9:
 			ish.oncourse.webservices.v9.stubs.replication.ReplicatedRecord replV9Record = new ish.oncourse.webservices.v9.stubs.replication.ReplicatedRecord();
 			StubUtils.setSuccessStatus(replV9Record);
 			replV9Record.setStub(toV9Hollow(stub, setWillowId));
 			return replV9Record;
+
 		case V10:
 			ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord replV10Record = new ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord();
 			StubUtils.setSuccessStatus(replV10Record);
 			replV10Record.setStub(toV10Hollow(stub, setWillowId));
 			return replV10Record;
+
 		case V11:
 			ish.oncourse.webservices.v11.stubs.replication.ReplicatedRecord replV11Record = new ish.oncourse.webservices.v11.stubs.replication.ReplicatedRecord();
 			StubUtils.setSuccessStatus(replV11Record);
 			replV11Record.setStub(toV11Hollow(stub, setWillowId));
 			return replV11Record;
+
 		default:
 			return null;
 		}
@@ -90,29 +93,31 @@ public class ReplicationUtils {
 		}
 	}
 
+ 
 	public static ish.oncourse.webservices.v7.stubs.replication.HollowStub toV7Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
 		ish.oncourse.webservices.v7.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v7.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);
 		return hollowStub;
 	}
-
+ 
 	public static ish.oncourse.webservices.v9.stubs.replication.HollowStub toV9Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
 		ish.oncourse.webservices.v9.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v9.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);
 		return hollowStub;
 	}
-
+ 
 	public static ish.oncourse.webservices.v10.stubs.replication.HollowStub toV10Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
 		ish.oncourse.webservices.v10.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v10.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);
 		return hollowStub;
 	}
-
+ 
 	public static ish.oncourse.webservices.v11.stubs.replication.HollowStub toV11Hollow(final GenericReplicationStub stub, final boolean setWillowId) {
 		ish.oncourse.webservices.v11.stubs.replication.HollowStub hollowStub = new ish.oncourse.webservices.v11.stubs.replication.HollowStub();
 		fillHollowStub(stub, hollowStub, setWillowId);
 		return hollowStub;
 	}
+
 	
 	private static GenericPaymentInStub getPaymentInStub(final GenericTransactionGroup group) {
 		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
@@ -120,7 +125,6 @@ public class ReplicationUtils {
 				return (GenericPaymentInStub) stub;
 			}
 		}
-
 		return null;
 	}
 	
