@@ -4,6 +4,7 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
+import ish.oncourse.model.Tutor;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.html.IPlainTextExtractor;
@@ -87,14 +88,19 @@ public class ClassDetails {
     @OnEvent(value = "setAttendences")
     public void setAttendences() throws IOException {
         List<String> params = request.getParameterNames();
+		Tutor tutor = session.getObjectContext().localObject(portalService.getContact().getTutor());
         for (String key : params) {
-            Long contactId = new Long(key);
+            Long studentId = new Long(key);
             Integer value = new Integer(request.getParameter(key));
 
-           for(Attendance attendance : session.getAttendances()){
+           for (Attendance attendance : session.getAttendances()) {
 
-              if(attendance.getStudent().getId().equals(contactId)){
+              if (attendance.getStudent().getId().equals(studentId)
+			  		&& !attendance.getAttendanceType().equals(value)) {
+				  
                   attendance.setAttendanceType(value);
+				  attendance.setMarkedByTutor(tutor);
+				  attendance.setMarkedByTutorDate(new Date());
                   break;
               }
            }
