@@ -8,7 +8,7 @@ sourceSets.main.groovy.srcDir 'src/main/java'
 
 
 dependencies {
-	def jettyVersion = '9.3.5.v20151012'
+	def jettyVersion = '9.2.13.v20150730'
 
 	compile project(':common')
 	compile ("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
