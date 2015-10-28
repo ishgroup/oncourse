@@ -557,20 +557,26 @@ public class PortalService implements IPortalService {
     }
 
     private List<Document> getAttachedFilesForStudent(Student student, CourseClass courseClass) {
+		ObjectContext sharedContext = cayenneService.sharedContext();
 
-        // only students with active enrolments can view class attachments
-        if (Enrolment.STUDENT.eq(student).filterObjects(courseClass.getValidEnrolments()).isEmpty()) {
+		Enrolment enrolment = ObjectSelect.query(Enrolment.class).where(Enrolment.STUDENT.eq(student)).and(Enrolment.COURSE_CLASS.eq(courseClass)).and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS)).selectFirst(sharedContext);
+		// only students with active enrolments can view class attachments
+        if (enrolment == null) {
             return Collections.emptyList();
         }
 
-        ObjectContext sharedContext = cayenneService.sharedContext();
-		
+        Expression courseQualifier  = Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
+				.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getCourse().getId()));
+
+		Expression classQualifier = Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(CourseClass.class.getSimpleName())
+				.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getId()));
+
+		Expression enrolmentQualifier = Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Enrolment.class.getSimpleName())
+				.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(enrolment.getId()));
+				
 		return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.STUDENTS))
 				.and(Document.IS_REMOVED.isFalse())
-				.and((Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
-					.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getCourse().getId())))
-					.orExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(CourseClass.class.getSimpleName())
-					.andExp(Document.BINARY_INFO_RELATIONS.dot(BinaryInfoRelation.ENTITY_WILLOW_ID).eq(courseClass.getId())))).select(sharedContext);
+				.and(courseQualifier.orExp(classQualifier).orExp(enrolmentQualifier)).select(sharedContext);
     }
 
     private List<Document> getAttachedFilesForTutor(CourseClass courseClass) {
