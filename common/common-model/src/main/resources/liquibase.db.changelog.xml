@@ -3642,7 +3642,14 @@
 
 		</sql>
 	</changeSet>
-	
-	
+
+	<changeSet id="233" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="Survey" columnName="uniqueCode"/>
+		</preConditions>
+		<sql>
+			ALTER TABLE Survey DROP COLUMN uniqueCode;
+		</sql>
+	</changeSet>
 
 </databaseChangeLog>
