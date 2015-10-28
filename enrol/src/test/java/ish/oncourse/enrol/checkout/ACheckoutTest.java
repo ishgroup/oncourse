@@ -140,7 +140,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 			CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, id);
 			courseClasses.add(courseClass);
 		}
-		PurchaseModel model = createModel(context, courseClasses, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+		PurchaseModel model = createModel(context, courseClasses, new ArrayList<Product>(), new ArrayList<Discount>());
 		createPurchaseController(model);
 		return courseClasses;
 

@@ -216,6 +216,15 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
+	<db-entity name="CorporatePass_Product">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="corporatePassId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="productId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="Country">
 		<db-attribute name="asccssCode" type="VARCHAR" length="10"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
@@ -1491,6 +1500,11 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
+	<obj-entity name="CorporatePassProduct" className="ish.oncourse.model.CorporatePassProduct" dbEntityName="CorporatePass_Product">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
 	<obj-entity name="Country" className="ish.oncourse.model.Country" dbEntityName="Country">
 		<obj-attribute name="asccssCode" type="java.lang.String" db-attribute-path="asccssCode"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2501,6 +2515,9 @@
 	<db-relationship name="corporatePassDiscounts" source="College" target="CorporatePass_Discount" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="corporatePassProducts" source="College" target="CorporatePass_Product" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="corporatePasses" source="College" target="CorporatePass" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2774,6 +2791,9 @@
 	<db-relationship name="corporatePassDiscounts" source="CorporatePass" target="CorporatePass_Discount" toMany="true">
 		<db-attribute-pair source="id" target="corporatePassId"/>
 	</db-relationship>
+	<db-relationship name="corporatePassProducts" source="CorporatePass" target="CorporatePass_Product" toMany="true">
+		<db-attribute-pair source="id" target="corporatePassId"/>
+	</db-relationship>
 	<db-relationship name="invoice" source="CorporatePass" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="corporatePassId"/>
 	</db-relationship>
@@ -2794,6 +2814,15 @@
 	</db-relationship>
 	<db-relationship name="discount" source="CorporatePass_Discount" target="Discount" toMany="false">
 		<db-attribute-pair source="discountId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="CorporatePass_Product" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="corporatePass" source="CorporatePass_Product" target="CorporatePass" toMany="false">
+		<db-attribute-pair source="corporatePassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="product" source="CorporatePass_Product" target="Product" toMany="false">
+		<db-attribute-pair source="productId" target="id"/>
 	</db-relationship>
 	<db-relationship name="contacts" source="Country" target="Contact" toMany="true">
 		<db-attribute-pair source="id" target="countryId"/>
@@ -3226,6 +3255,9 @@
 	</db-relationship>
 	<db-relationship name="college" source="Product" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="corporatePassProducts" source="Product" target="CorporatePass_Product" toMany="true">
+		<db-attribute-pair source="id" target="productId"/>
 	</db-relationship>
 	<db-relationship name="discountMembershipProducts" source="Product" target="DiscountMembership" toMany="true">
 		<db-attribute-pair source="id" target="membershipProductId"/>
@@ -3768,12 +3800,16 @@
 	<obj-relationship name="corporatePassDiscounts" source="CorporatePass" target="CorporatePassDiscount" deleteRule="Deny" db-relationship-path="corporatePassDiscounts"/>
 	<obj-relationship name="invoice" source="CorporatePass" target="Invoice" deleteRule="Deny" db-relationship-path="invoice"/>
 	<obj-relationship name="validClasses" source="CorporatePass" target="CourseClass" deleteRule="Deny" db-relationship-path="corporatePassCourseClass.courseClass"/>
+	<obj-relationship name="validProducts" source="CorporatePass" target="Product" deleteRule="Deny" db-relationship-path="corporatePassProducts.product"/>
 	<obj-relationship name="college" source="CorporatePassCourseClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="corporatePass" source="CorporatePassCourseClass" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePass"/>
 	<obj-relationship name="courseClass" source="CorporatePassCourseClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="college" source="CorporatePassDiscount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="corporatePass" source="CorporatePassDiscount" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePass"/>
 	<obj-relationship name="discount" source="CorporatePassDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
+	<obj-relationship name="college" source="CorporatePassProduct" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="corporatePass" source="CorporatePassProduct" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePass"/>
+	<obj-relationship name="product" source="CorporatePassProduct" target="Product" deleteRule="Nullify" db-relationship-path="product"/>
 	<obj-relationship name="applications" source="Course" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>

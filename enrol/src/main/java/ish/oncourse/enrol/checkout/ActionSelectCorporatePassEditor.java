@@ -12,7 +12,6 @@ public class ActionSelectCorporatePassEditor extends APurchaseAction{
     protected void makeAction() {
         getModel().getPayment().setType(PaymentType.INTERNAL);
         getController().setState(PurchaseController.State.editCorporatePass);
-		getController().getModel().removeAllProductItems(getModel().getPayer());
 
         ActionDeselectVoucher actionDeselectVoucher = new ActionDeselectVoucher();
         List<Voucher> vouchers = getModel().getVouchers();

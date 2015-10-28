@@ -33,7 +33,9 @@ public class ActionAddProduct extends APurchaseAction {
 
     @Override
     protected void parse() {
-        product = getParameter().getValue(Product.class);
+        if (product == null){
+            product = getParameter().getValue(Product.class);
+        }
     }
 
     @Override

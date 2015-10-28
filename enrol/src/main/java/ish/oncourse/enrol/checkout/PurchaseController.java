@@ -1035,7 +1035,8 @@ public class PurchaseController {
         courseClassIsNotVisible,
 		applicationReceived,
 		applicationAlreadyApplyed,
-		applicationAlreadyInTransaction, payNowWrong;
+		applicationAlreadyInTransaction, payNowWrong,
+		corporatePassInvalidProduct;
 
 		public String getMessage(Messages messages, Object... params) {
 			return messages.format(String.format("message-%s", name()), params);
