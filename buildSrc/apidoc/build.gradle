@@ -11,10 +11,10 @@ dependencies {
 	compile "antlr:antlr:2.7.7"
 	testCompile 'junit:junit:4.11'
 
-    compile 'org.codehaus.groovy:groovy-groovydoc:2.4.3'
-    compile 'org.codehaus.groovy:groovy-ant:2.4.3'
+    compile 'org.codehaus.groovy:groovy-groovydoc:2.4.5'
+    compile 'org.codehaus.groovy:groovy-ant:2.4.5'
     compile 'org.fusesource.jansi:jansi:1.11'
-	compile 'org.apache.ant:ant-antlr:1.9.3'
+	compile 'org.apache.ant:ant-antlr:1.9.6'
 }
 
 repositories {
@@ -32,6 +32,7 @@ task generateGrammar {
 	outputs.dir(groovyOutDir)
 	outputs.dir(javaOutDir)
 	doFirst {
+        
 		new File(groovyOutDir).mkdirs()
 		new File(javaOutDir).mkdirs()
 		ant {
