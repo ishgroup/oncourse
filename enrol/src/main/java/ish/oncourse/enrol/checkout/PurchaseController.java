@@ -29,7 +29,6 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.InvoiceUtils;
 import ish.util.DiscountUtils;
-import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -678,11 +677,11 @@ public class PurchaseController {
 					and(Discount.getCurrentDateFilter()).
 					select(model.getObjectContext());
 
-			List<Discount> discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), totalCount, totalAmount, enrolment).get();
+			GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), totalCount, totalAmount, enrolment).get();
 
-			if (!discounts.isEmpty()) {
-				DiscountUtils.applyDiscounts(discounts, invoiceLine, enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
-				for (Discount discount :discounts) {
+			if (!discounts.getBestDiscountsVariant().isEmpty()) {
+				DiscountUtils.applyDiscounts(discounts.getBestDiscountsVariant(), invoiceLine, enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
+				for (Discount discount : discounts.getBestDiscountsVariant()) {
 					createInvoiceLineDiscounts(invoiceLine, discount, discount.getObjectContext());
 				}
 			}

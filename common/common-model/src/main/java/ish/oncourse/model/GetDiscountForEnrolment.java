@@ -1,15 +1,10 @@
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.oncourse.enrol.checkout;
+package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountConcessionType;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.StudentConcession;
 import ish.oncourse.utils.MembershipDiscountHelper;
 import ish.oncourse.utils.WebDiscountUtils;
 import org.apache.cayenne.exp.Expression;
@@ -17,7 +12,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -41,6 +35,9 @@ public class GetDiscountForEnrolment {
 	private Money totalInvoicesAmount;
 	private Enrolment currentEnrolment;
 
+	private List<Discount> applicableDiscounts = new LinkedList<>();
+
+	private List<Discount> bestDiscountsVariant = new LinkedList<>();
 
 	private GetDiscountForEnrolment() {}
 	
@@ -55,10 +52,7 @@ public class GetDiscountForEnrolment {
 		return get;
 	}
 
-	public List<Discount> get() {
-		
-		List<Discount> applicableDiscounts = new LinkedList<>();
-
+	public GetDiscountForEnrolment get() {
 
 		for (Discount discount : classDiscounts) {
 			if (discount.isPromotion() && !addedPromos.contains(discount)) {
@@ -69,11 +63,10 @@ public class GetDiscountForEnrolment {
 		}
 	
 		if (!applicableDiscounts.isEmpty()) {
-			return WebDiscountUtils.chooseBestDiscountsVariant(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate());
-		} else {
-			return Collections.EMPTY_LIST;
-		}
+			bestDiscountsVariant.addAll(WebDiscountUtils.chooseBestDiscountsVariant(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate()));
+		} 
 		
+		return this;
 	}
 
 
@@ -92,7 +85,7 @@ public class GetDiscountForEnrolment {
 	 * @param student
 	 * @return
 	 */
-	public boolean isStudentEligibile(Student student, Discount discount) {
+	public static boolean isStudentEligibile(Student student, Discount discount) {
 		if (student == null || discount == null) {
 			return false;
 		}
@@ -201,5 +194,13 @@ public class GetDiscountForEnrolment {
 
 	public void setAddedPromos(List<Discount> addedPromos) {
 		this.addedPromos = addedPromos;
+	}
+
+	public List<Discount> getApplicableDiscounts() {
+		return applicableDiscounts;
+	}
+
+	public List<Discount> getBestDiscountsVariant() {
+		return bestDiscountsVariant;
 	}
 }

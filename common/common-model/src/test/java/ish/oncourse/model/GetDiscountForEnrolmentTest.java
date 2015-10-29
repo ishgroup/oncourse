@@ -16,13 +16,13 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 /**
- * Test for {@link RealDiscountsPolicy}.
+ * Test for {@link ish.oncourse.model.GetDiscountForEnrolment}.
  * 
  * @author ksenia
  * 
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
+public class GetDiscountForEnrolmentTest extends AbstractDiscountPolicyTest {
 	/**
 	 * Calendar instance for date types.
 	 */
@@ -47,7 +47,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	private static ConcessionType concessionType1;
 	/**
 	 * Student concession that hasn't date restrictions, referred to
-	 * {@link RealDiscountsPolicyTest#concessionType1}.
+	 * {@link GetDiscountForEnrolmentTest#concessionType1}.
 	 */
 	private static StudentConcession studentConcession;
 	/**
@@ -60,16 +60,19 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	private static ConcessionType concessionTypeForExpiredDateTest;
 	/**
 	 * Student concession that has valid expire date, referred to
-	 * {@link RealDiscountsPolicyTest#concessionType2}.
+	 * {@link GetDiscountForEnrolmentTest#concessionType2}.
 	 */
 	private static StudentConcession studentConcession2;
 
 	/**
 	 * Student concession which has been already expired, referred to
-	 * {@link RealDiscountsPolicyTest#concessionType2}.
+	 * {@link GetDiscountForEnrolmentTest#concessionType2}.
 	 */
 	private static StudentConcession studentConcessionExpired;
 
+	private static CourseClass courseClass;
+	
+	private static Enrolment enrolment;
 	/**
 	 * Initializes instance variables.
 	 * 
@@ -147,6 +150,14 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		student.addToStudentConcessions(studentConcession2);
 
 		context.commitChanges();
+		
+		courseClass = context.newObject(CourseClass.class);
+		courseClass.setFeeExGst(FEE_EX_GST);
+		courseClass.setFeeGst(FEE_GST);
+
+		enrolment = context.newObject(Enrolment.class);
+		enrolment.setCourseClass(courseClass);
+		enrolment.setStudent(student);
 	}
 
 	/**
@@ -156,10 +167,9 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	@Test
 	public void isStudentEligibileEmptyTest() {
 		Student student = new Student();
-		discountPolicy = new RealDiscountsPolicy(promotions);
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(null, null));
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, null));
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(null, combDiscountWithAmount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(null, null));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, null));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(null, combDiscountWithAmount));
 	}
 
 	/**
@@ -170,7 +180,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	public void isStudentEligibileWorkTest() {
 
 		// discount has null restrictions, that's why the student is eligible
-		assertTrue(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, combDiscountWithAmount));
+		assertTrue(GetDiscountForEnrolment.isStudentEligibile(student, combDiscountWithAmount));
 
 		testEnrolledWithinDaysRestriction();
 
@@ -191,7 +201,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		// enrolled within the last 100 days)
 		discount.setStudentEnrolledWithinDays(100);
 		// not eligible because student isn't enrolled to any class
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// add the reference to enrolment
 		Enrolment enrolment = context.newObject(Enrolment.class);
@@ -207,7 +217,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 		student.addToEnrolments(enrolment);
 		// eligible, by the date of previous enrolments restriction
-		assertTrue(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertTrue(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 	}
 
 	/**
@@ -220,7 +230,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		// add the student age restriction
 		discount.setStudentAge(20);
 		// not eligible, because the student date of birth is null
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// 40-years old student
 		testDate.add(Calendar.YEAR, -40);
@@ -229,31 +239,31 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discount.setStudentAgeOperator("unknown");
 		// not eligible, because such an operation for student age is not
 		// defined, can't compare
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// set the "<" operation for student age
 		discount.setStudentAgeOperator(RealDiscountsPolicy.AGE_UNDER);
 		// not eligible, because student age is 40, and "40<20" expression is
 		// incorrect
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// 15-years old student
 		testDate.add(Calendar.YEAR, 25);
 		student.getContact().setDateOfBirth(testDate.getTime());
 		// eligible: 15<20
-		assertTrue(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertTrue(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// set age oprator to ">"
 		discount.setStudentAgeOperator(RealDiscountsPolicy.AGE_OVER);
 		// not eligible, because student age is 15, and "15>20" expression is
 		// incorrect
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// 25-years old student
 		testDate.add(Calendar.YEAR, -10);
 		student.getContact().setDateOfBirth(testDate.getTime());
 		// eligible: 25>20
-		assertTrue(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertTrue(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 	}
 
 	/**
@@ -269,7 +279,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discount.addToDiscountConcessionTypes(discountConcessionType);
 		// not eligible, because the student doesn't have the reference to
 		// concessionType
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// add the reference to concessionType1(which the student has) to the
 		// discount
@@ -278,12 +288,12 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discount.addToDiscountConcessionTypes(discountConcessionType1);
 		// eligible, both the student and discount have the refs to
 		// concessionType1, which isn't restricted by date
-		assertTrue(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertTrue(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// set date restriction to the concessionType1
 		concessionType1.setHasExpiryDate(true);
 		// not eligible: the studentConcession hasn't expiry date
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// add the reference to concessionTypeForExpiredDateTest(which the
 		// student contains, and
@@ -293,7 +303,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discount.addToDiscountConcessionTypes(discountConcessionTypeExpired);
 		// not eligible, both the student and discount have the refs to
 		// concessionType3, but studentConcession has incorrect expire date
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// add the reference to concessionType2(which the student contains, and
 		// ref to which has valid expire date) to the discount
@@ -302,7 +312,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discount.addToDiscountConcessionTypes(discountConcessionType2);
 		// eligible, both the student and discount have the refs to
 		// concessionType2, correct expire date
-		assertTrue(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertTrue(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 	}
 
@@ -314,17 +324,17 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		// add the postcode restrictions to discount
 		discount.setStudentPostcodes("222222, 333333");
 		// not eligible: student doesn't have postcode
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// set some postcode to student
 		student.getContact().setPostcode("000000");
 		// not eligible: discount doesn't contain such a postcode
-		assertFalse(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// set valid poscode to student
 		student.getContact().setPostcode("222222");
 		// eligible: student has valid postcode
-		assertTrue(((RealDiscountsPolicy) discountPolicy).isStudentEligibile(student, discount));
+		assertTrue(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 	}
 
 	/**
@@ -332,10 +342,10 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void getApplicableByPolicySmokeTest() {
-		discountPolicy = new RealDiscountsPolicy(promotions, student, new ArrayList<Invoice>());
-		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(Arrays.asList(discount,
-				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin, 
-				hiddenDiscountWithAmount, nonAvailableDiscountWithAmount), FEE_EX_GST, FEE_GST);
+		List<Discount> applicableByPolicy = GetDiscountForEnrolment.valueOf(Arrays.asList(discount,
+				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin,
+				hiddenDiscountWithAmount, nonAvailableDiscountWithAmount), promotions, 1, Money.ONE, enrolment).get().getApplicableDiscounts();
+
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(5, applicableByPolicy.size());
 		assertEquals(discount, applicableByPolicy.get(0));
@@ -350,17 +360,22 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 	/**
 	 * The best variant for the given discounts:
-	 * {@link RealDiscountsPolicyTest#discount}.
+	 * {@link GetDiscountForEnrolmentTest#discount}.
 	 */
 	@Test
 	public void filterDiscountsSmokeTest() {
-		discountPolicy = new RealDiscountsPolicy(promotions, student, new ArrayList<Invoice>());
-		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(discount,
-				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin),
-				FEE_EX_GST, FEE_GST,new BigDecimal(0.1));
+		List<Discount> filteredDiscounts  =  GetDiscountForEnrolment.valueOf(Arrays.asList(discount,
+				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin), promotions, 1, Money.ONE, enrolment).get().getBestDiscountsVariant();
 		assertFalse(filteredDiscounts.isEmpty());
 		assertEquals(1, filteredDiscounts.size());
 		assertEquals(discount, filteredDiscounts.get(0));
+	}
+
+
+	@Test
+	public void testNonAvailableDiscounts() {
+		List<Discount> filteredDiscounts = GetDiscountForEnrolment.valueOf(Arrays.asList(nonAvailableDiscountWithAmount), promotions, 1, Money.ONE, enrolment).get().getBestDiscountsVariant();
+		assertTrue(filteredDiscounts.isEmpty());
 	}
 
 }
