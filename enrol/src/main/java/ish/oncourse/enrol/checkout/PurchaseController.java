@@ -633,23 +633,30 @@ public class PurchaseController {
 	 */
 
 	public void updateDiscountApplied() {
+
 		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
-			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
-			List<InvoiceLineDiscount> invoiceLineDiscounts = invoiceLine.getInvoiceLineDiscounts();
-			for (InvoiceLineDiscount invoiceLineDiscount : invoiceLineDiscounts) {
-				invoiceLineDiscount.setInvoiceLine(null);
-				invoiceLineDiscount.setDiscount(null);
+			List<InvoiceLine> invoiceLines = new ArrayList<>(enrolment.getInvoiceLines());
+			for (InvoiceLine invoiceLine : invoiceLines) {
+				invoiceLine.setEnrolment(null);
+				invoiceLine.setInvoice(null);
 			}
-			model.getObjectContext().deleteObjects(invoiceLineDiscounts);
-			
-			InvoiceUtil.fillInvoiceLine(invoiceLine, enrolment.getCourseClass().getFeeExGst(), Money.ZERO,
-					enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
+			model.getObjectContext().deleteObjects(invoiceLines);
+
+			InvoiceLine newInvoiceLine = invoiceProcessingService
+					.createInvoiceLineForEnrolment(enrolment);
+			newInvoiceLine.setInvoice(model.getInvoice());
+			newInvoiceLine.setEnrolment(enrolment);
 		}
 
 		Money totalAmount = Money.ZERO;
 		
 		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
-			totalAmount = totalAmount.add(enrolment.getCourseClass().getFeeIncGst());
+			Application application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
+			if (application != null && application.getFeeOverride() != null) {
+				totalAmount = totalAmount.add(application.getFeeOverride());
+			} else {
+				totalAmount = totalAmount.add(enrolment.getCourseClass().getFeeIncGst());
+			}
 		}
 		
 		for (ProductItem productItem : model.getAllEnabledProductItems()) {
@@ -659,6 +666,10 @@ public class PurchaseController {
 		int totalCount = model.getAllEnabledEnrolments().size();
 		
 		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
+			Application application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
+			if (application != null && application.getFeeOverride() != null) {
+				continue;
+			}
 			
 			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
 			List<Discount> classDiscounts = ObjectSelect.query(Discount.class).
