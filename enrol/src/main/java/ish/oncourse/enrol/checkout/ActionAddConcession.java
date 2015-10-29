@@ -17,7 +17,7 @@ public class ActionAddConcession extends APurchaseAction {
         if (deletingConcession != null)
 		    getModel().getObjectContext().deleteObject(getModel().localizeObject(deletingConcession));
 
-        getController().recalculateEnrolmentInvoiceLines();
+        getController().updateDiscountApplied();
         getController().setConcessionEditorController(null);
         getController().setState(PurchaseController.State.editCheckout);
 	}

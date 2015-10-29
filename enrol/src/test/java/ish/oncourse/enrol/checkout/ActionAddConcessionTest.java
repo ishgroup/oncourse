@@ -55,7 +55,7 @@ public class ActionAddConcessionTest {
 		assertTrue(actionAddConcession.action());
 		verify(model, times(1)).addConcession(studentConcession);
 		verify(objectContext, times(1)).commitChangesToParent();
-		verify(controller, times(1)).recalculateEnrolmentInvoiceLines();
+		verify(controller, times(1)).updateDiscountApplied();
 		verify(controller, times(1)).setState(PurchaseController.State.editCheckout);
 		verify(controller, times(1)).setConcessionEditorController(null);
 

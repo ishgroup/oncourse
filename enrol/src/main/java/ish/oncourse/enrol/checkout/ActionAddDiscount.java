@@ -8,7 +8,7 @@ public class ActionAddDiscount extends ADiscountAction {
 	protected void makeAction() {
 		getModel().addDiscount(getModel().localizeObject(discount));
         getController().getDiscountService().addPromotion(discount);
-		getController().recalculateEnrolmentInvoiceLines();
+		getController().updateDiscountApplied();
     }
 
     @Override

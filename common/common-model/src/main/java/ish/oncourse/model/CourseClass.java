@@ -355,7 +355,7 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @return
 	 */
 	public List<Discount> getDiscountsToApply(DiscountPolicy policy) {
-		return policy.filterDiscounts(getDiscounts(), getFeeExGst(), getTaxRate());
+		return policy.filterDiscounts(getDiscounts(), getFeeExGst(), getFeeGst(), getTaxRate());
 	}
 
 	/**

@@ -27,7 +27,7 @@ public class CreatePaymentPlanInvoiceNode {
 
 		Invoice invoice = CreateInvoice.valueOf(college, contact, webSite, objectContext).create();
 
-		InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment, actualPromotions, invoices);
+		InvoiceLine invoiceLine = invoiceProcessingService.createInvoiceLineForEnrolment(enrolment);
 		invoiceLine.setInvoice(invoice);
 		invoiceLine.setEnrolment(enrolment);
 

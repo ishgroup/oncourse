@@ -27,14 +27,14 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	}
 
 	/**
-	 * Test for {@link PotentialDiscountsPolicy#getApplicableByPolicy(List)},
+	 * Test for {@link PotentialDiscountsPolicy#getApplicableByPolicy(List, ish.math.Money, ish.math.Money)},
 	 * which chooses 2 discounts which are contained in promotions list.
 	 */
 	@Test
 	public void getApplicableByPolicyTest() {
 		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(Arrays.asList(
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
-				singleDiscountWithRateMin, hiddenDiscountWithAmount, nonAvailableDiscountWithAmount));
+				singleDiscountWithRateMin, hiddenDiscountWithAmount, nonAvailableDiscountWithAmount),FEE_EX_GST, FEE_GST);
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(3, applicableByPolicy.size());
 		assertEquals(combDiscountWithAmount, applicableByPolicy.get(0));
@@ -48,7 +48,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	}
 
 	/**
-	 * Test for {@link PotentialDiscountsPolicy#filterDiscounts(List)}, which
+	 * Test for {@link PotentialDiscountsPolicy#filterDiscounts(List, ish.math.Money, ish.math.Money, java.math.BigDecimal)}, which
 	 * chooses the best valiant from the applicable by policy: from 10$ and 15$
 	 * of discount value chooses discount with 15.
 	 */
@@ -56,7 +56,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	public void filterDiscountsSmokeTest() {
 		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
-				singleDiscountWithRateMin), FEE_EX_GST, new BigDecimal(0.1));
+				singleDiscountWithRateMin), FEE_EX_GST,FEE_GST, new BigDecimal(0.1));
 		assertFalse(filteredDiscounts.isEmpty());
 		assertEquals(1, filteredDiscounts.size());
 		assertEquals(singleDiscountWithRate, filteredDiscounts.get(0));

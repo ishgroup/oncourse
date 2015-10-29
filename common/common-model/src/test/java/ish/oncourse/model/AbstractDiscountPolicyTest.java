@@ -19,6 +19,8 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class AbstractDiscountPolicyTest {
 	protected static final Money FEE_EX_GST = new Money("100");
+
+	protected static final Money FEE_GST = new Money("10");
 	/**
 	 * Combinable discount with amount=10.
 	 */
@@ -111,23 +113,23 @@ public abstract class AbstractDiscountPolicyTest {
 
 	@Test
 	public void getApplicableByPolicyEmptyInputTest() {
-		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(null);
+		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(null, FEE_EX_GST, FEE_GST);
 		assertTrue(applicableByPolicy.isEmpty());
-		applicableByPolicy = discountPolicy.getApplicableByPolicy(Collections.EMPTY_LIST);
+		applicableByPolicy = discountPolicy.getApplicableByPolicy(Collections.EMPTY_LIST, FEE_EX_GST, FEE_GST);
 		assertTrue(applicableByPolicy.isEmpty());
 	}
 
 	@Test
 	public void filterDiscountsEmptyTest() {
-		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(null, FEE_EX_GST, new BigDecimal(0.1));
+		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(null, FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
 		assertTrue(filteredDiscounts.isEmpty());
-		filteredDiscounts = discountPolicy.filterDiscounts(Collections.EMPTY_LIST, FEE_EX_GST,new BigDecimal(0.1));
+		filteredDiscounts = discountPolicy.filterDiscounts(Collections.EMPTY_LIST, FEE_EX_GST, FEE_GST,new BigDecimal(0.1));
 		assertTrue(filteredDiscounts.isEmpty());
 	}
 	
 	@Test
 	public void testNonAvailableDiscounts() {
-		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(nonAvailableDiscountWithAmount), FEE_EX_GST, new BigDecimal(0.1));
+		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(nonAvailableDiscountWithAmount), FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
 		assertTrue(filteredDiscounts.isEmpty());
 	}
 

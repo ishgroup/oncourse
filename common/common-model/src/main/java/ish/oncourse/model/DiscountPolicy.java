@@ -47,10 +47,10 @@ public abstract class DiscountPolicy {
 	 * @param feeExGst 
 	 * @return filtered discounts.
 	 */
-	public List<Discount> filterDiscounts(List<Discount> discounts, Money feeExGst, BigDecimal taxRate) {
+	public List<Discount> filterDiscounts(List<Discount> discounts, Money feeExGst, Money getFeeGst, BigDecimal taxRate) {
 		List<Discount> result = new ArrayList<>();
 
-		result = getApplicableByPolicy(discounts);
+		result = getApplicableByPolicy(discounts, feeExGst, getFeeGst);
 
 		result = WebDiscountUtils.chooseBestDiscountsVariant(result, feeExGst, taxRate);
 
@@ -64,7 +64,7 @@ public abstract class DiscountPolicy {
 	 *            the discounts to filter.
 	 * @return filtered discounts.
 	 */
-	protected abstract List<Discount> getApplicableByPolicy(List<Discount> discounts);
+	protected abstract List<Discount> getApplicableByPolicy(List<Discount> discounts, Money feeExGst, Money getFeeGst);
 
 	public boolean isPromotionAdded(Discount discount) {
 		for (Discount promotion : promotions) {

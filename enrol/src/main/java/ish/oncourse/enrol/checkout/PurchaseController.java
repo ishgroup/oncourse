@@ -28,6 +28,8 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.InvoiceUtils;
+import ish.util.DiscountUtils;
+import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -35,6 +37,7 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,6 +46,7 @@ import org.apache.tapestry5.ioc.services.ParallelExecutor;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
@@ -216,26 +220,6 @@ public class PurchaseController {
 	public PurchaseModel getModel() {
 		return model;
 	}
-
-
-	 void recalculateEnrolmentInvoiceLines() {
-
-		for (Contact contact : model.getContacts()) {
-			for (Enrolment enrolment : model.getEnabledEnrolments(contact)) {
-				List<InvoiceLine> invoiceLines = new ArrayList<>(enrolment.getInvoiceLines());
-				for (InvoiceLine invoiceLine : invoiceLines) {
-					invoiceLine.setEnrolment(null);
-				}
-				model.getObjectContext().deleteObjects(invoiceLines);
-
-				InvoiceLine newInvoiceLine = invoiceProcessingService
-						.createInvoiceLineForEnrolment(enrolment, model.getDiscounts(), model.getNewInvoices());
-				newInvoiceLine.setInvoice(model.getInvoice());
-				newInvoiceLine.setEnrolment(enrolment);
-			}
-		}
-	}
-
 
 	/**
 	 * Creates the new {@link Enrolment} entity for the given courseClass and
@@ -642,7 +626,71 @@ public class PurchaseController {
 		UpdateInvoiceAmount.valueOf(getModel().getInvoice(), getModel().getCorporatePass()).update();
 	}
 
+	/**
+	 * Update applied discounts each time when total purchase amount or enabled enrolments count changed.
+	 * Such behavior required because now discounts applying depended on total invoices amount and enrolments count.
+	 * Apply and disapply any discounts to any purchase only in one place (here). 
+	 */
 
+	public void updateDiscountApplied() {
+		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
+			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
+			List<InvoiceLineDiscount> invoiceLineDiscounts = invoiceLine.getInvoiceLineDiscounts();
+			for (InvoiceLineDiscount invoiceLineDiscount : invoiceLineDiscounts) {
+				invoiceLineDiscount.setInvoiceLine(null);
+				invoiceLineDiscount.setDiscount(null);
+			}
+			model.getObjectContext().deleteObjects(invoiceLineDiscounts);
+			
+			InvoiceUtil.fillInvoiceLine(invoiceLine, enrolment.getCourseClass().getFeeExGst(), Money.ZERO,
+					enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
+		}
+
+		Money totalAmount = Money.ZERO;
+		
+		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
+			totalAmount = totalAmount.add(enrolment.getCourseClass().getFeeIncGst());
+		}
+		
+		for (ProductItem productItem : model.getAllEnabledProductItems()) {
+			totalAmount = totalAmount.add(productItem.getProduct().getPriceIncTax());
+		}
+		
+		int totalCount = model.getAllEnabledEnrolments().size();
+		
+		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
+			
+			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
+			List<Discount> classDiscounts = ObjectSelect.query(Discount.class).
+					where(Discount.IS_AVAILABLE_ON_WEB.isTrue()).
+					and(Discount.DISCOUNT_COURSE_CLASSES.dot(DiscountCourseClass.COURSE_CLASS).eq(enrolment.getCourseClass())).
+					and(Discount.getCurrentDateFilter()).
+					select(model.getObjectContext());
+
+			List<Discount> discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), totalCount, totalAmount, enrolment).get();
+
+			if (!discounts.isEmpty()) {
+				DiscountUtils.applyDiscounts(discounts, invoiceLine, enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
+				for (Discount discount :discounts) {
+					createInvoiceLineDiscounts(invoiceLine, discount, discount.getObjectContext());
+				}
+			}
+		}
+	}
+
+	/**
+	 * The method creates InvoiceLineDiscount entities for all discounts which were applied to this invoiceLine
+	 */
+	private void createInvoiceLineDiscounts(InvoiceLine invoiceLine, Discount discount, ObjectContext objectContext) {
+		InvoiceLineDiscount invoiceLineDiscount = objectContext.newObject(InvoiceLineDiscount.class);
+		invoiceLineDiscount.setInvoiceLine(invoiceLine);
+		invoiceLineDiscount.setDiscount(discount);
+		invoiceLineDiscount.setCollege(invoiceLine.getCollege());
+	}
+
+	private Money calculateTaxAdjustment(final CourseClass courseClass) {
+		return courseClass.getFeeIncGst().subtract(courseClass.getFeeExGst().multiply(courseClass.getTaxRate().add(BigDecimal.ONE)));
+	}
 
     public void updateTotalDiscountAmountIncTax() {
 		Money totalDiscountAmountIncTax = Money.ZERO;

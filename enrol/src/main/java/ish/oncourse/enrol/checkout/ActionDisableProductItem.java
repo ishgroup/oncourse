@@ -21,11 +21,12 @@ public class ActionDisableProductItem extends APurchaseAction{
                 ((Voucher) productItem).setRedemptionValue(Money.ZERO);
             }
 			getModel().disableProductItem(productItem);
-		}else if(productItem instanceof Membership || productItem instanceof Article) {
+		} else if(productItem instanceof Membership || productItem instanceof Article) {
             getModel().disableProductItem(productItem);
         }  else {
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
+		getController().updateDiscountApplied();
 	}
 
 	@Override

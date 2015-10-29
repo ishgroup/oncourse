@@ -1,22 +1,29 @@
-package ish.oncourse.model;
+/*
+ * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ */
+package ish.oncourse.enrol.checkout;
 
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
+import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountConcessionType;
+import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Student;
+import ish.oncourse.model.StudentConcession;
 import ish.oncourse.utils.MembershipDiscountHelper;
+import ish.oncourse.utils.WebDiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.LinkedList;
+import java.util.List;
 
-/**
- * Use this policy to get the discounts for which the selected student is
- * eligible.
- * 
- * @author ksenia
- * 
- */
-@Deprecated
-public class RealDiscountsPolicy extends DiscountPolicy {
+public class GetDiscountForEnrolment {
 
 	/**
 	 * Constant for {@link Discount#getStudentAgeOperator()} comparison: "less".
@@ -27,51 +34,48 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 	 * "greater".
 	 */
 	public static final String AGE_OVER = ">";
-	/**
-	 * Student that tries to get discount.
-	 */
-	private Student student;
+	
+	private List<Discount> classDiscounts;
+	private List<Discount> addedPromos;
+	private int enabledEnrolmentsCount;
+	private Money totalInvoicesAmount;
+	private Enrolment currentEnrolment;
 
-	private List<Invoice> invoices;
 
-	/**
-	 * Default constructor for the {@link RealDiscountsPolicy}. Gets the
-	 * user-defined promotions, and the student to consider eligibility.
-	 * 
-	 * @param promotions
-	 * @param student
-	 */
-	public RealDiscountsPolicy(List<Discount> promotions, Student student, List<Invoice> invoices) {
-		this(promotions);
-		this.student = student;
-		this.invoices = invoices;
+	private GetDiscountForEnrolment() {}
+	
+	public static GetDiscountForEnrolment valueOf(List<Discount> classDiscounts, List<Discount> addedPromos, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
+
+		GetDiscountForEnrolment get = new GetDiscountForEnrolment();
+		get.setClassDiscounts(classDiscounts);
+		get.setAddedPromos(addedPromos);
+		get.setEnabledEnrolmentsCount(enabledEnrolmentsCount);
+		get.setTotalInvoicesAmount(totalInvoicesAmount);
+		get.setCurrentEnrolment(currentEnrolment);
+		return get;
 	}
 
-	public RealDiscountsPolicy(List<Discount> promotions) {
-		super(promotions);
-	}
+	public List<Discount> get() {
+		
+		List<Discount> applicableDiscounts = new LinkedList<>();
 
-	/**
-	 * Check if the potential promotions are defined by user and if the student
-	 * given is eligible for discount. {@inheritDoc}
-	 * 
-	 * @see ish.oncourse.model.DiscountPolicy#getApplicableByPolicy(java.util.List, ish.math.Money, ish.math.Money)
-	 */
-	@Override
-	public List<Discount> getApplicableByPolicy(List<Discount> discounts, Money feeExGst, Money feeGst) {
-		List<Discount> result = new ArrayList<>();
-		if (discounts != null) {
-			for (Discount discount : discounts) {
-				if (discount.isPromotion() && !isPromotionAdded(discount)) {
-					continue;
-				}
-				if (isStudentEligibile(student, discount)) {
-					result.add(discount);
-				}
+
+		for (Discount discount : classDiscounts) {
+			if (discount.isPromotion() && !addedPromos.contains(discount)) {
+				continue;
+			} else if (isStudentEligibile(currentEnrolment.getStudent(), discount) && isDiscountEligibile(discount)) {
+				applicableDiscounts.add(discount);
 			}
 		}
-		return result;
+	
+		if (!applicableDiscounts.isEmpty()) {
+			return WebDiscountUtils.chooseBestDiscountsVariant(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate());
+		} else {
+			return Collections.EMPTY_LIST;
+		}
+		
 	}
+
 
 	/**
 	 * Determines if the given student is eligible for this Discount, based on:
@@ -80,11 +84,11 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 	 * student has ANY of the concessions related to this Discount, they will be
 	 * eligible. If the student has none of them (and one or more are related to
 	 * this discount), they will NOT be eligible.
-	 * 
+	 *
 	 * the implementation of this method is brought from
 	 * angel/client/ish.oncourse.cayenne.Discount#isStudentEligibile(Student
 	 * student)[97]
-	 * 
+	 *
 	 * @param student
 	 * @return
 	 */
@@ -133,7 +137,7 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 		}
 		if (discount.getDiscountConcessionTypes() != null && !discount.getDiscountConcessionTypes().isEmpty()) {
 			boolean notEligibile = true;
-			
+
 			for (DiscountConcessionType dct : discount.getDiscountConcessionTypes()) {
 				for (StudentConcession concession : student.getStudentConcessions()) {
 					if (concession.getConcessionType().getId().equals(dct.getConcessionType().getId())) {
@@ -150,7 +154,7 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 			}
 			if (notEligibile)
 				return false; // does not have any of the concession types that
-								// give this discount
+			// give this discount
 		}
 		if (discount.getStudentPostcodes() != null) {
 			List<String> postcodes = Arrays.asList(discount.getStudentPostcodes().split("\\s*,\\s"));
@@ -164,30 +168,38 @@ public class RealDiscountsPolicy extends DiscountPolicy {
 			}
 		}
 
-        MembershipDiscountHelper membershipDiscountHelper = new MembershipDiscountHelper();
-        membershipDiscountHelper.setContact(student.getContact());
-        membershipDiscountHelper.setDiscount(discount);
-        return membershipDiscountHelper.isEligibile();
+		MembershipDiscountHelper membershipDiscountHelper = new MembershipDiscountHelper();
+		membershipDiscountHelper.setContact(student.getContact());
+		membershipDiscountHelper.setDiscount(discount);
+		return membershipDiscountHelper.isEligibile();
 	}
 
-	// TODO: discount minEnrolments/minValue logic was disabled for 8.2 release
-	private boolean satisfiesMinEnrolmentCountAndValue(Discount discount, List<Invoice> invoices) {
-		int enrolmentsCount = 0;
-		Money totalValue = Money.ZERO;
 
-		for (Invoice invoice : invoices) {
-			for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
-				if (invoiceLine.getEnrolment() != null) {
-					CourseClass courseClass = invoiceLine.getEnrolment().getCourseClass();
+	public boolean isDiscountEligibile(Discount discount) {
 
-					if (courseClass.getDiscounts().contains(discount)) {
-						enrolmentsCount++;
-						totalValue = totalValue.add(invoiceLine.getFinalPriceToPayIncTax());
-					}
-				}
-			}
-		}
+		boolean minAmountCondition = totalInvoicesAmount.compareTo(discount.getMinValue()) >= 0;
+		boolean minEnrolmentsCondition = enabledEnrolmentsCount >= discount.getMinEnrolments();
+		
+		return minAmountCondition && minEnrolmentsCondition;
+	}
 
-		return enrolmentsCount >= discount.getMinEnrolments() && !totalValue.isLessThan(discount.getMinValue());
+	public void setClassDiscounts(List<Discount> classDiscounts) {
+		this.classDiscounts = classDiscounts;
+	}
+
+	public void setCurrentEnrolment(Enrolment currentEnrolment) {
+		this.currentEnrolment = currentEnrolment;
+	}
+
+	public void setTotalInvoicesAmount(Money totalInvoicesAmount) {
+		this.totalInvoicesAmount = totalInvoicesAmount;
+	}
+
+	public void setEnabledEnrolmentsCount(int enabledEnrolmentsCount) {
+		this.enabledEnrolmentsCount = enabledEnrolmentsCount;
+	}
+
+	public void setAddedPromos(List<Discount> addedPromos) {
+		this.addedPromos = addedPromos;
 	}
 }

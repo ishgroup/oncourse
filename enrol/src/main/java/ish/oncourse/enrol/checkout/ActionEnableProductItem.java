@@ -27,6 +27,7 @@ public class ActionEnableProductItem extends APurchaseAction {
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
 		getModel().enableProductItem(productItem, productItem.getContact());
+		getController().updateDiscountApplied();
 	}
 
 	private void enableArticle() {

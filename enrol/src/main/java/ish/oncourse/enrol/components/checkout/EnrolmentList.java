@@ -6,13 +6,14 @@ import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.RealDiscountsPolicy;
+import ish.oncourse.model.InvoiceLineDiscount;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class EnrolmentList {
@@ -68,9 +69,13 @@ public class EnrolmentList {
 
             @Override
             public List<Discount> getDiscounts() {
-                return enrolment.getCourseClass().getDiscountsToApply(
-                        new RealDiscountsPolicy(purchaseController.getModel().getDiscounts(),
-								enrolment.getStudent(), purchaseController.getModel().getNewInvoices()));
+				List<Discount> discounts = new LinkedList<>();
+				
+				for (InvoiceLineDiscount lineDiscount : enrolment.getInvoiceLines().get(0).getInvoiceLineDiscounts()) {
+					discounts.add(lineDiscount.getDiscount());
+				}
+				
+				return discounts;
             }
 		};
     }

@@ -335,7 +335,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discountPolicy = new RealDiscountsPolicy(promotions, student, new ArrayList<Invoice>());
 		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(Arrays.asList(discount,
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin, 
-				hiddenDiscountWithAmount, nonAvailableDiscountWithAmount));
+				hiddenDiscountWithAmount, nonAvailableDiscountWithAmount), FEE_EX_GST, FEE_GST);
 		assertFalse(applicableByPolicy.isEmpty());
 		assertEquals(5, applicableByPolicy.size());
 		assertEquals(discount, applicableByPolicy.get(0));
@@ -357,7 +357,7 @@ public class RealDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		discountPolicy = new RealDiscountsPolicy(promotions, student, new ArrayList<Invoice>());
 		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(discount,
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin),
-				FEE_EX_GST, new BigDecimal(0.1));
+				FEE_EX_GST, FEE_GST,new BigDecimal(0.1));
 		assertFalse(filteredDiscounts.isEmpty());
 		assertEquals(1, filteredDiscounts.size());
 		assertEquals(discount, filteredDiscounts.get(0));

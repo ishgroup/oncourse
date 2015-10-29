@@ -16,7 +16,7 @@ public class ActionEnableEnrolment extends APurchaseAction {
 
         if (enrolment.getCourseClass().getPaymentPlanLines().isEmpty() || !getController().isSupportPaymentPlan()) {
             InvoiceLine il = getController().getInvoiceProcessingService()
-					.createInvoiceLineForEnrolment(enrolment, getModel().getDiscounts(), getModel().getNewInvoices());
+					.createInvoiceLineForEnrolment(enrolment);
             il.setInvoice(getModel().getInvoice());
             il.setEnrolment(getEnrolment());
         } else {
@@ -25,7 +25,8 @@ public class ActionEnableEnrolment extends APurchaseAction {
         }
         //we set status IN_TRANSACTION for enable enrolment in transaction to consider the enrolment in places check
         enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
-    }
+		getController().updateDiscountApplied();
+	}
 
     @Override
     protected void parse() {

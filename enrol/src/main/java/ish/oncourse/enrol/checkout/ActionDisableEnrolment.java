@@ -20,7 +20,8 @@ public class ActionDisableEnrolment extends APurchaseAction {
 		getModel().disableEnrolment(enrolment);
         //we set status NEW for disabled enrolment  to exclude the enrolment in places check
         enrolment.setStatus(EnrolmentStatus.NEW);
-    }
+		getController().updateDiscountApplied();
+	}
 
 	@Override
 	protected void parse() {
