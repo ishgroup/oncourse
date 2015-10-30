@@ -128,21 +128,17 @@ configurations.all {
 }
 
 configurations {
-	apidoc
+    apidocSource
 }
 
 dependencies {
-	apidoc 'org.fusesource.jansi:jansi:1.11'
-	apidoc "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
-
-	// FIXME: is there a way to properly reference buildSrc project dependency?
-	apidoc rootProject.files('buildSrc/apidoc/build/libs/apidoc.jar')
+    apidocSource "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion:sources"
 }
 
 apiDocs {
-	source = sourceSets.main.groovy.plus(zipTree(configurations.apidoc.find { it.name.startsWith("waCommon") }))
-	classpath = configurations.compile.plus(configurations.apidoc)
-	groovyClasspath = configurations.compile
+	source = sourceSets.main.groovy.plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
+    // source = "${projectDir}/src/main/java"
+	// classpath = configurations.compile.plus(configurations.apidoc)
 	destinationDir = reporting.file("api-docs")
 }
 
