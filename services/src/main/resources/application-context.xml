@@ -29,6 +29,10 @@
 	
 	<bean id="v4_collegeRequestInterceptor" class="ish.oncourse.webservices.soap.v4.interceptors.CollegeRequestInterceptor" />
 
+	<bean id="v6_paymentPortType" class="ish.oncourse.webservices.soap.v6.PaymentPortTypeImpl" />
+
+	<bean id="v6_replicationPortType" class="ish.oncourse.webservices.soap.v6.ReplicationPortTypeImpl" />
+
 	<bean id="v7_paymentPortType" class="ish.oncourse.webservices.soap.v7.PaymentPortTypeImpl" />
 
 	<bean id="v7_replicationPortType" class="ish.oncourse.webservices.soap.v7.ReplicationPortTypeImpl" />
@@ -69,6 +73,22 @@
 	<jaxws:endpoint id="v6_reference" implementor="#v6_referencePortTypeBean"
 					address="/v6/reference">
 		<jaxws:inInterceptors>
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v6_replication" implementor="#v6_replicationPortType"
+					address="/v6/replication">
+		<jaxws:inInterceptors>
+			<ref bean="v4_communicationKeyInterceptor" />
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v6_payment" implementor="#v6_paymentPortType"
+					address="/v6/payment">
+		<jaxws:inInterceptors>
+			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
