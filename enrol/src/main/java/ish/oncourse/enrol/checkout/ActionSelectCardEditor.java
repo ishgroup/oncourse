@@ -15,6 +15,7 @@ public class ActionSelectCardEditor extends APurchaseAction{
 			getModel().getInvoice().setCustomerReference(null);
 			getModel().setCorporatePass(null);
 			getModel().setPayer(getModel().getContacts().get(0));
+			getController().updateDiscountApplied();
 		}
 
 		ActionChangePayer actionChangePayer = new ActionChangePayer();

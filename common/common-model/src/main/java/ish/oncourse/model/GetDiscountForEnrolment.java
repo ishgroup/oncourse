@@ -9,6 +9,7 @@ import ish.oncourse.utils.MembershipDiscountHelper;
 import ish.oncourse.utils.WebDiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.collections.ListUtils;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -31,6 +32,7 @@ public class GetDiscountForEnrolment {
 	
 	private List<Discount> classDiscounts;
 	private List<Discount> addedPromos;
+	private List<Discount> corporatePassDiscounts;
 	private int enabledEnrolmentsCount;
 	private Money totalInvoicesAmount;
 	private Enrolment currentEnrolment;
@@ -41,11 +43,12 @@ public class GetDiscountForEnrolment {
 
 	private GetDiscountForEnrolment() {}
 	
-	public static GetDiscountForEnrolment valueOf(List<Discount> classDiscounts, List<Discount> addedPromos, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
+	public static GetDiscountForEnrolment valueOf(List<Discount> classDiscounts, List<Discount> addedPromos, List<Discount> corporatePassDiscounts, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
 
 		GetDiscountForEnrolment get = new GetDiscountForEnrolment();
 		get.setClassDiscounts(classDiscounts);
 		get.setAddedPromos(addedPromos);
+		get.setCorporatePassDiscounts(corporatePassDiscounts);
 		get.setEnabledEnrolmentsCount(enabledEnrolmentsCount);
 		get.setTotalInvoicesAmount(totalInvoicesAmount);
 		get.setCurrentEnrolment(currentEnrolment);
@@ -53,8 +56,15 @@ public class GetDiscountForEnrolment {
 	}
 
 	public GetDiscountForEnrolment get() {
-
-		for (Discount discount : classDiscounts) {
+		
+		List<Discount> avalibleDiscounts = new LinkedList<>();
+		if (corporatePassDiscounts != null && !corporatePassDiscounts.isEmpty()) {
+			avalibleDiscounts.addAll(ListUtils.intersection(corporatePassDiscounts, classDiscounts));
+		} else {
+			avalibleDiscounts.addAll(classDiscounts);
+		}
+		
+		for (Discount discount : avalibleDiscounts) {
 			if (discount.isPromotion() && !addedPromos.contains(discount)) {
 				continue;
 			} else if (isStudentEligibile(currentEnrolment.getStudent(), discount) && isDiscountEligibile(discount)) {
@@ -174,6 +184,10 @@ public class GetDiscountForEnrolment {
 		boolean minEnrolmentsCondition = enabledEnrolmentsCount >= discount.getMinEnrolments();
 		
 		return minAmountCondition && minEnrolmentsCondition;
+	}
+
+	public void setCorporatePassDiscounts(List<Discount> corporatePassDiscounts) {
+		this.corporatePassDiscounts = corporatePassDiscounts;
 	}
 
 	public void setClassDiscounts(List<Discount> classDiscounts) {

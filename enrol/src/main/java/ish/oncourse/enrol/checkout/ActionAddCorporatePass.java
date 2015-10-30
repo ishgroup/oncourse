@@ -26,6 +26,7 @@ public class ActionAddCorporatePass extends APurchaseAction {
         actionChangePayer.action();
 
         getModel().setCorporatePass(corporatePass);
+		getController().updateDiscountApplied();
     }
 
     @Override

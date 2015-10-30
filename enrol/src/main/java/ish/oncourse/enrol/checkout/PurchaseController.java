@@ -633,56 +633,38 @@ public class PurchaseController {
 	 */
 
 	public void updateDiscountApplied() {
-		
-		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
-			Application application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
-			if (application != null && application.getFeeOverride() != null) {
-				continue;
-			}
-			
-			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
-			List<InvoiceLineDiscount> invoiceLineDiscounts = invoiceLine.getInvoiceLineDiscounts();
-			for (InvoiceLineDiscount invoiceLineDiscount : invoiceLineDiscounts) {
-				invoiceLineDiscount.setInvoiceLine(null);
-				invoiceLineDiscount.setDiscount(null);
-			}
-			model.getObjectContext().deleteObjects(invoiceLineDiscounts);
-			
-			InvoiceUtil.fillInvoiceLine(invoiceLine, enrolment.getCourseClass().getFeeExGst(), Money.ZERO,
-					enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
-		}
 
-		Money totalAmount = Money.ZERO;
-		
-		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
-			Application application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
-			if (application != null && application.getFeeOverride() != null) {
-				totalAmount = totalAmount.add(application.getFeeOverride());
-			} else {
-				totalAmount = totalAmount.add(enrolment.getCourseClass().getFeeIncGst());
-			}
-		}
-		
-		for (ProductItem productItem : model.getAllEnabledProductItems()) {
-			totalAmount = totalAmount.add(productItem.getProduct().getPriceIncTax());
-		}
-		
+		unlinkPreviouslyAddedDiscounts();
+		Money totalAmount = getTotalPurchasesAmount();
 		int totalCount = model.getAllEnabledEnrolments().size();
 		
+		//find and apply the best discount combination for each enrolment
 		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
 			Application application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
 			if (application != null && application.getFeeOverride() != null) {
+				//skip enrolments by applications with overriden fee. Such enrolments never linked to any discounts
 				continue;
 			}
 			
 			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
+			
 			List<Discount> classDiscounts = ObjectSelect.query(Discount.class).
 					where(Discount.IS_AVAILABLE_ON_WEB.isTrue()).
 					and(Discount.DISCOUNT_COURSE_CLASSES.dot(DiscountCourseClass.COURSE_CLASS).eq(enrolment.getCourseClass())).
 					and(Discount.getCurrentDateFilter()).
 					select(model.getObjectContext());
 
-			GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), totalCount, totalAmount, enrolment).get();
+			List<Discount> corporatePassDiscounts = new LinkedList<>();
+			
+			if (model.getCorporatePass() != null) {
+				corporatePassDiscounts  = ObjectSelect.query(Discount.class).
+						where(Discount.IS_AVAILABLE_ON_WEB.isTrue()).
+						and(Discount.CORPORATE_PASS_DISCOUNTS.dot(CorporatePassDiscount.CORPORATE_PASS).eq(model.getCorporatePass())).
+						and(Discount.getCurrentDateFilter()).
+						select(model.getObjectContext());
+			}
+
+			GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), corporatePassDiscounts, totalCount, totalAmount, enrolment).get();
 
 			if (!discounts.getBestDiscountsVariant().isEmpty()) {
 				DiscountUtils.applyDiscounts(discounts.getBestDiscountsVariant(), invoiceLine, enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
@@ -691,6 +673,55 @@ public class PurchaseController {
 				}
 			}
 		}
+	}
+
+	/** Unlink all previously added discounts 
+	 *  restore original fee for eash invoice line
+	 */
+	private void unlinkPreviouslyAddedDiscounts () {
+		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
+			Application application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
+			if (application != null && application.getFeeOverride() != null) {
+				//do not touch to enrolments by applications. Such enrolments never linked to any discounts
+				continue;
+			}
+
+			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
+			List<InvoiceLineDiscount> invoiceLineDiscounts = invoiceLine.getInvoiceLineDiscounts();
+			for (InvoiceLineDiscount invoiceLineDiscount : invoiceLineDiscounts) {
+				invoiceLineDiscount.setInvoiceLine(null);
+				invoiceLineDiscount.setDiscount(null);
+			}
+			model.getObjectContext().deleteObjects(invoiceLineDiscounts);
+
+			InvoiceUtil.fillInvoiceLine(invoiceLine, enrolment.getCourseClass().getFeeExGst(), Money.ZERO,
+					enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
+		}
+	}
+
+	/**
+	 * calculate total purchases amount excluding any discounts
+	 * extracts original fee directly from CourseClass or Product or Application which has overriden fee
+	 * @return
+	 */
+	private Money getTotalPurchasesAmount() {
+
+		Money totalAmount = Money.ZERO;
+
+		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
+			Application application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
+			if (application != null && application.getFeeOverride() != null) {
+				totalAmount = totalAmount.add(application.getFeeOverride());
+			} else {
+				totalAmount = totalAmount.add(enrolment.getCourseClass().getFeeIncGst());
+			}
+		}
+
+		for (ProductItem productItem : model.getAllEnabledProductItems()) {
+			totalAmount = totalAmount.add(productItem.getProduct().getPriceIncTax());
+		}
+		
+		return totalAmount;
 	}
 
 	/**
