@@ -532,8 +532,9 @@ public class Billing {
 
 		customFee.setCode(newCode);
 		customFee.setName(newName);
-
-		customFee.setPaidUntil(dateFormat.parse(newPaidUntil));
+		if (newPaidUntil != null) {
+			customFee.setPaidUntil(dateFormat.parse(newPaidUntil));
+		}
 		customFee.setFee(newFee);
 		context.commitChanges();
 	}
