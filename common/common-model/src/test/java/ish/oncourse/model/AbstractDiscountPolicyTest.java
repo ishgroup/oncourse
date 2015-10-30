@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Contains fields and tests common for {@link PotentialDiscountsPolicyTest} and {@link RealDiscountsPolicyTest}
+ * Contains fields and tests common for {@link PotentialDiscountsPolicyTest} and {@link ish.oncourse.model.GetDiscountForEnrolment}
  * @author ksenia
  *
  */
@@ -45,6 +45,14 @@ public abstract class AbstractDiscountPolicyTest {
 	 * Combinable discount for $10 amount which has isAvailableOnWeb property set to false
 	 */
 	public static Discount nonAvailableDiscountWithAmount;
+	/**
+	 * Not combinable discount for $50 amount which has minEnrolment = 1 and minValue = $200
+	 */
+	public static Discount minValueConditionDiscount;
+	/**
+	 * Not combinable discount for $60 amount which has minEnrolment = 2 and minValue = $200
+	 */
+	public static Discount minCountAndValueConditionDiscount;
 
 	public static List<Discount> promotions;
 	public static DiscountPolicy discountPolicy;
@@ -105,6 +113,22 @@ public abstract class AbstractDiscountPolicyTest {
 		nonAvailableDiscountWithAmount.setIsAvailableOnWeb(false);
 		nonAvailableDiscountWithAmount.setMinEnrolments(0);
 		nonAvailableDiscountWithAmount.setMinValue(Money.ZERO);
+
+		minValueConditionDiscount = new Discount();
+		minValueConditionDiscount.setDiscountAmount(new Money("50"));
+		minValueConditionDiscount.setCombinationType(false);
+		minValueConditionDiscount.setHideOnWeb(false);
+		minValueConditionDiscount.setIsAvailableOnWeb(true);
+		minValueConditionDiscount.setMinEnrolments(1);
+		minValueConditionDiscount.setMinValue(new Money("200"));
+
+		minCountAndValueConditionDiscount = new Discount();
+		minCountAndValueConditionDiscount.setDiscountAmount(new Money("60"));
+		minCountAndValueConditionDiscount.setCombinationType(false);
+		minCountAndValueConditionDiscount.setHideOnWeb(false);
+		minCountAndValueConditionDiscount.setIsAvailableOnWeb(true);
+		minCountAndValueConditionDiscount.setMinEnrolments(2);
+		minCountAndValueConditionDiscount.setMinValue(new Money("200"));
 		
 		promotions = new ArrayList<>();
 		promotions.add(combDiscountWithAmount);

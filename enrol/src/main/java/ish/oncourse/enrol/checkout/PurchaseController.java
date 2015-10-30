@@ -29,6 +29,7 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
 import ish.oncourse.util.InvoiceUtils;
 import ish.util.DiscountUtils;
+import ish.util.InvoiceUtil;
 import ish.util.ProductUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -632,19 +633,23 @@ public class PurchaseController {
 	 */
 
 	public void updateDiscountApplied() {
-
+		
 		for (Enrolment enrolment : model.getAllEnabledEnrolments()) {
-			List<InvoiceLine> invoiceLines = new ArrayList<>(enrolment.getInvoiceLines());
-			for (InvoiceLine invoiceLine : invoiceLines) {
-				invoiceLine.setEnrolment(null);
-				invoiceLine.setInvoice(null);
+			Application application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
+			if (application != null && application.getFeeOverride() != null) {
+				continue;
 			}
-			model.getObjectContext().deleteObjects(invoiceLines);
-
-			InvoiceLine newInvoiceLine = invoiceProcessingService
-					.createInvoiceLineForEnrolment(enrolment);
-			newInvoiceLine.setInvoice(model.getInvoice());
-			newInvoiceLine.setEnrolment(enrolment);
+			
+			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
+			List<InvoiceLineDiscount> invoiceLineDiscounts = invoiceLine.getInvoiceLineDiscounts();
+			for (InvoiceLineDiscount invoiceLineDiscount : invoiceLineDiscounts) {
+				invoiceLineDiscount.setInvoiceLine(null);
+				invoiceLineDiscount.setDiscount(null);
+			}
+			model.getObjectContext().deleteObjects(invoiceLineDiscounts);
+			
+			InvoiceUtil.fillInvoiceLine(invoiceLine, enrolment.getCourseClass().getFeeExGst(), Money.ZERO,
+					enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
 		}
 
 		Money totalAmount = Money.ZERO;

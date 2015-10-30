@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for {@link ish.oncourse.model.GetDiscountForEnrolment}.
@@ -242,7 +243,7 @@ public class GetDiscountForEnrolmentTest extends AbstractDiscountPolicyTest {
 		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// set the "<" operation for student age
-		discount.setStudentAgeOperator(RealDiscountsPolicy.AGE_UNDER);
+		discount.setStudentAgeOperator(GetDiscountForEnrolment.AGE_UNDER);
 		// not eligible, because student age is 40, and "40<20" expression is
 		// incorrect
 		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
@@ -254,7 +255,7 @@ public class GetDiscountForEnrolmentTest extends AbstractDiscountPolicyTest {
 		assertTrue(GetDiscountForEnrolment.isStudentEligibile(student, discount));
 
 		// set age oprator to ">"
-		discount.setStudentAgeOperator(RealDiscountsPolicy.AGE_OVER);
+		discount.setStudentAgeOperator(GetDiscountForEnrolment.AGE_OVER);
 		// not eligible, because student age is 15, and "15>20" expression is
 		// incorrect
 		assertFalse(GetDiscountForEnrolment.isStudentEligibile(student, discount));
@@ -356,6 +357,37 @@ public class GetDiscountForEnrolmentTest extends AbstractDiscountPolicyTest {
 		assertEquals(hiddenDiscountWithAmount, applicableByPolicy.get(4));
 		// non available discount should not appear in real discounts list
 		assertFalse(applicableByPolicy.contains(nonAvailableDiscountWithAmount));
+	}
+	
+	@Test
+	public void minValueConditionTest() {
+		List<Discount> applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(singleDiscountWithRate, minValueConditionDiscount, minCountAndValueConditionDiscount), promotions, 1, Money.ONE, enrolment).get().getApplicableDiscounts();
+		assertEquals(1, applicableByPolicy.size());
+		assertEquals(singleDiscountWithRate, applicableByPolicy.get(0));
+		
+		//add some other purchases and try again 
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(singleDiscountWithRate, minValueConditionDiscount, minCountAndValueConditionDiscount), promotions, 1, new Money("200"), enrolment).get().getApplicableDiscounts();
+
+		assertEquals(2, applicableByPolicy.size());
+		assertTrue(applicableByPolicy.contains(singleDiscountWithRate));
+		assertTrue(applicableByPolicy.contains(minValueConditionDiscount));
+
+		List<Discount> bestCombination  =  GetDiscountForEnrolment.valueOf(Arrays.asList(singleDiscountWithRate, minValueConditionDiscount, minCountAndValueConditionDiscount), promotions, 1, new Money("200"), enrolment).get().getBestDiscountsVariant();
+
+		assertEquals(1, bestCombination.size());
+		assertEquals(minValueConditionDiscount, bestCombination.get(0));
+
+		//add one more purchases and try again 
+		applicableByPolicy  =  GetDiscountForEnrolment.valueOf(Arrays.asList(singleDiscountWithRate, minValueConditionDiscount, minCountAndValueConditionDiscount), promotions, 2, new Money("200"), enrolment).get().getApplicableDiscounts();
+		assertEquals(3, applicableByPolicy.size());
+
+		assertTrue(applicableByPolicy.contains(singleDiscountWithRate));
+		assertTrue(applicableByPolicy.contains(minValueConditionDiscount));
+		assertTrue(applicableByPolicy.contains(minCountAndValueConditionDiscount));
+
+		bestCombination  =  GetDiscountForEnrolment.valueOf(Arrays.asList(singleDiscountWithRate, minValueConditionDiscount, minCountAndValueConditionDiscount), promotions, 2, new Money("200"), enrolment).get().getBestDiscountsVariant();
+		assertEquals(1, bestCombination.size());
+		assertEquals(minCountAndValueConditionDiscount, bestCombination.get(0));
 	}
 
 	/**
