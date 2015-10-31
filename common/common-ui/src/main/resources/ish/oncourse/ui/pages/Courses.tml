@@ -38,12 +38,9 @@
     </t:block>
 
     <t:block t:id="moreCourses">
-        <t:if test="DebugRequest">
-            <t:outputraw value="${debugInfo}"/>
-        </t:if>
 		<span t:type="ui/CoursesList" courses="courses" coursesCount="coursesCount"
               loadedCoursesIds="previouslyLoadedCourseIds"
-              itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams"/>
+              itemIndex="itemIndex" sitesParameter="sitesParameter" searchParams="searchParams" debugInfoMap="debugInfoMap"/>
     </t:block>
 
     <t:block t:id="htmlCourses">

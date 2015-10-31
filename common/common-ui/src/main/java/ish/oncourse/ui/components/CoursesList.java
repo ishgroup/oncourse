@@ -13,6 +13,7 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class CoursesList extends ISHCommon {
 	@Inject
@@ -52,10 +53,20 @@ public class CoursesList extends ISHCommon {
 	@Property
     private List<Long> loadedCoursesIds;
 
+	@Parameter
+	private Map debugInfoMap;
 
     public boolean isHasMoreItems() {
         return itemIndex < coursesCount;
     }
+
+	public Object getCourseDebugInfo() {
+		if (debugInfoMap != null) {
+			return debugInfoMap.get(course.getId().toString());
+		} else {
+			return null;
+		}
+	}
 
     public CourseItemModel getCourseItemModel()
     {

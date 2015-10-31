@@ -20,7 +20,10 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.BlockNotFoundException;
-import org.apache.tapestry5.annotations.*;
+import org.apache.tapestry5.annotations.Id;
+import org.apache.tapestry5.annotations.Persist;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
@@ -114,6 +117,9 @@ public class Courses extends ISHCommon {
 	private String debugInfo;
 
 	@Property
+	private Map debugInfoMap;
+
+	@Property
 	private Block currentBlock;
 
 	@Inject
@@ -135,7 +141,7 @@ public class Courses extends ISHCommon {
 	private List<Long> loadedCoursesIds;
 
 	public boolean isDebugRequest() {
-		return StringUtils.trimToNull(debugInfo) != null;
+		return debugInfo != null;
 	}
 
 	public List<Long> getPreviouslyLoadedCourseIds() {
@@ -289,7 +295,9 @@ public class Courses extends ISHCommon {
 				(searchParams.getDay() != null ||
 						searchParams.getSuburbs().size() > 0 ||
 						searchParams.getPrice() != null ||
-						searchParams.getTime() != null);
+						searchParams.getTime() != null ||
+						searchParams.getTutorId() != null
+				);
 	}
 
 	public boolean isHasMapItemList() {
@@ -326,6 +334,7 @@ public class Courses extends ISHCommon {
 			ids.add((String) doc.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
 		}
 		if (results.getDebugMap() != null) {
+			debugInfoMap = results.getExplainMap();
 			debugInfo = results.getDebugMap().get("explain").toString();
 		}
 		return courseService.loadByIds(ids.toArray());
