@@ -39,17 +39,17 @@ public abstract class AbstractAllStubBuildersTest extends ServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
 	}
 
-	protected <E extends Queueable, S extends GenericReplicationStub> void testStubBuilder(Class<E> entityClass,
+	protected <E extends Queueable, S extends GenericReplicationStub> S testStubBuilder(Class<E> entityClass,
 																						 AbstractWillowStubBuilder<E, S> stubBuilder, Long entityId, String... excludeProperty) {
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		E entity = Cayenne.objectForPK(cayenneService.sharedContext(), entityClass, entityId);
 		StubBuilderTestHelper<E, S> stubBuilderTestHelper = new StubBuilderTestHelper<>(entity,excludeProperty);
-		stubBuilderTestHelper.assertStubBuilder(stubBuilder);
+		return stubBuilderTestHelper.assertStubBuilder(stubBuilder);
 	}
 
-	protected <E extends Queueable, S extends GenericReplicationStub> void testStubBuilder(Class<E> entityClass,
+	protected <E extends Queueable, S extends GenericReplicationStub> S testStubBuilder(Class<E> entityClass,
 																						 AbstractWillowStubBuilder<E, S> stubBuilder, String... excludeProperty) {
-		this.testStubBuilder(entityClass,stubBuilder, 1l, excludeProperty);
+		return this.testStubBuilder(entityClass,stubBuilder, 1l, excludeProperty);
 	}
 
 

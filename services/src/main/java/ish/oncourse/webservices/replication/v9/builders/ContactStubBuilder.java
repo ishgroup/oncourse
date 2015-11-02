@@ -3,6 +3,7 @@ package ish.oncourse.webservices.replication.v9.builders;
 import ish.oncourse.model.Contact;
 import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v9.stubs.replication.ContactStub;
+import org.apache.commons.lang3.time.DateUtils;
 
 public class ContactStubBuilder extends
 		AbstractWillowStubBuilder<Contact, ContactStub> {
@@ -16,7 +17,7 @@ public class ContactStubBuilder extends
 			stub.setCountryId(entity.getCountry().getId());
 		}
 		stub.setCreated(entity.getCreated());
-		stub.setDateOfBirth(entity.getDateOfBirth());
+		stub.setDateOfBirth(entity.getDateOfBirth() != null ? DateUtils.setHours(entity.getDateOfBirth(), 12): null);
 		stub.setEmailAddress(entity.getEmailAddress());
 		stub.setFamilyName(entity.getFamilyName());
 		stub.setFaxNumber(entity.getFaxNumber());

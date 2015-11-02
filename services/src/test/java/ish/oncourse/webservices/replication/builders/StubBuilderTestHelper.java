@@ -8,6 +8,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.SupportedVersions;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.util.ReflectionUtils;
 
@@ -53,7 +54,7 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
     }
 
 
-    public void assertStubBuilder(AbstractWillowStubBuilder<E, S> stubBuilder) {
+    public S assertStubBuilder(AbstractWillowStubBuilder<E, S> stubBuilder) {
         LOGGER.info(String.format("test stubBuilder - \"%s\"", stubBuilder.getClass().getSimpleName()));
         GenericReplicationStub stub = stubBuilder.convert(entity, SupportedVersions.V4);
 
@@ -69,7 +70,7 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
                 assertEquals("test property - " + descriptor.getName(), entityValue, stubValue);
             }
         }
-
+        return (S) stub;
     }
 
     /**
@@ -203,7 +204,11 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 			if (propertyName.equals(Script.SYSTEM_EVENT_TYPE_PROPERTY)) {
 				return ((Script) entity).getSystemEventType().getDatabaseValue();
 			}
-		}
+		} else if (entity instanceof Contact) {
+            if (Contact.DATE_OF_BIRTH.getName().equals(propertyName)) {
+                return ((Contact) entity).getDateOfBirth() != null ? DateUtils.setHours(((Contact) entity).getDateOfBirth(), 12): null;
+            }
+        }
 
 
 			if (propertyName.equals("willowId")) {

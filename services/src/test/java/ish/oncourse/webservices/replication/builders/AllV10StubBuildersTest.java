@@ -5,7 +5,14 @@ package ish.oncourse.webservices.replication.builders;
 
 import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.v10.builders.*;
+import ish.oncourse.webservices.v10.stubs.replication.ContactStub;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import static junit.framework.Assert.assertEquals;
 
 public class AllV10StubBuildersTest extends AbstractAllStubBuildersTest {
 
@@ -46,7 +53,9 @@ public class AllV10StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testContactStubBuilder() {
-		this.testStubBuilder(Contact.class, new ContactStubBuilder());
+		ContactStub stub = this.testStubBuilder(Contact.class, new ContactStubBuilder());
+		Date date = stub.getDateOfBirth();
+		assertEquals(12l, DateUtils.getFragmentInHours(date, Calendar.DAY_OF_MONTH));
 	}
 
 	@Test
