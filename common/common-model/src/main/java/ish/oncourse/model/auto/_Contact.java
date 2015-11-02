@@ -156,7 +156,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final Property<String> UNIQUE_CODE = new Property<String>("uniqueCode");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<List<DiscussionCommentContact>> CONTACT_COMMENTS = new Property<List<DiscussionCommentContact>>("contactComments");
-    public static final Property<CorporatePass> CORPORATE_PASSES = new Property<CorporatePass>("corporatePasses");
+    public static final Property<List<CorporatePass>> CORPORATE_PASSES = new Property<List<CorporatePass>>("corporatePasses");
     public static final Property<Country> COUNTRY = new Property<Country>("country");
     public static final Property<List<CustomField>> CUSTOM_FIELDS = new Property<List<CustomField>>("customFields");
     public static final Property<List<ContactRelation>> FROM_CONTACTS = new Property<List<ContactRelation>>("fromContacts");
@@ -401,12 +401,15 @@ public abstract class _Contact extends CayenneDataObject {
     }
 
 
-    public void setCorporatePasses(CorporatePass corporatePasses) {
-        setToOneTarget("corporatePasses", corporatePasses, true);
+    public void addToCorporatePasses(CorporatePass obj) {
+        addToManyTarget("corporatePasses", obj, true);
     }
-
-    public CorporatePass getCorporatePasses() {
-        return (CorporatePass)readProperty("corporatePasses");
+    public void removeFromCorporatePasses(CorporatePass obj) {
+        removeToManyTarget("corporatePasses", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CorporatePass> getCorporatePasses() {
+        return (List<CorporatePass>)readProperty("corporatePasses");
     }
 
 

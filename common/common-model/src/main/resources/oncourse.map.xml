@@ -2719,7 +2719,7 @@
 	<db-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
-	<db-relationship name="corporatePasses" source="Contact" target="CorporatePass" toMany="false">
+	<db-relationship name="corporatePasses" source="Contact" target="CorporatePass" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="country" source="Contact" target="Country" toMany="false">
