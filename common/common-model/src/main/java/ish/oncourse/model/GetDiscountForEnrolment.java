@@ -73,7 +73,11 @@ public class GetDiscountForEnrolment {
 		}
 	
 		if (!applicableDiscounts.isEmpty()) {
-			bestDiscountsVariant.addAll(WebDiscountUtils.chooseBestDiscountsVariant(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate()));
+			if (applicableDiscounts.size() == 1) {
+				bestDiscountsVariant.add(applicableDiscounts.get(0));
+			} else {
+				bestDiscountsVariant.addAll(WebDiscountUtils.chooseBestDiscountsVariant(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate()));
+			}
 		} 
 		
 		return this;

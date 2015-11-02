@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.payment;
 
+import ish.math.Money;
 import ish.oncourse.analytics.Transaction;
 import ish.oncourse.model.*;
 
@@ -21,6 +22,8 @@ public interface PaymentEditorDelegate {
 	PaymentIn getPaymentIn();
 
 	Invoice getInvoice();
+	
+	Money getTotalDiscountAmountIncTax();
 
 	Map<String, String> getErrors();
 

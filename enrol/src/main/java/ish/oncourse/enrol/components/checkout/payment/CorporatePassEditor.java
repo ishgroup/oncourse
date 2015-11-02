@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.components.checkout.payment;
 
+import ish.math.Money;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorParser;
 import ish.oncourse.utils.StringUtilities;
@@ -45,6 +46,13 @@ public class CorporatePassEditor implements IPaymentControlDelegate {
 		if (delegate.getInvoice().getCorporatePassUsed() != null) {
 			String companyName = delegate.getInvoice().getCorporatePassUsed().getContact().getFullName();
 			successMessage = messages.format("message-corporatePassAdded", companyName, companyName);
+			Money totalDiscount = delegate.getTotalDiscountAmountIncTax();
+			if (totalDiscount.compareTo(Money.ZERO) > 0) {
+				successMessage = successMessage.concat(String.format("\n This corporatePass has caused a discount of %s to be applied to this sale.", totalDiscount.toString()));
+			} else if (totalDiscount.compareTo(Money.ZERO) < 0) {
+				successMessage = successMessage.concat(String.format("\n This corporatePass has caused a surcharge of %s to be applied to this sale.", totalDiscount.toString()));
+			}
+			
 		}
 	}
 

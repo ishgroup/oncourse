@@ -216,6 +216,12 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 		return purchaseController.getModel().getInvoice();
 	}
 
+	@Override
+	public Money getTotalDiscountAmountIncTax() {
+		return purchaseController.getTotalDiscountAmountIncTax();
+	}
+	
+
 	public void setPurchaseController(PurchaseController purchaseController) {
         this.purchaseController = purchaseController;
     }
