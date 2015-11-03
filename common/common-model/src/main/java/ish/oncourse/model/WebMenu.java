@@ -40,23 +40,6 @@ public class WebMenu extends _WebMenu implements Comparable<WebMenu> {
 		return children;
 	}
 
-	/**
-	 * @return All child menus with published nodes for this menu.
-	 */
-	@Deprecated //IWebMenuService.getNavigableChildrenBy should be used
-	public List<WebMenu> getNavigableChildMenus() {
-
-		Expression expr = ExpressionFactory
-				.matchExp(WebMenu.WEB_NODE_PROPERTY + "." + WebNode.PUBLISHED_PROPERTY, true).orExp(
-						ExpressionFactory.matchExp(WebMenu.WEB_NODE_PROPERTY, null).andExp(
-								ExpressionFactory.noMatchExp(WebMenu.URL_PROPERTY, null))
-				);
-
-		List<WebMenu> list = expr.filterObjects(getWebMenus());
-
-		return list;
-	}
-
 	public String getWarning() {
 		StringBuilder stringBuffer = new StringBuilder("Warning! " + getName() + " is referred to ");
 		WebNode webNode = getWebNode();
