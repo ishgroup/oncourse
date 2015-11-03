@@ -466,12 +466,12 @@ $j(document).ready(function () {
 			$j('.class-detail').css({'height':'100%'});
 			me.find('.text').html('Less');
 			me.find('span.icon-arrow-down').removeClass('icon-arrow-down').addClass('icon-arrow-up');
-			$j('.class-detail').find('strong').hide();
+			$j('.class-detail').find('strong').show();
 			me.addClass('active');
 		}
 		else {
 			$j('.class-detail').css({'height':'34px'});
-			$j('.class-detail').find('strong').show();
+			$j('.class-detail').find('strong').hide();
 			me.find('span.icon-arrow-up').removeClass('icon-arrow-up').addClass('icon-arrow-down');
 			me.find('.text').html('Show all');
 			me.removeClass('active');
