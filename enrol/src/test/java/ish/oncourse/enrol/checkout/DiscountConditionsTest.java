@@ -25,8 +25,9 @@ public class DiscountConditionsTest extends ACheckoutTest {
 		purchaseController = init(Arrays.asList(1001L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
 		addFirstContact(1001l);
 
+		//check that only negative discount available now, until other discounts conditions are not achieved
 		assertEquals(1, purchaseController.getModel().getAllEnabledEnrolments().size());
-		assertEquals(Money.ZERO, purchaseController.getTotalDiscountAmountIncTax());
+		assertEquals(new Money("-22.00"), purchaseController.getTotalDiscountAmountIncTax());
 		
 		addContact(1002l);
 
