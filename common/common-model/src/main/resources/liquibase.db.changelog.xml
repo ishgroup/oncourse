@@ -3687,7 +3687,19 @@
 
 		<addAutoIncrement tableName="CorporatePass_Product" columnName="id" columnDataType="BIGINT"/>
 	</changeSet>
-	
-	
+
+	<changeSet id="235" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="WebSite" columnName="SSLhostNameId"/>
+				<foreignKeyConstraintExists foreignKeyName="Website_SSLhostname" foreignKeyTableName="WebSite"/>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebSite DROP FOREIGN KEY Website_SSLhostname;
+			
+			ALTER TABLE WebSite DROP COLUMN SSLhostNameId;
+		</sql>
+	</changeSet>
 
 </databaseChangeLog>
