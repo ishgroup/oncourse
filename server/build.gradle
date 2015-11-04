@@ -143,8 +143,6 @@ dependencies {
 
 apiDocs {
 	source = sourceSets.main.groovy.plus(zipTree(configurations.apidocSource.find { it.name.startsWith("waCommon") }))
-    // source = "${projectDir}/src/main/java"
-	// classpath = configurations.compile.plus(configurations.apidoc)
 	destinationDir = reporting.file("api-docs")
 }
 
