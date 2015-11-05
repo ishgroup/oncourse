@@ -688,10 +688,6 @@ public class PurchaseController {
 
 			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
 			List<InvoiceLineDiscount> invoiceLineDiscounts = invoiceLine.getInvoiceLineDiscounts();
-			for (InvoiceLineDiscount invoiceLineDiscount : invoiceLineDiscounts) {
-				invoiceLineDiscount.setInvoiceLine(null);
-				invoiceLineDiscount.setDiscount(null);
-			}
 			model.getObjectContext().deleteObjects(invoiceLineDiscounts);
 
 			InvoiceUtil.fillInvoiceLine(invoiceLine, enrolment.getCourseClass().getFeeExGst(), Money.ZERO,
