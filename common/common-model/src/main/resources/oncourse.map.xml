@@ -3785,8 +3785,8 @@
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="products" source="Contact" target="ProductItem" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Deny" db-relationship-path="student"/>
-	<obj-relationship name="supportPassword" source="Contact" target="SupportPassword" deleteRule="Deny" db-relationship-path="supportPassword"/>
-	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="toContacts"/>
+	<obj-relationship name="supportPassword" source="Contact" target="SupportPassword" deleteRule="Cascade" db-relationship-path="supportPassword"/>
+	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Deny" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Deny" db-relationship-path="tutor"/>
 	<obj-relationship name="college" source="ContactRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>

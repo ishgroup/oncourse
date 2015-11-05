@@ -11,6 +11,8 @@ import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v11.stubs.replication.BinaryDataStub;
 import ish.oncourse.webservices.v11.stubs.replication.BinaryInfoStub;
+import ish.oncourse.webservices.v11.stubs.replication.ContactRelationStub;
+import ish.oncourse.webservices.v11.stubs.replication.ContactStub;
 import ish.oncourse.webservices.v11.stubs.replication.DeletedStub;
 import ish.oncourse.webservices.v11.stubs.replication.DocumentStub;
 import ish.oncourse.webservices.v11.stubs.replication.DocumentVersionStub;
@@ -28,6 +30,7 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -259,4 +262,73 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         }
         return transactionGroup;
     }
+
+
+	@Test
+	public void testMergeContactsDenyRule() {
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V11);
+
+		GenericReplicationStub deleteContactSub = PortHelper.createDeleteStub(SupportedVersions.V11);
+
+		deleteContactSub.setWillowId(3l);
+		deleteContactSub.setAngelId(3l);
+		deleteContactSub.setEntityIdentifier("Contact");
+
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deleteContactSub);
+
+		ContactStub updateContactSub = new ContactStub();
+		updateContactSub.setWillowId(4l);
+		updateContactSub.setAngelId(4l);
+		updateContactSub.setEntityIdentifier("Contact");
+		updateContactSub.setCreated(new Date());
+		updateContactSub.setModified(new Date());
+		updateContactSub.setFamilyName("Contact2");
+		updateContactSub.setGivenName("Contact32");
+		updateContactSub.setEmailAddress("1@kremlin.ru");
+
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(updateContactSub);
+
+		ContactRelationStub updateContactRelationSub = new ContactRelationStub();
+		updateContactRelationSub.setWillowId(1l);
+		updateContactRelationSub.setAngelId(1l);
+		updateContactRelationSub.setEntityIdentifier("ContactRelation");
+		updateContactRelationSub.setCreated(new Date());
+		updateContactRelationSub.setModified(new Date());
+		updateContactRelationSub.setFromContactId(4l);
+		updateContactRelationSub.setToContactId(1l);
+		updateContactRelationSub.setTypeId(1l);
+		
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(updateContactRelationSub);
+
+		List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
+		assertEquals(3, replicatedRecords.size());
+		
+		for (GenericReplicatedRecord record : replicatedRecords) {
+			if (record.getStub().getEntityIdentifier().equals("ContactRelation")) {
+				assertEquals((Long) 1l, record.getStub().getWillowId());
+			} else if (record.getStub().getEntityIdentifier().equals("Contact")) {
+				if (record.getStub().getAngelId().equals(3l)) {
+					assertNull(record.getStub().getWillowId());
+				} else {
+					assertNotNull(record.getStub().getWillowId());
+				}
+			}
+		}
+
+		ObjectContext context = cayenneService.newContext();
+
+		Contact deletedContact = ObjectSelect.query(Contact.class)
+				.where(BinaryInfo.ANGEL_ID.eq(3l))
+				.selectOne(context);
+		
+		assertNull(deletedContact);
+
+		Contact remainedContact = ObjectSelect.query(Contact.class)
+				.where(BinaryInfo.ANGEL_ID.eq(4l))
+				.selectOne(context);
+		
+		assertNotNull(remainedContact);
+
+		assertEquals(2, remainedContact.getToContacts().size());
+	}
 }
