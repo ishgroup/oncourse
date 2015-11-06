@@ -216,7 +216,7 @@ public class Courses extends ISHCommon {
                 this.currentBlock = htmlCoursesBlock;
             }
 		} catch (BlockNotFoundException e) {
-			logger.warn("Template {} should be adjusted for the new implementation of Courses.class. College: {}:{}", "Courses.tml", webSiteService.getCurrentCollege().getName(),webSiteService.getCurrentCollege().getId(), e);
+			logger.debug("Template {} should be adjusted for the new implementation of Courses.class. College: {}:{}", "Courses.tml", webSiteService.getCurrentCollege().getName(),webSiteService.getCurrentCollege().getId(), e);
 		}
 	}
 
