@@ -10,6 +10,8 @@ dependencies {
 	compile 'com.miglayout:miglayout-swing:4.2'
 	compile 'com.migcalendar:migcalendar:6.9.3'
 	compile 'commons-beanutils:commons-beanutils-core:1.8.3'
+
+	// 0.1.40.WS is a custom build of stilts from https://github.com/dzmitryk/stilts
 	compile 'org.projectodd.stilts:stilts-stomp-client:0.1.40.WS'
 
 	testCompile 'dbunit:dbunit:2.4.8'
