@@ -295,7 +295,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		updateContactRelationSub.setCreated(new Date());
 		updateContactRelationSub.setModified(new Date());
 		updateContactRelationSub.setFromContactId(4l);
-		updateContactRelationSub.setToContactId(1l);
+		updateContactRelationSub.setToContactId(5l);
 		updateContactRelationSub.setTypeId(1l);
 		
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(updateContactRelationSub);
