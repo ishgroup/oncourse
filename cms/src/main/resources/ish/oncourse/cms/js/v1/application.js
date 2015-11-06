@@ -363,7 +363,7 @@ $j(document).ready(function() {
 		}
 	});
 
-    $j("a.timeline").on('click', function(e) {
+    $j('body').on('click','a.timeline', function(e) {
         e.preventDefault();
         e.stopPropagation();
 		var id = '#sessions_for_class_'+$j(this).parents('.classItem').attr('data-classid');		
