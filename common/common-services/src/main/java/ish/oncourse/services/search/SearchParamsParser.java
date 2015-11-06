@@ -57,7 +57,9 @@ public class SearchParamsParser
                         String[] nears = provider.getParameters(SearchParam.near.name());
                         for (String near : nears) {
                             Suburb suburb = SuburbParser.valueOf(near, provider.getParameter(SearchParam.km.name()), searchService).parse();
-                            searchParams.addSuburb(suburb);
+                            if (suburb != null) {
+                                searchParams.addSuburb(suburb);
+                            }
                             value = suburb;
                         }
                         break;

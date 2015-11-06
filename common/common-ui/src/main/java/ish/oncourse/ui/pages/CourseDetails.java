@@ -5,6 +5,11 @@ import ish.oncourse.model.Course;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.html.IFacebookMetaProvider;
+import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.search.SearchParams;
+import ish.oncourse.services.search.SearchParamsParser;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.HTMLUtils;
 import org.apache.tapestry5.annotations.Property;
@@ -14,6 +19,15 @@ import org.apache.tapestry5.services.Request;
 public class CourseDetails extends ISHCommon {
 	@Inject
 	private ICourseService courseService;
+
+	@Inject
+	private ISearchService searchService;
+
+	@Inject
+	private IWebSiteService webSiteService;
+
+	@Inject
+	private ITagService tagService;
 
 	@Inject
 	private Request request;
@@ -27,13 +41,18 @@ public class CourseDetails extends ISHCommon {
 	@Property
 	private Course course;
 
+	private SearchParams searchParams;
+
 
 	void beginRender() {
+		SearchParamsParser paramsParser = SearchParamsParser.valueOf(request, searchService, tagService, webSiteService.getTimezone());
+		paramsParser.parse();
+		searchParams = paramsParser.getSearchParams();
 		course = (Course) request.getAttribute(Course.class.getSimpleName());
 	}
 
 	public CourseItemModel getCourseItemModel() {
-		return CourseItemModel.valueOf(course, courseService, courseClassService);
+		return CourseItemModel.valueOf(course, searchParams, courseService, courseClassService);
 	}
 
 	public String getCanonicalLinkPath() {
