@@ -4,10 +4,10 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.util.URLUtils;
 import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -274,7 +274,11 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public  String getRefundPolicyUrl() {
-		return getValue(REFUND_POLICY_URL, false);
+		String url = getValue(REFUND_POLICY_URL, false);
+		if (url != null && !URLUtils.isAbsolute(url) && !url.startsWith("/")) {
+			url = "/" + url;
+		}
+		return url;
 	}
 
 	public  void setRefundPolicyUrl(String value) {
