@@ -5,6 +5,7 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParams;
+import ish.oncourse.services.search.SearchResult;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.cayenne.Cayenne;
@@ -15,7 +16,6 @@ import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -69,8 +69,8 @@ public class CourseService implements ICourseService {
 
 		SearchParams searchParams = new SearchParams();
 		searchParams.setSubject(tag);
-		QueryResponse queryResponse = searchService.searchCourses(searchParams,0, limit);
-		SolrDocumentList documents = queryResponse.getResults();
+		SearchResult searchResult = searchService.searchCourses(searchParams,0, limit);
+		SolrDocumentList documents = searchResult.getQueryResponse().getResults();
 
 		List<Long> list = new LinkedList<>();
 		for (SolrDocument document : documents) {
@@ -113,15 +113,14 @@ public class CourseService implements ICourseService {
 	 * @return
 	 */
 	private Expression getSiteQualifier() {
-		return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, webSiteService.getCurrentCollege()).andExp(
-				getAvailabilityQualifier());
+		return Course.COLLEGE.eq(webSiteService.getCurrentCollege()).andExp(getAvailabilityQualifier());
 	}
 
 	/**
 	 * @return
 	 */
 	private Expression getAvailabilityQualifier() {
-		return ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true);
+		return Course.IS_WEB_VISIBLE.eq(true);
 	}
 
 	public List<Course> loadByIds(Object... ids) {
@@ -155,11 +154,9 @@ public class CourseService implements ICourseService {
                 return Collections.EMPTY_LIST;
             }
 		}
-		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, orderingMap.keySet()).andExp(getSiteQualifier())
-				.andExp(ExpressionFactory.matchExp(Course.IS_WEB_VISIBLE_PROPERTY, true));
+		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, orderingMap.keySet()).andExp(getSiteQualifier());
 
-		SelectQuery q = new SelectQuery(Course.class, expr);
-
+		SelectQuery<Course> q = SelectQuery.query(Course.class, expr);
 		applyCourseCacheSettings(q);
 		List<Course> courses = cayenneService.sharedContext().performQuery(q);
 		Collections.sort(courses, new Comparator<Course>() {

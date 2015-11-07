@@ -1,10 +1,7 @@
 package ish.oncourse.ui.components;
 
 import ish.oncourse.model.Tag;
-import ish.oncourse.services.search.ISearchService;
-import ish.oncourse.services.search.SearchParams;
-import ish.oncourse.services.search.SearchParamsParser;
-import ish.oncourse.services.search.Suburb;
+import ish.oncourse.services.search.*;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.logging.log4j.LogManager;
@@ -69,7 +66,8 @@ public class CoursesFilter {
         suburbs = new ArrayList<>(searchParams.getSuburbs());
 
         try {
-            QueryResponse queryResponse = searchService.searchCourses(searchParams, 0, 0);
+            SearchResult searchResult = searchService.searchCourses(searchParams, 0, 0);
+            QueryResponse queryResponse = searchResult.getQueryResponse();
             counter = queryResponse.getResults().getNumFound();
         } catch (Exception e) {
             logger.error(e);

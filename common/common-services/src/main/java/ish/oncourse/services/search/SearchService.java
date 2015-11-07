@@ -19,8 +19,6 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +131,7 @@ public class SearchService implements ISearchService {
      * The method logs stacktraces every exception from hierarchy. I have added it to see full stack trace of a exception.
      */
     private QueryResponse handleException(Throwable throwable, SolrQuery solrQuery, int count) {
-        logger.warn("Cannot execute query: {} with attempt {}", solrQueryToString(solrQuery), count, throwable);
+        logger.warn("Cannot execute query: {} with attempt {}", SearchResult.valueOf(solrQuery).getSolrQueryAsString(), count, throwable);
 
         if (throwable instanceof SolrServerException &&
                 throwable.getCause() instanceof SolrException &&
@@ -144,15 +142,14 @@ public class SearchService implements ISearchService {
         }
     }
 
-    public QueryResponse searchCourses(SearchParams params, int start, Integer rows) {
+    public SearchResult searchCourses(SearchParams params, int start, Integer rows) {
 
         try {
             String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
             SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId, start, rows).build());
-
-            logger.debug("Solr query: {}", solrQueryToString(q));
-
-            return query(q, SolrCore.courses);
+            SearchResult searchResult = SearchResult.valueOf(q, query(q, SolrCore.courses));
+            logger.debug("Solr query: {}", searchResult.getSolrQueryAsString());
+            return searchResult;
         } catch (Exception e) {
             throw new SearchException("Unable to find courses.", e);
         }
@@ -225,15 +222,6 @@ public class SearchService implements ISearchService {
             }
         }
         return query;
-    }
-
-    private String solrQueryToString(SolrQuery q) {
-        try {
-            return URLDecoder.decode(q.toString(), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e);
-            return q.toString();
-        }
     }
 
     public SolrDocumentList autoSuggest(String term) {
@@ -311,8 +299,9 @@ public class SearchService implements ISearchService {
         try {
             SolrQuery solrQuery = SolrQueryBuilder.createSearchSuburbByLocationQuery(location);
             SolrDocumentList results = new SolrDocumentList();
-            logger.debug(solrQueryToString(solrQuery));
             QueryResponse suburbs = query(solrQuery, SolrCore.suburbs);
+            SearchResult searchResult = SearchResult.valueOf(solrQuery, suburbs);
+            logger.debug(searchResult.getSolrQueryAsString());
             if (suburbs != null && suburbs.getResults() != null && !suburbs.getResults().isEmpty()) {
                 results.addAll(suburbs.getResults());
             }

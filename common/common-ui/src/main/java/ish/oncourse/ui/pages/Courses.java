@@ -216,7 +216,7 @@ public class Courses extends ISHCommon {
                 this.currentBlock = htmlCoursesBlock;
             }
 		} catch (BlockNotFoundException e) {
-			logger.debug("Template {} should be adjusted for the new implementation of Courses.class. College: {}:{}", "Courses.tml", webSiteService.getCurrentCollege().getName(),webSiteService.getCurrentCollege().getId(), e);
+			logger.debug("Template {} should be adjusted for the new implementation of Courses.class. College: {}:{}", "Courses.tml", webSiteService.getCurrentCollege().getName(), webSiteService.getCurrentCollege().getId(), e);
 		}
 	}
 
@@ -323,7 +323,8 @@ public class Courses extends ISHCommon {
 	}
 
 	private List<Course> searchCourses(int start, int rows) {
-		QueryResponse results = searchService.searchCourses(searchParams, start, rows);
+		SearchResult searchResult = searchService.searchCourses(searchParams, start, rows);
+		QueryResponse results = searchResult.getQueryResponse();
 		SolrDocumentList list = results.getResults() != null ? results.getResults() : new SolrDocumentList();
 		logger.info("The number of courses found: {}", list.size());
 		if (coursesCount == null) {
@@ -333,11 +334,27 @@ public class Courses extends ISHCommon {
 		for (SolrDocument doc : list) {
 			ids.add((String) doc.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
 		}
+		List<Course> courses = courseService.loadByIds(ids.toArray());
 		if (results.getDebugMap() != null) {
 			debugInfoMap = results.getExplainMap();
-			debugInfo = results.getDebugMap().get("explain").toString();
+			debugInfo = String.format("<div class='debug-info-title'>Sorl query:</div>\n" +
+							"<div class='debug-info-content'>%s</div>\n" +
+							"<div class='debug-info-title'>Solr debug info:</div>\n" +
+							"<div class='debug-info-content'>%s</div>\n" +
+							"<div class='debug-info-title'>Solr result size:</div>\n" +
+							"<div class='debug-info-content'>%d</div>\n" +
+							"<div class='debug-info-title'>Solr list courses ids:</div>\n" +
+							"<div class='debug-info-content'>%s</div>\n" +
+					        "<div class='debug-info-title'>DB found courses:</div>\n" +
+							"<div class='debug-info-content'>%d</div>\n",
+					searchResult.getSolrQueryAsString(),
+					results.getDebugMap().get("explain").toString(),
+					coursesCount,
+					ids,
+					courses.size()
+			);
 		}
-		return courseService.loadByIds(ids.toArray());
+		return courses;
 	}
 
 	public boolean isHasAnyItems() {
