@@ -133,7 +133,7 @@
 	<db-entity name="Contact">
 		<db-attribute name="abn" type="VARCHAR" length="50"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
-		<db-attribute name="businessPhoneNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="businessPhoneNumber" type="VARCHAR" length="20"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="cookieHash" type="VARCHAR" length="64"/>
 		<db-attribute name="countryId" type="BIGINT" length="19"/>
@@ -141,9 +141,9 @@
 		<db-attribute name="dateOfBirth" type="DATE" length="10"/>
 		<db-attribute name="emailAddress" type="VARCHAR" length="512"/>
 		<db-attribute name="familyName" type="VARCHAR" length="256"/>
-		<db-attribute name="faxNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="faxNumber" type="VARCHAR" length="20"/>
 		<db-attribute name="givenName" type="VARCHAR" length="256"/>
-		<db-attribute name="homePhoneNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="homePhoneNumber" type="VARCHAR" length="20"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isCompany" type="BIT"/>
 		<db-attribute name="isMale" type="BIT"/>
@@ -152,13 +152,13 @@
 		<db-attribute name="isMarketingViaSMSAllowed" type="BIT"/>
 		<db-attribute name="lastLoginTime" type="TIMESTAMP"/>
 		<db-attribute name="middleName" type="VARCHAR" length="128"/>
-		<db-attribute name="mobilePhoneNumber" type="VARCHAR" length="32"/>
+		<db-attribute name="mobilePhoneNumber" type="VARCHAR" length="20"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="password" type="VARCHAR" length="16"/>
 		<db-attribute name="passwordHash" type="VARCHAR" length="16"/>
 		<db-attribute name="passwordRecoverExpire" type="TIMESTAMP"/>
 		<db-attribute name="passwordRecoveryKey" type="VARCHAR" length="16"/>
-		<db-attribute name="postcode" type="VARCHAR" length="32"/>
+		<db-attribute name="postcode" type="VARCHAR" length="20"/>
 		<db-attribute name="state" type="VARCHAR" length="32"/>
 		<db-attribute name="street" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
