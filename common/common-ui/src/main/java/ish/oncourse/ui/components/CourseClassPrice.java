@@ -67,7 +67,11 @@ public class CourseClassPrice extends ISHCommon {
 	
 	private void fillAppliedDiscounts() {
 		List<Discount> promotions = discountService.getPromotions();
-		applicableDiscounts = courseClass.getDiscountsToApply(new PotentialDiscountsPolicy(promotions));
+		applicableDiscounts = new LinkedList<>();
+		Discount discountToApply = courseClass.getDiscountsToApply(new PotentialDiscountsPolicy(promotions));
+		if (discountToApply != null) {
+			applicableDiscounts.add(discountToApply);
+		}
 		discountedFee = courseClass.getDiscountedFeeIncTax(applicableDiscounts);
 		discountValue = courseClass.getDiscountAmountIncTax(applicableDiscounts);
 		discountExpiryDate = WebDiscountUtils.earliestExpiryDate(applicableDiscounts);

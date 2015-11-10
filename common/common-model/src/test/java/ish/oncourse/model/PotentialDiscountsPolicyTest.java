@@ -10,6 +10,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -56,12 +58,11 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void filterDiscountsSmokeTest() {
-		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(
+		Discount filteredDiscount = discountPolicy.filterDiscounts(Arrays.asList(
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
 				singleDiscountWithRateMin), FEE_EX_GST,FEE_GST, new BigDecimal(0.1));
-		assertFalse(filteredDiscounts.isEmpty());
-		assertEquals(1, filteredDiscounts.size());
-		assertEquals(singleDiscountWithRate, filteredDiscounts.get(0));
+		assertNotNull(filteredDiscount);
+		assertEquals(singleDiscountWithRate, filteredDiscount);
 	}
 
 	@Test
@@ -74,16 +75,16 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 	@Test
 	public void filterDiscountsEmptyTest() {
-		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(null, FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
-		assertTrue(filteredDiscounts.isEmpty());
-		filteredDiscounts = discountPolicy.filterDiscounts(Collections.EMPTY_LIST, FEE_EX_GST, FEE_GST,new BigDecimal(0.1));
-		assertTrue(filteredDiscounts.isEmpty());
+		Discount filteredDiscount = discountPolicy.filterDiscounts(null, FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+		assertNull(filteredDiscount);
+		filteredDiscount = discountPolicy.filterDiscounts(Collections.EMPTY_LIST, FEE_EX_GST, FEE_GST,new BigDecimal(0.1));
+		assertNull(filteredDiscount);
 	}
 
 	@Test
 	public void testNonAvailableDiscounts() {
-		List<Discount> filteredDiscounts = discountPolicy.filterDiscounts(Arrays.asList(nonAvailableDiscountWithAmount), FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
-		assertTrue(filteredDiscounts.isEmpty());
+		Discount filteredDiscount = discountPolicy.filterDiscounts(Arrays.asList(nonAvailableDiscountWithAmount), FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+		assertNull(filteredDiscount);
 	}
 
 }

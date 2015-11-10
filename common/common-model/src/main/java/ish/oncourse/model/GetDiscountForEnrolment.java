@@ -9,7 +9,6 @@ import ish.oncourse.utils.MembershipDiscountHelper;
 import ish.oncourse.utils.WebDiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.commons.collections.ListUtils;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -32,23 +31,23 @@ public class GetDiscountForEnrolment {
 	
 	private List<Discount> classDiscounts;
 	private List<Discount> addedPromos;
-	private List<Discount> corporatePassDiscounts;
+	private CorporatePass corporatePass;
 	private int enabledEnrolmentsCount;
 	private Money totalInvoicesAmount;
 	private Enrolment currentEnrolment;
 
 	private List<Discount> applicableDiscounts = new LinkedList<>();
 
-	private List<Discount> bestDiscountsVariant = new LinkedList<>();
+	private Discount chosenDiscount;
 
 	private GetDiscountForEnrolment() {}
 	
-	public static GetDiscountForEnrolment valueOf(List<Discount> classDiscounts, List<Discount> addedPromos, List<Discount> corporatePassDiscounts, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
+	public static GetDiscountForEnrolment valueOf(List<Discount> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
 
 		GetDiscountForEnrolment get = new GetDiscountForEnrolment();
 		get.setClassDiscounts(classDiscounts);
 		get.setAddedPromos(addedPromos);
-		get.setCorporatePassDiscounts(corporatePassDiscounts);
+		get.setCorporatePass(corporatePass);
 		get.setEnabledEnrolmentsCount(enabledEnrolmentsCount);
 		get.setTotalInvoicesAmount(totalInvoicesAmount);
 		get.setCurrentEnrolment(currentEnrolment);
@@ -57,14 +56,7 @@ public class GetDiscountForEnrolment {
 
 	public GetDiscountForEnrolment get() {
 		
-		List<Discount> avalibleDiscounts = new LinkedList<>();
-		if (corporatePassDiscounts != null && !corporatePassDiscounts.isEmpty()) {
-			avalibleDiscounts.addAll(ListUtils.intersection(corporatePassDiscounts, classDiscounts));
-		} else {
-			avalibleDiscounts.addAll(classDiscounts);
-		}
-		
-		for (Discount discount : avalibleDiscounts) {
+		for (Discount discount : classDiscounts) {
 			if (discount.isPromotion() && !addedPromos.contains(discount)) {
 				continue;
 			} else if (isStudentEligibile(currentEnrolment.getStudent(), discount) && isDiscountEligibile(discount)) {
@@ -73,12 +65,8 @@ public class GetDiscountForEnrolment {
 		}
 	
 		if (!applicableDiscounts.isEmpty()) {
-			if (applicableDiscounts.size() == 1) {
-				bestDiscountsVariant.add(applicableDiscounts.get(0));
-			} else {
-				bestDiscountsVariant.addAll(WebDiscountUtils.chooseBestDiscountsVariant(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate()));
-			}
-		} 
+			chosenDiscount = WebDiscountUtils.chooseDiscountForApply(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate());
+		}
 		
 		return this;
 	}
@@ -184,14 +172,21 @@ public class GetDiscountForEnrolment {
 
 	public boolean isDiscountEligibile(Discount discount) {
 
+		List<CorporatePassDiscount> passDiscounts = discount.getCorporatePassDiscounts();
+		
+		if (passDiscounts != null && !passDiscounts.isEmpty() 
+				&& (corporatePass == null || CorporatePassDiscount.CORPORATE_PASS.eq(corporatePass).filterObjects(passDiscounts).isEmpty())) {
+			return false;
+		}
+		
 		boolean minAmountCondition = totalInvoicesAmount.compareTo(discount.getMinValue()) >= 0;
 		boolean minEnrolmentsCondition = enabledEnrolmentsCount >= discount.getMinEnrolments();
 		
 		return minAmountCondition && minEnrolmentsCondition;
 	}
 
-	public void setCorporatePassDiscounts(List<Discount> corporatePassDiscounts) {
-		this.corporatePassDiscounts = corporatePassDiscounts;
+	public void setCorporatePass(CorporatePass corporatePass) {
+		this.corporatePass = corporatePass;
 	}
 
 	public void setClassDiscounts(List<Discount> classDiscounts) {
@@ -218,7 +213,7 @@ public class GetDiscountForEnrolment {
 		return applicableDiscounts;
 	}
 
-	public List<Discount> getBestDiscountsVariant() {
-		return bestDiscountsVariant;
+	public Discount getChosenDiscount() {
+		return chosenDiscount;
 	}
 }

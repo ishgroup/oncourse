@@ -38,23 +38,21 @@ public abstract class DiscountPolicy {
 	}
 
 	/**
-	 * The main method of the policy, select the best variant of the applicable
-	 * discounts from the given discounts of some courseClass. {@see
+	 * The main method of the policy, select single discount to apply
+	 * from the given discounts of some courseClass. {@see
 	 * CourseClass#getDiscountsToApply(DiscountPolicy)}
 	 * 
 	 * @param discounts
 	 *            the discounts to filter.
 	 * @param feeExGst 
-	 * @return filtered discounts.
+	 * @return single discount to apply.
 	 */
-	public List<Discount> filterDiscounts(List<Discount> discounts, Money feeExGst, Money getFeeGst, BigDecimal taxRate) {
+	public Discount filterDiscounts(List<Discount> discounts, Money feeExGst, Money getFeeGst, BigDecimal taxRate) {
 		List<Discount> result = new ArrayList<>();
 
 		result = getApplicableByPolicy(discounts, feeExGst, getFeeGst);
 
-		result = WebDiscountUtils.chooseBestDiscountsVariant(result, feeExGst, taxRate);
-
-		return result;
+		return WebDiscountUtils.chooseDiscountForApply(result, feeExGst, taxRate);
 	}
 
 	/**

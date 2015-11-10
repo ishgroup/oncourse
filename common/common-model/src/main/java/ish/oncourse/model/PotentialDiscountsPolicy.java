@@ -41,6 +41,10 @@ public class PotentialDiscountsPolicy extends DiscountPolicy {
 					continue;
 				}
 				
+				if (discount.getCorporatePassDiscounts() != null && !discount.getCorporatePassDiscounts().isEmpty()) {
+					continue;
+				}
+				
 				if (discount.isPromotion()) {
 					if (isPromotionAdded(discount)) {
 						result.add(discount);

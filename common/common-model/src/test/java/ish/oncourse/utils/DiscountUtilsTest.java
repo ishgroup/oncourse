@@ -101,7 +101,7 @@ public class DiscountUtilsTest {
 	/**
 	 * Test for {@link DiscountUtils#discountValue}. Emulates
 	 * the situation when the discount with amount is applied to
-	 * {@value DiscountUtilsTest#PRICE} price, then to zero price, then to price
+	 * price, then to zero price, then to price
 	 * that is less than discountAmount.
 	 */
 	@Test
@@ -181,47 +181,34 @@ public class DiscountUtilsTest {
 	}
 
 	/**
-	 * Test for {@link WebDiscountUtils#chooseBestDiscountsVariant(List,Money,BigDecimal)}. Emulates
+	 * Test for {@link WebDiscountUtils#chooseDiscountForApply(java.util.List, ish.math.Money, java.math.BigDecimal)}. Emulates
 	 * the situations when the discounts list parameter is null and empty.
 	 */
 	@Test
 	public void chooseBestDiscountsVariantEmptyTest() {
-		List<Discount> chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(null, PRICE, new BigDecimal(0));
-		assertTrue(chosenDiscounts.isEmpty());
-		chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(Collections.EMPTY_LIST, PRICE, new BigDecimal(0));
-		assertTrue(chosenDiscounts.isEmpty());
+		Discount chosenDiscount = WebDiscountUtils.chooseDiscountForApply(null, PRICE, new BigDecimal(0));
+		assertNull(chosenDiscount);
+		chosenDiscount = WebDiscountUtils.chooseDiscountForApply(Collections.EMPTY_LIST, PRICE, new BigDecimal(0));
+		assertNull(chosenDiscount);
 	}
 
 	/**
-	 * Test for {@link WebDiscountUtils#chooseBestDiscountsVariant(List,Money,BigDecimal)}. Emulates
-	 * the situation when the combined result is the best.
-	 */
-	@Test
-	public void chooseBestDiscountsVariantCombResultTest() {
-		List<Discount> chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(
-				Arrays.asList(combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin), PRICE, new BigDecimal(0));
-		assertFalse(chosenDiscounts.isEmpty());
-		assertTrue(chosenDiscounts.size() == 2);
-		assertEquals(combDiscountWithAmount, chosenDiscounts.get(0));
-		assertEquals(combDiscountWithRateMax, chosenDiscounts.get(1));
-	}
-
-	/**
-	 * Test for {@link WebDiscountUtils#chooseBestDiscountsVariant(List,Money,BigDecimal)}. Emulates
+	 * Test for {@link WebDiscountUtils#chooseDiscountForApply(java.util.List, ish.math.Money, java.math.BigDecimal)}. Emulates
 	 * the situation when the single-discount result is the best.
 	 */
 	@Test
 	public void chooseBestDiscountsVariantSingleResultTest() {
-		List<Discount> chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(
+		Discount chosenDiscount = WebDiscountUtils.chooseDiscountForApply(
 				Arrays.asList(singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin), PRICE, new BigDecimal(0));
-		assertFalse(chosenDiscounts.isEmpty());
-		assertTrue(chosenDiscounts.size() == 1);
-		assertEquals(singleDiscountWithRate, chosenDiscounts.get(0));
+		assertNotNull(chosenDiscount);
+		assertEquals(singleDiscountWithRate, chosenDiscount);
 	}
 
 	/**
-	 * Test for {@link WebDiscountUtils#chooseBestDiscountsVariant(List,Money,BigDecimal)}. Check
+	 * Test for {@link WebDiscountUtils#chooseDiscountForApply(java.util.List, ish.math.Money, java.math.BigDecimal)} . Check
 	 * situation when fee override is greater than course class price.
+	 * Currently handle this situation like as negative discount
+	 * That discount always beats a normal discount. It also beats having no discount at all 
 	 */
 	@Test
 	public void chooseBestDiscountVariantWithFeeOverride() {
@@ -231,24 +218,24 @@ public class DiscountUtilsTest {
 		feeOverride.setDiscountAmount(new Money(new BigDecimal(200)));
 		feeOverride.setDiscountType(DiscountType.FEE_OVERRIDE);
 
-		List<Discount> chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(Arrays.asList(feeOverride), PRICE, new BigDecimal(0));
+		Discount chosenDiscount = WebDiscountUtils.chooseDiscountForApply(Arrays.asList(feeOverride), PRICE, new BigDecimal(0));
 
-		assertNotNull("Checking that list is not null.", chosenDiscounts);
-		assertTrue("Checking that discount isn't selected as it's larger than course price.", chosenDiscounts.isEmpty());
-
-		chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(
+		assertNotNull(chosenDiscount);
+		assertEquals(feeOverride, chosenDiscount);
+		
+		chosenDiscount = WebDiscountUtils.chooseDiscountForApply(
 				Arrays.asList(singleDiscountWithRate, feeOverride, singleDiscountWithRateMin), PRICE, new BigDecimal(0));
 
-		assertEquals("Expecting one discount.", 1, chosenDiscounts.size());
-		assertEquals("Expecting singleDiscountWithRate.", singleDiscountWithRate, chosenDiscounts.get(0));
+		assertNotNull(chosenDiscount);
+		assertEquals(feeOverride, chosenDiscount);
 
 		feeOverride.setDiscountAmount(new Money(new BigDecimal(60)));
 
-		chosenDiscounts = WebDiscountUtils.chooseBestDiscountsVariant(
+		chosenDiscount = WebDiscountUtils.chooseDiscountForApply(
 				Arrays.asList(singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin, feeOverride), PRICE, new BigDecimal(0));
 
-		assertEquals("Expecting one discount.", 1, chosenDiscounts.size());
-		assertEquals("Expecting feeOverride.", feeOverride, chosenDiscounts.get(0));
+		assertNotNull(chosenDiscount);
+		assertEquals(feeOverride, chosenDiscount);
 	}
 	
 	@Test

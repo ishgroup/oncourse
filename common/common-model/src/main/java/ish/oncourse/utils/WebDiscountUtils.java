@@ -1,5 +1,6 @@
 package ish.oncourse.utils;
 
+import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.util.DiscountUtils;
@@ -29,49 +30,48 @@ public class WebDiscountUtils {
 	private static final String FOR_STUDENTS_START_STRING = "for students: ";
 
 	/**
-	 * Chooses the best option (the max discount value) from the proposed
-	 * discounts : uses the combination of "combinable" discounts, or uses the
-	 * best one of "uncombinable".<br/>
-	 * The processing of combined/notToCombine discounts is based on
-	 * angel/client/ish.oncourse.cayenne.InvoiceLine.updateDiscount().
+	 * Chooses single discount from the proposed
+	 * -if there is a negative discount which applies to the current enrolment, then that discount always beats a normal discount. It also beats having no discount at all 
+	 * -if there are two or more negative discounts which apply, then the higher (as an absolute value) applies 
+	 * -if there are only normal discounts, then the higher (which has max discount value) one wins
 	 * 
+	 * To implement this logic just split all available discounts into positive and negative,
+	 * If the list of negative discounts is not empty then select the higher (as an absolute value)
+	 * Else select the higher from positive discounts list.
 	 * @param discounts
 	 * @param feeExGst
+	 * @param taxRate
 	 * @return
 	 */
 
-	public static List<Discount> chooseBestDiscountsVariant(List<Discount> discounts, Money feeExGst, BigDecimal taxRate) {
-		Vector<Discount> chosenDiscounts = new Vector<>();
+	public static Discount chooseDiscountForApply(List<Discount> discounts, Money feeExGst, BigDecimal taxRate) {
 		if (discounts != null && !discounts.isEmpty()) {
-			// figure out the best deal for the customer.
-			// first try all the discounts which could be combined.
-			Expression exp = ExpressionFactory.matchExp(Discount.COMBINATION_TYPE_PROPERTY, Boolean.TRUE);
-			List<Discount> discountsToCombine = (List<Discount>) exp.filterObjects(discounts);
-			List<Discount> discountsNotToCombine = (List<Discount>) exp.notExp().filterObjects(discounts);
+			
+			Expression negativeExp = (Discount.DISCOUNT_AMOUNT.lt(Money.ZERO).andExp(Discount.DISCOUNT_TYPE.eq(DiscountType.DOLLAR)))
+					.orExp(Discount.DISCOUNT_RATE.lt(BigDecimal.ZERO).andExp(Discount.DISCOUNT_TYPE.eq(DiscountType.PERCENT)))
+					.orExp(Discount.DISCOUNT_AMOUNT.gt(feeExGst).andExp(Discount.DISCOUNT_TYPE.eq(DiscountType.FEE_OVERRIDE)));
 
-			Money maxDiscount = Money.ZERO;
-			Discount bestDeal = null;
-			maxDiscount = DiscountUtils.discountValue(discountsToCombine, feeExGst, taxRate);
-
-			for (Discount d : discountsNotToCombine) {
-				Money val = DiscountUtils.discountValue(Arrays.asList(d), feeExGst, taxRate);
-
-				if (val.compareTo(maxDiscount) > 0) {
-					bestDeal = d;
-					maxDiscount = val;
-				}
-			}
-
-			if (bestDeal == null) {
-				// go with combined discounts, remove all not combinable
-				chosenDiscounts.addAll(discountsToCombine);
-			} else {
-				// go with not combined discount
-				chosenDiscounts.add(bestDeal);
-			}
+			List<Discount> negativeDiscounts = negativeExp.filterObjects(discounts);
+			
+			return getByAbsoluteValue(!negativeDiscounts.isEmpty() ? negativeDiscounts : discounts, feeExGst, taxRate);
 		}
-		return chosenDiscounts;
+		return null;
+	}
 
+	private static Discount getByAbsoluteValue(List<Discount> discounts, Money feeExGst, BigDecimal taxRate) {
+
+		Money maxDiscount = Money.ZERO;
+		Discount bestDeal = null;
+		for (Discount discount : discounts) {
+			Money val = DiscountUtils.discountValue(Arrays.asList(discount), feeExGst, taxRate).abs();
+
+			if (val.compareTo(maxDiscount) > 0) {
+				bestDeal = discount;
+				maxDiscount = val;
+			}
+		} 
+	
+		return bestDeal;
 	}
 
 	/**
