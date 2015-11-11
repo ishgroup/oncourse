@@ -25,9 +25,10 @@ public class DiscountConditionsTest extends ACheckoutTest {
 		purchaseController = init(Arrays.asList(1001L), Collections.EMPTY_LIST, Collections.EMPTY_LIST, false);
 		addFirstContact(1001l);
 
-		//check that only negative discount available now, until other discounts conditions are not achieved
+		//check that no one discounts available now, until other discounts conditions are not achieved
+		//discount by corporate pass available after adding of corresponded  corporate pass only
 		assertEquals(1, purchaseController.getModel().getAllEnabledEnrolments().size());
-		assertEquals(new Money("-22.00"), purchaseController.getTotalDiscountAmountIncTax());
+		assertEquals(new Money("0"), purchaseController.getTotalDiscountAmountIncTax());
 		
 		addContact(1002l);
 
@@ -90,6 +91,7 @@ public class DiscountConditionsTest extends ACheckoutTest {
 		selectCorporatePassEditor();
 		addCorporatePass("password1");
 
+		//check that negative discount will be selected in the first order
 		for (Enrolment enrolment : purchaseController.getModel().getAllEnabledEnrolments()) {
 			assertEquals(1, enrolment.getInvoiceLines().get(0).getInvoiceLineDiscounts().size());
 			assertEquals(new Money("-20.00"), enrolment.getInvoiceLines().get(0).getDiscountEachExTax());

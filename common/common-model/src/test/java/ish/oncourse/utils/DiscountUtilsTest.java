@@ -264,4 +264,73 @@ public class DiscountUtilsTest {
 		assertEquals(new Money("857.00"), DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
 		assertEquals(new Money("95.91"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
 	}
+
+	/**
+	 * Test that any negative always beats a normal discounts.
+	 * If multiple negative discounts allowed to apply then the higher (as an absolute value) applies.
+	 */
+	@Test
+	public void testNegativeDiscount() {
+		
+		Money classPrice = new Money("800.00");
+		BigDecimal taxRate = new BigDecimal(0.1);
+				
+		Discount positivePercent = new Discount();
+		positivePercent.setDiscountType(DiscountType.PERCENT);
+		positivePercent.setDiscountRate(new BigDecimal("0.50"));
+
+		Discount positiveDollar = new Discount();
+		positivePercent.setDiscountType(DiscountType.DOLLAR);
+		positivePercent.setDiscountAmount(new Money("300"));
+
+		Discount positiveFeeOverride = new Discount();
+		positivePercent.setDiscountType(DiscountType.FEE_OVERRIDE);
+		positivePercent.setDiscountAmount(new Money("600"));
+
+		Discount negative10Percent = new Discount();
+		negative10Percent.setDiscountType(DiscountType.PERCENT);
+		negative10Percent.setDiscountRate(new BigDecimal("-0.10"));
+		negative10Percent.setRoundingMode(MoneyRounding.ROUNDING_1D);
+
+		assertEquals(negative10Percent, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent), classPrice, taxRate));
+		assertEquals(new Money("968"), DiscountUtils.getDiscountedFee(Arrays.asList(negative10Percent), classPrice, taxRate));
+		assertEquals(new Money("-80"), DiscountUtils.discountValue(Arrays.asList(negative10Percent), classPrice, taxRate));
+
+		Discount negative20Percent = new Discount();
+		negative20Percent.setDiscountType(DiscountType.PERCENT);
+		negative20Percent.setDiscountRate(new BigDecimal("-0.20"));
+		negative20Percent.setRoundingMode(MoneyRounding.ROUNDING_1D);
+
+		assertEquals(negative20Percent, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent), classPrice, taxRate));
+		assertEquals(new Money("1056"), DiscountUtils.getDiscountedFee(Arrays.asList(negative20Percent), classPrice, taxRate));
+		assertEquals(new Money("-160"), DiscountUtils.discountValue(Arrays.asList(negative20Percent), classPrice, taxRate));
+
+
+		Discount negative10Dollar = new Discount();
+		negative10Dollar.setDiscountType(DiscountType.DOLLAR);
+		negative10Dollar.setDiscountAmount(new Money("-10"));
+		negative10Dollar.setRoundingMode(MoneyRounding.ROUNDING_1D);
+
+		// check that the higher (as an absolute value) negative discount still beats (- %20)
+		assertEquals(negative20Percent, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar), classPrice, taxRate));
+
+		Discount negative200Dollar = new Discount();
+		negative200Dollar.setDiscountType(DiscountType.DOLLAR);
+		negative200Dollar.setDiscountAmount(new Money("-200"));
+		negative200Dollar.setRoundingMode(MoneyRounding.ROUNDING_1D);
+
+		assertEquals(negative200Dollar, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar, negative200Dollar), classPrice, taxRate));
+		assertEquals(new Money("1100"), DiscountUtils.getDiscountedFee(Arrays.asList(negative200Dollar), classPrice, taxRate));
+		assertEquals(new Money("-200"), DiscountUtils.discountValue(Arrays.asList(negative200Dollar), classPrice, taxRate));
+
+		Discount negativeFeeOverride = new Discount();
+		negativeFeeOverride.setDiscountType(DiscountType.FEE_OVERRIDE);
+		negativeFeeOverride.setDiscountAmount(new Money("1300"));
+		negativeFeeOverride.setRoundingMode(MoneyRounding.ROUNDING_1D);
+		
+		// check that negative "Fee Override" discount has the higher surcharge
+		assertEquals(negativeFeeOverride, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar, negative200Dollar, negativeFeeOverride), classPrice, taxRate));
+		assertEquals(new Money("1430"), DiscountUtils.getDiscountedFee(Arrays.asList(negativeFeeOverride), classPrice, taxRate));
+		assertEquals(new Money("-500"), DiscountUtils.discountValue(Arrays.asList(negativeFeeOverride), classPrice, taxRate));
+	}
 }

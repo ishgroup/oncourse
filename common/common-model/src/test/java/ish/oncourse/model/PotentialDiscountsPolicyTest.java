@@ -87,4 +87,38 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 		assertNull(filteredDiscount);
 	}
 
+	/**
+	 * Negative discount always beats a normal discount. 
+	 * If multiple negative discounts allowed to apply then the higher (as an absolute value) applies.
+	 */
+	@Test
+	public void negativeDiscountsTest() {
+		Discount chosenDiscount = discountPolicy.filterDiscounts(Arrays.asList(negativeDollarDiscount,
+				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
+				singleDiscountWithRateMin, hiddenDiscountWithAmount, nonAvailableDiscountWithAmount),FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+		
+		assertEquals(negativeDollarDiscount, chosenDiscount);
+
+		chosenDiscount = discountPolicy.filterDiscounts(Arrays.asList(negativeDollarDiscount, negativePercentDiscount,
+				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
+				singleDiscountWithRateMin, hiddenDiscountWithAmount, nonAvailableDiscountWithAmount),FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+
+		assertEquals(negativePercentDiscount, chosenDiscount);
+
+		chosenDiscount = discountPolicy.filterDiscounts(Arrays.asList(negativeDollarDiscount, negativePercentDiscount, negativeFeeOverrideDiscount,
+				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
+				singleDiscountWithRateMin, hiddenDiscountWithAmount, nonAvailableDiscountWithAmount),FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+
+		assertEquals(negativeFeeOverrideDiscount, chosenDiscount);
+	}
+
+	/**
+	 * Check that discounts linked to any Corporate Pass never show on web
+	 */
+	@Test
+	public void discountByCorporatePassTest() {
+		Discount chosenDiscount = discountPolicy.filterDiscounts(Arrays.asList(discountByCorporatePass), FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+		assertNull(chosenDiscount);
+	}
+
 }

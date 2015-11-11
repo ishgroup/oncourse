@@ -1,6 +1,9 @@
 package ish.oncourse.model;
 
+import ish.common.types.DiscountType;
 import ish.math.Money;
+import ish.oncourse.test.ContextUtils;
+import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -53,7 +56,26 @@ public abstract class AbstractDiscountPolicyTest {
 	 * Not combinable discount for $60 amount which has minEnrolment = 2 and minValue = $200
 	 */
 	public static Discount minCountAndValueConditionDiscount;
+	
+	/**
+	 * Discount for  -$20 amount (surcharge)
+	 */
+	public static Discount negativeDollarDiscount;
 
+	/**
+	 * Discount for  -%30 amount (surcharge)
+	 */
+	public static Discount negativePercentDiscount;
+
+	/**
+	 * Fee override $200 discount (surcharge)
+	 */
+	public static Discount negativeFeeOverrideDiscount;
+
+	public static CorporatePass corporatePass;
+	public static CorporatePassDiscount corporatePassDiscount;
+	public static Discount discountByCorporatePass;
+	
 	public static List<Discount> promotions;
 	public static DiscountPolicy discountPolicy;
 
@@ -61,7 +83,7 @@ public abstract class AbstractDiscountPolicyTest {
 	 * Initializes discounts entities.
 	 */
 	@BeforeClass
-	public static void init() {
+	public static void init() throws Exception {
 
 		combDiscountWithAmount = new Discount();
 		combDiscountWithAmount.setDiscountAmount(new Money(BigDecimal.TEN));
@@ -129,6 +151,52 @@ public abstract class AbstractDiscountPolicyTest {
 		minCountAndValueConditionDiscount.setIsAvailableOnWeb(true);
 		minCountAndValueConditionDiscount.setMinEnrolments(2);
 		minCountAndValueConditionDiscount.setMinValue(new Money("200"));
+
+		negativeDollarDiscount = new Discount();
+		negativeDollarDiscount.setDiscountType(DiscountType.DOLLAR);
+		negativeDollarDiscount.setDiscountAmount(new Money("-20"));
+		negativeDollarDiscount.setCombinationType(false);
+		negativeDollarDiscount.setHideOnWeb(false);
+		negativeDollarDiscount.setIsAvailableOnWeb(true);
+		negativeDollarDiscount.setMinEnrolments(0);
+		negativeDollarDiscount.setMinValue(Money.ZERO);
+
+		negativePercentDiscount = new Discount();
+		negativePercentDiscount.setDiscountType(DiscountType.PERCENT);
+		negativePercentDiscount.setDiscountRate(new BigDecimal(-0.3));
+		negativePercentDiscount.setCombinationType(false);
+		negativePercentDiscount.setHideOnWeb(false);
+		negativePercentDiscount.setIsAvailableOnWeb(true);
+		negativePercentDiscount.setMinEnrolments(0);
+		negativePercentDiscount.setMinValue(Money.ZERO);
+
+		negativeFeeOverrideDiscount = new Discount();
+		negativeFeeOverrideDiscount.setDiscountType(DiscountType.FEE_OVERRIDE);
+		negativeFeeOverrideDiscount.setDiscountAmount(new Money("200"));
+		negativeFeeOverrideDiscount.setCombinationType(false);
+		negativeFeeOverrideDiscount.setHideOnWeb(false);
+		negativeFeeOverrideDiscount.setIsAvailableOnWeb(true);
+		negativeFeeOverrideDiscount.setMinEnrolments(0);
+		negativeFeeOverrideDiscount.setMinValue(Money.ZERO);
+
+		ContextUtils.setupDataSources();
+
+		ObjectContext context = ContextUtils.createObjectContext();
+
+		discountByCorporatePass = context.newObject(Discount.class);
+		discountByCorporatePass.setDiscountType(DiscountType.PERCENT);
+		discountByCorporatePass.setDiscountRate(new BigDecimal("0.99"));
+		discountByCorporatePass.setHideOnWeb(false);
+		discountByCorporatePass.setIsAvailableOnWeb(true);
+		discountByCorporatePass.setMinEnrolments(0);
+		discountByCorporatePass.setMinValue(Money.ZERO);
+
+		corporatePass = context.newObject(CorporatePass.class);
+		
+		corporatePassDiscount = context.newObject(CorporatePassDiscount.class);
+		
+		discountByCorporatePass.addToCorporatePassDiscounts(corporatePassDiscount);
+		corporatePass.addToCorporatePassDiscounts(corporatePassDiscount);
 		
 		promotions = new ArrayList<>();
 		promotions.add(combDiscountWithAmount);
