@@ -120,16 +120,11 @@ public class Invoice extends _Invoice implements Queueable {
 
 	/**
 	 * Check if async replication is allowed on this object.
-	 * 
-	 * @return true
+	 *
+	 * We need the method  to not add to the async replication a payment transactions
+	 * which have not got the final status yet (DPS processing).
 	 */
 	public boolean isAsyncReplicationAllowed() {
-		
-		// TODO this code is needed for compatibility with 2.1.x automatic email  
-		// confirmations queuing mechanism and should be removed after we'll 
-		// stop support 2.1.x clients.
-		//
-		// For angel version 3.0 and higher we may always return true here
 		
 		List<PaymentInLine> lines = getPaymentInLines();
 		
