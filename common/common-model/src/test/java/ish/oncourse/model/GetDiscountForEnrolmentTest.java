@@ -74,8 +74,7 @@ public class GetDiscountForEnrolmentTest extends AbstractDiscountPolicyTest {
 	private static CourseClass courseClass;
 	
 	private static Enrolment enrolment;
-		
-	private static CorporatePass corporatePass;
+	
 	/**
 	 * Initializes instance variables.
 	 * 
