@@ -58,6 +58,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 */
 	private final IWillowUpdater willowUpdater;
 
+	/**
+	 * Atomic context
+	 */
+	private ICayenneService cayenneService;
+	
     /**
 	 * Atomic context
 	 */
@@ -85,7 +90,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		super();
 		this.webSiteService = webSiteService;
 		this.willowUpdater = willowUpdater;
-        this.atomicContext = cayenneService.newNonReplicatingContext();
+		this.cayenneService = cayenneService;
+        this.atomicContext = this.cayenneService.newNonReplicatingContext();
         this.queuedStatisticProcessor = new QueuedStatisticProcessor(this.atomicContext,webSiteService,willowUpdater,this, false);
         this.attachmentProcessor = new AttachmentProcessor(fileStorageAssetService, webSiteService);
 	}
@@ -368,6 +374,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 					EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier())));
 			College currentCollege = atomicContext.localObject(webSiteService.getCurrentCollege());
 			objectToUpdate.setCollege(currentCollege);
+			willowUpdater.setCayenneService(cayenneService);
 			willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, new RelationShipCallbackImpl());
 			return objectToUpdate;
 		} catch (CayenneRuntimeException e) {

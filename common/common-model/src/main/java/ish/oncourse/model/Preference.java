@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Preference;
 import ish.oncourse.utils.QueueableObjectUtils;
+import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.lifecycle.cache.CacheGroups;
 
 @CacheGroups("Preference")
@@ -14,6 +15,6 @@ public class Preference extends _Preference implements Queueable {
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return true;
+		return !CommonPreferenceController.SERVICES_SECURITYKEY.equals(getName());
 	}
 }

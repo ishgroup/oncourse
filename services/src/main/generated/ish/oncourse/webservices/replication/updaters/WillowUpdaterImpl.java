@@ -3,6 +3,7 @@ package ish.oncourse.webservices.replication.updaters;
 import ish.common.types.EntityMapping;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
@@ -23,6 +24,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	@Inject
 	private IWebSiteService webSiteService;
 	
+	private ICayenneService cayenneService;
 	/**
 	 * Willow updaters mappings
 	 */
@@ -104,6 +106,12 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 				entity.setCollege(entity.getObjectContext().localObject(currentCollege));
 			}	
 		}
+		updater.setCayenneService(cayenneService);
 		updater.updateEntityFromStub(stub, entity, callback);
+	}
+
+	@Override
+	public void setCayenneService(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService;
 	}
 }
