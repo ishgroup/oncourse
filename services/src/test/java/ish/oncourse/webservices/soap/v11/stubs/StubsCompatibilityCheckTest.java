@@ -631,6 +631,11 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		priorLearningParameters.add(new ReplicationStubFieldParameter("outcomeIdTrainingOrg", String.class));
 		stubsPropertyMap.put(getStubName(PriorLearningStub.class), priorLearningParameters);
 
+		List<ReplicationStubFieldParameter> corporatePassProductParameters = fillDefaultReplicationStubFields();
+		corporatePassProductParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
+		corporatePassProductParameters.add(new ReplicationStubFieldParameter("productId", Long.class));
+		stubsPropertyMap.put(getStubName(CorporatePassProductStub.class), corporatePassProductParameters);
+
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
 		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParameters);
@@ -1003,6 +1008,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testPriorLearningStub() {
 		GenericReplicationStub stub = new PriorLearningStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testCorporatePassProductStub() {
+		GenericReplicationStub stub = new CorporatePassProductStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	

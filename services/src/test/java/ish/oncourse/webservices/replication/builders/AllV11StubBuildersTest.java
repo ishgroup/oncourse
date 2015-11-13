@@ -292,4 +292,9 @@ public class AllV11StubBuildersTest extends AbstractAllStubBuildersTest {
 	public void testPriorLearningStubBuilder() {
 		this.testStubBuilder(PriorLearning.class, new PriorLearningStubBuilder());
 	}
+
+	@Test
+	public void testCorporatePassProductStubBuilder() {
+		this.testStubBuilder(CorporatePassProduct.class, new CorporatePassProductStubBuilder());
+	}
 }

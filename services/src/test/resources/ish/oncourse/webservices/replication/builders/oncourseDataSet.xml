@@ -576,5 +576,7 @@
 			invoiceId="1"/>
 	
 	<CorporatePass_Discount id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" corporatePassId="1" discountId="1"/>
-	
+
+	<CorporatePass_Product id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" corporatePassId="1" productId="1"/>
+
 </dataset>
