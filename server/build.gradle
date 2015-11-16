@@ -159,6 +159,12 @@ publishing {
 			artifact apidocsBundle
             version '99-SNAPSHOT'
 		}
+		executables(MavenPublication) {
+            artifact(installer_unix) {
+				classifier "unix"
+				extension "zip"
+            }
+        }
 	}
 }
 
