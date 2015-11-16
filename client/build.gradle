@@ -191,6 +191,18 @@ task installer_unix(dependsOn: jar, type: Zip) {
 	destinationDir file("${distsDir}/unix")
 }
 
+// For deploying to our repo
+publishing {
+    publications {
+		executables(MavenPublication) {
+            artifact(installer_webstart) {
+				classifier "webstart"
+				extension "zip"
+            }
+        }
+    }
+}
+
 // for help on webstart see src/packaging/webstart/devHowTo.txt
 task webstartRun(dependsOn: bundle_webstart, type: Exec) {
 	executable 'javaws'

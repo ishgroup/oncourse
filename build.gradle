@@ -1,7 +1,7 @@
 buildscript {
-    ext {
-        waCommonWebservicesClientVersion = '8.4.1'
-    }
+	ext {
+		waCommonWebservicesClientVersion = '8.4.1'
+	}
 	repositories {
 		maven {
 			url 'http://repo.ish.com.au/content/groups/public'
@@ -23,12 +23,13 @@ allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'jacoco' // adds the task 'jacocoTestReport'
-    apply plugin: 'idea' //adds tasks cleanIdeaModule and ideaModule
-    apply plugin: 'appBundler'
+	apply plugin: 'idea' //adds tasks cleanIdeaModule and ideaModule
+	apply plugin: 'appBundler'
+	apply plugin: 'maven-publish'
 
-    // get the version from the command line properties
-    version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
-    
+	// get the version from the command line properties
+	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
+	
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 
@@ -49,11 +50,33 @@ allprojects {
 
 	dependencies {
 		testCompile 'junit:junit:4.12'
-        compile 'org.apache.logging.log4j:log4j-api:2.4.1'
-        compile 'org.apache.logging.log4j:log4j-core:2.4.1'
-        compile 'org.apache.logging.log4j:log4j-1.2-api:2.4.1'
-        //log4j2 to commons-logging bridge
-        compile 'org.apache.logging.log4j:log4j-jcl:2.4.1'
+		compile 'org.apache.logging.log4j:log4j-api:2.4.1'
+		compile 'org.apache.logging.log4j:log4j-core:2.4.1'
+		compile 'org.apache.logging.log4j:log4j-1.2-api:2.4.1'
+		//log4j2 to commons-logging bridge
+		compile 'org.apache.logging.log4j:log4j-jcl:2.4.1'
+	}
+
+	group = 'ish.oncourse.angel'
+	publishing {
+		repositories {
+			maven {
+				name "executables"
+				url "http://repo.ish.com.au/content/repositories/ish-exe"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
+			}
+			maven {
+				name "snapshots"
+				url "http://repo.ish.com.au/content/repositories/ish-snapshots"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
+			}
+		}
 	}
 
 	ext.sharedManifest = manifest {
@@ -62,7 +85,7 @@ allprojects {
 			'Built-JDK': System.getProperty('java.version'),
 			'Built-Gradle': gradle.gradleVersion,
 			'Implementation-Version': System.getProperty('build_number') ?: 'local', 
-            'SCM-Revision': System.getProperty('svn_revision') ?: 'development',
+			'SCM-Revision': System.getProperty('svn_revision') ?: 'development',
 			'Permissions': 'all-permissions',
 			'Codebase': '*',
 			'Application-Name': 'onCourse',
@@ -73,8 +96,8 @@ allprojects {
 		systemProperties 'java.awt.headless': 'true'
 		maxHeapSize = '1024m'
 
-        // max number of parallel test executors, default to 4
-        maxParallelForks = project.hasProperty('maxParallelForks') ? project.maxParallelForks.toInteger() : 4
+		// max number of parallel test executors, default to 4
+		maxParallelForks = project.hasProperty('maxParallelForks') ? project.maxParallelForks.toInteger() : 4
 
 		jacoco {
 			enabled = project.hasProperty('jacoco-enabled');
@@ -83,8 +106,8 @@ allprojects {
 		ignoreFailures = true
 		
 		// log each starting test
-  		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
-  		}
+		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
+		}
 	}
 }
 	
@@ -137,9 +160,9 @@ configure(subprojects.findAll {it.name == 'server' || it.name == 'client'}) {
 	installer.dependsOn {
 		project.tasks.findAll { it.name.startsWith('installer_') }
 	}
-    codeSign.dependsOn {
-        project.prepareKeychains
-    }
+	codeSign.dependsOn {
+		project.prepareKeychains
+	}
 }
 
 task testReport(type: TestReport) {
@@ -149,7 +172,7 @@ task testReport(type: TestReport) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "2.7"
+	gradleVersion = "2.7"
 }
 
 task switchReplicationVersion << {

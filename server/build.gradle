@@ -154,16 +154,6 @@ task apidocsBundle(type: Jar) {
 
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
 publishing {
-	repositories {
-		maven {
-			url "http://repo.ish.com.au/content/repositories/ish-snapshots"
-			name 'internal-snapshots'
-			credentials {
-				username = nexusUsername
-				password = nexusPassword
-			}
-		}
-	}
 	publications {
 		apidocs(MavenPublication) {
 			artifact apidocsBundle
