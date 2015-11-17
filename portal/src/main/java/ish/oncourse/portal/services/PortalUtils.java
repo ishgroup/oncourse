@@ -22,7 +22,7 @@ public class PortalUtils {
     /**
      * from address.
      */
-    public static final String FROM_EMAIL = "support@ish.com.au";
+    public static final String FROM_EMAIL = "no-reply@skillsoncourse.com.au";
 
 
     /**
