@@ -133,10 +133,10 @@
 					</span>
 					<span class="timing-display">
 						<span class="timing-daytime match-10 timing-daytime-${dayTimeClass}">
-							<img src="/s/img/blank.png"/>
+							<img alt="" src="/s/img/blank.png"/>
 						</span>
 						<span class="timing-evening match-10 timing-evening-${eveningClass}">
-							<img src="/s/img/blank.png"/>
+							<img alt="" src="/s/img/blank.png"/>
 						</span>
 					</span>
                 </div>
