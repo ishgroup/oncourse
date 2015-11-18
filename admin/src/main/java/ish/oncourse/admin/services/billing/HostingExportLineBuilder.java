@@ -2,6 +2,7 @@ package ish.oncourse.admin.services.billing;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -15,7 +16,7 @@ public class HostingExportLineBuilder extends PlanExportLineBuilder {
 	public static final String HOSTING_PAID_UNTIL_KEY = "hosting-paidUntil";
 	public static final String HOSTING_RENEWAL_DATE_KEY = "hosting-renewalDate";
 
-	public static final String HOSTING_PLAN_DESCRIPTION_TEMPLATE = "{0} {1} web plan: 1 month (contract until {2})";
+	public static final String HOSTING_PLAN_DESCRIPTION_TEMPLATE = "{0} web plan for {1} : 1 month (contract until {2})";
 	
 	public HostingExportLineBuilder(
 			College college,
@@ -30,8 +31,8 @@ public class HostingExportLineBuilder extends PlanExportLineBuilder {
 	protected String buildDetailedDescription() {
 		return MessageFormat.format(
 				HOSTING_PLAN_DESCRIPTION_TEMPLATE,
+				StringUtils.capitalize(getBillingPlan()),
 				webSite.getName(),
-				getBillingPlan(),
 				MONTH_FORMATTER.format(getRenewalDate()));
 	}
 
