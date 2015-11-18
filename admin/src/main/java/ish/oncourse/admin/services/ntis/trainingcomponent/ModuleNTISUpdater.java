@@ -11,6 +11,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.V6ReferenceService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.commons.lang3.StringUtils;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
 
 import java.util.List;
@@ -76,6 +77,10 @@ public class ModuleNTISUpdater extends AbstractTrainingComponentNTISUpdater {
 				if (MODULE_FIELD_OF_EDUCATION_ID.equals(c.getSchemeCode())) {
 					m.setFieldOfEducation(c.getValueCode());
 				}
+			}
+			
+			if (StringUtils.trimToNull(m.getFieldOfEducation()) == null) {
+				m.setFieldOfEducation("129999");
 			}
 
 			if (component.getParentCode() != null) {

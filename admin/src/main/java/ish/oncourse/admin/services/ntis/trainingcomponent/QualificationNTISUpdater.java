@@ -12,6 +12,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.reference.V6ReferenceService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.datacontract.schemas._2004._07.system.DateTimeOffset;
@@ -90,6 +91,10 @@ public class QualificationNTISUpdater extends AbstractTrainingComponentNTISUpdat
 						q.setLevelCode(c.getValueCode());
 					}
 				}
+			}
+			
+			if (StringUtils.trimToNull(q.getFieldOfEducation()) == null) {
+				q.setFieldOfEducation("1299");
 			}
 
 			if (component.getParentCode() != null) {
