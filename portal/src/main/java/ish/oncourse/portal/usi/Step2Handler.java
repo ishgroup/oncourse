@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 
 import static ish.oncourse.model.Student.LABOUR_FORCE_STATUS_PROPERTY;
 import static ish.oncourse.model.auto._Student.*;
-import static ish.oncourse.portal.usi.UsiController.Step.step3;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -93,8 +92,8 @@ public class Step2Handler extends AbstractStepHandler {
     }
 
     @Override
-    public UsiController.Step getNextStep() {
-        return step3;
+    public Step getNextStep() {
+        return Step.step3;
     }
 
     public Step2Handler handle(Map<String, Value> input) {

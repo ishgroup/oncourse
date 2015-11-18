@@ -1,9 +1,10 @@
 package ish.oncourse.util;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ValidateHandler {
+public class ValidateHandler implements Serializable {
 
 	public static final String HTML_CLASS_validate = "validate has-error";
 	public static final String HTML_CLASS_valid = "valid";

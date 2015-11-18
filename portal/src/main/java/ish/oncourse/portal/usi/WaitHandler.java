@@ -12,9 +12,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static ish.oncourse.portal.usi.UsiController.Step;
-import static ish.oncourse.portal.usi.UsiController.Step.*;
-
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
@@ -24,14 +21,14 @@ public class WaitHandler extends AbstractStepHandler {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private AtomicReference<Step> nextStep = new AtomicReference<>(step1);
+    private AtomicReference<Step> nextStep = new AtomicReference<>(Step.step1);
 
     @Override
     public Result getValue() {
         if (result.isEmpty()) {
             Student student = getUsiController().getContact().getStudent();
-            addValue(Value.valueOf(Student.USI_PROPERTY, student.getUsi()));
-            addValue(Value.valueOf(Student.USI_STATUS_PROPERTY, student.getUsiStatus() != null ? student.getUsiStatus().name() :
+            addValue(Value.valueOf(Student.USI.getName(), student.getUsi()));
+            addValue(Value.valueOf(Student.USI_STATUS.getName(), student.getUsiStatus() != null ? student.getUsiStatus().name() :
                     UsiStatus.DEFAULT_NOT_SUPPLIED));
         }
         return result;
@@ -42,7 +39,7 @@ public class WaitHandler extends AbstractStepHandler {
     }
 
     public WaitHandler handle(Map<String, Value> input) {
-        if (nextStep.getAndSet(wait) == step1) {
+        if (nextStep.getAndSet(Step.wait) == Step.step1) {
             verifyUsi();
         }
         return this;
@@ -54,7 +51,7 @@ public class WaitHandler extends AbstractStepHandler {
             String avetmissID = getUsiController().getPreferenceController().getAvetmissID();
             if (avetmissID == null) {
                 getUsiController().getValidationResult().addError("messaget-avetmissIdentifierNotSet");
-                nextStep.set(step1);
+                nextStep.set(Step.step1);
                 return;
             }
 
@@ -62,7 +59,7 @@ public class WaitHandler extends AbstractStepHandler {
             if (certificate == null)
             {
                 getUsiController().getValidationResult().addError("messaget-auskeyCertificateNotSet");
-                nextStep.set(step1);
+                nextStep.set(Step.step1);
                 return;
             }
 
@@ -94,9 +91,9 @@ public class WaitHandler extends AbstractStepHandler {
                     }
                     if (match) {
                         contact.getStudent().setUsiStatus(UsiStatus.VERIFIED);
-                        nextStep.set(step1Done);
+                        nextStep.set(Step.step1Done);
                     } else {
-                        nextStep.set(step1Failed);
+                        nextStep.set(Step.step1Failed);
                         contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
                         getUsiController().getValidationResult().addError("message-personalDetailsNotMatch");
                     }
@@ -104,7 +101,7 @@ public class WaitHandler extends AbstractStepHandler {
                 case INVALID:
                 case DEACTIVATED:
                     contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
-                    nextStep.set(step1);
+                    nextStep.set(Step.step1);
                     result.addValue(
                             Value.valueOf(Student.USI_PROPERTY, contact.getStudent().getUsi(), getUsiController().getMessages().format("message-fieldNotMatch")));
                     getUsiController().getValidationResult().addError("message-invalidUsi");
@@ -114,7 +111,7 @@ public class WaitHandler extends AbstractStepHandler {
         } catch (Exception e) {
             contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
             logger.catching(e);
-            nextStep.set(step1);
+            nextStep.set(Step.step1);
             getUsiController().getValidationResult().addError("message-usiServiceUnexpectedException");
         }
     }

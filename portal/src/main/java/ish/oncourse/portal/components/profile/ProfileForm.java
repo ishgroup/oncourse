@@ -51,10 +51,6 @@ public class ProfileForm {
     private ICountryService countryService;
 
     @Property
-    @Persist
-    private ContactFieldHelper contactFieldHelper;
-
-    @Property
     @Parameter
     private boolean requireAdditionalInfo;
 
@@ -90,7 +86,9 @@ public class ProfileForm {
     @Persist
     private ValidateHandler validateHandler;
 
-    private static final DateFormat DATE_FIELD_PARSE_FORMAT = new SimpleDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT);
+	private ContactFieldHelper contactFieldHelper;
+
+	private static final DateFormat DATE_FIELD_PARSE_FORMAT = new SimpleDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT);
     private static final DateFormat DATE_FIELD_SHOW_FORMAT = new SimpleDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT);
 
     static {
@@ -106,24 +104,29 @@ public class ProfileForm {
            validateHandler  = new ValidateHandler();
         }
 
-        if (contactFieldHelper == null) {
-            contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFieldSet.enrolment);
-        }
-		
+
 		//collect all visible Custom field types provided by college
 		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
-			if (contactFieldHelper.isCustomFieldTypeVisible(fieldType)) {
+			if (getContactFieldHelper().isCustomFieldTypeVisible(fieldType)) {
 				customFieldContainer.put(fieldType.getName(), null);
 			}
 		}
 		
 		//fill values for fields which already predefined for contact
 		for (CustomField field : contact.getCustomFields()) {
-			if (contactFieldHelper.isCustomFieldVisible(field)) {
+			if (getContactFieldHelper().isCustomFieldVisible(field)) {
 				customFieldContainer.put(field.getCustomFieldType().getName(), field.getValue());
 			}
 		}
     }
+
+	@Cached
+	public ContactFieldHelper getContactFieldHelper() {
+		if (contactFieldHelper == null) {
+			contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFieldSet.enrolment);
+		}
+		return contactFieldHelper;
+	}
 
     @AfterRender
     void afteRender(){
@@ -147,8 +150,8 @@ public class ProfileForm {
 		return customFieldContainer.keySet();
 	}
 	
-	public boolean customFieldRequared(String customFieldName) {
-		return contactFieldHelper.isCustomFieldTypeRequired(getCustomFieldTypeByName(customFieldName));
+	public boolean customFieldRequired(String customFieldName) {
+		return getContactFieldHelper().isCustomFieldTypeRequired(getCustomFieldTypeByName(customFieldName));
 	}
 
 	public CustomFieldType getCustomFieldTypeByName(String name) {
@@ -162,11 +165,11 @@ public class ProfileForm {
 	}
 
     public boolean visible(String fieldName) {
-        return contactFieldHelper.getVisibleFields(contact, false).contains(fieldName);
+        return getContactFieldHelper().getVisibleFields(contact, false).contains(fieldName);
     }
 
     public boolean required(String fieldName) {
-        return contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.valueOf(fieldName), contact);
+        return getContactFieldHelper().isRequiredField(PreferenceController.FieldDescriptor.valueOf(fieldName), contact);
     }
 
 	private String getRequiredMessage(PreferenceController.FieldDescriptor fieldDescriptor) {
@@ -231,7 +234,7 @@ public class ProfileForm {
 		ConcurrentHashMap<String, String> errors = new ConcurrentHashMap<>(validateHandler.getErrors());
 		
 		for (Map.Entry<String, String> customFieldEntry : customFieldContainer.entrySet()) {
-			if (customFieldRequared(customFieldEntry.getKey()) && StringUtils.trimToNull(customFieldEntry.getValue()) == null) {
+			if (customFieldRequired(customFieldEntry.getKey()) && StringUtils.trimToNull(customFieldEntry.getValue()) == null) {
 				errors.putIfAbsent(customFieldEntry.getKey(), String.format("Field \"%s\" is required", customFieldEntry.getKey()));
 			}
 		}
@@ -242,7 +245,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getSuburb()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.suburb, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.suburb, contact)) {
 				errors.putIfAbsent(FieldDescriptor.suburb.name(), getRequiredMessage(FieldDescriptor.suburb));
 			}
 		} else {
@@ -254,7 +257,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getPostcode()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.postcode, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.postcode, contact)) {
 				errors.putIfAbsent(FieldDescriptor.postcode.name(), getRequiredMessage(FieldDescriptor.postcode));
 			}
 		} else {
@@ -265,7 +268,7 @@ public class ProfileForm {
 		}
 		
 		if (StringUtils.trimToNull(contact.getState()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.state, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.state, contact)) {
 				errors.putIfAbsent(FieldDescriptor.state.name(), getRequiredMessage(FieldDescriptor.state));
 			}
 		} else {
@@ -277,7 +280,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getHomePhoneNumber()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.homePhoneNumber, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.homePhoneNumber, contact)) {
 				errors.putIfAbsent(FieldDescriptor.homePhoneNumber.name(), getRequiredMessage(FieldDescriptor.homePhoneNumber));
 			}
 		} else {
@@ -289,7 +292,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getMobilePhoneNumber()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.mobilePhoneNumber, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.mobilePhoneNumber, contact)) {
 				errors.putIfAbsent(FieldDescriptor.mobilePhoneNumber.name(), getRequiredMessage(FieldDescriptor.mobilePhoneNumber));
 			}
 		} else {
@@ -301,7 +304,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getBusinessPhoneNumber()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.businessPhoneNumber, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.businessPhoneNumber, contact)) {
 				errors.putIfAbsent(FieldDescriptor.businessPhoneNumber.name(), getRequiredMessage(FieldDescriptor.businessPhoneNumber));
 			}
 		} else {
@@ -313,7 +316,7 @@ public class ProfileForm {
 		}
 
 		if (StringUtils.trimToNull(contact.getFaxNumber()) == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.faxNumber, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.faxNumber, contact)) {
 				errors.putIfAbsent(FieldDescriptor.faxNumber.name(), getRequiredMessage(FieldDescriptor.faxNumber));
 			}
 		} else {
@@ -325,7 +328,7 @@ public class ProfileForm {
 		}
 
 		if (contact.getDateOfBirth() == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.dateOfBirth, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.dateOfBirth, contact)) {
 				errors.putIfAbsent(FieldDescriptor.dateOfBirth.name(), getRequiredMessage(FieldDescriptor.dateOfBirth));
 			}
 		} else {
@@ -337,13 +340,13 @@ public class ProfileForm {
 		}
 
 		if (contact.getCountry() == null) {
-			if (contactFieldHelper.isRequiredField(FieldDescriptor.country, contact)) {
+			if (getContactFieldHelper().isRequiredField(FieldDescriptor.country, contact)) {
 				errors.putIfAbsent(FieldDescriptor.country.name(), getRequiredMessage(FieldDescriptor.country));
 			}
 		}
 		
 		if (contact.getStudent() != null && StringUtils.trimToNull(contact.getStudent().getSpecialNeeds()) == null) {
-			if (contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.specialNeeds, contact)) {
+			if (getContactFieldHelper().isRequiredField(PreferenceController.FieldDescriptor.specialNeeds, contact)) {
 				errors.putIfAbsent(FieldDescriptor.specialNeeds.name(), getRequiredMessage(FieldDescriptor.specialNeeds));
 			}
 		}

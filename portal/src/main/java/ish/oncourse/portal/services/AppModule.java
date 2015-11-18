@@ -26,6 +26,7 @@ import ish.oncourse.webservices.usi.USIService;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
+import org.apache.tapestry5.internal.services.TapestrySessionFactory;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ScopeConstants;
@@ -58,6 +59,7 @@ public class AppModule {
         binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
         binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
         binder.bind(IUSIVerificationService.class, PortalUSIService.class);
+        binder.bind(TapestrySessionFactory.class, ISHTapestrySessionFactoryImpl.class).withId("ISHTapestrySessionFactoryImpl");
     }
 
     @EagerLoad
@@ -86,6 +88,12 @@ public class AppModule {
     public static void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IPageRenderer pageRenderer) {
         configuration.add(IPageRenderer.class, pageRenderer);
     }
+
+    @Contribute(ServiceOverride.class)
+    public static void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local TapestrySessionFactory sessionFactory) {
+        configuration.add(TapestrySessionFactory.class, sessionFactory);
+    }
+
 
 
     public void contributeMasterDispatcher(OrderedConfiguration<Dispatcher> configuration,

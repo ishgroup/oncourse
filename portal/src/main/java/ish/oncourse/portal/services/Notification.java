@@ -1,6 +1,8 @@
 package ish.oncourse.portal.services;
 
-public class Notification {
+import java.io.Serializable;
+
+public class Notification implements Serializable{
 
     private int newResourcesCount = 0;
     private int newResultsCount = 0;

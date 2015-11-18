@@ -5,7 +5,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.portal.pages.PageNotFound;
 import ish.oncourse.portal.usi.*;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
@@ -16,6 +15,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -29,8 +29,6 @@ import org.apache.tapestry5.util.TextStreamResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -59,24 +57,30 @@ public class Usi {
     private IUSIVerificationService usiVerificationService;
 
     @Persist
-    @Property
-    private UsiController usiController;
+    private UsiControllerModel usiControllerModel;
 
 
     public Object onActivate() {
 
-        if (usiController == null) {
+        if (usiControllerModel == null) {
             return PageNotFound.class;
         } else {
             return null;
         }
     }
 
+    @Cached
+    public UsiController getUsiController() {
+        return UsiController.valueOf(usiControllerModel, countryService, languageService,
+                preferenceControllerFactory.getPreferenceController(usiControllerModel.getContact().getCollege()),
+                usiVerificationService);
+    }
+
     public Object onActivate(String uniqueCode) {
-        if (usiController == null || !usiController.getContact().getUniqueCode().equals(uniqueCode)) {
+        if (usiControllerModel == null || !usiControllerModel.getContact().getUniqueCode().equals(uniqueCode)) {
             Contact contact = parseUrl(uniqueCode);
             if (contact != null) {
-                initUsiController(contact);
+                initUsiControllerModel(contact);
                 return null;
             } else {
                 return PageNotFound.class;
@@ -86,17 +90,10 @@ public class Usi {
         }
     }
 
-    private void initUsiController(Contact contact) {
+    private void initUsiControllerModel(Contact contact) {
         ObjectContext context = cayenneService.newContext();
-        usiController = new UsiController();
-        usiController.setContact(context.localObject(contact));
-        usiController.setCountryService(countryService);
-        usiController.setLanguageService(languageService);
-        usiController.setPreferenceController(preferenceControllerFactory.getPreferenceController(contact.getCollege()));
-        usiController.setContactFieldHelper(new ContactFieldHelper(usiController.getPreferenceController(), enrolment));
-        usiController.setUsiVerificationService(usiVerificationService);
-        usiController.setMessages(messages);
-        usiController.getValidationResult().setMessages(messages);
+        usiControllerModel = UsiControllerModel.valueOf(context.localObject(contact));
+        usiControllerModel.setStep(Step.step1);
 
         // we need put college id to the session for WebSiteService.getCurrentCollege() method
         request.getSession(false).setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, contact.getCollege().getId());
@@ -104,11 +101,11 @@ public class Usi {
 
 
     public ValidationResult getValidationResult() {
-        return usiController.getValidationResult();
+        return getUsiController().getValidationResult();
     }
 
     public Contact getContact() {
-        return usiController.getContact();
+        return getUsiController().getContact();
     }
 
     private Contact parseUrl(String uniqueCode) {
@@ -145,13 +142,13 @@ public class Usi {
     public Object next() {
         Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
 
-        Result result = usiController.next(inputValues);
+        Result result = getUsiController().next(inputValues);
         return getJSONResult(result);
     }
 
     @OnEvent(value = "value")
     public Object value() {
-        Result values = usiController.getValue();
+        Result values = getUsiController().getValue();
 
         return getJSONResult(values);
     }
@@ -160,7 +157,7 @@ public class Usi {
     public Object verifyUsi()
     {
         Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
-        Result values = usiController.next(inputValues);
+        Result values = getUsiController().next(inputValues);
         return getJSONResult(values);
     }
 
@@ -171,7 +168,7 @@ public class Usi {
         JSONArray jsonArray = JSONUtils.getJSONValues(result.getValue());
         jsoResult.put("values", jsonArray);
         jsoResult.put("hasErrors", result.hasErrors());
-        jsoResult.put("step", usiController.getStep().name());
+        jsoResult.put("step", getUsiController().getStep().name());
         return new TextStreamResponse("text/json", jsoResult.toString());
     }
 

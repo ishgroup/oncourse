@@ -1,22 +1,20 @@
 package ish.oncourse.portal.usi;
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.portal.pages.usi.Usi;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
 import ish.oncourse.services.usi.IUSIVerificationService;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -29,28 +27,15 @@ public class UsiController {
     private ContactFieldHelper contactFieldHelper;
     private Messages messages;
 
-    private Contact contact;
-
     private AbstractStepHandler currentHandler;
-    private Step step;
 
     private ValidationResult validationResult = new ValidationResult();
 
+    private UsiControllerModel usiControllerModel;
 
-    public UsiController()
-    {
-        step = Step.step1;
-        currentHandler = new Step1Handler();
-        currentHandler.setUsiController(this);
-        currentHandler.init();
-    }
 
     public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
+        return usiControllerModel.getContact();
     }
 
     public ValidationResult getValidationResult() {
@@ -58,12 +43,11 @@ public class UsiController {
     }
 
     public Step getStep() {
-        return step;
+        return usiControllerModel.getStep();
     }
 
-    public void setStep(Step step)
-    {
-        this.step = step;
+    public void setStep(Step step) {
+        usiControllerModel.setStep(step);
         initCurrentHandler();
     }
 
@@ -73,9 +57,9 @@ public class UsiController {
         StepHandler stepHandler = currentHandler.handle(inputValue);
         Result result = stepHandler.getValue();
         if (!result.hasErrors()) {
-            if (step != stepHandler.getNextStep()) {
-                contact.getObjectContext().commitChanges();
-                step = stepHandler.getNextStep();
+            if (usiControllerModel.getStep() != stepHandler.getNextStep()) {
+                usiControllerModel.commitChanges();
+                usiControllerModel.setStep(stepHandler.getNextStep());
                 initCurrentHandler();
                 currentHandler.setPreviousResult(result);
             }
@@ -86,7 +70,7 @@ public class UsiController {
     private void initCurrentHandler() {
 
         try {
-            currentHandler = step.handlerClass.newInstance();
+            currentHandler = usiControllerModel.getStep().getHandlerClass().newInstance();
             currentHandler.setUsiController(this);
             currentHandler.init();
         } catch (Exception e) {
@@ -98,10 +82,6 @@ public class UsiController {
         return messages;
     }
 
-    public void setMessages(Messages messages) {
-        this.messages = messages;
-    }
-
     public Result getValue() {
         return currentHandler.getValue();
     }
@@ -110,67 +90,45 @@ public class UsiController {
         return languageService;
     }
 
-    public void setLanguageService(ILanguageService languageService) {
-        this.languageService = languageService;
-    }
-
     public ICountryService getCountryService() {
         return countryService;
-    }
-
-    public void setCountryService(ICountryService countryService) {
-        this.countryService = countryService;
     }
 
     public PreferenceController getPreferenceController() {
         return preferenceController;
     }
 
-    public void setPreferenceController(PreferenceController preferenceController) {
-        this.preferenceController = preferenceController;
-    }
-
     public ContactFieldHelper getContactFieldHelper() {
         return contactFieldHelper;
-    }
-
-    public void setContactFieldHelper(ContactFieldHelper contactFieldHelper) {
-        this.contactFieldHelper = contactFieldHelper;
     }
 
     public IUSIVerificationService getUsiVerificationService() {
         return usiVerificationService;
     }
 
-    public void setUsiVerificationService(IUSIVerificationService usiVerificationService) {
-        this.usiVerificationService = usiVerificationService;
+    public List<Enrolment> getVETEnrolments() {
+        return usiControllerModel.getVETEnrolments();
     }
 
+    public static UsiController valueOf(UsiControllerModel model,
+                                        ICountryService countryService,
+                                        ILanguageService languageService,
+                                        PreferenceController preferenceController,
+                                        IUSIVerificationService usiVerificationService) {
+        UsiController usiController = new UsiController();
+        usiController.usiControllerModel = model;
 
-    public enum Step {
-        step1(Step1Handler.class),
-        step1Done(Step1DoneHandler.class),
-        step1Failed(Step1FailedHandler.class),
-        step2(Step2Handler.class),
-        step3(Step3Handler.class),
-        step3Done(Step3DoneHandler.class),
-        done(DoneHandler.class),
-        wait(WaitHandler.class);
+        usiController.countryService = countryService;
+        usiController.languageService = languageService;
 
-        private Class<? extends AbstractStepHandler> handlerClass;
+        usiController.preferenceController = preferenceController;
+        usiController.contactFieldHelper = new ContactFieldHelper(usiController.getPreferenceController(), enrolment);
 
-        Step(Class<? extends AbstractStepHandler> handlerClass) {
-            this.handlerClass = handlerClass;
-        }
+        usiController.usiVerificationService = usiVerificationService;
+        usiController.messages = MessagesImpl.forClass(Usi.class);
+        usiController.getValidationResult().setMessages(usiController.messages);
+
+        usiController.initCurrentHandler();
+        return usiController;
     }
-
-	public List<Enrolment> getVETEnrolments() {
-		Expression expression = ExpressionFactory.greaterExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.END_DATE_PROPERTY, new Date()).
-			andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY + "." + CourseClass.COURSE_PROPERTY + "." + Course.IS_VETCOURSE_PROPERTY, true));
-		if (contact.getStudent() != null) {
-			return expression.filterObjects(contact.getStudent().getEnrolments());
-		} else {
-			return Collections.EMPTY_LIST;
-		}
-	}
 }

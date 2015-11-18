@@ -5,6 +5,7 @@
          version="3.0">
 
 	<display-name>oncourse-portal</display-name>
+	<distributable/>
 
 	<context-param>
 		<param-name>tapestry.app-package</param-name>

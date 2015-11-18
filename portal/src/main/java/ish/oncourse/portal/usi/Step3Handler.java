@@ -7,8 +7,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import java.util.Map;
 
 import static ish.oncourse.model.auto._Contact.*;
-import static ish.oncourse.model.auto._Student.SPECIAL_NEEDS_PROPERTY;
-import static ish.oncourse.portal.usi.UsiController.Step.step3Done;
+import static ish.oncourse.model.auto._Student.SPECIAL_NEEDS;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -23,16 +22,16 @@ public class Step3Handler extends AbstractStepHandler {
             Contact contact = getUsiController().getContact();
             Student student = contact.getStudent();
 
-            addValue(Value.valueOf(IS_MALE_PROPERTY, contact.getIsMale(), true));
-            addValue(Value.valueOf(STREET_PROPERTY, contact.getStreet(), isRequiredField(STREET_PROPERTY)));
-            addValue(Value.valueOf(SUBURB_PROPERTY, contact.getSuburb(), isRequiredField(SUBURB_PROPERTY)));
-            addValue(Value.valueOf(POSTCODE_PROPERTY, contact.getPostcode(), isRequiredField(POSTCODE_PROPERTY)));
-            addValue(Value.valueOf(STATE_PROPERTY, contact.getState(), isRequiredField(STATE_PROPERTY)));
-            addValue(Value.valueOf(COUNTRY_PROPERTY, contact.getCountry() != null ? contact.getCountry().getName() : null, isRequiredField(COUNTRY_PROPERTY)));
-            addValue(Value.valueOf(MOBILE_PHONE_NUMBER_PROPERTY, contact.getMobilePhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
-            addValue(Value.valueOf(HOME_PHONE_NUMBER_PROPERTY, contact.getHomePhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
-            addValue(Value.valueOf(BUSINESS_PHONE_NUMBER_PROPERTY, contact.getBusinessPhoneNumber(), isRequiredField(COUNTRY_PROPERTY)));
-            addValue(Value.valueOf(SPECIAL_NEEDS_PROPERTY, student.getSpecialNeeds(), isRequiredField(SPECIAL_NEEDS_PROPERTY)));
+            addValue(Value.valueOf(IS_MALE.getName(), contact.getIsMale(), true));
+            addValue(Value.valueOf(STREET.getName(), contact.getStreet(), isRequiredField(STREET.getName())));
+            addValue(Value.valueOf(SUBURB.getName(), contact.getSuburb(), isRequiredField(SUBURB.getName())));
+            addValue(Value.valueOf(POSTCODE.getName(), contact.getPostcode(), isRequiredField(POSTCODE.getName())));
+            addValue(Value.valueOf(STATE.getName(), contact.getState(), isRequiredField(STATE.getName())));
+            addValue(Value.valueOf(COUNTRY.getName(), contact.getCountry() != null ? contact.getCountry().getName() : null, isRequiredField(COUNTRY.getName())));
+            addValue(Value.valueOf(MOBILE_PHONE_NUMBER.getName(), contact.getMobilePhoneNumber(), isRequiredField(COUNTRY.getName())));
+            addValue(Value.valueOf(HOME_PHONE_NUMBER.getName(), contact.getHomePhoneNumber(), isRequiredField(COUNTRY.getName())));
+            addValue(Value.valueOf(BUSINESS_PHONE_NUMBER.getName(), contact.getBusinessPhoneNumber(), isRequiredField(COUNTRY.getName())));
+            addValue(Value.valueOf(SPECIAL_NEEDS.getName(), student.getSpecialNeeds(), isRequiredField(SPECIAL_NEEDS.getName())));
         }
         return result;
     }
@@ -43,8 +42,8 @@ public class Step3Handler extends AbstractStepHandler {
     }
 
     @Override
-    public UsiController.Step getNextStep() {
-        return step3Done;
+    public Step getNextStep() {
+        return Step.step3Done;
     }
 
     public Step3Handler handle(Map<String, Value> input) {
@@ -52,16 +51,16 @@ public class Step3Handler extends AbstractStepHandler {
         Contact contact = getUsiController().getContact();
         Student student = contact.getStudent();
 
-        handleGenderValue(contact, IS_MALE_PROPERTY);
-        handleContactValue(contact, STREET_PROPERTY);
-        handleContactValue(contact, SUBURB_PROPERTY);
-        handleContactValue(contact, POSTCODE_PROPERTY);
-        handleContactValue(contact, STATE_PROPERTY);
-        handleCountryValue(contact, COUNTRY_PROPERTY);
-        handleContactValue(contact, MOBILE_PHONE_NUMBER_PROPERTY);
-        handleContactValue(contact, HOME_PHONE_NUMBER_PROPERTY);
-        handleContactValue(contact, BUSINESS_PHONE_NUMBER_PROPERTY);
-        handleContactValue(student, SPECIAL_NEEDS_PROPERTY);
+        handleGenderValue(contact, IS_MALE.getName());
+        handleContactValue(contact, STREET.getName());
+        handleContactValue(contact, SUBURB.getName());
+        handleContactValue(contact, POSTCODE.getName());
+        handleContactValue(contact, STATE.getName());
+        handleCountryValue(contact, COUNTRY.getName());
+        handleContactValue(contact, MOBILE_PHONE_NUMBER.getName());
+        handleContactValue(contact, HOME_PHONE_NUMBER.getName());
+        handleContactValue(contact, BUSINESS_PHONE_NUMBER.getName());
+        handleContactValue(student, SPECIAL_NEEDS.getName());
         return this;
     }
 

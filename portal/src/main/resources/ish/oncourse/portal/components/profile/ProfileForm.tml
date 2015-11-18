@@ -143,7 +143,7 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label for="customField" class="control-label">${customFieldName}<t:if test="customFieldRequared(customFieldName)"><em title="${message:required}">*</em></t:if></label>
+								<label for="customField" class="control-label">${customFieldName}<t:if test="customFieldRequired(customFieldName)"><em title="${message:required}">*</em></t:if></label>
 								<div class="${validateHandler.validateClass(customFieldName)}">
 									<t:textfield t:id="customField" value="currentCustomFieldValue" class="form-control ${validateHandler.errorClass(customFieldName)}" data-default="${defaultValue}"/>
 									<span t:type="HintComponent" validationMessage="${validateHandler.error(customFieldName)}"/>

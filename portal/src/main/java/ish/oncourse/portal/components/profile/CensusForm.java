@@ -7,10 +7,7 @@ import ish.oncourse.model.Country;
 import ish.oncourse.model.Language;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.usi.JSONUtils;
-import ish.oncourse.portal.usi.Result;
-import ish.oncourse.portal.usi.UsiController;
-import ish.oncourse.portal.usi.Value;
+import ish.oncourse.portal.usi.*;
 import ish.oncourse.selectutils.BooleanSelection;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -342,7 +339,7 @@ public class CensusForm {
             jsonResult.put("message", usiController.getMessages().format("message-usiVerificationFailed"));
         }
 
-        if (usiController.getStep() == UsiController.Step.wait)
+        if (usiController.getStep() == Step.wait)
         {
             jsonResult.put("message", usiController.getMessages().format("message-usiVerificationMessage"));
         }

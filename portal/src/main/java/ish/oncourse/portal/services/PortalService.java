@@ -6,14 +6,14 @@ import ish.common.types.OutcomeStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.pages.usi.Usi;
+import ish.oncourse.portal.usi.Step;
 import ish.oncourse.portal.usi.UsiController;
+import ish.oncourse.portal.usi.UsiControllerModel;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
@@ -21,17 +21,12 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.util.FormatUtils;
-import ish.util.SecurityUtil;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.*;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +34,6 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ApplicationStateManager;
@@ -49,7 +43,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static ish.oncourse.portal.services.PortalUtils.*;
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
 
 /**
  * User: artem
@@ -920,21 +913,15 @@ public class PortalService implements IPortalService {
     @Override
     public UsiController getUsiController() {
         org.apache.tapestry5.services.Session session = request.getSession(false);
-        UsiController usiController = (UsiController) session.getAttribute("portal.usiController");
-        if (usiController == null)
+
+        UsiControllerModel usiControllerModel = (UsiControllerModel) session.getAttribute("portal.usiControllerModel");
+        if (usiControllerModel == null)
         {
             ObjectContext context = cayenneService.newContext();
-            usiController = new UsiController();
-            usiController.setContact(context.localObject(getContact()));
-            usiController.setCountryService(countryService);
-            usiController.setLanguageService(languageService);
-            usiController.setPreferenceController(preferenceController);
-            usiController.setContactFieldHelper(new ContactFieldHelper(usiController.getPreferenceController(), enrolment));
-            usiController.setUsiVerificationService(usiVerificationService);
-            usiController.setMessages(MessagesImpl.forClass(Usi.class));
-            usiController.getValidationResult().setMessages(usiController.getMessages());
-            session.setAttribute("portal.usiController", usiController);
+            usiControllerModel = UsiControllerModel.valueOf(context.localObject(getContact()));
+            usiControllerModel.setStep(Step.step1);
+            session.setAttribute("portal.usiControllerModel", usiControllerModel);
         }
-        return usiController;
+        return UsiController.valueOf(usiControllerModel, countryService, languageService, preferenceController, usiVerificationService);
     }
 }
