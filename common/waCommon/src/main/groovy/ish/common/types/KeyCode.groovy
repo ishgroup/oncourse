@@ -9,17 +9,9 @@ import ish.oncourse.API;
 
 /**
  * Keycode values are used for access rights. Each value specified is attached to an entity or a specific part of user interface.
- * Each KeyCode can have some or all of the following rights:
- * <ul>
- *     <li>View</li>
- *     <li>Print</li>
- *     <li>Create</li>
- *     <li>Edit</li>
- *     <li>Delete</li>
- * </ul>
+ * Each KeyCode can have some or all of the following rights: View, Print, Create, Edit, Delete.
  * 
- * Some Keycodes have rights which cannot be disabled and other rights which can never be enabled. 
- * 
+ * Some Keycodes have rights which cannot be disabled and other rights which can never be enabled.
  */
 @API
 public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
@@ -517,7 +509,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
     SPECIAL_TRIAL_BALANCE(90, "Trial balance", Mask.ALL - Mask.VIEW),
 
 	/**
-	 * Ability to print certificates without a USI <b>verified</b> for that student
+	 * Ability to print certificates without a USI verified for that student
 	 *
 	 * Database value: 91
 	 */
@@ -525,7 +517,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	PRINT_CERTIFICATE_WITHOUT_VERIFIED_USI(91, "Print certificate without verified USI", Mask.ALL - Mask.VIEW),
 
 	/**
-	 * Ability to print certificates without a USI <b>entered</b> for that student
+	 * Ability to print certificates without a USI entered for that student
 	 *
 	 * Database value: 92
 	 */

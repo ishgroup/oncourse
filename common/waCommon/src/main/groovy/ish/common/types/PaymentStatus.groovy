@@ -100,7 +100,7 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * The complete list of statuses that may be returned from the WillowServices soap gateway.
 	 *
-	 * <b>Note:</b> The list is made up of both transient and final statuses.
+	 * Note: The list is made up of both transient and final statuses.
 	 * 
 	 */
 	public static final List<PaymentStatus> STATUSES_GATEWAY = Arrays.asList(PaymentStatus.CORRUPTED,
@@ -118,10 +118,10 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * {@link PaymentStatus#SUCCESS} or to one of the {@link PaymentStatus#FAILED} statuses, by a gateway processing thread, so as to ensure that over enrolment
 	 * should not occur.
 	 *
-	 * <b>IMPORTANT:</b> It should be considered unsafe to cancel an enrolment via the client gui if the status is transient unless you can guarantee that
+	 * IMPORTANT: It should be considered unsafe to cancel an enrolment via the client gui if the status is transient unless you can guarantee that
 	 * another thread is not already waiting a response from the gateway. That's a challenge that's hard to overcome in a three tier application.
 	 *
-	 * <b>Note:</b> The list is made up of both transient and final statuses.
+	 * Note: The list is made up of both transient and final statuses.
 	 * 
 	 */
 	@API
@@ -130,7 +130,7 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * The complete list of statuses that indicate non-success.
 	 *
-	 * <b>Note:</b> Each failed status is a final status so far as the runtime is concerned.
+	 * Note: Each failed status is a final status so far as the runtime is concerned.
 	 * 
 	 */
 	@API

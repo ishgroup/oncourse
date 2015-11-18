@@ -103,7 +103,7 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * The complete list of statuses that may be returned from the WillowServices soap gateway.
-	 * <b>Note:</b> The list is made up of both transient and final statuses.
+	 * Note: The list is made up of both transient and final statuses.
 	 * 
 	 */
 	@API
@@ -116,8 +116,8 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * The list of statuses indicating a legitimate enrolment. i.e., those that indicate an 'existing' enrolment for a student, or that otherwise counts towards the number of places already taken in a class.
 	 * The transient statuses, {@link PaymentStatus#IN_TRANSACTION}, {@link PaymentStatus#QUEUED} and {@link PaymentStatus#NEW}, are considered legitimate until either being set automatically to {@link PaymentStatus#SUCCESS} or to one of the {@link PaymentStatus#FAILED} statuses, by a gateway processing thread, so as to ensure that over enrolment should not occur.
-	 * <b>IMPORTANT:</b> It should be considered unsafe to cancel an enrolment via the client gui if the status is transient unless you can guarantee that another thread is not already waiting a response from the gateway. That's a challenge that's hard to overcome in a three tier application.
-	 * <b>Note:</b> The list is made up of both transient and final statuses.
+	 * IMPORTANT: It should be considered unsafe to cancel an enrolment via the client gui if the status is transient unless you can guarantee that another thread is not already waiting a response from the gateway. That's a challenge that's hard to overcome in a three tier application.
+	 * Note: The list is made up of both transient and final statuses.
 	 * 
 	 */
 	@API
@@ -128,7 +128,7 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * The complete list of statuses that indicate non-success.
-	 * <b>Note:</b> Each failed status is a final status so far as the runtime is concerned.
+	 * Note: Each failed status is a final status so far as the runtime is concerned.
 	 * 
 	 */
 	@API
@@ -146,7 +146,7 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * The complete list of statuses that are final or otherwise set in stone.
-	 * <b>Note:</b> Corrupted status should of course, require investigation, as it has occurred due to a duplicate or conflicting record being found. Each of the other statuses is the result of a known and expected path of logic discounting bugs.
+	 * Note: Corrupted status should of course, require investigation, as it has occurred due to a duplicate or conflicting record being found. Each of the other statuses is the result of a known and expected path of logic discounting bugs.
 	 * 
 	 */
 	@API
