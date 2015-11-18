@@ -173,6 +173,7 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * @param status to be verified
 	 * @return true if the param belongs to statuses_final
 	 */
+	@API
 	public static boolean isFinalState(PaymentStatus status) {
 		return STATUSES_FINAL.contains(status);
 	}
