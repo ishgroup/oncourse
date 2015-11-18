@@ -95,7 +95,6 @@ allprojects {
         deployerJars 'org.apache.maven.wagon:wagon-http:2.8'
 	}
 
-	uploadArchives.dependsOn install
 	group = 'ish.oncourse.willow'
 	uploadArchives {
 		repositories.mavenDeployer {
