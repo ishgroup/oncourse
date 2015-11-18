@@ -10,6 +10,7 @@ $j(document).ready(function () {
     $j("input[id^='customField']").each(function () {
         if ($j(this).data('default')) {
             var values = $j(this).data('default').split(';');
+            values = values.map(function(x){ return "*" == x ? "Other" : x });
             if (values.length > 0) {
                 $j(this).autocomplete({
                     source: values,
