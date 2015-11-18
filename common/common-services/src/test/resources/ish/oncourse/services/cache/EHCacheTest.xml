@@ -1,0 +1,4 @@
+<dataset>
+    <College id="1" name="College 1"  webServicesSecurityCode="345ttn446191" communication_key="1" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+    <WebSite id="0" collegeId="1" name="WebSite 0" siteKey="site0" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+</dataset>

@@ -1,6 +1,5 @@
 package ish.oncourse.services.persistence;
 
-import net.sf.ehcache.pool.sizeof.annotations.IgnoreSizeOf;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
@@ -17,7 +16,6 @@ import java.util.Deque;
  * 
  * @author marek
  */
-@IgnoreSizeOf
 public class ISHObjectContext extends DataContext {
 	private static final long serialVersionUID = -4572980938171252406L;
 

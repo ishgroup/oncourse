@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- see description in web/src/resources/ehcache.xml-->
 <ehcache
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-        updateCheck="false" name="web">
-    <defaultCache
-            maxElementsInMemory="500"
-            eternal="false"
-            timeToLiveSeconds="600"
-            overflowToDisk="false">
-    </defaultCache>
+        updateCheck="false" name="test" maxBytesLocalHeap="40M">
+    <defaultCache timeToLiveSeconds="1"/>
 </ehcache>

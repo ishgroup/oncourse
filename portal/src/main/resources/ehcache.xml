@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- see description in web/src/resources/ehcache.xml-->
 <ehcache
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-        updateCheck="false" name="portal" maxBytesLocalHeap="500M">
-    <defaultCache timeToLiveSeconds="600"/>
-    <cache name="CourseClass" timeToLiveSeconds="60"/>
+        updateCheck="false" name="portal" maxBytesLocalHeap="40M">
+    <defaultCache timeToLiveSeconds="1"/>
+    <cache name="CourseClass" timeToLiveSeconds="1"/>
 </ehcache>
