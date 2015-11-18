@@ -18,9 +18,9 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 	public static final String ECOMMERCE_KEY = "ecommerce";
 	public static final String ECOMMERCE_FREE_KEY = "ecommerce-free";
 	public static final String WEB_VALUE_KEY = "ccWebValue";
-	public static final String ECOMMERCE_DESCRIPTION_TEMPLATE = "{0} eCommerce fee at {1}% of {2} ({3} less pre-paid bundle) ";
+	public static final String FULL_ECOMMERCE_DESCRIPTION_TEMPLATE = "{0} eCommerce fee at {1}% of {2} ({3} less pre-paid bundle) ";
 
-	private static final String TASMANIA_ECOMMERCE_DESCRIPTION_TEMPLATE = "{0} eCommerce fee at {1}% of {2}";
+	private static final String SIMPLE_ECOMMERCE_DESCRIPTION_TEMPLATE = "{0} eCommerce fee at {1}% of {2}";
 	private static final String TASMANIA_ECOMMERCE_MIN_FEE_DESC = "Adjustment for onCourse eCommerce minimum monthly fee of $375.";
 	private static final Long ECOMMERCE_QUANTITY = 1L;
 	private static final Long TASMANIA_COLLEGE_ID = 15L;
@@ -97,7 +97,7 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 	
 	private String getTasmaniaEcommerceKeyDescription(Double key, Map<Double, Double> tasmaniaEcommerceFees) {
 		return MessageFormat.format(
-				TASMANIA_ECOMMERCE_DESCRIPTION_TEMPLATE,
+				SIMPLE_ECOMMERCE_DESCRIPTION_TEMPLATE,
 				webSite.getName(),
 				decimalFormatter.format(key),
 				moneyFormat.format(tasmaniaEcommerceFees.get(key)));
@@ -125,7 +125,7 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 	@Override
 	protected String buildDetailedDescription() {
 		return MessageFormat.format(
-				ECOMMERCE_DESCRIPTION_TEMPLATE,
+				getEcommerceFree().compareTo(new BigDecimal(0)) > 0 ? FULL_ECOMMERCE_DESCRIPTION_TEMPLATE : SIMPLE_ECOMMERCE_DESCRIPTION_TEMPLATE,
 				webSite.getName(),
 				decimalFormatter.format(getEcommerce().doubleValue() * 100),
 				moneyFormat.format(getWebValue()),
