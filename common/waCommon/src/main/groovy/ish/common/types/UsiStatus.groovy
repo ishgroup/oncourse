@@ -14,16 +14,22 @@ import ish.oncourse.API;
 public enum UsiStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+     * Database value: 0
+     * The USI has not been entered at all.
 	 */
 	@API
 	DEFAULT_NOT_SUPPLIED(0, "Not supplied"),
 
 	/**
+     * Database value: 1
+     * A verification was attempted, but it failed.
 	 */
 	@API
 	NON_VERIFIED(1, "Not verified"),
 
 	/**
+     * Database value: 2
+     * A verification was made and succeeded.
 	 */
 	@API
 	VERIFIED(2, "Verified");

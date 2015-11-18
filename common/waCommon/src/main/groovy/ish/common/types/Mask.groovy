@@ -7,7 +7,8 @@ package ish.common.types;
 import ish.oncourse.API;
 
 /**
- * For each access key, a role may be given certain access levels.
+ * For each access key, a role may be given certain access levels. This class is not an enum because
+ * the values here can be added up to give layers of access. For example, VIEW (1) + EDIT (5) = 6.
  * 
  */
 @API

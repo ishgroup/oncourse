@@ -2,14 +2,9 @@
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.common.types;
-
-import ish.common.util.DisplayableExtendedEnumeration;
-import ish.oncourse.API;
-
-import java.util.Arrays;
-import java.util.List;
-
+package ish.common.types
+import ish.common.util.DisplayableExtendedEnumeration
+import ish.oncourse.API
 /**
  * Enrolments pass through various states as the enrolment process is completed. These statuses are particularly important for communication with the onCourse website and the progression of the enrolment through checks for number of places remaining and having the payment processed.
  * 
@@ -46,7 +41,8 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	QUEUED(1, "Awaiting confirmation"),
 
 	/**
-	 * Indicates current processing of a payment. E.g., the user has agreed to pay and all details are valid. However, all payments with STATUS_QUEUED will move again to a state of STATUS_IN_TRANSACTION prior to attempting subsequent processing. It has this definite meaning: We are about to process the payment by contacting the payment gateway. Used by willow
+	 * Indicates current processing of a payment. E.g., the user has agreed to pay and all details are valid. However, all payments with STATUS_QUEUED will move again to a state of STATUS_IN_TRANSACTION prior to attempting subsequent processing.
+     * Enrolments in this state will be automatically picked up by server-sides processing threads and moved to a final state.
 	 * 
 	 * Database value: 2
 	 */
@@ -70,7 +66,7 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	FAILED(4, "Failed"),
 	
 	/**
-	 * Indicates a failed response given by the credit card gateway. Used by angel and willow
+	 * Indicates a failed response given by the credit card gateway.
 	 * 
 	 * Database value: 6
 	 */
@@ -86,7 +82,7 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	FAILED_NO_PLACES(7, "Failed - no places"),
 	
 	/**
-	 * Indicates that an enrolment that was previously successful has been cancelled due to the student pulling out.
+	 * Indicates that an enrolment that was previously successful has been cancelled.
 	 * 
 	 * Database value: 8
 	 */
@@ -94,7 +90,7 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	CANCELLED(8, "Cancelled"),
 	
 	/**
-	 * Indicates an equivalent status to that of {@link #CANCELLED} but that a credit note was also created for the student in the system.
+	 * Indicates an equivalent status to that of cancelled but that a credit note was also created for the student in the system.
 	 * 
 	 * Database value: 9
 	 */

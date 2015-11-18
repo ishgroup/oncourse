@@ -2,14 +2,9 @@
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.common.types;
-
-import ish.common.util.DisplayableExtendedEnumeration;
-import ish.oncourse.API;
-
-import java.util.Arrays;
-import java.util.List;
-
+package ish.common.types
+import ish.common.util.DisplayableExtendedEnumeration
+import ish.oncourse.API
 /**
  * Payments pass through a number of statuses as the enrolment or sale is completed and the credit card is processed.
  * Once a final state is reached, the status may not be changed again.
@@ -17,47 +12,39 @@ import java.util.List;
  */
 @API
 public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
-	
-	// payment and invoice statuses
+    
 	/**
-	 * Indicates an state of conflict with data integrity rules (e.g., between the website and onCourse). i.e., something that should never happen and needs
-	 * resolution.
+	 * Indicates an state of conflict with data integrity rules (e.g., between the website and onCourse). 
+     * i.e., something that should never happen and needs resolution.
+     * 
+     * Database value: -99
 	 * 
 	 */
 	CORRUPTED(-99, ""),
 
 	/**
-	 * Previous comment said 'when the ish payment gateway is not used' which sounds a little confusing as to why it's called 'new'. Either way, that's blurring
-	 * the concepts with what 'type' is used to determine.
-	 *
-	 * Suggested comment: 'Indicates an as yet unconfirmed payment or enrolment.'
-	 *
-	 * Suggested logic: On server startup, any payments or enrolments left in this state (due to a crash of some kind) can be set to {@link #QUEUED} so as to
-	 * ensure that willow can be contacted again, if we crashed before the response, to obtain the result, or to contact willow for the first time if it never
-	 * got that far before a crash. This would seem to remove the need for a null status which is not one of the official statuses.
-	 *
-	 * Otherwise perhaps it'd make sense to for new payments/enrolments to always be committed from the client with a status of new thus allowing the
-	 * server-side post-persist to update the status to success according to the logic of whether willow returned success, or willow is not involved, or if the
-	 * gateway is disabled. Something to think about. Used by angel and willow
+	 * NEW payments are rarely seen in the wild and exist for a short time before the gateway is contacted to process
+     * the transaction.
 	 * 
+     * Database value: 0
 	 */
 	@API
 	NEW(0, "Not processed"), // FIXME: it would appear that the usage of this
 								// status is not consistent with its meaning.
 
 	/**
-	 * Indicates a payment or enrolment that was unable to retrieve a result on first attempt (i.e., on post-persist from quick enrol) and is as
-	 * such queued for later processing by a server-side thread.
+	 * Indicates a payment or enrolment that was unable to retrieve a result on first attempt and is
+	 * queued for later processing by a server-side thread.
 	 * 
+     * Database value: 1
 	 */
 	@API
 	QUEUED(1, "Queued"),
 
 	/**
-	 * Indicates current processing of a payment. E.g., the user has agreed to pay and all details are valid. However, all payments with STATUS_QUEUED will move
-	 * again to a state of STATUS_IN_TRANSACTION prior to attempting subsequent processing. It has this definite meaning: We are about to process the payment by
-	 * contacting the payment gateway.
+	 * This payment is currently being processed against the gateway and should not be touched by any other thread.
 	 * 
+     * Database value: 2
 	 */
 	@API
 	IN_TRANSACTION(2, "In transaction"),
@@ -65,6 +52,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Indicates successful and confirmed completion of a payment or enrolment.
 	 * 
+     * FINAL STATUS
+     * Database value: 3
 	 */
 	@API
 	SUCCESS(3, "Success"),
@@ -72,6 +61,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Indicates a failed response due to an error.
 	 * 
+     * FINAL STATUS
+     * Database value: 4
 	 */
 	@API
 	FAILED(4, "Failed"),
@@ -79,6 +70,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Indicates a failed response given by the credit card gateway.
 	 * 
+     * FINAL STATUS
+     * Database value: 6
 	 */
 	@API
 	FAILED_CARD_DECLINED(6, "Card declined"),
@@ -86,6 +79,8 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Indicates that the enrolment and payment could not be accepted because there were no enrolment places left.
 	 * 
+     * FINAL STATUS
+     * Database value: 7
 	 */
 	@API
 	FAILED_NO_PLACES(7, "Rejected - no places available"),
@@ -93,6 +88,7 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 * Indicates that payment was saved in onCourse Web, but user needs to provide credit card details.
 	 * 
+     * Database value: 10
 	 */
 	@API
 	CARD_DETAILS_REQUIRED(10, "Credit card details required");
@@ -111,15 +107,16 @@ public enum PaymentStatus implements DisplayableExtendedEnumeration<Integer> {
             PaymentStatus.FAILED_NO_PLACES);
 
 	/**
-	 * The list of statuses indicating a legitimate enrolment. i.e., those that indicate an 'existing' enrolment for a student, or that otherwise counts towards
-	 * the number of places already taken in a class.
+	 * The list of statuses indicating a legitimate enrolment. i.e., those that indicate an 'existing' enrolment 
+     * for a student, or that otherwise counts towards the number of places already taken in a class.
 	 *
 	 * The transient statuses, {@link PaymentStatus#QUEUED} and {@link PaymentStatus#NEW}, are considered legitimate until either being set automatically to
-	 * {@link PaymentStatus#SUCCESS} or to one of the {@link PaymentStatus#FAILED} statuses, by a gateway processing thread, so as to ensure that over enrolment
-	 * should not occur.
+	 * {@link PaymentStatus#SUCCESS} or to one of the failed statuses, by a gateway processing thread, 
+     * so as to ensure that over enrolment should not occur.
 	 *
-	 * IMPORTANT: It should be considered unsafe to cancel an enrolment via the client gui if the status is transient unless you can guarantee that
-	 * another thread is not already waiting a response from the gateway. That's a challenge that's hard to overcome in a three tier application.
+	 * IMPORTANT: It should be considered unsafe to cancel an enrolment via the client gui if the status is transient 
+     * unless you can guarantee that another thread is not already waiting a response from the gateway. 
+     * That's a challenge that's hard to overcome in a three tier application.
 	 *
 	 * Note: The list is made up of both transient and final statuses.
 	 * 

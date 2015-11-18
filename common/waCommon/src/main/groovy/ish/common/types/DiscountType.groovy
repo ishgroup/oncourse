@@ -8,16 +8,15 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
- * Available discount types
- * 
+ * Every discount can be one of three different types.
  */
 @API
 public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * Discount amount will be calculated based on the percent of the original price without tax. The value will be rounded according to the discount round property.
+	 * Discount amount will be calculated based on the percent of the original price. 
+     * The value will be rounded according to the discount round property.
 	 * Discount min and max value can be also applied when the discount has defined them.
-	 * Tax value will be calculated after the discounted price is calculated.
 	 * 
 	 * Database value: 1
 	 */
@@ -25,7 +24,8 @@ public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 	PERCENT(1, "Percent"),
 	
 	/**
-	 * Discount amount will be a set dollar value. This value applies to the original price without tax.
+	 * Discount amount will be a set dollar value off the full price.
+     * This value applies to the original price before tax.
 	 * Tax value will be calculated after the discounted price is calculated.
 	 * 
 	 * Database value: 2
@@ -34,7 +34,7 @@ public enum DiscountType implements DisplayableExtendedEnumeration<Integer> {
 	DOLLAR(2, "Dollar"),
 	
 	/**
-	 * Discounts of this type override the original price ex tax of the class.
+	 * Discounts of this type override the original price (before tax) of the class.
 	 * Tax, if applicable, will be added to the defined dollar value.
 	 * 
 	 * Database value: 3

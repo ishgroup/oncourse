@@ -40,7 +40,7 @@ public enum ClassCostRepetitionType implements DisplayableExtendedEnumeration<In
 	PER_ENROLMENT(3, "Per enrolment", "enrolments", "enrolment"),
  
 	/**
-	 * This is just like the fixed amount but with a multiplier again an arbitrary number of units.
+	 * This is just like the fixed amount but with a multiplier against an arbitrary number of units.
 	 * Database value: 4
 	 * 
 	 */
