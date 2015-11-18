@@ -1,6 +1,6 @@
 repositories {
     maven {
-        url 'http://repo.ish.com.au/content/groups/public'
+        url 'https://repo.ish.com.au/content/groups/public'
     }
 }
 

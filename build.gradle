@@ -4,10 +4,10 @@ buildscript {
 	}
 	repositories {
 		maven {
-			url 'http://repo.ish.com.au/content/groups/public'
+			url 'https://repo.ish.com.au/content/groups/public'
 		}
 		maven {
-			url 'http://repo.ish.com.au/content/groups/ish'
+			url 'https://repo.ish.com.au/content/groups/ish'
 		}
 	}
 
@@ -41,10 +41,10 @@ allprojects {
 
 	repositories {
 		maven {
-			url 'http://repo.ish.com.au/content/groups/public'
+			url 'https://repo.ish.com.au/content/groups/public'
 		}
 		maven {
-			url 'http://repo.ish.com.au/content/groups/ish'
+			url 'https://repo.ish.com.au/content/groups/ish'
 		}
 	}
 
@@ -62,7 +62,7 @@ allprojects {
 		repositories {
 			maven {
 				name "executables"
-				url "http://repo.ish.com.au/content/repositories/ish-exe"
+				url "https://repo.ish.com.au/content/repositories/ish-exe"
 				credentials {
 					username nexusUsername
 					password nexusPassword
@@ -70,7 +70,7 @@ allprojects {
 			}
 			maven {
 				name "snapshots"
-				url "http://repo.ish.com.au/content/repositories/ish-snapshots"
+				url "https://repo.ish.com.au/content/repositories/ish-snapshots"
 				credentials {
 					username nexusUsername
 					password nexusPassword
