@@ -7,9 +7,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ExceptionReporter;
+import org.apache.tapestry5.services.Response;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 public class Error500 extends ISHCommon implements ExceptionReporter {
@@ -34,6 +37,14 @@ public class Error500 extends ISHCommon implements ExceptionReporter {
 	@Inject
 	private IEnvironmentService environmentService;
 
+	@Inject
+	private Response response;
+
+
+	@SetupRender
+	public void setupRender() {
+		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	}
 
 	public void reportException(Throwable exception) {
 		this.exception = exception;
