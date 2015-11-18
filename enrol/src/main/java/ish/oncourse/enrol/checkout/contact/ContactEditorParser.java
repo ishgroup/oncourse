@@ -207,13 +207,13 @@ public class ContactEditorParser {
             case postcode:
                 return defaultCountry ? contact.validatePostcode() : validateLength(contact.getPostcode(), 20);
             case homePhoneNumber:
-                return defaultCountry ? contact.validateHomePhone() : validateLength(contact.getPostcode(), 20);
+                return defaultCountry ? contact.validateHomePhone() : validateLength(contact.getHomePhoneNumber(), 20);
             case businessPhoneNumber:
-                return defaultCountry ? contact.validateBusinessPhone() : validateLength(contact.getPostcode(), 20);
+                return defaultCountry ? contact.validateBusinessPhone() : validateLength(contact.getBusinessPhoneNumber(), 20);
             case faxNumber:
-                return defaultCountry ? contact.validateFax() : validateLength(contact.getPostcode(), 20);
+                return defaultCountry ? contact.validateFax() : validateLength(contact.getFaxNumber(), 20);
             case mobilePhoneNumber:
-                return defaultCountry ? contact.validateMobilePhone() : validateLength(contact.getPostcode(), 20);
+                return defaultCountry ? contact.validateMobilePhone() : validateLength(contact.getMobilePhoneNumber(), 20);
             case dateOfBirth:
                 String error = contact.validateBirthDate();
                 if (error == null) {
@@ -249,6 +249,6 @@ public class ContactEditorParser {
 
     private String validateLength(String value, int length) {
         value = StringUtils.trimToEmpty(value);
-        return value.length() > length ? String.format("Max length of the field is %s chars.", value) : null;
+        return value.length() > length ? String.format("Max length of the field is %d chars.", length) : null;
     }
 }
