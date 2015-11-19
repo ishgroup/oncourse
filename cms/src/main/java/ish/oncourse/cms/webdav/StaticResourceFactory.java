@@ -15,10 +15,10 @@ import io.milton.resource.CollectionResource;
 import io.milton.resource.Resource;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.cms.webdav.jscompiler.JSCompiler;
-import ish.oncourse.cms.webdav.scss.SCSSCompiler;
 import ish.oncourse.services.mail.EmailBuilder;
 import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.util.StaticResourcePath;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -28,11 +28,11 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 public class StaticResourceFactory implements ResourceFactory {
@@ -41,14 +41,6 @@ public class StaticResourceFactory implements ResourceFactory {
 
     private String defaultJsStackPath;
     private String defaultScssPath;
-
-    private static final String[] readOnlyFolders = new String[]
-            {
-                    "/s/stylesheets/",
-                    "/s/stylesheets/css/",
-                    "/s/stylesheets/src/",
-                    "/s/js/",
-            };
 
     private static final String SCSS_FILE_PATTERN = "^%s/stylesheets/src/(.*)\\.scss$";
     private static final String JS_FILE_PATTERN = "^%s/js/(.*)\\.js$";
@@ -297,10 +289,7 @@ public class StaticResourceFactory implements ResourceFactory {
         public boolean authorise(Request request, Request.Method method, Auth auth) {
             if (fsResourceFactory.getRoot().equals(getFile())) {
                 return super.authorise(request,method,auth) && ArrayUtils.contains(TopLevelDir.s.getAllowedMethods(), method);
-            }
-            else if (ArrayUtils.contains(readOnlyFolders,
-                    request.getAbsolutePath().replace(RootResourceFactory.WEBDAV_PATH_PREFIX, org.apache.commons.lang3.StringUtils.EMPTY)))
-            {
+            } else if (StaticResourcePath.getStaticResourcePathBy(request.getAbsolutePath().replace(RootResourceFactory.WEBDAV_PATH_PREFIX, org.apache.commons.lang3.StringUtils.EMPTY)) != null) {
                 return super.authorise(request,method,auth) && ArrayUtils.contains(AccessRights.DIR_READ_ONLY_AND_ADD_CHILD, method);
             } else {
                 return super.authorise(request, method, auth);

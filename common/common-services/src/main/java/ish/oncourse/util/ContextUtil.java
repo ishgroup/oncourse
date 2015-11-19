@@ -89,7 +89,7 @@ public class ContextUtil {
     		
     		return cacheCapacity;
     	} catch (Exception e) {
-    		logger.warn("oscache.cache.capacity option is not configured in context.xml, using default from oscache.properties configuration file.");
+    		logger.warn("cache.capacity option is not configured in context.xml, using default from ehcache.xml configuration file.");
     		return null;
     	}
     }
