@@ -7,4 +7,5 @@
 	
 	<Environment name="cache.enabled" override="false" type="java.lang.Boolean" value="false"/>
 	<Environment name="query.cache.enabled" override="false" type="java.lang.Boolean" value="false"/>
+	<Environment name="s.root" override="false" type="java.lang.String" value="/var/onCourse/s-draft"/>
 </Context>

@@ -1,5 +1,6 @@
 package ish.oncourse.admin.pages.college;
 
+import ish.oncourse.admin.services.CreateSiteFileStructure;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.selectutils.StringSelectModel;
@@ -8,6 +9,8 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSitePublisher;
 import ish.oncourse.services.system.ICollegeService;
+import ish.oncourse.util.ContextUtil;
+import ish.oncourse.util.ValidateHandler;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
@@ -20,6 +23,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -123,6 +127,12 @@ public class Web {
 
     @Inject
     private IWebSiteVersionService webSiteVersionService;
+
+    @Property
+    private ValidateHandler validateHandler = new ValidateHandler();
+
+    @Property
+    private String error;
 	
 	void onActivate(Long id) {
 		this.college = collegeService.findById(id);
@@ -265,10 +275,21 @@ public class Web {
 		urlAlias.setWebNode(node);
         urlAlias.setDefault(true);
 
-		context.commitChanges();
+        String sRootPath = ContextUtil.getSRoot();
 
-        WebSitePublisher publisher = WebSitePublisher.valueOf(stagedVersion, context);
-        publisher.publish();
+        boolean result = CreateSiteFileStructure.valueOf(site, new File(sRootPath)).create();
+
+        if (result) {
+            context.commitChanges();
+
+            WebSitePublisher publisher = WebSitePublisher.valueOf(stagedVersion, context);
+            publisher.publish();
+        } else {
+            HashMap<String,String> errors = new HashMap<>();
+            errors.put("addSite",
+                    String.format("Cannot add site with key %s. The file structure can not be created. See log messages.", site.getSiteKey()));
+            validateHandler.setErrors(errors);
+        }
 	}
 	
 	@OnEvent(component="cmsUsersForm", value="success")
@@ -356,7 +377,7 @@ public class Web {
 
 		WillowUser user = ObjectSelect.query(WillowUser.class).
 				where(WillowUser.EMAIL.eq(email).
-						andExp(WillowUser.COLLEGE.eq(college))).
+                        andExp(WillowUser.COLLEGE.eq(college))).
 				selectOne(context);
 
 		context.deleteObjects(user);
