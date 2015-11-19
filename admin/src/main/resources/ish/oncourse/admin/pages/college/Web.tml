@@ -86,8 +86,22 @@
                             <td>
                                 <div class="input-append">
                                     <t:textfield t:id="coursesRootTagName" value="currentWebSite.coursesRootTagName"/>
-                                    <t:actionlink t:id="deleteSite" class="btn" context="currentWebSite.siteKey"><i class="icon-trash"></i></t:actionlink>
+									<a href="#deleteSite_${currentWebSite.siteKey}" role="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteSite_${currentWebSite.siteKey}"><i class="icon-trash"></i></a>
                                 </div>
+								
+								<div id="deleteSite_${currentWebSite.siteKey}" class="modal hide fade" role="dialog" aria-labelledby="disableLabel" aria-hidden="true">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+										<h3 id="disableLabel">Delete web site</h3>
+									</div>
+									<div class="modal-body">
+										<p>This is pretty catastrophic... Are you sure you want to proceed?</p>
+									</div>
+									<div class="modal-footer">
+										<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+										<t:actionlink t:id="deleteSite" context="currentWebSite.siteKey" class="btn btn-primary btn-danger">Delete web site</t:actionlink>
+									</div>
+								</div>
                             </td>
 						</tr>
 					</t:loop>

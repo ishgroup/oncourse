@@ -7,11 +7,13 @@ import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import ish.oncourse.services.site.WebSiteDelete;
 import ish.oncourse.services.site.WebSitePublisher;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.util.ContextUtil;
 import ish.oncourse.util.ValidateHandler;
 import ish.util.SecurityUtil;
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -326,45 +328,8 @@ public class Web {
 				selectOne(context);
 		
 		try {
-
-			for (WebSiteVersion version : site.getVersions()) {
-
-				List<WebNode> nodes = new ArrayList<>(version.getWebNodes());
-				List<WebNodeType> nodeTypes = new ArrayList<>(version.getWebNodeTypes());
-				List<WebMenu> menus = new ArrayList<>(version.getMenus());
-
-				if (nodes.size() > 1 && menus.size() > 1) {
-					siteDeleteFailed = true;
-					return null;
-				}
-
-				if (nodes.size() == 1 && !"Home page".equals(nodes.get(0).getName())) {
-					siteDeleteFailed = true;
-					return null;
-				}
-
-				if (menus.size() == 1 && !"Home".equals(menus.get(0).getName())) {
-					siteDeleteFailed = true;
-					return null;
-				}
-
-				for (WebNode node : nodes) {
-					context.deleteObjects(node);
-				}
-
-				for (WebNodeType nodeType : nodeTypes) {
-					context.deleteObjects(nodeType);
-				}
-
-				for (WebMenu menu : menus) {
-					context.deleteObjects(menu);
-				}
-				context.deleteObjects(version);
-			}
-			context.deleteObjects(site);
-			
-			context.commitChanges();
-		} catch (DeleteDenyException e) {
+			WebSiteDelete.valueOf(site, context).delete();
+		} catch (CayenneRuntimeException e) {
 			this.siteDeleteFailed = true;
 			return null;
 		}
