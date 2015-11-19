@@ -16,7 +16,7 @@ public class HostingExportLineBuilder extends PlanExportLineBuilder {
 	public static final String HOSTING_PAID_UNTIL_KEY = "hosting-paidUntil";
 	public static final String HOSTING_RENEWAL_DATE_KEY = "hosting-renewalDate";
 
-	public static final String HOSTING_PLAN_DESCRIPTION_TEMPLATE = "{0} web plan for {1} : 1 month (contract until {2})";
+	public static final String HOSTING_PLAN_DESCRIPTION_TEMPLATE = "{0} web plan for {1}: 1 month (contract until {2})";
 	
 	public HostingExportLineBuilder(
 			College college,
