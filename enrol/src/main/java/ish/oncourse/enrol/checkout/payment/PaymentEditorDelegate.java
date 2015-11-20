@@ -1,7 +1,6 @@
 package ish.oncourse.enrol.checkout.payment;
 
 import ish.math.Money;
-import ish.oncourse.analytics.Transaction;
 import ish.oncourse.model.*;
 
 import java.util.List;
@@ -44,9 +43,6 @@ public interface PaymentEditorDelegate {
 	boolean isZeroPayment();
 
 	List<Application> getApplications();
-
-	Transaction getAnalyticsTransaction();
-
 
     void updatePaymentStatus();
 

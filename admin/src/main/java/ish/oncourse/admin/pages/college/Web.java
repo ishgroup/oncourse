@@ -69,9 +69,6 @@ public class Web {
 	private String newSiteGoogleTagmanagerValue;
 
 	@Property
-	private String newSiteGoogleAnalyticsValue;
-
-	@Property
 	private String newSiteCoursesRootTagName;
 
 	@Property
@@ -212,7 +209,6 @@ public class Web {
 				WebSite webSite = context.localObject(sites.get(key));
 				
 				if (webSite != null) {
-					webSite.setGoogleAnalyticsAccount(sites.get(key).getGoogleAnalyticsAccount());
 					webSite.setGoogleTagmanagerAccount(sites.get(key).getGoogleTagmanagerAccount());
 					webSite.setCoursesRootTagName(sites.get(key).getCoursesRootTagName());
 				}
@@ -233,7 +229,6 @@ public class Web {
 		site.setCollege(college);
 		site.setName(newSiteNameValue);
 		site.setSiteKey(newSiteKeyValue);
-		site.setGoogleAnalyticsAccount(newSiteGoogleAnalyticsValue);
 		site.setGoogleTagmanagerAccount(newSiteGoogleTagmanagerValue);
 		site.setCoursesRootTagName(newSiteCoursesRootTagName);
 		site.setCreated(now);

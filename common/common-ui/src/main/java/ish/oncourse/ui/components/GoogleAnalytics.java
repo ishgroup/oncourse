@@ -10,17 +10,17 @@ import org.apache.tapestry5.ioc.annotations.Inject;
  *
  * @author marek
  */
+@Deprecated
 public class GoogleAnalytics extends ISHCommon {
 
 	@Inject
 	private IWebSiteService siteService;
 
 	public String getAnalyticsAccount() {
-		String analyticsAccount = siteService.getCurrentWebSite().getGoogleAnalyticsAccount();
-		return (StringUtils.trimToNull(analyticsAccount) == null) ? StringUtils.EMPTY : analyticsAccount.trim();
+		return null;
 	}
 
 	public boolean isAccountValid() {
-		return StringUtils.trimToNull(getAnalyticsAccount()) != null;
+		return false;
 	}
 }

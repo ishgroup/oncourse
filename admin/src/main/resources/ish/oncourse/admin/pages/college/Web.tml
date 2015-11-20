@@ -62,7 +62,6 @@
 				<tr>
 					<th>Site Name</th>
 					<th>Site Key</th>
-					<th>Google Analytics</th>
 					<th>Google TagManager</th>
                     <th>Courses root tag name</th>
 				</tr>
@@ -73,11 +72,6 @@
 						<tr>
 							<td>${currentWebSite.name}</td>
 							<td>${currentWebSite.siteKey}</td>
-							<td>
-								<div class="input-append">
-									<t:textfield t:id="googleAnalyticsAccount" value="currentWebSite.googleAnalyticsAccount"/>
-								</div>
-							</td>
 							<td>
 								<div class="input-append">
 									<t:textfield t:id="googleTagmanagerAccount" value="currentWebSite.googleTagmanagerAccount"/>
@@ -113,11 +107,6 @@
 				<tr>
 					<td><t:textfield t:id="newSiteName" t:validate="required" value="newSiteNameValue"/></td>
 					<td><t:textfield t:id="newSiteKey" t:validate="required" value="newSiteKeyValue"/></td>
-					<td>
-						<div class="input-append">
-							<t:textfield t:id="newSiteGoogeAnalytics" value="newSiteGoogleAnalyticsValue"/>
-						</div>
-					</td>
 					<td>
 						<div class="input-append">
 							<t:textfield t:id="newSiteGoogleTagmanager" value="newSiteGoogleTagmanagerValue"/>

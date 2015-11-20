@@ -27,8 +27,6 @@ public abstract class _WebSite extends CayenneDataObject {
     @Deprecated
     public static final String CREATED_PROPERTY = "created";
     @Deprecated
-    public static final String GOOGLE_ANALYTICS_ACCOUNT_PROPERTY = "googleAnalyticsAccount";
-    @Deprecated
     public static final String GOOGLE_DIRECTIONS_FROM_PROPERTY = "googleDirectionsFrom";
     @Deprecated
     public static final String GOOGLE_TAGMANAGER_ACCOUNT_PROPERTY = "googleTagmanagerAccount";
@@ -53,7 +51,6 @@ public abstract class _WebSite extends CayenneDataObject {
 
     public static final Property<String> COURSES_ROOT_TAG_NAME = new Property<String>("coursesRootTagName");
     public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> GOOGLE_ANALYTICS_ACCOUNT = new Property<String>("googleAnalyticsAccount");
     public static final Property<String> GOOGLE_DIRECTIONS_FROM = new Property<String>("googleDirectionsFrom");
     public static final Property<String> GOOGLE_TAGMANAGER_ACCOUNT = new Property<String>("googleTagmanagerAccount");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
@@ -77,13 +74,6 @@ public abstract class _WebSite extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
-    }
-
-    public void setGoogleAnalyticsAccount(String googleAnalyticsAccount) {
-        writeProperty("googleAnalyticsAccount", googleAnalyticsAccount);
-    }
-    public String getGoogleAnalyticsAccount() {
-        return (String)readProperty("googleAnalyticsAccount");
     }
 
     public void setGoogleDirectionsFrom(String googleDirectionsFrom) {

@@ -53,10 +53,6 @@
 			<a href="${successUrl}">${message:continue.button.text}</a>
 		</div>
 
-		<t:if test="delegate.isCorporatePass()" negate="true">
-			<t:AnalyticsTransaction transaction="delegate.analyticsTransaction"/>
-		</t:if>
-
         <script type="text/javascript">
             refreshShortList();
         </script>
@@ -105,10 +101,6 @@
 			<a href="${successUrl}">${message:continue.button.text}</a>
 		</div>
 
-		<t:if test="delegate.emptyInvoice" negate="true">
-			<t:AnalyticsTransaction transaction="delegate.analyticsTransaction"/>
-		</t:if>
-		
 		<script type="text/javascript">
 			refreshShortList();
 		</script>
