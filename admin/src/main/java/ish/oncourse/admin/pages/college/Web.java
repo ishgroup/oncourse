@@ -1,11 +1,13 @@
 package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.admin.services.CreateSiteFileStructure;
+import ish.oncourse.admin.services.SiteTemplateSelectModel;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteDelete;
 import ish.oncourse.services.site.WebSitePublisher;
@@ -14,7 +16,6 @@ import ish.oncourse.util.ContextUtil;
 import ish.oncourse.util.ValidateHandler;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.CayenneRuntimeException;
-import org.apache.cayenne.DeleteDenyException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
@@ -27,7 +28,10 @@ import org.apache.tapestry5.services.Response;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Web {
 
@@ -64,6 +68,12 @@ public class Web {
 	
 	@Property
 	private String newSiteKeyValue;
+
+	@Property
+	private WebSite newSiteTemplateValue;
+
+	@Property
+	private SiteTemplateSelectModel templateSelectModel;
 	
 	@Property
 	private String newSiteGoogleTagmanagerValue;
@@ -127,6 +137,9 @@ public class Web {
     @Inject
     private IWebSiteVersionService webSiteVersionService;
 
+	@Inject
+	private IWebSiteService webSiteService;
+
     @Property
     private ValidateHandler validateHandler = new ValidateHandler();
 
@@ -174,6 +187,8 @@ public class Web {
 			i++;
 		}
 		siteSelectModel = new StringSelectModel(siteKeys);
+
+		templateSelectModel = SiteTemplateSelectModel.valueOf(webSiteService.getSiteTemplates());
 	}
 	
 	@AfterRender

@@ -9,7 +9,6 @@ import ish.oncourse.enrol.services.payment.PurchaseControllerBuilder;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.services.student.StudentService;
 import ish.oncourse.model.College;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
@@ -33,6 +32,7 @@ import org.apache.tapestry5.services.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
 
 import static org.mockito.Matchers.eq;
@@ -112,6 +112,11 @@ public class EnrolTestModule {
 		@Override
 		public TimeZone getTimezone() {
 			return TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
+		}
+
+		@Override
+		public List<WebSite> getSiteTemplates() {
+			throw new UnsupportedOperationException();
 		}
 	}
 

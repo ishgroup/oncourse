@@ -7,7 +7,6 @@ import ish.oncourse.cms.services.access.AuthenticationService;
 import ish.oncourse.cms.services.access.IAuthenticationService;
 import ish.oncourse.cms.services.site.CMSWebSiteVersionService;
 import ish.oncourse.model.College;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
@@ -20,6 +19,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 
+import java.util.List;
 import java.util.TimeZone;
 
 @SubModule({ ModelModule.class, ServiceModule.class })
@@ -54,6 +54,11 @@ public class CmsTestModule {
 		@Override
 		public TimeZone getTimezone() {
 			return null;
+		}
+
+		@Override
+		public List<WebSite> getSiteTemplates() {
+			throw new UnsupportedOperationException();
 		}
 	}
 }

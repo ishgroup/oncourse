@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ public class WebSiteService implements IWebSiteService {
 			.compile("([a-z,-]+)([.].+[.]oncourse[.]net[.]au)");
 
 	private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
-	
+
 	public static final String CURRENT_WEB_SITE = "currentWebSite";
 
 	@Inject
@@ -50,7 +51,7 @@ public class WebSiteService implements IWebSiteService {
 
 	/**
 	 * Constructor for unit tests.
-	 * 
+	 *
 	 * @param request
 	 *            tapestry5 http request
 	 * @param cayenneService
@@ -147,5 +148,10 @@ public class WebSiteService implements IWebSiteService {
 			}
 		}
 		return timezone;
+	}
+
+	@Override
+	public List<WebSite> getSiteTemplates() {
+		throw new UnsupportedOperationException();
 	}
 }

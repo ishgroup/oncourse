@@ -1,7 +1,6 @@
 package ish.oncourse.services;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
@@ -82,6 +81,7 @@ import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 
+import java.util.List;
 import java.util.TimeZone;
 
 public class ServiceTestModule {
@@ -139,6 +139,11 @@ public class ServiceTestModule {
 					@Override
 					public TimeZone getTimezone() {
 						return TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
+					}
+
+					@Override
+					public List<WebSite> getSiteTemplates() {
+						throw new UnsupportedOperationException();
 					}
 				};
 

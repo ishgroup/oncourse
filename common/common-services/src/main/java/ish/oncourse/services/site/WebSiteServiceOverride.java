@@ -1,7 +1,6 @@
 package ish.oncourse.services.site;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.access.SessionToken;
 import ish.oncourse.services.system.ICollegeService;
@@ -60,5 +59,10 @@ public class WebSiteServiceOverride implements IWebSiteService {
 	@Override
 	public TimeZone getTimezone() {
 		return TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
+	}
+
+	@Override
+	public List<WebSite> getSiteTemplates() {
+		throw new UnsupportedOperationException();
 	}
 }

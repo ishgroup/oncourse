@@ -5,7 +5,6 @@ package ish.oncourse.ui.services;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Product;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -94,6 +93,11 @@ public class DbEnabledTestModule {
 		@Override
 		public TimeZone getTimezone() {
 			return TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
+		}
+
+		@Override
+		public List<WebSite> getSiteTemplates() {
+			throw new UnsupportedOperationException();
 		}
 	}
 

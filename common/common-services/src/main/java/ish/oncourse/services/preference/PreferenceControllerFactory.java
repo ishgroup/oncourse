@@ -1,13 +1,13 @@
 package ish.oncourse.services.preference;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -39,6 +39,11 @@ public class PreferenceControllerFactory {
 				@Override
 				public TimeZone getTimezone() {
 					return TimeZone.getTimeZone(college.getTimeZone());
+				}
+
+				@Override
+				public List<WebSite> getSiteTemplates() {
+					throw new UnsupportedOperationException();
 				}
 			});
 			
