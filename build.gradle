@@ -26,6 +26,7 @@ allprojects {
 	apply plugin: 'idea' //adds tasks cleanIdeaModule and ideaModule
 	apply plugin: 'appBundler'
 	apply plugin: 'maven-publish'
+    apply plugin: 'findbugs'
 
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
@@ -55,7 +56,8 @@ allprojects {
 		compile 'org.apache.logging.log4j:log4j-1.2-api:2.4.1'
 		//log4j2 to commons-logging bridge
 		compile 'org.apache.logging.log4j:log4j-jcl:2.4.1'
-	}
+        compile 'com.google.code.findbugs:jsr305:3.0.1'
+    }
 
 	group = 'ish.oncourse.angel'
 	publishing {
