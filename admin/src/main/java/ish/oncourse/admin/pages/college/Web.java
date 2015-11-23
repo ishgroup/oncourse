@@ -1,7 +1,7 @@
 package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.admin.services.CreateSiteFileStructure;
-import ish.oncourse.admin.services.SiteTemplateSelectModel;
+import ish.oncourse.admin.services.template.SiteTemplateSelectModel;
 import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.model.*;
 import ish.oncourse.selectutils.StringSelectModel;

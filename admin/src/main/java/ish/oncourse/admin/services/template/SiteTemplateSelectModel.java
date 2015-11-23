@@ -1,4 +1,4 @@
-package ish.oncourse.admin.services;
+package ish.oncourse.admin.services.template;
 
 import ish.oncourse.model.WebSite;
 import org.apache.tapestry5.OptionGroupModel;

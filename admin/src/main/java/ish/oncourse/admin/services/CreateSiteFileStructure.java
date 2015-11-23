@@ -19,15 +19,15 @@ public class CreateSiteFileStructure {
 
     public boolean create() {
         File siteDir = new File(sRootDir, webSite.getSiteKey());
-        if (!siteDir.mkdirs()) {
-            logger.error("Cannot create dir %s.", siteDir.getAbsolutePath());
+        if (!siteDir.exists() && !siteDir.mkdirs()) {
+            logger.error("Cannot create dir {}.", siteDir.getAbsolutePath());
             return false;
         }
 
         StaticResourcePath[] paths = StaticResourcePath.values();
         for (StaticResourcePath path : paths) {
             File file = new File(siteDir, path.getFileSystemPath());
-            if (!file.mkdirs()) {
+            if (!file.exists() && !file.mkdirs()) {
                 logger.error("Cannot create dir %s.", file.getAbsolutePath());
             }
         }
