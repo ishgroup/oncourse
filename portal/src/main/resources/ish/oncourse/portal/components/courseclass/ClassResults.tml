@@ -16,16 +16,18 @@
 
                 <ul class="list-unstyled result-list">
                     <t:loop source="enrolment.outcomes" value="outcome">
-                        <li>
-                            <t:if test="outcome.module">
-                                <span>${outcome.module.title} (<a href="http://training.gov.au/Training/Details/${outcome.module.nationalCode}" target="_blank">${outcome.module.nationalCode}</a>)</span>
-                            </t:if>
-                            <t:unless test="outcome.module">
-                                <span>${courseClass.course.name}</span>
-                            </t:unless>
+                        <li class="row">
+							<div class="col-sm-8">
+								<t:if test="outcome.module">
+									${outcome.module.title} (<a href="http://training.gov.au/Training/Details/${outcome.module.nationalCode}" target="_blank">${outcome.module.nationalCode}</a>)
+								</t:if>
+								<t:unless test="outcome.module">
+									${courseClass.course.name}
+								</t:unless>
+							</div>
                             <t:if test="needResult()">
-								<div class="pull-right">
-									<div class="pull-right">
+								<div class="col-sm-4 text-right">
+									<div>
 										<strong class="${getOutComeClass()}">
 											${getOutComeResult()}
 											<t:if test="isNew()">
@@ -33,8 +35,7 @@
 											</t:if>
 										</strong>
 									</div>
-									<br/>
-									<div class="pull-right">
+									<div>
 										<small class="text-muted">${getOutComeDisplayName()}</small>
 									</div>
 								</div>

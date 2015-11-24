@@ -919,7 +919,10 @@ strong.link-color {
   }
   
 	.result-list {
-		
+		li.row {
+          margin-left: 0px;
+          margin-right: 0px;
+        }
 		li span {
 			width: 50%;
 		}
