@@ -4,12 +4,16 @@
 
 	<t:if test="canonicalLinkPath">
     	<link rel="canonical" href="${canonicalLinkPath}"></link>
+		<meta property="og:url" content="${canonicalLinkPath}" />
 	</t:if>
 
 	<t:if test="canonicalRelativeLinkPath">
 		<link rel="canonical" href="${canonicalRelativeLinkPath}"></link>
 	</t:if>
 
+	<meta property="og:type" content="website"/>
+	<meta property="og:image" content="" />
+	
 	<t:if test="metaDescription">
 		<meta content="${metaDescription}" name="description" property="og:description"/>
 	</t:if>
