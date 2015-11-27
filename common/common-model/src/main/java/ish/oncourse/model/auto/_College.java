@@ -179,8 +179,6 @@ public abstract class _College extends CayenneDataObject {
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
     @Deprecated
     public static final String WEB_SITES_PROPERTY = "webSites";
-    @Deprecated
-    public static final String WILLOW_USERS_PROPERTY = "willowUsers";
 
     public static final String ID_PK_COLUMN = "id";
 
@@ -265,7 +263,6 @@ public abstract class _College extends CayenneDataObject {
     public static final Property<List<WaitingListSite>> WAITING_LIST_SITES = new Property<List<WaitingListSite>>("waitingListSites");
     public static final Property<List<WaitingList>> WAITING_LISTS = new Property<List<WaitingList>>("waitingLists");
     public static final Property<List<WebSite>> WEB_SITES = new Property<List<WebSite>>("webSites");
-    public static final Property<List<WillowUser>> WILLOW_USERS = new Property<List<WillowUser>>("willowUsers");
 
     public void setAngelVersion(String angelVersion) {
         writeProperty("angelVersion", angelVersion);
@@ -1136,18 +1133,6 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<WebSite> getWebSites() {
         return (List<WebSite>)readProperty("webSites");
-    }
-
-
-    public void addToWillowUsers(WillowUser obj) {
-        addToManyTarget("willowUsers", obj, true);
-    }
-    public void removeFromWillowUsers(WillowUser obj) {
-        removeToManyTarget("willowUsers", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<WillowUser> getWillowUsers() {
-        return (List<WillowUser>)readProperty("willowUsers");
     }
 
 

@@ -58,19 +58,18 @@ public class AuthenticationService implements IAuthenticationService {
 
 		// if SystemUser authentication failed then try authenticate using WillowUser table
 		if (AuthenticationStatus.NO_MATCHING_USER.equals(status)) {
-			status = authenticateWillowUser(userName, password);
+			status = authenticateSuperUser(userName, password);
 		}
 
 		return status;
 	}
 
-	private AuthenticationStatus authenticateWillowUser(String userName, String password) {
+	private AuthenticationStatus authenticateSuperUser(String userName, String password) {
 		College college = siteService.getCurrentCollege();
 
 
 		List<WillowUser> users = ObjectSelect.query(WillowUser.class).
-				where(SystemUser.COLLEGE.eq(college).orExp(SystemUser.COLLEGE.isNull())).
-				and(SystemUser.EMAIL.eq(userName)).
+				where(WillowUser.EMAIL.eq(userName)).
 				select(cayenneService.newContext());
 
 		if (users.isEmpty()) {
@@ -155,15 +154,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 	@Override
 	public WillowUser getUser() {
-		WillowUser user = applicationStateManager.getIfExists(WillowUser.class);
-		if (user != null) {
-			boolean belongToCollege = (user.getCollege() == null) || 
-				(user.getCollege() != null && siteService.getCurrentCollege().getId().equals(user.getCollege().getId()));
-			if (belongToCollege) {
-				return user;
-			}
-		}
-		return null;
+		return applicationStateManager.getIfExists(WillowUser.class);
 	}
 
 	@Override

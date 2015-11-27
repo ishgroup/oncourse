@@ -1290,7 +1290,6 @@
 		<db-attribute name="webSiteVersionId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="WillowUser">
-		<db-attribute name="collegeId" type="BIGINT" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="email" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="failedLoginCount" type="INTEGER" length="10"/>
@@ -2699,9 +2698,6 @@
 	<db-relationship name="webSites" source="College" target="WebSite" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
-	<db-relationship name="willowUsers" source="College" target="WillowUser" toMany="true">
-		<db-attribute-pair source="id" target="collegeId"/>
-	</db-relationship>
 	<db-relationship name="college" source="ConcessionType" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -3680,9 +3676,6 @@
 	<db-relationship name="webSiteVersion" source="WebURLAlias" target="WebSiteVersion" toMany="false">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
-	<db-relationship name="college" source="WillowUser" target="College" toMany="false">
-		<db-attribute-pair source="collegeId" target="id"/>
-	</db-relationship>
 	<db-relationship name="logs" source="WillowUser" target="Log" toMany="true">
 		<db-attribute-pair source="id" target="userId"/>
 	</db-relationship>
@@ -3767,7 +3760,6 @@
 	<obj-relationship name="waitingListSites" source="College" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
 	<obj-relationship name="waitingLists" source="College" target="WaitingList" deleteRule="Deny" db-relationship-path="waitingLists"/>
 	<obj-relationship name="webSites" source="College" target="WebSite" deleteRule="Deny" db-relationship-path="webSites"/>
-	<obj-relationship name="willowUsers" source="College" target="WillowUser" deleteRule="Deny" db-relationship-path="willowUsers"/>
 	<obj-relationship name="college" source="ConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
@@ -4086,6 +4078,5 @@
 	<obj-relationship name="layout" source="WebTemplate" target="WebSiteLayout" deleteRule="Nullify" db-relationship-path="layout"/>
 	<obj-relationship name="webNode" source="WebUrlAlias" target="WebNode" deleteRule="Nullify" db-relationship-path="webNode"/>
 	<obj-relationship name="webSiteVersion" source="WebUrlAlias" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
-	<obj-relationship name="college" source="WillowUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="logs" source="WillowUser" target="Log" deleteRule="Deny" db-relationship-path="logs"/>
 </data-map>

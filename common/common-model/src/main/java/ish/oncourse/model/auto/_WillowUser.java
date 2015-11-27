@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
-import ish.oncourse.model.College;
 import ish.oncourse.model.Log;
 
 /**
@@ -40,8 +39,6 @@ public abstract class _WillowUser extends CayenneDataObject {
     @Deprecated
     public static final String PASSWORD_PROPERTY = "password";
     @Deprecated
-    public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String LOGS_PROPERTY = "logs";
 
     public static final String ID_PK_COLUMN = "id";
@@ -56,7 +53,6 @@ public abstract class _WillowUser extends CayenneDataObject {
     public static final Property<String> LAST_NAME = new Property<String>("lastName");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<String> PASSWORD = new Property<String>("password");
-    public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<List<Log>> LOGS = new Property<List<Log>>("logs");
 
     public void setCreated(Date created) {
@@ -128,15 +124,6 @@ public abstract class _WillowUser extends CayenneDataObject {
     public String getPassword() {
         return (String)readProperty("password");
     }
-
-    public void setCollege(College college) {
-        setToOneTarget("college", college, true);
-    }
-
-    public College getCollege() {
-        return (College)readProperty("college");
-    }
-
 
     public void addToLogs(Log obj) {
         addToManyTarget("logs", obj, true);

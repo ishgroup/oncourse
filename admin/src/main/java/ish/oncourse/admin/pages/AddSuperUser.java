@@ -41,7 +41,6 @@ public class AddSuperUser {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
 		this.cmsSuperUsers = ObjectSelect.query(WillowUser.class).
-				where(WillowUser.COLLEGE.isNull()).
 				select(context);
 	}
 	
@@ -50,7 +49,6 @@ public class AddSuperUser {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		
 		WillowUser user = context.newObject(WillowUser.class);
-		user.setCollege(null);
 		user.setEmail(newUserEmailValue);
 		final String hashedPassword = SecurityUtil.hashPassword(newUserPasswordValue);
 		user.setPassword(newUserPasswordValue);//TODO: migrate when found logic which will update old passwords

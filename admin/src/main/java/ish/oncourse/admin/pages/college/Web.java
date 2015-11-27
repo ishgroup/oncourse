@@ -48,20 +48,12 @@ public class Web {
 	@Property
 	private List<WebHostName> domains;
 	
-	@SuppressWarnings("all")
-	@Property
-	private List<WillowUser> cmsUsers;
-	
 	@Property
 	private WebHostName currentDomain;
 	
 	@SuppressWarnings("all")
 	@Property
 	private WebSite currentSite;
-	
-	@SuppressWarnings("all")
-	@Property
-	private WillowUser currentUser;
 	
 	@Property
 	private String newSiteNameValue;
@@ -86,18 +78,6 @@ public class Web {
 	
 	@Property
 	private String newDomainSite;
-	
-	@Property
-	private String newUserEmailValue;
-	
-	@Property
-	private String newUserPasswordValue;
-	
-	@Property
-	private String newUserFirstNameValue;
-	
-	@Property
-	private String newUserLastNameValue;
 	
 	@SuppressWarnings("all")
 	@Property
@@ -175,10 +155,6 @@ public class Web {
 				where(WebHostName.COLLEGE.eq(college)).
 				select(context);
 		
-		this.cmsUsers = ObjectSelect.query(WillowUser.class).
-				where(WillowUser.COLLEGE.eq(college)).
-				cacheStrategy(QueryCacheStrategy.NO_CACHE).
-				select(context);
 		
 		String[] siteKeys = new String[sites.size()];
 		int i = 0;
@@ -304,20 +280,6 @@ public class Web {
         }
 	}
 	
-	@OnEvent(component="cmsUsersForm", value="success")
-	void addUser() throws UnsupportedEncodingException {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		
-		WillowUser user = context.newObject(WillowUser.class);
-		user.setCollege(context.localObject(college));
-		user.setEmail(newUserEmailValue);
-		final String hashedPassword = SecurityUtil.hashPassword(newUserPasswordValue);
-		user.setPassword(newUserPasswordValue);//TODO: migrate when found logic which will update old passwords
-		user.setFirstName(newUserFirstNameValue);
-		user.setLastName(newUserLastNameValue);
-		
-		context.commitChanges();
-	}
 	
 	Object onActionFromDeleteDomain(Long id) {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
@@ -347,19 +309,6 @@ public class Web {
 		return null;
 	}
 	
-	Object onActionFromDeleteUser(String email) {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-
-		WillowUser user = ObjectSelect.query(WillowUser.class).
-				where(WillowUser.EMAIL.eq(email).
-                        andExp(WillowUser.COLLEGE.eq(college))).
-				selectOne(context);
-
-		context.deleteObjects(user);
-		context.commitChanges();
-		
-		return null;
-	}
 	
 	public String getSelectedSite() {
 		return currentDomain.getWebSite().getSiteKey();
