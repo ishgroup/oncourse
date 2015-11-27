@@ -1,6 +1,7 @@
 package ish.oncourse.admin.pages;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.system.ICollegeService;
@@ -45,6 +46,9 @@ public class Index {
 	@Persist
 	private College college;
 	
+	@Property
+	private WebSite site;
+	
 	@SetupRender
 	void setupRender() {
 		if (collegeModel == null) {
@@ -65,5 +69,9 @@ public class Index {
 	public String getState() {
 		PreferenceController preferenceController = preferenceControllerFactory.getPreferenceController(college);
 		return preferenceController.getAvetmissStateName();
+	}
+	
+	public boolean isCommaSeparate() {
+		return college.getWebSites().size() > college.getWebSites().indexOf(site) + 1;
 	}
 }
