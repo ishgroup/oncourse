@@ -31,8 +31,6 @@ public class WebSitePublisher {
     //create new published version as copy of draftVersion
     public void publish()
     {
-        initPublishedVersion();
-
         copyLayouts();
 
         copyWebNodeTypes();
@@ -231,6 +229,7 @@ public class WebSitePublisher {
             publisher.systemUser = objectContext.localObject(systemUser);
         }
         publisher.userEmail = userEmail;
+        publisher.initPublishedVersion();
         return publisher;
     }
 
@@ -239,7 +238,18 @@ public class WebSitePublisher {
         WebSitePublisher publisher = new WebSitePublisher();
         publisher.context = objectContext;
         publisher.draftVersion = objectContext.localObject(webSiteVersion);
+        publisher.initPublishedVersion();
         return publisher;
     }
+
+    public static WebSitePublisher valueOf(WebSiteVersion webSiteVersion, WebSiteVersion publishedVersion, ObjectContext objectContext)
+    {
+        WebSitePublisher publisher = new WebSitePublisher();
+        publisher.context = objectContext;
+        publisher.draftVersion = objectContext.localObject(webSiteVersion);
+        publisher.publishedVersion = objectContext.localObject(publishedVersion);
+        return publisher;
+    }
+
 
 }

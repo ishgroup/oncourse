@@ -8,6 +8,7 @@ import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
@@ -40,6 +41,9 @@ public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 
 	@Override
 	public WebSiteVersion getDeployedVersion(WebSite webSite) {
-		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
+		return ObjectSelect.query(WebSiteVersion.class)
+				.and(WebSiteVersion.WEB_SITE.eq(webSite))
+				.addOrderBy(WebSiteVersion.DEPLOYED_ON.desc())
+				.limit(1).selectFirst(webSite.getObjectContext());
 	}
 }

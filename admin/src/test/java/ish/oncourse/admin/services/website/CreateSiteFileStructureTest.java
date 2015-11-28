@@ -1,5 +1,6 @@
-package ish.oncourse.admin.services;
+package ish.oncourse.admin.services.website;
 
+import ish.oncourse.admin.services.CreateSiteFileStructure;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.util.StaticResourcePath;
 import org.junit.After;

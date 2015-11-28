@@ -1,24 +1,22 @@
 package ish.oncourse.admin.pages.college;
 
-import ish.oncourse.admin.services.CreateSiteFileStructure;
 import ish.oncourse.admin.services.template.SiteTemplateSelectModel;
-import ish.oncourse.admin.utils.LicenseFeeUtil;
-import ish.oncourse.model.*;
+import ish.oncourse.admin.services.website.CreateNewWebSite;
+import ish.oncourse.model.College;
+import ish.oncourse.model.WebHostName;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteDelete;
-import ish.oncourse.services.site.WebSitePublisher;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.util.ContextUtil;
 import ish.oncourse.util.ValidateHandler;
-import ish.util.SecurityUtil;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectById;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
@@ -26,8 +24,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Response;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -211,73 +207,19 @@ public class Web {
 	
 	@OnEvent(component="sitesForm", value="success")
 	void addSite() {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		Date now = new Date();
+        ObjectContext context = cayenneService.newNonReplicatingContext();
 
-		College college = context.localObject(this.college);
-		
-		WebSite site = context.newObject(WebSite.class);
-		site.setCollege(college);
-		site.setName(newSiteNameValue);
-		site.setSiteKey(newSiteKeyValue);
-		site.setGoogleTagmanagerAccount(newSiteGoogleTagmanagerValue);
-		site.setCoursesRootTagName(newSiteCoursesRootTagName);
-		site.setCreated(now);
-		site.setModified(now);
+        College college = context.localObject(this.college);
 
-        //we create staged web site version
-		WebSiteVersion stagedVersion = context.newObject(WebSiteVersion.class);
-		stagedVersion.setWebSite(site);
+        CreateNewWebSite createNewWebSite = CreateNewWebSite.valueOf(newSiteNameValue,
+				newSiteKeyValue, newSiteGoogleTagmanagerValue,
+				newSiteCoursesRootTagName, newSiteTemplateValue,
+				ContextUtil.getSRoot(),
+				college, context,
+				webSiteVersionService, webNodeService);
+        createNewWebSite.create();
 
-        WebSiteLayout webSiteLayout = context.newObject(WebSiteLayout.class);
-        webSiteLayout.setLayoutKey(WebNodeType.DEFAULT_LAYOUT_KEY);
-        webSiteLayout.setWebSiteVersion(stagedVersion);
-
-		WebNodeType page = context.newObject(WebNodeType.class);
-		page.setName(WebNodeType.PAGE);
-		page.setCreated(now);
-		page.setModified(now);
-		page.setWebSiteLayout(webSiteLayout);
-		page.setWebSiteVersion(stagedVersion);
-
-        WebNode node = webNodeService.createNewNodeBy(stagedVersion, page, DEFAULT_HOME_PAGE_NAME, DEFAULT_HOME_PAGE_NAME, 1);
-		node.setPublished(true);
-		
-		WebMenu menu = context.newObject(WebMenu.class);
-		menu.setName("Home");
-		menu.setCreated(now);
-		menu.setModified(now);
-		menu.setWebSiteVersion(stagedVersion);
-		menu.setWeight(1);
-		menu.setWebNode(node);
-
-		LicenseFeeUtil.createFee(context, college, site, LicenseFeeUtil.HOSTING_FEE_CODE);
-		LicenseFeeUtil.createFee(context, college, site, LicenseFeeUtil.CC_WEB_FEE_CODE);
-		LicenseFeeUtil.createFee(context, college, site, LicenseFeeUtil.ECOMMERCE_FEE_CODE);
-
-		context.commitChanges();
-
-		WebUrlAlias urlAlias = context.newObject(WebUrlAlias.class);
-		urlAlias.setWebSiteVersion(stagedVersion);
-		urlAlias.setUrlPath("/");
-		urlAlias.setWebNode(node);
-        urlAlias.setDefault(true);
-
-        String sRootPath = ContextUtil.getSRoot();
-
-        boolean result = CreateSiteFileStructure.valueOf(site, new File(sRootPath)).create();
-
-        if (result) {
-            context.commitChanges();
-
-            WebSitePublisher publisher = WebSitePublisher.valueOf(stagedVersion, context);
-            publisher.publish();
-        } else {
-            HashMap<String,String> errors = new HashMap<>();
-            errors.put("addSite",
-                    String.format("Cannot add site with key %s. The file structure can not be created. See log messages.", site.getSiteKey()));
-            validateHandler.setErrors(errors);
-        }
+        validateHandler.setErrors(createNewWebSite.getErrors());
 	}
 	
 	
