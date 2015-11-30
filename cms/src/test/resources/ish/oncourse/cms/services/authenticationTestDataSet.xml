@@ -11,7 +11,6 @@
 		  publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
 		  specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="timeZone" isVirtual="0"/>
 	
-	<WillowUser id="1" email="willow@test.test" firstName="Willow" lastName="User" isActive="1" password="willow" collegeId="3"/>
 	<WillowUser id="2" email="super@test.test" firstName="Super" lastName="User" isActive="1" password="super"/>
 
 	<SystemUser angelId="2" canEditCMS="1" canEditTara="0" collegeId="3" id="1" siteId="1" email="test@test.test" firstName="admin" isActive="1" isAdmin="1" lastLoginIP="127.0.0.1" lastLoginOn="2011-09-20 11:14:54" lastName="admin" login="test" password="5baa61e4c9b93f3f68225b6cf8331b7ee68fd8"/>

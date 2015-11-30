@@ -78,17 +78,6 @@ public class AuthenticationServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void testLoginWillowUser() throws Exception {
-		// wrong password
-		AuthenticationStatus statusFail = authenticationService.authenticate("willow@test.test", "wrong");
-		assertEquals(AuthenticationStatus.INVALID_CREDENTIALS, statusFail);
-
-		// correct password
-		AuthenticationStatus statusSuccess = authenticationService.authenticate("willow@test.test", "willow");
-		assertEquals(AuthenticationStatus.SUCCESS, statusSuccess);
-	}
-
-	@Test
 	public void testLoginWillowSuperUser() throws Exception {
 		// wrong password
 		AuthenticationStatus statusFail = authenticationService.authenticate("super@test.test", "wrong");
