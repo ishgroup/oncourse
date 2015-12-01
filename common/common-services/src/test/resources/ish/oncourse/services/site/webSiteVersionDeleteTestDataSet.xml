@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<College id="1" name="Mammoth Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+	<WebSite id="1" collegeId="1" name="Mammoth Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Contact id="1" collegeId="1" angelId="2"  created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="0" isMale="1" familyName="Manny" givenName="Penny"
+			 emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1"/>
+
+	<Invoice id="1" source="W" amountOwing="0" contactId="1"
+			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
+			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
+			 totalGst="20.00" created="2000-00-00 00:18:09" modified="2000-00-00 00:00:09" confirmationStatus="1" webSiteId="1"/>
+	<InvoiceLine id="1" collegeId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="100.00" taxEach="10.00"
+				 created="2000-00-00 00:00:09" modified="2000-00-00 00:00:09" title="Test Invoice Line"/>
+	
+	<LicenseFee id="1" college_Id="1" key_code="hosting" fee="200" free_transactions="0" plan_name="standart" webSiteId="1"/>
+	<LicenseFee id="2" college_Id="1" key_code="ecommerce" fee="0.02" free_transactions="0" webSiteId="1"/>
+	<LicenseFee id="3" college_Id="1" key_code="cc-web" fee="0.65" free_transactions="0" webSiteId="1"/>
+
+	<WebHostName name="mammoth.education.com.au" webSiteId="1" collegeId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+	
+	<WebSiteVersion id="1" webSiteId="1"/>
+	
+	<WebSiteLayout id="1" layoutKey="default" webSiteVersionId="1"/>
+	<WebSiteLayout id="2" layoutKey="aboutUs" webSiteVersionId="1"/>
+	
+	<WebTemplate id="1" name="PageHead.tml" content="any_xml_content" layoutId="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"/>
+	<WebTemplate id="2" name="PageHead.tml" content="any_xml_content" layoutId="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"/>
+
+	<WebNodeType id="1" name="page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1" webSiteLayoutId="1"/>
+	<WebNodeType id="2" name="aboutUs" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1" webSiteLayoutId="2"/>
+
+	<WebNode id="1" webNodeTypeId="1" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
+	<WebNode id="2" webNodeTypeId="2" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
+
+	<WebMenu id="1" webNodeId="1" weight="1" name="Home" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
+	<WebMenu id="2" webNodeId="1" webMenuParentId="1" weight="0" name="Menu" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
+	<WebMenu id="3"  URL="/about-us" webMenuParentId="2" weight="1" name="About us" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="1"/>
+
+	<WebContent id="1" content="Home page" content_textile="Home page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="1"/>
+	<WebContent id="2" content="About us" content_textile="About us" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="1"/>
+	<WebContent id="3" content="Block content" content_textile="Block content" name="Block_1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="1"/>
+	
+	<WebContentVisibility id="1" WebNodeId="1" WebContentId="1" weight="2147483647" regionKey="content"/>
+	<WebContentVisibility id="2" WebNodeId="2" WebContentId="2" weight="2147483647" regionKey="content"/>
+	<WebContentVisibility id="3" WebNodeTypeId="1" WebContentId="3" weight="0" regionKey="footer"/>
+	<WebContentVisibility id="4" WebNodeTypeId="2" WebContentId="3" weight="0" regionKey="header"/>
+
+	<WebUrlAlias id="1" webNodeId="2" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="1"/>
+	<WebUrlAlias id="2" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="1"/>
+
+	<WebSiteVersion id="2" webSiteId="1" deployedOn="2010-02-03 09:18:09"/>
+
+	<WebSiteLayout id="3" layoutKey="default" webSiteVersionId="2"/>
+	<WebSiteLayout id="4" layoutKey="aboutUs" webSiteVersionId="2"/>
+
+	<WebTemplate id="3" name="PageHead.tml" content="any_xml_content" layoutId="3" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"/>
+	<WebTemplate id="4" name="PageHead.tml" content="any_xml_content" layoutId="4" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"/>
+
+	<WebNodeType id="3" name="page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2" webSiteLayoutId="3"/>
+	<WebNodeType id="4" name="aboutUs" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2" webSiteLayoutId="4"/>
+
+	<WebNode id="3" webNodeTypeId="3" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
+	<WebNode id="4" webNodeTypeId="4" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
+
+	<WebMenu id="4" webNodeId="3" weight="1" name="Home" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
+	<WebMenu id="5" webNodeId="3" webMenuParentId="4" weight="0" name="Menu" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
+	<WebMenu id="6"  URL="/about-us" webMenuParentId="5" weight="1" name="About us" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="2"/>
+
+	<WebContent id="4" content="Home page" content_textile="Home page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="2"/>
+	<WebContent id="5" content="About us" content_textile="About us" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="2"/>
+	<WebContent id="6" content="Block content" content_textile="Block content" name="Block_1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="2"/>
+
+	<WebContentVisibility id="5" WebNodeId="3" WebContentId="4" weight="2147483647" regionKey="content"/>
+	<WebContentVisibility id="6" WebNodeId="4" WebContentId="5" weight="2147483647" regionKey="content"/>
+	<WebContentVisibility id="7" WebNodeTypeId="3" WebContentId="6" weight="0" regionKey="footer"/>
+	<WebContentVisibility id="8" WebNodeTypeId="4" WebContentId="6" weight="0" regionKey="header"/>
+
+	<WebUrlAlias id="3" webNodeId="4" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="2"/>
+	<WebUrlAlias id="4" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="2"/>
+
+	<WebSiteVersion id="3" webSiteId="1" deployedOn="2010-02-03 09:18:09"/>
+
+	<WebSiteLayout id="5" layoutKey="default" webSiteVersionId="3"/>
+	<WebSiteLayout id="6" layoutKey="aboutUs" webSiteVersionId="3"/>
+
+	<WebTemplate id="5" name="PageHead.tml" content="any_xml_content" layoutId="5" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"/>
+	<WebTemplate id="6" name="PageHead.tml" content="any_xml_content" layoutId="6" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"/>
+
+	<WebNodeType id="5" name="page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3" webSiteLayoutId="5"/>
+	<WebNodeType id="6" name="aboutUs" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3" webSiteLayoutId="6"/>
+
+	<WebNode id="5" webNodeTypeId="5" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
+	<WebNode id="6" webNodeTypeId="6" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
+
+	<WebMenu id="7" webNodeId="4" weight="1" name="Home" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
+	<WebMenu id="8" webNodeId="4" webMenuParentId="7" weight="0" name="Menu" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
+	<WebMenu id="9"  URL="/about-us" webMenuParentId="8" weight="1" name="About us" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
+
+	<WebContent id="7" content="Home page" content_textile="Home page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="3"/>
+	<WebContent id="8" content="About us" content_textile="About us" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="3"/>
+	<WebContent id="9" content="Block content" content_textile="Block content" name="Block_1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="3"/>
+
+	<WebContentVisibility id="9" WebNodeId="5" WebContentId="7" weight="2147483647" regionKey="content"/>
+	<WebContentVisibility id="10" WebNodeId="6" WebContentId="8" weight="2147483647" regionKey="content"/>
+	<WebContentVisibility id="11" WebNodeTypeId="5" WebContentId="9" weight="0" regionKey="footer"/>
+	<WebContentVisibility id="12" WebNodeTypeId="6" WebContentId="9" weight="0" regionKey="header"/>
+
+	<WebUrlAlias id="5" webNodeId="6" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="3"/>
+	<WebUrlAlias id="6" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="3"/>
+
+
+</dataset>
