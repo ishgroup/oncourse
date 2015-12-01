@@ -3702,4 +3702,103 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="236" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>
+			ALTER TABLE WebContent ADD CONSTRAINT WebContent_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="237" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>
+			ALTER TABLE WebNode ADD CONSTRAINT WebNode_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="238" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>
+			ALTER TABLE WebNodeType ADD CONSTRAINT WebNodeType_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="239" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>
+			ALTER TABLE WebMenu ADD CONSTRAINT WebMenu_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="240" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<sql>
+			ALTER TABLE WebUrlAlias ADD CONSTRAINT WebUrlAlias_webSiteVersion FOREIGN KEY (webSiteVersionId) REFERENCES WebSiteVersion (id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="241" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="WebContent" columnName="webSiteId"/>
+				<foreignKeyConstraintExists foreignKeyName="webContent_webSite" foreignKeyTableName="WebContent"/>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebContent DROP FOREIGN KEY webContent_webSite;
+			ALTER TABLE WebContent DROP COLUMN webSiteId;
+		</sql>
+	</changeSet>
+
+	<changeSet id="242" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="WebNode" columnName="webSiteId"/>
+				<indexExists tableName="WebNode" indexName="college_nodeNumber"/>
+				<foreignKeyConstraintExists foreignKeyName="WebNode_webSite" foreignKeyTableName="WebNode"/>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebNode DROP FOREIGN KEY WebNode_webSite;
+			ALTER TABLE WebNode DROP INDEX college_nodeNumber;
+			ALTER TABLE WebNode DROP COLUMN webSiteId;
+		</sql>
+	</changeSet>
+
+	<changeSet id="243" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="WebNodeType" columnName="webSiteId"/>
+				<foreignKeyConstraintExists foreignKeyName="WebNodeType_website" foreignKeyTableName="WebNodeType"/>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebNodeType DROP FOREIGN KEY WebNodeType_website;
+			ALTER TABLE WebNodeType DROP COLUMN webSiteId;
+		</sql>
+	</changeSet>
+
+	<changeSet id="244" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="WebMenu" columnName="webSiteId"/>
+				<foreignKeyConstraintExists foreignKeyName="WebMenu_webSite" foreignKeyTableName="WebMenu"/>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebMenu DROP FOREIGN KEY WebMenu_webSite;
+			ALTER TABLE WebMenu DROP COLUMN webSiteId;
+		</sql>
+	</changeSet>
+
+	<changeSet id="245" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="WebUrlAlias" columnName="webSiteId"/>
+				<indexExists tableName="WebUrlAlias" indexName="urlalias_unique"/>
+				<foreignKeyConstraintExists foreignKeyName="WebURLAlias_website" foreignKeyTableName="WebUrlAlias"/>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebUrlAlias DROP FOREIGN KEY WebURLAlias_website;
+			ALTER TABLE WebUrlAlias DROP INDEX urlalias_unique;
+			ALTER TABLE WebUrlAlias DROP COLUMN webSiteId;
+		</sql>
+	</changeSet>
+	
 </databaseChangeLog>
