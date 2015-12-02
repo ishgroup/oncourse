@@ -3,18 +3,18 @@
 
  	<table class="table table-striped table-condensed table-bordered table-hover">
  		<thead>
- 			<tr>
- 				<th>ID</th>
- 				<th>Name</th>
-				<th>State</th>
- 				<th>Last Remote Authentication</th>
- 				<th>Angel Version</th>
-				<th>Site</th>
- 			</tr>
+			<tr class="row">
+				<th class="span1">ID</th>
+				<th class="span8">Name</th>
+				<th class="span2">State</th>
+				<th class="span6">Last Remote Authentication</th>
+				<th class="span4">Angel Version</th>
+				<th class="span2">Site</th>
+			</tr>
  		</thead>
  		<tbody>
  			<t:loop source="colleges" value="college">
- 				<tr>
+ 				<tr class="row">
  					<td>${college.id}</td>
  					<td><a t:type="pagelink" t:page="college/overview" t:context="college.id" href="#">${college.name}</a></td>
 					<td>${state}</td>
