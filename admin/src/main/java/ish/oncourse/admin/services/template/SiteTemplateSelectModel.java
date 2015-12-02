@@ -13,7 +13,7 @@ import java.util.List;
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class SiteTemplateSelectModel extends AbstractSelectModel implements ValueEncoder<WebSite> {
+public class SiteTemplateSelectModel extends AbstractSelectModel {
 
     private List<WebSite> templates;
 
@@ -28,7 +28,7 @@ public class SiteTemplateSelectModel extends AbstractSelectModel implements Valu
                 templates.size());
 
         for (WebSite template : templates) {
-            optionModels.add(new OptionModelImpl(template.getSiteKey()));
+            optionModels.add(new OptionModelImpl(template.getSiteKey(), template));
         }
 
         return optionModels;
@@ -38,20 +38,5 @@ public class SiteTemplateSelectModel extends AbstractSelectModel implements Valu
         SiteTemplateSelectModel result = new SiteTemplateSelectModel();
         result.templates = templates;
         return result;
-    }
-
-    @Override
-    public String toClient(WebSite value) {
-        return value.getSiteKey();
-    }
-
-    @Override
-    public WebSite toValue(String clientValue) {
-        for (WebSite template : templates) {
-            if (template.getSiteKey().equals(clientValue)) {
-                return template;
-            }
-        }
-        throw new IllegalArgumentException(String.format("Cannot find template with name %s", clientValue));
     }
 }

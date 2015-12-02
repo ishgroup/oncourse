@@ -1,5 +1,6 @@
 package ish.oncourse.admin.pages.college;
 
+import ish.oncourse.admin.services.template.SiteTemplateEncoder;
 import ish.oncourse.admin.services.template.SiteTemplateSelectModel;
 import ish.oncourse.admin.services.website.CreateNewWebSite;
 import ish.oncourse.model.College;
@@ -258,5 +259,9 @@ public class Web {
 	
 	public WebSite getCurrentWebSite() {
 		return this.sites.get(currentSiteKey);
+	}
+
+	public SiteTemplateEncoder getSiteTemplateEncoder() {
+		return SiteTemplateEncoder.valueOf(webSiteService.getSiteTemplates());
 	}
 }

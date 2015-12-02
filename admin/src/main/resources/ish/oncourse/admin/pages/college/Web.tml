@@ -108,7 +108,7 @@
 					<td><t:textfield t:id="newSiteName" t:validate="required" value="newSiteNameValue"/></td>
 					<td><t:textfield t:id="newSiteKey" t:validate="required" value="newSiteKeyValue"/></td>
 
-					<td><t:select t:id="newSiteTemplate" model="templateSelectModel" value="newSiteTemplateValue"/></td>
+					<td><t:select t:id="newSiteTemplate" name="newSiteTemplate" model="templateSelectModel" encoder="siteTemplateEncoder" value="newSiteTemplateValue"/></td>
 					<td>
 						<div class="input-append">
 							<t:textfield t:id="newSiteGoogleTagmanager" value="newSiteGoogleTagmanagerValue"/>
