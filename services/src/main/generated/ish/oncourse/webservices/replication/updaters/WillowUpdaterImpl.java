@@ -9,6 +9,7 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.webservices.exception.UpdaterNotFoundException;
 import ish.oncourse.webservices.replication.v10.updaters.V10UpdatersMap;
 import ish.oncourse.webservices.replication.v11.updaters.V11UpdatersMap;
+import ish.oncourse.webservices.replication.v12.updaters.V12UpdatersMap;
 import ish.oncourse.webservices.replication.v6.updaters.V6UpdatersMap;
 import ish.oncourse.webservices.replication.v7.updaters.V7UpdatersMap;
 import ish.oncourse.webservices.replication.v9.updaters.V9UpdatersMap;
@@ -38,6 +39,8 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	private Map<String, IWillowUpdater> v10updaterMap = new HashMap<>();
  
 	private Map<String, IWillowUpdater> v11updaterMap = new HashMap<>();
+ 
+	private Map<String, IWillowUpdater> v12updaterMap = new HashMap<>();
 
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
 
@@ -61,6 +64,10 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		V11UpdatersMap v11map = new V11UpdatersMap();
 		v11map.initMap(textileConverter);
 		v11updaterMap = v11map.getUpdaterMap();
+
+		V12UpdatersMap v12map = new V12UpdatersMap();
+		v12map.initMap(textileConverter);
+		v12updaterMap = v12map.getUpdaterMap();
 
 	}
 
@@ -92,6 +99,10 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 
 			case V11:
 				updater = v11updaterMap.get(key);
+				break;
+
+			case V12:
+				updater = v12updaterMap.get(key);
 				break;
 
 			default:
