@@ -9,10 +9,12 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByInstructionStub(instructionStub);
 
 		switch (version) {
+
 			case V6:
 				((ish.oncourse.webservices.v6.stubs.replication.InstructionStub) instructionStub)
 						.setParameters((ish.oncourse.webservices.v6.stubs.replication.ParametersMap) parametersMap);
 				break;
+
 			case V7:
 				((ish.oncourse.webservices.v7.stubs.replication.InstructionStub) instructionStub)
 						.setParameters((ish.oncourse.webservices.v7.stubs.replication.ParametersMap) parametersMap);
@@ -33,6 +35,11 @@ public class StubUtils {
 						.setParameters((ish.oncourse.webservices.v11.stubs.replication.ParametersMap) parametersMap);
 				break;
 
+			case V12:
+				((ish.oncourse.webservices.v12.stubs.replication.InstructionStub) instructionStub)
+						.setParameters((ish.oncourse.webservices.v12.stubs.replication.ParametersMap) parametersMap);
+				break;
+
 			default:
 				throw new IllegalArgumentException("This stub version is not supported.");
 		}
@@ -40,11 +47,13 @@ public class StubUtils {
 	
 	public static boolean hasSuccessStatus(GenericReplicatedRecord record) {
 		SupportedVersions version = PortHelper.getVersionByReplicatedRecord(record);
-
+		
 		switch (version) {
+
 			case V6:
 				return ish.oncourse.webservices.v6.stubs.replication.Status.SUCCESS.equals(
 						((ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) record).getStatus());
+
 			case V7:
 				return ish.oncourse.webservices.v7.stubs.replication.Status.SUCCESS.equals(
 						((ish.oncourse.webservices.v7.stubs.replication.ReplicatedRecord) record).getStatus());
@@ -61,6 +70,10 @@ public class StubUtils {
 				return ish.oncourse.webservices.v11.stubs.replication.Status.SUCCESS.equals(
 						((ish.oncourse.webservices.v11.stubs.replication.ReplicatedRecord) record).getStatus());
 
+			case V12:
+				return ish.oncourse.webservices.v12.stubs.replication.Status.SUCCESS.equals(
+						((ish.oncourse.webservices.v12.stubs.replication.ReplicatedRecord) record).getStatus());
+
 			default:
 				throw new IllegalArgumentException("This stub version is not supported");
 		}
@@ -70,9 +83,11 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByReplicatedRecord(record);
 
 		switch (version) {
+
 			case V6:
 				return ish.oncourse.webservices.v6.stubs.replication.Status.FAILED.equals(
 						((ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) record).getStatus());
+
 			case V7:
 				return ish.oncourse.webservices.v7.stubs.replication.Status.FAILED.equals(
 						((ish.oncourse.webservices.v7.stubs.replication.ReplicatedRecord) record).getStatus());
@@ -89,6 +104,10 @@ public class StubUtils {
 				return ish.oncourse.webservices.v11.stubs.replication.Status.FAILED.equals(
 						((ish.oncourse.webservices.v11.stubs.replication.ReplicatedRecord) record).getStatus());
 
+			case V12:
+				return ish.oncourse.webservices.v12.stubs.replication.Status.FAILED.equals(
+						((ish.oncourse.webservices.v12.stubs.replication.ReplicatedRecord) record).getStatus());
+
 			default:
 				throw new IllegalArgumentException("This stub version is not supported");
 		}
@@ -98,10 +117,12 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByReplicatedRecord(record);
 
 		switch (version) {
+
 			case V6:
 				((ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v6.stubs.replication.Status.SUCCESS);
 				break;
+
 			case V7:
 				((ish.oncourse.webservices.v7.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v7.stubs.replication.Status.SUCCESS);
@@ -122,6 +143,11 @@ public class StubUtils {
 						ish.oncourse.webservices.v11.stubs.replication.Status.SUCCESS);
 				break;
 
+			case V12:
+				((ish.oncourse.webservices.v12.stubs.replication.ReplicatedRecord) record).setStatus(
+						ish.oncourse.webservices.v12.stubs.replication.Status.SUCCESS);
+				break;
+
 			default:
 				throw new IllegalArgumentException("This stub version is not supported");
 		}
@@ -131,10 +157,12 @@ public class StubUtils {
 		SupportedVersions version = PortHelper.getVersionByReplicatedRecord(record);
 
 		switch (version) {
+
 			case V6:
 				((ish.oncourse.webservices.v6.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v6.stubs.replication.Status.FAILED);
 				break;
+
 			case V7:
 				((ish.oncourse.webservices.v7.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v7.stubs.replication.Status.FAILED);
@@ -153,6 +181,11 @@ public class StubUtils {
 			case V11:
 				((ish.oncourse.webservices.v11.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v11.stubs.replication.Status.FAILED);
+				break;
+
+			case V12:
+				((ish.oncourse.webservices.v12.stubs.replication.ReplicatedRecord) record).setStatus(
+						ish.oncourse.webservices.v12.stubs.replication.Status.FAILED);
 				break;
 
 			default:

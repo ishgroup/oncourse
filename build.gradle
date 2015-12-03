@@ -28,7 +28,8 @@ ext {
 						   7,  // introduced in onCourse 5.1
                            9,   // introduced in onCourse 7.1
                            10,  // introduced in onCourse 7.4
-                           11   // introduced in onCourse 8.2
+                           11,  // introduced in onCourse 8.2
+						   12   // introduced in onCourse 8.7
     ]
     referenceVersions = [   4,  // introduced in onCourse 5.1
                             5,  // introduced in onCourse 7.4
