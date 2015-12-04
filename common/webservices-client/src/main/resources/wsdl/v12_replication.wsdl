@@ -560,6 +560,8 @@
 							<xs:element name="availableOnWeb" type="xs:boolean"/>
 							<xs:element name="minEnrolments" type="xs:int"/>
 							<xs:element name="minValue" type="xs:decimal"/>
+							<xs:element name="validFromOffset" type="xs:int"/>
+							<xs:element name="validToOffset" type="xs:int"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -762,6 +764,8 @@
 						<xs:sequence>
 							<xs:element name="courseClassId" type="xs:long" />
 							<xs:element name="discountId" type="xs:long" />
+							<xs:element name="discountAmount" type="xs:decimal" />
+							<xs:element name="discountRate" type="xs:decimal" />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>

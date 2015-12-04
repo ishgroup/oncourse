@@ -1,6 +1,7 @@
 
 package ish.oncourse.webservices.v12.stubs.replication;
 
+import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -21,6 +22,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *       &lt;sequence>
  *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="discountId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="discountAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
+ *         &lt;element name="discountRate" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -32,7 +35,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "discountCourseClassStub", propOrder = {
     "courseClassId",
-    "discountId"
+    "discountId",
+    "discountAmount",
+    "discountRate"
 })
 public class DiscountCourseClassStub
     extends ReplicationStub
@@ -46,6 +51,10 @@ public class DiscountCourseClassStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long discountId;
+    @XmlElement(required = true)
+    protected BigDecimal discountAmount;
+    @XmlElement(required = true)
+    protected BigDecimal discountRate;
 
     /**
      * Gets the value of the courseClassId property.
@@ -93,6 +102,54 @@ public class DiscountCourseClassStub
      */
     public void setDiscountId(Long value) {
         this.discountId = value;
+    }
+
+    /**
+     * Gets the value of the discountAmount property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getDiscountAmount() {
+        return discountAmount;
+    }
+
+    /**
+     * Sets the value of the discountAmount property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setDiscountAmount(BigDecimal value) {
+        this.discountAmount = value;
+    }
+
+    /**
+     * Gets the value of the discountRate property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getDiscountRate() {
+        return discountRate;
+    }
+
+    /**
+     * Sets the value of the discountRate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setDiscountRate(BigDecimal value) {
+        this.discountRate = value;
     }
 
 }

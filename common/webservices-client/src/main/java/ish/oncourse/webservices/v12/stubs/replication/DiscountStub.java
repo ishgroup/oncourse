@@ -41,6 +41,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="availableOnWeb" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="minEnrolments" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="minValue" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
+ *         &lt;element name="validFromOffset" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="validToOffset" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -70,7 +72,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "hideOnWeb",
     "availableOnWeb",
     "minEnrolments",
-    "minValue"
+    "minValue",
+    "validFromOffset",
+    "validToOffset"
 })
 public class DiscountStub
     extends ReplicationStub
@@ -136,6 +140,14 @@ public class DiscountStub
     protected Integer minEnrolments;
     @XmlElement(required = true)
     protected BigDecimal minValue;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer validFromOffset;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer validToOffset;
 
     /**
      * Gets the value of the code property.
@@ -615,6 +627,54 @@ public class DiscountStub
      */
     public void setMinValue(BigDecimal value) {
         this.minValue = value;
+    }
+
+    /**
+     * Gets the value of the validFromOffset property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getValidFromOffset() {
+        return validFromOffset;
+    }
+
+    /**
+     * Sets the value of the validFromOffset property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setValidFromOffset(Integer value) {
+        this.validFromOffset = value;
+    }
+
+    /**
+     * Gets the value of the validToOffset property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getValidToOffset() {
+        return validToOffset;
+    }
+
+    /**
+     * Sets the value of the validToOffset property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setValidToOffset(Integer value) {
+        this.validToOffset = value;
     }
 
 }
