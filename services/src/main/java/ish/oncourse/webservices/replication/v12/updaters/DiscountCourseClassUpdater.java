@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v12.updaters;
 
+import ish.math.Money;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountCourseClass;
@@ -15,5 +16,9 @@ public class DiscountCourseClassUpdater extends AbstractWillowUpdater<DiscountCo
 		entity.setCreated(stub.getCreated());
 		entity.setDiscount(callback.updateRelationShip(stub.getDiscountId(), Discount.class));
 		entity.setModified(stub.getModified());
+		if (stub.getDiscountAmount() != null) {
+			entity.setDiscountAmount(Money.valueOf(stub.getDiscountAmount()));
+		}
+		entity.setDiscountRate(stub.getDiscountRate());
 	}
 }

@@ -155,7 +155,9 @@
             hideOnWeb="0"
 			isAvailableOnWeb="1"
 			minEnrolments="1"
-			minValue="0"/>
+			minValue="0"
+			validFromOffset="-5"
+			validToOffset="5"/>
 
     <Enrolment id="1" angelId="2" source="W" collegeId="3" courseClassId="1"
                studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"

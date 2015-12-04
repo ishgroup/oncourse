@@ -1651,7 +1651,7 @@
 	<obj-entity name="DiscountCourseClass" className="ish.oncourse.model.DiscountCourseClass" dbEntityName="DiscountCourseClass">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="discountAmount" type="java.math.BigDecimal" db-attribute-path="discountAmount"/>
+		<obj-attribute name="discountAmount" type="ish.math.Money" db-attribute-path="discountAmount"/>
 		<obj-attribute name="discountRate" type="java.math.BigDecimal" db-attribute-path="discountRate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>

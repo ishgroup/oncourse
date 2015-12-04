@@ -51,6 +51,8 @@ public class DiscountStubBuilder extends AbstractWillowStubBuilder<Discount, Dis
 		if (entity.getMinValue() != null) {
 			stub.setMinValue(entity.getMinValue().toBigDecimal());
 		}
+		stub.setValidFromOffset(entity.getValidFromOffset());
+		stub.setValidToOffset(entity.getValidToOffset());
 		return stub;
 	}
 

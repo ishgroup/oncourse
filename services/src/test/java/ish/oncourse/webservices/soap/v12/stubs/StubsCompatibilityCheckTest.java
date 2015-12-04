@@ -201,7 +201,17 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		discountParameters.add(new ReplicationStubFieldParameter("availableOnWeb", Boolean.class));
 		discountParameters.add(new ReplicationStubFieldParameter("minValue", BigDecimal.class));
 		discountParameters.add(new ReplicationStubFieldParameter("minEnrolments", Integer.class));
+		discountParameters.add(new ReplicationStubFieldParameter("validFromOffset", Integer.class));
+		discountParameters.add(new ReplicationStubFieldParameter("validToOffset", Integer.class));
 		stubsPropertyMap.put(getStubName(DiscountStub.class), discountParameters);
+
+		final List<ReplicationStubFieldParameter> discountCourseClassParameters = fillDefaultReplicationStubFields();
+		discountCourseClassParameters.add(new ReplicationStubFieldParameter("courseClassId", Long.class));
+		discountCourseClassParameters.add(new ReplicationStubFieldParameter("discountId", Long.class));
+		discountCourseClassParameters.add(new ReplicationStubFieldParameter("discountAmount", BigDecimal.class));
+		discountCourseClassParameters.add(new ReplicationStubFieldParameter("discountRate", BigDecimal.class));
+		stubsPropertyMap.put(getStubName(DiscountCourseClassStub.class), discountCourseClassParameters);
+
 
 		List<ReplicationStubFieldParameter> enrolmentParameters = fillDefaultReplicationStubFields();
 		enrolmentParameters.add(new ReplicationStubFieldParameter("reasonForStudy", Integer.class));
@@ -816,6 +826,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testDiscountStub() {
 		final GenericReplicationStub stub = new DiscountStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testDiscountCourseClassStub() {
+		final GenericReplicationStub stub = new DiscountCourseClassStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 
