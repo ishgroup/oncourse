@@ -3800,5 +3800,37 @@
 			ALTER TABLE WebUrlAlias DROP COLUMN webSiteId;
 		</sql>
 	</changeSet>
-	
+
+	<changeSet id="246" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<not>
+					<columnExists tableName="Discount" columnName="validFromOffset"/>
+				</not>
+				<not>
+					<columnExists tableName="Discount" columnName="validToOffset"/>
+				</not>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE Discount ADD COLUMN validFromOffset INTEGER, ADD COLUMN validToOffset INTEGER;
+		</sql>
+	</changeSet>
+
+	<changeSet id="247" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<not>
+					<columnExists tableName="DiscountCourseClass" columnName="discountDollar"/>
+				</not>
+				<not>
+					<columnExists tableName="DiscountCourseClass" columnName="discountPercent"/>
+				</not>
+			</and>
+		</preConditions>
+		<sql>
+			ALTER TABLE DiscountCourseClass ADD COLUMN discountDollar DECIMAL(10,2), ADD COLUMN discountPercent DECIMAL(6,3);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

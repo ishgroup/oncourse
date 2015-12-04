@@ -76,7 +76,11 @@ public abstract class _Discount extends CayenneDataObject {
     @Deprecated
     public static final String VALID_FROM_PROPERTY = "validFrom";
     @Deprecated
+    public static final String VALID_FROM_OFFSET_PROPERTY = "validFromOffset";
+    @Deprecated
     public static final String VALID_TO_PROPERTY = "validTo";
+    @Deprecated
+    public static final String VALID_TO_OFFSET_PROPERTY = "validToOffset";
     @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
     @Deprecated
@@ -116,7 +120,9 @@ public abstract class _Discount extends CayenneDataObject {
     public static final Property<byte[]> STUDENTS_QUALIFIER = new Property<byte[]>("studentsQualifier");
     public static final Property<String> TIME_ZONE = new Property<String>("timeZone");
     public static final Property<Date> VALID_FROM = new Property<Date>("validFrom");
+    public static final Property<Integer> VALID_FROM_OFFSET = new Property<Integer>("validFromOffset");
     public static final Property<Date> VALID_TO = new Property<Date>("validTo");
+    public static final Property<Integer> VALID_TO_OFFSET = new Property<Integer>("validToOffset");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<List<CorporatePassDiscount>> CORPORATE_PASS_DISCOUNTS = new Property<List<CorporatePassDiscount>>("corporatePassDiscounts");
     public static final Property<List<DiscountConcessionType>> DISCOUNT_CONCESSION_TYPES = new Property<List<DiscountConcessionType>>("discountConcessionTypes");
@@ -292,11 +298,25 @@ public abstract class _Discount extends CayenneDataObject {
         return (Date)readProperty("validFrom");
     }
 
+    public void setValidFromOffset(Integer validFromOffset) {
+        writeProperty("validFromOffset", validFromOffset);
+    }
+    public Integer getValidFromOffset() {
+        return (Integer)readProperty("validFromOffset");
+    }
+
     public void setValidTo(Date validTo) {
         writeProperty("validTo", validTo);
     }
     public Date getValidTo() {
         return (Date)readProperty("validTo");
+    }
+
+    public void setValidToOffset(Integer validToOffset) {
+        writeProperty("validToOffset", validToOffset);
+    }
+    public Integer getValidToOffset() {
+        return (Integer)readProperty("validToOffset");
     }
 
     public void setCollege(College college) {
