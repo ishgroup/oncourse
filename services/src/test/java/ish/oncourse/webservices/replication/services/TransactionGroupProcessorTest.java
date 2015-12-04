@@ -128,7 +128,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         for (GenericReplicationStub replicationStub : replicationStubs) {
             if (replicationStub instanceof GenericEnrolmentStub) {
                 ((GenericEnrolmentStub)replicationStub).setStudentId(2L);
-                ((ish.oncourse.webservices.v12.stubs.replication.EnrolmentStub)replicationStub).setInvoiceLineId(1L);
+                ((ish.oncourse.webservices.v11.stubs.replication.EnrolmentStub)replicationStub).setInvoiceLineId(1L);
             }
             else if (replicationStub instanceof GenericPaymentInStub) {
                 ((GenericPaymentInStub) replicationStub).setContactId(2L);

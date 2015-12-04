@@ -206,7 +206,7 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), getMessage(AbstractWillowUpdater.APPLICATION_ENTITY_NAME));
 		//illegal entity
 		testIncorrectRelation(prepareV12Updater(),
-				prepareV11Stub(PaymentOut.class.getSimpleName()),
+				prepareV12Stub(PaymentOut.class.getSimpleName()),
 				getMessageForIllegalEntity(PaymentOut.class.getSimpleName()));
 	}
 	
