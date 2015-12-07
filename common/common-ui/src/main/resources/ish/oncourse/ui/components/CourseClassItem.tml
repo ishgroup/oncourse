@@ -56,7 +56,7 @@
                     <div class="tutor">
                         <t:loop source="visibleTutorRoles" value="tutorRole" index="index">
                             <a class="nyromodal" itemprop="performers" href="/tutor/${tutorRole.tutor.angelId}"
-                               title="View tutor profile">${tutorRole.tutor.fullName}
+                               title="View tutor profile">${tutorName}
                             </a>
                             <t:if test="lastIndex" negate="true">
                                 ,

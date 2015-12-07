@@ -2,10 +2,7 @@ package ish.oncourse.ui.components;
 
 import ish.math.Money;
 import ish.oncourse.components.ISHCommon;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.TutorRole;
+import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -25,7 +22,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.text.*;
+import java.text.Format;
 import java.util.*;
 
 import static ish.oncourse.utils.SessionUtils.StartEndTime;
@@ -44,7 +41,7 @@ public class CourseClassItem extends ISHCommon {
 
 	@Inject
 	private ICookiesService cookiesService;
-	
+
 	@Inject
 	private PreferenceController preferenceController;
 
@@ -98,7 +95,7 @@ public class CourseClassItem extends ISHCommon {
 
 	@Property
 	private List<StartEndTime> sessionDays;
-	
+
 	@Parameter
 	@Property
 	private boolean allowByAplication;
@@ -147,7 +144,7 @@ public class CourseClassItem extends ISHCommon {
 		String detail = textileConverter.convertCustomTextile(courseClass.getDetail(), new ValidationErrors());
 		return detail == null ? StringUtils.EMPTY : detail;
 	}
-	
+
 	private List<TutorRole> initVisibleTutorRoles() {
 		visibleTutorRoles = new ArrayList<>();
 		for (TutorRole role : courseClass.getTutorRoles()) {
@@ -160,6 +157,15 @@ public class CourseClassItem extends ISHCommon {
 
 	public boolean isHasTutorRoles() {
 		return courseClass.getTutorRoles().size() > 0;
+	}
+
+	public String getTutorName() {
+		Contact contact = tutorRole.getTutor().getContact();
+		if (Boolean.TRUE.equals(contact.getIsCompany())) {
+			return contact.getFamilyName();
+		} else {
+			return String.format("%s %s", contact.getGivenName(), contact.getFamilyName());
+		}
 	}
 
 	public boolean isHasLinkToLocation() {
@@ -214,14 +220,14 @@ public class CourseClassItem extends ISHCommon {
 		return String.format(key, isHasSessionsInTheSameDay() ? numberOfDay : numberOfSession,
 				FormatUtils.hoursFormat.format(courseClass.getTotalDurationHours().doubleValue()));
 	}
-	
+
 	public String getExpectedHours() {
-		return (courseClass.getIsDistantLearningCourse() && courseClass.getExpectedHours() != null) ? 
+		return (courseClass.getIsDistantLearningCourse() && courseClass.getExpectedHours() != null) ?
 				String.format("Approximately %.0f hours", courseClass.getExpectedHours().doubleValue()) : StringUtils.EMPTY;
 	}
-	
+
 	public String getMaximumDaysToComplete() {
-		return (courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null ? 
+		return (courseClass.getIsDistantLearningCourse() && courseClass.getMaximumDays() != null ?
 			String.format("%.0f maximum days to complete", courseClass.getMaximumDays().doubleValue()) : StringUtils.EMPTY);
 	}
 
@@ -253,17 +259,17 @@ public class CourseClassItem extends ISHCommon {
 	public boolean isFinishedClass() {
 		return !courseClass.isCancelled() && courseClass.hasEnded();
 	}
-	
+
 	public boolean isHasAvailableEnrolmentPlaces() {
 		return courseClass != null &&
 				courseClass.isHasAvailableEnrolmentPlaces() &&
 				new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check();
 	}
-	
+
 	public boolean isPaymentGatewayEnabled() {
 		return courseClass != null && preferenceController.isPaymentGatewayEnabled();
 	}
-	
+
 	public boolean isHasManySessions() {
 		return sessionDays.size() > 1 && courseClass != null && courseClass.isHasManySessions() && courseClass.isSessionsHaveDifferentTimes();
 	}
@@ -272,7 +278,7 @@ public class CourseClassItem extends ISHCommon {
 		List<Long> classIds = cookiesService.getCookieCollectionValue(CourseClass.SHORTLIST_COOKIE_KEY, Long.class);
 		return classIds.contains(courseClass.getId());
 	}
-	
+
 	public boolean isSelfPacedClass() {
 		return courseClass.getIsDistantLearningCourse();
 	}
