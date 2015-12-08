@@ -34,7 +34,7 @@
 	
 	<context-param>
     	<param-name>liquibase.datasource</param-name>
-    	<param-value>java:comp/env/jdbc/oncourse</param-value>
+    	<param-value>java:comp/env/jdbc/willow-alter</param-value>
 	</context-param>
   
 	<context-param>
