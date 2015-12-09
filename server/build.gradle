@@ -101,6 +101,9 @@ dependencies {
 
 	compile 'org.reflections:reflections:0.9.10'
 
+	// Needed for log4j to json or gelf formats
+	compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
+
 	compile 'org.apache.activemq:activemq-broker:5.12.1'
 	compile ('org.apache.activemq:activemq-http:5.12.1') {
 		exclude group: 'org.eclipse.jetty.aggregate'
