@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="discountId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="discountAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
- *         &lt;element name="discountRate" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -36,8 +35,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "discountCourseClassStub", propOrder = {
     "courseClassId",
     "discountId",
-    "discountAmount",
-    "discountRate"
+    "discountAmount"
 })
 public class DiscountCourseClassStub
     extends ReplicationStub
@@ -53,8 +51,6 @@ public class DiscountCourseClassStub
     protected Long discountId;
     @XmlElement(required = true)
     protected BigDecimal discountAmount;
-    @XmlElement(required = true)
-    protected BigDecimal discountRate;
 
     /**
      * Gets the value of the courseClassId property.
@@ -126,30 +122,6 @@ public class DiscountCourseClassStub
      */
     public void setDiscountAmount(BigDecimal value) {
         this.discountAmount = value;
-    }
-
-    /**
-     * Gets the value of the discountRate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getDiscountRate() {
-        return discountRate;
-    }
-
-    /**
-     * Sets the value of the discountRate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setDiscountRate(BigDecimal value) {
-        this.discountRate = value;
     }
 
 }

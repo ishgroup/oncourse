@@ -765,7 +765,6 @@
 							<xs:element name="courseClassId" type="xs:long" />
 							<xs:element name="discountId" type="xs:long" />
 							<xs:element name="discountAmount" type="xs:decimal" />
-							<xs:element name="discountRate" type="xs:decimal" />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>

@@ -154,7 +154,7 @@ public class DiscountUtils {
 	 * @return
 	 */
 
-	public static DiscountCourseClassInterface chooseDiscountForApply(List<DiscountCourseClassInterface> classDiscounts, Money feeExGst, BigDecimal taxRate) {
+	public static DiscountCourseClassInterface chooseDiscountForApply(List<? extends DiscountCourseClassInterface> classDiscounts, Money feeExGst, BigDecimal taxRate) {
 		if (classDiscounts != null && !classDiscounts.isEmpty()) {
 
 			List<DiscountCourseClassInterface> negativeDiscounts = new LinkedList<>();
@@ -192,7 +192,7 @@ public class DiscountUtils {
 		return null;
 	}
 
-	private static DiscountCourseClassInterface getByAbsoluteValue(List<DiscountCourseClassInterface> classDiscounts, Money feeExGst, BigDecimal taxRate) {
+	private static DiscountCourseClassInterface getByAbsoluteValue(List<? extends DiscountCourseClassInterface> classDiscounts, Money feeExGst, BigDecimal taxRate) {
 		Money maxDiscount = Money.ZERO;
 		DiscountCourseClassInterface bestDeal = null;
 		for (DiscountCourseClassInterface classDiscount : classDiscounts) {
