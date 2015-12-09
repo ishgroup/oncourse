@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 public class UrlUtil {
 	
-	public static final String PORTAL_URL = "https://skillsoncourse.com.au/portal";
+	public static final String PORTAL_URL = "https://www.skillsoncourse.com.au/portal";
 	
 	public static final String EXPIRY_DATE_FORMAT = "yyyyMMdd";
 	
@@ -31,7 +31,6 @@ public class UrlUtil {
 	public static final String KEY = "key";
 
     private static final Pattern PORTAL_LINK_PATTERN = Pattern.compile("https://(.*)/portal(.*)&key=");
-	private static final Pattern GENERIC_LINK_PATTERN = Pattern.compile("(.*)&key=");
 
 	/**
 	 * Creates link to portal's USI details entry page and signs it with hash.
@@ -47,10 +46,10 @@ public class UrlUtil {
 	 * @param expiry - URL expiry date
 	 * @param hashSalt - salt for hashing
 	 * @return - temporary URL to portal USI details collection page
-	 * @deprecated use {@link UrlUtil#signUrl(String, Date, String)} instead
+	 * @deprecated use {@link UrlUtil#createSignedPortalUrl(String, Date, String)} instead
 	 */
 	public static String createPortalUsiLink(String contactCode, Date expiry, String hashSalt) {
-		
+
 		if (StringUtils.trimToNull(contactCode) == null) {
 			throw new IllegalArgumentException("Contact unique code cannot be null.");
 		}
@@ -60,11 +59,11 @@ public class UrlUtil {
 		if (expiry == null) {
 			throw new IllegalArgumentException("Expiry date cannot be null.");
 		}
-		
+
 		DateFormat expiryDateFormat = new SimpleDateFormat(EXPIRY_DATE_FORMAT);
-		
+
 		StringBuilder urlBuilder = new StringBuilder();
-		
+
 		urlBuilder.append(URL_PART_DELIMITER);
 		urlBuilder.append(USI_PART);
 		urlBuilder.append(URL_PART_DELIMITER);
@@ -72,15 +71,15 @@ public class UrlUtil {
 		urlBuilder.append(URL_PARAM_START);
 		urlBuilder.append(VALID_UNTIL).append('=');
 		urlBuilder.append(expiryDateFormat.format(expiry));
-		
+
 		String unsignedUrl = urlBuilder.toString();
 
 		String hashKey = sha1Base64(hashSalt + unsignedUrl);
-		
+
 		urlBuilder.append(URL_PARAM_DELIMITER);
 		urlBuilder.append(KEY).append('=');
 		urlBuilder.append(hashKey);
-		
+
 		return PORTAL_URL + urlBuilder.toString();
 	}
 
@@ -92,25 +91,24 @@ public class UrlUtil {
 	 * @param validUntil - URL will be considered expired and therefore invalid its expiry date is
 	 *                   before this date   
 	 * @return - true if URL is valid and not expired
-	 * @deprecated use {@link UrlUtil#validateSignedUrl(String, String, Date)} instead
+	 * @deprecated use {@link UrlUtil#validateSignedPortalUrl(String, String, Date)} instead
 	 */
 	public static boolean validatePortalUsiLink(String link, String salt, Date validUntil) {
-
 		Matcher linkMatcher = PORTAL_LINK_PATTERN.matcher(link);
-		
+
 		if (linkMatcher.find()) {
 			String strippedLink = linkMatcher.group(2);
-			
+
 			Pattern expiryPattern = Pattern.compile("valid=(.*)");
 			Matcher expiryMatcher = expiryPattern.matcher(strippedLink);
-			
+
 			if (expiryMatcher.find()) {
 				DateFormat expiryDateFormat = new SimpleDateFormat(EXPIRY_DATE_FORMAT);
-				
+
 				String dateStr = expiryMatcher.group(1);
 
 				Date expiryDate;
-				
+
 				try {
 					expiryDate = expiryDateFormat.parse(dateStr);
 				} catch (ParseException e) {
@@ -129,26 +127,27 @@ public class UrlUtil {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
 	/**
-	 * Transforms given URL into signed URL by appending 'valid' and 'key' parameters.
+	 * Transforms given path into signed portal URL by prepending 'https://www.skillsoncourse.com.au/portal'
+	 * and appending 'valid' and 'key' parameters.
 	 *
 	 * Complete URL will look like this:
 	 *
-	 * https://skillsoncourse.com.au/portal/usi/uniqueCode?valid=21140101&key=k9_S8uk68W5PoCvq5lSUp70sqQY
+	 * https://www.skillsoncourse.com.au/portal/usi/uniqueCode?valid=21140101&key=k9_S8uk68W5PoCvq5lSUp70sqQY
 	 *
 	 *
-	 * @param url - unsigned URL
+	 * @param path - portal page path
 	 * @param expiry - URL expiry date
 	 * @param hashSalt - salt for hashing
 	 * @return - temporary signed URL
 	 */
-	public static String signUrl(String url, Date expiry, String hashSalt) {
-		if (StringUtils.trimToNull(url) == null) {
-			throw new IllegalArgumentException("URL cannnot be null.");
+	public static String createSignedPortalUrl(String path, Date expiry, String hashSalt) {
+		if (StringUtils.trimToNull(path) == null) {
+			throw new IllegalArgumentException("Path cannot be null.");
 		}
 		if (StringUtils.trimToNull(hashSalt) == null) {
 			throw new IllegalArgumentException("Hash salt cannot be null.");
@@ -159,9 +158,13 @@ public class UrlUtil {
 
 		DateFormat expiryDateFormat = new SimpleDateFormat(EXPIRY_DATE_FORMAT);
 
-		StringBuilder urlBuilder = new StringBuilder(url);
+		StringBuilder urlBuilder = new StringBuilder();
 
-		if (!url.contains(URL_PARAM_START)) {
+		if (!path.startsWith(URL_PART_DELIMITER)) {
+			urlBuilder.append(URL_PART_DELIMITER);
+		}
+		urlBuilder.append(path);
+		if (!path.contains(URL_PARAM_START)) {
 			urlBuilder.append(URL_PARAM_START);
 		} else {
 			urlBuilder.append(URL_PARAM_DELIMITER);
@@ -177,11 +180,11 @@ public class UrlUtil {
 		urlBuilder.append(KEY).append('=');
 		urlBuilder.append(hashKey);
 
-		return urlBuilder.toString();
+		return PORTAL_URL + urlBuilder.toString();
 	}
 
 	/**
-	 * Checks validity of given signed URL.
+	 * Checks validity of given signed portal URL.
 	 *
 	 * @param url - signed URL
 	 * @param salt - salt used to verify hash
@@ -189,11 +192,11 @@ public class UrlUtil {
 	 *                   before this date
 	 * @return - true if URL is valid and not expired
 	 */
-	public static boolean validateSignedUrl(String url, String salt, Date validUntil) {
-		Matcher linkMatcher = GENERIC_LINK_PATTERN.matcher(url);
+	public static boolean validateSignedPortalUrl(String url, String salt, Date validUntil) {
+		Matcher linkMatcher = PORTAL_LINK_PATTERN.matcher(url);
 
 		if (linkMatcher.find()) {
-			String strippedLink = linkMatcher.group(1);
+			String strippedLink = linkMatcher.group(2);
 
 			Pattern expiryPattern = Pattern.compile("valid=(.*)");
 			Matcher expiryMatcher = expiryPattern.matcher(strippedLink);
