@@ -3833,4 +3833,22 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="248" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="DiscountCourseClass" columnName="discountPercent"/>
+		</preConditions>
+		<sql>
+			ALTER TABLE DiscountCourseClass DROP COLUMN discountPercent;
+		</sql>
+	</changeSet>
+
+	<changeSet id="249" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="DiscountCourseClass" columnName="discountDollar"/>
+		</preConditions>
+		<sql>
+			ALTER TABLE DiscountCourseClass CHANGE COLUMN discountDollar discountAmount DECIMAL(10,2);
+		</sql>
+	</changeSet>
+	
 </databaseChangeLog>

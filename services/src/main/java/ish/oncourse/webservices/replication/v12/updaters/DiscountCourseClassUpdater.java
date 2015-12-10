@@ -19,6 +19,5 @@ public class DiscountCourseClassUpdater extends AbstractWillowUpdater<DiscountCo
 		if (stub.getDiscountAmount() != null) {
 			entity.setDiscountAmount(Money.valueOf(stub.getDiscountAmount()));
 		}
-		entity.setDiscountRate(stub.getDiscountRate());
 	}
 }

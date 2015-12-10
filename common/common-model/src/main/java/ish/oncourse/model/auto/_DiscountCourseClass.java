@@ -1,6 +1,5 @@
 package ish.oncourse.model.auto;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.cayenne.CayenneDataObject;
@@ -28,8 +27,6 @@ public abstract class _DiscountCourseClass extends CayenneDataObject {
     @Deprecated
     public static final String DISCOUNT_AMOUNT_PROPERTY = "discountAmount";
     @Deprecated
-    public static final String DISCOUNT_RATE_PROPERTY = "discountRate";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
     @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
@@ -43,7 +40,6 @@ public abstract class _DiscountCourseClass extends CayenneDataObject {
     public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<Money> DISCOUNT_AMOUNT = new Property<Money>("discountAmount");
-    public static final Property<BigDecimal> DISCOUNT_RATE = new Property<BigDecimal>("discountRate");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
@@ -68,13 +64,6 @@ public abstract class _DiscountCourseClass extends CayenneDataObject {
     }
     public Money getDiscountAmount() {
         return (Money)readProperty("discountAmount");
-    }
-
-    public void setDiscountRate(BigDecimal discountRate) {
-        writeProperty("discountRate", discountRate);
-    }
-    public BigDecimal getDiscountRate() {
-        return (BigDecimal)readProperty("discountRate");
     }
 
     public void setModified(Date modified) {

@@ -394,7 +394,6 @@
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="discountAmount" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="discountRate" type="DECIMAL" length="6" scale="3"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
@@ -1652,7 +1651,6 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="discountAmount" type="ish.math.Money" db-attribute-path="discountAmount"/>
-		<obj-attribute name="discountRate" type="java.math.BigDecimal" db-attribute-path="discountRate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
 	<obj-entity name="DiscountMembership" className="ish.oncourse.model.DiscountMembership" dbEntityName="DiscountMembership">
