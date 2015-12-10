@@ -3,11 +3,16 @@ package ish.util;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
+import javax.swing.text.DateFormatter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -134,5 +139,14 @@ public class DateTimeUtilTest {
 
 		Date expectedDate = DateUtils.truncate(gc, Calendar.DATE).getTime();
 		assertEquals(testDate, expectedDate);
+	}
+
+
+	@Test
+	public void testGetDifferenceInDays() throws ParseException {
+		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		assertEquals(2, DateTimeUtil.getDifferenceInDays(format.parse("01/03/2015 23:59:59"), format.parse("01/01/2015 00:00:01")));
+		assertEquals(-2, DateTimeUtil.getDifferenceInDays(format.parse("01/01/2015 23:59:59"), format.parse("01/03/2015 00:00:01")));
+		assertEquals(0, DateTimeUtil.getDifferenceInDays(format.parse("01/01/2015 23:59:59"), format.parse("01/01/2015 00:00:01")));
 	}
 }

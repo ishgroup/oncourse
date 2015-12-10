@@ -4,6 +4,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Set of basic, utility methods for java.util.Date and java.util.Calendar classes. Sometimes wonder why those methods are not a part of java itself.
@@ -96,5 +97,18 @@ public final class DateTimeUtil {
 		Calendar gc = Calendar.getInstance();
 		gc.set(Calendar.DAY_OF_MONTH, 1);
 		return trancateToMidnight(gc.getTime());
+	}
+
+	/**
+	 * Compute difference in days between two dates (ignore time)
+	 *
+	 * @param date1
+	 * @param date2 to add
+	 * @return negative value if date1 before date2, return positive value if  date1 after date2, return 0 if date1 and date2 are the same day
+	 */
+	
+	public static int getDifferenceInDays(Date date1, Date date2) {
+		Long days = TimeUnit.DAYS.convert(DateUtils.truncate(date1, Calendar.DAY_OF_MONTH).getTime() - DateUtils.truncate(date2, Calendar.DAY_OF_MONTH).getTime(), TimeUnit.MILLISECONDS);
+		return days.intValue();
 	}
 }
