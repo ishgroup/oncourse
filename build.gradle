@@ -78,6 +78,14 @@ allprojects {
 					password nexusPassword
 				}
 			}
+			maven {
+				name "releases"
+				url "https://repo.ish.com.au/content/repositories/ish-releases"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
+			}
 		}
 	}
 
