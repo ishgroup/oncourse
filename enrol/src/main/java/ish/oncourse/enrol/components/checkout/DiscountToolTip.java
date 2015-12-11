@@ -14,8 +14,5 @@ public class DiscountToolTip {
 
     @Parameter(required = true)
     @Property
-    private List<Discount> discounts;
-
-    @Property
     private Discount discount;
 }

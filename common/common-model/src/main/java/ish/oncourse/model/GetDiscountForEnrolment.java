@@ -7,6 +7,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.utils.MembershipDiscountHelper;
 import ish.oncourse.utils.WebDiscountUtils;
+import ish.util.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
@@ -29,20 +30,20 @@ public class GetDiscountForEnrolment {
 	 */
 	public static final String AGE_OVER = ">";
 	
-	private List<Discount> classDiscounts;
+	private List<DiscountCourseClass> classDiscounts;
 	private List<Discount> addedPromos;
 	private CorporatePass corporatePass;
 	private int enabledEnrolmentsCount;
 	private Money totalInvoicesAmount;
 	private Enrolment currentEnrolment;
 
-	private List<Discount> applicableDiscounts = new LinkedList<>();
+	private List<DiscountCourseClass> applicableDiscounts = new LinkedList<>();
 
-	private Discount chosenDiscount;
+	private DiscountCourseClass chosenDiscount;
 
 	private GetDiscountForEnrolment() {}
 	
-	public static GetDiscountForEnrolment valueOf(List<Discount> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
+	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
 
 		GetDiscountForEnrolment get = new GetDiscountForEnrolment();
 		get.setClassDiscounts(classDiscounts);
@@ -56,16 +57,16 @@ public class GetDiscountForEnrolment {
 
 	public GetDiscountForEnrolment get() {
 		
-		for (Discount discount : classDiscounts) {
-			if (discount.isPromotion() && !addedPromos.contains(discount)) {
+		for (DiscountCourseClass discountCourseClass : classDiscounts) {
+			if (discountCourseClass.getDiscount().isPromotion() && !addedPromos.contains(discountCourseClass.getDiscount())) {
 				continue;
-			} else if (isStudentEligibile(currentEnrolment.getStudent(), discount) && isDiscountEligibile(discount)) {
-				applicableDiscounts.add(discount);
+			} else if (isStudentEligibile(currentEnrolment.getStudent(), discountCourseClass.getDiscount()) && isDiscountEligibile(discountCourseClass.getDiscount())) {
+				applicableDiscounts.add(discountCourseClass);
 			}
 		}
 	
 		if (!applicableDiscounts.isEmpty()) {
-			chosenDiscount = WebDiscountUtils.chooseDiscountForApply(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate());
+			chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate());
 		}
 		
 		return this;
@@ -189,7 +190,7 @@ public class GetDiscountForEnrolment {
 		this.corporatePass = corporatePass;
 	}
 
-	public void setClassDiscounts(List<Discount> classDiscounts) {
+	public void setClassDiscounts(List<DiscountCourseClass> classDiscounts) {
 		this.classDiscounts = classDiscounts;
 	}
 
@@ -209,11 +210,11 @@ public class GetDiscountForEnrolment {
 		this.addedPromos = addedPromos;
 	}
 
-	public List<Discount> getApplicableDiscounts() {
+	public List<DiscountCourseClass> getApplicableDiscounts() {
 		return applicableDiscounts;
 	}
 
-	public Discount getChosenDiscount() {
+	public DiscountCourseClass getChosenDiscount() {
 		return chosenDiscount;
 	}
 }

@@ -68,14 +68,14 @@ public class EnrolmentList {
             }
 
             @Override
-            public List<Discount> getDiscounts() {
-				List<Discount> discounts = new LinkedList<>();
+            public Discount getDiscount() {
+				Discount discount = null;
 				
-				for (InvoiceLineDiscount lineDiscount : enrolment.getInvoiceLines().get(0).getInvoiceLineDiscounts()) {
-					discounts.add(lineDiscount.getDiscount());
+				if (!enrolment.getInvoiceLines().get(0).getInvoiceLineDiscounts().isEmpty()) {
+					discount = enrolment.getInvoiceLines().get(0).getInvoiceLineDiscounts().get(0).getDiscount();
 				}
 				
-				return discounts;
+				return discount;
             }
 		};
     }

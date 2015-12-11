@@ -3,15 +3,17 @@ package ish.oncourse.utils;
 import ish.common.types.DiscountType;
 import ish.math.Money;
 import ish.math.MoneyRounding;
+import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountCourseClass;
+import ish.oncourse.test.ContextUtils;
 import ish.util.DiscountUtils;
+import org.apache.cayenne.ObjectContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -26,76 +28,102 @@ public class DiscountUtilsTest {
 	/**
 	 * Combinable discount with amount=10.
 	 */
-	private static Discount combDiscountWithAmount;
+	private static DiscountCourseClass combDiscountWithAmount;
 	/**
 	 * Not combinable discount with the rate 20% and zero restrictions.
 	 */
-	private static Discount singleDiscountWithRate;
+	private static DiscountCourseClass singleDiscountWithRate;
 	/**
 	 * Combinable discount with the rate 20% and maximum 10.
 	 */
-	private static Discount combDiscountWithRateMax;
+	private static DiscountCourseClass combDiscountWithRateMax;
 	/**
 	 * Not combinable discount with the rate 10% and minimum 15.
 	 */
-	private static Discount singleDiscountWithRateMin;
+	private static DiscountCourseClass singleDiscountWithRateMin;
 
 	private static Money PRICE = new Money("100");
 
 	/**
 	 * The discount with DiscountType = percent.
 	 */
-	private static Discount percentDiscount;
+	private static DiscountCourseClass percentDiscount;
 
 	/**
 	 * The discount with DiscountType = dollar.
 	 */
-	private static Discount dollarDiscount;
+	private static DiscountCourseClass dollarDiscount;
 
 	/**
 	 * The discount with DiscountType = feeOverride.
 	 */
-	private static Discount feeOverrideDiscount;
+	private static DiscountCourseClass feeOverrideDiscount;
 
+	private static ObjectContext context;
+	
 	/**
 	 * Initializes discounts entities.
 	 */
 	@BeforeClass
-	public static void init() {
-		combDiscountWithAmount = new Discount();
-		combDiscountWithAmount.setDiscountAmount(new Money(BigDecimal.TEN));
-		combDiscountWithAmount.setCombinationType(true);
+	public static void init() throws Exception {
+		ContextUtils.setupDataSources();
+		context = ContextUtils.createObjectContext();
+		
+		Discount discount = context.newObject(Discount.class);
+		discount.setDiscountAmount(new Money(BigDecimal.TEN));
+		discount.setCombinationType(true);
+		combDiscountWithAmount = context.newObject(DiscountCourseClass.class);
+		combDiscountWithAmount.setDiscount(discount);
+		discount.addToDiscountCourseClasses(combDiscountWithAmount);
 
-		singleDiscountWithRate = new Discount();
-		singleDiscountWithRate.setDiscountRate(new BigDecimal(0.2));
-		singleDiscountWithRate.setMaximumDiscount(Money.ZERO);
-		singleDiscountWithRate.setMinimumDiscount(Money.ZERO);
-		singleDiscountWithRate.setCombinationType(false);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountRate(new BigDecimal(0.2));
+		discount.setMaximumDiscount(Money.ZERO);
+		discount.setMinimumDiscount(Money.ZERO);
+		discount.setCombinationType(false);
+		singleDiscountWithRate = context.newObject(DiscountCourseClass.class);
+		singleDiscountWithRate.setDiscount(discount);
+		discount.addToDiscountCourseClasses(singleDiscountWithRate);
 
-		combDiscountWithRateMax = new Discount();
-		combDiscountWithRateMax.setDiscountRate(new BigDecimal(0.2));
-		combDiscountWithRateMax.setMaximumDiscount(new Money(BigDecimal.TEN));
-		combDiscountWithRateMax.setCombinationType(true);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountRate(new BigDecimal(0.2));
+		discount.setMaximumDiscount(new Money(BigDecimal.TEN));
+		discount.setCombinationType(true);
+		combDiscountWithRateMax = context.newObject(DiscountCourseClass.class);
+		combDiscountWithRateMax.setDiscount(discount);
+		discount.addToDiscountCourseClasses(combDiscountWithRateMax);
 
-		singleDiscountWithRateMin = new Discount();
-		singleDiscountWithRateMin.setDiscountRate(new BigDecimal(0.1));
-		singleDiscountWithRateMin.setMinimumDiscount(new Money("15"));
-		singleDiscountWithRateMin.setCombinationType(false);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountRate(new BigDecimal(0.1));
+		discount.setMinimumDiscount(new Money("15"));
+		discount.setCombinationType(false);
+		singleDiscountWithRateMin = context.newObject(DiscountCourseClass.class);
+		singleDiscountWithRateMin.setDiscount(discount);
+		discount.addToDiscountCourseClasses(singleDiscountWithRateMin);
 
-		dollarDiscount = new Discount();
-		dollarDiscount.setDiscountRate(null);
-		dollarDiscount.setDiscountAmount(new Money(BigDecimal.TEN));
-		dollarDiscount.setDiscountType(DiscountType.DOLLAR);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountRate(null);
+		discount.setDiscountAmount(new Money(BigDecimal.TEN));
+		discount.setDiscountType(DiscountType.DOLLAR);
+		dollarDiscount = context.newObject(DiscountCourseClass.class);
+		dollarDiscount.setDiscount(discount);
+		discount.addToDiscountCourseClasses(dollarDiscount);
 
-		percentDiscount = new Discount();
-		percentDiscount.setDiscountRate(new BigDecimal(0.2));
-		percentDiscount.setDiscountAmount(null);
-		percentDiscount.setDiscountType(DiscountType.PERCENT);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountRate(new BigDecimal(0.2));
+		discount.setDiscountAmount(null);
+		discount.setDiscountType(DiscountType.PERCENT);
+		percentDiscount = context.newObject(DiscountCourseClass.class);
+		percentDiscount.setDiscount(discount);
+		discount.addToDiscountCourseClasses(percentDiscount);
 
-		feeOverrideDiscount = new Discount();
-		feeOverrideDiscount.setDiscountRate(null);
-		feeOverrideDiscount.setDiscountAmount(new Money(BigDecimal.TEN));
-		feeOverrideDiscount.setDiscountType(DiscountType.FEE_OVERRIDE);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountRate(null);
+		discount.setDiscountAmount(new Money(BigDecimal.TEN));
+		discount.setDiscountType(DiscountType.FEE_OVERRIDE);
+		feeOverrideDiscount = context.newObject(DiscountCourseClass.class);
+		feeOverrideDiscount.setDiscount(discount);
+		discount.addToDiscountCourseClasses(feeOverrideDiscount);
 	}
 
 	/**
@@ -106,34 +134,34 @@ public class DiscountUtilsTest {
 	 */
 	@Test
 	public void discountValueSmokeTest() {
-		Money discountValue = DiscountUtils.discountValue(Arrays.asList(combDiscountWithAmount), PRICE, new BigDecimal(0));
+		Money discountValue = DiscountUtils.discountValue(combDiscountWithAmount, PRICE, new BigDecimal(0));
 		assertEquals(new Money("10"), discountValue);
 
-		discountValue =  DiscountUtils.discountValue(Arrays.asList(combDiscountWithAmount), Money.ZERO, new BigDecimal(0));
+		discountValue =  DiscountUtils.discountValue(combDiscountWithAmount, Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValue);
 
-		discountValue = DiscountUtils.discountValue(Arrays.asList(combDiscountWithAmount), new Money("9"), new BigDecimal(0));
+		discountValue = DiscountUtils.discountValue(combDiscountWithAmount, new Money("9"), new BigDecimal(0));
 		assertEquals(new Money("9"), discountValue);
 
-		discountValue = DiscountUtils.discountValue(Arrays.asList(dollarDiscount), PRICE, new BigDecimal(0));
+		discountValue = DiscountUtils.discountValue(dollarDiscount, PRICE, new BigDecimal(0));
 		assertEquals(new Money("10"), discountValue);
 
-		discountValue = DiscountUtils.discountValue(Arrays.asList(percentDiscount), PRICE, new BigDecimal(0));
+		discountValue = DiscountUtils.discountValue(percentDiscount, PRICE, new BigDecimal(0));
 		assertEquals(new Money("20"), discountValue);
 
-		discountValue =  DiscountUtils.discountValue(Arrays.asList(feeOverrideDiscount), PRICE, new BigDecimal(0));
+		discountValue =  DiscountUtils.discountValue(feeOverrideDiscount, PRICE, new BigDecimal(0));
 		assertEquals(new Money("90"), discountValue);
 
 		// discount with DiscountTypes (dollar, percent and feeOverride) with
 		// zero price
 
-		discountValue = DiscountUtils.discountValue(Arrays.asList(dollarDiscount), Money.ZERO, new BigDecimal(0));
+		discountValue = DiscountUtils.discountValue(dollarDiscount, Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValue);
 
-		discountValue =DiscountUtils.discountValue(Arrays.asList(percentDiscount), Money.ZERO, new BigDecimal(0));
+		discountValue =DiscountUtils.discountValue(percentDiscount, Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValue);
 
-		discountValue = DiscountUtils.discountValue(Arrays.asList(feeOverrideDiscount), Money.ZERO, new BigDecimal(0));
+		discountValue = DiscountUtils.discountValue(feeOverrideDiscount, Money.ZERO, new BigDecimal(0));
 		assertEquals(Money.ZERO, discountValue);
 	}
 
@@ -144,68 +172,40 @@ public class DiscountUtilsTest {
 	@Test
 	public void discountValueRateWithRestrictionsTest() {
 		// Zero restrictions
-		Money discountValue = DiscountUtils.discountValue(Arrays.asList(singleDiscountWithRate), PRICE, new BigDecimal(0));
+		Money discountValue = DiscountUtils.discountValue(singleDiscountWithRate, PRICE, new BigDecimal(0));
 		assertEquals(new Money("20"), discountValue);
 		// Max restricted
-		discountValue = DiscountUtils.discountValue(Arrays.asList(combDiscountWithRateMax), PRICE, new BigDecimal(0));
-		assertTrue(PRICE.multiply(combDiscountWithRateMax.getDiscountRate()).compareTo(combDiscountWithRateMax.getMaximumDiscount()) > 0);
-		assertEquals(combDiscountWithRateMax.getMaximumDiscount(), discountValue);
+		discountValue = DiscountUtils.discountValue(combDiscountWithRateMax, PRICE, new BigDecimal(0));
+		assertTrue(PRICE.multiply(combDiscountWithRateMax.getDiscount().getDiscountRate()).compareTo(combDiscountWithRateMax.getDiscount().getMaximumDiscount()) > 0);
+		assertEquals(combDiscountWithRateMax.getDiscount().getMaximumDiscount(), discountValue);
 		// Min restricted
-		discountValue = DiscountUtils.discountValue(Arrays.asList(singleDiscountWithRateMin), PRICE, new BigDecimal(0));
-		assertTrue(PRICE.multiply(singleDiscountWithRateMin.getDiscountRate()).compareTo(singleDiscountWithRateMin.getMinimumDiscount()) < 0);
-		assertEquals(singleDiscountWithRateMin.getMinimumDiscount(), discountValue);
+		discountValue = DiscountUtils.discountValue(singleDiscountWithRateMin, PRICE, new BigDecimal(0));
+		assertTrue(PRICE.multiply(singleDiscountWithRateMin.getDiscount().getDiscountRate()).compareTo(singleDiscountWithRateMin.getDiscount().getMinimumDiscount()) < 0);
+		assertEquals(singleDiscountWithRateMin.getDiscount().getMinimumDiscount(), discountValue);
 	}
 
-	/**
-	 * Test for {@link DiscountUtils#discountValue}.
-	 * Emulates the situations when there is a filled list of discounts and
-	 * positive price, when there is a filled list of discounts and the price
-	 * that is less that discount value, when there is a null list of discounts
-	 * and positive price, when there is an empty list of discounts and positive
-	 * price and when there is a filled list of discounts and a zero price.
-	 */
-	@Test
-	public void discountValueForListTest() {
-		List<Discount> discounts = Arrays.asList(combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
-				singleDiscountWithRateMin);
-		Money discountValueForList = DiscountUtils.discountValue(discounts, PRICE, new BigDecimal(0));
-		assertEquals(new Money("55"), discountValueForList);
-		discountValueForList =DiscountUtils.discountValue(Arrays.asList(combDiscountWithAmount, singleDiscountWithRate), new Money("10"), new BigDecimal(0));
-		assertEquals(new Money("10"), discountValueForList);
-		discountValueForList = DiscountUtils.discountValue(null, PRICE, new BigDecimal(0));
-		assertEquals(Money.ZERO, discountValueForList);
-		discountValueForList = DiscountUtils.discountValue(Collections.EMPTY_LIST, PRICE, new BigDecimal(0));
-		assertEquals(Money.ZERO, discountValueForList);
-		discountValueForList = DiscountUtils.discountValue(discounts, Money.ZERO, new BigDecimal(0));
-		assertEquals(Money.ZERO, discountValueForList);
-	}
-
-	/**
-	 * Test for {@link WebDiscountUtils#chooseDiscountForApply(java.util.List, ish.math.Money, java.math.BigDecimal)}. Emulates
-	 * the situations when the discounts list parameter is null and empty.
-	 */
 	@Test
 	public void chooseBestDiscountsVariantEmptyTest() {
-		Discount chosenDiscount = WebDiscountUtils.chooseDiscountForApply(null, PRICE, new BigDecimal(0));
+		DiscountCourseClassInterface chosenDiscount = DiscountUtils.chooseDiscountForApply(null, PRICE, new BigDecimal(0));
 		assertNull(chosenDiscount);
-		chosenDiscount = WebDiscountUtils.chooseDiscountForApply(Collections.EMPTY_LIST, PRICE, new BigDecimal(0));
-		assertNull(chosenDiscount);
+		Money discountValueForList = DiscountUtils.discountValue(null, PRICE, new BigDecimal(0));
+		assertEquals(Money.ZERO, discountValueForList);
 	}
 
 	/**
-	 * Test for {@link WebDiscountUtils#chooseDiscountForApply(java.util.List, ish.math.Money, java.math.BigDecimal)}. Emulates
+	 * Test for {@link DiscountUtils#chooseDiscountForApply(java.util.List, ish.math.Money, java.math.BigDecimal)}. Emulates
 	 * the situation when the single-discount result is the best.
 	 */
 	@Test
 	public void chooseBestDiscountsVariantSingleResultTest() {
-		Discount chosenDiscount = WebDiscountUtils.chooseDiscountForApply(
+		DiscountCourseClass chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(
 				Arrays.asList(singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin), PRICE, new BigDecimal(0));
 		assertNotNull(chosenDiscount);
 		assertEquals(singleDiscountWithRate, chosenDiscount);
 	}
 
 	/**
-	 * Test for {@link WebDiscountUtils#chooseDiscountForApply(java.util.List, ish.math.Money, java.math.BigDecimal)} . Check
+	 * Test for {@link DiscountUtils#chooseDiscountForApply(java.util.List, ish.math.Money, java.math.BigDecimal)} . Check
 	 * situation when fee override is greater than course class price.
 	 * Currently handle this situation like as negative discount
 	 * That discount always beats a normal discount. It also beats having no discount at all 
@@ -213,17 +213,20 @@ public class DiscountUtilsTest {
 	@Test
 	public void chooseBestDiscountVariantWithFeeOverride() {
 
-		Discount feeOverride = new Discount();
-		feeOverride.setDiscountRate(null);
-		feeOverride.setDiscountAmount(new Money(new BigDecimal(200)));
-		feeOverride.setDiscountType(DiscountType.FEE_OVERRIDE);
+		Discount discount = context.newObject(Discount.class);
+		discount.setDiscountRate(null);
+		discount.setDiscountAmount(new Money(new BigDecimal(200)));
+		discount.setDiscountType(DiscountType.FEE_OVERRIDE);
+		DiscountCourseClass feeOverride = context.newObject(DiscountCourseClass.class);
+		feeOverride.setDiscount(discount);
+		discount.addToDiscountCourseClasses(feeOverride);
 
-		Discount chosenDiscount = WebDiscountUtils.chooseDiscountForApply(Arrays.asList(feeOverride), PRICE, new BigDecimal(0));
+		DiscountCourseClass chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(Arrays.asList(feeOverride), PRICE, new BigDecimal(0));
 
 		assertNotNull(chosenDiscount);
 		assertEquals(feeOverride, chosenDiscount);
 		
-		chosenDiscount = WebDiscountUtils.chooseDiscountForApply(
+		chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(
 				Arrays.asList(singleDiscountWithRate, feeOverride, singleDiscountWithRateMin), PRICE, new BigDecimal(0));
 
 		assertNotNull(chosenDiscount);
@@ -231,7 +234,7 @@ public class DiscountUtilsTest {
 
 		feeOverride.setDiscountAmount(new Money(new BigDecimal(60)));
 
-		chosenDiscount = WebDiscountUtils.chooseDiscountForApply(
+		chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(
 				Arrays.asList(singleDiscountWithRate, combDiscountWithRateMax, singleDiscountWithRateMin, feeOverride), PRICE, new BigDecimal(0));
 
 		assertNotNull(chosenDiscount);
@@ -240,29 +243,33 @@ public class DiscountUtilsTest {
 	
 	@Test
 	public void testDiscountRounding() {
-		Discount discount = new Discount();
+		Discount discount = context.newObject(Discount.class);
 		discount.setDiscountType(DiscountType.PERCENT);
 		discount.setDiscountRate(new BigDecimal("0.11"));
 		
+		DiscountCourseClass classDiscount = context.newObject(DiscountCourseClass.class);
+		classDiscount.setDiscount(discount);
+		discount.addToDiscountCourseClasses(classDiscount);
+		
 		discount.setRoundingMode(MoneyRounding.ROUNDING_NONE);
 		
-		assertEquals(new Money("856.63"), DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
-		assertEquals(new Money("96.25"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("856.63"), DiscountUtils.getDiscountedFee(classDiscount, new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("96.25"), DiscountUtils.discountValue(classDiscount, new Money("875.00"), new BigDecimal(0.1)));
 		
 		discount.setRoundingMode(MoneyRounding.ROUNDING_10C);
 		
-		assertEquals(new Money("856.60"), DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
-		assertEquals(new Money("96.27"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("856.60"), DiscountUtils.getDiscountedFee(classDiscount, new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("96.27"), DiscountUtils.discountValue(classDiscount, new Money("875.00"), new BigDecimal(0.1)));
 		
 		discount.setRoundingMode(MoneyRounding.ROUNDING_50C);
 		
-		assertEquals(new Money("856.50"),DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
-		assertEquals(new Money("96.36"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("856.50"),DiscountUtils.getDiscountedFee(classDiscount, new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("96.36"), DiscountUtils.discountValue(classDiscount, new Money("875.00"), new BigDecimal(0.1)));
 		
 		discount.setRoundingMode(MoneyRounding.ROUNDING_1D);
 		
-		assertEquals(new Money("857.00"), DiscountUtils.getDiscountedFee(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
-		assertEquals(new Money("95.91"), DiscountUtils.discountValue(Arrays.asList(discount), new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("857.00"), DiscountUtils.getDiscountedFee(classDiscount, new Money("875.00"), new BigDecimal(0.1)));
+		assertEquals(new Money("95.91"), DiscountUtils.discountValue(classDiscount, new Money("875.00"), new BigDecimal(0.1)));
 	}
 
 	/**
@@ -275,62 +282,94 @@ public class DiscountUtilsTest {
 		Money classPrice = new Money("800.00");
 		BigDecimal taxRate = new BigDecimal(0.1);
 				
-		Discount positivePercent = new Discount();
-		positivePercent.setDiscountType(DiscountType.PERCENT);
-		positivePercent.setDiscountRate(new BigDecimal("0.50"));
+		Discount discount = context.newObject(Discount.class);
+		discount.setDiscountType(DiscountType.PERCENT);
+		discount.setDiscountRate(new BigDecimal("0.50"));
+		
+		DiscountCourseClass positivePercent = context.newObject(DiscountCourseClass.class);
+		positivePercent.setDiscount(discount);
+		discount.addToDiscountCourseClasses(positivePercent);
 
-		Discount positiveDollar = new Discount();
-		positivePercent.setDiscountType(DiscountType.DOLLAR);
-		positivePercent.setDiscountAmount(new Money("300"));
+		discount = context.newObject(Discount.class);
+		discount.setDiscountType(DiscountType.DOLLAR);
+		discount.setDiscountAmount(new Money("300"));
 
-		Discount positiveFeeOverride = new Discount();
-		positivePercent.setDiscountType(DiscountType.FEE_OVERRIDE);
-		positivePercent.setDiscountAmount(new Money("600"));
+		DiscountCourseClass positiveDollar = context.newObject(DiscountCourseClass.class);
+		positiveDollar.setDiscount(discount);
+		discount.addToDiscountCourseClasses(positiveDollar);
 
-		Discount negative10Percent = new Discount();
-		negative10Percent.setDiscountType(DiscountType.PERCENT);
-		negative10Percent.setDiscountRate(new BigDecimal("-0.10"));
-		negative10Percent.setRoundingMode(MoneyRounding.ROUNDING_1D);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountType(DiscountType.FEE_OVERRIDE);
+		discount.setDiscountAmount(new Money("600"));
 
-		assertEquals(negative10Percent, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent), classPrice, taxRate));
-		assertEquals(new Money("968"), DiscountUtils.getDiscountedFee(Arrays.asList(negative10Percent), classPrice, taxRate));
-		assertEquals(new Money("-80"), DiscountUtils.discountValue(Arrays.asList(negative10Percent), classPrice, taxRate));
+		DiscountCourseClass positiveFeeOverride = context.newObject(DiscountCourseClass.class);
+		positiveFeeOverride.setDiscount(discount);
+		discount.addToDiscountCourseClasses(positiveFeeOverride);
 
-		Discount negative20Percent = new Discount();
-		negative20Percent.setDiscountType(DiscountType.PERCENT);
-		negative20Percent.setDiscountRate(new BigDecimal("-0.20"));
-		negative20Percent.setRoundingMode(MoneyRounding.ROUNDING_1D);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountType(DiscountType.PERCENT);
+		discount.setDiscountRate(new BigDecimal("-0.10"));
+		discount.setRoundingMode(MoneyRounding.ROUNDING_1D);
 
-		assertEquals(negative20Percent, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent), classPrice, taxRate));
-		assertEquals(new Money("1056"), DiscountUtils.getDiscountedFee(Arrays.asList(negative20Percent), classPrice, taxRate));
-		assertEquals(new Money("-160"), DiscountUtils.discountValue(Arrays.asList(negative20Percent), classPrice, taxRate));
+		DiscountCourseClass negative10Percent = context.newObject(DiscountCourseClass.class);
+		negative10Percent.setDiscount(discount);
+		discount.addToDiscountCourseClasses(negative10Percent);
+
+		assertEquals(negative10Percent, DiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent), classPrice, taxRate));
+		assertEquals(new Money("968"), DiscountUtils.getDiscountedFee(negative10Percent, classPrice, taxRate));
+		assertEquals(new Money("-80"), DiscountUtils.discountValue(negative10Percent, classPrice, taxRate));
+
+		discount = context.newObject(Discount.class);
+		discount.setDiscountType(DiscountType.PERCENT);
+		discount.setDiscountRate(new BigDecimal("-0.20"));
+		discount.setRoundingMode(MoneyRounding.ROUNDING_1D);
+
+		DiscountCourseClass negative20Percent = context.newObject(DiscountCourseClass.class);
+		negative20Percent.setDiscount(discount);
+		discount.addToDiscountCourseClasses(negative20Percent);
+
+		assertEquals(negative20Percent, DiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent), classPrice, taxRate));
+		assertEquals(new Money("1056"), DiscountUtils.getDiscountedFee(negative20Percent, classPrice, taxRate));
+		assertEquals(new Money("-160"), DiscountUtils.discountValue(negative20Percent, classPrice, taxRate));
 
 
-		Discount negative10Dollar = new Discount();
-		negative10Dollar.setDiscountType(DiscountType.DOLLAR);
-		negative10Dollar.setDiscountAmount(new Money("-10"));
-		negative10Dollar.setRoundingMode(MoneyRounding.ROUNDING_1D);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountType(DiscountType.DOLLAR);
+		discount.setDiscountAmount(new Money("-10"));
+		discount.setRoundingMode(MoneyRounding.ROUNDING_1D);
+
+		DiscountCourseClass negative10Dollar = context.newObject(DiscountCourseClass.class);
+		negative10Dollar.setDiscount(discount);
+		discount.addToDiscountCourseClasses(negative10Dollar);
 
 		// check that the higher (as an absolute value) negative discount still beats (- %20)
-		assertEquals(negative20Percent, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar), classPrice, taxRate));
+		assertEquals(negative20Percent, DiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar), classPrice, taxRate));
 
-		Discount negative200Dollar = new Discount();
-		negative200Dollar.setDiscountType(DiscountType.DOLLAR);
-		negative200Dollar.setDiscountAmount(new Money("-200"));
-		negative200Dollar.setRoundingMode(MoneyRounding.ROUNDING_1D);
+		discount = context.newObject(Discount.class);
+		discount.setDiscountType(DiscountType.DOLLAR);
+		discount.setDiscountAmount(new Money("-200"));
+		discount.setRoundingMode(MoneyRounding.ROUNDING_1D);
 
-		assertEquals(negative200Dollar, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar, negative200Dollar), classPrice, taxRate));
-		assertEquals(new Money("1100"), DiscountUtils.getDiscountedFee(Arrays.asList(negative200Dollar), classPrice, taxRate));
-		assertEquals(new Money("-200"), DiscountUtils.discountValue(Arrays.asList(negative200Dollar), classPrice, taxRate));
+		DiscountCourseClass negative200Dollar = context.newObject(DiscountCourseClass.class);
+		negative200Dollar.setDiscount(discount);
+		discount.addToDiscountCourseClasses(negative200Dollar);
 
-		Discount negativeFeeOverride = new Discount();
-		negativeFeeOverride.setDiscountType(DiscountType.FEE_OVERRIDE);
-		negativeFeeOverride.setDiscountAmount(new Money("1300"));
-		negativeFeeOverride.setRoundingMode(MoneyRounding.ROUNDING_1D);
+		assertEquals(negative200Dollar, DiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar, negative200Dollar), classPrice, taxRate));
+		assertEquals(new Money("1100"), DiscountUtils.getDiscountedFee(negative200Dollar, classPrice, taxRate));
+		assertEquals(new Money("-200"), DiscountUtils.discountValue(negative200Dollar, classPrice, taxRate));
+
+		discount = context.newObject(Discount.class);
+		discount.setDiscountType(DiscountType.FEE_OVERRIDE);
+		discount.setDiscountAmount(new Money("1300"));
+		discount.setRoundingMode(MoneyRounding.ROUNDING_1D);
+		
+		DiscountCourseClass negativeFeeOverride = context.newObject(DiscountCourseClass.class);
+		negativeFeeOverride.setDiscount(discount);
+		discount.addToDiscountCourseClasses(negativeFeeOverride);
 		
 		// check that negative "Fee Override" discount has the higher surcharge
-		assertEquals(negativeFeeOverride, WebDiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar, negative200Dollar, negativeFeeOverride), classPrice, taxRate));
-		assertEquals(new Money("1430"), DiscountUtils.getDiscountedFee(Arrays.asList(negativeFeeOverride), classPrice, taxRate));
-		assertEquals(new Money("-500"), DiscountUtils.discountValue(Arrays.asList(negativeFeeOverride), classPrice, taxRate));
+		assertEquals(negativeFeeOverride, DiscountUtils.chooseDiscountForApply(Arrays.asList(positivePercent, positiveDollar, positiveFeeOverride, negative10Percent, negative20Percent, negative10Dollar, negative200Dollar, negativeFeeOverride), classPrice, taxRate));
+		assertEquals(new Money("1430"), DiscountUtils.getDiscountedFee(negativeFeeOverride, classPrice, taxRate));
+		assertEquals(new Money("-500"), DiscountUtils.discountValue(negativeFeeOverride, classPrice, taxRate));
 	}
 }

@@ -1,6 +1,5 @@
 package ish.oncourse.webservices.soap.v12.stubs;
 
-import ish.oncourse.model.PriorLearning;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.util.GenericDeletedStub;
 import ish.oncourse.webservices.util.GenericInstructionStub;
@@ -209,7 +208,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		discountCourseClassParameters.add(new ReplicationStubFieldParameter("courseClassId", Long.class));
 		discountCourseClassParameters.add(new ReplicationStubFieldParameter("discountId", Long.class));
 		discountCourseClassParameters.add(new ReplicationStubFieldParameter("discountAmount", BigDecimal.class));
-		discountCourseClassParameters.add(new ReplicationStubFieldParameter("discountRate", BigDecimal.class));
 		stubsPropertyMap.put(getStubName(DiscountCourseClassStub.class), discountCourseClassParameters);
 
 

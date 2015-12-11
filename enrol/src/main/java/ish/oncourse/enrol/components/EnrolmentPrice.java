@@ -15,7 +15,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
-import java.util.List;
 import java.util.Locale;
 
 public class EnrolmentPrice {
@@ -49,7 +48,7 @@ public class EnrolmentPrice {
 
 	@Parameter
 	@Property
-	private List<Discount> discounts;
+	private Discount discount;
 	
 	private Application application;
 
@@ -90,7 +89,7 @@ public class EnrolmentPrice {
 			}
 			return !discountedTotalExTax.isZero();
 		} else {
-			return !enrolment.getCourseClass().getDiscountAmountExTax(discounts).isZero();
+			return !enrolment.getCourseClass().getDiscountAmountExTax(discount).isZero();
 		}
 
 	}
@@ -107,7 +106,7 @@ public class EnrolmentPrice {
 				discountedPriceIncTax = discountedPriceIncTax.add(invoiceLine.getDiscountedPriceTotalIncTax());
 			}
 		} else {
-			discountedPriceIncTax = enrolment.getCourseClass().getDiscountedFeeIncTax(discounts);
+			discountedPriceIncTax = enrolment.getCourseClass().getDiscountedFeeIncTax(enrolment.getCourseClass().getDiscountCourseClassBy(discount));
 		}
 		moneyFormat = FormatUtils.chooseMoneyFormat(discountedPriceIncTax);
 		return discountedPriceIncTax;
@@ -125,7 +124,7 @@ public class EnrolmentPrice {
 				discountIncTax = discountIncTax.add(invoiceLine.getDiscountTotalIncTax());
 			}
 		} else {
-			discountIncTax = enrolment.getCourseClass().getDiscountAmountIncTax(discounts);
+			discountIncTax = enrolment.getCourseClass().getDiscountAmountIncTax(enrolment.getCourseClass().getDiscountCourseClassBy(discount));
 		}
 		moneyFormat = FormatUtils.chooseMoneyFormat(discountIncTax);
 		return discountIncTax;

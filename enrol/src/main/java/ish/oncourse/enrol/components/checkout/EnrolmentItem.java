@@ -87,6 +87,6 @@ public class EnrolmentItem {
 
     public static interface EnrolmentItemDelegate {
         public void onChange(Integer contactIndex, Integer enrolmentIndex);
-        public List<Discount> getDiscounts();
+        public Discount getDiscount();
     }
 }

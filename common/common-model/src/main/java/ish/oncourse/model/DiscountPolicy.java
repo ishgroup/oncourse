@@ -1,11 +1,14 @@
 package ish.oncourse.model;
 
 import ish.math.Money;
+import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.utils.WebDiscountUtils;
+import ish.util.DiscountUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,27 +45,27 @@ public abstract class DiscountPolicy {
 	 * from the given discounts of some courseClass. {@see
 	 * CourseClass#getDiscountsToApply(DiscountPolicy)}
 	 * 
-	 * @param discounts
+	 * @param discountCourseClasses
 	 *            the discounts to filter.
 	 * @param feeExGst 
 	 * @return single discount to apply.
 	 */
-	public Discount filterDiscounts(List<Discount> discounts, Money feeExGst, Money getFeeGst, BigDecimal taxRate) {
-		List<Discount> result = new ArrayList<>();
+	public DiscountCourseClass filterDiscounts(List<DiscountCourseClass> discountCourseClasses, Money feeExGst, Money getFeeGst, BigDecimal taxRate) {
+		List<DiscountCourseClass> result;
 
-		result = getApplicableByPolicy(discounts, feeExGst, getFeeGst);
+		result = getApplicableByPolicy(discountCourseClasses, feeExGst, getFeeGst);
 
-		return WebDiscountUtils.chooseDiscountForApply(result, feeExGst, taxRate);
+		return (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(result, feeExGst, taxRate);
 	}
 
 	/**
 	 * Chooses the discounts applicable by the concrete policy.
 	 * 
-	 * @param discounts
+	 * @param discountCourseClasses
 	 *            the discounts to filter.
 	 * @return filtered discounts.
 	 */
-	protected abstract List<Discount> getApplicableByPolicy(List<Discount> discounts, Money feeExGst, Money getFeeGst);
+	protected abstract List<DiscountCourseClass> getApplicableByPolicy(List<DiscountCourseClass> discountCourseClasses, Money feeExGst, Money getFeeGst);
 
 	public boolean isPromotionAdded(Discount discount) {
 		for (Discount promotion : promotions) {

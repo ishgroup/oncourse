@@ -33,26 +33,27 @@ public class PotentialDiscountsPolicy extends DiscountPolicy {
 	 * @see ish.oncourse.model.DiscountPolicy#getApplicableByPolicy(java.util.List, ish.math.Money, ish.math.Money)
 	 */
 	@Override
-	public List<Discount> getApplicableByPolicy(List<Discount> discounts, Money feeExGst, Money feeGst) {
-		List<Discount> result = new ArrayList<>();
-		if (discounts != null) {
-			for (Discount discount : discounts) {
+	public List<DiscountCourseClass> getApplicableByPolicy(List<DiscountCourseClass> discountCourseClasses, Money feeExGst, Money feeGst) {
+		List<DiscountCourseClass> result = new ArrayList<>();
+		if (discountCourseClasses != null) {
+			for (DiscountCourseClass discountCourseClass : discountCourseClasses) {
+				Discount discount = discountCourseClass.getDiscount();
 				if (discount.getMinEnrolments() > 1 || feeExGst.add(feeGst).compareTo(discount.getMinValue()) < 0) {
 					continue;
 				}
-				
+
 				if (discount.getCorporatePassDiscounts() != null && !discount.getCorporatePassDiscounts().isEmpty()) {
 					continue;
 				}
-				
+
 				if (discount.isPromotion()) {
 					if (isPromotionAdded(discount)) {
-						result.add(discount);
+						result.add(discountCourseClass);
 					}
 					continue;
 
 				} else if (!hasAnyFiltering(discount) && !discount.getHideOnWeb()) {
-					result.add(discount);
+					result.add(discountCourseClass);
 				}
 			}
 		}

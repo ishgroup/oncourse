@@ -99,6 +99,20 @@
 				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
 				 deliveryMode="1" feeExGst="100" feeGst="10" isDistantLearningCourse="0"/>
 
+	<CourseClass id="1004" collegeId="1" code="2" courseId="1003"
+				 roomId="1" angelId="1004" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+				 deliveryMode="1" feeExGst="100" feeGst="10" isDistantLearningCourse="0"/>
+
+	<CourseClass id="1005" collegeId="1" code="3" courseId="1003"
+				 roomId="1" angelId="1005" startDate="2011-10-12 00:55:59.0"
+				 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+				 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+				 deliveryMode="1" feeExGst="100" feeGst="10" isDistantLearningCourse="0"/>
+
 	<Discount
 			id="1001"
 			angelId="1"
@@ -159,6 +173,44 @@
 			minEnrolments="1"
 			minValue="0"/>
 
+	<Discount
+			id="1004"
+			angelId="4"
+			collegeId="1"
+			combinationType="0"
+			created="2011-09-12 00:56:00.0"
+			detail="detail"
+			discountRate="0.2"
+			discountType="1"
+			modified="2011-09-12 00:56:00.0"
+			name="rewritten discount"
+			roundingMode="1"
+			timeZone="timeZone"
+			hideOnWeb="0"
+			isAvailableOnWeb="1"
+			minEnrolments="1"
+			minValue="0"/>
+
+	<Discount
+			id="1005"
+			angelId="5"
+			collegeId="1"
+			combinationType="0"
+			created="2011-09-12 00:56:00.0"
+			detail="detail"
+			discountRate="0.2"
+			discountType="1"
+			modified="2011-09-12 00:56:00.0"
+			name="Discount 3  days before and 3 days after offsets"
+			roundingMode="1"
+			timeZone="timeZone"
+			hideOnWeb="0"
+			isAvailableOnWeb="1"
+			minEnrolments="1"
+			minValue="0"
+			validFromOffset="-3"
+			validToOffset="3"/>
+
 	<DiscountCourseClass id="1001" angelId="1001" collegeId="1" courseClassId="1001"
 						 created="2011-09-12 00:56:00.0"
 						 modified="2011-09-12 00:56:00.0"
@@ -173,6 +225,17 @@
 						 created="2011-09-12 00:56:00.0"
 						 modified="2011-09-12 00:56:00.0"
 						 discountId="1003"/>
+	
+	<DiscountCourseClass id="1004" angelId="1004" collegeId="1" courseClassId="1004"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="1004"
+						 discountAmount="50"/>
+	
+	<DiscountCourseClass id="1005" angelId="1005" collegeId="1" courseClassId="1005"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="1005"/>
 
 	<Preference id="1" collegeId="1" name="license.ccprocessing"
 				value_string="true" />

@@ -313,17 +313,17 @@ public class CourseClass extends _CourseClass implements Queueable {
 	}
 
 	/**
-	 * Discounts with the valid date ranges that are bound to this courseClass
+	 * DiscountCourseClasses with the valid date ranges that are bound to this courseClass
 	 * via {@link #getDiscountCourseClasses()} relationship.
 	 * 
 	 * @return the discounts for this class
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Discount> getDiscounts() {
-		return ObjectSelect.query(Discount.class).
-				where(Discount.IS_AVAILABLE_ON_WEB.isTrue()).
-				and(Discount.DISCOUNT_COURSE_CLASSES.dot(DiscountCourseClass.COURSE_CLASS).eq(this)).
-				and(Discount.getCurrentDateFilter()).
+	public List<DiscountCourseClass> getAvalibleDiscountCourseClasses() {
+		return ObjectSelect.query(DiscountCourseClass.class).
+				where(DiscountCourseClass.DISCOUNT.dot(Discount.IS_AVAILABLE_ON_WEB).isTrue()).
+				and(DiscountCourseClass.COURSE_CLASS.eq(this)).
+				and(Discount.getCurrentDateFilterForDiscountCourseClass(getStartDate())).
 				select(getObjectContext());
 	}
 
@@ -335,11 +335,12 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 */
 	public List<Discount> getConcessionDiscounts() {
 
-		List<Discount> availableDiscountsWithoutCode = (Discount.CODE.isNull())
-				.orExp(Discount.CODE.eq(StringUtils.EMPTY)).filterObjects(getDiscounts());
+		List<DiscountCourseClass> availableDiscountsWithoutCode = (DiscountCourseClass.DISCOUNT.dot(Discount.CODE).isNull())
+				.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.CODE).eq(StringUtils.EMPTY)).filterObjects(getAvalibleDiscountCourseClasses());
 
 		List<Discount> discounts = new ArrayList<>(availableDiscountsWithoutCode.size());
-		for (Discount discount : availableDiscountsWithoutCode) {
+		for (DiscountCourseClass discountCourseClass : availableDiscountsWithoutCode) {
+			Discount discount = discountCourseClass.getDiscount();
 			if (discount.getDiscountConcessionTypes() != null && !discount.getDiscountConcessionTypes().isEmpty()) {
 				discounts.add(discount);
 			}
@@ -354,68 +355,88 @@ public class CourseClass extends _CourseClass implements Queueable {
 	 * @param policy
 	 * @return
 	 */
-	public Discount getDiscountsToApply(DiscountPolicy policy) {
-		return policy.filterDiscounts(getDiscounts(), getFeeExGst(), getFeeGst(), getTaxRate());
+	public DiscountCourseClass getDiscountToApply(DiscountPolicy policy) {
+
+		List<DiscountCourseClass> discountCourseClasses = ObjectSelect.query(DiscountCourseClass.class).
+				where(DiscountCourseClass.DISCOUNT.dot(Discount.IS_AVAILABLE_ON_WEB).isTrue()).
+				and(DiscountCourseClass.COURSE_CLASS.eq(this)).
+				and(Discount.getCurrentDateFilterForDiscountCourseClass(getStartDate())).
+				select(getObjectContext());
+		
+		return policy.filterDiscounts(discountCourseClasses, getFeeExGst(), getFeeGst(), getTaxRate());
 	}
 
 	/**
-	 * The value of discount without tax if the selectedDiscounts are applied to
+	 * The value of discount without tax if the discount is applied to
 	 * the courseClass price.
 	 * 
-	 * @param selectedDiscounts
+	 * @param discount
 	 * @return
 	 */
-	public Money getDiscountAmountExTax(List<Discount> selectedDiscounts) {
-		return DiscountUtils.discountValue(selectedDiscounts, getFeeExGst(), getTaxRate());
+	public Money getDiscountAmountExTax(Discount discount) {
+		if (discount == null) {
+			return Money.ZERO;
+		} else {
+			return DiscountUtils.discountValue(getDiscountCourseClassBy(discount), getFeeExGst(), getTaxRate());		
+		}
 	}
 
 	/**
-	 * The value of discount with tax if the selectedDiscounts are applied to
+	 * The value of discount with tax if the discount is applied to
 	 * the courseClass price.
 	 * 
-	 * @param selectedDiscounts
+	 * @param discountCourseClass
 	 * @return
 	 */
-	public Money getDiscountAmountIncTax(List<Discount> selectedDiscounts) {
-		return getFeeIncGst().subtract(getDiscountedFeeIncTax(selectedDiscounts));
+	public Money getDiscountAmountIncTax(DiscountCourseClass discountCourseClass) {
+		return getFeeIncGst().subtract(getDiscountedFeeIncTax(discountCourseClass));
 	}
 
 	/**
-	 * The value of discounted tax if the selectedDiscounts are applied to the
+	 * The value of discounted tax if the discount is applied to the
 	 * courseClass price.
 	 * 
-	 * @param selectedDiscounts
+	 * @param discount
 	 * @return
 	 */
-	public Money getDiscountedTax(List<Discount> selectedDiscounts) {
-		return getDiscountedFeeIncTax(selectedDiscounts).subtract(getDiscountedFee(selectedDiscounts));
+	public Money getDiscountedTax(Discount discount) {
+		return getDiscountedFeeIncTax(getDiscountCourseClassBy(discount)).subtract(getDiscountedFee(discount));
 	}
 
 	/**
 	 * The value of discounted fee with tax if the selectedDiscounts are applied
 	 * to the courseClass price.
 	 * 
-	 * @param selectedDiscounts
+	 * @param discountCourseClass
 	 * @return
 	 */
-	public Money getDiscountedFeeIncTax(List<Discount> selectedDiscounts) {
-		if (selectedDiscounts.isEmpty()) {
+	public Money getDiscountedFeeIncTax(DiscountCourseClass discountCourseClass) {
+		if (discountCourseClass == null) {
 			return getFeeIncGst();
+		} else {
+			return DiscountUtils.getDiscountedFee(discountCourseClass, getFeeExGst(), getTaxRate());	
 		}
-		return DiscountUtils.getDiscountedFee(selectedDiscounts, getFeeExGst(), getTaxRate());
 	}
 
 	/**
-	 * The value of discounted fee without tax if the selectedDiscounts are
+	 * The value of discounted fee without tax if the discount is
 	 * applied to the courseClass price.
 	 * 
-	 * @param selectedDiscounts
+	 * @param discount
 	 * @return
 	 */
-	public Money getDiscountedFee(List<Discount> selectedDiscounts) {
-		return getFeeExGst().subtract(getDiscountAmountExTax(selectedDiscounts));
+	public Money getDiscountedFee(Discount discount) {
+		return getFeeExGst().subtract(getDiscountAmountExTax(discount));
 	}
 
+	public DiscountCourseClass getDiscountCourseClassBy(Discount discount) {
+		for (DiscountCourseClass discountCourseClass : getDiscountCourseClasses()) {
+			if (discountCourseClass.getDiscount().equals(discount)) {
+				return discountCourseClass;
+			}
+		}
+		return null;
+	}
 	/**
 	 * The tax rate for the class: tax/fee.
 	 * 

@@ -5,6 +5,7 @@ import ish.math.MoneyRounding;
 import ish.oncourse.cayenne.DiscountInterface;
 import ish.oncourse.model.auto._Discount;
 import ish.oncourse.utils.QueueableObjectUtils;
+import ish.util.DateTimeUtil;
 import org.apache.cayenne.exp.Expression;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -36,14 +37,28 @@ public class Discount extends _Discount implements DiscountInterface, Queueable 
 		return e;
 	}
 
+	public static Expression getCurrentDateFilterForDiscountCourseClass(Date classStartDate) {
+		Date now = new Date();
+
+		Expression validToExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).isNull());
+		validToExp = validToExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).gt(now)));
+
+		Expression validFromExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).isNull());
+		validFromExp = validFromExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).lt(now)));
+
+		// apply discounts with offsets (valid from offset, valid to offset) only when courseClass has start date time.
+		if (classStartDate != null) {
+			int startClassOffsetInDays = DateTimeUtil.getDifferenceInDays(now, classStartDate);
+
+			validToExp = validToExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).gte(startClassOffsetInDays)));
+			validFromExp = validFromExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).lte(startClassOffsetInDays)));
+		}
+
+		return validToExp.andExp(validFromExp);
+	}
+	
 	public boolean isPromotion() {
 		return getCode() != null && !StringUtils.EMPTY.equals(getCode());
-	}
-
-	public boolean hasEligibilityFilter() {
-		return getStudentEnrolledWithinDays() != null || getStudentAge() != null
-				|| !(getDiscountConcessionTypes() == null || getDiscountConcessionTypes().isEmpty())
-				|| getStudentPostcodes() != null;
 	}
 
 	@Override

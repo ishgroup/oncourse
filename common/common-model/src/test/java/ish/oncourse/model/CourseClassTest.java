@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -290,18 +289,18 @@ public class CourseClassTest {
 
 	/**
 	 * Emulates the situation when some of the class's discounts are restricted
-	 * with dates and thus not retrieved by {@link CourseClass#getDiscounts()}.
+	 * with dates and thus not retrieved by {@link CourseClass#getAvalibleDiscountCourseClasses()}.
 	 */
 	@Test
 	public void getDiscountsTest() {
-		List<Discount> firstClassDiscounts = firstClass.getDiscounts();
+		List<DiscountCourseClass> firstClassDiscounts = firstClass.getAvalibleDiscountCourseClasses();
 		assertFalse(firstClassDiscounts.isEmpty());
 		assertEquals(3, firstClassDiscounts.size());
-		assertTrue(firstClassDiscounts.contains(currentPromotion));
-		assertTrue(firstClassDiscounts.contains(currentConcession));
-		assertTrue(firstClassDiscounts.contains(concessionEmpty));
-		assertFalse(firstClassDiscounts.contains(disabledDiscount));
-		List<Discount> secondClassDiscounts = secondClass.getDiscounts();
+		assertTrue(firstClassDiscounts.contains(firstClass.getDiscountCourseClassBy(currentPromotion)));
+		assertTrue(firstClassDiscounts.contains(firstClass.getDiscountCourseClassBy(currentConcession)));
+		assertTrue(firstClassDiscounts.contains(firstClass.getDiscountCourseClassBy(concessionEmpty)));
+		assertFalse(firstClassDiscounts.contains(firstClass.getDiscountCourseClassBy(disabledDiscount)));
+		List<DiscountCourseClass> secondClassDiscounts = secondClass.getAvalibleDiscountCourseClasses();
 		assertTrue(secondClassDiscounts.isEmpty());
 	}
 
@@ -360,16 +359,15 @@ public class CourseClassTest {
 		// 20$ discount
 		currentPromotion.setDiscountAmount(new Money("20"));
 
-		List<Discount> discWithAmount = Arrays.asList(currentPromotion);
-		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(discWithAmount));
-		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(discWithAmount));
-		Money discountedFee = firstClass.getDiscountedFee(discWithAmount);
+		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentPromotion));
+		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentPromotion)));
+		Money discountedFee = firstClass.getDiscountedFee(currentPromotion);
 		assertEquals(new Money("80"), discountedFee);
-		Money discountedTax = firstClass.getDiscountedTax(discWithAmount);
+		Money discountedTax = firstClass.getDiscountedTax(currentPromotion);
 		assertEquals(new Money("8"), discountedTax);
 		assertTrue(firstClass.getTaxRate().compareTo(
 				discountedTax.divide(discountedFee).toBigDecimal()) == 0);
-		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(discWithAmount));
+		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentPromotion)));
 
 	}
 
@@ -389,47 +387,17 @@ public class CourseClassTest {
 		// 20% discount
 		currentConcession.setDiscountRate(new BigDecimal("0.2"));
 
-		List<Discount> discWithRate = Arrays.asList(currentConcession);
-		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(discWithRate));
-		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(discWithRate));
-		Money discountedFee = firstClass.getDiscountedFee(discWithRate);
+		
+		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentConcession));
+		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentConcession)));
+		Money discountedFee = firstClass.getDiscountedFee(currentConcession);
 		assertEquals(new Money("80"), discountedFee);
-		Money discountedTax = firstClass.getDiscountedTax(discWithRate);
+		Money discountedTax = firstClass.getDiscountedTax(currentConcession);
 		assertEquals(new Money("8"), discountedTax);
 		assertTrue(firstClass.getTaxRate().compareTo(
 				discountedTax.divide(discountedFee).toBigDecimal()) == 0);
 
-		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(discWithRate));
+		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentConcession)));
 
 	}
-
-	/**
-	 * Emulates the applying of the list of dicounts: with amount of 20, with
-	 * rate 20% and with rate 70%. Leads to 100% discount to price of 100.
-	 */
-	@Test
-	public void applyMultipleDiscountsWithRateTest() {
-		firstClass.setFeeExGst(new Money("100"));
-		firstClass.setFeeGst(new Money("10"));
-		assertEquals(new Money("100"), firstClass.getFeeExGst());
-		assertEquals(new Money("10"), firstClass.getFeeGst());
-		assertEquals(new Money("110"), firstClass.getFeeIncGst());
-		// 20$,20%,70% - we get discount amount greater than price, so the
-		// system applies 100% discount
-		currentPromotion.setDiscountAmount(new Money("20"));
-		currentConcession.setDiscountRate(new BigDecimal("0.2"));
-		concessionEmpty.setDiscountRate(new BigDecimal("0.7"));
-
-		List<Discount> multipleDiscounts = Arrays.asList(currentPromotion, currentConcession,
-				concessionEmpty);
-		assertEquals(new Money("100"), firstClass.getDiscountAmountExTax(multipleDiscounts));
-		assertEquals(new Money("110"), firstClass.getDiscountAmountIncTax(multipleDiscounts));
-		Money discountedFee = firstClass.getDiscountedFee(multipleDiscounts);
-		assertEquals(new Money("0"), firstClass.getDiscountedFeeIncTax(multipleDiscounts));
-		assertEquals(new Money("0"), discountedFee);
-		Money discountedTax = firstClass.getDiscountedTax(multipleDiscounts);
-		assertEquals(new Money("0"), discountedTax);
-
-	}
-
 }

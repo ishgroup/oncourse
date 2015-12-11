@@ -4,6 +4,7 @@ import ish.math.Money;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
+import ish.oncourse.model.DiscountCourseClass;
 import ish.oncourse.model.PotentialDiscountsPolicy;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -51,7 +52,7 @@ public class CourseClassPrice extends ISHCommon {
 	@Property
 	private Money discountValue;
 
-	private List<Discount> applicableDiscounts;
+	private DiscountCourseClass applicableDiscount;
 
 	@Property
 	private Date discountExpiryDate;
@@ -67,30 +68,20 @@ public class CourseClassPrice extends ISHCommon {
 	
 	private void fillAppliedDiscounts() {
 		List<Discount> promotions = discountService.getPromotions();
-		applicableDiscounts = new LinkedList<>();
-		Discount discountToApply = courseClass.getDiscountsToApply(new PotentialDiscountsPolicy(promotions));
-		if (discountToApply != null) {
-			applicableDiscounts.add(discountToApply);
+		applicableDiscount = courseClass.getDiscountToApply(new PotentialDiscountsPolicy(promotions));
+		
+		discountedFee = courseClass.getDiscountedFeeIncTax(applicableDiscount);
+		discountValue = courseClass.getDiscountAmountIncTax(applicableDiscount);
+		if (applicableDiscount != null) {
+			discountExpiryDate = WebDiscountUtils.expiryDate(applicableDiscount.getDiscount(), courseClass);
 		}
-		discountedFee = courseClass.getDiscountedFeeIncTax(applicableDiscounts);
-		discountValue = courseClass.getDiscountAmountIncTax(applicableDiscounts);
-		discountExpiryDate = WebDiscountUtils.earliestExpiryDate(applicableDiscounts);
 		fillAppliedDiscountsTooltip();
 	}
 	
 	private void fillAppliedDiscountsTooltip() {
 		dateFormat = FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
-		if (!applicableDiscounts.isEmpty()) {
-			StringBuilder appliedDiscountsTitleBuf = new StringBuilder(applicableDiscounts.get(0).getName());
-			if (applicableDiscounts.size() > 1) {
-				appliedDiscountsTitleBuf.append(" combined with: ");
-				for (int i = 1; i < applicableDiscounts.size(); i++) {
-					appliedDiscountsTitleBuf.append(applicableDiscounts.get(i).getName());
-					if (i != applicableDiscounts.size() - 1) {
-						appliedDiscountsTitleBuf.append(", ");
-					}
-				}
-			}
+		if (applicableDiscount != null) {
+			StringBuilder appliedDiscountsTitleBuf = new StringBuilder(applicableDiscount.getDiscount().getName());
 			if (discountExpiryDate != null) {
 				appliedDiscountsTitleBuf.append(" expires ").append(dateFormat.format(discountExpiryDate));
 			}
@@ -99,8 +90,8 @@ public class CourseClassPrice extends ISHCommon {
 	}
 	
 	private void fillPosibleDiscounts() {
-		Expression notHiddenDiscounts = ExpressionFactory.matchExp(Discount.HIDE_ON_WEB_PROPERTY, false);
-		List<Discount> potentialDiscounts = notHiddenDiscounts.filterObjects(WebDiscountUtils.getFilteredDiscounts(courseClass));
+		Expression notHiddenDiscounts = DiscountCourseClass.DISCOUNT.dot(Discount.HIDE_ON_WEB).isFalse();
+		List<DiscountCourseClass> potentialDiscounts = notHiddenDiscounts.filterObjects(WebDiscountUtils.getFilteredDiscounts(courseClass));
 		Collections.sort(potentialDiscounts, new DiscountFeeComparator(courseClass));
 
 		Money money = null;
@@ -108,16 +99,16 @@ public class CourseClassPrice extends ISHCommon {
 
 		discountItems = new ArrayList<>();
 
-		for (Discount discount : potentialDiscounts) {
-			Money dMoney = courseClass.getDiscountedFeeIncTax(Arrays.asList(discount));
+		for (DiscountCourseClass discountCourseClass : potentialDiscounts) {
+			Money dMoney = courseClass.getDiscountedFeeIncTax(discountCourseClass);
 			if (money == null || !money.equals(dMoney))
 			{
-				money = courseClass.getDiscountedFeeIncTax(Arrays.asList(discount));
+				money = courseClass.getDiscountedFeeIncTax(discountCourseClass);
 				discountItem = new DiscountItem();
 				discountItem.setFeeIncTax(money);
 				discountItems.add(discountItem);
 			}
-			discountItem.addDiscount(discount);
+			discountItem.addDiscount(discountCourseClass.getDiscount());
 			discountItem.init();
 		}
 	}

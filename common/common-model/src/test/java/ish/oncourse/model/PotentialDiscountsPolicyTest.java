@@ -36,7 +36,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void getApplicableByPolicyTest() {
-		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(Arrays.asList(
+		List<DiscountCourseClass> applicableByPolicy = discountPolicy.getApplicableByPolicy(Arrays.asList(
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
 				singleDiscountWithRateMin, hiddenDiscountWithAmount, nonAvailableDiscountWithAmount),FEE_EX_GST, FEE_GST);
 		assertFalse(applicableByPolicy.isEmpty());
@@ -58,7 +58,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void filterDiscountsSmokeTest() {
-		Discount filteredDiscount = discountPolicy.filterDiscounts(Arrays.asList(
+		DiscountCourseClass filteredDiscount = discountPolicy.filterDiscounts(Arrays.asList(
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
 				singleDiscountWithRateMin), FEE_EX_GST,FEE_GST, new BigDecimal(0.1));
 		assertNotNull(filteredDiscount);
@@ -67,7 +67,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 	@Test
 	public void getApplicableByPolicyEmptyInputTest() {
-		List<Discount> applicableByPolicy = discountPolicy.getApplicableByPolicy(null, FEE_EX_GST, FEE_GST);
+		List<DiscountCourseClass> applicableByPolicy = discountPolicy.getApplicableByPolicy(null, FEE_EX_GST, FEE_GST);
 		assertTrue(applicableByPolicy.isEmpty());
 		applicableByPolicy = discountPolicy.getApplicableByPolicy(Collections.EMPTY_LIST, FEE_EX_GST, FEE_GST);
 		assertTrue(applicableByPolicy.isEmpty());
@@ -75,7 +75,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 	@Test
 	public void filterDiscountsEmptyTest() {
-		Discount filteredDiscount = discountPolicy.filterDiscounts(null, FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+		DiscountCourseClass filteredDiscount = discountPolicy.filterDiscounts(null, FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
 		assertNull(filteredDiscount);
 		filteredDiscount = discountPolicy.filterDiscounts(Collections.EMPTY_LIST, FEE_EX_GST, FEE_GST,new BigDecimal(0.1));
 		assertNull(filteredDiscount);
@@ -83,7 +83,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 
 	@Test
 	public void testNonAvailableDiscounts() {
-		Discount filteredDiscount = discountPolicy.filterDiscounts(Arrays.asList(nonAvailableDiscountWithAmount), FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+		DiscountCourseClass filteredDiscount = discountPolicy.filterDiscounts(Arrays.asList(nonAvailableDiscountWithAmount), FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
 		assertNull(filteredDiscount);
 	}
 
@@ -93,7 +93,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void negativeDiscountsTest() {
-		Discount chosenDiscount = discountPolicy.filterDiscounts(Arrays.asList(negativeDollarDiscount,
+		DiscountCourseClass chosenDiscount = discountPolicy.filterDiscounts(Arrays.asList(negativeDollarDiscount,
 				combDiscountWithAmount, singleDiscountWithRate, combDiscountWithRateMax,
 				singleDiscountWithRateMin, hiddenDiscountWithAmount, nonAvailableDiscountWithAmount),FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
 		
@@ -117,7 +117,7 @@ public class PotentialDiscountsPolicyTest extends AbstractDiscountPolicyTest {
 	 */
 	@Test
 	public void discountByCorporatePassTest() {
-		Discount chosenDiscount = discountPolicy.filterDiscounts(Arrays.asList(discountByCorporatePass), FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
+		DiscountCourseClass chosenDiscount = discountPolicy.filterDiscounts(Arrays.asList(discountByCorporatePass), FEE_EX_GST, FEE_GST, new BigDecimal(0.1));
 		assertNull(chosenDiscount);
 	}
 

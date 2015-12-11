@@ -117,13 +117,14 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 	public void testApplyCourseVoucherWithDiscount() {
 		ObjectContext context = getContext();
 
-		Discount discount = Cayenne.objectForPK(context, Discount.class, 1);
+		DiscountCourseClass discountCourseClass = Cayenne.objectForPK(context, DiscountCourseClass.class, 1);
 
 		CourseClass cc = Cayenne.objectForPK(context, CourseClass.class, 1);
 
 		InvoiceLine il = Cayenne.objectForPK(context, InvoiceLine.class, 2);
+		
 
-		DiscountUtils.applyDiscounts(Arrays.asList(discount), il, cc.getTaxRate(), Money.ZERO);
+		DiscountUtils.applyDiscounts(discountCourseClass, il, cc.getTaxRate(), Money.ZERO);
 
 		Voucher courseVoucher = Cayenne.objectForPK(context, Voucher.class, 1);
 

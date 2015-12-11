@@ -648,18 +648,18 @@ public class PurchaseController {
 			
 			InvoiceLine invoiceLine = enrolment.getInvoiceLines().get(0);
 			
-			List<Discount> classDiscounts = ObjectSelect.query(Discount.class).
-					where(Discount.IS_AVAILABLE_ON_WEB.isTrue()).
-					and(Discount.DISCOUNT_COURSE_CLASSES.dot(DiscountCourseClass.COURSE_CLASS).eq(enrolment.getCourseClass())).
-					and(Discount.getCurrentDateFilter()).
+			List<DiscountCourseClass> classDiscounts = ObjectSelect.query(DiscountCourseClass.class).
+					where(DiscountCourseClass.DISCOUNT.dot(Discount.IS_AVAILABLE_ON_WEB).isTrue()).
+					and(DiscountCourseClass.COURSE_CLASS.eq(enrolment.getCourseClass())).
+					and(Discount.getCurrentDateFilterForDiscountCourseClass(enrolment.getCourseClass().getStartDate())).
 					select(model.getObjectContext());
 
 			GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), model.getCorporatePass(), totalCount, totalAmount, enrolment).get();
-			Discount chosenDiscount = discounts.getChosenDiscount();
-					
+			DiscountCourseClass chosenDiscount = discounts.getChosenDiscount();
+
 			if (chosenDiscount != null) {
-				DiscountUtils.applyDiscounts(Arrays.asList(chosenDiscount), invoiceLine, enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
-				createInvoiceLineDiscounts(invoiceLine, chosenDiscount, chosenDiscount.getObjectContext());
+				DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
+				createInvoiceLineDiscounts(invoiceLine, chosenDiscount.getDiscount(), chosenDiscount.getObjectContext());
 			}
 		}
 	}
