@@ -71,6 +71,7 @@ public class DiscountUtilsTest {
 		
 		Discount discount = context.newObject(Discount.class);
 		discount.setDiscountAmount(new Money(BigDecimal.TEN));
+		discount.setDiscountType(DiscountType.DOLLAR);
 		discount.setCombinationType(true);
 		combDiscountWithAmount = context.newObject(DiscountCourseClass.class);
 		combDiscountWithAmount.setDiscount(discount);
@@ -78,6 +79,7 @@ public class DiscountUtilsTest {
 
 		discount = context.newObject(Discount.class);
 		discount.setDiscountRate(new BigDecimal(0.2));
+		discount.setDiscountType(DiscountType.PERCENT);
 		discount.setMaximumDiscount(Money.ZERO);
 		discount.setMinimumDiscount(Money.ZERO);
 		discount.setCombinationType(false);
@@ -87,6 +89,7 @@ public class DiscountUtilsTest {
 
 		discount = context.newObject(Discount.class);
 		discount.setDiscountRate(new BigDecimal(0.2));
+		discount.setDiscountType(DiscountType.PERCENT);
 		discount.setMaximumDiscount(new Money(BigDecimal.TEN));
 		discount.setCombinationType(true);
 		combDiscountWithRateMax = context.newObject(DiscountCourseClass.class);
@@ -95,6 +98,7 @@ public class DiscountUtilsTest {
 
 		discount = context.newObject(Discount.class);
 		discount.setDiscountRate(new BigDecimal(0.1));
+		discount.setDiscountType(DiscountType.PERCENT);
 		discount.setMinimumDiscount(new Money("15"));
 		discount.setCombinationType(false);
 		singleDiscountWithRateMin = context.newObject(DiscountCourseClass.class);
