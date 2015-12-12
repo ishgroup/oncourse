@@ -1,6 +1,7 @@
 package ish.oncourse.services.search;
 
 import ish.oncourse.model.Tag;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -21,33 +22,33 @@ public class SearchParams {
     private Long tutorId;
     private Boolean debugQuery = Boolean.FALSE;
     private TimeZone clientTimezone;
-	private List<Tag> tags = new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>();
 
-	public List<Tag> getTags() {
-		return tags;
-	}
+    public List<Tag> getTags() {
+        return tags;
+    }
 
-	public void addTag(Tag tag) {
-		tags.add(tag);
-	}
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
 
-	public TimeZone getClientTimezone() {
-		return clientTimezone;
-	}
+    public TimeZone getClientTimezone() {
+        return clientTimezone;
+    }
 
-	void setClientTimezone(TimeZone clientTimezone) {
-		this.clientTimezone = clientTimezone;
-	}
+    void setClientTimezone(TimeZone clientTimezone) {
+        this.clientTimezone = clientTimezone;
+    }
 
-	public Boolean getDebugQuery() {
-		return Boolean.TRUE.equals(debugQuery);
-	}
+    public Boolean getDebugQuery() {
+        return Boolean.TRUE.equals(debugQuery);
+    }
 
-	public void setDebugQuery(Boolean debugQuery) {
-		this.debugQuery = debugQuery;
-	}
+    public void setDebugQuery(Boolean debugQuery) {
+        this.debugQuery = debugQuery;
+    }
 
-	public String getS() {
+    public String getS() {
         return s;
     }
 
@@ -137,4 +138,18 @@ public class SearchParams {
     public void setTutorId(Long tutorId) {
         this.tutorId = tutorId;
     }
+
+    public static SearchParams valueOf(SearchParams params, boolean withoutSuburbs) {
+        SearchParams result;
+        try {
+            result = (SearchParams) BeanUtils.cloneBean(params);
+            if (withoutSuburbs) {
+                result.suburbs.clear();
+            }
+            return result;
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 }

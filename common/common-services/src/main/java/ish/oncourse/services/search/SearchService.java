@@ -19,6 +19,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,21 +179,18 @@ public class SearchService implements ISearchService {
 
     public Map<String, Count> getCountersForLocations(SearchParams params, List<Count> counts) {
         try {
-            String collegeId = String.valueOf(webSiteService.getCurrentCollege().getId());
-            SolrQuery q = applyCourseRootTag(SolrQueryBuilder.valueOf(params, collegeId).build());
-            q.setFacet(true);
 
-            Map<String, Count> queries = new HashMap<>();
+            List<Suburb> suburbs = new ArrayList<>();
             for (Count count : counts) {
                 Suburb suburb = SuburbParser.valueOf(count.getPath(), null, this).parse();
-                if (suburb != null) {
-                    String query = SolrQueryBuilder.getSuburbQuery(suburb);
-                    queries.put(query, count);
-                    q.addFacetQuery(query);
-                } else {
-                    logger.debug(String.format("Cannot find suburb %s", count.getPath()));
-                }
+                suburbs.add(suburb);
             }
+
+            LocationFacetQueryBuilder builder = LocationFacetQueryBuilder.valueOf(suburbs, counts, params, webSiteService.getCurrentCollege());
+            builder.build();
+            SolrQuery q = applyCourseRootTag(builder.getSolrQuery());
+            Map<String, Count> queries = builder.getFacetQueries();
+
             QueryResponse response = query(q, SolrCore.courses);
 
             HashMap<String, Count> result = new HashMap<>();

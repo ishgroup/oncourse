@@ -68,6 +68,15 @@ public class Suburb {
     }
 
 
+    public static Suburb valueOf(String postcode, Double latitude, Double longitude, Double distance) {
+        Suburb suburb = new Suburb();
+        suburb.postcode = postcode;
+        suburb.latitude = latitude;
+        suburb.longitude = longitude;
+        suburb.distance = distance;
+        return suburb;
+    }
+
     public static Suburb valueOf(String path, Double distance, SolrDocument doc) {
         return Suburb.valueOf(path, null, null, distance, doc);
     }
