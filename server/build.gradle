@@ -149,10 +149,10 @@ apiDocs {
 	destinationDir = reporting.file("api-docs")
 }
 
-// TODO need to make this depend on apiDocs
 task apidocsBundle(type: Jar) {
 	from reporting.file("api-docs")
 	classifier "apidocs"
+	dependsOn tasks.getByName('apiDocs')
 }
 
 // "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
