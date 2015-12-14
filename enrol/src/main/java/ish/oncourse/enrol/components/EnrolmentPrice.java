@@ -89,9 +89,8 @@ public class EnrolmentPrice {
 			}
 			return !discountedTotalExTax.isZero();
 		} else {
-			return !enrolment.getCourseClass().getDiscountAmountExTax(discount).isZero();
+			return discount != null && !enrolment.getCourseClass().getDiscountAmountExTax(discount).isZero();
 		}
-
 	}
 
 	/**
@@ -105,8 +104,10 @@ public class EnrolmentPrice {
 			for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
 				discountedPriceIncTax = discountedPriceIncTax.add(invoiceLine.getDiscountedPriceTotalIncTax());
 			}
-		} else {
+		} else if (discount != null) {
 			discountedPriceIncTax = enrolment.getCourseClass().getDiscountedFeeIncTax(enrolment.getCourseClass().getDiscountCourseClassBy(discount));
+		} else {
+			discountedPriceIncTax =  enrolment.getCourseClass().getFeeIncGst();
 		}
 		moneyFormat = FormatUtils.chooseMoneyFormat(discountedPriceIncTax);
 		return discountedPriceIncTax;
@@ -123,9 +124,12 @@ public class EnrolmentPrice {
 			for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
 				discountIncTax = discountIncTax.add(invoiceLine.getDiscountTotalIncTax());
 			}
-		} else {
+		} else if (discount != null) {
 			discountIncTax = enrolment.getCourseClass().getDiscountAmountIncTax(enrolment.getCourseClass().getDiscountCourseClassBy(discount));
+		} else {
+			discountIncTax = Money.ZERO;
 		}
+		
 		moneyFormat = FormatUtils.chooseMoneyFormat(discountIncTax);
 		return discountIncTax;
 	}

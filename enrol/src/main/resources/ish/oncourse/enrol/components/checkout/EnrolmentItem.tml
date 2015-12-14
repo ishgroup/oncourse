@@ -43,8 +43,10 @@
         </td>
 		<td class="alignright">
             <t:if test="checked">
-			    <span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="enrolment.courseClass" index="${contactIndex}_${enrolmentIndex}" discount="delegate.discount"/>
-                <span t:type="checkout/discounttooltip" discount="delegate.discount" toolTipId="${contactIndex}_${enrolmentIndex}"/>
+			    <span t:type="EnrolmentPrice" enrolment="enrolment" courseClass="enrolment.courseClass" index="${contactIndex}_${enrolmentIndex}"/>
+				<t:if test="delegate.discount">
+                	<span t:type="checkout/discounttooltip" discount="delegate.discount" toolTipId="${contactIndex}_${enrolmentIndex}"/>
+				</t:if>
             </t:if>
 		</td>
 	</tr>
