@@ -2262,6 +2262,8 @@ public abstract class CommonPreferenceController {
 			setSMTPPort((Integer) value);
 		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			setOncourseServerDefaultTimezone((String) value);
+		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {
+			setPaymentInfo((String) value);
 		}
 	}
 
