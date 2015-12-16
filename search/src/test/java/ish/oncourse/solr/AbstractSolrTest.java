@@ -34,6 +34,13 @@ import java.util.Map;
 public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
     protected  ModelBuilder modelBuilder;
 
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        SearchContextUtils.setupDataSources();
+        initSolr("src/main/resources/solr", "courses");
+    }
+
+
     @Before
     public void setup() throws Exception {
         InputStream st = CoursesSolrTest.class.getClassLoader().getResourceAsStream(getDataSetResource());
@@ -67,11 +74,6 @@ public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
         return rDataSet;
     }
 
-
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        SearchContextUtils.setupDataSources();
-    }
 
     public static void initSolr(String solrHome, String core) throws Exception {
         String config = String.format("%s/%s/conf/solrconfig.xml", solrHome, core);

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import ish.oncourse.services.search.*;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.request.LocalSolrQueryRequest;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -15,10 +14,6 @@ import java.util.Map;
  */
 public class FacetTest extends AbstractSolrTest {
 
-    @BeforeClass
-    public static void setupAll() throws Exception {
-        initSolr("src/main/resources/solr", "courses");
-    }
 
     @Override
     protected String getDataSetResource() {

@@ -9,18 +9,12 @@ import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.services.search.SolrQueryBuilder;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.request.LocalSolrQueryRequest;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Date;
 import java.util.Map;
 
 public class CoursesSolrTest extends AbstractSolrTest {
-
-    @BeforeClass
-    public static void setupAll() throws Exception {
-        initSolr("src/main/resources/solr", "courses");
-    }
 
     @Override
     protected String getDataSetResource() {

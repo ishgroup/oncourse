@@ -5,7 +5,6 @@ package ish.oncourse.solr;
 
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import ish.math.MoneyType;
-import ish.oncourse.test.InitialContextFactoryMock;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataNode;
@@ -59,23 +58,9 @@ public class SearchContextUtils {
 	}
 
 	public static void setupDataSourcesWithParams(Map<String, Boolean> params) throws Exception {
-		// sets up the InitialContextFactoryForTest as default factory.
-
-		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-
 		DataSource oncourse = createDataSource();
 
-		InitialContext ic = new InitialContext();
-		ic.createSubcontext("java:/comp/env");
-		ic.createSubcontext("java:/comp/env/jdbc");
-		ic.bind("java:comp/env/jdbc/oncourse", oncourse);
-
-		// bind the initial context instance, because the JNDIDataSourceFactory
-		// looks for it.
-		InitialContextFactoryMock.bind("java:comp/env", ic);
-
-		InitialContextFactoryMock.bind("jdbc/oncourse", oncourse);
-		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourse);
+		initJNDI(oncourse);
 
 		DataDomain domain = cayenneRuntime.getDataDomain();
 
@@ -85,6 +70,18 @@ public class SearchContextUtils {
 
 		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
+		}
+	}
+
+	private static void initJNDI(DataSource oncourse) {
+		try {
+			InitialContext ic = new InitialContext();
+
+			ic.createSubcontext("java:/comp/env");
+			ic.createSubcontext("java:/comp/env/jdbc");
+
+			ic.bind("java:comp/env/jdbc/oncourse", oncourse);
+		} catch (NamingException e) {
 		}
 	}
 
@@ -147,6 +144,10 @@ public class SearchContextUtils {
 		String databaseUri = System.getProperty("testDatabaseUri");
 		String driverClass = System.getProperty("testDatabaseDriver");
 		createTables = Boolean.valueOf(System.getProperty("testCreateTables"));
+		if (databaseUri == null) {
+			databaseUri = "jdbc:mysql://127.0.0.1:3306/ish_test?autoReconnect=true&zeroDateTimeBehavior=convertToNull&user=root&password=whatsup";
+			driverClass = com.mysql.jdbc.Driver.class.getName();
+		}
 
 		mysql = Mysql.valueOf(databaseUri);
 
