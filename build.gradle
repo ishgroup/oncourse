@@ -188,34 +188,3 @@ task testReport(type: TestReport) {
 task wrapper(type: Wrapper) {
 	gradleVersion = "2.7"
 }
-
-task switchReplicationVersion << {
-	exec {
-		commandLine "git", "mv", "${projectDir}/server/src/main/java/ish/oncourse/server/replication/$oldV", "${projectDir}/server/src/main/java/ish/oncourse/server/replication/$newV"
-	}
-	exec {
-		commandLine "git", "mv", "${projectDir}/server/src/test/java/ish/oncourse/server/replication/$oldV", "${projectDir}/server/src/test/java/ish/oncourse/server/replication/$newV"
-	}
-	exec {
-		commandLine "git", "mv", "${projectDir}/server/src/test/resources/ish/oncourse/server/replication/$oldV", "${projectDir}/server/src/test/resources/ish/oncourse/server/replication/$newV"
-	}
-
-	File clientFile = file("${projectDir}/client/src/test/java/ish/oncourse/client/modules/TestModule.java")
-	String clienContent = clientFile.getText()
-	clientFile.write(clienContent.replaceAll("import ish.oncourse.server.replication.$oldV", "import ish.oncourse.server.replication.$newV"))
-
-	FileTree serverFiles = fileTree(dir: "${projectDir}/server/src/", includes: ['**/*.java'])
-
-	serverFiles.each { File serverFile ->
-		String content = serverFile.getText()
-		serverFile.write(content
-				.replaceAll("import ish.oncourse.webservices.soap.$oldV","import ish.oncourse.webservices.soap.$newV")
-				.replaceAll("import ish.oncourse.webservices.$oldV","import ish.oncourse.webservices.$newV")
-				.replaceAll("import ish.oncourse.server.replication.$oldV","import ish.oncourse.server.replication.$newV")
-				.replaceAll("package ish.oncourse.server.replication.$oldV","package ish.oncourse.server.replication.$newV"))
-	}
-
-	File resourcesFile = file("${projectDir}/server/src/test/java/ish/oncourse/server/replication/$newV/updater/PaymentInUpdaterTest.java")
-	String resourcesContent = resourcesFile.getText()
-	resourcesFile.write(resourcesContent.replaceAll("ish/oncourse/server/replication/$oldV", "ish/oncourse/server/replication/$newV"))
-} 

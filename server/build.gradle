@@ -360,6 +360,32 @@ task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], 
 	}
 }
 
+task switchReplicationVersion << {
+
+    //TODO: determine these automatically?
+    def oldVersion = 11
+    def newVersion = 12
+    
+    ant.replace( fileset(dir: 'src/main/java/ish/oncourse/server/replication'),
+            linecontains: "import",
+            token: oldVersion,
+            value: newVersion
+    )
+
+    ant.replace( fileset(dir: 'src/test/java/ish/oncourse/server/replication'),
+            linecontains: "import",
+            token: oldVersion,
+            value: newVersion
+    )
+
+    ant.replace( fileset(dir: 'src/test/resources/ish/oncourse/server/replication'),
+            linecontains: "import",
+            token: oldVersion,
+            value: newVersion
+    )
+}
+
+
 String sha256(String filename) {
 	if (! file(filename).exists()) return "missing file"
 
