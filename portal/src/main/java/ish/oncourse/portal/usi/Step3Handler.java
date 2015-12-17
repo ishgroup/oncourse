@@ -23,9 +23,9 @@ public class Step3Handler extends AbstractStepHandler {
             Student student = contact.getStudent();
 
             addValue(Value.valueOf(IS_MALE.getName(), contact.getIsMale(), true));
-            addValue(Value.valueOf(STREET.getName(), contact.getStreet(), isRequiredField(STREET.getName())));
-            addValue(Value.valueOf(SUBURB.getName(), contact.getSuburb(), isRequiredField(SUBURB.getName())));
-            addValue(Value.valueOf(POSTCODE.getName(), contact.getPostcode(), isRequiredField(POSTCODE.getName())));
+            addValue(Value.valueOf(STREET.getName(), contact.getStreet(), true));
+            addValue(Value.valueOf(SUBURB.getName(), contact.getSuburb(), true));
+            addValue(Value.valueOf(POSTCODE.getName(), contact.getPostcode(), true));
             addValue(Value.valueOf(STATE.getName(), contact.getState(), isRequiredField(STATE.getName())));
             addValue(Value.valueOf(COUNTRY.getName(), contact.getCountry() != null ? contact.getCountry().getName() : null, isRequiredField(COUNTRY.getName())));
             addValue(Value.valueOf(MOBILE_PHONE_NUMBER.getName(), contact.getMobilePhoneNumber(), isRequiredField(COUNTRY.getName())));
