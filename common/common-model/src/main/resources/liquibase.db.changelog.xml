@@ -3850,5 +3850,13 @@
 			ALTER TABLE DiscountCourseClass CHANGE COLUMN discountDollar discountAmount DECIMAL(10,2);
 		</sql>
 	</changeSet>
-	
+
+	<changeSet id="250" author="akoyro" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="WebSite" columnName="googleAnalyticsAccount"/>
+		</preConditions>
+		<sql>
+			ALTER TABLE WebSite DROP COLUMN googleAnalyticsAccount;
+		</sql>
+	</changeSet>
 </databaseChangeLog>
