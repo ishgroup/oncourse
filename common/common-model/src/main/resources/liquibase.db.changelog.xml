@@ -3859,4 +3859,14 @@
 			ALTER TABLE WebSite DROP COLUMN googleAnalyticsAccount;
 		</sql>
 	</changeSet>
+
+	<changeSet id="251" author="akoyro" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="WillowUser" columnName="collegeId"/>
+		</preConditions>
+		<sql>
+			ALTER TABLE WillowUser DROP COLUMN collegeId;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
