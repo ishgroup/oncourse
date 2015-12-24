@@ -2,6 +2,11 @@
 
 var $j = jQuery.noConflict();
 
+/**
+ * The function inserts "/" in front of the path. It needs for IE.
+ * @param pathname
+ * @returns {String} returns the adjusted path
+ */
 function adjustPathName(pathname) {
     var paths = pathname.split("/");
 
@@ -10,7 +15,11 @@ function adjustPathName(pathname) {
     }
     return pathname;
 }
-
+/**
+ *
+ * @param pathname
+ * @returns {boolean} true if the pathname is "courses" path
+ */
 function isCoursesPath(pathname) {
     var paths = pathname.split("/");
     return paths.length > 1 && paths[1] == "courses";
@@ -85,10 +94,10 @@ CoursesUrlFormat.prototype = {
                 split = query.split('=');
                 switch (split[0]) {
                     case "tag":
-                        tags.push(decodeURIComponent(split[1]));
+                        tags.push(split[1]);
                         break;
                     case "near":
-                        locations.push(decodeURIComponent(split[1]));
+                        locations.push(split[1]);
                         break;
                     case "km":
                         km = split[1];
