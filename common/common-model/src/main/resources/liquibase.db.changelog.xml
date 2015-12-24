@@ -3865,6 +3865,8 @@
 			<columnExists tableName="WillowUser" columnName="collegeId"/>
 		</preConditions>
 		<sql>
+			ALTER TABLE WillowUser DROP FOREIGN KEY WillowUser_ibfk_1;
+			ALTER TABLE WillowUser DROP INDEX collegeId_email_uniq_idx;
 			ALTER TABLE WillowUser DROP COLUMN collegeId;
 		</sql>
 	</changeSet>
