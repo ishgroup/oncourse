@@ -6,6 +6,7 @@ import ish.oncourse.util.ContextUtil;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.management.ManagementService;
 import org.apache.cayenne.cache.QueryCache;
+import org.apache.cayenne.configuration.Constants;
 import org.apache.cayenne.configuration.ObjectContextFactory;
 import org.apache.cayenne.di.Binder;
 import org.apache.cayenne.di.Key;
@@ -21,6 +22,10 @@ public class ISHModule implements Module {
 
 	@Override
 	public void configure(Binder binder) {
+
+		//needs for case insensitive queries
+		binder.bindMap(Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
+
 		binder.bind(ObjectContextFactory.class).to(ISHObjectContextFactory.class);
 
 		if (ContextUtil.isQueryCacheEnabled()) {
