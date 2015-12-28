@@ -30,6 +30,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
@@ -130,7 +131,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 		model.setProducts(model.localizeObjects(products));
 		model.setCollege(model.localizeObject(webSiteService.getCurrentCollege()));
 		model.setWebSite(model.localizeObject(webSiteService.getCurrentWebSite()));
-		model.setDiscounts(discounts);
+		model.setDiscounts(model.localizeObjects(discounts));
 		model.setAllowToUsePrevOwing(false);
 		return model;
 	}
