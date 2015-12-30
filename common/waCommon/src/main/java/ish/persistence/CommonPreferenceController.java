@@ -1417,8 +1417,8 @@ public abstract class CommonPreferenceController {
 	public static final String EULA_AGREEMENT = "eula.agreement.";
 	public static final String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
 	public static final String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
-	public static final String LISTVIEW_COLIMN_SORTED = "listview.column.sorted.";
-	public static final Pattern COLIMN_SORTED_PATTERN = Pattern.compile("([\\d]+[:](true|false)[,])+");
+	public static final String LISTVIEW_COLUMN_SORTED = "listview.column.sorted.";
+	public static final Pattern COLUMN_SORTED_PATTERN = Pattern.compile("([\\d]+[:](true|false)[,])+");
 
 	public String getToolbarActiveTab() {
 		return getValue(TOOLBAR_ACTIVE_TAB, true);
@@ -1545,12 +1545,12 @@ public abstract class CommonPreferenceController {
 		for (Map.Entry<Integer, Boolean> col : sortedColumns.entrySet()) {
 			prefValue.append(String.format("%d:%b,", col.getKey(), col.getValue()));
 		}
-		setValue(LISTVIEW_COLIMN_SORTED + frameIdentifier, true, prefValue.toString());
+		setValue(LISTVIEW_COLUMN_SORTED + frameIdentifier, true, prefValue.toString());
 	}
 
 	public Map<Integer, Boolean> getSortedColumns(String frameIdentifier) {
-		String value = getValue(LISTVIEW_COLIMN_SORTED + frameIdentifier, true);
-		if (StringUtils.trimToNull(value) != null && COLIMN_SORTED_PATTERN.matcher(value).matches()) {
+		String value = getValue(LISTVIEW_COLUMN_SORTED + frameIdentifier, true);
+		if (StringUtils.trimToNull(value) != null && COLUMN_SORTED_PATTERN.matcher(value).matches()) {
 			String[] elements = commaExplode.split(value);
 			Map<Integer, Boolean> sortedColumn  = new LinkedHashMap<>(elements.length);
 			for (String col : elements) {
