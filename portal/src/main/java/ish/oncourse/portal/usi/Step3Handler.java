@@ -37,8 +37,11 @@ public class Step3Handler extends AbstractStepHandler {
     }
 
     private boolean isRequiredField(String key) {
+
         return getUsiController().getContactFieldHelper().isRequiredField(PreferenceController.FieldDescriptor.valueOf(key),
-                getUsiController().getContact());
+                getUsiController().getContact())
+                ||
+                (STREET.getName().equals(key) || SUBURB.getName().equals(key) || POSTCODE.getName().equals(key));
     }
 
     @Override
