@@ -1418,7 +1418,6 @@ public abstract class CommonPreferenceController {
 	public static final String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
 	public static final String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
 	public static final String LISTVIEW_COLUMN_SORTED = "listview.column.sorted.";
-	public static final Pattern COLUMN_SORTED_PATTERN = Pattern.compile("([\\d]+[:](true|false)[,])+");
 
 	public String getToolbarActiveTab() {
 		return getValue(TOOLBAR_ACTIVE_TAB, true);
@@ -1540,22 +1539,24 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(getValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true));
 	}
 
-	public void setSortedColumns(String frameIdentifier, Map<Integer, Boolean> sortedColumns) {
+	public void setListViewSortedColumns(String frameIdentifier, Map<String, Boolean> sortedColumns) {
 		StringBuilder prefValue = new StringBuilder();
-		for (Map.Entry<Integer, Boolean> col : sortedColumns.entrySet()) {
-			prefValue.append(String.format("%d:%b,", col.getKey(), col.getValue()));
+		for (Map.Entry<String, Boolean> col : sortedColumns.entrySet()) {
+			prefValue.append(String.format("%s:%b,", col.getKey(), col.getValue()));
 		}
 		setValue(LISTVIEW_COLUMN_SORTED + frameIdentifier, true, prefValue.toString());
 	}
 
-	public Map<Integer, Boolean> getSortedColumns(String frameIdentifier) {
+	public Map<String, Boolean> getListViewSortedColumns(String frameIdentifier) {
 		String value = getValue(LISTVIEW_COLUMN_SORTED + frameIdentifier, true);
-		if (StringUtils.trimToNull(value) != null && COLUMN_SORTED_PATTERN.matcher(value).matches()) {
+		if (StringUtils.trimToNull(value) != null) {
 			String[] elements = commaExplode.split(value);
-			Map<Integer, Boolean> sortedColumn  = new LinkedHashMap<>(elements.length);
+			Map<String, Boolean> sortedColumn  = new LinkedHashMap<>(elements.length);
 			for (String col : elements) {
 				String[] colIndexSorting = colonExplode.split(col);
-				sortedColumn.put(Integer.parseInt(colIndexSorting[0]), Boolean.parseBoolean(colIndexSorting[1]));
+				if (colIndexSorting.length == 2) {
+					sortedColumn.put(colIndexSorting[0], Boolean.parseBoolean(colIndexSorting[1]));
+				}
 			}
 			return sortedColumn;
 		}
