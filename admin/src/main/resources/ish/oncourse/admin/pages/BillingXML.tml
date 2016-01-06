@@ -10,6 +10,7 @@
             <namecode>${college.billingCode}</namecode>
             <description>onCourse <t:output format="literal:MMMM yyyy" value="fromMonth" /></description>
             <tofrom>${college.name}</tofrom>
+            <colour>1</colour>
             <subfile name="Detail">
                 <detail>
                     <detail.stockCode>${hosting.code}</detail.stockCode>
