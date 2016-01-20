@@ -43,7 +43,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
 	@Override
 	public boolean isEmptyInvoice() {
-		return purchaseController.getModel().getInvoice().getInvoiceLines().isEmpty();
+		return purchaseController.getModel().getInvoice().getInvoiceLines().isEmpty() && purchaseController.getModel().getPaymentPlanInvoices().isEmpty();
 	}
 
 	@Override

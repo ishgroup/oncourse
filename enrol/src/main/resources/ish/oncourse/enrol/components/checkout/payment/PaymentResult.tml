@@ -77,18 +77,14 @@
 	<t:block t:id="transactionSuccess">
 		<h2>Transaction <span>&#187;</span> Successful</h2>
 		<p>${messageThanksForEnrolment}</p>
-		<p>Your transaction was <strong>SUCCESSFUL</strong> and recorded in our system against reference number
+		<p>Your transaction was <strong>SUCCESSFUL</strong> and recorded in our system
 			<strong>
-				<t:if test="delegate.emptyInvoice">
-					<t:loop source="delegate.applications" value="application">
-						W${application.id}
-					</t:loop>
-					<p:else>
-						W${paymentIn.id}
-					</p:else>
+				<t:if test="paymentIn.id">
+					against reference number W${paymentIn.id}
 				</t:if>
 			</strong>.
 		</p>
+
 		
 		<p>${message:message-successConfirmationForZeroInvoice}</p>
 		<t:if test="successUrl">
