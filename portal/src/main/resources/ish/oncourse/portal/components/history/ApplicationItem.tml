@@ -10,9 +10,9 @@
 						${application.reason}
 					</p>
 				</t:if>
-				<t:if test="application.feeOverride">
+				<t:if test="feeOverride">
 					<p>
-						Your fee: ${application.feeOverride} (ex GST)
+						Your fee: <t:output value="feeOverride" format="moneyFormat"/> (ex GST)
 					</p>
 				</t:if>
 				<t:if test="application.enrolBy">
