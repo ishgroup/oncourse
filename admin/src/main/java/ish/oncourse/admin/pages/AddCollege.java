@@ -12,7 +12,6 @@ import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
@@ -24,13 +23,19 @@ public class AddCollege {
 
 	private static final String BUCKET_NAME_FORMAT = "ish-oncourse-%s";
 	private static final String AWS_USER_NAME_FORMAT = "college.%s";
+	private static final String KEY_PARAMETER_NAME = "key";
+	private static final String COLLEGE_KEY_PARAMETER_NAME  = "collegeKey";
+	private static final String BILLING_CODE_PARAMETER_NAME  = "billingCode";
+	private static final String COLLEGE_ID_PARAMETER_NAME = "collegeId";
+	private static final String MESSAGE_PARAMETER_NAME = "message";
+	private static final String ID_PARAMETER_NAME = "id";
+	private static final String STATUS_PARAMETER_NAME = "status";
+	private static final String SETUP_STATUS_PARAMETER_VALUE= "SETUP";
+	private static final String CONTENT_TYPE = "text/json";
 
 	@Inject
 	private IS3Service s3Service;
-	
-	@Property
-	private String findCollegeUrl;
-	
+
 	@Property
 	private Long collegeId;
 	
@@ -58,39 +63,31 @@ public class AddCollege {
 	
 	@Inject
 	private PageRenderLinkSource prls;
-	
-	@SetupRender
-	void setupRender() {
-		this.findCollegeUrl = response.encodeURL(request.getContextPath() + "/findCollege");
-	}
 
 	@OnEvent(value = "findCollegeEvent")
 	public Object findCollege() {
 		if (!request.isXHR()) {
 			return null;
 		}
-		String serviceKey = request.getParameter("key");
+		String serviceKey = request.getParameter(KEY_PARAMETER_NAME);
 		JSONObject response = new JSONObject();
 
 		College college = collegeService.findBySecurityCodeLastChars(serviceKey);
 		if (college != null) {
 			if (college.getBillingCode() != null) {
-				response.put("status", "ACTIVE");
-				response.put("message", "College already active.");
-
+				response.put(MESSAGE_PARAMETER_NAME, "College already active.");
 			}
 			else {
-				response.put("status", "SETUP");
-				response.put("message", "Found. Please fill following fields, then press Next to proceed to billing setup.");
-				response.put("id", college.getId());
+				response.put(STATUS_PARAMETER_NAME, SETUP_STATUS_PARAMETER_VALUE);
+				response.put(MESSAGE_PARAMETER_NAME, "Found. Please fill following fields, then press Next to proceed to billing setup.");
+				response.put(ID_PARAMETER_NAME, college.getId());
 			}
 		}
 		else {
-			response.put("status", "NOT FOUND");
-			response.put("message", "Could not find key.");
+			response.put(MESSAGE_PARAMETER_NAME, "Could not find key.");
 		}
 
-		return new TextStreamResponse("text/json", response.toString());
+		return new TextStreamResponse(CONTENT_TYPE, response.toString());
 	}
 
 	@OnEvent(value = "addBillingCodeAndCollegeKeyEvent")
@@ -99,20 +96,20 @@ public class AddCollege {
 			return null;
 		}
 		JSONObject response = new JSONObject();
-		String collegeKey = request.getParameter("collegeKey");
-		String billingCode = request.getParameter("billingCode");
+		String collegeKey = request.getParameter(COLLEGE_KEY_PARAMETER_NAME);
+		String billingCode = request.getParameter(BILLING_CODE_PARAMETER_NAME);
 
 		if ( billingCode.isEmpty() || collegeKey.isEmpty() ) {
-			response.put("message", "Billing Code and College Key must not be empty");
-			return new TextStreamResponse("text/json", response.toString());
+			response.put(MESSAGE_PARAMETER_NAME, "Billing Code and College Key must not be empty");
+			return new TextStreamResponse(CONTENT_TYPE, response.toString());
 		}
 
 		if (collegeKey.endsWith(".") ||	collegeKey.contains(" ")) {
-			response.put("message", "College key must not contain full stop and spaces");
-			return new TextStreamResponse("text/json", response.toString());
+			response.put(MESSAGE_PARAMETER_NAME, "College key must not contain full stop and spaces");
+			return new TextStreamResponse(CONTENT_TYPE, response.toString());
 		}
 
-		Long collegeId = Long.valueOf(request.getParameter("collegeId"));
+		Long collegeId = Long.valueOf(request.getParameter(COLLEGE_ID_PARAMETER_NAME));
 
 		ObjectContext context = cayenneService.newContext();
 		College college = context.localObject(collegeService.findById(collegeId));
@@ -129,8 +126,8 @@ public class AddCollege {
 			try {
 				enableExternalStorage(context, college, bucketName, userName);
 			} catch (Exception e) {
-				response.put("message", e.getMessage());
-				return new TextStreamResponse("text/json", response.toString());
+				response.put(MESSAGE_PARAMETER_NAME, e.getMessage());
+				return new TextStreamResponse(CONTENT_TYPE, response.toString());
 			}
 		}
 
