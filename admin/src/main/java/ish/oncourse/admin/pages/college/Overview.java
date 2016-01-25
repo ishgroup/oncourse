@@ -76,6 +76,9 @@ public class Overview {
 	
 	@Property
 	private String auskeyPassword;
+
+	@Property
+	private String collegeKey;
 	
 	@SetupRender
 	void setupRender() {
@@ -85,6 +88,7 @@ public class Overview {
 		onCourseVersion = college.getAngelVersion();
 		replicationState = college.getCommunicationKeyStatus().toString();
 		lastReplication = dateFormat.format(college.getLastRemoteAuthentication());
+		collegeKey = college.getCollegeKey();
 	}
 	
 	void onActivate(Long id) {

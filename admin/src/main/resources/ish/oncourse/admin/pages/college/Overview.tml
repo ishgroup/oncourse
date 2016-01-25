@@ -22,12 +22,16 @@
 			<td>Last replication:</td>
 			<td>${lastReplication}</td>
 		</tr>
+		<t:if test="collegeKey">
+			<tr>
+				<td>College key</td>
+				<td>${collegeKey}</td>
+			</tr>
+		</t:if>
 		<t:if test="bucketName">
 			<tr>
 				<td>S3 bucket name:</td>
-				<td>
-						${bucketName}
-				</td>
+				<td>${bucketName}</td>
 			</tr>
 		</t:if>
 		<tr>
