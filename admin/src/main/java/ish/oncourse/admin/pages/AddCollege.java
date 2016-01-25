@@ -28,9 +28,7 @@ public class AddCollege {
 	private static final String BILLING_CODE_PARAMETER_NAME  = "billingCode";
 	private static final String COLLEGE_ID_PARAMETER_NAME = "collegeId";
 	private static final String MESSAGE_PARAMETER_NAME = "message";
-	private static final String ID_PARAMETER_NAME = "id";
-	private static final String STATUS_PARAMETER_NAME = "status";
-	private static final String SETUP_STATUS_PARAMETER_VALUE= "SETUP";
+	private static final String STATUS_PARAMETER_NAME = "needCollegeKey";
 	private static final String CONTENT_TYPE = "text/json";
 
 	@Inject
@@ -71,6 +69,7 @@ public class AddCollege {
 		}
 		String serviceKey = request.getParameter(KEY_PARAMETER_NAME);
 		JSONObject response = new JSONObject();
+		response.put(STATUS_PARAMETER_NAME,false);
 
 		College college = collegeService.findBySecurityCodeLastChars(serviceKey);
 		if (college != null) {
@@ -78,9 +77,9 @@ public class AddCollege {
 				response.put(MESSAGE_PARAMETER_NAME, "College already active.");
 			}
 			else {
-				response.put(STATUS_PARAMETER_NAME, SETUP_STATUS_PARAMETER_VALUE);
+				response.put(STATUS_PARAMETER_NAME, true);
 				response.put(MESSAGE_PARAMETER_NAME, "Found. Please fill following fields, then press Next to proceed to billing setup.");
-				response.put(ID_PARAMETER_NAME, college.getId());
+				response.put(COLLEGE_ID_PARAMETER_NAME, college.getId());
 			}
 		}
 		else {

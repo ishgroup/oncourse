@@ -40,8 +40,8 @@ function initFindCollegeByServiceKey() {
             $j("#results").empty();
             $j("#results").append(data["message"]);
 
-            if (data["status"] == "SETUP") {
-                $j("#collegeId").val(data["id"]);
+            if (data["needCollegeKey"]) {
+                $j("#collegeId").val(data["collegeId"]);
                 $j("#newCollege").show();
             }
         }
