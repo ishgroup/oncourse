@@ -3871,4 +3871,23 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="252" author="ashestak" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<not><columnExists tableName="College" columnName="collegeKey"/></not>
+		</preConditions>
+		<sql>
+			ALTER TABLE College ADD COLUMN collegeKey VARCHAR(32) NULL;
+		</sql>
+	</changeSet>
+
+	<changeSet id="253" author="ashestak" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<columnExists tableName="College" columnName="collegeKey"/>
+			<not><indexExists tableName="College" columnNames="collegeKey"/></not>
+		</preConditions>
+		<sql>
+			CREATE UNIQUE INDEX college_key_unique ON College (collegeKey);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

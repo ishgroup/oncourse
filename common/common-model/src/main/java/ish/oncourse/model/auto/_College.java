@@ -84,6 +84,8 @@ public abstract class _College extends CayenneDataObject {
     @Deprecated
     public static final String BILLING_CODE_PROPERTY = "billingCode";
     @Deprecated
+    public static final String COLLEGE_KEY_PROPERTY = "collegeKey";
+    @Deprecated
     public static final String COMMUNICATION_KEY_PROPERTY = "communicationKey";
     @Deprecated
     public static final String COMMUNICATION_KEY_STATUS_PROPERTY = "communicationKeyStatus";
@@ -246,6 +248,7 @@ public abstract class _College extends CayenneDataObject {
 
     public static final Property<String> ANGEL_VERSION = new Property<String>("angelVersion");
     public static final Property<String> BILLING_CODE = new Property<String>("billingCode");
+    public static final Property<String> COLLEGE_KEY = new Property<String>("collegeKey");
     public static final Property<Long> COMMUNICATION_KEY = new Property<Long>("communicationKey");
     public static final Property<KeyStatus> COMMUNICATION_KEY_STATUS = new Property<KeyStatus>("communicationKeyStatus");
     public static final Property<Date> CREATED = new Property<Date>("created");
@@ -338,6 +341,13 @@ public abstract class _College extends CayenneDataObject {
     }
     public String getBillingCode() {
         return (String)readProperty("billingCode");
+    }
+
+    public void setCollegeKey(String collegeKey) {
+        writeProperty("collegeKey", collegeKey);
+    }
+    public String getCollegeKey() {
+        return (String)readProperty("collegeKey");
     }
 
     public void setCommunicationKey(Long communicationKey) {

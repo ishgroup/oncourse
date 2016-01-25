@@ -7,8 +7,10 @@
 				<td><input id="serviceKey" type="text"/></td>
 			</tr>
 			<tr>
-				<td><button id="find" class="btn btn-primary">Find</button></td>
-			</tr>
+				<td><button id="find" class="btn btn-primary">Find</button>
+					<t:eventlink t:id="findCollegeEvent" style="{display:none}" class="findServiceKeyLink"/>
+				</td>
+				</tr>
 		</table>
 	
 	<div id="results">
@@ -22,37 +24,15 @@
 					<td>Billing Code</td>
 					<td><t:textfield t:id="billingCode" t:validate="required" value="billingCode"/></td>
 				</tr>
+				<tr>
+					<td>College Key</td>
+					<td><t:textfield t:id="collegeKey" t:validate="required" maxlength="32" value="collegeKey"/></td>
+				</tr>
 			</table>
-			<t:submit t:id="addNewCollege" class="btn btn-primary" value="Next"/>
+			<div id="newCollegeValidationResult">
+			</div>
 		</t:form>
+		<button id="addNewCollege" class="btn btn-primary">Next</button>
+		<t:eventlink t:id="addBillingCodeAndCollegeKeyEvent" style="{display:none}" class="addBillingCodeAndCollegeKeyLink"/>
 	</div>
-	
-	<script type="text/javascript">
-		jQuery(function() {
-			jQuery("#newCollege").hide();
-			
-			jQuery("#find").click(function() {
-				jQuery("#newCollege").hide();
-				
-				var key = jQuery("#serviceKey").attr("value");
-				
-				var success = function(data) {
-					jQuery("#results").empty();
-					jQuery("#results").append(data["message"]);
-					
-					if (data["status"] == "SETUP") {
-						jQuery("#collegeId").val(data["id"]);
-						jQuery("#newCollege").show();
-					}
-				}
-				
-				jQuery.ajax({
-					url: "${findCollegeUrl}",
-					data: "key=" + key,
-					success: success,
-					dataType: "json"
-				});
-			});
-		});
-	</script>
 </html>
