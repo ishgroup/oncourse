@@ -125,9 +125,11 @@ public class DiscountUtilsTest {
 		assertEquals(new Money("136.00"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()));
 	}
 
+	/**
+	 * for different combination of feeIncTax and discountIncTax we found situation when we lose one cent
+	 */
 	@Test
-	public void testInvoiceLine() {
-
+	public void testOneCentProblem() {
 		BigDecimal taxRate = new BigDecimal(0.1);
 		BigDecimal rate = new BigDecimal(1.1);
 		for (int feeIncTaxDollars = 1; feeIncTaxDollars < 10_000 ; feeIncTaxDollars++){
@@ -154,13 +156,10 @@ public class DiscountUtilsTest {
 				when(classDiscount.getDiscount()).thenReturn(discount);
 				when(classDiscount.getDiscountDollar()).thenReturn(discountExtTax);
 
-
 				DiscountUtils.applyDiscounts(classDiscount,invoiceLine,taxRate,taxAdjustment);
-
 
 				Money invoiceLineTaxEach = invoiceLine.getTaxEach();
 				Money invoiceLineDiscountEachExTax = invoiceLine.getDiscountEachExTax();
-
 				Money actualPrice = feeExtTax.subtract(invoiceLineDiscountEachExTax).add(invoiceLineTaxEach);
 
 				if (!expectedPrice.equals(actualPrice)){
