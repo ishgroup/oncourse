@@ -505,8 +505,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 					}
 				}
 			}
-            String message = String.format("Uncommitted object with angelId:%s and entityName:%s wasn't found.", angelId, entityName);
-            throw new IllegalArgumentException(message);
+			College college = webSiteService.getCurrentCollege();
+			String message = String.format("collegeId: %s, Uncommitted object with angelId:%s and entityName:%s wasn't found.", college.getId(), angelId, entityName);
+			throw new IllegalArgumentException(message);
 		}
 	}
 }
