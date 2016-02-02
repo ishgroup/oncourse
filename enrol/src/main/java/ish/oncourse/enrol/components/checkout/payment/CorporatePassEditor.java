@@ -3,6 +3,7 @@ package ish.oncourse.enrol.components.checkout.payment;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorParser;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.utils.StringUtilities;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -13,6 +14,7 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.text.Format;
 import java.util.Map;
 
 public class CorporatePassEditor implements IPaymentControlDelegate {
@@ -47,10 +49,11 @@ public class CorporatePassEditor implements IPaymentControlDelegate {
 			String companyName = delegate.getInvoice().getCorporatePassUsed().getContact().getFullName();
 			successMessage = messages.format("message-corporatePassAdded", companyName, companyName);
 			Money totalDiscount = delegate.getTotalDiscountAmountIncTax();
+			Format moneyFormat = FormatUtils.chooseMoneyFormat(totalDiscount);
 			if (totalDiscount.compareTo(Money.ZERO) > 0) {
-				successMessage = successMessage.concat(String.format("\n This corporatePass has caused a discount of %s to be applied to this sale.", totalDiscount.toString()));
+				successMessage = successMessage.concat(String.format("\n This corporatePass has caused a discount of %s to be applied to this sale.", moneyFormat.format(totalDiscount)));
 			} else if (totalDiscount.compareTo(Money.ZERO) < 0) {
-				successMessage = successMessage.concat(String.format("\n This corporatePass has caused a surcharge of %s to be applied to this sale.", totalDiscount.toString()));
+				successMessage = successMessage.concat(String.format("\n This corporatePass has caused a surcharge of %s to be applied to this sale.", moneyFormat.format(totalDiscount)));
 			}
 			
 		}
