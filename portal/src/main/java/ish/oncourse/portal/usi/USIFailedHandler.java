@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class Step1FailedHandler extends Step1Handler{
+public class USIFailedHandler extends USIHandler {
 
     @Override
     public Result getValue() {
@@ -35,7 +35,7 @@ public class Step1FailedHandler extends Step1Handler{
     }
 
     @Override
-    public Step1FailedHandler handle(Map<String, Value> inputValues) {
+    public USIFailedHandler handle(Map<String, Value> inputValues) {
         this.inputValues = inputValues;
 
         handleDateOfBirth(Contact.DATE_OF_BIRTH_PROPERTY);

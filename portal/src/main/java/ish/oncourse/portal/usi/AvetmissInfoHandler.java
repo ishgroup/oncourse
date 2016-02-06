@@ -24,7 +24,7 @@ import static ish.oncourse.model.auto._Student.*;
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class Step2Handler extends AbstractStepHandler {
+public class AvetmissInfoHandler extends AbstractStepHandler {
     private static final Pattern ENROLMENT_KEY_PATTERN = Pattern.compile("^enrolment-([0-9]+)$");
 
     @Override
@@ -93,10 +93,10 @@ public class Step2Handler extends AbstractStepHandler {
 
     @Override
     public Step getNextStep() {
-        return Step.step3;
+        return Step.usi;
     }
 
-    public Step2Handler handle(Map<String, Value> input) {
+    public AvetmissInfoHandler handle(Map<String, Value> input) {
         this.inputValues = input;
         Student student = getUsiController().getContact().getStudent();
 

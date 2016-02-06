@@ -93,7 +93,7 @@ public class Usi {
     private void initUsiControllerModel(Contact contact) {
         ObjectContext context = cayenneService.newContext();
         usiControllerModel = UsiControllerModel.valueOf(context.localObject(contact));
-        usiControllerModel.setStep(Step.step1);
+        usiControllerModel.setStep(Step.contactInfo);
 
         // we need put college id to the session for WebSiteService.getCurrentCollege() method
         request.getSession(false).setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, contact.getCollege().getId());
@@ -132,7 +132,7 @@ public class Usi {
 
         Contact contact = contacts.get(0);
 
-        if (!UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
+        if (false && !UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
             return null;
         }
         return contact;

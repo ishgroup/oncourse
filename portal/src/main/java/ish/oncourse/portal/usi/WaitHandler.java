@@ -21,7 +21,7 @@ public class WaitHandler extends AbstractStepHandler {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private AtomicReference<Step> nextStep = new AtomicReference<>(Step.step1);
+    private AtomicReference<Step> nextStep = new AtomicReference<>(Step.usi);
 
     @Override
     public Result getValue() {
@@ -39,7 +39,7 @@ public class WaitHandler extends AbstractStepHandler {
     }
 
     public WaitHandler handle(Map<String, Value> input) {
-        if (nextStep.getAndSet(Step.wait) == Step.step1) {
+        if (nextStep.getAndSet(Step.wait) == Step.usi) {
             verifyUsi();
         }
         return this;
@@ -51,7 +51,7 @@ public class WaitHandler extends AbstractStepHandler {
             String avetmissID = getUsiController().getPreferenceController().getAvetmissID();
             if (avetmissID == null) {
                 getUsiController().getValidationResult().addError("messaget-avetmissIdentifierNotSet");
-                nextStep.set(Step.step1);
+                nextStep.set(Step.usi);
                 return;
             }
 
@@ -59,7 +59,7 @@ public class WaitHandler extends AbstractStepHandler {
             if (certificate == null)
             {
                 getUsiController().getValidationResult().addError("messaget-auskeyCertificateNotSet");
-                nextStep.set(Step.step1);
+                nextStep.set(Step.usi);
                 return;
             }
 
@@ -91,9 +91,9 @@ public class WaitHandler extends AbstractStepHandler {
                     }
                     if (match) {
                         contact.getStudent().setUsiStatus(UsiStatus.VERIFIED);
-                        nextStep.set(Step.step1Done);
+                        nextStep.set(Step.done);
                     } else {
-                        nextStep.set(Step.step1Failed);
+                        nextStep.set(Step.usiFailed);
                         contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
                         getUsiController().getValidationResult().addError("message-personalDetailsNotMatch");
                     }
@@ -101,7 +101,7 @@ public class WaitHandler extends AbstractStepHandler {
                 case INVALID:
                 case DEACTIVATED:
                     contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
-                    nextStep.set(Step.step1);
+                    nextStep.set(Step.usi);
                     result.addValue(
                             Value.valueOf(Student.USI_PROPERTY, contact.getStudent().getUsi(), getUsiController().getMessages().format("message-fieldNotMatch")));
                     getUsiController().getValidationResult().addError("message-invalidUsi");
@@ -111,7 +111,7 @@ public class WaitHandler extends AbstractStepHandler {
         } catch (Exception e) {
             contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
             logger.catching(e);
-            nextStep.set(Step.step1);
+            nextStep.set(Step.usi);
             getUsiController().getValidationResult().addError("message-usiServiceUnexpectedException");
         }
     }

@@ -919,7 +919,7 @@ public class PortalService implements IPortalService {
         {
             ObjectContext context = cayenneService.newContext();
             usiControllerModel = UsiControllerModel.valueOf(context.localObject(getContact()));
-            usiControllerModel.setStep(Step.step1);
+            usiControllerModel.setStep(Step.usi);
             session.setAttribute("portal.usiControllerModel", usiControllerModel);
         }
         return UsiController.valueOf(usiControllerModel, countryService, languageService, preferenceController, usiVerificationService);

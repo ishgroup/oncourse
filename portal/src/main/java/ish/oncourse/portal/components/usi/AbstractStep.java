@@ -36,4 +36,8 @@ public abstract class AbstractStep {
     public UsiController getUsiController() {
         return usiController;
     }
+
+    public boolean isHiddenField(String key) {
+        return usiController.getValue().isHidden(key);
+    }
 }

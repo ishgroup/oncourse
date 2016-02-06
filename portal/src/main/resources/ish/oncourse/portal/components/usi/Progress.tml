@@ -4,13 +4,13 @@
         <div class="container">
             <div class="progress-steps">
                 <ul>
-                    <li class="${classStep1}">
+                    <li class="${classContactInfo}">
                         <a href="#">Step 1</a>
                     </li>
-                    <li class="${classStep2}">
+                    <li class="${classAvetmissInfo}">
                         <a href="#">Step 2</a>
                     </li>
-                    <li class="${classStep3}">
+                    <li class="${classUSI}">
                         <a href="#">Step 3</a>
                     </li>
                 </ul>

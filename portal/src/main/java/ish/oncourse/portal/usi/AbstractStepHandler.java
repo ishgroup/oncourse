@@ -21,6 +21,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import static ish.oncourse.model.auto._Contact.DATE_OF_BIRTH;
+
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
@@ -58,7 +60,7 @@ public abstract class AbstractStepHandler implements StepHandler {
         Result pResult = getPreviousResult();
         Value pValue = pResult.getValue().get(value.getKey());
         if (pValue != null) {
-            value = Value.valueOf(value.getKey(), value.getValue(), pValue.getError(), value.isRequired(), value.getOptions().toArray(new Value[value.getOptions().size()]));
+            value = Value.valueOf(value, pValue.getError());
         }
         this.result.addValue(value);
     }
@@ -150,6 +152,15 @@ public abstract class AbstractStepHandler implements StepHandler {
         }
     }
 
+    protected void handleDateOfBirth(String key) {
+        Value inputValue = inputValues.get(key);
+        Value value = new DateOfBirthParser().parse(inputValue, getUsiController());
+        result.addValue(value);
+        if (value.getError() != null) {
+            result.setHasErrors(true);
+        }
+    }
+
     @Override
     public Result getPreviousResult() {
         return previousResult;
@@ -172,7 +183,7 @@ public abstract class AbstractStepHandler implements StepHandler {
         }
         public Value parse(Value inputValue, UsiController controller) {
             if (inputValue == null || inputValue.getValue() == null) {
-                return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, null, controller.getMessages().format("message-fieldRequired"));
+                return Value.valueOf(DATE_OF_BIRTH.getName(), null, controller.getMessages().format("message-fieldRequired"));
             } else {
                 /**
                  * the format is used to parse string value which an user puts in date field.
@@ -185,14 +196,14 @@ public abstract class AbstractStepHandler implements StepHandler {
                     Date date = FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT, timeZone).parse(inputValue.getValue().toString());
 
                     if (date.after(new Date()))
-                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, inputValue.getValue(), controller.getMessages().format("message-dateOfBirthShouldBeInPast"));
+                        return Value.valueOf(DATE_OF_BIRTH.getName(), inputValue.getValue(), controller.getMessages().format("message-dateOfBirthShouldBeInPast"));
                     if (date.before(MIN_DATE_OF_BIRTH))
-                        return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, inputValue.getValue(), controller.getMessages().format("message-dateOfBirthWrongFormat"));
+                        return Value.valueOf(DATE_OF_BIRTH.getName(), inputValue.getValue(), controller.getMessages().format("message-dateOfBirthWrongFormat"));
 
                     controller.getContact().setDateOfBirth(date);
-                    return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (Object) FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date));
+                    return Value.valueOf(DATE_OF_BIRTH.getName(), (Object) FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date));
                 } catch (ParseException e) {
-                    return Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, inputValue.getValue(), controller.getMessages().format("message-dateOfBirthWrongFormat"));
+                    return Value.valueOf(DATE_OF_BIRTH.getName(), inputValue.getValue(), controller.getMessages().format("message-dateOfBirthWrongFormat"));
                 }
             }
         }

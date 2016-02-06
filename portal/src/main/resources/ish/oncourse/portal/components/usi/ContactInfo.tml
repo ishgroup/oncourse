@@ -11,6 +11,19 @@
                         </p>
                     </div>
 
+                    <t:usi.textfield displayName="literal:Street address" placeholder="literal:For example, 215 Anzac Parade" hidden="isHiddenField('street')" name="literal:street" maxlength="255"/>
+
+                    <t:usi.textfield displayName="literal:Suburb" placeholder="literal:For example, SYDNEY" hidden="isHiddenField('suburb')" name="literal:suburb" maxlength="32"/>
+
+                    <t:usi.textfield displayName="literal:Postcode" placeholder="literal:For example, 2033" hidden="isHiddenField('postcode')" name="literal:postcode" maxlength="32"/>
+
+                    <t:usi.textfield displayName="literal:Date Of Birth" placeholder="literal:Format, dd/MM/yyyy" hidden="isHiddenField('dateOfBirth')" name="literal:dateOfBirth" maxlength="10"/>
+
+                    <t:usi.textfield displayName="literal:Country of birth" placeholder="literal:For example, Australia" hidden="isHiddenField('countryOfBirth')" name="literal:countryOfBirth" maxlength="32"/>
+
+                    <t:usi.textfield displayName="literal:Town of birth" placeholder="literal:For example, Sydney" hidden="isHiddenField('townOfBirth')" name="literal:townOfBirth" maxlength="32"/>
+
+
                     <div class="form-group">
                         <label class=" control-label" for="gender">Gender</label>
                         <div class="field-holder">
@@ -19,37 +32,9 @@
                             <label class="radio-inline" for="male">
                                 <input type="radio" name="isMale" id="male" value="male" class="form-control"/>Male</label>
                         </div>
-                        <small class="help-block"></small>
+                        <small class="help-block"/>
                     </div>
 
-
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="street">Street address</label>
-                        <div class="field-holder">
-                            <input id="street" name="street" type="text" placeholder="For example, 215 Anzac Parade" class="form-control input-md" />
-                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
-
-
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="suburb">Suburb</label>
-                        <div class="field-holder">
-                            <input id="suburb" name="suburb" type="text" placeholder="For example, SYDNEY" class="form-control input-md" maxlength="32"/>
-                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
-
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="postcode">Postcode</label>
-                        <div class="field-holder">
-                            <input id="postcode" name="postcode" type="text" placeholder="For example, 2033" class="form-control input-md"  maxlength="32"/>
-                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
 
                     <div class="form-group has-feedback">
                         <label class=" control-label" for="state">State</label>

@@ -34,4 +34,8 @@ public class Result {
     {
         return value.isEmpty();
     }
+
+    public boolean isHidden(String key) {
+        return value.get(key).isHidden();
+    }
 }

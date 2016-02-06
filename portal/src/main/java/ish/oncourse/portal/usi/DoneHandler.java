@@ -9,7 +9,7 @@ public class DoneHandler extends AbstractStepHandler {
 
     @Override
     public Step getNextStep() {
-        return Step.step2;
+        return Step.avetmissInfo;
     }
 
     public DoneHandler handle(Map<String, Value> input) {

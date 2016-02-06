@@ -13,27 +13,40 @@ public class Value {
     private Object value;
     private String error;
     private boolean required = false;
+    private boolean hidden = false;
     private List<Value> options = new ArrayList<>();
+
+    public static Value valueOf(String key, Object value, boolean required, boolean hidden) {
+        return valueOf(key, value, null, required, hidden);
+    }
 
     public static Value valueOf(String key, Object value, boolean required)
     {
-        return Value.valueOf(key, value, null ,required);
+        return Value.valueOf(key, value, null, required, false);
     }
 
-    public static Value valueOf(String key, Object value, String error, boolean required, Value... options)
+    public static Value valueOf(Value value, String error)
     {
+        return Value.valueOf(value.getKey(),
+                value.getValue(), error,
+                value.isRequired(), error == null && value.isHidden(),
+                value.getOptions().toArray(new Value[value.getOptions().size()]));
+    }
+
+    public static Value valueOf(String key, Object value, String error, boolean required, boolean hidden, Value... options) {
         Value result = new Value();
         result.key = key;
         result.value = value;
         result.error = error;
         result.required = required;
+        result.hidden = hidden;
         result.options.addAll(Arrays.asList(options));
         return result;
     }
 
     public static Value valueOf(String key, Object value, String error, Value... options)
     {
-        return Value.valueOf(key, value, error ,false, options);
+        return Value.valueOf(key, value, error, false, false, options);
     }
 
     public static Value valueOf(String key, Object value, String error)
@@ -66,5 +79,9 @@ public class Value {
 
     public boolean isRequired() {
         return required;
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 }

@@ -1,0 +1,11 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <div class="form-group has-feedback" hidden="hidden">
+        <label class=" control-label" for="${name}">${displayName}</label>
+
+        <div class="field-holder">
+            <input id="${name}" name="${name}" type="text" placeholder="${placeholder}" class="form-control input-md"/>
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback"/>
+        </div>
+        <small class="help-block"/>
+    </div>
+</t:container>

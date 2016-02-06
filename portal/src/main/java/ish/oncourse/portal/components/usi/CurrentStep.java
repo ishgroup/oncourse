@@ -15,12 +15,11 @@ public class CurrentStep {
     private UsiController usiController;
 
     @Inject
-    private Block step1,
-            step1Done,
-            step1Failed,
-            step2,
-            step3,
-            step3Done,
+    private Block usiForm,
+            usiFailed,
+            avetmissInfo,
+            contactInfo,
+            contactInfoDone,
             done,
             wait;
 
@@ -29,18 +28,16 @@ public class CurrentStep {
         switch (usiController.getStep())
         {
 
-            case step1:
-                return step1;
-            case step1Done:
-                return step1Done;
-            case step1Failed:
-                return step1Failed;
-            case step2:
-                return step2;
-            case step3:
-                return step3;
-            case step3Done:
-                return step3Done;
+            case usi:
+                return usiForm;
+            case usiFailed:
+                return usiFailed;
+            case avetmissInfo:
+                return avetmissInfo;
+            case contactInfo:
+                return contactInfo;
+            case contactInfoDone:
+                return contactInfoDone;
             case done:
                 return done;
             case wait:

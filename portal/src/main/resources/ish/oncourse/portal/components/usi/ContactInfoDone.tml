@@ -17,7 +17,7 @@
                     
                     <div class="form-group">
                         <div class="actions">
-                            <button class="btn btn-primary" id="usi-next">Done</button>
+                            <button class="btn btn-primary" id="usi-next">Next</button>
                         </div>
                     </div>
 

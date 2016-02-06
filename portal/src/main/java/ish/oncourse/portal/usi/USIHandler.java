@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class Step1Handler extends AbstractStepHandler {
+public class USIHandler extends AbstractStepHandler {
 
     @Override
     public Result getValue() {
@@ -35,22 +35,13 @@ public class Step1Handler extends AbstractStepHandler {
         return Step.wait;
     }
 
-    public Step1Handler handle(Map<String, Value> input) {
+    public USIHandler handle(Map<String, Value> input) {
         this.inputValues = input;
         handleDateOfBirth(Contact.DATE_OF_BIRTH.getName());
         handleUsi();
         return this;
     }
 
-
-    protected void handleDateOfBirth( String key) {
-        Value inputValue = inputValues.get(key);
-        Value value = new DateOfBirthParser().parse(inputValue, getUsiController());
-        result.addValue(value);
-        if (value.getError() != null) {
-            result.setHasErrors(true);
-        }
-    }
 
     private void handleUsi()
     {

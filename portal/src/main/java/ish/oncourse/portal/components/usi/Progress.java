@@ -15,13 +15,16 @@ public class Progress {
     @Parameter(required = true)
     private UsiController usiController;
 
-    public String getClassStep1()
+    public String getClassUSI()
     {
        switch (usiController.getStep())
        {
-
-           case step1:
-           case step1Failed:
+           case contactInfo:
+           case contactInfoDone:
+           case avetmissInfo:
+               return StringUtils.EMPTY;
+           case usi:
+           case usiFailed:
            case wait:
                return CLASS_active;
            default:
@@ -29,35 +32,24 @@ public class Progress {
        }
     }
 
-    public String getClassStep2()
+    public String getClassAvetmissInfo()
     {
         switch (usiController.getStep())
         {
-
-            case step1:
-            case step1Failed:
-            case step1Done:
-            case wait:
+            case contactInfo:
                 return StringUtils.EMPTY;
-            case step2:
+            case avetmissInfo:
                 return CLASS_active;
             default:
                 return CLASS_finished;
         }
     }
 
-    public String getClassStep3()
+    public String getClassContactInfo()
     {
         switch (usiController.getStep())
         {
-
-            case step1:
-            case step1Failed:
-            case step1Done:
-            case wait:
-            case step2:
-                return StringUtils.EMPTY;
-            case step3:
+            case contactInfo:
                 return CLASS_active;
             default:
                 return CLASS_finished;

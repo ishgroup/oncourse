@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class Step2 extends AbstractStep {
+public class AvetmissInfo extends AbstractStep {
 
     @Property
     private Enrolment enrolment;
