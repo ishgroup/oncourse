@@ -1,5 +1,6 @@
 package ish.oncourse.portal.components.usi;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 
@@ -28,4 +29,8 @@ public class TextField {
 	@Property
 	private int maxlength;
 
+
+	public String getStyle() {
+		return hidden ? "display: none;" : StringUtils.EMPTY;
+	}
 }

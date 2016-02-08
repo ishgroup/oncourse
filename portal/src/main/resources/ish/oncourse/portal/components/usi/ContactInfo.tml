@@ -17,7 +17,7 @@
 
                     <t:usi.textfield displayName="literal:Postcode" placeholder="literal:For example, 2033" hidden="isHiddenField('postcode')" name="literal:postcode" maxlength="32"/>
 
-                    <t:usi.textfield displayName="literal:Date Of Birth" placeholder="literal:Format, dd/MM/yyyy" hidden="isHiddenField('dateOfBirth')" name="literal:dateOfBirth" maxlength="10"/>
+                    <t:usi.textfield displayName="literal:Date Of Birth" placeholder="literal:Format,  DD/MM/YYYY" hidden="isHiddenField('dateOfBirth')" name="literal:dateOfBirth" maxlength="10"/>
 
                     <t:usi.textfield displayName="literal:Country of birth" placeholder="literal:For example, Australia" hidden="isHiddenField('countryOfBirth')" name="literal:countryOfBirth" maxlength="32"/>
 

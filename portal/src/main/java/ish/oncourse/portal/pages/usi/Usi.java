@@ -132,7 +132,7 @@ public class Usi {
 
         Contact contact = contacts.get(0);
 
-        if (false && !UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
+        if (!UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
             return null;
         }
         return contact;
