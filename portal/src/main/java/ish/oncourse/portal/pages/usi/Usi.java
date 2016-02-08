@@ -143,6 +143,17 @@ public class Usi {
         return getJSONResult(values);
     }
 
+    /**
+     * ]
+     * usi.js uses this method
+     */
+    @OnEvent(value = "verifyUsi")
+    public Object verifyUsi() {
+        Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
+        Result values = getUsiController().next(inputValues);
+        return getJSONResult(values);
+    }
+
     private Object getJSONResult(Result result) {
         JSONObject jsoResult = new JSONObject();
         JSONArray jsonArray = JSONUtils.getJSONValues(result.getValue());
