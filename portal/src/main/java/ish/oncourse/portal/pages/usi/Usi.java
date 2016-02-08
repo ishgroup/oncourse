@@ -12,14 +12,11 @@ import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.util.URLUtils;
 import ish.util.UrlUtil;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
@@ -37,9 +34,6 @@ public class Usi {
     @Inject
     @Property
     private Request request;
-
-    @Inject
-    private Messages messages;
 
     @Inject
     private ICayenneService cayenneService;
@@ -117,17 +111,13 @@ public class Usi {
             return null;
         }
         String url = String.format("%s?valid=%s&key=%s", URLUtils.buildURLString(request, request.getPath(), true), valid, key);
-        ObjectContext context = cayenneService.newNonReplicatingContext();
-        Expression expression = ExpressionFactory.matchAllExp(Contact.UNIQUE_CODE_PROPERTY, uniqueCode);
-        SelectQuery query = new SelectQuery(Contact.class, expression);
-
-        List<Contact> contacts = context.performQuery(query);
+        List<Contact> contacts = ObjectSelect.query(Contact.class).where(Contact.UNIQUE_CODE.eq(uniqueCode)).select(cayenneService.newNonReplicatingContext());
         if (contacts.isEmpty()) {
             return null;
         }
 
         if (contacts.size() > 1) {
-            throw new IllegalStateException(String.format("% is not unique", uniqueCode));
+            throw new IllegalStateException(String.format("%s is not unique", uniqueCode));
         }
 
         Contact contact = contacts.get(0);
@@ -152,16 +142,6 @@ public class Usi {
 
         return getJSONResult(values);
     }
-
-    @OnEvent(value = "verifyUsi")
-    public Object verifyUsi()
-    {
-        Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
-        Result values = getUsiController().next(inputValues);
-        return getJSONResult(values);
-    }
-
-
 
     private Object getJSONResult(Result result) {
         JSONObject jsoResult = new JSONObject();
