@@ -20,7 +20,7 @@ CensusForm.prototype = {
             })[0].value;
             var newUsi = $j('.form-control[name=usi]').val();
             if (self.data.values['usiStatus'] != 'VERIFIED' &&
-                (self.data.step == 'step1' || self.data.step == 'step1Failed') &&
+                (self.data.step == 'usi' || self.data.step == 'usiFailed') &&
                 oldUsi != newUsi) {
                 self.verifyUsi();
                 self.reloadByTimeout();
