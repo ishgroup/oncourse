@@ -7,6 +7,9 @@
                         <h5>Success!</h5>
 
                         <p><strong>You have provided sufficient information for your identity to be verified.</strong>
+                            <br/>
+                            You can log in to <a class="alert-link" href="https://skillsoncourse.com.au">https://skillsoncourse.com.au</a>
+                            at any time if you wish to make changes to your preferred contact methods.
                         </p>
                     </div>
                 </fieldset>
