@@ -164,7 +164,7 @@ public class CensusForm {
         }
         Country country = countryService.getCountryByName(countryOfBirthName);
         if (country == null) {
-            validateHandler.getErrors().put(Student.COUNTRY_OF_BIRTH_PROPERTY, messageBy(Student.COUNTRY_OF_BIRTH_PROPERTY));
+            validateHandler.getErrors().put(Student.COUNTRY_OF_BIRTH.getName(), messageBy(Student.COUNTRY_OF_BIRTH.getName()));
         } else {
             contact.getStudent().setCountryOfBirth(
                     contact.getObjectContext().localObject(
@@ -186,7 +186,7 @@ public class CensusForm {
         }
         Language language = languageService.getLanguageByName(languageHome);
         if (language == null) {
-            validateHandler.getErrors().put(Student.LANGUAGE_HOME_PROPERTY, messageBy(Student.LANGUAGE_HOME_PROPERTY));
+            validateHandler.getErrors().put(Student.LANGUAGE_HOME.getName(), messageBy(Student.LANGUAGE_HOME.getName()));
         } else {
             contact.getStudent().setLanguageHome(
                    contact.getObjectContext().localObject(language));
@@ -205,7 +205,7 @@ public class CensusForm {
     public void setSchoolYearStr(String schoolYearStr) {
         if (StringUtils.trimToNull(schoolYearStr) != null) {
             if (!schoolYearStr.matches("(\\d)+")) {
-                validateHandler.getErrors().put(Student.YEAR_SCHOOL_COMPLETED_PROPERTY, messageBy(Student.YEAR_SCHOOL_COMPLETED_PROPERTY));
+                validateHandler.getErrors().put(Student.YEAR_SCHOOL_COMPLETED.getName(), messageBy(Student.YEAR_SCHOOL_COMPLETED.getName()));
                 return;
             }
             contact.getStudent().setYearSchoolCompleted(
@@ -245,20 +245,20 @@ public class CensusForm {
 
     boolean validate() {
 
-        countryOfBirthErrorMessage = validateHandler.error(Student.COUNTRY_OF_BIRTH_PROPERTY);
+        countryOfBirthErrorMessage = validateHandler.error(Student.COUNTRY_OF_BIRTH.getName());
 
         if (countryOfBirthErrorMessage != null) {
             validateHandler.getErrors().put("countryOfBirth", countryOfBirthErrorMessage);
             censusForm.recordError(countryOfBirthErrorMessage);
         }
 
-        languageHomeErrorMessage = validateHandler.error(Student.LANGUAGE_HOME_PROPERTY);
+        languageHomeErrorMessage = validateHandler.error(Student.LANGUAGE_HOME.getName());
         if (languageHomeErrorMessage != null) {
             validateHandler.getErrors().put("languageHome", languageHomeErrorMessage);
             censusForm.recordError(languageHomeErrorMessage);
         }
 
-        schoolYearErrorMessage = validateHandler.error(Student.YEAR_SCHOOL_COMPLETED_PROPERTY);
+        schoolYearErrorMessage = validateHandler.error(Student.YEAR_SCHOOL_COMPLETED.getName());
         if (schoolYearErrorMessage == null && contact.getStudent() != null) {
             schoolYearErrorMessage = contact.getStudent()
                     .validateSchoolYear();
@@ -304,12 +304,11 @@ public class CensusForm {
         Contact contact = usiController.getContact();
         String timeZone = usiController.getContact().getCollege().getTimeZone();
         Date date = usiController.getContact().getDateOfBirth();
-        inputValues.put(Contact.DATE_OF_BIRTH_PROPERTY, Value.valueOf(Contact.DATE_OF_BIRTH_PROPERTY, (date != null ?
+        inputValues.put(Contact.DATE_OF_BIRTH.getName(), Value.valueOf(Contact.DATE_OF_BIRTH.getName(), (date != null ?
                 FormatUtils.getDateFormat(FormatUtils.DATE_FIELD_SHOW_FORMAT, timeZone).format(date) :
                 null)));
-        inputValues.put(Contact.GIVEN_NAME_PROPERTY, Value.valueOf(Contact.GIVEN_NAME_PROPERTY, contact.getGivenName()));
-        inputValues.put(Contact.FAMILY_NAME_PROPERTY, Value.valueOf(Contact.FAMILY_NAME_PROPERTY, contact.getFamilyName()));
-
+        inputValues.put(Contact.GIVEN_NAME.getName(), Value.valueOf(Contact.GIVEN_NAME.getName(), contact.getGivenName()));
+        inputValues.put(Contact.FAMILY_NAME.getName(), Value.valueOf(Contact.FAMILY_NAME.getName(), contact.getFamilyName()));
 
         usiController.next(inputValues);
         Result result = usiController.next(inputValues);
