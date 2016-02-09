@@ -20,6 +20,8 @@ public class UsiControllerModel implements Serializable {
 
     private Step step;
 
+    private ValidationResult validationResult = new ValidationResult();
+
     public Contact getContact() {
         return contact;
     }
@@ -46,11 +48,14 @@ public class UsiControllerModel implements Serializable {
         }
     }
 
+    public ValidationResult getValidationResult() {
+        return validationResult;
+    }
+
 
     public static UsiControllerModel valueOf(Contact contact) {
         UsiControllerModel model = new UsiControllerModel();
         model.contact = contact;
         return model;
     }
-
 }

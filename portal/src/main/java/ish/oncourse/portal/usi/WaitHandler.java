@@ -50,7 +50,7 @@ public class WaitHandler extends AbstractStepHandler {
         try {
             String avetmissID = getUsiController().getPreferenceController().getAvetmissID();
             if (avetmissID == null) {
-                getUsiController().getValidationResult().addError("messaget-avetmissIdentifierNotSet");
+                getUsiController().getValidationResult().addError("messaget-avetmissIdentifierNotSet", getUsiController().getMessages());
                 nextStep.set(Step.usi);
                 return;
             }
@@ -58,7 +58,7 @@ public class WaitHandler extends AbstractStepHandler {
             String certificate = getUsiController().getPreferenceController().getAuskeyCertificate();
             if (certificate == null)
             {
-                getUsiController().getValidationResult().addError("messaget-auskeyCertificateNotSet");
+                getUsiController().getValidationResult().addError("messaget-auskeyCertificateNotSet", getUsiController().getMessages());
                 nextStep.set(Step.usi);
                 return;
             }
@@ -95,7 +95,7 @@ public class WaitHandler extends AbstractStepHandler {
                     } else {
                         nextStep.set(Step.usiFailed);
                         contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
-                        getUsiController().getValidationResult().addError("message-personalDetailsNotMatch");
+                        getUsiController().getValidationResult().addError("message-personalDetailsNotMatch", getUsiController().getMessages());
                     }
                     break;
                 case INVALID:
@@ -103,8 +103,8 @@ public class WaitHandler extends AbstractStepHandler {
                     contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
                     nextStep.set(Step.usi);
                     result.addValue(
-                            Value.valueOf(Student.USI_PROPERTY, contact.getStudent().getUsi(), getUsiController().getMessages().format("message-fieldNotMatch")));
-                    getUsiController().getValidationResult().addError("message-invalidUsi");
+                            Value.valueOf(Student.USI.getName(), contact.getStudent().getUsi(), getUsiController().getMessages().format("message-fieldNotMatch")));
+                    getUsiController().getValidationResult().addError("message-invalidUsi", getUsiController().getMessages());
                     break;
             }
 
@@ -112,7 +112,7 @@ public class WaitHandler extends AbstractStepHandler {
             contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
             logger.catching(e);
             nextStep.set(Step.usi);
-            getUsiController().getValidationResult().addError("message-usiServiceUnexpectedException");
+            getUsiController().getValidationResult().addError("message-usiServiceUnexpectedException", getUsiController().getMessages());
         }
     }
 }

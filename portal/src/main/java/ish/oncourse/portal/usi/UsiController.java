@@ -29,8 +29,6 @@ public class UsiController {
 
     private AbstractStepHandler currentHandler;
 
-    private ValidationResult validationResult = new ValidationResult();
-
     private UsiControllerModel usiControllerModel;
 
 
@@ -39,7 +37,7 @@ public class UsiController {
     }
 
     public ValidationResult getValidationResult() {
-        return validationResult;
+        return usiControllerModel.getValidationResult();
     }
 
     public Step getStep() {
@@ -52,7 +50,7 @@ public class UsiController {
     }
 
     public Result next(Map<String, Value> inputValue) {
-        validationResult.clear();
+        usiControllerModel.getValidationResult().clear();
         currentHandler.init();
         StepHandler stepHandler = currentHandler.handle(inputValue);
         Result result = stepHandler.getValue();
@@ -126,7 +124,6 @@ public class UsiController {
 
         usiController.usiVerificationService = usiVerificationService;
         usiController.messages = MessagesImpl.forClass(Usi.class);
-        usiController.getValidationResult().setMessages(usiController.messages);
 
         usiController.initCurrentHandler();
         return usiController;

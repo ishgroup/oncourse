@@ -53,6 +53,10 @@ public class PortalService implements IPortalService {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private static final String ATTR_usiControllerModel = "portal.usiControllerModel";
+    private static final String ATTR_selectedContact = "portal.selectedContact";
+    private static final String ATTR_usiController = "portal.usiController";
+
     @Inject
     private IAuthenticationService authenticationService;
 
@@ -782,7 +786,7 @@ public class PortalService implements IPortalService {
 
     public Contact getSelectedContact() {
         org.apache.tapestry5.services.Session session = request.getSession(false);
-        return session != null ? (Contact) session.getAttribute("portal.selectedContact") : null;
+        return session != null ? (Contact) session.getAttribute(ATTR_selectedContact) : null;
     }
 
     public boolean isSelectedContact(Contact contact) {
@@ -792,8 +796,9 @@ public class PortalService implements IPortalService {
     public void selectContact(Contact contact) {
         org.apache.tapestry5.services.Session session = request.getSession(false);
         if (session != null) {
-            session.setAttribute("portal.selectedContact", contact);
-            session.setAttribute("portal.usiController", null);
+            session.setAttribute(ATTR_selectedContact, contact);
+            session.setAttribute(ATTR_usiController, null);
+            session.setAttribute(ATTR_usiControllerModel, null);
         }
     }
 
@@ -914,13 +919,13 @@ public class PortalService implements IPortalService {
     public UsiController getUsiController() {
         org.apache.tapestry5.services.Session session = request.getSession(false);
 
-        UsiControllerModel usiControllerModel = (UsiControllerModel) session.getAttribute("portal.usiControllerModel");
+        UsiControllerModel usiControllerModel = (UsiControllerModel) session.getAttribute(ATTR_usiControllerModel);
         if (usiControllerModel == null)
         {
             ObjectContext context = cayenneService.newContext();
             usiControllerModel = UsiControllerModel.valueOf(context.localObject(getContact()));
             usiControllerModel.setStep(Step.usi);
-            session.setAttribute("portal.usiControllerModel", usiControllerModel);
+            session.setAttribute(ATTR_usiControllerModel, usiControllerModel);
         }
         return UsiController.valueOf(usiControllerModel, countryService, languageService, preferenceController, usiVerificationService);
     }
