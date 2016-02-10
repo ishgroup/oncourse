@@ -377,7 +377,14 @@ public class Courses extends ISHCommon {
 	}
 
 	public Tag getBrowseTag() {
-		return tagService.getBrowseTag();
+		Tag tag = tagService.getBrowseTag();
+		if (tag == null) {
+			tag = tagService.getSubjectsTag();
+			if (tag != null && tag.getIsWebVisible()) {
+				return tag;
+			}
+		}
+		return tag;
 	}
 
 	public String getBrowseTagDetail() {
