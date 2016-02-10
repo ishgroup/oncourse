@@ -12,7 +12,6 @@ import ish.oncourse.util.FormatUtils;
 import ish.oncourse.utils.DiscountFeeComparator;
 import ish.oncourse.utils.WebDiscountUtils;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -20,8 +19,11 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
-import java.text.*;
-import java.util.*;
+import java.text.Format;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class CourseClassPrice extends ISHCommon {
 
@@ -88,8 +90,8 @@ public class CourseClassPrice extends ISHCommon {
 			appliedDiscountsTitle = appliedDiscountsTitleBuf.toString();
 		}
 	}
-	
-	private void fillPosibleDiscounts() {
+
+	private void fillPossibleDiscounts() {
 		Expression notHiddenDiscounts = DiscountCourseClass.DISCOUNT.dot(Discount.HIDE_ON_WEB).isFalse();
 		List<DiscountCourseClass> potentialDiscounts = notHiddenDiscounts.filterObjects(WebDiscountUtils.getFilteredDiscounts(courseClass));
 		Collections.sort(potentialDiscounts, new DiscountFeeComparator(courseClass));
@@ -116,7 +118,7 @@ public class CourseClassPrice extends ISHCommon {
 	@SetupRender
 	public void beforeRender() {
 		fillAppliedDiscounts();
-		fillPosibleDiscounts();
+		fillPossibleDiscounts();
 	}
 
 	public boolean isHasFee() {
