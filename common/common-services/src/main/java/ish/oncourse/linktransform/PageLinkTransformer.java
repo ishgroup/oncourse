@@ -17,8 +17,8 @@ import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.voucher.IVoucherService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Link;
@@ -350,13 +350,16 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	}
 
     private boolean needRedirect(Request request) {
-        final WebUrlAlias redirect = webUrlAliasService.getAliasByPath(request.getPath());
-        if (redirect != null && redirect.getRedirectTo() != null)
-        {
-            request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
-            return true;
-        }
-        return false;
+	    String path = requestGlobals.getHTTPServletRequest().getServletPath();
+	    String query = requestGlobals.getHTTPServletRequest().getQueryString();
+	    path += query != null ? "?" + query : StringUtils.EMPTY;
+
+	    WebUrlAlias redirect = webUrlAliasService.getAliasByPath(URLPath.valueOf(path).getEncodedPath());
+	    if (redirect != null && redirect.getRedirectTo() != null) {
+		    request.setAttribute(REQUEST_ATTR_redirectTo, redirect.getRedirectTo());
+		    return true;
+	    }
+	    return false;
     }
 
     public Link transformPageRenderLink(Link defaultLink, PageRenderRequestParameters parameters) {

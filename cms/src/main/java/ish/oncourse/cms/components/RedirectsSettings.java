@@ -1,7 +1,7 @@
 package ish.oncourse.cms.components;
 
+import ish.oncourse.linktransform.URLPath;
 import ish.oncourse.model.WebUrlAlias;
-import ish.oncourse.services.alias.GetRedirects;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -108,7 +108,8 @@ public class RedirectsSettings {
             webUrl.setWebSiteVersion(context.localObject(webSiteVersionService.getCurrentVersion()));
         }
 
-        webUrl.setUrlPath(urlPath);
+        URLPath path = URLPath.valueOf(urlPath);
+        webUrl.setUrlPath(path.getEncodedPath());
         webUrl.setRedirectTo(redirectTo);
         return webUrl;
     }
@@ -149,13 +150,14 @@ public class RedirectsSettings {
     private JSONObject getJSONWebUrl(WebUrlAlias webUrlAlias) {
         JSONObject jWebUrl = new JSONObject();
         jWebUrl.put(WebUrlAlias.ID_PK_COLUMN, webUrlAlias.getId());
+
         jWebUrl.put(WebUrlAlias.URL_PATH.getName(), webUrlAlias.getUrlPath());
         jWebUrl.put(WebUrlAlias.REDIRECT_TO.getName(), webUrlAlias.getRedirectTo());
         return jWebUrl;
     }
 
 
-    public static enum MessageKey
+    public enum MessageKey
     {
         pageAliasExist,
         redirectExist,
@@ -164,20 +166,17 @@ public class RedirectsSettings {
 
         private String key;
 
-        private MessageKey()
-        {
+        MessageKey() {
             key = String.format("message-%s", this.name());
         }
 
-        public String getKey()
-        {
+        public String getKey() {
             return key;
         }
     }
 
 
-    public static enum JSONProperty
-    {
+    public enum JSONProperty {
         error,
         value,
         key,
