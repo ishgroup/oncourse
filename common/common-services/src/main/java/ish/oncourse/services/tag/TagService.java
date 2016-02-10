@@ -5,11 +5,10 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -33,7 +32,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	 */
 	@Override
 	public Tag getSubjectsTag() {
-		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.NAME_PROPERTY, Tag.SUBJECTS_TAG_NAME)));
+		List<Tag> tags = findByQualifier(getSiteQualifier().andExp(Tag.NAME.eq(Tag.SUBJECTS_TAG_NAME)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
 
@@ -44,8 +43,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	 */
 	@Override
 	public Tag getTagGroupByName(String name) {
-		final List<Tag> tags = findByQualifier(getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.NAME_PROPERTY, name)).andExp(
-			ExpressionFactory.matchExp(Tag.IS_TAG_GROUP_PROPERTY, true)));
+		final List<Tag> tags = findByQualifier(getSiteQualifier().andExp(Tag.NAME.eq(name)).andExp(
+				Tag.IS_TAG_GROUP.eq(Boolean.TRUE)));
 		return (tags.size() > 0) ? tags.get(0) : null;
 	}
 
@@ -71,12 +70,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	 */
 	@Override
 	public List<Tag> getTagsForEntity(String entityName, Long entityId) {
-
-		String pathSpec = Tag.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAGGABLE_PROPERTY;
-
-		Expression qualifier = ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_IDENTIFIER_PROPERTY, entityName).andExp(
-				ExpressionFactory.matchExp(pathSpec + "." + Taggable.ENTITY_WILLOW_ID_PROPERTY, entityId));
-
+		Expression qualifier = Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_IDENTIFIER).eq(entityName)
+				.andExp(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_WILLOW_ID).eq(entityId));
 		return findByQualifier(getSiteQualifier().andExp(qualifier));
 	}
 
@@ -170,14 +165,10 @@ public class TagService extends BaseService<Tag> implements ITagService {
 
 	/**
 	 * Qualifier which restricts the tags to belong the current site and be web visible.
-	 * 
-	 * @return
 	 */
 	private Expression getSiteQualifier() {
 		College currentCollege = getWebSiteService().getCurrentCollege();
-		Expression qualifier = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, currentCollege).andExp(
-				ExpressionFactory.matchExp(Tag.IS_WEB_VISIBLE_PROPERTY, true));
-		return qualifier;
+		return Tag.COLLEGE.eq(currentCollege).andExp(Tag.IS_WEB_VISIBLE.eq(true));
 	}
 
 	@Override
@@ -186,39 +177,35 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		return browseTagId == null ? null : findById(browseTagId);
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public List<Tag> getMailingLists() {
 
 		List<Tag> tags = Collections.emptyList();
 
 		// MAILING_LISTS(3, "Mailing lists") - see NodeSpecialType
-		Expression qual = ExpressionFactory.matchExp(Tag.COLLEGE_PROPERTY, getWebSiteService().getCurrentCollege()).andExp(
-				ExpressionFactory.matchExp(Tag.SPECIAL_TYPE_PROPERTY, NodeSpecialType.MAILING_LISTS));
-		qual = qual.andExp(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, null));
-		SelectQuery q = new SelectQuery(Tag.class, qual);
+		Tag parent = ObjectSelect.query(Tag.class).where(Tag.COLLEGE.eq(getWebSiteService().getCurrentCollege()))
+				.and(Tag.SPECIAL_TYPE.eq(NodeSpecialType.MAILING_LISTS))
+				.and(Tag.PARENT.isNull()).selectFirst(getCayenneService().sharedContext());
 
-		Tag parent = (Tag) Cayenne.objectForQuery(getCayenneService().sharedContext(), q);
 		if (parent != null) {
-			Expression childQual = getSiteQualifier().andExp(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, parent));
-			q = new SelectQuery(Tag.class, childQual);
-			tags = getCayenneService().sharedContext().performQuery(q);
+			return ObjectSelect.query(Tag.class).where(getSiteQualifier())
+					.and(Tag.PARENT.eq(parent)).select(getCayenneService().sharedContext());
 		}
-
 		return tags;
 	}
 
+	@Override
 	public List<Tag> getMailingListsContactSubscribed(Contact contact) {
 
 		College currentCollege = getWebSiteService().getCurrentCollege();
 
-		Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
-				.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
-				.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, currentCollege));
+		List<Taggable> taggableList = ObjectSelect.query(Taggable.class)
+				.where(Taggable.ENTITY_IDENTIFIER.eq(Contact.class.getSimpleName()))
+				.and(Taggable.ENTITY_WILLOW_ID.eq(contact.getId()))
+				.and(Taggable.COLLEGE.eq(currentCollege))
+				.addPrefetch(Taggable.TAGGABLE_TAGS.disjoint())
+				.select(getCayenneService().sharedContext());
 
-		SelectQuery q = new SelectQuery(Taggable.class, qual);
-		q.addPrefetch(Taggable.TAGGABLE_TAGS_PROPERTY);
-		@SuppressWarnings("unchecked")
-		List<Taggable> taggableList = getCayenneService().sharedContext().performQuery(q);
 
 		Set<Tag> allMailingLists = new HashSet<>(getMailingLists());
 		List<Tag> tags = new ArrayList<>();
@@ -286,17 +273,13 @@ public class TagService extends BaseService<Tag> implements ITagService {
 			this.context = context;
 		}
 
-		public List<Taggable> load(Contact contact, Tag mailingList)
-		{
+		public List<Taggable> load(Contact contact, Tag mailingList) {
 			contact = context.localObject(contact);
 			mailingList = context.localObject(mailingList);
-
-			Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
-					.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, contact.getId()))
-					.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, contact.getCollege()))
-					.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, mailingList));
-			SelectQuery query = new SelectQuery(Taggable.class, qual);
-			return context.performQuery(query);
+			return ObjectSelect.query(Taggable.class).where(Taggable.ENTITY_IDENTIFIER.eq(Contact.class.getSimpleName()))
+					.and(Taggable.ENTITY_WILLOW_ID.eq(contact.getId()))
+					.and(Taggable.COLLEGE.eq(contact.getCollege()))
+					.and(Taggable.TAGGABLE_TAGS.dot(TaggableTag.TAG).eq(mailingList)).select(context);
 		}
 
 		public void delete(List<Taggable> taggables)
