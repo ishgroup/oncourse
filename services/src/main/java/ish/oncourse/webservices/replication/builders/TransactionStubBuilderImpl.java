@@ -36,11 +36,8 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 			
 			addRelatedStub(paymentRelated, paymentIn, version);
 			for (VoucherPaymentIn voucherPaymentIn : paymentIn.getVoucherPaymentIns()) {
-				if (voucherPaymentIn.getInvoiceLine() == null) {
-					//money voucher
-					addRelatedStub(paymentRelated, voucherPaymentIn, version);
-					addRelatedStub(paymentRelated, voucherPaymentIn.getVoucher(), version);
-				}
+				addRelatedStub(paymentRelated, voucherPaymentIn, version);
+				addInvoiceRelatedStub(paymentRelated, voucherPaymentIn.getVoucher().getInvoiceLine().getInvoice(), version);
 			}
 
 			for (PaymentInLine paymentLine : paymentIn.getPaymentInLines()) {
@@ -48,51 +45,7 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 				addRelatedStub(paymentRelated, paymentLine, version);
 
 				Invoice invoice = paymentLine.getInvoice();
-				addRelatedStub(paymentRelated, invoice, version);
-
-				for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
-
-					for (ProductItem item : invoiceLine.getProductItems()) {
-						addRelatedStub(paymentRelated, item, version);
-						addRelatedStub(paymentRelated, item.getProduct(), version);
-					}
-
-					for (VoucherPaymentIn vp : invoiceLine.getVoucherPaymentsIn()) {
-						addRelatedStub(paymentRelated, vp, version);
-						addRelatedStub(paymentRelated, vp.getVoucher(), version);
-					}
-
-					addRelatedStub(paymentRelated, invoiceLine, version);
-
-					Enrolment enrol = invoiceLine.getEnrolment();
-
-					if (enrol != null) {
-						addRelatedStub(paymentRelated, enrol, version);
-
-						CourseClass courseClass = enrol.getCourseClass();
-						addRelatedStub(paymentRelated, courseClass, version);
-						addRelatedStub(paymentRelated, courseClass.getCourse(), version);
-
-						Room room = courseClass.getRoom();
-						addRelatedStub(paymentRelated, room, version);
-
-						if (room != null) {
-							addRelatedStub(paymentRelated, room.getSite(), version);
-						}
-
-						addRelatedStub(paymentRelated, enrol.getStudent(), version);
-						addRelatedStub(paymentRelated, enrol.getStudent().getContact(), version);
-						
-						if (enrol.getStudent().getContact() != null) {
-							addRelatedStub(paymentRelated, enrol.getStudent().getContact().getTutor(), version);
-						}
-					}
-
-					for (InvoiceLineDiscount lineDiscount : invoiceLine.getInvoiceLineDiscounts()) {
-						addRelatedStub(paymentRelated, lineDiscount, version);
-						addRelatedStub(paymentRelated, lineDiscount.getDiscount(), version);
-					}
-				}
+				addInvoiceRelatedStub(paymentRelated, invoice, version);
 			}
 
 			addRelatedStub(paymentRelated, paymentIn.getContact(), version);
@@ -126,6 +79,60 @@ public class TransactionStubBuilderImpl implements ITransactionStubBuilder {
 	private void addRelatedStub(Set<GenericReplicationStub> enrlRelated, Queueable relatedEntity, final SupportedVersions version) {
 		if (relatedEntity != null) {
 			enrlRelated.add(builder.convert(relatedEntity, version));
+		}
+	}
+	
+	private void addInvoiceRelatedStub(Set<GenericReplicationStub> paymentRelated, Invoice invoice, final SupportedVersions version) {
+		
+		addRelatedStub(paymentRelated, invoice, version);
+		addRelatedStub(paymentRelated, invoice.getContact(), version);
+		
+		for (InvoiceLine invoiceLine : invoice.getInvoiceLines()) {
+			for (ProductItem item : invoiceLine.getProductItems()) {
+				addRelatedStub(paymentRelated, item, version);
+				addRelatedStub(paymentRelated, item.getProduct(), version);
+				addRelatedStub(paymentRelated, item.getContact(), version);
+				addRelatedStub(paymentRelated, item.getContact(), version);
+				if (item.getContact() != null) {
+					addRelatedStub(paymentRelated, item.getContact().getStudent(), version);
+				}
+			}
+
+			for (VoucherPaymentIn vp : invoiceLine.getVoucherPaymentsIn()) {
+				addRelatedStub(paymentRelated, vp, version);
+				addRelatedStub(paymentRelated, vp.getVoucher(), version);
+			}
+
+			addRelatedStub(paymentRelated, invoiceLine, version);
+
+			Enrolment enrol = invoiceLine.getEnrolment();
+
+			if (enrol != null) {
+				addRelatedStub(paymentRelated, enrol, version);
+
+				CourseClass courseClass = enrol.getCourseClass();
+				addRelatedStub(paymentRelated, courseClass, version);
+				addRelatedStub(paymentRelated, courseClass.getCourse(), version);
+
+				Room room = courseClass.getRoom();
+				addRelatedStub(paymentRelated, room, version);
+
+				if (room != null) {
+					addRelatedStub(paymentRelated, room.getSite(), version);
+				}
+
+				addRelatedStub(paymentRelated, enrol.getStudent(), version);
+				addRelatedStub(paymentRelated, enrol.getStudent().getContact(), version);
+
+				if (enrol.getStudent().getContact() != null) {
+					addRelatedStub(paymentRelated, enrol.getStudent().getContact().getTutor(), version);
+				}
+			}
+
+			for (InvoiceLineDiscount lineDiscount : invoiceLine.getInvoiceLineDiscounts()) {
+				addRelatedStub(paymentRelated, lineDiscount, version);
+				addRelatedStub(paymentRelated, lineDiscount.getDiscount(), version);
+			}
 		}
 	}
 }
