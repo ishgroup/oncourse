@@ -86,7 +86,7 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 
 	protected final String checkResponseAndReceiveSessionIdForVoucherAndCreditCardPayment(GenericTransactionGroup transaction) {
 		String sessionId = null;
-		assertEquals("19 stubs should be in response for this processing", 19, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("22 stubs should be in response for this processing", 22, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			assertNotNull("Willowid after the first payment processing should not be NULL", stub.getWillowId());
 			if (PAYMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
