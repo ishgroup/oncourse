@@ -25,7 +25,7 @@ public abstract class QEVoucherRedeemSuccessNoGUITest extends QEVoucherRedeemNoG
 	protected final void checkProcessedResponseForVoucherNoGUI(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("15 elements should be replicated for this payment", 15, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("18 elements should be replicated for this payment", 18, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {

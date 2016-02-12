@@ -37,7 +37,7 @@ public class QEMoneyVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedeem
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("20 elements should be replicated for this payment", 20, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("23 elements should be replicated for this payment", 23, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
@@ -77,6 +77,8 @@ public class QEMoneyVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedeem
 					assertEquals("Incorrect reverse invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("-100.00"));
 				} else if (stub.getAngelId() == 10l) {
 					assertEquals("Incorrect original invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("100.00"));
+				} else if (stub.getAngelId() == 4l) {
+					assertEquals("Incorrect original invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("10.91"));
 				} else {
 					assertFalse(String.format("Unexpected Invoice with id= %s and angelid= %s found in a queue",
 						stub.getWillowId(), stub.getAngelId()), true);
