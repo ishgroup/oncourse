@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+@Import(library = "context:js/cardNumberValidation.js")
 public class PaymentForm {
     /**
      * Credit card expire date interval
@@ -116,9 +117,11 @@ public class PaymentForm {
 
 	public void setCreditCardNumber(String creditCardNumber) {
 		if (getPaymentIn() != null) {
-			getPaymentIn().setCreditCardNumber(creditCardNumber);
+            String creditCardNumberWithoutSpaces = creditCardNumber.replaceAll(" ", "");
+            getPaymentIn().setCreditCardNumber(creditCardNumberWithoutSpaces);
 		}
-	}
+  	}
+
 	public String getCreditCardNumber() {
 		return getPaymentIn().getCreditCardNumber();
 	}

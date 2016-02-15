@@ -119,6 +119,6 @@
 
 <link rel="stylesheet" type="text/css" href="${request.contextPath}/css/enrol.css"/>
 <script type="text/javascript" src="${request.contextPath}/js/enrol-min.js"></script>
-
+<script type="text/javascript" src="${request.contextPath}/js/cardNumberValidation.js"></script>
 
 </html>
