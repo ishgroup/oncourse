@@ -71,7 +71,12 @@
 			<h3 id="disableLabel">Disable College</h3>
 		</div>
 		<div class="modal-body">
-			<p>This is pretty catastrophic... Are you sure you want to proceed?</p>
+			<p>This will:</p>
+			<ul>
+				<li>clear the billing code</li>
+				<li>clear all licenses</li>
+				<li>disable replication</li>
+			</ul>
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
