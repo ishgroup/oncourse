@@ -29,8 +29,14 @@
 				<t:textfield t:id="instructionMessage" t:validate="required" value="instructionMessage"/>
 				<t:submit t:id="addInstruction" class="btn btn-primary" value="Add"/>
 			</div>
-            <t:outputraw value="${listOfInstructions}"/>
-            <br/><br/>
+			<h5>Available complex instructions</h5>
+			<ul>
+				<li>queue:AttendanceForClass:class_angelId</li>
+				<li>queue:AttendanceForEnrolment:enrolment_angelId</li>
+				<li>queue:instructWithRelationships:PaymentIn:paymentIn_angelId</li>
+				<li>queue:instructWithRelationships:Invoice:invoice_angelId</li>
+				<li>queue:instructWithRelationships:Enrolment:enrolment_angelId</li>
+			</ul>
 		</t:form>
 	</div>
 	
