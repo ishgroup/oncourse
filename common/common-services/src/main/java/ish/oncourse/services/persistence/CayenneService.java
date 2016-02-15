@@ -38,6 +38,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		QueueableLifecycleListener listener = new QueueableLifecycleListener(this);
 		cayenneRuntime.getDataDomain().addFilter(listener);
 		cayenneRuntime.getDataDomain().addFilter(new CacheInvalidationFilter());
+		cayenneRuntime.getDataDomain().addFilter(new RelationshipQueryInvalidatingFilter());
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addDefaultListener(listener);
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new IshVersionListener());
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new BinaryInfoRelationListener(webSiteService));

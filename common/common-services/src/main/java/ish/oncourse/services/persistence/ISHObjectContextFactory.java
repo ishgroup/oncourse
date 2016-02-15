@@ -16,10 +16,7 @@ import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.server.DataContextFactory;
 import org.apache.cayenne.di.Key;
 
-import java.util.HashMap;
-
 /**
- *
  * @author marek
  */
 public class ISHObjectContextFactory extends DataContextFactory {
@@ -69,26 +66,10 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		context.setRecordQueueingEnabled(true);
 	}
 
-	protected DataRowStore createDataRowStore(DataDomain parent)
-	{
-		DataRowStore snapshotCache = null;
-		if (ContextUtil.isObjectCacheEnabled())
-		{
-			snapshotCache = parent.isSharedCacheEnabled()?
-					parent.getSharedSnapshotCache() :
-					new DataRowStore(parent.getName(), parent.getProperties(), eventManager);
-		}
-		else
-		{
-			/**
-			 * When cache.enabled property is set to false we disable object shared cache.
-			 */
-			HashMap<String,String> properties = new HashMap<>(parent.getProperties());
-			properties.put(DataRowStore.SNAPSHOT_CACHE_SIZE_PROPERTY, "1");
-			properties.put(DataRowStore.SNAPSHOT_EXPIRATION_PROPERTY, "0");
-			snapshotCache = new DataRowStore(parent.getName(),properties, eventManager);
-		}
-		return snapshotCache;
+	protected DataRowStore createDataRowStore(DataDomain parent) {
+		return parent.isSharedCacheEnabled() ?
+				parent.getSharedSnapshotCache() :
+				new DataRowStore(parent.getName(), parent.getProperties(), eventManager);
 	}
 
 }
