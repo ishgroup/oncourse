@@ -30,7 +30,7 @@
                   </span>
                 </div>
             </div>
-            <t:usi.progress usiController="usiController"/>
+            <t:usi.progress usiController="usiController" skipContactInfo="skipContactInfo(contact)"/>
         </div>
     </t:block>
 

@@ -36,6 +36,7 @@ public class Result {
     }
 
     public boolean isHidden(String key) {
-        return value.get(key).isHidden();
+        Value v = value.get(key);
+        return v == null || value.get(key).isHidden();
     }
 }

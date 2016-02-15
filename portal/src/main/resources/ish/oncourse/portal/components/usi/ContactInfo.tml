@@ -24,73 +24,40 @@
                     <t:usi.textfield displayName="literal:Town of birth" placeholder="literal:For example, Sydney" hidden="isHiddenField('townOfBirth')" name="literal:townOfBirth" maxlength="32"/>
 
 
-                    <div class="form-group">
-                        <label class=" control-label" for="gender">Gender</label>
-                        <div class="field-holder">
-                            <label class="radio-inline" for="female">
-                                <input type="radio" name="isMale" id="female" value="female" class="form-control"/>Female</label>
-                            <label class="radio-inline" for="male">
-                                <input type="radio" name="isMale" id="male" value="male" class="form-control"/>Male</label>
+                    <t:if test="isHiddenField('isMale')" negate="true">
+                        <div class="form-group">
+                            <label class=" control-label" for="gender">Gender</label>
+
+                            <div class="field-holder">
+                                <label class="radio-inline" for="female">
+                                    <input type="radio" name="isMale" id="female" value="female" class="form-control"/>Female</label>
+                                <label class="radio-inline" for="male">
+                                    <input type="radio" name="isMale" id="male" value="male" class="form-control"/>Male</label>
+                            </div>
+                            <small class="help-block"/>
                         </div>
-                        <small class="help-block"/>
-                    </div>
+                    </t:if>
 
+                    <t:usi.textfield displayName="literal:State" placeholder="literal:For example, NSW" hidden="isHiddenField('state')" name="literal:state" maxlength="32"/>
 
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="state">State</label>
-                        <div class="field-holder">
-                            <input id="state" name="state" type="text" placeholder="For example, NSW" class="form-control input-md"  maxlength="32"/>
-                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+                    <t:usi.textfield displayName="literal:Сountry" placeholder="literal:For example, Australia" hidden="isHiddenField('country')" name="literal:country" maxlength="32"/>
+
+                    <t:usi.textfield displayName="literal:Mobile phone" placeholder="literal:For example, 04123 456 789 " hidden="isHiddenField('mobilePhoneNumber')" name="literal:mobilePhoneNumber" maxlength="32"/>
+
+                    <t:usi.textfield displayName="literal:Home phone" placeholder="literal:For example, +44 2 1234 5678 " hidden="isHiddenField('homePhoneNumber')" name="literal:homePhoneNumber" maxlength="32"/>
+
+                    <t:usi.textfield displayName="literal:Work phone" placeholder="literal:For example, +44 2 1234 5678 " hidden="isHiddenField('businessPhoneNumber')" name="literal:businessPhoneNumber" maxlength="32"/>
+
+                    <t:if test="isHiddenField('specialNeeds')" negate="true">
+                        <div class="form-group has-feedback">
+                            <label class=" control-label" for="specialNeeds">Special needs or medical conditions</label>
+
+                            <div class="field-holder">
+                                <textarea class="form-control" id="specialNeeds" name="specialNeeds"/>
+                            </div>
+                            <small class="help-block"></small>
                         </div>
-                        <small class="help-block"></small>
-                    </div>
-
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="country">Сountry</label>
-                        <div class="field-holder">
-                            <input id="country" name="country" type="text" placeholder="For example, Australia" class="form-control input-md"  maxlength="32"/>
-                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
-
-
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="mobilePhoneNumber">Mobile phone</label>
-                        <div class="field-holder">
-                            <input id="mobilePhoneNumber" name="mobilePhoneNumber" type="text" placeholder="For example, 04123 456 789 " class="form-control input-md"  maxlength="32"/>
-                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
-
-
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="homePhoneNumber">Home phone</label>
-                        <div class="field-holder">
-                            <input id="homePhoneNumber" name="homePhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md"  maxlength="32"/>
-                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
-
-
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="businessPhoneNumber">Work phone</label>
-                        <div class="field-holder">
-                            <input id="businessPhoneNumber" name="businessPhoneNumber" type="text" placeholder="For example, +44 2 1234 5678 " class="form-control input-md"  maxlength="32"/>
-                            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
-
-                    <div class="form-group has-feedback">
-                        <label class=" control-label" for="specialNeeds">Special needs or medical conditions</label>
-                        <div class="field-holder">
-                            <textarea class="form-control" id="specialNeeds" name="specialNeeds"/>
-                        </div>
-                        <small class="help-block"></small>
-                    </div>
+                    </t:if>
 
                     <div class="form-group">
                         <div class="actions">

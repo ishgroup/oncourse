@@ -3,6 +3,7 @@ package ish.oncourse.portal.components.usi;
 import ish.oncourse.portal.usi.UsiController;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -14,6 +15,10 @@ public class Progress {
 
     @Parameter(required = true)
     private UsiController usiController;
+
+    @Parameter(required = true)
+    @Property
+    private boolean skipContactInfo;
 
     public String getClassUSI()
     {

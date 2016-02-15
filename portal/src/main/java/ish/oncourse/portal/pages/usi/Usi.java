@@ -87,11 +87,25 @@ public class Usi {
     private void initUsiControllerModel(Contact contact) {
         ObjectContext context = cayenneService.newContext();
         usiControllerModel = UsiControllerModel.valueOf(context.localObject(contact));
-        usiControllerModel.setStep(Step.contactInfo);
+	    usiControllerModel.setStep(skipContactInfo(contact) ? Step.avetmissInfo : Step.contactInfo);
 
         // we need put college id to the session for WebSiteService.getCurrentCollege() method
         request.getSession(false).setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, contact.getCollege().getId());
     }
+
+	public boolean skipContactInfo(Contact contact) {
+		return contact.getStreet() != null &&
+				contact.getSuburb() != null &&
+				contact.getPostcode() != null &&
+				contact.getDateOfBirth() != null &&
+				contact.getStudent().getCountryOfBirth() != null &&
+				contact.getStudent().getTownOfBirth() != null &&
+				contact.getIsMale() != null && contact.getState() != null &&
+				contact.getCountry() != null &&
+				contact.getMobilePhoneNumber() != null &&
+				contact.getHomePhoneNumber() != null &&
+				contact.getBusinessPhoneNumber() != null && contact.getStudent().getSpecialNeeds() != null;
+	}
 
 
     public ValidationResult getValidationResult() {
@@ -122,8 +136,8 @@ public class Usi {
 
         Contact contact = contacts.get(0);
 
-        if (!UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
-            return null;
+	    if (false && !UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
+		    return null;
         }
         return contact;
     }

@@ -1,17 +1,29 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
     <div class="header-nav">
         <div class="container">
             <div class="progress-steps">
                 <ul>
-                    <li class="${classContactInfo}">
-                        <a href="#">Step 1</a>
-                    </li>
+                    <t:if test="skipContactInfo" negate="true">
+                        <li class="${classContactInfo}">
+                            <a href="#">Step 1</a>
+                        </li>
+                    </t:if>
                     <li class="${classAvetmissInfo}">
-                        <a href="#">Step 2</a>
+                        <t:if test="skipContactInfo">
+                            <a href="#">Step 1</a>
+                            <p:else>
+                                <a href="#">Step 1</a>
+                            </p:else>
+                        </t:if>
                     </li>
                     <li class="${classUSI}">
-                        <a href="#">Step 3</a>
+                        <t:if test="skipContactInfo">
+                            <a href="#">Step 2</a>
+                            <p:else>
+                                <a href="#">Step 3</a>
+                            </p:else>
+                        </t:if>
                     </li>
                 </ul>
             </div>
