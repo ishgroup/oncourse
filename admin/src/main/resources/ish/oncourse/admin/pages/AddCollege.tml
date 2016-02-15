@@ -3,7 +3,7 @@
 	
 		<table class="table table-striped table-condensed">
 			<tr>
-				<td>Services Key</td>
+				<td>Security Key</td>
 				<td><input id="serviceKey" type="text"/></td>
 			</tr>
 			<tr>
