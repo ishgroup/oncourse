@@ -4,21 +4,21 @@
         <div class="container">
             <div class="progress-steps">
                 <ul>
-                    <t:if test="skipContactInfo" negate="true">
+                    <t:if test="usiController.skipContactInfo" negate="true">
                         <li class="${classContactInfo}">
                             <a href="#">Step 1</a>
                         </li>
                     </t:if>
                     <li class="${classAvetmissInfo}">
-                        <t:if test="skipContactInfo">
+                        <t:if test="usiController.skipContactInfo">
                             <a href="#">Step 1</a>
                             <p:else>
-                                <a href="#">Step 1</a>
+                                <a href="#">Step 2</a>
                             </p:else>
                         </t:if>
                     </li>
                     <li class="${classUSI}">
-                        <t:if test="skipContactInfo">
+                        <t:if test="usiController.skipContactInfo">
                             <a href="#">Step 2</a>
                             <p:else>
                                 <a href="#">Step 3</a>

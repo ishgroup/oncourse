@@ -14,11 +14,8 @@ public class Progress {
     private static final String CLASS_finished = "finished ";
 
     @Parameter(required = true)
-    private UsiController usiController;
-
-    @Parameter(required = true)
     @Property
-    private boolean skipContactInfo;
+    private UsiController usiController;
 
     public String getClassUSI()
     {

@@ -40,6 +40,10 @@ public class UsiController {
         return usiControllerModel.getValidationResult();
     }
 
+    public boolean isSkipContactInfo() {
+        return usiControllerModel.isSkipContactInfo();
+    }
+
     public Step getStep() {
         return usiControllerModel.getStep();
     }

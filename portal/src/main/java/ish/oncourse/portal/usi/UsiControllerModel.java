@@ -20,6 +20,8 @@ public class UsiControllerModel implements Serializable {
 
     private Step step;
 
+    private boolean skipContactInfo = false;
+
     private ValidationResult validationResult = new ValidationResult();
 
     public Contact getContact() {
@@ -52,10 +54,29 @@ public class UsiControllerModel implements Serializable {
         return validationResult;
     }
 
+    public boolean isSkipContactInfo() {
+        return skipContactInfo;
+    }
+
+    private void intSkipContactInfo() {
+        skipContactInfo = contact.getStreet() != null &&
+                contact.getSuburb() != null &&
+                contact.getPostcode() != null &&
+                contact.getDateOfBirth() != null &&
+                contact.getStudent().getCountryOfBirth() != null &&
+                contact.getStudent().getTownOfBirth() != null &&
+                contact.getIsMale() != null && contact.getState() != null &&
+                contact.getCountry() != null &&
+                contact.getMobilePhoneNumber() != null &&
+                contact.getHomePhoneNumber() != null &&
+                contact.getBusinessPhoneNumber() != null && contact.getStudent().getSpecialNeeds() != null;
+    }
+
 
     public static UsiControllerModel valueOf(Contact contact) {
         UsiControllerModel model = new UsiControllerModel();
         model.contact = contact;
+        model.intSkipContactInfo();
         return model;
     }
 }
