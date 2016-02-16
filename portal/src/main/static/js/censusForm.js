@@ -10,6 +10,7 @@ CensusForm = function () {
 };
 CensusForm.prototype = {
     data: 0,
+    usiEnable: true,
 
     initialize: function () {
         var self = this;
@@ -90,39 +91,34 @@ CensusForm.prototype = {
 
 
         if (this.data.step == 'wait') {
-            $j('.form-control[name=usi]').attr('disabled', true);
+            this.usiEnable = false;
             self.reloadByTimeout();
         }
-        else {
-            $j('.form-control[name=usi]').attr('disabled', false);
-        }
+        $j('.form-control[name=usi]').attr('disabled', !this.usiEnable);
     },
 
     fillUsiStatus: function (value) {
         var text = "not verified";
         $j('#usiControl').removeClass("usi-verified usi-not-verified usi-failed-verify");
         var styleClass = "label-warning";
-        var disabled = false;
+        this.usiEnable = true;
         switch (value.value) {
             case 'DEFAULT_NOT_SUPPLIED':
                 text = "not verified";
                 styleClass = "usi-not-verified";
-                disabled = false;
                 break;
             case 'NON_VERIFIED':
                 text = "verification failed";
                 styleClass = "usi-failed-verify";
-                disabled = false;
                 break;
             case 'VERIFIED':
                 text = "verified";
                 styleClass = "usi-verified";
-                disabled = true;
+                this.usiEnable = false;
                 break;
         }
         $j("#usiStatus").text(text);
         $j('#usiControl').addClass(styleClass);
-        $j('.form-control[name=usi]').attr('disabled', disabled);
     },
 
     fillControl: function (value) {
