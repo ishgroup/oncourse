@@ -18,7 +18,7 @@ import java.util.*;
 import static ish.oncourse.model.SearchParam.near;
 import static ish.oncourse.model.SearchParam.s;
 import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.isNoneBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class SearchInputs extends ISHCommon {
 
@@ -210,7 +210,7 @@ public class SearchInputs extends ISHCommon {
 
 		public URL build() throws MalformedURLException {
 			for (SearchParam key : SearchParam.values()) {
-				if (isNoneBlank(searchParams.get(key))) {
+				if (isNotBlank(searchParams.get(key))) {
 					queries.add(format("%s=%s", key.name(), searchParams.get(key)));
 				}
 			}
@@ -244,7 +244,7 @@ public class SearchInputs extends ISHCommon {
 			for (String tagName : form.tagGroups) {
 				String value = form.selectedTagMap.get(tagName);
 				for (Tag tag : form.tagGroupMap.get(tagName)) {
-					if (StringUtils.trimToNull(value) != null) {
+					if (isNotBlank(value)) {
 						if (value.equals(tag.getName())) {
 							//add selected tag if something selected
 							if (browseTag == null) {
