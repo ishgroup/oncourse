@@ -30,8 +30,8 @@ public class ProductsList extends ISHCommon {
 	private Product product;
 	
 	public boolean isHasMoreItems() {
-        return itemIndex < productsCount;
-    }
+		return (itemIndex + 1) < productsCount;
+	}
 	
 	public String getSearchParamsStr() {
 		StringBuilder result = new StringBuilder();
