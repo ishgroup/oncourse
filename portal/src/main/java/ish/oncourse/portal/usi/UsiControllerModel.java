@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -61,19 +61,19 @@ public class UsiControllerModel implements Serializable {
     }
 
     private void intSkipContactInfo() {
-	    skipContactInfo = isBlank(contact.getStreet()) &&
-			    isBlank(contact.getSuburb()) &&
-			    isBlank(contact.getPostcode()) &&
-			    (contact.getDateOfBirth() != null) &&
+        skipContactInfo = isNoneBlank(contact.getStreet()) &&
+                isNoneBlank(contact.getSuburb()) &&
+                isNoneBlank(contact.getPostcode()) &&
+                (contact.getDateOfBirth() != null) &&
 			    (contact.getStudent().getCountryOfBirth() != null) &&
-			    isBlank(contact.getStudent().getTownOfBirth()) &&
-			    (contact.getIsMale() != null) &&
-			    isBlank(contact.getState()) &&
-			    (contact.getCountry() != null) &&
-			    isBlank(contact.getMobilePhoneNumber()) &&
-			    isBlank(contact.getHomePhoneNumber()) &&
-			    isBlank(contact.getBusinessPhoneNumber()) &&
-			    isBlank(contact.getStudent().getSpecialNeeds());
+                isNoneBlank(contact.getStudent().getTownOfBirth()) &&
+                (contact.getIsMale() != null) &&
+                isNoneBlank(contact.getState()) &&
+                (contact.getCountry() != null) &&
+                isNoneBlank(contact.getMobilePhoneNumber()) &&
+                isNoneBlank(contact.getHomePhoneNumber()) &&
+                isNoneBlank(contact.getBusinessPhoneNumber()) &&
+                isNoneBlank(contact.getStudent().getSpecialNeeds());
     }
 
 
