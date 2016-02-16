@@ -6,12 +6,13 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -60,18 +61,19 @@ public class UsiControllerModel implements Serializable {
     }
 
     private void intSkipContactInfo() {
-	    skipContactInfo = StringUtils.trimToNull(contact.getStreet()) != null &&
-			    StringUtils.trimToNull(contact.getSuburb()) != null &&
-			    StringUtils.trimToNull(contact.getPostcode()) != null &&
-			    contact.getDateOfBirth() != null &&
-                contact.getStudent().getCountryOfBirth() != null &&
-			    StringUtils.trimToNull(contact.getStudent().getTownOfBirth()) != null &&
-			    contact.getIsMale() != null && StringUtils.trimToNull(contact.getState()) != null &&
-			    contact.getCountry() != null &&
-			    StringUtils.trimToNull(contact.getMobilePhoneNumber()) != null &&
-			    StringUtils.trimToNull(contact.getHomePhoneNumber()) != null &&
-			    StringUtils.trimToNull(contact.getBusinessPhoneNumber()) != null &&
-			    StringUtils.trimToNull(contact.getStudent().getSpecialNeeds()) != null;
+	    skipContactInfo = isBlank(contact.getStreet()) &&
+			    isBlank(contact.getSuburb()) &&
+			    isBlank(contact.getPostcode()) &&
+			    (contact.getDateOfBirth() != null) &&
+			    (contact.getStudent().getCountryOfBirth() != null) &&
+			    isBlank(contact.getStudent().getTownOfBirth()) &&
+			    (contact.getIsMale() != null) &&
+			    isBlank(contact.getState()) &&
+			    (contact.getCountry() != null) &&
+			    isBlank(contact.getMobilePhoneNumber()) &&
+			    isBlank(contact.getHomePhoneNumber()) &&
+			    isBlank(contact.getBusinessPhoneNumber()) &&
+			    isBlank(contact.getStudent().getSpecialNeeds());
     }
 
 

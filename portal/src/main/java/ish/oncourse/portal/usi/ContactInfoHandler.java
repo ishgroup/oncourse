@@ -4,13 +4,13 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.usi.handler.CountryOfBirthHandler;
 import ish.oncourse.services.preference.PreferenceController;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
 
 import static ish.oncourse.model.auto._Contact.*;
 import static ish.oncourse.model.auto._Student.*;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -25,15 +25,15 @@ public class ContactInfoHandler extends AbstractStepHandler {
 			Student student = contact.getStudent();
 
 
-			if (StringUtils.trimToNull(contact.getStreet()) == null) {
+			if (isBlank(contact.getStreet())) {
 				addValue(Value.valueOf(STREET.getName(), contact.getStreet(), true, false));
 			}
 
-			if (StringUtils.trimToNull(contact.getSuburb()) == null) {
+			if (isBlank(contact.getSuburb())) {
 				addValue(Value.valueOf(SUBURB.getName(), contact.getSuburb(), true, false));
 			}
 
-			if (StringUtils.trimToNull(contact.getPostcode()) == null) {
+			if (isBlank(contact.getPostcode())) {
 				addValue(Value.valueOf(POSTCODE.getName(), contact.getPostcode(), true, false));
 			}
 
@@ -46,7 +46,7 @@ public class ContactInfoHandler extends AbstractStepHandler {
 				addValue(Value.valueOf(COUNTRY_OF_BIRTH.getName(), null, true, false));
 			}
 
-			if (StringUtils.trimToNull(student.getTownOfBirth()) == null) {
+			if (isBlank(student.getTownOfBirth())) {
 				addValue(Value.valueOf(TOWN_OF_BIRTH.getName(), student.getTownOfBirth(), true, false));
 			}
 
@@ -54,7 +54,7 @@ public class ContactInfoHandler extends AbstractStepHandler {
 				addValue(Value.valueOf(IS_MALE.getName(), contact.getIsMale(), true));
 			}
 
-			if (StringUtils.trimToNull(contact.getState()) == null) {
+			if (isBlank(contact.getState())) {
 				addValue(Value.valueOf(STATE.getName(), contact.getState(), isRequiredField(STATE.getName())));
 			}
 
@@ -62,19 +62,19 @@ public class ContactInfoHandler extends AbstractStepHandler {
 				addValue(Value.valueOf(COUNTRY.getName(), null, isRequiredField(COUNTRY.getName())));
 			}
 
-			if (StringUtils.trimToNull(contact.getMobilePhoneNumber()) == null) {
+			if (isBlank(contact.getMobilePhoneNumber())) {
 				addValue(Value.valueOf(MOBILE_PHONE_NUMBER.getName(), contact.getMobilePhoneNumber(), isRequiredField(COUNTRY.getName())));
 			}
 
-			if (StringUtils.trimToNull(contact.getHomePhoneNumber()) == null) {
+			if (isBlank(contact.getHomePhoneNumber())) {
 				addValue(Value.valueOf(HOME_PHONE_NUMBER.getName(), contact.getHomePhoneNumber(), isRequiredField(COUNTRY.getName())));
 			}
 
-			if (StringUtils.trimToNull(contact.getBusinessPhoneNumber()) == null) {
+			if (isBlank(contact.getBusinessPhoneNumber())) {
 				addValue(Value.valueOf(BUSINESS_PHONE_NUMBER.getName(), contact.getBusinessPhoneNumber(), isRequiredField(COUNTRY.getName())));
 			}
 
-			if (StringUtils.trimToNull(student.getSpecialNeeds()) == null) {
+			if (isBlank(student.getSpecialNeeds())) {
 				addValue(Value.valueOf(SPECIAL_NEEDS.getName(), student.getSpecialNeeds(), isRequiredField(SPECIAL_NEEDS.getName())));
 			}
 		}
@@ -104,15 +104,15 @@ public class ContactInfoHandler extends AbstractStepHandler {
 		Contact contact = getUsiController().getContact();
 		Student student = contact.getStudent();
 
-		if (StringUtils.trimToNull(contact.getStreet()) == null) {
+		if (isBlank(contact.getStreet())) {
 			handleContactValue(contact, STREET.getName());
 		}
 
-		if (StringUtils.trimToNull(contact.getSuburb()) == null) {
+		if (isBlank(contact.getSuburb())) {
 			handleContactValue(contact, SUBURB.getName());
 		}
 
-		if (StringUtils.trimToNull(contact.getPostcode()) == null) {
+		if (isBlank(contact.getPostcode())) {
 			handleContactValue(contact, POSTCODE.getName());
 		}
 
@@ -124,7 +124,7 @@ public class ContactInfoHandler extends AbstractStepHandler {
 			CountryOfBirthHandler.valueOf(student, Student.COUNTRY_OF_BIRTH.getName(), inputValues, result, getUsiController()).handle();
 		}
 
-		if (StringUtils.trimToNull(student.getTownOfBirth()) == null) {
+		if (isBlank(student.getTownOfBirth())) {
 			handleContactValue(student, TOWN_OF_BIRTH.getName());
 		}
 
@@ -132,7 +132,7 @@ public class ContactInfoHandler extends AbstractStepHandler {
 			handleGenderValue(contact, IS_MALE.getName());
 		}
 
-		if (StringUtils.trimToNull(contact.getState()) == null) {
+		if (isBlank(contact.getState())) {
 			handleContactValue(contact, STATE.getName());
 		}
 
@@ -140,19 +140,19 @@ public class ContactInfoHandler extends AbstractStepHandler {
 			handleCountryValue(contact, COUNTRY.getName());
 		}
 
-		if (StringUtils.trimToNull(contact.getMobilePhoneNumber()) == null) {
+		if (isBlank(contact.getMobilePhoneNumber())) {
 			handleContactValue(contact, MOBILE_PHONE_NUMBER.getName());
 		}
 
-		if (StringUtils.trimToNull(contact.getHomePhoneNumber()) == null) {
+		if (isBlank(contact.getHomePhoneNumber())) {
 			handleContactValue(contact, HOME_PHONE_NUMBER.getName());
 		}
 
-		if (StringUtils.trimToNull(contact.getBusinessPhoneNumber()) == null) {
+		if (isBlank(contact.getBusinessPhoneNumber())) {
 			handleContactValue(contact, BUSINESS_PHONE_NUMBER.getName());
 		}
 
-		if (StringUtils.trimToNull(contact.getStudent().getSpecialNeeds()) == null) {
+		if (isBlank(contact.getStudent().getSpecialNeeds())) {
 			handleContactValue(student, SPECIAL_NEEDS.getName());
 		}
 		return this;
