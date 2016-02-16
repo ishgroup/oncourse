@@ -6,6 +6,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -59,17 +60,18 @@ public class UsiControllerModel implements Serializable {
     }
 
     private void intSkipContactInfo() {
-        skipContactInfo = contact.getStreet() != null &&
-                contact.getSuburb() != null &&
-                contact.getPostcode() != null &&
-                contact.getDateOfBirth() != null &&
+	    skipContactInfo = StringUtils.trimToNull(contact.getStreet()) != null &&
+			    StringUtils.trimToNull(contact.getSuburb()) != null &&
+			    StringUtils.trimToNull(contact.getPostcode()) != null &&
+			    contact.getDateOfBirth() != null &&
                 contact.getStudent().getCountryOfBirth() != null &&
-                contact.getStudent().getTownOfBirth() != null &&
-                contact.getIsMale() != null && contact.getState() != null &&
-                contact.getCountry() != null &&
-                contact.getMobilePhoneNumber() != null &&
-                contact.getHomePhoneNumber() != null &&
-                contact.getBusinessPhoneNumber() != null && contact.getStudent().getSpecialNeeds() != null;
+			    StringUtils.trimToNull(contact.getStudent().getTownOfBirth()) != null &&
+			    contact.getIsMale() != null && StringUtils.trimToNull(contact.getState()) != null &&
+			    contact.getCountry() != null &&
+			    StringUtils.trimToNull(contact.getMobilePhoneNumber()) != null &&
+			    StringUtils.trimToNull(contact.getHomePhoneNumber()) != null &&
+			    StringUtils.trimToNull(contact.getBusinessPhoneNumber()) != null &&
+			    StringUtils.trimToNull(contact.getStudent().getSpecialNeeds()) != null;
     }
 
 
