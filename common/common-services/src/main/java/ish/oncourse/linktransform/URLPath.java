@@ -1,6 +1,8 @@
 package ish.oncourse.linktransform;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -13,6 +15,9 @@ import java.util.ArrayList;
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
 public class URLPath {
+
+	private static final Logger logger = LogManager.getLogger();
+
 	private Path decodedPath;
 
 	private Path encodedPath;
@@ -101,6 +106,7 @@ public class URLPath {
 	}
 
 	private static class Query {
+
 		private String key;
 		private String value;
 
@@ -115,11 +121,20 @@ public class URLPath {
 		public static Query valueOf(String queryString) {
 			Query query = new Query();
 			String[] keyValue = StringUtils.split(queryString, '=');
-			if (keyValue.length == 2) {
-				query.key = keyValue[0];
-				query.value = keyValue[1];
-			} else {
-				throw new IllegalArgumentException(String.format("Wrong query %s", queryString));
+
+			switch (keyValue.length) {
+				case 1:
+					query.key = keyValue[0];
+					query.value = StringUtils.EMPTY;
+					break;
+				case 2:
+					query.key = keyValue[0];
+					query.value = keyValue[1];
+					break;
+				default:
+					query.key = queryString;
+					query.value = StringUtils.EMPTY;
+					logger.error("Wrong query {}", queryString);
 			}
 			return query;
 		}
