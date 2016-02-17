@@ -12,11 +12,10 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
 		classpath 'org.apache.cayenne:cayenne-tools:4.0.M2'
 	}
 }
-
 
 allprojects {
 	apply plugin: 'java'
@@ -51,11 +50,11 @@ allprojects {
 
 	dependencies {
 		testCompile 'junit:junit:4.12'
-		compile 'org.apache.logging.log4j:log4j-api:2.4.1'
-		compile 'org.apache.logging.log4j:log4j-core:2.4.1'
-		compile 'org.apache.logging.log4j:log4j-1.2-api:2.4.1'
+		compile 'org.apache.logging.log4j:log4j-api:2.5'
+		compile 'org.apache.logging.log4j:log4j-core:2.5'
+		compile 'org.apache.logging.log4j:log4j-1.2-api:2.5'
 		//log4j2 to commons-logging bridge
-		compile 'org.apache.logging.log4j:log4j-jcl:2.4.1'
+		compile 'org.apache.logging.log4j:log4j-jcl:2.5'
         compile 'com.google.code.findbugs:jsr305:3.0.1'
     }
 
