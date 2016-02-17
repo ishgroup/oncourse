@@ -5,10 +5,12 @@ import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PageLinkTransformer;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.runtime.Component;
 import org.apache.tapestry5.services.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,7 +19,7 @@ import java.util.regex.Matcher;
 
 public class AccessController implements Dispatcher {
 
-	private final static String LOGIN_PAGE = "/login";
+	public final static String LOGIN_PAGE = "/login";
 	private final static String FORGOT_PASSWORD_PAGE = "/forgotpassword";
 	private final static String PASSWORD_RECOVERY_PAGE = "/passwordrecovery";
 	private final static String SELECT_COLLEGE_PAGE = "/selectcollege";
@@ -42,54 +44,101 @@ public class AccessController implements Dispatcher {
     @Inject
     private IPortalService portalService;
 
+	@Inject
+	private ICayenneService cayenneService;
+
+	@Inject
+	private HttpServletRequest httpRequest;
+
+	private boolean isResource(String path) {
+		for (String resource : RESOURCES) {
+			if (path.toLowerCase().startsWith(resource))
+				return true;
+		}
+		return false;
+	}
+
+	private boolean isUsi(String path) {
+		Matcher matcher = PageLinkTransformer.REGEXP_USI_PATH.matcher(path.toLowerCase());
+		if (matcher.matches()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isPublicPage(String path) {
+		return path.equals(LOGIN_PAGE) ||
+				path.equals(FORGOT_PASSWORD_PAGE) ||
+				path.startsWith(PASSWORD_RECOVERY_PAGE) ||
+				path.equals(SELECT_COLLEGE_PAGE) ||
+				path.startsWith(CALENDAR_FILE) ||
+				path.startsWith(UNSUBSCRIBE_PAGE);
+	}
+
+	private String getPageName(String path) {
+		int nextSlashX = path.length();
+		String pageName;
+		while (true) {
+			pageName = path.substring(1, nextSlashX);
+
+			if (!pageName.endsWith("/") && resolver.isPageName(pageName)) {
+				return pageName;
+			}
+
+			nextSlashX = path.lastIndexOf('/', nextSlashX - 1);
+
+			if (nextSlashX <= 1) {
+				return null;
+			}
+		}
+	}
+
+	@Override
 	public boolean dispatch(Request request, Response response)
 			throws IOException {
 
 		String path = request.getPath();
 
-        for (String resource : RESOURCES) {
-            if (path.toLowerCase().startsWith(resource))
-                return true;
-        }
+		if (isResource(path)) {
+			return true;
+		}
 
-        Matcher matcher = PageLinkTransformer.REGEXP_USI_PATH.matcher(path.toLowerCase());
-        if (matcher.matches()) {
-            return false;
-        }
+		if (isUsi(path)) {
+			return false;
+		}
 
-		int nextslashx = path.length();
+		boolean processed = ProcessSignedRequest.valueOf(authenticationService, cayenneService.newContext(),
+				httpRequest,
+				request).process();
 
-		String pageName;
+		if (processed) {
+			return false;
+		} else {
+			return processCommonRequest(request, response, path);
+		}
+	}
 
-		while (true) {
-			pageName = path.substring(1, nextslashx);
-
-			if (!pageName.endsWith("/") && resolver.isPageName(pageName)) {
-				break;
-			}
-
-			nextslashx = path.lastIndexOf('/', nextslashx - 1);
-
-			if (nextslashx <= 1) {
-				return false;
-			}
+	private boolean processCommonRequest(Request request, Response response, String path) throws IOException {
+		String pageName = getPageName(path);
+		if (pageName == null) {
+			return false;
 		}
 
 		Component page = componentSource.getPage(pageName);
 
-        Contact contact = portalService.getContact();
+		Contact contact = portalService.getContact();
 
 		if (page != null) {
 			String loginPath = request.getContextPath() + LOGIN_PAGE;
 
 			if (contact == null) {
-				if (!path.equals(LOGIN_PAGE) && !path.equals(FORGOT_PASSWORD_PAGE) && !path.startsWith(PASSWORD_RECOVERY_PAGE) && !path.equals(SELECT_COLLEGE_PAGE) &&
-						!path.startsWith(CALENDAR_FILE) && !path.startsWith(UNSUBSCRIBE_PAGE)) {
+				if (!isPublicPage(path)) {
 					cookieService.pushPreviousPagePath(path);
 					response.sendRedirect(loginPath);
 					return true;
+				} else {
+					return false;
 				}
-				return false;
 			} else {
 				UserRole pageWithUserRole = page.getClass().getAnnotation(UserRole.class);
 
@@ -112,7 +161,6 @@ public class AccessController implements Dispatcher {
 				}
 			}
 		}
-
 		return false;
 	}
 }
