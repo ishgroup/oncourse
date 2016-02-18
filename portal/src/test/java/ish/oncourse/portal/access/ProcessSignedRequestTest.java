@@ -24,37 +24,39 @@ public class ProcessSignedRequestTest {
 		String currentPath = "/class/1";
 
 		//test FIRST
-		assertEquals(FIRST, ProcessSignedRequest.GetCase.valueOf(null, null, currentPath, currentContact, request).getCase());
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(null, null, currentPath, currentContact, request).getCase(), FIRST);
 
 		//test REFRESH
 		Contact prevContact = mock(Contact.class);
 		String prevPath = "/class/1";
 		when(prevContact.getId()).thenReturn(1l);
-		assertEquals(REFRESH, ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase());
-		assertEquals(REFRESH, ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, null, request).getCase());
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase(), REFRESH);
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, null, request).getCase(), REFRESH);
 
 
 		//test ANOTHER
 		prevContact = mock(Contact.class);
 		prevPath = "/class/1";
 		when(prevContact.getId()).thenReturn(2l);
-		assertEquals(ANOTHER, ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase());
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase(), ANOTHER);
 
 		prevPath = "/class/2";
 		when(prevContact.getId()).thenReturn(1l);
-		assertEquals(ANOTHER, ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase());
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase(), ANOTHER);
 
 		when(prevContact.getId()).thenReturn(2l);
-		assertEquals(ANOTHER, ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase());
-		assertEquals(ANOTHER, ProcessSignedRequest.GetCase.valueOf(null, prevContact, currentPath, currentContact, request).getCase());
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase(), ANOTHER);
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(null, prevContact, currentPath, currentContact, request).getCase(), ANOTHER);
 
 		prevPath = "/class/2";
 		when(prevContact.getId()).thenReturn(1l);
-		assertEquals(INVALID, ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, null, request).getCase());
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, null, request).getCase(), INVALID);
 
 		when(prevContact.getId()).thenReturn(1l);
-		assertEquals(REGULAR, ProcessSignedRequest.GetCase.valueOf(null, prevContact, currentPath, null, request).getCase());
-		assertEquals(REGULAR, ProcessSignedRequest.GetCase.valueOf(null, null, currentPath, null, request).getCase());
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(null, prevContact, currentPath, null, request).getCase(), REGULAR);
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(null, null, currentPath, null, request).getCase(), REGULAR);
 
+		when(request.isXHR()).thenReturn(true);
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase(), AJAX);
 	}
 }
