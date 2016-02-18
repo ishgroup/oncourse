@@ -1,6 +1,8 @@
 buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '8.9.1'
+		log4j2Version = '2.5'
+		cayenneVersion = '4.0.M2'
 	}
 	repositories {
 		maven {
@@ -13,7 +15,7 @@ buildscript {
 
 	dependencies {
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
-		classpath 'org.apache.cayenne:cayenne-tools:4.0.M2'
+		classpath "org.apache.cayenne:cayenne-tools:$cayenneVersion"
 	}
 }
 
@@ -50,11 +52,11 @@ allprojects {
 
 	dependencies {
 		testCompile 'junit:junit:4.12'
-		compile 'org.apache.logging.log4j:log4j-api:2.5'
-		compile 'org.apache.logging.log4j:log4j-core:2.5'
-		compile 'org.apache.logging.log4j:log4j-1.2-api:2.5'
+		compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
+		compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
+		compile "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"
 		//log4j2 to commons-logging bridge
-		compile 'org.apache.logging.log4j:log4j-jcl:2.5'
+		compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
         compile 'com.google.code.findbugs:jsr305:3.0.1'
     }
 

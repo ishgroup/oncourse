@@ -54,7 +54,7 @@ dependencies {
 		exclude group: 'xalan'
 	}
 
-	compile 'org.apache.cayenne:cayenne-lifecycle:4.0.M2'
+	compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 
 	compile 'foxtrot:foxtrot-core:4.0'
 
@@ -74,7 +74,7 @@ dependencies {
 
 	compile 'org.quartz-scheduler:quartz:2.2.2'
 	//log4j2 to slf4j1.7 bridge
-	compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.5'
+	compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
 	compile ('net.sf.jasperreports:jasperreports:6.1.1') {
