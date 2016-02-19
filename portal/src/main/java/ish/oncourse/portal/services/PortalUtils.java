@@ -77,8 +77,7 @@ public class PortalUtils {
             domainName = domainName.substring(domainName.lastIndexOf("://") + 3);
 
         if (domainName.endsWith("/")) {
-            logger.error("Incorrect domain name {}", domainName);
-            domainName = domainName.substring(0, domainName.length()-1);
+            domainName = domainName.substring(0, domainName.length() - 1);
         }
         return domainName;
     }
