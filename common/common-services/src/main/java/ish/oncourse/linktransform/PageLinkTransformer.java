@@ -35,6 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
 
+	public static final String ATTR_coursesTag = "coursesTag";
+
 	private static final String REMOVE_ITEM_ID_PARAMETER = "removeItemId";
 	private static final String ADD_ITEM_ID_PARAMETER = "addItemId";
 	private static final String KEY_PARAMETER = "key";
@@ -185,7 +187,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 						pageIdentifier = PageIdentifier.PageNotFound;
 						break;
 					}
-					request.setAttribute(Course.COURSE_TAG, tag);
+					request.setAttribute(ATTR_coursesTag, tag);
 				}
 			}
 			break;

@@ -2,7 +2,6 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Course;
 import ish.oncourse.utils.QueueableObjectUtils;
-import ish.oncourse.utils.TimestampUtilities;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -10,12 +9,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Course extends _Course implements Queueable {
 	private static final long serialVersionUID = 254942637990278217L;
-	public static final String COURSE_TAG = "courseTag";
 	private static final Logger logger = LogManager.getLogger();
 
 	public Long getId() {

@@ -1,12 +1,14 @@
 package ish.oncourse.textile.pages;
 
 import ish.oncourse.model.Tag;
+import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParamsParser;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.renderer.tags.ActiveTag;
+import ish.oncourse.services.textile.renderer.tags.GetActiveTags;
 import ish.oncourse.textile.components.TagItem;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Property;
@@ -17,7 +19,10 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.SPACE;
 
 public class TextileTags {
 	@Property
@@ -38,12 +43,15 @@ public class TextileTags {
 	@Inject
 	private IWebSiteService webSiteService;
 
+	@Inject
+	private ICourseService courseService;
+
 	private String entityType;
 
 	@SuppressWarnings("all")
 	@Property
 	@Component(id = "childTag", parameters = { "tag=currentTag",
-			"childPosition=currentChildPosition", "maxLevels=maxLevelsForChild", "counters=counters" })
+			"childPosition=currentChildPosition", "maxLevels=maxLevelsForChild", "counters=counters", "activeTags=activeTags" })
 	private TagItem childTag;
 
 	private Tag currentTag;
@@ -60,6 +68,9 @@ public class TextileTags {
 
 	@Property
 	private Map<Long, Long> counters;
+
+	@Property
+	private List<Tag> activeTags;
 
 	@SetupRender
 	boolean beginRender() {
@@ -81,6 +92,8 @@ public class TextileTags {
 		} else {
 			counters = Collections.emptyMap();
 		}
+
+		activeTags = GetActiveTags.valueOf(request, courseService, tagService).get();
 
 		return rootTag != null && (maxLevels == null || maxLevels > 0);
 	}
@@ -109,15 +122,12 @@ public class TextileTags {
 		if (!rootTag.getWebVisibleTags().isEmpty()) {
 			result.append(messages.get("li.class.hasChildren"));
 		}
-		String rootTagLink = getRootTagLink();
-		String requestPath = request.getPath();
-		String searchTagParameter = request.getParameter("subject");
-		String defaultPath = rootTag.getDefaultPath();
-		if (requestPath.endsWith(rootTagLink) || defaultPath.equals(searchTagParameter)) {
-			result.append(" ").append(messages.get("li.class.selected"));
-		} else if (requestPath.contains(rootTagLink)
-				|| (searchTagParameter != null && searchTagParameter.contains(defaultPath))) {
-			result.append(" ").append(messages.get("li.class.childSelected"));
+
+		ActiveTag activeTag = ActiveTag.valueOf(rootTag, activeTags);
+		if (activeTag.isActive()) {
+			result.append(SPACE).append(messages.get("li.class.childSelected"));
+		} else if (activeTag.isSelected()) {
+			result.append(SPACE).append(messages.get("li.class.selected"));
 		}
 		return result.toString();
 	}

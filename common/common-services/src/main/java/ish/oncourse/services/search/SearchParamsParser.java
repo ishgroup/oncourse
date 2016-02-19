@@ -1,6 +1,6 @@
 package ish.oncourse.services.search;
 
-import ish.oncourse.model.Course;
+import ish.oncourse.linktransform.PageLinkTransformer;
 import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
@@ -120,7 +120,7 @@ public class SearchParamsParser
         }
 
         if (browseTag == null && provider.getParameter(SearchParam.subject.name()) == null) {
-            browseTag = (Tag) provider.getAttribute(Course.COURSE_TAG);
+            browseTag = (Tag) provider.getAttribute(PageLinkTransformer.ATTR_coursesTag);
             if (browseTag != null) {
                 //this code updated because getDefaultPath() return incorrect value for tag group which have aliases
                 searchParams.setSubject(browseTag);

@@ -1,9 +1,9 @@
 package ish.oncourse.textile.components;
 
-import ish.oncourse.model.Course;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.TextileUtil;
+import ish.oncourse.services.textile.renderer.tags.ActiveTag;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -11,6 +11,8 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.SPACE;
 
 public class TagItem {
 
@@ -28,6 +30,9 @@ public class TagItem {
 
 	@Parameter
 	private Integer maxLevels;
+
+	@Parameter
+	private List<Tag> activeTags;
 
 	@Inject
 	private Request request;
@@ -101,36 +106,13 @@ public class TagItem {
 			result.append(messages.get("li.class.hasChildren"));
 		}
 
-		Tag activeTag = getActiveTag();
-
-		if (activeTag != null) {
-			if (activeTag.getId().equals(tag.getId())) {
-				result.append(" ").append(messages.get("li.class.childSelected"));
-			} else {
-				if (tag.isParentOf(activeTag)) {
-					result.append(" ").append(messages.get("li.class.selected"));
-				}
-			}
+		ActiveTag activeTag = ActiveTag.valueOf(tag, activeTags);
+		if (activeTag.isActive()) {
+			result.append(SPACE).append(messages.get("li.class.childSelected"));
+		} else if (activeTag.isSelected()) {
+			result.append(SPACE).append(messages.get("li.class.selected"));
 		}
-
 		return result.toString().trim();
-	}
-
-	private Tag getActiveTag() {
-
-		Tag courseTag = (Tag) request.getAttribute(Course.COURSE_TAG);
-
-		if (courseTag != null) {
-			return courseTag;
-		} else {
-			String subject = request.getParameter("subject");
-
-			if (subject != null) {
-				return tagService.getTagByFullPath(subject);
-			}
-		}
-
-		return null;
 	}
 
 	public String getTagLink() {
