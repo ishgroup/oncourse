@@ -55,9 +55,12 @@ public class VoucherService implements IVoucherService {
 		//select count(p) from Product p where (p.college = college) and (p.isWebVisible = true) and (p.isOnSale = true)
 		//Result SQL:
 		//SELECT COUNT(*) AS sc0 FROM Product t0 WHERE t0.type = ? OR t0.type = ? OR t0.type = ? OR t0.type = ? AND t0.collegeId = ? AND t0.isWebVisible = ? AND t0.isOnSale = ? [bind: 1:1, 2:1, 3:2, 4:3, 5:10875, 6:'true', 7:'true']
-		return ((Long) SQLSelect.dataRowQuery("select count(id) from Product where collegeId = #bind($collegeId) and " +
-						"isOnSale = 1 and isWebVisible = 1").params("collegeId", webSiteService.getCurrentCollege().getId())
-						.selectOne(cayenneService.sharedContext()).values().iterator().next()).intValue();
+		return ((Number) SQLSelect.dataRowQuery("select count(id) from Product where collegeId = #bind($collegeId) and " +
+						"isOnSale = #bind($isOnSale) and isWebVisible = #bind($isWebVisible)")
+				.params("collegeId", webSiteService.getCurrentCollege().getId())
+				.params("isOnSale", true)
+				.params("isWebVisible", true)
+				.selectOne(cayenneService.sharedContext()).values().iterator().next()).intValue();
 		//TODO the code should be uncommented when the cayenne EJBQLQuery handling for tables which keep inheritances entities is fixed
 		//return cayenneService.sharedContext().performQuery(new EJBQLQuery("select count(p) from Product p where " + getAvailableProductsQualifier().toEJBQL("p")))
 		//.get(0)).intValue();
