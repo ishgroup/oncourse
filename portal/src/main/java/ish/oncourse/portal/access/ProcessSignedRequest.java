@@ -4,6 +4,8 @@ import ish.oncourse.model.Contact;
 import ish.util.UrlUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
@@ -17,9 +19,9 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
 public class ProcessSignedRequest {
+	private static final Logger logger = LogManager.getLogger();
+
 	private final static String PARAM_contactId = "contactId";
-//	private final static String PARAM_key = UrlUtil.KEY;
-//	private final static String PARAM_valid = UrlUtil.VALID_UNTIL;
 
 	private final static String SESSION_ATTR_currentSignedPath = "prevSignedPath";
 	private IAuthenticationService authenticationService;
@@ -41,10 +43,14 @@ public class ProcessSignedRequest {
 		if (isNotBlank(value)) {
 			currentContact = ObjectSelect.query(Contact.class).where(Contact.UNIQUE_CODE.eq(value)).selectOne(context);
 			if (currentContact != null) {
-				boolean signed = UrlUtil.validateSignedPortalUrl(httpRequest.getRequestURI(), currentContact.getCollege().getWebServicesSecurityCode(), new Date());
+				String signedUrl = httpRequest.getRequestURL() + "?" + httpRequest.getQueryString();
+				boolean signed = UrlUtil.validateSignedPortalUrl(signedUrl, currentContact.getCollege().getWebServicesSecurityCode(), new Date());
 				if (!signed) {
+					logger.debug("Url {} is unsigned", signedUrl);
 					currentContact = null;
 				}
+			} else {
+				logger.debug("Cannot find user with UNIQUE_CODE {}", value);
 			}
 		}
 	}
