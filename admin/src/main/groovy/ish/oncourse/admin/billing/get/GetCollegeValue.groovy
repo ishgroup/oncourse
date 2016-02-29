@@ -10,17 +10,17 @@ import ish.oncourse.admin.billing.WebSiteValue
  */
 class GetCollegeValue implements Getter<CollegeValue> {
     def BillingContext context
+    def billingValues = new ArrayList<BillingValue>();
+    def webSiteValues = new ArrayList<WebSiteValue>();
 
     def CollegeValue get() {
-        def billingValues = new ArrayList<BillingValue>();
-        def webSiteValues = new ArrayList<WebSiteValue>();
 
-        billingValues.add(new GetSupportBillingValue(context: context).get())
-        billingValues.add(new GetSMSBillingValue(context: context).get())
-        billingValues.add(new GetOfficeCCBillingValue(context: context).get())
+        add(new GetSupportBillingValue(context: context).get())
+        add(new GetSMSBillingValue(context: context).get())
+        add(new GetOfficeCCBillingValue(context: context).get())
 
         context.college.getCustomFees().each { customFee ->
-            billingValues.add(new GetCustomFeeBillingValue(context: context, customFee: customFee).get())
+            add(new GetCustomFeeBillingValue(context: context, customFee: customFee).get())
         }
 
         context.college.getWebSites().each {
@@ -31,5 +31,12 @@ class GetCollegeValue implements Getter<CollegeValue> {
         return new CollegeValue(college: context.college,
                 billingValues: billingValues, webSiteValues: webSiteValues)
     }
+
+    private add(BillingValue value) {
+        if (value != null) {
+            billingValues.add(value)
+        }
+    }
+
 }
 

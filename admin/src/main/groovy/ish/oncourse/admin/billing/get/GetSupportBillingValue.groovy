@@ -1,6 +1,7 @@
 package ish.oncourse.admin.billing.get
 
 import ish.oncourse.admin.billing.BillingValue
+import ish.oncourse.admin.services.billing.IsPlanBillingMonth
 import ish.oncourse.admin.services.billing.StockCodes
 import ish.oncourse.model.LicenseFee
 import org.apache.cayenne.query.ObjectSelect
@@ -16,27 +17,32 @@ import static ish.oncourse.admin.services.billing.Constants.DATE_MONTH_FORMAT
  *
  * akoiro - 2/24/16.
  */
-class GetSupportBillingValue implements Getter<BillingValue> {
-    def BillingContext context
+class GetSupportBillingValue extends AbstractGetter<BillingValue> {
 
     @Override
-    BillingValue get() {
-        LicenseFee licenseFee = ObjectSelect.query(LicenseFee.class).where(LicenseFee.COLLEGE.eq(context.college)
-                .andExp(LicenseFee.KEY_CODE.eq(support.dbValue))).selectFirst(context.context)
-
+    protected BillingValue innerGet() {
         String description = MessageFormat.format(
                 support.descTemplate,
-                StringUtils.capitalise(licenseFee.getPlanName()),
-                context.college.getName(),
+                StringUtils.capitalise(licenseFee.planName),
+                context.college.name,
                 new SimpleDateFormat(DATE_MONTH_FORMAT).format(licenseFee.renewalDate));
 
 
-        StockCodes code = StockCodes.valueOf(licenseFee.getPlanName())
+        StockCodes code = StockCodes.valueOf(licenseFee.planName)
         BillingValue billingValue = new BillingValue(code: code.productionCode,
                 description: description,
                 quantity: 1,
                 unitPrice: licenseFee.fee)
 
         return billingValue
+    }
+
+    protected init() {
+        licenseFee = ObjectSelect.query(LicenseFee.class).where(LicenseFee.COLLEGE.eq(context.college)
+                .andExp(LicenseFee.KEY_CODE.eq(support.dbValue))).selectFirst(context.context)
+    }
+
+    def hasValue() {
+        return licenseFee != null && IsPlanBillingMonth.valueOf(licenseFee.planName, licenseFee.paidUntil, context.from).is();
     }
 }

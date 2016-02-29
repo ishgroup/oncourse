@@ -1,6 +1,7 @@
 package ish.oncourse.admin.billing.get
 
 import ish.oncourse.admin.billing.BillingValue
+import ish.oncourse.admin.services.billing.IsPlanBillingMonth
 import ish.oncourse.admin.services.billing.StockCodes
 import ish.oncourse.model.LicenseFee
 import ish.oncourse.model.WebSite
@@ -18,17 +19,12 @@ import static ish.oncourse.model.auto._LicenseFee.*
  *
  * akoiro - 2/24/16.
  */
-class GetHostingBillingValue implements Getter<BillingValue> {
-    def BillingContext context
+class GetHostingBillingValue extends AbstractGetter<BillingValue> {
+
     def WebSite webSite
 
     @Override
-    BillingValue get() {
-        def LicenseFee licenseFee = ObjectSelect.query(LicenseFee.class).where(COLLEGE.eq(context.college)
-                .andExp(WEB_SITE.eq(webSite))
-                .andExp(KEY_CODE.eq(hosting.dbValue)))
-                .selectFirst(context.context)
-
+    protected BillingValue innerGet() {
         def description = MessageFormat.format(
                 hosting.descTemplate,
                 StringUtils.capitalize(licenseFee.getPlanName()),
@@ -40,4 +36,17 @@ class GetHostingBillingValue implements Getter<BillingValue> {
                 quantity: 1,
                 unitPrice: licenseFee.fee)
     }
+
+    @Override
+    protected init() {
+        licenseFee = ObjectSelect.query(LicenseFee.class).where(COLLEGE.eq(context.college)
+                .andExp(WEB_SITE.eq(webSite))
+                .andExp(KEY_CODE.eq(hosting.dbValue)))
+                .selectFirst(context.context)
+    }
+
+    def hasValue() {
+        return licenseFee != null && IsPlanBillingMonth.valueOf(licenseFee.planName, licenseFee.paidUntil, context.from).is();
+    }
+
 }

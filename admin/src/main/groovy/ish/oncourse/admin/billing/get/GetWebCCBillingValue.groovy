@@ -16,7 +16,7 @@ import static ish.oncourse.model.auto._LicenseFee.*
  *
  * akoiro - 2/24/16.
  */
-class GetWebCCBillingValue implements Getter<BillingValue> {
+class GetWebCCBillingValue extends AbstractGetter<BillingValue> {
     private static final String SQL = 'select count(p.id) as count from PaymentIn p ' +
             'join PaymentInLine pil on p.id = pil.paymentInId join ' +
             'Invoice i on pil.invoiceId = i.id ' +
@@ -28,17 +28,10 @@ class GetWebCCBillingValue implements Getter<BillingValue> {
             'and p.type = 2 ' +
             'and p.status in (3, 6)';
 
-    def BillingContext context
     def WebSite webSite
 
     @Override
-    BillingValue get() {
-        def LicenseFee licenseFee = ObjectSelect.query(LicenseFee.class).where(COLLEGE.eq(context.college)
-                .andExp(WEB_SITE.eq(webSite))
-                .andExp(KEY_CODE.eq(ccWeb.dbValue)))
-                .selectFirst(context.context)
-
-
+    protected BillingValue innerGet() {
         def quantity = (Long) SQLSelect.dataRowQuery(SQL).params([
                 collegeId: context.college.id,
                 webSiteId: webSite.id,
@@ -53,5 +46,13 @@ class GetWebCCBillingValue implements Getter<BillingValue> {
                 description: description,
                 quantity: quantity,
                 unitPrice: licenseFee.fee)
+    }
+
+    @Override
+    protected init() {
+        licenseFee = ObjectSelect.query(LicenseFee.class).where(COLLEGE.eq(context.college)
+                .andExp(WEB_SITE.eq(webSite))
+                .andExp(KEY_CODE.eq(ccWeb.dbValue)))
+                .selectFirst(context.context)
     }
 }

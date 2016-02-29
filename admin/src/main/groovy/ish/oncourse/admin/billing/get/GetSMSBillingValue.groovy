@@ -12,7 +12,7 @@ import static ish.oncourse.admin.billing.LicenseCode.sms
  *
  * akoiro - 2/23/16.
  */
-class GetSMSBillingValue implements Getter<BillingValue> {
+class GetSMSBillingValue extends AbstractGetter<BillingValue> {
     static final String SQL =
             'SELECT count(id) as count FROM MessagePerson ' +
                     'WHERE collegeId = #bind($collegeId) ' +
@@ -20,21 +20,10 @@ class GetSMSBillingValue implements Getter<BillingValue> {
                     'AND timeOfDelivery >= #bind($from) ' +
                     'AND timeOfDelivery <= #bind($to)'
 
-    def BillingContext context
-
+    def value
 
     @Override
-    BillingValue get() {
-
-        LicenseFee licenseFee = ObjectSelect.query(LicenseFee.class).where(LicenseFee.COLLEGE.eq(context.college)
-                .andExp(LicenseFee.KEY_CODE.eq(sms.dbValue))).selectFirst(context.context)
-
-        def value = (Long) SQLSelect.dataRowQuery(SQL).params([
-                collegeId: context.college.id,
-                from     : context.from,
-                to       : context.to
-        ]).selectFirst(context.context).values().first()
-
+    protected BillingValue innerGet() {
         BillingValue result = new BillingValue(code: StockCodes.SMS.productionCode,
                 description: sms.simpleDesc,
                 quantity: value,
@@ -42,4 +31,16 @@ class GetSMSBillingValue implements Getter<BillingValue> {
         )
         return result
     }
+
+    @Override
+    protected init() {
+        licenseFee = ObjectSelect.query(LicenseFee.class).where(LicenseFee.COLLEGE.eq(context.college)
+                .andExp(LicenseFee.KEY_CODE.eq(sms.dbValue))).selectFirst(context.context)
+        value = (Long) SQLSelect.dataRowQuery(SQL).params([
+                collegeId: context.college.id,
+                from     : context.from,
+                to       : context.to
+        ]).selectFirst(context.context).values().first()
+    }
+
 }

@@ -21,7 +21,7 @@ import static ish.oncourse.model.auto._LicenseFee.*
  *
  * akoiro - 2/24/16.
  */
-class GetEcommerceBillingValue implements Getter<BillingValue> {
+class GetEcommerceBillingValue extends AbstractGetter<BillingValue> {
 
     static final String SQL = 'SELECT SUM(totalGst) FROM Invoice ' +
             'where collegeId = #bind($collegeId) AND ' +
@@ -30,16 +30,29 @@ class GetEcommerceBillingValue implements Getter<BillingValue> {
             'created <= #bind($to) AND ' +
             'source = #bind($source)';
 
-    def BillingContext context
     def WebSite webSite
 
-    def LicenseFee licenseFee
     def BigDecimal value
 
-    @Override
-    BillingValue get() {
-        init()
+    def init() {
+        licenseFee = ObjectSelect.query(LicenseFee.class).where(COLLEGE.eq(context.college)
+                .andExp(WEB_SITE.eq(webSite))
+                .andExp(KEY_CODE.eq(ecommerce.dbValue)))
+                .selectFirst(context.context)
 
+
+        value = (BigDecimal) SQLSelect.dataRowQuery(SQL).params([
+                collegeId: context.college.id,
+                webSiteId: webSite.id,
+                from     : context.from,
+                to       : context.to,
+                source   : SOURCE_WEB.databaseValue
+        ]).selectFirst(context.context).values().first()
+    }
+
+
+    @Override
+    protected BillingValue innerGet() {
         def decimalFormatter = new DecimalFormat();
         decimalFormatter.setRoundingMode(RoundingMode.valueOf(2));
 
@@ -57,21 +70,5 @@ class GetEcommerceBillingValue implements Getter<BillingValue> {
                 description: description,
                 quantity: 1,
                 unitPrice: value.subtract(licenseFee.freeTransactions).multiply(licenseFee.fee));
-    }
-
-    def init() {
-        licenseFee = ObjectSelect.query(LicenseFee.class).where(COLLEGE.eq(context.college)
-                .andExp(WEB_SITE.eq(webSite))
-                .andExp(KEY_CODE.eq(ecommerce.dbValue)))
-                .selectFirst(context.context)
-
-
-        value = (BigDecimal) SQLSelect.dataRowQuery(SQL).params([
-                collegeId: context.college.id,
-                webSiteId: webSite.id,
-                from     : context.from,
-                to       : context.to,
-                source   : SOURCE_WEB.databaseValue
-        ]).selectFirst(context.context).values().first()
     }
 }
