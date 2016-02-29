@@ -6,7 +6,7 @@ sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
 sourceSets.test.java.srcDirs = []
-sourceSets.test.groovy.srcDir 'src/main/java'
+sourceSets.test.groovy.srcDir 'src/test/java'
 
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:3.0'
