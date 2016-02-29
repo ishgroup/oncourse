@@ -3,7 +3,6 @@ package ish.oncourse.admin.services.billing;
 import ish.math.Country;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
-import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,11 +20,8 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 	public static final String FULL_ECOMMERCE_DESCRIPTION_TEMPLATE = "{0} eCommerce fee at {1}% of {2} ({3} less pre-paid bundle) ";
 
 	private static final String SIMPLE_ECOMMERCE_DESCRIPTION_TEMPLATE = "{0} eCommerce fee at {1}% of {2}";
-	private static final String TASMANIA_ECOMMERCE_MIN_FEE_DESC = "Adjustment for onCourse eCommerce minimum monthly fee of $375.";
 	private static final Long ECOMMERCE_QUANTITY = 1L;
-	private static final Long TASMANIA_COLLEGE_ID = 15L;
-	private static final double TASMANIA_MIN_FEE = 375;
-	
+
 	private DecimalFormat decimalFormatter;
 	private NumberFormat moneyFormat;
 	
@@ -42,65 +38,6 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 		
 		moneyFormat = NumberFormat.getCurrencyInstance(Country.AUSTRALIA.locale());
 		moneyFormat.setMinimumFractionDigits(2);
-	}
-	
-	private boolean isTasmaniaEcommerce() {
-		return TASMANIA_COLLEGE_ID.equals(college.getId());
-	}
-	
-	@Override
-	public String buildLine() {
-
-		if (isTasmaniaEcommerce()) {
-
-			String tasmaniaLines = "";
-
-			Map<Double, Double> tasmaniaEcommerceFees = getTasmaniaFees();
-
-			double totalFee = 0.0;
-
-			for (Double key : tasmaniaEcommerceFees.keySet()) {
-
-				double fee = tasmaniaEcommerceFees.get(key) * key / 100;
-				totalFee += fee;
-
-				tasmaniaLines += MessageFormat.format(
-						Constants.TEMPLATE,
-						college.getPurchaseOrder() != null ? college.getPurchaseOrder() : StringUtils.EMPTY,
-						college.getBillingCode(),
-						getStockCode(),
-						getTasmaniaEcommerceKeyDescription(key, tasmaniaEcommerceFees),
-						ECOMMERCE_QUANTITY,
-						decimalFormatter.format(fee),
-						getDescription(),
-						getTransactionDateString());
-			}
-
-			if (totalFee < TASMANIA_MIN_FEE) {
-				tasmaniaLines += MessageFormat.format(
-						Constants.TEMPLATE,
-						college.getPurchaseOrder() != null ? college.getPurchaseOrder() : StringUtils.EMPTY,
-						college.getBillingCode(),
-						getStockCode(),
-						TASMANIA_ECOMMERCE_MIN_FEE_DESC,
-						ECOMMERCE_QUANTITY,
-						decimalFormatter.format(TASMANIA_MIN_FEE - totalFee),
-						getDescription(),
-						getTransactionDateString());
-			}
-
-			return tasmaniaLines;
-		}
-		
-		return super.buildLine();
-	}
-	
-	private String getTasmaniaEcommerceKeyDescription(Double key, Map<Double, Double> tasmaniaEcommerceFees) {
-		return MessageFormat.format(
-				SIMPLE_ECOMMERCE_DESCRIPTION_TEMPLATE,
-				webSite.getName(),
-				decimalFormatter.format(key),
-				moneyFormat.format(tasmaniaEcommerceFees.get(key)));
 	}
 	
 	private BigDecimal getEcommerce() {
@@ -150,15 +87,5 @@ public class EcommerceExportLineBuilder extends AbstractExportLineBuilder {
 	@Override
 	protected boolean skipLine() {
 		return false;
-	}
-
-	private Map<Double, Double> getTasmaniaFees() {
-		if (isTasmaniaEcommerce()) {
-			BigDecimal ccWebValue = (BigDecimal) billingData.get(college.getId()).get(getWebSiteId()).get("ccWebValue");
-			ccWebValue = ccWebValue == null ? new BigDecimal(0.0) : ccWebValue;
-			return BillingDataServiceImpl.getTasmaniaEcommerceMap(ccWebValue.doubleValue(), billingData);
-		} else {
-			return null;
-		}
 	}
 }

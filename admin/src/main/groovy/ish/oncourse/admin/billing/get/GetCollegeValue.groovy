@@ -38,5 +38,9 @@ class GetCollegeValue implements Getter<CollegeValue> {
         }
     }
 
+    static GetCollegeValue valueOf(BillingContext context) {
+        return new GetCollegeValue(context: context);
+    }
+
 }
 

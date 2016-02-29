@@ -48,6 +48,7 @@ class GetEcommerceBillingValue extends AbstractGetter<BillingValue> {
                 to       : context.to,
                 source   : SOURCE_WEB.databaseValue
         ]).selectFirst(context.context).values().first()
+        value = value != null ? value : BigDecimal.ZERO
     }
 
 

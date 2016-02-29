@@ -350,24 +350,6 @@ public class Billing {
 		return moneyFormat.format(0.0);
 	}
 	
-	public Map<Double, Double> getTasmaniaFees() {
-		if (isTasmaniaEcommerce()) {
-			BigDecimal ccWebValue = (BigDecimal) billingData.get(college.getId()).get(
-					getCurrentWebSiteId()).get("ccWebValue");
-			ccWebValue = ccWebValue == null ? new BigDecimal(0.0) : ccWebValue;
-			tasmaniaEcommerceFees = billingService.getTasmaniaEcommerce(ccWebValue.doubleValue(), billingData);
-		}
-		return tasmaniaEcommerceFees;
-	}
-	
-	public String getTasmaniaFee() {
-		return moneyFormat.format(tasmaniaEcommerceFees.get(currentKey));
-	}
-	
-	public String getTasmaniaTotal() {
-		return moneyFormat.format((Double)currentKey / 100 * tasmaniaEcommerceFees.get(currentKey));
-	}
-
 	public WebSite getCurrentWebsite() {
 		List<WebSite> webSites = college.getWebSites();
 		if (webSiteIndex < webSites.size()) {

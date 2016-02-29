@@ -1,64 +1,37 @@
 <?xml version="1.0"?>
 <table name="Transaction" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <t:loop source="colleges" value="college" volatile="true">
+    <t:loop source="values" value="value">
         <transaction>
             <ourRef work-it-out="true"/>
-            <theirRef>${college.purchaseOrder}</theirRef>
-            <transdate><t:output format="literal:ddmmyy" value="now()" /></transdate>
+            <theirRef>${value.college.purchaseOrder}</theirRef>
+            <transdate><t:output format="literal:ddMMyy" value="now" /></transdate>
             <duedate work-it-out="true"/>
             <type>DI</type>
-            <namecode>${college.billingCode}</namecode>
-            <description>onCourse <t:output format="literal:MMMM yyyy" value="fromMonth" /></description>
-            <tofrom>${college.name}</tofrom>
+            <namecode>${value.college.billingCode}</namecode>
+            <description>onCourse <t:output format="literal:MMMM yyyy" value="from" /></description>
+            <tofrom>${value.college.name}</tofrom>
             <colour>1</colour>
             <subfile name="Detail">
-                <detail>
-                    <detail.stockCode>${hosting.code}</detail.stockCode>
-                    <detail.net>${hosting}</detail.net>
-                    <detail.description>${hosting.name}</detail.description>
-                </detail>
-                <detail>
-                    <detail.stockCode>${support.code}</detail.stockCode>
-                    <detail.net>${support}</detail.net>
-                    <detail.description>${support.name}</detail.description>
-                </detail>
-                <detail>
-                    <detail.stockCode>${sms.code}</detail.stockCode>
-                    <detail.net>${sms}</detail.net>
-                    <detail.description>${sms.name}</detail.description>
-                </detail>
-                <detail>
-                    <detail.stockCode>${ccOffice.code}</detail.stockCode>
-                    <detail.net>${ccOffice}</detail.net>
-                    <detail.description>${ccOffice.name}</detail.description>
-                </detail>
-                         
-                <t:loop source="college.customFees" value="customFee" volatile="true">
+                <t:loop source="value.billingValues" value="collegeBillingValue">
                     <detail>
-                        <detail.stockCode>${customFee.code}</detail.stockCode>
-                        <detail.net>${customFee}</detail.net>
-                        <detail.description>${customFee.name}</detail.description>
+                        <detail.stockCode>${collegeBillingValue.code}</detail.stockCode>
+                        <detail.description>${collegeBillingValue.description}</detail.description>
+                        <detail.stockqty>${collegeBillingValue.quantity}</detail.stockqty>
+                        <detail.unitprice>${collegeBillingValue.unitPrice}</detail.unitprice>
+                        <detail.net>${collegeBillingValue.net}</detail.net>
                     </detail>
                 </t:loop>
-                
-                <t:loop source="college.webSites" value="webSite"> #CustomFeeExportLineBuilder
-                    <detail>
-                        <detail.stockCode>${webSite.hosting.code}</detail.stockCode>
-                        <detail.net>${webSite.hosting}</detail.net>
-                        <detail.description>${webSite.hosting.name}</detail.description>
-                    </detail>
-                    <detail>
-                        <detail.stockCode>${webSite.ccWeb.code}</detail.stockCode>
-                        <detail.net>${webSite.ccWeb}</detail.net>
-                        <detail.description>${webSite.ccWeb.name}</detail.description>
-                    </detail>
-                    <detail>
-                        <detail.stockCode>${webSite.ecommerce.code}</detail.stockCode>
-                        <detail.net>${webSite.ecommerce}</detail.net>
-                        <detail.description>${webSite.ecommerce.name}</detail.description>
-                    </detail>
+                <t:loop source="value.webSiteValues" value="webSiteValue">
+                    <t:loop source="webSiteValue.billingValues" value="siteBillingValue">
+                        <detail>
+                            <detail.stockCode>${siteBillingValue.code}</detail.stockCode>
+                            <detail.description>${siteBillingValue.description}</detail.description>
+                            <detail.stockqty>${siteBillingValue.quantity}</detail.stockqty>
+                            <detail.unitprice>${siteBillingValue.unitPrice}</detail.unitprice>
+                            <detail.net>${siteBillingValue.net}</detail.net>
+                        </detail>
+                    </t:loop>
                 </t:loop>
-                
             </subfile>
         </transaction>
     </t:loop>

@@ -18,4 +18,8 @@ class BillingValue {
     boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj)
     }
+
+    def BigDecimal getNet() {
+        return unitPrice.multiply(quantity)
+    }
 }

@@ -17,11 +17,11 @@ class GetWebSiteValue implements Getter<WebSiteValue> {
     @Override
     WebSiteValue get() {
 
-        add(new GetHostingBillingValue(context: context).get())
-        add(new GetWebCCBillingValue(context: context).get())
-        add(new GetEcommerceBillingValue(context: context).get())
+        add(new GetHostingBillingValue(context: context, webSite: webSite).get())
+        add(new GetWebCCBillingValue(context: context, webSite: webSite ).get())
+        add(new GetEcommerceBillingValue(context: context, webSite: webSite).get())
 
-        return new WebSiteValue(webSite: webSite, values: values)
+        return new WebSiteValue(webSite: webSite, billingValues: values)
     }
 
     private add(BillingValue value) {

@@ -83,26 +83,13 @@
 					<td>${ccWebCollege} <small>ex GST</small></td>
 					<td>${ccWebTotal} <small>ex GST</small></td>
 				</tr>
-				<t:if test="tasmaniaEcommerce" negate="true">
-					<tr>
-						<td>eCommerce</td>
-						<td>${ccWebValue} <small>inc GST</small></td>
-						<td>${ecommerceFree}</td>
-						<td>${ecommerce}%</td>
-						<td>${ecommerceTotal} <small>ex GST</small></td>
-					</tr>
-					<p:else>
-						<t:loop source="tasmaniaFees.keySet()" value="currentKey">
-							<tr>
-								<td>eCommerce ${currentKey}%</td>
-								<td>${tasmaniaFee} <small>inc GST</small></td>
-								<td>${ecommerceFree}</td>
-								<td>${currentKey}%</td>
-								<td>${tasmaniaTotal}</td>
-							</tr>
-						</t:loop>
-					</p:else>
-				</t:if>
+				<tr>
+					<td>eCommerce</td>
+					<td>${ccWebValue} <small>inc GST</small></td>
+					<td>${ecommerceFree}</td>
+					<td>${ecommerce}%</td>
+					<td>${ecommerceTotal} <small>ex GST</small></td>
+				</tr>
 			</t:loop>
 		</t:loop>
 		</tbody>

@@ -13,6 +13,4 @@ public interface IBillingDataService {
 	Map<Long, Map<Long, Map<String, Object>>> getBillingData(Date from, Date to);
 	
 	String getBillingDataExport(List<College> colleges, Date month);
-	
-	Map<Double, Double> getTasmaniaEcommerce(double thisMonth, Map<Long, Map<Long, Map<String, Object>>> billingData);
 }

@@ -12,4 +12,9 @@ class BillingContext {
     def College college
     def Date from
     def Date to
+
+
+    static BillingContext valueOf(ObjectContext context, College college, Date from, Date to) {
+        return new BillingContext(context: context, college: college, from: from, to: to)
+    }
 }
