@@ -2,6 +2,12 @@ apply plugin: 'war'
 apply plugin: 'compass'
 apply plugin: 'groovy'
 
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDir 'src/main/java'
+
+sourceSets.test.java.srcDirs = []
+sourceSets.test.groovy.srcDir 'src/main/java'
+
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:3.0'
 
