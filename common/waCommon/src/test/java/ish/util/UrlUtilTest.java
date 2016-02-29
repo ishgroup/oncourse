@@ -85,4 +85,10 @@ public class UrlUtilTest {
 
 		assertFalse(UrlUtil.validateSignedPortalUrl(url, "saltstring", format.parse("01/01/2015")));
 	}
+
+	@Test
+	public void test() {
+		assertTrue(UrlUtil.validateSignedPortalUrl("https://www.skillsoncourse.com.au/portal/class/5034179?contactId=cvKcLp3qQabLXhf6&valid=20160303&key=CAnB0aQQpCLqN6nJB3fEQerjjm4",
+				"oJRJarnFPk9xoPVQ", new Date()));
+	}
 }

@@ -14,5 +14,9 @@
         <Logger name="ish.oncourse" level="debug">
             <AppenderRef ref="STDOUT"/>
         </Logger>
+        <Logger name="org.apache.cayenne.log.CommonsJdbcEventLogger" level="debug">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+
     </Loggers>
 </Configuration>

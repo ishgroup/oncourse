@@ -18,7 +18,7 @@ public enum StockCodes {
 
     private String productionCode;
 
-    private StockCodes(String productionCode) {
+    StockCodes(String productionCode) {
         this.productionCode = productionCode;
     }
 

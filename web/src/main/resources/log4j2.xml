@@ -24,5 +24,8 @@
             <AppenderRef ref="FILE_ERROR" level="error"/>
             <AppenderRef ref="FILE" level="warn"/>
         </Root>
+        <Logger name="org.apache.cayenne.log.CommonsJdbcEventLogger" level="debug">
+            <AppenderRef ref="FILE_ERROR"/>
+        </Logger>
     </Loggers>
 </Configuration>
