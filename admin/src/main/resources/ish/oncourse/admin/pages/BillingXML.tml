@@ -33,6 +33,10 @@
                             <detail.stockqty>${siteBillingValue.quantity}</detail.stockqty>
                             <detail.unitprice>${siteBillingValue.unitPrice}</detail.unitprice>
                             <detail.net>${siteBillingValue.net}</detail.net>
+                            <detail.account work-it-out="true"/>
+                            <detail.taxcode work-it-out="true"/>
+                            <detail.gross work-it-out="true"/>
+                            <detail.tax work-it-out="true"/>
                         </detail>
                     </t:loop>
                 </t:loop>
