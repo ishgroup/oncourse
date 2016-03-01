@@ -15,7 +15,7 @@ public class SupportExportLineBuilder extends PlanExportLineBuilder {
 	public static final String SUPPORT_PAID_UNTIL_KEY = "support-paidUntil";
 	public static final String SUPPORT_RENEWAL_DATE_KEY = "support-renewalDate";
 
-	public static final String SUPPORT_PLAN_DESCRIPTION_TEMPLATE = "{0} plan for {1}: 1 month (contract until {2})";
+	public static final String SUPPORT_PLAN_DESCRIPTION_TEMPLATE = "{0} plan for {1}: 1 month";
 	
 	public SupportExportLineBuilder(
 			College college,
@@ -31,8 +31,7 @@ public class SupportExportLineBuilder extends PlanExportLineBuilder {
 		return MessageFormat.format(
 				SUPPORT_PLAN_DESCRIPTION_TEMPLATE,
 				StringUtils.capitalise(getBillingPlan()),
-				college.getName(),
-				MONTH_FORMATTER.format(getRenewalDate()));
+				college.getName());
 	}
 
 	@Override
