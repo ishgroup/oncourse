@@ -52,7 +52,7 @@ class BillingValueGettersTest extends AbstractTest {
         BillingValue value = new GetSupportBillingValue(context: billingContext).get()
 
         assertEquals(new BillingValue(code: enterprise.productionCode,
-                description: "Enterprise plan for College1: 1 month (contract until December, 2013)",
+                description: "Enterprise plan for College1: 1 month",
                 quantity: 1,
                 unitPrice: 1.000), value);
     }
@@ -93,7 +93,7 @@ class BillingValueGettersTest extends AbstractTest {
 
         BillingValue value = new GetHostingBillingValue(context: billingContext, webSite: webSite).get()
         assertEquals(new BillingValue(code: platinum.productionCode,
-                description: "Platinum web plan for WebSite1: 1 month (contract until December, 2013)",
+                description: "Platinum web plan for WebSite1: 1 month",
                 quantity: 1,
                 unitPrice: 1.000), value);
     }
