@@ -55,6 +55,9 @@ public class BillingXML {
     private BillingValue siteBillingValue;
 
     @Property
+    private Date invoiceDate = new Date();
+
+    @Property
     private Date now = new Date();
 
     /**
@@ -72,6 +75,7 @@ public class BillingXML {
     @SetupRender
     public void beforeRender() {
         to = DateUtils.addMonths(from, 1);
+        invoiceDate = DateUtils.addDays(to, -1);
 
         List<College> colleges = collegeService.allColleges();
 
