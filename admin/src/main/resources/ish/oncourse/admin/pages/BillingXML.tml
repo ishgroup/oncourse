@@ -2,10 +2,8 @@
 <table name="Transaction" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <t:loop source="values" value="value">
         <transaction>
-            <ourRef work-it-out="true"/>
             <theirRef>${value.college.purchaseOrder}</theirRef>
             <transdate><t:output format="literal:yyyyMMdd" value="invoiceDate" /></transdate>
-            <duedate work-it-out="true"/>
             <type>DI</type>
             <namecode>${value.college.billingCode}</namecode>
             <description>onCourse <t:output format="literal:MMMM yyyy" value="from" /></description>
@@ -43,6 +41,8 @@
             </subfile>
             <contra work-it-out="true"/>
             <gross work-it-out="true"/>
+            <ourRef work-it-out="true"/>
+            <duedate work-it-out="true"/>
         </transaction>
     </t:loop>
 </table>
