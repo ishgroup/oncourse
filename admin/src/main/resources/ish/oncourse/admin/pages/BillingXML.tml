@@ -9,7 +9,7 @@
             <type>DI</type>
             <namecode>${value.college.billingCode}</namecode>
             <description>onCourse <t:output format="literal:MMMM yyyy" value="from" /></description>
-            <tofrom>${value.college.name}</tofrom>
+            <tofrom work-it-out="true"/>
             <colour>1</colour>
             <subfile name="Detail">
                 <t:loop source="value.billingValues" value="collegeBillingValue">
