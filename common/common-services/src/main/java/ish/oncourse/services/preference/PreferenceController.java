@@ -15,6 +15,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
 
+import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowNewStudent;
+
 public class PreferenceController extends CommonPreferenceController {
 
 	private static final Logger logger = LogManager.getLogger();
@@ -359,7 +361,26 @@ public class PreferenceController extends CommonPreferenceController {
 				getValue(STOP_WEB_ENROLMENTS_AGE_TYPE, false));
 	}
 
+	public void setAllowNewStudent(ContactFieldSet contactFieldSet, boolean value) {
+		setValue(allowNewStudent.getPreferenceNameBy(contactFieldSet), false, String.valueOf(value));
+	}
 
+    public boolean getAllowNewStudent(ContactFieldSet contactFieldSet) {
+        String value = getValue(allowNewStudent.getPreferenceNameBy(contactFieldSet), false);
+        if (StringUtils.isBlank(value)) {
+            return true;
+        } else {
+            return Boolean.valueOf(value);
+        }
+    }
+
+
+	public enum ConfigProperty {
+		allowNewStudent;
+		public String getPreferenceNameBy(ContactFieldSet contactFieldSet) {
+			return String.format("%s.contact.%s", contactFieldSet.name(), this.name());
+		}
+	}
 
     public enum ContactFieldSet {
 		enrolment,

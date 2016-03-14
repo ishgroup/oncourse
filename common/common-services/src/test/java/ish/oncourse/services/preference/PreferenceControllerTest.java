@@ -17,11 +17,10 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
+import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowNewStudent;
 import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.*;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class PreferenceControllerTest extends ServiceTest {
 
@@ -151,6 +150,33 @@ public class PreferenceControllerTest extends ServiceTest {
 		assertNotNull(stopWebEnrolmentsAge);
 		assertEquals(2, stopWebEnrolmentsAge.getDays());
 		assertEquals(ClassAgeType.beforeClassStarts, stopWebEnrolmentsAge.getType());
+	}
+
+	@Test
+	public void testAllowNewStudent() {
+
+		assertEquals("enrolment.contact.allowNewStudent", allowNewStudent.getPreferenceNameBy(enrolment));
+		assertEquals("mailinglist.contact.allowNewStudent", allowNewStudent.getPreferenceNameBy(mailinglist));
+		assertEquals("waitinglist.contact.allowNewStudent", allowNewStudent.getPreferenceNameBy(waitinglist));
+
+		assertTrue(prefController.getAllowNewStudent(enrolment));
+		assertTrue(prefController.getAllowNewStudent(mailinglist));
+		assertTrue(prefController.getAllowNewStudent(waitinglist));
+
+		prefController.setAllowNewStudent(enrolment, false);
+		assertFalse(prefController.getAllowNewStudent(enrolment));
+		prefController.setAllowNewStudent(enrolment, true);
+		assertTrue(prefController.getAllowNewStudent(enrolment));
+
+		prefController.setAllowNewStudent(mailinglist, false);
+		assertFalse(prefController.getAllowNewStudent(mailinglist));
+		prefController.setAllowNewStudent(mailinglist, true);
+		assertTrue(prefController.getAllowNewStudent(mailinglist));
+
+		prefController.setAllowNewStudent(waitinglist, false);
+		assertFalse(prefController.getAllowNewStudent(waitinglist));
+		prefController.setAllowNewStudent(waitinglist, true);
+		assertTrue(prefController.getAllowNewStudent(waitinglist));
 	}
 
 
