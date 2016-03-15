@@ -1,26 +1,22 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.math.Money;
-import ish.oncourse.enrol.checkout.contact.AddContactController;
-import ish.oncourse.enrol.checkout.contact.ContactCredentials;
-import ish.oncourse.enrol.checkout.contact.ContactEditorController;
-import ish.oncourse.enrol.checkout.contact.CustomFieldHolder;
-import ish.oncourse.enrol.checkout.contact.CustomFieldsBuilder;
+import ish.oncourse.enrol.checkout.contact.*;
 import ish.oncourse.model.*;
 import ish.oncourse.services.preference.ContactFieldHelper;
+import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.ObjectContext;
-import org.apache.commons.lang.StringUtils;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addCourseClass;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.changePayer;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.contactAlreadyAdded;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.notAllowCreateContact;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.addContact;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.editContact;
 import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
 
 public abstract class AAddContactAction extends APurchaseAction {
     private Contact contact;
-    private ContactCredentials contactCredentials;
+    protected ContactCredentials contactCredentials;
 
 
     protected abstract boolean shouldChangePayer();
@@ -195,12 +191,7 @@ public abstract class AAddContactAction extends APurchaseAction {
     protected void initProductItems() {
         for (Product product : getController().getModel().getProducts()) {
             if (!(product instanceof VoucherProduct)) {
-                ProductItem productItem = getController().createProductItem(contact, product);
-                getController().getModel().addProductItem(productItem);
-                ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
-                actionEnableProductItem.setProductItem(productItem);
-                actionEnableProductItem.setPrice(Money.ZERO);
-                actionEnableProductItem.action();
+                ActionEnableProductItemBuilder.valueOf(contact, product, getController()).build().action();
             }
         }
     }
@@ -213,8 +204,7 @@ public abstract class AAddContactAction extends APurchaseAction {
             else if (getController().getState() == addContact) {
                 contactCredentials = getParameter().getValue(ContactCredentials.class);
 				ContactCredentialsEncoder contactCredentialsEncoder = buildContactCredentialsEncoder();
-                contactCredentialsEncoder.encode();
-                contact = contactCredentialsEncoder.getContact();
+                contact = contactCredentialsEncoder.encode();
             } else {
                 contact = getParameter().getValue(Contact.class);
             }
@@ -222,24 +212,29 @@ public abstract class AAddContactAction extends APurchaseAction {
     }
 
 	protected ContactCredentialsEncoder buildContactCredentialsEncoder() {
-		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
-		contactCredentialsEncoder.setContactCredentials(contactCredentials);
-		contactCredentialsEncoder.setCollege(getModel().getCollege());
-		contactCredentialsEncoder.setObjectContext(getController().getCayenneService().newContext());
-		contactCredentialsEncoder.setStudentService(getController().getStudentService());
-		return contactCredentialsEncoder;
+		return ContactCredentialsEncoder.valueOf(contactCredentials,
+                false,
+                getModel().getCollege(),
+                getController().getCayenneService().newContext(),
+                getController().getStudentService(),
+                isAllowCreateContact());
 	}
+
+    protected boolean isAllowCreateContact() {
+        return getController().getPreferenceController().getAllowCreateContact(PreferenceController.ContactFieldSet.enrolment);
+    }
 
 	@Override
     protected boolean validate() {
-        if (contact == null)
+        if (contact == null && contactCredentials == null)
             return true;
         if (getController().getState() == addContact) {
-            ContactCredentials contactCredentials = getParameter().getValue(ContactCredentials.class);
             if (getModel().containsContactWith(contactCredentials)) {
-
                 getController().addError(contactAlreadyAdded);
-
+                return false;
+            }
+            if (!isAllowCreateContact() && contact == null) {
+                getController().addError(notAllowCreateContact);
                 return false;
             }
             return true;

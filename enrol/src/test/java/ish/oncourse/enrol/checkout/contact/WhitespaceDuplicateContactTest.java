@@ -67,15 +67,11 @@ public class WhitespaceDuplicateContactTest extends ACheckoutTest {
 
 		assertEquals(0, parser.getErrors().size());
 
-		ContactCredentialsEncoder encoder = new ContactCredentialsEncoder();
-		encoder.setCollege(contact.getCollege());
-		encoder.setContactCredentials(contactCredentials);
-		encoder.setStudentService(studentService);
-		encoder.setObjectContext(cayenneService.newContext());
+		ContactCredentialsEncoder encoder = ContactCredentialsEncoder.valueOf(
+				contactCredentials, false, contact.getCollege(),
+				cayenneService.newContext(), studentService, true);
 
-		encoder.encode();
-
-		Contact contact1 = encoder.getContact();
+		Contact contact1 = encoder.encode();
 		assertEquals(contact.getId(), contact1.getId());
 	}
 }

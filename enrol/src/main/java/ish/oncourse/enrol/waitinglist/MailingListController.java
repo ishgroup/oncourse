@@ -14,24 +14,6 @@ public class MailingListController extends AContactController {
 
     private ITagService tagService;
 
-    public void addMailingList() {
-        if (!getErrors().isEmpty())
-            return;
-        switch (getState())
-        {
-            case ADD_CONTACT:
-                addContact();
-                break;
-            case EDIT_CONTACT:
-                saveContact();
-                break;
-            case FINISHED:
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
     @Override
     public void saveContact() {
 

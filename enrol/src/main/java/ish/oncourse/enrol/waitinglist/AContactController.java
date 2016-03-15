@@ -2,15 +2,10 @@ package ish.oncourse.enrol.waitinglist;
 
 import ish.oncourse.enrol.checkout.ConcessionDelegate;
 import ish.oncourse.enrol.checkout.ContactCredentialsEncoder;
-import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
-import ish.oncourse.enrol.checkout.contact.ContactCredentials;
-import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
-import ish.oncourse.enrol.checkout.contact.CustomFieldHolder;
-import ish.oncourse.enrol.checkout.contact.CustomFieldsBuilder;
+import ish.oncourse.enrol.checkout.contact.*;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.CustomField;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import org.apache.cayenne.ObjectContext;
@@ -25,7 +20,7 @@ import static ish.oncourse.services.preference.PreferenceController.ContactField
 
 
 public abstract class AContactController implements AddContactDelegate, ContactEditorDelegate {
-
+	public static final String KEY_ERROR_notAllowCreateContact = "message-notAllowCreateContact";
 
 	private IStudentService studentService;
 	private ObjectContext objectContext;
@@ -51,6 +46,25 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 
 	private String specialNeeds;
 
+	public void process() {
+		if (!getErrors().isEmpty())
+			return;
+		switch (getState())
+		{
+			case ADD_CONTACT:
+				addContact();
+				break;
+			case EDIT_CONTACT:
+				saveContact();
+				break;
+			case FINISHED:
+				break;
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
+
+
 	/**
 	 * AddContactDelegate implementation
 	 */
@@ -70,15 +84,26 @@ public abstract class AContactController implements AddContactDelegate, ContactE
         contact.setIsMarketingViaSMSAllowed(Boolean.TRUE);
     }
 
+	protected Contact initContact() {
+		ContactCredentialsEncoder contactCredentialsEncoder =
+				ContactCredentialsEncoder.valueOf(contactCredentials,
+						false,
+						college,
+						objectContext,
+						studentService,
+						preferenceController.getAllowCreateContact(contactFieldSet));
+		return contactCredentialsEncoder.encode();
+	}
+
 	@Override
 	public void addContact() {
-		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
-		contactCredentialsEncoder.setContactCredentials(contactCredentials);
-		contactCredentialsEncoder.setCollege(college);
-		contactCredentialsEncoder.setObjectContext(objectContext);
-		contactCredentialsEncoder.setStudentService(studentService);
-		contactCredentialsEncoder.encode();
-		contact = contactCredentialsEncoder.getContact();
+		contact = initContact();
+		if (contact == null) {
+			addError(KEY_ERROR_notAllowCreateContact, getMessages().format(KEY_ERROR_notAllowCreateContact));
+			setState(State.ADD_CONTACT);
+			return;
+		}
+
 		specialNeeds = contact.getStudent() != null ? contact.getStudent().getSpecialNeeds(): null;
 
 		if (contact.getObjectId().isTemporary()) {

@@ -222,7 +222,7 @@ public class WaitingListForm {
         value = StringUtils.trimToNull(request.getParameter(WaitingList.DETAIL_PROPERTY));
 		if (value != null)
 			controller.getWaitingList().setDetail(value);
-		controller.addWaitingList();
+		controller.process();
 
         Link  link = pageRenderLinkSource.createPageRenderLink(this.getClass());
         restoreParameters(link);

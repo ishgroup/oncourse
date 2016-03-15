@@ -1,52 +1,27 @@
 package ish.oncourse.enrol.waitinglist;
 
-import ish.oncourse.enrol.checkout.ContactCredentialsEncoder;
-import ish.oncourse.enrol.checkout.contact.CustomFieldHolder;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Course;
-import ish.oncourse.model.CustomField;
-import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.model.WaitingList;
 import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
 
 public class WaitingListController extends AContactController {
-
 	public static final String KEY_ERROR_alreadyAdded = "message-alreadyAdded";
 
     private Course course;
     private WaitingList waitingList;
 
-	public void addWaitingList() {
-		if (!getErrors().isEmpty())
-			return;
-		switch (getState())
-		{
-			case ADD_CONTACT:
-				addContact();
-				break;
-			case EDIT_CONTACT:
-				saveContact();
-				break;
-			case FINISHED:
-				break;
-			default:
-				throw new IllegalArgumentException();
-		}
-	}
-
-
 	@Override
 	public void addContact() {
-		ContactCredentialsEncoder contactCredentialsEncoder = new ContactCredentialsEncoder();
-		contactCredentialsEncoder.setContactCredentials(getContactCredentials());
-		contactCredentialsEncoder.setCollege(getCollege());
-		contactCredentialsEncoder.setObjectContext(getObjectContext());
-		contactCredentialsEncoder.setStudentService(getStudentService());
-		contactCredentialsEncoder.encode();
+        Contact contact = initContact();
+		if (contact == null) {
+			addError(KEY_ERROR_notAllowCreateContact, getMessages().format(KEY_ERROR_notAllowCreateContact));
+			setState(State.ADD_CONTACT);
+			return;
+		}
 
-        Contact contact = contactCredentialsEncoder.getContact();
         setContact(contact);
 		waitingList.setStudent(contact.getStudent());
 

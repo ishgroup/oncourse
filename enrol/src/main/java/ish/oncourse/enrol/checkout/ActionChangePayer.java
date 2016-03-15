@@ -2,8 +2,10 @@ package ish.oncourse.enrol.checkout;
 
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
-import ish.math.Money;
-import ish.oncourse.model.*;
+import ish.oncourse.model.Contact;
+import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.Product;
+import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
@@ -87,12 +89,7 @@ public class ActionChangePayer extends APurchaseAction {
 		{
 			for (Product product : getController().getModel().getProducts()) {
 				if(product instanceof VoucherProduct) {
-					ProductItem productItem = getController().createProductItem(contact, product);
-					getController().getModel().addProductItem(productItem);
-					ActionEnableProductItem actionEnableProductItem = PurchaseController.Action.enableProductItem.createAction(getController());
-					actionEnableProductItem.setProductItem(productItem);
-					actionEnableProductItem.setPrice(Money.ZERO);
-					actionEnableProductItem.action();
+                    ActionEnableProductItemBuilder.valueOf(contact, product, getController()).build().action();
 				}
 			}
 		}

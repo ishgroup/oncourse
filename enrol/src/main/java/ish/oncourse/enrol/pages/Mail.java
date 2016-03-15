@@ -133,7 +133,7 @@ public class Mail {
             parser.parse();
             controller.setErrors(parser.getErrors());
         }
-        controller.addMailingList();
+        controller.process();
         return this;
     }
 
