@@ -44,6 +44,7 @@ public final class EntityMapping {
 		ANGEL_TO_WILLOW.put("ReportTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("SiteTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("StudentTagRelation", "Taggable");
+		ANGEL_TO_WILLOW.put("WaitingListTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("TagTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("TagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("TutorTagRelation", "Taggable");
