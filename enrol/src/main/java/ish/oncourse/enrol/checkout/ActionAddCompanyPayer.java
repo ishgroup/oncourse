@@ -56,7 +56,7 @@ public class ActionAddCompanyPayer extends AAddContactAction {
 	@Override
 	protected ContactCredentialsEncoder buildContactCredentialsEncoder() {
 		return ContactCredentialsEncoder.valueOf(contactCredentials,
-				false,
+				true,
 				getModel().getCollege(),
 				getController().getCayenneService().newContext(),
 				getController().getStudentService(),

@@ -61,6 +61,7 @@ public class ContactCredentialsEncoder {
         contact.setIsMarketingViaPostAllowed(true);
         contact.setIsMarketingViaSMSAllowed(true);
     }
+
     public boolean isAllowCreateContact() {
         return allowCreateContact;
     }

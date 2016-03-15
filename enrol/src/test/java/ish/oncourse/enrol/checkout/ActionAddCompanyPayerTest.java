@@ -36,7 +36,7 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 	}
 	
 	@Test
-	public void testExistingCommpany() throws InterruptedException {
+	public void testExistingCompany() throws InterruptedException {
 		
 		// reach the payment page and press 'add business payer' button
 		prepareModel();
