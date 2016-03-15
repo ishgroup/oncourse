@@ -17,7 +17,7 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
-import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowNewStudent;
+import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowCreateContact;
 import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.*;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static org.junit.Assert.*;
@@ -155,28 +155,28 @@ public class PreferenceControllerTest extends ServiceTest {
 	@Test
 	public void testAllowNewStudent() {
 
-		assertEquals("enrolment.contact.allowNewStudent", allowNewStudent.getPreferenceNameBy(enrolment));
-		assertEquals("mailinglist.contact.allowNewStudent", allowNewStudent.getPreferenceNameBy(mailinglist));
-		assertEquals("waitinglist.contact.allowNewStudent", allowNewStudent.getPreferenceNameBy(waitinglist));
+		assertEquals("enrolment.contact.allowCreateContact", allowCreateContact.getPreferenceNameBy(enrolment));
+		assertEquals("mailinglist.contact.allowCreateContact", allowCreateContact.getPreferenceNameBy(mailinglist));
+		assertEquals("waitinglist.contact.allowCreateContact", allowCreateContact.getPreferenceNameBy(waitinglist));
 
-		assertTrue(prefController.getAllowNewStudent(enrolment));
-		assertTrue(prefController.getAllowNewStudent(mailinglist));
-		assertTrue(prefController.getAllowNewStudent(waitinglist));
+		assertTrue(prefController.getAllowCreateContact(enrolment));
+		assertTrue(prefController.getAllowCreateContact(mailinglist));
+		assertTrue(prefController.getAllowCreateContact(waitinglist));
 
-		prefController.setAllowNewStudent(enrolment, false);
-		assertFalse(prefController.getAllowNewStudent(enrolment));
-		prefController.setAllowNewStudent(enrolment, true);
-		assertTrue(prefController.getAllowNewStudent(enrolment));
+		prefController.setAllowCreateContact(enrolment, false);
+		assertFalse(prefController.getAllowCreateContact(enrolment));
+		prefController.setAllowCreateContact(enrolment, true);
+		assertTrue(prefController.getAllowCreateContact(enrolment));
 
-		prefController.setAllowNewStudent(mailinglist, false);
-		assertFalse(prefController.getAllowNewStudent(mailinglist));
-		prefController.setAllowNewStudent(mailinglist, true);
-		assertTrue(prefController.getAllowNewStudent(mailinglist));
+		prefController.setAllowCreateContact(mailinglist, false);
+		assertFalse(prefController.getAllowCreateContact(mailinglist));
+		prefController.setAllowCreateContact(mailinglist, true);
+		assertTrue(prefController.getAllowCreateContact(mailinglist));
 
-		prefController.setAllowNewStudent(waitinglist, false);
-		assertFalse(prefController.getAllowNewStudent(waitinglist));
-		prefController.setAllowNewStudent(waitinglist, true);
-		assertTrue(prefController.getAllowNewStudent(waitinglist));
+		prefController.setAllowCreateContact(waitinglist, false);
+		assertFalse(prefController.getAllowCreateContact(waitinglist));
+		prefController.setAllowCreateContact(waitinglist, true);
+		assertTrue(prefController.getAllowCreateContact(waitinglist));
 	}
 
 
