@@ -3890,4 +3890,15 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="254" author="akoyro" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="WebContent" indexName="name_webSiteVersion_unique"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE UNIQUE INDEX name_webSiteVersion_unique ON WebContent (name, webSiteVersionId);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
