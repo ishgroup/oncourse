@@ -94,12 +94,11 @@ public class VoucherService implements IVoucherService {
         return results.isEmpty() ? null : results.get(0);
     }
 
-    public Voucher createVoucher(VoucherProduct voucherProduct, Contact contact) {
+    public Voucher createVoucher(VoucherProduct voucherProduct) {
         Voucher voucher = voucherProduct.getObjectContext().newObject(Voucher.class);
         voucher.setCode(SecurityUtil.generateRandomPassword(Voucher.VOUCHER_CODE_LENGTH));
         voucher.setCollege(voucherProduct.getCollege());
 
-        voucher.setContact(contact);
         voucher.setSource(PaymentSource.SOURCE_WEB);
         voucher.setStatus(ProductStatus.NEW);
         voucher.setProduct(voucherProduct);

@@ -3,12 +3,14 @@ package ish.oncourse.services.voucher;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Voucher;
+import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectById;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.services.Request;
 import org.dbunit.database.DatabaseConnection;
@@ -99,5 +101,17 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("Contact 1 should be linked with voucher", contact, voucher.getContact());
 		assertEquals("Contact 1 should be linked with voucher", contact.getProducts().get(0), voucher);
 		assertEquals("This voucher should be only 1 for this contact", 1, contact.getProducts().size());
+	}
+
+	@Test
+	public void tesCreateVoucher() {
+		Request request = mock(Request.class);
+		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
+		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+
+		VoucherProduct product = SelectById.query(VoucherProduct.class, 1).selectOne(cayenneService.sharedContext());
+		VoucherService service = new VoucherService(webSiteService, cayenneService);
+		Voucher voucher = service.createVoucher(product);
+		assertNull("Willow voucher always can be redeemed by anyone", voucher.getContact());
 	}
 }

@@ -1,6 +1,9 @@
 package ish.oncourse.services.voucher;
 
-import ish.oncourse.model.*;
+import ish.oncourse.model.Product;
+import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.Voucher;
+import ish.oncourse.model.VoucherProduct;
 
 import java.util.List;
 
@@ -9,7 +12,7 @@ public interface IVoucherService {
 	
 	Voucher getVoucherByCode(final String code);
 	
-	Voucher createVoucher(VoucherProduct voucherProduct, Contact contact);
+	Voucher createVoucher(VoucherProduct voucherProduct);
 
 	List<Product> loadByIds(List<Long> ids);
 	
