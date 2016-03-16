@@ -144,6 +144,15 @@ public class ContactEntrySettings {
 	private String mailingListIsMale;
 
 	@Property
+	private boolean enrolmentAllowCreateContact;
+
+	@Property
+	private boolean waitingListAllowCreateContact;
+
+	@Property
+	private boolean mailingListAllowCreateContact;
+
+	@Property
 	@Persist
 	private List<CustomFieldType> customFieldTypes;
 	
@@ -232,6 +241,11 @@ public class ContactEntrySettings {
 		this.mailingListCountryState = preferenceController.getRequireContactField(mailinglist, country);
 		this.mailingListSpecialNeedsState = preferenceController.getRequireContactField(mailinglist, specialNeeds);
 		this.mailingListIsMale = preferenceController.getRequireContactField(mailinglist, isMale);
+
+		this.enrolmentAllowCreateContact = preferenceController.getAllowCreateContact(enrolment);
+		this.waitingListAllowCreateContact = preferenceController.getAllowCreateContact(waitinglist);
+		this.mailingListAllowCreateContact = preferenceController.getAllowCreateContact(waitinglist);
+
 
         //we need to use new context to be sure that we always get actual data from db.
         ObjectContext objectContext = cayenneService.newContext();
@@ -331,6 +345,10 @@ public class ContactEntrySettings {
 		preferenceController.setRequireContactField(mailinglist, country, this.mailingListCountryState);
 		preferenceController.setRequireContactField(mailinglist, specialNeeds, this.mailingListSpecialNeedsState);
 		preferenceController.setRequireContactField(mailinglist, isMale, this.mailingListIsMale);
+
+		preferenceController.setAllowCreateContact(enrolment, this.enrolmentAllowCreateContact);
+		preferenceController.setAllowCreateContact(waitinglist, this.waitingListAllowCreateContact);
+		preferenceController.setAllowCreateContact(mailinglist, this.mailingListAllowCreateContact);
 
 		collectParentContactField.save();
 	}
