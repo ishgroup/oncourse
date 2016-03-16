@@ -17,6 +17,7 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CourseClassUtilsTest extends ServiceTest {
@@ -57,4 +58,18 @@ public class CourseClassUtilsTest extends ServiceTest {
 
 
     }
+
+    @Test
+    public void testFocusMatchForSite() {
+        ObjectContext context = this.cayenneService.newContext();
+        CourseClass courseClass = Cayenne.objectForPK(context, CourseClass.class, 1);
+        SearchParams params = new SearchParams();
+
+        params.setSiteId(1L);
+        assertEquals(1.0f, CourseClassUtils.focusMatchForClass(courseClass, params), 0f);
+
+        params.setSiteId(2L);
+        assertEquals(0.0f, CourseClassUtils.focusMatchForClass(courseClass, params), 0f);
+    }
+
 }

@@ -6,6 +6,7 @@ import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 import static ish.oncourse.services.search.SearchParamsParser.PARAM_VALUE_daytime;
 import static ish.oncourse.services.search.SearchParamsParser.PARAM_VALUE_evening;
@@ -211,6 +212,13 @@ public class CourseClassUtils {
 						.and(Tutor.ANGEL_ID.eq(searchParams.getTutorId()))
 						.selectFirst(courseClass.getObjectContext());
 				if (tutor == null) {
+					return 0.0f;
+				}
+			}
+
+			if (searchParams.getSiteId() != null) {
+				Room room = courseClass.getRoom();
+				if (room != null && !Objects.equals(room.getSite().getId(), searchParams.getSiteId())) {
 					return 0.0f;
 				}
 			}
