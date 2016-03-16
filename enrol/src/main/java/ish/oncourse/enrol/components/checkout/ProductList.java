@@ -5,6 +5,7 @@ import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.PurchaseController.Action;
 import ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.ProductItem;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -48,7 +49,7 @@ public class ProductList {
 			public void onChange(Integer contactIndex, Integer productItemIndex, Money price) {
 
              	Contact contact = purchaseController.getModel().getContacts().get(contactIndex);
-				ish.oncourse.model.ProductItem productItem = purchaseController.getModel().getProductItemBy(contact, productItemIndex);
+				ProductItem productItem = purchaseController.getModel().getProductItemBy(contact, productItemIndex);
              	Boolean isSelected = purchaseController.getModel().isProductItemEnabled(productItem);
 				ActionParameter actionParameter = new ActionParameter(isSelected ? Action.disableProductItem : Action.enableProductItem);
 				actionParameter.setValue(productItem);

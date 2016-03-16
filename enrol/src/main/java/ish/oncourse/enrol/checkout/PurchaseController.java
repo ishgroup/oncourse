@@ -240,7 +240,7 @@ public class PurchaseController {
 	 ProductItem createProductItem(Contact contact, Product product) {
 		if (product instanceof VoucherProduct) {
 			VoucherProduct vp = (VoucherProduct) product;
-			return voucherService.createVoucher(vp, contact);
+			return voucherService.createVoucher(vp);
 		} else if (product instanceof MembershipProduct) {
 			MembershipProduct mp = (MembershipProduct) product;
 			Membership membership = getModel().getObjectContext().newObject(Membership.class);
