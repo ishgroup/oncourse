@@ -9,7 +9,6 @@ import ish.math.Money;
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 
 import java.util.*;
 
@@ -21,10 +20,9 @@ import java.util.*;
  */
 public class VoucherRedemptionHelper {
 
-    private static final Expression COURSE_VOUCHER_QUALIFIER = ExpressionFactory.noMatchExp(Voucher.PRODUCT_PROPERTY + "." +
-            VoucherProduct.MAX_COURSES_REDEMPTION_PROPERTY, null);
-    private static final Expression MONEY_VOUCHER_QUALIFIER = ExpressionFactory.matchExp(Voucher.PRODUCT_PROPERTY + "." +
-            VoucherProduct.MAX_COURSES_REDEMPTION_PROPERTY, null);
+    private static final Expression COURSE_VOUCHER_QUALIFIER = Voucher.PRODUCT.dot(VoucherProduct.MAX_COURSES_REDEMPTION).isNotNull();
+
+    private static final Expression MONEY_VOUCHER_QUALIFIER = Voucher.PRODUCT.dot(VoucherProduct.MAX_COURSES_REDEMPTION).isNull();
 
     private ObjectContext context;
 
@@ -51,8 +49,6 @@ public class VoucherRedemptionHelper {
 
     /**
      * Set invoice which will be linked to payments created.
-     *
-     * @param invoice
      */
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
@@ -60,8 +56,6 @@ public class VoucherRedemptionHelper {
 
     /**
      * Get invoice used for processing.
-     *
-     * @return invoice
      */
     public Invoice getInvoice() {
         return invoice;
@@ -69,8 +63,6 @@ public class VoucherRedemptionHelper {
 
     /**
      * Add voucher to processing ensuring that it is not in use now.
-     *
-     * @param voucher
      * @return if voucher has been accepted
      */
     public boolean addVoucher(Voucher voucher, Money redeemNow) {
@@ -191,7 +183,7 @@ public class VoucherRedemptionHelper {
             throw new IllegalArgumentException("Either voucher or invoice line list is empty.");
         }
 
-        Expression enrolmentInvoiceLinesQual = ExpressionFactory.noMatchExp(InvoiceLine.ENROLMENT_PROPERTY, null);
+        Expression enrolmentInvoiceLinesQual = InvoiceLine.ENROLMENT.isNotNull();
 
         List<InvoiceLine> enrolmentLines = enrolmentInvoiceLinesQual.filterObjects(invoiceLinesList);
 
@@ -283,17 +275,13 @@ public class VoucherRedemptionHelper {
             throw new IllegalStateException("Voucher is void.");
         }
 
-        VoucherPaymentIn vp = getPaymentForVoucher(voucher, il, true);
+        VoucherPaymentIn vp = getPaymentForVoucher(voucher, il);
         PaymentIn payment = vp.getPayment();
 
         payment.setAmount(payment.getAmount().add(il.getDiscountedPriceTotalIncTax()));
 
         PaymentInLine pil = createPaymentInLine(payment, invoice);
         pil.setAmount(pil.getAmount().add(il.getDiscountedPriceTotalIncTax()));
-
-        ///todo we can use use
-
-        //pil.setAccountOut(invoice.getDebtorsAccount());
 
         voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() + 1);
 
@@ -314,7 +302,7 @@ public class VoucherRedemptionHelper {
 
         Money amount = redeemNow.isLessThan(amountLeft) ? redeemNow : amountLeft;
 
-        VoucherPaymentIn vp = getPaymentForVoucher(voucher, null, true);
+        VoucherPaymentIn vp = getPaymentForVoucher(voucher, null);
         PaymentIn payment = vp.getPayment();
         payment.setAmount(payment.getAmount().add(amount));
 
@@ -345,41 +333,38 @@ public class VoucherRedemptionHelper {
         return pil;
     }
 
-    private VoucherPaymentIn getPaymentForVoucher(Voucher voucher, InvoiceLine il, boolean create) {
+    private VoucherPaymentIn getPaymentForVoucher(Voucher voucher, InvoiceLine il) {
         for (VoucherPaymentIn vp : voucher.getVoucherPaymentIns()) {
             if (vp.getPayment().getStatus() == PaymentStatus.IN_TRANSACTION &&
                     (il == null || il.equals(vp.getInvoiceLine()))) {
                 return vp;
             }
         }
-        if (create) {
-            VoucherPaymentIn vp = context.newObject(VoucherPaymentIn.class);
+        VoucherPaymentIn vp = context.newObject(VoucherPaymentIn.class);
 
-            vp.setCollege(college);
-            vp.setVoucher(voucher);
-            vp.setInvoiceLine(il);
-            vp.setStatus(VoucherPaymentStatus.APPROVED);
+        vp.setCollege(college);
+        vp.setVoucher(voucher);
+        vp.setInvoiceLine(il);
+        vp.setStatus(VoucherPaymentStatus.APPROVED);
 
-            PaymentIn payment = paymentMap.get(voucher);
+        PaymentIn payment = paymentMap.get(voucher);
 
-            if (payment == null) {
-                payment = context.newObject(PaymentIn.class);
-                payment.setCollege(college);
-                payment.setType(PaymentType.VOUCHER);
-                payment.setContact(invoice.getContact());
-                payment.setAmount(Money.ZERO);
-                payment.setSource(PaymentSource.SOURCE_WEB);
-                payment.setStatus(PaymentStatus.IN_TRANSACTION);
+        if (payment == null) {
+            payment = context.newObject(PaymentIn.class);
+            payment.setCollege(college);
+            payment.setType(PaymentType.VOUCHER);
+            payment.setContact(invoice.getContact());
+            payment.setAmount(Money.ZERO);
+            payment.setSource(PaymentSource.SOURCE_WEB);
+            payment.setStatus(PaymentStatus.IN_TRANSACTION);
 
-                paymentMap.put(voucher, payment);
-            }
-
-            vp.setPayment(payment);
-
-            voucherPayments.add(vp);
-            return vp;
+            paymentMap.put(voucher, payment);
         }
-        return null;
+
+        vp.setPayment(payment);
+
+        voucherPayments.add(vp);
+        return vp;
     }
 
     public College getCollege() {
