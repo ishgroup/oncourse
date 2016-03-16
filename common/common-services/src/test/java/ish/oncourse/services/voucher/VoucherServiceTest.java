@@ -5,6 +5,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -19,7 +20,6 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -44,24 +44,28 @@ public class VoucherServiceTest extends ServiceTest {
 	@Test
 	public void testGetAvailableVoucherProducts() {
 		Request request = mock(Request.class);
+		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
+
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
-		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
+		final VoucherService service = new VoucherService(webSiteService, cayenneService);
+		assertEquals("Checking site key.", "scc", webSiteService.getCurrentWebSite().getSiteKey());
 		assertEquals("SCC should contain six defined Voucher Products", 6, service.getProductCount().intValue());
 		
 		Request request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.test.oncourse.net.au");
-		final VoucherService service2 = new VoucherService(new WebSiteService(request2, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "tae", service2.takeWebSiteService().getCurrentWebSite().getSiteKey());
+		final VoucherService service2 = new VoucherService(webSiteService, cayenneService);
+		assertEquals("Checking site key.", "tae",webSiteService.getCurrentWebSite().getSiteKey());
 		assertEquals("Tae have no defined Voucher Products", 1, service2.getProductCount().intValue());
 	}
 	
 	@Test
 	public void testGetVoucherByCode() {
 		Request request = mock(Request.class);
+		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
+
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
-		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
+		final VoucherService service = new VoucherService(webSiteService, cayenneService);
+		assertEquals("Checking site key.", "scc", webSiteService.getCurrentWebSite().getSiteKey());
 		Voucher voucher = service.getVoucherByCode("qwerty");
 		assertNotNull("Voucher for code qwerty should be founded", voucher);
 		assertEquals("Voucher value should be 100$", new Money("100.00"), voucher.getRedemptionValue());
@@ -73,9 +77,11 @@ public class VoucherServiceTest extends ServiceTest {
 	@Test
 	public void testGetAvailableVoucherProductsForUser() {
 		Request request = mock(Request.class);
+		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
+
 		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
-		final VoucherService service = new VoucherService(new WebSiteService(request, cayenneService), cayenneService);
-		assertEquals("Checking site key.", "scc", service.takeWebSiteService().getCurrentWebSite().getSiteKey());
+		final VoucherService service = new VoucherService(webSiteService, cayenneService);
+		assertEquals("Checking site key.", "scc", webSiteService.getCurrentWebSite().getSiteKey());
 		Voucher voucher = service.getVoucherByCode("qwerty_2");
 		assertNotNull("Voucher for code qwerty_2 should be founded", voucher);
 		assertEquals("Voucher value should be 101$", new Money("101.00"), voucher.getRedemptionValue());
@@ -93,9 +99,5 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("Contact 1 should be linked with voucher", contact, voucher.getContact());
 		assertEquals("Contact 1 should be linked with voucher", contact.getProducts().get(0), voucher);
 		assertEquals("This voucher should be only 1 for this contact", 1, contact.getProducts().size());
-		List<Voucher> availableVouchers = service.getAvailableVouchersForUser(contact);
-		assertFalse("Available vouchers list should not be empty", availableVouchers.isEmpty());
-		assertEquals("Available vouchers list should contain 4 vouchers", 4, availableVouchers.size());
-		assertEquals("Available vouchers list should contain selected voucher", voucher, availableVouchers.get(1));
 	}
 }

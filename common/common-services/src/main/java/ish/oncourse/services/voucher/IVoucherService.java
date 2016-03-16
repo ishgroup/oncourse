@@ -5,11 +5,7 @@ import ish.oncourse.model.*;
 import java.util.List;
 
 public interface IVoucherService {
-	List<Product> getAvailableProducts();
-	
 	List<Product> getAvailableProducts(Integer startDefault, Integer rowsDefault);
-	
-	List<Voucher> getAvailableVouchersForUser(final Contact contact);
 	
 	Voucher getVoucherByCode(final String code);
 	
@@ -21,11 +17,9 @@ public interface IVoucherService {
 
 	List<ProductItem> loadProductItemsByIds(List<Long> ids);
 	
-	Product loadAvailableVoucherProductBySKU(String sku);
+	Product getProductBySKU(String sku);
 
-	public Integer getProductCount();
-
-	Product loadAvailableVoucherProductById(Long id);
+	Integer getProductCount();
 
     boolean isVoucherWithoutPrice(VoucherProduct product);
 }

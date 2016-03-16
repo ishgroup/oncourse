@@ -195,7 +195,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			Product product = null;
 			String productSKU = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 			if (productSKU != null) {
-				product = voucherService.loadAvailableVoucherProductBySKU(productSKU);
+				product = voucherService.getProductBySKU(productSKU);
 			}
 			if (product != null) {
 				request.setAttribute(Product.class.getSimpleName(), product);
