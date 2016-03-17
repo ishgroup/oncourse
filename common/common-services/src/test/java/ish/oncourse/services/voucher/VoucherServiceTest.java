@@ -9,9 +9,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.test.ServiceTest;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectById;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.services.Request;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -79,9 +77,10 @@ public class VoucherServiceTest extends ServiceTest {
 	@Test
 	public void testGetAvailableVoucherProductsForUser() {
 		Request request = mock(Request.class);
+		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 
-		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(webSiteService, cayenneService);
 		assertEquals("Checking site key.", "scc", webSiteService.getCurrentWebSite().getSiteKey());
 		Voucher voucher = service.getVoucherByCode("qwerty_2");
@@ -90,8 +89,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("Voucher product name should be 'my test membership product part 2'", "my test membership product part 2", 
 			voucher.getProduct().getName());
 		assertEquals("Voucher product price should be 11$", new Money("11.00"), voucher.getProduct().getPriceExTax());
-		Contact contact = (Contact) voucher.getObjectContext().performQuery(new SelectQuery(Contact.class, 
-			ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, 1L))).get(0);
+		Contact contact = SelectById.query(Contact.class,1L).selectOne(cayenneService.sharedContext());
 		assertNotNull("Contact with id=1 should exist", contact);
 		//now link this Voucher with this contact
 		voucher.setContact(contact);
