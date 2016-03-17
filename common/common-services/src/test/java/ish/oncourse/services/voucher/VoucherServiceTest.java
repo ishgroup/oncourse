@@ -28,6 +28,9 @@ import static org.mockito.Mockito.when;
 public class VoucherServiceTest extends ServiceTest {
 	
 	private ICayenneService cayenneService;
+	private Request request = mock(Request.class);
+	private IWebSiteService webSiteService;
+
 
 	@Before
 	public void setup() throws Exception {
@@ -39,20 +42,24 @@ public class VoucherServiceTest extends ServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(dataSource.getConnection(), null), dataSet);
 		
 		this.cayenneService = getService(ICayenneService.class);
+
+		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+
+		webSiteService = new WebSiteService(request, cayenneService);
 	}
 	
 	@Test
 	public void testGetAvailableVoucherProducts() {
-		Request request = mock(Request.class);
-		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 
-		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+
 		final VoucherService service = new VoucherService(webSiteService, cayenneService);
 		assertEquals("Checking site key.", "scc", webSiteService.getCurrentWebSite().getSiteKey());
 		assertEquals("SCC should contain six defined Voucher Products", 6, service.getProductCount().intValue());
 		
 		Request request2 = mock(Request.class);
 		when(request2.getServerName()).thenReturn("tae.test.oncourse.net.au");
+		webSiteService = new WebSiteService(request2, cayenneService);
+
 		final VoucherService service2 = new VoucherService(webSiteService, cayenneService);
 		assertEquals("Checking site key.", "tae",webSiteService.getCurrentWebSite().getSiteKey());
 		assertEquals("Tae have no defined Voucher Products", 1, service2.getProductCount().intValue());
@@ -61,9 +68,10 @@ public class VoucherServiceTest extends ServiceTest {
 	@Test
 	public void testGetVoucherByCode() {
 		Request request = mock(Request.class);
+		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 
-		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
 		final VoucherService service = new VoucherService(webSiteService, cayenneService);
 		assertEquals("Checking site key.", "scc", webSiteService.getCurrentWebSite().getSiteKey());
 		Voucher voucher = service.getVoucherByCode("qwerty");
