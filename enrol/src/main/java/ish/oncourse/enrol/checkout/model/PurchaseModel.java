@@ -1,8 +1,6 @@
 package ish.oncourse.enrol.checkout.model;
 
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.model.*;
@@ -185,7 +183,7 @@ public class PurchaseModel {
 
 
 	public void addProductItem(ProductItem p) {
-		getContactNode(p.getContact()).addProductItem(p);
+		getContactNode(getContactBy(p)).addProductItem(p);
 	}
 
 	public void removeProductItem(Contact contact, ProductItem p) {
@@ -234,15 +232,15 @@ public class PurchaseModel {
 		getContactNode(e.getStudent().getContact()).disableEnrolment(e);
 	}
 
-	public void enableProductItem(ProductItem p, Contact contact) {
-		getContactNode(contact).enableProductItem(p);
+	public void enableProductItem(ProductItem p) {
+		getContactNode(getContactBy(p)).enableProductItem(p);
 	}
 
 	public void disableProductItem(ProductItem p) {
 		InvoiceLine il = p.getInvoiceLine();
 		p.setInvoiceLine(null);
 		objectContext.deleteObjects(il);
-		getContactNode(p.getContact()).disableProductItem(p);
+		getContactNode(getContactBy(p)).disableProductItem(p);
 	}
 
 	public void enableApplication(Application a) {
@@ -314,8 +312,23 @@ public class PurchaseModel {
 		return getEnabledEnrolments(enrolment.getStudent().getContact()).contains(enrolment);
 	}
 
+
+
 	public boolean isProductItemEnabled(ProductItem productItem) {
-		return getEnabledProductItems(productItem.getContact()).contains(productItem);
+		return getEnabledProductItems(getContactBy(productItem)).contains(productItem);
+	}
+
+	private Contact getContactBy(ProductItem productItem) {
+		ProductType productType = TypesUtil.getEnumForDatabaseValue(productItem.getType(), ProductType.class);
+		switch (productType) {
+			case ARTICLE:
+			case MEMBERSHIP:
+				return productItem.getContact();
+			case VOUCHER:
+				return payer;
+			default:
+				throw new IllegalArgumentException();
+		}
 	}
 
 	public boolean isApplicationEnabled(Application application) {

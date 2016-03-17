@@ -97,11 +97,11 @@ public class ProductItemTest extends ACheckoutTest {
 
 
 			if (productItem instanceof Membership) {
-				assertEquals(model.getPayer(), ((Membership) productItem).getContact());
+				assertEquals(model.getPayer(), productItem.getContact());
 				assertEquals((Integer) 2, productItem.getType());
 			} else if (productItem instanceof Voucher) {
 				assertEquals((Integer) 3, productItem.getType());
-				assertEquals(model.getPayer(), ((Voucher) productItem).getContact());
+				assertNull(productItem.getContact());
 			} else
 				throw new IllegalArgumentException();
 

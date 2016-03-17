@@ -101,7 +101,7 @@ public class ActionAddCompanyPayerTest extends ACheckoutTest {
 
 
 	@Test
-	public void testNewCommpany() {
+	public void testNewCompany() {
 		// reach the payment page and press 'add business payer' button
 		prepareModel();
 		

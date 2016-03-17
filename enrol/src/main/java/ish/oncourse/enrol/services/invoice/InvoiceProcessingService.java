@@ -7,15 +7,11 @@ import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.discount.IDiscountService;
-import ish.util.DiscountUtils;
 import ish.util.InvoiceUtil;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Implementation of {@link IInvoiceProcessingService}.
@@ -109,7 +105,7 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 
 		invoiceLine.setDescription(String.format("%s (%s %s)",
-				productItem.getContact().getFullName(), productItem.getProduct().getSku(), productItem.getProduct().getName()));
+				contact.getFullName(), productItem.getProduct().getSku(), productItem.getProduct().getName()));
 
 		invoiceLine.setTitle(String.format("%s %s", contact.getFullName(), product.getName()));
 

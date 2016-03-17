@@ -1,8 +1,8 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.ProductType;
+import ish.common.types.TypesUtil;
 import ish.math.Money;
-import ish.oncourse.model.Article;
-import ish.oncourse.model.Membership;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Voucher;
 
@@ -16,15 +16,20 @@ public class ActionDisableProductItem extends APurchaseAction{
 		 (invoiceLine for the productItem is removed)
 		*/
 		getController().getVoucherRedemptionHelper().clear();
-		if (productItem instanceof Voucher) {
-            if(getController().getVoucherService().isVoucherWithoutPrice(((Voucher) productItem).getVoucherProduct())) {
-                ((Voucher) productItem).setRedemptionValue(Money.ZERO);
-            }
-			getModel().disableProductItem(productItem);
-		} else if(productItem instanceof Membership || productItem instanceof Article) {
-            getModel().disableProductItem(productItem);
-        }  else {
-			throw new IllegalArgumentException("Unsupported product type.");
+		ProductType type = TypesUtil.getEnumForDatabaseValue(productItem.getType(), ProductType.class);
+		switch (type) {
+			case ARTICLE:
+			case MEMBERSHIP:
+				getModel().disableProductItem(productItem);
+				break;
+			case VOUCHER:
+				if(getController().getVoucherService().isVoucherWithoutPrice(((Voucher) productItem).getVoucherProduct())) {
+					((Voucher) productItem).setRedemptionValue(Money.ZERO);
+				}
+				getModel().disableProductItem(productItem);
+				break;
+			default:
+				throw new IllegalArgumentException("Unsupported product type.");
 		}
 		getController().updateDiscountApplied();
 	}

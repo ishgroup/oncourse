@@ -164,7 +164,7 @@ public class VoucherRedemptionWithBackToEditCheckoutTest extends ACheckoutTest {
 	@Test
 	public void testVoucherRedemptionWithTwoProductItems() throws InterruptedException {
 		PurchaseController purchaseController = init(Collections.EMPTY_LIST, Arrays.asList(101L, 102L), Collections.EMPTY_LIST, false);
-		addFirstContact(1001L);
+		Contact contact = addFirstContact(1001L);
 		PurchaseModel model = purchaseController.getModel();
 		assertTrue(model.getSelectedVouchers().isEmpty());
 		addCode("v1005");
@@ -174,7 +174,6 @@ public class VoucherRedemptionWithBackToEditCheckoutTest extends ACheckoutTest {
 		backToEditChekout();
 
 		ProductItem productItem = model.getAllEnabledProductItems().get(0);
-		Contact contact = productItem.getContact();
 
 		disableProductItem(productItem);
 		proceedToPayment();

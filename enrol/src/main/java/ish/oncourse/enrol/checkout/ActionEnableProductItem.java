@@ -1,6 +1,8 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.common.types.ProductStatus;
+import ish.common.types.ProductType;
+import ish.common.types.TypesUtil;
 import ish.math.Money;
 import ish.oncourse.model.*;
 
@@ -26,7 +28,7 @@ public class ActionEnableProductItem extends APurchaseAction {
 		} else {
 			throw new IllegalArgumentException("Unsupported product type.");
 		}
-		getModel().enableProductItem(productItem, productItem.getContact());
+		getModel().enableProductItem(productItem);
 		getController().updateDiscountApplied();
 	}
 
@@ -70,7 +72,7 @@ public class ActionEnableProductItem extends APurchaseAction {
 		il.setInvoice(getModel().getInvoice());
 
 		voucher.setInvoiceLine(il);
-    }
+	}
 
     @Override
 	protected void parse() {
@@ -99,15 +101,16 @@ public class ActionEnableProductItem extends APurchaseAction {
     }
 
     public boolean validateProductItem() {
-        if (productItem instanceof Membership) {
-            return validateMembership();
-		} else if (productItem instanceof Voucher) {
-            return validateVoucher();
-		} else if (productItem instanceof Article) {
-			return validateArticle();
-		}
-        else {
-            throw new IllegalArgumentException();
+		ProductType productType =TypesUtil.getEnumForDatabaseValue(productItem.getType(), ProductType.class);
+		switch (productType) {
+			case ARTICLE:
+				return validateArticle();
+			case MEMBERSHIP:
+				return validateMembership();
+			case VOUCHER:
+				return validateVoucher();
+			default:
+				throw new IllegalArgumentException();
 		}
     }
 
