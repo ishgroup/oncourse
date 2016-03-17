@@ -13,7 +13,6 @@ import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.validator.EmailValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -178,7 +177,7 @@ public class Contact extends _Contact implements Queueable {
 			 * But for our application such address is not valid, our application should accept only public (not local) domain like:
 			 * *.org, *.net and so on
 			 */
-			if (!EmailValidator.getInstance().isValid(emailAddress))
+			if (!org.apache.commons.validator.routines.EmailValidator.getInstance().isValid(emailAddress))
 				return INVALID_EMAIL_MESSAGE;
 
 		} catch (AddressException ex) {

@@ -24,7 +24,7 @@ public class ContactTest {
 	 * Array of valid emails. {@see #validateEmailSuccessTest()}.
 	 */
 	private String[] validEmails = { "testEmail@domain.org", "test+Email@domain.org", "test.Email@domain.org",
-			"test/Email@domain.org", "test_Email@domain.org","test|Email@domain.org" };
+			"test/Email@domain.org", "test_Email@domain.org","test|Email@domain.org", "jason.riley@cce.sydney" };
 
 	/**
 	 * Array of invalid emails. {@see #validateEmailFailedTest()}.
