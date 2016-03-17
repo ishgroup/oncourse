@@ -588,7 +588,16 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Database value: 100
 	 */
 	@API
-	QUALITY_RULE(100, "Quality rule");
+	QUALITY_RULE(100, "Quality rule"),
+
+	/**
+	 * Allow to access "Summary extracts" item in financial menu
+	 * Special single option.
+	 *
+	 * Database value: 101
+	 */
+	@API
+	SUMMARY_EXTRACTS(101, "Summary extracts", Mask.ALL - Mask.VIEW);
 	
 
 	private int value;
