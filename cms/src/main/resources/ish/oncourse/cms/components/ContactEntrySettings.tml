@@ -348,15 +348,15 @@
 				<div class="cms-set-name">Allow create new student</div>
 
 				<div class="cms-set-col">
-					<t:checkbox value="enrolmentSpecialNeedsState" class="cms-span2"/>
+					<t:checkbox t:id="enrolmentAllowCreateContact" value="enrolmentAllowCreateContact" class="cms-span2"/>
 				</div>
 
 				<div class="cms-set-col">
-					<t:checkbox value="waitingListAllowCreateContact" class="cms-span2"/>
+					<t:checkbox  t:id="waitingListAllowCreateContact" value="waitingListAllowCreateContact" class="cms-span2"/>
 				</div>
 
 				<div class="cms-set-col">
-					<t:checkbox value="mailingListAllowCreateContact" class="cms-span2"/>
+					<t:checkbox t:id="mailingListAllowCreateContact" value="mailingListAllowCreateContact" class="cms-span2"/>
 				</div>
 			</div>
 

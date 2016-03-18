@@ -244,7 +244,7 @@ public class ContactEntrySettings {
 
 		this.enrolmentAllowCreateContact = preferenceController.getAllowCreateContact(enrolment);
 		this.waitingListAllowCreateContact = preferenceController.getAllowCreateContact(waitinglist);
-		this.mailingListAllowCreateContact = preferenceController.getAllowCreateContact(waitinglist);
+		this.mailingListAllowCreateContact = preferenceController.getAllowCreateContact(mailinglist);
 
 
         //we need to use new context to be sure that we always get actual data from db.
