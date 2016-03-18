@@ -128,10 +128,6 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 		when(contact.getCountry()).thenReturn(country);
 		when(contact.getCollege()).thenReturn(college);
-		//the code emulates Contact.postAdd method
-		when(contact.getIsMarketingViaEmailAllowed()).thenReturn(Boolean.TRUE);
-		when(contact.getIsMarketingViaPostAllowed()).thenReturn(Boolean.TRUE);
-		when(contact.getIsMarketingViaSMSAllowed()).thenReturn(Boolean.TRUE);
 		when(contact.getIsMale()).thenReturn(null);
 		when(contact.getObjectContext()).thenReturn(context);
 		when(context.localObject(country)).thenReturn(country);
@@ -167,7 +163,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		request = mock(Request.class);
 		when(request.getParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED.getName())).thenReturn(null);
 		when(request.getParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED.getName())).thenReturn(null);
-		when(request.getParameter(Contact.IS_MARKETING_VIA_SMSALLOWED.getName())).thenReturn(null);
+		when(request.getParameter(Contact.IS_MARKETING_VIA_SMSALLOWED.getName())).thenReturn("true");
 		when(request.getParameter(Contact.DATE_OF_BIRTH.getName())).thenReturn("11/d11/d2011");
 		when(request.getParameter(Contact.POSTCODE.getName())).thenReturn("12345");
 
@@ -266,9 +262,9 @@ public class ContactEditorParserTest extends ACheckoutTest{
     private void testParseMarketingFields(ContactEditorParser parser)
     {
         parser.parseMarketingFields();
-        assertNotNull(parser.getContact().getIsMarketingViaEmailAllowed());
-		assertNotNull(parser.getContact().getIsMarketingViaPostAllowed());
-		assertNotNull(parser.getContact().getIsMarketingViaSMSAllowed());
+        assertFalse(parser.getContact().getIsMarketingViaEmailAllowed());
+		assertFalse(parser.getContact().getIsMarketingViaPostAllowed());
+		assertTrue(parser.getContact().getIsMarketingViaSMSAllowed());
     }
 
 

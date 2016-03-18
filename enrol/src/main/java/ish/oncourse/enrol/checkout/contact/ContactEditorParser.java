@@ -67,11 +67,11 @@ public class ContactEditorParser {
 
     void parseMarketingFields() {
         Boolean value = parseBooleanParameter(Contact.IS_MARKETING_VIA_EMAIL_ALLOWED.getName());
-        contact.setIsMarketingViaEmailAllowed(value == null ? Boolean.TRUE : value);
+        contact.setIsMarketingViaEmailAllowed(value == null ? Boolean.FALSE : value);
         value = parseBooleanParameter(Contact.IS_MARKETING_VIA_POST_ALLOWED.getName());
-        contact.setIsMarketingViaPostAllowed(value == null ? Boolean.TRUE : value);
+        contact.setIsMarketingViaPostAllowed(value == null ? Boolean.FALSE : value);
         value = parseBooleanParameter(Contact.IS_MARKETING_VIA_SMSALLOWED.getName());
-        contact.setIsMarketingViaSMSAllowed(value == null ? Boolean.TRUE : value);
+        contact.setIsMarketingViaSMSAllowed(value == null ? Boolean.FALSE : value);
     }
 
     private Boolean parseBooleanParameter(String parameterName) {
