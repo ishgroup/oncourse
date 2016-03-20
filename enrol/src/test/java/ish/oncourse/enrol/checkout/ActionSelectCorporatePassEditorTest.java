@@ -1,12 +1,13 @@
 package ish.oncourse.enrol.checkout;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 import org.apache.cayenne.Cayenne;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -41,7 +42,8 @@ public class ActionSelectCorporatePassEditorTest extends ACheckoutTest {
         selectCorporatePassEditor();
         addCorporatePass("password1");
         assertEquals(courseClass.getFeeIncGst().add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
-        assertEquals(getModel().getPayer(), getModel().getAllEnabledProductItems().get(0).getContact());
+        assertNotNull(getModel().getAllEnabledProductItems().get(0));
+        assertTrue(getModel().getAllEnabledProductItems().get(0) instanceof Voucher);
 
         selectCardEditor();
         selectCorporatePassEditor();

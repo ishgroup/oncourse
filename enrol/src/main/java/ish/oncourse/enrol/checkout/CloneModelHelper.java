@@ -22,6 +22,7 @@ public class CloneModelHelper {
         newModel.setWebSite(newModel.localizeObject(oldModel.getWebSite()));
         newModel.setDiscounts(newModel.localizeObjects(oldModel.getDiscounts()));
         newModel.setPayer(newModel.localizeObject(oldModel.getPayer()));
+        newModel.addContact(newModel.getPayer());
         newModel.setClasses(newModel.localizeObjects(oldModel.getClasses()));
         newModel.setProducts(newModel.localizeObjects(oldModel.getProducts()));
 
@@ -30,8 +31,10 @@ public class CloneModelHelper {
         List<Product> oldProducts = oldModel.getProducts();
         for (Contact oldContact : oldContacts) {
             Contact contact = newModel.localizeObject(oldContact);
-            newModel.addContact(contact);
-			
+            if (!contact.equals(newModel.getPayer())) {
+                newModel.addContact(contact);
+            }
+
 			if (!contact.getIsCompany()) {
 				for (CourseClass oldCourseClass : oldClasses) {
 					CourseClass courseClass = newModel.localizeObject(oldCourseClass);
