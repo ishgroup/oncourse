@@ -117,8 +117,12 @@ public class PaymentForm {
 
 	public void setCreditCardNumber(String creditCardNumber) {
 		if (getPaymentIn() != null) {
-            String creditCardNumberWithoutSpaces = creditCardNumber.replaceAll(" ", "");
-            getPaymentIn().setCreditCardNumber(creditCardNumberWithoutSpaces);
+            if (creditCardNumber != null) {
+                String creditCardNumberWithoutSpaces = creditCardNumber.replaceAll(" ", "");
+                getPaymentIn().setCreditCardNumber(creditCardNumberWithoutSpaces);
+            } else {
+                getPaymentIn().setCreditCardNumber(creditCardNumber);
+            }
 		}
   	}
 
