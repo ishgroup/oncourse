@@ -6,7 +6,6 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.utils.TimestampUtilities;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -388,12 +387,16 @@ public class CourseClassService implements ICourseClassService {
         List<CourseClass> list = new ArrayList<>();
 
         for (CourseClass courseClass : currentClasses) {
-            if (!courseClass.isHasAvailableEnrolmentPlaces()
-                    || !new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check()) {
+            if (isFullClass(courseClass)) {
                 list.add(courseClass);
             }
         }
 
         return list;
+    }
+
+    public boolean isFullClass(CourseClass courseClass) {
+        return !courseClass.isHasAvailableEnrolmentPlaces()
+                || !new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check();
     }
 }

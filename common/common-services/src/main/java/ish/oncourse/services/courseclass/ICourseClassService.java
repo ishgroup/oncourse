@@ -92,4 +92,6 @@ public interface ICourseClassService {
 	List<CourseClass> getFullClasses(Course course);
 	List<CourseClass> getCurrentClasses(Course course);
 	List<CourseClass> getEnrollableClasses(Course course);
+
+	boolean isFullClass(CourseClass courseClass);
 }

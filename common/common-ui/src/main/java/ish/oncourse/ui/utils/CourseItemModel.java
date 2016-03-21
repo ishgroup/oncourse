@@ -46,7 +46,7 @@ public class CourseItemModel {
             courseItemModel.enrollableClasses.addAll(courseClassService.getEnrollableClasses(course));
             List<CourseClass> currentClasses = courseClassService.getCurrentClasses(course);
                 for (CourseClass courseClass : currentClasses) {
-                    if (!courseClass.isHasAvailableEnrolmentPlaces()) {
+                    if (courseClassService.isFullClass(courseClass)) {
                         courseItemModel.fullClasses.add(courseClass);
                     } else if (CourseClassUtils.focusMatchForClass(courseClass, searchParams) == 1.0f) {
                         courseItemModel.availableClasses.add(courseClass);
