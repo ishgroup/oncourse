@@ -3901,4 +3901,11 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="255" author="akoyro" runOnChange="false" runAlways="false" context="production">
+		<sql>
+			ALTER TABLE WebURLAlias DROP INDEX url;
+			ALTER TABLE WebURLAlias MODIFY COLUMN urlPath VARCHAR(512);
+			ALTER TABLE WebURLAlias ADD INDEX urlPath (urlPath(100) );
+		</sql>
+	</changeSet>
 </databaseChangeLog>
