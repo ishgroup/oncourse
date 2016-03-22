@@ -1,10 +1,14 @@
 package ish.oncourse.services.datalayer;
 
 import ish.oncourse.model.ProductItem;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static ish.oncourse.services.datalayer.DataLayerFactory.*;
 
 public class ProductItem2ProductConverter extends AbstractProductConverter<ProductItem> {
+	private final static Logger logger = LogManager.getLogger();
+
 
 	private AbstractProductConverter<ish.oncourse.model.Product> productConverter;
 
@@ -13,7 +17,15 @@ public class ProductItem2ProductConverter extends AbstractProductConverter<Produ
 
 		productConverter = getProductFactory().getConverterBy(getValue().getProduct());
 		super.convert();
-        getProduct().userId = getValue().getContact().getId().toString();
+		try {
+			if (getValue().getContact() != null) {
+				getProduct().userId = getValue().getContact().getId().toString();
+			} else {
+				getProduct().userId = getValue().getInvoiceLine().getInvoice().getContact().getId().toString();
+			}
+		} catch (Exception e) {
+			logger.debug(e);
+		}
 	}
 
 	@Override
