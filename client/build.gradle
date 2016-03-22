@@ -6,6 +6,7 @@ dependencies {
     }
 
 	compile "org.apache.cayenne:cayenne-client:$cayenneVersion"
+	compile 'org.apache.cayenne:cayenne-client:4.0.ROP3'
 	compile 'foxtrot:foxtrot-core:4.0'
 	compile 'com.miglayout:miglayout-swing:4.2'
 	compile 'com.migcalendar:migcalendar:6.9.3'
@@ -16,6 +17,9 @@ dependencies {
 	// 0.1.40.WS is a custom build of stilts from https://github.com/dzmitryk/stilts
 	compile 'org.projectodd.stilts:stilts-stomp-client:0.1.40.WS'
 
+
+	compile "org.eclipse.jetty:jetty-client:$jettyVersion"
+	
 	testCompile 'dbunit:dbunit:2.4.8'
     testCompile 'org.mockito:mockito-core:1.10.17'
 	testCompile 'org.apache.poi:poi:3.12-beta1'
