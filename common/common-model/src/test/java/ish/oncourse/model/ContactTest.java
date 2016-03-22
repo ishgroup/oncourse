@@ -23,15 +23,14 @@ public class ContactTest {
 	/**
 	 * Array of valid emails. {@see #validateEmailSuccessTest()}.
 	 */
-	private String[] validEmails = { "testEmail@domain.org", "test+Email@domain.org", "test.Email@domain.org",
-			"test/Email@domain.org", "test|Email@domain.org", "test\\Email@domain.org", "test_Email@domain.org", "jason.riley@cce.sydney" };
+	private String[] validEmails = { "testEmail@domain.org", "test+Email@domain.org", "test.Email@domain.org", "testEmail@domain",
+			"test/Email@domain.org", "test|Email@domain.org", "test_Email@domain.org", "jason.riley@cce.sydney" ,
+			"testEmail@111.111.111.111" , "test\\Email@domain.org"};
 
 	/**
 	 * Array of invalid emails. {@see #validateEmailFailedTest()}.
 	 */
-	private String[] invalidEmails = { "testEmail-domain.org", "@domain.org", "testEmail@", "testEmail@domain", "test_Email",
-			"testEmail@111.111.111.111","testEmail@domain./org", "testEmail@domain.\\org" , "testEmail@domain.|org"
-			 };
+	private String[] invalidEmails = { "testEmail-domain.org", "@domain.org", "testEmail@", "test_Email", "testEmail@domain./org", "testEmail@domain.|org", "testEmail@domain.\\org"};
 
 	@Before
 	public void init() {

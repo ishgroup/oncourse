@@ -171,15 +171,6 @@ public class Contact extends _Contact implements Queueable {
 		try {
 			InternetAddress emailAddr = new InternetAddress(emailAddress);
 			emailAddr.validate();
-
-			/**
-			 * We use the additional validation because InternetAddress.validate() accepts email addresses like username@domain,
-			 * But for our application such address is not valid, our application should accept only public (not local) domain like:
-			 * *.org, *.net and so on
-			 */
-			if (!org.apache.commons.validator.routines.EmailValidator.getInstance().isValid(emailAddress))
-				return INVALID_EMAIL_MESSAGE;
-
 		} catch (AddressException ex) {
 			return INVALID_EMAIL_MESSAGE;
 		}
