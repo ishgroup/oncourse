@@ -224,6 +224,7 @@ public abstract class ACheckoutTest extends ServiceTest {
         assertTrue(purchaseController.isPaymentProgress());
         assertFalse(purchaseController.isFinished());
         updatePaymentStatus();
+		checkSortOrder();
     }
 
 	protected void makeValidPayment() throws InterruptedException {
@@ -237,6 +238,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 		assertEquals(paymentProgress, purchaseController.getState());
         assertTrue(purchaseController.isPaymentProgress());
         updatePaymentStatus();
+		checkSortOrder();
 	}
 
 	void updatePaymentStatus() throws InterruptedException {
@@ -460,6 +462,23 @@ public abstract class ACheckoutTest extends ServiceTest {
 			queueables.add(invoice.getPaymentInLines().get(0).getPaymentIn());
 		}
 		return queueables;
+	}
+
+	protected void checkSortOrder() {
+		checkSortOrder(getModel().getInvoice());
+		for (InvoiceNode invoice : getModel().getPaymentPlanInvoices()) {
+			checkSortOrder(invoice.getInvoice());
+		}
+	}
+	
+	
+	protected void checkSortOrder(Invoice invoice) {
+		if (invoice != null) {
+			for (int i = 0; i < invoice.getInvoiceLines().size(); i++) {
+				InvoiceLine invoiceLine = invoice.getInvoiceLines().get(i);
+				assertEquals(i, invoiceLine.getSortOrder().intValue());
+			}
+		}
 	}
 
 }

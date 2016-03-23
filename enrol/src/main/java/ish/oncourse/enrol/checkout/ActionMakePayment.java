@@ -3,7 +3,9 @@ package ish.oncourse.enrol.checkout;
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.ProductStatus;
+import ish.oncourse.enrol.checkout.model.InvoiceNode;
 import ish.oncourse.model.Enrolment;
+import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.ProductItem;
 
@@ -69,7 +71,14 @@ public class ActionMakePayment extends APurchaseAction {
 	}
 
 	private void adjustSortOrder() {
-		List<InvoiceLine> invoiceLines = getModel().getInvoice().getInvoiceLines();
+		adjustSortOrder(getModel().getInvoice());
+		for (InvoiceNode invoice : getModel().getPaymentPlanInvoices()) {
+			adjustSortOrder(invoice.getInvoice());
+		}
+	}
+
+	private void adjustSortOrder(Invoice invoice) {
+		List<InvoiceLine> invoiceLines = invoice.getInvoiceLines();
 		for (int i = 0; i < invoiceLines.size(); i++) {
 			InvoiceLine invoiceLine = invoiceLines.get(i);
 			invoiceLine.setSortOrder(i);

@@ -26,8 +26,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 	
@@ -315,6 +317,50 @@ public class PaymentInSuccessFailAbandonTest extends ServiceTest {
 		
 		Enrolment enrol = Cayenne.objectForPK(cayenneService.newContext(), Enrolment.class, 2000);
 		assertEquals("Enrol status sucess.", EnrolmentStatus.FAILED, enrol.getStatus());
+	}
+
+	@Test
+	public void testPaymentAbandonCheckOrdering() throws Exception {
+		PaymentIn paymentIn = Cayenne.objectForPK(cayenneService.newContext(), PaymentIn.class, 2002);
+		PaymentIn reversePaymentRegular = null;
+		PaymentIn reversePaymentPP = null;
+		PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().getModel();
+		Collection<PaymentIn> paymentIns = PaymentInAbandon.valueOf(model, false).perform().getRefundPayments();
+		assertEquals("we should get 3 payments: one direct and two reverse", 3, paymentIns.size());
+		Collection<PaymentIn> reversePaymentIns = PaymentIn.TYPE.eq(PaymentType.REVERSE).filterObjects(paymentIns);
+
+		for (PaymentIn payment : reversePaymentIns) {
+			if (new Money("100.00").equals(payment.getPaymentInLines().get(0).getAmount().abs())) {
+				reversePaymentRegular = payment;
+			} else if (new Money("200.00").equals(payment.getPaymentInLines().get(0).getAmount().abs())) {
+				reversePaymentPP = payment;
+			} else {
+				throw new IllegalStateException("Unexpected reverse payment amount");
+			}
+		}
+		
+		List<PaymentInLine> negateLines = PaymentInLine.AMOUNT.lt(Money.ZERO).filterObjects(reversePaymentRegular.getPaymentInLines());
+		assertEquals(1, negateLines.size());
+		List<InvoiceLine> refundLines = negateLines.get(0).getInvoice().getInvoiceLines();
+		assertEquals(2, refundLines.size());
+
+		List<InvoiceLine> firstLineList = InvoiceLine.TITLE.like("Test Invoice Line 1").filterObjects(refundLines);
+		assertEquals(1, firstLineList.size());
+		assertEquals(0, firstLineList.get(0).getSortOrder().intValue());
+
+		List<InvoiceLine> secondLineList = InvoiceLine.TITLE.like("Test Invoice Line 2").filterObjects(refundLines);
+		assertEquals(1, secondLineList.size());
+		assertEquals(1, secondLineList.get(0).getSortOrder().intValue());
+
+
+		List<PaymentInLine> negateLinesPP = PaymentInLine.AMOUNT.lt(Money.ZERO).filterObjects(reversePaymentPP.getPaymentInLines());
+		assertEquals(1, negateLinesPP.size());
+		List<InvoiceLine> refundLinesPP = negateLinesPP.get(0).getInvoice().getInvoiceLines();
+		assertEquals(1, refundLinesPP.size());
+		assertEquals(0, refundLinesPP.get(0).getSortOrder().intValue());
+
+
+
 	}
 	
 	@Test
