@@ -113,6 +113,11 @@
 		collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 		invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
 		totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<Invoice id="1000" source="O" amountOwing="100.00" contactId="11891600"
+			 collegeId="10" dateDue="2011-09-20 11:14:54" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1000" totalExGst="320.00"
+			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
 	
 	<InvoiceLine id="2000" collegeId="1" enrolmentId="2000"
 		invoiceId="2000" quantity="1.0" discountEachExTax="0.00"
@@ -123,6 +128,10 @@
 		invoiceId="2000" quantity="1.0" discountEachExTax="0.00"
 		priceEachExTax="99" taxEach="1" title="Test Invoice Line"
         created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<InvoiceLine id="1000" collegeId="10"
+				 invoiceId="1000" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="99" taxEach="1" title="Test Invoice Line" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
 	<MessageTemplate id="131" collegeId="1" angelId="201"
 		created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:21.0" name="Enrolment confirmation"
@@ -145,6 +154,14 @@
 		subject="[subject not used for SMS]"
 		message="&lt;college.name&gt; reminds you that your class &lt;class.name&gt; begins on &lt;class.startDate&gt;.&#xD;&#xA;" />
 
+	<PaymentIn id="1000" amount="100" angelId="1000" collegeId="10" sessionId="DC1E0EA635E017957B235117B591C1C8"
+			   contactId="11891600" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="O" status="6" statusNotes="" type="2" confirmationStatus="1"/>
+
+	<PaymentIn id="1001" amount="100" angelId="1001" collegeId="10" sessionId="DC1E0EA635E017957B235117B591C1C8"
+			   contactId="11891600" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
+			   source="O" status="10" statusNotes="" type="2" confirmationStatus="1"/>
+	
 	<PaymentIn id="2000" amount="100" angelId="22" collegeId="1"
 		contactId="1189160" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 		source="W" status="2" statusNotes="" type="2" confirmationStatus="1"/>
@@ -152,6 +169,15 @@
 	<PaymentInLine id="2000" amount="100" angelId="23"
 		collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2000"
 		modified="2011-09-12 00:17:21.0" paymentInId="2000" />
+
+	<PaymentInLine id="1000" amount="100" angelId="1000"
+				   collegeId="10" created="2011-09-12 00:17:21.0" invoiceId="1000"
+				   modified="2011-09-12 00:17:21.0" paymentInId="1000" />
+
+
+	<PaymentInLine id="1001" amount="100" angelId="1001"
+				   collegeId="10" created="2011-09-12 00:17:21.0" invoiceId="1000"
+				   modified="2011-09-12 00:17:21.0" paymentInId="1001"/>
 
 	<Session id="1186969" collegeId="1" courseClassId="1186958"
 		roomId="1181746" angelId="201" startDate="2011-10-12 00:55:59.0"
