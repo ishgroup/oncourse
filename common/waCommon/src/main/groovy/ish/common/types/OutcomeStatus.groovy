@@ -126,7 +126,12 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	/**
 	 */
 	@API
-	STATUS_WA_NOT_YET_STARTED(105, "Not yet started (WA:105)", null);
+	STATUS_WA_NOT_YET_STARTED(105, "Not yet started (WA:105)", null),
+
+	/**
+	 */
+	@API
+	SUPERSEDED_SUBJECT(61, "Superseded subject (61)", null);
 
 	/**
 	 * OutcomeStatuses which are valid to be added to a certificate
