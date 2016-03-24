@@ -9,6 +9,11 @@ window.onload = function () {
 
     input.onkeyup = function (e) {
         if (this.value == this.lastValue) return;
+        //don't validate credit card number if backspace entered
+        if (e.keyCode == 8) {
+            return;
+        }
+
         var caretPosition = this.selectionStart;
         var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
         var parts = [];
