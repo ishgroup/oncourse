@@ -21,14 +21,17 @@ import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.reflect.ArcProperty;
 import org.apache.cayenne.reflect.ClassDescriptor;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.*;
@@ -101,6 +104,10 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 */
 	@Override
 	public List<GenericReplicatedRecord> processGroup(GenericTransactionGroup group) {
+		return processGroup(group, 0);
+	}
+	
+	private List<GenericReplicatedRecord> processGroup(GenericTransactionGroup group, int attempt) {
 		this.transactionGroup = group;
 		this.result = new ArrayList<>();
 		
@@ -108,6 +115,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		// before it sends the stubs but it was not the case for angel versions up to 5.0
 		queuedStatisticProcessor.fillQueuedStatisticStubs(group);
 
+		List<GenericReplicationStub> stubs = new LinkedList<>(group.getGenericAttendanceOrBinaryDataOrBinaryInfo());
+		
 		for (GenericReplicationStub currentStub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
 			result.add(replRecord);
@@ -124,11 +133,16 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
             queuedStatisticProcessor.cleanupStatistic();
             fillWillowIds();
 
-
 		} catch (Exception e) {
-            String message = getErrorMessageBy(e);
 			atomicContext.rollbackChanges();
-            logger.error(message, e);
+			String message = getErrorMessageBy(e);
+			logger.error(message, e);
+			int index = ExceptionUtils.indexOfType(e, SQLIntegrityConstraintViolationException.class);
+			if (index != -1 && attempt < 3) {
+				logger.error("Try to process transaction group one more time since concurrent processing detected");
+				group.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
+				return processGroup(group, attempt++);
+			}
             updateReplicationStatusToFailed(result, message);
 		}
 		return result;

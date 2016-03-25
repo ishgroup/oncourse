@@ -16,6 +16,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -117,6 +119,11 @@ public class ContextUtils {
 		}
 
 		generator.runGenerator(dataSource);
+
+		
+		Statement statement = dataSource.getConnection().createStatement();
+		statement.execute("ALTER TABLE ENROLMENT ADD CONSTRAINT angel_college_unique UNIQUE(ANGELID, COLLEGEID)");
+		statement.close();
 
 		for (Relationship rel : entityRelationshipsToRemove) {
 			map.getDbEntity("EntityRelation").addRelationship(rel);
