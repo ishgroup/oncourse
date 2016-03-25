@@ -1,6 +1,7 @@
 goog.provide('checkout');
 
 goog.require('common');
+goog.require('jquery.inputmask')
 
 var $j = jQuery.noConflict();
 
@@ -295,6 +296,12 @@ function sendAjax(actionLink)
     sendAjaxWithData(actionLink,null);
 }
 
+function initMasks() {
+	$j("#creditCardNumber").inputmask("9999 9999 9999 9999");
+	$j("#dateOfBirth").inputmask("dd/mm/yyyy");
+
+}
+
 function initHandles()
 {
 	initSelectPayerHandle();
@@ -311,6 +318,7 @@ function initHandles()
 	initCorporatePassHandle();
     initRedeemedVoucherHandle();
 	initPayNow();
+	initMasks();
 }
 
 

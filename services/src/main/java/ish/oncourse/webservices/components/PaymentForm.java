@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-@Import(library = "context:js/cardNumberValidation.js")
+@Import(library = {"context:js/jquery.min.js", "context:js/jquery.inputmask.bundle.min.js", "context:js/payment.js"})
 public class PaymentForm {
     /**
      * Credit card expire date interval
