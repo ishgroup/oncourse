@@ -34,6 +34,8 @@ import ish.oncourse.webservices.v12.stubs.replication.StudentStub;
 import ish.oncourse.webservices.v12.stubs.replication.TransactionGroup;
 import ish.oncourse.webservices.v12.stubs.replication.VoucherStub;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,6 +52,8 @@ import java.util.concurrent.Future;
 import static org.junit.Assert.assertNull;
 
 public class ConcurentReplTest extends QEPaymentProcessTest {
+
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/ConcurentDataSet.xml";
 
@@ -485,6 +489,7 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 				try {
 					return	getReplicationPortType().sendRecords(replicationRequest);
 				} catch (ReplicationFault replicationFault) {
+					logger.error(replicationFault);
 					throw new RuntimeException(replicationFault);
 				}
 			}
@@ -496,6 +501,7 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 				try {
 					return getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
 				} catch (ReplicationFault replicationFault) {
+					logger.error(replicationFault);
 					throw new RuntimeException(replicationFault);
 				}
 			}
