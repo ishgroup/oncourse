@@ -14,6 +14,7 @@ import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -33,9 +34,12 @@ import ish.oncourse.webservices.v12.stubs.replication.StudentStub;
 import ish.oncourse.webservices.v12.stubs.replication.TransactionGroup;
 import ish.oncourse.webservices.v12.stubs.replication.VoucherStub;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
 import org.junit.Test;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -53,6 +57,15 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		return DEFAULT_DATASET_XML;
 	}
 
+
+	@Before
+	public void setup() throws Exception {
+		super.setup();
+		DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
+		Statement statement = onDataSource.getConnection().createStatement();
+		statement.execute("ALTER TABLE ENROLMENT ADD CONSTRAINT angel_college_unique UNIQUE(ANGELID, COLLEGEID)");
+		statement.close();
+	}
 
 	protected void fillv12PaymentStubs(GenericTransactionGroup transaction, GenericParametersMap parametersMap) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
