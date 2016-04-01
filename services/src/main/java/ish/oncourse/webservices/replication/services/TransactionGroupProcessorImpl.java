@@ -141,7 +141,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			if (index != -1 && attempt < 3) {
 				logger.error("Try to process transaction group one more time since concurrent processing detected");
 				group.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
-				return processGroup(group, attempt++);
+				return processGroup(group, ++attempt);
 			}
             updateReplicationStatusToFailed(result, message);
 		}
