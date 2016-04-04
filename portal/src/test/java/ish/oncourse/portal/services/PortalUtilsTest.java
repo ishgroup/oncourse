@@ -2,14 +2,15 @@ package ish.oncourse.portal.services;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Document;
+import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -92,4 +93,24 @@ public class PortalUtilsTest {
 
 
     }
+
+
+	@Test
+	public void needExtensionTest() {
+
+		DocumentVersion version = mock(DocumentVersion.class);
+		Document document = mock(Document.class);
+
+		when(document.getCurrentVersion()).thenReturn(version);
+
+		when(document.getType()).thenCallRealMethod();
+		when(version.getMimeType()).thenReturn("application/pdf");
+
+
+		when(document.getName()).thenReturn("test.pdf");
+		assertFalse(PortalUtils.needExtension(document));
+
+		when(document.getName()).thenReturn("test");
+		assertTrue(PortalUtils.needExtension(document));
+	}
 }

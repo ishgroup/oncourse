@@ -11,6 +11,7 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
@@ -135,5 +136,9 @@ public class Resources {
 
     public String getSize(Document document) {
         return FileUtils.byteCountToDisplaySize(document.getCurrentVersion().getByteSize());
+    }
+
+    public boolean needExtension() {
+        return PortalUtils.needExtension(sudentAndTutorsMaterial);
     }
 }

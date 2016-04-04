@@ -15,10 +15,7 @@
 							<img src="${contextPath}/img/ico-${sudentAndTutorsMaterial.type}.png"
 								 alt=""/>
 							<a href="${getMaterialUrl(sudentAndTutorsMaterial)}" target="_blank">
-								${sudentAndTutorsMaterial.name}
-								<t:if test="sudentAndTutorsMaterial.type.empty" negate="true">
-									.${sudentAndTutorsMaterial.type}
-								</t:if>
+								${sudentAndTutorsMaterial.name}<t:if test="needExtension()">.${sudentAndTutorsMaterial.type}</t:if>
 							</a>
 							${getSize(sudentAndTutorsMaterial)}.
 							<t:if test="isNew(sudentAndTutorsMaterial.modified)">

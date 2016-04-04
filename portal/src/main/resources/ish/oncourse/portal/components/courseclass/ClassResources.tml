@@ -7,10 +7,7 @@
                     <li class="${material.type}">
                         <span class="glyphicon glyphicon-file"></span>
                         <a href="${materialUrl}" target="_blank">
-                            ${material.name}
-                                <t:if test="material.type.empty" negate="true">
-                                    .${material.type}
-                                </t:if>
+                            ${material.name}<t:if test="needExtension()">.${material.type}</t:if>
                         </a>
                         <span>${size}.</span>
                         <t:if test="isNew()">

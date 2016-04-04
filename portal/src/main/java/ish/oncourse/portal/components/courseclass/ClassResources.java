@@ -3,9 +3,11 @@ package ish.oncourse.portal.components.courseclass;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -72,4 +74,8 @@ public class ClassResources {
 	public String getSize() {
 		return FileUtils.byteCountToDisplaySize(material.getCurrentVersion().getByteSize());
 	}
+
+    public boolean needExtension() {
+        return PortalUtils.needExtension(material);
+    }
 }

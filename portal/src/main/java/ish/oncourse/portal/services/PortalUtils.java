@@ -2,12 +2,13 @@ package ish.oncourse.portal.services;
 
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Document;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 import ish.persistence.CommonPreferenceController;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static ish.oncourse.util.FormatUtils.*;
+import static org.apache.commons.io.FilenameUtils.getExtension;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class PortalUtils {
     /**
@@ -193,6 +197,12 @@ public class PortalUtils {
         if (room != null)
             values.add(room);
         return StringUtils.join(values,", ");
+    }
+
+    public static boolean needExtension(Document material) {
+        return material != null &&
+                isBlank(getExtension(material.getName())) &&
+                isNotBlank(material.getCurrentVersion().getMimeType());
     }
 
 }
