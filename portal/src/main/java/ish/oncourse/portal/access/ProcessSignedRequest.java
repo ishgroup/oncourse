@@ -1,6 +1,7 @@
 package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
 import ish.util.UrlUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -25,6 +26,7 @@ public class ProcessSignedRequest {
 
 	private final static String SESSION_ATTR_currentSignedPath = "prevSignedPath";
 	private IAuthenticationService authenticationService;
+	private AccessLinksValidatorFactory accessLinksValidatorFactory;
 
 	private ObjectContext context;
 	private HttpServletRequest httpRequest;
@@ -56,7 +58,7 @@ public class ProcessSignedRequest {
 	}
 
 	public boolean process() {
-		Case c = GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase();
+		Case c = GetCase.valueOf(accessLinksValidatorFactory, prevPath, prevContact, currentPath, currentContact, request).getCase();
 		switch (c) {
 			case FIRST:
 				session = request.getSession(true);
@@ -64,6 +66,7 @@ public class ProcessSignedRequest {
 				session.setAttribute(SESSION_ATTR_currentSignedPath, currentPath);
 				return true;
 			case REFRESH:
+			case LINKED:
 				return true;
 			case ANOTHER:
 				authenticationService.logout();
@@ -85,10 +88,12 @@ public class ProcessSignedRequest {
 
 
 	public static ProcessSignedRequest valueOf(IAuthenticationService authenticationService,
+											   AccessLinksValidatorFactory accessLinksValidatorFactory,
 	                                           ObjectContext context,
 	                                           HttpServletRequest httpRequest,
 	                                           Request request) {
 		ProcessSignedRequest result = new ProcessSignedRequest();
+		result.accessLinksValidatorFactory = accessLinksValidatorFactory;
 		result.authenticationService = authenticationService;
 		result.context = context;
 		result.httpRequest = httpRequest;
@@ -104,6 +109,7 @@ public class ProcessSignedRequest {
 		AJAX,
 		FIRST,
 		REFRESH,
+		LINKED,
 		ANOTHER,
 		INVALID,
 		REGULAR
@@ -111,6 +117,8 @@ public class ProcessSignedRequest {
 
 
 	public static class GetCase {
+		private AccessLinksValidatorFactory accessLinksValidatorFactory;
+
 		private String prevPath;
 		private Contact prevContact;
 
@@ -126,6 +134,10 @@ public class ProcessSignedRequest {
 
 			if (isFirst()) {
 				return FIRST;
+			}
+
+			if (isLinked()) {
+				return LINKED;
 			}
 
 			if (isRefresh()) {
@@ -182,10 +194,15 @@ public class ProcessSignedRequest {
 			return currentPath != null && prevPath != null && currentPath.equals(prevPath);
 		}
 
-		public static GetCase valueOf(String prevPath, Contact prevContact,
+		private boolean isLinked() {
+			return prevPath != null && prevContact != null && accessLinksValidatorFactory.getBy(prevPath, currentPath).validate();
+		}
+
+		public static GetCase valueOf(AccessLinksValidatorFactory accessLinksValidatorFactory, String prevPath, Contact prevContact,
 		                              String currentPath, Contact currentContact,
 		                              Request request) {
 			GetCase getCase = new GetCase();
+			getCase.accessLinksValidatorFactory = accessLinksValidatorFactory;
 			getCase.prevPath = prevPath;
 			getCase.prevContact = prevContact;
 			getCase.currentPath = currentPath;

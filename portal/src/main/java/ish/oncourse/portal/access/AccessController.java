@@ -1,6 +1,7 @@
 package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PageLinkTransformer;
@@ -46,6 +47,9 @@ public class AccessController implements Dispatcher {
 
 	@Inject
 	private ICayenneService cayenneService;
+
+	@Inject
+	private AccessLinksValidatorFactory accessLinksValidatorFactory;
 
 	@Inject
 	private HttpServletRequest httpRequest;
@@ -107,7 +111,7 @@ public class AccessController implements Dispatcher {
 			return false;
 		}
 
-		boolean processed = ProcessSignedRequest.valueOf(authenticationService, cayenneService.newContext(),
+		boolean processed = ProcessSignedRequest.valueOf(authenticationService, accessLinksValidatorFactory, cayenneService.newContext(),
 				httpRequest,
 				request).process();
 

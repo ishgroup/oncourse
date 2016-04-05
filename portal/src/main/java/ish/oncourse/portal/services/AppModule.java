@@ -4,6 +4,7 @@ import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.access.AccessController;
 import ish.oncourse.portal.access.AuthenticationService;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
 import ish.oncourse.portal.services.application.IPortalApplicationService;
 import ish.oncourse.portal.services.application.PortalApplicationServiceImpl;
 import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
@@ -60,6 +61,7 @@ public class AppModule {
         binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
         binder.bind(IUSIVerificationService.class, PortalUSIService.class);
         binder.bind(TapestrySessionFactory.class, ISHTapestrySessionFactoryImpl.class).withId("ISHTapestrySessionFactoryImpl");
+        binder.bind(AccessLinksValidatorFactory.class, AccessLinksValidatorFactory.class);
     }
 
     @EagerLoad
