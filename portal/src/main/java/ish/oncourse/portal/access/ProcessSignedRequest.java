@@ -46,18 +46,17 @@ public class ProcessSignedRequest {
 				String signedUrl = httpRequest.getRequestURL() + "?" + httpRequest.getQueryString();
 				boolean signed = UrlUtil.validateSignedPortalUrl(signedUrl, currentContact.getCollege().getWebServicesSecurityCode(), new Date());
 				if (!signed) {
-					logger.warn("Url {} is unsigned", signedUrl);
+					logger.debug("Url {} is unsigned", signedUrl);
 					currentContact = null;
 				}
 			} else {
-				logger.warn("Cannot find user with UNIQUE_CODE {}", value);
+				logger.debug("Cannot find user with UNIQUE_CODE {}", value);
 			}
 		}
 	}
 
 	public boolean process() {
 		Case c = GetCase.valueOf(prevPath, prevContact, currentPath, currentContact, request).getCase();
-		logger.warn("Current case {}, prevPath: {}, prevContact: {},  currentPath: {}, currentContact: {}", c, prevPath, prevContact, currentPath, currentContact);
 		switch (c) {
 			case FIRST:
 				session = request.getSession(true);
