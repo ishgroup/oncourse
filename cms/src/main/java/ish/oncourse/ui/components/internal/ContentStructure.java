@@ -3,19 +3,18 @@ package ish.oncourse.ui.components.internal;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
+import ish.oncourse.services.cache.RequestCached;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.pages.internal.Page;
-import ish.oncourse.ui.utils.EmptyRenderable;
 import ish.oncourse.util.ValidationErrors;
-import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.SelectById;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.Block;
-import org.apache.tapestry5.ajax.MultiZoneUpdate;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -33,13 +32,17 @@ public class ContentStructure {
 	private WebNode node;
 
 	@Property
-	@Persist
-	private WebContentVisibility visibility;
+	private String contentTextile;
+
+	@Property
+	private Long visibilityId;
+
+	@Property
+	private WebContentVisibility nodeVisibility;
 
 	@Parameter
 	private Zone updateZone;
 
-	@SuppressWarnings("all")
 	@Property
 	@Component(id = "regionForm")
 	private Form regionForm;
@@ -69,7 +72,7 @@ public class ContentStructure {
 
 	@Inject
 	private Request request;
-	
+
 	@SetupRender
 	public void beforeRender() {
 		for(WebContentVisibility visibility: node.getWebContentVisibility()){
@@ -83,7 +86,7 @@ public class ContentStructure {
 
 	public String getRegionContent() {
 		ParsedContentVisitor visitor = new ParsedContentVisitor(textileConverter);
-		String accepted = visibility.getWebContent().accept(visitor);
+		String accepted = nodeVisibility.getWebContent().accept(visitor);
 		ValidationErrors errors = visitor.getErrors();
 		if (errors != null) {
 			syntaxError = errors.toString();
@@ -93,48 +96,50 @@ public class ContentStructure {
 		return accepted;
 	}
 
+	public String getNodeZoneKey() {
+		return ZONE_PREFIX + nodeVisibility.getRegionKey();
+	}
+
 	@OnEvent(component = "editRegion", value = "action")
-	public Object onActionFromEditRegion(String id) throws Exception {
-		if (!isSessionAndEntityValid()) {
+	public Object onActionFromEditRegion(String visibilityId) throws Exception {
+		if (request.getSession(false) == null) {
 			return page.getReloadPageBlock();
 		}
 		if(!request.isXHR()){
             return page.getReloadPageBlock();
 		}
 		
-		logger.debug("Edit region with id: {}", id);
+		logger.debug("Edit region with id: {}", visibilityId);
 
-		ObjectContext ctx = cayenneService.newContext(node.getObjectContext());
-		WebContent regionForEdit = webContentService.refresh(Long.parseLong(id));
-		if (regionForEdit == null) {
+		this.visibilityId = Long.parseLong(visibilityId);
+		WebContentVisibility visibility = getWebContentVisibility();
+
+		if (visibility == null) {
 			return page.getReloadPageBlock();
 		}
-		WebContent region = ctx.localObject(regionForEdit);
-
-		this.visibility = region.getWebContentVisibility(node);
-
+		this.visibilityId = visibility.getId();
+		this.contentTextile = visibility.getWebContent().getContentTextile();
 		return editorBlock;
 	}
 	
-	private boolean isSessionAndEntityValid() {
-		return (request.getSession(false) != null && visibility != null && visibility.getObjectContext() != null);
-	}
-
 	Object onSuccessFromRegionForm() {
-		if (!isSessionAndEntityValid()) {
+		if (request.getSession(false) == null || visibilityId == null) {
 			return page.getReloadPageBlock();
 		}
+		WebContentVisibility visibility = getWebContentVisibility();
 		WebContent webContent = visibility.getWebContent();
-		webContent.setContent(textileConverter.convertCoreTextile(webContent.getContentTextile()));
-		this.visibility.getObjectContext().commitChanges();
-		return new MultiZoneUpdate(EDITOR_ZONE_NAME, new EmptyRenderable()).add(getCurrentZoneKey(), regionContentBlock).add(UPDATED_ZONE_NAME, updateZone);
-	}
-	
-	public boolean isNotEmptyVisibility() {
-		return visibility != null;
+		webContent.setContentTextile(contentTextile);
+		webContent.setContent(textileConverter.convertCoreTextile(contentTextile));
+		visibility.getObjectContext().commitChanges();
+		return page.getReloadPageBlock();
 	}
 
-	public String getCurrentZoneKey() {
-		return ZONE_PREFIX + this.visibility.getRegionKey();
+	@RequestCached
+	public WebContentVisibility getWebContentVisibility() {
+		return SelectById.query(WebContentVisibility.class, visibilityId).selectOne(cayenneService.newContext());
+	}
+	
+	public String getEditZoneKey() {
+		return ZONE_PREFIX + getWebContentVisibility().getRegionKey();
 	}
 }

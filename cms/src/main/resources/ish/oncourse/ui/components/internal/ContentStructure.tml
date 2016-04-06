@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-    <t:loop source="node.webContentVisibility" value="visibility">
-    	<t:if test="${notEmptyVisibility}">
-	       <t:zone id="prop:currentZoneKey" class="region">
+    <t:loop source="node.webContentVisibility" value="nodeVisibility">
+    	<t:if test="nodeVisibility">
+	       <t:zone id="prop:nodeZoneKey" class="region">
 	           <t:delegate to="regionContentBlock"/>
 	       </t:zone>
 	    
 	       <script type="text/javascript">
-	       		Event.observe('${currentZoneKey}', Tapestry.ZONE_UPDATED_EVENT,  wrapEditAreas);
+	       		Event.observe('${nodeZoneKey}', Tapestry.ZONE_UPDATED_EVENT,  wrapEditAreas);
 	       </script>
 	    </t:if>
     </t:loop>
@@ -18,7 +18,7 @@
     <t:block id="regionContentBlock">
 		<div class="cms-edit-area">
 			
-			<t:actionLink t:id="editRegion" t:zone="editorZone" t:context="visibility.webContent.id">
+			<t:actionLink t:id="editRegion" t:zone="editorZone" t:context="nodeVisibility.id">
 				<div class="cms-edit-area-in"/>
 			</t:actionLink>
 			
@@ -42,15 +42,16 @@
             		<span class="cms-ico-close cms-close-popup"></span>
        			</div>
     		</div>
-    		<t:if test="${notEmptyVisibility}">
-			<form t:id="regionForm" zone="prop:currentZoneKey">
-    		
-    		<div class="cms-dialog-line">
-        		<label title="The content of this block" class="cms-block-sub-title">Content</label>
-        		<textarea class="cms-field-txt" t:type="TextArea" value="visibility.webContent.contentTextile" rows="18"/>
-   			</div>
+    		<t:if test="visibilityId">
+				<form t:id="regionForm" zone="prop:editZoneKey">
 
-    		</form>
+				<div class="cms-dialog-line">
+					<label title="The content of this block" class="cms-block-sub-title">Content</label>
+					<t:hidden type="hidden" value="visibilityId"/>
+					<textarea class="cms-field-txt" t:type="TextArea" value="contentTextile" rows="18"/>
+				</div>
+
+				</form>
     		 </t:if>
 		</div>
 		
