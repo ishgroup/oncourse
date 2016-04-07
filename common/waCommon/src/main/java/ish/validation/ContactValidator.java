@@ -31,12 +31,19 @@ public class ContactValidator implements Validator {
     public void validateForSave(ValidationResult result) {
         validateBirthDate(result);
         validateFirstNameLastName(result);
+        validateStreet(result);
+    }
+
+    private void validateStreet(ValidationResult result) {
+        if (contact.getStreet() != null && contact.getStreet().length() > 200) {
+            result.addFailure(new BeanValidationFailure(this, ContactInterface.STREET_KEY, "Street addresses are restricted to 200 characters."));
+        }
     }
 
     private void validateBirthDate(ValidationResult result) {
         if (contact.getBirthDate() != null) {
             if (contact.getBirthDate().after(DateUtils.addDays(new Date(), -1))) {
-                result.addFailure(new BeanValidationFailure(this, contact.BIRTH_DATE_PROPERTY, "The birth date cannot be in future."));
+                result.addFailure(new BeanValidationFailure(this, ContactInterface.BIRTH_DATE_PROPERTY, "The birth date cannot be in future."));
                 logger.warn(String.format("Incorrect birth date. Contact birth date : %s. Current date : %s", contact.getBirthDate(), new Date()));
             }
         }
@@ -45,7 +52,7 @@ public class ContactValidator implements Validator {
     private void validateFirstNameLastName(ValidationResult result) {
 
         if (contact.getLastName().length() > NAME_LENGTH) {
-            result.addFailure(new BeanValidationFailure(this, contact.LAST_NAME_KEY,
+            result.addFailure(new BeanValidationFailure(this, ContactInterface.LAST_NAME_KEY,
                     String.format("LastName exceeds maximum allowed length (%d chars): %d))", NAME_LENGTH, contact.getLastName().length())));
             logger.warn(String.format("LastName exceeds maximum allowed length (%d chars): %d))", NAME_LENGTH, contact.getLastName().length()));
         }

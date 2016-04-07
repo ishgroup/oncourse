@@ -176,4 +176,41 @@ public class ContactValidatorTest {
 
         assertEquals(2 ,validationResult.getFailures().size());
     }
+
+    @Test
+    public void testStreet() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String firstName = "first";
+        String lastName = "last";
+        String street = "street";
+        when(contact.getFirstName()).thenReturn(firstName);
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getStreet()).thenReturn(street);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(0 ,validationResult.getFailures().size());
+    }
+
+    @Test
+    public void testIncorrectStreet() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String firstName = "first";
+        String lastName = "last";
+        String street = StringUtils.repeat("street", 34);
+        when(contact.getFirstName()).thenReturn(firstName);
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getStreet()).thenReturn(street);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(1 ,validationResult.getFailures().size());
+        assertEquals("Street addresses are restricted to 200 characters." ,validationResult.getFailures().get(0).getDescription());
+    }
 }
