@@ -5,6 +5,7 @@ import ish.oncourse.cayenne.ContactInterface;
 import org.apache.cayenne.validation.BeanValidationFailure;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -99,8 +100,8 @@ public class ContactValidatorTest {
     public void testIncorrectFirstNameLastName() throws Exception {
 
         ContactInterface contact = Mockito.mock(ContactInterface.class);
-        String lastName = new String(new char[250]);
-        String firstName = new String(new char[250]);
+        String lastName = StringUtils.repeat("a", 250);
+        String firstName = StringUtils.repeat("a", 250);
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getFirstName()).thenReturn(firstName);
 
@@ -116,8 +117,9 @@ public class ContactValidatorTest {
     public void testCorrectFirstNameLastName() throws Exception {
 
         ContactInterface contact = Mockito.mock(ContactInterface.class);
-        String lastName = new String(new char[127]);
-        String firstName = new String(new char[127]);
+        String lastName = StringUtils.repeat("a", 127);
+        String firstName = StringUtils.repeat("a", 127);
+
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getFirstName()).thenReturn(firstName);
 
@@ -129,4 +131,49 @@ public class ContactValidatorTest {
         assertEquals(0 ,validationResult.getFailures().size());
     }
 
+    @Test
+    public void testCorrectCompanyName() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String lastName = "CompanyName";
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getIsCompany()).thenReturn(true);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(0 ,validationResult.getFailures().size());
+    }
+
+    @Test
+    public void testIncorrectCompanyName() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String lastName = "";
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getIsCompany()).thenReturn(true);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(1 ,validationResult.getFailures().size());
+    }
+
+    @Test
+    public void testEmptyFirstNameLastName() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String firstName = "";
+        String lastName = "";
+        when(contact.getFirstName()).thenReturn(firstName);
+        when(contact.getLastName()).thenReturn(lastName);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(2 ,validationResult.getFailures().size());
+    }
 }

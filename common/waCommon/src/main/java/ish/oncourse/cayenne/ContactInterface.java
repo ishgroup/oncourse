@@ -72,4 +72,6 @@ public interface ContactInterface {
 	public List<? extends InvoiceInterface> getInvoices();
 
 	public Date getBirthDate();
+
+	public Boolean getIsCompany();
 }

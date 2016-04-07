@@ -50,10 +50,23 @@ public class ContactValidator implements Validator {
             logger.warn(String.format("LastName exceeds maximum allowed length (%d chars): %d))", NAME_LENGTH, contact.getLastName().length()));
         }
 
-        if (contact.getFirstName().length() > NAME_LENGTH) {
-            result.addFailure(new BeanValidationFailure(this, contact.FIRST_NAME_KEY,
-                    String.format("FirstName exceeds maximum allowed length (%d chars): %d))", NAME_LENGTH, contact.getFirstName().length())));
-            logger.warn(String.format("FirstName exceeds maximum allowed length (%d chars): %d))", NAME_LENGTH, contact.getFirstName().length()));
+        if (Boolean.TRUE.equals(contact.getIsCompany())) {
+            if (contact.getLastName() == null || contact.getLastName().trim().length() == 0) {
+                result.addFailure(new BeanValidationFailure(this, ContactInterface.LAST_NAME_KEY, "You need to enter a company name."));
+            }
+        } else {
+            if (contact.getLastName() == null || contact.getLastName().trim().length() == 0) {
+                result.addFailure(new BeanValidationFailure(this, ContactInterface.LAST_NAME_KEY, "You need to enter a contact last name."));
+            }
+            if (contact.getFirstName() == null || contact.getFirstName().trim().length() == 0) {
+                result.addFailure(new BeanValidationFailure(this, ContactInterface.FIRST_NAME_KEY, "You need to enter a contact first name."));
+            }
+
+            if (contact.getFirstName().length() > NAME_LENGTH) {
+                result.addFailure(new BeanValidationFailure(this, contact.FIRST_NAME_KEY,
+                        String.format("FirstName exceeds maximum allowed length (%d chars): %d))", NAME_LENGTH, contact.getFirstName().length())));
+                logger.warn(String.format("FirstName exceeds maximum allowed length (%d chars): %d))", NAME_LENGTH, contact.getFirstName().length()));
+            }
         }
     }
 }
