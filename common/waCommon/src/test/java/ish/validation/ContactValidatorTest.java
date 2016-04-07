@@ -65,7 +65,7 @@ public class ContactValidatorTest {
 
         assertEquals(1 ,validationResult.getFailures().size());
         assertThat(validationResult.getFailures().get(0), instanceOf(BeanValidationFailure.class));
-        assertEquals(ContactInterface.BIRTH_DATE_PROPERTY, ((BeanValidationFailure)validationResult.getFailures().get(0)).getProperty());
+        assertEquals(ContactInterface.BIRTH_DATE_KEY, ((BeanValidationFailure)validationResult.getFailures().get(0)).getProperty());
     }
 
 
@@ -263,5 +263,32 @@ public class ContactValidatorTest {
 
         assertEquals(1, validationResult.getFailures().size());
         assertEquals("Email addresses are restricted to 100 characters.", validationResult.getFailures().get(0).getDescription());
+    }
+
+    @Test
+    public void validateWillowAngelPropertyLength() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String firstName = "first";
+        String lastName = "last";
+        String postCode = StringUtils.repeat("a",ContactValidator.POST_CODE_MAX_LENGTH + 1);
+        String state = StringUtils.repeat("a",ContactValidator.STATE_MAX_LENGTH + 1);
+        String mobilePhone = StringUtils.repeat("a",ContactValidator.MOBILE_PHONE_NUMBER_MAX_LENGTH + 1);
+        String homePhone = StringUtils.repeat("a",ContactValidator.HOME_PHONE_NUMBER_MAX_LENGTH + 1);
+        String fax = StringUtils.repeat("a",ContactValidator.FAX_MAX_LENGTH + 1);
+
+
+        when(contact.getFirstName()).thenReturn(firstName);
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getPostcode()).thenReturn(postCode);
+        when(contact.getState()).thenReturn(state);
+        when(contact.getMobilePhone()).thenReturn(mobilePhone);
+        when(contact.getHomePhone()).thenReturn(homePhone);
+        when(contact.getFax()).thenReturn(fax);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = contactValidator.validate();
+
+        assertEquals(5, validationResult.getFailures().size());
     }
 }
