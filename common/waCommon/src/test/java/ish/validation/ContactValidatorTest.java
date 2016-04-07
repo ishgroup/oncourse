@@ -1,0 +1,132 @@
+
+package ish.validation;
+
+import ish.oncourse.cayenne.ContactInterface;
+import org.apache.cayenne.validation.BeanValidationFailure;
+import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.lang.time.DateUtils;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.Date;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
+
+public class ContactValidatorTest {
+
+    /**
+     * birthDate same as new Date
+     * @throws Exception
+     */
+
+    @Test
+    public void testBirthDateValidation1() throws Exception {
+
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        when(contact.getBirthDate()).thenReturn(new Date());
+
+        String lastName = "test";
+        String firstName = "test";
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getFirstName()).thenReturn(firstName);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(1 ,validationResult.getFailures().size());
+    }
+
+
+    /**
+     * birthDate is (new Date + 1day)
+     * @throws Exception
+     */
+
+    @Test
+    public void testBirthDateValidation2() throws Exception {
+
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        Date birthDate = DateUtils.addDays(new Date(), 1);
+        when(contact.getBirthDate()).thenReturn(birthDate);
+
+        String lastName = "test";
+        String firstName = "test";
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getFirstName()).thenReturn(firstName);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(1 ,validationResult.getFailures().size());
+        assertThat(validationResult.getFailures().get(0), instanceOf(BeanValidationFailure.class));
+        assertEquals(ContactInterface.BIRTH_DATE_PROPERTY, ((BeanValidationFailure)validationResult.getFailures().get(0)).getProperty());
+    }
+
+
+    /**
+     * birthDate is (new Date - 1day)
+     * @throws Exception
+     */
+
+    @Test
+    public void testBirthDateValidation3() throws Exception {
+
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        Date birthDate = DateUtils.addDays(new Date(), -1);
+        when(contact.getBirthDate()).thenReturn(birthDate);
+
+        String lastName = "test";
+        String firstName = "test";
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getFirstName()).thenReturn(firstName);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(0 ,validationResult.getFailures().size());
+    }
+
+    @Test
+    public void testIncorrectFirstNameLastName() throws Exception {
+
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String lastName = new String(new char[250]);
+        String firstName = new String(new char[250]);
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getFirstName()).thenReturn(firstName);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(2 ,validationResult.getFailures().size());
+    }
+
+    @Test
+    public void testCorrectFirstNameLastName() throws Exception {
+
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String lastName = new String(new char[127]);
+        String firstName = new String(new char[127]);
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getFirstName()).thenReturn(firstName);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = new ValidationResult();
+        contactValidator.validateForSave(validationResult);
+
+        assertEquals(0 ,validationResult.getFailures().size());
+    }
+
+}

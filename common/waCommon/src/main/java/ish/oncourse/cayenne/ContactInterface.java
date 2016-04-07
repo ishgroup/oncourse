@@ -6,6 +6,7 @@ package ish.oncourse.cayenne;
 
 import ish.math.Money;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ public interface ContactInterface {
 	public static final String TOTAL_OWING_KEY = "totalOwing";
 	public static final String PAYMENTS = "payments";
 	public static final String DISPLAYABLE_PAYMENTS = "displayablePayments";
+
+	public static final String BIRTH_DATE_PROPERTY = "birthDate";
 
 	public static final String FULLNAME_FIRSTNAME_LASTNAME_PROP = "contactName";
 	public static final String FULLNAME_LASTNAME_FIRSTNAME_PROP = "full_name";
@@ -67,4 +70,6 @@ public interface ContactInterface {
 	public List<? extends InvoiceInterface> getOwingInvoices();
 
 	public List<? extends InvoiceInterface> getInvoices();
+
+	public Date getBirthDate();
 }
