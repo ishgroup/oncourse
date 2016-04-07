@@ -36,8 +36,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(1 ,validationResult.getFailures().size());
     }
@@ -62,8 +61,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(1 ,validationResult.getFailures().size());
         assertThat(validationResult.getFailures().get(0), instanceOf(BeanValidationFailure.class));
@@ -90,8 +88,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(0 ,validationResult.getFailures().size());
     }
@@ -107,8 +104,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(2 ,validationResult.getFailures().size());
     }
@@ -125,8 +121,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(0 ,validationResult.getFailures().size());
     }
@@ -140,8 +135,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(0 ,validationResult.getFailures().size());
     }
@@ -155,8 +149,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(1 ,validationResult.getFailures().size());
     }
@@ -171,8 +164,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(2 ,validationResult.getFailures().size());
     }
@@ -189,8 +181,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(0 ,validationResult.getFailures().size());
     }
@@ -207,8 +198,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        contactValidator.validateForSave(validationResult);
+        ValidationResult validationResult = contactValidator.validate();
 
         assertEquals(1 ,validationResult.getFailures().size());
         assertEquals("Street addresses are restricted to 200 characters." ,validationResult.getFailures().get(0).getDescription());
