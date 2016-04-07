@@ -269,17 +269,18 @@ public class PaymentProcessControllerTest extends ServiceTest {
         String sessionId = "SESSIONID";
         Session session = new MockSession();
 		PaymentInModel model = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
-        final PaymentProcessController paymentProcessController = new PaymentProcessControllerBuilder(new MockParallelExecutor(), null, cayenneService, 
+
+        //update parallel executor because unable to finally init them for test on startup
+        PaymentProcessController[] paymentProcessControllers = new PaymentProcessController[1];
+
+        paymentProcessControllers[0] = new PaymentProcessControllerBuilder(new MockParallelExecutor(paymentProcessControllers[0]), null, cayenneService,
         	paymentService, session) {
 			@Override
 			public IPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
         }.build(model);
-        //update parallel executor because unable to finally init them for test on startup
-        paymentProcessController.setParallelExecutor(new MockParallelExecutor(paymentProcessController));
-        
-        Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
-        assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
-        return paymentProcessController;
-    }
 
+        Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessControllers[0].getPaymentIn());
+        assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessControllers[0].getCurrentState());
+        return paymentProcessControllers[0];
+    }
 }

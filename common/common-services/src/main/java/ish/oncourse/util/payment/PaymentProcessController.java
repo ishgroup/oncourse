@@ -22,6 +22,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static ish.oncourse.util.payment.PaymentProcessController.PaymentProcessState.*;
 
@@ -40,6 +42,14 @@ public class PaymentProcessController {
     private PaymentInModel paymentInModel;
     private ObjectContext objectContext;
 
+    private Runnable commitDelegate;
+
+    /**
+     * If the property is true StackedPaymentMonitor is being started. If we don't need start the process just set the property false.
+     */
+    private boolean startWatcher = true;
+
+
     private Throwable throwable;
 
     private boolean illegalState = false;
@@ -52,88 +62,69 @@ public class PaymentProcessController {
 
     private List<Invoice> invoices;
 
-	/**
-	 * If the property is true StackedPaymentMonitor is being started. If we don't need start the process just set the property false.
-	 */
-    private boolean startWatcher = true;
-
-
-    public void setParallelExecutor(ParallelExecutor parallelExecutor) {
-        this.parallelExecutor = parallelExecutor;
-    }
-
-    public void setPaymentGatewayService(IPaymentGatewayService paymentGatewayService) {
-        this.paymentGatewayService = paymentGatewayService;
-    }
-    
-    public void setPaymentService(IPaymentService paymentService) {
-    	this.paymentService = paymentService;
-    }
+    private Lock lock = new ReentrantLock();
 
     public PaymentIn getPaymentIn() {
         return paymentInModel.getPaymentIn();
     }
     
-    public void setPaymentInModel(PaymentInModel paymentInModel) {
-        this.paymentInModel = paymentInModel;
-    }
-
-    public void setObjectContext(ObjectContext objectContext) {
-        this.objectContext = objectContext;
-    }
-
     private boolean keepInvoice() {
        return PaymentInUtil.hasSuccessEnrolments(paymentInModel.getPaymentIn()) || PaymentInUtil.hasSuccessProductItems(paymentInModel.getPaymentIn());
     }
 
 
-    public synchronized void processAction(PaymentAction action) {
-		if (currentState == ERROR)
-			return;
+    public void processAction(PaymentAction action) {
+        lock.lock();
+        try {
+            if (currentState == ERROR)
+                return;
 
-		illegalState = !validateState(action);
-        if (illegalState)
-            return;
+            illegalState = !validateState(action);
+            if (illegalState)
+                return;
 
-		if (!validateDatabaseState(action))
-		{
-			setThrowable(new IllegalStateException(String.format("paymentIn id: %s, sessionId: %s, status: %s, state: %s  has been changed by another process.",
-                    paymentInModel.getPaymentIn().getId(), paymentInModel.getPaymentIn().getSessionId(), paymentInModel.getPaymentIn().getStatus(), currentState)));
-			return;
-		}
-		switch (action) {
-        	case INIT_PAYMENT:
-                paymentInModel.getPaymentIn().setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
-                objectContext.commitChanges();
-                changeProcessState(FILL_PAYMENT_DETAILS);
-        		break;
-            case MAKE_PAYMENT:
-                processPayment();
-                break;
-            case TRY_ANOTHER_CARD:
-                tryOtherCard();
-                break;
-            case ABANDON_PAYMENT:
-                abandonPayment(action, keepInvoice());
-                break;
-            case CANCEL_PAYMENT:
-            	abandonPayment(action, true);
-                break;
-		    case EXPIRE_PAYMENT:
-		    	if (paymentService.isProcessedByGateway(paymentInModel.getPaymentIn())) {
-                    paymentInModel.getPaymentIn().setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
-		    		//if the payment expire by timeout we need to keep invoice
-		    		abandonPayment(action, true);
-		    	}
-                break;
-            case ABANDON_PAYMENT_KEEP_INVOICE:
-				abandonPayment(action, true);
-                break;
-            case UPDATE_PAYMENT_GATEWAY_STATUS:
-                updatePaymentGatewayStatus();
-                break;
-            default:
-                throw new IllegalArgumentException();
+            if (!validateDatabaseState(action))
+            {
+                setThrowable(new IllegalStateException(String.format("paymentIn id: %s, sessionId: %s, status: %s, state: %s  has been changed by another process.",
+                        paymentInModel.getPaymentIn().getId(), paymentInModel.getPaymentIn().getSessionId(), paymentInModel.getPaymentIn().getStatus(), currentState)));
+                return;
+            }
+            switch (action) {
+                case INIT_PAYMENT:
+                    paymentInModel.getPaymentIn().setStatus(PaymentStatus.CARD_DETAILS_REQUIRED);
+                    objectContext.commitChanges();
+                    changeProcessState(FILL_PAYMENT_DETAILS);
+                    break;
+                case MAKE_PAYMENT:
+                    processPayment();
+                    break;
+                case TRY_ANOTHER_CARD:
+                    tryOtherCard();
+                    break;
+                case ABANDON_PAYMENT:
+                    abandonPayment(action, keepInvoice());
+                    break;
+                case CANCEL_PAYMENT:
+                    abandonPayment(action, true);
+                    break;
+                case EXPIRE_PAYMENT:
+                    if (paymentService.isProcessedByGateway(paymentInModel.getPaymentIn())) {
+                        paymentInModel.getPaymentIn().setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
+                        //if the payment expire by timeout we need to keep invoice
+                        abandonPayment(action, true);
+                    }
+                    break;
+                case ABANDON_PAYMENT_KEEP_INVOICE:
+                    abandonPayment(action, true);
+                    break;
+                case UPDATE_PAYMENT_GATEWAY_STATUS:
+                    updatePaymentGatewayStatus();
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -261,95 +252,195 @@ public class PaymentProcessController {
         changeProcessState(FILL_PAYMENT_DETAILS);
     }
 
-    public synchronized PaymentProcessState getCurrentState() {
-        return currentState;
+    public PaymentProcessState getCurrentState() {
+        lock.lock();
+        try {
+            return currentState;
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public synchronized List<Invoice> getInvoices() {
-        return paymentInModel.getInvoices();
+    public List<Invoice> getInvoices() {
+        lock.lock();
+        try {
+            return paymentInModel.getInvoices();
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public synchronized College getCollege() {
-        return  paymentInModel.getPaymentIn().getCollege();
+    public College getCollege() {
+        lock.lock();
+        try {
+            return  paymentInModel.getPaymentIn().getCollege();
+        } finally {
+            lock.unlock();
+        }
     }
 
 
-    public synchronized Money getAmount() {
-        return paymentInModel.getPaymentIn().getAmount();
+    public Money getAmount() {
+        lock.lock();
+        try {
+            return paymentInModel.getPaymentIn().getAmount();
+        } finally {
+            lock.unlock();
+        }
     }
 
     public Contact getContact() {
-        return paymentInModel.getPaymentIn().getContact();
+        lock.lock();
+        try {
+            return paymentInModel.getPaymentIn().getContact();
+        } finally {
+            lock.unlock();
+        }
     }
 
     public PaymentIn performGatewayOperation() {
-    		paymentGatewayService.performGatewayOperation(paymentInModel);
-    		if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS) || 
-					(paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(paymentInModel.getPaymentIn().getStatusNotes())))
-    			commitChanges();
-    		return paymentInModel.getPaymentIn();
+        lock.lock();
+        try {
+            paymentGatewayService.performGatewayOperation(paymentInModel);
+            if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS) ||
+                    (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(paymentInModel.getPaymentIn().getStatusNotes())))
+                commitChanges();
+            return paymentInModel.getPaymentIn();
+        } finally {
+            lock.unlock();
+        }
     }
 
 
-    public synchronized boolean isProcessFinished() {
-        return currentState.equals(CANCEL) ||
-                currentState.equals(SUCCESS) ||
-                currentState.equals(ERROR) ||
-				currentState.equals(EXPIRED);
+    public boolean isProcessFinished() {
+        lock.lock();
+        try {
+            return currentState.equals(CANCEL) ||
+                    currentState.equals(SUCCESS) ||
+                    currentState.equals(ERROR) ||
+                    currentState.equals(EXPIRED);
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public synchronized Throwable geThrowable() {
-        return throwable;
+    public Throwable geThrowable() {
+        lock.lock();
+        try {
+            return throwable;
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public synchronized void setThrowable(Throwable throwable) {
-        this.currentState = ERROR;
-        this.throwable = throwable;
-        logger.error("Unexpected error", throwable);
+    public void setThrowable(Throwable throwable) {
+        lock.lock();
+        try {
+            this.currentState = ERROR;
+            this.throwable = throwable;
+            logger.error("Unexpected error", throwable);
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public synchronized boolean isIllegalState() {
-        return illegalState;
+    public boolean isIllegalState() {
+        lock.lock();
+        try {
+            return illegalState;
+        } finally {
+            lock.unlock();
+        }
     }
 
-	public synchronized boolean isExpired() {
-		return currentState == EXPIRED;
+	public boolean isExpired() {
+        lock.lock();
+        try {
+            return currentState == EXPIRED;
+        } finally {
+            lock.unlock();
+        }
 	}
 	
-	public synchronized boolean isFinalState()
-	{
-		return PaymentProcessState.isFinalState(currentState);
+	public boolean isFinalState() {
+        lock.lock();
+        try {
+            return PaymentProcessState.isFinalState(currentState);
+        } finally {
+            lock.unlock();
+        }
 	}
 
-	public synchronized boolean isProcessingState()
-	{
-		return PaymentProcessState.isProcessingState(currentState);
+	public boolean isProcessingState() {
+        lock.lock();
+        try {
+            return PaymentProcessState.isProcessingState(currentState);
+        } finally {
+            lock.unlock();
+        }
 	}
 
     public boolean isWrongPaymentExpressResult() {
-        return paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && currentState == ERROR;
+        lock.lock();
+        try {
+            return paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && currentState == ERROR;
+        } finally {
+            lock.unlock();
+        }
     }
 
 	public ICayenneService getCayenneService() {
 		return cayenneService;
 	}
 
-	public void setCayenneService(ICayenneService cayenneService) {
-		this.cayenneService = cayenneService;
-	}
-
-    /**
-     * If the property is false stackedPaymentMonitor is not started.
-     */
-    public boolean isStartWatcher() {
-        return startWatcher;
+    protected void commitChanges() {
+        lock.lock();
+        try {
+            if (commitDelegate != null) {
+                commitDelegate.run();
+            }
+            objectContext.commitChanges();
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public void setStartWatcher(boolean startWatcher) {
-        this.startWatcher = startWatcher;
+    public static  PaymentProcessController valueOf(ParallelExecutor parallelExecutor,
+                                                    IPaymentGatewayService paymentGatewayService,
+                                                    ICayenneService cayenneService,
+                                                    IPaymentService paymentService,
+                                                    PaymentInModel paymentInModel) {
+        PaymentProcessController result = new PaymentProcessController();
+        result.parallelExecutor = parallelExecutor;
+        result.paymentGatewayService = paymentGatewayService;
+        result.cayenneService = cayenneService;
+        result.paymentService = paymentService;
+
+        result.paymentInModel = paymentInModel;
+        result.objectContext = paymentInModel.getObjectContext();
+        return result;
     }
 
-    public static enum PaymentProcessState {
+    public static  PaymentProcessController valueOf(ParallelExecutor parallelExecutor,
+                                                    IPaymentGatewayService paymentGatewayService,
+                                                    ICayenneService cayenneService,
+                                                    IPaymentService paymentService,
+                                                    PaymentInModel paymentInModel, Runnable commitDelegate) {
+        PaymentProcessController result = new PaymentProcessController();
+        result.parallelExecutor = parallelExecutor;
+        result.paymentGatewayService = paymentGatewayService;
+        result.cayenneService = cayenneService;
+        result.paymentService = paymentService;
+
+        result.paymentInModel = paymentInModel;
+        result.objectContext = paymentInModel.getObjectContext();
+        result.commitDelegate = commitDelegate;
+        result.startWatcher = false;
+        return result;
+    }
+
+
+    public enum PaymentProcessState {
 		INIT, //initial state of the controller
 		FILL_PAYMENT_DETAILS, //payment form is opened
         PROCESSING_PAYMENT, //payment gateway is processing the payment
@@ -402,7 +493,7 @@ public class PaymentProcessController {
         }
     }
 
-    public static enum PaymentAction {
+    public enum PaymentAction {
 
 		INIT_PAYMENT(INIT), //initial action, should be called only once when paymentIn is set to controller
         MAKE_PAYMENT(FILL_PAYMENT_DETAILS),
@@ -414,7 +505,7 @@ public class PaymentProcessController {
 		EXPIRE_PAYMENT(FILL_PAYMENT_DETAILS, PROCESSING_PAYMENT, PROCESSING_ABANDON, PROCESSING_TRY_OTHER_CARD, FAILED);
 
 		private PaymentProcessState[] allowedPaymentProcessStates;
-		private PaymentAction(PaymentProcessState... allowedPaymentProcessStates) {
+        PaymentAction(PaymentProcessState... allowedPaymentProcessStates) {
 			this.allowedPaymentProcessStates = allowedPaymentProcessStates;
 		}
 
@@ -427,9 +518,4 @@ public class PaymentProcessController {
 			return false;
 		}
 	}
-
-	protected void commitChanges() {
-		objectContext.commitChanges();
-	}
-	
 }

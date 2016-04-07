@@ -26,8 +26,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
     private Map<String, String> errors = new HashMap<>();
 
 
-	public void init()
-	{
+	public void init() {
 		initPaymentProcessController();
 	}
 
@@ -117,14 +116,11 @@ public class PaymentEditorController implements PaymentEditorDelegate {
             PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.makePayment);
             purchaseController.performAction(actionParameter);
 
-			//we need refresh PaymentInModel before starting the process because VoucherPayments are recreated every enrol action
-			PaymentInModel model = getPaymentInModel();
-			paymentProcessController.setPaymentInModel(model);
-
             if (purchaseController.getErrors().isEmpty() &&
 					!purchaseController.isPaymentResult()) {
-				if (paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.INIT)
-					paymentProcessController.processAction(PaymentProcessController.PaymentAction.INIT_PAYMENT);
+				//we need refresh PaymentInModel before starting the process because VoucherPayments are recreated every enrol action
+				initPaymentProcessController();
+				paymentProcessController.processAction(PaymentProcessController.PaymentAction.INIT_PAYMENT);
 				paymentProcessController.processAction(MAKE_PAYMENT);
             }
         }
@@ -147,23 +143,19 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
 	private void initPaymentProcessController()
 	{
-		paymentProcessController = new PaymentProcessController() {
-			@Override
-			protected void commitChanges() {
-				purchaseController.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
-				purchaseController.commitApplications();
-				purchaseController.getModel().getObjectContext().commitChanges();
-				super.commitChanges();
-			}
-			
-		};
-
-		paymentProcessController.setPaymentInModel(getPaymentInModel());
-		paymentProcessController.setStartWatcher(false);
-		paymentProcessController.setObjectContext(purchaseController.getModel().getObjectContext());
-		paymentProcessController.setCayenneService(purchaseController.getCayenneService());
-		paymentProcessController.setPaymentGatewayService(purchaseController.getPaymentGatewayServiceBuilder().buildService());
-		paymentProcessController.setParallelExecutor(purchaseController.getParallelExecutor());
+		paymentProcessController = PaymentProcessController.valueOf(purchaseController.getParallelExecutor(),
+				purchaseController.getPaymentGatewayServiceBuilder().buildService(),
+				purchaseController.getCayenneService(),
+				purchaseController.getPaymentService(),
+				getPaymentInModel(),
+				new Runnable() {
+					@Override
+					public void run() {
+						purchaseController.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
+						purchaseController.commitApplications();
+						purchaseController.getModel().getObjectContext().commitChanges();
+					}
+				});
 	}
 
     private void finalizeProcess() {
@@ -176,7 +168,6 @@ public class PaymentEditorController implements PaymentEditorDelegate {
         paymentProcessController.processAction(ABANDON_PAYMENT);
 		purchaseController.setPaymentEditorController(null);
 		purchaseController.cloneModel();
-        initPaymentProcessController();
         PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.proceedToPayment);
         actionParameter.setValue(paymentProcessController.getPaymentIn());
         purchaseController.performAction(actionParameter);

@@ -22,10 +22,7 @@ public class StuckPaymentMonitor implements Invokable<Boolean> {
         try {
             logger.info("Wait for next state...");
             Thread.sleep(TIMEOUT);
-            synchronized (paymentProcessController)
-            {
-                paymentProcessController.processAction(PaymentProcessController.PaymentAction.EXPIRE_PAYMENT);
-            }
+            paymentProcessController.processAction(PaymentProcessController.PaymentAction.EXPIRE_PAYMENT);
             return Boolean.TRUE;
         } catch (InterruptedException e) {
             logger.info("StackedPaymentMonitor watchdog was interrupted", e);

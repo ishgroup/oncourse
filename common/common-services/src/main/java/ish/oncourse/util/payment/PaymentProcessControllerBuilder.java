@@ -27,23 +27,23 @@ public class PaymentProcessControllerBuilder {
 	}
 
 	public PaymentProcessController build(PaymentInModel model) {
-		PaymentProcessController controller = new PaymentProcessController();
 		if (session == null) {
 			throw new IllegalArgumentException("PaymentProcessControllerBuilder can't build the PaymentProcessController without valid session!");
 		}
 		//need to setup the session value for WebSiteService for correct execution of PaymentGatewayService
         session.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, model.getPaymentIn().getCollege().getId());
-		controller.setObjectContext(model.getObjectContext());
-		controller.setParallelExecutor(parallelExecutor);
+
 		IPaymentGatewayService paymentGatewayService = receivePaymentGatewayService();
 		if (paymentGatewayService instanceof DisabledPaymentGatewayService) {
 			throw new IllegalStateException("Unable to process payments for this college.");
 		}
-		controller.setPaymentGatewayService(paymentGatewayService);
-		controller.setCayenneService(cayenneService);
-		controller.setPaymentService(paymentService);
-		
-		controller.setPaymentInModel(model);
+
+		PaymentProcessController controller = PaymentProcessController.valueOf(parallelExecutor,
+				paymentGatewayService,
+				cayenneService,
+				paymentService,
+				model);
+
 		controller.processAction(PaymentAction.INIT_PAYMENT);
 		return controller;
 	}

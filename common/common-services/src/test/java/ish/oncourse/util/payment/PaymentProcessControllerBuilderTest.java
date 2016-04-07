@@ -75,16 +75,19 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		}
 		//create session
 		final Session session = request.getSession(true);
-		//test real execution emulation 
-		builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(), paymentGatewayServiceBuilder, cayenneService, paymentService, session);
+		//test real execution emulation
+
+		PaymentProcessController[] paymentProcessControllers = new PaymentProcessController[1];
+		builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(paymentProcessControllers[0]), paymentGatewayServiceBuilder, cayenneService, paymentService, session);
 		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		assertTrue("PaymentGatewayType may be only disabled before builder.build(sessionId) call",
 				builder.receivePaymentGatewayService() instanceof DisabledPaymentGatewayService);
 		paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
-        PaymentProcessController paymentProcessController = builder.build(paymentInModel);
+        paymentProcessControllers[0] = builder.build(paymentInModel);
+		PaymentProcessController paymentProcessController = paymentProcessControllers[0];
+
 		assertNotNull("build of paymentProcessController should return not null result for case when payment found", paymentProcessController);
 		//update parallel executor because unable to finally init them for test on startup
-		paymentProcessController.setParallelExecutor(new MockParallelExecutor(paymentProcessController));
 		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		assertTrue("If PaymentGatewayType evaluated for live value after session check this value should returns properly", 
 			builder.receivePaymentGatewayService() instanceof PaymentExpressGatewayService);
