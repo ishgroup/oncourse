@@ -2,7 +2,6 @@ dependencies {
 	compile "ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion"
 
 	compile 'javax.jmdns:jmdns:3.4.1'
-	compile 'javax.mail:mail:1.4.6'
 
 	compile 'org.apache.cayenne:cayenne-client:4.0.ROP3'
 
