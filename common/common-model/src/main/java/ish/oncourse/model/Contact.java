@@ -5,9 +5,11 @@ import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.auto._Contact;
+import ish.oncourse.model.interfaceBuilders.ContactInterfaceBuilder;
 import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.SecurityUtil;
+import ish.validation.ContactValidator;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.map.ObjRelationship;
@@ -39,12 +41,11 @@ public class Contact extends _Contact implements Queueable {
 	protected void validateForSave(ValidationResult result) {
 		super.validateForSave(result);
 
-		if (getDateOfBirth() != null) {
-			if (getDateOfBirth().after(new Date())) {
-				result.addFailure(ValidationFailure.validationFailure(this, _Contact.DATE_OF_BIRTH_PROPERTY,
-						"The birth date cannot be in the future."));
-				return;
-			}
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactInterfaceBuilder.build(this));
+		ValidationResult contactValidationResult = contactValidator.validate();
+
+		for (org.apache.cayenne.validation.ValidationFailure validationFailure : contactValidationResult.getFailures()) {
+			result.addFailure(validationFailure);
 		}
 	}
 
