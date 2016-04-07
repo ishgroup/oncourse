@@ -39,8 +39,17 @@ public class ContactValidator implements Validator {
             validateLastName();
         }
         validateStreet();
+        validateEmail();
 
         return result;
+    }
+
+    private void validateEmail() {
+        if (contact.getEmail() != null && contact.getEmail().length() > 0 && !ValidationUtil.isValidEmailAddress(contact.getEmail())) {
+            result.addFailure(new BeanValidationFailure(this, ContactInterface.EMAIL_KEY, "Please enter an email address in the correct format."));
+        } else if (contact.getEmail() != null && contact.getEmail().length() > 100) {
+            result.addFailure(new BeanValidationFailure(this, ContactInterface.EMAIL_KEY, "Email addresses are restricted to 100 characters."));
+        }
     }
 
     private void validateLastName() {

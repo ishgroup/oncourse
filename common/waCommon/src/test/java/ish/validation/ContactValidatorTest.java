@@ -203,4 +203,65 @@ public class ContactValidatorTest {
         assertEquals(1 ,validationResult.getFailures().size());
         assertEquals("Street addresses are restricted to 200 characters." ,validationResult.getFailures().get(0).getDescription());
     }
+
+    @Test
+    public void testCorrectEmail() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String firstName = "first";
+        String lastName = "last";
+        String email = "test@com.au";
+        when(contact.getFirstName()).thenReturn(firstName);
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getEmail()).thenReturn(email);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = contactValidator.validate();
+
+        assertEquals(0, validationResult.getFailures().size());
+    }
+
+    /**
+     * test incorrect email
+     * @throws Exception
+     */
+    @Test
+    public void testIncorrectEmail1() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String firstName = "first";
+        String lastName = "last";
+        String email = "test@com.au@au";
+        when(contact.getFirstName()).thenReturn(firstName);
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getEmail()).thenReturn(email);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = contactValidator.validate();
+
+        assertEquals(1, validationResult.getFailures().size());
+        assertEquals("Please enter an email address in the correct format.", validationResult.getFailures().get(0).getDescription());
+    }
+
+    /**
+     * test too long email
+     * @throws Exception
+     */
+    @Test
+    public void testIncorrectEmail2() throws Exception {
+        ContactInterface contact = Mockito.mock(ContactInterface.class);
+        String firstName = "first";
+        String lastName = "last";
+        String email = StringUtils.repeat("test",30).concat("@com.au");
+        when(contact.getFirstName()).thenReturn(firstName);
+        when(contact.getLastName()).thenReturn(lastName);
+        when(contact.getEmail()).thenReturn(email);
+
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
+
+        ValidationResult validationResult = contactValidator.validate();
+
+        assertEquals(1, validationResult.getFailures().size());
+        assertEquals("Email addresses are restricted to 100 characters.", validationResult.getFailures().get(0).getDescription());
+    }
 }

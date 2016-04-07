@@ -12,6 +12,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'commons-codec:commons-codec:1.10'
 	compile 'org.codehaus.groovy:groovy:2.4.5'
+    compile 'javax.mail:mail:1.4.6'
 }
 
 jar {
