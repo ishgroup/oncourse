@@ -5,7 +5,7 @@ import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
 import ish.oncourse.model.auto._Contact;
-import ish.oncourse.model.interfaceBuilders.ContactInterfaceBuilder;
+import ish.oncourse.model.builder.ContactInterfaceBuilder;
 import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.SecurityUtil;

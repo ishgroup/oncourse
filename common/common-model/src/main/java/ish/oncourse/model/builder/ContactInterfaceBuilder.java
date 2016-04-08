@@ -1,4 +1,4 @@
-package ish.oncourse.model.interfaceBuilders;
+package ish.oncourse.model.builder;
 
 import ish.math.Money;
 import ish.oncourse.cayenne.ContactInterface;
