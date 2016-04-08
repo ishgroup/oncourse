@@ -211,7 +211,8 @@ public class ContactValidatorTest {
         contactValidator.validate();
 
         assertEquals(1 ,validationResult.getFailures().size());
-        assertEquals("Street addresses are restricted to 200 characters." ,validationResult.getFailures().get(0).getDescription());
+        assertEquals(String.format(ContactValidator.LENGTH_FAILURE_FORMAT_STRING, ContactInterface.STREET_KEY, ContactValidator.STREET_MAX_LENGTH, street.length())
+                ,validationResult.getFailures().get(0).getDescription());
     }
 
     @Test
@@ -275,7 +276,8 @@ public class ContactValidatorTest {
         contactValidator.validate();
 
         assertEquals(1, validationResult.getFailures().size());
-        assertEquals("Email addresses are restricted to 100 characters.", validationResult.getFailures().get(0).getDescription());
+        assertEquals(String.format(ContactValidator.LENGTH_FAILURE_FORMAT_STRING, ContactInterface.EMAIL_KEY, ContactValidator.EMAIL_MAX_LENGTH, email.length()),
+                validationResult.getFailures().get(0).getDescription());
     }
 
     @Test

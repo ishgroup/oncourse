@@ -1,6 +1,8 @@
 package ish.validation;
 
+import org.apache.cayenne.validation.ValidationResult;
+
 public interface Validator {
 
-    void validate();
+    ValidationResult validate();
 }
