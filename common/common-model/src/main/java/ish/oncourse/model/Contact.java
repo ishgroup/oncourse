@@ -41,12 +41,8 @@ public class Contact extends _Contact implements Queueable {
 	protected void validateForSave(ValidationResult result) {
 		super.validateForSave(result);
 
-		ContactValidator contactValidator = ContactValidator.valueOf(ContactInterfaceBuilder.build(this));
-		ValidationResult contactValidationResult = contactValidator.validate();
-
-		for (org.apache.cayenne.validation.ValidationFailure validationFailure : contactValidationResult.getFailures()) {
-			result.addFailure(validationFailure);
-		}
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactInterfaceBuilder.build(this), result);
+		contactValidator.validate();
 	}
 
 	public String getFullName() {
