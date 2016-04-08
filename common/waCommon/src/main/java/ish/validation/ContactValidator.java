@@ -55,20 +55,22 @@ public class ContactValidator implements Validator {
      * On willow and angel sides database columns have different length.
      */
     private void validateWillowAngelPropertyLength() {
-        validatePropertyLength(contact.getPostcode(), ContactInterface.POSTCODE_KEY, POST_CODE_MAX_LENGTH);
-        validatePropertyLength(contact.getState(), ContactInterface.STATE_KEY, STATE_MAX_LENGTH);
-        validatePropertyLength(contact.getMobilePhone(), ContactInterface.MOBILE_PHONE_KEY, MOBILE_PHONE_NUMBER_MAX_LENGTH);
-        validatePropertyLength(contact.getHomePhone(), ContactInterface.PHONE_HOME_KEY, HOME_PHONE_NUMBER_MAX_LENGTH);
-        validatePropertyLength(contact.getFax(), ContactInterface.FAX_KEY, FAX_MAX_LENGTH);
-        validatePropertyLength(contact.getStreet(), ContactInterface.STREET_KEY, STREET_MAX_LENGTH);
-        validatePropertyLength(contact.getEmail(), ContactInterface.EMAIL_KEY, EMAIL_MAX_LENGTH);
-        validatePropertyLength(contact.getLastName(), ContactInterface.LAST_NAME_KEY, NAME_MAX_LENGTH);
-        validatePropertyLength(contact.getFirstName(), ContactInterface.FIRST_NAME_KEY, NAME_MAX_LENGTH);
+
+        validatePropertyLength(contact.getPostcode(), PropertyMaxLength.postCode);
+        validatePropertyLength(contact.getState(), PropertyMaxLength.state);
+        validatePropertyLength(contact.getMobilePhone(), PropertyMaxLength.mobilePhone);
+        validatePropertyLength(contact.getHomePhone(), PropertyMaxLength.homePhone);
+        validatePropertyLength(contact.getFax(), PropertyMaxLength.fax);
+        validatePropertyLength(contact.getStreet(), PropertyMaxLength.street);
+        validatePropertyLength(contact.getEmail(), PropertyMaxLength.email);
+        validatePropertyLength(contact.getLastName(), PropertyMaxLength.lastName);
+        validatePropertyLength(contact.getFirstName(), PropertyMaxLength.firstName);
     }
 
-    private void validatePropertyLength(String property, String propertyKey, int maxLength) {
-        if (property != null && property.length() > maxLength) {
-            addFailure(propertyKey, String.format(LENGTH_FAILURE_FORMAT_STRING, propertyKey, maxLength, property.length()));
+    private void validatePropertyLength(String property, PropertyMaxLength propertyMaxLength) {
+        if (property != null && property.length() > propertyMaxLength.getMaxLength()) {
+            addFailure(propertyMaxLength.getPropertyKey(),
+                    String.format(LENGTH_FAILURE_FORMAT_STRING, propertyMaxLength.getPropertyKey(), propertyMaxLength.getMaxLength(), property.length()));
         }
     }
 

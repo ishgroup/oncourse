@@ -15,71 +15,71 @@ import java.util.List;
  * @author ldeck, marcin
  */
 public interface ContactInterface {
-	public static final String CALENDAR_URL_KEY = "calendarUrl";
-	public static final String EMAIL_KEY = "email";
-	public static final String FIRST_NAME_KEY = "firstName";
-	public static final String LAST_NAME_KEY = "lastName";
-	public static final String MOBILE_PHONE_KEY = "mobilePhone";
-	public static final String POSTCODE_KEY = "postcode";
-	public static final String STREET_KEY = "street";
-	public static final String SUBURB_KEY = "suburb";
-	public static final String TOTAL_OWING_KEY = "totalOwing";
-	public static final String PAYMENTS = "payments";
-	public static final String DISPLAYABLE_PAYMENTS = "displayablePayments";
-	public static final String STATE_KEY = "state";
-	public static final String PHONE_HOME_KEY = "homePhone";
-	public static final String FAX_KEY = "fax";
-	public static final String BIRTH_DATE_KEY = "birthDate";
+	String CALENDAR_URL_KEY = "calendarUrl";
+	String EMAIL_KEY = "email";
+	String FIRST_NAME_KEY = "firstName";
+	String LAST_NAME_KEY = "lastName";
+	String MOBILE_PHONE_KEY = "mobilePhone";
+	String POSTCODE_KEY = "postcode";
+	String STREET_KEY = "street";
+	String SUBURB_KEY = "suburb";
+	String TOTAL_OWING_KEY = "totalOwing";
+	String PAYMENTS = "payments";
+	String DISPLAYABLE_PAYMENTS = "displayablePayments";
+	String STATE_KEY = "state";
+	String PHONE_HOME_KEY = "homePhone";
+	String FAX_KEY = "fax";
+	String BIRTH_DATE_KEY = "birthDate";
 
-	public static final String FULLNAME_FIRSTNAME_LASTNAME_PROP = "contactName";
-	public static final String FULLNAME_LASTNAME_FIRSTNAME_PROP = "full_name";
+	String FULLNAME_FIRSTNAME_LASTNAME_PROP = "contactName";
+	String FULLNAME_LASTNAME_FIRSTNAME_PROP = "full_name";
 
-	public String getCalendarUrl();
+	String getCalendarUrl();
 
-	public String getEmail();
+	String getEmail();
 
-	public String getFirstName();
+	String getFirstName();
 
 	/**
 	 * Convenience method, same as getName(false)
 	 * 
 	 * @return contact name in a format it is most commonly used: 'Smith, John'
 	 */
-	public String getName();
+	String getName();
 
 	/**
 	 * a unified method returning the formated contact name
-	 * 
+	 *
 	 * @param firstNameFirst - true for "John Smith", false for "Smith, John"
 	 * @return formatted name
 	 */
-	public String getName(boolean firstNameFirst);
+	String getName(boolean firstNameFirst);
 
-	public String getLastName();
+	String getLastName();
 
-	public String getMobilePhone();
+	String getMobilePhone();
 
-	public String getPostcode();
+	String getPostcode();
 
-	public String getStreet();
+	String getStreet();
 
-	public String getSuburb();
+	String getSuburb();
 
-	public Money getTotalOwing();
+	Money getTotalOwing();
 
-	public List<PaymentInterface> getPayments();
+	List<PaymentInterface> getPayments();
 
-	public List<? extends InvoiceInterface> getOwingInvoices();
+	List<? extends InvoiceInterface> getOwingInvoices();
 
-	public List<? extends InvoiceInterface> getInvoices();
+	List<? extends InvoiceInterface> getInvoices();
 
-	public Date getBirthDate();
+	Date getBirthDate();
 
-	public Boolean getIsCompany();
+	Boolean getIsCompany();
 
-	public String getState();
+	String getState();
 
-	public String getHomePhone();
+	String getHomePhone();
 
-	public String getFax();
+	String getFax();
 }
