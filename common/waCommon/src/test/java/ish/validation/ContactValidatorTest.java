@@ -2,6 +2,7 @@
 package ish.validation;
 
 import ish.oncourse.cayenne.ContactInterface;
+import ish.validation.ContactValidator.Property;
 import org.apache.cayenne.validation.BeanValidationFailure;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,7 @@ public class ContactValidatorTest {
 
     /**
      * birthDate same as new Date
+     *
      * @throws Exception
      */
 
@@ -39,12 +41,13 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(1 ,validationResult.getFailures().size());
+        assertEquals(1, validationResult.getFailures().size());
     }
 
 
     /**
      * birthDate is (new Date + 1day)
+     *
      * @throws Exception
      */
 
@@ -65,14 +68,15 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(1 ,validationResult.getFailures().size());
+        assertEquals(1, validationResult.getFailures().size());
         assertThat(validationResult.getFailures().get(0), instanceOf(BeanValidationFailure.class));
-        assertEquals(ContactInterface.BIRTH_DATE_KEY, ((BeanValidationFailure)validationResult.getFailures().get(0)).getProperty());
+        assertEquals(ContactInterface.BIRTH_DATE_KEY, ((BeanValidationFailure) validationResult.getFailures().get(0)).getProperty());
     }
 
 
     /**
      * birthDate is (new Date - 1day)
+     *
      * @throws Exception
      */
 
@@ -93,7 +97,7 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(0 ,validationResult.getFailures().size());
+        assertEquals(0, validationResult.getFailures().size());
     }
 
     @Test
@@ -110,7 +114,7 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(2 ,validationResult.getFailures().size());
+        assertEquals(2, validationResult.getFailures().size());
     }
 
     @Test
@@ -128,7 +132,7 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(0 ,validationResult.getFailures().size());
+        assertEquals(0, validationResult.getFailures().size());
     }
 
     @Test
@@ -143,7 +147,7 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(0 ,validationResult.getFailures().size());
+        assertEquals(0, validationResult.getFailures().size());
     }
 
     @Test
@@ -158,7 +162,7 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(1 ,validationResult.getFailures().size());
+        assertEquals(1, validationResult.getFailures().size());
     }
 
     @Test
@@ -174,7 +178,7 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(2 ,validationResult.getFailures().size());
+        assertEquals(2, validationResult.getFailures().size());
     }
 
     @Test
@@ -192,7 +196,7 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(0 ,validationResult.getFailures().size());
+        assertEquals(0, validationResult.getFailures().size());
     }
 
     @Test
@@ -210,9 +214,9 @@ public class ContactValidatorTest {
 
         contactValidator.validate();
 
-        assertEquals(1 ,validationResult.getFailures().size());
-        assertEquals(String.format(ContactValidator.LENGTH_FAILURE_FORMAT_STRING, ContactInterface.STREET_KEY, ContactValidator.STREET_MAX_LENGTH, street.length())
-                ,validationResult.getFailures().get(0).getDescription());
+        assertEquals(1, validationResult.getFailures().size());
+        assertEquals(String.format(ContactValidator.LENGTH_FAILURE_MESSAGE, ContactInterface.STREET_KEY, Property.street.getLength(), street.length())
+                , validationResult.getFailures().get(0).getDescription());
     }
 
     @Test
@@ -235,6 +239,7 @@ public class ContactValidatorTest {
 
     /**
      * test incorrect email
+     *
      * @throws Exception
      */
     @Test
@@ -258,6 +263,7 @@ public class ContactValidatorTest {
 
     /**
      * test too long email
+     *
      * @throws Exception
      */
     @Test
@@ -265,7 +271,7 @@ public class ContactValidatorTest {
         ContactInterface contact = Mockito.mock(ContactInterface.class);
         String firstName = "first";
         String lastName = "last";
-        String email = StringUtils.repeat("test",30).concat("@com.au");
+        String email = StringUtils.repeat("test", 30).concat("@com.au");
         when(contact.getFirstName()).thenReturn(firstName);
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getEmail()).thenReturn(email);
@@ -276,7 +282,7 @@ public class ContactValidatorTest {
         contactValidator.validate();
 
         assertEquals(1, validationResult.getFailures().size());
-        assertEquals(String.format(ContactValidator.LENGTH_FAILURE_FORMAT_STRING, ContactInterface.EMAIL_KEY, ContactValidator.EMAIL_MAX_LENGTH, email.length()),
+        assertEquals(String.format(ContactValidator.LENGTH_FAILURE_MESSAGE, ContactInterface.EMAIL_KEY, Property.email.getLength(), email.length()),
                 validationResult.getFailures().get(0).getDescription());
     }
 
@@ -285,11 +291,11 @@ public class ContactValidatorTest {
         ContactInterface contact = Mockito.mock(ContactInterface.class);
         String firstName = "first";
         String lastName = "last";
-        String postCode = StringUtils.repeat("a",ContactValidator.POST_CODE_MAX_LENGTH + 1);
-        String state = StringUtils.repeat("a",ContactValidator.STATE_MAX_LENGTH + 1);
-        String mobilePhone = StringUtils.repeat("a",ContactValidator.MOBILE_PHONE_NUMBER_MAX_LENGTH + 1);
-        String homePhone = StringUtils.repeat("a",ContactValidator.HOME_PHONE_NUMBER_MAX_LENGTH + 1);
-        String fax = StringUtils.repeat("a",ContactValidator.FAX_MAX_LENGTH + 1);
+        String postCode = StringUtils.repeat("a", Property.postcode.getLength() + 1);
+        String state = StringUtils.repeat("a", Property.state.getLength() + 1);
+        String mobilePhone = StringUtils.repeat("a", Property.mobilePhone.getLength() + 1);
+        String homePhone = StringUtils.repeat("a", Property.homePhone.getLength() + 1);
+        String fax = StringUtils.repeat("a", Property.fax.getLength() + 1);
 
 
         when(contact.getFirstName()).thenReturn(firstName);
