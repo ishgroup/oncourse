@@ -192,7 +192,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
     }
 
     public PaymentIn getPaymentIn() {
-        return paymentProcessController.getPaymentIn();
+        return purchaseController.getModel().getPayment();
     }
 
 	@Override
