@@ -267,9 +267,15 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 		List<Queueable> objects = objectsByAngelId(currentStub.getAngelId(), willowIdentifier);
 
-		if (objects.isEmpty()) {
+		if (objects.isEmpty() && currentStub.getWillowId() != null) {
 			//we need this since a lot of old records from angel has angelId=null.
 			objects = objectsByWillowId(currentStub.getWillowId(), willowIdentifier);
+			if (objects.isEmpty()) {
+				String message = String.format("Can not find corresponded record %s (willowId:%d, angelId:%d, collegeId:%d) by willowId on willow side.", willowIdentifier, currentStub.getWillowId(), currentStub.getAngelId(), webSiteService.getCurrentCollege().getId() );
+				StubUtils.setFailedStatus(replRecord);
+				replRecord.setMessage(message);
+				throw new IllegalArgumentException(message);
+			}
 		}
 
 		switch (objects.size()) {
