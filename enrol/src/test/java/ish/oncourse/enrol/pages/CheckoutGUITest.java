@@ -7,6 +7,7 @@ import ish.oncourse.services.paymentexpress.TestPaymentGatewayService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.dom.Element;
+import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.internal.test.TestableResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,11 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class CheckoutGUITest extends ACheckoutTest {
+
 	private static final Logger logger = LogManager.getLogger();
+
+	private static final String CONTACT_SHORTLIST_COOKIE = "1001";
+
 	@Before
 	public void setup() throws Exception {
 		setup("ish/oncourse/enrol/pages/CheckoutGUITest.xml");
@@ -26,108 +31,86 @@ public class CheckoutGUITest extends ACheckoutTest {
 
 	@Test
 	public void testSuccessfulPayment() throws InterruptedException {
-		getPageTester().getRegistry().getService("testCookiesService", ICookiesService.class).writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, "1001");
+		Element element = submitPaymentFormWithContactInformation();
 
-		//init load checkout
-		TestableResponse response = getPageTester().renderPageAndReturnResponse("Checkout");
-		assertResponse(response);
-		Element element = response.getRenderedDocument().getElementById("submitContact");
-		assertNotNull(element);
-
-		//add the first student
-		Map<String,String> parameters = new HashMap<>();
-		parameters.put("firstName", "Student1");
-		parameters.put("lastName", "Student1");
-		parameters.put("email", "Student1@Student1.net");
-		response = getPageTester().clickSubmitAndReturnResponse(element, parameters);
+		TestableResponse response = getPageTester().clickSubmitAndReturnResponse(element, createCreditCardParameters(TestPaymentGatewayService.VISA.getNumber()));
 		assertResponse(response);
 
-		element = response.getRenderedDocument().getElementById("proceedToPaymentEvent");
-		assertNotNull(element);
-
-		//press proceedToPayment
-		response = getPageTester().clickLinkAndReturnResponse(element);
-		assertResponse(response);
-
-		element = response.getRenderedDocument().getElementById("paymentSubmit");
-		assertNotNull(element);
-
-		//fill credit card details and press  paymentSubmit
-		parameters = new HashMap<>();
-		parameters.put("contact", "1001");
-		parameters.put("creditCardName", TestPaymentGatewayService.VISA.getName());
-		parameters.put("creditCardNumber", TestPaymentGatewayService.VISA.getNumber());
-		parameters.put("creditCardCVV", TestPaymentGatewayService.VISA.getCvv());
-		parameters.put("expiryMonth", "12");
-		parameters.put("expiryYear", "2027");
-		parameters.put("userAgreed", "on");
-
-		response = getPageTester().clickSubmitAndReturnResponse(element, parameters);
-		assertResponse(response);
-
-		assertTrue("DPS waitng page", response.getRenderedDocument().toString().contains("Please Wait!"));
-		//test dps gateway uses 10 sec interval to process payment
-		Thread.sleep(15000);
-		response = getPageTester().renderPageAndReturnResponse("Payment");
-		assertResponse(response);
-
-		assertTrue(response.getRenderedDocument().toString().contains("SUCCESSFUL"));
+		checkSuccessPayment(response);
 	}
 
 	@Test
 	public void testSuccessfulPaymentCreditCardNumberWithSpaces() throws InterruptedException {
-		getPageTester().getRegistry().getService("testCookiesService", ICookiesService.class).writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, "1001");
+		Element element = submitPaymentFormWithContactInformation();
 
-		//init load checkout
-		TestableResponse response = getPageTester().renderPageAndReturnResponse("Checkout");
-		assertResponse(response);
-		Element element = response.getRenderedDocument().getElementById("submitContact");
-		assertNotNull(element);
-
-		//add the first student
-		Map<String,String> parameters = new HashMap<>();
-		parameters.put("firstName", "Student1");
-		parameters.put("lastName", "Student1");
-		parameters.put("email", "Student1@Student1.net");
-		response = getPageTester().clickSubmitAndReturnResponse(element, parameters);
+		TestableResponse response = getPageTester().clickSubmitAndReturnResponse(element, createCreditCardParameters("4012 8888 8888 1881"));
 		assertResponse(response);
 
-		element = response.getRenderedDocument().getElementById("proceedToPaymentEvent");
-		assertNotNull(element);
-
-		//press proceedToPayment
-		response = getPageTester().clickLinkAndReturnResponse(element);
-		assertResponse(response);
-
-		element = response.getRenderedDocument().getElementById("paymentSubmit");
-		assertNotNull(element);
-
-		//fill credit card details and press  paymentSubmit
-		parameters = new HashMap<>();
-		parameters.put("contact", "1001");
-		parameters.put("creditCardName", TestPaymentGatewayService.VISA.getName());
-		parameters.put("creditCardNumber", "4012 8888 8888 1881");
-		parameters.put("creditCardCVV", TestPaymentGatewayService.VISA.getCvv());
-		parameters.put("expiryMonth", "12");
-		parameters.put("expiryYear", "2027");
-		parameters.put("userAgreed", "on");
-
-		response = getPageTester().clickSubmitAndReturnResponse(element, parameters);
-		assertResponse(response);
-
-		assertTrue("DPS waitng page", response.getRenderedDocument().toString().contains("Please Wait!"));
-		//test dps gateway uses 10 sec interval to process payment
-		Thread.sleep(15000);
-		response = getPageTester().renderPageAndReturnResponse("Payment");
-		assertResponse(response);
-
-		assertTrue(response.getRenderedDocument().toString().contains("SUCCESSFUL"));
+		checkSuccessPayment(response);
 	}
 
 	private void assertResponse(TestableResponse response) {
 		logger.debug(response.getRenderedDocument());
 		assertEquals(200, response.getStatus());
 		assertNull("Not Error500 page", response.getRenderedDocument().getElementById("exception"));
+	}
 
+	/**
+	 * @return credit card payment form
+	 */
+	private Element submitPaymentFormWithContactInformation() {
+		getPageTester().getRegistry().getService("testCookiesService", ICookiesService.class).writeCookieValue(CourseClass.SHORTLIST_COOKIE_KEY, CONTACT_SHORTLIST_COOKIE);
+
+		//init load checkout
+		TestableResponse response = getPageTester().renderPageAndReturnResponse("Checkout");
+		assertResponse(response);
+		Element element = response.getRenderedDocument().getElementById("submitContact");
+		assertNotNull(element);
+
+		response = getPageTester().clickSubmitAndReturnResponse(element, createStudentParameters());
+		assertResponse(response);
+
+		element = response.getRenderedDocument().getElementById("proceedToPaymentEvent");
+		assertNotNull(element);
+
+		//press proceedToPayment
+		response = getPageTester().clickLinkAndReturnResponse(element);
+		assertResponse(response);
+
+		element = response.getRenderedDocument().getElementById("paymentSubmit");
+		assertNotNull(element);
+
+		return element;
+	}
+
+	private void checkSuccessPayment(TestableResponse response) throws InterruptedException {
+		assertTrue("DPS waitng page", response.getRenderedDocument().toString().contains("Please Wait!"));
+		//test dps gateway uses 10 sec interval to process payment
+		Thread.sleep(15000);
+		response = getPageTester().renderPageAndReturnResponse("Payment");
+		assertResponse(response);
+
+		assertTrue(response.getRenderedDocument().toString().contains("SUCCESSFUL"));
+	}
+
+	private Map<String, String> createStudentParameters() {
+		Map<String,String> parameters = new HashMap<>();
+		parameters.put("firstName", "Student1");
+		parameters.put("lastName", "Student1");
+		parameters.put("email", "Student1@Student1.net");
+		return parameters;
+	}
+
+	private Map<String, String> createCreditCardParameters(String creditCardNumber) {
+		Map<String,String> parameters = new HashMap<>();
+		parameters.put("contact", CONTACT_SHORTLIST_COOKIE);
+		parameters.put("creditCardName", TestPaymentGatewayService.VISA.getName());
+		parameters.put("creditCardNumber", creditCardNumber);
+		parameters.put("creditCardCVV", TestPaymentGatewayService.VISA.getCvv());
+		parameters.put("expiryMonth", "12");
+		parameters.put("expiryYear", "2027");
+		parameters.put("userAgreed", "on");
+
+		return parameters;
 	}
 }
