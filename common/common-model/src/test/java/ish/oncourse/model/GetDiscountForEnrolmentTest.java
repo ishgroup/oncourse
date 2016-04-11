@@ -115,6 +115,7 @@ public class GetDiscountForEnrolmentTest extends AbstractDiscountPolicyTest {
 		college.setRequiresAvetmiss(false);
 		Contact contact = context.newObject(Contact.class);
 		contact.setFamilyName("familyName");
+		contact.setGivenName("givenName");
 		contact.setCollege(college);
 		student = context.newObject(Student.class);
 		student.setCollege(college);

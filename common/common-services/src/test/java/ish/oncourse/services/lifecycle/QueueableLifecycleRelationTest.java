@@ -47,6 +47,13 @@ public class QueueableLifecycleRelationTest extends ServiceTest {
 		Contact c1 = Cayenne.objectForPK(ctx, Contact.class, 1);
 		Contact c2 = Cayenne.objectForPK(ctx, Contact.class, 2);
 
+		c1.setFamilyName("FamilyName");
+		c1.setGivenName("GivenName");
+
+		c2.setFamilyName("FamilyName");
+		c2.setGivenName("GivenName");
+
+
 		c1.setStudent(st3);
 		c2.setTutor(t5);
 

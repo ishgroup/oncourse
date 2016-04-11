@@ -185,7 +185,9 @@ private static final Logger logger = LogManager.getLogger();
 		final Contact contact = context.newObject(Contact.class);
 		contact.setCollege(college);
 		contact.setStudent(student);
-		
+		contact.setFamilyName("FamilyName");
+		contact.setGivenName("GivenName");
+
 		final Tag mailingLists = context.newObject(Tag.class);
 		mailingLists.setCollege(college);
 		mailingLists.setName("Mailing Lists");

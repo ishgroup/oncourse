@@ -5,6 +5,7 @@ import ish.math.Money;
 import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang.time.DateUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -159,7 +160,7 @@ public class SampleEntityBuilder {
 		Country country = Cayenne.objectForPK(ctx, Country.class, 1l);
 		c.setCountry(country);
 
-		c.setDateOfBirth(new Date());
+		c.setDateOfBirth(DateUtils.addDays(new Date(), -1));
 		c.setEmailAddress("test@gmail.com");
 		c.setFamilyName("Putin");
 		c.setFaxNumber("777-771");
