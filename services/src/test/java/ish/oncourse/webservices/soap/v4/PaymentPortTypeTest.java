@@ -18,6 +18,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -590,12 +591,14 @@ public class PaymentPortTypeTest extends ServiceTest {
 		contactStub.setBusinessPhoneNumber("3241322");
 		contactStub.setCompany(false);
 		contactStub.setCountryId(86l);
-		contactStub.setDateOfBirth(today);
+		contactStub.setDateOfBirth(DateUtils.addDays(today, -1));
 		contactStub.setEmailAddress("test@test.com");
 		contactStub.setEntityIdentifier("Contact");
 		contactStub.setMarketingViaEmailAllowed(true);
 		contactStub.setMarketingViaPostAllowed(true);
 		contactStub.setMarketingViaSMSAllowed(true);
+		contactStub.setGivenName("Given");
+		contactStub.setFamilyName("Family");
 		return contactStub;
 	}
 
