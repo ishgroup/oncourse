@@ -1,6 +1,7 @@
 package ish.oncourse.services.site;
 
 import ish.oncourse.model.WebHostName;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.lifecycle.QueueableLifecycleListenerTest;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -36,6 +37,17 @@ public class WebSiteServiceTest extends ServiceTest {
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(dataSource.getConnection(), null), dataSet);
 		
 		this.cayenneService = getService(ICayenneService.class);
+	}
+
+	@Test
+	public void testTechnicalHostName() {
+		Request request = mock(Request.class);
+		when(request.getServerName()).thenReturn("constant2.live.oncourse.net.au");
+		WebSiteService service = new WebSiteService(request, cayenneService);
+		assertNotNull(service.getSiteKey());
+
+		WebSite webSite = service.getCurrentWebSite();
+		assertNotNull(webSite);
 	}
 	
 	@Test

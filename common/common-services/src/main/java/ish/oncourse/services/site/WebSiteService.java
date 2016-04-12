@@ -22,136 +22,133 @@ import java.util.regex.Pattern;
 
 public class WebSiteService implements IWebSiteService {
 
-	private static final String CURRENT_COLLEGE = "currentCollege";
+    private static final String CURRENT_COLLEGE = "currentCollege";
 
-	private final static Logger logger = LogManager.getLogger();
+    private final static Logger logger = LogManager.getLogger();
 
-	private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
-			.compile("([a-z,-]+)([.].+[.]oncourse[.]net[.]au)");
+    private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
+            .compile("([a-z0-9,-]+)([.].+[.]oncourse[.]net[.]au)");
 
-	private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
+    private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
 
-	public static final String CURRENT_WEB_SITE = "currentWebSite";
+    public static final String CURRENT_WEB_SITE = "currentWebSite";
 
-	@Inject
-	private Request request;
+    @Inject
+    private Request request;
 
-	@Inject
-	private ICayenneService cayenneService;
+    @Inject
+    private ICayenneService cayenneService;
 
-	@Inject
-	private ICookiesService cookiesService;
+    @Inject
+    private ICookiesService cookiesService;
 
-	/**
-	 * Default constructor for Tapestry ioc injection.
-	 */
-	public WebSiteService() {
+    /**
+     * Default constructor for Tapestry ioc injection.
+     */
+    public WebSiteService() {
 
-	}
+    }
 
-	/**
-	 * Constructor for unit tests.
-	 *
-	 * @param request
-	 *            tapestry5 http request
-	 * @param cayenneService
-	 *            cayenne service
-	 */
-	public WebSiteService(Request request, ICayenneService cayenneService) {
-		this.request = request;
-		this.cayenneService = cayenneService;
-	}
+    /**
+     * Constructor for unit tests.
+     *
+     * @param request        tapestry5 http request
+     * @param cayenneService cayenne service
+     */
+    public WebSiteService(Request request, ICayenneService cayenneService) {
+        this.request = request;
+        this.cayenneService = cayenneService;
+    }
 
-	private String getSiteKey() {
-		String serverName = request.getServerName().toLowerCase();
-		Matcher matcher = TECHNICAL_SITES_DOMAIN_PATTERN.matcher(serverName);
-		boolean siteKeyFound = matcher.matches();
-		String siteKey = null;
-		if (siteKeyFound) {
-			siteKey = matcher.group(1);
-		}
-		return siteKey;
-	}
+    String getSiteKey() {
+        String serverName = request.getServerName().toLowerCase();
+        Matcher matcher = TECHNICAL_SITES_DOMAIN_PATTERN.matcher(serverName);
+        boolean siteKeyFound = matcher.matches();
+        String siteKey = null;
+        if (siteKeyFound) {
+            siteKey = matcher.group(1);
+        }
+        return siteKey;
+    }
 
-	public WebHostName getCurrentDomain() {
+    WebHostName getCurrentDomain() {
+        WebHostName collegeDomain;
 
-		WebHostName collegeDomain = null;
+        String serverName = request.getServerName().toLowerCase();
+        String siteKey = getSiteKey();
 
-		String serverName = request.getServerName().toLowerCase();
-		String siteKey = getSiteKey();
+        if (siteKey != null) {
+            // there's not domain for technical site
+            return null;
+        } else {
+            collegeDomain = ObjectSelect.query(WebHostName.class)
+                    .and(WebHostName.NAME.eq(serverName))
+                    .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebHostName.class.getSimpleName())
+                    .selectFirst(cayenneService.sharedContext());
+        }
 
-		if (siteKey != null) {
-			// there's not domain for technical site
-			return null;
-		} else {
-			collegeDomain = ObjectSelect.query(WebHostName.class)
-					.and(WebHostName.NAME.eq(serverName))
-					.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebHostName.class.getSimpleName())
-					.selectFirst(cayenneService.sharedContext());
-		}
+        // commented as seems to be useless - uncomment if it will cause
+        // troubles
+        // if (collegeDomain == null) {
+        // collegeDomain = new WebHostName();
+        // collegeDomain.setName(serverName);
+        // }
 
-		// commented as seems to be useless - uncomment if it will cause
-		// troubles
-		// if (collegeDomain == null) {
-		// collegeDomain = new WebHostName();
-		// collegeDomain.setName(serverName);
-		// }
+        if (collegeDomain != null) {
+            logger.debug("Request server name: {} for Request #{} ; returning domain object with {}", request.getServerName(), request.hashCode(), collegeDomain.getName());
+        }
 
-		if (collegeDomain != null) {
-			logger.debug("Request server name: {} for Request #{} ; returning domain object with {}", request.getServerName(), request.hashCode(), collegeDomain.getName());
-		}
+        return collegeDomain;
+    }
 
-		return collegeDomain;
-	}
+    public WebSite getCurrentWebSite() {
+        WebSite currentWebSite = (WebSite) request.getAttribute(CURRENT_WEB_SITE);
+        if (currentWebSite != null) {
+            return currentWebSite;
+        }
+        WebHostName currentDomain = getCurrentDomain();
+        WebSite site = null;
+        if (currentDomain == null) {
+            site = ObjectSelect.query(WebSite.class)
+                    .where(WebSite.SITE_KEY.eq(getSiteKey()))
+                    .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, WebSite.class.toString())
+                    .selectFirst(cayenneService.sharedContext());
+        } else {
+            site = currentDomain.getWebSite();
+        }
+        request.setAttribute(CURRENT_WEB_SITE, site);
+        return site;
+    }
 
-	public WebSite getCurrentWebSite() {
-		WebSite currentWebSite = (WebSite) request.getAttribute(CURRENT_WEB_SITE);
-		if (currentWebSite != null) {
-			return currentWebSite;
-		}
-		WebHostName currentDomain = getCurrentDomain();
-		WebSite site = null;
-		SelectQuery query = new SelectQuery(WebSite.class);
-		if (currentDomain == null) {
-			query.andQualifier(ExpressionFactory.matchExp(WebSite.SITE_KEY_PROPERTY, getSiteKey()));
-		} else {
-			query.andQualifier(ExpressionFactory.matchDbExp(WebSite.ID_PK_COLUMN, currentDomain.getWebSite().getId()));
-		}
-		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		site = (WebSite) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
-		request.setAttribute(CURRENT_WEB_SITE, site);
-		return site;
-	}
+    public College getCurrentCollege() {
+        College currentCollege = (College) request.getAttribute(CURRENT_COLLEGE);
+        if (currentCollege != null) {
+            return currentCollege;
+        }
+        WebSite site = getCurrentWebSite();
+        College college = null;
+        SelectQuery query = new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, site
+                .getCollege().getId()));
+        query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 
-	public College getCurrentCollege() {
-		College currentCollege = (College) request.getAttribute(CURRENT_COLLEGE);
-		if (currentCollege != null) {
-			return currentCollege;
-		}
-		WebSite site = getCurrentWebSite();
-		College college = null;
-		SelectQuery query = new SelectQuery(College.class, ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, site
-				.getCollege().getId()));
-		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+        college = (College) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
+        request.setAttribute(CURRENT_COLLEGE, college);
+        return college;
+    }
 
-		college = (College) Cayenne.objectForQuery(cayenneService.sharedContext(), query);
-		request.setAttribute(CURRENT_COLLEGE, college);
-		return college;
-	}
+    public TimeZone getTimezone() {
+        TimeZone timezone = cookiesService.getClientTimezone();
+        if (timezone == null) {
+            timezone = cookiesService.getSimpleClientTimezone();
+            if (timezone == null) {
+                timezone = TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
+            }
+        }
+        return timezone;
+    }
 
-	public TimeZone getTimezone() {
-		TimeZone timezone = cookiesService.getClientTimezone();
-		if (timezone == null) {
-			timezone = cookiesService.getSimpleClientTimezone();
-			if (timezone == null) {
-				timezone = TimeZone.getTimeZone(this.getCurrentCollege().getTimeZone());
-			}
-		}
-		return timezone;
-	}
-
-	@Override
-	public List<WebSite> getSiteTemplates() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public List<WebSite> getSiteTemplates() {
+        throw new UnsupportedOperationException();
+    }
 }
