@@ -10,17 +10,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ish.validation.ContactValidationErrorCode.BIRTH_DATE_CAN_NOT_BE_IN_FUTURE;
-import static ish.validation.ContactValidationErrorCode.FIRST_NAME_NEED_TO_BE_PROVIDED;
-import static ish.validation.ContactValidationErrorCode.INCORRECT_EMAIL_FORMAT;
-import static ish.validation.ContactValidationErrorCode.INCORRECT_PROPERTY_LENGTH;
-import static ish.validation.ContactValidationErrorCode.LAST_NAME_NEED_TO_BE_PROVIDED;
+import static ish.validation.ContactErrorCode.birth_date_can_not_be_in_future;
+import static ish.validation.ContactErrorCode.first_name_need_to_be_provided;
+import static ish.validation.ContactErrorCode.incorrect_email_format;
+import static ish.validation.ContactErrorCode.incorrect_property_length;
+import static ish.validation.ContactErrorCode.last_name_need_to_be_provided;
 
 
-public class ContactValidator implements Validator<ContactValidationErrorCode> {
+public class ContactValidator implements Validator<ContactErrorCode> {
 
     private ContactInterface contact;
-    private Map<String, ContactValidationErrorCode> result;
+    private Map<String, ContactErrorCode> result;
 
     private ContactValidator() {
     }
@@ -34,7 +34,7 @@ public class ContactValidator implements Validator<ContactValidationErrorCode> {
     }
 
     @Override
-    public Map<String, ContactValidationErrorCode> validate() {
+    public Map<String, ContactErrorCode> validate() {
         validateBirthDate();
 
         if (Boolean.TRUE.equals(contact.getIsCompany())) {
@@ -62,26 +62,26 @@ public class ContactValidator implements Validator<ContactValidationErrorCode> {
     private void validateLength(Property property) {
         String value = (String) PropertyUtils.getProperty(contact, property.name());
         if (value != null && value.length() > property.getLength()) {
-            result.put(property.name(), INCORRECT_PROPERTY_LENGTH);
+            result.put(property.name(), incorrect_property_length);
         }
     }
 
 
     private void validateEmail() {
         if (!StringUtils.isBlank(contact.getEmail()) && !ValidationUtil.isValidEmailAddress(contact.getEmail())) {
-            result.put(ContactInterface.EMAIL_KEY, INCORRECT_EMAIL_FORMAT);
+            result.put(ContactInterface.EMAIL_KEY, incorrect_email_format);
         }
     }
 
     private void validateLastName() {
         if (StringUtils.isBlank(contact.getLastName())) {
-            result.put(ContactInterface.LAST_NAME_KEY, LAST_NAME_NEED_TO_BE_PROVIDED);
+            result.put(ContactInterface.LAST_NAME_KEY, last_name_need_to_be_provided);
         }
     }
 
     private void validateFirstName() {
         if (StringUtils.isBlank(contact.getFirstName())) {
-            result.put(ContactInterface.FIRST_NAME_KEY, FIRST_NAME_NEED_TO_BE_PROVIDED);
+            result.put(ContactInterface.FIRST_NAME_KEY, first_name_need_to_be_provided);
         }
     }
 
@@ -90,7 +90,7 @@ public class ContactValidator implements Validator<ContactValidationErrorCode> {
             Date birthDateTruncated = DateUtils.truncate(contact.getBirthDate(), Calendar.DAY_OF_MONTH);
             Date currentDateTruncated = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
             if (birthDateTruncated.after(DateUtils.addDays(currentDateTruncated, -1))) {
-                result.put(ContactInterface.BIRTH_DATE_KEY, BIRTH_DATE_CAN_NOT_BE_IN_FUTURE);
+                result.put(ContactInterface.BIRTH_DATE_KEY, birth_date_can_not_be_in_future);
 
             }
         }

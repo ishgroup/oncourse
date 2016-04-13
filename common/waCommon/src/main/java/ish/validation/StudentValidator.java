@@ -6,13 +6,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ish.validation.StudentValidationErrorCode.YEAR_SCHOOL_COMPLETED_IN_FUTURE;
-import static ish.validation.StudentValidationErrorCode.YEAR_SCHOOL_COMPLETED_WITHIN_LAST_100_YEAR;
+import static ish.validation.StudentErrorCode.year_school_completed_in_future;
+import static ish.validation.StudentErrorCode.year_school_completed_within_last_100_year;
 
-public class StudentValidator implements Validator<StudentValidationErrorCode> {
+public class StudentValidator implements Validator<StudentErrorCode> {
 
     private StudentInterface student;
-    private Map<String, StudentValidationErrorCode> result;
+    private Map<String, StudentErrorCode> result;
 
     private StudentValidator() {
     }
@@ -26,7 +26,7 @@ public class StudentValidator implements Validator<StudentValidationErrorCode> {
     }
 
     @Override
-    public Map<String, StudentValidationErrorCode> validate() {
+    public Map<String, StudentErrorCode> validate() {
         validateYearSchoolCompleted();
 
         return result;
@@ -37,9 +37,9 @@ public class StudentValidator implements Validator<StudentValidationErrorCode> {
             final int givenYear = student.getYearSchoolCompleted();
             final int thisYear = Calendar.getInstance().get(Calendar.YEAR);
             if (givenYear > thisYear) {
-                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, YEAR_SCHOOL_COMPLETED_IN_FUTURE);
+                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, year_school_completed_in_future);
             } else if (thisYear - givenYear > 100) {
-                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, YEAR_SCHOOL_COMPLETED_WITHIN_LAST_100_YEAR);
+                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, year_school_completed_within_last_100_year);
             }
         }
     }

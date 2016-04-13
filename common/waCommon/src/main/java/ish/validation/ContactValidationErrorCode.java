@@ -1,9 +1,0 @@
-package ish.validation;
-
-public enum ContactValidationErrorCode {
-    BIRTH_DATE_CAN_NOT_BE_IN_FUTURE,
-    FIRST_NAME_NEED_TO_BE_PROVIDED,
-    LAST_NAME_NEED_TO_BE_PROVIDED,
-    INCORRECT_EMAIL_FORMAT,
-    INCORRECT_PROPERTY_LENGTH
-}

@@ -17,7 +17,7 @@ public class StudentValidatorTest {
         StudentInterface student = Mockito.mock(StudentInterface.class);
         when(student.getYearSchoolCompleted()).thenReturn(2006);
 
-        Map<String, StudentValidationErrorCode> errorCodeMap = validateStudent(student);
+        Map<String, StudentErrorCode> errorCodeMap = validateStudent(student);
 
         assertEquals(0, errorCodeMap.size());
     }
@@ -27,7 +27,7 @@ public class StudentValidatorTest {
         StudentInterface student = Mockito.mock(StudentInterface.class);
         when(student.getYearSchoolCompleted()).thenReturn(Calendar.getInstance().get(Calendar.YEAR) + 1);
 
-        Map<String, StudentValidationErrorCode> errorCodeMap = validateStudent(student);
+        Map<String, StudentErrorCode> errorCodeMap = validateStudent(student);
 
         assertEquals(1, errorCodeMap.size());
     }
@@ -37,15 +37,15 @@ public class StudentValidatorTest {
         StudentInterface student = Mockito.mock(StudentInterface.class);
         when(student.getYearSchoolCompleted()).thenReturn(Calendar.getInstance().get(Calendar.YEAR) -101);
 
-        Map<String, StudentValidationErrorCode> errorCodeMap = validateStudent(student);
+        Map<String, StudentErrorCode> errorCodeMap = validateStudent(student);
 
         assertEquals(1, errorCodeMap.size());
     }
 
-    private Map<String, StudentValidationErrorCode> validateStudent(StudentInterface student) {
+    private Map<String, StudentErrorCode> validateStudent(StudentInterface student) {
 
         StudentValidator studentValidator = StudentValidator.valueOf(student);
-        Map<String, StudentValidationErrorCode> errorCodeMap = studentValidator.validate();
+        Map<String, StudentErrorCode> errorCodeMap = studentValidator.validate();
         return errorCodeMap;
     }
 }

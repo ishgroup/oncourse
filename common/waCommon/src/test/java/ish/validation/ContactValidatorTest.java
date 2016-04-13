@@ -36,7 +36,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(1, errorCodeMap.size());
     }
@@ -62,7 +62,7 @@ public class ContactValidatorTest {
 
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(1, errorCodeMap.size());
         assertNotNull(errorCodeMap.get(ContactInterface.BIRTH_DATE_KEY));
@@ -89,7 +89,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-         Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+         Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(0, errorCodeMap.size());
     }
@@ -106,7 +106,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(2, errorCodeMap.size());
     }
@@ -124,7 +124,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(0, errorCodeMap.size());
     }
@@ -139,7 +139,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(0, errorCodeMap.size());
     }
@@ -154,7 +154,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(1, errorCodeMap.size());
     }
@@ -170,7 +170,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(2, errorCodeMap.size());
     }
@@ -188,7 +188,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(0, errorCodeMap.size());
     }
@@ -206,7 +206,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(1, errorCodeMap.size());
         assertNotNull(errorCodeMap.get(ContactInterface.STREET_KEY));
@@ -225,7 +225,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(0, errorCodeMap.size());
     }
@@ -248,7 +248,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(1, errorCodeMap.size());
         assertNotNull(errorCodeMap.get(ContactInterface.EMAIL_KEY));
@@ -272,7 +272,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(1, errorCodeMap.size());
         assertNotNull(errorCodeMap.get(ContactInterface.EMAIL_KEY));
@@ -301,7 +301,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(5, errorCodeMap.size());
     }
@@ -321,7 +321,7 @@ public class ContactValidatorTest {
         
         ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
+        Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
         assertEquals(2, errorCodeMap.size());
     }
