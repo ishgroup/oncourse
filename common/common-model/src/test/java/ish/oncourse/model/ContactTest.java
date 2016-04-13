@@ -6,8 +6,11 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.map.EntityResolver;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -98,4 +101,206 @@ public class ContactTest {
 		assertTrue(validationResult.hasFailures());
 	}
 
+	/**
+	 * test incorrect property length
+	 */
+	@Test
+	public void testIncorrectPropertyLengthValidation() {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getGivenName()).thenReturn(StringUtils.repeat("a", 129));
+		when(contact.getFamilyName()).thenReturn( StringUtils.repeat("a", 129));
+		when(contact.getPostcode()).thenReturn(StringUtils.repeat("a", 21));
+		when(contact.getState()).thenReturn(StringUtils.repeat("a", 21));
+		when(contact.getMobilePhoneNumber()).thenReturn(StringUtils.repeat("a", 21));
+		when(contact.getHomePhoneNumber()).thenReturn( StringUtils.repeat("a", 21));
+		when(contact.getFaxNumber()).thenReturn(StringUtils.repeat("a", 21));
+		when(contact.getEmailAddress()).thenReturn(StringUtils.repeat("email", 30).concat("@com.au"));
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertTrue(validationResult.hasFailures());
+		assertEquals(8, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testValidateForSaveBirthDate1() {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getGivenName()).thenReturn("first");
+		when(contact.getFamilyName()).thenReturn("last");
+		when(contact.getDateOfBirth()).thenReturn(new Date());
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertTrue(validationResult.hasFailures());
+		assertEquals(1, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testValidateForSaveBirthDate2() {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getGivenName()).thenReturn("first");
+		when(contact.getFamilyName()).thenReturn("last");
+		when(contact.getDateOfBirth()).thenReturn(DateUtils.addDays(new Date(), 1));
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertTrue(validationResult.hasFailures());
+		assertEquals(1, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testValidateForSaveBirthDate3() {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getGivenName()).thenReturn("first");
+		when(contact.getFamilyName()).thenReturn("last");
+		when(contact.getDateOfBirth()).thenReturn(DateUtils.addDays(new Date(), -1));
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertEquals(0, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testValidateContactWithoutNameValidation() {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getGivenName()).thenReturn(null);
+		when(contact.getFamilyName()).thenReturn(null);
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertEquals(2, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testValidateCompanyValidation() {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getFamilyName()).thenReturn("CompanyName");
+		when(contact.getIsCompany()).thenReturn(true);
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertEquals(0, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testIncorrectCompanyNameValidation() throws Exception {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getFamilyName()).thenReturn("");
+		when(contact.getIsCompany()).thenReturn(true);
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertEquals(1, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testIncorrectEmailValidation() throws Exception {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getFamilyName()).thenReturn("familyName");
+		when(contact.getGivenName()).thenReturn("givenName");
+		when(contact.getEmailAddress()).thenReturn("test@com.au@au");
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertEquals(1, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testCorrectEmailValidation() throws Exception {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getFamilyName()).thenReturn("familyName");
+		when(contact.getGivenName()).thenReturn("givenName");
+		when(contact.getEmailAddress()).thenReturn("test@com.au");
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertEquals(0, validationResult.getFailures().size());
+	}
+
+	@Test
+	public void testContactWithNullFieldsValidation() throws Exception {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getFamilyName()).thenReturn(null);
+		when(contact.getGivenName()).thenReturn(null);
+		when(contact.getPostcode()).thenReturn(null);
+		when(contact.getState()).thenReturn(null);
+		when(contact.getMobilePhoneNumber()).thenReturn(null);
+		when(contact.getHomePhoneNumber()).thenReturn(null);
+		when(contact.getFaxNumber()).thenReturn(null);
+		when(contact.getEmailAddress()).thenReturn(null);
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertEquals(2, validationResult.getFailures().size());
+	}
 }
