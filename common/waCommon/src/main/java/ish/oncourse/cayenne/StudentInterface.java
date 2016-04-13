@@ -4,16 +4,13 @@
  */
 package ish.oncourse.cayenne;
 
-import java.util.List;
 
 public interface StudentInterface {
 
 	String CONTACT_KEY = "contact";
-	String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
+	String YEAR_SCHOOL_COMPLETED_KEY = "yearSchoolCompleted";
 
 	ContactInterface getContact();
-
-	List<StudentConcessionInterface> getConcessions();
 
 	Integer getYearSchoolCompleted();
 
