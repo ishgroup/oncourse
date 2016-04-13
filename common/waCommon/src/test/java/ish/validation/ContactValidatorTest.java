@@ -3,18 +3,16 @@ package ish.validation;
 
 import ish.oncourse.cayenne.ContactInterface;
 import ish.validation.ContactValidator.Property;
-import org.apache.cayenne.validation.BeanValidationFailure;
-import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Date;
+import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 public class ContactValidatorTest {
@@ -36,12 +34,11 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getFirstName()).thenReturn(firstName);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(1, validationResult.getFailures().size());
+        assertEquals(1, errorCodeMap.size());
     }
 
 
@@ -63,14 +60,12 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getFirstName()).thenReturn(firstName);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(1, validationResult.getFailures().size());
-        assertThat(validationResult.getFailures().get(0), instanceOf(BeanValidationFailure.class));
-        assertEquals(ContactInterface.BIRTH_DATE_KEY, ((BeanValidationFailure) validationResult.getFailures().get(0)).getProperty());
+        assertEquals(1, errorCodeMap.size());
+        assertNotNull(errorCodeMap.get(ContactInterface.BIRTH_DATE_KEY));
     }
 
 
@@ -91,13 +86,12 @@ public class ContactValidatorTest {
         String firstName = "test";
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getFirstName()).thenReturn(firstName);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+         Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        contactValidator.validate();
-
-        assertEquals(0, validationResult.getFailures().size());
+        assertEquals(0, errorCodeMap.size());
     }
 
     @Test
@@ -109,12 +103,12 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getFirstName()).thenReturn(firstName);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(2, validationResult.getFailures().size());
+        assertEquals(2, errorCodeMap.size());
     }
 
     @Test
@@ -127,12 +121,12 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getFirstName()).thenReturn(firstName);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(0, validationResult.getFailures().size());
+        assertEquals(0, errorCodeMap.size());
     }
 
     @Test
@@ -142,12 +136,12 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getIsCompany()).thenReturn(true);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(0, validationResult.getFailures().size());
+        assertEquals(0, errorCodeMap.size());
     }
 
     @Test
@@ -157,12 +151,12 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getIsCompany()).thenReturn(true);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(1, validationResult.getFailures().size());
+        assertEquals(1, errorCodeMap.size());
     }
 
     @Test
@@ -173,12 +167,12 @@ public class ContactValidatorTest {
         when(contact.getFirstName()).thenReturn(firstName);
         when(contact.getLastName()).thenReturn(lastName);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(2, validationResult.getFailures().size());
+        assertEquals(2, errorCodeMap.size());
     }
 
     @Test
@@ -191,12 +185,12 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getStreet()).thenReturn(street);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(0, validationResult.getFailures().size());
+        assertEquals(0, errorCodeMap.size());
     }
 
     @Test
@@ -209,14 +203,13 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getStreet()).thenReturn(street);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(1, validationResult.getFailures().size());
-        assertEquals(String.format(ContactValidator.LENGTH_FAILURE_MESSAGE, ContactInterface.STREET_KEY, Property.street.getLength(), street.length())
-                , validationResult.getFailures().get(0).getDescription());
+        assertEquals(1, errorCodeMap.size());
+        assertNotNull(errorCodeMap.get(ContactInterface.STREET_KEY));
     }
 
     @Test
@@ -229,12 +222,12 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getEmail()).thenReturn(email);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(0, validationResult.getFailures().size());
+        assertEquals(0, errorCodeMap.size());
     }
 
     /**
@@ -252,13 +245,13 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getEmail()).thenReturn(email);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(1, validationResult.getFailures().size());
-        assertEquals("Please enter an email address in the correct format.", validationResult.getFailures().get(0).getDescription());
+        assertEquals(1, errorCodeMap.size());
+        assertNotNull(errorCodeMap.get(ContactInterface.EMAIL_KEY));
     }
 
     /**
@@ -276,14 +269,13 @@ public class ContactValidatorTest {
         when(contact.getLastName()).thenReturn(lastName);
         when(contact.getEmail()).thenReturn(email);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(1, validationResult.getFailures().size());
-        assertEquals(String.format(ContactValidator.LENGTH_FAILURE_MESSAGE, ContactInterface.EMAIL_KEY, Property.email.getLength(), email.length()),
-                validationResult.getFailures().get(0).getDescription());
+        assertEquals(1, errorCodeMap.size());
+        assertNotNull(errorCodeMap.get(ContactInterface.EMAIL_KEY));
     }
 
     @Test
@@ -306,12 +298,12 @@ public class ContactValidatorTest {
         when(contact.getHomePhone()).thenReturn(homePhone);
         when(contact.getFax()).thenReturn(fax);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(5, validationResult.getFailures().size());
+        assertEquals(5, errorCodeMap.size());
     }
 
     @Test
@@ -326,11 +318,11 @@ public class ContactValidatorTest {
         when(contact.getFax()).thenReturn(null);
         when(contact.getEmail()).thenReturn(null);
 
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contact, validationResult);
+        
+        ContactValidator contactValidator = ContactValidator.valueOf(contact);
 
-        contactValidator.validate();
+        Map<String, ContactValidationErrorCode> errorCodeMap = contactValidator.validate();
 
-        assertEquals(2, validationResult.getFailures().size());
+        assertEquals(2, errorCodeMap.size());
     }
 }

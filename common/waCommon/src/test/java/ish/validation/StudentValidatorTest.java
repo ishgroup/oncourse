@@ -1,11 +1,11 @@
 package ish.validation;
 
 import ish.oncourse.cayenne.StudentInterface;
-import org.apache.cayenne.validation.ValidationResult;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -17,9 +17,9 @@ public class StudentValidatorTest {
         StudentInterface student = Mockito.mock(StudentInterface.class);
         when(student.getYearSchoolCompleted()).thenReturn(2006);
 
-        ValidationResult validationResult = validateStudent(student);
+        Map<String, StudentValidationErrorCode> errorCodeMap = validateStudent(student);
 
-        assertEquals(0, validationResult.getFailures().size());
+        assertEquals(0, errorCodeMap.size());
     }
 
     @Test
@@ -27,9 +27,9 @@ public class StudentValidatorTest {
         StudentInterface student = Mockito.mock(StudentInterface.class);
         when(student.getYearSchoolCompleted()).thenReturn(Calendar.getInstance().get(Calendar.YEAR) + 1);
 
-        ValidationResult validationResult = validateStudent(student);
+        Map<String, StudentValidationErrorCode> errorCodeMap = validateStudent(student);
 
-        assertEquals(1, validationResult.getFailures().size());
+        assertEquals(1, errorCodeMap.size());
     }
 
     @Test
@@ -37,15 +37,15 @@ public class StudentValidatorTest {
         StudentInterface student = Mockito.mock(StudentInterface.class);
         when(student.getYearSchoolCompleted()).thenReturn(Calendar.getInstance().get(Calendar.YEAR) -101);
 
-        ValidationResult validationResult = validateStudent(student);
+        Map<String, StudentValidationErrorCode> errorCodeMap = validateStudent(student);
 
-        assertEquals(1, validationResult.getFailures().size());
+        assertEquals(1, errorCodeMap.size());
     }
 
-    private ValidationResult validateStudent(StudentInterface student) {
-        ValidationResult validationResult = new ValidationResult();
-        StudentValidator studentValidator = StudentValidator.valueOf(student, validationResult);
-        studentValidator.validate();
-        return validationResult;
+    private Map<String, StudentValidationErrorCode> validateStudent(StudentInterface student) {
+
+        StudentValidator studentValidator = StudentValidator.valueOf(student);
+        Map<String, StudentValidationErrorCode> errorCodeMap = studentValidator.validate();
+        return errorCodeMap;
     }
 }

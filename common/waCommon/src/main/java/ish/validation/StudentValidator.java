@@ -1,29 +1,32 @@
 package ish.validation;
 
 import ish.oncourse.cayenne.StudentInterface;
-import org.apache.cayenne.validation.BeanValidationFailure;
-import org.apache.cayenne.validation.ValidationResult;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
-public class StudentValidator implements Validator {
+import static ish.validation.StudentValidationErrorCode.YEAR_SCHOOL_COMPLETED_IN_FUTURE;
+import static ish.validation.StudentValidationErrorCode.YEAR_SCHOOL_COMPLETED_WITHIN_LAST_100_YEAR;
+
+public class StudentValidator implements Validator<StudentValidationErrorCode> {
 
     private StudentInterface student;
-    private ValidationResult result;
+    private Map<String, StudentValidationErrorCode> result;
 
     private StudentValidator() {
     }
 
-    public static StudentValidator valueOf(StudentInterface student, ValidationResult validationResult) {
+    public static StudentValidator valueOf(StudentInterface student) {
         StudentValidator studentValidator = new StudentValidator();
         studentValidator.student = student;
-        studentValidator.result = validationResult;
+        studentValidator.result = new HashMap<>();
 
         return studentValidator;
     }
 
     @Override
-    public ValidationResult validate() {
+    public Map<String, StudentValidationErrorCode> validate() {
         validateYearSchoolCompleted();
 
         return result;
@@ -34,11 +37,9 @@ public class StudentValidator implements Validator {
             final int givenYear = student.getYearSchoolCompleted();
             final int thisYear = Calendar.getInstance().get(Calendar.YEAR);
             if (givenYear > thisYear) {
-                result.addFailure(new BeanValidationFailure(this, StudentInterface.YEAR_SCHOOL_COMPLETED_KEY,
-                        "Year school completed cannot be in the future if supplied."));
+                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, YEAR_SCHOOL_COMPLETED_IN_FUTURE);
             } else if (thisYear - givenYear > 100) {
-                result.addFailure(new BeanValidationFailure(this, StudentInterface.YEAR_SCHOOL_COMPLETED_KEY,
-                        "Year school completed if supplied should be within the last 100 years."));
+                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, YEAR_SCHOOL_COMPLETED_WITHIN_LAST_100_YEAR);
             }
         }
     }

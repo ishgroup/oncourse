@@ -1,8 +1,8 @@
 package ish.validation;
 
-import org.apache.cayenne.validation.ValidationResult;
+import java.util.Map;
 
-public interface Validator {
+public interface Validator <T> {
 
-    ValidationResult validate();
+    Map<String, T> validate();
 }

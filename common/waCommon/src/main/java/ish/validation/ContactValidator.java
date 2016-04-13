@@ -2,35 +2,39 @@ package ish.validation;
 
 import ish.oncourse.cayenne.ContactInterface;
 import org.apache.cayenne.reflect.PropertyUtils;
-import org.apache.cayenne.validation.BeanValidationFailure;
-import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static ish.validation.ContactValidationErrorCode.BIRTH_DATE_CAN_NOT_BE_IN_FUTURE;
+import static ish.validation.ContactValidationErrorCode.FIRST_NAME_NEED_TO_BE_PROVIDED;
+import static ish.validation.ContactValidationErrorCode.INCORRECT_EMAIL_FORMAT;
+import static ish.validation.ContactValidationErrorCode.INCORRECT_PROPERTY_LENGTH;
+import static ish.validation.ContactValidationErrorCode.LAST_NAME_NEED_TO_BE_PROVIDED;
 
 
-public class ContactValidator implements Validator {
+public class ContactValidator implements Validator<ContactValidationErrorCode> {
 
     private ContactInterface contact;
-    private ValidationResult result;
-
-    static final String LENGTH_FAILURE_MESSAGE = "Field %s exceeds maximum allowed length (%d chars): %d))";
+    private Map<String, ContactValidationErrorCode> result;
 
     private ContactValidator() {
     }
 
-    public static ContactValidator valueOf(ContactInterface contact, ValidationResult validationResult) {
+    public static ContactValidator valueOf(ContactInterface contact) {
         ContactValidator contactValidator = new ContactValidator();
         contactValidator.contact = contact;
-        contactValidator.result = validationResult;
+        contactValidator.result = new HashMap<>();
 
         return contactValidator;
     }
 
     @Override
-    public ValidationResult validate() {
+    public Map<String, ContactValidationErrorCode> validate() {
         validateBirthDate();
 
         if (Boolean.TRUE.equals(contact.getIsCompany())) {
@@ -58,27 +62,26 @@ public class ContactValidator implements Validator {
     private void validateLength(Property property) {
         String value = (String) PropertyUtils.getProperty(contact, property.name());
         if (value != null && value.length() > property.getLength()) {
-            addFailure(property.name(),
-                    String.format(LENGTH_FAILURE_MESSAGE, property.name(), property.getLength(), value.length()));
+            result.put(property.name(), INCORRECT_PROPERTY_LENGTH);
         }
     }
 
 
     private void validateEmail() {
         if (!StringUtils.isBlank(contact.getEmail()) && !ValidationUtil.isValidEmailAddress(contact.getEmail())) {
-            addFailure(ContactInterface.EMAIL_KEY, "Please enter an email address in the correct format.");
+            result.put(ContactInterface.EMAIL_KEY, INCORRECT_EMAIL_FORMAT);
         }
     }
 
     private void validateLastName() {
         if (StringUtils.isBlank(contact.getLastName())) {
-            addFailure(ContactInterface.LAST_NAME_KEY, "You need to enter a last name.");
+            result.put(ContactInterface.LAST_NAME_KEY, LAST_NAME_NEED_TO_BE_PROVIDED);
         }
     }
 
     private void validateFirstName() {
         if (StringUtils.isBlank(contact.getFirstName())) {
-            addFailure(ContactInterface.FIRST_NAME_KEY, "You need to enter a first name.");
+            result.put(ContactInterface.FIRST_NAME_KEY, FIRST_NAME_NEED_TO_BE_PROVIDED);
         }
     }
 
@@ -87,13 +90,10 @@ public class ContactValidator implements Validator {
             Date birthDateTruncated = DateUtils.truncate(contact.getBirthDate(), Calendar.DAY_OF_MONTH);
             Date currentDateTruncated = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
             if (birthDateTruncated.after(DateUtils.addDays(currentDateTruncated, -1))) {
-                addFailure(ContactInterface.BIRTH_DATE_KEY, "The birth date cannot be in future.");
+                result.put(ContactInterface.BIRTH_DATE_KEY, BIRTH_DATE_CAN_NOT_BE_IN_FUTURE);
+
             }
         }
-    }
-
-    private void addFailure(String propertyKey, String message) {
-        result.addFailure(new BeanValidationFailure(this, propertyKey, message));
     }
 
     enum Property {
