@@ -1,10 +1,7 @@
 
 package ish.validation;
 
-import ish.math.Money;
 import ish.oncourse.cayenne.ContactInterface;
-import ish.oncourse.cayenne.InvoiceInterface;
-import ish.oncourse.cayenne.PaymentInterface;
 import ish.validation.ContactValidator.Property;
 import org.apache.cayenne.validation.BeanValidationFailure;
 import org.apache.cayenne.validation.ValidationResult;
@@ -14,7 +11,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
@@ -336,114 +332,5 @@ public class ContactValidatorTest {
         contactValidator.validate();
 
         assertEquals(2, validationResult.getFailures().size());
-    }
-
-    /**
-     * test creation of ContactInterface as inner class
-     */
-    @Test
-    public void testContactInterface() {
-
-        ContactInterface contactInterface = new ContactInterface() {
-            @Override
-            public String getCalendarUrl() {
-                return null;
-            }
-
-            @Override
-            public String getEmail() {
-                return null;
-            }
-
-            @Override
-            public String getFirstName() {
-                return "first";
-            }
-
-            @Override
-            public String getName() {
-                return null;
-            }
-
-            @Override
-            public String getName(boolean firstNameFirst) {
-                return null;
-            }
-
-            @Override
-            public String getLastName() {
-                return "second";
-            }
-
-            @Override
-            public String getMobilePhone() {
-                return null;
-            }
-
-            @Override
-            public String getPostcode() {
-                return null;
-            }
-
-            @Override
-            public String getStreet() {
-                return null;
-            }
-
-            @Override
-            public String getSuburb() {
-                return null;
-            }
-
-            @Override
-            public Money getTotalOwing() {
-                return null;
-            }
-
-            @Override
-            public List<PaymentInterface> getPayments() {
-                return null;
-            }
-
-            @Override
-            public List<? extends InvoiceInterface> getOwingInvoices() {
-                return null;
-            }
-
-            @Override
-            public List<? extends InvoiceInterface> getInvoices() {
-                return null;
-            }
-
-            @Override
-            public Date getBirthDate() {
-                return null;
-            }
-
-            @Override
-            public Boolean getIsCompany() {
-                return null;
-            }
-
-            @Override
-            public String getState() {
-                return null;
-            }
-
-            @Override
-            public String getHomePhone() {
-                return null;
-            }
-
-            @Override
-            public String getFax() {
-                return null;
-            }
-        };
-
-        ValidationResult validationResult = new ValidationResult();
-        ContactValidator contactValidator = ContactValidator.valueOf(contactInterface, validationResult);
-
-        contactValidator.validate();
     }
 }

@@ -1,11 +1,17 @@
 package ish.oncourse.model;
 
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.utils.ContactDelegator;
+import ish.validation.ContactValidator;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.map.EntityResolver;
+import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Test for {@link Contact} entity.
@@ -74,4 +80,22 @@ public class ContactTest {
 					Contact.INVALID_EMAIL_MESSAGE, result);
 		}
 	}
+
+	@Test
+	public void testValidateForSave() {
+		EntityResolver entityResolver = mock(EntityResolver.class);
+		ObjectContext objectContext = mock(ObjectContext.class);
+		when(objectContext.getEntityResolver()).thenReturn(entityResolver);
+
+		Contact contact = mock(Contact.class);
+		when(contact.getObjectContext()).thenReturn(objectContext);
+
+		when(contact.getGivenName()).thenReturn(StringUtils.repeat("a", 500));
+
+		ValidationResult validationResult = new ValidationResult();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
+		contactValidator.validate();
+		assertTrue(validationResult.hasFailures());
+	}
+
 }
