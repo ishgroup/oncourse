@@ -14,6 +14,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
+import static ish.common.types.EnrolmentStatus.*;
+import static java.lang.String.format;
+
 public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueable {
 
 	private static final long serialVersionUID = 8361159336001022666L;
@@ -22,7 +25,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	/**
 	 * Statuses for which the class place is considered to be occupied.
 	 */
-	static List<EnrolmentStatus> VALID_ENROLMENTS = Arrays.asList(EnrolmentStatus.IN_TRANSACTION, EnrolmentStatus.SUCCESS);
+	static List<EnrolmentStatus> VALID_ENROLMENTS = Arrays.asList(EnrolmentStatus.IN_TRANSACTION, SUCCESS);
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -120,7 +123,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 			}
 			InvoiceLine originalInvoiceLine = invoices.first();
 			if (originalInvoiceLine.getFinalPriceToPayIncTax().isLessThan(Money.ZERO)) {
-				logger.error(String.format("Negative invoiceLine with id = %s used as original for enrolment with id = %s", originalInvoiceLine.getId(), getId()));
+				logger.error(format("Negative invoiceLine with id = %s used as original for enrolment with id = %s", originalInvoiceLine.getId(), getId()));
 			}
 			return originalInvoiceLine;
 		}
@@ -155,7 +158,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	}
 
 	private boolean isAsyncReplicationAllowedByStatusCheck() {
-		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != EnrolmentStatus.QUEUED;
+		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != QUEUED;
 	}
 
 	@Override
@@ -165,21 +168,16 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	}
 
 	private void validateStatus(EnrolmentStatus status) {
+
+		if (getStatus().equals(status)) {
+			return;
+		}
+		if (status == null) {
+			throw new NullPointerException(String.format("Enrolment: objectId: %s, angelId= %d: Cannot set null status.", getObjectId(), getAngelId()));
+		}
 		boolean error;
 		switch (getStatus()) {
 			case NEW:
-				error = (status == null);
-				break;
-			case QUEUED:
-				error = (status == null || EnrolmentStatus.NEW.equals(status));
-				break;
-			case IN_TRANSACTION:
-				// IN_TRANSACTION can be replaced to NEW in web enrolment when the enrolment is being marked as disabled.
-				error = (status == null || EnrolmentStatus.QUEUED.equals(status));
-				break;
-			case SUCCESS:
-				error = (!(EnrolmentStatus.SUCCESS.equals(status) || EnrolmentStatus.CANCELLED.equals(status) || EnrolmentStatus.REFUNDED.equals(status)));
-				break;
 			case FAILED:
 			case FAILED_CARD_DECLINED:
 			case FAILED_NO_PLACES:
@@ -188,15 +186,25 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 			case CORRUPTED:
 				error = !(getStatus().equals(status));
 				break;
+			case QUEUED:
+				error = NEW.equals(status);
+				break;
+			case IN_TRANSACTION:
+				// IN_TRANSACTION can be replaced to NEW in web enrolment when the enrolment is being marked as disabled.
+				error = QUEUED.equals(status);
+				break;
+			case SUCCESS:
+				error = (!(SUCCESS.equals(status) || CANCELLED.equals(status) || REFUNDED.equals(status)));
+				break;
 			default:
-				throw new IllegalArgumentException(String.format(
-						"Unsupported status %s found for enrolment with id= %s and angelId= %s",
-						getStatus(), getId(), getAngelId()));
+				throw new IllegalArgumentException(format(
+						"Enrolment: objectId: %s, angelId= %d: Unsupported status %s found!",
+						getObjectId(), getAngelId(), getStatus()));
 		}
 		if (error) {
-			throw new IllegalArgumentException(String.format(
-					"Can't set the %s status for enrolment with %s status and id= %s and angelId= %s!",
-					status, getStatus(), getId(), getAngelId()));
+			throw new IllegalArgumentException(format(
+					"Enrolment: objectId: %s, angelId= %d: Can't set the %s status for enrolment with %s status!",
+					getObjectId(), getAngelId(), status, getStatus()));
 		}
 	}
 
