@@ -253,7 +253,7 @@ public class ContactEditorParser {
         ContactErrorCode contactErrorCode = errorMap.get(propertyKey);
         if (contactErrorCode != null) {
             if (contactErrorCode.equals(ContactErrorCode.incorrectPropertyLength)) {
-                return String.format("Max length of the field is %d chars", maxLength);
+                return String.format("Max length of the %s field is %d characters", propertyKey, maxLength);
             }
         }
         return null;
