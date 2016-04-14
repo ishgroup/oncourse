@@ -92,7 +92,7 @@ public class ContactValidator implements Validator<ContactErrorCode> {
         }
     }
 
-    enum Property {
+    public enum Property {
         firstName(128),
         lastName(128),
         postcode(20),
