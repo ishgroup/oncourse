@@ -5,6 +5,7 @@ import ish.oncourse.enrol.utils.ContactCredentialsDelegator;
 import ish.oncourse.utils.StringUtilities;
 import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.services.Request;
 
 import java.util.HashMap;
@@ -17,7 +18,6 @@ public class AddContactParser {
 	public static final String FIELD_NAME_email = "email";
 
 	public static final String LENGTH_FAILURE_MESSAGE = "The %s cannot exceed %d characters.";
-	public static final String INVALID_EMAIL_MESSAGE = "The email address does not appear to be valid.";
 
 	private Request request;
 	private ContactCredentials contactCredentials;
@@ -30,52 +30,69 @@ public class AddContactParser {
 		contactCredentials.setFirstName(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_firstName)));
 		contactCredentials.setLastName(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_lastName)));
 		contactCredentials.setEmail(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_email)));
-		parseLastName();
-		parseEmail();
+
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactCredentialsDelegator.valueOf(contactCredentials));
+		Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
+
+		parseLastName(errorCodeMap.get(ContactInterface.FIRST_NAME_KEY));
+		parseEmail(errorCodeMap.get(ContactInterface.EMAIL_KEY));
 		
 		if (!isCompany) {
-			parseFirstName();
+			parseFirstName(errorCodeMap.get(ContactInterface.FIRST_NAME_KEY));
 		}
 	}
 
-	private void parseFirstName()
+	private void parseFirstName(ContactErrorCode errorCode)
 	{
-		ContactErrorCode errorCode = getErrorCode(ContactInterface.FIRST_NAME_KEY);
 		if (errorCode != null) {
-			if (errorCode.equals(ContactErrorCode.firstNameNeedToBeProvided)) {
-				errors.put(FIELD_NAME_firstName, "The student's first name is required.");
-			} else if (errorCode.equals(ContactErrorCode.incorrectPropertyLength)) {
-				errors.put(FIELD_NAME_firstName, String.format(LENGTH_FAILURE_MESSAGE, "first", ContactValidator.Property.firstName.getLength()));
+			switch (errorCode) {
+				case firstNameNeedToBeProvided:
+					errors.put(FIELD_NAME_firstName, "The student's first name is required.");
+					break;
+				case incorrectPropertyLength:
+					errors.put(FIELD_NAME_firstName, String.format(LENGTH_FAILURE_MESSAGE, "first", ContactValidator.Property.firstName.getLength()));
+					break;
+				default:
+					throw new IllegalArgumentException();
 			}
 		}
-		if (contactCredentials.getFirstName().split("\\d").length != 1) {
+
+		if (StringUtils.containsAny(contactCredentials.getFirstName(), "0123456789")) {
 			errors.put(FIELD_NAME_firstName, "The first name cannot contain number characters.");
 		}
 	}
 
-	private void parseLastName()
+	private void parseLastName(ContactErrorCode errorCode)
 	{
-		ContactErrorCode errorCode = getErrorCode(ContactInterface.LAST_NAME_KEY);
 		if (errorCode != null) {
-			if (errorCode.equals(ContactErrorCode.lastNameNeedToBeProvided)) {
-				errors.put(FIELD_NAME_lastName, "The student's last name is required.");
-			} else if (errorCode.equals(ContactErrorCode.incorrectPropertyLength)) {
-				errors.put(FIELD_NAME_lastName, String.format(LENGTH_FAILURE_MESSAGE, "last", ContactValidator.Property.lastName.getLength()));
+			switch (errorCode) {
+				case lastNameNeedToBeProvided:
+					errors.put(FIELD_NAME_lastName, "The student's last name is required.");
+					break;
+				case incorrectPropertyLength:
+					errors.put(FIELD_NAME_lastName, String.format(LENGTH_FAILURE_MESSAGE, "last", ContactValidator.Property.lastName.getLength()));
+					break;
+				default:
+					throw new IllegalArgumentException();
 			}
 		}
-		if (contactCredentials.getFirstName().split("\\d").length != 1) {
+		if (StringUtils.containsAny(contactCredentials.getLastName(), "0123456789")) {
 			errors.put(FIELD_NAME_lastName, "The last name cannot contain number characters.");
 		}
 	}
 
-	private void parseEmail()
+	private void parseEmail(ContactErrorCode errorCode)
 	{
-		ContactErrorCode errorCode = getErrorCode(ContactInterface.EMAIL_KEY);
 		if (errorCode != null) {
-			if (errorCode.equals(ContactErrorCode.incorrectEmailFormat)) {
-				errors.put(FIELD_NAME_email, INVALID_EMAIL_MESSAGE);
-			} else if (errorCode.equals(ContactErrorCode.incorrectPropertyLength)) {
-				errors.put(FIELD_NAME_email, String.format(LENGTH_FAILURE_MESSAGE, "email", ContactValidator.Property.email.getLength()));
+			switch (errorCode) {
+				case incorrectEmailFormat:
+					errors.put(FIELD_NAME_email, "The email address does not appear to be valid.");
+					break;
+				case incorrectPropertyLength:
+					errors.put(FIELD_NAME_email, String.format(LENGTH_FAILURE_MESSAGE, "email", ContactValidator.Property.email.getLength()));
+					break;
+				default:
+					throw new IllegalArgumentException();
 			}
 		}
 		if (contactCredentials.getEmail() == null) {
@@ -107,11 +124,5 @@ public class AddContactParser {
 
 	public void setCompany(boolean isCompany) {
 		this.isCompany = isCompany;
-	}
-
-	private ContactErrorCode getErrorCode(String propertyKey) {
-		ContactValidator contactValidator = ContactValidator.valueOf(ContactCredentialsDelegator.valueOf(contactCredentials));
-		Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
-		return errorCodeMap.get(propertyKey);
 	}
 }
