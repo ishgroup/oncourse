@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MessageFormat<E extends Queueable> {
 	private static final Logger logger = LogManager.getLogger();
-	private static final String MESSAGE_template = "%s: willowId: %d, angelId: %d: %s";
+	private static final String MESSAGE_template = "%s: willowId: %d, angelId: %d, collegeId: %d, %s";
 
 	private E entity;
 
@@ -16,7 +16,8 @@ public class MessageFormat<E extends Queueable> {
 	public String format() {
 		try {
 			String message = String.format(messageTemplate, parameters);
-			return String.format(MESSAGE_template, entity.getClass().getSimpleName(), entity.getId(), entity.getAngelId(), message);
+			return String.format(MESSAGE_template, entity.getClass().getSimpleName(), entity.getId(), entity.getAngelId(),
+					(entity.getCollege() != null ? entity.getCollege().getId(): null), message);
 		} catch (Exception e) {
 			logger.error("entity: {}, messageTemplate: {}, parameters: {}: Unexpected exception!", entity, messageTemplate, parameters);
 			return messageTemplate;
