@@ -45,8 +45,11 @@ public class AddContactParser {
 			if (errorCode.equals(ContactErrorCode.firstNameNeedToBeProvided)) {
 				errors.put(FIELD_NAME_firstName, "The student's first name is required.");
 			} else if (errorCode.equals(ContactErrorCode.incorrectPropertyLength)) {
-				errors.put(FIELD_NAME_firstName, String.format(LENGTH_FAILURE_MESSAGE, "first name", ContactValidator.Property.firstName));
+				errors.put(FIELD_NAME_firstName, String.format(LENGTH_FAILURE_MESSAGE, "first", ContactValidator.Property.firstName.getLength()));
 			}
+		}
+		if (contactCredentials.getFirstName().split("\\d").length != 1) {
+			errors.put(FIELD_NAME_firstName, "The first name cannot contain number characters.");
 		}
 	}
 
@@ -55,10 +58,13 @@ public class AddContactParser {
 		ContactErrorCode errorCode = getErrorCode(ContactInterface.LAST_NAME_KEY);
 		if (errorCode != null) {
 			if (errorCode.equals(ContactErrorCode.lastNameNeedToBeProvided)) {
-				errors.put(FIELD_NAME_firstName, "The student's last name is required.");
+				errors.put(FIELD_NAME_lastName, "The student's last name is required.");
 			} else if (errorCode.equals(ContactErrorCode.incorrectPropertyLength)) {
-				errors.put(FIELD_NAME_firstName, String.format(LENGTH_FAILURE_MESSAGE, "last name", ContactValidator.Property.lastName));
+				errors.put(FIELD_NAME_lastName, String.format(LENGTH_FAILURE_MESSAGE, "last", ContactValidator.Property.lastName.getLength()));
 			}
+		}
+		if (contactCredentials.getFirstName().split("\\d").length != 1) {
+			errors.put(FIELD_NAME_lastName, "The last name cannot contain number characters.");
 		}
 	}
 
@@ -67,10 +73,13 @@ public class AddContactParser {
 		ContactErrorCode errorCode = getErrorCode(ContactInterface.EMAIL_KEY);
 		if (errorCode != null) {
 			if (errorCode.equals(ContactErrorCode.incorrectEmailFormat)) {
-				errors.put(FIELD_NAME_firstName, INVALID_EMAIL_MESSAGE);
+				errors.put(FIELD_NAME_email, INVALID_EMAIL_MESSAGE);
 			} else if (errorCode.equals(ContactErrorCode.incorrectPropertyLength)) {
-				errors.put(FIELD_NAME_firstName, String.format(LENGTH_FAILURE_MESSAGE, "email name", ContactValidator.Property.email));
+				errors.put(FIELD_NAME_email, String.format(LENGTH_FAILURE_MESSAGE, "email", ContactValidator.Property.email.getLength()));
 			}
+		}
+		if (contactCredentials.getEmail() == null) {
+			errors.put(FIELD_NAME_email, "The student's email is required.");
 		}
 	}
 
