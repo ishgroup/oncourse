@@ -6,8 +6,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ish.validation.StudentErrorCode.year_school_completed_in_future;
-import static ish.validation.StudentErrorCode.year_school_completed_within_last_100_year;
+import static ish.validation.StudentErrorCode.*;
 
 public class StudentValidator implements Validator<StudentErrorCode> {
 
@@ -37,9 +36,9 @@ public class StudentValidator implements Validator<StudentErrorCode> {
             final int givenYear = student.getYearSchoolCompleted();
             final int thisYear = Calendar.getInstance().get(Calendar.YEAR);
             if (givenYear > thisYear) {
-                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, year_school_completed_in_future);
+                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, yearSchoolCompletedInFuture);
             } else if (thisYear - givenYear > 100) {
-                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, year_school_completed_within_last_100_year);
+                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, yearSchoolCompletedWithinLast100Year);
             }
         }
     }

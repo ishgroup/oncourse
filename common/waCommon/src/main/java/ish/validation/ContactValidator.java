@@ -10,11 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ish.validation.ContactErrorCode.birth_date_can_not_be_in_future;
-import static ish.validation.ContactErrorCode.first_name_need_to_be_provided;
-import static ish.validation.ContactErrorCode.incorrect_email_format;
-import static ish.validation.ContactErrorCode.incorrect_property_length;
-import static ish.validation.ContactErrorCode.last_name_need_to_be_provided;
+import static ish.validation.ContactErrorCode.*;
 
 
 public class ContactValidator implements Validator<ContactErrorCode> {
@@ -62,26 +58,26 @@ public class ContactValidator implements Validator<ContactErrorCode> {
     private void validateLength(Property property) {
         String value = (String) PropertyUtils.getProperty(contact, property.name());
         if (value != null && value.length() > property.getLength()) {
-            result.put(property.name(), incorrect_property_length);
+            result.put(property.name(), incorrectPropertyLength);
         }
     }
 
 
     private void validateEmail() {
         if (!StringUtils.isBlank(contact.getEmail()) && !ValidationUtil.isValidEmailAddress(contact.getEmail())) {
-            result.put(ContactInterface.EMAIL_KEY, incorrect_email_format);
+            result.put(ContactInterface.EMAIL_KEY, incorrectEmailFormat);
         }
     }
 
     private void validateLastName() {
         if (StringUtils.isBlank(contact.getLastName())) {
-            result.put(ContactInterface.LAST_NAME_KEY, last_name_need_to_be_provided);
+            result.put(ContactInterface.LAST_NAME_KEY, lastNameNeedToBeProvided);
         }
     }
 
     private void validateFirstName() {
         if (StringUtils.isBlank(contact.getFirstName())) {
-            result.put(ContactInterface.FIRST_NAME_KEY, first_name_need_to_be_provided);
+            result.put(ContactInterface.FIRST_NAME_KEY, firstNameNeedToBeProvided);
         }
     }
 
@@ -90,7 +86,7 @@ public class ContactValidator implements Validator<ContactErrorCode> {
             Date birthDateTruncated = DateUtils.truncate(contact.getBirthDate(), Calendar.DAY_OF_MONTH);
             Date currentDateTruncated = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
             if (birthDateTruncated.after(DateUtils.addDays(currentDateTruncated, -1))) {
-                result.put(ContactInterface.BIRTH_DATE_KEY, birth_date_can_not_be_in_future);
+                result.put(ContactInterface.BIRTH_DATE_KEY, birthDateCanNotBeInFuture);
 
             }
         }
