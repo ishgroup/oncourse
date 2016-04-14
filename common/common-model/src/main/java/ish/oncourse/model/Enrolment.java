@@ -6,6 +6,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.auto._Enrolment;
+import ish.oncourse.utils.EnrolmentStatusValidator;
 import ish.oncourse.utils.MessageFormat;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.Cayenne;
@@ -15,7 +16,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static ish.common.types.EnrolmentStatus.*;
+import static ish.common.types.EnrolmentStatus.QUEUED;
+import static ish.common.types.EnrolmentStatus.SUCCESS;
 import static java.lang.String.format;
 
 public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueable {
@@ -175,36 +177,10 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 			String message = MessageFormat.valueOf(this, "Cannot set null status!").format();
 			throw new NullPointerException(message);
 		}
-		if (status.equals(getStatus())) {
+		if (status == getStatus()) {
 			return;
 		}
-		boolean error;
-		switch (getStatus()) {
-			case NEW:
-				error = false;
-				break;
-			case FAILED:
-			case FAILED_CARD_DECLINED:
-			case FAILED_NO_PLACES:
-			case CANCELLED:
-			case REFUNDED:
-			case CORRUPTED:
-				error = !(getStatus().equals(status));
-				break;
-			case QUEUED:
-				error = NEW.equals(status);
-				break;
-			case IN_TRANSACTION:
-				// IN_TRANSACTION can be replaced to NEW in web enrolment when the enrolment is being marked as disabled.
-				error = QUEUED.equals(status);
-				break;
-			case SUCCESS:
-				error = (!(SUCCESS.equals(status) || CANCELLED.equals(status) || REFUNDED.equals(status)));
-				break;
-			default:
-				String message = MessageFormat.valueOf(this, "Unsupported status %s found!", getStatus()).format();
-				throw new IllegalArgumentException(message);
-		}
+		boolean error = !EnrolmentStatusValidator.valueOf(this.getStatus(), status).validate();
 		if (error) {
 			String message = MessageFormat.valueOf(this, "Can't set the %s status for enrolment with %s status!", status, getStatus()).format();
 			throw new IllegalArgumentException(message);
