@@ -40,12 +40,7 @@ public class CreateDefaultWebSiteStructure {
         menu.setWebSiteVersion(stagedVersion);
         menu.setWeight(1);
         menu.setWebNode(node);
-
-        WebSite webSite = stagedVersion.getWebSite();
-        College college = webSite.getCollege();
-        LicenseFeeUtil.createFee(context, college, webSite, LicenseFeeUtil.HOSTING_FEE_CODE);
-        LicenseFeeUtil.createFee(context, college, webSite, LicenseFeeUtil.CC_WEB_FEE_CODE);
-        LicenseFeeUtil.createFee(context, college, webSite, LicenseFeeUtil.ECOMMERCE_FEE_CODE);
+		
         context.commitChanges();
 
         WebUrlAlias urlAlias = context.newObject(WebUrlAlias.class);

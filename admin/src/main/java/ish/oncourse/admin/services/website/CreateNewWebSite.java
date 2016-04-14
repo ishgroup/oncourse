@@ -2,6 +2,7 @@ package ish.oncourse.admin.services.website;
 
 import ish.oncourse.admin.services.CreateSiteFileStructure;
 import ish.oncourse.admin.services.template.CopyTemplateStaticResources;
+import ish.oncourse.admin.utils.LicenseFeeUtil;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
@@ -45,6 +46,11 @@ public class CreateNewWebSite {
     public void create() {
         createFileStructure();
         createWebSiteStructure();
+
+		College college = webSite.getCollege();
+		LicenseFeeUtil.createFee(context, college, webSite, LicenseFeeUtil.HOSTING_FEE_CODE);
+		LicenseFeeUtil.createFee(context, college, webSite, LicenseFeeUtil.CC_WEB_FEE_CODE);
+		LicenseFeeUtil.createFee(context, college, webSite, LicenseFeeUtil.ECOMMERCE_FEE_CODE);
 
         context.commitChanges();
 
