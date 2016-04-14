@@ -34,7 +34,7 @@ public class AddContactParser {
 		ContactValidator contactValidator = ContactValidator.valueOf(ContactCredentialsDelegator.valueOf(contactCredentials));
 		Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
-		parseLastName(errorCodeMap.get(ContactInterface.FIRST_NAME_KEY));
+		parseLastName(errorCodeMap.get(ContactInterface.LAST_NAME_KEY));
 		parseEmail(errorCodeMap.get(ContactInterface.EMAIL_KEY));
 		
 		if (!isCompany) {
