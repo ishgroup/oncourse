@@ -8,15 +8,13 @@ import ish.math.Money;
 import ish.oncourse.model.auto._Enrolment;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueable {
+public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueable {
 
 	private static final long serialVersionUID = 8361159336001022666L;
 	private static final Logger logger = LogManager.getLogger();
@@ -24,7 +22,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 	/**
 	 * Statuses for which the class place is considered to be occupied.
 	 */
-	public static List<EnrolmentStatus> VALID_ENROLMENTS = Arrays.asList(EnrolmentStatus.IN_TRANSACTION, EnrolmentStatus.SUCCESS);
+	static List<EnrolmentStatus> VALID_ENROLMENTS = Arrays.asList(EnrolmentStatus.IN_TRANSACTION, EnrolmentStatus.SUCCESS);
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -33,17 +31,12 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 	/**
 	 * Checks if this enrolment is duplicated, ie checks if there is a record
 	 * with such a courseClass and student, that this enrolment has.
-	 * 
+	 *
 	 * @return true if the student is already enrolled to the courseClass.
 	 */
-	public Boolean isDuplicated() {
-		if (getStudent() == null || getCourseClass() == null) {
-			return null;
-		}
-
-		Expression filter = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, getStudent());
-
-		return !filter.filterObjects(getCourseClass().getValidEnrolments()).isEmpty();
+	public boolean isDuplicated() {
+		return getStudent() != null && getCourseClass() != null &&
+				Enrolment.STUDENT.eq(getStudent()).filterObjects(getCourseClass().getValidEnrolments()).isEmpty();
 	}
 
 	@Override
@@ -55,9 +48,9 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 		if (getSource() == null) {
 			setSource(PaymentSource.SOURCE_WEB);
 		}
-        if (getCreated() == null) {
-            setCreated(new Date());
-        }
+		if (getCreated() == null) {
+			setCreated(new Date());
+		}
 		if (getModified() == null) {
 			setModified(getCreated());
 		}
@@ -77,11 +70,9 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 
 	/**
 	 * Convenience method getting an attendance for a given session and student
-	 * 
-	 * @param session
-	 *            - session linked to the attendance, cannot be null
-	 * @param student
-	 *            - student linked to the attendance, cannot be null
+	 *
+	 * @param session - session linked to the attendance, cannot be null
+	 * @param student - student linked to the attendance, cannot be null
 	 * @return Attendance
 	 */
 	public Attendance getAttendanceForSessionAndStudent(Session session, Student student) {
@@ -99,18 +90,19 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 
 		return null;
 	}
-	
+
 	/**
 	 * Get the original enrollment invoice line.
 	 * This is a workaround to detect which invoice line should be linked with enrollment as "original".
 	 * Currently not-negative invoice line with lowest create date used for this cases.
 	 * If negative (reverse invoice line) linked with enrollment they should not be used as "original".
+	 *
 	 * @return the original enrollment invoice line
 	 */
 	@Deprecated
 	public InvoiceLine getOriginalInvoiceLine() {
 		if (getInvoiceLines() != null && !getInvoiceLines().isEmpty()) {
-			SortedSet<InvoiceLine> invoices = new TreeSet<>(new Comparator<InvoiceLine> () {
+			SortedSet<InvoiceLine> invoices = new TreeSet<>(new Comparator<InvoiceLine>() {
 				@Override
 				public int compare(InvoiceLine invoiceLine0, InvoiceLine invoiceLine1) {
 					if (!invoiceLine0.getFinalPriceToPayIncTax().isLessThan(Money.ZERO) && !invoiceLine1.getFinalPriceToPayIncTax().isLessThan(Money.ZERO)) {
@@ -137,11 +129,9 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 
 	/**
 	 * Check if async replication is allowed on this object. To replicate enrolment shouldn't have null, QUEUED or IN_TRANSACTION statuses.
-	 * 
-	 * @return
 	 */
 	public boolean isAsyncReplicationAllowed() {
-		//first of all we check if enrolment, linked to PaymentIn with either SUCCESS or FAIL status. 
+		//first of all we check if enrolment, linked to PaymentIn with either SUCCESS or FAIL status.
 		//If so enrolment is allowed to go to the queue. We need that since there may be several payments made for enrolment,
 		//for instance when first payment failed and second payment is in progress, enrolment is allowed to go to the queue.
 		if (getInvoiceLines() != null && !getInvoiceLines().isEmpty()) {
@@ -163,45 +153,32 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 		}
 		return isAsyncReplicationAllowedByStatusCheck();
 	}
-	
+
 	private boolean isAsyncReplicationAllowedByStatusCheck() {
 		return getStatus() != null && getStatus() != EnrolmentStatus.IN_TRANSACTION && getStatus() != EnrolmentStatus.QUEUED;
 	}
-	
+
 	@Override
 	public void setStatus(EnrolmentStatus status) {
-		if (getStatus() == null) {
-			//nothing to check
-		} else {
-			switch (getStatus()) {
+		validateStatus(status);
+		super.setStatus(status);
+	}
+
+	private void validateStatus(EnrolmentStatus status) {
+		boolean error;
+		switch (getStatus()) {
 			case NEW:
-				if (status == null) {
-					throw new IllegalArgumentException(String.format(
-						"Can't set the empty enrolment status for enrollment with id= %s and angelid= %s!",
-							getId(), getAngelId()));
-				}
+				error = (status == null);
 				break;
 			case QUEUED:
-				if (status == null || EnrolmentStatus.NEW.equals(status)) {
-					throw new IllegalArgumentException(String.format(
-						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
-							status, getStatus(), getId(), getAngelId()));
-				}
+				error = (status == null || EnrolmentStatus.NEW.equals(status));
 				break;
 			case IN_TRANSACTION:
 				// IN_TRANSACTION can be replaced to NEW in web enrolment when the enrolment is being marked as disabled.
-				if (status == null || EnrolmentStatus.QUEUED.equals(status)) {
-					throw new IllegalArgumentException(String.format(
-						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
-							status, getStatus(), getId(), getAngelId()));
-				}
+				error = (status == null || EnrolmentStatus.QUEUED.equals(status));
 				break;
 			case SUCCESS:
-				if (!(EnrolmentStatus.SUCCESS.equals(status) || EnrolmentStatus.CANCELLED.equals(status) || EnrolmentStatus.REFUNDED.equals(status))) {
-					throw new IllegalArgumentException(String.format(
-						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
-							status, getStatus(), getId(), getAngelId()));
-				}
+				error = (!(EnrolmentStatus.SUCCESS.equals(status) || EnrolmentStatus.CANCELLED.equals(status) || EnrolmentStatus.REFUNDED.equals(status)));
 				break;
 			case FAILED:
 			case FAILED_CARD_DECLINED:
@@ -209,19 +186,18 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface,Queueabl
 			case CANCELLED:
 			case REFUNDED:
 			case CORRUPTED:
-				if (!(getStatus().equals(status))) {
-					throw new IllegalArgumentException(String.format(
-						"Can't set the %s status for enrolment with %s status and id= %s and angelid= %s!",
-							status, getStatus(), getId(), getAngelId()));
-				}
+				error = !(getStatus().equals(status));
 				break;
 			default:
 				throw new IllegalArgumentException(String.format(
-					"Unsupported status %s found for enrolment with id= %s and angelid= %s",
+						"Unsupported status %s found for enrolment with id= %s and angelId= %s",
 						getStatus(), getId(), getAngelId()));
-			}
 		}
-		super.setStatus(status);
+		if (error) {
+			throw new IllegalArgumentException(String.format(
+					"Can't set the %s status for enrolment with %s status and id= %s and angelId= %s!",
+					status, getStatus(), getId(), getAngelId()));
+		}
 	}
 
 	@Override
