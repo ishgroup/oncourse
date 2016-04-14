@@ -109,7 +109,7 @@ public class ContactValidator implements Validator<ContactErrorCode> {
             this.length = length;
         }
 
-        int getLength() {
+        public int getLength() {
             return length;
         }
     }
