@@ -6,6 +6,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.auto._Enrolment;
+import ish.oncourse.utils.MessageFormat;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectIdQuery;
@@ -45,7 +46,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	@Override
 	protected void onPostAdd() {
 		if (getStatus() == null) {
-			setStatus(EnrolmentStatus.IN_TRANSACTION);
+			setStatus(EnrolmentStatus.NEW);
 		}
 
 		if (getSource() == null) {
@@ -163,21 +164,25 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 
 	@Override
 	public void setStatus(EnrolmentStatus status) {
-		validateStatus(status);
+		if (getStatus() != null) {
+			validateStatus(status);
+		}
 		super.setStatus(status);
 	}
 
 	private void validateStatus(EnrolmentStatus status) {
-
-		if (getStatus().equals(status)) {
-			return;
-		}
 		if (status == null) {
-			throw new NullPointerException(String.format("Enrolment: objectId: %s, angelId= %d: Cannot set null status.", getObjectId(), getAngelId()));
+			String message = MessageFormat.valueOf(this, "Cannot set null status!").format();
+			throw new NullPointerException(message);
+		}
+		if (status.equals(getStatus())) {
+			return;
 		}
 		boolean error;
 		switch (getStatus()) {
 			case NEW:
+				error = false;
+				break;
 			case FAILED:
 			case FAILED_CARD_DECLINED:
 			case FAILED_NO_PLACES:
@@ -197,14 +202,12 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 				error = (!(SUCCESS.equals(status) || CANCELLED.equals(status) || REFUNDED.equals(status)));
 				break;
 			default:
-				throw new IllegalArgumentException(format(
-						"Enrolment: objectId: %s, angelId= %d: Unsupported status %s found!",
-						getObjectId(), getAngelId(), getStatus()));
+				String message = MessageFormat.valueOf(this, "Unsupported status %s found!", getStatus()).format();
+				throw new IllegalArgumentException(message);
 		}
 		if (error) {
-			throw new IllegalArgumentException(format(
-					"Enrolment: objectId: %s, angelId= %d: Can't set the %s status for enrolment with %s status!",
-					getObjectId(), getAngelId(), status, getStatus()));
+			String message = MessageFormat.valueOf(this, "Can't set the %s status for enrolment with %s status!", status, getStatus()).format();
+			throw new IllegalArgumentException(message);
 		}
 	}
 

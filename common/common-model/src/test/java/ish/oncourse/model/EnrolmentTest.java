@@ -27,7 +27,7 @@ public class EnrolmentTest {
 	@Test
 	public void testNullStatusChange() throws Exception {
 		Enrolment enrolment = context.newObject(Enrolment.class);
-		assertEquals("Enrolment status should be in transaction before test", EnrolmentStatus.IN_TRANSACTION, enrolment.getStatus());
+		assertEquals("Enrolment status should be new before test", EnrolmentStatus.NEW, enrolment.getStatus());
 		boolean allowToSetNull = true;
 		try {
 			enrolment.setStatus(null);
@@ -39,7 +39,7 @@ public class EnrolmentTest {
 	}
 	
 	private void testNullSet(EnrolmentStatus testedStatus, String firstMessage, String secondMessage, String thirdMessage) {
-		Enrolment enrolment = new Enrolment();
+		Enrolment enrolment = context.newObject(Enrolment.class);
 		enrolment.setStatus(testedStatus);
 		context.registerNewObject(enrolment);
 		assertTrue(firstMessage, testedStatus.equals(enrolment.getStatus()));
