@@ -9,6 +9,7 @@ import ish.oncourse.utils.ContactDelegator;
 import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.SecurityUtil;
+import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
@@ -21,6 +22,7 @@ import javax.mail.internet.InternetAddress;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Contact extends _Contact implements Queueable {
 	static final String INVALID_EMAIL_MESSAGE = "The email address does not appear to be valid.";
@@ -32,8 +34,11 @@ public class Contact extends _Contact implements Queueable {
 
 	@Override
 	protected void validateForSave(ValidationResult result) {
-		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(this), result);
-		contactValidator.validate();
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(this));
+		Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
+
+		FillValidationResult.valueOf(result, errorCodeMap, this);
+
 		super.validateForSave(result);
 	}
 
@@ -96,6 +101,7 @@ public class Contact extends _Contact implements Queueable {
 	 * @param givenName
 	 * @return
 	 */
+	@Deprecated
 	public static String validateGivenName(String entityName, String givenName) {
 		givenName = StringUtils.trimToNull(givenName);
 		if (givenName == null) {
@@ -121,6 +127,7 @@ public class Contact extends _Contact implements Queueable {
 	 * @param familyName
 	 * @return
 	 */
+	@Deprecated
 	public static String validateFamilyName(String entityName, String familyName) {
 		familyName = StringUtils.trimToNull(familyName);
 		if (familyName == null) {
@@ -151,6 +158,7 @@ public class Contact extends _Contact implements Queueable {
 	 * @param emailAddress
 	 * @return
 	 */
+	@Deprecated
 	public static String validateEmail(String entityName, String emailAddress) {
 		emailAddress = StringUtils.trimToNull(emailAddress);
 		if (emailAddress == null) {
