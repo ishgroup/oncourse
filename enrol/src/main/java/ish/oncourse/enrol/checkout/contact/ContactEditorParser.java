@@ -1,12 +1,17 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.cayenne.ContactInterface;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.MessagesNamingConvention;
+import ish.oncourse.utils.ContactDelegator;
+import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.StringUtilities;
+import ish.validation.ContactErrorCode;
+import ish.validation.ContactValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tapestry5.ioc.Messages;
@@ -196,36 +201,28 @@ public class ContactEditorParser {
      */
     String validate(FieldDescriptor fieldDescriptor) {
         boolean defaultCountry = ICountryService.DEFAULT_COUNTRY_NAME.equals(contact.getCountry().getName());
+        ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact));
+        Map<String, ContactErrorCode> errorMap = contactValidator.validate();
 
         switch (fieldDescriptor) {
             case street:
-                return null;
+                return validateStreet(errorMap);
             case suburb:
                 return contact.validateSuburb();
             case state:
-                return contact.validateState();
+                return validateState(errorMap);
             case postcode:
-                return defaultCountry ? contact.validatePostcode() : validateLength(contact.getPostcode(), 20);
+                return validatePostCode(defaultCountry, errorMap);
             case homePhoneNumber:
-                return defaultCountry ? contact.validateHomePhone() : validateLength(contact.getHomePhoneNumber(), 20);
+                return validateHomePhone(defaultCountry, errorMap);
             case businessPhoneNumber:
                 return defaultCountry ? contact.validateBusinessPhone() : validateLength(contact.getBusinessPhoneNumber(), 20);
             case faxNumber:
-                return defaultCountry ? contact.validateFax() : validateLength(contact.getFaxNumber(), 20);
+                return validateFaxNumber(defaultCountry, errorMap);
             case mobilePhoneNumber:
-                return defaultCountry ? contact.validateMobilePhone() : validateLength(contact.getMobilePhoneNumber(), 20);
+                return validateMobilePhoneNumber(defaultCountry, errorMap);
             case dateOfBirth:
-                String error = contact.validateBirthDate();
-                if (error == null) {
-                    Date date = contact.getDateOfBirth();
-                    if (date != null) {
-                        if (date.compareTo(new Date()) > -1)
-                            return messages.format(KEY_ERROR_dateOfBirth_shouldBeInPast);
-                        if (MIN_DATE_OF_BIRTH.compareTo(date) > 0)
-                            return messages.get(KEY_ERROR_MESSAGE_birthdate_old);
-                    }
-                }
-                return error;
+                return validateDateOfBirth(errorMap);
             case country:
                 return null;
             case specialNeeds:
@@ -250,5 +247,109 @@ public class ContactEditorParser {
     private String validateLength(String value, int length) {
         value = StringUtils.trimToEmpty(value);
         return value.length() > length ? String.format("Max length of the field is %d chars.", length) : null;
+    }
+
+    private String validateLength(String propertyKey, Map<String, ContactErrorCode> errorMap, int maxLength){
+        ContactErrorCode contactErrorCode = errorMap.get(propertyKey);
+        if (contactErrorCode != null) {
+            if (contactErrorCode.equals(ContactErrorCode.incorrectPropertyLength)) {
+                return String.format("Max length of the field is %d chars", maxLength);
+            }
+        }
+        return null;
+    }
+
+
+   private String validateStreet(Map<String, ContactErrorCode> errorMap) {
+       return validateLength(ContactInterface.STREET_KEY, errorMap, ContactValidator.Property.street.getLength());
+   }
+
+    private String validateState(Map<String, ContactErrorCode> errorMap) {
+        return validateLength(ContactInterface.STATE_KEY, errorMap, ContactValidator.Property.state.getLength());
+    }
+
+    private String validatePostCode(boolean defaultCountry, Map<String, ContactErrorCode> errorMap) {
+        String lengthFailure = validateLength(ContactInterface.POSTCODE_KEY, errorMap, ContactValidator.Property.postcode.getLength());
+        if (lengthFailure != null) {
+            return lengthFailure;
+        }
+        if (defaultCountry) {
+            if (StringUtils.isBlank(contact.getPostcode())) {
+                return null;
+            }
+            if (!contact.getPostcode().matches("(\\d){4}")) {
+                return "Enter 4 digit postcode for Australian postcodes.";
+            }
+        }
+        return null;
+    }
+
+    private String validateHomePhone(boolean defaultCountry, Map<String, ContactErrorCode> errorMap) {
+        String lengthFailure = validateLength(ContactInterface.PHONE_HOME_KEY, errorMap, ContactValidator.Property.homePhone.getLength());
+        if (lengthFailure != null) {
+            return lengthFailure;
+        }
+        if (defaultCountry) {
+            if (StringUtils.isBlank(contact.getHomePhoneNumber())) {
+                return null;
+            }
+            try {
+                contact.setHomePhoneNumber(PhoneValidator.validatePhoneNumber("home", contact.getHomePhoneNumber()));
+            } catch (Exception ex) {
+                return ex.getMessage();
+            }
+        }
+        return null;
+    }
+
+    private String validateFaxNumber(boolean defaultCountry, Map<String, ContactErrorCode> errorMap) {
+        String lengthFailure = validateLength(ContactInterface.FAX_KEY, errorMap, ContactValidator.Property.fax.getLength());
+        if (lengthFailure != null) {
+            return lengthFailure;
+        }
+        if (defaultCountry) {
+            if (StringUtils.isBlank(contact.getFaxNumber())) {
+                return null;
+            }
+            try {
+                contact.setFaxNumber(PhoneValidator.validatePhoneNumber("fax", contact.getFaxNumber()));
+            } catch (Exception ex) {
+                return ex.getMessage();
+            }
+        }
+        return null;
+    }
+
+    private String validateDateOfBirth(Map<String, ContactErrorCode> errorMap) {
+        ContactErrorCode contactErrorCode = errorMap.get(ContactInterface.BIRTH_DATE_KEY);
+        if (contactErrorCode != null) {
+            if (contactErrorCode.equals(ContactErrorCode.birthDateCanNotBeInFuture)) {
+                return String.format("The birth date cannot be in the future.");
+            }
+        }
+        Date date = contact.getDateOfBirth();
+        if (date != null) {
+            if (MIN_DATE_OF_BIRTH.compareTo(date) > 0)
+                return messages.get(KEY_ERROR_MESSAGE_birthdate_old);
+        }
+        return null;
+    }
+
+    private String validateMobilePhoneNumber(boolean defaultCountry, Map<String, ContactErrorCode> errorMap) {
+        String lengthFailure = validateLength(ContactInterface.MOBILE_PHONE_KEY, errorMap, ContactValidator.Property.mobilePhone.getLength());
+        if (lengthFailure != null) {
+            return lengthFailure;
+        }
+        if (defaultCountry) {
+            if (StringUtils.isBlank(contact.getMobilePhoneNumber())) {
+                return null;
+            }
+            try {
+                contact.setMobilePhoneNumber(PhoneValidator.validateMobileNumber(contact.getMobilePhoneNumber()));
+            } catch (Exception ex) {
+                return ex.getMessage();
+            }
+        }
+        return null;
     }
 }
