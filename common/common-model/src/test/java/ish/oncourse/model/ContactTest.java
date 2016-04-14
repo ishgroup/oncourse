@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.oncourse.utils.ContactDelegator;
+import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.map.EntityResolver;
@@ -8,6 +9,8 @@ import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -101,10 +104,8 @@ public class ContactTest {
 		when(contact.getFaxNumber()).thenReturn(StringUtils.repeat("a", 21));
 		when(contact.getEmailAddress()).thenReturn(StringUtils.repeat("email", 30).concat("@com.au"));
 
-		ValidationResult validationResult = new ValidationResult();
-		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact), validationResult);
-		contactValidator.validate();
-		assertTrue(validationResult.hasFailures());
-		assertEquals(8, validationResult.getFailures().size());
+		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(contact));
+		Map<String, ContactErrorCode> validate = contactValidator.validate();
+		assertEquals(8, validate.size());
 	}
 }
