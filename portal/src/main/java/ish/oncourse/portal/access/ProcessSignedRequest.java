@@ -80,6 +80,7 @@ public class ProcessSignedRequest {
 				return false;
 			case REGULAR:
 			case AJAX:
+			case POST:
 				return false;
 			default:
 				throw new IllegalArgumentException();
@@ -107,6 +108,7 @@ public class ProcessSignedRequest {
 
 	public enum Case {
 		AJAX,
+		POST,
 		FIRST,
 		REFRESH,
 		LINKED,
@@ -130,6 +132,10 @@ public class ProcessSignedRequest {
 
 			if (isAjax()) {
 				return AJAX;
+			}
+
+			if (isPost()) {
+				return POST;
 			}
 
 			if (isFirst()) {
@@ -161,6 +167,10 @@ public class ProcessSignedRequest {
 
 		private boolean isAjax() {
 			return prevContact != null && request.isXHR();
+		}
+
+		private boolean isPost() {
+			return prevContact != null && prevPath != null && "POST".equals(request.getMethod());
 		}
 
 		private boolean isReqular() {

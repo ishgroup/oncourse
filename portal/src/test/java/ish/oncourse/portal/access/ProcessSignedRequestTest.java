@@ -83,5 +83,11 @@ public class ProcessSignedRequestTest {
 
         when(request.isXHR()).thenReturn(true);
         assertEquals(ProcessSignedRequest.GetCase.valueOf(accessLinksValidatorFactory, prevPath, prevContact, currentPath, currentContact, request).getCase(), AJAX);
+
+		prevPath = "/subscription";
+		currentPath = "/subscription.submit";
+		when(request.isXHR()).thenReturn(false);
+		when(request.getMethod()).thenReturn("POST");
+		assertEquals(ProcessSignedRequest.GetCase.valueOf(accessLinksValidatorFactory, prevPath, prevContact, currentPath, currentContact, request).getCase(), POST);
     }
 }
