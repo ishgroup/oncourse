@@ -103,11 +103,11 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * 
 	 */
 	@API
-	public static final List<EnrolmentStatus> STATUSES_GATEWAY = Arrays.asList(EnrolmentStatus.CORRUPTED,
-            EnrolmentStatus.QUEUED,
-            EnrolmentStatus.SUCCESS,
-            EnrolmentStatus.FAILED,
-            EnrolmentStatus.FAILED_NO_PLACES);
+	public static final List<EnrolmentStatus> STATUSES_GATEWAY = Arrays.asList(CORRUPTED,
+            QUEUED,
+            SUCCESS,
+            FAILED,
+            FAILED_NO_PLACES);
 
 	/**
 	 * The list of statuses indicating a legitimate enrolment. i.e., those that indicate an 'existing' enrolment for a student, or that otherwise counts towards the number of places already taken in a class.
@@ -117,10 +117,10 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * 
 	 */
 	@API
-	public static final List<EnrolmentStatus> STATUSES_LEGIT = Arrays.asList(EnrolmentStatus.NEW,
-            EnrolmentStatus.QUEUED,
-            EnrolmentStatus.IN_TRANSACTION,
-            EnrolmentStatus.SUCCESS);
+	public static final List<EnrolmentStatus> STATUSES_LEGIT = Arrays.asList(NEW,
+            QUEUED,
+            IN_TRANSACTION,
+            SUCCESS);
 	
 	/**
 	 * The complete list of statuses that indicate non-success.
@@ -128,17 +128,17 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * 
 	 */
 	@API
-	public static final List<EnrolmentStatus> STATUSES_FAILED = Arrays.asList(EnrolmentStatus.FAILED,
-            EnrolmentStatus.FAILED_NO_PLACES,
-            EnrolmentStatus.FAILED_CARD_DECLINED,
-            EnrolmentStatus.CORRUPTED);
+	public static final List<EnrolmentStatus> STATUSES_FAILED = Arrays.asList(FAILED,
+            FAILED_NO_PLACES,
+            FAILED_CARD_DECLINED,
+            CORRUPTED);
 	
 	/**
 	 * The list of statuses that indicate a prior enrolment of status {@link PaymentStatus#SUCCESS} into a class where the student has either cancelled and optionally been refunded their fees.
 	 * 
 	 */
 	@API
-	public static final List<EnrolmentStatus> STATUSES_CANCELLATIONS = Arrays.asList(EnrolmentStatus.CANCELLED, EnrolmentStatus.REFUNDED);
+	public static final List<EnrolmentStatus> STATUSES_CANCELLATIONS = Arrays.asList(CANCELLED, REFUNDED);
 	
 	/**
 	 * The complete list of statuses that are final or otherwise set in stone.
@@ -146,13 +146,13 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * 
 	 */
 	@API
-	public static final List<EnrolmentStatus> STATUSES_FINAL = Arrays.asList(EnrolmentStatus.SUCCESS,
-            EnrolmentStatus.FAILED,
-            EnrolmentStatus.FAILED_NO_PLACES,
-            EnrolmentStatus.FAILED_CARD_DECLINED,
-            EnrolmentStatus.CORRUPTED,
-            EnrolmentStatus.CANCELLED,
-            EnrolmentStatus.REFUNDED);
+	public static final List<EnrolmentStatus> STATUSES_FINAL = Arrays.asList(SUCCESS,
+            FAILED,
+            FAILED_NO_PLACES,
+            FAILED_CARD_DECLINED,
+            CORRUPTED,
+            CANCELLED,
+            REFUNDED);
 
 	private String displayName;
 	private int value;
