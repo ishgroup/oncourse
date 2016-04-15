@@ -11,13 +11,21 @@ import org.apache.tapestry5.services.Request;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ish.validation.ContactErrorCode.*;
+
 public class AddContactParser {
 
 	public static final String FIELD_NAME_firstName = "firstName";
 	public static final String FIELD_NAME_lastName = "lastName";
 	public static final String FIELD_NAME_email = "email";
 
-	public static final String LENGTH_FAILURE_MESSAGE = "The %s cannot exceed %d characters.";
+	protected static final Map<ContactErrorCode, String> ERROR_MESSAGES = new HashMap<>();
+	static {
+		ERROR_MESSAGES.put(firstNameNeedToBeProvided, "The student's first name is required.");
+		ERROR_MESSAGES.put(lastNameNeedToBeProvided, "The student's last name is required.");
+		ERROR_MESSAGES.put(incorrectEmailFormat, "The email address does not appear to be valid.");
+		ERROR_MESSAGES.put(incorrectPropertyLength, "The %s cannot exceed %d characters.");
+	}
 
 	private Request request;
 	private ContactCredentials contactCredentials;
@@ -59,10 +67,10 @@ public class AddContactParser {
 		if (errorCode != null) {
 			switch (errorCode) {
 				case firstNameNeedToBeProvided:
-					errors.put(FIELD_NAME_firstName, "The student's first name is required.");
+					errors.put(FIELD_NAME_firstName, ERROR_MESSAGES.get(firstNameNeedToBeProvided));
 					break;
 				case incorrectPropertyLength:
-					errors.put(FIELD_NAME_firstName, String.format(LENGTH_FAILURE_MESSAGE, "first", ContactValidator.Property.firstName.getLength()));
+					errors.put(FIELD_NAME_firstName, String.format(ERROR_MESSAGES.get(incorrectPropertyLength), "first name", ContactValidator.Property.firstName.getLength()));
 					break;
 				default:
 					throw new IllegalArgumentException();
@@ -79,10 +87,10 @@ public class AddContactParser {
 		if (errorCode != null) {
 			switch (errorCode) {
 				case lastNameNeedToBeProvided:
-					errors.put(FIELD_NAME_lastName, "The student's last name is required.");
+					errors.put(FIELD_NAME_lastName, ERROR_MESSAGES.get(lastNameNeedToBeProvided));
 					break;
 				case incorrectPropertyLength:
-					errors.put(FIELD_NAME_lastName, String.format(LENGTH_FAILURE_MESSAGE, "last", ContactValidator.Property.lastName.getLength()));
+					errors.put(FIELD_NAME_lastName, String.format(ERROR_MESSAGES.get(incorrectPropertyLength), "last name", ContactValidator.Property.lastName.getLength()));
 					break;
 				default:
 					throw new IllegalArgumentException();
@@ -98,10 +106,10 @@ public class AddContactParser {
 		if (errorCode != null) {
 			switch (errorCode) {
 				case incorrectEmailFormat:
-					errors.put(FIELD_NAME_email, "The email address does not appear to be valid.");
+					errors.put(FIELD_NAME_email, ERROR_MESSAGES.get(incorrectEmailFormat));
 					break;
 				case incorrectPropertyLength:
-					errors.put(FIELD_NAME_email, String.format(LENGTH_FAILURE_MESSAGE, "email", ContactValidator.Property.email.getLength()));
+					errors.put(FIELD_NAME_email, String.format(ERROR_MESSAGES.get(incorrectPropertyLength), "email", ContactValidator.Property.email.getLength()));
 					break;
 				default:
 					throw new IllegalArgumentException();
