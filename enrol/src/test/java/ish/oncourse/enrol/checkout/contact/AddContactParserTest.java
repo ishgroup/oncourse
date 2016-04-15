@@ -66,9 +66,7 @@ public class AddContactParserTest {
 	}
 
 	private AddContactParser createParser(Request request) {
-		AddContactParser parser = new AddContactParser();
-		parser.setContactCredentials(new ContactCredentials());
-		parser.setRequest(request);
+		AddContactParser parser = AddContactParser.valueOf(new ContactCredentials(), request, false);
 		assertNotNull(parser.getContactCredentials());
 		assertNotNull(parser.getRequest());
 		assertNotNull(parser.getErrors());

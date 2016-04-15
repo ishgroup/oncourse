@@ -57,9 +57,7 @@ public class WhitespaceDuplicateContactTest extends ACheckoutTest {
 				i + LAST_NAME_PART1 + i + " " + i + LAST_NAME_PART2 + i);
 		when(request.getParameter(AddContactParser.FIELD_NAME_email)).thenReturn(i + EMAIL + i);
 
-		AddContactParser parser = new AddContactParser();
-		parser.setRequest(request);
-		parser.setContactCredentials(contactCredentials);
+		AddContactParser parser = AddContactParser.valueOf(contactCredentials, request, false);
 		parser.parse();
 		assertEquals(FIRST_NAME, contactCredentials.getFirstName());
 		assertEquals(LAST_NAME, contactCredentials.getLastName());

@@ -115,9 +115,7 @@ public class Mail {
     Object addMailingList() {
 
         if (controller.isAddContact()) {
-            AddContactParser addContactParser = new AddContactParser();
-            addContactParser.setContactCredentials(controller.getContactCredentials());
-            addContactParser.setRequest(request);
+            AddContactParser addContactParser = AddContactParser.valueOf(controller.getContactCredentials(), request, false);
             addContactParser.parse();
 
             controller.setErrors(addContactParser.getErrors());

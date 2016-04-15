@@ -188,9 +188,7 @@ public class WaitingListForm {
     public Object onSuccess()
     {
 		if (controller.isAddContact()) {
-			AddContactParser addContactValidator = new AddContactParser();
-			addContactValidator.setContactCredentials(controller.getContactCredentials());
-			addContactValidator.setRequest(request);
+			AddContactParser addContactValidator = AddContactParser.valueOf(controller.getContactCredentials(), request, false);
 			addContactValidator.parse();
 			controller.setErrors(addContactValidator.getErrors());
 		} else if (controller.isEditContact()) {

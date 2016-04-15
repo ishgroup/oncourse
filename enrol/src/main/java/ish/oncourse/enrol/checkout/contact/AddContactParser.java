@@ -21,16 +21,28 @@ public class AddContactParser {
 
 	private Request request;
 	private ContactCredentials contactCredentials;
-	private boolean isCompany = false;
+	private boolean isCompany;
 
 	private Map<String, String> errors = new HashMap<>();
 
-	public void parse()
-	{
+	private AddContactParser() {
+	}
+
+	public static AddContactParser valueOf(ContactCredentials contactCredentials, Request request, boolean isCompany) {
+		AddContactParser addContactParser = new AddContactParser();
+		addContactParser.contactCredentials = contactCredentials;
+		addContactParser.request = request;
+		addContactParser.isCompany = isCompany;
+
 		contactCredentials.setFirstName(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_firstName)));
 		contactCredentials.setLastName(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_lastName)));
 		contactCredentials.setEmail(StringUtilities.cutToNull(request.getParameter(FIELD_NAME_email)));
 
+		return addContactParser;
+	}
+
+	public void parse()
+	{
 		ContactValidator contactValidator = ContactValidator.valueOf(ContactCredentialsDelegator.valueOf(contactCredentials));
 		Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
@@ -105,24 +117,11 @@ public class AddContactParser {
 		return request;
 	}
 
-	public void setRequest(Request request) {
-		this.request = request;
-	}
-
 	public ContactCredentials getContactCredentials() {
 		return contactCredentials;
 	}
 
-	public void setContactCredentials(ContactCredentials contactCredentials) {
-		this.contactCredentials = contactCredentials;
-	}
-
 	public Map<String, String> getErrors() {
 		return errors;
-	}
-
-
-	public void setCompany(boolean isCompany) {
-		this.isCompany = isCompany;
 	}
 }

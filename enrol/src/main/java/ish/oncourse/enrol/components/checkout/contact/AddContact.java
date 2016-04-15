@@ -59,10 +59,8 @@ public class AddContact {
 	@OnEvent(component = COMPONENT_submitContact, value = "selected")
 	public Object submitContact() {
 		if (delegate != null) {
-			AddContactParser addContactValidator = new AddContactParser();
-			addContactValidator.setContactCredentials(delegate.getContactCredentials());
-			addContactValidator.setRequest(request);
-			addContactValidator.setCompany(delegate.isCompanyPayer());
+			AddContactParser addContactValidator = AddContactParser.valueOf(delegate.getContactCredentials(),
+					request, delegate.isCompanyPayer());
 			addContactValidator.parse();
 			delegate.setErrors(addContactValidator.getErrors());
 			delegate.addContact();
