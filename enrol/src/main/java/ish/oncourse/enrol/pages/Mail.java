@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.checkout.ValidationResult;
-import ish.oncourse.enrol.checkout.contact.AddContactParser;
+import ish.oncourse.enrol.checkout.contact.AddContactValidator;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.enrol.components.MailingListBox;
 import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
@@ -115,10 +115,10 @@ public class Mail {
     Object addMailingList() {
 
         if (controller.isAddContact()) {
-            AddContactParser addContactParser = AddContactParser.valueOf(controller.getContactCredentials(), request, false);
-            addContactParser.parse();
+            AddContactValidator addContactValidator = AddContactValidator.valueOf(controller.getContactCredentials(), request, false);
+            addContactValidator.validate();
 
-            controller.setErrors(addContactParser.getErrors());
+            controller.setErrors(addContactValidator.getErrors());
         } else if (controller.isEditContact()) {
             ContactEditorParser parser = new ContactEditorParser();
 			parser.setCountryService(countryService);

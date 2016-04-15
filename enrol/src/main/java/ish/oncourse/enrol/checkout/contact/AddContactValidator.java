@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static ish.validation.ContactErrorCode.*;
 
-public class AddContactParser {
+public class AddContactValidator {
 
 	public static final String FIELD_NAME_firstName = "firstName";
 	public static final String FIELD_NAME_lastName = "lastName";
@@ -33,11 +33,11 @@ public class AddContactParser {
 
 	private Map<String, String> errors = new HashMap<>();
 
-	private AddContactParser() {
+	private AddContactValidator() {
 	}
 
-	public static AddContactParser valueOf(ContactCredentials contactCredentials, Request request, boolean isCompany) {
-		AddContactParser addContactParser = new AddContactParser();
+	public static AddContactValidator valueOf(ContactCredentials contactCredentials, Request request, boolean isCompany) {
+		AddContactValidator addContactParser = new AddContactValidator();
 		addContactParser.contactCredentials = contactCredentials;
 		addContactParser.request = request;
 		addContactParser.isCompany = isCompany;
@@ -49,20 +49,20 @@ public class AddContactParser {
 		return addContactParser;
 	}
 
-	public void parse()
+	public void validate()
 	{
 		ContactValidator contactValidator = ContactValidator.valueOf(ContactCredentialsDelegator.valueOf(contactCredentials));
 		Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
-		parseLastName(errorCodeMap.get(ContactInterface.LAST_NAME_KEY));
-		parseEmail(errorCodeMap.get(ContactInterface.EMAIL_KEY));
+		validateLastName(errorCodeMap.get(ContactInterface.LAST_NAME_KEY));
+		validateEmail(errorCodeMap.get(ContactInterface.EMAIL_KEY));
 		
 		if (!isCompany) {
-			parseFirstName(errorCodeMap.get(ContactInterface.FIRST_NAME_KEY));
+			validateFirstName(errorCodeMap.get(ContactInterface.FIRST_NAME_KEY));
 		}
 	}
 
-	private void parseFirstName(ContactErrorCode errorCode)
+	private void validateFirstName(ContactErrorCode errorCode)
 	{
 		if (errorCode != null) {
 			switch (errorCode) {
@@ -82,7 +82,7 @@ public class AddContactParser {
 		}
 	}
 
-	private void parseLastName(ContactErrorCode errorCode)
+	private void validateLastName(ContactErrorCode errorCode)
 	{
 		if (errorCode != null) {
 			switch (errorCode) {
@@ -101,7 +101,7 @@ public class AddContactParser {
 		}
 	}
 
-	private void parseEmail(ContactErrorCode errorCode)
+	private void validateEmail(ContactErrorCode errorCode)
 	{
 		if (errorCode != null) {
 			switch (errorCode) {

@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.components.checkout.contact;
 
 import ish.oncourse.enrol.checkout.contact.AddContactDelegate;
-import ish.oncourse.enrol.checkout.contact.AddContactParser;
+import ish.oncourse.enrol.checkout.contact.AddContactValidator;
 import ish.oncourse.enrol.pages.Payment;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -59,9 +59,9 @@ public class AddContact {
 	@OnEvent(component = COMPONENT_submitContact, value = "selected")
 	public Object submitContact() {
 		if (delegate != null) {
-			AddContactParser addContactValidator = AddContactParser.valueOf(delegate.getContactCredentials(),
+			AddContactValidator addContactValidator = AddContactValidator.valueOf(delegate.getContactCredentials(),
 					request, delegate.isCompanyPayer());
-			addContactValidator.parse();
+			addContactValidator.validate();
 			delegate.setErrors(addContactValidator.getErrors());
 			delegate.addContact();
 		}

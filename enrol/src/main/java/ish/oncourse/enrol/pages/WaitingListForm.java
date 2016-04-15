@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.pages;
 
 import ish.oncourse.enrol.checkout.ValidationResult;
-import ish.oncourse.enrol.checkout.contact.AddContactParser;
+import ish.oncourse.enrol.checkout.contact.AddContactValidator;
 import ish.oncourse.enrol.checkout.contact.ContactEditorParser;
 import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
 import ish.oncourse.enrol.services.student.IStudentService;
@@ -188,8 +188,8 @@ public class WaitingListForm {
     public Object onSuccess()
     {
 		if (controller.isAddContact()) {
-			AddContactParser addContactValidator = AddContactParser.valueOf(controller.getContactCredentials(), request, false);
-			addContactValidator.parse();
+			AddContactValidator addContactValidator = AddContactValidator.valueOf(controller.getContactCredentials(), request, false);
+			addContactValidator.validate();
 			controller.setErrors(addContactValidator.getErrors());
 		} else if (controller.isEditContact()) {
 			ContactEditorParser parser = new ContactEditorParser();

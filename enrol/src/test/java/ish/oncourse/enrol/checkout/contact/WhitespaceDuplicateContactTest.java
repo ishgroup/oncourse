@@ -51,19 +51,19 @@ public class WhitespaceDuplicateContactTest extends ACheckoutTest {
 		ContactCredentials contactCredentials = new ContactCredentials();
 
 		Request request = mock(Request.class);
-		when(request.getParameter(AddContactParser.FIELD_NAME_firstName)).thenReturn(i + FIRST_NAME + i);
-		when(request.getParameter(AddContactParser.FIELD_NAME_lastName)).thenReturn(i == ' ' ?
+		when(request.getParameter(AddContactValidator.FIELD_NAME_firstName)).thenReturn(i + FIRST_NAME + i);
+		when(request.getParameter(AddContactValidator.FIELD_NAME_lastName)).thenReturn(i == ' ' ?
 				i + LAST_NAME_PART1 + i + LAST_NAME_PART2 + i:
 				i + LAST_NAME_PART1 + i + " " + i + LAST_NAME_PART2 + i);
-		when(request.getParameter(AddContactParser.FIELD_NAME_email)).thenReturn(i + EMAIL + i);
+		when(request.getParameter(AddContactValidator.FIELD_NAME_email)).thenReturn(i + EMAIL + i);
 
-		AddContactParser parser = AddContactParser.valueOf(contactCredentials, request, false);
-		parser.parse();
+		AddContactValidator validator = AddContactValidator.valueOf(contactCredentials, request, false);
+		validator.validate();
 		assertEquals(FIRST_NAME, contactCredentials.getFirstName());
 		assertEquals(LAST_NAME, contactCredentials.getLastName());
 		assertEquals(EMAIL,contactCredentials.getEmail());
 
-		assertEquals(0, parser.getErrors().size());
+		assertEquals(0, validator.getErrors().size());
 
 		ContactCredentialsEncoder encoder = ContactCredentialsEncoder.valueOf(
 				contactCredentials, false, contact.getCollege(),
