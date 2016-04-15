@@ -1,5 +1,5 @@
 <html t:type="pagestructure" title="literal:Unsubscribe"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
 	
 	<t:if test="postUnsubscribe" negate="true">
 		<t:if test="isSubscribed">	
@@ -14,7 +14,7 @@
 		<t:outputraw value="mailingList.detail"/><br/>
         <br/>
 		<t:if test="isSubscribed">
-			<t:form t:id="unsubscribeForm">
+			<t:form t:id="unsubscribeForm" clientValidation="literal:NONE">
 				<div class="form-controls" xml:space="preserve">
 					<input t:type="submit" t:id="unsubscribeAction" value="Unsubscribe" class="btn"/>
 					<input t:type="submit" t:id="remainAction" value="Remain on this list" class="btn"/>
