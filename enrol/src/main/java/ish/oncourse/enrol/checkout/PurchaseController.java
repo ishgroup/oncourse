@@ -221,22 +221,6 @@ public class PurchaseController {
 		return model;
 	}
 
-	/**
-	 * Creates the new {@link Enrolment} entity for the given courseClass and
-	 * Student.
-	 */
-	 Enrolment createEnrolment(CourseClass courseClass, Student student) {
-		Enrolment enrolment = new Enrolment();
-		enrolment.setStatus(EnrolmentStatus.NEW);
-		enrolment.setSource(PaymentSource.SOURCE_WEB);
-		model.getObjectContext().registerNewObject(enrolment);
-		enrolment.setCollege(student.getCollege());
-		enrolment.setStudent(student);
-		enrolment.setCourseClass(courseClass);
-		return enrolment;
-	}
-
-
 	 ProductItem createProductItem(Contact contact, Product product) {
 		if (product instanceof VoucherProduct) {
 			VoucherProduct vp = (VoucherProduct) product;
@@ -942,7 +926,7 @@ public class PurchaseController {
 	 *
 	 * @author dzmitry
 	 */
-	public static enum Action {
+	public enum Action {
 		init(ActionInit.class),
 		changePayer(ActionChangePayer.class, Contact.class, State.class),
 		setVoucherPrice(ActionSetVoucherPrice.class, Money.class),

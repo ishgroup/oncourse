@@ -31,18 +31,6 @@ public class VoucherRedemptionWithBackToEditCheckoutTest extends ACheckoutTest {
 		performAction(actionParameter);
 	}
 
-	private void disableEnrolment(Enrolment enrolment) {
-		PurchaseController.ActionParameter disableEnrol = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
-		disableEnrol.setValue(enrolment);
-		performAction(disableEnrol);
-	}
-
-	private void enableEnrolment(Enrolment enrolment) {
-		PurchaseController.ActionParameter enableEnrol = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
-		enableEnrol.setValue(enrolment);
-		performAction(enableEnrol);
-	}
-
 	private void disableProductItem(ProductItem productItem) {
 		PurchaseController.ActionParameter disableProductItem = new PurchaseController.ActionParameter(PurchaseController.Action.disableProductItem);
 		disableProductItem.setValue(productItem);

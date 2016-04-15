@@ -1,6 +1,5 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.Enrolment;
 
 public class ActionDisableEnrolment extends APurchaseAction {
@@ -17,9 +16,7 @@ public class ActionDisableEnrolment extends APurchaseAction {
 			getModel().removePaymentPlanInvoiceFor(enrolment);
 		}
 
-		getModel().disableEnrolment(enrolment);
-        //we set status NEW for disabled enrolment  to exclude the enrolment in places check
-        enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment = getModel().disableEnrolment(enrolment);
 		getController().updateDiscountApplied();
 	}
 

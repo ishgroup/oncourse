@@ -5,6 +5,8 @@ import ish.oncourse.model.*;
 
 import java.util.List;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.disableEnrolment;
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.enableEnrolment;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.illegalState;
 
 public class ActionBackToEditCheckout extends APurchaseAction {
@@ -47,15 +49,17 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 					} else {
 						Enrolment enrolment = getModel().getEnrolmentBy(contact, courseClass);
 						if (enrolment == null) {
-							enrolment = getController().createEnrolment(courseClass, contact.getStudent());
+							enrolment = getModel().createEnrolment(courseClass, contact.getStudent());
 							getModel().addEnrolment(enrolment);
 						} else {
-							PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
-							parameter.setValue(enrolment);
-							getController().performAction(parameter);
-							parameter = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
-							parameter.setValue(enrolment);
-							getController().performAction(parameter);
+							ActionDisableEnrolment disableEnrolmentAction = disableEnrolment.createAction(getController());
+							disableEnrolmentAction.setEnrolment(enrolment);
+							getController().performAction(disableEnrolmentAction, disableEnrolment);
+
+							enrolment = disableEnrolmentAction.getEnrolment();
+							ActionEnableEnrolment enableEnrolmentAction = enableEnrolment.createAction(getController());
+							enableEnrolmentAction.setEnrolment(enrolment);
+							getController().performAction(enableEnrolmentAction, enableEnrolment);
 						}
 					}
 				}

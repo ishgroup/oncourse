@@ -151,6 +151,21 @@ public class PurchaseModel {
 		return payment;
 	}
 
+	/**
+	 * Creates the new {@link Enrolment} entity for the given courseClass and
+	 * Student.
+	 */
+	public Enrolment createEnrolment(CourseClass courseClass, Student student) {
+		Enrolment enrolment = objectContext.newObject(Enrolment.class);
+		enrolment.setStatus(EnrolmentStatus.NEW);
+		enrolment.setSource(PaymentSource.SOURCE_WEB);
+		enrolment.setCollege(student.getCollege());
+		enrolment.setStudent(student);
+		enrolment.setCourseClass(courseClass);
+		return enrolment;
+	}
+
+
 	public Money getTotalDiscountAmountIncTax() {
 		return totalDiscountAmountIncTax;
 	}
@@ -223,13 +238,24 @@ public class PurchaseModel {
 		getContactNode(e.getStudent().getContact()).enableEnrolment(e);
 	}
 
-	public void disableEnrolment(Enrolment e) {
+	public Enrolment disableEnrolment(Enrolment e) {
+
 		List<InvoiceLine> invoiceLines = new ArrayList<>(e.getInvoiceLines());
 		for (InvoiceLine invoiceLine : invoiceLines) {
 			invoiceLine.setEnrolment(null);
 		}
 		objectContext.deleteObjects(invoiceLines);
-		getContactNode(e.getStudent().getContact()).disableEnrolment(e);
+
+		Student student = e.getStudent();
+		CourseClass courseClass = e.getCourseClass();
+
+		ContactNode contactNode = getContactNode(student.getContact());
+		contactNode.removeEnrolment(e);
+		objectContext.deleteObject(e);
+
+		Enrolment enrolment = createEnrolment(courseClass, student);
+		contactNode.addEnrolment(enrolment);
+		return enrolment;
 	}
 
 	public void enableProductItem(ProductItem p) {

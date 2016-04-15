@@ -315,11 +315,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         Enrolment enrolmentToDisable = model.getEnabledEnrolments(model.getPayer()).iterator().next();
 
-        ActionParameter param = new ActionParameter(Action.disableEnrolment);
-        param.setValue(enrolmentToDisable);
-
-        performAction(param);
-
+        enrolmentToDisable = disableEnrolment(enrolmentToDisable);
 
         assertEquals(2, model.getEnabledEnrolments(model.getPayer()).size());
         assertEquals(1, model.getDisabledEnrolments(model.getPayer()).size());
@@ -327,11 +323,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
         assertEquals(enrolmentToDisable, model.getDisabledEnrolments(model.getPayer()).iterator().next());
         assertEquals(new Money("340.0"), InvoiceUtil.sumInvoiceLines(model.getInvoice().getInvoiceLines()));
 
-        param = new ActionParameter(enableEnrolment);
-        param.setValue(enrolmentToDisable);
-
-        performAction(param);
-
+        enableEnrolment(enrolmentToDisable);
 
         assertEquals(3, model.getEnabledEnrolments(model.getPayer()).size());
         assertEquals(0, model.getDisabledEnrolments(model.getPayer()).size());
@@ -351,11 +343,7 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         Enrolment enrolmentToDisable = model.getEnabledEnrolments(model.getPayer()).iterator().next();
 
-        ActionParameter param = new ActionParameter(Action.disableEnrolment);
-        param.setValue(enrolmentToDisable);
-
-        performAction(param);
-
+        enrolmentToDisable = disableEnrolment(enrolmentToDisable);
 
         assertEquals(2, model.getEnabledEnrolments(model.getPayer()).size());
         assertEquals(1, model.getDisabledEnrolments(model.getPayer()).size());

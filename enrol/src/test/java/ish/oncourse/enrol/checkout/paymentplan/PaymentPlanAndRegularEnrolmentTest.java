@@ -58,7 +58,7 @@ public class PaymentPlanAndRegularEnrolmentTest extends ACheckoutTest {
 
 		Enrolment enrolment = purchaseController.getModel().getEnabledEnrolments(purchaseController.getModel().getPayer()).get(0);
 
-		disableEnrolment(enrolment);
+		enrolment = disableEnrolment(enrolment);
 		enableEnrolment(enrolment);
 
 		payNowLessThanRequired();
@@ -173,13 +173,6 @@ public class PaymentPlanAndRegularEnrolmentTest extends ACheckoutTest {
 		assertTrue(purchaseController.getErrors().containsKey(PurchaseController.Message.payNowWrong.name()));
 	}
 
-	private void enableEnrolment(Enrolment enrolment) {
-		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
-		param.setValue(enrolment);
-		performAction(param);
-		assertEnableEnrolmnets();
-	}
-
 	private Contact initEnrolments() {
 		List<CourseClass> courseClasses = createPurchaseController(1001, 1002);
 		model = getModel();
@@ -242,11 +235,9 @@ public class PaymentPlanAndRegularEnrolmentTest extends ACheckoutTest {
 		assertEquals(amountDueDates.add(regularClass.getFeeIncGst()), purchaseController.getPayNow());
 	}
 
-	private void disableEnrolment(Enrolment enrolment) {
+	protected Enrolment disableEnrolment(Enrolment enrolment) {
 		Contact contact = enrolment.getStudent().getContact();
-		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
-		param.setValue(enrolment);
-		performAction(param);
+		enrolment = super.disableEnrolment(enrolment);
 
 		//assert enrolment
 		assertEquals(1, model.getEnabledEnrolments(contact).size());
@@ -286,6 +277,7 @@ public class PaymentPlanAndRegularEnrolmentTest extends ACheckoutTest {
 				}
 			}
 		}
+		return enrolment;
 	}
 
 }

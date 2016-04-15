@@ -25,7 +25,7 @@ public class PurchaseModelValidator {
                 ActionDisableEnrolment actionDisableEnrolment = disableEnrolment.createAction(purchaseController);
                 actionDisableEnrolment.setEnrolment(enrolment);
                 actionDisableEnrolment.action();
-                getModel().removeEnrolment(enrolment);
+                getModel().removeEnrolment(actionDisableEnrolment.getEnrolment());
             }
             result = result && valid;
         }

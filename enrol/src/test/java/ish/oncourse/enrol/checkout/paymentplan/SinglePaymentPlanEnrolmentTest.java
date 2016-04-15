@@ -52,7 +52,7 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 
 		Enrolment enrolment = purchaseController.getModel().getEnabledEnrolments(purchaseController.getModel().getPayer()).get(0);
 
-		disableEnrolment(enrolment);
+		enrolment = disableEnrolment(enrolment);
 		enableEnrolment(enrolment);
 
 		payNowLessThanRequired();
@@ -77,7 +77,7 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 
 		Enrolment enrolment = purchaseController.getModel().getEnabledEnrolments(purchaseController.getModel().getPayer()).get(0);
 
-		disableEnrolment(enrolment);
+		enrolment = disableEnrolment(enrolment);
 		enableEnrolment(enrolment);
 
 		payNowLessThanRequired();
@@ -214,13 +214,6 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 		assertTrue(purchaseController.getErrors().containsKey(PurchaseController.Message.payNowWrong.name()));
 	}
 
-	private void enableEnrolment(Enrolment enrolment) {
-		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
-		param.setValue(enrolment);
-		performAction(param);
-		AssertPaymentPlanEnrolment.valueOf(enrolment, purchaseController, model).assertValue();
-	}
-
 	private Contact initEnrolment() {
 		CourseClass courseClass = createPurchaseController(1001);
 		model = getModel();
@@ -229,11 +222,9 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 		return contact;
 	}
 
-	private void disableEnrolment(Enrolment enrolment) {
+	protected Enrolment disableEnrolment(Enrolment enrolment) {
 		Contact contact = enrolment.getStudent().getContact();
-		PurchaseController.ActionParameter param = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
-		param.setValue(enrolment);
-		performAction(param);
+		enrolment = super.disableEnrolment(enrolment);
 
 		//assert enrolment
 		assertEquals(0, model.getEnabledEnrolments(contact).size());
@@ -269,6 +260,7 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 				assertEquals(model.getDisabledEnrolments(contact).get(0), object);
 			}
 		}
+		return enrolment;
 	}
 
 }

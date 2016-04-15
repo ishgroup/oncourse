@@ -44,7 +44,7 @@ public class ActionAddCourseClass extends APurchaseAction {
 				} else {
 					Enrolment enrolment = getModel().getEnrolmentBy(contact, courseClass);
 					if (enrolment == null) {
-						enrolment = getController().createEnrolment(courseClass, contact.getStudent());
+						enrolment = getModel().createEnrolment(courseClass, contact.getStudent());
 						getModel().addEnrolment(enrolment);
 
 						if (!getModel().addedAsGuardian(contact)) {

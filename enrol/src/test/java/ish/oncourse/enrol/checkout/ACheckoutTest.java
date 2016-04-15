@@ -481,4 +481,19 @@ public abstract class ACheckoutTest extends ServiceTest {
 		}
 	}
 
+	protected Enrolment disableEnrolment(Enrolment enrolmentToDisable) {
+		ActionDisableEnrolment actionDisableEnrolment = Action.disableEnrolment.createAction(purchaseController);
+		actionDisableEnrolment.setEnrolment(enrolmentToDisable);
+		performAction(actionDisableEnrolment, Action.disableEnrolment);
+		return actionDisableEnrolment.getEnrolment();
+	}
+
+	protected Enrolment enableEnrolment(Enrolment enrolment) {
+		ActionEnableEnrolment action = Action.enableEnrolment.createAction(purchaseController);
+		action.setEnrolment(enrolment);
+		performAction(action, Action.enableEnrolment);
+		return action.getEnrolment();
+	}
+
+
 }

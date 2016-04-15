@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.disableEnrolment;
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.enableEnrolment;
 import static org.junit.Assert.assertEquals;
 
 public class DiscountConditionsTest extends ACheckoutTest {
@@ -147,7 +149,7 @@ public class DiscountConditionsTest extends ACheckoutTest {
 		expiryDate.add(Calendar.DATE, 3);
 		addedClass.setStartDate(expiryDate.getTime());
 
-		refreshEnrolment(enrolment);
+		enrolment = refreshEnrolment(enrolment);
 		
 		assertEquals(new Money("20.00"), enrolment.getInvoiceLines().get(0).getDiscountEachExTax());
 		assertEquals("Discount 3  days before and 3 days after offsets", getModel().getAllEnabledEnrolments().get(0).getInvoiceLines().get(0).getInvoiceLineDiscounts().get(0).getDiscount().getName());
@@ -160,7 +162,7 @@ public class DiscountConditionsTest extends ACheckoutTest {
 		expiryDate.add(Calendar.DATE, 4);
 		addedClass.setStartDate(expiryDate.getTime());
 
-		refreshEnrolment(enrolment);
+		enrolment = refreshEnrolment(enrolment);
 
 		assertEquals(Money.ZERO, enrolment.getInvoiceLines().get(0).getDiscountEachExTax());
 		assertEquals(0, getModel().getAllEnabledEnrolments().get(0).getInvoiceLines().get(0).getInvoiceLineDiscounts().size());
@@ -173,7 +175,7 @@ public class DiscountConditionsTest extends ACheckoutTest {
 		expiryDate.add(Calendar.DATE, -4);
 		addedClass.setStartDate(expiryDate.getTime());
 
-		refreshEnrolment(enrolment);
+		enrolment = refreshEnrolment(enrolment);
 
 		assertEquals(Money.ZERO, enrolment.getInvoiceLines().get(0).getDiscountEachExTax());
 		assertEquals(0, getModel().getAllEnabledEnrolments().get(0).getInvoiceLines().get(0).getInvoiceLineDiscounts().size());
@@ -186,19 +188,23 @@ public class DiscountConditionsTest extends ACheckoutTest {
 		expiryDate.add(Calendar.DATE, -3);
 		addedClass.setStartDate(expiryDate.getTime());
 
-		refreshEnrolment(enrolment);
+		enrolment = refreshEnrolment(enrolment);
 
 		assertEquals(new Money("20.00"), enrolment.getInvoiceLines().get(0).getDiscountEachExTax());
 		assertEquals("Discount 3  days before and 3 days after offsets", getModel().getAllEnabledEnrolments().get(0).getInvoiceLines().get(0).getInvoiceLineDiscounts().get(0).getDiscount().getName());
 	}
 	
-	private void refreshEnrolment(Enrolment enrolment) {
-		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableEnrolment);
-		actionParameter.setValue(enrolment);
-		performAction(actionParameter);
+	private Enrolment refreshEnrolment(Enrolment enrolment) {
 
-		actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.enableEnrolment);
-		actionParameter.setValue(enrolment);
-		performAction(actionParameter);
+		ActionDisableEnrolment actionDisableEnrolment =  disableEnrolment.createAction(purchaseController);
+		actionDisableEnrolment.setEnrolment(enrolment);
+		performAction(actionDisableEnrolment, disableEnrolment);
+
+		enrolment = actionDisableEnrolment.getEnrolment();
+
+		ActionEnableEnrolment actionEnableEnrolment =  enableEnrolment.createAction(purchaseController);
+		actionEnableEnrolment.setEnrolment(enrolment);
+		performAction(actionEnableEnrolment, enableEnrolment);
+		return enrolment;
 	}
 }

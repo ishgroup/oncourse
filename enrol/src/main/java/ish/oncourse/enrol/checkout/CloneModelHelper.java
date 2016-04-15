@@ -38,7 +38,7 @@ public class CloneModelHelper {
 			if (!contact.getIsCompany()) {
 				for (CourseClass oldCourseClass : oldClasses) {
 					CourseClass courseClass = newModel.localizeObject(oldCourseClass);
-					Enrolment enrolment = purchaseController.createEnrolment(courseClass,
+					Enrolment enrolment = newModel.createEnrolment(courseClass,
 							contact.getStudent());
 					newModel.addEnrolment(enrolment);
 					Enrolment oldEnrolment = oldModel.getEnrolmentBy(oldContact, oldCourseClass);
