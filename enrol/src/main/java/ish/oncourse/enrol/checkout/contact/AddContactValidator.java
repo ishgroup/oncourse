@@ -5,7 +5,6 @@ import ish.oncourse.enrol.utils.ContactCredentialsDelegator;
 import ish.oncourse.utils.StringUtilities;
 import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.services.Request;
 
 import java.util.HashMap;
@@ -76,10 +75,6 @@ public class AddContactValidator {
 					throw new IllegalArgumentException();
 			}
 		}
-
-		if (StringUtils.containsAny(contactCredentials.getFirstName(), "0123456789")) {
-			errors.put(FIELD_NAME_firstName, "The first name cannot contain number characters.");
-		}
 	}
 
 	private void validateLastName(ContactErrorCode errorCode)
@@ -95,9 +90,6 @@ public class AddContactValidator {
 				default:
 					throw new IllegalArgumentException();
 			}
-		}
-		if (StringUtils.containsAny(contactCredentials.getLastName(), "0123456789")) {
-			errors.put(FIELD_NAME_lastName, "The last name cannot contain number characters.");
 		}
 	}
 
