@@ -42,7 +42,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	 */
 	public boolean isDuplicated() {
 		return getStudent() != null && getCourseClass() != null &&
-				Enrolment.STUDENT.eq(getStudent()).filterObjects(getCourseClass().getValidEnrolments()).isEmpty();
+				!Enrolment.STUDENT.eq(getStudent()).filterObjects(getCourseClass().getValidEnrolments()).isEmpty();
 	}
 
 	@Override
