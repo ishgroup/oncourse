@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
 	<t:if test="haveMailingLists">
-        <form t:type="form" t:id="mailingListForm" target="mailingLists">
+        <form t:type="form" t:id="mailingListForm" target="mailingLists" clientValidation="literal:NONE">
         <div class="clearfix">
             <h6>I would like to receive information and offers via:</h6>
             <div class="row">
