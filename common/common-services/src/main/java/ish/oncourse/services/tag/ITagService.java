@@ -4,6 +4,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service for manipulations with {@link Tag} entities.
@@ -90,7 +91,7 @@ public interface ITagService {
 	 * @param currentUser
 	 * @return
 	 */
-	List<Tag> getMailingListsContactSubscribed(Contact currentUser);
+	Set<Tag> getMailingListsContactSubscribed(Contact currentUser);
 	
 	/**
 	 * Subscribe specified contact to specified mailing list.

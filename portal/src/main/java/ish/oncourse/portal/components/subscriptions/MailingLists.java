@@ -3,6 +3,7 @@ package ish.oncourse.portal.components.subscriptions;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.pages.Login;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.MailingListHelper;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
@@ -109,7 +110,7 @@ public class MailingLists {
 
 
 	private void initSelectedLists() {
-		List<Tag> listOfUser = tagService.getMailingListsContactSubscribed(currentUser);
+		Set<Tag> listOfUser = tagService.getMailingListsContactSubscribed(currentUser);
 		for (Tag t : listOfUser) {
 			selectedMailingLists.add(t.getId());
 		}
@@ -133,7 +134,7 @@ public class MailingLists {
 
 		this.isSaved = true;
 
-		Set<Tag> listOfUser = new HashSet<>(tagService.getMailingListsContactSubscribed(currentUser));
+		
 
         currentUser.setIsMarketingViaEmailAllowed(chkEmail);
 
@@ -141,50 +142,9 @@ public class MailingLists {
 
         currentUser.setIsMarketingViaPostAllowed(chkPost);
 
-		for (Long id : selectedMailingLists) {
-			List<Tag> tagList = tagService.loadByIds(id);
-			if (!tagList.isEmpty()) {
-				Tag tag = tagList.get(0);
-				if (!listOfUser.contains(tag)) {
-					Tag local = objectContext.localObject(tag);
-					Taggable taggable = objectContext.newObject(Taggable.class);
-					taggable.setCollege(local.getCollege());
-					Date date = new Date();
-					taggable.setCreated(date);
-					taggable.setModified(date);
-					taggable.setEntityIdentifier(Contact.class.getSimpleName());
-					taggable.setEntityWillowId(currentUser.getId());
-					taggable.setEntityAngelId(currentUser.getAngelId());
-
-					TaggableTag taggableTag = objectContext.newObject(TaggableTag.class);
-					taggableTag.setTag(local);
-					taggableTag.setCollege(local.getCollege());
-					taggable.addToTaggableTags(taggableTag);
-				} else {
-					listOfUser.remove(tag);
-				}
-			}
-		}
-
-		if (!listOfUser.isEmpty()) {
-			for (Tag tag : new ArrayList<>(listOfUser)) {
-				College currentCollege = webSiteService.getCurrentCollege();
-				Expression qual = ExpressionFactory.matchExp(Taggable.ENTITY_IDENTIFIER_PROPERTY, Contact.class.getSimpleName())
-						.andExp(ExpressionFactory.matchExp(Taggable.ENTITY_WILLOW_ID_PROPERTY, currentUser.getId()))
-						.andExp(ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, currentCollege));
-				qual = qual.andExp(ExpressionFactory.matchExp(Taggable.TAGGABLE_TAGS_PROPERTY + "." + TaggableTag.TAG_PROPERTY, tag));
-
-				SelectQuery q = new SelectQuery(Taggable.class, qual);
-				List<Taggable> taggableList = objectContext.performQuery(q);
-
-				for (Taggable t : new ArrayList<>(taggableList)) {
-					for (final TaggableTag tg : new ArrayList<>(t.getTaggableTags())) {
-						objectContext.deleteObjects(tg);
-						objectContext.deleteObjects(t);
-					}
-				}
-			}
-		}
+		Set<Tag> listOfUser = new HashSet<>(tagService.getMailingListsContactSubscribed(currentUser));
+		
+		MailingListHelper.valueOf(tagService, selectedMailingLists, listOfUser, objectContext, currentUser, webSiteService.getCurrentCollege()).saveSubscriptions();
 
 		objectContext.commitChanges();
 	}

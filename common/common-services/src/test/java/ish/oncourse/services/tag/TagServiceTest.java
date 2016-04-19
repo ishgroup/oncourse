@@ -208,7 +208,7 @@ private static final Logger logger = LogManager.getLogger();
 		tagService.subscribeContactToMailingList(contact, list);
 		
 		assertFalse(tagService.getMailingListsContactSubscribed(contact).isEmpty());
-		assertEquals("List1", tagService.getMailingListsContactSubscribed(contact).get(0).getName());
+		assertEquals("List1", tagService.getMailingListsContactSubscribed(contact).iterator().next().getName());
 		
 		tagService.unsubscribeContactFromMailingList(contact, list);
 		

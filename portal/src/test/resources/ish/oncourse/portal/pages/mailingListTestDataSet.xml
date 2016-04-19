@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Language id="2" name="Asian" isActive="1" ishVersion="333"/>
+    <Language id="1" name="Asian" isActive="1" ishVersion="333"/>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <TrainingPackage id="1" ishVersion="1" nationalISC="AGR05" title="Conditionally Endorsed Agri-Food Qualifications Training Package"  endorsementFrom="2010-02-03 09:18:09" endorsementTo="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" purchaseFrom="2010-02-03 09:18:09"/>
+    <Qualification id="1" ishVersion="333" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13"
+                   reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
+
+    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+    <Tutor id="1" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />
+    <Tutor id="2" angelId="1" collegeId="1" created="2010-02-03 09:18:09" finishDate="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" resume="Test resume" startDate="2010-02-03 09:18:09" />
+
+    <Student id="1" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1"
+             highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
+             isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1" yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
+    <Student id="2" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1"
+             highestSchoolLevel="1" concessionType="1" indigenousStatus="1" isOverseasClient="1"
+             isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1" yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
+
+    <Contact id="1" collegeId="1" tutorId="1" familyName="Contact1" givenName="Contact1" emailAddress="test@test.au"/>
+    <Contact id="2" collegeId="1" familyName="Contact2" givenName="Contact2" emailAddress="test@test.au"/>
+    <Contact id="3" collegeId="1" studentId="1" familyName="Contact3" givenName="Contact3" emailAddress="test@test.au"/>
+    <Contact id="4" collegeId="1" studentId="2" tutorId="2" familyName="Contact4" givenName="Contact4" emailAddress="test@test.au" />
+
+	<Tag id="1" collegeId="1" angelId="1" isWebVisible="0" isTagGroup="1" nodeType="1" weighting="1" name="Mailing Lists" detail="" specialType="3" modified="2010-02-03 09:18:09" created="2010-02-03 09:18:09"/>
+	<Tag id="2" parentId="1" collegeId="1" angelId="2" isWebVisible="1" isTagGroup="0" nodeType="1" weighting="1" name="Name1" detail="" modified="2010-02-03 09:18:09" created="2010-02-03 09:18:09"/>
+	<Tag id="3" parentId="1" collegeId="1" angelId="3" isWebVisible="1" isTagGroup="0" nodeType="1" weighting="1" name="Name2" detail="" modified="2010-02-03 09:18:09" created="2010-02-03 09:18:09"/>
+
+	
+	<Taggable id="100" collegeId="1" angelId="1" entityIdentifier="Contact" entityWillowId="1" entityAngelId="1" modified="2010-02-03 09:18:09" created="2010-02-03 09:18:09"/>
+	<Taggable id="200" collegeId="1" angelId="2" entityIdentifier="Contact" entityWillowId="1" entityAngelId="1" modified="2010-02-03 09:18:09" created="2010-02-03 09:18:09"/>
+
+	<TaggableTag id="100" collegeId="1" tagId="2" taggableId="100" modified="2010-02-03 09:18:09" created="2010-02-03 09:18:09"/>
+	<TaggableTag id="200" collegeId="1" tagId="2" taggableId="200" modified="2010-02-03 09:18:09" created="2010-02-03 09:18:09"/>
+
+</dataset>

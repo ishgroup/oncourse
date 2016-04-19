@@ -5,6 +5,7 @@ import ish.oncourse.services.tag.ITagService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class MailingListController extends AContactController {
 
@@ -23,7 +24,7 @@ public class MailingListController extends AContactController {
             return;
         }
         super.saveContact();
-        List<Tag> subscribedLists = tagService.getMailingListsContactSubscribed(getContact());
+        Set<Tag> subscribedLists = tagService.getMailingListsContactSubscribed(getContact());
         for (Tag list : selectedMailingLists) {
             if (!containsMailingList(subscribedLists,list)) {
                 tagService.subscribeContactToMailingList(getContact(), list);
@@ -35,7 +36,7 @@ public class MailingListController extends AContactController {
         }
     }
 
-    private boolean containsMailingList(List<Tag> subscribedLists, Tag tag)
+    private boolean containsMailingList(Set<Tag> subscribedLists, Tag tag)
     {
         for (Tag  tag1: subscribedLists) {
             if (tag1.getId().equals(tag.getId()))

@@ -9,6 +9,8 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
@@ -21,6 +23,8 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	@Inject
 	private Request request;
 
+	private static final Logger logger = LogManager.getLogger();
+	
 	public TagService(ICayenneService cayenneService, IWebSiteService webSiteService) {
 		super(cayenneService, webSiteService);
 	}
@@ -195,7 +199,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 	}
 
 	@Override
-	public List<Tag> getMailingListsContactSubscribed(Contact contact) {
+	public Set<Tag> getMailingListsContactSubscribed(Contact contact) {
 
 		College currentCollege = getWebSiteService().getCurrentCollege();
 
@@ -208,13 +212,17 @@ public class TagService extends BaseService<Tag> implements ITagService {
 
 
 		Set<Tag> allMailingLists = new HashSet<>(getMailingLists());
-		List<Tag> tags = new ArrayList<>();
+		Set<Tag> tags = new HashSet<>();
 
 		for (final Taggable t : taggableList) {
 			for (final TaggableTag tg : t.getTaggableTags()) {
 				Tag tag = tg.getTag();
 				if (allMailingLists.contains(tag)) {
-					tags.add(tag);
+					if(!tags.contains(tag)) {
+						tags.add(tag);
+					} else {
+						logger.error("Contact willowId:{} has more than one relation to MailingList (Tag) willowId:{}", contact.getId(), tag.getId());
+					}
 				}
 			}
 		}
