@@ -9,14 +9,7 @@ public class ActionSelectCardEditor extends APurchaseAction{
     protected void makeAction() {
 		getModel().getPayment().setType(PaymentType.CREDIT_CARD);
 
-		if (getController().isEditCorporatePass())
-		{
-			getModel().getInvoice().setCorporatePassUsed(null);
-			getModel().getInvoice().setCustomerReference(null);
-			getModel().setCorporatePass(null);
-			getModel().setPayer(getModel().getContacts().get(0));
-			getController().updateDiscountApplied();
-		}
+		ResetCorporatePass.valueOf(getController()).reset();
 
 		ActionChangePayer actionChangePayer = new ActionChangePayer();
 		actionChangePayer.setController(getController());

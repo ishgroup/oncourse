@@ -15,6 +15,8 @@ public class ActionBackToEditCheckout extends APurchaseAction {
 
 	@Override
 	protected void makeAction() {
+		ResetCorporatePass.valueOf(getController()).reset();
+
         getController().setPaymentEditorController(null);
 		getController().setState(PurchaseController.State.editCheckout);
         getController().getModel().setApplyPrevOwing(false);
