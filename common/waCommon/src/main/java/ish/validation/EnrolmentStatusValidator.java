@@ -1,4 +1,4 @@
-package ish.oncourse.utils;
+package ish.validation;
 
 import ish.common.types.EnrolmentStatus;
 
