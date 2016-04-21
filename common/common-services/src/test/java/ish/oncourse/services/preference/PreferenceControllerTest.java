@@ -89,6 +89,12 @@ public class PreferenceControllerTest extends ServiceTest {
 
 		prefController.setLicenseSms(true);
 		assertTrue("Check license sms.", prefController.getLicenseSms());
+
+		prefController.setValue("testKey", false, "testValue");
+		assertEquals("testValue", prefController.getValue("testKey", false));
+
+		prefController.setValue("testKey", false, "   test Value     ");
+		assertEquals("test Value", prefController.getValue("testKey", false));
 	}
 
 	@Test
@@ -179,9 +185,7 @@ public class PreferenceControllerTest extends ServiceTest {
 		assertTrue(prefController.getAllowCreateContact(waitinglist));
 	}
 
-
-
-		@After
+	@After
 	public void tearDown() throws Exception {
 		prefController = null;
 	}

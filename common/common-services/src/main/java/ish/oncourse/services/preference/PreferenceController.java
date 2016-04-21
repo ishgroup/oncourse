@@ -108,7 +108,7 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 
 		pref.setCollege(college);
-		pref.setValueString(value);
+		pref.setValueString(StringUtils.trim(value));
 
 		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
 
