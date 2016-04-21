@@ -3908,4 +3908,44 @@
 			ALTER TABLE WebURLAlias ADD INDEX urlPath (urlPath(100) );
 		</sql>
 	</changeSet>
+
+	<changeSet id="256" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="Document" columnNames="angelId"/>
+			</not>
+		</preConditions>
+		<createIndex tableName="Document" indexName="Document_angelId">
+			<column name="angelId"/>
+		</createIndex>
+	</changeSet>
+
+	<changeSet id="257" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<addUniqueConstraint tableName="Application" columnNames="collegeId,angelId" constraintName="collegeId_angelId_unique_application"/>
+	</changeSet>
+
+	<changeSet id="258" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<addUniqueConstraint tableName="CorporatePass" columnNames="collegeId,angelId" constraintName="collegeId_angelId_unique_corporatePass"/>
+	</changeSet>
+
+	<changeSet id="259" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<addUniqueConstraint tableName="CorporatePass_CourseClass" columnNames="collegeId,angelId" constraintName="collegeId_angelId_unique_CorporatePass_CourseClass"/>
+	</changeSet>
+
+	<changeSet id="260" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<addUniqueConstraint tableName="CorporatePass_Product" columnNames="collegeId,angelId" constraintName="collegeId_angelId_unique_CorporatePass_Product"/>
+	</changeSet>
+
+	<changeSet id="261" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<addUniqueConstraint tableName="CustomFieldType" columnNames="collegeId,angelId" constraintName="collegeId_angelId_unique_CustomFieldType"/>
+	</changeSet>
+
+	<changeSet id="262" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<addUniqueConstraint tableName="EntityRelation" columnNames="collegeId,angelId" constraintName="collegeId_angelId_unique_EntityRelation"/>
+	</changeSet>
+
+	<changeSet id="263" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<addUniqueConstraint tableName="SystemUser" columnNames="collegeId,angelId" constraintName="collegeId_angelId_unique_SystemUser"/>
+	</changeSet>
+
 </databaseChangeLog>
