@@ -8,21 +8,20 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import org.apache.cayenne.ObjectContext;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class WebSiteDelete extends AbstractWebSiteVersionDelete {
+public class WebSiteDelete {
 
 	private WebSite site;
-	private ObjectContext objectContext;
+	private ObjectContext context;
 
 	private WebSiteDelete() {}
 
 	public static WebSiteDelete valueOf(WebSite site, ObjectContext objectContext) {
 		WebSiteDelete instance = new WebSiteDelete();
 		instance.site = site;
-		instance.objectContext = objectContext;
+		instance.context = objectContext;
 		return instance;
 	}
 	
@@ -32,17 +31,17 @@ public class WebSiteDelete extends AbstractWebSiteVersionDelete {
 		List<WebSiteVersion> versions = new LinkedList<>(site.getVersions());
 				
 		for (WebSiteVersion version : versions) {
-			deleteVersion(version, objectContext);
+			DeleteVersion.valueOf(version, context).delete();
 		}
 		
 		List<Invoice> invoices = new LinkedList<>(site.getInvoices());
 		for (Invoice invoice : invoices) {
 			invoice.setWebSite(null);
 		}
-		objectContext.deleteObjects(site.getCollegeDomains());
-		objectContext.deleteObjects(site.getLicenseFees());
-		objectContext.deleteObject(site);
-		objectContext.commitChanges();
+		context.deleteObjects(site.getCollegeDomains());
+		context.deleteObjects(site.getLicenseFees());
+		context.deleteObject(site);
+		context.commitChanges();
 	}
 
 }

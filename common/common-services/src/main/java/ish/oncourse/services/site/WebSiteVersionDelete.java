@@ -7,35 +7,36 @@ import org.apache.cayenne.ObjectContext;
 /*
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
-public class WebSiteVersionDelete extends AbstractWebSiteVersionDelete {
+public class WebSiteVersionDelete {
 
-    private WebSiteVersion currentVersion;
-    private WebSiteVersion deployedVersion;
-	protected ObjectContext objectContext;
-	protected WebSiteVersion deletingVersion;
-	
+    private WebSiteVersion current;
+    private WebSiteVersion deployed;
+	private WebSiteVersion deleting;
+
+	private ObjectContext context;
+
 	public void delete() {
-		deleteVersion(deletingVersion, objectContext);
-		objectContext.commitChanges();
+		DeleteVersion.valueOf(deleting).delete();
+		context.commitChanges();
 	}
 
     private void validate() {
-        if (currentVersion.getId().equals(deletingVersion.getId())
-                || deployedVersion.getId().equals(deletingVersion.getId())) {
+        if (current.getId().equals(deleting.getId())
+                || deployed.getId().equals(deleting.getId())) {
             // prevent the deletion of the current live site or the draft site!
             throw new IllegalArgumentException("Attempt to delete current live site or the draft site version");
         }
     }
 
-    public static WebSiteVersionDelete valueOf(WebSiteVersion deletingVersion,
-                                               WebSiteVersion currentVersion,
-                                               WebSiteVersion deployedVersion,
-                                               ObjectContext objectContext) {
+    public static WebSiteVersionDelete valueOf(WebSiteVersion deleting,
+                                               WebSiteVersion current,
+                                               WebSiteVersion deployed,
+                                               ObjectContext object) {
         WebSiteVersionDelete result = new WebSiteVersionDelete();
-        result.deletingVersion = objectContext.localObject(deletingVersion);
-        result.currentVersion = objectContext.localObject(currentVersion);
-        result.deployedVersion = objectContext.localObject(deployedVersion);
-        result.objectContext = objectContext;
+        result.deleting = object.localObject(deleting);
+        result.current = object.localObject(current);
+        result.deployed = object.localObject(deployed);
+		result.context = object;
 
         result.validate();
         return result;
