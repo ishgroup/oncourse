@@ -15,6 +15,7 @@ import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.util.payment.CompleteInTransactionPayments;
 import ish.oncourse.util.payment.PaymentInAbandon;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInSucceed;
@@ -121,7 +122,9 @@ public class PaymentServiceImpl implements InternalPaymentService {
         updatedPayments.add(paymentInModel.getPaymentIn());
         updatedPayments.addAll(PaymentInUtil.getRelatedVoucherPayments(paymentInModel.getPaymentIn()));
 
-        PaymentInModelValidator validator = PaymentInModelValidator.valueOf(paymentInModel, prefsFactory).validate();
+		CompleteInTransactionPayments.valueOf(cayenneService.newContext(), paymentInModel.getPaymentIn(), paymentInModel.getPaymentIn().getContact(), paymentInService).complite();
+
+		PaymentInModelValidator validator = PaymentInModelValidator.valueOf(paymentInModel, prefsFactory).validate();
 
         if (validator.getError() == null) {
             if (paymentInModel.getPaymentIn().getType() == PaymentType.CREDIT_CARD &&

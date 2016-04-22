@@ -1,19 +1,14 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.VoucherProduct;
-import ish.oncourse.util.payment.PaymentInAbandon;
-import ish.oncourse.util.payment.PaymentInModel;
-import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
+import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.util.payment.CompleteInTransactionPayments;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.Calendar;
-import java.util.List;
+import static ish.oncourse.util.payment.CompleteInTransactionPayments.CompleteResult;
 
 public class ActionChangePayer extends APurchaseAction {
 
@@ -41,38 +36,20 @@ public class ActionChangePayer extends APurchaseAction {
         if (contact.getObjectId().isTemporary())
             return true;
         ObjectContext context = getController().getCayenneService().newContext();
+		PaymentIn current = getModel().getPayment();
+		IPaymentService paymentService = getController().getPaymentService();
 
-	    Calendar calendar = Calendar.getInstance();
-	    calendar.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW);
-	    
-		List<PaymentIn> payments = ObjectSelect.query(PaymentIn.class).
-				where(PaymentIn.STATUS.in(PaymentStatus.IN_TRANSACTION, PaymentStatus.CARD_DETAILS_REQUIRED)).
-	            and(PaymentIn.CONTACT.eq(contact)).
-	            and(PaymentIn.SOURCE.eq(PaymentSource.SOURCE_WEB)).
-				and(PaymentIn.CREATED.gt(calendar.getTime())).
-				select(context);
-	    
-	    PaymentIn current = getModel().getPayment();
-
-        for (PaymentIn p : payments) {
-            if (!current.getObjectId().isTemporary() &&
-                    current.getId().equals(p.getId()))
-                continue;
-
-			if (!getController().getPaymentService().isProcessedByGateway(p))
-			{
+		CompleteResult result = CompleteInTransactionPayments.valueOf(context, current, contact, paymentService).complite();
+		switch (result) {
+			case COMPLETE:
+				getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
+			case NOTHING_TO_COMPLETE:
+				return true;
+			case NOT_COMPLETE:
 				getController().addError(PurchaseController.Message.dpsHasNotFinishedProcessPreviousPayment, contact.getFullName());
 				return false;
-			}
-
-            if (!getController().getWarnings().containsKey(PurchaseController.Message.payerHadUnfinishedPayment.name()))
-                getController().addWarning(PurchaseController.Message.payerHadUnfinishedPayment, contact.getFullName());
-            PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(p).build().getModel();
-            PaymentInAbandon.valueOf(model, false);
-        }
-
-        context.commitChanges();
-		return true;
+			default: throw new IllegalArgumentException();
+		}
     }
 
     @Override
