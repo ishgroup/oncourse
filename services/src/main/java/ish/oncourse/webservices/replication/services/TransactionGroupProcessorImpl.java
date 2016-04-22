@@ -11,7 +11,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -28,11 +27,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static ish.oncourse.webservices.replication.services.ReplicationUtils.*;
 
@@ -44,7 +39,7 @@ import static ish.oncourse.webservices.replication.services.ReplicationUtils.*;
 public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
 
     static final String MESSAGE_TEMPLATE_NO_STUB = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s!";
-    static final String MESSAGE_TEMPLATE_NO_ANGELID = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s but without has null angelId!";
+    static final String MESSAGE_TEMPLATE_NO_ANGELID = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s but without angelId!";
 
     /**
 	 * Logger
