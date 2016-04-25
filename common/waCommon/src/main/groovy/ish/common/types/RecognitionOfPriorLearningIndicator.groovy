@@ -5,13 +5,14 @@ import ish.oncourse.API;
 
 /**
  * A code indicating whether an RPL is a unit of study or has an RPL component in the unit of study.
- * http://heimshelp.deewr.gov.au/sites/heimshelp/2014_data_requirements/2014dataelements/pages/577
- * 
+ * http://heimshelp.education.gov.au/sites/heimshelp/2015_data_requirements/2015dataelements/pages/577
  */
 @API
 public enum RecognitionOfPriorLearningIndicator implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Unit of study is NOT an RPL unit of study.
+	 *
 	 * Database value: 0
 	 */
 	@API
@@ -19,6 +20,8 @@ public enum RecognitionOfPriorLearningIndicator implements DisplayableExtendedEn
 		"Unit of study is NOT an RPL unit of study"),
 
 	/**
+	 * Unit of study consists wholly of RPL.
+	 *
 	 * Database value: 1
 	 */
 	@API
@@ -26,6 +29,8 @@ public enum RecognitionOfPriorLearningIndicator implements DisplayableExtendedEn
 		"Unit of study consists wholly of RPL"),
 
 	/**
+	 * Unit of study has a component of RPL.
+	 *
 	 * Database value: 2
 	 */
 	@API

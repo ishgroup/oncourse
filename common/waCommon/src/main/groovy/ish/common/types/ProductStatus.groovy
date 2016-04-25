@@ -10,6 +10,8 @@ import ish.oncourse.API;
 public enum ProductStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Base status product receives after payment was confirmed.
+	 *
 	 * Database value: 0
 	 */
 	@API
@@ -49,12 +51,16 @@ public enum ProductStatus implements DisplayableExtendedEnumeration<Integer> {
 	NEW(4, "New"),
 
 	/**
+	 * Product is past it's expiry date
+	 *
 	 * Database value: 5
 	 */
 	@API
 	EXPIRED(5, "Expired"),
 
 	/**
+	 * Status that can be set manually dor Article Product to confirm it's delivery.
+	 *
 	 * Database value: 6
 	 */
 	@API

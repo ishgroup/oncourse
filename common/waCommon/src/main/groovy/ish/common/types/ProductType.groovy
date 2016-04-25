@@ -16,16 +16,28 @@ import ish.oncourse.API;
 public enum ProductType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Product items offered by college, e.g, books.
+	 * Located in Products -> Products.
+	 *
+	 * Database value: 1
 	 */
 	@API
 	ARTICLE(1, "Product"),
 
 	/**
+	 * Memberships offered by college.
+	 * Located in Products -> Memberships.
+	 *
+	 * Database value: 2
 	 */
 	@API
 	MEMBERSHIP(2, "Membership"),
 
 	/**
+	 * Money and enrolment vouchers sold by college. Voucher can be used to cover the payments for enrolling into classes.
+	 * Located in Products -> Voucher types.
+	 *
+	 * Database value: 3
 	 */
 	@API
 	VOUCHER(3, "Voucher");

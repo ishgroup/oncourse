@@ -65,8 +65,8 @@ public class Money extends Number implements Comparable<Money> {
 	/**
 	 * Construct a new money instance, first argument is dollars, second is cents
 	 * 
-	 * @param dollars
-	 * @param cents
+	 * @param dollars dollars value
+	 * @param cents cents value
 	 */
 	@API
 	public Money(int dollars, int cents) {

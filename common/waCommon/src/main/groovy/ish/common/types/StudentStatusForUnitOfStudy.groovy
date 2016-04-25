@@ -5,7 +5,7 @@ import ish.oncourse.API;
 
 /**
  * A code which indicates the student status for a unit of study
- * http://heimshelp.deewr.gov.au/sites/heimshelp/2014_data_requirements/2014dataelements/pages/490
+ * http://heimshelp.education.gov.au/sites/heimshelp/2015_data_requirements/2015dataelements/pages/490
  * 
  */
 @API
