@@ -99,8 +99,8 @@
 	<WebNode id="5" webNodeTypeId="5" isPublished="1" name="Home page" nodeNumber="1" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
 	<WebNode id="6" webNodeTypeId="6" isPublished="1" name="About us" nodeNumber="2" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
 
-	<WebMenu id="7" webNodeId="4" weight="1" name="Home" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
-	<WebMenu id="8" webNodeId="4" webMenuParentId="7" weight="0" name="Menu" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
+	<WebMenu id="7" webNodeId="5" weight="1" name="Home" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
+	<WebMenu id="8" webNodeId="5" webMenuParentId="7" weight="0" name="Menu" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
 	<WebMenu id="9"  URL="/about-us" webMenuParentId="8" weight="1" name="About us" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45" webSiteVersionId="3"/>
 
 	<WebContent id="7" content="Home page" content_textile="Home page" created="2015-08-17 23:57:45" modified="2015-08-17 23:57:45"  webSiteVersionId="3"/>

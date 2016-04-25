@@ -29,10 +29,11 @@ class DeleteVersion {
 
 		deleteAllContents();
 
-		deleteAllMenus();
+//		deleteAllMenus();
 
 		deleteVersionRelatedObjects();
 
+		context.invalidateObjects(version);
 		context.deleteObjects(version);
 		context.commitChanges();
 	}
@@ -52,6 +53,7 @@ class DeleteVersion {
 	}
 
 	void deleteVersionRelatedObjects() {
+		deleteEntities(WebMenu.class);
 		deleteEntities(WebUrlAlias.class);
 		deleteEntities(WebNode.class);
 		deleteEntities(WebNodeType.class);

@@ -9,12 +9,11 @@ import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.lifecycle.QueueableLifecycleListenerTest;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
-
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SelectById;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -49,9 +48,9 @@ public class WebSiteVersionDeleteTest extends ServiceTest {
 	@Test
 	public void testDeleteVersion() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();
-		WebSiteVersion currentVersion = Cayenne.objectForPK(context, WebSiteVersion.class, 1l);
-		WebSiteVersion deletingVersion = Cayenne.objectForPK(context, WebSiteVersion.class, 2l);
-		WebSiteVersion deployedVersion = Cayenne.objectForPK(context, WebSiteVersion.class, 3l);
+		WebSiteVersion currentVersion = SelectById.query(WebSiteVersion.class, 1l).selectOne(context);
+		WebSiteVersion deletingVersion = SelectById.query(WebSiteVersion.class, 2l).selectOne(context);
+		WebSiteVersion deployedVersion = SelectById.query(WebSiteVersion.class, 3l).selectOne(context);
 		WebSiteVersionDelete.valueOf(deletingVersion, currentVersion, deployedVersion, context).delete();
 
 		assertEquals(PersistenceState.TRANSIENT, deletingVersion.getPersistenceState());
@@ -59,27 +58,27 @@ public class WebSiteVersionDeleteTest extends ServiceTest {
 		WebSite site = Cayenne.objectForPK(context, WebSite.class, 1l);
 		assertEquals(2, site.getVersions().size());
 		
-		assertNull(Cayenne.objectForPK(context, WebSiteVersion.class, 2l));
-		assertNull(Cayenne.objectForPK(context, WebSiteLayout.class, 3l));
-		assertNull(Cayenne.objectForPK(context, WebSiteLayout.class, 4l));
-		assertNull(Cayenne.objectForPK(context, WebTemplate.class, 3l));
-		assertNull(Cayenne.objectForPK(context, WebTemplate.class, 4l));
-		assertNull(Cayenne.objectForPK(context, WebNodeType.class, 3l));
-		assertNull(Cayenne.objectForPK(context, WebNodeType.class, 4l));
-		assertNull(Cayenne.objectForPK(context, WebNode.class, 3l));
-		assertNull(Cayenne.objectForPK(context, WebNode.class, 4l));
-		assertNull(Cayenne.objectForPK(context, WebMenu.class, 4l));
-		assertNull(Cayenne.objectForPK(context, WebMenu.class, 5l));
-		assertNull(Cayenne.objectForPK(context, WebMenu.class, 6l));
-		assertNull(Cayenne.objectForPK(context, WebContent.class, 4l));
-		assertNull(Cayenne.objectForPK(context, WebContent.class, 5l));
-		assertNull(Cayenne.objectForPK(context, WebContent.class, 6l));
-		assertNull(Cayenne.objectForPK(context, WebContentVisibility.class, 5l));
-		assertNull(Cayenne.objectForPK(context, WebContentVisibility.class, 6l));
-		assertNull(Cayenne.objectForPK(context, WebContentVisibility.class, 7l));
-		assertNull(Cayenne.objectForPK(context, WebContentVisibility.class, 8l));
-		assertNull(Cayenne.objectForPK(context, WebUrlAlias.class, 3l));
-		assertNull(Cayenne.objectForPK(context, WebUrlAlias.class, 4l));
+		assertNull(SelectById.query(WebSiteVersion.class,2l).selectOne(context));
+		assertNull(SelectById.query(WebSiteLayout.class, 3l).selectOne(context));
+		assertNull(SelectById.query(WebSiteLayout.class, 4l).selectOne(context));
+		assertNull(SelectById.query(WebTemplate.class, 3l).selectOne(context));
+		assertNull(SelectById.query(WebTemplate.class, 4l).selectOne(context));
+		assertNull(SelectById.query(WebNodeType.class, 3l).selectOne(context));
+		assertNull(SelectById.query(WebNodeType.class, 4l).selectOne(context));
+		assertNull(SelectById.query(WebNode.class, 3l).selectOne(context));
+		assertNull(SelectById.query(WebNode.class, 4l).selectOne(context));
+		assertNull(SelectById.query(WebMenu.class, 4l).selectOne(context));
+		assertNull(SelectById.query(WebMenu.class, 5l).selectOne(context));
+		assertNull(SelectById.query(WebMenu.class, 6l).selectOne(context));
+		assertNull(SelectById.query(WebContent.class, 4l).selectOne(context));
+		assertNull(SelectById.query(WebContent.class, 5l).selectOne(context));
+		assertNull(SelectById.query(WebContent.class, 6l).selectOne(context));
+		assertNull(SelectById.query(WebContentVisibility.class, 5l).selectOne(context));
+		assertNull(SelectById.query(WebContentVisibility.class, 6l).selectOne(context));
+		assertNull(SelectById.query(WebContentVisibility.class, 7l).selectOne(context));
+		assertNull(SelectById.query(WebContentVisibility.class, 8l).selectOne(context));
+		assertNull(SelectById.query(WebUrlAlias.class, 3l).selectOne(context));
+		assertNull(SelectById.query(WebUrlAlias.class, 4l).selectOne(context));
 	} 
 
 	@Test
