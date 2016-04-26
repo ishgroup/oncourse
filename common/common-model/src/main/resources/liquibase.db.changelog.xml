@@ -3957,4 +3957,8 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="265" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<addNotNullConstraint tableName="Room" columnName="siteId" columnDataType="BIGINT"/>
+	</changeSet>
+
 </databaseChangeLog>
