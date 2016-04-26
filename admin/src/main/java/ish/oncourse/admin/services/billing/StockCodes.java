@@ -9,6 +9,7 @@ public enum StockCodes {
 	
 	// hosting/support plans
     light("OC-LIGHT"),
+    ultimate("OC-12"),
     professional("OC-11"),
     enterprise("OC-10"),
     starter("OCW-20"),
