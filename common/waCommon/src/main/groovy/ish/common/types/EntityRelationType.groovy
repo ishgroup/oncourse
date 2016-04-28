@@ -14,12 +14,16 @@ public enum EntityRelationType implements DisplayableExtendedEnumeration<Integer
 
 	/**
 	 * Database value: 1
+	 *
+	 * Related record is Course
 	 */
 	@API
 	COURSE(1, "Course"),
 
 	/**
 	 * Database value: 2
+	 *
+	 * Related record is Product
 	 */
 	@API
 	PRODUCT(2, "Product");

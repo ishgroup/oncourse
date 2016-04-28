@@ -8,37 +8,41 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
- * Discounts can expire after a certain period of time. Once expired, new sales will not be allowed to
- * take advantage of the discount.
+ * Memberships can expire after a certain period of time. Once expired, new sales will not be allowed to
+ * take advantage of the membership.
  * 
  */
 @API
 public enum ExpiryType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * This discount expires after a certain numbers of days.
-	 * 
+	 * Database value: 1
+	 *
+	 * This membership expires after a certain numbers of days.
 	 */
 	@API
 	DAYS(1, "Days"),
 
 	/**
-	 * This discount lasts until the beginning of the new year.
-	 * 
+	 * Database value: 2
+	 *
+	 * This membership lasts until the beginning of the new year.
 	 */
 	@API
 	FIRST_JANUARY(2, "1st January"),
 
 	/**
-	 * This discount lasts until the 1 July.
-	 * 
+	 * Database value: 3
+	 *
+	 * This membership lasts until the 1 July.
 	 */
 	@API
 	FIRST_JULY(3, "1st July"),
 
 	/**
-	 * This discount never expires.
-	 * 
+	 * Database value: 4
+	 *
+	 * This membership never expires.
 	 */
 	@API
 	LIFETIME(4, "Never (Lifetime)");

@@ -10,58 +10,58 @@ import ish.oncourse.API;
 public enum ProductStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * Base status product receives after payment was confirmed.
-	 *
 	 * Database value: 0
+	 *
+	 * Base status product receives after payment was confirmed.
 	 */
 	@API
 	ACTIVE(0, "Active"),
 	
 	/**
-	 * A product sale which is cancelled but not reversed.
-	 * 
 	 * Database value: 1
+	 *
+	 * A product sale which is cancelled but not reversed.
 	 */
 	@API
 	CANCELLED(1, "Cancelled"),
 
 	/**
-	 * When a product sale has been reversed.
-	 * 
 	 * Database value: 2
+	 *
+	 * When a product sale has been reversed.
 	 */
 	@API
 	CREDITED(2, "Credited"),
 
 	/**
-	 * A voucher which has been sold and also redeemed. Doesn't apply to other types of products.
-	 * 
 	 * Database value: 3
+	 *
+	 * A voucher which has been sold and also redeemed. Doesn't apply to other types of products.
 	 */
 	@API
 	REDEEMED(3, "Redeemed"),
 	
 	/**
+	 * Database value: 4
+	 *
 	 * Represents status when voucher is persisted to database but its payment is not yet successful.
 	 * This status will transition to another status soon. You should not set this status ordinarily.
-	 * 
-	 * Database value: 4
 	 */
 	@API
 	NEW(4, "New"),
 
 	/**
-	 * Product is past it's expiry date
-	 *
 	 * Database value: 5
+	 *
+	 * Product is past it's expiry date
 	 */
 	@API
 	EXPIRED(5, "Expired"),
 
 	/**
-	 * Status that can be set manually dor Article Product to confirm it's delivery.
-	 *
 	 * Database value: 6
+	 *
+	 * Status that can be set manually for Article Product to confirm it's delivery.
 	 */
 	@API
 	DELIVERED(6, "Delivered");

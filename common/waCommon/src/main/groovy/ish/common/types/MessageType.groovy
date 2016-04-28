@@ -16,25 +16,25 @@ import ish.oncourse.API;
 public enum MessageType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * Messages sent to contact email.
-	 *
 	 * Database value: 1
+	 *
+	 * Messages sent to contact email.
 	 */
 	@API
 	EMAIL(1, "email"),
 	
 	/**
-	 * Messages sent ti contact address.
-	 *
 	 * Database value: 2
+	 *
+	 * Messages sent ti contact address.
 	 */
 	@API
 	SMS(2, "sms"),
 
 	/**
-	 * Messages sent to contact mobile phone number.
-	 *
 	 * Database value: 3
+	 *
+	 * Messages sent to contact mobile phone number.
 	 */
 	@API
 	POST(3, "post");

@@ -13,33 +13,33 @@ import ish.oncourse.API;
 public enum TriggerType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * This script will be executed at predefined times (as expressed in a cron string).
-	 *
 	 * Database value: 1
+	 *
+	 * This script will be executed at predefined times (as expressed in a cron string).
 	 */
 	@API
 	CRON(1, "Cron"),
 
 	/**
-	 * This script will be executed when a database object is created, edited or deleted.
-	 *
 	 * Database value: 2
+	 *
+	 * This script will be executed when a database object is created, edited or deleted.
 	 */
 	@API
 	ENTITY_EVENT(2, "Entity event"),
 
 	/**
-	 * This script will be executed on particular lifecycle events such as when an enrolment becomes confirmed or a class is cancelled.
-	 *
 	 * Database value: 3
+	 *
+	 * This script will be executed on particular lifecycle events such as when an enrolment becomes confirmed or a class is cancelled.
 	 */
 	@API
 	ONCOURSE_EVENT(3, "onCourse event"),
 
 	/**
-	 * This script will only be executed when a user manually causes it to run.
-	 *
 	 * Database value: 4
+	 *
+	 * This script will only be executed when user manually runs it.
 	 */
 	@API
 	ON_DEMAND(4, "On demand");

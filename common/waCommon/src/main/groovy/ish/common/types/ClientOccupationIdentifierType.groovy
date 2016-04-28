@@ -16,46 +16,55 @@ import ish.oncourse.API;
 public enum ClientOccupationIdentifierType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 0
 	 */
 	@API
 	NOT_SET(0, "Not Stated", 0),
 
 	/**
+	 * Database value: 1
 	 */
 	@API
 	MANAGER(1, "Manager (1)", 1),
 
 	/**
+	 * Database value: 2
 	 */
 	@API
 	PROFESSIONALS(2, "Professionals (2)", 2),
 
 	/**
+	 * Database value: 3
 	 */
 	@API
 	TECHNICIANS(3, "Technicians and Trades Workers (3)", 3),
 
 	/**
+	 * Database value: 4
 	 */
 	@API
 	COMMUNITY(4, "Community and personal Service Workers (4)", 4),
 
 	/**
+	 * Database value: 5
 	 */
 	@API
 	CLERICAL(5, "Clerical and Administrative Workers (5)", 5),
 	
 	/**
+	 * Database value: 6
 	 */
 	@API
 	SALES(6, "Sales Workers (6)", 6),
 
 	/**
+	 * Database value: 7
 	 */
 	@API
 	MACHINERY(7, "Machinery Operators and Drivers (7)", 7),
 
 	/**
+	 * Database value: 8
 	 */
 	@API
 	LABOURERS(8, "Labourers (8)", 8);

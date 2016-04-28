@@ -16,22 +16,25 @@ import ish.oncourse.API;
 public enum ConfirmationStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 1
+	 *
 	 * An email for this record is not yet sent.
-	 * 
 	 */
 	@API
 	NOT_SENT(1, "Not sent"),
 
 	/**
+	 * Database value: 2
+	 *
 	 * An email for this record has been sent.
-	 * 
 	 */
 	@API
 	SENT(2, "Sent"),
 
 	/**
+	 * Database value: 2
+	 *
 	 * A user has chosen to prevent an email being sent for this record.
-	 * 
 	 */
 	@API
 	DO_NOT_SEND(3, "Don't send");

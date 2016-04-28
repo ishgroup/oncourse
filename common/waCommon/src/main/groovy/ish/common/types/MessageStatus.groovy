@@ -16,25 +16,25 @@ import ish.oncourse.API;
 public enum MessageStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * Message hasn't been sent by onCourse server yet.
-	 *
 	 * Database value: 1
+	 *
+	 * Message hasn't been sent by onCourse server yet.
 	 */
 	@API
 	QUEUED(1, "queued"),
 	
 	/**
-	 * Message was sent to contact successfully.
-	 *
 	 * Database value: 2
+	 *
+	 * Message was sent to contact successfully.
 	 */
 	@API
 	SENT(2, "sent"),
 
 	/**
-	 * Message sending failed and won't be attempted again.
-	 *
 	 * Database value: 3
+	 *
+	 * Message sending failed and won't be attempted again.
 	 */
 	@API
 	FAILED(3, "failed");

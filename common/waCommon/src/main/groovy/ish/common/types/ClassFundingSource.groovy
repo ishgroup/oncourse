@@ -16,31 +16,37 @@ import ish.oncourse.API;
 public enum ClassFundingSource implements DisplayableExtendedEnumeration<Integer>, AvetmissReportingEnum {
 
 	/**
+	 * Database value: 0
 	 */
 	@API
 	COMMONWEALTH_AND_STATE_GENERAL(0, "Commonwealth and state - general recurrent", "11"),
 
 	/**
+	 * Database value: 1
 	 */
 	@API
 	COMMONWEALTH_SPECIFIC(1, "Commonwealth - specific", "13"),
 
 	/**
+	 * Database value: 2
 	 */
 	@API
 	STATE_SPECIFIC(2, "State - specific", "15"),
 
 	/**
+	 * Database value: 3
 	 */
 	@API
 	DOMESTIC_FULL_FEE(3, "Domestic full fee paying student", "20"),
 
 	/**
+	 * Database value: 4
 	 */
 	@API
 	INTERNATIONAL_FULL_FEE(4, "International full fee paying student", "30"),
 
 	/**
+	 * Database value: 5
 	 */
 	@API
 	REVENUE_FROM_OTHER_TO(5, "Revenue from other RTO", "80");

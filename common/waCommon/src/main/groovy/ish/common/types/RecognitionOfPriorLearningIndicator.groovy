@@ -11,27 +11,27 @@ import ish.oncourse.API;
 public enum RecognitionOfPriorLearningIndicator implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * Unit of study is NOT an RPL unit of study.
-	 *
 	 * Database value: 0
+	 *
+	 * Unit of study is NOT an RPL unit of study.
 	 */
 	@API
 	NOT_RPL_UNIT_OF_STUDY(0, "Unit of study is NOT an RPL unit of study",
 		"Unit of study is NOT an RPL unit of study"),
 
 	/**
-	 * Unit of study consists wholly of RPL.
-	 *
 	 * Database value: 1
+	 *
+	 * Unit of study consists wholly of RPL.
 	 */
 	@API
 	UNIT_OF_STUDY_CONSISTS_WHOLLY_OF_RPL(1, "Unit of study consists wholly of RPL",
 		"Unit of study consists wholly of RPL"),
 
 	/**
-	 * Unit of study has a component of RPL.
-	 *
 	 * Database value: 2
+	 *
+	 * Unit of study has a component of RPL.
 	 */
 	@API
 	UNIT_OF_STUDY_HAS_A_COMPONENT_OF_RPL(2, "Unit of study has a component of RPL",

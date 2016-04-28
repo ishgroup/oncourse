@@ -12,25 +12,25 @@ import ish.oncourse.API;
 public enum VoucherPaymentStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * Voucher is valid and can be used for enrolling/payment.
-	 *
 	 * Database value: 0
+	 *
+	 * Voucher is valid and can be used for enrolling/payment.
 	 */
 	@API
 	APPROVED(0, "Approved"),
 	
 	/**
-	 * Voucher has already being used in some other transaction.
-	 *
 	 * Database value: 1
+	 *
+	 * Voucher has already being used in some other transaction.
 	 */
 	@API
 	BUSY(1, "Busy"),
 
 	/**
-	 * Voucher details are different on angel and willow.
-	 *
 	 * Database value: 2
+	 *
+	 * Voucher details are different on angel and willow.
 	 */
 	@API
 	INCONSISTENT(2, "Inconsistent");
