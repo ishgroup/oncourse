@@ -12,10 +12,14 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.CommonUtils;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.*;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
+import org.apache.cayenne.query.SQLTemplate;
+import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -62,26 +66,19 @@ public class CollegeService implements ICollegeService {
 	@Override
 	public College findBySecurityCode(String securityCode) {
 
-		College college = null;
-
-		ObjectContext objectContext = cayenneService.sharedContext();
-
-		Expression qualifier = ExpressionFactory.matchExp(College.WEB_SERVICES_SECURITY_CODE_PROPERTY, securityCode);
-		SelectQuery q = new SelectQuery(College.class, qualifier);
-
-		@SuppressWarnings("unchecked")
-		List<College> records = objectContext.performQuery(q);
-
-		if ((records == null) || records.isEmpty()) {
-			logger.debug("No College found for security code: {}", securityCode);
-
-		} else if (records.size() == 1) {
-			college = records.get(0);
-			logger.debug("College with ID: {} found for security code: {}", college.getId(), securityCode);
-		} else {
-			logger.error("Multiple Colleges found for security code: {}", securityCode);
+		College college;
+		try {
+			ObjectContext objectContext = cayenneService.sharedContext();
+			college = ObjectSelect.query(College.class).where(College.WEB_SERVICES_SECURITY_CODE.eq(securityCode)).selectOne(objectContext);
+			if (college == null) {
+				logger.debug("No College found for security code: {}", securityCode);
+			} else {
+				logger.debug("College with ID: {} found for security code: {}", college.getId(), securityCode);
+			}
+		} catch (CayenneRuntimeException e) {
+			logger.error("Multiple Colleges found for security code: {}", securityCode, e);
+			throw e;
 		}
-
 		return college;
 	}
 	
@@ -90,21 +87,8 @@ public class CollegeService implements ICollegeService {
 	 */
 	@Override
 	public College findBySecurityCodeLastChars(String securityCodeEnding) {
-		College college = null;
-
 		ObjectContext objectContext = cayenneService.sharedContext();
-
-		Expression qualifier = ExpressionFactory.likeExp(College.WEB_SERVICES_SECURITY_CODE_PROPERTY, "%" + securityCodeEnding);
-		SelectQuery q = new SelectQuery(College.class, qualifier);
-
-		@SuppressWarnings("unchecked")
-		List<College> records = objectContext.performQuery(q);
-
-		if (records.size() == 1) {
-			college = records.get(0);
-		}
-
-		return college;
+		return ObjectSelect.query(College.class).where(College.WEB_SERVICES_SECURITY_CODE.like("%" + securityCodeEnding)).selectOne(objectContext);
 	}
 
 	/**
