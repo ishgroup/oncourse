@@ -17,7 +17,7 @@ public class GetDeployedVersion {
         return ObjectSelect.query(WebSiteVersion.class)
                 .cacheStrategy((useCache ? QueryCacheStrategy.LOCAL_CACHE: QueryCacheStrategy.LOCAL_CACHE_REFRESH), WebSiteVersion.class.getSimpleName())
                 .and(WebSiteVersion.WEB_SITE.eq(webSite))
-                .addOrderBy(WebSiteVersion.DEPLOYED_ON.desc()).selectFirst(objectContext);
+                .orderBy(WebSiteVersion.DEPLOYED_ON.desc()).selectFirst(objectContext);
     }
 
     public static GetDeployedVersion valueOf(ObjectContext objectContext, WebSite webSite, boolean useCache) {

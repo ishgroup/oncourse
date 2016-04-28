@@ -73,7 +73,7 @@ public class VoucherService implements IVoucherService {
             query.offset(startDefault);
             query.limit(rowsDefault);
         }
-        query.addOrderBy(Product.TYPE.desc(), Product.NAME.asc(), Product.PRICE_EX_TAX.desc());
+        query.orderBy(Product.TYPE.desc(), Product.NAME.asc(), Product.PRICE_EX_TAX.desc());
         return query.select(cayenneService.sharedContext());
     }
 

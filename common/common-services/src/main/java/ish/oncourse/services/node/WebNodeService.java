@@ -189,11 +189,11 @@ public class WebNodeService extends BaseService<WebNode> implements IWebNodeServ
 
 	private void applyCommons(ObjectSelect query) {
 		query.and(siteQualifier());
-		query.addPrefetch(WebNode.WEB_NODE_TYPE.disjoint());
-		query.addPrefetch(WebNode.WEB_NODE_TYPE.dot(WebNodeType.WEB_SITE_LAYOUT).disjoint());
-		query.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint());
-		query.addPrefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint());
-		query.addPrefetch(WebNode.WEB_URL_ALIASES.disjoint());
+		query.prefetch(WebNode.WEB_NODE_TYPE.disjoint());
+		query.prefetch(WebNode.WEB_NODE_TYPE.dot(WebNodeType.WEB_SITE_LAYOUT).disjoint());
+		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.disjoint());
+		query.prefetch(WebNode.WEB_CONTENT_VISIBILITY.dot(WebContentVisibility.WEB_CONTENT).disjoint());
+		query.prefetch(WebNode.WEB_URL_ALIASES.disjoint());
 		query.localCache(WebNode.class.getSimpleName());
 	}
 

@@ -66,7 +66,7 @@ public class InstructionServiceImpl implements IInstructionService {
 		List<Instruction> list = ObjectSelect.query(Instruction.class)
 				.where(Instruction.COLLEGE.eq(takeWebSiteService().getCurrentCollege()))
 				.and(Instruction.EXECUTED.isNull())
-				.addPrefetch(Instruction.PARAMETERS.getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
+				.prefetch(Instruction.PARAMETERS.getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
 				.select(objectContext);
 
 		for (Instruction inst : list) {

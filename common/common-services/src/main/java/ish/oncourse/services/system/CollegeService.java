@@ -192,7 +192,7 @@ public class CollegeService implements ICollegeService {
 	public List<College> allColleges() {
 		return ObjectSelect.query(College.class)
 				.where(College.BILLING_CODE.isNotNull())
-				.addOrderBy(College.NAME.descInsensitive())
+				.orderBy(College.NAME.descInsensitive())
 				.select(cayenneService.newContext());
 	}
 }

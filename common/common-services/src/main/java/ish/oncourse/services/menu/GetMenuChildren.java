@@ -21,8 +21,8 @@ public class GetMenuChildren {
         result.addAll(ObjectSelect.query(WebMenu.class).
                 cacheStrategy(useCache ? QueryCacheStrategy.LOCAL_CACHE : QueryCacheStrategy.LOCAL_CACHE_REFRESH, WebMenu.class.getSimpleName())
                 .and(WebMenu.PARENT_WEB_MENU.eq(parentMenu))
-                .addPrefetch(WebMenu.PARENT_WEB_MENU.disjoint())
-                .addPrefetch(WebMenu.WEB_NODE.disjoint())
+                .prefetch(WebMenu.PARENT_WEB_MENU.disjoint())
+                .prefetch(WebMenu.WEB_NODE.disjoint())
                 .select(objectContext));
         Collections.sort(result);
         return result;

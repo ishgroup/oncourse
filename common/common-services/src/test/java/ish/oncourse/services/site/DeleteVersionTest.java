@@ -51,18 +51,18 @@ public class DeleteVersionTest  extends ServiceTest {
 		for (WebSiteLayout layout : layouts) {
 			assertFalse(layout.getTemplates().isEmpty());
 			deleteVersion.deleteTemplates(layout);
-			layout = SelectById.query(WebSiteLayout.class, 1L).addPrefetch(WebSiteLayout.TEMPLATES.disjoint()).selectOne(context);
+			layout = SelectById.query(WebSiteLayout.class, 1L).prefetch(WebSiteLayout.TEMPLATES.disjoint()).selectOne(context);
 			assertTrue(layout.getTemplates().isEmpty());
 		}
 
 		assertFalse(version.getContents().isEmpty());
 		deleteVersion.deleteAllContents();
-		version = SelectById.query(WebSiteVersion.class, 1).addPrefetch(WebSiteVersion.CONTENTS.disjoint()).selectOne(context);
+		version = SelectById.query(WebSiteVersion.class, 1).prefetch(WebSiteVersion.CONTENTS.disjoint()).selectOne(context);
 		assertTrue(version.getContents().isEmpty());
 
 		assertFalse(version.getMenus().isEmpty());
 		deleteVersion.deleteAllMenus();
-		version = SelectById.query(WebSiteVersion.class, 1).addPrefetch(WebSiteVersion.MENUS.disjoint()).selectOne(context);
+		version = SelectById.query(WebSiteVersion.class, 1).prefetch(WebSiteVersion.MENUS.disjoint()).selectOne(context);
 		assertTrue(version.getMenus().isEmpty());
 
 
@@ -72,10 +72,10 @@ public class DeleteVersionTest  extends ServiceTest {
 		assertFalse(version.getLayouts().isEmpty());
 		deleteVersion.deleteVersionRelatedObjects();
 		version = SelectById.query(WebSiteVersion.class, 1)
-				.addPrefetch(WebSiteVersion.WEB_URLALIASES.disjoint())
-				.addPrefetch(WebSiteVersion.WEB_NODES.disjoint())
-				.addPrefetch(WebSiteVersion.WEB_NODE_TYPES.disjoint())
-				.addPrefetch(WebSiteVersion.LAYOUTS.disjoint())
+				.prefetch(WebSiteVersion.WEB_URLALIASES.disjoint())
+				.prefetch(WebSiteVersion.WEB_NODES.disjoint())
+				.prefetch(WebSiteVersion.WEB_NODE_TYPES.disjoint())
+				.prefetch(WebSiteVersion.LAYOUTS.disjoint())
 				.selectOne(context);
 		assertTrue(version.getWebURLAliases().isEmpty());
 		assertTrue(version.getWebNodes().isEmpty());

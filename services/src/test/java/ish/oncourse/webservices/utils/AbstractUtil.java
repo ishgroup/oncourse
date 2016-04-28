@@ -4,7 +4,8 @@ import ish.math.MoneyType;
 import ish.oncourse.test.InitialContextFactoryMock;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
-import org.apache.cayenne.conn.PoolManager;
+import org.apache.cayenne.datasource.DataSourceBuilder;
+import org.apache.cayenne.datasource.PoolingDataSourceBuilder;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -21,7 +22,12 @@ public abstract class AbstractUtil {
 	private ServerRuntime cayenneRuntime;
 
 	public DataSource createDataSource() throws SQLException {
-		return new PoolManager("com.mysql.jdbc.Driver", dataSourceUrl, 1,5, getUser(),getPassword());
+		PoolingDataSourceBuilder poolingDataSourceBuilder = DataSourceBuilder.url(dataSourceUrl)
+				.userName(getUser())
+				.userName(getUser())
+				.userName(getUser())
+				.pool(1, 5);
+		return poolingDataSourceBuilder.build();
 	}
 
 	public void init() throws NamingException, SQLException {

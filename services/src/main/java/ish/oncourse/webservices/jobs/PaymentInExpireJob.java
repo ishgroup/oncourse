@@ -199,8 +199,8 @@ public class PaymentInExpireJob implements Job {
 				.and(PaymentIn.CREATED.gt(calendar.getTime()))
 				.and(PaymentIn.TYPE.eq(PaymentType.CREDIT_CARD))
 				.and(PaymentIn.STATUS.in(PaymentStatus.CARD_DETAILS_REQUIRED, PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW))
-				.addPrefetch(PaymentIn.PAYMENT_IN_LINES.getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
-				.addPrefetch(PaymentIn.PAYMENT_IN_LINES.dot(PaymentInLine.INVOICE).getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
+				.prefetch(PaymentIn.PAYMENT_IN_LINES.getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
+				.prefetch(PaymentIn.PAYMENT_IN_LINES.dot(PaymentInLine.INVOICE).getName(), PrefetchTreeNode.UNDEFINED_SEMANTICS)
 				.limit(FETCH_LIMIT)
 				.select(newContext);
 

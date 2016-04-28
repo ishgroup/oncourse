@@ -88,7 +88,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 		return ObjectSelect.query(WebSiteVersion.class)
 				.localCache(WebSiteVersion.class.getSimpleName())
 				.and(WebSiteVersion.WEB_SITE.eq(webSite))
-				.addOrderBy(WebSiteVersion.DEPLOYED_ON.desc())
+				.orderBy(WebSiteVersion.DEPLOYED_ON.desc())
 				.limit(1).selectFirst(webSite.getObjectContext());
 	}
 }

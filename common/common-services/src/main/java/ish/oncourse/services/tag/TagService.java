@@ -207,7 +207,7 @@ public class TagService extends BaseService<Tag> implements ITagService {
 				.where(Taggable.ENTITY_IDENTIFIER.eq(Contact.class.getSimpleName()))
 				.and(Taggable.ENTITY_WILLOW_ID.eq(contact.getId()))
 				.and(Taggable.COLLEGE.eq(currentCollege))
-				.addPrefetch(Taggable.TAGGABLE_TAGS.disjoint())
+				.prefetch(Taggable.TAGGABLE_TAGS.disjoint())
 				.select(getCayenneService().sharedContext());
 
 

@@ -52,7 +52,7 @@ public class WillowQueueService implements IWillowQueueService {
 		List<QueuedTransaction> list = ObjectSelect.query(QueuedTransaction.class)
 				.where(QueuedTransaction.QUEUED_RECORDS.dot(QueuedRecord.NUMBER_OF_ATTEMPTS).lt(QueuedRecord.MAX_NUMBER_OF_RETRY))
 				.and(QueuedTransaction.COLLEGE.eq(webSiteService.getCurrentCollege()))
-				.addOrderBy(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING))
+				.orderBy(new Ordering("db:" + QueuedRecord.ID_PK_COLUMN, SortOrder.ASCENDING))
 				.pageSize(numberOfTransactions)
 				.offset(fromTransaction)
 				.select(cayenneService.sharedContext());
