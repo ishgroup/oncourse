@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent>
  *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="contactToDeleteId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="contactToUpdateId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="createdBy" type="{http://www.w3.org/2001/XMLSchema}long"/>
@@ -42,8 +42,10 @@ public class ContactDuplicateStub
     extends ReplicationStub
 {
 
-    @XmlElement(required = true)
-    protected String status;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer status;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
@@ -65,7 +67,7 @@ public class ContactDuplicateStub
      *     {@link String }
      *     
      */
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -77,7 +79,7 @@ public class ContactDuplicateStub
      *     {@link String }
      *     
      */
-    public void setStatus(String value) {
+    public void setStatus(Integer value) {
         this.status = value;
     }
 
