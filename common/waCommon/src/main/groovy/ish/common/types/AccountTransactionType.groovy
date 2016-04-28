@@ -15,19 +15,19 @@ import ish.oncourse.API;
 public enum AccountTransactionType implements DisplayableExtendedEnumeration<String> {
 
 	/**
-	 * Database value: I
+	 * Database value: I Transaction attached to Invoice line (e.g. payments performed during Quick Enrol or web enrol)
 	 */
 	@API
 	INVOICE_LINE("I", "Invoice line"),
 
 	/**
-	 * Database value: P
+	 * Database value: P Transactions created by performing Payment In (e.g. payments for unpaid invoices)
 	 */
 	@API
 	PAYMENT_IN_LINE("P", "Payment in line"),
 
 	/**
-	 * Database value: O
+	 * Database value: O Transactions created by performing Payment Out (e.g. payments for credit notes)
 	 */
 	@API
 	PAYMENT_OUT_LINE("O", "Payment out line"),
@@ -45,7 +45,7 @@ public enum AccountTransactionType implements DisplayableExtendedEnumeration<Str
 	DEPRECIATION("D", "Depreciation"),
 
 	/**
-	 * Database value: J
+	 * Database value: J Transaction added using 'Create GL journal entry' from Financial menu
 	 */
 	@API
 	JOURNAL("J", "Journal");

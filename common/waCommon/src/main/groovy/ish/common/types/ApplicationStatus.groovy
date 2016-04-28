@@ -17,41 +17,41 @@ import ish.oncourse.API;
 public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * Student applied for the class. Application is up for reviewing by college.
-	 *
 	 * Database value: 0
+	 *
+	 * Student applied for the class. Application is up for reviewing by college.
 	 */
 	@API
 	NEW(0, "New"),
 
 	/**
-	 * College reviewed NEW student application and allows an enrolment to class.
+	 * Database value: 2
 	 *
-	 * Database value: 1
+	 * College reviewed NEW student application and allowed an enrolment to class.
 	 */
 	@API
 	OFFERED(1, "Offered"),
 
 	/**
-	 * Set automatically once student with OFFERED application enrol to the class.
-	 *
 	 * Database value: 2
+	 *
+	 * Set automatically once student with OFFERED application enrol to the class.
 	 */
 	@API
 	ACCEPTED(2, "Accepted"),
 
 	/**
-	 * College reviewed NEW student application and rejected it.
-	 *
 	 * Database value: 3
+	 *
+	 * College reviewed NEW student application and rejected it.
 	 */
 	@API
 	REJECTED(3, "Rejected"),
 
 	/**
-	 * OFFERED application is rejected by student.
-	 *
 	 * Database value: 4
+	 *
+	 * OFFERED application was rejected by student.
 	 */
 	@API
 	WITHDRAWN(4, "Withdrawn");
