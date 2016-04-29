@@ -37,7 +37,8 @@ public class Contact extends _Contact implements Queueable {
 		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(this));
 		Map<String, ContactErrorCode> errorCodeMap = contactValidator.validate();
 
-		FillValidationResult.valueOf(result, errorCodeMap, this);
+		FillValidationResult fillValidationResult = FillValidationResult.valueOf(result, errorCodeMap, this);
+		fillValidationResult.fill();
 
 		super.validateForSave(result);
 	}
