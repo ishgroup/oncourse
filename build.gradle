@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		waCommonWebservicesClientVersion = '8.16.5'
+		waCommonWebservicesClientVersion = '8.17.2'
 		log4j2Version = '2.5'
 		cayenneVersion = '4.0.ROP3'
 		// as of 29/10/2015 upgrading to anything from 9.3.0 up to 9.3.5 causes
