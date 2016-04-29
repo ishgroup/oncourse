@@ -15,33 +15,33 @@ import ish.oncourse.API;
 public enum ClassCostFlowType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
-	 * A regular expense in the budget, other than wages.
-	 * 
 	 * Database value: 0
+	 *
+	 * A regular expense in the budget, other than wages.
 	 */
 	@API
 	EXPENSE(0, "Expense/Cost"),
 
 	/**
-	 * Additional funding other than class fees.
-	 * 
 	 * Database value: 1
+	 *
+	 * Additional funding other than class fees.
 	 */
 	@API
 	INCOME(1, "Income/Funding"),
 
 	/**
-	 * Money paid to tutors which will appear on the payroll export.
-	 * 
 	 * Database value: 2
+	 *
+	 * Money paid to tutors which will appear on the payroll export.
 	 */
 	@API
 	WAGES(2, "Wages"),
 
 	/**
-	 * Discounts expected to be offered. 
-	 * 
 	 * Database value: 3
+	 *
+	 * Discounts expected to be offered.
 	 */
 	@API
 	DISCOUNT(3, "Discount");

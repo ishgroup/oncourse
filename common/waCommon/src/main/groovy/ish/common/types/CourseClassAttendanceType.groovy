@@ -13,6 +13,8 @@ public enum CourseClassAttendanceType implements DisplayableExtendedEnumeration<
 
 	/**
      * Database value: 0
+	 *
+	 * For OUA and non-higher degree research student use only
 	 */
 	@API
 	OUA_AND_NOT_HIGHER_DEGREE_REASEARCH_STUDENT_USE(0, "For OUA and non-higher degree research student use only",
@@ -20,6 +22,8 @@ public enum CourseClassAttendanceType implements DisplayableExtendedEnumeration<
 
 	/**
      * Database value: 1
+	 *
+	 * Full-time attendance for: higher degree research student, higher education course completions for all full time students and VET student
 	 */
 	@API
 	FULL_TIME_ATTENDANCE(1, "Full-time attendance",
@@ -27,6 +31,8 @@ public enum CourseClassAttendanceType implements DisplayableExtendedEnumeration<
 
 	/**
      * Database value: 2
+	 *
+	 * Part-time attendance for: higher degree research student, higher education course completions for all part time students and VET student
 	 */
 	@API
 	PART_TIME_ATTENDANCE(2, "Part-time attendance",
@@ -34,6 +40,8 @@ public enum CourseClassAttendanceType implements DisplayableExtendedEnumeration<
 
 	/**
      * Database value: 9
+	 *
+	 * No information
 	 */
 	@API
 	NO_INFORMATION(9, "No information", "No information");

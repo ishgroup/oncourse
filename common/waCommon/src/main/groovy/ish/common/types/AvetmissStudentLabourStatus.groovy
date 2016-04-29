@@ -17,46 +17,55 @@ public enum AvetmissStudentLabourStatus implements DisplayableExtendedEnumeratio
 
 	// AVETMISS - page 48
 	/**
+	 * Database value: 0 Not stated
 	 */
 	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 	
 	/**
+	 * Database value: 1 Full-time employee
 	 */
 	@API
 	FULL_TIME(1, "Full-time employee"),
 
 	/**
+	 *  Database value: 2 Part-time employee
 	 */
 	@API
 	PART_TIME(2, "Part-time employee"),
 
 	/**
+	 * Database value: 3 Self-employed, not employing others
 	 */
 	@API
 	SELF_EMPLOYED(3, "Self-employed, not employing others"),
 
 	/**
+	 * Database value: 4 Employer
 	 */
 	@API
 	EMPLOYER(4, "Employer"),
 
 	/**
+	 * Database value: 5 Employed - unpaid in family business
 	 */
 	@API
 	UNPAID_FAMILY_WORKER(5, "Employed - unpaid in family business"),
 
 	/**
+	 * Database value: 6 Unemployed - seeking full-time work
 	 */
 	@API
 	UNEMPLOYED_SEEKING_FULL_TIME(6, "Unemployed - seeking full-time work"),
 
 	/**
+	 * Database value: 7 Unemployed - seeking part-time work
 	 */
 	@API
 	UNEMPLOYED_SEEKING_PART_TIME(7, "Unemployed - seeking part-time work"),
 
 	/**
+	 * Database value: 8 Not employed - not seeking employment
 	 */
 	@API
 	UNEMPLOYED_NOT_SEEKING(8, "Not employed - not seeking employment");

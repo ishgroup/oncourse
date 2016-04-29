@@ -8,7 +8,7 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
- * A set of values for AVETMISS reporting from the version 7 standard.
+ * A set of values for AVETMISS reporting from the version 7 standard describing how well student speaks English.
  * Consult the AVETMISS documentation for more detail about these options.
  * 
  */
@@ -16,26 +16,31 @@ import ish.oncourse.API;
 public enum AvetmissStudentEnglishProficiency implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 0
 	 */
 	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 
 	/**
+	 * Database value: 1
 	 */
 	@API
 	VERY_WELL(1, "Very Well"),
 
 	/**
+	 * Database value: 2
 	 */
 	@API
 	WELL(2, "Well"),
 
 	/**
+	 * Database value: 3
 	 */
 	@API
 	NOT_WELL(3, "Not Well"),
 
 	/**
+	 * Database value: 4
 	 */
 	@API
 	NOT_AT_ALL(4, "Not at all");

@@ -53,6 +53,7 @@ public enum AccountType implements DisplayableExtendedEnumeration<Integer> {
 	COS(5, "COS"),
 
 	/**
+	 * Database value: 6
 	 */
 	@API
 	EXPENSE(6, "expense");

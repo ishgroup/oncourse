@@ -15,6 +15,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 	/*VET FEE-HELP assisted students*/
 	/**
 	 * Database value: 1
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - non State Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED(1,
@@ -23,6 +25,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 
 	/**
 	 * Database value: 2
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - Restricted Access Arrangement
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT(2,
@@ -31,6 +35,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 
 	/**
 	 * Database value: 3
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - Victorian State Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_VICTORIAN_STATE_GOVERNMENT_SUBSIDISED(3,
@@ -39,6 +45,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 
 	/**
 	 * Database value: 4
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - New South Wales State Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NEW_SOUTH_WALES_STATE_GOVERNMENT_SUBSIDISED(4,
@@ -47,6 +55,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 
 	/**
 	 * Database value: 5
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - Queensland State Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_QUEENSLAND_STATE_GOVERNMENT_SUBSIDISED(5,
@@ -55,6 +65,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 
 	/**
 	 * Database value: 6
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - South Australian State Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_SOUTH_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED(6,
@@ -63,6 +75,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 
 	/**
 	 * Database value: 7
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - Western Australian State Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_WESTERN_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED(7,
@@ -71,6 +85,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 	
 	/**
 	 * Database value: 8
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - Tasmania State Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_TASMANIA_STATE_GOVERNMENT_SUBSIDISED(8,
@@ -79,6 +95,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 	
 	/**
 	 * Database value: 9
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - Northern Territory Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NORTHERN_TERRITORY_GOVERNMENT_SUBSIDISED(9,
@@ -87,6 +105,8 @@ public enum StudentStatusForUnitOfStudy implements DisplayableExtendedEnumeratio
 
 	/**
 	 * Database value: 10
+	 *
+	 * Deferred all/part of tuition fee through VET FEE-HELP - Australian Capital Territory Government subsidised
 	 */
 	@API
 	DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_AUSTRALIAN_CAPITAL_TERRITORY_GOVERNMENT_SUBSIDISED(10, 

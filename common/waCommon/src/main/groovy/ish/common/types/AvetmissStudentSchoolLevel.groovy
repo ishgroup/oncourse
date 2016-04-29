@@ -17,36 +17,43 @@ public enum AvetmissStudentSchoolLevel implements DisplayableExtendedEnumeration
 
 	// AVETMISS - page 31
 	/**
+	 * Database value: 0 Not stated
 	 */
 	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 	
 	/**
+	 * Database value: 1
 	 */
 	@API
 	DID_NOT_GO_TO_SCHOOL(1, "Did not go to school"),
 
 	/**
+	 * Database value: 2
 	 */
 	@API
 	COMPLETED_YEAR_8_OR_BELOW(2, "Year 8 or below"),
 
 	/**
+	 * Database value: 3
 	 */
 	@API
 	COMPLETED_YEAR_9(3, "Year 9"),
 
 	/**
+	 * Database value: 4
 	 */
 	@API
 	COMPLETED_YEAR_10(4, "Year 10"),
 
 	/**
+	 * Database value: 5
 	 */
 	@API
 	COMPLETED_YEAR_11(5, "Year 11"),
 
 	/**
+	 * Database value: 6
 	 */
 	@API
 	COMPLETED_YEAR_12(6, "Year 12");

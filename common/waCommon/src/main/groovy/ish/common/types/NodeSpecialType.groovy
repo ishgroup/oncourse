@@ -16,9 +16,10 @@ import ish.oncourse.API;
 public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 1
+	 *
 	 * There can only be one tag group called "subjects" and there must always be one.
 	 * It has special meaning in an onCourse website.
-	 * 
 	 */
 	@API
 	SUBJECTS(1, "Subjects"),
@@ -27,16 +28,18 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	HOME_WEBPAGE(2, "Home web page"),
 
 	/**
+	 * Database value: 3
+	 *
 	 * Tag groups which are of type mailing list appear in a special place in the user interface
 	 * but are still just a flag against a contact showing they are part of a mailing list.
-	 * 
 	 */
 	@API
 	MAILING_LISTS(3, "Mailing lists"),
 
 	/**
-	 * Wage intervals are a tag group used to designate pay cycles. 
-	 * 
+	 * Database value: 4
+	 *
+	 * Wage intervals are a tag group used to designate pay cycles.
 	 */
 	@API
 	PAYROLL_WAGE_INTERVALS(4, "Payroll wage intervals");

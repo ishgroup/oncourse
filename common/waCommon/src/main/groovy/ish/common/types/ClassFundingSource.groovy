@@ -17,36 +17,48 @@ public enum ClassFundingSource implements DisplayableExtendedEnumeration<Integer
 
 	/**
 	 * Database value: 0
+	 *
+	 * Commonwealth and state - general recurrent
 	 */
 	@API
 	COMMONWEALTH_AND_STATE_GENERAL(0, "Commonwealth and state - general recurrent", "11"),
 
 	/**
 	 * Database value: 1
+	 *
+	 * Commonwealth - specific
 	 */
 	@API
 	COMMONWEALTH_SPECIFIC(1, "Commonwealth - specific", "13"),
 
 	/**
 	 * Database value: 2
+	 *
+	 * State - specific
 	 */
 	@API
 	STATE_SPECIFIC(2, "State - specific", "15"),
 
 	/**
 	 * Database value: 3
+	 *
+	 * Domestic full fee paying student
 	 */
 	@API
 	DOMESTIC_FULL_FEE(3, "Domestic full fee paying student", "20"),
 
 	/**
 	 * Database value: 4
+	 *
+	 * International full fee paying student
 	 */
 	@API
 	INTERNATIONAL_FULL_FEE(4, "International full fee paying student", "30"),
 
 	/**
 	 * Database value: 5
+	 *
+	 * Revenue from other RTO
 	 */
 	@API
 	REVENUE_FROM_OTHER_TO(5, "Revenue from other RTO", "80");

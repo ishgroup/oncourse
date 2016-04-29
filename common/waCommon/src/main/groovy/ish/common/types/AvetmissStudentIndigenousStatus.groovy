@@ -16,26 +16,31 @@ import ish.oncourse.API;
 public enum AvetmissStudentIndigenousStatus implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
+	 * Database value: 0 Not stated
 	 */
 	@API
 	DEFAULT_POPUP_OPTION(0, "not stated"),
 
 	/**
+	 * Database value: 1 Aboriginal
 	 */
 	@API
 	ABORIGINAL(1, "Aboriginal"),
 
 	/**
+	 * Database value: 2 Torres Strait Islander
 	 */
 	@API
 	TORRES(2, "Torres Strait Islander"),
 
 	/**
+	 * Database value: 3 Aboriginal and Torres Strait Islander
 	 */
 	@API
 	ABORIGINAL_AND_TORRES(3, "Aboriginal and Torres Strait Islander"),
 
 	/**
+	 * Database value: 4 Neither
 	 */
 	@API
 	NEITHER(4, "Neither");

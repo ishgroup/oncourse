@@ -5,7 +5,7 @@ import ish.oncourse.API;
 
 /**
  * Details of prior study for which credit/RPL was offered
- * http://heimshelp.deewr.gov.au/sites/heimshelp/2014_data_requirements/2014dataelements/pages/561
+ * http://heimshelp.education.gov.au/sites/heimshelp/2015_data_requirements/2015dataelements/pages/561
  * 
  */
 @API
