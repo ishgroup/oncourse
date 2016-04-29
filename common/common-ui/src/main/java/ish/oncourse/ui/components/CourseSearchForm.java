@@ -7,21 +7,23 @@ import ish.oncourse.selectutils.ListValueEncoder;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.URLUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.Request;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class CourseSearchForm extends ISHCommon {
+	private static final Logger logger = LogManager.getLogger();
 
-    private static final String URL_PATH_SEARCH_PATTERN = "/courses?s=%s" +
+	static final String URL_PATH_SEARCH_PATTERN = "/courses?s=%s" +
             "&subject=%s" +
             "&near=%s" +
             "&price=%s" +
@@ -92,9 +94,9 @@ public class CourseSearchForm extends ISHCommon {
                     (day == null ? StringUtils.EMPTY : day)
             );
 			return URLUtils.buildURL(request, urlPath, false);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error(e);
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 }

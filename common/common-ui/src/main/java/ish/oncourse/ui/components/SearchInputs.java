@@ -6,6 +6,8 @@ import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.URLUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -21,14 +23,8 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class SearchInputs extends ISHCommon {
+	private static final Logger logger = LogManager.getLogger();
 
-	private static final String URL_PATH_SEARCH_PATTERN = "/courses?s=%s" +
-			"%s" +
-			"&near=%s" +
-			"&km=%s" +
-			"&price=%s" +
-			"&time=%s" +
-			"&day=%s";
 	private static final String SEARCH_TAG_NAMES_SEPARATOR = ";";
 	@Inject
 	private ITagService tagService;
@@ -192,10 +188,10 @@ public class SearchInputs extends ISHCommon {
 	URL onActionFromSearch2() {
 		try {
 			return BuildURL.valueOf(this).build();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error(e);
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 
@@ -266,6 +262,18 @@ public class SearchInputs extends ISHCommon {
 			result.initTags(form);
 			result.request = form.request;
 			return result;
+		}
+
+		public static BuildURL valueOf(Request request,
+				String browseTag,
+				List<String> tags,
+				Map<SearchParam, String> searchParams) {
+			BuildURL buildURL = new BuildURL();
+			buildURL.request = request;
+			buildURL.browseTag = browseTag;
+			buildURL.tags = tags;
+			buildURL.searchParams =searchParams;
+			return buildURL;
 		}
 
 	}
