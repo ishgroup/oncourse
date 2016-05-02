@@ -1471,9 +1471,11 @@
 					<xs:extension base="tns:replicationStub">
 						<xs:sequence>
 							<xs:element name="status" type="xs:int"/>
-							<xs:element name="contactToDeleteId" type="xs:long"/>
+							<xs:element name="contactToDeleteWillowId" type="xs:long"/>
+							<xs:element name="contactToDeleteAngelId" type="xs:long"/>
 							<xs:element name="contactToUpdateId" type="xs:long"/>
 							<xs:element name="createdBy" type="xs:long"/>
+							<xs:element name="description" type="xs:string"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>

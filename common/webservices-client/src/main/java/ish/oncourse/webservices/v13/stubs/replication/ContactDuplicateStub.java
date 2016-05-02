@@ -20,9 +20,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *     &lt;extension base="{http://repl.v13.soap.webservices.oncourse.ish/}replicationStub">
  *       &lt;sequence>
  *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="contactToDeleteId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="contactToDeleteWillowId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="contactToDeleteAngelId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="contactToUpdateId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="createdBy" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -34,9 +36,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "contactDuplicateStub", propOrder = {
     "status",
-    "contactToDeleteId",
+    "contactToDeleteWillowId",
+    "contactToDeleteAngelId",
     "contactToUpdateId",
-    "createdBy"
+    "createdBy",
+    "description"
 })
 public class ContactDuplicateStub
     extends ReplicationStub
@@ -49,7 +53,11 @@ public class ContactDuplicateStub
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
-    protected Long contactToDeleteId;
+    protected Long contactToDeleteWillowId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long contactToDeleteAngelId;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
@@ -58,6 +66,8 @@ public class ContactDuplicateStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long createdBy;
+    @XmlElement(required = true)
+    protected String description;
 
     /**
      * Gets the value of the status property.
@@ -84,27 +94,51 @@ public class ContactDuplicateStub
     }
 
     /**
-     * Gets the value of the contactToDeleteId property.
+     * Gets the value of the contactToDeleteWillowId property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public Long getContactToDeleteId() {
-        return contactToDeleteId;
+    public Long getContactToDeleteWillowId() {
+        return contactToDeleteWillowId;
     }
 
     /**
-     * Sets the value of the contactToDeleteId property.
+     * Sets the value of the contactToDeleteWillowId property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setContactToDeleteId(Long value) {
-        this.contactToDeleteId = value;
+    public void setContactToDeleteWillowId(Long value) {
+        this.contactToDeleteWillowId = value;
+    }
+
+    /**
+     * Gets the value of the contactToDeleteAngelId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getContactToDeleteAngelId() {
+        return contactToDeleteAngelId;
+    }
+
+    /**
+     * Sets the value of the contactToDeleteAngelId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setContactToDeleteAngelId(Long value) {
+        this.contactToDeleteAngelId = value;
     }
 
     /**
@@ -153,6 +187,30 @@ public class ContactDuplicateStub
      */
     public void setCreatedBy(Long value) {
         this.createdBy = value;
+    }
+
+    /**
+     * Gets the value of the description property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the value of the description property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDescription(String value) {
+        this.description = value;
     }
 
 }
