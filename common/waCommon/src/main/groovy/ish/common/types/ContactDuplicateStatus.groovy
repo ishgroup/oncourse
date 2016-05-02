@@ -18,7 +18,7 @@ public enum ContactDuplicateStatus implements DisplayableExtendedEnumeration<Int
 	@API
 	IN_TRANSACTION(2, "In transaction"),
 	@API
-	PROCESSED(2, "Processed");
+	PROCESSED(3, "Processed");
 
 	private String displayName;
 	private int value;
