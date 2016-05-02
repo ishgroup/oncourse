@@ -110,6 +110,21 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), Student.class);
 		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), Tag.class);
 		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
+		
+		//v13
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), Application.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), Certificate.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), Contact.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), Course.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), CourseClass.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), Enrolment.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), Invoice.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), Room.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), Session.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), Site.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), Student.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), Tag.class);
+		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
 	}
 
 	@Test
@@ -207,6 +222,25 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		//illegal entity
 		testIncorrectRelation(prepareV12Updater(),
 				prepareV12Stub(PaymentOut.class.getSimpleName()),
+				getMessageForIllegalEntity(PaymentOut.class.getSimpleName()));
+
+		//V13
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), getMessage(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), getMessage(AbstractWillowUpdater.CONTACT_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), getMessage(AbstractWillowUpdater.INVOICE_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), getMessage(AbstractWillowUpdater.ROOM_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), getMessage(AbstractWillowUpdater.SESSION_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), getMessage(AbstractWillowUpdater.SITE_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.STUDENT_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), getMessage(AbstractWillowUpdater.TUTOR_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), getMessage(AbstractWillowUpdater.TAG_ENTITY_NAME));
+		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), getMessage(AbstractWillowUpdater.APPLICATION_ENTITY_NAME));
+		//illegal entity
+		testIncorrectRelation(prepareV13Updater(),
+				prepareV13Stub(PaymentOut.class.getSimpleName()),
 				getMessageForIllegalEntity(PaymentOut.class.getSimpleName()));
 	}
 	
@@ -366,6 +400,22 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		stub.setEntityName(entityName);
 		return stub;
 	}
+
+	private ish.oncourse.webservices.replication.v13.updaters.BinaryInfoRelationUpdater prepareV13Updater() {
+		return new ish.oncourse.webservices.replication.v13.updaters.BinaryInfoRelationUpdater();
+	}
+
+	private ish.oncourse.webservices.v13.stubs.replication.BinaryInfoRelationStub prepareV13Stub(String entityName) {
+		ish.oncourse.webservices.v13.stubs.replication.BinaryInfoRelationStub stub = new ish.oncourse.webservices.v13.stubs.replication.BinaryInfoRelationStub();
+		stub.setAngelId(1l);
+		stub.setEntityAngelId(1l);
+		stub.setEntityWillowId(-1l);
+		stub.setDocumentId(1l);
+		stub.setDocumentVersionId(1l);
+		stub.setEntityName(entityName);
+		return stub;
+	}
+
 
 	private RelationShipCallback returnDummyRelationShipCallback(final ObjectContext objectContext) {
 		return new RelationShipCallback() {
