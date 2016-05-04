@@ -19,6 +19,8 @@ import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -33,6 +35,7 @@ import java.util.Map;
 public class Web {
 
     public final static String DEFAULT_HOME_PAGE_NAME = "Home page";
+	private static final Logger logger = LogManager.getLogger();
 	
 	@Property
 	private College college;
@@ -246,6 +249,7 @@ public class Web {
 			WebSiteDelete.valueOf(site, context).delete();
 		} catch (CayenneRuntimeException e) {
 			this.siteDeleteFailed = true;
+			logger.error("Web site could not be deleted", e);
 			return null;
 		}
 		
