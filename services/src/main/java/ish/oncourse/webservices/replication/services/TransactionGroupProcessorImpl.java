@@ -3,8 +3,11 @@ package ish.oncourse.webservices.replication.services;
 import ish.common.types.EntityMapping;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedStatistic;
+import ish.oncourse.model.Student;
+import ish.oncourse.model.Tutor;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -15,6 +18,7 @@ import ish.oncourse.webservices.util.GenericBinaryDataStub;
 import ish.oncourse.webservices.util.GenericDeletedStub;
 import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
+import ish.oncourse.webservices.util.GenericReplicationRecords;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.StubUtils;
@@ -47,7 +51,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
     static final String MESSAGE_TEMPLATE_NO_STUB = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s!";
     static final String MESSAGE_TEMPLATE_NO_ANGELID = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s but without angelId!";
-
+	private static final String MERGE_KEY = "MERGE";
     /**
 	 * Logger
 	 */
@@ -119,22 +123,75 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 		List<GenericReplicationStub> stubs = new LinkedList<>(group.getGenericAttendanceOrBinaryDataOrBinaryInfo());
 		
-		for (GenericReplicationStub currentStub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
-			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
-			result.add(replRecord);
-		}
-
         try {
+			if (transactionGroup.getTransactionKeys().contains(MERGE_KEY)) {
+				MergeProcessor processor = MergeProcessor.valueOf(atomicContext,group.getGenericAttendanceOrBinaryDataOrBinaryInfo());
+				
+				GenericReplicatedRecord  contactDuplicateRec = null;
+				GenericReplicatedRecord  studentToUpdateRec = null;
+				GenericReplicatedRecord  tutorToUpdateRec = null;
+				
+				GenericReplicationStub contactDuplicate = processor.getContactDuplicateStub();
+				contactDuplicateRec = toReplicatedRecord(contactDuplicate, false);
+				result.add(contactDuplicateRec);
+				processStub(contactDuplicate);
 
-			while (!group.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-				GenericReplicationStub currentStub = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(0);
-				processStub(currentStub);
+				List<GenericReplicationStub> contactsToUpdate = processor.getStubBy(Contact.class.getSimpleName(), false);
+				if (contactsToUpdate.size() > 0) {
+					//not only Contact (with UPDATE action) for merge can be in merge transaction group, ContactRelation -> toContact/fromContact also can be in merge transaction group
+					for (GenericReplicationStub contactToUpdate : contactsToUpdate) {
+						result.add(toReplicatedRecord(contactToUpdate, false));
+						processStub(contactToUpdate);
+					}
+				} else {
+					throw new IllegalStateException("Merge transaction does not contains Contact to update");
+				}
+
+				List<GenericReplicationStub> studentsToUpdate = processor.getStubBy(Student.class.getSimpleName(), false);
+				if (studentsToUpdate.size() == 1) {
+					GenericReplicationStub studentToUpdate = studentsToUpdate.get(0);
+					studentToUpdateRec = toReplicatedRecord(studentToUpdate, false);
+					result.add(studentToUpdateRec);
+					processStub(studentToUpdate);
+				} else if (studentsToUpdate.size() > 1) {
+					throw new IllegalStateException("Merge transaction  contains more than one Student to update");
+				}
+
+
+				List<GenericReplicationStub> tutorsToUpdate = processor.getStubBy(Tutor.class.getSimpleName(), false);
+				if (tutorsToUpdate.size() == 1) {
+					GenericReplicationStub tutorToUpdate = tutorsToUpdate.get(0);
+					tutorToUpdateRec = toReplicatedRecord(tutorToUpdate, false);
+					result.add(tutorToUpdateRec);
+					processStub(tutorToUpdate);
+				} else if (tutorsToUpdate.size() > 1) {
+					throw new IllegalStateException("Merge transaction  contains more than one Tutor to update");
+				}
+				
+				atomicContext.commitChanges();
+				fillWillowIds();
+				//leave contactDuplicate for angel response only
+				result.clear();
+				result.add(contactDuplicateRec);
+				
+				processor.processMerge(contactDuplicateRec, studentToUpdateRec, tutorToUpdateRec);
+				
+			} else {
+
+				for (GenericReplicationStub currentStub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+					GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
+					result.add(replRecord);
+				}
+
+				while (!group.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+					GenericReplicationStub currentStub = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(0);
+					processStub(currentStub);
+				}
+				atomicContext.commitChanges();
+				queuedStatisticProcessor.cleanupStatistic();
+				fillWillowIds();
 			}
-
-			atomicContext.commitChanges();
-            queuedStatisticProcessor.cleanupStatistic();
-            fillWillowIds();
-
+			
 		} catch (Exception e) {
 			atomicContext.rollbackChanges();
 			String message = getErrorMessageBy(e);

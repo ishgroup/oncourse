@@ -3961,4 +3961,33 @@
 		<addNotNullConstraint tableName="Room" columnName="siteId" columnDataType="BIGINT"/>
 	</changeSet>
 
+	<changeSet id="266" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="ContactDuplicate"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE ContactDuplicate (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			status INT NOT NULL,
+			createdBy BIGINT,
+			contactToUpdateId BIGINT NOT NULL,
+			contactToDeleteId BIGINT,
+			contactToDeleteAngelId BIGINT,
+			description VARCHAR(1000),
+			PRIMARY KEY (ID),
+			FOREIGN KEY (createdBy) REFERENCES SystemUser(id),
+			FOREIGN KEY (collegeId) REFERENCES College(id),
+			FOREIGN KEY (contactToUpdateId) REFERENCES Contact(id),
+			CONSTRAINT angelId_college_unique UNIQUE (collegeId, angelId),
+			INDEX contactToDelete (contactToDeleteId)
+			);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

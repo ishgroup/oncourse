@@ -168,6 +168,19 @@
 		<db-attribute name="tutorId" type="BIGINT" length="19"/>
 		<db-attribute name="uniqueCode" type="VARCHAR" length="16"/>
 	</db-entity>
+	<db-entity name="ContactDuplicate">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="contactToDeleteAngelId" type="BIGINT"/>
+		<db-attribute name="contactToDeleteId" type="BIGINT"/>
+		<db-attribute name="contactToUpdateId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="createdBy" type="BIGINT"/>
+		<db-attribute name="description" type="VARCHAR" length="1000"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="status" type="INTEGER" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="ContactRelation">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -1471,6 +1484,15 @@
 		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
+	<obj-entity name="ContactDuplicate" className="ish.oncourse.model.ContactDuplicate" dbEntityName="ContactDuplicate">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="contactToDeleteAngelId" type="java.lang.Long" db-attribute-path="contactToDeleteAngelId"/>
+		<obj-attribute name="contactToDeleteId" type="java.lang.Long" db-attribute-path="contactToDeleteId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="status" type="ish.common.types.ContactDuplicateStatus" db-attribute-path="status"/>
+	</obj-entity>
 	<obj-entity name="ContactRelation" className="ish.oncourse.model.ContactRelation" dbEntityName="ContactRelation">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2505,6 +2527,9 @@
 	<db-relationship name="concessionTypes" source="College" target="ConcessionType" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="contactDuplicates" source="College" target="ContactDuplicate" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="contactRelationTypes" source="College" target="ContactRelationType" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -2721,6 +2746,9 @@
 	<db-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
+	<db-relationship name="contactDuplicates" source="Contact" target="ContactDuplicate" toMany="true">
+		<db-attribute-pair source="id" target="contactToUpdateId"/>
+	</db-relationship>
 	<db-relationship name="corporatePasses" source="Contact" target="CorporatePass" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
@@ -2759,6 +2787,15 @@
 	</db-relationship>
 	<db-relationship name="tutor" source="Contact" target="Tutor" toMany="false">
 		<db-attribute-pair source="tutorId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="ContactDuplicate" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" toMany="false">
+		<db-attribute-pair source="contactToUpdateId" target="id"/>
+	</db-relationship>
+	<db-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" toMany="false">
+		<db-attribute-pair source="createdBy" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="ContactRelation" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -3447,6 +3484,9 @@
 	<db-relationship name="college" source="SystemUser" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="contactDuplicates" source="SystemUser" target="ContactDuplicate" toMany="true">
+		<db-attribute-pair source="id" target="createdBy"/>
+	</db-relationship>
 	<db-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" toMany="false">
 		<db-attribute-pair source="siteId" target="id"/>
 	</db-relationship>
@@ -3786,6 +3826,9 @@
 	<obj-relationship name="supportPassword" source="Contact" target="SupportPassword" deleteRule="Cascade" db-relationship-path="supportPassword"/>
 	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Deny" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Deny" db-relationship-path="tutor"/>
+	<obj-relationship name="college" source="ContactDuplicate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" deleteRule="Nullify" db-relationship-path="contactToUpdate"/>
+	<obj-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="college" source="ContactRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>
 	<obj-relationship name="relationType" source="ContactRelation" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
