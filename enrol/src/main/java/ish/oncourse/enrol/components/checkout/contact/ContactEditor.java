@@ -94,14 +94,13 @@ public class ContactEditor {
 
 		if (delegate != null)
 		{
-			ContactEditorParser contactEditorParser = new ContactEditorParser();
-			contactEditorParser.setCountryService(countryService);
-			contactEditorParser.setRequest(request);
-			contactEditorParser.setContact(delegate.getContact());
-			contactEditorParser.setContactFieldHelper(getContactFieldHelper());
-			contactEditorParser.setMessages(contactEditorFieldSet.getMessages());
-			contactEditorParser.setVisibleFields(delegate.getVisibleFields());
-			contactEditorParser.setCustomFieldHolder(delegate.getCustomFieldHolder());
+			ContactEditorParser contactEditorParser = ContactEditorParser.valueOf(request,
+					delegate.getContact(),
+					delegate.getVisibleFields(),
+					contactEditorFieldSet.getMessages(),
+					countryService,
+					delegate.getContactFieldHelper(),
+					delegate.getCustomFieldHolder());
 			contactEditorParser.parse();
 			Map<String,String> errors = new HashMap<>(contactEditorParser.getErrors());
 

@@ -1,9 +1,9 @@
 package ish.oncourse.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * adapted ISHPhoneValidator:
@@ -23,18 +23,6 @@ public class PhoneValidator {
 	// FIXME: verify logic
 	private static List<String> _VALID_AREA_CODES = Arrays.asList("02", "03", "04", "07", "08");
 
-	public static String stripNonNumericChars(String value) {
-		if (value != null) {
-			String newValue = value.trim().replaceAll("\\s+", "");
-			Pattern p = Pattern.compile("(\\d{8,})");
-			Matcher m = p.matcher(newValue);
-			while (m.find()) {
-				return m.group(1);
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Validates a standard australian mobile phone number.
 	 * <p>
@@ -51,22 +39,15 @@ public class PhoneValidator {
 	 *             exception with refs to object and key
 	 * @return a <b>formatted</b> value if value is valid
 	 */
+	@Deprecated //use MobileValidator
 	public static String validateMobileNumber(String pValue) throws Exception
-
 	{
-		String message = null;
-		String digitOnlyString = StringUtilities.stripAlphas(pValue);
-		if (!digitOnlyString.matches("[\\([0-9]\\-\\.\\ \\:\\)]+")) {
-			message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
-		} else if (digitOnlyString.length() != 10) {
-			message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
-		} else if (!"04".equals(digitOnlyString.substring(0, 2))) {
-			message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
-		}
+		MobileValidator validator = MobileValidator.valueOf(pValue).validate();
+		String message = validator.getMessage();
 		if (message != null) {
 			throw new Exception(message);
 		}
-		return digitOnlyString;
+		return validator.getValue();
 	}
 
 	/**
@@ -84,25 +65,92 @@ public class PhoneValidator {
 	 *             exception with refs to object and key
 	 * @return a <b>formatted</b> value if value is valid
 	 */
+	@Deprecated //use Validator
 	public static String validatePhoneNumber(String phoneName, String pValue) throws Exception {
-		String message;
-		String digitOnlyString;
+		Validator validator = Validator.valueOf(pValue, phoneName).validate();
 
-		message = null;
-		digitOnlyString = StringUtilities.stripAlphas(pValue);
-		if (digitOnlyString == null || digitOnlyString.length() != 10) {
-			message = String.format("Enter 10 digit %s phone number including area code for Australian numbers",phoneName);
-		} else if (!_VALID_AREA_CODES.contains(digitOnlyString.substring(0, 2))) {
-			message = String.format("Enter 10 digit %s phone number including area code for Australian numbers",phoneName);
+		if (validator.getMessage() != null) {
+			throw new Exception(validator.getMessage());
 		}
-
-		if (message != null) {
-			throw new Exception(message);
-		}
-		return digitOnlyString;
+		return validator.getValue();
 	}
 
 	private PhoneValidator() {
 	}
 
+
+	public static class MobileValidator {
+		private String value;
+
+		private String message;
+
+		public MobileValidator validate() {
+			value = StringUtils.trimToNull(value);
+			if (value != null) {
+				value = StringUtils.removePattern(value, "[^0-9]");
+				if (!value.matches("[\\([0-9]\\-\\.\\ \\:\\)]+")) {
+					message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
+				} else if (value.length() != 10) {
+					message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
+				} else if (!"04".equals(value.substring(0, 2))) {
+					message = "Enter 10 digit mobile phone number including 04 area code for Australian numbers";
+				}
+			}
+			return this;
+		}
+
+		public String getMessage() {
+			return message;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public static  MobileValidator valueOf(String value) {
+			MobileValidator validator = new MobileValidator();
+			validator.value = value;
+			return validator;
+		}
+	}
+
+	public static class Validator {
+		private String phoneName;
+		private String value;
+
+		private String message;
+
+		public Validator validate() {
+			value = StringUtils.trimToNull(value);
+			if (value != null) {
+				value  = StringUtils.removePattern(value, "[^0-9]");
+				if (value.length() != 10) {
+					message = String.format("Enter 10 digit %s phone number including area code for Australian numbers", phoneName);
+				} else if (!_VALID_AREA_CODES.contains(value.substring(0, 2))) {
+					message = String.format("Enter 10 digit %s phone number including area code for Australian numbers", phoneName);
+				}
+			}
+			return this;
+		}
+
+		public String getMessage() {
+			return message;
+		}
+
+		public String getPhoneName() {
+			return phoneName;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public static  Validator valueOf(String value, String phoneName) {
+			Validator validator = new Validator();
+			validator.value = value;
+			validator.phoneName = phoneName;
+			return validator;
+		}
+
+	}
 }

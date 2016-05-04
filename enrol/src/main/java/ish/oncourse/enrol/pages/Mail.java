@@ -120,14 +120,15 @@ public class Mail {
 
             controller.setErrors(addContactValidator.getErrors());
         } else if (controller.isEditContact()) {
-            ContactEditorParser parser = new ContactEditorParser();
-			parser.setCountryService(countryService);
-			parser.setMessages(contactEditorFieldSet.getMessages());
-            parser.setContact(controller.getContact());
-            parser.setVisibleFields(controller.getVisibleFields());
-            parser.setContactFieldHelper(controller.getContactFieldHelper());
-            parser.setRequest(request);
-			parser.setCustomFieldHolder(controller.getCustomFieldHolder());
+            ContactEditorParser parser = ContactEditorParser.valueOf(
+                    request,
+                    controller.getContact(),
+                    controller.getVisibleFields(),
+                    contactEditorFieldSet.getMessages(),
+                    countryService,
+                    controller.getContactFieldHelper(),
+                    controller.getCustomFieldHolder()
+            );
             parser.parse();
             controller.setErrors(parser.getErrors());
         }

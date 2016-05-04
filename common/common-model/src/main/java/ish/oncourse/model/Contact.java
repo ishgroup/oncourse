@@ -175,6 +175,7 @@ public class Contact extends _Contact implements Queueable {
 		return null;
 	}
 
+	@Deprecated //ContactValidator should be used
 	public String validateSuburb() {
 		String suburb = getSuburb();
 		if (suburb == null || "".equals(suburb)) {
@@ -187,6 +188,7 @@ public class Contact extends _Contact implements Queueable {
 		return null;
 	}
 
+	@Deprecated //ContactValidator should be used
 	public String validatePostcode() {
 		String suburb = getPostcode();
 		if (suburb == null || "".equals(suburb)) {
@@ -199,6 +201,7 @@ public class Contact extends _Contact implements Queueable {
 		return null;
 	}
 
+	@Deprecated //ContactValidator should be used
 	public String validateState() {
 		String state = getState();
 		if (state == null || "".equals(state)) {
@@ -211,6 +214,7 @@ public class Contact extends _Contact implements Queueable {
 		return null;
 	}
 
+	@Deprecated //ContactValidator should be used
 	public String validateHomePhone() {
 		String homePhone = getHomePhoneNumber();
 		if (homePhone == null || "".equals(homePhone)) {
@@ -225,6 +229,7 @@ public class Contact extends _Contact implements Queueable {
 		return null;
 	}
 
+	@Deprecated //ContactValidator should be used
 	public String validateMobilePhone() {
 		String mobilePhone = getMobilePhoneNumber();
 		if (mobilePhone == null || "".equals(mobilePhone)) {
@@ -239,6 +244,7 @@ public class Contact extends _Contact implements Queueable {
 		return null;
 	}
 
+	@Deprecated //ContactValidator should be used
 	public String validateBusinessPhone() {
 		String businessPhone = getBusinessPhoneNumber();
 		if (businessPhone == null || "".equals(businessPhone)) {
@@ -253,6 +259,7 @@ public class Contact extends _Contact implements Queueable {
 		return null;
 	}
 
+	@Deprecated //ContactValidator should be used
 	public String validateFax() {
 		String fax = getFaxNumber();
 		if (fax == null || "".equals(fax)) {

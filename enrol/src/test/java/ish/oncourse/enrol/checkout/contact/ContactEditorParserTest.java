@@ -1,11 +1,8 @@
 package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.ACheckoutTest;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Country;
-import ish.oncourse.model.CustomField;
-import ish.oncourse.model.CustomFieldType;
+import ish.oncourse.enrol.utils.EnrolContactValidator;
+import ish.oncourse.model.*;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
@@ -19,15 +16,11 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
+import static ish.oncourse.enrol.utils.EnrolContactValidator.*;
 import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
-import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.dateOfBirth;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -50,8 +43,12 @@ public class ContactEditorParserTest extends ACheckoutTest{
 	@Test
 	public void testValidationForCountryDependentFields() throws ParseException {
 
-		Country country = new Country();
-		country.setName(ICountryService.DEFAULT_COUNTRY_NAME);
+		Country country = mock(Country.class);
+		when(country.getName()).thenReturn(ICountryService.DEFAULT_COUNTRY_NAME);
+
+		Messages messages = mock(Messages.class);
+		when(messages.get(KEY_ERROR_MESSAGE_message_postcode_4_digits)).thenReturn("Enter 4 digit postcode for Australian postcodes.");
+
 		Contact contact = mock(Contact.class);
 		when(contact.getPostcode()).thenReturn("11111");
 		when(contact.getHomePhoneNumber()).thenReturn("04123456781");
@@ -60,26 +57,34 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(contact.getMobilePhoneNumber()).thenReturn("04123456781");
 		when(contact.getCountry()).thenReturn(country);
 
-		when(contact.validatePostcode()).thenCallRealMethod();
-		when(contact.validateHomePhone()).thenCallRealMethod();
-		when(contact.validateBusinessPhone()).thenCallRealMethod();
-		when(contact.validateFax()).thenCallRealMethod();
-		when(contact.validateMobilePhone()).thenCallRealMethod();
+		EnrolContactValidator validator = EnrolContactValidator.valueOf(contact, Arrays.asList(Contact.POSTCODE.getName(),
+				Contact.HOME_PHONE_NUMBER.getName(),
+				Contact.BUSINESS_PHONE_NUMBER.getName(),
+				Contact.FAX_NUMBER.getName(),
+				Contact.MOBILE_PHONE_NUMBER.getName(),
+				Contact.COUNTRY.getName()), messages);
+		validator.validate();
+		Map<String, String> errors = validator.getErrors();
+		assertNotNull(errors.get(FieldDescriptor.postcode.name()));
+		assertNotNull(errors.get(FieldDescriptor.homePhoneNumber.name()));
+		assertNotNull(errors.get(FieldDescriptor.businessPhoneNumber.name()));
+		assertNotNull(errors.get(FieldDescriptor.faxNumber.name()));
+		assertNotNull(errors.get(FieldDescriptor.mobilePhoneNumber.name()));
 
-		ContactEditorParser parser = new ContactEditorParser();
-		parser.setContact(contact);
-		assertNotNull(parser.validate(FieldDescriptor.postcode));
-		assertNotNull(parser.validate(FieldDescriptor.homePhoneNumber));
-		assertNotNull(parser.validate(FieldDescriptor.businessPhoneNumber));
-		assertNotNull(parser.validate(FieldDescriptor.faxNumber));
-		assertNotNull(parser.validate(FieldDescriptor.mobilePhoneNumber));
-
-		country.setName("USA");
-		assertNull(parser.validate(FieldDescriptor.postcode));
-		assertNull(parser.validate(FieldDescriptor.homePhoneNumber));
-		assertNull(parser.validate(FieldDescriptor.businessPhoneNumber));
-		assertNull(parser.validate(FieldDescriptor.faxNumber));
-		assertNull(parser.validate(FieldDescriptor.mobilePhoneNumber));
+		when(country.getName()).thenReturn("USA");
+		validator = EnrolContactValidator.valueOf(contact, Arrays.asList(Contact.POSTCODE.getName(),
+				Contact.HOME_PHONE_NUMBER.getName(),
+				Contact.BUSINESS_PHONE_NUMBER.getName(),
+				Contact.FAX_NUMBER.getName(),
+				Contact.MOBILE_PHONE_NUMBER.getName(),
+				Contact.COUNTRY.getName()), messages);
+		validator.validate();
+		errors = validator.getErrors();
+		assertNull(errors.get(FieldDescriptor.postcode.name()));
+		assertNull(errors.get(FieldDescriptor.homePhoneNumber.name()));
+		assertNull(errors.get(FieldDescriptor.businessPhoneNumber.name()));
+		assertNull(errors.get(FieldDescriptor.faxNumber.name()));
+		assertNull(errors.get(FieldDescriptor.mobilePhoneNumber.name()));
 
 	}
 
@@ -88,20 +93,15 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 		prepareData();
 
-		ContactEditorParser parser = new ContactEditorParser();
-		parser.setCountryService(countryService);
-		parser.setContact(contact);
-        parser.setRequest(request);
-		parser.setContactFieldHelper(contactFieldHelper);
-		parser.setCustomFieldHolder(customFieldHolder);
-		parser.setMessages(messages);
 
         FieldDescriptor[] fieldDescriptors =  FieldDescriptor.values();
         ArrayList<String> fields = new ArrayList<>();
         for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
             fields.add(fieldDescriptor.name());
         }
-        parser.setVisibleFields(fields);
+		ContactEditorParser parser = ContactEditorParser.valueOf(request,
+				contact, fields,
+				messages, countryService, contactFieldHelper, customFieldHolder);
         parser.parse();
         assertNotNull(parser.getErrors());
 
@@ -110,6 +110,9 @@ public class ContactEditorParserTest extends ACheckoutTest{
         assertNull(parser.getContact().getIsMale());
 
 		when(request.getParameter(Contact.COUNTRY.getName())).thenReturn(null);
+		parser = ContactEditorParser.valueOf(request,
+				contact, fields,
+				messages, countryService, contactFieldHelper, customFieldHolder);
 		//clean the errors before parse
 		parser.parse();
 
@@ -171,12 +174,12 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(contactFieldHelper.isRequiredField(FieldDescriptor.street, contact)).thenReturn(true);
 		when(contactFieldHelper.isCustomFieldTypeVisible(customFieldType)).thenReturn(true);
 		when(preferenceController.getEnrolmentMinAge()).thenReturn(18);
-		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge, 18))
-			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_youngAge);
-		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast))
-			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
-		when(messages.get(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old)).
-			thenReturn(ContactEditorParser.KEY_ERROR_MESSAGE_birthdate_old);
+		when(messages.format(KEY_ERROR_dateOfBirth_youngAge, 18))
+			.thenReturn(KEY_ERROR_dateOfBirth_youngAge);
+		when(messages.format(KEY_ERROR_dateOfBirth_shouldBeInPast))
+			.thenReturn(KEY_ERROR_dateOfBirth_shouldBeInPast);
+		when(messages.get(KEY_ERROR_MESSAGE_birthdate_old)).
+			thenReturn(KEY_ERROR_MESSAGE_birthdate_old);
 		customFieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, false);
 		customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
 	}
@@ -186,27 +189,22 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 		 prepareData();
 
-		ContactEditorParser parser = new ContactEditorParser();
-		parser.setCountryService(countryService);
-		parser.setContact(contact);
-		parser.setRequest(request);
-		parser.setContactFieldHelper(contactFieldHelper);
-		parser.setCustomFieldHolder(customFieldHolder);
-		parser.setMessages(messages);
-		parser.setVisibleFields(Collections.singletonList(Contact.DATE_OF_BIRTH.getName()));
-
-
+		ContactEditorParser parser = ContactEditorParser.valueOf(request,
+				contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()),
+				messages, countryService, contactFieldHelper, customFieldHolder);
 		//additional check for birth date validation
 		parser.getErrors().clear();
 		assertTrue("No errors should appears", parser.getErrors().isEmpty());
+
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.YEAR, -50);
 		String testDate = parser.getDateFormat().format(cal.getTime());
 		when(request.getParameter(Contact.DATE_OF_BIRTH.getName())).thenReturn(testDate);
 		doCallRealMethod().when(contact).setDateOfBirth(any(Date.class));
 
-		parser.setRequest(request);
-		parser.setContact(contact);
+		parser = ContactEditorParser.valueOf(request,
+				contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()),
+				messages, countryService, contactFieldHelper, customFieldHolder);
 		parser.parse();
 		assertNull("No date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH.getName()));
 
@@ -214,8 +212,9 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		cal.set(Calendar.YEAR, 84);
 		testDate = String.format("%s/%s/%s", cal.get(Calendar.DATE), cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR));
 		when(request.getParameter(Contact.DATE_OF_BIRTH.getName())).thenReturn(testDate);
-		parser.setRequest(request);
-		parser.setContact(contact);
+		parser = ContactEditorParser.valueOf(request,
+				contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()),
+				messages, countryService, contactFieldHelper, customFieldHolder);
 		parser.parse();
 		assertNull("No date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH.getName()));
 
@@ -225,8 +224,9 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		//parser.dateFormat.format(cal.getTime());
 		when(request.getParameter(Contact.DATE_OF_BIRTH.getName())).thenReturn(testDate);
 		when(contact.getDateOfBirth()).thenReturn(cal.getTime());
-		parser.setRequest(request);
-		parser.setContact(contact);
+		parser = ContactEditorParser.valueOf(request,
+				contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()),
+				messages, countryService, contactFieldHelper, customFieldHolder);
 		parser.parse();
 		assertNotNull("Date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH.getName()));
 	}
@@ -235,27 +235,33 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 	private void testValidateDateOfBirth(ContactEditorParser parser, Contact contact) {
         contact.setDateOfBirth(null);
-        String error = parser.validate(dateOfBirth);
+		String error = EnrolContactValidator.valueOf(contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()), parser.getMessages())
+				.validate().getErrors().get(FieldDescriptor.dateOfBirth.name());
+
         assertNull(error);
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -17);
         when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
-        parser.setContact(contact);
-        error = parser.validate(dateOfBirth);
+
+		error = EnrolContactValidator.valueOf(contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()), parser.getMessages())
+				.validate().getErrors().get(FieldDescriptor.dateOfBirth.name());
         assertNull(error);
 
 		when(contact.getDateOfBirth()).thenReturn(null);
-        error = parser.validate(dateOfBirth);
-        assertNull(error);
+		error = EnrolContactValidator.valueOf(contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()), parser.getMessages())
+				.validate().getErrors().get(FieldDescriptor.dateOfBirth.name());
+		assertNull(error);
 
         calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 1);
 		when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
-        error = parser.validate(dateOfBirth);
+		when(messages.get(KEY_ERROR_dateOfBirth_shouldBeInPast)).thenReturn("Your date of birth must be in past.");
+		error = EnrolContactValidator.valueOf(contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()), parser.getMessages())
+				.validate().getErrors().get(FieldDescriptor.dateOfBirth.name());
         assertNotNull(error);
 		//message from Contact "The birth date cannot be in the future."
-        assertEquals("The birth date cannot be in the future.", error);
+        assertEquals("Your date of birth must be in past.", error);
 
     }
 
@@ -286,23 +292,17 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 
 		Messages messages = mock(Messages.class);
-		when(messages.format(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast))
-			.thenReturn(ContactEditorParser.KEY_ERROR_dateOfBirth_shouldBeInPast);
-
-		ContactEditorParser parser = new ContactEditorParser();
-		parser.setCountryService(countryService);
-		parser.setContact(contact);
-		parser.setRequest(request);
-		parser.setContactFieldHelper(contactFieldHelper);
-		parser.setCustomFieldHolder(fieldHolder);
-		parser.setMessages(messages);
+		when(messages.format(KEY_ERROR_dateOfBirth_shouldBeInPast))
+			.thenReturn(KEY_ERROR_dateOfBirth_shouldBeInPast);
 
 		FieldDescriptor[] fieldDescriptors =  new FieldDescriptor[]{FieldDescriptor.dateOfBirth};
 		ArrayList<String> fields = new ArrayList<>();
 		for (FieldDescriptor fieldDescriptor : fieldDescriptors) {
 			fields.add(fieldDescriptor.name());
 		}
-		parser.setVisibleFields(fields);
+		ContactEditorParser parser = ContactEditorParser.valueOf(request,
+				contact, Collections.singletonList(FieldDescriptor.dateOfBirth.name()),
+				messages, countryService, contactFieldHelper, fieldHolder);
 		parser.parse();
 	}
 

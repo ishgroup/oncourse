@@ -192,14 +192,15 @@ public class WaitingListForm {
 			addContactValidator.validate();
 			controller.setErrors(addContactValidator.getErrors());
 		} else if (controller.isEditContact()) {
-			ContactEditorParser parser = new ContactEditorParser();
-			parser.setCountryService(countryService);
-			parser.setContact(controller.getContact());
-			parser.setContactFieldHelper(controller.getContactFieldHelper());
-			parser.setMessages(contactEditorFieldSet.getMessages());
-			parser.setRequest(request);
-			parser.setVisibleFields(controller.getVisibleFields());
-			parser.setCustomFieldHolder(controller.getCustomFieldHolder());
+			ContactEditorParser parser = ContactEditorParser.valueOf(
+					request,
+					controller.getContact(),
+					controller.getVisibleFields(),
+					contactEditorFieldSet.getMessages(),
+					countryService,
+					controller.getContactFieldHelper(),
+					controller.getCustomFieldHolder()
+			);
 			parser.parse();
 			controller.setErrors(parser.getErrors());
 		}
