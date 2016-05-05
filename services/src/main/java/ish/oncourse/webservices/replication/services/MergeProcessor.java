@@ -42,7 +42,7 @@ public class MergeProcessor {
 	public static MergeProcessor valueOf(ObjectContext context, List<GenericReplicationStub> stubs) {
 		MergeProcessor processor = new MergeProcessor();
 		processor.context = context;
-		processor.stubs = stubs;
+		processor.stubs = new ArrayList<>(stubs);
 		return processor;
 	}
 
@@ -54,7 +54,16 @@ public class MergeProcessor {
 		studentToUpdate = contactToUpdate.getStudent();
 		tutorToUpdate = contactToUpdate.getTutor();
 		
-		contactToDelete = SelectById.query(Contact.class, contactDuplicate.getContactToDeleteId()).selectOne(context);
+		if (contactDuplicate.getContactToDeleteId() != null) {
+			contactToDelete = SelectById.query(Contact.class, contactDuplicate.getContactToDeleteId()).selectOne(context);
+		} else if (contactDuplicate.getAngelId() != null) {
+			contactToDelete = ObjectSelect.query(Contact.class).where(Contact.ANGEL_ID.eq(contactDuplicate.getAngelId())).and(Contact.COLLEGE.eq(contactDuplicate.getCollege())).selectOne(context);
+			if (contactToDelete != null) {
+				contactDuplicate.setContactToDeleteId(contactToDelete.getId());
+			}
+		} else {
+			throw new IllegalStateException("ContactDuplicate has no reference to contact to delete");
+		}
 		
 		if (contactToDelete == null) {
 			return;
@@ -89,7 +98,6 @@ public class MergeProcessor {
 		}
 
 		List<ContactDuplicate> duplicates = ObjectSelect.query(ContactDuplicate.class).where(ContactDuplicate.CONTACT_TO_UPDATE.eq(contactToDelete)).select(context);
-				
 		
 		for (ContactDuplicate duplicate : new ArrayList<>(duplicates)) {
 			duplicate.setContactToUpdate(contactToUpdate);
@@ -98,7 +106,6 @@ public class MergeProcessor {
 		mergeDocumentRelation(CONTACT_IDENTIFIER, contactToDelete.getId(), contactToUpdate.getId(), contactToUpdate.getAngelId());
 		mergeContactRelations();
 		mergeTagRelations();
-
 
 		if (studentToUpdateRec != null) {
 			if (studentToUpdate != null && studentToUpdate.getId().equals(studentToUpdateRec.getStub().getWillowId())) {
@@ -137,7 +144,11 @@ public class MergeProcessor {
 
 		context.deleteObject(contactToDelete);
 		contactDuplicate.setStatus(ContactDuplicateStatus.PROCESSED);
-		contactDuplicate.setDescription(contactDuplicate.getDescription().concat("\n Contacts was successfully merged by willow side at: ").concat(new Date().toString()));
+		StringBuilder builder = new StringBuilder();
+		builder.append(contactDuplicate.getDescription());
+		builder.append("\nContacts was successfully merged by willow side at: ");
+		builder.append(new Date());
+		contactDuplicate.setDescription(builder.toString());
 		context.commitChanges();
 	}
 
@@ -203,13 +214,11 @@ public class MergeProcessor {
 			} else {
 				throw new IllegalStateException("Merge transaction does not contains/contains more than one contactDuplicate stub"); 
 			} 
-		
 		}
 		return contactDuplicateStub;
 	}
 
 	public List<GenericReplicationStub> getStubBy(String entityIdentifier, boolean isDeleteStub) {
-		
 		List<GenericReplicationStub> stubList = new LinkedList<>();
 		for (GenericReplicationStub stub : stubs) {
 			if (entityIdentifier.equals(stub.getEntityIdentifier()) &&
@@ -217,7 +226,6 @@ public class MergeProcessor {
 				stubList.add(stub);
 			}
 		}
-			
 		return stubList;
 	}
 	
@@ -249,7 +257,6 @@ public class MergeProcessor {
 					documentRelation.setEntityWillowId(toUpdateWillowId);
 					documentRelation.setEntityAngelId(toUpdateAngelId);
 				}
-
 			}
 		}
 	}
