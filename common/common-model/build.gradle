@@ -46,7 +46,8 @@ task cayenne << {
 			destDir: file("${projectDir}/src/main/java"),
 			makepairs: true,
 			mode: 'all',
-			overwrite: true
+			overwrite: true,
+			createPropertyNames: true
 	)
 }
 
