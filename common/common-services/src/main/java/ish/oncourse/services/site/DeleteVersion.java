@@ -5,6 +5,7 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.PersistentObject;
 import org.apache.cayenne.query.SQLSelect;
 
 import java.util.ArrayList;
@@ -29,27 +30,11 @@ class DeleteVersion {
 
 		deleteAllContents();
 
-//		deleteAllMenus();
-
 		deleteVersionRelatedObjects();
 
 		context.invalidateObjects(version);
 		context.deleteObjects(version);
 		context.commitChanges();
-	}
-
-	void deleteAllMenus() {
-		//find root menu for entry in menus tree
-		if (!version.getMenus().isEmpty()) {
-			WebMenu rootMenu = version.getMenus().get(0);
-			while (rootMenu.getParentWebMenu() != null) {
-				rootMenu = rootMenu.getParentWebMenu();
-			}
-			deleteChildrenMenus(rootMenu.getChildrenMenus(), context);
-			context.deleteObject(rootMenu);
-		}
-		context.commitChanges();
-		deleteEntities(WebMenu.class);
 	}
 
 	void deleteVersionRelatedObjects() {
@@ -60,7 +45,7 @@ class DeleteVersion {
 		deleteEntities(WebSiteLayout.class);
 	}
 
-	private void deleteEntities(Class entityClass) {
+	void deleteEntities(Class<? extends PersistentObject> entityClass) {
 		SQLSelect.dataRowQuery("DELETE FROM $tableName where webSiteVersionId = $id").paramsArray(
 				entityClass.getSimpleName(),
 				version.getId()).select(context);
@@ -73,14 +58,14 @@ class DeleteVersion {
 			context.commitChanges();
 		}
 		SQLSelect.dataRowQuery("DELETE FROM $tableName where webSiteVersionId = $id").paramsArray(
-				WebContent.class.getSimpleName(),
+				getTableNameBy(WebContent.class),
 				version.getId()).select(context);
 		context.deleteObjects(version.getContents());
 	}
 
 	void deleteTemplates(WebSiteLayout layout) {
 		SQLSelect.dataRowQuery("DELETE FROM $tableName where layoutId = $layoutId").paramsArray(
-				WebTemplate.class.getSimpleName(),
+				getTableNameBy(WebTemplate.class),
 				layout.getId()).select(context);
 	}
 
@@ -94,6 +79,10 @@ class DeleteVersion {
 			}
 			objectContext.deleteObject(webMenu);
 		}
+	}
+
+	String getTableNameBy(Class<? extends PersistentObject> entityClass) {
+		return context.getEntityResolver().getObjEntity(entityClass).getDbEntity().getName();
 	}
 
 	public static DeleteVersion valueOf(WebSiteVersion version) {

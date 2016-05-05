@@ -112,8 +112,8 @@
 	<WebContentVisibility id="11" WebNodeTypeId="5" WebContentId="9" weight="0" regionKey="footer"/>
 	<WebContentVisibility id="12" WebNodeTypeId="6" WebContentId="9" weight="0" regionKey="header"/>
 
-	<WebUrlAlias id="5" webNodeId="6" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="3"/>
-	<WebUrlAlias id="6" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="3"/>
+	<WebURLAlias id="5" webNodeId="6" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/about-us" isDefault="1" webSiteVersionId="3"/>
+	<WebURLAlias id="6" created="2015-11-20 19:23:57" modified="2015-11-20 19:23:57" urlPath="/some-path" isDefault="0" redirectTo="/about-us" webSiteVersionId="3"/>
 
 
 </dataset>

@@ -1,7 +1,9 @@
 package ish.oncourse.services.site;
 
+import ish.oncourse.model.WebMenu;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.WebSiteVersion;
+import ish.oncourse.model.WebUrlAlias;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.lifecycle.QueueableLifecycleListenerTest;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -19,12 +21,12 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DeleteVersionTest  extends ServiceTest {
 
 	private ICayenneService cayenneService;
+	private DeleteVersion deleteVersion;
 
 	@Before
 	public void setup() throws Exception {
@@ -41,11 +43,13 @@ public class DeleteVersionTest  extends ServiceTest {
 	}
 
 	@Test
-	public void testDeleteTemplates() {
+	public void test() {
 
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 		WebSiteVersion version = SelectById.query(WebSiteVersion.class, 1).selectOne(context);
-		DeleteVersion deleteVersion = DeleteVersion.valueOf(version);
+		deleteVersion = DeleteVersion.valueOf(version);
+
+		testGetTableNameBy();
 
 		List<WebSiteLayout> layouts = version.getLayouts();
 		for (WebSiteLayout layout : layouts) {
@@ -61,7 +65,7 @@ public class DeleteVersionTest  extends ServiceTest {
 		assertTrue(version.getContents().isEmpty());
 
 		assertFalse(version.getMenus().isEmpty());
-		deleteVersion.deleteAllMenus();
+		deleteVersion.deleteEntities(WebMenu.class);
 		version = SelectById.query(WebSiteVersion.class, 1).prefetch(WebSiteVersion.MENUS.disjoint()).selectOne(context);
 		assertTrue(version.getMenus().isEmpty());
 
@@ -81,5 +85,9 @@ public class DeleteVersionTest  extends ServiceTest {
 		assertTrue(version.getWebNodes().isEmpty());
 		assertTrue(version.getWebNodeTypes().isEmpty());
 		assertTrue(version.getLayouts().isEmpty());
+	}
+
+	private void testGetTableNameBy() {
+		assertEquals("WebURLAlias", deleteVersion.getTableNameBy(WebUrlAlias.class));
 	}
 }
