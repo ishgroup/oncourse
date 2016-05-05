@@ -47,7 +47,7 @@ class DeleteVersion {
 
 	void deleteEntities(Class<? extends PersistentObject> entityClass) {
 		SQLSelect.dataRowQuery("DELETE FROM $tableName where webSiteVersionId = $id").paramsArray(
-				entityClass.getSimpleName(),
+				getTableNameBy(entityClass),
 				version.getId()).select(context);
 	}
 
