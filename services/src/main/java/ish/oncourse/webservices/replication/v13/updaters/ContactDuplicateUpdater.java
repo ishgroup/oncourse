@@ -17,7 +17,9 @@ public class ContactDuplicateUpdater  extends AbstractWillowUpdater<ContactDupli
 	protected void updateEntity(ContactDuplicateStub stub, ContactDuplicate entity, RelationShipCallback callback) {
 		entity.setDescription(stub.getDescription());
 		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), ContactDuplicateStatus.class));
-		entity.setCreatedByUser(callback.updateRelationShip(stub.getCreatedBy(), SystemUser.class));
+		if(stub.getCreatedBy() != null) {
+			entity.setCreatedByUser(callback.updateRelationShip(stub.getCreatedBy(), SystemUser.class));
+		}
 		entity.setContactToUpdate(callback.updateRelationShip(stub.getContactToUpdateId(), Contact.class));
 		entity.setContactToDeleteId(stub.getContactToDeleteWillowId());
 		entity.setContactToDeleteAngelId(stub.getContactToDeleteAngelId());

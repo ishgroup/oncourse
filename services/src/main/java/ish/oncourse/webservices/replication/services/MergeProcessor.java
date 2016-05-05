@@ -273,7 +273,7 @@ public class MergeProcessor {
 						.andExp(ContactRelation.RELATION_TYPE.eq(toContactRelation.getRelationType()))
 						.filterObjects(contactToUpdate.getToContacts());
 				if (existingRelations.size() > 0) {
-					context.deleteObject(toContactRelations);
+					context.deleteObject(toContactRelation);
 				} else {
 					toContactRelation.setFromContact(contactToUpdate);
 				}
@@ -286,11 +286,11 @@ public class MergeProcessor {
 			if (toDelete("ContactRelation", fromContactRelation.getId(), fromContactRelation.getAngelId())) {
 				context.deleteObject(fromContactRelation);
 			} else {
-				List<ContactRelation> existingRelations = ContactRelation.TO_CONTACT.eq(fromContactRelation.getFromContact())
+				List<ContactRelation> existingRelations = ContactRelation.FROM_CONTACT.eq(fromContactRelation.getFromContact())
 						.andExp(ContactRelation.RELATION_TYPE.eq(fromContactRelation.getRelationType()))
-						.filterObjects(contactToUpdate.getToContacts());
+						.filterObjects(contactToUpdate.getFromContacts());
 				if (existingRelations.size() > 0) {
-					context.deleteObject(toContactRelations);
+					context.deleteObject(fromContactRelation);
 				} else {
 					fromContactRelation.setToContact(contactToUpdate);
 				}

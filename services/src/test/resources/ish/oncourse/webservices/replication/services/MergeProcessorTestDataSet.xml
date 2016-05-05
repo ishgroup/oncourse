@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<Country id="2" ishVersion="2" name="Kiribati" isoCodeAlpha2="KI" isoCodeAlpha3="KIR" isoCodeNumeric="296" asccssCode="1503" saccCode="1402"/>
+	<Country id="3" ishVersion="1" name="Belarus" isoCodeAlpha2="BY" isoCodeAlpha3="BLR" isoCodeNumeric="112" asccssCode="2603" saccCode="3301"/>
+	<Language id="1" name="English" isActive="1" ishVersion="1"/>
+	<Language id="2" ishVersion="1" name="Asian" isActive="1"/>
+	<Language id="3" ishVersion="1" name="Belgian" isActive="1"/>
+	<Language id="4" ishVersion="1" name="Belorussian" isActive="1"/>
+	<Module id="1" ishVersion="1" nationalCode="004/01" title="Occupational health and safety requirements associated with electrical work are followed" fieldOfEducation="061301" isModule="0"  />
+	<TrainingPackage id="1" ishVersion="1" nationalISC="AGR05" title="Conditionally Endorsed Agri-Food Qualifications Training Package"  endorsementFrom="2010-02-03 09:18:09" endorsementTo="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" purchaseFrom="2010-02-03 09:18:09"/>
+	<Qualification id="1" ishVersion="1" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13"
+				   reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
+
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+	<Student id="1" angelId="1" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+	<Tutor id="1" angelId="1" collegeId="1" />
+
+	<Student id="2" angelId="2" countryOfBirthId="1" languageId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+	<Tutor id="2" angelId="2" collegeId="1" />
+	
+	<Contact id="1" angelId="1" collegeId="1" tutorId="1" studentId="1"  businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="1@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
+	
+	<Contact id="2" angelId="2" collegeId="1" tutorId="2" studentId="2"  businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="1@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
+
+	<Course id="1" angelId="1" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
+	<CourseClass id="1" angelId="1" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="1" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" isDistantLearningCourse="0"/>
+	<Enrolment id="1" angelId="1" collegeId="1" courseClassId="1" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
+	<Invoice id="1" angelId="1" source="O" amountOwing="0.00" contactId="2" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"
+			 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+	<InvoiceLine id="1" angelId="1" collegeId="1" enrolmentId="1" invoiceId="1" quantity="1.0" discountEachExTax="0.00" priceEachExTax="109.09" taxEach="10.91" title="Test Invoice Line" created="2011-09-20 11:14:54" modified="2010-02-03 09:18:09"/>
+
+	<PaymentIn
+			amount="1.11"
+			angelId="1"
+			collegeId="1"
+			contactId="2"
+			created="2011-09-20 11:14:54"
+			creditCardCVV="QWER"
+			creditCardExpiry="creditCardExpiry"
+			creditCardName="creditCardName"
+			creditCardNumber="creditCardNumberX"
+			creditCardType="VISA"
+			dateBanked="2011-09-20 11:14:54"
+			gatewayReference="gatewayReference"
+			gatewayResponse="gatewayResponse"
+			id="1"
+			modified="2011-09-20 11:14:54"
+			sessionId="sessionId"
+			source="W"
+			status="1"
+			statusNotes="statusNotes"
+			studentId="1"
+			type="1" confirmationStatus="1"/>
+
+	<PaymentInLine
+			amount="1.11"
+			angelId="1"
+			collegeId="1"
+			created="2011-09-20 11:14:54"
+			id="1"
+			invoiceId="1"
+			modified="2011-09-20 11:14:54"
+			paymentInId="1"/>
+
+
+	<ContactRelationType id="1"
+						 angelId="1"
+						 collegeId="1"
+						 createdOn="2011-09-12 00:47:01.0"
+						 fromContactName="Viewer relationship1"
+						 toContactName="member1"
+						 modifiedOn="2011-09-12 00:47:01.0"
+						 delegatedAccessToContact="1"/>
+
+	<ContactRelationType id="2"
+						 angelId="2"
+						 collegeId="1"
+						 createdOn="2011-09-12 00:47:01.0"
+						 fromContactName="Viewer relationship2"
+						 toContactName="member1"
+						 modifiedOn="2011-09-12 00:47:01.0"
+						 delegatedAccessToContact="1"/>
+	
+	
+	<Contact id="3" angelId="3" collegeId="1" emailAddress="1@kremlin.ru" familyName="Contact2" givenName="Contact2"/>
+	<Contact id="4" angelId="4" collegeId="1" emailAddress="1@kremlin.ru" familyName="Contact3" givenName="Contact3"/>
+	<Contact id="5" angelId="5" collegeId="1" emailAddress="1@kremlin.ru" familyName="Contact5" givenName="Contact5"/>
+
+
+	<ContactRelation id="1" angelId="1" collegeId="1" createdOn ="2011-09-12 00:51:00.0" modifiedOn="2011-09-12 00:51:00.0"
+					 fromContactId="1"  toContactId="3" typeId="1"/>
+
+	<ContactRelation id="2" angelId="2" collegeId="1" createdOn ="2011-09-12 00:51:00.0" modifiedOn="2011-09-12 00:51:00.0"
+					 fromContactId="2"  toContactId="3" typeId="1"/>
+
+	<ContactRelation id="3" angelId="3" collegeId="1" createdOn ="2011-09-12 00:51:00.0" modifiedOn="2011-09-12 00:51:00.0"
+					 fromContactId="4"  toContactId="1" typeId="2"/>
+
+	<ContactRelation id="4" angelId="4" collegeId="1" createdOn ="2011-09-12 00:51:00.0" modifiedOn="2011-09-12 00:51:00.0"
+					 fromContactId="4"  toContactId="2" typeId="2"/>
+
+
+	<Document id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			  name="test3" description="test4" fileUUID="test1" isShared="1" isRemoved="0" webVisibility="3"/>
+	<Document id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			  name="test1" description="test1" fileUUID="test1" isShared="1" isRemoved="0" webVisibility="1"/>
+
+	<DocumentVersion id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 documentId="1" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
+					 pixelWidth="20" pixelHeight="10" description="description"/>
+	
+	<DocumentVersion id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 documentId="2" versionId="version" fileName="test.text" mimeType="text/plain" byteSize="1024" timestamp="2011-01-01 00:00:00"
+					 pixelWidth="20" pixelHeight="10" description="description"/>
+
+
+	<BinaryInfoRelation id="1" collegeId="1" entityIdentifier="Contact" entityWillowId="1" documentId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
+	<BinaryInfoRelation id="2" collegeId="1" entityIdentifier="Contact" entityWillowId="2" documentId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
+	<BinaryInfoRelation id="3" collegeId="1" entityIdentifier="Contact" entityWillowId="2" documentId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"/>
+
+
+	<Tag id="3475" collegeId="1" angelId="207" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:38:55.0" name="Payroll wage intervals"/>
+	<Tag id="1" parentId="3475" collegeId="1" angelId="1" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Fortnightly"/>
+	<Tag id="2" parentId="3475" collegeId="1" angelId="2" isWebVisible="0" nodeType="1" weighting="1" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0" name="Monthly"/>
+
+	<TagGroupRequirement id="479" tagId="3475" collegeId="1" angelId="202" allowsMultipleTags="0" isRequired="0" created="2011-09-12 00:38:55.0" modified="2011-09-12 00:17:20.0"/>
+
+	<Taggable id="1" collegeId="1" entityIdentifier="Contact" entityWillowId="1" />
+	<Taggable id="2" collegeId="1" entityIdentifier="Contact" entityWillowId="2" />
+	<Taggable id="3" collegeId="1" entityIdentifier="Contact" entityWillowId="2" />
+
+	<TaggableTag id="1" collegeId="1" tagId="1" taggableId="1"/>
+	<TaggableTag id="2" collegeId="1" tagId="1" taggableId="2"/>
+	<TaggableTag id="3" collegeId="1" tagId="2" taggableId="3"/>
+
+</dataset>

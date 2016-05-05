@@ -50,7 +50,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
     static final String MESSAGE_TEMPLATE_NO_STUB = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s!";
     static final String MESSAGE_TEMPLATE_NO_ANGELID = "Cannot delete object willowId:%d and identifier:%s\nbecause there is relationship to object willowId:%d and identifier:%s but without angelId!";
-	private static final String MERGE_KEY = "MERGE";
+	public static final String MERGE_KEY = "MERGE";
     /**
 	 * Logger
 	 */
@@ -340,15 +340,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 		List<Queueable> objects = objectsByAngelId(currentStub.getAngelId(), willowIdentifier);
 
-		if (objects.isEmpty() && currentStub.getWillowId() != null) {
+		if (objects.isEmpty()) {
 			//we need this since a lot of old records from angel has angelId=null.
 			objects = objectsByWillowId(currentStub.getWillowId(), willowIdentifier);
-			if (objects.isEmpty()) {
-				String message = String.format("Can not find corresponded record %s (willowId:%d, angelId:%d, collegeId:%d) by willowId on willow side.", willowIdentifier, currentStub.getWillowId(), currentStub.getAngelId(), webSiteService.getCurrentCollege().getId() );
-				StubUtils.setFailedStatus(replRecord);
-				replRecord.setMessage(message);
-				throw new IllegalArgumentException(message);
-			}
 		}
 
 		switch (objects.size()) {
@@ -356,6 +350,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			if (currentStub instanceof GenericDeletedStub) {
 				// ignore object was already deleted
 				return null;
+			} else if (currentStub.getWillowId() != null) {
+				String message = String.format("Can not find corresponded record %s (willowId:%d, angelId:%d, collegeId:%d) by willowId on willow side.", willowIdentifier, currentStub.getWillowId(), currentStub.getAngelId(), webSiteService.getCurrentCollege().getId() );
+				StubUtils.setFailedStatus(replRecord);
+				replRecord.setMessage(message);
+				throw new IllegalArgumentException(message);
 			}
             return createObject(currentStub);
 		}
