@@ -52,6 +52,8 @@ public abstract class _Certificate extends CayenneDataObject {
     @Deprecated
     public static final String STUDENT_LAST_NAME_PROPERTY = "studentLastName";
     @Deprecated
+    public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
+    @Deprecated
     public static final String CERTIFICATE_OUTCOMES_PROPERTY = "certificateOutcomes";
     @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
@@ -77,6 +79,7 @@ public abstract class _Certificate extends CayenneDataObject {
     public static final Property<Date> REVOKED_WHEN = new Property<Date>("revokedWhen");
     public static final Property<String> STUDENT_FIRST_NAME = new Property<String>("studentFirstName");
     public static final Property<String> STUDENT_LAST_NAME = new Property<String>("studentLastName");
+    public static final Property<String> UNIQUE_CODE = new Property<String>("uniqueCode");
     public static final Property<List<CertificateOutcome>> CERTIFICATE_OUTCOMES = new Property<List<CertificateOutcome>>("certificateOutcomes");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Qualification> QUALIFICATION = new Property<Qualification>("qualification");
@@ -185,6 +188,13 @@ public abstract class _Certificate extends CayenneDataObject {
     }
     public String getStudentLastName() {
         return (String)readProperty("studentLastName");
+    }
+
+    public void setUniqueCode(String uniqueCode) {
+        writeProperty("uniqueCode", uniqueCode);
+    }
+    public String getUniqueCode() {
+        return (String)readProperty("uniqueCode");
     }
 
     public void addToCertificateOutcomes(CertificateOutcome obj) {

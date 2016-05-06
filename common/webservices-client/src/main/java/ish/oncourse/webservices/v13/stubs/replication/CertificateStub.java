@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="issued" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="awarded" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *         &lt;element name="uniqueCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -57,7 +58,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "studentLastName",
     "studentId",
     "issued",
-    "awarded"
+    "awarded",
+    "uniqueCode"
 })
 public class CertificateStub
     extends ReplicationStub
@@ -111,6 +113,8 @@ public class CertificateStub
     @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date awarded;
+    @XmlElement(required = true)
+    protected String uniqueCode;
 
     /**
      * Gets the value of the certificateNumber property.
@@ -446,6 +450,30 @@ public class CertificateStub
      */
     public void setAwarded(Date value) {
         this.awarded = value;
+    }
+
+    /**
+     * Gets the value of the uniqueCode property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getUniqueCode() {
+        return uniqueCode;
+    }
+
+    /**
+     * Sets the value of the uniqueCode property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUniqueCode(String value) {
+        this.uniqueCode = value;
     }
 
 }

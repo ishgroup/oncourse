@@ -4001,4 +4001,15 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="268" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Certificate" columnName="uniqueCode"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Certificate ADD COLUMN uniqueCode VARCHAR(12) UNIQUE;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

@@ -83,6 +83,7 @@
 		<db-attribute name="studentFirstName" type="VARCHAR" length="100"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="studentLastName" type="VARCHAR" length="100"/>
+		<db-attribute name="uniqueCode" type="VARCHAR" length="12"/>
 	</db-entity>
 	<db-entity name="CertificateOutcome">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -1410,6 +1411,7 @@
 		<obj-attribute name="revokedWhen" type="java.util.Date" db-attribute-path="revokedWhen"/>
 		<obj-attribute name="studentFirstName" type="java.lang.String" db-attribute-path="studentFirstName"/>
 		<obj-attribute name="studentLastName" type="java.lang.String" db-attribute-path="studentLastName"/>
+		<obj-attribute name="uniqueCode" type="java.lang.String" db-attribute-path="uniqueCode"/>
 	</obj-entity>
 	<obj-entity name="CertificateOutcome" className="ish.oncourse.model.CertificateOutcome" dbEntityName="CertificateOutcome">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
