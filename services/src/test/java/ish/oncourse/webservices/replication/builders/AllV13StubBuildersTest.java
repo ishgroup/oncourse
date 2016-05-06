@@ -297,4 +297,9 @@ public class AllV13StubBuildersTest extends AbstractAllStubBuildersTest {
 	public void testCorporatePassProductStubBuilder() {
 		this.testStubBuilder(CorporatePassProduct.class, new CorporatePassProductStubBuilder());
 	}
+
+	@Test
+	public void testContactDuplicateStubBuilder() {
+		this.testStubBuilder(ContactDuplicate.class, new ContactDuplicateStubBuilder());
+	}
 }

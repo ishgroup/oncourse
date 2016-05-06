@@ -208,7 +208,18 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             if (Contact.DATE_OF_BIRTH.getName().equals(propertyName)) {
                 return ((Contact) entity).getDateOfBirth() != null ? DateUtils.setHours(((Contact) entity).getDateOfBirth(), 12): null;
             }
-        }
+        } else if (entity instanceof ContactDuplicate) {
+
+			switch (propertyName) {
+				case "createdBy":
+					return ((ContactDuplicate) entity).getCreatedByUser().getId();
+				case "status":
+					return ((ContactDuplicate) entity).getStatus().getDatabaseValue();
+				case "contactToDeleteWillowId":
+					return ((ContactDuplicate) entity).getContactToDeleteId();
+			}
+			
+		}
 
 
 			if (propertyName.equals("willowId")) {

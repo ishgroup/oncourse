@@ -99,7 +99,8 @@
              givenName="StubTest"
              faxNumber="1234-567"
              suburb="Moscow"
-			 abn="1234554321"/>
+			 abn="1234554321"
+			 invoiceTerms="20"/>
 
     <Attendance id="1" angelId="2" attendanceType="1" collegeId="3" sessionId="1" studentId="1" markedByTutorId="1"
                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0" note="Note1" durationMinutes="100" markedByTutorDate="2011-09-12 00:56:00.0"/>
@@ -497,6 +498,7 @@
                  studentLastName="studentLastName"
 				 issued="2011-09-20 11:14:54"
 				 awarded="2011-09-20 11:14:54"
+				 uniqueCode="qwertyuioqwe"
             />
 
     <CertificateOutcome certificateId="1" angelId="2" collegeId="3" created="2011-09-20 11:14:54" id="1" modified="2011-09-20 11:14:54" outcomeId="1"/>
@@ -581,4 +583,5 @@
 
 	<CorporatePass_Product id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" corporatePassId="1" productId="1"/>
 
+	<ContactDuplicate id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" contactToUpdateId="1" contactToDeleteId="2" contactToDeleteAngelId="2" description="description" status="3" createdBy="1"/>
 </dataset>

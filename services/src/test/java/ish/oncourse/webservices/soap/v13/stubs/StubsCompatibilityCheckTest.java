@@ -126,6 +126,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		contactParameters.add(new ReplicationStubFieldParameter("tutorId", Long.class));
 		contactParameters.add(new ReplicationStubFieldParameter("middleName", String.class));
 		contactParameters.add(new ReplicationStubFieldParameter("abn", String.class));
+		contactParameters.add(new ReplicationStubFieldParameter("invoiceTerms", Integer.class));
 		stubsPropertyMap.put(getStubName(ContactStub.class), contactParameters);
 
 		List<ReplicationStubFieldParameter> courseClassParameters = fillDefaultReplicationStubFields();
@@ -451,6 +452,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		certificateParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
 		certificateParameters.add(new ReplicationStubFieldParameter("issued", Date.class));
 		certificateParameters.add(new ReplicationStubFieldParameter("awarded", Date.class));
+		certificateParameters.add(new ReplicationStubFieldParameter("uniqueCode", String.class));
 		stubsPropertyMap.put(getStubName(CertificateStub.class), certificateParameters);
 		final List<ReplicationStubFieldParameter> certificateOutcomeParameters = fillDefaultReplicationStubFields();
 		certificateOutcomeParameters.add(new ReplicationStubFieldParameter("certificateId", Long.class));
@@ -643,6 +645,15 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		corporatePassProductParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
 		corporatePassProductParameters.add(new ReplicationStubFieldParameter("productId", Long.class));
 		stubsPropertyMap.put(getStubName(CorporatePassProductStub.class), corporatePassProductParameters);
+
+		List<ReplicationStubFieldParameter> contactDuplicateParameters = fillDefaultReplicationStubFields();
+		contactDuplicateParameters.add(new ReplicationStubFieldParameter("contactToUpdateId", Long.class));
+		contactDuplicateParameters.add(new ReplicationStubFieldParameter("contactToDeleteWillowId", Long.class));
+		contactDuplicateParameters.add(new ReplicationStubFieldParameter("contactToDeleteAngelId", Long.class));
+		contactDuplicateParameters.add(new ReplicationStubFieldParameter("status", Integer.class));
+		contactDuplicateParameters.add(new ReplicationStubFieldParameter("createdBy", Long.class));
+		contactDuplicateParameters.add(new ReplicationStubFieldParameter("description", String.class));
+		stubsPropertyMap.put(getStubName(ContactDuplicateStub.class), contactDuplicateParameters);
 
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
@@ -1028,6 +1039,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testCorporatePassProductStub() {
 		GenericReplicationStub stub = new CorporatePassProductStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testContactDuplicateStub() {
+		GenericReplicationStub stub = new ContactDuplicateStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	
