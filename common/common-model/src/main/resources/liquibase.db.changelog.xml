@@ -3990,4 +3990,15 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="267" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Contact" columnName="invoiceTerms"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Contact ADD COLUMN invoiceTerms INTEGER;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

@@ -47,6 +47,7 @@ public class ContactStubBuilder extends
 		stub.setTaxFileNumber(entity.getTaxFileNumber());
 		stub.setMiddleName(entity.getMiddleName());
 		stub.setAbn(entity.getAbn());
+		stub.setInvoiceTerms(entity.getInvoiceTerms());
 		return stub;
 	}
 }

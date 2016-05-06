@@ -54,6 +54,8 @@ public abstract class _Contact extends CayenneDataObject {
     @Deprecated
     public static final String HOME_PHONE_NUMBER_PROPERTY = "homePhoneNumber";
     @Deprecated
+    public static final String INVOICE_TERMS_PROPERTY = "invoiceTerms";
+    @Deprecated
     public static final String IS_COMPANY_PROPERTY = "isCompany";
     @Deprecated
     public static final String IS_MALE_PROPERTY = "isMale";
@@ -135,6 +137,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final Property<String> FAX_NUMBER = new Property<String>("faxNumber");
     public static final Property<String> GIVEN_NAME = new Property<String>("givenName");
     public static final Property<String> HOME_PHONE_NUMBER = new Property<String>("homePhoneNumber");
+    public static final Property<Integer> INVOICE_TERMS = new Property<Integer>("invoiceTerms");
     public static final Property<Boolean> IS_COMPANY = new Property<Boolean>("isCompany");
     public static final Property<Boolean> IS_MALE = new Property<Boolean>("isMale");
     public static final Property<Boolean> IS_MARKETING_VIA_EMAIL_ALLOWED = new Property<Boolean>("isMarketingViaEmailAllowed");
@@ -245,6 +248,13 @@ public abstract class _Contact extends CayenneDataObject {
     }
     public String getHomePhoneNumber() {
         return (String)readProperty("homePhoneNumber");
+    }
+
+    public void setInvoiceTerms(Integer invoiceTerms) {
+        writeProperty("invoiceTerms", invoiceTerms);
+    }
+    public Integer getInvoiceTerms() {
+        return (Integer)readProperty("invoiceTerms");
     }
 
     public void setIsCompany(Boolean isCompany) {

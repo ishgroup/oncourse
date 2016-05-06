@@ -37,5 +37,6 @@ public class ContactUpdater extends AbstractWillowUpdater<ContactStub, Contact> 
 		entity.setTaxFileNumber(stub.getTaxFileNumber());
 		entity.setMiddleName(stub.getMiddleName());
 		entity.setAbn(stub.getAbn());
+		entity.setInvoiceTerms(stub.getInvoiceTerms());
 	}
 }
