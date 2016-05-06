@@ -17,10 +17,10 @@ public class CertificateUpdater extends AbstractWillowUpdater<CertificateStub, C
 		entity.setEndDate(stub.getEndDate());
 		entity.setFundingSource(stub.getFundingSource());
 		entity.setIsQualification(stub.isQualification());
-		entity.setModified(entity.getModified());
-		entity.setPrintedWhen(entity.getPrintedWhen());
-		entity.setPrivateNotes(entity.getPrivateNotes());
-		entity.setPublicNotes(entity.getPublicNotes());
+		entity.setModified(stub.getModified());
+		entity.setPrintedWhen(stub.getPrintedWhen());
+		entity.setPrivateNotes(stub.getPrivateNotes());
+		entity.setPublicNotes(stub.getPublicNotes());
 		if (stub.getQualificationId() != null) {
 			entity.setQualification(Cayenne.objectForPK(entity.getObjectContext(), Qualification.class, stub.getQualificationId()));
 		}

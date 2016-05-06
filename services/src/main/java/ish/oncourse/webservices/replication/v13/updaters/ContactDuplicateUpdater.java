@@ -23,5 +23,8 @@ public class ContactDuplicateUpdater  extends AbstractWillowUpdater<ContactDupli
 		entity.setContactToUpdate(callback.updateRelationShip(stub.getContactToUpdateId(), Contact.class));
 		entity.setContactToDeleteId(stub.getContactToDeleteWillowId());
 		entity.setContactToDeleteAngelId(stub.getContactToDeleteAngelId());
+		entity.setCreated(stub.getCreated());
+		entity.setModified(stub.getModified());
+
 	}
 }

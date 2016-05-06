@@ -17,6 +17,7 @@ public class ContactDuplicateStubBuilder extends AbstractWillowStubBuilder<Conta
 		stub.setContactToUpdateId(entity.getContactToUpdate().getId());
 		stub.setContactToDeleteWillowId(entity.getContactToDeleteId());
 		stub.setContactToDeleteAngelId(entity.getContactToDeleteAngelId());
+		stub.setModified(entity.getModified());
 		return stub;
 	}
 }
