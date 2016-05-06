@@ -47,6 +47,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="tutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="middleName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="abn" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="invoiceTerms" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -83,7 +84,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "studentId",
     "tutorId",
     "middleName",
-    "abn"
+    "abn",
+    "invoiceTerms"
 })
 public class ContactStub
     extends ReplicationStub
@@ -161,6 +163,10 @@ public class ContactStub
     protected String middleName;
     @XmlElement(required = true)
     protected String abn;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer invoiceTerms;
 
     /**
      * Gets the value of the businessPhoneNumber property.
@@ -808,6 +814,30 @@ public class ContactStub
      */
     public void setAbn(String value) {
         this.abn = value;
+    }
+
+    /**
+     * Gets the value of the invoiceTerms property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getInvoiceTerms() {
+        return invoiceTerms;
+    }
+
+    /**
+     * Sets the value of the invoiceTerms property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setInvoiceTerms(Integer value) {
+        this.invoiceTerms = value;
     }
 
 }

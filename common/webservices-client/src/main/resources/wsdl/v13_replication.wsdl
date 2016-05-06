@@ -443,6 +443,7 @@
 							<xs:element name="tutorId" type="xs:long" />
 							<xs:element name="middleName" type="xs:string" />
 							<xs:element name="abn" type="xs:string" />
+							<xs:element name="invoiceTerms" type="xs:int" />
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
