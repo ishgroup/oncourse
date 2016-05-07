@@ -76,8 +76,8 @@ public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
 
 
     public static void initSolr(String solrHome, String core) throws Exception {
-        String config = String.format("%s/%s/conf/solrconfig.xml", solrHome, core);
-        String schema = String.format("%s/%s/conf/schema.xml", solrHome, core);
+        String config = "conf/solrconfig.xml";
+        String schema = "conf/schema.xml";
 
         initSolr(config, schema, solrHome, core);
     }
