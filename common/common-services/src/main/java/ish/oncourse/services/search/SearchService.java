@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
@@ -85,8 +86,11 @@ public class SearchService implements ISearchService {
                 if (solrURL == null) {
                     throw new IllegalStateException("Undefined property: " + Property.SolrServer);
                 }
-                HttpSolrClient httpSolrClient = new HttpSolrClient(solrURL + "/" + core.toString());
-                solrClient = httpSolrClient;
+                if (solrURL.startsWith("http://") || solrURL.startsWith("https://")) {
+                    solrClient = new HttpSolrClient(solrURL);
+                } else {
+                    solrClient = new CloudSolrClient(solrURL);
+                }
                 solrClients.put(core, solrClient);
 
             } catch (Exception e) {
@@ -109,7 +113,7 @@ public class SearchService implements ISearchService {
         Exception exception = null;
         while (count < 3) {
             try {
-                return getSolrClient(core).query(q);
+                return getSolrClient(core).query(core.name(), q);
             } catch (Exception e) {
                 exception = e;
                 count++;
