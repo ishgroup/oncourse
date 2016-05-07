@@ -1,15 +1,5 @@
-apply plugin: 'war'
-
 dependencies {
-    providedCompile 'javax.servlet:servlet-api:3.0'
-	
-	compile project(':common:common-services')
-
-	compile ('org.apache.solr:solr-dataimporthandler:5.5.1') {
-		exclude group: 'org.apache.hadoop'
-		exclude group: 'org.eclipse.jetty'
-	}
-	compile 'com.vividsolutions:jts:1.13'
+	testCompile project(':common:common-services')
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
@@ -20,6 +10,11 @@ dependencies {
 	testCompile ('org.apache.solr:solr-test-framework:5.5.1') {
 		exclude group: 'org.apache.hadoop'
 	}
+	testCompile ('org.apache.solr:solr-dataimporthandler:5.5.1') {
+		exclude group: 'org.apache.hadoop'
+	}
+
+	testCompile 'com.vividsolutions:jts:1.13'
 	testCompile 'org.apache.lucene:lucene-test-framework:5.5.1'
 	testCompile 'mysql:mysql-connector-java:5.1.38'
 	testCompile 'com.google.code.gson:gson:2.2.4'
@@ -31,17 +26,5 @@ test {
 		systemProperty 'testDatabaseUri', searchTestDatabaseUri
 		systemProperty 'testDatabaseDriver', searchTestDatabaseDriver
 		systemProperty 'testCreateTables', searchTestCreateTables
-	}
-}
-
-war {
-	archiveName = 'search.war'
-	manifest {
-		from sharedManifest
-	}
-
-	into('/') {
-		from zipTree(project.configurations.compile.find { it.name.startsWith("solr-") })
-		exclude 'WEB-INF/*'
 	}
 }
