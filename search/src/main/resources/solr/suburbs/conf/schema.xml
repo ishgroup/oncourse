@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<schema name="oncourse" version="1.2">
+<schema name="oncourse" version="1.6">
 	<types>
 
 		<!-- A specialized field for geospatial search. If indexed, this fieldType 
@@ -56,6 +56,8 @@
 
 
 	<fields>
+		<field name="_version_" type="long" indexed="true" stored="true" multiValued="false"/>
+
 		<field name="id" type="string" indexed="true" stored="true"
 			required="true" />
 

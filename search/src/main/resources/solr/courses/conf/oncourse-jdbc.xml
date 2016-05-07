@@ -347,18 +347,16 @@
 				</entity>
 				
 				<entity name="site" dataSource="onCourseDS" pk="id"
-					query="select s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+					query="select distinct s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
             	        inner join Room r on r.siteId=s.id
                 	    inner join CourseClass cc on cc.roomId=r.id
                     	where s.isWebVisible=1 and cc.id='${courseClass.id}'
-                  		group by s.suburb, s.postcode
             		  union
-            			select s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
+            			select distinct s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
 		            	inner join Room r on r.siteId=s.id
 			            inner join Session ss on ss.roomId=r.id
 			            inner join CourseClass cc on cc.id=ss.courseClassId
-			            where s.isWebVisible=1 and cc.id='${courseClass.id}'
-		    	        group by s.suburb, s.postcode"
+			            where s.isWebVisible=1 and cc.id='${courseClass.id}'"
 					deltaImportQuery="select s.id as id, s.id as siteId, s.suburb as sb, s.postcode as pc, lower(CONCAT(s.suburb, ' ', s.postcode)) as subpost, CONCAT(CAST(s.latitude AS CHAR), ',', CAST(s.longitude AS CHAR)) as loc from Site s
 					    where s.id='${dataimporter.delta.id}'"
 					deltaQuery="select id from Site where isWebVisible=1 and modified &gt; '${dataimporter.last_index_time}'" 

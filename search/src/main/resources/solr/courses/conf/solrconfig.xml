@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <luceneMatchVersion>LUCENE_41</luceneMatchVersion>
+  <luceneMatchVersion>6.0.0</luceneMatchVersion>
+  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" />
 
-  <dataDir>${SOLR_DATA}/courses</dataDir>
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
-	
+
 	<indexConfig>
 		<writeLockTimeout>20000</writeLockTimeout>
 		<maxIndexingThreads>8</maxIndexingThreads>
 		<useCompoundFile>false</useCompoundFile>
 		<ramBufferSizeMB>32</ramBufferSizeMB>
 		<maxBufferedDocs>1000</maxBufferedDocs>
-		
+
 		<mergePolicy class="org.apache.lucene.index.TieredMergePolicy">
 			<int name="maxMergeAtOnce">10</int>
 			<int name="segmentsPerTier">10</int>
 		</mergePolicy>
-		
+
 		<mergeFactor>10</mergeFactor>
-		
+
 		<mergeScheduler class="org.apache.lucene.index.ConcurrentMergeScheduler"/>
-		
+
 		<lockType>simple</lockType>
-		<unlockOnStartup>true</unlockOnStartup>
-		
+
 		<!--<termIndexInterval>128</termIndexInterval>-->
-		
+
 		<reopenReaders><t></t>rue</reopenReaders>
-		
+
 		<deletionPolicy class="solr.SolrDeletionPolicy">
 		<!-- The number of commit points to be kept -->
 		<str name="maxCommitsToKeep">1</str>
@@ -42,7 +41,7 @@
 		<str name="maxCommitAge">1DAY</str>
 		-->
 	    </deletionPolicy>
-	
+
 		<!-- Lucene Infostream
 		To aid in advanced debugging, Lucene provides an "InfoStream"
 		of detailed information when indexing.
@@ -51,21 +50,21 @@
 		IndexWriter to write its debugging info the specified file
 		-->
 		<infoStream file="INFOSTREAM.txt">false</infoStream>
-		
-	    <!-- maxFieldLength was removed in 4.0. To get similar behavior, include a 
-	         LimitTokenCountFilterFactory in your fieldType definition. E.g. 
+
+	    <!-- maxFieldLength was removed in 4.0. To get similar behavior, include a
+	         LimitTokenCountFilterFactory in your fieldType definition. E.g.
 	     <filter class="solr.LimitTokenCountFilterFactory" maxTokenCount="10000"/>
 	    -->
 	</indexConfig>
-	
+
   <jmx />
 
 <!-- The default high-performance update handler -->
 	<updateHandler class="solr.DirectUpdateHandler2">
 
-	<autoCommit> 
-		<maxTime>15000</maxTime> 
-		<openSearcher>false</openSearcher> 
+	<autoCommit>
+		<maxTime>15000</maxTime>
+		<openSearcher>false</openSearcher>
 	</autoCommit>
 
     <!-- softAutoCommit is like autoCommit except it causes a
@@ -74,12 +73,12 @@
          faster and more near-realtime friendly than a hard commit.
       -->
      <!--
-       <autoSoftCommit> 
-         <maxTime>1000</maxTime> 
+       <autoSoftCommit>
+         <maxTime>1000</maxTime>
        </autoSoftCommit>
       -->
 	</updateHandler>
-	
+
 	<query>
     <maxBooleanClauses>1024</maxBooleanClauses>
     <filterCache
@@ -87,7 +86,7 @@
       size="512"
       initialSize="512"
       autowarmCount="0"/>
-      
+
     <queryResultCache
       class="solr.LRUCache"
       size="512"
@@ -103,7 +102,7 @@
     <enableLazyFieldLoading>true</enableLazyFieldLoading>
     <queryResultWindowSize>20</queryResultWindowSize>
     <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
-    
+
     <listener event="newSearcher" class="solr.QuerySenderListener">
       <arr name="queries">
       </arr>
@@ -121,7 +120,7 @@
 
   </query>
 
-  <!-- 
+  <!--
     Let the dispatch filter handler /select?qt=XXX
     handleSelect=true will use consistent error handling for /select and /update
     handleSelect=false will use solr1.1 style error formatting
@@ -131,7 +130,7 @@
     <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048000" />
 
     <!-- Set HTTP caching related parameters (for proxy caches and clients).
-          
+
          To get the behaviour of Solr 1.2 (ie: no caching related headers)
          use the never304="true" option and do not specify a value for
          <cacheControl>
@@ -170,7 +169,7 @@
 
   <!-- requestHandler plugins... incoming queries will be dispatched to the
      correct handler based on the path or the qt (query type) param.
-     Names starting with a '/' are accessed with the a path equal to the 
+     Names starting with a '/' are accessed with the a path equal to the
      registered name.  Names without a leading '/' are accessed with:
       http://host/app/select?qt=name
      If no qt is defined, the requestHandler that declares default="true"
@@ -188,11 +187,11 @@
      </lst>
      <!-- not included by default -->
      <!-- arr name="last-components">
-       <str>pivot</str> 
+       <str>pivot</str>
      </arr-->
   </requestHandler>
-  
-  <!-- 
+
+  <!--
   -->
   <requestHandler name="/browse" class="solr.SearchHandler">
      <lst name="defaults">
@@ -236,7 +235,7 @@
      <str name="url-scheme">httpx</str>
      -->
   </requestHandler>
-  
+
   <requestHandler name="dismax" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">dismax</str>
@@ -262,7 +261,7 @@
      <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
     </lst>
   </requestHandler>
-  
+
   <requestHandler name="edismax" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">edismax</str>
@@ -337,7 +336,7 @@
   </requestHandler>
 
   <searchComponent name="tvComponent" class="org.apache.solr.handler.component.TermVectorComponent"/>
-  
+
   <requestHandler name="tvrh" class="org.apache.solr.handler.component.SearchHandler">
     <lst name="defaults">
       <bool name="tv">true</bool>
@@ -382,12 +381,12 @@
        <!--<int name="carrot.numDescriptions">5</int>-->
        <!-- produce sub clusters -->
        <bool name="carrot.outputSubClusters">false</bool>
-    </lst>     
+    </lst>
     <arr name="last-components">
       <str>clusteringComponent</str>
     </arr>
   </requestHandler>
-  
+
   <!-- Solr Cell: http://wiki.apache.org/solr/ExtractingRequestHandler -->
   <requestHandler name="/update/extract" class="org.apache.solr.handler.extraction.ExtractingRequestHandler" startup="lazy">
     <lst name="defaults">
@@ -411,7 +410,7 @@
   <requestHandler name="/terms" class="org.apache.solr.handler.component.SearchHandler">
      <lst name="defaults">
       <bool name="terms">true</bool>
-    </lst>     
+    </lst>
     <arr name="components">
       <str>termsComponent</str>
     </arr>
@@ -435,7 +434,7 @@
       <str>elevator</str>
     </arr>
   </requestHandler>
-  
+
   <requestHandler name="/update" class="solr.UpdateRequestHandler" />
   <requestHandler name="/update/javabin" class="solr.UpdateRequestHandler" />
   <requestHandler name="/analysis/document" class="solr.DocumentAnalysisRequestHandler" />
@@ -471,22 +470,7 @@
      <str name="echoHandler">true</str>
     </lst>
   </requestHandler>
-  
-  <requestHandler name="/replication" class="solr.ReplicationHandler" >
-    <lst name="master">
-      <str name="enable">${solr.master.enable:false}</str>
-      <str name="replicateAfter">startup</str>
-      <str name="replicateAfter">commit</str>
-      <str name="confFiles"></str>
-	  <str name="maxNumberOfBackups">1</str> 
-    </lst>
-    <lst name="slave">
-      <str name="enable">${solr.slave.enable:false}</str>
-      <str name="masterUrl">http://${solr.master.url}/${solr.core.name}</str>
-      <str name="pollInterval">${solr.poll}</str>
-    </lst>
-  </requestHandler>
-  
+
   <searchComponent class="solr.HighlightComponent" name="highlight">
     <highlighting>
       <!-- Configure the standard fragmenter -->
@@ -528,7 +512,7 @@
 
       <!-- default tag FragmentsBuilder -->
       <fragmentsBuilder name="default" class="org.apache.solr.highlight.ScoreOrderFragmentsBuilder" default="true">
-        <!-- 
+        <!--
         <lst name="defaults">
           <str name="hl.multiValuedSeparatorChar">/</str>
         </lst>
@@ -549,7 +533,7 @@
       </fragmentsBuilder>
     </highlighting>
   </searchComponent>
-  
+
   <queryResponseWriter name="xslt" class="solr.XSLTResponseWriter">
     <int name="xsltCacheLifetimeSeconds">5</int>
   </queryResponseWriter>
@@ -557,5 +541,5 @@
   <admin>
     <defaultQuery>*:*</defaultQuery>
   </admin>
- 
+
 </config>

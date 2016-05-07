@@ -1,5 +1,7 @@
 package ish.oncourse.solr;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.SolrTestCaseJ4;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
@@ -8,7 +10,12 @@ import org.apache.solr.util.AbstractSolrTestCase;
 import org.apache.solr.util.TestHarness;
 import org.junit.After;
 
+import java.io.File;
+import java.io.IOException;
+
 public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCase {
+	private static final Logger logger = LogManager.getLogger();
+
 	protected static final String SCHEMA_FILE_PATH = "/conf/schema.xml";
 	protected static final String SOLRCONFIG_FILE_PATH = "/conf/solrconfig.xml";
 	protected static final String SOLR_RESOURCES_PATH = "src/main/resources/solr/";
@@ -26,13 +33,17 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
 	
 	@After
     public void destroy() {
-    	clearIndex();
-    	server.shutdown();
-    }
+		try {
+			clearIndex();
+			server.close();
+		} catch (IOException e) {
+			logger.error(e);
+		}
+	}
 	
 	protected void prepareCore(final String coreName) throws Exception {
-        testSolrHome = TEST_SOLR_HOME;
-        System.setProperty("SOLR_DATA", testSolrHome);
+        testSolrHome = new File(TEST_SOLR_HOME).toPath();
+        System.setProperty("SOLR_DATA", TEST_SOLR_HOME);
 		System.setProperty("solr.master.url", "http://localhost:8081/search-internal");
 		System.setProperty("solr.master.enable", "true");
 		System.setProperty("solr.slave.enable", "false");
@@ -53,7 +64,7 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
     }
 	
 	protected static void customInitCore(final String coreName) throws Exception {
-    	log.info("####initCore");
+		logger.info("####initCore");
     	ignoreException("ignore_exception");
     	factoryProp = System.getProperty("solr.directoryFactory");
     	if (factoryProp == null) {
@@ -66,7 +77,7 @@ public abstract class CustomizedAbstractSolrTestCase extends AbstractSolrTestCas
     	if (configFile != null) {
     		customCreateCore(coreName);
     	}
-    	log.info("####initCore end");
+		logger.info("####initCore end");
     }
 	
 	protected static void customCreateCore(final String coreName) {
