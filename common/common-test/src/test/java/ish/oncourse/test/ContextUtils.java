@@ -106,15 +106,9 @@ public class ContextUtils {
 
 		DbGenerator generator = new DbGenerator(domain.getDefaultNode().getAdapter(), map, NoopJdbcEventLogger.getInstance(), Collections.<DbEntity> emptyList());
 		boolean isParamsEmpty = params == null || params.isEmpty();
-		if (isParamsEmpty) {
-			generator.setShouldCreateTables(true);
-			generator.setShouldCreateFKConstraints(true);
-			generator.setShouldCreatePKSupport(true);
-		} else {
-			generator.setShouldCreateTables(Boolean.TRUE.equals(params.get(SHOULD_CREATE_TABLES)));
-			generator.setShouldCreateFKConstraints(Boolean.TRUE.equals(params.get(SHOULD_CREATE_FK_CONSTRAINTS)));
-			generator.setShouldCreatePKSupport(Boolean.TRUE.equals(params.get(SHOULD_CREATE_PK_SUPPORT)));
-		}
+		generator.setShouldCreateTables(isParamsEmpty || Boolean.TRUE.equals(params.get(SHOULD_CREATE_TABLES)));
+		generator.setShouldCreateFKConstraints(isParamsEmpty || Boolean.TRUE.equals(params.get(SHOULD_CREATE_FK_CONSTRAINTS)));
+		generator.setShouldCreatePKSupport(isParamsEmpty || Boolean.TRUE.equals(params.get(SHOULD_CREATE_PK_SUPPORT)));
 
 		generator.runGenerator(dataSource);
 
