@@ -5,6 +5,7 @@ import ish.oncourse.model.SearchParam;
 import ish.oncourse.model.Tag;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.URLUtils;
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,13 +14,13 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
 import static ish.oncourse.model.SearchParam.near;
 import static ish.oncourse.model.SearchParam.s;
 import static java.lang.String.format;
+import static java.net.URLEncoder.encode;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class SearchInputs extends ISHCommon {
@@ -204,20 +205,20 @@ public class SearchInputs extends ISHCommon {
 
 		private List<String> queries = new ArrayList<>();
 
-		public URL build() throws MalformedURLException {
+		public URL build() throws Exception {
 			for (SearchParam key : SearchParam.values()) {
 				if (isNotBlank(searchParams.get(key))) {
-					queries.add(format("%s=%s", key.name(), searchParams.get(key)));
+					queries.add(format("%s=%s", key.name(), encode(searchParams.get(key), CharEncoding.UTF_8)));
 				}
 			}
 
 			for (String tag : tags) {
-				queries.add(format("%s=%s", SearchParam.tag.name(), tag));
+				queries.add(format("%s=%s", SearchParam.tag.name(), encode(tag, CharEncoding.UTF_8)));
 			}
 
 			String path = "/courses";
 			if (browseTag != null) {
-				path += browseTag;
+				path += encode(browseTag,CharEncoding.UTF_8);
 			}
 			if (queries.size() > 0) {
 				path += "?" + StringUtils.join(queries, "&");
