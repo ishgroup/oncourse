@@ -5,6 +5,7 @@
 
 package ish.oncourse.cayenne;
 
+import ish.common.types.CreditCardType;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
@@ -27,97 +28,99 @@ import java.util.Map;
  */
 public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 
-	public static final Map<String, PaymentSource> SOURCES = Maps.asLinkedMap(new String[] {
+	Map<String, PaymentSource> SOURCES = Maps.asLinkedMap(new String[] {
 			PaymentSource.SOURCE_WEB.getDisplayName(),
 			PaymentSource.SOURCE_ONCOURSE.getDisplayName() }, new PaymentSource[] { PaymentSource.SOURCE_WEB, PaymentSource.SOURCE_ONCOURSE });
 
 	/**
 	 * property mapped to the payer/payee
 	 */
-	public static final String PERSON_PROPERTY = "contact";
+	String PERSON_PROPERTY = "contact";
 	/**
 	 * property mapped to payment type
 	 */
-	public static final String PAYMENT_TYPE_PROPERTY = "paymentType";
+	String PAYMENT_TYPE_PROPERTY = "paymentType";
 
 	/**
 	 * property mapped to payment type
 	 */
-	public static final String STATUS_PROPERTY = "status";
+	String STATUS_PROPERTY = "status";
 
 	/**
 	 * payment in type
 	 */
-	public static final String TYPE_IN = "payment in";
+	String TYPE_IN = "payment in";
 	/**
 	 * payment out type
 	 */
-	public static final String TYPE_OUT = "payment out";
+	String TYPE_OUT = "payment out";
 
 	/**
 	 * handy map of payment types
 	 */
-	public static final Map<String, String> paymentTypes = Maps.asLinkedMap(new String[] { "In", "Out" }, new String[] { TYPE_IN, TYPE_OUT });
-	public static final String CREATED_ON_PROPERTY = "createdOn";
-	public static final String SOURCE_PROPERTY = "source";
-	public static final String METHOD_PROPERTY = "method";
-	public static final String AMOUNT_PROPERTY = "amount";
-	public static final String DISPLAYABLE_AMOUNT_PROPERTY = "displayableAmount";
-	public static final String DATE_BANKED_PROPERTY = "dateBanked";
-	public static final String CC_TRANSACTION_PROP = "cc_trans";
-	public static final String ADMINISTRATION_CENTRE_PROPERTY = "administrationCentre";
+	Map<String, String> paymentTypes = Maps.asLinkedMap(new String[] { "In", "Out" }, new String[] { TYPE_IN, TYPE_OUT });
+	String CREATED_ON_PROPERTY = "createdOn";
+	String SOURCE_PROPERTY = "source";
+	String METHOD_PROPERTY = "method";
+	String AMOUNT_PROPERTY = "amount";
+	String DISPLAYABLE_AMOUNT_PROPERTY = "displayableAmount";
+	String DATE_BANKED_PROPERTY = "dateBanked";
+	String CC_TRANSACTION_PROP = "cc_trans";
+	String ADMINISTRATION_CENTRE_PROPERTY = "administrationCentre";
 
 	/**
 	 * @return type of payment as string
 	 */
-	public String getTypeOfPayment();
+	String getTypeOfPayment();
 
 	/**
 	 * @return method of payment 
 	 */
-	public PaymentMethodInterface getPaymentMethod();
+	PaymentMethodInterface getPaymentMethod();
 
-	public void setPaymentMethod(PaymentMethodInterface method);
+	void setPaymentMethod(PaymentMethodInterface method);
 
 	/**
 	 * @return creation date
 	 */
-	public Date getCreatedOn();
+	Date getCreatedOn();
 
 	/**
 	 * @return date banked
 	 */
-	public Date getDateBanked();
+	Date getDateBanked();
 
 	/**
 	 * @return reconciled
 	 */
-	public Boolean getReconciled();
+	Boolean getReconciled();
 
 	/**
 	 * @param reconciled
 	 */
-	public void setReconciled(Boolean reconciled);
+	void setReconciled(Boolean reconciled);
 
-	public boolean isSuccess();
+	boolean isSuccess();
 
-	public ish.math.Money getAmount();
+	ish.math.Money getAmount();
 
-	public PaymentStatus getStatus();
+	PaymentStatus getStatus();
 
-	public void setPersistenceState(int ps);
+	void setPersistenceState(int ps);
 
-	public void removeFromPaymentLines(PaymentLineInterface pLine);
+	void removeFromPaymentLines(PaymentLineInterface pLine);
 
-	public void addToPaymentLines(PaymentLineInterface pLine);
+	void addToPaymentLines(PaymentLineInterface pLine);
 
-	public List<? extends PaymentLineInterface> getPaymentLines();
+	List<? extends PaymentLineInterface> getPaymentLines();
 
-	public ContactInterface getContact();
+	ContactInterface getContact();
 
-	public void setAccount(AccountInterface account);
+	void setAccount(AccountInterface account);
 
-	public BankingInterface getBanking();
+	BankingInterface getBanking();
 
-	public void setBanking(BankingInterface banking);
+	void setBanking(BankingInterface banking);
+	
+	CreditCardType getCreditCardType();
 }
