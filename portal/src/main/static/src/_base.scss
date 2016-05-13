@@ -8,10 +8,10 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: $heading-font, sans-serif;
 	font-weight: 700;
 	color: $red-color;
-	
+
 	a {
 		color: $red-color;
-		
+
 		&:hover, &:focus, &:active {
 			color: $red-color;
 			text-decoration: none;
@@ -22,7 +22,7 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
 	color: $link-color;
-	
+
 	&:hover {
 		/*color: #a14d02;*/
 		color: $link-hover-color;
@@ -58,7 +58,7 @@ a {
 .btn-primary {
 	background-color: $primary-btn;
 	border-color: $primary-btn;
-	
+
 	&.active, &:active, &:hover, &:focus {
 		background: $primary-btn-hover;
 		border-color: $primary-btn-hover-border;
@@ -121,6 +121,23 @@ button.finish {
 	padding: 116px 0 0 0;
 }
 
+.table tbody > tr > th {
+	background-color: #FAF5E0;
+	font-weight: bold;
+}
+
+ #show-if-balance {
+  display: none;
+}
+
+table.table > thead > tr.not-top-border > th {
+  border-top: none;
+}
+
+.payment-plan td {
+  border-top: none !important;
+}
+
 table.table thead th {
 	font-weight: bold;
 }
@@ -138,11 +155,11 @@ table.table thead th {
 	.tooltip {
 		bottom: 100%;
 		right: 0;
-		
+
 		.tooltip-inner {
 			background-color: #B94A48;
 		}
-		
+
 		.tooltip-arrow {
 			border-top-color: #B94A48;
 		}
@@ -160,16 +177,16 @@ table.table thead th {
 	.tooltip-inner {
 		background-color: #5BC0DE;
 	}
-	
+
 	.tooltip-arrow {
 		border-top-color: #5BC0DE;
 	}
 }
 
 ul.dropdown-menu {
-	
+
 	> li > a {
-		
+
 		&:hover, &:focus {
 			background-color: #69524A;
 			color: #fff;
@@ -187,7 +204,7 @@ ul.dropdown-menu {
 	padding: 6px 18px;
 	border: 3px solid $input-field-border;
   line-height: 1.928571;
-	
+
 	&:focus {
 		/*border-color: #C2DBF0;*/
 		border-color: $input-field-focus-border;
