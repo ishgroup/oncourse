@@ -16,9 +16,9 @@ dependencies {
     compile "antlr:antlr:2.7.7"
     testCompile 'junit:junit:4.11'
 
-    compile 'org.codehaus.groovy:groovy-groovydoc:2.4.5'
-    compile 'org.codehaus.groovy:groovy-ant:2.4.5'
-    compile 'org.fusesource.jansi:jansi:1.11'
+    compile 'org.codehaus.groovy:groovy-groovydoc:2.4.6'
+    compile 'org.codehaus.groovy:groovy-ant:2.4.6'
+    compile 'org.fusesource.jansi:jansi:1.12'
     compile 'org.apache.ant:ant-antlr:1.9.6'
 }
 
