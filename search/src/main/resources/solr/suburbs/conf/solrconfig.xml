@@ -60,7 +60,17 @@
   <jmx />
 
   <!-- the default high-performance update handler -->
-  <updateHandler class="solr.DirectUpdateHandler2"/>
+  <updateHandler class="solr.DirectUpdateHandler2">
+    <updateLog>
+      <str name="dir">${solr.ulog.dir:}</str>
+      <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
+    </updateLog>
+
+    <autoCommit>
+      <maxTime>15000</maxTime>
+      <openSearcher>false</openSearcher>
+    </autoCommit>
+  </updateHandler>
 
   <query>
     <maxBooleanClauses>1024</maxBooleanClauses>
