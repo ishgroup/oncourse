@@ -20,6 +20,25 @@
             allowWaitingList="1" name="Managerial Accounting"
 			enrolmentType="1"/>
 
+    <Course id="12" collegeId="10" angelId="12" code="COURSE12"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="foo bar"
+            enrolmentType="1"/>
+
+    <Course id="13" collegeId="10" angelId="13" code="COURSE13"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="foo of bar"
+            enrolmentType="1"/>
+
+
+    <Course id="14" collegeId="10" angelId="14" code="COURSE14"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="foo of the bar"
+            enrolmentType="1"/>
+
     <Site id="10" collegeId="10" angelId="10" isWebVisible="0"
           created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
 

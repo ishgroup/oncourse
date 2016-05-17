@@ -145,7 +145,7 @@ public class SearchContextUtils {
 		String driverClass = System.getProperty("testDatabaseDriver");
 		createTables = Boolean.valueOf(System.getProperty("testCreateTables"));
 		if (databaseUri == null) {
-			databaseUri = "jdbc:mysql://127.0.0.1:3306/ish_test?autoReconnect=true&zeroDateTimeBehavior=convertToNull&user=root&password=whatsup";
+			databaseUri = "jdbc:mysql://127.0.0.1:3306/ish_test?autoReconnect=true&zeroDateTimeBehavior=convertToNull&user=root&password=whatsup&useSSL=false";
 			driverClass = com.mysql.jdbc.Driver.class.getName();
 		}
 

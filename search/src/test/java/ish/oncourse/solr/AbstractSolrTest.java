@@ -19,6 +19,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -48,6 +49,7 @@ public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
 
         DataSource dataSource = ContextUtils.getDataSource("jdbc/oncourse");
         DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null);
+        dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
         dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 
         ReplacementDataSet rDataSet = initReplacement(dataSet);

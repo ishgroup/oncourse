@@ -12,7 +12,9 @@ import org.apache.solr.request.LocalSolrQueryRequest;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CoursesSolrTest extends AbstractSolrTest {
 
@@ -22,10 +24,38 @@ public class CoursesSolrTest extends AbstractSolrTest {
     }
 
     @Test
+	/**
+     * StopFilterFactory.enablePositionIncrements is not available in solr5.
+     * The test shows that our indexing work correctly for this use case:
+     * course1.name: foo of the bar
+     * course2.name: foo bar
+     * course3.name: foo of bar
+     * Search: s -> 'foo of the bar'
+     * Result should be: course1, course2, course3
+     */
+    public void testStopFilterFactory() throws Exception {
+        fullImport();
+        SearchParams searchParams = new SearchParams();
+        searchParams.setS("foo of the bar");
+        SolrQuery query = SolrQueryBuilder.valueOf(searchParams, "10", 0, 10).build();
+
+        Gson gson = new Gson();
+        Map response = gson.fromJson(JQ(new LocalSolrQueryRequest(h.getCore(), query)), Map.class);
+        assertEquals(3.0, ((Map) response.get("response")).get("numFound"));
+
+        java.util.List docs = (List) ((Map) response.get("response")).get("docs");
+        for (Object doc : docs) {
+            String name = (String)((Map) doc).get("name");
+            assertTrue(Objects.equals(name, "foo bar") || Objects.equals(name, "foo of bar") || Objects.equals(name, "foo of the bar"));
+        }
+
+    }
+
+    @Test
     public void testFullImport() throws Exception {
         Map response = fullImport();
 
-        assertEquals("2", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+        assertEquals("5", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
     }
 
     @Test
@@ -33,7 +63,7 @@ public class CoursesSolrTest extends AbstractSolrTest {
 
         Map response = fullImport();
 
-        assertEquals("2", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+        assertEquals("5", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
 
         Gson gson = new Gson();
 
@@ -114,7 +144,7 @@ public class CoursesSolrTest extends AbstractSolrTest {
         modelBuilder.attachTutorToCourseClass(tutor, courseClass);
         Map response = fullImport();
 
-        assertEquals("3", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
+        assertEquals("6", ((Map) response.get("statusMessages")).get("Total Documents Processed"));
 
         SolrQuery query = SolrQueryBuilder.valueOf(new SearchParams(), "10", 0, 10).build().addFilterQuery("tutorId: " + tutor.getAngelId());
 
