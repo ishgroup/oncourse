@@ -1,12 +1,4 @@
 $j(document).ready(function() {
-  jQuery('#input-price-for-course').val(jQuery('span#price-for-course').text());
-  var paymentDate = new Date(jQuery('#date-of-course').text());
-  if ( paymentDate < Date.now() ){
-    jQuery('#amount-due').css('color','red').append(' was overdue');
-  };
-  if ( jQuery('.balanse').first().text() > '$0,01' ){
-    jQuery('#show-if-balance').css('display', 'block');
-  };
 
 // I have some trouble with object/svg
 // I want to add classes to svg inside objects to change styles
@@ -61,6 +53,15 @@ $j(document).ready(function() {
     html: true,
     offLabel: '<span class="glyphicon glyphicon-remove">',
     onLabel: '<span class="glyphicon glyphicon-ok">'
+    });
+
+// for clarity how should it looks - payments modal effects
+    jQuery('#pay-button').on('click', function(){
+      setTimeout(
+        function() {
+          jQuery('.modal-body').html('<h3 class="text-center">Succes!</h3>');
+        },
+        2000);
     });
 
 });
