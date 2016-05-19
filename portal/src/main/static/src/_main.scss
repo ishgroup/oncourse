@@ -16,11 +16,11 @@
 	tr:nth-child(odd) > td {
 		background: $history-row-odd;
 	}
-	
+
 	tr:nth-child(even) > td {
 		background: $history-row-even;
 	}
-	
+
 }
 
 #enrolments-history, #applications-history > ul {
@@ -29,20 +29,20 @@
   li {
     padding: 9px 20px 3px 20px;
     border-top: 1px solid $border-color;
-    
+
     small, label {
       margin-left: 3px;
     }
-    
+
     &:nth-child(odd) {
       background: $history-row-odd;
     }
-    
+
     &:nth-child(even) {
       background: $history-row-even;
     }
   }
-  
+
 }
 
 .main-container.login-container {
@@ -54,7 +54,7 @@
 	margin: 60px 0 30px;
 	padding-bottom: 0;
   position: relative;
-	
+
 	h1 {
 		margin: 13px 0 0 0;
 		/*float: left;*/
@@ -69,46 +69,46 @@
 		  	font-size: 90%;
 		  	padding-right: 10px;
 		}
-		
+
 		span {
 			vertical-align: middle;
 			display: inline-block;
 		}
 	}
-	
+
 	.label {
 		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 		font-weight: normal;
 		margin-left: 15px;
 		font-size: 11px;
 		margin-top: 15px;
-		
+
 		&:hover {
 			color: $white;
 		}
-    
+
     &.pull-right {
       margin-top: 15px;
     }
 	}
-	
+
 	button.hide-map {
 		margin: 11px 11px 0 0;
 	}
-	
+
 	h4 small {
 		color: $dark-brown;
 		font-family: Arial;
 		font-size: 12px;
 	}
-	
+
 	.badge {
 		vertical-align: top;
 	}
-	
+
 	.tooltip-inner {
 		max-width: 285px;
-		
+
 		ul {
 			margin-bottom: 5px;
 		}
@@ -128,7 +128,7 @@
 
 .session-content {
 	position: relative;
-	
+
 	[id*='session-'] {
 		position: absolute;
 		top: -38px;
@@ -136,7 +136,7 @@
 		cursor: pointer;
 		z-index: 1;
 		display: none;
-		
+
 		&:after {
 			content: "";
 			display: block;
@@ -151,42 +151,42 @@
 			@include border-radius(3px);
 		}
 	}
-	
+
 	> div {
 		overflow: hidden;
 		padding: 0;
 		margin-right: -15px;
 		margin-left: -15px;
-		
+
 		section > div {
 			padding: 0 15px;
-			
+
 			> ul {
 				margin: 0;
 				background: $single-session;
 				padding: 10px;
 				position: relative;
 				border-radius: 7px;
-				
+
 				&.current {
 					background: $session-active;
 				}
-				
+
 				li h6 {
 					margin-top: 0;
 				}
-				
+
 				.review-btn-container {
 					margin-top: 10px;
 				}
 			}
 		}
 	}
-	
+
 	section {
 		position: relative;
 	}
-	
+
 	#session-prev {
 		right: 3px;
 		left: auto;
@@ -214,12 +214,12 @@
 .class-roll-content {
 	padding-left: 0px;
   margin-bottom: 35px;
-  
+
 	.page-header {
 		margin-bottom: 0px;
     margin-top: 30px;
 	}
-	
+
 	.info-text {
 		display: none;
 	}
@@ -234,30 +234,30 @@
 .session-list {
 	margin-bottom: 0;
 	position: relative;
-	
-	
+
+
 	> li {
 		border-bottom: 1px solid $border-color;
 		min-height:95px;
-		
+
 		&.active {
 			background: $cal_highlight-color;
 		}
-		
+
 		span.label {
 			cursor: pointer;
 		}
 	}
-	
+
 	.marking-roll {
 		display: none;
-		
+
 		.close {
 			float: left;
 			font-size: 18px;
 			margin-right: 3px
 		}
-		
+
 	}
 }
 
@@ -271,24 +271,24 @@
 }
 
 .student-list {
-	
+
 	h5 {
 		margin: 5px 0 7px 2px;
 	}
-	
+
 	> li {
 		position: relative;
-		
+
 		&:last-child {
 			.student-detail {
 				border-bottom: 0;
 			}
 		}
-		
+
 		.attendance-content {
 			display: none;
 		}
-		
+
 		.attendance {
 			position: relative;
 			padding-left: 0;
@@ -298,13 +298,13 @@
 			transition: all .2s linear;
 			left: -20px;
 			opacity: 0;
-			
+
 			&.act {
 				opacity: 1;
         left: 0;
 			}
 		}
-		
+
 		&.active {
 			.attendance {
 				background: $highlight-color;
@@ -315,32 +315,24 @@
 		.student-detail {
 			border-bottom: 1px solid $border-color;
 			padding: 12px 0 12px;
-			
+
 			 > div.attendance-content {
 				overflow: hidden;
 			 }
 		}
-		
-		.avatar {
-			float: right;
-		}
-		
-		&:nth-child(even) .avatar {
-			text-align: right;
-		}
 	}
-	
+
 	ul.list-inline {
 		margin-left: -3px;
 		margin-bottom: 2px;
 	}
-	
+
 	.avatar {
 		img {
 			max-width: 100%;
 		}
 	}
-	
+
 	.attendance {
 		padding-right: 0;
 	}
@@ -360,7 +352,7 @@
 	background: $well-bg;
 	@include border-radius(5px);
 	@include box-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
-	
+
 	.login-option {
 		label {
 			float: left;
@@ -368,20 +360,20 @@
 			font-weight: normal;
 		}
 	}
-	
+
 	fieldset {
 		position: relative;
 	}
-	
+
 	.forget-pwd {
 		padding-top: 10px;
 		float: left;
 	}
-	
+
 	.alert-info {
 		margin: 25px 0 0 0;
 	}
-	
+
 	.company-login {
 		display: none;
 	}
@@ -405,23 +397,23 @@
 	text-shadow: 0 1px 0 #D7EFFA;
 	background: none;
 	border-radius: 5px;
-	
+
 	li ul {
 		margin-top: 10px;
 	}
-	
+
 	.show-all-courses {
 		text-align: center;
 		width: 100%;
 	}
-	
+
 	.expanded {
-		
+
 		.applications-content, .classes-content {
 			border-bottom: 1px solid $border-color;
 		}
 	}
-	
+
 	.badge {
 		font-family: arial;
 		background: $dark-brown;
@@ -477,12 +469,12 @@
 		@include border-radius(7px);
 		top: 120px;
 	}
-	
+
 	.navbar-collapse {
 		max-height: none;
 		padding: 0;
 	}
-	
+
 	.nav > {
 		li > a {
 			display: block;
@@ -493,13 +485,13 @@
 			font-weight: 700;
 			text-shadow: none;
 			font-family: $heading-font;
-			
+
 			&:hover, &:focus {
 				text-decoration: none;
 				background-color: transparent;
 			}
 		}
-		
+
 		.active a, .active:hover a, .active:focus > a {
 			font-weight: bold;
 			color: $red-color;
@@ -507,11 +499,11 @@
 			border-right: none;
 		}
 	}
-	
+
 	.nav .nav {
 		display: none;
 		margin-bottom: 8px;
-		
+
 		> li > a {
 			padding-top: 3px;
 			padding-bottom: 3px;
@@ -523,27 +515,27 @@
 
   .applications-content, .classes-content {
 		overflow: auto;
-	
+
 		> li {
 			padding-left: 5px;
-			
+
 			p:first-child {
 				margin: 0;
 			}
-			
+
 			ul {
 				margin-top: 0;
 			}
 		}
-		
+
 		h4 {
 			color: #333;
 		}
-	
+
 		label {
 			margin-top: 3px;
 			font-weight: normal;
-			
+
 			> span:after {
 				content: "";
 				display: block;
@@ -553,11 +545,11 @@
 				height: 0;
 			}
 		}
-		
+
 		.label {
 			text-shadow: none;
 		}
-		
+
 		span.rating {
 			line-height: 18px;
 			display: inline-block;
@@ -574,7 +566,7 @@
 	font-size: 14px;
 	font-weight: 700;
 	color: #69524a;
-	
+
 	.icon-arrow-down {
 		float: none;
 		vertical-align: middle;
@@ -608,7 +600,7 @@
 	float: right;
   border-bottom: 1px solid #E6D4CE;
   margin-bottom: -1px;
-  
+
   &:after {
     position: absolute;
     content: "";
@@ -619,29 +611,29 @@
     top: 60px;
     z-index: -1;
   }
-	
+
 	> li {
 		float: right;
-		
+
 		&.active > a {
 			background-color: $body-bg;
 			border-color: $border-color;
 			border-bottom-color: $body-bg;
 			color: #5b574e;
-			
+
 			&:hover, &:focus {
 				background-color: $body-bg;
 				border-color: $border-color;
 				border-bottom-color: $body-bg;
 			}
 		}
-		
+
 		a {
 			color: $tabs-text-color;
 			font-size: 14px;
 			padding: 17px 15px;
 		}
-		
+
 		a:hover, a:focus {
 			background: $tabs-text-hover-color;
 		}
@@ -667,18 +659,18 @@ strong.link-color {
 }
 
 .sidebar-collapse{
-	
+
 	&::after {
 		content:"";
 		display: block;
 		clear: both;
 		margin: 0;
 	}
-	
+
 	.navbar-toggle {
 		background: #69524A;
 		margin-bottom: 0;
-		
+
 		.icon-bar {
 			background: #e9b049;
 		}
@@ -707,7 +699,7 @@ strong.link-color {
 	-webkit-box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
 	-moz-box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
 	box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
-	
+
 	input[type="checkbox"] {
 		display: none;
 	}
@@ -734,7 +726,7 @@ strong.link-color {
 	-moz-box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
 	box-shadow: inset 0px 0px 4px 0 rgba(0, 0, 0, 0.25);
 	line-height: 20px;
-  
+
 	&.on {
 		margin-left: 19px;
 		background: #bad1e5;
@@ -745,10 +737,10 @@ strong.link-color {
 	padding: 10px 0;
 	border-bottom: 1px solid $black;
 	margin-bottom: 10px;
-	
+
 	h4 {
 		margin-top: 0;
-		
+
 		a:hover {
 			text-decoration: none;
 		}
@@ -759,14 +751,14 @@ strong.link-color {
 	background: url(../img/date-bg-2.png) center no-repeat;
 	height: 50px;
 	text-align: center;
-	
+
 	p {
 		font-weight: bold;
 		margin: 14px 0px 0px 0px;
 		font-size: 20px;
 		line-height: 20px;
 	}
-	
+
 	small {
 		line-height: 10px;
 		display: block;
@@ -790,7 +782,7 @@ strong.link-color {
 	padding: 5px;
 	color: $dark-brown;
 	display: block;
-	
+
 	&:hover {
 		text-decoration: none;
 		color: $dark-brown;
@@ -808,15 +800,15 @@ strong.link-color {
 
 .waiting-list {
 	margin: 10px 0;
-	
+
 	a:hover {
 		text-decoration: none;
 	}
-	
+
 	.single-waiting {
 		padding: 10px 0;
 		border-bottom: 1px solid $black;
-		
+
 		.move-to-trash {
 			a {
 				color:#000;
@@ -829,7 +821,7 @@ strong.link-color {
 	position: relative;
 	height: 34px;
 	overflow: hidden;
-	
+
 	span.text-faded {
 		@include background-image(linear-gradient(left top, rgba(255,255,255,0), $body-bg));
 		display: block;
@@ -869,19 +861,19 @@ strong.link-color {
 		margin-bottom: 25px;
 		padding-bottom: 20px;
 		border-bottom: 1px solid $border-color;
-		
+
 		&:last-child {
 			border-bottom: 0;
 		}
-		
+
 		> p {
 			margin: 0 0 25px;
 		}
-		
+
 		> h4 {
 			margin-bottom: 0;
 		}
-		
+
 		.alert {
 			margin-top: 10px;
 			background: $highlight-color;
@@ -889,39 +881,39 @@ strong.link-color {
 			color: #333;
 		}
 	}
-	
+
 	.resources-list, .result-list {
 		margin-top: 20px;
 		border: 1px solid $border-color;
-		
+
 		li {
 			padding: 15px 20px;
 
 			span.label {
 				margin-left: 10px;
 			}
-			
+
 			&:nth-child(odd) {
 				background: #faf5e0;
 			}
-			
+
 			&:nth-child(even) {
 				background: #f0ead4;
 			}
-			
+
 			h6 {
 				font-size: 14px;
 			}
 		}
 	}
-	
+
   .resources-list {
     li a + span {
       vertical-align: middle;
       margin-left: 3px
     }
   }
-  
+
 	.result-list {
 		li.row {
           margin-left: 0px;
@@ -935,7 +927,7 @@ strong.link-color {
 
 .tooltip-info {
 	cursor: default;
-	
+
 	+ .tooltip .tooltip-inner {
 		max-width: 250px;
 	}
@@ -946,20 +938,20 @@ strong.link-color {
 	padding: 5px 10px;
 	color: #3d2518;
 	position: relative;
-	
+
 	.btn-xs {
 		vertical-align: baseline;
 		margin-left: 5px;
 		padding: 3px 7px;
 	}
-	
+
 	&.fixed {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 	}
-	
+
 }
 
 /* Profile page */
@@ -969,7 +961,7 @@ strong.link-color {
 		> a {
 			background-color: $highlight-color;
 			border-color: $highlight-color;
-			
+
 			&:hover, &:focus {
 				background-color: $highlight-color;
 				border-color: $highlight-color;
@@ -1005,7 +997,7 @@ strong.link-color {
   height: 0;
   width: 0;
   z-index: 2;
-  
+
   &:after {
     border-left: 20px solid rgba(0, 0, 0, 0);
     border-right: 20px solid rgba(0, 0, 0, 0);
@@ -1044,7 +1036,7 @@ strong.link-color {
 
 .student-list > li {
   border-bottom: 1px solid #D8AC85;
-  
+
   .student-detail {
     border-bottom: none;
   }
@@ -1082,4 +1074,231 @@ strong.link-color {
 //css for jquery-ui helper class
 .ui-helper-hidden-accessible {
   display: none;
+}
+
+.session-schedule {
+  left: 50px;
+}
+
+.session-content {
+  border: 1px solid #e4e4e4;
+  margin: 0;
+
+  button {
+  	right: 10px;
+  }
+
+  div {
+    margin: 0;
+  }
+}
+
+.percents-of-attendance {
+  font-size: 16px;
+}
+
+img.mark-img {
+  height: 50px;
+  cursor: pointer;
+}
+
+.new-nav-icon-text {
+  display: block;
+  position: relative;
+  margin-left: 40px;
+}
+
+object.new-nav-icon {
+  height: 30px;
+  position: absolute;
+  display: block;
+  margin-top: -5px;
+}
+
+object.note-icon {
+  height: 15px;
+}
+
+.past-course, .actual-course, .future-course {
+  border: 1px solid white;
+}
+
+.past-course {
+
+  object.session-icon {
+    background-color: #85B20D;
+  }
+
+   a {
+    color: #85B20D;
+  }
+
+  span {
+    color: #B8B8B8;
+  }
+
+  button {
+    background-color: #587608;
+    border-color: #587608;
+  }
+}
+
+.actual-course.past-course-diff {
+  background-color: #ECECEC;
+}
+
+.past-course-diff {
+  background-color: #85B20D;
+
+  span {
+    font-weight: bold;
+  }
+
+  a {
+    color: white;
+  }
+}
+
+.past-course.past-course-diff span {
+  color: white;
+}
+
+object.session-icon {
+  height: 40px;
+}
+
+ul.nav-menu {
+  margin-bottom: 0;
+
+  li {
+    min-height: 60px;
+    display: inline-block;
+  }
+}
+
+.without-border {
+  border: none !important;
+}
+
+.info small {
+  font-style: italic;
+}
+
+.service-name {
+  color: #F48824;
+}
+
+.btn-outcomes {
+  border: 1px solid #E4E4E4;
+  color: #991111;
+  display: block;
+  margin-top: 40px;
+  padding: 10px 20px;
+
+  span {
+    display: inline-block;
+  }
+
+  small {
+    color: #999999;
+  }
+}
+
+.btn-outcomes:hover {
+  text-decoration: none;
+}
+
+li.active .btn-outcomes {
+  background-color: #911;
+}
+
+li.active .btn-outcomes h4,
+li.active .btn-outcomes small {
+  color: white;
+}
+
+#mark-by-outcome li,
+#mark-by-student li{
+  padding: 12px 0;
+  border-bottom: 1px solid #E4E4E4;
+}
+
+.mark-by-caption {
+  font-size: 18px;
+  font-family: Arial;
+  padding: 30px 0 5px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #E4E4E4;
+}
+
+#class-description {
+  display: none;
+
+  table.class-desc-section {
+    margin: 25px 0;
+
+    object {
+      height: 30px;
+      display: inline-block;
+    }
+
+    div {
+      display: inline-block;
+    }
+
+    td {
+      padding: 15px 10px 0 10px;
+    }
+
+    tr:last-child td {
+      padding-bottom: 20px;
+    }
+  }
+}
+
+.actual-roll-desc {
+  background-color: #FFF0B2;
+}
+
+.past-roll-desc {
+  background-color: #85B20D;
+  color: white;
+}
+
+.mark-checkbox-div {
+  display: none;
+}
+
+.absent-with-reason {
+  background: #F0EAD4;
+  padding: 30px;
+  margin: 20px 0;
+
+  textarea {
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    margin: 15px 0;
+  }
+
+  .form-control {
+    border: 1px solid transparent;
+    top: 1px;
+  }
+
+  .input-group-addon {
+    border: none;
+    border-left: 1px solid #D9D9D9;
+    background: white;
+    color: #C7C7C7;
+    font-size: 22px;
+  }
+}
+
+ul.abcent-menu {
+  text-align: right;
+
+  li {
+    min-height: auto;
+  }
 }
