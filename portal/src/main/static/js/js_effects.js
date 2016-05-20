@@ -37,6 +37,7 @@ $j(document).ready(function() {
 
     if (jQuery(this).closest('.past-course').length){jQuery('.class-desc-section').addClass('past-roll-desc').removeClass('actual-roll-desc'); };
     if (jQuery(this).closest('.actual-course').length){jQuery('.class-desc-section').addClass('actual-roll-desc').removeClass('past-roll-desc'); };
+    jQuery('.add-rem-collapse').attr("data-toggle", "collapse");
 
 
 
@@ -46,14 +47,15 @@ $j(document).ready(function() {
       jQuery('.edit-roll a').css( 'pointer-events', 'auto' );
       jQuery('#class-roll-captions, .mark-percents').show();
       jQuery('#class-description, .mark-checkbox-div').hide();
+      Query('.add-rem-collapse').attr("data-toggle", "");
     });
-    });
+  });
 
-    jQuery('.mark-checkbox').checkboxpicker({
+  jQuery('.mark-checkbox').checkboxpicker({
     html: true,
     offLabel: '<span class="glyphicon glyphicon-remove">',
     onLabel: '<span class="glyphicon glyphicon-ok">'
-    });
+  });
 
 // for clarity how should it looks - payments modal effects
     jQuery('#pay-button').on('click', function(){
@@ -68,5 +70,17 @@ $j(document).ready(function() {
   jQuery(document).ready(function(){
     jQuery(".time_element").timepicki();
   });
+
+  jQuery('#absent-reason button').on('click', function(){
+    if ( $('#absent-reason textarea').val().length > 0 ){
+      //save reason
+    }
+    else {
+      alert('You have no reason!');
+      return false;
+    }
+  });
+
+
 
 });
