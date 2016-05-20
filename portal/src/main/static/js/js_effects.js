@@ -19,69 +19,67 @@ $j(document).ready(function() {
     });
   };
 
-  SetClassToSvg(jQuery('li.active object'), 'active');
-  SetClassToSvg(jQuery('.past-sessions .past-course object'), 'past-session');
+  SetClassToSvg($j('li.active object'), 'active');
+  SetClassToSvg($j('.past-sessions .past-course object'), 'past-session');
 
 // colors of different percents attendance
-  jQuery('.percents-of-attendance span').each( function(){
+  $j('.percents-of-attendance span').each( function(){
     parent = $(this).parent();
     percent = $(this).text();
 
     if (percent>90){
-      parent.css('color', '#8FB830');
+      parent.addClass('full-percents');
     }
     else if (percent>50) {
-      parent.css('color', '#c8706b');
+      parent.addClass('half-percents');
     }
     else{
-      parent.css('color', '#991111');
+      parent.addClass('mimimum-percents');
     };
   });
 
 // when you edit roll in Timetable it's happen
-  jQuery('.edit-roll a').on('click', function(){
-    jQuery(this).parents('.past-course, .actual-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">Finish</button>').addClass('past-course-diff');
-    jQuery('.edit-roll a').css( 'pointer-events', 'none' );
-    jQuery('#class-roll-captions, .mark-percents').hide();
-    jQuery('#class-description, .mark-checkbox-div').show();
+  $j('.edit-roll a').on('click', function(){
+    $j(this).parents('.past-course, .actual-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">Finish</button>').addClass('past-course-diff');
+    $j('.edit-roll a').css( 'pointer-events', 'none' );
+    $j('#class-roll-captions, .mark-percents').hide();
+    $j('#class-description, .mark-checkbox-div').show();
 
-    if (jQuery(this).closest('.past-course').length){jQuery('.class-desc-section').addClass('past-roll-desc').removeClass('actual-roll-desc'); };
-    if (jQuery(this).closest('.actual-course').length){jQuery('.class-desc-section').addClass('actual-roll-desc').removeClass('past-roll-desc'); };
-    jQuery('.add-rem-collapse').attr("data-toggle", "collapse");
+    if ($j(this).closest('.past-course').length){$j('.class-desc-section').addClass('past-roll-desc').removeClass('actual-roll-desc'); };
+    if ($j(this).closest('.actual-course').length){$j('.class-desc-section').addClass('actual-roll-desc').removeClass('past-roll-desc'); };
+    $j('.add-rem-collapse').attr("data-toggle", "collapse");
 
-    jQuery('button.btn-finish').on('click', function(){
-      jQuery(this).parents('.past-course, .actual-course').removeClass('past-course-diff');
-      jQuery(this).remove();
-      jQuery('.edit-roll a').css( 'pointer-events', 'auto' );
-      jQuery('#class-roll-captions, .mark-percents').show();
-      jQuery('#class-description, .mark-checkbox-div').hide();
-      Query('.add-rem-collapse').attr("data-toggle", "");
+    $j('button.btn-finish').on('click', function(){
+      $j(this).parents('.past-course, .actual-course').removeClass('past-course-diff');
+      $j(this).remove();
+      $j('.edit-roll a').css( 'pointer-events', 'auto' );
+      $j('#class-roll-captions, .mark-percents').show();
+      $j('#class-description, .mark-checkbox-div').hide();
+      $j('.add-rem-collapse').attr("data-toggle", "");
     });
   });
 
 // checkboxer
-  jQuery('.mark-checkbox').checkboxpicker({
+  $j('.mark-checkbox').checkboxpicker({
     html: true,
     offLabel: '<span class="glyphicon glyphicon-remove">',
     onLabel: '<span class="glyphicon glyphicon-ok">'
   });
 
 // for clarity how should it looks - payments modal effects
-    jQuery('#pay-button').on('click', function(){
+    $j('#pay-button').on('click', function(){
       setTimeout(
         function() {
-          jQuery('.modal-body').html('<h3 class="text-center">Succes!</h3>');
+          $j('.modal-body').html('<h3 class="text-center">Succes!</h3>');
         },
         2000);
     });
 
 // timepicker
-  jQuery(document).ready(function(){
-    jQuery(".time_element").timepicki();
-  });
+  $j(".time_element").timepicki();
 
 // save absent reason when you mark students
-  jQuery('#absent-reason button').on('click', function(){
+  $j('#absent-reason button').on('click', function(){
     if ( $('#absent-reason textarea').val().length > 0 ){
       //save reason
     }
@@ -90,7 +88,4 @@ $j(document).ready(function() {
       return false;
     }
   });
-
-
-
 });
