@@ -8,7 +8,7 @@ goog.require('jquery');
 
 var $j = jQuery.noConflict();
 
-function effects() {
+function dateEffects() {
     $j('#input-price-for-course').val($j('span#price-for-course').text());
     var paymentDate = new Date($j('#date-of-course').text());
     if (paymentDate < Date.now()) {
@@ -20,5 +20,5 @@ function effects() {
 }
 
 $j(document).ready(function () {
-    effects();
+    dateEffects();
 });
