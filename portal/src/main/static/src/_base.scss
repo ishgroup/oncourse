@@ -230,3 +230,25 @@ ul.dropdown-menu {
 .modal-footer, .modal-header {
   border-color: transparent;
 }
+
+
+.timepicker_wrap {
+  top: 65px;
+  border: none;
+  background: #FFFFFF;
+
+  .prev, .next {
+	  border: none;
+	  background-color: #E7E7E7;
+	  width: 100%;
+	}
+
+	input.timepicki-input {
+	  width: 100%;
+	  font-weight: normal;
+	  padding: 7px 0;
+	  font-size: 14px;
+	}
+}
+
+

@@ -64,4 +64,9 @@ $j(document).ready(function() {
         2000);
     });
 
+// timepicker
+  jQuery(document).ready(function(){
+    jQuery(".time_element").timepicki();
+  });
+
 });
