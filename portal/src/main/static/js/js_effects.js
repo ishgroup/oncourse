@@ -1,9 +1,17 @@
+goog.provide('js_effects');
+goog.require('jquery');
+goog.require('timepicki');
+goog.require('bootstrap-checkbox.min');
+
+
+var $j = jQuery.noConflict();
 $j(document).ready(function() {
 
 // I have some trouble with object/svg
 // I want to add classes to svg inside objects to change styles
 // If you find the best way, just do it
 
+// for adding class to svg inside object
   function SetClassToSvg(objects, classname){
     [].forEach.call(objects, function(item){
       item.contentDocument;
@@ -14,6 +22,7 @@ $j(document).ready(function() {
   SetClassToSvg(jQuery('li.active object'), 'active');
   SetClassToSvg(jQuery('.past-sessions .past-course object'), 'past-session');
 
+// colors of different percents attendance
   jQuery('.percents-of-attendance span').each( function(){
     parent = $(this).parent();
     percent = $(this).text();
@@ -29,6 +38,7 @@ $j(document).ready(function() {
     };
   });
 
+// when you edit roll in Timetable it's happen
   jQuery('.edit-roll a').on('click', function(){
     jQuery(this).parents('.past-course, .actual-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">Finish</button>').addClass('past-course-diff');
     jQuery('.edit-roll a').css( 'pointer-events', 'none' );
@@ -38,8 +48,6 @@ $j(document).ready(function() {
     if (jQuery(this).closest('.past-course').length){jQuery('.class-desc-section').addClass('past-roll-desc').removeClass('actual-roll-desc'); };
     if (jQuery(this).closest('.actual-course').length){jQuery('.class-desc-section').addClass('actual-roll-desc').removeClass('past-roll-desc'); };
     jQuery('.add-rem-collapse').attr("data-toggle", "collapse");
-
-
 
     jQuery('button.btn-finish').on('click', function(){
       jQuery(this).parents('.past-course, .actual-course').removeClass('past-course-diff');
@@ -51,6 +59,7 @@ $j(document).ready(function() {
     });
   });
 
+// checkboxer
   jQuery('.mark-checkbox').checkboxpicker({
     html: true,
     offLabel: '<span class="glyphicon glyphicon-remove">',
@@ -71,6 +80,7 @@ $j(document).ready(function() {
     jQuery(".time_element").timepicki();
   });
 
+// save absent reason when you mark students
   jQuery('#absent-reason button').on('click', function(){
     if ( $('#absent-reason textarea').val().length > 0 ){
       //save reason
