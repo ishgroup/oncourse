@@ -1,5 +1,6 @@
 goog.provide('timepicki');
-goog.require('jquery')
+
+goog.require('jquery');
 /*
  * Author: @senthil2rajan
  * plugin: timepicker

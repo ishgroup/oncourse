@@ -1,7 +1,8 @@
-goog.provide('js_effects');
+goog.provide('effects');
+
 goog.require('jquery');
+goog.require('bootstrap.checkbox');
 goog.require('timepicki');
-goog.require('bootstrap_checkbox');
 
 
 var $j = jQuery.noConflict();
