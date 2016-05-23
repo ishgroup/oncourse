@@ -3958,6 +3958,12 @@
 	</changeSet>
 
 	<changeSet id="265" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<validCheckSum>3:be48b71d27ed4280ecaa79f2421faf37</validCheckSum>
+		<sql>
+			ALTER TABLE Room DROP FOREIGN KEY Room_ibfk_2;
+			ALTER TABLE `Room` MODIFY `siteId` BIGINT NOT NULL;
+			ALTER TABLE Room ADD CONSTRAINT Room_ibfk_2 FOREIGN KEY (siteId) REFERENCES Site (id) ON DELETE NO ACTION;
+		</sql>
 		<addNotNullConstraint tableName="Room" columnName="siteId" columnDataType="BIGINT"/>
 	</changeSet>
 
