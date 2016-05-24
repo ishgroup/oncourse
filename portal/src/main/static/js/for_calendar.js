@@ -31,6 +31,9 @@ $j(function() {
         var cal = $j( '#calendar' ).calendario( {
             checkUpdate: false,
         caldata : codropsEvents,
+        weekabbrs : [ 'S', 'M', 'T', 'W', 'T', 'F', 'S' ],
+        displayWeekAbbr : true,
+        startIn : 1,
 
         onDayClick: function( date, allDay, jsEvent, view ) {
         var myDate = new Date();
@@ -41,6 +44,7 @@ $j(function() {
         }
 
         }),
+
         $month = $j( '#custom-month' ).html( cal.getMonthName() ),
         $year = $j( '#custom-year' ).html( cal.getYear() );
 

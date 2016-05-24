@@ -14,7 +14,7 @@ $heading-border-color: #E6D4CE;
 $dark-brown: #69524a;
 $primary-label-hover: #F7AC00;
 $primary-label-hover-border: #BB8200;
-$white: #ffffff; 
+$white: #ffffff;
 $black: #cccccc;
 $body-font: 'Droid Sans';
 $heading-font: 'PT Serif';
@@ -36,7 +36,7 @@ $header-dropdown-bg: #442E26;
 $header-dropdown-list-separator: #69524A;
 $tabs-text-color: #9c9c9c;
 $tabs-text-hover-color: #e8e6ca;
-/*USI Variables*/ 
+/*USI Variables*/
 $progress-step-bg: #dcd6bf;
 $progress-step-color: darken($progress-step-bg, 35%);
 
@@ -45,3 +45,33 @@ $progress-step-color-active: darken($progress-step-bg-active, 35%);
 
 $progress-step-bg-finished: #c3d6b3;
 $progress-step-color-finished: darken($progress-step-bg-finished, 35%);
+
+// in invision I use tool pipette and get this colors + calendario
+$cornflower-blue: #5BC0DE;
+$dark-coral: #B94A48;
+$smaragdine: #85B20D;
+$dark-smaragdine: #587608;
+$light-lemon: #FFF0B2;
+$tan-color: #D8AC85;
+$lemon-cream: #fff4c3;
+$sea-foam: #FCF8EA;
+$marengo: #495468;
+$dark-pink: #ef4f69;
+$red-wine: #b02c42;
+
+// different colors of gray; I have no idea where is official names of colors, so I use getcolor.ru and translate it in english
+// in invision I use tool pipette and get this colors
+$gray-lavender: #e7e7e7;
+$gray-grideperlevy: #C7C7C7;
+$lighter-color-beard-abdel-karim: #D9D9D9;
+$gray-quartz: #999999;
+$gray-linen: #ECECEC;
+$almost-light-gray: #B8B8B8;
+$light-blue-gray: #b7bbc2;
+$gray: #777777;
+$dark-gray: #333333;
+$light-gray: #AEAEAE;
+
+$completed-marker: #1ABC9C;
+$in-progress-marker: #FF6656;
+$future-marker: #3498DB;

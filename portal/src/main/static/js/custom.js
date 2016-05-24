@@ -38,13 +38,13 @@ $j(document).ready(function () {
             return $j(this).find('.tooltip-content').html();
         }
     });
-	
+
 	var path_hash = window.location.hash;
 	var hash = path_hash.split('#')[1];
 	if(hash == 'review') {
 		$j('#class-reviews').slideDown();
 	}
-	
+
     $j(".next-session-info button").click(function () {
         $j(".more-session").slideToggle('slow');
     });
@@ -60,7 +60,7 @@ $j(document).ready(function () {
         }
     });
     /* slider start */
-	
+
     /*slideWidth = $j('.session-content > div').width();
     slides = $j('.single-session');
     numberOfSlides = slides.length;
@@ -69,8 +69,8 @@ $j(document).ready(function () {
         'width': slideWidth + 30
     });
     $j('.session-content section').css('width', slideWidth * numberOfSlides + ( numberOfSlides * 30));*/
-	
-	
+
+
 	$j('.session-content section').width($j('.session-content > div').width());
 	slides = $j('.session-content section > div');
 	numberOfSlides = slides.length;
@@ -78,12 +78,12 @@ $j(document).ready(function () {
 	slides.css({'width':singleSlideWidth, 'float': 'left'});
 	var slideContentWidth = (slides.outerWidth()) * (slides.length);
 	$j('.session-content section').width(slideContentWidth);
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
     manageControls(currentPosition);
 		if(numberOfSlides <= 3)
 		$j('.session-content #session-prev').hide();
@@ -115,7 +115,7 @@ $j(document).ready(function () {
             slideCount = slideCount + 1;
         });
     });
-	
+
 	/* Timetable Session slider starts */
 	function manageControlarrows(position) {
         if (position == 0) {
@@ -129,20 +129,20 @@ $j(document).ready(function () {
             $j('#timetable-session-down').css({'visibility':'visible'});
         }
     }
-	
+
 	singleSessionWidthCalc = $j('.session-list-content').width();
 	//$j('.session-list > li').width(singleSessionWidthCalc);
 	$j('.session-list > li').css({'width':(singleSessionWidthCalc / SlidesToShow), 'float': 'left'});
 	singleSessionWidth = $j('.session-list > li').width();
 	var slideLength = $j('.session-list > li').length;
-	
+
 	$j('.list-unstyled.session-list').width(singleSessionWidth * slideLength);
-  
+
 	manageControlarrows(sessionPosition);
   if(slideLength <= showSlides) {
     $j('#timetable-session-up, #timetable-session-down').css({'visibility':'hidden'});
   }
-	
+
 	$j('[id*="timetable-session-"]').bind('click', function () {
         sessionPosition = ($j(this).attr('id') == 'timetable-session-down') ? sessionPosition + 1 : sessionPosition - 1;
         manageControlarrows(sessionPosition);
@@ -151,9 +151,9 @@ $j(document).ready(function () {
         }, 500);
 		return false;
     });
-	
+
 	/* Timetable Session slider ends */
-	
+
 	var courses_length = $j(".classes-content > li").length;
     //.classes-content section contains past classes else and they are hidden by default
     var hidden_courses_length = $j(".classes-content > li[style='display: none;']").length;
@@ -166,24 +166,24 @@ $j(document).ready(function () {
 		$j(this).hide();
 		return false;
 	});
-	
+
 	$j(document).on('click', 'a.event', function () {
         var dataRel = $j(this).attr('href').replace(/#/, "");
 		$j('#myModal').modal('hide');
-		
+
         if ($j('section > div[rel=' + dataRel + ']').length == 1) {
 			/*$j('.fc-content div a').removeClass('current');
 			$j(this).addClass('current');*/
 			$j('section > div ul').removeClass('current');
 			$j('section div[rel=' + dataRel + '] ul').addClass('current');
-			
+
 			//var slideToMove = $j('section div[rel=' + dataRel + ']').index() - 1;
 			var slideToMove = $j('section div[rel=' + dataRel + ']').index() + 1;
-			
+
       console.log("Slide to move"+slideToMove);
       console.log("number Of Slides"+numberOfSlides);
       console.log("single Slide Width"+singleSlideWidth);
-      
+
       if(SlidesToShow > 1) {
         if(slideToMove == numberOfSlides) {
           $j('.session-content section').animate({
@@ -217,7 +217,7 @@ $j(document).ready(function () {
 				}, 500);
 				currentPosition = slideToMove;
 			}*/
-			
+
             //console.log(currentPosition);
             manageControls(currentPosition);
 			$j('html, body').animate({
@@ -226,18 +226,18 @@ $j(document).ready(function () {
         }
         return false;
     });
-	
+
     /*$j(document).on('click', '.fc-content div a', function () {
         var dataRel = $j(this).attr('href').replace(/#/, "");
-		
+
         if ($j('section > div[rel=' + dataRel + ']').length == 1) {
 			$j('.fc-content div a').removeClass('current');
 			$j(this).addClass('current');
 			$j('section > div').removeClass('current');
 			$j('section div[rel=' + dataRel + ']').addClass('current');
-			
+
 			var slideToMove = $j('section div[rel=' + dataRel + ']').index() - 1;
-			
+
 			if(slideToMove >= numberOfSlides - 3) {
 				$j('.session-content section').animate({
 					'marginLeft': -(numberOfSlides - 3) * singleSlideWidth
@@ -250,7 +250,7 @@ $j(document).ready(function () {
 				}, 500);
 				currentPosition = slideToMove;
 			}
-			
+
             //console.log(currentPosition);
             manageControls(currentPosition);
 			$j('html, body').animate({
@@ -301,9 +301,9 @@ $j(document).ready(function () {
         }, 'slow');
         return false;
     });
-	
+
 	/* refresh google map */
-	
+
 	$j('.header-tabs li').not('.active').click(function(){
 		setTimeout(function () {
       //google map  initialize function is being added for specific page.
@@ -314,7 +314,7 @@ $j(document).ready(function () {
       //google.maps.event.trigger(map, 'resize');
     }, 500);
 	});
-	
+
     $j(".session-list > li .mark-roll").click(function () {
         /*$j(".session-list > li").removeClass('active');*/
 		//$j(".session-list > li").hide();
@@ -355,7 +355,7 @@ $j(document).ready(function () {
 		$j(".attendance-content").prev().removeClass('col-lg-6 col-sm-6').addClass('col-lg-4 col-sm-4');
 		return false;
 	});
-		
+
 	$j(".close-attendance").click(function(){
 			$j(".attendance-content").hide();
 			$j(".attendance-content").next().removeClass('col-lg-4 col-sm-4').addClass('col-lg-6 col-sm-6');
@@ -384,28 +384,28 @@ $j(document).ready(function () {
 		parant.find("button").removeClass('active');
 		$j(this).addClass('active');
 	});*/
-	
+
 	$j(".attendance button").click(function(){
 		var parant = $j(this).parents('.attendance');
 		parant.find("button").removeClass('btn-primary btn-danger').addClass('btn-default');
-		
-		
+
+
 		if(!$j(this).hasClass('active')) {
-			
+
 			parant.find("button").removeClass('active');
 			if($j(this).hasClass('btn-ok')) {
 				$j(this).removeClass('btn-default').addClass('btn-primary active');
 			}
-			
+
 			if($j(this).hasClass('btn-cancel')) {
 				$j(this).removeClass('btn-default').addClass('btn-danger active');
 			}
-			
+
 		} else if($j(this).hasClass('active')){
 			if($j(this).hasClass('btn-ok')) {
 				$j(this).removeClass('btn-primary active').addClass('btn-default');
 			}
-			
+
 			if($j(this).hasClass('btn-cancel')) {
 				$j(this).removeClass('btn-danger active').addClass('btn-default');
 			}
@@ -413,7 +413,7 @@ $j(document).ready(function () {
 		parant.find("button").not('.active').addClass('btn-dark');
 		return false;
 	});
-	
+
     /*$j(".attendance button").click(function () {
         if ($j(this).hasClass('btn-disable')) {
             $j(this).removeClass('btn-disable').addClass('btn-ok btn-primary active');
@@ -426,9 +426,9 @@ $j(document).ready(function () {
             $j(this).find('span').removeClass('glyphicon-remove').addClass('glyphicon-unmarked');
         }
     });*/
-	
-	// show all the sessions 
-	
+
+	// show all the sessions
+
 	$j('.info-text .finish, .marking-roll').click(function(){
 		$j(".session-wrapper, .course-detail").slideDown();
 		//$j('.marking-roll').hide();
@@ -459,7 +459,7 @@ $j(document).ready(function () {
         }, 200);*/
 		return false;
 	});
-	
+
 	$j('.show-full-description').click(function() {
 		var me = $j(this);
 		if(!me.hasClass('active')) {
@@ -478,7 +478,7 @@ $j(document).ready(function () {
 		}
 		return false;
 	});
-	
+
     $fluidEl = $j(".container > .col-lg-9");
     $j('#venue').data('aspectRatio', this.height / this.width);
     $j(window).resize(function () {
@@ -486,16 +486,19 @@ $j(document).ready(function () {
         $j("#venue").height(newWidth * $j("#venue").data('aspectRatio'));
 		/*console.log(newWidth * $j("#venue").data('aspectRatio'));*/
     }).resize();
-    $j('.calendar-container').css({
-        'height': ($j(window).height()+$j('#footer').height())
-    });
+    //
+    // Darya: this is you past code, not mine. Hmmm, css, rly?
+    //
+    // $j('.calendar-container').css({
+    //     'height': ($j(window).height()+$j('#footer').height())
+    // });
     popup_center();
-    
+
     var url = document.location.toString();
     var location_value = url.substring(url.lastIndexOf('/') + 1);
     if(location_value == "location")
       $j('.nav-tabs a[href=#class-location]').tab('show');
-    
+
     /*if (url.match('#')) {
         $j('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show');
     }*/
@@ -504,7 +507,7 @@ $j(document).ready(function () {
     $j('.nav-tabs a').on('shown', function (e) {
         window.location.hash = e.target.hash;
     });
-    
+
     var studentClassRollHeight = 0;
     $j('.student-list > li').each(function(){
       studentClassRollHeight = ($j(this).height() >= studentClassRollHeight) ? $j(this).outerHeight() : studentClassRollHeight;
@@ -529,21 +532,26 @@ $j(document).load(function(){
 
 $j(window).resize(function () {
   popup_center();
-  $j('.calendar-container').css({
-      'height': ($j(window).height()+$j('#footer').height())
-  });
-  
+
+  //
+  // Darya: this is you past code, not mine. Hmmm, css, rly?
+  //
+
+  // $j('.calendar-container').css({
+  //     'height': ($j(window).height()+$j('#footer').height())
+  // });
+
   var studentClassRollHeight = 0;
   $j('.student-list > li').each(function(){
     studentClassRollHeight = ($j(this).height() >= studentClassRollHeight) ? $j(this).outerHeight() : studentClassRollHeight;
   });
   $j('.student-list > li').css({'min-height':studentClassRollHeight});
-  
+
 	//console.log($j(window).width());
 	if($j(window).width() <= 1186) {
 		showSlides = 2;
 		SlidesToShow = 2;
-    
+
     if($j(window).width() <= 500) {
 			showSlides = 1;
 			SlidesToShow = 1;
@@ -553,9 +561,9 @@ $j(window).resize(function () {
 		showSlides = 3;
 		SlidesToShow = 3;
 	}
-	
+
 	$j('.session-content section').width($j('.session-content > div').width());
-	
+
 	numberOfSlides = slides.length;
 	singleSlideWidth = ($j('.session-content section').width())/showSlides;
   if(isSetSlideWidth) {
@@ -572,26 +580,26 @@ $j(window).resize(function () {
 	slides.css({'width':singleSlideWidth, 'float': 'left'});
 	var slideContentWidth = (slides.outerWidth()) * (slides.length);
 	$j('.session-content section').width(slideContentWidth);
-	
+
 	$j('.session-content section').animate({
 		'marginLeft': (singleSlideWidth) * (-currentPosition)
 	}, 500);
-	
-	
-	
+
+
+
 	// single session width
 	var slideLength = $j('.session-list > li').length;
 	var singleSessionWidthCalc = $j('.session-list-content').width();
-	
+
 	$j('.session-list > li').css({'width':(singleSessionWidthCalc / SlidesToShow), 'float': 'left'});
 	singleSessionWidth = $j('.session-list > li').width();
 	//console.log(singleSessionWidth);
 	$j('.list-unstyled.session-list').width(singleSessionWidth * slideLength);
-	
+
 	$j('.list-unstyled.session-list').animate({
 		'left': (singleSessionWidth) * (-sessionPosition)
 	}, 500);
-	
+
 	/*slideWidth = $j('.session-content > div').width();
     slides = $j('.single-session');
     numberOfSlides = slides.length;
@@ -602,14 +610,14 @@ $j(window).resize(function () {
 	$j('.session-content section').animate({
 		'marginLeft': (slideWidth + 30) * (-currentPosition)
 	}, 900);
-	
+
 	$j('.session-content section').css('width', slideWidth * numberOfSlides + ( numberOfSlides * 30));
 	*/
-  
+
   if($j('.login-form').length === 1) {
 		$j('.login-form').parents('.main-container').addClass('login-container');
 	}
-  
+
   if($j('#profile-form').length === 1) {
     $j('#profile-form').parents('.main-container').addClass('profile-container');
   }

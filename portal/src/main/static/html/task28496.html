@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+  <!-- I think no need to comment head -->
     <meta content="IE=EmulateIE9" http-equiv="X-UA-Compatible"/>
     <meta content="no-cache" http-equiv="Cache-control"/>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
@@ -18,15 +19,16 @@
     <![endif]--><script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;" type="text/javascript"></script>
     <script src="/portal/js/portal-min.js?v=r1951" type="text/javascript"></script>
 
-    <!-- jquery -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <!-- bootstrap.js -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+    <!-- js for me -->
     <script type="text/javascript" src="/home/daria/work/trunk/portal/build/resource-assemble/js/portal-min.js"></script>
   </head>
+
+<!-- NOTE: .text-center IS STANDART bootstrap CLASS, LIKE .pull-right -->
+<!-- W3S recommend use <strong> instead <b> -->
+<!-- What font do you use? -->
   <body>
     <div id="wrap">
+    <!-- navbar; no changes -->
       <div class="navbar navbar-fixed-top" id="header-holder">
         <div class="header-top">
           <div class="container">
@@ -57,167 +59,362 @@
           </div>
         </div>
       </div>
+
+
+      <!-- container -->
       <div class="container">
-        <!-- This block in SURVEYS tab. <div class="started">Started: April, 7</div>--><!-- This block in MESSAGES page <a href="#" class="btn1 fr mt8">New Discussion</a>-->
-        <div class="col-lg-9 col-sm-8 main-container">
+        <div class="col-lg-12 col-sm-12 main-container">
           <div class="page-header clearfix">
-            <h1><a href="#">Timetable</a></h1>
-          </div>
-          <!-- slider content start -->
-          <div class="clearfix session-content">
-            <span class="glyphicon glyphicon-chevron-right" id="session-prev"></span><span class="glyphicon glyphicon-chevron-left" id="session-next"></span>
-            <div>
-              <section class="clearfix">
-                <div rel="class-5104359" class="clearfix">
-                  <ul>
-                    <li>
-                      <h6>Sat 23 Apr</h6>
-                    </li>
-                    <li><a href="/portal/class/5104359"><b>Makeup skills for Mafiosa</b></a></li>
-                    <li>
-                      23 Apr 6:00PM - 9:00PM (UTC+0800)
-                    </li>
-                    <li><span class="glyphicon glyphicon-map-marker"></span><a class="venue" href="/portal/class/5104359/location">
-                      Room 1, Perth office
-                      </a>
-                    </li>
-                    <li class="review-btn-container"><a class="label label-primary" href="/portal/tutor/classapproval/5104359">Review now</a></li>
-                  </ul>
-                </div>
-                <div rel="class-5104363" class="clearfix">
-                  <ul>
-                    <li>
-                      <h6>Wed 25 May</h6>
-                    </li>
-                    <li><a href="/portal/class/5104363"><b>Makeup skills for Mafiosa</b></a></li>
-                    <li>
-                      25 May 4:00PM - 7:00PM (UTC+0800)
-                    </li>
-                    <li><span class="glyphicon glyphicon-map-marker"></span><a class="venue" href="/portal/class/5104363/location">
-                      Room 1, Perth office
-                      </a>
-                    </li>
-                    <li class="review-btn-container"><a class="label label-primary" href="/portal/tutor/classapproval/5104363">Review now</a></li>
-                  </ul>
-                </div>
-                <div rel="class-5090563" class="clearfix">
-                  <ul>
-                    <li>
-                      <h6>Thu 26 May</h6>
-                    </li>
-                    <li><a href="/portal/class/5090563"><b>Makeup skills for Mafiosa</b></a></li>
-                    <li>
-                      26 May 2:00PM - 5:00PM (UTC+0800)
-                    </li>
-                    <li><span class="glyphicon glyphicon-map-marker"></span><a class="venue" href="/portal/class/5090563/location">
-                      Room 1, Perth office
-                      </a>
-                    </li>
-                    <li class="review-btn-container"><a class="label label-primary" href="/portal/tutor/classapproval/5090563">Review now</a></li>
-                  </ul>
-                </div>
-                <div rel="class-5040367" class="clearfix">
-                  <ul>
-                    <li>
-                      <h6>Tue 31 May</h6>
-                    </li>
-                    <li><a href="/portal/class/5040367"><b>Makeup skills for Mafiosa</b></a></li>
-                    <li>
-                      31 May 6:00PM - 9:00PM (UTC+0800)
-                    </li>
-                    <li><span class="glyphicon glyphicon-map-marker"></span><a class="venue" href="/portal/class/5040367/location">
-                      Room 1, Perth office
-                      </a>
-                    </li>
-                    <li class="review-btn-container"><a class="label label-primary" href="/portal/tutor/classapproval/5040367">Review now</a></li>
-                  </ul>
-                </div>
-                <div rel="class-5104368" class="clearfix">
-                  <ul>
-                    <li>
-                      <h6>Tue 14 Jun</h6>
-                    </li>
-                    <li><a href="/portal/class/5104368"><b>Makeup skills for Mafiosa</b></a></li>
-                    <li>
-                      14 Jun 4:00PM - 7:00PM (UTC+0800)
-                    </li>
-                    <li><span class="glyphicon glyphicon-map-marker"></span><a class="venue" href="/portal/class/5104368/location">
-                      Room 1, Perth office
-                      </a>
-                    </li>
-                    <li class="review-btn-container"><a class="label label-primary" href="/portal/tutor/classapproval/5104368">Review now</a></li>
-                  </ul>
-                </div>
-              </section>
+            <h1 class="pull-left"><a href="#">Timetable</a></h1>
+
+            <!-- sync to device -->
+            <div class="sync-to-device zero-right vertical-center">
+              <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+              <span>SYNC TO DEVICE</span>
             </div>
           </div>
-          <!-- slider content end --><a href="/portal/timetable.calendar:getcalendarevents"></a>
-          <div class="calendar-container">
-            <div class="custom-calendar-wrap custom-calendar-full">
-              <div class="custom-header clearfix">
-                <h3 class="custom-month-year">
-                  <nav>
-                    <span style="display: inline;" class="glyphicon glyphicon-chevron-left" id="custom-prev"></span><span class="custom-month" id="custom-month"></span><span class="custom-year" id="custom-year"></span><span style="display: inline;" class="glyphicon glyphicon-chevron-right" id="custom-next"></span><!--<span id="custom-current" class="custom-current" title="Got to current date"></span>-->
-                  </nav>
-                </h3>
-                <div class="btn-group pull-right"><a href=" webcal:www.skillsoncourse.com.au/portal/calendar/bncxwqGMfwFwQlKy.ics" class="btn btn-primary btn-sm">Subscribe to calendar</a></div>
-              </div>
-              <div class="fc-calendar-container" id="calendar">
-                <div class="fc-calendar fc-five-rows">
-                  <div class="fc-head"></div>
-                  <div class="fc-body">
-                    <div class="fc-row"></div>
+        </div>
+
+
+          <div class="row">
+            <div class="col-lg-3 col-md-5 col-sm-12">
+            <!-- calenderio; now we have small calendar; in this step I can't see mark in calender, because I can't get data to a static page;  -->
+              <div class="calendar-container">
+                <div class="custom-calendar-wrap">
+                  <div id="custom-inner" class="custom-inner">
+                    <div class="custom-header clearfix">
+                      <nav>
+                        <span id="custom-prev" class="custom-prev"></span>
+                        <span id="custom-next" class="custom-next"></span>
+                      </nav>
+                      <h2>
+                        <div id="custom-month" class="custom-month"></div>
+                        <div id="custom-year" class="custom-year"></div>
+                      </h2>
+                    </div>
+                    <div id="calendar" class="fc-calendar-container"></div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-sm-4">
-          <div class="sidebar">
-            <!--<div data-spy="affix" data-offset-top="0" class="sidebar affix">--><!--<div data-spy="affix" data-offset-top="0" class="sidebar affix">-->
-            <div class="sidebar">
-              <ul class="nav sidenav">
-                <li class="expanded">
-                  <a href="/portal/class/5104363">Classes
-                  <span class="badge">4</span></a>
-                  <ul class="list-unstyled classes-content">
+
+              <div class="page-header">
+                <h4>Your Classes</h4>
+              </div>
+
+<!-- this is another structure for 'your-classes' on main page. So, I think you understand, what mean rel="class-ID" (it was in old page)
+     We have link to class and class status. Completed classes have green marker; "&#10004;" is check mark in Unicode, (!!!) and I understand how it use (!!!). Progress classes have orange mark; Future classes have blue mark. -->
+              <div class="your-classes-list">
+                <div rel="class-ID" class="">
+                  <ul>
                     <li>
-                      <p><strong><a href="/portal/class/5104363">Makeup skills for Mafiosa</a></strong><small class="text-muted"> (CLAS-28)</small><br/><label><span>25 May 2016 4:00PM </span><a class="label label-primary" href="/portal/tutor/classapproval/5104363">Review now</a></label></p>
-                      <br/>
+                      <span class="marker completed-marker vertical-center"></span>
+                      <a href="/portal/class/5104359">Thinking Innovatively</a>
                     </li>
-                    <li>
-                      <p><strong><a href="/portal/class/5090563">Makeup skills for Mafiosa</a></strong><small class="text-muted"> (CLAS-25)</small><br/><label><span>26 May 2016 2:00PM </span><a class="label label-primary" href="/portal/tutor/classapproval/5090563">Review now</a></label></p>
-                      <br/>
-                    </li>
-                    <li>
-                      <p><strong><a href="/portal/class/5040367">Makeup skills for Mafiosa</a></strong><small class="text-muted"> (CLAS-14)</small><br/><label><span>31 May 2016 6:00PM </span><a class="label label-primary" href="/portal/tutor/classapproval/5040367">Review now</a></label></p>
-                      <br/>
-                    </li>
-                    <li>
-                      <p><strong><a href="/portal/class/5104368">Makeup skills for Mafiosa</a></strong><small class="text-muted"> (CLAS-26)</small><br/><label><span>14 June 2016 4:00PM </span><a class="label label-primary" href="/portal/tutor/classapproval/5104368">Review now</a></label></p>
-                      <br/>
-                    </li>
-                    <li style="display: none;">
-                      <p><strong><a href="/portal/class/5104359">Makeup skills for Mafiosa</a></strong><small class="text-muted"> (CLAS-27)</small><br/><label><span>27 February 2016 6:00PM</span></label></p>
-                      <br/>
-                    </li>
+                    <li>&#10004; Completed</li>
                   </ul>
-                  <ul class="list-inline">
-                    <li class="show-all-courses"><a href="#" class="show-all-sessions">Show All <span class="icon-arrow-down"></span></a></li>
+                </div>
+                <div rel="class-ID2" class="">
+                  <ul>
+                    <li>
+                      <span class="marker in-progress-marker vertical-center"></span>
+                      <a href="/portal/class/5104359">Certificate III in Children's Services</a>
+                    </li>
+                    <li>In progress</li>
                   </ul>
-                </li>
-              </ul>
+                </div>
+                <div rel="class-ID3" class="">
+                  <ul>
+                    <li>
+                      <span class="marker future-marker vertical-center"></span>
+                      <a href="/portal/class/5104359">Animal Welfare Officer Skill Set</a>
+                    </li>
+                    <li>Starts <span class="when-start">Mon 17 Jan 2.30 pm</li>
+                  </ul>
+                </div>
+              </div>
             </div>
+
+            <div class="col-lg-9 col-md-7 col-sm-12 panel-group" id="accordion">
+            <!-- text-center is bootstrap class, check documentation if you not sure -->
+            <!-- new structure to class-list -->
+            <!-- nowadays using tables is not good practices; only if we need them -->
+            <!-- I did't change old classes-styles, because they used in others pages, so we have next (whith new css-classes): -->
+
+              <div class="month-section panel">
+              <!-- W3S recommend use <strong> instead <b> -->
+                <div class="month-name this-month-name text-center"><strong>May 2016</strong></div>
+
+                <div class="row">
+                  <div class="col-lg-2 date-of-classes text-right">
+                    <div class="week-day-of-class">Mon</div>
+                    <div class="day-of-class">16</div>
+                  </div>
+                  <div class="col-lg-10 classes-list">
+
+
+                    <div class="class-card completed-marker">
+                      <div data-toggle="collapse" data-parent="#accordion" href="#class-ID-description">
+                        <div class="row">
+                          <div class="col-lg-9 class-title">Philosophy Course: Introduction to the Philosophy of Shakespeare</div>
+                          <!-- text-right is bootstrap class, (text-align: right) -->
+                          <div class="col-lg-3 text-right">9am - 12.30pm</div>
+                        </div>
+                        <!-- A common character entity used in HTML is the non-breaking space: &nbsp; -->
+                        <div class="class-location"><span class="glyphicon glyphicon-map-marker"></span>&nbsp; Centre for Continuing Eduction</div>
+                      </div>
+
+                      <div id="class-ID-description" class="collapse">
+                        <div class="row class-description">
+                          <div class="col-lg-8">
+                            <ul>
+                              <li>Introduction to the onCourse user interface including dashboard, menus, lists and edit views.</li>
+                              <li>Private notes: Ensure all machines have the latest version of Java installed in order to access</li>
+                              <li>https://www.ish.au/oncourse/cloud/demo</li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 text-right bottom-right">
+                            <a><span class="glyphicon glyphicon-search"></span>&nbsp; View Course</a>
+                            &nbsp;
+                            <a><span class="glyphicon glyphicon-ok-circle"></span>&nbsp; Mark Roll</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="class-card completed-marker">
+                      <div data-toggle="collapse" data-parent="#accordion" href="#class-ID-description">
+                        <div class="row">
+                          <div class="col-lg-9 class-title">Philosophy Course: Introduction to the Philosophy of Shakespeare</div>
+                          <!-- text-right is bootstrap class, (text-align: right) -->
+                          <div class="col-lg-3 text-right">9am - 12.30pm</div>
+                        </div>
+                        <!-- A common character entity used in HTML is the non-breaking space: &nbsp; -->
+                        <div class="class-location"><span class="glyphicon glyphicon-map-marker"></span>&nbsp; Centre for Continuing Eduction</div>
+                      </div>
+
+                      <div id="class-ID-description" class="collapse">
+                        <div class="row class-description">
+                          <div class="col-lg-8">
+                            <ul>
+                              <li>Introduction to the onCourse user interface including dashboard, menus, lists and edit views.</li>
+                              <li>Private notes: Ensure all machines have the latest version of Java installed in order to access</li>
+                              <li>https://www.ish.au/oncourse/cloud/demo</li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 text-right bottom-right">
+                            <span class="glyphicon glyphicon-search"></span>&nbsp; View Course
+                            &nbsp;
+                            <span class="glyphicon glyphicon-ok-circle"></span>&nbsp; Mark Roll
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="class-card in-progress-marker">
+                      <div data-toggle="collapse" data-parent="#accordion" href="#class-ID-description">
+                        <div class="row">
+                          <div class="col-lg-9 class-title">Philosophy Course: Introduction to the Philosophy of Shakespeare</div>
+                          <!-- text-right is bootstrap class, (text-align: right) -->
+                          <div class="col-lg-3 text-right">9am - 12.30pm</div>
+                        </div>
+                        <!-- A common character entity used in HTML is the non-breaking space: &nbsp; -->
+                        <div class="class-location"><span class="glyphicon glyphicon-map-marker"></span>&nbsp; Centre for Continuing Eduction</div>
+                      </div>
+
+                      <div id="class-ID-description" class="collapse">
+                        <div class="row class-description">
+                          <div class="col-lg-8">
+                            <ul>
+                              <li>Introduction to the onCourse user interface including dashboard, menus, lists and edit views.</li>
+                              <li>Private notes: Ensure all machines have the latest version of Java installed in order to access</li>
+                              <li>https://www.ish.au/oncourse/cloud/demo</li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 text-right bottom-right">
+                            <span class="glyphicon glyphicon-search"></span>&nbsp; View Course
+                            &nbsp;
+                            <span class="glyphicon glyphicon-ok-circle"></span>&nbsp; Mark Roll
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-lg-2 date-of-classes text-right">
+                    <div class="week-day-of-class">Tue</div>
+                    <div class="day-of-class">17</div>
+                  </div>
+                  <div class="col-lg-10 classes-list">
+
+
+                    <div class="class-card in-progress-marker">
+                      <div data-toggle="collapse" data-parent="#accordion" href="#class-ID-description">
+                        <div class="row">
+                          <div class="col-lg-9 class-title">Philosophy Course: Introduction to the Philosophy of Shakespeare</div>
+                          <!-- text-right is bootstrap class, (text-align: right) -->
+                          <div class="col-lg-3 text-right">9am - 12.30pm</div>
+                        </div>
+                        <!-- A common character entity used in HTML is the non-breaking space: &nbsp; -->
+                        <div class="class-location"><span class="glyphicon glyphicon-map-marker"></span>&nbsp; Centre for Continuing Eduction</div>
+                      </div>
+
+                      <div id="class-ID-description" class="collapse">
+                        <div class="row class-description">
+                          <div class="col-lg-8">
+                            <ul>
+                              <li>Introduction to the onCourse user interface including dashboard, menus, lists and edit views.</li>
+                              <li>Private notes: Ensure all machines have the latest version of Java installed in order to access</li>
+                              <li>https://www.ish.au/oncourse/cloud/demo</li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 text-right bottom-right">
+                            <span class="glyphicon glyphicon-search"></span>&nbsp; View Course
+                            &nbsp;
+                            <span class="glyphicon glyphicon-ok-circle"></span>&nbsp; Mark Roll
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="class-card in-progress-marker">
+                      <div data-toggle="collapse" data-parent="#accordion" href="#class-ID-description">
+                        <div class="row">
+                          <div class="col-lg-9 class-title">Philosophy Course: Introduction to the Philosophy of Shakespeare</div>
+                          <!-- text-right is bootstrap class, (text-align: right) -->
+                          <div class="col-lg-3 text-right">9am - 12.30pm</div>
+                        </div>
+                        <!-- A common character entity used in HTML is the non-breaking space: &nbsp; -->
+                        <div class="class-location"><span class="glyphicon glyphicon-map-marker"></span>&nbsp; Centre for Continuing Eduction</div>
+                      </div>
+
+                      <div id="class-ID-description" class="collapse">
+                        <div class="row class-description">
+                          <div class="col-lg-8">
+                            <ul>
+                              <li>Introduction to the onCourse user interface including dashboard, menus, lists and edit views.</li>
+                              <li>Private notes: Ensure all machines have the latest version of Java installed in order to access</li>
+                              <li>https://www.ish.au/oncourse/cloud/demo</li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 text-right bottom-right">
+                            <span class="glyphicon glyphicon-search"></span>&nbsp; View Course
+                            &nbsp;
+                            <span class="glyphicon glyphicon-ok-circle"></span>&nbsp; Mark Roll
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+  <!-- ok, let's see to anther month -->
+              <div class="month-section panel">
+              <!-- W3S recommend use <strong> instead <b> -->
+                <div class="month-name text-center"><strong>June 2016</strong></div>
+                <div class="row">
+                  <div class="col-lg-2 date-of-classes text-right">
+                    <div class="week-day-of-class">Mon</div>
+                    <div class="day-of-class">16</div>
+                  </div>
+                  <div class="col-lg-10 classes-list">
+                    <div class="class-card completed-marker">
+                      <div data-toggle="collapse" data-parent="#accordion" href="#class-ID1-description">
+                        <div class="row">
+                          <div class="col-lg-9 class-title">Philosophy Course: Introduction to the Philosophy of Shakespeare</div>
+                          <!-- text-right is bootstrap class, (text-align: right) -->
+                          <div class="col-lg-3 text-right">9am - 12.30pm</div>
+                        </div>
+                        <!-- A common character entity used in HTML is the non-breaking space: &nbsp; -->
+                        <div class="class-location"><span class="glyphicon glyphicon-map-marker"></span>&nbsp; Centre for Continuing Eduction</div>
+                      </div>
+
+                      <div id="class-ID1-description" class="collapse">
+                        <div class="row class-description">
+                          <div class="col-lg-8">
+                            <ul>
+                              <li>Introduction to the onCourse user interface including dashboard, menus, lists and edit views.</li>
+                              <li>Private notes: Ensure all machines have the latest version of Java installed in order to access</li>
+                              <li>https://www.ish.au/oncourse/cloud/demo</li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 text-right bottom-right">
+                            <span class="glyphicon glyphicon-search"></span>&nbsp; View Course
+                            &nbsp;
+                            <span class="glyphicon glyphicon-ok-circle"></span>&nbsp; Mark Roll
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="month-section panel">
+              <!-- W3S recommend use <strong> instead <b> -->
+                <div class="month-name text-center"><strong>July 2016</strong></div>
+                <div class="row">
+                  <div class="col-lg-2 date-of-classes text-right">
+                    <div class="week-day-of-class">Mon</div>
+                    <div class="day-of-class">16</div>
+                  </div>
+                  <div class="col-lg-10 classes-list">
+                    <div class="class-card future-marker">
+                      <div data-toggle="collapse" data-parent="#accordion" href="#class-ID1-description">
+                        <div class="row">
+                          <div class="col-lg-9 class-title">Philosophy Course: Introduction to the Philosophy of Shakespeare</div>
+                          <!-- text-right is bootstrap class, (text-align: right) -->
+                          <div class="col-lg-3 text-right">9am - 12.30pm</div>
+                        </div>
+                        <!-- A common character entity used in HTML is the non-breaking space: &nbsp; -->
+                        <div class="class-location"><span class="glyphicon glyphicon-map-marker"></span>&nbsp; Centre for Continuing Eduction</div>
+                      </div>
+
+                      <div id="class-ID1-description" class="collapse">
+                        <div class="row class-description">
+                          <div class="col-lg-8">
+                            <ul>
+                              <li>Introduction to the onCourse user interface including dashboard, menus, lists and edit views.</li>
+                              <li>Private notes: Ensure all machines have the latest version of Java installed in order to access</li>
+                              <li>https://www.ish.au/oncourse/cloud/demo</li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 text-right bottom-right">
+                            <span class="glyphicon glyphicon-search"></span>&nbsp; View Course
+                            &nbsp;
+                            <span class="glyphicon glyphicon-ok-circle"></span>&nbsp; Mark Roll
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- image for loaging; i'm not sure about src, check it-->
+              <div class="loading text-center"><img src="/portal/img/loading.gif"></div>
+
+
+            </div>
+            <!-- end of classes list -->
           </div>
-        </div>
-      </div>
-    </div>
+          <!-- end of row -->
+
+
+  <!-- your footer -->
     <div id="footer">
       <div class="container clearfix">
         <!--<p class="text-muted credit pull-left">&copy; 2013</p>-->
         <p class="text-muted credit pull-right text-right"><a target="_blank" href="http://www.ish.com.au/oncourse"><img alt="" src="/portal/img/poweredby.png"/></a><br><small class="pull-right">© 2015</small></br></p>
       </div>
     </div>
+
   </body>
 </html>

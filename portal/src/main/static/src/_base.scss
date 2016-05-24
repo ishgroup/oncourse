@@ -122,7 +122,7 @@ button.finish {
 }
 
 .table tbody > tr > th {
-	background-color: #FAF5E0;
+	background-color: $history-row-odd;
 	font-weight: bold;
 }
 
@@ -157,11 +157,11 @@ table.table thead th {
 		right: 0;
 
 		.tooltip-inner {
-			background-color: #B94A48;
+			background-color: $dark-coral;
 		}
 
 		.tooltip-arrow {
-			border-top-color: #B94A48;
+			border-top-color: $dark-coral;
 		}
 	}
 }
@@ -175,11 +175,11 @@ table.table thead th {
 .has-info + .tooltip {
 
 	.tooltip-inner {
-		background-color: #5BC0DE;
+		background-color: $cornflower-blue;
 	}
 
 	.tooltip-arrow {
-		border-top-color: #5BC0DE;
+		border-top-color: $cornflower-blue;
 	}
 }
 
@@ -188,8 +188,8 @@ ul.dropdown-menu {
 	> li > a {
 
 		&:hover, &:focus {
-			background-color: #69524A;
-			color: #fff;
+			background-color: $dark-brown;
+			color: $white;
 		}
 	}
 }
@@ -224,7 +224,7 @@ ul.dropdown-menu {
 }
 
 .modal-content {
-  background-color: #F0EAD4;
+  background-color: $well-bg;
 }
 
 .modal-footer, .modal-header {
@@ -235,11 +235,11 @@ ul.dropdown-menu {
 .timepicker_wrap {
   top: 65px;
   border: none;
-  background: #FFFFFF;
+  background: $body-bg;
 
   .prev, .next {
 	  border: none;
-	  background-color: #E7E7E7;
+	  background-color: $gray-lavender;
 	  width: 100%;
 	}
 
