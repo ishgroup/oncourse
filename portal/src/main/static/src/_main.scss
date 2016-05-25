@@ -588,6 +588,12 @@
 		margin: 0;
 		font-weight: normal;
 	}
+
+  li {
+    span {
+      color: $gray-quartz;
+    }
+  }
 }
 
 #approvalForm input#accept {
@@ -1229,6 +1235,15 @@ li.active .btn-outcomes small {
   padding: 30px 0 5px 0;
   margin-bottom: 20px;
   border-bottom: 1px solid $gray-lavender;
+
+  a {
+    color: $dark-gray;
+
+    span {
+      color: $link-color;
+      font-size: 16px;
+    }
+  }
 }
 
 #class-description {
@@ -1418,3 +1433,76 @@ ul.abcent-menu {
 }
 
 .bottom-right {position: absolute; right: 0; bottom: 0;}
+
+.squaredThree {
+  width: 17px;
+  margin-right: 10px;
+  transform: translateY(22%);
+  position: relative;
+  display: inline-block;
+  label {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: transparent;
+    border: 2px solid $lighter-color-beard-abdel-karim;
+    border-radius: 4px;
+    &:after {
+      content: '\2714';
+      width: 17px;
+      height: 17px;
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      color: white;
+      padding: 0 25%;
+      background: $smaragdine;
+      border-radius: 4px;
+      opacity: 0;
+    }
+    &:hover::after {
+      opacity: 0.5;
+    }
+  }
+  input[type=checkbox] {
+    visibility: hidden;
+    &:checked + label:after {
+      opacity: 1;
+    }
+  }
+}
+
+
+.marking {
+  font-weight: bold;
+  color: $gray-quartz;
+  font-size: 12px;
+  display: inline;
+}
+
+.competent-marking { color: $smaragdine ;}
+.withdrawn-marking { color: $purpure ;}
+
+#mark-by-outcome, #mark-by-student {
+  .marking-list {
+    cursor: pointer;
+
+    .glyphicon {
+      margin: 0 15px 0 5px;
+      padding-top: 5px;
+    }
+
+    li {
+      display: inline-block;
+      border: transparent;
+    }
+  }
+}
+
+.classes-content li .glyphicon-chevron-up {
+  color: $primary-btn;
+}
+

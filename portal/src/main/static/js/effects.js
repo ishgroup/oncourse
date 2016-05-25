@@ -93,9 +93,14 @@ $j(document).ready(function() {
       //save reason
     }
     else {
-      // FOR EXAMPLE, I HAVE NOW TEMPLATES
+      // FOR EXAMPLE, I HAVE NO TEMPLATES
       alert('You have no reason!');
       return false;
     }
+  });
+
+  // it's change icon(up/down) when you want mark in outcome part
+  $j('.marking-list').on('click', function(){
+    $j(this).children('.glyphicon').toggleClass('glyphicon-chevron-up glyphicon-chevron-down')
   });
 });
