@@ -1394,38 +1394,36 @@ ul.abcent-menu {
     }
   }
 
-  .classes-list {
-    .class-card {
-      color: white;
-      padding: 20px;
-      border-radius: 7px;
-      margin: 10px 0;
+  .class-card {
+    color: white;
+    padding: 20px;
+    border-radius: 7px;
+    margin: 10px 0;
 
-      .class-title {
-        font-size: 20px;
-        margin-bottom: 10px;
+    .class-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .class-location {
+      .glyphicon-map-marker {
+        color: black;
+      }
+    }
+
+    .class-description {
+      margin-top: 20px;
+      position: relative;
+
+      a {
+        color: white;
       }
 
-      .class-location {
-        .glyphicon-map-marker {
-          color: black;
-        }
-      }
+      ul {
+        margin-bottom: 0;
 
-      .class-description {
-        margin-top: 20px;
-        position: relative;
-
-        a {
-          color: white;
-        }
-
-        ul {
-          margin-bottom: 0;
-
-          li:first-child {
-            margin-bottom: 20px;
-          }
+        li:first-child {
+          margin-bottom: 20px;
         }
       }
     }
@@ -1475,7 +1473,6 @@ ul.abcent-menu {
   }
 }
 
-
 .marking {
   font-weight: bold;
   color: $gray-quartz;
@@ -1506,3 +1503,52 @@ ul.abcent-menu {
   color: $primary-btn;
 }
 
+#all-timetables, #my-timetables {
+  border-left:  1px solid $gray-lavender;
+  border-right:  1px solid $gray-lavender;
+}
+
+.caption-classes {
+  .btn-outcomes {
+    border: none;
+    border-top: 10px solid white;
+    border-radius: 0;
+    background-color: $sidebar-bg;
+    padding-bottom: 4px;
+    margin-top: 0;
+
+    h4 {
+      color: black;
+    }
+  }
+
+  li.active {
+    .btn-outcomes {
+      border-color: transparent;
+      background-color: white;
+      border-top: 3px solid $red-color;
+      border-bottom: none;
+
+
+      border-left: 1px solid $gray-lavender;
+      border-right: 1px solid $gray-lavender;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      padding-bottom: 10px;
+
+      h4 {
+        color: $red-color;
+      }
+
+      small {
+        color: $gray-quartz;
+      }
+    }
+  }
+}
+
+.month-section {
+  hr {
+    margin-top: 10px;
+  }
+}
