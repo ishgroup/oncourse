@@ -2078,8 +2078,6 @@ public abstract class CommonPreferenceController {
 			return getSMTPPort();
 		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			return getOncourseServerDefaultTimezone();
-		} else if (FINANCE_TRANSACTION_LOCKED.equals(key)) {
-			return getFinanceTransactionLocked();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2291,8 +2289,6 @@ public abstract class CommonPreferenceController {
 			setOncourseServerDefaultTimezone((String) value);
 		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {
 			setPaymentInfo((String) value);
-		} else if (FINANCE_TRANSACTION_LOCKED.equals(key)) {
-			setFinanceTransactionLocked((Date) value);
 		}
 	}
 
@@ -2508,16 +2504,4 @@ public abstract class CommonPreferenceController {
 	// **************************************
 
 	public static final String FINANCE_TRANSACTION_LOCKED = "finance.transaction_locked";
-
-	public Date getFinanceTransactionLocked() {
-		try {
-			return dateFormat.parse(getValue(FINANCE_TRANSACTION_LOCKED, false));
-		} catch (ParseException e) {
-			return null;
-		}
-	}
-
-	public void setFinanceTransactionLocked(Date value) {
-		setValue(FINANCE_TRANSACTION_LOCKED, false, dateFormat.format(value));
-	}
 }
