@@ -12,6 +12,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.ValidationResult;
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Invoice extends _Invoice implements Queueable {
 		refundInvoice.setDescription("Refund for enrolments");
 		refundInvoice.setPublicNotes(getPublicNotes());
 		refundInvoice.setShippingAddress(getShippingAddress());
-		refundInvoice.setInvoiceDate(new Date());
+		refundInvoice.setInvoiceDate(DateUtils.setHours(new Date(), 12));
 		refundInvoice.setDateDue(new Date());
 		refundInvoice.setContact(getContact());
 		refundInvoice.setTotalExGst(Money.ZERO.subtract(getTotalExGst()));

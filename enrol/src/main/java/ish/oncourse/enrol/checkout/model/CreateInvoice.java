@@ -7,6 +7,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.WebSite;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class CreateInvoice {
 	public Invoice create() {
 		Invoice invoice = objectContext.newObject(Invoice.class);
 		// fill the invoice with default values
-		invoice.setInvoiceDate(new Date());
+		invoice.setInvoiceDate(DateUtils.setHours(new Date(), 12));
 		invoice.setAmountOwing(Money.ZERO);
 		invoice.setDateDue(new Date());
 		invoice.setSource(PaymentSource.SOURCE_WEB);
