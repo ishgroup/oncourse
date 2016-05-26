@@ -101,6 +101,6 @@ $j(document).ready(function() {
 
   // it's change icon(up/down) when you want mark in outcome part
   $j('.marking-list').on('click', function(){
-    $j(this).children('.glyphicon').toggleClass('glyphicon-chevron-up glyphicon-chevron-down')
+    $j(this).children('.glyphicon').toggleClass('glyphicon-chevron-up glyphicon-chevron-down');
   });
 });

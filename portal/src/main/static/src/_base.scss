@@ -231,6 +231,13 @@ ul.dropdown-menu {
   border-color: transparent;
 }
 
+.modal .modal-dialog {
+	position: inherit;
+  margin: auto;
+  left: 0;
+  right: 0;
+}
+
 
 .timepicker_wrap {
   top: 65px;
@@ -253,4 +260,8 @@ ul.dropdown-menu {
 
 .no-padding {
   padding: 0;
+}
+
+.progress {
+	margin-top: 7px;
 }

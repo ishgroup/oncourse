@@ -1246,7 +1246,7 @@ li.active .btn-outcomes small {
   }
 }
 
-#class-description {
+#class-description, .class-description-class {
   display: none;
 
   table.class-desc-section {
@@ -1269,6 +1269,10 @@ li.active .btn-outcomes small {
       padding-bottom: 20px;
     }
   }
+}
+/*remove after all*/
+.class-description-class {
+	display: block;
 }
 
 .actual-roll-desc {

@@ -9,18 +9,21 @@
     <title>History</title>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700"/>
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,700"/>
-    <link href="/portal/css/portal.css?v=development" type="text/css" rel="stylesheet">
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <!-- bootstrap -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <!--[if IE]>
     <link rel="stylesheet" type="text/css" href="/portal/css/ie.css" />
     <![endif]-->
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;" type="text/javascript"></script>
+
+
     <script src="/portal/js/portal-min.js?v=r1951" type="text/javascript"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <link href="/portal/css/portal.css?v=development" type="text/css" rel="stylesheet">
+
+    <!-- local styles -->
+    <link href="/home/daria/work/trunk/portal/build/resource-assemble/css/portal.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="/home/daria/work/trunk/portal/build/resource-assemble/js/portal-min.js"></script>
+
   </head>
   <body>
     <div id="wrap">
@@ -142,22 +145,22 @@
                       </div>
                     </div>
                   </div>
+                 </form>
 
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <div class="actions">
-                          <input value="PAY NOW" class="btn btn-primary" type="submit" data-toggle="modal" data-target="#myModal" id="pay-button">
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-lg-12 row">
+                      <div class="actions col-lg-3">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="pay-button">PROGRESSING</button>
+                      </div>
+
+                      <div class="progress progress-striped active col-lg-6 no-padding">
+                        <div class="progress-bar progress-bar-warning progress-bar-striped " role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                         </div>
                       </div>
+
                     </div>
                   </div>
-                </div>
-              </form>
-
-              <span>You can hide it; Show it after click and whrite here somthing like 'waiting answer from dps', or you can create partial whith this progress bar, or, maybe, need modal with progress and "success" caption. Click "pay now", you can see modal</span>
-              <div class="progress progress-striped active">
-                <div class="progress-bar progress-bar-warning progress-bar-striped " role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                 </div>
               </div>
 
@@ -349,5 +352,6 @@
           </div>
         </div>
       </div>
+
   </body>
 </html>
