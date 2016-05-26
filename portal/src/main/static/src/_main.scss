@@ -1375,64 +1375,61 @@ ul.abcent-menu {
   }
 }
 
+.month-name {
+  padding: 30px;
+  font-size: 15px;
+  color: $light-gray;
+}
 
+.this-month-name {
+  color: black;
+}
 
-.month-section { cursor: pointer;
-  .month-name {
-    padding: 30px;
-    font-size: 15px;
-    color: $light-gray;
+.date-of-classes {
+  .week-day-of-class {
+    color: $gray-quartz;
   }
 
-  .this-month-name {
-    color: black;
+  .day-of-class {
+    font-size: 42px;
+  }
+}
+
+.class-card {
+  color: white;
+  padding: 20px;
+  border-radius: 7px;
+  margin: 10px 0;
+
+  .class-title {
+    font-size: 20px;
+    margin-bottom: 10px;
   }
 
-  .date-of-classes {
-    .week-day-of-class {
-      color: $gray-quartz;
-    }
-
-    .day-of-class {
-      font-size: 42px;
+  .class-location {
+    .glyphicon-map-marker {
+      color: black;
     }
   }
 
-  .class-card {
-    color: white;
-    padding: 20px;
-    border-radius: 7px;
-    margin: 10px 0;
+  .class-description {
+    margin-top: 20px;
+    position: relative;
 
-    .class-title {
-      font-size: 20px;
-      margin-bottom: 10px;
+    a {
+      color: white;
     }
 
-    .class-location {
-      .glyphicon-map-marker {
-        color: black;
-      }
-    }
+    ul {
+      margin-bottom: 0;
 
-    .class-description {
-      margin-top: 20px;
-      position: relative;
-
-      a {
-        color: white;
-      }
-
-      ul {
-        margin-bottom: 0;
-
-        li:first-child {
-          margin-bottom: 20px;
-        }
+      li:first-child {
+        margin-bottom: 20px;
       }
     }
   }
 }
+
 
 .bottom-right {position: absolute; right: 0; bottom: 0;}
 
