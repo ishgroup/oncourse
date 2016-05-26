@@ -20,7 +20,8 @@ $j.ajax({
      codropsEvents = data;
     },
     error: function (jqXHR, textStatus,errorThrown) {
-        window.location.reload();
+        // window.location.reload();
+        console.log("Unexpected exception");
     }
 });
 }

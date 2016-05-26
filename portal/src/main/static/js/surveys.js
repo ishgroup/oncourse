@@ -85,7 +85,7 @@ Survey.prototype = {
             $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").raty("score") +
             $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").raty("score")) / 3));
     },
-    
+
     fillSurvey: function () {
         var self = this;
         $j("div[data='" + self.id + "'].class-reviews").find("span.venue-rate").raty("score", this.survey.venueScore);
@@ -99,8 +99,8 @@ Survey.prototype = {
     saveSurvey: function () {
         var self = this;
         var actionLink = "/portal/class.classdetails.surveys:saveSurvey/" + self.id;
-        var data = {            
-            
+        var data = {
+
             "comment": $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").val(),
             "courseScore": $j("div[data='" + self.id + "'].class-reviews").find("span.course-rate").find('input[name=score]').val(),
             "tutorScore": $j("div[data='" + self.id + "'].class-reviews").find("span.tutor-rate").find('input[name=score]').val(),
@@ -115,7 +115,8 @@ Survey.prototype = {
                 self.slideSurveys();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                window.location.reload();
+                // window.location.reload();
+                console.log("Unexpected exception");
             }
         });
     },
@@ -133,7 +134,8 @@ Survey.prototype = {
                 self.survey = data;
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                window.location.reload();
+                // window.location.reload();
+                console.log("Unexpected exception");
             }
         });
     }

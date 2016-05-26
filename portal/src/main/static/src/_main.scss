@@ -1507,9 +1507,11 @@ ul.abcent-menu {
 #all-timetables, #my-timetables {
   border-left:  1px solid $gray-lavender;
   border-right:  1px solid $gray-lavender;
+  left: -20px;
 }
 
 .caption-classes {
+	left: -20px;
   .btn-outcomes {
     border: none;
     border-top: 10px solid white;
