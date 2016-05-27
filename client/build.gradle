@@ -6,7 +6,7 @@ dependencies {
     }
 
 	compile "org.apache.cayenne:cayenne-client:$cayenneVersion"
-	compile 'org.apache.cayenne:cayenne-client:4.0.ROP3'
+	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
 	compile 'foxtrot:foxtrot-core:4.0'
 	compile 'com.miglayout:miglayout-swing:4.2'
 	compile 'com.migcalendar:migcalendar:6.9.3'
@@ -39,6 +39,7 @@ cayenne {
 	superPkg = "ish.oncourse.cayenne.glue"
 	templateDir = file ("${projectDir}/../common/src/main/resources/cayenne/dotemplates/")
 	type = 'client'
+	mode = 'all'
 	destDir = file ("${projectDir}/src/main/java")
 }
 

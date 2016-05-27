@@ -52,6 +52,7 @@ dependencies {
 	}
 
 	compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
+	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
 
 	compile 'foxtrot:foxtrot-core:4.0'
 
@@ -230,6 +231,7 @@ cayenne {
 	serverSuperPkg = "ish.oncourse.server.cayenne.glue"
 	templateDir = file ("${projectDir}/../common/src/main/resources/cayenne/dotemplates/")
 	type = 'server'
+	mode = 'all'
 	destDir = file ("${projectDir}/src/main/java")
 }
 

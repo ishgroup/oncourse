@@ -2,7 +2,7 @@ buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '8.18.2'
 		log4j2Version = '2.5'
-		cayenneVersion = '4.0.ROP3'
+		cayenneVersion = '4.0.M3.2'
 		// as of 29/10/2015 upgrading to anything from 9.3.0 up to 9.3.5 causes
 		// intermittent SSL issues when establishing secure connection
 		jettyVersion = '9.2.14.v20151106'

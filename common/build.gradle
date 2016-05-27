@@ -3,7 +3,7 @@ dependencies {
 
 	compile 'javax.jmdns:jmdns:3.4.1'
 
-	compile 'org.apache.cayenne:cayenne-client:4.0.ROP3'
+	compile "org.apache.cayenne:cayenne-client:$cayenneVersion"
 
 	compile 'commons-httpclient:commons-httpclient:3.1'
 	compile 'org.apache.commons:commons-lang3:3.3.2'
