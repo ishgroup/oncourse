@@ -255,12 +255,21 @@
 
                           <div class="pull-right col-lg-4 col-sm-5 col-xs-6 vertical-center zero-right">
                             <div class="col-lg-7 percents-of-attendance text-center vertical-center">
-                              <input class="mark-checkbox" type="checkbox">
+                              <div data-toggle="collapse" data-target="#marking-userID"><input class="mark-checkbox" type="checkbox"></div>
                             </div>
                             <div class="col-lg-5 text-center pull-right add-rem-collapse" data-toggle="collapse" data-target="#absence-userID">
                               <img class="mark-img" src="DIU_RAW2167.svg" />
                             </div>
                           </div>
+                        </div>
+                      </div>
+
+                      <div id="marking-userID" class="collapse">
+                        <div class="absent-with-reason">
+                          <strong>UPDATE ATTENDANCE</strong>
+                          <div class="warning-text">Are you sure you want to make this change?</div>
+                          <button class="btn btn-success btn-sm">YES</button>
+                          <button class="btn btn-danger btn-sm">NO</button>
                         </div>
                       </div>
 
