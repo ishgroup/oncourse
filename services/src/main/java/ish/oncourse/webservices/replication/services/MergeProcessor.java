@@ -78,9 +78,7 @@ public class MergeProcessor {
 		for (CorporatePass corporatePass : new ArrayList<>(contactToDelete.getCorporatePasses())) {
 			corporatePass.setContact(contactToUpdate);
 		}
-		for (CustomField customField : new ArrayList<>(contactToDelete.getCustomFields())) {
-			customField.setRelatedObject(contactToUpdate);
-		}
+
 		for (Invoice invoice : new ArrayList<>(contactToDelete.getInvoices())) {
 			invoice.setContact(contactToUpdate);
 		}
@@ -106,6 +104,7 @@ public class MergeProcessor {
 		mergeDocumentRelation(CONTACT_IDENTIFIER, contactToDelete.getId(), contactToUpdate.getId(), contactToUpdate.getAngelId());
 		mergeContactRelations();
 		mergeTagRelations();
+		mergeCustomFieldRelations();
 
 		if (studentToUpdateRec != null) {
 			if (studentToUpdate != null && studentToUpdate.getId().equals(studentToUpdateRec.getStub().getWillowId())) {
@@ -320,4 +319,21 @@ public class MergeProcessor {
 			}
 		}
 	}
+
+	private void mergeCustomFieldRelations() {
+		List<CustomField> contactToUpdateCustomFields = new ArrayList<>(contactToUpdate.getCustomFields());
+		List<CustomField> contactToDeleteCustomFields = new ArrayList<>(contactToDelete.getCustomFields());
+		for (CustomField contactToDeleteCustomField : contactToDeleteCustomFields) {
+			if (toDelete("CustomField", contactToDeleteCustomField.getId(), contactToDeleteCustomField.getAngelId())) {
+				context.deleteObject(contactToDeleteCustomField);
+			} else {
+				for (CustomField customFieldTypeFirstContact : contactToUpdateCustomFields) {
+					if (customFieldTypeFirstContact.getCustomFieldType().equals(contactToDeleteCustomField.getCustomFieldType())) {
+						context.deleteObjects(contactToDeleteCustomField);
+					}
+				}
+			}
+		}
+	}
+
 }
