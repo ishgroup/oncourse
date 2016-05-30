@@ -5,7 +5,6 @@ goog.require('timepicki');
 
 // THIS IS JS BY DARYA
 
-
 var $j = jQuery.noConflict();
 $j(document).ready(function() {
 
@@ -63,7 +62,6 @@ $j(document).ready(function() {
   });
 
 // checkboxer
-// YOU CAN SEE THAT IN BOOTSRAP-CHECKBOXER-DOCS
   $j('.mark-checkbox').checkboxpicker({
     html: true,
     offLabel: '<span class="glyphicon glyphicon-remove">',
@@ -82,7 +80,6 @@ $j(document).ready(function() {
     });
 
 // timepicker
-// I THINK YOU HAVE NOW QUESTION ABOUT IT
   $j(".time_element").timepicki();
 
 // save absent reason when you mark students

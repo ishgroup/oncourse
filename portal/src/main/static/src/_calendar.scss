@@ -91,7 +91,7 @@
   font-size: 14px;
   line-height: 20px;
   font-weight: 700;
-  color: $lighter-color-beard-abdel-karim;
+  color: $calendar-fc-date-color;
   text-shadow: 0 -1px 0 rgba(255,255,255,0.8);
   bottom: 5px;
   right: 5px;
@@ -136,7 +136,7 @@
   width: 99%;
   height: 50%;
   position: absolute;
-  background: $gray-lavender;
+  background: $calendar-gray-bg;
   bottom: -4px;
   left: 0.5%;
   z-index: -1;
@@ -178,7 +178,7 @@
 .custom-header h3 {
   font-size: 10px;
   font-weight: 700;
-  color: $light-blue-gray;
+  color: $calendar-custom-header-color;
 }
 
 .custom-header nav span {
@@ -196,7 +196,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background: $sea-foam;
+  background: $calendar-custom-header;
   border-radius: 50%;
 }
 
@@ -225,11 +225,11 @@
 }
 
 .custom-header nav span:hover:before {
-  color: $marengo;
+  color: $calendar-custom-header-nav;
 }
 
 .custom-content-reveal {
-  background: $gray-lavender;
+  background: $calendar-gray-bg;
   background: rgba(246, 246, 246, 0.9);
   width: 100%;
   height: 100%;
@@ -252,7 +252,7 @@
   width: 20px;
   height: 20px;
   text-align: center;
-  background: $dark-pink;
+  background: $calendar-custom-content-reveal;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
   cursor: pointer;
   line-height: 13px;
@@ -277,25 +277,25 @@
   font-size: 13px;
   font-weight: 300;
   letter-spacing: 3px;
-  color: $gray;
+  color: $calendar-text-color;
   padding: 20px;
   background: $white;
-  border-bottom: 1px solid $lighter-color-beard-abdel-karim;
-  border-top: 5px solid $dark-pink;
+  border-bottom: 1px solid $calendar-fc-date-color;
+  border-top: 5px solid $calendar-custom-content-reveal;
   box-shadow: 0 1px rgba(255,255,255,0.9);
   margin-bottom: 30px;
 }
 
 .custom-content-reveal span {
-  color: $gray;
+  color: $calendar-text-color;
 }
 
 .custom-content-reveal a {
-  color: $dark-pink;
+  color: $calendar-custom-content-reveal;
 }
 
 .custom-content-reveal a:hover {
-  color: $dark-gray;
+  color: $calendar-link-color;
 }
 
 /* Modifications */
@@ -309,7 +309,7 @@
 
 .fc-calendar .fc-head {
   background: transparent;
-  color: $dark-gray;
+  color: $calendar-link-color;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 12px;
@@ -329,7 +329,7 @@
   left: 50%;
   text-align: center;
   margin: -10px 0 0 -15px;
-  color: $gray;
+  color: $calendar-text-color;
   font-weight: 400;
   pointer-events: none;
 }
@@ -348,7 +348,7 @@
   width: 20px;
   margin-left: -10px;
   position: absolute;
-  color: $lighter-color-beard-abdel-karim;
+  color: $calendar-fc-date-color;
   font-size: 70px;
   line-height: 20px;
   left: 50%;
@@ -356,11 +356,11 @@
 }
 
 .fc-calendar .fc-row > div.fc-today.fc-content:after {
-  color: $red-wine;
+  color: $calendar-fc-content-after;
 }
 
 .fc-calendar .fc-row > div.fc-content:hover:after{
-  color: $dark-pink;
+  color: $calendar-custom-content-reveal;
 }
 
 .fc-calendar .fc-row > div.fc-today.fc-content:hover:after{

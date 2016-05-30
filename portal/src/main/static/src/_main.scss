@@ -591,7 +591,7 @@
 
   li {
     span {
-      color: $gray-quartz;
+      color: $small-text-color;
     }
   }
 }
@@ -989,14 +989,14 @@ strong.link-color {
   border-radius: 10px;
   margin: 20px 0 20px 0;
   position: relative;
-  border: 1px solid $tan-color;
+  border: 1px solid $class-reviews-border;
   display: none;
 }
 
 .arrow-top {
   border-left: 20px solid rgba(0, 0, 0, 0);
   border-right: 20px solid rgba(0, 0, 0, 0);
-  border-bottom: 20px solid $tan-color;
+  border-bottom: 20px solid $class-reviews-border;
   position: absolute;
   top: -20px;
   left: 115px;
@@ -1041,7 +1041,7 @@ strong.link-color {
 }
 
 .student-list > li {
-  border-bottom: 1px solid $tan-color;
+  border-bottom: 1px solid $class-reviews-border;
 
   .student-detail {
     border-bottom: none;
@@ -1087,7 +1087,7 @@ strong.link-color {
 }
 
 .session-content {
-  border: 1px solid $gray-lavender;
+  border: 1px solid $gray-border;
   margin: 0;
 
   button {
@@ -1132,29 +1132,29 @@ object.note-icon {
 .past-course {
 
   object.session-icon {
-    background-color: $smaragdine;
+    background-color: $session-icon;
   }
 
    a {
-    color: $smaragdine;
+    color: $session-icon;
   }
 
   span {
-    color: $almost-light-gray;
+    color: $past-course-text-color;
   }
 
   button {
-    background-color: $dark-smaragdine;
-    border-color: $dark-smaragdine;
+    background-color: $dark-green-mark;
+    border-color: $dark-green-mark;
   }
 }
 
 .actual-course.past-course-diff {
-  background-color: $gray-linen;
+  background-color: $past-course-diff-bg;
 }
 
 .past-course-diff {
-  background-color: $smaragdine;
+  background-color: $green-mark;
 
   span {
     font-weight: bold;
@@ -1195,7 +1195,7 @@ ul.nav-menu {
 }
 
 .btn-outcomes {
-  border: 1px solid $gray-lavender;
+  border: 1px solid $gray-border;
   color: $red-color;
   display: block;
   margin-top: 40px;
@@ -1206,7 +1206,7 @@ ul.nav-menu {
   }
 
   small {
-    color: $gray-quartz;
+    color: $small-text-color;
   }
 }
 
@@ -1226,7 +1226,7 @@ li.active .btn-outcomes small {
 #mark-by-outcome li,
 #mark-by-student li{
   padding: 12px 0;
-  border-bottom: 1px solid $gray-lavender;
+  border-bottom: 1px solid $gray-border;
 }
 
 .mark-by-caption {
@@ -1234,10 +1234,10 @@ li.active .btn-outcomes small {
   font-family: Arial;
   padding: 30px 0 5px 0;
   margin-bottom: 20px;
-  border-bottom: 1px solid $gray-lavender;
+  border-bottom: 1px solid $gray-border;
 
   a {
-    color: $dark-gray;
+    color: $calendar-link-color;
 
     span {
       color: $link-color;
@@ -1276,11 +1276,11 @@ li.active .btn-outcomes small {
 }
 
 .actual-roll-desc {
-  background-color: $light-lemon;
+  background-color: $actual-roll-desc-bg;
 }
 
 .past-roll-desc {
-  background-color: $smaragdine;
+  background-color: $green-mark;
   color: white;
 }
 
@@ -1307,9 +1307,9 @@ li.active .btn-outcomes small {
 
   .input-group-addon {
     border: none;
-    border-left: 1px solid $lighter-color-beard-abdel-karim;
+    border-left: 1px solid $input-group-addon-border;
     background: white;
-    color: $gray-grideperlevy;
+    color: $input-group-addon-color;
     font-size: 22px;
   }
 }
@@ -1323,7 +1323,7 @@ ul.abcent-menu {
 }
 
 .full-percents {
-  color: $smaragdine;
+  color: $green-mark;
 }
 
 .half-percents {
@@ -1367,7 +1367,7 @@ ul.abcent-menu {
   li {
     position: relative;
     padding-left: 23px;
-    color: $gray-quartz;
+    color: $small-text-color;
 
     a {
       color: black;
@@ -1378,7 +1378,7 @@ ul.abcent-menu {
 .month-name {
   padding: 30px;
   font-size: 15px;
-  color: $light-gray;
+  color: $month-name-color;
 }
 
 .this-month-name {
@@ -1387,7 +1387,7 @@ ul.abcent-menu {
 
 .date-of-classes {
   .week-day-of-class {
-    color: $gray-quartz;
+    color: $small-text-color;
   }
 
   .day-of-class {
@@ -1447,7 +1447,7 @@ ul.abcent-menu {
     top: 0;
     left: 0;
     background: transparent;
-    border: 2px solid $lighter-color-beard-abdel-karim;
+    border: 2px solid $input-group-addon-border;
     border-radius: 4px;
     &:after {
       content: '\2714';
@@ -1458,7 +1458,7 @@ ul.abcent-menu {
       left: -2px;
       color: white;
       padding: 0 25%;
-      background: $smaragdine;
+      background: $green-mark;
       border-radius: 4px;
       opacity: 0;
     }
@@ -1476,13 +1476,13 @@ ul.abcent-menu {
 
 .marking {
   font-weight: bold;
-  color: $gray-quartz;
+  color: $small-text-color;
   font-size: 12px;
   display: inline;
 }
 
-.competent-marking { color: $smaragdine ;}
-.withdrawn-marking { color: $purpure ;}
+.competent-marking { color: $green-mark;}
+.withdrawn-marking { color: $withdrawn-marker;}
 
 #mark-by-outcome, #mark-by-student {
   .marking-list {
@@ -1505,8 +1505,8 @@ ul.abcent-menu {
 }
 
 #all-timetables, #my-timetables {
-  border-left:  1px solid $gray-lavender;
-  border-right:  1px solid $gray-lavender;
+  border-left:  1px solid $gray-border;
+  border-right:  1px solid $gray-border;
   left: -20px;
 }
 
@@ -1533,8 +1533,8 @@ ul.abcent-menu {
       border-bottom: none;
 
 
-      border-left: 1px solid $gray-lavender;
-      border-right: 1px solid $gray-lavender;
+      border-left: 1px solid $gray-border;
+      border-right: 1px solid $gray-border;
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
       padding-bottom: 10px;
@@ -1544,7 +1544,7 @@ ul.abcent-menu {
       }
 
       small {
-        color: $gray-quartz;
+        color: $small-text-color;
       }
     }
   }

@@ -46,33 +46,41 @@ $progress-step-color-active: darken($progress-step-bg-active, 35%);
 $progress-step-bg-finished: #c3d6b3;
 $progress-step-color-finished: darken($progress-step-bg-finished, 35%);
 
-// in invision I use tool pipette and get this colors + calendario
-$cornflower-blue: #5BC0DE;
-$dark-coral: #B94A48;
-$smaragdine: #85B20D;
-$dark-smaragdine: #587608;
-$light-lemon: #FFF0B2;
-$tan-color: #D8AC85;
-$lemon-cream: #fff4c3;
-$sea-foam: #FCF8EA;
-$marengo: #495468;
-$dark-pink: #ef4f69;
-$red-wine: #b02c42;
 
-// different colors of gray; I have no idea where is official names of colors, so I use getcolor.ru and translate it in english
-// in invision I use tool pipette and get this colors
-$gray-lavender: #e7e7e7;
-$gray-grideperlevy: #C7C7C7;
-$lighter-color-beard-abdel-karim: #D9D9D9;
-$gray-quartz: #999999;
-$gray-linen: #ECECEC;
-$almost-light-gray: #B8B8B8;
-$light-blue-gray: #b7bbc2;
-$gray: #777777;
-$dark-gray: #333333;
-$light-gray: #AEAEAE;
+$tooltip-arrow: #5BC0DE;
+$coral-tooltip-arrow: #B94A48;
+
+$session-icon: #85B20D;
+$green-mark: #85B20D;
+
+$dark-green-mark: #587608;
+$actual-roll-desc-bg: #FFF0B2;
+$class-reviews-border: #D8AC85;
+$calendar-custom-header: #FCF8EA;
+$calendar-custom-header-nav: #495468;
+$calendar-custom-content-reveal: #ef4f69;
+$calendar-fc-content-after: #b02c42;
 
 $completed-marker: #1ABC9C;
 $in-progress-marker: #FF6656;
 $future-marker: #3498DB;
-$purpure: #D82020;
+$withdrawn-marker: #D82020;
+
+// gray-colors
+$timepicki-arrows: #e7e7e7;
+$calendar-gray-bg: #e7e7e7;
+$gray-border: #e7e7e7;
+
+$input-group-addon-color: #C7C7C7;
+
+$calendar-fc-date-color: #D9D9D9;
+$input-group-addon-border: #D9D9D9;
+
+$small-text-color: #999999;
+$past-course-diff-bg: #ECECEC;
+$past-course-text-color: #B8B8B8;
+$calendar-custom-header-color: #b7bbc2;
+$calendar-text-color: #777777;
+$calendar-link-color: #333333;
+$month-name-color: #AEAEAE;
+

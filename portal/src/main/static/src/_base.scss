@@ -157,11 +157,11 @@ table.table thead th {
 		right: 0;
 
 		.tooltip-inner {
-			background-color: $dark-coral;
+			background-color: $coral-tooltip-arrow;
 		}
 
 		.tooltip-arrow {
-			border-top-color: $dark-coral;
+			border-top-color: $coral-tooltip-arrow;
 		}
 	}
 }
@@ -175,11 +175,11 @@ table.table thead th {
 .has-info + .tooltip {
 
 	.tooltip-inner {
-		background-color: $cornflower-blue;
+		background-color: $tooltip-arrow;
 	}
 
 	.tooltip-arrow {
-		border-top-color: $cornflower-blue;
+		border-top-color: $tooltip-arrow;
 	}
 }
 
@@ -238,7 +238,6 @@ ul.dropdown-menu {
   right: 0;
 }
 
-
 .timepicker_wrap {
   top: 65px;
   border: none;
@@ -246,7 +245,7 @@ ul.dropdown-menu {
 
   .prev, .next {
 	  border: none;
-	  background-color: $gray-lavender;
+	  background-color: $timepicki-arrows;
 	  width: 100%;
 	}
 
