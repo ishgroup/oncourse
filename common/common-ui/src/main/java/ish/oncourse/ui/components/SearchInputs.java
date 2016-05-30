@@ -14,6 +14,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.*;
 
@@ -213,17 +214,29 @@ public class SearchInputs extends ISHCommon {
 			}
 
 			for (String tag : tags) {
-				queries.add(format("%s=%s", SearchParam.tag.name(), encode(tag, CharEncoding.UTF_8)));
+				queries.add(format("%s=%s", SearchParam.tag.name(), encodePath(tag)));
 			}
 
 			String path = "/courses";
 			if (browseTag != null) {
-				path += encode(browseTag,CharEncoding.UTF_8);
+				path += encodePath(browseTag);
 			}
 			if (queries.size() > 0) {
 				path += "?" + StringUtils.join(queries, "&");
 			}
 			return URLUtils.buildURL(request, path, false);
+		}
+
+		private String encodePath(String path) {
+			try {
+				String[] items = StringUtils.split(path, "/");
+				for (int i = 0; i < items.length; i++) {
+					items[i] =  encode(items[i], CharEncoding.UTF_8);
+				}
+				return new StringBuilder("/").append(StringUtils.join(items, '/')).toString();
+			} catch (UnsupportedEncodingException e) {
+				throw new IllegalArgumentException(e);
+			}
 		}
 
 		private void initSearchParams(SearchInputs form) {

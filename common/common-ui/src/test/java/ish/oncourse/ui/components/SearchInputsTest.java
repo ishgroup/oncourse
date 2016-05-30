@@ -20,7 +20,7 @@ public class SearchInputsTest {
 		Request request = mock(Request.class);
 		URL url = SearchInputs.BuildURL.valueOf(request, "/Tag1 1", Collections.singletonList("/Tag 2/Tag2 1"), Collections.singletonMap(SearchParam.s, "word1 word2")).build();
 		assertNotNull(url);
-		assertEquals("/courses%2FTag1+1", url.getPath());
-		assertEquals("s=word1+word2&tag=%2FTag+2%2FTag2+1", url.getQuery());
+		assertEquals("/courses/Tag1+1", url.getPath());
+		assertEquals("s=word1+word2&tag=/Tag+2/Tag2+1", url.getQuery());
 	}
 }
