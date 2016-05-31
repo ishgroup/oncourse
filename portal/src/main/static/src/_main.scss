@@ -1517,54 +1517,26 @@ ul.abcent-menu {
   }
 }
 
+.caption-classes {
+  margin-top: 25px;
+  float: left;
+
+  li {
+    position: absolute;
+    display: block;
+  }
+
+  li.active{
+    display: none;
+  }
+}
+
 .classes-content li .glyphicon-chevron-up {
   color: $primary-btn;
 }
 
 #all-timetables, #my-timetables {
-  border-left:  1px solid $gray-border;
-  border-right:  1px solid $gray-border;
   left: -20px;
-}
-
-.caption-classes {
-	left: -20px;
-  .btn-outcomes {
-    border: none;
-    border-top: 10px solid white;
-    border-radius: 0;
-    background-color: $sidebar-bg;
-    padding-bottom: 4px;
-    margin-top: 0;
-
-    h4 {
-      color: black;
-    }
-  }
-
-  li.active {
-    .btn-outcomes {
-      border-color: transparent;
-      background-color: white;
-      border-top: 3px solid $red-color;
-      border-bottom: none;
-
-
-      border-left: 1px solid $gray-border;
-      border-right: 1px solid $gray-border;
-      border-top-left-radius: 6px;
-      border-top-right-radius: 6px;
-      padding-bottom: 10px;
-
-      h4 {
-        color: $red-color;
-      }
-
-      small {
-        color: $small-text-color;
-      }
-    }
-  }
 }
 
 .month-section {
