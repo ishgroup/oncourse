@@ -34,6 +34,10 @@
 		}
 	}
 
+	.navbar-header:hover .back-to-dashboard {
+		display: none;
+	}
+
 	.main-nav {
 		padding: 10px 0;
 		display: block;

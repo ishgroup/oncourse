@@ -39,6 +39,24 @@ $j(document).ready(function() {
     };
   });
 
+// diff classes for diff percents on dashboard
+  function DashboardAttendance(){
+    dashboardPercent = $j('.dashboard-card.persent-of-attendance .percent').text();
+    dashboardAttendanceCard = $j('.dashboard-card.persent-of-attendance');
+
+    if ( dashboardPercent < "65%" ){
+      dashboardAttendanceCard.addClass('low-percent-card');
+    }
+    else if ( dashboardPercent < "80%" ){
+      dashboardAttendanceCard.addClass('middle-percent-card');
+    }
+    else {
+      dashboardAttendanceCard.addClass('top-percent-card');
+    }
+  };
+
+  DashboardAttendance();
+
 // when you edit roll in Timetable it's happen
 // PROGRAMMER: IT DOES NOT INCLUDE APP LOGIC, ONLY JS EFFECTS TO SHOW SOME DETAILS; REMOVE THAT AFTER YOU WORK
   $j('.edit-roll a').on('click', function(){

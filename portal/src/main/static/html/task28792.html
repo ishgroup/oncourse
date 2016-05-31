@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <!-- I think no need to comment head -->
+    <meta content="IE=EmulateIE9" http-equiv="X-UA-Compatible"/>
+    <meta content="no-cache" http-equiv="Cache-control"/>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="onCourse r1951" name="generator"/>
+    <title>Time Table</title>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700"/>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,700"/>
+    <link href="/portal/css/portal.css?v=r1951" type="text/css" rel="stylesheet"/>
+
+    <!--[if IE]>
+    <link rel="stylesheet" type="text/css" href="/portal/css/ie.css" />
+    <![endif]--><script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;" type="text/javascript"></script>
+    <script src="/portal/js/portal-min.js?v=r1951" type="text/javascript"></script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+      <div class="navbar navbar-fixed-top" id="header-holder">
+        <div class="header-top">
+          <div class="container">
+          <!-- note: hover effect here -->
+            <div class="navbar-header">
+              <button data-target=".nav-links" data-toggle="collapse" class="navbar-toggle" type="button"><span class="glyphicon glyphicon-user"></span></button>
+              <span class="navbar-brand">
+                <a href="/portal"><img alt="" src="/portal/img/logo-v3.png"/></a>
+                <div class="back-to-dashboard">
+                  <span class="vertical-stick">|</span>
+                  <a href="#" >Back to Dashboard</a>
+                </div>
+              </span>
+            </div>
+            <!-- end of hover effect -->
+
+            <div class="collapse nav-links logged navbar-collapse">
+              <strong>Elizabeth Bennett</strong>
+              <ul class="clearfix">
+                <li><a href="/portal/timetable.pagestructure.bodystructure.bodyheader.loginuser.logout">Logout</a></li>
+              </ul>
+              <img src="https://s.gravatar.com/avatar/31f90042df8ce9407d9828c0f9c6d7b7?d=https%3A%2F%2Fskillsoncourse.com.au%2Fportal%2Fimg%2Fico-student-default.png" class="login-avatar-icon"/><span class="caret"></span>
+            </div>
+          </div>
+        </div>
+        <div class="header-nav">
+          <div class="container">
+            <button data-target=".main-menu" data-toggle="collapse" class="navbar-toggle" type="button"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            <div class="main-menu collapse navbar-collapse">
+              <ul class="main-nav">
+                <li class=""><a href="/portal/timetable" id="timetable"><i class="icon-timetable"></i>Timetable</a></li>
+                <li class=""><a href="/portal/resources" id="resources"><i class="icon-resources"></i>Resources</a></li>
+                <li class=""><a href="/portal/profile" id="profile"><i class="icon-profile"></i>My Profile</a></li>
+                <li class=""><a href="/portal/subscriptions" id="subscriptions"><i class="icon-subscribe"></i>Subscriptions</a></li>
+                <li class=""><a href="/portal/history" id="history"><i class="icon-history"></i>History</a></li>
+              </ul>
+              <a class="btn btn-primary btn-lg btn-approval" href="/portal/tutor/classapproval/5040367">
+              Approvals <span class="badge">4</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashboard">
+      <!-- row: 5/7 -->
+        <div class="container">
+        <!-- level 1 -->
+          <div class="row">
+            <div class="col-lg-5">
+              <div class="dashboard-card">
+
+                <div class="about-class">
+                  <strong class="next-class-mark">NEXT CLASS</strong>
+                  <p class="class-date">Monday, 13 March 2016</p>
+                  <p class="class-time">9am - 12.30am</p>
+                  <p class="class-name">Philosophy Course: Introduction to the Philoshphy of Shakespeare</p>
+                  <p class="class-location"><span class="glyphicon glyphicon-map-marker"></span> The University of Sydney</p>
+                </div>
+
+                <div class="class-map">
+                  <div class="class-date">
+                    <div>Mon</div>
+                    <div class="class-day">13</div>
+                  </div>
+                  <a href="#" class="btn btn-primary btn-view-map">VIEW MAP</a>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-lg-7 no-padding hidden-xs">
+              <div class="col-lg-4">
+                <div class="dashboard-card persent-of-attendance">
+                  <div class="text-center percent">99%</div>
+                  <div class="attendance-mark text-center"><span class="glyphicon glyphicon-ok"></span>&nbsp;Attendance</div>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="dashboard-card payment text-center">
+                  <div class="payment-due">Payment Due</div>
+                  <div class="payment-sum">$268.00</div>
+                  <a href="#" class="btn btn-primary btn-pay">PAY ONLINE NOW</a>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="dashboard-card user-card text-center">
+                  <div class="usi-required"><strong>USI REQUIRED</strong></div>
+                  <div class="user-photo"><img src="http://lorempixel.com/50/50/people/"></div>
+                  <div class="user-name">Geoff Davis</div>
+                  <hr>
+                  <a href="#">Review Now</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- level 2 -->
+
+          <div class="row">
+            <div class="col-lg-5">
+              <div class="dashboard-card resources">
+                <div class="resources-header">
+                  <strong>RESOURCES</strong>
+                  <a class="pull-right">View All
+                    &nbsp;<span class="badge">14</span>
+                  </a>
+                </div>
+                <div class="resources-list">
+                  <ul>
+                    <li><span class="glyphicon glyphicon-file"></span><a href="#">Document-Download-Link-One.pdf</a></li>
+                    <li><span class="glyphicon glyphicon-file"></span><a href="#">Document-Download-Link-Two.pdf</a></li>
+                    <li><span class="glyphicon glyphicon-file"></span><a href="#">Document-Download-Link-Three.pdf</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7 no-padding">
+              <div class="col-lg-8">
+                <div class="dashboard-card class-feedback">
+                  <strong>CLASS FEEDBACK</strong>
+                  <div class="class-feedback-name">Certificate III in Children's Services</div>
+                  <div class="class-feedback-foot">
+                    <span><img src="/portal/img/stars.png"></span>&nbsp;|&nbsp;<a href="#">Provide Feedback</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4 hidden-xs">
+                <div class="dashboard-card future-class text-center">
+                  <p class="class-name">Animal Welfare Officer Skill Set</p>
+                  <p>(CLAS-28)</p>
+                  <p>Mon 17 Jan 2:30pm</p>
+                  <hr>
+                  <a href="#">Requries Approval</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- level 3 -->
+
+          <div class="row hidden-xs">
+            <div class="col-lg-5 no-padding">
+              <div class="col-lg-6">
+                <div class="dashboard-card marking-roll">
+                  <div class="mark-roll-header">
+                    <strong>MARK ROLL</strong>
+                    <p class="class-name">Animal Welfare Officer Skill Set</p>
+                  </div>
+                  <div class="mark-roll-body">
+                    <p>Friday, 22 March 2016</p>
+                    <span>9am - 5pm</span>
+
+                    <div class="mark-roll-link">
+                      <span class="glyphicon glyphicon-check"></span>
+                      <a href="#">Mark Roll</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="dashboard-card marking-outcomes">
+                  <div class="mark-outcomes-header">
+                    <strong>MARK OUTCOMES</strong>
+                    <p class="class-name">Certificate III in Children Services</p>
+                    <p>(CLAS-28)</p>
+                  </div>
+                  <div class="mark-outcomes-body">
+                    <span class="glyphicon glyphicon-signal"></span>
+                    <a href="#">Mark Outcomes</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7 no-padding">
+              <div class="col-lg-4">
+                <div class="dashboard-card app-to-study text-center">
+                  <strong>APPLICATION TO STUDY</strong>
+                  <p class="class-name">Philosophy Course: Introduction to the Philoshphy of Shakespeare</p>
+                  <p class="accepted"><span class="glyphicon glyphicon-ok"></span>&nbsp;Accepted</p>
+                  <button class="btn btn-proceed">PROCEED</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  <!-- end of wrap -->
+
+
+  </body>
+</html>

@@ -860,6 +860,23 @@ strong.link-color {
 	margin-top: 10px;
 }
 
+.back-to-dashboard {
+  display: none;
+
+  a {
+    color: $primary-btn-hover;
+  }
+
+  .vertical-stick {
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0 5px;
+  }
+}
+
+.navbar-header:hover .back-to-dashboard {
+  display: inline-block;
+}
+
 /* student resources */
 
 .resources-content, .result-content {

@@ -1,0 +1,383 @@
+#dashboard {
+  min-height: 100vh;
+  background-color: $dashboard-bg;
+  padding-top: 150px;
+  padding-bottom: 50px;
+
+  .class-name {
+    font-size: 18px;
+  }
+
+  .dashboard-card {
+    margin-top: 25px;
+    background-color: white;
+    border-radius: 10px;
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .about-class, .class-map {
+    width: 50%;
+    height: 100%;
+    padding: 20px;
+  }
+
+  .about-class {
+    float: left;
+
+    .class-date {
+      margin: 0;
+      color: black;
+    }
+    .class-time, .class-location {
+      color: $month-name-color;
+    }
+    .class-name {
+      font-size: 20px;
+    }
+    .class-location {
+      .glyphicon-map-marker {
+        color: $completed-marker;
+      }
+    }
+  }
+
+  .class-map {
+    /*add another image later*/
+    background-image: url("http://www.mindingthecampus.com/originals/campus.jpg");
+    background-size: cover;
+    float: right;
+
+    .class-date {
+      color: white;
+
+      .class-day {
+        font-size: 30px;
+      }
+    }
+
+    .btn-view-map {
+      background-color: $completed-marker;
+      border: none;
+      bottom: 20px;
+      position: absolute;
+      right: 20px;
+    }
+  }
+
+  .next-class-mark {
+    color: $completed-marker;
+  }
+
+  .persent-of-attendance.low-percent-card {
+    background-color: $low-percents-mark;
+
+    .glyphicon {
+      color: $dark-red-mark;
+      top: 3px;
+    }
+
+    .glyphicon:before {
+      content: "\e014";
+    }
+  }
+  .persent-of-attendance.middle-percent-card {
+    background-color: $middle-percents-mark;
+
+    .glyphicon {
+      color: $dark-orange-mark;
+    }
+
+    .glyphicon:before {
+      content: "\e107";
+    }
+  }
+  .persent-of-attendance.top-percent-card {
+    background-color: $green-mark;
+
+    .glyphicon {
+      color: $dark-green-mark;
+    }
+
+    .glyphicon:before {
+      content: "\e013";
+    }
+  }
+
+  .persent-of-attendance {
+    color: white;
+
+    .percent {
+      width: 100%;
+      font-size: 72px;
+      margin-top: 50px;
+    }
+
+    .attendance-mark {
+      background-color: rgba(255,255,255,0.1);
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      padding: 15px;
+      font-size: 18px;
+
+      .glyphicon {
+        margin-right: 5px;
+      }
+    }
+
+    .attendance-mark.top-percent {
+      background-color: $attendance-green-mark;
+    }
+  }
+
+  .payment {
+    background-color: $primary-btn-hover;
+
+    .payment-due {
+      color: $red-color;
+      font-size: 16px;
+      margin-top: 50px;
+    }
+    .payment-sum {
+      color: $calendar-link-color;
+      font-size: 42px;
+    }
+    .btn-pay {
+      background-color: $red-color;
+      border: none;
+      margin-top: 60px;
+    }
+  }
+
+  .user-card {
+    .usi-required {
+      color: $red-color;
+      margin: 20px;
+    }
+
+    .user-photo img{
+      border-radius: 50%;
+      margin: 10px;
+    }
+
+    .user-name {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+
+    hr {
+      margin: 20px 20px 15px;
+    }
+
+    a {
+      color: $red-color;
+    }
+  }
+
+  .resources {
+    .resources-header {
+      background-color: $resources-head-bg;
+      color: white;
+      padding: 20px;
+
+      a {
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+
+        .badge {
+          background-color: rgba(255,255,255,0.3);
+        }
+      }
+
+      a:hover {
+        text-decoration: none;
+      }
+    }
+
+    .resources-list {
+      li {
+        margin: 20px;
+        padding-bottom: 17px;
+        border-bottom: 1px solid $dasboard-resources-border;
+      }
+
+      li:last-child {
+        border: none;
+      }
+
+      a {
+        color: black;
+        display: inline-block;
+        width: 80%;
+      }
+
+      .glyphicon-file {
+        color: $dashboard-doc-icon-color;
+        margin-right: 10px;
+        font-size: 20px;
+        top: 5px;
+      }
+    }
+  }
+
+  .class-feedback {
+    padding: 23px;
+
+    strong {
+      color: $link-color;
+    }
+
+    .class-feedback-name {
+      margin-top: 20px;
+      padding-bottom: 20px;
+      font-size: 40px;
+      border-bottom: 1px solid $dasboard-resources-border;
+    }
+
+    .class-feedback-foot {
+      margin-top: 15px;
+      color: $dashboard-doc-icon-color;
+    }
+  }
+
+  .future-class {
+    background-color: $future-marker;
+    color: white;
+    padding: 20px;
+
+    hr {
+      border-color: $blue-line;
+      margin-top: 60px;
+      margin-bottom: 15px;
+    }
+
+    a {
+      color: white;
+    }
+
+    .class-name {
+      margin: 20px 0 0;
+    }
+  }
+
+  .marking-roll {
+    .mark-roll-header, .mark-roll-body {
+      padding: 20px;
+    }
+
+    .mark-roll-header {
+      background-color: $future-marker;
+      color: white;
+
+      .class-name {
+        margin: 15px 0 5px;
+      }
+    }
+
+    .mark-roll-body {
+      p {
+        margin: 0;
+      }
+
+      span {
+        color: $small-text-color;
+      }
+    }
+
+    .mark-roll-link {
+      position: absolute;
+      bottom: 20px;
+
+      .glyphicon {
+        font-size: 20px;
+        padding-right: 5px;
+        top: 5px;
+      }
+    }
+  }
+
+  .marking-outcomes {
+    background-color: $in-progress-marker;
+
+    span {
+      color: $small-text-color;
+    }
+
+    .mark-outcomes-header, .mark-outcomes-body {
+      padding: 20px;
+    }
+
+    .mark-outcomes-header {
+      color: white;
+
+      .class-name {
+        margin: 15px 0 15px;
+      }
+    }
+
+    .mark-outcomes-body {
+      background-color: white;
+      position: absolute;
+      bottom: 0;
+      padding: 20px;
+      width: 100%;
+
+      .glyphicon {
+        font-size: 20px;
+        padding-right: 5px;
+        top: 5px;
+      }
+    }
+  }
+
+  .app-to-study {
+    padding-top: 20px;
+
+    strong {
+      color: $red-color;
+    }
+
+    .class-name {
+      margin: 10px 0;
+    }
+
+    .accepted {
+      margin: 10px 0 15px;
+      color: $green-mark;
+    }
+
+    .btn-proceed {
+      background-color:  $green-mark;
+      color: white;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  #dashboard {
+    padding: 0 0 20px;
+
+    .dashboard-card {
+      height: auto;
+      min-height: 250px;
+    }
+
+    .about-class, .class-map {
+      float: inherit;
+      width: 100%;
+      min-height: 250px;
+    }
+
+    .about-class {
+      padding-right: 50px;
+      padding-bottom: 15px;
+
+      .class-name {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
