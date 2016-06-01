@@ -78,6 +78,7 @@
 
           </div>
           <div class="tab-content">
+
             <!-- Another location -->
             <div class="tab-pane active" id="outcomes-location">
               <div class="row">
@@ -85,7 +86,7 @@
                   <span>Assessments are made against units of competency from the Children's Services <span class="service-name">CHC0712</span>.</span>
                   <div class="row">
                     <ul>
-                      <li role="presentation">
+                      <li role="presentation" class="active">
                         <div class="col-lg-6 col-sm-12">
                           <a class="btn-lg btn-outcomes" href="#mark-by-outcome" data-toggle="tab">
                             <span><h4>Mark by Outcome</h4></span>
@@ -93,7 +94,7 @@
                           </a>
                         </div>
                       </li>
-                      <li role="presentation" class="active">
+                      <li role="presentation">
                         <div class="col-lg-6 col-sm-12">
                           <a class="btn-lg btn-outcomes" href="#mark-by-student" data-toggle="tab">
                             <span><h4>Mark by Student</h4></span>
@@ -107,107 +108,35 @@
               </div>
 
               <div class="tab-content">
-
-<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<!-- New partial inside partial -->
-
-                <div id="mark-by-student" class="tab-pane active">
-                  <div class="col-lg-12 col-sm-12 mark-by-caption">
-                    <a href="#">Back <span class="glyphicon glyphicon-chevron-right"></span></a>
-                    Geoff Davis
-                    <div class="pull-right marking-list marking" href="#absent-partial" data-toggle="tab">
-                      <div class="marking">MARK ALL</div>
-                      <span>&nbsp;|</span>
-                      <span class="glyphicon glyphicon-chevron-down"></span>
-                    </div>
-                  </div>
+                <div id="mark-by-outcome" class="tab-pane active">
+                  <div class="col-lg-12 col-sm-12 mark-by-caption">Select an Outcome</div>
                   <ul class="list-unstyled classes-content">
-                    <li>
-                      Coordinate work in the aged care sector (CHCAC13A) </br>
-                      <span>1/1/2016 - 31/1/2016</span>
-
-                      <div class="pull-right marking-list" data-toggle="collapse" data-target="#mark-by-user-ID">
-                        <div class="marking competent-marking">COMPETENT</div>
-                        <span>&nbsp;|</span>
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                      </div>
-
-                      <!-- collapse for mark -->
-                      <!-- collapse for every people at list -->
-                      <div class="collapse absent-with-reason" id="mark-by-user-ID">
-                        <strong>SELECT OUTCOME</strong>
-                        <!-- I'm not sure what happen after click; add some attribute for button or <li>, if you want -->
-                        <ul class="nav-menu">
-                          <li>
-                            <button>Competent</button>
-                            <span>&nbsp;|&nbsp;</span>
-                          </li>
-                          <li>
-                            <button>Not Yet Competent</button>
-                            <span>&nbsp;|&nbsp;</span>
-                          </li>
-                          <li>
-                            <button>No Result</button>
-                            <span>&nbsp;|&nbsp;</span>
-                          </li>
-                          <li><button>Withdrawn</button></li>
-                          <li class="pull-right">
-                            <div class="squaredThree">
-                              <input id="squaredThree" name="check" type="checkbox" >
-                              <label for="squaredThree"></label>
-                            </div>
-                            Set outcome end date to today
-                          </li>
-                        </ul>
-                        <!-- reloading page? -->
-                        <button class="btn btn-primary btn-sm">SAVE</button>
-                      </div>
-                      <!-- end of collapse -->
-                    </li>
-                    <li>
-                      Promote the safety, well-being and welfare of children, young people and their families (CHCCHILD3A)</br>
-                      <span>1/1/2016 - 31/1/2016</span>
-
-                      <div class="pull-right marking-list" data-toggle="collapse" data-target="#mark-by-user-ID">
-                        <div class="marking">NO RESULT</div>
-                        <span>&nbsp;|</span>
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                      </div>
-                    </li>
-                    <li>
-                      Provide food services (CHCAC16A)</br>
-                      <span>1/1/2016 - 31/1/2016</span>
-
-                      <div class="pull-right marking-list" data-toggle="collapse" data-target="#mark-by-user-ID">
-                        <div class="marking withdrawn-marking">WITHDARAWN</div>
-                        <span>&nbsp;|</span>
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                      </div>
-                    </li>
-                    <li>
-                      Work within legislative and ethical requirements (CHCCHILD1A)</br>
-                      <span>1/1/2016 - 31/1/2016</span>
-
-                      <div class="pull-right marking-list" data-toggle="collapse" data-target="#mark-by-user-ID">
-                        <div class="marking">NO RESULT</div>
-                        <span>&nbsp;|</span>
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                      </div>
-                    </li>
+                    <li class="arrow-content">Coordinate work in the aged care sector (CHCAC13A)</li>
+                    <li class="arrow-content">Promote the safety, well-being and welfare of children, young people and their families (CHCCHILD3A)</li>
+                    <li class="arrow-content">Provide food services (CHCAC16A)</li>
+                    <li class="arrow-content">Work within legislative and ethical requirements (CHCCHILD1A)</li>
                   </ul>
+                </div>
 
+                <div id="mark-by-student" class="tab-pane">
+                <div class="col-lg-12 col-sm-12 mark-by-caption">Select a Student</div>
+                  <ul class="list-unstyled classes-content">
+                    <li class="arrow-content">Geoff Davis</li>
+                    <li class="arrow-content">Flynn Hill</li>
+                    <li class="arrow-content">Sarah Hill</li>
+                    <li class="arrow-content">Amy Hill</li>
+                  </ul>
                 </div>
               </div>
+              <!-- Another location -->
             </div>
-<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<!-- New partial inside partial -->
 
             <div class="tab-pane" id="class-location">
               <div class="row">
                 <div class="col-lg-12 col-sm-12"><span>No information on the venue</span></div>
               </div>
             </div>
-<!-- --------------------------------------------- end of Darya's changes ------------------------------------------------------------- -->
+            <!--  end of Darya's changes  -->
 
           </div>
         </div>
@@ -254,7 +183,10 @@
         </div>
       </div>
     </div>
-
+    <div id="footer">
+      <div class="container clearfix">
+        <p class="text-muted credit pull-right text-right"><a target="_blank" href="http://www.ish.com.au/oncourse"><img alt="" src="/portal/img/poweredby.png"/></a><br><small class="pull-right">© 2015</small></br></p>
+      </div>
+    </div>
   </body>
 </html>
-

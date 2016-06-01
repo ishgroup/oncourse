@@ -1240,10 +1240,23 @@ li.active .btn-outcomes small {
   color: white;
 }
 
-#mark-by-outcome li,
-#mark-by-student li{
-  padding: 12px 0;
-  border-bottom: 1px solid $gray-border;
+#mark-by-outcome, #mark-by-student {
+
+  li{
+    padding: 12px 0;
+    border-bottom: 1px solid $gray-border;
+  }
+
+  .absent-with-reason {
+    li {
+      border-bottom: none;
+
+       button {
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
 }
 
 .mark-by-caption {
@@ -1499,6 +1512,7 @@ ul.abcent-menu {
 }
 
 .competent-marking { color: $green-mark;}
+.not-yet-competent-marking { color: $primary-btn; }
 .withdrawn-marking { color: $withdrawn-marker;}
 
 #mark-by-outcome, #mark-by-student {

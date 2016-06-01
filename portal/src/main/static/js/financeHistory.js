@@ -15,7 +15,7 @@ function dateEffects() {
         $j('#amount-due').addClass('warning-msg').append(' was overdue');
     }
     if ($j('.balanse').first().text() > '$0,01') {
-        $j('#show-if-balance').css('display', 'block');
+        $j('#show-if-balance').show();
     }
 }
 
