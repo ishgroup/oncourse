@@ -1166,7 +1166,7 @@ object.note-icon {
   }
 }
 
-.actual-course.past-course-diff {
+.actual-course.past-course-diff, .future-course.past-course-diff {
   background-color: $past-course-diff-bg;
 }
 
@@ -1300,9 +1300,21 @@ li.active .btn-outcomes small {
     }
   }
 }
-/*remove after all*/
 .class-description-class {
 	display: block;
+
+  td{
+    font-size: 14px;
+  }
+
+  .glyphicon{
+    font-size: 20px;
+    padding-left: 10px;
+  }
+
+  .glyphicon-calendar:before {
+    content: "\e109";
+  }
 }
 
 .actual-roll-desc {
@@ -1560,7 +1572,11 @@ ul.abcent-menu {
 }
 
 .warning-text {
-	margin: 10px 0;
+  margin: 10px 0;
+}
+
+.warning-msg {
+  color: red;
 }
 
 .absent-with-reason-mark {
@@ -1569,13 +1585,64 @@ ul.abcent-menu {
   left: 0;
   right: 0;
   z-index: 6;
-  width: 75px;
+  width: 80px;
   height: 34px;
   border-radius: 3px;
   font-size: 10px;
   padding: 3px;
 }
 
-.warning-msg {
-	color: red;
+.main-nav {
+  .glyphicon {
+    font-size: 20px;
+    margin: 0 5px;
+    top: 5px;
+  }
+}
+
+.student-panel {
+  li{
+    padding-top: 15px;
+  }
+}
+
+.class-raiting {
+  display: inline-block;
+  margin: 15px 0 0 15px;
+}
+
+.student-session-content {
+  .glyphicon {
+    padding: 10px;
+    font-size: 20px;
+  }
+
+  .glyphicon-ok {
+    background-color: $green-mark;
+    color: $dark-green-mark;
+  }
+
+  .glyphicon-remove {
+    background-color: $low-percents-mark;
+    color: $dark-red-mark;
+  }
+
+  .glyphicon-th-list {
+    background-color: $past-course-diff-bg;
+    color: $dashboard-doc-icon-color;
+  }
+
+  .past-course {
+    a {
+      color: $link-color;
+    }
+  }
+
+  .session-date {
+    font-weight: bold;
+  }
+}
+
+.current-attendance {
+  margin-top: 15px;
 }
