@@ -53,6 +53,8 @@ dependencies {
 
 	compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
 	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
+	compile "org.apache.cayenne:cayenne-java8:$cayenneVersion"
+
 
 	compile 'foxtrot:foxtrot-core:4.0'
 
