@@ -198,6 +198,12 @@ public class MergeProcessor {
 			for (WaitingList waitingList : new ArrayList<>(studentToDelet.getWaitingLists())) {
 				waitingList.setStudent(studentToUpdate);
 			}
+			for (MessagePerson person : new ArrayList<>(studentToDelet.getMessagePeople())) {
+				person.setStudent(studentToUpdate);
+			}
+			for (PaymentIn paymentIn : new ArrayList<>(studentToDelet.getPaymentsIn())) {
+				paymentIn.setStudent(studentToUpdate);
+			}
 			mergeDocumentRelation(STUDENT_IDENTIFIER, contactToDelete.getId(), contactToUpdate.getId(), contactToUpdate.getAngelId());
 			context.deleteObject(studentToDelet);
 		}
