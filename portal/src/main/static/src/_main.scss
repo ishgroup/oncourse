@@ -1119,8 +1119,8 @@ strong.link-color {
   font-size: 1.6rem;
 }
 
-img.mark-img {
-  height: 50px;
+span.mark-img {
+  font-size: 5em;
   cursor: pointer;
 }
 
@@ -1130,14 +1130,15 @@ img.mark-img {
   margin-left: 40px;
 }
 
-object.new-nav-icon {
-  height: 30px;
+.new-nav-icon {
+  font-size: 3rem;
   position: absolute;
   display: block;
-  margin-top: -5px;
+  margin-top: -10px;
+  margin-left: -5px;
 }
 
-object.note-icon {
+.note-icon {
   height: 15px;
 }
 
@@ -1147,8 +1148,9 @@ object.note-icon {
 
 .past-course {
 
-  object.session-icon {
+  .session-icon {
     background-color: $session-icon;
+    color: $dark-green-mark;
   }
 
    a {
@@ -1185,8 +1187,10 @@ object.note-icon {
   color: white;
 }
 
-object.session-icon {
-  height: 40px;
+.session-icon {
+	background-color: $past-course-diff-bg;
+  font-size: 3rem;
+  display: inline-block;
 }
 
 ul.nav-menu {
@@ -1280,7 +1284,12 @@ li.active .btn-outcomes small {
   table.class-desc-section {
     margin: 25px 0;
 
-    object {
+    .session-icon {
+    	background-color: transparent;
+    	font-size: 2em;
+    }
+
+    i {
       height: 30px;
       display: inline-block;
     }
