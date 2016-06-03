@@ -78,7 +78,7 @@
         border-radius: 50%;
         text-align: center;
         color: $white;
-        font-size: 9px;
+        font-size: 0.9rem;
         padding: 1px 0;
 			}
 		}
@@ -130,7 +130,7 @@
     .glyphicon-chevron-down {
       color: $primary-label-hover;
       margin-left: 5px;
-      font-size: 10px;
+      font-size: 1rem;
     }
 	}
 
@@ -140,7 +140,7 @@
 		.btn-approval {
 			float: right;
 			margin-top: 9px;
-			font-size: 14px;
+			font-size: 1.4rem;
 		}
 
 		.badge {
@@ -162,7 +162,7 @@
     }
 
     .user-links span {
-      font-size: 12px;
+      font-size: 1.2rem;
       margin: 15px 0;
     }
 
@@ -216,7 +216,7 @@
 				border: 0;
 				color: #D4952E;
 				text-transform: none;
-				font-size: 11px;
+				font-size: 1.1rem;
 				font-weight: 400;
 				padding-right: 0;
 			    position: absolute;
@@ -337,7 +337,7 @@
 			margin-left: 5px;
 			color: $white;
 			padding: 8px 12px;
-			font-size: 13px;
+			font-size: 1.3rem;
 
 			&:hover {
 				text-decoration: none;

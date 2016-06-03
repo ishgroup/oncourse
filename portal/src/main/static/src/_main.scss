@@ -80,7 +80,7 @@
 		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 		font-weight: normal;
 		margin-left: 15px;
-		font-size: 11px;
+		font-size: 1.1rem;
 		margin-top: 15px;
 
 		&:hover {
@@ -99,7 +99,7 @@
 	h4 small {
 		color: $dark-brown;
 		font-family: Arial;
-		font-size: 12px;
+		font-size: 1.2rem;
 	}
 
 	.badge {
@@ -254,7 +254,7 @@
 
 		.close {
 			float: left;
-			font-size: 18px;
+			font-size: 1.8rem;
 			margin-right: 3px
 		}
 
@@ -481,7 +481,7 @@
 			color: $red-color;
 			padding: 0px 20px 3px 5px;
 			border-bottom: 1px solid $sidebar-border-color;
-			font-size: 18px;
+			font-size: 1.8rem;
 			font-weight: 700;
 			text-shadow: none;
 			font-family: $heading-font;
@@ -563,7 +563,7 @@
 	text-align: center;
 	width: 100%;
 	text-transform: uppercase;
-	font-size: 14px;
+	font-size: 1.4rem;
 	font-weight: 700;
 	color: #69524a;
 
@@ -636,7 +636,7 @@
 
 		a {
 			color: $tabs-text-color;
-			font-size: 14px;
+			font-size: 1.4rem;
 			padding: 17px 15px;
 		}
 
@@ -761,7 +761,7 @@ strong.link-color {
 	p {
 		font-weight: bold;
 		margin: 14px 0px 0px 0px;
-		font-size: 20px;
+		font-size: 2rem;
 		line-height: 20px;
 	}
 
@@ -925,7 +925,7 @@ strong.link-color {
 			}
 
 			h6 {
-				font-size: 14px;
+				font-size: 1.4rem;
 			}
 		}
 	}
@@ -1090,7 +1090,7 @@ strong.link-color {
   position: absolute;
   z-index: 1030;
   display: block;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 1.4;
 }
 //css for jquery-ui helper class
@@ -1116,7 +1116,7 @@ strong.link-color {
 }
 
 .percents-of-attendance {
-  font-size: 16px;
+  font-size: 1.6rem;
 }
 
 img.mark-img {
@@ -1259,8 +1259,7 @@ li.active .btn-outcomes small {
 }
 
 .mark-by-caption {
-  font-size: 18px;
-  font-family: Arial;
+  font-size: 1.8rem;
   padding: 30px 0 5px 0;
   margin-bottom: 20px;
   border-bottom: 1px solid $gray-border;
@@ -1270,7 +1269,7 @@ li.active .btn-outcomes small {
 
     span {
       color: $link-color;
-      font-size: 16px;
+      font-size: 1.6rem;
     }
   }
 }
@@ -1307,7 +1306,7 @@ li.active .btn-outcomes small {
   }
 
   .glyphicon{
-    font-size: 20px;
+    font-size: 2rem;
     padding-left: 10px;
   }
 
@@ -1351,7 +1350,7 @@ li.active .btn-outcomes small {
     border-left: 1px solid $input-group-addon-border;
     background: white;
     color: $input-group-addon-color;
-    font-size: 22px;
+    font-size: 2.2rem;
   }
 }
 
@@ -1389,7 +1388,7 @@ ul.abcent-menu {
 }
 
 .sync-to-device .glyphicon-cloud-download {
-  font-size: 24px;
+  font-size: 2.4rem;
 }
 
 .marker {
@@ -1418,7 +1417,7 @@ ul.abcent-menu {
 
 .month-name {
   padding: 30px;
-  font-size: 15px;
+  font-size: 1.5rem;
   color: $month-name-color;
 }
 
@@ -1432,7 +1431,7 @@ ul.abcent-menu {
   }
 
   .day-of-class {
-    font-size: 42px;
+    font-size: 4.2rem;
   }
 }
 
@@ -1443,7 +1442,7 @@ ul.abcent-menu {
   margin: 10px 0;
 
   .class-title {
-    font-size: 20px;
+    font-size: 2rem;
     margin-bottom: 10px;
   }
 
@@ -1518,7 +1517,7 @@ ul.abcent-menu {
 .marking {
   font-weight: bold;
   color: $small-text-color;
-  font-size: 12px;
+  font-size: 1.2rem;
   display: inline;
 }
 
@@ -1587,13 +1586,13 @@ ul.abcent-menu {
   width: 80px;
   height: 34px;
   border-radius: 3px;
-  font-size: 10px;
+  font-size: 1rem;
   padding: 3px;
 }
 
 .main-nav {
   .glyphicon {
-    font-size: 20px;
+    font-size: 2rem;
     margin: 0 5px;
     top: 5px;
   }
@@ -1613,7 +1612,7 @@ ul.abcent-menu {
 .student-session-content {
   .glyphicon {
     padding: 10px;
-    font-size: 20px;
+    font-size: 2rem;
   }
 
   .glyphicon-ok {

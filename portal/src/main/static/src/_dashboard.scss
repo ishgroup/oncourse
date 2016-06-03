@@ -5,7 +5,7 @@
   padding-bottom: 50px;
 
   .class-name {
-    font-size: 18px;
+    font-size: 1.8rem;
   }
 
   .dashboard-card {
@@ -34,7 +34,7 @@
       color: $month-name-color;
     }
     .class-name {
-      font-size: 20px;
+      font-size: 2rem;
     }
     .class-location {
       .glyphicon-map-marker {
@@ -53,7 +53,7 @@
       color: white;
 
       .class-day {
-        font-size: 30px;
+        font-size: 3rem;
       }
     }
 
@@ -110,7 +110,7 @@
 
     .percent {
       width: 100%;
-      font-size: 72px;
+      font-size: 7.2rem;
       margin-top: 50px;
     }
 
@@ -120,7 +120,7 @@
       width: 100%;
       bottom: 0;
       padding: 15px;
-      font-size: 18px;
+      font-size: 1.8rem;
 
       .glyphicon {
         margin-right: 5px;
@@ -137,12 +137,12 @@
 
     .payment-due {
       color: $red-color;
-      font-size: 16px;
+      font-size: 1.6rem;
       margin-top: 50px;
     }
     .payment-sum {
       color: $calendar-link-color;
-      font-size: 42px;
+      font-size: 4.2rem;
     }
     .btn-pay {
       background-color: $red-color;
@@ -163,7 +163,7 @@
     }
 
     .user-name {
-      font-size: 20px;
+      font-size: 2rem;
       margin: 20px 0;
     }
 
@@ -217,7 +217,7 @@
       .glyphicon-file {
         color: $dashboard-doc-icon-color;
         margin-right: 10px;
-        font-size: 20px;
+        font-size: 2rem;
         top: 5px;
       }
     }
@@ -233,7 +233,7 @@
     .class-feedback-name {
       margin-top: 20px;
       padding-bottom: 20px;
-      font-size: 40px;
+      font-size: 4rem;
       border-bottom: 1px solid $dasboard-resources-border;
     }
 
@@ -292,7 +292,7 @@
       bottom: 20px;
 
       .glyphicon {
-        font-size: 20px;
+        font-size: 2rem;
         padding-right: 5px;
         top: 5px;
       }
@@ -326,7 +326,7 @@
       width: 100%;
 
       .glyphicon {
-        font-size: 20px;
+        font-size: 2rem;
         padding-right: 5px;
         top: 5px;
       }
