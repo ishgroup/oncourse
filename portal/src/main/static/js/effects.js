@@ -8,21 +8,6 @@ goog.require('timepicki');
 var $j = jQuery.noConflict();
 $j(document).ready(function() {
 
-// I have some trouble with object/svg
-// I want to add classes to svg inside objects to change styles
-// If you find the best way, just do it
-
-// for adding class to svg inside object
-  function SetClassToSvg(objects, classname){
-    [].forEach.call(objects, function(item){
-      item.contentDocument;
-      $j('svg', item).attr("class", classname);
-    });
-  };
-
-  SetClassToSvg($j('li.active object'), 'active');
-  SetClassToSvg($j('.past-sessions .past-course object'), 'past-session');
-
 // colors of different percents attendance
   $j('.percents-of-attendance span').each( function(){
     parent = $j(this).parent();
