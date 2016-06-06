@@ -122,5 +122,7 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 
 	void setBanking(BankingInterface banking);
 	
+	void setUndepositedFundsAccount(AccountInterface account);
+	
 	CreditCardType getCreditCardType();
 }
