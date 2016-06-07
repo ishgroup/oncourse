@@ -297,7 +297,7 @@ function sendAjax(actionLink)
 }
 
 function initMasks() {
-	$j("#creditCardNumber").inputmask("9999 9999 9999 9999");
+	$j("#creditCardNumber").inputmask("9999 9999 9999 9999", { "placeholder": " " });
 	$j("#dateOfBirth").inputmask("dd/mm/yyyy");
 
 }
