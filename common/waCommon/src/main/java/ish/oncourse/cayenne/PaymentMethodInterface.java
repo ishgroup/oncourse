@@ -22,4 +22,6 @@ public interface PaymentMethodInterface extends PersistentObjectI {
 	public Boolean getReconcilable();
 	
 	public PaymentType getType();
+	
+	public AccountInterface getUndepositedFundsAccount();
 }
