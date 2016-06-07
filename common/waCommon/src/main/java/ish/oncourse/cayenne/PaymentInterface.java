@@ -86,11 +86,6 @@ public interface PaymentInterface extends PrintableObject, PersistentObjectI {
 	Date getCreatedOn();
 
 	/**
-	 * @return date banked
-	 */
-	Date getDateBanked();
-
-	/**
 	 * @return reconciled
 	 */
 	Boolean getReconciled();

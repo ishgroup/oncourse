@@ -8,6 +8,5 @@ import org.apache.cayenne.Persistent;
 import java.util.Date;
 
 public interface BankingInterface extends Persistent {
-
-	Date getSettlementDate();
+	
 }
