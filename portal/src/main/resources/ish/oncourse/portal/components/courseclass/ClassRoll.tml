@@ -1,8 +1,16 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+             xmlns:p="tapestry:parameter">
 <div class="col-lg-12 class-roll-content clearfix">
     <div class="page-header clearfix">
         <h4 class="pull-left">
-        Class roll <small>${numberOfStudents} enrolled students (Maximum: ${courseClass.maximumPlaces} | Minimum: ${courseClass.minimumPlaces})</small>
+            Class roll <small>${numberOfStudents} enrolled students
+            <t:if test="courseClass.getIsDistantLearningCourse()" negate="true">
+                (Maximum: ${courseClass.maximumPlaces} | Minimum: ${courseClass.minimumPlaces})
+                <p:else>
+                    (Minimum: ${courseClass.minimumPlaces})
+                </p:else>
+            </t:if>
+            </small>
         </h4>
     </div>
     <p class="info-text clearfix">You are currently marking <strong id='sessionDate'></strong><button type="button" class="finish pull-right btn btn-default btn-xs">Finish</button></p>

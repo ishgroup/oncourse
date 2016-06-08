@@ -41,7 +41,7 @@ public class PaymentInModelValidator {
             CourseClass clazz = enrolment.getCourseClass();
             List<Enrolment> validEnrolments = clazz.getValidEnrolments();
             int availPlaces = clazz.getMaximumPlaces() - validEnrolments.size();
-            if (availPlaces < 0) {
+            if (!clazz.getIsDistantLearningCourse() && availPlaces < 0) {
                 error = Error.noPlacesAvailable;
                 errorMessage = String.format(error.getMessage(), clazz.getUniqueIdentifier());
                 logger.info("{} courseClassId: {}", errorMessage, clazz.getId());
