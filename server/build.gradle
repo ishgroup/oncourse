@@ -60,6 +60,7 @@ dependencies {
 
 	compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 	compile "org.eclipse.jetty:jetty-servlets:$jettyVersion"
+	compile "org.eclipse.jetty.http2:http2-server:$jettyVersion"
 	compile "org.eclipse.jetty.websocket:websocket-servlet:$jettyVersion"
 	compile "org.eclipse.jetty.websocket:websocket-server:$jettyVersion"
 
