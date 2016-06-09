@@ -97,7 +97,8 @@ dependencies {
 	compile 'com.warrenstrange:googleauth:0.4.5'
 	compile 'net.glxn.qrgen:javase:2.0'
 
-	compile 'net.sf.supercsv:super-csv:2.3.1'
+	compile 'net.sf.supercsv:super-csv:2.4.0'
+	compile 'net.sf.supercsv:super-csv-java8:2.4.0'
 
 	compile 'org.reflections:reflections:0.9.10'
 
