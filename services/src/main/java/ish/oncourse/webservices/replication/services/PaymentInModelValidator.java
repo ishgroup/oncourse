@@ -77,7 +77,7 @@ public class PaymentInModelValidator {
     }
 
     public enum Error {
-        activeEnrolmentExists("Student %s already has an enrollment in transaction for class %s and he/she cannot be enrolled twice."),
+        activeEnrolmentExists("Student %s already has an active enrolment for class %s and he/she cannot be enrolled twice."),
         noPlacesAvailable("No places available for courseClass: %s."),
         noLicenseCCProcessing("The college doesn't have a license for processing credit card payments");
 
