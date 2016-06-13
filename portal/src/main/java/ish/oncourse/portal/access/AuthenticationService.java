@@ -5,10 +5,7 @@ import ish.oncourse.model.SupportPassword;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
@@ -45,16 +42,10 @@ public class AuthenticationService implements IAuthenticationService {
 			return Collections.emptyList();
 		}
 
-		SelectQuery query = new SelectQuery(Contact.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.PASSWORD_PROPERTY, password));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.GIVEN_NAME_PROPERTY, firstName));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, lastName));
-
-		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.sharedContext().performQuery(query);
-		return users;
+		return ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email))
+				.and(Contact.PASSWORD.eq(password))
+				.and(Contact.GIVEN_NAME.eq(firstName))
+				.and(Contact.FAMILY_NAME.eq(lastName)).select(cayenneService.sharedContext());
 	}
 
 	@Override
@@ -66,20 +57,15 @@ public class AuthenticationService implements IAuthenticationService {
 
 		ObjectContext context = cayenneService.newNonReplicatingContext();
 
-		SelectQuery query = new SelectQuery(SupportPassword.class);
-		query.andQualifier(ExpressionFactory.matchExp(SupportPassword.PASSWORD_PROPERTY, supportLogin));
-		query.andQualifier(ExpressionFactory.greaterExp(SupportPassword.EXPIRES_ON_PROPERTY, new Date()));
-		query.addOrdering(SupportPassword.CREATED_ON_PROPERTY, SortOrder.DESCENDING);
-		query.setPageSize(1);
-		List<SupportPassword> supportPasswords = context.performQuery(query);
+		SupportPassword supportPassword = ObjectSelect.query(SupportPassword.class).where(SupportPassword.PASSWORD.eq(supportLogin))
+				.and(SupportPassword.EXPIRES_ON.gt(new Date()))
+				.orderBy(SupportPassword.CREATED_ON.desc()).selectFirst(context);
 
-		if	(supportPasswords.isEmpty()) {
-			return false;
-		} else{
-			
-			SupportPassword  value = supportPasswords.get(0);
-			Contact contact = cayenneService.sharedContext().localObject(value.getContact());
+		if (supportPassword != null) {
+			Contact contact = cayenneService.sharedContext().localObject(supportPassword.getContact());
 			applicationStateManager.set(Contact.class, contact);
+			return true;
+		} else {
 			return true;
 		}
 	}
@@ -94,16 +80,10 @@ public class AuthenticationService implements IAuthenticationService {
 			return Collections.emptyList();
 		}
 
-		SelectQuery query = new SelectQuery(Contact.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.PASSWORD_PROPERTY, password));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.IS_COMPANY_PROPERTY, Boolean.TRUE));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, companyName));
-
-		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.sharedContext().performQuery(query);
-		return users;
+		return ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email))
+				.and(Contact.PASSWORD.eq(password))
+				.and(Contact.IS_COMPANY.eq(Boolean.TRUE))
+				.and(Contact.FAMILY_NAME.eq(companyName)).select(cayenneService.sharedContext());
 	}
 
 	/**
@@ -116,15 +96,9 @@ public class AuthenticationService implements IAuthenticationService {
 			return Collections.emptyList();
 		}
 
-		SelectQuery query = new SelectQuery(Contact.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.GIVEN_NAME_PROPERTY, firstName));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, lastName));
-
-		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.sharedContext().performQuery(query);
-		return users;
+		return ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email))
+				.and(Contact.GIVEN_NAME.eq(firstName))
+				.and(Contact.FAMILY_NAME.eq(lastName)).select(cayenneService.sharedContext());
 	}
 	
 	@Override
@@ -134,15 +108,9 @@ public class AuthenticationService implements IAuthenticationService {
 			return Collections.emptyList();
 		}
 
-		SelectQuery query = new SelectQuery(Contact.class);
-
-		query.andQualifier(ExpressionFactory.matchExp(Contact.EMAIL_ADDRESS_PROPERTY, email));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.IS_COMPANY_PROPERTY, Boolean.TRUE));
-		query.andQualifier(ExpressionFactory.matchExp(Contact.FAMILY_NAME_PROPERTY, companyName));
-
-		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.sharedContext().performQuery(query);
-		return users;
+		return ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email))
+				.and(Contact.IS_COMPANY.eq(Boolean.TRUE))
+				.and(Contact.FAMILY_NAME.eq(companyName)).select(cayenneService.sharedContext());
 	}
 
 	/**
@@ -150,13 +118,8 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	@Override
 	public Contact findByPasswordRecoveryKey(String recoveryKey) {
-		Date today = new Date();
-		Expression expr = ExpressionFactory.matchExp(Contact.PASSWORD_RECOVERY_KEY_PROPERTY, recoveryKey);
-		expr = expr.andExp(ExpressionFactory.greaterOrEqualExp(Contact.PASSWORD_RECOVER_EXPIRE_PROPERTY, today));
-		SelectQuery query = new SelectQuery(Contact.class, expr);
-		@SuppressWarnings("unchecked")
-		List<Contact> users = cayenneService.sharedContext().performQuery(query);
-		return (users.isEmpty()) ? null : users.get(0);
+		return ObjectSelect.query(Contact.class).where(Contact.PASSWORD_RECOVERY_KEY.eq(recoveryKey))
+				.and(Contact.PASSWORD_RECOVER_EXPIRE.gte(new Date())).selectFirst(cayenneService.sharedContext());
 	}
 
 	/**
@@ -181,7 +144,7 @@ public class AuthenticationService implements IAuthenticationService {
 	public void storeCurrentUser(Contact user) {
 
             cookieService.writeCookieValue(COOKIE_NAME_lastLoginTime, user.getLastLoginTime() != null ?
-                    user.getLastLoginTime().toString() : new Date(0l).toString());
+                    user.getLastLoginTime().toString() : new Date(0L).toString());
 
         ObjectContext context = cayenneService.newContext();
 
