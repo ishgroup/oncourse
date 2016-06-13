@@ -6,7 +6,6 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
@@ -17,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import static ish.oncourse.portal.services.PortalUtils.COOKIE_NAME_lastLoginTime;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 public class AuthenticationService implements IAuthenticationService {
 
@@ -29,16 +29,17 @@ public class AuthenticationService implements IAuthenticationService {
 	@Inject
 	private Request request;
 
-    @Inject
-    private ICookiesService cookieService;
+	@Inject
+	private ICookiesService cookieService;
 
 	/**
 	 * @see IAuthenticationService#authenticate(String, String, String, String)
 	 */
 	public List<Contact> authenticate(String firstName, String lastName, String email, String password) {
-
-		if (firstName == null || firstName.isEmpty() || lastName == null || lastName.isEmpty() || email == null || email.isEmpty()
-				|| password == null || password.isEmpty()) {
+		if (trimToNull(firstName) == null ||
+				trimToNull(lastName) == null ||
+				trimToNull(email) == null ||
+				trimToNull(password) == null) {
 			return Collections.emptyList();
 		}
 
@@ -50,8 +51,8 @@ public class AuthenticationService implements IAuthenticationService {
 
 	@Override
 	public boolean authenticate(String supportLogin) {
-		
-		if (StringUtils.trimToNull(supportLogin) == null) {
+
+		if (trimToNull(supportLogin) == null) {
 			return false;
 		}
 
@@ -75,8 +76,8 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	public List<Contact> authenticateCompany(String companyName, String email, String password) {
 
-		if (companyName == null || companyName.isEmpty() || email == null || email.isEmpty()
-				|| password == null || password.isEmpty()) {
+		if (trimToNull(companyName) == null || trimToNull(email) == null
+				|| trimToNull(password) == null) {
 			return Collections.emptyList();
 		}
 
@@ -92,7 +93,9 @@ public class AuthenticationService implements IAuthenticationService {
 	@Override
 	public List<Contact> findForPasswordRecovery(String firstName, String lastName, String email) {
 
-		if (firstName == null || firstName.isEmpty() || lastName == null || lastName.isEmpty() || email == null || email.isEmpty()) {
+		if (trimToNull(firstName) == null ||
+				trimToNull(lastName) == null ||
+				trimToNull(email) == null) {
 			return Collections.emptyList();
 		}
 
@@ -100,11 +103,12 @@ public class AuthenticationService implements IAuthenticationService {
 				.and(Contact.GIVEN_NAME.eq(firstName))
 				.and(Contact.FAMILY_NAME.eq(lastName)).select(cayenneService.sharedContext());
 	}
-	
+
 	@Override
 	public List<Contact> findCompanyForPasswordRecovery(String companyName, String email) {
-		
-		if (companyName == null || companyName.isEmpty() || email == null || email.isEmpty()) {
+
+		if (trimToNull(companyName) == null ||
+				trimToNull(email) == null) {
 			return Collections.emptyList();
 		}
 
@@ -143,15 +147,15 @@ public class AuthenticationService implements IAuthenticationService {
 	@Override
 	public void storeCurrentUser(Contact user) {
 
-            cookieService.writeCookieValue(COOKIE_NAME_lastLoginTime, user.getLastLoginTime() != null ?
-                    user.getLastLoginTime().toString() : new Date(0L).toString());
+		cookieService.writeCookieValue(COOKIE_NAME_lastLoginTime, user.getLastLoginTime() != null ?
+				user.getLastLoginTime().toString() : new Date(0L).toString());
 
-        ObjectContext context = cayenneService.newContext();
+		ObjectContext context = cayenneService.newContext();
 
-        Contact localUser = context.localObject(user);
+		Contact localUser = context.localObject(user);
 
-        localUser.setLastLoginTime(new Date());
-        context.commitChanges();
+		localUser.setLastLoginTime(new Date());
+		context.commitChanges();
 
 		applicationStateManager.set(Contact.class, user);
 	}
@@ -160,7 +164,7 @@ public class AuthenticationService implements IAuthenticationService {
 	 * @see IAuthenticationService#logout()
 	 */
 	public void logout() {
-        applicationStateManager.set(Contact.class, null);
+		applicationStateManager.set(Contact.class, null);
 
 		Session session = request.getSession(false);
 
@@ -169,5 +173,5 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 	}
 
-	
+
 }
