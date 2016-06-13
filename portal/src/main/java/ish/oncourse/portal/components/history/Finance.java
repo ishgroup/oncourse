@@ -11,7 +11,7 @@ import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;

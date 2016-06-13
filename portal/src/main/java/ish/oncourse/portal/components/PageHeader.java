@@ -1,7 +1,7 @@
 package ish.oncourse.portal.components;
 
 import ish.oncourse.services.environment.IEnvironmentService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;

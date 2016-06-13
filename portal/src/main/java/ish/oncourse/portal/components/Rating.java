@@ -2,7 +2,7 @@ package ish.oncourse.portal.components;
 
 import ish.oncourse.portal.services.ValueChangeDelegate;
 import ish.oncourse.util.FormatUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Parameter;

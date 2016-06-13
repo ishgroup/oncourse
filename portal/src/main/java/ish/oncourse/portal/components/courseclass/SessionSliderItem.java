@@ -7,7 +7,7 @@ import ish.oncourse.model.TutorRole;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;

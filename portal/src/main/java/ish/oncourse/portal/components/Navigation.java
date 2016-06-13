@@ -9,7 +9,7 @@ import ish.oncourse.portal.services.Notification;
 import ish.oncourse.portal.services.PCourseClass;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.courseclass.ICourseClassService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.Parameter;

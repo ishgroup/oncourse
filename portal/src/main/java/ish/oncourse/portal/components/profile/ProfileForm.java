@@ -14,7 +14,7 @@ import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.Messages;

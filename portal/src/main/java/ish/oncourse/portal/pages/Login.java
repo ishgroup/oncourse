@@ -5,7 +5,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.cookies.ICookiesService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
