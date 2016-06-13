@@ -752,10 +752,6 @@ public class PurchaseController {
 	public boolean hasAvailableEnrolmentPlaces(Enrolment enrolment) {
 		CourseClass courseClass = enrolment.getCourseClass();
 
-		if (courseClass.getIsDistantLearningCourse()) {
-			return true;
-		}
-
 		SelectQuery query = new SelectQuery(Enrolment.class);
 		query.setQualifier(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass).andExp(ExpressionFactory.inExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.IN_TRANSACTION, EnrolmentStatus.SUCCESS)));
 		List<Enrolment> activeEnrolments = getModel().getObjectContext().performQuery(query);

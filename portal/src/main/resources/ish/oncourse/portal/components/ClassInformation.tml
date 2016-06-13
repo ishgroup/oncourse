@@ -11,10 +11,8 @@
 					<span>Enrolments:</span> 
 					${enrolmentsCount} <t:if test="hasEnrolments">(${maleEnrolmentsCount} male, ${femaleEnrolmentsCount} female)</t:if>
 				</div>
-				<t:if test="courseClass.getIsDistantLearningCourse()" negate="true">
-					<div><span>Maximum:</span> ${courseClass.maximumPlaces}</div>
-				</t:if>
-					<div><span>Minimum:</span> ${courseClass.minimumPlaces}</div>
+				<div><span>Maximum:</span> ${courseClass.maximumPlaces}</div>
+				<div><span>Minimum:</span> ${courseClass.minimumPlaces}</div>
 				<t:if test="lastEnrolled">
 					<div><span>Most recent enrolment:</span> ${lastEnrolled}</div>
 				</t:if>

@@ -100,9 +100,6 @@ public class CourseClass extends _CourseClass implements Queueable {
 
 	public int getAvailableEnrolmentPlaces() {
 		int result = -1;
-		if (getIsDistantLearningCourse()) {
-			return Integer.MAX_VALUE;
-		}
 		if (getMaximumPlaces() != null && getMaximumPlaces() > 0) {
 			int validEnrolment = validEnrolmentsCount();
 			result = getMaximumPlaces() - validEnrolment;
