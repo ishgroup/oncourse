@@ -15,6 +15,47 @@
 
     <Course id="4" collegeId="1" code="4" detail="Course4" name="Course4" isWebVisible="1" enrolmentType="1"/>
     <Course id="5" collegeId="1" code="5" detail="Course5" name="Course5" isWebVisible="1" enrolmentType="1"/>
+    <Course id="6" collegeId="1" code="6" detail="Course6" name="Course6" isWebVisible="0" enrolmentType="1"/>
+
+
+    <EntityRelation
+            id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="1"
+            toRecordId="2"
+    />
+    <EntityRelation
+            id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="1"
+            toRecordId="3"
+    />
+    <EntityRelation
+            id="3" angelId="3" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="4"
+            toRecordId="1"
+    />
+
+    <EntityRelation
+            id="4" angelId="4" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="5"
+            toRecordId="1"
+    />
+
+    <EntityRelation
+            id="5" angelId="5" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+            fromEntityIdentifier="1"
+            toEntityIdentifier="1"
+            fromRecordId="6"
+            toRecordId="1"
+    />
+
 
     <Room id="1" collegeId="1"/>
     <Room id="2" collegeId="1"/>
