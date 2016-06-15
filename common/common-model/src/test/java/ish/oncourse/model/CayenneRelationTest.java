@@ -10,7 +10,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.Ignore;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -24,6 +24,10 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Test Course->CourseCourseRelation->Course
+ * The test was whiten for task 29007 and is not ready to use on jenkins
+ *
+ * The test shows an issue in the cayenne relation handling.
+ * See details in task 29007
  *
  * User: akoiro
  * Date: 15/06/2016
@@ -40,7 +44,7 @@ public class CayenneRelationTest {
 
 	}
 
-	@Test
+	@Ignore
 	public void test() throws NamingException, SQLException {
 
 		Course fromCourse = createCourse();
