@@ -40,7 +40,7 @@ public class ContextUtils {
 	}
 
 	public static ObjectContext createObjectContext() {
-		return cayenneRuntime.getContext();
+		return cayenneRuntime.newContext();
 	}
 
 	/**
