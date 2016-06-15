@@ -76,23 +76,6 @@ public class Course extends _Course implements Queueable {
 		return qualification;
 	}
 
-	public List<Course> getRelatedToCourses() {
-		List<Course> relatedList = new ArrayList<>();
-		for (CourseCourseRelation courseRelation : getFromCourses()) {
-			Course relatedCourse = courseRelation.getToCourse();
-			if (relatedCourse.getIsWebVisible()) {
-				relatedList.add(relatedCourse);
-			}
-		}
-		for (CourseCourseRelation courseRelation : getToCourses()) {
-			Course relatedCourse = courseRelation.getFromCourse();
-			if (relatedCourse.getIsWebVisible()) {
-				relatedList.add(relatedCourse);
-			}
-		}
-		return relatedList;
-	}
-
 	@Override
 	public boolean isAsyncReplicationAllowed() {
 		return true;

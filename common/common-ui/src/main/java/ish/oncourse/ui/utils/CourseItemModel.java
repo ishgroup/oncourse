@@ -23,6 +23,8 @@ public class CourseItemModel {
 
     private List<Product> relatedProducts;
 
+    private List<Course> relatedCourses;
+
     private Course course;
 
     public static CourseItemModel valueOf(Course course, ICourseService courseService, ICourseClassService courseClassService) {
@@ -37,6 +39,7 @@ public class CourseItemModel {
         courseItemModel.availableClasses = new ArrayList<>();
         courseItemModel.enrollableClasses = new ArrayList<>();
         courseItemModel.relatedProducts = courseService.getRelatedProductsFor(course);
+        courseItemModel.relatedCourses = courseService.getRelatedCoursesFor(course);
 
         if (searchParams == null) {
             courseItemModel.enrollableClasses.addAll(courseClassService.getEnrollableClasses(course));
@@ -98,7 +101,7 @@ public class CourseItemModel {
     }
     
     public boolean isHaveRelatedCourses() {
-    	return !course.getRelatedToCourses().isEmpty();
+    	return !relatedCourses.isEmpty();
     }
 
     public boolean hasRelatedProducts() {

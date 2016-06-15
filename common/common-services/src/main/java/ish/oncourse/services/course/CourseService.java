@@ -1,5 +1,6 @@
 package ish.oncourse.services.course;
 
+import ish.common.types.EntityRelationType;
 import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -21,6 +22,14 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.*;
+
+import static ish.oncourse.model.auto._Course.*;
+import static ish.oncourse.model.auto._CourseCourseRelation.FROM_COURSE;
+import static ish.oncourse.model.auto._CourseCourseRelation.TO_COURSE;
+import static ish.oncourse.model.auto._EntityRelation.FROM_ENTITY_IDENTIFIER;
+import static ish.oncourse.model.auto._EntityRelation.TO_ENTITY_IDENTIFIER;
+import static java.lang.Boolean.TRUE;
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class CourseService implements ICourseService {
 
@@ -80,7 +89,7 @@ public class CourseService implements ICourseService {
 		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN,list).andExp(getSiteQualifier());
 
 		SelectQuery q = new SelectQuery(Course.class, expr);
-		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheStrategy(LOCAL_CACHE);
 		q.setCacheGroups(Course.class.getSimpleName());
 
 		List<Course> result = cayenneService.sharedContext().performQuery(q);
@@ -120,7 +129,7 @@ public class CourseService implements ICourseService {
 	 * @return
 	 */
 	private Expression getAvailabilityQualifier() {
-		return Course.IS_WEB_VISIBLE.eq(true);
+		return IS_WEB_VISIBLE.eq(true);
 	}
 
 	public List<Course> loadByIds(Object... ids) {
@@ -245,8 +254,8 @@ public class CourseService implements ICourseService {
         ObjectContext context = cayenneService.sharedContext();
         SelectQuery query = new SelectQuery(CourseProductRelation.class,
                 ExpressionFactory.matchExp(CourseProductRelation.COURSE_PROPERTY, course)
-                        .andExp(ExpressionFactory.matchExp(CourseProductRelation.PRODUCT_PROPERTY + "." + Product.IS_WEB_VISIBLE_PROPERTY, Boolean.TRUE)));
-		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+                        .andExp(ExpressionFactory.matchExp(CourseProductRelation.PRODUCT_PROPERTY + "." + Product.IS_WEB_VISIBLE_PROPERTY, TRUE)));
+		query.setCacheStrategy(LOCAL_CACHE);
 		query.setCacheGroups(CourseProductRelation.class.getSimpleName());
         List<CourseProductRelation> relations = context.performQuery(query);
         ArrayList<Product> result = new ArrayList<>();
@@ -255,6 +264,22 @@ public class CourseService implements ICourseService {
         }
         return result;
     }
+
+	public List<Course> getRelatedCoursesFor(Course course) {
+		ObjectContext context = cayenneService.sharedContext();
+		List<Course> courses = ObjectSelect.query(Course.class).where(
+				TO_COURSES.outer().dot(FROM_COURSE).eq(course)
+						.andExp(TO_COURSES.outer().dot(FROM_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE))
+						.andExp(TO_COURSES.outer().dot(TO_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE)))
+				.or(FROM_COURSES.outer().dot(TO_COURSE).eq(course)
+						.andExp(FROM_COURSES.outer().dot(FROM_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE))
+						.andExp(FROM_COURSES.outer().dot(TO_ENTITY_IDENTIFIER).eq(EntityRelationType.COURSE)))
+				.and(IS_WEB_VISIBLE.eq(TRUE))
+				.cacheStrategy(LOCAL_CACHE, CourseCourseRelation.class.getSimpleName())
+				.orderBy(Course.NAME.asc())
+				.select(context);
+		return courses;
+	}
 
 	private void sortByStartDate(final Boolean isAscending, List<Course> result) {
 		Collections.sort(result, new Comparator<Course>() {
@@ -314,7 +339,7 @@ public class CourseService implements ICourseService {
      * @param q course query
 	 */
 	private static void applyCourseCacheSettings(SelectQuery q) {
-		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
+		q.setCacheStrategy(LOCAL_CACHE);
 		q.setCacheGroups(Course.class.getSimpleName());
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY);
 		q.addPrefetch(Course.COURSE_CLASSES_PROPERTY + "." + CourseClass.ROOM_PROPERTY);

@@ -69,4 +69,9 @@ public interface ICourseService {
 
 	List<Product> getRelatedProductsFor(Course course);
 
+	/**
+	 * The method returns courses related to this <source>course</source>.
+	 */
+	List<Course> getRelatedCoursesFor(Course course);
+
 }
