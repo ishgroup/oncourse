@@ -268,7 +268,7 @@
 		<db-attribute name="isVETCourse" type="BIT"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
-		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="name" type="VARCHAR" length="200"/>
 		<db-attribute name="nominalHours" type="REAL"/>
 		<db-attribute name="qualificationId" type="BIGINT" length="19"/>
 		<db-attribute name="searchText" type="LONGVARCHAR" length="65535"/>
