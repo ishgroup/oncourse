@@ -4018,4 +4018,10 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="269" author="andrey" runOnChange="false" runAlways="false" context="production">
+		<sql>
+			ALTER TABLE Course MODIFY COLUMN name VARCHAR(200) null;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
