@@ -14,6 +14,7 @@ import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectById;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -242,7 +243,8 @@ public class MultiplePurchaseProductTest extends ACheckoutTest {
     private Product disableProductItem(Long productId, Contact contact) {
 
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(PurchaseController.Action.disableProductItem);
-		Product disabledProduct1 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Product.class, productId);
+		Product disabledProduct1 = SelectById.query(Product.class, productId)
+				.selectOne(getModel().getObjectContext());
 		actionParameter.setValue(purchaseController.getModel().getProductItemBy(contact, disabledProduct1));
 		performAction(actionParameter);
 		return disabledProduct1;

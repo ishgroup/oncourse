@@ -25,12 +25,11 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
-import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.query.SelectById;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import org.apache.tapestry5.ioc.services.ParallelExecutor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
@@ -183,7 +182,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
             boolean value = purchaseController.getModel().containsProduct(productId);
             if (!value)
             {
-                Product product = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Product.class, productId);
+                Product product = SelectById.query(Product.class, productId).selectOne(purchaseController.getModel().getObjectContext());
 
                 PurchaseController.ActionParameter parameter = new PurchaseController.ActionParameter(PurchaseController.Action.addProduct);
                 parameter.setValue(product);

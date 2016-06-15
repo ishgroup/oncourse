@@ -21,6 +21,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SelectById;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -326,7 +327,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 
         List<Product> products = new ArrayList<>();
         for (Long id : productIds)
-            products.add(Cayenne.objectForPK(context, Product.class, id));
+            products.add(SelectById.query(Product.class, id).selectOne(context));
 
         List<Discount> discounts = new ArrayList<>();
         for (Long id : discountIds)

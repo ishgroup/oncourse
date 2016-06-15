@@ -10,6 +10,7 @@ import ish.oncourse.model.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SelectById;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +44,8 @@ public class ProductItemTest extends ACheckoutTest {
 		purchaseController = init(Collections.EMPTY_LIST, Arrays.asList(9L), Collections.EMPTY_LIST, false);
 		model = purchaseController.getModel();
 
-		product = Cayenne.objectForPK(model.getObjectContext(), Product.class, 9L);
+		product = SelectById.query(Product.class,  9L)
+				.selectOne(getModel().getObjectContext());
 
 		assertEquals(1, model.getProducts().size());
 		assertEquals(product, model.getProducts().get(0));
@@ -159,7 +161,8 @@ public class ProductItemTest extends ACheckoutTest {
 
 
 		ActionParameter parameter = new ActionParameter(PurchaseController.Action.addProduct);
-		product = Cayenne.objectForPK(model.getObjectContext(), Product.class, 10L);
+		product = SelectById.query(Product.class, 10L)
+				.selectOne(getModel().getObjectContext());
 		parameter.setValue(product);
 		performAction(parameter);
 

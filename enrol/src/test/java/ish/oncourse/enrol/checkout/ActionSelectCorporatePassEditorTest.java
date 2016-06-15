@@ -3,7 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
-import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.query.SelectById;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +26,8 @@ public class ActionSelectCorporatePassEditorTest extends ACheckoutTest {
 
         ActionAddProduct actionAddProduct = new ActionAddProduct();
 
-        VoucherProduct product = Cayenne.objectForPK(getModel().getObjectContext(), VoucherProduct.class, 1001);
+        VoucherProduct product = SelectById.query(VoucherProduct.class, 1001)
+                .selectOne(getModel().getObjectContext());
         actionAddProduct.setProduct(product);
         performAction(actionAddProduct, PurchaseController.Action.addProduct);
 
