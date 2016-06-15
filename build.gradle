@@ -24,10 +24,7 @@ buildscript {
 }
 
 ext {
-    replicationVersions = [6,   // introduced in onCourse 5.0.1b1
-						   7,  // introduced in onCourse 5.1
-                           9,   // introduced in onCourse 7.1
-                           10,  // introduced in onCourse 7.4
+    replicationVersions = [10,  // introduced in onCourse 7.4
                            11,  // introduced in onCourse 8.2
 						   12,   // introduced in onCourse 8.7
 						   13   // introduced in onCourse 8.17

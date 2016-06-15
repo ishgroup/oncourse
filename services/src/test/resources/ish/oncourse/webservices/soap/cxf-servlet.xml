@@ -26,18 +26,6 @@
 
 	<bean id="v4_collegeRequestInterceptor" class="ish.oncourse.webservices.soap.v4.interceptors.TestCollegeRequestInterceptor" />
 
-	<bean id="v6_replicationPortType" class="ish.oncourse.webservices.soap.v6.TestReplicationPortTypeImpl" />
-
-	<bean id="v6_paymentPortType" class="ish.oncourse.webservices.soap.v6.TestPaymentPortTypeImpl" />
-
-	<bean id="v7_replicationPortType" class="ish.oncourse.webservices.soap.v7.TestReplicationPortTypeImpl" />
-
-	<bean id="v7_paymentPortType" class="ish.oncourse.webservices.soap.v7.TestPaymentPortTypeImpl" />
-
-	<bean id="v9_replicationPortType" class="ish.oncourse.webservices.soap.v9.TestReplicationPortTypeImpl" />
-
-	<bean id="v9_paymentPortType" class="ish.oncourse.webservices.soap.v9.TestPaymentPortTypeImpl" />
-
 	<bean id="v10_replicationPortType" class="ish.oncourse.webservices.soap.v10.TestReplicationPortTypeImpl" />
 
 	<bean id="v10_paymentPortType" class="ish.oncourse.webservices.soap.v10.TestPaymentPortTypeImpl" />
@@ -60,61 +48,14 @@
 			<ref bean="loggingFeature" />
 		</cxf:features>
 	</cxf:bus>
-
-	<jaxws:endpoint id="v6_replication" implementor="#v6_replicationPortType"
-					address="/v6/replication">
-		<jaxws:inInterceptors>
-			<ref bean="v4_communicationKeyInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v6_payment" implementor="#v6_paymentPortType"
-					address="/v6/payment">
-		<jaxws:inInterceptors>
-			<ref bean="v4_securityCodeInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v7_replication" implementor="#v7_replicationPortType"
-					address="/v7/replication">
-		<jaxws:inInterceptors>
-			<ref bean="v4_communicationKeyInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v7_payment" implementor="#v7_paymentPortType"
-					address="/v7/payment">
-		<jaxws:inInterceptors>
-			<ref bean="v4_securityCodeInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
+	
     <jaxws:endpoint id="v4_reference" implementor="#v4_referencePortTypeBean"
                     address="/v4/reference">
         <jaxws:inInterceptors>
             <ref bean="v4_collegeRequestInterceptor" />
         </jaxws:inInterceptors>
     </jaxws:endpoint>
-
-	<jaxws:endpoint id="v9_replication" implementor="#v9_replicationPortType"
-					address="/v9/replication">
-        <jaxws:inInterceptors>
-			<ref bean="v4_communicationKeyInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
-
-	<jaxws:endpoint id="v9_payment" implementor="#v9_paymentPortType"
-					address="/v9/payment">
-		<jaxws:inInterceptors>
-			<ref bean="v4_securityCodeInterceptor" />
-			<ref bean="v4_collegeRequestInterceptor" />
-		</jaxws:inInterceptors>
-	</jaxws:endpoint>
+	
 
 	<jaxws:endpoint id="v10_replication" implementor="#v10_replicationPortType"
 					address="/v10/replication">
