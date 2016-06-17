@@ -65,19 +65,19 @@ public class PaymentPortTypeTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV7ProcessCreditCardPayment() throws Exception {
-		testV7CreditCardPaymentProcessing();
+	public void testV13ProcessCreditCardPayment() throws Exception {
+		testV13CreditCardPaymentProcessing();
 	}
 	
-	private GenericTransactionGroup prepareV7CreditCardPaymentData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V7);
-		ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub enrolStub = enrolmentV7();
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceStub invoiceStub = invoiceV7();
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV7();
-		ish.oncourse.webservices.v7.stubs.replication.PaymentInStub paymentInStub = paymentInV7();
-		ish.oncourse.webservices.v7.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV7();
-		ish.oncourse.webservices.v7.stubs.replication.ContactStub contactStub = contactV7();
-		ish.oncourse.webservices.v7.stubs.replication.StudentStub studentStub = studentV7();
+	private GenericTransactionGroup prepareV13CreditCardPaymentData() {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V13);
+		ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub enrolStub = enrolmentV13();
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceStub invoiceStub = invoiceV13();
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV13();
+		ish.oncourse.webservices.v13.stubs.replication.PaymentInStub paymentInStub = paymentInV13();
+		ish.oncourse.webservices.v13.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV13();
+		ish.oncourse.webservices.v13.stubs.replication.ContactStub contactStub = contactV13();
+		ish.oncourse.webservices.v13.stubs.replication.StudentStub studentStub = studentV13();
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		stubs.add(enrolStub);
 		stubs.add(paymentInStub);
@@ -111,40 +111,40 @@ public class PaymentPortTypeTest extends ServiceTest {
 		//assertNotNull("Check if sessionId is set.", respPaymentInStub.getSessionId());
 	}
 	
-	private void testV7CreditCardPaymentProcessing() throws InternalReplicationFault {
+	private void testV13CreditCardPaymentProcessing() throws InternalReplicationFault {
 		InternalPaymentService port = getService(InternalPaymentService.class);
-		GenericTransactionGroup respGroup = port.processPayment(prepareV7CreditCardPaymentData());
+		GenericTransactionGroup respGroup = port.processPayment(prepareV13CreditCardPaymentData());
 		testCreditCardPaymentProcessing(respGroup);
 	}
 	
-	private GenericTransactionGroup prepareV7ProcessPaymentNoPlacesData() {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V7);
-		ish.oncourse.webservices.v7.stubs.replication.ContactStub contactStub1 = contactV7();
-		ish.oncourse.webservices.v7.stubs.replication.StudentStub studentStub1 = studentV7();
-		ish.oncourse.webservices.v7.stubs.replication.ContactStub contactStub2 = contactV7();
+	private GenericTransactionGroup prepareV13ProcessPaymentNoPlacesData() {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V13);
+		ish.oncourse.webservices.v13.stubs.replication.ContactStub contactStub1 = contactV13();
+		ish.oncourse.webservices.v13.stubs.replication.StudentStub studentStub1 = studentV13();
+		ish.oncourse.webservices.v13.stubs.replication.ContactStub contactStub2 = contactV13();
 		contactStub2.setAngelId(2l);
 		contactStub2.setStudentId(2l);
-		ish.oncourse.webservices.v7.stubs.replication.StudentStub studentStub2 = studentV7();
+		ish.oncourse.webservices.v13.stubs.replication.StudentStub studentStub2 = studentV13();
 		studentStub2.setAngelId(2l);
 		studentStub2.setContactId(2l);
-		ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub enrolStub1 = enrolmentV7();
+		ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub enrolStub1 = enrolmentV13();
 		enrolStub1.setCourseClassId(201l);
 		enrolStub1.setStudentId(1l);
 		enrolStub1.setInvoiceLineId(4l);
-		ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV7();
+		ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV13();
 		enrolStub1.setAngelId(2l);
 		enrolStub2.setCourseClassId(201l);
 		enrolStub2.setStudentId(2l);
 		enrolStub2.setInvoiceLineId(3l);
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceStub invoiceStub = invoiceV7();
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceStub invoiceStub = invoiceV13();
 		//NOTE: that invoicelines with collegeid 1 + angelid 1 and 2 already used by replication test and may not be cleanup.
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceLineStub invLineStub1 = invoiceLineV7();
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub invLineStub1 = invoiceLineV13();
 		invLineStub1.setAngelId(4l);
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV7();
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV13();
 		invLineStub2.setAngelId(3l);
 		invLineStub2.setEnrolmentId(2l);
-		ish.oncourse.webservices.v7.stubs.replication.PaymentInStub paymentInStub = paymentInV7();
-		ish.oncourse.webservices.v7.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV7();
+		ish.oncourse.webservices.v13.stubs.replication.PaymentInStub paymentInStub = paymentInV13();
+		ish.oncourse.webservices.v13.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV13();
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		stubs.add(contactStub1);
 		stubs.add(studentStub1);
@@ -190,41 +190,41 @@ public class PaymentPortTypeTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV7ProcessPaymentNoPlaces() throws Exception {
+	public void testV13ProcessPaymentNoPlaces() throws Exception {
 		InternalPaymentService port = getService(InternalPaymentService.class);
-		GenericTransactionGroup respGroup = port.processPayment(prepareV7ProcessPaymentNoPlacesData());
+		GenericTransactionGroup respGroup = port.processPayment(prepareV13ProcessPaymentNoPlacesData());
 		testProcessPaymentNoPlaces(respGroup);
 	}
 	
 	@Test
-	public void testV7ProcessPaymentZero() throws Exception {
-		notCreditCardOrZeroPaymentV7(true, false, false);
+	public void testV13ProcessPaymentZero() throws Exception {
+		notCreditCardOrZeroPaymentV13(true, false, false);
 	}
 
 	@Test
-	public void testV7ProcessNotCreditCardPayment() throws Exception {
-		notCreditCardOrZeroPaymentV7(false, false, false);
+	public void testV13ProcessNotCreditCardPayment() throws Exception {
+		notCreditCardOrZeroPaymentV13(false, false, false);
 	}
 	
 	@Test
-	public void testV7ZeroPaymentForFreeInvoice() throws Exception {
-		notCreditCardOrZeroPaymentV7(true, true, false);
+	public void testV13ZeroPaymentForFreeInvoice() throws Exception {
+		notCreditCardOrZeroPaymentV13(true, true, false);
 	}
 	
 	@Test
-	public void testV7ZeroPaymentForFreeInvoiceWithoutPlaces() throws Exception {
-		notCreditCardOrZeroPaymentV7(true, true, true);
+	public void testV13ZeroPaymentForFreeInvoiceWithoutPlaces() throws Exception {
+		notCreditCardOrZeroPaymentV13(true, true, true);
 	}
 
-	private GenericTransactionGroup notCreditCardOrZeroPaymentV7Data(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) {
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V7);
-		ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub enrolStub = enrolmentV7();
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceStub invoiceStub = invoiceV7();
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV7();
-		ish.oncourse.webservices.v7.stubs.replication.PaymentInStub paymentInStub = paymentInV7();
-		ish.oncourse.webservices.v7.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV7();
-		ish.oncourse.webservices.v7.stubs.replication.ContactStub contactStub = contactV7();
-		ish.oncourse.webservices.v7.stubs.replication.StudentStub studentStub = studentV7();
+	private GenericTransactionGroup notCreditCardOrZeroPaymentV13Data(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) {
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V13);
+		ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub enrolStub = enrolmentV13();
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceStub invoiceStub = invoiceV13();
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub invLineStub = invoiceLineV13();
+		ish.oncourse.webservices.v13.stubs.replication.PaymentInStub paymentInStub = paymentInV13();
+		ish.oncourse.webservices.v13.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV13();
+		ish.oncourse.webservices.v13.stubs.replication.ContactStub contactStub = contactV13();
+		ish.oncourse.webservices.v13.stubs.replication.StudentStub studentStub = studentV13();
 
 		if (!isZeroPayment) {
 			// setting payment type to CASH
@@ -244,7 +244,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 
 		if (withoutPlaces) {
-			ish.oncourse.webservices.v7.stubs.replication.CourseClassStub courseClassStub = courseClassV7();
+			ish.oncourse.webservices.v13.stubs.replication.CourseClassStub courseClassStub = courseClassV13();
 			enrolStub.setCourseClassId(courseClassStub.getAngelId());
 			stubs.add(courseClassStub);
 		}
@@ -287,9 +287,9 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertNull("Check that sessionId wasn't set.", respPaymentInStub.getSessionId());
 	}
 
-	private void notCreditCardOrZeroPaymentV7(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) throws Exception {
+	private void notCreditCardOrZeroPaymentV13(boolean isZeroPayment, boolean isFreeInvoice, boolean withoutPlaces) throws Exception {
 		InternalPaymentService port = getService(InternalPaymentService.class);
-		GenericTransactionGroup respGroup = port.processPayment(notCreditCardOrZeroPaymentV7Data(isZeroPayment, isFreeInvoice, withoutPlaces));
+		GenericTransactionGroup respGroup = port.processPayment(notCreditCardOrZeroPaymentV13Data(isZeroPayment, isFreeInvoice, withoutPlaces));
 		notCreditCardOrZeroPayment(respGroup, isZeroPayment, isFreeInvoice, withoutPlaces);
 	}
 	
@@ -348,13 +348,13 @@ public class PaymentPortTypeTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV7PaymentStatus() throws Exception {
-		testPaymentStatus(SupportedVersions.V7);
+	public void testV13PaymentStatus() throws Exception {
+		testPaymentStatus(SupportedVersions.V13);
 	}
 	
-	private GenericTransactionGroup v7ProcessRefundDataSuccess() {
-		GenericTransactionGroup reqGroup = PortHelper.createTransactionGroup(SupportedVersions.V7);
-		ish.oncourse.webservices.v7.stubs.replication.PaymentOutStub paymentOut = new ish.oncourse.webservices.v7.stubs.replication.PaymentOutStub();
+	private GenericTransactionGroup v13ProcessRefundDataSuccess() {
+		GenericTransactionGroup reqGroup = PortHelper.createTransactionGroup(SupportedVersions.V13);
+		ish.oncourse.webservices.v13.stubs.replication.PaymentOutStub paymentOut = new ish.oncourse.webservices.v13.stubs.replication.PaymentOutStub();
 		paymentOut.setAmount(new BigDecimal(100));
 		paymentOut.setAngelId(1l);
 		paymentOut.setContactId(3l);
@@ -371,9 +371,9 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return reqGroup;
 	}
 	
-	private GenericTransactionGroup v7ProcessRefundDataFail() {
-		GenericTransactionGroup reqGroup = PortHelper.createTransactionGroup(SupportedVersions.V7);
-		ish.oncourse.webservices.v7.stubs.replication.PaymentOutStub paymentOut = new ish.oncourse.webservices.v7.stubs.replication.PaymentOutStub();
+	private GenericTransactionGroup v13ProcessRefundDataFail() {
+		GenericTransactionGroup reqGroup = PortHelper.createTransactionGroup(SupportedVersions.V13);
+		ish.oncourse.webservices.v13.stubs.replication.PaymentOutStub paymentOut = new ish.oncourse.webservices.v13.stubs.replication.PaymentOutStub();
 		paymentOut.setContactId(3l);
 		paymentOut.setCreated(today);
 		paymentOut.setEntityIdentifier("PaymentOut");
@@ -438,11 +438,11 @@ public class PaymentPortTypeTest extends ServiceTest {
 	}
 	
 	@Test
-	public void testV7ProcessRefund() throws Exception {
+	public void testV13ProcessRefund() throws Exception {
 		InternalPaymentService port = getService(InternalPaymentService.class);
-		GenericTransactionGroup respGroup = port.processRefund(v7ProcessRefundDataSuccess());
+		GenericTransactionGroup respGroup = port.processRefund(v13ProcessRefundDataSuccess());
 		processRefundSuccess(respGroup);
-		respGroup = port.processRefund(v7ProcessRefundDataFail());
+		respGroup = port.processRefund(v13ProcessRefundDataFail());
 		processRefundFailed(respGroup);
 	}
 	
@@ -476,8 +476,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		assertEquals("Expecting that outcomes remain in the database until deleted from angel.", 1, dbUnitConnection.getRowCount("Outcome"));
 	}
 	
-	private ish.oncourse.webservices.v7.stubs.replication.CourseClassStub courseClassV7() {
-		ish.oncourse.webservices.v7.stubs.replication.CourseClassStub courseClassStub = new ish.oncourse.webservices.v7.stubs.replication.CourseClassStub();
+	private ish.oncourse.webservices.v13.stubs.replication.CourseClassStub courseClassV13() {
+		ish.oncourse.webservices.v13.stubs.replication.CourseClassStub courseClassStub = new ish.oncourse.webservices.v13.stubs.replication.CourseClassStub();
 		courseClassStub.setWillowId(1186958L);
 		courseClassStub.setCode("1");
 		courseClassStub.setEntityIdentifier("CourseClass");
@@ -503,8 +503,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return courseClassStub;
 	}
 	
-	private ish.oncourse.webservices.v7.stubs.replication.InvoiceLineStub invoiceLineV7() {
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceLineStub invLineStub = new ish.oncourse.webservices.v7.stubs.replication.InvoiceLineStub();
+	private ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub invoiceLineV13() {
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub invLineStub = new ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub();
 		invLineStub.setEntityIdentifier("InvoiceLine");
 		invLineStub.setAngelId(1l);
 		invLineStub.setCreated(today);
@@ -522,14 +522,13 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return invLineStub;
 	}
 
-	private ish.oncourse.webservices.v7.stubs.replication.InvoiceStub invoiceV7() {
-		ish.oncourse.webservices.v7.stubs.replication.InvoiceStub invoiceStub = new ish.oncourse.webservices.v7.stubs.replication.InvoiceStub();
+	private ish.oncourse.webservices.v13.stubs.replication.InvoiceStub invoiceV13() {
+		ish.oncourse.webservices.v13.stubs.replication.InvoiceStub invoiceStub = new ish.oncourse.webservices.v13.stubs.replication.InvoiceStub();
 		invoiceStub.setAngelId(1l);
 		invoiceStub.setAmountOwing(new BigDecimal(110l));
 		invoiceStub.setBillToAddress("Test billing address");
 		invoiceStub.setContactId(2l);
 		invoiceStub.setCreated(today);
-		invoiceStub.setCustomerPO("PO");
 		invoiceStub.setCustomerReference("ref123");
 		invoiceStub.setDateDue(dueDate);
 		invoiceStub.setDescription("Invoice for accounting course");
@@ -545,8 +544,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return invoiceStub;
 	}
 
-	private ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub enrolmentV7() {
-		ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub enrolStub = new ish.oncourse.webservices.v7.stubs.replication.EnrolmentStub();
+	private ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub enrolmentV13() {
+		ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub enrolStub = new ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub();
 		enrolStub.setAngelId(1l);
 		enrolStub.setCourseClassId(200l);
 		enrolStub.setCreated(today);
@@ -560,8 +559,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return enrolStub;
 	}
 
-	private ish.oncourse.webservices.v7.stubs.replication.StudentStub studentV7() {
-		ish.oncourse.webservices.v7.stubs.replication.StudentStub studentStub = new ish.oncourse.webservices.v7.stubs.replication.StudentStub();
+	private ish.oncourse.webservices.v13.stubs.replication.StudentStub studentV13() {
+		ish.oncourse.webservices.v13.stubs.replication.StudentStub studentStub = new ish.oncourse.webservices.v13.stubs.replication.StudentStub();
 		studentStub.setAngelId(1l);
 		studentStub.setContactId(1l);
 		studentStub.setCountryOfBirthId(86l);
@@ -571,8 +570,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return studentStub;
 	}
 
-	private ish.oncourse.webservices.v7.stubs.replication.PaymentInStub paymentInV7() {
-		ish.oncourse.webservices.v7.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v7.stubs.replication.PaymentInStub();
+	private ish.oncourse.webservices.v13.stubs.replication.PaymentInStub paymentInV13() {
+		ish.oncourse.webservices.v13.stubs.replication.PaymentInStub paymentInStub = new ish.oncourse.webservices.v13.stubs.replication.PaymentInStub();
 		paymentInStub.setAmount(new BigDecimal(110));
 		paymentInStub.setAngelId(1l);
 		paymentInStub.setContactId(4l);
@@ -585,8 +584,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return paymentInStub;
 	}
 
-	private ish.oncourse.webservices.v7.stubs.replication.ContactStub contactV7() {
-		ish.oncourse.webservices.v7.stubs.replication.ContactStub contactStub = new ish.oncourse.webservices.v7.stubs.replication.ContactStub();
+	private ish.oncourse.webservices.v13.stubs.replication.ContactStub contactV13() {
+		ish.oncourse.webservices.v13.stubs.replication.ContactStub contactStub = new ish.oncourse.webservices.v13.stubs.replication.ContactStub();
 		contactStub.setAngelId(1l);
 		contactStub.setBusinessPhoneNumber("3241322");
 		contactStub.setCompany(false);
@@ -602,8 +601,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 		return contactStub;
 	}
 
-	private ish.oncourse.webservices.v7.stubs.replication.PaymentInLineStub paymentInLineV7() {
-		ish.oncourse.webservices.v7.stubs.replication.PaymentInLineStub pLineStub = new ish.oncourse.webservices.v7.stubs.replication.PaymentInLineStub();
+	private ish.oncourse.webservices.v13.stubs.replication.PaymentInLineStub paymentInLineV13() {
+		ish.oncourse.webservices.v13.stubs.replication.PaymentInLineStub pLineStub = new ish.oncourse.webservices.v13.stubs.replication.PaymentInLineStub();
 		pLineStub.setAngelId(1l);
 		pLineStub.setCreated(today);
 		pLineStub.setModified(today);
