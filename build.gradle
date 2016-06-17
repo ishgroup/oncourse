@@ -5,7 +5,7 @@ buildscript {
 		cayenneVersion = '4.0.M3.2'
 		// as of 29/10/2015 upgrading to anything from 9.3.0 up to 9.3.5 causes
 		// intermittent SSL issues when establishing secure connection
-		jettyVersion = '9.3.9.v20160517'
+		jettyVersion = '9.3.7.v20160115'
 	}
 	repositories {
 		maven {
