@@ -130,19 +130,21 @@ public class PaymentPortTypeTest extends ServiceTest {
 		ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub enrolStub1 = enrolmentV13();
 		enrolStub1.setCourseClassId(201l);
 		enrolStub1.setStudentId(1l);
-		enrolStub1.setInvoiceLineId(4l);
+		enrolStub1.setAngelId(1l);
+		enrolStub1.setInvoiceLineId(3l);
 		ish.oncourse.webservices.v13.stubs.replication.EnrolmentStub enrolStub2 = enrolmentV13();
-		enrolStub1.setAngelId(2l);
 		enrolStub2.setCourseClassId(201l);
 		enrolStub2.setStudentId(2l);
-		enrolStub2.setInvoiceLineId(3l);
+		enrolStub2.setAngelId(2l);
+		enrolStub2.setInvoiceLineId(4l);
 		ish.oncourse.webservices.v13.stubs.replication.InvoiceStub invoiceStub = invoiceV13();
 		//NOTE: that invoicelines with collegeid 1 + angelid 1 and 2 already used by replication test and may not be cleanup.
 		ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub invLineStub1 = invoiceLineV13();
 		invLineStub1.setAngelId(4l);
+		invLineStub1.setEnrolmentId(2l);
 		ish.oncourse.webservices.v13.stubs.replication.InvoiceLineStub invLineStub2 = invoiceLineV13();
 		invLineStub2.setAngelId(3l);
-		invLineStub2.setEnrolmentId(2l);
+		invLineStub2.setEnrolmentId(1l);
 		ish.oncourse.webservices.v13.stubs.replication.PaymentInStub paymentInStub = paymentInV13();
 		ish.oncourse.webservices.v13.stubs.replication.PaymentInLineStub pLineStub = paymentInLineV13();
 		List<GenericReplicationStub> stubs = group.getGenericAttendanceOrBinaryDataOrBinaryInfo();
