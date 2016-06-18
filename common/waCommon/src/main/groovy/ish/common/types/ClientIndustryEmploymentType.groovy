@@ -68,7 +68,7 @@ public enum ClientIndustryEmploymentType implements DisplayableExtendedEnumerati
 	 * Database value: 8
 	 */
 	@API
-	ACCOMODATION(8, "Accommodation and Feed Services (H)", "H"),
+	ACCOMODATION(8, "Accommodation and Food Services (H)", "H"),
 
 	/**
 	 * Database value: 9
@@ -80,7 +80,7 @@ public enum ClientIndustryEmploymentType implements DisplayableExtendedEnumerati
 	 * Database value: 10
 	 */
 	@API
-	MEDIA(10, "Information Media and telecommunications (J)", "J"),
+	MEDIA(10, "Information Media and Telecommunications (J)", "J"),
 
 	/**
 	 * Database value: 11
@@ -92,7 +92,7 @@ public enum ClientIndustryEmploymentType implements DisplayableExtendedEnumerati
 	 * Database value: 12
 	 */
 	@API
-	RENTAL(12, "Rental, Hiring and real Estate Services (L)", "L"),
+	RENTAL(12, "Rental, Hiring and Real Estate Services (L)", "L"),
 
 	/**
 	 * Database value: 13
@@ -122,7 +122,7 @@ public enum ClientIndustryEmploymentType implements DisplayableExtendedEnumerati
 	 * Database value: 17
 	 */
 	@API
-	ARTS(17, "Arts and recreation Services (Q)", "Q"),
+	ARTS(17, "Arts and Recreation Services (Q)", "Q"),
 
 	/**
 	 * Database value: 18
