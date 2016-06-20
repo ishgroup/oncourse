@@ -2457,7 +2457,7 @@ public abstract class CommonPreferenceController {
 	 * @param valueIfNull
 	 * @return the preference stored on local disk as string
 	 */
-	private static String getFilePreference(String key, String valueIfNull) {
+	protected static String getFilePreference(String key, String valueIfNull) {
 		return FILE_PREFS.get(key, valueIfNull);
 	}
 
@@ -2467,7 +2467,7 @@ public abstract class CommonPreferenceController {
 	 * @param key
 	 * @param value
 	 */
-	private static void setFilePreference(String key, String value) {
+	protected static void setFilePreference(String key, String value) {
 		FILE_PREFS.put(key, value);
 	}
 
