@@ -9,6 +9,9 @@ import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.v13.stubs.replication.BinaryInfoRelationStub;
+import ish.oncourse.webservices.v13.stubs.replication.CourseStub;
+import ish.oncourse.webservices.v13.stubs.replication.DocumentStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -25,6 +28,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import static ish.oncourse.webservices.util.SupportedVersions.V13;
 import static org.junit.Assert.*;
 
 public class TransactionGroupProcessorTest extends ServiceTest {
@@ -696,5 +700,33 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		assertNotNull(remainedContact);
 
 		assertEquals(2, remainedContact.getToContacts().size());
+	}
+
+	@Test
+	public void testCourseWithAttachmentsCreation() throws Exception {
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V13);
+		CourseStub courseStub = new CourseStub();
+		courseStub.setName("CourseName");
+		courseStub.setAngelId(1L);
+		courseStub.setEnrolmentType(1);
+		courseStub.setEntityIdentifier("Course");
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(courseStub);
+
+		DocumentStub documentStub = new DocumentStub();
+		documentStub.setEntityIdentifier("Document");
+		documentStub.setAngelId(1L);
+		documentStub.setName("DocumentName");
+		documentStub.setShared(true);
+		documentStub.setWebVisible(1);
+		documentStub.setRemoved(true);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(documentStub);
+
+		BinaryInfoRelationStub binaryInfoRelationStub = new BinaryInfoRelationStub();
+		binaryInfoRelationStub.setEntityName("Course");
+		binaryInfoRelationStub.setEntityIdentifier("CourseAttachmentRelation");
+		binaryInfoRelationStub.setAngelId(1L);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryInfoRelationStub);
+
+		transactionGroupProcessor.processGroup(transactionGroup);
 	}
 }
