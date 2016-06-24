@@ -5,6 +5,8 @@ import ish.oncourse.model.Queueable;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.annotation.PostPersist;
+import org.apache.cayenne.annotation.PostUpdate;
 import org.apache.cayenne.annotation.PrePersist;
 import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.exp.Expression;
@@ -19,13 +21,13 @@ public class BinaryInfoRelationListener {
 		this.webSiteService = webSiteService;
 	}
 
-	@PrePersist(value = BinaryInfoRelation.class)
-	public void prePersist(BinaryInfoRelation relation) {
+	@PostPersist(value = BinaryInfoRelation.class)
+	public void postPersist(BinaryInfoRelation relation) {
 		setEntityWillowId(relation);
 	}
 
-	@PreUpdate(value = BinaryInfoRelation.class)
-	public void preUpdate(BinaryInfoRelation relation) {
+	@PostUpdate(value = BinaryInfoRelation.class)
+	public void postUpdate(BinaryInfoRelation relation) {
 		setEntityWillowId(relation);
 	}
 
@@ -46,6 +48,7 @@ public class BinaryInfoRelationListener {
 
 			if (object != null) {
 				relation.setEntityWillowId(object.getId());
+				objectContext.commitChanges();
 			}
 		}
 	}

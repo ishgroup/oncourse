@@ -326,30 +326,13 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		return new RelationShipCallback() {
 			@Override
 			public <M extends Queueable> M updateRelationShip(Long entityId, Class<M> clazz) {
-				if (clazz == Contact.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Course.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Certificate.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == CourseClass.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Enrolment.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Invoice.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Room.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Session.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Site.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Student.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Tutor.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == Tag.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == BinaryInfo.class && entityId == 1l) return objectContext.newObject(clazz);
-				if (clazz == PaymentOut.class && entityId == 1l) {
-					logger.warn("Illegal entity requested");
-					return objectContext.newObject(clazz);
-				}
 				return null;
 			}
 		};
 	}
 	
 	private String getMessage(String simpleName) {
-		return String.format("Unable to load related entity %s for angelid 1 or this entity have null willowId", simpleName);
+		return String.format("Unable to load related entity %s for angelid 1 or this entity not presented in transaction group", simpleName);
 	}
 	
 	private String getMessageForIllegalEntity(String simpleName) {

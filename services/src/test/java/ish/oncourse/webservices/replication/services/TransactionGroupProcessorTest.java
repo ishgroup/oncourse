@@ -30,6 +30,7 @@ import java.util.List;
 
 import static ish.oncourse.webservices.util.SupportedVersions.V13;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TransactionGroupProcessorTest extends ServiceTest {
 	WillowQueueService willowQueueService;
@@ -724,9 +725,22 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		BinaryInfoRelationStub binaryInfoRelationStub = new BinaryInfoRelationStub();
 		binaryInfoRelationStub.setEntityName("Course");
 		binaryInfoRelationStub.setEntityIdentifier("CourseAttachmentRelation");
+		binaryInfoRelationStub.setEntityAngelId(1l);
+		binaryInfoRelationStub.setDocumentId(1L);
 		binaryInfoRelationStub.setAngelId(1L);
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryInfoRelationStub);
 
 		transactionGroupProcessor.processGroup(transactionGroup);
+
+
+		ObjectContext context = cayenneService.newContext();
+		List<BinaryInfoRelation> relations = ObjectSelect.query(BinaryInfoRelation.class).select(context);
+		assertEquals(1, relations.size());
+		assertEquals(Long.valueOf(1), relations.get(0).getEntityAngelId());
+		assertNotNull(relations.get(0).getEntityWillowId());
+
+		Course course = ObjectSelect.query(Course.class).where(Course.ANGEL_ID.eq(1L)).selectOne(context);
+		assertEquals(course.getId(), relations.get(0).getEntityWillowId());
+		
 	}
 }

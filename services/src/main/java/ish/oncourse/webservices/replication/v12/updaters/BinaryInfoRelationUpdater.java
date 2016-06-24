@@ -80,14 +80,14 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 			logger.error(message);
 			throw new UpdaterException(message);
 		}
-		if (entityObject != null && entityObject.getId() != null) {
-			entity.setEntityWillowId(entityObject.getId());
-		} else {
+		if (entityObject == null) {
 			String message = String.format(
-				"Unable to load related entity %s for angelid %s or this entity have null willowId",
+					"Unable to load related entity %s for angelid %s or this entity not presented in transaction group",
 					stub.getEntityName(), stub.getEntityAngelId());
 			logger.error(message);
 			throw new UpdaterException(message);
+		} else if (entityObject.getId() != null) {
+			entity.setEntityWillowId(entityObject.getId());
 		}
 	}
 }
