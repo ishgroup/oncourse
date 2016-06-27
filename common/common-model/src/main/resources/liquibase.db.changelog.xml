@@ -4024,4 +4024,15 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="270" author="ashestak" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="CustomField" indexName="collegeId_angelId_unique"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE UNIQUE INDEX collegeId_angelId_unique ON CustomField (collegeId, angelId);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
