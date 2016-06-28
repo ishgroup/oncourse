@@ -4027,11 +4027,33 @@
 	<changeSet id="270" author="ashestak" runOnChange="false" runAlways="false" context="production">
 		<preConditions  onFail="MARK_RAN">
 			<not>
-				<indexExists tableName="CustomField" indexName="collegeId_angelId_unique"/>
+				<indexExists tableName="CustomField" indexName="customField_collegeId_angelId_unique"/>
 			</not>
 		</preConditions>
 		<sql>
-			CREATE UNIQUE INDEX collegeId_angelId_unique ON CustomField (collegeId, angelId);
+			CREATE UNIQUE INDEX customField_collegeId_angelId_unique ON CustomField (collegeId, angelId);
+		</sql>
+	</changeSet>
+
+	<changeSet id="271" author="ashestak" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="Document" indexName="document_collegeId_angelId_unique"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE UNIQUE INDEX document_collegeId_angelId_unique ON Document (collegeId, angelId);
+		</sql>
+	</changeSet>
+
+	<changeSet id="272" author="ashestak" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="DocumentVersion" indexName="documentVersion_collegeId_angelId_unique"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE UNIQUE INDEX documentVersion_collegeId_angelId_unique ON DocumentVersion (collegeId, angelId);
 		</sql>
 	</changeSet>
 
