@@ -16,6 +16,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Payments made in cash. These payments will need to be manually banked.
+	 *
 	 * Database value: 0
 	 * 
 	 */
@@ -24,6 +25,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * Payments made with cheque.  These payments will need to be manually banked.
+	 *
 	 * Database value: 1
 	 * 
 	 */
@@ -34,6 +36,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	 * Payments made with credit card.  These payments will need to be manually banked if the
 	 * credit card gateway is not enabled. They will be marked as banked automatically if
 	 * the gateway is available and the payment is successful.
+	 *
 	 * Database value: 2
 	 * 
 	 */
@@ -42,14 +45,16 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * Payments made by any means of electronic fund transfer (bank transfer etc.).  These payments will need to be manually banked.
+	 *
 	 * Database value: 3
 	 * 
 	 */
 	@API
-	
 	EFT(3, "EFT"),
+
 	/**
-	 * payments made using b-pay.  These payments will need to be manually banked.
+	 * Payments made using b-pay.  These payments will need to be manually banked.
+	 *
 	 * Database value: 4
 	 * 
 	 */
@@ -57,7 +62,15 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	BPAY(4, "B-Pay"),
 	
 	/**
-	 * A zero dollar payment which can be created for $0 invoices under some circumstances.
+	 * Internal payments (also known as "zero payments") are created by the system automatically, and cannot be created
+	 * manually. They will be seen when you create an invoice in QuickEnrol or on the website where there is no payment
+	 * and the payment is just created as a holding object to keep the workflow consistent with other regular payments.
+	 *
+	 * Additionally if you use a dollar type voucher, and there is no additional monetary payment, then an Internal
+	 * payment will also be created with a $0 value.
+	 *
+	 * Payments of this type always have a total of $0 even though they may have payment lines which are not $0.
+	 *
 	 * Database value: 5
 	 * 
 	 */
@@ -65,7 +78,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	INTERNAL(5, "Zero"),
 	
 	/**
-	 * Other types of payment (internal accounts transfer etc).  These payments will need to be manually banked.
+	 * Other types of payment (internal accounts transfer etc)
 	 * Database value: 6
 	 * 
 	 */
@@ -73,8 +86,14 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	OTHER(6, "Other"),
 	
 	/**
-	 * Special payment created during class/enrolment refund. used to balance out the original and refund invoice. They aren't real
-	 * payments but represent a link between an invoice and a credit note where payment from one was applied to the other.
+	 * Contra payments are created by a user manually in the onCourse user interface. They are created by cancelling out
+	 * a credit note (or part of an invoice) against an invoice (or part of an invoice).
+	 *
+	 * Contra payments can also be created when you cancel an enrolment, the invoice for that enrolment is unpaid and you
+	 * choose to issue a credit note. Then the credit note and original invoice are linked by a Contra Payment automatically.
+	 *
+	 * Payments of this type always have a total of $0 even though they will have payment lines which are not $0.
+	 *
 	 * Database value: 7
 	 * 
 	 */
@@ -82,7 +101,8 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	CONTRA(7, "Contra"),
 	
 	/**
-	 * special payment type created during voucher redemption. Banking is not needed.
+	 * A special payment type created during voucher redemption. Banking is never needed.
+	 *
 	 * Database value: 8
 	 * 
 	 */
@@ -98,9 +118,16 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	PAYPAL(9, "PayPal"),
 	
 	/**
-	 * special payment type used to link original and reverse invoices during payment cancellation or failure.
+	 * A reversal is a special payment type used to link original and reversed invoices during payment cancellation or failure.
 	 * This type cannot be created manually, but will appear when there is a failure during a payment transaction with the bank
 	 * or some other transaction processing error.
+	 *
+	 * In case of credit card failure, the operator is given a choice to keep the current invoice without payment,
+	 * or cancel the enrolment and issue a credit note. In this case a REVERSE payment is created to link the invoice
+	 * with the credit note and cancel out any amount owing.
+	 *
+	 * Payments of this type always have a total of $0 even though they will have paymentLines which are not $0.
+	 *
 	 * Database value: 10
 	 * 
 	 */
@@ -109,6 +136,7 @@ public enum PaymentType implements DisplayableExtendedEnumeration<Integer> {
 	
 	/**
 	 * EFTPOS payments.  These payments will need to be manually banked.
+	 *
 	 * Database value: 11
 	 * 
 	 */
