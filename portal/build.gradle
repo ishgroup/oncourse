@@ -1,5 +1,6 @@
 ext {
-	tapestryVersion = '5.4.1'
+	//cannot update to 5.4.*. Api for clustoring and JavaScript support were changed
+	tapestryVersion = '5.3.8'
 }
 
 apply plugin: 'war'
