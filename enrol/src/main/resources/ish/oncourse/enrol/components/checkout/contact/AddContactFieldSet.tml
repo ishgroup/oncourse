@@ -7,7 +7,7 @@
 					First name<em title="${message:message-required}">*</em>
 				</label>
 				<span class="${validateHandler.validateClass('firstName')}">
-					<t:textfield value="delegate.contactCredentials.firstName" t:id="firstName" class="input-fixed contact-field ${validateHandler.errorClass('firstName')}"/>
+					<t:textfield value="delegate.contactCredentials.firstName" autocomplete="given-name" t:id="firstName" class="input-fixed contact-field ${validateHandler.errorClass('firstName')}"/>
 					<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('firstName')}"/>
 				</span>
 			</p>
@@ -23,7 +23,7 @@
 				<em title="${message:message-required}">*</em>
 			</label>
 			<span class="${validateHandler.validateClass('lastName')}">
-				<t:textfield value="delegate.contactCredentials.lastName" t:id="lastName" class="input-fixed contact-field ${validateHandler.errorClass('lastName')}"/>
+				<t:textfield value="delegate.contactCredentials.lastName" autocomplete="family-name" t:id="lastName" class="input-fixed contact-field ${validateHandler.errorClass('lastName')}"/>
 				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('lastName')}"/>
 			</span>
 		</p>
@@ -34,7 +34,7 @@
 				Email<em title="${message:message-required}">*</em>
 			</label>
 			<span class="${validateHandler.validateClass('email')}">
-				<t:textfield value="delegate.contactCredentials.email" t:id="email" class="input-fixed contact-field ${validateHandler.errorClass('email')}"/>
+				<t:textfield value="delegate.contactCredentials.email" autocomplete="email" t:id="email" class="input-fixed contact-field ${validateHandler.errorClass('email')}"/>
 				<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('email')}"/>
 			</span>
 		</p>
