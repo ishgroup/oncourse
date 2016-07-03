@@ -1,7 +1,6 @@
 package ish.oncourse.services.paymentexpress;
 
 import com.paymentexpress.stubs.TransactionDetails;
-import com.paymentexpress.stubs.TransactionResult2;
 import ish.oncourse.model.College;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentTransaction;
@@ -115,19 +114,7 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
 
     @Override
     public void adjustTransaction(TransactionResult result) {
-		if (result.getResult2() != null) {
-			currentTransaction.setSoapResponse(result.getResult2().getMerchantHelpText());
-			currentTransaction.setResponse(result.getResult2().getResponseText());
-			currentTransaction.setTxnReference(result.getResult2().getTxnRef());
-
-			if (PaymentExpressUtil.isValidResult(result)) {
-				currentTransaction.setIsFinalised(true);
-			} else {
-				currentTransaction.setIsFinalised(false);
-			}
-		} else if (TransactionResult.ResultStatus.UNKNOWN.equals(result.getStatus())) {
-			currentTransaction.setIsFinalised(false);
-		}
+		AdjustPaymentTransaction.valueOf(currentTransaction, result).adjust();
     }
 
     @Override
@@ -143,10 +130,53 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
 
     @Override
     public void adjustPayment(TransactionResult result) {
-		if (result.getResult2() != null) {
-			paymentIn.setGatewayResponse(result.getResult2().getResponseText());
-			paymentIn.setGatewayReference(result.getResult2().getDpsTxnRef());
-			paymentIn.setBillingId(result.getResult2().getDpsBillingId());
-		}
+		AdjustPaymentIn.valueOf(paymentIn, result).adjust();
     }
+
+	public static class AdjustPaymentIn {
+		private PaymentIn paymentIn;
+		private TransactionResult transactionResult;
+		public void adjust() {
+			if (transactionResult.getResult2() != null) {
+				paymentIn.setGatewayResponse(transactionResult.getResult2().getResponseText());
+				paymentIn.setGatewayReference(transactionResult.getResult2().getDpsTxnRef());
+				paymentIn.setBillingId(transactionResult.getResult2().getDpsBillingId());
+			}
+		}
+
+		public static AdjustPaymentIn valueOf(PaymentIn paymentIn, TransactionResult transactionResult) {
+			AdjustPaymentIn result = new AdjustPaymentIn();
+			result.paymentIn = paymentIn;
+			result.transactionResult = transactionResult;
+			return result;
+		}
+	}
+
+	public static class AdjustPaymentTransaction {
+		private PaymentTransaction paymentTransaction;
+		private TransactionResult transactionResult;
+
+		public void adjust() {
+			if (transactionResult.getResult2() != null) {
+				paymentTransaction.setSoapResponse(transactionResult.getResult2().getMerchantHelpText());
+				paymentTransaction.setResponse(transactionResult.getResult2().getResponseText());
+				paymentTransaction.setTxnReference(transactionResult.getResult2().getTxnRef());
+
+				if (PaymentExpressUtil.isValidResult(transactionResult)) {
+					paymentTransaction.setIsFinalised(true);
+				} else {
+					paymentTransaction.setIsFinalised(false);
+				}
+			} else if (TransactionResult.ResultStatus.UNKNOWN.equals(transactionResult.getStatus())) {
+				paymentTransaction.setIsFinalised(false);
+			}
+		}
+
+		public static AdjustPaymentTransaction valueOf(PaymentTransaction paymentTransaction, TransactionResult transactionResult) {
+			AdjustPaymentTransaction result = new AdjustPaymentTransaction();
+			result.paymentTransaction = paymentTransaction;
+			result.transactionResult = transactionResult;
+			return result;
+		}
+	}
 }

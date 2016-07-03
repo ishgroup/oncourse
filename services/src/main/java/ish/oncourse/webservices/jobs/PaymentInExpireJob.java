@@ -1,46 +1,26 @@
 package ish.oncourse.webservices.jobs;
 
-import com.paymentexpress.stubs.PaymentExpressWSLocator;
-import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentTransaction;
-import ish.oncourse.paymentexpress.customization.PaymentExpressWSLocatorWithSoapResponseHandle;
 import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.paymentexpress.GetStatusOperation;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
-import ish.oncourse.services.paymentexpress.PaymentExpressUtil;
-import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.PaymentInSupport;
-import ish.oncourse.services.paymentexpress.TransactionResult;
+import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
-import ish.oncourse.util.payment.PaymentInAbandon;
-import ish.oncourse.util.payment.PaymentInModel;
-import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder;
-import ish.oncourse.util.payment.PaymentInModelFromSessionIdBuilder;
-import ish.oncourse.util.payment.PaymentInSucceed;
+import ish.oncourse.util.payment.*;
 import ish.oncourse.utils.PaymentInUtil;
-import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.PrefetchTreeNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Job to abandon (means fail enrolments and creating refunds) not
@@ -138,16 +118,10 @@ public class PaymentInExpireJob implements Job {
 						p.setStatusNotes(PaymentExpressGatewayService.FAILED_PAYMENT_IN);
 						abandonPayment(p);
 					}
-
-					p.setGatewayResponse(result.getResult2().getResponseText());
-					p.setGatewayReference(result.getResult2().getDpsTxnRef());
-					p.setBillingId(result.getResult2().getDpsBillingId());
+					PaymentInSupport.AdjustPaymentIn.valueOf(p, result).adjust();
 
 					PaymentTransaction transaction = p.getPaymentTransactions().get(0);
-					transaction.setIsFinalised(true);
-					transaction.setSoapResponse(result.getResult2().getMerchantHelpText());
-					transaction.setSoapResponse(result.getResult2().getResponseText());
-					transaction.setSoapResponse(result.getResult2().getTxnRef());
+					PaymentInSupport.AdjustPaymentTransaction.valueOf(transaction, result).adjust();
 				} else {
 					return;
 				}
