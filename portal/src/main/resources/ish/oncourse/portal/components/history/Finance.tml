@@ -1,56 +1,45 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <t:delegate to="block:paymentForm"/>
 
     <t:if test="items" negate="true">
-         <div>No financial history available.</div>
+        <div>No financial history available.</div>
     </t:if>
 
-
-<t:loop source="items" value="item">
-    <t:if test="isInvoice()">
-        <t:delegate to="block:invoice"/>
+    <t:if test="items.empty" negate="true">
+        <t:delegate to="block:items"/>
     </t:if>
 
-    <t:unless test="isInvoice()">
-        <t:delegate to="block:payment"/>
-    </t:unless>
-</t:loop>
+    <t:block t:id="items">
+        <table class="table">
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Balanse</th>
+            </tr>
+            <t:loop source="items" value="item">
+                <t:if test="isInvoice()">
+                    <t:delegate to="block:invoice"/>
+                </t:if>
 
-<t:block t:id="invoice">
-<tr>
-    <td>
-      <t:pagelink page="invoicedetails" context="id">${date}</t:pagelink>
-    </td>
-    <td>
-      <t:if test="isCreditNote()">
-          <t:pagelink page="invoicedetails" context="id">Credit note ${invoiceNumber}</t:pagelink>
-          <p:else>
-              <t:pagelink page="invoicedetails" context="id">Invoice ${invoiceNumber}</t:pagelink>
-          </p:else>
-      </t:if>
-    </td>
-    <td>
-        <t:pagelink page="invoicedetails" context="id"><t:output value="amount.abs()" format="moneyFormat(amount)"/></t:pagelink>
-        <t:if test="isNew()">
-            <span class="label label-primary">NEW</span>
-        </t:if>
-    </td>
-</tr>
-</t:block>
+                <t:unless test="isInvoice()">
+                    <t:delegate to="block:paymentIn"/>
+                </t:unless>
+            </t:loop>
+        </table>
+    </t:block>
 
-<t:block t:id="payment">
-    <tr>
-        <td>
-          <t:pagelink page="paymentdetails" context="id">${date}</t:pagelink>
-        </td>
-        <td>
-          <t:pagelink page="paymentdetails" context="id">Payment (${paymentType})</t:pagelink>
-        </td>
-        <td>
-          <t:pagelink page="paymentdetails" context="id"><t:output value="amount" format="moneyFormat(amount)"/></t:pagelink>
-            <t:if test="isNew()">
-                <span class="label label-primary">NEW</span>
-            </t:if>
-        </td>
-    </tr>
-</t:block>
+    <t:block t:id="invoice">
+        <t:history.invoiceRow invoice="getInvoice()"/>
+    </t:block>
+
+    <t:block t:id="paymentIn">
+        <t:history.paymentInRow paymentIn="getPaymentIn()"/>
+    </t:block>
+
+
+    <t:block t:id="paymentForm">
+        <t:history.paymentform/>
+    </t:block>
+
 </t:container>

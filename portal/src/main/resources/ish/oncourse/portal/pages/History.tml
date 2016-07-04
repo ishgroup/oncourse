@@ -11,17 +11,15 @@
 	<div class="tab-content">
     
         <div class="tab-pane${financeClass}" id="finance-history">
-          <table class="table">
-            <span t:type="history/finance"/>
-          </table>
+            <t:history.finance/>
         </div>
 
         <div class="tab-pane${enrolmentsClass}" id="enrolments-history">
-            <span t:type="history/classes"/>
+            <t:history.classes/>
         </div>
 		
 		<div class="tab-pane${applicationClass}" id="applications-history">
-			<span t:type="history/applications"/>
+			<t:history.applications/>
 		</div>
 	</div>
 </html>

@@ -1,0 +1,29 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <tr>
+        <td>
+            <t:pagelink page="invoiceDetails" context="invoice.id">
+                <t:output value="invoice.created" format="dateFormat()"/>
+            </t:pagelink>
+        </td>
+        <td>
+            <t:if test="creditNote">
+                <t:pagelink page="invoiceDetails" context="invoice.id">Credit note ${invoiceNumber}</t:pagelink>
+                <p:else>
+                    <t:pagelink page="invoiceDetails" context="invoice.id">Invoice ${invoiceNumber}</t:pagelink>
+                </p:else>
+            </t:if>
+        </td>
+        <td>
+            <t:pagelink page="invoiceDetails" context="invoice.id">
+                <t:output value="invoice.totalGst.abs()" format="moneyFormat(invoice.totalGst)"/>
+            </t:pagelink>
+        </td>
+
+        <td class="balance">
+            <t:output value="invoice.amountOwing" format="moneyFormat(invoice.amountOwing)"/>
+            <t:if test="isNew()">
+                <span class="label label-primary">NEW</span>
+            </t:if>
+        </td>
+    </tr>
+</t:container>

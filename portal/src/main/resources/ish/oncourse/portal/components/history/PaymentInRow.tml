@@ -1,0 +1,22 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <tr>
+        <td>
+            <t:pagelink page="paymentDetails" context="paymentIn.id">
+                <t:output value="paymentIn.created" format="dateFormat()"/>
+            </t:pagelink>
+        </td>
+        <td>
+            <t:pagelink page="paymentDetails" context="paymentIn.id">Payment (${paymentType})</t:pagelink>
+        </td>
+        <td>
+            <t:pagelink page="paymentDetails" context="paymentIn.id">
+                <t:output value="paymentIn.amount" format="moneyFormat(paymentIn.amount)"/>
+            </t:pagelink>
+        </td>
+        <td class="balance">$0
+            <t:if test="isNew()">
+                <span class="label label-primary">NEW</span>
+            </t:if>
+        </td>
+    </tr>
+</t:container>
