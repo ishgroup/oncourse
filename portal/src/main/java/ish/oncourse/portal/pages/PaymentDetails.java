@@ -1,8 +1,8 @@
 package ish.oncourse.portal.pages;
 
 import ish.math.Money;
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.portal.services.GetContactPhone;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.util.FormatUtils;
@@ -71,19 +71,7 @@ public class PaymentDetails {
 
 
     public String getPhoneNumber(){
-
-        Contact contact = payment.getContact();
-
-        if(contact.getMobilePhoneNumber()!=null)
-            return contact.getMobilePhoneNumber();
-        else if(contact.getHomePhoneNumber()!=null)
-            return contact.getHomePhoneNumber();
-        else if(contact.getBusinessPhoneNumber()!=null)
-            return contact.getBusinessPhoneNumber();
-        else if(contact.getFaxNumber()!=null)
-            return contact.getFaxNumber();
-        else
-            return null;
+        return GetContactPhone.valueOf(payment.getContact()).get();
     }
 
     public Format moneyFormat(Money money)

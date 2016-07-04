@@ -1,9 +1,10 @@
 package ish.oncourse.portal.pages;
 
 import ish.math.Money;
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
+import ish.oncourse.model.InvoiceDueDate;
 import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.portal.services.GetContactPhone;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -49,6 +50,9 @@ public class InvoiceDetails {
     @Property
     private InvoiceLine invoiceLine;
 
+    @Property
+    private InvoiceDueDate invoiceDueDate;
+
     @Inject
     private Messages messages;
 
@@ -70,19 +74,7 @@ public class InvoiceDetails {
 
 
     public String getPhoneNumber() {
-
-        Contact contact = invoice.getContact();
-
-        if (contact.getMobilePhoneNumber() != null)
-            return contact.getMobilePhoneNumber();
-        else if (contact.getHomePhoneNumber() != null)
-            return contact.getHomePhoneNumber();
-        else if (contact.getBusinessPhoneNumber() != null)
-            return contact.getBusinessPhoneNumber();
-        else if (contact.getFaxNumber() != null)
-            return contact.getFaxNumber();
-        else
-            return null;
+        return GetContactPhone.valueOf(invoice.getContact()).get();
     }
 
 
@@ -118,4 +110,7 @@ public class InvoiceDetails {
         return FormatUtils.chooseMoneyFormat(money);
     }
 
+    public Format dateFormat() {
+        return new SimpleDateFormat(PortalUtils.DATE_FORMAT_dd_MMMMM_yyyy);
+    }
 }
