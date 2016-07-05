@@ -12,6 +12,7 @@ import ish.math.Country;
 import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
 import ish.util.SecurityUtil;
+import ish.validation.PreferenceValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -960,6 +961,7 @@ public abstract class CommonPreferenceController {
 	public static final String ACCOUNT_PREPAID_FEES_POST_AT = "account.prepaidFeesPostAt";
 	public static final String ACCOUNT_PREPAID_FEES_POST_AT_EVERY_SESSION = "everySession";
 	public static final String ACCOUNT_PREPAID_FEES_POST_AT_FIRST_SESSION = "firstSession";
+	public static final String ACCOUNT_INVOICE_TERMS = "account.invoice.terms";
 
 	public Long getDefaultAccountId(String preferenceName) {
 		String value = getValue(preferenceName, false);
@@ -1015,6 +1017,26 @@ public abstract class CommonPreferenceController {
 		setValue(PAY_PERIOD_DAYS, false, String.valueOf(value));
 	}
 
+
+	public synchronized Integer getAccountInvoiceTerms() {
+		try {
+			String value = getValue(ACCOUNT_INVOICE_TERMS, false);
+			if (value == null) {
+				setAccountInvoiceTerms(0);
+				return 0;
+			}
+			return Integer.parseInt(value);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public void setAccountInvoiceTerms(int value) {
+		if (PreferenceValidator.isValidAccountInvoiceTerms(value)) {
+			setValue(ACCOUNT_INVOICE_TERMS, false, String.valueOf(value));
+		}
+	}
+	
 	public String getAccountPrepaidFeesPostAt() {
 		String value = getValue(ACCOUNT_PREPAID_FEES_POST_AT, false);
 		if (value == null) {
@@ -2078,6 +2100,8 @@ public abstract class CommonPreferenceController {
 			return getSMTPPort();
 		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			return getOncourseServerDefaultTimezone();
+		} else if (ACCOUNT_INVOICE_TERMS.equals(key)) {
+			return getAccountInvoiceTerms();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2289,6 +2313,8 @@ public abstract class CommonPreferenceController {
 			setOncourseServerDefaultTimezone((String) value);
 		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {
 			setPaymentInfo((String) value);
+		} else if (ACCOUNT_INVOICE_TERMS.equals(key)) {
+			setAccountInvoiceTerms((Integer) value);
 		}
 	}
 
