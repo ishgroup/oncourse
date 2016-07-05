@@ -1277,7 +1277,7 @@ li.active .btn-outcomes small {
   }
 }
 
-#class-description, .class-description-class {
+[id^=class-description], .class-description-class {
   display: none;
 
   table.class-desc-section {
@@ -1302,7 +1302,7 @@ li.active .btn-outcomes small {
   }
 }
 .class-description-class {
-	display: block;
+	display: none;
 
   td {
     font-size: 14px;
@@ -1580,7 +1580,7 @@ ul.abcent-menu {
   color: red;
 }
 
-.absent-with-reason-mark {
+.absent-with-reason-mark, .partially-attended-mark {
   position: absolute;
   margin: auto;
   left: 0;

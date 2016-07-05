@@ -1,0 +1,40 @@
+<html t:type="pagestructure" title="literal:Class"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:timetable" xmlns:p="tapestry:parameter">
+
+
+
+        <t:if test="${needApprove()}">
+            <p class="info-text fixed">This course requires approval <a href="${request.contextPath}/tutor/classapproval/${courseClass.id}" class="btn btn-primary btn-xs">Review now</a></p>
+        </t:if>
+        <div class="page-header zero-padding clearfix">
+                <ul class="nav nav-tabs header-tabs">
+                    <t:courseclass.classTabs courseClass="courseClass"/>
+                </ul>
+                <h1>
+                    <t:if test="url">
+                        <a href="${url}" target="_blank">${courseClass.course.name}</a>
+                        <p:else>
+                            <a href="#">${courseClass.course.name}</a>
+                        </p:else>
+                    </t:if>
+
+                    <span class="info">
+                        <small>  (${courseClass.uniqueIdentifier})</small>
+                        <t:if test="${needApprove()}">
+                            <a href="${request.contextPath}/tutor/classapproval/${courseClass.id}" class="label label-primary">Review now</a>
+                        </t:if>
+                    </span>
+                </h1>
+        </div>
+        <div class="tab-content">
+            <t:courseclass.classDetails courseClass="courseClass"/>
+            <t:courseclass.classLocation courseClass="courseClass"/>
+            <t:if test="hasResources()">
+                <t:courseclass.classResources courseClass="courseClass"/>
+            </t:if>
+            <t:if test="hasResults()">
+                <t:courseclass.classResults courseClass="courseClass"/>
+            </t:if>
+        </div>
+
+</html>

@@ -1,0 +1,24 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="col-lg-12 class-roll-content clearfix">
+		<div class="page-header clearfix">
+			<h4 class="col-md-6 col-sm-6 pull-left">
+				Class roll <small>${numberOfStudents} enrolled students (Maximum: ${courseClass.maximumPlaces} | Minimum: ${courseClass.minimumPlaces})</small>
+			</h4>
+			<h6 id="class-roll-captions" class="pull-right col-lg-4 col-md-6 col-sm-6 hidden-xs">
+				<div class="col-lg-7 col-md-7 col-sm-7 text-center">Attendance</div>
+				<div class="col-lg-5 col-md-5 col-sm-5 text-center">Mark</div>
+			</h6>
+		</div>
+		<t:loop source="sessions" value="session">
+			<span t:type="courseclass/sessiondetails" session="session"/>
+		</t:loop>
+		
+		
+		<p class="info-text clearfix">You are currently marking <strong id='sessionDate'></strong><button type="button" class="finish pull-right btn btn-default btn-xs">Finish</button></p>
+		<ul class="list-unstyled student-list clearfix">
+			<t:loop source="enrolments" value="enrolment">
+				<span t:type="courseclass/classRollItemNew" enrolment="enrolment"/>
+			</t:loop>
+		</ul>
+	</div>
+</t:container>

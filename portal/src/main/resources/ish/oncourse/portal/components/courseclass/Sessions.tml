@@ -1,0 +1,18 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<div class="col-lg-12 col-sm-12 session-wrapper">
+		<div class="no-border clearfix">
+			<h4 class="pull-left">Timetable <small>${numberOfSessions} sessions</small></h4>
+		</div>
+		<t:if test = "showSessions">
+			<div class="session-list-content">
+				<div class="session-content row">
+					<t:loop source="sessions" value="session">
+						<span t:type="courseClass/sessionItem" session="session"></span>
+					</t:loop>
+				</div>
+			</div>
+		</t:if>
+	</div>
+
+</t:container>

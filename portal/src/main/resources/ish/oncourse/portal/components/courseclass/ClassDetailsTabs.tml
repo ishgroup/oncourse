@@ -1,0 +1,53 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="header-nav">
+		<ul class="nav-menu main-nav">
+			<li class="active">
+				<a href="#class-details" data-toggle="tab">
+                    <span>
+                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW1512.svg" type="image/svg+xml"/>
+                    </span>
+					<span class="new-nav-icon-text">Roll</span>
+				</a>
+			</li>
+			<li>
+				<a href="#outcomes-location" data-toggle="tab">
+                    <span>
+                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW1354.svg" type="image/svg+xml"/>
+                    </span>
+					<span class="new-nav-icon-text">Outcomes</span>
+				</a>
+			</li>
+			<t:if test="hasResources()">
+				<li>
+					<a href="#class-resources" data-toggle="tab">
+                    <span>
+                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW2182.svg" type="image/svg+xml"/>
+                    </span>
+						<span class="new-nav-icon-text">Resources</span>
+					</a>
+				</li>
+			</t:if>
+			<t:if test="hasResults()">
+				<li>
+					<a href="#class-results" data-toggle="tab">
+                    <span>
+                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW0397.svg" type="image/svg+xml"/>
+                    </span>
+						<span class="new-nav-icon-text">Results</span>
+					</a>
+				</li>
+			</t:if>
+			<li>
+				<a href="#class-location" data-toggle="tab">
+                    <span>
+                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW0156.svg" type="image/svg+xml"/>
+                    </span>
+					<span class="new-nav-icon-text">Location</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+</t:container>
+
+

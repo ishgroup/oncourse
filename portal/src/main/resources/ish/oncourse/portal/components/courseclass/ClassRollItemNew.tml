@@ -1,0 +1,113 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+	<li class="col-lg-12 col-sm-12" rel="attendance-time-1">
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-xs-12 student-detail clearfix">
+				<div class="col-lg-1 col-sm-2 col-xs-2 attendance-content">
+					<div class="row attendance-button-field">
+						<div class="attendance">
+							<button class="btn btn-default btn-gradient btn-ok btn-xs" type="button">
+								<span class="glyphicon glyphicon-ok"/>
+							</button>
+							<button class="btn btn-default btn-gradient btn-cancel btn-xs" type="button">
+								<span class="glyphicon glyphicon-remove"/>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-8 col-sm-7 col-xs-6">
+					<div class="row student-card">
+						<!--  changing avatar location in html  -->
+						<div class="col-lg-2 col-sm-3 col-xs-3 avatar">
+							<div class="row"><img width="50" height="50" src="${avatarContextPath}"/></div>
+						</div>
+
+						<h5>${enrolment.student.fullName}</h5>
+						
+						<t:if test="enableDetails">
+						<ul class="list-inline">
+							<li><a href="mailto:${enrolment.student.contact.emailAddress}">${enrolment.student.contact.emailAddress}</a></li>
+							<t:if test="phoneNumber">
+								<li>|</li>
+								<li><a href="tel:${phoneNumber}">${phoneNumber}</a></li>
+							</t:if>
+						</ul>
+						</t:if>
+					</div>
+				</div>
+
+				
+				<div class="pull-right col-lg-4 col-sm-5 col-xs-6 vertical-center zero-right">
+					<div class="col-lg-7 text-center vertical-center">
+						<div class="collapse mark-buttons"  id="${enrolment.student.id}">
+							<div class="btn-group">
+								<a is="cancel" class="btn btn-default">
+									<span class="glyphicon glyphicon-remove"/>
+								</a>
+								<a is="ok" class="btn btn-default">
+									<span class="glyphicon glyphicon-ok"/>
+								</a>
+							</div>
+						</div>
+						<div class="percents-of-attendance"><span class="mark-percents"><span>${attendancePercent}</span>%</span></div>
+					</div>
+					<div id="absent-reason-partial-${enrolment.student.id}" class="col-lg-5 text-center pull-right add-rem-collapse">
+						<img class="mark-img" src="/portal/img/svg_icons/DIU_RAW2167.svg" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="marking-${enrolment.student.id}" class="collapse">
+			<div class="absent-with-reason">
+				<strong>UPDATE ATTENDANCE</strong>
+				<div class="warning-text">Are you sure you want to make this change?</div>
+				<button class="btn btn-success btn-sm">YES</button>
+				<button class="btn btn-danger btn-sm">NO</button>
+			</div>
+		</div>
+
+		<div id="absence-${enrolment.student.id}" class="collapse">
+			<ul class="nav-menu abcent-menu">
+				<li role="presentation" class="active"><a href="#absent-reason-${enrolment.student.id}" data-toggle="tab">Absent with reason</a></li>
+				&nbsp;|&nbsp;
+				<li role="presentation"><a href="#absent-partial-${enrolment.student.id}" data-toggle="tab">Partial</a></li>
+			</ul>
+
+			<div class="tab-content absent-with-reason">
+				<div id="absent-reason-${enrolment.student.id}" class="tab-pane active">
+					<strong>REASON FOR ABSENCE*</strong>
+					<textarea></textarea>
+					<button class="btn btn-primary btn-sm">SAVE</button>
+				</div>
+
+				<div id="absent-partial-${enrolment.student.id}" class="tab-pane">
+
+					<div class="row">
+						<div class="col-lg-6 col-sm-12">
+							<strong>ARRIVED</strong>
+							<div class="input-group">
+								<!-- timepicker -->
+								<input class="arrived form-control time_element"/>
+								<span class="input-group-addon glyphicon glyphicon-time"></span>
+							</div>
+						</div>
+						<div class="col-lg-6 col-sm-12">
+							<strong>DEPARTED</strong>
+							<div class="input-group">
+								<!-- timepicker -->
+								<input class="departed form-control time_element" type="text" name="timepicker"/>
+								<span class="input-group-addon glyphicon glyphicon-time"></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-sm-12">
+							<textarea></textarea>
+							<button class="btn btn-primary btn-sm">SAVE</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</li>
+</t:container>
