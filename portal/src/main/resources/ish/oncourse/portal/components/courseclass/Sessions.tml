@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<div class="col-lg-12 col-sm-12 session-wrapper">
+	<div class="col-lg-12 col-sm-12 session-wrapper table">
 		<div class="no-border clearfix">
 			<h4 class="pull-left">Timetable <small>${numberOfSessions} sessions</small></h4>
 		</div>

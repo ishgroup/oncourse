@@ -1170,6 +1170,10 @@ strong.link-color {
   background-color: $past-course-diff-bg;
 }
 
+.failed-course.past-course-diff,  {
+  background-color: #DD4848;
+}
+
 .past-course-diff {
   background-color: $green-mark;
 

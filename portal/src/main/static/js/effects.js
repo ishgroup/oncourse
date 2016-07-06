@@ -8,21 +8,6 @@ goog.require('timepicki');
 var $j = jQuery.noConflict();
 $j(document).ready(function() {
 
-// colors of different percents attendance
-  $j('.percents-of-attendance span').each( function(){
-    parent = $j(this).parent();
-    percent = $j(this).text();
-
-    if (percent>90){
-      parent.addClass('full-percents');
-    }
-    else if (percent>50) {
-      parent.addClass('half-percents');
-    }
-    else{
-      parent.addClass('mimimum-percents');
-    };
-  });
 
 // diff classes for diff percents on dashboard
   function DashboardAttendance(){

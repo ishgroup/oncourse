@@ -16,6 +16,9 @@ public class Class {
 	@Property
 	private CourseClass courseClass;
 
+	@Property
+	private Boolean isTutor;
+
 	@Inject
 	private ICayenneService cayenneService;
 
@@ -59,7 +62,13 @@ public class Class {
 			 * It is important when we define timezone for start and end time.
 			 */
             this.courseClass = portalService.getCourseClassBy(idLong);
-            return this.courseClass == null ? pageNotFound:null;
+			
+			if (this.courseClass != null) {
+				isTutor = portalService.getContact().getTutor() != null && portalService.isTutorFor(this.courseClass);
+				return null;
+			} else {
+				return pageNotFound;
+			}			
 		} else {
 			return pageNotFound;
         }

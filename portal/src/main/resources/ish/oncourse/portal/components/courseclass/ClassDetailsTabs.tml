@@ -1,27 +1,35 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 	<div class="header-nav">
 		<ul class="nav-menu main-nav">
 			<li class="active">
 				<a href="#class-details" data-toggle="tab">
-                    <span>
-                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW1512.svg" type="image/svg+xml"/>
-                    </span>
-					<span class="new-nav-icon-text">Roll</span>
+					<t:if test="isTutor">
+						<span>
+							<object class="new-nav-icon" data="/portal/img/svg_icons/mark_roll.svg" type="image/svg+xml"/>
+						</span>
+						<span class="new-nav-icon-text">Roll</span>
+						<p:else>
+							<span>
+								<object class="new-nav-icon" data="/portal/img/svg_icons/session_details.svg" type="image/svg+xml"/>
+							</span>
+							<span class="new-nav-icon-text">Details</span>
+						</p:else>
+					</t:if>
 				</a>
 			</li>
-			<li>
-				<a href="#outcomes-location" data-toggle="tab">
-                    <span>
-                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW1354.svg" type="image/svg+xml"/>
-                    </span>
-					<span class="new-nav-icon-text">Outcomes</span>
-				</a>
-			</li>
+			<!--<li>-->
+				<!--<a href="#outcomes-location" data-toggle="tab">-->
+                    <!--<span>-->
+                        <!--<object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW1354.svg" type="image/svg+xml"/>-->
+                    <!--</span>-->
+					<!--<span class="new-nav-icon-text">Outcomes</span>-->
+				<!--</a>-->
+			<!--</li>-->
 			<t:if test="hasResources()">
 				<li>
 					<a href="#class-resources" data-toggle="tab">
                     <span>
-                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW2182.svg" type="image/svg+xml"/>
+                        <object class="new-nav-icon" data="/portal/img/svg_icons/resources.svg" type="image/svg+xml"/>
                     </span>
 						<span class="new-nav-icon-text">Resources</span>
 					</a>
@@ -31,7 +39,7 @@
 				<li>
 					<a href="#class-results" data-toggle="tab">
                     <span>
-                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW0397.svg" type="image/svg+xml"/>
+                        <object class="new-nav-icon" data="/portal/img/svg_icons/class_details.svg" type="image/svg+xml"/>
                     </span>
 						<span class="new-nav-icon-text">Results</span>
 					</a>
@@ -40,7 +48,7 @@
 			<li>
 				<a href="#class-location" data-toggle="tab">
                     <span>
-                        <object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW0156.svg" type="image/svg+xml"/>
+                        <object class="new-nav-icon" data="/portal/img/svg_icons/location.svg" type="image/svg+xml"/>
                     </span>
 					<span class="new-nav-icon-text">Location</span>
 				</a>

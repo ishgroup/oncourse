@@ -10,6 +10,9 @@ import org.apache.tapestry5.services.Request;
 
 public class ClassDetailsTabs {
 
+	@Property
+	@Parameter
+	private boolean isTutor;
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -28,21 +31,12 @@ public class ClassDetailsTabs {
 		return request.getContextPath();
 	}
 
-
-
 	public boolean hasResults(){
 		CourseClass courseClass = cayenneService.sharedContext().localObject(this.courseClass);
-
 		return portalService.hasResult(courseClass);
 	}
 
-
 	public boolean hasResources(){
-
 		return  !portalService.getResourcesBy(this.courseClass).isEmpty();
 	}
-
-
-
-
 }

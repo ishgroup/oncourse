@@ -7,6 +7,7 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Student;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.utils.DateUtils;
 import org.apache.cayenne.query.ObjectSelect;
@@ -72,35 +73,6 @@ public class ClassRollItemNew {
 	}
 
 	public Integer getAttendancePercent() {
-		double minutesPassed = 0d;
-		double minutesPresent = 0d;
-
-		Date now = new Date();
-		for (Attendance a : getAttendances()) {
-			if (a.getSession().getEndDate().before(now)) {
-				if (a.getAttendanceType() != null && !AttendanceType.UNMARKED.getDatabaseValue().equals(a.getAttendanceType())) {
-					double sessionDuration = (a.getSession().getEndDate().getTime() - a.getSession().getStartDate().getTime())/60000;
-					minutesPassed += sessionDuration;
-					if (AttendanceType.ATTENDED.getDatabaseValue().equals(a.getAttendanceType()) || AttendanceType.DID_NOT_ATTEND_WITH_REASON.getDatabaseValue().equals(a.getAttendanceType())) {
-						minutesPresent += sessionDuration;
-					} else if (AttendanceType.PARTIAL.getDatabaseValue().equals(a.getAttendanceType())) {
-						Integer partialDuration = a.getDurationMinutes();
-						if (partialDuration != null) {
-							minutesPresent += Math.min(sessionDuration, partialDuration.doubleValue());
-						}
-					}
-				}
-			}
-		}
-
-		return (int) (100 * minutesPresent / minutesPassed);
-	}
-
-	private List<Attendance> getAttendances() {
-		return ObjectSelect.query(Attendance.class)
-				.where(Attendance.STUDENT.eq(enrolment.getStudent()))
-				.and(Attendance.SESSION.dot(Session.COURSE_CLASS).eq(enrolment.getCourseClass())).select(enrolment.getObjectContext());
-	}
-	
-	
+		return AttendanceUtils.getAttendancePercent(enrolment);
+	}	
 }

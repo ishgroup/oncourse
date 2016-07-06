@@ -1,0 +1,24 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<div class="col-lg-12 col-sm-12 session-wrapper">
+		<div class="no-border clearfix">
+			<h4 class="pull-left">Timetable <small>${numberOfSessions} sessions</small></h4>
+			<t:if test = "showSessions">
+				<span class="pull-right current-attendance"><strong>Current Attendance </strong><span>${attendancePercent}</span>%</span>
+			</t:if>
+		</div>
+		<t:if test = "showSessions">
+			<t:loop source="attendances" value="attendance">
+				<span t:type="courseclass/sessionstudentdetails" session="attendance.session" />
+			</t:loop>
+			<div class="session-list-content table">
+				<div class="session-content student-session-content row">
+					<t:loop source="attendances" value="attendance">
+						<span t:type="courseClass/attendanceItem" attendance="attendance"/>
+					</t:loop>
+				</div>
+			</div>
+		</t:if>
+	</div>
+
+</t:container>

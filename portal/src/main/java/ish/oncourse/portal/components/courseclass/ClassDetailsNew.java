@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.portal.services.IPortalService;
@@ -44,6 +45,9 @@ public class ClassDetailsNew {
 	@Property
 	@Parameter
 	private boolean isTutor;
+
+	@Property
+	private Enrolment enrolment;
 
 	@Persist
 	@Property
@@ -84,12 +88,12 @@ public class ClassDetailsNew {
 
 	@SetupRender
 	void setupRender() {
-
-		isTutor = portalService.getContact().getTutor() != null && portalService.isTutorFor(this.courseClass);
-
 		if (courseClass != null) {
 			details = PortalUtils.getClassDetailsBy(courseClass, textileConverter, extractor);
 			fullDetails = textileConverter.convertCustomTextile(PortalUtils.getClassDetails(courseClass), new ValidationErrors());
+		}
+		if (!isTutor) {
+			enrolment = portalService.getEnrolmentBy(portalService.getContact().getStudent(), courseClass);
 		}
 	}
 

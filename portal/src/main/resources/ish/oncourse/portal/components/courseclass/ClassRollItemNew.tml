@@ -51,7 +51,7 @@
 						<div class="percents-of-attendance"><span class="mark-percents"><span>${attendancePercent}</span>%</span></div>
 					</div>
 					<div id="absent-reason-partial-${enrolment.student.id}" class="col-lg-5 text-center pull-right add-rem-collapse">
-						<img class="mark-img" src="/portal/img/svg_icons/DIU_RAW2167.svg" />
+						<img class="mark-img" src="/portal/img/svg_icons/mark_finger.svg" />
 					</div>
 				</div>
 			</div>

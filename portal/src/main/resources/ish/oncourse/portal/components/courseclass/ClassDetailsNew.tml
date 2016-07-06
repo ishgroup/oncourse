@@ -17,14 +17,18 @@
 			<t:surveys.surveys courseClass="courseClass" isTutor="isTutor"/>
 		</t:if>
 
-		<div class="row">
-			<t:courseclass.sessions courseClass="courseClass" isTutor="isTutor"/>
-		</div>
-
 		<t:if test="isTutor">
+			<div class="row">
+				<t:courseclass.sessions courseClass="courseClass"/>
+			</div>
 			<div class="row">
 				<t:courseclass.classrollnew courseClass="courseClass"/>
 			</div>
 		</t:if>
+		<t:unless test="isTutor">
+			<div class="row">
+				<t:courseclass.attendances enrolment="enrolment"/>
+			</div>
+		</t:unless>
 	</div>
 </t:container>

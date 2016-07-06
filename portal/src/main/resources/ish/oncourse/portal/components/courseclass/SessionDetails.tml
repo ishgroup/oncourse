@@ -2,7 +2,7 @@
 	<div id="class-description-${session.id}" class="class-description-class ${markedClass}">
 		<table class="class-desc-section">
 			<tr>
-				<td><object data="/portal/img/svg_icons/DIU_RAW0397.svg" type="image/svg+xml"/></td>
+				<td><object data="/portal/img/svg_icons/session_detail.svg" type="image/svg+xml"/></td>
 				<td>
 				<t:if test="future">
 					Mark this of <strong>Date of course</strong>
@@ -20,8 +20,8 @@
 			</tr>
 			<t:if test="session.publicNotes">
 				<tr>
-					<td><object class="session-icon" data="/portal/img/svg_icons/DIU_RAW1512.svg" type="image/svg+xml"/></td>
-					<td>${session.publicNotes}</td>
+					<td><object data="/portal/img/svg_icons/mark_roll.svg" type="image/svg+xml"/></td>
+					<td><t:outputraw value="convertTextile(session.publicNotes)"/></td>
 				</tr>
 			</t:if>
 			<t:if test="session.privateNotes">

@@ -3,6 +3,7 @@ package ish.oncourse.portal.components.courseclass;
 import ish.common.types.AttendanceType;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Session;
+import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.FormatUtils;
 import org.apache.cayenne.Cayenne;
@@ -64,13 +65,11 @@ public class SessionItem {
 	}
 
 	public String getStartDate(){
-		return  FormatUtils.getDateFormat("EEE dd MMM",timeZone).format(session.getStartDate());
+		return AttendanceUtils.getStartDate(timeZone, session);
 	}
 
 	public String getSessionTime(){
-		return String.format("%s - %s",
-				FormatUtils.getDateFormat("h:mma", timeZone).format(session.getStartDate()),
-				FormatUtils.getDateFormat("h:mma", timeZone).format(session.getEndDate()));
+		return AttendanceUtils.getSessionTime(timeZone, session);
 	}
 	
 	public String getTimeClass() {
@@ -80,7 +79,6 @@ public class SessionItem {
 	public String getLableText() {
 		return future ? VIEW : marked ? EDIT_ROLL : MARK_ROLL;
 	}
-
 
 	public String getLableClass() {
 		return  future ? FUTURE : marked ? PAST : ACTUAL;

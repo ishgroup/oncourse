@@ -1,0 +1,30 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" >
+	<div id="class-description-${session.id}" class="class-description-class actual-roll-desc">
+		<table class="class-desc-section">
+			<tr>
+				<td><span class="glyphicon glyphicon-calendar"></span></td>
+				<td><strong>${sessionDate}</strong></td>
+			</tr>
+			<t:if test="venue">
+				<tr>
+					<td><span class="glyphicon glyphicon-map-marker"></span></td>
+					<td>${venue}</td>
+				</tr>
+			</t:if>
+			<t:loop source="tutors" value="tutor">
+				<tr>
+					<td><span class="glyphicon glyphicon-user"></span></td>
+					<td>${tutor.fullName} </td>
+				</tr>
+			</t:loop>
+			<t:if test="session.publicNotes">
+				<tr>
+					<td><span class="glyphicon glyphicon-edit"></span></td>
+					<td>
+						<t:outputraw value="convertTextile(session.publicNotes)"/>
+					</td>
+				</tr>
+			</t:if>
+		</table>
+	</div>
+</t:container>

@@ -20,11 +20,11 @@
 					</t:if>
 				</span>
 			</h1>
-			<t:courseclass.classDetailsTabs courseClass="courseClass"/>
+			<t:courseclass.classDetailsTabs courseClass="courseClass" isTutor="isTutor"/>
 		</div>
 		
 		<div class="tab-content">
-            <t:courseclass.classDetailsNew courseClass="courseClass"/>
+            <t:courseclass.classDetailsNew courseClass="courseClass" isTutor="isTutor"/>
             <t:courseclass.classLocation courseClass="courseClass"/>
             <t:if test="hasResources()">
                 <t:courseclass.classResources courseClass="courseClass"/>
