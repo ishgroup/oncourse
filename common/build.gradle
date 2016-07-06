@@ -17,6 +17,8 @@ dependencies {
 
 	compile 'org.quartz-scheduler:quartz:2.2.2'
 
+	compile "com.brsanthu:google-analytics-java:1.1.2"
+
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.3.3'
 
