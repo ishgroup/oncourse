@@ -98,7 +98,7 @@ Survey.prototype = {
     //commit surfey changes
     saveSurvey: function () {
         var self = this;
-        var actionLink = "/portal/class.classdetails.surveys:saveSurvey/" + self.id;
+        var actionLink = "/portal/class.classdetailsnew.surveys:saveSurvey/" + self.id;
         var data = {
 
             "comment": $j("div[data='" + self.id + "'].class-reviews").find("textarea.survey-comment").val(),
@@ -124,7 +124,7 @@ Survey.prototype = {
     loadSurvey: function () {
         var self = this;
         //get json survey and fill controls
-        var actionLink = "/portal/class.classdetails.surveys:getSurvey/" + self.id;
+        var actionLink = "/portal/class.classdetailsnew.surveys:getSurvey/" + self.id;
         $j.ajax({
 
             url: actionLink,
