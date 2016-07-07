@@ -5,6 +5,8 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.persistence.ICayenneService;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
@@ -23,11 +25,20 @@ public class Login {
 	private static final String PARAMETER_firstName = "firstName";
 	private static final String PARAMETER_lastName = "lastName";
 	private static final String PARAMETER_emailAddress = "emailAddress";
+	private static final String PARAMETER_firstTimeLogin = "e";
+
 	private static final String PARAMETER_oneTimePassword = "oneTimePassword";
 
+	@Inject
+	private ICayenneService cayenneService;
+	
 	@Persist
 	@Property
 	private String email;
+	
+	@Persist
+	@Property
+	private boolean firstTimeLogin;
 
 	@Persist
 	@Property
@@ -85,6 +96,9 @@ public class Login {
 	private ForgotPassword forgotPassword;
 
 	@InjectPage
+	private CreateAccount createAccount;
+
+	@InjectPage
 	private SelectCollege selectCollege;
 
 	/**
@@ -127,6 +141,27 @@ public class Login {
 	private static final String ON =  "on";
 
 	Object onActivate() {
+
+		if (portalService.getAuthenticatedUser() != null)
+			portalService.logout();
+
+		if (errors == null)
+			errors = new HashMap<>();
+		
+		String firstLoginEmail = StringUtils.trimToNull(request.getParameter(PARAMETER_firstTimeLogin));
+		if (firstLoginEmail != null) {
+			email = firstLoginEmail;
+			Contact contact = getContactByUniqEmail(firstLoginEmail);
+			if (contact != null) {
+				firstTimeLogin = true;
+				isCompany = contact.getIsCompany();
+				firstName = contact.getGivenName();
+				lastName = contact.getFamilyName();
+				return null;
+			}
+			
+		}
+		
 		String value = StringUtils.trimToNull(request.getParameter(PARAMETER_oneTimePassword));
 		if (value != null) {
 			if (authenticationService.authenticate(value)) {
@@ -135,20 +170,25 @@ public class Login {
 				loginForm.recordError("The attempt for support login was unsuccessful.");
 			}
 		}
-			
-		if (portalService.getAuthenticatedUser() != null)
-			portalService.logout();
-		if (errors == null)
-			errors = new HashMap<>();
+	
 		fillStudentFields();
 		return null;
 	}
 
+	private Contact getContactByUniqEmail(String email) {
+		List<Contact> contacts = ObjectSelect.query(Contact.class).where(Contact.EMAIL_ADDRESS.eq(email)).select(cayenneService.sharedContext());
+		if (contacts.size() == 1) {
+			Contact contact = contacts.get(0);
+			return contact.getPassword() == null ? contact : null;
+		}
+		return null;
+	}
 
 	@AfterRender
 	void afterRender() {
 		clearErrorFields();
 		isForgotPassword = false;
+		firstTimeLogin = false;
 		errors.clear();
 
 	}
@@ -174,6 +214,13 @@ public class Login {
 
 	}
 
+	@OnEvent(value = "onCreateAccountEvent")
+	Object onCreateAccount() {
+		this.firstTimeLogin = true;
+		return loginForm;
+
+	}
+	
 	Object onSuccess() throws IOException {
 		clearErrorFields();
 
@@ -213,7 +260,7 @@ public class Login {
 			loginForm.recordError(emailNameErrorMessage);
 		}
 
-		if (!isForgotPassword) {
+		if (!isForgotPassword && !firstTimeLogin) {
 			if (StringUtils.isBlank(password)) {
 
 				errors.put("password", messages.get("passwordNameErrorMessage"));
@@ -225,7 +272,7 @@ public class Login {
 
 
 		if (!loginForm.getHasErrors()) {
-			return (isForgotPassword) ? forgotPassword() : doLogin();
+			return isForgotPassword || firstTimeLogin ? resetPassword() : doLogin();
 		}
 		return this;
 	}
@@ -285,7 +332,7 @@ public class Login {
 		}
 	}
 
-	private Object forgotPassword() {
+	private Object resetPassword() {
 
 		List<Contact> users = new ArrayList<>();
 		if (isCompany) {
@@ -298,8 +345,13 @@ public class Login {
 			loginForm.recordError(messages.get("message-userNotExist"));
 			return this;
 		} else if (users.size() == 1) {
-			forgotPassword.setUser(users.get(0));
-			return forgotPassword;
+			if(firstTimeLogin) {
+				createAccount.setUser(users.get(0));
+				return createAccount;
+			} else {
+				forgotPassword.setUser(users.get(0));
+				return forgotPassword;
+			}
 		} else {
 			selectCollege.setPasswordRecover(true);
 

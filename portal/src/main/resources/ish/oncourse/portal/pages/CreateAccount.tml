@@ -1,0 +1,7 @@
+<html t:type="pagestructure" title="literal:Create Account"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<b>An email has been sent to confirm your account details. Click on the link in the email to set your password and log in to SkillsOnCourse.</b>
+	
+
+</html>

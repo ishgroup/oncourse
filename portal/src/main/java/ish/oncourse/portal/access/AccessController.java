@@ -22,6 +22,7 @@ public class AccessController implements Dispatcher {
 
 	public final static String LOGIN_PAGE = "/login";
 	private final static String FORGOT_PASSWORD_PAGE = "/forgotpassword";
+	private final static String CREATE_ACCOUNT_PAGE = "/createaccount";
 	private final static String PASSWORD_RECOVERY_PAGE = "/passwordrecovery";
 	private final static String SELECT_COLLEGE_PAGE = "/selectcollege";
 	private final static String CALENDAR_FILE = "/calendar";
@@ -73,6 +74,7 @@ public class AccessController implements Dispatcher {
 	private boolean isPublicPage(String path) {
 		return path.equals(LOGIN_PAGE) ||
 				path.equals(FORGOT_PASSWORD_PAGE) ||
+				path.equals(CREATE_ACCOUNT_PAGE) ||
 				path.startsWith(PASSWORD_RECOVERY_PAGE) ||
 				path.equals(SELECT_COLLEGE_PAGE) ||
 				path.startsWith(CALENDAR_FILE) ||
