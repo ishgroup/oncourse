@@ -10,7 +10,6 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.payment.CreditCardParser
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import org.apache.cayenne.ObjectContext
-import org.apache.tapestry5.ioc.annotations.Inject
 
 import static ish.common.types.PaymentSource.SOURCE_WEB
 import static ish.common.types.PaymentStatus.IN_TRANSACTION
@@ -27,7 +26,6 @@ class Controller implements IController {
 
     private Context context
 
-    @Inject
     public Controller(ICayenneService cayenneService, IPortalService portalService, IPaymentGatewayService paymentGatewayService) {
         this(portalService.authenticatedUser, cayenneService.newContext(), paymentGatewayService)
     }

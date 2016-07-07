@@ -29,6 +29,9 @@ class Context {
     def PaymentIn notFinalPaymentIn
 
     private void validate() {
+        if (contact == null) {
+            throw new IllegalAccessError()
+        }
         if (paymentIn != null && paymentIn.contact != contact) {
             throw new IllegalAccessError()
         }

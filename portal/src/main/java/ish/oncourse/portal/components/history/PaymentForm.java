@@ -33,11 +33,17 @@ public class PaymentForm {
 	@Inject
 	private HttpServletRequest httpRequest;
 
+	@Inject
+	private org.apache.tapestry5.services.Request request;
+
 	private ObjectMapper mapper = new ObjectMapper();
 
 
 	@OnEvent(value = "process")
 	public Object process() {
+		if (!this.request.isXHR()) {
+			throw new IllegalStateException();
+		}
 		try {
 			String json = IOUtils.toString(httpRequest.getInputStream(), "UTF-8");
 			Request request = mapper.readValue(json, Request.class);

@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div id="payment-from">
+    <div id="payment-form">
         <div class="form-group">
             <div id="payment-message">
             </div>

@@ -280,7 +280,9 @@ PaymentForm.prototype = {
 
 jQuery(document).ready(
     function () {
-        var form = new PaymentForm();
-        form.init();
-        form.sendRequest(false);
+        if ( $j('div#payment-form').length > 0) {
+            var form = new PaymentForm();
+            form.init();
+            form.sendRequest(false);
+        }
     });
