@@ -1,6 +1,7 @@
 package ish.oncourse.services.tag;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Tag;
 
 import java.util.List;
@@ -110,4 +111,9 @@ public interface ITagService {
 	void unsubscribeContactFromMailingList(Contact contact, Tag mailingList);
 
 	boolean isContactSubscribedToMailingList(Contact contact, Tag mailingList);
+
+	/**
+	 * @return true if the entity has this tag with this <code>tagPath</code>
+	 */
+	<E extends Queueable> boolean hasTag(E entity, String tagPath);
 }

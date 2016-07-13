@@ -1,6 +1,7 @@
 package ish.oncourse.services.tag;
 
 import ish.common.types.NodeSpecialType;
+import ish.oncourse.function.IGet;
 import ish.oncourse.model.*;
 import ish.oncourse.services.BaseService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -271,6 +272,25 @@ public class TagService extends BaseService<Tag> implements ITagService {
 		TaggablesSupporter supporter = new TaggablesSupporter(context);
 		List<Taggable> taggables = supporter.load(contact, mailingList);
 		return taggables.size() > 0;
+	}
+
+	public <E extends Queueable> boolean hasTag(final E entity, final String tagPath) {
+		IGet<Tag> getTag = new IGet<Tag>() {
+			@Override
+			public Tag get() {
+				return TagService.this.getTagByFullPath(tagPath);
+			}
+		};
+
+		IGet<E> getEntity = new IGet<E>() {
+			@Override
+			public E get() {
+				return entity;
+			}
+		};
+
+		EntityHasTag<E> hasTag = new EntityHasTag<>(getEntity, getTag);
+		return hasTag.get();
 	}
 
 	private class TaggablesSupporter
