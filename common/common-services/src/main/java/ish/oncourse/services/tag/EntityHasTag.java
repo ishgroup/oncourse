@@ -47,7 +47,8 @@ public class EntityHasTag<E extends Queueable> implements IGet<Boolean> {
 		tag = ObjectSelect.query(Tag.class)
 				.where(TAGGABLE_TAGS.dot(TAGGABLE).dot(ENTITY_IDENTIFIER).eq(entity.getObjectId().getEntityName()))
 				.and(TAGGABLE_TAGS.dot(TAGGABLE).dot(ENTITY_WILLOW_ID).eq(entity.getId()))
-				.and(ExpressionFactory.matchDbExp(ID_PK_COLUMN, tag.getId())).selectOne(entity.getObjectContext());
+				.and(ExpressionFactory.matchDbExp(ID_PK_COLUMN, tag.getId()))
+				.selectOne(entity.getObjectContext());
 		return tag != null;
 	}
 }

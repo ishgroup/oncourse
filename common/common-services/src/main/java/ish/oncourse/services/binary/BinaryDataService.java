@@ -47,6 +47,15 @@ public class BinaryDataService implements IBinaryDataService {
 
 	@Inject
 	private ITagService tagService;
+	
+	public BinaryDataService(ICayenneService cayenneService, IWebSiteService webSiteService, ApplicationStateManager applicationStateManager, PreferenceController preferenceController, IS3Service s3Service, ITagService tagService) {
+		this.cayenneService = cayenneService;
+		this.webSiteService = webSiteService;
+		this.applicationStateManager = applicationStateManager;
+		this.preferenceController = preferenceController;
+		this.s3Service = s3Service;
+		this.tagService = tagService;
+	}
 
 	public Document getBinaryInfo(final String searchProperty, Object value) {
 		return getRandomBinaryInfo(new GetCollegeExpression(webSiteService.getCurrentCollege(), true, isStudentLoggedIn()).get());

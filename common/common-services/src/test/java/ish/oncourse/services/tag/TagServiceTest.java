@@ -1,10 +1,8 @@
 package ish.oncourse.services.tag;
 
+import ish.common.types.CourseEnrolmentType;
 import ish.common.types.NodeSpecialType;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tag;
+import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -214,5 +212,88 @@ private static final Logger logger = LogManager.getLogger();
 		
 		assertTrue(tagService.getMailingListsContactSubscribed(contact).isEmpty());		
 	}
+
+	@Test
+	public void testHasTag() {
+		ObjectContext context = cayenneService.newNonReplicatingContext();
+		
+		Student student = context.newObject(Student.class);
+		College college = context.localObject(this.college);
+		student.setCollege(college);
+
+		Contact contact = context.newObject(Contact.class);
+		contact.setCollege(college);
+		contact.setStudent(student);
+		contact.setFamilyName("James");
+		contact.setGivenName("Bond");
+		
+		Course course = context.newObject(Course.class);
+		course.setCollege(college);
+		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
+
+		CourseClass courseClass = context.newObject(CourseClass.class);
+		courseClass.setCourse(course);
+		courseClass.setCollege(college);
+		courseClass.setMaximumPlaces(3);
+		courseClass.setIsDistantLearningCourse(false);
+
+		context.commitChanges();
+
+		Tag contactTag = context.newObject(Tag.class);
+		contactTag.setCollege(college);
+		contactTag.setName("Contact Tag");
+		contactTag.setIsTagGroup(true);
+		contactTag.setIsWebVisible(true);
+
+		Tag childTag = context.newObject(Tag.class);
+		childTag.setCollege(college);
+		childTag.setName("more than 1 year");
+		childTag.setParent(contactTag);
+		childTag.setIsWebVisible(true);
+		
+		Taggable taggable = context.newObject(Taggable.class);
+		taggable.setCollege(college);
+		taggable.setEntityIdentifier("Contact");
+		taggable.setEntityWillowId(contact.getId());
+
+		TaggableTag taggableTag = context.newObject(TaggableTag.class);
+		taggableTag.setCollege(college);
+		taggableTag.setTag(childTag);
+		taggableTag.setTaggable(taggable);
+
+		context.commitChanges();
+		
+		assertTrue(tagService.hasTag(contact, childTag.getDefaultPath()));
+		assertFalse(tagService.hasTag(courseClass, childTag.getDefaultPath()));
+
+
+		Tag classTag = context.newObject(Tag.class);
+		classTag.setCollege(college);
+		classTag.setName("Class Tag");
+		classTag.setIsTagGroup(true);
+		classTag.setIsWebVisible(true);
+
+		Tag classChildTag = context.newObject(Tag.class);
+		classChildTag.setCollege(college);
+		classChildTag.setName("science");
+		classChildTag.setParent(classTag);
+		classChildTag.setIsWebVisible(true);
+
+		Taggable taggable1 = context.newObject(Taggable.class);
+		taggable1.setCollege(college);
+		taggable1.setEntityIdentifier("CourseClass");
+		taggable1.setEntityWillowId(courseClass.getId());
+
+		TaggableTag taggableTag1 = context.newObject(TaggableTag.class);
+		taggableTag1.setCollege(college);
+		taggableTag1.setTag(childTag);
+		taggableTag1.setTaggable(taggable1);
+
+		context.commitChanges();
+
+		assertTrue(tagService.hasTag(courseClass, classChildTag.getDefaultPath()));
+		
+	}
+	
 
 }

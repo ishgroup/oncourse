@@ -46,8 +46,10 @@ public class GetDocuments implements IGet<List<Document>> {
 	}
 
 	public List<Document> get() {
-		return ObjectSelect.query(Document.class).where(BINARY_INFO_RELATIONS.dot(ENTITY_IDENTIFIER).eq(entityIdentifier)
-				.andExp(ENTITY_WILLOW_ID.eq(entityId)))
-				.and(new GetCollegeExpression(college, hidePrivate, isStudentLoggedIn).get()).select(objectContext);
+		return ObjectSelect.query(Document.class)
+				.where(BINARY_INFO_RELATIONS.dot(ENTITY_IDENTIFIER).eq(entityIdentifier))
+				.and(BINARY_INFO_RELATIONS.dot(ENTITY_WILLOW_ID).eq(entityId))
+				.and(new GetCollegeExpression(college, hidePrivate, isStudentLoggedIn).get())
+				.select(objectContext);
 	}
 }

@@ -8,25 +8,39 @@ import ish.common.types.AttachmentInfoVisibility;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.tag.TagService;
 import ish.oncourse.test.DataSetInitializer;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.internal.test.TestableRequest;
+import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BinaryDataServiceTest extends ServiceTest{
 	private ICayenneService cayenneService;
 	private IBinaryDataService binaryDataService;
+	private ApplicationStateManager applicationStateManager;
+	
 	private College college;
 	private Request request;
+
+	@Mock
+	private IWebSiteService webSiteService;
 
 	@Before
 	public void setup() throws Exception {
@@ -36,12 +50,12 @@ public class BinaryDataServiceTest extends ServiceTest{
 		request = getService(TestableRequest.class);
 		cayenneService = getService(ICayenneService.class);
 		binaryDataService = getService(IBinaryDataService.class);
+		applicationStateManager = getService(ApplicationStateManager.class);
 	}
 
 
 	@Test
-	public void profilePictureTest()
-	{
+	public void profilePictureTest() {
 		ObjectContext context = cayenneService.newContext();
 		college = Cayenne.objectForPK(context, College.class, 1l);
 		request.setAttribute("currentCollege", college);
@@ -67,6 +81,86 @@ public class BinaryDataServiceTest extends ServiceTest{
 		assertNotNull(binaryInfo);
 	}
 
+	@Test
+	public void testGetAttachments() {
+		ObjectContext context = cayenneService.newContext();
+		college = Cayenne.objectForPK(context, College.class, 1l);
+		Contact contact = Cayenne.objectForPK(context, Contact.class, 1l);
+		
+		
+		when(webSiteService.getCurrentCollege()).thenReturn(college);
+		IBinaryDataService binaryDataService = new BinaryDataService(cayenneService, webSiteService, applicationStateManager, null, null, null);
+		
+		
+		Document binaryInfo1 = createBinaryInfo(context, "binaryInfo1");
+		createBinaryInfoRelation(context, contact, binaryInfo1);
+
+		Document binaryInfo2 = createBinaryInfo(context, "binaryInfo2");
+		createBinaryInfoRelation(context, contact, binaryInfo2);
+
+		Document binaryInfo3 = createBinaryInfo(context, "binaryInfo3");
+		createBinaryInfoRelation(context, contact, binaryInfo3);
+		
+		context.commitChanges();
+		
+		assertEquals(3, binaryDataService.getAttachments(contact).size());
+
+		Contact contact2 = Cayenne.objectForPK(context, Contact.class, 2l);
+
+		assertEquals(0, binaryDataService.getAttachments(contact2).size());
+	}
+
+	@Test
+	public void testGetAttachmentByTag() {
+		ObjectContext context = cayenneService.newContext();
+		college = Cayenne.objectForPK(context, College.class, 1l);
+		Contact contact = Cayenne.objectForPK(context, Contact.class, 1l);
+
+
+		when(webSiteService.getCurrentCollege()).thenReturn(college);
+
+		ITagService tagService = new TagService(cayenneService, webSiteService);
+		IBinaryDataService binaryDataService = new BinaryDataService(cayenneService, webSiteService, applicationStateManager, null, null, tagService);
+
+
+		Document binaryInfo1 = createBinaryInfo(context, "binaryInfo1");
+		createBinaryInfoRelation(context, contact, binaryInfo1);
+
+		Document binaryInfo2 = createBinaryInfo(context, "binaryInfo2");
+		createBinaryInfoRelation(context, contact, binaryInfo2);
+
+		Document binaryInfo3 = createBinaryInfo(context, "binaryInfo3");
+		createBinaryInfoRelation(context, contact, binaryInfo3);
+
+		context.commitChanges();
+
+		Tag documentTag = context.newObject(Tag.class);
+		documentTag.setCollege(college);
+		documentTag.setName("document Tag");
+		documentTag.setIsTagGroup(true);
+		documentTag.setIsWebVisible(true);
+
+		Tag childTag = context.newObject(Tag.class);
+		childTag.setCollege(college);
+		childTag.setName("pic");
+		childTag.setParent(documentTag);
+		childTag.setIsWebVisible(true);
+
+		Taggable taggable = context.newObject(Taggable.class);
+		taggable.setCollege(college);
+		taggable.setEntityIdentifier("Document");
+		taggable.setEntityWillowId(binaryInfo1.getId());
+
+		TaggableTag taggableTag = context.newObject(TaggableTag.class);
+		taggableTag.setCollege(college);
+		taggableTag.setTag(childTag);
+		taggableTag.setTaggable(taggable);
+
+		context.commitChanges();
+
+		assertEquals(3, binaryDataService.getAttachments(contact).size());
+		assertEquals(binaryInfo1.getObjectId(), binaryDataService.getAttachmentByTag(contact, childTag.getDefaultPath()).getObjectId());
+	}
 
 	private Document createBinaryInfo(ObjectContext context, String fileName) {
 		Document document = context.newObject(Document.class);
