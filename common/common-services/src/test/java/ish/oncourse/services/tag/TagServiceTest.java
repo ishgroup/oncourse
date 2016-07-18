@@ -286,7 +286,7 @@ private static final Logger logger = LogManager.getLogger();
 
 		TaggableTag taggableTag1 = context.newObject(TaggableTag.class);
 		taggableTag1.setCollege(college);
-		taggableTag1.setTag(childTag);
+		taggableTag1.setTag(classChildTag);
 		taggableTag1.setTaggable(taggable1);
 
 		context.commitChanges();

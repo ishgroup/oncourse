@@ -13,6 +13,7 @@ import java.util.List;
 
 import static ish.oncourse.model.auto._BinaryInfoRelation.ENTITY_IDENTIFIER;
 import static ish.oncourse.model.auto._BinaryInfoRelation.ENTITY_WILLOW_ID;
+import static ish.oncourse.model.auto._BinaryInfoRelation.SPECIAL_TYPE;
 import static ish.oncourse.model.auto._Document.BINARY_INFO_RELATIONS;
 
 /**
@@ -49,6 +50,7 @@ public class GetDocuments implements IGet<List<Document>> {
 		return ObjectSelect.query(Document.class)
 				.where(BINARY_INFO_RELATIONS.dot(ENTITY_IDENTIFIER).eq(entityIdentifier))
 				.and(BINARY_INFO_RELATIONS.dot(ENTITY_WILLOW_ID).eq(entityId))
+				.and(BINARY_INFO_RELATIONS.dot(SPECIAL_TYPE).isNull())
 				.and(new GetCollegeExpression(college, hidePrivate, isStudentLoggedIn).get())
 				.select(objectContext);
 	}

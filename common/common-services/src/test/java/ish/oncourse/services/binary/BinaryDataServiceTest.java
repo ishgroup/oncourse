@@ -5,6 +5,7 @@
 package ish.oncourse.services.binary;
 
 import ish.common.types.AttachmentInfoVisibility;
+import ish.common.types.AttachmentSpecialType;
 import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -31,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BinaryDataServiceTest extends ServiceTest{
+public class BinaryDataServiceTest extends ServiceTest {
 	private ICayenneService cayenneService;
 	private IBinaryDataService binaryDataService;
 	private ApplicationStateManager applicationStateManager;
@@ -70,8 +71,13 @@ public class BinaryDataServiceTest extends ServiceTest{
 		binaryInfo = createBinaryInfo(context, "binaryInfo3");
 		createBinaryInfoRelation(context, contact1, binaryInfo);
 
-		binaryInfo = createBinaryInfo(context, BinaryDataService.NAME_PROFILE_PICTURE);
-		createBinaryInfoRelation(context, contact1, binaryInfo);
+		binaryInfo = createBinaryInfo(context, "binaryInfo4");
+		BinaryInfoRelation binaryInfoRelation4 = createBinaryInfoRelation(context, contact1, binaryInfo);
+		binaryInfoRelation4.setSpecialType(AttachmentSpecialType.PROFILE_PICTURE);
+
+		binaryInfo = createBinaryInfo(context, "binaryInfo5");
+		BinaryInfoRelation binaryInfoRelation5 = createBinaryInfoRelation(context, contact1, binaryInfo);
+		binaryInfoRelation5.setSpecialType(AttachmentSpecialType.PROFILE_PICTURE);
 		context.commitChanges();
 
 		List<Document> list = binaryDataService.getAttachedFiles(1l, Contact.class.getSimpleName(), false);
