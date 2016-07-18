@@ -2,6 +2,9 @@ goog.provide('StudentTimetable');
 
 goog.require('jquery');
 
+
+var $j = jQuery.noConflict();
+
 $j(document).ready(function () {
     init();
 });
