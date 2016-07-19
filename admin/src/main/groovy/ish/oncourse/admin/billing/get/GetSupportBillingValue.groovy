@@ -8,10 +8,8 @@ import org.apache.cayenne.query.ObjectSelect
 import org.codehaus.plexus.util.StringUtils
 
 import java.text.MessageFormat
-import java.text.SimpleDateFormat
 
 import static ish.oncourse.admin.billing.LicenseCode.support
-import static ish.oncourse.admin.services.billing.Constants.DATE_MONTH_FORMAT
 
 /**
  *
@@ -24,9 +22,7 @@ class GetSupportBillingValue extends AbstractGetter<BillingValue> {
         String description = MessageFormat.format(
                 support.descTemplate,
                 StringUtils.capitalise(licenseFee.planName),
-                context.college.name,
-                new SimpleDateFormat(DATE_MONTH_FORMAT).format(licenseFee.renewalDate));
-
+                context.college.name);
 
         StockCodes code = StockCodes.valueOf(licenseFee.planName)
         BillingValue billingValue = new BillingValue(code: code.productionCode,

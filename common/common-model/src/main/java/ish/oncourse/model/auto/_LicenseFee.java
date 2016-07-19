@@ -32,8 +32,6 @@ public abstract class _LicenseFee extends CayenneDataObject {
     @Deprecated
     public static final String PLAN_NAME_PROPERTY = "planName";
     @Deprecated
-    public static final String RENEWAL_DATE_PROPERTY = "renewalDate";
-    @Deprecated
     public static final String VALID_UNTIL_PROPERTY = "validUntil";
     @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
@@ -48,7 +46,6 @@ public abstract class _LicenseFee extends CayenneDataObject {
     public static final Property<String> KEY_CODE = new Property<String>("keyCode");
     public static final Property<Date> PAID_UNTIL = new Property<Date>("paidUntil");
     public static final Property<String> PLAN_NAME = new Property<String>("planName");
-    public static final Property<Date> RENEWAL_DATE = new Property<Date>("renewalDate");
     public static final Property<Date> VALID_UNTIL = new Property<Date>("validUntil");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<WebSite> WEB_SITE = new Property<WebSite>("webSite");
@@ -93,13 +90,6 @@ public abstract class _LicenseFee extends CayenneDataObject {
     }
     public String getPlanName() {
         return (String)readProperty("planName");
-    }
-
-    public void setRenewalDate(Date renewalDate) {
-        writeProperty("renewalDate", renewalDate);
-    }
-    public Date getRenewalDate() {
-        return (Date)readProperty("renewalDate");
     }
 
     public void setValidUntil(Date validUntil) {

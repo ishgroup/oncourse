@@ -72,7 +72,6 @@
 			<td>Key Code</td>
 			<td>Plan Name</td>
 			<td>Paid Until</td>
-			<td>Renewal Date</td>
 			<td>Free Transactions</td>
 			<td>Fee</td>
 		</tr>
@@ -85,11 +84,6 @@
 				<td>
 					<t:if test="support">
 						<t:textfield t:id="collegePaidUntil" class="datefield" value="currentCollegeFeePaidUntil"/>
-					</t:if>
-				</td>
-				<td>
-					<t:if test="support">
-						<t:textfield t:id="collegeRenewalDate" class="datefield" value="currentCollegeFeeRenewalDate"/>
 					</t:if>
 				</td>
 				<td><t:textfield t:id="collegeFreeTransactions" t:validate="required" value="currentCollegeLicenseFee.freeTransactions"/></td>
@@ -107,7 +101,6 @@
 				<td>Key Code</td>
 				<td>Plan Name</td>
 				<td>Paid Until</td>
-				<td>Renewal Date</td>
 				<td>Free Transactions</td>
 				<td>Fee</td>
 			</tr>
@@ -120,11 +113,6 @@
 					<td>
 						<t:if test="hosting">
 							<t:textfield t:id="paidUntil" class="datefield" value="currentPaidUntil"/>
-						</t:if>
-					</td>
-					<td>
-						<t:if test="hosting">
-							<t:textfield t:id="renewalDate" class="datefield" value="currentRenewalDate"/>
 						</t:if>
 					</td>
 					<td><t:textfield t:id="freeTransactions" t:validate="required" value="currentLicenseFee.freeTransactions"/></td>

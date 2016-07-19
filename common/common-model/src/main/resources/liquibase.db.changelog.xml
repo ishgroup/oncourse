@@ -4057,4 +4057,13 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="273" author="ashestak" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<columnExists tableName="LicenseFee" columnName="renewalDate" />
+		</preConditions>
+		<sql>
+			ALTER TABLE LicenseFee DROP COLUMN renewalDate
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

@@ -13,7 +13,7 @@ import java.util.*;
 
 public class BillingDataServiceImpl implements IBillingDataService {
 	
-    private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.webSiteId as webSiteId, l.key_code as keyCode, l.fee as fee, l.paidUntil as paidUntil, l.renewalDate as renewalDate, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
+    private static final String SQL_LICENSE_FEE = "SELECT l.college_id as collegeId, l.webSiteId as webSiteId, l.key_code as keyCode, l.fee as fee, l.paidUntil as paidUntil, l.plan_name as plan, l.free_transactions as freeTransactions FROM LicenseFee as l JOIN College as c on c.id = l.college_id WHERE c.billingCode IS NOT NULL";
     private static final String SQL_SMS = "SELECT count(*) as count, c.id as collegeId FROM MessagePerson AS m JOIN College AS c on c.Id = m.collegeId WHERE c.billingCode IS NOT NULL and type = 2 AND timeOfDelivery >= #bind($from)  AND timeOfDelivery <= #bind($to) GROUP BY collegeid";
     private static final String SQL_OFFICE_TRANSACTION_COUNT = "SELECT count(*) as count, c.id as collegeId FROM PaymentIn As p JOIN College AS c on c.Id = p.collegeId WHERE c.billingCode IS NOT NULL and p.created >= #bind($from) AND p.created <= #bind($to) AND source = 'O' AND p.type = 2 AND (status = 3 OR status = 6) GROUP BY collegeid";
     private static final String SQL_WEB_TRANSACTION_COUNT = "select count(p.id) as count, c.id as collegeId, i.webSiteId as webSiteId from PaymentIn p join PaymentInLine pil on p.id = pil.paymentInId join Invoice i on pil.invoiceId = i.id join College c on p.collegeId = c.id where c.billingCode is not null and p.created >= #bind($from) and p.created <= #bind($to) and p.source = 'W' and p.type = 2 and p.status in (3, 6) group by collegeId, i.webSiteId";
@@ -44,7 +44,6 @@ public class BillingDataServiceImpl implements IBillingDataService {
 			billingRow.get(webSiteId).put(key + "-renewMonth", r.get("billingMonth"));
 			billingRow.get(webSiteId).put(key + "-plan", r.get("plan"));
 			billingRow.get(webSiteId).put(key + "-paidUntil", r.get("paidUntil"));
-			billingRow.get(webSiteId).put(key + "-renewalDate", r.get("renewalDate"));
 
 			Integer freeTransactions = (Integer) r.get("freeTransactions");
 

@@ -28,8 +28,7 @@ class GetHostingBillingValue extends AbstractGetter<BillingValue> {
         def description = MessageFormat.format(
                 hosting.descTemplate,
                 StringUtils.capitalize(licenseFee.getPlanName()),
-                webSite.getName(),
-                new SimpleDateFormat(DATE_MONTH_FORMAT).format(licenseFee.getRenewalDate()));
+                webSite.getName());
 
         return new BillingValue(code: StockCodes.valueOf(licenseFee.getPlanName()).productionCode,
                 description: description,

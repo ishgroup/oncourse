@@ -27,7 +27,7 @@
     <LicenseFee id="1001" college_id="1001" key_code="sms" fee="1.0" free_transactions="0"/>
 
     <LicenseFee id="1002" college_id="1001" key_code="support" fee="1.0" free_transactions="0" plan_name="enterprise"
-                paidUntil="2013-01-01 00:00:00" renewalDate="2013-12-01 00:00:00"/>
+                paidUntil="2013-01-01 00:00:00"/>
 
     <LicenseFee id="1003" college_id="1001" key_code="cc-office" fee="1.0" free_transactions="0"/>
 
@@ -39,7 +39,6 @@
                 plan_name="platinum"
                 billingMonth="1"
                 paidUntil="2013-01-01 00:00:00"
-                renewalDate="2013-12-01 00:00:00"
                 webSiteId="1001"
                 fee="1.0"/>
 

@@ -14,7 +14,6 @@ public class HostingExportLineBuilder extends PlanExportLineBuilder {
 	public static final String HOSTING_PLAN_TYPE = "hosting";
 	public static final String HOSTING_PLAN_KEY = "hosting-plan";
 	public static final String HOSTING_PAID_UNTIL_KEY = "hosting-paidUntil";
-	public static final String HOSTING_RENEWAL_DATE_KEY = "hosting-renewalDate";
 
 	public static final String HOSTING_PLAN_DESCRIPTION_TEMPLATE = "{0} web plan for {1}: 1 month";
 	
@@ -48,10 +47,5 @@ public class HostingExportLineBuilder extends PlanExportLineBuilder {
 	@Override
 	protected boolean skipLine() {
 		return !isPlanBillingMonth(HOSTING_PLAN_KEY, HOSTING_PAID_UNTIL_KEY);
-	}
-	
-	@Override
-	protected Date getRenewalDate() {
-		return (Date) licenseData.get(college.getId()).get(getWebSiteId()).get(HOSTING_RENEWAL_DATE_KEY);
 	}
 }

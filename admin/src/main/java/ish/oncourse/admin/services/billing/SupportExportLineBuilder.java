@@ -13,7 +13,6 @@ public class SupportExportLineBuilder extends PlanExportLineBuilder {
 	public static final String SUPPORT_PLAN_TYPE = "support";
 	public static final String SUPPORT_PLAN_KEY = "support-plan";
 	public static final String SUPPORT_PAID_UNTIL_KEY = "support-paidUntil";
-	public static final String SUPPORT_RENEWAL_DATE_KEY = "support-renewalDate";
 
 	public static final String SUPPORT_PLAN_DESCRIPTION_TEMPLATE = "{0} plan for {1}: 1 month";
 	
@@ -47,10 +46,5 @@ public class SupportExportLineBuilder extends PlanExportLineBuilder {
 	@Override
 	protected boolean skipLine() {
 		return !isPlanBillingMonth(SUPPORT_PLAN_KEY, SUPPORT_PAID_UNTIL_KEY);
-	}
-	
-	@Override
-	protected Date getRenewalDate() {
-		return (Date) licenseData.get(college.getId()).get(getWebSiteId()).get(SUPPORT_RENEWAL_DATE_KEY);
 	}
 }

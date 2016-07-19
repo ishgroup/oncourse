@@ -72,11 +72,6 @@ public class BillingDataServiceImplTest {
 		calendar.set(Calendar.YEAR, 2012);
 		calendar.set(Calendar.MONTH, 2);
 
-		Calendar calendarRenewalMonth = Calendar.getInstance();
-		calendarRenewalMonth.set(Calendar.YEAR, 2013);
-		calendarRenewalMonth.set(Calendar.MONTH, 2);
-		cData.get(1L).put(HostingExportLineBuilder.HOSTING_RENEWAL_DATE_KEY, calendarRenewalMonth.getTime());
-
 		String result = "";
 
 		for (WebSite webSite : college.getWebSites()) {
@@ -145,11 +140,6 @@ public class BillingDataServiceImplTest {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR, 2012);
 		calendar.set(Calendar.MONTH, 2);
-
-		Calendar calendarRenewalMonth = Calendar.getInstance();
-		calendarRenewalMonth.set(Calendar.YEAR, 2013);
-		calendarRenewalMonth.set(Calendar.MONTH, 2);
-		cData.get(1L).put(SupportExportLineBuilder.SUPPORT_RENEWAL_DATE_KEY, calendarRenewalMonth.getTime());
 
 		String result = "";
 

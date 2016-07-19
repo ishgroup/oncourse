@@ -171,33 +171,6 @@ public class Billing {
 		return isHostingFee(getCurrentLicenseFee());
 	}
 
-	@OnEvent(component = "billingForm", value = "validate")
-	void validate() {
-
-		for (LicenseFee fee : collegeLicenseFees) {
-			if (isSupportFee(fee) || isHostingFee(fee)) {
-				validateFee(fee);
-			}
-		}
-
-		for (WebSite webSite : webSites) {
-			for (LicenseFee fee : webSite.getLicenseFees()) {
-				if (isSupportFee(fee) || isHostingFee(fee)) {
-					validateFee(fee);
-				}
-			}
-		}
-	}
-
-	private void validateFee(LicenseFee fee) {
-		String planName = StringUtils.trimToNull(fee.getPlanName());
-		Date renewalDate = fee.getRenewalDate();
-
-		if (planName != null && renewalDate == null) {
-			billingForm.recordError("Renewal date must be specified for all active plans.");
-		}
-	}
-	
 	@OnEvent(component="billingForm", value="success")
 	void submitted() {
 		ObjectContext context = college.getObjectContext();
@@ -309,24 +282,6 @@ public class Billing {
 			fee.setPaidUntil(null);
 		}
 	}
-	
-	public void setRenewalDate(LicenseFee fee, String dateString){
-		if (dateString != null) {
-			try {
-				Date date = dateFormat.parse(dateString);
-				if (date != null) {
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(date);
-					cal.set(Calendar.DAY_OF_MONTH, 1);
-					fee.setRenewalDate(cal.getTime());
-				}
-			} catch (ParseException e) {
-				billingForm.recordError("Renewal date not valid.");
-			}
-		} else {
-			fee.setRenewalDate(null);
-		}
-	}
 
 	public String getCollegeName() {
 		return college.getName();
@@ -379,14 +334,6 @@ public class Billing {
 		setPaidUntil(getCurrentLicenseFee(), paidUntilString);
 	}
 
-	public String getCurrentRenewalDate() {
-		return getFeeRenewalDate(getCurrentLicenseFee());
-	}
-
-	public void setCurrentRenewalDate(String renewalDateString) {
-		setRenewalDate(getCurrentLicenseFee(), renewalDateString);
-	}
-
 	public String getCurrentCollegeFeePaidUntil() {
 		return getFeePaidUntil(getCurrentCollegeLicenseFee());
 	}
@@ -395,27 +342,10 @@ public class Billing {
 		setPaidUntil(getCurrentCollegeLicenseFee(), paidUntilString);
 	}
 
-	public String getCurrentCollegeFeeRenewalDate() {
-		return getFeeRenewalDate(getCurrentCollegeLicenseFee());
-	}
-
-	public void setCurrentCollegeFeeRenewalDate(String renewalDateString) {
-		setRenewalDate(getCurrentCollegeLicenseFee(), renewalDateString);
-	}
-
 	private String getFeePaidUntil(LicenseFee fee) {
 		Date paidUntil = fee.getPaidUntil();
 		if (paidUntil != null) {
 			return dateFormat.format(paidUntil);
-		}
-
-		return StringUtils.EMPTY;
-	}
-
-	private String getFeeRenewalDate(LicenseFee fee) {
-		Date renewalDate = fee.getRenewalDate();
-		if (renewalDate != null) {
-			return dateFormat.format(renewalDate);
 		}
 
 		return StringUtils.EMPTY;

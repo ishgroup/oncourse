@@ -30,8 +30,6 @@ public abstract class PlanExportLineBuilder extends AbstractExportLineBuilder {
 		return PLAN_QUANTITY;
 	}
 	
-	protected abstract Date getRenewalDate();
-	
 	protected abstract String getPlanType();
 	
 	protected abstract String getBillingPlan();
