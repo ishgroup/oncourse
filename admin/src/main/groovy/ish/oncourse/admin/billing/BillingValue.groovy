@@ -13,6 +13,7 @@ class BillingValue {
     def String description;
     def Long quantity;
     def BigDecimal unitPrice;
+    def Date paidUntil;
 
     @Override
     boolean equals(Object obj) {

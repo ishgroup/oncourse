@@ -1,7 +1,6 @@
 package ish.oncourse.admin.billing.get
 
 import ish.oncourse.admin.billing.BillingValue
-import ish.oncourse.admin.services.billing.IsPlanBillingMonth
 import ish.oncourse.admin.services.billing.StockCodes
 import ish.oncourse.model.LicenseFee
 import org.apache.cayenne.query.ObjectSelect
@@ -28,7 +27,8 @@ class GetSupportBillingValue extends AbstractGetter<BillingValue> {
         BillingValue billingValue = new BillingValue(code: code.productionCode,
                 description: description,
                 quantity: 1,
-                unitPrice: licenseFee.fee)
+                unitPrice: licenseFee.fee,
+                paidUntil: licenseFee.paidUntil)
 
         return billingValue
     }
@@ -39,6 +39,6 @@ class GetSupportBillingValue extends AbstractGetter<BillingValue> {
     }
 
     def hasValue() {
-        return licenseFee != null && IsPlanBillingMonth.valueOf(licenseFee.planName, licenseFee.paidUntil, context.from).is();
+        return licenseFee != null && licenseFee.planName != null;
     }
 }

@@ -54,7 +54,8 @@ class BillingValueGettersTest extends AbstractTest {
         assertEquals(new BillingValue(code: enterprise.productionCode,
                 description: "Enterprise plan for College1: 1 month",
                 quantity: 1,
-                unitPrice: 1.000), value);
+                unitPrice: 1.000,
+                paidUntil: new Date(2013 - 1900, 0, 1, 0, 0 ,0)), value);
     }
 
     def void testGetOfficeCCBillingValue() {
@@ -83,8 +84,8 @@ class BillingValueGettersTest extends AbstractTest {
         assertEquals(new BillingValue(code: "CustomFee1001",
                 description: "CustomFee1001",
                 quantity: 1,
-                unitPrice: 1), value)
-
+                unitPrice: 1,
+                paidUntil: new Date(2010 - 1900, 1, 3, 0, 0 ,0)), value)
     }
 
     def void testGetHostingBillingValue() {
@@ -95,7 +96,8 @@ class BillingValueGettersTest extends AbstractTest {
         assertEquals(new BillingValue(code: platinum.productionCode,
                 description: "Platinum web plan for WebSite1: 1 month",
                 quantity: 1,
-                unitPrice: 1.000), value);
+                unitPrice: 1.000,
+                paidUntil: new Date(2013 - 1900, 0, 1, 0, 0, 0)), value)
     }
 
     def void testGetWebCCBillingValue() {

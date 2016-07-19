@@ -16,6 +16,9 @@
                         <detail.description>${collegeBillingValue.description}</detail.description>
                         <detail.stockqty>${collegeBillingValue.quantity}</detail.stockqty>
                         <detail.unitprice>${collegeBillingValue.unitPrice}</detail.unitprice>
+                        <t:if test="collegeBillingValue.paiduntil">
+                            <detail.paiduntil><t:output format="literal:yyyyMMdd" value="collegeBillingValue.paiduntil"/></detail.paiduntil>
+                        </t:if>
                         <detail.net>${collegeBillingValue.net}</detail.net>
                         <detail.account work-it-out="true"/>
                         <detail.taxcode work-it-out="true"/>

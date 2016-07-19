@@ -1,7 +1,6 @@
 package ish.oncourse.admin.billing.get
 
 import ish.oncourse.admin.billing.BillingValue
-import ish.oncourse.admin.services.billing.IsPlanBillingMonth
 import ish.oncourse.model.CustomFee
 
 /**
@@ -16,7 +15,8 @@ class GetCustomFeeBillingValue extends AbstractGetter<BillingValue> {
         return new BillingValue(code: customFee.code,
                 description: customFee.name,
                 quantity: 1,
-                unitPrice: customFee.fee)
+                unitPrice: customFee.fee,
+                paidUntil: customFee.paidUntil)
     }
 
     @Override
@@ -25,6 +25,6 @@ class GetCustomFeeBillingValue extends AbstractGetter<BillingValue> {
 
     @Override
     def hasValue() {
-        return IsPlanBillingMonth.valueOf(customFee.name, customFee.paidUntil, context.from).is();
+        return customFee.name != null;
     }
 }
