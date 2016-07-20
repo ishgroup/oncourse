@@ -128,7 +128,7 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
 				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 12 records.", 12, queuedRecords.size());
+		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0, enrolmentsFound = 0,
 			contactsFound = 0, studentsFound = 0;
 
@@ -145,9 +145,7 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 				enrolmentsFound++;
 			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())){
 				contactsFound++;
-			} else if (STUDENT_IDENTIFIER.equals(record.getEntityIdentifier())){
-				studentsFound++;
-			} else {
+			}  else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
 		}
@@ -158,7 +156,6 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 		assertEquals("Not all InvoiceLines found in a  queue", 2, invoiceLinesFound);
 		assertEquals("Not all Enrolments found in a  queue", 1, enrolmentsFound);
 		assertEquals("Not all Contacts found in a  queue", 1, contactsFound);
-		assertEquals("Not all Students found in a  queue", 1, studentsFound);
 	}
 
 	@Override
@@ -216,3 +213,28 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 		testNoGUICases();
 	}
 }
+
+/*ish.oncourse.webservices.replication.services.TransactionGroupProcessorTest.testDeleteV11Object
+		ish.oncourse.webservices.replication.services.TransactionGroupProcessorTest.testDeleteV12Object
+		ish.oncourse.webservices.replication.services.TransactionGroupProcessorTest.testDeleteV13Object
+
+
+		ish.oncourse.webservices.soap.v10.QECourseVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
+
+		ish.oncourse.webservices.soap.v10.QEDuplicateStudentEnrolmentNoGUITest
+		ish.oncourse.webservices.soap.v10.QEDuplicateStudentEnrolmentNoGUITest.testQEFailedPayment
+
+
+		ish.oncourse.webservices.soap.v10.QEMoneyVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
+
+		ish.oncourse.webservices.soap.v11.QECourseVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
+
+		ish.oncourse.webservices.soap.v11.QEDuplicateStudentEnrolmentNoGUITest.testQEFailedPayment
+		ish.oncourse.webservices.soap.v11.QEMoneyVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
+		ish.oncourse.webservices.soap.v12.QECourseVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
+		ish.oncourse.webservices.soap.v12.QEDuplicateStudentEnrolmentNoGUITest.testQEFailedPayment
+		ish.oncourse.webservices.soap.v12.QEMoneyVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
+		ish.oncourse.webservices.soap.v13.QECourseVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
+		ish.oncourse.webservices.soap.v13.QEDuplicateStudentEnrolmentNoGUITest.testQEFailedPayment
+		ish.oncourse.webservices.soap.v13.QEMoneyVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment*/
+

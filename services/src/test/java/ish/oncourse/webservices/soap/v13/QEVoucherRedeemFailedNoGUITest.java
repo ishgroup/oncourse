@@ -34,7 +34,7 @@ public abstract class QEVoucherRedeemFailedNoGUITest extends QEVoucherRedeemNoGU
 		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
 				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 16 records.", 16, queuedRecords.size());
+		assertEquals("Queue should contain 15 records.", 15, queuedRecords.size());
 
 		Expression exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, PAYMENT_IDENTIFIER);
 		assertEquals("Not all PaymentIns found in a queue", 3, exp.filterObjects(queuedRecords).size());
@@ -52,7 +52,5 @@ public abstract class QEVoucherRedeemFailedNoGUITest extends QEVoucherRedeemNoGU
 		assertEquals("Not all Vouchers found in a  queue", 1, exp.filterObjects(queuedRecords).size());
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, CONTACT_IDENTIFIER);
 		assertEquals("Not all Contacts found in a  queue", 1, exp.filterObjects(queuedRecords).size());
-		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, STUDENT_IDENTIFIER);
-		assertEquals("Not all Students found in a  queue", 1, exp.filterObjects(queuedRecords).size());
 	}
 }
