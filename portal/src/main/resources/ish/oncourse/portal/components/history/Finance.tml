@@ -15,7 +15,7 @@
                 <th>Date</th>
                 <th>Description</th>
                 <th>Amount</th>
-                <th>Balanse</th>
+                <th>Balance</th>
             </tr>
             <t:loop source="items" value="item">
                 <t:if test="isInvoice()">
