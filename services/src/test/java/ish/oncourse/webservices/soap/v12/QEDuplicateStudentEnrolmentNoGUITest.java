@@ -213,28 +213,3 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 		testNoGUICases();
 	}
 }
-
-/*ish.oncourse.webservices.replication.services.TransactionGroupProcessorTest.testDeleteV11Object
-		ish.oncourse.webservices.replication.services.TransactionGroupProcessorTest.testDeleteV12Object
-		ish.oncourse.webservices.replication.services.TransactionGroupProcessorTest.testDeleteV13Object
-
-
-		ish.oncourse.webservices.soap.v10.QECourseVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
-
-		ish.oncourse.webservices.soap.v10.QEDuplicateStudentEnrolmentNoGUITest
-		ish.oncourse.webservices.soap.v10.QEDuplicateStudentEnrolmentNoGUITest.testQEFailedPayment
-
-
-		ish.oncourse.webservices.soap.v10.QEMoneyVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
-
-		ish.oncourse.webservices.soap.v11.QECourseVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
-
-		ish.oncourse.webservices.soap.v11.QEDuplicateStudentEnrolmentNoGUITest.testQEFailedPayment
-		ish.oncourse.webservices.soap.v11.QEMoneyVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
-		ish.oncourse.webservices.soap.v12.QECourseVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
-		ish.oncourse.webservices.soap.v12.QEDuplicateStudentEnrolmentNoGUITest.testQEFailedPayment
-		ish.oncourse.webservices.soap.v12.QEMoneyVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
-		ish.oncourse.webservices.soap.v13.QECourseVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment
-		ish.oncourse.webservices.soap.v13.QEDuplicateStudentEnrolmentNoGUITest.testQEFailedPayment
-		ish.oncourse.webservices.soap.v13.QEMoneyVoucherRedeemFailedNoPlacesNoGUITest.testQEFailedPayment*/
-
