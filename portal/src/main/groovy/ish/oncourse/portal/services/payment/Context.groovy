@@ -5,7 +5,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.Invoice
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.model.PaymentTransaction
-import ish.oncourse.model.auto._Invoice
+import ish.oncourse.utils.invoice.GetAmountOwing
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 
@@ -21,6 +21,8 @@ import static org.apache.cayenne.query.ObjectSelect.query
  * Date: 1/07/2016
  */
 class Context {
+    private static final Money MIN_AMOUNT_OWING = new Money(0, 1);
+
     def ObjectContext objectContext
     def Contact contact
     def PaymentIn paymentIn
@@ -48,21 +50,21 @@ class Context {
             if (request.paymentInId != null) {
                 it.paymentIn = SelectById.query(PaymentIn.class, request.paymentInId).selectOne(objectContext)
                 if (it.paymentIn) {
-                    it.paymentTransaction = query(PaymentTransaction)
-                            .where(PAYMENT.eq(it.paymentIn))
-                            .and(IS_FINALISED.eq(Boolean.FALSE)).selectFirst(it.objectContext)
+                    it.paymentTransaction = (query(PaymentTransaction)
+                            .where(PAYMENT.eq(it.paymentIn)) & IS_FINALISED.eq(Boolean.FALSE)).selectFirst(it.objectContext)
                 }
             } else {
-                it.notFinalPaymentIn = query(PaymentIn).where(STATUS.in(IN_TRANSACTION, CARD_DETAILS_REQUIRED, NEW))
-                        .and(CONTACT.eq(contact))
+                it.notFinalPaymentIn = (query(PaymentIn).where(STATUS.in(IN_TRANSACTION, CARD_DETAILS_REQUIRED, NEW)) & CONTACT.eq(contact))
                         .selectFirst(it.objectContext)
             }
             if (request.invoiceId != null) {
                 it.invoice = SelectById.query(Invoice, request.invoiceId).selectOne(it.objectContext)
             } else {
-                it.invoice = query(Invoice).where(_Invoice.CONTACT.eq(contact)).and(Invoice.AMOUNT_OWING.gt(new Money(0, 1))).orderBy(Invoice.DATE_DUE.asc()).selectFirst(it.objectContext)
+                List<Invoice> invoices = (query(Invoice).where(Invoice.CONTACT.eq(contact)) & Invoice.AMOUNT_OWING.gt(MIN_AMOUNT_OWING)).orderBy(Invoice.DATE_DUE.asc()).select(it.objectContext)
+                it.invoice = invoices.find {invoice ->
+                    GetAmountOwing.valueOf(invoice).get().isGreaterThan(MIN_AMOUNT_OWING)
+                }
             }
-
             validate()
             return it
         }
