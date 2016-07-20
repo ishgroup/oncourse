@@ -9,7 +9,6 @@
     <tbody><tr>
         <td width="50%">${payment.contact.fullName}<br/>
             ${payment.contact.address}<br/><br/>
-            ${phoneNumber}
         </td>
         <td width="50%" class="text-right" valign="top">
             ${date} <br/>

@@ -31,7 +31,6 @@
     <tr>
         <td width="50%">${invoice.contact.fullName}<br/>
             ${invoice.billToAddress}<br/>
-            ${phoneNumber}
         </td>
         <td width="50%" class="text-right" valign="top">
             ${date} <br/>
@@ -117,7 +116,7 @@
         </tr>
         </thead>
         <tbody class="payment-plan">
-            <t:loop source="invoice.invoiceDueDates" value="invoiceDueDate">
+            <t:loop source="invoiceDueDates" value="invoiceDueDate">
                 <tr>
                     <td colspan="2"></td>
                     <td colspan="2"><t:output value="invoiceDueDate.dueDate" format="dateFormat()"/></td>

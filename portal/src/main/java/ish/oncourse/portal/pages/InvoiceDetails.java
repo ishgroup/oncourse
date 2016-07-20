@@ -10,6 +10,7 @@ import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -51,6 +52,9 @@ public class InvoiceDetails {
     private InvoiceLine invoiceLine;
 
     @Property
+    private List<InvoiceDueDate> invoiceDueDates;
+
+    @Property
     private InvoiceDueDate invoiceDueDate;
 
     @Inject
@@ -60,7 +64,15 @@ public class InvoiceDetails {
         if (id != null && id.length() > 0 && id.matches("\\d+")) {
             long idLong = Long.parseLong(id);
             this.invoice = portalService.getInvoiceBy(idLong);
-            return this.invoice == null ? pageNotFound : null;
+            if (invoice != null) {
+                invoiceDueDates =
+                        ObjectSelect.query(InvoiceDueDate.class)
+                                .where(InvoiceDueDate.INVOICE.eq(this.invoice))
+                                .orderBy(InvoiceDueDate.DUE_DATE.asc()).select(invoice.getObjectContext());
+                return null;
+            } else {
+                return pageNotFound;
+            }
         } else {
             return pageNotFound;
         }
