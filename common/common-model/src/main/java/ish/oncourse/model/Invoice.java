@@ -2,10 +2,10 @@ package ish.oncourse.model;
 
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.auto._Invoice;
 import ish.oncourse.utils.QueueableObjectUtils;
+import ish.oncourse.utils.invoice.GetAmountOwing;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -67,32 +67,9 @@ public class Invoice extends _Invoice implements Queueable {
 	}
 
 	public void updateAmountOwing() {
-		// update invoice owing
-		Money totalCredit = getTotalCredit();
-		Money totalInvoiced = getTotalInvoiced();
-		Money totalOwing = totalInvoiced.subtract(totalCredit);
-		setAmountOwing(totalOwing);
+		setAmountOwing(GetAmountOwing.valueOf(this).get());
 	}
 	
-	private Money getTotalCredit() {
-		Money result = Money.ZERO;
-		List<PaymentInLine> paymentLines = getPaymentInLines();
-		for (PaymentInLine paymentLine : paymentLines) {
-			if (PaymentStatus.SUCCESS.equals(paymentLine.getPaymentIn().getStatus())) {
-				result = result.add(paymentLine.getAmount());
-			}
-		}
-		return result;
-	}
-
-	private Money getTotalInvoiced() {
-		Money result = Money.ZERO;
-		List<InvoiceLine> invoiceLines = getInvoiceLines();
-		for (InvoiceLine invoiceLine : invoiceLines) {
-			result = result.add(invoiceLine.getFinalPriceToPayIncTax());
-		}
-		return result;
-	}
 
 	@Override
 	protected void onPostAdd() {
