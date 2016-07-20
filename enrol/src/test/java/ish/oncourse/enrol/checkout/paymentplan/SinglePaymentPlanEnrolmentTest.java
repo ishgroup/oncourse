@@ -158,7 +158,6 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 		queueables.add(invoice.getPaymentInLines().get(0).getPaymentIn());
 		queueables.add(invoice.getPaymentInLines().get(1).getPaymentIn());
 		queueables.add(invoice.getContact());
-		queueables.add(invoice.getContact().getStudent());
 		assertQueuedRecords(queueables.toArray(new Queueable[queueables.size()]));
 		model.getObjectContext().deleteObjects(ObjectSelect.query(QueuedRecord.class).select(model.getObjectContext()));
 

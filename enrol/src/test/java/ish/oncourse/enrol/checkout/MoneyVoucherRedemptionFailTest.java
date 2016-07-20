@@ -140,7 +140,7 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 
 
 		//check second QueuedTransaction contains right QueuedRecords
-		assertEquals(16, listQT.get(1).getQueuedRecords().size());
+		assertEquals(15, listQT.get(1).getQueuedRecords().size());
 		List<QueuedRecord> queuedRecords = listQT.get(1).getQueuedRecords();
 		Expression exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Enrolment");
 		assertEquals(1, exp.filterObjects(queuedRecords).size());
@@ -157,8 +157,6 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "PaymentIn");
 		assertEquals(3, exp.filterObjects(queuedRecords).size());
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Voucher");
-		assertEquals(1, exp.filterObjects(queuedRecords).size());
-		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Student");
 		assertEquals(1, exp.filterObjects(queuedRecords).size());
 		exp = ExpressionFactory.matchExp(QueuedRecord.ENTITY_IDENTIFIER_PROPERTY, "Contact");
 		assertEquals(1, exp.filterObjects(queuedRecords).size());

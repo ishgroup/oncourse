@@ -40,7 +40,6 @@ public class GetInvoiceTransaction {
 		for (InvoiceLine line: invoice.getInvoiceLines()) {
 			if (line.getEnrolment() != null) {
 				queueables.add(line.getEnrolment());
-				queueables.add(line.getEnrolment().getStudent());
 				queueables.add(line.getEnrolment().getStudent().getContact());
 			}
 			queueables.addAll(line.getProductItems());
