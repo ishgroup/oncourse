@@ -21,8 +21,8 @@ var Status = {
 };
 
 var WarningMessage = {
-    someBodyElseAlreadyPaidThisInvoice: "someBodyElseAlreadyPaidThisInvoice",
-    thereIsProcessedPayment: "thereIsProcessedPayment",
+    thisInvoiceAlreadyPaid: "thisInvoiceAlreadyPaid",
+    thereIsPaymentInTransaction: "thereIsPaymentInTransaction",
     thereAreNotUnbalancedInvoices: "thereAreNotUnbalancedInvoices",
     invalidCardNumber: "invalidCardNumber",
     invalidCardName: "invalidCardName",
@@ -37,16 +37,26 @@ var PaymentStatus = {
     SUCCESS: 'SUCCESS'
 };
 
+var Message = {
+    nextPaymentAmount: Handlebars.compile("Next amount due is <span id='next-payment-amount'>{{amount}}</span> on <span id='next-payment-due-date'>{{dateDue}}</span>"),
+    thisInvoiceAlreadyPaid: Handlebars.compile("<span>Your invoice what you have tried to pay for is already paid</span>"),
+    thereIsPaymentInTransaction: Handlebars.compile("<span>You have a payment already being processed by the system. You should finish this process before next payment</span>"),
+    invalidCreditCard: Handlebars.compile("<span><h2>Your payment was failed</h2> " +
+        "<p>Please check your credit card details or credit balance and try again. In particular, check the CVV and expiry date have been entered correctly.</p></span>"),
+    paymentSuccessful: Handlebars.compile("<span>" +
+        " <h2>Payment <span>&#187;</span> Successful</h2>" +
+        " <p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W{{paymentId}}</strong>.</p>" +
+        " </span>"),
+    paymentFailed: Handlebars.compile("<span><h2>Your payment was failed</h2> " +
+        "<p>Please check your credit card details or credit balance and try again. In particular, check the CVV and expiry date have been entered correctly.</p></span>"),
+    waitResult: Handlebars.compile("<span>Payment is now being processed against the bank. Please wait...</span>")
+
+};
+
 PaymentForm = function () {
 };
 
 PaymentForm.prototype = {
-    divNextPaymentAmountTemplate: Handlebars.compile("Next amount due is <span id='next-payment-amount'>{{amount}}</span> on <span id='next-payment-due-date'>{{dateDue}}</span>"),
-    divNextPaymentMessageTemplate: Handlebars.compile("Next amount due is <span id='next-payment-amount'>{{amount}}</span> on <span id='next-payment-due-date'>{{dateDue}}</span>"),
-    thereIsProcessedPaymentTemplate: Handlebars.compile("<span>You have a processed payment. You should finish this porcess before next payment</span>"),
-    someBodyElseAlreadyPaidThisInvoiceTemplate: Handlebars.compile("<span>Your invoice what you have tried to pay for is already paid</span>"),
-    paymentSuccessfulTemplate: Handlebars.compile("<span>Your payment was successful</span>"),
-    paymentFailedTemplate: Handlebars.compile("<span>Your payment was failed</span>"),
     request: {
         paymentInId: null,
         invoiceId: null,
@@ -85,6 +95,7 @@ PaymentForm.prototype = {
     makePayment: function () {
         this.hidePaymentControls();
         this.divPaymentProgressBar.show();
+        this.setMessage(Message.waitResult());
 
         this.request.invoiceId = this.response.invoiceId;
         this.request.paymentInId = this.response.paymentInId;
@@ -96,6 +107,14 @@ PaymentForm.prototype = {
         this.request.card.amount = this.inputAmount.inputmask('unmaskedvalue');
 
         this.sendRequest(true);
+    },
+
+    setMessage: function (html, cssClass) {
+        this.divPaymentMessage.html(html);
+        this.divPaymentMessage.removeClass();
+        if (cssClass) {
+            this.divPaymentMessage.addClass(cssClass);
+        }
     },
 
     hidePaymentControls: function () {
@@ -112,7 +131,7 @@ PaymentForm.prototype = {
 
     fillDivNextPayment: function () {
         if (this.response.amount > 0.01) {
-            this.divPaymentMessage.html(this.divNextPaymentAmountTemplate({
+            this.divPaymentMessage.html(Message.nextPaymentAmount({
                 amount: (this.response.amount).toLocaleString("en-Au", {
                     style: "currency",
                     currency: "AUD",
@@ -228,13 +247,22 @@ PaymentForm.prototype = {
             case WarningMessage.thereAreNotUnbalancedInvoices:
                 this.paymentForm.hide();
                 break;
-            case WarningMessage.thereIsProcessedPayment:
-                this.divPaymentMessage.html(this.thereIsProcessedPaymentTemplate());
+            case WarningMessage.thereIsPaymentInTransaction:
+                this.setMessage(Message.thereIsPaymentInTransaction(), 'warning-msg');
                 this.hidePaymentControls();
                 break;
-            case WarningMessage.someBodyElseAlreadyPaidThisInvoice:
-                this.divPaymentMessage.html(this.someBodyElseAlreadyPaidThisInvoiceTemplate());
+            case WarningMessage.thisInvoiceAlreadyPaid:
+                this.setMessage(Message.thisInvoiceAlreadyPaid(), 'warning-msg');
                 this.hidePaymentControls();
+                break;
+            case WarningMessage.invalidCardName:
+            case WarningMessage.invalidCardNumber:
+            case WarningMessage.invalidCardCvv:
+            case WarningMessage.invalidCardDate:
+                this.setMessage(Message.invalidCreditCard(), 'warning-msg');
+                this.hidePaymentControls();
+                this.divPaymentProgressBar.hide();
+                this.reloadPage(10000);
                 break;
             default:
                 this.paymentForm.hide();
@@ -257,9 +285,10 @@ PaymentForm.prototype = {
                 this.hidePaymentControls();
                 this.divPaymentProgressBar.hide();
                 if (this.response.paymentStatus == PaymentStatus.SUCCESS) {
-                    this.divPaymentMessage.html(this.paymentSuccessfulTemplate())
+                    this.setMessage(Message.paymentSuccessful({paymentId: this.response.paymentId}));
                 } else {
-                    this.divPaymentMessage.html(this.paymentFailedTemplate())
+                    this.setMessage(Message.paymentFailed(), 'warning-msg');
+                    this.reloadPage(15000);
                 }
                 break;
         }
@@ -275,12 +304,18 @@ PaymentForm.prototype = {
                 this.updateView();
             }
         }
+    },
+
+    reloadPage: function(delay) {
+        setTimeout(function () {
+            window.location.reload();
+        }, delay);
     }
 };
 
 jQuery(document).ready(
     function () {
-        if ( $j('div#payment-form').length > 0) {
+        if ($j('div#payment-form').length > 0) {
             var form = new PaymentForm();
             form.init();
             form.sendRequest(false);

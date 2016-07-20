@@ -7,8 +7,8 @@ import ish.oncourse.model.PaymentIn
 import static ish.oncourse.portal.services.payment.ErrorMessage.invalidRequest
 import static ish.oncourse.portal.services.payment.Status.result
 import static ish.oncourse.portal.services.payment.Status.wait
-import static ish.oncourse.portal.services.payment.WarningMessage.someBodyElseAlreadyPaidThisInvoice
-import static ish.oncourse.portal.services.payment.WarningMessage.thereIsProcessedPayment
+import static ish.oncourse.portal.services.payment.WarningMessage.thereIsPaymentInTransaction
+import static ish.oncourse.portal.services.payment.WarningMessage.thisInvoiceAlreadyPaid
 
 /**
  * User: akoiro
@@ -51,12 +51,12 @@ class ProcessMake extends AProcess {
         }
 
         if (!context.invoice.amountOwing.isGreaterThan(new Money(0, 1))) {
-            response.validationResult.warning = someBodyElseAlreadyPaidThisInvoice
+            response.validationResult.warning = thisInvoiceAlreadyPaid
             return
         }
 
         if (context.notFinalPaymentIn) {
-            response.validationResult.warning = thereIsProcessedPayment
+            response.validationResult.warning = thereIsPaymentInTransaction
         }
     }
 }

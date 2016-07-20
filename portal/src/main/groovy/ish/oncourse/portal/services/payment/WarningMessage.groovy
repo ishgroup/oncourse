@@ -5,8 +5,8 @@ package ish.oncourse.portal.services.payment
  * Date: 3/07/2016
  */
 enum WarningMessage {
-    someBodyElseAlreadyPaidThisInvoice,
-    thereIsProcessedPayment,
+    thisInvoiceAlreadyPaid,
+    thereIsPaymentInTransaction,
     thereAreNotUnbalancedInvoices,
     invalidCardNumber,
     invalidCardName,
