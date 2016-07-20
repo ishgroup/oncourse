@@ -485,7 +485,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
         //source should be the same as in the original #13955
 		paymentIn.setSource(this.getSource());
-		paymentIn.setStudent(getStudent());
 
 		return paymentIn;
 	}
@@ -507,23 +506,6 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 		}
 
 		return paymentIn;
-	}
-
-	/**
-	 * If the contact has a student reference, sets it to the payment.
-	 * 
-	 * @param contact
-	 *            the contact to set.
-	 */
-	@Override
-	public void setContact(Contact contact) {
-		super.setContact(contact);
-		if (contact != null) {
-			Student student = contact.getStudent();
-			if (student != null) {
-				setStudent(student);
-			}
-		}
 	}
 
 	/**

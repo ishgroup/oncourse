@@ -77,7 +77,7 @@ private ICayenneService cayenneService;
 			enrolment.setSource(paymentIn.getSource());
 			enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
 			if (invoiceLine.getId() == 20L) {
-				enrolment.setStudent(paymentIn.getStudent());
+				enrolment.setStudent(paymentIn.getContact().getStudent());
 				assertEquals("This student should have id=4", 4L, enrolment.getStudent().getId().longValue());
 			} else if (invoiceLine.getId() == 21L) {
 				Student student3 = (Student) context.performQuery(
@@ -165,7 +165,7 @@ private ICayenneService cayenneService;
 		enrolment.setCourseClass(courseClass);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
-		enrolment.setStudent(paymentIn.getStudent());
+		enrolment.setStudent(paymentIn.getContact().getStudent());
 		enrolment.setReasonForStudy(1);
 		invoiceLine.setEnrolment(enrolment);
 		
@@ -248,7 +248,7 @@ private ICayenneService cayenneService;
 		enrolment.setCourseClass(courseClass);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.IN_TRANSACTION);
-		enrolment.setStudent(paymentIn.getStudent());
+		enrolment.setStudent(paymentIn.getContact().getStudent());
 		enrolment.setReasonForStudy(1);
 		invoiceLine.setEnrolment(enrolment);
 		
@@ -307,7 +307,7 @@ private ICayenneService cayenneService;
 		enrolment.setCourseClass(courseClass);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.SUCCESS);
-		enrolment.setStudent(paymentIn.getStudent());
+		enrolment.setStudent(paymentIn.getContact().getStudent());
 		enrolment.setReasonForStudy(1);
 		invoiceLine.setEnrolment(enrolment);
 		
@@ -363,7 +363,7 @@ private ICayenneService cayenneService;
 		enrolment.setCourseClass(courseClass);
 		enrolment.setSource(paymentIn.getSource());
 		enrolment.setStatus(EnrolmentStatus.SUCCESS);
-		enrolment.setStudent(paymentIn.getStudent());
+		enrolment.setStudent(paymentIn.getContact().getStudent());
 		enrolment.setReasonForStudy(1);
 		invoiceLine.setEnrolment(enrolment);
 		

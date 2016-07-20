@@ -17,7 +17,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentInLine;
 import ish.oncourse.model.PaymentTransaction;
-import ish.oncourse.model.Student;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherPaymentIn;
 
@@ -80,8 +79,6 @@ public abstract class _PaymentIn extends CayenneDataObject {
     @Deprecated
     public static final String PAYMENT_TRANSACTIONS_PROPERTY = "paymentTransactions";
     @Deprecated
-    public static final String STUDENT_PROPERTY = "student";
-    @Deprecated
     public static final String VOUCHER_PAYMENT_INS_PROPERTY = "voucherPaymentIns";
     @Deprecated
     public static final String VOUCHERS_PROPERTY = "vouchers";
@@ -112,7 +109,6 @@ public abstract class _PaymentIn extends CayenneDataObject {
     public static final Property<Contact> CONTACT = new Property<Contact>("contact");
     public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = new Property<List<PaymentInLine>>("paymentInLines");
     public static final Property<List<PaymentTransaction>> PAYMENT_TRANSACTIONS = new Property<List<PaymentTransaction>>("paymentTransactions");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
     public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENT_INS = new Property<List<VoucherPaymentIn>>("voucherPaymentIns");
     public static final Property<List<Voucher>> VOUCHERS = new Property<List<Voucher>>("vouchers");
 
@@ -300,15 +296,6 @@ public abstract class _PaymentIn extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<PaymentTransaction> getPaymentTransactions() {
         return (List<PaymentTransaction>)readProperty("paymentTransactions");
-    }
-
-
-    public void setStudent(Student student) {
-        setToOneTarget("student", student, true);
-    }
-
-    public Student getStudent() {
-        return (Student)readProperty("student");
     }
 
 

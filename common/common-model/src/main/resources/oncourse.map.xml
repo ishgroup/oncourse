@@ -3249,9 +3249,6 @@
 	<db-relationship name="paymentTransactions" source="PaymentIn" target="PaymentTransaction" toMany="true">
 		<db-attribute-pair source="id" target="paymentId"/>
 	</db-relationship>
-	<db-relationship name="student" source="PaymentIn" target="Student" toMany="false">
-		<db-attribute-pair source="studentId" target="id"/>
-	</db-relationship>
 	<db-relationship name="voucherPaymentIn" source="PaymentIn" target="VoucherPaymentIn" toMany="true">
 		<db-attribute-pair source="id" target="paymentInId"/>
 	</db-relationship>
@@ -3976,7 +3973,6 @@
 	<obj-relationship name="contact" source="PaymentIn" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="paymentInLines" source="PaymentIn" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
 	<obj-relationship name="paymentTransactions" source="PaymentIn" target="PaymentTransaction" deleteRule="Deny" db-relationship-path="paymentTransactions"/>
-	<obj-relationship name="student" source="PaymentIn" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="voucherPaymentIns" source="PaymentIn" target="VoucherPaymentIn" deleteRule="Deny" db-relationship-path="voucherPaymentIn"/>
 	<obj-relationship name="vouchers" source="PaymentIn" target="Voucher" deleteRule="Nullify" db-relationship-path="voucherPaymentIn.voucher"/>
 	<obj-relationship name="college" source="PaymentInLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
