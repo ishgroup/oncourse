@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
+
 /**
  * User: artem
  * Date: 11/1/13
@@ -68,7 +70,9 @@ public class InvoiceDetails {
                 invoiceDueDates =
                         ObjectSelect.query(InvoiceDueDate.class)
                                 .where(InvoiceDueDate.INVOICE.eq(this.invoice))
-                                .orderBy(InvoiceDueDate.DUE_DATE.asc()).select(invoice.getObjectContext());
+                                .orderBy(InvoiceDueDate.DUE_DATE.asc())
+								.cacheStrategy(LOCAL_CACHE, InvoiceDueDate.class.getSimpleName())
+								.select(cayenneService.sharedContext());
                 return null;
             } else {
                 return pageNotFound;
