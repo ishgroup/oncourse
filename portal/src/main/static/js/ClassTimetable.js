@@ -130,7 +130,11 @@ AttendanceCtrl.prototype = {
         this.datePartialFrom.prop( "value", moment(this.attendance.startDate).format('hh:mm:a').toUpperCase());
         this.datePartialFrom.prop('disabled', 'true');
         
-        this.datePartialTo.timepicki({start_time: [moment(this.attendance.endDate).format('hh'), moment(this.attendance.endDate).format('mm'), moment(this.attendance.endDate).format('a').toUpperCase()]});
+        this.datePartialTo.timepicki({
+                        start_time: [moment(this.attendance.endDate).format('hh'), moment(this.attendance.endDate).format('mm'), moment(this.attendance.endDate).format('a').toUpperCase()],
+                        increase_direction: 'up',
+                        step_size_minutes: 5
+                   });
 
         if (this.attendance.durationMinutes) {
             this.datePartialTo.prop("value",moment(this.attendance.startDate).add(this.attendance.durationMinutes, 'minutes').format('hh:mm:a').toUpperCase());
@@ -193,23 +197,18 @@ AttendanceCtrl.prototype = {
         this.btnReasonSave.on('click', function(){
             
             if (self.txtReasonNote.val().length > 0) {
-                self.attendance.type = 3;
+                self.attendance.type = 2;
                 self.attendance.note = self.txtReasonNote.val();
                 self.makeWithReason();
                 self.btnPartialReason.click();
             }
             else {
-                alert('You have no reason!');
+                alert('You must specify reason for absence.');
                 return false;
             }
         });
 
-        this.btnPartialSave.on('click', function(){
-            
-            if (self.txtPartialNote.val().length <= 0) {
-                alert('You have no reason!');
-                return false;
-            }
+        this.btnPartialSave.on('click', function() {
 
             if (self.datePartialTo.val().length <= 0) {
                 alert('You have no DEPARTED time!');
@@ -218,14 +217,20 @@ AttendanceCtrl.prototype = {
             
             var departed = moment(moment(self.attendance.endDate).format('MM-DD-YYYY ') + self.datePartialTo.val(), 'MM-DD-YYYY hh : mm : a');
             
-            if (departed > self.attendance.endDate || departed < self.attendance.startDate) {
-                alert('DEPARTED time is wrong!');
+            if (departed > self.attendance.endDate) {
+                alert('Departed time must be before the session ends.');
+                return false;
+            } else if (departed < self.attendance.startDate) {
+                alert('Departed time must be after the session starts.');
                 return false;
             }
             
             self.attendance.type = 4;
             self.attendance.durationMinutes = moment.duration(departed.diff(self.attendance.startDate)).asMinutes();
-            self.attendance.note = self.txtPartialNote.val();
+
+            if (self.txtPartialNote.val().length > 0) {
+                self.attendance.note = self.txtPartialNote.val();
+            }
             self.makePartially();
             self.btnPartialReason.click();
         });

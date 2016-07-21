@@ -2,10 +2,10 @@
 	<div id="class-description-${session.id}" class="class-description-class ${markedClass}">
 		<table class="class-desc-section">
 			<tr>
-				<td><object data="/portal/img/svg_icons/session_detail.svg" type="image/svg+xml"/></td>
+				<td><object data="/portal/img/svg_icons/session_details.svg" type="image/svg+xml"/></td>
 				<td>
 				<t:if test="future">
-					Mark this of <strong>Date of course</strong>
+					Mark this  <strong>after session is over</strong>
 					<p:else>
 						<t:if test="marked">
 							Marked roll for 
