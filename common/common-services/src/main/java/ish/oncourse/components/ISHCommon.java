@@ -39,6 +39,8 @@ public abstract class ISHCommon {
     @Property
     private String ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZZ";
 
+    @Property
+    private Document attachment;
 
     public String formatMoney(Money money, String pattern) {
         NumberFormat format = new DecimalFormat(pattern);
