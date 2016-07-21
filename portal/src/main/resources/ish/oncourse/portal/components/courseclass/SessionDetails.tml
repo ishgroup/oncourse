@@ -27,7 +27,7 @@
 			<t:if test="session.privateNotes">
 			<tr>
 				<td></td>
-				<td><strong>Private notes</strong>${session.privateNotes}</td>
+				<td><strong>Private notes </strong>${session.privateNotes}</td>
 			</tr>
 			</t:if>
 		</table>
