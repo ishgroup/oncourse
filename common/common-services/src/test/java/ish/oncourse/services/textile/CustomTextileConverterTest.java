@@ -105,7 +105,7 @@ public class CustomTextileConverterTest {
 	@Test
 	public void smokeAttachmentConvertTest() {
 		when(document.getName()).thenReturn(TEST_ATTACHMENT_NAME);
-		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(document);
+		when(binaryDataService.getBinaryInfo(Document.NAME, TEST_ATTACHMENT_NAME)).thenReturn(document);
         String successfulResult = "successfully rendered attachment block";
 		testPageRenderParams(ATTACHMENT_BY_NAME, TextileUtil.TEXTILE_ATTACHMENT_PAGE, successfulResult);
 	}
@@ -135,7 +135,7 @@ public class CustomTextileConverterTest {
 		webContent.setContent(COMPLEX_WEB_BLOCK_CONTENT);
 		when(webContentService.getWebContent(WebContent.NAME_PROPERTY, TEST_BLOCK_NAME)).thenReturn(webContent);
 		reset(binaryDataService);
-		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_BINARYINFO_NAME)).thenReturn(document);
+		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME, TEST_BINARYINFO_NAME)).thenReturn(document);
 
 		String successfulResult = "successfully rendered image block";
 

@@ -3,12 +3,13 @@ package ish.oncourse.services.binary;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Queueable;
+import org.apache.cayenne.exp.Property;
 
 import java.util.List;
 
 public interface IBinaryDataService {
 
-	Document getBinaryInfo(String searchProperty, Object value);
+	<E> Document getBinaryInfo(Property<E> searchProperty, E value);
 
 	List<Document> getAttachedFiles(Long entityIdNum, String entityIdentifier, boolean hidePrivateAttachments);
 

@@ -30,7 +30,7 @@ public class TextileAttachment {
 		
 		String attachmentName = tagParams.get(AttachmentTextileAttributes.ATTACHMENT_PARAM_NAME.getValue());
 
-        attachment = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, attachmentName);
+        attachment = binaryDataService.getBinaryInfo(BinaryInfo.NAME, attachmentName);
 	}
 	
 	public String getAttachmentUrl() {

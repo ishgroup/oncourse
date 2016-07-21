@@ -9,10 +9,11 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.exp.Property;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +22,8 @@ import org.apache.tapestry5.services.ApplicationStateManager;
 
 import java.util.List;
 import java.util.Random;
+
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 public class BinaryDataService implements IBinaryDataService {
 
@@ -57,31 +60,24 @@ public class BinaryDataService implements IBinaryDataService {
 		this.tagService = tagService;
 	}
 
-	public Document getBinaryInfo(final String searchProperty, Object value) {
-		return getRandomBinaryInfo(new GetCollegeExpression(webSiteService.getCurrentCollege(), true, isStudentLoggedIn()).get());
+	public <E> Document getBinaryInfo(Property<E> property, E value) {
+		return getRandomBinaryInfo(new GetCollegeExpression(webSiteService.getCurrentCollege(), true, isStudentLoggedIn()).get()
+				.andExp(property.eq(value)));
 	}
 
 	private Document getRandomBinaryInfo(final Expression qualifier) {
 		ObjectContext sharedContext = cayenneService.sharedContext();
-		final SelectQuery binaryCount = new SelectQuery(Document.class, qualifier);
 
-		List<Document> binaries = (List<Document>) sharedContext.performQuery(binaryCount);
-		Long count = (long) binaries.size();
-		Document randomResult = null;
-		int attempt = 0;
-		if (count > 0) {
-			while (randomResult == null && attempt++ < 5) {
-				int random = new Random().nextInt(count.intValue());
+		List<Document> binaries = ObjectSelect.query(Document.class, qualifier)
+				.cacheStrategy(LOCAL_CACHE, Document.class.getSimpleName())
+				.select(sharedContext);
 
-				SelectQuery query = new SelectQuery(Document.class, qualifier);
-				query.setFetchOffset(random);
-				query.setFetchLimit(1);
-				randomResult = (Document) Cayenne.objectForQuery(sharedContext, query);
-				logger.info("Fetched random image: {}", randomResult);
-			}
+		if (binaries.size() > 0) {
+			int random = new Random().nextInt(binaries.size());
+			return binaries.get(random);
+		} else {
+			return null;
 		}
-
-		return randomResult;
 	}
 
 	@Override

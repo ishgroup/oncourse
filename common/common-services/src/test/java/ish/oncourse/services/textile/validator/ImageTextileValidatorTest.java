@@ -92,8 +92,8 @@ public class ImageTextileValidatorTest extends CommonValidatorTest {
 	public void init() {
 		validator = new ImageTextileValidator(binaryDataService);
 		errors = new ValidationErrors();
-		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, TEST_BINARYINFO_NAME)).thenReturn(document);
-		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, NOT_EXISTING_NAME)).thenReturn(null);
+		when(binaryDataService.getBinaryInfo(Document.NAME, TEST_BINARYINFO_NAME)).thenReturn(document);
+		when(binaryDataService.getBinaryInfo(Document.NAME, NOT_EXISTING_NAME)).thenReturn(null);
     }
 
 	/**

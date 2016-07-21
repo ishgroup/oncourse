@@ -52,7 +52,7 @@ public class Image extends ISHCommon {
 
     @SetupRender
     public void setupRender() {
-        image = binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, name);
+        image = binaryDataService.getBinaryInfo(Document.NAME, name);
         if (image != null) {
             path = binaryDataService.getUrl(image);
         }

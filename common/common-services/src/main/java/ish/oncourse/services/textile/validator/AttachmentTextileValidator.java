@@ -31,7 +31,7 @@ public class AttachmentTextileValidator extends AbstractTextileValidator {
 		String name = tagParams.get(AttachmentTextileAttributes.ATTACHMENT_PARAM_NAME.getValue());
 		
 		if (name != null) {
-			result = binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, name);
+			result = binaryDataService.getBinaryInfo(Document.NAME, name);
 			if (result == null) {
 				errors.addFailure(getNotFoundMessage(name), ValidationFailureType.CONTENT_NOT_FOUND);
 			}

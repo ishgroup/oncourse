@@ -30,7 +30,7 @@ public class ImageTextileValidator extends AbstractTextileValidator {
 		Map<String, String> tagParams = TextileUtil.getTagParams(tag, textileType.getAttributes());
 		String name = tagParams.get(ImageTextileAttributes.IMAGE_PARAM_NAME.getValue());
 		if (name != null) {
-			result = binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, name);
+			result = binaryDataService.getBinaryInfo(Document.NAME, name);
 			if (result == null) {
 				errors.addFailure(getNotFoundByNameMessage(name), ValidationFailureType.CONTENT_NOT_FOUND);
 			}

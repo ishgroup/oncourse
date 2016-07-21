@@ -46,7 +46,7 @@ public class AttachmentTextileRendererTest {
 	
 	@Test
 	public void testAttachmentRendering() {
-		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, TEST_ATTACHMENT_NAME))
+		when(binaryDataService.getBinaryInfo(BinaryInfo.NAME, TEST_ATTACHMENT_NAME))
 				.thenReturn(document);
 
         Map<String, Object> params = new HashMap<>();

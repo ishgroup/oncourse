@@ -199,7 +199,7 @@ public class TestModuleForContentStructure {
 			when(document.getName()).thenReturn(TestModuleForContentStructure.NAME_FOR_BINARY_INFO);
 			when(document.getCurrentVersion()).thenReturn(documentVersion);
 
-			when(mock.getBinaryInfo(Document.NAME_PROPERTY,TestModuleForContentStructure.NAME_FOR_BINARY_INFO)).thenReturn(
+			when(mock.getBinaryInfo(Document.NAME,TestModuleForContentStructure.NAME_FOR_BINARY_INFO)).thenReturn(
 					document);
 
 			return mock;

@@ -43,10 +43,10 @@ public class AttachmentTextileValidatorTest extends CommonValidatorTest {
 		validator = new AttachmentTextileValidator(binaryDataService);
 		errors = new ValidationErrors();
 
-		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, TEST_ATTACHMENT_NAME)).thenReturn(document);
+		when(binaryDataService.getBinaryInfo(Document.NAME, TEST_ATTACHMENT_NAME)).thenReturn(document);
 
-        when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, NOT_EXISTING_ATTACHMENT_NAME)).thenReturn(null);
-		when(binaryDataService.getBinaryInfo(Document.NAME_PROPERTY, EMPTY_BINARY_INFO_ATTACHMENT_NAME)).thenReturn(emptyDocument);
+        when(binaryDataService.getBinaryInfo(Document.NAME, NOT_EXISTING_ATTACHMENT_NAME)).thenReturn(null);
+		when(binaryDataService.getBinaryInfo(Document.NAME, EMPTY_BINARY_INFO_ATTACHMENT_NAME)).thenReturn(emptyDocument);
 	}
 
 	@Override

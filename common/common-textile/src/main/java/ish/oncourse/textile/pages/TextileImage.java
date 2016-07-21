@@ -91,7 +91,7 @@ public class TextileImage {
 	private Document getBinaryInfoBy(String name) {
 		Document imageBinaryInfo = null;
 		if (name != null) {
-			imageBinaryInfo = binaryDataService.getBinaryInfo(BinaryInfo.NAME_PROPERTY, name);
+			imageBinaryInfo = binaryDataService.getBinaryInfo(BinaryInfo.NAME, name);
 		}
 		
 		return imageBinaryInfo;
