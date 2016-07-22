@@ -8,12 +8,11 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Document;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 
 import java.util.List;
 
-import static ish.oncourse.model.auto._BinaryInfoRelation.ENTITY_IDENTIFIER;
-import static ish.oncourse.model.auto._BinaryInfoRelation.ENTITY_WILLOW_ID;
-import static ish.oncourse.model.auto._BinaryInfoRelation.SPECIAL_TYPE;
+import static ish.oncourse.model.auto._BinaryInfoRelation.*;
 import static ish.oncourse.model.auto._Document.BINARY_INFO_RELATIONS;
 
 /**
@@ -52,6 +51,7 @@ public class GetDocuments implements IGet<List<Document>> {
 				.and(BINARY_INFO_RELATIONS.dot(ENTITY_WILLOW_ID).eq(entityId))
 				.and(BINARY_INFO_RELATIONS.dot(SPECIAL_TYPE).isNull())
 				.and(new GetCollegeExpression(college, hidePrivate, isStudentLoggedIn).get())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Document.class.getSimpleName())
 				.select(objectContext);
 	}
 }
