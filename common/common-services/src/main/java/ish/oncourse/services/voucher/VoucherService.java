@@ -10,6 +10,7 @@ import ish.util.SecurityUtil;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SQLSelect;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
@@ -47,6 +48,7 @@ public class VoucherService implements IVoucherService {
                 .params("collegeId", webSiteService.getCurrentCollege().getId())
                 .params("isOnSale", true)
                 .params("isWebVisible", true)
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Product.class.getSimpleName())
                 .selectOne(cayenneService.sharedContext()).values().iterator().next()).intValue();
     }
 
@@ -56,7 +58,9 @@ public class VoucherService implements IVoucherService {
         return ObjectSelect.query(Product.class,
                 COLLEGE.eq(college)
                         .andExp(getAvailableProductsQualifier())
-                        .andExp(Product.SKU.eq(sku))).selectFirst(cayenneService.sharedContext());
+                        .andExp(Product.SKU.eq(sku)))
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Product.class.getSimpleName())
+                .selectFirst(cayenneService.sharedContext());
 
     }
 
@@ -73,6 +77,7 @@ public class VoucherService implements IVoucherService {
             query.offset(startDefault);
             query.limit(rowsDefault);
         }
+        query.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Product.class.getSimpleName());
         query.orderBy(Product.TYPE.desc(), Product.NAME.asc(), Product.PRICE_EX_TAX.desc());
         return query.select(cayenneService.sharedContext());
     }
@@ -81,17 +86,13 @@ public class VoucherService implements IVoucherService {
     public Voucher getVoucherByCode(String code) {
         College college = webSiteService.getCurrentCollege();
 
-        List<Voucher> results = ObjectSelect.query(Voucher.class,
+        return ObjectSelect.query(Voucher.class,
                 COLLEGE.eq(college)
                         .andExp(Voucher.CODE.eq(code))
                         .andExp(Voucher.STATUS.eq(ProductStatus.ACTIVE))
-                        .andExp(EXPIRY_DATE.gt(new Date()).orExp(EXPIRY_DATE.isNull()))).select(cayenneService.sharedContext());
-
-        logger.info("{} found for code {} for college {}", results.size(), code, college.getId());
-        if (results.size() > 1) {
-            logger.warn("{} vouchers found for code {} for college {}. Maybe we need to enlarge the code size?", results.size(), code, college.getId());
-        }
-        return results.isEmpty() ? null : results.get(0);
+                        .andExp(EXPIRY_DATE.gt(new Date()).orExp(EXPIRY_DATE.isNull())))
+                .cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Product.class.getSimpleName())
+                .selectFirst(cayenneService.sharedContext());
     }
 
     public Voucher createVoucher(VoucherProduct voucherProduct) {
