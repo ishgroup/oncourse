@@ -38,6 +38,7 @@ var PaymentStatus = {
 };
 
 var Message = {
+    overduePaymentAmount: Handlebars.compile("Overdue: <span id='next-payment-amount'>{{amount}}</span> on <span id='next-payment-due-date'>{{dateDue}}</span>"),
     nextPaymentAmount: Handlebars.compile("Next amount due is <span id='next-payment-amount'>{{amount}}</span> on <span id='next-payment-due-date'>{{dateDue}}</span>"),
     thisInvoiceAlreadyPaid: Handlebars.compile("<span>Your invoice what you have tried to pay for is already paid</span>"),
     thereIsPaymentInTransaction: Handlebars.compile("<span>You have a payment already being processed by the system. You should finish this process before next payment</span>"),
@@ -131,16 +132,19 @@ PaymentForm.prototype = {
 
     fillDivNextPayment: function () {
         if (this.response.amount > 0.01) {
-            this.divPaymentMessage.html(Message.nextPaymentAmount({
+            var context = {
                 amount: (this.response.amount).toLocaleString("en-Au", {
                     style: "currency",
                     currency: "AUD",
                     minimumFractionDigits: 2
                 }),
-                dateDue: moment(this.response.dateDue).format('D MMMM YYYY')
-            }));
+                    dateDue: moment(this.response.dateDue).format('D MMMM YYYY')
+            };
             if (this.response.dateDue < Date.now()) {
-                this.divPaymentMessage.addClass('warning-msg').append(' was overdue');
+                this.divPaymentMessage.addClass('warning-msg');
+                this.divPaymentMessage.html(Message.overduePaymentAmount(context));
+            } else {
+                this.divPaymentMessage.html(Message.nextPaymentAmount(context));
             }
             this.divPaymentMessage.show();
         } else {
