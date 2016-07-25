@@ -1,4 +1,4 @@
-(function($) {
+/**(function($) {
   $(document).ready(function() {
     $('#cert-verification-modal').on('shown.bs.modal', function () {
 
@@ -8,4 +8,4 @@
         $(this).find('.cert-icon').toggleClass('icon-arrow-top');
     });
   });
-})(jQuery);
+})(jQuery);**/
