@@ -6,6 +6,7 @@ import ish.oncourse.model.Invoice
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.model.PaymentTransaction
 import ish.oncourse.utils.invoice.GetAmountOwing
+import ish.oncourse.utils.invoice.GetInvoiceOverdue
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 
@@ -29,6 +30,8 @@ class Context {
     def Invoice invoice
     def PaymentTransaction paymentTransaction
     def PaymentIn notFinalPaymentIn
+    def Double nextAmount
+    def Date dateDue
 
     private void validate() {
         if (contact == null) {
@@ -39,6 +42,21 @@ class Context {
         }
         if (invoice != null && invoice.contact != contact) {
             throw new IllegalAccessError()
+        }
+    }
+
+    private void initNextAmount() {
+        if (this.invoice) {
+            GetInvoiceOverdue getInvoiceOverdue = GetInvoiceOverdue.valueOf(invoice).call();
+            if (getInvoiceOverdue.overdue.isGreaterThan(Money.ZERO)) {
+                nextAmount = getInvoiceOverdue.overdue.doubleValue()
+                dateDue = getInvoiceOverdue.dateDue;
+            }
+            else {
+                nextAmount = getInvoiceOverdue.next.doubleValue()
+                dateDue = getInvoiceOverdue.nextDateDue;
+            }
+
         }
     }
 
@@ -59,12 +77,18 @@ class Context {
             }
             if (request.invoiceId != null) {
                 it.invoice = SelectById.query(Invoice, request.invoiceId).selectOne(it.objectContext)
+                it.nextAmount = request.card.amount
+                it.dateDue = it.invoice.dateDue
             } else {
                 List<Invoice> invoices = (query(Invoice).where(Invoice.CONTACT.eq(contact)) & Invoice.AMOUNT_OWING.gt(MIN_AMOUNT_OWING)).orderBy(Invoice.DATE_DUE.asc()).select(it.objectContext)
-                it.invoice = invoices.find {invoice ->
+                it.invoice = invoices.find { invoice ->
                     GetAmountOwing.valueOf(invoice).get().isGreaterThan(MIN_AMOUNT_OWING)
                 }
+                it.initNextAmount()
             }
+
+            it.invoice
+
             validate()
             return it
         }

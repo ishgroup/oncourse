@@ -28,6 +28,8 @@ class ContextFactory {
             case Action.init:
                 context.with {
                     ignore.getInvoice { return invoice.proxyInstance() }
+                    ignore.getNextAmount {return  new Money(20, 20)}
+                    ignore.getDateDue {return new Date()}
                     ignore.getNotFinalPaymentIn { return null }
                     ignore.getPaymentIn { return null }
                 }
@@ -37,6 +39,8 @@ class ContextFactory {
                     ignore.getPaymentIn { return null }
                     ignore.getPaymentTransaction { return null }
                     ignore.getInvoice { return invoice.proxyInstance() }
+                    ignore.getNextAmount {return  new Money(20, 20)}
+                    ignore.getDateDue {return new Date()}
                     ignore.getNotFinalPaymentIn { return null }
                 }
                 break
@@ -49,6 +53,8 @@ class ContextFactory {
                     ignore.getPaymentTransaction { return paymentTransaction.proxyInstance() }
                     ignore.getPaymentIn { return paymentIn.proxyInstance() }
                     ignore.getInvoice { return invoice.proxyInstance() }
+                    ignore.getNextAmount {return  new Money(20, 20)}
+                    ignore.getDateDue {return new Date()}
                 }
                 break
         }

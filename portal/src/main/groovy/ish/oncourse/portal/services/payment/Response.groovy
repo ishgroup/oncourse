@@ -17,8 +17,8 @@ class Response {
 
     public static Response valueOf(Context context) {
         Response response = new Response().with {
-            it.amount = context.invoice?.amountOwing?.doubleValue()
-            it.dateDue = context.invoice?.dateDue
+            it.amount = context.nextAmount?.doubleValue()
+            it.dateDue = context.dateDue
             it.invoiceId = context.invoice?.id
             it.paymentId = context.paymentIn?.id
             it.paymentStatus = context.paymentIn?.status
