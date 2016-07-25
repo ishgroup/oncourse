@@ -24,7 +24,7 @@ public class ActionChangePayer extends APurchaseAction {
     protected boolean validate() {
         return !contact.equals(getModel().getPayer()) &&
                 validateAndCompleteInTransactionPayments() &&
-                getController().getModel().getContacts().contains(contact);
+                getController().getModel().getContacts().contains(contact) &&  getController().payerCanBeChanged();
 
     }
 

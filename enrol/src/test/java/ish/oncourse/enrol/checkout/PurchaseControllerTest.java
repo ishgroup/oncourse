@@ -62,10 +62,14 @@ public class PurchaseControllerTest extends ACheckoutTest {
         actions.add(addCourseClass);
         actions.add(addProduct);
         actions.add(changePayNow);
+		actions.add(changePayer);
+		actions.add(addVoucherPayer);
+		actions.add(addVoucherPersonPayer);
+		actions.add(addVoucherCompanyPayer);
         assertEquals(State.editCheckout.getAllowedActions(), actions);
         assertEquals(State.editConcession.getAllowedActions(), Arrays.asList(addConcession, removeConcession, cancelConcessionEditor));
         assertEquals(State.addContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian));
-        assertEquals(State.editContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian));
+        assertEquals(State.editContact.getAllowedActions(), Arrays.asList(addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian,addVoucherPersonPayer, addVoucherCompanyPayer));
         assertEquals(State.editPayment.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow));
         assertEquals(State.editCorporatePass.getAllowedActions(), Arrays.asList(makePayment, backToEditCheckout,  addCorporatePass, selectCardEditor));
         assertEquals(State.paymentProgress.getAllowedActions(), Arrays.asList(showPaymentResult));

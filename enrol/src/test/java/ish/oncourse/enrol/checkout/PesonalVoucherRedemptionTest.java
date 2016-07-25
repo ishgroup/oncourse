@@ -109,11 +109,14 @@ public class PesonalVoucherRedemptionTest extends ACheckoutTest {
 		proceedToPayment();
 
 		changePayer();
+		
+		//it is not possible to change payer during voucher redemption
+		assertEquals(Long.valueOf(1001L), model.getPayer().getId());
 
 		makeValidPayment();
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
-		assertEquals(450, model.getVouchers().get(0).getValueRemaining().intValue());
+		assertEquals(0, model.getVouchers().get(0).getValueRemaining().intValue());
 		assertEquals(ProductStatus.ACTIVE, model.getVouchers().get(0).getStatus());
 	}
 

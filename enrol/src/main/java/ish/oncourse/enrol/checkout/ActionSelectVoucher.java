@@ -24,7 +24,8 @@ public class ActionSelectVoucher extends APurchaseAction {
 
         ActionAddVoucherPayer actionAddVoucherPayer = new ActionAddVoucherPayer();
         actionAddVoucherPayer.setVoucher(voucher);
-        getController().performAction(actionAddVoucherPayer, addVoucherPayer);
+		actionAddVoucherPayer.setController(getController());
+		actionAddVoucherPayer.action();
     }
 
     @Override

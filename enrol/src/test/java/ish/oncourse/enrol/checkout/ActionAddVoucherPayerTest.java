@@ -88,6 +88,8 @@ public class ActionAddVoucherPayerTest extends ACheckoutTest {
 		actionAddVoucher.setVoucher(voucher3);
 		actionAddVoucher.setController(purchaseController);
 		success = actionAddVoucher.action();
+		purchaseController.updateTotalIncGst();
+		purchaseController.updateTotalDiscountAmountIncTax();
 		
 		//should be OK, vouchers apply together
 		assertTrue(success);

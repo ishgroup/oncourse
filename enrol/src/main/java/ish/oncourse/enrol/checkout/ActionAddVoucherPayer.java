@@ -30,7 +30,9 @@ public class ActionAddVoucherPayer extends APurchaseAction {
                 isEditPayment = true;
             }
 
-            if (getModel().getContacts().contains(contact)) {
+			if (contact.equals(getModel().getPayer())) {
+				return;
+			} else if (getModel().getContacts().contains(contact)) {
                 ActionChangePayer actionChangePayer = new ActionChangePayer();
                 actionChangePayer.setContact(contact);
                 getController().performAction(actionChangePayer, PurchaseController.Action.changePayer);
@@ -64,32 +66,31 @@ public class ActionAddVoucherPayer extends APurchaseAction {
 
                 }
 
-            }
-			
-			if (!isEditPayment && addPurchaces) {
-				if (!voucher.getContact().getIsCompany()) {
-					for (CourseClass courseClass : getModel().getClasses()) {
-						if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(courseClass.getCourse().getEnrolmentType()) &&
-								getController().getApplicationService().findOfferedApplicationBy(courseClass.getCourse(), voucher.getContact().getStudent()) == null) {
-							Application application = getModel().getApplicationBy(voucher.getContact(), courseClass.getCourse());
-							if (application == null) {
-								application = getController().createApplication(voucher.getContact().getStudent(), courseClass.getCourse());
-								getModel().addApplication(application);
+				if (!isEditPayment) {
+					if (!contact.getIsCompany()) {
+						for (CourseClass courseClass : getModel().getClasses()) {
+							if (CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(courseClass.getCourse().getEnrolmentType()) &&
+									getController().getApplicationService().findOfferedApplicationBy(courseClass.getCourse(), contact.getStudent()) == null) {
+								Application application = getModel().getApplicationBy(contact, courseClass.getCourse());
+								if (application == null) {
+									application = getController().createApplication(contact.getStudent(), courseClass.getCourse());
+									getModel().addApplication(application);
+								}
+							} else {
+								Enrolment enrolment = getModel().createEnrolment(courseClass, contact.getStudent());
+								getModel().addEnrolment(enrolment);
 							}
-						} else {
-							Enrolment enrolment = getModel().createEnrolment(courseClass, voucher.getContact().getStudent());
-							getModel().addEnrolment(enrolment);
+						}
+					}
+
+					for (Product product : getModel().getProducts()) {
+						//vouchers already relinked
+						if (!(product instanceof VoucherProduct)) {
+							getModel().addProductItem(getController().createProductItem(contact, product));
 						}
 					}
 				}
-
-				for (Product product : getModel().getProducts()) {
-					//vouchers already relinked
-					if (!(product instanceof VoucherProduct)) {
-						getModel().addProductItem(getController().createProductItem(voucher.getContact(), product));
-					}
-				}
-			}
+            }
         }
     }
 

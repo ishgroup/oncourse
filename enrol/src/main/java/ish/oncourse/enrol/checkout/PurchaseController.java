@@ -907,13 +907,25 @@ public class PurchaseController {
 		return true;
 	}
 
+
+	public boolean payerCanBeChanged() {
+		if (getModel().getSelectedVouchers().size() > 0) {
+			for (Voucher voucher : getModel().getSelectedVouchers()) {
+				if (voucher.getContact() != null) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	public enum State {
 		init(Action.init, Action.addContact),
-		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, addPersonPayer, addCompanyPayer, proceedToPayment, addCourseClass, addProduct, changePayNow, changePayer, addVoucherPayer, addVoucherPersonPayer, addVoucherCompanyPayer),
+		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, proceedToPayment, addCourseClass, addProduct, changePayNow, changePayer, addVoucherPayer, addVoucherPersonPayer, addVoucherCompanyPayer),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian),
 		editContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian, addVoucherPersonPayer, addVoucherCompanyPayer),
-		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow, addVoucherPayer),
+		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow),
 		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
 		paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment, showPaymentResult);
