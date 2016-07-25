@@ -2,6 +2,9 @@
 @import "compass";
 @import "compass/reset";
 @import "settings";
+
+@import "mixins";
+
 @import "bootstrap.min";
 @import "calendar";
 @import "normalize";
@@ -18,3 +21,4 @@
 @import "jquery-ui";
 @import "timepicki";
 @import "dashboard";
+@import "certificate";

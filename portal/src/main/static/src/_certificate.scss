@@ -1,0 +1,723 @@
+@import url(https://fonts.googleapis.com/css?family=Yantramanav:100,300);
+$certFontFamilyOne: 'Yantramanav', sans-serif;
+
+$custom-small-screen: 550px;
+$tablet-portrait: 600px;
+$small-screen: 768px;
+$tablet-screen: 980px;
+$tablet-landscape: 1025px;
+$desktop-screen: 1200px;
+
+$media-small: 'small';
+$media-tablet: 'tablet';
+$media-desktop: 'desktop';
+$media-custom: 'custom';
+
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  &.modal-open {
+    .cert-wrapper .container .cert-container > p {
+      @include responsive($media-desktop) {
+        margin-left: 50px;
+      }
+    }
+  }
+}
+.cert-wrapper {
+  position: relative;
+  //height: 920px;
+  overflow: hidden;
+  font-family: $certFontFamilyOne;
+  font-size: 14px;
+  @include responsive($media-small) {
+    font-size: 18px;
+  }
+  .cert-icon {
+    position: relative;
+
+    &.icon-info,
+    &.icon-info-error {
+      width: 26px;
+      height: 26px;
+      display: block;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        background: url(/portal/img/icon-info.png) top left no-repeat;
+        top: 0;
+        left: 0;
+      }
+    }
+    &.icon-info-error {
+      &::after {
+        background: url(/portal/img/icon-info-error.png) top left no-repeat;
+      }
+    }
+    &.icon-cert-right-mark {
+      position: relative;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background: url(/portal/img/icon-cert-right-mark.png) top center no-repeat;
+        left: 0;
+        top: 6px;
+      }
+    }
+    &.icon-arrow-down {
+      border: 0;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 6px;
+        background: url(/portal/img/icon-arrow-down.png) top center no-repeat;
+      }
+    }
+    &.icon-arrow-top {
+      border: 0;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 6px;
+        background: url(/portal/img/icon-arrow-top.png) top center no-repeat;
+      }
+    }
+  }
+  .cert-banner {
+    background: #ffe1a0;
+    //position: absolute;
+    overflow: hidden;
+    width: 100%;
+    //z-index: -1;
+    img {
+      position: relative;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      -moz-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+      -o-transform: translateX(-50%);
+      transform: translateX(-50%);
+      width: auto;
+      max-width: none;
+      min-width: 100%;
+      height: auto;
+      display: none;
+      &.cert-banner-img {
+        &.banner-mobile {
+          display: block;
+          @include responsive($media-custom, $custom-small-screen) {
+            display: none;
+          }
+          @include responsive($media-tablet) {
+            display: none;
+          }
+          @include responsive($media-desktop) {
+            display: none;
+          }
+        }
+        &.banner-tablet {
+          display: none;
+          @include responsive($media-custom, $custom-small-screen) {
+            display: block;
+          }
+          @include responsive($media-tablet) {
+            display: block;
+          }
+          @include responsive($media-desktop) {
+            display: none;
+          }
+        }
+        &.banner-desktop {
+          display: none;
+          @include responsive($media-desktop) {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+  &.cert-verify,
+  &.cert-invalid,
+  &.cert-statement {
+    h1 {
+      font-size: 38px;
+      text-transform: uppercase;
+      color: #222222;
+      font-family: $certFontFamilyOne;
+      font-weight: 100;
+      max-width: 250px;
+      margin: 20px auto 15px;
+      @include responsive($media-custom, $custom-small-screen) {
+        font-size: 70px;
+        margin-bottom: 10px;
+        max-width: 417px;
+      }
+      @include responsive($media-small) {
+        font-size: 120px;
+        margin-bottom: 10px;
+        max-width: 900px;
+      }
+      @include responsive($media-desktop) {
+        max-width: 100%;
+      }
+    }
+    h2, .cert-number, .cert-date {
+      font-size: 28px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      color: #222222;
+      font-family: $certFontFamilyOne;
+      font-weight: normal;
+      @include responsive($media-small) {
+        font-size: 35px;
+      }
+    }
+  }
+  &.cert-verify,
+  &.cert-invalid {
+    .container {
+      padding: 0 10px;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      .cert-container {
+        font-family: $certFontFamilyOne;
+        text-align: center;
+        padding-top: 65px;
+        padding-bottom: 30px;
+        position: relative;
+        max-height: 921px;
+        height: 404px;
+        @include responsive($media-custom, $custom-small-screen) {
+          height: 885px;
+          padding-top: 250px;
+          padding-bottom: 300px;
+        }
+        @include responsive($media-tablet) {
+          height: 921px;
+          padding-top: 270px;
+          padding-bottom: 310px;
+        }
+        p {
+          font-size: 16px;
+          text-transform: uppercase;
+          color: #ff7e00;
+          letter-spacing: 1px;
+          line-height: 2;
+          @include responsive($media-small) {
+            font-size: 20px;
+          }
+          a {
+            color: #ff7e00;
+            text-decoration: none;
+            border-bottom: 1px dotted #ff7e00;
+            padding-bottom: 4px;
+            outline: 0 none;
+          }
+        }
+        .cert-form {
+          max-width: 470px;
+          margin: 25px auto 0;
+          position: relative;
+          @include responsive($media-custom, $custom-small-screen) {
+            max-width: 660px;
+          }
+          @include responsive($media-small) {
+            margin: 48px auto 0;
+          }
+          .form-group {
+            display: inline-block;
+            //width: 75.758%;
+            max-width: 500px;
+            margin-right: 8px;
+            .input-group {
+              padding: 0px;
+              position: relative;
+              .input-group-addon {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                margin-top: -14px;
+                width: 26px;
+                height: 26px;
+                background: none;
+                border: 0;
+                padding: 0;
+                @include responsive($media-custom, $custom-small-screen) {
+                  left: 21px;
+                }
+                @include responsive($media-small) {
+                  left: 32px;
+                }
+              }
+              .form-control {
+                width: 100%;
+                color: #a2a2a2;
+                padding-left: 80px;
+                padding: 10px 80px 10px 55px;
+                outline: 0 none;
+                font-size: 22px;
+                border: 1px solid #fff;
+                border-radius: 10em;
+                height: 50px;
+                line-height: 1;
+                box-shadow: none;
+                @include responsive($media-custom, $custom-small-screen) {
+                  padding-left: 80px;
+                  padding: 10px 20px 10px 65px;
+                  height: 64px;
+                }
+                @include responsive($media-small) {
+                  padding: 17px 20px 17px 80px;
+                  height: 78px;
+                }
+              }
+            }
+          }
+          .btn-cert-verify {
+            display: inline-block;
+            width: 100%;
+            color: #fff;
+            border: 1px solid #ff9630;
+            border-radius: 10em;
+            background: #ff9630;
+            cursor: pointer;
+            outline: 0 none;
+            vertical-align: top;
+            text-transform: initial;
+            letter-spacing: 1px;
+            font-weight: 100;
+
+            position: absolute;
+            top: 0;
+            max-width: 97px;
+            right: 0;
+            font-size: 18px;
+            padding: 11.5px 10px;
+            &:hover {
+              background: darken(#ff9630, 5%);
+            }
+            @include responsive($media-custom, $custom-small-screen) {
+              max-width: 147px;
+              font-size: 25px;
+              padding: 13.5px 10px;
+              position: initial;
+            }
+            @include responsive($media-small) {
+              padding: 20.5px 10px;
+            }
+            @include responsive($media-tablet) {
+              padding: 17px 10px;
+              font-size: 30px;
+            }
+          }
+          #cert-verification-modal {
+            position: fixed;
+            outline: 0 none;
+            @include responsive($media-desktop) {
+              position: absolute;
+              top: -180px;
+              left: -310px;
+              overflow: visible;
+            }
+            .modal-backdrop {
+              z-index: 0;
+              @include responsive($media-desktop) {
+                width: 100%;
+                height: 100% !important;
+              }
+            }
+            .modal-dialog {
+              width: 290px;
+              padding: 30px 0px;
+              @include responsive($media-custom, $custom-small-screen) {
+                width: 320px;
+              }
+              @include responsive($media-desktop) {
+                margin-left: 15px;
+              }
+              .close {
+                background: #fff;
+                z-index: 2;
+                position: relative;
+                width: 35px;
+                height: 35px;
+                border-radius: 100%;
+                font-size: 30px;
+                padding-top: 3px;
+                padding-left: 2px;
+                top: 79px;
+                right: 14px;
+                color: #434343;
+                outline: 0 none;
+                opacity: 1;
+                filter: alpha(opacity=100);
+                @include responsive($media-custom, $custom-small-screen) {
+                  right: 21px;
+                }
+              }
+              .modal-content {
+                border-radius: 100%;
+                width: 290px;
+                height: 290px;
+                background: #ff9630;
+                color: #222222;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                text-align: left;
+                overflow: hidden;
+                font-size: 14px;
+                position: relative;
+                border: 1px solid #807151;
+                @include responsive($media-custom, $custom-small-screen) {
+                  width: 320px;
+                  height: 320px;
+                }
+                .modal-border-wrapper {
+                  position: absolute;
+                  top: -40px;
+                  left: -40px;
+                  right: 0px;
+                  bottom: 0;
+                  border: 40px solid #807151;
+                  border-radius: 100%;
+                  overflow: hidden;
+                  z-index: 1;
+                  width: 372px;
+                  height: 372px;
+                  @include responsive($media-custom, $custom-small-screen) {
+                    width: 397px;
+                    height: 397px;
+                  }
+                }
+                .modal-body {
+                  overflow: hidden;
+                  border: 3px solid #cdcdcd;
+                  background: #fff;
+                  font-size: 14px;
+                  /* left: -87px;
+                  top: -28px; */
+                  padding: 28px;
+                  box-shadow: inset -1px -1px 5px #cdcdcd, 6px 6px #fff;
+                  width: 300px;
+                  height: 250px;
+                  border-top-left-radius: 100%;
+                  position: initial;
+                  margin-top: -25px;
+                  margin-left: -105px;
+                  @include responsive($media-custom, $custom-small-screen) {
+                    margin-top: -10px;
+                    margin-left: -90px;
+                  }
+                }
+                p {
+                  text-transform: initial;
+                  color: #222222;
+                  font-size: 15px;
+                }
+                .cert-qrcode {
+                  float: right;
+                  text-align: right;
+                  .cert-code {
+                    margin-bottom: 10px;
+                    .cert-id-text, img {
+                      display: inline-block;
+                      vertical-align: bottom;
+                    }
+                    .cert-id-text {
+                      font-size: 14px;
+                      font-weight: bold;
+                      text-transform: uppercase;
+                      line-height: 0.78;
+                      margin-right: 3px;
+                    }
+                    img {
+                      width: 44px;
+                      height: 44px;
+                    }
+                  }
+                  .cert-qrcode-link {
+                    margin-right: 6.5px;
+                    a {
+                      color: #222222;
+                      span {
+                        position: relative;
+                        &::after {
+                          content: "";
+                          position: absolute;
+                          border: 2px solid #ff9630;
+                          left: 0;
+                          height: 22px;
+                          top: -2px;
+                          margin-left: -3px;
+                          margin-right: -9px;
+                          right: 3px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &.cert-invalid {
+    .cert-banner {
+      background: #ffb8ac;
+      img {
+        opacity: 0.2;
+      }
+    }
+    .container {
+      .cert-container {
+        @include responsive($media-custom, $custom-small-screen) {
+          height: 885px;
+          padding-top: 170px;
+          padding-bottom: 300px;
+        }
+        @include responsive($media-tablet) {
+          height: 921px;
+          padding-top: 210px;
+          padding-bottom: 226px;
+        }
+        @include responsive($media-tablet) {
+
+        }
+        p {
+          &, a {
+            color: #b60101;
+          }
+          a {
+            border-color: #b60101;
+          }
+        }
+        .cert-form {
+          .btn-cert-verify {
+            background: #b60000;
+            &:hover {
+              background: darken(#b60000, 5%);
+            }
+          }
+          #cert-verification-modal {
+            .modal-dialog .modal-content {
+              background: #b60000;
+              border-color: #805d57;
+              .modal-border-wrapper {
+                border-color: #805d57;
+              }
+              .cert-qrcode .cert-qrcode-link a span::after {
+                border-color: #b60000;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &.cert-statement {
+    background: #c9eeca;
+    text-align: center;
+    .cert-container {
+      padding: 56px 0;
+      h1 {
+        margin-top: 26px;
+        margin-bottom: 22px;
+        max-width: 250px;
+        @include responsive($media-custom, $custom-small-screen) {
+          max-width: 100%;
+        }
+      }
+      p {
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        line-height: 2;
+        @include responsive($media-small) {
+          font-size: 18.5px;
+        }
+      }
+      .cert-units {
+        text-align: left;
+        background: #fff;
+        max-width: 1000px;
+        margin: 58px -15px;
+        color: #898989;
+        padding: 10px 20px;
+        @include responsive($media-small) {
+          margin: 58px auto;
+          border: 1px solid #fff;
+          border-radius: 5px;
+          padding: 30px;
+        }
+        @include responsive($media-tablet) {
+          padding: 58px 40px;
+        }
+        >div {
+          margin-bottom: 5px;
+          &.row {
+            border-bottom: 1px solid #e6e6e6;
+            padding-bottom: 10px;
+            padding-top: 6px;
+            @include responsive($media-small) {
+              border-bottom: 0;
+              padding-bottom: 0px;
+              padding-top: 0px;
+            }
+            .icon-arrow-down, .icon-arrow-top {
+              float: right;
+              display: block;
+              &::after {
+                right: -22px;
+              }
+              @include responsive($media-small) {
+                display: none;
+              }
+            }
+            .col-sm-2 {
+              padding-right: 30px;
+              cursor: pointer;
+              @include responsive($media-small) {
+                padding-right: 15px;
+                cursor: default;
+              }
+            }
+            .col-sm-10 {
+              display: none;
+              padding-right: 30px;
+              @include responsive($media-small) {
+                display: block !important;
+                height: auto !important;
+                padding-right: 15px;
+              }
+            }
+            &.units-active {
+              .col-sm-10 {
+                display: block !important;
+              }
+            }
+            &:last-child {
+              border-bottom: 0;
+            }
+          }
+        }
+        strong {
+          color: #222222;
+        }
+      }
+      .NRTLogo {
+        margin-top: 38px;
+      }
+      .cert-verified-text {
+        color: #407d43;
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 1;
+      }
+    }
+  }
+}
+.cert-footer {
+  background: #fff;
+  padding: 40px 10px;
+  @include responsive($media-small) {
+    padding: 40px;
+  }
+  .cert-sites-list {
+    display: none;
+    width: 100%;
+    @include responsive($media-custom, $custom-small-screen) {
+      display: block;
+      max-width: 70%;
+      overflow: hidden;
+      float: left;
+    }
+    @include responsive($media-custom, $tablet-portrait) {
+      max-width: 67%;
+    }
+    @include responsive($media-small) {
+      max-width: 62%;
+    }
+    @include responsive($media-tablet) {
+      max-width: 61%;
+    }
+    @include responsive($media-custom, $tablet-landscape) {
+      max-width: 76.8%;
+    }
+    ul {
+      list-style: none;
+      display: table;
+      li {
+        display: table-cell;
+        text-align: center;
+        margin-bottom: 15px;
+        vertical-align: middle;
+        @include responsive($media-small) {
+          text-align: left;
+          margin-bottom: 0px;
+          padding-right: 15px;
+        }
+      }
+    }
+  }
+  .cert-poweredby-item {
+    text-align: center;
+    position: relative;
+    @include responsive($media-custom, $custom-small-screen) {
+      float: right;
+      margin-top: 13px;
+    }
+    @include responsive($media-small) {
+
+    }
+    @include responsive($media-tablet) {
+      text-align: right;
+    }
+    img {
+      display: inline-block;
+      vertical-align: middle;
+      max-width: 150px;
+      @include responsive($media-small) {
+        max-width: none;
+      }
+    }
+    .poweredby-text {
+      display: inline-block;
+      vertical-align: middle;
+      padding-right: 15px;
+      text-transform: uppercase;
+      color: #999999;
+      font-family: $certFontFamilyOne;
+      font-size: 10px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      @include responsive($media-custom, $custom-small-screen) {
+        position: absolute;
+        left: 51px;
+        top: -10px;
+      }
+      @include responsive($media-small) {
+        left: 69px;
+        top: -10px;
+      }
+    }
+  }
+}

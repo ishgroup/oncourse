@@ -1,0 +1,36 @@
+/**
+*
+* mixins.scss
+*
+* Contains different type of functions
+*
+* Author: Chintan Kotadia <chintankotadia13@gmail.com>
+* Company: IshSkillCourse
+*/
+
+/**
+ * Following mixin handles responsive media screen from mobile first to desktop
+ */
+
+@mixin responsive($media, $custom-width: '') {
+	@if $media == small {
+		@media only screen and (min-width: $small-screen) {
+			@content;
+		}
+	}
+	@else if $media == tablet {
+		@media only screen and (min-width: $tablet-screen) {
+			@content;
+		}
+	}
+	@else if $media == desktop {
+		@media only screen and (min-width: $desktop-screen) {
+			@content;
+		}
+	}
+	@else if $media == custom {
+		@media only screen and (min-width: $custom-width) {
+			@content;
+		}
+	}
+}
