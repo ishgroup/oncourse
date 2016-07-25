@@ -47,4 +47,6 @@ public interface PaymentEditorDelegate {
     void updatePaymentStatus();
 
 	College getCollege();
+
+	boolean payerCanBeChanged();
 }

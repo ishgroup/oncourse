@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.model.Voucher;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.voucherAlreadyAdded;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.voucherCanNotBeUsed;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.voucherNotMatch;
 
 public class ActionAddVoucher extends APurchaseAction {
@@ -39,6 +40,11 @@ public class ActionAddVoucher extends APurchaseAction {
 
 		if (voucher == null) {
 			getController().addWarning(voucherNotMatch, voucherCode);
+			return false;
+		}
+
+		if (!getController().voucherCanBeUsed(voucher.getContact())) {
+			getController().addWarning(voucherCanNotBeUsed);
 			return false;
 		}
         return true;

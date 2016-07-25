@@ -220,6 +220,10 @@ public class PaymentEditor implements IPaymentControlDelegate {
         return delegate.getContacts();
     }
 
+	public boolean isPayerChange() {
+		return delegate.payerCanBeChanged();
+	}
+
 	public boolean isAmexAvailable()
 	{
 		return preferenceController.getServicesAmexEnabled();

@@ -10,6 +10,8 @@ import ish.oncourse.enrol.checkout.model.GetAmounts;
 import ish.oncourse.enrol.checkout.model.InvoiceNode;
 import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.model.UpdateInvoiceAmount;
+import ish.oncourse.enrol.checkout.payment.ActionAddVoucherCompanyPayer;
+import ish.oncourse.enrol.checkout.payment.ActionAddVoucherPersonPayer;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorController;
 import ish.oncourse.enrol.checkout.payment.PaymentEditorDelegate;
 import ish.oncourse.enrol.services.concessions.IConcessionsService;
@@ -892,13 +894,26 @@ public class PurchaseController {
 		return getModel().getPaymentPlanInvoices().size() > 0;
 	}
 
+	public boolean voucherCanBeUsed(Contact contact) {
+		if (contact == null)
+			return true;
+		if (getModel().getSelectedVouchers().size() > 0) {
+			for (Voucher voucher : getModel().getSelectedVouchers()) {
+				if (voucher.getContact() != null && !voucher.canBeUsedBy(voucher.getObjectContext().localObject(contact))) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	public enum State {
 		init(Action.init, Action.addContact),
-		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, proceedToPayment, addCourseClass, addProduct, changePayNow),
+		editCheckout(COMMON_ACTIONS, addCode, selectVoucher, deselectVoucher, removeDiscount, addPersonPayer, addCompanyPayer, proceedToPayment, addCourseClass, addProduct, changePayNow, changePayer, addVoucherPayer, addVoucherPersonPayer, addVoucherCompanyPayer),
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian),
-		editContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian),
-		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow),
+		editContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian, addVoucherPersonPayer, addVoucherCompanyPayer),
+		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow, addVoucherPayer),
 		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
 		paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment, showPaymentResult);
@@ -962,7 +977,10 @@ public class PurchaseController {
         selectVoucher(ActionSelectVoucher.class, Long.class),
         deselectVoucher(ActionDeselectVoucher.class, Long.class),
         addGuardian(ActionAddGuardian.class, Contact.class),
-        cancelAddGuardian(ActionCancelAddGuardian.class);
+        cancelAddGuardian(ActionCancelAddGuardian.class),
+		addVoucherPayer(ActionAddVoucherPayer.class),
+		addVoucherPersonPayer(ActionAddVoucherPersonPayer.class, Contact.class),
+		addVoucherCompanyPayer(ActionAddVoucherCompanyPayer.class, Contact.class);
 
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
@@ -1085,6 +1103,7 @@ public class PurchaseController {
 		noPlacesLeft,
         incorrectCode,
         voucherAlreadyAdded,
+		voucherCanNotBeUsed,
         voucherWrongPayer,
         voucherAlreadyBeingUsed,
         voucherRedeemNotAllow,

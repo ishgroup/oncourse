@@ -35,25 +35,37 @@
                     <span class="select-payer">
                         <t:loop source="payers" value="payerValue" encoder="payersEncoder">
                             <label class="radio-btn">
-                                <t:if test="isSelected()">
-                                    <input type="radio" name="payer" value="${payerValue.id}" checked="true"/>${payerValue.fullName}
-                                    <p:else>
-                                        <input type="radio" name="payer" value="${payerValue.id}" />${payerValue.fullName}
-                                    </p:else>
-                                </t:if>
+								<t:if test="payerChange">
+									<t:if test="isSelected()">
+										<input type="radio" name="payer" value="${payerValue.id}" checked="true"/>${payerValue.fullName}
+										<p:else>
+											<input type="radio" name="payer" value="${payerValue.id}" />${payerValue.fullName}
+										</p:else>
+									</t:if>
+									<p:else>
+										<t:if test="isSelected()">
+										<input type="radio" name="payer" value="${payerValue.id}" checked="true" disabled="disabled"/>${payerValue.fullName}
+										<p:else>
+											<input type="radio" name="payer" value="${payerValue.id}" disabled="disabled"/>${payerValue.fullName}
+										</p:else>
+									</t:if>
+									</p:else>
+								</t:if>
                             </label>
                         </t:loop>
                     </span>
-                    <!--<t:select t:id="contact" value="payer" model="payersModel" encoder="payersEncoder" blankOption="NEVER" />-->
-                    <!--<t:eventlink t:id="changePayerEvent" style="{display:none;}"/>-->
-                </p>
-                <div class="payer-selection">
-                    <a href="#" class="button">Choose a different payer</a>
-                    <ul class="new-payer-option">
-                        <li id="new-person"><a href="#">a person</a></li>
-                        <li id="new-company"><a href="#">a business</a></li>
-                    </ul>
-                </div>
+					<!--<t:select t:id="contact" value="payer" model="payersModel" encoder="payersEncoder" blankOption="NEVER" />-->
+					<!--<t:eventlink t:id="changePayerEvent" style="{display:none;}"/>-->
+				</p>
+				<t:if test="payerChange">
+					<div class="payer-selection">
+						<a href="#" class="button">Choose a different payer</a>
+						<ul class="new-payer-option">
+							<li id="new-person"><a href="#">a person</a></li>
+							<li id="new-company"><a href="#">a business</a></li>
+						</ul>
+					</div>
+				</t:if>
 				<p>
 					<label for="creditCardName">Name on Card<em title="${message:message-required}">*</em></label>
 					<span class="${validateHandler.validateClass('creditCardName')}">

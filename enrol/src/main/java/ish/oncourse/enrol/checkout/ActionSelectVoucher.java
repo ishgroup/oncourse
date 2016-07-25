@@ -4,7 +4,10 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Voucher;
 import org.apache.cayenne.Cayenne;
 
-import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.addVoucherPayer;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.voucherAlreadyBeingUsed;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.voucherCanNotBeUsed;
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.voucherRedeemed;
 
 public class ActionSelectVoucher extends APurchaseAction {
 
@@ -18,6 +21,10 @@ public class ActionSelectVoucher extends APurchaseAction {
     @Override
     protected void makeAction() {
         getModel().selectVoucher(voucher);
+
+        ActionAddVoucherPayer actionAddVoucherPayer = new ActionAddVoucherPayer();
+        actionAddVoucherPayer.setVoucher(voucher);
+        getController().performAction(actionAddVoucherPayer, addVoucherPayer);
     }
 
     @Override
@@ -37,8 +44,8 @@ public class ActionSelectVoucher extends APurchaseAction {
 
     @Override
     protected boolean validate() {
-        if (!voucher.canBeUsedBy(contact)) {
-            getController().addError(voucherWrongPayer, voucher.getContact().getFullName());
+        if (!getController().voucherCanBeUsed(voucher.getContact())) {
+            getController().addWarning(voucherCanNotBeUsed);
             return false;
         }
 

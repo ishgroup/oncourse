@@ -232,4 +232,16 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 		}
 		return null;
 	}
+
+	@Override
+	public boolean payerCanBeChanged() {
+		if (purchaseController.getModel().getSelectedVouchers().size() > 0) {
+			for (Voucher voucher : purchaseController.getModel().getSelectedVouchers()) {
+				if (voucher.getContact() != null) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
