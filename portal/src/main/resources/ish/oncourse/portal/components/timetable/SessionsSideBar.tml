@@ -1,0 +1,27 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<t:loop t:source="monthDaySessions.entrySet()" t:value="monthDayEntry">
+		<t:if test="isCurrentMonth(monthDayEntry.key)">
+			<div class="month-name this-month-name text-center"><strong>
+				<t:output format="literal:MMMM yyyy" value="monthDayEntry.key"/>
+			</strong></div>
+		</t:if>
+		<t:unless test="isCurrentMonth(monthDayEntry.key)">
+			<div class="month-name text-center"><strong>
+				<t:output format="literal:MMMM yyyy" value="monthDayEntry.key"/>
+			</strong></div>
+		</t:unless>
+
+		<t:if test="showTeam">
+			<t:loop t:source="monthDayEntry.value.entrySet()" t:value="dayEntry">
+				<div t:type="timetable/teamsessionitem" contact="contact" dayEntry="dayEntry" children="children"/>
+			</t:loop>
+		</t:if>
+
+		<t:unless test="showTeam">
+			<t:loop t:source="monthDayEntry.value.entrySet()" t:value="dayEntry">
+				<div t:type="timetable/mysessionitem" contact="contact" dayEntry="dayEntry"/>
+			</t:loop>
+		</t:unless>
+	</t:loop>
+</t:container>

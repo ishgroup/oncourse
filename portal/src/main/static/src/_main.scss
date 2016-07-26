@@ -1422,6 +1422,57 @@ ul.abcent-menu {
   }
 }
 
+.your-classes-list,  .classes-list {
+   	.class-colour-0 {
+  	 	background-color: #1abc9c;
+  	}
+  	.class-colour-1 {
+  	   background-color: #ff6656;
+  	}
+  	.class-colour-2 {
+  	   background-color: #3498db;
+  	}
+  	.class-colour-3 {
+  	   background-color: #f4ac00;
+  	}
+  	.class-colour-4 {
+  	   background-color: #f24788;
+  	}
+  	.class-colour-5 {
+  	   background-color: #969991;
+  	}
+  	.class-colour-6 {
+  	   background-color: #83c961;
+  	}
+  	.class-colour-7 {
+  	   background-color: #16c1c8;
+  	}
+  	.class-colour-8 {
+  	  background-color: #9258aa;
+  	}
+  	.class-colour-9 {
+  	   background-color: #57718c;
+  	}
+}
+
+#accordion {
+    margin-bottom: 50px;
+    
+    .team-date-of-classes {
+    		    margin-top: 10px;
+                border-top: 1px solid rgba(128, 128, 128, 0.29);
+                margin-bottom: 10px;
+                
+                .week-day-of-class {
+                    padding-top: 20px;
+                }
+                
+                ul {
+                       padding-top: 20px;
+                }
+    	}
+}
+
 .month-name {
   padding: 30px;
   font-size: 1.5rem;

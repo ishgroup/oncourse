@@ -3,6 +3,7 @@ package ish.oncourse.portal.services;
 import ish.common.types.AttachmentInfoVisibility;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.OutcomeStatus;
+import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
@@ -169,9 +170,23 @@ public class PortalService implements IPortalService {
      * @return contact's sesssions array where entry format is MM-dd-yyyy,<a href='#class-%s'>%s</a>
      * we use it to show sessions callender for contact in Tempalte page
      */
-    public JSONObject getCalendarEvents() {
-        List<Session> sessions = courseClassService.getContactSessions(getContact());
-
+    public JSONObject getCalendarEvents(Date month, boolean showTeamEvents) {
+        List<Session> sessions;
+		
+		if (showTeamEvents) {
+			List<Contact> contacts =  new ArrayList<>(getChildContacts());
+			contacts.remove(getContact());
+			Set<Session> uniqSessions = new HashSet<>();
+			for (Contact contact : contacts) {
+				uniqSessions.addAll(courseClassService.getContactSessions(contact, month));
+			}
+			sessions = new ArrayList<>(uniqSessions);
+		} else {
+			sessions = courseClassService.getContactSessions(getContact(), month);
+		}
+		
+		Session.START_DATE.asc().orderList(sessions);
+		
         JSONObject result = new JSONObject();
 
         Map<String, List<Session>> daysSessionMap = new HashMap<>();
@@ -200,19 +215,13 @@ public class PortalService implements IPortalService {
         StringBuilder events = new StringBuilder();
 
         for (Session session : sessions) {
-            events.append(String.format("<li><a href='#class-%s' class=\"event\">%s</a></li>", session.getCourseClass().getId(), formatDate(session)));
+            events.append(String.format("<span id=\"sessionId-%d\" value=\"%d\" class=\"event\"/>", session.getId(),session.getCourseClass().getId()));
         }
 
-        return String.format("<ul>%s</ul>", events);
+        return events.toString();
     }
 
 
-    private String formatDate(Session session) {
-        TimeZone timeZone = courseClassService.getClientTimeZone(session.getCourseClass());
-        return String.format("%s - %s",
-                FormatUtils.getDateFormat(FormatUtils.shortTimeFormatString, timeZone).format(session.getStartDate()),
-                FormatUtils.getDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone).format(session.getEndDate()));
-    }
 
     public boolean isApproved(CourseClass courseClass) {
 
@@ -705,17 +714,28 @@ public class PortalService implements IPortalService {
 
 
     @Override
-    public List<PaymentIn> getPayments() {
+    public List<PaymentIn> getPaymentIns() {
 
         Contact contact = getContact();
 
         ObjectContext sharedContext = cayenneService.sharedContext();
-
-        SelectQuery query = new SelectQuery(PaymentIn.class, ExpressionFactory.matchExp(
-                PaymentIn.CONTACT_PROPERTY, contact).andExp(
-                ExpressionFactory.greaterExp(PaymentIn.AMOUNT_PROPERTY, Money.ZERO)));
-        return (List<PaymentIn>) sharedContext.performQuery(query);
+		
+		return ObjectSelect.query(PaymentIn.class).where(PaymentIn.STATUS.eq(PaymentStatus.SUCCESS))
+				.and(PaymentIn.AMOUNT.ne(Money.ZERO))
+				.and(PaymentIn.CONTACT.eq(contact)).select(sharedContext);
     }
+
+	@Override
+	public List<PaymentOut> getPaymentOuts() {
+
+		Contact contact = getContact();
+
+		ObjectContext sharedContext = cayenneService.sharedContext();
+
+		return ObjectSelect.query(PaymentOut.class).where(PaymentOut.STATUS.eq(PaymentStatus.SUCCESS))
+				.and(PaymentOut.TOTAL_AMOUNT.ne(Money.ZERO))
+				.and(PaymentOut.CONTACT.eq(contact)).select(sharedContext);
+	}
 
     public int getNewPaymentsCount() {
         Contact contact = getContact();

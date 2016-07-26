@@ -1,0 +1,21 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<t:loop source="classes" value="courseClass">
+		<div>
+			<ul>
+				<li>
+					<span value="${courseClass.id}" class="marker vertical-center"></span>
+					<a href="/portal/class/${courseClass.id}">${courseClass.course.name}</a>
+				</li>
+				<t:if test="complited">
+					<li>&#10004; Completed</li>
+				</t:if>
+				<t:if test="inProgress">
+					<li>In progress</li>
+				</t:if>
+				<t:if test="future">
+					<li>Starts ${startDate}</li>
+				</t:if>
+			</ul>
+		</div>
+	</t:loop>
+</t:container>

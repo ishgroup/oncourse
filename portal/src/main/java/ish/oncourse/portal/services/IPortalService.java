@@ -41,9 +41,9 @@ public interface IPortalService {
      * It is used to show session in session roll component
      */
     public JSONObject getJSONSession(Session session);
-
-    public JSONObject getCalendarEvents();
-
+	
+	public JSONObject getCalendarEvents(Date month, boolean showTeamEvents);
+	
     public JSONObject getNearesSessionIndex(Integer i);
 
     public boolean isApproved(CourseClass courseClass);
@@ -90,7 +90,9 @@ public interface IPortalService {
 
     public boolean hasResults();
 
-    public List<PaymentIn> getPayments();
+    public List<PaymentIn> getPaymentIns();
+
+	public List<PaymentOut> getPaymentOuts();
 
     public List<Enrolment> getEnrolments();
 

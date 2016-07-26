@@ -6,10 +6,12 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.utils.DateUtils;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
@@ -137,7 +139,7 @@ public class CourseClassService implements ICourseClassService {
         // get only session for current month
         Expression intervalExpr = ExpressionFactory.betweenExp(Session.START_DATE_PROPERTY, month, nextMonth.getTime());
 
-        return getContactSessionsWithAddingExpression(contact, intervalExpr);
+        return getContactSessionsWithAddingExpression(contact, intervalExpr, null);
     }
 
     /**
@@ -145,10 +147,15 @@ public class CourseClassService implements ICourseClassService {
      */
     @Override
     public List<Session> getContactSessions(Contact contact) {
-        return getContactSessionsWithAddingExpression(contact, null);
+        return getContactSessionsWithAddingExpression(contact, null, null);
     }
 
-    private List<Session> getContactSessionsWithAddingExpression(Contact contact, Expression addingExpresion) {
+	@Override
+	public List<Session> getContactSessions(Contact contact, Date month) {
+		return getContactSessionsWithAddingExpression(contact, null, month);
+	}
+	
+    private List<Session> getContactSessionsWithAddingExpression(Contact contact, Expression addingExpresion, Date month) {
 
         /*
            * get session for timetable
@@ -156,14 +163,19 @@ public class CourseClassService implements ICourseClassService {
            */
         List<Session> sessions = new ArrayList<>(30);
 
-
         if (contact.getStudent() == null && contact.getTutor() == null) {
             logger.warn("Contact with ID: {} is neither Student nor Tutor.", contact.getId());
             return Collections.emptyList();
         }
 
+		Expression startingExp;
+		
         // expression: get only future session
-        Expression startingExp = ExpressionFactory.greaterOrEqualExp(Session.START_DATE_PROPERTY, new Date());
+		if (month != null) {
+			startingExp = ExpressionFactory.betweenExp(Session.START_DATE_PROPERTY, DateUtils.startOfMonth(month),  DateUtils.endOfMonth(month));
+		} else {
+			startingExp = ExpressionFactory.lessOrEqualExp(Session.START_DATE_PROPERTY, new Date());
+		}
 
         // expression: get only sessions from ACTIVE classes (not canceled)
         Expression activeClassesExp = ExpressionFactory.noMatchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);

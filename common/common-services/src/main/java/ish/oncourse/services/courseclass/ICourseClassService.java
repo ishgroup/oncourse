@@ -61,7 +61,14 @@ public interface ICourseClassService {
 	 * @return session list
 	 */
 	List<Session> getContactSessions(Contact contact);
-	
+
+	/**
+	 * Find contact session. Used for timetable list
+	 * @param contact willow contact
+	 * @param month certain period of time         
+	 * @return session list
+	 */
+	List<Session> getContactSessions(Contact contact, Date month);
 	/**
 	 * Find contact courseClasses.
 	 * @param contact willow contact

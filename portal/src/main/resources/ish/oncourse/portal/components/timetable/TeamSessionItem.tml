@@ -1,0 +1,68 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<div class="row">
+		<div class="col-lg-1 col-lg-offset-1  date-of-classes text-right team-date-of-classes">
+			<div class="week-day-of-class">
+				<t:output format="literal:EEE" value="dayEntry.key"/>
+			</div>
+			<div class="day-of-class">
+				<t:output format="literal:dd " value="dayEntry.key"/>
+			</div>
+		</div>
+
+		<div class="col-lg-10 classes-list">
+			<t:loop t:source="dayEntry.value" t:value="session">
+
+				<div class="row">
+
+					<div class="col-lg-3 team-date-of-classes">
+
+						<ul>
+							<t:loop t:source="getChildrenForSession(session)" t:value="child">
+								<li>${child.fullName}</li>
+							</t:loop>
+						</ul>
+					</div>
+
+					<div class="col-lg-9">
+						<div class="class-card" value="${session.courseClass.id}">
+							<div class="point-marker" data-toggle="collapse" data-parent="#accordion"
+								 href="#session-description-ID${session.id}" value="${session.id}"
+								 aria-expanded="false">
+								<div class="row">
+									<div class="col-lg-7 class-title">${session.courseClass.course.name}</div>
+									<div class="col-lg-5 text-right">
+										<t:output format="literal:h.mma" value="session.startDate"/>
+										-
+										<t:output format="literal:h.mma" value="session.endDate"/>
+									</div>
+								</div>
+								<t:if test="venue">
+									<div class="class-location"><span
+											class="glyphicon glyphicon-map-marker"/>&nbsp;${venue}</div>
+								</t:if>
+							</div>
+
+							<div id="session-description-ID${session.id}" class="row class-description collapse"
+								 aria-expanded="false">
+								<div class="col-lg-8">
+									<ul>
+										<t:if test="session.publicNotes">
+											<li>${convertTextile(session.publicNotes)}</li>
+										</t:if>
+										<li>${classUrl}</li>
+									</ul>
+								</div>
+								<div class="col-lg-4 text-right bottom-right">
+									<a href="/portal/class/${session.courseClass.id}"><span
+											class="glyphicon glyphicon-search"/>&nbsp;View Course</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</t:loop>
+		</div>
+	</div>
+
+</t:container>

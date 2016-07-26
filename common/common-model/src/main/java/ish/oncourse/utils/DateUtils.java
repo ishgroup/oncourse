@@ -1,6 +1,8 @@
 package ish.oncourse.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateUtils {
 	
@@ -19,4 +21,35 @@ public class DateUtils {
     	//return false for check in different timezones
     	return false;
     }
+
+	public static Date startOfMonth(Date month) {
+		Calendar startOfMonth = Calendar.getInstance();
+		startOfMonth.setTime(month);
+		startOfMonth.set(Calendar.DAY_OF_MONTH, startOfMonth.getActualMinimum(Calendar.DAY_OF_MONTH));
+		return startOfMonth.getTime();
+	}
+
+	public static Date endOfMonth(Date month) {
+		Calendar endOfMonth = Calendar.getInstance();
+		endOfMonth.setTime(month);
+		endOfMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+		endOfMonth.set(Calendar.HOUR_OF_DAY, 23);
+		endOfMonth.set(Calendar.MINUTE, 59);
+		endOfMonth.set(Calendar.SECOND, 59);
+		return endOfMonth.getTime();
+	}
+
+	public static boolean isCurrentMonth(Date month) {
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyyMM");
+		return fmt.format(month).equals(fmt.format(new Date()));
+	}
+
+	public static Date startOfDay(Date day) {
+		Calendar startOfDay = Calendar.getInstance();
+		startOfDay.setTime(day);
+		startOfDay.set(Calendar.HOUR_OF_DAY, 0);
+		startOfDay.set(Calendar.MINUTE, 0);
+		startOfDay.set(Calendar.SECOND, 0);
+		return startOfDay.getTime();
+	}
 }

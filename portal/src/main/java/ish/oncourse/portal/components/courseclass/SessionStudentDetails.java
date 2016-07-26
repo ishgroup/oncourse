@@ -8,6 +8,7 @@ import ish.oncourse.model.Session;
 import ish.oncourse.model.Tutor;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
+import ish.oncourse.portal.services.attendance.SessionUtils;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
@@ -52,16 +53,7 @@ public class SessionStudentDetails {
 	}
 
 	public String getVenue() {
-		Room room  = session.getRoom();
-
-		if (room == null) {
-			room =  session.getCourseClass().getRoom();
-		}
-
-		if (room != null)
-			return String.format("%s, %s", room.getName(), room.getSite().getName());
-		else
-			return StringUtils.EMPTY;
+		return SessionUtils.getVenue(session);
 	}
 
 	public String convertTextile(String note) {

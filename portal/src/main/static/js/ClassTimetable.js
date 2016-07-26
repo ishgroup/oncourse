@@ -332,5 +332,11 @@ ClassTimetable.prototype = {
 
 
 $j(document).ready(function () {
-    new ClassTimetable().init();
+    if ($j('.session-wrapper table').length) {
+        new ClassTimetable().init();
+        if (location.hash && $j('a' + location.hash).length) {
+            $j(location.hash).click();
+            location.hash = '';
+        }
+    }
 });

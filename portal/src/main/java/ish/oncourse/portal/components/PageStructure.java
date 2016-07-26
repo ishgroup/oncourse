@@ -32,6 +32,10 @@ public class PageStructure {
 
     @InjectPage
     private Login loginPage;
+	
+	@Property
+	@Parameter
+	private boolean showSideBar = true;
 
 
     public Object onException(Throwable cause) throws Throwable{

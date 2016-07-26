@@ -11,6 +11,10 @@ public class BodyStructure {
     @Property
     private String activeMenu;
 
+	@Property
+	@Parameter
+	private boolean showSideBar;
+
 	@Inject
 	private IPortalService portalService;
 
