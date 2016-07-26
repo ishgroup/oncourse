@@ -29,6 +29,11 @@ public class InvoiceRow {
 	@Property
 	private Invoice invoice;
 
+	@Parameter(required = true)
+	@Property
+	private Money balance;
+
+
 	public Format moneyFormat(Money money) {
 		return FormatUtils.chooseMoneyFormat(money);
 	}

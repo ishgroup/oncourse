@@ -1,8 +1,11 @@
 package ish.oncourse.portal.components.history;
 
+import ish.common.types.PaymentStatus;
+import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentOut;
 import ish.oncourse.portal.services.IPortalService;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.query.Ordering;
@@ -37,6 +40,8 @@ public class Finance {
 
 	@Inject
 	private Messages messages;
+	
+	private Money balance = Money.ZERO;
 
 	@SetupRender
 	void setupRender() {
@@ -45,14 +50,22 @@ public class Finance {
 
 		items = new ArrayList<>();
 		items.addAll(contact.getInvoices());
-		items.addAll(portalService.getPayments());
+		items.addAll(portalService.getPaymentIns());
+		items.addAll(portalService.getPaymentOuts());
 
-		Ordering.orderList(items, Collections.singletonList(new Ordering(PaymentIn.CREATED_PROPERTY, SortOrder.DESCENDING)));
-
+		Ordering.orderList(items, Collections.singletonList(new Ordering(PaymentIn.CREATED_PROPERTY, SortOrder.ASCENDING)));
 	}
 
 	public boolean isInvoice() {
 		return item instanceof Invoice;
+	}
+
+	public boolean isPaymentIn() {
+		return item instanceof PaymentIn;
+	}
+
+	public boolean isPaymentOut() {
+		return item instanceof PaymentOut;
 	}
 
 	public Invoice getInvoice() {
@@ -61,5 +74,20 @@ public class Finance {
 
 	public PaymentIn getPaymentIn() {
 		return (PaymentIn) item;
+	}
+
+	public PaymentOut getPaymentOut() {
+		return (PaymentOut) item;
+	}
+	
+	public Money getBalance() {
+		if (isInvoice()) {
+			balance = balance.add(getInvoice().getTotalGst());
+		} else if (isPaymentIn()) {
+			balance = balance.subtract(getPaymentIn().getAmount());
+		} else if (isPaymentOut()) {
+			balance = balance.add(getPaymentOut().getTotalAmount());
+		}
+		return balance;
 	}
 }

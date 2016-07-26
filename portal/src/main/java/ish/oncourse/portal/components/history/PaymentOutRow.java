@@ -5,6 +5,7 @@ package ish.oncourse.portal.components.history;
 
 import ish.math.Money;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.PaymentOut;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.util.FormatUtils;
@@ -15,17 +16,14 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 
-/**
- * User: akoiro
- * Date: 5/07/2016
- */
-public class PaymentInRow {
+public class PaymentOutRow {
+
 	@Inject
 	private IPortalService portalService;
 
 	@Parameter
 	@Property
-	private PaymentIn paymentIn;
+	private PaymentOut paymentOut;
 
 	@Parameter
 	@Property
@@ -44,10 +42,7 @@ public class PaymentInRow {
 	}
 
 	public boolean isNew() {
-		return portalService.isNew(paymentIn);
+		return portalService.isNew(paymentOut);
 	}
-
-	public String getPaymentType() {
-		return paymentIn.getType().getDisplayName();
-	}
+	
 }

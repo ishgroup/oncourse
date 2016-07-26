@@ -18,25 +18,34 @@
                 <th>Balance</th>
             </tr>
             <t:loop source="items" value="item">
-                <t:if test="isInvoice()">
+                <t:if test="invoice">
                     <t:delegate to="block:invoice"/>
                 </t:if>
 
-                <t:unless test="isInvoice()">
-                    <t:delegate to="block:paymentIn"/>
-                </t:unless>
+				<t:if test="paymentIn">
+					<t:delegate to="block:paymentIn"/>
+				</t:if>
+
+				<t:if test="paymentOut">
+					<t:delegate to="block:paymentOut"/>
+				</t:if>
+
+               
             </t:loop>
         </table>
     </t:block>
 
     <t:block t:id="invoice">
-        <t:history.invoiceRow invoice="getInvoice()"/>
+        <t:history.invoiceRow invoice="getInvoice()" balance="balance"/>
     </t:block>
 
     <t:block t:id="paymentIn">
-        <t:history.paymentInRow paymentIn="getPaymentIn()"/>
+        <t:history.paymentInRow paymentIn="getPaymentIn()" balance="balance"/>
     </t:block>
 
+	<t:block t:id="paymentOut">
+		<t:history.paymentOutRow paymentOut="getPaymentOut()" balance="balance"/>
+	</t:block>
 
     <t:block t:id="paymentForm">
         <t:history.paymentform/>

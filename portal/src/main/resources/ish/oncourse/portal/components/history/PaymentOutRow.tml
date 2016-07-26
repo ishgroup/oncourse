@@ -1,0 +1,19 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<tr>
+		<td>
+			<t:output value="paymentOut.created" format="dateFormat()"/>
+		</td>
+		<td>
+			Payment Out 
+		</td>
+		<td>
+			<t:output value="paymentOut.totalAmount" format="moneyFormat(paymentOut.totalAmount)"/>
+		</td>
+		<td class="balance">
+			<t:output value="balance" format="moneyFormat(balance)"/>
+			<t:if test="isNew()">
+				<span class="label label-primary">NEW</span>
+			</t:if>
+		</td>
+	</tr>
+</t:container>

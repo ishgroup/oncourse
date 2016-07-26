@@ -13,8 +13,9 @@
                 <t:output value="paymentIn.amount" format="moneyFormat(paymentIn.amount)"/>
             </t:pagelink>
         </td>
-        <td class="balance">$0
-            <t:if test="isNew()">
+        <td class="balance">
+			<t:output value="balance" format="moneyFormat(balance)"/>
+			<t:if test="isNew()">
                 <span class="label label-primary">NEW</span>
             </t:if>
         </td>

@@ -20,7 +20,7 @@
         </td>
 
         <td class="balance">
-            <t:output value="invoice.amountOwing" format="moneyFormat(invoice.amountOwing)"/>
+            <t:output value="balance" format="moneyFormat(balance)"/>
             <t:if test="isNew()">
                 <span class="label label-primary">NEW</span>
             </t:if>
