@@ -117,7 +117,7 @@ public class PesonalVoucherRedemptionTest extends ACheckoutTest {
 		assertTrue(purchaseController.isPaymentResult());
 		assertTrue(purchaseController.isFinished());
 		assertEquals(0, model.getVouchers().get(0).getValueRemaining().intValue());
-		assertEquals(ProductStatus.ACTIVE, model.getVouchers().get(0).getStatus());
+		assertEquals(ProductStatus.REDEEMED, model.getVouchers().get(0).getStatus());
 	}
 
 	@Test

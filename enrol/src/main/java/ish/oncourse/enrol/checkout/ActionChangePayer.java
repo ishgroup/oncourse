@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Product;
+import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.util.payment.CompleteInTransactionPayments;
@@ -24,9 +25,20 @@ public class ActionChangePayer extends APurchaseAction {
     protected boolean validate() {
         return !contact.equals(getModel().getPayer()) &&
                 validateAndCompleteInTransactionPayments() &&
-                getController().getModel().getContacts().contains(contact) &&  getController().payerCanBeChanged();
+                getController().getModel().getContacts().contains(contact) && lockedByVoucher();
 
     }
+
+	private boolean lockedByVoucher() {
+		if (getModel().getSelectedVouchers().size() > 0) {
+			for (Voucher voucher : getModel().getSelectedVouchers()) {
+				if (voucher.getContact() != null && !voucher.getContact().equals(contact)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
     /**
      * Check if there are in_transaction payments on enrolling contact. If finds any it abandons them.
