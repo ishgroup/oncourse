@@ -3,6 +3,7 @@
  */
 package ish.oncourse.portal.components.timetable;
 
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
@@ -85,7 +86,7 @@ public class SessionsSideBar {
 			fromDate = DateUtils.startOfMonth(month);
 		}
 
-		ObjectSelect<Session> query = ObjectSelect.query(Session.class).where(Session.START_DATE.gte(fromDate));
+		ObjectSelect<Session> query = ObjectSelect.query(Session.class).where(Session.START_DATE.gte(fromDate)).and(Session.COURSE_CLASS.dot(CourseClass.CANCELLED).isFalse());
 		
 		if (showTeam) {
 			children = new ArrayList<>(portalService.getChildContacts());
@@ -105,7 +106,8 @@ public class SessionsSideBar {
 				if (contactExp == null) {
 					contactExp = Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STUDENT).eq(contact.getStudent());
 				} else {
-					contactExp = contactExp.orExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(contact.getStudent()));
+					contactExp = contactExp.orExp(Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STUDENT).eq(contact.getStudent())
+							.andExp(Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS)));
 				}
 			}
 			query = query.and(contactExp);

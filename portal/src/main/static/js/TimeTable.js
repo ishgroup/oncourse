@@ -81,7 +81,7 @@ MyTimetable.prototype = {
     },
     
     updateMonthYear: function() {
-        this.month.html(this.cal.getMonthName());
+        this.month.html(this.cal.getMonthName() + " ");
         this.year.html(this.cal.getYear());
         this.getDataForMonth();
         this.refreshColors($j("div.fc-calendar-event > span"), true);

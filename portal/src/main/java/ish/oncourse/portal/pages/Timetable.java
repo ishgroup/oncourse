@@ -53,13 +53,15 @@ public class Timetable {
 	private Contact contact;
 
 	@Property
-	private boolean showTeam;
+	private boolean showTeam = false;
 	
 	private String MONTH_FORMAT = "MMMMM-yyyy";
 
 	@SetupRender
 	void setupRender() {
-		showTeam = portalService.getChildContacts().size() > 1;
+		if (portalService.getContact().equals(portalService.getAuthenticatedUser())) {
+			showTeam = portalService.getChildContacts().size() > 1;
+		}
 	}
 	
 	@OnEvent(value = "getCalendarEvents")
