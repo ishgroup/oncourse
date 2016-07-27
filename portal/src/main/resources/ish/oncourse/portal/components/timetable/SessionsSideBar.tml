@@ -2,12 +2,12 @@
 
 	<t:loop t:source="monthDaySessions.entrySet()" t:value="monthDayEntry">
 		<t:if test="isCurrentMonth(monthDayEntry.key)">
-			<div class="month-name this-month-name text-center"><strong>
+			<div class="month-name this-month-name text-center" data-year-month="${monthDayEntry.key.time}" ><strong>
 				<t:output format="literal:MMMM yyyy" value="monthDayEntry.key"/>
 			</strong></div>
 		</t:if>
 		<t:unless test="isCurrentMonth(monthDayEntry.key)">
-			<div class="month-name text-center"><strong>
+			<div class="month-name text-center" data-year-month="${monthDayEntry.key.time}"><strong>
 				<t:output format="literal:MMMM yyyy" value="monthDayEntry.key"/>
 			</strong></div>
 		</t:unless>

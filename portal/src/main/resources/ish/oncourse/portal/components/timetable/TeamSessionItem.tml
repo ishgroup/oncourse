@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="row">
-		<div class="col-lg-1 col-lg-offset-1  date-of-classes text-right team-date-of-classes">
+		<div class="col-lg-1 col-lg-offset-1  date-of-classes text-right team-date-of-classes" data-month-day="${dayEntry.key.time}" >
 			<div class="week-day-of-class">
 				<t:output format="literal:EEE" value="dayEntry.key"/>
 			</div>
@@ -48,7 +48,7 @@
 								<div class="col-lg-8">
 									<ul>
 										<t:if test="session.publicNotes">
-											<li>${convertTextile(session.publicNotes)}</li>
+											<li><t:outputraw value="convertTextile(session.publicNotes)"/></li>
 										</t:if>
 										<li>${classUrl}</li>
 									</ul>

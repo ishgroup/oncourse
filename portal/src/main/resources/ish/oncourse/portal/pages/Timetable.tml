@@ -41,8 +41,9 @@
 								<span id="custom-next" class="custom-next"></span>
 							</nav>
 							<h2>
-								<div id="custom-month" class="custom-month"></div>
-								<div id="custom-year" class="custom-year"></div>
+								<span id="custom-month" class="custom-month"></span> 
+								
+								<span id="custom-year" class="custom-year"></span>
 							</h2>
 						</div>
 						<div id="calendar" class="fc-calendar-container"></div>
@@ -68,7 +69,7 @@
 	</t:block>
 
 	<t:block t:id="sessionsSideBar">
-		<div t:type="timetable/sessionsSideBar" month="month" contact="contact" showTeam="showTeam"/>
-		<!--<div t:type="timetable/sessionsSideBar" month="month"  pageSize="pageSize" offset="offset" contact="contact" showTeam="showTeam"/>-->
+		<!--<div t:type="timetable/sessionsSideBar" month="month" contact="contact" showTeam="showTeam"/>-->
+		<div t:type="timetable/sessionsSideBar" month="month"  pageSize="pageSize" offset="offset" contact="contact" showTeam="showTeam"/>
 	</t:block>
 </html>

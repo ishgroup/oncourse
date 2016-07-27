@@ -131,18 +131,18 @@ MyTimetable.prototype = {
 
     renderSessions: function() {
         $j('#accordion').empty();
-//        this.sessionsOffset = 0;
-//        this.sessionsPageSize = 10;
+        this.sessionsOffset = 0;
+        this.sessionsPageSize = 10;
 
         this.nextPage();
         
 
-//        $j(window).scroll(function() {
-//            if(($j('#accordion').innerHeight() < ($j(window).scrollTop() + $j(window).height() - $j('#header-holder').height())) && $j('#showMoreCourses').length ) {
-//                $j("#showMoreCourses").replaceWith("<div class='loading text-center'><img src='/portal/img/loading.gif'/></div>");
-//                timetable.nextPage();
-//            }
-//        });
+        $j(window).scroll(function() {
+            if(($j('#accordion').innerHeight() < ($j(window).scrollTop() + $j(window).height() - $j('#header-holder').height())) && $j('#showMoreCourses').length ) {
+                $j("#showMoreCourses").replaceWith("<div class='loading text-center'><img src='/portal/img/loading.gif'/></div>");
+                timetable.nextPage();
+            }
+        });
     },
     
     nextPage: function() {
@@ -150,30 +150,58 @@ MyTimetable.prototype = {
         var self = this;
         $j.ajax({
             type: "GET",
-            url: '/portal/timetable:getSessions/' + this.showTeam + '/' + this.cal.getMonthName() +'-'+ this.cal.getYear(), 
-//                + '/' + this.sessionsPageSize + '/' + this.sessionsOffset ,
+            url: '/portal/timetable:getSessions/' + this.showTeam + '/' + this.cal.getMonthName() +'-'+ this.cal.getYear() + '/' + this.sessionsPageSize + '/' + this.sessionsOffset ,
             async: true,
             //if the parameter is not set internet explorer loads content from cache
             cache: false,
             success: function(data) {
                 if (data.content) {
-
                     $j(refreshId).append(data.content);
-
-//                    if ($j(data.content).find('.class-card').length == 10) {
-//                        $j(refreshId).append("<a id='showMoreCourses' style='display:none;'>");
-//                    }
-//                    $j('.point-marker').off();
+                    
+                    if (self.showTeam) {
+                        self.splitMonthsDays(data.content);
+                        if ($j(data.content).find('.class-card').length == 10) {
+                            $j(refreshId).append("<a id='showMoreCourses' style='display:none;'>");
+                            self.sessionsOffset += self.sessionsPageSize;
+                        }
+                    }
+                    
+                    $j('.point-marker').off();
                     self.initMarkerHandler();
-
-//                    self.sessionsOffset += self.sessionsPageSize;
                     self.refreshColors($j(refreshId + ' .class-card'), false);
                 }
-//                $j("div.loading").remove();
+                $j("div.loading").remove();
             }
         });
     },
 
+    splitMonthsDays: function(content) {
+        
+        var monthHeadCode;
+        $j('.month-name').each(function() {
+            if (monthHeadCode == null) {
+                monthHeadCode = $j(this).attr('data-year-month');
+            } else if (monthHeadCode == $j(this).attr('data-year-month')) {
+                $j(this).remove();
+            } else {
+                monthHeadCode = $j(this).attr('data-year-month');
+            }
+        });
+
+        var dayHeadCode;
+        $j('.team-date-of-classes').each(function() {
+            if (dayHeadCode == null) {
+                dayHeadCode = $j(this).attr('data-month-day');
+            } else if (dayHeadCode == $j(this).attr('data-month-day')) {
+                $j(this).child('.week-day-of-class').hide();
+                $j(this).child('.week-day-of-class').hide();
+                $j(this).style('border-top', 'white');
+            } else {
+                dayHeadCode = $j(this).attr('data-month-day');
+            }
+        });
+        
+    },
                                 
     refreshColors: function(elements, updateParent) {
         var self = this;

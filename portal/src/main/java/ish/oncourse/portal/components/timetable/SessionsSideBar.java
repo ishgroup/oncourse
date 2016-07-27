@@ -33,12 +33,12 @@ import java.util.List;
 import java.util.Map;
 
 public class SessionsSideBar {
-//
-//	@Parameter
-//	private int pageSize;
-//
-//	@Parameter
-//	private int offset;
+
+	@Parameter
+	private int pageSize;
+
+	@Parameter
+	private int offset;
 
 	@Parameter
 	@Property
@@ -92,6 +92,7 @@ public class SessionsSideBar {
 			children = new ArrayList<>(portalService.getChildContacts());
 			children.remove(portalService.getContact());
 			query = query.and(Session.ATTENDANCES.dot(Attendance.STUDENT).in(ContactUtils.getStudentsBy(children)));
+			query = query.offset(offset).limit(pageSize);
 		} else {
 
 			if (contact.getTutor() == null && contact.getStudent() == null || month == null) {
@@ -116,8 +117,6 @@ public class SessionsSideBar {
 		
 		monthDaySessions = SessionUtils.groupByMonthDay(query
 				.orderBy(Session.START_DATE.asc())
-//				.offset(offset)
-//				.limit(pageSize)
 				.prefetch(Session.COURSE_CLASS.disjoint())
 				.select(cayenneService.sharedContext()));
 	}

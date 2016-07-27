@@ -81,12 +81,12 @@ public class Timetable {
 	}
 
 	@OnEvent(value = "getSessions")
-	public Block getSessions(boolean showTeam, String selectedMonth /**, int pageSize, int offset**/) throws ParseException {
+	public Block getSessions(boolean showTeam, String selectedMonth , int pageSize, int offset) throws ParseException {
 		this.contact = portalService.getContact();
 		this.showTeam = showTeam;
 		this.month = new SimpleDateFormat(MONTH_FORMAT).parse(selectedMonth);
-//		this.pageSize = pageSize;
-//		this.offset = offset;
+		this.pageSize = pageSize;
+		this.offset = offset;
 		return sessionsSideBar;
 	}
 }
