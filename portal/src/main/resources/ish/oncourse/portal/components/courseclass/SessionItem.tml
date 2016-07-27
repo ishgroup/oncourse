@@ -1,12 +1,13 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="col-md-6 col-sm-12 ${timeClass}">
-		<object class="session-icon" data="/portal/img/svg_icons/mark_roll.svg" type="image/svg+xml"/>
+		<img class="session-icon" src="/portal/img/svg_icons/mark_roll.svg"/>
+
 		<div class="vertical-center session-schedule">
 			<span class="session-date">${startDate} </span>
 			<span class="session-time">${sessionTime}</span>
 			<t:if test="session.publicNotes">
 				<span>
-					<object class="note-icon" data="/portal/img/svg_icons/session_public_note.svg" type="image/svg+xml"/>
+					<img class="note-icon" src="/portal/img/svg_icons/session_public_note.svg"/>
 				</span>
 			</t:if>
 			<span>&nbsp;|&nbsp;</span>

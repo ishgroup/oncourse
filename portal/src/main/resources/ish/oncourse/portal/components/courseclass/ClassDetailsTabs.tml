@@ -5,12 +5,12 @@
 				<a href="#class-details" data-toggle="tab">
 					<t:if test="isTutor">
 						<span>
-							<object class="new-nav-icon" data="/portal/img/svg_icons/mark_roll.svg" type="image/svg+xml"/>
+							<img class="new-nav-icon" src="/portal/img/svg_icons/mark_roll.svg"/>
 						</span>
 						<span class="new-nav-icon-text">Roll</span>
 						<p:else>
 							<span>
-								<object class="new-nav-icon" data="/portal/img/svg_icons/session_details.svg" type="image/svg+xml"/>
+								<img class="new-nav-icon" src="/portal/img/svg_icons/session_details.svg"/>
 							</span>
 							<span class="new-nav-icon-text">Details</span>
 						</p:else>
@@ -20,7 +20,7 @@
 			<!--<li>-->
 				<!--<a href="#outcomes-location" data-toggle="tab">-->
                     <!--<span>-->
-                        <!--<object class="new-nav-icon" data="/portal/img/svg_icons/DIU_RAW1354.svg" type="image/svg+xml"/>-->
+                        <!--<img class="new-nav-icon" src="/portal/img/svg_icons/DIU_RAW1354.svg"/>-->
                     <!--</span>-->
 					<!--<span class="new-nav-icon-text">Outcomes</span>-->
 				<!--</a>-->
@@ -29,7 +29,7 @@
 				<li>
 					<a href="#class-resources" data-toggle="tab">
                     <span>
-                        <object class="new-nav-icon" data="/portal/img/svg_icons/resources.svg" type="image/svg+xml"/>
+                        <img class="new-nav-icon" src="/portal/img/svg_icons/resources.svg"/>
                     </span>
 						<span class="new-nav-icon-text">Resources</span>
 					</a>
@@ -39,7 +39,7 @@
 				<li>
 					<a href="#class-results" data-toggle="tab">
                     <span>
-                        <object class="new-nav-icon" data="/portal/img/svg_icons/class_details.svg" type="image/svg+xml"/>
+                        <img class="new-nav-icon" src="/portal/img/svg_icons/class_details.svg"/>
                     </span>
 						<span class="new-nav-icon-text">Results</span>
 					</a>
@@ -48,7 +48,7 @@
 			<li>
 				<a href="#class-location" data-toggle="tab">
                     <span>
-                        <object class="new-nav-icon" data="/portal/img/svg_icons/location.svg" type="image/svg+xml"/>
+                        <img class="new-nav-icon" src="/portal/img/svg_icons/location.svg"/>
                     </span>
 					<span class="new-nav-icon-text">Location</span>
 				</a>
