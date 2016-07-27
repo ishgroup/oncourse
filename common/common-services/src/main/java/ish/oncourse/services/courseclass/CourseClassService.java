@@ -174,8 +174,8 @@ public class CourseClassService implements ICourseClassService {
 		if (month != null) {
 			startingExp = ExpressionFactory.betweenExp(Session.START_DATE_PROPERTY, DateUtils.startOfMonth(month),  DateUtils.endOfMonth(month));
 		} else {
-			startingExp = ExpressionFactory.lessOrEqualExp(Session.START_DATE_PROPERTY, new Date());
-		}
+			startingExp = ExpressionFactory.greaterOrEqualExp(Session.START_DATE_PROPERTY, new Date());
+        }
 
         // expression: get only sessions from ACTIVE classes (not canceled)
         Expression activeClassesExp = ExpressionFactory.noMatchExp(Session.COURSE_CLASS_PROPERTY + "." + CourseClass.CANCELLED_PROPERTY, Boolean.TRUE);
