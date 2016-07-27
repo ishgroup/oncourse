@@ -28,7 +28,7 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	/**
 	 * Statuses for which the class place is considered to be occupied.
 	 */
-	static List<EnrolmentStatus> VALID_ENROLMENTS = Arrays.asList(EnrolmentStatus.IN_TRANSACTION, SUCCESS);
+	public static List<EnrolmentStatus> VALID_ENROLMENTS = Arrays.asList(EnrolmentStatus.IN_TRANSACTION, SUCCESS);
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);

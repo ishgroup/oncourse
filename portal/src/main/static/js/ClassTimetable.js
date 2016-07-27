@@ -95,6 +95,7 @@ AttendanceCtrl.prototype = {
             $j(this).remove();
             self.reset();
             self.attendance.type = 0;
+            self.saveAttendance();
         })
 
     },
@@ -105,7 +106,41 @@ AttendanceCtrl.prototype = {
             $j(this).remove();
             self.reset();
             self.attendance.type = 0;
+            self.saveAttendance();
         }) 
+    },
+    
+    saveAttendance: function() {
+        
+        var self = this;
+        $j.ajax({
+            type: 'POST',
+            url: '/portal/class.classdetailsnew:saveAttendance',
+            async: false,
+            cache: false,
+            data: JSON.stringify(self.attendance),
+            contentType: 'application/json',
+            processData: false,
+            success: function (data) {
+                $j('div#'+ data.studentId +'.mark-buttons').next('.percents-of-attendance').children('span').children('span').text(data.percent);
+                var sessionLink = $j('a#' + data.sessionId);
+                sessionLink.text(data.lableText);
+
+                var parentSpan = sessionLink.parent();
+                parentSpan.removeClass('edit-roll past-roll');
+                parentSpan.removeClass('edit-roll actual-roll');
+                parentSpan.addClass(data.lableClass);
+
+                var sessionItem = parentSpan.parent().parent();
+                sessionItem.removeClass('actual-course');
+                sessionItem.removeClass('past-course');
+                sessionItem.addClass(data.timeClass);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(errorThrown);
+            }
+        });
     },
     
     init: function(attendance) {
@@ -150,7 +185,8 @@ AttendanceCtrl.prototype = {
         
         this.btnOk.on('click', function() {
             if (self.attendance.type == 0) {
-                self.makeOk()
+                self.makeOk();
+                self.saveAttendance();
             } else if (self.attendance.type != 1) {
                 self.markState = true;
                 self.dlgConfirm.show();
@@ -160,6 +196,7 @@ AttendanceCtrl.prototype = {
         this.btnCancel.on('click', function() {
             if (self.attendance.type == 0) {
                 self.makeCancel()
+                self.saveAttendance();
             } else if (self.attendance.type != 3) {
                 self.markState = false;
                 self.dlgConfirm.show();
@@ -170,9 +207,11 @@ AttendanceCtrl.prototype = {
             switch (self.markState) {
                 case true:
                     self.makeOk();
+                    self.saveAttendance();
                     break;
                 case false:
                     self.makeCancel();
+                    self.saveAttendance();
                     break;
                 default:
                     break;
@@ -200,6 +239,7 @@ AttendanceCtrl.prototype = {
                 self.attendance.type = 2;
                 self.attendance.note = self.txtReasonNote.val();
                 self.makeWithReason();
+                self.saveAttendance();
                 self.btnPartialReason.click();
             }
             else {
@@ -232,6 +272,7 @@ AttendanceCtrl.prototype = {
                 self.attendance.note = self.txtPartialNote.val();
             }
             self.makePartially();
+            self.saveAttendance();
             self.btnPartialReason.click();
         });
     }
@@ -278,7 +319,7 @@ ClassTimetable.prototype = {
         });
         
         $j('.edit-roll a').on('click', function () {
-            $j(this).parents('.past-course, .actual-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">Finish</button>').addClass('past-course-diff');
+            $j(this).parents('.past-course, .actual-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">Close</button>').addClass('past-course-diff');
             $j('.edit-roll a').css('pointer-events', 'none');
             $j('.future-roll a').css('pointer-events', 'none');
             $j('#class-roll-captions, .mark-percents').hide();
@@ -286,7 +327,6 @@ ClassTimetable.prototype = {
             self.id = $j(this).attr('id');
             $j('#class-description-' +  self.id).show();
             $j('.mark-buttons').removeClass('collapse');
-
 
             self.updateAttendence(self.id);
 
@@ -300,30 +340,9 @@ ClassTimetable.prototype = {
                 $j('.edit-roll a').css('pointer-events', 'auto');
                 $j('.future-roll a').css('pointer-events', 'auto');
                 $j('button.btn-finish').remove();
-                var response = [];
                 $j.each(self.attendanceItems, function(index, attendanceItem) {
-                    response.push(attendanceItem.attendance);
                     attendanceItem.destroy();
-                });
-
-                $j.ajax({
-                    type: 'POST',
-                    url: '/portal/class.classdetailsnew:setAttendences',
-                    async: false,
-                    cache: false,
-                    data: JSON.stringify(response),
-                    contentType: 'application/json',
-                    processData: false,
-                    success: function () {
-                        window.location.reload();
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(jqXHR);
-                        console.log(errorThrown);
-                    }
-                });
-                
-                
+                });  
             });
         });
         

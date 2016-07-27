@@ -842,12 +842,11 @@ public class PortalService implements IPortalService {
     }
 
     public Enrolment getEnrolmentBy(Student student, CourseClass courseClass) {
-        Expression enrolmentExp = ExpressionFactory.matchExp(Enrolment.STUDENT_PROPERTY, student)
-                .andExp(ExpressionFactory.matchExp(Enrolment.COURSE_CLASS_PROPERTY, courseClass))
-                .andExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.SUCCESS));
-        SelectQuery query = new SelectQuery(Enrolment.class, enrolmentExp);
-
-        return (Enrolment) Cayenne.objectForQuery(student.getObjectContext(), query);
+		return ObjectSelect.query(Enrolment.class)
+				.where(Enrolment.STUDENT.eq(student))
+				.and(Enrolment.COURSE_CLASS.eq(courseClass))
+				.and(Enrolment.STATUS.in(Enrolment.VALID_ENROLMENTS))
+				.selectFirst(student.getObjectContext());
     }
 
     public boolean isTutorFor(CourseClass courseClass)
