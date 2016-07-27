@@ -57,13 +57,13 @@ public class YourClasses {
 		Expression contactExp = null; 
 		
 		if (tutor != null) {
-			contactExp = CourseClass.TUTOR_ROLES.dot(TutorRole.TUTOR).eq(tutor);
+			contactExp = CourseClass.CANCELLED.isFalse().andExp(CourseClass.TUTOR_ROLES.dot(TutorRole.TUTOR).eq(tutor));
 		}
 		if (student!= null) {
 			if (contactExp == null) {
-				contactExp = CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student);
+				contactExp = CourseClass.ENROLMENTS.dot(Enrolment.STATUS).in(Enrolment.VALID_ENROLMENTS).andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student));
 			} else {
-				contactExp = contactExp.orExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student));
+				contactExp = contactExp.orExp(CourseClass.ENROLMENTS.dot(Enrolment.STATUS).in(Enrolment.VALID_ENROLMENTS).andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student)));
 			}
 		}
 		classes = query.and(contactExp).select(cayenneService.sharedContext());
