@@ -104,8 +104,8 @@ public class SessionsSideBar {
 				contactExp = Session.SESSION_TUTORS.outer().dot(SessionTutor.TUTOR).eq(contact.getTutor());
 			}
 			if (contact.getStudent() != null) {
-				Expression studentExp = Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STUDENT).eq(contact.getStudent())
-						.andExp(Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS));
+				Expression studentExp = Session.COURSE_CLASS.outer().dot(CourseClass.ENROLMENTS).outer().dot(Enrolment.STUDENT).eq(contact.getStudent())
+						.andExp(Session.COURSE_CLASS.outer().dot(CourseClass.ENROLMENTS).outer().dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS));
 				
 				if (contactExp == null) {
 					contactExp = studentExp;
