@@ -4,18 +4,13 @@
 			<tr>
 				<td><img src="/portal/img/svg_icons/session_details.svg"/></td>
 				<td>
-				<t:if test="future">
-					Mark this  <strong>after session is over</strong>
-					<p:else>
-						<t:if test="marked">
-							Marked roll for 
-							<p:else>
-								You are currently marking 
-							</p:else>
-						</t:if>
-						<strong>${sessionDate}</strong>
-					</p:else>
-				</t:if>
+					<t:if test="marked">
+						Marked roll for 
+						<p:else>
+							You are currently marking 
+						</p:else>
+					</t:if>
+					<strong>${sessionDate}</strong>
 				</td>
 			</tr>
 			<t:if test="session.publicNotes">
@@ -27,7 +22,7 @@
 			<t:if test="session.privateNotes">
 			<tr>
 				<td></td>
-				<td><strong>Private notes </strong>${session.privateNotes}</td>
+				<td><strong>Private notes </strong><t:outputraw value="convertTextile(session.privateNotes)"/></td>
 			</tr>
 			</t:if>
 		</table>

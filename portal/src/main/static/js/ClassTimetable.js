@@ -3,6 +3,7 @@ goog.provide('ClassTimetable');
 goog.require('jquery');
 goog.require('moment');
 goog.require('timepicki');
+goog.require('StudentTimetable');
 
 /**
  * Created by Artem on 28/06/2016.
@@ -123,6 +124,7 @@ AttendanceCtrl.prototype = {
             processData: false,
             success: function (data) {
                 $j('div#'+ data.studentId +'.mark-buttons').next('.percents-of-attendance').children('span').children('span').text(data.percent);
+                updatePercenColours();
                 var sessionLink = $j('a#' + data.sessionId);
                 sessionLink.text(data.lableText);
 

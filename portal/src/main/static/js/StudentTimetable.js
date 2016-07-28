@@ -10,22 +10,9 @@ $j(document).ready(function () {
 });
 
 function init() {
-    
-    $j('.percents-of-attendance span, .current-attendance span').each( function(){
-        parent = $j(this).parent();
-        percent = $j(this).text();
 
-        if (percent>90){
-            parent.addClass('full-percents');
-        }
-        else if (percent>50) {
-            parent.addClass('half-percents');
-        }
-        else{
-            parent.addClass('mimimum-percents');
-        };
-    });
 
+    updatePercenColours();
     $j('.show-roll a').on('click', function() {
        
         $j(this).parents('.past-course, .future-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">CLOSE</button>').addClass('past-course-diff');
@@ -42,4 +29,21 @@ function init() {
         });
     });
 
+}
+
+function updatePercenColours() {
+    $j('.percents-of-attendance span, .current-attendance span').each( function(){
+        parent = $j(this).parent();
+        percent = $j(this).text();
+
+        if (percent>90){
+            parent.addClass('full-percents');
+        }
+        else if (percent>50) {
+            parent.addClass('half-percents');
+        }
+        else{
+            parent.addClass('mimimum-percents');
+        };
+    });
 }

@@ -32,13 +32,11 @@ public class SessionItem {
 
 	private boolean marked;
 
-	private boolean future;
 
 	@SetupRender
 	boolean setupRender() {
 		timeZone = session.getCourseClass().getClassTimeZone();
 		marked = Attendance.ATTENDANCE_TYPE.eq(AttendanceType.UNMARKED.getDatabaseValue()).filterObjects(session.getAttendances()).isEmpty();
-		future = session.getEndDate().after(new Date());
 
 		return true;
 	}
@@ -52,15 +50,15 @@ public class SessionItem {
 	}
 	
 	public String getTimeClass() {
-		return future ? FUTURE_SESSION : marked ? PAST_SESSION : ACTUAL_SESSION ;
+		return marked ? PAST_SESSION : ACTUAL_SESSION ;
 	}
 
 	public String getLableText() {
-		return future ? VIEW : marked ? EDIT_ROLL : MARK_ROLL;
+		return marked ? EDIT_ROLL : MARK_ROLL;
 	}
 
 	public String getLableClass() {
-		return  future ? FUTURE : marked ? PAST : ACTUAL;
+		return  marked ? PAST : ACTUAL;
 	}
 
 }
