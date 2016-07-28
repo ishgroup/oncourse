@@ -7,6 +7,7 @@ import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.services.attendance.ContactUtils;
 import ish.oncourse.portal.usi.Step;
 import ish.oncourse.portal.usi.UsiController;
 import ish.oncourse.portal.usi.UsiControllerModel;
@@ -948,4 +949,35 @@ public class PortalService implements IPortalService {
         }
         return UsiController.valueOf(usiControllerModel, countryService, languageService, preferenceController, usiVerificationService);
     }
+	
+	public List<Session> getContactSessionsFrom(Date start, Contact contact) {
+
+		ObjectSelect<Session> query = ObjectSelect.query(Session.class).where(Session.START_DATE.gte(start)).and(Session.COURSE_CLASS.dot(CourseClass.CANCELLED).isFalse());
+
+			if (contact.getTutor() == null && contact.getStudent() == null) {
+				return Collections.EMPTY_LIST;
+			}
+		
+			Expression contactExp = null;
+
+			if (contact.getTutor() != null) {
+				contactExp = Session.SESSION_TUTORS.outer().dot(SessionTutor.TUTOR).eq(contact.getTutor());
+			}
+			if (contact.getStudent() != null) {
+				Expression studentExp = Session.COURSE_CLASS.outer().dot(CourseClass.ENROLMENTS).outer().dot(Enrolment.STUDENT).eq(contact.getStudent())
+						.andExp(Session.COURSE_CLASS.outer().dot(CourseClass.ENROLMENTS).outer().dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS));
+
+				if (contactExp == null) {
+					contactExp = studentExp;
+				} else {
+					contactExp = contactExp.orExp(studentExp);
+				}
+			}
+			query = query.and(contactExp);
+
+		return query.orderBy(Session.START_DATE.asc())
+				.prefetch(Session.COURSE_CLASS.disjoint())
+				.select(cayenneService.sharedContext());
+	}
+	
 }

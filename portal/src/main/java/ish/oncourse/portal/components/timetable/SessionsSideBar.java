@@ -93,34 +93,16 @@ public class SessionsSideBar {
 			children.remove(portalService.getContact());
 			query = query.and(Session.ATTENDANCES.dot(Attendance.STUDENT).in(ContactUtils.getStudentsBy(children)));
 			query = query.offset(offset).limit(pageSize);
+
+			monthDaySessions = SessionUtils.groupByMonthDay(query
+					.orderBy(Session.START_DATE.asc())
+					.prefetch(Session.COURSE_CLASS.disjoint())
+					.select(cayenneService.sharedContext()));
 		} else {
-
-			if (contact.getTutor() == null && contact.getStudent() == null || month == null) {
-				return;
-			}
-			Expression contactExp = null;
-
-			if (contact.getTutor() != null) {
-				contactExp = Session.SESSION_TUTORS.outer().dot(SessionTutor.TUTOR).eq(contact.getTutor());
-			}
-			if (contact.getStudent() != null) {
-				Expression studentExp = Session.COURSE_CLASS.outer().dot(CourseClass.ENROLMENTS).outer().dot(Enrolment.STUDENT).eq(contact.getStudent())
-						.andExp(Session.COURSE_CLASS.outer().dot(CourseClass.ENROLMENTS).outer().dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS));
-				
-				if (contactExp == null) {
-					contactExp = studentExp;
-				} else {
-					contactExp = contactExp.orExp(studentExp);
-				}
-			}
-			query = query.and(contactExp);
-			
+			monthDaySessions = SessionUtils.groupByMonthDay(portalService.getContactSessionsFrom(fromDate, contact));
 		}
 		
-		monthDaySessions = SessionUtils.groupByMonthDay(query
-				.orderBy(Session.START_DATE.asc())
-				.prefetch(Session.COURSE_CLASS.disjoint())
-				.select(cayenneService.sharedContext()));
+		
 	}
 
 	public boolean isCurrentMonth(Date month) {

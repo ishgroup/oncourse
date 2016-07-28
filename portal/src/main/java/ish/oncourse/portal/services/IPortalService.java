@@ -155,4 +155,6 @@ public interface IPortalService {
 	public String getProfilePictureUrl(Contact contact);
 
     public UsiController getUsiController();
+	
+	public List<Session> getContactSessionsFrom(Date start, Contact contact);
 }

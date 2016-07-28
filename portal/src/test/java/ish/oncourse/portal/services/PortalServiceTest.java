@@ -3,10 +3,12 @@ package ish.oncourse.portal.services;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
+import ish.oncourse.model.Session;
 import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.DateFormatter;
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -23,8 +25,10 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * User: artem
@@ -242,4 +246,22 @@ public class PortalServiceTest extends ServiceTest {
 
         assertTrue(service.hasResults());
     }
+
+	@Test
+	public void testContactSessionsFrom() {
+		ICayenneService cayenneService = getService(ICayenneService.class);
+		IPortalService service = getService(IPortalService.class);
+		IAuthenticationService authenticationService = getService(IAuthenticationService.class);
+		ObjectContext objectContext = cayenneService.sharedContext();
+
+		Contact contact = Cayenne.objectForPK(objectContext, Contact.class, 5);
+		authenticationService.storeCurrentUser(contact);
+
+		List<Session> sessions = service.getContactSessionsFrom(DateFormatter.parseDate("2103-01-01 00:00:00", TimeZone.getDefault()), contact);
+		assertEquals(4, sessions.size());
+		assertEquals(Long.valueOf(551), sessions.get(0).getId());
+		assertEquals(Long.valueOf(561), sessions.get(1).getId());
+		assertEquals(Long.valueOf(552), sessions.get(2).getId());
+		assertEquals(Long.valueOf(562), sessions.get(3).getId());
+	}
 }
