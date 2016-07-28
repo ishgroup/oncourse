@@ -101,14 +101,16 @@ public class SessionsSideBar {
 			Expression contactExp = null;
 
 			if (contact.getTutor() != null) {
-				contactExp = Session.SESSION_TUTORS.dot(SessionTutor.TUTOR).eq(contact.getTutor());
+				contactExp = Session.SESSION_TUTORS.outer().dot(SessionTutor.TUTOR).eq(contact.getTutor());
 			}
 			if (contact.getStudent() != null) {
+				Expression studentExp = Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STUDENT).eq(contact.getStudent())
+						.andExp(Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS));
+				
 				if (contactExp == null) {
-					contactExp = Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STUDENT).eq(contact.getStudent());
+					contactExp = studentExp;
 				} else {
-					contactExp = contactExp.orExp(Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STUDENT).eq(contact.getStudent())
-							.andExp(Session.COURSE_CLASS.dot(CourseClass.ENROLMENTS).dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS)));
+					contactExp = contactExp.orExp(studentExp);
 				}
 			}
 			query = query.and(contactExp);

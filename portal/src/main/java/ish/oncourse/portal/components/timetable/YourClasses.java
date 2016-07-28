@@ -57,7 +57,7 @@ public class YourClasses {
 		Expression contactExp = null; 
 		
 		if (tutor != null) {
-			contactExp = CourseClass.CANCELLED.isFalse().andExp(CourseClass.TUTOR_ROLES.dot(TutorRole.TUTOR).eq(tutor));
+			contactExp = CourseClass.CANCELLED.isFalse().andExp(CourseClass.TUTOR_ROLES.outer().dot(TutorRole.TUTOR).eq(tutor));
 		}
 		if (student!= null) {
 			if (contactExp == null) {
