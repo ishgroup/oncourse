@@ -6,6 +6,8 @@ import ish.oncourse.model.Session;
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import static ish.oncourse.portal.services.attendance.SessionResponse.*;
+
+import ish.oncourse.utils.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -32,12 +34,13 @@ public class SessionItem {
 
 	private boolean marked;
 
+	private boolean future;
 
 	@SetupRender
 	boolean setupRender() {
 		timeZone = session.getCourseClass().getClassTimeZone();
 		marked = Attendance.ATTENDANCE_TYPE.eq(AttendanceType.UNMARKED.getDatabaseValue()).filterObjects(session.getAttendances()).isEmpty();
-
+		future = session.getStartDate().after(DateUtils.endOfDay(new Date()));
 		return true;
 	}
 
@@ -48,17 +51,17 @@ public class SessionItem {
 	public String getSessionTime(){
 		return AttendanceUtils.getSessionTime(timeZone, session);
 	}
-	
+
 	public String getTimeClass() {
-		return marked ? PAST_SESSION : ACTUAL_SESSION ;
+		return future ? FUTURE_SESSION : marked ? PAST_SESSION : ACTUAL_SESSION ;
 	}
 
 	public String getLableText() {
-		return marked ? EDIT_ROLL : MARK_ROLL;
+		return future ? VIEW : marked ? EDIT_ROLL : MARK_ROLL;
 	}
 
 	public String getLableClass() {
-		return  marked ? PAST : ACTUAL;
+		return  future ? FUTURE : marked ? PAST : ACTUAL;
 	}
 
 }

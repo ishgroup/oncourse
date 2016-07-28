@@ -4,13 +4,18 @@
 			<tr>
 				<td><img src="/portal/img/svg_icons/session_details.svg"/></td>
 				<td>
-					<t:if test="marked">
-						Marked roll for 
+					<t:if test="future">
+						Mark this  <strong>after session is over</strong>
 						<p:else>
-							You are currently marking 
+							<t:if test="marked">
+								Marked roll for
+								<p:else>
+									You are currently marking
+								</p:else>
+							</t:if>
+							<strong>${sessionDate}</strong>
 						</p:else>
 					</t:if>
-					<strong>${sessionDate}</strong>
 				</td>
 			</tr>
 			<t:if test="session.publicNotes">

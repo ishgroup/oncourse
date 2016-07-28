@@ -52,4 +52,13 @@ public class DateUtils {
 		startOfDay.set(Calendar.SECOND, 0);
 		return startOfDay.getTime();
 	}
+
+	public static Date endOfDay(Date day) {
+		Calendar startOfDay = Calendar.getInstance();
+		startOfDay.setTime(day);
+		startOfDay.set(Calendar.HOUR_OF_DAY, 23);
+		startOfDay.set(Calendar.MINUTE, 59);
+		startOfDay.set(Calendar.SECOND, 59);
+		return startOfDay.getTime();
+	}
 }
