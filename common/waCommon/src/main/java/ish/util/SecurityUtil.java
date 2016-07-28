@@ -4,6 +4,8 @@
  */
 package ish.util;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,6 +17,7 @@ import java.security.SecureRandom;
  */
 public final class SecurityUtil {
 	public static final int VOUCHER_CODE_LENGTH = 8;
+	public static final int CERTIFICATE_CODE_LENGTH = 12;
 
 	private static SecureRandom random = new SecureRandom();
 
@@ -53,6 +56,11 @@ public final class SecurityUtil {
 		}
 		return code.toString();
 	}
+
+	public static String generateCertificateCode() {
+		return RandomStringUtils.random(CERTIFICATE_CODE_LENGTH, 0, humanReadableChars.length(), false, false, humanReadableChars.toCharArray(), random);
+	}
+
 
 	/**
 	 * Take a clear text password and return a hash. If an error occurs, null is returned.
