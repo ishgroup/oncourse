@@ -3,30 +3,23 @@
  */
 package ish.oncourse.portal.components.timetable;
 
-import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Session;
-import ish.oncourse.model.SessionTutor;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tutor;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.attendance.ContactUtils;
 import ish.oncourse.portal.services.attendance.SessionUtils;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.DateUtils;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.commons.lang3.StringUtils;
+
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,10 +46,10 @@ public class SessionsSideBar {
 	private boolean showTeam;
 
 	@Property
-	private Map<Date, Map<Date, List<Session>>> monthDaySessions;
+	private Map<String, Map<Date, List<Session>>> monthDaySessions;
 
 	@Property
-	private Map.Entry<Date, Map<Date, List<Session>>> monthDayEntry;
+	private Map.Entry<String, Map<Date, List<Session>>> monthDayEntry;
 	
 	@Property
 	private Map<Date, List<Session>> daySessions;
@@ -106,12 +99,12 @@ public class SessionsSideBar {
 		
 	}
 
-	public boolean isCurrentMonth(Date month) {
-		return DateUtils.isCurrentMonth(month);
+	public boolean isCurrentMonth(String month) {
+		return new SimpleDateFormat("MMMM yyyy").format(new Date()).equals(month);
 	}
 	
 	public boolean isEmptyCurrentMonth() {
-		return offset == 0 && monthDaySessions.get(month) == null;
+		return offset == 0 && monthDaySessions.get(new SimpleDateFormat("MMMM yyyy").format(month)) == null;
 	}
 
 }

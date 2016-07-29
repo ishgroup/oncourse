@@ -12,8 +12,8 @@ class SessionUtils {
 	}
 
 
-	static Map<Date, Map<Date, List<Session>>> groupByMonthDay(List<Session> sessions) {
-		groupByDay(sessions).groupBy { e -> DateUtils.startOfMonth(e.key) }
+	static Map<String, Map<Date, List<Session>>> groupByMonthDay(List<Session> sessions) {
+		groupByDay(sessions).groupBy { e -> DateUtils.startOfMonth(e.key).format('MMMM yyyy') }
 	}
 	
 	static String getVenue(Session session) {
