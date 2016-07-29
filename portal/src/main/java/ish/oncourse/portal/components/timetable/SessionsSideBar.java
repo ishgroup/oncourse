@@ -109,5 +109,9 @@ public class SessionsSideBar {
 	public boolean isCurrentMonth(Date month) {
 		return DateUtils.isCurrentMonth(month);
 	}
+	
+	public boolean isEmptyCurrentMonth() {
+		return offset == 0 && monthDaySessions.get(month) == null;
+	}
 
 }

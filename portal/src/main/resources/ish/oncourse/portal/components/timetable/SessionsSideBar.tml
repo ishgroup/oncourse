@@ -1,5 +1,14 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
+	<t:if test="emptyCurrentMonth">
+		<div class="month-name this-month-name no-sessions text-center" data-year-month="${month.time}" ><strong>
+			<t:output format="literal:MMMM yyyy" value="month"/>
+			<br/>
+			<br/>
+			No sessions.
+		</strong></div>
+	</t:if>
+
 	<t:loop t:source="monthDaySessions.entrySet()" t:value="monthDayEntry">
 		<t:if test="isCurrentMonth(monthDayEntry.key)">
 			<div class="month-name this-month-name text-center" data-year-month="${monthDayEntry.key.time}" ><strong>

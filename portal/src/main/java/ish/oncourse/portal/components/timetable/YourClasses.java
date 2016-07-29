@@ -53,7 +53,7 @@ public class YourClasses {
 			return;
 		}
 		
-		ObjectSelect query = ObjectSelect.query(CourseClass.class).where(CourseClass.SESSIONS.dot(Session.START_DATE).between(DateUtils.startOfMonth(month), DateUtils.endOfMonth(month)));
+		ObjectSelect query = ObjectSelect.query(CourseClass.class).where(CourseClass.SESSIONS.dot(Session.START_DATE).gte(DateUtils.startOfMonth(month)));
 		Expression contactExp = null; 
 		
 		if (tutor != null) {
