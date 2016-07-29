@@ -14,7 +14,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-8 col-sm-7 col-xs-6">
+				<div class="col-lg-8 col-sm-6 col-xs-6">
 					<div class="row student-card">
 						<!--  changing avatar location in html  -->
 						<div class="col-lg-2 col-sm-3 col-xs-3 avatar">
@@ -22,7 +22,7 @@
 						</div>
 
 						<h5>${enrolment.student.fullName}</h5>
-						
+
 						<t:if test="enableDetails">
 						<ul class="list-inline">
 							<li><a href="mailto:${enrolment.student.contact.emailAddress}">${enrolment.student.contact.emailAddress}</a></li>
@@ -35,9 +35,9 @@
 					</div>
 				</div>
 
-				
-				<div class="pull-right col-lg-4 col-sm-5 col-xs-6 vertical-center zero-right">
-					<div class="col-lg-7 text-center vertical-center">
+
+				<div class="pull-right col-lg-4 col-sm-6 col-xs-6 zero-right">
+					<div class="col-lg-6 col-xs-6 text-center">
 						<div class="collapse mark-buttons"  id="${enrolment.student.id}">
 							<div class="btn-group">
 								<a is="cancel" class="btn btn-default">
@@ -50,7 +50,7 @@
 						</div>
 						<div class="percents-of-attendance"><span class="mark-percents"><span>${attendancePercent}</span>%</span></div>
 					</div>
-					<div id="absent-reason-partial-${enrolment.student.id}" class="col-lg-5 text-center pull-right add-rem-collapse">
+					<div id="absent-reason-partial-${enrolment.student.id}" class="col-lg-4 col-xs-4 text-right pull-right add-rem-collapse">
 						<img class="mark-img" src="/portal/img/svg_icons/mark_finger.svg" />
 					</div>
 				</div>
