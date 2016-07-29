@@ -508,11 +508,11 @@ $j(document).ready(function () {
         window.location.hash = e.target.hash;
     });
 
-    var studentClassRollHeight = 0;
+    /*var studentClassRollHeight = 0;
     $j('.student-list > li').each(function(){
       studentClassRollHeight = ($j(this).height() >= studentClassRollHeight) ? $j(this).outerHeight() : studentClassRollHeight;
     });
-    $j('.student-list > li').css({'min-height':studentClassRollHeight});
+    $j('.student-list > li').css({'min-height':studentClassRollHeight});*/
 });
 
 $j(document).load(function(){
@@ -541,11 +541,11 @@ $j(window).resize(function () {
   //     'height': ($j(window).height()+$j('#footer').height())
   // });
 
-  var studentClassRollHeight = 0;
+  /*var studentClassRollHeight = 0;
   $j('.student-list > li').each(function(){
     studentClassRollHeight = ($j(this).height() >= studentClassRollHeight) ? $j(this).outerHeight() : studentClassRollHeight;
   });
-  $j('.student-list > li').css({'min-height':studentClassRollHeight});
+  $j('.student-list > li').css({'min-height':studentClassRollHeight});*/
 
 	//console.log($j(window).width());
 	if($j(window).width() <= 1186) {
