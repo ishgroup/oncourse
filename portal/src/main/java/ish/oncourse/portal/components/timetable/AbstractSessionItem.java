@@ -10,6 +10,7 @@ import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.portal.services.attendance.SessionUtils;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -57,6 +58,14 @@ abstract public class AbstractSessionItem {
 
 	public String getClassUrl() {
 		return portalService.getUrlBy(session.getCourseClass());
+	}
+
+	public String getStartDateTime() {
+		return FormatUtils.getDateFormat("h.mma", session.getTimeZone()).format(session.getStartDate());
+	}
+
+	public String getEndDateTime() {
+		return FormatUtils.getDateFormat("h.mma", session.getTimeZone()).format(session.getEndDate());
 	}
 
 }

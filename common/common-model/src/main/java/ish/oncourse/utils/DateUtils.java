@@ -3,6 +3,7 @@ package ish.oncourse.utils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtils {
 	
@@ -45,7 +46,12 @@ public class DateUtils {
 	}
 
 	public static Date startOfDay(Date day) {
+		return startOfDay(day, null);
+	}
+	
+	public static Date startOfDay(Date day, String timeZone) {
 		Calendar startOfDay = Calendar.getInstance();
+		startOfDay.setTimeZone(timeZone == null ? TimeZone.getDefault() :TimeZone.getTimeZone(timeZone));
 		startOfDay.setTime(day);
 		startOfDay.set(Calendar.HOUR_OF_DAY, 0);
 		startOfDay.set(Calendar.MINUTE, 0);

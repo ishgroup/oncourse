@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils
 class SessionUtils {
 	
 	static Map<Date, List<Session>> groupByDay(List<Session> sessions) {
-		sessions.groupBy { s -> DateUtils.startOfDay(s.startDate) }
+		sessions.groupBy { s -> DateUtils.startOfDay(s.startDate, s.timeZone) }
 	}
 
 
