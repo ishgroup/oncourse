@@ -470,7 +470,7 @@ $j(document).ready(function () {
 			me.addClass('active');
 		}
 		else {
-			$j('.class-detail').css({'height':'34px'});
+			$j('.class-detail').css({'height':'50px'});
 			$j('.class-detail').find('strong').hide();
 			me.find('span.icon-arrow-up').removeClass('icon-arrow-up').addClass('icon-arrow-down');
 			me.find('.text').html('Show all');
