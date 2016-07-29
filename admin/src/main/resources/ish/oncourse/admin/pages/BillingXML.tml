@@ -33,6 +33,9 @@
                             <detail.description>${siteBillingValue.description}</detail.description>
                             <detail.stockqty>${siteBillingValue.quantity}</detail.stockqty>
                             <detail.unitprice>${siteBillingValue.unitPrice}</detail.unitprice>
+                            <t:if test="siteBillingValue.paiduntil">
+                                <detail.paiduntil><t:output format="literal:yyyyMMdd" value="siteBillingValue.paiduntil"/></detail.paiduntil>
+                            </t:if>
                             <detail.net>${siteBillingValue.net}</detail.net>
                             <detail.account work-it-out="true"/>
                             <detail.taxcode work-it-out="true"/>
