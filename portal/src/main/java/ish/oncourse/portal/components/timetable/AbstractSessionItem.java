@@ -6,9 +6,9 @@ package ish.oncourse.portal.components.timetable;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Session;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.services.PortalUtils;
+
 import ish.oncourse.portal.services.attendance.SessionUtils;
-import ish.oncourse.services.html.IPlainTextExtractor;
+
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -67,5 +67,9 @@ abstract public class AbstractSessionItem {
 	public String getEndDateTime() {
 		return FormatUtils.getDateFormat("h.mma", session.getTimeZone()).format(session.getEndDate());
 	}
-
+	
+	public String getEntryKey() {
+		return FormatUtils.getDateFormat("MMMM yyyy dd").format(dayEntry.getKey());
+	}
+	
 }

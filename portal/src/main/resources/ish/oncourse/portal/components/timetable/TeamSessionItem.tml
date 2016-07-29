@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-
+	<t:loop t:source="dayEntry.value" t:value="session">
 	<div class="row">
-		<div class="col-lg-1 col-lg-offset-1  date-of-classes text-right team-date-of-classes" data-month-day="${dayEntry.key.time}" >
+		<div class="col-lg-1 col-lg-offset-1  date-of-classes text-right team-date-of-classes" data-month-day="${entryKey}" >
 			<div class="week-day-of-class">
 				<t:output format="literal:EEE" value="dayEntry.key"/>
 			</div>
@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="col-lg-10 classes-list">
-			<t:loop t:source="dayEntry.value" t:value="session">
+			
 
 				<div class="row">
 
@@ -61,8 +61,9 @@
 						</div>
 					</div>
 				</div>
-			</t:loop>
+			
 		</div>
 	</div>
+	</t:loop>
 
 </t:container>

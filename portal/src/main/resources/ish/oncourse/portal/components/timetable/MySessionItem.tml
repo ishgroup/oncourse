@@ -1,6 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+	<t:loop t:source="dayEntry.value" t:value="session">
 	<div class="row">
-		<div class="col-lg-2 date-of-classes text-right">
+		<div class="col-lg-2 date-of-classes text-right" data-month-day="${entryKey}">
 			<div class="week-day-of-class">
 				<t:output format="literal:EEE" value="dayEntry.key"/>
 			</div>
@@ -9,9 +11,7 @@
 			</div>
 		</div>
 
-		<div class="col-lg-10 classes-list">
-			<t:loop t:source="dayEntry.value" t:value="session">
-
+		<div class="col-lg-10 classes-list">			
 				<div class="class-card" value="${session.courseClass.id}">
 					<div class="point-marker" data-toggle="collapse" data-parent="#accordion"
 						 href="#session-description-ID${session.id}" value="${session.id}" aria-expanded="false">
@@ -54,7 +54,8 @@
 						</div>
 					</div>
 				</div>
-			</t:loop>
+			
 		</div>
 	</div>
+	</t:loop>
 </t:container>

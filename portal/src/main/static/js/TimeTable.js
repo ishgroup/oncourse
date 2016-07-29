@@ -157,9 +157,9 @@ MyTimetable.prototype = {
             success: function(data) {
                 if (data.content) {
                     $j(refreshId).append(data.content);
-                    
+                    self.splitMonthsDays();
                     if (self.showTeam) {
-                        self.splitMonthsDays(data.content);
+                       
                         if ($j(data.content).find('.class-card').length == 10) {
                             $j(refreshId).append("<a id='showMoreCourses' style='display:none;'>");
                             self.sessionsOffset += self.sessionsPageSize;
@@ -175,8 +175,8 @@ MyTimetable.prototype = {
         });
     },
 
-    splitMonthsDays: function(content) {
-        
+    splitMonthsDays: function() {
+
         var monthHeadCode;
         $j('.month-name').each(function() {
             if (monthHeadCode == null) {
@@ -189,13 +189,14 @@ MyTimetable.prototype = {
         });
 
         var dayHeadCode;
-        $j('.team-date-of-classes').each(function() {
+        $j('.date-of-classes').each(function() {
             if (dayHeadCode == null) {
                 dayHeadCode = $j(this).attr('data-month-day');
             } else if (dayHeadCode == $j(this).attr('data-month-day')) {
-                $j(this).child('.week-day-of-class').hide();
-                $j(this).child('.week-day-of-class').hide();
-                $j(this).style('border-top', 'white');
+                $j(this).css('border-top', 'white');
+                $j(this).children('.day-of-class').css('color', '#cccaca');
+                $j(this).children('.week-day-of-class').css('color', '#cccaca');
+
             } else {
                 dayHeadCode = $j(this).attr('data-month-day');
             }
