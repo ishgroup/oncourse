@@ -825,7 +825,7 @@ strong.link-color {
 
 .class-detail {
 	position: relative;
-	height: 34px;
+	min-height: 34px;
 	overflow: hidden;
 
 	span.text-faded {
@@ -1457,16 +1457,16 @@ ul.abcent-menu {
 
 #accordion {
     margin-bottom: 50px;
-    
+
     .team-date-of-classes {
     		    margin-top: 10px;
                 border-top: 1px solid rgba(128, 128, 128, 0.29);
                 margin-bottom: 10px;
-                
+
                 .week-day-of-class {
                     padding-top: 20px;
                 }
-                
+
                 ul {
                        padding-top: 20px;
                 }
