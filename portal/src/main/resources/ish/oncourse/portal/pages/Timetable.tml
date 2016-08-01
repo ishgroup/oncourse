@@ -1,7 +1,7 @@
 <html t:type="pagestructure" title="literal:Time Table" showSideBar="false"
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:timetable">
 	<div id="mytimetablepage" class="page-header clearfix">
-		
+
 		<t:if test="showTeam">
 			<h1 class="pull-left timetable-header">
 				<a href="#">Team Timetable</a>
@@ -21,7 +21,7 @@
 				<a href="#">Timetable</a>
 			</h1>
 		</t:unless>
-		
+
 		<div class="sync-to-device zero-right vertical-center"
 			 value="webcal:${request.serverName}${request.contextPath}/calendar/${portalService.contact.uniqueCode}.ics">
 			<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"/>
@@ -41,8 +41,8 @@
 								<span id="custom-next" class="custom-next"></span>
 							</nav>
 							<h2>
-								<span id="custom-month" class="custom-month"></span> 
-								
+								<span id="custom-month" class="custom-month"></span>
+
 								<span id="custom-year" class="custom-year"></span>
 							</h2>
 						</div>
@@ -54,13 +54,13 @@
 				<div class="page-header">
 					<h4>Your Classes</h4>
 				</div>
-	
+
 				<div class="your-classes-list">
 				</div>
 			</t:if>
 		</div>
 
-		<div class="row col-lg-9 col-md-7 col-sm-12 panel-group" id="accordion">
+		<div class="col-lg-9 col-md-7 col-sm-12 panel-group" id="accordion">
 		</div>
 	</div>
 

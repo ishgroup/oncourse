@@ -1324,10 +1324,6 @@ li.active .btn-outcomes small {
     font-size: 2rem;
     padding-left: 10px;
   }
-
-  .glyphicon-calendar:before {
-    content: "\e109";
-  }
 }
 
 .actual-roll-desc {
@@ -1403,6 +1399,7 @@ ul.abcent-menu {
 .sync-to-device {
   color: #B4B4B4;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .sync-to-device .glyphicon-cloud-download {
@@ -1467,21 +1464,21 @@ ul.abcent-menu {
 }
 
 #accordion {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 
-    .team-date-of-classes {
-                margin-top: 10px;
-                border-top: 1px solid rgba(128, 128, 128, 0.29);
-                margin-bottom: 10px;
+  .team-date-of-classes {
+    margin-top: 10px;
+    border-top: 1px solid rgba(128, 128, 128, 0.29);
+    margin-bottom: 10px;
 
-                .week-day-of-class {
-                    padding-top: 20px;
-                }
+    .week-day-of-class {
+      padding-top: 20px;
+    }
 
-                ul {
-                       padding-top: 20px;
-                }
-        }
+    ul {
+      padding-top: 20px;
+    }
+  }
 }
 
 .month-name {
@@ -1509,6 +1506,10 @@ ul.abcent-menu {
   padding: 20px;
   border-radius: 7px;
   margin: 10px 0;
+
+  .point-marker {
+    cursor: pointer;
+  }
 
   .class-title {
     font-size: 2rem;
