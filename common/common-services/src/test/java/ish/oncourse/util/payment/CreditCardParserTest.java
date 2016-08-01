@@ -21,6 +21,7 @@ public class CreditCardParserTest {
 	private static final String AMEX_DEFAULT_CARD_NUMBER_2 = "37XXX";
 	private static final String AMEX_POTENTIAL_CARD_NUMBER_1 = "34";
 	private static final String AMEX_POTENTIAL_CARD_NUMBER_2 = "37";
+	private static final String MASTERCARD_EXTENDED_BIN_RANGE = "22300010000000";
 
 	@Test
 	public void test() {
@@ -76,5 +77,7 @@ public class CreditCardParserTest {
 			CreditCardType.MASTERCARD, cardParser.parser(AMEX_DEFAULT_CARD_NUMBER_1));
 		assertNotEquals("Credit cards macthes to visa should not be detected as mastercard",
 			CreditCardType.MASTERCARD, cardParser.parser(VISA_DEFAULT_CARD_NUMBER));
+		assertEquals("Credit card should be detected as mastercard",
+				CreditCardType.MASTERCARD, cardParser.parser(MASTERCARD_EXTENDED_BIN_RANGE));
 	}
 }
