@@ -58,7 +58,7 @@ public final class SecurityUtil {
 	}
 
 	public static String generateCertificateCode() {
-		return RandomStringUtils.random(CERTIFICATE_CODE_LENGTH, 0, humanReadableChars.length(), false, false, humanReadableChars.toCharArray(), random);
+		return RandomStringUtils.random(CERTIFICATE_CODE_LENGTH, 0, voucherCodeLegalChars.length(), false, false, voucherCodeLegalChars.toCharArray(), random);
 	}
 
 
