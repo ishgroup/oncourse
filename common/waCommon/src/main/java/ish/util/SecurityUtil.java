@@ -17,7 +17,8 @@ import java.security.SecureRandom;
  */
 public final class SecurityUtil {
 	public static final int VOUCHER_CODE_LENGTH = 8;
-	public static final int CERTIFICATE_CODE_LENGTH = 12;
+	public static final int CERTIFICATE_CODE_LENGTH = 11;
+	public static final String CERTIFICATE_NAME_SPACE = "c";
 
 	private static SecureRandom random = new SecureRandom();
 
@@ -58,7 +59,7 @@ public final class SecurityUtil {
 	}
 
 	public static String generateCertificateCode() {
-		return RandomStringUtils.random(CERTIFICATE_CODE_LENGTH, 0, voucherCodeLegalChars.length(), false, false, voucherCodeLegalChars.toCharArray(), random);
+		return  String.format("%s%s",CERTIFICATE_NAME_SPACE, (RandomStringUtils.random(CERTIFICATE_CODE_LENGTH, 0, voucherCodeLegalChars.length(), false, false, voucherCodeLegalChars.toCharArray(), random)));
 	}
 
 
