@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="col-md-6 col-sm-12 ${timeClass}">
-		<img class="session-icon" src="/portal/img/svg_icons/mark_roll.svg"/>
+		<i class="session-icon"></i>
 
 		<div class="vertical-center session-schedule">
 			<span class="session-date">${startDate} </span>

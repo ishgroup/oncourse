@@ -14,7 +14,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-8 col-sm-6 col-xs-6 student-card-wrapper">
+				<div class="col-lg-8 col-sm-6 col-xs-5 student-card-wrapper">
 					<div class="row student-card">
 						<!--  changing avatar location in html  -->
 						<div class="col-lg-2 col-sm-3 col-xs-3 avatar">
@@ -36,8 +36,8 @@
 				</div>
 
 
-				<div class="pull-right col-lg-4 col-sm-6 col-xs-6 zero-right student-card-action-wrapper">
-					<div class="col-lg-6 col-xs-7 text-center">
+				<div class="pull-right col-lg-4 col-sm-6 col-xs-7 zero-right student-card-action-wrapper">
+					<div class="col-xs-12 pull-right text-right">
 						<div class="collapse mark-buttons"  id="${enrolment.student.id}">
 							<div class="btn-group">
 								<a is="cancel" class="btn btn-default">
@@ -49,9 +49,6 @@
 							</div>
 						</div>
 						<div class="percents-of-attendance"><span class="mark-percents"><span>${attendancePercent}</span>%</span></div>
-					</div>
-					<div id="absent-reason-partial-${enrolment.student.id}" class="col-lg-4 col-xs-4 text-right pull-right add-rem-collapse">
-						<img class="mark-img" src="/portal/img/svg_icons/mark_finger.svg" />
 					</div>
 				</div>
 			</div>
@@ -75,7 +72,7 @@
 
 			<div class="tab-content absent-with-reason">
 				<div id="absent-reason-${enrolment.student.id}" class="tab-pane active">
-					<strong>REASON FOR ABSENCE*</strong>
+					<strong>REASON FOR ABSENCE</strong>
 					<textarea></textarea>
 					<button class="btn btn-primary btn-sm">SAVE</button>
 				</div>

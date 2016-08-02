@@ -325,37 +325,6 @@
             .percents-of-attendance {
                 margin-top: 15px;
             }
-            .student-card-wrapper {
-                width: 100%;
-                margin-bottom: 15px;
-                @include responsive($media-custom, $custom-small-screen) {
-                    margin-bottom: 0px;
-                    width: 50%;
-                }
-                @include responsive($media-desktop) {
-                    width: 66.66666666666666%;
-                }
-                .student-card {
-                    .avatar {
-                        width: 50px;
-                       @include responsive($media-custom, $custom-small-screen) {
-                            width: 25%;
-                        }
-                        @include responsive($media-desktop) {
-                            width: 66.66666666666666%;
-                        }
-                    }
-                }
-            }
-            .student-card-action-wrapper {
-                width: 100%;
-                @include responsive($media-custom, $custom-small-screen) {
-                    width: 50%;
-                }
-                @include responsive($media-desktop) {
-                    width: 33.33333333333333%;
-                }
-            }
         }
     }
 
@@ -1187,7 +1156,6 @@ strong.link-color {
 .past-course {
 
   .session-icon {
-    background-color: $session-icon;
     color: $dark-green-mark;
   }
 
@@ -1230,9 +1198,27 @@ strong.link-color {
 }
 
 .session-icon {
-    background-color: $past-course-diff-bg;
+  background-color: $past-course-diff-bg;
   height: 40px;
   display: inline-block;
+  width: 40px;
+  position: relative;
+  vertical-align: top;
+  &::after {
+    position: absolute;
+    content: "";
+    width: 40px;
+    height: 40px;
+    background: url(/portal/img/svg_icons/mark_roll.svg) top left no-repeat;
+  }
+}
+
+.past-course {
+    .session-icon {
+        &::after {
+            background: url(/portal/img/svg_icons/mark_roll-green.svg) top left no-repeat;
+        }
+    }
 }
 
 ul.nav-menu {
