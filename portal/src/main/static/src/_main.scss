@@ -325,6 +325,37 @@
             .percents-of-attendance {
                 margin-top: 15px;
             }
+            .student-card-wrapper {
+                width: 100%;
+                margin-bottom: 15px;
+                @include responsive($media-custom, $custom-small-screen) {
+                    margin-bottom: 0px;
+                    width: 50%;
+                }
+                @include responsive($media-desktop) {
+                    width: 66.66666666666666%;
+                }
+                .student-card {
+                    .avatar {
+                        width: 50px;
+                       @include responsive($media-custom, $custom-small-screen) {
+                            width: 25%;
+                        }
+                        @include responsive($media-desktop) {
+                            width: 66.66666666666666%;
+                        }
+                    }
+                }
+            }
+            .student-card-action-wrapper {
+                width: 100%;
+                @include responsive($media-custom, $custom-small-screen) {
+                    width: 50%;
+                }
+                @include responsive($media-desktop) {
+                    width: 33.33333333333333%;
+                }
+            }
         }
     }
 

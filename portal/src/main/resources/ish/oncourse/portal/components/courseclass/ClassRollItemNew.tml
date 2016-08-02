@@ -14,7 +14,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-8 col-sm-6 col-xs-6">
+				<div class="col-lg-8 col-sm-6 col-xs-6 student-card-wrapper">
 					<div class="row student-card">
 						<!--  changing avatar location in html  -->
 						<div class="col-lg-2 col-sm-3 col-xs-3 avatar">
@@ -36,8 +36,8 @@
 				</div>
 
 
-				<div class="pull-right col-lg-4 col-sm-6 col-xs-6 zero-right">
-					<div class="col-lg-6 col-xs-6 text-center">
+				<div class="pull-right col-lg-4 col-sm-6 col-xs-6 zero-right student-card-action-wrapper">
+					<div class="col-lg-6 col-xs-7 text-center">
 						<div class="collapse mark-buttons"  id="${enrolment.student.id}">
 							<div class="btn-group">
 								<a is="cancel" class="btn btn-default">
