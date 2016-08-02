@@ -134,4 +134,25 @@
 	<TaggableTag id="2" collegeId="1" tagId="1" taggableId="2"/>
 	<TaggableTag id="3" collegeId="1" tagId="2" taggableId="3"/>
 
+	<CustomFieldType id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 name="test" defaultValue="test" isMandatory="0"/>
+
+	<CustomFieldType id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 name="test" defaultValue="test" isMandatory="0"/>
+
+	<CustomField id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				 customFieldTypeId="1" foreignId="1" value="test1"/>
+
+	<CustomField id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				 customFieldTypeId="1" foreignId="2" value="test2"/>
+
+	<CustomField id="3" angelId="3" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				 customFieldTypeId="2" foreignId="2" value="test3"/>
+
+	<CustomField id="4" angelId="4" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				 customFieldTypeId="1" foreignId="3" value="test4"/>
+
+	<CustomField id="5" angelId="5" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				 customFieldTypeId="2" foreignId="3" value="test5"/>
+
 </dataset>

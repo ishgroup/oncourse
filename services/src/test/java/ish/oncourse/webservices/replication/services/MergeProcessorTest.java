@@ -199,4 +199,377 @@ public class MergeProcessorTest extends ServiceTest {
 		assertEquals(3l ,tagRelation2.getId().longValue());
 		assertEquals(3l, tagRelation2.getTaggable().getId().longValue());
 	}
+
+
+	/**
+	 * contact1 has customField of type1, contact2 has customField of type1 and type2. After merge
+	 * contact1 must have customFields of type1 and type2. contact2 must be deleted.
+	 */
+	@Test
+	public void customFieldMerge1() {
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V13);
+
+		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
+		duplicateStub.setAngelId(1L);
+		duplicateStub.setStatus(ContactDuplicateStatus.IN_TRANSACTION.getDatabaseValue());
+		duplicateStub.setDescription("Description");
+		duplicateStub.setContactToUpdateId(1L);
+		duplicateStub.setContactToDeleteWillowId(2L);
+		duplicateStub.setContactToDeleteAngelId(2L);
+		duplicateStub.setEntityIdentifier("ContactDuplicate");
+		duplicateStub.setCreated(new Date());
+		duplicateStub.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(duplicateStub);
+
+		ContactStub contactStub = new ContactStub();
+		contactStub.setAngelId(1L);
+		contactStub.setWillowId(1L);
+		contactStub.setEntityIdentifier("Contact");
+		contactStub.setCreated(new Date());
+		contactStub.setModified(new Date());
+		contactStub.setMarketingViaEmailAllowed(true);
+		contactStub.setMarketingViaSMSAllowed(true);
+		contactStub.setMarketingViaPostAllowed(true);
+		contactStub.setFamilyName("familyName");
+		contactStub.setGivenName("givenName");
+		contactStub.setUniqueCode("code");
+		contactStub.setStudentId(1L);
+		contactStub.setTutorId(1L);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactStub);
+
+		DeletedStub deletedContact = new DeletedStub();
+		deletedContact.setEntityIdentifier("Contact");
+		deletedContact.setWillowId(2L);
+		deletedContact.setAngelId(2L);
+		deletedContact.setCreated(new Date());
+		deletedContact.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedContact);
+
+		CustomFieldTypeStub customFieldTypeStub1 = new CustomFieldTypeStub();
+		customFieldTypeStub1.setEntityIdentifier("CustomFieldType");
+		customFieldTypeStub1.setAngelId(1L);
+		customFieldTypeStub1.setWillowId(1L);
+		customFieldTypeStub1.setMandatory(false);
+		customFieldTypeStub1.setCreated(new Date());
+		customFieldTypeStub1.setModified(new Date());
+		customFieldTypeStub1.setName("test");
+		customFieldTypeStub1.setMandatory(false);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
+
+		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
+		customFieldTypeStub2.setEntityIdentifier("CustomFieldType");
+		customFieldTypeStub2.setAngelId(2L);
+		customFieldTypeStub2.setWillowId(2L);
+		customFieldTypeStub2.setCreated(new Date());
+		customFieldTypeStub2.setModified(new Date());
+		customFieldTypeStub2.setName("test");
+		customFieldTypeStub2.setMandatory(false);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
+
+		CustomFieldStub customFieldStub1 = new CustomFieldStub();
+		customFieldStub1.setEntityIdentifier("CustomField");
+		customFieldStub1.setCustomFieldTypeId(1L);
+		customFieldStub1.setAngelId(1L);
+		customFieldStub1.setWillowId(1L);
+		customFieldStub1.setForeignId(1L);
+		customFieldStub1.setCreated(new Date());
+		customFieldStub1.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub1);
+
+		DeletedStub customFieldStub2 = new DeletedStub();
+		customFieldStub2.setEntityIdentifier("CustomField");
+		customFieldStub2.setAngelId(2L);
+		customFieldStub2.setWillowId(2L);
+		customFieldStub2.setCreated(new Date());
+		customFieldStub2.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub2);
+
+		CustomFieldStub customFieldStub3 = new CustomFieldStub();
+		customFieldStub3.setEntityIdentifier("CustomField");
+		customFieldStub3.setCustomFieldTypeId(2L);
+		customFieldStub3.setAngelId(3L);
+		customFieldStub3.setWillowId(3L);
+		customFieldStub3.setForeignId(1L);
+		customFieldStub3.setCreated(new Date());
+		customFieldStub3.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub3);
+
+		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
+
+		List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
+		assertEquals(1, records.size());
+		assertEquals(SUCCESS,((ReplicatedRecord)records.get(0)).getStatus());
+
+		ObjectContext context = cayenneService.newContext();
+
+		Contact contact1 = ObjectSelect.query(Contact.class)
+				.where(Contact.ANGEL_ID.eq(1L))
+				.selectOne(context);
+
+		CustomFieldType customFieldType1 = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.ANGEL_ID.eq(1L))
+				.selectOne(context);
+		CustomFieldType customFieldType2 = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.ANGEL_ID.eq(2L))
+				.selectOne(context);
+
+
+		List<CustomField> contact1CustomFields = ObjectSelect.query(CustomField.class)
+				.where(CustomField.RELATED_OBJECT.eq(contact1))
+				.select(context);
+
+		assertEquals(2, contact1CustomFields.size());
+		assertEquals(customFieldType1, contact1CustomFields.get(0).getCustomFieldType());
+		assertEquals(customFieldType2, contact1CustomFields.get(1).getCustomFieldType());
+
+		Contact contact2 = ObjectSelect.query(Contact.class)
+				.where(Contact.ANGEL_ID.eq(2L))
+				.selectOne(context);
+
+		assertNull(contact2);
+	}
+
+	/**
+	 * contact1 has customField of type1 and type2, contact2 also  has customField of type1 and type2. After merge
+	 * contact1 must have customFields of type1 and type2. contact2 must be deleted.
+	 */
+	@Test
+	public void customFieldMerge2() {
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V13);
+
+		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
+		duplicateStub.setAngelId(1L);
+		duplicateStub.setStatus(ContactDuplicateStatus.IN_TRANSACTION.getDatabaseValue());
+		duplicateStub.setDescription("Description");
+		duplicateStub.setContactToUpdateId(2L);
+		duplicateStub.setContactToDeleteWillowId(3L);
+		duplicateStub.setContactToDeleteAngelId(3L);
+		duplicateStub.setEntityIdentifier("ContactDuplicate");
+		duplicateStub.setCreated(new Date());
+		duplicateStub.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(duplicateStub);
+
+		ContactStub contactStub = new ContactStub();
+		contactStub.setAngelId(2L);
+		contactStub.setWillowId(2L);
+		contactStub.setEntityIdentifier("Contact");
+		contactStub.setCreated(new Date());
+		contactStub.setModified(new Date());
+		contactStub.setMarketingViaEmailAllowed(true);
+		contactStub.setMarketingViaSMSAllowed(true);
+		contactStub.setMarketingViaPostAllowed(true);
+		contactStub.setFamilyName("familyName");
+		contactStub.setGivenName("givenName");
+		contactStub.setUniqueCode("code");
+		contactStub.setStudentId(1L);
+		contactStub.setTutorId(1L);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactStub);
+
+		DeletedStub deletedContact = new DeletedStub();
+		deletedContact.setEntityIdentifier("Contact");
+		deletedContact.setWillowId(3L);
+		deletedContact.setAngelId(3L);
+		deletedContact.setCreated(new Date());
+		deletedContact.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedContact);
+
+		CustomFieldTypeStub customFieldTypeStub1 = new CustomFieldTypeStub();
+		customFieldTypeStub1.setEntityIdentifier("CustomFieldType");
+		customFieldTypeStub1.setAngelId(1L);
+		customFieldTypeStub1.setWillowId(1L);
+		customFieldTypeStub1.setMandatory(false);
+		customFieldTypeStub1.setCreated(new Date());
+		customFieldTypeStub1.setModified(new Date());
+		customFieldTypeStub1.setName("test");
+		customFieldTypeStub1.setMandatory(false);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
+
+		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
+		customFieldTypeStub2.setEntityIdentifier("CustomFieldType");
+		customFieldTypeStub2.setAngelId(2L);
+		customFieldTypeStub2.setWillowId(2L);
+		customFieldTypeStub2.setCreated(new Date());
+		customFieldTypeStub2.setModified(new Date());
+		customFieldTypeStub2.setName("test");
+		customFieldTypeStub2.setMandatory(false);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
+
+		DeletedStub customFieldStub3 = new DeletedStub();
+		customFieldStub3.setEntityIdentifier("CustomField");
+		customFieldStub3.setAngelId(4L);
+		customFieldStub3.setWillowId(4L);
+		customFieldStub3.setCreated(new Date());
+		customFieldStub3.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub3);
+
+		DeletedStub customFieldStub4 = new DeletedStub();
+		customFieldStub4.setEntityIdentifier("CustomField");
+		customFieldStub4.setAngelId(5L);
+		customFieldStub4.setWillowId(5L);
+		customFieldStub4.setCreated(new Date());
+		customFieldStub4.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub4);
+
+
+		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
+
+		List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
+		assertEquals(1, records.size());
+		assertEquals(SUCCESS,((ReplicatedRecord)records.get(0)).getStatus());
+
+		ObjectContext context = cayenneService.newContext();
+
+		Contact contact1 = ObjectSelect.query(Contact.class)
+				.where(Contact.ANGEL_ID.eq(2L))
+				.selectOne(context);
+
+		CustomFieldType customFieldType1 = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.ANGEL_ID.eq(1L))
+				.selectOne(context);
+		CustomFieldType customFieldType2 = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.ANGEL_ID.eq(2L))
+				.selectOne(context);
+
+
+		List<CustomField> contact1CustomFields = ObjectSelect.query(CustomField.class)
+				.where(CustomField.RELATED_OBJECT.eq(contact1))
+				.select(context);
+
+		assertEquals(2, contact1CustomFields.size());
+		assertEquals(customFieldType1, contact1CustomFields.get(0).getCustomFieldType());
+		assertEquals("test2", contact1CustomFields.get(0).getValue());
+		assertEquals(customFieldType2, contact1CustomFields.get(1).getCustomFieldType());
+		assertEquals("test3", contact1CustomFields.get(1).getValue());
+
+		Contact contact2 = ObjectSelect.query(Contact.class)
+				.where(Contact.ANGEL_ID.eq(3L))
+				.selectOne(context);
+
+		assertNull(contact2);
+	}
+
+	/**
+	 * contact1 has customField of type1, contact2 has customField of type1 and type2. Angel don't create stud to delete customField of type1 from contact2
+	 * After merge contact1 must have customFields of type1 and type2. contact2 must be deleted. customField of type1 from contact2 also must be deleted.
+	 */
+	@Test
+	public void customFieldMerge3() {
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V13);
+
+		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
+		duplicateStub.setAngelId(1L);
+		duplicateStub.setStatus(ContactDuplicateStatus.IN_TRANSACTION.getDatabaseValue());
+		duplicateStub.setDescription("Description");
+		duplicateStub.setContactToUpdateId(1L);
+		duplicateStub.setContactToDeleteWillowId(2L);
+		duplicateStub.setContactToDeleteAngelId(2L);
+		duplicateStub.setEntityIdentifier("ContactDuplicate");
+		duplicateStub.setCreated(new Date());
+		duplicateStub.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(duplicateStub);
+
+		ContactStub contactStub = new ContactStub();
+		contactStub.setAngelId(1L);
+		contactStub.setWillowId(1L);
+		contactStub.setEntityIdentifier("Contact");
+		contactStub.setCreated(new Date());
+		contactStub.setModified(new Date());
+		contactStub.setMarketingViaEmailAllowed(true);
+		contactStub.setMarketingViaSMSAllowed(true);
+		contactStub.setMarketingViaPostAllowed(true);
+		contactStub.setFamilyName("familyName");
+		contactStub.setGivenName("givenName");
+		contactStub.setUniqueCode("code");
+		contactStub.setStudentId(1L);
+		contactStub.setTutorId(1L);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactStub);
+
+		DeletedStub deletedContact = new DeletedStub();
+		deletedContact.setEntityIdentifier("Contact");
+		deletedContact.setWillowId(2L);
+		deletedContact.setAngelId(2L);
+		deletedContact.setCreated(new Date());
+		deletedContact.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedContact);
+
+		CustomFieldTypeStub customFieldTypeStub1 = new CustomFieldTypeStub();
+		customFieldTypeStub1.setEntityIdentifier("CustomFieldType");
+		customFieldTypeStub1.setAngelId(1L);
+		customFieldTypeStub1.setWillowId(1L);
+		customFieldTypeStub1.setMandatory(false);
+		customFieldTypeStub1.setCreated(new Date());
+		customFieldTypeStub1.setModified(new Date());
+		customFieldTypeStub1.setName("test");
+		customFieldTypeStub1.setMandatory(false);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
+
+		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
+		customFieldTypeStub2.setEntityIdentifier("CustomFieldType");
+		customFieldTypeStub2.setAngelId(2L);
+		customFieldTypeStub2.setWillowId(2L);
+		customFieldTypeStub2.setCreated(new Date());
+		customFieldTypeStub2.setModified(new Date());
+		customFieldTypeStub2.setName("test");
+		customFieldTypeStub2.setMandatory(false);
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
+
+		CustomFieldStub customFieldStub1 = new CustomFieldStub();
+		customFieldStub1.setEntityIdentifier("CustomField");
+		customFieldStub1.setCustomFieldTypeId(1L);
+		customFieldStub1.setAngelId(1L);
+		customFieldStub1.setWillowId(1L);
+		customFieldStub1.setForeignId(1L);
+		customFieldStub1.setCreated(new Date());
+		customFieldStub1.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub1);
+
+		CustomFieldStub customFieldStub3 = new CustomFieldStub();
+		customFieldStub3.setEntityIdentifier("CustomField");
+		customFieldStub3.setCustomFieldTypeId(2L);
+		customFieldStub3.setAngelId(3L);
+		customFieldStub3.setWillowId(3L);
+		customFieldStub3.setForeignId(1L);
+		customFieldStub3.setCreated(new Date());
+		customFieldStub3.setModified(new Date());
+		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub3);
+
+		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
+
+		List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
+		assertEquals(1, records.size());
+		assertEquals(SUCCESS,((ReplicatedRecord)records.get(0)).getStatus());
+
+		ObjectContext context = cayenneService.newContext();
+
+		Contact contact1 = ObjectSelect.query(Contact.class)
+				.where(Contact.ANGEL_ID.eq(1L))
+				.selectOne(context);
+
+		CustomFieldType customFieldType1 = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.ANGEL_ID.eq(1L))
+				.selectOne(context);
+		CustomFieldType customFieldType2 = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.ANGEL_ID.eq(2L))
+				.selectOne(context);
+
+
+		List<CustomField> contact1CustomFields = ObjectSelect.query(CustomField.class)
+				.where(CustomField.RELATED_OBJECT.eq(contact1))
+				.select(context);
+
+		assertEquals(2, contact1CustomFields.size());
+		assertEquals(customFieldType1, contact1CustomFields.get(0).getCustomFieldType());
+		assertEquals(customFieldType2, contact1CustomFields.get(1).getCustomFieldType());
+
+		Contact contact2 = ObjectSelect.query(Contact.class)
+				.where(Contact.ANGEL_ID.eq(2L))
+				.selectOne(context);
+
+		assertNull(contact2);
+
+		CustomField customField2 = ObjectSelect.query(CustomField.class)
+				.where(CustomField.ANGEL_ID.eq(2L))
+				.selectOne(context);
+		assertNull(customField2);
+	}
 }
