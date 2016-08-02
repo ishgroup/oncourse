@@ -337,6 +337,9 @@ public class MergeProcessor {
 				}
 			}
 		}
-	}
 
+		for (CustomField customField : new ArrayList<>(contactToDelete.getCustomFields())) {
+			customField.setRelatedObject(contactToUpdate);
+		}
+	}
 }
