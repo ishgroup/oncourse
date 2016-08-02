@@ -7,6 +7,7 @@ import ish.oncourse.model.PaymentTransaction;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.util.CreditCardUtil;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -140,7 +141,9 @@ public class PaymentInSupport implements IPaymentSupport<PaymentIn, PaymentTrans
 			if (transactionResult.getResult2() != null) {
 				paymentIn.setGatewayResponse(transactionResult.getResult2().getResponseText());
 				paymentIn.setGatewayReference(transactionResult.getResult2().getDpsTxnRef());
-				paymentIn.setBillingId(transactionResult.getResult2().getDpsBillingId());
+				if (StringUtils.trimToNull(transactionResult.getResult2().getDpsBillingId()) != null) {
+					paymentIn.setBillingId(transactionResult.getResult2().getDpsBillingId());
+				}
 			}
 		}
 
