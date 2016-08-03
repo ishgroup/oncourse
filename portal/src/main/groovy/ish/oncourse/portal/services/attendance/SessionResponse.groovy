@@ -3,7 +3,6 @@
  */
 package ish.oncourse.portal.services.attendance
 
-import ish.common.types.AttendanceType
 import ish.oncourse.model.Enrolment
 import ish.oncourse.portal.services.IPortalService
 
@@ -34,17 +33,28 @@ public class SessionResponse {
 			it.sessionId = att.session.id
 			it.studentId = att.student.id
 
-			def marked = ish.oncourse.model.Attendance.ATTENDANCE_TYPE.eq(AttendanceType.UNMARKED.getDatabaseValue()).filterObjects(att.session.attendances).isEmpty();
-			
-			if (marked) {
-				it.timeClass = PAST_SESSION
-				it.labelText = EDIT_ROLL
-				it.labelClass = PAST
-			} else {
-				it.timeClass = ACTUAL_SESSION
-				it.labelText = MARK_ROLL
-				it.labelClass = ACTUAL
-			}
+            def SessionStyle style = SessionStyle.valueOf(att.session)
+
+            switch (style) {
+                case SessionStyle.empty:
+					it.timeClass = PAST_SESSION
+					it.labelText = MARK_ROLL
+					it.labelClass = PAST
+					break
+                case SessionStyle.future:
+                case SessionStyle.unmarked:
+                    it.timeClass = ACTUAL_SESSION
+                    it.labelText = MARK_ROLL
+                    it.labelClass = ACTUAL
+                    break
+                case SessionStyle.marked:
+                    it.timeClass = PAST_SESSION
+                    it.labelText = EDIT_ROLL
+                    it.labelClass = PAST
+                    break
+                default:
+                    throw new IllegalArgumentException()
+            }
 			return it
 		}
 		return response

@@ -3,21 +3,19 @@
  */
 package ish.oncourse.portal.components.courseclass;
 
-import ish.common.types.AttendanceType;
-import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Session;
-
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
+import ish.oncourse.portal.services.attendance.SessionStyle;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tapestry5.Block;
+import org.apache.tapestry5.annotations.Id;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 public class SessionDetails {
@@ -25,35 +23,67 @@ public class SessionDetails {
 	@Property
 	@Parameter
 	private Session session;
-	
-	@Property
-	private boolean marked;
-	
-	@Property
-	private boolean future;
 
+	@Property
+	private String markedClass;
+	
 	private TimeZone timeZone;
 
 	@Inject
 	private ITextileConverter textileConverter;
-	
-	private static final String MARKED_CLASS = "past-roll-desc";
-	private static final String UNMARKED_CLASS = "actual-roll-desc";
+
+	@Inject
+	@Id("empty")
+	private Block emptyBlock;
+
+	@Inject
+	@Id("unmarked")
+	private Block unmarkedBlock;
+
+	@Inject
+	@Id("future")
+	private Block futureBlock;
+
+	@Inject
+	@Id("marked")
+	private Block markedBlock;
+
+	@Property
+	private Block visibileBlock;
+
+	private static final String PAST_CLASS = "past-roll-desc";
+	private static final String ACTUAL_CLASS = "actual-roll-desc";
 
 
 	@SetupRender
 	boolean setupRender() {
 		timeZone = session.getCourseClass().getClassTimeZone();
-		marked = Attendance.ATTENDANCE_TYPE.eq(AttendanceType.UNMARKED.getDatabaseValue()).filterObjects(session.getAttendances()).isEmpty();
-		future = session.getEndDate().after(new Date());
+
+		SessionStyle style = SessionStyle.valueOf(session);
+		switch (style)
+		{
+			case empty:
+				visibileBlock = emptyBlock;
+				markedClass = ACTUAL_CLASS;
+				break;
+			case unmarked:
+				visibileBlock = unmarkedBlock;
+				markedClass = ACTUAL_CLASS;
+				break;
+			case future:
+				visibileBlock = futureBlock;
+				markedClass = ACTUAL_CLASS;
+				break;
+			case marked:
+				visibileBlock = markedBlock;
+				markedClass = PAST_CLASS;
+				break;
+			default:
+				throw new IllegalArgumentException();
+		}
 		return true;
 	}
 	
-	
-	public String getMarkedClass() {
-		return !future && marked ? MARKED_CLASS : UNMARKED_CLASS;
-	}
-
 	public String getSessionDate() {
 		return AttendanceUtils.getSessionDateTime(timeZone, session);
 	}

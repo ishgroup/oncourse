@@ -1,17 +1,14 @@
 package ish.oncourse.portal.components.courseclass;
 
-import ish.common.types.AttendanceType;
-import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Session;
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
+import ish.oncourse.portal.services.attendance.SessionStyle;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.utils.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 import static ish.oncourse.portal.services.attendance.SessionResponse.*;
@@ -32,15 +29,43 @@ public class SessionItem {
 	@Parameter
 	private Session session;
 
-	private boolean marked;
+	@Property
+	private String timeClass;
 
-	private boolean future;
+	@Property
+	private String labelText;
+
+	@Property
+	private String labelClass;
 
 	@SetupRender
 	boolean setupRender() {
 		timeZone = session.getCourseClass().getClassTimeZone();
-		marked = Attendance.ATTENDANCE_TYPE.eq(AttendanceType.UNMARKED.getDatabaseValue()).filterObjects(session.getAttendances()).isEmpty();
-		future = session.getStartDate().after(DateUtils.endOfDay(new Date()));
+		SessionStyle style = SessionStyle.valueOf(session);
+		switch (style) {
+			case empty:
+				timeClass = PAST_SESSION;
+				labelText = VIEW;
+				labelClass = FUTURE;
+				break;
+			case marked:
+				timeClass = PAST_SESSION;
+				labelText = EDIT_ROLL;
+				labelClass = PAST;
+				break;
+			case future:
+				timeClass = FUTURE_SESSION;
+				labelText = VIEW;
+				labelClass = FUTURE;
+				break;
+			case unmarked:
+				timeClass = ACTUAL_SESSION;
+				labelText = MARK_ROLL;
+				labelClass = ACTUAL;
+				break;
+			default:
+				throw new IllegalArgumentException();
+		}
 		return true;
 	}
 
@@ -51,17 +76,4 @@ public class SessionItem {
 	public String getSessionTime(){
 		return AttendanceUtils.getSessionTime(timeZone, session);
 	}
-
-	public String getTimeClass() {
-		return future ? FUTURE_SESSION : marked ? PAST_SESSION : ACTUAL_SESSION ;
-	}
-
-	public String getLabelText() {
-		return future ? VIEW : marked ? EDIT_ROLL : MARK_ROLL;
-	}
-
-	public String getLabelClass() {
-		return  future ? FUTURE : marked ? PAST : ACTUAL;
-	}
-
 }

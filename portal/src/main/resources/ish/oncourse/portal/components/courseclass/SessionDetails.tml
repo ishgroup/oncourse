@@ -1,21 +1,10 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div id="class-description-${session.id}" class="class-description-class ${markedClass}">
 		<table class="class-desc-section">
 			<tr>
 				<td><img src="/portal/img/svg_icons/session_details.svg"/></td>
 				<td>
-					<t:if test="future">
-						Mark this  <strong>after session is over</strong>
-						<p:else>
-							<t:if test="marked">
-								Marked roll for
-								<p:else>
-									You are currently marking
-								</p:else>
-							</t:if>
-							<strong>${sessionDate}</strong>
-						</p:else>
-					</t:if>
+					<t:delegate to="visibileBlock"/>
 				</td>
 			</tr>
 			<t:if test="session.publicNotes">
@@ -32,4 +21,20 @@
 			</t:if>
 		</table>
 	</div>
+
+	<t:block t:id="empty">
+		There are <strong>not enrolments</strong>
+	</t:block>
+
+	<t:block t:id="future">
+		Mark this  <strong>after session is over</strong>
+	</t:block>
+
+	<t:block t:id="marked">
+		Marked roll for <strong>${sessionDate}</strong>
+	</t:block>
+
+	<t:block t:id="unmarked">
+		You are currently marking <strong>${sessionDate}</strong>
+	</t:block>
 </t:container>
