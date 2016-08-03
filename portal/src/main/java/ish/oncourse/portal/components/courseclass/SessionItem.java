@@ -5,8 +5,6 @@ import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Session;
 import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.services.persistence.ICayenneService;
-import static ish.oncourse.portal.services.attendance.SessionResponse.*;
-
 import ish.oncourse.utils.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -15,6 +13,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
 import java.util.TimeZone;
+
+import static ish.oncourse.portal.services.attendance.SessionResponse.*;
 
 /**
  * User: artem
@@ -56,11 +56,11 @@ public class SessionItem {
 		return future ? FUTURE_SESSION : marked ? PAST_SESSION : ACTUAL_SESSION ;
 	}
 
-	public String getLableText() {
+	public String getLabelText() {
 		return future ? VIEW : marked ? EDIT_ROLL : MARK_ROLL;
 	}
 
-	public String getLableClass() {
+	public String getLabelClass() {
 		return  future ? FUTURE : marked ? PAST : ACTUAL;
 	}
 

@@ -11,7 +11,7 @@
 				</span>
 			</t:if>
 			<span>&nbsp;|&nbsp;</span>
-			<span class="${lableClass}"><a href="#" id="${session.id}">${lableText}</a></span>
+			<span class="${labelClass}"><a href="#" id="${session.id}">${labelText}</a></span>
 		</div>
 	</div>
 </t:container>
