@@ -21,12 +21,10 @@ public class SessionResponse {
 
 	def Integer percent
 	def String timeClass
-	def String lableText
-	def String lableClass
+	def String labelText
+	def String labelClass
 	def Long sessionId
 	def Long studentId
-
-
 
 	public static SessionResponse valueOf(ish.oncourse.model.Attendance att, IPortalService portalService) {
 		SessionResponse response = new SessionResponse().with {
@@ -40,12 +38,12 @@ public class SessionResponse {
 			
 			if (marked) {
 				it.timeClass = PAST_SESSION
-				it.lableText = EDIT_ROLL
-				it.lableClass = PAST
+				it.labelText = EDIT_ROLL
+				it.labelClass = PAST
 			} else {
 				it.timeClass = ACTUAL_SESSION
-				it.lableText = MARK_ROLL
-				it.lableClass = ACTUAL
+				it.labelText = MARK_ROLL
+				it.labelClass = ACTUAL
 			}
 			return it
 		}

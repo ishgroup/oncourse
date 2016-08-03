@@ -126,12 +126,12 @@ AttendanceCtrl.prototype = {
                 $j('div#'+ data.studentId +'.mark-buttons').next('.percents-of-attendance').children('span').children('span').text(data.percent);
                 updatePercenColours();
                 var sessionLink = $j('a#' + data.sessionId);
-                sessionLink.text(data.lableText);
+                sessionLink.text(data.labelText);
 
                 var parentSpan = sessionLink.parent();
                 parentSpan.removeClass('edit-roll past-roll');
                 parentSpan.removeClass('edit-roll actual-roll');
-                parentSpan.addClass(data.lableClass);
+                parentSpan.addClass(data.labelClass);
 
                 var sessionItem = parentSpan.parent().parent();
                 sessionItem.removeClass('actual-course');
