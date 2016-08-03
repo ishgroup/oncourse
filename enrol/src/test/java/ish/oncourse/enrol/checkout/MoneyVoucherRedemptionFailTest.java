@@ -124,7 +124,7 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 		ObjectContext context = purchaseController.getCayenneService().newContext();
 		SelectQuery selectQuery = new SelectQuery(QueuedTransaction.class);
 		List<QueuedTransaction> listQT = context.performQuery(selectQuery);
-		assertEquals(3, listQT.size());
+		assertEquals(2, listQT.size());
 
 		//check first QueuedTransaction contains right QueuedRecords
 		assertEquals(4, listQT.get(0).getQueuedRecords().size());
