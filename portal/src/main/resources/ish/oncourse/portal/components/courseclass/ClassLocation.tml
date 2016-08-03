@@ -4,34 +4,13 @@
         <div class="row">
             <div class="col-lg-12 col-sm-12">
 
-                <t:if test="hasCoordinates">
-                       <script type="text/javascript">
-
-                           var map;
-                           function initialize() {
-                               vLat = "${mapPositionLatitude}";
-                               vLong = "${mapPositionLongitude}";
-                               var mapOptions = {
-                                   zoom: 14,
-                                   center:  new google.maps.LatLng(vLat,vLong),
-                                   mapTypeId: google.maps.MapTypeId.ROADMAP
-                               };
-
-                                 map = new google.maps.Map(document.getElementById("venue"),
-                                       mapOptions);
-
-                               var marker = new google.maps.Marker({
-                                   position: new google.maps.LatLng(vLat,vLong),
-                                   map: map
-                               });
-                           }
-                           google.maps.event.addDomListener(window, 'load', initialize);
-                    </script>
+                <t:if test="hasLocation">
                     <div id="venue" ></div>
                 </t:if>
-                <t:unless test="hasCoordinates">
-                    <span>${message:message.withoutCoordinates}</span>
+                <t:unless test="hasLocation">
+                    <span>${message:message.withoutLocation}</span>
                 </t:unless>
+                <t:eventlink context="1000" event="getLocation"/>
             </div>
         </div>
     </div>

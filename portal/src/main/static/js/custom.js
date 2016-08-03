@@ -302,19 +302,6 @@ $j(document).ready(function () {
         return false;
     });
 
-	/* refresh google map */
-
-	$j('.header-tabs li').not('.active').click(function(){
-		setTimeout(function () {
-      //google map  initialize function is being added for specific page.
-      if (typeof initialize == 'function')
-      {
-          initialize();
-      }
-      //google.maps.event.trigger(map, 'resize');
-    }, 500);
-	});
-
     $j(".session-list > li .mark-roll").click(function () {
         /*$j(".session-list > li").removeClass('active');*/
 		//$j(".session-list > li").hide();

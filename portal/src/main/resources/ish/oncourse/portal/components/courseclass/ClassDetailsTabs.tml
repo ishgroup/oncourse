@@ -45,7 +45,7 @@
 					</a>
 				</li>
 			</t:if>
-			<li>
+			<li id="class-location-tab">
 				<a href="#class-location" data-toggle="tab">
                     <span>
                         <img class="new-nav-icon" src="/portal/img/svg_icons/location.svg"/>

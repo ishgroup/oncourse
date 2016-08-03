@@ -1,55 +1,58 @@
 package ish.oncourse.portal.components.courseclass;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Site;
+import ish.oncourse.services.courseclass.GetCourseClassLocation;
+import ish.oncourse.services.courseclass.Location;
+import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.Messages;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.util.TextStreamResponse;
+
+import java.io.IOException;
 
 
 public class ClassLocation {
 
 
-    @Parameter
-    private CourseClass courseClass;
+	@Parameter
+	private CourseClass courseClass;
 
-    private  Site site;
+	@Property
+	private Boolean hasLocation;
 
-    @Property
-    private Boolean hasCoordinates;
+	@Inject
+	private Request request;
 
-    @Property
-    private double mapPositionLatitude;
+	@Inject
+	private Messages messages;
 
-    @Property
-    private double mapPositionLongitude;
+	private ObjectMapper mapper = new ObjectMapper();
 
-    @SetupRender
-    public void beforeRender() {
-        if (courseClass.isHasRoom())
-        {
-            hasCoordinates = true;
-            site= courseClass.getRoom().getSite();
-            setupMapPosition();
-        }
-        else
-            hasCoordinates = false;
-    }
+	@SetupRender
+	public void beforeRender() {
+		Location location = new GetCourseClassLocation(courseClass).get();
+		hasLocation = location != null;
+	}
 
+	@OnEvent(value = "getLocation")
+	public StreamResponse getLocation(Long courseClassId) throws IOException {
 
+		if (!request.isXHR())
+			return null;
+		Location location = new GetCourseClassLocation(courseClass).get();
 
-    public void setupMapPosition() {
-        /**
-         * if at least one site has coordinate  we should show google map.
-         */
-         if (site.getLatitude() != null && site.getLongitude() != null) {
-            mapPositionLatitude = site.getLatitude().doubleValue();
-            mapPositionLongitude = site.getLongitude().doubleValue();
-
-            }else
-			 hasCoordinates=false;
-
-     }
+		String json = String.format("{\"message\": \"%s\"}", messages.get("message.withoutLocation"));
+		if (location != null) {
+			json = mapper.writeValueAsString(location);
+		}
+		return new TextStreamResponse("text/json", json);
+	}
 }
 
 
