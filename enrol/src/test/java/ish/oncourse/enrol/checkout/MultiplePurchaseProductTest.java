@@ -10,6 +10,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.Product;
 import ish.oncourse.model.ProductItem;
+import ish.oncourse.model.Voucher;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.Expression;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MultiplePurchaseProductTest extends ACheckoutTest {
 
@@ -93,6 +95,16 @@ public class MultiplePurchaseProductTest extends ACheckoutTest {
 		assertEquals(7, paymentIn.getPaymentInLines().get(0).getInvoice().getInvoiceLines().size());
 	}
 
+	@Test
+	public void purchaseVoucherWithoutPrice() {
+		init(Collections.<Long>emptyList(), Arrays.asList(13L), Collections.<Long>emptyList(), false);
+		Contact contact1 = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1189157);
+		addContact(contact1);
+		assertEquals(1, purchaseController.getModel().getAllEnabledProductItems().size());
+		Voucher voucher = (Voucher) purchaseController.getModel().getAllEnabledProductItems().get(0);
+		assertEquals(new Money("100.00"),voucher.getValueRemaining());
+	}
+	
 	@Test
 	public void testCloneModel() throws InterruptedException {
 		init(Collections.<Long>emptyList(), Arrays.asList(8L, 9L, 11L, 12L), Collections.<Long>emptyList(), false);

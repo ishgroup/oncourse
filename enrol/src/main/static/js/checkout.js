@@ -76,6 +76,18 @@ function initProductItemListHandle()
         var actionLink = $j(this).next('a').attr('href');
         sendAjaxWithData(actionLink, data);
 	});
+
+    $j('.priceValue').keypress(function(){
+        $j(this).parent('tr.enrolmentItem').find('.update-voucher-price').removeClass('display-none');
+    });
+
+    $j('.update-voucher-price').click(function()
+    {
+        $j(this).addClass('display-none');
+        var data = $j(this).parents('tr').find('input.priceValue').serialize();
+        var actionLink = $j(this).parents('tr').find('a.update-link').attr('href');
+        sendAjaxWithData(actionLink, data);
+    });
 }
 
 function initApplicationListHandler() {

@@ -119,6 +119,34 @@ public class ProductListItem {
 		return null;
 	}
 
+	@OnEvent(value = "updateProductEvent")
+	public Object updateProductEvent(Integer contactIndex, Integer productItemIndex) {
+		if (!request.isXHR())
+			return null;
+		if (delegate != null) {
+			delegate.onUpdate(contactIndex, productItemIndex, getUpdatedPrice());
+			if (blockToRefresh != null)
+				return blockToRefresh;
+		}
+		return null;
+	}
+	
+	private Money getUpdatedPrice() {
+		MoneyFormatter formatter = MoneyFormatter.getInstance();
+
+		String priceValue =  StringUtils.trimToNull(request.getParameter("priceValue"));
+		Money price = Money.ZERO;
+		if (priceValue != null)
+		{
+			try {
+				return  (Money) formatter.stringToValue(priceValue);
+			} catch (ParseException e) {
+				return null;
+			}
+		}
+		return price;
+	}
+
     public Format moneyFormat(Money money)
     {
         return FormatUtils.chooseMoneyFormat(money);
@@ -127,6 +155,9 @@ public class ProductListItem {
 
 	public static interface ProductItemDelegate {
 		public void onChange(Integer contactIndex, Integer productItemIndex, Money price);
+
+		public void onUpdate(Integer contactIndex, Integer productItemIndex, Money price);
+
 	}
 
     public Integer[] getActionContext() {
@@ -165,5 +196,9 @@ public class ProductListItem {
             return voucher.getVoucherProduct().getRedemptionCourses();
         }
     }
+	
+	public boolean isEditablePrice() {
+		return isVoucherProduct() && !voucherValue.hasPrice();
+	}
 
 }

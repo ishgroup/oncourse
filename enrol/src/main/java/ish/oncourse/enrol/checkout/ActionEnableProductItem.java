@@ -54,6 +54,9 @@ public class ActionEnableProductItem extends APurchaseAction {
 		InvoiceLine il;
 
 		if (getController().getVoucherService().isVoucherWithoutPrice(product)) {
+			if (Money.ZERO.equals(price)) {
+				price = new Money("100.00");
+			}
 			voucher.setRedemptionValue(price);
 			voucher.setValueOnPurchase(price);
 			il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
@@ -139,7 +142,7 @@ public class ActionEnableProductItem extends APurchaseAction {
     private boolean validateVoucher() {
         Voucher voucher = (Voucher) productItem;
         boolean withoutPrice = getController().getVoucherService().isVoucherWithoutPrice(voucher.getVoucherProduct());
-        if (withoutPrice && (price.isZero() || price.isLessThan(Money.ZERO)))
+        if (withoutPrice && (price.isLessThan(Money.ZERO)))
         {
             String message = enterVoucherPrice.getMessage(getController().getMessages(), voucher.getProduct().getName());
             getController().getErrors().put(enterVoucherPrice.name(), message);

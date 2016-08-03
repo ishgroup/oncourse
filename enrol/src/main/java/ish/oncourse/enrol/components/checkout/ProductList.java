@@ -14,6 +14,8 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Message.enterVoucherPrice;
+
 public class ProductList {
 
 	@Property
@@ -59,6 +61,28 @@ public class ProductList {
                     actionParameter.setValue(Money.ZERO);
 				purchaseController.performAction(actionParameter);
 			}
+			
+			@Override
+			public void onUpdate(Integer contactIndex, Integer productItemIndex, Money price) {
+				
+				Contact contact = purchaseController.getModel().getContacts().get(contactIndex);
+				ProductItem productItem = purchaseController.getModel().getProductItemBy(contact, productItemIndex);
+				if (price == null) {
+					String message = enterVoucherPrice.getMessage(purchaseController.getMessages(), productItem.getProduct().getName());
+					purchaseController.getErrors().put(enterVoucherPrice.name(), message);
+					return;
+				}
+				
+				ActionParameter actionParameter = new ActionParameter(Action.disableProductItem);
+				actionParameter.setValue(productItem);
+				purchaseController.performAction(actionParameter);
+				
+				actionParameter = new ActionParameter(Action.enableProductItem);
+				actionParameter.setValue(productItem);
+				actionParameter.setValue(price);
+				purchaseController.performAction(actionParameter);
+			}
+			
 		};
 	}
 
