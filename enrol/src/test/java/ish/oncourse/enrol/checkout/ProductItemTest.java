@@ -168,16 +168,14 @@ public class ProductItemTest extends ACheckoutTest {
 
 		assertEquals(2, model.getProducts().size());
 		assertEquals(2, model.getAllProductItems(model.getPayer()).size());
-		assertEquals(1, model.getAllEnabledProductItems().size());
+		assertEquals(2, model.getAllEnabledProductItems().size());
 
-		assertEquals(1, purchaseController.getErrors().size());
-		assertEquals("Please enter the correct price for voucher: my test voucher product part 6.", purchaseController.getErrors().get(enterVoucherPrice.name()));
-
+		assertEquals(0, purchaseController.getErrors().size());
 
 		proceedToPayment();
 		assertEquals(2, model.getProducts().size());
-		assertEquals(1, model.getAllProductItems(model.getPayer()).size());
-		assertEquals(1, model.getAllEnabledProductItems().size());
+		assertEquals(2, model.getAllProductItems(model.getPayer()).size());
+		assertEquals(2, model.getAllEnabledProductItems().size());
 
 		makeValidPayment();
 

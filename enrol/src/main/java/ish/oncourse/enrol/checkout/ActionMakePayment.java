@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.GetInvoiceDueDate;
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.ProductStatus;
@@ -9,6 +10,7 @@ import ish.oncourse.model.Invoice;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.ProductItem;
 
+import java.util.Date;
 import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.*;
@@ -25,6 +27,7 @@ public class ActionMakePayment extends APurchaseAction {
 			throw new IllegalArgumentException();
 
 		adjustSortOrder();
+		adjustDueDate();
         getModel().deleteDisabledItems();
 		getModel().getObjectContext().commitChanges();
 	}
@@ -83,6 +86,12 @@ public class ActionMakePayment extends APurchaseAction {
 			InvoiceLine invoiceLine = invoiceLines.get(i);
 			invoiceLine.setSortOrder(i);
 		}
+	}
+	private void  adjustDueDate() {
+		Integer defaultTerms = getController().getPreferenceController().getAccountInvoiceTerms();
+		Integer contactTerms = getModel().getInvoice().getContact().getInvoiceTerms();
+		Date dueDate = GetInvoiceDueDate.valueOf(defaultTerms, contactTerms).get();
+		getModel().getInvoice().setDateDue(dueDate);
 	}
 
 	@Override
