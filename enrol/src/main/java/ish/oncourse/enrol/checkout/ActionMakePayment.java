@@ -27,13 +27,13 @@ public class ActionMakePayment extends APurchaseAction {
 			throw new IllegalArgumentException();
 
 		adjustSortOrder();
-		adjustDueDate();
         getModel().deleteDisabledItems();
 		getModel().getObjectContext().commitChanges();
 	}
 
 	private void makeCorporatePass() {
 		getModel().deletePayment();
+		adjustDueDate();
 		if (getModel().getInvoice().getInvoiceLines().isEmpty()) {
 			getModel().deleteInvoice();
 		}
@@ -61,6 +61,8 @@ public class ActionMakePayment extends APurchaseAction {
 		} else {
 			if (getModel().getInvoice().getInvoiceLines().isEmpty()) {
 				getModel().deleteInvoice();
+			} else {
+				adjustDueDate();
 			}
 			getController().setState(PurchaseController.State.paymentProgress);
 		}
