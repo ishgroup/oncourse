@@ -4066,4 +4066,15 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="274" author="ashestak" runOnChange="false" runAlways="false" context="production">
+		<preConditions  onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="SessionModule" indexName="sessionModule_collegeId_angelId_unique"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE UNIQUE INDEX sessionModule_collegeId_angelId_unique ON SessionModule (collegeId, angelId);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
