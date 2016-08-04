@@ -6,6 +6,7 @@ import ish.math.Money;
 import ish.oncourse.model.auto._PaymentIn;
 import ish.oncourse.utils.PaymentInUtil;
 import ish.oncourse.utils.QueueableObjectUtils;
+import ish.oncourse.utils.ValidateNegativePayment;
 import ish.util.CreditCardUtil;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
@@ -67,10 +68,15 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		Money amount = getAmount();
 
-		//#18653 we may pass only contra payments with negative amount
-		if (amount.isLessThan(Money.ZERO) && !PaymentType.CONTRA.equals(getType())) {
+		if (!amount.isZero() && PaymentType.CONTRA.equals(getType())) {
 			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY,
-				"The payment-in must have non negative amount."));
+				"The CONTRA payment-in amount must be $0"));
+			return;
+		}
+
+		if (!ValidateNegativePayment.valueOf(this).validate()) {
+			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY,
+					"Credit card and system type payments should be positive"));
 			return;
 		}
 
