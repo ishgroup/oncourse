@@ -325,6 +325,16 @@
             .percents-of-attendance {
                 margin-top: 15px;
             }
+            .student-card-action-wrapper {
+                .mark-buttons {
+                    padding: 4px 7px;
+                    font-size: 12px;
+                    @include responsive($media-custom, $custom-small-screen) {
+                        padding: 6px 12px;
+                        font-size: 14px;
+                    }
+                }
+            }
         }
     }
 
@@ -1128,7 +1138,7 @@ strong.link-color {
 }
 
 .mark-img {
-  height: 50px;
+  height: 40px;
   cursor: pointer;
 }
 
@@ -1202,23 +1212,7 @@ strong.link-color {
   height: 40px;
   display: inline-block;
   width: 40px;
-  position: relative;
   vertical-align: top;
-  &::after {
-    position: absolute;
-    content: "";
-    width: 40px;
-    height: 40px;
-    background: url(/portal/img/svg_icons/mark_roll.svg) top left no-repeat;
-  }
-}
-
-.past-course {
-    .session-icon {
-        &::after {
-            background: url(/portal/img/svg_icons/mark_roll-green.svg) top left no-repeat;
-        }
-    }
 }
 
 ul.nav-menu {
@@ -1354,6 +1348,37 @@ li.active .btn-outcomes small {
 
 .mark-checkbox-div {
   display: none;
+}
+
+.attendance-actions {
+    .nav-menu.abcent-menu {
+        li {
+            &.active {
+                a {
+                    color: $red-color;
+                }
+            }
+        }
+    }
+    .absent-with-reason {
+        .tab-pane.active {
+            &::before {
+                content: "";
+                position: absolute;
+                border-bottom: 12px solid $sidebar-bg;
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+                right: 0;
+                top: -40px;
+            }
+            &.absent-reason::before {
+                right: 65px;
+            }
+            &.absent-partial::before {
+                right: -23px;
+            }
+        }
+    }
 }
 
 .absent-with-reason {

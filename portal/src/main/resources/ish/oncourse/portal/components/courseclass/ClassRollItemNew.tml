@@ -36,8 +36,8 @@
 				</div>
 
 
-				<div class="pull-right col-lg-4 col-sm-6 col-xs-7 zero-right student-card-action-wrapper">
-					<div class="col-xs-12 pull-right text-right">
+				<div class="pull-right col-lg-3 col-sm-6 col-xs-7 zero-right student-card-action-wrapper">
+					<div class="col-xs-8 text-right">
 						<div class="collapse mark-buttons"  id="${enrolment.student.id}">
 							<div class="btn-group">
 								<a is="cancel" class="btn btn-default">
@@ -50,11 +50,14 @@
 						</div>
 						<div class="percents-of-attendance"><span class="mark-percents"><span>${attendancePercent}</span>%</span></div>
 					</div>
+					<div id="absent-reason-partial-${enrolment.student.id}" class="col-lg-4 col-xs-4 text-right pull-right add-rem-collapse">
+						<img class="mark-img" src="/portal/img/svg_icons/DIU_RAW0679.svg" />
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div id="marking-${enrolment.student.id}" class="collapse">
+		<div id="marking-${enrolment.student.id}" class="collapse attendance-actions">
 			<div class="absent-with-reason">
 				<strong>UPDATE ATTENDANCE</strong>
 				<div class="warning-text">Are you sure you want to make this change?</div>
@@ -71,13 +74,13 @@
 			</ul>
 
 			<div class="tab-content absent-with-reason">
-				<div id="absent-reason-${enrolment.student.id}" class="tab-pane active">
+				<div id="absent-reason-${enrolment.student.id}" class="tab-pane absent-reason active">
 					<strong>REASON FOR ABSENCE</strong>
 					<textarea></textarea>
 					<button class="btn btn-primary btn-sm">SAVE</button>
 				</div>
 
-				<div id="absent-partial-${enrolment.student.id}" class="tab-pane">
+				<div id="absent-partial-${enrolment.student.id}" class="tab-pane absent-partial">
 
 					<div class="row">
 						<div class="col-lg-6 col-sm-12">
