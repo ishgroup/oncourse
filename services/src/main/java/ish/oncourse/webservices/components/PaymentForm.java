@@ -2,6 +2,7 @@ package ish.oncourse.webservices.components;
 
 import ish.common.types.CreditCardType;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.util.payment.CreditCardParser;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.webservices.pages.Payment;
 import ish.persistence.CommonPreferenceController;
@@ -9,7 +10,6 @@ import org.apache.tapestry5.Field;
 import org.apache.tapestry5.ValidationTracker;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.RadioGroup;
 import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
@@ -66,10 +66,6 @@ public class PaymentForm {
 
     @InjectComponent
     @Property
-    private RadioGroup cardTypeField;
-
-    @InjectComponent
-    @Property
     private Select expiryMonth;
 
     @InjectComponent
@@ -97,14 +93,13 @@ public class PaymentForm {
 		pageURL = paymentPage.getPageURL();
     }
 
-	public void setCreditCardType(CreditCardType creditCardType) {
-		if (getPaymentIn() != null) {
-			getPaymentIn().setCreditCardType(creditCardType);
-		}
-	}
-	public CreditCardType getCreditCardType() {
-		return getPaymentIn().getCreditCardType();
-	}
+    private void determineCreditCardType() {
+        if (getPaymentIn() != null) {
+            CreditCardParser cardParser = new CreditCardParser();
+            CreditCardType creditCardType = cardParser.parser(getCreditCardNumber());
+            getPaymentIn().setCreditCardType(creditCardType);
+        }
+    }
 
 	public void setCreditCardName(String creditCardName) {
 		if (getPaymentIn() != null) {
@@ -161,10 +156,6 @@ public class PaymentForm {
             return;
         }
 
-        if (!paymentPage.getPaymentProcessController().getPaymentIn().validateCCType()) {
-            paymentDetailsForm.recordError(cardTypeField,
-                    messages.get("cardTypeErrorMessage"));
-        }
         if (!paymentPage.getPaymentProcessController().getPaymentIn().validateCCName()) {
             paymentDetailsForm.recordError(cardName,
                     messages.get("cardNameErrorMessage"));
@@ -224,6 +215,7 @@ public class PaymentForm {
 		}
 
         synchronized (paymentPage.getPaymentProcessController()) {
+            determineCreditCardType();
             validate();
             if (!paymentDetailsForm.getHasErrors()) {
                 if (isSubmitted) {
@@ -235,22 +227,6 @@ public class PaymentForm {
             }
         }
         return paymentPage.getPageURL();
-    }
-
-    public CreditCardType getMasterCard() {
-        return CreditCardType.MASTERCARD;
-    }
-
-    public CreditCardType getVisa() {
-        return CreditCardType.VISA;
-    }
-
-    public CreditCardType getAmex() {
-        return CreditCardType.AMEX;
-    }
-
-    public String getCardTypeClass() {
-        return getInputSectionClass(cardTypeField);
     }
 
     public String getCardNameInputClass() {

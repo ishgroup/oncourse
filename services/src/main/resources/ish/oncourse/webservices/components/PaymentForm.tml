@@ -2,21 +2,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	 <div class="pay-form">
         <t:form t:id="paymentDetailsForm">
-        
-            <div class="${cardTypeClass}">
-                <label>Card Type<sup>*</sup></label>
-                   <span class="pay-form-cardtype">
-                   	<t:radiogroup t:id="cardTypeField" value="creditCardType">
-                   	    <t:radio t:id="masterCard" class="radio"/><t:label for="masterCard"/>
-                   	    <t:radio t:id="visa" class="radio"/><t:label for="visa"/>
-                   	    <t:if test="preferenceService.servicesAmexEnabled">
-                   	    	<t:radio t:id="amex" class="radio"/><t:label for="amex"/>
-                   	    </t:if>	
-                   	</t:radiogroup>
-                   </span>
-                   <span t:type="ErrorDisplay" form="paymentDetailsForm" field="cardTypeField"/>
-            </div>
-
 
             <div class="${cardNameInputClass}">
                 <label>${message:nameOnCard}<sup>*</sup></label>
