@@ -37,7 +37,7 @@
 
 
 				<div class="pull-right col-lg-4 col-sm-6 col-xs-7 zero-right student-card-action-wrapper">
-					<div class="col-xs-8 text-right">
+					<div class="col-xs-8 text-right tick-cross-wrapper">
 						<div class="collapse mark-buttons"  id="${enrolment.student.id}">
 							<div class="btn-group">
 								<a is="cancel" class="btn btn-default">
