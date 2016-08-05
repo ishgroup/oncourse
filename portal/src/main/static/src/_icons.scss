@@ -27,9 +27,10 @@
 
 .past-course {
     .app-icon.session-icon {
-        &::after {
+        background: $session-icon;
+        /* &::after {
             background: url(/portal/img/svg_icons/mark_roll-green.svg) top left no-repeat;
             background-size: contain;
-        }
+        } */
     }
 }
