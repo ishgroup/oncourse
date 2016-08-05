@@ -32,7 +32,7 @@ public class GetCollegeExpression {
 
 		if (hidePrivateAttachments) {
 			if (isStudentLoggedIn) {
-				expression = expression.andExp(WEB_VISIBILITY.in(PUBLIC,PRIVATE));
+				expression = expression.andExp(WEB_VISIBILITY.ne(PRIVATE));
 			} else {
 				expression = expression.andExp(WEB_VISIBILITY.eq(PUBLIC));
 			}
