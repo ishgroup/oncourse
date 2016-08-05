@@ -30,7 +30,7 @@ public class PaymentFormTest extends ServiceTest{
     private static final String APP_NAME = "";
     private static final String CONTEXT_NAME = "src/main/webapp";
     private static final String URL = "Payment/999999999";
-    private static final int DIV_FOR_CARD_NUMBER_INPUT = 3;
+    private static final int DIV_FOR_CARD_NUMBER_INPUT = 2;
 
 
     @Before
