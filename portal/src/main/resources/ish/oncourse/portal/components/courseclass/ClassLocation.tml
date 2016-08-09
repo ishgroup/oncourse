@@ -3,6 +3,7 @@
     <div id="class-location" class="tab-pane">
         <div class="row">
             <div class="col-lg-12 col-sm-12">
+                <t:courseclass.classlocationdetails courseClass="courseClass"/>
 
                 <t:if test="hasLocation">
                     <div id="venue" ></div>

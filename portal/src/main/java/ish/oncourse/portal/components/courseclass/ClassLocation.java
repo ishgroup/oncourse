@@ -21,6 +21,7 @@ public class ClassLocation {
 
 
 	@Parameter
+	@Property
 	private CourseClass courseClass;
 
 	@Property

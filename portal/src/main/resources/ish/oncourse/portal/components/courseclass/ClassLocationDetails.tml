@@ -1,0 +1,42 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <div class="location-details">
+        <t:if test="siteDetails.siteName">
+            <div class="location-name">${siteDetails.siteName}</div>
+            <p:else>
+                <t:if test="siteDetails.roomName">
+                    <div class="location-name">${siteDetails.roomName}</div>
+                </t:if>
+            </p:else>
+        </t:if>
+        <div class="location-address">
+            <t:if t:test="siteDetails.hasAddress()">
+                <div class="location-street">${siteDetails.street}</div>
+                <div class="location-suburb">${siteDetails.suburb}</div>
+                <div class="location-state">${siteDetails.state}</div>
+                <t:if t:test="siteDetails.postcode">
+                    <div class="location-postcode">${siteDetails.postcode}</div>
+                </t:if>
+            </t:if>
+         </div>
+         <div class="location-directions">
+             <t:if t:test="siteDetails.drivingDirections">
+                 <div class="location-driving">Site Directions</div>
+                 <p>
+                     <t:outputRaw value="siteDetails.drivingDirections" />
+                 </p>
+             </t:if>
+             <t:if t:test="siteDetails.publicTransportDirections">
+                 <div class="location-publicTransport">Public Transport</div>
+                 <p>
+                     <t:outputRaw value="siteDetails.publicTransportDirections"/>
+                 </p>
+             </t:if>
+             <t:if t:test="siteDetails.specialInstructions">
+                 <div class="location-instructions">Other Information</div>
+                 <p>
+                     <t:outputRaw value="siteDetails.specialInstructions" />
+                 </p>
+             </t:if>
+         </div>
+    </div>
+</t:container>

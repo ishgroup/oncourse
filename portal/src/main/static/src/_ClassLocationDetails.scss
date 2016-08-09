@@ -1,0 +1,16 @@
+div.location-details {
+  div.location-name {}
+
+  div.location-address {
+    div.location-street {}
+    div.location-suburb {}
+    div.location-state {}
+    div.location-postcode {}
+  }
+
+  div.location-directions {
+    div.location-driving {}
+    div.location-publicTransport {}
+    div.location-instructions {}
+  }
+}

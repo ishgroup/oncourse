@@ -3,8 +3,8 @@ package ish.oncourse.ui.components;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Room;
 import ish.oncourse.model.Site;
+import ish.oncourse.services.site.SiteDetails;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.util.ValidationErrors;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -30,42 +30,37 @@ public class SiteDetailsComponent extends ISHCommon {
 	@Property
 	private boolean collapseLocationMap;
 
-	public boolean isHasName() {
-		if (room == null) {
-			return false;
-		}
-		String name = room.getName();
-		return isStringNotEmpty(name) && !"*default*".equals(name.trim().toLowerCase());
-	}
+	private SiteDetails siteDetails;
 
 	@SetupRender
 	public void beforeRender() {
-		if (room != null) {
-			site = room.getSite();
-		}
+		siteDetails = SiteDetails.valueOf(room, textileConverter);
+		site = siteDetails.getSite();
 	}
 
+	public boolean isHasName() {
+		return siteDetails.getRoomName() != null;
+	}
+
+
 	public boolean isHasAddress() {
-		String street = site.getStreet();
-		String suberb = site.getSuburb();
-		return isStringNotEmpty(street) && isStringNotEmpty(suberb);
+		return siteDetails.hasAddress();
 	}
 
 	public boolean isHasPostCode() {
-		String postcode = site.getPostcode();
-		return isStringNotEmpty(postcode);
+		return siteDetails.getPostcode() != null;
 	}
 
 	public boolean isHasDrivingDirections() {
-		return isStringNotEmpty(site.getDrivingDirections());
+		return siteDetails.getDrivingDirections() != null;
 	}
 
 	public boolean isHasPublicTransportDirections() {
-		return isStringNotEmpty(site.getPublicTransportDirections());
+		return siteDetails.getPublicTransportDirections() != null;
 	}
 
 	public boolean isHasSpecialInstructions() {
-		return isStringNotEmpty(site.getSpecialInstructions());
+		return siteDetails.getSpecialInstructions() != null;
 	}
 
 	public List<Site> getMapSites() {
@@ -74,23 +69,15 @@ public class SiteDetailsComponent extends ISHCommon {
 		return sites;
 	}
 
-	/**
-	 * @param str
-	 * @return
-	 */
-	private boolean isStringNotEmpty(String str) {
-		return str != null && !"".equals(str);
-	}
-
 	public String getDrivingDirections() {
-		return textileConverter.convertCustomTextile(site.getDrivingDirections(), new ValidationErrors());
+		return siteDetails.getDrivingDirections();
 	}
 
 	public String getPublicTransportDirections() {
-		return textileConverter.convertCustomTextile(site.getPublicTransportDirections(), new ValidationErrors());
+		return siteDetails.getPublicTransportDirections();
 	}
 
 	public String getSpecialInstructions() {
-		return textileConverter.convertCustomTextile(site.getSpecialInstructions(), new ValidationErrors());
+		return siteDetails.getSpecialInstructions();
 	}
 }
