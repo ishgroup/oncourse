@@ -4088,4 +4088,15 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="276" author="ashestak" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="PaymentIn" columnName="studentId" />
+		</preConditions>
+		<sql>
+			ALTER TABLE PaymentIn DROP FOREIGN KEY PaymentIn_ibfk_3;
+			ALTER TABLE PaymentIn DROP COLUMN studentId;
+			ALTER TABLE PaymentIn MODIFY contactId bigint(20) NOT NULL;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
