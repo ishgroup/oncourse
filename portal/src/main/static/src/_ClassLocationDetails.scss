@@ -2,15 +2,19 @@ div.location-details {
   div.location-name {}
 
   div.location-address {
-    div.location-street {}
-    div.location-suburb {}
-    div.location-state {}
-    div.location-postcode {}
-  }
-
-  div.location-directions {
-    div.location-driving {}
-    div.location-publicTransport {}
-    div.location-instructions {}
+    div.location-street {
+    }
+    div.location-suburb {
+      float: left;
+      margin-right: 5px;
+    }
+    div.location-state {
+      float: left;
+      margin-right: 5px;
+    }
+    div.location-postcode {
+      float: left;
+      margin-right: 5px;
+    }
   }
 }

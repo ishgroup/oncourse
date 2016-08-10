@@ -18,25 +18,5 @@
                 </t:if>
             </t:if>
          </div>
-         <div class="location-directions">
-             <t:if t:test="siteDetails.drivingDirections">
-                 <div class="location-driving">Site Directions</div>
-                 <p>
-                     <t:outputRaw value="siteDetails.drivingDirections" />
-                 </p>
-             </t:if>
-             <t:if t:test="siteDetails.publicTransportDirections">
-                 <div class="location-publicTransport">Public Transport</div>
-                 <p>
-                     <t:outputRaw value="siteDetails.publicTransportDirections"/>
-                 </p>
-             </t:if>
-             <t:if t:test="siteDetails.specialInstructions">
-                 <div class="location-instructions">Other Information</div>
-                 <p>
-                     <t:outputRaw value="siteDetails.specialInstructions" />
-                 </p>
-             </t:if>
-         </div>
     </div>
 </t:container>
