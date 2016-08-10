@@ -16,6 +16,9 @@ public class PortalSettings {
 	@Property
 	private String feedbackEmail;
 	
+	@Property
+	private boolean outcomeMarkingViaPortal;
+	
 	@SuppressWarnings("all")
 	@Property
 	private boolean saved;
@@ -38,8 +41,9 @@ public class PortalSettings {
 	
 	@SetupRender
 	void beforeRender() {
-		this.hideDetails = preferenceController.getHideStudentDetailsFromTutor();
-		this.feedbackEmail = preferenceController.getTutorFeedbackEmail();
+		hideDetails = preferenceController.getHideStudentDetailsFromTutor();
+		feedbackEmail = preferenceController.getTutorFeedbackEmail();
+		outcomeMarkingViaPortal = preferenceController.getOutcomeMarkingViaPortal();
 	}
 	
 	@AfterRender
@@ -53,8 +57,9 @@ public class PortalSettings {
 		}
 		portalSettingsForm.clearErrors();
 		
-		preferenceController.setHideStudentDetailsFromTutor(this.hideDetails);
-		preferenceController.setTutorFeedbackEmail(this.feedbackEmail);
+		preferenceController.setHideStudentDetailsFromTutor(hideDetails);
+		preferenceController.setTutorFeedbackEmail(feedbackEmail);
+		preferenceController.setOutcomeMarkingViaPortal(outcomeMarkingViaPortal);
 		
 		saved = true;
 		

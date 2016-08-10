@@ -29,6 +29,7 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private static final String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
 	private static final String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
+	private static final String OUTCOME_MARKING_VIA_PORTAL = "outcome.marking.via.portal";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS = "website.medialinks.enabled";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_COURSE = "website.course.medialinks.enabled";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
@@ -123,59 +124,59 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 
-	public  void setLicenseAccessControl(boolean value) {
+	public void setLicenseAccessControl(boolean value) {
 		setValue(LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseLdap(boolean value) {
+	public void setLicenseLdap(boolean value) {
 		setValue(LICENSE_LDAP, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseBudget(boolean value) {
+	public void setLicenseBudget(boolean value) {
 		setValue(LICENSE_BUDGET, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseExternalDB(boolean value) {
+	public void setLicenseExternalDB(boolean value) {
 		setValue(LICENSE_EXTENRNAL_DB, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseSSL(boolean value) {
+	public void setLicenseSSL(boolean value) {
 		setValue(LICENSE_SSL, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseSms(boolean value) {
+	public void setLicenseSms(boolean value) {
 		setValue(LICENSE_SMS, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseCCProcessing(boolean value) {
+	public void setLicenseCCProcessing(boolean value) {
 		setValue(LICENSE_CC_PROCESSING, false, Boolean.toString(value));
 	}
 
-	public  void setLicensePayroll(boolean value) {
+	public void setLicensePayroll(boolean value) {
 		setValue(LICENSE_PAYROLL, false, Boolean.toString(value));
 	}
 
-	public  void setLicenseWebsite(boolean value) {
+	public void setLicenseWebsite(boolean value) {
 		setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
 	}
 
-	public  String getNTISLastUpdate() {
+	public String getNTISLastUpdate() {
 		return getValue(NTIS_LAST_UPDATE, false);
 	}
 
-	public  void setNTISLastUpdate(String value) {
+	public void setNTISLastUpdate(String value) {
 		setValue(NTIS_LAST_UPDATE, false, value);
 	}
 
-	public  String getPostcodesLastUpdate() {
+	public String getPostcodesLastUpdate() {
 		return getValue(POSTCODES_LAST_UPDATE, false);
 	}
 
-	public  void setPostcodesLastUpdate(String value) {
+	public void setPostcodesLastUpdate(String value) {
 		setValue(POSTCODES_LAST_UPDATE, false, value);
 	}
 
-	public  boolean getHideStudentDetailsFromTutor() {
+	public boolean getHideStudentDetailsFromTutor() {
 		try {
 			return Boolean.parseBoolean(getValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false));
 		} catch (Exception e) {
@@ -184,19 +185,32 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public  void setHideStudentDetailsFromTutor(boolean value) {
+	public void setHideStudentDetailsFromTutor(boolean value) {
 		setValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false, Boolean.toString(value));
 	}
 
-	public  String getTutorFeedbackEmail() {
+	public String getTutorFeedbackEmail() {
 		return getValue(TUTOR_FEEDBACK_EMAIL, false);
 	}
 
-	public  void setTutorFeedbackEmail(String value) {
+	public void setTutorFeedbackEmail(String value) {
 		setValue(TUTOR_FEEDBACK_EMAIL, false, value);
 	}
+	
+	public boolean getOutcomeMarkingViaPortal() {
+		try {
+			return Boolean.parseBoolean(getValue(OUTCOME_MARKING_VIA_PORTAL, false));
+		} catch (Exception e) {
+			logger.error("Cannot get property {}", OUTCOME_MARKING_VIA_PORTAL, e);
+			return false;
+		}
+	}
+	
+	public void setOutcomeMarkingViaPortal(boolean value) {
+		setValue(OUTCOME_MARKING_VIA_PORTAL, false, Boolean.toString(value));
+	}
 
-	public  boolean getEnableSocialMediaLinks() {
+	public boolean getEnableSocialMediaLinks() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS, false));
 		} catch (Exception e) {
@@ -205,11 +219,11 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public  void setEnableSocialMediaLinks(boolean value) {
+	public void setEnableSocialMediaLinks(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS, false, Boolean.toString(value));
 	}
 
-	public  boolean getEnableSocialMediaLinksCourse() {
+	public boolean getEnableSocialMediaLinksCourse() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false));
 		} catch (Exception e) {
@@ -218,11 +232,11 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public  void setEnableSocialMediaLinksCourse(boolean value) {
+	public void setEnableSocialMediaLinksCourse(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false, Boolean.toString(value));
 	}
 
-	public  boolean getEnableSocialMediaLinksWebPage() {
+	public boolean getEnableSocialMediaLinksWebPage() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false));
 		} catch (Exception e) {
@@ -231,19 +245,19 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public  void setEnableSocialMediaLinksWebPage(boolean value) {
+	public void setEnableSocialMediaLinksWebPage(boolean value) {
 		setValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false, Boolean.toString(value));
 	}
 
-	public  String getAddThisProfileId() {
+	public String getAddThisProfileId() {
 		return getValue(ADDTHIS_PROFILE_ID, false);
 	}
 
-	public  void setAddThisProfileId(String value) {
+	public void setAddThisProfileId(String value) {
 		setValue(ADDTHIS_PROFILE_ID, false, value);
 	}
 
-	public  PaymentGatewayType getPaymentGatewayType() {
+	public PaymentGatewayType getPaymentGatewayType() {
 		try {
 			return PaymentGatewayType.valueOf(getValue(PAYMENT_GATEWAY_TYPE, false));
 		} catch (Exception e) {
@@ -252,15 +266,15 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public  void setPaymentGatewayType(PaymentGatewayType value) {
+	public void setPaymentGatewayType(PaymentGatewayType value) {
 		setValue(PAYMENT_GATEWAY_TYPE, false, value.toString());
 	}
 
-	public  boolean isPaymentGatewayEnabled() {
+	public boolean isPaymentGatewayEnabled() {
 		return !PaymentGatewayType.DISABLED.equals(this.getPaymentGatewayType());
 	}
 
-	public  Integer getEnrolmentMinAge() {
+	public Integer getEnrolmentMinAge() {
 		String value = getValue(ENROLMENT_MIN_AGE, false);
 
 		if (value != null && StringUtils.isNumeric(value)) {
@@ -271,11 +285,11 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public  void setEnrolmentMinAge(Integer age) {
+	public void setEnrolmentMinAge(Integer age) {
 		setValue(ENROLMENT_MIN_AGE, false, age.toString());
 	}
 
-	public  String getRefundPolicyUrl() {
+	public String getRefundPolicyUrl() {
 		String url = getValue(REFUND_POLICY_URL, false);
 		if (url != null && !URLUtils.isAbsolute(url) && !url.startsWith("/")) {
 			url = "/" + url;
@@ -283,7 +297,7 @@ public class PreferenceController extends CommonPreferenceController {
 		return url;
 	}
 
-	public  void setRefundPolicyUrl(String value) {
+	public void setRefundPolicyUrl(String value) {
 		setValue(REFUND_POLICY_URL, false, value);
 	}
 
