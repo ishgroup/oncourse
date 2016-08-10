@@ -754,7 +754,6 @@
 		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="status" type="INTEGER" isMandatory="true" length="25"/>
 		<db-attribute name="statusNotes" type="VARCHAR" length="1000"/>
-		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="type" type="SMALLINT"/>
 	</db-entity>
 	<db-entity name="PaymentInLine">
@@ -3450,9 +3449,6 @@
 	<db-relationship name="messagePeople" source="Student" target="MessagePerson" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
-	<db-relationship name="paymentIns" source="Student" target="PaymentIn" toMany="true">
-		<db-attribute-pair source="id" target="studentId"/>
-	</db-relationship>
 	<db-relationship name="priorLearnings" source="Student" target="PriorLearning" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
@@ -4035,7 +4031,6 @@
 	<obj-relationship name="language" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="language"/>
 	<obj-relationship name="languageHome" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="languageHome"/>
 	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
-	<obj-relationship name="paymentsIn" source="Student" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentIns"/>
 	<obj-relationship name="priorLearnings" source="Student" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="studentConcessions" source="Student" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Cascade" db-relationship-path="waitingLists"/>
