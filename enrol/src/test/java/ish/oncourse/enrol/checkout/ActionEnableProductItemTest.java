@@ -30,6 +30,8 @@ public class ActionEnableProductItemTest extends ACheckoutTest {
 		Voucher voucher = (Voucher) purchaseController.getModel().getAllEnabledProductItems().get(0);
 		assertEquals(new Money("100.00"),voucher.getValueRemaining());
 
+		proceedToPayment();
+
 		makeInvalidPayment();
 		purchaseController.getPaymentEditorDelegate().tryAgain();
 	}
