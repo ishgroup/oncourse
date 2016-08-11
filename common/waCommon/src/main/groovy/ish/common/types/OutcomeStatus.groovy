@@ -248,7 +248,7 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
     private boolean assessable = false;
 
     private OutcomeStatus(int value, String assessableName, String nonAssessableName) {
-        this(value, assessableName, nonAssessableName);
+        this(value, assessableName, nonAssessableName, false);
     }
 
 	private OutcomeStatus(int value, String assessableName, String nonAssessableName, boolean assessable) {
