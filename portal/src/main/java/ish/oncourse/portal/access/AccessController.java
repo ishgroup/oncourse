@@ -28,7 +28,8 @@ public class AccessController implements Dispatcher {
 	private final static String CALENDAR_FILE = "/calendar";
 	private final static String UNSUBSCRIBE_PAGE = "/unsubscribe";
 
-    private final static String[] RESOURCES = {"/css","/js","/img","/fonts"};
+    private final static String[] RESOURCES = {"/css","/js","/img","/fonts",
+			"/certificate/img","/certificate/js","/certificate/css"};
 
 
 	@Inject
@@ -62,6 +63,15 @@ public class AccessController implements Dispatcher {
 		}
 		return false;
 	}
+
+	private boolean isCertificate(String path) {
+		Matcher matcher = PageLinkTransformer.REGEXP_CERTIFICATE_PATH.matcher(path.toLowerCase());
+		if (matcher.matches()) {
+			return true;
+		}
+		return false;
+	}
+
 
 	private boolean isUsi(String path) {
 		Matcher matcher = PageLinkTransformer.REGEXP_USI_PATH.matcher(path.toLowerCase());
@@ -110,6 +120,10 @@ public class AccessController implements Dispatcher {
 		}
 
 		if (isUsi(path)) {
+			return false;
+		}
+
+		if (isCertificate(path)) {
 			return false;
 		}
 

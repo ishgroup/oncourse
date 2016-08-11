@@ -1,0 +1,22 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+    <footer class="cert-footer clearfix">
+        <aside class="cert-sites-list">
+            <ul class="list-inline">
+                <li><img src="/portal/certificate/img/uni-sydeny.png"/></li>
+                <li><img src="/portal/certificate/img/apple.png"/></li>
+                <li><img src="/portal/certificate/img/nick.png"/></li>
+                <li><img src="/portal/certificate/img/nida.png"/></li>
+                <li><img src="/portal/certificate/img/parramatta-college.png"/></li>
+                <li><img src="/portal/certificate/img/aftrs-open.png"/></li>
+                <li><img src="/portal/certificate/img/wea-hunter.png"/></li>
+            </ul>
+        </aside>
+        <aside class="cert-poweredby-item">
+            <span class="poweredby-text">Powered by</span>
+            <img src="img/onCourse-logo.png"/>
+        </aside>
+    </footer>
+
+    <script type="text/javascript" src="/portal/js/portal-min.js"></script>
+    <script type="text/javascript" src="/portal/certificate/js/certificate.js"></script>
+</t:container>

@@ -22,6 +22,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
     public static final Pattern REGEXP_USI_PATH = Pattern.compile("^/usi/(.*)$");
     public static final Pattern REGEXP_USI_CONTEXT = Pattern.compile("^([^?.]*)?(.*)$");
 
+    public static final Pattern REGEXP_CERTIFICATE_PATH = Pattern.compile("^/certificate/(.*)$");
+
 
     @Inject
     private ICayenneService cayenneService;

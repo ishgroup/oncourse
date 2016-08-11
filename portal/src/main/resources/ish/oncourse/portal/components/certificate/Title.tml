@@ -1,0 +1,32 @@
+<t:container  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <t:delegate to="current"/>
+
+    <t:block t:id="without">
+        <p class="cert-verified-text">
+            <i class="cert-icon icon-cert-right-mark"/>&nbsp; Statement of Attainment
+        </p>
+        <h1>${model.firstName} ${model.lastName}</h1>
+        <p class="cert-verified-text">The following units of competency were successfully completed:</p>
+    </t:block>
+
+    <t:block t:id="skillset">
+        <p class="cert-verified-text">
+            <i class="cert-icon icon-cert-right-mark"/>&nbsp; Statement of Attainment - Skill Set
+        </p>
+        <h1>${model.firstName} ${model.lastName}</h1>
+        <p class="cert-verified-text">has attained the </p>
+        <h2>${model.qualification.code} ${model.qualification.level} ${model.qualification.title}</h2>
+        <p class="cert-verified-text">by successfully completing the following units of competency:</p>
+    </t:block>
+
+    <t:block t:id="qualification">
+        <p class="cert-verified-text">
+            <i class="cert-icon icon-cert-right-mark"/>&nbsp; Qualification
+        </p>
+        <h1>${model.firstName} ${model.lastName}</h1>
+        <p class="cert-verified-text">was awarded the Qualification</p>
+        <h2>${model.qualification.code} ${model.qualification.level} ${model.qualification.title}</h2>
+        <p class="cert-verified-text">The following units of competency were successfully completed:</p>
+    </t:block>
+</t:container>

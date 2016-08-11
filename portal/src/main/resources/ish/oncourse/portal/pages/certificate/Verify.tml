@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+<t:certificate.header title="literal:Certificate Verify"/>
+<body>
+<section class="cert-wrapper cert-verify">
+    <div class="cert-banner">
+        <img src="img/desktop-cert-bg.png" class="cert-banner-img banner-desktop"/>
+        <img src="img/tablet-cert-bg.png" class="cert-banner-img banner-tablet"/>
+        <img src="img/mobile-cert-bg.png" class="cert-banner-img banner-mobile"/>
+    </div>
+    <div class="container">
+        <div class="cert-container">
+            <h1>Verify Certificate</h1>
+            <p>Enter the <a href="#cert-verification-modal" class="ul-dotted" data-toggle="modal"
+                            data-target="#cert-verification-modal">certificate identifier</a> below to verify</p>
+
+            <t:certificate.form/>
+        </div>
+    </div>
+</section>
+<t:certificate.footer/>
+</body>
+</html>

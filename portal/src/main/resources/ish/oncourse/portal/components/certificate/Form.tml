@@ -1,0 +1,44 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+    <t:delegate to="block:form"/>
+
+    <t:block t:id="form">
+        <t:form class="form-inline cert-form">
+            <div class="form-group col-sm-9">
+                <div class="input-group col-sm-12">
+                    <div class="input-group-addon"><i class="cert-icon icon-info"></i></div>
+                    <input type="text" name="code" class="form-control" placeholder="Enter code..."/>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-cert-verify">Verify</button>
+            <t:delegate to="block:info"/>
+        </t:form>
+    </t:block>
+
+    <t:block t:id="info">
+        <div class="modal" tabindex="-1" role="dialog" id="cert-verification-modal"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <div class="modal-content">
+                    <div class="modal-border-wrapper"></div>
+                    <div class="clearfix modal-body">
+                        <p><strong>Loreum Ipsom</strong></p>
+                        <p><strong>Loreum Ipsom</strong></p>
+                        <p>Loreum Ipsom</p>
+                        <div class="clearfix cert-qrcode">
+                            <div class="cert-code">
+                                <span class="cert-id-text">Certificate ID</span>
+                                <img src="img/icon-qrcode.png"/>
+                            </div>
+                            <div class="cert-qrcode-link">
+                                <a href="http://cert.au/hW4ji84rfS">http://cert.au<span>/hW4ji84rfS</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </t:block>
+</t:container>

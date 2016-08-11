@@ -1,0 +1,923 @@
+/**
+*
+* mixins.scss
+*
+* Contains different type of functions
+*
+* Author: Chintan Kotadia <chintankotadia13@gmail.com>
+* Company: IshSkillCourse
+*/
+/**
+ * Following mixin handles responsive media screen from mobile first to desktop
+ */
+@import url(https://fonts.googleapis.com/css?family=Yantramanav:100,300);
+/* line 20, ../../../sass/portal/src/certificate.scss */
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+@media only screen and (min-width: 1200px) {
+  /* line 27, ../../../sass/portal/src/certificate.scss */
+  body.modal-open .cert-wrapper .container .cert-container > p {
+    margin-left: 50px;
+  }
+}
+
+/* line 34, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper {
+  position: relative;
+  overflow: hidden;
+  font-family: "Yantramanav", sans-serif;
+  font-size: 14px;
+}
+@media only screen and (min-width: 768px) {
+  /* line 34, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper {
+    font-size: 18px;
+  }
+}
+/* line 43, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon {
+  position: relative;
+}
+/* line 47, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-info, .cert-wrapper .cert-icon.icon-info-error {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+/* line 51, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-info::after, .cert-wrapper .cert-icon.icon-info-error::after {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  background: url(../../img/icon-info.png) top left no-repeat;
+  top: 0;
+  left: 0;
+}
+/* line 62, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-info-error::after {
+  background: url(../../img/icon-info-error.png) top left no-repeat;
+}
+/* line 66, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-cert-right-mark {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+/* line 71, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-cert-right-mark::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: url(../../img/icon-cert-right-mark.png) top center no-repeat;
+  left: 0;
+  top: 6px;
+}
+/* line 81, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-arrow-down {
+  border: 0;
+}
+/* line 83, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-arrow-down::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 6px;
+  background: url(../../img/icon-arrow-down.png) top center no-repeat;
+}
+/* line 91, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-arrow-top {
+  border: 0;
+}
+/* line 93, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-icon.icon-arrow-top::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 6px;
+  background: url(../../img/icon-arrow-top.png) top center no-repeat;
+}
+/* line 102, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-banner {
+  background: #ffe1a0;
+  overflow: hidden;
+  width: 100%;
+}
+/* line 108, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-banner img {
+  position: relative;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%);
+  width: auto;
+  max-width: none;
+  min-width: 100%;
+  height: auto;
+  display: none;
+}
+/* line 122, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-banner img.cert-banner-img.banner-mobile {
+  display: block;
+}
+@media only screen and (min-width: 550px) {
+  /* line 122, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper .cert-banner img.cert-banner-img.banner-mobile {
+    display: none;
+  }
+}
+@media only screen and (min-width: 980px) {
+  /* line 122, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper .cert-banner img.cert-banner-img.banner-mobile {
+    display: none;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  /* line 122, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper .cert-banner img.cert-banner-img.banner-mobile {
+    display: none;
+  }
+}
+/* line 134, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-banner img.cert-banner-img.banner-tablet {
+  display: none;
+}
+@media only screen and (min-width: 550px) {
+  /* line 134, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper .cert-banner img.cert-banner-img.banner-tablet {
+    display: block;
+  }
+}
+@media only screen and (min-width: 980px) {
+  /* line 134, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper .cert-banner img.cert-banner-img.banner-tablet {
+    display: block;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  /* line 134, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper .cert-banner img.cert-banner-img.banner-tablet {
+    display: none;
+  }
+}
+/* line 146, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper .cert-banner img.cert-banner-img.banner-desktop {
+  display: none;
+}
+@media only screen and (min-width: 1200px) {
+  /* line 146, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper .cert-banner img.cert-banner-img.banner-desktop {
+    display: block;
+  }
+}
+/* line 158, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify h1, .cert-wrapper.cert-invalid h1, .cert-wrapper.cert-statement h1 {
+  font-size: 38px;
+  text-transform: uppercase;
+  color: #222222;
+  font-family: "Yantramanav", sans-serif;
+  font-weight: 100;
+  max-width: 250px;
+  margin: 20px auto 15px;
+}
+@media only screen and (min-width: 550px) {
+  /* line 158, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify h1, .cert-wrapper.cert-invalid h1, .cert-wrapper.cert-statement h1 {
+    font-size: 70px;
+    margin-bottom: 10px;
+    max-width: 417px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 158, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify h1, .cert-wrapper.cert-invalid h1, .cert-wrapper.cert-statement h1 {
+    font-size: 120px;
+    margin-bottom: 10px;
+    max-width: 900px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  /* line 158, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify h1, .cert-wrapper.cert-invalid h1, .cert-wrapper.cert-statement h1 {
+    max-width: 100%;
+  }
+}
+/* line 180, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify h2, .cert-wrapper.cert-verify .cert-number, .cert-wrapper.cert-verify .cert-date, .cert-wrapper.cert-invalid h2, .cert-wrapper.cert-invalid .cert-number, .cert-wrapper.cert-invalid .cert-date, .cert-wrapper.cert-statement h2, .cert-wrapper.cert-statement .cert-number, .cert-wrapper.cert-statement .cert-date {
+  font-size: 28px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  color: #222222;
+  font-family: "Yantramanav", sans-serif;
+  font-weight: normal;
+}
+@media only screen and (min-width: 768px) {
+  /* line 180, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify h2, .cert-wrapper.cert-verify .cert-number, .cert-wrapper.cert-verify .cert-date, .cert-wrapper.cert-invalid h2, .cert-wrapper.cert-invalid .cert-number, .cert-wrapper.cert-invalid .cert-date, .cert-wrapper.cert-statement h2, .cert-wrapper.cert-statement .cert-number, .cert-wrapper.cert-statement .cert-date {
+    font-size: 35px;
+  }
+}
+/* line 194, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container, .cert-wrapper.cert-invalid .container {
+  padding: 0 10px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+/* line 202, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container, .cert-wrapper.cert-invalid .container .cert-container {
+  font-family: "Yantramanav", sans-serif;
+  text-align: center;
+  padding-top: 65px;
+  padding-bottom: 30px;
+  position: relative;
+  max-height: 921px;
+  height: 404px;
+}
+@media only screen and (min-width: 550px) {
+  /* line 202, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container, .cert-wrapper.cert-invalid .container .cert-container {
+    height: 885px;
+    padding-top: 250px;
+    padding-bottom: 300px;
+  }
+}
+@media only screen and (min-width: 980px) {
+  /* line 202, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container, .cert-wrapper.cert-invalid .container .cert-container {
+    height: 921px;
+    padding-top: 270px;
+    padding-bottom: 310px;
+  }
+}
+/* line 220, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container p, .cert-wrapper.cert-invalid .container .cert-container p {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #ff7e00;
+  letter-spacing: 1px;
+  line-height: 2;
+}
+@media only screen and (min-width: 768px) {
+  /* line 220, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container p, .cert-wrapper.cert-invalid .container .cert-container p {
+    font-size: 20px;
+  }
+}
+/* line 229, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container p a, .cert-wrapper.cert-invalid .container .cert-container p a {
+  color: #ff7e00;
+  text-decoration: none;
+  border-bottom: 1px dotted #ff7e00;
+  padding-bottom: 4px;
+  outline: 0 none;
+}
+/* line 237, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form, .cert-wrapper.cert-invalid .container .cert-container .cert-form {
+  max-width: 470px;
+  margin: 25px auto 0;
+  position: relative;
+}
+@media only screen and (min-width: 550px) {
+  /* line 237, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form, .cert-wrapper.cert-invalid .container .cert-container .cert-form {
+    max-width: 660px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 237, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form, .cert-wrapper.cert-invalid .container .cert-container .cert-form {
+    margin: 48px auto 0;
+  }
+}
+/* line 247, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form .form-group, .cert-wrapper.cert-invalid .container .cert-container .cert-form .form-group {
+  display: inline-block;
+  max-width: 500px;
+  margin-right: 8px;
+}
+/* line 252, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form .form-group .input-group, .cert-wrapper.cert-invalid .container .cert-container .cert-form .form-group .input-group {
+  padding: 0px;
+  position: relative;
+}
+/* line 255, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form .form-group .input-group .input-group-addon, .cert-wrapper.cert-invalid .container .cert-container .cert-form .form-group .input-group .input-group-addon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  margin-top: -14px;
+  width: 26px;
+  height: 26px;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+@media only screen and (min-width: 550px) {
+  /* line 255, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form .form-group .input-group .input-group-addon, .cert-wrapper.cert-invalid .container .cert-container .cert-form .form-group .input-group .input-group-addon {
+    left: 21px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 255, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form .form-group .input-group .input-group-addon, .cert-wrapper.cert-invalid .container .cert-container .cert-form .form-group .input-group .input-group-addon {
+    left: 32px;
+  }
+}
+/* line 272, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form .form-group .input-group .form-control, .cert-wrapper.cert-invalid .container .cert-container .cert-form .form-group .input-group .form-control {
+  width: 100%;
+  color: #a2a2a2;
+  padding-left: 80px;
+  padding: 10px 80px 10px 55px;
+  outline: 0 none;
+  font-size: 22px;
+  border: 1px solid #fff;
+  border-radius: 10em;
+  height: 50px;
+  line-height: 1;
+  box-shadow: none;
+}
+@media only screen and (min-width: 550px) {
+  /* line 272, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form .form-group .input-group .form-control, .cert-wrapper.cert-invalid .container .cert-container .cert-form .form-group .input-group .form-control {
+    padding-left: 80px;
+    padding: 10px 20px 10px 65px;
+    height: 64px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 272, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form .form-group .input-group .form-control, .cert-wrapper.cert-invalid .container .cert-container .cert-form .form-group .input-group .form-control {
+    padding: 17px 20px 17px 80px;
+    height: 78px;
+  }
+}
+/* line 296, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form .btn-cert-verify, .cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify {
+  display: inline-block;
+  width: 100%;
+  color: #fff;
+  border: 1px solid #ff9630;
+  border-radius: 10em;
+  background: #ff9630;
+  cursor: pointer;
+  outline: 0 none;
+  vertical-align: top;
+  text-transform: initial;
+  letter-spacing: 1px;
+  font-weight: 100;
+  position: absolute;
+  top: 0;
+  max-width: 97px;
+  right: 0;
+  font-size: 18px;
+  padding: 11.5px 10px;
+}
+/* line 316, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form .btn-cert-verify:hover, .cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify:hover {
+  background: #ff8917;
+}
+@media only screen and (min-width: 550px) {
+  /* line 296, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form .btn-cert-verify, .cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify {
+    max-width: 147px;
+    font-size: 25px;
+    padding: 13.5px 10px;
+    position: initial;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 296, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form .btn-cert-verify, .cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify {
+    padding: 20.5px 10px;
+  }
+}
+@media only screen and (min-width: 980px) {
+  /* line 296, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form .btn-cert-verify, .cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify {
+    padding: 17px 10px;
+    font-size: 30px;
+  }
+}
+/* line 333, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal {
+  position: fixed;
+  outline: 0 none;
+}
+@media only screen and (min-width: 1200px) {
+  /* line 333, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal {
+    position: absolute;
+    top: -180px;
+    left: -310px;
+    overflow: visible;
+  }
+}
+/* line 342, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-backdrop, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-backdrop {
+  z-index: 0;
+}
+@media only screen and (min-width: 1200px) {
+  /* line 342, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-backdrop, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-backdrop {
+    width: 100%;
+    height: 100% !important;
+  }
+}
+/* line 349, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog {
+  width: 290px;
+  padding: 30px 0px;
+}
+@media only screen and (min-width: 550px) {
+  /* line 349, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog {
+    width: 320px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  /* line 349, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog {
+    margin-left: 15px;
+  }
+}
+/* line 358, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .close, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .close {
+  background: #fff;
+  z-index: 2;
+  position: relative;
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  font-size: 30px;
+  padding-top: 3px;
+  padding-left: 2px;
+  top: 79px;
+  right: 14px;
+  color: #434343;
+  outline: 0 none;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+@media only screen and (min-width: 550px) {
+  /* line 358, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .close, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .close {
+    right: 21px;
+  }
+}
+/* line 378, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content {
+  border-radius: 100%;
+  width: 290px;
+  height: 290px;
+  background: #ff9630;
+  color: #222222;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  text-align: left;
+  overflow: hidden;
+  font-size: 14px;
+  position: relative;
+  border: 1px solid #807151;
+}
+@media only screen and (min-width: 550px) {
+  /* line 378, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content {
+    width: 320px;
+    height: 320px;
+  }
+}
+/* line 395, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-border-wrapper, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-border-wrapper {
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  right: 0px;
+  bottom: 0;
+  border: 40px solid #807151;
+  border-radius: 100%;
+  overflow: hidden;
+  z-index: 1;
+  width: 372px;
+  height: 372px;
+}
+@media only screen and (min-width: 550px) {
+  /* line 395, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-border-wrapper, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-border-wrapper {
+    width: 397px;
+    height: 397px;
+  }
+}
+/* line 412, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-body, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-body {
+  overflow: hidden;
+  border: 3px solid #cdcdcd;
+  background: #fff;
+  font-size: 14px;
+  /* left: -87px;
+  top: -28px; */
+  padding: 28px;
+  box-shadow: inset -1px -1px 5px #cdcdcd, 6px 6px #fff;
+  width: 300px;
+  height: 250px;
+  border-top-left-radius: 100%;
+  position: initial;
+  margin-top: -25px;
+  margin-left: -105px;
+}
+@media only screen and (min-width: 550px) {
+  /* line 412, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-body, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-body {
+    margin-top: -10px;
+    margin-left: -90px;
+  }
+}
+/* line 432, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content p, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content p {
+  text-transform: initial;
+  color: #222222;
+  font-size: 15px;
+}
+/* line 437, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode {
+  float: right;
+  text-align: right;
+}
+/* line 440, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code {
+  margin-bottom: 10px;
+}
+/* line 442, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code .cert-id-text, .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code img, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code .cert-id-text, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code img {
+  display: inline-block;
+  vertical-align: bottom;
+}
+/* line 446, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code .cert-id-text, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code .cert-id-text {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 0.78;
+  margin-right: 3px;
+}
+/* line 453, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code img, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-code img {
+  width: 44px;
+  height: 44px;
+}
+/* line 458, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link {
+  margin-right: 6.5px;
+}
+/* line 460, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a {
+  color: #222222;
+}
+/* line 462, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span {
+  position: relative;
+}
+/* line 464, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span::after, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span::after {
+  content: "";
+  position: absolute;
+  border: 2px solid #ff9630;
+  left: 0;
+  height: 22px;
+  top: -2px;
+  margin-left: -3px;
+  margin-right: -9px;
+  right: 3px;
+}
+/* line 487, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .cert-banner {
+  background: #ffb8ac;
+}
+/* line 489, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .cert-banner img {
+  opacity: 0.2;
+}
+@media only screen and (min-width: 550px) {
+  /* line 494, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-invalid .container .cert-container {
+    height: 885px;
+    padding-top: 170px;
+    padding-bottom: 300px;
+  }
+}
+@media only screen and (min-width: 980px) {
+  /* line 494, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-invalid .container .cert-container {
+    height: 921px;
+    padding-top: 210px;
+    padding-bottom: 226px;
+  }
+}
+/* line 509, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .container .cert-container p, .cert-wrapper.cert-invalid .container .cert-container p a {
+  color: #b60101;
+}
+/* line 512, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .container .cert-container p a {
+  border-color: #b60101;
+}
+/* line 517, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify {
+  background: #b60000;
+}
+/* line 519, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify:hover {
+  background: #9d0000;
+}
+/* line 524, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content {
+  background: #b60000;
+  border-color: #805d57;
+}
+/* line 527, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-border-wrapper {
+  border-color: #805d57;
+}
+/* line 530, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span::after {
+  border-color: #b60000;
+}
+/* line 539, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement {
+  background: #c9eeca;
+  text-align: center;
+}
+/* line 542, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container {
+  padding: 56px 0;
+}
+/* line 544, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container h1 {
+  margin-top: 26px;
+  margin-bottom: 22px;
+  max-width: 250px;
+}
+@media only screen and (min-width: 550px) {
+  /* line 544, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-statement .cert-container h1 {
+    max-width: 100%;
+  }
+}
+/* line 552, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container p {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 2;
+}
+@media only screen and (min-width: 768px) {
+  /* line 552, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-statement .cert-container p {
+    font-size: 18.5px;
+  }
+}
+/* line 561, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units {
+  text-align: left;
+  background: #fff;
+  max-width: 1000px;
+  margin: 58px -15px;
+  color: #898989;
+  padding: 10px 20px;
+}
+@media only screen and (min-width: 768px) {
+  /* line 561, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-statement .cert-container .cert-units {
+    margin: 58px auto;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    padding: 30px;
+  }
+}
+@media only screen and (min-width: 980px) {
+  /* line 561, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-statement .cert-container .cert-units {
+    padding: 58px 40px;
+  }
+}
+/* line 577, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units > div {
+  margin-bottom: 5px;
+}
+/* line 579, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units > div.row {
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 10px;
+  padding-top: 6px;
+}
+@media only screen and (min-width: 768px) {
+  /* line 579, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-statement .cert-container .cert-units > div.row {
+    border-bottom: 0;
+    padding-bottom: 0px;
+    padding-top: 0px;
+  }
+}
+/* line 588, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-down, .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-top {
+  float: right;
+  display: block;
+}
+/* line 591, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-down::after, .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-top::after {
+  right: -22px;
+}
+@media only screen and (min-width: 768px) {
+  /* line 588, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-down, .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-top {
+    display: none;
+  }
+}
+/* line 598, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units > div.row .col-sm-2 {
+  padding-right: 30px;
+  cursor: pointer;
+}
+@media only screen and (min-width: 768px) {
+  /* line 598, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-statement .cert-container .cert-units > div.row .col-sm-2 {
+    padding-right: 15px;
+    cursor: default;
+  }
+}
+/* line 606, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units > div.row .col-sm-10 {
+  display: none;
+  padding-right: 30px;
+}
+@media only screen and (min-width: 768px) {
+  /* line 606, ../../../sass/portal/src/certificate.scss */
+  .cert-wrapper.cert-statement .cert-container .cert-units > div.row .col-sm-10 {
+    display: block !important;
+    height: auto !important;
+    padding-right: 15px;
+  }
+}
+/* line 616, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units > div.row.units-active .col-sm-10 {
+  display: block !important;
+}
+/* line 620, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units > div.row:last-child {
+  border-bottom: 0;
+}
+/* line 625, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-units strong {
+  color: #222222;
+}
+/* line 629, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .NRTLogo {
+  margin-top: 38px;
+}
+/* line 632, ../../../sass/portal/src/certificate.scss */
+.cert-wrapper.cert-statement .cert-container .cert-verified-text {
+  color: #407d43;
+  text-transform: uppercase;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* line 641, ../../../sass/portal/src/certificate.scss */
+.cert-footer {
+  background: #fff;
+  padding: 40px 10px;
+}
+@media only screen and (min-width: 768px) {
+  /* line 641, ../../../sass/portal/src/certificate.scss */
+  .cert-footer {
+    padding: 40px;
+  }
+}
+/* line 647, ../../../sass/portal/src/certificate.scss */
+.cert-footer .cert-sites-list {
+  display: none;
+  width: 100%;
+}
+@media only screen and (min-width: 550px) {
+  /* line 647, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-sites-list {
+    display: block;
+    max-width: 70%;
+    overflow: hidden;
+    float: left;
+  }
+}
+@media only screen and (min-width: 600px) {
+  /* line 647, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-sites-list {
+    max-width: 67%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 647, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-sites-list {
+    max-width: 62%;
+  }
+}
+@media only screen and (min-width: 980px) {
+  /* line 647, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-sites-list {
+    max-width: 61%;
+  }
+}
+@media only screen and (min-width: 1025px) {
+  /* line 647, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-sites-list {
+    max-width: 76.8%;
+  }
+}
+/* line 668, ../../../sass/portal/src/certificate.scss */
+.cert-footer .cert-sites-list ul {
+  list-style: none;
+  display: table;
+}
+/* line 671, ../../../sass/portal/src/certificate.scss */
+.cert-footer .cert-sites-list ul li {
+  display: table-cell;
+  text-align: center;
+  margin-bottom: 15px;
+  vertical-align: middle;
+}
+@media only screen and (min-width: 768px) {
+  /* line 671, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-sites-list ul li {
+    text-align: left;
+    margin-bottom: 0px;
+    padding-right: 15px;
+  }
+}
+/* line 684, ../../../sass/portal/src/certificate.scss */
+.cert-footer .cert-poweredby-item {
+  text-align: center;
+  position: relative;
+}
+@media only screen and (min-width: 550px) {
+  /* line 684, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-poweredby-item {
+    float: right;
+    margin-top: 13px;
+  }
+}
+@media only screen and (min-width: 980px) {
+  /* line 684, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-poweredby-item {
+    text-align: right;
+  }
+}
+/* line 697, ../../../sass/portal/src/certificate.scss */
+.cert-footer .cert-poweredby-item img {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 150px;
+}
+@media only screen and (min-width: 768px) {
+  /* line 697, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-poweredby-item img {
+    max-width: none;
+  }
+}
+/* line 705, ../../../sass/portal/src/certificate.scss */
+.cert-footer .cert-poweredby-item .poweredby-text {
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 15px;
+  text-transform: uppercase;
+  color: #999999;
+  font-family: "Yantramanav", sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+@media only screen and (min-width: 550px) {
+  /* line 705, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-poweredby-item .poweredby-text {
+    position: absolute;
+    left: 51px;
+    top: -10px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 705, ../../../sass/portal/src/certificate.scss */
+  .cert-footer .cert-poweredby-item .poweredby-text {
+    left: 69px;
+    top: -10px;
+  }
+}
