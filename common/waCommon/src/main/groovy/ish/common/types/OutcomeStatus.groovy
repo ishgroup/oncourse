@@ -2,12 +2,10 @@
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.common.types;
+package ish.common.types
 
-import ish.common.util.DisplayableExtendedEnumeration;
-import ish.oncourse.API;
-
-import java.util.*;
+import ish.common.util.DisplayableExtendedEnumeration
+import ish.oncourse.API
 
 /**
  * A set of values for AVETMISS reporting from the version 7 standard.
@@ -31,7 +29,7 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * Competency achieved/pass
 	 */
 	@API
-	STATUS_ASSESSABLE_PASS(20, "Competency achieved/pass (20)", null),
+	STATUS_ASSESSABLE_PASS(20, "Competency achieved/pass (20)", null, true),
 	
 	/**
 	 * Database value: 30
@@ -55,7 +53,7 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * RPL granted
 	 */
 	@API
-	STATUS_ASSESSABLE_RPL_GRANTED(51, "RPL granted (51)", null), // recognition of prior learning
+	STATUS_ASSESSABLE_RPL_GRANTED(51, "RPL granted (51)", null, true), // recognition of prior learning
 
 	/**
 	 * Database value: 52
@@ -71,7 +69,7 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * RCC granted
 	 */
 	@API
-	STATUS_ASSESSABLE_RCC_GRANTED(53, "RCC granted (53)", null),
+	STATUS_ASSESSABLE_RCC_GRANTED(53, "RCC granted (53)", null, true),
 
 	/**
 	 * Database value: 54
@@ -87,7 +85,7 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	 * Credit Transfer
 	 */
 	@API
-	STATUS_ASSESSABLE_CREDIT_TRANSFER(60, "Credit Transfer (60)", null),
+	STATUS_ASSESSABLE_CREDIT_TRANSFER(60, "Credit Transfer (60)", null, true),
 
 	/**
 	 * Database value: 65
@@ -234,23 +232,30 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	public static final Map<String, OutcomeStatus> STATUS_CHOICES_VET = TypesUtil.getValuesAsMap(OutcomeStatus.class);
 
 	static {
-		STATUS_CHOICES_DEPRECATED.add(OutcomeStatus.STATUS_ASSESSABLE_RCC_GRANTED.getDisplayName());
-		STATUS_CHOICES_DEPRECATED.add(OutcomeStatus.STATUS_ASSESSABLE_RCC_NOT_GRANTED.getDisplayName());
+		STATUS_CHOICES_DEPRECATED.add(STATUS_ASSESSABLE_RCC_GRANTED.getDisplayName());
+		STATUS_CHOICES_DEPRECATED.add(STATUS_ASSESSABLE_RCC_NOT_GRANTED.getDisplayName());
 
 		for (String key : STATUS_CHOICES_DEPRECATED) {
 			STATUS_CHOICES_VET.remove(key);
 		}
 
-		STATUS_CHOICES_NON_VET.put(OutcomeStatus.STATUS_NOT_SET.getAlternateDisplayName(), OutcomeStatus.STATUS_NOT_SET);
-		STATUS_CHOICES_NON_VET.put(OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.getAlternateDisplayName(), OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED);
-		STATUS_CHOICES_NON_VET.put(OutcomeStatus.STATUS_NON_ASSESSABLE_NOT_COMPLETED.getAlternateDisplayName(),
-				OutcomeStatus.STATUS_NON_ASSESSABLE_NOT_COMPLETED);
+		STATUS_CHOICES_NON_VET.put(STATUS_NOT_SET.getAlternateDisplayName(), STATUS_NOT_SET);
+		STATUS_CHOICES_NON_VET.put(STATUS_NON_ASSESSABLE_COMPLETED.getAlternateDisplayName(), STATUS_NON_ASSESSABLE_COMPLETED);
+		STATUS_CHOICES_NON_VET.put(STATUS_NON_ASSESSABLE_NOT_COMPLETED.getAlternateDisplayName(),
+				STATUS_NON_ASSESSABLE_NOT_COMPLETED);
 	}
 
-	private OutcomeStatus(int value, String assessableName, String nonAssessableName) {
+    private boolean assessable = false;
+
+    private OutcomeStatus(int value, String assessableName, String nonAssessableName) {
+        this(value, assessableName, nonAssessableName);
+    }
+
+	private OutcomeStatus(int value, String assessableName, String nonAssessableName, boolean assessable) {
 		this.value = value;
 		this.assessableName = assessableName;
 		this.nonAssessableName = nonAssessableName;
+        this.assessable = assessable;
 	}
 
 	/**
@@ -282,5 +287,9 @@ public enum OutcomeStatus implements DisplayableExtendedEnumeration<Integer> {
 	@Override
 	public String toString() {
 		return getDisplayName();
+	}
+
+	public boolean isAssessable() {
+        return assessable
 	}
 }
