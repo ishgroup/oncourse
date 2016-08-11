@@ -19,7 +19,7 @@
             </t:if>
 		</td>
 		<td class="alignright priceValue update-button">
-			<div class="button update-voucher-price display-none priceValue">update</div>
+			<div class="button update-voucher-price display-none priceValue">Update</div>
 		</td>
 		<td class="alignright priceValue">
 			<t:if test="checked">
@@ -55,7 +55,7 @@
                 </t:unless>
             </t:if>
             <t:unless test="voucherValue.hasPrice()">
-                This voucher have no specified price. Please enter the amount below:
+                This voucher have no specified price. Please enter the amount:
             </t:unless>
     </t:block>
 
