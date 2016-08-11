@@ -36,6 +36,7 @@ AttendanceCtrl.prototype = {
     btnPartialSave: null,
 
     markState: null,
+    markButtons: null,
     partialReasonDialogShows: false,
 
     destroy:  function() {
@@ -55,8 +56,10 @@ AttendanceCtrl.prototype = {
     reset: function() {
         this.btnOk.removeClass('btn-success');
         this.btnOk.removeClass('active');
+        this.btnOk.css("visibility", "visible");
         this.btnCancel.removeClass('active');
         this.btnCancel.removeClass('btn-danger');
+        this.btnCancel.css("visibility", "visible");
         this.dlgConfirm.hide();
     },
 
@@ -92,6 +95,8 @@ AttendanceCtrl.prototype = {
     makePartially: function() {
         var self = this;
         this.btnGroup.closest('div').append('<div class="partially-attended-mark btn-primary">Partially attended</div>');
+        this.btnOk.css("visibility", "hidden");
+        this.btnCancel.css("visibility", "hidden");
         this.btnGroup.closest('div').children('div.partially-attended-mark').on('click', function() {
             $j(this).remove();
             self.reset();
@@ -103,6 +108,8 @@ AttendanceCtrl.prototype = {
     makeWithReason: function() {
         var self = this;
         this.btnGroup.closest('div').append('<div class="absent-with-reason-mark btn-primary">Absent with reason</div>');
+        this.btnOk.css("visibility", "hidden");
+        this.btnCancel.css("visibility", "hidden");
         this.btnGroup.closest('div').children('div.absent-with-reason-mark').on('click', function() {
             $j(this).remove();
             self.reset();
@@ -157,6 +164,7 @@ AttendanceCtrl.prototype = {
         this.dlgPartialReason = $j('#absence-' + this.attendance.studentId);
         this.txtReasonNote = $j('#absent-reason-' + this.attendance.studentId + ' textarea');
         this.txtPartialNote = $j('#absent-partial-' + this.attendance.studentId + ' textarea');
+        this.markButtons =  $j('#' + this.attendance.studentId + '.mark-buttons');
 
         this.txtReasonNote.val(this.attendance.note);
         this.txtPartialNote.val(this.attendance.note);
@@ -228,9 +236,11 @@ AttendanceCtrl.prototype = {
         this.btnPartialReason.on('click', function() {
             if (self.partialReasonDialogShows) {
                 self.dlgPartialReason.addClass('collapse');
+                self.markButtons.removeClass('collapse');
                 self.partialReasonDialogShows = false;
             } else {
                 self.dlgPartialReason.removeClass('collapse');
+                self.markButtons.addClass('collapse');
                 self.partialReasonDialogShows = true;
             }
         });
