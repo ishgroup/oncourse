@@ -77,7 +77,7 @@ function initProductItemListHandle()
         sendAjaxWithData(actionLink, data);
 	});
 
-    $j('.priceValue').keypress(function(){
+    $j('.priceValue').on('input', function(){
         $j(this).parent('tr.enrolmentItem').find('.update-voucher-price').removeClass('display-none');
     });
 
