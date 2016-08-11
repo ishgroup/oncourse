@@ -13,6 +13,9 @@ import static ish.oncourse.enrol.checkout.PurchaseController.Message.enterVouche
 
 
 public class ActionEnableProductItem extends APurchaseAction {
+	
+	private static final Money DEFAULT_VOUCHER_PRICE = new Money("100.00");
+	
 	private ProductItem productItem;
     //the value which payer entered in price field on gui for voucher without price
     private Money price;
@@ -55,7 +58,7 @@ public class ActionEnableProductItem extends APurchaseAction {
 
 		if (getController().getVoucherService().isVoucherWithoutPrice(product)) {
 			if (Money.ZERO.equals(price)) {
-				price = new Money("100.00");
+				price = DEFAULT_VOUCHER_PRICE;
 			}
 			voucher.setRedemptionValue(price);
 			voucher.setValueOnPurchase(price);

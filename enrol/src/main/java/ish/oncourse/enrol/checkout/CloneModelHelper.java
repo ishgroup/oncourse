@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.math.Money;
 import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.model.*;
 import ish.oncourse.services.voucher.VoucherRedemptionHelper;
@@ -63,13 +64,11 @@ public class CloneModelHelper {
 
             for (Product oldProduct : oldProducts) {
                 Product product = newModel.localizeObject(oldProduct);
-                ProductItem productItem = purchaseController.createProductItem(contact, product);
-                newModel.addProductItem(productItem);
+                ActionEnableProductItem actionEnableProductItem = ActionEnableProductItemBuilder.valueOf(contact, product, purchaseController).build();
                 ProductItem oldProductItem = oldModel.getProductItemBy(oldContact, oldProduct);
                 if (oldProductItem != null) {
-                    ActionEnableProductItem actionEnableProductItem = new ActionEnableProductItem();
-                    actionEnableProductItem.setController(purchaseController);
-                    actionEnableProductItem.setProductItem(productItem);
+                    Money price = oldProductItem instanceof Voucher ? ((Voucher) oldProductItem).getValueOnPurchase() : Money.ZERO;
+                    actionEnableProductItem.setPrice(price);
                     actionEnableProductItem.action();
                 }
             }

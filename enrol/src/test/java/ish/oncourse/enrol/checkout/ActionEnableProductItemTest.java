@@ -11,9 +11,6 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by anarut on 8/11/16.
- */
 public class ActionEnableProductItemTest extends ACheckoutTest {
 
 	@Before
@@ -28,7 +25,7 @@ public class ActionEnableProductItemTest extends ACheckoutTest {
 		addContact(contact1);
 		assertEquals(1, purchaseController.getModel().getAllEnabledProductItems().size());
 		Voucher voucher = (Voucher) purchaseController.getModel().getAllEnabledProductItems().get(0);
-		assertEquals(new Money("100.00"),voucher.getValueRemaining());
+		assertEquals(new Money("100.00"), voucher.getValueOnPurchase());
 
 		proceedToPayment();
 
