@@ -56,8 +56,7 @@
             </t:if>
             <t:unless test="voucherValue.hasPrice()">
                 This voucher have no specified price.
-                <br/>
-                <span>Please enter the amount:</span>   
+                <dt class="label">Please enter the amount:</dt>
             </t:unless>
     </t:block>
 
