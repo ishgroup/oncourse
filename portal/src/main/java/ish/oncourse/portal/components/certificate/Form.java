@@ -19,6 +19,9 @@ import org.apache.tapestry5.services.Request;
  * Date: 10/08/2016
  */
 public class Form {
+	public static final String PREFIX = "c";
+	public static final String PARAM_code = "code";
+
 	@Inject
 	private ICayenneService cayenneService;
 
@@ -41,11 +44,11 @@ public class Form {
 	private Statement statement;
 
 	Object onSuccess() {
-		String code = StringUtils.trimToNull(request.getParameter("code"));
+		String code = StringUtils.trimToNull(request.getParameter(PARAM_code));
 		if (code == null) {
 			return null;
 		} else {
-			return pageRenderLinkSource.createPageRenderLinkWithContext(Statement.class, code);
+			return pageRenderLinkSource.createPageRenderLinkWithContext(Statement.class, PREFIX + code);
 		}
 	}
 }
