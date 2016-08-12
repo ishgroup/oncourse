@@ -136,11 +136,12 @@ public class ProductListItem {
 
 		String priceValue =  StringUtils.trimToNull(request.getParameter("priceValue"));
 		Money price = Money.ZERO;
-		if (priceValue != null) {
+		if (priceValue != null)
+		{
 			try {
-				price =  (Money) formatter.stringToValue(priceValue);
+				return  (Money) formatter.stringToValue(priceValue);
 			} catch (ParseException e) {
-				logger.info(e);
+				return null;
 			}
 		}
 		return price;
