@@ -134,4 +134,23 @@ public class SiteDetails {
 		siteDetails.init();
 		return siteDetails;
 	}
+
+	public static SiteDetails valueOf(Site site, ITextileConverter textileConverter) {
+		SiteDetails siteDetails = new SiteDetails();
+		siteDetails.room = null;
+		siteDetails.site = site;
+		siteDetails.textileConverter = textileConverter;
+		siteDetails.init();
+		return siteDetails;
+	}
+
+	public static SiteDetails valueOf() {
+		SiteDetails siteDetails = new SiteDetails();
+		siteDetails.room = null;
+		siteDetails.site = null;
+		siteDetails.textileConverter = null;
+		siteDetails.init();
+		return siteDetails;
+	}
+
 }

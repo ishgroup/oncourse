@@ -28,6 +28,10 @@ public class ClassLocationDetails {
 
 	@SetupRender
 	public void setupRender() {
-		this.siteDetails = SiteDetails.valueOf(courseClass.getRoom(), textileConverter);
+		if (courseClass.getRoom() != null) {
+			this.siteDetails = SiteDetails.valueOf(courseClass.getRoom(), textileConverter);
+		} else {
+			this.siteDetails = SiteDetails.valueOf();
+		}
 	}
 }

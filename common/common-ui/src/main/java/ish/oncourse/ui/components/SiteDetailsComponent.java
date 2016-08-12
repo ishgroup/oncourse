@@ -34,8 +34,15 @@ public class SiteDetailsComponent extends ISHCommon {
 
 	@SetupRender
 	public void beforeRender() {
-		siteDetails = SiteDetails.valueOf(room, textileConverter);
-		site = siteDetails.getSite();
+		if (room != null) {
+			siteDetails = SiteDetails.valueOf(room, textileConverter);
+			site = siteDetails.getSite();
+		}
+		else if (site != null) {
+			siteDetails = SiteDetails.valueOf(site, textileConverter);
+		} else {
+			siteDetails = SiteDetails.valueOf();
+		}
 	}
 
 	public boolean isHasName() {
