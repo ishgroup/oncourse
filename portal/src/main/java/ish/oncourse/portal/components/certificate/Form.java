@@ -19,7 +19,6 @@ import org.apache.tapestry5.services.Request;
  * Date: 10/08/2016
  */
 public class Form {
-	public static final String PREFIX = "c";
 	public static final String PARAM_code = "code";
 
 	@Inject
@@ -48,7 +47,7 @@ public class Form {
 		if (code == null) {
 			return null;
 		} else {
-			return pageRenderLinkSource.createPageRenderLinkWithContext(Statement.class, PREFIX + code);
+			return pageRenderLinkSource.createPageRenderLinkWithContext(Statement.class, code);
 		}
 	}
 }

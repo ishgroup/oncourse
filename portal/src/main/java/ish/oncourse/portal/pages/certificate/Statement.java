@@ -6,7 +6,6 @@ package ish.oncourse.portal.pages.certificate;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.portal.certificate.Model;
 import ish.oncourse.portal.certificate.ModelBuilder;
-import ish.oncourse.portal.components.certificate.Form;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -51,11 +50,7 @@ public class Statement extends ISHCommon {
 	}
 
 	public Object onActivate(String code) {
-
-		if (code == null || !code.startsWith(Form.PREFIX)) {
-			return pageRenderLinkSource.createPageRenderLink(Verify.class);
-		}
-		code =  StringUtils.trimToNull(code.substring(1));
+		code =  StringUtils.trimToNull(code);
 		if (code == null) {
 			return pageRenderLinkSource.createPageRenderLink(Verify.class);
 		}
