@@ -29,10 +29,6 @@ class ModelBuilder {
 
     public Result build() {
         code = StringUtils.trimToNull(code)
-        if (code == null || !code.startsWith('c')) {
-            return Result.emptyCode
-        }
-        code =  StringUtils.trimToNull(code.substring(1))
         if (code == null) {
             return Result.emptyCode
         }

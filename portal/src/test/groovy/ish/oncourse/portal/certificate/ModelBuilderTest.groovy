@@ -32,27 +32,17 @@ class ModelBuilderTest {
         PreferenceController preferenceController = mock(PreferenceController)
         PreferenceControllerFactory factory = mock(PreferenceControllerFactory)
         when(factory.getPreferenceController(certificate.getCollege())).thenReturn(preferenceController)
-        String code = "c111111111111"
+        String code = "111111111111"
         ModelBuilder builder = ModelBuilder.valueOf(code, service, factory)
         ModelBuilder.Result result = builder.build()
 
         assertEquals(ModelBuilder.Result.successFull, result)
-
-        code = "111111111111"
-        builder = ModelBuilder.valueOf(code, service, factory)
-        result = builder.build()
-        assertEquals(ModelBuilder.Result.emptyCode, result)
 
         code = ""
         builder = ModelBuilder.valueOf(code, service, factory)
         result = builder.build()
         assertEquals(ModelBuilder.Result.emptyCode, result)
 
-
-        code = "c"
-        builder = ModelBuilder.valueOf(code, service, factory)
-        result = builder.build()
-        assertEquals(ModelBuilder.Result.emptyCode, result)
 
         code = null
         builder = ModelBuilder.valueOf(code, service, factory)

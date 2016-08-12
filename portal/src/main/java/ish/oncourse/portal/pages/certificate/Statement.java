@@ -8,6 +8,7 @@ import ish.oncourse.portal.certificate.Model;
 import ish.oncourse.portal.certificate.ModelBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PageRenderLinkSource;
@@ -18,6 +19,8 @@ import org.apache.tapestry5.services.Request;
  * Date: 8/08/2016
  */
 public class Statement extends ISHCommon {
+
+	public static final String PREFIX = "c";
 
 	@Inject
 	private Request request;
@@ -49,6 +52,15 @@ public class Statement extends ISHCommon {
 	}
 
 	public Object onActivate(String code) {
+
+		if (code == null || !code.startsWith(PREFIX)) {
+			return pageRenderLinkSource.createPageRenderLink(Verify.class);
+		}
+		code =  StringUtils.trimToNull(code.substring(1));
+		if (code == null) {
+			return pageRenderLinkSource.createPageRenderLink(Verify.class);
+		}
+
 		builder = ModelBuilder.valueOf(code, cayenneService, preferenceControllerFactory);
 		switch (builder.build()) {
 			case emptyCode:
