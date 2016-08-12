@@ -33,7 +33,7 @@ class Model {
         model.firstName = certificate.studentFirstName
         model.lastName = certificate.studentLastName
         model.collegeName = certificate.college.name
-        model.rto = preferenceController.getAvetmissID()
+        model.rto = preferenceController.avetmissID
         model.collegeUrl = PortalUtils.getDomainName(preferenceController)
         if (model.collegeUrl) {
             model.collegeUrl = "http://" + model.collegeUrl
