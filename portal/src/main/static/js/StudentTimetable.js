@@ -44,6 +44,6 @@ function updatePercenColours() {
         }
         else{
             parent.addClass('mimimum-percents');
-        };
+        }
     });
 }

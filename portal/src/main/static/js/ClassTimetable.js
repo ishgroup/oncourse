@@ -11,13 +11,13 @@ goog.require('StudentTimetable');
 
 var $j = jQuery.noConflict();
 
-AttendanceCtrl = function() {
-}
+AttendanceCtrl = function () {
+};
 
 AttendanceCtrl.prototype = {
-    
+
     attendance: null,
-    
+
     btnGroup: null,
     btnCancel: null,
     btnOk: null,
@@ -26,11 +26,11 @@ AttendanceCtrl.prototype = {
     btnConfirmNo: null,
     btnPartialReason: null,
     dlgPartialReason: null,
-    
+
     txtReasonNote: null,
     txtPartialNote: null,
-    datePartialFrom:null,
-    datePartialTo:null,
+    datePartialFrom: null,
+    datePartialTo: null,
 
     btnReasonSave: null,
     btnPartialSave: null,
@@ -39,7 +39,7 @@ AttendanceCtrl.prototype = {
     markButtons: null,
     partialReasonDialogShows: false,
 
-    destroy:  function() {
+    destroy: function () {
         this.btnCancel.off();
         this.btnOk.off();
         this.btnPartialReason.off();
@@ -53,7 +53,7 @@ AttendanceCtrl.prototype = {
     },
 
 
-    reset: function() {
+    reset: function () {
         this.btnOk.removeClass('btn-success');
         this.btnOk.removeClass('active');
         this.btnOk.css("visibility", "visible");
@@ -63,7 +63,7 @@ AttendanceCtrl.prototype = {
         this.dlgConfirm.hide();
     },
 
-    update: function() {
+    update: function () {
         switch (this.attendance.type) {
             case 1:
                 this.makeOk();
@@ -81,23 +81,23 @@ AttendanceCtrl.prototype = {
                 break;
         }
     },
-    
-    makeOk: function() {
+
+    makeOk: function () {
         this.btnOk.addClass('btn-success active');
         this.btnCancel.removeClass('btn-danger active');
         this.attendance.type = 1;
     },
-    makeCancel: function() {
+    makeCancel: function () {
         this.btnCancel.addClass('btn-danger active');
         this.btnOk.removeClass('btn-success active');
         this.attendance.type = 3;
     },
-    makePartially: function() {
+    makePartially: function () {
         var self = this;
         this.btnGroup.closest('div').append('<div class="partially-attended-mark btn-primary">Partially attended</div>');
         this.btnOk.css("visibility", "hidden");
         this.btnCancel.css("visibility", "hidden");
-        this.btnGroup.closest('div').children('div.partially-attended-mark').on('click', function() {
+        this.btnGroup.closest('div').children('div.partially-attended-mark').on('click', function () {
             $j(this).remove();
             self.reset();
             self.attendance.type = 0;
@@ -105,21 +105,21 @@ AttendanceCtrl.prototype = {
         })
 
     },
-    makeWithReason: function() {
+    makeWithReason: function () {
         var self = this;
         this.btnGroup.closest('div').append('<div class="absent-with-reason-mark btn-primary">Absent with reason</div>');
         this.btnOk.css("visibility", "hidden");
         this.btnCancel.css("visibility", "hidden");
-        this.btnGroup.closest('div').children('div.absent-with-reason-mark').on('click', function() {
+        this.btnGroup.closest('div').children('div.absent-with-reason-mark').on('click', function () {
             $j(this).remove();
             self.reset();
             self.attendance.type = 0;
             self.saveAttendance();
-        }) 
+        })
     },
-    
-    saveAttendance: function() {
-        
+
+    saveAttendance: function () {
+
         var self = this;
         $j.ajax({
             type: 'POST',
@@ -130,7 +130,7 @@ AttendanceCtrl.prototype = {
             contentType: 'application/json',
             processData: false,
             success: function (data) {
-                $j('div#'+ data.studentId +'.mark-buttons').next('.percents-of-attendance').children('span').children('span').text(data.percent);
+                $j('div#' + data.studentId + '.mark-buttons').next('.percents-of-attendance').children('span').children('span').text(data.percent);
                 updatePercenColours();
                 var sessionLink = $j('a#' + data.sessionId);
                 sessionLink.text(data.labelText);
@@ -151,8 +151,8 @@ AttendanceCtrl.prototype = {
             }
         });
     },
-    
-    init: function(attendance) {
+
+    init: function (attendance) {
         this.attendance = attendance;
         this.btnGroup = $j('#' + this.attendance.studentId + '> div.btn-group');
         this.btnCancel = this.btnGroup.children('a[is=cancel]');
@@ -160,52 +160,52 @@ AttendanceCtrl.prototype = {
         this.dlgConfirm = $j('#marking-' + this.attendance.studentId);
         this.btnConfirmYes = this.dlgConfirm.children('.absent-with-reason').children('.btn-success');
         this.btnConfirmNo = this.dlgConfirm.children('.absent-with-reason').children('.btn-danger');
-        this.btnPartialReason = $j('#absent-reason-partial-' + this.attendance.studentId)
+        this.btnPartialReason = $j('#absent-reason-partial-' + this.attendance.studentId);
         this.dlgPartialReason = $j('#absence-' + this.attendance.studentId);
         this.txtReasonNote = $j('#absent-reason-' + this.attendance.studentId + ' textarea');
         this.txtPartialNote = $j('#absent-partial-' + this.attendance.studentId + ' textarea');
-        this.markButtons =  $j('#' + this.attendance.studentId + '.mark-buttons');
+        this.markButtons = $j('#' + this.attendance.studentId + '.mark-buttons');
 
         this.txtReasonNote.val(this.attendance.note);
         this.txtPartialNote.val(this.attendance.note);
 
         this.datePartialFrom = $j('#absent-partial-' + this.attendance.studentId + ' input.arrived');
         this.datePartialTo = $j('#absent-partial-' + this.attendance.studentId + ' input.departed');
-        
-        this.datePartialFrom.prop( "value", moment(this.attendance.startDate).format('hh:mm:a').toUpperCase());
+
+        this.datePartialFrom.prop("value", moment(this.attendance.startDate).format('hh:mm:a').toUpperCase());
         this.datePartialFrom.prop('disabled', 'true');
-        
+
         this.datePartialTo.timepicki({
-                        start_time: [moment(this.attendance.endDate).format('hh'), moment(this.attendance.endDate).format('mm'), moment(this.attendance.endDate).format('a').toUpperCase()],
-                        increase_direction: 'up',
-                        step_size_minutes: 5
-                   });
+            start_time: [moment(this.attendance.endDate).format('hh'), moment(this.attendance.endDate).format('mm'), moment(this.attendance.endDate).format('a').toUpperCase()],
+            increase_direction: 'up',
+            step_size_minutes: 5
+        });
 
         if (this.attendance.durationMinutes) {
-            this.datePartialTo.prop("value",moment(this.attendance.startDate).add(this.attendance.durationMinutes, 'minutes').format('hh:mm:a').toUpperCase());
-        } 
-        
+            this.datePartialTo.prop("value", moment(this.attendance.startDate).add(this.attendance.durationMinutes, 'minutes').format('hh:mm:a').toUpperCase());
+        }
+
         this.btnReasonSave = $j('#absent-reason-' + this.attendance.studentId + ' button');
-        this.btnPartialSave =  $j('#absent-partial-' + this.attendance.studentId + ' button');
-        
+        this.btnPartialSave = $j('#absent-partial-' + this.attendance.studentId + ' button');
+
         this.reset();
         this.update();
 
         var self = this;
-        
-        this.btnOk.on('click', function() {
+
+        this.btnOk.on('click', function () {
             if (self.attendance.type == 0) {
                 self.makeOk();
                 self.saveAttendance();
             } else if (self.attendance.type != 1) {
                 self.markState = true;
                 self.dlgConfirm.show();
-            }    
+            }
         });
 
-        this.btnCancel.on('click', function() {
+        this.btnCancel.on('click', function () {
             if (self.attendance.type == 0) {
-                self.makeCancel()
+                self.makeCancel();
                 self.saveAttendance();
             } else if (self.attendance.type != 3) {
                 self.markState = false;
@@ -213,7 +213,7 @@ AttendanceCtrl.prototype = {
             }
         });
 
-        this.btnConfirmYes.on('click', function() {
+        this.btnConfirmYes.on('click', function () {
             switch (self.markState) {
                 case true:
                     self.makeOk();
@@ -229,11 +229,11 @@ AttendanceCtrl.prototype = {
             self.dlgConfirm.hide();
         });
 
-        this.btnConfirmNo.on('click', function() {
+        this.btnConfirmNo.on('click', function () {
             self.dlgConfirm.hide();
         });
 
-        this.btnPartialReason.on('click', function() {
+        this.btnPartialReason.on('click', function () {
             if (self.partialReasonDialogShows) {
                 self.dlgPartialReason.addClass('collapse');
                 self.markButtons.removeClass('collapse');
@@ -245,8 +245,8 @@ AttendanceCtrl.prototype = {
             }
         });
 
-        this.btnReasonSave.on('click', function(){
-            
+        this.btnReasonSave.on('click', function () {
+
             if (self.txtReasonNote.val().length > 0) {
                 self.attendance.type = 2;
                 self.attendance.note = self.txtReasonNote.val();
@@ -260,15 +260,15 @@ AttendanceCtrl.prototype = {
             }
         });
 
-        this.btnPartialSave.on('click', function() {
+        this.btnPartialSave.on('click', function () {
 
             if (self.datePartialTo.val().length <= 0) {
                 alert('You have no DEPARTED time!');
                 return false;
             }
-            
+
             var departed = moment(moment(self.attendance.endDate).format('MM-DD-YYYY ') + self.datePartialTo.val(), 'MM-DD-YYYY hh : mm : a');
-            
+
             if (departed > self.attendance.endDate) {
                 alert('Departed time must be before the session ends.');
                 return false;
@@ -276,7 +276,7 @@ AttendanceCtrl.prototype = {
                 alert('Departed time must be after the session starts.');
                 return false;
             }
-            
+
             self.attendance.type = 4;
             self.attendance.durationMinutes = moment.duration(departed.diff(self.attendance.startDate)).asMinutes();
 
@@ -288,7 +288,7 @@ AttendanceCtrl.prototype = {
             self.btnPartialReason.click();
         });
     }
-}
+};
 
 
 ClassTimetable = function () {
@@ -308,28 +308,39 @@ ClassTimetable.prototype = {
             contentType: 'application/json',
             processData: false,
             success: function (data) {
-                $j.each(data, function(index, attendance) {
-                    var attendanceItem =  new AttendanceCtrl()
+                $j.each(data, function (index, attendance) {
+                    var attendanceItem = new AttendanceCtrl();
                     attendanceItem.init(attendance);
                     self.attendanceItems.push(attendanceItem)
 
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+                console.log(errorThrown);
                 window.location.reload();
             }
         });
     },
 
+    scrollTo: function (element) {
+        $j(document.body).animate({
+            scrollTop: element.offset().top
+        }, 800);
+    },
+
     init: function () {
         var self = this;
-        
-        $j('.future-roll a').on('click', function() {
-           $j('[id^=class-description-]').hide();
-           var id = $j(this).attr('id');
-           $j('#class-description-' +  id).show()
+
+        $j('.future-roll a').on('click', function () {
+            $j('[id^=class-description-]').hide();
+            var id = $j(this).attr('id');
+            var classDescription = $j('#class-description-' + id);
+            classDescription.show();
+            self.scrollTo(classDescription);
+            return false;
         });
-        
+
         $j('.edit-roll a').on('click', function () {
             $j(this).parents('.past-course, .actual-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">Close</button>').addClass('past-course-diff');
             $j('.edit-roll a').css('pointer-events', 'none');
@@ -337,7 +348,8 @@ ClassTimetable.prototype = {
             $j('#class-roll-captions, .mark-percents').hide();
             $j('[id^=class-description-]').hide();
             self.id = $j(this).attr('id');
-            $j('#class-description-' +  self.id).show();
+            var classDescription = $j('#class-description-' + self.id);
+            classDescription.show();
             $j('.mark-buttons').removeClass('collapse');
 
             self.updateAttendence(self.id);
@@ -345,19 +357,21 @@ ClassTimetable.prototype = {
             $j('button.btn-finish').on('click', function () {
                 $j(this).parents('.past-course, .actual-course').removeClass('past-course-diff');
                 $j('#class-roll-captions, .mark-percents').show();
-                $j('#class-description-' +  self.id).hide();
+                $j('#class-description-' + self.id).hide();
                 $j('.mark-buttons').addClass('collapse');
                 $j('.absent-with-reason-mark').remove();
                 $j('.partially-attended-mark').remove();
                 $j('.edit-roll a').css('pointer-events', 'auto');
                 $j('.future-roll a').css('pointer-events', 'auto');
                 $j('button.btn-finish').remove();
-                $j.each(self.attendanceItems, function(index, attendanceItem) {
+                $j.each(self.attendanceItems, function (index, attendanceItem) {
                     attendanceItem.destroy();
-                });  
+                });
             });
+            self.scrollTo(classDescription);
+            return false;
         });
-        
+
     }
 };
 
