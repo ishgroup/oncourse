@@ -27,7 +27,7 @@
 	</t:block>
 
 	<t:block t:id="future">
-		Mark this  <strong>after session is over</strong>
+		You will be able to mark <strong>this session on ${startDate}</strong>
 	</t:block>
 
 	<t:block t:id="marked">

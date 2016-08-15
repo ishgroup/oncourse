@@ -83,7 +83,11 @@ public class SessionDetails {
 		}
 		return true;
 	}
-	
+
+	public String getStartDate() {
+		return AttendanceUtils.getStartDate(timeZone, session);
+	}
+
 	public String getSessionDate() {
 		return AttendanceUtils.getSessionDateTime(timeZone, session);
 	}

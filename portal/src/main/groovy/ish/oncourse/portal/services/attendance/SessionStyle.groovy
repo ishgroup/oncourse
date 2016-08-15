@@ -4,6 +4,9 @@ import ish.oncourse.model.Session
 
 import static ish.common.types.AttendanceType.UNMARKED
 import static ish.oncourse.model.auto._Attendance.ATTENDANCE_TYPE
+import static java.util.Calendar.DAY_OF_MONTH
+import static org.apache.commons.lang3.time.DateUtils.addDays
+import static org.apache.commons.lang3.time.DateUtils.truncate
 
 /**
  * User: akoiro
@@ -16,7 +19,8 @@ enum SessionStyle {
     unmarked
 
     public static SessionStyle valueOf(Session session) {
-        if (session.endDate.after(new Date()))  {
+        Date date = addDays(truncate(new Date(), DAY_OF_MONTH), 1);
+        if (session.startDate.after(date))  {
             return future
         } else if (session.attendances.empty) {
             return empty
