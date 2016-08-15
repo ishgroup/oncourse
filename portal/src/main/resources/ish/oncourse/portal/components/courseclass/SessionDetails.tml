@@ -23,7 +23,7 @@
 	</div>
 
 	<t:block t:id="empty">
-		There are <strong>not enrolments</strong>
+		There are <strong>no enrolments</strong>
 	</t:block>
 
 	<t:block t:id="future">
