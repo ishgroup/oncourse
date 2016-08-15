@@ -59,7 +59,6 @@
             source="W"
             status="2"
             statusNotes="statusNotes"
-            studentId="1"
             type="2" confirmationStatus="1"/>
             
     <PaymentInLine
@@ -83,7 +82,7 @@
 		creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA" dateBanked="2011-09-20 11:14:54"
 		gatewayReference="gatewayReference" gatewayResponse="gatewayResponse" id="200"
 		modified="2011-09-20 11:14:54" sessionId="sessionId" source="W" status="2" 
-		statusNotes="statusNotes" studentId="4" type="2" confirmationStatus="1"/>
+		statusNotes="statusNotes" type="2" confirmationStatus="1"/>
 	
 	<PaymentInLine  amount="120.00" angelId="12" collegeId="1" created="2011-09-20 11:14:54" id="12" invoiceId="2" modified="2011-09-20 11:14:54"
 		paymentInId="200"/>
@@ -93,7 +92,7 @@
                creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA" dateBanked="2011-09-20 11:14:54"
                gatewayReference="gatewayReference" gatewayResponse="gatewayResponse" id="20"
                modified="2011-09-20 11:14:54" sessionId="sessionId" source="W" status="2"
-               statusNotes="statusNotes" studentId="4" type="2" confirmationStatus="1"/>
+               statusNotes="statusNotes" type="2" confirmationStatus="1"/>
 
     <PaymentInLine  amount="100.00" angelId="20" collegeId="1" created="2011-09-20 11:14:54" id="20" invoiceId="20" modified="2011-09-20 11:14:54"
                     paymentInId="20"/>
@@ -117,7 +116,7 @@
     	creditCardExpiry="creditCardExpiry" creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA" 
     	dateBanked="2011-09-20 11:14:54" gatewayReference="gatewayReference" gatewayResponse="gatewayResponse" id="300"
 		modified="2011-09-20 11:14:54" sessionId="sessionId" source="W" status="2" 
-		statusNotes="statusNotes" studentId="1" type="2"  confirmationStatus="1"/>
+		statusNotes="statusNotes" type="2"  confirmationStatus="1"/>
 	
 	<PaymentInLine  amount="120.00" angelId="3" collegeId="1" created="2011-09-20 11:14:54" id="300" invoiceId="3" modified="2011-09-20 11:14:54"
 		paymentInId="300"/>
@@ -132,7 +131,7 @@
 			   creditCardExpiry="creditCardExpiry" creditCardName="creditCardName" creditCardNumber="creditCardNumberX" creditCardType="VISA"
 			   dateBanked="2011-09-20 11:14:54" gatewayReference="gatewayReference" gatewayResponse="gatewayResponse" id="400"
 			   modified="2011-09-20 11:14:54" sessionId="sessionId" source="O" status="2"
-			   statusNotes="statusNotes" studentId="1" type="2" confirmationStatus="1"/>
+			   statusNotes="statusNotes" type="2" confirmationStatus="1"/>
 
 	<PaymentInLine  amount="50.00" angelId="4" collegeId="1" created="2011-09-20 11:14:54" id="400" invoiceId="4" modified="2011-09-20 11:14:54"
 					paymentInId="400"/>
