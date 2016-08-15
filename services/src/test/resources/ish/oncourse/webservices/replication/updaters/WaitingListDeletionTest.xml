@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
+             paymentGatewayPass="test1234"/>
+
+
+    <Contact id="1" collegeId="1" angelId="1"
+             countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+             isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir"
+             emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+
+    <Student id="1" collegeId="1" angelId="1"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+    <Course id="1" collegeId="1" code="def123" angelId="1" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
+
+    <WaitingList id="1" angelId="1" collegeId="1" courseId="1" detail="test" potentialStudents="5" studentId="1"/>
+
+    <Tag angelId="1" collegeId="1" created="2011-09-20 11:14:54" detail="detail" detail_textile="detail_textile" id="1" isTagGroup="1" isWebVisible="1"
+         modified="2011-09-20 11:14:54" name="name" nodeType="1" shortName="shortName" specialType="1" weighting="1"/>
+
+    <Taggable angelId="1" collegeId="1" created="2011-09-20 11:14:54" entityAngelId="1" entityIdentifier="WaitingList" entityWillowId="1" id="1"
+              modified="2011-09-20 11:14:54"/>
+
+    <TaggableTag angelId="1" collegeId="1" created="2011-09-20 11:14:54" id="1" modified="2011-09-20 11:14:54" tagId="1" taggableId="1"/>
+
+</dataset>
