@@ -1,37 +1,71 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 <t:certificate.header title="literal:Statement of Certificate"/>
 <body>
-<section class="cert-wrapper cert-statement">
-    <div class="container">
-        <div class="cert-container">
-            <t:certificate.title model="model"/>
-            <div class="cert-units">
-                <t:loop source="model.modules" value="module">
-                    <t:delegate to="block:module"/>
-                </t:loop>
-            </div>
-            <p class="cert-verified-text">
-                Certificate number <span class="cert-number">${model.number}</span> was issued by
-            </p>
-            <h2>
-                <a href="${model.collegeUrl}" target="_blank">${model.collegeName}<t:if test="model.rto"> (RTO${model.rto})</t:if></a>
-            </h2>
-            <p class="cert-verified-text">
-                on <span class="cert-date">${formatDate(model.issued, 'dd/MM/YYYY')}</span>
-            </p>
-            <t:if test="model.nrt">
-                <div class="NRTLogo">
-                    <img src="/portal/img/nrt_logo.png"/>
-                </div>
-            </t:if>
-        </div>
-    </div>
-</section>
-
-<t:certificate.footer/>
-
+    <t:if test="model.revoked">
+        <t:delegate to="block:revoked"/>
+        <p:else>
+            <t:delegate to="block:valid"/>
+        </p:else>
+    </t:if>
+    <t:certificate.footer/>
 </body>
+
+<t:block t:id="revoked">
+    <section class="cert-wrapper cert-invalid">
+        <div class="cert-banner">
+            <img src="/portal/certificate/img/desktop-cert-bg.png" class="cert-banner-img banner-desktop"/>
+            <img src="/portal/certificate/img/tablet-cert-bg.png" class="cert-banner-img banner-tablet"/>
+            <img src="/portal/certificate/img/mobile-cert-bg.png" class="cert-banner-img banner-mobile"/>
+        </div>
+        <div class="container">
+            <div class="cert-container">
+                <h1>
+                    Certificate <span >${model.number}</span> was revoked
+                </h1>
+                <h2>
+                    <a href="${model.collegeUrl}" target="_blank">by ${model.collegeName}
+                        <t:if test="model.rto"> (RTO${model.rto})</t:if>
+                    </a>
+                </h2>
+                <p class="cert-verified-text">
+                    on <span class="cert-date">${formatDate(model.revoked, 'dd/MM/YYYY')}</span>
+                </p>
+            </div>
+        </div>
+    </section>
+</t:block>
+
+<t:block t:id="valid">
+    <section class="cert-wrapper cert-statement">
+        <div class="container">
+            <div class="cert-container">
+                <t:certificate.title model="model"/>
+                <div class="cert-units">
+                    <t:loop source="model.modules" value="module">
+                        <t:delegate to="block:module"/>
+                    </t:loop>
+                </div>
+                <p class="cert-verified-text">
+                    Certificate number <span class="cert-number">${model.number}</span> was issued by
+                </p>
+                <h2>
+                    <a href="${model.collegeUrl}" target="_blank">${model.collegeName}
+                        <t:if test="model.rto"> (RTO${model.rto})</t:if>
+                    </a>
+                </h2>
+                <p class="cert-verified-text">
+                    on <span class="cert-date">${formatDate(model.issued, 'dd/MM/YYYY')}</span>
+                </p>
+                <t:if test="model.nrt">
+                    <div class="NRTLogo">
+                        <img src="/portal/img/nrt_logo.png"/>
+                    </div>
+                </t:if>
+            </div>
+        </div>
+    </section>
+</t:block>
 
 <t:block t:id="module">
     <div class="row">

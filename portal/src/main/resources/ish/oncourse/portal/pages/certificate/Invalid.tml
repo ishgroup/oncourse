@@ -4,9 +4,9 @@
 <body>
 <section class="cert-wrapper cert-invalid">
     <div class="cert-banner">
-        <img src="img/desktop-cert-bg.png" class="cert-banner-img banner-desktop"/>
-        <img src="img/tablet-cert-bg.png" class="cert-banner-img banner-tablet"/>
-        <img src="img/mobile-cert-bg.png" class="cert-banner-img banner-mobile"/>
+        <img src="/portal/certificate/img/desktop-cert-bg.png" class="cert-banner-img banner-desktop"/>
+        <img src="/portal/certificate/img/tablet-cert-bg.png" class="cert-banner-img banner-tablet"/>
+        <img src="/portal/certificate/img/mobile-cert-bg.png" class="cert-banner-img banner-mobile"/>
     </div>
     <div class="container">
         <div class="cert-container">

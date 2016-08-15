@@ -13,7 +13,7 @@
         </aside>
         <aside class="cert-poweredby-item">
             <span class="poweredby-text">Powered by</span>
-            <img src="img/onCourse-logo.png"/>
+            <img src="/portal/certificate/img/onCourse-logo.png"/>
         </aside>
     </footer>
 

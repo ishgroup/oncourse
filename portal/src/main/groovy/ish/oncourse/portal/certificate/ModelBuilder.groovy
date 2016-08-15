@@ -6,6 +6,8 @@ import ish.oncourse.services.preference.PreferenceControllerFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 
+import static ish.oncourse.portal.certificate.ModelBuilder.Result.revoked
+
 /**
  * User: akoiro
  * Date: 11/08/2016
@@ -43,7 +45,11 @@ class ModelBuilder {
 
         model = Model.valueOf(certificate, preferenceControllerFactory.getPreferenceController(certificate.getCollege()))
 
-        return Result.successFull
+        if (model.revoked != null) {
+            return revoked;
+        } else {
+            return Result.successFull
+        }
     }
 
     public
@@ -58,6 +64,7 @@ class ModelBuilder {
     enum Result {
         emptyCode,
         certificateNotFound,
+        revoked,
         successFull
     }
 }

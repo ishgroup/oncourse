@@ -61,6 +61,7 @@ public class Statement extends ISHCommon {
 				return pageRenderLinkSource.createPageRenderLink(Verify.class);
 			case certificateNotFound:
 				return pageRenderLinkSource.createPageRenderLinkWithContext(Invalid.class);
+			case revoked:
 			case successFull:
 				model = builder.getModel();
 				return null;

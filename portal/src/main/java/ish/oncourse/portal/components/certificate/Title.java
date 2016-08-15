@@ -20,7 +20,7 @@ public class Title {
 	private Model model;
 
 	@Inject
-	private Block without;
+	private Block statement;
 
 	@Inject
 	private Block skillset;
@@ -28,28 +28,68 @@ public class Title {
 	@Inject
 	private Block qualification;
 
+	@Inject
+	private Block revoked;
+
 	@Property
 	private Block current;
 
 	@SetupRender
 	public void setupRender() {
-		if (model.getQualification() != null) {
-			switch (model.getQualification().getType()) {
-				case QUALIFICATION_TYPE:
-				case COURSE_TYPE:
-				case HIGHER_TYPE:
-					current = qualification;
-					break;
-				case SKILLSET_TYPE:
-				case SKILLSET_LOCAL_TYPE:
-					current = skillset;
-					break;
-				default:
-					throw new IllegalArgumentException();
+		switch (GetBlockId.valueOf(model).getBlockId()) {
+			case statement:
+				current = statement;
+				break;
+			case skillset:
+				current = skillset;
+				break;
+			case qualification:
+				current = qualification;
+				break;
+			case revoked:
+				current = revoked;
+				break;
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
+
+	enum BlockId {
+		statement,
+		skillset,
+		qualification,
+		revoked
+	}
+
+	static class GetBlockId {
+		private Model model;
+
+		BlockId getBlockId() {
+			if (model.getRevoked() != null) {
+				return BlockId.revoked;
+			} else if (model.getQualification() != null && model.getQualification().isQualification()) {
+				switch (model.getQualification().getType()) {
+					case QUALIFICATION_TYPE:
+					case COURSE_TYPE:
+					case HIGHER_TYPE:
+						return BlockId.qualification;
+					case SKILLSET_TYPE:
+					case SKILLSET_LOCAL_TYPE:
+						return BlockId.skillset;
+					default:
+						throw new IllegalArgumentException();
+				}
+			} else {
+				return BlockId.statement;
 			}
-		} else {
-			current = without;
 		}
 
+		static GetBlockId valueOf(Model model) {
+			GetBlockId getBlockId = new GetBlockId();
+			getBlockId.model = model;
+			return getBlockId;
+		}
 	}
 }
+
+

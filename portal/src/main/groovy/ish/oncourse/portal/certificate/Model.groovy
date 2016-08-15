@@ -14,6 +14,7 @@ import org.apache.commons.lang3.RandomStringUtils
 class Model {
     def String number
     def Date issued
+    def Date revoked
 
     def String firstName
     def String lastName
@@ -33,6 +34,7 @@ class Model {
         model.firstName = certificate.studentFirstName
         model.lastName = certificate.studentLastName
         model.collegeName = certificate.college.name
+        model.revoked = (certificate.revokedWhen != null && certificate.revokedWhen.before(new Date())) ? certificate.revokedWhen: null
         model.rto = preferenceController.avetmissID
         model.collegeUrl = PortalUtils.getDomainName(preferenceController)
         if (model.collegeUrl) {
@@ -43,7 +45,8 @@ class Model {
             model.qualification = new Qualification(title: certificate.qualification.title,
                     level: certificate.qualification.level,
                     code: certificate.qualification.nationalCode,
-                    type: certificate.qualification.isAccreditedCourse
+                    type: certificate.qualification.isAccreditedCourse,
+                    qualification: certificate.isQualification
             )
         }
 
@@ -86,6 +89,7 @@ class Model {
         def String title;
         def String level;
         def QualificationType type
+        def boolean qualification
     }
 
     public static class Module {
