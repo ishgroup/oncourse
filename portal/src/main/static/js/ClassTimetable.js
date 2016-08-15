@@ -310,9 +310,9 @@ ClassTimetable.prototype = {
             success: function (data) {
                 $j.each(data, function (index, attendance) {
                     var attendanceItem = new AttendanceCtrl();
+                    $j('#' + attendance.studentId).removeClass('collapse');
                     attendanceItem.init(attendance);
                     self.attendanceItems.push(attendanceItem)
-
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -350,7 +350,6 @@ ClassTimetable.prototype = {
             self.id = $j(this).attr('id');
             var classDescription = $j('#class-description-' + self.id);
             classDescription.show();
-            $j('.mark-buttons').removeClass('collapse');
 
             self.updateAttendence(self.id);
 
