@@ -24,7 +24,7 @@
 		<td class="alignright priceValue">
 			<t:if test="checked">
 				<t:if test="editablePrice">
-					<input class="priceValue" name='priceValue' value="${price.toString()}"/>
+					<input class="priceValue" name='priceValue' value="${moneyFormat(price).format(price)}"/>
 					<t:eventlink t:id="updateProductEvent" class="display-none update-link" context="actionContext" />
 				</t:if>
 				<t:unless test="editablePrice">
