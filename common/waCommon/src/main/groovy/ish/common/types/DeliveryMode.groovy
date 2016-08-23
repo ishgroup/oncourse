@@ -31,7 +31,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Classroom-based
 	 */
 	@API
-	CLASSROOM(1, "Classroom-based (10)", 10),
+	CLASSROOM(1, "Classroom (10)", 10),
 
 	/**
      * Database value: 2
@@ -39,7 +39,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Electronic-based
 	 */
 	@API
-	ELECTRONIC(2, "Electronic-based (20)", 20),
+	ONLINE(2, "Online (20)", 20),
 
 	/**
      * Database value: 3
@@ -47,7 +47,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Employment-based
 	 */
 	@API
-	EMPLOYMENT(3, "Employment-based (30)", 30),
+	WORKPLACE(3, "Workplace (30)", 30),
 
 	/**
      * Database value: 4
@@ -127,7 +127,39 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * WA: Internet Site - Online Learning
 	 */
 	@API
-	WA_INTERNET_SITE(19, "WA: Internet Site - Online Learning (9)", 9);
+	WA_INTERNET_SITE(19, "WA: Internet Site - Online Learning (9)", 9),
+
+	/**
+	 * Database value: 20
+	 *
+	 * Classroom-based
+	 */
+	@API
+	CLASSROOM_AND_ONLINE(20, "Classroom and online (10)", 10),
+
+	/**
+	 * Database value: 21
+	 *
+	 * Classroom-based
+	 */
+	@API
+	CLASSROOM_AND_WORKSPACE(21, "Classroom and workplace (30)", 30),
+
+	/**
+	 * Database value: 22
+	 *
+	 * Classroom-based
+	 */
+	@API
+	ONLINE_AND_WORKSPACE(21, "Online and workplace (30)", 30),
+
+	/**
+	 * Database value: 23
+	 *
+	 * Classroom-based
+	 */
+	@API
+	CLASSROOM_ONLINE_AND_WORKSPACE(21, "Classroom, online & workplace (30)", 30);
 
 	private String displayName;
 	private int value;
