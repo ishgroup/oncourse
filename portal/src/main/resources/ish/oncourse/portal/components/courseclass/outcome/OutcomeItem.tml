@@ -1,0 +1,21 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	
+	<t:if test="outcome.startDate">
+		<t:if test="outcome.endDate">
+			<span>|<t:output format="literal:d/M/yyyy" value="outcome.startDate"/> - <t:output format="literal:d/M/yyyy" value="outcome.endDate"/></span>
+		</t:if>
+	</t:if>
+	
+	<div class="pull-right marking-list collapsed" data-toggle="collapse"
+		 data-target="#mark-outcomeId-${outcome.id}"
+		 aria-expanded="false">
+		<div class="marking ${outcomeClass}">${outcomeLable}</div>
+		<span>&nbsp;|</span>
+		<span class="glyphicon glyphicon-chevron-down"></span>
+	</div>
+
+	<div class="absent-with-reason collapse" id="mark-outcomeId-${outcome.id}" aria-expanded="false"
+		 style="height: 60px;">
+		<div t:type="courseclass/outcome/outcomeeditor" vet="vet" outcomeId="literal:outcome-editor-${outcome.id}"/>
+	</div>
+</t:container>

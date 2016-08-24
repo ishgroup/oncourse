@@ -1,0 +1,35 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+		<div id="module-outcome-content" class="tab-pane active">
+			<div class="col-lg-12 col-sm-12 mark-by-caption">
+				<a href="#" id="back-to-modules">Back <span class="glyphicon glyphicon-chevron-right"></span></a>
+					${module.title} (${module.nationalCode})
+
+				<div class="pull-right marking-list marking"
+					 data-toggle="collapse"
+					 data-target="#mark-moduleId-${module.id}"
+					 aria-expanded="false">
+					<div class="marking">MARK ALL</div>
+					<span>&nbsp;|</span>
+					<span class="glyphicon glyphicon-chevron-down"></span>
+				</div>
+			</div>
+			<div class="absent-with-reason collapse" id="mark-moduleId-${module.id}" data-classId="${courseClass.id}" aria-expanded="false"
+				 style="height: 60px;">
+				<div t:type="courseclass/outcome/outcomeeditor" vet="literal:true" outcomeId="literal:module-editor-${module.id}"/>
+			</div>
+			<ul class="list-unstyled classes-content">
+				<t:loop source="outcomes" value="outcome">
+					<li>
+						${outcome.enrolment.student.fullName} 
+						<t:delegate to="block:outcomeItem"/>
+					</li>
+				</t:loop>
+			</ul>
+		</div>
+
+	
+	<t:block t:id="outcomeItem">
+		<div t:type="courseclass/outcome/outcomeitem" outcome="outcome"/>
+	</t:block>
+</t:container>

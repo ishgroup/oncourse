@@ -17,14 +17,16 @@
 					</t:if>
 				</a>
 			</li>
-			<!--<li>-->
-				<!--<a href="#outcomes-location" data-toggle="tab">-->
-                    <!--<span>-->
-                        <!--<img class="new-nav-icon" src="/portal/img/svg_icons/DIU_RAW1354.svg"/>-->
-                    <!--</span>-->
-					<!--<span class="new-nav-icon-text">Outcomes</span>-->
-				<!--</a>-->
-			<!--</li>-->
+			<t:if test="isTutor">
+				<li>
+					<a href="#class-outcomes" data-toggle="tab">
+						<span>
+							<img class="new-nav-icon" src="/portal/img/svg_icons/mark_outcomes.svg"/>
+						</span>
+						<span class="new-nav-icon-text">Outcomes</span>
+					</a>
+				</li>
+			</t:if>
 			<t:if test="hasResources()">
 				<li>
 					<a href="#class-resources" data-toggle="tab">

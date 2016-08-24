@@ -1,0 +1,35 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+
+		<div id="enrolment-outcome-content" class="tab-pane active">
+			<div class="col-lg-12 col-sm-12 mark-by-caption">
+				<a href="#" id="back-to-students">Back <span class="glyphicon glyphicon-chevron-right"></span></a>
+				${enrolment.student.fullName}
+				<div class="pull-right marking-list marking" 
+					 data-toggle="collapse"
+					 data-target="#mark-enrolmentId-${enrolment.id}"
+					 aria-expanded="false">
+					<div class="marking">MARK ALL</div>
+					<span>&nbsp;|</span>
+					<span class="glyphicon glyphicon-chevron-down"></span>
+				</div>
+			</div>
+			<div class="absent-with-reason collapse" id="mark-enrolmentId-${enrolment.id}" aria-expanded="false"
+				 style="height: 60px;">
+				<div t:type="courseclass/outcome/outcomeeditor" vet="vet" outcomeId="literal:enrolment-editor-${enrolment.id}"/>
+			</div>
+			<ul class="list-unstyled classes-content">
+				<t:loop source="enrolment.outcomes" value="outcome">
+					<li>
+						<t:if test="outcome.module">
+							${outcome.module.title} (${outcome.module.nationalCode}) <br/>
+						</t:if>
+						<t:delegate to="block:outcomeItem"/>
+					</li>
+				</t:loop>
+			</ul>
+		</div>
+
+	<t:block t:id="outcomeItem">
+		<div t:type="courseclass/outcome/outcomeitem" outcome="outcome"/>
+	</t:block>
+</t:container>

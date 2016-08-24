@@ -40,6 +40,8 @@ public class OutcomeStubBuilder extends AbstractWillowStubBuilder<Outcome, Outco
 			stub.setMarkedByTutorId(entity.getMarkedByTutor().getId());
 		}
 		
+		stub.setEndDate(entity.getEndDate());
+
 		return stub;
 	}
 

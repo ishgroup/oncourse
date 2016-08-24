@@ -25,7 +25,10 @@
 		
 		<div class="tab-content">
             <t:courseclass.classDetailsNew courseClass="courseClass" isTutor="isTutor"/>
-            <t:courseclass.classLocation courseClass="courseClass"/>
+			<t:if test="isTutor">
+				<t:courseclass.outcome.outcomes courseClass="courseClass"/>
+			</t:if>
+			<t:courseclass.classLocation courseClass="courseClass"/>
             <t:if test="hasResources()">
                 <t:courseclass.classResources courseClass="courseClass"/>
             </t:if>

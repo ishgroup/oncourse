@@ -1,0 +1,31 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<strong>SELECT OUTCOME</strong>
+	<ul class="nav-menu">
+		
+		<li>
+			<button data-status="COMPETENT">Competent</button>
+			<span>&nbsp;|&nbsp;</span>
+		</li>
+		<li>
+			<button data-status="NOT-YET-COMPETENT">Not Yet Competent</button>
+			<span>&nbsp;|&nbsp;</span>
+		</li>
+		<li>
+			<button data-status="NO-RESULT">No Result</button>
+			<span>&nbsp;|&nbsp;</span>
+		</li>
+		<t:if test="vet">
+			<li>
+				<button data-status="WITHDARAWN">Withdrawn</button>
+			</li>
+		</t:if>
+		<li class="pull-right">
+			<div class="squaredThree">
+				<input id="${outcomeId}" name="check" type="checkbox" class="set-end-date"/>
+				<label for="${outcomeId}"></label>
+			</div>
+			Set outcome end date to today
+		</li>
+	</ul>
+	<button class="btn btn-primary btn-sm">SAVE</button>
+</t:container>

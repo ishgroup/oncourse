@@ -1,0 +1,72 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"  xmlns:p="tapestry:parameter">
+	<div id="class-outcomes" class="tab-pane">
+		<!--<div class="row" id="outcomeClassId_${courseClass.id}">-->
+		<div class="row">
+			<div class="col-lg-12 col-sm-12">
+				<span>Assessments are made against units of competency from the 
+					<t:if test="courseClass.course.qualification">
+					${courseClass.course.qualification.title} <span class="service-name">${courseClass.course.qualification.nationalCode}</span>
+						<p:else >
+							${courseClass.course.name} <span class="service-name">${courseClass.course.code}</span>
+						</p:else>
+					</t:if>
+					.
+				</span>
+				<div class="row">
+					<ul>
+						<t:if test="!courseClass.course.courseModules.empty">
+							<li role="presentation" class="active">
+								<div class="col-lg-6 col-sm-12">
+									<a class="btn-lg btn-outcomes" href="#mark-by-outcome" data-toggle="tab">
+										<span><h4>Mark by Outcome</h4></span>
+										<small> ${courseClass.course.modules.size()} outcomes</small>
+									</a>
+								</div>
+							</li>
+						</t:if>
+						<t:if test="!courseClass.validEnrolments.empty">
+							<li role="presentation">
+								<div class="col-lg-6 col-sm-12">
+									<a class="btn-lg btn-outcomes" href="#mark-by-student" data-toggle="tab">
+										<span><h4>Mark by Student</h4></span>
+										<small> ${courseClass.validEnrolments.size()} students</small>
+									</a>
+								</div>
+							</li>
+						</t:if>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="tab-content">
+			<t:if test="!courseClass.course.courseModules.empty">
+				<div id="mark-by-outcome" class="tab-pane active">
+					<div class="col-lg-12 col-sm-12 mark-by-caption">Select an Outcome</div>
+					<ul class="list-unstyled classes-content">
+						<t:loop source="courseClass.course.courseModules" value="courseModule">
+							<li class="arrow-content" id="outcomeModuleId_${courseModule.module.id}">${courseModule.module.title} (${courseModule.module.nationalCode})</li>
+						</t:loop>
+					</ul>
+				</div>
+			</t:if>
+
+			<div id="mark-by-student" class="tab-pane">
+				<div class="col-lg-12 col-sm-12 mark-by-caption">Select a Student</div>
+				<ul class="list-unstyled classes-content">
+					<t:loop source="courseClass.validEnrolments" value="enrolment">
+						<li class="arrow-content"  id="outcomeEnrolmentId_${enrolment.id}">${enrolment.student.contact.fullName}</li>
+					</t:loop>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<t:block t:id="enrolmentOutcomes">
+		<div t:type="courseclass/outcome/enrolmentoutcomes" enrolment="enrolment"/>
+	</t:block>
+
+	<t:block t:id="moduleOutcomes">
+		<div t:type="courseclass/outcome/moduleoutcomes" module="module" courseClass="courseClass"/>
+	</t:block>
+</t:container>
