@@ -17,7 +17,7 @@
 					</t:if>
 				</a>
 			</li>
-			<t:if test="isTutor">
+			<t:if test="allowToEditOutcomes()">
 				<li>
 					<a href="#class-outcomes" data-toggle="tab">
 						<span>

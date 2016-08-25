@@ -5,8 +5,10 @@ goog.require('jquery');
 
 var $j = jQuery.noConflict();
 
-const ENROLMENT_SOURCE = 'Enrolment';
-const MODULE_SOURCE = 'Module';
+var OutcomeSouce = {
+    ENROLMENT_SOURCE: 'Enrolment',
+    MODULE_SOURCE: 'Module'
+}
 
 var outcomesContent;
 
@@ -51,7 +53,7 @@ function renderModuleOutcomes(moduleId) {
                     $j('#mark-by-outcome').addClass('active');
                 });
                 $j('div[id^="mark-outcomeId-"]').each(function(){
-                    new OutcomeCtrl().init($j(this), MODULE_SOURCE, moduleId);
+                    new OutcomeCtrl().init($j(this), OutcomeSouce.MODULE_SOURCE, moduleId);
                 })
                 new ModuleCtrl().init($j('div[id^="mark-moduleId-"]'));
 
@@ -82,7 +84,7 @@ function renderEnrolmentOutcomes(enrolmentId) {
                     $j('#mark-by-student').addClass('active')
                 });
                 $j('div[id^="mark-outcomeId-"]').each(function(){
-                    new OutcomeCtrl().init($j(this), ENROLMENT_SOURCE, enrolmentId);
+                    new OutcomeCtrl().init($j(this), OutcomeSouce.ENROLMENT_SOURCE, enrolmentId);
                 });
                 new EnrolmentCtrl().init($j('div[id^="mark-enrolmentId-"]'));
 
@@ -216,7 +218,7 @@ OutcomeCtrl.prototype = {
                     url: '/portal/class.outcomes:saveOutcome/' + self.outcomeId + '/' + self.status + '/' + setDate,
                     type: 'GET',
                     success: function () {
-                        self.source == ENROLMENT_SOURCE ? renderEnrolmentOutcomes(self.sourceId) : renderModuleOutcomes(self.sourceId);
+                        self.source == OutcomeSouce.ENROLMENT_SOURCE ? renderEnrolmentOutcomes(self.sourceId) : renderModuleOutcomes(self.sourceId);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         window.location.reload();
