@@ -151,7 +151,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Classroom-based
 	 */
 	@API
-	ONLINE_AND_WORKSPACE(21, "Online and workplace (30)", 30),
+	ONLINE_AND_WORKSPACE(22, "Online and workplace (30)", 30),
 
 	/**
 	 * Database value: 23
@@ -159,7 +159,7 @@ public enum DeliveryMode implements DisplayableExtendedEnumeration<Integer> {
 	 * Classroom-based
 	 */
 	@API
-	CLASSROOM_ONLINE_AND_WORKSPACE(21, "Classroom, online & workplace (30)", 30);
+	CLASSROOM_ONLINE_AND_WORKSPACE(23, "Classroom, online & workplace (30)", 30);
 
 	private String displayName;
 	private int value;
