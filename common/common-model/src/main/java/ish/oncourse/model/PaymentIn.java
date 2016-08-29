@@ -68,7 +68,8 @@ public class PaymentIn extends _PaymentIn implements Queueable {
 
 		Money amount = getAmount();
 
-		if (!amount.isZero() && PaymentType.CONTRA.equals(getType())) {
+		if (!amount.isZero() &&
+				(PaymentType.CONTRA.equals(getType()) || PaymentType.REVERSE.equals(getType()))) {
 			result.addFailure(ValidationFailure.validationFailure(this, _PaymentIn.AMOUNT_PROPERTY,
 				"The CONTRA payment-in amount must be $0"));
 			return;
