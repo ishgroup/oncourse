@@ -439,6 +439,7 @@ body {
                   .cert-qrcode-link {
                     margin-right: 6.5px;
                     a {
+                      text-decoration: none;
                       color: #222222;
                       span {
                         position: relative;
@@ -674,6 +675,9 @@ body {
     }
     @include responsive($media-tablet) {
       text-align: right;
+    }
+    a {
+      text-decoration: none;
     }
     img {
       display: inline-block;

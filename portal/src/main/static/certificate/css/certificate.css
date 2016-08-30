@@ -584,13 +584,14 @@
 }
 /* line 460, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a {
+  text-decoration: none;
   color: #222222;
 }
-/* line 462, ../../../sass/portal/src/certificate.scss */
+/* line 463, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span {
   position: relative;
 }
-/* line 464, ../../../sass/portal/src/certificate.scss */
+/* line 465, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-verify .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span::after, .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span::after {
   content: "";
   position: absolute;
@@ -602,16 +603,16 @@
   margin-right: -9px;
   right: 3px;
 }
-/* line 487, ../../../sass/portal/src/certificate.scss */
+/* line 488, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .cert-banner {
   background: #ffb8ac;
 }
-/* line 489, ../../../sass/portal/src/certificate.scss */
+/* line 490, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .cert-banner img {
   opacity: 0.2;
 }
 @media only screen and (min-width: 550px) {
-  /* line 494, ../../../sass/portal/src/certificate.scss */
+  /* line 495, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-invalid .container .cert-container {
     height: 885px;
     padding-top: 170px;
@@ -619,64 +620,64 @@
   }
 }
 @media only screen and (min-width: 980px) {
-  /* line 494, ../../../sass/portal/src/certificate.scss */
+  /* line 495, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-invalid .container .cert-container {
     height: 921px;
     padding-top: 210px;
     padding-bottom: 226px;
   }
 }
-/* line 509, ../../../sass/portal/src/certificate.scss */
+/* line 510, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .container .cert-container p, .cert-wrapper.cert-invalid .container .cert-container p a {
   color: #b60101;
 }
-/* line 512, ../../../sass/portal/src/certificate.scss */
+/* line 513, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .container .cert-container p a {
   border-color: #b60101;
 }
-/* line 517, ../../../sass/portal/src/certificate.scss */
+/* line 518, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify {
   background: #b60000;
 }
-/* line 519, ../../../sass/portal/src/certificate.scss */
+/* line 520, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .container .cert-container .cert-form .btn-cert-verify:hover {
   background: #9d0000;
 }
-/* line 524, ../../../sass/portal/src/certificate.scss */
+/* line 525, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content {
   background: #b60000;
   border-color: #805d57;
 }
-/* line 527, ../../../sass/portal/src/certificate.scss */
+/* line 528, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .modal-border-wrapper {
   border-color: #805d57;
 }
-/* line 530, ../../../sass/portal/src/certificate.scss */
+/* line 531, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-invalid .container .cert-container .cert-form #cert-verification-modal .modal-dialog .modal-content .cert-qrcode .cert-qrcode-link a span::after {
   border-color: #b60000;
 }
-/* line 539, ../../../sass/portal/src/certificate.scss */
+/* line 540, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement {
   background: #c9eeca;
   text-align: center;
 }
-/* line 542, ../../../sass/portal/src/certificate.scss */
+/* line 543, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container {
   padding: 56px 0;
 }
-/* line 544, ../../../sass/portal/src/certificate.scss */
+/* line 545, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container h1 {
   margin-top: 26px;
   margin-bottom: 22px;
   max-width: 250px;
 }
 @media only screen and (min-width: 550px) {
-  /* line 544, ../../../sass/portal/src/certificate.scss */
+  /* line 545, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-statement .cert-container h1 {
     max-width: 100%;
   }
 }
-/* line 552, ../../../sass/portal/src/certificate.scss */
+/* line 553, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container p {
   font-size: 16px;
   text-transform: uppercase;
@@ -684,12 +685,12 @@
   line-height: 2;
 }
 @media only screen and (min-width: 768px) {
-  /* line 552, ../../../sass/portal/src/certificate.scss */
+  /* line 553, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-statement .cert-container p {
     font-size: 18.5px;
   }
 }
-/* line 561, ../../../sass/portal/src/certificate.scss */
+/* line 562, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units {
   text-align: left;
   background: #fff;
@@ -699,7 +700,7 @@
   padding: 10px 20px;
 }
 @media only screen and (min-width: 768px) {
-  /* line 561, ../../../sass/portal/src/certificate.scss */
+  /* line 562, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-statement .cert-container .cert-units {
     margin: 58px auto;
     border: 1px solid #fff;
@@ -708,86 +709,86 @@
   }
 }
 @media only screen and (min-width: 980px) {
-  /* line 561, ../../../sass/portal/src/certificate.scss */
+  /* line 562, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-statement .cert-container .cert-units {
     padding: 58px 40px;
   }
 }
-/* line 577, ../../../sass/portal/src/certificate.scss */
+/* line 578, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units > div {
   margin-bottom: 5px;
 }
-/* line 579, ../../../sass/portal/src/certificate.scss */
+/* line 580, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units > div.row {
   border-bottom: 1px solid #e6e6e6;
   padding-bottom: 10px;
   padding-top: 6px;
 }
 @media only screen and (min-width: 768px) {
-  /* line 579, ../../../sass/portal/src/certificate.scss */
+  /* line 580, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-statement .cert-container .cert-units > div.row {
     border-bottom: 0;
     padding-bottom: 0px;
     padding-top: 0px;
   }
 }
-/* line 588, ../../../sass/portal/src/certificate.scss */
+/* line 589, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-down, .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-top {
   float: right;
   display: block;
 }
-/* line 591, ../../../sass/portal/src/certificate.scss */
+/* line 592, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-down::after, .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-top::after {
   right: -22px;
 }
 @media only screen and (min-width: 768px) {
-  /* line 588, ../../../sass/portal/src/certificate.scss */
+  /* line 589, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-down, .cert-wrapper.cert-statement .cert-container .cert-units > div.row .icon-arrow-top {
     display: none;
   }
 }
-/* line 598, ../../../sass/portal/src/certificate.scss */
+/* line 599, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units > div.row .col-sm-2 {
   padding-right: 30px;
   cursor: pointer;
 }
 @media only screen and (min-width: 768px) {
-  /* line 598, ../../../sass/portal/src/certificate.scss */
+  /* line 599, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-statement .cert-container .cert-units > div.row .col-sm-2 {
     padding-right: 15px;
     cursor: default;
   }
 }
-/* line 606, ../../../sass/portal/src/certificate.scss */
+/* line 607, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units > div.row .col-sm-10 {
   display: none;
   padding-right: 30px;
 }
 @media only screen and (min-width: 768px) {
-  /* line 606, ../../../sass/portal/src/certificate.scss */
+  /* line 607, ../../../sass/portal/src/certificate.scss */
   .cert-wrapper.cert-statement .cert-container .cert-units > div.row .col-sm-10 {
     display: block !important;
     height: auto !important;
     padding-right: 15px;
   }
 }
-/* line 616, ../../../sass/portal/src/certificate.scss */
+/* line 617, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units > div.row.units-active .col-sm-10 {
   display: block !important;
 }
-/* line 620, ../../../sass/portal/src/certificate.scss */
+/* line 621, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units > div.row:last-child {
   border-bottom: 0;
 }
-/* line 625, ../../../sass/portal/src/certificate.scss */
+/* line 626, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-units strong {
   color: #222222;
 }
-/* line 629, ../../../sass/portal/src/certificate.scss */
+/* line 630, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .NRTLogo {
   margin-top: 38px;
 }
-/* line 632, ../../../sass/portal/src/certificate.scss */
+/* line 633, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper.cert-statement .cert-container .cert-verified-text {
   color: #407d43;
   text-transform: uppercase;
@@ -795,24 +796,24 @@
   line-height: 1;
 }
 
-/* line 641, ../../../sass/portal/src/certificate.scss */
+/* line 642, ../../../sass/portal/src/certificate.scss */
 .cert-footer {
   background: #fff;
   padding: 40px 10px;
 }
 @media only screen and (min-width: 768px) {
-  /* line 641, ../../../sass/portal/src/certificate.scss */
+  /* line 642, ../../../sass/portal/src/certificate.scss */
   .cert-footer {
     padding: 40px;
   }
 }
-/* line 647, ../../../sass/portal/src/certificate.scss */
+/* line 648, ../../../sass/portal/src/certificate.scss */
 .cert-footer .cert-sites-list {
   display: none;
   width: 100%;
 }
 @media only screen and (min-width: 550px) {
-  /* line 647, ../../../sass/portal/src/certificate.scss */
+  /* line 648, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-sites-list {
     display: block;
     max-width: 70%;
@@ -821,35 +822,35 @@
   }
 }
 @media only screen and (min-width: 600px) {
-  /* line 647, ../../../sass/portal/src/certificate.scss */
+  /* line 648, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-sites-list {
     max-width: 67%;
   }
 }
 @media only screen and (min-width: 768px) {
-  /* line 647, ../../../sass/portal/src/certificate.scss */
+  /* line 648, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-sites-list {
     max-width: 62%;
   }
 }
 @media only screen and (min-width: 980px) {
-  /* line 647, ../../../sass/portal/src/certificate.scss */
+  /* line 648, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-sites-list {
     max-width: 61%;
   }
 }
 @media only screen and (min-width: 1025px) {
-  /* line 647, ../../../sass/portal/src/certificate.scss */
+  /* line 648, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-sites-list {
     max-width: 76.8%;
   }
 }
-/* line 668, ../../../sass/portal/src/certificate.scss */
+/* line 669, ../../../sass/portal/src/certificate.scss */
 .cert-footer .cert-sites-list ul {
   list-style: none;
   display: table;
 }
-/* line 671, ../../../sass/portal/src/certificate.scss */
+/* line 672, ../../../sass/portal/src/certificate.scss */
 .cert-footer .cert-sites-list ul li {
   display: table-cell;
   text-align: center;
@@ -857,44 +858,48 @@
   vertical-align: middle;
 }
 @media only screen and (min-width: 768px) {
-  /* line 671, ../../../sass/portal/src/certificate.scss */
+  /* line 672, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-sites-list ul li {
     text-align: left;
     margin-bottom: 0px;
     padding-right: 15px;
   }
 }
-/* line 684, ../../../sass/portal/src/certificate.scss */
+/* line 685, ../../../sass/portal/src/certificate.scss */
 .cert-footer .cert-poweredby-item {
   text-align: center;
   position: relative;
 }
 @media only screen and (min-width: 550px) {
-  /* line 684, ../../../sass/portal/src/certificate.scss */
+  /* line 685, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-poweredby-item {
     float: right;
     margin-top: 13px;
   }
 }
 @media only screen and (min-width: 980px) {
-  /* line 684, ../../../sass/portal/src/certificate.scss */
+  /* line 685, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-poweredby-item {
     text-align: right;
   }
 }
-/* line 697, ../../../sass/portal/src/certificate.scss */
+/* line 698, ../../../sass/portal/src/certificate.scss */
+.cert-footer .cert-poweredby-item a {
+  text-decoration: none;
+}
+/* line 701, ../../../sass/portal/src/certificate.scss */
 .cert-footer .cert-poweredby-item img {
   display: inline-block;
   vertical-align: middle;
   max-width: 150px;
 }
 @media only screen and (min-width: 768px) {
-  /* line 697, ../../../sass/portal/src/certificate.scss */
+  /* line 701, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-poweredby-item img {
     max-width: none;
   }
 }
-/* line 705, ../../../sass/portal/src/certificate.scss */
+/* line 709, ../../../sass/portal/src/certificate.scss */
 .cert-footer .cert-poweredby-item .poweredby-text {
   display: inline-block;
   vertical-align: middle;
@@ -907,7 +912,7 @@
   font-weight: 600;
 }
 @media only screen and (min-width: 550px) {
-  /* line 705, ../../../sass/portal/src/certificate.scss */
+  /* line 709, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-poweredby-item .poweredby-text {
     position: absolute;
     left: 51px;
@@ -915,7 +920,7 @@
   }
 }
 @media only screen and (min-width: 768px) {
-  /* line 705, ../../../sass/portal/src/certificate.scss */
+  /* line 709, ../../../sass/portal/src/certificate.scss */
   .cert-footer .cert-poweredby-item .poweredby-text {
     left: 69px;
     top: -10px;
