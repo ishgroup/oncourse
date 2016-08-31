@@ -1,0 +1,13 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="dashboard-card marking-outcomes">
+		<div class="mark-outcomes-header">
+			<strong>MARK OUTCOMES</strong>
+			<p class="class-name">${courseClass.course.name}</p>
+			<p>(${courseClass.uniqueIdentifier})</p>
+		</div>
+		<div class="mark-outcomes-body">
+			<span class="glyphicon glyphicon-signal"></span>
+			<a href="/portal/class/${courseClass.id}/outcomes">Mark Outcomes</a>
+		</div>
+	</div>
+</t:container>
