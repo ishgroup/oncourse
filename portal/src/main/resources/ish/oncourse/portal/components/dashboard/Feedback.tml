@@ -1,0 +1,9 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="dashboard-card class-feedback">
+		<strong>CLASS FEEDBACK</strong>
+		<div class="class-feedback-name">${enrolment.courseClass.course.name}</div>
+		<div class="class-feedback-foot">
+			<a href="/portal/class/${enrolment.courseClass.id}"><span><img src="/portal/img/stars.png"/></span>&nbsp;|&nbsp;Provide Feedback</a>
+		</div>
+	</div>
+</t:container>
