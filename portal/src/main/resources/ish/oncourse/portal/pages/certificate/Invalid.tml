@@ -10,11 +10,8 @@
     </div>
     <div class="container">
         <div class="cert-container">
-            <h1>Sorry, no<br>Certificate found?</br></h1>
-            <p>Please Re-enter the <a href="#cert-identifier" class="ul-dotted" data-toggle="modal"
-                                      data-target="#cert-verification-modal">certificate identifier</a> below to try
-                again</p>
-
+            <h1>Sorry, no<br>Certificate found.</br></h1>
+            <p>Please Re-enter the <a href="#cert-identifier" class="ul-dotted" data-toggle="modal" data-target="#cert-verification-modal">certificate identifier</a> below to try again</p>
             <t:certificate.form/>
         </div>
     </div>
