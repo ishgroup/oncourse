@@ -65,6 +65,8 @@ public interface IPortalService {
 
     public List<CourseClass> getContactCourseClasses(CourseClassFilter filter);
 
+	public List<CourseClass> getTutorCourseClasses(Contact contact, CourseClassFilter filter);
+
 	public List<PCourseClass> fillCourseClassSessions(CourseClassFilter filter) ;
 
 	public String getUrlBy(CourseClass courseClass);

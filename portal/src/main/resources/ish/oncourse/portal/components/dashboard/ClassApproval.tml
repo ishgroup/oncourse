@@ -1,0 +1,11 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="dashboard-card future-class text-center">
+		<p class="class-name">${classToApproval.course.name}</p>
+		<p>(${classToApproval.uniqueIdentifier})</p>
+		<t:if test="classToApproval.startDate">
+			<p>Mon 17 Jan 2:30pm</p>
+		</t:if>
+		<hr/>
+		<a href="/portal/tutor/classapproval/${classToApproval.id}">Requries Approval</a>
+	</div>
+</t:container>

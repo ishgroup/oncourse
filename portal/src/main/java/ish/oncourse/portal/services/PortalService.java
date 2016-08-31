@@ -285,7 +285,7 @@ public class PortalService implements IPortalService {
 
     }
 
-    private List<CourseClass> getTutorCourseClasses(Contact contact, CourseClassFilter filter) {
+    public List<CourseClass> getTutorCourseClasses(Contact contact, CourseClassFilter filter) {
         if (contact.getTutor() != null) {
             SelectQuery q = new SelectQuery(CourseClass.class, getTutorClassesExpression());
             q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
