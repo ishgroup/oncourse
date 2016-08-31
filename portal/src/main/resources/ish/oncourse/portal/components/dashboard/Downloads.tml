@@ -1,0 +1,20 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="dashboard-card resources">
+		<div class="resources-header">
+			<strong>RESOURCES</strong>
+			<a class="pull-right" href="/portal/resources">View All
+				&nbsp;<span class="badge">${documentsCount}</span>
+			</a>
+		</div>
+		<div class="resources-list">
+			<ul>
+				<t:loop source="documents" value="document">
+					<li><span class="glyphicon glyphicon-file"/><a href="${url}">
+						${document.name}
+						<t:if test="needExtension()">.${extension}</t:if>
+					</a></li>
+				</t:loop>
+			</ul>
+		</div>
+	</div>
+</t:container>
