@@ -10,12 +10,16 @@ import org.apache.cayenne.query.ObjectSelect
 class AttendanceUtils {
 
 	static Integer getAttendancePercent(Enrolment enrolment) {
+		getAttendancePercent(getAttendances(enrolment))
+	}
+
+	static Integer getAttendancePercent(List<Attendance> attendances) {
 		double minutesPassed = 0d;
 		double minutesPresent = 0d;
 
 		Date now = new Date()
-		
-		getAttendances(enrolment).each { a ->
+
+		attendances.each { a ->
 			if (a.session.endDate.before(now)) {
 				if (a.attendanceType  && !AttendanceType.UNMARKED.databaseValue.equals(a.attendanceType)) {
 					double sessionDuration = (a.session.endDate.time - a.session.startDate.time)/60000
@@ -34,6 +38,7 @@ class AttendanceUtils {
 
 		(int) (100 * minutesPresent / minutesPassed);
 	}
+	
 
 	static List<Attendance> getAttendances(Enrolment enrolment) {
 		 ObjectSelect.query(Attendance)
@@ -49,9 +54,12 @@ class AttendanceUtils {
 
 
 	static String getStartDate(TimeZone timeZone, Session session){
-		return  FormatUtils.getDateFormat("EEE dd MMM", timeZone).format(session.getStartDate());
+		return getStartDate(timeZone, session, "EEE dd MMM")
 	}
 
+	static String getStartDate(TimeZone timeZone, Session session, String format){
+		return  FormatUtils.getDateFormat(format, timeZone).format(session.getStartDate());
+	}
 
 	static String getSessionDateTime(TimeZone timeZone, Session session){
 		return String.format("%s %s", getStartDate(timeZone, session), getSessionTime(timeZone, session));

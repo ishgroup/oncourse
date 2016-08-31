@@ -1,0 +1,6 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="dashboard-card persent-of-attendance">
+		<div class="text-center percent">${percent}%</div>
+		<div class="attendance-mark text-center"><span class="glyphicon glyphicon-ok"></span>&nbsp;Attendance</div>
+	</div>
+</t:container>

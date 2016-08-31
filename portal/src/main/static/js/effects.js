@@ -14,10 +14,10 @@ $j(document).ready(function() {
     dashboardPercent = $j('.dashboard-card.persent-of-attendance .percent').text();
     dashboardAttendanceCard = $j('.dashboard-card.persent-of-attendance');
 
-    if ( dashboardPercent < "65%" ){
+    if ( dashboardPercent < "75%" ){
       dashboardAttendanceCard.addClass('low-percent-card');
     }
-    else if ( dashboardPercent < "80%" ){
+    else if ( dashboardPercent < "85%" ){
       dashboardAttendanceCard.addClass('middle-percent-card');
     }
     else {
