@@ -1,19 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <footer class="cert-footer clearfix">
-        <aside class="cert-sites-list">
-            <ul class="list-inline">
-                <li><img src="/portal/certificate/img/uni-sydeny.png"/></li>
-                <li><img src="/portal/certificate/img/apple.png"/></li>
-                <li><img src="/portal/certificate/img/nick.png"/></li>
-                <li><img src="/portal/certificate/img/nida.png"/></li>
-                <li><img src="/portal/certificate/img/parramatta-college.png"/></li>
-                <li><img src="/portal/certificate/img/aftrs-open.png"/></li>
-                <li><img src="/portal/certificate/img/wea-hunter.png"/></li>
-            </ul>
-        </aside>
         <aside class="cert-poweredby-item">
-            <span class="poweredby-text">Powered by</span>
-            <img src="/portal/certificate/img/onCourse-logo.png"/>
+            <a href="http://www.ish.com.au/oncourse">
+                <span class="poweredby-text">Powered by</span>
+                <img src="/portal/certificate/img/onCourse-logo.png"/>
+            </a>
         </aside>
     </footer>
 
