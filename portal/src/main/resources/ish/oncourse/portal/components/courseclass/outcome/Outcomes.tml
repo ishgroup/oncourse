@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"  xmlns:p="tapestry:parameter">
-	<div id="class-outcomes" class="tab-pane">
+	<div id="class-outcomes" class="tab-pane  ${activeClass}">
 		<!--<div class="row" id="outcomeClassId_${courseClass.id}">-->
 		<div class="row">
 			<div class="col-lg-12 col-sm-12">

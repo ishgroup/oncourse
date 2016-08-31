@@ -14,6 +14,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -35,7 +36,10 @@ public class Outcomes {
 	@Parameter
 	@Property
 	private CourseClass courseClass;
-
+	
+	@Parameter
+	private boolean activeTab = false;
+	
 	@Property
 	private CourseModule courseModule;
 
@@ -128,5 +132,9 @@ public class Outcomes {
 			default:
 				throw new IllegalArgumentException(String.format("Unsupported status: %s", status));
 		}
+	}
+
+	public String getActiveClass() {
+		return activeTab ? "active" : StringUtils.EMPTY;
 	}
 }

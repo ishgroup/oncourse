@@ -2,6 +2,7 @@ package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.dashboard.ClassTab;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -9,6 +10,8 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import static ish.oncourse.portal.services.dashboard.ClassTab.*;
 
 public class Class {
 
@@ -27,7 +30,7 @@ public class Class {
     private Request request;
 
 	@Property
-	private boolean showLocation = false;
+	private ClassTab activeTab =  DETAILS;
 
 	@Inject
 	private IWebSiteService webSiteService;
@@ -45,8 +48,11 @@ public class Class {
 
 	Object onActivate(String id, String tab) {
 
-		if (tab.equals(LOCATION)) {
-			showLocation = true;
+		for (ClassTab it : ClassTab.values()) {
+			if (it.getKey().equals(tab)) {
+				activeTab = it;
+				break;
+			}	
 		}
 
 		return onActivate(id);
@@ -96,5 +102,9 @@ public class Class {
 
 	public String getUrl() {
 		return portalService.getUrlBy(courseClass);
+	}
+	
+	public boolean isActive(String tabKey) {
+		return activeTab.getKey().equals(tabKey);
 	}
 }

@@ -7,6 +7,7 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -28,6 +29,9 @@ public class ClassResults {
 
     @Inject
     private IPortalService portalService;
+
+	@Parameter
+	private boolean activeTab = false;
 
     @Property
     @Parameter
@@ -125,5 +129,9 @@ public class ClassResults {
     {
         return portalService.isNew(outcome);
     }
+
+	public String getActiveClass() {
+		return activeTab ? "active" : StringUtils.EMPTY;
+	}
 
 }

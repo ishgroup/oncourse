@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-<div id="class-results" class="tab-pane">
+<div id="class-results" class="tab-pane ${activeClass}">
     <ul class="list-unstyled result-content">
         <li>
             <t:if test="qualification">

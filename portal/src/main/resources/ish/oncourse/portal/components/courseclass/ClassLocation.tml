@@ -1,6 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
         >
-    <div id="class-location" class="tab-pane">
+    <div id="class-location" class="tab-pane  ${activeClass}">
         <div class="row">
             <div class="col-lg-12 col-sm-12">
                 <t:courseclass.classlocationdetails courseClass="courseClass"/>

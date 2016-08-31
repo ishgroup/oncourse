@@ -8,6 +8,7 @@ import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -26,6 +27,9 @@ public class ClassResources {
     @Parameter
     @Property
     private CourseClass courseClass;
+
+	@Parameter
+	private boolean activeTab = false;
 
     @Property
     private List<Document> materials;
@@ -78,4 +82,9 @@ public class ClassResources {
     public boolean needExtension() {
         return PortalUtils.needExtension(material);
     }
+
+	public String getActiveClass() {
+		return activeTab ? "active" : StringUtils.EMPTY;
+	}
+
 }

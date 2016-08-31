@@ -40,7 +40,7 @@ ClassLocation.prototype = {
     init: function () {
         var self = this;
         var path = window.location.pathname.split('/');
-        this.courseClassId = path.length > 0 ? path[path.length - 1] : null;
+        this.courseClassId = path.length > 0 ? path[3] : null;
         if (this.courseClassId) {
             this.classLocationTab = $j("li#class-location-tab");
             this.classLocationTab.on('click', function () {

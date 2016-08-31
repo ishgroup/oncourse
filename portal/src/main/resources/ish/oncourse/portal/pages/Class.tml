@@ -20,20 +20,20 @@
 					</t:if>
 				</span>
 			</h1>
-			<t:courseclass.classDetailsTabs courseClass="courseClass" isTutor="isTutor"/>
+			<t:courseclass.classDetailsTabs courseClass="courseClass" isTutor="isTutor" activeTab="activeTab"/>
 		</div>
 		
 		<div class="tab-content">
-            <t:courseclass.classDetailsNew courseClass="courseClass" isTutor="isTutor"/>
+            <t:courseclass.classDetailsNew courseClass="courseClass" isTutor="isTutor" activeTab="${isActive('details')}"/>
 			<t:if test="isTutor">
-				<t:courseclass.outcome.outcomes courseClass="courseClass"/>
+				<t:courseclass.outcome.outcomes courseClass="courseClass" activeTab="${isActive('outcomes')}"/>
 			</t:if>
-			<t:courseclass.classLocation courseClass="courseClass"/>
+			<t:courseclass.classLocation courseClass="courseClass" activeTab="${isActive('location')}"/>
             <t:if test="hasResources()">
-                <t:courseclass.classResources courseClass="courseClass"/>
+                <t:courseclass.classResources courseClass="courseClass" activeTab="${isActive('resources')}"/>
             </t:if>
             <t:if test="hasResults()">
-                <t:courseclass.classResults courseClass="courseClass"/>
+                <t:courseclass.classResults courseClass="courseClass" activeTab="${isActive('results')}"/>
             </t:if>
         </div>
 

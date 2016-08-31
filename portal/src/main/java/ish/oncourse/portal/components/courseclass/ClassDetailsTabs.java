@@ -2,18 +2,25 @@ package ish.oncourse.portal.components.courseclass;
 
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.dashboard.ClassTab;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
+
+import static ish.oncourse.portal.services.dashboard.ClassTab.DETAILS;
 
 public class ClassDetailsTabs {
 
 	@Property
 	@Parameter
 	private boolean isTutor;
+
+	@Parameter
+	private ClassTab activeTab = DETAILS;
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -46,5 +53,9 @@ public class ClassDetailsTabs {
 
 	public boolean allowToEditOutcomes() {
 		return  isTutor && preferenceController.getOutcomeMarkingViaPortal() && !courseClass.getValidEnrolments().isEmpty();
+	}
+	
+	public String getActiveClass(String tabKey) {
+		return activeTab.getKey().equals(tabKey) ? "active" : StringUtils.EMPTY;
 	}
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.courseclass.GetCourseClassLocation;
 import ish.oncourse.services.courseclass.Location;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
@@ -23,6 +24,9 @@ public class ClassLocation {
 	@Parameter
 	@Property
 	private CourseClass courseClass;
+
+	@Parameter
+	private boolean activeTab = false;
 
 	@Property
 	private Boolean hasLocation;
@@ -53,6 +57,10 @@ public class ClassLocation {
 			json = mapper.writeValueAsString(location);
 		}
 		return new TextStreamResponse("text/json", json);
+	}
+
+	public String getActiveClass() {
+		return activeTab ? "active" : StringUtils.EMPTY;
 	}
 }
 

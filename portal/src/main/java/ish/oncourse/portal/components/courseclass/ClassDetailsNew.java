@@ -19,6 +19,7 @@ import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -55,6 +56,9 @@ public class ClassDetailsNew {
 	@Property
 	@Parameter
 	private CourseClass courseClass;
+
+	@Parameter
+	private boolean activeTab = true;
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -132,6 +136,10 @@ public class ClassDetailsNew {
 		context.commitChanges();
 		
 		return new TextStreamResponse("text/json",  mapper.writeValueAsString(SessionResponse.valueOf(att, portalService)));
+	}
+	
+	public String getActiveClass() {
+		return activeTab ? "active" : StringUtils.EMPTY;
 	}
 
 }

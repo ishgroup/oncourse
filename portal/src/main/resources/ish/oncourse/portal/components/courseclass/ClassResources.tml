@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-  <div class="tab-pane" id="class-resources">
+  <div class="tab-pane ${activeClass}" id="class-resources">
     <ul class="list-unstyled resources-content">
         <li>
             <ul class="list-unstyled resources-list">
