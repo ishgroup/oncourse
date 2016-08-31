@@ -1,0 +1,18 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="dashboard-card marking-roll">
+		<div class="mark-roll-header">
+			<strong>MARK ROLL</strong>
+
+			<p class="class-name">${session.courseClass.course.name}</p>
+		</div>
+		<div class="mark-roll-body">
+			<p>${sessionStartDate}</p>
+			<span>${sessionTime}</span>
+
+			<div class="mark-roll-link">
+				<span class="glyphicon glyphicon-check"/>
+				<a href="/portal/class/${session.courseClass.id}#${session.id}">Mark Roll</a>
+			</div>
+		</div>
+	</div>
+</t:container>
