@@ -4,6 +4,8 @@
 package ish.oncourse.services.courseclass;
 
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.Room;
+import ish.oncourse.model.Session;
 import ish.oncourse.model.Site;
 
 /**
@@ -12,15 +14,21 @@ import ish.oncourse.model.Site;
  */
 public class GetCourseClassLocation {
 	private CourseClass courseClass;
+	private Session session;
 	private Location location;
 
 	public GetCourseClassLocation(CourseClass courseClass) {
 		this.courseClass = courseClass;
 	}
+	
+	public GetCourseClassLocation(Session session) {
+		this.session = session;
+	}
 
 	public Location get() {
 		if (hasSite()) {
-			Site site = courseClass.getRoom().getSite();
+			
+			Site site = session != null ? session.getRoom().getSite() : courseClass.getRoom().getSite();
 
 			if (site.getLatitude() != null && site.getLongitude() != null) {
 				location = new Location(site.getLatitude().doubleValue(), site.getLongitude().doubleValue());
@@ -30,8 +38,10 @@ public class GetCourseClassLocation {
 	}
 
 	private boolean hasSite() {
-		return courseClass.getRoom() != null &&
-				courseClass.getRoom().getSite() != null &&
-				courseClass.getRoom().getSite().getIsWebVisible();
+		Room room = session != null ? session.getRoom() : courseClass != null ? courseClass.getRoom() : null;
+		return room != null &&
+				room.getSite() != null &&
+				room.getSite().getIsWebVisible();
+		
 	}
 }
