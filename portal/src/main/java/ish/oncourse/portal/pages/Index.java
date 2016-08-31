@@ -5,9 +5,9 @@ import org.apache.tapestry5.annotations.InjectPage;
 public class Index {
 
 	@InjectPage
-	private Timetable timetable;
+	private Dashboard dashboard;
 
 	Object onActivate() {
-		return timetable;
+		return dashboard;
 	}
 }

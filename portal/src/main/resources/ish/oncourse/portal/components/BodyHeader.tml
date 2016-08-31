@@ -11,6 +11,10 @@
           </t:if>
           <span class="navbar-brand">
             <a href="${request.contextPath}/"><img src="/portal/img/logo-v3.png" alt=""/></a>
+			   <span class="back-to-dashboard">
+				   <span class="vertical-stick">|</span>
+				   <a href="${request.contextPath}/">Back to Dashboard</a>
+			   </span>
           </span>
         </div>
         <t:if t:test="userInSession">

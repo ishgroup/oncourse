@@ -1,0 +1,50 @@
+<html t:type="pagestructure" title="literal:Dashboard" showSideBar="false"
+	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" >
+
+<div id="dashboard">
+	<div class="container">
+		<t:if test="getNextSession.get()">
+			<t:dashboard.nextsession session="getNextSession.get()"/>
+		</t:if>
+
+		<t:if test="!attendanceCalculater.attendance.empty">
+			<t:dashboard.attendance percent="attendanceCalculater.calculate()"/>
+		</t:if>
+
+		<t:if test="!paymentDuecalculater.owingInvoices.empty">
+			<t:dashboard.paymentdue paymentDue="paymentDuecalculater.calculate()"/>
+		</t:if>
+
+		<t:if test="contact.student">
+			<t:if test="!contact.student.usi">
+				<t:dashboard.usirequired contact="contact"/>
+			</t:if>
+		</t:if>
+
+		<t:if test="!portalService.resources.empty">
+			<t:dashboard.downloads/>
+		</t:if>
+
+		<t:if test="getEnrolmentToSurvey.get()">
+			<t:dashboard.feedback enrolment="getEnrolmentToSurvey.get()"/>
+		</t:if>
+
+		<t:if test="getClassToApproval.get()">
+			<t:dashboard.classapproval classToApproval="getClassToApproval.get()"/>
+		</t:if>
+		
+		<t:if test="getSessionToMarkRoll.get()">
+			<t:dashboard.markroll session="getSessionToMarkRoll.get()"/>
+		</t:if>
+
+		<t:if test="getClassToMarkOutcomes.get()">
+			<t:dashboard.markoutcomes courseClass="getClassToMarkOutcomes.get()"/>
+		</t:if>
+
+		<t:if test="getApplicationToStudy.get()">
+			<t:dashboard.applicationtostudy application="getApplicationToStudy.get()"/>
+		</t:if>
+		
+	</div>
+</div>
+</html>
