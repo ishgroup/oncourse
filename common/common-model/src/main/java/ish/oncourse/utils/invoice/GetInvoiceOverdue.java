@@ -20,6 +20,7 @@ public class GetInvoiceOverdue {
 	private Invoice invoice;
 	private List<InvoiceDueDate> dueDates;
 	private Money amountOwing;
+	private Date targetDate;
 
 	private Money overdue;
 	private Date dateDue;
@@ -28,7 +29,7 @@ public class GetInvoiceOverdue {
 	private Date nextDateDue;
 
 
-	private Date getCurrentDate() {
+	private static Date getCurrentDate() {
 		Date date = DateUtils.addDays(new Date(), 1);
 		date = DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
 		date = DateUtils.addMilliseconds(date, -1);
@@ -36,21 +37,20 @@ public class GetInvoiceOverdue {
 	}
 
 	public GetInvoiceOverdue call() {
-
-		Date currentDate = getCurrentDate();
+		
 		overdue = Money.ZERO;
 		next = Money.ZERO;
 		dateDue = invoice.getDateDue();
 		nextDateDue = invoice.getDateDue();
 
 		if (dueDates.isEmpty()) {
-			overdue = invoice.getDateDue().before(currentDate) ? invoice.getAmountOwing() : Money.ZERO;
+			overdue = invoice.getDateDue().before(targetDate) ? invoice.getAmountOwing() : Money.ZERO;
 			next = invoice.getAmountOwing();
 		} else {
 			InvoiceDueDate.DUE_DATE.asc().orderList(dueDates);
 
 			for (InvoiceDueDate dueDate : dueDates) {
-				if (dueDate.getDueDate().before(currentDate)) {
+				if (dueDate.getDueDate().before(targetDate)) {
 					overdue = overdue.add(dueDate.getAmount());
 					dateDue = dueDate.getDueDate();
 				} else {
@@ -88,10 +88,17 @@ public class GetInvoiceOverdue {
 
 
 	public static GetInvoiceOverdue valueOf(Invoice invoice) {
+	
+		return valueOf(invoice, getCurrentDate());
+	}
+	
+	public static GetInvoiceOverdue valueOf(Invoice invoice, Date targetDate) {
 		GetInvoiceOverdue result = new GetInvoiceOverdue();
 		result.invoice = invoice;
+		result.targetDate = targetDate;
 		result.dueDates = invoice.getInvoiceDueDates();
 		result.amountOwing = GetAmountOwing.valueOf(invoice).get();
+		
 		return result;
 	}
 

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Language id="2" name="Asian" isActive="1" ishVersion="333"/>
+	<Language id="1" name="Asian" isActive="1" ishVersion="333"/>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798"
+			 asccssCode="1609" saccCode="1511"/>
+
+	<College id="1" name="Sydney Community College" webServicesSecurityCode="345ttn44$%9"
+			 communication_key="7059522699886202880" communication_key_status="VALID"
+			 firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+
+	<Contact id="1" collegeId="1" familyName="Contact1" givenName="Contact1" emailAddress="Contact1@Contact1.au"/>
+	
+	<Invoice id="1" source="O" amountOwing="20.00" contactId="1"
+			 collegeId="1" dateDue="[threeDaysLater]" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1" totalExGst="100.00"
+			 totalGst="0.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+	
+	<InvoiceLine id="1" collegeId="1"
+				 invoiceId="1" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="100.00" taxEach="0.00" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<PaymentIn id="1" amount="80" collegeId="1" contactId="1" created="2011-09-12 00:17:21.0"
+			   modified="2011-09-12 00:17:21.0"
+			   source="O" status="3" statusNotes="" type="0" confirmationStatus="1"/>
+	
+	<PaymentInLine id="1" amount="80"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="1"
+				   modified="2011-09-12 00:17:21.0" paymentInId="1"/>
+
+	<Invoice id="2" source="O" amountOwing="100.00" contactId="1"
+			 collegeId="1" dateDue="[eightDaysLater]" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1" totalExGst="100.00"
+			 totalGst="0.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<InvoiceLine id="2" collegeId="1" 
+				 invoiceId="2" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="100.00" taxEach="0.00" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<Invoice id="3" source="O" amountOwing="80.00" contactId="1"
+			 collegeId="1" dateDue="[fourDaysLater]" description="invoice for testing"
+			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1" totalExGst="140.00"
+			 totalGst="140.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
+
+	<InvoiceLine id="3" collegeId="1"
+				 invoiceId="3" quantity="1.0" discountEachExTax="0.00"
+				 priceEachExTax="140.00" taxEach="0.00" title="Test Invoice Line"
+				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+	<InvoiceDueDate
+			id="1"
+			collegeId="1"
+			created="2011-09-20 11:14:54"
+			modified="2011-09-20 11:14:54"
+			amount="30.00"
+			dueDate="[fourDaysAgo]"
+			invoiceId="3"/>
+	
+	<InvoiceDueDate
+			id="2"
+			collegeId="1"
+			created="2011-09-20 11:14:54"
+			modified="2011-09-20 11:14:54"
+			amount="30.00"
+			dueDate="[today]"
+			invoiceId="3"/>
+
+	<InvoiceDueDate
+			id="3"
+			collegeId="1"
+			created="2011-09-20 11:14:54"
+			modified="2011-09-20 11:14:54"
+			amount="40.00"
+			dueDate="[fourDaysLater]"
+			invoiceId="3"/>
+
+	<InvoiceDueDate
+			id="4"
+			collegeId="1"
+			created="2011-09-20 11:14:54"
+			modified="2011-09-20 11:14:54"
+			amount="40.00"
+			dueDate="[eightDaysLater]"
+			invoiceId="3"/>
+
+	<PaymentIn id="2" amount="30" collegeId="1" contactId="1" created="2011-09-12 00:17:21.0"
+			   modified="2011-09-12 00:17:21.0"
+			   source="O" status="3" statusNotes="" type="0" confirmationStatus="1"/>
+
+	<PaymentInLine id="2" amount="30"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="3"
+				   modified="2011-09-12 00:17:21.0" paymentInId="2"/>
+
+	<PaymentIn id="3" amount="30" collegeId="1" contactId="1" created="2011-09-12 00:17:21.0"
+			   modified="2011-09-12 00:17:21.0"
+			   source="O" status="3" statusNotes="" type="0" confirmationStatus="1"/>
+
+	<PaymentInLine id="3" amount="30"
+				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="3"
+				   modified="2011-09-12 00:17:21.0" paymentInId="3"/>
+	
+
+</dataset>

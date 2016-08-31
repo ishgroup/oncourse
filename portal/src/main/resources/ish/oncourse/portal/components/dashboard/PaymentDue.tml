@@ -1,0 +1,7 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="dashboard-card payment text-center">
+		<div class="payment-due">Payment Due</div>
+		<div class="payment-sum"><t:output value="paymentDue" format="moneyFormat" /></div>
+		<a href="/portal/history" class="btn btn-primary btn-pay">PAY ONLINE NOW</a>
+	</div>
+</t:container>
