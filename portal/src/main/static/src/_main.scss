@@ -275,6 +275,10 @@
 
     h5 {
         margin: 5px 0 7px 2px;
+        font-size: 14px;
+        @include responsive($media-xsmall) {
+            font-size: 1.7rem;
+        }
     }
 
     > li {
@@ -348,18 +352,16 @@
                     }
                 }
                 .tick-cross-wrapper {
-                    padding-right: 0px;
+                    padding-left: 0px;
+                    @include responsive($media-small) {
+                        padding-right: 0px;
+                        padding-left: 15px;
+                    }
                 }
                 .add-rem-collapse {
                     margin-top: 2px;
-                    @include responsive($media-small) {
-                        margin-top: 8px;
-                    }
                     img.mark-img {
                         width: 30px;
-                        @include responsive($media-small) {
-                            width: 40px;
-                        }
                     }
                 }
             }
@@ -373,9 +375,9 @@
 
     .avatar {
         margin-right: 10px;
-        width: 50px;
+        width: 65px;
         @include responsive($media-small) {
-            width: 65px;
+            width: 50px;
         }
         img {
             max-width: 100%;
@@ -1256,7 +1258,7 @@ ul.nav-menu {
   &.main-nav {
     text-align: center;
     padding: 10px;
-    @include responsive($media-xsmall) {
+    @include responsive($media-small) {
         text-align: left;
         padding: 0 0 0 15px;
     }
