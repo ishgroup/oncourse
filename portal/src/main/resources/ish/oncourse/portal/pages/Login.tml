@@ -62,8 +62,8 @@
 		</t:form>
 		<div class="alert alert-info">
 		<t:if test="firstTimeLogin">
-			<p>It looks like this is your first visit to SkillsOnCourse. Create an account to login and manage your classes, view your timetable and much more.</p>
-			<p:else><p>If you are a tutor or a student login to SkillsOnCourse to manage your
+			<p>It looks like this is your first visit to skillsOnCourse. Create an account to login and manage your classes, view your timetable and much more.</p>
+			<p:else><p>Login to skillsOnCourse if you are a tutor or a student. Manage your
 				classes, view your timetable and much more.</p>
 			</p:else>
 		</t:if>
