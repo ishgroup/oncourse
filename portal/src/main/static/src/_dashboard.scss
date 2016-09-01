@@ -1,18 +1,27 @@
-#dashboard {
-  min-height: 100vh;
+ #dashboard {
+  min-height: 600vh;
   background-color: $dashboard-bg;
-  padding-top: 150px;
-  padding-bottom: 50px;
+  //padding-top: 150px;
+  //padding-bottom: 50px;
+  -webkit-transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+  -moz-transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+  -ms-transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+  -o-transition: left .4s ease-in-out, top .4s ease-in-out .4s;
+  transition: left .4s ease-in-out, top .4s ease-in-out .4s;
 
   .class-name {
     font-size: 1.8rem;
   }
 
   .dashboard-card {
-    margin-top: 25px;
+    float: left;
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-bottom: 15px;
     background-color: white;
     border-radius: 10px;
     height: 250px;
+    width: 200px;
     overflow: hidden;
     position: relative;
   }
@@ -106,7 +115,7 @@
 
   .persent-of-attendance {
     color: white;
-
+    width: 200px;
     .percent {
       width: 100%;
       font-size: 7.2rem;
@@ -129,6 +138,10 @@
     .attendance-mark.top-percent {
       background-color: $attendance-green-mark;
     }
+  }
+
+  .next-session {
+  	width: 460px;
   }
 
   .payment {
@@ -176,6 +189,7 @@
   }
 
   .resources {
+    width: 460px;
     .resources-header {
       background-color: $resources-head-bg;
       color: white;
@@ -224,6 +238,7 @@
 
   .class-feedback {
     padding: 23px;
+    width: 415px;
 
     strong {
       color: $link-color;

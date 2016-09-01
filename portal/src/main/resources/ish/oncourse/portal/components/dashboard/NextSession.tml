@@ -1,35 +1,32 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+	<div class="dashboard-card next-session">
+		<div class="about-class">
+			<strong class="next-class-mark">NEXT CLASS</strong>
 
-	<div class="row">
-			<div class="dashboard-card">
+			<p class="class-date">${sessionStartDate}</p>
 
-				<div class="about-class">
-					<strong class="next-class-mark">NEXT CLASS</strong>
+			<p class="class-time">${sessionTime}</p>
 
-					<p class="class-date">${sessionStartDate}</p>
+			<p class="class-name">${session.courseClass.course.name}</p>
 
-					<p class="class-time">${sessionTime}</p>
+			<t:if test="session.room">
+				<p class="class-location"><span class="glyphicon glyphicon-map-marker"></span>${venue}</p>
+			</t:if>
 
-					<p class="class-name">${session.courseClass.course.name}</p>
+		</div>
 
-					<t:if test="session.room">
-						<p class="class-location"><span class="glyphicon glyphicon-map-marker"></span>${venue}</p>	
-					</t:if>
-					
-				</div>
-				
-				<div class="class-map" style="background-image: url(${mapUrl})">
-					<div class="class-date">
-						<div>${sessionDay}</div>
-						<div class="class-day">${sessionDate}</div>
-					</div>
-					<t:if test="location">
-						<a href="/portal/class/${session.courseClass.id}/location" class="btn btn-primary btn-view-map">VIEW MAP</a>
-					</t:if>
-					<t:unless test="location">
-						No information on the venue
-					</t:unless>
-				</div>
+		<div class="class-map" style="background-image: url(${mapUrl})">
+			<div class="class-date">
+				<div>${sessionDay}</div>
+				<div class="class-day">${sessionDate}</div>
 			</div>
+			<t:if test="location">
+				<a href="/portal/class/${session.courseClass.id}/location" class="btn btn-primary btn-view-map">VIEW
+					MAP</a>
+			</t:if>
+			<t:unless test="location">
+				No information on the venue
+			</t:unless>
+		</div>
 	</div>
 </t:container>
