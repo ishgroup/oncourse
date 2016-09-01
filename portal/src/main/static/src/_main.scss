@@ -891,6 +891,12 @@ strong.link-color {
         width: 100%;
         min-height: 17px;
     }
+    >h2 {
+        line-height: 1.23;
+    }
+    >h3 {
+        line-height: 1.35;
+    }
 }
 
 .rating-class-details label {
@@ -1107,6 +1113,12 @@ strong.link-color {
 .session-wrapper {
   position: relative;
   padding-right: 15px;
+  h4 {
+    float: none !important;
+    @include responsive($media-xsmall) {
+        float: left !important;
+    }
+  }
 }
 
 .student-list > li {
@@ -1184,6 +1196,10 @@ strong.link-color {
   position: relative;
   margin-left: 32px;
   margin-right: 10px;
+  @include responsive($media-small) {
+    margin-left: 36px;
+    margin-right: 0px;
+  }
 }
 
 .new-nav-icon {
@@ -1801,5 +1817,12 @@ ul.abcent-menu {
 }
 
 .current-attendance {
-  margin-top: 15px;
+  float: left !important;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  @include responsive($media-xsmall) {
+    margin-top: 15px;
+    margin-bottom: 0px;
+    float: right !important;
+  }
 }
