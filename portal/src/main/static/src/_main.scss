@@ -100,6 +100,7 @@
         color: $dark-brown;
         font-family: Arial;
         font-size: 1.2rem;
+        display: inline-block;
     }
 
     .badge {
@@ -278,6 +279,10 @@
 
     > li {
         position: relative;
+        padding: 0;
+        @include responsive($media-small) {
+            padding: 0 15px;
+        }
 
         &:last-child {
             .student-detail {
@@ -320,17 +325,23 @@
                 overflow: hidden;
             }
             .mark-buttons {
-                margin-top: 8px;
+                margin-top: 2px;
+                @include responsive($media-small) {
+                    margin-top: 8px;
+                }
             }
             .percents-of-attendance {
-                margin-top: 15px;
+                margin-top: 2px;
+                @include responsive($media-small) {
+                    margin-top: 15px;
+                }
             }
             .student-card-action-wrapper {
                 .mark-buttons {
                     .btn-group a {
                         padding: 4px 7px;
                         font-size: 12px;
-                        @include responsive($media-custom, $custom-small-screen) {
+                        @include responsive($media-small) {
                             padding: 6px 12px;
                             font-size: 14px;
                         }
@@ -340,7 +351,16 @@
                     padding-right: 0px;
                 }
                 .add-rem-collapse {
-                    margin-top: 8px;
+                    margin-top: 2px;
+                    @include responsive($media-small) {
+                        margin-top: 8px;
+                    }
+                    img.mark-img {
+                        width: 30px;
+                        @include responsive($media-small) {
+                            width: 40px;
+                        }
+                    }
                 }
             }
         }
@@ -353,8 +373,13 @@
 
     .avatar {
         margin-right: 10px;
+        width: 50px;
+        @include responsive($media-small) {
+            width: 65px;
+        }
         img {
             max-width: 100%;
+            height: auto;
         }
     }
 
@@ -1129,8 +1154,10 @@ strong.link-color {
 }
 
 .session-content {
-  border: 1px solid $gray-border;
   margin: 0;
+  @include responsive($media-xsmall) {
+    border: 1px solid $gray-border;
+  }
 
   button {
     right: 10px;
@@ -1153,7 +1180,8 @@ strong.link-color {
 .new-nav-icon-text {
   display: block;
   position: relative;
-  margin-left: 40px;
+  margin-left: 32px;
+  margin-right: 10px;
 }
 
 .new-nav-icon {
@@ -1225,6 +1253,14 @@ strong.link-color {
 
 ul.nav-menu {
   margin-bottom: 0;
+  &.main-nav {
+    text-align: center;
+    padding: 10px;
+    @include responsive($media-xsmall) {
+        text-align: left;
+        padding: 0 0 0 15px;
+    }
+  }
 
   li {
     max-height: 60px;

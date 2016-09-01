@@ -102,7 +102,7 @@ body {
       &.cert-banner-img {
         &.banner-mobile {
           display: block;
-          @include responsive($media-custom, $custom-small-screen) {
+          @include responsive($media-xsmall) {
             display: none;
           }
           @include responsive($media-tablet) {
@@ -114,7 +114,7 @@ body {
         }
         &.banner-tablet {
           display: none;
-          @include responsive($media-custom, $custom-small-screen) {
+          @include responsive($media-xsmall) {
             display: block;
           }
           @include responsive($media-tablet) {
@@ -144,7 +144,7 @@ body {
       font-weight: 100;
       max-width: 250px;
       margin: 20px auto 15px;
-      @include responsive($media-custom, $custom-small-screen) {
+      @include responsive($media-xsmall) {
         font-size: 70px;
         margin-bottom: 10px;
         max-width: 417px;
@@ -188,7 +188,7 @@ body {
         position: relative;
         max-height: 921px;
         height: 404px;
-        @include responsive($media-custom, $custom-small-screen) {
+        @include responsive($media-xsmall) {
           height: 885px;
           padding-top: 250px;
           padding-bottom: 300px;
@@ -219,7 +219,7 @@ body {
           max-width: 470px;
           margin: 25px auto 0;
           position: relative;
-          @include responsive($media-custom, $custom-small-screen) {
+          @include responsive($media-xsmall) {
             max-width: 660px;
           }
           @include responsive($media-small) {
@@ -243,7 +243,7 @@ body {
                 background: none;
                 border: 0;
                 padding: 0;
-                @include responsive($media-custom, $custom-small-screen) {
+                @include responsive($media-xsmall) {
                   left: 21px;
                 }
                 @include responsive($media-small) {
@@ -262,7 +262,7 @@ body {
                 height: 50px;
                 line-height: 1;
                 box-shadow: none;
-                @include responsive($media-custom, $custom-small-screen) {
+                @include responsive($media-xsmall) {
                   padding-left: 80px;
                   padding: 10px 20px 10px 65px;
                   height: 64px;
@@ -297,7 +297,7 @@ body {
             &:hover {
               background: darken(#ff9630, 5%);
             }
-            @include responsive($media-custom, $custom-small-screen) {
+            @include responsive($media-xsmall) {
               max-width: 147px;
               font-size: 25px;
               padding: 13.5px 10px;
@@ -330,7 +330,7 @@ body {
             .modal-dialog {
               width: 290px;
               padding: 30px 0px;
-              @include responsive($media-custom, $custom-small-screen) {
+              @include responsive($media-xsmall) {
                 width: 320px;
               }
               @include responsive($media-desktop) {
@@ -352,7 +352,7 @@ body {
                 outline: 0 none;
                 opacity: 1;
                 filter: alpha(opacity=100);
-                @include responsive($media-custom, $custom-small-screen) {
+                @include responsive($media-xsmall) {
                   right: 21px;
                 }
               }
@@ -369,7 +369,7 @@ body {
                 font-size: 14px;
                 position: relative;
                 border: 1px solid #807151;
-                @include responsive($media-custom, $custom-small-screen) {
+                @include responsive($media-xsmall) {
                   width: 320px;
                   height: 320px;
                 }
@@ -385,7 +385,7 @@ body {
                   z-index: 1;
                   width: 372px;
                   height: 372px;
-                  @include responsive($media-custom, $custom-small-screen) {
+                  @include responsive($media-xsmall) {
                     width: 397px;
                     height: 397px;
                   }
@@ -405,7 +405,7 @@ body {
                   position: initial;
                   margin-top: -25px;
                   margin-left: -105px;
-                  @include responsive($media-custom, $custom-small-screen) {
+                  @include responsive($media-xsmall) {
                     margin-top: -10px;
                     margin-left: -90px;
                   }
@@ -474,7 +474,7 @@ body {
     }
     .container {
       .cert-container {
-        @include responsive($media-custom, $custom-small-screen) {
+        @include responsive($media-xsmall) {
           height: 885px;
           padding-top: 170px;
           padding-bottom: 300px;
@@ -527,7 +527,7 @@ body {
         margin-top: 26px;
         margin-bottom: 22px;
         max-width: 250px;
-        @include responsive($media-custom, $custom-small-screen) {
+        @include responsive($media-xsmall) {
           max-width: 100%;
         }
       }
@@ -629,7 +629,7 @@ body {
   .cert-sites-list {
     display: none;
     width: 100%;
-    @include responsive($media-custom, $custom-small-screen) {
+    @include responsive($media-xsmall) {
       display: block;
       max-width: 70%;
       overflow: hidden;
@@ -666,7 +666,7 @@ body {
   .cert-poweredby-item {
     text-align: center;
     position: relative;
-    @include responsive($media-custom, $custom-small-screen) {
+    @include responsive($media-xsmall) {
       float: right;
       margin-top: 13px;
     }
@@ -697,7 +697,7 @@ body {
       font-size: 10px;
       letter-spacing: 1px;
       font-weight: 600;
-      @include responsive($media-custom, $custom-small-screen) {
+      @include responsive($media-xsmall) {
         position: absolute;
         left: 51px;
         top: -10px;

@@ -101,13 +101,14 @@ $dark-red-mark: #A11B1B;
 @import url(https://fonts.googleapis.com/css?family=Yantramanav:100,300);
 $certFontFamilyOne: 'Yantramanav', sans-serif;
 
-$custom-small-screen: 550px;
+$xsmall-screen: 550px;
 $tablet-portrait: 600px;
 $small-screen: 768px;
 $tablet-screen: 980px;
 $tablet-landscape: 1025px;
 $desktop-screen: 1200px;
 
+$media-xsmall: 'xsmall';
 $media-small: 'small';
 $media-tablet: 'tablet';
 $media-desktop: 'desktop';
