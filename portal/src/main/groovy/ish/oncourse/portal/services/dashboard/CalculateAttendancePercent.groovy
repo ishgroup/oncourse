@@ -7,8 +7,12 @@ import ish.oncourse.model.Student
 import ish.oncourse.portal.services.attendance.AttendanceUtils
 import org.apache.cayenne.query.ObjectSelect
 
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
+
 class CalculateAttendancePercent {
 	
+	public static final String DASHBOARD_CACHE = 'Dashboard'
+
 	def Student student
 	private List<Attendance> attendances
 	
@@ -32,7 +36,10 @@ class CalculateAttendancePercent {
 				yearAgo = now - 1.year
 			}
 			attendances = ObjectSelect.query(Attendance).where(Attendance.STUDENT.eq(student))
-					.and(Attendance.SESSION.dot(Session.START_DATE).between(yearAgo, now)).select(student.getObjectContext())
+					.and(Attendance.SESSION.dot(Session.START_DATE).between(yearAgo, now))
+					.prefetch(Attendance.SESSION.disjoint())
+					.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)
+					.select(student.objectContext)
 		}
 		return attendances;
 	}

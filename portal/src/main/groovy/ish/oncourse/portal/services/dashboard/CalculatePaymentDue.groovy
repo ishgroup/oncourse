@@ -7,6 +7,9 @@ import ish.oncourse.model.Invoice
 import ish.oncourse.utils.invoice.GetInvoiceOverdue
 import org.apache.cayenne.query.ObjectSelect
 
+import static ish.oncourse.portal.services.dashboard.CalculateAttendancePercent.DASHBOARD_CACHE
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
+
 class CalculatePaymentDue {
 	
 	def Contact contact;
@@ -37,7 +40,12 @@ class CalculatePaymentDue {
 			
 			owingInvoices =  ObjectSelect.query(Invoice).where(Invoice.CONTACT.eq(contact))
 					.and(Invoice.AMOUNT_OWING.gt(Money.ZERO))
-					.and(Invoice.DATE_DUE.lt(next7Days)).select(contact.getObjectContext())
+					.and(Invoice.DATE_DUE.lt(next7Days))
+					.prefetch(Invoice.INVOICE_LINES.disjoint())
+					.prefetch(Invoice.PAYMENT_IN_LINES.disjoint())
+					.prefetch(Invoice.INVOICE_DUE_DATES.disjoint())
+					.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)
+					.select(contact.getObjectContext())
 			return owingInvoices
 		}
 		return owingInvoices

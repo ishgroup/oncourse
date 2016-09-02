@@ -5,6 +5,8 @@ import ish.oncourse.model.Student
 import org.apache.cayenne.query.ObjectSelect
 
 import static ish.common.types.ApplicationStatus.OFFERED
+import static ish.oncourse.portal.services.dashboard.CalculateAttendancePercent.DASHBOARD_CACHE
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
 
 class GetApplicationToStudy {
 	
@@ -24,6 +26,7 @@ class GetApplicationToStudy {
 					.where(Application.STUDENT.eq(student))
 					.and(Application.STATUS.eq(OFFERED))
 					.orderBy(Application.MODIFIED.desc())
+					.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)
 					.selectFirst(student.objectContext)
 		}
 		return application

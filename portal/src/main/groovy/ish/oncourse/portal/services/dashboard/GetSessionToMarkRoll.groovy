@@ -5,6 +5,8 @@ import ish.oncourse.model.Session
 import ish.oncourse.model.SessionTutor
 import ish.oncourse.model.Tutor
 import org.apache.cayenne.query.ObjectSelect
+import static ish.oncourse.portal.services.dashboard.CalculateAttendancePercent.DASHBOARD_CACHE
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
 
 class GetSessionToMarkRoll {
 	
@@ -24,6 +26,7 @@ class GetSessionToMarkRoll {
 				session = ObjectSelect.query(Session).where(Session.SESSION_TUTORS.outer().dot(SessionTutor.TUTOR).eq(tutor))
 						.and(Session.START_DATE.lte(untilDate))
 						.orderBy(Session.START_DATE.desc())
+						.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)
 						.selectFirst(tutor.getObjectContext())
 			}
 		}

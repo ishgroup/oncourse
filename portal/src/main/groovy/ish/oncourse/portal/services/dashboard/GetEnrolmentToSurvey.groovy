@@ -6,6 +6,9 @@ import ish.oncourse.model.Student
 import ish.oncourse.model.Survey
 import org.apache.cayenne.query.ObjectSelect
 
+import static ish.oncourse.portal.services.dashboard.CalculateAttendancePercent.DASHBOARD_CACHE
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
+
 class GetEnrolmentToSurvey {
 
 	def Student student
@@ -24,7 +27,10 @@ class GetEnrolmentToSurvey {
 					.and(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE).lte(new Date()))
 					.and(Enrolment.SURVEYS.outer().dot(Survey.CREATED).isNull())
 					.orderBy(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE).asc())
-					.selectFirst(student.getObjectContext())
+					.prefetch(Enrolment.COURSE_CLASS.disjoint())
+					.prefetch(Enrolment.COURSE_CLASS.dot(CourseClass.COURSE).disjoint())
+					.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)
+					.selectFirst(student.objectContext)
 		}
 		return enrolment
 	}
