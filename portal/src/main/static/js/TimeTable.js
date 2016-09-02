@@ -38,7 +38,6 @@ MyTimetable.prototype = {
     year: null,
     cal: null,
     allClasses: null,
-    mainContainer: null,
     showTeam: null,
     sessionsOffset: null,
     sessionsPageSize: null,
@@ -47,9 +46,7 @@ MyTimetable.prototype = {
     init: function(showTeam) {
         this.showTeam = showTeam;
         this.allClasses = [];
-        this.mainContainer = $j('.main-container');
-        this.mainContainer.removeClass('col-lg-9 col-sm-8');
-        this.mainContainer.addClass('col-lg-12 col-sm-12');
+        $j('#wrap').addClass('timetable');
 
         $j('div.sync-to-device').on('click', function () {
             window.location.href =  $j(this).attr('value');
