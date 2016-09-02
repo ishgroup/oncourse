@@ -395,3 +395,19 @@
     }
   }
 }
+
+#wrap.dashboard {
+	background-color: #F5F0DF;
+}
+
+#wrap .main-container {
+	@extend .col-lg-9;
+	@extend .col-sm-8;
+}
+
+#wrap.dashboard .main-container {
+	@extend .col-lg-12;
+	@extend .col-sm-12;
+}
+
+
