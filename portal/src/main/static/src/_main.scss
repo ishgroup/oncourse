@@ -53,7 +53,10 @@
     border-bottom-color: $heading-border-color;
     margin: 60px 0 30px;
     padding-bottom: 0;
-  position: relative;
+    position: relative;
+    &.navbar {
+        margin-bottom: 30px;
+    }
 
     h1 {
         margin: 13px 0 0 0;
@@ -1754,8 +1757,8 @@ ul.abcent-menu {
 .absent-with-reason-mark, .partially-attended-mark {
   position: absolute;
   margin: auto;
-  left: 0;
-  right: 0;
+  left: auto;
+  right: -7px;
   z-index: 6;
   width: 80px;
   height: 34px;
@@ -1763,6 +1766,10 @@ ul.abcent-menu {
   font-size: 1rem;
   padding: 3px;
   text-align: center;
+  @include responsive($media-small) {
+    left: 0;
+    right: 0;
+  }
 }
 
 .main-nav {
