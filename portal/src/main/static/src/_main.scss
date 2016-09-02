@@ -45,8 +45,10 @@
 
 }
 
-.main-container.login-container {
-    width: 100%;
+#wrap .main-container {
+    &.col-lg-12.col-sm-12, &.login-container {
+        width: 100%;
+    }
 }
 
 .page-header {
