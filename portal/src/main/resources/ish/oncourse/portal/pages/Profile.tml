@@ -3,6 +3,7 @@
 
 <div class="page-header clearfix zero-padding">
     <ul class="nav nav-tabs header-tabs">
+        <i class="glyphicon glyphicon-chevron-down toggle-tabs"></i>
         <li id="tab_profile" class="${getActiveClass('tab_profile')}"><a data-toggle="tab" href="#profile-form">Profile details</a></li>
         <li id="tab_password" class="${getActiveClass('tab_password')}"><a data-toggle="tab" href="#password-form">Change password</a></li>
         <t:if test="showCensusTab()">

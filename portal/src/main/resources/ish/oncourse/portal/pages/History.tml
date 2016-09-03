@@ -2,6 +2,7 @@
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:history">
 	<div class="page-header clearfix zero-padding">
 		<ul class="nav nav-tabs header-tabs">
+            <i class="glyphicon glyphicon-chevron-down toggle-tabs"></i>
 			<li class="${financeClass}"><a data-toggle="tab" href="#finance-history">Finance</a></li>
 		    <li class="${enrolmentsClass}"><a data-toggle="tab" href="#enrolments-history">Classes</a></li>
 			<li class="${applicationClass}"><a data-toggle="tab" href="#applications-history">Applications</a></li>
@@ -9,7 +10,7 @@
 		<h1><a href="#">History</a></h1>
 	</div>
 	<div class="tab-content">
-    
+
         <div class="tab-pane${financeClass}" id="finance-history">
             <t:history.finance/>
         </div>
@@ -17,7 +18,7 @@
         <div class="tab-pane${enrolmentsClass}" id="enrolments-history">
             <t:history.classes/>
         </div>
-		
+
 		<div class="tab-pane${applicationClass}" id="applications-history">
 			<t:history.applications/>
 		</div>

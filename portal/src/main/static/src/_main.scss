@@ -660,34 +660,79 @@
 
 .nav-tabs.header-tabs {
     margin-top: 5px;
-    float: right;
-  border-bottom: 1px solid #E6D4CE;
-  margin-bottom: -1px;
+    float: none;
+    border: 1px solid #E6D4CE;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    position: relative;
 
-  &:after {
-    position: absolute;
-    content: "";
-    display: block;
-    border-bottom: 1px solid $heading-border-color;
-    width: 100%;
-    left: 0;
-    top: 60px;
-    z-index: -1;
-  }
+    @include responsive($media-small) {
+        border: 0 none;
+        border-radius: 0px;
+    }
+
+    @include responsive($media-desktop) {
+        float: right;
+        border-bottom: 1px solid #E6D4CE;
+        margin-bottom: -1px;
+    }
+
+    .toggle-tabs {
+        display: block;
+        cursor: pointer;
+        position: absolute;
+        top: 21px;
+        right: 15px;
+        @include responsive($media-small) {
+            display: none;
+        }
+        &:hover + li {
+            background: $tabs-text-hover-color;
+        }
+    }
+
+    &:after {
+        @include responsive($media-small) {
+            position: absolute;
+            content: "";
+            display: block;
+            border-bottom: 1px solid $heading-border-color;
+            width: 100%;
+            left: 0;
+            top: 60px;
+            z-index: -1;
+        }
+    }
 
     > li {
-        float: right;
+        float: none;
+        margin-bottom: 0;
+        display: none;
+        @include responsive($media-small) {
+            float: right;
+            margin-bottom: -1px;
+            display: block;
+        }
 
-        &.active > a {
-            background-color: $body-bg;
-            border-color: $border-color;
-            border-bottom-color: $body-bg;
-            color: #5b574e;
-
-            &:hover, &:focus {
+        &.active {
+            display: block;
+            > a {
                 background-color: $body-bg;
-                border-color: $border-color;
-                border-bottom-color: $body-bg;
+                color: #5b574e;
+
+                &, &:hover, &:focus {
+                    border: 0 none;
+                    @include responsive($media-small) {
+                        border: 1px solid $border-color;
+                        border-bottom-color: $body-bg;
+                    }
+                }
+
+                &:hover, &:focus {
+                    background-color: $body-bg;
+                    border-color: $border-color;
+                    border-bottom-color: $body-bg;
+                }
             }
         }
 
@@ -695,10 +740,19 @@
             color: $tabs-text-color;
             font-size: 1.4rem;
             padding: 17px 15px;
-        }
+            margin-right: 0;
+            border: 0 none;
+            @include responsive($media-small) {
+                margin-right: 2px;
+                border: 1px solid transparent;
+            }
 
-        a:hover, a:focus {
-            background: $tabs-text-hover-color;
+            &:hover, &:focus {
+                background: $tabs-text-hover-color;
+                @include responsive($media-small) {
+
+                }
+            }
         }
     }
 }

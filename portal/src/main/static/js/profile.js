@@ -11,7 +11,7 @@ function initProfile()
 		$j('[id*=tab_]').click(function()
 		{
 			var actionLink = "/portal/profile:setactivetab/"+$j(this).attr('id');
-			$j.ajax({	
+			$j.ajax({
 				url: actionLink,
 				async: false,
 				cache: false,
@@ -21,6 +21,8 @@ function initProfile()
                     window.location.reload();
                 }
 			});
+
+            $j(this).parent().find('li').removeClass('show');
 		});
 }
 
@@ -29,7 +31,7 @@ function initAutocomplete(){if ($j("#suburb").length) {
 
         $j("#suburb").autocomplete({source: '/ish/internal/autocomplete.sub',
 	    minLength: 3,
-            select: function(event, ui) {		
+            select: function(event, ui) {
                 var value = ui.item.value;
                 var suburb = suburbFromString(value);
                 var postcode = postcodeFromString(value); // otherwise it thinks it's a number
@@ -52,6 +54,9 @@ function initAutocomplete(){if ($j("#suburb").length) {
 
 $j(document).ready(function() {
 	initProfile();
-	initAutocomplete();        
+	initAutocomplete();
 
+    $j('.nav-tabs.header-tabs .toggle-tabs').on('click', function() {
+        $j(this).parent().find('li').toggleClass('show');
+    });
 });

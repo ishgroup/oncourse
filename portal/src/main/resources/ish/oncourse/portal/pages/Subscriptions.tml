@@ -2,6 +2,7 @@
 	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" activeMenu="literal:subscriptions">
 	<div class="page-header clearfix zero-padding">
 		<ul class="nav nav-tabs header-tabs">
+			<i class="glyphicon glyphicon-chevron-down toggle-tabs"></i>
 			<li id='tab-mailing' class="${getActiveClass('tab-mailing')}"><a data-toggle="tab" href="#mailing-lists">Mailing Lists</a></li>
 			<li id='tab-waiting' class="${getActiveClass('tab-waiting')}"><a data-toggle="tab" href="#waiting-lists">Waiting Lists</a></li>
 		</ul>
