@@ -123,7 +123,7 @@ public class Outcomes {
 			case NOT_YET_COMPETENT_LABEL:
 				outcome.setStatus(vet ? STATUS_ASSESSABLE_FAIL : STATUS_NON_ASSESSABLE_NOT_COMPLETED);
 				break;
-			case WITHDARAWN_LABEL:
+			case WITHDRAWN_LABEL:
 				outcome.setStatus(STATUS_ASSESSABLE_WITHDRAWN);
 				break;
 			case NO_RESULT_LABEL:

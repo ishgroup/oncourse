@@ -15,12 +15,12 @@ public class OutcomeItem {
 
 	public static final String COMPETENT_LABEL = "COMPETENT";
 	public static final String NOT_YET_COMPETENT_LABEL = "NOT YET COMPETENT";
-	public static final String WITHDARAWN_LABEL = "WITHDARAWN";
+	public static final String WITHDRAWN_LABEL = "WITHDRAWN";
 	public static final String NO_RESULT_LABEL = "NO RESULT";
 
 	private static final String COMPETENT_CLASS = "competent-marking";
 	private static final String NOT_YET_COMPETENT_CLASS = "not-yet-competent-marking";
-	private static final String WITHDARAWN_CLASS = "withdrawn-marking";
+	private static final String WITHDRAWN_CLASS = "withdrawn-marking";
 	
 	
 	@Parameter
@@ -52,8 +52,8 @@ public class OutcomeItem {
 				outcomeClass = NOT_YET_COMPETENT_CLASS;
 				break;
 			case STATUS_ASSESSABLE_WITHDRAWN:
-				outcomeLable = WITHDARAWN_LABEL;
-				outcomeClass = WITHDARAWN_CLASS;
+				outcomeLable = WITHDRAWN_LABEL;
+				outcomeClass = WITHDRAWN_CLASS;
 				break;
 			case STATUS_NOT_SET:
 				outcomeLable = NO_RESULT_LABEL;
