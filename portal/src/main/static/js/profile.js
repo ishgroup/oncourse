@@ -21,8 +21,6 @@ function initProfile()
                     window.location.reload();
                 }
 			});
-
-            $j(this).parent().find('li').removeClass('show');
 		});
 }
 
@@ -58,5 +56,9 @@ $j(document).ready(function() {
 
     $j('.nav-tabs.header-tabs .toggle-tabs').on('click', function() {
         $j(this).parent().find('li').toggleClass('show');
+    });
+
+    $j('.nav-tabs.header-tabs li').on('click', function() {
+        $j(this).parent().find('li').removeClass('show');
     });
 });
