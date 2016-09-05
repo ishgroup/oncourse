@@ -665,10 +665,12 @@
     margin-bottom: 5px;
     border-radius: 4px;
     position: relative;
+    padding: 1px;
 
     @include responsive($media-small) {
         border: 0 none;
         border-radius: 0px;
+        padding: 0px;
     }
 
     @include responsive($media-desktop) {
@@ -683,6 +685,7 @@
         position: absolute;
         top: 21px;
         right: 15px;
+        z-index: 10;
         @include responsive($media-small) {
             display: none;
         }
@@ -699,7 +702,7 @@
             border-bottom: 1px solid $heading-border-color;
             width: 100%;
             left: 0;
-            top: 60px;
+            top: 55px;
             z-index: -1;
         }
     }
@@ -733,6 +736,13 @@
                     border-color: $border-color;
                     border-bottom-color: $body-bg;
                 }
+            }
+        }
+
+        > a {
+            border-radius: 4px;
+            @include responsive($media-small) {
+                border-radius: 4px 4px 0 0;
             }
         }
 
