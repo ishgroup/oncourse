@@ -32,8 +32,11 @@ public class OutcomeStubBuilder extends AbstractWillowStubBuilder<Outcome, Outco
 		if (entity.getStatus() != null) {
 			stub.setStatus(entity.getStatus().getDatabaseValue());
 		}
-		stub.setReportableHours(new BigDecimal(entity.getReportableHours()));
-
+		
+		if (entity.getReportableHours() != null) {
+			stub.setReportableHours(new BigDecimal(entity.getReportableHours()));
+		}
+		
 		stub.setMarkedByTutorDate(entity.getMarkedByTutorDate());
 		
 		if (entity.getMarkedByTutor() != null) {
