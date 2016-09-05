@@ -6,5 +6,5 @@
         updateCheck="false" name="portal" maxBytesLocalHeap="40M">
     <defaultCache timeToLiveSeconds="1"/>
     <cache name="CourseClass" timeToLiveSeconds="1"/>
-	<cache name="Dashboard" timeToLiveSeconds="600"/>
+	<cache name="dashboard" timeToLiveSeconds="600"/>
 </ehcache>

@@ -15,6 +15,7 @@ import ish.oncourse.portal.services.dashboard.GetEnrolmentToSurvey;
 import ish.oncourse.portal.services.dashboard.GetNextSession;
 import ish.oncourse.portal.services.dashboard.GetSessionToMarkRoll;
 
+import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -25,6 +26,10 @@ public class Dashboard {
 	@Inject
 	@Property
 	private IPortalService portalService;
+
+	@Inject
+	@Property
+	private CacheManager cacheManager;
 
 	@Property
 	private Contact contact;
@@ -61,7 +66,7 @@ public class Dashboard {
 		contact = portalService.getContact();
 		
 		getClassToApproval = new GetClassToApproval(contact, portalService);
-		attendanceCalculater =  new CalculateAttendancePercent(contact.getStudent());
+		attendanceCalculater =  new CalculateAttendancePercent(contact.getStudent(), cacheManager);
 		getEnrolmentToSurvey = new GetEnrolmentToSurvey(contact.getStudent());
 		getApplicationToStudy = new GetApplicationToStudy(contact.getStudent());
 		getSessionToMarkRoll = new GetSessionToMarkRoll(contact.getTutor());
