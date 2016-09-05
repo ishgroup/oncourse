@@ -126,7 +126,7 @@ public class PaymentServiceTestModule {
 	
 	@EagerLoad
 	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(webSiteService);
+		CayenneService cayenneService = new CayenneService(webSiteService, ServiceModule.buildCacheManager());
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}

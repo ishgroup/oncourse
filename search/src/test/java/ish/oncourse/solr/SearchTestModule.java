@@ -1,5 +1,6 @@
 package ish.oncourse.solr;
 
+import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -118,7 +119,7 @@ public class SearchTestModule {
 
 	@EagerLoad
 	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(webSiteService);
+		CayenneService cayenneService = new CayenneService(webSiteService, ServiceModule.buildCacheManager());
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}

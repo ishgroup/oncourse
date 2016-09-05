@@ -55,6 +55,7 @@ import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.persistence.UnregisterMBeans;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.property.IPropertyService;
@@ -90,6 +91,8 @@ import ish.oncourse.services.tutor.TutorService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.management.ManagementService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -103,6 +106,9 @@ import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.LibraryMapping;
+
+import javax.management.MBeanServer;
+import java.lang.management.ManagementFactory;
 
 /**
  * A Tapestry IoC module definition for all common services.
@@ -203,8 +209,28 @@ public class ServiceModule {
 	}
 
 	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(webSiteService);
+	public static CacheManager buildCacheManager() {
+
+		CacheManager cacheManager = CacheManager.create(ServiceModule.class.getClassLoader().getResource("ehcache.xml"));
+
+		Integer cacheCapacity = ContextUtil.getCacheCapacity();
+
+		if (cacheCapacity != null) {
+			cacheManager.getConfiguration().getDefaultCacheConfiguration().setMaxEntriesLocalHeap(cacheCapacity);
+		}
+		try {
+			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+			UnregisterMBeans.valueOf(cacheManager, mBeanServer).unregister();
+			ManagementService.registerMBeans(cacheManager, mBeanServer, true, true, true, true);
+		} catch (Exception e) {
+			logger.error("Cannot register MBeans for  cacheManager \"{}\".",cacheManager.getName(), e);
+		}
+		return cacheManager;
+	}
+	
+	@EagerLoad
+	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
+		CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}

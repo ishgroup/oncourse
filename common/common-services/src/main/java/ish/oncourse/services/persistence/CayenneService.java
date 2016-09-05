@@ -4,6 +4,7 @@ import ish.math.MoneyType;
 import ish.oncourse.listeners.IshVersionListener;
 import ish.oncourse.services.lifecycle.*;
 import ish.oncourse.services.site.IWebSiteService;
+import net.sf.ehcache.CacheManager;
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataNode;
@@ -13,6 +14,7 @@ import org.apache.cayenne.lifecycle.changeset.ChangeSetFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
+import org.codehaus.plexus.util.CachedMap;
 
 
 public class CayenneService implements ICayenneService, RegistryShutdownListener {
@@ -22,12 +24,12 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	
 	private static final Logger logger = LogManager.getLogger();
 	
-	public CayenneService(IWebSiteService webSiteService) {
+	public CayenneService(IWebSiteService webSiteService, CacheManager cacheManager) {
 		
 		logger.info("Starting CayenneService....");
 		
 		try {
-			this.cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new ISHModule());
+			this.cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new ISHModule(cacheManager));
 			this.cayenneRuntime.getDataDomain().addFilter(new ChangeSetFilter());
 		} catch (Exception e) {
 			throw new RuntimeException("Error loading Cayenne stack", e);
