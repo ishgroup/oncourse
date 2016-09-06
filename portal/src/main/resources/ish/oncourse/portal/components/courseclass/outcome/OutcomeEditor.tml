@@ -16,7 +16,7 @@
 		</li>
 		<t:if test="vet">
 			<li>
-				<button data-status="WITHDARAWN">Withdrawn</button>
+				<button data-status="WITHDRAWN">Withdrawn</button>
 			</li>
 		</t:if>
 		<li class="pull-right">
