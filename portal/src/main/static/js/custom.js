@@ -416,37 +416,6 @@ $j(document).ready(function () {
 
 	// show all the sessions
 
-	$j('.info-text .finish, .marking-roll').click(function(){
-		$j(".session-wrapper, .course-detail").slideDown();
-		//$j('.marking-roll').hide();
-		//$j('.mark-roll').show();
-		$j('.class-roll-content .info-text').hide();
-		//$j(".session-list > li").removeClass('active').show();
-		$j(".session-list > li").removeClass('active');
-		$j(".session-info").show();
-		//$j(".past-sessions").show();
-		$j('.attendance-content').hide('slow');
-		/*$j('.list-unstyled.session-list').css({
-            'left': (singleSessionWidth) * (-sessionPosition)
-        });*/
-		//$j('.attendance').width(0);
-		var el = $j('.attendance');
-        var index = 0;
-		el.removeClass('act');
-        /*var timer = window.setInterval(function () {
-            if (index < el.length) {
-                var indexing = index++;
-                el.eq(indexing).removeClass('act');
-                setTimeout(function () {
-                   // el.eq(indexing).removeClass('act');
-                }, 200);
-            } else {
-                window.clearInterval(timer);
-            }
-        }, 200);*/
-		return false;
-	});
-
 	$j('.show-full-description').click(function() {
 		var me = $j(this);
 		if(!me.hasClass('active')) {

@@ -10,7 +10,6 @@
 		</t:loop>
 
 
-		<p class="info-text clearfix">You are currently marking <strong id='sessionDate'></strong><button type="button" class="finish pull-right btn btn-default btn-xs">Finish</button></p>
 		<ul class="list-unstyled student-list clearfix">
 			<t:loop source="enrolments" value="enrolment">
 				<span t:type="courseclass/classRollItemNew" enrolment="enrolment"/>

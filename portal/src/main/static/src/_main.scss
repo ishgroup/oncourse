@@ -237,35 +237,6 @@
     overflow: hidden;
 }
 
-.session-list {
-    margin-bottom: 0;
-    position: relative;
-
-
-    > li {
-        border-bottom: 1px solid $border-color;
-        min-height:95px;
-
-        &.active {
-            background: $cal_highlight-color;
-        }
-
-        span.label {
-            cursor: pointer;
-        }
-    }
-
-    .marking-roll {
-        display: none;
-
-        .close {
-            float: left;
-            font-size: 1.8rem;
-            margin-right: 3px
-        }
-
-    }
-}
 
 .session-info {
     a {
