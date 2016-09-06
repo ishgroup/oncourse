@@ -53,7 +53,12 @@ public class Profile {
     {
         this.activeTabId = activeTabId;
     }
-
+	
+	Object onActivate(String activeTabId) {
+		this.activeTabId = activeTabId;
+		return null;
+	}
+	
     public String getActiveClass(String tabId)
     {
         return tabId.equals(activeTabId) ? messages.get("class.active") : StringUtils.EMPTY;
