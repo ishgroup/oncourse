@@ -97,6 +97,14 @@ function renderEnrolmentOutcomes(enrolmentId) {
     });
 }
 
+function refreshSelection(selected) {
+    $j(a).closest('.nav-menu').find('li > button').each(function(){
+        $j(this).removeClass('ui-priority-primary')
+    });
+    $j(selected).addClass('ui-priority-primary');
+}
+
+
 EnrolmentCtrl = function () {
 };
 
@@ -112,6 +120,7 @@ EnrolmentCtrl.prototype = {
 
         var self = this;
         $j(this.enrolment).children('ul').children('li').children('button').on('click', function () {
+            refreshSelection(this);
             self.status = $j(this).attr('data-status');
         });
         $j(this.enrolment).children('button').on('click', function () {
@@ -156,6 +165,7 @@ ModuleCtrl.prototype = {
 
         var self = this;
         $j(this.module).children('ul').children('li').children('button').on('click', function () {
+            refreshSelection(this);
             self.status = $j(this).attr('data-status');
         });
         $j(this.module).children('button').on('click', function () {
@@ -203,6 +213,7 @@ OutcomeCtrl.prototype = {
 
         var self = this;
         $j(this.outcome).children('ul').children('li').children('button').on('click', function () {
+            refreshSelection(this);
             self.status = $j(this).attr('data-status');
         });
         $j(this.outcome).children('button').on('click', function () {

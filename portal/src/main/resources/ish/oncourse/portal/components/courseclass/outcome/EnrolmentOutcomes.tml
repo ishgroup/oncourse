@@ -21,8 +21,12 @@
 				<t:loop source="enrolment.outcomes" value="outcome">
 					<li>
 						<t:if test="outcome.module">
-							${outcome.module.title} (${outcome.module.nationalCode}) <br/>
+							${outcome.module.title} (${outcome.module.nationalCode})
 						</t:if>
+						<t:unless test="outcome.module">
+							${outcome.enrolment.courseClass.course.name} (${outcome.enrolment.courseClass.uniqueIdentifier})
+						</t:unless>
+						
 						<t:delegate to="block:outcomeItem"/>
 					</li>
 				</t:loop>
