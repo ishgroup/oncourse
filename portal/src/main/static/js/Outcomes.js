@@ -98,7 +98,7 @@ function renderEnrolmentOutcomes(enrolmentId) {
 }
 
 function refreshSelection(selected) {
-    $j(a).closest('.nav-menu').find('li > button').each(function(){
+    $j(selected).closest('.nav-menu').find('li > button').each(function(){
         $j(this).removeClass('ui-priority-primary')
     });
     $j(selected).addClass('ui-priority-primary');
