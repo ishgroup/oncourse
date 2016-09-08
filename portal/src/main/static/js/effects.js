@@ -11,13 +11,13 @@ $j(document).ready(function() {
 
 // diff classes for diff percents on dashboard
   function DashboardAttendance(){
-    dashboardPercent = $j('.dashboard-card.persent-of-attendance .percent').text();
+    dashboardPercent = $j('.dashboard-card.persent-of-attendance .percent').text().replace('%','');
     dashboardAttendanceCard = $j('.dashboard-card.persent-of-attendance');
 
-    if ( dashboardPercent < "75%" ){
+    if ( dashboardPercent < 75 ){
       dashboardAttendanceCard.addClass('low-percent-card');
     }
-    else if ( dashboardPercent < "85%" ){
+    else if ( dashboardPercent < 85 ){
       dashboardAttendanceCard.addClass('middle-percent-card');
     }
     else {
