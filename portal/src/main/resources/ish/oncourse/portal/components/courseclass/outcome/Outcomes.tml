@@ -25,7 +25,7 @@
 							</li>
 						</t:if>
 						<t:if test="!courseClass.validEnrolments.empty">
-							<li role="presentation">
+							<li role="presentation" class="${stydentsContentClass}">
 								<div class="col-lg-6 col-sm-12">
 									<a class="btn-lg btn-outcomes" href="#mark-by-student" data-toggle="tab">
 										<span><h4>Mark by Student</h4></span>
@@ -51,7 +51,7 @@
 				</div>
 			</t:if>
 
-			<div id="mark-by-student" class="tab-pane">
+			<div id="mark-by-student" class="tab-pane ${stydentsContentClass}">
 				<div class="col-lg-12 col-sm-12 mark-by-caption">Select a Student</div>
 				<ul class="list-unstyled classes-content">
 					<t:loop source="courseClass.validEnrolments" value="enrolment">

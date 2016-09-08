@@ -141,4 +141,8 @@ public class Outcomes {
 	public String getActiveClass() {
 		return activeTab ? "active" : StringUtils.EMPTY;
 	}
+
+	public String getStydentsContentClass() {
+		return courseClass.getCourse().getCourseModules().isEmpty() ?  "active" : StringUtils.EMPTY;
+	}
 }
