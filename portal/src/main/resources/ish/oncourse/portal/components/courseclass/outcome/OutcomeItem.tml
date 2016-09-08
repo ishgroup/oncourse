@@ -14,6 +14,23 @@
 
 	<div class="absent-with-reason collapse" id="mark-outcomeId-${outcome.id}" aria-expanded="false"
 		 style="height: 60px;">
-		<div t:type="courseclass/outcome/outcomeeditor" vet="vet" outcomeId="literal:outcome-editor-${outcome.id}"/>
+
+		<t:if test="allowToEdit">
+			<div t:type="courseclass/outcome/outcomeeditor" vet="vet" outcomeId="literal:outcome-editor-${outcome.id}"/>
+		</t:if>
+		<t:unless test="allowToEdit">
+			<strong>SELECT OUTCOME</strong>
+			<ul class="nav-menu">
+				<li>
+					Outcome editing is locked. Reason:
+					<t:if test="invalidStartDate">
+						Outcome start date is in the future.
+					</t:if>
+					<t:unless test="invalidStartDate">
+						Outcome is linked to a certificate
+					</t:unless>
+				</li>
+			</ul>
+		</t:unless>
 	</div>
 </t:container>

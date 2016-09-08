@@ -74,5 +74,14 @@ public class OutcomeItem {
 				outcomeLable = NOT_YET_COMPETENT_LABEL;
 				outcomeClass = StringUtils.EMPTY;
 		}
-	} 
+	}
+
+	public boolean isAllowToEdit() {
+		return OutcomeUtils.isEditingAllowed(outcome);
+	}
+
+	public boolean isInvalidStartDate() {
+		return outcomeStartDate.after(new Date());
+	}
+
 }

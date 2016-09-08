@@ -5,6 +5,14 @@ import ish.common.CalculateStartDate
 import ish.oncourse.model.Outcome
 
 class OutcomeUtils {
+
+	def static boolean isEditingAllowed(Outcome outcome) {
+		getOutcomeStartDate(outcome).before(new Date()) && !linkedToActiveCertificate(outcome)
+	}
+
+	def static boolean linkedToActiveCertificate(Outcome outcome) {
+		outcome.certificateOutcomes*.certificate.findAll{c -> c.revokedWhen == null}.size() > 0
+	}
 	
 	def static Date getOutcomeStartDate(Outcome outcome) {
 		outcome.startDate?: new CalculateStartDate(outcome).calculate();

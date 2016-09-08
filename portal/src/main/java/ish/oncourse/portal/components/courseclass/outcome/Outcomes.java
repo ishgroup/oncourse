@@ -10,6 +10,7 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Module;
 import ish.oncourse.model.Outcome;
 import ish.oncourse.portal.services.IPortalService;
+import ish.oncourse.portal.services.attendance.OutcomeUtils;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -109,6 +110,9 @@ public class Outcomes {
 	}
 	
 	private void saveOutcome(Outcome outcome, String status, boolean setEndDate) {
+//		if (OutcomeUtils.isEditingAllowed(outcome)) {
+//			return;
+//		}
 		outcome.setMarkedByTutor(outcome.getObjectContext().localObject(portalService.getContact().getTutor()));
 		outcome.setMarkedByTutorDate(new Date());
 		if (setEndDate) {
