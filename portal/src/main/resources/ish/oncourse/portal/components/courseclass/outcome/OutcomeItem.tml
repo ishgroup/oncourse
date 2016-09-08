@@ -22,12 +22,12 @@
 			<strong>SELECT OUTCOME</strong>
 			<ul class="nav-menu">
 				<li>
-					Outcome editing is locked. Reason:
+					This outcome cannot be edited because
 					<t:if test="invalidStartDate">
-						Outcome start date is in the future.
+						it has not yet started.
 					</t:if>
 					<t:unless test="invalidStartDate">
-						Outcome is linked to a certificate
+						it is linked to a certificate.
 					</t:unless>
 				</li>
 			</ul>
