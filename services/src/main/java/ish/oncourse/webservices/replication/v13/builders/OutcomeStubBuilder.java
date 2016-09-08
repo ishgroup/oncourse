@@ -43,7 +43,7 @@ public class OutcomeStubBuilder extends AbstractWillowStubBuilder<Outcome, Outco
 		}
 		
 		stub.setEndDate(entity.getEndDate());
-		
+		stub.setStartDate(entity.getStartDate());
 		return stub;
 	}
 
