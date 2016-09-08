@@ -3,13 +3,14 @@
  */
 package ish.oncourse.portal.components.courseclass.outcome;
 
-
 import ish.oncourse.model.Outcome;
+import ish.oncourse.portal.services.attendance.OutcomeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 
+import java.util.Date;
 
 public class OutcomeItem {
 
@@ -36,10 +37,20 @@ public class OutcomeItem {
 	@Property
 	private boolean vet;
 
+	@Property
+	private Date outcomeStartDate;
+
+	@Property
+	private Date outcomeEndDate;
+
 
 	@SetupRender
 	public void setupRender() {
+		outcomeEndDate = OutcomeUtils.getOutcomeEndDate(outcome);
+		outcomeStartDate = OutcomeUtils.getOutcomeStartDate(outcome);
+		
 		vet = outcome.getModule() != null;
+		
 		switch (outcome.getStatus()) {
 			case STATUS_ASSESSABLE_PASS:
 			case STATUS_NON_ASSESSABLE_COMPLETED:

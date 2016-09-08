@@ -1,10 +1,8 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	
-	<t:if test="outcome.startDate">
-		<t:if test="outcome.endDate">
-			<span>|<t:output format="literal:d/M/yyyy" value="outcome.startDate"/> - <t:output format="literal:d/M/yyyy" value="outcome.endDate"/></span>
-		</t:if>
-	</t:if>
+
+	<span>|<t:output format="literal:d/M/yyyy" value="outcomeStartDate"/> - <t:output format="literal:d/M/yyyy" value="outcomeEndDate"/></span>
+
 	
 	<div class="pull-right marking-list collapsed" data-toggle="collapse"
 		 data-target="#mark-outcomeId-${outcome.id}"
