@@ -24,6 +24,7 @@ class GetApplicationToStudy {
 		} else if (!application) {
 			application = ObjectSelect.query(Application)
 					.where(Application.STUDENT.eq(student))
+					.and(Application.ENROL_BY.isNotNull().orExp(Application.ENROL_BY.gte(new Date())))
 					.and(Application.STATUS.eq(OFFERED))
 					.orderBy(Application.MODIFIED.desc())
 					.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)
