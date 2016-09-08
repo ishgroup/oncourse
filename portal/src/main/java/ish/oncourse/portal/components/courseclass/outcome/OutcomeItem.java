@@ -54,6 +54,9 @@ public class OutcomeItem {
 		switch (outcome.getStatus()) {
 			case STATUS_ASSESSABLE_PASS:
 			case STATUS_NON_ASSESSABLE_COMPLETED:
+			case STATUS_ASSESSABLE_RPL_GRANTED:
+			case STATUS_ASSESSABLE_RCC_GRANTED:
+			case STATUS_ASSESSABLE_CREDIT_TRANSFER:
 				outcomeLable = COMPETENT_LABEL;
 				outcomeClass = COMPETENT_CLASS;
 				break; 
@@ -72,7 +75,7 @@ public class OutcomeItem {
 				break;
 			default:
 				outcomeLable = NOT_YET_COMPETENT_LABEL;
-				outcomeClass = StringUtils.EMPTY;
+				outcomeClass = NOT_YET_COMPETENT_CLASS;
 		}
 	}
 
