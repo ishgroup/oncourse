@@ -1,10 +1,11 @@
 package ish.oncourse.model;
 
+import ish.oncourse.cayenne.OutcomeInterface;
 import ish.oncourse.model.auto._Outcome;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.validation.ValidationResult;
 
-public class Outcome extends _Outcome implements Queueable {
+public class Outcome extends _Outcome implements Queueable, OutcomeInterface {
 	private static final long serialVersionUID = 6238039938398442623L;
 
 	public Long getId() {

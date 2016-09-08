@@ -191,4 +191,9 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	public boolean isInFinalStatus() {
 		return EnrolmentStatus.STATUSES_FINAL.contains(getStatus());
 	}
+
+	@Override
+	public Date getCreatedOn() {
+		return super.getCreated();
+	}
 }

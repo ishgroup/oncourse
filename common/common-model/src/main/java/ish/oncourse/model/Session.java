@@ -1,11 +1,14 @@
 package ish.oncourse.model;
 
+import ish.oncourse.cayenne.SessionInterface;
 import ish.oncourse.model.auto._Session;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
-public class Session extends _Session implements Queueable {
+import java.util.Date;
+
+public class Session extends _Session implements Queueable, SessionInterface {
 	private static final long serialVersionUID = 5495296857845632418L;
 
 	public Long getId() {
@@ -50,5 +53,15 @@ public class Session extends _Session implements Queueable {
 	@Override
 	public boolean isAsyncReplicationAllowed() {
 		return false;
+	}
+
+	@Override
+	public Date getStartDatetime() {
+		return super.getStartDate();
+	}
+
+	@Override
+	public Date getEndDatetime() {
+		return super.getEndDate();
 	}
 }

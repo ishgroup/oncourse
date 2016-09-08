@@ -2,9 +2,8 @@ package ish.oncourse.model;
 
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
-import ish.oncourse.cayenne.DiscountInterface;
+import ish.oncourse.cayenne.CourseClassInterface;
 import ish.oncourse.model.auto._CourseClass;
-import ish.oncourse.utils.WebDiscountUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
@@ -19,7 +18,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-public class CourseClass extends _CourseClass implements Queueable {
+public class CourseClass extends _CourseClass implements Queueable, CourseClassInterface {
 	
 	private static final long serialVersionUID = 3351739058505297154L;
 
@@ -497,5 +496,15 @@ public class CourseClass extends _CourseClass implements Queueable {
 	@Override
 	public boolean isAsyncReplicationAllowed() {
 		return true;
+	}
+
+	@Override
+	public Date getStartDateTime() {
+		return super.getStartDate();
+	}
+
+	@Override
+	public Date getEndDateTime() {
+		return super.getEndDate();
 	}
 }
