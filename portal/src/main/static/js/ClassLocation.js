@@ -43,6 +43,9 @@ ClassLocation.prototype = {
         this.courseClassId = path.length > 0 ? path[3] : null;
         if (this.courseClassId) {
             this.classLocationTab = $j("li#class-location-tab");
+            if(path.length == 5 && path[4] == "location") {
+                self.initMap()
+            }
             this.classLocationTab.on('click', function () {
                 self.initMap()
             })
