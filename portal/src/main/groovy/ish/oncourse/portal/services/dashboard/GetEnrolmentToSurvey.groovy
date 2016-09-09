@@ -1,5 +1,6 @@
 package ish.oncourse.portal.services.dashboard
 
+import ish.common.types.EnrolmentStatus
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Enrolment
 import ish.oncourse.model.Student
@@ -23,6 +24,8 @@ class GetEnrolmentToSurvey {
 			return null
 		} else if (!enrolment) {
 			enrolment = ObjectSelect.query(Enrolment).where(Enrolment.STUDENT.eq(student))
+					.and(Enrolment.STATUS.eq(EnrolmentStatus.SUCCESS))
+					.and(Enrolment.COURSE_CLASS.dot(CourseClass.CANCELLED).isFalse())
 					.and(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE).isNotNull())
 					.and(Enrolment.COURSE_CLASS.dot(CourseClass.END_DATE).lte(new Date()))
 					.and(Enrolment.SURVEYS.outer().dot(Survey.CREATED).isNull())
