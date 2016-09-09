@@ -28,7 +28,7 @@
 			<div class="cms-set-ops">
 				<label class="cms-checkbox">
 					<t:checkbox t:id="outcomeMarkingViaPortalCheckbox"
-								value="outcomeMarkingViaPortal" /> Disable outcome marking in tutor portal.
+								value="outcomeMarkingViaPortal" /> Enable outcome marking in tutor portal.
 				</label>
 			</div>
 			<br/>
