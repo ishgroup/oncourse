@@ -3,7 +3,7 @@
 		<div class="mark-roll-header">
 			<strong>MARK ROLL</strong>
 
-			<p class="class-name">${session.courseClass.course.name}</p>
+			<p class="class-name text-overflow mark-roll">${session.courseClass.course.name}</p>
 		</div>
 		<div class="mark-roll-body">
 			<p>${sessionStartDate}</p>

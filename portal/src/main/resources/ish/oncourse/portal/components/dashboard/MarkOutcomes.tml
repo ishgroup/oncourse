@@ -2,8 +2,8 @@
 	<div class="dashboard-card marking-outcomes">
 		<div class="mark-outcomes-header">
 			<strong>MARK OUTCOMES</strong>
-			<p class="class-name">${courseClass.course.name}</p>
-			<p>(${courseClass.uniqueIdentifier})</p>
+			<p class="class-name mark-outcomes text-overflow">${courseClass.course.name}</p>
+			<p class="class-name sing-line text-overflow">(${courseClass.uniqueIdentifier})</p>
 		</div>
 		<div class="mark-outcomes-body">
 			<span class="glyphicon glyphicon-signal"></span>

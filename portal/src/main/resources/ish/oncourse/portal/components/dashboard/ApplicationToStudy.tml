@@ -1,7 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="dashboard-card app-to-study text-center">
 		<strong>APPLICATION TO STUDY</strong>
-		<p class="class-name">${application.course.name}</p>
+		<p class="class-name text-overflow application">${application.course.name}</p>
 		<p class="accepted"><span class="glyphicon glyphicon-ok"/>&nbsp;Accepted</p>
 		<a href="/portal/history/applications#application-${application.id}" class="btn btn btn-proceed">PROCEED</a>
 	</div>

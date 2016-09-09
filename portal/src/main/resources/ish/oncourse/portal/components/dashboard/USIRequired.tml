@@ -2,7 +2,7 @@
 	<div class="dashboard-card user-card text-center">
 		<div class="usi-required"><strong>USI REQUIRED</strong></div>
 		<div class="user-photo"><img src="${profilePicturePath}" height="50" width="50"/></div>
-		<div class="user-name">${contact.fullName}</div>
+		<div class="user-name text-overflow sing-line">${contact.fullName}</div>
 		<hr/>
 		<a href="/portal/profile/tab_census">Review Now</a>
 	</div>
