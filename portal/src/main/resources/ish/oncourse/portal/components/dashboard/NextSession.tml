@@ -19,14 +19,14 @@
 			<div class="class-date">
 				<div>${sessionDay}</div>
 				<div class="class-day">${sessionDate}</div>
+				<t:unless test="location">
+					No information on the venue
+				</t:unless>
 			</div>
 			<t:if test="location">
 				<a href="/portal/class/${session.courseClass.id}/location" class="btn btn-primary btn-view-map">VIEW
 					MAP</a>
 			</t:if>
-			<t:unless test="location">
-				No information on the venue
-			</t:unless>
 		</div>
 	</div>
 </t:container>
