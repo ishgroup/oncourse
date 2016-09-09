@@ -3,7 +3,7 @@
 		<strong>CLASS FEEDBACK</strong>
 		<div class="class-feedback-name">${enrolment.courseClass.course.name}</div>
 		<div class="class-feedback-foot">
-			<a href="/portal/class/${enrolment.courseClass.id}"><span><img src="/portal/img/stars.png"/></span>&nbsp;|&nbsp;Provide Feedback</a>
+			<a href="/portal/class/${enrolment.courseClass.id}"><span class="right-separator"><img src="/portal/img/stars.png"/></span>Provide Feedback</a>
 		</div>
 	</div>
 </t:container>
