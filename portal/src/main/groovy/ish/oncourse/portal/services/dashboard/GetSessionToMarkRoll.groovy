@@ -1,6 +1,7 @@
 package ish.oncourse.portal.services.dashboard
 
 import groovy.time.TimeCategory
+import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Session
 import ish.oncourse.model.SessionTutor
 import ish.oncourse.model.Tutor
@@ -24,6 +25,7 @@ class GetSessionToMarkRoll {
 			use(TimeCategory) {
 				Date untilDate = new Date() + 1.hour
 				session = ObjectSelect.query(Session).where(Session.SESSION_TUTORS.outer().dot(SessionTutor.TUTOR).eq(tutor))
+						.and(Session.COURSE_CLASS.dot(CourseClass.CANCELLED).isFalse())
 						.and(Session.START_DATE.lte(untilDate))
 						.orderBy(Session.START_DATE.desc())
 						.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)

@@ -28,6 +28,7 @@ class GetClassToMarkOutcomes {
 			return null
 		} else if (!courseClass) {
 			courseClass = ObjectSelect.query(CourseClass).where(CourseClass.TUTOR_ROLES.outer().dot(TutorRole.TUTOR).eq(tutor))
+					.and(CourseClass.CANCELLED.isFalse())
 					.and(CourseClass.END_DATE.lte(new Date()))
 					.and(CourseClass.ENROLMENTS.outer().dot(Enrolment.OUTCOMES).outer().dot(Outcome.STATUS).eq(STATUS_NOT_SET))
 					.orderBy(CourseClass.END_DATE.desc())
