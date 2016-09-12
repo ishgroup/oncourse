@@ -5,12 +5,11 @@
 			<div class="col-lg-12 col-sm-12">
 				<span>Assessments are made against units of competency from the 
 					<t:if test="courseClass.course.qualification">
-					${courseClass.course.qualification.title} <span class="service-name">${courseClass.course.qualification.nationalCode}</span>
+					${courseClass.course.qualification.title} <span class="service-name">${courseClass.course.qualification.nationalCode}</span>.
 						<p:else >
-							${courseClass.course.name} <span class="service-name">${courseClass.course.code}</span>
+							${courseClass.course.name} <span class="service-name">${courseClass.course.code}</span>.
 						</p:else>
 					</t:if>
-					.
 				</span>
 				<div class="row">
 					<ul>
