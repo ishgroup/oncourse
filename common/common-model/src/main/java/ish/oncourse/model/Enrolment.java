@@ -196,4 +196,10 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 	public Date getCreatedOn() {
 		return super.getCreated();
 	}
+	
+	@Override
+	public CourseClass getCourseClass() {
+		return super.getCourseClass();
+	}
+
 }
