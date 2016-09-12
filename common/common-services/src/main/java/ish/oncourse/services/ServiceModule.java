@@ -12,6 +12,10 @@ import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.content.WebContentService;
+import ish.oncourse.services.content.cache.ContentEHCacheService;
+import ish.oncourse.services.content.cache.IContentCacheService;
+import ish.oncourse.services.content.cache.IContentKeyFactory;
+import ish.oncourse.services.content.cache.WillowContentKeyFactory;
 import ish.oncourse.services.cookies.CookiesImplOverride;
 import ish.oncourse.services.cookies.CookiesService;
 import ish.oncourse.services.cookies.ICookiesOverride;
@@ -201,6 +205,9 @@ public class ServiceModule {
 
         binder.bind(IRequestCacheService.class, RequestCacheService.class);
 		binder.bind(IApplicationService.class, ApplicationServiceImpl.class);
+
+		binder.bind(IContentCacheService.class, ContentEHCacheService.class);
+		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
     }
 
 	@Scope("perthread")
