@@ -12,6 +12,10 @@ var OutcomeSouce = {
 
 var outcomesContent;
 
+function scrollTop() {
+    $('html, body').animate({scrollTop: $("#class-outcomes").offset().top}, 1000);
+}
+
 $j(document).ready(function () {
 
     if ($j('div#class-outcomes')) {
@@ -19,9 +23,11 @@ $j(document).ready(function () {
 
         $j('li[id^="outcomeModuleId_"]').on('click', function(){
             renderModuleOutcomes($j(this).attr('id').replace('outcomeModuleId_',''));
+            scrollTop();
         });
         $j('li[id^="outcomeEnrolmentId_"]').on('click', function(){
             renderEnrolmentOutcomes($j(this).attr('id').replace('outcomeEnrolmentId_',''));
+            scrollTop();
         });
         $j('a[href="#mark-by-outcome"]').on('click', function(){
             $j('#module-outcome-content').remove();
