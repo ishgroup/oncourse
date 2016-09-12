@@ -7,7 +7,7 @@
 
 			<p class="class-time">${sessionTime}</p>
 
-			<p class="class-name text-overflow next-session">${session.courseClass.course.name}</p>
+			<p class="class-name text-overflow next-session-title">${session.courseClass.course.name}</p>
 
 			<t:if test="session.room">
 				<p class="class-location"><span class="glyphicon glyphicon-map-marker"></span>${venue}</p>
