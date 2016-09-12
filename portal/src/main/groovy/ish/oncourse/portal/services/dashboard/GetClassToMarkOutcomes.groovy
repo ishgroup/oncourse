@@ -5,6 +5,7 @@ import ish.oncourse.model.Enrolment
 import ish.oncourse.model.Outcome
 import ish.oncourse.model.Tutor
 import ish.oncourse.model.TutorRole
+import ish.oncourse.services.preference.PreferenceController
 import org.apache.cayenne.query.ObjectSelect
 
 import static ish.common.types.OutcomeStatus.STATUS_NOT_SET
@@ -15,13 +16,15 @@ class GetClassToMarkOutcomes {
 	
 	def Tutor tutor
 	def CourseClass courseClass
+	def PreferenceController preferenceController
 	
-	def GetClassToMarkOutcomes(Tutor tutor) {
+	def GetClassToMarkOutcomes(Tutor tutor, PreferenceController preferenceController) {
 		this.tutor = tutor
+		this.preferenceController = preferenceController
 	}
 	
 	def CourseClass get() {
-		if (!tutor) {
+		if (!tutor || !preferenceController.outcomeMarkingViaPortal) {
 			return null
 		} else if (!courseClass) {
 			courseClass = ObjectSelect.query(CourseClass).where(CourseClass.TUTOR_ROLES.outer().dot(TutorRole.TUTOR).eq(tutor))

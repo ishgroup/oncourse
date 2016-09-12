@@ -4,6 +4,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.dashboard.ClassTab;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
@@ -24,6 +25,9 @@ public class Class {
 
 	@Inject
 	private ICayenneService cayenneService;
+	
+	@Inject
+	private PreferenceController preferenceController;
 
     @Inject
     @Property
@@ -106,5 +110,9 @@ public class Class {
 	
 	public boolean isActive(String tabKey) {
 		return activeTab.getKey().equals(tabKey);
+	}
+
+	public boolean isShowOutcomes() {
+		return isTutor && preferenceController.getOutcomeMarkingViaPortal();
 	}
 }

@@ -15,6 +15,7 @@ import ish.oncourse.portal.services.dashboard.GetEnrolmentToSurvey;
 import ish.oncourse.portal.services.dashboard.GetNextSession;
 import ish.oncourse.portal.services.dashboard.GetSessionToMarkRoll;
 
+import ish.oncourse.services.preference.PreferenceController;
 import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -55,6 +56,8 @@ public class Dashboard {
 	@Property
 	private GetClassToApproval getClassToApproval;
 
+	@Inject
+	private PreferenceController preferenceController;
 
 	@Property
 	private GetNextSession getNextSession;
@@ -70,7 +73,7 @@ public class Dashboard {
 		getEnrolmentToSurvey = new GetEnrolmentToSurvey(contact.getStudent());
 		getApplicationToStudy = new GetApplicationToStudy(contact.getStudent());
 		getSessionToMarkRoll = new GetSessionToMarkRoll(contact.getTutor());
-		getClassToMarkOutcomes = new GetClassToMarkOutcomes(contact.getTutor());
+		getClassToMarkOutcomes = new GetClassToMarkOutcomes(contact.getTutor(), preferenceController);
 		paymentDuecalculater = new CalculatePaymentDue(contact);
 		getNextSession = new GetNextSession(contact, portalService);
 	}

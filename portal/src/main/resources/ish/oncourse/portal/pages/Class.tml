@@ -25,7 +25,7 @@
 		
 		<div class="tab-content">
             <t:courseclass.classDetailsNew courseClass="courseClass" isTutor="isTutor" activeTab="${isActive('details')}"/>
-			<t:if test="isTutor">
+			<t:if test="showOutcomes">
 				<t:courseclass.outcome.outcomes courseClass="courseClass" activeTab="${isActive('outcomes')}"/>
 			</t:if>
 			<t:courseclass.classLocation courseClass="courseClass" activeTab="${isActive('location')}"/>
