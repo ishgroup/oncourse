@@ -13,7 +13,7 @@ var OutcomeSouce = {
 var outcomesContent;
 
 function scrollTop() {
-    $('html, body').animate({scrollTop: $("#class-outcomes").offset().top}, 1000);
+    $j('html, body').animate({scrollTop: $j("#class-outcomes").offset().top}, 1000);
 }
 
 $j(document).ready(function () {
