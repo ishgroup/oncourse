@@ -937,6 +937,11 @@ strong.link-color {
     >h3 {
         line-height: 1.35;
     }
+    
+    ol {
+        list-style-type: decimal;
+        margin-left: 14px;
+    }
 }
 
 .rating-class-details label {
