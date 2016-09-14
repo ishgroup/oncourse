@@ -32,8 +32,10 @@ class ValidatePaymentAmount {
 		}
 		
 		//payment amount limited to a minimum of $20, or the amount of the total owing if that is less than $20.
-		if (actualOwing.isLessThan(twentyDollars) && amountPaid.isLessThan(actualOwing)) {
-			result.warning = amountLessThanOwing
+		if (actualOwing.isLessThan(twentyDollars)) {
+			if (amountPaid.isLessThan(actualOwing)) {
+				result.warning = amountLessThanOwing
+			}
 		} else if (amountPaid.isLessThan(twentyDollars)) {
 			result.warning = amountLessThan20Dollars
 		}
