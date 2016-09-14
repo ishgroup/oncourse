@@ -22,10 +22,8 @@
     height: 250px;
     width: 100%;
     overflow: hidden;
-    position: initial !important;
     @include responsive($media-small) {
       width: 200px;
-      position: absolute !important;
       margin-left: 15px;
     }
   }
@@ -448,7 +446,7 @@
   	-webkit-box-orient: vertical;
   	overflow: hidden;
     text-overflow: ellipsis;
-    
+
     &.next-session-title {
 		-webkit-line-clamp: 4;
 		height: 110px;
@@ -456,26 +454,26 @@
     &.sing-line {
   		-webkit-line-clamp: 1;
     }
-    
+
    	&.feedback {
        -webkit-line-clamp: 2;
        height: 120px;
     }
-    
+
     &.approval {
         -webkit-line-clamp: 2;
         height: 45px;
     }
-    
+
     &.mark-roll, &.mark-outcomes {
 		-webkit-line-clamp: 2;
 		height: 50px;
     }
-    
+
     &.application {
         -webkit-line-clamp: 4;
         height: 100px;
     }
 }
-  
+
 
