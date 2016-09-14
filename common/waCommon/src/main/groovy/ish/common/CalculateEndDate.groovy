@@ -24,9 +24,11 @@ class CalculateEndDate {
 		// 'No sessions' means CourseClass.endDateTime is null
 		CourseClassInterface courseClass = outcome.enrolment.courseClass;
 		if (courseClass.isDistantLearningCourse || courseClass.sessions.empty) {
+			Date endDate
 			use(TimeCategory) {
-				return courseClass.maximumDays ? outcome.enrolment.createdOn + 365.day : outcome.enrolment.createdOn + courseClass.maximumDays.day	
+				endDate = courseClass.maximumDays ? outcome.enrolment.createdOn + courseClass.maximumDays.day : outcome.enrolment.createdOn + 365.day 
 			}
+			return endDate
 		}
 
 		if (outcome.module) {
