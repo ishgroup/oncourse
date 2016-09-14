@@ -3,6 +3,7 @@
  */
 package ish.oncourse.portal.components.timetable;
 
+import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.CourseClass;
 
 import ish.oncourse.model.Enrolment;
@@ -61,9 +62,9 @@ public class YourClasses {
 		}
 		if (student!= null) {
 			if (contactExp == null) {
-				contactExp = CourseClass.ENROLMENTS.outer().dot(Enrolment.STATUS).in(Enrolment.VALID_ENROLMENTS).andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student));
+				contactExp = CourseClass.ENROLMENTS.outer().dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS).andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student));
 			} else {
-				contactExp = contactExp.orExp(CourseClass.ENROLMENTS.outer().dot(Enrolment.STATUS).in(Enrolment.VALID_ENROLMENTS)
+				contactExp = contactExp.orExp(CourseClass.ENROLMENTS.outer().dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS)
 						.andExp(CourseClass.ENROLMENTS.outer().dot(Enrolment.STUDENT).eq(student)));
 			}
 		}
