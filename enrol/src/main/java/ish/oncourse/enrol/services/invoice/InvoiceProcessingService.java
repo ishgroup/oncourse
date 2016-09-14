@@ -12,6 +12,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 
 /**
  * Implementation of {@link IInvoiceProcessingService}.
@@ -19,13 +20,8 @@ import java.math.BigDecimal;
  * @author ksenia
  */
 public class InvoiceProcessingService implements IInvoiceProcessingService {
-
-
-	/**
-	 * InvoiceLine title format:
-	 * <Student FirstName> <Student LastName> <CourseCode>-<CourseClassCode> <CourseName>
-	 */
-	public static final String INVOICE_LINE_TITLE_TEMPALTE = "%s %s %s-%s %s";
+	
+	private static final String DATE_FORMAT = "dd-MM-yyyy dd'T'HH:mm a";
 	private final IDiscountService discountService;
 	
 	@Inject
@@ -59,14 +55,12 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		Contact contact = student.getContact();
 		College college = enrolment.getCollege();
 
-		invoiceLine.setTitle(String.format(INVOICE_LINE_TITLE_TEMPALTE,
-				contact.getGivenName(),
-				contact.getFamilyName(),
-				course.getCode(),
-				courseClass.getCode(),
-				course.getName()));
-		invoiceLine.setDescription(courseClass.getUniqueIdentifier() + " "
-				+ courseClass.getCourse().getName());
+		invoiceLine.setTitle(String.format("%s %s", contact.getFullName(), courseClass.getUniqueIdentifier()));
+		if (courseClass.getStartDateTime() == null) {
+			invoiceLine.setDescription(courseClass.getCourse().getName());
+		} else {
+			invoiceLine.setDescription(String.format("%s starting on %s", courseClass.getCourse().getName(), new SimpleDateFormat(DATE_FORMAT).format(enrolment.getCourseClass().getStartDateTime())));
+		}
 
 		invoiceLine.setQuantity(BigDecimal.ONE);
 		Money fee = courseClass.getFeeExGst();
