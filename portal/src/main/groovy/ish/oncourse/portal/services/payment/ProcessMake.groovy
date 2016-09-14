@@ -50,10 +50,11 @@ class ProcessMake extends AProcess {
             return
         }
 
-        if (!context.invoice.amountOwing.isGreaterThan(new Money(0, 1))) {
-            response.validationResult.warning = thisInvoiceAlreadyPaid
-            return
-        }
+		ValidatePaymentAmount validatePaymentAmount = new ValidatePaymentAmount(request: request, context: context, result: response.validationResult);
+		validatePaymentAmount.validate()
+		if (!response.validationResult.valid()) {
+			return
+		}
 
         if (context.notFinalPaymentIn) {
             response.validationResult.warning = thereIsPaymentInTransaction

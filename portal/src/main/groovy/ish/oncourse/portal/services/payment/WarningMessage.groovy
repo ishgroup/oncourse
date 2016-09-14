@@ -12,4 +12,8 @@ enum WarningMessage {
     invalidCardName,
     invalidCardCvv,
     invalidCardDate,
+	amountLessThan20Dollars,
+	amountLessThanOwing,
+	amountMoreThanOwing,
+	amountWrong
 }

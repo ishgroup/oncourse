@@ -27,7 +27,11 @@ var WarningMessage = {
     invalidCardNumber: "invalidCardNumber",
     invalidCardName: "invalidCardName",
     invalidCardCvv: "invalidCardCvv",
-    invalidCardDate: "invalidCardDate"
+    invalidCardDate: "invalidCardDate",
+    amountLessThan20Dollars: "amountLessThan20Dollars",
+    amountLessThanOwing: "amountLessThanOwing",
+    amountMoreThanOwing: "amountMoreThanOwing",
+    amountWrong: "amountWrong"
 };
 
 var PaymentStatus = {
@@ -50,7 +54,12 @@ var Message = {
         " </span>"),
     paymentFailed: Handlebars.compile("<span><h2>Your payment was failed</h2> " +
         "<p>Please check your credit card details or credit balance and try again. In particular, check the CVV and expiry date have been entered correctly.</p></span>"),
-    waitResult: Handlebars.compile("<span>Payment is now being processed against the bank. Please wait...</span>")
+    waitResult: Handlebars.compile("<span>Payment is now being processed against the bank. Please wait...</span>"),
+    amountLessThan20Dollars:  Handlebars.compile("<span>The minimum amount for this payment is $20. Please correct it and try again. </span>"),
+    amountLessThanOwing: Handlebars.compile("<span>Payment amount can't be less than total owing for invoice. Please correct it and try again. </span>"),
+    amountMoreThanOwing: Handlebars.compile("<span>Payment amount can't be great than total owing for invoice. Please correct it and try again. </span>"),
+    amountWrong: Handlebars.compile("<span>Payment amount is wrong. Please correct it and try again. </span>")
+
 
 };
 
@@ -259,19 +268,36 @@ PaymentForm.prototype = {
                 this.setMessage(Message.thisInvoiceAlreadyPaid(), 'warning-msg');
                 this.hidePaymentControls();
                 break;
+            case WarningMessage.amountLessThan20Dollars:
+                this.showWarning(Message.amountLessThan20Dollars());
+                break;
+            case WarningMessage.amountLessThanOwing:
+                this.showWarning(Message.amountLessThanOwing());
+                break;
+            case WarningMessage.amountMoreThanOwing:
+                this.showWarning(Message.amountMoreThanOwing());
+                break;
+            case WarningMessage.amountWrong:
+                this.showWarning(Message.amountWrong());
+                break;
             case WarningMessage.invalidCardName:
             case WarningMessage.invalidCardNumber:
             case WarningMessage.invalidCardCvv:
             case WarningMessage.invalidCardDate:
-                this.setMessage(Message.invalidCreditCard(), 'warning-msg');
-                this.hidePaymentControls();
-                this.divPaymentProgressBar.hide();
-                this.reloadPage(10000);
+                this.showWarning(Message.invalidCreditCard())
                 break;
             default:
                 this.paymentForm.hide();
         }
     },
+    
+    showWarning: function(message) {
+        this.setMessage(message, 'warning-msg');
+        this.hidePaymentControls();
+        this.divPaymentProgressBar.hide();
+        this.reloadPage(10000);
+    },
+    
     updateView: function () {
         this.paymentForm.show();
         switch (this.response.status) {
