@@ -343,6 +343,7 @@ ClassTimetable.prototype = {
 
         $j('.edit-roll a').on('click', function () {
             $j(this).parents('.past-course, .actual-course').append('<button class="btn btn-primary vertical-center btn-xs btn-finish">Close</button>').addClass('past-course-diff');
+            $j('.class-roll-content .close-section').append('<button class="btn btn-primary btn-finish">Close</button>');
             $j('.edit-roll a').css('pointer-events', 'none');
             $j('.future-roll a').css('pointer-events', 'none');
             $j('#class-roll-captions, .mark-percents').hide();
@@ -354,7 +355,7 @@ ClassTimetable.prototype = {
             self.updateAttendence(self.id);
 
             $j('button.btn-finish').on('click', function () {
-                $j(this).parents('.past-course, .actual-course').removeClass('past-course-diff');
+                $j('button.btn-finish').parents('.past-course, .actual-course').removeClass('past-course-diff');
                 $j('#class-roll-captions, .mark-percents').show();
                 $j('#class-description-' + self.id).hide();
                 $j('.mark-buttons').addClass('collapse');

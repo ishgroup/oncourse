@@ -1,9 +1,13 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 	<div class="col-lg-12 class-roll-content clearfix">
-		<div class="page-header clearfix">
-			<h4>
-				Class roll <small>${numberOfStudents} enrolled students (Maximum: ${courseClass.maximumPlaces} | Minimum: ${courseClass.minimumPlaces})</small>
-			</h4>
+		<div class="page-header clearfix row">
+			<span class="class-roll-section">
+				<h4>
+					Class roll <small>${numberOfStudents} enrolled students (Maximum: ${courseClass.maximumPlaces} | Minimum: ${courseClass.minimumPlaces})</small>
+				</h4>
+			</span>
+			<span class="close-section">
+			</span>
 		</div>
 		<t:loop source="sessions" value="session">
 			<span t:type="courseclass/sessiondetails" session="session"/>
