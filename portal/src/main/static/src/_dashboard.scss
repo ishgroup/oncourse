@@ -15,20 +15,27 @@
   .dashboard-card {
     float: left;
     margin-top: 15px;
-    margin-left: 15px;
+    margin-left: 0px;
     margin-bottom: 15px;
     background-color: white;
     border-radius: 10px;
     height: 250px;
-    width: 200px;
+    width: 100%;
     overflow: hidden;
-    position: relative;
+    position: initial !important;
+    @include responsive($media-small) {
+      width: 200px;
+      position: absolute !important;
+      margin-left: 15px;
+    }
   }
 
   .about-class, .class-map {
-    width: 50%;
     height: 100%;
     padding: 20px;
+    @include responsive($media-small) {
+      width: 50%;
+    }
   }
 
   .about-class {
@@ -114,7 +121,9 @@
 
   .persent-of-attendance {
     color: white;
-    width: 200px;
+    @include responsive($media-small) {
+      width: 200px;
+    }
     .percent {
       width: 100%;
       font-size: 7.2rem;
@@ -140,7 +149,9 @@
   }
 
   .next-session {
-  	width: 460px;
+    @include responsive($media-small) {
+  	 width: 460px;
+    }
   }
 
   .payment {
@@ -188,7 +199,9 @@
   }
 
   .resources {
-    width: 460px;
+    @include responsive($media-small) {
+      width: 460px;
+    }
     .resources-header {
       background-color: $resources-head-bg;
       color: white;
@@ -237,7 +250,9 @@
 
   .class-feedback {
     padding: 23px;
-    width: 415px;
+    @include responsive($media-small) {
+      width: 415px;
+    }
 
     strong {
       color: $link-color;
@@ -412,7 +427,7 @@
 			@extend .col-sm-12;
 		}
 	}
-	
+
 }
 
 .right-separator {
