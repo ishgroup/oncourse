@@ -2,6 +2,7 @@ package ish.oncourse.portal.services.payment
 
 import groovy.mock.interceptor.MockFor
 import ish.common.types.PaymentStatus
+import ish.math.Money
 import ish.oncourse.model.PaymentIn
 import org.junit.Test
 
@@ -23,6 +24,7 @@ class ProcessMakeTest {
         request.card.cvv = "1234"
         request.card.name = "User1 User1"
         request.card.date = addYears(new Date(), 3).format("MM/YYYY")
+		request.card.amount = new Money("20.00")
 
         Context context = contextFactory.get(Action.make)
         ProcessMake process = new ProcessMake(request: request, context: context, createPaymentInClosure: {
