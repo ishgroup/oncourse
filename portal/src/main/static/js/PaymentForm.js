@@ -55,9 +55,9 @@ var Message = {
     paymentFailed: Handlebars.compile("<span><h2>Your payment was failed</h2> " +
         "<p>Please check your credit card details or credit balance and try again. In particular, check the CVV and expiry date have been entered correctly.</p></span>"),
     waitResult: Handlebars.compile("<span>Payment is now being processed against the bank. Please wait...</span>"),
-    amountLessThan20Dollars:  Handlebars.compile("<span>The minimum amount for this payment is $20. Please correct it and try again. </span>"),
+    amountLessThan20Dollars:  Handlebars.compile("<span>The minimum amount for a payment is $20. Please correct it and try again. </span>"),
     amountLessThanOwing: Handlebars.compile("<span>Payment amount can't be less than total owing for invoice. Please correct it and try again. </span>"),
-    amountMoreThanOwing: Handlebars.compile("<span>Payment amount can't be great than total owing for invoice. Please correct it and try again. </span>"),
+    amountMoreThanOwing: Handlebars.compile("<span>Payment amount can't be greater than total owing for invoice. Please correct it and try again. </span>"),
     amountWrong: Handlebars.compile("<span>Payment amount is wrong. Please correct it and try again. </span>")
 
 
