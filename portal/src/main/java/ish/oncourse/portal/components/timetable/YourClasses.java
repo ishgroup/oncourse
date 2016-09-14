@@ -62,10 +62,10 @@ public class YourClasses {
 		}
 		if (student!= null) {
 			if (contactExp == null) {
-				contactExp = CourseClass.ENROLMENTS.outer().dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS).andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student));
+				contactExp = CourseClass.ENROLMENTS.dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS).andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student));
 			} else {
-				contactExp = contactExp.orExp(CourseClass.ENROLMENTS.outer().dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS)
-						.andExp(CourseClass.ENROLMENTS.outer().dot(Enrolment.STUDENT).eq(student)));
+				contactExp = contactExp.orExp(CourseClass.ENROLMENTS.dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS)
+						.andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student)));
 			}
 		}
 		classes = query.and(contactExp).select(cayenneService.sharedContext());
