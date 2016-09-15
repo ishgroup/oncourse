@@ -109,7 +109,7 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 						assertEquals("Refund for enrolments", invoiceDB1.getDescription());
 						List<InvoiceLine> invoiceLinesDB1 = invoiceDB1.getInvoiceLines();
 						assertEquals(1, invoiceLinesDB1.size());
-						assertEquals("Refund for enrolment : MSC-1 Microsoft Word", invoiceLinesDB1.get(0).getDescription());
+						assertEquals("Refund for enrolment : Microsoft Word starting on 13-09-2011 13T00:58 AM", invoiceLinesDB1.get(0).getDescription());
 						assertNull(invoiceLinesDB1.get(0).getEnrolment());
 					}
 				}
