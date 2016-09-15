@@ -1,6 +1,5 @@
 package ish.oncourse.enrol.checkout;
 
-import ish.oncourse.enrol.services.invoice.InvoiceProcessingService;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
@@ -85,10 +84,7 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
         Enrolment enrolment = purchaseController.getModel().getAllEnabledEnrolments().get(0);
         for (InvoiceLine invoiceLine : enrolment.getInvoiceLines()) {
         	assertNotNull(invoiceLine);
-        	assertEquals("Test invoiceLine title", String.format(InvoiceProcessingService.INVOICE_LINE_TITLE_TEMPALTE,
-        		contact.getGivenName(), contact.getFamilyName() ,
-        		courseClass.getCourse().getCode(),courseClass.getCode(),courseClass.getCourse().getName()),
-        		invoiceLine.getTitle());
+        	assertEquals("Test invoiceLine title", String.format("%s %s", contact.getFullName() , courseClass.getUniqueIdentifier()), invoiceLine.getTitle());
         }
         /*InvoiceLine invoiceLine = enrolment.getOriginalInvoiceLine();
         assertNotNull(invoiceLine);
