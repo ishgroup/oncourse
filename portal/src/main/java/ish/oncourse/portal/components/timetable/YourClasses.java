@@ -3,19 +3,13 @@
  */
 package ish.oncourse.portal.components.timetable;
 
-import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.CourseClass;
 
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Session;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.Tutor;
-import ish.oncourse.model.TutorRole;
+import ish.oncourse.portal.services.timetable.GetContactClassesObjectSelect;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.FormatUtils;
-import ish.oncourse.utils.DateUtils;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -54,21 +48,7 @@ public class YourClasses {
 			return;
 		}
 		
-		ObjectSelect query = ObjectSelect.query(CourseClass.class).where(CourseClass.SESSIONS.dot(Session.START_DATE).gte(DateUtils.startOfMonth(month)));
-		Expression contactExp = null; 
-		
-		if (tutor != null) {
-			contactExp = CourseClass.CANCELLED.isFalse().andExp(CourseClass.TUTOR_ROLES.outer().dot(TutorRole.TUTOR).eq(tutor));
-		}
-		if (student!= null) {
-			if (contactExp == null) {
-				contactExp = CourseClass.ENROLMENTS.dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS).andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student));
-			} else {
-				contactExp = contactExp.orExp(CourseClass.ENROLMENTS.dot(Enrolment.STATUS).eq(EnrolmentStatus.SUCCESS)
-						.andExp(CourseClass.ENROLMENTS.dot(Enrolment.STUDENT).eq(student)));
-			}
-		}
-		classes = query.and(contactExp).select(cayenneService.sharedContext());
+		classes = new GetContactClassesObjectSelect(month, student, tutor).get().select(cayenneService.sharedContext());
 	}
 	
 	public boolean isFuture() {
