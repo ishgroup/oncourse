@@ -37,7 +37,9 @@ public class Downloads {
 	public void setupRender() {
 		documents = portalService.getResources();
 		documentsCount = documents.size();
-		documents = Document.MODIFIED.desc().orderedList(documents).subList(0,3);
+		if (documentsCount > 3) {
+			documents = Document.MODIFIED.desc().orderedList(documents).subList(0, 3);
+		}
 	}
 
 	public boolean needExtension() {
