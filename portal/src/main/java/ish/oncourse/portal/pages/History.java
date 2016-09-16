@@ -18,7 +18,7 @@ public class History {
     private IPortalService portalService;
 
     @InjectPage
-    private PageNotFound pageNotFound;
+    private Index indexPage;
 
 	@Property
 	private String financeClass = ACTIVE_CLASS;
@@ -38,7 +38,7 @@ public class History {
 		} else if (tab.startsWith(FINANCE_TAB)) {
 			financeClass = ACTIVE_CLASS;
 		} else {
-			return pageNotFound;
+			return indexPage;
 		}
 		return true;
 	}

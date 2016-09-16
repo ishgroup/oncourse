@@ -5,7 +5,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.TutorRole;
 import ish.oncourse.portal.annotations.UserRole;
-import ish.oncourse.portal.pages.PageNotFound;
+import ish.oncourse.portal.pages.Index;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PortalUtils;
 import ish.oncourse.services.courseclass.ICourseClassService;
@@ -69,11 +69,11 @@ public class ClassApproval {
     private TextArea whyDeclinedField;
 
     @InjectPage
-    private PageNotFound pageNotFound;
+    private Index indexPage;
 
     Object onActivate() {
         if (courseClass == null)
-            return pageNotFound;
+            return indexPage;
         else
             return null;
     }
@@ -81,9 +81,9 @@ public class ClassApproval {
     Object onActivate(String id) {
         if (id != null && id.length() > 0 && id.matches("\\d+")) {
             this.courseClass = portalService.getCourseClassBy(Long.parseLong(id));
-            return this.courseClass == null ? pageNotFound : null;
+            return this.courseClass == null ? indexPage : null;
         } else {
-            return pageNotFound;
+            return indexPage;
         }
     }
 

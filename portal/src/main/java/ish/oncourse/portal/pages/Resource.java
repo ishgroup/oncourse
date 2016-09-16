@@ -36,7 +36,7 @@ public class Resource {
 		Document document = getDocumentByUuid(fileUuid);
 		
 		if (document == null) {
-			return PageNotFound.class;
+			return Index.class;
 		}
 
 		try {

@@ -29,7 +29,7 @@ public class PaymentDetails {
     private IPortalService portalService;
 
     @InjectPage
-    private PageNotFound pageNotFound;
+    private Index indexPage;
 
     @Inject
     private Messages messages;
@@ -44,9 +44,9 @@ public class PaymentDetails {
              * It is important when we define timezone for start and end time.
              */
             this.payment =  portalService.getPaymentInBy(idLong);
-            return payment == null ? pageNotFound:null;
+            return payment == null ? indexPage:null;
         } else {
-            return pageNotFound;
+            return indexPage;
         }
 
     }

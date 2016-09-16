@@ -40,7 +40,7 @@ public class Class {
 	private IWebSiteService webSiteService;
 
 	@InjectPage
-	private PageNotFound pageNotFound;
+	private Index indexPage;
 
     @Inject
     private IPortalService portalService;
@@ -77,10 +77,10 @@ public class Class {
 				isTutor = portalService.getContact().getTutor() != null && portalService.isTutorFor(this.courseClass);
 				return null;
 			} else {
-				return pageNotFound;
+				return indexPage;
 			}			
 		} else {
-			return pageNotFound;
+			return indexPage;
         }
 	}
 

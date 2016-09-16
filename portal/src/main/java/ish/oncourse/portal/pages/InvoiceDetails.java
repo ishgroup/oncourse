@@ -32,7 +32,7 @@ import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 public class InvoiceDetails {
 
     @InjectPage
-    private PageNotFound pageNotFound;
+    private Index indexPage;
 
     @Property
     private Invoice invoice;
@@ -75,10 +75,10 @@ public class InvoiceDetails {
 								.select(cayenneService.sharedContext());
                 return null;
             } else {
-                return pageNotFound;
+                return indexPage;
             }
         } else {
-            return pageNotFound;
+            return indexPage;
         }
 
     }

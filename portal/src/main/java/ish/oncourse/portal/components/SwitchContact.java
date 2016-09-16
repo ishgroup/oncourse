@@ -1,8 +1,6 @@
 package ish.oncourse.portal.components;
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.portal.pages.PageNotFound;
-import ish.oncourse.portal.pages.Timetable;
 import ish.oncourse.portal.services.IPortalService;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.*;
@@ -20,12 +18,6 @@ public class SwitchContact {
 
     @Property
     private Contact contact;
-
-    @InjectPage
-    private PageNotFound pageNotFound;
-
-    @InjectPage
-    private Timetable timetable;
 
     @Inject
     private ComponentResources componentResources;
@@ -51,14 +43,13 @@ public class SwitchContact {
     }
 
     @OnEvent(value = "selectContact")
-    public Object selectContact(Long contactId)
+    public void selectContact(Long contactId)
     {
         for (Contact contact : contacts) {
-            if (contact.getId().equals(contactId)) {
-                portalService.selectContact(contact);
-                return timetable;
-            }
-        }
-        return pageNotFound;
+			if (contact.getId().equals(contactId)) {
+				portalService.selectContact(contact);
+				break;
+			}
+		}
     }
 }
