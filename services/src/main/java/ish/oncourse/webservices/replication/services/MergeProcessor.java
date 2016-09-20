@@ -164,6 +164,10 @@ public class MergeProcessor {
 			for (Attendance attendance : new ArrayList<>(tutorToDelete.getAttendances())) {
 				attendance.setMarkedByTutor(tutorToUpdate);
 			}
+
+			for (MessagePerson person : new ArrayList<>(tutorToDelete.getMessagePeople())) {
+				person.setTutor(tutorToUpdate);
+			}
 			
 			List<Outcome> outcomes = ObjectSelect.query(Outcome.class).where(Outcome.MARKED_BY_TUTOR.eq(tutorToDelete)).select(context);
 			for (Outcome outcome : new ArrayList<>(outcomes)) {
