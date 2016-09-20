@@ -642,7 +642,15 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SUMMARY_EXTRACTS(101, "Summary extracts", Mask.ALL - Mask.VIEW);
+	SUMMARY_EXTRACTS(101, "Summary extracts", Mask.ALL - Mask.VIEW),
+
+	/**
+	 * Database value: 102
+	 *
+	 * Access right for sending email templates
+	 */
+	@API
+	SEND_EMAIL_TEMPLATES(102, "Send email template");
 	
 
 	private int value;
