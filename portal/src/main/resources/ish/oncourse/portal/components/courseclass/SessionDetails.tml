@@ -2,14 +2,14 @@
 	<div id="class-description-${session.id}" class="class-description-class ${markedClass}">
 		<table class="class-desc-section">
 			<tr>
-				<td><img src="/portal/img/svg_icons/session_details.svg"/></td>
+				<td><img src="/portal/img/session_details.svg"/></td>
 				<td>
 					<t:delegate to="visibileBlock"/>
 				</td>
 			</tr>
 			<t:if test="session.publicNotes">
 				<tr>
-					<td><img src="/portal/img/svg_icons/mark_roll.svg"/></td>
+					<td><img src="/portal/img/mark_roll.svg"/></td>
 					<td><t:outputraw value="convertTextile(session.publicNotes)"/></td>
 				</tr>
 			</t:if>

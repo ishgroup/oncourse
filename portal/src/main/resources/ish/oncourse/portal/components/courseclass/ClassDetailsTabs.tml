@@ -5,12 +5,12 @@
 				<a href="#class-details" data-toggle="tab">
 					<t:if test="isTutor">
 						<span>
-							<img class="new-nav-icon" src="/portal/img/svg_icons/mark_roll.svg"/>
+							<img class="new-nav-icon" src="/portal/img/mark_roll.svg"/>
 						</span>
 						<span class="new-nav-icon-text">Roll</span>
 						<p:else>
 							<span>
-								<img class="new-nav-icon" src="/portal/img/svg_icons/session_details.svg"/>
+								<img class="new-nav-icon" src="/portal/img/session_details.svg"/>
 							</span>
 							<span class="new-nav-icon-text">Details</span>
 						</p:else>
@@ -21,7 +21,7 @@
 				<li class="${getActiveClass('outcomes')}">
 					<a href="#class-outcomes" data-toggle="tab">
 						<span>
-							<img class="new-nav-icon" src="/portal/img/svg_icons/mark_outcomes.svg"/>
+							<img class="new-nav-icon" src="/portal/img/mark_outcomes.svg"/>
 						</span>
 						<span class="new-nav-icon-text">Outcomes</span>
 					</a>
@@ -31,7 +31,7 @@
 				<li class="${getActiveClass('resources')}">
 					<a href="#class-resources" data-toggle="tab">
                     <span>
-                        <img class="new-nav-icon" src="/portal/img/svg_icons/resources.svg"/>
+                        <img class="new-nav-icon" src="/portal/img/resources.svg"/>
                     </span>
 						<span class="new-nav-icon-text">Resources</span>
 					</a>
@@ -41,7 +41,7 @@
 				<li class="${getActiveClass('results')}">
 					<a href="#class-results" data-toggle="tab">
                     <span>
-                        <img class="new-nav-icon" src="/portal/img/svg_icons/class_details.svg"/>
+                        <img class="new-nav-icon" src="/portal/img/class_details.svg"/>
                     </span>
 						<span class="new-nav-icon-text">Results</span>
 					</a>
@@ -50,7 +50,7 @@
 			<li id="class-location-tab" class="${getActiveClass('location')}">
 				<a href="#class-location" data-toggle="tab">
                     <span>
-                        <img class="new-nav-icon" src="/portal/img/svg_icons/location.svg"/>
+                        <img class="new-nav-icon" src="/portal/img/location.svg"/>
                     </span>
 					<span class="new-nav-icon-text">Location</span>
 				</a>

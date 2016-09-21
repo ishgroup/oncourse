@@ -34,14 +34,14 @@ body {
         position: absolute;
         width: 26px;
         height: 26px;
-        background: url(/portal/img/icon-info.png) top left no-repeat;
+        background: url(/portal/img/info.png) top left no-repeat;
         top: 0;
         left: 0;
       }
     }
     &.icon-info-error {
       &::after {
-        background: url(/portal/img/icon-info-error.png) top left no-repeat;
+        background: url(/portal/img/info-error.png) top left no-repeat;
       }
     }
     &.icon-cert-right-mark {
@@ -54,7 +54,7 @@ body {
         position: absolute;
         width: 24px;
         height: 24px;
-        background: url(/portal/img/icon-cert-right-mark.png) top center no-repeat;
+        background: url(/portal/img/cert-right-mark.png) top center no-repeat;
         left: 0;
         top: 6px;
       }
@@ -66,7 +66,7 @@ body {
         position: absolute;
         width: 10px;
         height: 6px;
-        background: url(/portal/img/icon-arrow-down.png) top center no-repeat;
+        background: url(/portal/img/arrow-down.png) top center no-repeat;
       }
     }
     &.icon-arrow-top {
@@ -76,7 +76,7 @@ body {
         position: absolute;
         width: 10px;
         height: 6px;
-        background: url(/portal/img/icon-arrow-top.png) top center no-repeat;
+        background: url(/portal/img/arrow-top.png) top center no-repeat;
       }
     }
   }

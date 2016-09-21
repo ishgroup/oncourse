@@ -152,7 +152,7 @@ public interface IPortalService {
 	 * check profile pictype in onCourse system at first
 	 * else finde avatar on gravatar servise
 	 * 
-	 * returns ico-student-default.png (see portal resourses) by default
+	 * returns student-default.png (see portal resourses) by default
 	 */
 	public String getProfilePictureUrl(Contact contact);
 

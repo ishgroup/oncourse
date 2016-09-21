@@ -30,7 +30,7 @@
                         <div class="clearfix cert-qrcode">
                             <div class="cert-code">
                                 <span class="cert-id-text">Certificate ID</span>
-                                <img src="img/icon-qrcode.png"/>
+                                <img src="img/qrcode.png"/>
                             </div>
                             <div class="cert-qrcode-link">
                                 <a href="http://cert.au/cZPXsuCqs4Yu">http://cert.au<span>/cZPXsuCqs4Yu</span></a>

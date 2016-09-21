@@ -20,7 +20,7 @@
         display: block;
     }
     &.session-icon::after {
-        background: url(/portal/img/svg_icons/mark_roll.svg) top left no-repeat;
+        background: url(/portal/img/mark_roll.svg) top left no-repeat;
         background-size: contain;
     }
 }
@@ -29,7 +29,7 @@
     .app-icon.session-icon {
         background: $session-icon;
         /* &::after {
-            background: url(/portal/img/svg_icons/mark_roll-green.svg) top left no-repeat;
+            background: url(/portal/img/mark_roll-green.svg) top left no-repeat;
             background-size: contain;
         } */
     }

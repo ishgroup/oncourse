@@ -911,7 +911,7 @@ public class PortalService implements IPortalService {
 		}
 		
 		if (contact.getEmailAddress() == null) {
-			return "https://" + request.getServerName() + "/portal/img/ico-student-default.png";
+			return "https://" + request.getServerName() + "/portal/img/student-default.png";
 		}
 		
 		//else finde avatar on gravatar servise - use special URL https://s.gravatar.com/avatar/hash?d=default_img_URL
@@ -921,7 +921,7 @@ public class PortalService implements IPortalService {
 		//3.md5 hash the final string
 		return "https://s.gravatar.com/avatar/" 
 				+ DigestUtils.md5Hex(contact.getEmailAddress().trim().toLowerCase().getBytes())
-				+ "?d=https%3A%2F%2Fskillsoncourse.com.au%2Fportal%2Fimg%2Fico-student-default.png";
+				+ "?d=https%3A%2F%2Fskillsoncourse.com.au%2Fportal%2Fimg%2Fstudent-default.png";
 	}
 
 

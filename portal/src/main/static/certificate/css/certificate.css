@@ -54,13 +54,13 @@
   position: absolute;
   width: 26px;
   height: 26px;
-  background: url(../../img/icon-info.png) top left no-repeat;
+  background: url(../../img/info.png) top left no-repeat;
   top: 0;
   left: 0;
 }
 /* line 62, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper .cert-icon.icon-info-error::after {
-  background: url(../../img/icon-info-error.png) top left no-repeat;
+  background: url(../../img/info-error.png) top left no-repeat;
 }
 /* line 66, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper .cert-icon.icon-cert-right-mark {
@@ -75,7 +75,7 @@
   position: absolute;
   width: 24px;
   height: 24px;
-  background: url(../../img/icon-cert-right-mark.png) top center no-repeat;
+  background: url(../../img/cert-right-mark.png) top center no-repeat;
   left: 0;
   top: 6px;
 }
@@ -89,7 +89,7 @@
   position: absolute;
   width: 10px;
   height: 6px;
-  background: url(../../img/icon-arrow-down.png) top center no-repeat;
+  background: url(../../img/arrow-down.png) top center no-repeat;
 }
 /* line 91, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper .cert-icon.icon-arrow-top {
@@ -101,7 +101,7 @@
   position: absolute;
   width: 10px;
   height: 6px;
-  background: url(../../img/icon-arrow-top.png) top center no-repeat;
+  background: url(../../img/arrow-top.png) top center no-repeat;
 }
 /* line 102, ../../../sass/portal/src/certificate.scss */
 .cert-wrapper .cert-banner {
