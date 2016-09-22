@@ -5,7 +5,7 @@ package ish.oncourse.cayenne;
 
 import java.util.List;
 import java.util.Date;
-
+import java.util.TimeZone;
 
 public interface CourseClassInterface {
 
@@ -19,5 +19,10 @@ public interface CourseClassInterface {
 
 	Date getEndDateTime();
 
+	CourseInterface getCourse();
+
+	String getCode();
+
+	TimeZone getTimeZone();
 
 }

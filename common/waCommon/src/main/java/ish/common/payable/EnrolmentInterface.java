@@ -1,6 +1,8 @@
 package ish.common.payable;
 
 import ish.oncourse.cayenne.CourseClassInterface;
+import ish.oncourse.cayenne.StudentInterface;
+
 import java.util.Date;
 
 /**
@@ -13,5 +15,7 @@ public interface EnrolmentInterface {
 	CourseClassInterface getCourseClass();
 
 	Date getCreatedOn();
+
+	StudentInterface getStudent();
 	
 }
