@@ -15,9 +15,7 @@ import org.apache.tapestry5.annotations.SetupRender;
 import java.util.TimeZone;
 
 public class NextSession {
-	
-	private static final String MAP_URL_PATTERN = "https://maps.googleapis.com/maps/api/streetview?size=200x300&location=%f,%f&key=AIzaSyBAmT4qKhRR0cMHVqj70vQWDZU0-3ppJkg";
-	
+		
 	@Parameter
 	@Property
 	private Session session;
@@ -50,7 +48,7 @@ public class NextSession {
 	}
 	
 	public String getMapUrl() {
-		return location != null ? String.format(MAP_URL_PATTERN,location.getLatitude(), location.getLongitude()) : "http://www.mindingthecampus.com/originals/campus.jpg";
+		return Location.getStreetViewUrl(location);
 	}
 
 }

@@ -42,7 +42,7 @@ public class ClassLocation {
 	@SetupRender
 	public void beforeRender() {
 		Location location = new GetCourseClassLocation(courseClass).get();
-		hasLocation = location != null;
+		hasLocation = location != null && location.hasCoordinates();
 	}
 
 	@OnEvent(value = "getLocation")
@@ -53,7 +53,7 @@ public class ClassLocation {
 		Location location = new GetCourseClassLocation(courseClass).get();
 
 		String json = String.format("{\"message\": \"%s\"}", messages.get("message.withoutLocation"));
-		if (location != null) {
+		if (location != null && location.hasCoordinates()) {
 			json = mapper.writeValueAsString(location);
 		}
 		return new TextStreamResponse("text/json", json);

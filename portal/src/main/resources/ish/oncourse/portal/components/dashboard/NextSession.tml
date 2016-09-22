@@ -24,8 +24,10 @@
 				</t:unless>
 			</div>
 			<t:if test="location">
-				<a href="/portal/class/${session.courseClass.id}/location" class="btn btn-primary btn-view-map">VIEW
-					MAP</a>
+				<t:if test="location.hasCoordinates()">
+					<a href="/portal/class/${session.courseClass.id}/location" class="btn btn-primary btn-view-map">VIEW
+						MAP</a>
+				</t:if>
 			</t:if>
 		</div>
 	</div>
