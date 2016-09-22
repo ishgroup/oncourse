@@ -13,7 +13,6 @@ public class SwitchContact {
     private IPortalService portalService;
 
     @Property
-    @Persist
     private List<Contact> contacts;
 
     @Property
@@ -45,7 +44,7 @@ public class SwitchContact {
     @OnEvent(value = "selectContact")
     public void selectContact(Long contactId)
     {
-        for (Contact contact : contacts) {
+        for (Contact contact : portalService.getChildContacts()) {
 			if (contact.getId().equals(contactId)) {
 				portalService.selectContact(contact);
 				break;
