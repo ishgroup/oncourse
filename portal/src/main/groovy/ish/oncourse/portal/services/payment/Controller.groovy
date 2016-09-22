@@ -27,7 +27,7 @@ class Controller implements IController {
     private Context context
 
     public Controller(ICayenneService cayenneService, IPortalService portalService, IPaymentGatewayService paymentGatewayService) {
-        this(portalService.authenticatedUser, cayenneService.newContext(), paymentGatewayService)
+        this(portalService.contact, cayenneService.newContext(), paymentGatewayService)
     }
 
     Controller(Contact contact, ObjectContext objectContext, IPaymentGatewayService paymentGatewayService) {
