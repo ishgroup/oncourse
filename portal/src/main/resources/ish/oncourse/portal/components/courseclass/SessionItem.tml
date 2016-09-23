@@ -7,7 +7,7 @@
 			<span class="session-time">${sessionTime}</span>
 			<t:if test="session.publicNotes">
 				<span>
-					<img class="note-icon" src="/portal/img/session_public_note.svg"/>
+					<img class="note-icon" src="/portal/img/portal.svg#session_public_note"/>
 				</span>
 			</t:if>
 			<span>&nbsp;|&nbsp;</span>

@@ -58,12 +58,15 @@ war {
     from ('src/main/static') {
         exclude 'js'
         exclude 'src'
+		exclude 'img/.svg'
     }
 }
 
 
 processResources.inputs.files gzipJs
 processResources.inputs.files gzipCss
+processResources.inputs.files combineSvg
 
 clean.dependsOn cleanMinifyJs
 clean.dependsOn cleanCompileSass
+clean.dependsOn cleanCombineSvg

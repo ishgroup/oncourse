@@ -2,10 +2,11 @@
 <!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
 	 y="0px" width="128px" height="128px" viewBox="0 0 128 128" xml:space="preserve">
-<g id="_x31_28px_boxes">
-	<rect fill="none" width="128" height="128"/>
-</g>
-<g id="Production">
+
+<g id="mark_outcomes">
+	<g id="_x31_28px_boxes">
+		<rect fill="none" width="128" height="128"/>
+	</g>
 	<g>
 		<path fill="#7a7D7d" d="M60.807,99l1.9609,20.3686c0.2508,2.6178,2.5789,4.4748,5.1814,4.2227
 			c2.6116-0.25,4.5259-2.4903,4.2756-5.1019L70.3507,99H60.807z"/>
