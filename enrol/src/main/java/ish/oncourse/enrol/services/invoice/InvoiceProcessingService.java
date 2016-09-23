@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
  */
 public class InvoiceProcessingService implements IInvoiceProcessingService {
 	
-	private static final String DATE_FORMAT = "dd-MM-yyyy dd'T'HH:mm a";
+	private static final String DATE_FORMAT = "dd-mm-yyyy h:mm a z";
 	private final IDiscountService discountService;
 	
 	@Inject
@@ -59,7 +59,9 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		if (courseClass.getStartDateTime() == null) {
 			invoiceLine.setDescription(courseClass.getCourse().getName());
 		} else {
-			invoiceLine.setDescription(String.format("%s starting on %s", courseClass.getCourse().getName(), new SimpleDateFormat(DATE_FORMAT).format(enrolment.getCourseClass().getStartDateTime())));
+			SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
+			format.setTimeZone(enrolment.getCourseClass().getClassTimeZone());
+			invoiceLine.setDescription(String.format("%s starting on %s", courseClass.getCourse().getName(), format.format(enrolment.getCourseClass().getStartDateTime())));
 		}
 
 		invoiceLine.setQuantity(BigDecimal.ONE);
