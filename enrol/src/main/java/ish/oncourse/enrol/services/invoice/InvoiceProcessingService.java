@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
  */
 public class InvoiceProcessingService implements IInvoiceProcessingService {
 	
-	private static final String DATE_FORMAT = "dd-mm-yyyy h:mm a z";
+	private static final String DATE_FORMAT = "dd-MM-yyyy h:mm a z";
 	private final IDiscountService discountService;
 	
 	@Inject
