@@ -162,7 +162,7 @@ public class TestModuleForContentStructure {
 			when(webSite.getCollege()).thenReturn(college);
 
 			WebHostName host = mock(WebHostName.class);
-			when(host.getName()).thenReturn("scc.test1.oncourse.net.au");
+			when(host.getName()).thenReturn("scc.oncourse.cc");
 			when(host.getWebSite()).thenReturn(webSite);
 
 			IWebSiteService mockService = mock(IWebSiteService.class);

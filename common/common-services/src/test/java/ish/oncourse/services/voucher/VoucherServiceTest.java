@@ -43,7 +43,7 @@ public class VoucherServiceTest extends ServiceTest {
 		
 		this.cayenneService = getService(ICayenneService.class);
 
-		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+		when(request.getServerName()).thenReturn("scc.oncourse.cc");
 
 		webSiteService = new WebSiteService(request, cayenneService);
 	}
@@ -57,7 +57,7 @@ public class VoucherServiceTest extends ServiceTest {
 		assertEquals("SCC should contain six defined Voucher Products", 6, service.getProductCount().intValue());
 		
 		Request request2 = mock(Request.class);
-		when(request2.getServerName()).thenReturn("tae.test.oncourse.net.au");
+		when(request2.getServerName()).thenReturn("tae.oncourse.cc");
 		webSiteService = new WebSiteService(request2, cayenneService);
 
 		final VoucherService service2 = new VoucherService(webSiteService, cayenneService);
@@ -68,7 +68,7 @@ public class VoucherServiceTest extends ServiceTest {
 	@Test
 	public void testGetVoucherByCode() {
 		Request request = mock(Request.class);
-		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+		when(request.getServerName()).thenReturn("scc.oncourse.cc");
 
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 
@@ -85,7 +85,7 @@ public class VoucherServiceTest extends ServiceTest {
 	@Test
 	public void testGetAvailableVoucherProductsForUser() {
 		Request request = mock(Request.class);
-		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+		when(request.getServerName()).thenReturn("scc.oncourse.cc");
 
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 
@@ -113,7 +113,7 @@ public class VoucherServiceTest extends ServiceTest {
 	public void tesCreateVoucher() {
 		Request request = mock(Request.class);
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
-		when(request.getServerName()).thenReturn("scc.staging1.oncourse.net.au");
+		when(request.getServerName()).thenReturn("scc.oncourse.cc");
 
 		VoucherProduct product = SelectById.query(VoucherProduct.class, 1).selectOne(cayenneService.sharedContext());
 		VoucherService service = new VoucherService(webSiteService, cayenneService);

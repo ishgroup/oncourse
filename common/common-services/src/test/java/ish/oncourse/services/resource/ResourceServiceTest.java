@@ -1,21 +1,12 @@
 package ish.oncourse.services.resource;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.WebHostName;
-import ish.oncourse.model.WebSite;
-import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
-import ish.oncourse.services.site.IWebSiteService;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ResourceServiceTest extends Assert {
 
@@ -40,9 +31,6 @@ public class ResourceServiceTest extends Assert {
 				}
 			}
 		};
-
-		IWebSiteService webSiteService1 = mockWebSiteService("scc");
-		ILookupService lookupService = mock(ILookupService.class);
 		
 		ResourceService resourceService = new ResourceService(null, null);
 
@@ -51,27 +39,4 @@ public class ResourceServiceTest extends Assert {
 		assertEquals("/s/x/some.css", r1.getPublicUrl());
 	}
 
-	
-	private IWebSiteService mockWebSiteService(String siteCode) {
-		WebSite webSite = mock(WebSite.class);
-		
-		when(webSite.getName()).thenReturn("Sydney Community College Test Site");
-		when(webSite.getSiteKey()).thenReturn("scc");
-		
-		College college = mock(College.class);
-		
-		when(college.getWebSites()).thenReturn(Arrays.asList(webSite));
-		when(webSite.getCollege()).thenReturn(college);
-
-		WebHostName host = mock(WebHostName.class);
-		when(host.getName()).thenReturn("scc.test1.oncourse.net.au");
-		when(host.getWebSite()).thenReturn(webSite);
-
-		IWebSiteService webSiteService = mock(IWebSiteService.class);
-
-		when(webSiteService.getCurrentCollege()).thenReturn(college);
-		when(webSiteService.getCurrentWebSite()).thenReturn(webSite);
-		
-		return webSiteService;
-	}
 }

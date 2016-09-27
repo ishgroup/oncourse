@@ -29,6 +29,9 @@ public class WebSiteService implements IWebSiteService {
     private static final Pattern TECHNICAL_SITES_DOMAIN_PATTERN = Pattern
             .compile("([a-z0-9,-]+)([.].+[.]oncourse[.]net[.]au)");
 
+	private static final Pattern SHORT_SITES_DOMAIN_PATTERN = Pattern
+			.compile("([a-z0-9,-]+)([.]oncourse[.]cc)");
+
     private static final String COLLEGE_DOMAIN_CACHE_GROUP = "webhosts";
 
     public static final String CURRENT_WEB_SITE = "currentWebSite";
@@ -61,13 +64,21 @@ public class WebSiteService implements IWebSiteService {
     }
 
     String getSiteKey() {
+		String siteKey = null;
         String serverName = request.getServerName().toLowerCase();
-        Matcher matcher = TECHNICAL_SITES_DOMAIN_PATTERN.matcher(serverName);
+
+		Matcher matcher = SHORT_SITES_DOMAIN_PATTERN.matcher(serverName);
+		
         boolean siteKeyFound = matcher.matches();
-        String siteKey = null;
         if (siteKeyFound) {
             siteKey = matcher.group(1);
-        }
+        } else {
+			matcher = TECHNICAL_SITES_DOMAIN_PATTERN.matcher(serverName);
+			if (matcher.matches()) {
+				siteKey = matcher.group(1);
+			}
+		}
+		
         return siteKey;
     }
 

@@ -43,7 +43,7 @@ public class TestModule {
 		when(webSite.getCollege()).thenReturn(college);
 
 		WebHostName host = mock(WebHostName.class);
-		when(host.getName()).thenReturn("tara.test1.oncourse.net.au/portal");
+		when(host.getName()).thenReturn("tara.oncourse.cc/portal");
 		when(host.getWebSite()).thenReturn(webSite);
 
 		PortalSiteService mockService = mock(PortalSiteService.class);
