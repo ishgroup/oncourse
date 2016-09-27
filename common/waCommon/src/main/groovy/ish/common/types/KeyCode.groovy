@@ -620,14 +620,6 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	PAYMENT_METHOD(98, "Payment Method"),
 
 	/**
-	 * Database value: 99
-	 *
-	 * Ability to view messages.
-	 */
-	@API
-	MESSAGE(99, "Message"),
-
-	/**
 	 * Database value: 100
 	 *
 	 * Ability to edit quality rules
