@@ -15,6 +15,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -109,7 +110,10 @@ public class MoneyVoucherRedemptionFailTest extends ACheckoutTest {
 						assertEquals("Refund for enrolments", invoiceDB1.getDescription());
 						List<InvoiceLine> invoiceLinesDB1 = invoiceDB1.getInvoiceLines();
 						assertEquals(1, invoiceLinesDB1.size());
-						assertEquals("Refund for enrolment : Microsoft Word starting on 13-09-2011 7:58 AM AEST", invoiceLinesDB1.get(0).getDescription());
+						SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy h:mm a z");
+						format.setTimeZone(enrolment.getCourseClass().getClassTimeZone());
+						String stringDate = format.format(enrolment.getCourseClass().getStartDateTime());
+						assertEquals(String.format("Refund for enrolment : Microsoft Word starting on %s", stringDate), invoiceLinesDB1.get(0).getDescription());
 						assertNull(invoiceLinesDB1.get(0).getEnrolment());
 					}
 				}
