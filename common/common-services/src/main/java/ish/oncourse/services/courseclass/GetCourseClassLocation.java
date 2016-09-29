@@ -30,7 +30,7 @@ public class GetCourseClassLocation {
 			
 			Site site = session != null ? session.getRoom().getSite() : courseClass.getRoom().getSite();
 
-			location = new Location(site.getLatitude().doubleValue(), site.getLongitude().doubleValue(), 
+			location = new Location(site.getLatitude() != null ? site.getLatitude().doubleValue() : null, site.getLongitude() != null ? site.getLongitude().doubleValue() : null, 
 						site.getState(), site.getStreet(), site.getSuburb());
 		}
 		return location;

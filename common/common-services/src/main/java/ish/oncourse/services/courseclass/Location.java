@@ -29,8 +29,9 @@ public class Location {
 				builder.append(state);
 				builder.append(" ");
 			}
-			builder.append(suburb);
+			builder.append(street);
 			if (StringUtils.trimToNull(suburb) != null) {
+				builder.append(" ");
 				builder.append(suburb);
 			}
 			this.address = builder.toString();
