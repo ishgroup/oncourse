@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
 
-	<dataSource name="onCourseRef" type="JdbcDataSource"
-		jndiName="java:comp/env/jdbc/oncourse" />
+	<dataSource name="onCourseDS" driver="com.mysql.jdbc.Driver"
+				url="${oncourse.jdbc.url}"
+				user="${oncourse.jdbc.user}" password="${oncourse.jdbc.password}"/>
 
 	<document>
 		<entity name="suburb" dataSource="onCourseRef" pk="id"

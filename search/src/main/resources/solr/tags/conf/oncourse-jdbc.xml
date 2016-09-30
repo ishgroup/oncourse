@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
 
-	<dataSource name="onCourseDS" type="JdbcDataSource"
-		jndiName="java:comp/env/jdbc/oncourse" />
+	<dataSource name="onCourseDS" driver="com.mysql.jdbc.Driver"
+				url="${oncourse.jdbc.url}"
+				user="${oncourse.jdbc.user}" password="${oncourse.jdbc.password}"/>
 		
 	<document>
 		<entity name="tag" dataSource="onCourseDS" pk="id" query="select distinct t.id, t.name as nm, 'tag' as type, t.collegeId as collegeID from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = 'Course'">
