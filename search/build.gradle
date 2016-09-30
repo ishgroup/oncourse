@@ -1,53 +1,94 @@
+import groovy.json.JsonSlurper
+
 configurations {
-	zookeeper
+    zookeeper
 }
 
 dependencies {
-	testCompile project(':common:common-services')
+    testCompile project(':common:common-services')
 
-	// The odd next line is to work around gradle pulling in the wrong configuration
-	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
-	testCompile (project(path: ':common:common-test', configuration: 'testFixtures')) {
-		exclude group: 'org.eclipse.jetty'
-	}
-	
-	testCompile ("org.apache.solr:solr-test-framework:${solrVersion}") {
-		exclude group: 'org.apache.hadoop'
-	}
-	testCompile ("org.apache.solr:solr-dataimporthandler:${solrVersion}") {
-		exclude group: 'org.apache.hadoop'
-	}
+    // The odd next line is to work around gradle pulling in the wrong configuration
+    // http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
+    testCompile(project(path: ':common:common-test', configuration: 'testFixtures')) {
+        exclude group: 'org.eclipse.jetty'
+    }
 
-	testCompile 'com.vividsolutions:jts:1.13'
-	testCompile 'mysql:mysql-connector-java:5.1.38'
-	testCompile 'com.google.code.gson:gson:2.2.4'
-	testCompile 'org.eclipse.jetty:jetty-jndi:9.2.13.v20150730'
+    testCompile("org.apache.solr:solr-test-framework:${solrVersion}") {
+        exclude group: 'org.apache.hadoop'
+    }
+    testCompile("org.apache.solr:solr-dataimporthandler:${solrVersion}") {
+        exclude group: 'org.apache.hadoop'
+    }
 
-	zookeeper "org.apache.solr:solr-core:${solrVersion}"
+    testCompile 'com.vividsolutions:jts:1.13'
+    testCompile 'mysql:mysql-connector-java:5.1.38'
+    testCompile 'com.google.code.gson:gson:2.2.4'
+    testCompile 'org.eclipse.jetty:jetty-jndi:9.2.13.v20150730'
+
+    zookeeper "org.apache.solr:solr-core:${solrVersion}"
 }
 
+/**
+ * We need add jenkins build properties for search job:
+ * -PSOLR_TEST_DB_URL=jdbc:mysql://localhost:3306/db_name?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false
+ * -PSOLR_TEST_DB_USER=db_user
+ * -PSOLR_TEST_DB_PASSWORD=db_password
+ * -PSOLR_TEST_CREATE_TABLES=true
+ */
 test {
-	if (project.hasProperty('searchTestDatabaseUri')) {
-		systemProperty 'testDatabaseUri', searchTestDatabaseUri
-		systemProperty 'testDatabaseDriver', searchTestDatabaseDriver
-		systemProperty 'testCreateTables', searchTestCreateTables
-	}
+    if (project.hasProperty('SOLR_TEST_DB_URL')) {
+        systemProperty 'oncourse.jdbc.url', SOLR_TEST_DB_URL
+        systemProperty 'oncourse.jdbc.user', SOLR_TEST_DB_USER
+        systemProperty 'oncourse.jdbc.password', SOLR_TEST_DB_PASSWORD
+        systemProperty 'testCreateTables', SOLR_TEST_CREATE_TABLES
+    }
 }
 
-task deployConfig {
-	description = 'Upload configuration to production zookeeper cluster.'
-	file('src/main/resources/solr').eachDir { core ->
-		doLast {
-	      javaexec {
-	      	classpath configurations.zookeeper
-	        main = 'org.apache.solr.cloud.ZkCLI'
-	        args = [
-	        	"-confdir", core,
-	        	"-zkhost", "splash.internal:2181",
-	        	"-cmd", "upconfig",
-	        	"-confname", core.name
-	        ]
-	      }
-	    }
-	}
+def createCollection = {core ->
+    def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=LIST&wt=json").text)
+    if (!result.collections.contains(core)) {
+        def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
+                "action=CREATE" +
+                "&name=$core" +
+                "&numShards=1" +
+                "&replicationFactor=2" +
+                "&maxShardsPerNode=1" +
+                "&collection.configName=$core" +
+                "&property.oncourse.jdbc.url=$oncourseJdbcUrl" +
+                "&property.oncourse.jdbc.user=$oncourseJdbcUser" +
+                "&property.oncourse.jdbc.password=$oncoursePassword").text
+        logger.info(out)
+    }
 }
+
+/**
+ the following properties sould be added on jenkins in the file ~/.gradle/gradle.properties
+ zkHost =
+ zkPort =
+ solrHost =
+ solrPort =
+ willow db access properties
+ oncourseJdbcUrl =
+ oncourseJdbcUser =
+ oncoursePassword =
+ */
+task deployConfig {
+    description = 'Upload configuration to production zookeeper cluster.'
+    file('src/main/resources/solr').eachDir { core ->
+        doLast {
+            javaexec {
+                classpath configurations.zookeeper
+                main = 'org.apache.solr.cloud.ZkCLI'
+                args = [
+                        "-confdir", new File(core, 'conf'),
+                        "-zkhost", "$zkHost:$zkPort",
+                        "-cmd", "upconfig",
+                        "-confname", core.name
+                ]
+            }
+            createCollection(core.name)
+        }
+    }
+}
+
+
