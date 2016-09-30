@@ -36,9 +36,9 @@ public class SearchContextUtils {
 
 	private static ServerRuntime cayenneRuntime;
 
-	public static final String SHOULD_CREATE_TABLES="createTables";
-	public static final String SHOULD_CREATE_FK_CONSTRAINTS="createFKConstraints";
-	public static final String SHOULD_CREATE_PK_SUPPORT="createPKSupport";
+	public static final String SHOULD_CREATE_TABLES = "createTables";
+	public static final String SHOULD_CREATE_FK_CONSTRAINTS = "createFKConstraints";
+	public static final String SHOULD_CREATE_PK_SUPPORT = "createPKSupport";
 
 	static {
 		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
@@ -68,7 +68,7 @@ public class SearchContextUtils {
 			createTablesForDataSourceByParams(oncourse, domain.getDataMap("oncourse"), params);
 		}
 
-		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
+		for (DataNode dataNode : cayenneRuntime.getDataDomain().getDataNodes()) {
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
 		}
 	}
@@ -102,7 +102,7 @@ public class SearchContextUtils {
 			map.getDbEntity("EntityRelation").removeRelationship(rel.getName());
 		}
 
-		DbGenerator generator = new DbGenerator(domain.getDefaultNode().getAdapter(), map, cayenneRuntime.getInjector().getInstance(JdbcEventLogger.class), Collections.<DbEntity> emptyList());
+		DbGenerator generator = new DbGenerator(domain.getDefaultNode().getAdapter(), map, cayenneRuntime.getInjector().getInstance(JdbcEventLogger.class), Collections.<DbEntity>emptyList());
 		boolean isParamsEmpty = params == null || params.isEmpty();
 		if (isParamsEmpty) {
 			generator.setShouldCreateTables(true);
@@ -141,32 +141,33 @@ public class SearchContextUtils {
 	 */
 	public static DataSource createDataSource() throws Exception {
 
-		String databaseUri = System.getProperty("testDatabaseUri");
-		String driverClass = System.getProperty("testDatabaseDriver");
-		createTables = Boolean.valueOf(System.getProperty("testCreateTables"));
-		if (databaseUri == null) {
-			databaseUri = "jdbc:mysql://127.0.0.1:3306/ish_test?autoReconnect=true&zeroDateTimeBehavior=convertToNull&user=root&password=whatsup&useSSL=false";
-			driverClass = com.mysql.jdbc.Driver.class.getName();
-		}
+		String jdbcUrl = System.getProperty("oncourse.jdbc.url");
+		String jdbcUser = System.getProperty("oncourse.jdbc.user");
+		String jdbcPassword = System.getProperty("oncourse.jdbc.password");
 
-		mysql = Mysql.valueOf(databaseUri);
+		String driverClass = com.mysql.jdbc.Driver.class.getName();
+		createTables = Boolean.valueOf(System.getProperty("testCreateTables"));
+
+		mysql = Mysql.valueOf(jdbcUrl, jdbcUser, jdbcPassword);
 
 		truncateAllTables(createTables);
 
 		if (createSchema) {
-			createMysqlSchema(databaseUri);
+			createMysqlSchema();
 		}
 
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName(driverClass);
-		dataSource.setUrl(databaseUri);
+		dataSource.setUrl(mysql.jdbcUrl);
+		dataSource.setUsername(mysql.jdbcUser);
+		dataSource.setPassword(mysql.jdbcPassword);
 		dataSource.setMaxActive(100);
 		return dataSource;
 	}
 
-	private static void createMysqlSchema(String databaseUri) throws SQLException {
-		Connection connection = DriverManager.getConnection(mysql.mysqlUri);
-		PreparedStatement preparedStatement = connection.prepareStatement(String.format("CREATE SCHEMA %s DEFAULT CHARACTER SET ascii ;", mysql.databaseName));
+	private static void createMysqlSchema() throws SQLException {
+		Connection connection = DriverManager.getConnection(mysql.mysqlUri, mysql.jdbcUser, mysql.jdbcPassword);
+		PreparedStatement preparedStatement = connection.prepareStatement(String.format("CREATE SCHEMA %s DEFAULT CHARACTER SET ascii ;", mysql.dbName));
 		preparedStatement.execute();
 		connection.close();
 	}
@@ -183,31 +184,31 @@ public class SearchContextUtils {
 
 	private static void dropMysqlSchema() throws SQLException {
 		Connection connection = DriverManager.getConnection(mysql.mysqlUri);
-		PreparedStatement preparedStatement = connection.prepareStatement(String.format("DROP DATABASE %s ;", mysql.databaseName));
+		PreparedStatement preparedStatement = connection.prepareStatement(String.format("DROP DATABASE %s ;", mysql.dbName));
 		preparedStatement.execute();
 		connection.close();
 	}
 
 	public static void truncateAllTables(boolean dropTables) throws SQLException {
 		Connection connection = null;
-		PreparedStatement preparedStatement  = null;
+		PreparedStatement preparedStatement = null;
 		Statement statement = null;
 		try {
-			connection = DriverManager.getConnection(mysql.mysqlUri);
-			preparedStatement = connection.prepareStatement(String.format("select Concat(table_schema,'.',TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES where  table_schema = '%s';", mysql.databaseName));
+			connection = DriverManager.getConnection(mysql.mysqlUri, mysql.jdbcUser, mysql.jdbcPassword);
+			preparedStatement = connection.prepareStatement(String.format("select Concat(table_schema,'.',TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES where  table_schema = '%s';", mysql.dbName));
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 
 			statement = connection.createStatement();
 			statement.addBatch("SET FOREIGN_KEY_CHECKS=0;");
 			while (resultSet.next()) {
-                statement.addBatch(String.format(dropTables ? "DROP TABLE %s;": "TRUNCATE TABLE %s;", resultSet.getString(1)));
-            }
+				statement.addBatch(String.format(dropTables ? "DROP TABLE %s;" : "TRUNCATE TABLE %s;", resultSet.getString(1)));
+			}
 			statement.addBatch("SET FOREIGN_KEY_CHECKS=1;");
 			statement.executeBatch();
 		} finally {
 
-			if (statement != null){
+			if (statement != null) {
 				statement.close();
 			}
 			if (preparedStatement != null) {
@@ -221,17 +222,21 @@ public class SearchContextUtils {
 	}
 
 	public static class Mysql {
+		String jdbcUrl;
+		String jdbcUser;
+		String jdbcPassword;
 		String mysqlUri;
-		String databaseName;
-		String databaseUri;
+		String dbName;
 
-		public static Mysql valueOf(String databaseUri) {
+		public static Mysql valueOf(String jdbcUrl, String jdbcUser, String jdbcPassword) {
 			Mysql result = new Mysql();
-			result.databaseUri = databaseUri;
-			String[] parts = StringUtils.split(databaseUri, "?");
+			result.jdbcUrl = jdbcUrl;
+			result.jdbcUser = jdbcUser;
+			result.jdbcPassword = jdbcPassword;
+			String[] parts = StringUtils.split(jdbcUrl, "?");
 			String[] urlParts = StringUtils.split(parts[0], "/");
 			result.mysqlUri = urlParts[0] + "//" + urlParts[1] + "?" + parts[1];
-			result.databaseName = urlParts[2];
+			result.dbName = urlParts[2];
 			return result;
 		}
 
