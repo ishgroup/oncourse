@@ -19,7 +19,7 @@ public class Location {
 	private static final String MAP_URL_PATTERN = "https://maps.googleapis.com/maps/api/streetview?size=200x300&location=%s&key=AIzaSyBAmT4qKhRR0cMHVqj70vQWDZU0-3ppJkg";
 	private static final String DEFAULT_STREET_VIEW_URL = "http://www.mindingthecampus.com/originals/campus.jpg";
 
-	public Location(double latitude, double longitude, String state, String street, String suburb) {
+	public Location(Double latitude, Double longitude, String state, String street, String suburb) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		
