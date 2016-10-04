@@ -48,7 +48,7 @@ public class Discount extends _Discount implements DiscountInterface, Queueable 
 
 		// apply discounts with offsets (valid from offset, valid to offset) only when courseClass has start date time.
 		if (classStartDate != null) {
-			int startClassOffsetInDays = DateTimeUtil.getDifferenceInDays(now, classStartDate);
+			int startClassOffsetInDays = DateTimeUtil.getDaysLeapYearDaylightSafe(classStartDate, now);
 
 			validToExp = validToExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).gte(startClassOffsetInDays)));
 			validFromExp = validFromExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).lte(startClassOffsetInDays)));
