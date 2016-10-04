@@ -4099,4 +4099,16 @@
 		</sql>
 	</changeSet>
 
+
+	<changeSet id="277" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="Invoice" indexName="invoice_collegeId_angelId_unique"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE UNIQUE INDEX invoice_collegeId_angelId_unique ON Invoice (collegeId, angelId);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
