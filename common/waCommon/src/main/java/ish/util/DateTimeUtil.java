@@ -98,17 +98,4 @@ public final class DateTimeUtil {
 		gc.set(Calendar.DAY_OF_MONTH, 1);
 		return trancateToMidnight(gc.getTime());
 	}
-
-	/**
-	 * Compute difference in days between two dates (ignore time)
-	 *
-	 * @param date1
-	 * @param date2 to add
-	 * @return negative value if date1 before date2, return positive value if  date1 after date2, return 0 if date1 and date2 are the same day
-	 */
-	
-	public static int getDifferenceInDays(Date date1, Date date2) {
-		Long days = TimeUnit.DAYS.convert(DateUtils.truncate(date1, Calendar.DAY_OF_MONTH).getTime() - DateUtils.truncate(date2, Calendar.DAY_OF_MONTH).getTime(), TimeUnit.MILLISECONDS);
-		return days.intValue();
-	}
 }

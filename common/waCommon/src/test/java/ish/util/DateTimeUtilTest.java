@@ -145,8 +145,10 @@ public class DateTimeUtilTest {
 	@Test
 	public void testGetDifferenceInDays() throws ParseException {
 		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		assertEquals(2, DateTimeUtil.getDifferenceInDays(format.parse("01/03/2015 23:59:59"), format.parse("01/01/2015 00:00:01")));
-		assertEquals(-2, DateTimeUtil.getDifferenceInDays(format.parse("01/01/2015 23:59:59"), format.parse("01/03/2015 00:00:01")));
-		assertEquals(0, DateTimeUtil.getDifferenceInDays(format.parse("01/01/2015 23:59:59"), format.parse("01/01/2015 00:00:01")));
+		assertEquals(2, DateTimeUtil.getDaysLeapYearDaylightSafe(format.parse("01/01/2015 00:00:01"),format.parse("01/03/2015 23:59:59")));
+		assertEquals(-2, DateTimeUtil.getDaysLeapYearDaylightSafe( format.parse("01/03/2015 00:00:01"),format.parse("01/01/2015 23:59:59")));
+		assertEquals(0, DateTimeUtil.getDaysLeapYearDaylightSafe(format.parse("01/01/2015 00:00:01"),format.parse("01/01/2015 23:59:59")));
+		assertEquals(-4, DateTimeUtil.getDaysLeapYearDaylightSafe(format.parse("10/04/2016 00:00:01"),format.parse("09/30/2016 23:59:59")));
+
 	}
 }
