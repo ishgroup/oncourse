@@ -9,10 +9,12 @@ import ish.oncourse.model.Product;
 import ish.oncourse.model.Voucher;
 import ish.oncourse.model.VoucherProduct;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Action;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addCompanyPayer;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addPersonPayer;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addVoucherCompanyPayer;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addVoucherPersonPayer;
+import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
 
 public class ActionAddVoucherPayer extends APurchaseAction {
 
@@ -24,7 +26,6 @@ public class ActionAddVoucherPayer extends APurchaseAction {
 		Contact contact = voucher.getContact();
         if (contact != null) {
             boolean isEditPayment = false;
-			boolean addPurchaces = false;
 			
             if (getController().getState().equals(PurchaseController.State.editPayment)) {
                 isEditPayment = true;
@@ -35,37 +36,19 @@ public class ActionAddVoucherPayer extends APurchaseAction {
 			} else if (getModel().getContacts().contains(contact)) {
                 ActionChangePayer actionChangePayer = new ActionChangePayer();
                 actionChangePayer.setContact(contact);
-                getController().performAction(actionChangePayer, PurchaseController.Action.changePayer);
+                getController().performAction(actionChangePayer, Action.changePayer);
             } else {
-				addPurchaces = true;
                 getController().setState(PurchaseController.State.editContact);
-                PurchaseController.ActionParameter actionParameter;
-                if (contact.getIsCompany()) {
+				
+				Action action = contact.getIsCompany() ? (isEditPayment ? addCompanyPayer : addVoucherCompanyPayer) : (isEditPayment ? addPersonPayer : addVoucherPersonPayer);
+				ActionParameter actionParameter = new ActionParameter(action);
+				actionParameter.setValue(getController().getCayenneService().newContext().localObject(contact));
+				getController().performAction(actionParameter);
 
-                    if (isEditPayment) {
-                        actionParameter = new PurchaseController.ActionParameter(addCompanyPayer);
-                    } else {
-                        //actionParameter = new PurchaseController.ActionParameter(addCompanyPayer);
-                        actionParameter = new PurchaseController.ActionParameter(addVoucherCompanyPayer);
-                    }
-                    actionParameter.setValue(contact);
-                    getController().performAction(actionParameter);
-                } else {
-                    if (isEditPayment) {
-                        actionParameter = new PurchaseController.ActionParameter(addPersonPayer);
-                    } else {
-                        //actionParameter = new PurchaseController.ActionParameter(addPersonPayer);
-                        actionParameter = new PurchaseController.ActionParameter(addVoucherPersonPayer);
-                    }
-                    actionParameter.setValue(contact);
-                    getController().performAction(actionParameter);
-					
-					if (contact.getStudent() == null) {
-						contact.createNewStudent();
-					}
-
-                }
-
+				if (contact.getStudent() == null) {
+					contact.createNewStudent();
+				}
+				
 				if (!isEditPayment) {
 					if (!contact.getIsCompany()) {
 						for (CourseClass courseClass : getModel().getClasses()) {

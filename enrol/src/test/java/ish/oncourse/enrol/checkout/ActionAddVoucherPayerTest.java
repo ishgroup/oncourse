@@ -1,6 +1,9 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.oncourse.model.Queueable;
+import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.model.Voucher;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +32,13 @@ public class ActionAddVoucherPayerTest extends ACheckoutTest {
         actionAddVoucher.setVoucher(voucher1);
         actionAddVoucher.setController(purchaseController);
         actionAddVoucher.action();
+
+		assertEquals(17, getModel().getObjectContext().uncommittedObjects().size());
+		assertEquals(10, getModel().getObjectContext().newObjects().size());
+		assertEquals(2, getModel().getAllEnabledEnrolments().get(0).getPersistenceState());
+
+		assertEquals(0,ObjectSelect.query(QueuedRecord.class).select(getModel().getObjectContext()).size());
+		
 
 		//check that contact was added, disabled enrolment was added for him, payer was changed
         assertEquals(Long.valueOf(1002l), getModel().getPayer().getId());
