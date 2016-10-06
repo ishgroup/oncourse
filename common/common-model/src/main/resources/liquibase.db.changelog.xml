@@ -4111,4 +4111,12 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="278" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<foreignKeyConstraintExists foreignKeyName="WebMenu_menuParent" foreignKeyTableName="WebMenu"/>
+		</preConditions>
+		<sql>ALTER TABLE WebMenu DROP FOREIGN KEY WebMenu_menuParent</sql>
+		<sql>ALTER TABLE WebMenu ADD CONSTRAINT WebMenu_menuParent FOREIGN KEY (webMenuParentId) REFERENCES WebMenu (id) ON DELETE CASCADE</sql>
+	</changeSet>
+
 </databaseChangeLog>
