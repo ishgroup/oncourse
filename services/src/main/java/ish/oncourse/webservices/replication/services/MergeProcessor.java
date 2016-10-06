@@ -62,13 +62,13 @@ public class MergeProcessor {
 				contactDuplicate.setContactToDeleteId(contactToDelete.getId());
 			}
 		} else {
-			throw new IllegalStateException("ContactDuplicate has no reference to contact to delete");
+			throw new IllegalStateException(String.format("ContactDuplicate (collegeId: %d, angelId:%d, willowId:%d) has no reference to contact to delete.", contactDuplicate.getCollege().getId(), contactDuplicate.getAngelId(), contactDuplicate.getId()));
 		}
 		
 		if (contactToDelete == null) {
 			return;
 		} else if (!toDelete(CONTACT_IDENTIFIER, contactToDelete.getId(), contactToDelete.getAngelId())) {
-			throw new IllegalStateException("Contact to delete  does not present in MERGE transactionGroup");
+			throw new IllegalStateException(String.format("Contact to delete  does not present in MERGE transactionGroup, ContactDuplicate collegeId: %d, angelId:%d, willowId:%d.", contactDuplicate.getCollege().getId(), contactDuplicate.getAngelId(), contactDuplicate.getId()));
 		}
 		
 		studentToDelete = contactToDelete.getStudent();
@@ -112,7 +112,7 @@ public class MergeProcessor {
 			} else if (studentToDelete != null && studentToDelete.getId().equals(studentToUpdateRec.getStub().getWillowId())) {
 				mergeStudents(studentToDelete, studentToUpdate);
 			} else {
-				throw new IllegalStateException("Unknown student to update");
+				throw new IllegalStateException(String.format("Unknown student to update, ContactDuplicate collegeId: %d, angelId:%d, willowId:%d", contactDuplicate.getCollege().getId(), contactDuplicate.getAngelId(), contactDuplicate.getId()));
 			}
 			
 		} else if ((studentToUpdate != null && studentToDelete == null) || (studentToUpdate == null && studentToDelete == null))  {
@@ -130,7 +130,7 @@ public class MergeProcessor {
 			} else if (tutorToDelete != null && tutorToDelete.getId().equals(tutorToUpdateRec.getStub().getWillowId())) {
 				mergeTutor(tutorToDelete, tutorToUpdate);
 			} else {
-				throw new IllegalStateException("Unknown tutor to update");
+				throw new IllegalStateException(String.format("Unknown tutor to update, ContactDuplicate collegeId: %d, angelId:%d, willowId:%d", contactDuplicate.getCollege().getId(), contactDuplicate.getAngelId(), contactDuplicate.getId()));
 			}
 
 		} else if ((tutorToUpdate != null && tutorToDelete == null) || (tutorToUpdate == null && tutorToDelete == null))  {
