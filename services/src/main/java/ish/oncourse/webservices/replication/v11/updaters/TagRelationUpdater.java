@@ -6,6 +6,7 @@ import ish.oncourse.model.TaggableTag;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v11.stubs.replication.TagRelationStub;
+import org.apache.cayenne.PersistenceState;
 
 public class TagRelationUpdater extends AbstractWillowUpdater<TagRelationStub, Taggable> {
 
@@ -15,10 +16,12 @@ public class TagRelationUpdater extends AbstractWillowUpdater<TagRelationStub, T
 		entity.setEntityIdentifier(stub.getEntityName());
 		entity.setEntityWillowId(stub.getEntityWillowId());
 		entity.setModified(stub.getModified());
-		TaggableTag taggableTag = entity.getObjectContext().newObject(TaggableTag.class);
-		Tag tag = callback.updateRelationShip(stub.getTagId(), Tag.class);
-		taggableTag.setTag(tag);
-		taggableTag.setCollege(tag.getCollege());
-		entity.addToTaggableTags(taggableTag);
+		if (entity.getPersistenceState() == PersistenceState.NEW && entity.getTaggableTags().isEmpty()) {
+			TaggableTag taggableTag = entity.getObjectContext().newObject(TaggableTag.class);
+			Tag tag = callback.updateRelationShip(stub.getTagId(), Tag.class);
+			taggableTag.setTag(tag);
+			taggableTag.setCollege(tag.getCollege());
+			entity.addToTaggableTags(taggableTag);
+		}
 	}
 }
