@@ -749,7 +749,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public void setLdapSSL(Boolean value) {
-		setValue(LDAP_BIND_USER_DN, false, String.valueOf(value));
+		setValue(LDAP_SSL, false, String.valueOf(value));
 	}
 
 	public String getLdapBaseDN() {
