@@ -44,7 +44,15 @@ test {
     }
 }
 
-def createCollection = {core ->
+def aliasCollection = { String alias, String collection ->
+    def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
+            "action=CREATEALIAS" +
+            "&name=$alias" +
+            "&collections=$collection").text
+    logger.info(out)
+}
+
+def createCollection = {String core ->
     def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=LIST&wt=json").text)
     if (!result.collections.contains(core)) {
         def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
@@ -57,6 +65,35 @@ def createCollection = {core ->
                 "&property.oncourse.jdbc.url=$oncourseJdbcUrl" +
                 "&property.oncourse.jdbc.user=$oncourseJdbcUser" +
                 "&property.oncourse.jdbc.password=$oncoursePassword").text
+        logger.info(out)
+    }
+}
+
+
+def deleteAlias = { String alias ->
+    def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
+            "action=DELETEALIAS" +
+            "&name=$alias").text
+    logger.info(out)
+}
+
+task deleteAllCollections << {
+    def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=LIST&wt=json").text)
+    result.collections.each { collection ->
+        def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
+                "action=DELETE" +
+                "&name=$collection").text
+        logger.info(out)
+    }
+}
+
+task deleteAllAliases << {
+    def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=CLUSTERSTATUS&wt=json").text)
+    result.cluster.aliases.keySet().each { alias ->
+        println alias
+        def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
+                "action=DELETEALIAS" +
+                "&name=$alias").text
         logger.info(out)
     }
 }
@@ -75,6 +112,7 @@ def createCollection = {core ->
 task deployConfig {
     description = 'Upload configuration to production zookeeper cluster.'
     file('src/main/resources/solr').eachDir { core ->
+        def coreName = "${core.name}-${System.getProperty('build_number') ?: 'local'}"
         doLast {
             javaexec {
                 classpath configurations.zookeeper
@@ -83,12 +121,12 @@ task deployConfig {
                         "-confdir", new File(core, 'conf'),
                         "-zkhost", "$zkHost:$zkPort",
                         "-cmd", "upconfig",
-                        "-confname", core.name
+                        "-confname", coreName
                 ]
             }
-            createCollection(core.name)
+            createCollection(coreName)
+            aliasCollection("${core.name}-staging", coreName)
         }
     }
 }
-
 
