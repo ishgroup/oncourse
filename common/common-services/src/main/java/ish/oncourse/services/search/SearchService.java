@@ -19,6 +19,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrException;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Symbol;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +54,8 @@ public class SearchService implements ISearchService {
      */
     public static final double MIN_DISTANCE = 0.0001;
 
+    public static final String ALIAS_SUFFIX_PROPERTY = "willow.solr.alias.suffix";
+
     @Inject
     private IWebSiteService webSiteService;
 
@@ -65,6 +68,10 @@ public class SearchService implements ISearchService {
     @SuppressWarnings("all")
     @Inject
     private ITagService tagService;
+
+    @Inject
+    @Symbol(ALIAS_SUFFIX_PROPERTY)
+    private String aliasSuffix;
 
     private Map<SolrCore, SolrClient> solrClients = new HashMap<>();
 
@@ -113,7 +120,7 @@ public class SearchService implements ISearchService {
         Exception exception = null;
         while (count < 3) {
             try {
-                return getSolrClient(core).query(core.name(), q);
+                return getSolrClient(core).query(core.name() + (aliasSuffix != null ? "-" + aliasSuffix: StringUtils.EMPTY), q);
             } catch (Exception e) {
                 exception = e;
                 count++;
