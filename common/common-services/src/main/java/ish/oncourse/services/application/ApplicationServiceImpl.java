@@ -29,7 +29,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 	 */
 	@Override
 	public Application findOfferedApplicationBy(Course course, Student student) {
-		List<Application> applications = findeApplications(course, student, ApplicationStatus.OFFERED);
+		List<Application> applications = findApplications(course, student, ApplicationStatus.OFFERED);
 
 		//find the lowest applicable fee
 		Ordering ordering = new Ordering();
@@ -53,11 +53,11 @@ public class ApplicationServiceImpl implements IApplicationService {
 	 */
 	@Override
 	public Application findNewApplicationBy(Course course, Student student) {
-		List<Application> applications = findeApplications(course, student, ApplicationStatus.NEW);
+		List<Application> applications = findApplications(course, student, ApplicationStatus.NEW);
 		return applications.size() > 0 ? applications.get(0) : null;	
 	}
 	
-	private List<Application> findeApplications(Course course, Student student, ApplicationStatus status) {
+	private List<Application> findApplications(Course course, Student student, ApplicationStatus status) {
 		
 		SelectQuery q = new SelectQuery(Application.class);
 		q.andQualifier(ExpressionFactory.matchExp(Application.COURSE_PROPERTY, course));
