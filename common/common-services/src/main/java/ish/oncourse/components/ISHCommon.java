@@ -52,6 +52,10 @@ public abstract class ISHCommon {
         return format.format(date);
     }
 
+	public Date getCurrentDate() {
+		return new Date();
+	}
+
     public <E extends Queueable> boolean hasTag(E entity, String tagPath) {
         return tagService.hasTag(entity, tagPath);
     }
