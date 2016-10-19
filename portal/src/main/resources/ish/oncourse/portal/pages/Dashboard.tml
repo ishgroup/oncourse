@@ -15,10 +15,8 @@
 			<t:dashboard.paymentdue paymentDue="paymentDuecalculater.calculate()"/>
 		</t:if>
 
-		<t:if test="contact.student">
-			<t:if test="!contact.student.usi">
+		<t:if test="usiRequired.get()">
 				<t:dashboard.usirequired contact="contact"/>
-			</t:if>
 		</t:if>
 
 		<t:if test="!portalService.resources.empty">
