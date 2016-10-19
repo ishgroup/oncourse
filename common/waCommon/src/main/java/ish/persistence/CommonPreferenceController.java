@@ -1072,6 +1072,7 @@ public abstract class CommonPreferenceController {
 	public static final String AVETMISS_EMAIL = "avetmiss.email";
 	public static final String AVETMISS_CERT_SIGNATORY_NAME = "avetmiss.certificate.signatory.name";
 	public static final String AVETMISS_QLD_IDENTIFIER = "avetmiss.qld.identifier";
+	public static final String AVETMISS_FEE_HELP_PROVIDER_CODE = "avetmiss.fee.help.provider.code";
 
 	public boolean getShowRTOGUI() {
 		String aPref = getValue(AVETMISS_SHOW_GUI, false);
@@ -1253,6 +1254,14 @@ public abstract class CommonPreferenceController {
 
 	public void setAvetmissQldIdentifier(String value) {
 		setValue(AVETMISS_QLD_IDENTIFIER, false, value);
+	}
+
+	public String getAvetmissFeeHelpProviderCode() {
+		return getValue(AVETMISS_FEE_HELP_PROVIDER_CODE, false);
+	}
+
+	public void setAvetmissFeeHelpProviderCode(String value) {
+		setValue(AVETMISS_FEE_HELP_PROVIDER_CODE, false, value);
 	}
 
 	// **************************************
@@ -2102,6 +2111,8 @@ public abstract class CommonPreferenceController {
 			return getOncourseServerDefaultTimezone();
 		} else if (ACCOUNT_INVOICE_TERMS.equals(key)) {
 			return getAccountInvoiceTerms();
+		} else if (AVETMISS_FEE_HELP_PROVIDER_CODE.equals(key)) {
+			return getAvetmissFeeHelpProviderCode();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2315,6 +2326,8 @@ public abstract class CommonPreferenceController {
 			setPaymentInfo((String) value);
 		} else if (ACCOUNT_INVOICE_TERMS.equals(key)) {
 			setAccountInvoiceTerms((Integer) value);
+		} else if (AVETMISS_FEE_HELP_PROVIDER_CODE.equals(key)) {
+			setAvetmissFeeHelpProviderCode((String) value);
 		}
 	}
 
