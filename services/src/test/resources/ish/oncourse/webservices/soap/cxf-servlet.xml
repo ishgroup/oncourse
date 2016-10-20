@@ -41,6 +41,10 @@
 	<bean id="v13_replicationPortType" class="ish.oncourse.webservices.soap.v13.TestReplicationPortTypeImpl" />
 
 	<bean id="v13_paymentPortType" class="ish.oncourse.webservices.soap.v13.TestPaymentPortTypeImpl" />
+
+	<bean id="v14_replicationPortType" class="ish.oncourse.webservices.soap.v14.TestReplicationPortTypeImpl" />
+
+	<bean id="v14_paymentPortType" class="ish.oncourse.webservices.soap.v14.TestPaymentPortTypeImpl" />
 	
 	<cxf:bus>
 		<cxf:features>
@@ -115,6 +119,22 @@
 
 	<jaxws:endpoint id="v13_payment" implementor="#v13_paymentPortType"
 					address="/v13/payment">
+		<jaxws:inInterceptors>
+			<ref bean="v4_securityCodeInterceptor" />
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v14_replication" implementor="#v14_replicationPortType"
+					address="/v14/replication">
+		<jaxws:inInterceptors>
+			<ref bean="v4_communicationKeyInterceptor" />
+			<ref bean="v4_collegeRequestInterceptor" />
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="v14_payment" implementor="#v14_paymentPortType"
+					address="/v14/payment">
 		<jaxws:inInterceptors>
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />

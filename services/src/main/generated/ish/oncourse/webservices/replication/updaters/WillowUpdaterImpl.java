@@ -11,6 +11,7 @@ import ish.oncourse.webservices.replication.v10.updaters.V10UpdatersMap;
 import ish.oncourse.webservices.replication.v11.updaters.V11UpdatersMap;
 import ish.oncourse.webservices.replication.v12.updaters.V12UpdatersMap;
 import ish.oncourse.webservices.replication.v13.updaters.V13UpdatersMap;
+import ish.oncourse.webservices.replication.v14.updaters.V14UpdatersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
@@ -35,8 +36,11 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 	private Map<String, IWillowUpdater> v12updaterMap = new HashMap<>();
  
 	private Map<String, IWillowUpdater> v13updaterMap = new HashMap<>();
+ 
+	private Map<String, IWillowUpdater> v14updaterMap = new HashMap<>();
 
 	public WillowUpdaterImpl(@Inject ITextileConverter textileConverter) {
+
 
 		V10UpdatersMap v10map = new V10UpdatersMap();
 		v10map.initMap(textileConverter);
@@ -54,6 +58,10 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		v13map.initMap(textileConverter);
 		v13updaterMap = v13map.getUpdaterMap();
 
+		V14UpdatersMap v14map = new V14UpdatersMap();
+		v14map.initMap(textileConverter);
+		v14updaterMap = v14map.getUpdaterMap();
+
 	}
 
 	@Override
@@ -65,6 +73,7 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 		String key = EntityMapping.getWillowEntityIdentifer(stub.getEntityIdentifier());
 		final IWillowUpdater updater;
 		switch (version) {
+
 			case V10:
 				updater = v10updaterMap.get(key);
 				break;
@@ -79,6 +88,10 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 
 			case V13:
 				updater = v13updaterMap.get(key);
+				break;
+
+			case V14:
+				updater = v14updaterMap.get(key);
 				break;
 
 			default:
