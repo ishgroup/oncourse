@@ -28,7 +28,8 @@ ext {
     replicationVersions = [10,  // introduced in onCourse 7.4
                            11,  // introduced in onCourse 8.2
 						   12,   // introduced in onCourse 8.7
-						   13   // introduced in onCourse 8.17
+						   13,   // introduced in onCourse 8.17
+						   14    // introduced in onCourse 9.1
     ]
     referenceVersions = [   4,  // introduced in onCourse 5.1
                             5,  // introduced in onCourse 7.4
