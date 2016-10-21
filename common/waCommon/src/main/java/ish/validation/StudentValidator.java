@@ -10,6 +10,8 @@ import static ish.validation.StudentErrorCode.*;
 
 public class StudentValidator implements Validator<StudentErrorCode> {
 
+    public static final int MIN_YEAR_SCHOOL_COMPLETED = 1940;
+    
     private StudentInterface student;
     private Map<String, StudentErrorCode> result;
 
@@ -37,8 +39,8 @@ public class StudentValidator implements Validator<StudentErrorCode> {
             final int thisYear = Calendar.getInstance().get(Calendar.YEAR);
             if (givenYear > thisYear) {
                 result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, yearSchoolCompletedInFuture);
-            } else if (thisYear - givenYear > 100) {
-                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, yearSchoolCompletedWithinLast100Year);
+            } else if (givenYear < MIN_YEAR_SCHOOL_COMPLETED) {
+                result.put(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY, yearSchoolCompletedBefore1940);
             }
         }
     }
