@@ -81,6 +81,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     TagRelationStub.class,
     MessageTemplateStub.class,
     CertificateOutcomeStub.class,
+    AssessmentClassTutorStub.class,
     PaymentInLineStub.class,
     CorporatePassDiscountStub.class,
     DocumentVersionStub.class,

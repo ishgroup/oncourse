@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="courseClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="dueDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="releaseDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
- *         &lt;element name="assessorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -38,8 +37,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "assessmentId",
     "courseClassId",
     "dueDate",
-    "releaseDate",
-    "assessorId"
+    "releaseDate"
 })
 public class AssessmentClassStub
     extends ReplicationStub
@@ -61,10 +59,6 @@ public class AssessmentClassStub
     @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
     protected Date releaseDate;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
-    @XmlSchemaType(name = "long")
-    protected Long assessorId;
 
     /**
      * Gets the value of the assessmentId property.
@@ -160,30 +154,6 @@ public class AssessmentClassStub
      */
     public void setReleaseDate(Date value) {
         this.releaseDate = value;
-    }
-
-    /**
-     * Gets the value of the assessorId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Long getAssessorId() {
-        return assessorId;
-    }
-
-    /**
-     * Sets the value of the assessorId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setAssessorId(Long value) {
-        this.assessorId = value;
     }
 
 }
