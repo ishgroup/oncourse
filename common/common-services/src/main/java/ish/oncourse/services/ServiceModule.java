@@ -97,7 +97,7 @@ import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.management.ManagementService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
@@ -269,7 +269,7 @@ public class ServiceModule {
 		// variant for site template customization
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
 
-
+		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, StringUtils.EMPTY);
 	}
 
 	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
