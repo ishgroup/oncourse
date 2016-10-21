@@ -268,8 +268,6 @@ public class ServiceModule {
 		// this is overridden in other palces anyways, as we are using locale
 		// variant for site template customization
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
-
-		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, StringUtils.EMPTY);
 	}
 
 	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
