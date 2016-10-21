@@ -15,6 +15,7 @@ import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
+import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteVersionService;
@@ -39,6 +40,8 @@ import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
+
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @SubModule({ModelModule.class, ServiceModule.class, TextileModule.class})
 public class AppModule {
@@ -111,6 +114,7 @@ public class AppModule {
 
     public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
         configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
+        configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
     }
 
     public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request,

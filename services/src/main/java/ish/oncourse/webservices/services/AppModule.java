@@ -10,6 +10,7 @@ import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.usi.IUSIVerificationService;
@@ -54,6 +55,8 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestExceptionHandler;
 import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.ResponseRenderer;
+
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
  * @author marek
@@ -109,6 +112,7 @@ public class AppModule {
         configuration.add(IOCSymbols.THREAD_POOL_MAX_SIZE, "50");
         configuration.add(IOCSymbols.THREAD_POOL_KEEP_ALIVE, "1 m");
         configuration.add(IOCSymbols.THREAD_POOL_ENABLED, "true");
+		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
 	}
 	
 	@EagerLoad

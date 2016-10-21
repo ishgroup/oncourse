@@ -15,6 +15,7 @@ import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.node.IWebNodeTypeService;
+import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteVersionService;
@@ -36,6 +37,8 @@ import org.apache.tapestry5.services.MarkupRendererFilter;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
+
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
  * The module that is automatically included as part of the Tapestry IoC
@@ -66,6 +69,7 @@ public class AppModule {
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
+		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
 	}
 
 	@Contribute(PageRenderLinkTransformer.class)
