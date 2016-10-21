@@ -120,7 +120,7 @@ public class SearchService implements ISearchService {
         Exception exception = null;
         while (count < 3) {
             try {
-                return getSolrClient(core).query(core.name() + (aliasSuffix != null ? "-" + aliasSuffix: StringUtils.EMPTY), q);
+                return getSolrClient(core).query(core.name() + (StringUtils.trimToNull(aliasSuffix) != null ? "-" + aliasSuffix: StringUtils.EMPTY), q);
             } catch (Exception e) {
                 exception = e;
                 count++;
