@@ -18,21 +18,13 @@ public abstract class _EntityRelation extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String FROM_ENTITY_IDENTIFIER_PROPERTY = "fromEntityIdentifier";
-    @Deprecated
     public static final String FROM_ENTITY_WILLOW_ID_PROPERTY = "fromEntityWillowId";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String TO_ENTITY_IDENTIFIER_PROPERTY = "toEntityIdentifier";
-    @Deprecated
     public static final String TO_ENTITY_WILLOW_ID_PROPERTY = "toEntityWillowId";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";

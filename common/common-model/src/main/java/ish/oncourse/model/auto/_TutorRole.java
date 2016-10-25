@@ -19,23 +19,14 @@ public abstract class _TutorRole extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CONFIRMED_DATE_PROPERTY = "confirmedDate";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String IN_PUBLICITY_PROPERTY = "inPublicity";
-    @Deprecated
     public static final String IS_CONFIRMED_PROPERTY = "isConfirmed";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
-    @Deprecated
     public static final String TUTOR_PROPERTY = "tutor";
 
     public static final String ID_PK_COLUMN = "id";

@@ -20,21 +20,13 @@ public abstract class _Voucher extends ProductItem {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CODE_PROPERTY = "code";
-    @Deprecated
     public static final String ID_KEY_PROPERTY = "idKey";
-    @Deprecated
     public static final String REDEEMED_COURSES_COUNT_PROPERTY = "redeemedCoursesCount";
-    @Deprecated
     public static final String REDEMPTION_VALUE_PROPERTY = "redemptionValue";
-    @Deprecated
     public static final String SOURCE_PROPERTY = "source";
-    @Deprecated
     public static final String VALUE_ON_PURCHASE_PROPERTY = "valueOnPurchase";
-    @Deprecated
     public static final String PAYMENTS_PROPERTY = "payments";
-    @Deprecated
     public static final String VOUCHER_PAYMENT_INS_PROPERTY = "voucherPaymentIns";
 
     public static final String ID_PK_COLUMN = "id";

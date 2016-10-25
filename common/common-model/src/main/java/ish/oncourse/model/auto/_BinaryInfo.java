@@ -20,33 +20,19 @@ public abstract class _BinaryInfo extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String BYTE_SIZE_PROPERTY = "byteSize";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String FILE_PATH_PROPERTY = "filePath";
-    @Deprecated
     public static final String FILE_UUID_PROPERTY = "fileUUID";
-    @Deprecated
     public static final String MIME_TYPE_PROPERTY = "mimeType";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String PIXEL_HEIGHT_PROPERTY = "pixelHeight";
-    @Deprecated
     public static final String PIXEL_WIDTH_PROPERTY = "pixelWidth";
-    @Deprecated
     public static final String REFERENCE_NUMBER_PROPERTY = "referenceNumber";
-    @Deprecated
     public static final String WEB_VISIBLE_PROPERTY = "webVisible";
-    @Deprecated
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";

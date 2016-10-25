@@ -18,9 +18,7 @@ public abstract class _MembershipProduct extends Product {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY = "discountMembershipProducts";
-    @Deprecated
     public static final String DISCOUNTS_AVAILABLE_PROPERTY = "discountsAvailable";
 
     public static final String ID_PK_COLUMN = "id";

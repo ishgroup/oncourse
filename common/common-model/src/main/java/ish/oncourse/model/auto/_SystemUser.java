@@ -21,45 +21,25 @@ public abstract class _SystemUser extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String EDIT_CMS_PROPERTY = "editCMS";
-    @Deprecated
     public static final String EDIT_TARA_PROPERTY = "editTara";
-    @Deprecated
     public static final String EMAIL_PROPERTY = "email";
-    @Deprecated
     public static final String FIRST_NAME_PROPERTY = "firstName";
-    @Deprecated
     public static final String IS_ACTIVE_PROPERTY = "isActive";
-    @Deprecated
     public static final String IS_ADMIN_PROPERTY = "isAdmin";
-    @Deprecated
     public static final String LAST_LOGIN_IP_PROPERTY = "lastLoginIP";
-    @Deprecated
     public static final String LAST_LOGIN_ON_PROPERTY = "lastLoginOn";
-    @Deprecated
     public static final String LOGIN_PROPERTY = "login";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PASSWORD_PROPERTY = "password";
-    @Deprecated
     public static final String SURNAME_PROPERTY = "surname";
-    @Deprecated
     public static final String TOKEN_PROPERTY = "token";
-    @Deprecated
     public static final String TOKEN_SCRATCH_CODES_PROPERTY = "tokenScratchCodes";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String DEFAULT_ADMINISTRATION_CENTRE_PROPERTY = "defaultAdministrationCentre";
-    @Deprecated
     public static final String DOCUMENT_VERSIONS_PROPERTY = "documentVersions";
-    @Deprecated
     public static final String SITES_DEPLOYED_PROPERTY = "sitesDeployed";
 
     public static final String ID_PK_COLUMN = "id";

@@ -21,27 +21,16 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String ENTITY_ANGEL_ID_PROPERTY = "entityAngelId";
-    @Deprecated
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
-    @Deprecated
     public static final String ENTITY_WILLOW_ID_PROPERTY = "entityWillowId";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String SPECIAL_TYPE_PROPERTY = "specialType";
-    @Deprecated
     public static final String BINARY_INFO_PROPERTY = "binaryInfo";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String DOCUMENT_PROPERTY = "document";
-    @Deprecated
     public static final String DOCUMENT_VERSION_PROPERTY = "documentVersion";
 
     public static final String ID_PK_COLUMN = "id";

@@ -19,19 +19,12 @@ public abstract class _InvoiceDueDate extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String AMOUNT_PROPERTY = "amount";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DUE_DATE_PROPERTY = "dueDate";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String INVOICE_PROPERTY = "invoice";
 
     public static final String ID_PK_COLUMN = "id";

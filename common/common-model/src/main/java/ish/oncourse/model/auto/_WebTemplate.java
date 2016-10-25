@@ -17,15 +17,10 @@ public abstract class _WebTemplate extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CONTENT_PROPERTY = "content";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String LAYOUT_PROPERTY = "layout";
 
     public static final String ID_PK_COLUMN = "id";

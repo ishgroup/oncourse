@@ -36,73 +36,39 @@ public abstract class _Student extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CHESSN_PROPERTY = "chessn";
-    @Deprecated
     public static final String CITIZENSHIP_PROPERTY = "citizenship";
-    @Deprecated
     public static final String CONCESSION_TYPE_PROPERTY = "concessionType";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DISABILITY_TYPE_PROPERTY = "disabilityType";
-    @Deprecated
     public static final String ENGLISH_PROFICIENCY_PROPERTY = "englishProficiency";
-    @Deprecated
     public static final String FEE_HELP_ELIGIBLE_PROPERTY = "feeHelpEligible";
-    @Deprecated
     public static final String HIGHEST_SCHOOL_LEVEL_PROPERTY = "highestSchoolLevel";
-    @Deprecated
     public static final String INDIGENOUS_STATUS_PROPERTY = "indigenousStatus";
-    @Deprecated
     public static final String IS_OVERSEAS_CLIENT_PROPERTY = "isOverseasClient";
-    @Deprecated
     public static final String IS_STILL_AT_SCHOOL_PROPERTY = "isStillAtSchool";
-    @Deprecated
     public static final String LABOUR_FORCE_TYPE_PROPERTY = "labourForceType";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PRIOR_EDUCATION_CODE_PROPERTY = "priorEducationCode";
-    @Deprecated
     public static final String SPECIAL_NEEDS_PROPERTY = "specialNeeds";
-    @Deprecated
     public static final String SPECIAL_NEEDS_ASSISTANCE_PROPERTY = "specialNeedsAssistance";
-    @Deprecated
     public static final String TOWN_OF_BIRTH_PROPERTY = "townOfBirth";
-    @Deprecated
     public static final String USI_PROPERTY = "usi";
-    @Deprecated
     public static final String USI_STATUS_PROPERTY = "usiStatus";
-    @Deprecated
     public static final String YEAR_SCHOOL_COMPLETED_PROPERTY = "yearSchoolCompleted";
-    @Deprecated
     public static final String APPLICATIONS_PROPERTY = "applications";
-    @Deprecated
     public static final String ATTENDANCES_PROPERTY = "attendances";
-    @Deprecated
     public static final String CERTIFICATES_PROPERTY = "certificates";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
-    @Deprecated
     public static final String COUNTRY_OF_BIRTH_PROPERTY = "countryOfBirth";
-    @Deprecated
     public static final String ENROLMENTS_PROPERTY = "enrolments";
-    @Deprecated
     public static final String LANGUAGE_PROPERTY = "language";
-    @Deprecated
     public static final String LANGUAGE_HOME_PROPERTY = "languageHome";
-    @Deprecated
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
-    @Deprecated
     public static final String PRIOR_LEARNINGS_PROPERTY = "priorLearnings";
-    @Deprecated
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
-    @Deprecated
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
     public static final String ID_PK_COLUMN = "id";

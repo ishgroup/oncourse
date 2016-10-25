@@ -18,19 +18,12 @@ public abstract class _WebUrlAlias extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DEFAULT_PROPERTY = "default";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String REDIRECT_TO_PROPERTY = "redirectTo";
-    @Deprecated
     public static final String URL_PATH_PROPERTY = "urlPath";
-    @Deprecated
     public static final String WEB_NODE_PROPERTY = "webNode";
-    @Deprecated
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";

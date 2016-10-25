@@ -18,11 +18,8 @@ public abstract class _VoucherProduct extends Product {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String MAX_COURSES_REDEMPTION_PROPERTY = "maxCoursesRedemption";
-    @Deprecated
     public static final String VALUE_PROPERTY = "value";
-    @Deprecated
     public static final String REDEMPTION_COURSES_PROPERTY = "redemptionCourses";
 
     public static final String ID_PK_COLUMN = "id";

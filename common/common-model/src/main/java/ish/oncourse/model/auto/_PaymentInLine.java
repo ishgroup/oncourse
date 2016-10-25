@@ -20,19 +20,12 @@ public abstract class _PaymentInLine extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String AMOUNT_PROPERTY = "amount";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String INVOICE_PROPERTY = "invoice";
-    @Deprecated
     public static final String PAYMENT_IN_PROPERTY = "paymentIn";
 
     public static final String ID_PK_COLUMN = "id";

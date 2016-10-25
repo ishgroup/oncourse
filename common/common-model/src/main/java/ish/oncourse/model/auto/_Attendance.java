@@ -20,27 +20,16 @@ public abstract class _Attendance extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String ATTENDANCE_TYPE_PROPERTY = "attendanceType";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DURATION_MINUTES_PROPERTY = "durationMinutes";
-    @Deprecated
     public static final String MARKED_BY_TUTOR_DATE_PROPERTY = "markedByTutorDate";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NOTE_PROPERTY = "note";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String MARKED_BY_TUTOR_PROPERTY = "markedByTutor";
-    @Deprecated
     public static final String SESSION_PROPERTY = "session";
-    @Deprecated
     public static final String STUDENT_PROPERTY = "student";
 
     public static final String ID_PK_COLUMN = "id";

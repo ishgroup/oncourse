@@ -26,53 +26,29 @@ public abstract class _Course extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ALLOW_WAITING_LIST_PROPERTY = "allowWaitingList";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CODE_PROPERTY = "code";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DETAIL_PROPERTY = "detail";
-    @Deprecated
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
-    @Deprecated
     public static final String ENROLMENT_TYPE_PROPERTY = "enrolmentType";
-    @Deprecated
     public static final String FIELD_OF_EDUCATION_PROPERTY = "fieldOfEducation";
-    @Deprecated
     public static final String IS_SUFFICIENT_FOR_QUALIFICATION_PROPERTY = "isSufficientForQualification";
-    @Deprecated
     public static final String IS_VETCOURSE_PROPERTY = "isVETCourse";
-    @Deprecated
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String NOMINAL_HOURS_PROPERTY = "nominalHours";
-    @Deprecated
     public static final String SEARCH_TEXT_PROPERTY = "searchText";
-    @Deprecated
     public static final String APPLICATIONS_PROPERTY = "applications";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
-    @Deprecated
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
-    @Deprecated
     public static final String FROM_COURSES_PROPERTY = "fromCourses";
-    @Deprecated
     public static final String QUALIFICATION_PROPERTY = "qualification";
-    @Deprecated
     public static final String TO_COURSES_PROPERTY = "toCourses";
-    @Deprecated
     public static final String VOUCHER_PRODUCT_COURSES_PROPERTY = "voucherProductCourses";
-    @Deprecated
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
     public static final String ID_PK_COLUMN = "id";

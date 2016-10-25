@@ -19,13 +19,9 @@ public abstract class _WebSiteLayout extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String LAYOUT_KEY_PROPERTY = "layoutKey";
-    @Deprecated
     public static final String TEMPLATES_PROPERTY = "templates";
-    @Deprecated
     public static final String WEB_NODE_TYPES_PROPERTY = "webNodeTypes";
-    @Deprecated
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";

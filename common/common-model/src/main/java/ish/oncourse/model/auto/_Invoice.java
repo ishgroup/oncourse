@@ -28,55 +28,30 @@ public abstract class _Invoice extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String AMOUNT_OWING_PROPERTY = "amountOwing";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String BILL_TO_ADDRESS_PROPERTY = "billToAddress";
-    @Deprecated
     public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String CUSTOMER_REFERENCE_PROPERTY = "customerReference";
-    @Deprecated
     public static final String DATE_DUE_PROPERTY = "dateDue";
-    @Deprecated
     public static final String DESCRIPTION_PROPERTY = "description";
-    @Deprecated
     public static final String INVOICE_DATE_PROPERTY = "invoiceDate";
-    @Deprecated
     public static final String INVOICE_NUMBER_PROPERTY = "invoiceNumber";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PUBLIC_NOTES_PROPERTY = "publicNotes";
-    @Deprecated
     public static final String SESSION_ID_PROPERTY = "sessionId";
-    @Deprecated
     public static final String SHIPPING_ADDRESS_PROPERTY = "shippingAddress";
-    @Deprecated
     public static final String SOURCE_PROPERTY = "source";
-    @Deprecated
     public static final String TOTAL_EX_GST_PROPERTY = "totalExGst";
-    @Deprecated
     public static final String TOTAL_GST_PROPERTY = "totalGst";
-    @Deprecated
     public static final String AUTHORISED_REBILLING_CARD_PROPERTY = "authorisedRebillingCard";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
-    @Deprecated
     public static final String CORPORATE_PASS_USED_PROPERTY = "corporatePassUsed";
-    @Deprecated
     public static final String INVOICE_DUE_DATES_PROPERTY = "invoiceDueDates";
-    @Deprecated
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
-    @Deprecated
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
-    @Deprecated
     public static final String WEB_SITE_PROPERTY = "webSite";
 
     public static final String ID_PK_COLUMN = "id";

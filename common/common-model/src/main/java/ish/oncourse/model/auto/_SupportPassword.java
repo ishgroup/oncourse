@@ -17,15 +17,10 @@ public abstract class _SupportPassword extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CREATED_ON_PROPERTY = "createdOn";
-    @Deprecated
     public static final String EXPIRES_ON_PROPERTY = "expiresOn";
-    @Deprecated
     public static final String MODIFIED_ON_PROPERTY = "modifiedOn";
-    @Deprecated
     public static final String PASSWORD_PROPERTY = "password";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
 
     public static final String ID_PK_COLUMN = "id";

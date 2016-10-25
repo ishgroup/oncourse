@@ -19,19 +19,12 @@ public abstract class _WebContent extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CONTENT_PROPERTY = "content";
-    @Deprecated
     public static final String CONTENT_TEXTILE_PROPERTY = "contentTextile";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String WEB_CONTENT_VISIBILITIES_PROPERTY = "webContentVisibilities";
-    @Deprecated
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";

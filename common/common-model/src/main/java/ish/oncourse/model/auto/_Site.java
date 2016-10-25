@@ -23,55 +23,30 @@ public abstract class _Site extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String COUNTRY_ID_PROPERTY = "countryId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DRIVING_DIRECTIONS_PROPERTY = "drivingDirections";
-    @Deprecated
     public static final String DRIVING_DIRECTIONS_TEXTILE_PROPERTY = "drivingDirectionsTextile";
-    @Deprecated
     public static final String IS_VIRTUAL_PROPERTY = "isVirtual";
-    @Deprecated
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
-    @Deprecated
     public static final String LATITUDE_PROPERTY = "latitude";
-    @Deprecated
     public static final String LONGITUDE_PROPERTY = "longitude";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String POSTCODE_PROPERTY = "postcode";
-    @Deprecated
     public static final String PUBLIC_TRANSPORT_DIRECTIONS_PROPERTY = "publicTransportDirections";
-    @Deprecated
     public static final String PUBLIC_TRANSPORT_DIRECTIONS_TEXTILE_PROPERTY = "publicTransportDirectionsTextile";
-    @Deprecated
     public static final String SPECIAL_INSTRUCTIONS_PROPERTY = "specialInstructions";
-    @Deprecated
     public static final String SPECIAL_INSTRUCTIONS_TEXTILE_PROPERTY = "specialInstructionsTextile";
-    @Deprecated
     public static final String STATE_PROPERTY = "state";
-    @Deprecated
     public static final String STREET_PROPERTY = "street";
-    @Deprecated
     public static final String SUBURB_PROPERTY = "suburb";
-    @Deprecated
     public static final String TIME_ZONE_PROPERTY = "timeZone";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COUNTRY_PROPERTY = "country";
-    @Deprecated
     public static final String ROOMS_PROPERTY = "rooms";
-    @Deprecated
     public static final String SYSTEM_USERS_PROPERTY = "systemUsers";
-    @Deprecated
     public static final String WAITING_LIST_SITES_PROPERTY = "waitingListSites";
 
     public static final String ID_PK_COLUMN = "id";

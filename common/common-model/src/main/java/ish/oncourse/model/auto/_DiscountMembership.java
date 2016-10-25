@@ -21,21 +21,13 @@ public abstract class _DiscountMembership extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String APPLY_TO_MEMBER_ONLY_PROPERTY = "applyToMemberOnly";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String DISCOUNT_PROPERTY = "discount";
-    @Deprecated
     public static final String DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY = "discountMembershipRelationTypes";
-    @Deprecated
     public static final String MEMBERSHIP_PRODUCT_PROPERTY = "membershipProduct";
 
     public static final String ID_PK_COLUMN = "id";

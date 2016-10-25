@@ -16,6 +16,7 @@ import ish.common.types.PaymentSource;
 import ish.common.types.RecognitionOfPriorLearningIndicator;
 import ish.common.types.StudentStatusForUnitOfStudy;
 import ish.math.Money;
+import ish.oncourse.model.AssessmentSubmission;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.InvoiceLine;
@@ -33,53 +34,30 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String CREDIT_FOEID_PROPERTY = "creditFOEId";
-    @Deprecated
     public static final String CREDIT_LEVEL_PROPERTY = "creditLevel";
-    @Deprecated
     public static final String CREDIT_OFFERED_VALUE_PROPERTY = "creditOfferedValue";
-    @Deprecated
     public static final String CREDIT_PROVIDER_PROPERTY = "creditProvider";
-    @Deprecated
     public static final String CREDIT_PROVIDER_TYPE_PROPERTY = "creditProviderType";
-    @Deprecated
     public static final String CREDIT_TOTAL_PROPERTY = "creditTotal";
-    @Deprecated
     public static final String CREDIT_TYPE_PROPERTY = "creditType";
-    @Deprecated
     public static final String CREDIT_USED_VALUE_PROPERTY = "creditUsedValue";
-    @Deprecated
     public static final String FEE_HELP_AMOUNT_PROPERTY = "feeHelpAmount";
-    @Deprecated
     public static final String FEE_HELP_STATUS_PROPERTY = "feeHelpStatus";
-    @Deprecated
     public static final String FEE_STATUS_PROPERTY = "feeStatus";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String REASON_FOR_STUDY_PROPERTY = "reasonForStudy";
-    @Deprecated
     public static final String SOURCE_PROPERTY = "source";
-    @Deprecated
     public static final String STATUS_PROPERTY = "status";
-    @Deprecated
+    public static final String ASSESSMENT_SUBMISSIONS_PROPERTY = "assessmentSubmissions";
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
-    @Deprecated
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
-    @Deprecated
     public static final String OUTCOMES_PROPERTY = "outcomes";
-    @Deprecated
     public static final String STUDENT_PROPERTY = "student";
-    @Deprecated
     public static final String SURVEYS_PROPERTY = "surveys";
 
     public static final String ID_PK_COLUMN = "id";
@@ -102,6 +80,7 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final Property<Integer> REASON_FOR_STUDY = new Property<Integer>("reasonForStudy");
     public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
     public static final Property<EnrolmentStatus> STATUS = new Property<EnrolmentStatus>("status");
+    public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = new Property<List<AssessmentSubmission>>("assessmentSubmissions");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
     public static final Property<List<InvoiceLine>> INVOICE_LINES = new Property<List<InvoiceLine>>("invoiceLines");
@@ -234,6 +213,18 @@ public abstract class _Enrolment extends CayenneDataObject {
     public EnrolmentStatus getStatus() {
         return (EnrolmentStatus)readProperty("status");
     }
+
+    public void addToAssessmentSubmissions(AssessmentSubmission obj) {
+        addToManyTarget("assessmentSubmissions", obj, true);
+    }
+    public void removeFromAssessmentSubmissions(AssessmentSubmission obj) {
+        removeToManyTarget("assessmentSubmissions", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<AssessmentSubmission> getAssessmentSubmissions() {
+        return (List<AssessmentSubmission>)readProperty("assessmentSubmissions");
+    }
+
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);

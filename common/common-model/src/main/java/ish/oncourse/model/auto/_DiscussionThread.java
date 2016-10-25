@@ -13,7 +13,6 @@ public abstract class _DiscussionThread extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String TOPIC_PROPERTY = "topic";
 
     public static final String ID_PK_COLUMN = "id";

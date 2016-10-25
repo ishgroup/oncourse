@@ -13,11 +13,8 @@ public abstract class _DiscussionComment extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String BODY_PROPERTY = "body";
-    @Deprecated
     public static final String DISCUSSION_THREAD_ID_PROPERTY = "discussionThreadId";
-    @Deprecated
     public static final String IS_DELETED_PROPERTY = "isDeleted";
 
     public static final String ID_PK_COLUMN = "id";

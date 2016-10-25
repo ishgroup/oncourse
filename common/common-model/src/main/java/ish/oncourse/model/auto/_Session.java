@@ -24,35 +24,20 @@ public abstract class _Session extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String END_DATE_PROPERTY = "endDate";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PRIVATE_NOTES_PROPERTY = "privateNotes";
-    @Deprecated
     public static final String PUBLIC_NOTES_PROPERTY = "publicNotes";
-    @Deprecated
     public static final String START_DATE_PROPERTY = "startDate";
-    @Deprecated
     public static final String TIME_ZONE_PROPERTY = "timeZone";
-    @Deprecated
     public static final String ATTENDANCES_PROPERTY = "attendances";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
-    @Deprecated
     public static final String MARKER_PROPERTY = "marker";
-    @Deprecated
     public static final String ROOM_PROPERTY = "room";
-    @Deprecated
     public static final String SESSION_MODULES_PROPERTY = "sessionModules";
-    @Deprecated
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
 
     public static final String ID_PK_COLUMN = "id";

@@ -16,9 +16,7 @@ public abstract class _CourseProductRelation extends EntityRelation {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String COURSE_PROPERTY = "course";
-    @Deprecated
     public static final String PRODUCT_PROPERTY = "product";
 
     public static final String ID_PK_COLUMN = "id";

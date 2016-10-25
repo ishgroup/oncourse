@@ -21,45 +21,25 @@ public abstract class _Certificate extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String AWARDED_PROPERTY = "awarded";
-    @Deprecated
     public static final String CERTIFICATE_NUMBER_PROPERTY = "certificateNumber";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String END_DATE_PROPERTY = "endDate";
-    @Deprecated
     public static final String FUNDING_SOURCE_PROPERTY = "fundingSource";
-    @Deprecated
     public static final String IS_QUALIFICATION_PROPERTY = "isQualification";
-    @Deprecated
     public static final String ISSUED_PROPERTY = "issued";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PRINTED_WHEN_PROPERTY = "printedWhen";
-    @Deprecated
     public static final String PRIVATE_NOTES_PROPERTY = "privateNotes";
-    @Deprecated
     public static final String PUBLIC_NOTES_PROPERTY = "publicNotes";
-    @Deprecated
     public static final String REVOKED_WHEN_PROPERTY = "revokedWhen";
-    @Deprecated
     public static final String STUDENT_FIRST_NAME_PROPERTY = "studentFirstName";
-    @Deprecated
     public static final String STUDENT_LAST_NAME_PROPERTY = "studentLastName";
-    @Deprecated
     public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
-    @Deprecated
     public static final String CERTIFICATE_OUTCOMES_PROPERTY = "certificateOutcomes";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String QUALIFICATION_PROPERTY = "qualification";
-    @Deprecated
     public static final String STUDENT_PROPERTY = "student";
 
     public static final String ID_PK_COLUMN = "id";

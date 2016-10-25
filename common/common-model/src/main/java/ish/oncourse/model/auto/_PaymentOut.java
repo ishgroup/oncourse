@@ -25,37 +25,21 @@ public abstract class _PaymentOut extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String CREDIT_CARD_CVV_PROPERTY = "creditCardCVV";
-    @Deprecated
     public static final String CREDIT_CARD_TYPE_PROPERTY = "creditCardType";
-    @Deprecated
     public static final String DATE_BANKED_PROPERTY = "dateBanked";
-    @Deprecated
     public static final String DATE_PAID_PROPERTY = "datePaid";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PAYMENT_IN_TXN_REFERENCE_PROPERTY = "paymentInTxnReference";
-    @Deprecated
     public static final String SOURCE_PROPERTY = "source";
-    @Deprecated
     public static final String STATUS_PROPERTY = "status";
-    @Deprecated
     public static final String STATUS_NOTES_PROPERTY = "statusNotes";
-    @Deprecated
     public static final String TOTAL_AMOUNT_PROPERTY = "totalAmount";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
-    @Deprecated
     public static final String PAYMENT_OUT_TRANSACTIONS_PROPERTY = "paymentOutTransactions";
 
     public static final String ID_PK_COLUMN = "id";

@@ -31,97 +31,51 @@ public abstract class _Contact extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ABN_PROPERTY = "abn";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String BUSINESS_PHONE_NUMBER_PROPERTY = "businessPhoneNumber";
-    @Deprecated
     public static final String COOKIE_HASH_PROPERTY = "cookieHash";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DATE_OF_BIRTH_PROPERTY = "dateOfBirth";
-    @Deprecated
     public static final String EMAIL_ADDRESS_PROPERTY = "emailAddress";
-    @Deprecated
     public static final String FAMILY_NAME_PROPERTY = "familyName";
-    @Deprecated
     public static final String FAX_NUMBER_PROPERTY = "faxNumber";
-    @Deprecated
     public static final String GIVEN_NAME_PROPERTY = "givenName";
-    @Deprecated
     public static final String HOME_PHONE_NUMBER_PROPERTY = "homePhoneNumber";
-    @Deprecated
     public static final String INVOICE_TERMS_PROPERTY = "invoiceTerms";
-    @Deprecated
     public static final String IS_COMPANY_PROPERTY = "isCompany";
-    @Deprecated
     public static final String IS_MALE_PROPERTY = "isMale";
-    @Deprecated
     public static final String IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY = "isMarketingViaEmailAllowed";
-    @Deprecated
     public static final String IS_MARKETING_VIA_POST_ALLOWED_PROPERTY = "isMarketingViaPostAllowed";
-    @Deprecated
     public static final String IS_MARKETING_VIA_SMSALLOWED_PROPERTY = "isMarketingViaSMSAllowed";
-    @Deprecated
     public static final String LAST_LOGIN_TIME_PROPERTY = "lastLoginTime";
-    @Deprecated
     public static final String MIDDLE_NAME_PROPERTY = "middleName";
-    @Deprecated
     public static final String MOBILE_PHONE_NUMBER_PROPERTY = "mobilePhoneNumber";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PASSWORD_PROPERTY = "password";
-    @Deprecated
     public static final String PASSWORD_HASH_PROPERTY = "passwordHash";
-    @Deprecated
     public static final String PASSWORD_RECOVER_EXPIRE_PROPERTY = "passwordRecoverExpire";
-    @Deprecated
     public static final String PASSWORD_RECOVERY_KEY_PROPERTY = "passwordRecoveryKey";
-    @Deprecated
     public static final String POSTCODE_PROPERTY = "postcode";
-    @Deprecated
     public static final String STATE_PROPERTY = "state";
-    @Deprecated
     public static final String STREET_PROPERTY = "street";
-    @Deprecated
     public static final String SUBURB_PROPERTY = "suburb";
-    @Deprecated
     public static final String TAX_FILE_NUMBER_PROPERTY = "taxFileNumber";
-    @Deprecated
     public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_COMMENTS_PROPERTY = "contactComments";
-    @Deprecated
     public static final String CORPORATE_PASSES_PROPERTY = "corporatePasses";
-    @Deprecated
     public static final String COUNTRY_PROPERTY = "country";
-    @Deprecated
     public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
-    @Deprecated
     public static final String FROM_CONTACTS_PROPERTY = "fromContacts";
-    @Deprecated
     public static final String INVOICES_PROPERTY = "invoices";
-    @Deprecated
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
-    @Deprecated
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
-    @Deprecated
     public static final String PAYMENTS_OUT_PROPERTY = "paymentsOut";
-    @Deprecated
     public static final String PRODUCTS_PROPERTY = "products";
-    @Deprecated
     public static final String STUDENT_PROPERTY = "student";
-    @Deprecated
     public static final String SUPPORT_PASSWORD_PROPERTY = "supportPassword";
-    @Deprecated
     public static final String TO_CONTACTS_PROPERTY = "toContacts";
-    @Deprecated
     public static final String TUTOR_PROPERTY = "tutor";
 
     public static final String ID_PK_COLUMN = "id";

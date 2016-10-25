@@ -18,17 +18,11 @@ public abstract class _Log extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ACTION_PROPERTY = "action";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PAGE_PROPERTY = "page";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String USER_PROPERTY = "user";
 
     public static final String ID_PK_COLUMN = "id";

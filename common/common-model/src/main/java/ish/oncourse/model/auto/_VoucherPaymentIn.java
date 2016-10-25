@@ -21,23 +21,14 @@ public abstract class _VoucherPaymentIn extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String ENROLMENTS_COUNT_PROPERTY = "enrolmentsCount";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String STATUS_PROPERTY = "status";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
-    @Deprecated
     public static final String PAYMENT_PROPERTY = "payment";
-    @Deprecated
     public static final String VOUCHER_PROPERTY = "voucher";
 
     public static final String ID_PK_COLUMN = "id";

@@ -18,15 +18,10 @@ public abstract class _WebContentVisibility extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String REGION_KEY_PROPERTY = "regionKey";
-    @Deprecated
     public static final String WEIGHT_PROPERTY = "weight";
-    @Deprecated
     public static final String WEB_CONTENT_PROPERTY = "webContent";
-    @Deprecated
     public static final String WEB_NODE_PROPERTY = "webNode";
-    @Deprecated
     public static final String WEB_NODE_TYPE_PROPERTY = "webNodeType";
 
     public static final String ID_PK_COLUMN = "id";

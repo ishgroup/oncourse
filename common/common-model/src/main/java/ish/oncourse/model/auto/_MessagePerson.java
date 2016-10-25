@@ -23,33 +23,19 @@ public abstract class _MessagePerson extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DESTINATION_ADDRESS_PROPERTY = "destinationAddress";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NUMBER_OF_ATTEMPTS_PROPERTY = "numberOfAttempts";
-    @Deprecated
     public static final String RESPONSE_PROPERTY = "response";
-    @Deprecated
     public static final String STATUS_PROPERTY = "status";
-    @Deprecated
     public static final String TIME_OF_DELIVERY_PROPERTY = "timeOfDelivery";
-    @Deprecated
     public static final String TYPE_PROPERTY = "type";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
-    @Deprecated
     public static final String MESSAGE_PROPERTY = "message";
-    @Deprecated
     public static final String STUDENT_PROPERTY = "student";
-    @Deprecated
     public static final String TUTOR_PROPERTY = "tutor";
 
     public static final String ID_PK_COLUMN = "id";

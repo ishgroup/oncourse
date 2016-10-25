@@ -19,23 +19,14 @@ public abstract class _QueuedRecord extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ACTION_PROPERTY = "action";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
-    @Deprecated
     public static final String ENTITY_WILLOW_ID_PROPERTY = "entityWillowId";
-    @Deprecated
     public static final String ERROR_MESSAGE_PROPERTY = "errorMessage";
-    @Deprecated
     public static final String LAST_ATTEMPT_TIMESTAMP_PROPERTY = "lastAttemptTimestamp";
-    @Deprecated
     public static final String NUMBER_OF_ATTEMPTS_PROPERTY = "numberOfAttempts";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String QUEUED_TRANSACTION_PROPERTY = "queuedTransaction";
 
     public static final String ID_PK_COLUMN = "id";

@@ -19,23 +19,14 @@ public abstract class _LicenseFee extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String BILLING_MONTH_PROPERTY = "billingMonth";
-    @Deprecated
     public static final String FEE_PROPERTY = "fee";
-    @Deprecated
     public static final String FREE_TRANSACTIONS_PROPERTY = "freeTransactions";
-    @Deprecated
     public static final String KEY_CODE_PROPERTY = "keyCode";
-    @Deprecated
     public static final String PAID_UNTIL_PROPERTY = "paidUntil";
-    @Deprecated
     public static final String PLAN_NAME_PROPERTY = "planName";
-    @Deprecated
     public static final String VALID_UNTIL_PROPERTY = "validUntil";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String WEB_SITE_PROPERTY = "webSite";
 
     public static final String ID_PK_COLUMN = "id";

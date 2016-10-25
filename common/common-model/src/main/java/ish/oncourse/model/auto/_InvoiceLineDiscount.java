@@ -19,17 +19,11 @@ public abstract class _InvoiceLineDiscount extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String DISCOUNT_PROPERTY = "discount";
-    @Deprecated
     public static final String INVOICE_LINE_PROPERTY = "invoiceLine";
 
     public static final String ID_PK_COLUMN = "id";

@@ -26,41 +26,23 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DESCRIPTION_PROPERTY = "description";
-    @Deprecated
     public static final String DISCOUNT_EACH_EX_TAX_PROPERTY = "discountEachExTax";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PRICE_EACH_EX_TAX_PROPERTY = "priceEachExTax";
-    @Deprecated
     public static final String QUANTITY_PROPERTY = "quantity";
-    @Deprecated
     public static final String SORT_ORDER_PROPERTY = "sortOrder";
-    @Deprecated
     public static final String TAX_EACH_PROPERTY = "taxEach";
-    @Deprecated
     public static final String TITLE_PROPERTY = "title";
-    @Deprecated
     public static final String UNIT_PROPERTY = "unit";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
-    @Deprecated
     public static final String ENROLMENT_PROPERTY = "enrolment";
-    @Deprecated
     public static final String INVOICE_PROPERTY = "invoice";
-    @Deprecated
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
-    @Deprecated
     public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
-    @Deprecated
     public static final String VOUCHER_PAYMENTS_IN_PROPERTY = "voucherPaymentsIn";
 
     public static final String ID_PK_COLUMN = "id";

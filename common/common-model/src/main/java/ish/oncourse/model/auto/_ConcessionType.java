@@ -20,31 +20,18 @@ public abstract class _ConcessionType extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String CREDENTIAL_EXPIRY_DAYS_PROPERTY = "credentialExpiryDays";
-    @Deprecated
     public static final String HAS_CONCESSION_NUMBER_PROPERTY = "hasConcessionNumber";
-    @Deprecated
     public static final String HAS_EXPIRY_DATE_PROPERTY = "hasExpiryDate";
-    @Deprecated
     public static final String IS_CONCESSION_PROPERTY = "isConcession";
-    @Deprecated
     public static final String IS_ENABLED_PROPERTY = "isEnabled";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String REQUIRES_CREDENTIAL_CHECK_PROPERTY = "requiresCredentialCheck";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
-    @Deprecated
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
 
     public static final String ID_PK_COLUMN = "id";

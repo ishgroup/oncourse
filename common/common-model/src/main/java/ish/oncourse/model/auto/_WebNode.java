@@ -22,25 +22,15 @@ public abstract class _WebNode extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String NODE_NUMBER_PROPERTY = "nodeNumber";
-    @Deprecated
     public static final String PUBLISHED_PROPERTY = "published";
-    @Deprecated
     public static final String WEB_CONTENT_VISIBILITY_PROPERTY = "webContentVisibility";
-    @Deprecated
     public static final String WEB_MENUS_PROPERTY = "webMenus";
-    @Deprecated
     public static final String WEB_NODE_TYPE_PROPERTY = "webNodeType";
-    @Deprecated
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
-    @Deprecated
     public static final String WEB_URL_ALIASES_PROPERTY = "webUrlAliases";
 
     public static final String ID_PK_COLUMN = "id";

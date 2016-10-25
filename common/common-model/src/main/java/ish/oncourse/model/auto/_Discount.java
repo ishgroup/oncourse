@@ -27,71 +27,38 @@ public abstract class _Discount extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CODE_PROPERTY = "code";
-    @Deprecated
     public static final String COMBINATION_TYPE_PROPERTY = "combinationType";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DETAIL_PROPERTY = "detail";
-    @Deprecated
     public static final String DISCOUNT_AMOUNT_PROPERTY = "discountAmount";
-    @Deprecated
     public static final String DISCOUNT_RATE_PROPERTY = "discountRate";
-    @Deprecated
     public static final String DISCOUNT_TYPE_PROPERTY = "discountType";
-    @Deprecated
     public static final String HIDE_ON_WEB_PROPERTY = "hideOnWeb";
-    @Deprecated
     public static final String IS_AVAILABLE_ON_WEB_PROPERTY = "isAvailableOnWeb";
-    @Deprecated
     public static final String MAXIMUM_DISCOUNT_PROPERTY = "maximumDiscount";
-    @Deprecated
     public static final String MIN_ENROLMENTS_PROPERTY = "minEnrolments";
-    @Deprecated
     public static final String MIN_VALUE_PROPERTY = "minValue";
-    @Deprecated
     public static final String MINIMUM_DISCOUNT_PROPERTY = "minimumDiscount";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String ROUNDING_MODE_PROPERTY = "roundingMode";
-    @Deprecated
     public static final String STUDENT_AGE_PROPERTY = "studentAge";
-    @Deprecated
     public static final String STUDENT_AGE_OPERATOR_PROPERTY = "studentAgeOperator";
-    @Deprecated
     public static final String STUDENT_ENROLLED_WITHIN_DAYS_PROPERTY = "studentEnrolledWithinDays";
-    @Deprecated
     public static final String STUDENT_POSTCODES_PROPERTY = "studentPostcodes";
-    @Deprecated
     public static final String STUDENTS_QUALIFIER_PROPERTY = "studentsQualifier";
-    @Deprecated
     public static final String TIME_ZONE_PROPERTY = "timeZone";
-    @Deprecated
     public static final String VALID_FROM_PROPERTY = "validFrom";
-    @Deprecated
     public static final String VALID_FROM_OFFSET_PROPERTY = "validFromOffset";
-    @Deprecated
     public static final String VALID_TO_PROPERTY = "validTo";
-    @Deprecated
     public static final String VALID_TO_OFFSET_PROPERTY = "validToOffset";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CORPORATE_PASS_DISCOUNTS_PROPERTY = "corporatePassDiscounts";
-    @Deprecated
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
-    @Deprecated
     public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
-    @Deprecated
     public static final String DISCOUNT_MEMBERSHIP_PRODUCTS_PROPERTY = "discountMembershipProducts";
-    @Deprecated
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
 
     public static final String ID_PK_COLUMN = "id";

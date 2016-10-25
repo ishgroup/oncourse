@@ -79,169 +79,87 @@ public abstract class _College extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_VERSION_PROPERTY = "angelVersion";
-    @Deprecated
     public static final String BILLING_CODE_PROPERTY = "billingCode";
-    @Deprecated
     public static final String COLLEGE_KEY_PROPERTY = "collegeKey";
-    @Deprecated
     public static final String COMMUNICATION_KEY_PROPERTY = "communicationKey";
-    @Deprecated
     public static final String COMMUNICATION_KEY_STATUS_PROPERTY = "communicationKeyStatus";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String FIRST_REMOTE_AUTHENTICATION_PROPERTY = "firstRemoteAuthentication";
-    @Deprecated
     public static final String IP_ADDRESS_PROPERTY = "ipAddress";
-    @Deprecated
     public static final String IS_TESTING_WEB_SERVICE_PAYMENTS_PROPERTY = "isTestingWebServicePayments";
-    @Deprecated
     public static final String IS_TESTING_WEB_SITE_PAYMENTS_PROPERTY = "isTestingWebSitePayments";
-    @Deprecated
     public static final String IS_WEB_SERVICE_PAYMENTS_ENABLED_PROPERTY = "isWebServicePaymentsEnabled";
-    @Deprecated
     public static final String IS_WEB_SITE_PAYMENTS_ENABLED_PROPERTY = "isWebSitePaymentsEnabled";
-    @Deprecated
     public static final String LAST_REMOTE_AUTHENTICATION_PROPERTY = "lastRemoteAuthentication";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String PAYMENT_GATEWAY_ACCOUNT_PROPERTY = "paymentGatewayAccount";
-    @Deprecated
     public static final String PAYMENT_GATEWAY_PASS_PROPERTY = "paymentGatewayPass";
-    @Deprecated
     public static final String PURCHASE_ORDER_PROPERTY = "purchaseOrder";
-    @Deprecated
     public static final String REQUIRES_AVETMISS_PROPERTY = "requiresAvetmiss";
-    @Deprecated
     public static final String TIME_ZONE_PROPERTY = "timeZone";
-    @Deprecated
     public static final String WEB_SERVICES_SECURITY_CODE_PROPERTY = "webServicesSecurityCode";
-    @Deprecated
     public static final String APPLICATIONS_PROPERTY = "applications";
-    @Deprecated
     public static final String ATTENDANCES_PROPERTY = "attendances";
-    @Deprecated
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
-    @Deprecated
     public static final String BINARY_INFOS_PROPERTY = "binaryInfos";
-    @Deprecated
     public static final String CERTIFICATE_OUTCOMES_PROPERTY = "certificateOutcomes";
-    @Deprecated
     public static final String CERTIFICATES_PROPERTY = "certificates";
-    @Deprecated
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
-    @Deprecated
     public static final String CONCESSION_TYPES_PROPERTY = "concessionTypes";
-    @Deprecated
     public static final String CONTACT_RELATION_TYPES_PROPERTY = "contactRelationTypes";
-    @Deprecated
     public static final String CONTACT_RELATIONS_PROPERTY = "contactRelations";
-    @Deprecated
     public static final String CONTACTS_PROPERTY = "contacts";
-    @Deprecated
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
-    @Deprecated
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
-    @Deprecated
     public static final String COURSES_PROPERTY = "courses";
-    @Deprecated
     public static final String CUSTOM_FEES_PROPERTY = "customFees";
-    @Deprecated
     public static final String CUSTOM_FIELD_TYPES_PROPERTY = "customFieldTypes";
-    @Deprecated
     public static final String DISCOUNT_CONCESSION_TYPES_PROPERTY = "discountConcessionTypes";
-    @Deprecated
     public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
-    @Deprecated
     public static final String DISCOUNT_MEMBERSHIP_RELATION_TYPES_PROPERTY = "discountMembershipRelationTypes";
-    @Deprecated
     public static final String DISCOUNT_MEMBERSHIPS_PROPERTY = "discountMemberships";
-    @Deprecated
     public static final String DISCOUNTS_PROPERTY = "discounts";
-    @Deprecated
     public static final String EMAIL_TEMPLATES_PROPERTY = "emailTemplates";
-    @Deprecated
     public static final String ENROLMENTS_PROPERTY = "enrolments";
-    @Deprecated
     public static final String INSTRUCTIONS_PROPERTY = "instructions";
-    @Deprecated
     public static final String INVOICE_DUE_DATES_PROPERTY = "invoiceDueDates";
-    @Deprecated
     public static final String INVOICE_LINE_DISCOUNTS_PROPERTY = "invoiceLineDiscounts";
-    @Deprecated
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
-    @Deprecated
     public static final String INVOICES_PROPERTY = "invoices";
-    @Deprecated
     public static final String LICENSE_FEES_PROPERTY = "licenseFees";
-    @Deprecated
     public static final String LOGS_PROPERTY = "logs";
-    @Deprecated
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
-    @Deprecated
     public static final String MESSAGE_TEMPLATES_PROPERTY = "messageTemplates";
-    @Deprecated
     public static final String MESSAGES_PROPERTY = "messages";
-    @Deprecated
     public static final String NOTIFICATION_TEMPLATES_PROPERTY = "notificationTemplates";
-    @Deprecated
     public static final String OUTCOMES_PROPERTY = "outcomes";
-    @Deprecated
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
-    @Deprecated
     public static final String PAYMENT_PLAN_LINES_PROPERTY = "paymentPlanLines";
-    @Deprecated
     public static final String PAYMENTS_IN_PROPERTY = "paymentsIn";
-    @Deprecated
     public static final String PAYMENTS_OUT_PROPERTY = "paymentsOut";
-    @Deprecated
     public static final String PREFERENCES_PROPERTY = "preferences";
-    @Deprecated
     public static final String PRIOR_LEARNINGS_PROPERTY = "priorLearnings";
-    @Deprecated
     public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
-    @Deprecated
     public static final String PRODUCTS_PROPERTY = "products";
-    @Deprecated
     public static final String QUEUED_RECORDS_PROPERTY = "queuedRecords";
-    @Deprecated
     public static final String QUEUED_TRANSACTIONS_PROPERTY = "queuedTransactions";
-    @Deprecated
     public static final String ROOMS_PROPERTY = "rooms";
-    @Deprecated
     public static final String SCRIPTS_PROPERTY = "scripts";
-    @Deprecated
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
-    @Deprecated
     public static final String SESSIONS_PROPERTY = "sessions";
-    @Deprecated
     public static final String SITES_PROPERTY = "sites";
-    @Deprecated
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
-    @Deprecated
     public static final String STUDENTS_PROPERTY = "students";
-    @Deprecated
     public static final String TAG_GROUP_REQUIREMENTS_PROPERTY = "tagGroupRequirements";
-    @Deprecated
     public static final String TAGGABLE_TAGS_PROPERTY = "taggableTags";
-    @Deprecated
     public static final String TAGGABLES_PROPERTY = "taggables";
-    @Deprecated
     public static final String TAGS_PROPERTY = "tags";
-    @Deprecated
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
-    @Deprecated
     public static final String TUTORS_PROPERTY = "tutors";
-    @Deprecated
     public static final String WAITING_LIST_SITES_PROPERTY = "waitingListSites";
-    @Deprecated
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
-    @Deprecated
     public static final String WEB_SITES_PROPERTY = "webSites";
 
     public static final String ID_PK_COLUMN = "id";

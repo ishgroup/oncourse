@@ -19,27 +19,16 @@ public abstract class _CustomFieldType extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DEFAULT_VALUE_PROPERTY = "defaultValue";
-    @Deprecated
     public static final String IS_MANDATORY_PROPERTY = "isMandatory";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String REQUIRE_FOR_ENROLMENT_PROPERTY = "requireForEnrolment";
-    @Deprecated
     public static final String REQUIRE_FOR_MAILING_LIST_PROPERTY = "requireForMailingList";
-    @Deprecated
     public static final String REQUIRE_FOR_WAITING_LIST_PROPERTY = "requireForWaitingList";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
 
     public static final String ID_PK_COLUMN = "id";

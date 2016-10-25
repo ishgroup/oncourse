@@ -21,29 +21,17 @@ public abstract class _Document extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DESCRIPTION_PROPERTY = "description";
-    @Deprecated
     public static final String FILE_UUID_PROPERTY = "fileUUID";
-    @Deprecated
     public static final String IS_REMOVED_PROPERTY = "isRemoved";
-    @Deprecated
     public static final String IS_SHARED_PROPERTY = "isShared";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String WEB_VISIBILITY_PROPERTY = "webVisibility";
-    @Deprecated
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String VERSIONS_PROPERTY = "versions";
 
     public static final String ID_PK_COLUMN = "id";

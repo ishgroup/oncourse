@@ -21,23 +21,14 @@ public abstract class _WaitingList extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DETAIL_PROPERTY = "detail";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String POTENTIAL_STUDENTS_PROPERTY = "potentialStudents";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_PROPERTY = "course";
-    @Deprecated
     public static final String STUDENT_PROPERTY = "student";
-    @Deprecated
     public static final String WAITING_LIST_SITES_PROPERTY = "waitingListSites";
 
     public static final String ID_PK_COLUMN = "id";

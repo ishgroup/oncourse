@@ -22,39 +22,22 @@ public abstract class _Tag extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DETAIL_PROPERTY = "detail";
-    @Deprecated
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
-    @Deprecated
     public static final String IS_TAG_GROUP_PROPERTY = "isTagGroup";
-    @Deprecated
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String NODE_TYPE_PROPERTY = "nodeType";
-    @Deprecated
     public static final String SHORT_NAME_PROPERTY = "shortName";
-    @Deprecated
     public static final String SPECIAL_TYPE_PROPERTY = "specialType";
-    @Deprecated
     public static final String WEIGHTING_PROPERTY = "weighting";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String PARENT_PROPERTY = "parent";
-    @Deprecated
     public static final String TAG_GROUP_REQUIREMENTS_PROPERTY = "tagGroupRequirements";
-    @Deprecated
     public static final String TAGGABLE_TAGS_PROPERTY = "taggableTags";
-    @Deprecated
     public static final String TAGS_PROPERTY = "tags";
 
     public static final String ID_PK_COLUMN = "id";

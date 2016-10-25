@@ -15,11 +15,8 @@ public abstract class _InstructionParameter extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String VALUE_PROPERTY = "value";
-    @Deprecated
     public static final String INSTRUCTION_PROPERTY = "instruction";
 
     public static final String ID_PK_COLUMN = "id";

@@ -19,27 +19,16 @@ public abstract class _Module extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DISCIPLINE_CODE_PROPERTY = "disciplineCode";
-    @Deprecated
     public static final String FIELD_OF_EDUCATION_PROPERTY = "fieldOfEducation";
-    @Deprecated
     public static final String IS_MODULE_PROPERTY = "isModule";
-    @Deprecated
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NATIONAL_CODE_PROPERTY = "nationalCode";
-    @Deprecated
     public static final String TITLE_PROPERTY = "title";
-    @Deprecated
     public static final String TRAINING_PACKAGE_ID_PROPERTY = "trainingPackageId";
-    @Deprecated
     public static final String MODULE_COURSES_PROPERTY = "moduleCourses";
-    @Deprecated
     public static final String SESSION_MODULES_PROPERTY = "sessionModules";
 
     public static final String ID_PK_COLUMN = "id";

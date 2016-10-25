@@ -17,19 +17,12 @@ public abstract class _PaymentTransaction extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String IS_FINALISED_PROPERTY = "isFinalised";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String RESPONSE_PROPERTY = "response";
-    @Deprecated
     public static final String SOAP_RESPONSE_PROPERTY = "soapResponse";
-    @Deprecated
     public static final String TXN_REFERENCE_PROPERTY = "txnReference";
-    @Deprecated
     public static final String PAYMENT_PROPERTY = "payment";
 
     public static final String ID_PK_COLUMN = "id";

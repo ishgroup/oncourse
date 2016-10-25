@@ -17,25 +17,15 @@ public abstract class _NotificationTemplate extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ALLOW_WEBOBJECTS_TAGS_PROPERTY = "allowWebobjectsTags";
-    @Deprecated
     public static final String ALLOWED_IN_TEXTILE_TAGS_PROPERTY = "allowedInTextileTags";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MESSAGE_PROPERTY = "message";
-    @Deprecated
     public static final String MIME_TYPE_PROPERTY = "mimeType";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String SUBJECT_PROPERTY = "subject";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";

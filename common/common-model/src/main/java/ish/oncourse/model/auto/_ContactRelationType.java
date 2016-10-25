@@ -20,23 +20,14 @@ public abstract class _ContactRelationType extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DELEGATED_ACCESS_TO_CONTACT_PROPERTY = "delegatedAccessToContact";
-    @Deprecated
     public static final String FROM_CONTACT_NAME_PROPERTY = "fromContactName";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String TO_CONTACT_NAME_PROPERTY = "toContactName";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_RELATIONS_PROPERTY = "contactRelations";
-    @Deprecated
     public static final String MEMBESHIP_DISCOUNT_RELATIONS_PROPERTY = "membeshipDiscountRelations";
 
     public static final String ID_PK_COLUMN = "id";

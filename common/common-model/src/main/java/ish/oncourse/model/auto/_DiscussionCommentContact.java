@@ -16,11 +16,8 @@ public abstract class _DiscussionCommentContact extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String IS_NEW_PROPERTY = "isNew";
-    @Deprecated
     public static final String COMMENT_PROPERTY = "comment";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
 
     public static final String ID_PK_COLUMN = "id";

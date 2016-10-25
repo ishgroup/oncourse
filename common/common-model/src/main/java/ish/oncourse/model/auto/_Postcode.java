@@ -13,27 +13,16 @@ public abstract class _Postcode extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String B_SPNAME_PROPERTY = "bSPname";
-    @Deprecated
     public static final String B_SPNUMBER_PROPERTY = "bSPnumber";
-    @Deprecated
     public static final String CATEGORY_PROPERTY = "category";
-    @Deprecated
     public static final String COMMENTS_PROPERTY = "comments";
-    @Deprecated
     public static final String DELIVERY_OFFICE_PROPERTY = "deliveryOffice";
-    @Deprecated
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
-    @Deprecated
     public static final String LOCALITY_PROPERTY = "locality";
-    @Deprecated
     public static final String PARCEL_ZONE_PROPERTY = "parcelZone";
-    @Deprecated
     public static final String POSTCODE_PROPERTY = "postcode";
-    @Deprecated
     public static final String PRESORT_INDICATOR_PROPERTY = "presortIndicator";
-    @Deprecated
     public static final String STATE_PROPERTY = "state";
 
     public static final String POSTCODE_PK_COLUMN = "postcode";

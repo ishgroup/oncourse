@@ -15,17 +15,11 @@ public abstract class _Language extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ABS_CODE_PROPERTY = "absCode";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String IS_ACTIVE_PROPERTY = "isActive";
-    @Deprecated
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
 
     public static final String ID_PK_COLUMN = "id";

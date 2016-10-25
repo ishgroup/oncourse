@@ -15,29 +15,17 @@ public abstract class _TrainingPackage extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String COPYRIGHT_CATEGORY_PROPERTY = "copyrightCategory";
-    @Deprecated
     public static final String COPYRIGHT_CONTACT_PROPERTY = "copyrightContact";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DEVELOPER_PROPERTY = "developer";
-    @Deprecated
     public static final String ENDORSEMENT_FROM_PROPERTY = "endorsementFrom";
-    @Deprecated
     public static final String ENDORSEMENT_TO_PROPERTY = "endorsementTo";
-    @Deprecated
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NATIONAL_ISC_PROPERTY = "nationalISC";
-    @Deprecated
     public static final String PURCHASE_FROM_PROPERTY = "purchaseFrom";
-    @Deprecated
     public static final String TITLE_PROPERTY = "title";
-    @Deprecated
     public static final String TYPE_PROPERTY = "type";
 
     public static final String ID_PK_COLUMN = "id";

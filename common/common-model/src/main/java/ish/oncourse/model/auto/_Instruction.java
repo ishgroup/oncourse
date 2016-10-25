@@ -19,19 +19,12 @@ public abstract class _Instruction extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String EXECUTED_PROPERTY = "executed";
-    @Deprecated
     public static final String MESSAGE_PROPERTY = "message";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String RESPONSE_PROPERTY = "response";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String PARAMETERS_PROPERTY = "parameters";
 
     public static final String ID_PK_COLUMN = "id";

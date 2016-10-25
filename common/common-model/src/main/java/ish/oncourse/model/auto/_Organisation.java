@@ -15,25 +15,15 @@ public abstract class _Organisation extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ABN_PROPERTY = "abn";
-    @Deprecated
     public static final String CODE_PROPERTY = "code";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String HAS_ACTIVE_REGISTRATION_PROPERTY = "hasActiveRegistration";
-    @Deprecated
     public static final String LEGAL_PERSON_NAME_PROPERTY = "legalPersonName";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String REGISTRATION_END_PROPERTY = "registrationEnd";
-    @Deprecated
     public static final String REGISTRATION_START_PROPERTY = "registrationStart";
-    @Deprecated
     public static final String TRADING_NAME_PROPERTY = "tradingName";
-    @Deprecated
     public static final String WEB_ADDRESS_PROPERTY = "webAddress";
 
     public static final String ID_PK_COLUMN = "id";

@@ -24,37 +24,21 @@ public abstract class _Outcome extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DELIVERY_MODE_PROPERTY = "deliveryMode";
-    @Deprecated
     public static final String END_DATE_PROPERTY = "endDate";
-    @Deprecated
     public static final String FUNDING_SOURCE_PROPERTY = "fundingSource";
-    @Deprecated
     public static final String MARKED_BY_TUTOR_DATE_PROPERTY = "markedByTutorDate";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String REPORTABLE_HOURS_PROPERTY = "reportableHours";
-    @Deprecated
     public static final String START_DATE_PROPERTY = "startDate";
-    @Deprecated
     public static final String STATUS_PROPERTY = "status";
-    @Deprecated
     public static final String CERTIFICATE_OUTCOMES_PROPERTY = "certificateOutcomes";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String ENROLMENT_PROPERTY = "enrolment";
-    @Deprecated
     public static final String MARKED_BY_TUTOR_PROPERTY = "markedByTutor";
-    @Deprecated
     public static final String MODULE_PROPERTY = "module";
-    @Deprecated
     public static final String PRIOR_LEARNING_PROPERTY = "priorLearning";
 
     public static final String ID_PK_COLUMN = "id";

@@ -21,39 +21,22 @@ public abstract class _DocumentVersion extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String BYTE_SIZE_PROPERTY = "byteSize";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DESCRIPTION_PROPERTY = "description";
-    @Deprecated
     public static final String FILE_NAME_PROPERTY = "fileName";
-    @Deprecated
     public static final String FILE_PATH_PROPERTY = "filePath";
-    @Deprecated
     public static final String MIME_TYPE_PROPERTY = "mimeType";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PIXEL_HEIGHT_PROPERTY = "pixelHeight";
-    @Deprecated
     public static final String PIXEL_WIDTH_PROPERTY = "pixelWidth";
-    @Deprecated
     public static final String THUMBNAIL_PROPERTY = "thumbnail";
-    @Deprecated
     public static final String TIMESTAMP_PROPERTY = "timestamp";
-    @Deprecated
     public static final String VERSION_ID_PROPERTY = "versionId";
-    @Deprecated
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CREATED_BY_USER_PROPERTY = "createdByUser";
-    @Deprecated
     public static final String DOCUMENT_PROPERTY = "document";
 
     public static final String ID_PK_COLUMN = "id";

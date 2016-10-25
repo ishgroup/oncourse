@@ -22,29 +22,17 @@ public abstract class _WebSite extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String COURSES_ROOT_TAG_NAME_PROPERTY = "coursesRootTagName";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String GOOGLE_DIRECTIONS_FROM_PROPERTY = "googleDirectionsFrom";
-    @Deprecated
     public static final String GOOGLE_TAGMANAGER_ACCOUNT_PROPERTY = "googleTagmanagerAccount";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String SITE_KEY_PROPERTY = "siteKey";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
-    @Deprecated
     public static final String INVOICES_PROPERTY = "invoices";
-    @Deprecated
     public static final String LICENSE_FEES_PROPERTY = "licenseFees";
-    @Deprecated
     public static final String VERSIONS_PROPERTY = "versions";
 
     public static final String ID_PK_COLUMN = "id";

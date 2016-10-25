@@ -18,27 +18,16 @@ public abstract class _WillowUser extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String EMAIL_PROPERTY = "email";
-    @Deprecated
     public static final String FAILED_LOGIN_COUNT_PROPERTY = "failedLoginCount";
-    @Deprecated
     public static final String FIRST_NAME_PROPERTY = "firstName";
-    @Deprecated
     public static final String IS_ACTIVE_PROPERTY = "isActive";
-    @Deprecated
     public static final String LAST_FAILED_LOGIN_PROPERTY = "lastFailedLogin";
-    @Deprecated
     public static final String LAST_LOGIN_PROPERTY = "lastLogin";
-    @Deprecated
     public static final String LAST_NAME_PROPERTY = "lastName";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PASSWORD_PROPERTY = "password";
-    @Deprecated
     public static final String LOGS_PROPERTY = "logs";
 
     public static final String ID_PK_COLUMN = "id";

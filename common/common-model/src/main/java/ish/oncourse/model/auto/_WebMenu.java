@@ -20,23 +20,14 @@ public abstract class _WebMenu extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String URL_PROPERTY = "url";
-    @Deprecated
     public static final String WEIGHT_PROPERTY = "weight";
-    @Deprecated
     public static final String CHILDREN_MENUS_PROPERTY = "childrenMenus";
-    @Deprecated
     public static final String PARENT_WEB_MENU_PROPERTY = "parentWebMenu";
-    @Deprecated
     public static final String WEB_NODE_PROPERTY = "webNode";
-    @Deprecated
     public static final String WEB_SITE_VERSION_PROPERTY = "webSiteVersion";
 
     public static final String ID_PK_COLUMN = "id";

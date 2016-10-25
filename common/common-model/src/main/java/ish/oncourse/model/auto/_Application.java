@@ -23,29 +23,17 @@ public abstract class _Application extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String ENROL_BY_PROPERTY = "enrolBy";
-    @Deprecated
     public static final String FEE_OVERRIDE_PROPERTY = "feeOverride";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String REASON_PROPERTY = "reason";
-    @Deprecated
     public static final String SOURCE_PROPERTY = "source";
-    @Deprecated
     public static final String STATUS_PROPERTY = "status";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_PROPERTY = "course";
-    @Deprecated
     public static final String STUDENT_PROPERTY = "student";
 
     public static final String ID_PK_COLUMN = "id";

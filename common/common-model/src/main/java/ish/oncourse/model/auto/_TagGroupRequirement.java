@@ -18,21 +18,13 @@ public abstract class _TagGroupRequirement extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ALLOWS_MULTIPLE_TAGS_PROPERTY = "allowsMultipleTags";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
-    @Deprecated
     public static final String IS_REQUIRED_PROPERTY = "isRequired";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String TAG_PROPERTY = "tag";
 
     public static final String ID_PK_COLUMN = "id";

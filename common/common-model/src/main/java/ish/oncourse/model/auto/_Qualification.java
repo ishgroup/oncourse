@@ -21,43 +21,24 @@ public abstract class _Qualification extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANZSCO_PROPERTY = "anzsco";
-    @Deprecated
     public static final String ASCO_PROPERTY = "asco";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String FIELD_OF_EDUCATION_PROPERTY = "fieldOfEducation";
-    @Deprecated
     public static final String FIELD_OF_STUDY_PROPERTY = "fieldOfStudy";
-    @Deprecated
     public static final String IS_ACCREDITED_COURSE_PROPERTY = "isAccreditedCourse";
-    @Deprecated
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
-    @Deprecated
     public static final String LEVEL_PROPERTY = "level";
-    @Deprecated
     public static final String LEVEL_CODE_PROPERTY = "levelCode";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NATIONAL_CODE_PROPERTY = "nationalCode";
-    @Deprecated
     public static final String NEW_APPRENTICESHIP_PROPERTY = "newApprenticeship";
-    @Deprecated
     public static final String NOMINAL_HOURS_PROPERTY = "nominalHours";
-    @Deprecated
     public static final String REVIEW_DATE_PROPERTY = "reviewDate";
-    @Deprecated
     public static final String TITLE_PROPERTY = "title";
-    @Deprecated
     public static final String TRAINING_PACKAGE_ID_PROPERTY = "trainingPackageId";
-    @Deprecated
     public static final String CERTIFICATES_PROPERTY = "certificates";
-    @Deprecated
     public static final String COURSES_PROPERTY = "courses";
-    @Deprecated
     public static final String PRIOR_LEARNINGS_PROPERTY = "priorLearnings";
 
     public static final String ID_PK_COLUMN = "id";

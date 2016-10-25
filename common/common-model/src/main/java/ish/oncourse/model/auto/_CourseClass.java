@@ -9,6 +9,7 @@ import org.apache.cayenne.exp.Property;
 
 import ish.common.types.CourseClassAttendanceType;
 import ish.math.Money;
+import ish.oncourse.model.AssessmentClass;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.CourseClassPaymentPlanLine;
@@ -30,93 +31,50 @@ public abstract class _CourseClass extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String ATTENDANCE_TYPE_PROPERTY = "attendanceType";
-    @Deprecated
     public static final String CANCELLED_PROPERTY = "cancelled";
-    @Deprecated
     public static final String CENSUS_DATE_PROPERTY = "censusDate";
-    @Deprecated
     public static final String CODE_PROPERTY = "code";
-    @Deprecated
     public static final String COUNT_OF_SESSIONS_PROPERTY = "countOfSessions";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DELIVERY_MODE_PROPERTY = "deliveryMode";
-    @Deprecated
     public static final String DETAIL_PROPERTY = "detail";
-    @Deprecated
     public static final String DETAIL_TEXTILE_PROPERTY = "detailTextile";
-    @Deprecated
     public static final String END_DATE_PROPERTY = "endDate";
-    @Deprecated
     public static final String EXPECTED_HOURS_PROPERTY = "expectedHours";
-    @Deprecated
     public static final String FEE_EX_GST_PROPERTY = "feeExGst";
-    @Deprecated
     public static final String FEE_GST_PROPERTY = "feeGst";
-    @Deprecated
     public static final String FEE_HELP_CLASS_PROPERTY = "feeHelpClass";
-    @Deprecated
     public static final String FULL_TIME_LOAD_PROPERTY = "fullTimeLoad";
-    @Deprecated
     public static final String IS_ACTIVE_PROPERTY = "isActive";
-    @Deprecated
     public static final String IS_DISTANT_LEARNING_COURSE_PROPERTY = "isDistantLearningCourse";
-    @Deprecated
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
-    @Deprecated
     public static final String MATERIALS_PROPERTY = "materials";
-    @Deprecated
     public static final String MATERIALS_TEXTILE_PROPERTY = "materialsTextile";
-    @Deprecated
     public static final String MAX_STUDENT_AGE_PROPERTY = "maxStudentAge";
-    @Deprecated
     public static final String MAXIMUM_DAYS_PROPERTY = "maximumDays";
-    @Deprecated
     public static final String MAXIMUM_PLACES_PROPERTY = "maximumPlaces";
-    @Deprecated
     public static final String MIN_STUDENT_AGE_PROPERTY = "minStudentAge";
-    @Deprecated
     public static final String MINIMUM_PLACES_PROPERTY = "minimumPlaces";
-    @Deprecated
     public static final String MINUTES_PER_SESSION_PROPERTY = "minutesPerSession";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String REPORTING_PERIOD_PROPERTY = "reportingPeriod";
-    @Deprecated
     public static final String SESSION_DETAIL_PROPERTY = "sessionDetail";
-    @Deprecated
     public static final String SESSION_DETAIL_TEXTILE_PROPERTY = "sessionDetailTextile";
-    @Deprecated
     public static final String START_DATE_PROPERTY = "startDate";
-    @Deprecated
     public static final String STARTING_MINUTE_PER_SESSION_PROPERTY = "startingMinutePerSession";
-    @Deprecated
     public static final String TIME_ZONE_PROPERTY = "timeZone";
-    @Deprecated
+    public static final String ASSESSMENT_CLASSES_PROPERTY = "assessmentClasses";
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_PROPERTY = "course";
-    @Deprecated
     public static final String DISCOUNT_COURSE_CLASSES_PROPERTY = "discountCourseClasses";
-    @Deprecated
     public static final String DISCUSSIONS_PROPERTY = "discussions";
-    @Deprecated
     public static final String ENROLMENTS_PROPERTY = "enrolments";
-    @Deprecated
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
-    @Deprecated
     public static final String PAYMENT_PLAN_LINES_PROPERTY = "paymentPlanLines";
-    @Deprecated
     public static final String ROOM_PROPERTY = "room";
-    @Deprecated
     public static final String SESSIONS_PROPERTY = "sessions";
-    @Deprecated
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
 
     public static final String ID_PK_COLUMN = "id";
@@ -155,6 +113,7 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final Property<Date> START_DATE = new Property<Date>("startDate");
     public static final Property<Integer> STARTING_MINUTE_PER_SESSION = new Property<Integer>("startingMinutePerSession");
     public static final Property<String> TIME_ZONE = new Property<String>("timeZone");
+    public static final Property<List<AssessmentClass>> ASSESSMENT_CLASSES = new Property<List<AssessmentClass>>("assessmentClasses");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Course> COURSE = new Property<Course>("course");
     public static final Property<List<DiscountCourseClass>> DISCOUNT_COURSE_CLASSES = new Property<List<DiscountCourseClass>>("discountCourseClasses");
@@ -404,6 +363,18 @@ public abstract class _CourseClass extends CayenneDataObject {
     public String getTimeZone() {
         return (String)readProperty("timeZone");
     }
+
+    public void addToAssessmentClasses(AssessmentClass obj) {
+        addToManyTarget("assessmentClasses", obj, true);
+    }
+    public void removeFromAssessmentClasses(AssessmentClass obj) {
+        removeToManyTarget("assessmentClasses", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<AssessmentClass> getAssessmentClasses() {
+        return (List<AssessmentClass>)readProperty("assessmentClasses");
+    }
+
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);

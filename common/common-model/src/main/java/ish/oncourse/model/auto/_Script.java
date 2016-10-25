@@ -20,33 +20,19 @@ public abstract class _Script extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DESCRIPTION_PROPERTY = "description";
-    @Deprecated
     public static final String ENABLED_PROPERTY = "enabled";
-    @Deprecated
     public static final String ENTITY_CLASS_PROPERTY = "entityClass";
-    @Deprecated
     public static final String ENTITY_EVENT_TYPE_PROPERTY = "entityEventType";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String RESULT_PROPERTY = "result";
-    @Deprecated
     public static final String SCHEDULE_PROPERTY = "schedule";
-    @Deprecated
     public static final String SCRIPT_PROPERTY = "script";
-    @Deprecated
     public static final String SYSTEM_EVENT_TYPE_PROPERTY = "systemEventType";
-    @Deprecated
     public static final String TRIGGER_TYPE_PROPERTY = "triggerType";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";

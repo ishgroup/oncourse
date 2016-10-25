@@ -15,21 +15,13 @@ public abstract class _PostcodeDb extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String DC_PROPERTY = "dc";
-    @Deprecated
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
-    @Deprecated
     public static final String LAT_PROPERTY = "lat";
-    @Deprecated
     public static final String LON_PROPERTY = "lon";
-    @Deprecated
     public static final String POSTCODE_PROPERTY = "postcode";
-    @Deprecated
     public static final String STATE_PROPERTY = "state";
-    @Deprecated
     public static final String SUBURB_PROPERTY = "suburb";
-    @Deprecated
     public static final String TYPE_PROPERTY = "type";
 
     public static final String ID_PK_COLUMN = "id";

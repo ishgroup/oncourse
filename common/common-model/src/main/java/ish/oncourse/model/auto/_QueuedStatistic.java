@@ -17,15 +17,10 @@ public abstract class _QueuedStatistic extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
-    @Deprecated
     public static final String RECEIVED_TIMESTAMP_PROPERTY = "receivedTimestamp";
-    @Deprecated
     public static final String STACKED_COUNT_PROPERTY = "stackedCount";
-    @Deprecated
     public static final String STACKED_TRANSACTIONS_COUNT_PROPERTY = "stackedTransactionsCount";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";

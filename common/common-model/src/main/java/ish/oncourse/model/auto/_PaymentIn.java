@@ -30,57 +30,31 @@ public abstract class _PaymentIn extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String AMOUNT_PROPERTY = "amount";
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String BILLING_ID_PROPERTY = "billingId";
-    @Deprecated
     public static final String CONFIRMATION_STATUS_PROPERTY = "confirmationStatus";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String CREDIT_CARD_CVV_PROPERTY = "creditCardCVV";
-    @Deprecated
     public static final String CREDIT_CARD_EXPIRY_PROPERTY = "creditCardExpiry";
-    @Deprecated
     public static final String CREDIT_CARD_NAME_PROPERTY = "creditCardName";
-    @Deprecated
     public static final String CREDIT_CARD_NUMBER_PROPERTY = "creditCardNumber";
-    @Deprecated
     public static final String CREDIT_CARD_TYPE_PROPERTY = "creditCardType";
-    @Deprecated
     public static final String DATE_BANKED_PROPERTY = "dateBanked";
-    @Deprecated
     public static final String GATEWAY_REFERENCE_PROPERTY = "gatewayReference";
-    @Deprecated
     public static final String GATEWAY_RESPONSE_PROPERTY = "gatewayResponse";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String SESSION_ID_PROPERTY = "sessionId";
-    @Deprecated
     public static final String SOURCE_PROPERTY = "source";
-    @Deprecated
     public static final String STATUS_PROPERTY = "status";
-    @Deprecated
     public static final String STATUS_NOTES_PROPERTY = "statusNotes";
-    @Deprecated
     public static final String TYPE_PROPERTY = "type";
-    @Deprecated
     public static final String AUTHORISED_INVOICES_PROPERTY = "authorisedInvoices";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
-    @Deprecated
     public static final String PAYMENT_IN_LINES_PROPERTY = "paymentInLines";
-    @Deprecated
     public static final String PAYMENT_TRANSACTIONS_PROPERTY = "paymentTransactions";
-    @Deprecated
     public static final String VOUCHER_PAYMENT_INS_PROPERTY = "voucherPaymentIns";
-    @Deprecated
     public static final String VOUCHERS_PROPERTY = "vouchers";
 
     public static final String ID_PK_COLUMN = "id";

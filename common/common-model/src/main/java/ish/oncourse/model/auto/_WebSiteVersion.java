@@ -25,23 +25,14 @@ public abstract class _WebSiteVersion extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String DEPLOYED_ON_PROPERTY = "deployedOn";
-    @Deprecated
     public static final String CONTENTS_PROPERTY = "contents";
-    @Deprecated
     public static final String DEPLOYED_BY_PROPERTY = "deployedBy";
-    @Deprecated
     public static final String LAYOUTS_PROPERTY = "layouts";
-    @Deprecated
     public static final String MENUS_PROPERTY = "menus";
-    @Deprecated
     public static final String WEB_NODE_TYPES_PROPERTY = "webNodeTypes";
-    @Deprecated
     public static final String WEB_NODES_PROPERTY = "webNodes";
-    @Deprecated
     public static final String WEB_SITE_PROPERTY = "webSite";
-    @Deprecated
     public static final String WEB_URLALIASES_PROPERTY = "webURLAliases";
 
     public static final String ID_PK_COLUMN = "id";

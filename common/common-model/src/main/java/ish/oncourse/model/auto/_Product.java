@@ -21,39 +21,22 @@ public abstract class _Product extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DESCRIPTION_PROPERTY = "description";
-    @Deprecated
     public static final String EXPIRY_DAYS_PROPERTY = "expiryDays";
-    @Deprecated
     public static final String EXPIRY_TYPE_PROPERTY = "expiryType";
-    @Deprecated
     public static final String IS_ON_SALE_PROPERTY = "isOnSale";
-    @Deprecated
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String NOTES_PROPERTY = "notes";
-    @Deprecated
     public static final String PRICE_EX_TAX_PROPERTY = "priceExTax";
-    @Deprecated
     public static final String SKU_PROPERTY = "sku";
-    @Deprecated
     public static final String TAX_ADJUSTMENT_PROPERTY = "taxAdjustment";
-    @Deprecated
     public static final String TAX_AMOUNT_PROPERTY = "taxAmount";
-    @Deprecated
     public static final String TYPE_PROPERTY = "type";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String PRODUCT_ITEMS_PROPERTY = "productItems";
 
     public static final String ID_PK_COLUMN = "id";

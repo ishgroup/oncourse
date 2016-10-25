@@ -15,23 +15,14 @@ public abstract class _Country extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ASCCSS_CODE_PROPERTY = "asccssCode";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String ISH_VERSION_PROPERTY = "ishVersion";
-    @Deprecated
     public static final String ISO_CODE_ALPHA2_PROPERTY = "isoCodeAlpha2";
-    @Deprecated
     public static final String ISO_CODE_ALPHA3_PROPERTY = "isoCodeAlpha3";
-    @Deprecated
     public static final String ISO_CODE_NUMERIC_PROPERTY = "isoCodeNumeric";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String SACC_CODE_PROPERTY = "saccCode";
 
     public static final String ID_PK_COLUMN = "id";

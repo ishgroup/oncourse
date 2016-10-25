@@ -20,25 +20,15 @@ public abstract class _ContactDuplicate extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CONTACT_TO_DELETE_ANGEL_ID_PROPERTY = "contactToDeleteAngelId";
-    @Deprecated
     public static final String CONTACT_TO_DELETE_ID_PROPERTY = "contactToDeleteId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DESCRIPTION_PROPERTY = "description";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String STATUS_PROPERTY = "status";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_TO_UPDATE_PROPERTY = "contactToUpdate";
-    @Deprecated
     public static final String CREATED_BY_USER_PROPERTY = "createdByUser";
 
     public static final String ID_PK_COLUMN = "id";

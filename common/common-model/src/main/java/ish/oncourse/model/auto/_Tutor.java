@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
+import ish.oncourse.model.AssessmentClassTutor;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
@@ -24,33 +25,20 @@ public abstract class _Tutor extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String FINISH_DATE_PROPERTY = "finishDate";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String RESUME_PROPERTY = "resume";
-    @Deprecated
     public static final String RESUME_TEXTILE_PROPERTY = "resumeTextile";
-    @Deprecated
     public static final String START_DATE_PROPERTY = "startDate";
-    @Deprecated
+    public static final String ASSESSMENT_CLASS_TUTORS_PROPERTY = "assessmentClassTutors";
     public static final String ATTENDANCES_PROPERTY = "attendances";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
-    @Deprecated
     public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
-    @Deprecated
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
-    @Deprecated
     public static final String SESSIONS_PROPERTY = "sessions";
-    @Deprecated
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
 
     public static final String ID_PK_COLUMN = "id";
@@ -62,6 +50,7 @@ public abstract class _Tutor extends CayenneDataObject {
     public static final Property<String> RESUME = new Property<String>("resume");
     public static final Property<String> RESUME_TEXTILE = new Property<String>("resumeTextile");
     public static final Property<Date> START_DATE = new Property<Date>("startDate");
+    public static final Property<List<AssessmentClassTutor>> ASSESSMENT_CLASS_TUTORS = new Property<List<AssessmentClassTutor>>("assessmentClassTutors");
     public static final Property<List<Attendance>> ATTENDANCES = new Property<List<Attendance>>("attendances");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Contact> CONTACT = new Property<Contact>("contact");
@@ -118,6 +107,18 @@ public abstract class _Tutor extends CayenneDataObject {
     public Date getStartDate() {
         return (Date)readProperty("startDate");
     }
+
+    public void addToAssessmentClassTutors(AssessmentClassTutor obj) {
+        addToManyTarget("assessmentClassTutors", obj, true);
+    }
+    public void removeFromAssessmentClassTutors(AssessmentClassTutor obj) {
+        removeToManyTarget("assessmentClassTutors", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<AssessmentClassTutor> getAssessmentClassTutors() {
+        return (List<AssessmentClassTutor>)readProperty("assessmentClassTutors");
+    }
+
 
     public void addToAttendances(Attendance obj) {
         addToManyTarget("attendances", obj, true);

@@ -18,15 +18,10 @@ public abstract class _CustomFee extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String CODE_PROPERTY = "code";
-    @Deprecated
     public static final String FEE_PROPERTY = "fee";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String PAID_UNTIL_PROPERTY = "paidUntil";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
 
     public static final String ID_PK_COLUMN = "id";

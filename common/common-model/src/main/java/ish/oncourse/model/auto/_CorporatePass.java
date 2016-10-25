@@ -23,29 +23,17 @@ public abstract class _CorporatePass extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String EXPIRY_DATE_PROPERTY = "expiryDate";
-    @Deprecated
     public static final String INVOICE_EMAIL_PROPERTY = "invoiceEmail";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String PASSWORD_PROPERTY = "password";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String CONTACT_PROPERTY = "contact";
-    @Deprecated
     public static final String CORPORATE_PASS_DISCOUNTS_PROPERTY = "corporatePassDiscounts";
-    @Deprecated
     public static final String INVOICE_PROPERTY = "invoice";
-    @Deprecated
     public static final String VALID_CLASSES_PROPERTY = "validClasses";
-    @Deprecated
     public static final String VALID_PRODUCTS_PROPERTY = "validProducts";
 
     public static final String ID_PK_COLUMN = "id";

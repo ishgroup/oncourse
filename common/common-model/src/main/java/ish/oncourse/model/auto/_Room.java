@@ -21,31 +21,18 @@ public abstract class _Room extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CAPACITY_PROPERTY = "capacity";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String DIRECTIONS_PROPERTY = "directions";
-    @Deprecated
     public static final String DIRECTIONS_TEXTILE_PROPERTY = "directionsTextile";
-    @Deprecated
     public static final String FACILITIES_PROPERTY = "facilities";
-    @Deprecated
     public static final String FACILITIES_TEXTILE_PROPERTY = "facilitiesTextile";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NAME_PROPERTY = "name";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
-    @Deprecated
     public static final String SESSIONS_PROPERTY = "sessions";
-    @Deprecated
     public static final String SITE_PROPERTY = "site";
 
     public static final String ID_PK_COLUMN = "id";

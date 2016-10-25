@@ -21,27 +21,16 @@ public abstract class _PriorLearning extends CayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
-    @Deprecated
     public static final String ANGEL_ID_PROPERTY = "angelId";
-    @Deprecated
     public static final String CREATED_PROPERTY = "created";
-    @Deprecated
     public static final String EXTERNAL_REF_PROPERTY = "externalRef";
-    @Deprecated
     public static final String MODIFIED_PROPERTY = "modified";
-    @Deprecated
     public static final String NOTES_PROPERTY = "notes";
-    @Deprecated
     public static final String OUTCOME_ID_TRAINING_ORG_PROPERTY = "outcomeIdTrainingOrg";
-    @Deprecated
     public static final String TITLE_PROPERTY = "title";
-    @Deprecated
     public static final String COLLEGE_PROPERTY = "college";
-    @Deprecated
     public static final String OUTCOMES_PROPERTY = "outcomes";
-    @Deprecated
     public static final String QUALIFICATION_PROPERTY = "qualification";
-    @Deprecated
     public static final String STUDENT_PROPERTY = "student";
 
     public static final String ID_PK_COLUMN = "id";
