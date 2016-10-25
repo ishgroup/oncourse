@@ -2,6 +2,7 @@ dependencies {
     compile project(':common:waCommon')
     compile ('org.apache.cxf:cxf-bundle:2.6.16') {
         exclude group:'net.sf.ehcache', module: 'ehcache-core'
+        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
     }
 }
 
