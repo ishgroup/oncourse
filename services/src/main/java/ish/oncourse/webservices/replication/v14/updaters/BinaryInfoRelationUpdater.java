@@ -2,24 +2,7 @@ package ish.oncourse.webservices.replication.v14.updaters;
 
 import ish.common.types.AttachmentSpecialType;
 import ish.common.types.TypesUtil;
-import ish.oncourse.model.Application;
-import ish.oncourse.model.BinaryInfoRelation;
-import ish.oncourse.model.Certificate;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Document;
-import ish.oncourse.model.DocumentVersion;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.PriorLearning;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.Room;
-import ish.oncourse.model.Session;
-import ish.oncourse.model.Site;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tag;
-import ish.oncourse.model.Tutor;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
@@ -74,6 +57,10 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Application.class);
 		} else if (PRIOR_LEARNING_ENTITY_NAME.equals(stub.getEntityName())) {
 			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), PriorLearning.class);
+		} else if (ASSESSMENT_ENTITY_NAME.equals(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Assessment.class);
+		} else if (ASSESSMENT_SUBMISSION__ENTITY_NAME.equals(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), AssessmentSubmission.class);
 		} else {
 			String message = String.format("Unexpected related entity with type %s and angelid %s",
 				stub.getEntityName(), stub.getEntityAngelId());

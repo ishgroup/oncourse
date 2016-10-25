@@ -4119,4 +4119,110 @@
 		<sql>ALTER TABLE WebMenu ADD CONSTRAINT WebMenu_menuParent FOREIGN KEY (webMenuParentId) REFERENCES WebMenu (id) ON DELETE CASCADE</sql>
 	</changeSet>
 
+	<changeSet id="279" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="Assessment"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE Assessment (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			active TINYINT(1)  NOT NULL,
+			code VARCHAR(64) NOT NULL,
+			name VARCHAR(200) NOT NULL,
+			description TEXT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_Assessment_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT assessment_angelId_college_unique UNIQUE (collegeId, angelId),
+			INDEX assessment_code (code),
+			INDEX assessment_name (name));
+		</sql>
+	</changeSet>
+
+	<changeSet id="280" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="AssessmentClass"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE AssessmentClass (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			courseClassId BIGINT NOT NULL,
+			assessmentId BIGINT NOT NULL,
+			dueDate DATETIME NOT NULL,
+			releaseDate DATETIME NOT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_AssessmentClass_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fk_AssessmentClass_CourseClass FOREIGN KEY (courseClassId) REFERENCES CourseClass(id),
+			CONSTRAINT fk_AssessmentClass_Assessment FOREIGN KEY (assessmentId) REFERENCES Assessment(id),
+			CONSTRAINT assessmentClass_angelId_college_unique UNIQUE (collegeId, angelId),
+			CONSTRAINT assessmentClass_assessmentId_courseClassId_unique UNIQUE (assessmentId, courseClassId)
+			);
+		</sql>
+	</changeSet>
+
+	<changeSet id="281" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="AssessmentClassTutor"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE AssessmentClassTutor (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			assessmentClassId BIGINT NOT NULL,
+			tutorId BIGINT NOT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_AssessmentClassTutor_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fk_AssessmentClassTutor_AssessmentClass FOREIGN KEY (assessmentClassId) REFERENCES AssessmentClass(id),
+			CONSTRAINT fk_AssessmentClassTutor_Tutor FOREIGN KEY (tutorId) REFERENCES Tutor(id),
+			CONSTRAINT assessmentClassTutor_angelId_college_unique UNIQUE (collegeId, angelId),
+			CONSTRAINT assessmentClassTutor_assessmentClassId_tutorId_unique UNIQUE (assessmentClassId, tutorId)
+			);
+		</sql>
+	</changeSet>
+
+	<changeSet id="281" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="AssessmentSubmission"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE AssessmentSubmission (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			assessmentClassId BIGINT NOT NULL,
+			enrolmentId BIGINT NOT NULL,
+			submittedById BIGINT NOT NULL,
+			tutorComments TEXT NULL,
+			studentComments TEXT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_AssessmentSubmission_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fk_AssessmentSubmission_AssessmentClass FOREIGN KEY (assessmentClassId) REFERENCES AssessmentClass(id),
+			CONSTRAINT fk_AssessmentSubmission_Enrolment FOREIGN KEY (enrolmentId) REFERENCES Enrolment(id),
+			CONSTRAINT fk_AssessmentSubmission_Contact FOREIGN KEY (submittedById) REFERENCES Contact(id),
+			CONSTRAINT assessmentSubmission_angelId_college_unique UNIQUE (collegeId, angelId),
+			);
+		</sql>
+	</changeSet>
+
+
 </databaseChangeLog>

@@ -88,7 +88,11 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(getEntityName(PriorLearning.class), new PriorLearningUpdater());
 		updaterMap.put(getEntityName(CorporatePassProduct.class), new CorporatePassProductUpdater());
 		updaterMap.put(getEntityName(ContactDuplicate.class), new ContactDuplicateUpdater());
-    }
+		updaterMap.put(getEntityName(Assessment.class), new AssessmentUpdater());
+		updaterMap.put(getEntityName(AssessmentClass.class), new AssessmentClassUpdater());
+		updaterMap.put(getEntityName(AssessmentClassTutor.class), new AssessmentClassTutorUpdater());
+		updaterMap.put(getEntityName(AssessmentSubmission.class), new AssessmentSubmissionUpdater());
+	}
 
 	/**
 	 * @return the updaterMap
