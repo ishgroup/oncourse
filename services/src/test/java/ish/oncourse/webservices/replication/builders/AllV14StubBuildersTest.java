@@ -27,7 +27,7 @@ public class AllV14StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testAttendanceStubBuilder() {
-		this.testStubBuilder(Attendance.class, new AttendanceStubBuilder());
+		this.testStubBuilder(Attendance.class, new AttendanceStubBuilder(), "attendedFrom", "attendedUntil");
 	}
 
 	@Test
@@ -128,8 +128,8 @@ public class AllV14StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testOutcomeStubBuilder() {
-		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(), 1l, "endDate", "hoursAttended", "startDate", "priorLearningId");
-		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(), 2l, "endDate", "hoursAttended", "startDate", "enrolmentId");
+		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(), 1l, "endDate", "hoursAttended", "startDate", "priorLearningId", "modifiedByUserId", "modifiedByUserDateTime");
+		this.testStubBuilder(Outcome.class, new OutcomeStubBuilder(), 2l, "endDate", "hoursAttended", "startDate", "enrolmentId", "modifiedByUserId", "modifiedByUserDateTime");
 	}
 
 	@Test

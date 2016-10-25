@@ -73,6 +73,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
         attendanceParameters.add(new ReplicationStubFieldParameter("note", String.class, false));
 		attendanceParameters.add(new ReplicationStubFieldParameter("markedByTutorId", Long.class));
 		attendanceParameters.add(new ReplicationStubFieldParameter("markedByTutorDate", Date.class));
+		attendanceParameters.add(new ReplicationStubFieldParameter("attendedFrom", Date.class));
+		attendanceParameters.add(new ReplicationStubFieldParameter("attendedUntil", Date.class));
 		stubsPropertyMap.put(getStubName(AttendanceStub.class), attendanceParameters);
 		final List<ReplicationStubFieldParameter> binaryDataParameters = fillDefaultReplicationStubFields();
 		binaryDataParameters.add(new ReplicationStubFieldParameter("binaryInfoId", Long.class));
@@ -296,6 +298,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		outcomeParameters.add(new ReplicationStubFieldParameter("priorLearningId", Long.class));
 		outcomeParameters.add(new ReplicationStubFieldParameter("markedByTutorId", Long.class));
 		outcomeParameters.add(new ReplicationStubFieldParameter("markedByTutorDate", Date.class));
+		outcomeParameters.add(new ReplicationStubFieldParameter("modifiedByUserId", Long.class));
+		outcomeParameters.add(new ReplicationStubFieldParameter("modifiedByUserDateTime", Date.class));
 		stubsPropertyMap.put(getStubName(OutcomeStub.class), outcomeParameters);
 		final List<ReplicationStubFieldParameter> paymentInLineParameters = fillDefaultReplicationStubFields();
 		paymentInLineParameters.add(new ReplicationStubFieldParameter("amount", BigDecimal.class));
