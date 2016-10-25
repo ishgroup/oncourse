@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="assessmentClassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="submittedById" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="tutorComments" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="studentComments" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -36,7 +37,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "enrolmentId",
     "assessmentClassId",
     "submittedById",
-    "tutorComments"
+    "tutorComments",
+    "studentComments"
 })
 public class AssessmentSubmissionStub
     extends ReplicationStub
@@ -56,6 +58,8 @@ public class AssessmentSubmissionStub
     protected Long submittedById;
     @XmlElement(required = true)
     protected String tutorComments;
+    @XmlElement(required = true)
+    protected String studentComments;
 
     /**
      * Gets the value of the enrolmentId property.
@@ -151,6 +155,30 @@ public class AssessmentSubmissionStub
      */
     public void setTutorComments(String value) {
         this.tutorComments = value;
+    }
+
+    /**
+     * Gets the value of the studentComments property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getStudentComments() {
+        return studentComments;
+    }
+
+    /**
+     * Sets the value of the studentComments property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setStudentComments(String value) {
+        this.studentComments = value;
     }
 
 }
