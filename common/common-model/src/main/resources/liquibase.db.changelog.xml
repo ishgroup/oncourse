@@ -4196,7 +4196,7 @@
 		</sql>
 	</changeSet>
 
-	<changeSet id="281" author="artyom" runOnChange="false" runAlways="false" context="production">
+	<changeSet id="282" author="artyom" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="AssessmentSubmission"/>
