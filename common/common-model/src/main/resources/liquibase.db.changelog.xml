@@ -4219,8 +4219,7 @@
 			CONSTRAINT fk_AssessmentSubmission_AssessmentClass FOREIGN KEY (assessmentClassId) REFERENCES AssessmentClass(id),
 			CONSTRAINT fk_AssessmentSubmission_Enrolment FOREIGN KEY (enrolmentId) REFERENCES Enrolment(id),
 			CONSTRAINT fk_AssessmentSubmission_Contact FOREIGN KEY (submittedById) REFERENCES Contact(id),
-			CONSTRAINT assessmentSubmission_angelId_college_unique UNIQUE (collegeId, angelId),
-			);
+			CONSTRAINT assessmentSubmission_angelId_college_unique UNIQUE (collegeId, angelId));
 		</sql>
 	</changeSet>
 
