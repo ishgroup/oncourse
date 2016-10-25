@@ -198,6 +198,21 @@ public class MergeProcessorTest extends ServiceTest {
 		assertNotNull(tagRelation2);
 		assertEquals(3l ,tagRelation2.getId().longValue());
 		assertEquals(3l, tagRelation2.getTaggable().getId().longValue());
+		
+		List<AssessmentClassTutor> assessmentClassTutor = ObjectSelect.query(AssessmentClassTutor.class).select(context);
+		assertEquals(2, assessmentClassTutor.size());
+		
+		assertEquals(Long.valueOf(1), assessmentClassTutor.get(0).getTutor().getId());
+		assertEquals(Long.valueOf(1), assessmentClassTutor.get(1).getTutor().getId());
+
+
+		List<AssessmentSubmission> assessmentSubmissions = ObjectSelect.query(AssessmentSubmission.class).select(context);
+		assertEquals(2, assessmentClassTutor.size());
+
+		assertEquals(Long.valueOf(1), assessmentSubmissions.get(0).getSubmittedBy().getId());
+		assertEquals(Long.valueOf(1), assessmentSubmissions.get(1).getSubmittedBy().getId());
+
+		
 	}
 
 

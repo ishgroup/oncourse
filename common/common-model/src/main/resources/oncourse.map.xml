@@ -3958,6 +3958,7 @@
 	<obj-relationship name="college" source="ConcessionType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discountConcessionTypes" source="ConcessionType" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
+	<obj-relationship name="assessmentSubmissions" source="Contact" target="AssessmentSubmission" deleteRule="Deny" db-relationship-path="assessmentSubmissions"/>
 	<obj-relationship name="college" source="Contact" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" deleteRule="Deny" db-relationship-path="contactComments"/>
 	<obj-relationship name="corporatePasses" source="Contact" target="CorporatePass" deleteRule="Deny" db-relationship-path="corporatePasses"/>

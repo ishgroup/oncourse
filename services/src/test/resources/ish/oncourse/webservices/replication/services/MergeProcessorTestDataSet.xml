@@ -154,5 +154,36 @@
 
 	<CustomField id="5" angelId="5" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
 				 customFieldTypeId="2" foreignId="3" value="test5"/>
+	
+	<Assessment id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+			code="1" name="Assessment-1" active="1"/>
+
+	<Assessment id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				code="2" name="Assessment-2" active="1"/>
+
+	<AssessmentClass id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				courseClassId="1" assessmentId="1" releaseDate="2011-09-20 11:14:54" dueDate="2011-09-20 11:14:54"/>
+
+	<AssessmentClass id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 courseClassId="1" assessmentId="2" releaseDate="2011-09-20 11:14:54" dueDate="2011-09-20 11:14:54"/>
+
+	<AssessmentClassTutor id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 assessmentClassId="1" tutorId="1"/>
+
+	<AssessmentClassTutor id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+						  assessmentClassId="2" tutorId="1"/>
+	
+	<AssessmentClassTutor id="3" angelId="3" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+						  assessmentClassId="1" tutorId="2"/>
+
+	<AssessmentClassTutor id="4" angelId="3" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+						  assessmentClassId="2" tutorId="2"/>
+
+	<AssessmentSubmission id="1" angelId="1" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+						  enrolmentId="1" assessmentClassId="1" submittedByid="1"/>
+
+	<AssessmentSubmission id="2" angelId="2" collegeId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+						  enrolmentId="1" assessmentClassId="2" submittedByid="2"/>
+	
 
 </dataset>

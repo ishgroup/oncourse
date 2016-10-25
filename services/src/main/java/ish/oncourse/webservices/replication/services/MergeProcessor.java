@@ -79,6 +79,11 @@ public class MergeProcessor {
 			corporatePass.setContact(contactToUpdate);
 		}
 
+
+		for (AssessmentSubmission submission : new ArrayList<>(contactToDelete.getAssessmentSubmissions())) {
+			submission.setSubmittedBy(contactToUpdate);
+		}
+
 		for (Invoice invoice : new ArrayList<>(contactToDelete.getInvoices())) {
 			invoice.setContact(contactToUpdate);
 		}
@@ -173,6 +178,8 @@ public class MergeProcessor {
 			for (Outcome outcome : new ArrayList<>(outcomes)) {
 				outcome.setMarkedByTutor(tutorToUpdate);
 			}
+			mergeAssessmentClassTutors(tutorToUpdate, tutorToDelete);
+
 			context.deleteObject(tutorToDelete);
 		}
 	}
@@ -324,6 +331,27 @@ public class MergeProcessor {
 					taggableTag.getTaggable().setEntityAngelId(contactToUpdate.getAngelId());
 				}
 			}
+		}
+	}
+	
+	private void mergeAssessmentClassTutors(Tutor tutorToUpdate, Tutor tutorToDelete) {
+		List<AssessmentClassTutor> tutorAssessmentsUpdate = new ArrayList<>(tutorToUpdate.getAssessmentClassTutors());
+		List<AssessmentClassTutor> tutorAssessmentsDelete = new ArrayList<>(tutorToDelete.getAssessmentClassTutors());
+		
+		for (AssessmentClassTutor tutorAssessmentDelete : tutorAssessmentsDelete) {
+			if (toDelete("AssessmentClassTutor", tutorAssessmentDelete.getId(), tutorAssessmentDelete.getAngelId())) {
+				context.deleteObject(tutorAssessmentDelete);
+			} else {
+				for (AssessmentClassTutor tutorAssessmentUpdate : tutorAssessmentsUpdate) {
+					if (tutorAssessmentUpdate.getAssessmentClass().equals(tutorAssessmentDelete.getAssessmentClass())) {
+						context.deleteObjects(tutorAssessmentDelete);
+					}
+				}
+			}
+		}
+
+		for (AssessmentClassTutor assessmentClassTutor : new ArrayList<>(tutorToDelete.getAssessmentClassTutors())) {
+			assessmentClassTutor.setTutor(tutorToUpdate);
 		}
 	}
 

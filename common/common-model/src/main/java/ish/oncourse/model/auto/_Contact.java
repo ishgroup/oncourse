@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
+import ish.oncourse.model.AssessmentSubmission;
 import ish.oncourse.model.College;
 import ish.oncourse.model.ContactRelation;
 import ish.oncourse.model.CorporatePass;
@@ -62,6 +63,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String SUBURB_PROPERTY = "suburb";
     public static final String TAX_FILE_NUMBER_PROPERTY = "taxFileNumber";
     public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
+    public static final String ASSESSMENT_SUBMISSIONS_PROPERTY = "assessmentSubmissions";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_COMMENTS_PROPERTY = "contactComments";
     public static final String CORPORATE_PASSES_PROPERTY = "corporatePasses";
@@ -111,6 +113,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final Property<String> SUBURB = new Property<String>("suburb");
     public static final Property<String> TAX_FILE_NUMBER = new Property<String>("taxFileNumber");
     public static final Property<String> UNIQUE_CODE = new Property<String>("uniqueCode");
+    public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = new Property<List<AssessmentSubmission>>("assessmentSubmissions");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<List<DiscussionCommentContact>> CONTACT_COMMENTS = new Property<List<DiscussionCommentContact>>("contactComments");
     public static final Property<List<CorporatePass>> CORPORATE_PASSES = new Property<List<CorporatePass>>("corporatePasses");
@@ -343,6 +346,18 @@ public abstract class _Contact extends CayenneDataObject {
     public String getUniqueCode() {
         return (String)readProperty("uniqueCode");
     }
+
+    public void addToAssessmentSubmissions(AssessmentSubmission obj) {
+        addToManyTarget("assessmentSubmissions", obj, true);
+    }
+    public void removeFromAssessmentSubmissions(AssessmentSubmission obj) {
+        removeToManyTarget("assessmentSubmissions", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<AssessmentSubmission> getAssessmentSubmissions() {
+        return (List<AssessmentSubmission>)readProperty("assessmentSubmissions");
+    }
+
 
     public void setCollege(College college) {
         setToOneTarget("college", college, true);
