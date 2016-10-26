@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.replication.builders;
 
+import ish.common.types.EntityMapping;
+import ish.oncourse.model.BinaryInfoRelation;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -30,7 +32,11 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 				return null;
 			}
 			soapStub = convert(entity, version);
-			soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
+			if (entity instanceof BinaryInfoRelation) {
+				soapStub.setEntityIdentifier(EntityMapping.getAttachmentRelationIdentifer(((BinaryInfoRelation) entity).getEntityIdentifier()));
+			} else {
+				soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
+			}
 			break;
 		case DELETE:
 			soapStub = PortHelper.createDeleteStub(version);

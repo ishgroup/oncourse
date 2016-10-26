@@ -83,7 +83,6 @@ private Map<String, IWillowStubBuilder> builderMap;
 		builderMap.put(getEntityName(AssessmentClass.class), new AssessmentClassStubBuilder());
 		builderMap.put(getEntityName(AssessmentClassTutor.class), new AssessmentClassTutorStubBuilder());
 		builderMap.put(getEntityName(AssessmentSubmission.class), new AssessmentSubmissionStubBuilder());
-
-
+		builderMap.put(getEntityName(BinaryInfoRelation.class), new BinaryInfoRelationStubBuilder());
 	}
 }

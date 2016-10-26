@@ -4077,16 +4077,16 @@
 		</sql>
 	</changeSet>
 
-	<changeSet id="275" author="anarut" runOnChange="false" runAlways="false" context="production">
-		<preConditions onFail="MARK_RAN">
-			<not>
-				<indexExists tableName="Attendance" indexName="studentId_sessionId_unique_attendance"/>
-			</not>
-		</preConditions>
-		<sql>
-			CREATE UNIQUE INDEX studentId_sessionId_unique_attendance ON Attendance (studentId, sessionId);
-		</sql>
-	</changeSet>
+	<!--<changeSet id="275" author="anarut" runOnChange="false" runAlways="false" context="production">-->
+		<!--<preConditions onFail="MARK_RAN">-->
+			<!--<not>-->
+				<!--<indexExists tableName="Attendance" indexName="studentId_sessionId_unique_attendance"/>-->
+			<!--</not>-->
+		<!--</preConditions>-->
+		<!--<sql>-->
+			<!--CREATE UNIQUE INDEX studentId_sessionId_unique_attendance ON Attendance (studentId, sessionId);-->
+		<!--</sql>-->
+	<!--</changeSet>-->
 
 	<changeSet id="276" author="ashestak" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">

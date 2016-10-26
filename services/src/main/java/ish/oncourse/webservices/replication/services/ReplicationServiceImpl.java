@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.services;
 
+import ish.common.types.EntityMapping;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -7,6 +8,7 @@ import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.v14.stubs.replication.BinaryInfoRelationStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -232,10 +234,11 @@ public class ReplicationServiceImpl implements IReplicationService {
 			int numberDeleted = 0;
 
 			for (GenericReplicatedRecord record : request.getReplicatedRecord()) {
-
+				String entityIdentifier = EntityMapping.BINARY_RELATION_MAPPING.values().contains(record.getStub().getEntityIdentifier()) ? BinaryInfoRelation.class.getSimpleName() : record.getStub().getEntityIdentifier();
+						
 				List<QueuedRecord> list = ObjectSelect.query(QueuedRecord.class)
 						.where(QueuedRecord.ENTITY_WILLOW_ID.eq(record.getStub().getWillowId()))
-						.and(QueuedRecord.ENTITY_IDENTIFIER.eq(record.getStub().getEntityIdentifier()))
+						.and(QueuedRecord.ENTITY_IDENTIFIER.eq(entityIdentifier))
 						.and(QueuedRecord.NUMBER_OF_ATTEMPTS.gt(0))
 						.select(ctx);
 
@@ -248,13 +251,13 @@ public class ReplicationServiceImpl implements IReplicationService {
 								try {
 									@SuppressWarnings("unchecked")
 									Class<? extends Queueable> entityClass = (Class<? extends Queueable>) ctx.getEntityResolver()
-											.getObjEntity(record.getStub().getEntityIdentifier()).getJavaClass();
+											.getObjEntity(entityIdentifier).getJavaClass();
 									Queueable object = (Queueable) Cayenne.objectForPK(ctx, entityClass, record.getStub().getWillowId());
 									if (object == null) {
 										//This can be the result of willow entity deletion when receive the response from angel. 
 										//In this case queued record will be removed on next replication iteration
 										String message = String.format("Unable to load %s entity with %s willowid to setup %s angelid.", 
-												record.getStub().getEntityIdentifier(), record.getStub().getWillowId(), record.getStub().getAngelId());
+												entityIdentifier, record.getStub().getWillowId(), record.getStub().getAngelId());
 										logger.error(message);
 										queuedRecord.setErrorMessage(message);
 										//also setup received angleid to queued record to be able fix the entity in the issue case.
@@ -269,7 +272,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 								} catch (CayenneRuntimeException ce) {
 									ctx.rollbackChanges();
 									String message = String.format("Failed to update entity:%s with angelId:%s and willowId:%s for college:%s after replication to angel.", 
-											record.getStub().getEntityIdentifier(),record.getStub().getAngelId(), record.getStub().getWillowId(), collegeid); 
+											entityIdentifier,record.getStub().getAngelId(), record.getStub().getWillowId(), collegeid); 
 									logger.error(message, ce);
 									queuedRecord.setErrorMessage(message);									
 								}
