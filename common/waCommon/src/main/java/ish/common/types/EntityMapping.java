@@ -12,7 +12,7 @@ public final class EntityMapping {
 
 	private static final Map<String, String> WILLOW_TO_ANGEL = new HashMap<>();
 
-	private static final Map<String, String> BINARY_RELATION_MAPPING = new HashMap<>();
+	public static final Map<String, String> BINARY_RELATION_MAPPING = new HashMap<>();
 
 	static {
 		ANGEL_TO_WILLOW.put("AttachmentData", "BinaryData");
