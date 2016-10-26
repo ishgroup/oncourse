@@ -12,6 +12,8 @@ public final class EntityMapping {
 
 	private static final Map<String, String> WILLOW_TO_ANGEL = new HashMap<>();
 
+	private static final Map<String, String> BINARY_RELATION_MAPPING = new HashMap<>();
+
 	static {
 		ANGEL_TO_WILLOW.put("AttachmentData", "BinaryData");
 		ANGEL_TO_WILLOW.put("AttachmentInfo", "BinaryInfo");
@@ -63,6 +65,23 @@ public final class EntityMapping {
 		WILLOW_TO_ANGEL.put("TagGroupRequirement", "TagRequirement");
 		WILLOW_TO_ANGEL.put("Taggable", "TagRelation");
 		WILLOW_TO_ANGEL.put("TaggableTag", "TagRelation");
+
+		BINARY_RELATION_MAPPING.put("Certificate", "CertificateAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Contact", "ContactAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Course", "CourseAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("CourseClass","CourseClassAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Enrolment", "EnrolmentAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Invoice", "InvoiceAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("PriorLearning", "PriorLearningAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Room", "RoomAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Session", "SessionAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Site", "SiteAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Student", "StudentAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Tag", "TagAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Tutor", "TutorAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Application", "ApplicationAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Assessment", "AssessmentAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("AssessmentSubmission", "AssessmentSubmissionAttachmentRelation");
 	}
 
 	/**
@@ -106,5 +125,9 @@ public final class EntityMapping {
 		}
 
 		return willowIdentifier;
+	}
+
+	public static String getAttachmentRelationIdentifer(String attachable) {
+		return EntityMapping.BINARY_RELATION_MAPPING.get(attachable);
 	}
 }
