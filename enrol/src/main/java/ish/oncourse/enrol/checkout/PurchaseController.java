@@ -8,6 +8,7 @@ import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.ContactEditorDelegate;
 import ish.oncourse.enrol.checkout.model.GetAmounts;
 import ish.oncourse.enrol.checkout.model.InvoiceNode;
+import ish.oncourse.enrol.checkout.model.PaymentPlanBuilder;
 import ish.oncourse.enrol.checkout.model.PurchaseModel;
 import ish.oncourse.enrol.checkout.model.UpdateInvoiceAmount;
 import ish.oncourse.enrol.checkout.payment.ActionAddVoucherCompanyPayer;
@@ -646,6 +647,11 @@ public class PurchaseController {
 			if (chosenDiscount != null) {
 				DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
 				createInvoiceLineDiscounts(invoiceLine, chosenDiscount.getDiscount(), chosenDiscount.getObjectContext());
+				if (enrolment.getCourseClass().getPaymentPlanLines().size() > 0) {
+					InvoiceNode node = model.getPaymentPlanInvoiceBy(enrolment);
+					node.getSelectedDueDates().clear();
+					node.getSelectedDueDates().addAll(PaymentPlanBuilder.valueOf(enrolment).build().getSelectedDueDates());				
+				}
 			}
 		}
 	}

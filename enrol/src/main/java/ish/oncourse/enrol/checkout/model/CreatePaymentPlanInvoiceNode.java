@@ -6,6 +6,8 @@ import ish.oncourse.enrol.services.invoice.IInvoiceProcessingService;
 import ish.oncourse.model.*;
 import org.apache.cayenne.ObjectContext;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -16,8 +18,6 @@ public class CreatePaymentPlanInvoiceNode {
 	private Contact contact;
 	private WebSite webSite;
 	private PaymentIn paymentIn;
-	private List<Discount> actualPromotions;
-	private List<Invoice> invoices;
 	private College college;
 	private IInvoiceProcessingService invoiceProcessingService;
 
@@ -52,8 +52,6 @@ public class CreatePaymentPlanInvoiceNode {
 		result.contact = purchaseController.getModel().getPayer();
 		result.webSite = purchaseController.getModel().getWebSite();
 		result.paymentIn = purchaseController.getModel().getPayment();
-		result.actualPromotions = purchaseController.getDiscounts();
-		result.invoices = purchaseController.getModel().getNewInvoices();
 		result.college = purchaseController.getModel().getCollege();
 		result.objectContext = purchaseController.getModel().getObjectContext();
 		result.invoiceProcessingService = purchaseController.getInvoiceProcessingService();
