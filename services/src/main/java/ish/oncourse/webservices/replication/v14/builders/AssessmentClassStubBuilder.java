@@ -17,6 +17,6 @@ public class AssessmentClassStubBuilder extends AbstractWillowStubBuilder<Assess
 		stub.setCourseClassId(entity.getCourseClass().getId());
 		stub.setReleaseDate(entity.getReleaseDate());
 		stub.setDueDate(entity.getDueDate());
-		return null;
+		return stub;
 	}
 }

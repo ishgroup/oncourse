@@ -11,7 +11,7 @@ public class AssessmentSubmissionStubBuilder extends AbstractWillowStubBuilder<A
 	@Override
 	protected AssessmentSubmissionStub createFullStub(AssessmentSubmission entity) {
 		AssessmentSubmissionStub stub = new AssessmentSubmissionStub();
-		stub.setCreated(entity.getCreated());
+		stub.setModified(entity.getModified());
 		stub.setEnrolmentId(entity.getEnrolment().getId());
 		stub.setAssessmentClassId(entity.getAssessmentClass().getId());
 		stub.setSubmittedById(entity.getSubmittedBy().getId());
