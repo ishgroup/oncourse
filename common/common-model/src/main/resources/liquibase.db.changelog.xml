@@ -4223,7 +4223,7 @@
 		</sql>
 	</changeSet>
 
-	<changeSet id="282" author="artyom" runOnChange="false" runAlways="false" context="production">
+	<changeSet id="283" author="artyom" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="Enrolment" columnName="fundingSource"/>
@@ -4232,7 +4232,7 @@
 		<sql>ALTER TABLE Enrolment ADD COLUMN fundingSource INTEGER NULL</sql>
 	</changeSet>
 
-	<changeSet id="282" author="artyom" runOnChange="false" runAlways="false" context="production">
+	<changeSet id="284" author="artyom" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="CourseClass" columnName="fundingSource"/>
