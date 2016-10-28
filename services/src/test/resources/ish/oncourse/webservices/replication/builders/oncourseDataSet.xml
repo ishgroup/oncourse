@@ -50,7 +50,7 @@
                  minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
                  startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
                  maximumDays="3" attendanceType="0" feeHelpClass="0" reportingPeriod="1" censusDate="2011-10-16 01:55:59.0"
-				 minStudentAge="18" maxStudentAge="25" isActive="0"/>
+				 minStudentAge="18" maxStudentAge="25" isActive="0" fundingSource="1"/>
 
     <Session id="1" collegeId="3" courseClassId="1" roomId="1" angelId="2" startDate="2011-10-12 00:55:59.0"
              endDate="2011-10-12 01:55:59.0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
@@ -164,7 +164,7 @@
                studentId="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
                status="2" reasonForStudy="1" creditFOEId="1234" creditLevel="0" creditOfferedValue="1234"
                creditProvider="ABCD" creditUsedValue="1234" creditType="0" creditProviderType="0" feeStatus="1"
-               creditTotal="0" feeHelpStatus="0" confirmationStatus="1" feehelpamount="0"/>
+               creditTotal="0" feeHelpStatus="0" confirmationStatus="1" feehelpamount="0" fundingSource="1"/>
                
 	<CorporatePass id="1" angelId="2" collegeId="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" expiryDate="2112-02-03 09:18:09"
 				invoiceEmail="test@test.test" password="test" contactId="1"/>
@@ -582,4 +582,18 @@
 	<CorporatePass_Product id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" corporatePassId="1" productId="1"/>
 
 	<ContactDuplicate id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" contactToUpdateId="1" contactToDeleteId="2" contactToDeleteAngelId="2" description="description" status="3" createdBy="1"/>
+
+
+	<Assessment id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+				code="1" name="Assessment-1" active="1" description="description"/>
+
+	<AssessmentClass id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+					 courseClassId="1" assessmentId="1" releaseDate="2011-09-20 11:14:54" dueDate="2011-09-20 11:14:54"/>
+
+	<AssessmentClassTutor id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+						  assessmentClassId="1" tutorId="1"/>
+
+	<AssessmentSubmission id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+						  enrolmentId="1" assessmentClassId="1" submittedByid="1" tutorComments="tutorComments" studentComments="studentComments"/>
+	
 </dataset>

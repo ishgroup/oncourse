@@ -17,7 +17,7 @@ public class OutcomeStubBuilder extends AbstractWillowStubBuilder<Outcome, Outco
 		}
 		stub.setEnrolmentId(entity.getEnrolment().getId());
 		if (entity.getFundingSource() != null) {
-			stub.setFundingSource(entity.getFundingSource());
+			stub.setFundingSource(entity.getFundingSource().getDatabaseValue());
 		}
 		stub.setModified(entity.getModified());
 		if (entity.getModule() != null) {

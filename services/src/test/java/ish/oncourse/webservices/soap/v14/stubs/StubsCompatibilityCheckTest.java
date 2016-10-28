@@ -165,6 +165,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		courseClassParameters.add(new ReplicationStubFieldParameter("minStudentAge", Integer.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("maxStudentAge", Integer.class));
 		courseClassParameters.add(new ReplicationStubFieldParameter("active", Boolean.class));
+		courseClassParameters.add(new ReplicationStubFieldParameter("fundingSource", Integer.class));
 		stubsPropertyMap.put(getStubName(CourseClassStub.class), courseClassParameters);
 
 		final List<ReplicationStubFieldParameter> courseParameters = fillDefaultReplicationStubFields();
@@ -233,6 +234,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		enrolmentParameters.add(new ReplicationStubFieldParameter("creditTotal", Integer.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		enrolmentParameters.add(new ReplicationStubFieldParameter("feeHelpAmount", BigDecimal.class));
+		enrolmentParameters.add(new ReplicationStubFieldParameter("fundingSource", Integer.class));
+
 		stubsPropertyMap.put(getStubName(EnrolmentStub.class), enrolmentParameters);
 
 		final List<ReplicationStubFieldParameter> invoiceLineDiscountParameters = fillDefaultReplicationStubFields();
@@ -659,6 +662,33 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		contactDuplicateParameters.add(new ReplicationStubFieldParameter("description", String.class));
 		stubsPropertyMap.put(getStubName(ContactDuplicateStub.class), contactDuplicateParameters);
 
+		List<ReplicationStubFieldParameter> assessmentParameters = fillDefaultReplicationStubFields();
+		assessmentParameters.add(new ReplicationStubFieldParameter("code", String.class));
+		assessmentParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		assessmentParameters.add(new ReplicationStubFieldParameter("description", String.class));
+		assessmentParameters.add(new ReplicationStubFieldParameter("isActive", Boolean.class));
+		stubsPropertyMap.put(getStubName(AssessmentStub.class), assessmentParameters);
+
+		List<ReplicationStubFieldParameter> assessmentClassParameters = fillDefaultReplicationStubFields();
+		assessmentClassParameters.add(new ReplicationStubFieldParameter("assessmentId", Long.class));
+		assessmentClassParameters.add(new ReplicationStubFieldParameter("courseClassId", Long.class));
+		assessmentClassParameters.add(new ReplicationStubFieldParameter("dueDate", Date.class));
+		assessmentClassParameters.add(new ReplicationStubFieldParameter("releaseDate", Date.class));
+		stubsPropertyMap.put(getStubName(AssessmentClassStub.class), assessmentClassParameters);
+
+		List<ReplicationStubFieldParameter> assessmentClassTutorParameters = fillDefaultReplicationStubFields();
+		assessmentClassTutorParameters.add(new ReplicationStubFieldParameter("assessmentClassId", Long.class));
+		assessmentClassTutorParameters.add(new ReplicationStubFieldParameter("tutorId", Long.class));
+		stubsPropertyMap.put(getStubName(AssessmentClassTutorStub.class), assessmentClassTutorParameters);
+
+		List<ReplicationStubFieldParameter> assessmentSubmissionParameters = fillDefaultReplicationStubFields();
+		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("enrolmentId", Long.class));
+		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("assessmentClassId", Long.class));
+		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("submittedById", Long.class));
+		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("tutorComments", String.class));
+		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("studentComments", String.class));
+		stubsPropertyMap.put(getStubName(AssessmentSubmissionStub.class), assessmentSubmissionParameters);
+
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
 		stubsPropertyMap.put(getStubName(ReplicationStub.class), replicationStubParameters);
@@ -1049,6 +1079,30 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testContactDuplicateStub() {
 		GenericReplicationStub stub = new ContactDuplicateStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testAssessmentStub() {
+		GenericReplicationStub stub = new AssessmentStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testAssessmentClassStub() {
+		GenericReplicationStub stub = new AssessmentClassStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testAssessmentClassTutorStub() {
+		GenericReplicationStub stub = new AssessmentClassTutorStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testAssessmentSubmissionStub() {
+		GenericReplicationStub stub = new AssessmentSubmissionStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	

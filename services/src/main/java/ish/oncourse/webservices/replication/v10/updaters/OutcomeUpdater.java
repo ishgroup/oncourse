@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v10.updaters;
 
+import ish.common.types.ClassFundingSource;
 import ish.common.types.OutcomeStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Enrolment;
@@ -28,7 +29,12 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 		} else {
 			logger.error("Can not find enrolment by angelId: {}", stub.getEnrolmentId());
 		}
-		entity.setFundingSource(stub.getFundingSource());
+
+
+		if (stub.getFundingSource() != null) {
+			entity.setFundingSource(TypesUtil.getEnumForDatabaseValue(stub.getFundingSource(), ClassFundingSource.class));
+		}
+		
 		if (stub.getModuleId() != null) {
 			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
 		}

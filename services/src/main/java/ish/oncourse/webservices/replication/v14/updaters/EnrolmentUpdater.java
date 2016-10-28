@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v14.updaters;
 
+import ish.common.types.ClassFundingSource;
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.CreditLevel;
 import ish.common.types.CreditProviderType;
@@ -76,6 +77,9 @@ public class EnrolmentUpdater extends AbstractWillowUpdater<EnrolmentStub, Enrol
 		}
 		if (stub.getConfirmationStatus() != null) {
 			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
+		}
+		if (stub.getFundingSource() != null) {
+			entity.setFundingSource(TypesUtil.getEnumForDatabaseValue(stub.getFundingSource(), ClassFundingSource.class));
 		}
 	}
 }

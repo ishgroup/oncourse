@@ -302,4 +302,24 @@ public class AllV14StubBuildersTest extends AbstractAllStubBuildersTest {
 	public void testContactDuplicateStubBuilder() {
 		this.testStubBuilder(ContactDuplicate.class, new ContactDuplicateStubBuilder());
 	}
+
+	@Test
+	public void testAssessmentStubBuilder() {
+		this.testStubBuilder(Assessment.class, new AssessmentStubBuilder());
+	}
+
+	@Test
+	public void testAssessmentClassStubBuilder() {
+		this.testStubBuilder(AssessmentClass.class, new AssessmentClassStubBuilder());
+	}
+
+	@Test
+	public void testAssessmentClassTutorStubBuilder() {
+		this.testStubBuilder(AssessmentClassTutor.class, new AssessmentClassTutorStubBuilder());
+	}
+
+	@Test
+	public void testAssessmentSubmissionStubBuilder() {
+		this.testStubBuilder(AssessmentSubmission.class, new AssessmentSubmissionStubBuilder());
+	}
 }

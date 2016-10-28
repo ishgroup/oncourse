@@ -51,6 +51,11 @@ public class EnrolmentStubBuilder extends AbstractWillowStubBuilder<Enrolment, E
 		if (entity.getConfirmationStatus() != null) {
 			stub.setConfirmationStatus(entity.getConfirmationStatus().getDatabaseValue());
 		}
+		
+		if (entity.getFundingSource() != null) {
+			stub.setFundingSource(entity.getFundingSource().getDatabaseValue());
+		}
+		
 		return stub;
 	}
 }

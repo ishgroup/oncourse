@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v13.updaters;
 
+import ish.common.types.ClassFundingSource;
 import ish.common.types.OutcomeStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Enrolment;
@@ -41,8 +42,11 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 				logger.error("Can not find priorLearning by angelId: {}", stub.getPriorLearningId());
 			}
 		}
+
+		if (stub.getFundingSource() != null) {
+			entity.setFundingSource(TypesUtil.getEnumForDatabaseValue(stub.getFundingSource(), ClassFundingSource.class));
+		}
 		
-		entity.setFundingSource(stub.getFundingSource());
 		if (stub.getModuleId() != null) {
 			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
 		}

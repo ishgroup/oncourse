@@ -162,6 +162,9 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             if (propertyName.equals("attendanceType")) {
                 return ((CourseClass) entity).getAttendanceType().getDatabaseValue();
             }
+			if (propertyName.equals("fundingSource")) {
+				return ((CourseClass) entity).getFundingSource().getDatabaseValue();
+			}
         } else if (entity instanceof Enrolment) {
             switch (propertyName) {
                 case "creditLevel":
@@ -176,6 +179,8 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
                     return ((Enrolment) entity).getFeeStatus().getDatabaseValue();
                 case "feeHelpStatus":
                     return ((Enrolment) entity).getFeeHelpStatus().getDatabaseValue();
+				case"fundingSource":
+					return ((Enrolment) entity).getFundingSource().getDatabaseValue();
                 case "creditFoeId":
                     propertyName = Enrolment.CREDIT_FOEID_PROPERTY;
                     break;
@@ -190,6 +195,9 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
             if (propertyName.equals("status")) {
                 return ((Outcome) entity).getStatus().getDatabaseValue();
             }
+			if (propertyName.equals("fundingSource")) {
+				return ((Outcome) entity).getFundingSource().getDatabaseValue();
+			}
         } else if (entity instanceof Application) {
             if (propertyName.equals(Application.CONFIRMATION_STATUS_PROPERTY)) {
                 return ((Application) entity).getConfirmationStatus().getDatabaseValue();
@@ -219,6 +227,12 @@ public class StubBuilderTestHelper<E extends Queueable, S extends GenericReplica
 					return ((ContactDuplicate) entity).getContactToDeleteId();
 			}
 			
+		} else if (entity instanceof Assessment) {
+
+			if (propertyName.equals("isActive")) {
+				return ((Assessment) entity).getActive();
+			}
+
 		}
 
 

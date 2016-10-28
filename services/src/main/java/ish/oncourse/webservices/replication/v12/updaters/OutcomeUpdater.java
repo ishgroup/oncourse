@@ -1,5 +1,7 @@
 package ish.oncourse.webservices.replication.v12.updaters;
 
+import ish.common.types.ClassFundingSource;
+import ish.common.types.CreditLevel;
 import ish.common.types.OutcomeStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Enrolment;
@@ -42,7 +44,11 @@ public class OutcomeUpdater extends AbstractWillowUpdater<OutcomeStub, Outcome> 
 			}
 		}
 		
-		entity.setFundingSource(stub.getFundingSource());
+
+		if (stub.getFundingSource() != null) {
+			entity.setFundingSource(TypesUtil.getEnumForDatabaseValue(stub.getFundingSource(), ClassFundingSource.class));
+		}
+		
 		if (stub.getModuleId() != null) {
 			entity.setModule(Cayenne.objectForPK(entity.getObjectContext(), Module.class, stub.getModuleId()));
 		}

@@ -47,6 +47,10 @@ public class CourseClassStubBuilder extends AbstractWillowStubBuilder<CourseClas
 		stub.setMinStudentAge(entity.getMinStudentAge());
 		stub.setMaxStudentAge(entity.getMaxStudentAge());
 		stub.setActive(entity.getIsActive());
+
+		if (entity.getFundingSource() != null) {
+			stub.setFundingSource(entity.getFundingSource().getDatabaseValue());
+		}
 		
 		return stub;
 	}

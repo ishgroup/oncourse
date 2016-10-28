@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.replication.v14.updaters;
 
+import ish.common.types.ClassFundingSource;
 import ish.common.types.CourseClassAttendanceType;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
@@ -59,5 +60,8 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setMinStudentAge(stub.getMinStudentAge());
 		entity.setMaxStudentAge(stub.getMaxStudentAge());
 		entity.setIsActive(stub.isActive());
+		if (stub.getFundingSource() != null) {
+			entity.setFundingSource(TypesUtil.getEnumForDatabaseValue(stub.getFundingSource(), ClassFundingSource.class));
+		}
 	}
 }
