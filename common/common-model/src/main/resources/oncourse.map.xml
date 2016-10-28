@@ -334,6 +334,7 @@
 		<db-attribute name="feeGst" type="DECIMAL" length="14" scale="2"/>
 		<db-attribute name="feeHelpClass" type="SMALLINT"/>
 		<db-attribute name="fullTimeLoad" type="VARCHAR" length="10"/>
+		<db-attribute name="fundingSource" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isActive" type="BIT"/>
 		<db-attribute name="isCancelled" type="BIT"/>
@@ -557,6 +558,7 @@
 		<db-attribute name="feeHelpAmount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="feeHelpStatus" type="INTEGER"/>
 		<db-attribute name="feeStatus" type="INTEGER"/>
+		<db-attribute name="fundingSource" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="reasonForStudy" type="INTEGER" length="10"/>
@@ -1649,6 +1651,7 @@
 		<obj-attribute name="feeGst" type="ish.math.Money" db-attribute-path="feeGst"/>
 		<obj-attribute name="feeHelpClass" type="java.lang.Boolean" db-attribute-path="feeHelpClass"/>
 		<obj-attribute name="fullTimeLoad" type="java.lang.String" db-attribute-path="fullTimeLoad"/>
+		<obj-attribute name="fundingSource" type="ish.common.types.ClassFundingSource" db-attribute-path="fundingSource"/>
 		<obj-attribute name="isActive" type="java.lang.Boolean" db-attribute-path="isActive"/>
 		<obj-attribute name="isDistantLearningCourse" type="java.lang.Boolean" db-attribute-path="isDistantLearningCourse"/>
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
@@ -1826,6 +1829,7 @@
 		<obj-attribute name="feeHelpAmount" type="ish.math.Money" db-attribute-path="feeHelpAmount"/>
 		<obj-attribute name="feeHelpStatus" type="ish.common.types.EnrolmentVETFeeHelpStatus" db-attribute-path="feeHelpStatus"/>
 		<obj-attribute name="feeStatus" type="ish.common.types.StudentStatusForUnitOfStudy" db-attribute-path="feeStatus"/>
+		<obj-attribute name="fundingSource" type="ish.common.types.ClassFundingSource" db-attribute-path="fundingSource"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="reasonForStudy" type="java.lang.Integer" db-attribute-path="reasonForStudy"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
@@ -1998,7 +2002,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="deliveryMode" type="java.lang.Integer" db-attribute-path="deliveryMode"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
-		<obj-attribute name="fundingSource" type="java.lang.Integer" db-attribute-path="fundingSource"/>
+		<obj-attribute name="fundingSource" type="ish.common.types.ClassFundingSource" db-attribute-path="fundingSource"/>
 		<obj-attribute name="markedByTutorDate" type="java.util.Date" db-attribute-path="markedByTutorDate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="reportableHours" type="java.lang.Double" db-attribute-path="reportableHours"/>

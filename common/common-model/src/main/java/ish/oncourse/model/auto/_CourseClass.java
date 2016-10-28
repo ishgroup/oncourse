@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
+import ish.common.types.ClassFundingSource;
 import ish.common.types.CourseClassAttendanceType;
 import ish.math.Money;
 import ish.oncourse.model.AssessmentClass;
@@ -47,6 +48,7 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final String FEE_GST_PROPERTY = "feeGst";
     public static final String FEE_HELP_CLASS_PROPERTY = "feeHelpClass";
     public static final String FULL_TIME_LOAD_PROPERTY = "fullTimeLoad";
+    public static final String FUNDING_SOURCE_PROPERTY = "fundingSource";
     public static final String IS_ACTIVE_PROPERTY = "isActive";
     public static final String IS_DISTANT_LEARNING_COURSE_PROPERTY = "isDistantLearningCourse";
     public static final String IS_WEB_VISIBLE_PROPERTY = "isWebVisible";
@@ -95,6 +97,7 @@ public abstract class _CourseClass extends CayenneDataObject {
     public static final Property<Money> FEE_GST = new Property<Money>("feeGst");
     public static final Property<Boolean> FEE_HELP_CLASS = new Property<Boolean>("feeHelpClass");
     public static final Property<String> FULL_TIME_LOAD = new Property<String>("fullTimeLoad");
+    public static final Property<ClassFundingSource> FUNDING_SOURCE = new Property<ClassFundingSource>("fundingSource");
     public static final Property<Boolean> IS_ACTIVE = new Property<Boolean>("isActive");
     public static final Property<Boolean> IS_DISTANT_LEARNING_COURSE = new Property<Boolean>("isDistantLearningCourse");
     public static final Property<Boolean> IS_WEB_VISIBLE = new Property<Boolean>("isWebVisible");
@@ -236,6 +239,13 @@ public abstract class _CourseClass extends CayenneDataObject {
     }
     public String getFullTimeLoad() {
         return (String)readProperty("fullTimeLoad");
+    }
+
+    public void setFundingSource(ClassFundingSource fundingSource) {
+        writeProperty("fundingSource", fundingSource);
+    }
+    public ClassFundingSource getFundingSource() {
+        return (ClassFundingSource)readProperty("fundingSource");
     }
 
     public void setIsActive(Boolean isActive) {

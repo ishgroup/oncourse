@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
+import ish.common.types.ClassFundingSource;
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.CreditLevel;
 import ish.common.types.CreditProviderType;
@@ -48,6 +49,7 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String FEE_HELP_AMOUNT_PROPERTY = "feeHelpAmount";
     public static final String FEE_HELP_STATUS_PROPERTY = "feeHelpStatus";
     public static final String FEE_STATUS_PROPERTY = "feeStatus";
+    public static final String FUNDING_SOURCE_PROPERTY = "fundingSource";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String REASON_FOR_STUDY_PROPERTY = "reasonForStudy";
     public static final String SOURCE_PROPERTY = "source";
@@ -76,6 +78,7 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final Property<Money> FEE_HELP_AMOUNT = new Property<Money>("feeHelpAmount");
     public static final Property<EnrolmentVETFeeHelpStatus> FEE_HELP_STATUS = new Property<EnrolmentVETFeeHelpStatus>("feeHelpStatus");
     public static final Property<StudentStatusForUnitOfStudy> FEE_STATUS = new Property<StudentStatusForUnitOfStudy>("feeStatus");
+    public static final Property<ClassFundingSource> FUNDING_SOURCE = new Property<ClassFundingSource>("fundingSource");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<Integer> REASON_FOR_STUDY = new Property<Integer>("reasonForStudy");
     public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
@@ -184,6 +187,13 @@ public abstract class _Enrolment extends CayenneDataObject {
     }
     public StudentStatusForUnitOfStudy getFeeStatus() {
         return (StudentStatusForUnitOfStudy)readProperty("feeStatus");
+    }
+
+    public void setFundingSource(ClassFundingSource fundingSource) {
+        writeProperty("fundingSource", fundingSource);
+    }
+    public ClassFundingSource getFundingSource() {
+        return (ClassFundingSource)readProperty("fundingSource");
     }
 
     public void setModified(Date modified) {

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
+import ish.common.types.ClassFundingSource;
 import ish.common.types.OutcomeStatus;
 import ish.oncourse.model.CertificateOutcome;
 import ish.oncourse.model.College;
@@ -47,7 +48,7 @@ public abstract class _Outcome extends CayenneDataObject {
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<Integer> DELIVERY_MODE = new Property<Integer>("deliveryMode");
     public static final Property<Date> END_DATE = new Property<Date>("endDate");
-    public static final Property<Integer> FUNDING_SOURCE = new Property<Integer>("fundingSource");
+    public static final Property<ClassFundingSource> FUNDING_SOURCE = new Property<ClassFundingSource>("fundingSource");
     public static final Property<Date> MARKED_BY_TUTOR_DATE = new Property<Date>("markedByTutorDate");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<Double> REPORTABLE_HOURS = new Property<Double>("reportableHours");
@@ -88,11 +89,11 @@ public abstract class _Outcome extends CayenneDataObject {
         return (Date)readProperty("endDate");
     }
 
-    public void setFundingSource(Integer fundingSource) {
+    public void setFundingSource(ClassFundingSource fundingSource) {
         writeProperty("fundingSource", fundingSource);
     }
-    public Integer getFundingSource() {
-        return (Integer)readProperty("fundingSource");
+    public ClassFundingSource getFundingSource() {
+        return (ClassFundingSource)readProperty("fundingSource");
     }
 
     public void setMarkedByTutorDate(Date markedByTutorDate) {

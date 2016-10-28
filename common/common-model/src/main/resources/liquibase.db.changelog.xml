@@ -4223,5 +4223,22 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="282" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Enrolment" columnName="fundingSource"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE Enrolment ADD COLUMN fundingSource INTEGER NULL</sql>
+	</changeSet>
+
+	<changeSet id="282" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="CourseClass" columnName="fundingSource"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE CourseClass ADD COLUMN fundingSource INTEGER NULL</sql>
+	</changeSet>
 
 </databaseChangeLog>
