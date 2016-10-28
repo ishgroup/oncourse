@@ -54,6 +54,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="minStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="maxStudentAge" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="active" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="fundingSource" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -96,7 +97,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "fullTimeLoad",
     "minStudentAge",
     "maxStudentAge",
-    "active"
+    "active",
+    "fundingSource"
 })
 public class CourseClassStub
     extends ReplicationStub
@@ -210,6 +212,10 @@ public class CourseClassStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean active;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer fundingSource;
 
     /**
      * Gets the value of the cancelled property.
@@ -1001,6 +1007,30 @@ public class CourseClassStub
      */
     public void setActive(Boolean value) {
         this.active = value;
+    }
+
+    /**
+     * Gets the value of the fundingSource property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getFundingSource() {
+        return fundingSource;
+    }
+
+    /**
+     * Sets the value of the fundingSource property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFundingSource(Integer value) {
+        this.fundingSource = value;
     }
 
 }

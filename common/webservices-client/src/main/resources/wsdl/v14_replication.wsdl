@@ -515,6 +515,7 @@
 							<xs:element name="minStudentAge" type="xs:int"/>
 							<xs:element name="maxStudentAge" type="xs:int"/>
 							<xs:element name="active" type="xs:boolean"/>
+							<xs:element name="fundingSource" type="xs:int"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -806,6 +807,7 @@
 							<xs:element name="creditTotal" type="xs:int" />
 							<xs:element name="feeHelpAmount" type="xs:decimal"/>
 							<xs:element name="confirmationStatus" type="xs:int"/>
+							<xs:element name="fundingSource" type="xs:int"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>

@@ -39,6 +39,7 @@ import ish.oncourse.webservices.util.GenericEnrolmentStub;
  *         &lt;element name="creditTotal" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="feeHelpAmount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="fundingSource" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -66,7 +67,8 @@ import ish.oncourse.webservices.util.GenericEnrolmentStub;
     "feeStatus",
     "creditTotal",
     "feeHelpAmount",
-    "confirmationStatus"
+    "confirmationStatus",
+    "fundingSource"
 })
 public class EnrolmentStub
     extends ReplicationStub
@@ -131,6 +133,10 @@ public class EnrolmentStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer confirmationStatus;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer fundingSource;
 
     /**
      * Gets the value of the reasonForStudy property.
@@ -562,6 +568,30 @@ public class EnrolmentStub
      */
     public void setConfirmationStatus(Integer value) {
         this.confirmationStatus = value;
+    }
+
+    /**
+     * Gets the value of the fundingSource property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getFundingSource() {
+        return fundingSource;
+    }
+
+    /**
+     * Sets the value of the fundingSource property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFundingSource(Integer value) {
+        this.fundingSource = value;
     }
 
 }
