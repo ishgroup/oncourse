@@ -361,7 +361,6 @@ public abstract class CommonPreferenceController {
 	public static final String LICENSE_SMS = "license.sms";
 	public static final String LICENSE_CC_PROCESSING = "license.ccprocessing";
 	public static final String LICENSE_PAYROLL = "license.payroll";
-	public static final String LICENSE_WEBSITE = "license.website";
 	public static final String LICENSE_VOUCHER = "license.voucher";
 	public static final String LICENSE_MEMBERSHIP = "license.membership";
 	public static final String LICENSE_ATTENDANCE = "license.attendance";
@@ -446,15 +445,6 @@ public abstract class CommonPreferenceController {
 	}
 
 	public void setLicensePayroll(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseWebsite() {
-		return Boolean.parseBoolean(getValue(LICENSE_WEBSITE, false));
-	}
-
-	public void setLicenseWebsite(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
 	}
