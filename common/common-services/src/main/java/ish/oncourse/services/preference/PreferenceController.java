@@ -156,10 +156,6 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(LICENSE_PAYROLL, false, Boolean.toString(value));
 	}
 
-	public void setLicenseWebsite(boolean value) {
-		setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
-	}
-
 	public String getNTISLastUpdate() {
 		return getValue(NTIS_LAST_UPDATE, false);
 	}

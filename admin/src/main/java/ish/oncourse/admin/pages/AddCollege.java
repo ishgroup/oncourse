@@ -153,7 +153,6 @@ public class AddCollege {
 		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_SMS, String.valueOf(false));
 		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_CC_PROCESSING, String.valueOf(false));
 		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_PAYROLL, String.valueOf(false));
-		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_WEBSITE, String.valueOf(false));
 		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_VOUCHER, String.valueOf(false));
 		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_MEMBERSHIP, String.valueOf(true));
 		PreferenceUtil.createPreference(context, college, PreferenceController.LICENSE_ATTENDANCE, String.valueOf(true));

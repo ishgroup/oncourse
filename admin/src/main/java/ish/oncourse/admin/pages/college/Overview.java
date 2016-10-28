@@ -42,7 +42,6 @@ public class Overview {
 			PreferenceController.LICENSE_SMS,
 			PreferenceController.LICENSE_CC_PROCESSING,
 			PreferenceController.LICENSE_PAYROLL,
-			PreferenceController.LICENSE_WEBSITE,
 			PreferenceController.LICENSE_VOUCHER
 	}));
 	
