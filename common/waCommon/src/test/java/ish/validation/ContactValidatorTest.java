@@ -27,7 +27,7 @@ public class ContactValidatorTest {
     public void testBirthDateValidation1() throws Exception {
 
         ContactInterface contact = Mockito.mock(ContactInterface.class);
-        when(contact.getBirthDate()).thenReturn(new Date());
+        when(contact.getDateOfBirth()).thenReturn(new Date());
 
         String lastName = "test";
         String firstName = "test";
@@ -53,7 +53,7 @@ public class ContactValidatorTest {
 
         ContactInterface contact = Mockito.mock(ContactInterface.class);
         Date birthDate = DateUtils.addDays(new Date(), 1);
-        when(contact.getBirthDate()).thenReturn(birthDate);
+        when(contact.getDateOfBirth()).thenReturn(birthDate);
 
         String lastName = "test";
         String firstName = "test";
@@ -80,7 +80,7 @@ public class ContactValidatorTest {
 
         ContactInterface contact = Mockito.mock(ContactInterface.class);
         Date birthDate = DateUtils.addDays(new Date(), -1);
-        when(contact.getBirthDate()).thenReturn(birthDate);
+        when(contact.getDateOfBirth()).thenReturn(birthDate);
 
         String lastName = "test";
         String firstName = "test";

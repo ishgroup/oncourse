@@ -82,8 +82,8 @@ public class ContactValidator implements Validator<ContactErrorCode> {
     }
 
     private void validateBirthDate() {
-        if (contact.getBirthDate() != null) {
-            Date birthDateTruncated = DateUtils.truncate(contact.getBirthDate(), Calendar.DAY_OF_MONTH);
+        if (contact.getDateOfBirth() != null) {
+            Date birthDateTruncated = DateUtils.truncate(contact.getDateOfBirth(), Calendar.DAY_OF_MONTH);
             Date currentDateTruncated = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
             if (birthDateTruncated.after(DateUtils.addDays(currentDateTruncated, -1))) {
                 result.put(ContactInterface.BIRTH_DATE_KEY, birthDateCanNotBeInFuture);

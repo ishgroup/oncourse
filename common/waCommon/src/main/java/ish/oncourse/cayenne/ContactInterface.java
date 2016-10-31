@@ -73,7 +73,7 @@ public interface ContactInterface {
 
 	List<? extends InvoiceInterface> getInvoices();
 
-	Date getBirthDate();
+	Date getDateOfBirth();
 
 	Boolean getIsCompany();
 
