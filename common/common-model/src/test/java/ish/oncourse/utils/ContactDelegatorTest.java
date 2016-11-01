@@ -34,7 +34,7 @@ public class ContactDelegatorTest {
         assertEquals(contact.getMobilePhoneNumber(), contactDelegator.getMobilePhone());
         assertEquals(contact.getPostcode(), contactDelegator.getPostcode());
         assertEquals(contact.getStreet(), contactDelegator.getStreet());
-        assertEquals(contact.getDateOfBirth(), contactDelegator.getBirthDate());
+        assertEquals(contact.getDateOfBirth(), contactDelegator.getDateOfBirth());
         assertEquals(contact.getIsCompany(), contactDelegator.getIsCompany());
         assertEquals(contact.getState(), contactDelegator.getState());
         assertEquals(contact.getHomePhoneNumber(), contactDelegator.getHomePhone());

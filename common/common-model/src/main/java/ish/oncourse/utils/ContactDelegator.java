@@ -77,7 +77,7 @@ public class ContactDelegator implements ContactInterface {
     }
 
     @Override
-    public Date getBirthDate() {
+    public Date getDateOfBirth() {
         return contact.getDateOfBirth();
     }
 
