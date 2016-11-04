@@ -1,5 +1,8 @@
 configurations { providedCompile }
 
+apply plugin: 'groovy'
+sourceSets.main.groovy.srcDir 'src/main/java'
+sourceSets.test.groovy.srcDir 'src/test/java'
 
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:3.0'
@@ -23,6 +26,7 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
 	compile 'com.amazonaws:aws-java-sdk:1.6.11'
 
+	compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.0.4'
