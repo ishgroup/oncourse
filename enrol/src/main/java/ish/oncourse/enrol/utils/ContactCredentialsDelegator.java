@@ -87,10 +87,10 @@ public class ContactCredentialsDelegator implements ContactInterface {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public Date getBirthDate() {
-        return null;
-    }
+	@Override
+	public Date getDateOfBirth() {
+		return null;
+	}
 
     @Override
     public Boolean getIsCompany() {
