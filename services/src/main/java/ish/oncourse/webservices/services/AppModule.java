@@ -98,7 +98,7 @@ public class AppModule {
 		if (TestUSIServiceEndpoint.useTestUSIEndpoint()) {
 			return USIService.valueOf(new TestUSIServiceEndpoint());
 		} else {
-			au.gov.usi._2013.ws.servicepolicy.USIService service = new au.gov.usi._2013.ws.servicepolicy.USIService();
+			au.gov.usi._2015.ws.servicepolicy.USIService service = new au.gov.usi._2015.ws.servicepolicy.USIService();
 			return USIService.valueOf(service.getWS2007FederationHttpBindingIUSIService());
 		}
 	}
