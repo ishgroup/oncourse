@@ -25,17 +25,17 @@ public class AUSKeyCryptoService extends CryptoBase implements CallbackHandler {
 
 	@Inject
 	@Autowired
-	private PreferenceController preferenceController;
+	private CryptoKeys cryptoKeys;
 
 	@Override
 	public String getDefaultX509Identifier() throws WSSecurityException {
-		return preferenceController.getServicesSecurityKey();
+		return cryptoKeys.getServicesSecurityKey();
 	}
 
 	@Override
 	public X509Certificate[] getX509Certificates(CryptoType cryptoType) throws WSSecurityException {
 		try {
-			return CryptoUtils.getCertificateChain(Base64.decode(preferenceController.getAuskeyCertificate()));
+			return CryptoUtils.getCertificateChain(Base64.decode(cryptoKeys.getAuskeyCertificate()));
 		} catch (IOException | CertificateException e) {
 			throw new WSSecurityException("Error parsing certificate.", e);
 		}
@@ -55,9 +55,9 @@ public class AUSKeyCryptoService extends CryptoBase implements CallbackHandler {
 	public PrivateKey getPrivateKey(String identifier, String password) throws WSSecurityException {
 		try {
 			return CryptoUtils.decryptPrivateKey(
-					Base64.decode(preferenceController.getAuskeyPrivateKey()),
+					Base64.decode(cryptoKeys.getAuskeyPrivateKey()),
 					password.toCharArray(),
-					Base64.decode(preferenceController.getAuskeySalt()));
+					Base64.decode(cryptoKeys.getAuskeySalt()));
 		} catch (Exception e) {
 			throw new WSSecurityException("Error decrypting private key.", e);
 		}
@@ -84,8 +84,8 @@ public class AUSKeyCryptoService extends CryptoBase implements CallbackHandler {
 			if (callback instanceof WSPasswordCallback) {
 				WSPasswordCallback passwordCallback = (WSPasswordCallback) callback;
 
-				if (preferenceController.getServicesSecurityKey().equals(passwordCallback.getIdentifier())) {
-					passwordCallback.setPassword(preferenceController.getAuskeyPassword());
+				if (cryptoKeys.getServicesSecurityKey().equals(passwordCallback.getIdentifier())) {
+					passwordCallback.setPassword(cryptoKeys.getAuskeyPassword());
 				}
 			}
 		}

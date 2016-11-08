@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.usi;
 
-import au.gov.usi._2013.ws.VerifyUSIType;
+import au.gov.usi._2015.ws.VerifyUSIType;
 import ish.common.types.USIVerificationRequest;
 import org.junit.Test;
 

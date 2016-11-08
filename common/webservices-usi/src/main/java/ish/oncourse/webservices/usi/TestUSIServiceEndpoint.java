@@ -1,12 +1,8 @@
 package ish.oncourse.webservices.usi;
 
-import au.gov.usi._2013.ws.*;
-import au.gov.usi._2013.ws.servicepolicy.*;
-import ish.common.types.USIFieldStatus;
-import ish.common.types.USIVerificationRequest;
-import ish.common.types.USIVerificationResult;
+import au.gov.usi._2015.ws.*;
+import au.gov.usi._2015.ws.servicepolicy.*;
 import ish.common.types.USIVerificationStatus;
-import ish.oncourse.services.usi.IUSIVerificationService;
 
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
@@ -98,12 +94,32 @@ public class TestUSIServiceEndpoint implements IUSIService {
     }
 
     @Override
-    public BulkVerifyUSIResponseType bulkVerifyUSI(BulkVerifyUSIType in) throws IUSIServiceBulkVerifyUSIErrorInfoFaultFaultMessage {
+    public BulkVerifyUSIResponseType bulkVerifyUSI(BulkVerifyUSIType in) throws IUSIServiceBulkVerifyUSIErrorInfoFaultFaultMessageSingle, IUSIServiceCreateUSIErrorInfoFaultFaultMessage {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public BulkUploadRetrieveResponseType bulkUploadRetrieve(BulkUploadRetrieveType in) throws IUSIServiceBulkUploadRetrieveErrorInfoFaultFaultMessage {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public LocateUSIResponseType locateUSI(LocateUSIType in) throws IUSIServiceLocateUSIErrorInfoFaultFaultMessageSingle, IUSIServiceLocateUSIErrorInfoFaultFaultMessage {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public GetNonDvsDocumentTypesResponseType getNonDvsDocumentTypes(GetNonDvsDocumentTypesType in) throws IUSIServiceGetNonDvsDocumentTypesErrorInfoFaultFaultMessageSingle, IUSIServiceGetNonDvsDocumentTypesErrorInfoFaultFaultMessage {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public UpdateUSIPersonalDetailsResponseType updateUSIPersonalDetails(UpdateUSIPersonalDetailsType in) throws IUSIServiceUpdateUSIPersonalDetailsErrorInfoFaultFaultMessageSingle, IUSIServiceUpdateUSIPersonalDetailsErrorInfoFaultFaultMessage {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public UpdateUSIContactDetailsResponseType updateUSIContactDetails(UpdateUSIContactDetailsType in) throws IUSIServiceUpdateUSIContactDetailsErrorInfoFaultFaultMessageSingle, IUSIServiceUpdateUSIContactDetailsErrorInfoFaultFaultMessage {
         throw new UnsupportedOperationException();
     }
 }

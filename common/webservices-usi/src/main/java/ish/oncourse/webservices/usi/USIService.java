@@ -3,9 +3,9 @@
  */
 package ish.oncourse.webservices.usi;
 
-import au.gov.usi._2013.ws.VerifyUSIResponseType;
-import au.gov.usi._2013.ws.VerifyUSIType;
-import au.gov.usi._2013.ws.servicepolicy.IUSIService;
+import au.gov.usi._2015.ws.VerifyUSIResponseType;
+import au.gov.usi._2015.ws.VerifyUSIType;
+import au.gov.usi._2015.ws.servicepolicy.IUSIService;
 import ish.common.types.USIFieldStatus;
 import ish.common.types.USIVerificationRequest;
 import ish.common.types.USIVerificationResult;

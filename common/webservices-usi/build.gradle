@@ -15,6 +15,9 @@ dependencies {
     
     compile 'org.springframework:spring-beans:3.0.5.RELEASE'
     compile 'org.bouncycastle:bcprov-jdk15:1.45'
+
+    testCompile 'org.springframework:spring-context:3.1.0.RELEASE'
+    testCompile 'cglib:cglib:2.2.2'
 }
 
 jar {
@@ -40,10 +43,10 @@ project.ext {
     wsdlDir = file("${projectDir}/src/main/resources/wsdl")
     generatedWsdlDir = file("${projectDir}/src/main/java")
     wsdlsToGenerate = [
-            [       '-wsdlLocation', "/wsdl/USIService.wsdl",
+            [       '-wsdlLocation', "/wsdl/USIServiceV2.wsdl",
                     '-b', "$wsdlDir/usi_bindings.xml",
                     "-client",
-                    "$wsdlDir/USIService.wsdl"],
+                    "$wsdlDir/USIServiceV2.wsdl"],
     ]
 }
 
