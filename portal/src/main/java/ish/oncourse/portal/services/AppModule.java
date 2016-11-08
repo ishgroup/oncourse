@@ -15,6 +15,7 @@ import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
@@ -25,6 +26,7 @@ import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.UIRequestExceptionHandler;
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import ish.oncourse.webservices.usi.USIService;
+import ish.oncourse.webservices.usi.crypto.CryptoKeys;
 import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
@@ -68,11 +70,41 @@ public class AppModule {
     }
 
     @EagerLoad
+    public static CryptoKeys buildCryptoKeys(@Inject final PreferenceController preferenceController) {
+        return new CryptoKeys() {
+            @Override
+            public String getServicesSecurityKey() {
+                return preferenceController.getServicesSecurityKey();
+            }
+
+            @Override
+            public String getAuskeyCertificate() {
+                return preferenceController.getAuskeyCertificate();
+            }
+
+            @Override
+            public String getAuskeyPrivateKey() {
+                return preferenceController.getAuskeyPrivateKey();
+            }
+
+            @Override
+            public String getAuskeySalt() {
+                return preferenceController.getAuskeySalt();
+            }
+
+            @Override
+            public String getAuskeyPassword() {
+                return preferenceController.getAuskeyPassword();
+            }
+        };
+    }
+
+    @EagerLoad
     public static USIService buildUSIService() {
         if (TestUSIServiceEndpoint.useTestUSIEndpoint()) {
             return USIService.valueOf(new TestUSIServiceEndpoint());
         } else {
-            au.gov.usi._2013.ws.servicepolicy.USIService service = new au.gov.usi._2013.ws.servicepolicy.USIService();
+            au.gov.usi._2015.ws.servicepolicy.USIService service = new au.gov.usi._2015.ws.servicepolicy.USIService();
             return USIService.valueOf(service.getWS2007FederationHttpBindingIUSIService());
         }
     }
