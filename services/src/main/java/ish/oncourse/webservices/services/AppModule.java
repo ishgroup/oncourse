@@ -10,6 +10,7 @@ import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
@@ -38,6 +39,7 @@ import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import ish.oncourse.webservices.usi.USIService;
 import ish.oncourse.webservices.usi.USIVerificationService;
+import ish.oncourse.webservices.usi.crypto.CryptoKeys;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.ioc.IOCSymbols;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -46,6 +48,7 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
+import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
@@ -93,7 +96,37 @@ public class AppModule {
 		binder.bind(UpdateAmountOwingJob.class);
 	}
 
-	@EagerLoad
+    @EagerLoad
+    public static CryptoKeys buildCryptoKeys(@Inject final PreferenceController preferenceController) {
+        return new CryptoKeys() {
+            @Override
+            public String getServicesSecurityKey() {
+                return preferenceController.getServicesSecurityKey();
+            }
+
+            @Override
+            public String getAuskeyCertificate() {
+                return preferenceController.getAuskeyCertificate();
+            }
+
+            @Override
+            public String getAuskeyPrivateKey() {
+                return preferenceController.getAuskeyPrivateKey();
+            }
+
+            @Override
+            public String getAuskeySalt() {
+                return preferenceController.getAuskeySalt();
+            }
+
+            @Override
+            public String getAuskeyPassword() {
+                return preferenceController.getAuskeyPassword();
+            }
+        };
+    }
+
+    @EagerLoad
 	public static USIService buildUSIService() {
 		if (TestUSIServiceEndpoint.useTestUSIEndpoint()) {
 			return USIService.valueOf(new TestUSIServiceEndpoint());
