@@ -4,6 +4,12 @@ apply plugin: 'groovy'
 sourceSets.main.groovy.srcDir 'src/main/java'
 sourceSets.test.groovy.srcDir 'src/test/java'
 
+//groovy compile should read source files in UTF-8
+//because some tests (ish.oncourse.services.textile.TextileUtilTest.test_unicodeQuotesEncoding)
+//use UTF-8 chars
+compileGroovy.options.encoding = 'UTF-8'
+compileTestGroovy.options.encoding = 'UTF-8'
+
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:3.0'
 
