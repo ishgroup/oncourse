@@ -1,97 +1,56 @@
 package ish.oncourse.services.paymentexpress
 
-import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub
 import ish.oncourse.model.PaymentOut
-import ish.oncourse.paymentexpress.customization.PaymentExpressWSLocatorWithSoapResponseHandle
+import ish.oncourse.model.PaymentOutTransaction
+import ish.oncourse.model.PaymentTransaction
+import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.payment.PaymentInModel
-import org.apache.logging.log4j.LogManager
+import org.apache.cayenne.ObjectContext
 import org.apache.tapestry5.ioc.annotations.Scope
-
-import javax.xml.rpc.ServiceException
-import java.rmi.RemoteException
-
-import static ish.oncourse.services.paymentexpress.DPSResponse.ResultStatus.*
 
 @Scope("perthread")
 class NewPaymentExpressGatewayService implements INewPaymentGatewayService {
 
-	def logger = LogManager.getLogger();
+	private final ICayenneService cayenneService;
 
-	/**
-	 * Webservices calls timeout.
-	 */
-	static final int TIMEOUT = 1000 * 120;
-	static final int RETRY_INTERVAL = 2000;
-	static final int NUMBER_OF_ATTEMPTS = 5;
+
+	def NewPaymentExpressGatewayService(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService
+	}
+	
 
 	def submit(PaymentInModel model, String billingId = null) {
+
+		ObjectContext transactionContext = cayenneService.newNonReplicatingContext()
+		PaymentTransaction currentTransaction = transactionContext.newObject(PaymentTransaction.class)
+		currentTransaction.setPayment(transactionContext.localObject(model.paymentIn))
+		transactionContext.commitChanges()
+		
 		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, billingId).build()
-		ProcessDPSResponse.valueOf(model, submitRequest(request)).process()
+		DPSResponse response = createGatewayHelper().submitRequest(request)
+		
+		ProcessDPSResponse.valueOf(model, response).process()
+		ProcessPaymentTransaction.valueOf(currentTransaction, response).process()
 	}
 
 	def submit(PaymentOut paymentOut) {
+		
+		ObjectContext transactionContext = cayenneService.newNonReplicatingContext()
+		PaymentOutTransaction currentTransaction = transactionContext.newObject(PaymentOutTransaction.class)
+		currentTransaction.setCreated(new Date())
+		currentTransaction.setModified(new Date())
+		currentTransaction.setPaymentOut(transactionContext.localObject(paymentOut))
+		
 		DPSRequest request = DPSRequestBuilder.valueOf(paymentOut).build()
-		ProcessDPSResponse.valueOf(paymentOut, submitRequest(request)).process()
+		DPSResponse response = createGatewayHelper().submitRequest(request)
+		
+		ProcessDPSResponse.valueOf(paymentOut, response).process()
+		ProcessPaymentTransaction.valueOf(currentTransaction, response).process()
+
 	}
 
-	protected DPSResponse submitRequest(DPSRequest request) {
-		DPSResponse response
-		retry(
-				{response = processDPSRequest(request)},
-				{RETRY.equals(response.status)},
-				{ e -> logger.error("Attempt to submit payment transaction was failed", e.getStackTrace(), e) })
-		return response
-	}
-	
-	protected DPSResponse processDPSRequest(DPSRequest dpsRequest) {
-		def stub = soapClientStub()
-		def result
-		try {
-			result = DPSResponse.valueOf(stub.submitTransaction(dpsRequest.paymentGatewayAccount, dpsRequest.paymentGatewayPass, dpsRequest.transactionDetails))
-			return UNKNOWN.equals(result.status)  ? getStatus(stub, dpsRequest) : result
-		} catch (RemoteException e) {
-			logger.warn("Cannot submitTransaction for payment with txnRef: {}", dpsRequest.transactionDetails.txnRef, e);
-			return getStatus(stub, dpsRequest)
-		}
-	}
-
-	def getStatus = {stub, dpsRequest ->
-		def result
-		retry({result = DPSResponse.valueOf(stub.getStatus(dpsRequest.paymentGatewayAccount,  dpsRequest.paymentGatewayPass, dpsRequest.transactionDetails.txnRef))},
-				{UNKNOWN.equals(result.status)},
-				{ e -> logger.error("Attempt to  verify payment status was failed", e.getStackTrace(), e) })
-		return result 
-	}
-
-	static retry = { Closure body, Closure shouldRetry = {false}, Closure errorHandler, times = NUMBER_OF_ATTEMPTS  ->
-		int retries = 0
-		while(retries++ < times) {
-			try {
-				body.call();
-				if (!shouldRetry.call()) {
-					return
-				} else {
-					Thread.sleep(RETRY_INTERVAL)
-				}
-			} catch(e) {
-				errorHandler.call(e)
-			}
-		}
-		return
-	}
-
-	/**
-	 * Initializes soap client.
-	 *
-	 * @return
-	 * @throws javax.xml.rpc.ServiceException
-	 */
-	def PaymentExpressWSSoap12Stub soapClientStub() throws ServiceException {
-		def serviceLocator = new PaymentExpressWSLocatorWithSoapResponseHandle();
-		serviceLocator.setPaymentExpressWSSoapEndpointAddress("https://sec.paymentexpress.com/WSV1/PXWS.asmx");
-		PaymentExpressWSSoap12Stub stub = (PaymentExpressWSSoap12Stub) serviceLocator.getPaymentExpressWSSoap12();
-		stub.setTimeout(TIMEOUT);
-		return stub;
+	protected GatewayHelper createGatewayHelper() {
+		return new GatewayHelper()
 	}
 
 }

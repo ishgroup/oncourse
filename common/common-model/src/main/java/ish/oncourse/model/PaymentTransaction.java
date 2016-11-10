@@ -4,7 +4,7 @@ import ish.oncourse.model.auto._PaymentTransaction;
 
 import java.util.Date;
 
-public class PaymentTransaction extends _PaymentTransaction {
+public class PaymentTransaction extends _PaymentTransaction implements IPaymentTransaction {
 	private static final long serialVersionUID = -3879382348217850073L;
 	public static final String REFERENCE_ID_PARAM = "ref";
 	public static final String APPROVED_RESPONSE = "APPROVED";

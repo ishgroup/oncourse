@@ -1,18 +1,24 @@
 package ish.oncourse.services.paymentexpress
 
 import ish.oncourse.services.ServiceModule
+import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.preference.PreferenceController
 import org.apache.tapestry5.ioc.annotations.Inject
+
+import static ish.oncourse.model.PaymentGatewayType.*
 
 class NewPaymentGatewayServiceBuilder implements INewPaymentGatewayServiceBuilder {
 
 
 	private final PreferenceController preferenceController;
-
+	private final ICayenneService cayenneService;
+	
 	@Inject
-	def NewPaymentGatewayServiceBuilder(PreferenceController preferenceController) {
+	def NewPaymentGatewayServiceBuilder(PreferenceController preferenceController, ICayenneService cayenneService) {
 		super();
 		this.preferenceController = preferenceController;
+		this.cayenneService = cayenneService;
+
 	}
 
 	/**
@@ -30,7 +36,7 @@ class NewPaymentGatewayServiceBuilder implements INewPaymentGatewayServiceBuilde
 
 		switch (preferenceController.paymentGatewayType) {
 			case PAYMENT_EXPRESS:
-				return new NewPaymentExpressGatewayService();
+				return new NewPaymentExpressGatewayService(cayenneService);
 			case TEST:
 				return new NewTestPaymentGatewayService();
 			default:
