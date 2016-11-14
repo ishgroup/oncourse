@@ -207,8 +207,27 @@
 			}
 
 			ul.dropdown-menu {
-				background: #FEFBE8;
+				background: none;
 				display: none;
+				width: 100%;
+				position: relative;
+				background: none;
+				border: none;
+				box-shadow: none;
+				top: 0;
+				margin: 18px 0 0px;
+				padding-top: 20px;
+				@include responsive($media-xsmall) {
+					width: 172px;
+				}
+				&::after {
+					content: "";
+					position: absolute;
+					border-top: 1px solid $calendar-fc-date-color;
+					left: -21px;
+					right: -18px;
+					top: 0;
+				}
 			}
 
 			button.btn {
@@ -221,7 +240,7 @@
 				padding-right: 0;
 			    position: absolute;
 			    right: 0;
-				display: none;
+				display: none !important;
 				// float: right;
 
 				.caret {
@@ -240,16 +259,22 @@
 			display: none;
 			@include border-radius(0 0 10px 10px);
 			z-index: 9;
+			border-top: 1px solid $calendar-fc-date-color;
 
 			> li {
-				border-top: 1px solid $dasboard-resources-border;
+				display: inline-block;
+				text-transform: capitalize;
+				padding: 20px 0;
 
 				> a {
-					padding: 10px 20px;
+					padding: 0px 20px;
 					display: block;
 
 					&:hover {
 						text-decoration: none;
+					}
+					&.link-user-switch {
+						border-right: 1px solid $calendar-fc-date-color;
 					}
 				}
 

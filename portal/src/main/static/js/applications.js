@@ -7,7 +7,7 @@ var target;
 
 $j(document).ready(function () {
 
-    
+
     if (window.location.href.indexOf("/applications") > -1 && window.location.hash != "") {
 
         target = window.location.hash;
@@ -56,7 +56,7 @@ $j(document).ready(function () {
     });
 
 
-    
+
     $j("a[href^='/portal/history/applications#application-']").click(function(e) {
         if (!$j("a[href^='#applications-history']").closest('li').hasClass('active')) {
             location.reload();
@@ -65,8 +65,15 @@ $j(document).ready(function () {
             scrollToTarget(this.hash);
         }
     });
-    
-   
+
+    $j('.header-top .nav-links.logged .change-user ul.dropdown-menu').slimscroll({
+        height: 250
+    });
+
+    $j(document).on('click', '.link-user-switch', function(e) {
+        e.preventDefault();
+        $j('.change-user > button.dropdown-toggle').trigger('click');
+    })
 });
 
 $j(window).load(function() {

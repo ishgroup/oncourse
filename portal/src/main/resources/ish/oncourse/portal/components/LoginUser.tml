@@ -2,8 +2,13 @@
 
 	<div class="collapse nav-links logged navbar-collapse">
 		<strong>${contact.givenName} ${contact.familyName}</strong>
-       
+
 		<ul class="clearfix">
+            <t:if test="needToShow()">
+                <li>
+                    <a href="#" class="link-user-switch">View all users</a>
+                </li>
+            </t:if>
             <li>
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
             </li>
