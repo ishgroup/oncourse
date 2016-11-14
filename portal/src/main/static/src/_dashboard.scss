@@ -31,8 +31,10 @@
   .about-class, .class-map {
     height: 100%;
     padding: 20px;
-    @include responsive($media-small) {
-      width: 50%;
+    width: 50%;
+    .text-overflow.next-session-title {
+      height: auto;
+      max-height: 110px;
     }
   }
 
@@ -235,6 +237,10 @@
         color: black;
         display: inline-block;
         width: 80%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        vertical-align: middle;
       }
 
       .glyphicon-file {
