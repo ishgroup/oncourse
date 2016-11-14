@@ -46,13 +46,13 @@ var Message = {
     nextPaymentAmount: Handlebars.compile("Next amount due is <span id='next-payment-amount'>{{amount}}</span> on <span id='next-payment-due-date'>{{dateDue}}</span>"),
     thisInvoiceAlreadyPaid: Handlebars.compile("<span>Your invoice what you have tried to pay for is already paid</span>"),
     thereIsPaymentInTransaction: Handlebars.compile("<span>You have a payment already being processed by the system. You should finish this process before next payment</span>"),
-    invalidCreditCard: Handlebars.compile("<span><h2>Your payment was failed</h2> " +
+    invalidCreditCard: Handlebars.compile("<span><h2>Your payment failed</h2> " +
         "<p>Please check your credit card details or credit balance and try again. In particular, check the CVV and expiry date have been entered correctly.</p></span>"),
     paymentSuccessful: Handlebars.compile("<span>" +
         " <h2>Payment <span>&#187;</span> Successful</h2>" +
         " <p>Your payment was <strong>SUCCESSFUL</strong> and recorded in our system against reference number <strong>W{{paymentId}}</strong>.</p>" +
         " </span>"),
-    paymentFailed: Handlebars.compile("<span><h2>Your payment was failed</h2> " +
+    paymentFailed: Handlebars.compile("<span><h2>Your payment failed</h2> " +
         "<p>Please check your credit card details or credit balance and try again. In particular, check the CVV and expiry date have been entered correctly.</p></span>"),
     waitResult: Handlebars.compile("<span>Payment is now being processed against the bank. Please wait...</span>"),
     amountLessThan20Dollars:  Handlebars.compile("<span>The minimum amount for a payment is $20. Please correct it and try again. </span>"),
