@@ -29,36 +29,38 @@ jar {
 	}
 }
 
-task testSecureRandom(dependsOn: testClasses) << {
-	if (new File("build/randomPasswordTest.txt").exists()) {
-		new File("build/randomPasswordTest.txt").delete();
-	}
-
-	for (int i=0;i<100;i++) {
-		//its important to fork
-		ant.java(
-			classname: 'ish.util.SecurityUtilTest',
-			fork: true,
-			classpath: sourceSets.test.runtimeClasspath.asPath,
-			dir: project.projectDir,
-			failonerror: true) {
+task testSecureRandom(dependsOn: testClasses) {
+	doLast {
+		if (new File("build/randomPasswordTest.txt").exists()) {
+			new File("build/randomPasswordTest.txt").delete();
 		}
 
-		// read the file, store the strings in a list for easy access
-		List<String> lines = new ArrayList<String>();
-		new BufferedReader(new FileReader("build/randomPasswordTest.txt"))
-    	 	.eachLine(){ s ->
-      			lines.add(s);
-		}
+		for (int i=0;i<100;i++) {
+			//its important to fork
+			ant.java(
+				classname: 'ish.util.SecurityUtilTest',
+				fork: true,
+				classpath: sourceSets.test.runtimeClasspath.asPath,
+				dir: project.projectDir,
+				failonerror: true) {
+			}
 
-		// get last generated item, remove from the list
-		String lastAdded = lines.get(lines.size()-1)
-		lines.remove(lines.size()-1);
+			// read the file, store the strings in a list for easy access
+			List<String> lines = new ArrayList<String>();
+			new BufferedReader(new FileReader("build/randomPasswordTest.txt"))
+	    	 	.eachLine(){ s ->
+	      			lines.add(s);
+			}
 
-		assert !lines.contains(lastAdded)
+			// get last generated item, remove from the list
+			String lastAdded = lines.get(lines.size()-1)
+			lines.remove(lines.size()-1);
 
-		if (i%10 == 0) {
-			println "Generated ${i} random hashes..."
+			assert !lines.contains(lastAdded)
+
+			if (i%10 == 0) {
+				println "Generated ${i} random hashes..."
+			}
 		}
 	}
 }
