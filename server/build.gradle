@@ -118,6 +118,17 @@ dependencies {
 	testCompile 'org.kohsuke:wordnet-random-name:1.3'
 }
 
+configurations {
+    apidocSource
+}
+
+configurations.all {
+	resolutionStrategy {
+		// this is the last MPL version of iText, so we can't go past this
+		forcedModules = ['com.lowagie:itext:2.1.7.js2']
+	}
+}
+
 jar {
 	manifest {
 		from sharedManifest
@@ -131,15 +142,6 @@ sourceSets {
 	// generate some manifest files for lists of resources to find at runtime
 	output.dir("$buildDir/generated-resources/main", builtBy: 'createResourceManifests')
   }
-}
-
-configurations.all {
-	// this is the last MPL version of iText, so we can't go past this
-	resolutionStrategy.force 'com.lowagie:itext:2.1.7.js2'
-}
-
-configurations {
-    apidocSource
 }
 
 dependencies {
@@ -363,26 +365,26 @@ task installer_winService64(dependsOn: [bundle_winService64, prepareKeychains], 
 	}
 }
 
-task switchReplicationVersion << {
+task switchReplicationVersion {
+	doLast {
+		FileTree serverFiles = fileTree(dir: 'src/main/java/ish/oncourse/server/replication/')
+				.plus(fileTree(dir: 'src/test/java/ish/oncourse/server/replication/'))
+				.plus(fileTree(dir: 'src/main/java/ish/oncourse/server/modules/'))
+				.plus(fileTree(dir: 'src/test/java/ish/oncourse/server/upgrades/'))
 
-	FileTree serverFiles = fileTree(dir: 'src/main/java/ish/oncourse/server/replication/')
-			.plus(fileTree(dir: 'src/test/java/ish/oncourse/server/replication/'))
-			.plus(fileTree(dir: 'src/main/java/ish/oncourse/server/modules/'))
-			.plus(fileTree(dir: 'src/test/java/ish/oncourse/server/upgrades/'))
 
-
-	serverFiles.each { File serverFile ->
-		print(serverFile.getName())
-		String content = serverFile.getText()
-		serverFile.write(content.readLines().collect { line -> line.startsWith("import") ? line.replaceAll(oldV, newV) : line }.join("\n").concat("\n"))
+		serverFiles.each { File serverFile ->
+			print(serverFile.getName())
+			String content = serverFile.getText()
+			serverFile.write(content.readLines().collect { line -> line.startsWith("import") ? line.replaceAll(oldV, newV) : line }.join("\n").concat("\n"))
+		}
+		
+		File resourcesFile = file("src/main/java/ish/oncourse/server/modules/SoapPortLocatorImpl.java")
+		String resourcesContent = resourcesFile.getText()
+		resourcesFile.write(resourcesContent.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/replication", "https://secure-payment.oncourse.net.au/services/${newV}/replication")
+											.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/payment", "https://secure-payment.oncourse.net.au/services/${newV}/payment")
+											.replaceAll("wsdl/${oldV}_replication.wsdl", "wsdl/${newV}_replication.wsdl"))
 	}
-	
-	File resourcesFile = file("src/main/java/ish/oncourse/server/modules/SoapPortLocatorImpl.java")
-	String resourcesContent = resourcesFile.getText()
-	resourcesFile.write(resourcesContent.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/replication", "https://secure-payment.oncourse.net.au/services/${newV}/replication")
-										.replaceAll("https://secure-payment.oncourse.net.au/services/${oldV}/payment", "https://secure-payment.oncourse.net.au/services/${newV}/payment")
-										.replaceAll("wsdl/${oldV}_replication.wsdl", "wsdl/${newV}_replication.wsdl"))
-	
 }
 
 
