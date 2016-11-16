@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="fieldHeadingId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="property" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="property" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="defaultValue" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="mandatory" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="order" type="{http://www.w3.org/2001/XMLSchema}int"/>
@@ -62,10 +62,8 @@ public class FieldStub
     protected String description;
     @XmlElement(required = true)
     protected String name;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
-    @XmlSchemaType(name = "boolean")
-    protected Boolean property;
+    @XmlElement(required = true)
+    protected String property;
     @XmlElement(required = true)
     protected String defaultValue;
     @XmlElement(required = true, type = String.class)
@@ -181,7 +179,7 @@ public class FieldStub
      *     {@link String }
      *     
      */
-    public Boolean isProperty() {
+    public String getProperty() {
         return property;
     }
 
@@ -193,7 +191,7 @@ public class FieldStub
      *     {@link String }
      *     
      */
-    public void setProperty(Boolean value) {
+    public void setProperty(String value) {
         this.property = value;
     }
 

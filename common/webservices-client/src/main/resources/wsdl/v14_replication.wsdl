@@ -1559,7 +1559,7 @@
 							<xs:element name="fieldHeadingId" type="xs:long"/>
 							<xs:element name="description" type="xs:string"/>
 							<xs:element name="name" type="xs:string"/>
-							<xs:element name="property" type="xs:boolean"/>
+							<xs:element name="property" type="xs:string"/>
 							<xs:element name="defaultValue" type="xs:string"/>
 							<xs:element name="mandatory" type="xs:boolean"/>
 							<xs:element name="order" type="xs:int"/>
