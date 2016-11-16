@@ -89,6 +89,10 @@
 			<xs:element name="assessmentClass" type="tns:assessmentClassStub"/>
 			<xs:element name="assessmentClassTutor" type="tns:assessmentClassTutorStub"/>
 			<xs:element name="assessmentSubmission" type="tns:assessmentSubmissionStub"/>
+			<xs:element name="field" type="tns:fieldStub"/>
+			<xs:element name="fieldConfiguration" type="tns:fieldConfigurationStub"/>
+			<xs:element name="fieldConfigurationScheme" type="tns:fieldConfigurationSchemeStub"/>
+			<xs:element name="fieldHeading" type="tns:fieldHeadingStub"/>
 			<xs:element name="hollow" type="tns:hollowStub" />
 			<xs:element name="deleted" type="tns:deletedStub" />
 			<xs:element name="confirmExecution" type="tns:confirmExecution" />
@@ -473,6 +477,7 @@
 							<xs:element name="searchText" type="xs:string" />
 							<xs:element name="qualificationId" type="xs:long" />
 							<xs:element name="enrolmentType" type="xs:int" />
+							<xs:element name="fieldConfigurationSchemeId" type="xs:long"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -1378,6 +1383,7 @@
 							<xs:element name="name" type="xs:string"/>
 							<xs:element name="defaultValue" type="xs:string"/>
 							<xs:element name="mandatory" type="xs:boolean"/>
+							<xs:element name="key" type="xs:string"/>
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
@@ -1545,6 +1551,58 @@
 				</xs:complexContent>
 			</xs:complexType>			
 			
+			<xs:complexType name="fieldStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="fieldConfigurationId" type="xs:long"/>
+							<xs:element name="fieldHeadingId" type="xs:long"/>
+							<xs:element name="description" type="xs:string"/>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="property" type="xs:boolean"/>
+							<xs:element name="defaultValue" type="xs:string"/>
+							<xs:element name="mandatory" type="xs:boolean"/>
+							<xs:element name="order" type="xs:int"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="fieldConfigurationStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="name" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="fieldConfigurationSchemeStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="applicationFieldConfigurationId" type="xs:long"/>
+							<xs:element name="enrolFieldConfigurationId" type="xs:long"/>
+							<xs:element name="waitingListFieldConfigurationId" type="xs:long"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="fieldHeadingStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="description" type="xs:string"/>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="fieldConfigurationId" type="xs:long"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+
 			<xs:complexType name="confirmExecution">
 				<xs:sequence>
 					<xs:element minOccurs="0" name="id" type="xs:long" />

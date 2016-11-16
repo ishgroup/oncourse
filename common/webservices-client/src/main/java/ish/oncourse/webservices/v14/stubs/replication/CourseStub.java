@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="searchText" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="qualificationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="enrolmentType" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="fieldConfigurationSchemeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -55,7 +56,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "nominalHours",
     "searchText",
     "qualificationId",
-    "enrolmentType"
+    "enrolmentType",
+    "fieldConfigurationSchemeId"
 })
 public class CourseStub
     extends ReplicationStub
@@ -99,6 +101,10 @@ public class CourseStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer enrolmentType;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long fieldConfigurationSchemeId;
 
     /**
      * Gets the value of the allowWaitingList property.
@@ -410,6 +416,30 @@ public class CourseStub
      */
     public void setEnrolmentType(Integer value) {
         this.enrolmentType = value;
+    }
+
+    /**
+     * Gets the value of the fieldConfigurationSchemeId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getFieldConfigurationSchemeId() {
+        return fieldConfigurationSchemeId;
+    }
+
+    /**
+     * Sets the value of the fieldConfigurationSchemeId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFieldConfigurationSchemeId(Long value) {
+        this.fieldConfigurationSchemeId = value;
     }
 
 }

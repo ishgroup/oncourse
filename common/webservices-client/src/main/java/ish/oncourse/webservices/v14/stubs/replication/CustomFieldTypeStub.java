@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="defaultValue" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="mandatory" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="key" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "customFieldTypeStub", propOrder = {
     "name",
     "defaultValue",
-    "mandatory"
+    "mandatory",
+    "key"
 })
 public class CustomFieldTypeStub
     extends ReplicationStub
@@ -48,6 +50,8 @@ public class CustomFieldTypeStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean mandatory;
+    @XmlElement(required = true)
+    protected String key;
 
     /**
      * Gets the value of the name property.
@@ -119,6 +123,30 @@ public class CustomFieldTypeStub
      */
     public void setMandatory(Boolean value) {
         this.mandatory = value;
+    }
+
+    /**
+     * Gets the value of the key property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Sets the value of the key property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setKey(String value) {
+        this.key = value;
     }
 
 }
