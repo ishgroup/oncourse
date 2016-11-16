@@ -305,7 +305,7 @@
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="enrolmentType" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="fieldConfigurationSchemaId" type="BIGINT"/>
+		<db-attribute name="fieldConfigurationSchemeId" type="BIGINT"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isSufficientForQualification" type="BIT"/>
@@ -3110,8 +3110,8 @@
 	<db-relationship name="courseToRelation" source="Course" target="EntityRelation" toMany="true">
 		<db-attribute-pair source="id" target="toRecordId"/>
 	</db-relationship>
-	<db-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme" toMany="false">
-		<db-attribute-pair source="fieldConfigurationSchemaId" target="id"/>
+	<db-relationship name="fieldConfigurationScheme" source="Course" target="FieldConfigurationScheme" toMany="false">
+		<db-attribute-pair source="fieldConfigurationSchemeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="qualification" source="Course" target="Qualification" toMany="false">
 		<db-attribute-pair source="qualificationId" target="id"/>
@@ -3360,7 +3360,7 @@
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="courses" source="FieldConfigurationScheme" target="Course" toMany="true">
-		<db-attribute-pair source="id" target="fieldConfigurationSchemaId"/>
+		<db-attribute-pair source="id" target="fieldConfigurationSchemeId"/>
 	</db-relationship>
 	<db-relationship name="enrolFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" toMany="false">
 		<db-attribute-pair source="enrolFieldConfigurationId" target="id"/>
@@ -4150,7 +4150,7 @@
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="Course" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
-	<obj-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationSchema"/>
+	<obj-relationship name="fieldConfigurationScheme" source="Course" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
 	<obj-relationship name="fromCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseFromRelation"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
 	<obj-relationship name="toCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseToRelation"/>
