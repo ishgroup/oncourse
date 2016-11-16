@@ -54,7 +54,17 @@ public enum ApplicationStatus implements DisplayableExtendedEnumeration<Integer>
 	 * OFFERED application was rejected by student.
 	 */
 	@API
-	WITHDRAWN(4, "Withdrawn");
+	WITHDRAWN(4, "Withdrawn"),
+
+	/**
+	 * Database value: 5
+	 *
+	 * Status of un-actioned applications and new applications which are being 
+	 * assessed, but a judgement to offer or reject has not yet been made.
+	 */
+	@API
+	IN_PROGRESS(5, "In progress");
+	
 
 	private String displayName;
 	private int value;
