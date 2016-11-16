@@ -400,9 +400,9 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="defaultValue" type="VARCHAR" length="32000"/>
+		<db-attribute name="fieldKey" type="VARCHAR" length="200"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isMandatory" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="key" type="VARCHAR" length="200"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="requireForEnrolment" type="VARCHAR" length="20"/>
@@ -587,11 +587,11 @@
 		<db-attribute name="description" type="CLOB"/>
 		<db-attribute name="fieldConfigurationId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="fieldHeadingId" type="BIGINT"/>
+		<db-attribute name="fieldOrder" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="mandatory" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
-		<db-attribute name="order" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="property" type="VARCHAR" isMandatory="true" length="200"/>
 	</db-entity>
 	<db-entity name="FieldConfiguration">
@@ -1753,7 +1753,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="defaultValue" type="java.lang.String" db-attribute-path="defaultValue"/>
 		<obj-attribute name="isMandatory" type="java.lang.Boolean" db-attribute-path="isMandatory"/>
-		<obj-attribute name="key" type="java.lang.String" db-attribute-path="key"/>
+		<obj-attribute name="key" type="java.lang.String" db-attribute-path="fieldKey"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="requireForEnrolment" type="java.lang.String" db-attribute-path="requireForEnrolment"/>
@@ -1901,7 +1901,7 @@
 		<obj-attribute name="mandatory" type="java.lang.Boolean" db-attribute-path="mandatory"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="order" type="java.lang.Integer" db-attribute-path="order"/>
+		<obj-attribute name="order" type="java.lang.Integer" db-attribute-path="fieldOrder"/>
 		<obj-attribute name="property" type="java.lang.String" db-attribute-path="property"/>
 	</obj-entity>
 	<obj-entity name="FieldConfiguration" className="ish.oncourse.model.FieldConfiguration" dbEntityName="FieldConfiguration">

@@ -4330,7 +4330,7 @@
 			name VARCHAR(200) NOT NULL,
 			mandatory TINYINT(1) NOT NULL,
 			defaultValue VARCHAR(300) NULL,
-			`order` INTEGER NOT NULL,
+			fieldOrder INTEGER NOT NULL,
 			property VARCHAR(200) NOT NULL,
 			fieldConfigurationId BIGINT NOT NULL,
 			fieldHeadingId BIGINT NULL,
@@ -4341,7 +4341,7 @@
 			CONSTRAINT field_angelId_college_unique UNIQUE (collegeId, angelId),
 			CONSTRAINT field_name_fieldConfiguration_unique UNIQUE (fieldConfigurationId, name),
 			CONSTRAINT field_property_fieldConfiguration_unique UNIQUE (fieldConfigurationId, property),
-			CONSTRAINT field_order_fieldConfiguration_unique UNIQUE (fieldConfigurationId, `order`));
+			CONSTRAINT field_fieldOrder_fieldConfiguration_unique UNIQUE (fieldConfigurationId, fieldOrder));
 		</sql>
 	</changeSet>
 
@@ -4359,11 +4359,11 @@
 	<changeSet id="290" author="artyom" runOnChange="false" runAlways="false" context="production">
 		<preConditions>
 			<not>
-				<columnExists tableName="CustomFieldType" columnName="key"/>
+				<columnExists tableName="CustomFieldType" columnName="fieldKey"/>
 			</not>
 		</preConditions>
 		<sql>
-			ALTER TABLE CustomFieldType ADD COLUMN `key` VARCHAR(200);
+			ALTER TABLE CustomFieldType ADD COLUMN fieldKey VARCHAR(200);
 		</sql>
 	</changeSet>
 
