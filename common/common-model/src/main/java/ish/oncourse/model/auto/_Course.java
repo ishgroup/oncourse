@@ -12,6 +12,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseCourseRelation;
 import ish.oncourse.model.CourseModule;
+import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.VoucherProductCourse;
 import ish.oncourse.model.WaitingList;
@@ -45,6 +46,7 @@ public abstract class _Course extends CayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
+    public static final String FIELD_CONFIGURATION_SCHEMA_PROPERTY = "fieldConfigurationSchema";
     public static final String FROM_COURSES_PROPERTY = "fromCourses";
     public static final String QUALIFICATION_PROPERTY = "qualification";
     public static final String TO_COURSES_PROPERTY = "toCourses";
@@ -72,6 +74,7 @@ public abstract class _Course extends CayenneDataObject {
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<List<CourseClass>> COURSE_CLASSES = new Property<List<CourseClass>>("courseClasses");
     public static final Property<List<CourseModule>> COURSE_MODULES = new Property<List<CourseModule>>("courseModules");
+    public static final Property<FieldConfigurationScheme> FIELD_CONFIGURATION_SCHEMA = new Property<FieldConfigurationScheme>("fieldConfigurationSchema");
     public static final Property<List<CourseCourseRelation>> FROM_COURSES = new Property<List<CourseCourseRelation>>("fromCourses");
     public static final Property<Qualification> QUALIFICATION = new Property<Qualification>("qualification");
     public static final Property<List<CourseCourseRelation>> TO_COURSES = new Property<List<CourseCourseRelation>>("toCourses");
@@ -225,6 +228,15 @@ public abstract class _Course extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<CourseModule> getCourseModules() {
         return (List<CourseModule>)readProperty("courseModules");
+    }
+
+
+    public void setFieldConfigurationSchema(FieldConfigurationScheme fieldConfigurationSchema) {
+        setToOneTarget("fieldConfigurationSchema", fieldConfigurationSchema, true);
+    }
+
+    public FieldConfigurationScheme getFieldConfigurationSchema() {
+        return (FieldConfigurationScheme)readProperty("fieldConfigurationSchema");
     }
 
 

@@ -23,6 +23,7 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     public static final String CREATED_PROPERTY = "created";
     public static final String DEFAULT_VALUE_PROPERTY = "defaultValue";
     public static final String IS_MANDATORY_PROPERTY = "isMandatory";
+    public static final String KEY_PROPERTY = "key";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String REQUIRE_FOR_ENROLMENT_PROPERTY = "requireForEnrolment";
@@ -37,6 +38,7 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<String> DEFAULT_VALUE = new Property<String>("defaultValue");
     public static final Property<Boolean> IS_MANDATORY = new Property<Boolean>("isMandatory");
+    public static final Property<String> KEY = new Property<String>("key");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<String> NAME = new Property<String>("name");
     public static final Property<String> REQUIRE_FOR_ENROLMENT = new Property<String>("requireForEnrolment");
@@ -71,6 +73,13 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     }
     public Boolean getIsMandatory() {
         return (Boolean)readProperty("isMandatory");
+    }
+
+    public void setKey(String key) {
+        writeProperty("key", key);
+    }
+    public String getKey() {
+        return (String)readProperty("key");
     }
 
     public void setModified(Date modified) {

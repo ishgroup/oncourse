@@ -4241,4 +4241,130 @@
 		<sql>ALTER TABLE CourseClass ADD COLUMN fundingSource INTEGER NULL</sql>
 	</changeSet>
 
+	<changeSet id="285" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<tableExists tableName="FieldConfiguration"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE FieldConfiguration (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			name VARCHAR(200) NOT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_FieldConfiguration_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fieldConfiguration_angelId_college_unique UNIQUE (collegeId, angelId),
+			CONSTRAINT fieldConfiguration_name_college_unique UNIQUE (collegeId, name));
+		</sql>
+	</changeSet>
+
+	<changeSet id="286" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<tableExists tableName="FieldConfigurationScheme"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE FieldConfigurationScheme (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			name VARCHAR(200) NOT NULL,
+			applicationFieldConfigurationId BIGINT NOT NULL,
+			enrolFieldConfigurationId BIGINT NOT NULL,
+			waitingListFieldConfigurationId BIGINT NOT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_FieldConfigurationScheme_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fk_applicationFieldConfiguration FOREIGN KEY (applicationFieldConfigurationId) REFERENCES FieldConfiguration(id),
+			CONSTRAINT fk_enrolFieldConfiguration FOREIGN KEY (enrolFieldConfigurationId) REFERENCES FieldConfiguration(id),
+			CONSTRAINT fk_waitingListFieldConfiguration FOREIGN KEY (waitingListFieldConfigurationId) REFERENCES FieldConfiguration(id),
+			CONSTRAINT fieldConfigurationScheme_angelId_college_unique UNIQUE (collegeId, angelId),
+			CONSTRAINT fieldConfigurationScheme_name_college_unique UNIQUE (collegeId, name));
+		</sql>
+	</changeSet>
+
+	<changeSet id="287" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<tableExists tableName="FieldHeading"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE FieldHeading (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			description TEXT NULL,
+			name VARCHAR(200) NOT NULL,
+			fieldConfigurationId BIGINT NOT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_FieldHeading_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fk_FieldHeading_FieldConfiguration FOREIGN KEY (fieldConfigurationId) REFERENCES FieldConfiguration(id),
+			CONSTRAINT fieldHeading_angelId_college_unique UNIQUE (collegeId, angelId),
+			CONSTRAINT fieldHeading_name_fieldConfiguration_unique UNIQUE (fieldConfigurationId, name));
+		</sql>
+	</changeSet>
+
+	<changeSet id="288" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<tableExists tableName="Field"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE Field (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			description TEXT NULL,
+			name VARCHAR(200) NOT NULL,
+			mandatory TINYINT(1) NOT NULL,
+			defaultValue VARCHAR(300) NULL,
+			`order` INTEGER NOT NULL,
+			property VARCHAR(200) NOT NULL,
+			fieldConfigurationId BIGINT NOT NULL,
+			fieldHeadingId BIGINT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_Field_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fk_Field_FieldConfiguration FOREIGN KEY (fieldConfigurationId) REFERENCES FieldConfiguration(id),
+			CONSTRAINT fk_Field_FieldHeading FOREIGN KEY (fieldHeadingId) REFERENCES FieldHeading(id),
+			CONSTRAINT field_angelId_college_unique UNIQUE (collegeId, angelId),
+			CONSTRAINT field_name_fieldConfiguration_unique UNIQUE (fieldConfigurationId, name),
+			CONSTRAINT field_property_fieldConfiguration_unique UNIQUE (fieldConfigurationId, property),
+			CONSTRAINT field_order_fieldConfiguration_unique UNIQUE (fieldConfigurationId, `order`));
+		</sql>
+	</changeSet>
+
+	<changeSet id="289" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<columnExists tableName="Course" columnName="fieldConfigurationSchemaId"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Course ADD COLUMN fieldConfigurationSchemeId BIGINT, ADD CONSTRAINT fieldConfigurationScheme FOREIGN KEY (fieldConfigurationSchemeId) REFERENCES FieldConfigurationScheme(id);
+		</sql>
+	</changeSet>
+
+	<changeSet id="290" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<columnExists tableName="CustomFieldType" columnName="key"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE CustomFieldType ADD COLUMN `key` VARCHAR(200);
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

@@ -305,6 +305,7 @@
 		<db-attribute name="detail" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="detail_textile" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="enrolmentType" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="fieldConfigurationSchemaId" type="BIGINT"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="128"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="isSufficientForQualification" type="BIT"/>
@@ -401,6 +402,7 @@
 		<db-attribute name="defaultValue" type="VARCHAR" length="32000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isMandatory" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="key" type="VARCHAR" length="200"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="requireForEnrolment" type="VARCHAR" length="20"/>
@@ -576,6 +578,50 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="toEntityIdentifier" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="toRecordId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="Field">
+		<db-attribute name="angelId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="defaultValue" type="VARCHAR" length="300"/>
+		<db-attribute name="description" type="CLOB"/>
+		<db-attribute name="fieldConfigurationId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="fieldHeadingId" type="BIGINT"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="mandatory" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="order" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="property" type="VARCHAR" isMandatory="true" length="200"/>
+	</db-entity>
+	<db-entity name="FieldConfiguration">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
+	</db-entity>
+	<db-entity name="FieldConfigurationScheme">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="applicationFieldConfigurationId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="enrolFieldConfigurationId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="waitingListFieldConfigurationId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="FieldHeading">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="description" type="CLOB"/>
+		<db-attribute name="fieldConfigurationId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
 	</db-entity>
 	<db-entity name="Instruction">
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
@@ -1707,6 +1753,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="defaultValue" type="java.lang.String" db-attribute-path="defaultValue"/>
 		<obj-attribute name="isMandatory" type="java.lang.Boolean" db-attribute-path="isMandatory"/>
+		<obj-attribute name="key" type="java.lang.String" db-attribute-path="key"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="requireForEnrolment" type="java.lang.String" db-attribute-path="requireForEnrolment"/>
@@ -1845,6 +1892,36 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="toEntityIdentifier" type="ish.common.types.EntityRelationType" db-attribute-path="toEntityIdentifier"/>
 		<obj-attribute name="toEntityWillowId" type="java.lang.Long" db-attribute-path="toRecordId"/>
+	</obj-entity>
+	<obj-entity name="Field" className="ish.oncourse.model.Field" dbEntityName="Field">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="defaultValue" type="java.lang.String" db-attribute-path="defaultValue"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="mandatory" type="java.lang.Boolean" db-attribute-path="mandatory"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="order" type="java.lang.Integer" db-attribute-path="order"/>
+		<obj-attribute name="property" type="java.lang.String" db-attribute-path="property"/>
+	</obj-entity>
+	<obj-entity name="FieldConfiguration" className="ish.oncourse.model.FieldConfiguration" dbEntityName="FieldConfiguration">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
+	<obj-entity name="FieldConfigurationScheme" className="ish.oncourse.model.FieldConfigurationScheme" dbEntityName="FieldConfigurationScheme">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
+	<obj-entity name="FieldHeading" className="ish.oncourse.model.FieldHeading" dbEntityName="FieldHeading">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
 	<obj-entity name="Instruction" className="ish.oncourse.model.Instruction" dbEntityName="Instruction">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2730,6 +2807,18 @@
 	<db-relationship name="entityRelation" source="College" target="EntityRelation" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="fieldConfigurationSchemes" source="College" target="FieldConfigurationScheme" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="fieldConfigurations" source="College" target="FieldConfiguration" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="fieldHeadings" source="College" target="FieldHeading" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="fields" source="College" target="Field" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="instructions" source="College" target="Instruction" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -3021,6 +3110,9 @@
 	<db-relationship name="courseToRelation" source="Course" target="EntityRelation" toMany="true">
 		<db-attribute-pair source="id" target="toRecordId"/>
 	</db-relationship>
+	<db-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme" toMany="false">
+		<db-attribute-pair source="fieldConfigurationSchemaId" target="id"/>
+	</db-relationship>
 	<db-relationship name="qualification" source="Course" target="Qualification" toMany="false">
 		<db-attribute-pair source="qualificationId" target="id"/>
 	</db-relationship>
@@ -3233,6 +3325,57 @@
 	</db-relationship>
 	<db-relationship name="relationToProduct" source="EntityRelation" target="Product" toMany="false">
 		<db-attribute-pair source="toRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="Field" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" toMany="false">
+		<db-attribute-pair source="fieldConfigurationId" target="id"/>
+	</db-relationship>
+	<db-relationship name="fieldHeading" source="Field" target="FieldHeading" toMany="false">
+		<db-attribute-pair source="fieldHeadingId" target="id"/>
+	</db-relationship>
+	<db-relationship name="applicationFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" toMany="true">
+		<db-attribute-pair source="id" target="applicationFieldConfigurationId"/>
+	</db-relationship>
+	<db-relationship name="college" source="FieldConfiguration" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="enrolFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" toMany="true">
+		<db-attribute-pair source="id" target="enrolFieldConfigurationId"/>
+	</db-relationship>
+	<db-relationship name="fieldHeadings" source="FieldConfiguration" target="FieldHeading" toMany="true">
+		<db-attribute-pair source="id" target="fieldConfigurationId"/>
+	</db-relationship>
+	<db-relationship name="fields" source="FieldConfiguration" target="Field" toMany="true">
+		<db-attribute-pair source="id" target="fieldConfigurationId"/>
+	</db-relationship>
+	<db-relationship name="waitingListFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" toMany="true">
+		<db-attribute-pair source="id" target="waitingListFieldConfigurationId"/>
+	</db-relationship>
+	<db-relationship name="applicationFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" toMany="false">
+		<db-attribute-pair source="applicationFieldConfigurationId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="FieldConfigurationScheme" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="courses" source="FieldConfigurationScheme" target="Course" toMany="true">
+		<db-attribute-pair source="id" target="fieldConfigurationSchemaId"/>
+	</db-relationship>
+	<db-relationship name="enrolFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" toMany="false">
+		<db-attribute-pair source="enrolFieldConfigurationId" target="id"/>
+	</db-relationship>
+	<db-relationship name="waitingListFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" toMany="false">
+		<db-attribute-pair source="waitingListFieldConfigurationId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="FieldHeading" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="fieldConfiguration" source="FieldHeading" target="FieldConfiguration" toMany="false">
+		<db-attribute-pair source="fieldConfigurationId" target="id"/>
+	</db-relationship>
+	<db-relationship name="fields" source="FieldHeading" target="Field" toMany="true">
+		<db-attribute-pair source="id" target="fieldHeadingId"/>
 	</db-relationship>
 	<db-relationship name="college" source="Instruction" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
@@ -4007,6 +4150,7 @@
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="Course" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
+	<obj-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationSchema"/>
 	<obj-relationship name="fromCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseFromRelation"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
 	<obj-relationship name="toCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseToRelation"/>
@@ -4077,6 +4221,23 @@
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="surveys" source="Enrolment" target="Survey" deleteRule="Deny" db-relationship-path="surveys"/>
 	<obj-relationship name="college" source="EntityRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="college" source="Field" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
+	<obj-relationship name="fieldHeading" source="Field" target="FieldHeading" deleteRule="Nullify" db-relationship-path="fieldHeading"/>
+	<obj-relationship name="applicationFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" deleteRule="Deny" db-relationship-path="applicationFieldConfigurationSchemes"/>
+	<obj-relationship name="college" source="FieldConfiguration" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="enrolFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" deleteRule="Deny" db-relationship-path="enrolFieldConfigurationSchemes"/>
+	<obj-relationship name="fieldHeadings" source="FieldConfiguration" target="FieldHeading" deleteRule="Deny" db-relationship-path="fieldHeadings"/>
+	<obj-relationship name="fields" source="FieldConfiguration" target="Field" deleteRule="Deny" db-relationship-path="fields"/>
+	<obj-relationship name="waitingListFieldConfigurationSchemes" source="FieldConfiguration" target="FieldConfigurationScheme" deleteRule="Deny" db-relationship-path="waitingListFieldConfigurationSchemes"/>
+	<obj-relationship name="applicationFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="applicationFieldConfiguration"/>
+	<obj-relationship name="college" source="FieldConfigurationScheme" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="courses" source="FieldConfigurationScheme" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
+	<obj-relationship name="enrolFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="enrolFieldConfiguration"/>
+	<obj-relationship name="waitingListFieldConfiguration" source="FieldConfigurationScheme" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="waitingListFieldConfiguration"/>
+	<obj-relationship name="college" source="FieldHeading" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="fieldConfiguration" source="FieldHeading" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
+	<obj-relationship name="fields" source="FieldHeading" target="Field" deleteRule="Deny" db-relationship-path="fields"/>
 	<obj-relationship name="college" source="Instruction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="parameters" source="Instruction" target="InstructionParameter" deleteRule="Cascade" db-relationship-path="parameters"/>
 	<obj-relationship name="instruction" source="InstructionParameter" target="Instruction" deleteRule="Nullify" db-relationship-path="instruction"/>
