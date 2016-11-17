@@ -29,6 +29,9 @@ public class CourseStubBuilder extends AbstractWillowStubBuilder<Course, CourseS
 		stub.setVETCourse(entity.getIsVETCourse());
 		stub.setWebVisible(entity.getIsWebVisible());
 		stub.setEnrolmentType(entity.getEnrolmentType().getDatabaseValue());
+		if (entity.getFieldConfigurationScheme() != null) {
+			stub.setFieldConfigurationSchemeId(entity.getFieldConfigurationScheme().getId());
+		}
 		return stub;
 	}
 }

@@ -3,6 +3,7 @@ package ish.oncourse.webservices.replication.v14.updaters;
 import ish.common.types.CourseEnrolmentType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
@@ -41,5 +42,6 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 		}
 		entity.setSearchText(stub.getSearchText());
 		entity.setEnrolmentType(TypesUtil.getEnumForDatabaseValue(stub.getEnrolmentType(), CourseEnrolmentType.class));
+		entity.setFieldConfigurationScheme(callback.updateRelationShip(stub.getFieldConfigurationSchemeId(), FieldConfigurationScheme.class));
 	}
 }
