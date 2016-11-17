@@ -3,21 +3,16 @@
  */
 package ish.oncourse.webservices.replication.v14.updaters;
 
-import ish.oncourse.model.CustomFieldType;
+import ish.oncourse.model.FieldConfiguration;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.v14.stubs.replication.CustomFieldTypeStub;
+import ish.oncourse.webservices.v14.stubs.replication.FieldConfigurationStub;
 
-public class CustomFieldTypeUpdater extends AbstractWillowUpdater<CustomFieldTypeStub, CustomFieldType> {
-
+public class FieldConfigurationUpdater extends AbstractWillowUpdater<FieldConfigurationStub, FieldConfiguration> {
 	@Override
-	protected void updateEntity(CustomFieldTypeStub stub, CustomFieldType entity, RelationShipCallback callback) {
+	protected void updateEntity(FieldConfigurationStub stub, FieldConfiguration entity, RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
-		
 		entity.setName(stub.getName());
-		entity.setDefaultValue(stub.getDefaultValue());
-		entity.setIsMandatory(stub.isMandatory());
-		entity.setKey(stub.getKey());
 	}
 }
