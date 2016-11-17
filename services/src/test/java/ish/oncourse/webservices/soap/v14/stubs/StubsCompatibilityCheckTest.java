@@ -182,6 +182,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		courseParameters.add(new ReplicationStubFieldParameter("searchText", String.class));
 		courseParameters.add(new ReplicationStubFieldParameter("qualificationId", Long.class));
 		courseParameters.add(new ReplicationStubFieldParameter("enrolmentType", Integer.class));
+		courseParameters.add(new ReplicationStubFieldParameter("fieldConfigurationSchemeId", Long.class));
 		stubsPropertyMap.put(getStubName(CourseStub.class), courseParameters);
 		final List<ReplicationStubFieldParameter> discountParameters = fillDefaultReplicationStubFields();
 		discountParameters.add(new ReplicationStubFieldParameter("code", String.class));
@@ -582,6 +583,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("name", String.class));
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("defaultValue", String.class));
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("mandatory", Boolean.class));
+		customFieldTypeParameters.add(new ReplicationStubFieldParameter("key", String.class));
 		stubsPropertyMap.put(getStubName(CustomFieldTypeStub.class), customFieldTypeParameters);
 		
 		List<ReplicationStubFieldParameter> customFieldParameters = fillDefaultReplicationStubFields();
@@ -688,6 +690,36 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("tutorComments", String.class));
 		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("studentComments", String.class));
 		stubsPropertyMap.put(getStubName(AssessmentSubmissionStub.class), assessmentSubmissionParameters);
+
+
+		List<ReplicationStubFieldParameter> fieldParameters = fillDefaultReplicationStubFields();
+		fieldParameters.add(new ReplicationStubFieldParameter("fieldConfigurationId", Long.class));
+		fieldParameters.add(new ReplicationStubFieldParameter("fieldHeadingId", Long.class));
+		fieldParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		fieldParameters.add(new ReplicationStubFieldParameter("description", String.class));
+		fieldParameters.add(new ReplicationStubFieldParameter("property", String.class));
+		fieldParameters.add(new ReplicationStubFieldParameter("defaultValue", String.class));
+		fieldParameters.add(new ReplicationStubFieldParameter("mandatory", Boolean.class));
+		fieldParameters.add(new ReplicationStubFieldParameter("order", Integer.class));
+		stubsPropertyMap.put(getStubName(FieldStub.class), fieldParameters);
+
+		List<ReplicationStubFieldParameter> fieldHeadingParameters = fillDefaultReplicationStubFields();
+		fieldHeadingParameters.add(new ReplicationStubFieldParameter("fieldConfigurationId", Long.class));
+		fieldHeadingParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		fieldHeadingParameters.add(new ReplicationStubFieldParameter("description", String.class));
+		stubsPropertyMap.put(getStubName(FieldHeadingStub.class), fieldHeadingParameters);
+
+		List<ReplicationStubFieldParameter> fieldConfigurationParameters = fillDefaultReplicationStubFields();
+		fieldConfigurationParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		stubsPropertyMap.put(getStubName(FieldConfigurationStub.class), fieldConfigurationParameters);
+
+
+		List<ReplicationStubFieldParameter> fieldConfigurationSchemeParameters = fillDefaultReplicationStubFields();
+		fieldConfigurationSchemeParameters.add(new ReplicationStubFieldParameter("name", String.class));
+		fieldConfigurationSchemeParameters.add(new ReplicationStubFieldParameter("applicationFieldConfigurationId", Long.class));
+		fieldConfigurationSchemeParameters.add(new ReplicationStubFieldParameter("enrolFieldConfigurationId", Long.class));
+		fieldConfigurationSchemeParameters.add(new ReplicationStubFieldParameter("waitingListFieldConfigurationId", Long.class));
+		stubsPropertyMap.put(getStubName(FieldConfigurationSchemeStub.class), fieldConfigurationSchemeParameters);
 
 		//TODO: add new stubs here
 		final List<ReplicationStubFieldParameter> replicationStubParameters = fillDefaultReplicationStubFields();
@@ -1103,6 +1135,30 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testAssessmentSubmissionStub() {
 		GenericReplicationStub stub = new AssessmentSubmissionStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
+	@Test
+	public void testFieldStub() {
+		GenericReplicationStub stub = new FieldStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testFieldHeadingStub() {
+		GenericReplicationStub stub = new FieldHeadingStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testFieldConfigurationStub() {
+		GenericReplicationStub stub = new FieldConfigurationStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+
+	@Test
+	public void testFieldConfigurationSchemeStub() {
+		GenericReplicationStub stub = new FieldConfigurationSchemeStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 	

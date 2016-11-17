@@ -322,4 +322,24 @@ public class AllV14StubBuildersTest extends AbstractAllStubBuildersTest {
 	public void testAssessmentSubmissionStubBuilder() {
 		this.testStubBuilder(AssessmentSubmission.class, new AssessmentSubmissionStubBuilder());
 	}
+	
+	@Test
+	public void testFieldStubBuilder() {
+		this.testStubBuilder(Field.class, new FieldStubBuilder());
+	}
+
+	@Test
+	public void testFieldConfigurationStubBuilder() {
+		this.testStubBuilder(FieldConfiguration.class, new FieldConfigurationStubBuilder());
+	}
+
+	@Test
+	public void testFieldConfigurationSchemeStubBuilder() {
+		this.testStubBuilder(FieldConfigurationScheme.class, new FieldConfigurationSchemeStubBuilder());
+	}
+
+	@Test
+	public void testFieldHeadingStubBuilder() {
+		this.testStubBuilder(FieldHeading.class, new FieldHeadingStubBuilder());
+	}
 }
