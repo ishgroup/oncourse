@@ -9,28 +9,28 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 public class LoginUser {
-	
-	@Inject
-	private IPortalService portalService;
 
-	@Property
-	private Contact contact;
+    @Inject
+    private IPortalService portalService;
 
-	@InjectPage
-	private Login login;
+    @Property
+    private Contact contact;
 
-	@SetupRender
-	void setupRender() {
-		this.contact = portalService.getAuthenticatedUser();
-	}
+    @InjectPage
+    private Login login;
 
-	public Object onActionFromLogout() throws Exception {
+    @SetupRender
+    void setupRender() {
+        this.contact = portalService.getAuthenticatedUser();
+    }
+
+    public Object onActionFromLogout() throws Exception {
         portalService.logout();
-		return login;
-	}
-	
-	public String getProfilePicturePath() {
-		return portalService.getProfilePictureUrl(contact);
-	}
+        return login;
+    }
+
+    public String getProfilePicturePath() {
+        return portalService.getProfilePictureUrl(contact);
+    }
 
 }

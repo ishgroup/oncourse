@@ -36,8 +36,7 @@ public class SwitchContact {
         return portalService.isSelectedContact(contact);
     }
 
-    public boolean needToShow()
-    {
+    public boolean hasRelatedContacts() {
         return contacts.size() > 1;
     }
 
