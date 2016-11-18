@@ -4,11 +4,9 @@
 		<strong>${contact.givenName} ${contact.familyName}</strong>
 
 		<ul class="clearfix">
-            <t:if test="needToShow()">
-                <li>
-                    <a href="#" class="link-user-switch">View all users</a>
-                </li>
-            </t:if>
+            <li class="hide view-all-users">
+                <a href="#" class="link-user-switch">View all users</a>
+            </li>
             <li>
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
             </li>

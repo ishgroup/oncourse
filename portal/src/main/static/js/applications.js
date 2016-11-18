@@ -73,7 +73,11 @@ $j(document).ready(function () {
     $j(document).on('click', '.link-user-switch', function(e) {
         e.preventDefault();
         $j('.change-user > button.dropdown-toggle').trigger('click');
-    })
+    });
+
+    if($j('.btn-group.change-user').length > 0) {
+        $j('.view-all-users').removeClass('hide');
+    }
 });
 
 $j(window).load(function() {
