@@ -1,9 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="collapse nav-links logged navbar-collapse">
+        <img class="login-avatar-icon" src="${profilePicturePath}"/>
 		<strong>${contact.givenName} ${contact.familyName}</strong>
 
-		<ul class="clearfix">
+		<ul class="clearfix user-action-links">
             <li class="hide view-all-users">
                 <a href="#" class="link-user-switch">View all users</a>
             </li>
@@ -11,8 +12,7 @@
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
             </li>
 		</ul>
-		<img class="login-avatar-icon" src="${profilePicturePath}"/>
-        <span class="caret"/>
+        <span class="glyphicon glyphicon-chevron-down"/>
 		<span t:type="switchcontact"/>
 	</div>
 </t:container>
