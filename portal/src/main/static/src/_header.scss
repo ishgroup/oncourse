@@ -170,6 +170,13 @@
 			width: 230px;
 		}
 
+		.glyphicon-chevron-down {
+			display: none;
+			@include responsive($media-small) {
+				display: block;
+			}
+		}
+
 
     .diff-line {
       border-right: 1px solid #DFDFDF;
