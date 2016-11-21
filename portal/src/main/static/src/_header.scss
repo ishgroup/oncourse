@@ -242,7 +242,7 @@
 			@include responsive($media-small) {
 				display: none !important;
 			}
-			&.open {
+			&.user-open {
 				&::after {
 					content: "";
 					position: absolute;
