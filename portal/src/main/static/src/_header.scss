@@ -235,10 +235,13 @@
 		}
 
 		.change-user {
-			display: none !important;
+			display: none;
 			margin-top: 28px;
 			padding-top: 10px;
 			position: relative;
+			@include responsive($media-small) {
+				display: none !important;
+			}
 			&.open {
 				&::after {
 					content: "";
@@ -345,8 +348,10 @@
 			box-shadow: 0 6px 10px rgba(0,0,0,0.5);
 
 			.change-user {
-				&.open {
-					display: block !important;
+				&.user-open {
+					@include responsive($media-small) {
+						display: block !important;
+					}
 				}
 
 				button.btn {
