@@ -203,6 +203,9 @@
 				> li {
 					width: 50%;
 					text-align: center;
+					a {
+						padding: 0 15px;
+					}
 				}
 			}
 		}
@@ -232,7 +235,21 @@
 		}
 
 		.change-user {
-			display: inherit;
+			display: none;
+			margin-top: 28px;
+			padding-top: 10px;
+			position: relative;
+			&.open {
+				&::after {
+					content: "";
+					position: absolute;
+					border-top: 1px solid $calendar-fc-date-color;
+					left: -18px;
+					right: -18px;
+					top: 0;
+					display: block;
+				}
+			}
 
 			&.open .dropdown-toggle {
 				-webkit-box-shadow: none;
@@ -241,26 +258,15 @@
 
 			ul.dropdown-menu {
 				background: none;
-				display: none;
+				display: block;
 				width: 100%;
 				position: relative;
 				background: none;
 				border: none;
 				box-shadow: none;
 				top: 0;
-				margin: 18px 0 0px;
-				padding-top: 20px;
-				@include responsive($media-xsmall) {
-					width: 172px;
-				}
-				&::after {
-					content: "";
-					position: absolute;
-					border-top: 1px solid $calendar-fc-date-color;
-					left: -21px;
-					right: -18px;
-					top: 0;
-				}
+				margin: 0px;
+				padding-top: 10px;
 			}
 
 			button.btn {
@@ -335,6 +341,7 @@
 		&.navbar-collapse.in {
 			background: white;
 			color: black;
+			box-shadow: 0 6px 10px rgba(0,0,0,0.5);
 
 			.change-user {
 
