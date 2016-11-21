@@ -199,6 +199,12 @@
 
 		.user-action-links {
 			box-shadow: 0 6px 10px rgba(0,0,0,0.5);
+			&.has-more-users {
+				> li {
+					width: 50%;
+					text-align: center;
+				}
+			}
 		}
 
 		> strong {

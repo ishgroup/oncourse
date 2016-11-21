@@ -72,11 +72,12 @@ $j(document).ready(function () {
 
     $j(document).on('click', '.link-user-switch', function(e) {
         e.preventDefault();
-        $j('.change-user > button.dropdown-toggle').trigger('click');
+        $j('.logged .change-user').toggleClass('open');
     });
 
     if($j('.btn-group.change-user').length > 0) {
         $j('.view-all-users').removeClass('hide');
+        $j('.user-action-links').addClass('has-more-users');
     }
 });
 
