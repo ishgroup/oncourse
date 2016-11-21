@@ -72,8 +72,8 @@ $j(document).ready(function () {
 
     $j(document).on('click', '.link-user-switch', function(e) {
         e.preventDefault();
-        $j('.logged .change-user').toggleClass('open');
         $j('.logged .change-user').slideToggle();
+        $j('.logged .change-user').toggleClass('open');
     });
 
     if($j('.btn-group.change-user').length > 0) {
