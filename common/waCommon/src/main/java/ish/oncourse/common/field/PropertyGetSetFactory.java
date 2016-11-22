@@ -47,8 +47,8 @@ public class PropertyGetSetFactory {
 	}
 
 	private PropertyGetSet customFieldGetSet(String propertyKey, final Object model) {
-		final Method get = findMethod(GET, FieldProperty.CUSTOM_FIELD);
-		final Method set = findMethod(SET, FieldProperty.CUSTOM_FIELD);
+		final Method get = findMethod(GET, FieldProperty.CUSTOM_FIELD, String.class);
+		final Method set = findMethod(SET, FieldProperty.CUSTOM_FIELD, String.class, String.class);
 		final String customFieldKey = propertyKey.replace(CUSTOM_FIELD_PROPERTY_PATTERN, "");
 
 		return new PropertyGetSet() {
@@ -79,7 +79,7 @@ public class PropertyGetSetFactory {
 	private PropertyGetSet regularGetSet(String propertyKey, final Object model) {
 		final FieldProperty property = FieldProperty.getByKey(propertyKey);
 		final Method get = findMethod(GET, property);
-		final Method set = findMethod(SET, property);
+		final Method set = findMethod(SET, property,property.getParameterType());
 
 		return new PropertyGetSet() {
 
@@ -105,7 +105,7 @@ public class PropertyGetSetFactory {
 		};
 	}
 
-	private Method findMethod(String type, final FieldProperty field)  {
+	private Method findMethod(String type, final FieldProperty field,  Class<?>... parameterType)  {
 		try {
 				ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(true);
 				provider.addIncludeFilter(new TypeFilter() {
@@ -130,7 +130,7 @@ public class PropertyGetSetFactory {
 			for (MethodMetadata metadata : definition.getMetadata().getAnnotatedMethods(Property.class.getName())) {
 				Map<String, Object> attributes = metadata.getAnnotationAttributes(Property.class.getName());
 				if (attributes.get(VALUE_ATTRIBUTE).equals(field) && attributes.get(TYPE_ATTRIBUTE).equals(type)) {
-					return aClass.getDeclaredMethod(metadata.getMethodName());
+					return aClass.getDeclaredMethod(metadata.getMethodName(), parameterType);
 				}
 			}
 			logger.error(String.format("Can not find corresponded class/method, type: %s, context type: %s, property name: %s, package: %s.",
