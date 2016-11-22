@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Language id="2" name="Asian" isActive="1" ishVersion="333"/>
+	<Language id="1" name="Asian" isActive="1" ishVersion="333"/>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+	<Contact id="1" collegeId="1"  angelId="1" countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir" emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow" isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1"/>
+
+	<CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Custom field" fieldKey="customField" isMandatory="0"/>
+
+</dataset>

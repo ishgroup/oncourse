@@ -4,6 +4,11 @@ import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.oncourse.common.field.ContextType;
+import ish.oncourse.common.field.FieldProperty;
+import ish.oncourse.common.field.Property;
+import ish.oncourse.common.field.PropertyGetSetFactory;
+import ish.oncourse.common.field.Type;
 import ish.oncourse.model.auto._Contact;
 import ish.oncourse.utils.ContactDelegator;
 import ish.oncourse.utils.PhoneValidator;
@@ -13,7 +18,9 @@ import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.map.ObjRelationship;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 
@@ -24,6 +31,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+
+@Type(value = ContextType.CONTACT)
 public class Contact extends _Contact implements Queueable {
 	static final String INVALID_EMAIL_MESSAGE = "The email address does not appear to be valid.";
 	private static final long serialVersionUID = -7158531319889954101L;
@@ -32,6 +41,73 @@ public class Contact extends _Contact implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
+	@Property(value = FieldProperty.DATE_OF_BIRTH, type = PropertyGetSetFactory.GET)
+	@Override
+	public Date getDateOfBirth() {
+		return super.getDateOfBirth();
+	}
+	
+	@Property(value = FieldProperty.DATE_OF_BIRTH, type = PropertyGetSetFactory.SET)
+	@Override
+	public void setDateOfBirth(Date dateOfBirth) {
+		super.setDateOfBirth(dateOfBirth);
+	}
+
+	@Property(value = FieldProperty.EMAIL_ADDRESS, type = PropertyGetSetFactory.GET)
+	@Override
+	public String getEmailAddress() {
+		return super.getEmailAddress();
+	}
+
+	@Property(value = FieldProperty.EMAIL_ADDRESS, type = PropertyGetSetFactory.SET)
+	@Override
+	public void setEmailAddress(String emailAddress) {
+		super.setEmailAddress(emailAddress);
+	}
+
+	@Property(value = FieldProperty.CUSTOM_FIELD, type = PropertyGetSetFactory.GET)
+	public String getCustomFieldValue(String key) {
+		CustomField field = getCustomField(key);
+		return  field == null ? null : field.getValue();
+	}
+	
+	
+	@Property(value = FieldProperty.CUSTOM_FIELD, type = PropertyGetSetFactory.SET)
+	public void setCustomFieldValue(String key, String value){
+		CustomField field = getCustomField(key);
+		if (field != null) {
+			field.setValue(value);
+		} else {
+			ObjectContext context = getObjectContext();
+			CustomFieldType customFieldType = ObjectSelect.query(CustomFieldType.class)
+					.where(CustomFieldType.COLLEGE.eq(getCollege()))
+					.and(CustomFieldType.KEY.eq(key))
+					.selectFirst(context);
+			
+			if (customFieldType == null) {
+				return;
+			}
+			CustomField customField = context.newObject(CustomField.class);
+			customField.setValue(value);
+			customField.setRelatedObject(this);
+			customField.setCustomFieldType(customFieldType);
+			customField.setCollege(getCollege());
+		}
+	}
+	
+	private CustomField getCustomField(String key) {
+		for (CustomField customField : getCustomFields()) {
+			String customFieldKey = customField.getCustomFieldType().getKey();
+			if (customFieldKey != null && customFieldKey .equalsIgnoreCase(key)) {
+				return customField;
+			}
+		}
+		return null;
+	}
+	
+	
+	
+	
 	@Override
 	protected void validateForSave(ValidationResult result) {
 		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(this));
