@@ -28,7 +28,7 @@ public class PropertyGetSetFactory {
 	public static final String GET = "get";
 	public static final String VALUE_ATTRIBUTE = "value";
 	public static final String TYPE_ATTRIBUTE = "type";
-	
+	public static final String PARAM_TYPES = "parameterTypes";
 	public static final String CUSTOM_FIELD_PROPERTY_PATTERN = "customField.";
 	private String packageName;
 			
@@ -47,8 +47,8 @@ public class PropertyGetSetFactory {
 	}
 
 	private PropertyGetSet customFieldGetSet(String propertyKey, final Object model) {
-		final Method get = findMethod(GET, FieldProperty.CUSTOM_FIELD, String.class);
-		final Method set = findMethod(SET, FieldProperty.CUSTOM_FIELD, String.class, String.class);
+		final Method get = findMethod(GET, FieldProperty.CUSTOM_FIELD);
+		final Method set = findMethod(SET, FieldProperty.CUSTOM_FIELD);
 		final String customFieldKey = propertyKey.replace(CUSTOM_FIELD_PROPERTY_PATTERN, "");
 
 		return new PropertyGetSet() {
@@ -56,7 +56,7 @@ public class PropertyGetSetFactory {
 			@Override
 			public Object get() {
 				try {
-					return get.invoke(model,customFieldKey);
+					return get.invoke(model, customFieldKey);
 				} catch (InvocationTargetException | IllegalAccessException e) {
 					logger.error(String.format("Unexpected exception occurred during perform Get custom field method, key: %s, package: %s.", customFieldKey, packageName));
 					throw new RuntimeException(e);
@@ -79,7 +79,7 @@ public class PropertyGetSetFactory {
 	private PropertyGetSet regularGetSet(String propertyKey, final Object model) {
 		final FieldProperty property = FieldProperty.getByKey(propertyKey);
 		final Method get = findMethod(GET, property);
-		final Method set = findMethod(SET, property,property.getParameterType());
+		final Method set = findMethod(SET, property);
 
 		return new PropertyGetSet() {
 
@@ -105,10 +105,10 @@ public class PropertyGetSetFactory {
 		};
 	}
 
-	private Method findMethod(String type, final FieldProperty field,  Class<?>... parameterType)  {
+	private Method findMethod(String type, final FieldProperty field)  {
 		try {
-				ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(true);
-				provider.addIncludeFilter(new TypeFilter() {
+			ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(true);
+			provider.addIncludeFilter(new TypeFilter() {
 				@Override
 				public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) {
 					AnnotationMetadata metadata = metadataReader.getAnnotationMetadata();
@@ -130,7 +130,7 @@ public class PropertyGetSetFactory {
 			for (MethodMetadata metadata : definition.getMetadata().getAnnotatedMethods(Property.class.getName())) {
 				Map<String, Object> attributes = metadata.getAnnotationAttributes(Property.class.getName());
 				if (attributes.get(VALUE_ATTRIBUTE).equals(field) && attributes.get(TYPE_ATTRIBUTE).equals(type)) {
-					return aClass.getDeclaredMethod(metadata.getMethodName(), parameterType);
+					return aClass.getDeclaredMethod(metadata.getMethodName(), (Class<?>[]) attributes.get(PARAM_TYPES));
 				}
 			}
 			logger.error(String.format("Can not find corresponded class/method, type: %s, context type: %s, property name: %s, package: %s.",
