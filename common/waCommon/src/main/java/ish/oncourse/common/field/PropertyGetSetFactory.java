@@ -17,6 +17,8 @@ import org.springframework.core.type.filter.TypeFilter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,7 +30,7 @@ public class PropertyGetSetFactory {
 	public static final String GET = "get";
 	public static final String VALUE_ATTRIBUTE = "value";
 	public static final String TYPE_ATTRIBUTE = "type";
-	public static final String PARAM_TYPES = "parameterTypes";
+	public static final String PARAM_TYPES = "params";
 	public static final String CUSTOM_FIELD_PROPERTY_PATTERN = "customField.";
 	private String packageName;
 			
@@ -130,7 +132,7 @@ public class PropertyGetSetFactory {
 			for (MethodMetadata metadata : definition.getMetadata().getAnnotatedMethods(Property.class.getName())) {
 				Map<String, Object> attributes = metadata.getAnnotationAttributes(Property.class.getName());
 				if (attributes.get(VALUE_ATTRIBUTE).equals(field) && attributes.get(TYPE_ATTRIBUTE).equals(type)) {
-					return aClass.getDeclaredMethod(metadata.getMethodName(), (Class<?>[]) attributes.get(PARAM_TYPES));
+					return aClass.getDeclaredMethod(metadata.getMethodName(), convertTypes(attributes.get(PARAM_TYPES)));
 				}
 			}
 			logger.error(String.format("Can not find corresponded class/method, type: %s, context type: %s, property name: %s, package: %s.",
@@ -143,5 +145,23 @@ public class PropertyGetSetFactory {
 			throw new IllegalArgumentException(e);
 		}
 			
+	}
+	
+	private Class[] convertTypes(Object types) {
+		 ArrayList<Class> classes = new ArrayList<>();
+		
+		if (types != null) {
+			org.springframework.asm.Type[] typesArry =(org.springframework.asm.Type[]) types;
+			for (org.springframework.asm.Type aTypesArry : typesArry) {
+				try {
+					classes.add(this.getClass().getClassLoader().loadClass(aTypesArry.getClassName()));
+				} catch (ClassNotFoundException e) {
+					logger.error(String.format("Unexpected exception.Can not load corresponded class type: %s", aTypesArry.getClassName()), e);
+					throw new IllegalArgumentException(e);
+				}
+			}
+		}
+		
+		return classes.toArray(new Class[classes.size()]);
 	}
 }

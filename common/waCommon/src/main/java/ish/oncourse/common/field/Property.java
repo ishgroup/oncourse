@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 public @interface  Property {
 	FieldProperty value();
 	String type();
-	Class<?>[] parameterTypes();
+	Class[] params();
 }
