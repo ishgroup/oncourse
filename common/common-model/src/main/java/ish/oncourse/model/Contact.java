@@ -41,38 +41,38 @@ public class Contact extends _Contact implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
-	@Property(value = FieldProperty.DATE_OF_BIRTH, type = PropertyGetSetFactory.GET)
+	@Property(value = FieldProperty.DATE_OF_BIRTH, type = PropertyGetSetFactory.GET, params = {})
 	@Override
 	public Date getDateOfBirth() {
 		return super.getDateOfBirth();
 	}
 	
-	@Property(value = FieldProperty.DATE_OF_BIRTH, type = PropertyGetSetFactory.SET)
+	@Property(value = FieldProperty.DATE_OF_BIRTH, type = PropertyGetSetFactory.SET, params = {Date.class})
 	@Override
 	public void setDateOfBirth(Date dateOfBirth) {
 		super.setDateOfBirth(dateOfBirth);
 	}
 
-	@Property(value = FieldProperty.EMAIL_ADDRESS, type = PropertyGetSetFactory.GET)
+	@Property(value = FieldProperty.EMAIL_ADDRESS, type = PropertyGetSetFactory.GET, params = {})
 	@Override
 	public String getEmailAddress() {
 		return super.getEmailAddress();
 	}
 
-	@Property(value = FieldProperty.EMAIL_ADDRESS, type = PropertyGetSetFactory.SET)
+	@Property(value = FieldProperty.EMAIL_ADDRESS, type = PropertyGetSetFactory.SET, params = {String.class})
 	@Override
 	public void setEmailAddress(String emailAddress) {
 		super.setEmailAddress(emailAddress);
 	}
 
-	@Property(value = FieldProperty.CUSTOM_FIELD, type = PropertyGetSetFactory.GET)
+	@Property(value = FieldProperty.CUSTOM_FIELD, type = PropertyGetSetFactory.GET, params = {String.class})
 	public String getCustomFieldValue(String key) {
 		CustomField field = getCustomField(key);
 		return  field == null ? null : field.getValue();
 	}
 	
 	
-	@Property(value = FieldProperty.CUSTOM_FIELD, type = PropertyGetSetFactory.SET)
+	@Property(value = FieldProperty.CUSTOM_FIELD, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
 	public void setCustomFieldValue(String key, String value){
 		CustomField field = getCustomField(key);
 		if (field != null) {
