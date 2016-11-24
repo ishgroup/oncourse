@@ -5,7 +5,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.model.PaymentInLine
 import ish.oncourse.portal.services.IPortalService
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayService
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.payment.CreditCardParser
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
@@ -20,17 +20,17 @@ import static ish.common.types.PaymentType.CREDIT_CARD
  * Date: 1/07/2016
  */
 class Controller implements IController {
-    private IPaymentGatewayService paymentGatewayService
+    private INewPaymentGatewayService paymentGatewayService
     private Contact contact
     private ObjectContext objectContext
 
     private Context context
 
-    public Controller(ICayenneService cayenneService, IPortalService portalService, IPaymentGatewayService paymentGatewayService) {
+    public Controller(ICayenneService cayenneService, IPortalService portalService, INewPaymentGatewayService paymentGatewayService) {
         this(portalService.contact, cayenneService.newContext(), paymentGatewayService)
     }
 
-    Controller(Contact contact, ObjectContext objectContext, IPaymentGatewayService paymentGatewayService) {
+    Controller(Contact contact, ObjectContext objectContext, INewPaymentGatewayService paymentGatewayService) {
         this.contact = contact
         this.objectContext = objectContext
         this.paymentGatewayService = paymentGatewayService
@@ -84,7 +84,7 @@ class Controller implements IController {
     }
 
     def processPaymentIn = { PaymentIn paymentIn ->
-        paymentGatewayService.performGatewayOperation(PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().model)
+        paymentGatewayService.submit(PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().model)
         context.objectContext.commitChanges()
         return paymentIn
     }

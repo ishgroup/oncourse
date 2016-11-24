@@ -6,6 +6,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.Invoice
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.portal.services.APortalTest
+import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService
 import org.dbunit.dataset.IDataSet
 import org.dbunit.dataset.ReplacementDataSet
@@ -67,7 +68,7 @@ class ControllerTest extends APortalTest {
             it.date = addYears(new Date(), 3).format("MM/YYYY")
         }
 
-        PaymentExpressGatewayService paymentExpressGatewayService = new PaymentExpressGatewayService(cayenneService)
+        NewPaymentExpressGatewayService paymentExpressGatewayService = new NewPaymentExpressGatewayService(cayenneService)
         controller = new Controller(contact, objectContext, paymentExpressGatewayService)
 
         response = controller.process(request)

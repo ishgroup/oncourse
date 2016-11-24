@@ -1,5 +1,6 @@
 package ish.oncourse.portal.services
 
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayService
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.test.ServiceTest
@@ -21,7 +22,7 @@ import javax.sql.DataSource
 abstract class APortalTest extends ServiceTest {
     def ICayenneService cayenneService;
     def IPortalService portalService
-    def IPaymentGatewayService paymentGatewayService
+    def INewPaymentGatewayService paymentGatewayService
     def ObjectContext objectContext
 
     protected String getDataSetName() {
@@ -46,7 +47,7 @@ abstract class APortalTest extends ServiceTest {
 
         cayenneService = getService(ICayenneService)
         portalService = getService(IPortalService)
-        paymentGatewayService = getService(IPaymentGatewayService)
+        paymentGatewayService = getService(INewPaymentGatewayService)
         objectContext = cayenneService.newContext()
 
     }

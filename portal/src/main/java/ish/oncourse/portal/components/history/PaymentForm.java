@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.payment.Controller;
 import ish.oncourse.portal.services.payment.Request;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.commons.io.IOUtils;
@@ -28,7 +29,7 @@ public class PaymentForm {
 	private IPortalService portalService;
 
 	@Inject
-	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+	private INewPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
 
 	@Inject
 	private HttpServletRequest httpRequest;

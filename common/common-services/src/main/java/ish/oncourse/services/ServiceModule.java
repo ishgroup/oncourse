@@ -54,8 +54,11 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.NewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -189,6 +192,8 @@ public class ServiceModule {
 		binder.bind(IPostcodeService.class, PostcodeService.class).withId("PostcodeService");
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
+		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
+
 
 		if (isInTestMode) {
 			binder.bind(ISMSService.class, TestModeSMSService.class);
@@ -214,6 +219,12 @@ public class ServiceModule {
 	public static IPaymentGatewayService buildPaymentGatewayService(IPaymentGatewayServiceBuilder builder) {
 		return builder.buildService();
 	}
+
+	@Scope("perthread")
+	public static INewPaymentGatewayService buildNewPaymentGatewayService(INewPaymentGatewayServiceBuilder builder) {
+		return builder.buildService();
+	}
+
 
 	@EagerLoad
 	public static CacheManager buildCacheManager() {
