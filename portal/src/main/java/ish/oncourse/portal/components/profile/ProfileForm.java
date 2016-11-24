@@ -391,4 +391,8 @@ public class ProfileForm {
         }
         return profile;
     }
+
+	public String getCountryList() {
+		return countryService.getStringCountryList();
+	}
 }

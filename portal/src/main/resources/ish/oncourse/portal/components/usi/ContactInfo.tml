@@ -19,7 +19,7 @@
 
                     <t:usi.textfield displayName="literal:Date Of Birth" placeholder="literal:Format,  DD/MM/YYYY" hidden="isHiddenField('dateOfBirth')" name="literal:dateOfBirth" maxlength="10"/>
 
-                    <t:usi.textfield displayName="literal:Country of birth" placeholder="literal:For example, Australia" hidden="isHiddenField('countryOfBirth')" name="literal:countryOfBirth" maxlength="32"/>
+                    <t:usi.textfield displayName="literal:Country of birth" placeholder="literal:For example, Australia" hidden="isHiddenField('countryOfBirth')" name="literal:countryOfBirth" maxlength="32" t:id="countryOfBirth"/> 
 
                     <t:usi.textfield displayName="literal:Town of birth" placeholder="literal:For example, Sydney" hidden="isHiddenField('townOfBirth')" name="literal:townOfBirth" maxlength="32"/>
 
@@ -40,7 +40,7 @@
 
                     <t:usi.textfield displayName="literal:State" placeholder="literal:For example, NSW" hidden="isHiddenField('state')" name="literal:state" maxlength="32"/>
 
-                    <t:usi.textfield displayName="literal:Сountry" placeholder="literal:For example, Australia" hidden="isHiddenField('country')" name="literal:country" maxlength="32"/>
+                    <t:usi.textfield displayName="literal:Сountry" placeholder="literal:For example, Australia" hidden="isHiddenField('country')" name="literal:country" maxlength="32" t:id="country"/>
 
                     <t:usi.textfield displayName="literal:Mobile phone" placeholder="literal:For example, 04123 456 789 " hidden="isHiddenField('mobilePhoneNumber')" name="literal:mobilePhoneNumber" maxlength="32"/>
 
@@ -69,4 +69,17 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        jQuery(function() {
+            var countryNames = ${countryList};
+
+            jQuery("#countryOfBirth").autocomplete({
+                source: countryNames
+            });
+            jQuery("#country").autocomplete({
+                source: countryNames
+            });
+        });
+    </script>
 </t:container>

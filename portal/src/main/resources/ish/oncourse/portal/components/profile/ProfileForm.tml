@@ -177,4 +177,14 @@
             </t:form>
         </div>
     </div>
+
+    <script type="text/javascript">
+        jQuery(function() {
+            var countryNames = ${countryList};
+            
+            jQuery("#country").autocomplete({
+                source: countryNames
+            });
+        });
+    </script>
     </t:container>
