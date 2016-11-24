@@ -1,7 +1,11 @@
 configurations { providedCompile }
 
 apply plugin: 'groovy'
+
+sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
+
+sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDir 'src/test/java'
 
 //groovy compile should read source files in UTF-8
