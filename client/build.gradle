@@ -148,9 +148,9 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 				storepass:				project.codeSigningTemporaryPassword,
 				alias:					"oncourse", 
 				keypass:				project.codeSigningTemporaryPassword,
-				sigalg:					"MD5withRSA",
-				digestalg:				"SHA1",
-				tsaurl:					'http://timestamp.comodoca.com/rfc3161',
+				sigalg:					"SHA256withRSA",
+				digestalg:				"SHA256",
+				tsaurl:					'http://timestamp.comodoca.com?td=sha256',
 				lazy: 					"true",
 				preservelastmodified:	"true") {
 					fileset(dir: "${distsDir}/webstart/Libraries/") {
