@@ -39,7 +39,7 @@
 		<db-attribute name="dueDate" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
-		<db-attribute name="releaseDate" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="releaseDate" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="AssessmentClassTutor">
 		<db-attribute name="angelId" type="BIGINT"/>

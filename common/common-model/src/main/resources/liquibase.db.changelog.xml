@@ -4367,4 +4367,8 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="291" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<sql>ALTER TABLE AssessmentClass MODIFY COLUMN releaseDate DATETIME NULL;</sql>
+	</changeSet>
+
 </databaseChangeLog>
