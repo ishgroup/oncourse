@@ -149,7 +149,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 				alias:					"oncourse", 
 				keypass:				project.codeSigningTemporaryPassword,
 				sigalg:					"SHA256withRSA",
-				digestalg:				"SHA256",
+				digestalg:				"SHA-256",
 				tsaurl:					'http://timestamp.comodoca.com?td=sha256',
 				lazy: 					"true",
 				preservelastmodified:	"true") {
