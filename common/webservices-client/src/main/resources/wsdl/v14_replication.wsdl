@@ -89,6 +89,7 @@
 			<xs:element name="assessmentClass" type="tns:assessmentClassStub"/>
 			<xs:element name="assessmentClassTutor" type="tns:assessmentClassTutorStub"/>
 			<xs:element name="assessmentSubmission" type="tns:assessmentSubmissionStub"/>
+			<xs:element name="assessmentClassModule" type="tns:assessmentClassModuleStub"/>
 			<xs:element name="field" type="tns:fieldStub"/>
 			<xs:element name="fieldConfiguration" type="tns:fieldConfigurationStub"/>
 			<xs:element name="fieldConfigurationScheme" type="tns:fieldConfigurationSchemeStub"/>
@@ -1549,7 +1550,18 @@
 						</xs:sequence>
 					</xs:extension>
 				</xs:complexContent>
-			</xs:complexType>			
+			</xs:complexType>
+
+			<xs:complexType name="assessmentClassModuleStub">
+				<xs:complexContent>
+					<xs:extension base="tns:replicationStub">
+						<xs:sequence>
+							<xs:element name="assessmentClassId" type="xs:long"/>
+							<xs:element name="moduleId" type="xs:long"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
 			
 			<xs:complexType name="fieldStub">
 				<xs:complexContent>
