@@ -88,5 +88,6 @@ private Map<String, IWillowStubBuilder> builderMap;
 		builderMap.put(getEntityName(FieldHeading.class), new FieldHeadingStubBuilder());
 		builderMap.put(getEntityName(FieldConfiguration.class), new FieldConfigurationStubBuilder());
 		builderMap.put(getEntityName(FieldConfigurationScheme.class), new FieldConfigurationSchemeStubBuilder());
+		builderMap.put(getEntityName(AssessmentClassModule.class), new AssessmentClassModuleStubBuilder());
 	}
 }

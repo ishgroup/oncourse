@@ -7,7 +7,7 @@ import ish.oncourse.model.AssessmentClassTutor;
 import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v14.stubs.replication.AssessmentClassTutorStub;
 
-public class AssessmentClassTutorStubBuilder  extends AbstractWillowStubBuilder<AssessmentClassTutor, AssessmentClassTutorStub> {
+public class AssessmentClassTutorStubBuilder extends AbstractWillowStubBuilder<AssessmentClassTutor, AssessmentClassTutorStub> {
 	@Override
 	protected AssessmentClassTutorStub createFullStub(AssessmentClassTutor entity) {
 		AssessmentClassTutorStub stub = new AssessmentClassTutorStub();

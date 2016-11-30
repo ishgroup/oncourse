@@ -96,6 +96,7 @@ private Map<String, IWillowUpdater> updaterMap;
 		updaterMap.put(getEntityName(FieldConfiguration.class), new FieldConfigurationUpdater());
 		updaterMap.put(getEntityName(FieldHeading.class), new FieldHeadingUpdater());
 		updaterMap.put(getEntityName(FieldConfigurationScheme.class), new FieldConfigurationSchemeUpdater());
+		updaterMap.put(getEntityName(AssessmentClassModule.class), new AssessmentClassModuleUpdater());
 
 	}
 
