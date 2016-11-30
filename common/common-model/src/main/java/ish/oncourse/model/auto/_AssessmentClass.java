@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.Assessment;
+import ish.oncourse.model.AssessmentClassModule;
 import ish.oncourse.model.AssessmentClassTutor;
 import ish.oncourse.model.AssessmentSubmission;
 import ish.oncourse.model.College;
@@ -28,6 +29,7 @@ public abstract class _AssessmentClass extends CayenneDataObject {
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String RELEASE_DATE_PROPERTY = "releaseDate";
     public static final String ASSESSMENT_PROPERTY = "assessment";
+    public static final String ASSESSMENT_CLASS_MODULES_PROPERTY = "assessmentClassModules";
     public static final String ASSESSMENT_CLASS_TUTORS_PROPERTY = "assessmentClassTutors";
     public static final String ASSESSMENT_SUBMISSIONS_PROPERTY = "assessmentSubmissions";
     public static final String COLLEGE_PROPERTY = "college";
@@ -41,6 +43,7 @@ public abstract class _AssessmentClass extends CayenneDataObject {
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<Date> RELEASE_DATE = new Property<Date>("releaseDate");
     public static final Property<Assessment> ASSESSMENT = new Property<Assessment>("assessment");
+    public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = new Property<List<AssessmentClassModule>>("assessmentClassModules");
     public static final Property<List<AssessmentClassTutor>> ASSESSMENT_CLASS_TUTORS = new Property<List<AssessmentClassTutor>>("assessmentClassTutors");
     public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = new Property<List<AssessmentSubmission>>("assessmentSubmissions");
     public static final Property<College> COLLEGE = new Property<College>("college");
@@ -87,6 +90,18 @@ public abstract class _AssessmentClass extends CayenneDataObject {
 
     public Assessment getAssessment() {
         return (Assessment)readProperty("assessment");
+    }
+
+
+    public void addToAssessmentClassModules(AssessmentClassModule obj) {
+        addToManyTarget("assessmentClassModules", obj, true);
+    }
+    public void removeFromAssessmentClassModules(AssessmentClassModule obj) {
+        removeToManyTarget("assessmentClassModules", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<AssessmentClassModule> getAssessmentClassModules() {
+        return (List<AssessmentClassModule>)readProperty("assessmentClassModules");
     }
 
 

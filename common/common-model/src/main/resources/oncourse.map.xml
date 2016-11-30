@@ -41,6 +41,15 @@
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="releaseDate" type="TIMESTAMP"/>
 	</db-entity>
+	<db-entity name="AssessmentClassModule">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="assessmentClassId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="moduleId" type="BIGINT" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="AssessmentClassTutor">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="assessmentClassId" type="BIGINT" isMandatory="true"/>
@@ -1468,6 +1477,11 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="releaseDate" type="java.util.Date" db-attribute-path="releaseDate"/>
 	</obj-entity>
+	<obj-entity name="AssessmentClassModule" className="ish.oncourse.model.AssessmentClassModule" dbEntityName="AssessmentClassModule">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+	</obj-entity>
 	<obj-entity name="AssessmentClassTutor" className="ish.oncourse.model.AssessmentClassTutor" dbEntityName="AssessmentClassTutor">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="collegeId" type="java.lang.Long" db-attribute-path="collegeId"/>
@@ -2615,6 +2629,9 @@
 	<db-relationship name="assessment" source="AssessmentClass" target="Assessment" toMany="false">
 		<db-attribute-pair source="assessmentId" target="id"/>
 	</db-relationship>
+	<db-relationship name="assessmentClassModules" source="AssessmentClass" target="AssessmentClassModule" toMany="true">
+		<db-attribute-pair source="id" target="assessmentClassId"/>
+	</db-relationship>
 	<db-relationship name="assessmentClassTutors" source="AssessmentClass" target="AssessmentClassTutor" toMany="true">
 		<db-attribute-pair source="id" target="assessmentClassId"/>
 	</db-relationship>
@@ -2626,6 +2643,15 @@
 	</db-relationship>
 	<db-relationship name="courseClass" source="AssessmentClass" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="assessmentClass" source="AssessmentClassModule" target="AssessmentClass" toMany="false">
+		<db-attribute-pair source="assessmentClassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="AssessmentClassModule" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="module" source="AssessmentClassModule" target="Module" toMany="false">
+		<db-attribute-pair source="moduleId" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClass" source="AssessmentClassTutor" target="AssessmentClass" toMany="false">
 		<db-attribute-pair source="assessmentClassId" target="id"/>
@@ -2700,6 +2726,9 @@
 		<db-attribute-pair source="outcomeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="applications" source="College" target="Application" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="assessmentClassModules" source="College" target="AssessmentClassModule" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
 	<db-relationship name="assessmentClassTutors" source="College" target="AssessmentClassTutor" toMany="true">
@@ -3485,6 +3514,9 @@
 	<db-relationship name="college" source="MessageTemplate" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" toMany="true">
+		<db-attribute-pair source="id" target="moduleId"/>
+	</db-relationship>
 	<db-relationship name="moduleCourses" source="Module" target="CourseModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
 	</db-relationship>
@@ -4013,10 +4045,14 @@
 	<obj-relationship name="assessmentClasses" source="Assessment" target="AssessmentClass" deleteRule="Deny" db-relationship-path="assessmentClasses"/>
 	<obj-relationship name="college" source="Assessment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="assessment" source="AssessmentClass" target="Assessment" deleteRule="Nullify" db-relationship-path="assessment"/>
+	<obj-relationship name="assessmentClassModules" source="AssessmentClass" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
 	<obj-relationship name="assessmentClassTutors" source="AssessmentClass" target="AssessmentClassTutor" deleteRule="Deny" db-relationship-path="assessmentClassTutors"/>
 	<obj-relationship name="assessmentSubmissions" source="AssessmentClass" target="AssessmentSubmission" deleteRule="Deny" db-relationship-path="assessmentSubmissions"/>
 	<obj-relationship name="college" source="AssessmentClass" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="AssessmentClass" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="assessmentClass" source="AssessmentClassModule" target="AssessmentClass" deleteRule="Nullify" db-relationship-path="assessmentClass"/>
+	<obj-relationship name="college" source="AssessmentClassModule" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="module" source="AssessmentClassModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
 	<obj-relationship name="assessmentClass" source="AssessmentClassTutor" target="AssessmentClass" deleteRule="Nullify" db-relationship-path="assessmentClass"/>
 	<obj-relationship name="college" source="AssessmentClassTutor" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="tutor" source="AssessmentClassTutor" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
@@ -4042,6 +4078,7 @@
 	<obj-relationship name="college" source="CertificateOutcome" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="outcome" source="CertificateOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
 	<obj-relationship name="applications" source="College" target="Application" deleteRule="Deny" db-relationship-path="applications"/>
+	<obj-relationship name="assessmentClassModules" source="College" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
 	<obj-relationship name="attendances" source="College" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="binaryInfoRelations" source="College" target="BinaryInfoRelation" deleteRule="Deny" db-relationship-path="binaryInfoRelations"/>
 	<obj-relationship name="binaryInfos" source="College" target="BinaryInfo" deleteRule="Deny" db-relationship-path="binaryInfos"/>
@@ -4275,6 +4312,7 @@
 	<obj-relationship name="student" source="MessagePerson" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="tutor" source="MessagePerson" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
 	<obj-relationship name="college" source="MessageTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
 	<obj-relationship name="moduleCourses" source="Module" target="CourseModule" deleteRule="Deny" db-relationship-path="moduleCourses"/>
 	<obj-relationship name="sessionModules" source="Module" target="SessionModule" deleteRule="Deny" db-relationship-path="sessionModules"/>
 	<obj-relationship name="college" source="NotificationTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>

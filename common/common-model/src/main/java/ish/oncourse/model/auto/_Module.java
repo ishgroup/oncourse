@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
+import ish.oncourse.model.AssessmentClassModule;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.SessionModule;
 
@@ -28,6 +29,7 @@ public abstract class _Module extends CayenneDataObject {
     public static final String NATIONAL_CODE_PROPERTY = "nationalCode";
     public static final String TITLE_PROPERTY = "title";
     public static final String TRAINING_PACKAGE_ID_PROPERTY = "trainingPackageId";
+    public static final String ASSESSMENT_CLASS_MODULES_PROPERTY = "assessmentClassModules";
     public static final String MODULE_COURSES_PROPERTY = "moduleCourses";
     public static final String SESSION_MODULES_PROPERTY = "sessionModules";
 
@@ -42,6 +44,7 @@ public abstract class _Module extends CayenneDataObject {
     public static final Property<String> NATIONAL_CODE = new Property<String>("nationalCode");
     public static final Property<String> TITLE = new Property<String>("title");
     public static final Property<Long> TRAINING_PACKAGE_ID = new Property<Long>("trainingPackageId");
+    public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = new Property<List<AssessmentClassModule>>("assessmentClassModules");
     public static final Property<List<CourseModule>> MODULE_COURSES = new Property<List<CourseModule>>("moduleCourses");
     public static final Property<List<SessionModule>> SESSION_MODULES = new Property<List<SessionModule>>("sessionModules");
 
@@ -107,6 +110,18 @@ public abstract class _Module extends CayenneDataObject {
     public Long getTrainingPackageId() {
         return (Long)readProperty("trainingPackageId");
     }
+
+    public void addToAssessmentClassModules(AssessmentClassModule obj) {
+        addToManyTarget("assessmentClassModules", obj, true);
+    }
+    public void removeFromAssessmentClassModules(AssessmentClassModule obj) {
+        removeToManyTarget("assessmentClassModules", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<AssessmentClassModule> getAssessmentClassModules() {
+        return (List<AssessmentClassModule>)readProperty("assessmentClassModules");
+    }
+
 
     public void addToModuleCourses(CourseModule obj) {
         addToManyTarget("moduleCourses", obj, true);

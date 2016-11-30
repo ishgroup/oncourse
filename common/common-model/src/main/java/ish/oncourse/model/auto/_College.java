@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.Application;
+import ish.oncourse.model.AssessmentClassModule;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.BinaryInfo;
 import ish.oncourse.model.BinaryInfoRelation;
@@ -101,6 +102,7 @@ public abstract class _College extends CayenneDataObject {
     public static final String TIME_ZONE_PROPERTY = "timeZone";
     public static final String WEB_SERVICES_SECURITY_CODE_PROPERTY = "webServicesSecurityCode";
     public static final String APPLICATIONS_PROPERTY = "applications";
+    public static final String ASSESSMENT_CLASS_MODULES_PROPERTY = "assessmentClassModules";
     public static final String ATTENDANCES_PROPERTY = "attendances";
     public static final String BINARY_INFO_RELATIONS_PROPERTY = "binaryInfoRelations";
     public static final String BINARY_INFOS_PROPERTY = "binaryInfos";
@@ -186,6 +188,7 @@ public abstract class _College extends CayenneDataObject {
     public static final Property<String> TIME_ZONE = new Property<String>("timeZone");
     public static final Property<String> WEB_SERVICES_SECURITY_CODE = new Property<String>("webServicesSecurityCode");
     public static final Property<List<Application>> APPLICATIONS = new Property<List<Application>>("applications");
+    public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = new Property<List<AssessmentClassModule>>("assessmentClassModules");
     public static final Property<List<Attendance>> ATTENDANCES = new Property<List<Attendance>>("attendances");
     public static final Property<List<BinaryInfoRelation>> BINARY_INFO_RELATIONS = new Property<List<BinaryInfoRelation>>("binaryInfoRelations");
     public static final Property<List<BinaryInfo>> BINARY_INFOS = new Property<List<BinaryInfo>>("binaryInfos");
@@ -403,6 +406,18 @@ public abstract class _College extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<Application> getApplications() {
         return (List<Application>)readProperty("applications");
+    }
+
+
+    public void addToAssessmentClassModules(AssessmentClassModule obj) {
+        addToManyTarget("assessmentClassModules", obj, true);
+    }
+    public void removeFromAssessmentClassModules(AssessmentClassModule obj) {
+        removeToManyTarget("assessmentClassModules", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<AssessmentClassModule> getAssessmentClassModules() {
+        return (List<AssessmentClassModule>)readProperty("assessmentClassModules");
     }
 
 
