@@ -5,23 +5,22 @@ import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Discount;
 import ish.oncourse.model.DiscountCourseClass;
-import ish.oncourse.model.PotentialDiscountsPolicy;
+import ish.oncourse.services.discount.DiscountItem;
+import ish.oncourse.services.discount.WebDiscountUtils;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.discount.GetAppliedDiscounts;
+import ish.oncourse.services.discount.GetPossibleDiscounts;
 import ish.oncourse.util.FormatUtils;
-import ish.oncourse.utils.DiscountFeeComparator;
-import ish.oncourse.utils.WebDiscountUtils;
-import org.apache.cayenne.exp.Expression;
-import org.apache.commons.lang.StringUtils;
+import ish.util.DiscountUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.math.BigDecimal;
 import java.text.Format;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -52,9 +51,7 @@ public class CourseClassPrice extends ISHCommon {
 	private List<DiscountItem> discountItems;
 
 	@Property
-	private Money discountValue;
-
-	private DiscountCourseClass applicableDiscount;
+	private Money discountValue = Money.ZERO;
 
 	@Property
 	private Date discountExpiryDate;
@@ -67,56 +64,39 @@ public class CourseClassPrice extends ISHCommon {
 	
 	@Parameter
 	private Money feeOverride;
+
+	@Inject
+	private Request request;
 	
 	private void fillAppliedDiscounts() {
-		List<Discount> promotions = discountService.getPromotions();
-		applicableDiscount = courseClass.getDiscountToApply(new PotentialDiscountsPolicy(promotions));
+		List<Discount> promotions = request.getAttribute(CourseItem.PROMOS_ATTR) == null ? discountService.getPromotions() : (List<Discount>)request.getAttribute(CourseItem.PROMOS_ATTR);
+		List<DiscountCourseClass> allApplicable = GetAppliedDiscounts.valueOf(courseClass, promotions).get();
+		DiscountCourseClass bestDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(allApplicable, courseClass.getFeeExGst(), courseClass.getTaxRate());
 		
-		discountedFee = courseClass.getDiscountedFeeIncTax(applicableDiscount);
-		discountValue = courseClass.getDiscountAmountIncTax(applicableDiscount);
-		if (applicableDiscount != null) {
-			discountExpiryDate = WebDiscountUtils.expiryDate(applicableDiscount.getDiscount(), courseClass);
+		if (bestDiscount != null) {
+			discountedFee = courseClass.getDiscountedFeeIncTax(bestDiscount);
+			discountValue = courseClass.getFeeIncGst().subtract(discountedFee);
+			fillAppliedDiscountsTooltip(bestDiscount);
 		}
-		fillAppliedDiscountsTooltip();
 	}
 	
-	private void fillAppliedDiscountsTooltip() {
-		dateFormat = FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
-		if (applicableDiscount != null) {
-			StringBuilder appliedDiscountsTitleBuf = new StringBuilder(applicableDiscount.getDiscount().getName());
-			if (discountExpiryDate != null) {
-				appliedDiscountsTitleBuf.append(" expires ").append(dateFormat.format(discountExpiryDate));
-			}
-			appliedDiscountsTitle = appliedDiscountsTitleBuf.toString();
+	private void fillAppliedDiscountsTooltip(DiscountCourseClass applicableDiscount) {
+		StringBuilder appliedDiscountsTitleBuf = new StringBuilder(applicableDiscount.getDiscount().getName());
+		discountExpiryDate = WebDiscountUtils.expiryDate(applicableDiscount.getDiscount(), courseClass.getStartDate());
+		if (discountExpiryDate != null) {
+			appliedDiscountsTitleBuf.append(" expires ").append(dateFormat.format(discountExpiryDate));
 		}
+		appliedDiscountsTitle = appliedDiscountsTitleBuf.toString();
 	}
 
 	private void fillPossibleDiscounts() {
-		Expression notHiddenDiscounts = DiscountCourseClass.DISCOUNT.dot(Discount.HIDE_ON_WEB).isFalse();
-		List<DiscountCourseClass> potentialDiscounts = notHiddenDiscounts.filterObjects(WebDiscountUtils.getFilteredDiscounts(courseClass));
-		Collections.sort(potentialDiscounts, new DiscountFeeComparator(courseClass));
-
-		Money money = null;
-		DiscountItem discountItem = null;
-
-		discountItems = new ArrayList<>();
-
-		for (DiscountCourseClass discountCourseClass : potentialDiscounts) {
-			Money dMoney = courseClass.getDiscountedFeeIncTax(discountCourseClass);
-			if (money == null || !money.equals(dMoney))
-			{
-				money = courseClass.getDiscountedFeeIncTax(discountCourseClass);
-				discountItem = new DiscountItem();
-				discountItem.setFeeIncTax(money);
-				discountItems.add(discountItem);
-			}
-			discountItem.addDiscount(discountCourseClass.getDiscount());
-			discountItem.init();
-		}
+		List<DiscountCourseClass> potentialDiscounts = GetPossibleDiscounts.valueOf(courseClass).get();
+		discountItems = WebDiscountUtils.sortByDiscountValue(potentialDiscounts, courseClass.getFeeExGst(), courseClass.getTaxRate());
 	}
 
 	@SetupRender
 	public void beforeRender() {
+		dateFormat = FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
 		fillAppliedDiscounts();
 		fillPossibleDiscounts();
 	}
@@ -168,51 +148,4 @@ public class CourseClassPrice extends ISHCommon {
     public boolean isPaymentGatewayEnabled() {
         return preferenceController.isPaymentGatewayEnabled();
     }
-
-
-	public static final class DiscountItem
-	{
-		private static final String DIVIDER = " / ";
-		private List<Discount> discounts = new ArrayList<>();
-		private Money feeIncTax;
-
-
-		private Format feeFormat;
-		private String title;
-
-		public void init()
-		{
-			List<String> strings = new ArrayList<>();
-			for (Discount  discount : discounts) {
-				strings.add(discount.getName());
-			}
-			title = StringUtils.join(strings, DIVIDER);
-			feeFormat = FormatUtils.chooseMoneyFormat(feeIncTax);
-		}
-
-		public void addDiscount(Discount discount)
-		{
-			discounts.add(discount);
-		}
-
-		public String getTitle()
-		{
-			return title;
-		}
-
-		public Money getFeeIncTax() {
-			return feeIncTax;
-		}
-
-		public void setFeeIncTax(Money feeIncTax)
-		{
-			this.feeIncTax = feeIncTax;
-		}
-
-		public Format getFeeFormat()
-		{
-			return feeFormat;
-		}
-
-	}
 }

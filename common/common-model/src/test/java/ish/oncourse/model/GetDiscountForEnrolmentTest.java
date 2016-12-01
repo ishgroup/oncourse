@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
  * 
  */
 @RunWith(MockitoJUnitRunner.class)
-public class GetDiscountForEnrolmentTest extends AbstractDiscountPolicyTest {
+public class GetDiscountForEnrolmentTest extends AbstractGetDiscountForEnrolmentTest {
 	/**
 	 * Calendar instance for date types.
 	 */

@@ -346,24 +346,6 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		}
 		return discounts;
 	}
-	
-	/**
-	 * Retrieves the discount which should be applied to this class prices by
-	 * the given policy.
-	 * 
-	 * @param policy
-	 * @return
-	 */
-	public DiscountCourseClass getDiscountToApply(DiscountPolicy policy) {
-
-		List<DiscountCourseClass> discountCourseClasses = ObjectSelect.query(DiscountCourseClass.class).
-				where(DiscountCourseClass.DISCOUNT.dot(Discount.IS_AVAILABLE_ON_WEB).isTrue()).
-				and(DiscountCourseClass.COURSE_CLASS.eq(this)).
-				and(Discount.getCurrentDateFilterForDiscountCourseClass(getStartDate())).
-				select(getObjectContext());
-		
-		return policy.filterDiscounts(discountCourseClasses, getFeeExGst(), getFeeGst(), getTaxRate());
-	}
 
 	/**
 	 * The value of discount without tax if the discount is applied to

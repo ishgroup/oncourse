@@ -8,6 +8,7 @@ import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.tag.ITagService;
@@ -25,7 +26,6 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
-import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 public class CourseItem extends ISHCommon {
 
 	private static final int COURSE_DETAILS_LENGTH = 490;
+	public static final String PROMOS_ATTR = "promotions";
 	private static final Logger logger = LogManager.getLogger();
 
 	@Property
@@ -92,6 +93,9 @@ public class CourseItem extends ISHCommon {
 
 	@Property
 	private Money feeOverride;
+	
+	@Inject
+	private IDiscountService discountService;
 	
 
     @SetupRender
@@ -254,6 +258,8 @@ public class CourseItem extends ISHCommon {
 	}
 
 	private void init() {
+		request.setAttribute(PROMOS_ATTR, discountService.getPromotions());
+		discountService.getPromotions();
 		// If course has ENROLMENT_BY_APPLICATION type:
 		// 		-if student specified (find by uniqCode) && student has offered application for this course
 		//				then show 'ENROL NOW' button and show special price - 'feeOverride'

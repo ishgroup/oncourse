@@ -6,7 +6,6 @@ package ish.oncourse.model;
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
 import ish.oncourse.utils.MembershipDiscountHelper;
-import ish.oncourse.utils.WebDiscountUtils;
 import ish.util.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;

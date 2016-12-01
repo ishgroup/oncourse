@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+	<Language id="1" name="English" isActive="1" ishVersion="1"/>
+	<Qualification id="1" ishVersion="1" nationalCode="10351TAS" level="Certificate IV in" title="Youth &amp; Community Work (Christian)" anzsco="411716" asco="GEN19" fieldOfStudy="1103" fieldOfEducation="0899" nominalHours="13"
+				   reviewDate="2009-07-16 16:50:31" isAccreditedCourse="1" created="2009-07-16 16:50:31" modified="2009-07-16 16:50:31"/>
+
+	<College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+			 communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+
+	<Contact id="1" collegeId="1"
+			 countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0"
+			 isCompany="1" isMale="1" familyName="Company1" givenName="Company1"
+			 emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow"
+			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+			 isMarketingViaSMSAllowed="1" />
+
+	<Course id="1" collegeId="1" angelId="1" code="ATT1" isWebVisible="1" isVETCourse="0"
+			isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+			allowWaitingList="1" name="Test 1" detail="detail"
+			detail_textile="detailTextile" fieldOfEducation="fieldOfEducation"
+			nominalHours="1.1" qualificationId="1" searchText="searchText"
+			enrolmentType="1"/>
+
+
+	<Site id="1" collegeId="1" angelId="1" isWebVisible="0" created="2011-09-12 00:17:18.0"
+		  modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
+		  drivingDirections="drivingDirections" drivingDirections_textile="drivingDirections_textile" latitude="1.11"
+		  longitude="1.11" postcode="postcode" publicTransportDirections="publicTransportDirections"
+		  publicTransportDirections_textile="publicTransportDirections_textile" specialInstructions="specialInstructions"
+		  specialInstructions_textile="specialInstructions_textile" state="state" street="street" suburb="suburb" timeZone="Australia/Sydney" isVirtual="0"/>
+
+	<Room id="1" collegeId="1" siteId="1" angelId="1" capacity="30" created="2011-09-12 00:47:01.0"
+		  modified="2011-09-12 01:02:00.0" name="TestRoom" directions="directions" directions_textile="directions_textile"
+		  facilities="facilities" facilities_textile="facilities_textile"/>
+
+	<CourseClass id="1" angelId="1" collegeId="1"
+				 code="123" courseId="1" roomId="1"
+				 startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
+				 isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+				 maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="100.00"
+				 feeGst="10.00"
+				 detail="detail" detail_textile="detailTextile" materials="materials"
+				 materials_textile="materials_textile"
+				 minutesPerSession="1" sessionDetail="sessionDetail" sessionDetail_textile="sessionDetail_textile"
+				 startingMinutePerSession="1" timeZone="timeZone" isDistantLearningCourse="0" expectedHours="2.0"
+				 maximumDays="3"/>
+
+
+
+
+	<Discount name="discountPercent1" id="1" angelId="1"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="50"/>
+	<Discount name="discountPercent2" id="2" angelId="2"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="0" minEnrolments="1" minValue="0"/>
+	<Discount name="discountPercent3" id="3" angelId="3"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="1" isAvailableOnWeb="1" minEnrolments="1" minValue="0"/>
+	<Discount name="discountPercent4" id="4" angelId="4" code="codee4" collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="0"/>
+	<Discount name="discountPercent5" id="5" angelId="5" code="codee5" collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="0"/>
+	<Discount name="discountPercent6" id="6" angelId="6"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="2" minValue="0"/>
+	<Discount name="discountPercent7" id="7" angelId="7"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="120"/>
+	<Discount name="discountPercent8" id="8" angelId="8" studentAge="10"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.2" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="0"/>
+	<Discount name="discountPercent9" id="9" angelId="9" studentEnrolledWithinDays="3"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.3" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="0"/>
+	<Discount name="discountPercent10" id="10" angelId="10" studentPostcodes="2000"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.4" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="0"/>
+	<Discount name="discountPercent11" id="11" angelId="11"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="1" isAvailableOnWeb="0" minEnrolments="1" minValue="0"/>
+
+
+	<CorporatePass id="1" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+				   contactId="1" password="password1"/>
+	<CorporatePass_CourseClass id="1" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+							   corporatePassId="1" courseClassId="1"/>
+	<CorporatePass_Discount id="1" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+							corporatePassId="1" discountId="11"/>
+
+	<Discount name="discountPercent12" id="12" angelId="12"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="0"/>
+
+	<ConcessionType id="1" angelId="1" collegeId="1" credentialExpiryDays="1" hasConcessionNumber="1" hasExpiryDate="0" isConcession="1" isEnabled="1" name="ConcessionType1" requiresCredentialCheck="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>
+	<DiscountConcessionType id="1" discountId="12" concessionTypeId="1" collegeId="1"/>
+
+	<Discount name="discountPercent13" id="13" angelId="13"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="0" isAvailableOnWeb="1" minEnrolments="1" minValue="0"/>
+	
+	<Product collegeId="1" SKU="23458" createdOn="2012-05-10 17:59:42.384" description="11$ product double edition" expiryType="4" id="1" isOnSale="1"
+			 isWebVisible="1" modifiedOn="2012-05-15 16:29:23.13" name="my test article product" type="2" angelId="9"
+			 taxAdjustment="0.00" priceExTax="10.00" feeGST="0.00"/>
+	
+	<DiscountMembership id="1" angelId="1" collegeId="1" createdOn="2011-09-12 00:56:00" modifiedOn="2011-09-12 00:56:00" applyToMemberOnly="1" discountId="13" membershipProductId="1"/>
+
+
+	<Discount name="discountPercent14" id="14" angelId="14"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone" validFrom="2111-09-12 00:56:00.0"  hideOnWeb="1" isAvailableOnWeb="0" minEnrolments="1" minValue="0"/>
+	<Discount name="discountPercent15" id="15" angelId="15"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"  validTo="2001-09-12 00:56:00.0" hideOnWeb="1" isAvailableOnWeb="0" minEnrolments="1" minValue="0"/>
+	
+	<Discount name="discountPercent16" id="16" angelId="16" validFromOffset="1" validToOffset="1"  collegeId="1" combinationType="1" created="2011-09-12 00:56:00.0" detail="detail" discountRate="0.5" discountType="1" modified="2011-09-12 00:56:00.0" roundingMode="0" timeZone="timeZone"   hideOnWeb="1" isAvailableOnWeb="0" minEnrolments="1" minValue="0"/>
+	
+	
+	
+	
+	<DiscountCourseClass id="1" angelId="1" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="1"/>
+	
+	<DiscountCourseClass id="2" angelId="2" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="2"/>
+
+	<DiscountCourseClass id="3" angelId="3" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="3"/>
+	
+	<DiscountCourseClass id="4" angelId="4" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="4"/>
+	
+	<DiscountCourseClass id="5" angelId="5" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="5"/>
+	
+	<DiscountCourseClass id="6" angelId="6" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="6"/>
+	
+	<DiscountCourseClass id="7" angelId="7" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="7"/>
+	
+	<DiscountCourseClass id="8" angelId="8" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="8"/>
+	
+	<DiscountCourseClass id="9" angelId="9" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="9"/>
+	
+	<DiscountCourseClass id="10" angelId="10" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="10"/>
+	
+	<DiscountCourseClass id="11" angelId="11" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="11"/>
+	
+	<DiscountCourseClass id="12" angelId="12" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="12"/>
+	
+	<DiscountCourseClass id="13" angelId="13" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="13"/>
+	
+	<DiscountCourseClass id="14" angelId="14" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="14"/>
+
+	<DiscountCourseClass id="15" angelId="15" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="15"/>
+
+	<DiscountCourseClass id="16" angelId="16" collegeId="1" courseClassId="1"
+						 created="2011-09-12 00:56:00.0"
+						 modified="2011-09-12 00:56:00.0"
+						 discountId="16"/>
+
+</dataset>

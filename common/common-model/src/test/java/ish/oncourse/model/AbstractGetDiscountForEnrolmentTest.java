@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Contains fields and tests common for {@link PotentialDiscountsPolicyTest} and {@link ish.oncourse.model.GetDiscountForEnrolment}
+ * Contains fields and tests common for {@link ish.oncourse.model.GetDiscountForEnrolment}
  * @author ksenia
  *
  */
-public abstract class AbstractDiscountPolicyTest {
+public abstract class AbstractGetDiscountForEnrolmentTest {
 	protected static final Money FEE_EX_GST = new Money("100");
 
 	protected static final Money FEE_GST = new Money("10");
@@ -72,7 +72,6 @@ public abstract class AbstractDiscountPolicyTest {
 	public static DiscountCourseClass discountByCorporatePass;
 	
 	public static List<Discount> promotions;
-	public static DiscountPolicy discountPolicy;
 
 	/**
 	 * Initializes discounts entities.
