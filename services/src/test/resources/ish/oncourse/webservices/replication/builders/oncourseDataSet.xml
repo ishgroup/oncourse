@@ -616,5 +616,8 @@
 
 	<AssessmentSubmission id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
 						  enrolmentId="1" assessmentClassId="1" submittedByid="1" tutorComments="tutorComments" studentComments="studentComments"/>
-	
+
+    <AssessmentClassModule id="1" angelId="1" collegeId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54"
+                          assessmentClassId="1" moduleId="1"/>
+    
 </dataset>

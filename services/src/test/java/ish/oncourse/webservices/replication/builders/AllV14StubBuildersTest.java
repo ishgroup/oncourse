@@ -342,4 +342,10 @@ public class AllV14StubBuildersTest extends AbstractAllStubBuildersTest {
 	public void testFieldHeadingStubBuilder() {
 		this.testStubBuilder(FieldHeading.class, new FieldHeadingStubBuilder());
 	}
+
+	@Test
+	public void testAssessmentClassModuleStubBuilder() {
+		this.testStubBuilder(AssessmentClassModule.class, new AssessmentClassModuleStubBuilder());
+	}
 }
+     

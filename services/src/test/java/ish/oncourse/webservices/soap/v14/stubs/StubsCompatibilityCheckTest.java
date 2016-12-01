@@ -683,6 +683,11 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		assessmentClassTutorParameters.add(new ReplicationStubFieldParameter("tutorId", Long.class));
 		stubsPropertyMap.put(getStubName(AssessmentClassTutorStub.class), assessmentClassTutorParameters);
 
+		List<ReplicationStubFieldParameter> assessmentClassModuleParameters = fillDefaultReplicationStubFields();
+		assessmentClassModuleParameters.add(new ReplicationStubFieldParameter("assessmentClassId", Long.class));
+		assessmentClassModuleParameters.add(new ReplicationStubFieldParameter("moduleId", Long.class));
+		stubsPropertyMap.put(getStubName(AssessmentClassModuleStub.class), assessmentClassModuleParameters);
+		
 		List<ReplicationStubFieldParameter> assessmentSubmissionParameters = fillDefaultReplicationStubFields();
 		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("enrolmentId", Long.class));
 		assessmentSubmissionParameters.add(new ReplicationStubFieldParameter("assessmentClassId", Long.class));
@@ -1132,6 +1137,12 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 
+	@Test
+	public void testAssessmentClassModuleStub() {
+		GenericReplicationStub stub = new AssessmentClassModuleStub();
+		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
+	}
+	
 	@Test
 	public void testAssessmentSubmissionStub() {
 		GenericReplicationStub stub = new AssessmentSubmissionStub();
