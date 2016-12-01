@@ -87,7 +87,7 @@ public class GetDiscountTest extends ServiceTest {
 		assertEquals("discountPercent10", discountItems.get(1).getTitle());
 		assertEquals(new Money("77.00"), discountItems.get(2).getFeeIncTax());
 		assertEquals("discountPercent9", discountItems.get(2).getTitle());
-		assertEquals(new Money("88.00"), discountItems.get(2).getFeeIncTax());
-		assertEquals("discountPercent8", discountItems.get(2).getTitle());
+		assertEquals(new Money("88.00"), discountItems.get(3).getFeeIncTax());
+		assertEquals("discountPercent8", discountItems.get(3).getTitle());
 	}	
 }
