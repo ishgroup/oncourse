@@ -27,7 +27,7 @@ public class ApplicationStatusComponent {
 		if (ApplicationStatus.OFFERED.equals(application.getStatus()) && application.getEnrolBy() != null && application.getEnrolBy().before(new Date())) {
 			return messages.get(EXPIRED_APPLICATION_MESSAGE_KEY);
 		} else {
-			return messages.get(application.getStatus().getDisplayName());
+			return messages.get(application.getStatus().name());
 		}
 	}
 }
