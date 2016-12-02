@@ -37,6 +37,7 @@ public class GetPossibleDiscounts {
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_MEMBERSHIP_PRODUCTS).outer().dot(DiscountMembership.CREATED).isNotNull()).
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_CONCESSION_TYPES).outer().dot(DiscountConcessionType.CONCESSION_TYPE).isNotNull())
 				).
+				prefetch(DiscountCourseClass.DISCOUNT.joint()).
 				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
 				cacheGroups(DiscountCourseClass.class.getSimpleName()).
 				select(courseClass.getObjectContext());

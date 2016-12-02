@@ -8,6 +8,7 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
 import ish.util.DiscountUtils;
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
@@ -112,18 +113,9 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 * @return count of enrolments.
 	 */
 	public int validEnrolmentsCount() {
-		EJBQLQuery query = new EJBQLQuery(
-				"Select count(e) from Enrolment e where e.courseClass=?1 and e.status in (?2)");
-		query.setParameter(1, this);
-		
-		List<Integer> statusesValues = new ArrayList<>();
-		// use values, because the EJBQL in cayenne 3.0 doesn't convert enums in
-		// this expression
-		for (EnrolmentStatus es : Enrolment.VALID_ENROLMENTS) {
-			statusesValues.add(es.getDatabaseValue());
-		}
-		query.setParameter(2, statusesValues);
-		return ((Number) getObjectContext().performQuery(query).get(0)).intValue();
+		SQLTemplate template = new SQLTemplate(
+				String.format("Select count(*) as COUNT from Enrolment where courseClassId=%d and status in (%d, %d)", getId(), EnrolmentStatus.SUCCESS.getDatabaseValue(),  EnrolmentStatus.IN_TRANSACTION.getDatabaseValue()), true);		
+		return ((Number) ((DataRow) getObjectContext().performQuery(template).get(0)).get("COUNT")).intValue();
 	}
 
 	/**
@@ -266,31 +258,27 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Session> getTimelineableSessions() {
-		List<Session> classSessions;
-		
 		if (getObjectId().isTemporary()) {
-			classSessions = getSessions();
+			return Session.START_DATE.isNotNull().andExp(Session.END_DATE.isNotNull()).filterObjects(getSessions());
+		} else {
+			return getPersistentTimelineableSessions(false);
 		}
-		else {
-			Expression expr = Session.COURSE_CLASS.eq(this);
-			SelectQuery q = new SelectQuery(Session.class, expr);
-			/**
-			 * we use CACHE LOCAL_CACHE  Strategy to reduce db requests.
-			 */
-			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-			q.setCacheGroups(Session.class.getSimpleName());
-			q.addPrefetch(Session.ROOM_PROPERTY);
-			q.addPrefetch(Session.ROOM_PROPERTY + "." + Room.SITE_PROPERTY);
-			classSessions = getObjectContext().performQuery(q);
-		}
+	}
+	
+	public List<Session> getPersistentTimelineableSessions(boolean sort) {
+		ObjectSelect select = ObjectSelect.query(Session.class)
+				.where(Session.COURSE_CLASS.eq(this))
+				.and(Session.START_DATE.isNotNull())
+				.and(Session.END_DATE.isNotNull())
+				.prefetch(Session.ROOM.disjoint())
+				.prefetch(Session.ROOM.dot(Room.SITE).disjoint())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroups(Session.class.getSimpleName());
 		
-		List<Session> validSessions = new ArrayList<>();
-		for (Session session : classSessions) {
-			if ((session.getStartDate() != null) && (session.getEndDate() != null)) {
-				validSessions.add(session);
-			}
+		if (sort) {
+			select.orderBy(Session.START_DATE.desc(), Session.ROOM.dot(Room.SITE).dot(Site.NAME).desc());
 		}
-		return validSessions;
+		return select.select(getObjectContext());
 	}
 
 	public boolean isHasRoom() {

@@ -14,6 +14,8 @@ import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -106,6 +108,8 @@ public class CourseClassItem extends ISHCommon {
 
 	@Property
 	private List<TutorRole> visibleTutorRoles;
+	
+	private List<Session> timelineableSessions;
 
 	@SetupRender
 	public void beforeRender() {
@@ -124,12 +128,13 @@ public class CourseClassItem extends ISHCommon {
 		else
 			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 
-		sessionDays = SessionUtils.getSessionDays(courseClass.getTimelineableSessions());
+		timelineableSessions = courseClass.getPersistentTimelineableSessions(true);
+		sessionDays = SessionUtils.getSessionDays(timelineableSessions);
 		initVisibleTutorRoles();
 	}
 
 	public boolean isHasSessionsInTheSameDay() {
-		return sessionDays.size() != courseClass.getTimelineableSessions().size();
+		return sessionDays.size() != timelineableSessions.size();
 	}
 
 	public Date getFirstSessionStartDate() {
@@ -145,14 +150,15 @@ public class CourseClassItem extends ISHCommon {
 		return detail == null ? StringUtils.EMPTY : detail;
 	}
 
-	private List<TutorRole> initVisibleTutorRoles() {
-		visibleTutorRoles = new ArrayList<>();
-		for (TutorRole role : courseClass.getTutorRoles()) {
-			if (role.getInPublicity() && tutorService.isActiveTutor(role.getTutor())) {
-				visibleTutorRoles.add(role);
-			}
-		}
-		return visibleTutorRoles;
+	private void initVisibleTutorRoles() {
+		visibleTutorRoles = ObjectSelect.query(TutorRole.class)
+				.where(TutorRole.COURSE_CLASS.eq(courseClass))
+				.and(TutorRole.IN_PUBLICITY.isTrue())
+				.and(TutorRole.TUTOR.dot(Tutor.START_DATE).isNull().orExp(TutorRole.TUTOR.dot(Tutor.START_DATE).gt(new Date())))
+				.prefetch(TutorRole.TUTOR.disjoint())
+				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).disjoint())
+				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroups(TutorRole.class.getSimpleName()).select(courseClass.getObjectContext());
 	}
 
 	public boolean isHasTutorRoles() {
@@ -196,19 +202,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public List<Session> getSortedTimelineableSessions() {
-		List<Session> sessions = courseClass.getTimelineableSessions();
-		Collections.sort(sessions, new Comparator<Session>() {
-			public int compare(Session o1, Session o2) {
-				int siteNameComparison = o1.getStartDate().compareTo(o2.getStartDate());
-				Room room1 = o1.getRoom();
-				Room room2 = o2.getRoom();
-				if (siteNameComparison == 0 && room1 != null && room2 != null) {
-					siteNameComparison = room1.getSite().getName().compareTo(room2.getSite().getName());
-				}
-				return siteNameComparison;
-			}
-		});
-		return sessions;
+		return timelineableSessions;
 	}
 
 	public String getClassSessions() {

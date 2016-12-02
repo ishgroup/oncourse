@@ -47,6 +47,7 @@ public class GetAppliedDiscounts {
 								.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.CODE).isNotNull()
 										.andExp(DiscountCourseClass.DISCOUNT.in(promotions)))
 				).
+				prefetch(DiscountCourseClass.DISCOUNT.joint()).
 				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
 				cacheGroups(DiscountCourseClass.class.getSimpleName()).
 				select(courseClass.getObjectContext());
