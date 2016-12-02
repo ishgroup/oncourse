@@ -2,7 +2,7 @@
 
 	<div class="collapse nav-links logged navbar-collapse">
         <img class="login-avatar-icon" src="${profilePicturePath}"/>
-		<strong>${contact.givenName} ${contact.familyName}</strong>
+		<strong>${contact.givenName} ${contact.familyName} <span class="glyphicon glyphicon-chevron-down"/></strong>
 
 		<ul class="clearfix user-action-links">
             <li class="hide view-all-users">
@@ -12,7 +12,6 @@
               <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
             </li>
 		</ul>
-        <span class="glyphicon glyphicon-chevron-down"/>
 		<span t:type="switchcontact"/>
 	</div>
 </t:container>
