@@ -171,10 +171,7 @@
 		}
 
 		.glyphicon-chevron-down {
-			display: none;
-			@include responsive($media-small) {
-				display: block;
-			}
+			display: block;
 		}
 
 
@@ -213,10 +210,12 @@
 		> strong {
 			text-transform: uppercase;
 			float: left;
-			width: 76%;
+			//width: 76%;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+			margin-right: 6px;
+			display: block !important;
 		}
 
 		.caret {
@@ -232,6 +231,14 @@
 			margin-right: 8px;
 			top: -2px;
 			position: relative;
+		}
+
+		.active-selected-user {
+			display: table;
+			color: #F7AC00;
+			text-transform: none;
+			font-size: 1.1rem;
+			font-weight: 400;
 		}
 
 		.change-user {

@@ -1,5 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
     <t:if test="hasRelatedContacts()">
+        <div class="clearfix active-selected-user">${selectedContact.fullName}</div>
         <div class="clearfix btn-group change-user">
             <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
                 ${selectedContact.fullName} <span class="caret"></span>
