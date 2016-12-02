@@ -1,8 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
 	<div class="collapse nav-links logged navbar-collapse">
-        <img class="login-avatar-icon" src="${profilePicturePath}"/>
-		<strong>${contact.givenName} ${contact.familyName} <span class="glyphicon glyphicon-chevron-down"/></strong>
+        <div class="contact-profile">
+            <img class="login-avatar-icon" src="${profilePicturePath}"/>
+    		<strong>${contact.givenName} ${contact.familyName} <span class="glyphicon glyphicon-chevron-down"/></strong>
+        </div>
 
 		<ul class="clearfix user-action-links">
             <li class="hide view-all-users">

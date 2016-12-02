@@ -207,15 +207,19 @@
 			}
 		}
 
-		> strong {
-			text-transform: uppercase;
+		> .contact-profile {
 			float: left;
-			//width: 76%;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			margin-right: 6px;
-			display: block !important;
+			width: 100%;
+			strong {
+				text-transform: uppercase;
+				float: left;
+				//width: 76%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				margin-right: 6px;
+				display: block !important;
+			}
 		}
 
 		.caret {
@@ -234,16 +238,18 @@
 		}
 
 		.active-selected-user {
-			display: table;
 			color: #F7AC00;
 			text-transform: none;
 			font-size: 1.1rem;
 			font-weight: 400;
+			position: relative;
+			top: -3px;
+			margin-left: 34px;
 		}
 
 		.change-user {
 			display: none;
-			margin-top: 28px;
+			margin-top: 2px;
 			padding-top: 10px;
 			position: relative;
 			@include responsive($media-small) {
