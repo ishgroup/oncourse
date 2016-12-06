@@ -280,12 +280,11 @@ public class PortalService implements IPortalService {
 
     public List<CourseClass> getTutorCourseClasses(Contact contact, CourseClassFilter filter) {
         if (contact.getTutor() != null) {
-            SelectQuery q = new SelectQuery(CourseClass.class, getTutorClassesExpression());
-            q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-            q.setCacheGroups(CourseClass.class.getSimpleName());
-            q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
 
-            List<CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
+            List<CourseClass> courseClasses = ObjectSelect.query(CourseClass.class, getTutorClassesExpression()).
+            cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, CourseClass.class.getSimpleName())
+                    .prefetch(CourseClass.SESSIONS.disjoint()).select(cayenneService.newContext());
+
             switch (filter) {
                 case UNCONFIRMED:
                     return getUnconfirmedTutorClasses(courseClasses, contact);
@@ -332,20 +331,9 @@ public class PortalService implements IPortalService {
         Date date = getCurrentDate();
 
         for (CourseClass courseClass : courseClasses) {
-            if (courseClass.getIsDistantLearningCourse()) {
+            if (IsCurrentTutorClass.valueOf(courseClass, date).is()) {
                 current.add(courseClass);
             }
-            if (!courseClass.getIsDistantLearningCourse() && !courseClass.getSessions().isEmpty()) {
-
-                if (courseClass.getEndDate().after(date))
-                    current.add(courseClass);
-            }
-
-            if (!courseClass.getIsDistantLearningCourse() && courseClass.getSessions().isEmpty()) {
-
-                current.add(courseClass);
-            }
-
         }
 
         return current;
@@ -353,20 +341,19 @@ public class PortalService implements IPortalService {
 
 
     private List<CourseClass> getUnconfirmedTutorClasses(List<CourseClass> courseClasses, Contact contact) {
+
         List<CourseClass> unconfirmed = new ArrayList<>();
 
-        List<CourseClass> currentClasses = getCurrentTutorClasses(courseClasses);
+        Date date = getCurrentDate();
 
         for (CourseClass courseClass : courseClasses) {
-            for (TutorRole tutorRole : courseClass.getTutorRoles()) {
-                try {
-                    if (tutorRole.getTutor().getId().equals(contact.getTutor().getId())
-                            && !tutorRole.getIsConfirmed()
-                            && currentClasses.contains(courseClass)) {
-                        unconfirmed.add(courseClass);
-                    }
-                } catch (Exception e) {
-                    logger.error("Unexpected error. contactId: {}, courseClassId: {}, tutorRoleId: {}", contact.getId(), courseClass.getId(), tutorRole.getId(), e);
+            if (IsCurrentTutorClass.valueOf(courseClass, date).is()) {
+                TutorRole tutorRole = ObjectSelect.query(TutorRole.class).where(TutorRole.TUTOR.eq(contact.getTutor()))
+                        .and(TutorRole.COURSE_CLASS.eq(courseClass))
+                        .and(TutorRole.IS_CONFIRMED.isFalse()).selectFirst(cayenneService.newContext());
+
+                if (tutorRole != null) {
+                    unconfirmed.add(courseClass);
                 }
             }
         }
@@ -739,7 +726,7 @@ public class PortalService implements IPortalService {
 
         return ObjectSelect.query(PaymentIn.class).where(PaymentIn.CONTACT.eq(contact)
                 .andExp(PaymentIn.AMOUNT.gt(Money.ZERO))
-                        .andExp(PaymentIn.MODIFIED.gte(lastLoginTime))).select(sharedContext).size();
+                .andExp(PaymentIn.MODIFIED.gte(lastLoginTime))).select(sharedContext).size();
     }
 
     public int getNewInvoicesCount() {
@@ -959,6 +946,26 @@ public class PortalService implements IPortalService {
         return query.orderBy(Session.START_DATE.asc())
                 .prefetch(Session.COURSE_CLASS.disjoint())
                 .select(cayenneService.sharedContext());
+    }
+
+
+    public static class IsCurrentTutorClass {
+        private CourseClass courseClass;
+        private Date date;
+
+        public boolean is() {
+            return courseClass.getIsDistantLearningCourse() ||
+                    (!courseClass.getSessions().isEmpty() && courseClass.getEndDate().after(date)) ||
+                    courseClass.getSessions().isEmpty();
+        }
+
+        public static IsCurrentTutorClass valueOf(CourseClass courseClass, Date date) {
+            IsCurrentTutorClass result = new IsCurrentTutorClass();
+            result.courseClass = courseClass;
+            result.date = date;
+            return result;
+        }
+
     }
 
 }
