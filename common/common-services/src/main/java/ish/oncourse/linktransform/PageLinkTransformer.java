@@ -14,6 +14,7 @@ import ish.oncourse.services.node.IWebNodeService;
 import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
+import ish.oncourse.services.sites.SitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.voucher.IVoucherService;
@@ -32,6 +33,8 @@ import org.apache.tapestry5.services.RequestGlobals;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 public class PageLinkTransformer implements PageRenderLinkTransformer {
 
@@ -230,7 +233,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		case Page:
 			String nodeNumber = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 			WebNode webNode = null;
-			if (StringUtils.isNumeric(nodeNumber)) {
+			if (isNumeric(nodeNumber)) {
 				request.setAttribute(IWebNodeService.NODE_NUMBER_PARAMETER, nodeNumber);
 				webNode = webNodeService.getCurrentNode();
 			}
@@ -245,11 +248,8 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		case Sites:
 			break;
 		case Site:
-			Site site = null;
-			String siteId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			if (siteId != null && siteId.matches(DIGIT_PATTERN)) {
-				site = sitesService.getSite(Site.ANGEL_ID_PROPERTY, siteId);
-			}
+		case KioskSite:
+			Site site = new GetSiteByAngelId().path(path).sitesService(sitesService).get();
 			if (site != null) {
 				request.setAttribute(Site.class.getSimpleName(), site);
 			} else {
@@ -257,13 +257,15 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			break;
 		case Room:
+		case KioskRoom:
 			Room room = null;
 			String roomId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			if (roomId != null && roomId.matches(DIGIT_PATTERN)) {
+			if (isNumeric(roomId)) {
 				room = roomService.getRoom(Room.ANGEL_ID_PROPERTY, Long.valueOf(roomId));
 			}
 			if (room != null) {
 				request.setAttribute(Room.class.getSimpleName(), room);
+				request.setAttribute(Site.class.getSimpleName(), room.getSite());
 			} else {
 				pageIdentifier = PageIdentifier.PageNotFound;
 			}
@@ -370,4 +372,29 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 		return defaultLink;
 	}
 
+	public static class GetSiteByAngelId {
+
+		private String path;
+		private ISitesService sitesService;
+
+		public GetSiteByAngelId path(String path) {
+			this.path = path;
+			return this;
+		}
+
+		public GetSiteByAngelId sitesService(ISitesService sitesService) {
+			this.sitesService = sitesService;
+			return this;
+		}
+
+		public Site get() {
+			Site site = null;
+			String siteId = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
+			if (isNumeric(siteId)) {
+				site = sitesService.getSite(Site.ANGEL_ID_PROPERTY, siteId);
+			}
+			return site;
+		}
+
+	}
 }

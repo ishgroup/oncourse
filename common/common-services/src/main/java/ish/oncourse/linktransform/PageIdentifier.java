@@ -95,7 +95,11 @@ public enum PageIdentifier
 
 	SiteNotFound("/sitenotfound", "ui/SiteNotFound"),
 	
-	WaitingListForm(new PrefixMatcher("/waitinglistform/"), "enrol/WaitingListForm" );
+	WaitingListForm(new PrefixMatcher("/waitinglistform/"), "enrol/WaitingListForm" ),
+
+	KioskSite(new PrefixMatcher("/site/kiosk/"), "ui/kiosk/KioskPage"),
+
+	KioskRoom(new PrefixMatcher("/room/kiosk/"), "ui/kiosk/KioskPage");
 
 	private  static final PageIdentifier[] sortedValues;
 	static
