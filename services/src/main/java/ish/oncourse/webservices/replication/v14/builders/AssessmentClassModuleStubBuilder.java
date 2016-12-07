@@ -15,6 +15,6 @@ public class AssessmentClassModuleStubBuilder extends AbstractWillowStubBuilder<
 		stub.setModified(entity.getModified());
 		stub.setAssessmentClassId(entity.getAssessmentClass().getId());
 		stub.setModuleId(entity.getModule().getId());
-		return null;
+		return stub;
 	}
 }
