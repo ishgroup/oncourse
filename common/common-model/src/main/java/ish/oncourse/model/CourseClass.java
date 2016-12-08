@@ -9,7 +9,6 @@ import ish.oncourse.utils.SessionUtils;
 import ish.oncourse.utils.TimestampUtilities;
 import ish.util.DiscountUtils;
 import org.apache.cayenne.DataRow;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.*;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -261,23 +260,19 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		if (getObjectId().isTemporary()) {
 			return Session.START_DATE.isNotNull().andExp(Session.END_DATE.isNotNull()).filterObjects(getSessions());
 		} else {
-			return getPersistentTimelineableSessions(false);
+			return getPersistentTimelineableSessions();
 		}
 	}
 	
-	public List<Session> getPersistentTimelineableSessions(boolean sort) {
+	public List<Session> getPersistentTimelineableSessions() {
 		ObjectSelect select = ObjectSelect.query(Session.class)
 				.where(Session.COURSE_CLASS.eq(this))
 				.and(Session.START_DATE.isNotNull())
 				.and(Session.END_DATE.isNotNull())
-				.prefetch(Session.ROOM.disjoint())
-				.prefetch(Session.ROOM.dot(Room.SITE).disjoint())
+				.prefetch(Session.ROOM.joint())
+				.prefetch(Session.ROOM.dot(Room.SITE).joint())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
 				.cacheGroups(Session.class.getSimpleName());
-		
-		if (sort) {
-			select.orderBy(Session.START_DATE.desc(), Session.ROOM.dot(Room.SITE).dot(Site.NAME).desc());
-		}
 		return select.select(getObjectContext());
 	}
 
