@@ -4,9 +4,12 @@ import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.ui.utils.CourseContext;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -15,6 +18,13 @@ public class CourseClassPlacesAvailable extends ISHCommon {
 
 	@Inject
 	private PreferenceController preferenceController;
+
+	@Inject
+	private Request request;
+
+	private CourseContext context;
+	
+	private int placesAvailable;
 
 	@Parameter
 	@Property
@@ -25,18 +35,22 @@ public class CourseClassPlacesAvailable extends ISHCommon {
 	public Format getFormat() {
 		return format;
 	}
+	
+	@SetupRender
+	public void beforeRender() {
+		placesAvailable = courseClass.getAvailableEnrolmentPlaces();
+	 	context = (CourseContext) request.getAttribute(CourseItem.COURSE_CONTEXT);
+	}
 
 	public boolean isHasCommonAvailable() {
-		return courseClass.getAvailableEnrolmentPlaces() > 5;
+		return placesAvailable > 5;
 	}
 
 	public boolean isHasManyPlaces() {
-		return courseClass.getAvailableEnrolmentPlaces() > 1;
+		return placesAvailable > 1;
 	}
 
 	public boolean hasAvailableEnrolmentPlaces() {
-		return courseClass.getAvailableEnrolmentPlaces() > 0
-				&& new CheckClassAge().courseClass(courseClass).classAge(preferenceController.getStopWebEnrolmentsAge()).check();
+		return placesAvailable > 0 && (context != null || new CheckClassAge().courseClass(courseClass).classAge(preferenceController.getStopWebEnrolmentsAge()).check());
 	}
-
 }

@@ -8,11 +8,13 @@ import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
+import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.textile.ITextileConverter;
+import ish.oncourse.ui.utils.CourseContext;
 import ish.oncourse.ui.utils.CourseItemModel;
 import ish.oncourse.util.ValidationErrors;
 import ish.oncourse.utils.StringUtilities;
@@ -33,7 +35,7 @@ import java.util.regex.Pattern;
 public class CourseItem extends ISHCommon {
 
 	private static final int COURSE_DETAILS_LENGTH = 490;
-	public static final String PROMOS_ATTR = "promotions";
+	public static final String COURSE_CONTEXT = "CourseContext";
 	private static final Logger logger = LogManager.getLogger();
 
 	@Property
@@ -258,8 +260,7 @@ public class CourseItem extends ISHCommon {
 	}
 
 	private void init() {
-		request.setAttribute(PROMOS_ATTR, discountService.getPromotions());
-		discountService.getPromotions();
+		request.setAttribute(COURSE_CONTEXT, CourseContext.valueOf(discountService.getPromotions(), new CheckClassAge().classAge(preferenceController.getHideClassOnWebsiteAge())));
 		// If course has ENROLMENT_BY_APPLICATION type:
 		// 		-if student specified (find by uniqCode) && student has offered application for this course
 		//				then show 'ENROL NOW' button and show special price - 'feeOverride'

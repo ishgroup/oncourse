@@ -11,6 +11,7 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.discount.GetAppliedDiscounts;
 import ish.oncourse.services.discount.GetPossibleDiscounts;
+import ish.oncourse.ui.utils.CourseContext;
 import ish.oncourse.util.FormatUtils;
 import ish.util.DiscountUtils;
 import org.apache.tapestry5.annotations.Parameter;
@@ -69,7 +70,8 @@ public class CourseClassPrice extends ISHCommon {
 	private Request request;
 	
 	private void fillAppliedDiscounts() {
-		List<Discount> promotions = request.getAttribute(CourseItem.PROMOS_ATTR) == null ? discountService.getPromotions() : (List<Discount>)request.getAttribute(CourseItem.PROMOS_ATTR);
+		CourseContext context = (CourseContext) request.getAttribute(CourseItem.COURSE_CONTEXT);
+		List<Discount> promotions = context == null ? discountService.getPromotions() : context.getDiscounts();
 		List<DiscountCourseClass> allApplicable = GetAppliedDiscounts.valueOf(courseClass, promotions).get();
 		DiscountCourseClass bestDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(allApplicable, courseClass.getFeeExGst(), courseClass.getTaxRate());
 		

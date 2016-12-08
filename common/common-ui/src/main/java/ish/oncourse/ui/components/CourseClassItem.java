@@ -9,6 +9,7 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
+import ish.oncourse.ui.utils.CourseContext;
 import ish.oncourse.util.CustomizedDateFormat;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidationErrors;
@@ -23,6 +24,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 
 import java.text.Format;
 import java.util.*;
@@ -109,13 +111,18 @@ public class CourseClassItem extends ISHCommon {
 	@Property
 	private List<TutorRole> visibleTutorRoles;
 	
+	@Inject
+	private Request request;
+	
 	private List<Session> timelineableSessions;
+
+	private CourseContext context;
 
 	@SetupRender
 	public void beforeRender() {
 
         TimeZone timeZone = courseClassService.getClientTimeZone(courseClass);
-
+		context = (CourseContext) request.getAttribute(CourseItem.COURSE_CONTEXT);
 
 		endDateFormat =  FormatUtils.getDateFormat(FormatUtils.dateFormatString, timeZone);
 		startDateFormat = needFormatWithoutYear() ? FormatUtils.getDateFormat(FormatUtils.DATE_FORMAT_EEE_dd_MMM, timeZone) :
@@ -128,7 +135,7 @@ public class CourseClassItem extends ISHCommon {
 		else
 			timeFormatWithTimeZone = new CustomizedDateFormat(FormatUtils.timeFormatWithTimeZoneString, timeZone);
 
-		timelineableSessions = courseClass.getPersistentTimelineableSessions(true);
+		timelineableSessions = courseClass.getPersistentTimelineableSessions();
 		sessionDays = SessionUtils.getSessionDays(timelineableSessions);
 		initVisibleTutorRoles();
 	}
@@ -155,8 +162,8 @@ public class CourseClassItem extends ISHCommon {
 				.where(TutorRole.COURSE_CLASS.eq(courseClass))
 				.and(TutorRole.IN_PUBLICITY.isTrue())
 				.and(TutorRole.TUTOR.dot(Tutor.START_DATE).isNull().orExp(TutorRole.TUTOR.dot(Tutor.START_DATE).gt(new Date())))
-				.prefetch(TutorRole.TUTOR.disjoint())
-				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).disjoint())
+				.prefetch(TutorRole.TUTOR.joint())
+				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).joint())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
 				.cacheGroups(TutorRole.class.getSimpleName()).select(courseClass.getObjectContext());
 	}
@@ -201,7 +208,18 @@ public class CourseClassItem extends ISHCommon {
 				&& !"online".equals(courseClass.getRoom().getSite().getName());
 	}
 
-	public List<Session> getSortedTimelineableSessions() {
+	public List<Session> getSortedTimelineableSessions() {		
+		Collections.sort(timelineableSessions, new Comparator<Session>() {
+			public int compare(Session o1, Session o2) {
+				int siteNameComparison = o1.getStartDate().compareTo(o2.getStartDate());
+				Room room1 = o1.getRoom();
+				Room room2 = o2.getRoom();
+				if (siteNameComparison == 0 && room1 != null && room2 != null) {
+					siteNameComparison = room1.getSite().getName().compareTo(room2.getSite().getName());
+				}
+				return siteNameComparison;
+			}
+		});
 		return timelineableSessions;
 	}
 
@@ -255,9 +273,7 @@ public class CourseClassItem extends ISHCommon {
 	}
 
 	public boolean isHasAvailableEnrolmentPlaces() {
-		return courseClass != null &&
-				courseClass.isHasAvailableEnrolmentPlaces() &&
-				new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check();
+		return courseClass.isHasAvailableEnrolmentPlaces() && (context != null || new CheckClassAge().courseClass(courseClass).classAge(preferenceController.getStopWebEnrolmentsAge()).check());
 	}
 
 	public boolean isPaymentGatewayEnabled() {
