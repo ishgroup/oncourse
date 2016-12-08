@@ -24,9 +24,8 @@ public class GetPossibleDiscounts {
 	}
 	
 	public List<DiscountCourseClass> get() {
-		return  ObjectSelect.query(DiscountCourseClass.class).
+		List<DiscountCourseClass> discounts = ObjectSelect.query(DiscountCourseClass.class).
 				where(DiscountCourseClass.COURSE_CLASS.eq(courseClass)).
-				and(Discount.getCurrentDateFilterForDiscountCourseClass(courseClass.getStartDate())).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.CODE).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.HIDE_ON_WEB).isFalse()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.IS_AVAILABLE_ON_WEB).isTrue()).
@@ -41,5 +40,7 @@ public class GetPossibleDiscounts {
 				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
 				cacheGroups(DiscountCourseClass.class.getSimpleName()).
 				select(courseClass.getObjectContext());
+		
+		return WebDiscountUtils.filterValidDateRange(discounts,courseClass.getStartDate());
 	}
 }

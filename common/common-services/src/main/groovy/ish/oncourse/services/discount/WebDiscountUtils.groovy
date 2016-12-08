@@ -1,10 +1,13 @@
 package ish.oncourse.services.discount
 
-import groovy.time.TimeCategory
 import ish.math.Money
-import ish.oncourse.model.CourseClass
+import ish.oncourse.model.CorporatePassDiscount
 import ish.oncourse.model.Discount
+import ish.oncourse.model.DiscountConcessionType
 import ish.oncourse.model.DiscountCourseClass
+import ish.oncourse.model.DiscountMembership
+import ish.util.DateTimeUtil
+import org.apache.cayenne.query.QueryCacheStrategy
 
 class WebDiscountUtils {
 	
@@ -53,5 +56,28 @@ class WebDiscountUtils {
 		}
 
 		return result;
+	}
+
+	def static List<DiscountCourseClass> filterValidDateRange(List<DiscountCourseClass> discounts, Date classStartDate) {
+		Date now = new Date()
+
+		if (classStartDate != null) {
+			int startClassOffsetInDays = DateTimeUtil.getDaysLeapYearDaylightSafe(classStartDate, now)
+
+			discounts.findAll {
+				((!it.discount.validTo && !it.discount.validToOffset) || 
+				(it.discount.validTo && it.discount.validTo.after(now)) ||
+				(it.discount.validToOffset && it.discount.validToOffset >= startClassOffsetInDays)) &&
+				((!it.discount.validFrom && !it.discount.validFromOffset) ||
+				(it.discount.validTo && it.discount.validTo.after(now)) ||
+				(it.discount.validFromOffset && it.discount.validFromOffset <= startClassOffsetInDays))
+			}
+			
+		} else {
+			discounts.findAll {
+				(!it.discount.validTo && !it.discount.validToOffset) || (it.discount.validTo && it.discount.validTo.after(now)) &&
+				(!it.discount.validFrom && !it.discount.validFromOffset) || (it.discount.validTo && it.discount.validTo.after(now))
+			}
+		}
 	}
 }
