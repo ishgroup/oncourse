@@ -369,8 +369,7 @@ public class CourseClassService implements ICourseClassService {
         List<CourseClass> list = new ArrayList<>();
 
         for (CourseClass courseClass : currentClasses) {
-            if (courseClass.isHasAvailableEnrolmentPlaces() &&
-                    new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check()) {
+            if (courseClass.isHasAvailableEnrolmentPlaces()) {
                 list.add(courseClass);
             }
         }
@@ -381,14 +380,13 @@ public class CourseClassService implements ICourseClassService {
     public List<CourseClass> getCurrentClasses(Course course) {
         List<CourseClass> courseClasses = course.getCourseClasses();
         List<CourseClass> list = new ArrayList<>();
-
+		CheckClassAge classAge = new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge());
         for (CourseClass courseClass : courseClasses) {
             if (Boolean.TRUE.equals(courseClass.getIsWebVisible())
                     && !courseClass.isCancelled()
-                    && new CheckClassAge().classAge(preferenceController.getHideClassOnWebsiteAge()).courseClass(courseClass).check()) {
+                    && classAge.courseClass(courseClass).check()) {
                 list.add(courseClass);
             }
-
         }
 
         return list;
@@ -397,7 +395,6 @@ public class CourseClassService implements ICourseClassService {
     public List<CourseClass> getFullClasses(Course course) {
         List<CourseClass> currentClasses = getCurrentClasses(course);
         List<CourseClass> list = new ArrayList<>();
-
         for (CourseClass courseClass : currentClasses) {
             if (isFullClass(courseClass)) {
                 list.add(courseClass);
@@ -407,8 +404,7 @@ public class CourseClassService implements ICourseClassService {
         return list;
     }
 
-    public boolean isFullClass(CourseClass courseClass) {
-        return !courseClass.isHasAvailableEnrolmentPlaces()
-                || !new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge()).courseClass(courseClass).check();
+	public boolean isFullClass(CourseClass courseClass) {
+        return !courseClass.isHasAvailableEnrolmentPlaces();
     }
 }
