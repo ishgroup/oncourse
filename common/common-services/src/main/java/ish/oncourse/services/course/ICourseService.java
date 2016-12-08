@@ -37,7 +37,7 @@ public interface ICourseService {
 	 * @param ids
 	 * @return
 	 */
-	List<Course> loadByIds(Object... ids);
+	List<Course> loadByIds(List<String> ids);
 
 	/**
 	 * Load by search property and search property value.
@@ -47,6 +47,8 @@ public interface ICourseService {
 	 * @return
 	 */
 	Course getCourse(String searchProperty, Object value);
+
+	Course getCourseByCode(String code);
 
 	/**
 	 * Gets random course, linked to provided tag.

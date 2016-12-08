@@ -210,7 +210,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			Course course = null;
 			String courseCode = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
 			if (courseCode != null) {
-				course = courseService.getCourse(Course.CODE_PROPERTY, courseCode);
+				course = courseService.getCourseByCode(courseCode);
 			}
 			if (course != null) {
 				request.setAttribute(Course.class.getSimpleName(), course);

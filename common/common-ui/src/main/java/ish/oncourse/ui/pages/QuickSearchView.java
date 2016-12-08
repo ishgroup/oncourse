@@ -129,7 +129,7 @@ public class QuickSearchView extends ISHCommon {
 			}
 		}
 
-		this.courses = courseService.loadByIds(courseIds.toArray());
+		this.courses = courseService.loadByIds(courseIds);
 		this.tags = tagService.loadByIds(tagIds.toArray());
 		this.locationDetailList = postCodeDbService.findBySuburb(postCodes.toArray(new String[postCodes.size()]));
 	}

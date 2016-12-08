@@ -3,6 +3,7 @@ package ish.oncourse.services.course;
 import ish.common.types.EntityRelationType;
 import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.courseclass.LoadByIds;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchParams;
@@ -132,50 +133,8 @@ public class CourseService implements ICourseService {
 		return IS_WEB_VISIBLE.eq(true);
 	}
 
-	public List<Course> loadByIds(Object... ids) {
-
-		if (ids == null || ids.length == 0) {
-			return Collections.emptyList();
-		}
-
-		final Map<Long, Integer> orderingMap = new HashMap<>();
-		for (Integer i = 0; i < ids.length; i++) {
-			Long id = null;
-			if (ids[i] instanceof Long) {
-				id = (Long) ids[i];
-			}
-            //To exclude NumberFormatException  StringUtils.isNumeric has been added
-			if (ids[i] instanceof String &&
-                    StringUtils.trimToNull((String) ids[i]) != null &&
-                    StringUtils.isNumeric((String) ids[i])) {
-				id = Long.valueOf((String) ids[i]);
-			}
-            if (id != null)
-            {
-			    orderingMap.put(id, i);
-            }
-            else
-            {
-                /**
-                 * The warn has been added to exclude error when some hacked request is going with not numeric ids
-                 */
-                logger.debug("ids cannot contain not numeric element like this: {}", ids[i]);
-                return Collections.EMPTY_LIST;
-            }
-		}
-		Expression expr = ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, orderingMap.keySet()).andExp(getSiteQualifier());
-
-		SelectQuery<Course> q = SelectQuery.query(Course.class, expr);
-		applyCourseCacheSettings(q);
-		List<Course> courses = cayenneService.sharedContext().performQuery(q);
-		Collections.sort(courses, new Comparator<Course>() {
-
-			@Override
-			public int compare(Course o1, Course o2) {
-				return orderingMap.get(o1.getId()).compareTo(orderingMap.get(o2.getId()));
-			}
-		});
-		return courses;
+	public List<Course> loadByIds(List<String> ids) {
+		return LoadByIds.load(ids, cayenneService.sharedContext(), webSiteService.getCurrentCollege());
 	}
 
 	public Course getCourse(String searchProperty, Object value) {
@@ -197,6 +156,21 @@ public class CourseService implements ICourseService {
 		return (Course) Cayenne.objectForQuery(cayenneService.sharedContext(), q);
 	}
 
+	public Course getCourseByCode(String code) {
+		return ObjectSelect.query(Course.class)
+				.where(Course.COLLEGE.eq(webSiteService.getCurrentCollege()))
+				.and(Course.IS_WEB_VISIBLE.isTrue())
+				.and(Course.CODE.eq(code))
+				.prefetch(Course.COURSE_CLASSES.joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.COLLEGE).joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
+				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
+				.cacheStrategy(LOCAL_CACHE)
+				.cacheGroups(Course.class.getSimpleName())
+				.selectOne(cayenneService.sharedContext());
+	}
+	
 	public Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
 		return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
 	}

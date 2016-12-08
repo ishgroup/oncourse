@@ -334,7 +334,7 @@ public class Courses extends ISHCommon {
 		for (SolrDocument doc : list) {
 			ids.add((String) doc.getFieldValue(SOLR_DOCUMENT_ID_FIELD));
 		}
-		List<Course> courses = courseService.loadByIds(ids.toArray());
+		List<Course> courses = courseService.loadByIds(ids);
 		if (results.getDebugMap() != null) {
 			debugInfoMap = results.getExplainMap();
 			debugInfo = String.format("<div class='debug-info-title'>Sorl query:</div>\n" +
