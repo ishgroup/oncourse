@@ -7,6 +7,7 @@ import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.waitinglist.WaitingListController;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -18,6 +19,7 @@ import ish.oncourse.util.HTMLUtils;
 import ish.oncourse.util.ValidateHandler;
 import ish.oncourse.utils.StringUtilities;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.SelectById;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -148,13 +150,14 @@ public class WaitingListForm {
 					return;
 				}
 
-				List<Course> result = courseService.loadByIds(courseId);
-				if (result.isEmpty()) {
+				ObjectContext context = cayenneService.newContext();
+				Course result = SelectById.query(Course.class, courseId).selectOne(context);
+
+				if (result == null) {
 					unknownCourse = true;
 					return;
 				}
-
-				ObjectContext context = cayenneService.newContext();
+				
 				controller = new WaitingListController();
 				controller.setContactFieldSet(waitinglist);
 				controller.setPreferenceController(preferenceController);
@@ -162,7 +165,7 @@ public class WaitingListForm {
 				controller.setObjectContext(context);
 				controller.setMessages(messages);
 				controller.setCollege(context.localObject(webSiteService.getCurrentCollege()));
-				controller.setCourse(context.localObject(result.get(0)));
+				controller.setCourse(result);
 				controller.init();
 
 				refererUrl = request.getHeader("referer");
