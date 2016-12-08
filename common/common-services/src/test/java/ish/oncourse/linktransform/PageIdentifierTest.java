@@ -166,6 +166,23 @@ public class PageIdentifierTest {
 
 		urls.put(PageNotFound, forExectMattcher("/pagenotfound",false));
 
+		value =  new Urls();
+		value.setValids("/site/kiosk/1234",
+				"/site/kiosk/1234/",
+				"/site/kiosk/1234 ",
+				"/site/kiosk/1234/ "
+		);
+		value.setInvalids("/site/kiosk", "/site/kiosk/","/site/kiosk/ ");
+		urls.put(KioskSite, value);
+
+		value =  new Urls();
+		value.setValids("/room/kiosk/1234",
+				"/room/kiosk/1234/",
+				"/room/kiosk/1234 ",
+				"/room/kiosk/1234/ "
+		);
+		value.setInvalids("/room/kiosk", "/room/kiosk/","/room/kiosk/ ");
+		urls.put(KioskRoom, value);
 	}
 
 	private static Urls forExectMattcher(String prefix, boolean withInvalid)
