@@ -8,8 +8,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta content="onCourse r1951" name="generator"/>
     <title>Timetable</title>
-
-    <link href="/s/stylesheets/css/kiosk/timetable.css" media="screen, print" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="screen, print" href="${request.contextPath}/css/timetable.css"/>
 </head>
 <body t:type="any">
 <div class="timetable-wrapper">
@@ -37,7 +36,7 @@
             <div class="container">
                 <div class="footer-logo col-right">
                     <a class="popup" href="http://www.ish.com.au/oncourse" target="_blank">
-                        <img alt="powered by ish onCourse" height="9" width="102" src="/s/images/poweredby.png"/>
+                        <img alt="powered by ish onCourse" height="9" width="102" src="/s/img/icons/poweredby.png"/>
                     </a>
                 </div>
             </div>

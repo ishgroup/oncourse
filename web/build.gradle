@@ -1,4 +1,5 @@
 apply plugin: 'war'
+apply plugin: 'compass'
 
 dependencies {
     providedCompile 'javax.servlet:servlet-api:3.0'
@@ -20,4 +21,18 @@ war {
 	manifest {
 		from sharedManifest
 	}
+
+	from 'build/resource-assemble'
+	from 'build/resource'
+	from ('src/main/static') {
+		exclude 'js'
+		exclude 'src'
+	}
 }
+
+
+processResources.inputs.files gzipJs
+processResources.inputs.files gzipCss
+
+clean.dependsOn cleanMinifyJs
+clean.dependsOn cleanCompileSass

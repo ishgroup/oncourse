@@ -21,6 +21,7 @@ import static ish.oncourse.model.auto._Session.ROOM;
 public class KioskPage {
 
     @Inject
+    @Property
     private Request request;
 
     @Inject
