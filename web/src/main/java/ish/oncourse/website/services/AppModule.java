@@ -19,6 +19,7 @@ import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteVersionService;
+import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
 import ish.oncourse.website.services.html.CacheMetaProvider;
@@ -70,6 +71,7 @@ public class AppModule {
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
 		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
+		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "false");
 	}
 
 	@Contribute(PageRenderLinkTransformer.class)

@@ -95,6 +95,8 @@ import ish.oncourse.services.threading.ThreadSource;
 import ish.oncourse.services.threading.ThreadSourceImpl;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
+import ish.oncourse.services.visitor.IParsedContentVisitor;
+import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
@@ -151,6 +153,7 @@ public class ServiceModule {
 		binder.bind(ISearchService.class, SearchService.class);
 		binder.bind(ITagService.class, TagService.class);
 		binder.bind(ITextileConverter.class, TextileConverter.class);
+		binder.bind(IParsedContentVisitor.class, ParsedContentVisitor.class);
 
 		// Data specific serivces
 		binder.bind(IBinaryDataService.class, BinaryDataService.class);

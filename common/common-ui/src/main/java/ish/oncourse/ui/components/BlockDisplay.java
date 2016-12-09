@@ -3,8 +3,7 @@ package ish.oncourse.ui.components;
 import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.model.WebNodeType;
-import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.visitor.ParsedContentVisitor;
+import ish.oncourse.services.visitor.IParsedContentVisitor;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -20,11 +19,11 @@ public class BlockDisplay extends ISHCommon {
 	@Parameter
 	private String regionKey;
 
-	@Inject
-	private ITextileConverter textileConverter;
-
 	@Property
 	private List<WebContent> regions;
+	
+	@Inject
+	private IParsedContentVisitor visitor;
 
 	@Property
 	private WebContent region;
@@ -42,6 +41,6 @@ public class BlockDisplay extends ISHCommon {
 	}
 
 	public String getRegionContent() {
-		return region.accept(new ParsedContentVisitor(textileConverter));
+		return visitor.visitWebContent(region);
 	}
 }

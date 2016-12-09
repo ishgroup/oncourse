@@ -7,7 +7,7 @@ import ish.oncourse.services.cache.RequestCached;
 import ish.oncourse.services.content.IWebContentService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.services.visitor.ParsedContentVisitor;
+import ish.oncourse.services.visitor.IParsedContentVisitor;
 import ish.oncourse.ui.pages.internal.Page;
 import ish.oncourse.util.ValidationErrors;
 import org.apache.cayenne.query.SelectById;
@@ -52,6 +52,8 @@ public class ContentStructure {
 
 	@Inject
 	private ITextileConverter textileConverter;
+	@Inject
+	private IParsedContentVisitor visitor;
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -85,10 +87,9 @@ public class ContentStructure {
 	}
 
 	public String getRegionContent() {
-		ParsedContentVisitor visitor = new ParsedContentVisitor(textileConverter);
-		String accepted = nodeVisibility.getWebContent().accept(visitor);
-		ValidationErrors errors = visitor.getErrors();
-		if (errors != null) {
+		ValidationErrors errors = new ValidationErrors();
+		String accepted = visitor.visitWebContent(nodeVisibility.getWebContent(), errors);
+		if (errors.hasFailures()) {
 			syntaxError = errors.toString();
 		} else {
 			syntaxError = StringUtils.EMPTY;

@@ -6,7 +6,7 @@ import ish.oncourse.model.WebContentVisibility;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.renderer.PageTextileRenderer;
-import ish.oncourse.services.visitor.ParsedContentVisitor;
+import ish.oncourse.services.visitor.IParsedContentVisitor;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -21,6 +21,9 @@ public class TextilePage {
 
     @Inject
     private Request request;
+
+	@Inject
+	private IParsedContentVisitor visitor;
 
 	private WebNode node;
 
@@ -42,7 +45,7 @@ public class TextilePage {
 	}
 
 	public String getRegionContent() {
-		return region.accept(new ParsedContentVisitor(textileConverter));
+		return visitor.visitWebContent(region);
 	}
 
 }

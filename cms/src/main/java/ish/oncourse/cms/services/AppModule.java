@@ -19,6 +19,7 @@ import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.components.internal.ContentStructure;
 import ish.oncourse.ui.components.internal.PageStructure;
 import ish.oncourse.ui.pages.internal.Page;
@@ -63,6 +64,7 @@ public class AppModule {
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
         configuration.add(SymbolConstants.SECURE_ENABLED, "true");
 		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, "staging");
+		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "true");
 	}
 
     public void contributeMetaDataLocator(MappedConfiguration<String,String> configuration)
