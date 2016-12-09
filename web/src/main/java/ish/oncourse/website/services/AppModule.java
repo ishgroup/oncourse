@@ -71,7 +71,7 @@ public class AppModule {
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
 		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
-		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "false");
+		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "true");
 	}
 
 	@Contribute(PageRenderLinkTransformer.class)
