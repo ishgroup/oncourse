@@ -1,6 +1,7 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.cms.services.access.IAuthenticationService;
+import ish.oncourse.function.GetServerName;
 import ish.oncourse.model.SystemUser;
 import ish.oncourse.model.WebNode;
 import ish.oncourse.model.WillowUser;
@@ -50,7 +51,7 @@ public class CmsNavigation {
 
     public void onActionFromLogout() throws Exception {
         authenticationService.logout();
-        response.sendRedirect(HTMLUtils.HTTPS_PROTOCOL + request.getServerName());
+        response.sendRedirect(HTMLUtils.HTTPS_PROTOCOL + GetServerName.valueOf(request).get());
     }
 
     public Object onActionFromPages() {
