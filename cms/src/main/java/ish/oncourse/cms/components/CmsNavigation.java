@@ -48,9 +48,11 @@ public class CmsNavigation {
 
     }
 
-    public void onActionFromLogout() throws Exception {
+    @OnEvent("cmsLogoutEvent")
+    public void logout() throws Exception {
+        if (!request.isXHR())
+            return;
         authenticationService.logout();
-        response.sendRedirect(HTMLUtils.HTTPS_PROTOCOL + request.getServerName());
     }
 
     public Object onActionFromPages() {

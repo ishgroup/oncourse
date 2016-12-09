@@ -21,12 +21,6 @@ function reloadPageOnSessionTimeout() {
         }
     });
 }
-jQuery(document).ready(
-    function () {
-        jQuery(".cms_editor_tabs").tabs();
-        initPublish();
-        initAddNewPage();
-    });
 
 function initPublish() {
 
@@ -279,6 +273,32 @@ function showDeleteThemeConfirmation(id) {
     });
 }
 
+
+function logout(event) {
+    event.preventDefault();
+    jQuery.ajax({
+        type: "GET",
+        async: false,
+        url: "/cms/ui/internal/page.pagestructure.cmsnavigation:cmslogoutevent",
+        complete: function () {
+            window.location.reload();
+        },
+        error: function(data) {
+            window.console.log(data);
+        }
+    });
+    return false
+}
+
+
+jQuery(document).ready(
+    function () {
+        jQuery(".cms_editor_tabs").tabs();
+        initPublish();
+        initAddNewPage();
+
+        jQuery("#logout").on('click', function (e) {logout(e)})
+    });
 
 
 

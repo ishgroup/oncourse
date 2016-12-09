@@ -18,7 +18,7 @@
     	<div class="cms-user-auth">
         	<span class="cms-ico-user"></span>
         	${userName}
-        	<a href="#" t:type="ActionLink" t:id="logout" class="cms-logout">Logout</a>
+        	<a id="logout" class="cms-logout">Logout</a>
     	</div>
 	</div>
 	
