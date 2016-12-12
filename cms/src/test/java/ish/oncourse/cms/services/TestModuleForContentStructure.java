@@ -12,10 +12,13 @@ import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.Property;
+import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.services.UIModule;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
@@ -25,6 +28,7 @@ import org.apache.tapestry5.services.*;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -48,6 +52,11 @@ public class TestModuleForContentStructure {
 			configuration.override("LogFilter", logFilter);
 		}
 
+	public static void contributeApplicationDefaults(
+			MappedConfiguration<String, String> configuration) {
+		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "false");
+	}
+	
         public IWebSiteVersionService buildWebSiteVersionService() {
             IWebSiteVersionService mockService = mock(IWebSiteVersionService.class);
             return mockService;
