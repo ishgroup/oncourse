@@ -26,9 +26,7 @@ public class CourseClassUpdater extends AbstractWillowUpdater<CourseClassStub, C
 		entity.setCourse(callback.updateRelationShip(stub.getCourseId(), Course.class));
 		entity.setCreated(stub.getCreated());
 		entity.setDeliveryMode(stub.getDeliveryMode());
-		if (stub.getDetailTextile() != null) {
-			entity.setDetail(textileConverter.convertCoreTextile(stub.getDetailTextile()));
-		}
+		entity.setDetail(stub.getDetailTextile() == null ? null : textileConverter.convertCoreTextile(stub.getDetailTextile()));
 		entity.setDetailTextile(stub.getDetailTextile());
 		entity.setEndDate(stub.getEndDate());
 		entity.setFeeExGst(new Money(stub.getFeeExGst()));
