@@ -53,12 +53,12 @@ public class KioskPage {
             sessions = ObjectSelect.query(Session.class).where(ROOM.eq(room))
                     .and(Session.END_DATE.gte(start))
                     .and(Session.END_DATE.lt(end))
-                    .orderBy(Session.END_DATE.asc(), Session.COURSE_CLASS.asc()).limit(20).select(cayenneService.sharedContext());
+                    .orderBy(Session.START_DATE.asc()).limit(20).select(cayenneService.newContext());
         } else {
             sessions = ObjectSelect.query(Session.class).where(ROOM.dot(Room.SITE).eq(site))
                     .and(Session.END_DATE.gte(start))
                     .and(Session.END_DATE.lt(end))
-                    .orderBy(Session.END_DATE.asc(), Session.COURSE_CLASS.asc()).limit(20).select(cayenneService.sharedContext());
+                    .orderBy(Session.START_DATE.asc()).limit(20).select(cayenneService.newContext());
         }
     }
 }
