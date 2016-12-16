@@ -3,7 +3,7 @@
 1. Install node and npm [https://nodejs.org](https://nodejs.org)
 
 2. Run command from repository
-    `NODE_ENV=production npm start`
+    `npm start`
 
 3. Wait some time
 

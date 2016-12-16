@@ -7,6 +7,11 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const MODULE_PATH = './app/modules/enrol';
 
 let plugins = [
+        new webpack.DefinePlugin({
+            'process.env':{
+                'NODE_ENV': JSON.stringify(NODE_ENV)
+            }
+        }),
         new webpack.ProvidePlugin({
             'React': 'react'
         }),
@@ -14,7 +19,11 @@ let plugins = [
     ];
 
 if(NODE_ENV === 'production') {
-    plugins.push(new webpack.optimize.UglifyJsPlugin());
+    plugins.push(new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            warnings: false
+        }
+    }));
 }
 
 plugins.push(new HtmlWebpackPlugin({
