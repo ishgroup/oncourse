@@ -1,0 +1,19 @@
+.enrol-list {
+    margin-top: 20px;
+    min-width: 200px;
+    max-width: 400px;
+}
+
+.enrol-list__header {
+    font-weight: bold;
+}
+
+.enrol-list__row {
+    border: solid 1px #cccccc;
+    border-top: none;
+    padding: 5px 10px;
+}
+
+.enrol-list__row:first-child {
+    border-top: solid 1px #cccccc;
+}
