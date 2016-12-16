@@ -5,6 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.ui.utils.GetVisibleTutors;
+import ish.oncourse.util.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -68,19 +69,17 @@ public class KioskSession {
         code = courseClass.getUniqueIdentifier();
 
         currentDate = new Date();
-        start = session.getStartDatetime();
-        end = session.getEndDatetime();
+        start = session.getStartDate();
+        end = session.getEndDate();
 
 
-        String format = "%s-%s";
+        time = FormatUtils.getSessionTimeAsString(session);
+
         commencedClass = StringUtils.EMPTY;
         if (start.before(currentDate)) {
-            format = "commenced %s-%s";
+            time = format("commenced %s", time);
             commencedClass = "course-commenced";
         }
-
-        time = format(format, getTimeFormat(session.getTimeZone()).format(start),
-                getTimeFormat(session.getTimeZone()).format(end));
 
         location = session.getRoom().getName();
 

@@ -2,7 +2,8 @@ package ish.oncourse.util;
 
 import ish.math.Country;
 import ish.math.Money;
-import org.apache.commons.lang.StringUtils;
+import ish.oncourse.model.Session;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.*;
 import java.util.Date;
@@ -157,5 +158,15 @@ public class FormatUtils {
     
     public static String convertDateToISO8601InUserTimezone(Date date, String timeZone) {
     	return FormatUtils.getDateFormat(DATE_FORMAT_ISO8601, timeZone).format(date);
+    }
+
+    public static String getSessionTimeAsString(Session session) {
+        TimeZone timeZone = TimeZone.getDefault();
+        if (!StringUtils.isBlank(session.getTimeZone())) {
+            timeZone = TimeZone.getTimeZone(session.getTimeZone());
+        }
+        CustomizedDateFormat dateFormat = new CustomizedDateFormat(FormatUtils.TIME_FORMAT_h_mm_a, timeZone);
+        return String.format("%s - %s", dateFormat.format(session.getStartDate()),
+                dateFormat.format(session.getEndDate())).toLowerCase();
     }
 }
