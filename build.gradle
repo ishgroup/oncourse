@@ -10,10 +10,10 @@ buildscript {
 		//mavenCentral()
 
 		maven {
-			url 'http://repo.ish.com.au/content/groups/public'
+			url 'https://repo.ish.com.au/content/groups/public'
 		}
 		maven {
-			url 'http://repo.ish.com.au/content/groups/ish'
+			url 'https://repo.ish.com.au/content/groups/ish'
 		}
 	}
 	dependencies {
@@ -75,10 +75,10 @@ allprojects {
 	repositories {
 		//mavenCentral()
 		maven {
-			url 'http://repo.ish.com.au/content/groups/public'
+			url 'https://repo.ish.com.au/content/groups/public'
 		}
 		maven {
-			url 'http://repo.ish.com.au/content/groups/ish'
+			url 'https://repo.ish.com.au/content/groups/ish'
 		}
 	}
 
@@ -101,10 +101,10 @@ allprojects {
 		repositories.mavenDeployer {
 			name = 'ishRepo'
 			configuration = configurations.deployerJars
-			repository(id:'internal-releases', url: 'http://repo.ish.com.au/content/repositories/ish-releases') {
+			repository(id:'internal-releases', url: 'https://repo.ish.com.au/content/repositories/ish-releases') {
 				authentication(userName: nexusUsername, password: nexusPassword)
 			}
-			snapshotRepository(id:'internal-snapshots', url: 'http://repo.ish.com.au/content/repositories/ish-snapshots') {
+			snapshotRepository(id:'internal-snapshots', url: 'https://repo.ish.com.au/content/repositories/ish-snapshots') {
 				authentication(userName: nexusUsername, password: nexusPassword)
 			}
 		}
