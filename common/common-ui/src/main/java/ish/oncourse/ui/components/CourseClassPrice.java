@@ -98,6 +98,13 @@ public class CourseClassPrice extends ISHCommon {
 
 	@SetupRender
 	public void beforeRender() {
+		feeFormat = null;
+		discountedFee = null;
+		discountItems = null;
+		discountValue = Money.ZERO;
+		discountExpiryDate = null;
+		dateFormat = null;
+		appliedDiscountsTitle = null; 
 		dateFormat = FormatUtils.getShortDateFormat(courseClass.getCollege().getTimeZone());
 		fillAppliedDiscounts();
 		fillPossibleDiscounts();
