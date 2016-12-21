@@ -1,10 +1,11 @@
-### Installation:
+# Test application
 
-1. Install node and npm [https://nodejs.org](https://nodejs.org)
+Before make sure that you have node and npm. If not you can get it from [https://nodejs.org](https://nodejs.org)
 
-2. Run command from repository
-    `npm start`
-
-3. Wait some time
-
+## Development mode
+1. `npm run build:dev`
+2. `npm start`
 4. Go to localhost:8080
+
+## Production build
+`npm run build:prod`

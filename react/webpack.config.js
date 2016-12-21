@@ -4,7 +4,9 @@ let webpack = require('webpack'),
     HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const MODULE_PATH = './app/modules/enrol';
+const MODULE_PATH = './app/views';
+const __PROD__ = NODE_ENV === 'production';
+const __DEV__ = NODE_ENV === 'development';
 
 let plugins = [
         new webpack.DefinePlugin({
@@ -18,7 +20,7 @@ let plugins = [
         new ExtractTextPlugin('[name]/bundle.css')
     ];
 
-if(NODE_ENV === 'production') {
+if(__PROD__) {
     plugins.push(new webpack.optimize.UglifyJsPlugin({
         compress: {
             warnings: false
@@ -36,7 +38,7 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     entry: {
         ie: ['babel-polyfill'],
-        enrol: `${MODULE_PATH}/app`
+        enrol: `${MODULE_PATH}/enrol/Enrol`
     },
     output: {
         filename: '[name]/bundle.js',
@@ -52,7 +54,7 @@ module.exports = {
             exclude: /node_modules/,
             query: {
                 presets: ['es2015', 'react'],
-                plugins: ['transform-class-properties']
+                plugins: ['transform-class-properties', 'transform-object-rest-spread']
             }
         }, {
             loader: ExtractTextPlugin.extract('css-loader'),
@@ -64,7 +66,8 @@ module.exports = {
         root: path.resolve(__dirname, 'src'),
         alias: {
             app: 'app',
-            css: 'styles'
+            css: 'styles',
+            config: 'app/config/' + (__PROD__ ? 'production' : 'development')
         }
     },
 

@@ -5,23 +5,28 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
-    "start": "npm install && node server.js"
+    "build:dev": "npm install && NODE_ENV=development ./node_modules/webpack/bin/webpack.js",
+    "build:prod": "npm install && NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
+    "start": "node dev-server.js"
   },
   "devDependencies": {
     "babel-core": "6.18.2",
     "babel-loader": "6.2.8",
     "babel-plugin-transform-class-properties": "6.19.0",
+    "babel-plugin-transform-object-rest-spread": "6.20.2",
     "babel-polyfill": "6.20.0",
     "babel-preset-es2015": "6.18.0",
     "babel-preset-react": "6.16.0",
+    "body-parser": "1.15.2",
     "css-loader": "0.26.0",
+    "express": "4.14.0",
     "extract-text-webpack-plugin": "1.0.1",
-    "html-webpack-plugin": "^2.24.1",
-    "node-static": "0.7.9",
+    "html-webpack-plugin": "2.24.1",
+    "shortid": "2.2.6",
     "webpack": "1.13.3"
   },
   "dependencies": {
+    "axios": "0.15.3",
     "classnames": "2.2.5",
     "react": "0.14.8",
     "react-dom": "0.14.8",
