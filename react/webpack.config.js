@@ -1,51 +1,20 @@
 let webpack = require('webpack'),
     path = require('path'),
     ExtractTextPlugin = require("extract-text-webpack-plugin"),
-    HtmlWebpackPlugin = require('html-webpack-plugin');
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    glob = require('glob');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const MODULE_PATH = './app/views';
 const __PROD__ = NODE_ENV === 'production';
 const __DEV__ = NODE_ENV === 'development';
+const __TEST__ = NODE_ENV === 'test';
+const CONTEXT = path.resolve(__dirname, 'src');
+const DIST = path.resolve(__dirname, 'dist');
 
-let plugins = [
-        new webpack.DefinePlugin({
-            'process.env':{
-                'NODE_ENV': JSON.stringify(NODE_ENV)
-            }
-        }),
-        new webpack.ProvidePlugin({
-            'React': 'react'
-        }),
-        new ExtractTextPlugin('[name]/bundle.css')
-    ];
+let config = {
+    context: CONTEXT,
 
-if(__PROD__) {
-    plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false
-        }
-    }));
-}
-
-plugins.push(new HtmlWebpackPlugin({
-    filename: 'index.html',
-    inject: 'body',
-    template: 'templates/index.ejs'
-}));
-
-module.exports = {
-    context: path.resolve(__dirname, 'src'),
-    entry: {
-        ie: ['babel-polyfill'],
-        enrol: `${MODULE_PATH}/enrol/Enrol`
-    },
-    output: {
-        filename: '[name]/bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    },
-
-    watch: NODE_ENV === 'development',
+    watch: __DEV__,
 
     module: {
         loaders: [{
@@ -57,7 +26,7 @@ module.exports = {
                 plugins: ['transform-class-properties', 'transform-object-rest-spread']
             }
         }, {
-            loader: ExtractTextPlugin.extract('css-loader'),
+            loader: __TEST__ ? 'null' : ExtractTextPlugin.extract('css-loader'),
             test: /.css$/
         }]
     },
@@ -69,7 +38,68 @@ module.exports = {
             css: 'styles',
             config: 'app/config/' + (__PROD__ ? 'production' : 'development')
         }
-    },
-
-    plugins
+    }
 };
+
+if(!config.plugins) {
+    config.plugins = [];
+}
+
+config.plugins.push(
+    new webpack.DefinePlugin({
+        'process.env':{
+            'NODE_ENV': JSON.stringify(NODE_ENV)
+        }
+    }),
+    new webpack.ProvidePlugin({
+        'React': 'react'
+    })
+);
+
+if(__TEST__) {
+    Object.assign(config, {
+        entry: glob.sync('app/**/*-spec.js', { cwd: CONTEXT }),
+        output: {
+            filename: 'test/bundle.js',
+            path: DIST
+        },
+
+        externals: {
+            'cheerio': 'window',
+            'react/addons': true,
+            'react/lib/ExecutionEnvironment': true,
+            'react/lib/ReactContext': true
+        }
+    });
+} else {
+    Object.assign(config, {
+        entry: {
+            ie: ['babel-polyfill'],
+            enrol: `app/cmp`
+        },
+        output: {
+            filename: '[name]/bundle.js',
+            path: DIST
+        }
+    });
+    config.plugins.push(
+        new ExtractTextPlugin('[name]/bundle.css'),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            inject: 'body',
+            template: 'templates/index.ejs'
+        })
+    );
+}
+
+if(__PROD__) {
+    config.plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
+    );
+}
+
+module.exports = config;

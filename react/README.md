@@ -9,3 +9,6 @@ Before make sure that you have node and npm. If not you can get it from [https:/
 
 ## Production build
 `npm run build:prod`
+
+## Run tests
+`npm test`
