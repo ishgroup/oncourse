@@ -1,7 +1,7 @@
-import Form from '../form/Form';
-import Field from '../form/Field';
+import Form from 'app/common/components/form/Form';
+import Field from 'app/common/components/form/Field';
 import render from './personFormTpl';
-import 'css/components/personForm.css';
+import 'styles/enrol/components/personForm.css';
 
 let validators = {
     required: (value) => {

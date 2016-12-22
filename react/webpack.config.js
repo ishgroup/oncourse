@@ -5,6 +5,7 @@ let webpack = require('webpack'),
     glob = require('glob');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const WATCH = process.env.WATCH === '1';
 const __PROD__ = NODE_ENV === 'production';
 const __DEV__ = NODE_ENV === 'development';
 const __TEST__ = NODE_ENV === 'test';
@@ -14,7 +15,7 @@ const DIST = path.resolve(__dirname, 'dist');
 let config = {
     context: CONTEXT,
 
-    watch: __DEV__,
+    watch: WATCH,
 
     module: {
         loaders: [{
@@ -35,8 +36,8 @@ let config = {
         root: path.resolve(__dirname, 'src'),
         alias: {
             app: 'app',
-            css: 'styles',
-            config: 'app/config/' + (__PROD__ ? 'production' : 'development')
+            styles: 'styles',
+            config: 'app/common/config/' + (__PROD__ ? 'production' : 'development')
         }
     }
 };
@@ -60,7 +61,7 @@ if(__TEST__) {
     Object.assign(config, {
         entry: glob.sync('app/**/*-spec.js', { cwd: CONTEXT }),
         output: {
-            filename: 'test/bundle.js',
+            filename: '__test__/bundle.js',
             path: DIST
         },
 
@@ -75,7 +76,7 @@ if(__TEST__) {
     Object.assign(config, {
         entry: {
             ie: ['babel-polyfill'],
-            enrol: `app/cmp`
+            enrol: `app/enrol/App`
         },
         output: {
             filename: '[name]/bundle.js',

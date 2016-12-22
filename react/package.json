@@ -4,9 +4,15 @@
   "description": "ish project",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/webpack/bin/webpack.js && ./node_modules/mocha/bin/mocha ./dist/test/bundle.js --require ./test-setup.js",
-    "build:dev": "npm install && NODE_ENV=development ./node_modules/webpack/bin/webpack.js",
-    "build:prod": "npm install && NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
+    "test": "./node_modules/mocha/bin/mocha ./dist/test/bundle.js --require ./test-setup.js",
+    "prebuild": "npm install",
+    "build:dev": " NODE_ENV=development ./node_modules/webpack/bin/webpack.js",
+    "build:dev:wacth": "NODE_ENV=development WATCH=1 ./node_modules/webpack/bin/webpack.js",
+    "build:prod": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
+    "build:test": "NODE_ENV=test ./node_modules/webpack/bin/webpack.js",
+    "postbuild:dev": "echo '\\033[0;32mDevelopment build is finished \\033[0m'",
+    "postbuild:prod": "echo '\\033[0;32mProduction build is finished \\033[0m'",
+    "postbuild:test": "echo '\\033[0;32mTest build is finished \\033[0m'",
     "start": "node dev-server.js"
   },
   "devDependencies": {

@@ -1,10 +1,10 @@
 import { render } from 'react-dom';
-import student from 'app/api/student';
-import PersonForm from 'app/components/personForm/PersonForm';
-import StudentList from 'app/components/studentList/StudentList';
-import renderCmp from './enrolTpl';
+import student from 'app/common/api/student';
+import PersonForm from './components/personForm/PersonForm';
+import StudentList from './components/studentList/StudentList';
+import renderCmp from './appTpl';
 
-import 'css/views/enrol.css';
+import 'styles/enrol/app.css';
 
 class Enrol extends React.Component {
 

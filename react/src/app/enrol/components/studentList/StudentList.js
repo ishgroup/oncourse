@@ -1,5 +1,5 @@
 import render from './studentListTpl';
-import 'css/components/studentList.css';
+import 'styles/enrol/components/studentList.css';
 
 class StudentList extends React.Component {
 

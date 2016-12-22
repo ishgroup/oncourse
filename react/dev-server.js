@@ -16,3 +16,8 @@ app.post('/api/students', function (req, res) {
 });
 
 app.listen(process.env.PORT || 8080);
+
+let spawn = require('child_process').spawn,
+    echo = spawn('echo', ['\033[0;32mDevelopment server is started \033[0m']);
+
+echo.stdout.pipe(process.stdin);
