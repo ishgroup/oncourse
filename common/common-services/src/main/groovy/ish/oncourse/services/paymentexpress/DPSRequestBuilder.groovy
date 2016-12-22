@@ -25,7 +25,7 @@ class DPSRequestBuilder {
 	def static DPSRequestBuilder valueOf(PaymentIn paymentIn,  PaymentRequest request) {
 		new DPSRequestBuilder(paymentIn:paymentIn,
 				college:paymentIn.college,
-				response: request,
+				request: request,
 				ref:paymentIn.clientReference)
 	}
 	
