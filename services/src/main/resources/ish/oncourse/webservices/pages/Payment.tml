@@ -103,7 +103,7 @@
 					<div class="pay-form-line">
 						<label>${message:cvv}<sup>*</sup></label>
 					   <span class="pay-form-control">
-						<input name="creditCardCVV" type="text" class="field small" maxlength="4" autocomplete="off"/>
+						<input id="cardCvv" name="creditCardCVV" type="text" class="field small" maxlength="4" autocomplete="off"/>
 					   </span>
 						<span id="cvv-error"></span>
 					</div>
