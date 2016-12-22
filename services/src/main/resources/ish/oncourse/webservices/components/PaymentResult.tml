@@ -1,30 +1,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-    <div class="pay-form">
-        <t:if test="notProcessed">
-            <p:else>
-                <t:if t:test="paymentFailed">
-                    <t:delegate to="block:paymentFailed"/>
-                    <p:else>
-                        <t:if t:test="paymentSuccess">
-                            <t:delegate to="block:paymentSuccess"/>
-                            <p:else>
-                                <t:if test="error">
-                                    <t:delegate to="block:error"/>
-                                    <p:else>
-                                        <div class="pay-fail">
-                                            <h2 class="page-title">This payment was cancelled.</h2>
-                                        </div>
-                                    </p:else>
-                                </t:if>
-                            </p:else>
-                        </t:if>
-                    </p:else>
-                </t:if>
-            </p:else>
-        </t:if>
-    </div>
 
+	<t:if test="notProcessed">
+		<p:else>
+			<t:if t:test="retry">
+				<t:delegate to="block:paymentFailed"/>
+				<p:else>
+					<t:if t:test="paymentSuccess">
+						<t:delegate to="block:paymentSuccess"/>
+						<p:else>
+							<t:if test="paymentFailed">
+								<div class="pay-fail">
+									<h2 class="page-title">This payment was cancelled.</h2>
+								</div>
+								<p:else>
+									<t:delegate to="block:error"/>
+								</p:else>
+							</t:if>
+						</p:else>
+					</t:if>
+				</p:else>
+			</t:if>
+		</p:else>
+	</t:if>
 
     <t:block t:id="error">
         <div class="pay-fail">
@@ -46,27 +44,20 @@
 
     <t:block t:id="paymentFailed">
         <div class="pay-fail">
-            <t:if t:test="paymentStatusNodeNullTransactionResponse">
-                <h2 class="page-title">This payment failed because the banking system is offline. Please try again
-                    later.</h2>
-                <p:else>
-					<h2 class="page-title">This payment failed because the card was expired, invalid or does not have sufficient funds.</h2>
-                </p:else>
-            </t:if>
+			<h2 class="page-title">This payment failed because the card was expired, invalid or does not have sufficient funds.</h2>
             <div class="pay-message">
-                <div class="submit-wrapper">
-                    <t:form t:id="paymentResultForm">
-                        <p>
-                            <span class="btn-next-wr"><t:submit t:id="tryOtherCard" type="button"
-                                                                value="Try another card" class="btn btn-next"/></span>
-                            <strong>Try a different credit card.</strong>
-                        </p>
-                        <p>
-                            <t:submit type="button" t:id="abandonAndKeep" value="Abandon, Keep Invoice" class="btn"/>
-                            <strong>The payment will be marked as failed, but the invoice and enrolments kept. The
-                                debtor will be kept, owing you money for later payment.</strong>
-                        </p>
-                    </t:form>
+                <div class="choose-wrapper choose-wrapper">
+					<p>
+						<span class="btn-next-wr">
+							<button id="pay-retry" class="btn btn-next">Try another card</button>
+						</span>
+						<strong>Try a different credit card.</strong>
+					</p>
+					<p>
+						<button id="pay-abandon" class="btn">Abandon, Keep Invoice</button>
+						<strong>The payment will be marked as failed, but the invoice and enrolments kept. The
+							debtor will be kept, owing you money for later payment.</strong>
+					</p>
                 </div>
             </div>
         </div>

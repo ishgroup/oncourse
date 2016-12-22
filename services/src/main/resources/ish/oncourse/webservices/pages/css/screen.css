@@ -227,10 +227,14 @@ a {
 	background-color: #ffe4c1;
 }
 
-form .submit-wrapper {
+div .submit-wrapper {
 	margin: 0 0 0 18%;
 	width: 300px;
 	text-align: right;
+}
+
+.choose-wrapper {
+    width: auto;
 }
 
 .submit-wrapper {
@@ -509,4 +513,8 @@ form .submit-wrapper {
 
 .pay-fail p + p > strong {
 	width: 200px;
+}
+
+.hide {
+    display: none;
 }

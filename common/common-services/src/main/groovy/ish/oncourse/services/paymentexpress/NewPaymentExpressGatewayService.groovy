@@ -3,6 +3,8 @@ package ish.oncourse.services.paymentexpress
 import ish.oncourse.model.PaymentOut
 import ish.oncourse.model.PaymentOutTransaction
 import ish.oncourse.model.PaymentTransaction
+import ish.oncourse.services.payment.PaymentRequest
+import ish.oncourse.services.payment.PaymentResponse
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.payment.PaymentInModel
 import org.apache.cayenne.ObjectContext
@@ -17,16 +19,19 @@ class NewPaymentExpressGatewayService implements INewPaymentGatewayService {
 	def NewPaymentExpressGatewayService(ICayenneService cayenneService) {
 		this.cayenneService = cayenneService
 	}
-	
 
-	def submit(PaymentInModel model, String billingId = null) {
+	def submit(PaymentInModel model, String billingId) {
+		submit(model, null, billingId)
+	}
+	
+	def submit(PaymentInModel model, PaymentRequest paymentRequest = null, String billingId = null) {
 
 		ObjectContext transactionContext = cayenneService.newNonReplicatingContext()
 		PaymentTransaction currentTransaction = transactionContext.newObject(PaymentTransaction.class)
 		currentTransaction.setPayment(transactionContext.localObject(model.paymentIn))
 		transactionContext.commitChanges()
 		
-		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, billingId).build()
+		DPSRequest request = paymentRequest ? DPSRequestBuilder.valueOf(model.paymentIn, paymentRequest).build() : DPSRequestBuilder.valueOf(model.paymentIn, billingId).build()
 		DPSResponse response = createGatewayHelper().submitRequest(request)
 		
 		ProcessDPSResponse.valueOf(model, response).process()

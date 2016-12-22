@@ -28,7 +28,7 @@ public class PaymentInModelFromSessionIdBuilder {
     public PaymentInModelFromSessionIdBuilder build() {
 
 		try {
-			PaymentIn paymentIn = ObjectSelect.query(PaymentIn.class).where(PaymentIn.SESSION_ID.eq(sessionId)).and(PaymentIn.STATUS.in(PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW, PaymentStatus.CARD_DETAILS_REQUIRED)).selectOne(context);
+			PaymentIn paymentIn = ObjectSelect.query(PaymentIn.class).where(PaymentIn.SESSION_ID.eq(sessionId)).and(PaymentIn.STATUS.in(PaymentStatus.IN_TRANSACTION, PaymentStatus.NEW, PaymentStatus.CARD_DETAILS_REQUIRED)).prefetch(PaymentIn.PAYMENT_TRANSACTIONS.joint()).selectOne(context);
 			model.setPaymentIn(paymentIn);
 			List<Invoice> invoices = ObjectSelect.query(Invoice.class).where(Invoice.SESSION_ID.eq(sessionId)).select(context);
 			for (Invoice invoice : invoices) {

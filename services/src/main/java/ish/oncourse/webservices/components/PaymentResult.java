@@ -1,83 +1,33 @@
 package ish.oncourse.webservices.components;
 
-import ish.oncourse.util.payment.PaymentProcessController;
-import ish.oncourse.webservices.pages.Payment;
-import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.Request;
-
-import static ish.oncourse.util.payment.PaymentProcessController.PaymentAction.*;
+import ish.oncourse.services.payment.GetPaymentState;
 
 public class PaymentResult {
 
+	private GetPaymentState.PaymentState state;
 
-    private PaymentProcessController.PaymentAction paymentAction;
-
-	@Inject
-	private ComponentResources componentResources;
-
-	@Inject
-	private Request request;
-
-    @InjectPage
-    private Payment paymentPage;
-
-
-    public boolean isError() {
-        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.ERROR);
-    }
+	public void setState(GetPaymentState.PaymentState state) {
+		this.state = state;
+	}
 
     public boolean isPaymentFailed() {
-        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.FAILED);
+        return GetPaymentState.PaymentState.FAILED.equals(state);
  	}
+
+	public boolean isPaymentSuccess() {
+		return GetPaymentState.PaymentState.SUCCESS.equals(state);
+	}
+	
+	public boolean isRetry() {
+		return GetPaymentState.PaymentState.CHOOSE_ABANDON_OTHER.equals(state);
+	}
 	
 	public boolean isNotProcessed() {
-        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.FILL_PAYMENT_DETAILS);
-    }
-	
-	public boolean isPaymentSuccess() {
-        return paymentPage.getPaymentProcessController().getCurrentState().equals(PaymentProcessController.PaymentProcessState.SUCCESS);
+		return GetPaymentState.PaymentState.FILL_CC_DETAILS.equals(state);
     }
 
-    public boolean isPaymentStatusNodeNullTransactionResponse() {
-        return "Null transaction response".equals(paymentPage.getPaymentProcessController().getPaymentIn().getStatusNotes());
-    }
-
-    public boolean isWrongPaymentExpressResult() {
-        return paymentPage.getPaymentProcessController().isWrongPaymentExpressResult();
-    }
-
-	@OnEvent(component = "tryOtherCard", value = "selected")
-	void submitTryOtherCard() {
-        paymentAction = TRY_ANOTHER_CARD;
+	public boolean isWrongPaymentExpressResult() {
+		return GetPaymentState.PaymentState.DPS_ERROR.equals(state);
 	}
 
-	@OnEvent(component = "abandonReverse", value = "selected")
-	void submitAbandonAndReverse() {
-        paymentAction = ABANDON_PAYMENT;
-    }
-
-    @OnEvent(component = "abandonAndKeep", value = "selected")
-    void  submitAbandonAndKeep()
-    {
-        paymentAction = ABANDON_PAYMENT_KEEP_INVOICE;
-    }
-
-	@OnEvent(component = "paymentResultForm", value = "success")
-	Object submitted() {
-		Payment paymentPage = (Payment) componentResources.getPage();
-        switch (paymentAction)
-        {
-            case TRY_ANOTHER_CARD:
-            case ABANDON_PAYMENT:
-            case ABANDON_PAYMENT_KEEP_INVOICE:
-                paymentPage.getPaymentProcessController().processAction(paymentAction);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-        return this.paymentPage.getPageURL();
-	}
 }
