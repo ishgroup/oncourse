@@ -4375,4 +4375,27 @@
 		<sql>UPDATE CourseClass SET detail = NULL WHERE detail_textile IS NULL;</sql>
 	</changeSet>
 
+	<changeSet id="293" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="AssessmentClassModule"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE AssessmentClassModule (
+			id BIGINT NOT NULL AUTO_INCREMENT,
+			angelId BIGINT,
+			collegeId BIGINT NOT NULL,
+			created DATETIME NOT NULL,
+			modified DATETIME NOT NULL,
+			assessmentClassId BIGINT NOT NULL,
+			moduleId BIGINT NOT NULL,
+			PRIMARY KEY (id),
+			CONSTRAINT fk_AssessmentClassModule_College FOREIGN KEY (collegeId) REFERENCES College(id),
+			CONSTRAINT fk_AssessmentClassModule_AssessmentClass FOREIGN KEY (assessmentClassId) REFERENCES AssessmentClass(id),
+			CONSTRAINT fk_AssessmentClassModule_Module FOREIGN KEY (moduleId) REFERENCES Module(id),
+			CONSTRAINT аssessmentClassModule_angelId_college_unique UNIQUE (collegeId, angelId));
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
