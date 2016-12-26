@@ -3,7 +3,15 @@ package ish.persistence;
 import ish.oncourse.API;
 
 /**
- * List of all preferences referenced by a string key
+ * List of all preferences which can be accessed in the system. You can access the values most easily as direct attributes:
+ * <code>
+ *     preference.college.name
+ * </code>
+ *
+ * but you can also use the string key:
+ * <code>
+ *     Preference.valueString("college.name")
+ * </code>
  */
 @API
 public class Preferences {
@@ -29,7 +37,8 @@ public class Preferences {
 	public static final String COLLEGE_ABN = "college.abn";
 
 	/**
-	 * College website URL
+	 * College website URL. If you have multiple sites, use the primary one here since this will be used for references
+	 * to street directions and other information in an enrolment confirmation.
 	 *
 	 * @param prefKey web.url
 	 */
@@ -37,7 +46,7 @@ public class Preferences {
 	public static final String COLLEGE_URL = "web.url";
 	
 	/**
-	 * Invoice remittance instructions
+	 * Invoice remittance instructions. This additional text will be added to every invoice.
 	 *
 	 * @param prefKey college.paymentInfo
 	 */
@@ -53,7 +62,7 @@ public class Preferences {
 	// **************************************
 
 	/**
-	 * Default server time zone
+	 * Default server time zone. Don't change this without conisidering how the change affects your data.
 	 *
 	 * @param prefKey oncourse.server.timezone.default
 	 */
@@ -140,7 +149,7 @@ public class Preferences {
 	public static final String EMAIL_ADMIN_ADDRESS = "email.admin";
 
 	/**
-	 * Email from address
+	 * Email from address. Outbound email will have this from address by default.
 	 *
 	 * @param prefKey email.from
 	 */
@@ -158,7 +167,8 @@ public class Preferences {
 	public static final String EMAIL_BOUNCE_ENABLED = "email.bounce";
 
 	/**
-	 *
+	 * The POP server from which bounced email will be retrieved. Use this if you have VERP enabled and want onCourse
+	 * to match bounces against your contact list.
 	 *
 	 * @param prefKey email.pop3host
 	 */
@@ -178,7 +188,8 @@ public class Preferences {
 	public static final String EMAIL_POP3PASSWORD = "email.pop3.password";
 
 	/**
-	 * SMS from
+	 * SMS from. This can either be a valid phone number (in which case recipients will be able to reply directly) or
+	 * a word which identifies your college.
 	 *
 	 * @param prefKey sms.from
 	 */
