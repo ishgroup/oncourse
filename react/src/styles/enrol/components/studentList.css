@@ -12,6 +12,7 @@
 
 .enrol-list__header {
     font-weight: bold;
+    border: solid 1px #cccccc;
 }
 
 .enrol-list__row:first-child {

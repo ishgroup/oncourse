@@ -19,12 +19,15 @@ let config = {
 
     module: {
         loaders: [{
+            loader: 'es3ify',
+            test: /\.js$/,
+        }, {
             loader: 'babel-loader',
             test: /\.js$/,
             exclude: /node_modules/,
             query: {
-                presets: ['es2015', 'react'],
-                plugins: ['transform-class-properties', 'transform-object-rest-spread']
+                presets: [['es2015', { loose: true }], 'react'],
+                plugins: ['transform-class-properties', 'transform-object-rest-spread', 'transform-proto-to-assign']
             }
         }, {
             loader: __TEST__ ? 'null' : ExtractTextPlugin.extract('css-loader'),
