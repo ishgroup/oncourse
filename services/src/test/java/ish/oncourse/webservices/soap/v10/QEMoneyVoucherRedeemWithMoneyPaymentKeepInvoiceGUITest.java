@@ -36,8 +36,8 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentKeepInvoiceGUITest extends QEMo
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 			transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("22 elements should be replicated for this payment", 22, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
-		int reversePaymentCount = 0;
+		assertEquals("24 elements should be replicated for this payment", 24, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		int newPaymentCount = 0;
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
@@ -56,11 +56,11 @@ public class QEMoneyVoucherRedeemWithMoneyPaymentKeepInvoiceGUITest extends QEMo
 							stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);
 					}
 				} else {
-					if (reversePaymentCount == 0) {
-						assertEquals("This should be reverse payment", PaymentType.REVERSE.getDatabaseValue(), paymentInStub.getType());
+					if (newPaymentCount == 0) {
+						assertEquals("This should be reverse payment", PaymentType.CREDIT_CARD.getDatabaseValue(), paymentInStub.getType());
 						PaymentStatus status = TypesUtil.getEnumForDatabaseValue(paymentInStub.getStatus(), PaymentStatus.class);
-						assertEquals("Payment status should be success", PaymentStatus.SUCCESS, status);
-						reversePaymentCount++;
+						assertEquals("Payment status should be success", PaymentStatus.FAILED, status);
+						newPaymentCount++;
 					} else {
 						assertFalse(String.format("Unexpected PaymentIn with id= %s angelid=%s and status= %s found in a queue",
 								stub.getWillowId(), stub.getAngelId(), paymentInStub.getStatus()), true);

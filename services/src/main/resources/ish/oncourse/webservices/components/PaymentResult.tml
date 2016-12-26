@@ -46,7 +46,7 @@
         <div class="pay-fail">
 			<h2 class="page-title">This payment failed because the card was expired, invalid or does not have sufficient funds.</h2>
             <div class="pay-message">
-                <div class="choose-wrapper choose-wrapper">
+                <div class="submit-wrapper choose-wrapper">
 					<p>
 						<span class="btn-next-wr">
 							<button id="pay-retry" class="btn btn-next">Try another card</button>

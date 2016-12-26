@@ -45,6 +45,9 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public abstract class RealWSTransportTest extends AbstractTransportTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessDataset.xml";
@@ -78,6 +81,8 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected PageTester tester;
 	protected ICayenneService cayenneService;
 	private static TestServer server;
+	public org.apache.tapestry5.ioc.Messages messages;
+
 
 	@Override
 	protected final TestServer getServer() {
@@ -131,6 +136,8 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
         dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, replacementDataSet);
         cayenneService = serviceTest.getService(ICayenneService.class);
+		messages = mock(org.apache.tapestry5.ioc.Messages.class);
+		when(messages.get(anyString())).thenReturn("Any string");
 	}
 	
 	/**

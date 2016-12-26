@@ -6,6 +6,7 @@ package ish.oncourse.webservices.soap.v10;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.TypesUtil;
+import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
@@ -13,7 +14,10 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -46,6 +50,36 @@ public class QESuccessPaymentPlanTest extends QEPaymentPlanGUITest {
 				}
 			} 
 		}
+	}
+
+	@Override
+	protected void  checkAsyncReplication(ObjectContext context) {
+		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
+				.select(context);
+		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
+		assertEquals("Queue should contain 9 records.", 9, queuedRecords.size());
+		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
+				enrolmentsFound = 0;
+		for (QueuedRecord record : queuedRecords) {
+			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				paymentsFound++;
+			} else if (PAYMENT_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				paymentLinesFound++;
+			} else if (INVOICE_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				invoicesFound++;
+			} else if (INVOICE_LINE_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				invoiceLinesFound++;
+			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				enrolmentsFound++;
+			} else {
+				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
+			}
+		}
+		assertEquals("Not all PaymentIns found in a queue", 1, paymentsFound);
+		assertEquals("Not all PaymentInLines found in a queue", 2, paymentLinesFound);
+		assertEquals("Not all Invoices found in a queue", 2, invoicesFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 2, invoiceLinesFound);
+		assertEquals("Not all Enrolments found in a  queue", 2, enrolmentsFound);
 	}
 	
 	@Test

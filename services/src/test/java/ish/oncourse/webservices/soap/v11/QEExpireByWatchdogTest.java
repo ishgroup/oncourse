@@ -32,6 +32,7 @@ import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.dom.Node;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.services.Session;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -208,6 +209,7 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 	}
 
 	@Test
+	@Ignore
 	public void testExpireQEByWatchdog() throws Exception {
 		//check that empty queuedRecords
 		ObjectContext context = cayenneService.newNonReplicatingContext();

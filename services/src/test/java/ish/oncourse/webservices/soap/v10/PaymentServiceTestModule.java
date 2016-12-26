@@ -39,8 +39,11 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.NewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -166,6 +169,7 @@ public class PaymentServiceTestModule {
 			}
 		}).scope(ScopeConstants.PERTHREAD);
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
+		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
 	}
 	
 	@EagerLoad
@@ -177,6 +181,11 @@ public class PaymentServiceTestModule {
 	
 	@Scope("perthread")
 	public static IPaymentGatewayService buildPaymentGatewayService(IPaymentGatewayServiceBuilder builder) {
+		return builder.buildService();
+	}
+
+	@Scope("perthread")
+	public static INewPaymentGatewayService buildNewPaymentGatewayService(INewPaymentGatewayServiceBuilder builder) {
 		return builder.buildService();
 	}
 }

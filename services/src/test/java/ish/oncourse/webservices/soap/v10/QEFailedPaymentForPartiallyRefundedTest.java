@@ -38,9 +38,9 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
 				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 15 records.", 15, queuedRecords.size());
+		assertEquals("Queue should contain 28 records.", 28, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
-			enrolmentsFound = 0, membershipsFound = 0, vouchersFound = 0, articlesFound = 0;
+			enrolmentsFound = 0, membershipsFound = 0, vouchersFound = 0, articlesFound = 0, contactFound = 0;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				paymentsFound++;
@@ -58,30 +58,35 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 				vouchersFound++;
 			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())){
 				articlesFound++;
+			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())){
+				contactFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
 		}
-		assertEquals("Not all PaymentIns found in a queue", 1, paymentsFound);
-		assertEquals("Not all PaymentInLines found in a queue", 2, paymentLinesFound);
-		assertEquals("Not all Invoices found in a queue", 2, invoicesFound);
-		assertEquals("Not all InvoiceLines found in a  queue", 5, invoiceLinesFound);
-		assertEquals("Not all Enrolments found in a  queue", 2, enrolmentsFound);
+		assertEquals("Not all PaymentIns found in a queue", 2, paymentsFound);
+		assertEquals("Not all PaymentInLines found in a queue", 4, paymentLinesFound);
+		assertEquals("Not all Invoices found in a queue", 4, invoicesFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 10, invoiceLinesFound);
+		assertEquals("Not all Enrolments found in a  queue", 4, enrolmentsFound);
 		assertEquals("Membership not found in a queue", 1, membershipsFound);
 		assertEquals("Voucher not found in a queue", 1, vouchersFound);
 		assertEquals("Article not found in a queue", 1, articlesFound);
+		assertEquals("Contact not found in a queue", 1, contactFound);
 	}
 
 	@Override
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("25 elements should be replicated for this payment", 25, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("28 elements should be replicated for this payment", 28, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
-				if (stub.getAngelId() == 1l) {
-					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
+				PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
+				if (stub.getAngelId() == null) {
+					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED, status);
+				} else if (stub.getAngelId() == 1l) {
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(),

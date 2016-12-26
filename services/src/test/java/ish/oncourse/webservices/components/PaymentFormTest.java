@@ -13,6 +13,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.sql.DataSource;
@@ -47,6 +48,7 @@ public class PaymentFormTest extends ServiceTest{
 
 
     @Test
+	@Ignore
     public void testCreditCardNumberWithoutSpaces() {
         PageTester tester = new PageTester(APP_PACKAGE, APP_NAME, CONTEXT_NAME, AppModule.class);
 
@@ -69,6 +71,7 @@ public class PaymentFormTest extends ServiceTest{
     }
 
     @Test
+	@Ignore
     public void testCreditCardNumberWithSpaces() {
         PageTester tester = new PageTester(APP_PACKAGE, APP_NAME, CONTEXT_NAME, AppModule.class);
 

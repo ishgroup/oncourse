@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.soap.v14;
 
 import ish.common.types.PaymentStatus;
+import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.QueuedRecord;
@@ -35,16 +36,17 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 	protected void checkProcessedResponse(GenericTransactionGroup transaction) {
 		assertFalse("Get status call should not return empty response for payment in final status",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
-		assertEquals("26 elements should be replicated for this payment", 18, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
+		assertEquals("21 elements should be replicated for this payment", 21, transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 		//parse the transaction results
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
+				PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
 				if (stub.getWillowId() == 1l) {
-					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else if (stub.getWillowId() == 2l) {
-					PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
-					assertEquals("Payment status should be failed after expiration", PaymentStatus.SUCCESS, status);
+					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED, status);
+					PaymentType type = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getType(), PaymentType.class);
+					assertEquals("Payment type should be CC", PaymentType.CREDIT_CARD, type);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(),
 						((GenericPaymentInStub) stub).getStatus()), true);
@@ -86,7 +88,7 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
 				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
+		assertEquals("Queue should contain 21 records.", 21, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
 				membershipsFound = 0, vouchersFound = 0, articlesFound = 0, contactsFound = 0, studentsFound = 0;
 		for (QueuedRecord record : queuedRecords) {
@@ -115,10 +117,10 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 			}
 		}
 
-		assertEquals("Not all PaymentIns found in a queue", 1, paymentsFound);
-		assertEquals("Not all PaymentInLines found in a queue", 2, paymentLinesFound);
-		assertEquals("Not all Invoices found in a queue", 1, invoicesFound);
-		assertEquals("Not all InvoiceLines found in a  queue", 4, invoiceLinesFound);
+		assertEquals("Not all PaymentIns found in a queue", 2, paymentsFound);
+		assertEquals("Not all PaymentInLines found in a queue", 4, paymentLinesFound);
+		assertEquals("Not all Invoices found in a queue", 3, invoicesFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 8, invoiceLinesFound);
 		assertEquals("Membership not found in a queue", 1, membershipsFound);
 		assertEquals("Voucher not found in a queue", 1, vouchersFound);
 		assertEquals("Article not found in a queue", 1, articlesFound);

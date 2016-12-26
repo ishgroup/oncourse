@@ -225,9 +225,9 @@ public abstract class QEPaymentPlanGUITest extends QEPaymentProcessTest {
 		List<QueuedRecord> queuedRecords = ObjectSelect.query(QueuedRecord.class)
 				.select(context);
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
-		assertEquals("Queue should contain 9 records.", 9, queuedRecords.size());
+		assertEquals("Queue should contain 19 records.", 19, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
-				enrolmentsFound = 0;
+				enrolmentsFound = 0, contactFound = 0;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				paymentsFound++;
@@ -239,14 +239,17 @@ public abstract class QEPaymentPlanGUITest extends QEPaymentProcessTest {
 				invoiceLinesFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				enrolmentsFound++;
+			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())) {
+				contactFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
 			}
 		}
-		assertEquals("Not all PaymentIns found in a queue", 1, paymentsFound);
-		assertEquals("Not all PaymentInLines found in a queue", 2, paymentLinesFound);
-		assertEquals("Not all Invoices found in a queue", 2, invoicesFound);
-		assertEquals("Not all InvoiceLines found in a  queue", 2, invoiceLinesFound);
-		assertEquals("Not all Enrolments found in a  queue", 2, enrolmentsFound);
+		assertEquals("Not all PaymentIns found in a queue", 2, paymentsFound);
+		assertEquals("Not all PaymentInLines found in a queue", 4, paymentLinesFound);
+		assertEquals("Not all Invoices found in a queue", 4, invoicesFound);
+		assertEquals("Not all InvoiceLines found in a  queue", 4, invoiceLinesFound);
+		assertEquals("Not all Enrolments found in a  queue", 4, enrolmentsFound);
+		assertEquals("Not all Contact found in a  queue", 1, contactFound);
 	}
 }
