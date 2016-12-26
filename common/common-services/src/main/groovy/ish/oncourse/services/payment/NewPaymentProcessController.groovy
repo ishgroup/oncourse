@@ -1,6 +1,8 @@
 package ish.oncourse.services.payment
 
+import groovy.transform.CompileStatic
 import ish.common.types.PaymentStatus
+import ish.math.Money
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder
 import ish.oncourse.services.persistence.ICayenneService
@@ -13,15 +15,16 @@ import org.apache.tapestry5.ioc.Messages
 import static ish.oncourse.services.payment.GetPaymentState.PaymentState.*
 import static ish.oncourse.services.payment.PaymentAction.*
 
+@CompileStatic
 class NewPaymentProcessController {
 
-	def ExtendedModel model
-	def INewPaymentGatewayServiceBuilder paymentGatewayServiceBuilder
-	def ICayenneService cayenneService
-	def Messages messages
-	def GetPaymentState.PaymentState state
+	ExtendedModel model
+	INewPaymentGatewayServiceBuilder paymentGatewayServiceBuilder
+	ICayenneService cayenneService
+	Messages messages
+	GetPaymentState.PaymentState state
 	
-	def processRequest(PaymentRequest request, PaymentResponse response) {
+	void processRequest(PaymentRequest request, PaymentResponse response) {
 		switch (request.action) {
 			case MAKE_PAYMENT:
 				processPayment(request, response)
@@ -36,40 +39,40 @@ class NewPaymentProcessController {
 		}
 	}
 
-	def boolean readyToProcess() {
+	boolean readyToProcess() {
 		return READY_TO_PROCESS == state
 	}
 
-	def boolean fillCCDetails() {
+	boolean fillCCDetails() {
 		return FILL_CC_DETAILS == state
 	}
 	
-	def boolean isFailed() {
+	boolean isFailed() {
 		FAILED == state
 	}
 
-	def boolean isSuccess() {
+	boolean isSuccess() {
 		SUCCESS == state
 	}
 
-	def boolean isChooseAbandonOther() {
+	boolean isChooseAbandonOther() {
 		return CHOOSE_ABANDON_OTHER == state
 	}
 	
-	def boolean inProgress() {
+	boolean inProgress() {
 		return DPS_PROCESSING == state
 	}
 
-	def boolean isDPSError() {
+	boolean isDPSError() {
 		return DPS_ERROR == state
 	}
 	
-	def boolean isError() {
+	boolean isError() {
 		return ERROR == state
 	}
 
 
-	def processPayment(PaymentRequest request, PaymentResponse response) {	
+	void processPayment(PaymentRequest request, PaymentResponse response) {
 		if (fillCCDetails()) {
 			validate(request, response)
 			if (response.hasErrors()) {
@@ -107,7 +110,7 @@ class NewPaymentProcessController {
 		}
 	}
 
-	def proceedToDetails(PaymentResponse response = null) {
+	void proceedToDetails(PaymentResponse response = null) {
 		if (readyToProcess()) {
 			model.paymentIn.status = PaymentStatus.CARD_DETAILS_REQUIRED
 			model.paymentIn.objectContext.commitChanges()
@@ -119,7 +122,7 @@ class NewPaymentProcessController {
 	}
 	
 	
-	def tryOtherCard(PaymentResponse response) {
+	void tryOtherCard(PaymentResponse response) {
 		if (isChooseAbandonOther()) {
 			model.paymentIn.status = PaymentStatus.CARD_DETAILS_REQUIRED
 			model.paymentIn.objectContext.commitChanges()
@@ -130,7 +133,7 @@ class NewPaymentProcessController {
 		}
 	}
 
-	def void abandonPaymentKeepInvoice(PaymentResponse response) {
+	void abandonPaymentKeepInvoice(PaymentResponse response) {
 		if (isChooseAbandonOther()) {
 			PaymentInAbandon.valueOf(model, true).perform()
 			model.paymentIn.objectContext.commitChanges()
@@ -141,38 +144,19 @@ class NewPaymentProcessController {
 		}
 	}
 
-	private validate(PaymentRequest request, PaymentResponse response) {
-		if (request.getName() == null || request.getName().equals(StringUtils.EMPTY)) {
-			response.setCardNameError(messages.get("cardNameErrorMessage"));
+	private void validate(PaymentRequest request, PaymentResponse response) {
+		if (request.getName() == null || request.getName() == StringUtils.EMPTY) {
+			response.setCardNameError(messages.get("cardNameErrorMessage"))
 		}
-		String cardNumberErrorMessage = CreditCardValidator.validateNumber(request.getNumber());
+		String cardNumberErrorMessage = CreditCardValidator.validateNumber(request.getNumber())
 		if (cardNumberErrorMessage != null) {
-			response.setCardNumberError(cardNumberErrorMessage);
+			response.setCardNumberError(cardNumberErrorMessage)
 		}
 		if (!CreditCardValidator.validCvv(request.getCvv())) {
-			response.setCardCVVError(messages.get("cardcvv"));
+			response.setCardCVVError(messages.get("cardcvv"))
 		}
 		if (!CreditCardValidator.validCCExpiry(request.getMonth(), request.getYear())) {
-			response.setCardExpiryDateError(messages.get("expiryDateError"));
-		}
-	}
-	
-	def getPaymentProperty(String property) {
-		switch (state) {
-			case READY_TO_PROCESS:
-			case FILL_CC_DETAILS:	
-			case CHOOSE_ABANDON_OTHER:
-			case DPS_PROCESSING:
-			case DPS_ERROR:
-			case WARNING:
-				return model.paymentIn."$property"
-			case FAILED:
-				return model.failedPayments.get(0)."$property"
-			case SUCCESS:
-				return model.successPayment."$property"
-			case ERROR:
-				return model.paymentIn?."$property"
-			default: null
+			response.setCardExpiryDateError(messages.get("expiryDateError"))
 		}
 	}
 

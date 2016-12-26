@@ -1,13 +1,15 @@
 package ish.oncourse.services.paymentexpress
 
 import com.paymentexpress.stubs.TransactionResult2
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class DPSResponse {
-	def TransactionResult2 result2
-	def ResultStatus status;
+	TransactionResult2 result2
+	ResultStatus status
 
 
-	def static DPSResponse valueOf(TransactionResult2 result2) {
+	static DPSResponse valueOf(TransactionResult2 result2) {
 		def response = new DPSResponse(result2: result2)
 		
 		if (!result2 || PaymentExpressUtil.translateFlag(result2.statusRequired)) {
@@ -22,7 +24,7 @@ class DPSResponse {
 		return response
 	}
 
-	public static enum ResultStatus {
+	static enum ResultStatus {
 		SUCCESS,
 		FAILED,
 		UNKNOWN,

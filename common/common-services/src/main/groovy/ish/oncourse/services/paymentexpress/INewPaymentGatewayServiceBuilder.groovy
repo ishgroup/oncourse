@@ -1,5 +1,8 @@
 package ish.oncourse.services.paymentexpress
 
-public interface INewPaymentGatewayServiceBuilder {
-	INewPaymentGatewayService buildService();
+import groovy.transform.CompileStatic
+
+@CompileStatic
+interface INewPaymentGatewayServiceBuilder {
+	INewPaymentGatewayService buildService()
 }

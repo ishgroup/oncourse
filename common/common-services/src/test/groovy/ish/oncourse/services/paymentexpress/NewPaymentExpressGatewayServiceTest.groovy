@@ -7,9 +7,6 @@ import ish.common.types.CreditCardType
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.PaymentIn
-import ish.oncourse.services.ServiceModule
-import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.test.ServiceTest
 import ish.oncourse.util.payment.PaymentInModel
 import org.junit.Before
 import org.junit.Test
@@ -18,13 +15,10 @@ import java.rmi.RemoteException
 
 import static ish.common.types.PaymentStatus.FAILED_CARD_DECLINED
 import static ish.common.types.PaymentStatus.SUCCESS
-import static ish.oncourse.services.paymentexpress.IPaymentGatewayService.*
+import static ish.oncourse.services.paymentexpress.IPaymentGatewayService.FAILED_PAYMENT_IN
 import static ish.oncourse.services.paymentexpress.IPaymentGatewayService.SUCCESS_PAYMENT_IN
 import static org.mockito.Matchers.any
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.times
-import static org.mockito.Mockito.verify
-import static org.mockito.Mockito.when
+import static org.mockito.Mockito.*
 
 class NewPaymentExpressGatewayServiceTest {
 	
@@ -55,7 +49,7 @@ class NewPaymentExpressGatewayServiceTest {
 	@Test
 	def void testRealGateway(){
 		def service = new GatewayHelper()
-		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, null).build()
+		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
 		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
 		checkSuccess()
 	}
@@ -87,7 +81,7 @@ class NewPaymentExpressGatewayServiceTest {
 		def service = getCustomService(stub)
 		
 		when(paymentIn.status).thenReturn(FAILED_CARD_DECLINED)
-		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, null).build()
+		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
 		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
 		checkFail()
 	}
@@ -122,16 +116,16 @@ class NewPaymentExpressGatewayServiceTest {
 
 		def service = getCustomService(stub)
 
-		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, null).build()
+		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
 		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
 		checkSuccess()
 	}
 
 	@Test
-	def void test5TimesRetry() {
+	void test5TimesRetry() {
 		def stub = new PaymentExpressWSSoap12Stub() {
 			TransactionResult2 result2
-			def TransactionResult2 submitTransaction(String postUsername,  String postPassword, TransactionDetails transactionDetails) {
+			TransactionResult2 submitTransaction(String postUsername,  String postPassword, TransactionDetails transactionDetails) {
 				result2 = mock(TransactionResult2)
 				when(result2.retry).thenReturn('1')
 				return result2
@@ -140,7 +134,7 @@ class NewPaymentExpressGatewayServiceTest {
 
 		def service = getCustomService(stub)
 		when(paymentIn.status).thenReturn(FAILED_CARD_DECLINED)
-		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, null).build()
+		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
 		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
 		checkFail()
 	}

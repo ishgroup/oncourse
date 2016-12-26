@@ -1,14 +1,16 @@
 package ish.oncourse.services.paymentexpress
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.IPaymentTransaction
 import ish.oncourse.model.PaymentOutTransaction
 
 import static ish.oncourse.services.paymentexpress.DPSResponse.ResultStatus.*
 
+@CompileStatic
 class ProcessPaymentTransaction {
 
-	def IPaymentTransaction transaction
-	def DPSResponse response
+	IPaymentTransaction transaction
+	DPSResponse response
 
 	static ProcessPaymentTransaction valueOf(IPaymentTransaction transaction, DPSResponse response) {
 		return new ProcessPaymentTransaction(response: response, transaction: transaction)

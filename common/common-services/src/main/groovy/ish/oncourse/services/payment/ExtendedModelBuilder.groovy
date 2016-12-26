@@ -1,5 +1,6 @@
 package ish.oncourse.services.payment
 
+import groovy.transform.CompileStatic
 import ish.common.types.PaymentStatus
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.util.payment.PaymentInModel
@@ -10,6 +11,7 @@ import org.apache.cayenne.query.ObjectSelect
 import static ish.common.types.PaymentStatus.STATUSES_FAILED
 
 
+@CompileStatic
 class ExtendedModelBuilder  {
 	
 	protected ObjectContext context

@@ -5,11 +5,7 @@ import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.services.payment.GetPaymentState;
-import ish.oncourse.services.payment.NewPaymentProcessController;
-import ish.oncourse.services.payment.PaymentControllerBuilder;
-import ish.oncourse.services.payment.PaymentRequest;
-import ish.oncourse.services.payment.PaymentResponse;
+import ish.oncourse.services.payment.*;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.components.PaymentResult;
@@ -28,6 +24,9 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static ish.oncourse.webservices.pages.Payment.GetPaymentProperty.valueForContact;
+import static ish.oncourse.webservices.pages.Payment.GetPaymentProperty.valueForMoney;
 
 @Import(library = {"context:js/jquery.min.js", "context:js/jquery.inputmask.bundle.min.js", "context:js/payment.js"}, stylesheet = "css/screen.css")
 public class Payment {
@@ -102,8 +101,8 @@ public class Payment {
 
 	private void initProperties() {
 		this.moneyFormat = new DecimalFormat(PAYMENT_AMOUNT_FORMAT);
-		this.totalIncGst = (Money) paymentProcessController.getPaymentProperty(PaymentIn.AMOUNT_PROPERTY);
-		this.payer = (Contact) paymentProcessController.getPaymentProperty(PaymentIn.CONTACT_PROPERTY);
+		this.totalIncGst =  valueForMoney(paymentProcessController.getState(), paymentProcessController.getModel()).get();
+		this.payer = valueForContact(paymentProcessController.getState(), paymentProcessController.getModel()).get();
 		this.invoices = paymentProcessController.getModel().getInvoices();
 		this.result.setState(paymentProcessController.getState());
 		initYears();
@@ -162,6 +161,56 @@ public class Payment {
 		NewPaymentProcessController controller = new PaymentControllerBuilder(sessionId, paymentGatewayServiceBuilder, cayenneService, messages, this.request).build();
 		result.setState(controller.getState());
 		return result;
+	}
+
+	static abstract class GetPaymentProperty<T> {
+		private GetPaymentState.PaymentState state;
+		private ExtendedModel model;
+
+		private GetPaymentProperty(GetPaymentState.PaymentState state, ExtendedModel model) {
+			this.state = state;
+			this.model = model;
+		}
+
+		protected abstract T getProperty(PaymentIn it);
+
+		public T get() {
+			switch (state) {
+				case READY_TO_PROCESS:
+				case FILL_CC_DETAILS:
+				case CHOOSE_ABANDON_OTHER:
+				case DPS_PROCESSING:
+				case DPS_ERROR:
+				case WARNING:
+				case ERROR:
+					return getProperty(model.getPaymentIn());
+				case FAILED:
+					return getProperty(model.getFailedPayments().get(0));
+				case SUCCESS:
+					return getProperty(model.getSuccessPayment());
+				default:
+					throw new IllegalArgumentException();
+			}
+		}
+
+		static GetPaymentProperty<Money> valueForMoney(GetPaymentState.PaymentState state, ExtendedModel model) {
+			return new GetPaymentProperty<Money>(state, model) {
+				@Override
+				protected Money getProperty(PaymentIn it) {
+					return it.getAmount();
+				}
+			};
+		}
+
+		static GetPaymentProperty<Contact> valueForContact(GetPaymentState.PaymentState state, ExtendedModel model) {
+			return new GetPaymentProperty<Contact>(state, model) {
+				@Override
+				protected Contact getProperty(PaymentIn it) {
+					return it.getContact();
+				}
+			};
+		}
+
 	}
 	
 	

@@ -1,14 +1,16 @@
 package ish.oncourse.services.payment
 
 import groovy.transform.AutoClone
+import groovy.transform.CompileStatic
 
 @AutoClone
+@CompileStatic
 class PaymentRequest {
-	def String sessionId
-	def String name
-	def String number
-	def String cvv
-	def String year
-	def String month
-	def PaymentAction action
+	String sessionId
+	String name
+	String number
+	String cvv
+	String year
+	String month
+	PaymentAction action
 }

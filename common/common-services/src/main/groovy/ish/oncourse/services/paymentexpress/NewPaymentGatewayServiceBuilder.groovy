@@ -1,5 +1,6 @@
 package ish.oncourse.services.paymentexpress
 
+import groovy.transform.CompileStatic
 import ish.oncourse.services.ServiceModule
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.preference.PreferenceController
@@ -7,6 +8,7 @@ import org.apache.tapestry5.ioc.annotations.Inject
 
 import static ish.oncourse.model.PaymentGatewayType.*
 
+@CompileStatic
 class NewPaymentGatewayServiceBuilder implements INewPaymentGatewayServiceBuilder {
 
 
@@ -14,7 +16,7 @@ class NewPaymentGatewayServiceBuilder implements INewPaymentGatewayServiceBuilde
 	private final ICayenneService cayenneService;
 	
 	@Inject
-	def NewPaymentGatewayServiceBuilder(PreferenceController preferenceController, ICayenneService cayenneService) {
+	NewPaymentGatewayServiceBuilder(PreferenceController preferenceController, ICayenneService cayenneService) {
 		super();
 		this.preferenceController = preferenceController;
 		this.cayenneService = cayenneService;
@@ -26,7 +28,7 @@ class NewPaymentGatewayServiceBuilder implements INewPaymentGatewayServiceBuilde
 	 * college.paymentGatewayType property. {@inheritDoc}
 	 *
 	 */
-	def INewPaymentGatewayService buildService() {
+	INewPaymentGatewayService buildService() {
 
 		def isInTestMode = Boolean.valueOf(System.getProperty(ServiceModule.APP_TEST_MODE));
 

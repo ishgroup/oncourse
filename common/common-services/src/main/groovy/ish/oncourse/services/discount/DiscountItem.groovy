@@ -1,5 +1,6 @@
 package ish.oncourse.services.discount
 
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.Discount
 import ish.oncourse.util.FormatUtils
@@ -7,40 +8,37 @@ import org.apache.commons.lang.StringUtils
 
 import java.text.Format
 
-public  class DiscountItem
-{
-	private static final String DIVIDER = " / ";
-	private List<Discount> discounts;
-	private Money feeIncTax;
+@CompileStatic
+class DiscountItem {
+    private static final String DIVIDER = " / "
+    List<Discount> discounts
+    private Money feeIncTax
 
 
-	private Format feeFormat;
-	private String title;
+    private Format feeFormat
+    private String title
 
-	def DiscountItem init()
-	{
-		List<String> strings = new ArrayList<>();
-		for (Discount  discount : discounts) {
-			strings.add(discount.getName());
-		}
-		title = StringUtils.join(strings, DIVIDER);
-		feeFormat = FormatUtils.chooseMoneyFormat(feeIncTax);
-		return this
-	}
+    DiscountItem init() {
+        List<String> strings = new ArrayList<>()
+        for (Discount discount : discounts) {
+            strings.add(discount.getName())
+        }
+        title = StringUtils.join(strings, DIVIDER)
+        feeFormat = FormatUtils.chooseMoneyFormat(feeIncTax)
+        return this
+    }
 
-	def String getTitle()
-	{
-		return title;
-	}
+    String getTitle() {
+        return title;
+    }
 
-	def Money getFeeIncTax() {
-		return feeIncTax;
-	}
+    Money getFeeIncTax() {
+        return feeIncTax
+    }
 
 
-	def Format getFeeFormat()
-	{
-		return feeFormat;
-	}
+    Format getFeeFormat() {
+        return feeFormat
+    }
 
 }

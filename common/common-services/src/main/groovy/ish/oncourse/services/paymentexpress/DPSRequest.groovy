@@ -1,9 +1,11 @@
 package ish.oncourse.services.paymentexpress
 
 import com.paymentexpress.stubs.TransactionDetails
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class DPSRequest {
-	def TransactionDetails transactionDetails
-	def String paymentGatewayAccount
-	def String paymentGatewayPass
+    TransactionDetails transactionDetails
+    String paymentGatewayAccount
+    String paymentGatewayPass
 }

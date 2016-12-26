@@ -1,19 +1,19 @@
 package ish.oncourse.services.payment
 
 import groovy.transform.AutoClone
+import groovy.transform.CompileStatic
 
 @AutoClone
+@CompileStatic
 class PaymentResponse {
 
-	def String cardNameError
-	def String cardNumberError
-	def String cardCVVError
-	def String cardExpiryDateError
-	def GetPaymentState.PaymentState status
+    String cardNameError
+    String cardNumberError
+    String cardCVVError
+    String cardExpiryDateError
+    GetPaymentState.PaymentState status
 
-	def boolean hasErrors() {
-		cardNameError || cardNumberError || cardCVVError || cardExpiryDateError 
-	}
-
-
+    boolean hasErrors() {
+        cardNameError || cardNumberError || cardCVVError || cardExpiryDateError
+    }
 }

@@ -1,5 +1,6 @@
 package ish.oncourse.services.paymentexpress
 
+import groovy.transform.CompileStatic
 import ish.common.types.PaymentStatus
 import ish.oncourse.model.PaymentOut
 import ish.oncourse.util.payment.PaymentInFail
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils
 
 import static ish.oncourse.services.paymentexpress.DPSResponse.ResultStatus.*
 
+@CompileStatic
 class ProcessDPSResponse {
 
 	private PaymentInModel model
@@ -16,7 +18,7 @@ class ProcessDPSResponse {
 	private PaymentOut paymentOut
 	private ProcessCase processCase
 
-	static def ProcessDPSResponse valueOf(PaymentInModel model, DPSResponse response) {
+	static ProcessDPSResponse valueOf(PaymentInModel model, DPSResponse response) {
 		new ProcessDPSResponse(model: model, response: response,
 				processCase: new ProcessCase() {
 					@Override
@@ -47,7 +49,7 @@ class ProcessDPSResponse {
 		})		 
 	}
 
-	static def ProcessDPSResponse valueOf(PaymentOut paymentOut, DPSResponse response) {
+	static ProcessDPSResponse valueOf(PaymentOut paymentOut, DPSResponse response) {
 		new ProcessDPSResponse(paymentOut: paymentOut, response: response,
 				processCase:  new ProcessCase() {
 					@Override

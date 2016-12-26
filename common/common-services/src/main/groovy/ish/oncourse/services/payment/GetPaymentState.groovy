@@ -1,17 +1,19 @@
 package ish.oncourse.services.payment
 
+import groovy.transform.CompileStatic
 import ish.common.types.PaymentStatus
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService
 import ish.oncourse.services.persistence.ICayenneService
 
 import static ish.oncourse.services.payment.GetPaymentState.PaymentState.*
 
+@CompileStatic
 class GetPaymentState {
 
-	def ExtendedModel model
-	def ICayenneService cayenneService
+	ExtendedModel model
+	ICayenneService cayenneService
 	
-	def PaymentState getState() {
+	PaymentState getState() {
 
 		if (model.paymentIn) {
 			switch (model.paymentIn.status) {
@@ -40,7 +42,7 @@ class GetPaymentState {
 	}
 
 
-	public enum PaymentState {
+	enum PaymentState {
 		READY_TO_PROCESS,
 		FILL_CC_DETAILS,
 		CHOOSE_ABANDON_OTHER,

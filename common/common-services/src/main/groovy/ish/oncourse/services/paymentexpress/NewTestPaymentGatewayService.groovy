@@ -1,35 +1,35 @@
 package ish.oncourse.services.paymentexpress
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.PaymentOut
 import ish.oncourse.services.payment.PaymentRequest
-import ish.oncourse.services.payment.PaymentResponse
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.search.CourseClassUtils
 import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInModel
 
+@CompileStatic
 class NewTestPaymentGatewayService  implements INewPaymentGatewayService {
 
-	private final ICayenneService cayenneService;
+	private final ICayenneService cayenneService
 
-	def NewTestPaymentGatewayService(ICayenneService cayenneService) {
+	NewTestPaymentGatewayService(ICayenneService cayenneService) {
 		this.cayenneService = cayenneService
 	}
 
 	@Override
-	def submit(PaymentInModel model, String billingId = null) {
+	submit(PaymentInModel model, String billingId = null) {
 		def service = new TestPaymentGatewayService(cayenneService)
 		billingId ? service.performGatewayOperation(model, billingId) : service.performGatewayOperation(model)
 	}
 
 
 	@Override
-	def submit(PaymentOut paymentOut) {
+	submit(PaymentOut paymentOut) {
 		new TestPaymentGatewayService(cayenneService).performGatewayOperation(paymentOut)
 	}
 
 	@Override
-	def submit(PaymentInModel model, PaymentRequest response) {
+	submit(PaymentInModel model, PaymentRequest response) {
 
 		model.paymentIn.creditCardCVV = response.cvv
 		model.paymentIn.creditCardNumber= response.number
