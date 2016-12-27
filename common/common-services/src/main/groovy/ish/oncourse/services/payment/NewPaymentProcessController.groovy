@@ -134,7 +134,7 @@ class NewPaymentProcessController {
 	}
 
 	void abandonPaymentKeepInvoice(PaymentResponse response) {
-		if (isChooseAbandonOther()) {
+		if (isChooseAbandonOther() || fillCCDetails()) {
 			PaymentInAbandon.valueOf(model, true).perform()
 			model.paymentIn.objectContext.commitChanges()
 			state = FAILED

@@ -34,9 +34,7 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -122,6 +120,8 @@ public class PaymentServiceTestModule {
 		//binder.bind(IPaymentGatewayService.class, PaymentExpressGatewayService.class).withId("PaymentGatewayService");
 		
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
+		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
+
 	}
 	
 	@EagerLoad
