@@ -224,6 +224,7 @@ public class Preferences {
 	 */
 	@API
 	public static final String LDAP_HOST = "ldap.host";
+
 	public static final String LDAP_SERVERPORT = "ldap.serverport";
 	@Deprecated
 	public static final String LDAP_SECURITY = "ldap.security";
@@ -308,7 +309,7 @@ public class Preferences {
 	public static final String AVETMISS_SHOW_GUI = "enableRTOGUI";
 
 	/**
-	 * AVETMISS RTO Identifier
+	 * AVETMISS RTO Identifier. Must be a valid choice from training.gov.au
 	 *
 	 * @param prefKey avetmiss.identifier
 	 */
@@ -316,7 +317,7 @@ public class Preferences {
 	public static final String AVETMISS_ID = "avetmiss.identifier";
 
 	/**
-	 * AVETMISS jurisdiction
+	 * Defaut AVETMISS jurisdiction used when exporting.
 	 *
 	 * @param prefKey avetmiss.jurisdiction
 	 */
@@ -324,7 +325,7 @@ public class Preferences {
 	public static final String AVETMISS_JURISDICTION = "avetmiss.jurisdiction";
 
 	/**
-	 * Training organisation name
+	 * Training organisation name for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.collegename
 	 */
@@ -336,7 +337,7 @@ public class Preferences {
 	public static final String AVETMISS_TYPE = "avetmiss.type";
 
 	/**
-	 * Address 1 line
+	 * Address 1 line for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.address.line1
 	 */
@@ -344,7 +345,7 @@ public class Preferences {
 	public static final String AVETMISS_ADDRESS1 = "avetmiss.address.line1";
 
 	/**
-	 * Address 2 line
+	 * Address 2 line for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.address.line2
 	 */
@@ -352,7 +353,7 @@ public class Preferences {
 	public static final String AVETMISS_ADDRESS2 = "avetmiss.address.line2";
 
 	/**
-	 * Suburb
+	 * Suburb for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.address.suburb
 	 */
@@ -360,7 +361,7 @@ public class Preferences {
 	public static final String AVETMISS_SUBURB = "avetmiss.address.suburb";
 
 	/**
-	 * Postcode
+	 * Postcode for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.address.postcode
 	 */
@@ -368,7 +369,7 @@ public class Preferences {
 	public static final String AVETMISS_POSTCODE = "avetmiss.address.postcode";
 
 	/**
-	 * State
+	 * State for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.address.state
 	 */
@@ -378,7 +379,7 @@ public class Preferences {
 	public static final String AVETMISS_STATE_NAME_VirtualKey = "avetmiss.address.stateName";
 
 	/**
-	 * Contact name
+	 * Contact name for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.contactname
 	 */
@@ -386,7 +387,7 @@ public class Preferences {
 	public static final String AVETMISS_CONTACTNAME = "avetmiss.contactname";
 
 	/**
-	 * Telephone
+	 * Telephone for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.phone
 	 */
@@ -394,7 +395,7 @@ public class Preferences {
 	public static final String AVETMISS_PHONE = "avetmiss.phone";
 
 	/**
-	 * Fax
+	 * Fax for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.fax
 	 */
@@ -402,7 +403,7 @@ public class Preferences {
 	public static final String AVETMISS_FAX = "avetmiss.fax";
 
 	/**
-	 * Email
+	 * College email for the AVETMISS export file.
 	 *
 	 * @param prefKey avetmiss.email
 	 */
@@ -410,7 +411,7 @@ public class Preferences {
 	public static final String AVETMISS_EMAIL = "avetmiss.email";
 
 	/**
-	 * Full certificate signatory name
+	 * Certificate signatory name. This name is placed at the bottom of the printed certificate.
 	 *
 	 * @param prefKey avetmiss.certificate.signatory.name
 	 */
@@ -426,7 +427,7 @@ public class Preferences {
 	public static final String AVETMISS_QLD_IDENTIFIER = "avetmiss.qld.identifier";
 
 	/**
-	 * Fee Help Provider Code
+	 * FEE HELP Provider Code
 	 *
 	 * @param prefKey avetmiss.fee.help.provider.code
 	 */
@@ -440,14 +441,14 @@ public class Preferences {
 	// **************************************
 	
 	/**
-	 * Minimum places in class (default)
+	 * Default minimum places in class. Used when creating a new class.
 	 *
 	 * @param prefKey courseclass_default_minimumPlaces
 	 */
 	@API
 	public static final String CLASS_DEFAULTS_MINIMUM_PLACES = "courseclass_default_minimumPlaces";
 	/**
-	 * Maximum places in class (default)
+	 * Default maximum places in class. Used when creating a new class.
 	 *
 	 * @param prefKey courseclass_default_maximumPlaces
 	 */
