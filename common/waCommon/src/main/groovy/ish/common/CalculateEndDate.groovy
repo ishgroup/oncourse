@@ -1,6 +1,7 @@
 package ish.common
 
 import groovy.time.TimeCategory
+import ish.oncourse.cayenne.AssessmentClassModuleInterface
 import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.OutcomeInterface
 import ish.oncourse.cayenne.SessionInterface
@@ -23,7 +24,7 @@ class CalculateEndDate {
 		// this is a flexible delivery class so the start date varies for each enrolment
 		// 'No sessions' means CourseClass.endDateTime is null
 		CourseClassInterface courseClass = outcome.enrolment.courseClass;
-		if (courseClass.isDistantLearningCourse || courseClass.sessions.empty) {
+		if (courseClass.isDistantLearningCourse || (courseClass.sessions.empty && courseClass.assessmentClasses.empty)) {
 			Date endDate
 			use(TimeCategory) {
 				endDate = courseClass.maximumDays ? outcome.enrolment.createdOn + courseClass.maximumDays.day : outcome.enrolment.createdOn + 365.day 
@@ -34,10 +35,14 @@ class CalculateEndDate {
 		if (outcome.module) {
 			List<SessionModuleInterface> sessionModules = courseClass.sessions*.sessionModules
 					.flatten()
-					.findAll { sm -> sm.module == outcome.module }
-					.sort { a,b -> -(a.session.startDatetime <=> b.session.startDatetime) }
-			if (sessionModules.size()) {
-				return sessionModules.first().session.endDatetime
+					.findAll { sm -> sm.module == outcome.module } as List<SessionModuleInterface>
+			
+			List<AssessmentClassModuleInterface> assessmentClassModules = courseClass.assessmentClasses*.assessmentClassModules
+					.flatten()
+					.findAll { acm -> acm.module == outcome.module } as List<AssessmentClassModuleInterface>
+			
+			if (sessionModules || assessmentClassModules) {
+				return (sessionModules*.session*.endDatetime + assessmentClassModules*.assessmentClass*.dueDate).sort().last()
 			}
 		}
 		// if the module for the outcome isn't found in the sessions, return the class end date

@@ -6,7 +6,6 @@ package ish.oncourse.cayenne;
 import java.util.List;
 import java.util.Date;
 
-
 public interface CourseClassInterface {
 
 	Boolean getIsDistantLearningCourse();
@@ -19,5 +18,6 @@ public interface CourseClassInterface {
 
 	Date getEndDateTime();
 
+	List<? extends AssessmentClassInterface> getAssessmentClasses();
 
 }

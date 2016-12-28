@@ -1,15 +1,12 @@
 package ish.common
 
+import ish.oncourse.cayenne.AssessmentClassModuleInterface
 import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.OutcomeInterface
-import ish.oncourse.cayenne.SessionInterface
 import ish.oncourse.cayenne.SessionModuleInterface
-import org.apache.cayenne.query.Ordering
-import org.apache.cayenne.query.SortOrder
 
 class CalculateStartDate {
-
-
+	
 	private  OutcomeInterface outcome
 
 	def CalculateStartDate(OutcomeInterface outcome)  {
@@ -25,18 +22,21 @@ class CalculateStartDate {
 		// this is a flexible delivery class so the start date varies for each enrolment
 		// 'No sessions' means CourseClass.startDateTime is null
 		CourseClassInterface courseClass = outcome.enrolment.courseClass
-		if (courseClass.isDistantLearningCourse || courseClass.sessions.empty) {
+		if (courseClass.isDistantLearningCourse || (courseClass.sessions.empty && courseClass.assessmentClasses.empty)) {
 			return outcome.enrolment.createdOn;
 		}
 
 		if (outcome.module) {
 			List<SessionModuleInterface> sessionModules = courseClass.sessions*.sessionModules
 					.flatten()
-					.findAll { sm -> sm.module == outcome.module }
-					.sort { a,b -> a.session.startDatetime <=> b.session.startDatetime }
-			
-			if (sessionModules.size()) {
-				return sessionModules.first().session.startDatetime
+					.findAll { sm -> sm.module == outcome.module } as List<SessionModuleInterface>
+
+			List<AssessmentClassModuleInterface> assessmentClassModules = courseClass.assessmentClasses*.assessmentClassModules
+					.flatten()
+					.findAll { acm -> acm.module == outcome.module } as List<AssessmentClassModuleInterface>
+
+			if (sessionModules || assessmentClassModules) {
+				return (sessionModules*.session*.startDatetime + assessmentClassModules*.assessmentClass*.dueDate).sort().first()
 			}
 		}
 
