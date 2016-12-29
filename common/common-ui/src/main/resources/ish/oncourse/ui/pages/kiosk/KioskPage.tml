@@ -43,5 +43,8 @@
         </div>
     </footer>
 </div>
+<script type="text/javascript">
+    setTimeout(function(){window.location.reload();}, 900000);
+</script>
 </body>
 </html>
