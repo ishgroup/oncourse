@@ -47,7 +47,7 @@ public class KioskPage {
         TimeZone timeZone = TimeZone.getTimeZone(site.getCollege().getTimeZone());
 
         Date start = Calendar.getInstance(timeZone).getTime();
-        Date end = DateUtils.addDays(start, 1);
+        Date end = DateUtils.truncate(DateUtils.addDays(start, 1), Calendar.DAY_OF_MONTH);
 
         if (room != null) {
             sessions = ObjectSelect.query(Session.class).where(ROOM.eq(room))
