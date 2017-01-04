@@ -64,8 +64,8 @@ dependencies {
 	compile "org.eclipse.jetty.websocket:websocket-servlet:$jettyVersion"
 	compile "org.eclipse.jetty.websocket:websocket-server:$jettyVersion"
 
-	compile 'org.apache.derby:derbyclient:10.12.1.1'
-	compile 'org.apache.derby:derbynet:10.12.1.1'
+	compile 'org.apache.derby:derbyclient:10.13.1.1'
+	compile 'org.apache.derby:derbynet:10.13.1.1'
 
 	// can't go above 2.0.5 due to the bug in liquibase [https://liquibase.jira.com/browse/CORE-2265]
 	compile 'org.liquibase:liquibase-core:2.0.5-fix'
@@ -111,7 +111,7 @@ dependencies {
 	}
 
 	testCompile 'org.mockito:mockito-core:1.10.19'
-	testCompile 'org.apache.derby:derbytools:10.12.1.1'
+ 	testCompile 'org.apache.derby:derbytools:10.13.1.1'
 	testCompile 'dbunit:dbunit:2.4.8'
 	testCompile 'commons-dbcp:commons-dbcp:1.4'
 	testCompile 'xmlunit:xmlunit:1.6' //used for xml export validation tests
