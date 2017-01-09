@@ -161,7 +161,7 @@ public class CourseClassItem extends ISHCommon {
 		visibleTutorRoles = ObjectSelect.query(TutorRole.class)
 				.where(TutorRole.COURSE_CLASS.eq(courseClass))
 				.and(TutorRole.IN_PUBLICITY.isTrue())
-				.and(TutorRole.TUTOR.dot(Tutor.START_DATE).isNull().orExp(TutorRole.TUTOR.dot(Tutor.START_DATE).gt(new Date())))
+				.and(TutorRole.TUTOR.dot(Tutor.FINISH_DATE).isNull().orExp(TutorRole.TUTOR.dot(Tutor.FINISH_DATE).gt(new Date())))
 				.prefetch(TutorRole.TUTOR.joint())
 				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).joint())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
