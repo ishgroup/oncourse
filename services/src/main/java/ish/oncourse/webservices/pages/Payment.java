@@ -28,7 +28,7 @@ import java.util.List;
 import static ish.oncourse.webservices.pages.Payment.GetPaymentProperty.valueForContact;
 import static ish.oncourse.webservices.pages.Payment.GetPaymentProperty.valueForMoney;
 
-@Import(library = {"context:js/jquery.min.js", "context:js/jquery.inputmask.bundle.min.js", "context:js/payment.js"}, stylesheet = "css/screen.css")
+@Import(library = {"js/jquery.min.js", "js/jquery.inputmask.bundle.min.js", "js/payment.js"}, stylesheet = "css/screen.css")
 public class Payment {
 	private static final Logger logger = LogManager.getLogger();
 	private static final String PAYMENT_AMOUNT_FORMAT = "###,##0.00";
