@@ -42,7 +42,15 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	 * Wage intervals are a tag group used to designate pay cycles.
 	 */
 	@API
-	PAYROLL_WAGE_INTERVALS(4, "Payroll wage intervals");
+	PAYROLL_WAGE_INTERVALS(4, "Payroll wage intervals"),
+
+	/**
+	 * Database value: 5
+	 *
+	 * Assessment methods are a tag group used to mark assessments.
+	 */
+	@API
+	ASSESSMENT_METHOD(5, "Assessment methods");
 
 	private String displayName;
 	private int value;
