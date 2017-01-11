@@ -27,7 +27,7 @@
     <section>
         <div class="courses-today">
             <t:if test="sessions.empty">
-                <div class="container">There are no more classes scheduled today.</div>
+                <div class="text-center">There are no more classes scheduled today.</div>
                 <p:else>
                     <t:loop source="sessions" value="session">
                         <t:ui.kiosk.kiosksession session="session"/>
