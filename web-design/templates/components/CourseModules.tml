@@ -1,0 +1,16 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <div class="course_modules"><span>
+    <t:if test="qualification">
+        Assessments are made against units of competency from the ${qualification.level} ${qualification.title} ${qualification.nationalCode}.
+    <p:else>
+        Assessments are made against units of competency.
+    </p:else>
+    </t:if>
+    </span>
+    <ul>
+        <t:loop source="modules" value="module">
+            <li>${module.title} (<a href="https://training.gov.au/Training/Details/${module.nationalCode}" rel="nofollow" target="_blank">${module.nationalCode}</a>)</li>
+        </t:loop>
+    </ul>
+    </div>
+</t:container>
