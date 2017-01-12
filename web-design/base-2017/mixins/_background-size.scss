@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+/// Handles background image sizes includes browser specific size like: webkit, moz, o
+///
+/// @author Chintan Kotadia
+///
+/// @param {String} $size
+///   Specify background size
+///
+/// @example scss - Usage
+///   .element-one {
+///     @include background-size(contain);
+///   }
+///
+/// @example css - CSS Output
+///   .element-one {
+///     -webkit-background-size: contain;
+///     -moz-background-size: contain;
+///     -o-background-size: contain;
+///     background-size: contain
+///   }
+///
+/// @require {mixin} prefixer
+///
+/// @output `background-size`
+///
+/// @name background-size
+/// @group ish
+///
+
+@mixin background-size($size) {
+  @include prefixer(background-size, $size, webkit moz o spec);
+}

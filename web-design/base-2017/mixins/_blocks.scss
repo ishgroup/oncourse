@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+/// Handles content blocks
+///
+/// @author Chintan Kotadia
+///
+/// @param {String} $class [grid | column | etc.,]
+///   Specify you own class
+///
+/// @param {String} $display [table-cell | left | right]
+///   Can use css property of table or float
+///
+/// @param {String} $media [small | tablet | desktop | custom]
+///   Specify media screen
+///
+/// @example scss - Usage
+///   ul {
+///     @include blocks("&.grid", table-cell, $media-tablet);
+///   }
+///
+/// @example css - CSS Output
+///   ul.grid {
+///     display: table
+///   }
+///
+///   ul.grid>li {
+///     width: 100%;
+///     display: block
+///   }
+///
+///   @media only screen and (min-width: 992px) {
+///     ul.grid.grid-5>li {
+///       width:20%;
+///       display: table-cell
+///     }
+///   }
+///
+///   @media only screen and (min-width: 992px) {
+///     ul.grid.grid-4>li {
+///       width:25%;
+///       display: table-cell
+///     }
+///   }
+///
+///   @media only screen and (min-width: 992px) {
+///     ul.grid.grid-3>li {
+///       width:33.33%;
+///       display: table-cell
+///     }
+///   }
+///
+///   @media only screen and (min-width: 992px) {
+///     ul.grid.grid-2>li {
+///       width:50%;
+///       display: table-cell
+///     }
+///   }
+///
+///   @media only screen and (min-width: 992px) {
+///     ul.grid.grid-1>li {
+///       width:100%;
+///       display: table-cell
+///     }
+///   }
+///
+/// @require {mixin} responsive
+///
+/// @name blocks
+/// @group ish
+///
+
+@mixin blocks($class, $display, $media) {
+  #{$class} {
+    display: table;
+    >li {
+      width: 100%;
+      display: block;
+    }
+    @include block(#{$class}-5, 20%,    $display, $media);
+    @include block(#{$class}-4, 25%,    $display, $media);
+    @include block(#{$class}-3, 33.33%, $display, $media);
+    @include block(#{$class}-2, 50%,    $display, $media);
+    @include block(#{$class}-1, 100%,   $display, $media);
+  }
+}
+
+@mixin block($class, $width, $display, $media) {
+  #{$class} {
+    >li {
+      @include responsive($media) {
+        width: $width;
+        @if $display == "left" {
+          float: left;
+        }
+        @else if $display == "right" {
+          float: right;
+        } @else {
+          display: $display;
+        }
+      }
+    }
+  }
+}

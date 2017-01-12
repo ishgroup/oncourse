@@ -1,0 +1,68 @@
+//
+//
+// default-b.scss
+//
+// Contains all the settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+$fontFamilyOne: !default;
+
+// Content settings */
+$colorTypeOne: !default;
+$colorTypeTwo: !default;
+
+$colorTypeThree: !default;
+$colorTypeFour: !default;
+
+$colorTypeFive: !default;
+$colorTypeSix: !default;
+
+@if $theme == "b" {
+  @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,900);
+
+  $containerWidth: 1260px;
+
+  $anchorColor: #7d8087;
+  $anchorHoverColor: #37b8cb;
+
+  $primaryColor: #859f4b; //btn primary color
+  $secondaryColor: #247a83;
+
+  // media: small, tablet, desktop */
+  $small-screen: 640px;
+  $tablet-screen: 992px;
+  $desktop-screen: 1080px;
+  $custom-screen: 1060px;
+
+  // Font Families */
+  $fontFamilyOne: 'Raleway', sans-serif;
+
+  $bodyBackground: $white;
+  $bodyFont : $fontFamilyOne;
+  $bodyFontFamily: $bodyFont;
+  $bodyFontSize: 14px;
+  $bodyFontColor: #333333;
+
+  // Content container */
+  $contentContainerMarginTop: 0px;
+  $enrolActionFontSize: 14px;
+
+  // Courses */
+  $waitingListTitleHoverBG: $bodyFontColor;
+
+  // Content settings */
+  $colorTypeOne: #9ac836;
+  $colorTypeTwo: #799e28;
+
+  $colorTypeThree: #d0e64b;
+  $colorTypeFour: #b9cc46;
+
+  $colorTypeFive: #33a6b2;
+  $colorTypeSix: #247a83;
+}

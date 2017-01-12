@@ -1,0 +1,52 @@
+//
+//
+// footer.scss
+//
+// Contains footer's settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+//
+// Following settings are handles footer style
+//
+
+// Footer background color
+$footerBG: #e8e6ca no-repeat center top !default;
+// Footer text color
+$footerTextColor: #8ca3ab !default;
+$footerFontSize: 14px !default;
+$footerTextAlign: center !default;
+$footerTextAlignMediaTablet: left !default;
+$footerPadding: 10px 0 0 0 !default;
+$footerLineHeight: 26px !default;
+// Footer address text color default is secondary color
+$footerAddressTextColor: $secondaryColor !default;
+
+$footerContainerFloat: left !default;
+$footerContainerWidth: 100% !default;
+$footerContainerMargin: 20px 0 0 0 !default;
+
+$footerContainerInfoFloat: left !default;
+$footerContainerInfoTextAlign: left !default;
+$footerContainerInfoDisplay: inline-block !default;
+$footerContainerInfoPadding: 0px 17px !default;
+
+$footerContainerLogoFloat: right !default;
+$footerContainerLogoTextAlign: right !default;
+
+$footerContainerCopyrightFloat: left !default;
+$footerContainerRightBlockFloat: right !default;
+$footerContainerRightBlockWidth: auto !default;
+
+$infoLinksBackground: transparent !default;
+$infoLinksMargin: 30px 0 0 0 !default;
+$infoLinksPadding: 0px !default;
+$footerContainerInfoLinkColor: $white !default;
+$footerContainerInfoLinkHoverColor: $white !default;
+$infoLinksBlockColor: $white !default;

@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+/// Handles responsive media screen from mobile first to desktop
+///
+/// @author Chintan Kotadia
+///
+/// @param {String} $media [small | tablet | desktop | custom]
+///   Specify media screen
+///
+/// @param {String} $custom-width [""]
+///   Its an optional parameter
+///
+/// @example scss - Usage
+///   .element-one {
+///     font-size: 12px;
+///     @include responsive('small') {
+///       font-size: 18px;
+///     }
+///   }
+///
+/// @example css - CSS Output
+///   .element-one {
+///     font-size: 12px;
+///   }
+///
+///   @media only screen and (min-width: $small-screen) {
+///     .element-one {
+///       font-size: 18px;
+///     }
+///   }
+///
+/// @output `responsive`
+///
+/// @name responsive
+/// @group ish
+///
+
+@mixin responsive($media, $custom-width: '') {
+  @if $media == small {
+    @media only screen and (min-width: $small-screen) {
+      @content;
+    }
+  }
+  @else if $media == tablet {
+    @media only screen and (min-width: $tablet-screen) {
+      @content;
+    }
+  }
+  @else if $media == desktop {
+    @media only screen and (min-width: $desktop-screen) {
+      @content;
+    }
+  }
+  @else if $media == custom {
+    @media only screen and (min-width: $custom-width) {
+      @content;
+    }
+  }
+}

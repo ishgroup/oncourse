@@ -1,0 +1,37 @@
+//
+//
+// default-a.scss
+//
+// Contains all the settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@if $theme == "a" {
+  $containerWidth: 1120px;
+
+  $anchorColor: #7d8087;
+  $anchorHoverColor: #37b8cb;
+
+  $primaryColor: #38BACA; //btn primary color
+  $secondaryColor: #252d30;
+
+  // media: small, tablet, desktop */
+  $small-screen: 640px;
+  $tablet-screen: 992px;
+  $desktop-screen: 1024px;
+
+  $bodyFontFamily: 'Source Sans Pro', sans-serif;
+  $bodyFontSize: 15px;
+  $bodyFontColor: #5c636b;
+
+  // Content container */
+  $contentContainerMarginTop: 0px;
+
+  // Courses */
+  $waitingListTitleHoverBG: $bodyFontColor;
+}

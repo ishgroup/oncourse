@@ -1,0 +1,142 @@
+//
+//
+// footer.scss
+//
+// Contains site's footer styles
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@include theme('a', 'footer') {
+	#footer {
+		color: $footerTextColor;
+		background: $footerBG;
+		font-size: 14px;
+		line-height: 26px;
+		padding-top: 25px;
+
+		@include responsive($media-tablet) {
+			padding-top: 70px;
+		}
+
+		&:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+		.left {
+			+ br {
+				display: none;
+			}
+			> br, > img + p {
+				display: none;
+			}
+
+			> p {
+				float: left;
+			}
+			.social-content {
+				> br {
+					display: none;
+				}
+				> img {
+					background-color: #FFFFFF;
+				}
+
+				float: left;
+				width: 190px;
+				.social-links {
+					margin-top: 25px;
+					li {
+						display: inline-block;
+
+						&:first-child {
+							margin-left: 0;
+						}
+					}
+				}
+			}
+			.address-info {
+				float: left;
+
+				.title {
+					text-transform: uppercase;
+					color: $footerTitleColor;
+				}
+
+				.address {
+					margin-bottom: 20px;
+				}
+			}
+		}
+
+		.right {
+			float: right;
+			width: 555px;
+			display: table;
+			> p {
+				display: none;
+			}
+
+			>ul {
+				display: table-cell;
+				> li:first-child {
+					color: $footerTitleColor;
+					text-transform: uppercase;
+				}
+				a {
+					color: $footerAnchorColor;
+					text-decoration: none;
+					&:hover {
+						color: $footerAnchorHoverColor;
+					}
+				}
+			}
+		}
+		.courses-list, .quicklinks {
+			ul >li {
+				>a, &:first-child {
+					text-transform: capitalize;
+				}
+				ul {
+					display: none;
+				}
+			}
+		}
+
+		.footer-text {
+			padding-top: 15px;
+			clear: both;
+			@include responsive($media-tablet) {
+				padding-top: 80px;
+			}
+			&:after {
+				content: "";
+				display: block;
+				clear: both;
+			}
+			.footer-left {
+				float: left;
+			}
+			.footer-right {
+				float: right;
+			}
+			.footer-logo {
+				a {
+					.ish {
+						color: #80A306;
+					}
+					&:hover {
+						color: $anchorColor;
+					}
+				}
+			}
+		}
+
+	}
+
+}

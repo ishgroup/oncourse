@@ -1,0 +1,74 @@
+//
+//
+// products.scss
+//
+// Contains all the styles of products contents
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// Following all the styles handles products class items
+//
+
+.producItem {
+	// Class item block
+	.classItem {
+		background-color: #fff;
+		border: none;
+		padding: 5px 5px 5px 0;
+		// Hiding bubble info on mouse over of products item
+		&:hover .bubbleInfo {
+			display: none
+		}
+
+		// Product class item left and right info
+		.class-item-info {
+			.class-item-info-l, .class-item-info-r {
+				width: auto;
+				float: none;
+				.info {
+					padding-left: 0;
+					padding-top: 0;
+					ul {
+						margin-left: 65px
+					}
+					abbr, span, a {
+						color: #000;
+					}
+					div.label {
+						padding: 0 3px 0 0;
+						float: left;
+						min-width: 57px;
+						color: #808080;
+						background: none;
+						text-shadow: none;
+						font-weight: normal;
+						&, +div {
+							line-height: 1.5;
+						}
+						+div {
+							color: #000;
+							padding-left: 0;
+							padding-top: 0
+						}
+					}
+				}
+			}
+
+			// Class item right info
+			.class-item-info-r {
+				width: 55%
+			}
+		}
+
+		// Text transformation of date start and date end
+		.dtend, .dtstart {
+			text-transform: none
+		}
+	}
+}

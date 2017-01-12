@@ -1,0 +1,211 @@
+//
+//
+// search.scss
+//
+// Contains search's settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// Following all the settings handles search box and advanced search box style
+//
+
+//
+// All search text boxes
+//
+
+// Search text box height
+$searchTextBoxHeight: 31px !default;
+// Search text box spaces
+$searchTextBoxPadding: 5px 10px !default;
+// Search text box width
+$searchTextBoxWidth: 65.49% !default;
+
+// Search default height
+$searchTopHeight: 31px !default;
+
+// Search button background
+$searchButtonBG: #f89a1d !default;
+// Search button height
+$searchButtonHeight: $searchTopHeight !default;
+// Search button width
+$searchButtonWidth: 35px !default;
+// Search button spaces
+$searchButtonPadding: 7.5px 10px 5.5px !default;
+
+// Search button toggle background
+$toggleSearchBackground: transparent !default;
+// Search button toggle background changed on mouse over
+$toggleSearchActiveBackground: $searchButtonBG !default;
+
+//
+// Main top search text box
+//
+
+$searchBoxFloat: right !default;
+// Search box width
+$searchBoxWidth: 290px !default;
+// Search box border
+$searchBoxBorder: 0px !default;
+// Search box curved
+$searchBoxBorderRadius: 0px !default;
+// Search box input width
+$searchBoxInputWidth: 65.49% !default;
+// Search box input height
+$searchBoxInputHeight: $searchTopHeight !default;
+// Search box input spaces
+$searchBoxInputPadding: 7.5px 10px 5.5px !default;
+// Search box input border
+$searchBoxInputBorder: 1px #d5d5d5 solid !default;
+// Search box input curved
+$searchBoxInputBorderRadius: 0px !default;
+
+//
+// Advanced search button for desktop screen
+//
+
+// Advanced search box open from left side
+$advancedSearchOpenFromLeft: "" !default;
+// Advanced search box open from right side
+$advancedSearchOpenFromRight: "" !default;
+
+// Advanced search box background color
+$advanceSearchBG: #f89a1d !default;
+// Advanced search box background color rgb
+$advanceSearchBGRGB: $advanceSearchBG !default;
+// Advanced search box margin
+$advanceSearchMargin: 0px !default;
+// Advanced search box spaces
+$advanceSearchPadding: 15px 15px 12px !default;
+// Advanced search box selection priority
+$advanceSearchZIndex: 99 !default;
+// Advanced search box width
+$advanceSearchWidth: 100% !default;
+// Advanced search box position top
+$advanceSearchTop: 31px !default;
+// Advanced search box position left
+$advanceSearchLeft: 0px !default;
+// Advanced search box position right
+$advanceSearchRight: 0px !default;
+@if $advancedSearchOpenFromRight == "on" {
+	$advanceSearchLeft: auto;
+}
+// Advanced search box position
+$advanceSearchPosition: absolute !default;
+// Advanced search box text color
+$advanceSearchColor: $white !default;
+
+
+//
+// Advanced search button for mobile screen
+//
+
+// Advanced search button width
+$advanceSearchButtonWidth: 100% !default;
+// Advanced search button curved
+$advanceSearchButtonBorderRadius: 4px !default;
+// Advanced search button spaces
+$advanceSearchButtonPadding: $btnPadding !default;
+// Advanced search submit button width
+$advanceSearchSubmitButtonWidth: 100% !default;
+// Advanced search button background
+$advanceSearchButtonBG: #69524a !default;
+// Advanced search button text color changed on mouse over
+$advanceSearchButtonColorHover: $white !default;
+// Advanced search clear button background color
+$advanceSearchButtonClearBackground: $advanceSearchButtonBG !default;
+// Advanced search clear button background color changed on mouse over
+$advanceSearchButtonClearColorHover: $advanceSearchButtonColorHover !default;
+// Advanced search clear button visibility
+$advanceSearchButtonClearDisplay: block !default;
+// Advanced search clear button position
+$advanceSearchButtonClearPosition: left !default;
+// Advanced search submit button position
+$advanceSearchButtonSubmitPosition: right !default;
+
+//
+// More options button
+//
+
+$advancedSearchButtonFloat: left !default;
+$advancedSearchButtonWidth: 60.7969px !default;
+$advancedSearchButtonMargin: 0px !default;
+
+// Search more option active button background color
+$searchActiveButtonBG: #69524a !default;
+
+$discountBlockDisplay: none !default;
+$discountBlockTitleDisplay: none !default;
+$discountBlockActionLinkDisplay: none !default;
+$discountBlockNyromodalLinkDisplay: none !default;
+
+// Search more option backgrond color
+$searchMoreOptions: #fdb713 !default;
+// Search more option width
+$searchMoreOptionsWidth: 22.41% !default;
+// Search more option height
+$searchMoreOptionsHeight: $searchTopHeight !default;
+// Search more option height gap
+$searchMoreOptionsLineHeight: 0.9 !default;
+// Search more option spaces
+$searchMoreOptionsPadding: 0px 5px !default;
+// Search more option min width
+$searchMoreOptionsMinWidth: 60px !default;
+// Search more option visibility
+$searchMoreOptionsDisplay: inline-block !default;
+
+$searchMoreOptionsText: 13px !default;
+$searchMoreOptionsPadding: 0px !default;
+$searchMoreOptionsLineHeight: 1 !default;
+
+// Show advanced search on mobile screen
+$showAdvancedSearchOnMobile: "on" !default;
+// Advenced search active button right position
+$advancedSearchActiveRight: 10px !default;
+
+$advancedSearchFormBlocksTabletWidth: 100% !default;
+$advancedSearchFormBlocksTabletPadding: 0 !default;
+// Visibility of advanced search input blocks
+$advancedSearchFormBlocksDisplay: block !default;
+
+//
+// Advanced search location box style
+//
+
+// Advanced search location box visibility
+$advancedSearchLocationDisplay: block !default;
+// Advanced search location box width
+$advancedSearchLocationWidth: 100% !default;
+
+//
+// Advanced search price box style
+//
+
+// Advanced search price box visibility
+$advancedSearchPriceDisplay: none !important !default;
+// Advanced search price box width
+$advancedSearchPriceWidth: 100% !default;
+
+// Advanced search active top position
+$advancedSearchActiveTop: 30px !default;
+// Advanced search active spaces
+$advancedSearchActivePadding: 20px !default;
+// Advanced search active text search visibility
+$advancedSearchActiveTextSearchDisplay: block !default;
+
+// Show advanced search on mobile screen
+@if $showAdvancedSearchOnMobile == "on" {
+	// Advanced search form block visibility
+	$advancedSearchFormBlocksDisplay: block !important;
+	// Advanced search active top position
+	$advancedSearchActiveTop: 0px;
+	// Advanced search active spaces
+	$advancedSearchActivePadding: 0px;
+	// Advanced search active text search visibility
+	$advancedSearchActiveTextSearchDisplay: none;
+}

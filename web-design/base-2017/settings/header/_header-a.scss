@@ -1,0 +1,61 @@
+//
+//
+// header-a.scss
+//
+// Contains all settings used for header content only
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+$navColor: !default;
+$subNavBgColor: !default;
+$subNavColor: !default;
+
+@if $header-theme == "a" {
+  $headerTopBarBG: #ee2222;
+  $headerTopBarTextColor: $white;
+  $headerContainerPosition: relative;
+  $headerContainerMarginBottom: 25px;
+  $headerGroupPosition: absolute;
+
+  $navColor: #454a4d; //navAnchorColor
+  $subNavBgColor: #252D30; //$first-accent-color
+  $subNavColor: #FFFFFF; //firstAccentNavAnchorColor
+
+  // Navigation */
+  $navbarPaddingLeft: 280px;
+  $navWidth: auto;
+  $navMarginTop: 0px;
+  $navBG: transparent;
+  $navBorderColor: #2e2e2e;
+  $navAnchorColor: $white;
+  $navAnchorHoverBG: transparent;
+  $navAnchorHoverTextColor: #2e2e2e;
+  $navAnchorPadding: 0px;
+  $navAnchorHeight: auto;
+  $navAnchorLineHeight: 28px;
+
+  $navAnchorArrowColor: $white;
+  $firstChildMenuPadding: 0px;
+  $displayFullWidthMenu: none;
+  $first-accent-color: #252D30;
+  $firstDropMenufullWidth: 117.1%;
+  $firstDropMenuMargin: 0px -14.95%;
+  $first-accent-width: 200px;
+  $firstAccentNavAnchorColor: $white;
+  $firstAccentNavAnchorPadding: 8px 20px;
+
+  $navToggleBG: #e7e7e7;
+  $navToggleTextColor: #231f20;
+
+  $navToggleHoverBG: #d5d5d5;
+  $navToggleHoverTextColor: #231f20;
+
+  // Search */
+  $advanceSearchButtonBG: $headerTopBarBG;
+  $searchActiveButtonBG: $headerTopBarBG;
+}

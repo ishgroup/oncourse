@@ -1,0 +1,109 @@
+@charset "UTF-8";
+
+/// Settings handles body tag' background color, url, position, or etc.
+///
+/// @example scss - Usage
+///   body {
+///    background: $bodyBackground;
+///  }
+///
+/// @example css - CSS Output
+///   body {
+///    background: #ffffff;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$bodyBackground: #ffffff !default;
+
+/// Settings handles body tag' font color
+///
+/// @example scss - Usage
+///   body {
+///    color: $bodyFontColor;
+///  }
+///
+/// @example css - CSS Output
+///   body {
+///    color: #4d4d4d;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$bodyFontColor: #4d4d4d !default;
+
+/// Settings handles body tag' font family
+///
+/// @example scss - Usage
+///  body {
+///    font-family: $bodyFontFamily;
+///  }
+///
+/// @example css - CSS Output
+///  body {
+///    font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$bodyFontFamily: "Source Sans Pro", Helvetica, Arial, sans-serif !default;
+
+/// Settings handles body tag' font size
+///
+/// @example scss - Usage
+///  body {
+///    font-size: $bodyFontSize;
+///  }
+///
+/// @example css - CSS Output
+///  body {
+///    font-size: 12px;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$bodyFontSize: 12px !default;
+
+/// Settings handles body tag' font weight
+///
+/// @example scss - Usage
+///  body {
+///    font-weight: $bodyFontStyle;
+///  }
+///
+/// @example css - CSS Output
+///  body {
+///    font-weight: normal;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$bodyFontStyle: normal !default;
+
+/// Settings handles body tag' text line height
+///
+/// @example scss - Usage
+///  body {
+///    line-height: $bodyLineHeight;
+///  }
+///
+/// @example css - CSS Output
+///  body {
+///    line-height: 1;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$bodyLineHeight: 1 !default;

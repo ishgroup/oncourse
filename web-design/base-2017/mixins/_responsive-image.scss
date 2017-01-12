@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+/// Handles full page responsive image
+///
+/// @author Chintan Kotadia
+///
+/// @example scss - Usage
+///   .element {
+///     height: 200px;
+///     width: 100%;
+///     @include responsive-image();
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     height: 200px;
+///     width: 100%;
+///     position: absolute;
+///     overflow: hidden;
+///   }
+///
+///   .element img {
+///     position: relative;
+///     left: 50%;
+///     -webkit-transform: translateX(-50%);
+///     -moz-transform: translateX(-50%);
+///     -ms-transform: translateX(-50%);
+///     -o-transform: translateX(-50%);
+///     transform: translateX(-50%);
+///     width: auto;
+///     max-width: none;
+///     min-width: 100%;
+///     height: auto
+///   }
+///
+/// @name responsive-image
+/// @group ish
+///
+
+@mixin responsive-image() {
+  position: absolute;
+  overflow: hidden;
+  img {
+    position: relative;
+    left: 50%;
+    @include transform(translateX(-50%));
+    width: auto;
+    max-width: none;
+    min-width: 100%;
+    height: auto;
+  }
+}

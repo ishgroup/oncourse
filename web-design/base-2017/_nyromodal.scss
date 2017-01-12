@@ -1,0 +1,149 @@
+//
+//
+// nyromodal.scss
+//
+// Contains the styles of nyromodal
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+// Nyromodal background overlay
+.nyroModalBg {
+	position: fixed;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: #000;
+	opacity: 0.7;
+	z-index: 11
+}
+
+.nmReposition {
+	position: absolute
+}
+
+// Nyromodal close button
+.nyroModalCloseButton {
+	top: -13px;
+	right: -13px;
+	width: 12px;
+	height: 12px;
+	text-indent: -9999em;
+	background: url("/s/img/common/close.gif");
+	z-index: 12
+}
+
+// Nyromodal title
+.nyroModalTitle {
+	top: -26px;
+	left: 0;
+	margin: 0;
+	font-size: 1.1em;
+	z-index: 12;
+	color: #ddd;
+	display: none
+}
+
+// Nyromodal cont wrapper
+.nyroModalCont {
+	position: absolute;
+	border: 4px solid #777;
+	margin: 25px;
+	background: #fff;
+	z-index: 999;
+	iframe {
+		width: 600px;
+		height: 500px
+	}
+	h2 {
+		font-size: 22px;
+	}
+}
+// Nyromodal error
+.nyroModalError {
+	border: 4px solid red;
+	color: red;
+	width: 250px;
+	height: 250px;
+	div {
+		min-width: 0;
+		min-height: 0;
+		padding: 10px
+	}
+}
+
+// Default nyromodal size
+.nyroModalLink, .nyroModalDom, .nyroModalForm, .nyroModalFormFile {
+	position: relative;
+	padding: 10px;
+	min-height: 250px;
+	min-width: 250px;
+	max-width: 1000px
+}
+
+.nyroModalImage, .nyroModalSwf, .nyroModalIframe, .nyroModalIframeForm {
+	position: relative;
+	overflow: hidden
+}
+
+// Nyromodal visibility gone
+.nyroModalHidden {
+	left: -9999em;
+	top: -9999em
+}
+
+// Nyromodal showing loader when modal loading
+.nyroModalLoad {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	background: #fff url("/s/img/common/ajaxLoader.gif") no-repeat center;
+	padding: 0
+}
+
+// Nyromodal previous and next button
+.nyroModalPrev, .nyroModalNext {
+	outline: none;
+	position: absolute;
+	top: 0;
+	height: 60%;
+	width: 150px;
+	min-height: 50px;
+	max-height: 300px;
+	cursor: pointer;
+	text-indent: -9999em;
+	background: transparent url("data:image/gif;base64,AAAA") left 20% no-repeat
+}
+
+// Nyromodal image size of previous and next button
+.nyroModalImage {
+	.nyroModalPrev, .nyroModalNext {
+		height: 100%;
+		width: 40%;
+		max-height: none
+	}
+}
+
+// Nyromodal previous image
+.nyroModalPrev {
+	left: 0;
+	&:hover {
+		background-image: url("/s/img/common/prev.gif")
+	}
+}
+
+// Nyromodal nect image
+.nyroModalNext {
+	right: 0;
+	background-position: right 20%;
+	&:hover {
+		background-position: right 20%;
+		background-image: url("/s/img/common/next.gif")
+	}
+}

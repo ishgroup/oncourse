@@ -1,0 +1,18 @@
+//
+//
+// footer-b.scss
+//
+// Contains all settings used for footer content for theme "b"
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@if $footer-theme == "b" {
+  $footerBG: #0a3a4a no-repeat center top !default;
+  $footerTextColor: $white !default;
+  $footerAddressTextColor: #8ca3ab !default;
+}

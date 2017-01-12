@@ -1,0 +1,239 @@
+//
+//
+// courses.scss
+//
+// Contains courses's settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+//
+// Following settings are handles courses font style
+//
+
+// Courses font family default is body font family
+$coursesFontFamily: $bodyFontFamily !default;
+// Courses details font family default is body font family
+$coursesDetailsFontFamily: $bodyFontFamily !default;
+// Normal font family used for bubble info on course page
+$normalFontFamily: $bodyFontFamily !default;
+
+//
+//
+// Following all the settings handles Enrol button style
+//
+
+// Enrol button text hover color
+$enrolActionHoverTextColor: $white !default;
+// Enrol button font family
+$enrolActionFontFamily: $bodyFontFamily !default;
+// Enrol button background color, default set to site primary color
+$enrolActionBackground: $primaryColor !default;
+// Enrol button background hover color, default set to site secondary color
+$enrolActionHoverBackground: $secondaryColor !default;
+// Enrol button border color on mouse hover
+$enrolActionHoverBorderColor: #CCC !default;
+
+$enrolActionPadding: 10px 5px !default;
+
+// Enrol button font size
+$enrolActionFontSize: 14px !default;
+// Enrol button text color
+$enrolActionColor: $white !default;
+// Enrol button text case (capitalize, lowercase, uppercase, or initial)
+$enrolActionTextTransform: uppercase !default;
+// Enrol button top and bottom height
+$enrolActionLineHeight: 12px !default;
+// Enrol button border
+$enrolActionBorder: 1px solid $primaryColor !default;
+
+$enrolActionBorderRadius: 5px 5px 5px 13px !default;
+$enrolActionWidth: 110px !default;
+
+// Enrol button background color when it is disabled
+$enrolActionDisabled: #F9F9F9 !default;
+// Enrol button border color when it is disabled
+$enrolActionDisabledBorderColor: #CCC !default;
+// Enrol button text color when it is disabled
+$enrolActionDisabledTextColor: #888 !default;
+
+
+//
+//
+// Following settings are handles courses waiting list style
+//
+
+// Waiting list default background
+$waitingListTitleBG: #eee !default;
+// Waiting list font size
+$waitingListTitleFontSize: 14px !default;
+// Waiting list top position
+$waitingListTitleMarginTop: 15px !default;
+// Waiting list alignment default is center (left, center, right)
+$waitingListTitleAlign: center !default;
+// Waiting list changed background on mouse hover
+$waitingListTitleHoverBG: $anchorHoverColor !default;
+// Waiting list link title color
+$waitingListTitleAnchorColor: #889 !default;
+// Waiting list link added white spaces (top, right, bottom, left)
+$waitingListTitleAnchorPadding: 10px 5px !default;
+// Waiting list link title color on hover
+$waitingListTitleAnchorHoverColor: #A90E1F !default;
+
+//
+//
+// Following settings are handles courses waiting list join button style
+//
+
+// Waiting list join button background default taken primary color
+$coursesJoinButtonBackground: $primaryColor !default;
+// Waiting list join button mouse hover background default taken primary color
+$coursesJoinButtonHoverBackground: $primaryColor !default;
+// Waiting list join button displaying center on block
+$coursesJoinButtonDisplay: inline-block !default;
+// Waiting list join button min width
+$coursesJoinButtonMinWidth: 60px !default;
+// Waiting list join button default white space
+$coursesJoinButtonPadding: 5px !default;
+// Waiting list join button font size
+$coursesJoinButtonFontSize: 14px !default;
+// Waiting list join button text color
+$coursesJoinButtonColor: $white !default;
+// Waiting list join button changed text color on mouse hover
+$coursesJoinButtonHoverColor: $white !default;
+//Showing other classes image arrow
+$showOtherClassesImage: "/s/img/icon/go-down-18.png" !default;
+//Showing full classes image arrow
+$showFullClassesImage: "/s/img/arrow-down.png" !default;
+// Waiting list join button top and bottom text height
+$coursesJoinButtonLineHeight: 12px !default;
+// Waiting list join button curved
+$coursesJoinButtonBorderRadius: 5px !default;
+
+//
+//
+// Following settings are handles courses content font style
+//
+
+// Course content text size
+$coursesContentFontSize: 13px !default;
+
+//
+//
+// Following settings are handles courses items style
+//
+
+// Course item header font size
+$coursesHeaderItemFontSize: 28px !default;
+// Course description text color
+$courseDescriptionTextColor: #252525 !default;
+// Course description block bottom margin
+$courseDescriptionMargin: 0 0 35px 0 !default;
+// Course description's first image to displayed on left side of page
+$courseDescriptionFirstImageFloat: left !default;
+// Course description's first image position
+$courseDescriptionFirstImageMargin: 0px 15px 15px 0px !default;
+
+// Courses list item position (inside, outside)
+$courseItemListStylePosition: outside !default;
+// Courses list item bottom, left margin
+$courseItemListMargin: 0 0 18px 18px !default;
+// Courses list item childred's left margin
+$courseItemListChildMarginLeft: 10px !default;
+
+// Courses item class description text color
+$courseItemClassDescriptionColor: #444 !default;
+// Courses item class description block margin
+$courseItemClassDescriptionMargin: 0 0 10px 0 !default;
+// Courses item class description headr text color (h1, h2, h3, h4, h5)
+$courseItemClassDescriptionHeaderColor: #444 !important !default;
+
+//
+//
+// Following settings are handles courses module style
+//
+
+// Courses module background color
+$courseModuleBackgroundColor: #FEFEFE !default;
+// Courses module border
+$courseModuleBorder: 1px solid #E1E1E8 !default;
+// Courses module curved
+$courseModuleBorderRadius: 3px !default;
+// Courses module top bottom position
+$courseModuleMargin: 7px 0 !default;
+// Courses module inside block's bottom border
+$courseModuleSpanBottomBorder: 1px solid #E1E1E8 !default;
+// Courses module inside block's background
+$courseModuleSpanBackground: url("/s/img/core/right_triangle.png") 15px center no-repeat !default;
+// Courses module inside block's background on active or mouse hover
+$courseModuleSpanActiveBackground: url("/s/img/core/bottom_triangle.png") 11px center no-repeat !default;
+// Courses module list margin
+$courseModuleListMargin: 15px 0 0 18px !default;
+// Courses module list spaces left bottom
+$courseModuleListPadding: 0 0 10px 6px !default;
+// Courses module child list left space
+$courseModuleListChildPaddingLeft: 6px !default;
+
+//
+//
+// Following settings are handles class items style
+//
+
+// Courses class item background color
+$classItemBackgroundColor: $white !default;
+// Courses class item border color
+$classItemBorderColor: #eee !default;
+// Courses class item border
+$classItemBorder: 1px solid $classItemBorderColor !default;
+// Courses class item left border
+$classItemBorderLeft: 6px solid $classItemBorderColor !default;
+// Courses class item changed border color on mouse hover
+$classItemBorderHoverColor: $primaryColor !default;
+
+//
+//
+// Following settings are handles confirmed checkout popup style
+//
+
+// Confirmed to checkout popup's background
+$confirmedProceedBackground: #A90E1F !default;
+// Confirmed to checkout popup's text color
+$confirmedProceedColor: $white !default;
+// Confirmed to checkout popup's text size
+$confirmedProceedFontSize: 11px !default;
+
+//
+//
+// Following settings support courses bubbleinfo
+//
+
+$coursesBubbleInfoDisplay: block !default;
+$coursesBubbleInfoPositionLeft: -260px;
+$coursesBubbleInfoPositionRight: -280px;
+$coursesBubbleInfoArrowPositionRight: -23px;
+$coursesBubbleInfoArrowPositionLeft: auto;
+$coursesBubbleInfoArrowImage: "/s/img/popup-arrow.png";
+
+@if $sidebarRight == on {
+	$coursesBubbleInfoPositionLeft: auto;
+	$coursesBubbleInfoArrowPositionLeft: -23px;
+	$coursesBubbleInfoArrowImage: "/s/img/popup-arrow-r.png";
+}
+
+$coursesClassItemDateImage: $imagePath + "icon/calendar.png" !default;
+$coursesClassItemDateDisplay: inline-block !default;
+$coursesClassItemTimeDisplay: inline-block !default;
+$coursesClassItemSessionDisplay: inline-block !default;
+
+$coursesClassItemTutorDisplay: block !default;
+$coursesClassItemTutorImage: "/s/img/icon/person.png" !default;
+
+$coursesClassItemLocationDisplay: block !default;
+$coursesClassItemLocationImage: "/s/img/icon/location.png" !default;
+
+$coursesClassItemPriceDisplay: block !default;

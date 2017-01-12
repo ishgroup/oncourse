@@ -1,0 +1,179 @@
+//
+//
+// layout.scss
+//
+// Contains all the styles of different contents
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// Following style handles site wrapper section
+//
+
+a {
+	@include transition(all 0.5s);
+}
+#cmsWrapper {
+	a {
+		@include transition(none);
+	}
+}
+
+.site-wrapper {
+	width: 100%;
+	margin: 0 auto;
+
+	// List
+	ul, ol {
+
+		// List type disc
+		&.list-type-disc {
+			list-style-type: disc;
+			list-style-position: $listStyleDiscPosition;
+			margin: $listStyleDiscMargin;
+		}
+
+		// List type circle
+		&.list-type-circle {
+			list-style-type: circle;
+			list-style-position: $listStyleCirclePosition;
+			margin: $listStyleCircleMargin;
+		}
+
+		// List type decimal
+		&.list-type-decimal {
+			list-style-type: decimal;
+			list-style-position: $listStyleDecimalPosition;
+			margin: $listStyleDecimalMargin;
+		}
+
+		// List type square
+		&.list-type-square {
+			list-style-type: square;
+			list-style-position: $listStyleSquarePosition;
+			margin: $listStyleSquareMargin;
+		}
+
+		// List type other (can specify style type of list)
+		&.list-type-other {
+			list-style-type: $listStyleOtherType;
+			list-style-position: $listStyleOtherPosition;
+			margin: $listStyleOtherMargin;
+		}
+	}
+}
+
+// Main container
+.container {
+	width: 100%;
+	max-width: $containerWidth;
+	padding: 0px 5px;
+	margin: 0 auto;
+	@include clearfix;
+	@include responsive($media-small) {
+		padding: 0 10px;
+	}
+}
+
+//
+// Content container for desktop screen
+//
+
+#contentContainer {
+	// Following function handles responsive media tablet screen
+	@include responsive($media-tablet) {
+		margin-top: $contentContainerMarginTop;
+	}
+}
+
+// All page content
+.content {
+	> h1.page-title:first-child {
+		display: none;
+	}
+	h1 {
+		font-weight: bold;
+		font-family: $h1InnerFontFamily;
+		padding: 0;
+		margin: 0 0 15px;
+		color: $primaryColor;
+	}
+
+	#z_content {
+		background-color: transparent !important;
+		> h1 {
+			display: none;
+		}
+	}
+}
+
+// Question field block
+p.question-field {
+	padding-left: 10%;
+	font-weight: bold;
+	margin-bottom: 5px;
+	label {
+		padding-left: 0;
+	}
+}
+
+// Form content
+.form-content {
+	fieldset {
+		label {
+			max-width: none
+		}
+		>p>label {
+			padding: 4px 10px 0 10%;
+			width: auto;
+			text-align: left
+		}
+	}
+	h4 {
+		font-weight: bold;
+		margin-left: 10%;
+		border-bottom: 1px solid #ccc
+	}
+}
+
+// Image container right aligned
+.image-container {
+	float: right;
+	margin-left: 25px
+}
+
+#mc_embed_signup {
+	clear: both
+}
+
+.gm-style {
+	.gm-style-iw {
+		div {
+			>h1, >h2, >h3, >h4, >h5, >h6, >p {
+				margin: 0px;
+				color: #0C2F61 !important;
+			}
+			h4 {
+				font-size: 14px !important;
+				font-weight: 700 !important;
+			}
+			h5 {
+				font-size: 13px !important;
+				font-weight: 400 !important;
+			}
+			a {
+				padding: 0px !important;
+				color: #90b244 !important;
+				font-size: 12px !important;
+				&:hover {
+					color: #648733 !important;
+				}
+			}
+		}
+	}
+}

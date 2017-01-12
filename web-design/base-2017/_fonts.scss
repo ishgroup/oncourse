@@ -1,0 +1,20 @@
+//
+//
+// fonts.scss
+//
+// All the styles of fonts
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// Following all the style handles font styles and posibility to use default font
+//
+
+@if $useDefaultFont == true {
+	@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
+}

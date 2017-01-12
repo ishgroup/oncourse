@@ -1,0 +1,116 @@
+//
+//
+// header-tag.scss
+//
+// Contains header-tag's settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+//
+// Following settings are handles h1 tag style
+//
+
+// Header tag h1 text color
+$h1Color: #ee9b48 !default;
+// Header tag h1 text size
+$h1FontSize: 22px !default;
+
+// Header tag h1 link color
+$h1LinkColor: $primaryColor !default;
+// Header tag h1 link color on mouse over
+$h1LinkHoverColor: $secondaryColor !default;
+// Header tag h1 text size
+$h1FontSize: 22px !default;
+// Header tag h1 line height
+$h1LineHeight: 1.2 !default;
+// Header tag h1 font weight
+$h1FontWeight: normal !default;
+
+//
+//
+// Following settings are handles h2 tag style
+//
+
+// Header tag h2 link color
+$h2LinkColor: $primaryColor !default;
+// Header tag h2 link color on mouse over
+$h2LinkHoverColor: $secondaryColor !default;
+// Header tag h2 link text size
+$h2FontSize: 20px !default;
+// Header tag h2 line height
+$h2LineHeight: 1.2 !default;
+// Header tag h2 font weight
+$h2FontWeight: normal !default;
+
+//
+//
+// Following settings are handles h3 tag style
+//
+
+// Header tag h3 link color
+$h3LinkColor: $primaryColor !default;
+// Header tag h3 link color on mouse over
+$h3LinkHoverColor: $secondaryColor !default;
+// Header tag h3 link text size
+$h3FontSize: 18px !default;
+// Header tag h3 line height
+$h3LineHeight: 1.2 !default;
+// Header tag h3 font weight
+$h3FontWeight: normal !default;
+
+//
+//
+// Following settings are handles h4 tag style
+//
+
+// Header tag h4 link color
+$h4LinkColor: $primaryColor !default;
+// Header tag h4 link color on mouse over
+$h4LinkHoverColor: $secondaryColor !default;
+// Header tag h4 link text size
+$h4FontSize: 17px !default;
+// Header tag h4 line height
+$h4LineHeight: 1.2 !default;
+// Header tag h4 font weight
+$h4FontWeight: normal !default;
+
+//
+//
+// Following settings are handles h5 tag style
+//
+
+// Header tag h5 link color
+$h5LinkColor: $primaryColor !default;
+// Header tag h5 link color on mouse over
+$h5LinkHoverColor: $secondaryColor !default;
+// Header tag h5 link text size
+$h5FontSize: 14px !default;
+// Header tag h5 line height
+$h5LineHeight: 1.2 !default;
+// Header tag h5 font weight
+$h5FontWeight: normal !default;
+
+//
+//
+// Following settings are handles h6 tag style
+//
+
+// Header tag h6 link color
+$h6LinkColor: $primaryColor !default;
+// Header tag h6 link color on mouse over
+$h6LinkHoverColor: $secondaryColor !default;
+// Header tag h6 link text size
+$h6FontSize: 12px !default;
+// Header tag h6 line height
+$h6LineHeight: 1.2 !default;
+// Header tag h6 font weight
+$h6FontWeight: normal !default;
+
+// Content header h1 font family
+$h1InnerFontFamily: $bodyFontFamily !default;

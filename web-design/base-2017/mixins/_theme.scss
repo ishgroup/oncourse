@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+/// Generate style based on theme
+///
+/// @author Chintan Kotadia
+///
+/// @param {String} $name ['a' | 'b' | 'c' | 'd']
+///   Specify theme name
+///
+/// @param {String} $type ['header' | 'footer']
+///   Checking type of content
+///
+/// @example scss - Usage
+///   $theme: "a";
+///
+///   @include theme('a', 'header') {
+///     .element {
+///       ...
+///     }
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     ...
+///   }
+///
+/// @require {var} $theme
+/// @require {var} $header-theme
+/// @require {var} $footer-theme
+/// @require {mixin} theme
+/// @name theme
+/// @group ish
+///
+
+@mixin theme($name, $type: '') {
+  @if $type == 'header' {
+    @if $name == $header-theme {
+      @content;
+    }
+  } @else if $type == 'footer' {
+    @if $name == $footer-theme {
+      @content;
+    }
+  } @else if $name == $theme {
+    @content;
+  }
+}

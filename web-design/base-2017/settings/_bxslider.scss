@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+/// Handles slider's settings.
+///
+/// Slider wrapper margin and used for defining gap at the bottom.
+///
+/// @example scss - Usage
+///  .bx-wrapper {
+///    margin: $sliderWrapperMargin;
+///  }
+///
+/// @example css - CSS Output
+///  .bx-wrapper {
+///    margin: 0 auto 60px;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$sliderWrapperMargin: 0 auto 60px !default;

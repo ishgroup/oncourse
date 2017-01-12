@@ -1,0 +1,42 @@
+//
+//
+// elements.scss
+//
+// Contains elements settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+// All input's text color
+$inputColor: #1a1a1a !default;
+
+//
+//
+// Following settings are handles button styles
+//
+
+// Button background color
+$btnBackgroundColor: $primaryColor !default;
+// Button background color on mouse over
+$btnBackgroundHoverColor: $secondaryColor !default;
+// Button text color
+$btnColor: $white !default;
+// Button text color on mouse over
+$btnHoverTextColor: $white !default;
+// Button curved
+$btnBorderRadius: 4px !default;
+// Button spaces
+$btnPadding: 6px 20px !default;
+// Button text size
+$btnFontSize: 14px !default;
+// Button font weight
+$btnFontWeight: 700 !default;
+
+// Button type 2 background color
+$btnType2BackgroundColor: $secondaryColor !default;
+// Button type 2 text color
+$btnType2Color: $white !default;

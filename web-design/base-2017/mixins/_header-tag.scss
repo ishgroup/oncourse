@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+/// Handles all header tags (For e.g.: h1, h2, h3, h4, h5, h6), Default styles for header tag
+///
+/// @author Chintan Kotadia
+///
+/// @param {Number} $fontSize
+///   Specify font size
+///
+/// @param {Number} $lineHeight
+///   Specify line height
+///
+/// @param {String} $fontWeight
+///   Specify font weight
+///
+/// @param {String} $linkColor
+///   Specify header tag' link color
+///
+/// @param {String} $linkHoverColor
+///   Specify header tag' link hover color
+///
+/// @example scss - Usage
+///   .h1 {
+///     @include header-tag(22px, 1.2, normal, #25416f, #28b8f7);
+///   }
+///
+/// @example css - CSS Output
+///   h1 {
+///     font-size: 22px;
+///       line-height: 1.2;
+///       font-weight: normal
+///   }
+///
+///   h1 a {
+///     color: #25416f
+///   }
+///
+///   h1 a:hover {
+///       text-decoration: none;
+///       color: #28b8f7
+///   }
+///
+/// @name header-tag
+/// @group ish
+///
+
+@mixin header-tag($fontSize, $lineHeight, $fontWeight, $linkColor, $linkHoverColor) {
+  font-size: $fontSize;
+  line-height: $lineHeight;
+  font-weight: $fontWeight;
+
+  &, a {
+    color: $linkColor;
+  }
+  a:hover {
+    text-decoration: none;
+    color: $linkHoverColor;
+  }
+}

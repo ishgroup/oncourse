@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+/// Draw a triangle arrow
+///
+/// @author Chintan Kotadia
+///
+/// @param {String} $arrow ['top' | 'right' | 'bottom' | 'left']
+///   Specify font size
+///
+/// @param {Number} $width
+///   Specify width of arrow
+///
+/// @param {String} $color
+///   Specify arrow color
+///
+/// @param {String} $position [absolute]
+///   Specify position of arrow [absolute | relative]
+///
+/// @example scss - Usage
+///   .element::after {
+///     @include arrow('top', 6px, #a0a0a0);
+///   }
+///
+/// @example css - CSS Output
+///   .element::after {
+///     content: "";
+///     position: absolute;
+///     border-right: 6px solid transparent;
+///     border-top: 6px solid #a0a0a0;
+///     border-left: 6px solid transparent;
+///   }
+///
+/// @name arrow
+/// @group ish
+///
+
+@mixin arrow($arrow, $width, $color, $position: absolute) {
+  content: "";
+  position: $position;
+  @if $arrow == 'top' or $arrow == 'bottom' {
+    border-right: $width solid transparent;
+    border-#{$arrow}: $width solid $color;
+    border-left: $width solid transparent;
+  } @else if $arrow == 'left' or $arrow == 'right' {
+    border-top: $width solid transparent;
+    border-#{$arrow}: $width solid $color;
+    border-bottom: $width solid transparent;
+  } @else {
+    border-style: solid;
+    border-width: $width;
+    border-color: $color;
+  }
+}

@@ -1,0 +1,159 @@
+//
+//
+// shortlist.scss
+//
+// Contains short list's settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// Following all the settings handles courses shortlist (selected courses list) style
+//
+
+$shortListFloat: left !default;
+$shortListMarginRightSmall: 10px !default;
+$shortListPosition: relative !default;
+$shortListPadding: 0 10px !default;
+$shortListMarginRightTablet: 20px !default;
+
+// Short list info item color
+$shortListInfoSpanColor: #fdc913 !default;
+// Short list info item text size
+$shortListInfoSpanFontSize: 21px !default;
+// Short list info item text height
+$shortListInfoSpanLineHeight: 1.38095 !default;
+// Short list info item margin
+$shortListInfoSpanMargin: 0 7px 0 0 !default;
+
+// Short list info item count margin
+$shortListInfoPtagMargin: 0px !default;
+// Short list info item count text height
+$shortListInfoPtagLineHeight: 2.07143 !default;
+// Short list info item count text size
+$shortListInfoPtagFontSize: 14px !default;
+
+// Short list of courses order's background color
+$shortListOrderBackground: #e61b23 !default;
+// Short list of courses order's box highlighting
+$shortListOrderBoxShadow: 0 1px 3px rgba(0,0,0,0.3) !default;
+// Short list of courses order's width
+$shortListOrderWidth: 220px !default;
+// Short list of courses order's position left
+$shortListOrderLeft: auto !default;
+// Short list of courses order's position top
+$shortListOrderTop: 50px !default;
+// Short list of courses order's position right
+$shortListOrderRight: -3px !default;
+// Short list of courses order's position right for media tablet
+$shortListOrderRightMediaTablet: -66px !default;
+// Short list of courses order's position right for media tablet
+$shortListOrderLeftMediaTablet: auto !default;
+// Short list of courses order's position
+$shortListOrderPosition: absolute !default;
+// Short list of courses order's text size
+$shortListOrderFontSize: 14px !default;
+// Short list of courses order's spaces
+$shortListOrderPadding: 5px 10px !default;
+// Short list of courses order's selection priority
+$shortListOrderZindex: 10 !default;
+
+// Short list of courses order's color
+$shortListOrderListColor: $white !default;
+// Short list of courses order's position
+$shortListOrderListPosition: relative !default;
+// Short list of courses order's margin
+$shortListOrderListMargin: 0 0 10px 0 !default;
+// Short list of courses order's text height
+$shortListOrderListLineHeight: 1.35714 !default;
+// Short list of courses order's spaces
+$shortListOrderListPadding: 5px 18px 5px 0 !default;
+// Short list of courses order's bottom border
+$shortListOrderListBottomBorder: 1px dotted $white !default;
+
+// Short list of courses order's before border color
+$shortListOrderBeforeBorderColor: $shortListOrderBackground !default;
+// Short list of courses order's before position left
+$shortListOrderBeforePositionLeft: auto !default;
+// Short list of courses order's before position left for media screen tablet
+$shortListOrderBeforePositionLeftMediaTablet: 50% !default;
+// Short list of courses order's before position top
+$shortListOrderBeforePositionTop: -6px !default;
+// Short list of courses order's before position right
+$shortListOrderBeforePositionRight: 27px !default;
+// Short list of courses order's before position right for media screen tablet
+$shortListOrderBeforePositionRightMediaTablet: auto !default;
+// Short list of courses order's before margin left
+$shortListOrderBeforeMarginLeft: -7px !default;
+
+// Short list of courses order's link color
+$shortListOrderLinkColor: $white !default;
+// Short list of courses order's link text size
+$shortListOrderLinkFontSize: $bodyFontSize !default;
+// Short list of courses order's link text weight
+$shortListOrderLinkFontWeight: $bodyFontStyle !default;
+// Short list of courses order's link mouse over color
+$shortListOrderLinkHoverColor: #231f20 !default;
+// Short list of courses order's link delete icon background and image
+$shortListOrderDeleteIconBackground: transparent url("/s/img/b-cut.png") no-repeat scroll 3px 50% !default;
+// Short list of courses order's link delete icon background color
+$shortListOrderDeleteIconBackgroundColor: transparent !default;
+// Short list of courses order's link delete text color
+$shortListOrderDeleteColor: $white !default;
+// Short list of courses order's link delete icon background color on mouse over
+$shortListOrderDeleteIconHoverBackgroundColor: #990000 !default;
+
+// Short list enrol button background
+$shortListOrderEnrolLinkBackground: #f89a1d !default;
+// Short list enrol button background color
+$shortListOrderEnrolLinkBackgroundColor: #f89a1d !default;
+// Short list enrol button link text color
+$shortListOrderEnrolLinkColor: $white !default;
+// Short list enrol button alignment
+$shortListOrderEnrolLinkAlign: right !default;
+// Short list enrol button spaces
+$shortListOrderEnrolLinkPadding: 2px 10px !default;
+// Short list enrol button test size
+$shortListOrderEnrolLinkFontSize: 11px !default;
+// Short list enrol button text weight
+$shortListOrderEnrolLinkFontWeight: bold !default;
+// Short list enrol button link mouse over color
+$shortListOrderEnrolLinkHoverColor: $white !default;
+
+//
+// Following settings handles shortlist action links
+//
+$shortlistActionPosition: absolute !default;
+$shortlistActionLeft: -11px !default;
+$shortlistActionTop: 0 !default;
+$shortlistActionWidth: 100% !default;
+
+$shortlistActionControlsDisplay: block !default;
+
+$shortlistActionLinkDisplay: block !default;
+$shortlistActionLinkOverflow: hidden !default;
+$shortlistActionLinkWhiteSpace: nowrap !default;
+
+$shortlistActionLinkListPadding: 0 !default;
+$shortlistActionLinkListLineHeight: 1.5 !default;
+
+$shortlistActionLinkListFirstChildBackground: transparent !default;
+$shortlistActionLinkListFirstChildTextColor: #959595 !default;
+$shortlistActionLinkListFirstChildLinkColor: $white !default;
+
+$shortlistActionLinkListLinkColor: #959595 !default;
+$shortlistActionLinkListLinkBackground: transparent !default;
+$shortlistActionLinkListLinkTextDecoration: none !default;
+$shortlistActionLinkListLinkTextIndent: -9999px !default;
+$shortlistActionLinkListLinkDisplay: block !default;
+$shortlistActionLinkListLinkHeight: 29px !default;
+$shortlistActionLinkListLinkTextTransform: uppercase !default;
+$shortlistActionLinkListLinkFontSize: 10px !default;
+$shortlistActionLinkListLinkPaddingTop: 4px !default;
+
+// Enrol link
+$shortlistActionEnrolDisplay: none !default;

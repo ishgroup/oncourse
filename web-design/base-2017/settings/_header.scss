@@ -1,0 +1,72 @@
+//
+//
+// header.scss
+//
+// Contains header's settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+//
+// Following settings are handles header top bar style
+//
+
+// Header top bar position
+$headerTopBarFloat: left !default;
+// Header top bar width
+$headerTopBarWidth: 100% !default;
+// Header top bar background
+$headerTopBarBG: #69524a no-repeat center top !default;
+// Header top bar text color
+$headerTopBarTextColor: $white !default;
+// Header top bar bottom margin
+$headerTopBarMarginBottom: 21px !default;
+// Header top bar top spaces
+$headerTopBarPaddingTop: 7px !default;
+// Header top bar height
+$headerTopBarHeight: 45px !default;
+
+//
+//
+// Following settings are handles header top bar contact style
+//
+
+// Header top bar contact visibility
+$headerTopBarContactDisplay: block !default;
+// Header top bar contact spaces
+$headerTopBarContactPadding: 0 10px 9px !default;
+// Header top bar contact text height
+$headerTopBarContactLineHeight: 1.07143 !default;
+// Header top bar contact font size
+$headerTopBarContactFontSize: 15px !default;
+// Header top bar contact margin
+$headerTopBarContactMargin: 8px 0px 0px 26px !default;
+// Header top bar contact text color
+$headerTopBarPhoneTextColor: $white !default;
+
+//
+//
+// Following settings are handles header main container style
+//
+
+// Header main container position
+$headerContainerPosition: relative !default;
+// Header main container margin bottom
+$headerContainerMarginBottom: 50px !default;
+
+//
+//
+// Following settings are handles header logo style
+//
+
+// Header logo selection visibility
+$headerGroupSiteLogoZIndex: 10 !default;
+// Header logo alignment
+$headerGroupSiteLogoFloatPosition: left !default;
+// Header logo position
+$headerGroupPosition: absolute !default;

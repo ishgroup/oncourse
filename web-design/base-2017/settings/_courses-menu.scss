@@ -1,0 +1,58 @@
+//
+//
+// courses-menu.scss
+//
+// Contains courses-menu's settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+//
+// Following settings are handles courses menu tree style
+//
+
+// Courses menu tree margin and defining gap at the left side
+$coursesMenuMargin: 0 0 0 25px !default;
+// Courses menu tree background
+$coursesMenuBackground: transparent !default;
+// Courses menu tree spaces
+$coursesMenuPadding: 15px 25px 15px 8px !default;
+// Courses menu tree list item text color
+$coursesMenuItemColor: $black !default;
+// Courses menu tree list item spaces
+$coursesMenuItemPadding: 0 0 0 14px !default;
+// Courses menu tree top item border
+$coursesMenuItemBorderBottom: 1px dotted transparent !default;
+
+//
+//
+// Following settings are handles courses menu tree list item link style
+//
+
+// Courses menu tree list item's background
+$coursesMenuItemLinkBackground: transparent !default;
+// Courses menu tree list item's link color
+$coursesMenuItemLinkColor: $black !default;
+
+// Courses menu tree list item's changed link background color on mouse over
+$coursesMenuItemLinkHoverBackground: transparent !default;
+// Courses menu tree list item's changed link text color on mouse over
+$coursesMenuItemLinkHoverColor: $black !default;
+
+// Courses menu tree child list link spaces
+$coursesMenuItemLinkPadding: 9px 0px 13px 8px !default;
+// Courses menu tree child list link border bottom
+$coursesMenuItemLinkBottomBorder: 1px dotted #dedee0 !default;
+// Courses menu tree child list link border bottom on mouse over
+$coursesMenuItemLinkHoverBottomBorder: 1px dotted #dedee0 !default;
+
+// Courses menu tree child list link text size
+$coursesMenuItemLinkFontSize: 14px !default;
+
+// Courses menu tree child list link text color
+$coursesMenuChildLinkColor: $black !default;

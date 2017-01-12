@@ -1,0 +1,36 @@
+//
+//
+// main.scss
+//
+// Contains default main style's settings used in main.scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// Following all the settings handles form content style
+//
+
+// Content form fieldset label text size
+$contentFieldsetLabelInnerTextFontSize: 11px !default;
+// Content form fieldset label required text color
+$contentFieldsetLabelRequiredColor: red !default;
+
+//
+// Following settings handles responsive videos (iframe, object, embed) style
+//
+
+// Video container's max width
+$videoContainerMaxWidth: 500px !default;
+// Video container width
+$videoContainerWidth: 100% !default;
+// Video container bottom spaces
+$videoContainerPaddingBottom: 32.25% !default;
+// Video container top spaces
+$videoContainerPaddingTop: 70px !default;
+
+$pTagMarginBottom: 18px !default;

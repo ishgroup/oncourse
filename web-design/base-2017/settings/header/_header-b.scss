@@ -1,0 +1,119 @@
+//
+//
+// header-b.scss
+//
+// Contains all settings used for header content for theme b
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@if $header-theme == "b" {
+  $headerTopBarFloat: none;
+  $headerTopBarBG: #fbfbfb;
+  $headerContainerPosition: relative;
+  $headerContainerMarginBottom: 0px;
+  $headerGroupPosition: relative;
+
+  $headerTopBarTextColor: $bodyFontColor;
+  $headerTopBarMarginBottom: 39px;
+
+  $headerTopBarContactMargin: 6px 10px 0px 20px;
+  $headerTopBarPhoneTextColor: $bodyFontColor;
+
+  $headerTopBarPaddingTop: 0px;
+  $headerTopBarHeight: 57px;
+  $headerGroupSiteLogoFloatPosition: none;
+  $headerGroupSiteLogoZIndex: 0;
+
+  // Navigation */
+  $navbarPaddingLeft: 0px;
+  $navFontSize: 15px;
+  $navFontWeight: normal;
+  $navWidth: auto;
+  $navMarginTop: 0px;
+  $navBG: transparent;
+  $navBorderTop: 0px;
+  $navBorderBottom: 0px;
+  $navBorderColor: transparent;
+  $navListBottomBorder: 2px solid transparent;
+  $navAnchorColor: #4f5150;
+  $navAnchorHoverBG: #9bc837;
+  $navAnchorHoverTextColor: #2e2e2e;
+  $navAnchorTopFontSize: 15px;
+  $navAnchorPadding: 10px 27px;
+  $navAnchorHeight: auto;
+  $navAnchorLineHeight: 36px;
+
+  $navAnchorArrowColor: $navAnchorHoverBG;
+  $firstChildMenuPadding: 0px;
+  $displayFullWidthMenu: none;
+  $first-accent-color: $navAnchorHoverBG;
+  $firstDropMenufullWidth: 117.1%;
+  $firstDropMenuMargin: 0px -14.95%;
+  $first-accent-width: 400px;
+  $firstAccentNavAnchorColor: #2e2e2e;
+  $firstAccentNavAnchorPadding: 8px 20px;
+
+  $navToggleBG: #e7e7e7;
+  $navToggleTextColor: #231f20;
+
+  $navToggleHoverBG: #d5d5d5;
+  $navToggleHoverTextColor: #231f20;
+
+  // Navigation */
+
+  // Short list */
+  $shortListInfoSpanColor: #6d6d6d;
+  $shortListInfoSpanFontSize: 14px;
+  $shortListInfoSpanLineHeight: 2;
+  $shortListInfoSpanMargin: 0 5px 0 0;
+  // Short list */
+
+  // Search */
+  $advancedSearchOpenFromLeft: "off";
+  $advancedSearchOpenFromRight: "on";
+  $searchTopHeight: 28px;
+  $searchButtonPadding: 3.5px 7px 3.5px;
+  $searchButtonBG: transparent;
+  $searchButtonWidth: 31px;
+
+  $btnHeight: 40px;
+  $btnPadding: 12px 27px;
+  $advanceSearchButtonWidth: 150px;
+  $advanceSearchButtonBorderRadius: 2em;
+
+  $advanceSearchButtonClearPosition: right;
+  $advanceSearchButtonSubmitPosition: left;
+
+  $advanceSearchColor: #202020;
+  $advanceSearchButtonBG: #d0e64b;
+  $advanceSearchButtonClearBackground: #d3eaec;
+  $searchActiveButtonBG: $advanceSearchButtonBG;
+
+  $toggleSearchActiveBackground: #9ac836;
+
+  // Advanced search */
+  $advanceSearchBG: #fbfbfb;
+  $advancedSearchPriceDisplay: block;
+  $advancedSearchLocationWidth: 50%;
+  $advancedSearchPriceWidth: $advancedSearchLocationWidth;
+
+  $searchBoxWidth: 190px;
+  $searchBoxBorder: 1px solid #ddd;
+  $searchBoxBorderRadius: 14px;
+
+  $searchBoxInputPadding: 3.5px 12px 3.5px;
+  $searchBoxInputWidth: 72%;
+  $searchBoxInputBorder: 0px;
+  $searchBoxInputBorderRadius: 14px 0px 0px 14px;
+
+  $searchMoreOptions: transparent;
+  $searchMoreOptionsWidth: 12px;
+  $searchMoreOptionsPadding: 0px;
+  $searchMoreOptionsMinWidth: $searchMoreOptionsWidth;
+  $searchMoreOptionsDisplay: block;
+}

@@ -1,0 +1,57 @@
+//
+//
+// sidebar.scss
+//
+// Contains all the styles of sidebar contents
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// Following all the styles handles sidebar of page
+// Posibility to make sidebar enable to left/right
+//
+
+@if $sidebarLeft == on or $sidebarRight == on {
+	//Content on left side
+	$content: left;
+	//Sidebar on right side
+	$sidebar: right;
+	//Main content width
+	$sidebarContentWidth: $contentWidth;
+	//Sidebar width
+	$mSidebarWidth: $sidebarWidth;
+
+	@if $sidebarLeft == on { //Enable left sidebar
+		$content: right;
+		$sidebar: left;
+	}
+	@else if $sidebarRight == on { //Enable right sidebar
+		$content: left;
+		$sidebar: right;
+	}
+
+	#content {
+		float: $content;
+		width: 100%;
+
+		// Responsive media for tablet
+		@include responsive($media-tablet) {
+			width: $sidebarContentWidth;
+		}
+	}
+	##{$sidebarWrapper} {
+		float: $sidebar;
+		width: 100%;
+
+		// Responsive media for tablet
+		@include responsive($media-tablet) {
+			width: $mSidebarWidth;
+			min-width: 160px;
+		}
+	}
+}

@@ -1,0 +1,126 @@
+//
+//
+// navigation.scss
+//
+// Contains navigation's settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// Following all the settings handles navigation style
+//
+
+// Navbar position (left, right)
+$navbarFloatPosition: none !default;
+// Navbar left gaps
+$navbarPaddingLeft: 280px !default;
+
+// Navbar text size
+$navFontSize: 12px !default;
+// Navbar text weight
+$navFontWeight: 600 !default;
+// Navbar text transformation
+$navTextTransform: uppercase !default;
+// Navbar width
+$navWidth: auto !default;
+// Display Navbar after tablet screen
+$navTabletDisplay: block !important !default;
+// Navbar margin
+$navMargin: 0px !default;
+// Navbar background color
+$navBG: transparent !default;
+// Navbar border color
+$navBorderColor: transparent !default;
+// Navbar border top
+$navBorderTop: 1px solid $navBorderColor !default;
+// Navbar border bottom
+$navBorderBottom: 1px solid $navBorderColor !default;
+// Navbar display list item
+$navDisplayItem: list-item !important !default;
+
+// Navbar list bottom border
+$navListBottomBorder: 1px solid $navBorderColor !default;
+// Navbar list text transform
+$navListTextTransform: $navTextTransform !default;
+// Navbar list bottom border on media screen tablet
+$navListBottomBorderMediaTablet: 0px !default;
+// Navbar list smooth transition animation on changing on list item
+$navListTransition: all 2s cubic-bezier(0, 0.25, 0.28, 1.15) !default;
+
+// Navbar text color
+$navAnchorColor: #2e2e2e !default;
+// Navbar background color on mouse over
+$navAnchorHoverBG: #444444 !default;
+// Navbar text color on mouse over
+$navAnchorHoverTextColor: $white !default;
+// Navbar top text size
+$navAnchorTopFontSize: $bodyFontSize !default;
+// Navbar spaces
+$navAnchorPadding: 8px !default;
+// Navbar first child spaces
+$navFirstChildAnchorPadding: $navAnchorPadding !default;
+// Navbar last child spaces
+$navLastChildAnchorPadding: $navAnchorPadding !default;
+// Navbar height
+$navAnchorHeight: auto !default;
+// Navbar text line height
+$navAnchorLineHeight: 16px !default;
+
+// Navbar child arrow background
+$navAnchorArrowColor: $navAnchorHoverBG !default;
+// Navbar child arrow position bottom
+$navAnchorArrowPositionBottom: -11.4px !default;
+// Navbar child arrow position left
+$navAnchorArrowPositionLeft: 49% !default;
+// Navbar child arrow position left for tablet secreen
+$navAnchorArrowPositionLeftMediaTablet: 40% !default;
+// Navbar child arrow position (top, bottom, left, right)
+$navAnchorArrowPositionSide: "top" !default;
+// Navbar child arrow border width
+$navAnchorArrowBorderWidth: 7px !default;
+
+// Navbar first child menu spaces
+$firstChildMenuPadding: 0px !default;
+// Navbar full width menu
+$displayFullWidthMenu: none !default;
+// Navbar child background color
+$first-accent-color: #252D30 !default;
+// Navbar child full width
+$firstDropMenufullWidth: 117.1% !default;
+// Navbar child menu margin
+$firstDropMenuMargin: 0px -14.95% !default;
+// Navbar child menu width
+$first-accent-width: 200px !default;
+
+// Navbar top text transformation
+$firstAccentNavTextTransform: $navTextTransform !default;
+// Navbar top text color
+$firstAccentNavAnchorColor: $white !default;
+// Navbar top text spaces
+$firstAccentNavAnchorPadding: 8px 20px !default;
+
+// Navbar toggle background
+$navToggleBG: #e7e7e7 !default;
+// Navbar toggle text color
+$navToggleTextColor: #231f20 !default;
+
+// Navbar toggle background on mouse over
+$navToggleHoverBG: #d5d5d5 !default;
+// Navbar toggle text color on mouse over
+$navToggleHoverTextColor: #231f20 !default;
+
+//
+// For dynamic content loaded in child menu
+//
+$navChildMenuLinkHoverBG: transparent !default;
+$navChildMenuDisplay: none !default;
+$navChildMenuPosition: relative !default;
+$navChildMenuTop: 100% !default;
+$navChildMenuHoverTop: 100% !default;
+$navChildMenuHoverLinkDisplayMediaTablet: block !important !default;
+$navChildMenuHoverDisplay: block !important !default;
