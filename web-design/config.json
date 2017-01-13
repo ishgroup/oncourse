@@ -1,0 +1,16 @@
+{
+  "dest": "./docs",
+  "display": {
+    "access": ["public", "private"],
+    "alias": true,
+    "watermark": true,
+  },
+  "groups": {
+    "ish": "ISH onCourse"
+  },
+  "autofill": [
+    "throw",
+    "content",
+    "require"
+  ]
+}
