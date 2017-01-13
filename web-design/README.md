@@ -4,7 +4,7 @@ INSTALLATION
 ============
 
 1. Make sure you have npm installed
-1. `# npm install sassdoc --save`
+1. `# npm install`
 
 Generate SassDoc
 ================
