@@ -1,4 +1,4 @@
-//= require jquery-1.8.2.min.js
+//= require jquery-3.1.1.js
 //= require jquery-ui-1.9.1.min.js
 //= require jquery.cookie.js
 //= require jquery.nyroModal-2.0.0.min.js
