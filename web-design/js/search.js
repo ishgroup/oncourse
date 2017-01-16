@@ -5,7 +5,7 @@
  *
  *	- Quicksearch
  * 	- Find a suburb by name or postcode
- *	- Advanced search 
+ *	- Advanced search
  *
  */
 
@@ -13,7 +13,7 @@
 // open the infoWindow on the map with the site details for the site ID specified
 function showSiteOnMap(siteID) {
 	$j('#focus-map').show();
-	$j("body").animate({ scrollTop: 0 }, "slow"); 
+	$j("body").animate({ scrollTop: 0 }, "slow");
 	if (window.map==null) {
 		window.siteIDtoShow = siteID;
 		mapLoadForID('mapDelayed');
@@ -112,20 +112,20 @@ function showAdvancedSearch() {
 	$j('#advanced_search').show('slow', function() {
 	});
 
-	// install watcher to detect clicks on the background					
-	$j(document).bind('mousedown', function(e) { 
+	// install watcher to detect clicks on the background
+	$j(document).bind('mousedown', function(e) {
 		// hide advanced search if click was not inside advanced search area
 		if(!$j(e.target).is('#advanced_search_container *') && !$j(e.target).is('div.ac_results *') && !$j(e.target).is('.ui-autocomplete *')) {
 			hideAdvancedSearch();
 		}
-		
+
 	});
 }
 
 function hideAdvancedSearch() {
 	$j(document).unbind('mousedown');
 	$j('form#search').ClearTypeFadeTo({ speed: 450, opacity: 1 });
-	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 1 });	
+	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 1 });
 	$j('#advanced_search').hide('slow');
 
 	$j('a.show-advanced-search span').removeClass('adv_search_active').text("More options");
@@ -226,7 +226,7 @@ function setPostcodeAndStateFromSuburb(searchForm, suburbString) {
 			}
 			if (searchForm.state && state.length>0) {
 				$j("#"+searchForm.state.id).val(state);
-			}		
+			}
 		}
 	}
 	return false;
@@ -247,27 +247,27 @@ jQuery.fn.quickSearch = function(url, settings) {
 		var divContainer = $j('.quicksearch-wrap');
 		var thisObject = this;
 		var selectedIndex = -1;
-		
+
 		// function triggered after contents is updated
 		updatedFunction = function() {
 			show();
-			
+
 			// observe checkboxes
 			$j('.suburb-choice').each(function() {
 				$j(this).bind("click", updateFunction);
 			});
 		};
-		
+
 		loadFunction = function(url, params, callbackFunction) {
 			selectedIndex = -1;
 			divContainer.load(url, params, callbackFunction);
 		};
-		
+
 		// function for updating the list via site selections
 		updateFunction = function withToggle(event) {
 			var srcElement = null;
 			if (event && (srcElement = event['srcElement'])) {
-				
+
 				// build array of query params
 				var params = [];
 				$j('.suburb-choice:checked').each(function() {
@@ -280,7 +280,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 				loadFunction(url, {text: terms, suburb: params}, updatedFunction);
 			}
 		};
-		
+
 		// take terms and query the server-side
 		matchesFunction = function getMatches(terms) {
 			if (!terms || terms.length < minInput) {
@@ -290,17 +290,13 @@ jQuery.fn.quickSearch = function(url, settings) {
 			textInput.addClass('throbber');
 			loadFunction(url, {text: terms, directSearch:true}, updatedFunction);
 		};
-		
+
 		function show() {
 			textInput.removeClass('throbber');
 			$j('div.advanced-search-button').fadeTo(0, 0);
 			hideAdvancedSearch();
 			divContainer.addClass('show-quick-search').show();
-			//divContainer.removeShadow();
-			/*divContainer.slideDown('slow', function() {
-				divContainer.dropShadow();
-			});*/
-			
+
 			// install watcher to detect clicks on the background
 			$j(document).bind('mousedown.quicksearch', function(click) {
 				// hide quicksearch if click was not inside quicksearch area
@@ -309,7 +305,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 				}
 			});
 		}
-		
+
 		function hide() {
 			selectedIndex = -1;
 			allItems = null;
@@ -320,7 +316,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 			$j('div.advanced-search-button').fadeTo(0, 1);
 			divContainer.removeClass('show-quick-search');
 		}
-		
+
 		textInput.keyup(function(key) {
 			if (key.which == 27) { // escape
 				hide();
@@ -337,7 +333,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 				if (selectedIndex >= 0) {
 					selectedItem = allItems.eq(selectedIndex);
 				}
-				
+
 				if (key.which == 13) { // return key
 					if (selectedItem == null) {
 						$j('form#search').submit();
@@ -348,7 +344,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 						return false;
 					}
 				}
-				
+
 
 				if (allItems.size() == 1 && (key.which == 40 || key.which == 9 || key.which == 38)) {
 					selectedIndex = 0;
@@ -362,7 +358,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 							selectedIndex++;
 						}
 					}
-					
+
 					if (key.which == 38) { // up key
 						if (selectedIndex <= 0) {
 							selectedIndex = allItems.size() - 1;
@@ -375,16 +371,16 @@ jQuery.fn.quickSearch = function(url, settings) {
 						if (selectedItem != null) {
 							selectedItem.removeClass('selected');
 						}
-						
+
 						allItems.eq(selectedIndex).addClass('selected');
 					}
 				}
-				
+
 				return false;
 			}
 			return true;
 		});
-		
+
 		// observe quicksearch field delay == 1.0seconds
 		// depends on jquery-util/query.utils[.min].js
 		textInput.delayedObserver(function() {
@@ -401,5 +397,5 @@ jQuery.fn.hideQuickSearch = function(url, settings) {
 
 
 $j(document).ready(function() {
-	initSuburbAutoComplete();		
+	initSuburbAutoComplete();
 });
