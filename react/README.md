@@ -1,6 +1,8 @@
-# Test application
+# Web modules application
 
-Before make sure that you have node and npm. If not you can get it from [https://nodejs.org](https://nodejs.org)
+Before make sure that you installed node and npm. If not you can get it from [https://nodejs.org](https://nodejs.org)
+
+All bundles are located in `dist` folder. Run one of next commands for bundles creating:
 
 ## Production build
 `npm run build:prod`

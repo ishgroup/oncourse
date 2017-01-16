@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Application</title>
+
+    </head>
+
+    <body>
+        <div>
+            <% include containers/cart %>
+        </div>
+        <div>
+            <% courses.forEach(function(course) { %>
+                <%- include('containers/enrolButton', {course: course}) %>
+            <% }) %>
+        </div>
+        <script type="application/javascript" src="/app/bundle.js"></script>
+    </body>
+</html>
