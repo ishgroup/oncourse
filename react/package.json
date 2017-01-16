@@ -4,11 +4,13 @@
   "description": "ish project",
   "main": "webpack.config.js",
   "scripts": {
+    "prebuild:prod": "rm -rf ./dist",
     "build:prod": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
     "build:dev": "NODE_ENV=development ./node_modules/webpack/bin/webpack.js",
     "build:dev:watch": "NODE_ENV=development WATCH=1 ./node_modules/webpack/bin/webpack.js",
     "build:test": "NODE_ENV=test ./node_modules/webpack/bin/webpack.js",
-    "test": "./node_modules/mocha/bin/mocha ./dist/__test__/bundle.js --require ./test-patch.js",
+    "test": "./node_modules/mocha/bin/mocha ./tmp/test.js --require ./test-patch.js",
+    "test:clean": "rm ./tmp/test.js",
     "start": "./node_modules/nodemon/bin/nodemon.js dev-server --watch dist/**/*.js --watch dev-server/**/*.js --watch dev-server/**/*.json"
   },
   "devDependencies": {

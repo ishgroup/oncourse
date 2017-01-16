@@ -10,6 +10,7 @@ const __DEV__ = NODE_ENV === 'development';
 const __TEST__ = NODE_ENV === 'test';
 const CONTEXT = path.resolve(__dirname, 'src');
 const DIST = path.resolve(__dirname, 'dist');
+const TMP = path.resolve(__dirname, 'tmp');
 
 let config = {
     target: __TEST__ ? 'node' : 'web',
@@ -70,8 +71,8 @@ if(__TEST__) {
     Object.assign(config, {
         entry: glob.sync('test/**/*.js', { cwd: CONTEXT }),
         output: {
-            filename: '__test__/bundle.js',
-            path: DIST
+            filename: 'test.js',
+            path: TMP
         }
     });
 } else {
