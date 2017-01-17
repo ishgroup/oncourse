@@ -15,6 +15,13 @@
 //= require vendor/dynamic.js
 
 
+/*
+    Additional vendor libraries which might be useful in your site
+*/
+
+//= require vendor/vex.combined-3.0.0.js
+
+
 
 /*
     These files are due to be removed
@@ -32,7 +39,6 @@
 	Don't remove them or the application may break
 */
 
-//= require vendor/vex.combined.js
 //= require application.js
 //= require gmap.js
 //= require search.js
