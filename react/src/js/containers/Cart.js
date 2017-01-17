@@ -5,15 +5,14 @@ import { removeCourse as onRemoveCourse } from '../actions/cart';
 
 class CartOrderItem extends React.Component {
 
-    static propTypes = {
-        course: React.PropTypes.object,
-        onRemove: React.PropTypes.func
-    };
+    constructor() {
+        super();
 
-    remove = (e) => {
-        e.stopPropagation();
-        this.props.onRemove(this.props.course.id);
-    };
+        this.remove = (e) => {
+            e.stopPropagation();
+            this.props.onRemove(this.props.course.id);
+        };
+    }
 
     render() {
         let course = this.props.course;
@@ -31,21 +30,26 @@ class CartOrderItem extends React.Component {
             </li>
         );
     }
-
 }
 
-class Cart extends React.Component {
+CartOrderItem.propTypes = {
+    course: React.PropTypes.object,
+    onRemove: React.PropTypes.func
+};
 
-    static propTypes = {
-        courses: React.PropTypes.array,
-        onRemoveCourse: React.PropTypes.func
-    };
+class Cart extends React.Component {
 
     constructor() {
         super();
 
         this.state = {
             showedShortList: false
+        };
+
+        this.toggleShortList = () => {
+            this.setState({
+                showedShortList: !this.state.showedShortList
+            });
         };
     }
 
@@ -56,12 +60,6 @@ class Cart extends React.Component {
             });
         }
     }
-
-    toggleShortList = () => {
-        this.setState({
-            showedShortList: !this.state.showedShortList
-        });
-    };
 
     render() {
         let count = this.props.courses.length;
@@ -90,6 +88,11 @@ class Cart extends React.Component {
         );
     }
 }
+
+Cart.propTypes = {
+    courses: React.PropTypes.array,
+    onRemoveCourse: React.PropTypes.func
+};
 
 function getCourses(courses) {
     return courses.reduce((arr, course) => {

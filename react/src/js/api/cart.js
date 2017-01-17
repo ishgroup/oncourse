@@ -1,6 +1,15 @@
 import config from 'config';
 import request from 'js/lib/request';
 
+/**
+ * @file api of cart
+ */
+
+/**
+ * @param {Number} courseId course id
+ * @description adds course to cart
+ * @returns {jqXHR}
+ */
 export function addCourse(courseId) {
     return request({
         type: 'put',
@@ -8,6 +17,12 @@ export function addCourse(courseId) {
     });
 }
 
+
+/**
+ * @param {Number} courseId course id
+ * @description remove course from cart
+ * @returns {jqXHR}
+ */
 export function removeCourse(courseId) {
     return request({
         type: 'delete',

@@ -45,59 +45,59 @@ export default class Bootstrap {
         }
     }
 
-    prepareType = {
-        boolean(value) {
-            if(['true', 'false'].indexOf(value) === -1) {
-                throw new Error('expected boolean type');
-            }
-
-            return value === 'true';
-        },
-
-        number(value) {
-            let v = Number(value);
-
-            if(isNaN(v)) {
-                throw new Error('expected number type');
-            }
-
-            return v;
-        },
-
-        string(value) {
-            if(typeof value !== 'string') {
-                throw new Error('expected string type');
-            }
-
-            return value;
-        },
-
-        array(value) {
-            let v = JSON.parse(value);
-
-            if(!(v instanceof Array)) {
-                throw new Error('expected array type');
-            }
-
-            return v;
-        },
-
-        object(value) {
-            let v = JSON.parse(value);
-
-            if(typeof v !== 'object' || v instanceof Array) {
-                throw new Error('expected object type');
-            }
-
-            return v;
-        }
-    };
-
     prepareProp(value, type) {
-        if(!(type in this.prepareType)) {
+        if(!(type in this.constructor.prepareType)) {
             throw new Error('unexpected type');
         }
 
-        return this.prepareType[type](value);
+        return this.constructor.prepareType[type](value);
     }
 }
+
+Bootstrap.prepareType = {
+    boolean(value) {
+        if(['true', 'false'].indexOf(value) === -1) {
+            throw new Error('expected boolean type');
+        }
+
+        return value === 'true';
+    },
+
+    number(value) {
+        let v = Number(value);
+
+        if(isNaN(v)) {
+            throw new Error('expected number type');
+        }
+
+        return v;
+    },
+
+    string(value) {
+        if(typeof value !== 'string') {
+            throw new Error('expected string type');
+        }
+
+        return value;
+    },
+
+    array(value) {
+        let v = JSON.parse(value);
+
+        if(!(v instanceof Array)) {
+            throw new Error('expected array type');
+        }
+
+        return v;
+    },
+
+    object(value) {
+        let v = JSON.parse(value);
+
+        if(typeof v !== 'object' || v instanceof Array) {
+            throw new Error('expected object type');
+        }
+
+        return v;
+    }
+};

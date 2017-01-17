@@ -5,15 +5,10 @@ import { addCourse as onEnrol } from '../actions/cart';
 
 class EnrolButton extends React.Component {
 
-    static propTypes = {
-        id: React.PropTypes.number,
-        isAdded: React.PropTypes.bool,
-        onEnrol: React.PropTypes.func
-    };
-
-    add = () => {
-        this.props.onEnrol(this.props.id);
-    };
+    constructor() {
+        super();
+        this.add = () => this.props.onEnrol(this.props.id);
+    }
 
     render() {
         let isAdded = this.props.isAdded;
@@ -23,6 +18,12 @@ class EnrolButton extends React.Component {
         );
     }
 }
+
+EnrolButton.propTypes = {
+    id: React.PropTypes.number,
+    isAdded: React.PropTypes.bool,
+    onEnrol: React.PropTypes.func
+};
 
 function isAdded(courses, courseId) {
     let course = courses.find((course) => {

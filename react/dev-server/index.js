@@ -25,7 +25,7 @@ app.put('/api/v1/cart/courses/:id', (req, res) => {
         return;
     }
 
-    res.send(200, course);
+    res.status(200).send(course);
 });
 
 app.delete('/api/v1/cart/courses/:id', (req, res) => {
@@ -34,11 +34,11 @@ app.delete('/api/v1/cart/courses/:id', (req, res) => {
     });
 
     if(!course) {
-        res.send(404);
+        res.status(404).send();
         return;
     }
 
-    res.send(204);
+    res.status(204).send();
 });
 
 app.listen(process.env.PORT || 8080);

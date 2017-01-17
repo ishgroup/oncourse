@@ -26,7 +26,7 @@ let config = {
             exclude: /node_modules/,
             query: {
                 presets: [['es2015', { loose: true }], 'react'],
-                plugins: ['transform-class-properties', 'transform-object-rest-spread', 'transform-proto-to-assign']
+                plugins: ['transform-object-rest-spread']
             }
         }, {
             loader: __TEST__ ? 'null' : ExtractTextPlugin.extract('css-loader'),

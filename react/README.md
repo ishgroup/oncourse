@@ -30,3 +30,6 @@ Run one of next commands for bundles creating:
 `npm test`
 
 You can remove test bundle file by: `npm test:clean`
+
+## Generate documentation
+`npm run doc`
