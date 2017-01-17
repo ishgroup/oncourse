@@ -32,6 +32,7 @@
 	Don't remove them or the application may break
 */
 
+//= require vendor/vex.combined.js
 //= require application.js
 //= require gmap.js
 //= require search.js
