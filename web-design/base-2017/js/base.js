@@ -19,7 +19,8 @@
     Additional vendor libraries which might be useful in your site
 */
 
-//= require vendor/vex.combined-3.0.0.js
+//= require vendor/vex-3.0.0.js
+//= require vendor/vex.dialog-3.0.0.js
 
 
 
