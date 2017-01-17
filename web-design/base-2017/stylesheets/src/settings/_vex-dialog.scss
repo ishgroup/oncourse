@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+/// Settings handles vex themes, include required themes
+///
+/// Available themes:
+/// - default
+/// - bottom-right-corner
+/// - flat-attack
+/// - os
+/// - plain
+/// - top
+/// - wireframe
+///
+/// @example scss - Usage
+///   $vex-theme: 'default' 'flat-attack';
+///
+/// @example css - CSS Output
+///  .vex.vex-theme-default {
+///    ...
+///  }
+///
+///  .vex.vex-theme-flat-attack {
+///    ...
+///  }
+///
+/// @type var
+/// @group ish
+///
+
+$vex-theme: 'default' !default;
+
+$vex-theme-default: 'default';
+$vex-theme-bottom-right-corner: 'bottom-right-corner';
+$vex-theme-flat-attack: 'flat-attack';
+$vex-theme-os: 'os';
+$vex-theme-plain: 'plain';
+$vex-theme-top: 'top';
+$vex-theme-wireframe: 'wireframe';
