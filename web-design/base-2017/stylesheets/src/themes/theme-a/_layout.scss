@@ -30,23 +30,8 @@
 		}
 	}
 	.container {
-		padding: 0px;
 		h1.courses-title {
 			display: block !important;
-		}
-		.courses ul.courses-list-sub .courses-list-sub2 .courses-list-sub2 {
-			margin: 0;
-			list-style: none;
-		}
-		.courses ul.courses-list {
-			>ul > li> a {
-				color: $black;
-				border-bottom: 1px dotted #dedee0;
-				font-weight: bold;
-			}
-			ul.courses-list-sub>li {
-				width: 2.28%;
-			}
 		}
 	}
 	.content {
