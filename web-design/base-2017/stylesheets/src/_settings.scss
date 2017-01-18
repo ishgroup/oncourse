@@ -18,6 +18,49 @@
 $white: #fff;
 $black: #000;
 
+/// Settings handles site' theme.
+///
+/// Default theme is `"a"`, If you don't want to use default theme then specify `$theme: "custom"`.
+///
+/// This includes theme related settings
+///
+/// Themes: `a` | `b` | `c`
+///
+/// @example scss - Usage
+///  $theme: "a";
+///
+/// @type String
+/// @group ish
+///
+
+$theme: "a" !default;
+
+/// Settings handles site' header theme
+/// Default header theme like as $theme.
+/// This includes header related settings based on theme
+///
+/// @example scss - Usage
+///  $header-theme: "a";
+///
+/// @type String
+/// @group ish
+///
+
+$header-theme: $theme !default;
+
+/// Settings handles site' footer theme
+/// Default footer theme like as $theme.
+/// This includes footer related settings based on theme
+///
+/// @example scss - Usage
+///  $footer-theme: "a";
+///
+/// @type String
+/// @group ish
+///
+
+$footer-theme: $theme !default;
+
 /// Settings handles primary color.
 ///
 /// @example scss - Usage
@@ -240,49 +283,26 @@ $media-tablet: "tablet";
 $media-desktop: "desktop";
 $media-custom: "custom";
 
-/// Settings handles site' theme.
-/// Default theme is not specified.
-/// This includes theme related settings
-///
-/// Themes: a | b | c
-///
-/// @example scss - Usage
-///  $theme: "a";
-///
-/// @type String
-/// @group ish
-///
-
-$theme: "" !default;
-
-/// Settings handles site' header theme
-/// Default header theme like as $theme.
-/// This includes header related settings based on theme
-///
-/// @example scss - Usage
-///  $header-theme: "a";
-///
-/// @type String
-/// @group ish
-///
-
-$header-theme: $theme !default;
-
-/// Settings handles site' footer theme
-/// Default footer theme like as $theme.
-/// This includes footer related settings based on theme
-///
-/// @example scss - Usage
-///  $footer-theme: "a";
-///
-/// @type String
-/// @group ish
-///
-
-$footer-theme: $theme !default;
-
 //
 // Other settings imported from default settings
 // Settings splitted in files
 //
 @import "settings/default-settings";
+
+//
+//
+// Default application settings theme wise
+//
+@import "settings/default/default";
+
+//
+//
+// Default header settings theme wise
+//
+@import "settings/header/header";
+
+//
+//
+// Default footer settings theme wise
+//
+@import "settings/footer/footer";

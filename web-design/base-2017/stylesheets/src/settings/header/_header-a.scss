@@ -16,11 +16,12 @@ $subNavBgColor: !default;
 $subNavColor: !default;
 
 @if $header-theme == "a" {
-  $headerTopBarBG: #ee2222;
-  $headerTopBarTextColor: $white;
   $headerContainerPosition: relative;
   $headerContainerMarginBottom: 25px;
   $headerGroupPosition: absolute;
+
+  $headerTopBarBG: #ee2222;
+  $headerTopBarTextColor: $white;
 
   $navColor: #454a4d; //navAnchorColor
   $subNavBgColor: #252D30; //$first-accent-color
@@ -29,13 +30,16 @@ $subNavColor: !default;
   // Navigation */
   $navbarPaddingLeft: 280px;
   $navWidth: auto;
-  $navMarginTop: 0px;
+  $navMarginTop: 0px; //$navMargin
   $navBG: transparent;
   $navBorderColor: #2e2e2e;
   $navAnchorColor: $white;
   $navAnchorHoverBG: transparent;
   $navAnchorHoverTextColor: #2e2e2e;
+  $navAnchorTopFontSize: $bodyFontSize;
   $navAnchorPadding: 0px;
+  $navFirstChildAnchorPadding: $navAnchorPadding;
+  $navLastChildAnchorPadding: $navAnchorPadding;
   $navAnchorHeight: auto;
   $navAnchorLineHeight: 28px;
 
@@ -56,6 +60,19 @@ $subNavColor: !default;
   $navToggleHoverTextColor: #231f20;
 
   // Search */
+  $advancedSearchOpenFromLeft: "off";
+  $advancedSearchOpenFromRight: "on";
   $advanceSearchButtonBG: $headerTopBarBG;
+  $advanceSearchButtonClearBackground: $advanceSearchButtonBG;
+
   $searchActiveButtonBG: $headerTopBarBG;
+
+  // ShortList
+  $shortListOrderLinkFontSize: $bodyFontSize;
+
+
+  $navBorderTop: 1px solid $navBorderColor;
+  $navBorderBottom: 1px solid $navBorderColor;
+  $navListBottomBorder: 1px solid $navBorderColor;
+
 }

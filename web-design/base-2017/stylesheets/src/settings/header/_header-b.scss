@@ -12,12 +12,12 @@
 //
 
 @if $header-theme == "b" {
-  $headerTopBarFloat: none;
-  $headerTopBarBG: #fbfbfb;
   $headerContainerPosition: relative;
   $headerContainerMarginBottom: 0px;
   $headerGroupPosition: relative;
 
+  $headerTopBarFloat: none;
+  $headerTopBarBG: #fbfbfb;
   $headerTopBarTextColor: $bodyFontColor;
   $headerTopBarMarginBottom: 39px;
 
@@ -45,6 +45,9 @@
   $navAnchorHoverTextColor: #2e2e2e;
   $navAnchorTopFontSize: 15px;
   $navAnchorPadding: 10px 27px;
+  $navFirstChildAnchorPadding: $navAnchorPadding;
+  $navLastChildAnchorPadding: $navAnchorPadding;
+
   $navAnchorHeight: auto;
   $navAnchorLineHeight: 36px;
 
@@ -67,6 +70,7 @@
   // Navigation */
 
   // Short list */
+  $shortListOrderLinkFontSize: $bodyFontSize;
   $shortListInfoSpanColor: #6d6d6d;
   $shortListInfoSpanFontSize: 14px;
   $shortListInfoSpanLineHeight: 2;
@@ -80,11 +84,13 @@
   $searchButtonPadding: 3.5px 7px 3.5px;
   $searchButtonBG: transparent;
   $searchButtonWidth: 31px;
+  $searchButtonHeight: $searchTopHeight;
 
   $btnHeight: 40px;
   $btnPadding: 12px 27px;
   $advanceSearchButtonWidth: 150px;
   $advanceSearchButtonBorderRadius: 2em;
+  $advanceSearchButtonPadding: $btnPadding;
 
   $advanceSearchButtonClearPosition: right;
   $advanceSearchButtonSubmitPosition: left;
@@ -98,6 +104,7 @@
 
   // Advanced search */
   $advanceSearchBG: #fbfbfb;
+  $advanceSearchBGRGB: $advanceSearchBG;
   $advancedSearchPriceDisplay: block;
   $advancedSearchLocationWidth: 50%;
   $advancedSearchPriceWidth: $advancedSearchLocationWidth;
@@ -108,12 +115,15 @@
 
   $searchBoxInputPadding: 3.5px 12px 3.5px;
   $searchBoxInputWidth: 72%;
+  $searchBoxInputHeight: $searchTopHeight;
   $searchBoxInputBorder: 0px;
   $searchBoxInputBorderRadius: 14px 0px 0px 14px;
 
   $searchMoreOptions: transparent;
   $searchMoreOptionsWidth: 12px;
+  $searchMoreOptionsHeight: $searchTopHeight;
   $searchMoreOptionsPadding: 0px;
   $searchMoreOptionsMinWidth: $searchMoreOptionsWidth;
   $searchMoreOptionsDisplay: block;
+
 }

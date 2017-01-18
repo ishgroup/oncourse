@@ -12,7 +12,7 @@
 //
 
 @if $footer-theme == "b" {
-  $footerBG: #0a3a4a no-repeat center top !default;
-  $footerTextColor: $white !default;
-  $footerAddressTextColor: #8ca3ab !default;
+  $footerBG: #0a3a4a no-repeat center top;
+  $footerTextColor: $white;
+  $footerAddressTextColor: #8ca3ab;
 }

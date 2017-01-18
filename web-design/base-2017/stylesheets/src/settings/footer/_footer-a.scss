@@ -18,6 +18,8 @@ $footerAnchorHoverColor: !default;
 @if $footer-theme == "a" {
   $footerBG: #252d30;
   $footerTextColor: #8ca3ab;
+  $footerAddressTextColor: $secondaryColor;
+
   $footerTitleColor: $white;
   $footerAnchorColor: #8ca3ab;
   $footerAnchorHoverColor: $white;
