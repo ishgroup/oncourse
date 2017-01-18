@@ -144,7 +144,7 @@ $discountBlockTitleDisplay: none !default;
 $discountBlockActionLinkDisplay: none !default;
 $discountBlockNyromodalLinkDisplay: none !default;
 
-// Search more option backgrond color
+// Search more option background color
 $searchMoreOptions: #fdb713 !default;
 // Search more option width
 $searchMoreOptionsWidth: 22.41% !default;
@@ -160,11 +160,12 @@ $searchMoreOptionsMinWidth: 60px !default;
 $searchMoreOptionsDisplay: inline-block !default;
 
 $searchMoreOptionsText: 13px !default;
-$searchMoreOptionsLineHeight: 1 !default;
+$searchMoreOptionsTextPadding: 0px !default;
+$searchMoreOptionsTextLineHeight: 0.9 !default;
 
 // Show advanced search on mobile screen
 $showAdvancedSearchOnMobile: "on" !default;
-// Advenced search active button right position
+// Advanced search active button right position
 $advancedSearchActiveRight: 10px !default;
 
 $advancedSearchFormBlocksTabletWidth: 100% !default;

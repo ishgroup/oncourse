@@ -286,8 +286,8 @@
 					font-size: $searchMoreOptionsText;
 					color: $white;
 					cursor: pointer !important;
-					padding: $searchMoreOptionsPadding;
-					line-height: $searchMoreOptionsLineHeight;
+					padding: $searchMoreOptionsTextPadding;
+					//line-height: $searchMoreOptionsTextLineHeight;
 				}
 			}
 		}
