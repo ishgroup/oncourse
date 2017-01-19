@@ -2,16 +2,6 @@ import ACTIONS from '../constants';
 import cartApi from 'js/api/cart';
 import { getError } from 'js/lib/utils';
 
-/**
- * Cart actions
- * @module js/actions/cart
- */
-
-/**
- * Add course to cart
- * @param {Number} courseId Course id
- * @return {Function}
- */
 export function addCourse(courseId) {
     return (dispatch) => {
         let req = cartApi.addCourse(courseId);
@@ -36,12 +26,6 @@ export function addCourse(courseId) {
     };
 }
 
-
-/**
- * Remove course from cart
- * @param {Number} courseId Course id
- * @return {Function}
- */
 export function removeCourse(courseId) {
     return (dispatch) => {
         let req = cartApi.removeCourse(courseId);

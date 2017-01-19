@@ -2,8 +2,7 @@ import config from 'config';
 import request from 'js/lib/request';
 
 /**
- * Cart api
- * @module js/api/cart
+ * @file api of cart
  */
 
 /**
