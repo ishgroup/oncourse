@@ -1,7 +1,7 @@
 import ACTIONS from 'js/constants';
 import cart from 'js/reducers/cart';
 
-describe('cart reducers', () => {
+describe('cart reducer', () => {
 
     it('should return initial state', () => {
         expect(cart(undefined, {})).to.deep.equal({
