@@ -14,9 +14,9 @@ public class Cron {
 
 	@Inject
 	private PaymentInExpireJob paymentInExpireJob;
-
-	@Inject
-	private UpdateAmountOwingJob updateAmountOwing;
+//
+//	@Inject
+//	private UpdateAmountOwingJob updateAmountOwing;
 
 	public StreamResponse onActivate() {
 
@@ -27,7 +27,7 @@ public class Cron {
 				// executing jobs
 				paymentInExpireJob.execute();
 				smsJob.execute();
-				updateAmountOwing.execute();
+//				updateAmountOwing.execute();
 			}
 		}).start();
 
