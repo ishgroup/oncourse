@@ -33,3 +33,57 @@ You can remove test bundle file by: `npm test:clean`
 
 ## Generate documentation
 `npm run doc`
+
+## Customization of React-component
+When you create new react-component which will be able to customize you need create two files:
+```
+myComponent/
+    MyComponent.js
+    MyComponent.extend.js
+```
+You write all logic of component in `MyComponent.js` and all methods
+which will be able to override by customer in `MyComponent.extend.js`.
+
+After that you need to pull two modules `MyComponent.extend.js` and
+`MyComponent.custom.js` (even if it doesn't exist) in `MyComponent.js`
+
+You need to prepare some code inside overidable methods(e.g. render) in files
+
+MyComponent.js
+```
+import extend from 'MyComponent.extend.js';
+import customExtend from 'MyComponent.custom.js';
+
+let extend = Object.assign({}, nativeExtend, customExtend);
+
+class MyComponent extends React.Component {
+
+    //some logic...
+    
+    render() {
+        return extend.render.apply({
+            welcome: 'Hi'
+        });
+    }
+}
+```
+
+MyComponent.extend.js
+```
+export default {
+    render() {
+        return <div>{this.welcome + ', native ui'}
+    }
+};
+```
+
+MyComponent.custom.js
+```
+export default {
+    render() {
+        return <div>{this.welcome + ', custom ui'}
+    }
+};
+```
+
+You will get `Hi, native ui!` without `MyComponent.custom.js` and `Hi, custom ui!` with it in browser.
