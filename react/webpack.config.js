@@ -1,8 +1,7 @@
 let webpack = require('webpack'),
     path = require('path'),
     ExtractTextPlugin = require("extract-text-webpack-plugin"),
-    glob = require('glob'),
-    fs = require('fs');
+    glob = require('glob');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const WATCH = process.env.WATCH === '1';
@@ -19,26 +18,6 @@ let config = {
     context: CONTEXT,
 
     watch: WATCH,
-
-    //ToDo Used for component customization. This is workaround. I think it should be solved by webpack-plugin.
-    externals: [function(context, request, callback) {
-        let p = path.resolve(context, request) + '.js';
-
-        if(/.custom.js$/.test(p)) {
-            fs.stat(p, (err) => {
-                if(err) {
-                    callback(null, "{}");
-                    return;
-                }
-
-                callback();
-            });
-            return;
-        }
-
-
-        callback();
-    }],
 
     module: {
         loaders: [{
