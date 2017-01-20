@@ -1,0 +1,137 @@
+//
+//
+// default-c.scss
+//
+// Contains all the settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+$hotpink: !default;
+$deepblue: !default;
+$charcoal: !default;
+$cinder: !default;
+$turquoise: !default;
+$citrus: !default;
+$pistachio: !default;
+$aubergine: !default;
+$gunmetal: !default;
+$steam: !default;
+
+@if $theme == "c" {
+  $useDefaultFont: false;
+  @import url(https://fonts.googleapis.com/css?family=Asap:400,400italic,700,700italic);
+  @import url(https://fonts.googleapis.com/css?family=Hind:400,600,700);
+
+  $containerWidth: 1120px;
+
+  //
+  // Color settings
+  //
+
+  $hotpink: #CF053C;
+  $deepblue: #00437A;
+  $charcoal: #1F1F1F;
+  $cinder: #A0A0A0;
+  $turquoise: #4092A9;
+  $citrus: #DA7C00;
+  $pistachio: #A8AE13;
+  $aubergine: #4D3060;
+  $gunmetal: #2E303D;
+  $steam: #EAEFF3;
+
+  $anchorColor: $deepblue;
+  $anchorHoverColor: $hotpink;
+
+  $primaryColor: $hotpink; //btn primary color
+  $secondaryColor: $charcoal;
+
+  // media: small, tablet, desktop
+  $small-screen: 480px;
+  $tablet-screen: 767px;
+  $desktop-screen: 1024px;
+
+  $fontFamilyOne: 'ASAP', sans-serif;
+
+  $bodyFontFamily: 'Hind', sans-serif;
+  $bodyFontSize: 16px;
+  $bodyFontColor: $charcoal;
+  $bodyLineHeight: 23px;
+
+  //
+  // Heading styles
+  //
+
+  $h1FontSize: 42px;
+  $h1LineHeight: 52px;
+  $h1FontWeight: bold;
+  $h1LinkColor: $charcoal;
+  $h1LinkHoverColor: $primaryColor;
+
+  $h2FontSize: 36px;
+  $h2LineHeight: 46px;
+  $h2FontWeight: bold;
+  $h2LinkColor: $charcoal;
+  $h2LinkHoverColor: $primaryColor;
+
+  $h3FontSize: 28px;
+  $h3LineHeight: 36px;
+  $h3FontWeight: bold;
+  $h3LinkColor: $charcoal;
+  $h3LinkHoverColor: $primaryColor;
+
+  $h4FontSize: 22px;
+  $h4LineHeight: 30px;
+  $h4FontWeight: bold;
+  $h4LinkColor: $charcoal;
+  $h4LinkHoverColor: $primaryColor;
+
+  $h5FontSize: 18px;
+  $h5LineHeight: 26px;
+  $h5FontWeight: bold;
+  $h5LinkColor: $charcoal;
+  $h5LinkHoverColor: $primaryColor;
+
+  $h6FontSize: 16px;
+  $h6LineHeight: 23px;
+  $h6FontWeight: bold;
+  $h6LinkColor: $charcoal;
+  $h6LinkHoverColor: $primaryColor;
+
+  // Content container
+  $contentContainerMarginTop: 0px;
+
+  // Courses
+  $waitingListTitleHoverBG: $bodyFontColor;
+
+  $enrolActionDisabled: #9b9b9b;
+  $enrolActionDisabledBorderColor: #9b9b9b;
+  $enrolActionDisabledTextColor: $white;
+
+  $classItemBorderColor: $steam;
+  $classItemBorder: 1px solid $classItemBorderColor;
+  $classItemBorderLeft: 6px solid $deepblue;
+
+
+  $enrolActionFontFamily: $bodyFontFamily;
+  $enrolActionBackground: $primaryColor;
+  $enrolActionHoverBackground: $secondaryColor;
+
+  $enrolActionBorder: 1px solid $primaryColor;
+  $coursesJoinButtonBackground: $primaryColor;
+  $coursesJoinButtonHoverBackground: $primaryColor;
+  $classItemBorderHoverColor: $primaryColor;
+
+  $coursesFontFamily: $bodyFontFamily;
+  $coursesDetailsFontFamily: $bodyFontFamily;
+  $normalFontFamily: $bodyFontFamily;
+
+  $btnBackgroundColor: $primaryColor;
+  $btnBackgroundHoverColor: $secondaryColor;
+
+  $btnType2BackgroundColor: $secondaryColor;
+}

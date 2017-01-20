@@ -1,0 +1,429 @@
+//
+//
+// layout.scss
+//
+// Contains all the styles of different contents
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@include theme('c') {
+  a {
+    @include transition(all 0.5s);
+  }
+  ul {
+    @include blocks("&.grid", table-cell, $media-tablet);
+    @include blocks("&.column", "left", $media-tablet);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: $fontFamilyOne;
+  }
+
+  h1 {
+    @include header-tag($h1FontSize, $h1LineHeight, $h1FontWeight, $h1LinkColor, $h1LinkHoverColor);
+  }
+
+  // Content header tag h2 text size and its link styles
+  h2 {
+    @include header-tag($h2FontSize, $h2LineHeight, $h2FontWeight, $h2LinkColor, $h2LinkHoverColor);
+  }
+
+  // Content header tag h3 text size and its link styles
+  h3 {
+    @include header-tag($h3FontSize, $h3LineHeight, $h3FontWeight, $h3LinkColor, $h3LinkHoverColor);
+  }
+
+  // Content header tag h4 text size and its link styles
+  h4 {
+    @include header-tag($h4FontSize, $h4LineHeight, $h4FontWeight, $h4LinkColor, $h4LinkHoverColor);
+  }
+
+  // Content header tag h5 text size and its link styles
+  h5 {
+    @include header-tag($h5FontSize, $h5LineHeight, $h5FontWeight, $h5LinkColor, $h5LinkHoverColor);
+  }
+
+  // Content header tag h6 text size and its link styles
+  h6 {
+    @include header-tag($h6FontSize, $h6LineHeight, $h6FontWeight, $h6LinkColor, $h6LinkHoverColor);
+  }
+
+  .abtn {
+    @include anim();
+    border-radius: 0px;
+    font-family: $fontFamilyOne;
+    &.alpha {
+      @include canim();
+      color: $white;
+      text-transform: uppercase;
+    }
+    &.beta {
+      @include canim($white, 12px 20px 12px 20px, $deepblue, 0);
+      color: $deepblue;
+      border: 3px solid $deepblue;
+      text-transform: uppercase;
+      &:hover {
+        color: $white;
+      }
+    }
+    &.gamma {
+      @include canim($deepblue);
+      color: #fff;
+      text-transform: uppercase;
+    }
+  }
+
+  .linear-border {
+    padding: 10px 5px;
+    position: relative;
+    overflow: hidden;
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      border-top: 3px solid transparent;
+      @include border-image(linear-gradient(to right, #CF053C 10%, #4092A9 10%, #4092A9 35%, #DA7C00 35%, #DA7C00 60%, #A8AE13 60%, #A8AE13 85%, #4D3060 85%));
+      border-image-slice: 1;
+      left: 0;
+      bottom: 0;
+      z-index: 0;
+    }
+  }
+
+  .repeating-image {
+    height: 250px;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: repeating-linear-gradient(90deg, rgba(218,124,0,0.60), rgba(218,124,0,0.60) 60px, #ffffff 25px, rgb(255, 255, 255) 103.5px);
+      z-index: -1;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  .sicon {
+    &.arrow {
+      margin-left: 8px;
+      position: relative;
+      &::after {
+        background: none;
+        width: auto;
+        height: auto;
+        display: inline-block;
+        top: 8px;
+      }
+      &.down {
+        &::after {
+          @include arrow('top', 5px, $hotpink);
+        }
+      }
+      &.up::after {
+        @include arrow('bottom', 5px, $hotpink);
+      }
+    }
+  }
+
+  .top-description {
+    max-width: 840px;
+    margin: 0 auto 40px;
+    text-align: center;
+    >p {
+      margin: 0px;
+      font-size: 20px;
+    }
+    .main-heading {
+      margin-bottom: 25px;
+      color: $white;
+      font-size: 32px;
+      line-height: 44px;
+      position: relative;
+      font-weight: bold;
+      @include responsive($media-tablet) {
+        font-size: 42px;
+        line-height: 64px;
+        margin-bottom: 35px;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        background: url($imagePath + "icons/icon-border-1.png") top left no-repeat;
+        width: 66px;
+        height: 21px;
+        top: -22px;
+        left: 50%;
+        @include transform(translateX(-50%));
+      }
+      &.one {
+        color: $charcoal;
+      }
+      &.two::after {
+        background: url($imagePath + "icons/icon-border-2.png") top left no-repeat;
+      }
+      &.three::after {
+        background: url($imagePath + "icons/icon-border-3.png") top left no-repeat;
+      }
+    }
+  }
+
+  .browse-courses-wrapper {
+    text-align: center;
+    padding: 50px 0px 20px;
+    @include responsive($media-tablet) {
+      padding: 50px 0px 120px;
+    }
+    >p {
+      margin: 0px;
+    }
+    .list-item {
+      list-style: none;
+      margin: 0px;
+      font-size: 0px;
+      text-align: left;
+      @include responsive($media-tablet) {
+        display: table;
+      }
+      &.first, &.second, &.third {
+        li {
+          @include anim();
+          width: 100%;
+          min-height: 185px;
+          @include canim_left($hotpink, 12px 20px 12px 20px, rgba(0,0,0,0.25), 0);
+          padding: 25px;
+          display: block;
+          @include responsive($media-small) {
+            @include canim_left($hotpink, 12px 20px 12px 20px, rgba(0,0,0,0.25), 0.0909);
+            @include icon-arrow();
+            padding: 25px 80px 25px 130px;
+          }
+          @include responsive($media-tablet) {
+            width: 50%;
+            display: table-cell;
+
+          }
+        }
+      }
+      &.first {
+        li {
+          &:first-child {
+
+          }
+          &:last-child {
+            background: $turquoise;
+          }
+        }
+      }
+      &.second {
+        li {
+          &:first-child {
+            background: $citrus;
+          }
+          &:last-child {
+            background: $pistachio;
+          }
+        }
+      }
+      &.third {
+        li {
+          &:first-child {
+            background: $aubergine;
+          }
+          &:last-child {
+            background: $gunmetal;
+            padding: 72px 25px 73px 25px;
+            @include responsive($media-small) {
+              padding: 72px 80px 73px 50px;
+            }
+            h3 {
+              margin: 0px;
+            }
+          }
+        }
+      }
+      li {
+        @include responsive($media-tablet) {
+          width: 50%;
+          display: inline-block;
+          vertical-align: top;
+        }
+        a {
+          color: $white;
+          font-weight: normal;
+          h3 {
+            font-family: $fontFamilyOne;
+            color: $white;
+            font-size: 32px;
+            line-height: 40px;
+            margin-bottom: 10px;
+            position: relative;
+            .icon-arrow {
+              background: url("/s/img/icons/icon-arrow.png");
+              width: 13px;
+              height: 21px;
+              display: inline-block;
+              margin-left: 10px;
+              @include responsive($media-small) {
+                display: none;
+              }
+              &::after {
+                display: none;
+              }
+            }
+          }
+          p {
+            font-family: $bodyFontFamily;
+            font-size: $bodyFontSize;
+            line-height: $bodyLineHeight;
+            font-weight: normal;
+            margin: 0;
+          }
+        }
+      }
+
+    }
+  }
+
+  .cicon {
+    display: block;
+    &::after {
+      content: "";
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: -1;
+      opacity: 0.3;
+      @include responsive($media-small) {
+        top: 50%;
+        left: 40px;
+        @include transform(translateY(-50%));
+        opacity: 1;
+      }
+    }
+    &.icon-atr::after {
+      background: url($imagePath + 'icons/icon-brush.png') top left no-repeat;
+      width: 59px;
+      height: 78px;
+    }
+    &.icon-lifestyle::after {
+      background: url($imagePath + 'icons/icon-home.png') top left no-repeat;
+      width: 67px;
+      height: 59px;
+    }
+    &.icon-language::after {
+      background: url($imagePath + 'icons/icon-language.png') top left no-repeat;
+      width: 60px;
+      height: 59px;
+    }
+    &.icon-business::after {
+      background: url($imagePath + 'icons/icon-business.png') top left no-repeat;
+      width: 64px;
+      height: 52px;
+    }
+    &.icon-sports::after {
+      background: url($imagePath + 'icons/icon-sports.png') top left no-repeat;
+      width: 59px;
+      height: 59px;
+    }
+  }
+
+  .icon-arrow {
+    @include icon-arrow();
+  }
+
+  .bx-wrapper .bx-pager {
+    padding-top: 20px;
+    top: 240px;
+    bottom: 0;
+  }
+
+  .sicon {
+    &.icon-facebook::after {
+      background: url($imagePath + 'icons/icon-facebook.png');
+      width: 32px;
+      height: 32px;
+    }
+    &.icon-twitter::after {
+      background: url($imagePath + 'icons/icon-twitter.png');
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  #Main {
+    &.main-page {
+      #content {
+        float: none;
+        width: 100%;
+      }
+      #sidebarRight {
+        display: none;
+      }
+    }
+    #content h1.page-title {
+      display: none;
+    }
+
+    .addthis {
+      display: none;
+    }
+  }
+  .container {
+    padding: 0 15px;
+    @include responsive($media-small) {
+      padding: 0 10px;
+    }
+    h1.courses-title {
+      display: block !important;
+    }
+    .courses ul.courses-list-sub .courses-list-sub2 .courses-list-sub2 {
+      margin: 0;
+      list-style: none;
+    }
+    .courses ul.courses-list {
+      >ul > li> a {
+        color: $black;
+        border-bottom: 1px dotted #dedee0;
+        font-weight: bold;
+      }
+      ul.courses-list-sub>li {
+        width: 2.28%;
+      }
+    }
+  }
+  .content {
+    ul li {
+      margin-bottom: 0px;
+    }
+    .home-slider {
+      ul {
+        margin-left: 0px;
+        li>img {
+          width: 100%;
+        }
+
+      }
+    }
+  }
+  .nyroModalLink #popup-content .tutors_details {
+    ul.attachedImages, .tutor_pic {
+      position: initial;
+      width: 213px;
+      float: right;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      right: 0px;
+    }
+    .tutors_classes {
+      display: table;
+      width: 100%;
+    }
+  }
+}

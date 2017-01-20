@@ -24,6 +24,7 @@ $colorTypeFive: !default;
 $colorTypeSix: !default;
 
 @if $theme == "b" {
+  $useDefaultFont: false;
   @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,900);
 
   $containerWidth: 1260px;

@@ -1,0 +1,92 @@
+//
+//
+// header-c.scss
+//
+// Contains all settings used for header content for theme c
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@if $header-theme == "c" {
+  $headerTopBarBG: #ee2222;
+  $headerTopBarTextColor: $white;
+  $headerContainerPosition: relative;
+  $headerContainerMarginBottom: 25px;
+  $headerGroupPosition: absolute;
+
+  $navColor: $white;
+  $navFontSize: 20px;
+  $navFontWeight: bold;
+  $navTextTransform: uppercase;
+  $subNavBgColor: $deepblue;
+  $subNavColor: #FFFFFF;
+
+  // Navigation
+  $navbarPaddingLeft: 10px;
+  $navWidth: 100%;
+  $navMarginTop: 0px;
+  $navBG: transparent;
+  $navBorderColor: #2e2e2e;
+  $navAnchorColor: $white;
+  $navAnchorHoverBG: transparent;
+  $navAnchorHoverTextColor: $white;
+  $navAnchorPadding: 21.5px 0px;
+  $navAnchorHeight: auto;
+  $navAnchorLineHeight: initial;
+
+  $navAnchorArrowColor: $white;
+  $firstChildMenuPadding: 21.5px 0px;
+  $displayFullWidthMenu: none;
+  $first-accent-color: $deepblue;
+  $firstDropMenufullWidth: 117.1%;
+  $firstDropMenuMargin: 0px -14.95%;
+  $first-accent-width: 200px;
+  $firstAccentNavAnchorColor: $white;
+  $firstAccentNavAnchorPadding: 8px 20px;
+
+  $navToggleBG: #e7e7e7;
+  $navToggleTextColor: #231f20;
+
+  $navToggleHoverBG: #d5d5d5;
+  $navToggleHoverTextColor: #231f20;
+
+  // Search
+  $advanceSearchSubmitButtonWidth: 29%;
+  $advanceSearchButtonBG: $deepblue;
+  $searchActiveButtonBG: $deepblue;
+  $advanceSearchButtonBorderRadius: 0;
+  $advanceSearchButtonWidth: 40%;
+  $advanceSearchButtonPadding: 9px 20px;
+
+  $searchMoreOptions: transparent;
+  $searchMoreOptionsPadding: 0px;
+
+  $advanceSearchBG: transparent;
+  $advanceSearchMargin: 10px 0px;
+  $advanceSearchTop: 0px;
+  $advanceSearchPosition: relative;
+  $advanceSearchPadding: 15px 0px 12px;
+
+  $toggleSearchActiveBackground: transparent;
+
+  $advancedSearchFormBlocksTabletWidth: 200px;
+  $advancedSearchLocationWidth: 200px;
+  $advancedSearchPriceWidth: 235px;
+
+  // Shortlist info settings
+  $shortListOrderBackground: $hotpink;
+  $shortListOrderEnrolLinkBackground: $deepblue;
+  $shortListOrderEnrolLinkBackgroundColor: $deepblue;
+
+  $shortListOrderRightMediaTablet: 8px;
+  $shortListOrderBeforePositionLeftMediaTablet: auto;
+  $shortListOrderBeforePositionRightMediaTablet: 23px;
+
+  $shortListInfoSpanColor: $white;
+  $shortListInfoSpanFontSize: 16px;
+  $shortListInfoSpanMargin: 0px;
+}

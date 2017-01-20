@@ -1,0 +1,276 @@
+//
+//
+// footer.scss
+//
+// Contains all the styles of footer contents
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@include theme('c', 'footer') {
+	#footer {
+		&:after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+    .footer-text {
+      margin-bottom: 0px;
+    }
+		.featured-courses-wrapper {
+			background: $gunmetal;
+			padding: 70px 0px;
+			color: $white;
+			text-align: left;
+			ul {
+				li {
+					width: 100% !important;
+					max-width: 600px;
+					margin: 0 auto 30px;
+					padding: 0 20px;
+					@include responsive($media-custom, 625px) {
+						padding: 0;
+					}
+					@include responsive($media-custom, 992px) {
+						margin: 0 auto;
+					}
+				}
+				.item {
+					.left {
+						width: 100%;
+						@include responsive($media-custom, 625px) {
+							display: inline-block;
+							width: 267px;
+							vertical-align: top;
+						}
+					}
+					.right {
+						float: none;
+						width: 100%;
+						margin-top: 20px;
+						@include responsive($media-custom, 625px) {
+							display: inline-block;
+							vertical-align: top;
+							max-width: 300px;
+							padding-left: 30px;
+							margin-top: 0px;
+						}
+						h5 {
+							color: $white;
+							margin-bottom: 10px;
+						}
+						p {
+							display: block;
+							margin-bottom: 10px;
+						}
+					}
+				}
+			}
+			.bx-wrapper {
+				max-width: 100% !important;
+				.bx-viewport {
+					max-width: 1200px;
+					margin: 0 auto;
+				}
+				.bx-pager.bx-default-pager {
+					a {
+						background: $white;
+						&:hover, &.active {
+							background: $pistachio;
+						}
+					}
+				}
+				.bx-controls-direction {
+					a {
+						margin-top: -30px;
+						width: 62px;
+						height: 62px;
+						&.bx-prev {
+							background: url($imagePath + 'icons/icon-bx-prev.png');
+							left: 3px;
+						}
+						&.bx-next {
+							background: url($imagePath + 'icons/icon-bx-next.png');
+							right: 3px;
+						}
+					}
+				}
+			}
+		}
+		.stay-updated-wrapper {
+			background: #0687c8;
+			padding: 70px 20px;
+			color: #fff;
+			text-align: left;
+			.top-description {
+				max-width: 480px;
+				@include responsive($media-tablet) {
+					max-width: 840px;
+				}
+			}
+			form {
+				max-width: 480px;
+				margin: 0 auto;
+				text-align: center;
+				@include responsive($media-tablet) {
+					max-width: 980px;
+				}
+				.form-control {
+					width: 100%;
+					@include responsive($media-tablet) {
+						display: inline-block;
+						max-width: 370px;
+						margin-right: 20px;
+					}
+					&.button {
+						margin-right: 0px;
+						@include responsive($media-small) {
+							max-width: 180px;
+							margin: 0 auto;
+						}
+					}
+				}
+				label {
+					font-family: $fontFamilyOne;
+					font-size: 20px;
+					line-height: 28px;
+				}
+
+				input {
+					padding: 15px;
+					background: $white;
+					font-size: 22px;
+					color: $charcoal;
+					line-height: 28px;
+					height: auto;
+					@include responsive($media-small) {
+						padding: 22px;
+					}
+				}
+				button {
+					width: 100%;
+					padding: 20px 55px;
+					margin-top: 20px;
+					@include responsive($media-small) {
+						padding: 29px 55px;
+					}
+					@include responsive($media-tablet) {
+						float: none;
+						margin-top: 0px;
+					}
+				}
+			}
+		}
+		.container {
+			.footer-container {
+				padding: 15px 0px 21px;
+				.footer-info {
+					text-align: left;
+					@include responsive($media-custom, 640px) {
+						max-width: 310px;
+						float: left;
+					}
+					.copyrights {
+						display: block;
+						@include responsive($media-small) {
+							display: inline-block;
+							vertical-align: top;
+							margin-right: 20px;
+						}
+					}
+					.social-links {
+						display: block;
+						margin-top: 15px;
+						line-height: 0;
+						@include responsive($media-small) {
+							margin-top: 0px;
+							display: inline-block;
+							vertical-align: top;
+						}
+						li {
+							display: inline-block;
+							a {
+								display: block;
+								font-size: 0;
+								line-height: 1;
+								.sicon {
+									display: inline-block;
+									width: 32px;
+									height: 32px;
+								}
+							}
+						}
+					}
+				}
+				.right-block {
+					float: none;
+					text-align: left;
+					@include responsive($media-custom, 640px) {
+						float: right;
+					}
+					.block-links {
+						display: block;
+						margin-top: 15px;
+						@include responsive($media-custom, 640px) {
+							margin-top: 0px;
+							display: inline-block;
+							vertical-align: top;
+						}
+						li {
+							display: inline-block;
+							border-right: 1px solid $cinder;
+							padding: 0 17px;
+							line-height: 1;
+							&:first-child {
+								padding-left: 0px;
+								@include responsive($media-custom, 640px) {
+									padding-left: 17px;
+								}
+							}
+							&:last-child {
+								border-right: 0px;
+								@include responsive($media-tablet) {
+									border-right: 1px solid $cinder;
+								}
+							}
+							a {
+								color: #3a7a93;
+								&:hover {
+									color: $cinder;
+								}
+							}
+						}
+					}
+					.footer-logo {
+						display: none;
+						@include responsive($media-small) {
+							padding-left: 17px;
+						}
+
+						@include responsive($media-tablet) {
+							display: inline-block;
+						}
+					}
+				}
+				>.footer-logo {
+					display: block;
+					float: none;
+					width: 100%;
+					margin-top: 20px;
+					padding: 0px;
+					text-align: left;
+					@include responsive($media-custom, 640px) {
+						text-align: center;
+					}
+					@include responsive($media-tablet) {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}

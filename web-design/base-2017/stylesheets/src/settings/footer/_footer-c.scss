@@ -1,0 +1,21 @@
+//
+//
+// footer-c.scss
+//
+// Contains all settings used for footer content for theme "c"
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@if $footer-theme == "c" {
+  $footerBG: $gunmetal;
+  $footerTextColor: $white;
+  $footerFontSize: 14px;
+  $footerLineHeight: 26px;
+  $footerPadding: 0;
+  $footerContainerMargin: 0px;
+}

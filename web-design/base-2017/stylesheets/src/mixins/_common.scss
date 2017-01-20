@@ -1,0 +1,82 @@
+//
+//
+// common.scss
+//
+// Contains list of common mixins
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+// canim($bg, $padding, $overlayBG, $scale-position, $scale)
+//
+
+@mixin canim($bg: #CF053C, $padding: 12px 20px 12px 20px, $overlayBG: rgba(0,0,0,0.25), $scale: 0.111) {
+  background: $bg;
+  padding: $padding;
+  &::before {
+    content: '';
+    background: $overlayBG;
+    @include transform(scaleY($scale));
+    @include transform-origin(50% 100%);
+  }
+  &:hover {
+    &::before {
+      @include transform(scaleY(1));
+    }
+  }
+}
+
+@mixin canim_left($bg: #CF053C, $padding: 12px 20px 12px 20px, $overlayBG: rgba(0,0,0,0.25), $scale: 0.111) {
+  background: $bg;
+  padding: $padding;
+  &::before {
+    content: '';
+    background: $overlayBG;
+    @include transform(scaleX($scale));
+    @include transform-origin(100% 0%);
+  }
+  &:hover {
+    &::before {
+      @include transform(scaleX(1));
+    }
+  }
+}
+
+@mixin anim() {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  @include transform(translateZ(0));
+  @include backface-visibility(hidden);
+  @include transition(0.1s);
+  font-size: 14px;
+  font-weight: bold;
+  &::before {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 0px;
+    bottom: 0px;
+    right: 0;
+    @include transition(transform .3s ease-out);
+  }
+}
+
+@mixin icon-arrow() {
+  &::after {
+    content: "";
+    background: url($imagePath + 'icons/icon-arrow.png');
+    width: 13px;
+    height: 21px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    @include transform(translateX(-50%));
+  }
+}

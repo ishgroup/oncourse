@@ -1,0 +1,699 @@
+//
+//
+// header.scss
+//
+// Contains all the styles of header contents
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@include theme('c', 'header') {
+	#header {
+		>p, >br {
+			margin: 0px;
+		}
+		.header-container {
+			border-bottom: 5px solid $hotpink;
+			padding-bottom: 10px;
+			@include responsive($media-tablet) {
+				padding-bottom: 0px;
+				border-bottom: 0px;
+			}
+			.header-hgroup {
+				.pull-left {
+					@include responsive($media-tablet) {
+						background: url($imagePath + '/logos/logo-1.png') top right no-repeat;
+						background-position-x: 214px;
+						width: 385px;
+					}
+					#siteLogo {
+						position: relative;
+						width: 120px;
+						margin-top: 15px;
+						margin-bottom: 0px;
+						@include responsive($media-small) {
+							width: 130px;
+						}
+						@include responsive($media-tablet) {
+							width: auto;
+						}
+						a {
+							font-size: 0px;
+						}
+					}
+				}
+				>.pull-right {
+					width: 96px;
+					@include responsive($media-small) {
+						width: auto;
+					}
+					ul.header-top-links {
+						display: none;
+						margin-top: 10px;
+						vertical-align: middle;
+						@include responsive($media-small) {
+							display: inline-block;
+						}
+						li {
+							display: inline-block;
+							padding: 0px 15px;
+							@include responsive($media-small) {
+								padding: 0px 2px;
+							}
+							@include responsive($media-tablet) {
+								padding: 0px 15px;
+							}
+							a {
+								color: $charcoal;
+								&:hover {
+									color: $anchorHoverColor;
+								}
+							}
+						}
+					}
+					.top-cart {
+						vertical-align: middle;
+						display: inline-block;
+						margin-top: 25px;
+						margin-right: 12px;
+						@include responsive($media-small) {
+							margin-right: 0px;
+							margin-left: 9px;
+							margin-top: 13px;
+							border-left: 1px solid $cinder;
+						}
+						@include responsive($media-tablet) {
+							margin-left: 4px;
+						}
+						#shortlist {
+							background: url(/s/img/icons/cart.png) top left no-repeat;
+							padding-left: 18px;
+							margin-right: 0px;
+							height: 30px;
+							@include responsive($media-small) {
+								padding-left: 33px;
+								margin-left: 9px;
+							}
+							@include responsive($media-tablet) {
+								margin-left: 19px;
+							}
+							.shortlistInfo span {
+								font-size: 11px;
+								width: 20px;
+								height: 20px;
+								background: $deepblue;
+								border-radius: 1em;
+								font-weight: bold;
+								font-family: $fontFamilyOne;
+								padding: 3px 0px;
+								text-align: center;
+								margin-top: -5px;
+								@include responsive($media-small) {
+									font-size: 14px;
+									width: 25px;
+									height: 25px;
+									margin-top: 2px;
+								}
+							}
+						}
+					}
+				}
+			}
+			.find-course-form {
+				display: none;
+			}
+		}
+
+		a.phone-number {
+			color: $white;
+			text-decoration: none;
+		}
+
+		#headerToolbar {
+			float: left;
+			width: 100%;
+			#search_box {
+				float: none;
+				display: block;
+				font-family: $fontFamilyOne;
+				#advanced_search {
+					.advanced-search-form {
+						>div {
+							&#adv_search_keyword {
+								display: none !important;
+							}
+							&#adv_search_time {
+								clear: both;
+							}
+							&#adv_search_tag {
+								@include responsive($media-small) {
+									margin-right: 35px;
+								}
+							}
+							&#adv_search_submit {
+								clear: both;
+								width: 100%;
+								@include responsive($media-tablet) {
+									width: $advanceSearchSubmitButtonWidth;
+								}
+							}
+							&#adv_search_time, &#adv_search_day {
+								max-width: 111px;
+								width: 100%;
+								margin: 0 0 10px;
+								padding: 0;
+								@include responsive($media-small) {
+									max-width: $advancedSearchPriceWidth;
+								}
+							}
+							>label {
+								font-family: $fontFamilyOne;
+								color: $white;
+								font-size: 16px;
+								text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+								@include responsive($media-tablet) {
+									font-size: 18px;
+								}
+							}
+							>input, select {
+								font-family: $bodyFontFamily;
+								color: $charcoal;
+								font-size: 14px;
+								padding: 10px;
+								height: 48px;
+								@include placeholder() {
+									color: $cinder;
+								}
+								@include responsive($media-tablet) {
+									font-size: 16px;
+									padding: 16px;
+									height: 60px;
+								}
+							}
+							select {
+								background: $white url($imagePath + 'icons/icon-arrow-down.png') right top no-repeat;
+								@include appearance(none);
+								line-height: 1.63;
+								background-position: 96% 20px;
+								padding: 10px 25px 10px 10px;
+								height: 48px;
+								@include responsive($media-tablet) {
+									padding: 16px 25px 16px 16px;
+									background-position: 96% 24px;
+									height: 60px;
+								}
+							}
+						}
+					}
+				}
+				.advanced-search-button.more-options {
+					display: block;
+					text-align: left;
+					height: auto;
+					width: auto;
+					margin-top: 5px;
+					@include responsive($media-small) {
+						margin-top: 10px;
+					}
+					@include responsive($media-small) {
+						margin-top: 15px;
+					}
+					.show-advanced-search {
+						margin-left: 0px;
+						&.sicon.arrow {
+							&.down::after {
+								border-top-color: $white;
+							}
+							&.up::after {
+								border-bottom-color: $white;
+							}
+						}
+						@include responsive($media-tablet) {
+							&.sicon.arrow {
+								&.down::after {
+									border-top-color: $hotpink;
+								}
+								&.up::after {
+									border-bottom-color: $hotpink;
+								}
+							}
+						}
+
+						&::after {
+							right: -15px;
+							top: 9px;
+						}
+						span {
+							font-size: 16px;
+							color: $white;
+							text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+							font-weight: bold;
+							@include responsive($media-small) {
+								font-size: 18px;
+							}
+							@include responsive($media-tablet) {
+								font-size: 22px;
+							}
+						}
+					}
+				}
+				#search {
+					width: 100%;
+					margin-right: 0px;
+					position: relative;
+					.quicksearch {
+						width: 100%;
+						line-height: 16px;
+						height: 50px;
+						font-size: 14px;
+						padding: 18px 68px 18px 18px;
+						color: $charcoal;
+						@include placeholder() {
+							color: $cinder;
+						}
+						@include responsive($media-small) {
+							font-size: 16px;
+							line-height: 20px;
+							padding: 16px 156px 16px 16px;
+						}
+
+						@include responsive($media-tablet) {
+							height: 76px;
+							font-size: 22px;
+							line-height: 30px;
+							padding: 22px 200px 22px 22px;
+						}
+					}
+				}
+			}
+			.find.btn {
+				width: 50px;
+				height: 50px;
+				padding-left: 16px;
+				padding-right: 16px;
+				font-size: 16px;
+				color: $white;
+				text-transform: uppercase;
+				background: $deepblue;
+				font-weight: 600;
+				text-indent: -9999px;
+				position: absolute;
+				top: 0;
+				right: 0;
+				z-index: 1;
+				&:hover {
+					background: $deepblue;
+				}
+				.sicon.search-icon {
+					@include responsive($media-small) {
+						display: none;
+					}
+				}
+				@include responsive($media-small) {
+					width: 140px;
+					padding-left: 18px;
+					padding-right: 18px;
+					font-size: 14px;
+					text-indent: initial;
+				}
+
+				@include responsive($media-tablet) {
+					width: 180px;
+					height: 76px;
+					padding-left: 20px;
+					padding-right: 20px;
+					font-size: 20px;
+					text-indent: initial;
+				}
+			}
+		}
+
+		.find-course-form {
+			background: darken($hotpink, 5%);
+			margin-top: -9px;
+			padding: 20px 25px;
+			z-index: 1;
+			position: relative;
+			@include responsive($media-small) {
+				padding: 20px;
+				margin-top: 75px;
+			}
+			@include responsive($media-tablet) {
+				margin-top: 0px;
+				background: none;
+				padding: 0px 10px;
+			}
+			.container {
+				padding: 0px;
+			}
+			.header-course-form {
+				position: relative;
+				z-index: 1;
+				color: $white;
+				max-width: 920px;
+				font-size: 22px;
+				width: 100%;
+				left: 0;
+				padding: 0px;
+				@include responsive($media-tablet) {
+					padding: 0px 0px 30px;
+				}
+			}
+		}
+
+		.find-course-wrapper {
+			position: relative;
+			overflow: hidden;
+			background: darken($hotpink, 5%);
+			@include responsive($media-tablet) {
+				min-height: 590px;
+			}
+
+			.find-course {
+				width: 100%;
+				height: 200px;
+				@include responsive($media-small) {
+					position: absolute;
+					height: 100%;
+					@include responsive-image();
+				}
+			}
+			.form-tag-line {
+				position: relative;
+				z-index: 1;
+				color: $white;
+				max-width: 920px;
+				font-size: 22px;
+				width: 100%;
+				left: 0;
+				padding: 15px;
+				@include responsive($media-small) {
+					display: block;
+					padding: 64px 15px 0px;
+				}
+				@include responsive($media-tablet) {
+					padding: 125px 0px 0px;
+				}
+				h1 {
+					font-family: $fontFamilyOne;
+					color: $white;
+					font-size: 26px;
+					line-height: 24px;
+					text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+					@include responsive($media-small) {
+						font-size: 36px;
+						line-height: 44px;
+					}
+					@include responsive($media-tablet) {
+						font-size: 56px;
+						line-height: 64px;
+					}
+				}
+				p {
+					text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+				}
+			}
+		}
+
+		.read-more-about-us {
+			background: $steam;
+			padding: 30px 25px;
+			@include responsive($media-tablet) {
+				padding: 70px 25px;
+			}
+			.container {
+				max-width: 1020px;
+				padding: 0 15px;
+				@include responsive($media-small) {
+					padding: 0px;
+				}
+				.left, .right {
+					@include responsive($media-tablet) {
+						display: inline-block;
+						vertical-align: top;
+					}
+				}
+				.left {
+					@include responsive($media-tablet) {
+						width: 40%;
+						padding-right: 20px;
+					}
+					h1 {
+						font-family: $fontFamilyOne;
+						color: $charcoal;
+						font-size: 32px;
+						line-height: 44px;
+
+					}
+					>p {
+						display: none;
+					}
+				}
+				.right {
+					@include responsive($media-tablet) {
+						width: 60%;
+						padding-left: 20px;
+					}
+					p.heading {
+						font-size: 20px;
+						margin-bottom: 0px;
+					}
+					p {
+						line-height: 28px;
+						a {
+							float: left;
+							@include responsive($media-tablet) {
+								float: right;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.internal-page {
+		#header {
+			.find-course-form {
+				background: darken($hotpink, 5%);
+				padding: 20px 25px;
+				z-index: 1;
+				position: relative;
+				margin-top: 0px;
+				margin-bottom: 15px;
+				.container {
+					padding: 0px;
+					.header-course-form {
+						padding: 0px;
+						max-width: 100%;
+					}
+				}
+			}
+			#headerToolbar #search_box .advanced-search-button.more-options .show-advanced-search.sicon.arrow {
+				&.down::after {
+					border-top-color: $white;
+				}
+				&.up::after {
+					border-bottom-color: $white;
+				}
+			}
+		}
+	}
+
+	.nav-toggle {
+		display: inline-block;
+		width: 32px;
+		height: 30px;
+		padding: 0;
+		margin-top: 25px;
+		float: right;
+		background: transparent;
+		@include responsive($media-small) {
+			display: none;
+		}
+		&:hover {
+			background: transparent;
+		}
+		>div {
+			width: auto;
+		}
+		.toggle-title, &::before, &::after {
+			background: $deepblue;
+			height: 5px;
+			left: 0;
+			right: 0;
+			top: 0px;
+			@include transition(all .2s linear);
+			border-radius: 100px;
+			border: 1px solid $deepblue;
+			line-height: 0px;
+			font-size: 0px;
+			display: block;
+			text-indent: -9999px;
+			margin: 0px;
+			width: 100%;
+		}
+		&::before, &::after {
+			content: "";
+			position: absolute;
+		}
+		&::before {
+			top: 22px;
+		}
+		.toggle-title {
+			position: relative;
+			top: 11px;
+			float: none;
+			@include transition(all 0.1s ease-in-out);
+		}
+		&.active {
+			.toggle-title {
+				visibility: hidden;
+			}
+			&::before, &::after {
+				top: 11px;
+			}
+			&::before {
+				@include transform(rotate(45deg));
+			}
+			&::after {
+				@include transform(rotate(135deg));
+			}
+		}
+	}
+
+	.navbar {
+		&.container {
+			max-width: none;
+			background: $hotpink;
+		}
+		nav#nav {
+			display: none;
+			margin-left: 0px;
+			font-family: $fontFamilyOne;
+			@include responsive($media-small) {
+				display: block !important;
+			}
+			.header-top-links {
+				display: block;
+				@include responsive($media-small) {
+					display: none;
+				}
+			}
+
+			max-width: 1120px;
+			margin: 0 auto;
+			float: none;
+			> ul {
+				background: transparent;
+				border: 0px;
+				@include responsive($media-small) {
+					display: table;
+				}
+				&::after {
+					content: "";
+					display: block;
+					clear: both;
+				}
+				> li {
+					margin: 0px;
+					border-bottom: 0px;
+					@include responsive($media-small) {
+						float: none;
+						display: table-cell !important;
+						text-align: center;
+						width: 185px;
+					}
+
+					> a {
+						color: $navColor;
+						text-decoration: none;
+						display: block;
+						border-bottom: 5px solid transparent;
+						letter-spacing: 1px;
+						font-size: 16px;
+						@include responsive($media-small) {
+							font-size: 12px;
+							padding: 15.5px 0px;
+							float: left;
+							position: relative;
+							left: 50%;
+							@include transform(translateX(-50%));
+						}
+						@include responsive($media-tablet) {
+							font-size: 16px;
+							padding: $navAnchorPadding;
+						}
+						&:hover {
+							background: transparent;
+						}
+						&::before {
+							display: none !important;
+							border: 0px !important;
+						}
+					}
+					&:first-child, &:last-child {
+						>a {
+							@include responsive($media-small) {
+								padding: 15.5px 0px;
+							}
+
+							@include responsive($media-tablet) {
+								padding: $navAnchorPadding;
+							}
+						}
+					}
+					> ul {
+						display: none;
+						background: $subNavBgColor;
+						top: 100%;
+						left: 0;
+						z-index: 9;
+						@include responsive($media-tablet) {
+							position: absolute;
+						}
+						> li {
+							padding: 0px;
+							> a {
+								white-space: nowrap;
+								color: $subNavColor;
+								text-decoration: none;
+								font-size: 14px;
+								&:hover {
+									background: $turquoise;
+								}
+							}
+						}
+					}
+
+					&:hover, &.active {
+						>a {
+							border-bottom: 5px solid $white;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	#headerToolbar #search_box #advanced_search .advanced-search-form {
+		#adv_search_time, #adv_search_day {
+			.checkbox>input {
+				width: 20px;
+				height: 20px;
+			}
+		}
+	}
+
+	.hide {
+		display: none !important;
+	}
+
+	.show {
+		display: block !important;
+	}
+}

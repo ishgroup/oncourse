@@ -1,0 +1,26 @@
+//
+//
+// site.scss
+//
+// This file must not be renamed or removed.
+// Contains all the styles related to the application
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+//
+// All the base styles divided into different files
+// for better management
+//
+
+@import "layout";
+@import "header";
+@import "content";
+@import "courses";
+@import "sidebar";
+@import "footer";
