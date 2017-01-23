@@ -15,7 +15,7 @@ function isAdded(courses, courseId) {
 
 export default connect((state, ownProps) => {
     return {
-        isAdded: isAdded(state.cart.courses, ownProps.id)
+        isAdded: isAdded(state.cart.courses, ownProps.classId)
     };
 }, (dispatch) => {
     return bindActionCreators({ onEnrol }, dispatch);

@@ -21,7 +21,7 @@ export function addCourse(courseId) {
             courseId
         });
 
-        req.then((course) => {
+        return req.then((course) => {
             dispatch({
                 type: ACTIONS.ADD_TO_CART_SUCCESS,
                 course
@@ -51,7 +51,7 @@ export function removeCourse(courseId) {
             courseId
         });
 
-        req.then(() => {
+        return req.then(() => {
             dispatch({
                 type: ACTIONS.REMOVE_FROM_CART_SUCCESS,
                 courseId

@@ -16,7 +16,18 @@ let app = new Bootstrap();
 
 app.setStore(store)
     .register('enrol-button', EnrolButton, {
-        id: 'number'
+        /**
+         * ToDo discuss with Andrey properties for enrol button.
+         * Now it almost looks like properties in tapestry template
+         */
+        classId: 'number',
+        className: 'string',
+        isCanceled: 'boolean',
+        isFinished: 'boolean',
+        hasAvailableEnrolmentPlaces: 'boolean',
+        allowByApplication: 'boolean',
+        paymentGatewayEnabled: 'boolean',
+        freePlaces: 'number'
     })
     .register('cart', Cart)
     .register('popup', PopupContainer)
