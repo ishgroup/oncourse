@@ -75,7 +75,8 @@ function refreshShortList() {
 
 						$('.confirmOrderDialog').stop(true, false).fadeIn('fast');
 
-						$(document).on('click', '.confirm-close-wrapper .closeButton', function() {
+						$(document).on('click', '.confirm-close-wrapper .closeButton', function(e) {
+							e.preventDefault();
 							$('.confirmOrderDialog').fadeOut('fast');
 							return false;
 						});
@@ -103,7 +104,8 @@ function refreshShortList() {
 				});
 
 				$('.confirmOrderDialog').stop(true, false).fadeIn('fast');
-				$(document).on('click', '.confirm-close-wrapper .closeButton', function() {
+				$(document).on('click', '.confirm-close-wrapper .closeButton', function(e) {
+					e.preventDefault();
 					$('.confirmOrderDialog').fadeOut('fast');
 					return false;
 				});
