@@ -16,22 +16,22 @@
 //
 
 #DetailsPage {
-	.courseItem {
-		.page-title {
-			font-size: $coursesHeaderItemFontSize;
-			font-weight: normal;
-		}
-		.addthis {
-			width: auto;
-		}
-	}
-	// Adding gap to course item first image at bottom
-	.content .courseItem>img:first-child {
-		margin-bottom: 6px;
-	}
-	.content-container {
-		padding-bottom: 0px;
-	}
+  .courseItem {
+    .page-title {
+      font-size: $coursesHeaderItemFontSize;
+      font-weight: normal;
+    }
+    .addthis {
+      width: auto;
+    }
+  }
+  // Adding gap to course item first image at bottom
+  .content .courseItem>img:first-child {
+    margin-bottom: 6px;
+  }
+  .content-container {
+    padding-bottom: 0px;
+  }
 }
 
 //
@@ -39,342 +39,341 @@
 //
 
 .internal-page {
-	&#ListPage, &#ProductsListPage {
-		.content {
-			.courseItem {
-				// Following backface-visibility used for text backface visibility
-				@include backface-visibility(hidden);
-				border-top: 2px dotted $primaryColor;
-				padding-top: 20px;
-			}
-		}
-		.content-container {
-			padding-bottom: 0px;
-		}
-	}
-	// Following style handles courses description
-	&#DetailsPage .courseDescription {
-		object {
-			float: left;
-			margin-right: 20px;
-			margin-bottom: 10px;
-		}
-		// First p tag of courses description container for first image of course
-		p:first-child {
-			margin-bottom: 0px;
-			> br {
-				display: none;
-			}
-			img {
-				float: $courseDescriptionFirstImageFloat;
-				margin: $courseDescriptionFirstImageMargin;
-			}
-		}
-	}
-	// Style for all courses and course details page
-	&#ListPage, &#DetailsPage {
-		.content {
-			font-size: $coursesContentFontSize;
-		}
-	}
+  &#ListPage, &#ProductsListPage {
+    .content {
+      .courseItem {
+        // Following backface-visibility used for text backface visibility
+        @include backface-visibility(hidden);
+        border-top: 2px dotted $primaryColor;
+        padding-top: 20px;
+      }
+    }
+    .content-container {
+      padding-bottom: 0px;
+    }
+  }
+  // Following style handles courses description
+  &#DetailsPage .courseDescription {
+    object {
+      float: left;
+      margin-right: 20px;
+      margin-bottom: 10px;
+    }
+    // First p tag of courses description container for first image of course
+    p:first-child {
+      margin-bottom: 0px;
+      > br {
+        display: none;
+      }
+      img {
+        float: $courseDescriptionFirstImageFloat;
+        margin: $courseDescriptionFirstImageMargin;
+      }
+    }
+  }
+  // Style for all courses and course details page
+  &#ListPage, &#DetailsPage {
+    .content {
+      font-size: $coursesContentFontSize;
+    }
+  }
 
-	/**
-	 * Following style handles courses item lists and course description
-	 */
+  /**
+   * Following style handles courses item lists and course description
+   */
 
-	.content {
-		.courseItem {
-			margin: 0px;
-			h2 {
-				margin: 0 0 5px;
-				font-size: $coursesHeaderItemFontSize;
-			}
-			h4 {
-				font-weight: bold;
-				margin-bottom: 3px;
-			}
-			h5 a {
-				font-weight: bold;
-			}
-			.NRTLogo {
-				float: right;
-			}
+  .content {
+    .courseItem {
+      margin: 0px;
+      h2 {
+        margin: 0 0 5px;
+        font-size: $coursesHeaderItemFontSize;
+      }
+      h4 {
+        font-weight: bold;
+        margin-bottom: 3px;
+      }
+      h5 a {
+        font-weight: bold;
+      }
+      .NRTLogo {
+        float: right;
+      }
 
-			// Following style for first image of course or add class (course-image) to any container
-			> img:first-child, .course-image {
-				float: none;
-				max-width: 120px;
-				margin: 0 auto;
-				display: block;
-				margin-bottom: 10px;
+      // Following style for first image of course or add class (course-image) to any container
+      > img:first-child, .course-image {
+        float: none;
+        max-width: $coursesThumbnailWidth;
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 10px;
 
-				// Following function handles responsive media screen
-				@include responsive($media-small) {
-					margin-right: 15px;
-					float: left;
-				}
-			}
-			.desc-image {
-				margin-bottom: 10px;
-			}
-			ul, ol {
-				list-style-position: $courseItemListStylePosition;
-				margin: $courseItemListMargin;
-				li {
-					margin-left: $courseItemListChildMarginLeft;
-				}
-			}
+        // Following function handles responsive media screen
+        @include responsive($media-small) {
+          margin-right: 15px;
+          float: left;
+        }
+      }
+      .desc-image {
+        margin-bottom: 10px;
+      }
+      ul, ol {
+        list-style-position: $courseItemListStylePosition;
+        margin: $courseItemListMargin;
+        li {
+          margin-left: $courseItemListChildMarginLeft;
+        }
+      }
 
-			// Courses default description
-			.courseDescription {
-				padding-top: 18px;
-				word-wrap: break-word;
-				p {
-					color: $courseDescriptionTextColor;
-				}
-			}
+      // Courses default description
+      .courseDescription {
+        padding-top: 18px;
+        word-wrap: break-word;
+        p {
+          color: $courseDescriptionTextColor;
+        }
+      }
 
-			// Courses short description
-			.courseShortDescription {
-				line-height: 19px;
-				max-height: 155px;
-				word-wrap: break-word;
-				overflow: hidden;
-				margin: 0 0 10px 0;
-				position: relative;
-			}
-			.courseImage {
-				float: right;
-				width: 44%;
-				text-align: right;
-				img {
-					word-break: break-word;
-				}
-			}
-			p {
-				margin-bottom: 20px;
-			}
+      // Courses short description
+      .courseShortDescription {
+        @include courses-short-desc($coursesDescriptionRows, $coursesDescriptionLineHeight, $coursesContentFontSize);
+        word-wrap: break-word;
+        overflow: hidden;
+        margin: 0 0 10px 0;
+        position: relative;
+      }
+      .courseImage {
+        float: right;
+        width: 44%;
+        text-align: right;
+        img {
+          word-break: break-word;
+        }
+      }
+      p {
+        margin-bottom: 20px;
+      }
 
-			// Class default description
-			.classDescription {
-				word-wrap: break-word;
-				color: $courseItemClassDescriptionColor;
-				margin: $courseItemClassDescriptionMargin;
-				position: relative;
-				top: 10px;
+      // Class default description
+      .classDescription {
+        word-wrap: break-word;
+        color: $courseItemClassDescriptionColor;
+        margin: $courseItemClassDescriptionMargin;
+        position: relative;
+        top: 10px;
 
-				// Header tags
-				h1, h2, h3, h4, h5 {
-					color: $courseItemClassDescriptionHeaderColor;
-					text-transform: none;
-					font-weight: bold;
-					margin-bottom: 18px;
-				}
-				h1 {
-					font-size: 20px
-				}
+        // Header tags
+        h1, h2, h3, h4, h5 {
+          color: $courseItemClassDescriptionHeaderColor;
+          text-transform: none;
+          font-weight: bold;
+          margin-bottom: 18px;
+        }
+        h1 {
+          font-size: 20px
+        }
 
-				h2 {
-					font-size: 18px
-				}
+        h2 {
+          font-size: 18px
+        }
 
-				h3 {
-					font-size: 16px
-				}
+        h3 {
+          font-size: 16px
+        }
 
-				h4 {
-					font-size: 14px
-				}
+        h4 {
+          font-size: 14px
+        }
 
-				h5 {
-					font-size: 12px
-				}
-			}
+        h5 {
+          font-size: 12px
+        }
+      }
 
-			.class-starting-dates {
-				margin-left: 126px;
-				padding-top: 10px;
+      .class-starting-dates {
+        margin-left: 126px;
+        padding-top: 10px;
 
-				h5 {
-					display: inline-block;
-					font-size: 13px;
-					font-weight: bold;
-					margin-bottom: 10px;
-					margin-right: 20px;
-					text-transform: uppercase;
-				}
+        h5 {
+          display: inline-block;
+          font-size: 13px;
+          font-weight: bold;
+          margin-bottom: 10px;
+          margin-right: 20px;
+          text-transform: uppercase;
+        }
 
-				ul {
-					display: inline-block;
-					margin: 0;
-				}
+        ul {
+          display: inline-block;
+          margin: 0;
+        }
 
-				li {
-					display: inline-block;
-					margin: 0 5px 5px 0;
+        li {
+          display: inline-block;
+          margin: 0 5px 5px 0;
 
-					&:first-child {
-						border-left: 0;
-					}
-				}
-			}
-			.description, .course_modules {
-				margin: $courseDescriptionMargin;
-				color: $courseDescriptionTextColor;
-			}
+          &:first-child {
+            border-left: 0;
+          }
+        }
+      }
+      .description, .course_modules {
+        margin: $courseDescriptionMargin;
+        color: $courseDescriptionTextColor;
+      }
 
-			// Course modules
-			.course_modules {
-				background-color: $courseModuleBackgroundColor;
-				border: $courseModuleBorder;
-				border-radius: $courseModuleBorderRadius;
-				margin: $courseModuleMargin;
-				>span {
-					padding: 5px;
-					padding-left: 40px;
-					border-bottom: $courseModuleSpanBottomBorder;
-					display: block;
-					position: relative;
-					background: $courseModuleSpanBackground;
-					cursor: pointer;
-					&.active {
-						background: $courseModuleSpanActiveBackground;
-					}
-				}
-				>ul {
-					margin: $courseModuleListMargin;
-					padding: $courseModuleListPadding;
-					display: none;
-					li {
-						padding-left: $courseModuleListChildPaddingLeft;
-					}
-				}
-			}
+      // Course modules
+      .course_modules {
+        background-color: $courseModuleBackgroundColor;
+        border: $courseModuleBorder;
+        border-radius: $courseModuleBorderRadius;
+        margin: $courseModuleMargin;
+        >span {
+          padding: 5px;
+          padding-left: 40px;
+          border-bottom: $courseModuleSpanBottomBorder;
+          display: block;
+          position: relative;
+          background: $courseModuleSpanBackground;
+          cursor: pointer;
+          &.active {
+            background: $courseModuleSpanActiveBackground;
+          }
+        }
+        >ul {
+          margin: $courseModuleListMargin;
+          padding: $courseModuleListPadding;
+          display: none;
+          li {
+            padding-left: $courseModuleListChildPaddingLeft;
+          }
+        }
+      }
 
-			// More link of course
-			.more {
-				display: block;
-				font-weight: normal;
-				@include background(linear-gradient(left center, rgba(255, 255, 255, 0) 50%, #ffffff 95%));
-				position: absolute;
-				bottom: 0px;
-				width: 100%;
-				right: 0;
-				text-align: right;
-				color: $secondaryColor;
-				z-index: 2;
+      // More link of course
+      .more {
+        display: block;
+        font-weight: normal;
+        @include background(linear-gradient(left center, rgba(255, 255, 255, 0) 50%, #ffffff 95%));
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        right: 0;
+        text-align: right;
+        color: $secondaryColor;
+        z-index: 2;
 
-				a {
-					color: $secondaryColor;
-					font-weight: bold;
-					text-decoration: none;
+        a {
+          color: $secondaryColor;
+          font-weight: bold;
+          text-decoration: none;
 
-					&:hover {
-						color: $primaryColor;
-						text-decoration: underline;
-					}
-				}
-			}
+          &:hover {
+            color: $primaryColor;
+            text-decoration: underline;
+          }
+        }
+      }
 
-			// Courses waiting link block of courses
-			.waiting-list-title {
-				float: left;
-				width: 100%;
-				position: relative;
-				background: $waitingListTitleBG;
-				font-size: $waitingListTitleFontSize;
-				margin-top: $waitingListTitleMarginTop;
-				text-align: $waitingListTitleAlign;
+      // Courses waiting link block of courses
+      .waiting-list-title {
+        float: left;
+        width: 100%;
+        position: relative;
+        background: $waitingListTitleBG;
+        font-size: $waitingListTitleFontSize;
+        margin-top: $waitingListTitleMarginTop;
+        text-align: $waitingListTitleAlign;
 
-				strong {
-					color: $primaryColor;
-				}
+        strong {
+          color: $primaryColor;
+        }
 
-				a {
-					color: $waitingListTitleAnchorColor;
-					text-decoration: none;
-					display: block;
-					padding: $waitingListTitleAnchorPadding;
+        a {
+          color: $waitingListTitleAnchorColor;
+          text-decoration: none;
+          display: block;
+          padding: $waitingListTitleAnchorPadding;
 
-					&:hover {
-						color: $waitingListTitleAnchorHoverColor;
-						text-decoration: underline;
-					}
-				}
+          &:hover {
+            color: $waitingListTitleAnchorHoverColor;
+            text-decoration: underline;
+          }
+        }
 
-				// Join button style of waiting list link
-				.join-btn {
-					display: $coursesJoinButtonDisplay;
-					background: $coursesJoinButtonBackground;
-					min-width: $coursesJoinButtonMinWidth;
-					padding: $coursesJoinButtonPadding;
-					font-size: $coursesJoinButtonFontSize;
-					color: $coursesJoinButtonColor;
-					line-height: $coursesJoinButtonLineHeight;
-					font-weight: 300;
-					text-align: center;
-					border-radius: $coursesJoinButtonBorderRadius;
-				}
+        // Join button style of waiting list link
+        .join-btn {
+          display: $coursesJoinButtonDisplay;
+          background: $coursesJoinButtonBackground;
+          min-width: $coursesJoinButtonMinWidth;
+          padding: $coursesJoinButtonPadding;
+          font-size: $coursesJoinButtonFontSize;
+          color: $coursesJoinButtonColor;
+          line-height: $coursesJoinButtonLineHeight;
+          font-weight: 300;
+          text-align: center;
+          border-radius: $coursesJoinButtonBorderRadius;
+        }
 
-				&:hover {
-					background: $waitingListTitleHoverBG;
-					a, strong {
-						color: $white;
-					}
-					.join-btn {
-						background: $coursesJoinButtonHoverBackground;
-						color: $coursesJoinButtonHoverColor;
-					}
-				}
-			}
-			.other-classes-control {
-				text-align: right;
-				font-size: 11px;
-				margin-bottom: 0;
-				a {
-					display: inline-block;
-					text-decoration: none;
-					padding: 6px;
-					padding-right: 20px;
-					background-image: url($showOtherClassesImage);
-					background-position: right 4px;
-					background-repeat: no-repeat
-				}
-			}
-			.full-classes-control {
-				text-align: right;
-				font-size: 11px;
-				margin-bottom: 0;
-				a {
-					display: inline-block;
-					text-decoration: none;
-					padding: 6px;
-					padding-right: 20px;
-					background-image: url($showFullClassesImage);
-					background-position: right 4px;
-					background-repeat: no-repeat;
-				}
-			}
-		}
-	}
+        &:hover {
+          background: $waitingListTitleHoverBG;
+          a, strong {
+            color: $white;
+          }
+          .join-btn {
+            background: $coursesJoinButtonHoverBackground;
+            color: $coursesJoinButtonHoverColor;
+          }
+        }
+      }
+      .other-classes-control {
+        text-align: right;
+        font-size: 11px;
+        margin-bottom: 0;
+        a {
+          display: inline-block;
+          text-decoration: none;
+          padding: 6px;
+          padding-right: 20px;
+          background-image: url($showOtherClassesImage);
+          background-position: right 4px;
+          background-repeat: no-repeat
+        }
+      }
+      .full-classes-control {
+        text-align: right;
+        font-size: 11px;
+        margin-bottom: 0;
+        a {
+          display: inline-block;
+          text-decoration: none;
+          padding: 6px;
+          padding-right: 20px;
+          background-image: url($showFullClassesImage);
+          background-position: right 4px;
+          background-repeat: no-repeat;
+        }
+      }
+    }
+  }
 
-	// Product's list and details page styles
-	&#ProductsListPage, &#ProductDetailsPage {
-		.content .producItem {
-			.courseShortDescription {
-				width: 100%;
-				float: none;
-			}
+  // Product's list and details page styles
+  &#ProductsListPage, &#ProductDetailsPage {
+    .content .producItem {
+      .courseShortDescription {
+        width: 100%;
+        float: none;
+      }
 
-			.classItem {
-				clear: both;
-				.classAction .enrolAction:hover {
-					// Changing enrol action button background color to 5% darken
-					background-color: darken($primaryColor, 5%);
-				}
-			}
-		}
-	}
+      .classItem {
+        clear: both;
+        .classAction .enrolAction:hover {
+          // Changing enrol action button background color to 5% darken
+          background-color: darken($primaryColor, 5%);
+        }
+      }
+    }
+  }
 }
 
 //
@@ -382,449 +381,449 @@
 //
 
 .classItem {
-	zoom: 1 \9;
-	position: relative;
-	padding: 5px;
-	background-color: $classItemBackgroundColor;
-	margin: 0 0 20px;
-	border: $classItemBorder;
-	border-left: $classItemBorderLeft;
-	&::after {
-		visibility: hidden;
-		display: block;
-		font-size: 0;
-		content: " ";
-		clear: both;
-		height: 0
-	}
-	&:hover {
-		border-color: $classItemBorderHoverColor;
+  zoom: 1 \9;
+  position: relative;
+  padding: 5px;
+  background-color: $classItemBackgroundColor;
+  margin: 0 0 20px;
+  border: $classItemBorder;
+  border-left: $classItemBorderLeft;
+  &::after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0
+  }
+  &:hover {
+    border-color: $classItemBorderHoverColor;
 
-		// Following function handles responsive media screen and showing bubble info on mouse over of classitem
-		@include responsive($media-tablet) {
-			.bubbleInfo {
-				display: $coursesBubbleInfoDisplay;
-			}
-		}
-	}
-	p {
-		margin-bottom: 3px;
-	}
+    // Following function handles responsive media screen and showing bubble info on mouse over of classitem
+    @include responsive($media-tablet) {
+      .bubbleInfo {
+        display: $coursesBubbleInfoDisplay;
+      }
+    }
+  }
+  p {
+    margin-bottom: 3px;
+  }
 
-	// Courses capitalize text of date start and end
-	.dtend, .dtstart {
-		text-transform: capitalize;
-	}
-	.classSessions {
-		display: none;
-	}
+  // Courses capitalize text of date start and end
+  .dtend, .dtstart {
+    text-transform: capitalize;
+  }
+  .classSessions {
+    display: none;
+  }
 
-	// Inner info of class item block
-	.class-item-info {
-		float: left;
-		width: 100%;
-		zoom: 1 \9;
-		font-size: 13px;
+  // Inner info of class item block
+  .class-item-info {
+    float: left;
+    width: 100%;
+    zoom: 1 \9;
+    font-size: 13px;
 
-		// Following function handles responsive media screen
-		@include responsive($media-tablet) {
-			width: 69%;
-		}
-		&::after {
-			visibility: hidden;
-			display: block;
-			font-size: 0;
-			content: " ";
-			clear: both;
-			height: 0
-		}
-		div {
-			line-height: 1.5;
-			padding: 2px 0 2px 19px
-		}
+    // Following function handles responsive media screen
+    @include responsive($media-tablet) {
+      width: 69%;
+    }
+    &::after {
+      visibility: hidden;
+      display: block;
+      font-size: 0;
+      content: " ";
+      clear: both;
+      height: 0
+    }
+    div {
+      line-height: 1.5;
+      padding: 2px 0 2px 19px
+    }
 
-		// Class left item info, and right item info
-		.class-item-info-l, .class-item-info-r {
-			float: left;
-			line-height: 1;
-			padding: 0;
-		}
-		.class-item-info-l {
-			padding-right: 0px;
-			width: 100%;
+    // Class left item info, and right item info
+    .class-item-info-l, .class-item-info-r {
+      float: left;
+      line-height: 1;
+      padding: 0;
+    }
+    .class-item-info-l {
+      padding-right: 0px;
+      width: 100%;
 
-			// Following function handles responsive media screen
-			@include responsive($media-small) {
-				width: 48%;
-				border-right: 1px solid #eee;
-			}
-		}
-		.class-item-info-r {
-			border: none;
-			width: 100%;
+      // Following function handles responsive media screen
+      @include responsive($media-small) {
+        width: 48%;
+        border-right: 1px solid #eee;
+      }
+    }
+    .class-item-info-r {
+      border: none;
+      width: 100%;
 
-			// Following function handles responsive media screen
-			@include responsive($media-small) {
-				width: 48%;
-				padding-left: 15px;
-			}
-		}
-		.summary {
-			display: none
-		}
+      // Following function handles responsive media screen
+      @include responsive($media-small) {
+        width: 48%;
+        padding-left: 15px;
+      }
+    }
+    .summary {
+      display: none
+    }
 
-		// Showing date icon on class info
-		.date {
-			line-height: 1.8;
-			background-image: url($coursesClassItemDateImage);
-			background-repeat: no-repeat;
-			background-position: left 5px;
-			padding-right: 20px;
-			.date-time {
-				border-bottom: 1px dotted;
-			}
-		}
-		.date-link {
-			display: $coursesClassItemDateDisplay;
-		}
-		.time-link {
-			display: $coursesClassItemTimeDisplay;
-		}
-		.session-link {
-			display: $coursesClassItemSessionDisplay;
-		}
+    // Showing date icon on class info
+    .date {
+      line-height: 1.8;
+      background-image: url($coursesClassItemDateImage);
+      background-repeat: no-repeat;
+      background-position: left 5px;
+      padding-right: 20px;
+      .date-time {
+        border-bottom: 1px dotted;
+      }
+    }
+    .date-link {
+      display: $coursesClassItemDateDisplay;
+    }
+    .time-link {
+      display: $coursesClassItemTimeDisplay;
+    }
+    .session-link {
+      display: $coursesClassItemSessionDisplay;
+    }
 
-		// Showing tutor icon on class info
-		.tutor {
-			display: $coursesClassItemTutorDisplay;
-			background-image: url($coursesClassItemTutorImage);
-			background-position: left 4px;
-			background-repeat: no-repeat
-		}
+    // Showing tutor icon on class info
+    .tutor {
+      display: $coursesClassItemTutorDisplay;
+      background-image: url($coursesClassItemTutorImage);
+      background-position: left 4px;
+      background-repeat: no-repeat
+    }
 
-		// Showing location icon on class info
-		.location {
-			display: $coursesClassItemLocationDisplay;
-			background-image: url($coursesClassItemLocationImage);
-			background-position: left top;
-			background-repeat: no-repeat
-		}
+    // Showing location icon on class info
+    .location {
+      display: $coursesClassItemLocationDisplay;
+      background-image: url($coursesClassItemLocationImage);
+      background-position: left top;
+      background-repeat: no-repeat
+    }
 
-		// Price block of class info
-		.price {
-			position: relative;
-			margin: 0px;
-			padding: 0;
-			display: $coursesClassItemPriceDisplay;
-			.discount-price {
-				color: #999999;
-			}
-			.fee-disabled {
-				text-decoration: line-through;
-				color: gray;
-			}
-			.fee-discounted {
-				color: $primaryColor;
-				margin-left: 5px
-			}
-			acronym.discount-price {
-				cursor: help
-			}
-		}
-		.link-timetable-location {
-			padding: 4px 0 0;
-		}
-	}
-	.location,
-	.class-item-info .link-timetable-location {
-		a {
-			border-bottom: 1px dotted;
-		}
-	}
+    // Price block of class info
+    .price {
+      position: relative;
+      margin: 0px;
+      padding: 0;
+      display: $coursesClassItemPriceDisplay;
+      .discount-price {
+        color: #999999;
+      }
+      .fee-disabled {
+        text-decoration: line-through;
+        color: gray;
+      }
+      .fee-discounted {
+        color: $primaryColor;
+        margin-left: 5px
+      }
+      acronym.discount-price {
+        cursor: help
+      }
+    }
+    .link-timetable-location {
+      padding: 4px 0 0;
+    }
+  }
+  .location,
+  .class-item-info .link-timetable-location {
+    a {
+      border-bottom: 1px dotted;
+    }
+  }
 
-	/**
-	 * Courses enrol action button
-	 */
+  /**
+   * Courses enrol action button
+   */
 
-	.classAction {
-		float: right;
-		width: 100%;
-		text-align: right;
-		font-size: 11px;
-		line-height: 1.5;
-		@include responsive($media-tablet) {
-			width: 31%;
-		}
+  .classAction {
+    float: right;
+    width: 100%;
+    text-align: right;
+    font-size: 11px;
+    line-height: 1.5;
+    @include responsive($media-tablet) {
+      width: 31%;
+    }
 
-		>div {
-			margin-bottom: 3px
-		}
-		.enrolAction {
-			font-family: $enrolActionFontFamily;
-			display: inline-block;
-			background: $enrolActionBackground;
-			color: $enrolActionColor;
-			text-transform: $enrolActionTextTransform;
-			font-weight: bold;
-			text-decoration: none;
-			width: 100%;
-			min-width: 110px;
-			padding: $enrolActionPadding;
-			margin: 5px 0 0;
-			font-size: $enrolActionFontSize;
-			line-height: $enrolActionLineHeight;
-			text-align: center;
-			border: $enrolActionBorder;
+    >div {
+      margin-bottom: 3px
+    }
+    .enrolAction {
+      font-family: $enrolActionFontFamily;
+      display: inline-block;
+      background: $enrolActionBackground;
+      color: $enrolActionColor;
+      text-transform: $enrolActionTextTransform;
+      font-weight: bold;
+      text-decoration: none;
+      width: 100%;
+      min-width: 110px;
+      padding: $enrolActionPadding;
+      margin: 5px 0 0;
+      font-size: $enrolActionFontSize;
+      line-height: $enrolActionLineHeight;
+      text-align: center;
+      border: $enrolActionBorder;
 
-			// Enrol action button's curved
-			@include border-radius(4px);
+      // Enrol action button's curved
+      @include border-radius(4px);
 
-			// Following function handles responsive media screen
-			@include responsive($media-tablet) {
-				width: $enrolActionWidth;
-				// Enrol action button's curved
-				@include border-radius($enrolActionBorderRadius);
-			}
-			&.enrol-added-class {
-				background: $secondaryColor;
-				border: 1px solid $enrolActionHoverBorderColor;
-			}
+      // Following function handles responsive media screen
+      @include responsive($media-tablet) {
+        width: $enrolActionWidth;
+        // Enrol action button's curved
+        @include border-radius($enrolActionBorderRadius);
+      }
+      &.enrol-added-class {
+        background: $secondaryColor;
+        border: 1px solid $enrolActionHoverBorderColor;
+      }
 
-			&:hover {
-				background: $enrolActionHoverBackground;
-				border: 1px solid $enrolActionHoverBorderColor;
-				color: $enrolActionHoverTextColor;
-			}
+      &:hover {
+        background: $enrolActionHoverBackground;
+        border: 1px solid $enrolActionHoverBorderColor;
+        color: $enrolActionHoverTextColor;
+      }
 
-			// Style added when enrol action is disabled
-			&.disabled {
-				background: $enrolActionDisabled;
-				text-indent: 0;
-				text-align: center;
-				border: 1px solid $enrolActionDisabledBorderColor;
-				color: $enrolActionDisabledTextColor;
-				font-size: 13px;
-				cursor: default;
-				&:hover {
-					color: darken($enrolActionDisabledTextColor, 5%);
-				}
-			}
-		}
-	}
-	.courseAddOrder {
-		padding-right: 15px;
-		background-image: url("/s/img/icon/add.png");
-		background-position: right 4px;
-		background-repeat: no-repeat
-	}
-	.courseEmail {
-		padding-right: 15px;
-		background-image: url("/s/img/icon/email.png");
-		background-position: right 5px;
-		background-repeat: no-repeat
-	}
+      // Style added when enrol action is disabled
+      &.disabled {
+        background: $enrolActionDisabled;
+        text-indent: 0;
+        text-align: center;
+        border: 1px solid $enrolActionDisabledBorderColor;
+        color: $enrolActionDisabledTextColor;
+        font-size: 13px;
+        cursor: default;
+        &:hover {
+          color: darken($enrolActionDisabledTextColor, 5%);
+        }
+      }
+    }
+  }
+  .courseAddOrder {
+    padding-right: 15px;
+    background-image: url("/s/img/icon/add.png");
+    background-position: right 4px;
+    background-repeat: no-repeat
+  }
+  .courseEmail {
+    padding-right: 15px;
+    background-image: url("/s/img/icon/email.png");
+    background-position: right 5px;
+    background-repeat: no-repeat
+  }
 
-	a {
-		color: #4D4D4D;
-		&:hover {
-			color: $primaryColor;
-		}
-	}
+  a {
+    color: #4D4D4D;
+    &:hover {
+      color: $primaryColor;
+    }
+  }
 
-	.session-divider {
-		display: inline-block;
-		padding: 0 7px;
-	}
+  .session-divider {
+    display: inline-block;
+    padding: 0 7px;
+  }
 
-	.session-number {
-		border-bottom: 1px dotted;
-	}
+  .session-number {
+    border-bottom: 1px dotted;
+  }
 }
 
 // Related courses of course list
 .relatedCourses ul {
-	list-style: none;
-	margin-left: 0;
-	margin-top: 2px;
-	li {
-		display: block;
-		margin-bottom: 5px;
-		a {
-			line-height: 22px
-		}
-	}
+  list-style: none;
+  margin-left: 0;
+  margin-top: 2px;
+  li {
+    display: block;
+    margin-bottom: 5px;
+    a {
+      line-height: 22px
+    }
+  }
 }
 
 // Courses class's bubbleinfo
 .bubbleInfo {
-	display: none;
-	font-family: $normalFontFamily;
-	font-size: 12px;
-	width: 256px;
-	border-collapse: collapse;
-	padding: 0 23px 0 0;
-	position: absolute;
-	left: $coursesBubbleInfoPositionLeft;
-	right: $coursesBubbleInfoPositionRight;
-	top: -20px;
-	z-index: 10;
-	.arrow {
-		position: absolute;
-		right: $coursesBubbleInfoArrowPositionRight;
-		left: $coursesBubbleInfoArrowPositionLeft;
-		top: 16px;
-		width: 23px;
-		height: 27px;
-		background-image: url($coursesBubbleInfoArrowImage);
-		background-position: right top;
-		background-repeat: no-repeat
-	}
-	.tooltip_popup {
-		position: relative;
-		padding: 20px 15px;
-		background-color: #fff;
-		border: 1px solid #a2a2a2;
-		@include border-radius(15px);
-		-moz-box-shadow: -2px 3px 8px #666;
-		-webkit-box-shadow: -2px 3px 8px #666;
-		box-shadow: -2px 3px 8px #666
-	}
-	.bubble_top {
-		margin-bottom: 15px
-	}
-	.class-link, .course-link {
-		background-repeat: no-repeat;
-		padding-left: 19px;
-		background-position: 0 4px;
-		padding-top: 3px
-	}
-	.class-link {
-		background-image: url("/s/img/printer.png");
-		background-position: left top;
-		background-repeat: no-repeat;
-		margin: 0 0 2px 0
-	}
-	.course-link {
-		background-image: url("/s/img/icon/documentinfo.png");
-		background-position: left 5px;
-		background-repeat: no-repeat;
-		line-height: 1.4
-	}
-	.waiting-list .waiting-list-title a {
-		line-height: 1
-	}
-	.waitinglist-block {
-		width: 100%;
-		overflow: auto
-	}
-	.timing-display {
-		display: inline-block;
-		font-weight: bold;
-		border: 1px solid silver;
-		padding: 2px;
-		margin-right: 3px;
-		background-color: white
-	}
-	.timing-yes {
-		color: #444
-	}
+  display: none;
+  font-family: $normalFontFamily;
+  font-size: 12px;
+  width: 256px;
+  border-collapse: collapse;
+  padding: 0 23px 0 0;
+  position: absolute;
+  left: $coursesBubbleInfoPositionLeft;
+  right: $coursesBubbleInfoPositionRight;
+  top: -20px;
+  z-index: 10;
+  .arrow {
+    position: absolute;
+    right: $coursesBubbleInfoArrowPositionRight;
+    left: $coursesBubbleInfoArrowPositionLeft;
+    top: 16px;
+    width: 23px;
+    height: 27px;
+    background-image: url($coursesBubbleInfoArrowImage);
+    background-position: right top;
+    background-repeat: no-repeat
+  }
+  .tooltip_popup {
+    position: relative;
+    padding: 20px 15px;
+    background-color: #fff;
+    border: 1px solid #a2a2a2;
+    @include border-radius(15px);
+    -moz-box-shadow: -2px 3px 8px #666;
+    -webkit-box-shadow: -2px 3px 8px #666;
+    box-shadow: -2px 3px 8px #666
+  }
+  .bubble_top {
+    margin-bottom: 15px
+  }
+  .class-link, .course-link {
+    background-repeat: no-repeat;
+    padding-left: 19px;
+    background-position: 0 4px;
+    padding-top: 3px
+  }
+  .class-link {
+    background-image: url("/s/img/printer.png");
+    background-position: left top;
+    background-repeat: no-repeat;
+    margin: 0 0 2px 0
+  }
+  .course-link {
+    background-image: url("/s/img/icon/documentinfo.png");
+    background-position: left 5px;
+    background-repeat: no-repeat;
+    line-height: 1.4
+  }
+  .waiting-list .waiting-list-title a {
+    line-height: 1
+  }
+  .waitinglist-block {
+    width: 100%;
+    overflow: auto
+  }
+  .timing-display {
+    display: inline-block;
+    font-weight: bold;
+    border: 1px solid silver;
+    padding: 2px;
+    margin-right: 3px;
+    background-color: white
+  }
+  .timing-yes {
+    color: #444
+  }
 
-	.timing-no {
-		color: silver
-	}
-	.timing-display img {
-		display: inline;
-		width: 16px;
-		margin: 0;
-		margin-bottom: -5px
-	}
-	.timing-daytime, .timing-evening {
-		background-position: -1px top;
-		background-repeat: no-repeat;
-		padding: 0
-	}
-	.timing-daytime {
-		background-image: url("/s/img/sun6-faded.png");
-	}
-	.timing-evening {
-		background-image: url("/s/img/moon6-faded.png");
-	}
+  .timing-no {
+    color: silver
+  }
+  .timing-display img {
+    display: inline;
+    width: 16px;
+    margin: 0;
+    margin-bottom: -5px
+  }
+  .timing-daytime, .timing-evening {
+    background-position: -1px top;
+    background-repeat: no-repeat;
+    padding: 0
+  }
+  .timing-daytime {
+    background-image: url("/s/img/sun6-faded.png");
+  }
+  .timing-evening {
+    background-image: url("/s/img/moon6-faded.png");
+  }
 
-	.timing-daytime-yes, .timing-daytime-match, .timing-daytime-fail,
-	.timing-evening-yes, .timing-evening-match, .timing-evening-fail,
-	.time-evening, .time-daytime {
-		background-position: left top;
-		background-repeat: no-repeat
-	}
-	.timing-daytime-yes {
-		background-image: url("/s/img/sun6.png");
-	}
-	.timing-daytime-match {
-		background-image: url("/s/img/sun6-green.png");
-	}
-	.timing-daytime-fail {
-		background-image: url("/s/img/sun6-red.png");
-	}
-	.timing-evening-yes {
-		background-image: url("/s/img/moon6.png");
-	}
-	.timing-evening-match {
-		background-image: url("/s/img/moon6-green.png");
-	}
-	.timing-evening-fail {
-		background-image: url("/s/img/moon6-red.png");
-	}
+  .timing-daytime-yes, .timing-daytime-match, .timing-daytime-fail,
+  .timing-evening-yes, .timing-evening-match, .timing-evening-fail,
+  .time-evening, .time-daytime {
+    background-position: left top;
+    background-repeat: no-repeat
+  }
+  .timing-daytime-yes {
+    background-image: url("/s/img/sun6.png");
+  }
+  .timing-daytime-match {
+    background-image: url("/s/img/sun6-green.png");
+  }
+  .timing-daytime-fail {
+    background-image: url("/s/img/sun6-red.png");
+  }
+  .timing-evening-yes {
+    background-image: url("/s/img/moon6.png");
+  }
+  .timing-evening-match {
+    background-image: url("/s/img/moon6-green.png");
+  }
+  .timing-evening-fail {
+    background-image: url("/s/img/moon6-red.png");
+  }
 
-	.time-evening, .time-daytime {
-		padding-left: 16px;
-		margin-left: -6px
-	}
-	.time-evening {
-		background-image: url("/s/img/moon6-faded.png");
-	}
-	.time-daytime {
-		background-image: url("/s/img/sun6-faded.png");
-	}
+  .time-evening, .time-daytime {
+    padding-left: 16px;
+    margin-left: -6px
+  }
+  .time-evening {
+    background-image: url("/s/img/moon6-faded.png");
+  }
+  .time-daytime {
+    background-image: url("/s/img/sun6-faded.png");
+  }
 
-	.timing-match {
-		color: #0f6e00
-	}
-	.timing-fail {
-		color: #c53628
-	}
+  .timing-match {
+    color: #0f6e00
+  }
+  .timing-fail {
+    color: #c53628
+  }
 }
 
 .class-details-title {
-	zoom: 1 \9;
-	position: relative;
-	min-height: 40px;
-	margin: 0 0 5px 0;
-	&::after {
-		visibility: hidden;
-		display: block;
-		font-size: 0;
-		content: " ";
-		clear: both;
-		height: 0
-	}
-	>h1 {
-		margin: 0 210px 0 0 !important
-	}
-	>.print-page {
-		position: absolute;
-		top: 0;
-		right: 0;
-		padding: 6px 10px 6px 40px;
-		text-align: right;
-		color: brown;
-		font-weight: bold;
-		font-size: 14px;
-		border: 1px solid silver;
-		background-image: url("/s/img/icon/printer1.png");
-		background-position: 4px 4px;
-		background-repeat: no-repeat;
-		@include border-radius(10px);
-	}
+  zoom: 1 \9;
+  position: relative;
+  min-height: 40px;
+  margin: 0 0 5px 0;
+  &::after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0
+  }
+  >h1 {
+    margin: 0 210px 0 0 !important
+  }
+  >.print-page {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 6px 10px 6px 40px;
+    text-align: right;
+    color: brown;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid silver;
+    background-image: url("/s/img/icon/printer1.png");
+    background-position: 4px 4px;
+    background-repeat: no-repeat;
+    @include border-radius(10px);
+  }
 }
 
 //
@@ -832,207 +831,207 @@
 //
 
 .courseShortDescription {
-	&::after {
-		filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#00FFFFFF', EndColorStr='#FFFFFFFF');
-		@include background(linear-gradient(left center, rgba(255,255,255,0) 50%,#ffffff 90%));
-		bottom: 0px;
-		content: "";
-		display: block;
-		height: 20px;
-		right: 0;
-		position: absolute;
-		width: 100%;
-	}
+  &::after {
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#00FFFFFF', EndColorStr='#FFFFFFFF');
+    @include background(linear-gradient(left center, rgba(255,255,255,0) 50%,#ffffff 90%));
+    bottom: 0px;
+    content: "";
+    display: block;
+    height: 20px;
+    right: 0;
+    position: absolute;
+    width: 100%;
+  }
 }
 
 // Courses related items
 
 .related-items {
-	border-top: 1px solid #ececec;
-	margin-top: 30px;
-	padding-top: 20px;
+  border-top: 1px solid #ececec;
+  margin-top: 30px;
+  padding-top: 20px;
 
-	h3 {
-		font-size: 16px;
-		margin-bottom: 5px;
-	}
+  h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
 
-	a {
-		&:hover {
-			color: $primaryColor;
-		}
-	}
+  a {
+    &:hover {
+      color: $primaryColor;
+    }
+  }
 }
 
 // Class Panels
 
 .course-classes {
-	clear: both;
-	margin-bottom: 20px;
+  clear: both;
+  margin-bottom: 20px;
 }
 
 
 .show-if-js {
-	display: none;
+  display: none;
 
-	.has-js & {
-		display: block;
-	}
+  .has-js & {
+    display: block;
+  }
 }
 
 // Hiding page title after course classes
 .page-title + .course-classes {
-	h4, h5 {
-		display: none;
-	}
+  h4, h5 {
+    display: none;
+  }
 }
 
 // Displaying page title after course classes
 .right-content {
-	h1.summary.page-title {
-		display: block;
-	}
+  h1.summary.page-title {
+    display: block;
+  }
 }
 
 //
 // Courses class's tutor popup content details
 //
 #popup-content {
-	padding: 30px 54px;
-	line-height: 1.2;
-	p {
-		margin-bottom: 10px;
-		width: 68%;
-	}
-	.tutors_details {
-		zoom: 1 \9;
-		&::after {
-			visibility: hidden;
-			display: block;
-			font-size: 0;
-			content: " ";
-			clear: both;
-			height: 0
-		}
-		ul.attachedImages, .tutor_pic {
-			position: initial;
-			width: 213px;
-			float: right;
-			margin-left: 20px;
-			margin-bottom: 20px;
-			right: 0px;
+  padding: 30px 54px;
+  line-height: 1.2;
+  p {
+    margin-bottom: 10px;
+    width: 68%;
+  }
+  .tutors_details {
+    zoom: 1 \9;
+    &::after {
+      visibility: hidden;
+      display: block;
+      font-size: 0;
+      content: " ";
+      clear: both;
+      height: 0
+    }
+    ul.attachedImages, .tutor_pic {
+      position: initial;
+      width: 213px;
+      float: right;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      right: 0px;
 
-			li img, img {
-				box-shadow: 0 0 5px #333;
-				padding: 2px;
-				width: 100%;
-				max-width: 100%;
-			}
-		}
-	}
-	.tutors_classes span {
-		display: list-item;
-		list-style: disc inside
-	}
+      li img, img {
+        box-shadow: 0 0 5px #333;
+        padding: 2px;
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+  .tutors_classes span {
+    display: list-item;
+    list-style: disc inside
+  }
 }
 #timeline-wrap {
-	display: none;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -200px 0 0 -375px;
-	padding: 10px;
-	width: 750px;
-	height: 400px;
-	font-size: 90%;
-	z-index: 12;
-	background: white;
-	border-right: 1px solid #888;
-	border-bottom: 1px solid #888;
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -200px 0 0 -375px;
+  padding: 10px;
+  width: 750px;
+  height: 400px;
+  font-size: 90%;
+  z-index: 12;
+  background: white;
+  border-right: 1px solid #888;
+  border-bottom: 1px solid #888;
 }
 
 #timeline {
-	width: 748px;
-	height: 398px;
-	background: #EEE;
-	border: 1px solid #AAA
+  width: 748px;
+  height: 398px;
+  background: #EEE;
+  border: 1px solid #AAA
 }
 
 .session-table {
-	width: 100%;
-	font-size: 12px;
-	margin: 10px 20px;
-	thead tr th {
-		padding: 5px 8px;
-		font-weight: bold;
-		text-align: left
-	}
-	td {
-		padding: 5px;
-		border-top: 1px solid #DDD;
-		padding: 7px 0;
-		text-align: left
-	}
-	a:link:hover, a:visited:hover {
-		text-decoration: underline
-	}
+  width: 100%;
+  font-size: 12px;
+  margin: 10px 20px;
+  thead tr th {
+    padding: 5px 8px;
+    font-weight: bold;
+    text-align: left
+  }
+  td {
+    padding: 5px;
+    border-top: 1px solid #DDD;
+    padding: 7px 0;
+    text-align: left
+  }
+  a:link:hover, a:visited:hover {
+    text-decoration: underline
+  }
 
-	a:link {
-		color: $primaryColor;
-		&:hover {
-			color: #444;
-		}
-	}
+  a:link {
+    color: $primaryColor;
+    &:hover {
+      color: #444;
+    }
+  }
 }
 
 //
 // Confirm order dialog
 //
 .confirmOrderDialog {
-	display: none;
-	width: 250px;
-	position: absolute;
-	right: 150px;
-	top: 100px;
-	left: 50%;
-	margin-left: -125px;
-	padding: 20px;
-	background: #fff;
-	border: 1px solid #444;
-	z-index: 5;
-	font-size: 14px;
-	box-shadow: 0px 0px 20px rgba(68, 68, 68, 0.3);
-	@include border-radius(4px);
-	div.closeButton {
-		display: none
-	}
-	div {
-		margin-bottom: 3px
-	}
+  display: none;
+  width: 250px;
+  position: absolute;
+  right: 150px;
+  top: 100px;
+  left: 50%;
+  margin-left: -125px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #444;
+  z-index: 5;
+  font-size: 14px;
+  box-shadow: 0px 0px 20px rgba(68, 68, 68, 0.3);
+  @include border-radius(4px);
+  div.closeButton {
+    display: none
+  }
+  div {
+    margin-bottom: 3px
+  }
 
-	.confirm-proseed {
-		text-align: center;
-		.button {
-			display: inline-block;
-			padding: 5px 10px;
-			background: $confirmedProceedBackground;
-			color: $confirmedProceedColor;
-			text-transform: uppercase;
-			border: 0;
-			text-decoration: none;
-			font-size: $confirmedProceedFontSize;
-			font-weight: 700;
-		}
-	}
-	.classDate {
-		font-size: 11px;
-		color: #666
-	}
+  .confirm-proseed {
+    text-align: center;
+    .button {
+      display: inline-block;
+      padding: 5px 10px;
+      background: $confirmedProceedBackground;
+      color: $confirmedProceedColor;
+      text-transform: uppercase;
+      border: 0;
+      text-decoration: none;
+      font-size: $confirmedProceedFontSize;
+      font-weight: 700;
+    }
+  }
+  .classDate {
+    font-size: 11px;
+    color: #666
+  }
 
-	.confirm-close-wrapper {
-		border-top: 1px solid #444;
-		padding: 10px 0 0 0;
-		text-align: center;
-		font-size: 16px
-	}
+  .confirm-close-wrapper {
+    border-top: 1px solid #444;
+    padding: 10px 0 0 0;
+    text-align: center;
+    font-size: 16px
+  }
 }

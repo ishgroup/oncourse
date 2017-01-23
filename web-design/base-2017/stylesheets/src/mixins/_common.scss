@@ -80,3 +80,16 @@
     @include transform(translateX(-50%));
   }
 }
+
+@mixin courses-short-desc($row, $line-height, $font-size) {
+  $unit-line-height: 0;
+  font-size: _convert-units(convert-px($font-size), 'px');
+  line-height: $line-height;
+  @if unit($line-height) != 'px' {
+    $unit-line-height: (strip-units($line-height) * convert-px($font-size));
+  } @else {
+    $unit-line-height: strip-units($line-height);
+  }
+  $value: strip-units($unit-line-height * $row);
+  max-height: _convert-units($value, 'px');
+}

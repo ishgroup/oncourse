@@ -128,8 +128,15 @@ $coursesContentFontSize: 13px !default;
 // Following settings are handles courses items style
 //
 
+// Courses short description rows
+$coursesDescriptionRows: 5 !default;
+// Courses short description text height
+$coursesDescriptionLineHeight: 19px !default;
+
 // Course item header font size
 $coursesHeaderItemFontSize: 28px !default;
+// Adjust courses thumbnail max width
+$coursesThumbnailWidth: 120px !default;
 // Course description text color
 $courseDescriptionTextColor: #252525 !default;
 // Course description block bottom margin

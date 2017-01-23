@@ -1,0 +1,21 @@
+//
+//
+// convert-px.scss
+//
+// Function convert all value in pixel
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+@function convert-px($value) {
+  $unit-value: strip-units($value);
+  @if unit($value) == 'em' or unit($value) == 'rem' {
+    @return ($unit-value * 16);
+  } @else {
+    @return $unit-value;
+  }
+}
