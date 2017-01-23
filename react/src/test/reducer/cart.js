@@ -5,11 +5,12 @@ describe('cart reducer', () => {
 
     it('should return initial state', () => {
         expect(cart(undefined, {})).to.deep.equal({
-            courses: []
+            courses: [],
+            products: []
         });
     });
 
-    describe('ADD_TO_CART action handling', () => {
+    describe('ADD_CLASS_TO_CART action handling', () => {
 
         let course1, course2;
 
@@ -24,7 +25,7 @@ describe('cart reducer', () => {
             };
         });
 
-        it('should handle ADD_TO_CART', () => {
+        it('should handle ADD_CLASS_TO_CART', () => {
             let state = cart({
                 courses: [{
                     id: course1.id,
@@ -35,7 +36,7 @@ describe('cart reducer', () => {
                     error: {}
                 }]
             }, {
-                type: ACTIONS.ADD_TO_CART,
+                type: ACTIONS.ADD_CLASS_TO_CART,
                 courseId: 1
             });
 
@@ -51,7 +52,7 @@ describe('cart reducer', () => {
             });
 
             state = cart(state, {
-                type: ACTIONS.ADD_TO_CART,
+                type: ACTIONS.ADD_CLASS_TO_CART,
                 courseId: 2
             });
 
@@ -66,7 +67,7 @@ describe('cart reducer', () => {
             });
 
             state = cart(state, {
-                type: ACTIONS.ADD_TO_CART,
+                type: ACTIONS.ADD_CLASS_TO_CART,
                 courseId: 3
             });
 
@@ -85,7 +86,7 @@ describe('cart reducer', () => {
         });
 
 
-        it('should handle ADD_TO_CART_SUCCESS', () => {
+        it('should handle ADD_CLASS_TO_CART_SUCCESS', () => {
             let state = cart({
                 courses: [{
                     id: course1.id,
@@ -95,7 +96,7 @@ describe('cart reducer', () => {
                     pending: true
                 }]
             }, {
-                type: ACTIONS.ADD_TO_CART_SUCCESS,
+                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
                 course: course2
             });
 
@@ -111,7 +112,7 @@ describe('cart reducer', () => {
             });
 
             state = cart(state, {
-                type: ACTIONS.ADD_TO_CART_SUCCESS,
+                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
                 course: course1
             });
 
@@ -128,7 +129,7 @@ describe('cart reducer', () => {
             });
 
             state = cart(state, {
-                type: ACTIONS.ADD_TO_CART_SUCCESS,
+                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
                 course: course1
             });
 
@@ -145,7 +146,7 @@ describe('cart reducer', () => {
             });
         });
 
-        it('should handle ADD_TO_CART_FAILURE', () => {
+        it('should handle ADD_CLASS_TO_CART_FAILURE', () => {
             let state = cart({
                 courses: [{
                     id: course1.id,
@@ -155,7 +156,7 @@ describe('cart reducer', () => {
                     pending: true
                 }]
             }, {
-                type: ACTIONS.ADD_TO_CART_FAILURE,
+                type: ACTIONS.ADD_CLASS_TO_CART_FAILURE,
                 courseId: course2.id,
                 error: {}
             });
@@ -173,7 +174,7 @@ describe('cart reducer', () => {
         });
     });
 
-    describe('REMOVE_FROM_CART action handling', () => {
+    describe('REMOVE_CLASS_FROM_CART action handling', () => {
         let course1, course2;
 
         beforeEach(() => {
@@ -187,7 +188,7 @@ describe('cart reducer', () => {
             };
         });
 
-        it('should handle REMOVE_FROM_CART', () => {
+        it('should handle REMOVE_CLASS_FROM_CART', () => {
             let state = cart({
                 courses: [{
                     id: course1.id,
@@ -195,7 +196,7 @@ describe('cart reducer', () => {
                     pending: false
                 }]
             }, {
-                type: ACTIONS.REMOVE_FROM_CART,
+                type: ACTIONS.REMOVE_CLASS_FROM_CART,
                 courseId: 1
             });
 
@@ -214,7 +215,7 @@ describe('cart reducer', () => {
                     pending: true
                 }]
             }, {
-                type: ACTIONS.REMOVE_FROM_CART,
+                type: ACTIONS.REMOVE_CLASS_FROM_CART,
                 courseId: 1
             });
 
@@ -234,7 +235,7 @@ describe('cart reducer', () => {
                     error: {}
                 }]
             }, {
-                type: ACTIONS.REMOVE_FROM_CART,
+                type: ACTIONS.REMOVE_CLASS_FROM_CART,
                 courseId: 1
             });
 
@@ -247,7 +248,7 @@ describe('cart reducer', () => {
             });
         });
 
-        it('should handle REMOVE_FROM_CART_SUCCESS', () => {
+        it('should handle REMOVE_CLASS_FROM_CART_SUCCESS', () => {
             let state = cart({
                 courses: [{
                     id: course1.id,
@@ -259,7 +260,7 @@ describe('cart reducer', () => {
                     pending: false
                 }]
             }, {
-                type: ACTIONS.REMOVE_FROM_CART_SUCCESS,
+                type: ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS,
                 courseId: course1.id
             });
 
@@ -272,7 +273,7 @@ describe('cart reducer', () => {
             });
         });
 
-        it('should handle REMOVE_FROM_CART_FAILURE', () => {
+        it('should handle REMOVE_CLASS_FROM_CART_FAILURE', () => {
             let state = cart({
                 courses: [{
                     id: course1.id,
@@ -284,7 +285,7 @@ describe('cart reducer', () => {
                     pending: false
                 }]
             }, {
-                type: ACTIONS.REMOVE_FROM_CART_FAILURE,
+                type: ACTIONS.REMOVE_CLASS_FROM_CART_FAILURE,
                 courseId: course1.id,
                 error: {}
             });

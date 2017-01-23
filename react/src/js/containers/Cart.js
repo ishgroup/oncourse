@@ -2,23 +2,27 @@ import Cart from '../components/cart/Cart';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { plural } from 'js/lib/utils';
-import { removeCourse as onRemoveCourse } from '../actions/cart';
+import { removeClass, removeProduct } from '../actions/cart';
 
-function getCourses(courses) {
-    return courses.reduce((arr, course) => {
-        if(course.pending || course.error) {
+function getCourses(classes) {
+    return classes.reduce((arr, classCourse) => {
+        if(classCourse.pending || classCourse.error) {
             return arr;
         }
 
-        arr.push(course.data);
+        arr.push(classCourse.data);
         return arr;
     }, []);
 }
 
 export default connect((state) => {
     return {
-        courses: getCourses(state.cart.courses)
+        classes: getCourses(state.cart.courses),
+        products: state.cart.products
     };
 }, (dispatch) => {
-    return bindActionCreators({ onRemoveCourse }, dispatch);
+    return bindActionCreators({
+        removeClass,
+        removeProduct
+    }, dispatch);
 })(Cart);

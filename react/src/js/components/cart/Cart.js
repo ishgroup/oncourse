@@ -1,4 +1,7 @@
-import CartOrderItem from './CartOrderItem';
+import CartClassItem from './CartClassItem';
+import CartProductItem from './CartProductItem';
+import classnames from 'classnames';
+import { plural } from 'js/lib/utils';
 import nativeExtend from './Cart.extend';
 import customExtend from './Cart.custom';
 
@@ -21,7 +24,7 @@ class Cart extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(!nextProps.courses.length) {
+        if(!nextProps.classes.length) {
             this.setState({
                 showedShortList: false
             });
@@ -31,21 +34,26 @@ class Cart extends React.Component {
     render() {
         return extend.render.apply({
             props: {
-                courses: this.props.courses,
+                classes: this.props.classes,
+                products: this.props.products,
                 showedShortList: this.state.showedShortList
             },
             methods: {
                 toggleShortList: this.toggleShortList,
-                onRemoveCourse: this.props.onRemoveCourse
+                removeClass: this.props.removeClass,
+                removeProduct: this.props.removeProduct
             },
-            components: { CartOrderItem }
+            utils: { plural, classnames },
+            components: { CartProductItem, CartClassItem }
         });
     }
 }
 
 Cart.propTypes = {
-    courses: React.PropTypes.array,
-    onRemoveCourse: React.PropTypes.func
+    classes: React.PropTypes.array,
+    products: React.PropTypes.array,
+    removeClass: React.PropTypes.func,
+    removeProduct: React.PropTypes.func
 };
 
 export default Cart;

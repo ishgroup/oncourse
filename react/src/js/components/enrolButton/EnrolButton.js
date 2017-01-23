@@ -18,7 +18,7 @@ class EnrolButton extends React.Component {
                 });
             } else {
                 //ToDo how to handle error?
-                this.props.onEnrol(this.props.classId)
+                this.props.addClass(this.props.classId)
                     .then(() => {
                         this.setState({
                             showedPopup: true,
@@ -67,7 +67,7 @@ class EnrolButton extends React.Component {
 
 EnrolButton.propTypes = {
     isAdded: React.PropTypes.bool,
-    onEnrol: React.PropTypes.func,
+    addClass: React.PropTypes.func,
 
     // props from container
     classId: React.PropTypes.number,

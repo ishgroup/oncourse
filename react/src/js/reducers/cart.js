@@ -1,12 +1,13 @@
 import ACTIONS from '../constants';
 
 const initialState = {
-    courses: []
+    courses: [],
+    products: []
 };
 
 const handleActions = {
 
-    [ACTIONS.ADD_TO_CART](state, action) {
+    [ACTIONS.ADD_CLASS_TO_CART](state, action) {
         let course = state.courses.find((course) => {
                 return course.id === action.courseId;
             }),
@@ -39,7 +40,7 @@ const handleActions = {
         };
     },
 
-    [ACTIONS.ADD_TO_CART_SUCCESS](state, action) {
+    [ACTIONS.ADD_CLASS_TO_CART_SUCCESS](state, action) {
         let course = state.courses.find((course) => {
             return course.id === action.course.id;
         });
@@ -64,7 +65,7 @@ const handleActions = {
         };
     },
 
-    [ACTIONS.ADD_TO_CART_FAILURE](state, action) {
+    [ACTIONS.ADD_CLASS_TO_CART_FAILURE](state, action) {
         let course = state.courses.find((course) => {
             return course.id === action.courseId;
         });
@@ -89,7 +90,7 @@ const handleActions = {
         };
     },
 
-    [ACTIONS.REMOVE_FROM_CART](state, action) {
+    [ACTIONS.REMOVE_CLASS_FROM_CART](state, action) {
         let course = state.courses.find((course) => {
                 return course.id === action.courseId;
             }),
@@ -121,7 +122,7 @@ const handleActions = {
         };
     },
 
-    [ACTIONS.REMOVE_FROM_CART_SUCCESS](state, action) {
+    [ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS](state, action) {
         let course = state.courses.find((course) => {
             return course.id === action.courseId;
         });
@@ -141,7 +142,7 @@ const handleActions = {
         };
     },
 
-    [ACTIONS.REMOVE_FROM_CART_FAILURE](state, action) {
+    [ACTIONS.REMOVE_CLASS_FROM_CART_FAILURE](state, action) {
         let course = state.courses.find((course) => {
             return course.id === action.courseId;
         });

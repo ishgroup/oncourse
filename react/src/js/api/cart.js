@@ -11,7 +11,7 @@ import request from 'js/lib/request';
  * @description adds course to cart
  * @returns {jqXHR}
  */
-export function addCourse(courseId) {
+export function addClass(courseId) {
     return request({
         type: 'put',
         url: config.api_root + '/cart/courses/' + courseId
@@ -24,7 +24,7 @@ export function addCourse(courseId) {
  * @description remove course from cart
  * @returns {jqXHR}
  */
-export function removeCourse(courseId) {
+export function removeClass(courseId) {
     return request({
         type: 'delete',
         url: config.api_root + '/cart/courses/' + courseId
@@ -32,5 +32,5 @@ export function removeCourse(courseId) {
 }
 
 export default {
-    addCourse, removeCourse
+    addClass, removeClass
 };

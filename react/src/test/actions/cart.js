@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import ACTIONS from 'js/constants';
-import { addCourse, removeCourse } from 'js/actions/cart';
+import { addClass, removeClass } from 'js/actions/cart';
 
 let getDispatch = function(handleActions) {
     return function (action) {
@@ -13,7 +13,7 @@ let getDispatch = function(handleActions) {
 describe('cart actions', () => {
     let handleActions;
 
-    describe('ADD_TO_CART action', () => {
+    describe('ADD_CLASS_TO_CART action', () => {
         let course = {
             id: 1,
             name: 'Course 1'
@@ -21,21 +21,21 @@ describe('cart actions', () => {
 
         beforeEach(() => {
             handleActions = {
-                [ACTIONS.ADD_TO_CART](action) {
-                    expect(action, ACTIONS.ADD_TO_CART).to.deep.equal({
-                        type: ACTIONS.ADD_TO_CART,
+                [ACTIONS.ADD_CLASS_TO_CART](action) {
+                    expect(action, ACTIONS.ADD_CLASS_TO_CART).to.deep.equal({
+                        type: ACTIONS.ADD_CLASS_TO_CART,
                         courseId: course.id
                     });
                 }
             };
         });
 
-        it('should create ADD_TO_CART and ADD_TO_CART_SUCCESS actions', (done) => {
+        it('should create ADD_CLASS_TO_CART and ADD_CLASS_TO_CART_SUCCESS actions', (done) => {
             handleActions = {
                 ...handleActions,
-                [ACTIONS.ADD_TO_CART_SUCCESS](action) {
-                    expect(action, ACTIONS.ADD_TO_CART_SUCCESS).to.deep.equal({
-                        type: ACTIONS.ADD_TO_CART_SUCCESS,
+                [ACTIONS.ADD_CLASS_TO_CART_SUCCESS](action) {
+                    expect(action, ACTIONS.ADD_CLASS_TO_CART_SUCCESS).to.deep.equal({
+                        type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
                         course
                     });
                     done();
@@ -46,15 +46,15 @@ describe('cart actions', () => {
                 .put('/cart/courses/' + course.id)
                 .reply(200, course);
 
-            addCourse(course.id)(getDispatch(handleActions));
+            addClass(course.id)(getDispatch(handleActions));
         });
 
-        it('should create ADD_TO_CART and ADD_TO_CART_FAILURE actions', (done) => {
+        it('should create ADD_CLASS_TO_CART and ADD_CLASS_TO_CART_FAILURE actions', (done) => {
             handleActions = {
                 ...handleActions,
-                [ACTIONS.ADD_TO_CART_FAILURE](action) {
-                    expect(action, ACTIONS.ADD_TO_CART_FAILURE).to.deep.equal({
-                        type: ACTIONS.ADD_TO_CART_FAILURE,
+                [ACTIONS.ADD_CLASS_TO_CART_FAILURE](action) {
+                    expect(action, ACTIONS.ADD_CLASS_TO_CART_FAILURE).to.deep.equal({
+                        type: ACTIONS.ADD_CLASS_TO_CART_FAILURE,
                         courseId: course.id,
                         error: {}
                     });
@@ -66,18 +66,18 @@ describe('cart actions', () => {
                 .put('/cart/courses/' + course.id)
                 .replyWithError(500);
 
-            addCourse(course.id)(getDispatch(handleActions));
+            addClass(course.id)(getDispatch(handleActions));
         });
     });
 
-    describe('REMOVE_FROM_CART action', () => {
+    describe('REMOVE_CLASS_FROM_CART action', () => {
         let courseId = 1;
 
         beforeEach(() => {
             handleActions = {
-                [ACTIONS.REMOVE_FROM_CART](action) {
-                    expect(action, ACTIONS.REMOVE_FROM_CART).to.deep.equal({
-                        type: ACTIONS.REMOVE_FROM_CART,
+                [ACTIONS.REMOVE_CLASS_FROM_CART](action) {
+                    expect(action, ACTIONS.REMOVE_CLASS_FROM_CART).to.deep.equal({
+                        type: ACTIONS.REMOVE_CLASS_FROM_CART,
                         courseId
                     });
                 }
@@ -85,12 +85,12 @@ describe('cart actions', () => {
         });
 
 
-        it('should create REMOVE_FROM_CART and REMOVE_FROM_CART_SUCCESS actions', (done) => {
+        it('should create REMOVE_CLASS_FROM_CART and REMOVE_CLASS_FROM_CART_SUCCESS actions', (done) => {
             handleActions = {
                 ...handleActions,
-                [ACTIONS.REMOVE_FROM_CART_SUCCESS](action) {
-                    expect(action, ACTIONS.REMOVE_FROM_CART_SUCCESS).to.deep.equal({
-                        type: ACTIONS.REMOVE_FROM_CART_SUCCESS,
+                [ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS](action) {
+                    expect(action, ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS).to.deep.equal({
+                        type: ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS,
                         courseId
                     });
                     done();
@@ -101,15 +101,15 @@ describe('cart actions', () => {
                 .delete('/cart/courses/' + courseId)
                 .reply(204);
 
-            removeCourse(courseId)(getDispatch(handleActions));
+            removeClass(courseId)(getDispatch(handleActions));
         });
 
-        it('should create REMOVE_FROM_CART and REMOVE_FROM_CART_FAILURE actions', (done) => {
+        it('should create REMOVE_CLASS_FROM_CART and REMOVE_CLASS_FROM_CART_FAILURE actions', (done) => {
             handleActions = {
                 ...handleActions,
-                [ACTIONS.REMOVE_FROM_CART_FAILURE](action) {
-                    expect(action, ACTIONS.REMOVE_FROM_CART_FAILURE).to.deep.equal({
-                        type: ACTIONS.REMOVE_FROM_CART_FAILURE,
+                [ACTIONS.REMOVE_CLASS_FROM_CART_FAILURE](action) {
+                    expect(action, ACTIONS.REMOVE_CLASS_FROM_CART_FAILURE).to.deep.equal({
+                        type: ACTIONS.REMOVE_CLASS_FROM_CART_FAILURE,
                         courseId,
                         error: {}
                     });
@@ -121,7 +121,7 @@ describe('cart actions', () => {
                 .delete('/cart/course/' + courseId)
                 .replyWithError(500);
 
-            removeCourse(courseId)(getDispatch(handleActions));
+            removeClass(courseId)(getDispatch(handleActions));
         });
     });
 });

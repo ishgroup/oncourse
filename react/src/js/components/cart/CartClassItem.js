@@ -1,5 +1,5 @@
-import nativeExtend from './CartOrderItem.extend';
-import customExtend from './CartOrderItem.custom';
+import nativeExtend from './CartClassItem.extend';
+import customExtend from './CartClassItem.custom';
 
 let extend = Object.assign({}, nativeExtend, customExtend);
 
@@ -7,17 +7,16 @@ class CartOrderItem extends React.Component {
 
     constructor() {
         super();
-
         this.remove = (e) => {
             e.stopPropagation();
-            this.props.onRemove(this.props.course.id);
+            this.props.remove(this.props.courseClass.id);
         };
     }
 
     render() {
         return extend.render.apply({
             props: {
-                course: this.props.course
+                courseClass: this.props.courseClass
             },
             methods: {
                 remove: this.remove
@@ -27,8 +26,8 @@ class CartOrderItem extends React.Component {
 }
 
 CartOrderItem.propTypes = {
-    course: React.PropTypes.object,
-    onRemove: React.PropTypes.func
+    courseClass: React.PropTypes.object,
+    remove: React.PropTypes.func
 };
 
 export default CartOrderItem;
