@@ -14,7 +14,7 @@
 
      $.extend($.expr[':'], {
         // case insensitive version of :contains
-        icontains: function(a,i,m){return (a.textContent||a.innerText||jQuery(a).text()||"").toLowerCase().indexOf(m[3].toLowerCase())>=0;}
+        icontains: function(a,i,m){return (a.textContent||a.innerText||$j(a).text()||"").toLowerCase().indexOf(m[3].toLowerCase())>=0;}
     });
 
     $.iterators = {
@@ -158,7 +158,7 @@
                 };
                 scopeVal = calcFontSize();
             }
-            else { scopeVal = parseFloat(jQuery(settings.scope).css("font-size")); }
+            else { scopeVal = parseFloat($(settings.scope).css("font-size")); }
 
             var result = (settings.reverse === true) ? (pxVal * scopeVal).toFixed(2) + 'px' : (pxVal / scopeVal).toFixed(2) + 'em';
             return result;

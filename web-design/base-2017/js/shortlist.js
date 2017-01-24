@@ -6,19 +6,19 @@
 */
 
 function slideShowShortlist() {
-	if($('.shortListOrder').size() > 0) {
-		$('.shortListOrder').slideUp();
+	if($j('.shortListOrder').length > 0) {
+		$j('.shortListOrder').slideUp();
 
-		$(document).on('click', '.shortlistActionShow', function() {
-			$('.shortListOrder').fadeIn('fast');
-			$(this).hide();
-			$('.shortlistActionHide').show().addClass('active');
+		$j(document).on('click', '.shortlistActionShow', function() {
+			$j('.shortListOrder').fadeIn('fast');
+			$j(this).hide();
+			$j('.shortlistActionHide').show().addClass('active');
 		});
 
-		$(document).on('click', '.shortlistActionHide', function() {
-			$('.shortListOrder').fadeOut('fast');
-			$(this).removeClass('active').hide();
-			$('.shortlistActionShow').show();
+		$j(document).on('click', '.shortlistActionHide', function() {
+			$j('.shortListOrder').fadeOut('fast');
+			$j(this).removeClass('active').hide();
+			$j('.shortlistActionShow').show();
 		});
 	}
 
@@ -29,59 +29,59 @@ function refreshShortList() {
 	* Refreshes the shortList component and if the courseClassToRefresh!=null,
 	* refreshes the shortlistControl for this class.
 	*/
-	$.ajax({
+	$j.ajax({
 		type: 'GET',
 		url:  '/refreshShortList',
 		success: function(msg) {
-			$('#shortlist').replaceWith($.trim(msg));
+			$j('#shortlist').replaceWith($j.trim(msg));
 			slideShowShortlist();
 		}
 	});
 }
 
-(function($) {
-	$(document).ready(function() {
+(function($j) {
+	$j(document).ready(function() {
 		slideShowShortlist();
 
-		$(document).on('click', '.closebutton', function() {
-			$(this).parents('.dialogContainer').fadeOut('fast');
+		$j(document).on('click', '.closebutton', function() {
+			$j(this).parents('.dialogContainer').fadeOut('fast');
 		});
 
 		// Add items to the shortlist return a response to the user
-		$(document).on('click touchend', '.enrolAction:not(.disabled)', function() {
+		$j(document).on('click touchend', '.enrolAction:not(.disabled)', function() {
 			//grab the classid of the enrol button that's just been clicked.
-			var listid = $(this).parents('.classItem').data('classid');
-			var buttonPos = $('.classItem[data-classid=' + listid + ']').position();
+			var listid = $j(this).parents('.classItem').data('classid');
+			var buttonPos = $j('.classItem[data-classid=' + listid + ']').position();
 			var link = this.href;
 
 			// does it already exist in the shortlist? if not, make that ajax call.
-			if(($('.shortlistChoices li[data-classid=' + listid + ']') == null)
-				| ($('.shortlistChoices li[data-classid=' + listid + ']').length == 0)) {
+			if(($j('.shortlistChoices li[data-classid=' + listid + ']') == null)
+				| ($j('.shortlistChoices li[data-classid=' + listid + ']').length == 0)) {
 
-				$.ajax({
+				$j.ajax({
 					type: 'GET',
 					url:  link,
 					success: function(msg) {
 						//Make the order confirmation box appear
-						$('.confirmOrderDialog .confirm-txt').text('Thanks for adding: ');
-						$('.confirmOrderDialog .className').show().text($('.classItem[data-classid=' + listid + '] .summary').text());
-						$('.confirmOrderDialog .classDate').show().text($('.classItem[data-classid=' + listid + '] .class-item-info-l > .date a:first').text());
-						$('.classItem[data-classid=' + listid + '] .enrolAction').addClass('enrol-added-class').text('Added');
+						$j('.confirmOrderDialog .confirm-txt').text('Thanks for adding: ');
+						$j('.confirmOrderDialog .className').show().text($j('.classItem[data-classid=' + listid + '] .summary').text());
+						$j('.confirmOrderDialog .classDate').show().text($j('.classItem[data-classid=' + listid + '] .class-item-info-l > .date a:first').text());
+						$j('.classItem[data-classid=' + listid + '] .enrolAction').addClass('enrol-added-class').text('Added');
 
-						$('.confirmOrderDialog').css({
+						$j('.confirmOrderDialog').css({
 							top: buttonPos.top,
 							right: '150px'
 						});
 
-						$('.confirmOrderDialog').stop(true, false).fadeIn('fast');
+						$j('.confirmOrderDialog').stop(true, false).fadeIn('fast');
 
-						$(document).on('click', '.confirm-close-wrapper .closeButton', function(e) {
+						$j(document).on('click', '.confirm-close-wrapper .closeButton', function(e) {
 							e.preventDefault();
-							$('.confirmOrderDialog').fadeOut('fast');
+							$j('.confirmOrderDialog').fadeOut('fast');
 							return false;
 						});
 
-						$('#shortlist').replaceWith($.trim(msg));
+						$j('#shortlist').replaceWith($j.trim(msg));
 						slideShowShortlist();
 
 						// Send event to Google Analytics for this add to cart event
@@ -94,19 +94,19 @@ function refreshShortList() {
 
 		} else {
 				// Else, let them know that it's already on their shortlist and get them to go to checkout
-				$('.confirmOrderDialog .confirm-txt').text('You\'ve already added this class to your shortlist. Do you want to proceed to checkout?');
-				$('.confirmOrderDialog .className').empty();
-				$('.confirmOrderDialog .classDate').empty()
+				$j('.confirmOrderDialog .confirm-txt').text('You\'ve already added this class to your shortlist. Do you want to proceed to checkout?');
+				$j('.confirmOrderDialog .className').empty();
+				$j('.confirmOrderDialog .classDate').empty()
 
-				$('.confirmOrderDialog').css({
+				$j('.confirmOrderDialog').css({
 					top: buttonPos.top,
 					right: '150px'
 				});
 
-				$('.confirmOrderDialog').stop(true, false).fadeIn('fast');
-				$(document).on('click', '.confirm-close-wrapper .closeButton', function(e) {
+				$j('.confirmOrderDialog').stop(true, false).fadeIn('fast');
+				$j(document).on('click', '.confirm-close-wrapper .closeButton', function(e) {
 					e.preventDefault();
-					$('.confirmOrderDialog').fadeOut('fast');
+					$j('.confirmOrderDialog').fadeOut('fast');
 					return false;
 				});
 			}
@@ -114,18 +114,18 @@ function refreshShortList() {
 		});
 
 		/* Remove an item from the shortlist*/
-		$(document).on('click', '#shortlist .deleteItem a', function() {
-			var fThis = $(this);
+		$j(document).on('click', '#shortlist .deleteItem a', function() {
+			var fThis = $j(this);
 			fThis.parent().addClass('loading');
 			var link = this.href;
-			var id = $(this).parents('li').attr('data-classid');
+			var id = $j(this).parents('li').attr('data-classid');
 
-			$.ajax({
+			$j.ajax({
 				type: 'GET',
 				url:  link,
 				success: function(msg) {
-					$('.classItem[data-classid=' + id + '] .enrolAction').removeClass('enrol-added-class').text('Enrol Now');
-					$('#shortlist').replaceWith(msg);
+					$j('.classItem[data-classid=' + id + '] .enrolAction').removeClass('enrol-added-class').text('Enrol Now');
+					$j('#shortlist').replaceWith(msg);
 					slideShowShortlist();
 				}
 			});
@@ -133,11 +133,11 @@ function refreshShortList() {
 		});
 
 		// Drop our shortlisted items in the shortlist box
-		$(document).on('click', 'li.onshortlist-x a.cutitem', function() {
+		$j(document).on('click', 'li.onshortlist-x a.cutitem', function() {
 			var link = this.href;
 			var itemId = this.id.match(/(\d+)/)[1];
 
-			$.ajax({
+			$j.ajax({
 				type: 'GET',
 				url:  link,
 				success: function() {
@@ -147,9 +147,9 @@ function refreshShortList() {
 			return false;
 		});
 
-		$(document).on('click', '.course_modules > span', function() {
-		  $(this).toggleClass('active');
-		  $(this).next('ul').slideToggle(500);
+		$j(document).on('click', '.course_modules > span', function() {
+		  $j(this).toggleClass('active');
+		  $j(this).next('ul').slideToggle(500);
 	  });
 	});
 })(jQuery);

@@ -12,8 +12,8 @@
 
 // open the infoWindow on the map with the site details for the site ID specified
 function showSiteOnMap(siteID) {
-	$('#focus-map').show();
-	$("body").animate({ scrollTop: 0 }, "slow");
+	$j('#focus-map').show();
+	$j("body").animate({ scrollTop: 0 }, "slow");
 
 	if(window.map==null) {
 		window.siteIDtoShow = siteID;
@@ -44,23 +44,23 @@ function showSiteOnMap(siteID) {
 // bgColor    The color to set the background if none specified in the CSS (default is '#fff')
 //
 // Examples:
-// $('div').ClearTypeFadeIn({ speed: 1500 });
-// $('div').ClearTypeFadeIn({ speed: 1500, bgColor: '#ff6666', callback: myCallback });
-// $('div').ClearTypeFadeOut({ speed: 1500, callback: function() { alert('Fade Out complete') } });
+// $j('div').ClearTypeFadeIn({ speed: 1500 });
+// $j('div').ClearTypeFadeIn({ speed: 1500, bgColor: '#ff6666', callback: myCallback });
+// $j('div').ClearTypeFadeOut({ speed: 1500, callback: function() { alert('Fade Out complete') } });
 //
 // Notes on the interaction of ClearType with DXTransforms in IE7
 // http://blogs.msdn.com/ie/archive/2006/08/31/730887.aspx
 jQuery.fn.ClearTypeFadeTo = function(options) {
 	if(options) {
-		$(this)
+		$j(this)
 		.show()
 		.each(function() {
 			if(jQuery.browser.msie) {
 				// Save the original background color
-				$(this).attr('oBgColor', $(this).css('background-color'));
+				$j(this).attr('oBgColor', $j(this).css('background-color'));
 				// Set the bgColor so that bold text renders correctly (bug with IE/ClearType/bold text)
 				// !!! Disabled the following as it does not seem to be picking up the element bgColor, causing sites to be unviewable in IE (-cll)
-				//$(this).css({ 'background-color': (options.bgColor ? options.bgColor : '#fff') })
+				//$j(this).css({ 'background-color': (options.bgColor ? options.bgColor : '#fff') })
 			}
 		})
 		.fadeTo(options.speed, options.opacity, function() {
@@ -71,9 +71,9 @@ jQuery.fn.ClearTypeFadeTo = function(options) {
 				// background color and 'filter' style in place.
 				if(options.opacity == 0 || options.opacity == 1) {
 					// Reset the background color if we saved it previously
-					$(this).css({ 'background-color': $(this).attr('oBgColor') }).removeAttr('oBgColor');
+					$j(this).css({ 'background-color': $j(this).attr('oBgColor') }).removeAttr('oBgColor');
 					// Remove the 'filter' style to restore ClearType functionality.
-					$(this).get(0).style.removeAttribute('filter');
+					$j(this).get(0).style.removeAttribute('filter');
 				}
 			}
 
@@ -84,7 +84,7 @@ jQuery.fn.ClearTypeFadeTo = function(options) {
 
 jQuery.fn.ClearTypeFadeIn = function(options) {
 	if(options) {
-		$(this)
+		$j(this)
 		.css({ opacity: 0 })
 		.ClearTypeFadeTo({ speed: options.speed, opacity: 1, callback: options.callback });
 	}
@@ -92,7 +92,7 @@ jQuery.fn.ClearTypeFadeIn = function(options) {
 
 jQuery.fn.ClearTypeFadeOut = function(options) {
 	if(options) {
-		$(this)
+		$j(this)
 		.css({ opacity: 1 })
 		.ClearTypeFadeTo({ speed: options.speed, opacity: 0, callback: options.callback });
 	}
@@ -101,7 +101,7 @@ jQuery.fn.ClearTypeFadeOut = function(options) {
 /* -----*/
 
 function toggleAdvancedSearch() {
-	if($('#advanced_search').is(':visible')) {
+	if($j('#advanced_search').is(':visible')) {
 		hideAdvancedSearch();
 	} else {
 		showAdvancedSearch();
@@ -109,16 +109,16 @@ function toggleAdvancedSearch() {
 }
 
 function showAdvancedSearch() {
-	$('a.show-advanced-search span').addClass('adv_search_active').text("Fewer options");
+	$j('a.show-advanced-search span').addClass('adv_search_active').text("Fewer options");
 
-	$('form#search').ClearTypeFadeTo({ speed: 450, opacity: 0.4 });
-	$('div#content').ClearTypeFadeTo({ speed: 450, opacity: 0.4 });
-	$('#advanced_search').show('slow', function() { });
+	$j('form#search').ClearTypeFadeTo({ speed: 450, opacity: 0.4 });
+	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 0.4 });
+	$j('#advanced_search').show('slow', function() { });
 
 	// install watcher to detect clicks on the background
-	$(document).bind('mousedown', function(e) {
+	$j(document).bind('mousedown', function(e) {
 		// hide advanced search if click was not inside advanced search area
-		if(!$(e.target).is('#advanced_search_container *') && !$(e.target).is('div.ac_results *') && !$(e.target).is('.ui-autocomplete *')) {
+		if(!$j(e.target).is('#advanced_search_container *') && !$j(e.target).is('div.ac_results *') && !$j(e.target).is('.ui-autocomplete *')) {
 			hideAdvancedSearch();
 		}
 
@@ -126,12 +126,12 @@ function showAdvancedSearch() {
 }
 
 function hideAdvancedSearch() {
-	$(document).unbind('mousedown');
-	$('form#search').ClearTypeFadeTo({ speed: 450, opacity: 1 });
-	$('div#content').ClearTypeFadeTo({ speed: 450, opacity: 1 });
-	$('#advanced_search').hide('slow');
+	$j(document).unbind('mousedown');
+	$j('form#search').ClearTypeFadeTo({ speed: 450, opacity: 1 });
+	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 1 });
+	$j('#advanced_search').hide('slow');
 
-	$('a.show-advanced-search span').removeClass('adv_search_active').text("More options");
+	$j('a.show-advanced-search span').removeClass('adv_search_active').text("More options");
 
 }
 
@@ -141,7 +141,7 @@ jQuery.fn.clearForm = function() {
 		var type = this.type, tag = this.tagName.toLowerCase();
 
 		if(tag == 'form')
-			return $(':input',this).clearForm();
+			return $j(':input',this).clearForm();
 
 		if(type == 'text' || type == 'password' || tag == 'textarea')
 			this.value = '';
@@ -153,15 +153,15 @@ jQuery.fn.clearForm = function() {
 };
 
 function clearAdvancedSearch() {
-	$('#search2').clearForm();
+	$j('#search2').clearForm();
 }
 
 
 // clear default values from text fields with class defaultText that match the "default" attribute
 function clearDefaultValues() {
-	$(".defaultText").each(function(srcc) {
-		if($(this).val() == $(this).attr("default")) {
-			$(this).val("");
+	$j(".defaultText").each(function(srcc) {
+		if($j(this).val() == $j(this).attr("default")) {
+			$j(this).val("");
 		}
 	});
 }
@@ -225,11 +225,11 @@ function setPostcodeAndStateFromSuburb(searchForm, suburbString) {
 		var state = postcode.length==0 ? '' : stateFromPostcode(postcode);
 		if(suburb.length > 0) {
 			if(searchForm.postcode && postcode.length>0) {
-				$("#"+searchForm.postcode.id).val(postcode);
-				//$("."+suburbID).val(suburb);
+				$j("#"+searchForm.postcode.id).val(postcode);
+				//$j("."+suburbID).val(suburb);
 			}
 			if(searchForm.state && state.length>0) {
-				$("#"+searchForm.state.id).val(state);
+				$j("#"+searchForm.state.id).val(state);
 			}
 		}
 	}
@@ -238,17 +238,17 @@ function setPostcodeAndStateFromSuburb(searchForm, suburbString) {
 
 // sets suburb field after auto complete dialog closes
 function setSuburbAfterAutoComplete(searchForm) {
-	var suburb = suburbFromString($("#"+searchForm.suburb.id).val());
+	var suburb = suburbFromString($j("#"+searchForm.suburb.id).val());
 	if(suburb.length > 0) {
-		$("#"+searchForm.suburb.id).val(suburb);
+		$j("#"+searchForm.suburb.id).val(suburb);
 	}
 }
 
 jQuery.fn.quickSearch = function(url, settings) {
 	return this.each(function() {
 		var minInput = 3;
-		var textInput = $(this);
-		var divContainer = $('.quicksearch-wrap');
+		var textInput = $j(this);
+		var divContainer = $j('.quicksearch-wrap');
 		var thisObject = this;
 		var selectedIndex = -1;
 
@@ -257,8 +257,8 @@ jQuery.fn.quickSearch = function(url, settings) {
 			show();
 
 			// observe checkboxes
-			$('.suburb-choice').each(function() {
-				$(this).bind("click", updateFunction);
+			$j('.suburb-choice').each(function() {
+				$j(this).bind("click", updateFunction);
 			});
 		};
 
@@ -274,8 +274,8 @@ jQuery.fn.quickSearch = function(url, settings) {
 
 				// build array of query params
 				var params = [];
-				$('.suburb-choice:checked').each(function() {
-					var me = $(this);
+				$j('.suburb-choice:checked').each(function() {
+					var me = $j(this);
 					var val = me.attr('value');
 					params.push(val);
 				});
@@ -299,14 +299,14 @@ jQuery.fn.quickSearch = function(url, settings) {
 
 		function show() {
 			textInput.removeClass('throbber');
-			$('div.advanced-search-button').fadeTo(0, 0);
+			$j('div.advanced-search-button').fadeTo(0, 0);
 			hideAdvancedSearch();
 			divContainer.addClass('show-quick-search').show();
 
 			// install watcher to detect clicks on the background
-			$(document).bind('mousedown.quicksearch', function(click) {
+			$j(document).bind('mousedown.quicksearch', function(click) {
 				// hide quicksearch if click was not inside quicksearch area
-				if($(click.target).parents('div.quicksearch-wrap').length == 0 && click.target != thisObject) {
+				if($j(click.target).parents('div.quicksearch-wrap').length == 0 && click.target != thisObject) {
 					hide();
 				}
 			});
@@ -317,20 +317,20 @@ jQuery.fn.quickSearch = function(url, settings) {
 			allItems = null;
 			textInput.removeClass('throbber');
 			//divContainer.removeShadow();
-			$(document).unbind('mousedown.quicksearch');
+			$j(document).unbind('mousedown.quicksearch');
 			divContainer.slideUp(400);
-			$('div.advanced-search-button').fadeTo(0, 1);
+			$j('div.advanced-search-button').fadeTo(0, 1);
 			divContainer.removeClass('show-quick-search');
 		}
 
-		textInput.keyup(function(key) {
+		textInput.on('keyup', function(key) {
 			if(key.which == 27) { // escape
 				hide();
 				return false;
 			}
 
 			// copy the text of the quick search field into the advanced search field
-			$("#adv_keyword").val($(this).attr('value'));
+			$j("#adv_keyword").val($j(this).attr('value'));
 
 			oldIndex = selectedIndex;
 			allItems = divContainer.children('div').children('ul').children('li').not('.title');
@@ -343,7 +343,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 
 				if(key.which == 13) { // return key
 					if(selectedItem == null) {
-						$('form#search').submit();
+						$j('form#search').submit();
 						return true;
 					} else {
 						window.location = selectedItem.children('a').attr('href');
@@ -388,7 +388,7 @@ jQuery.fn.quickSearch = function(url, settings) {
 
 		// observe quicksearch field delay == 1.0seconds
 		// depends on jquery-util/query.utils[.min].js
-		textInput.delayedObserver(function() {
+		textInput.on('delayedObserver', function() {
 			matchesFunction(textInput.val());
 		}, 1.0);
 	});
@@ -400,7 +400,8 @@ jQuery.fn.hideQuickSearch = function(url, settings) {
 	})
 };
 
-
-$(document).ready(function() {
-	initSuburbAutoComplete();
-});
+(function($j) {
+	$j(document).ready(function() {
+		initSuburbAutoComplete();
+	});
+})(jQuery);
