@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	
+
 	<t:if test="overridden">
 		<t:output value="feeOverride" format="feeFormat"/>
 		<t:delegate to="block:tax"/>
@@ -14,7 +14,13 @@
 					<t:output value="discountedFee" format="feeFormat" />
 				</acronym>
 			</span>
-					<p:else><t:output value="fee" format="feeFormat" /></p:else>
+					<p:else>
+						<span itemprop="price" content="${formatMoney(fee, '0.00')}">${formatMoney(fee,'$#,###,###,##0.##')}</span>
+						<span itemprop="priceCurrency" content="AUD" />
+						<span itemprop="url" content="/course/${courseClass.course.code}" />
+						<span itemprop="category" content="primary" />
+						<span itemprop="availability" content="InStock" />
+					</p:else>
 				</t:if>
 
 				<t:delegate to="block:tax"/>

@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	
+
 	<t:if test="overridden">
 		<t:output value="feeOverride" format="feeFormat"/>
 		<t:delegate to="block:tax"/>
@@ -7,15 +7,19 @@
 			<t:if test="hasFee">
 				<t:if test="hasDiscountValue">
 			<span class="fee-disabled">
-					${formatMoney(fee,'$#,###,###,##0.##')}
+				<t:output value="fee" format="feeFormat" />
 			</span>
 			<span class="fee-discounted">
 				<acronym title="${appliedDiscountsTitle}">
-					${formatMoney(discountedFee,'$#,###,###,##0.##')}
+					<t:output value="discountedFee" format="feeFormat" />
 				</acronym>
 			</span>
 					<p:else>
-						${formatMoney(fee,'$#,###,###,##0.##')}
+						<span itemprop="price" content="${formatMoney(fee, '0.00')}">${formatMoney(fee,'$#,###,###,##0.##')}</span>
+						<span itemprop="priceCurrency" content="AUD" />
+						<span itemprop="url" content="/course/${courseClass.course.code}" />
+						<span itemprop="category" content="primary" />
+						<span itemprop="availability" content="InStock" />
 					</p:else>
 				</t:if>
 
@@ -25,7 +29,7 @@
 					<t:loop source="discountItems" value="discountItem">
 						<span class="discount-price">/</span>
 						<acronym class="discount-price" title="${discountItem.title}">
-							${formatMoney(discountItem.feeIncTax,'$#,###,###,##0.##')}
+							<t:output value="discountItem.feeIncTax" format="discountItem.feeFormat" />
 						</acronym>
 					</t:loop>
 				</t:if>

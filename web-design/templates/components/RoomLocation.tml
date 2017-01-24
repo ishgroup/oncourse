@@ -1,19 +1,21 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<t:if test="room.site.isWebVisible">
-		<t:unless test="disabledLink"> 
-			<t:if test="redirect">
-				<a href="${mapLink}">
-					<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
-				</a>
-				<p:else>
-					<a title="Show venue details" class="tooltip" onclick="zoomMapForSite(${room.site.angelId});" href="#">
+	<span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+		<t:if test="room.site.isWebVisible">
+			<t:unless test="disabledLink">
+				<t:if test="redirect">
+					<a href="${mapLink}" itemprop="mainEntityOfPage" content="${mapLink}">
 						<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
 					</a>
+					<p:else>
+						<a href="/site/${room.site.angelId}" itemprop="mainEntityOfPage" content="/site/${room.site.angelId}">
+							<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
+						</a>
+					</p:else>
+				</t:if>
+				<p:else>
+					<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
 				</p:else>
-			</t:if>
-			<p:else>
-				<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
-			</p:else>
-		</t:unless>
-	</t:if>
+			</t:unless>
+		</t:if>
+	</span>
 </t:container>

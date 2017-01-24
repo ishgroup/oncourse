@@ -4,7 +4,7 @@
 		<header class="site-header" id="header">
 			<section class="header-container">
 				<section class="top-bar">
-					<div class="container">
+					<div class="container" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 						<a href="/" class="nav-logo mobile-enabled">
 							<img src="/s/img/logos/nav-logo.png" alt="" class="normal_logo" />
 						</a>
@@ -43,11 +43,11 @@
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:content" />
 				<t:body />
 			</article>
-			<aside class="sidebar-right" id="sidebarRight">
+			<aside class="sidebar-right" id="sidebarRight" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:right" />
 			</aside>
 		</section>
-		<footer class="site-footer" id="footer">
+		<footer class="site-footer" id="footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
 			<section class="container">
 				<div t:type="ui/blockdisplay" webNodeType="webNodeType" regionKey="literal:footer" />
 			</section>
