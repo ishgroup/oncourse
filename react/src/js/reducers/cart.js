@@ -1,173 +1,79 @@
+import { combineReducers } from 'redux';
 import ACTIONS from '../constants';
 
-const initialState = {
-    courses: [],
-    products: []
-};
+function addItemReducer(params) {
+    const handleActions = {
+        [params.action](state, action) {
+            let item = state.find((item) => item[params.fieldId] === action.data[params.fieldId]);
 
-const handleActions = {
-
-    [ACTIONS.ADD_CLASS_TO_CART](state, action) {
-        let course = state.courses.find((course) => {
-                return course.id === action.courseId;
-            }),
-            index;
-
-        if(course) {
-            if(course.pending) {
+            if(item) {
                 return state;
             }
 
-            index = state.courses.indexOf(course);
-            course = { ...course };
-            delete course.error;
-        } else {
-            course = {};
-            index = state.courses.length;
+            return [...state, action.data];
         }
+    };
 
-        return {
-            ...state,
-            courses: [
-                ...state.courses.slice(0, index),
-                {
-                    ...course,
-                    id: action.courseId,
-                    pending: true
-                },
-                ...state.courses.slice(index + 1)
-            ]
-        };
-    },
-
-    [ACTIONS.ADD_CLASS_TO_CART_SUCCESS](state, action) {
-        let course = state.courses.find((course) => {
-            return course.id === action.course.id;
-        });
-
-        if(!course) {
-            return state;
-        }
-
-        let index = state.courses.indexOf(course);
-
-        return {
-            ...state,
-            courses: [
-                ...state.courses.slice(0, index),
-                {
-                    ...course,
-                    pending: false,
-                    data: action.course
-                },
-                ...state.courses.slice(index + 1)
-            ]
-        };
-    },
-
-    [ACTIONS.ADD_CLASS_TO_CART_FAILURE](state, action) {
-        let course = state.courses.find((course) => {
-            return course.id === action.courseId;
-        });
-
-        if(!course) {
-            return state;
-        }
-
-        let index = state.courses.indexOf(course);
-
-        return {
-            ...state,
-            courses: [
-                ...state.courses.slice(0, index),
-                {
-                    ...course,
-                    pending: false,
-                    error: action.error
-                },
-                ...state.courses.slice(index + 1)
-            ]
-        };
-    },
-
-    [ACTIONS.REMOVE_CLASS_FROM_CART](state, action) {
-        let course = state.courses.find((course) => {
-                return course.id === action.courseId;
-            }),
-            index;
-
-        if(course) {
-            if(course.pending) {
-                return state;
-            }
-
-            index = state.courses.indexOf(course);
-            course = { ...course };
-            delete course.error;
-        } else {
-            course = {};
-            index = state.courses.length;
-        }
-
-        return {
-            ...state,
-            courses: [
-                ...state.courses.slice(0, index),
-                {
-                    ...course,
-                    pending: true
-                },
-                ...state.courses.slice(index + 1)
-            ]
-        };
-    },
-
-    [ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS](state, action) {
-        let course = state.courses.find((course) => {
-            return course.id === action.courseId;
-        });
-
-        if(!course) {
-            return state;
-        }
-
-        let index = state.courses.indexOf(course);
-
-        return {
-            ...state,
-            courses: [
-                ...state.courses.slice(0, index),
-                ...state.courses.slice(index + 1)
-            ]
-        };
-    },
-
-    [ACTIONS.REMOVE_CLASS_FROM_CART_FAILURE](state, action) {
-        let course = state.courses.find((course) => {
-            return course.id === action.courseId;
-        });
-
-        if(!course) {
-            return state;
-        }
-
-        let index = state.courses.indexOf(course);
-
-        return {
-            ...state,
-            courses: [
-                ...state.courses.slice(0, index),
-                {
-                    ...course,
-                    pending: false,
-                    error: action.error
-                },
-                ...state.courses.slice(index + 1)
-            ]
-        };
+    return function(state = [], action) {
+        return handleActions[action.type] ? handleActions[action.type](state, action) : state;
     }
-};
+}
 
-export default (state = initialState, action) => {
-    return handleActions[action.type] ? handleActions[action.type](state, action) : state;
-};
+function removeItemReducer(params) {
+    const handleActions = {
+
+        [params.action](state, action) {
+            let item = state.find((item) => {
+                return item[params.fieldId] === action[params.fieldId];
+            });
+
+            if(!item) {
+                return state;
+            }
+
+            let index = state.indexOf(item);
+
+            return [
+                ...state.slice(0, index),
+                ...state.slice(index + 1)
+            ];
+        }
+    };
+
+    return function(state = [], action) {
+        return handleActions[action.type] ? handleActions[action.type](state, action) : state;
+    }
+}
+
+function concatReducers(...reducers) {
+    return function (state, action) {
+        return reducers.reduce((state, reducer) => {
+            return reducer(state, action);
+        }, state);
+    };
+}
+
+export default combineReducers({
+    courses: concatReducers(
+        addItemReducer({
+            fieldId: 'id',
+            fieldItem: 'data',
+            action: ACTIONS.ADD_CLASS_TO_CART_SUCCESS
+        }),
+        removeItemReducer({
+            action: ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS,
+            fieldId: 'id'
+        })
+    ),
+    products: concatReducers(
+        addItemReducer({
+            fieldId: 'id',
+            fieldItem: 'data',
+            action: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS
+        }),
+        removeItemReducer({
+            action: ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS,
+            fieldId: 'id'
+        })
+    )
+});

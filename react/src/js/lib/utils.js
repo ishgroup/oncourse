@@ -17,3 +17,8 @@ export function plural(count, values) {
 export function getError() {
     return {};
 }
+
+export function stopPropagation(e) {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+}

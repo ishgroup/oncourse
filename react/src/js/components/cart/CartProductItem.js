@@ -1,31 +1,24 @@
+import classnames from 'classnames';
+import CartItem from './CartItem';
 import nativeExtend from './CartProductItem.extend';
 import customExtend from './CartProductItem.custom';
 
 let extend = Object.assign({}, nativeExtend, customExtend);
 
-class CartProductItem extends React.Component {
-
-    constructor() {
-        super();
-        this.remove = (e) => {
-            e.stopPropagation();
-            this.props.remove(this.props.product.id);
-        };
-    }
+class CartProductItem extends CartItem {
 
     render() {
         return extend.render.apply({
             props: {
-                product: this.props.product
+                product: this.props.item,
+                pending: this.state.pending
             },
             methods: {
-                remove: this.props.remove
-            }
+                remove: this.remove
+            },
+            utils: { classnames }
         });
     }
 }
 
-CartProductItem.propTypes = {
-    product: React.PropTypes.object,
-    remove: React.PropTypes.func
-};
+export default CartProductItem;

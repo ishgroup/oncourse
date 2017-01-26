@@ -9,7 +9,7 @@ class ConfirmOrderDialog extends React.Component {
 
     constructor(props) {
         super();
-        this.$classItem = $(`.classItem[data-classid=${props.classId}]`);
+        this.$item = $(`.classItem[data-classid=${props.id}]`);
     }
 
     componentWillMount() {
@@ -19,11 +19,8 @@ class ConfirmOrderDialog extends React.Component {
     componentDidMount() {
         $(findDOMNode(this))
             .show()
-            .offset(this.$classItem.offset())
-            .css({
-                left: 0,
-                right: '150px'
-            })
+            .offset({ top: this.$item.offset().top })
+            .css('right', '150px')
             .fadeIn('fast');
     }
 
@@ -35,10 +32,10 @@ class ConfirmOrderDialog extends React.Component {
         return extend.render.apply({
             props: {
                 isAlreadyAdded: this.props.isAlreadyAdded,
-                classId: this.props.classId,
-                className: this.props.className,
+                id: this.props.id,
+                name: this.props.name,
                 //ToDo ask about time
-                classDate: this.$classItem.find('.class-item-info-l > .date a:first').text()
+                date: this.$item.find('.class-item-info-l > .date a:first').text()
             },
             methods: {
                 close: this.props.close
@@ -50,9 +47,9 @@ class ConfirmOrderDialog extends React.Component {
 
 ConfirmOrderDialog.propTypes = {
     isAlreadyAdded: React.PropTypes.bool,
-    classId: React.PropTypes.number,
-    className: React.PropTypes.string,
-    classDate: React.PropTypes.string,
+    id: React.PropTypes.number,
+    name: React.PropTypes.string,
+    date: React.PropTypes.string,
     close: React.PropTypes.func
 };
 

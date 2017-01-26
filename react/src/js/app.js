@@ -5,7 +5,11 @@ import cart from './reducers/cart';
 import popup from './reducers/popup';
 import Cart from './containers/Cart';
 import EnrolButton from './containers/EnrolButton';
+import BuyButton from './containers/BuyButton';
 import PopupContainer from './containers/PopupContainer';
+
+// ToDo initialize global variable in webpack
+window.jQuery = $;
 
 let store = createStore(
     combineReducers({ cart, popup }),
@@ -20,8 +24,8 @@ app.setStore(store)
          * ToDo discuss with Andrey properties for enrol button.
          * Now it almost looks like properties in tapestry template
          */
-        classId: 'number',
-        className: 'string',
+        id: 'number',
+        name: 'string',
         isCanceled: 'boolean',
         isFinished: 'boolean',
         hasAvailableEnrolmentPlaces: 'boolean',
@@ -29,6 +33,15 @@ app.setStore(store)
         paymentGatewayEnabled: 'boolean',
         freePlaces: 'number'
     })
+    .register('buy-button', BuyButton, {
+        id: 'number',
+        name: 'string',
+        paymentGatewayEnabled: 'boolean',
+        canBuy: 'boolean'
+    })
     .register('cart', Cart)
-    .register('popup', PopupContainer)
-    .start();
+    .register('popup', PopupContainer);
+
+$(document).ready(() => {
+    app.start();
+});

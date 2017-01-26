@@ -5,7 +5,9 @@ export default {
         return (
             <li>
                 <a href={`/class/${courseClass.course_id}`}>{courseClass.name}</a>
-                <span className="deleteItem" title="Remove item">
+                <span className={this.utils.classnames('deleteItem', {
+                    'loading': this.props.pending
+                })} title="Remove item">
                     <a onClick={this.methods.remove}>X</a>
                 </span>
                 {courseClass.start_date && courseClass.end_date &&

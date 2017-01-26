@@ -55,7 +55,7 @@ export default {
         return (
             <div className="classAction">
                 {reverseElements ? elements.reverse() : elements}
-                {showedPopup && <ConfirmOrderDialog classId={this.props.classId} className={this.props.className}
+                {showedPopup && <ConfirmOrderDialog id={this.props.id} name={this.props.name}
                                                     isAlreadyAdded={isAlreadyAdded} close={this.methods.closePopup}/>}
             </div>
         );

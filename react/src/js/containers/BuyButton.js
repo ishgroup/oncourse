@@ -1,20 +1,20 @@
-import EnrolButton from '../components/enrolButton/EnrolButton';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { addClass as add } from '../actions/cart';
+import BuyButton from '../components/buyButton/BuyButton';
+import { addProduct as add } from '../actions/cart';
 
 function isAdded(items, id) {
     let item = items.find((item) => {
         return item.id === id;
     });
 
-    return !!item;
+    return !!item && !item.pending;
 }
 
 export default connect((state, ownProps) => {
     return {
-        isAdded: isAdded(state.cart.courses, ownProps.id)
+        isAdded: isAdded(state.cart.products, ownProps.id)
     };
 }, (dispatch) => {
     return bindActionCreators({ add }, dispatch);
-})(EnrolButton);
+})(BuyButton);

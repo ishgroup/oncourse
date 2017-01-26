@@ -1,6 +1,6 @@
 export default {
     render: function() {
-        let { isAlreadyAdded, className, classDate } = this.props;
+        let { isAlreadyAdded, name, date } = this.props;
 
         let commonText, classDescription = [];
 
@@ -9,8 +9,8 @@ export default {
         } else {
             commonText = 'Thanks for adding:';
             classDescription = [
-                <p key="className" className="className">{className}</p>,
-                <p key="classDate" className="classDate">{classDate}</p>
+                <p key="className" className="className">{name}</p>,
+                <p key="classDate" className="classDate">{date}</p>
             ];
         }
 
