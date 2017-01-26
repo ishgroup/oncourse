@@ -75,5 +75,16 @@ export default combineReducers({
             action: ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS,
             fieldId: 'id'
         })
+    ),
+    discounts: concatReducers(
+        addItemReducer({
+            fieldId: 'code',
+            fieldItem: 'data',
+            action: ACTIONS.ADD_DISCOUNT_TO_CART_SUCCESS
+        }),
+        removeItemReducer({
+            action: ACTIONS.REMOVE_DISCOUNT_FROM_CART_SUCCESS,
+            fieldId: 'code'
+        })
     )
 });

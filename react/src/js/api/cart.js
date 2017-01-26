@@ -71,7 +71,32 @@ export function removeProduct(productId) {
     });
 }
 
+/**
+ * @param {Object} code Promo code
+ * @description adds discount to cart
+ * @returns {jqXHR}
+ */
+export function addDiscount(code) {
+    return request({
+        type: 'put',
+        url: config.api_root + '/cart/discounts/' + code
+    });
+}
+
+/**
+ * @param {Object} code Promo code
+ * @description remove discount from cart
+ * @returns {jqXHR}
+ */
+export function removeDiscount(code) {
+    return request({
+        type: 'delete',
+        url: config.api_root + '/cart/discounts/' + code
+    });
+}
+
 export default {
     addClass, removeClass,
-    addProduct, removeProduct
+    addProduct, removeProduct,
+    addDiscount, removeDiscount
 };

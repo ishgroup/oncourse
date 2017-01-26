@@ -82,3 +82,26 @@ export const removeProduct = removeCartItem({
     action: ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS,
     fieldId: 'id'
 });
+
+/**
+ * Add discount to cart
+ * @param {Number} code Code of discount
+ * @return {Function}
+ */
+export const addDiscount = addCartItem({
+    add: cartApi.addDiscount,
+    action: ACTIONS.ADD_DISCOUNT_TO_CART_SUCCESS,
+    fieldId: 'code',
+    fieldItem: 'data'
+});
+
+/**
+ * Remove discount from cart
+ * @param {Number} code Code of discount
+ * @return {Function}
+ */
+export const removeDiscount = removeCartItem({
+    remove: cartApi.removeDiscount,
+    action: ACTIONS.REMOVE_DISCOUNT_FROM_CART_SUCCESS,
+    fieldId: 'code'
+});
