@@ -1,7 +1,7 @@
 import ACTIONS from 'js/constants';
 import { hidePopup, updatePopup } from 'js/actions/popup';
 
-describe('cart actions', () => {
+describe('popup actions', () => {
     it('should create HIDE_POPUP actions', () => {
         expect(hidePopup()).to.deep.equal({
             type: ACTIONS.HIDE_POPUP

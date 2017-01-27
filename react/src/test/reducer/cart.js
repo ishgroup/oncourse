@@ -2,306 +2,155 @@ import ACTIONS from 'js/constants';
 import cart from 'js/reducers/cart';
 
 describe('cart reducer', () => {
+    let course1, course2, product1, product2, state, initialState;
+
+    beforeEach(() => {
+        initialState = {
+            courses: [],
+            products: [],
+            discounts: []
+        };
+        product1 = course1 = {
+            id: 1,
+            name: 'Item 1'
+        };
+        product2 = course2 = {
+            id: 2,
+            name: 'Course 2'
+        };
+    });
 
     it('should return initial state', () => {
-        expect(cart(undefined, {})).to.deep.equal({
-            courses: [],
-            products: []
+        expect(cart(undefined, {})).to.deep.equal(initialState);
+    });
+
+    describe('ADD_CLASS_TO_CART_SUCCESS', () => {
+        it('should add course class to cart', () => {
+            state = cart(undefined, {
+                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
+                data: course1
+            });
+
+            state = cart(state, {
+                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
+                data: course2
+            });
+
+            expect(state).to.be.deep.equal(Object.assign(initialState, { courses: [course1, course2] }));
+        });
+
+        it('should return previous state because of course class already is in cart', () => {
+            state = cart(undefined, {
+                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
+                data: course1
+            });
+
+            state = cart(state, {
+                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
+                data: course1
+            });
+
+            expect(state).to.be.deep.equal(Object.assign(initialState, { courses: [course1] }));
         });
     });
 
-    describe('ADD_CLASS_TO_CART action handling', () => {
-
-        let course1, course2;
-
-        beforeEach(() => {
-            course1 = {
-                id: 1,
-                name: 'Course 1'
-            };
-            course2 = {
-                id: 2,
-                name: 'Course 2'
-            };
-        });
-
-        it('should handle ADD_CLASS_TO_CART', () => {
-            let state = cart({
-                courses: [{
-                    id: course1.id,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    pending: false,
-                    error: {}
-                }]
-            }, {
-                type: ACTIONS.ADD_CLASS_TO_CART,
-                courseId: 1
-            });
-
-            expect(state, 'Add pending course').to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    pending: false,
-                    error: {}
-                }]
-            });
-
-            state = cart(state, {
-                type: ACTIONS.ADD_CLASS_TO_CART,
-                courseId: 2
-            });
-
-            expect(state, 'Add course with error').to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    pending: true
-                }]
-            });
-
-            state = cart(state, {
-                type: ACTIONS.ADD_CLASS_TO_CART,
-                courseId: 3
-            });
-
-            expect(state, 'Add new course').to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    pending: true
-                }, {
-                    id: 3,
-                    pending: true
-                }]
-            });
-        });
-
-
-        it('should handle ADD_CLASS_TO_CART_SUCCESS', () => {
-            let state = cart({
-                courses: [{
-                    id: course1.id,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    pending: true
-                }]
-            }, {
+    describe('REMOVE_CLASS_FROM_CART_SUCCESS', () => {
+        it('should remove course class from cart', () => {
+            state = cart(undefined, {
                 type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
-                course: course2
-            });
-
-            expect(state).to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    pending: false,
-                    data: course2
-                }]
+                data: course1
             });
 
             state = cart(state, {
                 type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
-                course: course1
-            });
-
-            expect(state).to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    pending: false,
-                    data: course1
-                }, {
-                    id: course2.id,
-                    pending: false,
-                    data: course2
-                }]
+                data: course2
             });
 
             state = cart(state, {
-                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
-                course: course1
-            });
-
-            expect(state, 'Add added course').to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    pending: false,
-                    data: course1
-                }, {
-                    id: course2.id,
-                    pending: false,
-                    data: course2
-                }]
-            });
-        });
-
-        it('should handle ADD_CLASS_TO_CART_FAILURE', () => {
-            let state = cart({
-                courses: [{
-                    id: course1.id,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    pending: true
-                }]
-            }, {
-                type: ACTIONS.ADD_CLASS_TO_CART_FAILURE,
-                courseId: course2.id,
-                error: {}
-            });
-
-            expect(state).to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    pending: false,
-                    error: {}
-                }]
-            });
-        });
-    });
-
-    describe('REMOVE_CLASS_FROM_CART action handling', () => {
-        let course1, course2;
-
-        beforeEach(() => {
-            course1 = {
-                id: 1,
-                name: 'Course 1'
-            };
-            course2 = {
-                id: 2,
-                name: 'Course 2'
-            };
-        });
-
-        it('should handle REMOVE_CLASS_FROM_CART', () => {
-            let state = cart({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: false
-                }]
-            }, {
-                type: ACTIONS.REMOVE_CLASS_FROM_CART,
-                courseId: 1
-            });
-
-            expect(state, 'Remove existed course').to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: true
-                }]
-            });
-
-            state = cart({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: true
-                }]
-            }, {
-                type: ACTIONS.REMOVE_CLASS_FROM_CART,
-                courseId: 1
-            });
-
-            expect(state, 'Remove pending course').to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: true
-                }]
-            });
-
-            state = cart({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: false,
-                    error: {}
-                }]
-            }, {
-                type: ACTIONS.REMOVE_CLASS_FROM_CART,
-                courseId: 1
-            });
-
-            expect(state, 'Remove course with error').to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: true
-                }]
-            });
-        });
-
-        it('should handle REMOVE_CLASS_FROM_CART_SUCCESS', () => {
-            let state = cart({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    data: course2,
-                    pending: false
-                }]
-            }, {
                 type: ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS,
-                courseId: course1.id
+                id: course1.id
             });
 
-            expect(state).to.deep.equal({
-                courses: [{
-                    id: course2.id,
-                    data: course2,
-                    pending: false
-                }]
-            });
+            expect(state).to.be.deep.equal(Object.assign(initialState, { courses: [course2] }));
         });
 
-        it('should handle REMOVE_CLASS_FROM_CART_FAILURE', () => {
-            let state = cart({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: true
-                }, {
-                    id: course2.id,
-                    data: course2,
-                    pending: false
-                }]
-            }, {
-                type: ACTIONS.REMOVE_CLASS_FROM_CART_FAILURE,
-                courseId: course1.id,
-                error: {}
+        it('should return previous state because of course class isn\'t in cart', () => {
+            state = cart(undefined, {
+                type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
+                data: course1
             });
 
-            expect(state).to.deep.equal({
-                courses: [{
-                    id: course1.id,
-                    data: course1,
-                    pending: false,
-                    error: {}
-                }, {
-                    id: course2.id,
-                    data: course2,
-                    pending: false
-                }]
+            state = cart(state, {
+                type: ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS,
+                id: course2.id
             });
+
+            expect(state).to.be.deep.equal(Object.assign(initialState, { courses: [course1] }));
+        });
+    });
+
+    describe('ADD_PRODUCT_TO_CART_SUCCESS', () => {
+        it('should add product to cart', () => {
+            state = cart(undefined, {
+                type: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS,
+                data: product1
+            });
+
+            state = cart(state, {
+                type: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS,
+                data: product2
+            });
+
+            expect(state).to.be.deep.equal(Object.assign(initialState, { products: [product1, product2] }));
+        });
+
+        it('should return previous state because of product already is in cart', () => {
+            state = cart(undefined, {
+                type: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS,
+                data: product1
+            });
+
+            state = cart(state, {
+                type: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS,
+                data: product1
+            });
+
+            expect(state).to.be.deep.equal(Object.assign(initialState, { products: [product1] }));
+        });
+    });
+
+    describe('REMOVE_PRODUCT_FROM_CART_SUCCESS', () => {
+        it('should remove product from cart', () => {
+            state = cart(undefined, {
+                type: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS,
+                data: product1
+            });
+
+            state = cart(state, {
+                type: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS,
+                data: product2
+            });
+
+            state = cart(state, {
+                type: ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS,
+                id: product1.id
+            });
+
+            expect(state).to.be.deep.equal(Object.assign(initialState, { products: [product2] }));
+        });
+
+        it('should return previous state because of product isn\'t in cart', () => {
+            state = cart(undefined, {
+                type: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS,
+                data: product1
+            });
+
+            state = cart(state, {
+                type: ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS,
+                id: product2.id
+            });
+
+            expect(state).to.be.deep.equal(Object.assign(initialState, { products: [product1] }));
         });
     });
 });
