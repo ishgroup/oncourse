@@ -24,28 +24,6 @@ time, mark, audio, video {
 	vertical-align: baseline
 }
 
-//
-// Following styles handles default tags and makes it block
-//
-
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, main, nav, section, summary {
-	display: block;
-}
-
-audio, canvas, video {
-	display: inline-block;
-}
-
-audio:not([controls]) {
-	display: none;
-	height: 0;
-}
-
-[hidden],
-template {
-	display: none;
-}
-
 html {
 	font-family: $bodyFontFamily;
  	-webkit-text-size-adjust: 100%;
@@ -80,25 +58,6 @@ a {
 	}
 }
 
-b,
-strong {
-	font-weight: bold;
-}
-
-dfn {
-	font-style: italic;
-}
-
-hr {
-	box-sizing: content-box;
-	height: 0;
-}
-
-mark {
-	background: #ff0;
-	color: $black;
-}
-
 code,
 kbd,
 pre,
@@ -123,26 +82,6 @@ blockquote, q {
 	quotes: none
 }
 
-small {
-	font-size: 80%;
-}
-
-sub,
-sup {
-	font-size: 75%;
-	line-height: 0;
-	position: relative;
-	vertical-align: baseline;
-}
-
-sup {
-	top: -0.5em;
-}
-
-sub {
-	bottom: -0.25em;
-}
-
 img {
 	border: 0;
 	height: auto;
@@ -152,10 +91,6 @@ img {
 
 a img {
 	border: none;
-}
-
-svg:not(:root) {
-	overflow: hidden;
 }
 
 figure {
@@ -188,11 +123,6 @@ input {
 }
 
 button,
-select {
-	text-transform: none;
-}
-
-button,
 html input[type="button"],
 input[type="reset"],
 input[type="submit"] {
@@ -200,17 +130,6 @@ input[type="submit"] {
 	cursor: pointer;
 	border: none;
 	outline: 0;
-}
-
-button[disabled],
-html input[disabled] {
-	cursor: default;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-	box-sizing: border-box;
-	padding: 0;
 }
 
 input[type="search"] {
@@ -224,20 +143,9 @@ input[type="search"]::-webkit-search-decoration {
 	@include appearance(none);
 }
 
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-	border: 0;
-	padding: 0;
-}
-
 textarea {
 	overflow: auto;
 	vertical-align: top;
-}
-
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
 }
 
 h1, h2, h3, h4, h5 {
@@ -261,24 +169,4 @@ img,
 object,
 embed {
 	max-width: 100%;
-}
-
-.clearfix {
-	*zoom: 1;
-	clear: both;
-	@include clearfix;
-}
-
-.hide {
-	display: none !important;
-}
-
-.show {
-	display: block !important;
-}
-.pull-left {
-	float: left;
-}
-.pull-right {
-	float: right;
 }
