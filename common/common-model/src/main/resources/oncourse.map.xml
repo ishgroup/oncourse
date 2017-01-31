@@ -330,7 +330,7 @@
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="attendanceType" type="INTEGER"/>
 		<db-attribute name="censusDate" type="TIMESTAMP"/>
-		<db-attribute name="code" type="VARCHAR" length="32"/>
+		<db-attribute name="code" type="VARCHAR" length="50"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="countOfSessions" type="INTEGER" length="10"/>
 		<db-attribute name="courseId" type="BIGINT" isMandatory="true" length="19"/>

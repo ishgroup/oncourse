@@ -4397,5 +4397,10 @@
 			CONSTRAINT аssessmentClassModule_angelId_college_unique UNIQUE (collegeId, angelId));
 		</sql>
 	</changeSet>
-
+	
+	<changeSet id="294" author="anarut" context="production" runOnChange="false">
+		<sql>
+			ALTER TABLE CourseClass MODIFY COLUMN code VARCHAR(50) NULL;
+		</sql>
+	</changeSet>
 </databaseChangeLog>
