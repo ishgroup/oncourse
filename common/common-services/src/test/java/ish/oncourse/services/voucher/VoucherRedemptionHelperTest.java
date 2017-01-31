@@ -268,7 +268,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
         assertEquals(Money.ZERO, voucher1.getRedemptionValue());
     }
 
-	// @Test
+//	@Test
 	public void testApplyMultipleVouchersToSingleInvoiceLine() {
 		ObjectContext context = getContext();
 

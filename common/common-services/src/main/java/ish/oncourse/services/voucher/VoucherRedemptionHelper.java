@@ -280,7 +280,7 @@ public class VoucherRedemptionHelper {
 
         payment.setAmount(payment.getAmount().add(il.getDiscountedPriceTotalIncTax()));
 
-        PaymentInLine pil = createPaymentInLine(payment, invoice);
+        PaymentInLine pil = getPaymentInLine(payment, invoice);
         pil.setAmount(pil.getAmount().add(il.getDiscountedPriceTotalIncTax()));
 
         voucher.setRedeemedCoursesCount(voucher.getRedeemedCoursesCount() + 1);
@@ -306,11 +306,9 @@ public class VoucherRedemptionHelper {
         PaymentIn payment = vp.getPayment();
         payment.setAmount(payment.getAmount().add(amount));
 
-        PaymentInLine pil = createPaymentInLine(payment, invoice);
+        PaymentInLine pil = getPaymentInLine(payment, invoice);
 
         pil.setAmount(pil.getAmount().add(amount));
-        //pil.setAccountOut(invoice.getDebtorsAccount());
-
 
         voucher.setRedemptionValue(voucher.getRedemptionValue().subtract(amount));
 
@@ -324,7 +322,14 @@ public class VoucherRedemptionHelper {
         return amount;
     }
 
-    private PaymentInLine createPaymentInLine(PaymentIn payment, Invoice invoice) {
+    private PaymentInLine getPaymentInLine(PaymentIn payment, Invoice invoice) {
+
+        for (PaymentInLine paymentInLine : payment.getPaymentInLines()) {
+            if (paymentInLine.getInvoice().equals(invoice)) {
+                return paymentInLine;
+            }
+        }
+
         PaymentInLine pil = context.newObject(PaymentInLine.class);
         pil.setCollege(college);
         pil.setPaymentIn(payment);
