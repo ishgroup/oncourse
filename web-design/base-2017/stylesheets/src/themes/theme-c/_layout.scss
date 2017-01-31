@@ -16,8 +16,8 @@
     @include transition(all 0.5s);
   }
   ul {
-    @include blocks("&.grid", table-cell, $media-tablet);
-    @include blocks("&.column", "left", $media-tablet);
+    @include blocks("&.grid", $media-tablet, "table");
+    @include blocks("&.column", $media-tablet);
   }
 
   h1, h2, h3, h4, h5, h6 {

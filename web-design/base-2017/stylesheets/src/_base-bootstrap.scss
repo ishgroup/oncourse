@@ -1,0 +1,39 @@
+//
+//
+// base-bootstrap.scss
+//
+// Contains base and default styles
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//
+//
+// Default bourbon styles
+// Do not remove this imports
+//
+//
+
+@import "bourbon/bourbon";
+
+//
+//
+// Default bootstrap styles
+// Do not remove this imports
+//
+//
+
+@import "library/bootstrap";
+
+//
+//
+// Default application styles
+// Do not remove this imports
+//
+//
+
+@import "app";

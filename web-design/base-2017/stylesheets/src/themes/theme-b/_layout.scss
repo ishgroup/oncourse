@@ -16,8 +16,8 @@
 		@include transition(all 0.5s);
 	}
 	ul {
-		@include blocks("&.grid", table-cell, $media-tablet);
-		@include blocks("&.column", "left", $media-tablet);
+		@include blocks("&.grid", $media-tablet, "table");
+		@include blocks("&.column", $media-tablet);
 	}
 
 	#Main.main-page {
@@ -396,14 +396,13 @@
 					}
 				}
 				ul {
-					margin: 0px;
 					list-style: none;
-					width: 100%;
+					margin-bottom: 0;
 					li {
 						list-style: none;
 						text-align: center;
 						vertical-align: middle;
-						margin-bottom: 20px;
+						padding-bottom: 20px;
 						.block {
 							position: relative;
 							width: 100%;
@@ -421,14 +420,6 @@
 							@include responsive($media-small) {
 								height: 286px;
 								max-width: 399px;
-							}
-							@include responsive($media-tablet) {
-								&.left {
-									margin-left: 0px;
-								}
-								&.right {
-									margin-right: 0px;
-								}
 							}
 							>a {
 								display: table;
