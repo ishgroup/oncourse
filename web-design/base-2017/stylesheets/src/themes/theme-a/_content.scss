@@ -76,15 +76,20 @@
 
 		.blocks {
 			list-style: none;
-			margin: 0 0 15px 0;
+			margin: 0 -5px 15px;
+			background: $white;
+			display: block;
+			width: auto;
 			@include responsive($media-tablet) {
-				display: table;
 				border-bottom: 1px solid #ddd;
+				margin: 0 -10px 60px;
+			}
+			@include responsive($media-custom, 1090px) {
+				display: table;
+				width: 100%;
 				margin: 0 0 60px 0;
 			}
 			> li {
-				display: block;
-				width: 100%;
 				padding: 30px 44px;
 				border-bottom: 1px solid #dfdfdf;
 				text-align: center;
@@ -93,8 +98,6 @@
 				}
 
 				@include responsive($media-tablet) {
-					display: table-cell;
-					width: 33.33%;
 					border-left: 1px solid #dfdfdf;
 					border-bottom: 0px;
 				}
@@ -127,14 +130,11 @@
 		}
 		.popular-courses-list {
 			background: #eeeff3;
-			margin: 0;
 			list-style: none;
-			width: 100%;
-			float: left;
+			margin: 0;
 			margin-bottom: 15px;
-
+			padding: 0;
 			@include responsive($media-tablet) {
-				width: 33%;
 				margin-bottom: 0px;
 			}
 
@@ -188,8 +188,6 @@
 	}
 
 	.featured-block {
-		float: right;
-		width: 100%;
 		background: url($imagePath + 'featured-bg.png') center center no-repeat;
 		background-size:  cover;
 		padding: 34px 30px 32px 30px;
@@ -198,7 +196,6 @@
 		min-height: 273px;
 
 		@include responsive($media-tablet) {
-			width: 67%;
 			margin-bottom: 60px;
 		}
 

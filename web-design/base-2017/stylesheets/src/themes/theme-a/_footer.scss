@@ -23,11 +23,7 @@
 			padding-top: 70px;
 		}
 
-		&:after {
-			content: "";
-			display: block;
-			clear: both;
-		}
+		@include clearfix;
 		.left {
 			+ br {
 				display: none;
@@ -46,9 +42,6 @@
 				> img {
 					background-color: #FFFFFF;
 				}
-
-				float: left;
-				width: 190px;
 				.social-links {
 					margin-top: 25px;
 					li {
@@ -61,8 +54,6 @@
 				}
 			}
 			.address-info {
-				float: left;
-
 				.title {
 					text-transform: uppercase;
 					color: $footerTitleColor;
@@ -75,15 +66,10 @@
 		}
 
 		.right {
-			float: right;
-			width: 555px;
-			display: table;
 			> p {
 				display: none;
 			}
-
-			>ul {
-				display: table-cell;
+			.row>ul {
 				> li:first-child {
 					color: $footerTitleColor;
 					text-transform: uppercase;
@@ -114,11 +100,7 @@
 			@include responsive($media-tablet) {
 				padding-top: 80px;
 			}
-			&:after {
-				content: "";
-				display: block;
-				clear: both;
-			}
+			@include clearfix;
 			.footer-left {
 				float: left;
 			}
@@ -136,7 +118,5 @@
 				}
 			}
 		}
-
 	}
-
 }
