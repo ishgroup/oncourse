@@ -31,6 +31,8 @@ public interface ICourseService {
 	List<Course> getCourses(Tag tag, Sort sort, Boolean isAscending,
 			Integer limit);
 
+	boolean availableByRootTag(Course course);
+	
 	/**
 	 * Load by primary keys.
 	 * 

@@ -119,6 +119,21 @@ public class CourseService implements ICourseService {
 
 	}
 
+	@Override
+	public boolean availableByRootTag(Course course) {
+		Tag rootTag = tagService.getTagByFullPath(StringUtils.trimToNull(webSiteService.getCurrentWebSite().getCoursesRootTagName()));
+		if (rootTag == null) {
+			return true;
+		}
+		
+		for (Tag tag :  tagService.getTagsForEntity(Course.class.getSimpleName(), course.getId())) {
+			if (rootTag.getId().equals(tag.getId()) || rootTag.isParentOf(tag)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * @return
 	 */

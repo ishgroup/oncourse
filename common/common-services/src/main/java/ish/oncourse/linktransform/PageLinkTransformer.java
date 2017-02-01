@@ -212,7 +212,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			if (courseCode != null) {
 				course = courseService.getCourseByCode(courseCode);
 			}
-			if (course != null) {
+			if (course != null && courseService.availableByRootTag(course)) {
 				request.setAttribute(Course.class.getSimpleName(), course);
 			} else {
 				pageIdentifier = PageIdentifier.PageNotFound;
@@ -224,7 +224,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			if (courseClassCode != null) {
 				courseClass = courseClassService.getCourseClassByFullCode(courseClassCode);
 			}
-			if (courseClass != null) {
+			if (courseClass != null && courseService.availableByRootTag(courseClass.getCourse())) {
 				request.setAttribute(CourseClass.class.getSimpleName(), courseClass);
 			} else {
 				pageIdentifier = PageIdentifier.PageNotFound;
