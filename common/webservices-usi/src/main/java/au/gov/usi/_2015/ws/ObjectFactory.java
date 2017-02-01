@@ -53,27 +53,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LocateUSIType }
+     * Create an instance of {@link BulkVerifyUSIResponseType }
      * 
      */
-    public LocateUSIType createLocateUSIType() {
-        return new LocateUSIType();
-    }
-
-    /**
-     * Create an instance of {@link VerifyUSIType }
-     * 
-     */
-    public VerifyUSIType createVerifyUSIType() {
-        return new VerifyUSIType();
-    }
-
-    /**
-     * Create an instance of {@link ErrorType }
-     * 
-     */
-    public ErrorType createErrorType() {
-        return new ErrorType();
+    public BulkVerifyUSIResponseType createBulkVerifyUSIResponseType() {
+        return new BulkVerifyUSIResponseType();
     }
 
     /**
@@ -85,163 +69,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateUSIResponseType }
+     * Create an instance of {@link LocateUSIResponseType }
      * 
      */
-    public CreateUSIResponseType createCreateUSIResponseType() {
-        return new CreateUSIResponseType();
-    }
-
-    /**
-     * Create an instance of {@link ImmiCardDocumentType }
-     * 
-     */
-    public ImmiCardDocumentType createImmiCardDocumentType() {
-        return new ImmiCardDocumentType();
-    }
-
-    /**
-     * Create an instance of {@link ContactDetailsType }
-     * 
-     */
-    public ContactDetailsType createContactDetailsType() {
-        return new ContactDetailsType();
-    }
-
-    /**
-     * Create an instance of {@link GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes }
-     * 
-     */
-    public GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes createGetNonDvsDocumentTypesResponseTypeNonDvsDocumentTypes() {
-        return new GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes();
-    }
-
-    /**
-     * Create an instance of {@link BulkUploadResponseType }
-     * 
-     */
-    public BulkUploadResponseType createBulkUploadResponseType() {
-        return new BulkUploadResponseType();
-    }
-
-    /**
-     * Create an instance of {@link NationalAddressType }
-     * 
-     */
-    public NationalAddressType createNationalAddressType() {
-        return new NationalAddressType();
-    }
-
-    /**
-     * Create an instance of {@link UpdateUSIPersonalDetailsResponseType.Errors }
-     * 
-     */
-    public UpdateUSIPersonalDetailsResponseType.Errors createUpdateUSIPersonalDetailsResponseTypeErrors() {
-        return new UpdateUSIPersonalDetailsResponseType.Errors();
-    }
-
-    /**
-     * Create an instance of {@link MedicareDocumentType }
-     * 
-     */
-    public MedicareDocumentType createMedicareDocumentType() {
-        return new MedicareDocumentType();
-    }
-
-    /**
-     * Create an instance of {@link BirthCertificateDocumentType }
-     * 
-     */
-    public BirthCertificateDocumentType createBirthCertificateDocumentType() {
-        return new BirthCertificateDocumentType();
-    }
-
-    /**
-     * Create an instance of {@link CitizenshipCertificateDocumentType }
-     * 
-     */
-    public CitizenshipCertificateDocumentType createCitizenshipCertificateDocumentType() {
-        return new CitizenshipCertificateDocumentType();
-    }
-
-    /**
-     * Create an instance of {@link PassportDocumentType }
-     * 
-     */
-    public PassportDocumentType createPassportDocumentType() {
-        return new PassportDocumentType();
-    }
-
-    /**
-     * Create an instance of {@link CertificateOfRegistrationByDescentDocumentType }
-     * 
-     */
-    public CertificateOfRegistrationByDescentDocumentType createCertificateOfRegistrationByDescentDocumentType() {
-        return new CertificateOfRegistrationByDescentDocumentType();
-    }
-
-    /**
-     * Create an instance of {@link DriversLicenceDocumentType }
-     * 
-     */
-    public DriversLicenceDocumentType createDriversLicenceDocumentType() {
-        return new DriversLicenceDocumentType();
-    }
-
-    /**
-     * Create an instance of {@link PersonalDetailsType }
-     * 
-     */
-    public PersonalDetailsType createPersonalDetailsType() {
-        return new PersonalDetailsType();
-    }
-
-    /**
-     * Create an instance of {@link ApplicationType }
-     * 
-     */
-    public ApplicationType createApplicationType() {
-        return new ApplicationType();
-    }
-
-    /**
-     * Create an instance of {@link ContactDetailsLocateType }
-     * 
-     */
-    public ContactDetailsLocateType createContactDetailsLocateType() {
-        return new ContactDetailsLocateType();
-    }
-
-    /**
-     * Create an instance of {@link VisaDocumentType }
-     * 
-     */
-    public VisaDocumentType createVisaDocumentType() {
-        return new VisaDocumentType();
-    }
-
-    /**
-     * Create an instance of {@link LocateUSIResponseType.Errors }
-     * 
-     */
-    public LocateUSIResponseType.Errors createLocateUSIResponseTypeErrors() {
-        return new LocateUSIResponseType.Errors();
-    }
-
-    /**
-     * Create an instance of {@link PhoneType }
-     * 
-     */
-    public PhoneType createPhoneType() {
-        return new PhoneType();
-    }
-
-    /**
-     * Create an instance of {@link BulkUploadType.Applications }
-     * 
-     */
-    public BulkUploadType.Applications createBulkUploadTypeApplications() {
-        return new BulkUploadType.Applications();
+    public LocateUSIResponseType createLocateUSIResponseType() {
+        return new LocateUSIResponseType();
     }
 
     /**
@@ -253,107 +85,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link VerificationResponseType }
+     * Create an instance of {@link CitizenshipCertificateDocumentType }
      * 
      */
-    public VerificationResponseType createVerificationResponseType() {
-        return new VerificationResponseType();
-    }
-
-    /**
-     * Create an instance of {@link ApplicationResponseType.Errors }
-     * 
-     */
-    public ApplicationResponseType.Errors createApplicationResponseTypeErrors() {
-        return new ApplicationResponseType.Errors();
-    }
-
-    /**
-     * Create an instance of {@link BulkVerifyUSIResponseType }
-     * 
-     */
-    public BulkVerifyUSIResponseType createBulkVerifyUSIResponseType() {
-        return new BulkVerifyUSIResponseType();
-    }
-
-    /**
-     * Create an instance of {@link UpdateUSIContactDetailsResponseType }
-     * 
-     */
-    public UpdateUSIContactDetailsResponseType createUpdateUSIContactDetailsResponseType() {
-        return new UpdateUSIContactDetailsResponseType();
-    }
-
-    /**
-     * Create an instance of {@link BulkVerifyUSIType }
-     * 
-     */
-    public BulkVerifyUSIType createBulkVerifyUSIType() {
-        return new BulkVerifyUSIType();
-    }
-
-    /**
-     * Create an instance of {@link ApplicationResponseType }
-     * 
-     */
-    public ApplicationResponseType createApplicationResponseType() {
-        return new ApplicationResponseType();
-    }
-
-    /**
-     * Create an instance of {@link BulkVerifyUSIType.Verifications }
-     * 
-     */
-    public BulkVerifyUSIType.Verifications createBulkVerifyUSITypeVerifications() {
-        return new BulkVerifyUSIType.Verifications();
-    }
-
-    /**
-     * Create an instance of {@link UpdateUSIPersonalDetailsType }
-     * 
-     */
-    public UpdateUSIPersonalDetailsType createUpdateUSIPersonalDetailsType() {
-        return new UpdateUSIPersonalDetailsType();
-    }
-
-    /**
-     * Create an instance of {@link GetNonDvsDocumentTypesResponseType }
-     * 
-     */
-    public GetNonDvsDocumentTypesResponseType createGetNonDvsDocumentTypesResponseType() {
-        return new GetNonDvsDocumentTypesResponseType();
-    }
-
-    /**
-     * Create an instance of {@link VerifyUSIResponseType }
-     * 
-     */
-    public VerifyUSIResponseType createVerifyUSIResponseType() {
-        return new VerifyUSIResponseType();
-    }
-
-    /**
-     * Create an instance of {@link UpdateUSIPersonalDetailsResponseType }
-     * 
-     */
-    public UpdateUSIPersonalDetailsResponseType createUpdateUSIPersonalDetailsResponseType() {
-        return new UpdateUSIPersonalDetailsResponseType();
-    }
-
-    /**
-     * Create an instance of {@link BulkUploadRetrieveResponseType }
-     * 
-     */
-    public BulkUploadRetrieveResponseType createBulkUploadRetrieveResponseType() {
-        return new BulkUploadRetrieveResponseType();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfErrorInfo }
-     * 
-     */
-    public ArrayOfErrorInfo createArrayOfErrorInfo() {
-        return new ArrayOfErrorInfo();
+    public CitizenshipCertificateDocumentType createCitizenshipCertificateDocumentType() {
+        return new CitizenshipCertificateDocumentType();
     }
 
     /**
@@ -365,51 +101,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetNonDvsDocumentTypesType }
+     * Create an instance of {@link LocateUSIType }
      * 
      */
-    public GetNonDvsDocumentTypesType createGetNonDvsDocumentTypesType() {
-        return new GetNonDvsDocumentTypesType();
-    }
-
-    /**
-     * Create an instance of {@link BulkVerifyUSIResponseType.VerificationResponses }
-     * 
-     */
-    public BulkVerifyUSIResponseType.VerificationResponses createBulkVerifyUSIResponseTypeVerificationResponses() {
-        return new BulkVerifyUSIResponseType.VerificationResponses();
-    }
-
-    /**
-     * Create an instance of {@link VerificationType }
-     * 
-     */
-    public VerificationType createVerificationType() {
-        return new VerificationType();
-    }
-
-    /**
-     * Create an instance of {@link LocateUSIResponseType }
-     * 
-     */
-    public LocateUSIResponseType createLocateUSIResponseType() {
-        return new LocateUSIResponseType();
-    }
-
-    /**
-     * Create an instance of {@link UpdateUSIContactDetailsType }
-     * 
-     */
-    public UpdateUSIContactDetailsType createUpdateUSIContactDetailsType() {
-        return new UpdateUSIContactDetailsType();
-    }
-
-    /**
-     * Create an instance of {@link BulkUploadRetrieveResponseType.Applications }
-     * 
-     */
-    public BulkUploadRetrieveResponseType.Applications createBulkUploadRetrieveResponseTypeApplications() {
-        return new BulkUploadRetrieveResponseType.Applications();
+    public LocateUSIType createLocateUSIType() {
+        return new LocateUSIType();
     }
 
     /**
@@ -421,11 +117,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ErrorInfo }
+     * Create an instance of {@link UpdateUSIContactDetailsResponseType }
      * 
      */
-    public ErrorInfo createErrorInfo() {
-        return new ErrorInfo();
+    public UpdateUSIContactDetailsResponseType createUpdateUSIContactDetailsResponseType() {
+        return new UpdateUSIContactDetailsResponseType();
+    }
+
+    /**
+     * Create an instance of {@link PhoneType }
+     * 
+     */
+    public PhoneType createPhoneType() {
+        return new PhoneType();
+    }
+
+    /**
+     * Create an instance of {@link ApplicationType }
+     * 
+     */
+    public ApplicationType createApplicationType() {
+        return new ApplicationType();
+    }
+
+    /**
+     * Create an instance of {@link VerifyUSIResponseType }
+     * 
+     */
+    public VerifyUSIResponseType createVerifyUSIResponseType() {
+        return new VerifyUSIResponseType();
     }
 
     /**
@@ -445,6 +165,230 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ContactDetailsLocateType }
+     * 
+     */
+    public ContactDetailsLocateType createContactDetailsLocateType() {
+        return new ContactDetailsLocateType();
+    }
+
+    /**
+     * Create an instance of {@link ApplicationResponseType.Errors }
+     * 
+     */
+    public ApplicationResponseType.Errors createApplicationResponseTypeErrors() {
+        return new ApplicationResponseType.Errors();
+    }
+
+    /**
+     * Create an instance of {@link VerificationType }
+     * 
+     */
+    public VerificationType createVerificationType() {
+        return new VerificationType();
+    }
+
+    /**
+     * Create an instance of {@link PersonalDetailsType }
+     * 
+     */
+    public PersonalDetailsType createPersonalDetailsType() {
+        return new PersonalDetailsType();
+    }
+
+    /**
+     * Create an instance of {@link BirthCertificateDocumentType }
+     * 
+     */
+    public BirthCertificateDocumentType createBirthCertificateDocumentType() {
+        return new BirthCertificateDocumentType();
+    }
+
+    /**
+     * Create an instance of {@link DriversLicenceDocumentType }
+     * 
+     */
+    public DriversLicenceDocumentType createDriversLicenceDocumentType() {
+        return new DriversLicenceDocumentType();
+    }
+
+    /**
+     * Create an instance of {@link UpdateUSIPersonalDetailsResponseType.Errors }
+     * 
+     */
+    public UpdateUSIPersonalDetailsResponseType.Errors createUpdateUSIPersonalDetailsResponseTypeErrors() {
+        return new UpdateUSIPersonalDetailsResponseType.Errors();
+    }
+
+    /**
+     * Create an instance of {@link ApplicationResponseType }
+     * 
+     */
+    public ApplicationResponseType createApplicationResponseType() {
+        return new ApplicationResponseType();
+    }
+
+    /**
+     * Create an instance of {@link ErrorType }
+     * 
+     */
+    public ErrorType createErrorType() {
+        return new ErrorType();
+    }
+
+    /**
+     * Create an instance of {@link BulkUploadRetrieveResponseType.Applications }
+     * 
+     */
+    public BulkUploadRetrieveResponseType.Applications createBulkUploadRetrieveResponseTypeApplications() {
+        return new BulkUploadRetrieveResponseType.Applications();
+    }
+
+    /**
+     * Create an instance of {@link UpdateUSIContactDetailsType }
+     * 
+     */
+    public UpdateUSIContactDetailsType createUpdateUSIContactDetailsType() {
+        return new UpdateUSIContactDetailsType();
+    }
+
+    /**
+     * Create an instance of {@link VerifyUSIType }
+     * 
+     */
+    public VerifyUSIType createVerifyUSIType() {
+        return new VerifyUSIType();
+    }
+
+    /**
+     * Create an instance of {@link MedicareDocumentType }
+     * 
+     */
+    public MedicareDocumentType createMedicareDocumentType() {
+        return new MedicareDocumentType();
+    }
+
+    /**
+     * Create an instance of {@link ImmiCardDocumentType }
+     * 
+     */
+    public ImmiCardDocumentType createImmiCardDocumentType() {
+        return new ImmiCardDocumentType();
+    }
+
+    /**
+     * Create an instance of {@link VisaDocumentType }
+     * 
+     */
+    public VisaDocumentType createVisaDocumentType() {
+        return new VisaDocumentType();
+    }
+
+    /**
+     * Create an instance of {@link VerificationResponseType }
+     * 
+     */
+    public VerificationResponseType createVerificationResponseType() {
+        return new VerificationResponseType();
+    }
+
+    /**
+     * Create an instance of {@link BulkUploadResponseType }
+     * 
+     */
+    public BulkUploadResponseType createBulkUploadResponseType() {
+        return new BulkUploadResponseType();
+    }
+
+    /**
+     * Create an instance of {@link ContactDetailsType }
+     * 
+     */
+    public ContactDetailsType createContactDetailsType() {
+        return new ContactDetailsType();
+    }
+
+    /**
+     * Create an instance of {@link BulkUploadRetrieveResponseType }
+     * 
+     */
+    public BulkUploadRetrieveResponseType createBulkUploadRetrieveResponseType() {
+        return new BulkUploadRetrieveResponseType();
+    }
+
+    /**
+     * Create an instance of {@link UpdateUSIPersonalDetailsType }
+     * 
+     */
+    public UpdateUSIPersonalDetailsType createUpdateUSIPersonalDetailsType() {
+        return new UpdateUSIPersonalDetailsType();
+    }
+
+    /**
+     * Create an instance of {@link BulkUploadType.Applications }
+     * 
+     */
+    public BulkUploadType.Applications createBulkUploadTypeApplications() {
+        return new BulkUploadType.Applications();
+    }
+
+    /**
+     * Create an instance of {@link ErrorInfo }
+     * 
+     */
+    public ErrorInfo createErrorInfo() {
+        return new ErrorInfo();
+    }
+
+    /**
+     * Create an instance of {@link CertificateOfRegistrationByDescentDocumentType }
+     * 
+     */
+    public CertificateOfRegistrationByDescentDocumentType createCertificateOfRegistrationByDescentDocumentType() {
+        return new CertificateOfRegistrationByDescentDocumentType();
+    }
+
+    /**
+     * Create an instance of {@link NationalAddressType }
+     * 
+     */
+    public NationalAddressType createNationalAddressType() {
+        return new NationalAddressType();
+    }
+
+    /**
+     * Create an instance of {@link BulkVerifyUSIType.Verifications }
+     * 
+     */
+    public BulkVerifyUSIType.Verifications createBulkVerifyUSITypeVerifications() {
+        return new BulkVerifyUSIType.Verifications();
+    }
+
+    /**
+     * Create an instance of {@link UpdateUSIPersonalDetailsResponseType }
+     * 
+     */
+    public UpdateUSIPersonalDetailsResponseType createUpdateUSIPersonalDetailsResponseType() {
+        return new UpdateUSIPersonalDetailsResponseType();
+    }
+
+    /**
+     * Create an instance of {@link CreateUSIResponseType }
+     * 
+     */
+    public CreateUSIResponseType createCreateUSIResponseType() {
+        return new CreateUSIResponseType();
+    }
+
+    /**
+     * Create an instance of {@link BulkVerifyUSIResponseType.VerificationResponses }
+     * 
+     */
+    public BulkVerifyUSIResponseType.VerificationResponses createBulkVerifyUSIResponseTypeVerificationResponses() {
+        return new BulkVerifyUSIResponseType.VerificationResponses();
+    }
+
+    /**
      * Create an instance of {@link PersonalDetailsUpdateType }
      * 
      */
@@ -458,6 +402,62 @@ public class ObjectFactory {
      */
     public UpdateUSIContactDetailsResponseType.Errors createUpdateUSIContactDetailsResponseTypeErrors() {
         return new UpdateUSIContactDetailsResponseType.Errors();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfErrorInfo }
+     * 
+     */
+    public ArrayOfErrorInfo createArrayOfErrorInfo() {
+        return new ArrayOfErrorInfo();
+    }
+
+    /**
+     * Create an instance of {@link LocateUSIResponseType.Errors }
+     * 
+     */
+    public LocateUSIResponseType.Errors createLocateUSIResponseTypeErrors() {
+        return new LocateUSIResponseType.Errors();
+    }
+
+    /**
+     * Create an instance of {@link GetNonDvsDocumentTypesType }
+     * 
+     */
+    public GetNonDvsDocumentTypesType createGetNonDvsDocumentTypesType() {
+        return new GetNonDvsDocumentTypesType();
+    }
+
+    /**
+     * Create an instance of {@link GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes }
+     * 
+     */
+    public GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes createGetNonDvsDocumentTypesResponseTypeNonDvsDocumentTypes() {
+        return new GetNonDvsDocumentTypesResponseType.NonDvsDocumentTypes();
+    }
+
+    /**
+     * Create an instance of {@link BulkVerifyUSIType }
+     * 
+     */
+    public BulkVerifyUSIType createBulkVerifyUSIType() {
+        return new BulkVerifyUSIType();
+    }
+
+    /**
+     * Create an instance of {@link PassportDocumentType }
+     * 
+     */
+    public PassportDocumentType createPassportDocumentType() {
+        return new PassportDocumentType();
+    }
+
+    /**
+     * Create an instance of {@link GetNonDvsDocumentTypesResponseType }
+     * 
+     */
+    public GetNonDvsDocumentTypesResponseType createGetNonDvsDocumentTypesResponseType() {
+        return new GetNonDvsDocumentTypesResponseType();
     }
 
     /**

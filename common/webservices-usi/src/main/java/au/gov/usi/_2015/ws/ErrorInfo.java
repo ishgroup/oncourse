@@ -1,6 +1,8 @@
 
 package au.gov.usi._2015.ws;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,6 +22,9 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="Code" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="Title" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="Message" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;sequence>
+ *           &lt;element name="MemberNames" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
+ *         &lt;/sequence>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,7 +37,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ErrorInfo", propOrder = {
     "code",
     "title",
-    "message"
+    "message",
+    "memberNames"
 })
 public class ErrorInfo {
 
@@ -42,6 +48,8 @@ public class ErrorInfo {
     protected String title;
     @XmlElement(name = "Message", required = true)
     protected String message;
+    @XmlElement(name = "MemberNames", required = true, nillable = true)
+    protected List<String> memberNames;
 
     /**
      * Gets the value of the code property.
@@ -105,6 +113,35 @@ public class ErrorInfo {
      */
     public void setMessage(String value) {
         this.message = value;
+    }
+
+    /**
+     * Gets the value of the memberNames property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the memberNames property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getMemberNames().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
+     */
+    public List<String> getMemberNames() {
+        if (memberNames == null) {
+            memberNames = new ArrayList<String>();
+        }
+        return this.memberNames;
     }
 
 }
