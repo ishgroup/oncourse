@@ -634,7 +634,16 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SUMMARY_EXTRACTS(101, "Summary extracts", Mask.ALL - Mask.VIEW);
+	SUMMARY_EXTRACTS(101, "Summary extracts", Mask.ALL - Mask.VIEW),
+	
+	/**
+	 * Database value: 101
+	 *
+	 * Allow to access "Audit logging"
+	 * Special single option.
+	 */
+	@API
+	AUDIT_LOGGING(102, "Summary extracts");
 	
 
 	private int value;
