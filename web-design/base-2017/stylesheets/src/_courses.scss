@@ -101,12 +101,26 @@
       }
 
       // Following style for first image of course or add class (course-image) to any container
-      > img:first-child, .course-image {
+      .course-image {
         float: none;
         max-width: $coursesThumbnailWidth;
-        margin: 0 auto;
         display: block;
-        margin-bottom: 10px;
+        margin: 0 auto 10px;
+
+        // Following function handles responsive media screen
+        @include responsive($media-small) {
+          margin: 0;
+        }
+
+        img {
+          @include responsive($media-small) {
+            margin-right: 15px;
+            float: left;
+          }
+        }
+      }
+      > img:first-child {
+        @extend .course-image;
 
         // Following function handles responsive media screen
         @include responsive($media-small) {

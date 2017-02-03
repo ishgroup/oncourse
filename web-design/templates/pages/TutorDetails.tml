@@ -27,7 +27,7 @@
 							<h4>Resume</h4>
 							<t:if t:test="${profilePicture}">
 								<div class="tutor_pic">
-									<img class="profilePicture" src="${profilePictureUrl}" />
+									<img class="profilePicture" src="${profilePictureUrl}" alt="${tutorDetailsTitle}" />
 								</div>
 							</t:if>
 
@@ -36,11 +36,11 @@
 					</t:if>
 				</div>
 				<t:if t:test="${hasRoles}">
-					<h4>Classes</h4>
 					<div class="tutors_classes">
+						<h4>Classes</h4>
 						<t:loop t:source="currentVisibleTutorRoles" t:value="role">
 						<span>
-							<a href="/class/${role.courseClass.uniqueIdentifier}">${role.courseClass.uniqueIdentifier} ${role.courseClass.course.name}</a>
+							<a href="/class/${role.courseClass.uniqueIdentifier}">${role.courseClass.course.name}</a>
 						</span>
 						</t:loop>
 					</div>

@@ -4,7 +4,7 @@
 			<h3 class="title-block">
 				<span>My Discounts</span>
 			</h3>
-		
+
 			<t:if t:test="promotions.empty" negate="true">
 				<ul class="menu">
 					<t:loop source="promotions" value="promotion">
@@ -18,7 +18,7 @@
 				</ul>
 			</t:if>
 			<a class="nyromodalreload actionLink" target="_blank" href="http://${serverName}/addDiscount">Add a discount code</a>
-			<a class="actionLink" target="_blank" href="https://skillsoncourse.com.au/login">Manage your classes</a>
+			<a class="actionLink" target="_blank" href="https://skillsoncourse.com.au/login">My Account</a>
 		</div>
 	</t:if>
 </t:container>

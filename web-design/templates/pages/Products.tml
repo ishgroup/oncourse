@@ -6,6 +6,7 @@
 				<t:if t:test="hasAnyItems" negate="true">
 					<h2>No products available</h2>
 					<p:else>
+						<h2>Available products:</h2>
 						<span t:type="ui/ProductsList" products="products" productsCount="productsCount"
 							itemIndex="itemIndex"/>
 					</p:else>
