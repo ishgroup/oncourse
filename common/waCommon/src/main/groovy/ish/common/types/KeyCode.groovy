@@ -643,7 +643,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	AUDIT_LOGGING(102, "Summary extracts");
+	AUDIT_LOGGING(102, "Audit logging", Mask.NONE, Mask.CREATE | Mask.EDIT | Mask.DELETE);
 	
 
 	private int value;
