@@ -85,7 +85,9 @@
                         data-prop-can-buy="${canBuy()}"
                         data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
                         data-prop-id="${product.id}"
-                        data-prop-name="${product.name}"></div>
+                        data-prop-name="${product.name}"
+                        data-prop-unique-identifier="${product.sku}"></div>
+                    ></div>
                 </div>
             </div>
         </div>

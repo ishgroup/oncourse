@@ -96,7 +96,8 @@
                     data-prop-has-available-enrolment-places="${hasAvailableEnrolmentPlaces}"
                     data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
                     data-prop-allow-by-application="${allowByAplication}"
-                    data-prop-free-places="${courseClass.availableEnrolmentPlaces}"></div>
+                    data-prop-free-places="${courseClass.availableEnrolmentPlaces}"
+                    data-prop-unique-identifier="${courseClass.uniqueIdentifier}"></div>
             </div>
 
             <t:if test="courseClass.detail">
