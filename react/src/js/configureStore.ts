@@ -23,10 +23,8 @@ export function configureStore(): Store<IshState> {
       .map(course => course.id)
       .join("%");
 
-    if (courses) {
-      CookieService.set("shortlist", courses);
-      LocalStorageService.set("shortlist", state.cart.courses);
-    }
+    CookieService.set("shortlist", courses);
+    LocalStorageService.set("shortlist", state.cart.courses || []);
   });
 
   storeListenerService.addListener(state => {
@@ -34,10 +32,8 @@ export function configureStore(): Store<IshState> {
       .map(product => product.id)
       .join("%");
 
-    if (products) {
-      CookieService.set("productShortList", products);
-      LocalStorageService.set("productShortList", state.cart.products);
-    }
+    CookieService.set("productShortList", products);
+    LocalStorageService.set("productShortList", state.cart.products || []);
   });
 
   preloadedState(store);
