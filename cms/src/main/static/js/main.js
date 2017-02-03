@@ -91,7 +91,7 @@ function animLayout(toggle) {
 function hideEdit() {
 
 
-    if (jQuery('.ie').size() > 0) {
+    if (jQuery('.ie').length > 0) {
         jQuery('.cms-pane-small').hide();
         jQuery('.cms-pane-wide').hide();
     }
@@ -117,7 +117,7 @@ function pageBar() {
 
     var flag = false;
     var ietrue;
-    if (jQuery('.ie').size() > 0) {
+    if (jQuery('.ie').length > 0) {
         ietrue = true;
     } else {
         ietrue = false;
@@ -132,7 +132,7 @@ function pageBar() {
     	var actionLink = this.children[0].children[0];
     	Tapestry.findZoneManager( actionLink ).updateFromURL(actionLink.href);
         var actBtn = jQuery('.cms-btn-control.active');
-        if (actBtn.size() > 0) {
+        if (actBtn.length > 0) {
             actBtn.click();
         }
 
@@ -157,7 +157,7 @@ function pageBar() {
         }
 
         jQuery(this).addClass('active');
-        if (jQuery('.cms-darkover').size() == 0) {
+        if (jQuery('.cms-darkover').length == 0) {
             jQuery('<div>').addClass('cms-darkover').prependTo('body');
         } else {
             jQuery('.cms-darkover').show();
@@ -274,7 +274,7 @@ function tabsContent() {
 
             var i = jQuery(this).index() - 1;
             jQuery(this).addClass("active");
-            if (jQuery(this).children('em').size() == 0) {
+            if (jQuery(this).children('em').length() == 0) {
                 var f = document.createElement('em');
                 f.className = 'cms-m-active';
                 jQuery(this).append(f);
@@ -339,7 +339,7 @@ function highlightMenuItem(menuItem) {
                 jQuery(this).addClass("over").parents().removeClass("over");
                 /*the code finds 'ul' child and if it exists and content of the ul element is not empty
                 the code hides delete button for the menu item*/
-                if (jQuery(this).children('ul').children().size())
+                if (jQuery(this).children('ul').children().length)
                 {
                     jQuery(this).find("span.cms-menu-pages-dl").css("visibility", "hidden");
                 }
