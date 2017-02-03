@@ -72,12 +72,6 @@ a {
 .container {
 	width: 100%;
 	max-width: $containerWidth;
-	padding: 0px 5px;
-	margin: 0 auto;
-	@include clearfix;
-	@include responsive($media-small) {
-		padding: 0 10px;
-	}
 }
 
 //

@@ -383,7 +383,7 @@
 .classItem {
   zoom: 1 \9;
   position: relative;
-  padding: 5px;
+  padding: 10px 15px;
   background-color: $classItemBackgroundColor;
   margin: 0 0 20px;
   border: $classItemBorder;
@@ -414,71 +414,54 @@
   .dtend, .dtstart {
     text-transform: capitalize;
   }
-  .classSessions {
+  .classSessions, .summary {
     display: none;
   }
 
   // Inner info of class item block
   .class-item-info {
-    float: left;
-    width: 100%;
     zoom: 1 \9;
     font-size: 13px;
 
-    // Following function handles responsive media screen
-    @include responsive($media-tablet) {
-      width: 69%;
-    }
-    &::after {
-      visibility: hidden;
-      display: block;
-      font-size: 0;
-      content: " ";
-      clear: both;
-      height: 0
-    }
     div {
       line-height: 1.5;
-      padding: 2px 0 2px 19px
+      &.date {
+        padding-left: 20px;
+      }
     }
 
     // Class left item info, and right item info
     .class-item-info-l, .class-item-info-r {
-      float: left;
       line-height: 1;
-      padding: 0;
     }
     .class-item-info-l {
-      padding-right: 0px;
-      width: 100%;
-
       // Following function handles responsive media screen
-      @include responsive($media-small) {
-        width: 48%;
+      @include responsive($media-custom, 768px) {
         border-right: 1px solid #eee;
       }
     }
     .class-item-info-r {
       border: none;
-      width: 100%;
-
+      padding-left: 0;
       // Following function handles responsive media screen
-      @include responsive($media-small) {
-        width: 48%;
+      @include responsive($media-custom, 768px) {
         padding-left: 15px;
       }
     }
-    .summary {
-      display: none
-    }
 
     // Showing date icon on class info
+    .cd-icon {
+      background-position: left top;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+      margin-right: 3px;
+      display: inline-block;
+    }
     .date {
       line-height: 1.8;
       background-image: url($coursesClassItemDateImage);
       background-repeat: no-repeat;
       background-position: left 5px;
-      padding-right: 20px;
       .date-time {
         border-bottom: 1px dotted;
       }
@@ -496,24 +479,29 @@
     // Showing tutor icon on class info
     .tutor {
       display: $coursesClassItemTutorDisplay;
-      background-image: url($coursesClassItemTutorImage);
-      background-position: left 4px;
-      background-repeat: no-repeat
+      .event-tutor-icon {
+        background-image: url($coursesClassItemTutorImage);
+        width: 14px;
+        height: 13px;
+        @extend .cd-icon;
+      }
     }
 
     // Showing location icon on class info
     .location {
       display: $coursesClassItemLocationDisplay;
-      background-image: url($coursesClassItemLocationImage);
-      background-position: left top;
-      background-repeat: no-repeat
+      .event-location-icon {
+        background-image: url($coursesClassItemLocationImage);
+        width: 14px;
+        height: 22px;
+        @extend .cd-icon;
+      }
     }
 
     // Price block of class info
     .price {
       position: relative;
       margin: 0px;
-      padding: 0;
       display: $coursesClassItemPriceDisplay;
       .discount-price {
         color: #999999;
@@ -546,14 +534,9 @@
    */
 
   .classAction {
-    float: right;
-    width: 100%;
     text-align: right;
     font-size: 11px;
     line-height: 1.5;
-    @include responsive($media-tablet) {
-      width: 31%;
-    }
 
     >div {
       margin-bottom: 3px

@@ -18,9 +18,6 @@
 .producItem {
 	// Class item block
 	.classItem {
-		background-color: #fff;
-		border: none;
-		padding: 5px 5px 5px 0;
 		// Hiding bubble info on mouse over of products item
 		&:hover .bubbleInfo {
 			display: none
@@ -29,8 +26,6 @@
 		// Product class item left and right info
 		.class-item-info {
 			.class-item-info-l, .class-item-info-r {
-				width: auto;
-				float: none;
 				.info {
 					padding-left: 0;
 					padding-top: 0;
@@ -48,6 +43,8 @@
 						background: none;
 						text-shadow: none;
 						font-weight: normal;
+						font-size: 13px;
+						text-align: left;
 						&, +div {
 							line-height: 1.5;
 						}
