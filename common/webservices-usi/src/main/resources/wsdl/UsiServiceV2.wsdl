@@ -1211,6 +1211,9 @@
           <xs:element type="xs:int" name="Code"></xs:element>
           <xs:element type="xs:string" name="Title"></xs:element>
           <xs:element type="xs:string" name="Message"></xs:element>
+          <xs:sequence>
+            <xs:element  maxOccurs="unbounded" name="MemberNames" nillable="true" type="xs:string"/>
+          </xs:sequence>        
         </xs:sequence>
       </xs:complexType>
       <xs:element name="ErrorInfo" type="ErrorInfo"></xs:element>
