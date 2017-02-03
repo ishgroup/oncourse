@@ -5,20 +5,23 @@
   "main": "webpack.config.js",
   "scripts": {
     "prebuild:prod": "rm -rf ./dist",
-    "build:prod": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js",
-    "build:dev": "NODE_ENV=development ./node_modules/webpack/bin/webpack.js",
-    "build:dev:watch": "NODE_ENV=development WATCH=1 ./node_modules/webpack/bin/webpack.js",
-    "build:test": "NODE_ENV=test ./node_modules/webpack/bin/webpack.js",
-    "test": "./node_modules/mocha/bin/mocha ./tmp/test.js --require ./test-patch.js",
+    "build:prod": "webpack -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
+    "build:prod:watch": "webpack --watch -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
+    "build:dev": "webpack --env.NODE_ENV development --env.SOURCE_MAP eval-source-map",
+    "build:dev:watch": "webpack --debug --watch --env.NODE_ENV development --env.SOURCE_MAP eval-source-map",
+    "build:test": "webpack --config webpack.test.config.js",
+    "test": "mocha ./tmp/test.js --require ./test-patch.js",
     "test:clean": "rm ./tmp/test.js",
-    "start": "./node_modules/nodemon/bin/nodemon.js dev-server --watch dist/**/*.js --watch dev-server/**/*.js --watch dev-server/**/*.json",
-    "doc": "node_modules/jsdoc/jsdoc.js src/js/**/*.js"
+    "start": "nodemon dev-server --watch dist/**/*.js --watch dev-server/**/*.js --watch dev-server/**/*.json",
+    "doc": "jsdoc src/js/**/*.js"
   },
   "devDependencies": {
+    "@types/jquery": "^2.0.40",
+    "@types/lodash": "^4.14.52",
+    "@types/react-redux": "^4.4.36",
     "babel-core": "6.21.0",
     "babel-loader": "6.2.8",
     "babel-plugin-transform-object-rest-spread": "6.20.2",
-    "babel-polyfill": "6.20.0",
     "babel-preset-es2015": "6.18.0",
     "babel-preset-react": "6.16.0",
     "body-parser": "1.15.2",
@@ -34,16 +37,19 @@
     "nock": "9.0.2",
     "nodemon": "1.11.0",
     "null-loader": "0.1.1",
-    "webpack": "1.13.3",
+    "ts-loader": "^2.0.0",
+    "typescript": "^2.1.5",
+    "webpack": "^2.2.1",
     "xmlhttprequest": "1.8.0"
   },
   "dependencies": {
+    "babel-polyfill": "6.20.0",
     "classnames": "2.2.5",
+    "lodash": "^4.17.4",
     "react": "0.14.8",
     "react-dom": "0.14.8",
     "react-redux": "5.0.1",
     "redux": "3.6.0",
-    "redux-thunk": "2.1.0",
-    "jquery": "3.1.1"
+    "redux-thunk": "2.1.0"
   }
 }

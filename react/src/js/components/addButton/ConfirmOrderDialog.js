@@ -1,5 +1,5 @@
 import { findDOMNode } from 'react-dom';
-import { stopPropagation } from 'js/lib/utils';
+import { stopPropagation } from '../../lib/utils';
 import nativeExtend from './ConfirmOrderDialog.extend';
 import customExtend from './ConfirmOrderDialog.custom';
 

@@ -1,5 +1,5 @@
 import nock from 'nock';
-import config from 'config';
+import {ConfigConstants} from '../../js/config/ConfigConstants';
 import ACTIONS from 'js/constants';
 import { addClass, addProduct, removeClass, removeProduct } from 'js/actions/cart';
 
@@ -31,7 +31,7 @@ describe('cart actions', () => {
             }
         };
 
-        nock(config.api_root)
+        nock(ConfigConstants.API_ROOT)
             .put('/cart/courses/' + course.id)
             .reply(200, course);
 
@@ -49,7 +49,7 @@ describe('cart actions', () => {
             }
         };
 
-        nock(config.api_root)
+        nock(ConfigConstants.API_ROOT)
             .delete('/cart/courses/' + course.id)
             .reply(204);
 
@@ -67,7 +67,7 @@ describe('cart actions', () => {
             }
         };
 
-        nock(config.api_root)
+        nock(ConfigConstants.API_ROOT)
             .put('/cart/products/' + product.id)
             .reply(200, product);
 
@@ -85,7 +85,7 @@ describe('cart actions', () => {
             }
         };
 
-        nock(config.api_root)
+        nock(ConfigConstants.API_ROOT)
             .delete('/cart/products/' + product.id)
             .reply(204);
 

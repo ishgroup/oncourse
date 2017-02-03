@@ -1,5 +1,5 @@
 import ACTIONS from '../constants';
-import cartApi from 'js/api/cart';
+import cartApi from '../api/cart';
 
 function addCartItem(params) {
     return function(item) {

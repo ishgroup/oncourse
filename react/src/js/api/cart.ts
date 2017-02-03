@@ -1,5 +1,5 @@
-import config from 'config';
-import request from 'js/lib/request';
+import {ConfigConstants} from '../config/ConfigConstants';
+import request from '../lib/request';
 
 // emit request
 function emitRequest(item) {
@@ -24,10 +24,10 @@ function emitRequest(item) {
  */
 export function addClass(courseClass) {
     return emitRequest(courseClass);
-    return request({
-        type: 'put',
-        url: config.api_root + '/cart/courses/' + courseClass.id
-    });
+    // return request({
+    //     type: 'put',
+    //     url: ConfigConstants.API_ROOT + '/cart/courses/' + courseClass.id
+    // });
 }
 
 
@@ -38,10 +38,10 @@ export function addClass(courseClass) {
  */
 export function removeClass(courseId) {
     return emitRequest(courseId);
-    return request({
-        type: 'delete',
-        url: config.api_root + '/cart/courses/' + courseId
-    });
+    // return request({
+    //     type: 'delete',
+    //     url: ConfigConstants.API_ROOT + '/cart/courses/' + courseId
+    // });
 }
 
 
@@ -52,10 +52,10 @@ export function removeClass(courseId) {
  */
 export function addProduct(product) {
     return emitRequest(product);
-    return request({
-        type: 'put',
-        url: config.api_root + '/cart/products/' + product.id
-    });
+    // return request({
+    //     type: 'put',
+    //     url: ConfigConstants.API_ROOT + '/cart/products/' + product.id
+    // });
 }
 
 /**
@@ -65,10 +65,10 @@ export function addProduct(product) {
  */
 export function removeProduct(productId) {
     return emitRequest(productId);
-    return request({
-        type: 'delete',
-        url: config.api_root + '/cart/products/' + productId
-    });
+    // return request({
+    //     type: 'delete',
+    //     url: ConfigConstants.API_ROOT + '/cart/products/' + productId
+    // });
 }
 
 /**
@@ -79,7 +79,7 @@ export function removeProduct(productId) {
 export function addDiscount(code) {
     return request({
         type: 'put',
-        url: config.api_root + '/cart/discounts/' + code
+        url: ConfigConstants.API_ROOT + '/cart/discounts/' + code
     });
 }
 
@@ -91,7 +91,7 @@ export function addDiscount(code) {
 export function removeDiscount(code) {
     return request({
         type: 'delete',
-        url: config.api_root + '/cart/discounts/' + code
+        url: ConfigConstants.API_ROOT + '/cart/discounts/' + code
     });
 }
 
