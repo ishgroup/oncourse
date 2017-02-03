@@ -20,6 +20,7 @@ export interface Course {
 }
 
 export interface Product {
+  readonly id: number;
 }
 
 export interface Discount {

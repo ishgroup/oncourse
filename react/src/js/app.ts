@@ -1,5 +1,4 @@
-import React from "react";
-import {createStore, combineReducers, applyMiddleware, Store} from "redux";
+import {createStore, combineReducers, applyMiddleware} from "redux";
 import thunk from "redux-thunk";
 import cart from "./reducers/cart";
 import popup from "./reducers/popup";
@@ -24,12 +23,19 @@ storeListenerService.addListener(state => {
     .map(course => course.id)
     .join("%");
 
-  const products = state.cart.courses
-    .map(course => course.id)
+  if (courses) {
+    CookieService.set("shortlist", courses);
+  }
+});
+
+storeListenerService.addListener(state => {
+  const products = state.cart.products
+    .map(product => product.id)
     .join("%");
 
-  CookieService.set("shortlist", courses);
-  CookieService.set("productShortList", products);
+  if (products) {
+    CookieService.set("productShortList", products);
+  }
 });
 
 new Bootstrap(store)

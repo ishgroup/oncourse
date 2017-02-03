@@ -1,4 +1,4 @@
-import {plural} from '../../lib/utils';
+import {plural} from '../../lib/utils.ts';
 import AddButton from '../addButton/AddButton';
 import nativeExtend from './EnrolButton.extend';
 import customExtend from './EnrolButton.custom';

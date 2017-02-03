@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import ConfirmOrderDialog from './ConfirmOrderDialog';
-import {stopPropagation} from '../../lib/utils';
+import {stopPropagation} from '../../lib/utils.ts';
 
 class AddButton extends React.Component {
     constructor() {

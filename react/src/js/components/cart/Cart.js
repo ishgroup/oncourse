@@ -1,7 +1,7 @@
 import CartClassItem from './CartClassItem';
 import CartProductItem from './CartProductItem';
 import classnames from 'classnames';
-import {plural} from '../../lib/utils';
+import {plural} from '../../lib/utils.ts';
 import nativeExtend from './Cart.extend';
 import customExtend from './Cart.custom';
 

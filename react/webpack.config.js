@@ -19,7 +19,7 @@ Build started with following configuration:
 
   return {
     entry: {
-      polyfill: [
+      "dynamic-polyfill": [
         'babel-polyfill',
       ],
       dynamic: [
@@ -77,6 +77,10 @@ Build started with following configuration:
           'NODE_ENV': JSON.stringify(NODE_ENV)
         },
         API_ROOT: JSON.stringify(API_ROOT)
+      }),
+      new webpack.ProvidePlugin({
+        'React': 'react',
+        '$': 'jquery'
       })
     ]
   }

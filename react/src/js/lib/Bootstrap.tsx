@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import {render, findDOMNode} from 'react-dom';
 import {Provider} from 'react-redux';
 import {camelCase} from './utils';
 import {Store} from "redux";
 import {IshState} from "../services/IshState";
-import {whenReady} from "../services/jq";
-import forEach from "lodash/forEach";
+import {whenReady} from "../services/jq.js";
+import * as _ from "lodash";
 import Component = React.Component;
 import JSXElement = JSX.JSXElement;
 import ComponentClass = React.ComponentClass;
@@ -46,7 +46,7 @@ export class Bootstrap {
       const containers = document.querySelectorAll(`[data-cid=${cid}]`),
         {Component, props} = this.components[cid];
 
-      forEach(containers, (container: HTMLElement) => {
+      _.forEach(containers, (container: HTMLElement) => {
         let realProps = {};
 
         for (let prop in props) {
