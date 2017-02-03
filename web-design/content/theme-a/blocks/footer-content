@@ -1,0 +1,24 @@
+<div class="row"><div class="col-xs-24 col-md-12 left"><div class="row"><div class="col-md-12 social-content">
+!/s/img/logos/logo.png!
+*(social-links) !/s/img/icon-facebook.png!:/
+* !/s/img/icon-twitter.png!:/
+* !/s/img/icon-google.png!:/
+</div><div class="col-md-12 address-info">
+
+p(title). Contact us
+
+p(address). Level one, 30 Wilson street
+Newtown NSW 2024
+Sydney Australia
+
+Phone: +61 9550 5001
+Fax: +61 9550 4001
+
+All transactions are processed in Australia Dollars (AUD)
+</div></div> </div><div class="col-xs-24 col-md-12 right"><div class="row">
+*(col-md-12) Courses
+* {tags name:"/Subjects" hideTopLevel:"true"}
+
+*(col-md-12 quicklinks) Quicklinks
+
+</div> </div> </div>

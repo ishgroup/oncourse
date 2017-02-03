@@ -145,6 +145,9 @@ body {
 			// Form input's parent p tag rows
 			&.form-cont-row {
 				margin-bottom: 5px;
+				>br {
+					display: none;
+				}
 				label {
 					text-align: left;
 					max-width: 100%;

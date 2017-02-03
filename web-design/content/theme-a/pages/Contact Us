@@ -1,0 +1,9 @@
+h2. Contact Us
+
+{form name:"contact us" email:"contact@ish.com.au"}
+  {text label:"Email address" required:"yes"}
+  {text label:"First Name" required:"yes"}
+  {text label:"Last name" required:"yes"}
+  {text label:"Phone number" required:"no"}
+  {text label:"Reason for complaint" required:"yes" lines:8}
+  {form}

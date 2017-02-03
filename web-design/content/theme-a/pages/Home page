@@ -1,0 +1,28 @@
+<div class="home-slider flexslider">{block name:"Slider-home"}</div>
+*(blocks grid grid-3) __(icon-progress)progress__ %Cras enim faucibus%  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+* __(icon-laptop)laptop__ %Vivamus a enim magna%  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+* __(icon-code)code__ %Lorem ipsum dolor%  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+
+<div class="col-xs-24"><div class="row">
+*(col-md-8 popular-courses-list) popular courses
+* "Introduction to HTML":/
+* "OOCSS: to HTML":/
+* "CSS Preprocessors":/
+* "Responsive Design Principles":/
+* "Javascript and jQuery":/
+<div class="col-md-16 featured-block">
+"Featured Courses":/
+
+h1. Mobile First Design
+
+* ut labore et dolore magnam aliquam quaerat voluptatem
+* tempora incidunt ut labore et dolore magnam
+* master-builder of human happiness.
+* voluptatem quia voluptas sit aspernatur aut odit
+</div> </div> </div>
+
+h1(courses-title). Courses
+
+<div class="courses">{tags}</div>
+
+p(courses-info). Modern courses to learn and grow. "Enrol today.":/enrol
