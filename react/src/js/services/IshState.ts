@@ -17,10 +17,13 @@ export interface CartState {
 export interface Course {
     readonly id: number;
     readonly name: string;
+    readonly uniqueIdentifier: string;
 }
 
 export interface Product {
   readonly id: number;
+  readonly name: string;
+  readonly uniqueIdentifier: string;
 }
 
 export interface Discount {

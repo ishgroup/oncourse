@@ -4,7 +4,7 @@
   "description": "ish project",
   "main": "webpack.config.js",
   "scripts": {
-    "prebuild:prod": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
     "build:prod": "webpack -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
     "build:prod:watch": "webpack --watch -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
     "build:dev": "webpack --env.NODE_ENV development --env.SOURCE_MAP eval-source-map",

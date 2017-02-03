@@ -24,7 +24,8 @@ class AddButton extends React.Component {
 
                 this.props.add({
                     id: this.props.id,
-                    name: this.props.name
+                    name: this.props.name,
+                    uniqueIdentifier: this.props.uniqueIdentifier
                 })
                     .then(() => {
                         this.setState({
@@ -56,6 +57,7 @@ class AddButton extends React.Component {
             props: {
                 id: this.props.id,
                 name: this.props.name,
+                uniqueIdentifier: this.props.name,
                 isAdded: this.props.isAdded,
                 isAlreadyAdded: this.state.isAlreadyAdded,
                 showedPopup: this.state.showedPopup,
@@ -76,6 +78,7 @@ AddButton.propTypes = {
     add: React.PropTypes.func,
     id: React.PropTypes.number,
     name: React.PropTypes.string,
+    uniqueIdentifier: React.PropTypes.string,
     paymentGatewayEnabled: React.PropTypes.bool
 };
 

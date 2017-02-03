@@ -15,6 +15,7 @@ new Bootstrap(store)
      */
     id: 'number',
     name: 'string',
+    uniqueIdentifier: 'string',
     isCanceled: 'boolean',
     isFinished: 'boolean',
     hasAvailableEnrolmentPlaces: 'boolean',
@@ -25,6 +26,7 @@ new Bootstrap(store)
   .register('buy-button', BuyButton, {
     id: 'number',
     name: 'string',
+    uniqueIdentifier: 'string',
     paymentGatewayEnabled: 'boolean',
     canBuy: 'boolean'
   })
