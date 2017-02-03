@@ -34,7 +34,7 @@ import java.util.Map;
 
 @Type(value = ContextType.CONTACT)
 public class Contact extends _Contact implements Queueable {
-	static final String INVALID_EMAIL_MESSAGE = "The email address does not appear to be valid.";
+	
 	private static final long serialVersionUID = -7158531319889954101L;
 
 	public Long getId() {
@@ -105,9 +105,6 @@ public class Contact extends _Contact implements Queueable {
 		return null;
 	}
 	
-	
-	
-	
 	@Override
 	protected void validateForSave(ValidationResult result) {
 		ContactValidator contactValidator = ContactValidator.valueOf(ContactDelegator.valueOf(this));
@@ -145,251 +142,6 @@ public class Contact extends _Contact implements Queueable {
 		return buff.toString().trim();
 	}
 
-	private String getEntityName() {
-		if (getStudent() != null) {
-			return "student";
-		}
-		if (Boolean.TRUE.equals(getIsCompany())) {
-			return "company";
-		}
-		if (getTutor() != null) {
-			return "tutor";
-		}
-		return "contact";
-	}
-
-	/**
-	 * Validate methods; will return the string representation of error or null,
-	 * if the field is valid
-	 */
-	public String validateGivenName() {
-		if (!Boolean.TRUE.equals(getIsCompany())) {
-			String givenName = getGivenName();
-			return validateGivenName(getEntityName(), givenName);
-		}
-		return null;
-	}
-
-	/**
-	 * Validate first name utility method
-	 * 
-	 * @param entityName
-	 *            company, student or tutor
-	 * @param givenName
-	 * @return
-	 */
-	@Deprecated
-	public static String validateGivenName(String entityName, String givenName) {
-		givenName = StringUtils.trimToNull(givenName);
-		if (givenName == null) {
-			return "The " + entityName + "'s first name is required.";
-		}
-
-		if (givenName.split("\\d").length != 1) {
-			return "The first name cannot contain number characters.";
-		}
-
-		return null;
-	}
-
-	public String validateFamilyName() {
-		String familyName = getFamilyName();
-		return validateFamilyName(getEntityName(), familyName);
-	}
-
-	/**
-	 * Validate last name untility method
-	 * 
-	 * @param entityName
-	 * @param familyName
-	 * @return
-	 */
-	@Deprecated
-	public static String validateFamilyName(String entityName, String familyName) {
-		familyName = StringUtils.trimToNull(familyName);
-		if (familyName == null) {
-			return "The " + entityName + "'s last name is required.";
-		}
-		if (familyName.split("\\d").length != 1) {
-			return "The last name cannot contain number characters.";
-		}
-		return null;
-	}
-
-	public String validateEmail() {
-		String emailAddress = getEmailAddress();
-		return validateEmail(getEntityName(), emailAddress);
-	}
-
-	private static String getEmptyEmailMessage(String entityName) {
-		return "The " + entityName + "'s email is required.";
-	}
-	
-	public String getEmptyEmailMessage() {
-		return getEmptyEmailMessage(getEntityName());
-	}
-	
-	/**
-	 * Utility method to validate email address.
-	 * @param entityName
-	 * @param emailAddress
-	 * @return
-	 */
-	@Deprecated
-	public static String validateEmail(String entityName, String emailAddress) {
-		emailAddress = StringUtils.trimToNull(emailAddress);
-		if (emailAddress == null) {
-			return "The " + entityName + "'s email is required.";
-		}
-
-		try {
-			InternetAddress emailAddr = new InternetAddress(emailAddress);
-			emailAddr.validate();
-		} catch (AddressException ex) {
-			return INVALID_EMAIL_MESSAGE;
-		}
-		return null;
-	}
-
-	@Deprecated //ContactValidator should be used
-	public String validateSuburb() {
-		String suburb = getSuburb();
-		if (suburb == null || "".equals(suburb)) {
-			// not required
-			return null;
-		}
-		if (suburb.split("\\d").length != 1) {
-			return "A suburb name cannot contain numeric digits.";
-		}
-		return null;
-	}
-
-	@Deprecated //ContactValidator should be used
-	public String validatePostcode() {
-		String suburb = getPostcode();
-		if (suburb == null || "".equals(suburb)) {
-			// not required
-			return null;
-		}
-		if (!suburb.matches("(\\d){4}")) {
-			return "Enter 4 digit postcode for Australian postcodes.";
-		}
-		return null;
-	}
-
-	@Deprecated //ContactValidator should be used
-	public String validateState() {
-		String state = getState();
-		if (state == null || "".equals(state)) {
-			// not required
-			return null;
-		}
-		if (state.length() > 20) {
-			return "The name of the state cannot exceed 20 characters.";
-		}
-		return null;
-	}
-
-	@Deprecated //ContactValidator should be used
-	public String validateHomePhone() {
-		String homePhone = getHomePhoneNumber();
-		if (homePhone == null || "".equals(homePhone)) {
-			// not required
-			return null;
-		}
-		try {
-			setHomePhoneNumber(PhoneValidator.validatePhoneNumber("home", homePhone));
-		} catch (Exception ex) {
-			return ex.getMessage();
-		}
-		return null;
-	}
-
-	@Deprecated //ContactValidator should be used
-	public String validateMobilePhone() {
-		String mobilePhone = getMobilePhoneNumber();
-		if (mobilePhone == null || "".equals(mobilePhone)) {
-			// not required
-			return null;
-		}
-		try {
-			setMobilePhoneNumber(PhoneValidator.validateMobileNumber(mobilePhone));
-		} catch (Exception ex) {
-			return ex.getMessage();
-		}
-		return null;
-	}
-
-	@Deprecated //ContactValidator should be used
-	public String validateBusinessPhone() {
-		String businessPhone = getBusinessPhoneNumber();
-		if (businessPhone == null || "".equals(businessPhone)) {
-			// not required
-			return null;
-		}
-		try {
-			setBusinessPhoneNumber(PhoneValidator.validatePhoneNumber("business", businessPhone));
-		} catch (Exception ex) {
-			return ex.getMessage();
-		}
-		return null;
-	}
-
-	@Deprecated //ContactValidator should be used
-	public String validateFax() {
-		String fax = getFaxNumber();
-		if (fax == null || "".equals(fax)) {
-			// not required
-			return null;
-		}
-		try {
-			setFaxNumber(PhoneValidator.validatePhoneNumber("fax", fax));
-		} catch (Exception ex) {
-			return ex.getMessage();
-		}
-		return null;
-	}
-
-	public String validatePassword() {
-		String password = getPassword();
-		return validatedPassword(password, false);
-	}
-
-	public String validatePasswordConfirm(String confirmPassword) {
-		return validatedPassword(confirmPassword, true);
-	}
-
-	public String validateBirthDate() {
-		Date birthDate = getDateOfBirth();
-
-        //birthDate is not required field,
-		if (birthDate == null) {
-            return null;
-		}
-
-		if (birthDate.after(new Date())) {
-			return "The birth date cannot be in the future.";
-		}
-
-		return null;
-	}
-
-	private String validatedPassword(String aValue, boolean isConfirm) {
-
-		String prefix = "The password" + (isConfirm ? " confirm" : "") + " ";
-		int minimumPasswordChars = 4;
-		if (aValue == null || aValue.length() < minimumPasswordChars) {
-			return prefix + "must be at least " + minimumPasswordChars + " characters long.";
-		}
-		if (aValue.split("\\s").length != 1) {
-			return prefix + "cannot contain blank spaces.";
-		}
-		if (isConfirm && !aValue.equals(getPassword())) {
-			return prefix + "does not match the given password.";
-		}
-		return null;
-	}
-
 	@Override
 	protected void onPostAdd() {
 		if (getIsCompany() == null) {
@@ -405,12 +157,7 @@ public class Contact extends _Contact implements Queueable {
 			setIsMarketingViaPostAllowed(true);
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ish.oncourse.model.auto._Contact#onPrePersist()
-	 */
+	
 	@Override
 	protected void onPrePersist() {
 		onPostAdd();

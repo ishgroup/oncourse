@@ -1,7 +1,7 @@
 package ish.oncourse.enrol.utils;
 
-import ish.oncourse.enrol.utils.EnrolContactValidator.ValidateLength;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.util.contact.WillowContactValidator;
 import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
 import org.apache.tapestry5.ioc.Messages;
@@ -28,7 +28,7 @@ public class ValidateLengthTest {
 
     @Test
     public void testIncorrectLength() throws Exception {
-        ValidateLength lengthValidator = ValidateLength.valueOf(PreferenceController.FieldDescriptor.postcode,
+        WillowContactValidator.ValidateLength lengthValidator = WillowContactValidator.ValidateLength.valueOf(PreferenceController.FieldDescriptor.postcode,
                 ContactValidator.Property.postcode.getLength(),
                 incorrectPropertyLength,
                 messages);
@@ -38,14 +38,14 @@ public class ValidateLengthTest {
 
     @Test
     public void testCorrectLength() throws Exception {
-        ValidateLength lengthValidator = ValidateLength.valueOf(PreferenceController.FieldDescriptor.postcode,
+        WillowContactValidator.ValidateLength lengthValidator = WillowContactValidator.ValidateLength.valueOf(PreferenceController.FieldDescriptor.postcode,
                 ContactValidator.Property.postcode.getLength(),
                 null,
                 messages);
 
         assertNull(lengthValidator.getMessage());
 
-        lengthValidator = ValidateLength.valueOf(PreferenceController.FieldDescriptor.postcode,
+        lengthValidator = WillowContactValidator.ValidateLength.valueOf(PreferenceController.FieldDescriptor.postcode,
                 ContactValidator.Property.postcode.getLength(),
                 ContactErrorCode.lastNameNeedToBeProvided,
                 messages);

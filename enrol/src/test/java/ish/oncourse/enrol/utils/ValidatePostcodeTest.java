@@ -1,6 +1,6 @@
 package ish.oncourse.enrol.utils;
 
-import ish.oncourse.enrol.utils.EnrolContactValidator.ValidatePostcode;
+import ish.oncourse.util.contact.WillowContactValidator;
 import ish.validation.ContactErrorCode;
 import org.apache.tapestry5.ioc.Messages;
 import org.junit.Before;
@@ -28,25 +28,25 @@ public class ValidatePostcodeTest {
 
     @Test
     public void testPostcodeIncorrectLength() throws Exception {
-        ValidatePostcode postCodeValidator = ValidatePostcode.valueOf("011", false, ContactErrorCode.incorrectPropertyLength, messages);
+        WillowContactValidator.ValidatePostcode postCodeValidator = WillowContactValidator.ValidatePostcode.valueOf("011", false, ContactErrorCode.incorrectPropertyLength, messages);
         assertEquals(POSTCODE_LENGTH_MESSAGE, postCodeValidator.getMessage());
     }
 
     @Test
     public void testPostcodeCorrectLength() throws Exception {
-        ValidatePostcode postCodeValidator = ValidatePostcode.valueOf("011", false, null, messages);
+        WillowContactValidator.ValidatePostcode postCodeValidator = WillowContactValidator.ValidatePostcode.valueOf("011", false, null, messages);
         assertNotEquals(POSTCODE_LENGTH_MESSAGE, postCodeValidator.getMessage());
     }
 
     @Test
     public void testIncorrectPostcodeFormat() throws Exception {
-        ValidatePostcode postCodeValidator = ValidatePostcode.valueOf("11111", true, null, messages);
+        WillowContactValidator.ValidatePostcode postCodeValidator = WillowContactValidator.ValidatePostcode.valueOf("11111", true, null, messages);
         assertEquals(POSTCODE_FORMAT_MESSAGE, postCodeValidator.getMessage());
     }
 
     @Test
     public void testCorrectPostcodeFormat() throws Exception {
-        ValidatePostcode postCodeValidator = ValidatePostcode.valueOf("1111", true, null, messages);
+        WillowContactValidator.ValidatePostcode postCodeValidator = WillowContactValidator.ValidatePostcode.valueOf("1111", true, null, messages);
         assertNotEquals(POSTCODE_FORMAT_MESSAGE, postCodeValidator.getMessage());
     }
 }

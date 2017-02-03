@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.components.ContactDetailStrings;
 import ish.oncourse.enrol.utils.EnrolContactValidator;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
@@ -87,7 +88,7 @@ public class ContactEditorParser {
                     value = DateUtils.truncate(dateFormat.parse(stringValue), Calendar.DAY_OF_MONTH);
                 } catch (ParseException e) {
                     value = null;
-                    errors.put(fieldDescriptor.name(), messages.get(KEY_ERROR_MESSAGE_birthdate_hint));
+                    errors.put(fieldDescriptor.name(), messages.get(ContactDetailStrings.KEY_ERROR_MESSAGE_birthdate_hint));
                 }
             }
 
@@ -98,7 +99,7 @@ public class ContactEditorParser {
                     value = getCountryBy(stringValue);
                     if (value == null) {
                         errors.put(fieldDescriptor.name(),
-                                messages.format(KEY_ERROR_error_countryOfBirth, stringValue));
+                                messages.format(ContactDetailStrings.KEY_ERROR_error_countryOfBirth, stringValue));
                         value = getCountryBy(ICountryService.DEFAULT_COUNTRY_NAME);
                     }
                 }
@@ -112,7 +113,7 @@ public class ContactEditorParser {
             if (customFieldHolder.isCustomFieldRequared(name)
                     && StringUtils.trimToNull(customFieldHolder.getCustomFieldValue(name)) == null) {
                 errors.put(name,
-                        messages.format(KEY_ERROR_MESSAGE_fieldRequired, name));
+                        messages.format(ContactDetailStrings.KEY_ERROR_MESSAGE_fieldRequired, name));
             }
         }
 
@@ -137,7 +138,7 @@ public class ContactEditorParser {
     }
 
     private String getRequiredMessage(FieldDescriptor fieldDescriptor) {
-        return messages.format(KEY_ERROR_MESSAGE_fieldRequired,
+        return messages.format(ContactDetailStrings.KEY_ERROR_MESSAGE_fieldRequired,
                 messages.get(String.format(MessagesNamingConvention.LABEL_KEY_TEMPLATE, fieldDescriptor.name())));
     }
 

@@ -17,19 +17,7 @@ public class Constants {
 	public static final String DATE_FIELD_PARSE_FORMAT = FormatUtils.DATE_FIELD_PARSE_FORMAT;
 
 	public static final String DATE_FIELD_SHOW_FORMAT = FormatUtils.DATE_FIELD_SHOW_FORMAT;
-
-	public static final Date MIN_DATE_OF_BIRTH;
-
-	static{
-		try {
-			MIN_DATE_OF_BIRTH = DateUtils.truncate(new SimpleDateFormat(DATE_FIELD_PARSE_FORMAT).parse("01/01/1900"),
-					Calendar.YEAR);
-		} catch (ParseException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-
+	
 	/**
 	 * Used components names.
 	 */

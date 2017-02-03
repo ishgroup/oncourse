@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout.contact;
 
+import ish.oncourse.components.ContactDetailStrings;
 import ish.oncourse.enrol.checkout.ACheckoutTest;
 import ish.oncourse.enrol.utils.EnrolContactValidator;
 import ish.oncourse.model.*;
@@ -47,7 +48,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(country.getName()).thenReturn(ICountryService.DEFAULT_COUNTRY_NAME);
 
 		Messages messages = mock(Messages.class);
-		when(messages.get(KEY_ERROR_MESSAGE_message_postcode_4_digits)).thenReturn("Enter 4 digit postcode for Australian postcodes.");
+		when(messages.get(ContactDetailStrings.KEY_ERROR_MESSAGE_message_postcode_4_digits)).thenReturn("Enter 4 digit postcode for Australian postcodes.");
 
 		Contact contact = mock(Contact.class);
 		when(contact.getPostcode()).thenReturn("11111");
@@ -174,12 +175,12 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(contactFieldHelper.isRequiredField(FieldDescriptor.street, contact)).thenReturn(true);
 		when(contactFieldHelper.isCustomFieldTypeVisible(customFieldType)).thenReturn(true);
 		when(preferenceController.getEnrolmentMinAge()).thenReturn(18);
-		when(messages.format(KEY_ERROR_dateOfBirth_youngAge, 18))
-			.thenReturn(KEY_ERROR_dateOfBirth_youngAge);
-		when(messages.format(KEY_ERROR_dateOfBirth_shouldBeInPast))
-			.thenReturn(KEY_ERROR_dateOfBirth_shouldBeInPast);
-		when(messages.get(KEY_ERROR_MESSAGE_birthdate_old)).
-			thenReturn(KEY_ERROR_MESSAGE_birthdate_old);
+		when(messages.format(ContactDetailStrings.KEY_ERROR_dateOfBirth_youngAge, 18))
+			.thenReturn(ContactDetailStrings.KEY_ERROR_dateOfBirth_youngAge);
+		when(messages.format(ContactDetailStrings.KEY_ERROR_dateOfBirth_shouldBeInPast))
+			.thenReturn(ContactDetailStrings.KEY_ERROR_dateOfBirth_shouldBeInPast);
+		when(messages.get(ContactDetailStrings.KEY_ERROR_MESSAGE_birthdate_old)).
+			thenReturn(ContactDetailStrings.KEY_ERROR_MESSAGE_birthdate_old);
 		customFieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, false);
 		customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
 	}
@@ -256,7 +257,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
         calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 1);
 		when(contact.getDateOfBirth()).thenReturn(calendar.getTime());
-		when(messages.get(KEY_ERROR_dateOfBirth_shouldBeInPast)).thenReturn("Your date of birth must be in past.");
+		when(messages.get(ContactDetailStrings.KEY_ERROR_dateOfBirth_shouldBeInPast)).thenReturn("Your date of birth must be in past.");
 		error = EnrolContactValidator.valueOf(contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()), parser.getMessages())
 				.validate().getErrors().get(FieldDescriptor.dateOfBirth.name());
         assertNotNull(error);
@@ -292,8 +293,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 
 		Messages messages = mock(Messages.class);
-		when(messages.format(KEY_ERROR_dateOfBirth_shouldBeInPast))
-			.thenReturn(KEY_ERROR_dateOfBirth_shouldBeInPast);
+		when(messages.format(ContactDetailStrings.KEY_ERROR_dateOfBirth_shouldBeInPast))
+			.thenReturn(ContactDetailStrings.KEY_ERROR_dateOfBirth_shouldBeInPast);
 
 		FieldDescriptor[] fieldDescriptors =  new FieldDescriptor[]{FieldDescriptor.dateOfBirth};
 		ArrayList<String> fields = new ArrayList<>();

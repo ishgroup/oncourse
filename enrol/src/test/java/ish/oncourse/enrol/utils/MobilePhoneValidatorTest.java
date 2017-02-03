@@ -1,6 +1,6 @@
 package ish.oncourse.enrol.utils;
 
-import ish.oncourse.enrol.utils.EnrolContactValidator.MobilePhoneValidator;
+import ish.oncourse.util.contact.WillowContactValidator;
 import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator.Property;
 import org.apache.tapestry5.ioc.Messages;
@@ -35,7 +35,7 @@ public class MobilePhoneValidatorTest {
     @Test
     public void testEmptyMobilePhone() throws Exception {
         Map<String, ContactErrorCode> errorCodes = new HashMap<>();
-        MobilePhoneValidator mobilePhoneValidator = MobilePhoneValidator.valueOf(mobilePhoneNumber, Property.mobilePhone.getLength(),
+        WillowContactValidator.MobilePhoneValidator mobilePhoneValidator = WillowContactValidator.MobilePhoneValidator.valueOf(mobilePhoneNumber, Property.mobilePhone.getLength(),
                 "", false, errorCodes, messages).validate();
         assertNull(mobilePhoneValidator.getMessage());
     }
@@ -44,7 +44,7 @@ public class MobilePhoneValidatorTest {
     public void testIncorrectLength() throws Exception {
         Map<String, ContactErrorCode> errorCodes = new HashMap<>();
         errorCodes.put(Property.mobilePhone.name(), ContactErrorCode.incorrectPropertyLength);
-        MobilePhoneValidator mobilePhoneValidator = MobilePhoneValidator.valueOf(mobilePhoneNumber, Property.mobilePhone.getLength(),
+        WillowContactValidator.MobilePhoneValidator mobilePhoneValidator = WillowContactValidator.MobilePhoneValidator.valueOf(mobilePhoneNumber, Property.mobilePhone.getLength(),
                 "11112222333344441", false, errorCodes, messages).validate();
         assertEquals(String.format(MOBILE_PHONE_LENGTH_MESSAGE, Property.mobilePhone.getLength()), mobilePhoneValidator.getMessage());
     }
@@ -53,7 +53,7 @@ public class MobilePhoneValidatorTest {
     public void testIncorrectMobilePhoneFormat() throws Exception {
         Map<String, ContactErrorCode> errorCodes = new HashMap<>();
         errorCodes.put(Property.mobilePhone.name(), null);
-        MobilePhoneValidator mobilePhoneValidator = MobilePhoneValidator.valueOf(mobilePhoneNumber, Property.mobilePhone.getLength(),
+        WillowContactValidator.MobilePhoneValidator mobilePhoneValidator = WillowContactValidator.MobilePhoneValidator.valueOf(mobilePhoneNumber, Property.mobilePhone.getLength(),
                 "111 22 22", true, errorCodes, messages).validate();
 
         assertNotNull(mobilePhoneValidator.getMessage());
@@ -63,7 +63,7 @@ public class MobilePhoneValidatorTest {
     public void testCorrectMobilePhoneFormat() throws Exception {
         Map<String, ContactErrorCode> errorCodes = new HashMap<>();
         errorCodes.put(Property.mobilePhone.name(), null);
-        MobilePhoneValidator mobilePhoneValidator = MobilePhoneValidator.valueOf(mobilePhoneNumber, Property.mobilePhone.getLength(),
+        WillowContactValidator.MobilePhoneValidator mobilePhoneValidator = WillowContactValidator.MobilePhoneValidator.valueOf(mobilePhoneNumber, Property.mobilePhone.getLength(),
                 "04 2222 333 4", true, errorCodes, messages).validate();
 
         assertNull(mobilePhoneValidator.getMessage());

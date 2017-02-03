@@ -48,44 +48,6 @@ public class ContactTest {
 		contact = new Contact();
 	}
 
-	/**
-	 * Emulates the situations when email is null or empty.
-	 */
-	@Test
-	public void validateEmailEmptyTest() {
-		String result = contact.validateEmail();
-		assertEquals(contact.getEmptyEmailMessage(), result);
-		contact.setEmailAddress(StringUtils.EMPTY);
-		assertEquals(contact.getEmptyEmailMessage(), result);
-	}
-
-	/**
-	 * Emulates the situations when email is valid string. In these cases
-	 * testing method should return null.
-	 */
-	@Test
-	public void validateEmailSuccessTest() {
-		for (String email : validEmails) {
-			contact.setEmailAddress(email);
-			String result = contact.validateEmail();
-			assertNull("Email address \"" + email + "\" failed with message:" + result, result);
-		}
-	}
-
-	/**
-	 * Emulates the situations when email is invalid string. In these cases
-	 * testing method should return error message.
-	 */
-	@Test
-	public void validateEmailFailedTest() {
-		for (String email : invalidEmails) {
-			contact.setEmailAddress(email);
-			String result = contact.validateEmail();
-			assertEquals("Error message for email \"" + email + "\" is incorrect:" + result,
-					Contact.INVALID_EMAIL_MESSAGE, result);
-		}
-	}
-
 	@Test
 	public void testIncorrectPropertyLengthValidation() {
 		EntityResolver entityResolver = mock(EntityResolver.class);

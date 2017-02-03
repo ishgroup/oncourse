@@ -1,6 +1,6 @@
 package ish.oncourse.enrol.utils;
 
-import ish.oncourse.enrol.utils.EnrolContactValidator.PhoneValidator;
+import ish.oncourse.util.contact.WillowContactValidator;
 import ish.validation.ContactErrorCode;
 import org.apache.tapestry5.ioc.Messages;
 import org.junit.Before;
@@ -24,19 +24,19 @@ public class PhoneValidatorTest {
 
     @Test
     public void testIncorrectLength() throws Exception {
-        PhoneValidator phoneValidator = PhoneValidator.homePhoneValidator("111112222333344441", false, ContactErrorCode.incorrectPropertyLength, messages).validate();
+        WillowContactValidator.PhoneValidator phoneValidator = WillowContactValidator.PhoneValidator.homePhoneValidator("111112222333344441", false, ContactErrorCode.incorrectPropertyLength, messages).validate();
         assertNull(phoneValidator.getMessage());
     }
 
     @Test
     public void testIncorrectFormat() throws Exception {
-        PhoneValidator phoneValidator = PhoneValidator.homePhoneValidator("12345678901", true, null, messages).validate();
+        WillowContactValidator.PhoneValidator phoneValidator = WillowContactValidator.PhoneValidator.homePhoneValidator("12345678901", true, null, messages).validate();
         assertEquals(String.format(INCORRECT_PHONE_FORMAT_MESSAGE, "home phone"), phoneValidator.getMessage());
     }
 
     @Test
     public void testCorrectFormat() throws Exception {
-        PhoneValidator phoneValidator = PhoneValidator.homePhoneValidator("1234 5678 90", true, null, messages).validate();
+        WillowContactValidator.PhoneValidator phoneValidator = WillowContactValidator.PhoneValidator.homePhoneValidator("1234 5678 90", true, null, messages).validate();
         assertNotNull(phoneValidator.getMessage());
         assertEquals("1234567890", phoneValidator.getValue());
     }
