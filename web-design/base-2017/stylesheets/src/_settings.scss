@@ -157,6 +157,68 @@ $imagePath: '/s/img/' !default;
 
 $images-bxslider: '/s/img/bxslider' !default;
 
+/// Settings handles path of fonts.
+///
+/// @example scss - Usage
+///   $fonts-path: '/s/fonts/';
+///
+///   @include font-face('FontAwesome', $fonts-path + 'FontAwesome/FontAwesome');
+///
+/// @example css - CSS Output
+///   @font-face {
+///     font-family: 'FontAwesome';
+///     font-weight: normal;
+///     font-style: normal;
+///     src: url('/s/fonts/FontAwesome/FontAwesome.eot?#iefix') format('embedded-opentype'),
+///     url('/s/fonts/FontAwesome/FontAwesome.woff2') format('woff2'),
+///     url('/s/fonts/FontAwesome/FontAwesome.woff') format('woff'),
+///     url('/s/fonts/FontAwesome/FontAwesome.ttf') format('truetype'),
+///     url('/s/fonts/FontAwesome/FontAwesome.svg#fontawesomeregular') format('svg');
+///   }
+///
+/// @type String
+/// @group ish
+///
+
+$fonts-path: '/s/fonts/' !default;
+
+/// Settings handles path of `FontAwesome` font.
+///
+/// @example scss - Usage
+///   $fa-font-path: $fonts-path + 'FontAwesome';
+///
+///   @font-face {
+///     font-family: 'FontAwesome';
+///     src: url('#{$fa-font-path}/FontAwesome.eot?v=#{$fa-version}');
+///     src: url('#{$fa-font-path}/FontAwesome.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'),
+///     url('#{$fa-font-path}/FontAwesome.woff2?v=#{$fa-version}') format('woff2'),
+///     url('#{$fa-font-path}/FontAwesome.woff?v=#{$fa-version}') format('woff'),
+///     url('#{$fa-font-path}/FontAwesome.ttf?v=#{$fa-version}') format('truetype'),
+///     url('#{$fa-font-path}/FontAwesome.svg?v=#{$fa-version}#fontawesomeregular') format('svg');
+///     font-weight: normal;
+///     font-style: normal;
+///   }
+///
+/// @example css - CSS Output
+///   @font-face {
+///     font-family: 'FontAwesome';
+///     src: url(/s/fonts/FontAwesome/FontAwesome.eot?v=4.6.3');
+///     src: url('/s/fonts/FontAwesome/FontAwesome.eot?#iefix&v=4.6.3') format('embedded-opentype'),
+///     url('/s/fonts/FontAwesome/FontAwesome.woff2?v=4.6.3') format('woff2'),
+///     url('/s/fonts/FontAwesome/FontAwesome.woff?v=4.6.3') format('woff'),
+///     url('/s/fonts/FontAwesome/FontAwesome.ttf?v=4.6.3') format('truetype'),
+///     url('/s/fonts/FontAwesome/FontAwesome.svg?v=4.6.3#fontawesomeregular') format('svg');
+///     font-weight: normal;
+///     font-style: normal;
+///   }
+///
+/// @type String
+/// @require {Var} $fonts-path
+/// @group ish
+///
+
+$fa-font-path: $fonts-path + 'FontAwesome' !default;
+
 $useDefaultFont: true !default;
 
 // media: small, tablet, desktop */
@@ -282,6 +344,26 @@ $media-small: "small";
 $media-tablet: "tablet";
 $media-desktop: "desktop";
 $media-custom: "custom";
+
+/// Settings handles enable faceted search.
+///
+/// @example scss - Usage
+///  $enable-faceted-search: true;
+///
+///  .filters-container {
+///    ...
+///  }
+///
+/// @example css - CSS Output
+///  .filters-container {
+///    ...
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$enable-faceted-search: false !default;
 
 //
 // Other settings imported from default settings
