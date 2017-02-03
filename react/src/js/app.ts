@@ -1,42 +1,11 @@
-import {createStore, combineReducers, applyMiddleware} from "redux";
-import thunk from "redux-thunk";
-import cart from "./reducers/cart";
-import popup from "./reducers/popup";
+import {configureStore} from "./configureStore";
 import Cart from "./containers/Cart";
 import EnrolButton from "./containers/EnrolButton";
 import BuyButton from "./containers/BuyButton";
 import PopupContainer from "./containers/PopupContainer";
-import {StoreListenerService} from "./services/StoreListenerService";
-import {CookieService} from "./services/CookieService";
-import {IshState} from "./services/IshState";
 import {Bootstrap} from "./lib/Bootstrap";
 
-const store = createStore(
-  combineReducers<IshState>({cart, popup}),
-  applyMiddleware(thunk)
-);
-
-const storeListenerService = new StoreListenerService(store);
-
-storeListenerService.addListener(state => {
-  const courses = state.cart.courses
-    .map(course => course.id)
-    .join("%");
-
-  if (courses) {
-    CookieService.set("shortlist", courses);
-  }
-});
-
-storeListenerService.addListener(state => {
-  const products = state.cart.products
-    .map(product => product.id)
-    .join("%");
-
-  if (products) {
-    CookieService.set("productShortList", products);
-  }
-});
+const store = configureStore();
 
 new Bootstrap(store)
   .register('enrol-button', EnrolButton, {

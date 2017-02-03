@@ -1,9 +1,5 @@
 import {Store, Unsubscribe} from "redux";
 import {Logger, LogMessage, Level} from "./Logger";
-import map from "lodash/fp";
-import flatten from "lodash/fp/flatten";
-import sortBy from "lodash/fp/sortBy";
-import flow from "lodash/fp/flow";
 import {IshState} from "./IshState";
 
 type StoreListener = (state: IshState) => void;
