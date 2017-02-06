@@ -146,6 +146,11 @@
 						font-size: 13px;
 						vertical-align: middle;
 						margin-bottom: 5px;
+						margin-top: 0;
+						font-weight: normal;
+						>input {
+							position: relative;
+						}
 					}
 					&:last-child {
 						padding-top: 7px;

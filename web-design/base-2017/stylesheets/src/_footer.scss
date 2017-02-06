@@ -56,7 +56,8 @@
 					// Following function handles responsive media screen
 					@include responsive($media-tablet) {
 						float: left;
-						width: 190px;
+						max-width: 190px;
+						width: 50%;
 						margin-right: 10px;
 					}
 				}
@@ -129,7 +130,7 @@
 
 				// Following function handles responsive media screen
 				@include responsive($media-tablet) {
-					width: auto;
+					width: 50%;
 				}
 			}
 

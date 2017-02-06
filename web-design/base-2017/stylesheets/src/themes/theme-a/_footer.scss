@@ -36,9 +36,10 @@
 				float: left;
 			}
 			.social-content {
-				@include bootstrap(false) {
-					float: left;
-					width: 190px;
+				@include responsive($media-tablet) {
+					@include bootstrap(false) {
+						float: left;
+					}
 				}
 				> br {
 					display: none;
@@ -75,8 +76,11 @@
 		.right {
 			@include bootstrap(false) {
 				float: right;
-				width: 555px;
 				display: table;
+				width: 100%;
+				@include responsive($media-tablet) {
+					width: 50%;
+				}
 			}
 			> p {
 				display: none;
@@ -96,7 +100,14 @@
 			}
 
 			@include bootstrap(false) {
-				>ul {
+				.row {
+					display: table;
+					width: 100%;
+				}
+				.row>ul, >ul {
+					@include responsive($media-tablet) {
+						display: table-cell;
+					}
 					@extend %right-content;
 				}
 			}

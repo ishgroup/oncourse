@@ -1,8 +1,6 @@
-<html t:type="ui/dialogstructure" title="literal:My Discounts"
-	  xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<html t:type="ui/dialogstructure" title="literal:My Discounts" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
 
-	<p>Sometimes we are able to offer discounts on a selection of our classes. If you have a discount code, then please enter it into the box
-		below</p>
+	<p>Sometimes we are able to offer discounts on a selection of our classes. If you have a discount code, then please enter it into the box below</p>
 	<t:delegate to="block:discountForm"/>
 	<p class="note"><strong class="alert">Please note:</strong> Our discounts are usually only available until a certain date, so you may not be able to use an old discount code.</p>
 
