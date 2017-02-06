@@ -714,3 +714,6 @@ div#form_error {
 	text-align: center;
 	background-color: black
 }
+.clearfix {
+	@include clearfix;
+}
