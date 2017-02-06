@@ -12,19 +12,21 @@
 //
 
 //
-//
 // Default bourbon styles
 // Do not remove this imports
-//
 //
 
 @import "bourbon/bourbon";
 
 //
+// Settings handles to disable Bootstrap
+//
+
+$bootstrap: false;
+
 //
 // Default application styles
 // Do not remove this imports
-//
 //
 
 @import "app";

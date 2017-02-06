@@ -36,6 +36,10 @@
 				float: left;
 			}
 			.social-content {
+				@include bootstrap(false) {
+					float: left;
+					width: 190px;
+				}
 				> br {
 					display: none;
 				}
@@ -54,6 +58,9 @@
 				}
 			}
 			.address-info {
+				@include bootstrap(false) {
+					float: left;
+				}
 				.title {
 					text-transform: uppercase;
 					color: $footerTitleColor;
@@ -66,10 +73,15 @@
 		}
 
 		.right {
+			@include bootstrap(false) {
+				float: right;
+				width: 555px;
+				display: table;
+			}
 			> p {
 				display: none;
 			}
-			.row>ul {
+			%right-content {
 				> li:first-child {
 					color: $footerTitleColor;
 					text-transform: uppercase;
@@ -80,6 +92,18 @@
 					&:hover {
 						color: $footerAnchorHoverColor;
 					}
+				}
+			}
+
+			@include bootstrap(false) {
+				>ul {
+					@extend %right-content;
+				}
+			}
+
+			@include bootstrap(true) {
+				.row>ul {
+					@extend %right-content;
 				}
 			}
 		}

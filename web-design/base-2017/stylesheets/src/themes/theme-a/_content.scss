@@ -134,8 +134,18 @@
 			margin: 0;
 			margin-bottom: 15px;
 			padding: 0;
+
+			@include bootstrap(false) {
+				width: 100%;
+				float: left;
+			}
+
 			@include responsive($media-tablet) {
 				margin-bottom: 0px;
+
+				@include bootstrap(false) {
+					width: 33.33333%;
+				}
 			}
 
 			+ p {
@@ -195,8 +205,17 @@
 		margin-bottom: 30px;
 		min-height: 273px;
 
+		@include bootstrap(false) {
+			float: right;
+			width: 100%;
+		}
+
 		@include responsive($media-tablet) {
 			margin-bottom: 60px;
+
+			@include bootstrap(false) {
+				width: 66.66667%;
+			}
 		}
 
 		> p, > br {

@@ -26,6 +26,10 @@
 		// Product class item left and right info
 		.class-item-info {
 			.class-item-info-l, .class-item-info-r {
+				@include bootstrap(false) {
+					width: auto;
+					float: none;
+				}
 				.info {
 					padding-left: 0;
 					padding-top: 0;

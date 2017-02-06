@@ -437,29 +437,79 @@
     zoom: 1 \9;
     font-size: 13px;
 
+    @include bootstrap(false) {
+      float: left;
+      width: 100%;
+      @include responsive($media-tablet) {
+        width: 69%;
+      }
+      div {
+        &.location, &.tutor {
+          padding: 2px 0 2px 0;
+        }
+        &.date {
+          padding: 2px 15px 2px 19px;
+        }
+        &.class-item-info-r {
+          @include responsive($media-tablet) {
+            padding-left: 19px;
+            padding-right: 15px;
+          }
+        }
+      }
+    }
+
     div {
       line-height: 1.5;
-      &.date {
-        padding-left: 20px;
+      @include bootstrap(true) {
+        &.date {
+          padding-left: 20px;
+        }
       }
     }
 
     // Class left item info, and right item info
     .class-item-info-l, .class-item-info-r {
       line-height: 1;
+      @include bootstrap(false) {
+        float: left;
+        padding: 0;
+      }
     }
     .class-item-info-l {
-      // Following function handles responsive media screen
-      @include responsive($media-custom, 768px) {
-        border-right: 1px solid #eee;
+      @include bootstrap(false) {
+        padding-right: 0px;
+        width: 100%;
+        @include responsive($media-small) {
+          width: 48%;
+          border-right: 1px solid #eee;
+        }
+      }
+
+      @include bootstrap(true) {
+        // Following function handles responsive media screen
+        @include responsive($media-custom, 768px) {
+          border-right: 1px solid #eee;
+        }
       }
     }
     .class-item-info-r {
       border: none;
-      padding-left: 0;
-      // Following function handles responsive media screen
-      @include responsive($media-custom, 768px) {
-        padding-left: 15px;
+
+      @include bootstrap(false) {
+        width: 100%;
+        @include responsive($media-small) {
+          width: 48%;
+          padding-left: 15px;
+        }
+      }
+
+      @include bootstrap(true) {
+        padding-left: 0;
+        // Following function handles responsive media screen
+        @include responsive($media-custom, 768px) {
+          padding-left: 15px;
+        }
       }
     }
 
@@ -476,6 +526,11 @@
       background-image: url($coursesClassItemDateImage);
       background-repeat: no-repeat;
       background-position: left 5px;
+
+      @include bootstrap(false) {
+        padding-right: 20px;
+      }
+
       .date-time {
         border-bottom: 1px dotted;
       }
@@ -517,6 +572,9 @@
       position: relative;
       margin: 0px;
       display: $coursesClassItemPriceDisplay;
+      @include bootstrap(false) {
+        padding: 0;
+      }
       .discount-price {
         color: #999999;
       }
@@ -551,6 +609,14 @@
     text-align: right;
     font-size: 11px;
     line-height: 1.5;
+
+    @include bootstrap(false) {
+      float: right;
+      width: 100%;
+      @include responsive($media-tablet) {
+        width: 31%;
+      }
+    }
 
     >div {
       margin-bottom: 3px

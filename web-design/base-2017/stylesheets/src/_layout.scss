@@ -72,6 +72,13 @@ a {
 .container {
 	width: 100%;
 	max-width: $containerWidth;
+	@include bootstrap(false) {
+		margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    @include clearfix;
+	}
 }
 
 //
