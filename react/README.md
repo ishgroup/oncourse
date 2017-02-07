@@ -21,7 +21,7 @@ or
 
 ## Development mode
 1. Run dev server `npm start`
-2. Go to localhost:8080
+2. Go to localhost:1707/index.html|courses.html
 
 ## Run tests
 `npm run test`

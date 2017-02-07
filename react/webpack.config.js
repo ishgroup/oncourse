@@ -95,7 +95,7 @@ Build started with following configuration:
     ],
     devServer: {
       inline: false,
-      port: 3000,
+      port: 1707,
       stats: {
         chunkModules: false,
         colors: true
