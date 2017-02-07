@@ -87,7 +87,6 @@
                         data-prop-id="${product.id}"
                         data-prop-name="${product.name}"
                         data-prop-unique-identifier="${product.sku}"></div>
-                    ></div>
                 </div>
             </div>
         </div>
