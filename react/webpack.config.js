@@ -1,6 +1,7 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const fs = require('fs');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (options = {}) {
   // Settings
@@ -16,6 +17,13 @@ Build started with following configuration:
 → SOURCE_MAP: ${SOURCE_MAP}
 → API_ROOT: ${API_ROOT}
 `);
+
+  function getHtmlWebpackPlugin(name) {
+    return new HtmlWebpackPlugin({
+      filename: name,
+      template: path.resolve(__dirname, './dev-server/', name)
+    });
+  }
 
   return {
     entry: {
@@ -81,7 +89,26 @@ Build started with following configuration:
       new webpack.ProvidePlugin({
         'React': 'react',
         '$': 'jquery'
-      })
-    ]
+      }),
+      getHtmlWebpackPlugin("index.html"),
+      getHtmlWebpackPlugin("courses.html")
+    ],
+    devServer: {
+      inline: false,
+      port: 3000,
+      stats: {
+        chunkModules: false,
+        colors: true
+      },
+      historyApiFallback: true,
+      contentBase: './',
+      proxy: [{
+        context: '/api/v1',
+        target: API_ROOT,
+        pathRewrite: {
+          '^/api/v1': ''
+        }
+      }]
+    }
   }
 };

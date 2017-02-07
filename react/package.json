@@ -7,11 +7,11 @@
     "clean": "rm -rf ./dist",
     "build:prod": "webpack -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
     "build:prod:watch": "webpack --watch -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
-    "build:dev": "webpack --env.NODE_ENV development --env.SOURCE_MAP eval-source-map",
-    "build:dev:watch": "webpack --debug --watch --env.NODE_ENV development --env.SOURCE_MAP eval-source-map",
+    "build:dev": "webpack --env.SOURCE_MAP eval-source-map",
+    "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "karma start ./karma.conf.js",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",
-    "start": "nodemon dev-server --watch dist/**/*.js --watch dev-server/**/*.js --watch dev-server/**/*.json",
+    "start": "node ./dev-server/generate.js && webpack-dev-server --env.SOURCE_MAP eval-source-map",
     "doc": "jsdoc src/js/**/*.js"
   },
   "devDependencies": {
@@ -26,6 +26,7 @@
     "babel-preset-react": "6.16.0",
     "css-loader": "0.26.0",
     "extract-text-webpack-plugin": "1.0.1",
+    "html-webpack-plugin": "^2.28.0",
     "jasmine-core": "^2.5.2",
     "jsdoc": "3.4.3",
     "karma": "^1.4.1",
@@ -38,7 +39,8 @@
     "phantomjs-prebuilt": "^2.1.14",
     "ts-loader": "^2.0.0",
     "typescript": "^2.1.5",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
   },
   "dependencies": {
     "babel-polyfill": "6.20.0",

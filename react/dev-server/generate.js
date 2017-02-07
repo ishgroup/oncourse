@@ -1,4 +1,94 @@
-<link rel="stylesheet" href="https://www.sydneycommunitycollege.edu.au/s/stylesheets/css/site.css?v=r27609"/>
+const fs = require("fs");
+
+generateIndex();
+generateCourses();
+
+function cart() {
+  return `<div data-cid="cart"></div>`;
+}
+
+function buyButton(id) {
+  return `<div data-cid="buy-button"
+       data-prop-can-buy="true"
+       data-prop-payment-gateway-enabled="true"
+       data-prop-id="${id}"
+       data-prop-name="Name ${id}"></div>`;
+}
+
+function enrolButton(id) {
+  return `<div data-cid="enrol-button"
+     data-prop-id="${id}"
+     data-prop-name="Course ${id}"
+     data-prop-unique-identifier="2424"
+     data-prop-is-canceled="false"
+     data-prop-is-finished="false"
+     data-prop-has-available-enrolment-places="true"
+     data-prop-payment-gateway-enabled="true"
+     data-prop-allow-by-application="false"
+     data-prop-free-places="3"></div>`;
+}
+
+function popup() {
+  return `<div data-cid="popup"></div>`;
+}
+
+function saveFile(file, data) {
+  fs.writeFileSync(`${__dirname}/${file}`, data);
+}
+
+function generateIndex() {
+  saveFile("index.html", `
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Application</title>
+    <style>
+      .cart {
+        background-color: azure;
+      }
+      
+      .enrol-button {
+        border-top: 1px solid #000000;
+        background-color: aliceblue;
+      }
+    </style>
+    <script type="text/javascript" src="dynamic-polyfill.js"></script>
+    <script type="text/javascript" src="dynamic.js"></script>
+  </head>
+  <body>
+    <div class="cart">${cart()}</div>
+    <div class="enrol-button">${enrolButton(1)}</div>
+    <div class="enrol-button">${enrolButton(2)}</div>
+    <div class="enrol-button">${enrolButton(3)}</div>
+    <div class="popup">${popup()}</div>
+  </body>
+</html>
+`);
+  console.log("index.html generated");
+}
+
+function generateCourses() {
+  saveFile("courses.html", `
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Application - Cources</title>
+    <style>
+      .cart {
+        background-color: azure;
+      }
+      
+      .enrol-button {
+        border-top: 1px solid #000000;
+        background-color: aliceblue;
+      }
+    </style>
+    <script type="text/javascript" src="dynamic-polyfill.js"></script>
+    <script type="text/javascript" src="dynamic.js"></script>
+  </head>
+  <link rel="stylesheet" href="https://www.sydneycommunitycollege.edu.au/s/stylesheets/css/site.css?v=r27609"/>
 
 <body id="DetailsPage" class="internal-page">
 
@@ -48,7 +138,7 @@
                                 <a href="/contact">Contact</a>
                             </li>
                         </ul>
-                        <% include containers/cart %>
+                        ${cart()}
                         <a href="#" class="nav-toggle js-nav-toggle pull-right">
                             <div class="">
 					<span class="toggle-title pull-right">
@@ -1339,8 +1429,7 @@
 
                                     </div>
 
-                                    <%- include('containers/enrolButton', {classId: 5132142}) %>
-
+                                    ${enrolButton(5132142)}
 
                                     <div class="classStatus">
 
@@ -1550,9 +1639,7 @@
 
                                     </div>
 
-
-                                    <%- include('containers/enrolButton', {classId: 5132173}) %>
-
+                                    ${enrolButton(5132173)}
 
                                     <div class="classStatus">
 
@@ -1761,8 +1848,7 @@
 
                                     </div>
 
-
-                                    <%- include('containers/enrolButton', {classId: 5132177}) %>
+                                    ${enrolButton(5132177)}
 
 
                                     <div class="classStatus">
@@ -1971,9 +2057,7 @@
 
                                     </div>
 
-
-                                    <%- include('containers/enrolButton', {classId: 5132178}) %>
-
+                                    ${enrolButton(5132178)}
 
                                     <div class="classStatus">
 
@@ -2258,5 +2342,9 @@
         <div id="timeline"></div>
     </div>
 </section>
-<script type="application/javascript" src="/dynamic.js"></script>
 </body>
+</html>
+`);
+  console.log("courses.html generated");
+}
+
