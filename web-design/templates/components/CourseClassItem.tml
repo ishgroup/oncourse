@@ -88,7 +88,8 @@
             </div>
 
             <div class="col-xs-24 col-md-7">
-                <div data-cid="enrol-button"
+                <div class="reactjs-component"
+                    data-cid="enrol-button"
                     data-prop-id="${courseClass.id}"
                     data-prop-name="${courseClass.course.name}"
                     data-prop-is-canceled="${courseClass.cancelled}"

@@ -81,7 +81,8 @@
                 </div>
 
                 <div class="col-xs-24 col-md-7">
-                    <div data-cid="buy-button"
+                    <div class="reactjs-component"
+                        data-cid="buy-button"
                         data-prop-can-buy="${canBuy()}"
                         data-prop-payment-gateway-enabled="${paymentGatewayEnabled}"
                         data-prop-id="${product.id}"
