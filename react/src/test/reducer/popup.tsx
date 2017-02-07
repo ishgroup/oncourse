@@ -1,9 +1,10 @@
-import ACTIONS from 'js/constants';
-import popup from 'js/reducers/popup';
+import * as React from 'react';
+import ACTIONS from '../../js/constants';
+import popup from '../../js/reducers/popup';
 
 describe('popup reducer', () => {
     it('should return initial state', () => {
-        expect(popup(undefined, {})).to.deep.equal({
+        expect(popup(undefined, {})).toEqual({
             content: null
         });
     });
@@ -15,7 +16,7 @@ describe('popup reducer', () => {
 
         expect(popup(state, {
             type: ACTIONS.HIDE_POPUP
-        })).to.deep.equal({
+        })).toEqual({
             content: null
         });
     });

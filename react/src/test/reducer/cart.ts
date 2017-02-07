@@ -1,5 +1,6 @@
-import ACTIONS from 'js/constants';
-import cart from 'js/reducers/cart';
+import ACTIONS from '../../js/constants';
+import cart from '../../js/reducers/cart';
+import {Action} from "redux";
 
 describe('cart reducer', () => {
     let course1, course2, product1, product2, state, initialState;
@@ -21,7 +22,7 @@ describe('cart reducer', () => {
     });
 
     it('should return initial state', () => {
-        expect(cart(undefined, {})).to.deep.equal(initialState);
+        expect(cart(undefined, {} as Action)).toEqual(initialState);
     });
 
     describe('ADD_CLASS_TO_CART_SUCCESS', () => {
@@ -36,7 +37,7 @@ describe('cart reducer', () => {
                 data: course2
             });
 
-            expect(state).to.be.deep.equal(Object.assign(initialState, { courses: [course1, course2] }));
+            expect(state).toEqual(Object.assign(initialState, { courses: [course1, course2] }));
         });
 
         it('should return previous state because of course class already is in cart', () => {
@@ -50,7 +51,7 @@ describe('cart reducer', () => {
                 data: course1
             });
 
-            expect(state).to.be.deep.equal(Object.assign(initialState, { courses: [course1] }));
+            expect(state).toEqual(Object.assign(initialState, { courses: [course1] }));
         });
     });
 
@@ -71,7 +72,7 @@ describe('cart reducer', () => {
                 id: course1.id
             });
 
-            expect(state).to.be.deep.equal(Object.assign(initialState, { courses: [course2] }));
+            expect(state).toEqual(Object.assign(initialState, { courses: [course2] }));
         });
 
         it('should return previous state because of course class isn\'t in cart', () => {
@@ -85,7 +86,7 @@ describe('cart reducer', () => {
                 id: course2.id
             });
 
-            expect(state).to.be.deep.equal(Object.assign(initialState, { courses: [course1] }));
+            expect(state).toEqual(Object.assign(initialState, { courses: [course1] }));
         });
     });
 
@@ -101,7 +102,7 @@ describe('cart reducer', () => {
                 data: product2
             });
 
-            expect(state).to.be.deep.equal(Object.assign(initialState, { products: [product1, product2] }));
+            expect(state).toEqual(Object.assign(initialState, { products: [product1, product2] }));
         });
 
         it('should return previous state because of product already is in cart', () => {
@@ -115,7 +116,7 @@ describe('cart reducer', () => {
                 data: product1
             });
 
-            expect(state).to.be.deep.equal(Object.assign(initialState, { products: [product1] }));
+            expect(state).toEqual(Object.assign(initialState, { products: [product1] }));
         });
     });
 
@@ -136,7 +137,7 @@ describe('cart reducer', () => {
                 id: product1.id
             });
 
-            expect(state).to.be.deep.equal(Object.assign(initialState, { products: [product2] }));
+            expect(state).toEqual(Object.assign(initialState, { products: [product2] }));
         });
 
         it('should return previous state because of product isn\'t in cart', () => {
@@ -150,7 +151,7 @@ describe('cart reducer', () => {
                 id: product2.id
             });
 
-            expect(state).to.be.deep.equal(Object.assign(initialState, { products: [product1] }));
+            expect(state).toEqual(Object.assign(initialState, { products: [product1] }));
         });
     });
 });

@@ -8,6 +8,7 @@
     "noImplicitReturns": false,
     "strictNullChecks": false,
     "module": "commonjs",
+    "skipLibCheck": true,
     "allowJs": true,
     "target": "es5",
     "jsx": "react",

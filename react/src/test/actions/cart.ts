@@ -1,11 +1,10 @@
-import nock from 'nock';
 import {ConfigConstants} from '../../js/config/ConfigConstants';
-import ACTIONS from 'js/constants';
-import { addClass, addProduct, removeClass, removeProduct } from 'js/actions/cart';
+import ACTIONS from '../../js/constants';
+import { addClass, addProduct, removeClass, removeProduct } from '../../js/actions/cart';
 
 let getDispatch = function(handleActions) {
     return function (action) {
-        expect(action.type in handleActions).to.be.true;
+        expect(action.type in handleActions).toBeTruthy();
         handleActions[action.type](action);
     };
 };
@@ -23,7 +22,7 @@ describe('cart actions', () => {
     it('ADD_CLASS_TO_CART_SUCCESS', (done) => {
         handleActions = {
             [ACTIONS.ADD_CLASS_TO_CART_SUCCESS](action) {
-                expect(action, ACTIONS.ADD_CLASS_TO_CART_SUCCESS).to.deep.equal({
+                expect(action).toEqual({
                     type: ACTIONS.ADD_CLASS_TO_CART_SUCCESS,
                     data: course
                 });
@@ -31,9 +30,10 @@ describe('cart actions', () => {
             }
         };
 
-        nock(ConfigConstants.API_ROOT)
-            .put('/cart/courses/' + course.id)
-            .reply(200, course);
+        // TODO: anyway there is no real calls, so we can refactor this later
+        // nock(ConfigConstants.API_ROOT)
+        //     .put('/cart/courses/' + course.id)
+        //     .reply(200, course);
 
         addClass(course)(getDispatch(handleActions));
     });
@@ -41,7 +41,7 @@ describe('cart actions', () => {
     it('REMOVE_CLASS_FROM_CART_SUCCESS', (done) => {
         handleActions = {
             [ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS](action) {
-                expect(action, ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS).to.deep.equal({
+                expect(action).toEqual({
                     type: ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS,
                     id: course.id
                 });
@@ -49,9 +49,9 @@ describe('cart actions', () => {
             }
         };
 
-        nock(ConfigConstants.API_ROOT)
-            .delete('/cart/courses/' + course.id)
-            .reply(204);
+        // nock(ConfigConstants.API_ROOT)
+        //     .delete('/cart/courses/' + course.id)
+        //     .reply(204);
 
         removeClass(course.id)(getDispatch(handleActions));
     });
@@ -59,7 +59,7 @@ describe('cart actions', () => {
     it('ADD_PRODUCT_TO_CART_SUCCESS', (done) => {
         handleActions = {
             [ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS](action) {
-                expect(action, ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS).to.deep.equal({
+                expect(action).toEqual({
                     type: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS,
                     data: product
                 });
@@ -67,9 +67,9 @@ describe('cart actions', () => {
             }
         };
 
-        nock(ConfigConstants.API_ROOT)
-            .put('/cart/products/' + product.id)
-            .reply(200, product);
+        // nock(ConfigConstants.API_ROOT)
+        //     .put('/cart/products/' + product.id)
+        //     .reply(200, product);
 
         addProduct(product)(getDispatch(handleActions));
     });
@@ -77,7 +77,7 @@ describe('cart actions', () => {
     it('REMOVE_PRODUCT_FROM_CART_SUCCESS', (done) => {
         handleActions = {
             [ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS](action) {
-                expect(action, ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS).to.deep.equal({
+                expect(action).toEqual({
                     type: ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS,
                     id: product.id
                 });
@@ -85,9 +85,9 @@ describe('cart actions', () => {
             }
         };
 
-        nock(ConfigConstants.API_ROOT)
-            .delete('/cart/products/' + product.id)
-            .reply(204);
+        // nock(ConfigConstants.API_ROOT)
+        //     .delete('/cart/products/' + product.id)
+        //     .reply(204);
 
         removeProduct(product.id)(getDispatch(handleActions));
     });

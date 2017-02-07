@@ -7,7 +7,7 @@ function emitRequest(item) {
 
     setTimeout(() => {
         d.resolve(item);
-    }, 1000);
+    }, 0);
 
     return d.promise();
 }
