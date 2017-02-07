@@ -17,8 +17,12 @@
 
 /*
   Additional vendor libraries which might be useful in your site
+
+ jquery-migrate-3.0.0.js - we should keep the library in our stack until we get rid of jquery-ui-1.9.1
+ or will upgrade it to latest jquery-ui
 */
 
+//= require vendor/jquery-migrate-3.0.0.js
 //= require vendor/jquery.browser.js
 //= require vendor/jquery-ui-1.9.1.min.js
 //= require vendor/vex-3.0.0.js
