@@ -393,7 +393,11 @@ function deleteCookie( name, path, domain ) {
 	  		url:  link,
 	  		success: function(msg) {
 	  			$j('#showMore').replaceWith(msg);
-	  			if($j.trim($j('#sitesParameter').text()) != '') {
+
+	  			// Since this call possibly returns react markers,
+				// we should told react about it.
+                window.Ish.react.bootstrap();
+                if($j.trim($j('#sitesParameter').text()) != '') {
 	  				$j.ajax({
 	  					type: "GET",
 	  					url:  "/coursesSitesMap?sites="+$j('#sitesParameter').text(),
