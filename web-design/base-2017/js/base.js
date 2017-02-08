@@ -27,6 +27,7 @@
 //= require vendor/jquery-ui-1.9.1.min.js
 //= require vendor/vex-3.0.0.js
 //= require vendor/vex.dialog-3.0.0.js
+//= require vendor/assets.min.js
 
 
 

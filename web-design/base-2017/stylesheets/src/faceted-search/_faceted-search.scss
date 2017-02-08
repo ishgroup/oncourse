@@ -1,0 +1,461 @@
+//
+//
+// faceted-search.scss
+//
+// Contains styles for sidebar courses faceted search
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+//---------------------------------------------------------------------------
+//  TAGS (FILTERS)
+//---------------------------------------------------------------------------
+
+$nav-border: #dedee0;
+@if $fs-enable == true {
+  .filters-container {
+    position: relative;
+    margin-left: 25px;
+    padding-right: 25px;
+    br {
+      display: none;
+    }
+    &.active {
+      position: absolute;
+      top: 0;
+      left: -21px;
+      right: -21px;
+      border-top: 0;
+      display: block;
+    }
+
+    h3 {
+      background: transparent;
+      color: $primaryColor;
+      padding: 9px 0px 13px 8px;
+      border-bottom: 1px dotted $nav-border;
+      font-size: 14px;
+    }
+    a {
+      padding: 0;
+      border-width: 0;
+    }
+
+    .filters-clear-all {
+      position: absolute;
+      right: 25px;
+      font-weight: normal;
+    }
+
+    .side-box {
+      // border-bottom: 1px dotted $nav-border;
+      // border-width: 0 0 1px;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+
+      &:last-child {
+        border-width: 0;
+      }
+
+      .courses-list {
+        margin-left: 0;
+        padding-right: 6px;
+        > li:first-child {
+          margin-top: 0;
+          & > a {
+            margin-bottom: 16px;
+          }
+        }
+      }
+    }
+
+    .tags-list,
+    .courses-list-sub {
+      li {
+        margin-bottom: 10px;
+        padding-left: 0;
+      }
+    }
+    ul ul li ul.tag-list {
+      padding-left: 35px;
+      display: none;
+    }
+
+    .filter-option {
+      position: relative;
+      overflow: hidden;
+
+      .filter-option-counter {
+        position: absolute;
+        right: 0;
+        top: 3px;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        font-size: 10px;
+        padding: 3px 8px;
+        line-height: 1.0;
+      }
+
+      > .tag-list li {
+        margin-bottom: 0;
+        margin-top: 10px;
+      }
+    }
+
+    //---------------------------------------------------------------------------
+    //  FILTER OPTION ($CUSTOM CHECKBOXES UPD)
+    //---------------------------------------------------------------------------
+
+    input[type=checkbox].filter-option-control, .icheckbox_flat {
+      //position:absolute; z-index:-1000; left:-1000px;
+
+      & + label.filter-option-label,
+      & + label.filter-option-label.clr {
+        padding-left: 10px;
+        // padding-top: 2px;
+        margin-right: 40px;
+        margin-bottom: 0;
+        // height:22px;
+        display:inline-block;
+        line-height:22px;
+        background-repeat:no-repeat;
+        background-position: 0 0;
+        font-size:14px;
+        vertical-align:middle;
+        cursor:pointer;
+        width: auto;
+        position: initial;
+      }
+
+      &:checked + label.filter-option-label,
+      & + label.filter-option-label.chk {
+        &:before {
+          // background-color: $white !important;
+          // border: solid 4px $primaryColor !important;
+        }
+      }
+    }
+
+    label.filter-option-label {
+
+      &:before {
+        // background-image:url(""+$images-general+"/chckbx-sprite.png");
+        // -webkit-touch-callout: none;
+        // -webkit-user-select: none;
+        // -khtml-user-select: none;
+        // -moz-user-select: none;
+        // -ms-user-select: none;
+        // user-select: none;
+        // color: $color-default;
+
+        content: "";
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        top: 2px;
+        left: 0;
+
+        font: normal normal normal 11px/1 FontAwesome;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    }
+    // FILTER CHECKBOXES
+    input[type=checkbox].filter-option-control {
+
+      & + label.filter-option-label,
+      & + label.filter-option-label.clr {
+        background-repeat:no-repeat;
+        background-position: 0 0;
+        cursor:pointer;
+        font-weight: normal;
+        vertical-align: top;
+        margin-top: 0;
+      }
+
+      // CHECKED STATE
+      &:checked + label.filter-option-label,
+      & + label.filter-option-label.chk {
+        // background-position: 0 -22px;
+        &:before {
+          content: "\f00c";
+          padding-top: 1px;
+          padding-left: 1px;
+          background-color: $primaryColor;
+          border-color: $primaryColor;
+          color: $white;
+        }
+      }
+    }
+
+
+    // NORMAL STATE
+    label.filter-option-label {
+      // background-image:url(""+$images-general+"/chckbx-sprite.png");
+      // -webkit-touch-callout: none;
+      // -webkit-user-select: none;
+      // -khtml-user-select: none;
+      // -moz-user-select: none;
+      // -ms-user-select: none;
+      // user-select: none;
+      // color: $color-default;
+
+      font-family: $bodyFontFamily;
+      font-size: 14px;
+
+      &:before {
+        border: 1px solid #cbcbcb;
+        border-radius: 2px;
+        background-color: #fff;
+      }
+      &.hasOptionChild::before {
+        background: none !important;
+        border: none !important;
+      }
+    }
+
+    // DISABLED STATE
+    input:disabled.filter-option-control + label.filter-option-label,
+    input[disabled='disabled'].filter-option-control + label.filter-option-label,
+    div.disabled + label.filter-option-label {
+      color: #c5c5c5;
+
+      &:before {
+        border-color: #e5e5e5;
+      }
+
+      & + .filter-option-counter {
+        color: #c5c5c5;
+      }
+    }
+  }
+
+  //TABS
+  .locations-list {
+    padding-left: 20px;
+    section {
+      //padding-top: 15px;//25px
+      display: block;//none
+      //margin-bottom: 15px;
+      // padding: 20px 0 10px .25em; // padding: 20px 0 0;
+      // border-top: 1px solid #ddd;
+      // border-bottom: 1px solid #ddd;
+    }
+
+    > input[type=radio] {
+      display: none;
+    }
+
+    > label {
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    > label[for='loc1'] {
+      margin-left: 0;
+    }
+
+    // > input[type=radio]:checked + label {
+    // }
+
+    #loc1:checked ~ #loc1_tags,
+    #loc2:checked ~ #loc2_tags,
+    #loc3:checked ~ #loc3_tags,
+    #loc4:checked ~ #loc4_tags,
+    #loc5:checked ~ #loc5_tags,
+    #loc6:checked ~ #loc6_tags,
+    #loc7:checked ~ #loc7_tags,
+    #loc8:checked ~ #loc8_tags,
+    #loc9:checked ~ #loc9_tags,
+    #loc10:checked ~ #loc10_tags {
+      display: block;
+    }
+  }
+
+  .internal-page #contentContainer {
+    .courses-filter-header {
+      margin-bottom: 20px;
+      position: relative;
+      top: -56px;
+      z-index: 2;
+      padding: 20px 0px 20px;
+      background: #efefef;
+      @include responsive($media-tablet) {
+        padding: 31px 0px;
+      }
+
+      &::before, &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        background: #efefef;
+        z-index: -1;
+        display: block;
+        width: 200%;
+      }
+      &::before {
+        left: -200%;
+      }
+      &::after {
+        right: -200%;
+      }
+
+      .courses-filter-added {
+        width: 100%;
+        display: inline-block;
+        vertical-align: top;
+        //padding-right: 130px;
+        @include responsive($media-small) {
+          width: 79%;
+          padding-right: 0px;
+        }
+
+        .courses-filter-title {
+          color: $primaryColor;
+          font-family: $bodyFontFamily;
+          font-size: 23px;
+          display: inline-block;
+          vertical-align: top;
+        }
+
+        .courses-filter-list {
+          list-style: none;
+          display: inline-block;
+          vertical-align: top;
+          margin-bottom: 0;
+          margin-top: 5px;
+          width: 100%;
+          margin-left: 0;
+          @include responsive($media-small) {
+            width: auto;
+          }
+
+          li {
+            // display: inline-block;
+            float: left;
+            font-size: 14px;
+            padding: 0 13px;
+            margin: 4px 0;
+            //border: 1px solid #dadada;
+            text-transform: capitalize;
+            // margin-left: -4px;
+
+            &:last-child {
+              border-width: 0;
+            }
+            a.courses-filter-clear-all {
+              text-transform: initial;
+            }
+
+            &:before {
+              content: none;
+            }
+
+            span {
+              display: inline-block;
+              margin-right: 6px;
+              color: #2e3138;
+            }
+
+            .courses-filter-clear-all, .courses-filter-clear-option {
+              color: $primaryColor;
+
+              &:hover {
+                color: #2e3138;
+              }
+            }
+          }
+        }
+      }
+
+      .courses-filter-refine {
+        width: auto;
+        display: inline-block;
+        font-size: 14px;
+        text-align: right;
+        margin-left: -4px;
+        margin-top: 5px;
+        position: absolute;
+        top: 25px;
+        right: 10px;
+        @include responsive($media-tablet) {
+          top: 33px;
+        }
+
+        .courses-filter-found,
+        .courses-filter-refine-option {
+          display: inline-block;
+        }
+
+        .courses-filter-found {
+          // padding: 0; //0 13px 0 0
+          // @include responsive($media-small) {
+          //     border: 1px solid #dadada;
+          //     border-width: 0 1px 0 0;
+          // }
+
+          .courses-filter-found-counter {
+            color: $primaryColor;
+            font-size: 14px;
+            font-family: $bodyFontFamily;
+          }
+
+          .courses-filter-found-label {
+            color: #2e3138;
+            text-transform: capitalize;
+          }
+        }
+        .courses-filter-refine-option {
+          display: none;
+          padding: 0 0 0 13px;
+          margin-left: -4px;
+        }
+
+        .courses-filter-refine-custom {
+
+          &:before {
+            position: relative;
+            content: "";
+            bottom: -7px;
+            right: 8px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #000;
+            z-index: 100;
+            float: right;
+            margin-left: 5px;
+          }
+
+          &.courses-filter-refine-customOpen,
+          &.courses-filter-refine-customHover {
+
+            color: $primaryColor;
+
+            &:before {
+              border-top-color: $primaryColor;
+            }
+          }
+
+          .courses-filter-refine-customInner {
+            text-align: left;
+            max-width: 142px;
+          }
+        }
+      }
+    }
+  }
+}

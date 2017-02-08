@@ -93,3 +93,9 @@
   $value: strip-units($unit-line-height * $row);
   max-height: _convert-units($value, 'px');
 }
+
+@mixin fa-enable() {
+  @if $fa-enable == true {
+    @content;
+  }
+}
