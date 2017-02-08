@@ -7,7 +7,13 @@ import {Bootstrap} from "./lib/Bootstrap";
 
 const store = configureStore();
 
-new Bootstrap(store)
+const w = window as any;
+// Init Ish namespace in window
+w.Ish = w.Ish || {};
+// Set bootstrap function to Ish.react
+// We use this in jquery-managed code,
+// to get notifications about new react-markers
+w.Ish.react = new Bootstrap(store)
   .register('enrol-button', EnrolButton, {
     /**
      * ToDo discuss with Andrey properties for enrol button.
