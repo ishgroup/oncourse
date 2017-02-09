@@ -5,9 +5,12 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.InvoiceLine;
 import org.apache.cayenne.Cayenne;
+import org.apache.commons.lang3.time.DateUtils;
+import org.dbunit.dataset.ReplacementDataSet;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.List;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.ActionParameter;
@@ -19,6 +22,13 @@ public class ActionEnableEnrolmentTest extends ACheckoutTest {
     @Before
     public void setup() throws Exception {
 		setup("ish/oncourse/enrol/checkout/ActionEnableEnrolmentTest.xml");
+    }
+
+
+    @Override
+    protected void configDataSet(ReplacementDataSet dataSet) {
+        super.configDataSet(dataSet);
+        dataSet.addReplacementObject("[ageLessThen25year]", DateUtils.addYears(new Date(), -24));
     }
 
     @Test

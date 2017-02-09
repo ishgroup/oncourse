@@ -97,7 +97,7 @@
 		angelId="1007" countryId="1" created="2011-09-12 01:03:00.0" isCompany="0"
 		isMale="1" familyName="TestStudent6" givenName="TestStudent6" street="test address2"
 		suburb="test suburb" state="wa" isMarketingViaEmailAllowed="1"
-		isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" dateOfBirth="1991-01-01 00:00:00"/>
+		isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1" dateOfBirth="[ageLessThen25year]"/>
 
 	<Course id="1001" collegeId="1" angelId="1001" code="AAV"
 		isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
