@@ -221,15 +221,18 @@ $confirmedProceedFontSize: 11px !default;
 
 $coursesBubbleInfoDisplay: block !default;
 $coursesBubbleInfoPositionLeft: -260px;
-$coursesBubbleInfoPositionRight: -280px;
+$coursesBubbleInfoPositionRight: auto;
 $coursesBubbleInfoArrowPositionRight: -23px;
 $coursesBubbleInfoArrowPositionLeft: auto;
 $coursesBubbleInfoArrowImage: "/s/img/popup-arrow.png";
 
-@if $sidebarRight == on {
-	$coursesBubbleInfoPositionLeft: auto;
-	$coursesBubbleInfoArrowPositionLeft: -23px;
-	$coursesBubbleInfoArrowImage: "/s/img/popup-arrow-r.png";
+@if $sidebarRight == "on" and $sidebarLeft == "" {
+  $coursesBubbleInfoPositionLeft: auto;
+  $coursesBubbleInfoPositionRight: -280px;
+
+  $coursesBubbleInfoArrowPositionLeft: -23px;
+  $coursesBubbleInfoArrowPositionRight: auto;
+  $coursesBubbleInfoArrowImage: "/s/img/popup-arrow-r.png";
 }
 
 $coursesClassItemDateImage: $imagePath + "icon/calendar.png" !default;

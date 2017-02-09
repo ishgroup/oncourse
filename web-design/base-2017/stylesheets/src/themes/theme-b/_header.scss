@@ -40,7 +40,11 @@
 				position: relative;
 				padding: 30px;
 				@include responsive($media-tablet) {
-					padding: 55px 75px 15px 15px;
+					@if $sidebarLeft == on {
+						padding: 55px 75px 15px 15px;
+					} @else {
+						padding: 55px 75px 15px 75px;
+					}
 				}
 			}
 			#header {

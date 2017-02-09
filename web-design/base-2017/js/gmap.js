@@ -106,9 +106,9 @@ function zoomMapForSite(siteId) {
 	if(!mapLoaded) {
 		mapLoad('gmapCanvas', gMapSites, gMapOptions);
 	}
-	$("body").animate({ scrollTop: 0 }, "slow",
+	$j("body").animate({ scrollTop: 0 }, "slow",
 		function(){
-			$('#sitesMap').addClass('show');
+			$j('#sitesMap').addClass('show');
 		});
 
 	//get the {marker, infowindow} pair
@@ -159,8 +159,8 @@ function dirLoader(dirmap, dirtxt) {
 	}
 	if (dirmap && document.getElementById(dirmap) && (mapControl == null || mapControl.value)) {
 		dmap = document.getElementById(dirmap);
-		$(dmap).removeClass("mapCollapsed");
-		$(dmap).addClass("mapExpanded");
+		$j(dmap).removeClass("mapCollapsed");
+		$j(dmap).addClass("mapExpanded");
 		var gMapOptions = {
 			zoom : 12,
 			center : latLng,
