@@ -182,7 +182,7 @@ $images-bxslider: '/s/img/bxslider' !default;
 
 $fonts-path: '/s/fonts/' !default;
 
-$fa-font-path: '../src/base-2017/library/font-awesome/font';
+$fa-font-path: $fonts-path + 'FontAwesome';
 
 /// Settings handles to enable font-awesome.
 ///
