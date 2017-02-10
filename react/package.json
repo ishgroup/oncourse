@@ -12,7 +12,7 @@
     "test": "karma start ./karma.conf.js",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",
     "start": "node ./dev-server/generate.js && webpack-dev-server --env.SOURCE_MAP eval-source-map",
-    "doc": "jsdoc src/js/**/*.js"
+    "doc": "jsdoc src/js/**/*.js --destination ./dist/doc"
   },
   "devDependencies": {
     "@types/jasmine": "^2.5.41",
