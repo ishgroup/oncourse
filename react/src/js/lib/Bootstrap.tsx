@@ -7,7 +7,6 @@ import {IshState} from "../services/IshState";
 import {whenReady} from "../services/jq.js";
 import forEach from "lodash/forEach";
 import Component = React.Component;
-import JSXElement = JSX.JSXElement;
 import ComponentClass = React.ComponentClass;
 import {Logger, Level, LogMessage} from "../services/Logger";
 
