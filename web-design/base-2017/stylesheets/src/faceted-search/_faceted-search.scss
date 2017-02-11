@@ -33,7 +33,11 @@ $nav-border: #dedee0;
       display: block;
     }
 
-    h3 {
+    .fst-main {
+      font-weight: bold;
+    }
+
+    .fst-inner, h3 {
       background: transparent;
       color: $primaryColor;
       padding: 9px 0px 13px 8px;

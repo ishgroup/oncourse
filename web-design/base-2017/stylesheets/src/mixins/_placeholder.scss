@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+/// Outputs vendor-prefixed placeholders for styling. Must be nested in a rule-set.
+///
+/// @author Chintan Kotadia
+///
+/// @example scss - Usage
+///   input {
+///     width: 300px;
+///     @include placeholder {
+///       color: red;
+///     }
+///   }
+///
+/// @example css - CSS Output
+///   input {
+///     width: 300px;
+///   }
+///
+///   input::-webkit-input-placeholder {
+///     color: red;
+///   }
+///   input:-moz-placeholder {
+///     color: red;
+///   }
+///   input::-moz-placeholder {
+///     color: red;
+///   }
+///   input:-ms-input-placeholder {
+///     color: red;
+///   }
+///
+/// @name placeholder
+/// @group ish
+///
+
+@mixin placeholder {
+  $placeholders: ":-webkit-input" ":-moz" "-moz" "-ms-input";
+  @each $placeholder in $placeholders {
+    &:#{$placeholder}-placeholder {
+      @content;
+    }
+  }
+}

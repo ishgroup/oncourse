@@ -11,16 +11,16 @@
 // Author: Chintan Kotadia
 //
 
-$footerTitleColor: !default;
-$footerAnchorColor: !default;
-$footerAnchorHoverColor: !default;
+$footerBG-a: #252d30 !default;
+$footerTextColor-a: #8ca3ab !default;
+$footerAddressTextColor-a: $secondaryColor-a !default;
+
+$footerTitleColor: $white !default;
+$footerAnchorColor: #8ca3ab !default;
+$footerAnchorHoverColor: $white !default;
 
 @if $footer-theme == "a" {
-  $footerBG: #252d30;
-  $footerTextColor: #8ca3ab;
-  $footerAddressTextColor: $secondaryColor;
-
-  $footerTitleColor: $white;
-  $footerAnchorColor: #8ca3ab;
-  $footerAnchorHoverColor: $white;
+  $footerBG: $footerBG-a;
+  $footerTextColor: $footerTextColor-a;
+  $footerAddressTextColor: $footerAddressTextColor-a;
 }

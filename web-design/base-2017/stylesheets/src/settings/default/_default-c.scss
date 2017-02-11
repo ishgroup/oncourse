@@ -11,56 +11,71 @@
 // Author: Chintan Kotadia
 //
 
-$hotpink: !default;
-$deepblue: !default;
-$charcoal: !default;
-$cinder: !default;
-$turquoise: !default;
-$citrus: !default;
-$pistachio: !default;
-$aubergine: !default;
-$gunmetal: !default;
-$steam: !default;
+//
+// Color settings
+//
+
+$hotpink: #CF053C !default;
+$deepblue: #00437A !default;
+$charcoal: #1F1F1F !default;
+$cinder: #A0A0A0 !default;
+$turquoise: #4092A9 !default;
+$citrus: #DA7C00 !default;
+$pistachio: #A8AE13 !default;
+$aubergine: #4D3060 !default;
+$gunmetal: #2E303D !default;
+$steam: #EAEFF3 !default;
+
+$containerWidth-c: 1120px !default;
+
+$anchorColor-c: $deepblue !default;
+$anchorHoverColor-c: $hotpink !default;
+
+$primaryColor-c: $hotpink !default;
+$secondaryColor-c: $charcoal !default;
+
+// media: small, tablet, desktop
+$small-screen-c: 480px !default;
+$tablet-screen-c: 767px !default;
+$desktop-screen-c: 1024px !default;
+
+$bodyFontFamily-c: 'Hind', sans-serif !default;
+$bodyFontSize-c: 16px !default;
+$bodyFontColor-c: $charcoal !default;
+$bodyLineHeight-c: 23px !default;
+
+$enrolActionDisabled-c: #9b9b9b !default;
+$enrolActionDisabledBorderColor-c: #9b9b9b !default;
+$enrolActionDisabledTextColor-c: $white !default;
+
+$classItemBorderColor-c: $steam !default;
+$classItemBorder-c: 1px solid $classItemBorderColor-c !default;
+$classItemBorderLeft-c: 6px solid $deepblue !default;
 
 @if $theme == "c" {
   $useDefaultFont: false;
   @import url(https://fonts.googleapis.com/css?family=Asap:400,400italic,700,700italic);
   @import url(https://fonts.googleapis.com/css?family=Hind:400,600,700);
 
-  $containerWidth: 1120px;
+  $containerWidth: $containerWidth-c;
 
-  //
-  // Color settings
-  //
+  $anchorColor: $anchorColor-c;
+  $anchorHoverColor: $anchorHoverColor-c;
 
-  $hotpink: #CF053C;
-  $deepblue: #00437A;
-  $charcoal: #1F1F1F;
-  $cinder: #A0A0A0;
-  $turquoise: #4092A9;
-  $citrus: #DA7C00;
-  $pistachio: #A8AE13;
-  $aubergine: #4D3060;
-  $gunmetal: #2E303D;
-  $steam: #EAEFF3;
-
-  $anchorColor: $deepblue;
-  $anchorHoverColor: $hotpink;
-
-  $primaryColor: $hotpink; //btn primary color
-  $secondaryColor: $charcoal;
+  $primaryColor: $primaryColor-c; //btn primary color
+  $secondaryColor: $secondaryColor-c;
 
   // media: small, tablet, desktop
-  $small-screen: 480px;
-  $tablet-screen: 767px;
-  $desktop-screen: 1024px;
+  $small-screen: $small-screen-c;
+  $tablet-screen: $tablet-screen-c;
+  $desktop-screen: $desktop-screen-c;
 
   $fontFamilyOne: 'ASAP', sans-serif;
 
-  $bodyFontFamily: 'Hind', sans-serif;
-  $bodyFontSize: 16px;
-  $bodyFontColor: $charcoal;
-  $bodyLineHeight: 23px;
+  $bodyFontFamily: $bodyFontFamily-c;
+  $bodyFontSize: $bodyFontSize-c;
+  $bodyFontColor: $bodyFontColor-c;
+  $bodyLineHeight: $bodyLineHeight-c;
 
   //
   // Heading styles
@@ -69,69 +84,69 @@ $steam: !default;
   $h1FontSize: 42px;
   $h1LineHeight: 52px;
   $h1FontWeight: bold;
-  $h1LinkColor: $charcoal;
-  $h1LinkHoverColor: $primaryColor;
+  $h1LinkColor: $secondaryColor-c;
+  $h1LinkHoverColor: $primaryColor-c;
 
   $h2FontSize: 36px;
   $h2LineHeight: 46px;
   $h2FontWeight: bold;
-  $h2LinkColor: $charcoal;
-  $h2LinkHoverColor: $primaryColor;
+  $h2LinkColor: $secondaryColor-c;
+  $h2LinkHoverColor: $primaryColor-c;
 
   $h3FontSize: 28px;
   $h3LineHeight: 36px;
   $h3FontWeight: bold;
-  $h3LinkColor: $charcoal;
-  $h3LinkHoverColor: $primaryColor;
+  $h3LinkColor: $secondaryColor-c;
+  $h3LinkHoverColor: $primaryColor-c;
 
   $h4FontSize: 22px;
   $h4LineHeight: 30px;
   $h4FontWeight: bold;
-  $h4LinkColor: $charcoal;
-  $h4LinkHoverColor: $primaryColor;
+  $h4LinkColor: $secondaryColor-c;
+  $h4LinkHoverColor: $primaryColor-c;
 
   $h5FontSize: 18px;
   $h5LineHeight: 26px;
   $h5FontWeight: bold;
-  $h5LinkColor: $charcoal;
-  $h5LinkHoverColor: $primaryColor;
+  $h5LinkColor: $secondaryColor-c;
+  $h5LinkHoverColor: $primaryColor-c;
 
   $h6FontSize: 16px;
   $h6LineHeight: 23px;
   $h6FontWeight: bold;
-  $h6LinkColor: $charcoal;
-  $h6LinkHoverColor: $primaryColor;
+  $h6LinkColor: $secondaryColor-c;
+  $h6LinkHoverColor: $primaryColor-c;
 
   // Content container
   $contentContainerMarginTop: 0px;
 
   // Courses
-  $waitingListTitleHoverBG: $bodyFontColor;
+  $waitingListTitleHoverBG: $bodyFontColor-c;
 
-  $enrolActionDisabled: #9b9b9b;
-  $enrolActionDisabledBorderColor: #9b9b9b;
-  $enrolActionDisabledTextColor: $white;
+  $enrolActionDisabled: $enrolActionDisabled-c;
+  $enrolActionDisabledBorderColor: $enrolActionDisabledBorderColor-c;
+  $enrolActionDisabledTextColor: $enrolActionDisabledTextColor-c;
 
-  $classItemBorderColor: $steam;
-  $classItemBorder: 1px solid $classItemBorderColor;
-  $classItemBorderLeft: 6px solid $deepblue;
+  $classItemBorderColor: $classItemBorderColor-c;
+  $classItemBorder: $classItemBorder-c;
+  $classItemBorderLeft: $classItemBorderLeft-c;
 
 
-  $enrolActionFontFamily: $bodyFontFamily;
-  $enrolActionBackground: $primaryColor;
-  $enrolActionHoverBackground: $secondaryColor;
+  $enrolActionFontFamily: $bodyFontFamily-c;
+  $enrolActionBackground: $primaryColor-c;
+  $enrolActionHoverBackground: $secondaryColor-c;
 
-  $enrolActionBorder: 1px solid $primaryColor;
-  $coursesJoinButtonBackground: $primaryColor;
-  $coursesJoinButtonHoverBackground: $primaryColor;
-  $classItemBorderHoverColor: $primaryColor;
+  $enrolActionBorder: 1px solid $primaryColor-c;
+  $coursesJoinButtonBackground: $primaryColor-c;
+  $coursesJoinButtonHoverBackground: $primaryColor-c;
+  $classItemBorderHoverColor: $primaryColor-c;
 
-  $coursesFontFamily: $bodyFontFamily;
-  $coursesDetailsFontFamily: $bodyFontFamily;
-  $normalFontFamily: $bodyFontFamily;
+  $coursesFontFamily: $bodyFontFamily-c;
+  $coursesDetailsFontFamily: $bodyFontFamily-c;
+  $normalFontFamily: $bodyFontFamily-c;
 
-  $btnBackgroundColor: $primaryColor;
-  $btnBackgroundHoverColor: $secondaryColor;
+  $btnBackgroundColor: $primaryColor-c;
+  $btnBackgroundHoverColor: $secondaryColor-c;
 
-  $btnType2BackgroundColor: $secondaryColor;
+  $btnType2BackgroundColor: $secondaryColor-c;
 }

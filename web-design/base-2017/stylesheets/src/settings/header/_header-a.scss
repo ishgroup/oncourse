@@ -15,64 +15,122 @@ $navColor: !default;
 $subNavBgColor: !default;
 $subNavColor: !default;
 
+$headerContainerPosition-a: relative !default;
+$headerContainerMarginBottom-a: 25px !default;
+$headerGroupPosition-a: absolute !default;
+
+$headerTopBarBG-a: #ee2222 !default;
+$headerTopBarTextColor-a: $white !default;
+
+$navColor-a: #454a4d !default; //navAnchorColor
+$subNavBgColor-a: #252D30 !default; //$first-accent-color
+$subNavColor-a: #FFFFFF !default; //firstAccentNavAnchorColor
+
+// Navigation */
+$navbarPaddingLeft-a: 280px !default;
+$navWidth-a: auto !default;
+$navMarginTop-a: 0px !default; //$navMargin
+$navBG-a: transparent !default;
+$navBorderColor-a: #2e2e2e !default;
+$navAnchorColor-a: $white !default;
+$navAnchorHoverBG-a: transparent !default;
+$navAnchorHoverTextColor-a: #2e2e2e !default;
+$navAnchorTopFontSize-a: $bodyFontSize-a !default;
+$navAnchorPadding-a: 0px !default;
+$navFirstChildAnchorPadding-a: $navAnchorPadding-a !default;
+$navLastChildAnchorPadding-a: $navAnchorPadding-a !default;
+$navAnchorHeight-a: auto !default;
+$navAnchorLineHeight-a: 28px !default;
+
+$navAnchorArrowColor-a: $white !default;
+$firstChildMenuPadding-a: 0px !default;
+$displayFullWidthMenu-a: none !default;
+$first-accent-color-a: #252D30 !default;
+$firstDropMenufullWidth-a: 117.1% !default;
+$firstDropMenuMargin-a: 0px -14.95% !default;
+$first-accent-width-a: 200px !default;
+$firstAccentNavAnchorColor-a: $white !default;
+$firstAccentNavAnchorPadding-a: 8px 20px !default;
+
+$navToggleBG-a: #e7e7e7 !default;
+$navToggleTextColor-a: #231f20 !default;
+
+$navToggleHoverBG-a: #d5d5d5 !default;
+$navToggleHoverTextColor-a: #231f20 !default;
+
+// Search */
+$advancedSearchOpenFromLeft-a: "off" !default;
+$advancedSearchOpenFromRight-a: "on" !default;
+$advanceSearchButtonBG-a: $headerTopBarBG-a !default;
+$advanceSearchButtonClearBackground-a: $advanceSearchButtonBG-a !default;
+
+$searchActiveButtonBG-a: $headerTopBarBG-a !default;
+
+// ShortList
+$shortListOrderLinkFontSize-a: $bodyFontSize-a !default;
+
+
+$navBorderTop-a: 1px solid $navBorderColor-a !default;
+$navBorderBottom-a: 1px solid $navBorderColor-a !default;
+$navListBottomBorder-a: 1px solid $navBorderColor-a !default;
+
 @if $header-theme == "a" {
-  $headerContainerPosition: relative;
-  $headerContainerMarginBottom: 25px;
-  $headerGroupPosition: absolute;
+  $headerContainerPosition: $headerContainerPosition-a;
+  $headerContainerMarginBottom: $headerContainerMarginBottom-a;
+  $headerGroupPosition: $headerGroupPosition-a;
 
-  $headerTopBarBG: #ee2222;
-  $headerTopBarTextColor: $white;
+  $headerTopBarBG: $headerTopBarBG-a;
+  $headerTopBarTextColor: $headerTopBarTextColor-a;
 
-  $navColor: #454a4d; //navAnchorColor
-  $subNavBgColor: #252D30; //$first-accent-color
-  $subNavColor: #FFFFFF; //firstAccentNavAnchorColor
+  $navColor: $navColor-a; //navAnchorColor
+  $subNavBgColor: $subNavBgColor-a; //$first-accent-color
+  $subNavColor: $subNavColor-a; //firstAccentNavAnchorColor
 
   // Navigation */
-  $navbarPaddingLeft: 280px;
-  $navWidth: auto;
-  $navMarginTop: 0px; //$navMargin
-  $navBG: transparent;
-  $navBorderColor: #2e2e2e;
-  $navAnchorColor: $white;
-  $navAnchorHoverBG: transparent;
-  $navAnchorHoverTextColor: #2e2e2e;
-  $navAnchorTopFontSize: $bodyFontSize;
-  $navAnchorPadding: 0px;
-  $navFirstChildAnchorPadding: $navAnchorPadding;
-  $navLastChildAnchorPadding: $navAnchorPadding;
-  $navAnchorHeight: auto;
-  $navAnchorLineHeight: 28px;
+  $navbarPaddingLeft: $navbarPaddingLeft-a;
+  $navWidth: $navWidth-a;
+  $navMarginTop: $navMarginTop-a; //$navMargin
+  $navBG: $navBG-a;
+  $navBorderColor: $navBorderColor-a;
+  $navAnchorColor: $navAnchorColor-a;
+  $navAnchorHoverBG: $navAnchorHoverBG-a;
+  $navAnchorHoverTextColor: $navAnchorHoverTextColor-a;
+  $navAnchorTopFontSize: $navAnchorTopFontSize-a;
+  $navAnchorPadding: $navAnchorPadding-a;
+  $navFirstChildAnchorPadding: $navFirstChildAnchorPadding-a;
+  $navLastChildAnchorPadding: $navLastChildAnchorPadding-a;
+  $navAnchorHeight: $navAnchorHeight-a;
+  $navAnchorLineHeight: $navAnchorLineHeight-a;
 
-  $navAnchorArrowColor: $white;
-  $firstChildMenuPadding: 0px;
-  $displayFullWidthMenu: none;
-  $first-accent-color: #252D30;
-  $firstDropMenufullWidth: 117.1%;
-  $firstDropMenuMargin: 0px -14.95%;
-  $first-accent-width: 200px;
-  $firstAccentNavAnchorColor: $white;
-  $firstAccentNavAnchorPadding: 8px 20px;
+  $navAnchorArrowColor: $navAnchorArrowColor-a;
+  $firstChildMenuPadding: $firstChildMenuPadding-a;
+  $displayFullWidthMenu: $displayFullWidthMenu-a;
+  $first-accent-color: $first-accent-color-a;
+  $firstDropMenufullWidth: $firstDropMenufullWidth-a;
+  $firstDropMenuMargin: $firstDropMenuMargin-a;
+  $first-accent-width: $first-accent-width-a;
+  $firstAccentNavAnchorColor: $firstAccentNavAnchorColor-a;
+  $firstAccentNavAnchorPadding: $firstAccentNavAnchorPadding-a;
 
-  $navToggleBG: #e7e7e7;
-  $navToggleTextColor: #231f20;
+  $navToggleBG: $navToggleBG-a;
+  $navToggleTextColor: $navToggleTextColor-a;
 
-  $navToggleHoverBG: #d5d5d5;
-  $navToggleHoverTextColor: #231f20;
+  $navToggleHoverBG: $navToggleHoverBG-a;
+  $navToggleHoverTextColor: $navToggleHoverTextColor-a;
 
   // Search */
-  $advancedSearchOpenFromLeft: "off";
-  $advancedSearchOpenFromRight: "on";
-  $advanceSearchButtonBG: $headerTopBarBG;
-  $advanceSearchButtonClearBackground: $advanceSearchButtonBG;
+  $advancedSearchOpenFromLeft: $advancedSearchOpenFromLeft-a;
+  $advancedSearchOpenFromRight: $advancedSearchOpenFromRight-a;
+  $advanceSearchButtonBG: $advanceSearchButtonBG-a;
+  $advanceSearchButtonClearBackground: $advanceSearchButtonClearBackground-a;
 
-  $searchActiveButtonBG: $headerTopBarBG;
+  $searchActiveButtonBG: $searchActiveButtonBG-a;
 
   // ShortList
-  $shortListOrderLinkFontSize: $bodyFontSize;
+  $shortListOrderLinkFontSize: $shortListOrderLinkFontSize-a;
 
 
-  $navBorderTop: 1px solid $navBorderColor;
-  $navBorderBottom: 1px solid $navBorderColor;
-  $navListBottomBorder: 1px solid $navBorderColor;
-
+  $navBorderTop: $navBorderTop-a;
+  $navBorderBottom: $navBorderBottom-a;
+  $navListBottomBorder: $navListBottomBorder-a;
 }

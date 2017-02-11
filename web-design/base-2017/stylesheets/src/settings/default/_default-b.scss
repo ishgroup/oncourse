@@ -14,97 +14,103 @@
 $fontFamilyOne: !default;
 
 // Content settings */
-$colorTypeOne: !default;
-$colorTypeTwo: !default;
+$colorTypeOne: #9ac836 !default;
+$colorTypeTwo: #799e28 !default;
 
-$colorTypeThree: !default;
-$colorTypeFour: !default;
+$colorTypeThree: #d0e64b !default;
+$colorTypeFour: #b9cc46 !default;
 
-$colorTypeFive: !default;
-$colorTypeSix: !default;
+$colorTypeFive: #33a6b2 !default;
+$colorTypeSix: #247a83 !default;
+
+$containerWidth-b: 1260px !default;
+$anchorColor-b: #7d8087 !default;
+$anchorHoverColor-b: #37b8cb !default;
+
+$primaryColor-b: #859f4b !default;
+$secondaryColor-b: #247a83 !default;
+
+$small-screen-b: 640px !default;
+$tablet-screen-b: 992px !default;
+$desktop-screen-b: 1080px !default;
+$custom-screen-b: 1060px !default;
+
+$bodyFontFamily-b: 'Source Sans Pro', sans-serif !default;
+$bodyFontSize-b: 14px !default;
+$bodyFontColor-b: #333333 !default;
+$bodyBackground-b: $white !default;
 
 @if $theme == "b" {
   $useDefaultFont: false;
   @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,900);
 
-  $containerWidth: 1260px;
+  $containerWidth: $containerWidth-b;
 
-  $anchorColor: #7d8087;
-  $anchorHoverColor: #37b8cb;
+  $anchorColor: $anchorColor-b;
+  $anchorHoverColor: $anchorHoverColor-b;
 
-  $primaryColor: #859f4b; //btn primary color
-  $secondaryColor: #247a83;
+  $primaryColor: $primaryColor-b; //btn primary color
+  $secondaryColor: $secondaryColor-b;
 
   // media: small, tablet, desktop */
-  $small-screen: 640px;
-  $tablet-screen: 992px;
-  $desktop-screen: 1080px;
-  $custom-screen: 1060px;
+  $small-screen: $small-screen-b;
+  $tablet-screen: $tablet-screen-b;
+  $desktop-screen: $desktop-screen-b;
+  $custom-screen: $custom-screen-b;
 
   // Font Families */
   $fontFamilyOne: 'Raleway', sans-serif;
 
-  $bodyBackground: $white;
+  $bodyBackground: $bodyBackground-b;
   $bodyFontFamily: $fontFamilyOne;
-  $bodyFontSize: 14px;
-  $bodyFontColor: #333333;
+  $bodyFontSize: $bodyFontSize-b;
+  $bodyFontColor: $bodyFontColor-b;
 
   // Content container */
   $contentContainerMarginTop: 0px;
 
   // Courses */
-  $waitingListTitleHoverBG: $bodyFontColor;
+  $waitingListTitleHoverBG: $bodyFontColor-b;
 
 
-  $h1InnerFontFamily: $bodyFontFamily;
+  $h1InnerFontFamily: $bodyFontFamily-b;
 
   $discountBlockDisplay: block;
   $discountBlockActionLinkDisplay: block;
 
-  $h1LinkColor: $primaryColor;
-  $h1LinkHoverColor: $secondaryColor;
+  $h1LinkColor: $primaryColor-b;
+  $h1LinkHoverColor: $secondaryColor-b;
 
-  $h2LinkColor: $primaryColor;
-  $h2LinkHoverColor: $secondaryColor;
+  $h2LinkColor: $primaryColor-b;
+  $h2LinkHoverColor: $secondaryColor-b;
 
-  $h3LinkColor: $primaryColor;
-  $h3LinkHoverColor: $secondaryColor;
+  $h3LinkColor: $primaryColor-b;
+  $h3LinkHoverColor: $secondaryColor-b;
 
-  $h4LinkColor: $primaryColor;
-  $h4LinkHoverColor: $secondaryColor;
+  $h4LinkColor: $primaryColor-b;
+  $h4LinkHoverColor: $secondaryColor-b;
 
-  $h5LinkColor: $primaryColor;
-  $h5LinkHoverColor: $secondaryColor;
+  $h5LinkColor: $primaryColor-b;
+  $h5LinkHoverColor: $secondaryColor-b;
 
-  $h6LinkColor: $primaryColor;
-  $h6LinkHoverColor: $secondaryColor;
+  $h6LinkColor: $primaryColor-b;
+  $h6LinkHoverColor: $secondaryColor-b;
 
-  $enrolActionFontFamily: $bodyFontFamily;
-  $enrolActionBackground: $primaryColor;
-  $enrolActionHoverBackground: $secondaryColor;
+  $enrolActionFontFamily: $bodyFontFamily-b;
+  $enrolActionBackground: $primaryColor-b;
+  $enrolActionHoverBackground: $secondaryColor-b;
 
-  $enrolActionBorder: 1px solid $primaryColor;
-  $coursesJoinButtonBackground: $primaryColor;
-  $coursesJoinButtonHoverBackground: $primaryColor;
-  $classItemBorderHoverColor: $primaryColor;
+  $enrolActionBorder: 1px solid $primaryColor-b;
+  $coursesJoinButtonBackground: $primaryColor-b;
+  $coursesJoinButtonHoverBackground: $primaryColor-b;
+  $classItemBorderHoverColor: $primaryColor-b;
 
-  $coursesFontFamily: $bodyFontFamily;
-  $coursesDetailsFontFamily: $bodyFontFamily;
-  $normalFontFamily: $bodyFontFamily;
+  $coursesFontFamily: $bodyFontFamily-b;
+  $coursesDetailsFontFamily: $bodyFontFamily-b;
+  $normalFontFamily: $bodyFontFamily-b;
 
-  $btnBackgroundColor: $primaryColor;
-  $btnBackgroundHoverColor: $secondaryColor;
+  $btnBackgroundColor: $primaryColor-b;
+  $btnBackgroundHoverColor: $secondaryColor-b;
 
-  $btnType2BackgroundColor: $secondaryColor;
-
-
-  // Content settings */
-  $colorTypeOne: #9ac836;
-  $colorTypeTwo: #799e28;
-
-  $colorTypeThree: #d0e64b;
-  $colorTypeFour: #b9cc46;
-
-  $colorTypeFive: #33a6b2;
-  $colorTypeSix: #247a83;
+  $btnType2BackgroundColor: $secondaryColor-b;
 }

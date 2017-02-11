@@ -11,119 +11,226 @@
 // Author: Chintan Kotadia
 //
 
+$headerContainerPosition-b: relative !default;
+$headerContainerMarginBottom-b: 0px !default;
+$headerGroupPosition-b: relative !default;
+
+$headerTopBarFloat-b: none !default;
+$headerTopBarBG-b: #fbfbfb !default;
+$headerTopBarTextColor-b: $bodyFontColor-b !default;
+$headerTopBarMarginBottom-b: 39px !default;
+
+$headerTopBarContactMargin-b: 6px 10px 0px 20px !default;
+$headerTopBarPhoneTextColor-b: $bodyFontColor-b !default;
+
+$headerTopBarPaddingTop-b: 0px !default;
+$headerTopBarHeight-b: 57px !default;
+$headerGroupSiteLogoFloatPosition-b: none !default;
+$headerGroupSiteLogoZIndex-b: 0 !default;
+
+// Navigation
+$navbarPaddingLeft-b: 0px !default;
+$navFontSize-b: 15px !default;
+$navFontWeight-b: normal !default;
+$navWidth-b: auto !default;
+$navMarginTop-b: 0px !default;
+$navBG-b: transparent !default;
+$navBorderTop-b: 0px !default;
+$navBorderBottom-b: 0px !default;
+$navBorderColor-b: transparent !default;
+$navListBottomBorder-b: 2px solid transparent !default;
+$navAnchorColor-b: #4f5150 !default;
+$navAnchorHoverBG-b: #9bc837 !default;
+$navAnchorHoverTextColor-b: #2e2e2e !default;
+$navAnchorTopFontSize-b: 15px !default;
+$navAnchorPadding-b: 10px 27px !default;
+$navFirstChildAnchorPadding-b: $navAnchorPadding-b !default;
+$navLastChildAnchorPadding-b: $navAnchorPadding-b !default;
+
+$navAnchorHeight-b: auto !default;
+$navAnchorLineHeight-b: 36px !default;
+
+$navAnchorArrowColor-b: $navAnchorHoverBG-b !default;
+$firstChildMenuPadding-b: 0px !default;
+$displayFullWidthMenu-b: none !default;
+$first-accent-color-b: $navAnchorHoverBG-b !default;
+$firstDropMenufullWidth-b: 117.1% !default;
+$firstDropMenuMargin-b: 0px -14.95% !default;
+$first-accent-width-b: 400px !default;
+$firstAccentNavAnchorColor-b: #2e2e2e !default;
+$firstAccentNavAnchorPadding-b: 8px 20px !default;
+
+$navToggleBG-b: #e7e7e7 !default;
+$navToggleTextColor-b: #231f20 !default;
+
+$navToggleHoverBG-b: #d5d5d5 !default;
+$navToggleHoverTextColor-b: #231f20 !default;
+
+// Short list
+$shortListOrderLinkFontSize-b: $bodyFontSize-b !default;
+$shortListInfoSpanColor-b: #6d6d6d !default;
+$shortListInfoSpanFontSize-b: 14px !default;
+$shortListInfoSpanLineHeight-b: 2 !default;
+$shortListInfoSpanMargin-b: 0 5px 0 0 !default;
+
+// Search
+$advancedSearchOpenFromLeft-b: "off" !default;
+$advancedSearchOpenFromRight-b: "on" !default;
+$searchTopHeight-b: 28px !default;
+$searchButtonPadding-b: 3.5px 7px 3.5px !default;
+$searchButtonBG-b: transparent !default;
+$searchButtonWidth-b: 31px !default;
+$searchButtonHeight-b: $searchTopHeight-b !default;
+
+$btnHeight-b: 40px !default;
+$btnPadding-b: 12px 27px !default;
+$advanceSearchButtonWidth-b: 150px !default;
+$advanceSearchButtonBorderRadius-b: 2em !default;
+$advanceSearchButtonPadding-b: $btnPadding-b !default;
+
+$advanceSearchButtonClearPosition-b: right !default;
+$advanceSearchButtonSubmitPosition-b: left !default;
+
+$advanceSearchColor-b: #202020 !default;
+$advanceSearchButtonBG-b: #d0e64b !default;
+$advanceSearchButtonClearBackground-b: #d3eaec !default;
+$searchActiveButtonBG-b: $advanceSearchButtonBG-b !default;
+
+$toggleSearchActiveBackground-b: #9ac836 !default;
+
+// Advanced search
+$advanceSearchBG-b: #fbfbfb !default;
+$advanceSearchBGRGB-b: $advanceSearchBG-b !default;
+$advancedSearchPriceDisplay-b: block !default;
+$advancedSearchLocationWidth-b: 50% !default;
+$advancedSearchPriceWidth-b: $advancedSearchLocationWidth-b !default;
+
+$searchBoxWidth-b: 190px !default;
+$searchBoxBorder-b: 1px solid #ddd !default;
+$searchBoxBorderRadius-b: 14px !default;
+
+$searchBoxInputPadding-b: 3.5px 12px 3.5px !default;
+$searchBoxInputWidth-b: 72% !default;
+$searchBoxInputHeight-b: $searchTopHeight-b !default;
+$searchBoxInputBorder-b: 0px !default;
+$searchBoxInputBorderRadius-b: 14px 0px 0px 14px !default;
+
+$searchMoreOptions-b: transparent !default;
+$searchMoreOptionsWidth-b: 12px !default;
+$searchMoreOptionsHeight-b: $searchTopHeight-b !default;
+$searchMoreOptionsPadding-b: 0px !default;
+$searchMoreOptionsMinWidth-b: $searchMoreOptionsWidth-b !default;
+$searchMoreOptionsDisplay-b: block !default;
+
 @if $header-theme == "b" {
-  $headerContainerPosition: relative;
-  $headerContainerMarginBottom: 0px;
-  $headerGroupPosition: relative;
+  $headerContainerPosition: $headerContainerPosition-b;
+  $headerContainerMarginBottom: $headerContainerMarginBottom-b;
+  $headerGroupPosition: $headerGroupPosition-b;
 
-  $headerTopBarFloat: none;
-  $headerTopBarBG: #fbfbfb;
-  $headerTopBarTextColor: $bodyFontColor;
-  $headerTopBarMarginBottom: 39px;
+  $headerTopBarFloat: $headerTopBarFloat-b;
+  $headerTopBarBG: $headerTopBarBG-b;
+  $headerTopBarTextColor: $headerTopBarTextColor-b;
+  $headerTopBarMarginBottom: $headerTopBarMarginBottom-b;
 
-  $headerTopBarContactMargin: 6px 10px 0px 20px;
-  $headerTopBarPhoneTextColor: $bodyFontColor;
+  $headerTopBarContactMargin: $headerTopBarContactMargin-b;
+  $headerTopBarPhoneTextColor: $headerTopBarPhoneTextColor-b;
 
-  $headerTopBarPaddingTop: 0px;
-  $headerTopBarHeight: 57px;
-  $headerGroupSiteLogoFloatPosition: none;
-  $headerGroupSiteLogoZIndex: 0;
+  $headerTopBarPaddingTop: $headerTopBarPaddingTop-b;
+  $headerTopBarHeight: $headerTopBarHeight-b;
+  $headerGroupSiteLogoFloatPosition: $headerGroupSiteLogoFloatPosition-b;
+  $headerGroupSiteLogoZIndex: $headerGroupSiteLogoZIndex-b;
 
-  // Navigation */
-  $navbarPaddingLeft: 0px;
-  $navFontSize: 15px;
-  $navFontWeight: normal;
-  $navWidth: auto;
-  $navMarginTop: 0px;
-  $navBG: transparent;
-  $navBorderTop: 0px;
-  $navBorderBottom: 0px;
-  $navBorderColor: transparent;
-  $navListBottomBorder: 2px solid transparent;
-  $navAnchorColor: #4f5150;
-  $navAnchorHoverBG: #9bc837;
-  $navAnchorHoverTextColor: #2e2e2e;
-  $navAnchorTopFontSize: 15px;
-  $navAnchorPadding: 10px 27px;
-  $navFirstChildAnchorPadding: $navAnchorPadding;
-  $navLastChildAnchorPadding: $navAnchorPadding;
+  // Navigation
+  $navbarPaddingLeft: $navbarPaddingLeft-b;
+  $navFontSize: $navFontSize-b;
+  $navFontWeight: $navFontWeight-b;
+  $navWidth: $navWidth-b;
+  $navMarginTop: $navMarginTop-b;
+  $navBG: $navBG-b;
+  $navBorderTop: $navBorderTop-b;
+  $navBorderBottom: $navBorderBottom-b;
+  $navBorderColor: $navBorderColor-b;
+  $navListBottomBorder: $navListBottomBorder-b;
+  $navAnchorColor: $navAnchorColor-b;
+  $navAnchorHoverBG: $navAnchorHoverBG-b;
+  $navAnchorHoverTextColor: $navAnchorHoverTextColor-b;
+  $navAnchorTopFontSize: $navAnchorTopFontSize-b;
+  $navAnchorPadding: $navAnchorPadding-b;
+  $navFirstChildAnchorPadding: $navFirstChildAnchorPadding-b;
+  $navLastChildAnchorPadding: $navLastChildAnchorPadding-b;
 
-  $navAnchorHeight: auto;
-  $navAnchorLineHeight: 36px;
+  $navAnchorHeight: $navAnchorHeight-b;
+  $navAnchorLineHeight: $navAnchorLineHeight-b;
 
-  $navAnchorArrowColor: $navAnchorHoverBG;
-  $firstChildMenuPadding: 0px;
-  $displayFullWidthMenu: none;
-  $first-accent-color: $navAnchorHoverBG;
-  $firstDropMenufullWidth: 117.1%;
-  $firstDropMenuMargin: 0px -14.95%;
-  $first-accent-width: 400px;
-  $firstAccentNavAnchorColor: #2e2e2e;
-  $firstAccentNavAnchorPadding: 8px 20px;
+  $navAnchorArrowColor: $navAnchorArrowColor-b;
+  $firstChildMenuPadding: $firstChildMenuPadding-b;
+  $displayFullWidthMenu: $displayFullWidthMenu-b;
+  $first-accent-color: $first-accent-color-b;
+  $firstDropMenufullWidth: $firstDropMenufullWidth-b;
+  $firstDropMenuMargin: $firstDropMenuMargin-b;
+  $first-accent-width: $first-accent-width-b;
+  $firstAccentNavAnchorColor: $firstAccentNavAnchorColor-b;
+  $firstAccentNavAnchorPadding: $firstAccentNavAnchorPadding-b;
 
-  $navToggleBG: #e7e7e7;
-  $navToggleTextColor: #231f20;
+  $navToggleBG: $navToggleBG-b;
+  $navToggleTextColor: $navToggleTextColor-b;
 
-  $navToggleHoverBG: #d5d5d5;
-  $navToggleHoverTextColor: #231f20;
+  $navToggleHoverBG: $navToggleHoverBG-b;
+  $navToggleHoverTextColor: $navToggleHoverTextColor-b;
 
-  // Navigation */
+  // Short list
+  $shortListOrderLinkFontSize: $shortListOrderLinkFontSize-b;
+  $shortListInfoSpanColor: $shortListInfoSpanColor-b;
+  $shortListInfoSpanFontSize: $shortListInfoSpanFontSize-b;
+  $shortListInfoSpanLineHeight: $shortListInfoSpanLineHeight-b;
+  $shortListInfoSpanMargin: $shortListInfoSpanMargin-b;
 
-  // Short list */
-  $shortListOrderLinkFontSize: $bodyFontSize;
-  $shortListInfoSpanColor: #6d6d6d;
-  $shortListInfoSpanFontSize: 14px;
-  $shortListInfoSpanLineHeight: 2;
-  $shortListInfoSpanMargin: 0 5px 0 0;
-  // Short list */
+  // Search
+  $advancedSearchOpenFromLeft: $advancedSearchOpenFromLeft-b;
+  $advancedSearchOpenFromRight: $advancedSearchOpenFromRight-b;
+  $searchTopHeight: $searchTopHeight-b;
+  $searchButtonPadding: $searchButtonPadding-b;
+  $searchButtonBG: $searchButtonBG-b;
+  $searchButtonWidth: $searchButtonWidth-b;
+  $searchButtonHeight: $searchButtonHeight-b;
 
-  // Search */
-  $advancedSearchOpenFromLeft: "off";
-  $advancedSearchOpenFromRight: "on";
-  $searchTopHeight: 28px;
-  $searchButtonPadding: 3.5px 7px 3.5px;
-  $searchButtonBG: transparent;
-  $searchButtonWidth: 31px;
-  $searchButtonHeight: $searchTopHeight;
+  $btnHeight: $btnHeight-b;
+  $btnPadding: $btnPadding-b;
+  $advanceSearchButtonWidth: $advanceSearchButtonWidth-b;
+  $advanceSearchButtonBorderRadius: $advanceSearchButtonBorderRadius-b;
+  $advanceSearchButtonPadding: $advanceSearchButtonPadding-b;
 
-  $btnHeight: 40px;
-  $btnPadding: 12px 27px;
-  $advanceSearchButtonWidth: 150px;
-  $advanceSearchButtonBorderRadius: 2em;
-  $advanceSearchButtonPadding: $btnPadding;
+  $advanceSearchButtonClearPosition: $advanceSearchButtonClearPosition-b;
+  $advanceSearchButtonSubmitPosition: $advanceSearchButtonSubmitPosition-b;
 
-  $advanceSearchButtonClearPosition: right;
-  $advanceSearchButtonSubmitPosition: left;
+  $advanceSearchColor: $advanceSearchColor-b;
+  $advanceSearchButtonBG: $advanceSearchButtonBG-b;
+  $advanceSearchButtonClearBackground: $advanceSearchButtonClearBackground-b;
+  $searchActiveButtonBG: $searchActiveButtonBG-b;
 
-  $advanceSearchColor: #202020;
-  $advanceSearchButtonBG: #d0e64b;
-  $advanceSearchButtonClearBackground: #d3eaec;
-  $searchActiveButtonBG: $advanceSearchButtonBG;
+  $toggleSearchActiveBackground: $toggleSearchActiveBackground-b;
 
-  $toggleSearchActiveBackground: #9ac836;
+  // Advanced search
+  $advanceSearchBG: $advanceSearchBG-b;
+  $advanceSearchBGRGB: $advanceSearchBGRGB-b;
+  $advancedSearchPriceDisplay: $advancedSearchPriceDisplay-b;
+  $advancedSearchLocationWidth: $advancedSearchLocationWidth-b;
+  $advancedSearchPriceWidth: $advancedSearchPriceWidth-b;
 
-  // Advanced search */
-  $advanceSearchBG: #fbfbfb;
-  $advanceSearchBGRGB: $advanceSearchBG;
-  $advancedSearchPriceDisplay: block;
-  $advancedSearchLocationWidth: 50%;
-  $advancedSearchPriceWidth: $advancedSearchLocationWidth;
+  $searchBoxWidth: $searchBoxWidth-b;
+  $searchBoxBorder: $searchBoxBorder-b;
+  $searchBoxBorderRadius: $searchBoxBorderRadius-b;
 
-  $searchBoxWidth: 190px;
-  $searchBoxBorder: 1px solid #ddd;
-  $searchBoxBorderRadius: 14px;
+  $searchBoxInputPadding: $searchBoxInputPadding-b;
+  $searchBoxInputWidth: $searchBoxInputWidth-b;
+  $searchBoxInputHeight: $searchBoxInputHeight-b;
+  $searchBoxInputBorder: $searchBoxInputBorder-b;
+  $searchBoxInputBorderRadius: $searchBoxInputBorderRadius-b;
 
-  $searchBoxInputPadding: 3.5px 12px 3.5px;
-  $searchBoxInputWidth: 72%;
-  $searchBoxInputHeight: $searchTopHeight;
-  $searchBoxInputBorder: 0px;
-  $searchBoxInputBorderRadius: 14px 0px 0px 14px;
-
-  $searchMoreOptions: transparent;
-  $searchMoreOptionsWidth: 12px;
-  $searchMoreOptionsHeight: $searchTopHeight;
-  $searchMoreOptionsPadding: 0px;
-  $searchMoreOptionsMinWidth: $searchMoreOptionsWidth;
-  $searchMoreOptionsDisplay: block;
-
+  $searchMoreOptions: $searchMoreOptions-b;
+  $searchMoreOptionsWidth: $searchMoreOptionsWidth-b;
+  $searchMoreOptionsHeight: $searchMoreOptionsHeight-b;
+  $searchMoreOptionsPadding: $searchMoreOptionsPadding-b;
+  $searchMoreOptionsMinWidth: $searchMoreOptionsMinWidth-b;
+  $searchMoreOptionsDisplay: $searchMoreOptionsDisplay-b;
 }

@@ -11,68 +11,82 @@
 // Author: Chintan Kotadia
 //
 
+$containerWidth-a: 1120px !default;
+$anchorColor-a: #7d8087 !default;
+$anchorHoverColor-a: #37b8cb !default;
+
+$primaryColor-a: #38BACA !default;
+$secondaryColor-a: #252d30 !default;
+
+$small-screen-a: 640px !default;
+$tablet-screen-a: 992px !default;
+$desktop-screen-a: 1024px !default;
+
+$bodyFontFamily-a: 'Source Sans Pro', sans-serif !default;
+$bodyFontSize-a: 15px !default;
+$bodyFontColor-a: #5c636b !default;
+
 @if $theme == "a" {
-  $containerWidth: 1120px;
+  $containerWidth: $containerWidth-a;
 
-  $anchorColor: #7d8087;
-  $anchorHoverColor: #37b8cb;
+  $anchorColor: $anchorColor-a;
+  $anchorHoverColor: $anchorHoverColor-a;
 
-  $primaryColor: #38BACA; //btn primary color
-  $secondaryColor: #252d30;
+  $primaryColor: $primaryColor-a; //btn primary color
+  $secondaryColor: $secondaryColor-a;
 
-  // media: small, tablet, desktop */
-  $small-screen: 640px;
-  $tablet-screen: 992px;
-  $desktop-screen: 1024px;
+  // media: small, tablet, desktop
+  $small-screen: $small-screen-a;
+  $tablet-screen: $tablet-screen-a;
+  $desktop-screen: $desktop-screen-a;
 
-  $bodyFontFamily: 'Source Sans Pro', sans-serif;
-  $bodyFontSize: 15px;
-  $bodyFontColor: #5c636b;
+  $bodyFontFamily: $bodyFontFamily-a;
+  $bodyFontSize: $bodyFontSize-a;
+  $bodyFontColor: $bodyFontColor-a;
 
-  // Content container */
+  // Content container
   $contentContainerMarginTop: 0px;
 
-  // Courses */
-  $waitingListTitleHoverBG: $bodyFontColor;
+  // Courses
+  $waitingListTitleHoverBG: $bodyFontColor-a;
 
 
-  $h1InnerFontFamily: $bodyFontFamily;
+  $h1InnerFontFamily: $bodyFontFamily-a;
 
-  $h1LinkColor: $primaryColor;
-  $h1LinkHoverColor: $secondaryColor;
+  $h1LinkColor: $primaryColor-a;
+  $h1LinkHoverColor: $secondaryColor-a;
 
-  $h2LinkColor: $primaryColor;
-  $h2LinkHoverColor: $secondaryColor;
+  $h2LinkColor: $primaryColor-a;
+  $h2LinkHoverColor: $secondaryColor-a;
 
-  $h3LinkColor: $primaryColor;
-  $h3LinkHoverColor: $secondaryColor;
+  $h3LinkColor: $primaryColor-a;
+  $h3LinkHoverColor: $secondaryColor-a;
 
-  $h4LinkColor: $primaryColor;
-  $h4LinkHoverColor: $secondaryColor;
+  $h4LinkColor: $primaryColor-a;
+  $h4LinkHoverColor: $secondaryColor-a;
 
-  $h5LinkColor: $primaryColor;
-  $h5LinkHoverColor: $secondaryColor;
+  $h5LinkColor: $primaryColor-a;
+  $h5LinkHoverColor: $secondaryColor-a;
 
-  $h6LinkColor: $primaryColor;
-  $h6LinkHoverColor: $secondaryColor;
+  $h6LinkColor: $primaryColor-a;
+  $h6LinkHoverColor: $secondaryColor-a;
 
-  $enrolActionFontFamily: $bodyFontFamily;
-  $enrolActionBackground: $primaryColor;
-  $enrolActionHoverBackground: $secondaryColor;
+  $enrolActionFontFamily: $bodyFontFamily-a;
+  $enrolActionBackground: $primaryColor-a;
+  $enrolActionHoverBackground: $secondaryColor-a;
 
-  $enrolActionBorder: 1px solid $primaryColor;
-  $coursesJoinButtonBackground: $primaryColor;
-  $coursesJoinButtonHoverBackground: $primaryColor;
-  $classItemBorderHoverColor: $primaryColor;
+  $enrolActionBorder: 1px solid $primaryColor-a;
+  $coursesJoinButtonBackground: $primaryColor-a;
+  $coursesJoinButtonHoverBackground: $primaryColor-a;
+  $classItemBorderHoverColor: $primaryColor-a;
 
-  $coursesFontFamily: $bodyFontFamily;
-  $coursesDetailsFontFamily: $bodyFontFamily;
-  $normalFontFamily: $bodyFontFamily;
+  $coursesFontFamily: $bodyFontFamily-a;
+  $coursesDetailsFontFamily: $bodyFontFamily-a;
+  $normalFontFamily: $bodyFontFamily-a;
 
 
-  $btnBackgroundColor: $primaryColor;
-  $btnBackgroundHoverColor: $secondaryColor;
+  $btnBackgroundColor: $primaryColor-a;
+  $btnBackgroundHoverColor: $secondaryColor-a;
 
-  $btnType2BackgroundColor: $secondaryColor;
-
+  $btnType2BackgroundColor: $secondaryColor-a;
 }

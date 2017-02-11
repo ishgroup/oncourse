@@ -11,11 +11,18 @@
 // Author: Chintan Kotadia
 //
 
+$footerBG-c: $gunmetal !default;
+$footerTextColor-c: $white !default;
+$footerFontSize-c: 14px !default;
+$footerLineHeight-c: 26px !default;
+$footerPadding-c: 0 !default;
+$footerContainerMargin-c: 0px !default;
+
 @if $footer-theme == "c" {
-  $footerBG: $gunmetal;
-  $footerTextColor: $white;
-  $footerFontSize: 14px;
-  $footerLineHeight: 26px;
-  $footerPadding: 0;
-  $footerContainerMargin: 0px;
+  $footerBG: $footerBG-c;
+  $footerTextColor: $footerTextColor-c;
+  $footerFontSize: $footerFontSize-c;
+  $footerLineHeight: $footerLineHeight-c;
+  $footerPadding: $footerPadding-c;
+  $footerContainerMargin: $footerContainerMargin-c;
 }
