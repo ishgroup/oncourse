@@ -2,7 +2,7 @@
   "name": "web-design",
   "version": "0.1.0",
   "scripts": {
-    "sassdoc": "sassdoc ./base-2017 -c ./config.json"
+    "sassdoc": "sassdoc ./base-2017/stylesheets/src -c ./config.json"
   },
   "dependencies": {
     "sassdoc": "^2.1.20"

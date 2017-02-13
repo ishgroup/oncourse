@@ -13,4 +13,5 @@ include 'admin',
 	'search',
 	'services',
 	'web',
-	'cms'
+	'cms',
+	'willow-api'
