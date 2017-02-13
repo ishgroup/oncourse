@@ -38,17 +38,19 @@ dependencies {
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 }
 
-task cayenne << {
-	ant.taskdef(resource: 'org/apache/cayenne/tools/antlib.xml', classpath: project.configurations.cayenneTools.asPath)
+task cayenne {
+	doLast {
+		ant.taskdef(resource: 'org/apache/cayenne/tools/antlib.xml', classpath: project.configurations.cayenneTools.asPath)
 
-	ant.cgen(map: file("${projectDir}/src/main/resources/oncourse.map.xml"),
-			superPkg: "ish.oncourse.model.auto",
-			destDir: file("${projectDir}/src/main/java"),
-			makepairs: true,
-			mode: 'all',
-			overwrite: true,
-			createPropertyNames: true
-	)
+		ant.cgen(map: file("${projectDir}/src/main/resources/oncourse.map.xml"),
+				superPkg: "ish.oncourse.model.auto",
+				destDir: file("${projectDir}/src/main/java"),
+				makepairs: true,
+				mode: 'all',
+				overwrite: true,
+				createPropertyNames: true
+		)
+	}
 }
 
 compileJava.dependsOn(cayenne)

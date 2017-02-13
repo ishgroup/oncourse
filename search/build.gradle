@@ -77,24 +77,28 @@ def deleteAlias = { String alias ->
     logger.info(out)
 }
 
-task deleteAllCollections << {
-    def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=LIST&wt=json").text)
-    result.collections.each { collection ->
-        def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
-                "action=DELETE" +
-                "&name=$collection").text
-        logger.info(out)
+task deleteAllCollections {
+    doLast {
+        def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=LIST&wt=json").text)
+        result.collections.each { collection ->
+            def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
+                    "action=DELETE" +
+                    "&name=$collection").text
+            logger.info(out)
+        }
     }
 }
 
-task deleteAllAliases << {
-    def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=CLUSTERSTATUS&wt=json").text)
-    result.cluster.aliases.keySet().each { alias ->
-        println alias
-        def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
-                "action=DELETEALIAS" +
-                "&name=$alias").text
-        logger.info(out)
+task deleteAllAliases {
+    doLast {
+        def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=CLUSTERSTATUS&wt=json").text)
+        result.cluster.aliases.keySet().each { alias ->
+            println alias
+            def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
+                    "action=DELETEALIAS" +
+                    "&name=$alias").text
+            logger.info(out)
+        }
     }
 }
 
