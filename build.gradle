@@ -24,6 +24,18 @@ buildscript {
 	}
 }
 
+plugins {
+	id 'java'
+	id 'groovy'
+	id 'maven'
+	id 'jacoco'
+	id 'war'
+	id 'application' // used for willow-api
+	id 'com.github.robfletcher.compass' version '2.0.6'
+	id 'com.eriwen.gradle.js' version "2.14.1"
+	id 'com.github.ben-manes.versions' version '0.14.0' // adds the task 'dependencyUpdates -Drevision=release'
+}
+
 ext {
     replicationVersions = [10,  // introduced in onCourse 7.4
                            11,  // introduced in onCourse 8.2
@@ -37,13 +49,17 @@ ext {
     ]
 }
 
-allprojects {
-	apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates -Drevision=release'
+subprojects {
+	// the following list of applying plugins should not be needed in gradle 3.x, but I can't see why it breaks when removed.
 	apply plugin: 'java'
 	apply plugin: 'maven'
+	apply plugin: 'groovy'
 	apply plugin: 'jacoco'
-    apply plugin: 'compass'
-    apply plugin: 'com.eriwen.gradle.js'
+	apply plugin: 'war'
+	apply plugin: 'application'
+	apply plugin: 'com.github.robfletcher.compass'
+	apply plugin: 'com.eriwen.gradle.js'
+	apply plugin: 'com.github.ben-manes.versions'
 
     //java compile should read java files in UTF-8
     //because some tests (ish.oncourse.services.textile.TextileUtilTest.test_unicodeQuotesEncoding)
@@ -172,7 +188,7 @@ allprojects {
         environment = 'production'
     }
 
-    task gzipCss(dependsOn:compileSass) {
+    task gzipCss(dependsOn: compassCompile) {
         String srcPath = "${buildDir}/resource-assemble/css/${project.name}.css"
         inputs.file srcPath
         outputs.file "${srcPath}.gz"
@@ -193,5 +209,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = "2.13"
+	gradleVersion = "3.3"
 }

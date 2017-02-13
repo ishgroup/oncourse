@@ -3,9 +3,6 @@ ext {
 	tapestryVersion = '5.3.8'
 }
 
-apply plugin: 'war'
-apply plugin: 'groovy'
-
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
@@ -68,5 +65,5 @@ processResources.inputs.files gzipCss
 processResources.inputs.files combineSvg
 
 clean.dependsOn cleanMinifyJs
-clean.dependsOn cleanCompileSass
+clean.dependsOn cleanCompassCompile
 clean.dependsOn cleanCombineSvg

@@ -1,6 +1,3 @@
-apply plugin: 'war'
-apply plugin: 'compass'
-
 configurations {
     closureCompiler
 }
@@ -59,4 +56,4 @@ processResources.inputs.files gzipJs
 processResources.inputs.files gzipCss
 
 clean.dependsOn cleanMinifyJs
-clean.dependsOn cleanCompileSass
+clean.dependsOn cleanCompassCompile

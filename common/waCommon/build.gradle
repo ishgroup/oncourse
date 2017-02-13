@@ -1,5 +1,3 @@
-apply plugin: 'groovy'
-
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
