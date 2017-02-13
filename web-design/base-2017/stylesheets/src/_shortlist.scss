@@ -175,7 +175,7 @@
 				font-size: $shortListOrderEnrolLinkFontSize;
 				font-weight: $shortListOrderEnrolLinkFontWeight;
 				&:hover {
-					background: darken($shortListOrderEnrolLinkBackgroundColor, 5%);
+					background: $shortListOrderEnrolLinkHoverBackgroundColor;
 					color: $shortListOrderEnrolLinkHoverColor;
 				}
 			}

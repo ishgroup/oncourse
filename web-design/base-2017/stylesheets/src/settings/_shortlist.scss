@@ -121,6 +121,8 @@ $shortListOrderEnrolLinkPadding: 2px 10px !default;
 $shortListOrderEnrolLinkFontSize: 11px !default;
 // Short list enrol button text weight
 $shortListOrderEnrolLinkFontWeight: bold !default;
+
+$shortListOrderEnrolLinkHoverBackgroundColor: darken($shortListOrderEnrolLinkBackgroundColor, 5%) !default;
 // Short list enrol button link mouse over color
 $shortListOrderEnrolLinkHoverColor: $white !default;
 
