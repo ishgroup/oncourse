@@ -3,6 +3,7 @@
  */
 package ish.oncourse.log4j;
 
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.ConfigurationFactory;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
@@ -27,7 +28,7 @@ public class ISHConfigurationFactory extends XmlConfigurationFactory {
         return SUFFIXES;
     }
 
-    public Configuration getConfiguration(final String name, final URI configLocation) {
+    public Configuration getConfiguration(final LoggerContext loggerContext, final String name, final URI configLocation) {
         if (!isActive()) {
             return null;
         }
@@ -38,7 +39,7 @@ public class ISHConfigurationFactory extends XmlConfigurationFactory {
             }
             final ConfigurationSource source = getInputFromUri(configLocation);
             if (source != null) {
-                return getConfiguration(source);
+                return getConfiguration(loggerContext, source);
             }
         }
         return null;
