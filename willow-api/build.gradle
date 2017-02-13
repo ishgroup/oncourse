@@ -27,3 +27,7 @@ mainClassName = 'ish.oncourse.willow.WillowApp'
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
+
+compileGroovy {
+    groovyOptions.configurationScript = file("config.groovy")
+}

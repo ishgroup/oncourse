@@ -15,7 +15,7 @@ class CXFModuleProvider implements BQModuleProvider {
     }
 
     @Override
-    Map<String, Type> configs() {
+    Map<String, Class> configs() {
         return Collections.singletonMap("cxf", CXFModuleConfig.class)
     }
 }

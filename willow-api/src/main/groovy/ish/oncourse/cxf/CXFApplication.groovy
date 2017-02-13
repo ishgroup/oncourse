@@ -12,12 +12,12 @@ import javax.ws.rs.core.Application
  */
 class CXFApplication extends Application{
 
-    private List<Object> singletons = new ArrayList<>()
-    private List<Class> classes = new ArrayList<>()
+    private Set<Object> singletons = new HashSet<>()
+    private Set<Class> classes = new HashSet<>()
     private Map<String, Object> props = new HashMap<>()
 
 
-    CXFApplication(Set<Object> resources, Map<String, Object> props) {
+    CXFApplication(Set<Object> resources, Map<String, String> props) {
         singletons.addAll(resources)
 
         classes.add(JacksonJsonProvider.class)
