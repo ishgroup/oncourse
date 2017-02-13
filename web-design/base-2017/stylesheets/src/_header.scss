@@ -101,7 +101,7 @@ header {
 		.header-hgroup {
 			#siteLogo {
 				float: none;
-				text-align: center;
+				text-align: $headerGroupSiteLogoTextAlign;
 				z-index: $headerGroupSiteLogoZIndex;
 				@include responsive($media-small) {
 					float: $headerGroupSiteLogoFloatPosition;
