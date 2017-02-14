@@ -1,4 +1,17 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'maven'
 apply plugin: 'application'
+
+repositories {
+    //mavenCentral()
+    maven {
+        url 'https://repo.ish.com.au/content/groups/public'
+    }
+    maven {
+        url 'https://repo.ish.com.au/content/groups/ish'
+    }
+}
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.8'

@@ -45,7 +45,7 @@ ext {
     ]
 }
 
-subprojects {
+configure (subprojects - project(':willow-api')) {
 	// the following list of applying plugins should not be needed in gradle 3.x, but I can't see why it breaks when removed.
 	apply plugin: 'java'
 	apply plugin: 'maven'

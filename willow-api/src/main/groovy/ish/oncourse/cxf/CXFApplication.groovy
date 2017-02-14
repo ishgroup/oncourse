@@ -2,8 +2,6 @@ package ish.oncourse.cxf
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
-import com.google.inject.Inject
-import ish.oncourse.willow.service.ShoppingCartService
 
 import javax.ws.rs.core.Application
 
