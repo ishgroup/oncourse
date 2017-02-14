@@ -17,6 +17,11 @@
         <meta itemprop="postalCode" content="${room.site.postcode}"/>
         <!-- <meta itemprop="addressCountry" content="Australia"/> -->
       </span>
+      <p:else>
+        <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+          <meta itemprop="streetAddress" content="${room.site.name}"/>
+        </span>
+      </p:else>
     </t:if>
   </t:if>
 </t:container>

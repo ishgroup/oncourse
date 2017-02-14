@@ -17,9 +17,11 @@
 					<p:else>
 						<span itemprop="price" content="${formatMoney(fee, '0.00')}">${formatMoney(fee,'$#,###,###,##0.##')}</span>
 						<span itemprop="priceCurrency" content="AUD" />
-						<span itemprop="url" content="/course/${courseClass.course.code}" />
+						<span itemprop="url" content="https://${request.serverName}/course/${courseClass.course.code}" />
 						<span itemprop="category" content="primary" />
 						<span itemprop="availability" content="InStock" />
+						<span content="${formatDate(currentDate,'yyyy-MM-dd')}" itemprop="availabilityStarts" />
+						<span content="main" itemprop="inventoryLevel" />
 					</p:else>
 				</t:if>
 
