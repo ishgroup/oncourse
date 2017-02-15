@@ -12,7 +12,7 @@
                     <div class="row">
                         <t:if t:test="courseClass.firstSession">
                             <div class="col-xs-24 date">
-                                <a timezone="10" rel="session" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time">
+                                <a timezone="10" rel="session" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time">
                                     <span itemprop="startDate" class="dtstart hide" content="${formatDate(firstSessionStartDate,'yyyy-MM-dd')}">
                                         ${formatDate(firstSessionStartDate,'yyyy-MM-dd')}
                                     </span>
@@ -32,7 +32,7 @@
                                     </t:if>
                                 </a>
                                 <br/>
-                                <a timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time" rel="session">
+                                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time" rel="session">
                                     <span itemprop="endDate" class="dtend hide" content="${formatDate(firstSessionEndDate,'yyyy-MM-dd')}">
                                         ${formatDate(firstSessionEndDate,'yyyy-MM-dd')}
                                     </span>
@@ -46,7 +46,7 @@
                                     <t:if t:test="hasManySessions"> (first session)</t:if>
                                 </a>
                                 <br/>
-                                <a itemprop="duration" timezone="10" href="/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">${classSessions}</a>
+                                <a itemprop="duration" timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">${classSessions}</a>
                             </div>
 
                             <p:else>
@@ -77,7 +77,16 @@
                                 <i class="event-location-icon"></i>
                                 <t:if test="courseClass.hasRoom">
                                     <span t:type="ui/roomLocation" room="courseClass.room" withRoomName="false" disabledLink="notExistsOnMap" isList="isList"/>
-                                    <p:else>Venue TBA</p:else>
+                                    <p:else>
+                                        <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+                                            <span content="Venue TBA" itemprop="name">
+                                                Venue TBA
+                                            </span>
+                                            <span itemtype="http://schema.org/PostalAddress" itemscope="itemscope" itemprop="address">
+                                                <meta content="Venue TBA" itemprop="streetAddress" />
+                                            </span>
+                                        </span>
+                                    </p:else>
                                 </t:if>
                             </div>
                         </t:if>
@@ -87,7 +96,7 @@
                                     <i class="event-tutor-icon"></i>
                                     <t:loop source="visibleTutorRoles" value="tutorRole" index="index">
                                         <span itemprop="performer" itemscope="itemscope" itemtype="http://schema.org/Person">
-                                            <a class="nyromodal" itemprop="mainEntityOfPage" href="/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">
+                                            <a class="nyromodal" itemprop="mainEntityOfPage" href="https://${request.serverName}/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">
                                                 <span itemprop="name">${tutorRole.tutor.fullName}</span>
                                             </a>
                                         </span>
@@ -155,10 +164,10 @@
                     </div>
                     <div class="bubble_middle bubble_content">
                         <div class="class-link">
-                            <a href="/class/${courseClass.course.code}-${courseClass.code}" itemprop="url"> View this class... </a>
+                            <a href="https://${request.serverName}/class/${courseClass.course.code}-${courseClass.code}" itemprop="url"> View this class... </a>
                         </div>
                         <div class="course-link">
-                            <a href="/course/${courseClass.course.code}"> More about <em>${courseClass.course.name}</em>... </a>
+                            <a href="https://${request.serverName}/course/${courseClass.course.code}"> More about <em>${courseClass.course.name}</em>... </a>
                         </div>
                     </div>
                     <div class="bubble_bottom"></div>
