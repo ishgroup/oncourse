@@ -1,13 +1,13 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+	<!-- <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place"> -->
 		<t:if test="room.site.isWebVisible">
 			<t:unless test="disabledLink">
 				<t:if test="redirect">
-					<a href="${mapLink}" itemprop="mainEntityOfPage" content="${mapLink}">
+					<a href="${mapLink}" content="${mapLink}"> <!-- itemprop="mainEntityOfPage"  -->
 						<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
 					</a>
 					<p:else>
-						<a href="/site/${room.site.angelId}" itemprop="mainEntityOfPage" content="https://${request.serverName}/site/${room.site.angelId}">
+						<a href="/site/${room.site.angelId}" content="https://${request.serverName}/site/${room.site.angelId}"> <!-- itemprop="mainEntityOfPage"  -->
 							<span t:type="ui/RoomLocationText" room="room" withRoomName="withRoomName" withSiteAddress="withSiteAddress" />
 						</a>
 					</p:else>
@@ -17,5 +17,5 @@
 				</p:else>
 			</t:unless>
 		</t:if>
-	</span>
+	<!-- </span> -->
 </t:container>

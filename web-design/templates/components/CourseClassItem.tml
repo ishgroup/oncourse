@@ -4,7 +4,14 @@
         <div class="row">
             <!--hcalendar implementation-->
             <div itemprop="name" class="col-xs-24 summary">${courseClass.course.name}</div>
-            <meta itemprop="description" content="${courseClass.course.name}" />
+            <t:if test="courseClass.course.detail">
+                <span itemprop="description" class="hide">
+                    <t:outputraw value="${courseClass.course.detail}" />
+                </span>
+                <p:else>
+                <meta itemprop="description" content="${courseClass.course.name}" />
+                </p:else>
+            </t:if>
             <meta itemprop="url" content="https://${request.serverName}/course/${courseClass.uniqueIdentifier}" />
             <meta itemprop="eventStatus" content="available" />
             <div class="col-xs-24 col-md-17 class-item-info">
@@ -29,14 +36,15 @@
                                         <abbr class="dtend">
                                             <t:output format="endDateFormat" value="courseClass.endDate"/>
                                         </abbr>
+                                        <p:else>
+                                            <span itemprop="endDate" class="dtend hide" content="${formatDate(firstSessionEndDate,'yyyy-MM-dd')}">
+                                                ${formatDate(firstSessionEndDate,'yyyy-MM-dd')}
+                                            </span>
+                                        </p:else>
                                     </t:if>
                                 </a>
                                 <br/>
                                 <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time" rel="session">
-                                    <span itemprop="endDate" class="dtend hide" content="${formatDate(firstSessionEndDate,'yyyy-MM-dd')}">
-                                        ${formatDate(firstSessionEndDate,'yyyy-MM-dd')}
-                                    </span>
-
                                     <abbr class="dtstart">
                                         <t:output format="timeFormat" value="firstSessionStartDate"/>
                                     </abbr> -
@@ -46,17 +54,12 @@
                                     <t:if t:test="hasManySessions"> (first session)</t:if>
                                 </a>
                                 <br/>
-                                <a itemprop="duration" timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">${classSessions}</a>
+                                <a itemprop="duration" timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session" content="${classSessions}">${classSessions}</a>
                             </div>
 
                             <p:else>
                                 <t:if t:test="selfPacedClass">
                                     <div class="col-xs-24 date">Self paced<br/>${expectedHours}<br/>${maximumDaysToComplete}</div>
-                                    <p:else>
-                                        <div class="col-xs-24">
-                                            <b>no session</b>
-                                        </div>
-                                    </p:else>
 
                                     <span itemprop="startDate" class="dtstart hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
                                         ${formatDate(currentDate,'yyyy-MM-dd')}
@@ -65,6 +68,20 @@
                                     <span itemprop="endDate" class="dtend hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
                                         ${formatDate(currentDate,'yyyy-MM-dd')}
                                     </span>
+
+                                    <p:else>
+                                        <div class="col-xs-24">
+                                            <b>no session</b>
+                                        </div>
+
+                                        <span itemprop="startDate" class="dtstart hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                                            ${formatDate(currentDate,'yyyy-MM-dd')}
+                                        </span>
+
+                                        <span itemprop="endDate" class="dtend hide" content="${formatDate(currentDate,'yyyy-MM-dd')}">
+                                            ${formatDate(currentDate,'yyyy-MM-dd')}
+                                        </span>
+                                    </p:else>
                                 </t:if>
                             </p:else>
                         </t:if>
@@ -90,6 +107,19 @@
                                 </t:if>
                             </div>
                         </t:if>
+
+                        <t:if t:test="courseClass.room">
+                            <span itemprop="location" itemscope="itemscope" itemtype="http://schema.org/Place">
+                                <meta itemprop="name" content="${courseClass.room.site.name}" />
+                                <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+                                    <meta itemprop="streetAddress" content="${courseClass.room.site.street}"/>
+                                    <meta itemprop="addressLocality" content="${courseClass.room.site.suburb}"/>
+                                    <meta itemprop="addressRegion" content="${courseClass.room.site.state}"/>
+                                    <meta itemprop="postalCode" content="${courseClass.room.site.postcode}"/>
+                                </span>
+                            </span>
+                        </t:if>
+
                         <t:if test="hasTutorRoles">
                             <div class="col-xs-24 tutor">
                                 <t:if test="visibleTutorRoles">

@@ -10,17 +10,17 @@
     <t:if t:test="withSiteAddress">
       <span> ${room.site.street} ${room.site.suburb} ${room.site.postcode} </span>
       <!-- <span itemprop="telephone" content="..."/> -->
-      <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+      <!-- <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
         <meta itemprop="streetAddress" content="${room.site.street}"/>
         <meta itemprop="addressLocality" content="${room.site.suburb}"/>
         <meta itemprop="addressRegion" content="${room.site.state}"/>
-        <meta itemprop="postalCode" content="${room.site.postcode}"/>
+        <meta itemprop="postalCode" content="${room.site.postcode}"/> -->
         <!-- <meta itemprop="addressCountry" content="Australia"/> -->
-      </span>
+      <!-- </span> -->
       <p:else>
-        <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+        <!-- <span itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
           <meta itemprop="streetAddress" content="${room.site.name}"/>
-        </span>
+        </span> -->
       </p:else>
     </t:if>
   </t:if>

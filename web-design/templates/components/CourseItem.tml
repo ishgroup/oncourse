@@ -21,7 +21,7 @@
 				<div t:type="ui/image" name="${courseItemModel.course.code}_1" class="course-img" width="200" height="183" alt="${courseItemModel.course.name}"></div>
 			</div>
 			<h2 itemprop="name">
-				<a href="https://${request.serverName}/course/${courseItemModel.course.code}" class="url" itemprop="url">${courseItemModel.course.name}</a>
+				<a href="/course/${courseItemModel.course.code}" class="url" itemprop="url">${courseItemModel.course.name}</a>
 				<t:if t:test="courseItemModel.nrt">
 					<img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
 				</t:if>
