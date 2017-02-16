@@ -66,7 +66,7 @@ class WebDiscountUtils {
                         (it.discount.validTo && it.discount.validTo.after(now)) ||
                         (it.discount.validToOffset && it.discount.validToOffset >= startClassOffsetInDays)) &&
                         ((!it.discount.validFrom && !it.discount.validFromOffset) ||
-                                (it.discount.validTo && it.discount.validTo.after(now)) ||
+                                (it.discount.validFrom && it.discount.validFrom.before(now)) ||
                                 (it.discount.validFromOffset && it.discount.validFromOffset <= startClassOffsetInDays))
             }
 
