@@ -17,6 +17,7 @@ import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.PrefetchTreeNode;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -89,8 +90,25 @@ public class PaymentInExpireJob implements Job {
 		try {
 			// do not fail payments for which we haven't got final transaction response from gateway
 			if (paymentService.isProcessedByGateway(p)) {
-				p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
-				abandonPayment(p);
+				
+				boolean successResult = false;
+				for (PaymentTransaction transaction : p.getPaymentTransactions()) {
+					if (StringUtils.trimToNull(transaction.getResponse()) != null 
+							&& transaction.getResponse().startsWith("APPROVED")
+							&& StringUtils.trimToNull(transaction.getSoapResponse()) != null 
+							&& transaction.getSoapResponse().contains("<authorized>1</authorized>")) {
+
+						successResult = true;
+					}
+							
+				}
+				
+				if (successResult) {
+					succeedPayment(p);
+				} else {
+					p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
+					abandonPayment(p);
+				}
 			} else if (PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(p.getStatusNotes())) {
 				if (p.getPaymentTransactions().isEmpty()) {
 					logger.warn("PaymentIn with id:{} has no related not finished transactions", p.getId());
@@ -103,17 +121,7 @@ public class PaymentInExpireJob implements Job {
 
 				if (PaymentExpressUtil.isValidResult(result)) {
 					if (TransactionResult.ResultStatus.SUCCESS.equals(result.getStatus())) {
-						p.setStatusNotes(PaymentExpressGatewayService.SUCCESS_PAYMENT_IN);
-
-						PaymentInModel model;
-						if (PaymentSource.SOURCE_ONCOURSE.equals(p.getSource())) {
-							model = PaymentInModelFromSessionIdBuilder.valueOf(p.getSessionId(), p.getObjectContext()).build().getModel();
-						} else {
-							model = PaymentInModelFromPaymentInBuilder.valueOf(p).build().getModel();
-						}
-
-						PaymentInSucceed.valueOf(model).perform();
-
+						succeedPayment(p);
 					} else {
 						p.setStatusNotes(PaymentExpressGatewayService.FAILED_PAYMENT_IN);
 						abandonPayment(p);
@@ -139,6 +147,18 @@ public class PaymentInExpireJob implements Job {
         }
     }
 	
+    private void succeedPayment(PaymentIn p) {
+		p.setStatusNotes(PaymentExpressGatewayService.SUCCESS_PAYMENT_IN);
+		PaymentInModel model;
+		if (PaymentSource.SOURCE_ONCOURSE.equals(p.getSource())) {
+			model = PaymentInModelFromSessionIdBuilder.valueOf(p.getSessionId(), p.getObjectContext()).build().getModel();
+		} else {
+			model = PaymentInModelFromPaymentInBuilder.valueOf(p).build().getModel();
+		}
+		PaymentInSucceed.valueOf(model).perform();
+	}
+    
+    
 	private void abandonPayment(PaymentIn p) {
 
 		//web enrollments need to be abandoned with reverse invoice, oncourse invoices preferable to keep the invoice.

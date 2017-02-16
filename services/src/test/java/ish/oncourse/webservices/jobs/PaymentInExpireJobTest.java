@@ -387,5 +387,59 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		assertEquals(EnrolmentStatus.FAILED, enrolment2.getStatus());
 
 	}
-	
+
+	@Test
+	public void testSuccessTransaction() throws Exception {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -PaymentIn.EXPIRE_INTERVAL);
+
+		// simulate EXPIRE_INTERVAL wait by directly updating enrolments with sql statement
+		Connection connection = null;
+		try {
+			connection = getDataSource("jdbc/oncourse").getConnection();
+			PreparedStatement prepStat = connection.prepareStatement(String.format("update PaymentIn set modified=? where id=%s", 20000));
+			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
+			int affected = prepStat.executeUpdate();
+			assertEquals("Expected update on 1 paymentIn.", 1, affected);
+			prepStat.close();
+
+			cal = Calendar.getInstance();
+			cal.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW + 1);
+			prepStat = connection.prepareStatement(String.format("update PaymentIn set created=? where id=%s", 20000));
+			prepStat.setDate(1, new java.sql.Date(cal.getTime().getTime()));
+			affected = prepStat.executeUpdate();
+			assertEquals("Expected update on 1 paymentIn.", 1, affected);
+
+			prepStat.close();
+			
+			Statement statement = connection.createStatement();
+			statement.execute("\n" +
+					"\n" +
+					"INSERT INTO PaymentTransaction\n" +
+					"(paymentId, isFinalised, created, modified, txnReference, response, soapResponse)\n" +
+					"VALUES(20000, 1, '2017-02-13 23:44:25','2017-02-13 23:44:25','O2000', 'APPROVED (00)', '<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><soap:Body><SubmitTransactionResponse xmlns=\"http://PaymentExpress.com\"><SubmitTransactionResult><acquirerReco>00</acquirerReco><acquirerResponseText>APPROVED</acquirerResponseText><amount>700.00</amount><authCode>030624</authCode><authorized>1</authorized><billingId/><cardHolderHelpText>The Transaction was approved</cardHolderHelpText><cardHolderName>JOHN SMITH</cardHolderName><cardHolderResponseDescription>The Transaction was approved</cardHolderResponseDescription><cardHolderResponseText>APPROVED</cardHolderResponseText><cardName>MasterCard</cardName><cardNumber>543111........11</cardNumber><currencyId>36</currencyId><currencyName>AUD</currencyName><currencyRate>1.00</currencyRate><cvc2/><dateExpiry>1127</dateExpiry><dateSettlement>20170208</dateSettlement><dpsBillingId>0000030179087440</dpsBillingId><dpsTxnRef>000000032e9ddea3</dpsTxnRef><helpText>Transaction Approved</helpText><merchantHelpText>The Transaction was approved</merchantHelpText><merchantReference>O1365562</merchantReference><merchantResponseDescription>The Transaction was approved</merchantResponseDescription><merchantResponseText>APPROVED</merchantResponseText><reco>00</reco><responseText>APPROVED</responseText><retry>0</retry><statusRequired>0</statusRequired><testMode>0</testMode><txnRef>O1365562</txnRef><txnType>Purchase</txnType><iccData/><cardNumber2/><issuerCountryId/><txnMac>25FA3AFA</txnMac><cvc2ResultCode>NotUsed</cvc2ResultCode><riskRuleMatches/><extendedData/></SubmitTransactionResult></SubmitTransactionResponse></soap:Body></soap:Envelope>')");
+					
+		}
+		finally {
+			if (connection != null) {
+				connection.close();
+			}
+		}
+
+		job.execute();
+		
+		ObjectContext objectContext = cayenneService.newContext();
+
+
+		PaymentIn p = Cayenne.objectForPK(objectContext, PaymentIn.class, 20000);
+		assertEquals("Payment has failed.", PaymentStatus.SUCCESS, p.getStatus());
+		Enrolment e = Cayenne.objectForPK(objectContext, Enrolment.class, 20000);
+		assertEquals("Payment has failed.", EnrolmentStatus.SUCCESS,e.getStatus());
+		Enrolment e1 = Cayenne.objectForPK(objectContext, Enrolment.class, 20010);
+		assertEquals("Payment has failed.", EnrolmentStatus.SUCCESS,e.getStatus());
+		
+	}
+
+
 }
