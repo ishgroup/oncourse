@@ -5,9 +5,9 @@
             <!--hcalendar implementation-->
             <div itemprop="name" class="col-xs-24 summary">${courseClass.course.name}</div>
             <t:if test="courseClass.course.detail">
-                <span itemprop="description" class="hide">
-                    <t:outputraw value="${courseClass.course.detail}" />
-                </span>
+                <div itemprop="description" class="hide">
+                    <t:textOutput value="${courseClass.course.detail}" />
+                </div>
                 <p:else>
                 <meta itemprop="description" content="${courseClass.course.name}" />
                 </p:else>
