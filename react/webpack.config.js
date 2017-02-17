@@ -92,7 +92,7 @@ Build started with following configuration:
       new TypedocWebpackPlugin({
         jsx: 'react',
         target: 'es6',
-        // allowSyntheticDefaultImports: true,
+        allowSyntheticDefaultImports: true,
         moduleResolution: 'node',
         module: 'es6',
       }, './src/js/')
