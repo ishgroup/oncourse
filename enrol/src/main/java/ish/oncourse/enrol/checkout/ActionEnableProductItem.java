@@ -1,5 +1,6 @@
 package ish.oncourse.enrol.checkout;
 
+import ish.common.types.ExpiryType;
 import ish.common.types.ProductStatus;
 import ish.common.types.ProductType;
 import ish.common.types.TypesUtil;
@@ -132,7 +133,7 @@ public class ActionEnableProductItem extends APurchaseAction {
                 continue;
 			if (membership.getStatus() != ProductStatus.ACTIVE)
 				continue;
-            if (membership.getProduct().equals(productItem.getProduct()))
+            if (membership.getProduct().equals(productItem.getProduct()) && ExpiryType.LIFETIME.equals(productItem.getProduct().getExpiryType()))
             {
                 String message = duplicatedMembership.getMessage(getController().getMessages(), ((Membership) productItem).getContact().getFullName(), membership.getProduct().getSku());
                 getController().getErrors().put(duplicatedMembership.name(), message);
