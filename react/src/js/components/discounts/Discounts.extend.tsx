@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 export default {
     render() {
         const count = this.props.discounts.length;

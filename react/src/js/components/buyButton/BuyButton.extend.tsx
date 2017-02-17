@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 export default {
     render() {
         if(!this.props.canBuy || !this.props.paymentGatewayEnabled) {

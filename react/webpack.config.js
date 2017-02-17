@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 module.exports = function (options = {}) {
   // Settings
@@ -86,12 +87,15 @@ Build started with following configuration:
         },
         API_ROOT: JSON.stringify(API_ROOT)
       }),
-      new webpack.ProvidePlugin({
-        'React': 'react',
-        '$': 'jquery'
-      }),
       getHtmlWebpackPlugin("index.html"),
-      getHtmlWebpackPlugin("courses.html")
+      getHtmlWebpackPlugin("courses.html"),
+      new TypedocWebpackPlugin({
+        jsx: 'react',
+        target: 'es6',
+        // allowSyntheticDefaultImports: true,
+        moduleResolution: 'node',
+        module: 'es6',
+      }, './src/js/')
     ],
     devServer: {
       inline: false,

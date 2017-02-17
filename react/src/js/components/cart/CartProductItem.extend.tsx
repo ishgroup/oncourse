@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 export default {
     render() {
         let product = this.props.product;
@@ -17,8 +19,8 @@ export default {
                  */}
                 {product.created && product.modified &&
                     <div className="shortListOrderClasses">
-                        <abbr class="dtstart" title="">{product.created}</abbr>
-                        <abbr class="dtend" title="">{product.modified}</abbr>
+                        <abbr className="dtstart" title="">{product.created}</abbr>
+                        <abbr className="dtend" title="">{product.modified}</abbr>
                     </div>}
             </li>
         );

@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 export default {
     render() {
         let countClasses = this.props.classes.length,

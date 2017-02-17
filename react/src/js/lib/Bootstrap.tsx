@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {camelCase} from './utils';
 import {Store} from "redux";
 import {IshState} from "../services/IshState";
-import {whenReady} from "../services/jq.js";
+import {whenReady} from "../services/jq";
 import forEach from "lodash/forEach";
 import Component = React.Component;
 import ComponentClass = React.ComponentClass;

@@ -1,7 +1,7 @@
 import {configureStore} from "./configureStore";
 import Cart from "./containers/Cart";
 import EnrolButton from "./containers/EnrolButton";
-import BuyButton from "./containers/BuyButton";
+import {BuyButton} from "./components/buyButton/BuyButton";
 import PopupContainer from "./containers/PopupContainer";
 import {Bootstrap} from "./lib/Bootstrap";
 

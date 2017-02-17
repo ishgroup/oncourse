@@ -11,14 +11,15 @@
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "karma start ./karma.conf.js",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",
-    "start": "node ./dev-server/generate.js && webpack-dev-server --env.SOURCE_MAP eval-source-map",
-    "doc": "jsdoc src/js/**/*.js --destination ./dist/doc"
+    "start": "node ./dev-server/generate.js && webpack-dev-server --env.SOURCE_MAP eval-source-map"
   },
   "devDependencies": {
     "@types/jasmine": "^2.5.41",
     "@types/jquery": "^2.0.40",
     "@types/lodash": "^4.14.52",
     "@types/react-redux": "^4.4.36",
+    "@types/webpack": "^2.2.6",
+    "@types/webpack-env": "^1.13.0",
     "babel-core": "6.21.0",
     "babel-loader": "6.2.8",
     "babel-plugin-transform-object-rest-spread": "6.20.2",
@@ -38,6 +39,8 @@
     "null-loader": "0.1.1",
     "phantomjs-prebuilt": "^2.1.14",
     "ts-loader": "^2.0.0",
+    "typedoc": "^0.5.5",
+    "typedoc-webpack-plugin": "^1.1.3",
     "typescript": "^2.1.5",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"

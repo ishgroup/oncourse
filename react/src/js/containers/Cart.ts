@@ -13,4 +13,4 @@ export default connect((state) => {
         removeClass,
         removeProduct
     }, dispatch);
-})(Cart);
+})(Cart as any);

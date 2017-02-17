@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 export default {
     render: function() {
         let { isAlreadyAdded, name, date } = this.props;

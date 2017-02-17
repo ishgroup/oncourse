@@ -1,41 +1,6 @@
 import ACTIONS from '../constants';
 import cartApi from '../api/cart';
-
-function addCartItem(params) {
-    return function(item) {
-        return (dispatch) => {
-            let req = params.add(item);
-
-            return req.then((item) => {
-                dispatch({
-                    type: params.action,
-                    [params.fieldItem]: item
-                });
-            });
-        }
-    };
-}
-
-function removeCartItem(params) {
-    return function(id) {
-        return (dispatch) => {
-            let req = params.remove(id);
-
-            return req.then(() => {
-                dispatch({
-                    type: params.action,
-                    [params.fieldId]: id
-                });
-            });
-        }
-    };
-}
-
-
-/**
- * Cart actions
- * @module js/actions/cart
- */
+import {CommonCartItem} from "../services/IshState";
 
 /**
  * Add course class to cart
@@ -105,3 +70,33 @@ export const removeDiscount = removeCartItem({
     action: ACTIONS.REMOVE_DISCOUNT_FROM_CART_SUCCESS,
     fieldId: 'code'
 });
+
+function addCartItem(params) {
+  return function (item: CommonCartItem) {
+    return (dispatch) => {
+      let req = params.add(item);
+
+      return req.then((item) => {
+        dispatch({
+          type: params.action,
+          [params.fieldItem]: item
+        });
+      });
+    }
+  };
+}
+
+function removeCartItem(params) {
+  return function (id) {
+    return (dispatch) => {
+      let req = params.remove(id);
+
+      return req.then(() => {
+        dispatch({
+          type: params.action,
+          [params.fieldId]: id
+        });
+      });
+    }
+  };
+}

@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import CartItem from './CartItem';
 import nativeExtend from './CartProductItem.extend';
-import customExtend from './CartProductItem.custom';
 
-let extend = Object.assign({}, nativeExtend, customExtend);
+const custom = {}; // require("./CartProductItem.custom")
+const extend = Object.assign({}, nativeExtend, custom);
 
 class CartProductItem extends CartItem {
 

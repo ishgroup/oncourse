@@ -9,7 +9,6 @@
     "strictNullChecks": false,
     "module": "es6",
     "skipLibCheck": true,
-    "allowJs": true,
     "target": "es5",
     "jsx": "react",
     "lib": [

@@ -9,4 +9,4 @@ export default connect((state) => {
     };
 }, (dispatch) => {
     return bindActionCreators({ add }, dispatch);
-})(Discounts);
+})(Discounts as any);

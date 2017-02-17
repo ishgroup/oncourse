@@ -21,5 +21,5 @@ const handleActions = {
 };
 
 export default function(state = initialState, action) {
-    return handleActions[action.type] ? handleActions[action.type](...arguments) : state;
+    return handleActions[action.type] ? handleActions[action.type](state, action) : state;
 }

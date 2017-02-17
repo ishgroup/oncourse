@@ -1,5 +1,6 @@
 import {ConfigConstants} from '../config/ConfigConstants';
 import request from '../lib/request';
+import $ from 'jquery';
 
 // emit request
 function emitRequest(item) {

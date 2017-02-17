@@ -1,11 +1,6 @@
 import ACTIONS from '../constants';
 
 /**
- * Popup actions
- * @module js/actions/popup
- */
-
-/**
  * Update popup by passed content
  * @param {VirtualDOM} Content content which you want to display in popup
  * @return {Object} Action UPDATE_POPUP

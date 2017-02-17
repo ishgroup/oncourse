@@ -53,10 +53,36 @@ function generateIndex() {
         background-color: aliceblue;
       }
     </style>
-    <script type="text/javascript" src="dynamic-polyfill.js"></script>
-    <script type="text/javascript" src="dynamic.js"></script>
+    <script>
+      function htmlToElement(html) {
+        var template = document.createElement('template');
+        template.innerHTML = html;
+        return template.content.firstChild;
+      }
+      var count = 3;
+      function append() {
+          count++;
+      
+        document.body.appendChild(htmlToElement(\`<div class="enrol-button">
+    <div data-cid="enrol-button"
+         data-prop-id="count"
+         data-prop-name="Course count"
+         data-prop-unique-identifier="2424"
+         data-prop-is-canceled="false"
+         data-prop-is-finished="false"
+         data-prop-has-available-enrolment-places="true"
+         data-prop-payment-gateway-enabled="true"
+         data-prop-allow-by-application="false"
+         data-prop-free-places="3"></div>
+  </div>\`));
+        
+        window.Ish.react.bootstrap();
+      }
+      
+    </script>
   </head>
   <body>
+    <button onclick="append()">Add New Enrol Button</button>
     <div class="cart">${cart()}</div>
     <div class="enrol-button">${enrolButton(1)}</div>
     <div class="enrol-button">${enrolButton(2)}</div>
@@ -85,8 +111,6 @@ function generateCourses() {
         background-color: aliceblue;
       }
     </style>
-    <script type="text/javascript" src="dynamic-polyfill.js"></script>
-    <script type="text/javascript" src="dynamic.js"></script>
   </head>
   <link rel="stylesheet" href="https://www.sydneycommunitycollege.edu.au/s/stylesheets/css/site.css?v=r27609"/>
 
