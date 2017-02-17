@@ -82,7 +82,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="mobilePhoneNumber" class="control-label">Mobile Phone<t:if test="required('mobilePhoneNumber')"><em title="${message:required}">*</em></t:if></label>
-                            <div class="${validateHandler.validateClass('mobilePhone')}">
+                            <div class="${validateHandler.validateClass('mobilePhoneNumber')}">
                                 <t:textfield value="contact.mobilePhoneNumber" t:id="mobilePhoneNumber" class="form-control ${validateHandler.errorClass('mobilePhoneNumber')}"/>
                                 <span t:type="HintComponent" validationMessage="${validateHandler.error('mobilePhoneNumber')}"/>
                             </div>
@@ -102,7 +102,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="faxNumber" class="control-label">Fax<t:if test="required('faxNumber')"><em title="${message:required}">*</em></t:if></label>
-                            <div class="${validateHandler.validateClass('fax')}">
+                            <div class="${validateHandler.validateClass('faxNumber')}">
                                 <t:textfield value="contact.faxNumber" t:id="faxNumber" class="form-control ${validateHandler.errorClass('faxNumber')}"/>
                                 <span t:type="HintComponent" validationMessage="${validateHandler.error('faxNumber')}"/>
                             </div>
