@@ -4,12 +4,16 @@ import EnrolButton from "./containers/EnrolButton";
 import {BuyButton} from "./components/buyButton/BuyButton";
 import PopupContainer from "./containers/PopupContainer";
 import {Bootstrap} from "./lib/Bootstrap";
+import {PublicApi} from "./external/PublicApi";
 
 const store = configureStore();
 
 const w = window as any;
 // Init Ish namespace in window
 w.Ish = w.Ish || {};
+// Set Api to public Api
+w.Ish.api = new PublicApi(store);
+
 // Set bootstrap function to Ish.react
 // We use this in jquery-managed code,
 // to get notifications about new react-markers

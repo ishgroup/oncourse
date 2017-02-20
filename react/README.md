@@ -29,7 +29,7 @@ or
 `npm run test:watch`
 
 ## Generate documentation
-`npm run doc`
+`npm run build:dev`
 
 ## Customization of React-component
 When you create new react-component which will be able to customize you need create two files:
@@ -84,3 +84,13 @@ export default {
 ```
 
 You will get `Hi, native ui!` without `MyComponent.custom.js` and `Hi, custom ui!` with it in browser.
+
+## Use public JavaScript API
+
+All functions can be found in global object `window.Ish.api`.
+
+For example:
+
+```
+window.Ish.api.getCart();
+```

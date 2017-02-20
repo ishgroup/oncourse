@@ -14,11 +14,6 @@ function emitRequest(item) {
 }
 
 /**
- * Cart api
- * @module js/api/cart
- */
-
-/**
  * @param {Object} courseClass course
  * @description adds course to cart
  * @returns {jqXHR}
