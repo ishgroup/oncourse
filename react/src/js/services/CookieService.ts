@@ -23,9 +23,10 @@ export class CookieService {
    *
    * @param name Name of a cookie
    * @param value New value of a cookie
+   * @param path Path of cookie, "/" - if not defined
    */
-  static set(name: string, value: string): void {
-    const cookie = `${name}=${value}`;
+  static set(name: string, value: string, path: string = "/"): void {
+    const cookie = `${name}=${value}; path=${path}`;
 
     Logger.log(new LogMessage(Level.INFO, "New Cookies set", [cookie]));
 
