@@ -18,7 +18,7 @@
 			</div>
 		</div>
 
-		<div class="addthis-wrapper">
+		<!-- <div class="addthis-wrapper">
 			<div class="addthis">
 				<span>Share on</span>
 				<div class="addthis_toolbox addthis_default_style ">
@@ -30,7 +30,7 @@
 				</div>
 				<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57e9e20c1694abd2" type="text/javascript"></script>
 			</div>
-		</div>
+		</div> -->
 		<div class="clearboth"></div>
 
 		<div itemprop="description" id="course-description" class="courseDescription expandable">

@@ -40,6 +40,9 @@ $bodyFontSize-b: 14px !default;
 $bodyFontColor-b: #333333 !default;
 $bodyBackground-b: $white !default;
 
+$discountBlockDisplay-b: block !default;
+$discountBlockActionLinkDisplay-b: block !default;
+
 @if $theme == "b" {
   $useDefaultFont: false;
   @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,900);
@@ -75,8 +78,8 @@ $bodyBackground-b: $white !default;
 
   $h1InnerFontFamily: $bodyFontFamily-b;
 
-  $discountBlockDisplay: block;
-  $discountBlockActionLinkDisplay: block;
+  $discountBlockDisplay: $discountBlockDisplay-b;
+  $discountBlockActionLinkDisplay: $discountBlockActionLinkDisplay-b;
 
   $h1LinkColor: $primaryColor-b;
   $h1LinkHoverColor: $secondaryColor-b;
