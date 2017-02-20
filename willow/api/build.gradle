@@ -14,6 +14,8 @@ repositories {
 }
 
 dependencies {
+    compile project(':willow:model')
+
     compile 'org.codehaus.groovy:groovy-all:2.4.8'
 
    //cxf
@@ -26,7 +28,6 @@ dependencies {
     //bean validation
     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.apache.bval:org.apache.bval.bundle:1.1.2'
-
 
     //bootique
     compile 'io.bootique.jetty:bootique-jetty:0.19'
