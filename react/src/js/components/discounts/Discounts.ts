@@ -2,8 +2,7 @@ import * as React from 'react';
 import nativeExtend from './Discounts.extend';
 import {Discount} from "../../services/IshState";
 
-const custom = {}; // require('./Discounts.custom')
-const extend = Object.assign({}, nativeExtend, custom);
+const extend = Object.assign({}, nativeExtend, require('./Discounts.custom'));
 
 export default class Discounts extends React.Component<DiscountsProps, DiscountState> {
 

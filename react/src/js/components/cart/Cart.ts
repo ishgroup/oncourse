@@ -6,8 +6,7 @@ import {plural} from '../../lib/utils';
 import nativeExtend from './Cart.extend';
 import {Product} from "../../services/IshState";
 
-const custom = {}; // require('./Cart.custom')
-const extend = Object.assign({}, nativeExtend, custom);
+const extend = Object.assign({}, nativeExtend, require('./Cart.custom'));
 
 class Cart extends React.Component<CarsComponentProps, CartComponentState> {
 

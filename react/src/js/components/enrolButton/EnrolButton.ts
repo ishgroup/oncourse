@@ -3,8 +3,7 @@ import {plural} from '../../lib/utils';
 import {AddButton, AddButtonProps} from '../addButton/AddButton';
 import nativeExtend from './EnrolButton.extend';
 
-const custom = {}; // require('./EnrolButton.custom');
-const extend = Object.assign({}, nativeExtend, custom);
+const extend = Object.assign({}, nativeExtend, require('./EnrolButton.custom'));
 
 export type EnrolButtonCommonProps = EnrolButtonProps & AddButtonProps;
 

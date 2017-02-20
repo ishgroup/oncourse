@@ -4,8 +4,7 @@ import {stopPropagation} from '../../lib/utils';
 import nativeExtend from './ConfirmOrderDialog.extend';
 import $ from 'jquery';
 
-const custom = {}; // require('./ConfirmOrderDialog.custom')
-const extend = Object.assign({}, nativeExtend, custom);
+const extend = Object.assign({}, nativeExtend, require('./ConfirmOrderDialog.custom'));
 
 export class ConfirmOrderDialog extends React.Component<ConfirmOrderDialogProps, {}> {
   private $item: JQuery;

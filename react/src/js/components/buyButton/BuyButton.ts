@@ -1,8 +1,7 @@
 import {AddButton, AddButtonProps} from '../addButton/AddButton';
 import nativeExtend from './BuyButton.extend';
 
-const custom = {}; // require("./BuyButton.custom")
-const extend = Object.assign({}, nativeExtend, custom);
+const extend = Object.assign({}, nativeExtend, require("./BuyButton.custom"));
 
 type CommonProps = BuyButtonProps & AddButtonProps;
 
