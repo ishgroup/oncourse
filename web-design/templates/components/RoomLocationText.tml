@@ -4,7 +4,7 @@
   </t:if>
   <t:if test="hasSiteName">
     <t:if test="withRoomName"> - </t:if>
-    <span itemprop="name" content="${room.site.name}">
+    <span> <!-- itemprop="name" content="${room.site.name}" -->
       ${room.site.name}
     </span>
     <t:if t:test="withSiteAddress">

@@ -1,9 +1,6 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
-	<div class="clearfix courseItem${tagClasses}">
+	<div class="clearfix courseItem${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
 		<t:if t:test="isList" negate="true">
-			<div class="course-item-image">
-				<div t:type="ui/image" name="${courseItemModel.course.code}_1" class="course-img" width="200" height="183" alt="${courseItemModel.course.name}"></div>
-			</div>
 			<t:if t:test="addThisEnabled">
 				<div class="addthis">
 					<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
@@ -16,12 +13,16 @@
 				</t:if>
 				${courseItemModel.course.name}
 			</h1>
+			<div class="course-item-image align-left">
+				<div t:type="ui/image" name="${courseItemModel.course.code}_1" class="course-img" width="200" height="183" alt="${courseItemModel.course.name}"></div>
+			</div>
 		<p:else>
 			<div class="course-image course-code-list-image">
 				<div t:type="ui/image" name="${courseItemModel.course.code}_1" class="course-img" width="200" height="183" alt="${courseItemModel.course.name}"></div>
 			</div>
 			<h2 itemprop="name">
-				<a href="/course/${courseItemModel.course.code}" class="url" itemprop="url">${courseItemModel.course.name}</a>
+				<meta content="https://${request.serverName}/course/${courseItemModel.course.code}" itemprop="url" />
+				<a href="/course/${courseItemModel.course.code}" class="url">${courseItemModel.course.name}</a>
 				<t:if t:test="courseItemModel.nrt">
 					<img class="NRTLogo" alt="NRT" src="/s/img/core/nrt.png"/>
 				</t:if>
@@ -35,20 +36,21 @@
 		</p:else>
 		</t:if>
 
-		<div class="clearfix"></div>
-
-		<t:if t:test="${courseItemModel.showModules}">
-			<div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
-				 qualification="courseItemModel.course.qualification"
-				 course="courseItemModel.course"></div>
-		</t:if>
 		<t:if t:test="isList" negate="true">
 			<div class="courseDescription">
 				<span itemprop="description">
 					<t:outputraw value="${courseDetail}" />
 				</span>
 			</div>
-			<div class="clearfix"></div>
+		</t:if>
+
+		<div class="clearfix"></div>
+
+		<t:if t:test="${courseItemModel.showModules}">
+			<div t:type="ui/CourseModules" modules="courseItemModel.course.modules"
+				 qualification="courseItemModel.course.qualification"
+				 course="courseItemModel.course"></div>
+				 <div class="clearfix"></div>
 		</t:if>
 
 		<t:loop source="courseItemModel.availableClasses" value="courseClass">

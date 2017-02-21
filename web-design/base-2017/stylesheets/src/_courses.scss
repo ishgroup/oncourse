@@ -83,6 +83,25 @@
    */
 
   .content {
+    .align-left, .align-right {
+      margin: 0 auto 10px;
+
+      // Following function handles responsive media screen
+      @include responsive($media-small) {
+        margin: 0 15px 15px 0;
+        float: left;
+      }
+      img {
+        margin: 0;
+        float: none;
+      }
+    }
+    .align-right {
+      @include responsive($media-small) {
+        margin: 0 0 15px 15px;
+        float: right;
+      }
+    }
     .courseItem {
       margin: 0px;
       h2 {
@@ -125,6 +144,7 @@
         // Following function handles responsive media screen
         @include responsive($media-small) {
           margin-right: 15px;
+          margin-bottom: 15px;
           float: left;
         }
       }
@@ -141,7 +161,8 @@
 
       // Courses default description
       .courseDescription {
-        padding-top: 18px;
+        padding-top: 15px;
+        padding-bottom: 15px;
         word-wrap: break-word;
         p {
           color: $courseDescriptionTextColor;

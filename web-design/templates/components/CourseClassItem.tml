@@ -1,6 +1,12 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+    <t:if test="allowByAplication" negate="true">
+        <span class="hide" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+            <div class="price">
+                <span t:type="ui/CourseClassPrice" courseClass="courseClass" feeOverride="feeOverride"/>
+            </div>
+        </span>
+    </t:if>
     <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="clearfix classItem ${classCommenced}" data-classid="${courseClass.id}" data-sku="${courseClass.uniqueIdentifier}">
-
         <div class="row">
             <!--hcalendar implementation-->
             <div itemprop="name" class="col-xs-24 summary">${courseClass.course.name}</div>
@@ -14,6 +20,8 @@
             </t:if>
             <meta itemprop="url" content="https://${request.serverName}/course/${courseClass.uniqueIdentifier}" />
             <meta itemprop="eventStatus" content="available" />
+            <meta content="https://${request.serverName}/s/img/blank.png" itemprop="image" />
+
             <div class="col-xs-24 col-md-17 class-item-info">
                 <div class="col-xs-24 col-sm-12 class-item-info-l">
                     <div class="row">
@@ -194,7 +202,7 @@
                     </div>
                     <div class="bubble_middle bubble_content">
                         <div class="class-link">
-                            <a href="https://${request.serverName}/class/${courseClass.course.code}-${courseClass.code}" itemprop="url"> View this class... </a>
+                            <a href="https://${request.serverName}/class/${courseClass.course.code}-${courseClass.code}"> View this class... </a>
                         </div>
                         <div class="course-link">
                             <a href="https://${request.serverName}/course/${courseClass.course.code}"> More about <em>${courseClass.course.name}</em>... </a>
