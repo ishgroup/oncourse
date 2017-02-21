@@ -23,7 +23,7 @@ import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
@@ -87,7 +87,7 @@ public class PurchaseController {
 	private IStudentService studentService;
 	private PreferenceController preferenceController;
 	private ICayenneService cayenneService;
-	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+	private INewPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
 	private IWebSiteService webSiteService;
 	private ITagService tagService;
 	private IPaymentService paymentService;
@@ -449,7 +449,7 @@ public class PurchaseController {
 		this.cayenneService = cayenneService;
 	}
 
-	public void setPaymentGatewayServiceBuilder(IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder) {
+	public void setPaymentGatewayServiceBuilder(INewPaymentGatewayServiceBuilder paymentGatewayServiceBuilder) {
 		this.paymentGatewayServiceBuilder = paymentGatewayServiceBuilder;
 	}
 
@@ -487,7 +487,7 @@ public class PurchaseController {
 		return cayenneService;
 	}
 
-	public IPaymentGatewayServiceBuilder getPaymentGatewayServiceBuilder() {
+	public INewPaymentGatewayServiceBuilder getPaymentGatewayServiceBuilder() {
 		return paymentGatewayServiceBuilder;
 	}
 

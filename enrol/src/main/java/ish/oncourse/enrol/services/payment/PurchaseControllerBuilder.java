@@ -18,6 +18,7 @@ import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.datalayer.IDataLayerFactory;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -64,7 +65,7 @@ public class PurchaseControllerBuilder implements IPurchaseControllerBuilder {
 	private IConcessionsService concessionsService;
 
 	@Inject
-	private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+	private INewPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
 
 	@Inject
 	private ITagService tagService;

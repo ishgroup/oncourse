@@ -7,6 +7,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -35,7 +36,7 @@ public class PaymentProcessController {
      * Can be null. in this way payment gateway processing will be run form the same thread.
      */
     private ParallelExecutor parallelExecutor;
-    private IPaymentGatewayService paymentGatewayService;
+    private INewPaymentGatewayService paymentGatewayService;
 	private ICayenneService cayenneService;
 	private IPaymentService paymentService;
 	
@@ -301,7 +302,7 @@ public class PaymentProcessController {
     public PaymentIn performGatewayOperation() {
         lock.lock();
         try {
-            paymentGatewayService.performGatewayOperation(paymentInModel);
+            paymentGatewayService.submit(paymentInModel);
             if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS) ||
                     (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(paymentInModel.getPaymentIn().getStatusNotes())))
                 commitChanges();
@@ -406,7 +407,7 @@ public class PaymentProcessController {
     }
 
     public static  PaymentProcessController valueOf(ParallelExecutor parallelExecutor,
-                                                    IPaymentGatewayService paymentGatewayService,
+                                                    INewPaymentGatewayService paymentGatewayService,
                                                     ICayenneService cayenneService,
                                                     IPaymentService paymentService,
                                                     PaymentInModel paymentInModel) {
@@ -422,7 +423,7 @@ public class PaymentProcessController {
     }
 
     public static  PaymentProcessController valueOf(ParallelExecutor parallelExecutor,
-                                                    IPaymentGatewayService paymentGatewayService,
+                                                    INewPaymentGatewayService paymentGatewayService,
                                                     ICayenneService cayenneService,
                                                     IPaymentService paymentService,
                                                     PaymentInModel paymentInModel, Runnable commitDelegate) {
