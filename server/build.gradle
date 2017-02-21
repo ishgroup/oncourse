@@ -77,7 +77,7 @@ dependencies {
 	compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
 
 	compile 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-	compile ('net.sf.jasperreports:jasperreports:6.1.1') {
+	compile ('net.sf.jasperreports:jasperreports:6.4.0') {
 		exclude group: 'org.apache.poi', module: 'poi-ooxml'
 
 		exclude group:'org.codehaus.castor'
