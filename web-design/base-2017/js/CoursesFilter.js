@@ -459,5 +459,18 @@ CoursesFilter.prototype = {
       var filterCount = $(this).find('.filter-option-counter');
       filterCount.text(filterCount.text().replace(/([\(|\)])+/g, ''));
     });
+
+    $('.side-box').each(function(key, box) {
+        $(box).find('.locations-list>ul').each(function(lKey, list) {
+            var _list_title = $(list).find('>li>span').text();
+            var _list_class = $(list).attr('class')+(lKey+1);
+            var _list_template = '<input id="'+ _list_class +'" type="radio" name="tabs"><label for="'+ _list_class +'">'+ _list_title +'</label>';
+
+            $(list).find('>li>span').remove();
+            $(list).attr({ id: _list_class + '_tags', 'data-tabid': _list_class });
+            $(_list_template).insertBefore($(list));
+        });
+    });
+
   });
 })(jQuery);

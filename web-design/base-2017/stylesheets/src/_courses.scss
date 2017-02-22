@@ -60,16 +60,16 @@
       margin-bottom: 10px;
     }
     // First p tag of courses description container for first image of course
-    p:first-child {
-      margin-bottom: 0px;
-      > br {
-        display: none;
-      }
-      img {
-        float: $courseDescriptionFirstImageFloat;
-        margin: $courseDescriptionFirstImageMargin;
-      }
-    }
+    // p:first-child {
+    //   margin-bottom: 0px;
+    //   > br {
+    //     display: none;
+    //   }
+    //   img {
+    //     float: $courseDescriptionFirstImageFloat;
+    //     margin: $courseDescriptionFirstImageMargin;
+    //   }
+    // }
   }
   // Style for all courses and course details page
   &#ListPage, &#DetailsPage {

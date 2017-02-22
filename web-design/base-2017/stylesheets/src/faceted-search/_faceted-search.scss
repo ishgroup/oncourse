@@ -56,8 +56,8 @@ $nav-border: #dedee0;
     }
 
     .side-box {
-      // border-bottom: 1px dotted $nav-border;
-      // border-width: 0 0 1px;
+      border-bottom: 1px dotted $nav-border;
+      border-width: 0 0 1px;
       padding-bottom: 15px;
       margin-bottom: 25px;
 
@@ -73,6 +73,21 @@ $nav-border: #dedee0;
           & > a {
             margin-bottom: 16px;
           }
+        }
+      }
+
+      .locations-list {
+        >p {
+          display: none;
+        }
+        ul li {
+          padding-left: 0;
+          >span {
+            display: none;
+          }
+        }
+        input[type=radio] {
+          display: none;
         }
       }
     }
@@ -108,6 +123,10 @@ $nav-border: #dedee0;
         margin-bottom: 0;
         margin-top: 10px;
       }
+
+      > .filter-option-control {
+        display: none;
+      }
     }
 
     //---------------------------------------------------------------------------
@@ -119,16 +138,11 @@ $nav-border: #dedee0;
 
       & + label.filter-option-label,
       & + label.filter-option-label.clr {
-        padding-left: 10px;
-        // padding-top: 2px;
-        margin-right: 40px;
         margin-bottom: 0;
         // height:22px;
         display:inline-block;
-        line-height:22px;
         background-repeat:no-repeat;
         background-position: 0 0;
-        font-size:14px;
         vertical-align:middle;
         cursor:pointer;
         width: auto;
@@ -161,7 +175,7 @@ $nav-border: #dedee0;
         width: 14px;
         height: 14px;
         position: absolute;
-        top: 2px;
+        top: 3px;
         left: 0;
 
         font: normal normal normal 11px/1 FontAwesome;
@@ -212,6 +226,9 @@ $nav-border: #dedee0;
 
       font-family: $bodyFontFamily;
       font-size: 14px;
+      line-height: 22px;
+      padding-left: 23px;
+      padding-right: 35px;
 
       &:before {
         border: 1px solid #cbcbcb;
