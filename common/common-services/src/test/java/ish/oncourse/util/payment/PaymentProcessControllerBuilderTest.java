@@ -5,6 +5,7 @@ import ish.oncourse.model.Preference;
 import ish.oncourse.services.PaymentServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -34,7 +35,7 @@ import static org.junit.Assert.*;
 public class PaymentProcessControllerBuilderTest extends ServiceTest {
 	private ICayenneService cayenneService;
     private IPaymentService paymentService;
-    private IPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
+    private INewPaymentGatewayServiceBuilder paymentGatewayServiceBuilder;
     private Request request;
     
 	@Before
@@ -48,7 +49,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
         cayenneService = getService(ICayenneService.class);
         paymentService = getService(IPaymentService.class);
-        paymentGatewayServiceBuilder = getService(IPaymentGatewayServiceBuilder.class);
+        paymentGatewayServiceBuilder = getService(INewPaymentGatewayServiceBuilder.class);
         request = getService(TestableRequest.class);
         assertNotNull("TestableRequest should be binded", request);
     }
