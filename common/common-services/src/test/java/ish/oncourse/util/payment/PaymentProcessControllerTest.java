@@ -8,6 +8,7 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -43,7 +44,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
             + Calendar.getInstance().get(Calendar.YEAR);
 
     private ICayenneService cayenneService;
-    private IPaymentGatewayService paymentGatewayService;
+    private INewPaymentGatewayService paymentGatewayService;
     private IPaymentService paymentService;
 
     @Before
@@ -59,7 +60,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
 
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
         cayenneService = getService(ICayenneService.class);
-        paymentGatewayService = getService("PaymentGatewayService", IPaymentGatewayService.class);
+        paymentGatewayService = getService("PaymentGatewayService", INewPaymentGatewayService.class);
         paymentService = getService(IPaymentService.class);
 
     }
@@ -276,7 +277,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
         paymentProcessControllers[0] = new PaymentProcessControllerBuilder(new MockParallelExecutor(paymentProcessControllers[0]), null, cayenneService,
         	paymentService, session) {
 			@Override
-			public IPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
+			public INewPaymentGatewayService receivePaymentGatewayService() {return paymentGatewayService;}
         }.build(model);
 
         Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessControllers[0].getPaymentIn());
