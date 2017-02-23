@@ -28,7 +28,7 @@ public class UpdateAmountOwingJob implements Job{
             "left join Enrolment e on e.id = il.enrolmentId\n" +
             "where i.amountOwing > 0 and p.amount = i.amountOwing and pil.amount = i.amountOwing and p.status = 3 \n" +
             "and i.amountOwing = (select sum(il.priceEachExTax - il.discountEachExTax + il.taxEach) from InvoiceLine il where il.invoiceId = i.id)\n" +
-            "and 0 = (select count(p1.id) from PaymentInLine pl1 inner join PaymentIn p1 on pl1.paymentInId = p1.id where pl1.invoiceId = i.id and pl1.amount < 0 and p1.type in (7,10,5))\n" +
+            "and 0 = (select count(p1.id) from PaymentInLine pl1 inner join PaymentIn p1 on pl1.paymentInId = p1.id where pl1.invoiceId = i.id and pl1.amount < 0)\n" +
             "and (e.id is null or e.status = 3)\n" +
 			"and c.billingCode is not null\n" +
 			"and c.lastRemoteAuthentication > '%s'\n" +
