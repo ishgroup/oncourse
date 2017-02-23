@@ -1,8 +1,8 @@
 /**
- * The function inserts "/" in front of the path. It needs for IE.
- * @param pathname
- * @returns {String} returns the adjusted path
- */
+* The function inserts "/" in front of the path. It needs for IE.
+* @param pathname
+* @returns {String} returns the adjusted path
+*/
 function adjustPathName(pathname) {
   var paths = pathname.split("/");
 
@@ -12,10 +12,10 @@ function adjustPathName(pathname) {
   return pathname;
 }
 /**
- *
- * @param pathname
- * @returns {boolean} true if the pathname is "courses" path
- */
+*
+* @param pathname
+* @returns {boolean} true if the pathname is "courses" path
+*/
 function isCoursesPath(pathname) {
   var paths = pathname.split("/");
   return paths.length > 1 && paths[1] == "courses";
@@ -27,11 +27,11 @@ CoursesUrlFormat = function () {
 CoursesUrlFormat.prototype = {
   format: function (request) {
     var url = "/courses";
+    var parameters = [];
+
     if (request.browseTag) {
       url += request.browseTag;
     }
-
-    var parameters = [];
 
     if (request.s) {
       parameters.push("s=" + request.s);
@@ -163,7 +163,6 @@ CoursesFilter = function () {
   this.updateHtmlBlockId = "#courses-list";
   this.disableZeroControls = true;
 
-
   this.currentLocation = window.location;
   this.comingSoonPeriod = 30;
   this.request = null;
@@ -288,6 +287,11 @@ CoursesFilter.prototype = {
       $j(this.optionClass + "[data-counter=0]").prop('disabled', true);
     }
 
+    if(this.request.site !== '') {
+      self.getControlBy(this.request.site).prop('checked', true);
+      self.getControlBy(this.request.site).addClass('checked');
+    }
+
     this.updateRefineControl();
   },
 
@@ -317,6 +321,8 @@ CoursesFilter.prototype = {
       return "tag"
     } else  if (id.indexOf("location_") == 0) {
       return "location"
+    } else  if (id.indexOf("site_") == 0) {
+      return "site"
     }
   },
 
@@ -328,6 +334,9 @@ CoursesFilter.prototype = {
       case "location":
         this.removeLocationCondition(control);
         break;
+      case "site":
+        this.removeSiteCondition(control);
+        break;
     }
   },
 
@@ -338,6 +347,9 @@ CoursesFilter.prototype = {
         break;
       case "location":
         this.addLocationCondition(control);
+        break;
+      case "site":
+        this.addSiteCondition(control);
         break;
     }
   },
@@ -396,6 +408,14 @@ CoursesFilter.prototype = {
     }
   },
 
+  addSiteCondition: function (control) {
+    this.request.site = $j(control).data('path');
+  },
+
+  removeSiteCondition: function (control) {
+    this.request.site = '';
+  },
+
   isParentTag: function (currentTag, newTag) {
     return currentTag.indexOf(newTag) == 0 || newTag.indexOf(currentTag) == 0;
   },
@@ -435,9 +455,6 @@ CoursesFilter.prototype = {
       success: function (data) {
         $j(self.optionClass).next("label").next("span").text("0");
         $j.each(data, function(index, value){
-          if (value.counter > 0) {
-            //console.log(value.id);
-          }
           $j("#tag_"+value.id).next("label").next("span").text(value.counter);
         })
       },
@@ -471,12 +488,12 @@ CoursesFilter.prototype = {
         var _option_counter = '<span class="filter-option-counter">(0)</span>';
 
         $(value).prepend(_input_checkbox);
-        $(value).prepend(_option_counter);
+        $(value).append(_option_counter);
 
         if(_path !== '') {
             $.ajax({
                 type: "GET",
-                url: '/' + _path,
+                url: '/courses?site=' + _path,
                 async: false,
                 cache: false,
                 success: function (data) {
@@ -491,20 +508,6 @@ CoursesFilter.prototype = {
                 }
             });
         }
-
-        var _site_link = window.location.href;
-        var _link_part = _site_link.split('/');
-
-        if(_link_part.length > 3) {
-            var _location_link = _link_part[_link_part.length - 1];
-            var _option_path_part = _path.split('?');
-            var _option_site = _option_path_part[_option_path_part.length - 1];
-
-            if(_location_link === _path || _location_link.indexOf(_option_site) != -1) {
-                $('#' + _for).prop('checked', true);
-                $('#' + _for).parent().addClass('checked');
-            }
-        }
     });
 
     var coursesFilter = new CoursesFilter();
@@ -515,19 +518,6 @@ CoursesFilter.prototype = {
     $('.courses-menu .filters-container .side-box .filter-option').each(function(key, value) {
       var filterCount = $(this).find('.filter-option-counter');
       filterCount.text(filterCount.text().replace(/([\(|\)])+/g, ''));
-    });
-
-    $(document).on('click', '.locations-list .tags-list .filter-option.site-option > .filter-option-control', function() {
-        var _path = $(this).data('path');
-        var _path_part = _path.split('?');
-        var _path_site = _path_part[_path_part.length - 1];
-        var _window_link = window.location.href.replace('?' + _path_site, '');
-        _window_link = window.location.href.replace('&' + _path_site, '');
-
-        if($(this).prop('checked'))
-            window.location.href = '/'+ _path;
-        else
-            window.location.href = _window_link;
     });
 
   });
