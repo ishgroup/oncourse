@@ -346,8 +346,8 @@
 		<db-attribute name="fullTimeLoad" type="VARCHAR" length="10"/>
 		<db-attribute name="fundingSource" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="isActive" type="BIT"/>
-		<db-attribute name="isCancelled" type="BIT"/>
+		<db-attribute name="isActive" type="BIT" isMandatory="true"/>
+		<db-attribute name="isCancelled" type="BIT" isMandatory="true"/>
 		<db-attribute name="isDistantLearningCourse" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="BIT"/>
 		<db-attribute name="materials" type="LONGVARCHAR" length="16777215"/>

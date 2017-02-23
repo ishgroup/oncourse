@@ -4403,4 +4403,32 @@
 			ALTER TABLE CourseClass MODIFY COLUMN code VARCHAR(50) NULL;
 		</sql>
 	</changeSet>
+
+	<changeSet id="295" author="artyom" context="production" runOnChange="false">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<sqlCheck expectedResult="0">
+					select count(*) from CourseClass
+					where isCancelled is null;
+				</sqlCheck>
+			</not>
+		</preConditions>
+		<sql>
+			update CourseClass set isCancelled = 0 where isCancelled is null;
+		</sql>
+	</changeSet>
+	
+	<changeSet id="296" author="artyom" context="production" runOnChange="false">
+		<preConditions>
+			<sqlCheck expectedResult="0">
+				select count(*) from CourseClass
+				where isCancelled is null;
+			</sqlCheck>
+		</preConditions>
+		<sql>
+			alter table CourseClass modify column isCancelled tinyint(1) not null;
+		</sql>
+	</changeSet>
+	
+	
 </databaseChangeLog>
