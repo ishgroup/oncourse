@@ -12,5 +12,5 @@
 ** {location display:"NSW North Coast" suburb:"Coffs Harbour" postcode:"2450" distance:"100"}
 
 *(loc) %New Zealand%
-**(tags-list) <div class="filter-option site-option"><label for="christchurch" class="checkbox filter-option-label" data-path="courses?site=5003131">Christchurch</label> </div>
-** <div class="filter-option site-option"><label for="auckland" class="checkbox filter-option-label" data-path="courses?site=5003143">Auckland</label> </div> </div> </div> </div> </div>
+**(tags-list) <div class="filter-option site-option"><label for="site_christchurch" class="checkbox filter-option-label" data-path="5003131">Christchurch</label> </div>
+** <div class="filter-option site-option"><label for="site_auckland" class="checkbox filter-option-label" data-path="5003143">Auckland</label> </div> </div> </div> </div> </div>
