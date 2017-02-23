@@ -1,0 +1,16 @@
+
+<div class="filters-container"> <h4>Filter courses by</h4><div class="side-box"> <h3>Courses <a href="#" class="courses-filter-clear-all filters-clear-all btn-link">Clear all</a></h3> {tags multiSelect:"true" maxLevels:"2"} </div>  <div class="side-box"> <div class="taggroup-location"> <h4>Location</h4> <div class="locations-list">
+
+*(loc) %Australia%
+**(tags-list) {location display:"Sydney" suburb:"West Ryde" postcode:"2114" distance:"100"}
+** {location display:"Melbourne" suburb:"Melbourne" postcode:"3000" distance:100"}
+** {location display:"Brisbane" suburb:"Red Hill" postcode:"4059" distance:"100"}
+** {location display:"Newcastle" suburb:"Newcastle" postcode:"2300" distance:"100"}
+** {location display:"Perth" suburb:"Subiaco" postcode:"6008" distance:"100"}
+** {location display:"Adelaide" suburb:"Adelaide" postcode:"5000" distance:"100"}
+** {location display:"Tasmania" suburb:"Launceston" postcode:"7250" distance:"100"}
+** {location display:"NSW North Coast" suburb:"Coffs Harbour" postcode:"2450" distance:"100"}
+
+*(loc) %New Zealand%
+**(tags-list) <div class="filter-option site-option"><label for="christchurch" class="checkbox filter-option-label" data-path="courses?site=5003131">Christchurch</label> </div>
+** <div class="filter-option site-option"><label for="auckland" class="checkbox filter-option-label" data-path="courses?site=5003143">Auckland</label> </div> </div> </div> </div> </div>

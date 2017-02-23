@@ -450,6 +450,63 @@ CoursesFilter.prototype = {
 
 (function($) {
   $(document).ready(function () {
+
+    $('.side-box').each(function(key, box) {
+        $(box).find('.locations-list>ul').each(function(lKey, list) {
+            var _list_title = $(list).find('>li>span').text();
+            var _list_class = $(list).attr('class') + (lKey+1);
+            var _list_template = '<input id="'+ _list_class +'" type="radio" name="tabs"><label for="'+ _list_class +'">'+ _list_title +'</label>';
+
+            $(list).find('>li>span').remove();
+            $(list).attr({ id: _list_class + '_tags', 'data-tabid': _list_class });
+            $(_list_template).insertBefore($(list));
+        });
+    });
+
+    $('.tags-list .filter-option.site-option').each(function(key, value) {
+        var _label = $(value).find('label.filter-option-label');
+        var _for = _label.attr('for'), _path = _label.data('path');
+
+        var _input_checkbox = '<input type="checkbox" data-counter="0" data-path="'+ _path +'" class="filter-option-control" name="'+ _for +'" id="'+ _for +'">';
+        var _option_counter = '<span class="filter-option-counter">(0)</span>';
+
+        $(value).prepend(_input_checkbox);
+        $(value).prepend(_option_counter);
+
+        if(_path !== '') {
+            $.ajax({
+                type: "GET",
+                url: '/' + _path,
+                async: false,
+                cache: false,
+                success: function (data) {
+                    if($(data).find('div.courseItem') !== undefined) {
+                        var _total_option_counter = $(data).find('div.courseItem').length;
+                        $(value).find('.filter-option-counter').text(_total_option_counter);
+                        $(value).find('.filter-option-control').attr('data-counter', _total_option_counter);
+                    }
+                },
+                error: function (data) {
+                    //console.log(data);
+                }
+            });
+        }
+
+        var _site_link = window.location.href;
+        var _link_part = _site_link.split('/');
+
+        if(_link_part.length > 3) {
+            var _location_link = _link_part[_link_part.length - 1];
+            var _option_path_part = _path.split('?');
+            var _option_site = _option_path_part[_option_path_part.length - 1];
+
+            if(_location_link === _path || _location_link.indexOf(_option_site) != -1) {
+                $('#' + _for).prop('checked', true);
+                $('#' + _for).parent().addClass('checked');
+            }
+        }
+    });
+
     var coursesFilter = new CoursesFilter();
     coursesFilter.init();
     $('#courses-filter-refine-option').customSelect({customClass:'courses-filter-refine-custom'});
@@ -460,16 +517,17 @@ CoursesFilter.prototype = {
       filterCount.text(filterCount.text().replace(/([\(|\)])+/g, ''));
     });
 
-    $('.side-box').each(function(key, box) {
-        $(box).find('.locations-list>ul').each(function(lKey, list) {
-            var _list_title = $(list).find('>li>span').text();
-            var _list_class = $(list).attr('class')+(lKey+1);
-            var _list_template = '<input id="'+ _list_class +'" type="radio" name="tabs"><label for="'+ _list_class +'">'+ _list_title +'</label>';
+    $(document).on('click', '.locations-list .tags-list .filter-option.site-option > .filter-option-control', function() {
+        var _path = $(this).data('path');
+        var _path_part = _path.split('?');
+        var _path_site = _path_part[_path_part.length - 1];
+        var _window_link = window.location.href.replace('?' + _path_site, '');
+        _window_link = window.location.href.replace('&' + _path_site, '');
 
-            $(list).find('>li>span').remove();
-            $(list).attr({ id: _list_class + '_tags', 'data-tabid': _list_class });
-            $(_list_template).insertBefore($(list));
-        });
+        if($(this).prop('checked'))
+            window.location.href = '/'+ _path;
+        else
+            window.location.href = _window_link;
     });
 
   });
