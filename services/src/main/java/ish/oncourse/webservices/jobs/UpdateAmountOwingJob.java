@@ -32,6 +32,7 @@ public class UpdateAmountOwingJob implements Job{
             "and (e.id is null or e.status = 3)\n" +
 			"and c.billingCode is not null\n" +
 			"and c.lastRemoteAuthentication > '%s'\n" +
+			"group by i.id\n" +
             "order by i.collegeId, i.created";
 
     private ICayenneService cayenneService;
