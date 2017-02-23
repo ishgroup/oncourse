@@ -4,10 +4,9 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.PaymentServiceTestModule;
 import ish.oncourse.services.payment.IPaymentService;
-import ish.oncourse.services.paymentexpress.DisabledPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
+import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import org.apache.cayenne.ObjectContext;
@@ -82,7 +81,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(paymentProcessControllers[0]), paymentGatewayServiceBuilder, cayenneService, paymentService, session);
 		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		assertTrue("PaymentGatewayType may be only disabled before builder.build(sessionId) call",
-				builder.receivePaymentGatewayService() instanceof DisabledPaymentGatewayService);
+				builder.receivePaymentGatewayService() instanceof NewDisabledPaymentGatewayService);
 		paymentInModel = PaymentInModelFromSessionIdBuilder.valueOf(sessionId, cayenneService.newContext()).build().getModel();
         paymentProcessControllers[0] = builder.build(paymentInModel);
 		PaymentProcessController paymentProcessController = paymentProcessControllers[0];
@@ -91,7 +90,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
 		//update parallel executor because unable to finally init them for test on startup
 		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		assertTrue("If PaymentGatewayType evaluated for live value after session check this value should returns properly", 
-			builder.receivePaymentGatewayService() instanceof PaymentExpressGatewayService);
+			builder.receivePaymentGatewayService() instanceof NewPaymentExpressGatewayService);
 		Assert.assertNotNull("paymentProcessController.getPaymentIn()", paymentProcessController.getPaymentIn());
         assertEquals("paymentProcessController.getCurrentState()", FILL_PAYMENT_DETAILS, paymentProcessController.getCurrentState());
         
@@ -101,7 +100,7 @@ public class PaymentProcessControllerBuilderTest extends ServiceTest {
         builder = new PaymentProcessControllerBuilder(new MockParallelExecutor(), paymentGatewayServiceBuilder, cayenneService, paymentService, session);
 		assertNotNull("Correctly inited builder should receive not null PaymentGatewayService", builder.receivePaymentGatewayService());
 		assertTrue("PaymentGatewayType may be only disabled before builder.build(sessionId) call", 
-				builder.receivePaymentGatewayService() instanceof DisabledPaymentGatewayService);
+				builder.receivePaymentGatewayService() instanceof NewDisabledPaymentGatewayService);
 		ObjectContext content = cayenneService.newNonReplicatingContext();
 		@SuppressWarnings("unchecked")
 		List<Preference> preferences = content.performQuery(new SelectQuery(Preference.class, ExpressionFactory.matchDbExp(Preference.ID_PK_COLUMN, 1l)));

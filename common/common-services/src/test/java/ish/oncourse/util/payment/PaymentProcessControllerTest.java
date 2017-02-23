@@ -60,7 +60,7 @@ public class PaymentProcessControllerTest extends ServiceTest {
 
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
         cayenneService = getService(ICayenneService.class);
-        paymentGatewayService = getService("PaymentGatewayService", INewPaymentGatewayService.class);
+        paymentGatewayService = getService("NewPaymentGatewayService", INewPaymentGatewayService.class);
         paymentService = getService(IPaymentService.class);
 
     }

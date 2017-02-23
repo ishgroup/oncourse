@@ -42,7 +42,9 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
+import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -167,8 +169,9 @@ public class ServiceTestModule {
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPaymentGatewayService.class, PaymentExpressGatewayService.class).withId("PaymentGatewayService");
-
-        binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
+		binder.bind(INewPaymentGatewayService.class, NewPaymentExpressGatewayService.class).withId("NewPaymentGatewayService");
+		
+		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
         binder.bind(IRequestCacheService.class, RequestCacheService.class);
 	}
 	
