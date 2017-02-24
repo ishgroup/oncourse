@@ -1,9 +1,10 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-	<section class="info-links">
+	<section class="info-links" itemscope="itemscope" itemtype="http://schema.org/Organization" itemprop="provider">
+		<meta property="og:site_name" content="${collegeName}" />
 		<div class="container">
 			<div class="footer-container">
 				<ul class="footer-info">
-					<li>© ${year} University</li>
+					<li>© ${year} <span itemprop="name">${collegeName}</span></li>
 					<li><a href="/terms-conditions">Terms &amp; Conditions</a></li>
 				</ul>
 
