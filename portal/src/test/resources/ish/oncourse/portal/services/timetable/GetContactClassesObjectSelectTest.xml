@@ -47,19 +47,19 @@
 	<Course id="1" collegeId="1" code="1" detail="Course1" name="Course1" enrolmentType="1"/>
 	
 
-	<CourseClass id="1" code="1" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-1" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
+	<CourseClass isActive="1" id="1" code="1" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-1" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
 				isCancelled="0" isDistantLearningCourse="0"/>
 
-	<CourseClass id="2" code="2" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-2" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
+	<CourseClass isActive="1" id="2" code="2" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-2" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
 				 isCancelled="0" isDistantLearningCourse="0"/>
 
-	<CourseClass id="3" code="3" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-3" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
+	<CourseClass isActive="1" id="3" code="3" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-3" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
 				 isCancelled="0" isDistantLearningCourse="0"/>
 
-	<CourseClass id="4" code="4" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-4" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
+	<CourseClass isActive="1"  id="4" code="4" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-4" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
 				 isCancelled="0" isDistantLearningCourse="0"/>
 
-	<CourseClass id="5" code="5" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-5" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
+	<CourseClass isActive="1" id="5" code="5" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class 1-5" feeExGst="20.00" feeGst="1.25" maximumPlaces="3"
 				 isCancelled="0" isDistantLearningCourse="0"/>
 
 	<Session id="1" collegeId="1" courseClassId="1" angelId="201" startDate="[plus1days]" endDate="[plus1days]" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"/>

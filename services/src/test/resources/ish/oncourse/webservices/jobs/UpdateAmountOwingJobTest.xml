@@ -47,7 +47,7 @@
 		allowWaitingList="1" name="Adobe Photoshop essentials"
 		enrolmentType="1"/>
 
-	<CourseClass id="2000" collegeId="1" code="1" courseId="2000"
+	<CourseClass isActive="1"  id="2000" collegeId="1" code="1" courseId="2000"
 		roomId="2000" angelId="200" startDate="2011-10-12 00:55:59.0"
 		endDate="2011-10-16 01:55:59.0" isWebVisible="0" isCancelled="0"
 		created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"

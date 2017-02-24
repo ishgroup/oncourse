@@ -40,21 +40,21 @@
              isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
              isMarketingViaSMSAllowed="1" />
 
-    <CourseClass id="10" collegeId="10" code="1" courseId="10"
+    <CourseClass isActive="1" id="10" collegeId="10" code="1" courseId="10"
                  roomId="10" angelId="10" startDate="[START_DATE]"
                  endDate="[END_DATE]" isWebVisible="1" isCancelled="0"
                  created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
                  maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
                  deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
 
-    <CourseClass id="11" collegeId="10" code="2" courseId="10"
+    <CourseClass isActive="1" id="11" collegeId="10" code="2" courseId="10"
                  roomId="10" angelId="11" startDate="[START_DATE]"
                  endDate="[END_DATE]" isWebVisible="1" isCancelled="0"
                  created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
                  maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
                  deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
 
-    <CourseClass id="12" collegeId="10" code="1" courseId="11"
+    <CourseClass isActive="1" id="12" collegeId="10" code="1" courseId="11"
                  roomId="10" angelId="11" startDate="[START_DATE]"
                  endDate="[END_DATE]" isWebVisible="1" isCancelled="0"
                  created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"

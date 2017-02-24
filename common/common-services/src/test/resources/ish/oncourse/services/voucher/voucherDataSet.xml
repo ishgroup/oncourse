@@ -118,10 +118,10 @@
 		nominalHours="1.1" qualificationId="1" searchText="searchText"
 		enrolmentType="1"/>
 
-    <CourseClass id="1" collegeId="1"
+    <CourseClass isActive="1" isCancelled="0" id="1" collegeId="1"
 		code="1" courseId="1" roomId="1" angelId="1"
 		startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
-		isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+		isWebVisible="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
 		maximumPlaces="30" minimumPlaces="30" countOfSessions="3" deliveryMode="1" feeExGst="454.55"
 		feeGst="90.00"
 		detail="detail" detail_textile="detailTextile" materials="materials"
@@ -137,7 +137,7 @@
 		nominalHours="1.1" qualificationId="1" searchText="searchText"
 		enrolmentType="1"/>
 
-    <CourseClass id="2" collegeId="1"
+    <CourseClass isActive="1" id="2" collegeId="1"
 		code="1" courseId="2" roomId="1" angelId="1"
 		startDate="2011-10-12 00:55:59.0" endDate="2011-10-16 01:55:59.0"
 		isWebVisible="0" isCancelled="0" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
