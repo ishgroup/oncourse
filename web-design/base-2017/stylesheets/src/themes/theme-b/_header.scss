@@ -243,7 +243,7 @@
 						>a, &:first-child>a, &:last-child>a {
 							padding: 10px 8px;
 							@include responsive($media-custom, $custom-screen) {
-								padding: $navAnchorPadding;
+								padding: $navAnchorPadding-b;
 							}
 						}
 					}

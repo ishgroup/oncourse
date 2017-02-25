@@ -12,14 +12,6 @@
 //
 
 @include theme('a') {
-	a {
-		@include transition(all 0.5s);
-	}
-	ul {
-		@include blocks("&.grid", $media-tablet, "table");
-		@include blocks("&.column", $media-tablet);
-	}
-
 	#Main.main-page {
 		#content {
 			float: none;

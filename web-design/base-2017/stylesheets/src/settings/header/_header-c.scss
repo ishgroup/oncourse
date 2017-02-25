@@ -11,40 +11,53 @@
 // Author: Chintan Kotadia
 //
 
-$headerTopBarBG-c: #ee2222 !default;
-$headerTopBarTextColor-c: $white !default;
 $headerContainerPosition-c: relative !default;
-$headerContainerMarginBottom-c: 25px !default;
-$headerGroupPosition-c: absolute !default;
+$headerContainerMarginBottom-c: 0px !default;
+$headerGroupPosition-c: relative !default;
 
-$navColor-c: $white !default;
-$navFontSize-c: 20px !default;
-$navFontWeight-c: bold !default;
-$navTextTransform-c: uppercase !default;
-$subNavBgColor-c: $deepblue !default;
-$subNavColor-c: #FFFFFF !default;
+$headerTopBarFloat-c: none !default;
+$headerTopBarBG-c: #fbfbfb !default;
+$headerTopBarTextColor-c: $bodyFontColor-c !default;
+$headerTopBarMarginBottom-c: 39px !default;
+
+$headerTopBarContactMargin-c: 6px 10px 0px 20px !default;
+$headerTopBarPhoneTextColor-c: $bodyFontColor-c !default;
+
+$headerTopBarPaddingTop-c: 0px !default;
+$headerTopBarHeight-c: 57px !default;
+$headerGroupSiteLogoFloatPosition-c: none !default;
+$headerGroupSiteLogoZIndex-c: 0 !default;
 
 // Navigation
-$navbarPaddingLeft-c: 10px !default;
-$navWidth-c: 100% !default;
+$navbarPaddingLeft-c: 0px !default;
+$navFontSize-c: 15px !default;
+$navFontWeight-c: normal !default;
+$navWidth-c: auto !default;
 $navMarginTop-c: 0px !default;
 $navBG-c: transparent !default;
-$navBorderColor-c: #2e2e2e !default;
-$navAnchorColor-c: $white !default;
-$navAnchorHoverBG-c: transparent !default;
-$navAnchorHoverTextColor-c: $white !default;
-$navAnchorPadding-c: 21.5px 0px !default;
-$navAnchorHeight-c: auto !default;
-$navAnchorLineHeight-c: initial !default;
+$navBorderTop-c: 0px !default;
+$navBorderBottom-c: 0px !default;
+$navBorderColor-c: transparent !default;
+$navListBottomBorder-c: 2px solid transparent !default;
+$navAnchorColor-c: #4f5150 !default;
+$navAnchorHoverBG-c: #9bc837 !default;
+$navAnchorHoverTextColor-c: #2e2e2e !default;
+$navAnchorTopFontSize-c: 15px !default;
+$navAnchorPadding-c: 10px 27px !default;
+$navFirstChildAnchorPadding-c: $navAnchorPadding-c !default;
+$navLastChildAnchorPadding-c: $navAnchorPadding-c !default;
 
-$navAnchorArrowColor-c: $white !default;
-$firstChildMenuPadding-c: 21.5px 0px !default;
+$navAnchorHeight-c: auto !default;
+$navAnchorLineHeight-c: 36px !default;
+
+$navAnchorArrowColor-c: $navAnchorHoverBG-c !default;
+$firstChildMenuPadding-c: 0px !default;
 $displayFullWidthMenu-c: none !default;
-$first-accent-color-c: $deepblue !default;
+$first-accent-color-c: $navAnchorHoverBG-c !default;
 $firstDropMenufullWidth-c: 117.1% !default;
 $firstDropMenuMargin-c: 0px -14.95% !default;
-$first-accent-width-c: 200px !default;
-$firstAccentNavAnchorColor-c: $white !default;
+$first-accent-width-c: 400px !default;
+$firstAccentNavAnchorColor-c: #2e2e2e !default;
 $firstAccentNavAnchorPadding-c: 8px 20px !default;
 
 $navToggleBG-c: #e7e7e7 !default;
@@ -53,66 +66,99 @@ $navToggleTextColor-c: #231f20 !default;
 $navToggleHoverBG-c: #d5d5d5 !default;
 $navToggleHoverTextColor-c: #231f20 !default;
 
+// Short list
+$shortListOrderLinkFontSize-c: $bodyFontSize-c !default;
+$shortListInfoSpanColor-c: #6d6d6d !default;
+$shortListInfoSpanFontSize-c: 14px !default;
+$shortListInfoSpanLineHeight-c: 2 !default;
+$shortListInfoSpanMargin-c: 0 5px 0 0 !default;
+
 // Search
-$advanceSearchSubmitButtonWidth-c: 29% !default;
-$advanceSearchButtonBG-c: $deepblue !default;
-$searchActiveButtonBG-c: $deepblue !default;
-$advanceSearchButtonBorderRadius-c: 0 !default;
-$advanceSearchButtonWidth-c: 40% !default;
-$advanceSearchButtonPadding-c: 9px 20px !default;
+$advancedSearchOpenFromLeft-c: "off" !default;
+$advancedSearchOpenFromRight-c: "on" !default;
+$searchTopHeight-c: 28px !default;
+$searchButtonPadding-c: 3.5px 7px 3.5px !default;
+$searchButtonBG-c: transparent !default;
+$searchButtonWidth-c: 31px !default;
+$searchButtonHeight-c: $searchTopHeight-c !default;
+
+$btnHeight-c: 40px !default;
+$btnPadding-c: 12px 27px !default;
+$advanceSearchButtonWidth-c: 150px !default;
+$advanceSearchButtonBorderRadius-c: 2em !default;
+$advanceSearchButtonPadding-c: $btnPadding-c !default;
+
+$advanceSearchButtonClearPosition-c: right !default;
+$advanceSearchButtonSubmitPosition-c: left !default;
+
+$advanceSearchColor-c: #202020 !default;
+$advanceSearchButtonBG-c: #d0e64b !default;
+$advanceSearchButtonClearBackground-c: #d3eaec !default;
+$searchActiveButtonBG-c: $advanceSearchButtonBG-c !default;
+
+$toggleSearchActiveBackground-c: #9ac836 !default;
+
+// Advanced search
+$advanceSearchBG-c: #fbfbfb !default;
+$advanceSearchBGRGB-c: $advanceSearchBG-c !default;
+$advancedSearchPriceDisplay-c: block !default;
+$advancedSearchLocationWidth-c: 50% !default;
+$advancedSearchPriceWidth-c: $advancedSearchLocationWidth-c !default;
+
+$searchBoxWidth-c: 190px !default;
+$searchBoxBorder-c: 1px solid #ddd !default;
+$searchBoxBorderRadius-c: 14px !default;
+
+$searchBoxInputPadding-c: 3.5px 12px 3.5px !default;
+$searchBoxInputWidth-c: 72% !default;
+$searchBoxInputHeight-c: $searchTopHeight-c !default;
+$searchBoxInputBorder-c: 0px !default;
+$searchBoxInputBorderRadius-c: 14px 0px 0px 14px !default;
 
 $searchMoreOptions-c: transparent !default;
+$searchMoreOptionsWidth-c: 12px !default;
+$searchMoreOptionsHeight-c: $searchTopHeight-c !default;
 $searchMoreOptionsPadding-c: 0px !default;
-
-$advanceSearchBG-c: transparent !default;
-$advanceSearchMargin-c: 10px 0px !default;
-$advanceSearchTop-c: 0px !default;
-$advanceSearchPosition-c: relative !default;
-$advanceSearchPadding-c: 15px 0px 12px !default;
-
-$toggleSearchActiveBackground-c: transparent !default;
-
-$advancedSearchFormBlocksTabletWidth-c: 200px !default;
-$advancedSearchLocationWidth-c: 200px !default;
-$advancedSearchPriceWidth-c: 235px !default;
-
-// Shortlist info settings
-$shortListOrderBackground-c: $hotpink !default;
-$shortListOrderEnrolLinkBackground-c: $deepblue !default;
-$shortListOrderEnrolLinkBackgroundColor-c: $deepblue !default;
-
-$shortListOrderRightMediaTablet-c: 8px !default;
-$shortListOrderBeforePositionLeftMediaTablet-c: auto !default;
-$shortListOrderBeforePositionRightMediaTablet-c: 23px !default;
-
-$shortListInfoSpanColor-c: $white !default;
-$shortListInfoSpanFontSize-c: 16px !default;
-$shortListInfoSpanMargin-c: 0px !default;
+$searchMoreOptionsMinWidth-c: $searchMoreOptionsWidth-c !default;
+$searchMoreOptionsDisplay-c: block !default;
 
 @if $header-theme == "c" {
-  $headerTopBarBG: $headerTopBarBG-c;
-  $headerTopBarTextColor: $headerTopBarTextColor-c;
   $headerContainerPosition: $headerContainerPosition-c;
   $headerContainerMarginBottom: $headerContainerMarginBottom-c;
   $headerGroupPosition: $headerGroupPosition-c;
 
-  $navColor: $navColor-c;
-  $navFontSize: $navFontSize-c;
-  $navFontWeight: $navFontWeight-c;
-  $navTextTransform: $navTextTransform-c;
-  $subNavBgColor: $subNavBgColor-c;
-  $subNavColor: $subNavColor-c;
+  $headerTopBarFloat: $headerTopBarFloat-c;
+  $headerTopBarBG: $headerTopBarBG-c;
+  $headerTopBarTextColor: $headerTopBarTextColor-c;
+  $headerTopBarMarginBottom: $headerTopBarMarginBottom-c;
+
+  $headerTopBarContactMargin: $headerTopBarContactMargin-c;
+  $headerTopBarPhoneTextColor: $headerTopBarPhoneTextColor-c;
+
+  $headerTopBarPaddingTop: $headerTopBarPaddingTop-c;
+  $headerTopBarHeight: $headerTopBarHeight-c;
+  $headerGroupSiteLogoFloatPosition: $headerGroupSiteLogoFloatPosition-c;
+  $headerGroupSiteLogoZIndex: $headerGroupSiteLogoZIndex-c;
 
   // Navigation
   $navbarPaddingLeft: $navbarPaddingLeft-c;
+  $navFontSize: $navFontSize-c;
+  $navFontWeight: $navFontWeight-c;
   $navWidth: $navWidth-c;
   $navMarginTop: $navMarginTop-c;
   $navBG: $navBG-c;
+  $navBorderTop: $navBorderTop-c;
+  $navBorderBottom: $navBorderBottom-c;
   $navBorderColor: $navBorderColor-c;
+  $navListBottomBorder: $navListBottomBorder-c;
   $navAnchorColor: $navAnchorColor-c;
   $navAnchorHoverBG: $navAnchorHoverBG-c;
   $navAnchorHoverTextColor: $navAnchorHoverTextColor-c;
+  $navAnchorTopFontSize: $navAnchorTopFontSize-c;
   $navAnchorPadding: $navAnchorPadding-c;
+  $navFirstChildAnchorPadding: $navFirstChildAnchorPadding-c;
+  $navLastChildAnchorPadding: $navLastChildAnchorPadding-c;
+
   $navAnchorHeight: $navAnchorHeight-c;
   $navAnchorLineHeight: $navAnchorLineHeight-c;
 
@@ -132,39 +178,59 @@ $shortListInfoSpanMargin-c: 0px !default;
   $navToggleHoverBG: $navToggleHoverBG-c;
   $navToggleHoverTextColor: $navToggleHoverTextColor-c;
 
+  // Short list
+  $shortListOrderLinkFontSize: $shortListOrderLinkFontSize-c;
+  $shortListInfoSpanColor: $shortListInfoSpanColor-c;
+  $shortListInfoSpanFontSize: $shortListInfoSpanFontSize-c;
+  $shortListInfoSpanLineHeight: $shortListInfoSpanLineHeight-c;
+  $shortListInfoSpanMargin: $shortListInfoSpanMargin-c;
+
   // Search
-  $advanceSearchSubmitButtonWidth: $advanceSearchSubmitButtonWidth-c;
-  $advanceSearchButtonBG: $advanceSearchButtonBG-c;
-  $searchActiveButtonBG: $searchActiveButtonBG-c;
-  $advanceSearchButtonBorderRadius: $advanceSearchButtonBorderRadius-c;
+  $advancedSearchOpenFromLeft: $advancedSearchOpenFromLeft-c;
+  $advancedSearchOpenFromRight: $advancedSearchOpenFromRight-c;
+  $searchTopHeight: $searchTopHeight-c;
+  $searchButtonPadding: $searchButtonPadding-c;
+  $searchButtonBG: $searchButtonBG-c;
+  $searchButtonWidth: $searchButtonWidth-c;
+  $searchButtonHeight: $searchButtonHeight-c;
+
+  $btnHeight: $btnHeight-c;
+  $btnPadding: $btnPadding-c;
   $advanceSearchButtonWidth: $advanceSearchButtonWidth-c;
+  $advanceSearchButtonBorderRadius: $advanceSearchButtonBorderRadius-c;
   $advanceSearchButtonPadding: $advanceSearchButtonPadding-c;
 
-  $searchMoreOptions: $searchMoreOptions-c;
-  $searchMoreOptionsPadding: $searchMoreOptionsPadding-c;
+  $advanceSearchButtonClearPosition: $advanceSearchButtonClearPosition-c;
+  $advanceSearchButtonSubmitPosition: $advanceSearchButtonSubmitPosition-c;
 
-  $advanceSearchBG: $advanceSearchBG-c;
-  $advanceSearchMargin: $advanceSearchMargin-c;
-  $advanceSearchTop: $advanceSearchTop-c;
-  $advanceSearchPosition: $advanceSearchPosition-c;
-  $advanceSearchPadding: $advanceSearchPadding-c;
+  $advanceSearchColor: $advanceSearchColor-c;
+  $advanceSearchButtonBG: $advanceSearchButtonBG-c;
+  $advanceSearchButtonClearBackground: $advanceSearchButtonClearBackground-c;
+  $searchActiveButtonBG: $searchActiveButtonBG-c;
 
   $toggleSearchActiveBackground: $toggleSearchActiveBackground-c;
 
-  $advancedSearchFormBlocksTabletWidth: $advancedSearchFormBlocksTabletWidth-c;
+  // Advanced search
+  $advanceSearchBG: $advanceSearchBG-c;
+  $advanceSearchBGRGB: $advanceSearchBGRGB-c;
+  $advancedSearchPriceDisplay: $advancedSearchPriceDisplay-c;
   $advancedSearchLocationWidth: $advancedSearchLocationWidth-c;
   $advancedSearchPriceWidth: $advancedSearchPriceWidth-c;
 
-  // Shortlist info settings
-  $shortListOrderBackground: $shortListOrderBackground-c;
-  $shortListOrderEnrolLinkBackground: $shortListOrderEnrolLinkBackground-c;
-  $shortListOrderEnrolLinkBackgroundColor: $shortListOrderEnrolLinkBackgroundColor-c;
+  $searchBoxWidth: $searchBoxWidth-c;
+  $searchBoxBorder: $searchBoxBorder-c;
+  $searchBoxBorderRadius: $searchBoxBorderRadius-c;
 
-  $shortListOrderRightMediaTablet: $shortListOrderRightMediaTablet-c;
-  $shortListOrderBeforePositionLeftMediaTablet: $shortListOrderBeforePositionLeftMediaTablet-c;
-  $shortListOrderBeforePositionRightMediaTablet: $shortListOrderBeforePositionRightMediaTablet-c;
+  $searchBoxInputPadding: $searchBoxInputPadding-c;
+  $searchBoxInputWidth: $searchBoxInputWidth-c;
+  $searchBoxInputHeight: $searchBoxInputHeight-c;
+  $searchBoxInputBorder: $searchBoxInputBorder-c;
+  $searchBoxInputBorderRadius: $searchBoxInputBorderRadius-c;
 
-  $shortListInfoSpanColor: $shortListInfoSpanColor-c;
-  $shortListInfoSpanFontSize: $shortListInfoSpanFontSize-c;
-  $shortListInfoSpanMargin: $shortListInfoSpanMargin-c;
+  $searchMoreOptions: $searchMoreOptions-c;
+  $searchMoreOptionsWidth: $searchMoreOptionsWidth-c;
+  $searchMoreOptionsHeight: $searchMoreOptionsHeight-c;
+  $searchMoreOptionsPadding: $searchMoreOptionsPadding-c;
+  $searchMoreOptionsMinWidth: $searchMoreOptionsMinWidth-c;
+  $searchMoreOptionsDisplay: $searchMoreOptionsDisplay-c;
 }

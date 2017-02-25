@@ -11,51 +11,31 @@
 // Author: Chintan Kotadia
 //
 
-//
-// Color settings
-//
+// Content settings */
 
-$hotpink: #CF053C !default;
-$deepblue: #00437A !default;
-$charcoal: #1F1F1F !default;
-$cinder: #A0A0A0 !default;
-$turquoise: #4092A9 !default;
-$citrus: #DA7C00 !default;
-$pistachio: #A8AE13 !default;
-$aubergine: #4D3060 !default;
-$gunmetal: #2E303D !default;
-$steam: #EAEFF3 !default;
+$containerWidth-c: 1260px !default;
+$anchorColor-c: #7d8087 !default;
+$anchorHoverColor-c: #37b8cb !default;
 
-$containerWidth-c: 1120px !default;
+$primaryColor-c: #859f4b !default;
+$secondaryColor-c: #247a83 !default;
 
-$anchorColor-c: $deepblue !default;
-$anchorHoverColor-c: $hotpink !default;
+$small-screen-c: 640px !default;
+$tablet-screen-c: 992px !default;
+$desktop-screen-c: 1080px !default;
+$custom-screen-c: 1060px !default;
 
-$primaryColor-c: $hotpink !default;
-$secondaryColor-c: $charcoal !default;
+$bodyFontFamily-c: 'Source Sans Pro', sans-serif !default;
+$bodyFontSize-c: 14px !default;
+$bodyFontColor-c: #333333 !default;
+$bodyBackground-c: $white !default;
 
-// media: small, tablet, desktop
-$small-screen-c: 480px !default;
-$tablet-screen-c: 767px !default;
-$desktop-screen-c: 1024px !default;
-
-$bodyFontFamily-c: 'Hind', sans-serif !default;
-$bodyFontSize-c: 16px !default;
-$bodyFontColor-c: $charcoal !default;
-$bodyLineHeight-c: 23px !default;
-
-$enrolActionDisabled-c: #9b9b9b !default;
-$enrolActionDisabledBorderColor-c: #9b9b9b !default;
-$enrolActionDisabledTextColor-c: $white !default;
-
-$classItemBorderColor-c: $steam !default;
-$classItemBorder-c: 1px solid $classItemBorderColor-c !default;
-$classItemBorderLeft-c: 6px solid $deepblue !default;
+$discountBlockDisplay-c: block !default;
+$discountBlockActionLinkDisplay-c: block !default;
 
 @if $theme == "c" {
   $useDefaultFont: false;
-  @import url(https://fonts.googleapis.com/css?family=Asap:400,400italic,700,700italic);
-  @import url(https://fonts.googleapis.com/css?family=Hind:400,600,700);
+  @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,900);
 
   $containerWidth: $containerWidth-c;
 
@@ -69,53 +49,14 @@ $classItemBorderLeft-c: 6px solid $deepblue !default;
   $small-screen: $small-screen-c;
   $tablet-screen: $tablet-screen-c;
   $desktop-screen: $desktop-screen-c;
+  $custom-screen: $custom-screen-c;
 
-  $fontFamilyOne: 'ASAP', sans-serif;
+  // Font Families
 
-  $bodyFontFamily: $bodyFontFamily-c;
+  $bodyBackground: $bodyBackground-c;
+  $bodyFontFamily: 'Raleway', sans-serif;
   $bodyFontSize: $bodyFontSize-c;
   $bodyFontColor: $bodyFontColor-c;
-  $bodyLineHeight: $bodyLineHeight-c;
-
-  //
-  // Heading styles
-  //
-
-  $h1FontSize: 42px;
-  $h1LineHeight: 52px;
-  $h1FontWeight: bold;
-  $h1LinkColor: $secondaryColor-c;
-  $h1LinkHoverColor: $primaryColor-c;
-
-  $h2FontSize: 36px;
-  $h2LineHeight: 46px;
-  $h2FontWeight: bold;
-  $h2LinkColor: $secondaryColor-c;
-  $h2LinkHoverColor: $primaryColor-c;
-
-  $h3FontSize: 28px;
-  $h3LineHeight: 36px;
-  $h3FontWeight: bold;
-  $h3LinkColor: $secondaryColor-c;
-  $h3LinkHoverColor: $primaryColor-c;
-
-  $h4FontSize: 22px;
-  $h4LineHeight: 30px;
-  $h4FontWeight: bold;
-  $h4LinkColor: $secondaryColor-c;
-  $h4LinkHoverColor: $primaryColor-c;
-
-  $h5FontSize: 18px;
-  $h5LineHeight: 26px;
-  $h5FontWeight: bold;
-  $h5LinkColor: $secondaryColor-c;
-  $h5LinkHoverColor: $primaryColor-c;
-
-  $h6FontSize: 16px;
-  $h6LineHeight: 23px;
-  $h6FontWeight: bold;
-  $h6LinkColor: $secondaryColor-c;
-  $h6LinkHoverColor: $primaryColor-c;
 
   // Content container
   $contentContainerMarginTop: 0px;
@@ -123,14 +64,29 @@ $classItemBorderLeft-c: 6px solid $deepblue !default;
   // Courses
   $waitingListTitleHoverBG: $bodyFontColor-c;
 
-  $enrolActionDisabled: $enrolActionDisabled-c;
-  $enrolActionDisabledBorderColor: $enrolActionDisabledBorderColor-c;
-  $enrolActionDisabledTextColor: $enrolActionDisabledTextColor-c;
 
-  $classItemBorderColor: $classItemBorderColor-c;
-  $classItemBorder: $classItemBorder-c;
-  $classItemBorderLeft: $classItemBorderLeft-c;
+  $h1InnerFontFamily: $bodyFontFamily-c;
 
+  $discountBlockDisplay: $discountBlockDisplay-c;
+  $discountBlockActionLinkDisplay: $discountBlockActionLinkDisplay-c;
+
+  $h1LinkColor: $primaryColor-c;
+  $h1LinkHoverColor: $secondaryColor-c;
+
+  $h2LinkColor: $primaryColor-c;
+  $h2LinkHoverColor: $secondaryColor-c;
+
+  $h3LinkColor: $primaryColor-c;
+  $h3LinkHoverColor: $secondaryColor-c;
+
+  $h4LinkColor: $primaryColor-c;
+  $h4LinkHoverColor: $secondaryColor-c;
+
+  $h5LinkColor: $primaryColor-c;
+  $h5LinkHoverColor: $secondaryColor-c;
+
+  $h6LinkColor: $primaryColor-c;
+  $h6LinkHoverColor: $secondaryColor-c;
 
   $enrolActionFontFamily: $bodyFontFamily-c;
   $enrolActionBackground: $primaryColor-c;

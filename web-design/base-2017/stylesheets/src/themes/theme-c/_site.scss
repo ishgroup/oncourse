@@ -14,13 +14,12 @@
 
 //
 //
-// All the base styles divided into different files
+// All the styles of application divided into different files
 // for better management
 //
 
+@import "sliders";
+
 @import "layout";
 @import "header";
-@import "content";
-@import "courses";
-@import "sidebar";
 @import "footer";
