@@ -47,13 +47,16 @@
     	color: $navToggleHoverTextColor;
     }
     >div {
-    	width: 75px;
+    	width: 76px;
     	margin: 0 auto;
     }
     .toggle-title {
     	display: block;
     	margin-right: 4px;
     	position: relative;
+    	>i.toggle-icon {
+    		display: block;
+    	}
     }
   }
 
@@ -211,6 +214,7 @@
 							a {
 								&:hover {
 									background: $navChildMenuLinkHoverBG;
+									color: $navChildMenuLinkHoverColor;
 								}
 							}
 						}

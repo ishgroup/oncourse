@@ -116,7 +116,16 @@
 			.top-bar {
 				a.nav-logo {
 					float: left;
-					margin: 12px 35px 12px 20px;
+					margin: 15px 35px 14px 20px;
+					@include responsive($media-tablet) {
+						margin: 12px 35px 12px 20px;
+					}
+					img {
+						max-width: 88%;
+						@include responsive($media-tablet) {
+							max-width: 100%;
+						}
+					}
 				}
 				.nav-toggle {
 					margin: 0px 10px 0px 0px;
@@ -125,10 +134,17 @@
 					padding: 4px 15px;
 					float: right;
 					overflow: hidden;
+					position: fixed;
+					top: 12px;
+					right: 0;
 				}
 				#headerToolbar {
 					margin-top: 14px;
 					position: relative;
+					padding-right: 50px;
+					@include responsive($media-tablet) {
+						padding-right: 0;
+					}
 					.discount-block {
 						display: $discountBlockDisplay-b;
 						float: left;

@@ -26,6 +26,9 @@ $bodyFontFamily-a: 'Source Sans Pro', sans-serif !default;
 $bodyFontSize-a: 15px !default;
 $bodyFontColor-a: #5c636b !default;
 
+$discountBlockTextColor-a: $anchorColor-a !default;
+$discountBlockTitleColor-a: $bodyFontColor-a !default;
+
 @if $theme == "a" {
   $containerWidth: $containerWidth-a;
 
@@ -43,6 +46,9 @@ $bodyFontColor-a: #5c636b !default;
   $bodyFontFamily: $bodyFontFamily-a;
   $bodyFontSize: $bodyFontSize-a;
   $bodyFontColor: $bodyFontColor-a;
+
+  $discountBlockTextColor: $discountBlockTextColor-a;
+  $discountBlockTitleColor: $discountBlockTitleColor-a;
 
   // Content container
   $contentContainerMarginTop: 0px;

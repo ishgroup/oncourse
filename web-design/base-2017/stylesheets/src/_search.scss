@@ -345,8 +345,15 @@
 	}
 	.discount-block {
 		display: $discountBlockDisplay;
+		a {
+			color: $discountBlockTextColor;
+			&:hover {
+				color: $secondaryColor;
+			}
+		}
 		.title-block {
 			display: $discountBlockTitleDisplay;
+			color: $discountBlockTitleColor;
 		}
 		.actionLink {
 			display: $discountBlockActionLinkDisplay;

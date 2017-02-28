@@ -42,6 +42,8 @@ $bodyBackground-b: $white !default;
 
 $discountBlockDisplay-b: block !default;
 $discountBlockActionLinkDisplay-b: block !default;
+$discountBlockTextColor-b: $anchorColor-b !default;
+$discountBlockTitleColor-b: $bodyFontColor-b !default;
 
 @if $theme == "b" {
   $useDefaultFont: false;
@@ -68,6 +70,9 @@ $discountBlockActionLinkDisplay-b: block !default;
   $bodyFontFamily: $fontFamilyOne;
   $bodyFontSize: $bodyFontSize-b;
   $bodyFontColor: $bodyFontColor-b;
+
+  $discountBlockTextColor: $discountBlockTextColor-b;
+  $discountBlockTitleColor: $discountBlockTitleColor-b;
 
   // Content container */
   $contentContainerMarginTop: 0px;
