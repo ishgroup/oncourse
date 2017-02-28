@@ -16,7 +16,7 @@ repositories {
 dependencies {
     compile project(':willow:model')
 
-    compile 'org.codehaus.groovy:groovy-all:2.4.8'
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
    //cxf
     compile 'org.apache.cxf:cxf-core:3.1.10'
