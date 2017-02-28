@@ -1,6 +1,3 @@
-apply plugin: 'com.github.robfletcher.compass'
-apply plugin: 'com.eriwen.gradle.js'
-
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 

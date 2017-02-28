@@ -1,6 +1,3 @@
-apply plugin: 'com.github.robfletcher.compass'
-apply plugin: 'com.eriwen.gradle.js'
-
 ext {
 	//cannot update to 5.4.*. Api for clustoring and JavaScript support were changed
 	tapestryVersion = '5.3.8'

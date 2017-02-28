@@ -149,63 +149,7 @@ configure (subprojects - project(':willow:api') - project(':willow:model')) {
 		}
 	}
 
-
-
-    if (file('src/main/static/src').exists()) {
-	    //common tasks for combining java script and css
-
-    	apply plugin: 'com.eriwen.gradle.js'
-	    javascript.source {
-	        production {
-	            js {
-	                srcDir 'src/main/static/js'
-	                include "**/*.js"
-	            }
-	        }
-	    }
-
-	    minifyJs {
-	        source = javascript.source.production.js.files
-	        dest = file("${buildDir}/resource-assemble/js/${project.name}-min.js")
-	    }
-
-	    gzipJs {
-	        source = minifyJs
-	        dest = file("${buildDir}/resource-assemble/js/${project.name}-min.js.gz")
-	    }
-
-        apply plugin: 'com.github.robfletcher.compass'
-
-		//css combining
-	    compass {
-	        cssDir = file("${buildDir}/resource-assemble/css")
-	        sassDir = file('src/main/static/src')
-	        fontsDir = file('src/main/static/fonts')
-	        noLineComments = true
-	        relativeAssets = true
-	        debugInfo = false
-	        environment = 'production'
-	    }
-
-	    task gzipCss(dependsOn: compassCompile) {
-	        String srcPath = "${buildDir}/resource-assemble/css/${project.name}.css"
-	        inputs.file srcPath
-	        outputs.file "${srcPath}.gz"
-	        doLast {
-	            ant.gzip(src: srcPath, destfile: "${srcPath}.gz")
-	        }
-	    }
-
-		task combineSvg(type: CombineSvg)  {
-			projectName = "${project.name}"
-			imgDirectoryName = file("src/main/static/img")
-			outputDirectoryName = "${buildDir}/resource-assemble"
-		}
-
-		task cleanCombineSvg(type: CleanCombineSvg)  {
-			imgDirectory = "${buildDir}/resource-assemble/img"
-		}
-	}
+	apply from: "$rootDir/buildStaticResources.gradle"
 }
 
 task wrapper(type: Wrapper) {
