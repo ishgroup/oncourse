@@ -29,7 +29,6 @@ plugins {
 	id 'groovy'
 	id 'maven'
 	id 'jacoco'
-	id 'war'
 	id 'com.github.ben-manes.versions' version '0.14.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
@@ -52,7 +51,6 @@ configure (subprojects - project(':willow:api') - project(':willow:model')) {
 	apply plugin: 'maven'
 	apply plugin: 'groovy'
 	apply plugin: 'jacoco'
-	apply plugin: 'war'
 
     //java compile should read java files in UTF-8
     //because some tests (ish.oncourse.services.textile.TextileUtilTest.test_unicodeQuotesEncoding)
