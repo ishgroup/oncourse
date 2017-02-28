@@ -44,6 +44,8 @@ public class PaymentInLineTest {
 		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 		
 		courseClass = context.newObject(CourseClass.class);
+		courseClass.setIsActive(true);
+		courseClass.setCancelled(false);
 		courseClass.setCourse(course);
 		courseClass.setCollege(college);
 		courseClass.setMaximumPlaces(3);

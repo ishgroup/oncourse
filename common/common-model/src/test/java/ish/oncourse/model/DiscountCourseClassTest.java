@@ -64,6 +64,8 @@ public class DiscountCourseClassTest {
         courseClass.setMaximumPlaces(10);
         courseClass.setIsDistantLearningCourse(false);
         courseClass.setCollege(college);
+        courseClass.setIsActive(true);
+        courseClass.setCancelled(false);
         courseClass.setCourse(course);
 
         context.commitChanges();

@@ -51,6 +51,8 @@ public class PaymentInTest extends ServiceTest{
 		this.courseClass = context.newObject(CourseClass.class);
 		courseClass.setCourse(course);
 		courseClass.setCollege(college);
+		courseClass.setIsActive(true);
+		courseClass.setCancelled(false);
 		courseClass.setMaximumPlaces(3);
 		courseClass.setIsDistantLearningCourse(false);
 

@@ -202,6 +202,8 @@ public class EnrolmentTest {
 		course.setEnrolmentType(CourseEnrolmentType.OPEN_FOR_ENROLMENT);
 		CourseClass courseClass = context.newObject(CourseClass.class);
 		courseClass.setCourse(course);
+		courseClass.setIsActive(true);
+		courseClass.setCancelled(false);
 		courseClass.setCollege(college);
 		courseClass.setMaximumPlaces(3);
 		courseClass.setIsDistantLearningCourse(false);

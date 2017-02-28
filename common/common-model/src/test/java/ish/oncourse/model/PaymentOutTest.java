@@ -39,6 +39,8 @@ public class PaymentOutTest {
 		courseClass.setCourse(course);
 		courseClass.setCollege(college);
 		courseClass.setMaximumPlaces(3);
+		courseClass.setIsActive(true);
+		courseClass.setCancelled(false);
 		courseClass.setIsDistantLearningCourse(false);
 
 		context.commitChanges();

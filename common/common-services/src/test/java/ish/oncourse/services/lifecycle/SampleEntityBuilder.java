@@ -41,7 +41,8 @@ public class SampleEntityBuilder {
 		c.setCancelled(false);
 		c.setCode("12345");
 		c.setMaximumPlaces(3);
-
+		c.setCancelled(false);
+		c.setIsActive(true);
 		College college = Cayenne.objectForPK(ctx, College.class, 1l);
 		c.setCollege(college);
 

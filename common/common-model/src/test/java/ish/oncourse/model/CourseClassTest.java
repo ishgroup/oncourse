@@ -108,6 +108,8 @@ public class CourseClassTest {
 
 		firstClass = context.newObject(CourseClass.class);
 		firstClass.setCourse(course);
+		firstClass.setIsActive(true);
+		firstClass.setCancelled(false);
 		firstClass.setCollege(college);
 		firstClass.setMaximumPlaces(3);
 		firstClass.setIsDistantLearningCourse(false);
@@ -180,6 +182,8 @@ public class CourseClassTest {
 		secondClass.setCourse(course);
 		secondClass.setCollege(college);
 		secondClass.setMaximumPlaces(3);
+		secondClass.setIsActive(true);
+		secondClass.setCancelled(false);
 		secondClass.setIsDistantLearningCourse(false);
 		
 		pastSecondClassDiscount = context.newObject(Discount.class);
@@ -201,6 +205,8 @@ public class CourseClassTest {
 		thirdClass = context.newObject(CourseClass.class);
 		thirdClass.setCourse(course);
 		thirdClass.setCollege(college);
+		thirdClass.setIsActive(true);
+		thirdClass.setCancelled(false);
 		thirdClass.setMaximumPlaces(3);
 		thirdClass.setIsDistantLearningCourse(false);
 		
@@ -228,6 +234,8 @@ public class CourseClassTest {
 		fourthClass = context.newObject(CourseClass.class);
 		fourthClass.setCourse(course);
 		fourthClass.setCollege(college);
+		fourthClass.setIsActive(true);
+		fourthClass.setCancelled(false);
 		fourthClass.setMaximumPlaces(3);
 		fourthClass.setIsDistantLearningCourse(false);
 		
