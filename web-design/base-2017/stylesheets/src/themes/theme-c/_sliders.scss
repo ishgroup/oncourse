@@ -16,6 +16,56 @@
 	$home-slider-height-mobile: 300px;
 	$home-slider-height: 531px;
 
+	.slider-fixed-top {
+		.home-slider {
+			.bx-wrapper {
+				height: 100%;
+			}
+			.bx-viewport {
+				// height: $home-slider-height-mobile-small;
+				// overflow: hidden;
+				// @include responsive($media-small) {
+				// 	height: $home-slider-height-mobile;
+				// }
+				// @include responsive($media-tablet) {
+				// 	height: $home-slider-height;
+				// }
+				>ul {
+					height: 100%;
+					li {
+						height: 100%;
+						>span {
+							@include responsive-image();
+							width: 100%;
+							height: 100%;
+							img {
+								height: 100%;
+							}
+						}
+						.overlay {
+							background: transparent url($imagePath + 'bxslider/overlay.png') 0 0;
+							top: 0;
+							left: 0;
+							opacity: 0.5;
+							z-index: 1;
+							width: 100%;
+							height: 100%;
+							position: absolute;
+							@include user-select(none);
+						}
+						.container {
+							position: relative;
+							z-index: 2;
+							color: $white;
+						}
+					}
+				}
+			}
+			.bx-wrapper .bx-controls-direction a {
+				display: block;
+			}
+		}
+	}
 	.flexslider {
 		&.home-slider {
 			height: $home-slider-height-mobile-small;

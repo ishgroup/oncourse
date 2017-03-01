@@ -11,14 +11,16 @@
 // Author: Chintan Kotadia
 //
 
-// Content settings */
+// Content settings
 
-$containerWidth-c: 1260px !default;
+$containerWidth-c: 1460px !default;
 $anchorColor-c: #7d8087 !default;
 $anchorHoverColor-c: #37b8cb !default;
 
-$primaryColor-c: #859f4b !default;
-$secondaryColor-c: #247a83 !default;
+$layout-color-c: #4cddf3 !default;
+
+$primaryColor-c: #404040 !default;
+$secondaryColor-c: #00515f !default;
 
 $small-screen-c: 640px !default;
 $tablet-screen-c: 992px !default;
@@ -26,19 +28,24 @@ $desktop-screen-c: 1080px !default;
 $custom-screen-c: 1060px !default;
 
 $bodyFontFamily-c: 'Source Sans Pro', sans-serif !default;
-$bodyFontSize-c: 14px !default;
-$bodyFontColor-c: #333333 !default;
-$bodyBackground-c: $white !default;
+$bodyFontSize-c: 15px !default;
+$bodyFontColor-c: #717171 !default;
+$bodyBackground-c: #f7f7f7 !default;
 
-$discountBlockDisplay-c: block !default;
-$discountBlockActionLinkDisplay-c: block !default;
+$headerTopBarMarginBottom-c: 0 !default;
+$headerTopBarPaddingTop-c: 0 !default;
+$headerTopBarHeight-c: auto !default;
+$headerTopBarBG-c: $white !default;
+
+$discountBlockDisplay-c: none !default;
+$discountBlockActionLinkDisplay-c: none !default;
 $discountBlockTextColor-c: $anchorColor-c !default;
 $discountBlockTitleColor-c: $bodyFontColor-c !default;
 
-@if $theme == "c" {
-  $useDefaultFont: false;
-  @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,900);
+$classItemBackgroundColor-c: transparent !default;
+$classItemBorder-c: #dedede !default;
 
+@if $theme == "c" {
   $containerWidth: $containerWidth-c;
 
   $anchorColor: $anchorColor-c;
@@ -56,12 +63,17 @@ $discountBlockTitleColor-c: $bodyFontColor-c !default;
   // Font Families
 
   $bodyBackground: $bodyBackground-c;
-  $bodyFontFamily: 'Raleway', sans-serif;
+  $bodyFontFamily: $bodyFontFamily-c;
   $bodyFontSize: $bodyFontSize-c;
   $bodyFontColor: $bodyFontColor-c;
 
   $discountBlockTextColor: $discountBlockTextColor-c;
   $discountBlockTitleColor: $discountBlockTitleColor-c;
+
+  $headerTopBarMarginBottom: $headerTopBarMarginBottom-c;
+  $headerTopBarPaddingTop: $headerTopBarPaddingTop-c;
+  $headerTopBarHeight: $headerTopBarHeight-c;
+  $headerTopBarBG: $headerTopBarBG-c;
 
   // Content container
   $contentContainerMarginTop: 0px;
@@ -101,6 +113,10 @@ $discountBlockTitleColor-c: $bodyFontColor-c !default;
   $coursesJoinButtonBackground: $primaryColor-c;
   $coursesJoinButtonHoverBackground: $primaryColor-c;
   $classItemBorderHoverColor: $primaryColor-c;
+  $classItemBackgroundColor: $classItemBackgroundColor-c;
+
+  $classItemBorder: 1px solid $classItemBorder-c;
+  $classItemBorderLeft: 6px solid $classItemBorder-c;
 
   $coursesFontFamily: $bodyFontFamily-c;
   $coursesDetailsFontFamily: $bodyFontFamily-c;

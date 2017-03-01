@@ -229,10 +229,12 @@
 					margin-top: -2px;
 					left: 0;
 					z-index: 9;
+					text-align: $navChildMenuTextAlign;
 					@include responsive($media-tablet) {
 						position: absolute;
 						width: $first-accent-width;
 						min-width: 200px;
+						text-align: $navChildMenuTextAlignTablet;
 					}
 				}
 

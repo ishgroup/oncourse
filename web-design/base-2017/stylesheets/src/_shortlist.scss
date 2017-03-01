@@ -47,6 +47,7 @@
 	// Short list info displaying selected courses count and text
 	.shortlistInfo {
 		span {
+			background: $shortListInfoSpanBGColor;
 			color: $shortListInfoSpanColor;
 			float: left;
 			font-size: $shortListInfoSpanFontSize;
