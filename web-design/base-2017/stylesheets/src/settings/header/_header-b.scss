@@ -93,17 +93,26 @@ $advanceSearchButtonSubmitPosition-b: left !default;
 
 $advanceSearchColor-b: #202020 !default;
 $advanceSearchButtonBG-b: #d0e64b !default;
+$advanceSearchButtonBG-Internal-b: #d0e64b !default;
+
 $advanceSearchButtonClearBackground-b: #d3eaec !default;
+$advanceSearchButtonClearBackground-Internal-b: #b6d741 !default;
+
 $searchActiveButtonBG-b: $advanceSearchButtonBG-b !default;
 
 $toggleSearchActiveBackground-b: #9ac836 !default;
 
 // Advanced search
 $advanceSearchBG-b: #fbfbfb !default;
+$advanceSearchBG-Internal-b: #9ac836 !default;
 $advanceSearchBGRGB-b: $advanceSearchBG-b !default;
 $advancedSearchPriceDisplay-b: block !default;
 $advancedSearchLocationWidth-b: 50% !default;
 $advancedSearchPriceWidth-b: $advancedSearchLocationWidth-b !default;
+
+$advanceSearchInputBG-Internal-b: #f1fed4 !default;
+$advanceSearchInputBG-Home-b: #cecece !default;
+$advanceSearchTitleColor-b: $secondaryColor-b !default;
 
 $searchBoxWidth-b: 190px !default;
 $searchBoxBorder-b: 1px solid #ddd !default;

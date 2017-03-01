@@ -26,8 +26,22 @@ $bodyFontFamily-a: 'Source Sans Pro', sans-serif !default;
 $bodyFontSize-a: 15px !default;
 $bodyFontColor-a: #5c636b !default;
 
+$h1InnerTextColor-a: $primaryColor-a !default;
+
 $discountBlockTextColor-a: $anchorColor-a !default;
 $discountBlockTitleColor-a: $bodyFontColor-a !default;
+
+$courseItemBorderTop-a: 2px dotted $primaryColor-a !default;
+$classItemLinkHoverColor-a: $primaryColor-a !default;
+$classItemBorderHoverColor-a: $primaryColor-a !default;
+
+$courseMoreLinkColor-a: $secondaryColor-a !default;
+$courseMoreLinkHoverColor-a: $primaryColor-a !default;
+
+$coursesJoinButtonBackground-a: $primaryColor-a !default;
+$waitingListTitleHoverBG-a: $bodyFontColor-a !default;
+
+$enrolActionAddedBackground-a: $secondaryColor-a !default;
 
 @if $theme == "a" {
   $containerWidth: $containerWidth-a;
@@ -54,10 +68,11 @@ $discountBlockTitleColor-a: $bodyFontColor-a !default;
   $contentContainerMarginTop: 0px;
 
   // Courses
-  $waitingListTitleHoverBG: $bodyFontColor-a;
+  $waitingListTitleHoverBG: $waitingListTitleHoverBG-a;
 
 
   $h1InnerFontFamily: $bodyFontFamily-a;
+  $h1InnerTextColor: $h1InnerTextColor-a;
 
   $h1LinkColor: $primaryColor-a;
   $h1LinkHoverColor: $secondaryColor-a;
@@ -82,17 +97,25 @@ $discountBlockTitleColor-a: $bodyFontColor-a !default;
   $enrolActionHoverBackground: $secondaryColor-a;
 
   $enrolActionBorder: 1px solid $primaryColor-a;
-  $coursesJoinButtonBackground: $primaryColor-a;
+  $enrolActionAddedBackground: $enrolActionAddedBackground-a;
+
+  $coursesJoinButtonBackground: $coursesJoinButtonBackground-a;
   $coursesJoinButtonHoverBackground: $primaryColor-a;
-  $classItemBorderHoverColor: $primaryColor-a;
+  $classItemBorderHoverColor: $classItemBorderHoverColor-a;
 
   $coursesFontFamily: $bodyFontFamily-a;
   $coursesDetailsFontFamily: $bodyFontFamily-a;
   $normalFontFamily: $bodyFontFamily-a;
 
+  $courseItemBorderTop: $courseItemBorderTop-a;
+
+  $courseMoreLinkColor: $courseMoreLinkColor-a;
+  $courseMoreLinkHoverColor: $courseMoreLinkHoverColor-a;
 
   $btnBackgroundColor: $primaryColor-a;
   $btnBackgroundHoverColor: $secondaryColor-a;
 
   $btnType2BackgroundColor: $secondaryColor-a;
+
+  $classItemLinkHoverColor: $classItemLinkHoverColor-a;
 }

@@ -21,6 +21,9 @@ $colorTypeThree: #d0e64b !default;
 $colorTypeFour: #b9cc46 !default;
 
 $colorTypeFive: #33a6b2 !default;
+$colorTypeFiveHover: darken($colorTypeFive, 5%) !default;
+$colorTypeFiveBorderColorHover: $colorTypeFive !default;
+
 $colorTypeSix: #247a83 !default;
 
 $containerWidth-b: 1260px !default;
@@ -40,10 +43,28 @@ $bodyFontSize-b: 14px !default;
 $bodyFontColor-b: #333333 !default;
 $bodyBackground-b: $white !default;
 
+$h1InnerTextColor-b: $primaryColor-b !default;
+
 $discountBlockDisplay-b: block !default;
 $discountBlockActionLinkDisplay-b: block !default;
 $discountBlockTextColor-b: $anchorColor-b !default;
 $discountBlockTitleColor-b: $bodyFontColor-b !default;
+
+$courseItemBorderTop-b: 2px dotted $primaryColor-b !default;
+
+$contentMainTitle-b: $secondaryColor-b !default;
+$contentSubTitle-b: #0a3a4a !default;
+
+$classItemLinkHoverColor-b: $primaryColor-b !default;
+$classItemBorderHoverColor-b: $primaryColor-b !default;
+
+$courseMoreLinkColor-b: $secondaryColor-b !default;
+$courseMoreLinkHoverColor-b: $primaryColor-b !default;
+
+$coursesJoinButtonBackground-b: $primaryColor-b !default;
+$waitingListTitleHoverBG-b: $bodyFontColor-b !default;
+
+$enrolActionAddedBackground-b: $secondaryColor-b !default;
 
 @if $theme == "b" {
   $useDefaultFont: false;
@@ -78,10 +99,11 @@ $discountBlockTitleColor-b: $bodyFontColor-b !default;
   $contentContainerMarginTop: 0px;
 
   // Courses */
-  $waitingListTitleHoverBG: $bodyFontColor-b;
+  $waitingListTitleHoverBG: $waitingListTitleHoverBG-b;
 
 
   $h1InnerFontFamily: $bodyFontFamily-b;
+  $h1InnerTextColor: $h1InnerTextColor-b;
 
   $discountBlockDisplay: $discountBlockDisplay-b;
   $discountBlockActionLinkDisplay: $discountBlockActionLinkDisplay-b;
@@ -109,16 +131,25 @@ $discountBlockTitleColor-b: $bodyFontColor-b !default;
   $enrolActionHoverBackground: $secondaryColor-b;
 
   $enrolActionBorder: 1px solid $primaryColor-b;
-  $coursesJoinButtonBackground: $primaryColor-b;
+  $enrolActionAddedBackground: $enrolActionAddedBackground-b;
+
+  $coursesJoinButtonBackground: $coursesJoinButtonBackground-b;
   $coursesJoinButtonHoverBackground: $primaryColor-b;
-  $classItemBorderHoverColor: $primaryColor-b;
+  $classItemBorderHoverColor: $classItemBorderHoverColor-b;
 
   $coursesFontFamily: $bodyFontFamily-b;
   $coursesDetailsFontFamily: $bodyFontFamily-b;
   $normalFontFamily: $bodyFontFamily-b;
 
+  $courseItemBorderTop: $courseItemBorderTop-b;
+
+  $courseMoreLinkColor: $courseMoreLinkColor-b;
+  $courseMoreLinkHoverColor: $courseMoreLinkHoverColor-b;
+
   $btnBackgroundColor: $primaryColor-b;
   $btnBackgroundHoverColor: $secondaryColor-b;
 
   $btnType2BackgroundColor: $secondaryColor-b;
+
+  $classItemLinkHoverColor: $classItemLinkHoverColor-b;
 }

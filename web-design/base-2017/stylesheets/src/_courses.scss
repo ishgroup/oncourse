@@ -44,7 +44,7 @@
       .courseItem {
         // Following backface-visibility used for text backface visibility
         @include backface-visibility(hidden);
-        border-top: 2px dotted $primaryColor;
+        border-top: $courseItemBorderTop;
         padding-top: 20px;
       }
     }
@@ -295,16 +295,16 @@
         width: 100%;
         right: 0;
         text-align: right;
-        color: $secondaryColor;
+        color: $courseMoreLinkColor;
         z-index: 2;
 
         a {
-          color: $secondaryColor;
+          color: $courseMoreLinkColor;
           font-weight: bold;
           text-decoration: none;
 
           &:hover {
-            color: $primaryColor;
+            color: $courseMoreLinkHoverColor;
             text-decoration: underline;
           }
         }
@@ -321,7 +321,7 @@
         text-align: $waitingListTitleAlign;
 
         strong {
-          color: $primaryColor;
+          color: $waitingListStrongTextColor;
         }
 
         a {
@@ -605,7 +605,7 @@
         color: gray;
       }
       .fee-discounted {
-        color: $primaryColor;
+        color: $coursesClassItemFeeDiscountColor;
         margin-left: 5px
       }
       acronym.discount-price {
@@ -670,7 +670,7 @@
         @include border-radius($enrolActionBorderRadius);
       }
       &.enrol-added-class {
-        background: $secondaryColor;
+        background: $enrolActionAddedBackground;
         border: 1px solid $enrolActionHoverBorderColor;
       }
 
@@ -709,9 +709,9 @@
   }
 
   a {
-    color: #4D4D4D;
+    color: $classItemLinkColor;
     &:hover {
-      color: $primaryColor;
+      color: $classItemLinkHoverColor;
     }
   }
 
@@ -943,7 +943,7 @@
 
   a {
     &:hover {
-      color: $primaryColor;
+      color: $coursesRelatedItemsLinkHoverColor;
     }
   }
 }
@@ -1062,9 +1062,9 @@
   }
 
   a:link {
-    color: $primaryColor;
+    color: $coursesSessionTableLinkColor;
     &:hover {
-      color: #444;
+      color: $coursesSessionTableLinkHoverColor;
     }
   }
 }

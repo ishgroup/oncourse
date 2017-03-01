@@ -54,26 +54,26 @@
 					.top-bar {
 						margin-bottom: 30px;
 						#headerToolbar #search_box #advanced_search {
-							background: #9ac836;
+							background: $advanceSearchBG-Internal-b;
 							color: $white;
 							.advanced-search-form {
 								.search-title {
 									color: $white;
 								}
 								input[type="text"], select, input[type="checkbox"] {
-									background: #f1fed4;
+									background: $advanceSearchInputBG-Internal-b;
 								}
 								#adv_search_submit {
 									button, a {
-										background: #d0e64b;
+										background: $advanceSearchButtonBG-Internal-b;
 										&:hover {
-											background: darken(#d0e64b, 10%);
+											background: darken($advanceSearchButtonBG-Internal-b, 10%);
 										}
 									}
 									a {
-										background: #b6d741;
+										background: $advanceSearchButtonClearBackground-Internal-b;
 										&:hover {
-											background: darken(#b6d741, 10%);
+											background: darken($advanceSearchButtonClearBackground-Internal-b, 10%);
 										}
 									}
 								}
@@ -186,12 +186,12 @@
 							z-index: 9999;
 							.advanced-search-form {
 								input[type="text"], select, input[type="checkbox"] {
-									background: #cecece;
+									background: $advanceSearchInputBG-Home-b;
 								}
 								.search-title {
 									font-size: 30px;
 									font-weight: bold;
-									color: $secondaryColor;
+									color: $advanceSearchTitleColor-b;
 									margin-bottom: 25px;
 								}
 								>div {

@@ -32,6 +32,8 @@ $bodyFontSize-c: 15px !default;
 $bodyFontColor-c: #717171 !default;
 $bodyBackground-c: #f7f7f7 !default;
 
+$h1InnerTextColor-c: $primaryColor-c !default;
+
 $headerTopBarMarginBottom-c: 0 !default;
 $headerTopBarPaddingTop-c: 0 !default;
 $headerTopBarHeight-c: auto !default;
@@ -44,6 +46,19 @@ $discountBlockTitleColor-c: $bodyFontColor-c !default;
 
 $classItemBackgroundColor-c: transparent !default;
 $classItemBorder-c: #dedede !default;
+
+$courseItemBorderTop-c: 2px dotted $primaryColor-c !default;
+
+$classItemLinkHoverColor-c: $primaryColor-c !default;
+$classItemBorderHoverColor-c: $primaryColor-c !default;
+
+$courseMoreLinkColor-c: $secondaryColor-c !default;
+$courseMoreLinkHoverColor-c: $primaryColor-c !default;
+
+$coursesJoinButtonBackground-c: $primaryColor-c !default;
+$waitingListTitleHoverBG-c: $bodyFontColor-c !default;
+
+$enrolActionAddedBackground-c: $secondaryColor-c !default;
 
 @if $theme == "c" {
   $containerWidth: $containerWidth-c;
@@ -79,10 +94,11 @@ $classItemBorder-c: #dedede !default;
   $contentContainerMarginTop: 0px;
 
   // Courses
-  $waitingListTitleHoverBG: $bodyFontColor-c;
+  $waitingListTitleHoverBG: $waitingListTitleHoverBG-c;
 
 
   $h1InnerFontFamily: $bodyFontFamily-c;
+  $h1InnerTextColor: $h1InnerTextColor-c;
 
   $discountBlockDisplay: $discountBlockDisplay-c;
   $discountBlockActionLinkDisplay: $discountBlockActionLinkDisplay-c;
@@ -110,9 +126,11 @@ $classItemBorder-c: #dedede !default;
   $enrolActionHoverBackground: $secondaryColor-c;
 
   $enrolActionBorder: 1px solid $primaryColor-c;
-  $coursesJoinButtonBackground: $primaryColor-c;
+  $enrolActionAddedBackground: $enrolActionAddedBackground-c;
+
+  $coursesJoinButtonBackground: $coursesJoinButtonBackground-c;
   $coursesJoinButtonHoverBackground: $primaryColor-c;
-  $classItemBorderHoverColor: $primaryColor-c;
+  $classItemBorderHoverColor: $classItemBorderHoverColor-c;
   $classItemBackgroundColor: $classItemBackgroundColor-c;
 
   $classItemBorder: 1px solid $classItemBorder-c;
@@ -122,8 +140,15 @@ $classItemBorder-c: #dedede !default;
   $coursesDetailsFontFamily: $bodyFontFamily-c;
   $normalFontFamily: $bodyFontFamily-c;
 
+  $courseItemBorderTop: $courseItemBorderTop-c;
+
+  $courseMoreLinkColor: $courseMoreLinkColor-c;
+  $courseMoreLinkHoverColor: $courseMoreLinkHoverColor-c;
+
   $btnBackgroundColor: $primaryColor-c;
   $btnBackgroundHoverColor: $secondaryColor-c;
 
   $btnType2BackgroundColor: $secondaryColor-c;
+
+  $classItemLinkHoverColor: $classItemLinkHoverColor-c;
 }

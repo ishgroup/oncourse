@@ -62,6 +62,8 @@ $enrolActionDisabledBorderColor: #CCC !default;
 // Enrol button text color when it is disabled
 $enrolActionDisabledTextColor: #888 !default;
 
+$enrolActionAddedBackground: $secondaryColor !default;
+
 
 //
 //
@@ -76,6 +78,7 @@ $waitingListTitleFontSize: 14px !default;
 $waitingListTitleMarginTop: 15px !default;
 // Waiting list alignment default is center (left, center, right)
 $waitingListTitleAlign: center !default;
+$waitingListStrongTextColor: $primaryColor !default;
 // Waiting list changed background on mouse hover
 $waitingListTitleHoverBG: $anchorHoverColor !default;
 // Waiting list link title color
@@ -127,6 +130,8 @@ $coursesContentFontSize: 13px !default;
 //
 // Following settings are handles courses items style
 //
+
+$courseItemBorderTop: 2px dotted $primaryColor !default;
 
 // Courses short description rows
 $coursesDescriptionRows: 5 !default;
@@ -186,6 +191,9 @@ $courseModuleListPadding: 0 0 10px 6px !default;
 // Courses module child list left space
 $courseModuleListChildPaddingLeft: 6px !default;
 
+$courseMoreLinkColor: $secondaryColor !default;
+$courseMoreLinkHoverColor: $primaryColor !default;
+
 //
 //
 // Following settings are handles class items style
@@ -201,6 +209,8 @@ $classItemBorder: 1px solid $classItemBorderColor !default;
 $classItemBorderLeft: 6px solid $classItemBorderColor !default;
 // Courses class item changed border color on mouse hover
 $classItemBorderHoverColor: $primaryColor !default;
+$classItemLinkColor: #4D4D4D !default;
+$classItemLinkHoverColor: $primaryColor!default;
 
 //
 //
@@ -247,3 +257,9 @@ $coursesClassItemLocationDisplay: block !default;
 $coursesClassItemLocationImage: "/s/img/icon/location.png" !default;
 
 $coursesClassItemPriceDisplay: block !default;
+$coursesClassItemFeeDiscountColor: $primaryColor !default;
+
+$coursesRelatedItemsLinkHoverColor: $primaryColor !default;
+
+$coursesSessionTableLinkColor: $primaryColor !default;
+$coursesSessionTableLinkHoverColor: #444 !default;

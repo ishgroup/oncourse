@@ -148,10 +148,10 @@
 
 		#content {
 			.main-title {
-				color: $secondaryColor;
+				color: $contentMainTitle-b;
 			}
 			.sub-title {
-				color: #0a3a4a;
+				color: $contentSubTitle-b;
 			}
 			.home-design-starting {
 				@include responsive($media-tablet) {
@@ -195,7 +195,8 @@
 					color: $white;
 					border-color: $colorTypeFive;
 					&:hover {
-						background: darken($colorTypeFive, 5%);
+						background: $colorTypeFiveHover;
+						border-color: $colorTypeFiveBorderColorHover;
 					}
 				}
 				.left {
@@ -490,7 +491,7 @@
 				vertical-align: top;
 				width: 100%;
 				margin-bottom: 10px;
-				border-bottom: 1px solid $secondaryColor;
+				border-bottom: 1px solid $secondaryColor-b;
 				@include responsive($media-tablet) {
 					border-bottom: 0px;
 					display: table-cell;
