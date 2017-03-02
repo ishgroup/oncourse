@@ -481,6 +481,8 @@ public class PaymentPortTypeTest extends ServiceTest {
 	private ish.oncourse.webservices.v13.stubs.replication.CourseClassStub courseClassV13() {
 		ish.oncourse.webservices.v13.stubs.replication.CourseClassStub courseClassStub = new ish.oncourse.webservices.v13.stubs.replication.CourseClassStub();
 		courseClassStub.setWillowId(1186958L);
+		courseClassStub.setActive(true);
+		courseClassStub.setCancelled(false);
 		courseClassStub.setCode("1");
 		courseClassStub.setEntityIdentifier("CourseClass");
 		courseClassStub.setCourseId(200L);
@@ -489,7 +491,6 @@ public class PaymentPortTypeTest extends ServiceTest {
 		courseClassStub.setStartDate(today);
 		courseClassStub.setEndDate(dueDate);
 		courseClassStub.setWebVisible(false);
-		courseClassStub.setCancelled(false);
 		courseClassStub.setCreated(today);
 		courseClassStub.setModified(today);
 		//courseClassStub.setMaximumPlaces(30);
