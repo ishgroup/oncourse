@@ -25,7 +25,7 @@ class GatewayHelper {
         retry(
                 { response = processDPSRequest(request) },
                 { (RETRY == response.status) },
-                { Exception e -> logger.error("Attempt to submit payment transaction was failed", e.getStackTrace(), e) })
+                { Exception e -> logger.error("Attempt to submit payment with txnRef:{} transaction was failed", request.transactionDetails.txnRef, e) })
         return response
     }
 
@@ -47,7 +47,7 @@ class GatewayHelper {
             result = DPSResponse.valueOf(stub.getStatus(dpsRequest.paymentGatewayAccount, dpsRequest.paymentGatewayPass, dpsRequest.transactionDetails.txnRef))
         },
                 { (UNKNOWN == result.status) },
-                { Exception e -> logger.error("Attempt to  verify payment status was failed", e.getStackTrace(), e) })
+                { Exception e -> logger.error("Attempt to  verify payment status was failed, payment reference:{}", dpsRequest.transactionDetails.txnRef, e) })
         return result
     }
 
