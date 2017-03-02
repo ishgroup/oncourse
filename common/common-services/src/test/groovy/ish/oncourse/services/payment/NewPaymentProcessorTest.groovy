@@ -1,6 +1,8 @@
 package ish.oncourse.services.payment
 
+import ish.common.types.CreditCardType
 import ish.common.types.PaymentStatus
+import ish.oncourse.model.PaymentIn
 import ish.oncourse.services.PaymentServiceTestModule
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder
 import ish.oncourse.services.persistence.ICayenneService
@@ -124,6 +126,7 @@ class NewPaymentProcessorTest extends ServiceTest {
         PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: '5105105105105100', cvv: '321', month: '11', year: '2017')
         PaymentResponse response = new PaymentResponse()
         controller.processPayment(request, response)
+        testPaymentFields(controller.model.paymentIn, request)
 
         controller = getPaymentController('sessionId')
         assertEquals(GetPaymentState.PaymentState.CHOOSE_ABANDON_OTHER, controller.state)
@@ -145,6 +148,7 @@ class NewPaymentProcessorTest extends ServiceTest {
         response = new PaymentResponse()
         controller.processPayment(request, response)
         assertEquals(GetPaymentState.PaymentState.SUCCESS, response.status)
+        testPaymentFields(controller.model.paymentIn, request)
 
         controller = getPaymentController('sessionId')
         assertEquals(GetPaymentState.PaymentState.SUCCESS, controller.state)
@@ -170,7 +174,8 @@ class NewPaymentProcessorTest extends ServiceTest {
         PaymentRequest request = new PaymentRequest(name: 'JOHN JOHN', number: '5105105105105100', cvv: '321', month: '11', year: '2017')
         PaymentResponse response = new PaymentResponse()
         controller.processPayment(request, response)
-
+        testPaymentFields(controller.model.paymentIn, request)
+        
         controller = getPaymentController('sessionId')
         assertEquals(GetPaymentState.PaymentState.CHOOSE_ABANDON_OTHER, controller.state)
         assertNotNull(controller.model.paymentIn)
@@ -217,6 +222,15 @@ class NewPaymentProcessorTest extends ServiceTest {
 
     }
 
+    private testPaymentFields(PaymentIn paymentIn,  PaymentRequest request) {
+        assertEquals(paymentIn.creditCardName, request.name)
+        assertEquals(paymentIn.creditCardCVV, 'XXX')
+        assertEquals(paymentIn.creditCardExpiry, "$request.month/$request.year")
+        assertEquals(paymentIn.creditCardType, CreditCardType.MASTERCARD)
+        assertEquals(paymentIn.creditCardNumber, "${request.number.substring(0,6)}XXXXXXX${request.number.substring(13)}")
+        
+    }
+    
     private getPaymentController(String sessionId) {
         new PaymentControllerBuilder(sessionId, getService(INewPaymentGatewayServiceBuilder), cayenneService, messages, getService(TestableRequest)).build()
 

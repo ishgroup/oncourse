@@ -84,6 +84,7 @@ class NewPaymentProcessController {
 			paymentIn.creditCardType = CreditCardValidator.determineCreditCardType(request.number)
 			paymentIn.creditCardCVV = CreditCardUtil.obfuscateCVVNumber(request.cvv)
 			paymentIn.creditCardNumber = CreditCardUtil.obfuscateCCNumber(request.number)
+			paymentIn.creditCardName = request.name
 			paymentIn.creditCardExpiry = request.month + "/" + request.year
 			paymentIn.status = PaymentStatus.IN_TRANSACTION
 			paymentIn.objectContext.commitChanges()
