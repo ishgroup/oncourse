@@ -5,6 +5,7 @@ import ish.oncourse.model.Document;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.tag.ITagService;
+import ish.oncourse.util.tapestry.TapestryFormatUtils;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -42,14 +43,15 @@ public abstract class ISHCommon {
     @Property
     private Document attachment;
 
+    @Property
+    private TapestryFormatUtils formatUtils;
+
     public String formatMoney(Money money, String pattern) {
-        NumberFormat format = new DecimalFormat(pattern);
-        return format.format(money);
+       return formatUtils.formatMoney(money, pattern);
     }
 
     public String formatDate(Date date, String pattern) {
-        DateFormat format = new SimpleDateFormat(pattern);
-        return format.format(date);
+        return formatUtils.formatDate(date, pattern);
     }
 
 	public Date getCurrentDate() {
