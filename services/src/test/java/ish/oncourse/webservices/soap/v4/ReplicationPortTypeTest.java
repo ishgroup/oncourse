@@ -190,6 +190,8 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		rootStub.setDetail("CourseDetails");
 		rootStub.setFeeExGst(new BigDecimal(1200));
 		rootStub.setFeeGst(new BigDecimal(1300));
+		rootStub.setActive(true);
+		rootStub.setCancelled(false);
 		rootStub.setMaximumPlaces(23);
 		rootStub.setStartDate(new Date());
 		rootStub.setCreated(new Date());
