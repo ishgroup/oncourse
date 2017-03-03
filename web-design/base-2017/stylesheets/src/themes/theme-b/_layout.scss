@@ -49,6 +49,7 @@
 		letter-spacing: 0px;
 		height: 35px;
 		font-size: 13px;
+		line-height: 1.2;
 		@include responsive($media-tablet) {
 			font-size: 14px;
 			height: 45px;

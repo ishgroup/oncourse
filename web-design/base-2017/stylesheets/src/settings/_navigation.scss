@@ -127,3 +127,11 @@ $navChildMenuTop: 100% !default;
 $navChildMenuHoverTop: 100% !default;
 $navChildMenuHoverLinkDisplayMediaTablet: block !important !default;
 $navChildMenuHoverDisplay: block !important !default;
+
+$enableHamburgerMenu: false !default;
+$navToggleIconWidth: 23px !default;
+$navToggleIconColor: $primaryColor !default;
+$navToggleIconHeight: 4px !default;
+$navToggleIconBorderRadius: 100px !default;
+$navToggleIconLinePosition: -8px !default;
+$navToggleIconHoverColor: $secondaryColor !default;

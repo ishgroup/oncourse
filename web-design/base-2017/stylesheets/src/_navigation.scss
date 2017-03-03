@@ -32,33 +32,94 @@
 	line-height: 1.5;
 	@include border-radius(4px);
 
-    // Following function handles responsive media small screen align to right of page
-    @include responsive($media-small) {
-    	float: right;
-    	width: 105px;
-    }
-
-    // Nav toggle removed in desktop screen
-    @include responsive($media-tablet) {
-    	display: none;
-    }
-    &:hover {
-    	background: $navToggleHoverBG;
-    	color: $navToggleHoverTextColor;
-    }
-    >div {
-    	width: 76px;
-    	margin: 0 auto;
-    }
-    .toggle-title {
-    	display: block;
-    	margin-right: 4px;
-    	position: relative;
-    	>i.toggle-icon {
-    		display: block;
-    	}
-    }
+  // Following function handles responsive media small screen align to right of page
+  @include responsive($media-small) {
+  	float: right;
+  	width: 105px;
   }
+
+  // Nav toggle removed in desktop screen
+  @include responsive($media-tablet) {
+  	display: none;
+  }
+  &:hover {
+  	background: $navToggleHoverBG;
+  	color: $navToggleHoverTextColor;
+  }
+  >div {
+  	width: 76px;
+  	margin: 0 auto;
+  }
+  .toggle-title {
+  	display: block;
+  	margin-right: 4px;
+  	position: relative;
+  	>i.toggle-icon {
+  		display: block;
+  	}
+  }
+}
+
+@if $enableHamburgerMenu == true {
+	.nav-toggle {
+	  .nav-title {
+	    display: none;
+	  }
+	  .nav-toggle-icon {
+	    display: inline-block;
+	    vertical-align: middle;
+	  }
+
+	  .nav-toggle-icon {
+	    padding: 0;
+	    position: relative;
+	    margin-right: 10px;
+	    &, &::before, &::after {
+	      width: $navToggleIconWidth;
+	      background: $navToggleIconColor;
+	      height: $navToggleIconHeight;
+	      left: 0;
+	      right: 0;
+	      @include transition(all 0.2s linear);
+	      border-radius: $navToggleIconBorderRadius;
+	      line-height: 0px;
+	      font-size: 0px;
+	      display: inline-block;
+	      text-indent: -9999px;
+	    }
+	    &::before, &::after {
+	      content: "";
+	      position: absolute
+	    }
+
+	    /*5 (32) => 11 x -13*/
+	    /*2 (23) => 6 x -8*/
+	    &::before {
+	      top: $navToggleIconLinePosition;
+	    }
+	    &::after {
+	      bottom: $navToggleIconLinePosition;
+	    }
+	  }
+	  &.active {
+	    .nav-toggle-icon {
+	      background: transparent;
+	      border: 0 none;
+	      &::before,
+	      &::after {
+	        top: -1px;
+	        background: $navToggleIconHoverColor;
+	      }
+	      &::before {
+	        @include transform(rotate(45deg));
+	      }
+	      &::after {
+	        @include transform(rotate(-45deg));
+	      }
+	    }
+	  }
+	}
+}
 
 //
 // Following styles handles site header navigation menu

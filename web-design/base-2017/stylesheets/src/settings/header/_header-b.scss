@@ -60,11 +60,19 @@ $first-accent-width-b: 400px !default;
 $firstAccentNavAnchorColor-b: #2e2e2e !default;
 $firstAccentNavAnchorPadding-b: 8px 20px !default;
 
-$navToggleBG-b: #e7e7e7 !default;
+$navToggleBG-b: transparent !default;
 $navToggleTextColor-b: #231f20 !default;
 
 $navToggleHoverBG-b: #d5d5d5 !default;
 $navToggleHoverTextColor-b: #231f20 !default;
+
+$enableHamburgerMenu-b: true !default;
+$navToggleIconWidth-b: 23px !default;
+$navToggleIconColor-b: $primaryColor-b !default;
+$navToggleIconHeight-b: 4px !default;
+$navToggleIconBorderRadius-b: 100px !default;
+$navToggleIconLinePosition-b: -7px !default;
+$navToggleIconHoverColor-b: $secondaryColor-b !default;
 
 // Short list
 $shortListOrderLinkFontSize-b: $bodyFontSize-b !default;
@@ -186,6 +194,14 @@ $searchMoreOptionsDisplay-b: block !default;
 
   $navToggleHoverBG: $navToggleHoverBG-b;
   $navToggleHoverTextColor: $navToggleHoverTextColor-b;
+
+  $enableHamburgerMenu: $enableHamburgerMenu-b;
+  $navToggleIconWidth: $navToggleIconWidth-b;
+  $navToggleIconColor: $navToggleIconColor-b;
+  $navToggleIconHeight: $navToggleIconHeight-b;
+  $navToggleIconBorderRadius: $navToggleIconBorderRadius-b;
+  $navToggleIconLinePosition: $navToggleIconLinePosition-b;
+  $navToggleIconHoverColor: $navToggleIconHoverColor-b;
 
   // Short list
   $shortListOrderLinkFontSize: $shortListOrderLinkFontSize-b;

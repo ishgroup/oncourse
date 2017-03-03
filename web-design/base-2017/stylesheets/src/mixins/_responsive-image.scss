@@ -37,13 +37,20 @@
 /// @group ish
 ///
 
-@mixin responsive-image() {
+@mixin responsive-image($horz: false) {
   position: absolute;
   overflow: hidden;
   img {
     position: relative;
     left: 50%;
-    @include transform(translateX(-50%));
+
+    @if $horz == true {
+      top: 50%;
+      @include transform(translateX(-50%) translateY(-50%));
+    } @else {
+      @include transform(translateX(-50%));
+    }
+
     width: auto;
     max-width: none;
     min-width: 100%;

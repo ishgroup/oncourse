@@ -13,6 +13,9 @@
 
 @include theme('c', 'header') {
 	body {
+		&.header-fixed {
+			padding-top: 74px;
+		}
 		.content-images {
 			display: none;
 		}
@@ -85,6 +88,12 @@
 	// 	}
 	// }
 	#header {
+		&.affix.site-header {
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 999;
+		}
 		>p {
 			margin: 0px;
 		}
@@ -100,7 +109,6 @@
 				.nav-toggle {
 					margin: 0px 10px 0px 0px;
 					width: 40px;
-					text-indent: -9999px;
 					padding: 4px 10px;
 					float: right;
 					overflow: hidden;
