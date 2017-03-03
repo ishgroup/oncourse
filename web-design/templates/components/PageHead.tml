@@ -16,6 +16,7 @@
 
 	<t:if test="metaDescription">
 		<meta content="${metaDescription}" name="description" property="og:description"/>
+		<meta content="${metaDescription}" property="twitter:description"/>
 	</t:if>
 
 	<meta name="robots" content="NOODP,NOYDIR" />

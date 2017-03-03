@@ -6,8 +6,10 @@
 		<meta property="og:title" content="${webNode.name} ${college.name}" />
 		<meta property="twitter:title" itemprop="name" content="${webNode.name} ${college.name}"/>
 	</t:if>
+	<meta property="og:site_name" content="${college.name}" />
+	<meta name="twitter:site" content="${college.name}" />
 	<t:unless test="webNode">
-		   <t:delegate to="block:pageName"/>
+		<t:delegate to="block:pageName"/>
 	</t:unless>
 
 	<t:block t:id="pageName">
