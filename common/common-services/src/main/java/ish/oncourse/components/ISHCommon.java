@@ -44,7 +44,7 @@ public abstract class ISHCommon {
     private Document attachment;
 
     @Property
-    private TapestryFormatUtils formatUtils;
+    private TapestryFormatUtils formatUtils = new TapestryFormatUtils();
 
     public String formatMoney(Money money, String pattern) {
        return formatUtils.formatMoney(money, pattern);
