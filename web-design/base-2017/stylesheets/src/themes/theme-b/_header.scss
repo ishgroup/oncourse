@@ -50,7 +50,9 @@
 			#header {
 				.header-container {
 					margin-bottom: 0px;
-					background: none;
+					@include responsive($media-small) {
+						background: none;
+					}
 					.top-bar {
 						margin-bottom: 30px;
 						#headerToolbar #search_box #advanced_search {
@@ -113,6 +115,13 @@
 		.header-container {
 			background: $white;
 			padding-bottom: 22px;
+			z-index: 1;
+			box-shadow: 1px 1px 10px 2px #ddd;
+			border-bottom: 2px solid #ddd;
+			@include responsive($media-small) {
+				box-shadow: none;
+				border: 0;
+			}
 			.top-bar {
 				a.nav-logo {
 					float: left;
@@ -267,7 +276,10 @@
 			}
 			.header-hgroup {
 				#siteLogo {
-					display: none;
+					display: block;
+					@include responsive($media-small) {
+						display: none;
+					}
 				}
 			}
 			.navbar {
@@ -306,17 +318,11 @@
 	.internal-page {
 		#header {
 			.top-bar {
-				.navbar {
-					.site-nav {
-						.list-horizontal {
-							>li:first-child {
-								display: none !important;
-							}
-						}
-					}
-				}
 				.nav-logo {
-					display: block;
+					display: none;
+					@include responsive($media-small) {
+						display: block;
+					}
 				}
 			}
 		}
