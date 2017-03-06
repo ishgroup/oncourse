@@ -29,7 +29,7 @@ class ConvertCourse2SolrCourseTest {
 
         ConvertCourse2SolrCourse course2SolrCourse = new ConvertCourse2SolrCourse()
         SolrCourse solrCourse = course2SolrCourse.convert(course)
-        Assert.assertEquals(course.id, solrCourse.id)
+        Assert.assertEquals(String.valueOf(course.id), solrCourse.id)
         Assert.assertEquals(course.name, solrCourse.name)
         Assert.assertEquals(course.detail, solrCourse.detail)
         Assert.assertEquals(course.code, solrCourse.code)
