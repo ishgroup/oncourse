@@ -11,6 +11,8 @@ class SolrCourseTest {
 
     @Test
     void test() {
+
+        Date current = new Date()
         ObjectMapper mapper = new ObjectMapper()
         SolrCourse course = new SolrCourse().with {
             collegeId = 1
@@ -18,7 +20,7 @@ class SolrCourseTest {
             name = 'Course'
             detail = 'Course detail'
             code = 'C1'
-            startDate = '2017-03-01T07:32:36+00:00'
+            startDate = current
             it
         }
 
