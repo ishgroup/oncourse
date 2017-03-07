@@ -25,9 +25,9 @@
 				padding: 30px;
 				@include responsive($media-tablet) {
 					@if $sidebarLeft == on {
-						padding: 55px 75px 15px 15px;
+						padding: 75px 75px 35px 15px;
 					} @else {
-						padding: 55px 75px 15px 75px;
+						padding: 75px 75px 35px 75px;
 					}
 				}
 			}
@@ -281,9 +281,46 @@
 				padding: 3px 15px;
 				#siteLogo {
 					float: left;
-					max-width: 190px;
-					width: 20px;
 					margin-bottom: 0;
+					font-size: 20px;
+					text-transform: uppercase;
+					font-weight: bold;
+					line-height: 35px;
+					>a {
+						color: #000;
+						&:hover {
+							span {
+								background: lighten($layout-color-c, 10%);
+								background: rgba($layout-color-c, 0.7);
+								&:after {
+									background: darken($layout-color-c, 15%);
+								}
+							}
+						}
+					}
+					img {
+						width: 20px;
+					}
+					span {
+						width: 20px;
+						height: 20px;
+						margin-top: -4px;
+						margin-right: 3px;
+						background: lighten($layout-color-c, 10%);
+						background: rgba($layout-color-c, 0.5);
+						position: relative;
+						display: inline-block;
+						vertical-align: middle;
+						&::after {
+							content: "";
+							position: absolute;
+							left: 0;
+							bottom: 0;
+							width: 10px;
+							height: 10px;
+							background: $layout-color-c;
+						}
+					}
 				}
 			}
 			.navbar {

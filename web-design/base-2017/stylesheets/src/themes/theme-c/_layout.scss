@@ -12,6 +12,10 @@
 //
 
 @include theme('c') {
+	&::selection {
+		background-color: $layout-color-c;
+		color: $white;
+	}
 	#Main.main-page {
 		#content {
 			float: none;
@@ -43,17 +47,34 @@
 	// App Button */
 	.app-btn {
 		display: inline-block;
-		padding: 7.5px 17px;
+		padding: 13px 25px;
 		border-radius: 2em;
 		border: 2px solid;
 		letter-spacing: 0px;
-		height: 35px;
-		font-size: 13px;
+		font-size: 14px;
 		line-height: 1.2;
-		@include responsive($media-tablet) {
-			font-size: 14px;
-			height: 45px;
-			padding: 12.5px 27px;
+		letter-spacing: 1px;
+		font-weight: 300;
+		background: $layout-color-c;
+		&:hover {
+			background: $secondaryColor-c;
+		}
+	}
+
+	.bottom-line {
+		position: relative;
+		margin-bottom: 45px;
+		line-height: 1.4;
+		&::after {
+			content: "";
+			position: absolute;
+			background: $layout-color-c;
+			height: 2px;
+			width: 100px;
+			bottom: -30px;
+			margin: 0 auto;
+			left: 0;
+			right: 0;
 		}
 	}
 
@@ -154,6 +175,41 @@
 			.sub-title {
 				color: #0a3a4a;
 			}
+
+			section.block {
+				padding: 120px 0px;
+				>h3 {
+					font-size: 37px;
+					text-transform: uppercase;
+					letter-spacing: 2px;
+					font-weight: 300;
+					line-height: 1.4;
+					position: relative;
+					margin-bottom: 80px;
+					&::after {
+						@extend .bottom-line;
+					}
+				}
+				>p {
+					max-width: 680px;
+					font-size: 17px;
+					margin: 0 auto 15px;
+				}
+				ul {
+					margin: 0;
+					padding: 0;
+				}
+				ul, li {
+					list-style: none;
+				}
+				&.browse-courses {
+					text-align: center;
+					p>a.app-btn {
+						margin: 65px 0 80px;
+					}
+				}
+			}
+
 			.home-design-starting {
 				@include responsive($media-tablet) {
 					padding: 0px 25px 0 30px;
