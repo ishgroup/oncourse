@@ -12,7 +12,7 @@
             <div itemprop="name" class="col-xs-24 summary">${courseClass.course.name}</div>
             <t:if test="courseClass.course.detail">
                 <div itemprop="description" class="hide">
-                    <t:textOutput value="${courseClass.course.detail}" />
+                    <t:textOutput value="${formatUtils.truncate(courseClass.course.detail, 200)}" />...
                 </div>
                 <p:else>
                 <meta itemprop="description" content="${courseClass.course.name}" />
@@ -37,6 +37,7 @@
                                     </abbr>
 
                                     <t:if t:test="showDateEnd"> -
+                                        <meta itemprop="duration" content="${formatUtils.duration(firstSessionStartDate, courseClass.endDate)}" />
                                         <span itemprop="endDate" class="dtend hide" content="${formatDate(courseClass.endDate,'yyyy-MM-dd')}">
                                             ${formatDate(courseClass.endDate,'yyyy-MM-dd')}
                                         </span>
@@ -45,6 +46,7 @@
                                             <t:output format="endDateFormat" value="courseClass.endDate"/>
                                         </abbr>
                                         <p:else>
+                                            <meta itemprop="duration" content="${formatUtils.duration(firstSessionStartDate, firstSessionEndDate)}" />
                                             <span itemprop="endDate" class="dtend hide" content="${formatDate(firstSessionEndDate,'yyyy-MM-dd')}">
                                                 ${formatDate(firstSessionEndDate,'yyyy-MM-dd')}
                                             </span>
@@ -62,7 +64,7 @@
                                     <t:if t:test="hasManySessions"> (first session)</t:if>
                                 </a>
                                 <br/>
-                                <a itemprop="duration" timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session" content="${classSessions}">${classSessions}</a>
+                                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">${classSessions}</a>
                             </div>
 
                             <p:else>

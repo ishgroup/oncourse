@@ -4,7 +4,7 @@
 	<t:if test="webNode">
 		<title>${webNode.name} ${college.name}</title>
 		<meta property="og:title" content="${webNode.name} ${college.name}" />
-		<meta property="twitter:title" itemprop="name" content="${webNode.name} ${college.name}"/>
+		<meta property="twitter:title" content="${webNode.name} ${college.name}"/>
 	</t:if>
 	<meta property="og:site_name" content="${college.name}" />
 	<meta name="twitter:site" content="${college.name}" />
@@ -19,12 +19,12 @@
 			<t:if test="tag">
 				<title>${tag.name} - ${pageName} ${college.name}</title>
 				<meta property="og:title" content="${tag.name} - ${pageName} ${college.name}" />
-				<meta property="twitter:title" itemprop="name" content="${tag.name} - ${pageName} ${college.name}"/>
+				<meta property="twitter:title" content="${tag.name} - ${pageName} ${college.name}"/>
 			</t:if>
 			<t:unless test="tag">
 				<title>${pageName} ${college.name}</title>
 				<meta property="og:title" content="${pageName} ${college.name}" />
-				<meta property="twitter:title" itemprop="name" content="${pageName} ${college.name}"/>
+				<meta property="twitter:title" content="${pageName} ${college.name}"/>
 			</t:unless>
 		</t:if>
 		<t:remove>Title for pages where pageName is not defined in tapestry template</t:remove>
@@ -32,12 +32,12 @@
 			<t:if test="tag">
 				<title>${tag.name} - ${college.name}</title>
 				<meta property="og:title" content="${tag.name} - ${college.name}" />
-				<meta property="twitter:title" itemprop="name" content="${tag.name} - ${college.name}"/>
+				<meta property="twitter:title" content="${tag.name} - ${college.name}"/>
 			</t:if>
 			<t:unless test="tag">
 				<title>${college.name}</title>
 				<meta property="og:title" content="${college.name}" />
-				<meta property="twitter:title" itemprop="name" content="${college.name}"/>
+				<meta property="twitter:title" content="${college.name}"/>
 			</t:unless>
 		</t:unless>
 	</t:block>
