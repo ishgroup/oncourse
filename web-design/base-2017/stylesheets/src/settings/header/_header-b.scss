@@ -139,6 +139,13 @@ $searchMoreOptionsPadding-b: 0px !default;
 $searchMoreOptionsMinWidth-b: $searchMoreOptionsWidth-b !default;
 $searchMoreOptionsDisplay-b: block !default;
 
+$sliderPagerItemBackground-b: transparent !default;
+$sliderPagerItemWidth-b: 13px !default;
+$sliderPagerItemHeight-b: 13px !default;
+$sliderPagerItemBorderRadius-b: 100% !default;
+$sliderPagerItemBorder-b: 2px solid #fff !default;
+$sliderPagerItemActiveBackground-b: #fff !default;
+
 @if $header-theme == "b" {
   $headerContainerPosition: $headerContainerPosition-b;
   $headerContainerMarginBottom: $headerContainerMarginBottom-b;
@@ -258,4 +265,11 @@ $searchMoreOptionsDisplay-b: block !default;
   $searchMoreOptionsPadding: $searchMoreOptionsPadding-b;
   $searchMoreOptionsMinWidth: $searchMoreOptionsMinWidth-b;
   $searchMoreOptionsDisplay: $searchMoreOptionsDisplay-b;
+
+  $sliderPagerItemBackground: $sliderPagerItemBackground-b;
+  $sliderPagerItemWidth: $sliderPagerItemWidth-b;
+  $sliderPagerItemHeight: $sliderPagerItemHeight-b;
+  $sliderPagerItemBorderRadius: $sliderPagerItemBorderRadius-b;
+  $sliderPagerItemBorder: $sliderPagerItemBorder-b;
+  $sliderPagerItemActiveBackground: $sliderPagerItemActiveBackground-b;
 }

@@ -332,7 +332,6 @@
 
           &:hover {
             color: $waitingListTitleAnchorHoverColor;
-            text-decoration: underline;
           }
         }
 
@@ -353,7 +352,7 @@
         &:hover {
           background: $waitingListTitleHoverBG;
           a, strong {
-            color: $white;
+            color: $waitingListTextHoverColor;
           }
           .join-btn {
             background: $coursesJoinButtonHoverBackground;

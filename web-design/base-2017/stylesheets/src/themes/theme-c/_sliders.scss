@@ -161,27 +161,11 @@
 				}
 			}
 			.bx-pager {
-				width: 100%;
-				max-width: $containerWidth;
 				text-align: right;
 				bottom: 25px;
-				left: 0;
-				right: 0px;
-				margin: 0 auto;
 				padding-right: 25px;
 				@include responsive($media-small) {
 					bottom: 95px;
-				}
-				&.bx-default-pager a {
-					background: transparent;
-					color: transparent;
-					width: 13px;
-					height: 13px;
-					border: 2px solid $white;
-					@include border-radius(1em);
-					&.active {
-						background: $white;
-					}
 				}
 			}
 			.bx-controls-direction a {

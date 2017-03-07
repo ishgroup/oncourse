@@ -138,6 +138,13 @@ $searchMoreOptionsPadding-c: 0px !default;
 $searchMoreOptionsMinWidth-c: $searchMoreOptionsWidth-c !default;
 $searchMoreOptionsDisplay-c: block !default;
 
+$sliderPagerItemBackground-c: transparent !default;
+$sliderPagerItemWidth-c: 13px !default;
+$sliderPagerItemHeight-c: 13px !default;
+$sliderPagerItemBorderRadius-c: 100% !default;
+$sliderPagerItemBorder-c: 2px solid #fff !default;
+$sliderPagerItemActiveBackground-c: #fff !default;
+
 @if $header-theme == "c" {
   $headerContainerPosition: $headerContainerPosition-c;
   $headerContainerMarginBottom: $headerContainerMarginBottom-c;
@@ -265,4 +272,11 @@ $searchMoreOptionsDisplay-c: block !default;
   $searchMoreOptionsPadding: $searchMoreOptionsPadding-c;
   $searchMoreOptionsMinWidth: $searchMoreOptionsMinWidth-c;
   $searchMoreOptionsDisplay: $searchMoreOptionsDisplay-c;
+
+  $sliderPagerItemBackground: $sliderPagerItemBackground-c;
+  $sliderPagerItemWidth: $sliderPagerItemWidth-c;
+  $sliderPagerItemHeight: $sliderPagerItemHeight-c;
+  $sliderPagerItemBorderRadius: $sliderPagerItemBorderRadius-c;
+  $sliderPagerItemBorder: $sliderPagerItemBorder-c;
+  $sliderPagerItemActiveBackground: $sliderPagerItemActiveBackground-c;
 }
