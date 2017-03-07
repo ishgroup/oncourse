@@ -25,7 +25,15 @@ public class TapestryFormatUtils {
     private static final Logger logger = LogManager.getLogger();
 
     /**
-     * Returns duration between two dates in ISO-8601 format
+     * Returns duration between two dates in ISO-8601 format, startDate must be less than endDate,
+     * otherwise method returns empty string.<br/><br/>
+     * <i>Examples:</i><br/><br/>
+     * startDate -> Mon Mar 06 09:53:44 MSK 2017<br/>
+     * endDate -> Tue Mar 07 09:53:44 MSK 2017<br/>
+     * out -> P0Y0M1DT0H0M0.000S<br/><br/>
+     * startDate -> Tue Mar 07 09:53:44 MSK 2017 2017<br/>
+     * endDate -> Mon Mar 06 09:53:44 MSK<br/>
+     * out ->
      *
      * @param startDate start date
      * @param endDate   end date
@@ -45,7 +53,18 @@ public class TapestryFormatUtils {
     }
 
     /**
-     * Just String.format method wrapper
+     * Exception-safe wrapper for String.format() method, in exceptional case returns empty string.<br/><br/>
+     * <i>Examples:</i><br/><br/>
+     * pattern -> this is %s %s %d<br/>
+     * arg0 -> test<br/>
+     * arg1 -> coverage<br/>
+     * arg2 -> 15<br/>
+     * out -> this is test coverage 15<br/><br/>
+     * pattern -> this is %s %s %m<br/>
+     * arg0 -> test<br/>
+     * arg1 -> coverage<br/>
+     * arg2 -> 15<br/>
+     * out ->
      *
      * @param format format pattern
      * @param args   array of arguments
@@ -64,7 +83,12 @@ public class TapestryFormatUtils {
     }
 
     /**
-     * Format money by pattern
+     * Exception-safe method for formatting Money objects to string according to DecimalFormat standards,
+     * in case of exception returns empty string.<br/><br/>
+     * <i>Example:</i><br/><br/>
+     * money -> new Money(new BigDecimal(1000.99))<br/>
+     * pattern -> ###,###.###<br/>
+     * out -> 1,000.99
      *
      * @param money   money
      * @param pattern DecimalFormat pattern string
@@ -84,7 +108,12 @@ public class TapestryFormatUtils {
     }
 
     /**
-     * Format date by pattern
+     * Exception-safe method for formatting Date objects to string according to SimpleDateFormat standards,
+     * in case of exception returns empty string.<br/><br/>
+     * <i>Example:</i><br/><br/>
+     * date -> Mon Mar 06 10:18:45 MSK 2017<br/>
+     * pattern -> YYYY/DD/MM-HH:mm:ss<br/>
+     * out -> 2017/65/03-10:18:45
      *
      * @param date    date
      * @param pattern SimpleDateFormat pattern
@@ -104,7 +133,19 @@ public class TapestryFormatUtils {
     }
 
     /**
-     * Truncate a string to the closest word boundary after a number of characters
+     * Truruncate string by closest word for specified length, result cannot have length more than in parameter.
+     * If closest word is first returns empty string, in exceptional case returns empty string too.
+     * All spaces in the end of string are removes.<br/><br/>
+     * <i>Examples:</i><br/><br/>
+     * src -> test message blah blah blah<br/>
+     * length -> 8<br/>
+     * out -> test<br/><br/>
+     * src -> abracadabra<br/>
+     * length -> 5<br/>
+     * out -><br/><br/>
+     * src -> Lorem ipsum dolor sit amet,<br/>
+     * length -> 27<br/>
+     * out -> Lorem ipsum dolor sit amet,
      *
      * @param src    input string
      * @param length maximum number of characters
