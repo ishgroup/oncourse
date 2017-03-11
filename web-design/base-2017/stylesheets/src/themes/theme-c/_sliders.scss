@@ -222,4 +222,44 @@
 			}
 		}
 	}
+	.gallery-wrapper {
+		.bx-wrapper {
+			&:hover {
+				.bx-controls-direction a {
+					@include opacity(1);
+					&.bx-prev {
+						left: 10px;
+					}
+					&.bx-next {
+						right: 10px;
+					}
+				}
+			}
+			.courses-gallery-items {
+				li {
+					img {
+						margin: 0 auto;
+					}
+				}
+			}
+			.bx-controls-direction a {
+				@include transition(all 0.2s ease-out);
+				@include opacity(0);
+				z-index: 9;
+				&.bx-prev {
+					left: 0;
+				}
+				&.bx-next {
+					right: 0;
+				}
+			}
+			.bx-pager.bx-default-pager a {
+				border: 2px solid #eaeaea;
+				&:hover, &.active, &:focus {
+					background: $layout-color-c;
+					border-color: $layout-color-c;
+				}
+			}
+		}
+	}
 }

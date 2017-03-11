@@ -1,0 +1,68 @@
+//
+//
+// icons.scss
+//
+// Contains all the styles of icons
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
+
+.featured-icon {
+  &::after {
+    content: "";
+    position: absolute;
+    background: url($imagePath + 'icons/color-icons.png');
+  }
+}
+.f-icon-plus::after {
+  @extend .featured-icon;
+  width: 44px;
+  height: 44px;
+  background-position: 0 0;
+}
+.f-icon-mail::after {
+  @extend .featured-icon;
+  width: 44px;
+  height: 23px;
+  background-position: 0 -54px;
+}
+.f-icon-plus {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 20%;
+  z-index: 20;
+  @include opacity(0);
+  @include transition(all 0.2s ease-out);
+}
+.prev-featured, .next-featured, .gallery-wrapper .bx-wrapper .bx-controls-direction a {
+  background: url($imagePath + 'icons/arrows-sprite.png') no-repeat;
+  width: 30px;
+  height: 57px;
+  &:hover {
+    background-color: $layout-color-c;
+  }
+}
+.prev-featured {
+  background-position: -80px -14px;
+}
+.next-featured {
+  background-position: -80px -98px;
+}
+
+.gallery-wrapper .bx-wrapper .bx-controls-direction {
+  a {
+    background-color: $layout-color-c;
+    &.bx-prev {
+      background-position: -16px -14px;
+    }
+    &.bx-next {
+      background-position: -16px -98px;
+    }
+  }
+}
