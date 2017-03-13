@@ -69,7 +69,7 @@ public class QueuedRecord extends _QueuedRecord {
 		super.validateForSave(result);
 		QueuedTransaction transaction = getQueuedTransaction();
 		if (!getCollege().getId().equals(transaction.getCollege().getId())) {
-			result.addFailure(ValidationFailure.validationFailure(this, QueuedRecord.COLLEGE_PROPERTY, String.format(
+			result.addFailure(ValidationFailure.validationFailure(this, COLLEGE_PROPERTY, String.format(
 					"QueuedRecord college:%s doesn't match QueuedTransaction college:%s.", getCollege().getId(), transaction.getCollege()
 							.getId())));
 		}

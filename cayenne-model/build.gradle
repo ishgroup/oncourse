@@ -1,0 +1,36 @@
+configurations {
+    cayenneTools
+}
+
+dependencies {
+    cayenneTools "org.apache.cayenne:cayenne-tools:$cayenneVersion"
+}
+
+dependencies {
+    compile ("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion") {
+        //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
+        exclude group: 'org.apache.cayenne', module: 'cayenne-server'
+    }
+
+    compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
+    compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
+    compile 'joda-time:joda-time:1.6.2'
+
+}
+
+task cayenne {
+    doLast {
+        ant.taskdef(resource: 'org/apache/cayenne/tools/antlib.xml', classpath: project.configurations.cayenneTools.asPath)
+
+        ant.cgen(map: file("${projectDir}/src/main/resources/oncourse.map.xml"),
+                superPkg: "ish.oncourse.model.auto",
+                destDir: file("${projectDir}/src/main/java"),
+                makepairs: true,
+                mode: 'all',
+                overwrite: true,
+                createPropertyNames: true
+        )
+    }
+}
+
+compileJava.dependsOn(cayenne)

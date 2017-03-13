@@ -15,4 +15,5 @@ include 'admin',
 	'web',
 	'cms',
 	'willow:api',
-	'willow:model'
+	'willow:model',
+	'cayenne-model'
