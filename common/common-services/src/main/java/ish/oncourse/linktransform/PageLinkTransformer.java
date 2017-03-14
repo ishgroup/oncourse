@@ -5,16 +5,17 @@
 
 package ish.oncourse.linktransform;
 
+import ish.oncourse.linktransform.functions.GetCourseClassByPath;
 import ish.oncourse.model.*;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.sites.ISitesService;
-import ish.oncourse.services.sites.SitesService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.voucher.IVoucherService;
@@ -118,6 +119,9 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 	IRoomService roomService;
 
 	@Inject
+	ICayenneService cayenneService;
+
+	@Inject
 	private IWebSiteService webSiteService;
 
 	@Inject
@@ -219,12 +223,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			break;
 		case CourseClass:
-			CourseClass courseClass = null;
-			String courseClassCode = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			if (courseClassCode != null) {
-				courseClass = courseClassService.getCourseClassByFullCode(courseClassCode);
-			}
-			if (courseClass != null && courseService.availableByRootTag(courseClass.getCourse())) {
+			CourseClass courseClass = GetCourseClassByPath
+					.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentCollege(), path)
+					.get();
+			if (courseClass != null) {
 				request.setAttribute(CourseClass.class.getSimpleName(), courseClass);
 			} else {
 				pageIdentifier = PageIdentifier.PageNotFound;
