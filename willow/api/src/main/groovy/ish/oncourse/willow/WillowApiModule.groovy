@@ -2,12 +2,8 @@ package ish.oncourse.willow
 
 import com.google.inject.Binder
 import io.bootique.ConfigModule
-import ish.oncourse.cxf.CXFApplication
 import ish.oncourse.cxf.CXFModule
-import ish.oncourse.cxf.CXFResource
-import ish.oncourse.willow.service.CourseClassService
-import ish.oncourse.willow.service.ShoppingCartService
-import org.apache.cxf.interceptor.LoggingInInterceptor
+import ish.oncourse.willow.service.*
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 /**
@@ -18,6 +14,7 @@ class WillowApiModule extends ConfigModule{
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(ShoppingCartService)
         CXFModule.contributeResources(binder).addBinding().to(CourseClassService)
+        CXFModule.contributeResources(binder).addBinding().to(ContactService)
 
     }
 }
