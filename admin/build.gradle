@@ -33,6 +33,8 @@ dependencies {
 	compile 'org.apache.tapestry:tapestry-upload:5.2.6'
 	compile "org.codehaus.groovy:groovy:$groovyVersion"
 
+	compile 'org.reflections:reflections:0.9.11'
+	
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
