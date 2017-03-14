@@ -33,12 +33,9 @@ public class CourseUpdater extends AbstractWillowUpdater<CourseStub, Course> {
 		entity.setIsWebVisible(stub.isWebVisible());
 		entity.setModified(stub.getModified());
 		entity.setName(stub.getName());
-		if (stub.getQualificationId() != null) {
-			entity.setQualification(Cayenne.objectForPK(entity.getObjectContext(), Qualification.class, stub.getQualificationId()));
-		}
-		if (stub.getNominalHours() != null) {
-			entity.setNominalHours(stub.getNominalHours().floatValue());
-		}
+		entity.setQualification(
+				stub.getQualificationId() != null ? Cayenne.objectForPK(entity.getObjectContext(), Qualification.class, stub.getQualificationId()) : null);
+		entity.setNominalHours(stub.getNominalHours() != null ? stub.getNominalHours().floatValue() : 0F);
 		entity.setSearchText(stub.getSearchText());
 		entity.setEnrolmentType(TypesUtil.getEnumForDatabaseValue(stub.getEnrolmentType(), CourseEnrolmentType.class));
 	}
