@@ -3,6 +3,7 @@ package ish.oncourse.willow.model;
 public class Contact {
     private long id;
     private String firstName;
+    private String uniqueIdentifier;
     private String lastName;
     private String email;
 
@@ -20,6 +21,14 @@ public class Contact {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getUniqueIdentifier() {
+        return uniqueIdentifier;
+    }
+
+    public void setUniqueIdentifier(String uniqueIdentifier) {
+        this.uniqueIdentifier = uniqueIdentifier;
     }
 
     public String getLastName() {

@@ -6,6 +6,8 @@ public class Discount {
     private long id;
     private Date expiryDate;
     private double discountedFee;
+    private double discountValue;
+    private String title;
 
     public long getId() {
         return id;
@@ -29,5 +31,21 @@ public class Discount {
 
     public void setDiscountedFee(double discountedFee) {
         this.discountedFee = discountedFee;
+    }
+
+    public double getDiscountValue() {
+        return discountValue;
+    }
+
+    public void setDiscountValue(double discountValue) {
+        this.discountValue = discountValue;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

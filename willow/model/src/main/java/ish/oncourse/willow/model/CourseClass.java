@@ -4,6 +4,7 @@ public class CourseClass {
     private long id;
     private Course course;
     private String code;
+    private CourseClassPrice price;
 
     public long getId() {
         return id;
@@ -27,5 +28,13 @@ public class CourseClass {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public CourseClassPrice getPrice() {
+        return price;
+    }
+
+    public void setPrice(CourseClassPrice price) {
+        this.price = price;
     }
 }
