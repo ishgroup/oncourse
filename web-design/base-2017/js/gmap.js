@@ -10,6 +10,19 @@
 * array that contain the siteMarker and the corresponding infowindow as items.
 */
 var sites;
+var vLat;
+var vLong;
+var gMapOptions;
+var near;
+var vSiteAddress;
+var vFrom;
+var showNearMarker;
+var showMapItems;
+var zoom;
+var map;
+var siteMarkers;
+var gMapSites;
+var mapLoaded;
 
 /**
 * Creates the Map components for div with the given id and options, sets markers to the given sites.
@@ -200,20 +213,6 @@ function dirLoader(dirmap, dirtxt) {
 
 (function($) {
 	$(document).ready(function() {
-		var vLat;
-		var vLong;
-		var gMapOptions;
-		var near;
-		var vSiteAddress;
-		var vFrom;
-		var showNearMarker;
-		var showMapItems;
-		var zoom;
-		var map;
-		var siteMarkers;
-		var gMapSites;
-		var mapLoaded;
-
 		$(document).on('click', '.class-item-info-r .location a.tooltip', function(e) {
 			e.preventDefault();
 		});

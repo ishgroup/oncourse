@@ -79,21 +79,7 @@
 									font-weight: 400;
 								}
 								>a {
-									margin: 35px auto 0;
-									display: block;
-									color: $white;
-									padding: 10px 25px 10px;
-									font-size: 15px;
-									border: 2px solid $layout-color-c;
-									width: 189px;
-									font-weight: 700;
-									text-transform: uppercase;
-									border-radius: 2px;
-									letter-spacing: 2px;
-									text-decoration: none;
-									&:hover {
-										border-color: $white;
-									}
+									@extend .square-btn;
 								}
 							}
 						}

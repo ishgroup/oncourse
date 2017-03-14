@@ -46,8 +46,8 @@
   Don't remove them or the application may break
 */
 
-//= require application.js
 //= require gmap.js
+//= require application.js
 //= require search.js
 //= require shortlist.js
 //= require forms.js
