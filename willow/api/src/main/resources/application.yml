@@ -4,3 +4,13 @@ jetty:
 cxf:
   urlPattern: '/*'
   welcomeText: 'Willow REST API: 0.0.1'
+jdbc:
+  ish:
+    url: jdbc:mysql://localhost:3306/w2test_college?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8
+    username:
+    password:
+    driverClassName: com.mysql.jdbc.Driver
+cayenne:
+  datasource: ish
+  configs:
+    - cayenne-oncourse.xml
