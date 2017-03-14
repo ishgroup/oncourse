@@ -1,5 +1,20 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
 
+	<script type="application/ld+json">
+		{
+			"@context": "http://schema.org",
+			"@type": "WebSite",
+			"name": "${college.name}",
+			"alternateName": "${college.name}",
+			"url": "https://${request.serverName}/",
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": "https://${request.serverName}/courses?s={search_term_string}",
+				"query-input": "required name=search_term_string"
+			}
+		}
+	</script>
+
 	<t:remove>Title for cms pages</t:remove>
 	<t:if test="webNode">
 		<title>${webNode.name} ${college.name}</title>

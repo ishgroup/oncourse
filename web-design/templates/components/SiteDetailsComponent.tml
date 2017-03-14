@@ -2,8 +2,7 @@
 	<div class="locationInfo" itemscope="itemscope" itemtype="http://schema.org/Place">
 		<meta itemprop="name" content="${site.name}" />
 		<t:if t:test="site.hasCoordinates">
-			<span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap"
-				showLocationMap="true" />
+			<span t:type="ui/GoogleDirections" sites="mapSites" showDirections="true" collapseLocationMap="collapseLocationMap" showLocationMap="true" />
 			<span itemprop="geo" itemscope="itemscope" itemtype="http://schema.org/GeoCoordinates">
 				<meta itemprop="latitude" content="${site.latitude}" />
 				<meta itemprop="longitude" content="${site.longitude}" />
@@ -21,6 +20,7 @@
 					</t:if>
 					<meta itemprop="telephone" content="02 8503 8111"/>
 				</div>
+				<p></p>
 			</t:if>
 
 			<t:if t:test="hasDrivingDirections">

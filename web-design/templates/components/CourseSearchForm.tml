@@ -4,6 +4,7 @@
 			<span>Search</span>
 		</h3>
 		<form action="/courses" method="get" id="search" name="search">
+			<label for="s" class="hide">Search:</label>
 			<input type="text" id="s" class="quicksearch" name="s" size="15" autocomplete="off" placeholder="Search" />
 			<button type="submit" id="find" class="find btn">
 				<i class="sicon search-icon"></i>Search
