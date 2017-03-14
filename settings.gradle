@@ -1,5 +1,6 @@
 rootProject.name = 'Willow'
-include 'admin',
+include 'admin', 
+	'common:cayenne-model',
 	'common:common-model',
 	'common:common-services',
 	'common:common-test',
@@ -15,5 +16,5 @@ include 'admin',
 	'web',
 	'cms',
 	'willow:api',
-	'willow:model',
-	'cayenne-model'
+	'willow:model'
+	

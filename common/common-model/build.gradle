@@ -1,5 +1,5 @@
 dependencies {
-	compile project(':cayenne-model')
+	compile project(':common:cayenne-model')
 
 	compile 'commons-lang:commons-lang:2.6'
 	compile 'net.sf.ehcache:ehcache:2.10.0'

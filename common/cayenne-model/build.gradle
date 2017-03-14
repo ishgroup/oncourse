@@ -15,7 +15,7 @@ dependencies {
     compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
     compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
     compile 'joda-time:joda-time:1.6.2'
-
+    
 }
 
 task cayenne {
