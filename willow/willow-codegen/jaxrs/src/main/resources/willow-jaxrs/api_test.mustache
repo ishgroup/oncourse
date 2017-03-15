@@ -1,0 +1,63 @@
+package {{package}};
+
+{{#imports}}import {{import}};
+{{/imports}}
+import org.junit.Test;
+import org.junit.Before;
+import static org.junit.Assert.*;
+
+import javax.ws.rs.core.Response;
+import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.apache.cxf.jaxrs.client.ClientConfiguration;
+import org.apache.cxf.jaxrs.client.WebClient;
+
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+
+{{^fullJavaUtil}}
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+{{/fullJavaUtil}}
+
+/**
+ * API tests for {{classname}}
+ */
+public class {{classname}}Test {
+
+    private {{classname}} api;
+    
+    @Before
+    public void setup() {
+        JacksonJsonProvider provider = new JacksonJsonProvider();
+        List providers = new ArrayList();
+        providers.add(provider);
+        
+        api = JAXRSClientFactory.create("{{basePath}}", {{classname}}.class, providers);
+        org.apache.cxf.jaxrs.client.Client client = WebClient.client(api);
+        
+        ClientConfiguration config = WebClient.getConfig(client);
+    }
+
+    {{#operations}}{{#operation}}
+    /**
+     * {{summary}}
+     *
+     * {{notes}}
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void {{operationId}}Test() {
+        {{#allParams}}
+        {{^isFile}}{{{dataType}}} {{paramName}} = null;{{/isFile}}{{#isFile}}org.apache.cxf.jaxrs.ext.multipart.Attachment {{paramName}} = null;{{/isFile}}
+        {{/allParams}}
+	//{{^vendorExtensions.x-java-is-response-void}}{{>returnTypes}} response = {{/vendorExtensions.x-java-is-response-void}}api.{{operationId}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
+        {{^vendorExtensions.x-java-is-response-void}}//assertNotNull(response);{{/vendorExtensions.x-java-is-response-void}}
+        // TODO: test validations
+        
+        
+    }
+    {{/operation}}{{/operations}}
+}

@@ -1,0 +1,5 @@
+mainClassName = "ish.oncourse.cxf.codegen.WillowStubGenerator"
+
+dependencies {
+    compile(project(":common"))
+}
