@@ -2,9 +2,9 @@ package ish.oncourse.willow.model;
 
 import ish.oncourse.willow.model.Course;
 import ish.oncourse.willow.model.CourseClassPrice;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.joda.time.*;
 
 public class CourseClass  {
   

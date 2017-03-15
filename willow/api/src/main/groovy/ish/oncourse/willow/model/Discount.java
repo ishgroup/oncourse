@@ -1,6 +1,6 @@
 package ish.oncourse.willow.model;
 
-import org.joda.time.*;
+import java.time.LocalDateTime;
 
 public class Discount  {
   

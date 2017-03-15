@@ -44,6 +44,8 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
         typeMapping.put("date", "LocalDateTime");
 
         importMapping.put("LocalDate", "java.time.LocalDateTime");
+        importMapping.put("LocalDateTime", "java.time.LocalDateTime");
+        typeMapping.put("DateTime", "LocalDateTime");
 
         embeddedTemplateDir = templateDir = "willow-jaxrs";
     }
