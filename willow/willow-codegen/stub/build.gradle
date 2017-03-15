@@ -1,5 +1,5 @@
-mainClassName = "ish.oncourse.cxf.codegen.WillowStubGenerator"
+mainClassName = "ish.oncourse.codegen.stub.WillowStubGenerator"
 
 dependencies {
-    compile(project(":common"))
+    compile(project(":codegen-common"))
 }

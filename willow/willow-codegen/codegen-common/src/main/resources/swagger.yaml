@@ -1,0 +1,285 @@
+swagger: '2.0'
+info:
+  title: Ish API
+  description: Ish React App Api
+  version: "1.0.0"
+host: ish.com
+schemes:
+  - https
+basePath: /react
+produces:
+  - application/json
+paths:
+  /products:
+    post:
+      summary: Get list of products
+      operationId: getProducts
+      description: Get list of products based on current shopping cart state
+      tags:
+       - Products
+      consumes:
+       - application/json
+      parameters:
+      - name: productsParams
+        in: body
+        description: Params for request list of products
+        required: true
+        schema:
+          $ref: '#/definitions/ProductsParams'
+      responses:
+        200:
+          description: List of products
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /classes:
+    post:
+      summary: Get list of CourseClasses
+      operationId: getCourseClasses
+      description: Get list of course classes based on current shopping cart state
+      tags:
+       - CourseClasses
+      consumes:
+       - application/json
+      parameters:
+      - name: courseClassesParams
+        in: body
+        description: Params for request list of course classes
+        required: true
+        schema:
+          $ref: '#/definitions/CourseClassesParams'
+      responses:
+        200:
+          description: List of products
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CourseClass'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /cart:
+    post:
+      summary: Create new Cart session
+      description: |
+        Create new session Id that will be used for futher requests to cast endpoints.
+      tags:
+       - Cart
+      consumes:
+       - application/json
+      responses:
+        200:
+          description: Object with token
+          schema:
+            $ref: '#/definitions/Token'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+parameters:
+  Session:
+    name: X-Session-Token
+    in: header
+    description: User's session Id
+    required: true
+    type: string
+definitions:
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Internal Unique identifier of product
+      code:
+        type: string
+        description: Code of product
+      name:
+        type: string
+        description: Name of product
+      description:
+        type: string
+        description: Description of product
+  Course:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Internal Unique identifier of course
+      code:
+        type: string
+        description: Code of course
+      name:
+        type: string
+        description: Name of course
+      description:
+        type: string
+        description: Description of course
+  CourseClass:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Internal Unique identifier of class
+      course:
+        $ref: '#/definitions/Course'
+      code:
+        type: string
+        description: Code of class
+      start:
+        type: string
+        format: date
+        description: Start date of class
+      end:
+        type: string
+        format: date
+        description: End date of class
+      hasAvailablePlaces:
+        type: boolean
+        description: Available places
+      isFinished:
+        type: boolean
+        description: Is class finished
+      isCancelled:
+        type: boolean
+        description: Is class cancelled
+      isAllowByApplication:
+        type: boolean
+        description: Allow by application
+      isPaymentGatewayEnabled:
+        type: boolean
+        description: Is payment gateway enabled
+      price:
+        type: array
+        items:
+          $ref: '#/definitions/CourseClassPrice'
+        description: Prices attached to current course class
+  CourseClassPrice:
+    type: object
+    properties:
+      fee:
+        type: string
+        description: 'TODO:  fee'
+      feeOverriden:
+        type: string
+        description: 'TODO:  feeOverriden'
+      appliedDiscount:
+        $ref: '#/definitions/Discount'
+        description: 'TODO: appliedDiscount'
+      possibleDiscounts:
+        type: array
+        items:
+          $ref: '#/definitions/Discount'
+        description: 'TODO: possibleDiscounts'
+      hasTax:
+        type: boolean
+        description: Has tax
+  Discount:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Internal Unique identifier of discount
+      expiryDate:
+        type: string
+        format: date
+      discountedFee:
+        type: string
+      discountValue:
+        type: string
+      title:
+        type: string
+  Contact:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Internal Unique identifier of course
+      uniqueIdentifier:
+        type: string
+        description: Unique identifier of contact
+      firstName:
+        type: string
+        description: first name of contact
+      lastName:
+        type: string
+        description: last name of contact
+      email:
+        type: string
+        description: email of contact
+  Promotion:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Internal unique indetificator of promotion
+      code:
+        type: string
+        description: Code of promotion
+      name:
+        type: string
+        description: Name of promotion
+  Token:
+    type: object
+    properties:
+      token:
+        type: string
+        description: Unique identifier for the user
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
+  CourseClassesParams:
+    type: object
+    properties:
+      courseClassesIds:
+        type: array
+        items:
+          type: string
+        description: List of requested course classes
+      promotions:
+        type: array
+        items:
+          $ref: '#/definitions/PromotionParams'
+        description: List of applied promotions
+      contact:
+        $ref: '#/definitions/ContactParams'
+  ProductsParams:
+    type: object
+    properties:
+      productsIds:
+        type: array
+        items:
+          type: string
+        description: List of requested products
+      promotions:
+        type: array
+        items:
+          $ref: '#/definitions/PromotionParams'
+        description: List of applied promotions
+      contact:
+        $ref: '#/definitions/ContactParams'
+  ContactParams:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Internal Unique identifier of course
+  PromotionParams:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Internal unique indetificator of promotion
+

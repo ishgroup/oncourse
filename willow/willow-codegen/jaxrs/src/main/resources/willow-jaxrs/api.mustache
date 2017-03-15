@@ -24,7 +24,7 @@ public interface {{classname}}  {
 {{#hasProduces}}
     @Produces({ {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} })
 {{/hasProduces}}
-    public {{>returnTypes}} {{nickname}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
+    {{>returnTypes}} {{nickname}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
 {{/operation}}
 }
 {{/operations}}

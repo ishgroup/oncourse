@@ -6,13 +6,6 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
-import javax.ws.rs.core.Response;
-import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
-import org.apache.cxf.jaxrs.client.ClientConfiguration;
-import org.apache.cxf.jaxrs.client.WebClient;
-
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-
 {{^fullJavaUtil}}
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,24 +22,12 @@ public class {{classname}}Test {
     
     @Before
     public void setup() {
-        JacksonJsonProvider provider = new JacksonJsonProvider();
-        List providers = new ArrayList();
-        providers.add(provider);
-        
-        api = JAXRSClientFactory.create("{{basePath}}", {{classname}}.class, providers);
-        org.apache.cxf.jaxrs.client.Client client = WebClient.client(api);
-        
-        ClientConfiguration config = WebClient.getConfig(client);
     }
 
     {{#operations}}{{#operation}}
     /**
      * {{summary}}
-     *
      * {{notes}}
-     *
-     * @throws ApiException
-     *          if the Api call fails
      */
     @Test
     public void {{operationId}}Test() {

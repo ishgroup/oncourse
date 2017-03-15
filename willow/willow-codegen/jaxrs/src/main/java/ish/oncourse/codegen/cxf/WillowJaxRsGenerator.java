@@ -31,19 +31,19 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
         apiPackage = "ish.oncourse.willow.service";
         modelPackage = "ish.oncourse.willow.model";
 
-        sourceFolder = "src/main/java";
+        sourceFolder = "src/main/groovy";
+        implFolder = "src/main/groovy";
 
-        outputFolder = "generated/willow-jaxrs";
+        outputFolder = "../../api";
 
-        apiTemplateFiles.put("apiServiceImpl.mustache", ".java");
+        apiTemplateFiles.put("apiServiceImpl.mustache", ".groovy");
 
         modelDocTemplateFiles.remove("model_doc.mustache");
         apiDocTemplateFiles.remove("api_doc.mustache");
 
-        typeMapping.put("date", "LocalDate");
-        typeMapping.put("DateTime", "java.time.LocalDateTime");
+        typeMapping.put("date", "LocalDateTime");
 
-        importMapping.put("LocalDate", "java.time.LocalDate");
+        importMapping.put("LocalDate", "java.time.LocalDateTime");
 
         embeddedTemplateDir = templateDir = "willow-jaxrs";
     }
@@ -65,6 +65,30 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
     @Override
     public String getName() {
         return "willow-jaxrs";
+    }
+
+    @Override
+    public String apiFilename(String templateName, String tag) {
+        String suffix = apiTemplateFiles().get(templateName);
+        String result = apiFileFolder() + '/' + toApiFilename(tag) + suffix;
+
+        if (templateName.endsWith("Impl.mustache")) {
+            int ix = result.lastIndexOf('/');
+            result = result.substring(0, ix) + "/impl" + result.substring(ix, result.length() - 7) + "ServiceImpl.groovy";
+            result = result.replace(apiFileFolder(), implFileFolder(implFolder));
+        } else if (templateName.endsWith("Factory.mustache")) {
+            int ix = result.lastIndexOf('/');
+            result = result.substring(0, ix) + "/factories" + result.substring(ix, result.length() - 5) + "ServiceFactory.java";
+            result = result.replace(apiFileFolder(), implFileFolder(implFolder));
+        } else if (templateName.endsWith("Service.mustache")) {
+            int ix = result.lastIndexOf('.');
+            result = result.substring(0, ix) + "Service.java";
+        }
+        return result;
+    }
+
+    private String implFileFolder(String output) {
+        return outputFolder + "/" + output + "/" + apiPackage().replace('.', '/');
     }
 
     @Override

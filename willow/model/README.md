@@ -1,1 +1,0 @@
-1. `gradle generateTypeScript` will generate typescript definitions from java classes and placed them in `build` folder under name `willow.d.ts`.

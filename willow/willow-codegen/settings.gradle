@@ -1,4 +1,4 @@
 include("jaxrs")
 include("stub")
 include("typescript")
-include("common")
+include("codegen-common")

@@ -1,5 +1,5 @@
-mainClassName = "ish.oncourse.cxf.codegen.WillowBackendGenerator"
+mainClassName = "ish.oncourse.codegen.cxf.WillowJaxRsGenerator"
 
 dependencies {
-    compile(project(":common"))
+    compile(project(":codegen-common"))
 }

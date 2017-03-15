@@ -11,3 +11,12 @@
 1. [Swagger Editor](http://editor.swagger.io/#!/)
 2. [Swagger Specification](http://swagger.io/specification/)
 3. [Mustache Template Variables](https://github.com/swagger-api/swagger-codegen/wiki/Mustache-Template-Variables)
+
+## Run
+
+To generate sources for `:willow:api`:
+
+```bash
+pwd # Should be: .../willow/willow-codegen
+./gradlew :jaxrs:run
+```

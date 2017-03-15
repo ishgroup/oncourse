@@ -2,8 +2,8 @@ package ish.oncourse.codegen.common;
 
 import io.swagger.codegen.ClientOptInput;
 import io.swagger.codegen.ClientOpts;
-import io.swagger.codegen.Codegen;
 import io.swagger.codegen.CodegenConfig;
+import io.swagger.codegen.DefaultGenerator;
 import io.swagger.models.Swagger;
 import io.swagger.parser.SwaggerParser;
 
@@ -32,6 +32,6 @@ public final class Launcher {
                 .opts(new ClientOpts())
                 .swagger(swagger);
 
-        return new Codegen().opts(clientOptInput).generate();
+        return new DefaultGenerator().opts(clientOptInput).generate();
     }
 }
