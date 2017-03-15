@@ -1,7 +1,7 @@
-package ish.oncourse.solr.reindex
+package ish.oncourse.services
 
 import groovy.transform.CompileStatic
-import ish.oncourse.solr.zookeeper.ZookeeperLock
+import ish.oncourse.solr.reindex.IReindexJob
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -10,34 +10,39 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 
 @CompileStatic
-class SolrReindexService {
+class ScheduledService {
     private static final Logger logger = LogManager.getLogger()
 
     private ScheduledExecutorService service
 
-    private ZookeeperLock zookeeperLock
+    private IExecutor executor
 
-    List<IReindexJob> jobs = new LinkedList<>()
+    private List<IReindexJob> jobs = new LinkedList<>()
 
-    private List<ScheduledFuture> futures = new LinkedList<>();
+    private List<ScheduledFuture> futures = new LinkedList<>()
 
-
-    private SolrReindexService() {
+    private ScheduledService() {
 
     }
 
-    void start() {
-        this.zookeeperLock.lockAndExecute({
+    List<ScheduledFuture> getFutures() { futures }
+
+    ScheduledService start() {
+        this.executor.execute({
             service = Executors.newScheduledThreadPool(3)
             jobs.each {
                 futures.add(service.scheduleAtFixedRate(it, it.config.initialDelay, it.config.period, it.config.timeUnit))
             }
 
-        }, { Exception e -> logger.error("Cannot start SolrReindexService", e) })
+        })
+        return this
     }
 
     void close() {
         try {
+            service.addShutdownHook {
+                this.executor.release()
+            }
             service.shutdown()
         } catch (e) {
             logger.warn(e)
@@ -45,8 +50,9 @@ class SolrReindexService {
     }
 
 
-    static SolrReindexService valueOf(ZookeeperLock zookeeperLock, IReindexJob... jobs) {
-        SolrReindexService result = new SolrReindexService()
+    static ScheduledService valueOf(IExecutor lockExecutor, IReindexJob... jobs) {
+        ScheduledService result = new ScheduledService()
+        result.executor = lockExecutor
         result.jobs.addAll(jobs)
         return result
     }

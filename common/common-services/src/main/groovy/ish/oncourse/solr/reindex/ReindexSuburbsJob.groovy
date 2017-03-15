@@ -2,6 +2,24 @@ package ish.oncourse.solr.reindex
 
 import groovy.transform.CompileStatic
 
+import java.util.concurrent.TimeUnit
+
 @CompileStatic
-class ReindexSuburbsJob {
+class ReindexSuburbsJob implements IReindexJob {
+    private ScheduleConfig config = new ScheduleConfig(0, 1, TimeUnit.DAYS)
+
+    @Override
+    ScheduleConfig getConfig() {
+        return config
+    }
+
+    @Override
+    void run() {
+        println "${getClass().simpleName} ${new Date()}"
+    }
+
+    static ReindexSuburbsJob instance() {
+        ReindexSuburbsJob job = new ReindexSuburbsJob()
+        return job
+    }
 }
