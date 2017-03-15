@@ -5,8 +5,8 @@ import java.util.Date;
 public class Discount {
     private long id;
     private Date expiryDate;
-    private double discountedFee;
-    private double discountValue;
+    private String discountedFee;
+    private String discountValue;
     private String title;
 
     public long getId() {
@@ -25,19 +25,19 @@ public class Discount {
         this.expiryDate = expiryDate;
     }
 
-    public double getDiscountedFee() {
+    public String getDiscountedFee() {
         return discountedFee;
     }
 
-    public void setDiscountedFee(double discountedFee) {
+    public void setDiscountedFee(String discountedFee) {
         this.discountedFee = discountedFee;
     }
 
-    public double getDiscountValue() {
+    public String getDiscountValue() {
         return discountValue;
     }
 
-    public void setDiscountValue(double discountValue) {
+    public void setDiscountValue(String discountValue) {
         this.discountValue = discountValue;
     }
 
