@@ -47,7 +47,7 @@ public class CourseClassPrice  {
     }
 
     /**
-     * TODO: appliedDiscount
+     * Get appliedDiscount
      * @return appliedDiscount
      */
     public Discount getAppliedDiscount() {
@@ -64,7 +64,7 @@ public class CourseClassPrice  {
     }
 
     /**
-     * TODO: possibleDiscounts
+     * List discounts sorted by discounted fee
      * @return possibleDiscounts
      */
     public List<Discount> getPossibleDiscounts() {

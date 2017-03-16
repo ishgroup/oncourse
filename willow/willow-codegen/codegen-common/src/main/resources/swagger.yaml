@@ -208,9 +208,7 @@ definitions:
         type: boolean
         description: Is payment gateway enabled
       price:
-        type: array
-        items:
-          $ref: '#/definitions/CourseClassPrice'
+        $ref: '#/definitions/CourseClassPrice'
         description: Prices attached to current course class
   CourseClassPrice:
     type: object
@@ -227,7 +225,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Discount'
-        description: 'TODO: possibleDiscounts'
+        description: List discounts sorted by discounted fee
       hasTax:
         type: boolean
         description: Has tax

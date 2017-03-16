@@ -3,8 +3,6 @@ package ish.oncourse.willow.model;
 import ish.oncourse.willow.model.Course;
 import ish.oncourse.willow.model.CourseClassPrice;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CourseClass  {
   
@@ -18,7 +16,7 @@ public class CourseClass  {
     private Boolean isCancelled = null;
     private Boolean isAllowByApplication = null;
     private Boolean isPaymentGatewayEnabled = null;
-    private List<CourseClassPrice> price = new ArrayList<CourseClassPrice>();
+    private CourseClassPrice price = null;
 
     /**
      * Internal Unique identifier of class
@@ -194,21 +192,16 @@ public class CourseClass  {
      * Prices attached to current course class
      * @return price
      */
-    public List<CourseClassPrice> getPrice() {
+    public CourseClassPrice getPrice() {
         return price;
     }
 
-    public void setPrice(List<CourseClassPrice> price) {
+    public void setPrice(CourseClassPrice price) {
        this.price = price;
     }
 
-    public CourseClass price(List<CourseClassPrice> price) {
+    public CourseClass price(CourseClassPrice price) {
       this.price = price;
-      return this;
-    }
-
-    public CourseClass addPriceItem(CourseClassPrice priceItem) {
-      this.price.add(priceItem);
       return this;
     }
 

@@ -15,6 +15,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
 
+import static ish.oncourse.services.preference.PreferenceConstant.PAYMENT_GATEWAY_TYPE;
 import static ish.oncourse.services.preference.PreferenceConstant.STOP_WEB_ENROLMENTS_AGE;
 import static ish.oncourse.services.preference.PreferenceConstant.STOP_WEB_ENROLMENTS_AGE_TYPE;
 import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowCreateContact;
@@ -36,9 +37,7 @@ public class PreferenceController extends CommonPreferenceController {
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_COURSE = "website.course.medialinks.enabled";
 	private static final String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
 	private static final String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
-
-	protected static final String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
-
+	
 	private static final String ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED = "enrolment.corporatePass.payment.enabled";
 	private static final String ENROLMENT_CREDITCARD_PAYMENT_ENABLED = "enrolment.creditCard..payment.enabled";
 

@@ -6,4 +6,6 @@ package ish.oncourse.services.preference;
 public class PreferenceConstant {
     public static final String STOP_WEB_ENROLMENTS_AGE = "stop.web.enrolments.age";
     public static final String STOP_WEB_ENROLMENTS_AGE_TYPE = "stop.web.enrolments.age.type";
+    public static final String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
+
 }
