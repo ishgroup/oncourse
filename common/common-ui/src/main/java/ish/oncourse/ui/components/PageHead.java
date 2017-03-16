@@ -57,6 +57,7 @@ public class PageHead extends ISHCommon {
 
     @SetupRender
     public void  setupRender() {
+	    metaDescription = StringUtils.isNotBlank(metaDescription) ? metaDescription : siteService.getCurrentCollege().getName();
     }
 
 	public String getCiVersion()
