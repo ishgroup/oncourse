@@ -9,6 +9,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 
+/**
+ * The service is used to start reindex jobs periodically
+ */
 @CompileStatic
 class ScheduledService {
     private static final Logger logger = LogManager.getLogger()
