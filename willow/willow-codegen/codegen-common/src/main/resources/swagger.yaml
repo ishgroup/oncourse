@@ -64,6 +64,58 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /contact/{studentUniqueIdentifier}:
+    get:
+      summary: Get contact for provided student unique identifier
+      operationId: getContact
+      description: Get contact for provided student unique identifier
+      tags:
+       - Contact
+      parameters:
+      - name: studentUniqueIdentifier
+        in: path
+        description: Unique identifier of student
+        required: true
+        type: string
+      responses:
+        200:
+          description: Contact for provided id
+          schema:
+            $ref: '#/definitions/Contact'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /promotion/{code}:
+    get:
+      summary: Get promotion by code
+      operationId: getPromotion
+      description: Get promotion by code
+      tags:
+       - Promotion
+      parameters:
+      - name: code
+        in: path
+        description: Promotions's code
+        required: true
+        type: string
+      responses:
+        200:
+          description: Promotion for provided code
+          schema:
+            $ref: '#/definitions/Promotion'
+        404:
+          description: In case if promotion not avaliable for provided code
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message to show on UI
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /cart:
     post:
       summary: Create new Cart session
@@ -170,7 +222,6 @@ definitions:
         description: 'TODO:  feeOverriden'
       appliedDiscount:
         $ref: '#/definitions/Discount'
-        description: 'TODO: appliedDiscount'
       possibleDiscounts:
         type: array
         items:
