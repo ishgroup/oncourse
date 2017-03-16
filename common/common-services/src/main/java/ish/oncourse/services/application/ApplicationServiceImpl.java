@@ -29,21 +29,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 	 */
 	@Override
 	public Application findOfferedApplicationBy(Course course, Student student) {
-		List<Application> applications = findApplications(course, student, ApplicationStatus.OFFERED);
-
-		//find the lowest applicable fee
-		Ordering ordering = new Ordering();
-		ordering.setSortSpecString(Application.FEE_OVERRIDE_PROPERTY);
-		ordering.setNullSortedFirst(false);
-		ordering.setAscending();
-
-		ordering.orderList(applications);
-
-		//exclude expired applications
-		Expression expression = ExpressionFactory.greaterExp(Application.ENROL_BY_PROPERTY, new Date()).orExp(ExpressionFactory.matchExp(Application.ENROL_BY_PROPERTY, null));
-		applications = expression.filterObjects(applications);
-		
-		return applications.size() > 0 ? applications.get(0) : null;
+		return new FindOfferedApplication(course, student,cayenneService.sharedContext()).get();
 	}
 	
 	/**

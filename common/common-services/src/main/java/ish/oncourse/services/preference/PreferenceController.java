@@ -15,6 +15,8 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
 
+import static ish.oncourse.services.preference.PreferenceConstant.STOP_WEB_ENROLMENTS_AGE;
+import static ish.oncourse.services.preference.PreferenceConstant.STOP_WEB_ENROLMENTS_AGE_TYPE;
 import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowCreateContact;
 
 public class PreferenceController extends CommonPreferenceController {
@@ -46,10 +48,7 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private static final String HIDE_CLASS_ON_WEB_AGE = "hide.class.on.web.age";
 	private static final String HIDE_CLASS_ON_WEB_AGE_TYPE = "hide.class.on.web.age.type";
-
-	private static final String STOP_WEB_ENROLMENTS_AGE = "stop.web.enrolments.age";
-	private static final String STOP_WEB_ENROLMENTS_AGE_TYPE = "stop.web.enrolments.age.type";
-
+	
 
     @Inject
 	private ICayenneService cayenneService;
