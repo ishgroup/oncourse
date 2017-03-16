@@ -107,6 +107,7 @@ paths:
         404:
           description: In case if promotion not avaliable for provided code
           schema:
+            title: PromotionNotFound
             type: object
             properties:
               message:
