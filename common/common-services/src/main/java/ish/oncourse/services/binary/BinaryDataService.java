@@ -146,4 +146,10 @@ public class BinaryDataService implements IBinaryDataService {
 				entity.getId(), webSiteService.getCurrentCollege(), true, isStudentLoggedIn(), cayenneService.sharedContext());
 		return getDocuments.get();
 	}
+
+	public <E extends Queueable> List<Document> getImages(E entity) {
+		GetDocuments getDocuments = new GetDocuments(entity.getObjectId().getEntityName(),
+				entity.getId(), webSiteService.getCurrentCollege(), true, isStudentLoggedIn(), cayenneService.sharedContext());
+		return new GetImages(getDocuments).get();
+	}
 }

@@ -35,5 +35,11 @@ public enum AttachmentType {
 		return StringUtils.EMPTY;
 	}
 
-	
+	public String getMimeType() {
+		return mimeType;
+	}
+
+	public String getExtention() {
+		return extention;
+	}
 }

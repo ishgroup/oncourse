@@ -29,4 +29,9 @@ public interface IBinaryDataService {
 	 * @return list of attachments which are linked to this entity
 	 */
 	<E extends Queueable> List<Document> getAttachments(E entity);
+
+	/**
+	 * @return list of documents linked to entity with mime type 'image/jpeg'
+	 */
+	<E extends Queueable> List<Document> getImages(E entity);
 }

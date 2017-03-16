@@ -168,7 +168,49 @@ public class BinaryDataServiceTest extends ServiceTest {
 		assertEquals(binaryInfo1.getObjectId(), binaryDataService.getAttachmentByTag(contact, childTag.getDefaultPath()).getObjectId());
 	}
 
+	@Test
+	public void GetImagesTest() {
+		ObjectContext context = cayenneService.newContext();
+		college = Cayenne.objectForPK(context, College.class, 1l);
+		request.setAttribute("currentCollege", college);
+		Course course = Cayenne.objectForPK(context, Course.class, 1l);
+
+
+		when(webSiteService.getCurrentCollege()).thenReturn(college);
+		IBinaryDataService binaryDataService = new BinaryDataService(cayenneService, webSiteService, applicationStateManager, null, null, null);
+
+		Document binaryInfo = createBinaryInfo(context, "binaryInfo1course", AttachmentType.JPEG.getMimeType());
+		createBinaryInfoRelation(context, course, binaryInfo);
+
+		binaryInfo = createBinaryInfo(context, "binaryInfo2course", AttachmentType.JPEG.getMimeType());
+		createBinaryInfoRelation(context, course, binaryInfo);
+
+		binaryInfo = createBinaryInfo(context, "binaryInfo3course", AttachmentType.JPEG.getMimeType());
+		createBinaryInfoRelation(context, course, binaryInfo);
+
+		binaryInfo = createBinaryInfo(context, "binaryInfo4course", AttachmentType.JPEG.getMimeType());
+		createBinaryInfoRelation(context, course, binaryInfo);
+
+		binaryInfo = createBinaryInfo(context, "binaryInfo5course", AttachmentType.XLS.getMimeType());
+		createBinaryInfoRelation(context, course, binaryInfo);
+
+		binaryInfo = createBinaryInfo(context, "binaryInfo6course", AttachmentType.TXT.getMimeType());
+		createBinaryInfoRelation(context, course, binaryInfo);
+
+		binaryInfo = createBinaryInfo(context, "binaryInfo7course", AttachmentType.BMP.getMimeType());
+		createBinaryInfoRelation(context, course, binaryInfo);
+		
+		context.commitChanges();
+
+		List<Document> list = binaryDataService.getImages(course);
+		assertEquals(4, list.size());
+	}
+	
 	private Document createBinaryInfo(ObjectContext context, String fileName) {
+		return createBinaryInfo(context, fileName, "");
+	}
+
+	private Document createBinaryInfo(ObjectContext context, String fileName, String mimeType) {
 		Document document = context.newObject(Document.class);
 		DocumentVersion version = context.newObject(DocumentVersion.class);
 		
@@ -181,20 +223,20 @@ public class BinaryDataServiceTest extends ServiceTest {
 		version.setCollege(college);
 		version.setPixelHeight(0);
 		version.setPixelWidth(0);
-		version.setMimeType("");
+		version.setMimeType(mimeType);
 		
 		version.setDocument(document);
 		
 		return document;
 	}
 
-	private BinaryInfoRelation createBinaryInfoRelation(ObjectContext context, Contact contact, Document binaryInfo) {
+	private BinaryInfoRelation createBinaryInfoRelation(ObjectContext context, Queueable entity, Document binaryInfo) {
 		BinaryInfoRelation relation = context.newObject(BinaryInfoRelation.class);
 		relation.setDocument(binaryInfo);
 		relation.setCollege(binaryInfo.getCollege());
-		relation.setEntityAngelId(contact.getAngelId());
-		relation.setEntityWillowId(contact.getId());
-		relation.setEntityIdentifier(Contact.class.getSimpleName());
+		relation.setEntityAngelId(entity.getAngelId());
+		relation.setEntityWillowId(entity.getId());
+		relation.setEntityIdentifier(entity.getClass().getSimpleName());
 		return relation;
 	}
 

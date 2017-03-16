@@ -16,4 +16,7 @@
 	<Contact id="1" angelId = "1" collegeId="1"/>
 	<Contact id="2" angelId = "2" collegeId="1"/>
 	<Contact id="3" angelId = "3" collegeId="1"/>
+
+	<Course id="1" collegeId="1" angelId="1" code="AAV" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0" allowWaitingList="1" name="Managerial Accounting" enrolmentType="1"/>
+	
 </dataset>
