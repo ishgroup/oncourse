@@ -15,6 +15,8 @@ import ish.oncourse.services.courseclass.ClassAge
 import ish.oncourse.services.discount.GetAppliedDiscounts
 import ish.oncourse.services.discount.GetPossibleDiscounts
 import ish.oncourse.services.discount.WebDiscountUtils
+import ish.oncourse.services.preference.GetPreference
+import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.services.preference.PreferenceConstant
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.model.CourseClassPrice
@@ -39,8 +41,6 @@ import static ish.oncourse.services.preference.PreferenceConstant.PAYMENT_GATEWA
 
 class CourseClassesApiServiceImpl implements CourseClassesApi {
     
-    final static  Logger logger = LoggerFactory.getLogger(CourseClassesApiServiceImpl.class)
-
     ServerRuntime cayenneRuntime
 
     @Inject
@@ -99,7 +99,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         isFinished = !c.cancelled && c.hasEnded()
                         isCancelled = c.cancelled
                         isAllowByApplication = allowByApplication
-                        isPaymentGatewayEnabled = isPaymentGatewayEnabled(c.college)
+                        isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college: c.college).get()
                         price = new CourseClassPrice().with {
                             fee = c.feeIncGst.toBigDecimal().toString()
                             hasTax = !c.gstExempt
@@ -117,40 +117,25 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                                     if (discountExpiryDate) {
                                         title = title + " expires ${FormatUtils.getShortDateFormat(c.college.timeZone).format(discountExpiryDate)}"
                                     }
+                                    it
                                 }  
                             }
         
                             WebDiscountUtils.sortByDiscountValue(GetPossibleDiscounts.valueOf(c).get(), c.feeExGst, c.taxRate).each { d ->
                                 possibleDiscounts << new Discount(discountedFee: d.feeIncTax.toBigDecimal().toString(), title: d.title)
                             }
+                            it
                         }
                         it
                     }
         }
         result
     }
-
-
+    
     private static boolean hasAvailablePlaces(ish.oncourse.model.CourseClass courseClass) {
-        String  age = getPreference(courseClass.college, PreferenceConstant.STOP_WEB_ENROLMENTS_AGE)
-        String type = getPreference(courseClass.college, PreferenceConstant.STOP_WEB_ENROLMENTS_AGE_TYPE)
+        String  age = new GetPreference(college: courseClass.college, key: PreferenceConstant.STOP_WEB_ENROLMENTS_AGE).get()
+        String type = new GetPreference(college: courseClass.college, key: PreferenceConstant.STOP_WEB_ENROLMENTS_AGE_TYPE).get()
         return courseClass.isHasAvailableEnrolmentPlaces() && new CheckClassAge().courseClass(courseClass).classAge(ClassAge.valueOf(age, type)).check()
-    }
-
-    private static boolean isPaymentGatewayEnabled(College college) {
-        try {
-            PaymentGatewayType.DISABLED != PaymentGatewayType.valueOf(getPreference(college,PAYMENT_GATEWAY_TYPE))
-        } catch (Exception ignored) {
-            logger.error('Can not determine payment gateway type for college id:{}', college.id)
-            false
-        }
-    }
-
-    private static String getPreference(College college, String key) {
-        Preference preference = (ObjectSelect.query(Preference)
-                .where(Preference.NAME.eq(key)) & Preference.COLLEGE.eq(college))
-                .selectOne(college.objectContext)
-        preference ? preference.valueString : null
     }
 }
 

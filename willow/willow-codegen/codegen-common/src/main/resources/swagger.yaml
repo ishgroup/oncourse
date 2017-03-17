@@ -158,6 +158,12 @@ definitions:
       description:
         type: string
         description: Description of product
+      isPaymentGatewayEnabled:
+        type: boolean
+        description: Is payment gateway enabled
+      canBuy:
+        type: boolean
+        description: Is on sale and is Web visible
   Course:
     type: object
     properties:
