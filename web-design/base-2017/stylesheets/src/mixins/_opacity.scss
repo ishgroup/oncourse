@@ -4,12 +4,10 @@
 //
 // The opacity property in CSS specifies how transparent an element is.
 //
-// This file is copyright ish group, Australia.
+// Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-// and is part of ish onCourse.
-//
-// Author: Chintan Kotadia
-//
+
+
 
 @mixin opacity($value) {
   $ie: $value*100;
