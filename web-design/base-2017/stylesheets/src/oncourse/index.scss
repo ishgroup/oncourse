@@ -9,31 +9,7 @@
 
 
 
-//
-// Contains all settings
-//
-
 @import "settings";
-
-//
-// Contains all functions
-//
-@import "functions/functions";
-
-//
-// Contains all mixins
-//
-@import "mixins/mixins";
-
-//
-// Contains fontawesome styles
-//
-@import "library/font-awesome/font-awesome";
-
-//
-// Default vex dialog styles
-//
-@import "/library/vex-dialog/vex";
 
 //
 // Default font family
@@ -45,19 +21,13 @@
 //
 
 @import "main";
-@import "default/jqueryui";
-@import "default/jquery.bxslider";
+
 @import "responsive_embed";
 
 //
 // Normalize style
 //
 @import "normalize";
-
-//
-// All the base styles divided into different files
-// for better management
-//
 
 //
 // Default style for inputs and button
@@ -67,7 +37,7 @@
 //
 // Default style of faceted search
 //
-@import "faceted-search/faceted-search";
+@import "faceted-search";
 
 //
 //
@@ -158,5 +128,3 @@
 // Default print page styles
 //
 @import "print";
-
-@import "themes/themes";

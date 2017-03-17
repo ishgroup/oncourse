@@ -1,0 +1,33 @@
+// Third party libraries which can make building a site easier.
+
+
+// * Bootstrap ( http://getbootstrap.com/) contains a number of clean styles for headings, 
+//   dialogs, buttons and much more. It also contains a mobile first grid layout.
+
+//   If you decide to disable this, make sure you also set the variable to false.
+@import "bootstrap";
+$bootstrap: true;
+
+
+// * Bourbon ( http://bourbon.io/docs/ ) is a set of convenience mixins and other SCSS 
+//   for handling cross-browser CSS
+@import "bourbon/bourbon";
+
+
+// * Font-awesome ( http://fontawesome.io/ ) is a set of useful icons you can use in your site
+@import "font-awesome/font-awesome"
+
+
+// * Vex ( http://github.hubspot.com/vex/ ) is a modal dialog library for creating lightbox 
+//   style floating windows
+@import "vex-dialog/vex"
+
+
+// * jquery BXslider ( http://bxslider.com/ ) is a simple slider and carousel
+@import "jquery.bxslider"
+
+
+
+
+// * jqueryUI. Do not use this library since it is being removed from onCourse.
+@import "jqueryui"

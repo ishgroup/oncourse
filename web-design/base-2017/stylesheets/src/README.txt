@@ -1,0 +1,1 @@
+The "site" folder is where you put your own styling. Try to stay away from editing any other files in the other folders if possible in order to make upgrading to a new base stylesheet set easier in the future.
