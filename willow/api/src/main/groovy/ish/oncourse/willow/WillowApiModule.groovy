@@ -5,7 +5,6 @@ import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
 import ish.math.MoneyType
 import ish.oncourse.cxf.CXFModule
-import ish.oncourse.willow.service.*
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
