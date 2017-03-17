@@ -7,24 +7,26 @@ import ish.oncourse.willow.model.Promotion
 import ish.oncourse.willow.service.PromotionApi
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect
-
-import javax.ws.rs.PathParam
+import org.apache.cxf.interceptor.InInterceptors
 
 
 @CompileStatic
+@InInterceptors(classes = [RequestInterceptor.class])
 class PromotionApiServiceImpl implements PromotionApi {
 
     private ServerRuntime cayenneRuntime
+    private CollegeService collegeService
 
     @Inject
-    PromotionApiServiceImpl(ServerRuntime cayenneRuntime) {
+    PromotionApiServiceImpl(ServerRuntime cayenneRuntime, CollegeService collegeService) {
+        this.collegeService = collegeService
         this.cayenneRuntime = cayenneRuntime
     }
     
     @Override
     Promotion getPromotion(String code) {
         
-     Discount discount  = (ObjectSelect.query(Discount).where(Discount.COLLEGE.isNotNull()) 
+     Discount discount  = (ObjectSelect.query(Discount).where(Discount.COLLEGE.eq(collegeService.college)) 
         & Discount.CODE.eq(code)
         & Discount.getCurrentDateFilter()
         & Discount.IS_AVAILABLE_ON_WEB.eq(true)).selectFirst(cayenneRuntime.newContext())

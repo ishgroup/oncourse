@@ -5,6 +5,7 @@ import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
 import ish.math.MoneyType
 import ish.oncourse.cxf.CXFModule
+import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
@@ -22,7 +23,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(ContactApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ProductsApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(PromotionApiServiceImpl)
-
+        CXFModule.contributeResources(binder).addBinding().to(CollegeService)
     }
 
     static class WillowApiCayenneModule implements Module {

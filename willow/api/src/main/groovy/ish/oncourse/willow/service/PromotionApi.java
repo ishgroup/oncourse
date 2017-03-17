@@ -2,13 +2,16 @@ package ish.oncourse.willow.service;
 
 import ish.oncourse.willow.model.Promotion;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
-@Path("/promotion")
+@Path("/")
 public interface PromotionApi  {
 
     @GET
-    @Path("{code}")
+    @Path("/promotion/{code}")
     @Produces({ "application/json" })
     Promotion getPromotion(@PathParam("code") String code);
 }
