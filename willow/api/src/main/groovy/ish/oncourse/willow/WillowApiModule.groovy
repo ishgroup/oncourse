@@ -2,25 +2,28 @@ package ish.oncourse.willow
 
 import com.google.inject.Binder
 import io.bootique.ConfigModule
+import io.bootique.cayenne.CayenneModule
 import ish.math.MoneyType
 import ish.oncourse.cxf.CXFModule
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
-import org.apache.cayenne.configuration.server.ServerRuntime
+import org.apache.cayenne.configuration.Constants
+import org.apache.cayenne.di.Module
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 class WillowApiModule extends ConfigModule {
     void configure(Binder binder) {
+        CayenneModule.contributeModules(binder).addBinding().to(WillowApiCayenneModule)
+
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(CourseClassesApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ContactApiServiceImpl)
-
     }
 
-    static void registerTypes(ServerRuntime serverRuntime) {
-        serverRuntime.dataDomain.dataNodes.each {
-            it.adapter.extendedTypes.registerType(new MoneyType())
+    static class WillowApiCayenneModule implements Module {
+        @Override
+        void configure(org.apache.cayenne.di.Binder binder) {
+            binder.bindList(Constants.SERVER_DEFAULT_TYPES_LIST).add(new MoneyType())
         }
     }
-
 }
