@@ -9,14 +9,11 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.HTMLUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-
-import static ish.oncourse.services.datalayer.DataLayerFactory.Cart;
 
 public class PageHead extends ISHCommon {
 
@@ -57,8 +54,12 @@ public class PageHead extends ISHCommon {
 
     @SetupRender
     public void  setupRender() {
-	    metaDescription = StringUtils.isNotBlank(metaDescription) ? metaDescription : siteService.getCurrentCollege().getName();
+	    
     }
+	
+	public String getCollegeName() {
+		return siteService.getCurrentCollege().getName();
+	}
 
 	public String getCiVersion()
 	{
