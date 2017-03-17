@@ -11,11 +11,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
-@Path("/")
+@Path("/contact")
 public interface ContactApi  {
 
     @GET
-    @Path("/contact/{studentUniqueIdentifier}")
+    @Path("{studentUniqueIdentifier}")
     @Produces({ "application/json" })
     Contact getContact(@PathParam("studentUniqueIdentifier") String studentUniqueIdentifier);
 }

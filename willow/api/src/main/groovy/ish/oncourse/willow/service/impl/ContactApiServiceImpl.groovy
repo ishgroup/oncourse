@@ -24,7 +24,7 @@ class ContactApiServiceImpl implements ContactApi{
     }
     
     @Override
-    Contact getContact(@PathParam("studentUniqueIdentifier") String studentUniqueIdentifier) {
+    Contact getContact(String studentUniqueIdentifier) {
         ish.oncourse.model.Contact contact = ObjectSelect.query(ish.oncourse.model.Contact).where(ish.oncourse.model.Contact.UNIQUE_CODE.eq(studentUniqueIdentifier)).selectOne(cayenneRuntime.newContext())
         if (contact) {
             new Contact(id: contact.id.toString(),

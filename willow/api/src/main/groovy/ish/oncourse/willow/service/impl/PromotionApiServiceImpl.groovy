@@ -22,7 +22,7 @@ class PromotionApiServiceImpl implements PromotionApi {
     }
     
     @Override
-    Promotion getPromotion(@PathParam("code") String code) {
+    Promotion getPromotion(String code) {
         
      Discount discount  = (ObjectSelect.query(Discount).where(Discount.COLLEGE.isNotNull()) 
         & Discount.CODE.eq(code)
