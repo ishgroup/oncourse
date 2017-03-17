@@ -48,9 +48,6 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
     @Inject
     CourseClassService(ServerRuntime cayenneRuntime) {
         this.cayenneRuntime = cayenneRuntime
-        for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
-            dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType())
-        }
     }
     
     List<CourseClass> getCourseClasses(CourseClassesParams courseClassesParams) {
