@@ -136,6 +136,14 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 parameters:
+  XOrigin:
+    name: X-Origin
+    in: header
+    description: |
+      College URL which we sends with every request,
+      since we have common endpoint for all colledges.
+    required: true
+    type: string
   Session:
     name: X-Session-Token
     in: header
