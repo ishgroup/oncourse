@@ -8,6 +8,7 @@ import ish.oncourse.cxf.CXFModule
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
+import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.di.Module
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
@@ -20,6 +21,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(CourseClassesApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ContactApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ProductsApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(PromotionApiServiceImpl)
 
     }
 
