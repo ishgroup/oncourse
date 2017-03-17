@@ -1,6 +1,7 @@
 package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.math.MoneyType
 import ish.oncourse.model.Application
@@ -39,9 +40,10 @@ import java.time.ZoneOffset
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 import static ish.oncourse.services.preference.PreferenceConstant.PAYMENT_GATEWAY_TYPE
 
+@CompileStatic
 class CourseClassesApiServiceImpl implements CourseClassesApi {
-    
-    ServerRuntime cayenneRuntime
+
+    private ServerRuntime cayenneRuntime
 
     @Inject
     CourseClassService(ServerRuntime cayenneRuntime) {
@@ -80,7 +82,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
             
                     if (ENROLMENT_BY_APPLICATION == c.course.enrolmentType) {
                         if (contact?.student) {
-                            Application application = new FindOfferedApplication(c.course, contact.student, context)
+                            Application application = new FindOfferedApplication(c.course, contact.student, context).get()
                             if (application != null) {
                                 overridenFee = application.feeOverride
                                 allowByApplication = false
@@ -112,8 +114,8 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                                     Money value = c.getDiscountedFeeIncTax(bestDiscount)
                                     discountedFee = value.toBigDecimal().toString()
                                     discountValue = c.feeIncGst.subtract(value).toBigDecimal().toString()
-                                    title = bestDiscount.discount.name
-                                    Date discountExpiryDate = WebDiscountUtils.expiryDate(bestDiscount.discount, c.startDate)
+                                    title = ((ish.oncourse.model.Discount) bestDiscount.discount).name
+                                    Date discountExpiryDate = WebDiscountUtils.expiryDate((ish.oncourse.model.Discount) bestDiscount.discount, c.startDate)
                                     if (discountExpiryDate) {
                                         title = title + " expires ${FormatUtils.getShortDateFormat(c.college.timeZone).format(discountExpiryDate)}"
                                     }

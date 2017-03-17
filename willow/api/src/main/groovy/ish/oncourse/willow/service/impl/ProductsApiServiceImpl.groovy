@@ -1,6 +1,7 @@
 package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.willow.service.*
 import ish.oncourse.willow.model.Product
@@ -10,10 +11,10 @@ import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 
-
+@CompileStatic
 class ProductsApiServiceImpl implements ProductsApi {
     
-    ServerRuntime cayenneRuntime
+    private ServerRuntime cayenneRuntime
 
     @Inject
     ProductsApiServiceImpl(ServerRuntime cayenneRuntime) {
