@@ -1,5 +1,6 @@
 package ish.oncourse.willow.service.impl
 
+import groovy.transform.CompileStatic
 import org.apache.cxf.interceptor.Fault
 import org.apache.cxf.message.Message
 import org.apache.cxf.phase.AbstractPhaseInterceptor
@@ -7,6 +8,7 @@ import org.apache.cxf.phase.Phase
 
 import javax.servlet.http.HttpServletRequest
 
+@CompileStatic
 class RequestInterceptor extends AbstractPhaseInterceptor<Message> {
     static final ThreadLocal<String> ThreadLocalXOrigin = new ThreadLocal<String>()
 
@@ -16,7 +18,7 @@ class RequestInterceptor extends AbstractPhaseInterceptor<Message> {
 
     @Override
     void handleMessage(Message message) throws Fault {
-        HttpServletRequest request = message.get('HTTP.REQUEST')
+        HttpServletRequest request = (HttpServletRequest) message.get('HTTP.REQUEST')
         String host = request.getHeader('X-Origin')
         if (host == null)
             throw new NullPointerException("X-Origin should be not null.")
