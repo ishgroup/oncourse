@@ -23,8 +23,8 @@ public class CourseClassPaymentPlanLine extends _CourseClassPaymentPlanLine impl
 
 		if (getAmount() == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, AMOUNT.getName(), "Amount must be set."));
-		} else if (!getAmount().isGreaterThan(Money.ZERO)) {
-			result.addFailure(ValidationFailure.validationFailure(this, AMOUNT.getName(), "Amount should not be positive."));
+		} else if (getAmount().isNegative()) {
+			result.addFailure(ValidationFailure.validationFailure(this, AMOUNT.getName(), "Amount should be positive or zero."));
 		}
 	}
 }
