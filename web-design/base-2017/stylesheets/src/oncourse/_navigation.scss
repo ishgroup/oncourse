@@ -4,10 +4,12 @@
 //
 // All the styles of navigation
 //
-// Copyright ish group (Australia) and part of ish onCourse.
+// This file is copyright ish group, Australia.
 // It is licensed to you under the Apache License, version 2.0
-
-
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
 
 //
 // Following styles handles nav toggle and its showing on mobile screen
@@ -234,7 +236,7 @@
 						display: $navChildMenuDisplay;
 						padding: $firstChildMenuPadding;
 						@include responsive($media-tablet) {
-							padding:  20px 0;
+							padding: $firstChildMenuTablePadding;
 						}
 
 						> .full-width-menu-drop {
