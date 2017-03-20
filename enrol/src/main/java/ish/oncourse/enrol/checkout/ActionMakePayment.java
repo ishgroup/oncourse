@@ -58,7 +58,7 @@ public class ActionMakePayment extends APurchaseAction {
 			getController().setState(PurchaseController.State.paymentResult);
 			getController().setConfirmationStatus(ConfirmationStatus.NOT_SENT);
 			getController().commitApplications();
-		} else if (getController().getPaymentEditorDelegate().isZeroPayment()) {
+		} else if (getController().getPaymentEditorDelegate().isPaymentPlanZeroPayment()) {
 		    makeCorporatePass();
         } else {
 			if (getModel().getInvoice().getInvoiceLines().isEmpty()) {

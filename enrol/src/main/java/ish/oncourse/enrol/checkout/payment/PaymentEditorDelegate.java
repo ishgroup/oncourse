@@ -42,6 +42,8 @@ public interface PaymentEditorDelegate {
 	
 	boolean isZeroPayment();
 
+	boolean isPaymentPlanZeroPayment();
+
 	List<Application> getApplications();
 
     void updatePaymentStatus();
