@@ -41,7 +41,9 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 	}
 
 	public boolean isPaymentPlanZeroPayment() {
-		return isZeroPayment() && (!purchaseController.getModel().getInvoice().getInvoiceLines().isEmpty() ||
+		return isZeroPayment() &&
+				purchaseController.getModel().getVoucherPayments().isEmpty() &&
+				(!purchaseController.getModel().getInvoice().getInvoiceLines().isEmpty() ||
 				!purchaseController.getModel().getPaymentPlanInvoices().isEmpty());
 	}
 
