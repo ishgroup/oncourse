@@ -9,6 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.HTMLUtils;
+import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -48,7 +49,6 @@ public class PageHead extends ISHCommon {
 	@Parameter
 	private String canonicalRelativeLinkPath;
 
-	@Property
 	@Parameter
 	private String metaDescription;
 
@@ -57,10 +57,6 @@ public class PageHead extends ISHCommon {
 	    
     }
 	
-	public String getCollegeName() {
-		return siteService.getCurrentCollege().getName();
-	}
-
 	public String getCiVersion()
 	{
 		WebSiteVersion currentVersion = webSiteVersionService.getCurrentVersion();
@@ -68,6 +64,15 @@ public class PageHead extends ISHCommon {
 			return "r" + currentVersion.getId().toString();
 		} else {
 			return "development";
+		}
+	}
+
+	@Cached
+	public String getMetaDescription() {
+		if (metaDescription == null) {
+			return siteService.getCurrentCollege().getName();
+		} else {
+			return metaDescription;
 		}
 	}
 

@@ -14,12 +14,7 @@
 	<meta property="og:type" content="website"/>
 	<meta property="og:image" content="" />
 	
-	<t:if test="metaDescription">
-		<meta content="${metaDescription}" name="description" property="og:description"/>
-		<p:else>
-			<meta content="${collegeName}" name="description" property="og:description"/>
-		</p:else>
-	</t:if>
+	<meta content="${metaDescription}" name="description" property="og:description"/>
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
