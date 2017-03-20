@@ -41,9 +41,6 @@ public abstract class APageStructure extends ISHCommon {
     @InjectComponent
     private GoogleTagmanager googleTagmanager;
 
-    @InjectComponent
-    private GoogleTagmanagerNoscript googleTagmanagerNoscript;
-
     @Property
     @Parameter
     private String bodyId;
