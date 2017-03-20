@@ -343,7 +343,7 @@ $fs-enable: false !default;
 // Other settings imported from default settings
 // Settings splitted in files
 //
-@import "settings/default-settings";
+@import "settings/index";
 
 //
 //
@@ -355,10 +355,10 @@ $fs-enable: false !default;
 //
 // Default header settings theme wise
 //
-@import "settings/header/header";
+@import "settings/header/index";
 
 //
 //
 // Default footer settings theme wise
 //
-@import "settings/footer/footer";
+@import "settings/footer/index";
