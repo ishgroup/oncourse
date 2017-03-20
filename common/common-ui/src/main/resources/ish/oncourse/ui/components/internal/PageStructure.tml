@@ -9,18 +9,18 @@
 	<t:if test="wrapped">
 		<head>
 			<meta http-equiv="Cache-control" content="cacheMeta"/>
-			<span t:type="ui/googletagmanager" eventName="eventName" cart="cart"/>
-			<span t:type="ui/pagehead" pageName="pageName" webNode="webNode"
+			<t:ui.googletagmanager eventName="eventName" cart="cart"/>
+			<t:ui.pagehead pageName="pageName" webNode="webNode"
 				  canonicalLinkPath="canonicalLinkPath"
 				  canonicalRelativeLinkPath="canonicalRelativeLinkPath"
 				  metaDescription="metaDescription"/>
 		</head>
 		<body t:type="any" class="prop:agentAwareBodyClass" id="prop:bodyId">
-			<span t:type="ui/googletagmanagerbody"/>
+			<t:ui.googletagmanagerbody/>
 
-            <div  t:type="ui/BodyStructure" webNodeType="webNodeType">
+            <t:ui.BodyStructure webNodeType="webNodeType">
 				<t:body/>
-			</div>
+			</t:ui.BodyStructure>
 		</body>
 		<p:else>
 			<t:body/>
