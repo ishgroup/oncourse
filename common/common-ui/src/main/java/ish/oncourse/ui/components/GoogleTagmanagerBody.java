@@ -14,7 +14,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 /**
  * Created by pavel on 3/16/17.
  */
-public class GoogleTagmanagerNoscript extends ISHCommon {
+public class GoogleTagmanagerBody extends ISHCommon {
     @Inject
     private IWebSiteService siteService;
 

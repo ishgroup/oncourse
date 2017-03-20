@@ -6,7 +6,6 @@ import ish.oncourse.model.WebNodeType;
 import ish.oncourse.services.html.ICacheMetaProvider;
 import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.ui.components.GoogleTagmanager;
-import ish.oncourse.ui.components.GoogleTagmanagerNoscript;
 import ish.oncourse.util.RequestUtil;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.annotations.InjectComponent;
