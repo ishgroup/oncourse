@@ -4,10 +4,12 @@
 //
 // Contains all the styles of enrol contents
 //
-// Copyright ish group (Australia) and part of ish onCourse.
+// This file is copyright ish group, Australia.
 // It is licensed to you under the Apache License, version 2.0
-
-
+// and is part of ish onCourse.
+//
+// Author: Chintan Kotadia
+//
 
 //
 // Following all the styles handles checkout progress steps
@@ -69,6 +71,10 @@
 					background: #e7e7e7;
 					text-transform: uppercase;
 					font-weight: bold;
+					font-size: 7px;
+					@include responsive($media-small) {
+						font-size: 12px;
+					}
 					&:hover {
 						text-decoration: none;
 					}
@@ -116,15 +122,35 @@ span#addstudent {
 			margin: 0;
 			float: left;
 			list-style: none;
-			width: 19.8%;
+			width: 100% !important;
 			background: #fcfcfc;
 			border-top-left-radius: 9px;
+			border-top: 1px solid transparent;
+			border-top-right-radius: 9px;
+			border-bottom: 1px solid #ddd;
+			@include responsive($media-small) {
+				width: 19.8% !important;
+				border-top-right-radius: 0px;
+				border-bottom: 0;
+			}
 			li {
 				margin: 0;
+				width: 50%;
+				display: inline-block;
+				@include responsive($media-small) {
+					width: 100%;
+					display: block;
+				}
 				&.first {
 					&.active a {
-						border-top-color: transparent;
+						border-top-color: #ddd !important;
 						border-top-left-radius: 6px;
+						border-top-right-radius: 6px;
+						@include responsive($media-small) {
+							border-top-color: transparent !important;
+							border-top-left-radius: 6px;
+							border-top-right-radius: 0px;
+						}
 					}
 					a:hover {
 						border-top-left-radius: 6px;
@@ -133,61 +159,113 @@ span#addstudent {
 				a {
 					padding: 8px 12px;
 					line-height: 20px;
-					margin-right: -1px;
+					margin-right: 0px !important;
+					margin-bottom: -1px;
 					display: block;
 					border: 1px solid transparent;
 					color: #555;
 					text-decoration: none;
+					@include responsive($media-small) {
+						margin-bottom: 0px;
+						margin-right: -1px !important;
+					}
 					&:hover {
 						background: #eee;
-						border-color: #EEE #DDD #EEE #EEE;
+						border-color: #EEE #DDD #DDD #DDD !important;
 						color: #333;
+						border-top-right-radius: 6px;
+						border-top-left-radius: 6px;
+						@include responsive($media-small) {
+							border-top-right-radius: 0px;
+							border-top-left-radius: 0px;
+							border-color: #EEE #DDD #EEE #EEE !important;
+						}
 					}
 				}
 				&.active a {
 					background: #fff;
-					border-color: #DDD transparent #DDD transparent;
+					border-color: #DDD #DDD #FFF #DDD !important;
 					font-weight: bold;
 					color: #555;
+					border-top-left-radius: 6px;
+					border-top-right-radius: 6px;
+					@include responsive($media-small) {
+						border-color: #DDD transparent #DDD transparent !important;
+						border-top-left-radius: 0px;
+						border-top-right-radius: 0px;
+					}
 				}
 			}
 		}
 		.tab-content {
-			width: 80%;
+			width: 100% !important;
 			float: left;
 			border-left: 1px solid #ddd;
 			background: #fff;
 			@include border-right-radius(9px);
+			padding: 0 10px;
+			@include responsive($media-small) {
+				width: 80% !important;
+				padding: 0
+			}
 			.enrolmentsSelected fieldset {
 				position: relative;
 			}
 			.form-details {
-				p label {
-					font-weight: normal;
-					text-align: left;
-					padding-left: 20px;
-					padding-right: 0;
-					width: 20%;
-					> small {
-						color: #999;
-						font-size: 9px;
-						display: block;
-						line-height: 9px;
-					}
-					&.radio-btn {
-						width: auto;
-						float: none;
-						margin-left: 0px;
-						max-width: none;
-						display: block;
-						margin-bottom: 5px;
-						&.text-right {
-							text-align: right;
-							padding: 0;
+				p {
+					label {
+						font-weight: bold !important;
+						text-align: left;
+						padding-left: 0px !important;
+						padding-right: 0;
+						margin-bottom: 3px !important;
+						width: 100% !important;
+						max-width: 100% !important;
+						@include responsive($media-small) {
+							font-weight: normal !important;
+							padding-left: 20px !important;
+							width: 20% !important;
+							max-width: 140px !important;
+							margin-bottom: 0px !important;
 						}
-						input[type=radio] {
-							float: left;
-							margin-left: -20px;
+						> small {
+							color: #999;
+							font-size: 9px;
+							display: block;
+							line-height: 9px;
+						}
+						&.radio-btn {
+							width: auto;
+							float: none;
+							margin-left: 0px;
+							max-width: none;
+							display: block;
+							margin-bottom: 5px;
+							&.text-right {
+								text-align: right;
+								padding: 0;
+							}
+							input[type=radio] {
+								float: left;
+								margin-left: 0px !important;
+								margin-right: 5px !important;
+								@include responsive($media-small) {
+									margin-left: -20px !important;
+									margin-right: 0px !important;
+								}
+							}
+						}
+					}
+					> span {
+						width: 100%;
+						@include responsive($media-small) {
+							width: 70%;
+						}
+						#cvvLink {
+							margin-left: 11px !important;
+							@include responsive($media-small) {
+								margin-left: 55px !important;
+							}
 						}
 					}
 				}
@@ -201,8 +279,12 @@ span#addstudent {
 
 			.payer-selection {
 				position: absolute;
-				top: 50px;
-				right: 20px;
+				top: 60px;
+				right: -4px;
+				@include responsive($media-small) {
+					top: 50px;
+					right: 20px;
+				}
 				> a.button {
 					float: none;
 					text-decoration: none;
@@ -289,6 +371,18 @@ span#addstudent {
 			}
 			#corporate-pass {
 				margin-top: 10px;
+				label.corporatePass-label {
+					max-width: 100%;
+					width: 100%;
+					text-align: left;
+					margin-bottom: 3px;
+					@include responsive($media-small) {
+						max-width: 180px;
+						width: 26%;
+						text-align: right;
+						margin-bottom: 0px;
+					}
+				}
 				> fieldset {
 					border: 0;
 					padding-right: 0;
@@ -299,7 +393,7 @@ span#addstudent {
 			}
 		}
 		.vcc-card-image {
-			vertical-align: bottom;
+			vertical-align: top !important;
 			margin-left: 5px;
 			margin-bottom: 2px;
 		}
@@ -311,135 +405,149 @@ span#addstudent {
 			}
 		}
 	}
-}
 
-#cvvLink {
-	margin-left: 55px !important;
-}
-
-@-moz-document url-prefix() {
-	.payer-selection {
-		top: 65px;
-	}
-}
-
-
-#checkout div.amount-container {
-	border: 1px solid #D6D6D6;
-	@include border-radius(7px);
-	padding: 15px 10px;
-	background: #F7F7F7;
-	margin-bottom: 20px;
-	.amount-content {
-		width: 253px;
-		float: right;
-		label {
-			font-weight: normal;
-			width: 145px;
-			text-align: right;
-			margin-right: 10px;
-			padding-right: 0px;
-		}
-		a {
-			text-decoration: none;
-		}
-		p {
-			margin: 0 0 5px 0;
-		}
-		span {
-			display: inline-block;
-			width: 65px;
-			text-align: right;
+	div.amount-container {
+		border: 1px solid #D6D6D6;
+		@include border-radius(7px);
+		padding: 15px 10px;
+		background: #F7F7F7;
+		margin-bottom: 20px;
+		.amount-content {
+			width: 253px;
 			float: right;
-			line-height: 21px;
-			margin-right: 32px;
-			&#creditAccessLink {
-				color: #125687;
-				cursor: pointer;
-			}
-			&#removeOwingLink {
-				width: auto;
-				margin: 0 0 0 5px;
-				color: #125687;
-			}
-		}
-		.clearboth {
-			clear: both;
-		}
-		.total-amount {
-			font-weight: bold;
 			label {
+				font-weight: normal;
+				width: 145px;
+				text-align: right;
+				margin-right: 10px;
+				padding-right: 0px;
+			}
+			a {
+				text-decoration: none;
+			}
+			p {
+				margin: 0 0 5px 0;
+			}
+			span {
+				display: inline-block;
+				width: 65px;
+				text-align: right;
+				float: right;
+				line-height: 21px;
+				margin-right: 32px;
+				&#creditAccessLink {
+					color: #125687;
+					cursor: pointer;
+				}
+				&#removeOwingLink {
+					width: auto;
+					margin: 0 0 0 5px;
+					color: #125687;
+				}
+			}
+			.clearboth {
+				clear: both;
+			}
+			.total-amount {
 				font-weight: bold;
+				label {
+					font-weight: bold;
+				}
+			}
+			input {
+				display: inline-block;
+				width: 65px;
+				text-align: right;
+				margin-right: 32px;
+				font: inherit;
+				background-color: #FAFAFA;
+				border: 1px solid #DDD;
+			}
+
+			#vouchers {
+				white-space: nowrap;
+				input[type="checkbox"] {
+					margin-top: 2px;
+					width: initial;
+					margin-right: initial;
+				}
+				p label {
+					display: inline-block;
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
 			}
 		}
-		input {
-			display: inline-block;
-			width: 65px;
-			text-align: right;
-			margin-right: 32px;
-			font: inherit;
+		div.code-info {
+			float: left;
+			width: 100% !important;
+			margin: 0 0 20px 0;
+			@include responsive($media-small) {
+				width: 270px !important;
+			}
+			p {
+				margin-bottom: 0px;
+				clear: both;
+				font-size: 11px;
+			}
+		}
+		input.code_input {
+			padding: 3px;
 			background-color: #FAFAFA;
 			border: 1px solid #DDD;
-		}
-
-		#vouchers {
-			white-space: nowrap;
-			input[type="checkbox"] {
-				margin-top: 2px;
-				width: initial;
-				margin-right: initial;
-			}
-			p label {
-				display: inline-block;
-				text-overflow: ellipsis;
-				overflow: hidden;
-			}
-		}
-	}
-	div.code-info {
-		float: left;
-		width: 270px;
-		margin: 0 0 20px 0;
-		p {
-			margin-bottom: 0px;
-			clear: both;
+			width: 120px;
 			font-size: 11px;
+			float: left;
+		}
+		#access-password-popup {
+			display: none;
+			z-index: 999;
+			position: absolute;
+			top: 5px;
+			list-style: none;
+			width: 200px;
+			margin: 0;
+			background-color: white;
+			border: 1px solid #CCC;
+			@include border-radius(6px);
+			-webkit-box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
+			box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
+			-webkit-background-clip: padding-box;
+			background-clip: padding-box;
+			padding: 15px 10px 15px 10px;
+		}
+		.action-link {
+			cursor: pointer;
+			color: #85A918;
+			margin-left: 20px;
+		}
+		.btn-primary, [id*=paymentSubmit] {
+			color: white;
+			text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+			text-shadow: none;
+			background-color: $primaryColor;
+			background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
+			background-image: -webkit-linear-gradient(top, #08C, #04C);
+			background-image: -o-linear-gradient(top, #08C, #04C);
+			background-image: linear-gradient(to bottom, #08C, #04C);
+			background-image: -moz-linear-gradient(top, #08C, #04C);
+			background-repeat: repeat-x;
+			display: inline-block;
+			padding: 3px 10px;
+			margin-bottom: 5px;
+			@include border-radius(0px);
+			text-decoration: none;
+			border-width: 0px;
+			border-color: #04C #04C #002A80;
+			border-style: solid;
+			cursor: pointer;
+			font-size: 100%;
 		}
 	}
-	input.code_input {
-		padding: 3px;
-		background-color: #FAFAFA;
-		border: 1px solid #DDD;
-		width: 120px;
-		font-size: 11px;
-		float: left;
-	}
-	#access-password-popup {
-		display: none;
-		z-index: 999;
-		position: absolute;
-		top: 5px;
-		list-style: none;
-		width: 200px;
-		margin: 0;
-		background-color: white;
-		border: 1px solid #CCC;
-		@include border-radius(6px);
-		-webkit-box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
-		box-shadow: rgba(0, 0, 0, 0.19922) 0px 5px 10px;
-		-webkit-background-clip: padding-box;
-		background-clip: padding-box;
-		padding: 15px 10px 15px 10px;
-	}
-	.action-link {
-		cursor: pointer;
-		color: #85A918;
-		margin-left: 20px;
-	}
-	.btn-primary, [id*=paymentSubmit] {
+
+	> form > div > [id*=paymentSubmit] {
 		color: white;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-		text-shadow: none;
 		background-color: $primaryColor;
 		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
 		background-image: -webkit-linear-gradient(top, #08C, #04C);
@@ -449,7 +557,7 @@ span#addstudent {
 		background-repeat: repeat-x;
 		display: inline-block;
 		padding: 3px 10px;
-		margin-bottom: 5px;
+		margin-bottom: 0;
 		@include border-radius(0px);
 		text-decoration: none;
 		border-width: 0px;
@@ -457,6 +565,35 @@ span#addstudent {
 		border-style: solid;
 		cursor: pointer;
 		font-size: 100%;
+		text-shadow: none;
+		line-height: 24px;
+	}
+}
+form {
+	div.form-controls {
+		width: 100%;
+		padding: 0;
+		margin: 0 auto 12px;
+		text-align: center;
+		@include responsive($media-small) {
+			width: auto;
+			margin: 12px 0 12px 180px;
+			padding: 0 20px;
+			text-align: left;
+		}
+	}
+}
+
+#cvvLink {
+	margin-left: 11px !important;
+	@include responsive($media-small) {
+		margin-left: 55px !important;
+	}
+}
+
+@-moz-document url-prefix() {
+	.payer-selection {
+		top: 65px;
 	}
 }
 
@@ -468,6 +605,27 @@ div.clearboth {
 	cursor: help;
 }
 
+#checkout form, form#waitingListForm, form#mailingListForm {
+	label {
+		display: block !important;
+		text-align: left !important;
+		max-width: 100% !important;
+		width: 100% !important;
+		padding-right: 0px !important;
+		vertical-align: middle;
+		font-weight: bold;
+		line-height: 16px;
+		margin-bottom: 3px;
+		@include responsive($media-small) {
+			display: inline-block !important;
+			text-align: right !important;
+			max-width: 180px !important;
+			width: 26% !important;
+			padding-right: 20px !important;
+			margin-bottom: 0px;
+		}
+	}
+}
 #checkout, #waitingListForm, #mailingListForm {
 	label {
 		display: inline-block;
@@ -492,6 +650,10 @@ div.clearboth {
 		display: inline-block;
 		vertical-align: top;
 		position: relative;
+		width: 100%;
+		@include responsive($media-small) {
+			width: 70%;
+		}
 		&.validate-text {
 			position: absolute;
 			z-index: 1;
@@ -550,7 +712,10 @@ div.clearboth {
 		&[type="text"], &[type="password"] {
 			padding: 3px;
 			background-color: whiteSmoke;
-			width: 120px;
+			width: 100% !important;
+			@include responsive($media-small) {
+				width: 120px !important;
+			}
 		}
 		&[type="checkbox"], &[type="radio"] {
 			margin-top: 2px;
@@ -573,7 +738,10 @@ div.clearboth {
 		border: 1px solid #ddd;
 		font-size: 11px;
 		height: 150px;
-		width: 44%;
+		width: 100% !important;
+		@include responsive($media-small) {
+			width: 44% !important;
+		}
 	}
 	img.t-error-icon {
 		display: none;
@@ -655,7 +823,8 @@ div.clearboth {
 	}
 	.button {
 		float: left;
-		margin: 0 0 0 10px;
+		margin: 0px !important;
+		margin-bottom: 10px !important;
 		border: 1px solid #D1D1D1;
 		padding: 3px 10px;
 		color: black;
@@ -668,6 +837,9 @@ div.clearboth {
 		background: -ms-linear-gradient(top, white 0%, #EEE 100%);
 		background: linear-gradient(top, white 0%, #EEE 100%);
 		@include border-radius(3px);
+		@include responsive($media-small) {
+			margin: 0 0 0 10px !important;
+		}
 	}
 	#addContact {
 		background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
@@ -691,30 +863,6 @@ div.clearboth {
 	}
 }
 
-
-#checkout > form > div > [id*=paymentSubmit] {
-	color: white;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	background-color: $primaryColor;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
-	background-image: -webkit-linear-gradient(top, #08C, #04C);
-	background-image: -o-linear-gradient(top, #08C, #04C);
-	background-image: linear-gradient(to bottom, #08C, #04C);
-	background-image: -moz-linear-gradient(top, #08C, #04C);
-	background-repeat: repeat-x;
-	display: inline-block;
-	padding: 3px 10px;
-	margin-bottom: 0;
-	@include border-radius(0px);
-	text-decoration: none;
-	border-width: 0px;
-	border-color: #04C #04C #002A80;
-	border-style: solid;
-	cursor: pointer;
-	font-size: 100%;
-	text-shadow: none;
-	line-height: 24px;
-}
 .content {
 	.payments {
 		tr {
@@ -1282,10 +1430,14 @@ span {
 #paymentform {
 	.conditions {
 		position: relative;
-		top: -20px;
-		left: 26%;
+		top: -21px !important;
+		left: 60px !important;
 		padding-left: 20px;
 		width: 60%;
+		@include responsive($media-small) {
+			top: -20px !important;
+			left: 26% !important;
+		}
 	}
 	>div label {
 		display: inline-block;
