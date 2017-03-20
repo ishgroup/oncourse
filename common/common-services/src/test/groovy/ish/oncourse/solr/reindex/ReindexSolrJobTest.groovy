@@ -8,6 +8,7 @@ import org.junit.Test
 import org.mockito.Mockito
 
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 
 class ReindexSolrJobTest {
 
@@ -25,7 +26,7 @@ class ReindexSolrJobTest {
         }
 
 
-        int count = 0
+        AtomicInteger count = new AtomicInteger(0)
         ScheduledService service = ScheduledService.valueOf(executor, new IReindexJob() {
             @Override
             ScheduleConfig getConfig() {
@@ -34,15 +35,15 @@ class ReindexSolrJobTest {
 
             @Override
             void run() {
-                count++
+                count.incrementAndGet()
                 println "ReindexSolrJobTest:${new Date()}"
             }
         }).start()
 
 
-        while (count < 5) {
+        while (count.get() < 5) {
             sleep(1000)
         }
-        Assert.assertEquals(5, count)
+        Assert.assertTrue(count.get() >= 5)
     }
 }
