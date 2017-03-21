@@ -21,6 +21,10 @@ function isCoursesPath(pathname) {
   return paths.length > 1 && paths[1] == "courses";
 }
 
+function filterItem(item) {
+  return escape(decodeURIComponent(item)).toLowerCase();
+}
+
 CoursesUrlFormat = function () {
 };
 
@@ -270,15 +274,15 @@ CoursesFilter.prototype = {
 
   updateControlValues: function () {
     var self = this;
-    this.getControlBy(decodeURIComponent(this.request.browseTag)).prop('checked', true);
+    this.getControlBy(filterItem(this.request.browseTag)).prop('checked', true);
     $j.each(this.request.tags, function (index, tag) {
-      self.getControlBy(decodeURIComponent(tag)).prop('checked', true);
+      self.getControlBy(filterItem(tag)).prop('checked', true);
     });
 
     $j.each(this.request.locations, function (index, path) {
-      var control =  self.getControlBy(decodeURIComponent(path));
+      var control =  self.getControlBy(filterItem(path));
       control.prop('checked', true);
-      var tabid = self.getControlBy(decodeURIComponent(path)).parents("section [id^='loc']").data('tabid');
+      var tabid = self.getControlBy(filterItem(path)).parents("section [id^='loc']").data('tabid');
       $j('#' + tabid).attr('checked', true);
       $j('label[for="' + tabid + '"]').addClass('location-active');
     });
@@ -308,11 +312,11 @@ CoursesFilter.prototype = {
   },
 
   removeTag: function (tag) {
-    var index = this.request.tags.indexOf(decodeURIComponent(tag));
+    var index = this.request.tags.indexOf(unescape(decodeURIComponent(tag)));
     if (index > -1) {
       this.request.tags.splice(index, 1);
     }
-    this.getControlBy(decodeURIComponent(tag)).prop('checked', false);
+    this.getControlBy(filterItem(tag)).prop('checked', false);
   },
 
   getControlType: function(control) {
@@ -389,7 +393,7 @@ CoursesFilter.prototype = {
     var tag = decodeURIComponent($j(control).data('path'));
     if (this.request.browseTag) {
       if (this.isParentTag(this.request.browseTag, tag)) {
-        this.getControlBy(decodeURIComponent(this.request.browseTag)).prop('checked', false);
+        this.getControlBy(filterItem(this.request.browseTag)).prop('checked', false);
         this.request.browseTag = tag;
         var currentTags = this.request.tags.slice();
         $j.each(currentTags, function (index, currentTag) {
@@ -516,8 +520,17 @@ CoursesFilter.prototype = {
     $('.filters-container ul ul li ul.tag-list').has('li').parent().find('>label').addClass('hasOptionChild');
 
     $('.courses-menu .filters-container .side-box .filter-option').each(function(key, value) {
-      var filterCount = $(this).find('.filter-option-counter');
+      var childList = $(value).find('>.tag-list>li');
+
+      var filterCount = $(this).find('>.filter-option-counter');
       filterCount.text(filterCount.text().replace(/([\(|\)])+/g, ''));
+
+      if(childList.length > 0) {
+        $.each(childList, function(cKey, cValue) {
+          filterCount = $(cValue).find('>.filter-option>.filter-option-counter');
+          filterCount.text(filterCount.text().replace(/([\(|\)])+/g, ''));
+        });
+      }
     });
 
   });
