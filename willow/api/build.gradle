@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'application'
 
 repositories {
-    //mavenCentral()
+    mavenCentral()
     maven {
         url 'https://repo.ish.com.au/content/groups/public'
     }
@@ -34,7 +34,11 @@ dependencies {
     compile 'io.bootique.jetty:bootique-jetty:0.19'
     compile 'io.bootique.cayenne:bootique-cayenne:0.18'
     compile 'io.bootique.logback:bootique-logback:0.13'
+    compile 'io.bootique.jcache:bootique-jcache:0.1'
     
+    //cache
+    compile 'org.ehcache:ehcache:3.3.0'
+
     compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
     compile 'org.slf4j:log4j-over-slf4j:1.7.24'
     compile 'org.slf4j:slf4j-api:1.7.24'

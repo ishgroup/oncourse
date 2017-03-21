@@ -3,13 +3,9 @@ package ish.oncourse.willow.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.math.Money
-import ish.math.MoneyType
 import ish.oncourse.model.Application
-import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.DiscountCourseClass
-import ish.oncourse.model.PaymentGatewayType
-import ish.oncourse.model.Preference
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.services.courseclass.CheckClassAge
 import ish.oncourse.services.courseclass.ClassAge
@@ -27,18 +23,15 @@ import ish.oncourse.willow.model.CourseClass
 import ish.oncourse.willow.model.CourseClassesParams
 import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.access.DataNode
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 import org.apache.cayenne.query.SelectById
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 import java.time.ZoneOffset
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
-import static ish.oncourse.services.preference.PreferenceConstant.PAYMENT_GATEWAY_TYPE
 
 @CompileStatic
 class CourseClassesApiServiceImpl implements CourseClassesApi {
@@ -60,17 +53,26 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
         if (courseClassesParams.contact?.id) {
             contact = SelectById.query(Contact, courseClassesParams.contact.id)
                     .prefetch(Contact.STUDENT.joint())
+                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                    .cacheGroups(Contact.class.simpleName)
                     .selectOne(context)
         }
 
         if (courseClassesParams.promotions) {
-            promotions = ObjectSelect.query(ish.oncourse.model.Discount).where(ExpressionFactory.inDbExp(ish.oncourse.model.Discount.ID_PK_COLUMN, courseClassesParams.promotions*.id)).select(context)
+            promotions = ObjectSelect.query(ish.oncourse.model.Discount)
+                    .where(ExpressionFactory.
+                    inDbExp(ish.oncourse.model.Discount.ID_PK_COLUMN, courseClassesParams.promotions*.id))
+                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                    .cacheGroups(ish.oncourse.model.Discount.class.simpleName)
+                    .select(context)
         }
 
         ObjectSelect.query(ish.oncourse.model.CourseClass)
                 .where(ExpressionFactory.inDbExp(ish.oncourse.model.CourseClass.ID_PK_COLUMN, courseClassesParams.courseClassesIds))
                 .prefetch(ish.oncourse.model.CourseClass.COLLEGE.joint())
                 .prefetch(ish.oncourse.model.CourseClass.COURSE.joint())
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                .cacheGroups(ish.oncourse.model.CourseClass.class.simpleName)
                 .select(cayenneRuntime.newContext())
                 .each { c ->
 

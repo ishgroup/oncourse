@@ -2,6 +2,7 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.model.Contact
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.willow.service.*
 import ish.oncourse.willow.model.Product
@@ -10,6 +11,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 
 @CompileStatic
 class ProductsApiServiceImpl implements ProductsApi {
@@ -28,7 +30,9 @@ class ProductsApiServiceImpl implements ProductsApi {
 
         ObjectSelect.query(ish.oncourse.model.Product)
             .where(ExpressionFactory.inDbExp(ish.oncourse.model.Product.ID_PK_COLUMN, productsParams.productsIds))
-            .select(context)
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                .cacheGroups(ish.oncourse.model.Product.class.simpleName)
+                .select(context)
             .each { p ->
                 result << new Product().with {
                     id = p.id
