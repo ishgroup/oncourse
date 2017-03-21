@@ -6,6 +6,14 @@ export function camelCase(str) {
     }).join();
 }
 
+const camelSplitter = /(.)([A-Z]+)/g;
+
+export function camelToDashCase(str) {
+  return str.replace(camelSplitter, function (m, previous, uppers) {
+    return previous + '-' + uppers.toLowerCase();
+  });
+}
+
 export function plural(count, values) {
     if(count === 1) {
         return values[0];

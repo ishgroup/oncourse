@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {render, findDOMNode} from 'react-dom';
 import {Provider} from 'react-redux';
-import {camelCase} from './utils';
+import {camelToDashCase} from './utils';
 import {Store} from "redux";
 import {IshState} from "../services/IshState";
 import {whenReady} from "../services/jq";
@@ -57,8 +57,7 @@ export class Bootstrap {
         let realProps = {};
 
         for (let prop in props) {
-          let value = container.dataset[camelCase('prop-' + prop)];
-
+          const value = container.getAttribute(`data-prop-${camelToDashCase(prop)}`);
           realProps[prop] = Bootstrap.prepareProp(value, props[prop]);
         }
 
