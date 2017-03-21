@@ -327,6 +327,56 @@
 								}
 							}
 						}
+						ul.courseList {
+							>ul, & {
+								list-style: none;
+								margin: 0px;
+							}
+							ul>li {
+								margin-bottom: 40px;
+								>a {
+									letter-spacing: -1px;
+									font-size: 20px;
+									font-weight: bold;
+									line-height: 0.8;
+									color: #333;
+									&:hover {
+										color: #37b8cb;
+									}
+								}
+								.courseDescription {
+									width: 100%;
+									max-width: 370px;
+									font-size: 13px;
+									line-height: 1.2;
+									letter-spacing: 0;
+									margin-bottom: 6px;
+									margin-top: 6px;
+
+									height: 30px;
+									overflow: hidden;
+									@include responsive($media-tablet) {
+										max-width: 300px;
+									}
+									>p, >a, ul> ol {
+										margin: 0px;
+										line-height: 1.2;
+									}
+
+								}
+								.course-more-link {
+									font-size: 15px;
+									color: #f37d50;
+									font-weight: 700;
+									@include responsive($media-small) {
+										font-size: 18px;
+									}
+									@include responsive($media-tablet) {
+										font-size: 20px;
+									}
+								}
+							}
+						}
 					}
 				}
 			}

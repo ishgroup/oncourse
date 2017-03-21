@@ -80,6 +80,7 @@ $nav-border: #dedee0;
         }
         ul li {
           padding-left: 0;
+          margin-bottom: 10px;
           >span {
             display: none;
           }
@@ -99,7 +100,7 @@ $nav-border: #dedee0;
     }
     ul ul li ul.tag-list {
       padding-left: 35px;
-      display: none;
+      //display: none;
     }
 
     .filter-option {
