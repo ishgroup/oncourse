@@ -40,13 +40,6 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 		return purchaseController.getModel().getCorporatePass() != null;
 	}
 
-	public boolean isPaymentPlanZeroPayment() {
-		return isZeroPayment() &&
-				purchaseController.getModel().getVoucherPayments().isEmpty() &&
-				(!purchaseController.getModel().getInvoice().getInvoiceLines().isEmpty() ||
-				!purchaseController.getModel().getPaymentPlanInvoices().isEmpty());
-	}
-
 	@Override
 	public boolean isEmptyInvoice() {
 		return purchaseController.getModel().getInvoice().getInvoiceLines().isEmpty() && purchaseController.getModel().getPaymentPlanInvoices().isEmpty();
@@ -64,17 +57,17 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 
 	@Override
 	public boolean isFinalState() {
-		return  isPaymentPlanZeroPayment() || isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.isFinalState();
+		return  isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.isFinalState();
 	}
 
 	@Override
-    public boolean isProcessFinished() {
-        return  isPaymentPlanZeroPayment() || isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.isProcessFinished();
-    }
-
-    public boolean isPaymentSuccess() {
-        return  isPaymentPlanZeroPayment() || isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
-    }
+	public boolean isProcessFinished() {
+		return  isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.isProcessFinished();
+	}
+	
+	public boolean isPaymentSuccess() {
+		return  isCorporatePass() || (isZeroPayment() && isEmptyInvoice()) || paymentProcessController.getCurrentState() == PaymentProcessController.PaymentProcessState.SUCCESS;
+	}
 
 	public boolean isWrongPaymentExpressResult() {
 		return paymentProcessController.isWrongPaymentExpressResult();

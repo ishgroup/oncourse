@@ -302,6 +302,12 @@ public class PaymentProcessController {
     public PaymentIn performGatewayOperation() {
         lock.lock();
         try {
+            PaymentIn payment = paymentInModel.getPaymentIn();
+            if (payment.isZeroPayment()) {
+                PaymentInSucceed.valueOf(paymentInModel).perform();
+                commitChanges();
+                return paymentInModel.getPaymentIn();
+            }
             paymentGatewayService.submit(paymentInModel);
             if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS) ||
                     (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(paymentInModel.getPaymentIn().getStatusNotes())))

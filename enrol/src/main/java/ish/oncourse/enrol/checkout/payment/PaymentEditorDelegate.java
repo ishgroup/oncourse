@@ -41,9 +41,7 @@ public interface PaymentEditorDelegate {
 	boolean isEmptyInvoice();
 	
 	boolean isZeroPayment();
-
-	boolean isPaymentPlanZeroPayment();
-
+	
 	List<Application> getApplications();
 
     void updatePaymentStatus();
