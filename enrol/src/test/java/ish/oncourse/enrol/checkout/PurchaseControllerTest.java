@@ -23,7 +23,10 @@ import java.util.List;
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.*;
 import static ish.oncourse.enrol.checkout.PurchaseController.COMMON_ACTIONS;
 import static ish.oncourse.enrol.checkout.PurchaseController.State;
+import static ish.oncourse.enrol.checkout.PurchaseController.State.paymentProgress;
+import static ish.oncourse.enrol.checkout.PurchaseController.State.paymentResult;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class PurchaseControllerTest extends ACheckoutTest {
 
@@ -576,6 +579,28 @@ public class PurchaseControllerTest extends ACheckoutTest {
 
         purchaseController.performAction(param);
         assertTrue("No actions should be allowed when purchaseController is in finalized state.", purchaseController.isIllegalState());
+    }
+
+
+    @Test
+    public void testZeroPaymentPayment() throws InterruptedException {
+        PurchaseController purchaseController =  init(Arrays.asList(1186960L), new ArrayList<Long>(), new ArrayList<Long>(), true);
+
+        ActionParameter param = new ActionParameter(Action.proceedToPayment);
+        param.setValue(purchaseController.getModel().getPayment());
+        performAction(param);
+        
+        PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
+        delegate.makePayment();
+        
+        assertEquals(paymentProgress, purchaseController.getState());
+        assertTrue(purchaseController.isPaymentProgress());
+        assertFalse(purchaseController.isFinished());
+        updatePaymentStatus();
+
+        assertEquals(paymentResult, purchaseController.getState());
+
+        assertEquals(PaymentStatus.SUCCESS, purchaseController.getModel().getPayment().getStatus());
     }
 
 	@Test
