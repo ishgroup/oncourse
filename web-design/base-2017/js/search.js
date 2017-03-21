@@ -332,6 +332,8 @@ jQuery.fn.quickSearch = function(url, settings) {
 			// copy the text of the quick search field into the advanced search field
 			$j("#adv_keyword").val($j(this).attr('value'));
 
+			matchesFunction(textInput.val());
+
 			oldIndex = selectedIndex;
 			allItems = divContainer.children('div').children('ul').children('li').not('.title');
 			selectedItem = null;
@@ -385,12 +387,6 @@ jQuery.fn.quickSearch = function(url, settings) {
 			}
 			return true;
 		});
-
-		// observe quicksearch field delay == 1.0seconds
-		// depends on jquery-util/query.utils[.min].js
-		textInput.on('delayedObserver', function() {
-			matchesFunction(textInput.val());
-		}, 1.0);
 	});
 };
 

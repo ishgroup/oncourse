@@ -270,7 +270,7 @@ function deleteCookie( name, path, domain ) {
 			if (e.keyCode == 13) $j('form#search2').submit();
 		});
 
-		if($j('input.quicksearch')) {
+		if($j('input.quicksearch').length > 0) {
 			$j('input.quicksearch').quickSearch("/advanced/keyword");
 		}
 
