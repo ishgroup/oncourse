@@ -131,58 +131,54 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 
 		PaymentIn payment = model.getPaymentIn();
         ObjectContext context = cayenneService.newNonReplicatingContext();
+        
+        PaymentTransaction paymentTransaction = context.newObject(PaymentTransaction.class);
+        paymentTransaction.setTxnReference(payment.getClientReference());
+        context.commitChanges();
 
-        if (payment.isZeroPayment()) {
-			PaymentInSucceed.valueOf(model).perform();
-        } else {
-			
-            PaymentTransaction paymentTransaction = context.newObject(PaymentTransaction.class);
-            paymentTransaction.setTxnReference(payment.getClientReference());
-            context.commitChanges();
+        PaymentIn local = context.localObject(payment);
+        paymentTransaction.setPayment(local);
 
-            PaymentIn local = context.localObject(payment);
-            paymentTransaction.setPayment(local);
-
-            /**
-             * Emulate of the rail payment behavior
-             */
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                LOG.debug(e);
-            }
-			
-			if (payment.getCreditCardName().equalsIgnoreCase("DPS unknown result")) {
-				paymentTransaction.setIsFinalised(false);
-				payment.setStatus(PaymentStatus.IN_TRANSACTION);
-				payment.setStatusNotes(UNKNOW_RESULT_PAYMENT_IN);
-				context.commitChanges();
-				return;
-			}
-			
-            result = verifyPayment(payment);
-
-            if (result.isSuccess()) {
-                paymentTransaction.setResponse(result.getStatusNotes());
-
-				payment.setBillingId(SecurityUtil.generateRandomPassword(16));
-                payment.setGatewayResponse(result.getStatusNotes());
-                payment.setStatusNotes(SUCCESS_PAYMENT_IN);
-                payment.setGatewayReference(paymentTransaction.getTxnReference());
-
-				PaymentInSucceed.valueOf(model).perform();
-
-            } else {
-                paymentTransaction.setResponse(result.getStatusNotes());
-                payment.setStatusNotes(FAILED_PAYMENT_IN);
-                payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
-
-				PaymentInFail.valueOf(model).perform();
-            }
-
-            paymentTransaction.setIsFinalised(true);
-            context.commitChanges();
+        /**
+         * Emulate of the rail payment behavior
+         */
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            LOG.debug(e);
         }
+        
+        if (payment.getCreditCardName().equalsIgnoreCase("DPS unknown result")) {
+            paymentTransaction.setIsFinalised(false);
+            payment.setStatus(PaymentStatus.IN_TRANSACTION);
+            payment.setStatusNotes(UNKNOW_RESULT_PAYMENT_IN);
+            context.commitChanges();
+            return;
+        }
+        
+        result = verifyPayment(payment);
+
+        if (result.isSuccess()) {
+            paymentTransaction.setResponse(result.getStatusNotes());
+
+            payment.setBillingId(SecurityUtil.generateRandomPassword(16));
+            payment.setGatewayResponse(result.getStatusNotes());
+            payment.setStatusNotes(SUCCESS_PAYMENT_IN);
+            payment.setGatewayReference(paymentTransaction.getTxnReference());
+
+            PaymentInSucceed.valueOf(model).perform();
+
+        } else {
+            paymentTransaction.setResponse(result.getStatusNotes());
+            payment.setStatusNotes(FAILED_PAYMENT_IN);
+            payment.setStatus(PaymentStatus.FAILED_CARD_DECLINED);
+
+            PaymentInFail.valueOf(model).perform();
+        }
+
+        paymentTransaction.setIsFinalised(true);
+        context.commitChanges();
+        
     }
 
 	@Override
