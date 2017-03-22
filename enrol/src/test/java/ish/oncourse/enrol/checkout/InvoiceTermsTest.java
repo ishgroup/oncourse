@@ -45,7 +45,7 @@ public class InvoiceTermsTest extends ACheckoutTest {
 		assertTrue("purchaseController is not in state 'EditPayment'", purchaseController.isEditPayment());
 		makeValidPayment();
 
-		assertEquals(DateUtils.truncate(DateUtils.addDays(new Date(), 20), Calendar.DATE), DateUtils.truncate(purchaseController.getModel().getInvoice().getDateDue(), Calendar.DATE));
+		assertEquals(DateUtils.truncate(DateUtils.addDays(purchaseController.getModel().getInvoice().getInvoiceDate(), 20), Calendar.DATE), DateUtils.truncate(purchaseController.getModel().getInvoice().getDateDue(), Calendar.DATE));
 
 	}
 
