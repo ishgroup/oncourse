@@ -10,11 +10,14 @@
 
 @import "site/index";
 
-@import "library/index";
+@import "oncourse/settings/index";
+@import "themes/settings";
 
 @import "functions/index";
 
 @import "mixins/index";
+
+@import "library/index";
 
 @import "oncourse/index";
 

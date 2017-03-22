@@ -1,0 +1,340 @@
+//
+//
+// default.scss
+//
+// Contains default settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+
+
+
+//
+// Different settings
+//
+
+$white: #fff;
+$black: #000;
+
+/// Settings handles site' theme.
+///
+/// Default theme is `"a"`, If you don't want to use default theme then specify `$theme: "custom"`.
+///
+/// This includes theme related settings
+///
+/// Themes: `a` | `b` | `c`
+///
+/// @example scss - Usage
+///  $theme: "a";
+///
+/// @type String
+/// @group ish
+///
+
+$theme: "a" !default;
+
+/// Settings handles site' header theme
+/// Default header theme like as $theme.
+/// This includes header related settings based on theme
+///
+/// @example scss - Usage
+///  $header-theme: "a";
+///
+/// @type String
+/// @group ish
+///
+
+$header-theme: $theme !default;
+
+/// Settings handles site' footer theme
+/// Default footer theme like as $theme.
+/// This includes footer related settings based on theme
+///
+/// @example scss - Usage
+///  $footer-theme: "a";
+///
+/// @type String
+/// @group ish
+///
+
+$footer-theme: $theme !default;
+
+/// Settings handles primary color.
+///
+/// @example scss - Usage
+///  .element-one {
+///    background: $primaryColor;
+///    color: $primaryColor;
+///  }
+///
+/// @example css - CSS Output
+///  .element-one {
+///    background: #e23250;
+///    color: #e23250;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$primaryColor: #e23250 !default;
+
+/// Settings handles secondary color.
+///
+/// @example scss - Usage
+///  .element-one {
+///    background: $secondaryColor;
+///    color: $secondaryColor;
+///  }
+///
+/// @example css - CSS Output
+///  .element-one {
+///    background: #e23250;
+///    color: #e23250;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$secondaryColor: #5a6c7a !default;
+
+/// Settings handles to set max content width
+///
+/// @example scss - Usage
+///  .container {
+///    width: $containerWidth;
+///  }
+///
+/// @example css - CSS Output
+///  .container {
+///    width: 990px;
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$containerWidth: 990px !default;
+
+/// Settings handles image path.
+///
+/// @example scss - Usage
+///  .element-one {
+///    background: url($imagePath + 'image-name.png');
+///  }
+///
+/// @example css - CSS Output
+///  .element-one {
+///    background: url('/s/img/image-name.png');
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$imagePath: '/s/img/' !default;
+
+/// Settings handles image path of bxslider.
+///
+/// @example scss - Usage
+///  $images-bxslider: '/s/img/my-bxslider';
+///
+///  .bxslider {
+///    background: url($images-bxslider + '/image-name.png');
+///  }
+///
+/// @example css - CSS Output
+///  .bxslider {
+///    background: url('/s/img/my-bxslider/image-name.png');
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$images-bxslider: '/s/img/bxslider' !default;
+
+/// Settings handles path of fonts.
+///
+/// @example scss - Usage
+///   $fonts-path: '/s/fonts/';
+///
+///   @include font-face('fontName', $fonts-path + 'fontName/fontName');
+///
+/// @example css - CSS Output
+///   @font-face {
+///     font-family: 'fontName';
+///     font-weight: normal;
+///     font-style: normal;
+///     src: url('/s/fonts/fontName/fontName.eot?#iefix') format('embedded-opentype'),
+///     url('/s/fonts/fontName/fontName.woff2') format('woff2'),
+///     url('/s/fonts/fontName/fontName.woff') format('woff'),
+///     url('/s/fonts/FontAwesome/fontName.ttf') format('truetype'),
+///     url('/s/fonts/fontName/fontName.svg') format('svg');
+///   }
+///
+/// @type String
+/// @group ish
+///
+
+$fonts-path: '/s/fonts/' !default;
+
+$fa-font-path: $fonts-path + 'FontAwesome';
+
+/// Settings handles to enable font-awesome.
+///
+/// @example scss - Usage
+///  $fa-enable: true;
+///
+/// @type Bool
+/// @group ish
+///
+
+$fa-enable: false !default;
+
+$useDefaultFont: true !default;
+
+// media: small, tablet, desktop */
+
+/// Settings handles small media screen
+///
+/// @example scss - Usage
+///  $small-screen: 480px;
+///
+///  .element-one {
+///    font-size: 12px;
+///    @include responsive($media-small) {
+///      font-size: 14px;
+///    }
+///  }
+///
+/// @example css - CSS Output
+///  .element-one {
+///    font-size: 12px;
+///  }
+///
+///  @media only screen and (min-width: 480px) {
+///    .element-one {
+///      font-size: 14px;
+///    }
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$small-screen: 320px !default;
+
+/// Settings handles tablet media screen
+///
+/// @example scss - Usage
+///  $tablet-screen: 768px;
+///
+///  .element-one {
+///    font-size: 12px;
+///    @include responsive($media-tablet) {
+///      font-size: 14px;
+///    }
+///  }
+///
+/// @example css - CSS Output
+///  .element-one {
+///    font-size: 12px;
+///  }
+///
+///  @media only screen and (min-width: 768px) {
+///    .element-one {
+///      font-size: 14px;
+///    }
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$tablet-screen: 640px !default;
+
+/// Settings handles desktop media screen
+///
+/// @example scss - Usage
+///  $desktop-screen: 1140px;
+///
+///  .element-one {
+///    font-size: 12px;
+///    @include responsive($media-desktop) {
+///      font-size: 14px;
+///    }
+///  }
+///
+/// @example css - CSS Output
+///  .element-one {
+///    font-size: 12px;
+///  }
+///
+///  @media only screen and (min-width: 1140px) {
+///    .element-one {
+///      font-size: 14px;
+///    }
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$desktop-screen: 1024px !default;
+
+
+/// Settings handles custom media screen
+///
+/// @example scss - Usage
+///  $custom-screen: 1140px;
+///
+///  .element-one {
+///    font-size: 12px;
+///    @include responsive($media-custom) {
+///      font-size: 14px;
+///    }
+///  }
+///
+/// @example css - CSS Output
+///  .element-one {
+///    font-size: 12px;
+///  }
+///
+///  @media only screen and (min-width: 1140px) {
+///    .element-one {
+///      font-size: 14px;
+///    }
+///  }
+///
+/// @type String
+/// @group ish
+///
+
+$custom-screen: !default;
+
+$media-small: "small";
+$media-tablet: "tablet";
+$media-desktop: "desktop";
+$media-custom: "custom";
+
+/// Settings handles to enable faceted search.
+///
+/// @example scss - Usage
+///  $fs-enable: true;
+///
+///  .filters-container {
+///    ...
+///  }
+///
+/// @example css - CSS Output
+///  .filters-container {
+///    ...
+///  }
+///
+/// @type Bool
+/// @group ish
+///
+
+$fs-enable: false !default;
