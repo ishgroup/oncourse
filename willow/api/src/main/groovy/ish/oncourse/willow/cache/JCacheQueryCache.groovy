@@ -17,7 +17,7 @@ class JCacheQueryCache implements QueryCache {
     protected CacheManager cacheManager
     
     @Inject
-    protected JCacheConfigurationFactory configurationFactory;
+    protected JCacheConfigurationFactory configurationFactory
 
     private Set<String> seenCacheNames = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>())
 

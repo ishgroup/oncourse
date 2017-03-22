@@ -31,7 +31,7 @@ class JCacheManagerProvider implements Provider<CacheManager> {
         if (!jcacheConfig) {
             manager = provider.cacheManager
         } else {
-            manager = provider.getCacheManager(jcacheConfig, null)
+            manager = provider.getCacheManager(jcacheConfig, (ClassLoader) null)
         }
 
         return manager
@@ -40,7 +40,7 @@ class JCacheManagerProvider implements Provider<CacheManager> {
     private URI getConfig() {
         String config = properties.get(JCacheConstants.JCACHE_PROVIDER_CONFIG)
         if (!config) {
-            null
+            this.class.classLoader.getResource('ehcache.xml').toURI()
         } else {
             try {
                 new URI(config)
