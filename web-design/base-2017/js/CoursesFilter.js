@@ -274,6 +274,7 @@ CoursesFilter.prototype = {
 
   updateControlValues: function () {
     var self = this;
+
     this.getControlBy(filterItem(this.request.browseTag)).prop('checked', true);
     $j.each(this.request.tags, function (index, tag) {
       self.getControlBy(filterItem(tag)).prop('checked', true);
@@ -313,6 +314,7 @@ CoursesFilter.prototype = {
 
   removeTag: function (tag) {
     var index = this.request.tags.indexOf(unescape(decodeURIComponent(tag)));
+
     if (index > -1) {
       this.request.tags.splice(index, 1);
     }
@@ -377,7 +379,7 @@ CoursesFilter.prototype = {
   removeTagCondition: function(control) {
     var tag = $j(control).data('path').replace(' ', '%20');
 
-    if (this.request.browseTag == tag) {
+    if (filterItem(this.request.browseTag) == tag) {
       this.request.browseTag = null;
       if (this.request.tags.length > 0) {
         this.request.browseTag = this.request.tags[0];
