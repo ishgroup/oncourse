@@ -1,9 +1,10 @@
 {
   "name": "ish",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ish project",
   "main": "webpack.config.js",
   "scripts": {
+    "packages:refresh": "npm prune && npm install",
     "clean": "rm -rf ./dist",
     "build:prod": "npm run clean && webpack -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
     "build:prod:watch": "webpack --watch -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
