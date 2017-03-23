@@ -6,16 +6,16 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
-
+//
 
 @include theme('c') {
 	&::selection {
 		background-color: $layout-color-c;
 		color: $white;
 	}
-	.site-wrapper {
-		overflow-y: hidden;
+	body {
+		overflow: hidden;
+		overflow-y: scroll;
 	}
 	#Main.main-page {
 		#content {
@@ -120,7 +120,7 @@
 			}
 		}
 		section.block {
-			padding: 120px 0px;
+			padding: 50px 0px;
 			>h3 {
 				font-size: 37px;
 				text-transform: uppercase;
@@ -129,6 +129,7 @@
 				line-height: 1.4;
 				position: relative;
 				margin-bottom: 80px;
+				text-align: center;
 				&::after {
 					@extend .bottom-line;
 				}
@@ -147,15 +148,18 @@
 				list-style: none;
 			}
 			.ff-featured {
-				position: absolute;
-				left: 0;
-				right: 0;
-				overflow: hidden;
-				height: 600px;
+				// position: absolute;
+				// left: 0;
+				// right: 0;
+				// overflow: hidden;
+				height: 520px;
+				>p, .ff-tags, .ff-tags-content {
+					display: none;
+				}
 				.nav-featured {
 					margin: 80px auto;
 					height: 57px;
-					width: 455px;
+					max-width: 455px;
 					>div {
 						float: left;
 						cursor: pointer;
@@ -164,16 +168,14 @@
 						margin-top: 6px;
 					}
 					.prev-featured, .next-featured {
+						margin-right: 20px;
+						margin-left: 20px;
 						background-color: #e1e1e1;
 						&:hover {
 							background-color: $layout-color-c;
 						}
 					}
-					.prev-featured {
-						margin-right: 110px;
-					}
 					.next-featured {
-						margin-left: 110px;
 						float: right;
 					}
 				}
@@ -237,6 +239,7 @@
 									left: 0;
 									top: 0;
 									height: 266px;
+									width: 100%;
 									@include responsive-image(true);
 								}
 								.ff-desc {
@@ -283,7 +286,7 @@
 			}
 			&.browse-courses, &.featured-courses {
 				text-align: center;
-				padding-bottom: 735px;
+				//padding-bottom: 735px;
 			}
 			&.light {
 				background: $white;
@@ -346,6 +349,79 @@
 					color: $white;
 				}
 			}
+			&#contact-us {
+				text-align: left;
+				.title-one, .title-two {
+					text-align: left;
+				}
+				.contact-address {
+					margin-bottom: 45px;
+					@include responsive($media-tablet) {
+						margin-bottom: 0;
+					}
+					>p {
+						font-size: 13px;
+						font-weight: 600;
+						color: #a8a8a8;
+						>span {
+							width: 80px;
+							float: left;
+							font-size: 15px;
+							color: #3f3f3f;
+						}
+					}
+				}
+				.contact-form {
+					form {
+						fieldset {
+							border: 0 none;
+							margin: 0;
+							padding: 0;
+						}
+						p.form-cont-row {
+							>br, >label {
+								display: none;
+							}
+							input, textarea {
+								width: 100% !important;
+								border: none;
+								outline: none;
+								padding: 11px;
+								font-weight: 300;
+								font-size: 13px;
+								color: #a8a8a8;
+								text-transform: uppercase;
+								background: #fbfbfb;
+								height: auto;
+								resize: none;
+							}
+						}
+						.form-submit-button {
+							width: 100%;
+							font-size: 14px;
+							line-height: 26px;
+							font-weight: 600;
+							color: $white;
+							text-transform: uppercase;
+							padding: 3px 30px;
+							border-radius: 3px;
+							background: $layout-color-c;
+							border: none;
+							letter-spacing: 1px;
+							&:hover {
+								color: $layout-color-c;
+								background-color: #f7f7f7;
+							}
+
+						}
+					}
+				}
+			}
+		}
+		.footer-social-links {
+			width: 215px;
+			margin: 0 auto;
+			@extend .clearfix;
 		}
 	}
 
@@ -414,5 +490,15 @@
 				border: 0px;
 			}
 		}
+	}
+}
+.footer-gmap {
+	height: 500px;
+	margin-bottom: 60px;
+	#gmap_contact {
+		height: 500px;
+		position: absolute !important;
+		width: 100%;
+		left: 0;
 	}
 }

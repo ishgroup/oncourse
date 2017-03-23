@@ -6,7 +6,7 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
+//
 
 
 @include theme('c', 'header') {
@@ -33,26 +33,26 @@
 				.header-container {
 					.top-bar {
 						#headerToolbar #search_box #advanced_search {
-							background: #9ac836;
-							color: $white;
+							background: $white;
+							color: #202020;
 							.advanced-search-form {
 								.search-title {
-									color: $white;
+									color: #00515f;
 								}
 								input[type="text"], select, input[type="checkbox"] {
-									background: #f1fed4;
+									background: #cecece;
 								}
 								#adv_search_submit {
 									button, a {
-										background: #d0e64b;
+										background: $layout-color-c;
 										&:hover {
-											background: darken(#d0e64b, 10%);
+											background: darken($layout-color-c, 10%);
 										}
 									}
 									a {
-										background: #b6d741;
+										background: #d3eaec;
 										&:hover {
-											background: darken(#b6d741, 10%);
+											background: darken(#d3eaec, 10%);
 										}
 									}
 								}
@@ -64,27 +64,6 @@
 		}
 	}
 
-	// .navbar {
-	// 	nav#nav {
-	// 		display: none;
-	// 	}
-	// 	&.mobile-enabled {
-	// 		position: absolute;
-	// 		top: 58px;
-	// 		width: 100%;
-	// 		z-index: 9999;
-	// 		nav#nav {
-	// 			background: #EBEBEB;
-	// 			box-shadow: 1px 1px 6px 2px #ddd;
-	// 		}
-	// 	}
-	// }
-
-	// .mobile-enabled {
-	// 	@include responsive($media-tablet) {
-	// 		display: none;
-	// 	}
-	// }
 	#header {
 		&.affix.site-header {
 			top: 0;
@@ -258,6 +237,9 @@
 						>ul {
 							float: none;
 							text-align: center;
+							a {
+								letter-spacing: 1px;
+							}
 							>li {
 								@include responsive($media-tablet) {
 									float: none;
@@ -329,8 +311,8 @@
 								z-index: 9999;
 								@include responsive($media-tablet) {
 									left: 50%;
-									margin-left: -109px;
-									box-shadow: 1px 1px 5px #ddd;
+									margin-left: -100px;
+									//box-shadow: 1px 1px 5px #ddd;
 								}
 								li {
 									a {

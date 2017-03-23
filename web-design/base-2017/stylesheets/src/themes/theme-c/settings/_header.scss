@@ -28,7 +28,7 @@ $headerGroupSiteLogoZIndex-c: 0 !default;
 
 // Navigation
 $navbarPaddingLeft-c: 0px !default;
-$navFontSize-c: 15px !default;
+$navFontSize-c: 12px !default;
 $navFontWeight-c: normal !default;
 $navWidth-c: auto !default;
 $navMarginTop-c: 0px !default;
@@ -41,12 +41,12 @@ $navAnchorColor-c: #4f5150 !default;
 $navAnchorHoverBG-c: $white !default;
 $navAnchorHoverTextColor-c: $layout-color-c !default;
 $navAnchorTopFontSize-c: 15px !default;
-$navAnchorPadding-c: 10px 25px !default;
+$navAnchorPadding-c: 10px 25px 15px !default;
 $navFirstChildAnchorPadding-c: $navAnchorPadding-c !default;
 $navLastChildAnchorPadding-c: $navAnchorPadding-c !default;
 
-$navChildMenuLinkHoverBG-c: $layout-color-c !default;
-$navChildMenuLinkHoverColor-c: $white !default;
+$navChildMenuLinkHoverBG-c: transparent !default;
+$navChildMenuLinkHoverColor-c: $black !default;
 $navChildMenuTextAlign-c: center !default;
 $navChildMenuTextAlignTablet-c: left !default;
 
@@ -55,12 +55,13 @@ $navAnchorLineHeight-c: 36px !default;
 
 $navAnchorArrowColor-c: $navAnchorHoverBG-c !default;
 $firstChildMenuPadding-c: 0px !default;
+$firstChildMenuTablePadding-c: 10px 0 !default;
 $displayFullWidthMenu-c: none !default;
 $first-accent-color-c: $navAnchorHoverBG-c !default;
 $firstDropMenufullWidth-c: 117.1% !default;
 $firstDropMenuMargin-c: 0px -14.95% !default;
-$first-accent-width-c: 220px !default;
-$firstAccentNavAnchorColor-c: #2e2e2e !default;
+$first-accent-width-c: 200px !default;
+$firstAccentNavAnchorColor-c: #4d4d4d !default;
 $firstAccentNavAnchorPadding-c: 8px 20px !default;
 
 $navToggleBG-c: transparent !default;
@@ -95,8 +96,8 @@ $searchButtonWidth-c: 31px !default;
 $searchButtonHeight-c: $searchTopHeight-c !default;
 
 $btnHeight-c: 40px !default;
-$btnPadding-c: 12px 27px !default;
-$advanceSearchButtonWidth-c: 150px !default;
+$btnPadding-c: 12px 15px !default;
+$advanceSearchButtonWidth-c: 125px !default;
 $advanceSearchButtonBorderRadius-c: 2em !default;
 $advanceSearchButtonPadding-c: $btnPadding-c !default;
 
@@ -104,11 +105,11 @@ $advanceSearchButtonClearPosition-c: right !default;
 $advanceSearchButtonSubmitPosition-c: left !default;
 
 $advanceSearchColor-c: #202020 !default;
-$advanceSearchButtonBG-c: #d0e64b !default;
+$advanceSearchButtonBG-c: $layout-color-c !default;
 $advanceSearchButtonClearBackground-c: #d3eaec !default;
 $searchActiveButtonBG-c: $advanceSearchButtonBG-c !default;
 
-$toggleSearchActiveBackground-c: #9ac836 !default;
+$toggleSearchActiveBackground-c: $layout-color-c !default;
 
 // Advanced search
 $advanceSearchBG-c: #fbfbfb !default;
@@ -185,6 +186,7 @@ $sliderPagerItemActiveBackground-c: #fff !default;
 
   $navAnchorArrowColor: $navAnchorArrowColor-c;
   $firstChildMenuPadding: $firstChildMenuPadding-c;
+  $firstChildMenuTablePadding: $firstChildMenuTablePadding-c;
   $displayFullWidthMenu: $displayFullWidthMenu-c;
   $first-accent-color: $first-accent-color-c;
   $firstDropMenufullWidth: $firstDropMenufullWidth-c;

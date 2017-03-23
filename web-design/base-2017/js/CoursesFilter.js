@@ -281,9 +281,10 @@ CoursesFilter.prototype = {
     });
 
     $j.each(this.request.locations, function (index, path) {
-      var control =  self.getControlBy(filterItem(path));
+      var control =  self.getControlBy(filterItem(path).replace('%20' ,' '));
       control.prop('checked', true);
-      var tabid = self.getControlBy(filterItem(path)).parents("section [id^='loc']").data('tabid');
+      var tabid = self.getControlBy(filterItem(path).replace('%20' ,' ')).parents("section [id^='loc']").data('tabid');
+
       $j('#' + tabid).attr('checked', true);
       $j('label[for="' + tabid + '"]').addClass('location-active');
     });
@@ -361,18 +362,19 @@ CoursesFilter.prototype = {
   },
 
   removeLocationCondition: function (control) {
-    var path = $j(control).data('path').replace(' ', '%20');
+    var path = filterItem($j(control).data('path'));
     var index = this.request.locations.indexOf(path);
 
     if (index > -1) {
       this.request.locations.splice(index, 1);
     }
+
     $j(control).prop('checked', false);
     this.request.km = null;
   },
 
   addLocationCondition: function (control) {
-    this.request.locations.push(decodeURIComponent($j(control).data('path')));
+    this.request.locations.push(filterItem($j(control).data('path')));
     this.request.km = null;
   },
 

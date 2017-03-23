@@ -148,17 +148,20 @@
 				#headerToolbar {
 					margin-top: 14px;
 					position: relative;
-					padding-right: 50px;
+					padding-right: 45px;
 					@include responsive($media-tablet) {
 						padding-right: 0;
 					}
 					.discount-block {
-						display: $discountBlockDisplay-b;
+						display: none;
 						float: left;
 						line-height: 1.38095;
 						margin-top: 6px;
 						margin-right: 16px;
 						text-transform: uppercase;
+						@include responsive($media-small) {
+							display: $discountBlockDisplay-b;
+						}
 						.title-block, .nyromodalreload.actionLink {
 							display: none;
 						}

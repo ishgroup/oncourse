@@ -9,9 +9,9 @@
 
 
 
-$footerBG-c: #0a3a4a no-repeat center top !default;
-$footerTextColor-c: $white !default;
-$footerAddressTextColor-c: #8ca3ab !default;
+$footerBG-c: $white no-repeat center top !default;
+$footerTextColor-c: #434343 !default;
+$footerAddressTextColor-c: #434343 !default;
 
 @if $footer-theme == "c" {
   $footerBG: $footerBG-c;
