@@ -19,7 +19,7 @@ class JCacheEntryLoader implements EntryProcessor<String, List, List> {
     List process(MutableEntry<String, List> entry, Object... arguments) throws EntryProcessorException {
         if (!entry.exists()) {
             List result = (List)entryFactory.createObject()
-            if (!result) {
+            if (result == null) {
                 throw new CayenneRuntimeException("Null object created: " + entry.getKey())
             }
             entry.value = result

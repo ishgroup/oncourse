@@ -1,0 +1,36 @@
+package ish.oncourse.willow.service
+
+import ish.oncourse.willow.model.Promotion
+import ish.oncourse.willow.service.impl.CollegeService
+import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
+import ish.oncourse.willow.service.impl.RequestInterceptor
+import org.junit.Test
+
+import static org.junit.Assert.assertEquals
+
+class PromotionApiTest extends ApiTest {
+    @Override
+    protected String getDataSetResource() {
+        'ish/oncourse/willow/service/CourseClassesApiTest.xml'
+    }
+
+    @Test
+    void getPromotionTest() {
+
+        RequestInterceptor.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+
+        PromotionApi api = new PromotionApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
+
+        Promotion promotion = api.getPromotion('CODE')
+
+        assertEquals(promotion.id, "1001")
+        assertEquals(promotion.code, "234567")
+        assertEquals(promotion.name, "name_1")
+
+        promotion = api.getPromotion('code1')
+
+        assertEquals(promotion.id, "1002")
+        assertEquals(promotion.code, "code1")
+        assertEquals(promotion.name, "name_2")
+    }
+}

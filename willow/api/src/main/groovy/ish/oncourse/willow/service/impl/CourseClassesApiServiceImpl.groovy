@@ -39,7 +39,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
     private ServerRuntime cayenneRuntime
 
     @Inject
-    CourseClassService(ServerRuntime cayenneRuntime) {
+    CourseClassesApiServiceImpl(ServerRuntime cayenneRuntime) {
         this.cayenneRuntime = cayenneRuntime
     }
     
@@ -104,26 +104,27 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         price = new CourseClassPrice().with {
                             fee = c.feeIncGst.toBigDecimal().toString()
                             hasTax = !c.gstExempt
-                            feeOverriden = overridenFee ? (c.gstExempt ? overridenFee.toBigDecimal().toString() : (overridenFee * BigDecimal.ONE.add(c.taxRate)).toBigDecimal().toString()) : null
-        
-                            DiscountCourseClass bestDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(GetAppliedDiscounts.valueOf(c, promotions).get(), c.feeExGst, c.taxRate)
-                            
-                            if (bestDiscount) {
-                                appliedDiscount = new Discount().with {
-                                    Money value = c.getDiscountedFeeIncTax(bestDiscount)
-                                    discountedFee = value.toBigDecimal().toString()
-                                    discountValue = c.feeIncGst.subtract(value).toBigDecimal().toString()
-                                    title = ((ish.oncourse.model.Discount) bestDiscount.discount).name
-                                    Date discountExpiryDate = WebDiscountUtils.expiryDate((ish.oncourse.model.Discount) bestDiscount.discount, c.startDate)
-                                    if (discountExpiryDate) {
-                                        title = title + " expires ${FormatUtils.getShortDateFormat(c.college.timeZone).format(discountExpiryDate)}"
+                            feeOverriden = overridenFee ? (c.gstExempt ? overridenFee.toBigDecimal().toString() : overridenFee.multiply(BigDecimal.ONE.add(c.taxRate)).toBigDecimal().toString()) : null
+                            if (!feeOverriden) {
+                                DiscountCourseClass bestDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(GetAppliedDiscounts.valueOf(c, promotions).get(), c.feeExGst, c.taxRate)
+
+                                if (bestDiscount) {
+                                    appliedDiscount = new Discount().with {
+                                        Money value = c.getDiscountedFeeIncTax(bestDiscount)
+                                        discountedFee = value.toBigDecimal().toString()
+                                        discountValue = c.feeIncGst.subtract(value).toBigDecimal().toString()
+                                        title = ((ish.oncourse.model.Discount) bestDiscount.discount).name
+                                        Date discountExpiryDate = WebDiscountUtils.expiryDate((ish.oncourse.model.Discount) bestDiscount.discount, c.startDate)
+                                        if (discountExpiryDate) {
+                                            title = title + " expires ${FormatUtils.getShortDateFormat(c.college.timeZone).format(discountExpiryDate)}"
+                                        }
+                                        it
                                     }
-                                    it
-                                }  
-                            }
+                                }
         
-                            WebDiscountUtils.sortByDiscountValue(GetPossibleDiscounts.valueOf(c).get(), c.feeExGst, c.taxRate).each { d ->
-                                possibleDiscounts << new Discount(discountedFee: d.feeIncTax.toBigDecimal().toString(), title: d.title)
+                                WebDiscountUtils.sortByDiscountValue(GetPossibleDiscounts.valueOf(c).get(), c.feeExGst, c.taxRate).each { d ->
+                                    possibleDiscounts << new Discount(discountedFee: d.feeIncTax.toBigDecimal().toString(), title: d.title)
+                                }
                             }
                             it
                         }

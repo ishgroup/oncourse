@@ -39,6 +39,7 @@ class ProductsApiServiceImpl implements ProductsApi {
                     name = p.name
                     code = p.sku
                     canBuy = p.isOnSale & p.isWebVisible
+                    description = p.description
                     isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college: p.college).get()
                     it
                 }
