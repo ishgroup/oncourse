@@ -35,7 +35,7 @@ class JCacheQueryCache implements QueryCache {
         Cache<String, List> cache = createIfAbsent(metadata)
 
         List<?> result = cache.get(key)
-        return result?: cache.invoke(key, new JCacheEntryLoader(factory))
+        return result?: (List)cache.invoke(key, new JCacheEntryLoader(factory))
     }
 
     @Override
