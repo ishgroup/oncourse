@@ -4,7 +4,6 @@ import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.cache.JCacheQueryCache
 import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.server.ServerRuntime
-import org.ehcache.jsr107.Eh107CacheManager
 import org.junit.Test
 
 import javax.cache.CacheManager
