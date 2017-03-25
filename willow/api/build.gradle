@@ -58,3 +58,10 @@ sourceCompatibility = '1.8'
 compileGroovy {
     groovyOptions.configurationScript = file("config.groovy")
 }
+
+distZip {
+    def versionFile = new File(buildDir, "VERSION")
+    versionFile.write(version ?: "SNAPSHOT")
+    into('.')
+    from(versionFile)
+}
