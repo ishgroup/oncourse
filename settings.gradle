@@ -16,4 +16,5 @@ include 'admin',
 	'services',
 	'web',
 	'cms',
-    'willow-api:api'
+    'willow-api:api', 
+	'willow-api:codegen'
