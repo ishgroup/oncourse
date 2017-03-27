@@ -1,4 +1,6 @@
+rootProject.name = 'codegen'
+
 include("jaxrs")
 include("stub")
 include("typescript")
-include("codegen-common")
+include("common")
