@@ -19,6 +19,11 @@ class RequestInterceptor extends AbstractPhaseInterceptor<Message> {
     @Override
     void handleMessage(Message message) throws Fault {
         HttpServletRequest request = (HttpServletRequest) message.get('HTTP.REQUEST')
+        
+        if (request.pathInfo.equalsIgnoreCase("/ISHHealthCheck")) {
+            return
+        }
+        
         String host = request.getHeader('X-Origin')
         if (host == null)
             throw new NullPointerException("X-Origin should be not null.")

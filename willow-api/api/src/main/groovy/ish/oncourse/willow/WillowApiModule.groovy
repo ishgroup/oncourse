@@ -5,14 +5,15 @@ import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
 import ish.math.MoneyType
 import ish.oncourse.cxf.CXFModule
-import ish.oncourse.willow.cache.JCacheConfigurationFactory
 import ish.oncourse.willow.cache.JCacheModule
-import ish.oncourse.willow.cache.JCacheQueryCache
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
+import ish.oncourse.willow.service.impl.HealthCheckApiServiceImpl
+import ish.oncourse.willow.service.impl.HealthCheckInterceptor
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
+import ish.oncourse.willow.service.impl.ShotDownService
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.di.Module
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
@@ -27,6 +28,9 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(ProductsApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(PromotionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(CollegeService)
+        CXFModule.contributeResources(binder).addBinding().to(HealthCheckInterceptor)
+        CXFModule.contributeResources(binder).addBinding().to(HealthCheckApiServiceImpl)
+        CXFModule.contributeResources(binder).addBinding().to(ShotDownService)
     }
 
     static class WillowApiCayenneModule implements Module {
