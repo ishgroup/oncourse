@@ -142,6 +142,7 @@ parameters:
     description: |
       College URL which we sends with every request,
       since we have common endpoint for all colledges.
+      Example: intranet.ish.com.au
     required: true
     type: string
   Session:
