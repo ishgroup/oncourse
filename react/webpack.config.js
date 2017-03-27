@@ -9,7 +9,7 @@ module.exports = function (options = {}) {
   // --env.API_ROOT root --env.SOURCE_MAP source-map ...
   const NODE_ENV = options.NODE_ENV || 'development'; // 'production'
   const SOURCE_MAP = options.SOURCE_MAP || 'source-map'; // 'eval-source-map'
-  const API_ROOT = options.API_ROOT || 'http://localhost:8080/api/v1'; // 'https://ish.com.au/api/v1'
+  const API_ROOT = options.API_ROOT || 'http://localhost:10080'; // 'https://ish.com.au/api/v1'
 
   console.log(`
 Build started with following configuration:
@@ -28,10 +28,8 @@ Build started with following configuration:
 
   return {
     entry: {
-      "dynamic-polyfill": [
-        'babel-polyfill',
-      ],
       dynamic: [
+        'babel-polyfill',
         'react',
         'redux',
         'react-redux',
@@ -78,6 +76,16 @@ Build started with following configuration:
           plugins: ['transform-object-rest-spread']
         },
         exclude: /node_modules/
+      }, {
+        test: /\.css$/,
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+          options: {
+            modules: true
+          }
+        }]
       }]
     },
     plugins: [
@@ -85,16 +93,18 @@ Build started with following configuration:
         'process.env': {
           'NODE_ENV': JSON.stringify(NODE_ENV)
         },
-        API_ROOT: JSON.stringify(API_ROOT)
+        _API_ROOT: JSON.stringify(API_ROOT),
+        _APP_VERSION: JSON.stringify(process.env.BUILD_NUMBER || "DEV")
       }),
       getHtmlWebpackPlugin("index.html"),
       getHtmlWebpackPlugin("courses.html"),
+      getHtmlWebpackPlugin("enrol.html"),
       new TypedocWebpackPlugin({
         jsx: 'react',
         target: 'es6',
         allowSyntheticDefaultImports: true,
         moduleResolution: 'node',
-        module: 'es6',
+        module: 'es6'
       }, './src/js/')
     ],
     devServer: {
@@ -107,10 +117,10 @@ Build started with following configuration:
       historyApiFallback: true,
       contentBase: './',
       proxy: [{
-        context: '/api/v1',
+        context: '/api',
         target: API_ROOT,
         pathRewrite: {
-          '^/api/v1': ''
+          '^/api/': ''
         }
       }]
     }

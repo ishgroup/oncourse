@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {LegacyModal} from "../modal/LegacyModal";
 
 export default {
     render() {
@@ -9,6 +10,7 @@ export default {
 
         return (
             <div className="short-list" id="shortlist">
+                <LegacyModal/>
                 <div className="shortlistInfo" id="info">
                     <span>{count}</span>
                     <p>{this.utils.plural(count, ['item', 'items'])}</p>

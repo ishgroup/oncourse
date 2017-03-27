@@ -94,3 +94,7 @@ For example:
 ```
 window.Ish.api.getCart();
 ```
+
+## Writing Components
+
+Please follow project style, in project we use [Airbnb React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react#table-of-contents) and [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)

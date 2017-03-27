@@ -14,11 +14,11 @@ export class LogMessage {
 export class Logger {
     static log(message: LogMessage) {
         if (message.level === Level.DEBUG) {
-            console.debug(message.message, message.data);
+            console.debug(message.message, message.data || "");
         } else if (message.level === Level.INFO) {
-            console.info(message.message, message.data);
+            console.info(message.message, message.data || "");
         } else if (message.level === Level.ERROR) {
-            console.error(message.message, message.data);
+            console.error(message.message, message.data || "");
         }
     }
 }
