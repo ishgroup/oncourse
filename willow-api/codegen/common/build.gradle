@@ -1,0 +1,3 @@
+dependencies {
+    compile("io.swagger:swagger-codegen:2.2.2")
+}

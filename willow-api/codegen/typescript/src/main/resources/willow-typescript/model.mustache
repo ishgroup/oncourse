@@ -1,23 +1,21 @@
-import {Activity} from "./Activity";
-
 {{#imports}}
-  {{import}}
+import { {{import}} } from "./{{import}}";
 {{/imports}}
 
 {{#models}}
   {{#model}}
-    {{#description}}
-      /**
-      * {{{description}}}
-      */
-    {{/description}}
+  {{#description}}
+/**
+ * {{{description}}}
+ */
+{{/description}}
 export class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{
 {{#vars}}
   {{#description}}
 
-    /**
-    * {{{description}}}
-    */
+  /**
+   * {{{description}}}
+   */
   {{/description}}
   {{name}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}};
 {{/vars}}

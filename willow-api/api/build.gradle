@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'application'
 
 repositories {
-    mavenCentral()
+    //mavenCentral()
     maven {
         url 'https://repo.ish.com.au/content/groups/public'
     }

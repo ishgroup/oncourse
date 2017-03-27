@@ -17,4 +17,9 @@ include 'admin',
 	'web',
 	'cms',
     'willow-api:api', 
-	'willow-api:codegen'
+    'willow-api:codegen',
+    'willow-api:codegen:common',
+    'willow-api:codegen:common',
+    'willow-api:codegen:jaxrs',
+    'willow-api:codegen:stub',
+    'willow-api:codegen:typescript'

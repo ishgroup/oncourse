@@ -3,5 +3,5 @@ apply plugin: "application"
 mainClassName = "ish.oncourse.codegen.cxf.WillowJaxRsGenerator"
 
 dependencies {
-    compile(project(":codegen-common"))
+    compile(project(":willow-api:codegen:common"))
 }

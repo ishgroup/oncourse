@@ -1,6 +1,8 @@
 package ish.oncourse.codegen.typescript;
 
 import io.swagger.codegen.CodegenConfig;
+import io.swagger.codegen.CodegenOperation;
+import io.swagger.codegen.CodegenParameter;
 import io.swagger.codegen.CodegenType;
 import io.swagger.codegen.languages.AbstractTypeScriptClientCodegen;
 import io.swagger.models.properties.ArrayProperty;
@@ -64,10 +66,14 @@ public class WillowClientGenerator extends AbstractTypeScriptClientCodegen imple
     public WillowClientGenerator() {
         super();
 
-        outputFolder = "generated/typescript";
+        outputFolder = "../../../react";
 
         modelTemplateFiles.put("model.mustache", ".ts");
         apiTemplateFiles.put("api.mustache", ".ts");
+
+        typeMapping.put("DateTime", "string");
+        typeMapping.put("any", "any");
+        typeMapping.put("Date", "string");
 
         templateDir = "willow-typescript";
         apiPackage = "js.http";
@@ -159,5 +165,26 @@ public class WillowClientGenerator extends AbstractTypeScriptClientCodegen imple
         }
 
         return postProcessModelsEnum(objs);
+    }
+
+    @Override
+    public String toModelImport(String name) {
+        return name;
+    }
+
+    @Override
+    public Map<String, Object> postProcessOperations(Map<String, Object> objs) {
+        CodegenOperation operation = ((Map<String, List<CodegenOperation>>) objs.get("operations")).get("operation").get(0);
+
+        if (operation.pathParams != null && operation.pathParams.size() > 0) {
+            for (CodegenParameter it : operation.pathParams) {
+                operation.path = operation.path.replace(
+                        "{" + it.paramName + "}",
+                        "${" + it.paramName + "}"
+                );
+            }
+        }
+
+        return objs;
     }
 }
