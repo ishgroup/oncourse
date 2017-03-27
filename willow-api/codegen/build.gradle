@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        jcenter()
         maven {
             url 'https://repo.ish.com.au/content/groups/public'
         }
@@ -17,7 +16,6 @@ buildscript {
 
 subprojects {
     apply plugin: "java"
-    apply plugin: "application"
     apply plugin: "io.spring.dependency-management"
     apply plugin: "com.github.johnrengelman.shadow"
 
@@ -31,7 +29,6 @@ subprojects {
     }
 
     repositories {
-        jcenter()
         maven {
             url 'https://repo.ish.com.au/content/groups/public'
         }
