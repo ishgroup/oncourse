@@ -59,9 +59,7 @@ compileGroovy {
     groovyOptions.configurationScript = file("config.groovy")
 }
 
-distZip {
-    def versionFile = new File(buildDir, "VERSION")
-    versionFile.write(version ?: "SNAPSHOT")
-    into('.')
-    from(versionFile)
+processResources.doLast {
+    def versionFile = file("${project.buildDir}/resources/main/VERSION")
+    versionFile.text = version ?: "SNAPSHOT"
 }
