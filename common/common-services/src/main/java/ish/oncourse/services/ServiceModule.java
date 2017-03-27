@@ -77,9 +77,7 @@ import ish.oncourse.services.s3.S3Service;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteService;
-import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.sites.SitesService;
 import ish.oncourse.services.sms.DefaultSMSService;
@@ -101,7 +99,6 @@ import ish.oncourse.services.visitor.IParsedContentVisitor;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
-import ish.oncourse.ui.services.TapestryOverrideModule;
 import ish.oncourse.util.*;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.management.ManagementService;
@@ -116,7 +113,6 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Scope;
-import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.LibraryMapping;
 
@@ -126,7 +122,6 @@ import java.lang.management.ManagementFactory;
 /**
  * A Tapestry IoC module definition for all common services.
  */
-@SubModule(TapestryOverrideModule.class)
 public class ServiceModule {
 
 	public static final String APP_TEST_MODE = "application.test";
@@ -182,7 +177,6 @@ public class ServiceModule {
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IWebSiteService.class, WebSiteService.class);
-		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IWebTemplateService.class, WebTemplateService.class);

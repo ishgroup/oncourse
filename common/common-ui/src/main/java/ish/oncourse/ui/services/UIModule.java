@@ -38,8 +38,66 @@ import java.io.IOException;
 /**
  * A Tapestry IoC module definition of the common components library.
  */
-@SubModule({TextileModule.class, TapestryOverrideModule.class})
+@SubModule(TextileModule.class)
 public class UIModule {
+
+	public PageLoader buildPageLoaderOverride(@Autobuild PageLoaderOverride service, @ComponentTemplates InvalidationEventHub templatesHub,
+			@ComponentMessages InvalidationEventHub messagesHub, @ComponentClasses InvalidationEventHub classesInvalidationEventHub,
+			IWebNodeService webNodeService,
+			Request request) {
+
+		service.setRequest(request);
+		classesInvalidationEventHub.addInvalidationListener(service);
+		templatesHub.addInvalidationListener(service);
+		messagesHub.addInvalidationListener(service);
+
+		service.setWebNodeService(webNodeService);
+		return service;
+	}
+
+	public PageSource buildPageSourceOverride(PageLoader pageLoader, @ComponentTemplates InvalidationEventHub templatesHub,
+			@ComponentMessages InvalidationEventHub messagesHub, @ComponentClasses InvalidationEventHub classesInvalidationEventHub,
+			IWebNodeService webNodeService,
+			Request request) {
+
+		PageSourceOverride service = new PageSourceOverride(pageLoader, webNodeService, request);
+		classesInvalidationEventHub.addInvalidationListener(service);
+
+		messagesHub.addInvalidationListener(service);
+		templatesHub.addInvalidationListener(service);
+
+		return service;
+	}
+
+	public ComponentTemplateSource buildComponentTemplateSourceOverride(TemplateParser parser, ComponentTemplateLocator locator,
+			ClasspathURLConverter classpathURLConverter, UpdateListenerHub updateListenerHub, Request request,
+			IResourceService resourceService, IWebNodeService webNodeService, IWebNodeTypeService webNodeTypeService,
+			ICayenneService cayenneService, IWebSiteService webSiteService, IWebSiteVersionService webSiteVersionService) {
+
+		ComponentTemplateSourceOverride service = new ComponentTemplateSourceOverride(parser, locator, classpathURLConverter, request,
+				resourceService, webNodeService, webNodeTypeService, cayenneService, webSiteService, webSiteVersionService);
+
+		updateListenerHub.addUpdateListener(service);
+
+		return service;
+	}
+
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
+			@Local ComponentTemplateSource componentTemplateSourceOverride) {
+		configuration.add(ComponentTemplateSource.class, componentTemplateSourceOverride);
+	}
+
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local PageLoader override) {
+		configuration.add(PageLoader.class, override);
+	}
+
+	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local PageSource override) {
+		configuration.add(PageSource.class, override);
+	}
+
+	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
+		configuration.add(new LibraryMapping("ui", "ish.oncourse.ui"));
+	}
 
 	public void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration,
 			@InjectService("LogFilter") RequestFilter logFilter) {

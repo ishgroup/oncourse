@@ -13,12 +13,11 @@ compileGroovy.options.encoding = 'UTF-8'
 compileTestGroovy.options.encoding = 'UTF-8'
 
 dependencies {
-	compile 'javax.servlet:servlet-api:3.0'
+	providedCompile 'javax.servlet:servlet-api:3.0'
 
 	compile project(':common:common-model')
 	compile project(':common:common-functions')
-	compile project(':common:common-ui')
-	
+
 	compile 'commons-collections:commons-collections:3.2.1'
 	compile 'commons-logging:commons-logging:1.1.1'
 	compile 'commons-lang:commons-lang:2.6'
@@ -40,7 +39,6 @@ dependencies {
 
 	//we use DefaultArtifactVersion class from the package to compare angel versions.
 	compile 'org.apache.maven:maven-artifact:3.0.4'
-	testCompile 'org.apache.tapestry:tapestry-test:5.2.6'
 
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
