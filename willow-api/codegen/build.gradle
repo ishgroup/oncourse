@@ -10,18 +10,12 @@ buildscript {
 
     dependencies {
         classpath("io.spring.gradle:dependency-management-plugin:1.0.0.RELEASE")
-        classpath("com.github.jengelman.gradle.plugins:shadow:1.2.4")
     }
 }
 
 subprojects {
     apply plugin: "java"
     apply plugin: "io.spring.dependency-management"
-    apply plugin: "com.github.johnrengelman.shadow"
-
-    shadowJar {
-        mergeServiceFiles()
-    }
 
     ext {
         swaggerCodegenVersion = "2.2.2"
