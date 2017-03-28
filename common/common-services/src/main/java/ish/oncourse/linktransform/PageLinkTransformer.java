@@ -5,6 +5,7 @@
 
 package ish.oncourse.linktransform;
 
+import ish.oncourse.linktransform.functions.GetCourseByPath;
 import ish.oncourse.linktransform.functions.GetCourseClassByPath;
 import ish.oncourse.model.*;
 import ish.oncourse.services.alias.IWebUrlAliasService;
@@ -211,12 +212,10 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			break;
 		case Course:
-			Course course = null;
-			String courseCode = path.substring(path.lastIndexOf(LEFT_SLASH_CHARACTER) + 1);
-			if (courseCode != null) {
-				course = courseService.getCourseByCode(courseCode);
-			}
-			if (course != null && courseService.availableByRootTag(course)) {
+			Course course = GetCourseByPath
+					.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), path)
+					.get();
+			if (course != null) {
 				request.setAttribute(Course.class.getSimpleName(), course);
 			} else {
 				pageIdentifier = PageIdentifier.PageNotFound;
@@ -224,7 +223,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			break;
 		case CourseClass:
 			CourseClass courseClass = GetCourseClassByPath
-					.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentCollege(), path)
+					.valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), path)
 					.get();
 			if (courseClass != null) {
 				request.setAttribute(CourseClass.class.getSimpleName(), courseClass);

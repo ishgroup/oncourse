@@ -12,23 +12,34 @@ import org.apache.cayenne.query.ObjectSelect;
  * Returns active and visible course classes by path
  * Created by pavel on 3/13/17.
  */
-public class GetCourseClassByFullCode {
+public class GetCourseClassByCode {
 
     private ObjectContext context;
     private College college;
     private String code;
 
-    private GetCourseClassByFullCode() {
+    private GetCourseClassByCode() {
     }
 
-    public static GetCourseClassByFullCode valueOf(ObjectContext context, College college, String code) {
-        GetCourseClassByFullCode result = new GetCourseClassByFullCode();
+    /**
+     * Create instance
+     * @param context
+     * @param college
+     * @param code
+     * @return
+     */
+    public static GetCourseClassByCode valueOf(ObjectContext context, College college, String code) {
+        GetCourseClassByCode result = new GetCourseClassByCode();
         result.context = context;
         result.college = college;
         result.code = code;
         return result;
     }
 
+    /**
+     * Return active webvisible course class by code
+     * @return
+     */
     public CourseClass get() {
         String[] parts = code.split("-");
         // courseClass code has format "course.code-courseClass.code"
@@ -40,6 +51,7 @@ public class GetCourseClassByFullCode {
 
         ObjectSelect<CourseClass> query = ObjectSelect.query(CourseClass.class, ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, college)
                 .andExp(ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true))
+                .andExp(ExpressionFactory.matchExp(CourseClass.IS_WEB_VISIBLE_PROPERTY, true))
                 .andExp(getSearchStringPropertyQualifier(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY, courseCode))
                 .andExp(getSearchStringPropertyQualifier(CourseClass.CODE_PROPERTY, courseClassCode)));
 
@@ -48,10 +60,5 @@ public class GetCourseClassByFullCode {
 
     private Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
         return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
-    }
-
-    private Expression getSiteQualifier() {
-        return ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, college).andExp(
-                ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true));
     }
 }
