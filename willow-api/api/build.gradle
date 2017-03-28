@@ -50,6 +50,14 @@ dependencies {
     testCompile 'commons-dbcp:commons-dbcp:1.4'
 }
 
+test {
+    if (project.hasProperty('oncourse.jdbc.url')) {
+        systemProperty 'oncourse.jdbc.url', project.properties.get('oncourse.jdbc.url')
+        systemProperty 'oncourse.jdbc.user', project.properties.get('oncourse.jdbc.user')
+        systemProperty 'oncourse.jdbc.password', project.properties.get('oncourse.jdbc.password')
+    }
+}
+
 mainClassName = 'ish.oncourse.willow.WillowApp'
 
 targetCompatibility = '1.8'

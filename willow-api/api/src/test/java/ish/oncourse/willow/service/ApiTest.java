@@ -117,7 +117,7 @@ public abstract class ApiTest {
     }
     
     private static DataSource createDataSource() throws Exception {
-        String jdbcUrl = System.getProperty("oncourse.jdbc.url");
+        String jdbcUrl = System.getProperty("oncourse.jdbc.url") + "?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8";
         String jdbcUser = System.getProperty("oncourse.jdbc.user");
         String jdbcPassword = System.getProperty("oncourse.jdbc.password");
 
