@@ -10,7 +10,6 @@ import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import ish.oncourse.willow.service.impl.HealthCheckApiServiceImpl
-import ish.oncourse.willow.service.impl.HealthCheckInterceptor
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
 import ish.oncourse.willow.service.impl.ShotDownService
@@ -28,7 +27,6 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(ProductsApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(PromotionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(CollegeService)
-        CXFModule.contributeResources(binder).addBinding().to(HealthCheckInterceptor)
         CXFModule.contributeResources(binder).addBinding().to(HealthCheckApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ShotDownService)
     }
