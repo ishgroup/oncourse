@@ -49,7 +49,7 @@ def aliasCollection = { String alias, String collection ->
             "action=CREATEALIAS" +
             "&name=$alias" +
             "&collections=$collection").text
-    logger.info(out)
+    println out
 }
 
 def createCollection = {String core ->
@@ -65,7 +65,7 @@ def createCollection = {String core ->
                 "&property.oncourse.jdbc.url=$oncourseJdbcUrl" +
                 "&property.oncourse.jdbc.user=$oncourseJdbcUser" +
                 "&property.oncourse.jdbc.password=$oncoursePassword").text
-        logger.info(out)
+        println out
     }
 }
 
@@ -74,7 +74,7 @@ def deleteAlias = { String alias ->
     def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
             "action=DELETEALIAS" +
             "&name=$alias").text
-    logger.info(out)
+    println out
 }
 
 task deleteAllCollections {
@@ -84,7 +84,7 @@ task deleteAllCollections {
             def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
                     "action=DELETE" +
                     "&name=$collection").text
-            logger.info(out)
+            println out
         }
     }
 }
@@ -97,7 +97,7 @@ task deleteAllAliases {
             def out = new URL("http://$solrHost:$solrPort/solr/admin/collections?" +
                     "action=DELETEALIAS" +
                     "&name=$alias").text
-            logger.info(out)
+            println out
         }
     }
 }

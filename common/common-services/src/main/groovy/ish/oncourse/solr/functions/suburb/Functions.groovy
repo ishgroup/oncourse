@@ -3,12 +3,10 @@ package ish.oncourse.solr.functions.suburb
 import ish.oncourse.model.PostcodeDb
 import ish.oncourse.solr.model.SolrSuburb
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.ResultIterator
 
 import static org.apache.cayenne.query.ObjectSelect.query
 
-/**
- * Created by akoira on 28/3/17.
- */
 class Functions {
     static Closure<SolrSuburb> getSolrSuburb = { PostcodeDb postcode ->
         return new SolrSuburb().with {
@@ -22,6 +20,10 @@ class Functions {
     }
 
     static Closure<Iterator<SolrSuburb>> getSolrSuburbs = { ObjectContext context ->
-        return query(PostcodeDb).orderBy(PostcodeDb.POSTCODE.asc()).iterator(context).each(getSolrSuburb)
+        ResultIterator<PostcodeDb> postcodeDbs = query(PostcodeDb).orderBy(PostcodeDb.POSTCODE.asc()).iterator(context)
+        return [hasNext: { return postcodeDbs.hasNextRow() },
+                next   : { return getSolrSuburb.call(postcodeDbs.nextRow()) },
+                remove : { postcodeDbs.skipRow() }
+        ] as Iterator
     }
 }
