@@ -15,12 +15,12 @@ import java.util.Date;
 /**
  * The first test which shows how we can populate SolrCourse document to the solr index
  */
-public class SolrCourseTest extends SolrTestCaseJ4 {
+public class SolrCourseIndexTest extends SolrTestCaseJ4 {
     private static InitSolr initSolr;
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        initSolr = InitSolr.valueOf();
+        initSolr = InitSolr.coursesCore();
         initSolr.init();
     }
 

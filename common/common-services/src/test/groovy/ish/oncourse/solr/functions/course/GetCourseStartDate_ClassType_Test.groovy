@@ -1,8 +1,8 @@
-package ish.oncourse.solr.functions
+package ish.oncourse.solr.functions.course
 
 import org.junit.Test
 
-import static ish.oncourse.solr.functions.GetCourseStartDate.ClassType.*
+import static ish.oncourse.solr.functions.course.GetCourseStartDate.ClassType.*
 import static org.testng.Assert.assertEquals
 
 class GetCourseStartDate_ClassType_Test {

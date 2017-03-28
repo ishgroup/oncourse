@@ -1,10 +1,10 @@
-package ish.oncourse.solr.functions
+package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Session
 
-import static ish.oncourse.solr.functions.GetCourseStartDate.ClassType.valueOf
-import static ish.oncourse.solr.functions.GetCourseStartDate.ClassType.withOutSessions
+import static ish.oncourse.solr.functions.course.GetCourseStartDate.ClassType.valueOf
+import static ish.oncourse.solr.functions.course.GetCourseStartDate.ClassType.withOutSessions
 import static org.apache.commons.lang3.time.DateUtils.addDays
 import static org.apache.commons.lang3.time.DateUtils.addHours
 import static org.mockito.Mockito.mock

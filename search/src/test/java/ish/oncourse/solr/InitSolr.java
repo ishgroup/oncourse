@@ -34,10 +34,17 @@ public class InitSolr {
         return result;
     }
 
-    public static InitSolr valueOf() {
+    public static InitSolr coursesCore() {
         return InitSolr.valueOf("conf/solrconfig.xml",
                 "conf/schema.xml",
                 "src/main/resources/solr",
                 "courses");
+    }
+
+    public static InitSolr suburbsCore() {
+        return InitSolr.valueOf("conf/solrconfig.xml",
+                "conf/schema.xml",
+                "src/main/resources/solr",
+                "suburbs");
     }
 }

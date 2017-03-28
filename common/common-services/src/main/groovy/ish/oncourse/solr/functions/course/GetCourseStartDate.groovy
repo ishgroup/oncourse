@@ -1,10 +1,11 @@
-package ish.oncourse.solr.functions
+package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import org.apache.commons.lang3.time.DateUtils
 
-import static ish.oncourse.solr.functions.GetCourseStartDate.ClassType.*
+import static ish.oncourse.solr.functions.course.Functions.getCourseClasses
+import static ish.oncourse.solr.functions.course.GetCourseStartDate.ClassType.*
 
 /**
  * Gets startDate value for SolrCourse document
@@ -13,7 +14,7 @@ class GetCourseStartDate {
 
     Date current = new Date()
 
-    Date get(Course course, Closure<List<CourseClass>> courseClasses = { CourseQueries.getCourseClasses(course) }) {
+    Date get(Course course, Closure<List<CourseClass>> courseClasses = getCourseClasses) {
 
         List<CourseClass> classes = courseClasses.call(course)
 

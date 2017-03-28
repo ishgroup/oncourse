@@ -18,8 +18,8 @@ class ReindexTagsJob implements IReindexJob {
         println "${getClass().simpleName} ${new Date()}"
     }
 
-    static ReindexSuburbsJob instance() {
-        ReindexSuburbsJob job = new ReindexSuburbsJob()
+    static ReindexTagsJob instance() {
+        ReindexTagsJob job = new ReindexTagsJob()
         return job
     }
 }

@@ -1,0 +1,6 @@
+jetty:
+  connector:
+    port: 10082
+cxf:
+  urlPattern: '/*'
+  welcomeText: 'Willow REST API: 0.0.3'

@@ -1,4 +1,4 @@
-package ish.oncourse.solr.functions
+package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass

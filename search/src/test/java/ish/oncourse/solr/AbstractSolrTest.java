@@ -38,7 +38,7 @@ public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
     @BeforeClass
     public static void beforeClass() throws Exception {
         SearchContextUtils.setupDataSources();
-        InitSolr.valueOf().init();
+        InitSolr.coursesCore().init();
     }
 
 
