@@ -4,7 +4,6 @@ import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.services.courseclass.CheckClassAge;
-import ish.oncourse.services.courseclass.functions.GetCourseClassByFullCode;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -87,12 +86,9 @@ public class GetCourseClassRenderedHtmlTest {
 
 	@Test
 	public void testPageLoad() {
-		College currentCollege = ObjectSelect.query(College.class)
-				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 11612))
+		CourseClass courseClass = ObjectSelect.query(CourseClass.class)
+				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 5137172))
 				.selectOne(cayenneService.sharedContext());
-
-
-		CourseClass courseClass = GetCourseClassByFullCode.valueOf(cayenneService.sharedContext(), currentCollege, "DJPLF-1").get();
 
 		CourseContext courseContext = CourseContext.valueOf(discountService.getPromotions(), new CheckClassAge().classAge(preferenceController.getHideClassOnWebsiteAge()));
 
