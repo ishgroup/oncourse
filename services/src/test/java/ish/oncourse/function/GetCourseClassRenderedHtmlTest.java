@@ -8,13 +8,13 @@ import ish.oncourse.services.courseclass.functions.GetCourseClassByFullCode;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.ui.utils.CourseContext;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.webservices.services.AppModule;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.internal.services.*;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.internal.test.TestableResponse;
@@ -31,9 +31,8 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
-/**
- * Created by anarut on 3/24/17.
- */
+import static org.junit.Assert.assertTrue;
+
 public class GetCourseClassRenderedHtmlTest {
 
 	private PageTester tester;
@@ -42,7 +41,6 @@ public class GetCourseClassRenderedHtmlTest {
 	private Environment environment;
 
 	private ICayenneService cayenneService;
-	private IWebSiteService webSiteService;
 
 	private IDiscountService discountService;
 	private PreferenceController preferenceController;
@@ -100,7 +98,7 @@ public class GetCourseClassRenderedHtmlTest {
 
 		prepareRequestGlobals();
 
-		String result2 = GetCourseClassRenderedHtml.valueOf(pageRenderer, courseClass, true, false, false, Money.ZERO, courseContext).get();
-		System.out.println(result2);
+		String result = GetCourseClassRenderedHtml.valueOf(pageRenderer, courseClass, true, false, false, Money.ZERO, courseContext).get();
+		assertTrue(StringUtils.isNotBlank(result));
 	}
 }

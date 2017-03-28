@@ -179,7 +179,7 @@ public class ServiceModule {
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		binder.bind(IWebSiteService.class, WebSiteService.class);
-		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
+
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IWebTemplateService.class, WebTemplateService.class);

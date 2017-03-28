@@ -15,7 +15,6 @@ import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.usi.IUSIVerificationService;
-import ish.oncourse.ui.services.TapestryOverrideModule;
 import ish.oncourse.util.UIRequestExceptionHandler;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
@@ -42,23 +41,13 @@ import ish.oncourse.webservices.usi.USIService;
 import ish.oncourse.webservices.usi.USIVerificationService;
 import ish.oncourse.webservices.usi.crypto.CryptoKeys;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry5.ioc.IOCSymbols;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.ScopeConstants;
-import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.ServiceBuilder;
-import org.apache.tapestry5.ioc.ServiceResources;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
-import org.apache.tapestry5.services.ApplicationGlobals;
-import org.apache.tapestry5.services.ComponentSource;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestExceptionHandler;
-import org.apache.tapestry5.services.Response;
-import org.apache.tapestry5.services.ResponseRenderer;
+import org.apache.tapestry5.services.*;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
@@ -66,7 +55,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  * @author marek
  */
 @SuppressWarnings("all")
-@SubModule({ ModelModule.class, ServiceModule.class, TapestryOverrideModule.class })
+@SubModule({ ModelModule.class, ServiceModule.class })
 public class AppModule {
 	private static final String WEB_SITE_SERVICE_OVERRIDE_NAME = WebSiteServiceOverride.class.getSimpleName();
 
@@ -185,6 +174,10 @@ public class AppModule {
 		};
 	}
 
+	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
+		configuration.add(new LibraryMapping("ui", "ish.oncourse.ui"));
+	}
+	
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
 		configuration.add(RequestExceptionHandler.class, handler);
 	}
