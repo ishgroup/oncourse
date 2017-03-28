@@ -3,7 +3,6 @@ package ish.oncourse.services.courseclass;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
-import ish.oncourse.services.courseclass.functions.GetCourseClassByFullCode;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
