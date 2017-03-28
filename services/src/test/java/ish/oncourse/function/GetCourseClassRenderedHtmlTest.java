@@ -3,8 +3,6 @@ package ish.oncourse.function;
 import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.PaymentInSuccessFailAbandonTest;
-import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.courseclass.functions.GetCourseClassByFullCode;
 import ish.oncourse.services.discount.IDiscountService;
@@ -17,15 +15,10 @@ import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.webservices.services.AppModule;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.tapestry5.BaseValidationDecorator;
-import org.apache.tapestry5.RenderSupport;
-import org.apache.tapestry5.ValidationDecorator;
 import org.apache.tapestry5.internal.services.*;
-import org.apache.tapestry5.internal.services.ajax.JavaScriptSupportImpl;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.internal.test.TestableResponse;
 import org.apache.tapestry5.services.*;
-import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.apache.tapestry5.test.PageTester;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -37,7 +30,6 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * Created by anarut on 3/24/17.
@@ -72,7 +64,7 @@ public class GetCourseClassRenderedHtmlTest {
 		discountService = tester.getRegistry().getService(IDiscountService.class);
 		preferenceController = tester.getRegistry().getService(PreferenceController.class);
 
-		InputStream st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
+		InputStream st = GetCourseClassRenderedHtmlTest.class.getClassLoader().getResourceAsStream(
 				"ish/oncourse/function/GetCourseClassRenderedHtmlTestDataSet.xml");
 
 
