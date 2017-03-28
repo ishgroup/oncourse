@@ -8,6 +8,9 @@ dependencies {
     providedCompile 'javax.servlet:servlet-api:3.0'
 
 	compile project(':common:common-model')
+	
+	compile project(':common:common-ui')
+	
 	compile (project(':common:common-services')) {
 		exclude group: 'axis', module: 'axis-wsdl4j'
 	}

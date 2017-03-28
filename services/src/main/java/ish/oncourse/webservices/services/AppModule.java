@@ -15,6 +15,7 @@ import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.usi.IUSIVerificationService;
+import ish.oncourse.ui.services.TapestryOverrideModule;
 import ish.oncourse.util.UIRequestExceptionHandler;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.exception.PaymentNotFoundException;
@@ -65,7 +66,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  * @author marek
  */
 @SuppressWarnings("all")
-@SubModule({ ModelModule.class, ServiceModule.class })
+@SubModule({ ModelModule.class, ServiceModule.class, TapestryOverrideModule.class })
 public class AppModule {
 	private static final String WEB_SITE_SERVICE_OVERRIDE_NAME = WebSiteServiceOverride.class.getSimpleName();
 

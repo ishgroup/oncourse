@@ -1,7 +1,0 @@
-<html title="literal:Unsubscribe" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <body>
-        <p>Simple text</p>
-        <p>Simple text 2</p>
-        <div id="divBlock"><h2>Simple Test Page</h2></div>
-    </body>
-</html>
