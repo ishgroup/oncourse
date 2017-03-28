@@ -67,7 +67,11 @@ compileGroovy {
     groovyOptions.configurationScript = file("config.groovy")
 }
 
-processResources.doLast {
-    def versionFile = file("${project.buildDir}/resources/main/VERSION")
-    versionFile.text = version ?: "SNAPSHOT"
+distZip {
+    def versionFile = file("${project.projectDir}/src/dist/VERSION")
+    versionFile.text = project.hasProperty('releaseVersion')? project.properties.get('releaseVersion'):"SNAPSHOT"
+}
+distZip.doLast{
+    def versionFile = file("${project.projectDir}/src/dist/VERSION")
+    versionFile.text=''
 }
