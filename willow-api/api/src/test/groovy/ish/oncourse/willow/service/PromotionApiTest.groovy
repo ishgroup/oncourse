@@ -24,7 +24,7 @@ class PromotionApiTest extends ApiTest {
         Promotion promotion = api.getPromotion('CODE')
 
         assertEquals(promotion.id, "1001")
-        assertEquals(promotion.code, "234567")
+        assertEquals(promotion.code, "code")
         assertEquals(promotion.name, "name_1")
 
         promotion = api.getPromotion('code1')
