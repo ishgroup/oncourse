@@ -4,7 +4,7 @@ generateIndex();
 generateCourses();
 
 function cart() {
-  return `<div data-cid="cart"></div>`;
+  return `<div data-cid="cart"></div><div data-cid="promotions"></div>`;
 }
 
 function buyButton(id) {
@@ -15,8 +15,13 @@ function buyButton(id) {
        data-prop-name="Name ${id}"></div>`;
 }
 
+function fee(id) {
+  return `<div data-cid="fees" data-prop-id="${id}"></div>`;
+}
+
 function enrolButton(id) {
-  return `<div data-cid="enrol-button"
+  return `${fee(id)}
+    <div data-cid="enrol-button"
      data-prop-id="${id}"
      data-prop-name="Course ${id}"
      data-prop-unique-identifier="2424"
@@ -59,22 +64,86 @@ function generateIndex() {
         template.innerHTML = html;
         return template.content.firstChild;
       }
-      var count = 3;
-      function append() {
-          count++;
+      var count = 0;
       
-        document.body.appendChild(htmlToElement(\`<div class="enrol-button">
-    <div data-cid="enrol-button"
-         data-prop-id="count"
-         data-prop-name="Course count"
-         data-prop-unique-identifier="2424"
-         data-prop-is-canceled="false"
-         data-prop-is-finished="false"
-         data-prop-has-available-enrolment-places="true"
-         data-prop-payment-gateway-enabled="true"
-         data-prop-allow-by-application="false"
-         data-prop-free-places="3"></div>
-  </div>\`));
+      var ids = [
+        '5038512',
+        '5038573',
+        '5035698',
+        '5036062',
+        '5036477',
+        '5036433',
+        '5036589',
+        '5034827',
+        '5034921',
+        '5036405',
+        '5036425',
+        '5036774',
+        '5036974',
+        '5036460',
+        '5036207',
+        '5036157',
+        '5036902',
+        '5034095',
+        '5034138',
+        '5034760',
+        '5035259',
+        '5035330',
+        '5035368',
+        '5035407',
+        '5035429',
+        '5035706',
+        '5035766',
+        '5034160',
+        '5035074',
+        '5035140',
+        '5035158',
+        '5035235',
+        '5035401',
+        '5035530',
+        '5035804',
+        '5034864',
+        '5035011',
+        '5034973',
+        '5035463',
+        '5035715',
+        '5034744',
+        '5035246',
+        '5035296',
+        '5035538',
+        '5035627',
+        '5035705',
+        '5035719',
+        '5035726',
+        '5036534',
+        '5036703',
+        '5036876',
+        '5037058',
+        '5038578',
+        '5039125',
+        '5039126',
+        '5039131'
+      ];
+      
+      function append() {
+        count++;
+      
+        document.body.appendChild(htmlToElement([
+        '<div>',
+        '<div data-cid="fees" data-prop-id="' + ids[count] + '"></div>',
+        '<div class="enrol-button">',
+         '<div data-cid="enrol-button"',
+         '  data-prop-id="' + ids[count] + '"',
+         '  data-prop-name="Course ' + ids[count] + '"',
+         '  data-prop-unique-identifier="2424"',
+         '  data-prop-is-canceled="false"',
+         '  data-prop-is-finished="false"',
+         '  data-prop-has-available-enrolment-places="true"',
+         '  data-prop-payment-gateway-enabled="true"',
+         '  data-prop-allow-by-application="false"',
+         '  data-prop-free-places="3"></div>',
+         '</div>',
+         '</div>'].join('')));
         
         window.Ish.react.bootstrap();
       }
@@ -84,10 +153,10 @@ function generateIndex() {
   <body>
     <button onclick="append()">Add New Enrol Button</button>
     <div class="cart">${cart()}</div>
-    <div class="enrol-button">${enrolButton(1)}</div>
-    <div class="enrol-button">${enrolButton(2)}</div>
-    <div class="enrol-button">${enrolButton(3)}</div>
     <div class="popup">${popup()}</div>
+    <div class="enrol-button">${enrolButton(5038511)}</div>
+    <div class="enrol-button">${enrolButton(5038575)}</div>
+    <div class="enrol-button">${enrolButton(5037328)}</div>
   </body>
 </html>
 `);
@@ -1433,27 +1502,7 @@ function generateCourses() {
                                 </div>
                                 <div class="classAction">
 
-                                    <div class="price">
-
-
-                                        $139
-
-
-                                        <span class="gst">
-				 inc <span title="Goods and Services Tax">GST</span>
-			</span>
-
-
-                                        <span class="discount-price">/</span>
-                                        <acronym title="Registered Pension Holders - Call office"
-                                                 class="discount-price">
-                                            $111.2
-                                        </acronym>
-
-
-                                    </div>
-
-                                    ${enrolButton(5132142)}
+                                    ${enrolButton(5038511)}
 
                                     <div class="classStatus">
 
@@ -1663,7 +1712,7 @@ function generateCourses() {
 
                                     </div>
 
-                                    ${enrolButton(5132173)}
+                                    ${enrolButton(5038575)}
 
                                     <div class="classStatus">
 
@@ -1872,7 +1921,7 @@ function generateCourses() {
 
                                     </div>
 
-                                    ${enrolButton(5132177)}
+                                    ${enrolButton(5037328)}
 
 
                                     <div class="classStatus">
@@ -2081,7 +2130,7 @@ function generateCourses() {
 
                                     </div>
 
-                                    ${enrolButton(5132178)}
+                                    ${enrolButton(5038512)}
 
                                     <div class="classStatus">
 

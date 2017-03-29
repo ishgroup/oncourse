@@ -1,18 +1,30 @@
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {BuyButton, BuyButtonProps} from '../components/buyButton/BuyButton';
-import { addProduct as add } from '../actions/cart';
-import {Product} from "../services/IshState";
+import {IshState, ProductCart, ProductCartState} from "../services/IshState";
+import {IshActions} from "../constants/IshActions";
+import {Product} from "../model/Product";
 
-function isAdded(items: Product[], id: number) {
-    const item = items.find((item) => item.id === id);
-    return !!item && !item.pending;
+export default connect(mapStateToProps, mapDispatchToProps)(BuyButton);
+
+function isAdded(items: ProductCartState, id: string) {
+  const item = items.result.find(itemId => itemId === id);
+  return !!item;
 }
 
-export default connect((state, ownProps: BuyButtonProps) => {
-    return {
-        isAdded: isAdded(state.cart.products, ownProps.id)
-    };
-}, (dispatch) => {
-    return bindActionCreators({ add }, dispatch);
-})(BuyButton as any);
+function mapDispatchToProps(dispatch) {
+  return {
+    addProduct: (product: Product) => {
+      dispatch({
+        type: IshActions.ADD_PRODUCT_TO_CART,
+        payload: product
+      });
+    }
+  };
+}
+
+function mapStateToProps(state: IshState, ownProps: BuyButtonProps) {
+  return {
+    product: state.products.entities[ownProps.id] || {},
+    isAdded: isAdded(state.cart.products, ownProps.id)
+  };
+}

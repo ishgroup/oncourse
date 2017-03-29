@@ -1,16 +1,30 @@
-import Cart from '../components/cart/Cart';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { removeClass, removeProduct } from '../actions/cart';
+import Cart, {CartProps} from '../components/cart/Cart';
+import {connect} from 'react-redux';
+import {CourseClassCart, IshState, ProductCart} from "../services/IshState";
+import {IshActions} from "../constants/IshActions";
 
-export default connect((state) => {
-    return {
-        classes: state.cart.courses,
-        products: state.cart.products
-    };
-}, (dispatch) => {
-    return bindActionCreators({
-        removeClass,
-        removeProduct
-    }, dispatch);
-})(Cart as any);
+export default connect(mapStateToProps, mapDispatchToProps)(Cart as any);
+
+function mapStateToProps(state: IshState, ownProps: CartProps) {
+  return {
+    classes: state.cart.courses,
+    products: state.cart.products
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    removeClass: (courseClass: CourseClassCart) => {
+      dispatch({
+        type: IshActions.REMOVE_CLASS_FROM_CART,
+        payload: courseClass
+      });
+    },
+    removeProduct: (product: ProductCart) => {
+      dispatch({
+        type: IshActions.REMOVE_PRODUCT_FROM_CART,
+        payload: product
+      });
+    },
+  };
+}

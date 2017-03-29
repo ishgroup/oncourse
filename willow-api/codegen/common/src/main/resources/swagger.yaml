@@ -196,6 +196,9 @@ definitions:
         description: Internal Unique identifier of class
       course:
         $ref: '#/definitions/Course'
+      name:
+        type: string
+        description: Name of class
       code:
         type: string
         description: Code of class

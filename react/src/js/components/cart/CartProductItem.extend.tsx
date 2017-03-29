@@ -1,12 +1,13 @@
 import * as React from 'react';
+import {ProductCart} from "../../services/IshState";
 
 export default {
     render() {
-        let product = this.props.product;
+        let product: ProductCart = this.props.product;
 
         return (
             <li>
-                <a href={`/product/${product.uniqueIdentifier}`}>{product.name}</a>
+                <a href={`/product/${product.id}`}>{product.name}</a>
                 <span className={this.utils.classnames('deleteItem', {
                     'loading': this.props.pending
                 })} title="Remove item">
@@ -17,10 +18,10 @@ export default {
                     Why we display product create and modified dates as date range?
                     Weird stuff
                  */}
-                {product.created && product.modified &&
+                {product["created"] && product["modified"] &&
                     <div className="shortListOrderClasses">
-                        <abbr className="dtstart" title="">{product.created}</abbr>
-                        <abbr className="dtend" title="">{product.modified}</abbr>
+                        <abbr className="dtstart" title="">{product["created"]}</abbr>
+                        <abbr className="dtend" title="">{product["modified"]}</abbr>
                     </div>}
             </li>
         );

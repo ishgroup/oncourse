@@ -6,14 +6,9 @@ import {Store} from "redux";
 import {IshState} from "../services/IshState";
 import {whenReady} from "../services/jq";
 import forEach from "lodash/forEach";
-import Component = React.Component;
 import ComponentClass = React.ComponentClass;
 import {Logger, Level, LogMessage} from "../services/Logger";
-
-interface BootstrapComponent {
-  Component: ComponentClass<any>;
-  props: {[key: string]: string};
-}
+import {StatelessComponent} from "react";
 
 export class Bootstrap {
   private components: {[key: string]: BootstrapComponent} = {};
@@ -21,7 +16,7 @@ export class Bootstrap {
   constructor(private store: Store<IshState>) {
   }
 
-  register(id: string, Component: ComponentClass<any>, props?: {[key: string]: string}) {
+  register(id: string, Component: Component, props?: {[key: string]: string}) {
     this.components[id] = {
       Component,
       props
@@ -31,7 +26,7 @@ export class Bootstrap {
 
   start(): Bootstrap {
     whenReady(() => this.bootstrap());
-    return this
+    return this;
   }
 
   private static prepareProp(value, type) {
@@ -43,31 +38,35 @@ export class Bootstrap {
   }
 
   private bootstrap() {
-    for (let cid in this.components) {
-      const containers = document.querySelectorAll(`[data-cid=${cid}]`),
-        {Component, props} = this.components[cid];
+    try {
+      Object.keys(this.components).forEach((cid) => {
+        const containers = document.querySelectorAll(`[data-cid=${cid}]`);
+        const {Component, props} = this.components[cid];
 
-      forEach(containers, (container: HTMLElement) => {
-        if (container.childElementCount != 0) {
-          Logger.log(new LogMessage(Level.DEBUG, "Container already has a children, that mean that React will not" +
-            " render this tag."));
-          return
-        }
+        forEach(containers, (container: HTMLElement) => {
+          if (container.childElementCount != 0) {
+            Logger.log(new LogMessage(Level.DEBUG, "Container already has a children, that mean that React will not" +
+              " render this tag."));
+            return
+          }
 
-        let realProps = {};
+          let realProps = {};
 
-        for (let prop in props) {
-          const value = container.getAttribute(`data-prop-${camelToDashCase(prop)}`);
-          realProps[prop] = Bootstrap.prepareProp(value, props[prop]);
-        }
+          Object.keys(props).forEach((prop) => {
+            const value = container.getAttribute(`data-prop-${camelToDashCase(prop)}`);
+            realProps[prop] = Bootstrap.prepareProp(value, props[prop]);
+          });
 
-        render(
-          <Provider store={this.store}>
-            <Component {...realProps}/>
-          </Provider>,
-          container
-        );
+          render(
+            <Provider store={this.store}>
+              <Component {...realProps}/>
+            </Provider>,
+            container
+          );
+        });
       });
+    } catch (e) {
+      Logger.log(new LogMessage(Level.ERROR, "Unhandled error", e));
     }
   }
 
@@ -118,4 +117,10 @@ export class Bootstrap {
       return v;
     }
   };
+}
+
+type Component = ComponentClass<any> | StatelessComponent<any>;
+interface BootstrapComponent {
+  Component: Component;
+  props: { [key: string]: string };
 }

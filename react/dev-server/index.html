@@ -20,22 +20,86 @@
         template.innerHTML = html;
         return template.content.firstChild;
       }
-      var count = 3;
-      function append() {
-          count++;
+      var count = 0;
       
-        document.body.appendChild(htmlToElement(`<div class="enrol-button">
-    <div data-cid="enrol-button"
-         data-prop-id="count"
-         data-prop-name="Course count"
-         data-prop-unique-identifier="2424"
-         data-prop-is-canceled="false"
-         data-prop-is-finished="false"
-         data-prop-has-available-enrolment-places="true"
-         data-prop-payment-gateway-enabled="true"
-         data-prop-allow-by-application="false"
-         data-prop-free-places="3"></div>
-  </div>`));
+      var ids = [
+        '5038512',
+        '5038573',
+        '5035698',
+        '5036062',
+        '5036477',
+        '5036433',
+        '5036589',
+        '5034827',
+        '5034921',
+        '5036405',
+        '5036425',
+        '5036774',
+        '5036974',
+        '5036460',
+        '5036207',
+        '5036157',
+        '5036902',
+        '5034095',
+        '5034138',
+        '5034760',
+        '5035259',
+        '5035330',
+        '5035368',
+        '5035407',
+        '5035429',
+        '5035706',
+        '5035766',
+        '5034160',
+        '5035074',
+        '5035140',
+        '5035158',
+        '5035235',
+        '5035401',
+        '5035530',
+        '5035804',
+        '5034864',
+        '5035011',
+        '5034973',
+        '5035463',
+        '5035715',
+        '5034744',
+        '5035246',
+        '5035296',
+        '5035538',
+        '5035627',
+        '5035705',
+        '5035719',
+        '5035726',
+        '5036534',
+        '5036703',
+        '5036876',
+        '5037058',
+        '5038578',
+        '5039125',
+        '5039126',
+        '5039131'
+      ];
+      
+      function append() {
+        count++;
+      
+        document.body.appendChild(htmlToElement([
+        '<div>',
+        '<div data-cid="fees" data-prop-id="' + ids[count] + '"></div>',
+        '<div class="enrol-button">',
+         '<div data-cid="enrol-button"',
+         '  data-prop-id="' + ids[count] + '"',
+         '  data-prop-name="Course ' + ids[count] + '"',
+         '  data-prop-unique-identifier="2424"',
+         '  data-prop-is-canceled="false"',
+         '  data-prop-is-finished="false"',
+         '  data-prop-has-available-enrolment-places="true"',
+         '  data-prop-payment-gateway-enabled="true"',
+         '  data-prop-allow-by-application="false"',
+         '  data-prop-free-places="3"></div>',
+         '</div>',
+         '</div>'].join('')));
         
         window.Ish.react.bootstrap();
       }
@@ -44,37 +108,40 @@
   </head>
   <body>
     <button onclick="append()">Add New Enrol Button</button>
-    <div class="cart"><div data-cid="cart"></div></div>
-    <div class="enrol-button"><div data-cid="enrol-button"
-     data-prop-id="1"
-     data-prop-name="Course 1"
-     data-prop-unique-identifier="2424"
-     data-prop-is-canceled="false"
-     data-prop-is-finished="false"
-     data-prop-has-available-enrolment-places="true"
-     data-prop-payment-gateway-enabled="true"
-     data-prop-allow-by-application="false"
-     data-prop-free-places="3"></div></div>
-    <div class="enrol-button"><div data-cid="enrol-button"
-     data-prop-id="2"
-     data-prop-name="Course 2"
-     data-prop-unique-identifier="2424"
-     data-prop-is-canceled="false"
-     data-prop-is-finished="false"
-     data-prop-has-available-enrolment-places="true"
-     data-prop-payment-gateway-enabled="true"
-     data-prop-allow-by-application="false"
-     data-prop-free-places="3"></div></div>
-    <div class="enrol-button"><div data-cid="enrol-button"
-     data-prop-id="3"
-     data-prop-name="Course 3"
-     data-prop-unique-identifier="2424"
-     data-prop-is-canceled="false"
-     data-prop-is-finished="false"
-     data-prop-has-available-enrolment-places="true"
-     data-prop-payment-gateway-enabled="true"
-     data-prop-allow-by-application="false"
-     data-prop-free-places="3"></div></div>
+    <div class="cart"><div data-cid="cart"></div><div data-cid="promotions"></div></div>
     <div class="popup"><div data-cid="popup"></div></div>
+    <div class="enrol-button"><div data-cid="fees" data-prop-id="5038511"></div>
+    <div data-cid="enrol-button"
+     data-prop-id="5038511"
+     data-prop-name="Course 5038511"
+     data-prop-unique-identifier="2424"
+     data-prop-is-canceled="false"
+     data-prop-is-finished="false"
+     data-prop-has-available-enrolment-places="true"
+     data-prop-payment-gateway-enabled="true"
+     data-prop-allow-by-application="false"
+     data-prop-free-places="3"></div></div>
+    <div class="enrol-button"><div data-cid="fees" data-prop-id="5038575"></div>
+    <div data-cid="enrol-button"
+     data-prop-id="5038575"
+     data-prop-name="Course 5038575"
+     data-prop-unique-identifier="2424"
+     data-prop-is-canceled="false"
+     data-prop-is-finished="false"
+     data-prop-has-available-enrolment-places="true"
+     data-prop-payment-gateway-enabled="true"
+     data-prop-allow-by-application="false"
+     data-prop-free-places="3"></div></div>
+    <div class="enrol-button"><div data-cid="fees" data-prop-id="5037328"></div>
+    <div data-cid="enrol-button"
+     data-prop-id="5037328"
+     data-prop-name="Course 5037328"
+     data-prop-unique-identifier="2424"
+     data-prop-is-canceled="false"
+     data-prop-is-finished="false"
+     data-prop-has-available-enrolment-places="true"
+     data-prop-payment-gateway-enabled="true"
+     data-prop-allow-by-application="false"
+     data-prop-free-places="3"></div></div>
   </body>
 </html>

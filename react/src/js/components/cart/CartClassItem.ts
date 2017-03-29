@@ -4,7 +4,7 @@ import nativeExtend from './CartClassItem.extend';
 
 const extend = Object.assign({}, nativeExtend, require("./CartClassItem.custom"));
 
-class CartOrderItem extends CartItem {
+class CartClassItem extends CartItem {
 
     render() {
         return extend.render.apply({
@@ -20,4 +20,4 @@ class CartOrderItem extends CartItem {
     }
 }
 
-export default CartOrderItem;
+export default CartClassItem;

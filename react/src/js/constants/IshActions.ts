@@ -1,0 +1,27 @@
+export class IshActions {
+  static ADD_CLASS_TO_CART = "ADD_CLASS_TO_CART";
+  static REMOVE_CLASS_FROM_CART = "REMOVE_CLASS_FROM_CART";
+
+  static ADD_PRODUCT_TO_CART = "ADD_PRODUCT_TO_CART";
+  static REMOVE_PRODUCT_FROM_CART = "REMOVE_PRODUCT_FROM_CART";
+
+  static ADD_PROMOTION_TO_CART = "ADD_PROMOTION_TO_CART";
+  static REMOVE_PROMOTION_FROM_CART = "REMOVE_PROMOTION_FROM_CART";
+
+  static HIDE_POPUP = "HIDE_POPUP";
+  static UPDATE_POPUP = "UPDATE_POPUP";
+  static REQUEST_COURSE_CLASS = "REQUEST_COURSE_CLASS";
+  static REQUEST_PRODUCT = "REQUEST_PRODUCT";
+  static REQUEST_PROMOTION = "REQUEST_PROMOTION";
+  static REQUEST_CONTACT = "REQUEST_CONTACT";
+
+  static SYNC_CART = "SYNC_CART";
+}
+
+export function FULFILLED(actionType: string) {
+  return `${actionType}_FULFILLED`;
+}
+
+export function REJECTED(actionType: string) {
+  return `${actionType}_REJECTED`;
+}

@@ -17,16 +17,14 @@ export default class CartItem extends React.Component<CartItemProps, CartItemSta
     }
 
     this.setState({pending: true});
-    this.props.remove(this.props.item.id)
-      .fail(() => {
-        this.setState({pending: false});
-      });
+    this.props.remove(this.props.item);
+    this.setState({pending: false});
   };
 }
 
 interface CartItemProps {
   item: CommonCartItem;
-  remove: (id: number) => JQueryPromise<{}>;
+  remove: (item: CommonCartItem) => void;
 }
 
 interface CartItemState {

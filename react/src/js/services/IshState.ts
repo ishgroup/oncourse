@@ -1,35 +1,59 @@
+import {CourseClassPrice} from "../model/CourseClassPrice";
+import {Promotion} from "../model/Promotion";
+import {CourseClass} from "../model/CourseClass";
+import {Product} from "../model/Product";
+import {Contact} from "../model/Contact";
+
 export interface IshState {
-    readonly cart: CartState;
-    readonly popup: PopupState;
-}
-
-
-export interface PopupState {
-    readonly content: string;
+  readonly cart: CartState;
+  readonly popup: PopupState;
+  readonly courses: CoursesState;
+  readonly products: ProductsState;
 }
 
 export interface CartState {
-    readonly courses: Course[];
-    readonly products: Product[];
-    readonly discounts: Discount[];
+  readonly contact: ContactState;
+  readonly courses: CourseClassCartState;
+  readonly products: ProductCartState;
+  readonly promotions: PromotionCartState;
+  readonly discounts: PromotionCartState; // replace with promotions
 }
 
-export type CommonCartItem = Course | Product | Discount;
-
-export interface Course {
-    readonly id: number;
-    readonly name: string;
-    readonly uniqueIdentifier: string;
+export interface PopupState {
+  readonly content: string;
 }
 
-export interface Product {
-  readonly id: number;
+export type CoursesState = Normalized<CourseClass>;
+export type ProductsState = Normalized<Product>;
+
+/**
+ * @deprecated we will use separate classes
+ */
+export type CommonCartItem = CourseClassCart | ProductCart | PromotionCart;
+
+export type CourseClassCartState = Normalized<CourseClassCart>;
+export type ProductCartState = Normalized<ProductCart>;
+export type PromotionCartState = Normalized<PromotionCart>;
+
+//--- Extend backend model
+export interface CourseClassPriceState extends CourseClassPrice {
+}
+
+export interface CourseClassCart extends CourseClass {
   readonly name: string;
-  readonly uniqueIdentifier: string;
-
-  pending: boolean;
+  readonly freePlaces: number;
 }
 
-export interface Discount {
-  readonly id: number; // todo: check
+export interface ContactState extends Contact {
+}
+
+export interface ProductCart extends Product {
+}
+
+export interface PromotionCart extends Promotion {
+}
+
+interface Normalized<V> {
+  readonly entities: { [key: string]: V };
+  readonly result: any;
 }

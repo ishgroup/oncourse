@@ -1,18 +1,18 @@
-import ACTIONS from '../constants';
+import {IshActions} from "../constants/IshActions";
 
 const initialState = {
     content: null
 };
 
 const handleActions = {
-    [ACTIONS.UPDATE_POPUP](state, action) {
+    [IshActions.UPDATE_POPUP](state, action) {
         return {
             ...state,
             content: action.content
         };
     },
 
-    [ACTIONS.HIDE_POPUP](state) {
+    [IshActions.HIDE_POPUP](state) {
         return {
             ...state,
             content: null

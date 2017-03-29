@@ -1,90 +1,123 @@
-import { combineReducers } from 'redux';
-import ACTIONS from '../constants';
+import {combineReducers} from 'redux';
+import {IshAction} from "../actions/IshAction";
+import {FULFILLED, IshActions} from "../constants/IshActions";
+import {CourseClassCartState, ProductCartState} from "../services/IshState";
+import {Contact} from "../model/Contact";
 
-function addItemReducer(params) {
-    const handleActions = {
-        [params.action](state, action) {
-            let item = state.find((item) => item[params.fieldId] === action.data[params.fieldId]);
-
-            if(item) {
-                return state;
-            }
-
-            return [...state, action.data];
-        }
-    };
-
-    return function(state = [], action) {
-        return handleActions[action.type] ? handleActions[action.type](state, action) : state;
-    }
+function classesAllIds(state = [], action: IshAction<CourseClassCartState>) {
+  switch (action.type) {
+    case FULFILLED(IshActions.ADD_CLASS_TO_CART):
+      return [
+        ...state,
+        ...[action.payload.result]
+          .filter(t => !state.includes(t)) // dedup
+      ];
+    case FULFILLED(IshActions.REMOVE_CLASS_FROM_CART):
+      return state.filter(it => it !== action.payload.result);
+    default:
+      return state;
+  }
 }
 
-function removeItemReducer(params) {
-    const handleActions = {
-
-        [params.action](state, action) {
-            let item = state.find((item) => {
-                return item[params.fieldId] === action[params.fieldId];
-            });
-
-            if(!item) {
-                return state;
-            }
-
-            let index = state.indexOf(item);
-
-            return [
-                ...state.slice(0, index),
-                ...state.slice(index + 1)
-            ];
-        }
-    };
-
-    return function(state = [], action) {
-        return handleActions[action.type] ? handleActions[action.type](state, action) : state;
-    }
+function classesById(state = {}, action: IshAction<CourseClassCartState>) {
+  switch (action.type) {
+    case FULFILLED(IshActions.ADD_CLASS_TO_CART):
+      return {
+        ...state,
+        ...action.payload.entities.classes
+      };
+    case FULFILLED(IshActions.REMOVE_CLASS_FROM_CART):
+      const nextState = {...state};
+      delete nextState[action.payload.result];
+      return nextState;
+    default:
+      return state;
+  }
 }
 
-function concatReducers(...reducers) {
-    return function (state, action) {
-        return reducers.reduce((state, reducer) => {
-            return reducer(state, action);
-        }, state);
-    };
+function productsAllIds(state = [], action: IshAction<ProductCartState>) {
+  switch (action.type) {
+    case FULFILLED(IshActions.ADD_PRODUCT_TO_CART):
+      return [
+        ...state,
+        ...[action.payload.result]
+          .filter(t => !state.includes(t)) // dedup
+      ];
+    case FULFILLED(IshActions.REMOVE_PRODUCT_FROM_CART):
+      return state.filter(it => it !== action.payload.result);
+    default:
+      return state;
+  }
 }
 
-export default combineReducers({
-    courses: concatReducers(
-        addItemReducer({
-            fieldId: 'id',
-            fieldItem: 'data',
-            action: ACTIONS.ADD_CLASS_TO_CART_SUCCESS
-        }),
-        removeItemReducer({
-            action: ACTIONS.REMOVE_CLASS_FROM_CART_SUCCESS,
-            fieldId: 'id'
-        })
-    ),
-    products: concatReducers(
-        addItemReducer({
-            fieldId: 'id',
-            fieldItem: 'data',
-            action: ACTIONS.ADD_PRODUCT_TO_CART_SUCCESS
-        }),
-        removeItemReducer({
-            action: ACTIONS.REMOVE_PRODUCT_FROM_CART_SUCCESS,
-            fieldId: 'id'
-        })
-    ),
-    discounts: concatReducers(
-        addItemReducer({
-            fieldId: 'code',
-            fieldItem: 'data',
-            action: ACTIONS.ADD_DISCOUNT_TO_CART_SUCCESS
-        }),
-        removeItemReducer({
-            action: ACTIONS.REMOVE_DISCOUNT_FROM_CART_SUCCESS,
-            fieldId: 'code'
-        })
-    )
+function productsById(state = {}, action: IshAction<ProductCartState>) {
+  switch (action.type) {
+    case FULFILLED(IshActions.ADD_PRODUCT_TO_CART):
+      return {
+        ...state,
+        ...action.payload.entities.products
+      };
+    case FULFILLED(IshActions.REMOVE_PRODUCT_FROM_CART):
+      const nextState = {...state};
+      delete nextState[action.payload.result];
+      return nextState;
+    default:
+      return state;
+  }
+}
+
+function promotionsAllIds(state = [], action: IshAction<ProductCartState>) {
+  switch (action.type) {
+    case FULFILLED(IshActions.ADD_PROMOTION_TO_CART):
+      return [
+        ...state,
+        ...[action.payload.result]
+          .filter(t => !state.includes(t)) // dedup
+      ];
+    case FULFILLED(IshActions.REMOVE_PROMOTION_FROM_CART):
+      return state.filter(it => it !== action.payload.result);
+    default:
+      return state;
+  }
+}
+
+function promotionsById(state = {}, action: IshAction<ProductCartState>) {
+  switch (action.type) {
+    case FULFILLED(IshActions.ADD_PROMOTION_TO_CART):
+      return {
+        ...state,
+        ...action.payload.entities.promotions
+      };
+    case FULFILLED(IshActions.REMOVE_PROMOTION_FROM_CART):
+      const nextState = {...state};
+      delete nextState[action.payload.result];
+      return nextState;
+    default:
+      return state;
+  }
+}
+
+function contactReducer(state = {}, action: IshAction<Contact>) {
+  switch (action.type) {
+    case FULFILLED(IshActions.REQUEST_CONTACT):
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+export const cartReducer = combineReducers({
+  courses: combineReducers({
+    entities: classesById,
+    result: classesAllIds
+  }),
+  products: combineReducers({
+    entities: productsById,
+    result: productsAllIds
+  }),
+  promotions: combineReducers({
+    entities: promotionsById,
+    result: promotionsAllIds
+  }),
+  contact: contactReducer
 });

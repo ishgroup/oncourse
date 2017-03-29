@@ -19,13 +19,6 @@ Build started with following configuration:
 → API_ROOT: ${API_ROOT}
 `);
 
-  function getHtmlWebpackPlugin(name) {
-    return new HtmlWebpackPlugin({
-      filename: name,
-      template: path.resolve(__dirname, './dev-server/', name)
-    });
-  }
-
   return {
     entry: {
       dynamic: [
@@ -33,6 +26,7 @@ Build started with following configuration:
         'react',
         'redux',
         'react-redux',
+        'rxjs',
         path.resolve(__dirname, 'src', 'js', 'app.ts')
       ]
     },
@@ -69,14 +63,6 @@ Build started with following configuration:
         loader: 'ts-loader',
         exclude: /node_modules/,
       }, {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        options: {
-          presets: [['es2015', {loose: true}], 'react'],
-          plugins: ['transform-object-rest-spread']
-        },
-        exclude: /node_modules/
-      }, {
         test: /\.css$/,
         use: [{
           loader: 'style-loader'
@@ -88,25 +74,7 @@ Build started with following configuration:
         }]
       }]
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          'NODE_ENV': JSON.stringify(NODE_ENV)
-        },
-        _API_ROOT: JSON.stringify(API_ROOT),
-        _APP_VERSION: JSON.stringify(process.env.BUILD_NUMBER || "DEV")
-      }),
-      getHtmlWebpackPlugin("index.html"),
-      getHtmlWebpackPlugin("courses.html"),
-      getHtmlWebpackPlugin("enrol.html"),
-      new TypedocWebpackPlugin({
-        jsx: 'react',
-        target: 'es6',
-        allowSyntheticDefaultImports: true,
-        moduleResolution: 'node',
-        module: 'es6'
-      }, './src/js/')
-    ],
+    plugins: createListOfPlugins({NODE_ENV, API_ROOT}),
     devServer: {
       inline: false,
       port: 1707,
@@ -126,3 +94,38 @@ Build started with following configuration:
     }
   }
 };
+
+function createListOfPlugins({NODE_ENV, API_ROOT}) {
+  const plugins = [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(NODE_ENV)
+      },
+      _API_ROOT: JSON.stringify(API_ROOT),
+      _APP_VERSION: JSON.stringify(process.env.BUILD_NUMBER || "DEV")
+    }),
+    getHtmlWebpackPlugin("index.html"),
+    getHtmlWebpackPlugin("courses.html"),
+    getHtmlWebpackPlugin("enrol.html")
+  ];
+
+  function getHtmlWebpackPlugin(name) {
+    return new HtmlWebpackPlugin({
+      filename: name,
+      template: path.resolve(__dirname, './dev-server/', name)
+    });
+  }
+
+  if (NODE_ENV === "production") {
+    plugins.push(new TypedocWebpackPlugin({
+      jsx: 'react',
+      target: 'es6',
+      allowSyntheticDefaultImports: true,
+      moduleResolution: 'node',
+      module: 'es6'
+    }, './src/js/'));
+
+  }
+
+  return plugins;
+}

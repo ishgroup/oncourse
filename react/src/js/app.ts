@@ -1,45 +1,39 @@
 import {configureStore} from "./configureStore";
-import Cart from "./containers/Cart";
-import EnrolButton from "./containers/EnrolButton";
-import {BuyButton} from "./components/buyButton/BuyButton";
-import PopupContainer from "./containers/PopupContainer";
 import {Bootstrap} from "./lib/Bootstrap";
 import {PublicApi} from "./external/PublicApi";
+import {LogMessage, Level, Logger} from "./services/Logger";
+import {ConfigConstants} from "./config/ConfigConstants";
+import {Root} from "./containers/Root";
+import {WindowService} from "./services/WindowService";
+import {CartRoot} from "./containers/CartRoot";
+import {Fees} from "./containers/Fees";
+import {defaultAxios} from "./services/DefaultHttpClient";
+import BuyButton from "./containers/BuyButton";
+import EnrolButton from "./containers/EnrolButton";
+import PopupContainer from "./containers/PopupContainer";
+import Promotions from "./containers/Promotions";
+
+// Log application version before start.
+Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));
 
 const store = configureStore();
 
-const w = window as any;
-// Init Ish namespace in window
-w.Ish = w.Ish || {};
-// Set Api to public Api
-w.Ish.api = new PublicApi(store);
+// TODO: Testing Only
+defaultAxios.defaults.headers.common["X-Origin"] = "reactjs.oncourse.cc";
+
+WindowService.set("api", new PublicApi(store));
+
+const react = new Bootstrap(store)
+  .register("enrol", Root, {})
+  .register("fees", Fees, {id: "string"})
+  .register("enrol-button", EnrolButton, {id: "string"})
+  .register("buy-button", BuyButton, {id: "string"})
+  .register("cart", CartRoot, {})
+  .register("popup", PopupContainer, {})
+  .register("promotions", Promotions, {})
+  .start();
 
 // Set bootstrap function to Ish.react
 // We use this in jquery-managed code,
 // to get notifications about new react-markers
-w.Ish.react = new Bootstrap(store)
-  .register('enrol-button', EnrolButton, {
-    /**
-     * ToDo discuss with Andrey properties for enrol button.
-     * Now it almost looks like properties in tapestry template
-     */
-    id: 'number',
-    name: 'string',
-    uniqueIdentifier: 'string',
-    isCanceled: 'boolean',
-    isFinished: 'boolean',
-    hasAvailableEnrolmentPlaces: 'boolean',
-    allowByApplication: 'boolean',
-    paymentGatewayEnabled: 'boolean',
-    freePlaces: 'number'
-  })
-  .register('buy-button', BuyButton, {
-    id: 'number',
-    name: 'string',
-    uniqueIdentifier: 'string',
-    paymentGatewayEnabled: 'boolean',
-    canBuy: 'boolean'
-  })
-  .register('cart', Cart)
-  .register('popup', PopupContainer)
-  .start();
+WindowService.set("react", react);

@@ -22,11 +22,19 @@ export function plural(count, values) {
     }
 }
 
-export function getError() {
-    return {};
-}
-
 export function stopPropagation(e) {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
+}
+
+export function logDebug<T>(value: T, name: string = ""):T {
+  debugger;
+
+  if (name) {
+    console.log(name, value);
+  } else {
+    console.log(value);
+  }
+
+  return value;
 }

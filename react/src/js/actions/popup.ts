@@ -1,4 +1,4 @@
-import ACTIONS from '../constants';
+import {IshActions} from "../constants/IshActions";
 
 /**
  * Update popup by passed content
@@ -7,7 +7,7 @@ import ACTIONS from '../constants';
  */
 export function updatePopup(content) {
     return {
-        type: ACTIONS.UPDATE_POPUP,
+        type: IshActions.UPDATE_POPUP,
         content
     }
 }
@@ -18,6 +18,6 @@ export function updatePopup(content) {
  */
 export function hidePopup() {
     return {
-        type: ACTIONS.HIDE_POPUP
+        type: IshActions.HIDE_POPUP
     };
 }
