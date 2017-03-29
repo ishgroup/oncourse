@@ -6,8 +6,8 @@
   "scripts": {
     "packages:refresh": "npm prune && npm install",
     "clean": "rm -rf ./dist",
-    "build:prod": "npm run clean && webpack -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
-    "build:prod:watch": "webpack --watch -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au/api/v1",
+    "build:prod": "npm run clean && webpack -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au",
+    "build:prod:watch": "webpack --watch -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au",
     "build:dev": "npm run clean && webpack --env.SOURCE_MAP eval-source-map",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "karma start ./karma.conf.js",
