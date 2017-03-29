@@ -9,11 +9,14 @@ dependencies {
 
 	compile project(':common:common-model')
 	
-	compile project(':common:common-ui')
+	compile project(':common:common-ui') {
+		exclude group: 'axis', module: 'axis-wsdl4j'
+	}
 	
 	compile (project(':common:common-services')) {
 		exclude group: 'axis', module: 'axis-wsdl4j'
 	}
+	
     compile (project(':common:webservices-usi')) {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
