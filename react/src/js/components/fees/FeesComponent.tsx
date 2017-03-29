@@ -2,7 +2,7 @@ import * as React from "react";
 import {CourseClassPriceState} from "../../services/IshState";
 
 export interface FeesComponentProps extends CourseClassPriceState {
-  paymentGatewayEnabled: boolean;
+  isPaymentGatewayEnabled: boolean;
 }
 
 export const FeesComponent = (props: FeesComponentProps) => {
@@ -26,13 +26,13 @@ export const FeesComponent = (props: FeesComponentProps) => {
 };
 
 function getFee(props: FeesComponentProps) {
-  const {hasTax, paymentGatewayEnabled} = props;
+  const {hasTax, isPaymentGatewayEnabled} = props;
 
   return (
     <div>
       {getDiscount(props)}
       {hasTax && getTax(hasTax)}
-      {paymentGatewayEnabled && getDiscountItems(props)}
+      {isPaymentGatewayEnabled && getDiscountItems(props)}
     </div>
   );
 }

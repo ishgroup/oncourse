@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {FeesComponent, FeesComponentProps} from "../components/fees/FeesComponent";
 import {IshState} from "../services/IshState";
 import {IshActions} from "../constants/IshActions";
+import {debug} from "util";
 
 class FeesContainer extends React.Component<FeesProps, FeesState> {
   constructor() {
@@ -26,21 +27,18 @@ const mapDispatchToProps = (dispatch) => ({
   requestCourseClassById: (id: string) => {
     dispatch({
       type: IshActions.REQUEST_COURSE_CLASS,
-      id
+      payload: id
     });
   }
 });
 
 const mapStateToProps = (state: IshState, ownProps: FeesProps) => {
-  const courseId = state.courses.result
-    .find(id => id === ownProps.id);
-
-  const course = state.courses.entities[courseId] || {};
+  const course = state.courses.entities[ownProps.id] || {};
 
   return {
     price: {
-      ...course,
-      paymentGatewayEnabled: course
+      ...course.price,
+      isPaymentGatewayEnabled: course.isPaymentGatewayEnabled
     }
   };
 };

@@ -51,7 +51,7 @@ class Cart extends React.Component<CartProps, CartComponentState> {
                 return <CartClassItem key={courseClassId} item={classes.entities[courseClassId]} remove={removeClass}/>
               })}
               {products.result.map((productId) => {
-                return <CartProductItem key={productId} item={products[productId]} remove={removeProduct}/>
+                return <CartProductItem key={productId} item={products.entities[productId]} remove={removeProduct}/>
               })}
               <li className="shortListOrderEnrol">
                 <a className="shortlistLinkEnrol" href="/enrol/">{countClasses ? 'Enrol' : 'Purchase'}</a>

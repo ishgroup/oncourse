@@ -48,6 +48,12 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
     });
   };
 
+  componentDidMount() {
+    const {id, requestProductById} = this.props;
+
+    requestProductById(id);
+  }
+
   render() {
     const {isAdded, id} = this.props;
     const {canBuy, isPaymentGatewayEnabled, name} = this.props.product;
@@ -74,8 +80,9 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
 export interface BuyButtonProps {
   readonly id: string;
   readonly product: Product;
-  readonly isAdded: boolean,
-  readonly addProduct: (product: Product) => void,
+  readonly isAdded: boolean;
+  readonly addProduct: (product: Product) => void;
+  readonly requestProductById: (id: string) => void;
 }
 
 interface BuyButtonState {

@@ -9,7 +9,8 @@
         background-color: azure;
       }
       
-      .enrol-button {
+      .enrol-button,
+      .buy-button {
         border-top: 1px solid #000000;
         background-color: aliceblue;
       }
@@ -86,20 +87,12 @@
       
         document.body.appendChild(htmlToElement([
         '<div>',
-        '<div data-cid="fees" data-prop-id="' + ids[count] + '"></div>',
-        '<div class="enrol-button">',
-         '<div data-cid="enrol-button"',
-         '  data-prop-id="' + ids[count] + '"',
-         '  data-prop-name="Course ' + ids[count] + '"',
-         '  data-prop-unique-identifier="2424"',
-         '  data-prop-is-canceled="false"',
-         '  data-prop-is-finished="false"',
-         '  data-prop-has-available-enrolment-places="true"',
-         '  data-prop-payment-gateway-enabled="true"',
-         '  data-prop-allow-by-application="false"',
-         '  data-prop-free-places="3"></div>',
-         '</div>',
-         '</div>'].join('')));
+          '<div data-cid="fees" data-prop-id="' + ids[count] + '"></div>',
+          '<div class="enrol-button">',
+            '<div data-cid="enrol-button"',
+            '  data-prop-id="' + ids[count] + '"></div>',
+          '</div>',
+        '</div>'].join('')));
         
         window.Ish.react.bootstrap();
       }
@@ -110,38 +103,13 @@
     <button onclick="append()">Add New Enrol Button</button>
     <div class="cart"><div data-cid="cart"></div><div data-cid="promotions"></div></div>
     <div class="popup"><div data-cid="popup"></div></div>
-    <div class="enrol-button"><div data-cid="fees" data-prop-id="5038511"></div>
-    <div data-cid="enrol-button"
-     data-prop-id="5038511"
-     data-prop-name="Course 5038511"
-     data-prop-unique-identifier="2424"
-     data-prop-is-canceled="false"
-     data-prop-is-finished="false"
-     data-prop-has-available-enrolment-places="true"
-     data-prop-payment-gateway-enabled="true"
-     data-prop-allow-by-application="false"
-     data-prop-free-places="3"></div></div>
-    <div class="enrol-button"><div data-cid="fees" data-prop-id="5038575"></div>
-    <div data-cid="enrol-button"
-     data-prop-id="5038575"
-     data-prop-name="Course 5038575"
-     data-prop-unique-identifier="2424"
-     data-prop-is-canceled="false"
-     data-prop-is-finished="false"
-     data-prop-has-available-enrolment-places="true"
-     data-prop-payment-gateway-enabled="true"
-     data-prop-allow-by-application="false"
-     data-prop-free-places="3"></div></div>
-    <div class="enrol-button"><div data-cid="fees" data-prop-id="5037328"></div>
-    <div data-cid="enrol-button"
-     data-prop-id="5037328"
-     data-prop-name="Course 5037328"
-     data-prop-unique-identifier="2424"
-     data-prop-is-canceled="false"
-     data-prop-is-finished="false"
-     data-prop-has-available-enrolment-places="true"
-     data-prop-payment-gateway-enabled="true"
-     data-prop-allow-by-application="false"
-     data-prop-free-places="3"></div></div>
+    <div class="enrol-button"><div data-cid="fees" data-prop-id="5038511"></div> <div data-cid="enrol-button" data-prop-id="5038511"></div></div>
+    <div class="enrol-button"><div data-cid="fees" data-prop-id="5038575"></div> <div data-cid="enrol-button" data-prop-id="5038575"></div></div>
+    <div class="enrol-button"><div data-cid="fees" data-prop-id="5037328"></div> <div data-cid="enrol-button" data-prop-id="5037328"></div></div>
+    <div class="buy-button"><div data-cid="buy-button" data-prop-id="83"></div></div>
+    <div class="buy-button"><div data-cid="buy-button" data-prop-id="85"></div></div>
+    <div class="buy-button"><div data-cid="buy-button" data-prop-id="172"></div></div>
+    <div class="buy-button"><div data-cid="buy-button" data-prop-id="147"></div></div>
+    <div class="buy-button"><div data-cid="buy-button" data-prop-id="146"></div></div>
   </body>
 </html>

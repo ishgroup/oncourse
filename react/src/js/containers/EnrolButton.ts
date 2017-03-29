@@ -25,6 +25,12 @@ function mapDispatchToProps(dispatch) {
         type: IshActions.ADD_CLASS_TO_CART,
         payload: courseClass
       });
+    },
+    requestCourseClassById: (id: string) => {
+      dispatch({
+        type: IshActions.REQUEST_COURSE_CLASS,
+        payload: id
+      });
     }
   };
 }

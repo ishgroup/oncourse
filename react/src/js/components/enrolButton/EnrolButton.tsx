@@ -48,6 +48,12 @@ export class EnrolButton extends React.Component<EnrolButtonProps, EnrolButtonSt
     });
   };
 
+  componentDidMount() {
+    const {id, requestCourseClassById} = this.props;
+
+    requestCourseClassById(id);
+  }
+
   render() {
     const {
       id,
@@ -109,6 +115,7 @@ export interface EnrolButtonProps {
   readonly id: string;
   readonly isAdded: boolean,
   readonly courseClass: CourseClassCart; // TODO: actually just CourseClass, waiting for Artem fixes.
+  readonly requestCourseClassById: (id: string) => void;
   readonly addCourseClass?: (item: CourseClass) => void,
 }
 

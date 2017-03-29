@@ -1,5 +1,4 @@
 import {Store} from "react-redux";
-import thunk from "redux-thunk";
 import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
 import {createStore, applyMiddleware, GenericStoreEnhancer} from "redux";
@@ -24,9 +23,9 @@ export function configureStore(): Store<IshState> {
      * Split middlewares which we using in development and in production.
      */
     if (process.env.NODE_ENV === EnvironmentConstants.development) {
-      return applyMiddleware(thunk, createEpicMiddleware(rootEpic), logger);
+      return applyMiddleware(createEpicMiddleware(rootEpic), logger);
     } else {
-      return applyMiddleware(thunk, createEpicMiddleware(rootEpic));
+      return applyMiddleware(createEpicMiddleware(rootEpic));
     }
   }
 

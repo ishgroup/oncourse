@@ -18,6 +18,12 @@ function mapDispatchToProps(dispatch) {
         type: IshActions.ADD_PRODUCT_TO_CART,
         payload: product
       });
+    },
+    requestProductById: (id: string) => {
+      dispatch({
+        type: IshActions.REQUEST_PRODUCT,
+        payload: id
+      });
     }
   };
 }

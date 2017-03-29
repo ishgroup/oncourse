@@ -21,6 +21,15 @@ export class LegacySyncStorage {
     remove(id, "productShortList");
   }
 
+  addPromotion(id: string) {
+    add(id, "promotions");
+  }
+
+  removePromotion(id: string) {
+    remove(id, "promotions");
+
+  }
+
   sync = (action: IshAction<CourseClassCartState | ProductCartState>) => {
     switch (action.type) {
       case FULFILLED(IshActions.ADD_CLASS_TO_CART):
@@ -31,6 +40,10 @@ export class LegacySyncStorage {
         return this.addProduct(getId(action));
       case FULFILLED(IshActions.REMOVE_PRODUCT_FROM_CART):
         return this.removeProduct(getId(action));
+      case FULFILLED(IshActions.ADD_PROMOTION_TO_CART):
+        return this.addPromotion(getId(action));
+      case FULFILLED(IshActions.REMOVE_PROMOTION_FROM_CART):
+        return this.removePromotion(getId(action));
       default:
         Logger.log(new LogMessage(Level.ERROR, "Unexpected action", [action]));
         return;

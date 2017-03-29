@@ -8,11 +8,7 @@ function cart() {
 }
 
 function buyButton(id) {
-  return `<div data-cid="buy-button"
-       data-prop-can-buy="true"
-       data-prop-payment-gateway-enabled="true"
-       data-prop-id="${id}"
-       data-prop-name="Name ${id}"></div>`;
+  return `<div data-cid="buy-button" data-prop-id="${id}"></div>`;
 }
 
 function fee(id) {
@@ -20,17 +16,7 @@ function fee(id) {
 }
 
 function enrolButton(id) {
-  return `${fee(id)}
-    <div data-cid="enrol-button"
-     data-prop-id="${id}"
-     data-prop-name="Course ${id}"
-     data-prop-unique-identifier="2424"
-     data-prop-is-canceled="false"
-     data-prop-is-finished="false"
-     data-prop-has-available-enrolment-places="true"
-     data-prop-payment-gateway-enabled="true"
-     data-prop-allow-by-application="false"
-     data-prop-free-places="3"></div>`;
+  return `<div data-cid="enrol-button" data-prop-id="${id}"></div>`;
 }
 
 function popup() {
@@ -53,7 +39,8 @@ function generateIndex() {
         background-color: azure;
       }
       
-      .enrol-button {
+      .enrol-button,
+      .buy-button {
         border-top: 1px solid #000000;
         background-color: aliceblue;
       }
@@ -130,20 +117,12 @@ function generateIndex() {
       
         document.body.appendChild(htmlToElement([
         '<div>',
-        '<div data-cid="fees" data-prop-id="' + ids[count] + '"></div>',
-        '<div class="enrol-button">',
-         '<div data-cid="enrol-button"',
-         '  data-prop-id="' + ids[count] + '"',
-         '  data-prop-name="Course ' + ids[count] + '"',
-         '  data-prop-unique-identifier="2424"',
-         '  data-prop-is-canceled="false"',
-         '  data-prop-is-finished="false"',
-         '  data-prop-has-available-enrolment-places="true"',
-         '  data-prop-payment-gateway-enabled="true"',
-         '  data-prop-allow-by-application="false"',
-         '  data-prop-free-places="3"></div>',
-         '</div>',
-         '</div>'].join('')));
+          '<div data-cid="fees" data-prop-id="' + ids[count] + '"></div>',
+          '<div class="enrol-button">',
+            '<div data-cid="enrol-button"',
+            '  data-prop-id="' + ids[count] + '"></div>',
+          '</div>',
+        '</div>'].join('')));
         
         window.Ish.react.bootstrap();
       }
@@ -154,9 +133,14 @@ function generateIndex() {
     <button onclick="append()">Add New Enrol Button</button>
     <div class="cart">${cart()}</div>
     <div class="popup">${popup()}</div>
-    <div class="enrol-button">${enrolButton(5038511)}</div>
-    <div class="enrol-button">${enrolButton(5038575)}</div>
-    <div class="enrol-button">${enrolButton(5037328)}</div>
+    <div class="enrol-button">${fee(5038511)} ${enrolButton(5038511)}</div>
+    <div class="enrol-button">${fee(5038575)} ${enrolButton(5038575)}</div>
+    <div class="enrol-button">${fee(5037328)} ${enrolButton(5037328)}</div>
+    <div class="buy-button">${buyButton(83)}</div>
+    <div class="buy-button">${buyButton(85)}</div>
+    <div class="buy-button">${buyButton(172)}</div>
+    <div class="buy-button">${buyButton(147)}</div>
+    <div class="buy-button">${buyButton(146)}</div>
   </body>
 </html>
 `);
