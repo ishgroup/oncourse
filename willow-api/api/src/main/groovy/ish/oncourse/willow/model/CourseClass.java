@@ -12,6 +12,7 @@ public class CourseClass  {
     private LocalDateTime start = null;
     private LocalDateTime end = null;
     private Boolean hasAvailablePlaces = null;
+    private Integer availableEnrolmentPlaces = null;
     private Boolean isFinished = null;
     private Boolean isCancelled = null;
     private Boolean isAllowByApplication = null;
@@ -121,6 +122,23 @@ public class CourseClass  {
     }
 
     /**
+     * Numver of free places
+     * @return availableEnrolmentPlaces
+     */
+    public Integer getAvailableEnrolmentPlaces() {
+        return availableEnrolmentPlaces;
+    }
+
+    public void setAvailableEnrolmentPlaces(Integer availableEnrolmentPlaces) {
+       this.availableEnrolmentPlaces = availableEnrolmentPlaces;
+    }
+
+    public CourseClass availableEnrolmentPlaces(Integer availableEnrolmentPlaces) {
+      this.availableEnrolmentPlaces = availableEnrolmentPlaces;
+      return this;
+    }
+
+    /**
      * Is class finished
      * @return isFinished
      */
@@ -217,6 +235,7 @@ public class CourseClass  {
       sb.append("    start: ").append(toIndentedString(start)).append("\n");
       sb.append("    end: ").append(toIndentedString(end)).append("\n");
       sb.append("    hasAvailablePlaces: ").append(toIndentedString(hasAvailablePlaces)).append("\n");
+      sb.append("    availableEnrolmentPlaces: ").append(toIndentedString(availableEnrolmentPlaces)).append("\n");
       sb.append("    isFinished: ").append(toIndentedString(isFinished)).append("\n");
       sb.append("    isCancelled: ").append(toIndentedString(isCancelled)).append("\n");
       sb.append("    isAllowByApplication: ").append(toIndentedString(isAllowByApplication)).append("\n");

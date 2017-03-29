@@ -16,6 +16,7 @@ import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.services.preference.PreferenceConstant
 import ish.oncourse.util.FormatUtils
+import ish.oncourse.willow.model.Course
 import ish.oncourse.willow.model.CourseClassPrice
 import ish.oncourse.willow.model.Discount
 import ish.oncourse.willow.service.*
@@ -93,7 +94,14 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                     }
             
                     result << new CourseClass().with {
-                        id = c.id.toString()
+                        it.id = c.id.toString()
+                        it.course = new Course().with {
+                            it.id = c.course.id.toString()
+                            it.name = c.course.name
+                            it
+                        }
+                        it.availableEnrolmentPlaces = c.availableEnrolmentPlaces
+                                
                         start = c.startDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                         end = c.endDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                         hasAvailablePlaces = hasAvailablePlaces(c)
