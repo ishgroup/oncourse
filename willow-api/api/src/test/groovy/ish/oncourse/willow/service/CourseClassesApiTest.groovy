@@ -1,5 +1,6 @@
 package ish.oncourse.willow.service
 
+import groovy.transform.CompileStatic
 import ish.oncourse.willow.model.ContactParams
 import ish.oncourse.willow.model.CourseClass;
 import ish.oncourse.willow.model.CourseClassesParams
@@ -59,7 +60,7 @@ class CourseClassesApiTest extends ApiTest {
         assertEquals(classes.get(1).price.appliedDiscount, null)
         assertEquals(classes.get(1).price.possibleDiscounts.size(), 0)
 
-        assertEquals(classes.get(1).id, "1003")
+        assertEquals(classes.get(2).id, "1003")
 
     }
 
