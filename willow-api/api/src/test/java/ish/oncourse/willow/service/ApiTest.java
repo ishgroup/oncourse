@@ -40,7 +40,7 @@ public abstract class ApiTest {
     private static Mysql mysql;
     private static boolean createSchema = false;
     private static boolean dropSchema = false;
-    private static boolean createTables = false;
+    private static boolean createTables = true;
     private static DataSource dataSource;
 
     protected static ServerRuntime cayenneRuntime;
@@ -124,8 +124,6 @@ public abstract class ApiTest {
         
         String driverClass = com.mysql.jdbc.Driver.class.getName();
         
-        createTables = Boolean.valueOf(System.getProperty("testCreateTables"));
-
         mysql = Mysql.valueOf(jdbcUrl, jdbcUser, jdbcPassword);
 
         truncateAllTables(createTables);
