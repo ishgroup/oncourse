@@ -213,7 +213,7 @@ definitions:
       availableEnrolmentPlaces:
         type: integer
         format: int32
-        description: Numver of free places
+        description: Number of free places
       isFinished:
         type: boolean
         description: Is class finished
