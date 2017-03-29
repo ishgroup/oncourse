@@ -8,6 +8,7 @@ import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.test.ContextUtils;
+import ish.oncourse.test.ServiceTest;
 import ish.oncourse.ui.utils.CourseContext;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.webservices.services.AppModule;
@@ -80,8 +81,12 @@ public class GetCourseClassRenderedHtmlTest {
 	}
 
 	@After
-	public void tearDown() {
-
+	public void tearDown() throws Exception {
+		ServiceTest.cleanDataSources();
+		
+		if (tester != null && tester.getRegistry() != null) {
+			tester.getRegistry().shutdown();
+		}
 	}
 
 	@Test
