@@ -17,6 +17,6 @@
 To generate sources for `:willow:api`:
 
 ```bash
-pwd # Should be: .../willow/willow-codegen
+pwd # Should be: .../willow-api/codegen
 ./gradlew :jaxrs:run
 ```
