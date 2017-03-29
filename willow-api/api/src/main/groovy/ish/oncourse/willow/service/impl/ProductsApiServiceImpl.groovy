@@ -34,14 +34,14 @@ class ProductsApiServiceImpl implements ProductsApi {
                 .cacheGroups(ish.oncourse.model.Product.class.simpleName)
                 .select(context)
             .each { p ->
-                result << new Product().with {
-                    id = p.id.toString()
-                    name = p.name
-                    code = p.sku
-                    canBuy = p.isOnSale & p.isWebVisible
-                    description = p.description
-                    isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college: p.college).get()
-                    it
+                result << new Product().with { pr ->
+                    pr.id = p.id.toString()
+                    pr.name = p.name
+                    pr.code = p.sku
+                    pr.canBuy = p.isOnSale & p.isWebVisible
+                    pr.description = p.description
+                    pr.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college: p.college).get()
+                    pr
                 }
             }
         

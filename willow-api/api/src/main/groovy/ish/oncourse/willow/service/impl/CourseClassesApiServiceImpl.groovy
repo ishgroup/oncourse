@@ -101,40 +101,40 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                             it
                         }
                         it.availableEnrolmentPlaces = c.availableEnrolmentPlaces
-                                
-                        start = c.startDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
-                        end = c.endDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
-                        hasAvailablePlaces = hasAvailablePlaces(c)
-                        isFinished = !c.cancelled && c.hasEnded()
-                        isCancelled = c.cancelled
-                        isAllowByApplication = allowByApplication
-                        isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college: c.college).get()
-                        price = new CourseClassPrice().with {
-                            fee = c.feeIncGst.toBigDecimal().toString()
-                            hasTax = !c.gstExempt
-                            feeOverriden = overridenFee ? (c.gstExempt ? overridenFee.toBigDecimal().toString() : overridenFee.multiply(BigDecimal.ONE.add(c.taxRate)).toBigDecimal().toString()) : null
+
+                        it.start = c.startDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
+                        it.end = c.endDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
+                        it.hasAvailablePlaces = hasAvailablePlaces(c)
+                        it.isFinished = !c.cancelled && c.hasEnded()
+                        it.isCancelled = c.cancelled
+                        it.isAllowByApplication = allowByApplication
+                        it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college: c.college).get()
+                        it.price = new CourseClassPrice().with { ccp ->
+                            ccp.fee = c.feeIncGst.toBigDecimal().toString()
+                            ccp.hasTax = !c.gstExempt
+                            ccp.feeOverriden = overridenFee ? (c.gstExempt ? overridenFee.toBigDecimal().toString() : overridenFee.multiply(BigDecimal.ONE.add(c.taxRate)).toBigDecimal().toString()) : null
                             if (!feeOverriden) {
                                 DiscountCourseClass bestDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(GetAppliedDiscounts.valueOf(c, promotions).get(), c.feeExGst, c.taxRate)
 
                                 if (bestDiscount) {
-                                    appliedDiscount = new Discount().with {
+                                    ccp.appliedDiscount = new Discount().with { d ->
                                         Money value = c.getDiscountedFeeIncTax(bestDiscount)
-                                        discountedFee = value.toBigDecimal().toString()
-                                        discountValue = c.feeIncGst.subtract(value).toBigDecimal().toString()
-                                        title = ((ish.oncourse.model.Discount) bestDiscount.discount).name
+                                        d.discountedFee = value.toBigDecimal().toString()
+                                        d.discountValue = c.feeIncGst.subtract(value).toBigDecimal().toString()
+                                        d.title = ((ish.oncourse.model.Discount) bestDiscount.discount).name
                                         Date discountExpiryDate = WebDiscountUtils.expiryDate((ish.oncourse.model.Discount) bestDiscount.discount, c.startDate)
                                         if (discountExpiryDate) {
-                                            title = title + " expires ${FormatUtils.getShortDateFormat(c.college.timeZone).format(discountExpiryDate)}"
+                                            d.title = d.title + " expires ${FormatUtils.getShortDateFormat(c.college.timeZone).format(discountExpiryDate)}"
                                         }
-                                        it
+                                        d
                                     }
                                 }
         
                                 WebDiscountUtils.sortByDiscountValue(GetPossibleDiscounts.valueOf(c).get(), c.feeExGst, c.taxRate).each { d ->
-                                    possibleDiscounts << new Discount(discountedFee: d.feeIncTax.toBigDecimal().toString(), title: d.title)
+                                    ccp.possibleDiscounts << new Discount(discountedFee: d.feeIncTax.toBigDecimal().toString(), title: d.title)
                                 }
                             }
-                            it
+                            ccp
                         }
                         it
                     }
