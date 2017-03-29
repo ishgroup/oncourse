@@ -35,7 +35,7 @@ class ProductsApiServiceImpl implements ProductsApi {
                 .select(context)
             .each { p ->
                 result << new Product().with {
-                    id = p.id
+                    id = p.id.toString()
                     name = p.name
                     code = p.sku
                     canBuy = p.isOnSale & p.isWebVisible
