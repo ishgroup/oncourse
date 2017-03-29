@@ -196,9 +196,6 @@ definitions:
         description: Internal Unique identifier of class
       course:
         $ref: '#/definitions/Course'
-      name:
-        type: string
-        description: Name of class
       code:
         type: string
         description: Code of class
@@ -213,6 +210,10 @@ definitions:
       hasAvailablePlaces:
         type: boolean
         description: Available places
+      availableEnrolmentPlaces:
+        type: integer
+        format: int32
+        description: Numver of free places
       isFinished:
         type: boolean
         description: Is class finished
