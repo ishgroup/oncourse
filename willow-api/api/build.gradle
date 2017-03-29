@@ -48,6 +48,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'dbunit:dbunit:2.4.8'
     testCompile 'commons-dbcp:commons-dbcp:1.4'
+    testCompile 'commons-pool:commons-pool:1.5.6'
 }
 
 test {
