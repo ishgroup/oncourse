@@ -1,7 +1,14 @@
 package ish.oncourse.willow.model;
 
-import ish.oncourse.willow.model.Course;
-import ish.oncourse.willow.model.CourseClassPrice;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import ish.oncourse.util.FormatUtils;
+
 import java.time.LocalDateTime;
 
 public class CourseClass  {
@@ -9,7 +16,13 @@ public class CourseClass  {
     private String id = null;
     private Course course = null;
     private String code = null;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime start = null;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime end = null;
     private Boolean hasAvailablePlaces = null;
     private Integer availableEnrolmentPlaces = null;
