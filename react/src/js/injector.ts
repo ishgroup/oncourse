@@ -7,6 +7,12 @@ import {ProductsApi} from "./http/ProductsApi";
 import {PromotionApi} from "./http/PromotionApi";
 import {MergeService} from "./services/MergeService";
 import {LegacySyncStorage} from "./services/LegacySyncStorage";
+import {EnvironmentConstants} from "./config/EnvironmentConstants";
+import {CartApiStub} from "./httpStub/CartApiStub";
+import {ContactApiStub} from "./httpStub/ContactApiStub";
+import {ProductsApiStub} from "./httpStub/ProductsApiStub";
+import {CourseClassesApiStub} from "./httpStub/CourseClassesApiStub";
+import {PromotionApiStub} from "./httpStub/PromotionApiStub";
 
 export class Injector {
   readonly http: HttpService = new DefaultHttpService();
@@ -35,3 +41,11 @@ export class Injector {
   }
 }
 
+if (process.env.NODE_ENV === EnvironmentConstants.development) {
+  const injector = Injector.of();
+  injector.setService("cartApi", new CartApiStub(injector.http));
+  injector.setService("contactApi", new ContactApiStub(injector.http));
+  injector.setService("courseClassesApi", new CourseClassesApiStub(injector.http));
+  injector.setService("productsApi", new ProductsApiStub(injector.http));
+  injector.setService("promotionApi", new PromotionApiStub(injector.http));
+}

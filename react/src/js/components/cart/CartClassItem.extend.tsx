@@ -7,7 +7,7 @@ export default {
 
         return (
             <li>
-                <a href={`/class/${courseClass.id}`}>{courseClass.name}</a>
+                <a href={`/class/${courseClass.id}`}>{courseClass.course.name}</a>
                 <span className={this.utils.classnames('deleteItem', {
                     'loading': this.props.pending
                 })} title="Remove item">

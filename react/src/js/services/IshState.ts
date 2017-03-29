@@ -40,8 +40,6 @@ export interface CourseClassPriceState extends CourseClassPrice {
 }
 
 export interface CourseClassCart extends CourseClass {
-  readonly name: string;
-  readonly freePlaces: number;
 }
 
 export interface ContactState extends Contact {

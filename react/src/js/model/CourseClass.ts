@@ -30,6 +30,11 @@ export class CourseClass {
   hasAvailablePlaces?: boolean;
 
   /**
+   * Number of free places
+   */
+  availableEnrolmentPlaces?: number;
+
+  /**
    * Is class finished
    */
   isFinished?: boolean;

@@ -8,11 +8,6 @@ export class PromotionApi {
   }
 
   getPromotion(code: string): Promise<Promotion> {
-    return Promise.resolve({
-      id: new Date().getTime().toString(),
-      name: code,
-      code: code
-    });
-    // return this.http.GET(`/promotion/${code}`)
+    return this.http.GET(`/promotion/${code}`)
   }
 }

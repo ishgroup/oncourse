@@ -2,7 +2,7 @@ import * as React from 'react';
 import {plural, stopPropagation} from '../../lib/utils';
 import classnames from 'classnames';
 import {ConfirmOrderDialog} from "../addButton/ConfirmOrderDialog";
-import {CourseClassCart, CourseClassCartState} from "../../services/IshState";
+import {CourseClassCart} from "../../services/IshState";
 import {CourseClass} from "../../model/CourseClass";
 
 export class EnrolButton extends React.Component<EnrolButtonProps, EnrolButtonState> {
@@ -51,13 +51,13 @@ export class EnrolButton extends React.Component<EnrolButtonProps, EnrolButtonSt
   render() {
     const {
       id,
-      name,
+      course,
       isPaymentGatewayEnabled,
       hasAvailablePlaces,
       isCancelled,
       isFinished,
       isAllowByApplication,
-      freePlaces
+      availableEnrolmentPlaces
     } = this.props.courseClass;
 
     const {isAdded} = this.props;
@@ -91,14 +91,14 @@ export class EnrolButton extends React.Component<EnrolButtonProps, EnrolButtonSt
         {text}
       </button>,
       showedPlaces && <div key="free_places" className="classStatus">
-        {freePlaces > 5 ? 'There are places available' : `There ${plural(freePlaces, ['is one place', `${freePlaces} are places`])} available`}
+        {availableEnrolmentPlaces > 5 ? 'There are places available' : `There ${plural(availableEnrolmentPlaces, ['is one place', `${availableEnrolmentPlaces} are places`])} available`}
       </div>
     ];
 
     return (
       <div className="classAction">
         {reverseElements ? elements.reverse() : elements}
-        {this.state.showedPopup && <ConfirmOrderDialog id={id} name={name}
+        {this.state.showedPopup && <ConfirmOrderDialog id={id} name={course.name}
                                             isAlreadyAdded={this.state.isAlreadyAdded} close={this.closePopup}/>}
       </div>
     );

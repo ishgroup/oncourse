@@ -18,9 +18,6 @@ Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.A
 
 const store = configureStore();
 
-// TODO: Testing Only
-defaultAxios.defaults.headers.common["X-Origin"] = "reactjs.oncourse.cc";
-
 WindowService.set("api", new PublicApi(store));
 
 const react = new Bootstrap(store)
