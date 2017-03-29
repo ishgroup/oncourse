@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Rodal from 'rodal';
-import "rodal/src/rodal.css";
+import "rodal/lib/rodal.css";
 import {ModalService, ModalOptions} from "../../services/ModalService";
 import {WindowService} from "../../services/WindowService";
 import {LogMessage, Level, Logger} from "../../services/Logger";

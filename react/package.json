@@ -58,7 +58,7 @@
     "redux-logger": "^3.0.0",
     "redux-observable": "^0.14.1",
     "redux-thunk": "2.1.0",
-    "rodal": "^1.2.10",
+    "rodal": "^1.4.0",
     "rxjs": "^5.2.0"
   }
 }
