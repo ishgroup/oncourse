@@ -1,0 +1,113 @@
+//
+//
+// default.scss
+//
+// Contains all the settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+
+
+$theme: "b";
+
+// Content settings
+$colorTypeOne: #9ac836 !default;
+$colorTypeTwo: #799e28 !default;
+
+$colorTypeThree: #d0e64b !default;
+$colorTypeFour: #b9cc46 !default;
+
+$colorTypeFive: #33a6b2 !default;
+$colorTypeFiveHover: darken($colorTypeFive, 5%) !default;
+$colorTypeFiveBorderColorHover: $colorTypeFive !default;
+
+$colorTypeSix: #247a83 !default;
+
+$useDefaultFont: false;
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,900);
+
+$containerWidth: 1260px !default;
+
+$anchorColor: #7d8087 !default;
+$anchorHoverColor: #37b8cb !default;
+
+$primaryColor: #859f4b !default; //btn primary color
+$secondaryColor: #247a83 !default;
+
+// media: small, tablet, desktop */
+$small-screen: 640px !default;
+$tablet-screen: 992px !default;
+$desktop-screen: 1080px !default;
+$custom-screen: 1060px !default;
+
+// Font Families */
+$fontFamilyOne: 'Raleway', sans-serif !default;
+
+$bodyBackground: #fff !default;
+$bodyFontFamily: 'Raleway', sans-serif !default;
+$bodyFontSize: 14px !default;
+$bodyFontColor: #333333 !default;
+
+$discountBlockTextColor: $anchorColor !default;
+$discountBlockTitleColor: $bodyFontColor !default;
+
+// Content container */
+$contentContainerMarginTop: 0px;
+
+// Courses */
+$waitingListTitleHoverBG: $bodyFontColor !default;
+
+
+$h1InnerFontFamily: $bodyFontFamily !default;
+$h1InnerTextColor: $primaryColor !default;
+
+$discountBlockDisplay: block !default;
+$discountBlockActionLinkDisplay: block !default;
+
+$h1LinkColor: $primaryColor !default;
+$h1LinkHoverColor: $secondaryColor !default;
+
+$h2LinkColor: $primaryColor !default;
+$h2LinkHoverColor: $secondaryColor !default;
+
+$h3LinkColor: $primaryColor !default;
+$h3LinkHoverColor: $secondaryColor !default;
+
+$h4LinkColor: $primaryColor !default;
+$h4LinkHoverColor: $secondaryColor !default;
+
+$h5LinkColor: $primaryColor !default;
+$h5LinkHoverColor: $secondaryColor !default;
+
+$h6LinkColor: $primaryColor !default;
+$h6LinkHoverColor: $secondaryColor !default;
+
+$enrolActionFontFamily: $bodyFontFamily !default;
+$enrolActionBackground: $primaryColor !default;
+$enrolActionHoverBackground: $secondaryColor !default;
+
+$enrolActionBorder: 1px solid $primaryColor !default;
+$enrolActionAddedBackground: $secondaryColor !default;
+
+$coursesJoinButtonBackground: $primaryColor !default;
+$coursesJoinButtonHoverBackground: $primaryColor !default;
+$classItemBorderHoverColor: $primaryColor !default;
+
+$coursesFontFamily: $bodyFontFamily !default;
+$coursesDetailsFontFamily: $bodyFontFamily !default;
+$normalFontFamily: $bodyFontFamily !default;
+
+$courseItemBorderTop: 2px dotted $primaryColor !default;
+
+$courseMoreLinkColor: $secondaryColor !default;
+$courseMoreLinkHoverColor: $primaryColor !default;
+
+$btnBackgroundColor: $primaryColor !default;
+$btnBackgroundHoverColor: $secondaryColor !default;
+
+$btnType2BackgroundColor: $secondaryColor !default;
+
+$classItemLinkHoverColor: $primaryColor !default;
+
+$contentMainTitle: $secondaryColor !default;
+$contentSubTitle: #0a3a4a !default;

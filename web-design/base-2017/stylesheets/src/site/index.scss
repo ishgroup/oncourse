@@ -1,2 +1,13 @@
 @import "settings";
+
+@import "../oncourse/themes/theme-c/settings/default";
+@import "../oncourse/themes/theme-c/settings/header";
+@import "../oncourse/themes/theme-c/settings/footer";
+
+@import "../oncourse/base";
+
+@import "../oncourse/themes/theme-c/content";
+@import "../oncourse/themes/theme-c/header";
+@import "../oncourse/themes/theme-c/footer";
+
 @import "styles";

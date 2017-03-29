@@ -1,0 +1,85 @@
+//
+//
+// default.scss
+//
+// Contains all the settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+
+
+$theme: "a";
+$containerWidth: 1120px !default;
+
+$anchorColor: #7d8087 !default;
+$anchorHoverColor: #37b8cb !default;
+
+$primaryColor: #38BACA !default; //btn primary color
+$secondaryColor: #252d30 !default;
+
+// media: small, tablet, desktop
+$small-screen: 640px !default;
+$tablet-screen: 992px !default;
+$desktop-screen: 1024px !default;
+
+$bodyFontFamily: 'Source Sans Pro', sans-serif !default;
+$bodyFontSize: 15px !default;
+$bodyFontColor: #5c636b !default;
+
+$discountBlockTextColor: $anchorColor !default;
+$discountBlockTitleColor: $bodyFontColor !default;
+
+// Content container
+$contentContainerMarginTop: 0px;
+
+// Courses
+$waitingListTitleHoverBG: $bodyFontColor !default;
+
+
+$h1InnerFontFamily: $bodyFontFamily !default;
+$h1InnerTextColor: $primaryColor !default;
+
+$h1LinkColor: $primaryColor !default;
+$h1LinkHoverColor: $secondaryColor !default;
+
+$h2LinkColor: $primaryColor !default;
+$h2LinkHoverColor: $secondaryColor !default;
+
+$h3LinkColor: $primaryColor !default;
+$h3LinkHoverColor: $secondaryColor !default;
+
+$h4LinkColor: $primaryColor !default;
+$h4LinkHoverColor: $secondaryColor !default;
+
+$h5LinkColor: $primaryColor !default;
+$h5LinkHoverColor: $secondaryColor !default;
+
+$h6LinkColor: $primaryColor !default;
+$h6LinkHoverColor: $secondaryColor !default;
+
+$enrolActionFontFamily: $bodyFontFamily !default;
+$enrolActionBackground: $primaryColor !default;
+$enrolActionHoverBackground: $secondaryColor !default;
+
+$enrolActionBorder: 1px solid $primaryColor !default;
+$enrolActionAddedBackground: $secondaryColor !default;
+
+$coursesJoinButtonBackground: $primaryColor !default;
+$coursesJoinButtonHoverBackground: $primaryColor !default;
+$classItemBorderHoverColor: $primaryColor !default;
+
+$coursesFontFamily: $bodyFontFamily !default;
+$coursesDetailsFontFamily: $bodyFontFamily !default;
+$normalFontFamily: $bodyFontFamily !default;
+
+$courseItemBorderTop: 2px dotted $primaryColor !default;
+
+$courseMoreLinkColor: $secondaryColor !default;
+$courseMoreLinkHoverColor: $primaryColor !default;
+
+$btnBackgroundColor: $primaryColor !default;
+$btnBackgroundHoverColor: $secondaryColor !default;
+
+$btnType2BackgroundColor: $secondaryColor !default;
+
+$classItemLinkHoverColor: $primaryColor !default;

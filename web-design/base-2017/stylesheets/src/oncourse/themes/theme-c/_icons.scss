@@ -1,0 +1,89 @@
+//
+//
+// icons.scss
+//
+// Contains all the styles of icons
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('c') {
+  .featured-icon {
+    &::after {
+      content: "";
+      position: absolute;
+      background: url($imagePath + 'icons/color-icons.png');
+    }
+  }
+  .f-icon-plus::after {
+    @extend .featured-icon;
+    width: 44px;
+    height: 44px;
+    background-position: 0 0;
+  }
+  .f-icon-mail::after {
+    @extend .featured-icon;
+    width: 44px;
+    height: 23px;
+    background-position: 0 -54px;
+  }
+  .f-icon-plus {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 20%;
+    z-index: 20;
+    @include opacity(0);
+    @include transition(all 0.2s ease-out);
+  }
+  .prev-featured, .next-featured, .gallery-wrapper .bx-wrapper .bx-controls-direction a {
+    background: url($imagePath + 'icons/arrows-sprite.png') no-repeat;
+    width: 30px;
+    height: 57px;
+    &:hover {
+      background-color: $theme-color;
+    }
+  }
+  .prev-featured {
+    background-position: -80px -14px;
+  }
+  .next-featured {
+    background-position: -80px -98px;
+  }
+
+  .gallery-wrapper .bx-wrapper .bx-controls-direction {
+    a {
+      background-color: $theme-color;
+      &.bx-prev {
+        background-position: -16px -14px;
+      }
+      &.bx-next {
+        background-position: -16px -98px;
+      }
+    }
+  }
+
+  .social-footer {
+    background: url($imagePath + 'icons/social-sprite.png');
+    width: 51px;
+    height: 51px;
+    margin: 0 10px;
+    float: left;
+    &:hover {
+      @include opacity(0.7);
+    }
+  }
+  .sf-icon-facebook {
+    @extend .social-footer;
+    background-position: -102px 0;
+  }
+  .sf-icon-twitter {
+    @extend .social-footer;
+  }
+  .sf-icon-gplus {
+    @extend .social-footer;
+    background-position: -51px 0;
+  }
+}

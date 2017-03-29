@@ -1,0 +1,146 @@
+//
+//
+// header.scss
+//
+// Contains all settings used for header content for theme b
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+
+
+$header-theme: "b";
+
+$headerContainerPosition: relative !default;
+$headerContainerMarginBottom: 0px !default;
+$headerGroupPosition: relative !default;
+
+$headerTopBarFloat: none !default;
+$headerTopBarBG: #fbfbfb !default;
+$headerTopBarTextColor: $bodyFontColor !default;
+$headerTopBarMarginBottom: 39px !default;
+
+$headerTopBarContactMargin: 6px 10px 0px 20px !default;
+$headerTopBarPhoneTextColor: $bodyFontColor !default;
+
+$headerTopBarPaddingTop: 0px !default;
+$headerTopBarHeight: 57px !default;
+$headerGroupSiteLogoFloatPosition: none !default;
+$headerGroupSiteLogoZIndex: 0 !default;
+
+// Navigation
+$navbarPaddingLeft: 0px !default;
+$navFontSize: 15px !default;
+$navFontWeight: normal !default;
+$navWidth: auto !default;
+$navMarginTop: 0px !default;
+$navBG: transparent !default;
+$navBorderTop: 0px !default;
+$navBorderBottom: 0px !default;
+$navBorderColor: transparent !default;
+$navListBottomBorder: 2px solid transparent !default;
+$navAnchorColor: #4f5150 !default;
+$navAnchorHoverBG: #9bc837 !default;
+$navAnchorHoverTextColor: #2e2e2e !default;
+$navAnchorTopFontSize: 15px !default;
+$navAnchorPadding: 10px 27px !default;
+$navFirstChildAnchorPadding: $navAnchorPadding !default;
+$navLastChildAnchorPadding: $navAnchorPadding !default;
+
+$navAnchorHeight: auto !default;
+$navAnchorLineHeight: 36px !default;
+
+$navAnchorArrowColor: $navAnchorHoverBG !default;
+$firstChildMenuPadding: 0px !default;
+$displayFullWidthMenu: none !default;
+$first-accent-color: $navAnchorHoverBG !default;
+$firstDropMenufullWidth: 117.1% !default;
+$firstDropMenuMargin: 0px -14.95% !default;
+$first-accent-width: 400px !default;
+$firstAccentNavAnchorColor: #2e2e2e !default;
+$firstAccentNavAnchorPadding: 8px 20px !default;
+
+$navToggleBG: transparent !default;
+$navToggleTextColor: #231f20 !default;
+
+$navToggleHoverBG: #d5d5d5 !default;
+$navToggleHoverTextColor: #231f20 !default;
+
+$enableHamburgerMenu: true !default;
+$navToggleIconWidth: 23px !default;
+$navToggleIconColor: $primaryColor !default;
+$navToggleIconHeight: 4px !default;
+$navToggleIconBorderRadius: 100px !default;
+$navToggleIconLinePosition: -7px !default;
+$navToggleIconHoverColor: $secondaryColor !default;
+
+// Short list
+$shortListOrderLinkFontSize: $bodyFontSize !default;
+$shortListInfoSpanColor: #6d6d6d !default;
+$shortListInfoSpanFontSize: 14px !default;
+$shortListInfoSpanLineHeight: 2 !default;
+$shortListInfoSpanMargin: 0 5px 0 0 !default;
+
+// Search
+$advancedSearchOpenFromLeft: "off" !default;
+$advancedSearchOpenFromRight: "on" !default;
+$searchTopHeight: 28px !default;
+$searchButtonPadding: 3.5px 7px 3.5px !default;
+$searchButtonBG: transparent !default;
+$searchButtonWidth: 31px !default;
+$searchButtonHeight: $searchTopHeight !default;
+
+$btnHeight: 40px !default;
+$btnPadding: 12px 27px !default;
+$advanceSearchButtonWidth: 150px !default;
+$advanceSearchButtonBorderRadius: 2em !default;
+$advanceSearchButtonPadding: $btnPadding !default;
+
+$advanceSearchButtonClearPosition: right !default;
+$advanceSearchButtonSubmitPosition: left !default;
+
+$advanceSearchColor: #202020 !default;
+$advanceSearchButtonBG: #d0e64b !default;
+$advanceSearchButtonBG-Internal: #d0e64b !default;
+
+$advanceSearchButtonClearBackground: #d3eaec !default;
+$advanceSearchButtonClearBackground-Internal: #b6d741 !default;
+
+$searchActiveButtonBG: $advanceSearchButtonBG !default;
+
+$toggleSearchActiveBackground: #9ac836 !default;
+
+// Advanced search
+$advanceSearchBG: #fbfbfb !default;
+$advanceSearchBG-Internal: #9ac836 !default;
+$advanceSearchBGRGB: $advanceSearchBG !default;
+$advancedSearchPriceDisplay: block !default;
+$advancedSearchLocationWidth: 50% !default;
+$advancedSearchPriceWidth: $advancedSearchLocationWidth !default;
+
+$advanceSearchInputBG-Internal: #f1fed4 !default;
+$advanceSearchInputBG-Home: #cecece !default;
+$advanceSearchTitleColor: $secondaryColor !default;
+
+$searchBoxWidth: 190px !default;
+$searchBoxBorder: 1px solid #ddd !default;
+$searchBoxBorderRadius: 14px !default;
+
+$searchBoxInputPadding: 3.5px 12px 3.5px !default;
+$searchBoxInputWidth: 72% !default;
+$searchBoxInputHeight: $searchTopHeight !default;
+$searchBoxInputBorder: 0px !default;
+$searchBoxInputBorderRadius: 14px 0px 0px 14px !default;
+
+$searchMoreOptions: transparent !default;
+$searchMoreOptionsWidth: 12px !default;
+$searchMoreOptionsHeight: $searchTopHeight !default;
+$searchMoreOptionsPadding: 0px !default;
+$searchMoreOptionsMinWidth: $searchMoreOptionsWidth !default;
+$searchMoreOptionsDisplay: block !default;
+
+$sliderPagerItemBackground: transparent !default;
+$sliderPagerItemWidth: 13px !default;
+$sliderPagerItemHeight: 13px !default;
+$sliderPagerItemBorderRadius: 100% !default;
+$sliderPagerItemBorder: 2px solid #fff !default;
+$sliderPagerItemActiveBackground: #fff !default;

@@ -3,8 +3,18 @@
 // site.scss
 //
 // This file must not be renamed or removed.
+// Contains all the styles related to the application
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
 
-@import "site/index";
+
+
+//
+//
+// All the styles of application divided into different files
+// for better management
+//
+
+@import "main";
+@import "layout";

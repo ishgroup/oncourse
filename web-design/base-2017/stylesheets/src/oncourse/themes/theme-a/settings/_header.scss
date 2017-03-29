@@ -1,0 +1,70 @@
+//
+//
+// header.scss
+//
+// Contains all settings used for header content only
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+
+
+
+$header-theme: "a";
+$headerContainerPosition: relative !default;
+$headerContainerMarginBottom: 25px !default;
+$headerGroupPosition: absolute !default;
+
+$headerTopBarBG: #ee2222 !default;
+$headerTopBarTextColor: #fff !default;
+
+$navColor: #454a4d !default; //navAnchorColor
+$subNavBgColor: #252D30 !default; //$first-accent-color
+$subNavColor: #FFFFFF !default; //firstAccentNavAnchorColor
+
+// Navigation
+$navbarPaddingLeft: 280px !default;
+$navWidth: auto !default;
+$navMarginTop: 0px !default; //$navMargin
+$navBG: transparent !default;
+$navBorderColor: #2e2e2e !default;
+$navAnchorColor: #fff !default;
+$navAnchorHoverBG: transparent !default;
+$navAnchorHoverTextColor: #2e2e2e !default;
+$navAnchorTopFontSize: $bodyFontSize !default;
+$navAnchorPadding: 0px !default;
+$navFirstChildAnchorPadding: $navAnchorPadding !default;
+$navLastChildAnchorPadding: $navAnchorPadding !default;
+$navAnchorHeight: auto !default;
+$navAnchorLineHeight: 28px !default;
+
+$navAnchorArrowColor: #fff !default;
+$firstChildMenuPadding: 0px !default;
+$displayFullWidthMenu: none !default;
+$first-accent-color: #252D30 !default;
+$firstDropMenufullWidth: 117.1% !default;
+$firstDropMenuMargin: 0px -14.95% !default;
+$first-accent-width: 200px !default;
+$firstAccentNavAnchorColor: #fff !default;
+$firstAccentNavAnchorPadding: 8px 20px !default;
+
+$navToggleBG: #e7e7e7 !default;
+$navToggleTextColor: #231f20 !default;
+
+$navToggleHoverBG: #d5d5d5 !default;
+$navToggleHoverTextColor: #231f20 !default;
+
+// Search
+$advancedSearchOpenFromLeft: "off" !default;
+$advancedSearchOpenFromRight: "on" !default;
+$advanceSearchButtonBG: $headerTopBarBG !default;
+$advanceSearchButtonClearBackground: $advanceSearchButtonBG !default;
+
+$searchActiveButtonBG: $headerTopBarBG !default;
+
+// ShortList
+$shortListOrderLinkFontSize: $bodyFontSize !default;
+
+
+$navBorderTop: 1px solid $navBorderColor !default;
+$navBorderBottom: 1px solid $navBorderColor !default;
+$navListBottomBorder: 1px solid $navBorderColor !default;

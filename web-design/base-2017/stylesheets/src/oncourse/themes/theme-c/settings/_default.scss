@@ -1,0 +1,106 @@
+//
+//
+// default.scss
+//
+// Contains all the settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+
+
+
+// Content settings
+$theme: "c";
+
+$theme-color: #4cddf3 !default;
+
+$containerWidth: 1460px !default;
+
+$anchorColor: #7d8087 !default;
+$anchorHoverColor: #37b8cb !default;
+
+$primaryColor: #404040 !default; //btn primary color
+$secondaryColor: #00515f !default;
+
+// media: small, tablet, desktop
+$small-screen: 640px !default;
+$tablet-screen: 992px !default;
+$desktop-screen: 1080px !default;
+$custom-screen: 1060px !default;
+
+// Font Families
+
+$bodyBackground: #f7f7f7 !default;
+$bodyFontFamily: 'Source Sans Pro', sans-serif !default;
+$bodyFontSize: 15px !default;
+$bodyFontColor: #717171 !default;
+
+$discountBlockTextColor: $anchorColor !default;
+$discountBlockTitleColor: $bodyFontColor !default;
+
+$headerTopBarMarginBottom: 0 !default;
+$headerTopBarPaddingTop: 0 !default;
+$headerTopBarHeight: auto !default;
+$headerTopBarBG: #fff !default;
+
+// Content container
+$contentContainerMarginTop: 0px;
+
+// Courses
+$waitingListTitleHoverBG: $bodyFontColor !default;
+
+
+$h1InnerFontFamily: $bodyFontFamily;
+$h1InnerTextColor: $primaryColor !default;
+
+$discountBlockDisplay: none !default;
+$discountBlockActionLinkDisplay: none !default;
+
+$h1LinkColor: $primaryColor;
+$h1LinkHoverColor: $secondaryColor;
+
+$h2LinkColor: $primaryColor;
+$h2LinkHoverColor: $secondaryColor;
+
+$h3LinkColor: $primaryColor;
+$h3LinkHoverColor: $secondaryColor;
+
+$h4LinkColor: $primaryColor;
+$h4LinkHoverColor: $secondaryColor;
+
+$h5LinkColor: $primaryColor;
+$h5LinkHoverColor: $secondaryColor;
+
+$h6LinkColor: $primaryColor;
+$h6LinkHoverColor: $secondaryColor;
+
+$enrolActionFontFamily: $bodyFontFamily;
+$enrolActionBackground: $primaryColor;
+$enrolActionHoverBackground: $secondaryColor;
+
+$enrolActionBorder: 1px solid $primaryColor;
+$enrolActionAddedBackground: $secondaryColor !default;
+
+$coursesJoinButtonBackground: $primaryColor !default;
+$coursesJoinButtonHoverBackground: $primaryColor;
+$classItemBorderHoverColor: $primaryColor !default;
+$classItemBackgroundColor: transparent !default;
+
+$classItemBorder: 1px solid #dedede !default;
+$classItemBorderLeft: 6px solid #dedede !default;
+
+$coursesFontFamily: $bodyFontFamily;
+$coursesDetailsFontFamily: $bodyFontFamily;
+$normalFontFamily: $bodyFontFamily;
+
+$courseItemBorderTop: 2px dotted $primaryColor !default;
+
+$courseMoreLinkColor: $secondaryColor !default;
+$courseMoreLinkHoverColor: $primaryColor !default;
+
+$btnBackgroundColor: $primaryColor;
+$btnBackgroundHoverColor: $secondaryColor;
+
+$btnType2BackgroundColor: $secondaryColor;
+
+$classItemLinkHoverColor: $primaryColor !default;
