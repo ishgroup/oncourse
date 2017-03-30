@@ -9,6 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.util.HTMLUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -69,7 +70,7 @@ public class PageHead extends ISHCommon {
 
 	@Cached
 	public String getMetaDescription() {
-		if (metaDescription == null) {
+		if (StringUtils.isBlank(metaDescription)) {
 			return siteService.getCurrentCollege().getName();
 		} else {
 			return metaDescription;
