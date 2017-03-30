@@ -47,4 +47,11 @@ public class InitSolr {
                 "src/main/resources/solr",
                 "suburbs");
     }
+
+    public static InitSolr tagsCore() {
+        return InitSolr.valueOf("conf/solrconfig.xml",
+                "conf/schema.xml",
+                "src/main/resources/solr",
+                "tags");
+    }
 }
