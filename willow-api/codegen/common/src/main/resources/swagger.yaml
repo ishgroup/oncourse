@@ -64,6 +64,33 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /contact:
+    put:
+      summary: Create or get Contact
+      operationId: createOrGetContact
+      description: Create or get Contact for add student view operation
+      tags:
+       - Contact
+      parameters:
+      - name: createContactParams
+        in: body
+        description: Params for create or get contact
+        required: true
+        schema:
+          $ref: '#/definitions/CreateContactParams'
+      responses:
+        200:
+          description: Contact
+          schema:
+            $ref: '#/definitions/Contact'
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/ValidationError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /contact/{studentUniqueIdentifier}:
     get:
       summary: Get contact for provided student unique identifier
@@ -351,4 +378,48 @@ definitions:
       id:
         type: string
         description: Internal unique indetificator of promotion
-
+  CreateContactParams:
+    type: object
+    required:
+    - firstName
+    - lastName
+    - email
+    properties:
+      firstName:
+        type: string
+        description: First Name of Contact
+      lastName:
+        type: string
+        description: Last Name of Contact
+      email:
+        description: Email of Contact
+        type: string
+  ValidationError:
+    type: object
+    required:
+    - formErrors
+    - fieldsErrors
+    properties:
+      formErrors:
+        type: array
+        items:
+          type: string
+        description: Global error
+      fieldsErrors:
+        type: array
+        items:
+          title: FieldErrors
+          type: object
+          required:
+          - name
+          - errors
+          properties:
+            name:
+              type: string
+              description: Name of fiels with error
+            errors:
+              type: array
+              items:
+                type: string
+              description: Errors for particular field, or empty array
+        description: Array of fields errors, or empty array
