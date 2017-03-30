@@ -4,12 +4,17 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.model.Contact
 import ish.oncourse.willow.model.CreateContactParams
+import ish.oncourse.willow.model.FieldErrors
+import ish.oncourse.willow.model.ValidationError
 import ish.oncourse.willow.service.ContactApi
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+import javax.ws.rs.BadRequestException
+import javax.ws.rs.core.Response
 
 @CompileStatic
 class ContactApiServiceImpl implements ContactApi{
@@ -25,7 +30,15 @@ class ContactApiServiceImpl implements ContactApi{
 
     @Override
     Contact createOrGetContact(CreateContactParams createContactParams) {
-        return null
+        throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(
+                new ValidationError().with {
+                formErrors = ['form error number one', 'form error number two']
+                fieldsErrors << new FieldErrors(name: 'firstName', errors: ['error1','error2'])
+                fieldsErrors << new FieldErrors(name: 'lastName', errors: ['error3','error4']) 
+                    it
+            })
+            .status(400)
+            .build())
     }
 
     @Override
