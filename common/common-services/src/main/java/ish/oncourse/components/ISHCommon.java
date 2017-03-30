@@ -69,4 +69,8 @@ public abstract class ISHCommon {
     public <E extends Queueable> Document getAttachmentByTag(E entity, final String tagPath) {
         return binaryDataService.getAttachmentByTag(entity, tagPath);
     }
+
+    public <E extends Queueable> List<Document>  getImages(E entity) {
+        return binaryDataService.getImages(entity);
+    }
 }
