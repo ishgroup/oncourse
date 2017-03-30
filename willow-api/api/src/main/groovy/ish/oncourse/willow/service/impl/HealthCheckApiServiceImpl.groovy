@@ -9,10 +9,10 @@ import javax.ws.rs.BadRequestException
 class HealthCheckApiServiceImpl implements HealthCheckApi {
 
     
-    ShotDownService downService
+    private ShutdownService downService
 
     @Inject 
-    HealthCheckApiServiceImpl(ShotDownService downService) {
+    HealthCheckApiServiceImpl(ShutdownService downService) {
         this.downService = downService
     }
     

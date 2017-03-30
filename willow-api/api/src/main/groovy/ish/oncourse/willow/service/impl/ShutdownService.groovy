@@ -5,24 +5,18 @@ import io.bootique.shutdown.ShutdownManager
 
 import java.util.concurrent.atomic.AtomicBoolean
 
-class ShotDownService {
+class ShutdownService {
     
-    AtomicBoolean signalReceived = new AtomicBoolean(false) 
+    private AtomicBoolean signalReceived = new AtomicBoolean(false) 
     
     @Inject
     ShotDownService(ShutdownManager manager) {
-        manager.addShutdownHook(new AutoCloseable() {
-            @Override
-            void close() throws Exception {
-                signalReceived.getAndSet(true)
-            }
-        })
+        manager.addShutdownHook([close: { 
+            signalReceived.getAndSet(true) 
+        }] as AutoCloseable)
     }
-    
     
     boolean isKillSignalReceived() {
         signalReceived.get()
     }
-    
-    
 }
