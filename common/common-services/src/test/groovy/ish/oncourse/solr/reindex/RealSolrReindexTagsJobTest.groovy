@@ -20,8 +20,6 @@ class RealSolrReindexTagsJobTest {
     private static final String solrFullImportURL = "http://localhost:7001/solr/${collectionName}/dataimport?command=full-import".toString()
     private static final Long sleepingTime = 5000L
 
-    private static final String query = 'select distinct t.id, t.name as nm, \'tag\' as type, t.collegeId as collegeID from Tag t inner join TaggableTag tgt on tgt.tagId=t.id inner join Taggable tg on tgt.taggableId = tg.id where t.isWebVisible=1 and tg.entityIdentifier = \'Course\''
-    
     private CloudSolrClient client
     private CayenneRuntime runtime
 
@@ -100,10 +98,16 @@ class RealSolrReindexTagsJobTest {
         c2.sort { it.id }
         
         for(int i = 0; i < c1.size(); i++) {
+            assertNotNull(c1[i].id)
             assertEquals('id assertion', c1[i].id, c2[i].id)
+            assertNotNull(c1[i].collegeId)
             assertEquals('collegeId assertion', c1[i].collegeId, c2[i].collegeId)
+            assertNotNull(c1[i].doctype)
             assertEquals('doctype assertion', c1[i].doctype, c2[i].doctype)
+            assertNotNull(c1[i].name)
             assertEquals('name assertion', c1[i].name, c2[i].name)
+            
+            assertNotEquals(c1[i]._version_, c2[i]._version_)
         }
     }
 }
