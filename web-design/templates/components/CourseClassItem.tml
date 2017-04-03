@@ -27,7 +27,7 @@
                     <div class="row">
                         <t:if t:test="courseClass.firstSession">
                             <div class="col-xs-24 date">
-                                <a timezone="10" rel="session" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time">
+                                <a timezone="10" rel="session" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time session-date">
                                     <span itemprop="startDate" class="dtstart hide" content="${formatDate(firstSessionStartDate,'yyyy-MM-dd')}">
                                         ${formatDate(firstSessionStartDate,'yyyy-MM-dd')}
                                     </span>
@@ -54,7 +54,7 @@
                                     </t:if>
                                 </a>
                                 <br/>
-                                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time" rel="session">
+                                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline date-time session-time" rel="session">
                                     <abbr class="dtstart">
                                         <t:output format="timeFormat" value="firstSessionStartDate"/>
                                     </abbr> -
@@ -64,7 +64,7 @@
                                     <t:if t:test="hasManySessions"> (first session)</t:if>
                                 </a>
                                 <br/>
-                                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline" rel="session">${classSessions}</a>
+                                <a timezone="10" href="https://${request.serverName}/Timeline/sessions?ids=${courseClass.id}" class="timeline session-item" rel="session">${classSessions}</a>
                             </div>
 
                             <p:else>

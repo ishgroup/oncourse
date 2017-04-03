@@ -113,7 +113,7 @@
 		.header-container {
 			background: $white;
 			padding-bottom: 22px;
-			z-index: 1;
+			z-index: 9;
 			box-shadow: 1px 1px 10px 2px #ddd;
 			border-bottom: 2px solid #ddd;
 			@include responsive($media-small) {
@@ -209,10 +209,14 @@
 										font-size: 17px;
 									}
 									&#adv_search_location, &#adv_search_time {
-										padding-right: 10px;
+										@include responsive($media-tablet) {
+											padding-right: 10px;
+										}
 									}
 									&#adv_search_price, &#adv_search_day {
-										padding-left: 10px;
+										@include responsive($media-tablet) {
+											padding-left: 10px;
+										}
 									}
 								}
 
