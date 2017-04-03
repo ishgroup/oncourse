@@ -7,37 +7,6 @@ goog.require('handlebars');
 
 var $j = jQuery.noConflict();
 
-Inputmask.extendDefinitions({
-    M: {
-        validator: "0[1-9]|1[012]",
-        cardinality: 2,
-        placeholder: 'M',
-        prevalidator: [{
-            validator: function (chrs, maskset, pos, strict, opts) {
-                var isNumeric = new RegExp("[0-9]");
-                if(!isNumeric.test(chrs)) return false;
-                if(chrs > "1") {
-                    maskset.buffer[pos] = "0";
-                    return {
-                        "pos": pos+1,
-                        "c": chrs
-                    };
-                }
-                else return true;
-            },
-            cardinality: 1
-        }]
-    },
-    Y: {
-        validator: "[0-9]",
-        cardinality: 2,
-        placeholder: 'Y',
-        prevalidator: null
-    }
-});
-
-
-
 var Action = {
     init: 'init',
     make: 'make',
@@ -219,7 +188,7 @@ PaymentForm.prototype = {
 
     initInputDate: function () {
         this.inputDate = $j("div#payment-controls input[name='date']");
-        this.inputDate.inputmask("M/Y", { placeholder: " ", showMaskOnHover: false, showMaskOnFocus: false });
+        this.inputDate.inputmask("m/y", {showMaskOnHover: false, showMaskOnFocus: false });
     },
 
     fillCardDetails: function () {
