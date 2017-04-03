@@ -174,7 +174,7 @@ PaymentForm.prototype = {
 
     initInputNumber: function () {
         this.inputNumber = $j("div#payment-controls input[name='number']");
-        this.inputNumber.inputmask("9999 9999 9999 9999", {placeholder: " "});
+        this.inputNumber.inputmask("9999 9999 9999 9999", { placeholder: " ", showMaskOnHover: false, showMaskOnFocus: false });
     },
 
     initInputName: function () {
@@ -183,12 +183,12 @@ PaymentForm.prototype = {
 
     initInputCvv: function () {
         this.inputCvv = $j("div#payment-controls input[name='cvv']");
-        this.inputCvv.inputmask("9999", {placeholder: " "});
+        this.inputCvv.inputmask("9999", { placeholder: " ", showMaskOnHover: false, showMaskOnFocus: false });
     },
 
     initInputDate: function () {
         this.inputDate = $j("div#payment-controls input[name='date']");
-        this.inputDate.inputmask("m/y", {placeholder: ' '});
+        this.inputDate.inputmask("m/y", { placeholder: " ", showMaskOnHover: false, showMaskOnFocus: false });
     },
 
     fillCardDetails: function () {
@@ -290,14 +290,14 @@ PaymentForm.prototype = {
                 this.paymentForm.hide();
         }
     },
-    
+
     showWarning: function(message) {
         this.setMessage(message, 'warning-msg');
         this.hidePaymentControls();
         this.divPaymentProgressBar.hide();
         this.reloadPage(10000);
     },
-    
+
     updateView: function () {
         this.paymentForm.show();
         switch (this.response.status) {
