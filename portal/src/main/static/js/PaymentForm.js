@@ -1,7 +1,6 @@
 goog.provide('PaymentForm');
 
-goog.require('jquery');
-goog.require('jquery.inputmask');
+goog.require('initialise');
 goog.require('moment');
 goog.require('handlebars');
 
@@ -402,7 +401,9 @@ PaymentForm.prototype = {
         var val = moment(this.inputDate.val(), DATE_FORMATS, true);
 
         if (val.isValid()) {
-            this.inputDate.tooltip('destroy');
+            if(this.inputDate.toolkit) {
+                this.inputDate.tooltip('destroy');
+            }
         } else {
             this.inputDate.tooltip({
                 toggle: "tooltip",
