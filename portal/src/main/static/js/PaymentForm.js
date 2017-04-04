@@ -7,6 +7,13 @@ goog.require('handlebars');
 
 var $j = jQuery.noConflict();
 
+var DATE_FORMAT = 'MM/YY';
+var DATE_FORMATS = ["M/YY", "M-YY", "M/YYYY", "M-YYYY",
+    "MM/YY", "MM-YY", "MM/YYYY", "MM-YYYY",
+    "MMM-YY", "MMM YY", "MMM-YYYY", "MMM YYYY",
+    "MMMM-YY", "MMMM YY", "MMMM-YYYY", "MMMM YYYY"];
+
+
 var Action = {
     init: 'init',
     make: 'make',
@@ -55,7 +62,7 @@ var Message = {
     paymentFailed: Handlebars.compile("<span><h2>Your payment failed</h2> " +
         "<p>Please check your credit card details or credit balance and try again. In particular, check the CVV and expiry date have been entered correctly.</p></span>"),
     waitResult: Handlebars.compile("<span>Payment is now being processed against the bank. Please wait...</span>"),
-    amountLessThan20Dollars:  Handlebars.compile("<span>The minimum amount for a payment is $20. Please correct it and try again. </span>"),
+    amountLessThan20Dollars: Handlebars.compile("<span>The minimum amount for a payment is $20. Please correct it and try again. </span>"),
     amountLessThanOwing: Handlebars.compile("<span>Payment amount can't be less than total owing for invoice. Please correct it and try again. </span>"),
     amountMoreThanOwing: Handlebars.compile("<span>Payment amount can't be greater than total owing for invoice. Please correct it and try again. </span>"),
     amountWrong: Handlebars.compile("<span>Payment amount is wrong. Please correct it and try again. </span>")
@@ -147,7 +154,7 @@ PaymentForm.prototype = {
                     currency: "AUD",
                     minimumFractionDigits: 2
                 }),
-                    dateDue: moment(this.response.dateDue).format('D MMMM YYYY')
+                dateDue: moment(this.response.dateDue).format('D MMMM YYYY')
             };
             if (this.response.dateDue < Date.now()) {
                 this.divPaymentMessage.addClass('warning-msg');
@@ -162,6 +169,13 @@ PaymentForm.prototype = {
         }
     },
 
+    addValidationListener: function () {
+        var self = this;
+        $j("input").on("change paste keyup", function (e) {
+            self.validateForm(e.target)
+        });
+    },
+
     initInputAmount: function () {
         this.inputAmount = $j("div#payment-controls input[name='amount']");
         this.inputAmount.inputmask("currency", {
@@ -174,7 +188,11 @@ PaymentForm.prototype = {
 
     initInputNumber: function () {
         this.inputNumber = $j("div#payment-controls input[name='number']");
-        this.inputNumber.inputmask("9999 9999 9999 9999", { placeholder: " ", showMaskOnHover: false, showMaskOnFocus: false });
+        this.inputNumber.inputmask("9999 9999 9999 9999", {
+            placeholder: " ",
+            showMaskOnHover: false,
+            showMaskOnFocus: false
+        });
     },
 
     initInputName: function () {
@@ -183,12 +201,18 @@ PaymentForm.prototype = {
 
     initInputCvv: function () {
         this.inputCvv = $j("div#payment-controls input[name='cvv']");
-        this.inputCvv.inputmask("9999", { placeholder: " ", showMaskOnHover: false, showMaskOnFocus: false });
+        this.inputCvv.inputmask("9999", {placeholder: " ", showMaskOnHover: false, showMaskOnFocus: false});
     },
 
     initInputDate: function () {
+        var self = this;
         this.inputDate = $j("div#payment-controls input[name='date']");
-        this.inputDate.inputmask("m/y", {showMaskOnHover: false, showMaskOnFocus: false });
+        this.inputDate.on('blur', function () {
+            var val = moment(self.inputDate.val(), DATE_FORMATS, true);
+            if (val.isValid()) {
+                self.inputDate.val(val.format(DATE_FORMAT));
+            }
+        });
     },
 
     fillCardDetails: function () {
@@ -196,7 +220,7 @@ PaymentForm.prototype = {
         this.inputName.val(this.request.card.name);
         this.inputNumber.val(this.request.card.number);
         this.inputCvv.val(this.request.card.cvv);
-        this.inputDate.val(this.request.card.date ? moment(this.request.card.date).format('MM/YYYY') : '');
+        this.inputDate.val(this.request.card.date ? moment(this.request.card.date).format(DATE_FORMAT) : '');
 
         this.fillDivNextPayment();
     },
@@ -225,6 +249,9 @@ PaymentForm.prototype = {
         this.initInputNumber();
         this.initInputCvv();
         this.initInputDate();
+        this.addValidationListener();
+
+        this.buttonPay.attr("disabled", true);
     },
 
     sendRequest: function (async) {
@@ -240,7 +267,6 @@ PaymentForm.prototype = {
             success: function (data) {
                 self.response = data;
                 self.processResponse()
-
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);
@@ -284,14 +310,14 @@ PaymentForm.prototype = {
             case WarningMessage.invalidCardNumber:
             case WarningMessage.invalidCardCvv:
             case WarningMessage.invalidCardDate:
-                this.showWarning(Message.invalidCreditCard())
+                this.showWarning(Message.invalidCreditCard());
                 break;
             default:
                 this.paymentForm.hide();
         }
     },
 
-    showWarning: function(message) {
+    showWarning: function (message) {
         this.setMessage(message, 'warning-msg');
         this.hidePaymentControls();
         this.divPaymentProgressBar.hide();
@@ -336,12 +362,71 @@ PaymentForm.prototype = {
         }
     },
 
-    reloadPage: function(delay) {
+    reloadPage: function (delay) {
         setTimeout(function () {
             window.location.reload();
         }, delay);
+    },
+
+
+    validateForm: function (input) {
+        var field = $j(input);
+        switch (field.attr('name')) {
+            case 'amount':
+                this.updateInputStatus(field, this.validateAmount(field));
+                break;
+            case 'name':
+                this.updateInputStatus(field, field.val());
+                break;
+            case 'number':
+                this.updateInputStatus(field, field.val());
+                break;
+            case 'cvv':
+                this.updateInputStatus(field, field.val());
+                break;
+            case 'date':
+                this.updateInputStatus(field, this.validateDate());
+                break;
+            default:
+                break;
+
+        }
+        if (this.validateAmount() && this.inputName.val() && this.inputNumber.val() && this.inputCvv.val() && this.validateDate()) {
+            this.buttonPay.removeAttr("disabled");
+        } else {
+            this.buttonPay.attr("disabled", true);
+        }
+    },
+
+    validateDate: function () {
+        var val = moment(this.inputDate.val(), DATE_FORMATS, true);
+
+        if (val.isValid()) {
+            this.inputDate.tooltip('destroy');
+        } else {
+            this.inputDate.tooltip({
+                toggle: "tooltip",
+                placement: "auto",
+                title: "Please enter the date in the format 'MM/YY'"
+            });
+        }
+
+        return val.isValid();
+    },
+
+    validateAmount: function () {
+        return this.inputAmount.val() && Number(this.inputAmount.inputmask('unmaskedvalue')) > 0
+    },
+
+    updateInputStatus: function (input, error) {
+        if (error) {
+            input.parent('div').removeClass('has-error')
+        } else {
+            input.parent('div').addClass('has-error')
+        }
     }
 };
+
 
 jQuery(document).ready(
     function () {
