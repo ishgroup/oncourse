@@ -10,6 +10,7 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.payment.CreditCardParser
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import org.apache.cayenne.ObjectContext
+import org.apache.commons.lang3.time.DateUtils
 
 import static ish.common.types.PaymentSource.SOURCE_WEB
 import static ish.common.types.PaymentStatus.IN_TRANSACTION
@@ -69,7 +70,7 @@ class Controller implements IController {
             it.creditCardNumber = request.card.number
             it.creditCardType = new CreditCardParser().parser(request.card.number)
             it.creditCardCVV = request.card.cvv
-            it.creditCardExpiry = request.card.date
+            it.creditCardExpiry = DateUtils.parseDate(request.card.date, "MM/yy").format("MM/yyyy")
             return it
         }
 
