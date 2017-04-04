@@ -8,17 +8,17 @@ import groovy.transform.AutoClone
  */
 @AutoClone
 class Request {
-    def Long paymentInId
-    def Long invoiceId
-    def Action action
-    def Card card = new Card()
+    Long paymentInId
+    Long invoiceId
+    Action action
+    Card card = new Card()
 
     @AutoClone
-    public static class Card {
-        def String name;
-        def String number;
-        def String cvv;
-        def String date;
-        def Double amount
+    static class Card {
+        String name
+        String number
+        String cvv
+        String date
+        Double amount
     }
 }

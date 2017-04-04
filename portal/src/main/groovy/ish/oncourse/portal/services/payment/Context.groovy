@@ -24,14 +24,14 @@ import static org.apache.cayenne.query.ObjectSelect.query
 class Context {
     private static final Money MIN_AMOUNT_OWING = new Money(0, 1);
 
-    def ObjectContext objectContext
-    def Contact contact
-    def PaymentIn paymentIn
-    def Invoice invoice
-    def PaymentTransaction paymentTransaction
-    def PaymentIn notFinalPaymentIn
-    def Double nextAmount
-    def Date dateDue
+    ObjectContext objectContext
+    Contact contact
+    PaymentIn paymentIn
+    Invoice invoice
+    PaymentTransaction paymentTransaction
+    PaymentIn notFinalPaymentIn
+    Double nextAmount
+    Date dateDue
 
     private void validate() {
         if (contact == null) {
