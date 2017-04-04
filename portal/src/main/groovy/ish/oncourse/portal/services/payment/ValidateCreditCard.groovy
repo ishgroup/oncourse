@@ -3,6 +3,9 @@ package ish.oncourse.portal.services.payment
 import ish.common.types.CreditCardType
 import ish.oncourse.util.payment.CreditCardParser
 import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.time.DateUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import static ish.common.util.ExternalValidation.validateCreditCardNumber
 
@@ -11,10 +14,12 @@ import static ish.common.util.ExternalValidation.validateCreditCardNumber
  * Date: 3/07/2016
  */
 class ValidateCreditCard {
-    def Request.Card card
-    def ValidationResult result
+    private static final Logger logger = LogManager.getLogger();
 
-    public void validate() {
+    Request.Card card
+    ValidationResult result
+
+    void validate() {
         validateName()
         if (result.valid()) {
             validateNumber()
@@ -32,28 +37,25 @@ class ValidateCreditCard {
     private void validateName() {
         if (StringUtils.isBlank(card.name)) {
             result.warning = WarningMessage.invalidCardName
-            return
         }
     }
 
-    private void validateDate() {
+    void validateDate() {
         if (StringUtils.isBlank(card.date)) {
             result.warning = WarningMessage.invalidCardDate
             return
         }
-        String[] dateParts = card.date.split("/");
-        if (dateParts.length != 2 || !dateParts[0].matches("\\d{1,2}") && !dateParts[0].matches("\\d{4}")) {
-            result.warning = WarningMessage.invalidCardDate
-            return
-        }
-        int ccExpiryMonth = Integer.parseInt(dateParts[0]) - 1;
-        int ccExpiryYear = Integer.parseInt(dateParts[1]);
-        Calendar today = Calendar.getInstance();
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MONTH, ccExpiryMonth);
-        cal.set(Calendar.YEAR, ccExpiryYear);
 
-        if (cal.getTime().before(today.getTime())) {
+        try {
+            Date today = new Date()
+            use(DateUtils) {
+                Date date =  card.date.parseDate("MM/yy").addMonths(1).truncate(Calendar.DAY_OF_MONTH)
+                if (date.before(today)) {
+                    result.warning = WarningMessage.invalidCardDate
+                }
+            }
+        } catch (e) {
+            logger.debug(e)
             result.warning = WarningMessage.invalidCardDate
         }
     }
@@ -72,7 +74,7 @@ class ValidateCreditCard {
         }
     }
 
-    public boolean validateCvv() {
+    boolean validateCvv() {
 
         if (StringUtils.isBlank(card.cvv)) {
             result.warning = WarningMessage.invalidCardCvv
