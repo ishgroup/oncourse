@@ -13,7 +13,7 @@
 	#footer {
 		position: relative;
 		font-weight: 300;
-	    font-size: 15px;
+		font-size: 15px;
 		&::before {
 			content: "";
 			background: $footerZigZagBackground;
@@ -29,14 +29,14 @@
 			line-height: 2;
 		}
 		.info-links {
-			background: #071e26;
+			background: $footerInfoLinksBackground;
 			margin-top: 30px;
 			.container {
-				color: #196674;
+				color: $footerInfoLinksTextColor;
 				a {
-					color: #196674;
+					color: $footerInfoLinksAnchorColor;
 					&:hover {
-						color: $white;
+						color: $footerInfoLinksAnchorHoverColor;
 					}
 				}
 			}
@@ -48,14 +48,14 @@
 				text-transform: uppercase;
 			}
 			.address-info >p {
-				color: #8da1a9;
+				color: $footerInfoColor;
 				line-height: 2;
 			}
 			ul ul li a {
-				color: #8da1a9;
+				color: $footerInfoColor;
 				line-height: 2;
 				&:hover {
-					color: $white;
+					color: $footerInfoHoverColor;
 				}
 			}
 			.address-info .title, .courses-tags>li:first-child, .quicklinks>li {
@@ -92,9 +92,9 @@
 		}
 		.container {
 			a {
-				color: #8da1a9;
+				color: $footerInfoColor;
 				&:hover {
-					color: $white;
+					color: $footerInfoHoverColor;
 				}
 			}
 			.footer-container {
@@ -103,7 +103,7 @@
 			}
 			.contact-courses {
 				.top {
-					border-bottom: 2px solid #124953;
+					border-bottom: $footerContactBorderBottom;
 					padding: 30px 0px;
 					margin-bottom: 40px;
 					.links {
@@ -114,10 +114,10 @@
 						}
 						>a {
 							font-size: 17px;
-							color: #17616f;
+							color: $footerContactLinkColor;
 							display: block;
 							&:hover {
-								color: $white;
+								color: $footerContactLinkHoverColor;
 							}
 							@include responsive($media-small) {
 								display: initial;

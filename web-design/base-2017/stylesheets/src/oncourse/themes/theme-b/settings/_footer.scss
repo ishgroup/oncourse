@@ -8,10 +8,21 @@
 // It is licensed to you under the Apache License, version 2.0
 
 
-
 $footer-theme: "b";
 
 $footerZigZagBackground: url("/s/img/icons/zigzag.png") !default;
 
 $footerBG: #0a3a4a no-repeat center top !default;
 $footerTextColor: #fff !default;
+
+$footerInfoLinksBackground: #071e26 !default;
+$footerInfoLinksTextColor: #196674 !default;
+$footerInfoLinksAnchorColor: #196674 !default;
+$footerInfoLinksAnchorHoverColor: $white !default;
+
+$footerInfoColor: #8da1a9 !default;
+$footerInfoHoverColor: $white !default;
+$footerContactBorderBottom: 2px solid #124953 !default;
+
+$footerContactLinkColor: #17616f !default;
+$footerContactLinkHoverColor: $white !default;

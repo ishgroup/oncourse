@@ -82,8 +82,8 @@
       display: block;
       margin-left: -#{$col-gap};
       margin-right: -#{$col-gap};
+      @include clearfix;
     }
-    @include clearfix;
     >li {
       width: 100%;
       display: block;

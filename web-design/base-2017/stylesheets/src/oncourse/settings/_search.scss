@@ -36,6 +36,8 @@ $searchButtonWidth: 35px !default;
 // Search button spaces
 $searchButtonPadding: 7.5px 10px 5.5px !default;
 
+// Search button toggle display
+$toggleSearchDisplay: block !default;
 // Search button toggle background
 $toggleSearchBackground: transparent !default;
 // Search button toggle background changed on mouse over
@@ -46,6 +48,7 @@ $toggleSearchActiveBackground: $searchButtonBG !default;
 //
 
 $searchBoxFloat: right !default;
+$searchBoxDisplay: block !important !default;
 // Search box width
 $searchBoxWidth: 290px !default;
 // Search box border

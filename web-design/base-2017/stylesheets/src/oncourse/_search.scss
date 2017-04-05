@@ -33,10 +33,10 @@
 		height: 31px;
 		padding: 8px 10px;
 		margin-right: 10px;
-		display: block;
+		display: $toggleSearchDisplay;
 		opacity: 0.6;
-    	@include transition(background-color 0.2s ease-out);
-    	background: $toggleSearchBackground;
+		@include transition(background-color 0.2s ease-out);
+		background: $toggleSearchBackground;
 		&:hover, &.is-active {
 			opacity: 1;
 			background: $toggleSearchActiveBackground;
@@ -70,6 +70,13 @@
 	#search_box {
 		float: $searchBoxFloat;
 		display: none;
+
+		@include responsive($media-tablet) {
+			display: $searchBoxDisplay;
+			#search {
+				margin-right: 0px;
+			}
+		}
 
 		// Hiding header of search box
 		h3 {
@@ -328,13 +335,6 @@
 						display: none;
 					}
 				}
-			}
-		}
-
-		@include responsive($media-tablet) {
-			display: block !important;
-			#search {
-				margin-right: 0px;
 			}
 		}
 	}
