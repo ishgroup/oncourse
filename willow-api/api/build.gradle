@@ -63,6 +63,7 @@ dependencies {
     compile 'mysql:mysql-connector-java:5.1.38'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
     testCompile 'org.dbunit:dbunit:2.5.3'
     testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
     testCompile 'org.apache.commons:commons-pool2:2.4.2'
