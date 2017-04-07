@@ -49,6 +49,8 @@ dependencies {
 		exclude group: 'joda-time'
 		exclude group: 'commons-logging'
 		exclude group: 'xalan'
+
+		exclude group: 'org.codehaus.groovy'
 	}
 
 	compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
@@ -90,7 +92,7 @@ dependencies {
 	compile 'org.bouncycastle:bcprov-jdk15on:1.53'
 	compile 'org.bouncycastle:bcmail-jdk15on:1.53'
 
-	compile 'org.codehaus.groovy:groovy-all:2.4.8'
+	compile 'org.codehaus.groovy:groovy-all:2.4.10'
 	compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 	compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
 
