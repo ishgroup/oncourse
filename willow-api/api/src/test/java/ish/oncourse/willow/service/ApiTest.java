@@ -14,7 +14,7 @@ import org.apache.cayenne.log.JdbcEventLogger;
 import org.apache.cayenne.map.DataMap;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.cayenne.map.Relationship;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -137,7 +137,7 @@ public abstract class ApiTest {
         dataSource.setUrl(mysql.jdbcUrl);
         dataSource.setUsername(mysql.jdbcUser);
         dataSource.setPassword(mysql.jdbcPassword);
-        dataSource.setMaxActive(100);
+        dataSource.setMaxTotal(100);
         return dataSource;
     }
 
