@@ -1,10 +1,12 @@
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'application'
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'maven'
+    id 'application'
+    id "io.spring.dependency-management" version "1.0.1.RELEASE"
+}
 
 repositories {
-    //mavenCentral()
     maven {
         url 'https://repo.ish.com.au/content/groups/public'
     }
@@ -12,6 +14,17 @@ repositories {
         url 'https://repo.ish.com.au/content/groups/ish'
     }
 }
+
+ext {
+    bootiqueVersion = "0.22"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
+    }
+}
+
 
 dependencies {
     compile (project(':common:common-functions')) {
@@ -32,24 +45,27 @@ dependencies {
     compile 'org.apache.bval:org.apache.bval.bundle:1.1.2'
 
     //bootique
-    compile 'io.bootique.jetty:bootique-jetty:0.19'
+    compile 'io.bootique:bootique'
+    compile 'io.bootique.jetty:bootique-jetty'
+    compile 'io.bootique.jcache:bootique-jcache'
+    compile 'io.bootique.logback:bootique-logback'
+    //cannot use the latest bootique-cayenne
+    //cayenne 4.0.M5 is not compatible with groovy and @CompileStatic
     compile 'io.bootique.cayenne:bootique-cayenne:0.18'
-    compile 'io.bootique.logback:bootique-logback:0.13'
-    compile 'io.bootique.jcache:bootique-jcache:0.1'
-    
+
     //cache
-    compile 'org.ehcache:ehcache:3.3.0'
+    compile 'org.ehcache:ehcache:3.3.1'
 
     compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
-    compile 'org.slf4j:log4j-over-slf4j:1.7.24'
-    compile 'org.slf4j:slf4j-api:1.7.24'
+    compile 'org.slf4j:log4j-over-slf4j:1.7.25'
+    compile 'org.slf4j:slf4j-api:1.7.25'
     
     compile 'mysql:mysql-connector-java:5.1.38'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'dbunit:dbunit:2.4.8'
-    testCompile 'commons-dbcp:commons-dbcp:1.4'
-    testCompile 'commons-pool:commons-pool:1.5.6'
+    testCompile 'org.dbunit:dbunit:2.5.3'
+    testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
+    testCompile 'org.apache.commons:commons-pool2:2.4.2'
 }
 
 test {
