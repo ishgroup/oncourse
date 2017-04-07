@@ -1,5 +1,19 @@
+//
+//
+// settings.scss
+//
+// Contains all the settings used in different scss files
+//
+// This file is copyright ish group, Australia.
+// It is licensed to you under the Apache License, version 2.0
+// and is part of ish onCourse.
+//
+
 // This file is ready for your settings.
 // Any variables you set here will override those within the rest of the stylesheet files
+
+$white: #fff;
+$black: #000;
 
 // $primaryColor: #e23250;
 // $secondaryColor: #5a6c7a;
@@ -31,3 +45,8 @@
 // $footerBG: #000;
 
 $sidebarLeft: "on";
+
+$advanceSearchLeft: auto;
+
+// $showFullClassesImage: "/s/img/icons/arrow-down.svg";
+// $showOtherClassesImage: $showFullClassesImage;

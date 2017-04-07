@@ -869,6 +869,11 @@
     color: #c53628
   }
 }
+#ClassDetailsPage, #DetailsPage.class-details {
+  .class-details-title>h1 {
+    margin: 0 210px 0 0 !important
+  }
+}
 
 .class-details-title {
   zoom: 1 \9;
@@ -882,9 +887,6 @@
     content: " ";
     clear: both;
     height: 0
-  }
-  >h1 {
-    margin: 0 210px 0 0 !important
   }
   >.print-page {
     position: absolute;

@@ -73,9 +73,6 @@
 
 		@include responsive($media-tablet) {
 			display: $searchBoxDisplay;
-			#search {
-				margin-right: 0px;
-			}
 		}
 
 		// Hiding header of search box
@@ -89,6 +86,7 @@
 			@include responsive($media-tablet) {
 				border: $searchBoxBorder;
 				border-radius: $searchBoxBorderRadius;
+				margin-right: 0px;
 			}
 
 			// Quicksearch text box
