@@ -111,6 +111,10 @@
 				text-align: right;
 				bottom: 25px;
 				padding-right: 25px;
+				max-width: 1260px;
+				margin: 0 auto;
+				left: 0;
+				right: 0;
 				@include responsive($media-small) {
 					bottom: 95px;
 				}

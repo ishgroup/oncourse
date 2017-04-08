@@ -120,7 +120,7 @@
 								color: $footerContactLinkHoverColor;
 							}
 							@include responsive($media-small) {
-								display: initial;
+								display: inline-block;
 								padding-right: 26px;
 							}
 						}
