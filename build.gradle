@@ -29,6 +29,7 @@ plugins {
 	id 'groovy'
 	id 'maven'
 	id 'jacoco'
+	id 'maven-publish'
 	id 'com.github.ben-manes.versions' version '0.14.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
@@ -45,7 +46,7 @@ ext {
     ]
 }
 
-configure (subprojects - project(':willow-api:api')) {
+configure (allprojects) {
 	// the following list of applying plugins should not be needed in gradle 3.x, but I can't see why it breaks when removed.
 	apply plugin: 'java'
 	apply plugin: 'maven'
@@ -80,7 +81,6 @@ configure (subprojects - project(':willow-api:api')) {
 	}
 
 	repositories {
-		//mavenCentral()
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -147,8 +147,38 @@ configure (subprojects - project(':willow-api:api')) {
 		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
 		}
 	}
+}
 
-	apply from: "$rootDir/buildStaticResources.gradle"
+apply from: "$rootDir/buildStaticResources.gradle"
+
+group = 'ish.oncourse.willow'
+publishing {
+	repositories {
+		maven {
+			name "executables"
+			url "https://repo.ish.com.au/content/repositories/ish-exe"
+			credentials {
+				username nexusUsername
+				password nexusPassword
+			}
+		}
+		maven {
+			name "snapshots"
+			url "https://repo.ish.com.au/content/repositories/ish-snapshots"
+			credentials {
+				username nexusUsername
+				password nexusPassword
+			}
+		}
+		maven {
+			name "releases"
+			url "https://repo.ish.com.au/content/repositories/ish-releases"
+			credentials {
+				username nexusUsername
+				password nexusPassword
+			}
+		}
+	}
 }
 
 task wrapper(type: Wrapper) {

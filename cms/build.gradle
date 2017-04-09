@@ -54,10 +54,3 @@ war {
         exclude '*.js'
     }
 }
-
-
-processResources.inputs.files gzipJs
-processResources.inputs.files gzipCss
-
-clean.dependsOn cleanMinifyJs
-clean.dependsOn cleanCompassCompile

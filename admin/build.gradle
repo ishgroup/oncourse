@@ -55,10 +55,3 @@ war {
 		exclude 'src'
 	}
 }
-
-
-processResources.inputs.files gzipJs
-processResources.inputs.files gzipCss
-
-clean.dependsOn cleanMinifyJs
-clean.dependsOn cleanCompassCompile

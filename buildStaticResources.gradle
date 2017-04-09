@@ -56,6 +56,13 @@ allprojects.findAll { it.name in projectsWithStaticResources }.each { p ->
             imgDirectory = "${buildDir}/resource-assemble/img"
         }
 
+        processResources.inputs.files gzipJs
+        processResources.inputs.files gzipCss
+        processResources.inputs.files combineSvg
+
+        clean.dependsOn cleanMinifyJs
+        clean.dependsOn cleanCompassCompile
+        clean.dependsOn cleanCombineSvg
     }
 }
 

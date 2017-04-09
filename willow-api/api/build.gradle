@@ -3,6 +3,7 @@ plugins {
     id 'groovy'
     id 'maven'
     id 'application'
+    id 'maven-publish'
     id "io.spring.dependency-management" version "1.0.1.RELEASE"
 }
 
@@ -93,5 +94,17 @@ processResources.doLast {
 distZip {
     applicationDistribution.from( "${buildDir}/resources/VERSION" ) {
         into('.')
+    }
+}
+
+// For deploying to our repo
+publishing {
+    publications {
+        zip(MavenPublication) {
+            artifact(distZip) {
+                classifier "executable"
+                extension "zip"
+            }
+        }
     }
 }

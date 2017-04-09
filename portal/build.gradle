@@ -62,12 +62,3 @@ war {
 		exclude 'img/.svg'
     }
 }
-
-
-processResources.inputs.files gzipJs
-processResources.inputs.files gzipCss
-processResources.inputs.files combineSvg
-
-clean.dependsOn cleanMinifyJs
-clean.dependsOn cleanCompassCompile
-clean.dependsOn cleanCombineSvg
