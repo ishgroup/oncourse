@@ -1,4 +1,4 @@
-apply plugin: 'maven-publish'
+apply plugin: 'application'
 apply plugin: 'io.spring.dependency-management'
 
 repositories {
@@ -94,7 +94,7 @@ distZip {
 // For deploying to our repo
 publishing {
     publications {
-        zip(MavenPublication) {
+        executables(MavenPublication) {
             artifact(distZip) {
                 classifier "executable"
                 extension "zip"

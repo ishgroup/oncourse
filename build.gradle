@@ -46,11 +46,12 @@ ext {
     ]
 }
 
-configure (allprojects) {
+allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'groovy'
 	apply plugin: 'jacoco'
+	apply plugin: 'maven-publish'
 	apply plugin: 'com.github.ben-manes.versions'
 
     //java compile should read java files in UTF-8
@@ -147,39 +148,39 @@ configure (allprojects) {
 		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
 		}
 	}
-}
 
-apply from: "$rootDir/buildStaticResources.gradle"
-
-group = 'ish.oncourse.willow'
-publishing {
-	repositories {
-		maven {
-			name "executables"
-			url "https://repo.ish.com.au/content/repositories/ish-exe"
-			credentials {
-				username nexusUsername
-				password nexusPassword
+	group = 'ish.oncourse.willow'
+	publishing {
+		repositories {
+			maven {
+				name "executables"
+				url "https://repo.ish.com.au/content/repositories/ish-exe"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
 			}
-		}
-		maven {
-			name "snapshots"
-			url "https://repo.ish.com.au/content/repositories/ish-snapshots"
-			credentials {
-				username nexusUsername
-				password nexusPassword
+			maven {
+				name "snapshots"
+				url "https://repo.ish.com.au/content/repositories/ish-snapshots"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
 			}
-		}
-		maven {
-			name "releases"
-			url "https://repo.ish.com.au/content/repositories/ish-releases"
-			credentials {
-				username nexusUsername
-				password nexusPassword
+			maven {
+				name "releases"
+				url "https://repo.ish.com.au/content/repositories/ish-releases"
+				credentials {
+					username nexusUsername
+					password nexusPassword
+				}
 			}
 		}
 	}
 }
+
+apply from: "$rootDir/buildStaticResources.gradle"
 
 task wrapper(type: Wrapper) {
 	gradleVersion = "3.3"
