@@ -29,6 +29,7 @@ plugins {
 	id 'jacoco'
 	id 'maven-publish'
 	id 'war'
+	id 'application'
 	id 'io.spring.dependency-management' version '1.0.1.RELEASE'
 	id 'com.github.ben-manes.versions' version '0.14.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
@@ -174,6 +175,15 @@ allprojects {
 				credentials {
 					username nexusUsername
 					password nexusPassword
+				}
+			}
+		}
+		// For deploying to our repo
+		publications {
+			executables(MavenPublication) {
+				artifact(distZip) {
+					classifier "executable"
+					extension "zip"
 				}
 			}
 		}
