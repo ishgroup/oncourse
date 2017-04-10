@@ -4,11 +4,11 @@ import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
 
-@Path("/ISHHealthCheck")
+@Path("/")
 interface HealthCheckApi {
     
     @GET
-    @Path("/")
+    @Path("/ISHHealthCheck")
     @Produces(['text/plain'])
     String healthCheck()
 }
