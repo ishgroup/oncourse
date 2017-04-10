@@ -10,7 +10,6 @@ dependencies {
     compile ("ish.oncourse.willow:waCommon:$waCommonWebservicesClientVersion") {
         //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
-        exclude group: 'org.codehaus.groovy' , module: 'groovy-all'
     }
 
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
