@@ -1,6 +1,4 @@
-plugins {
-    id 'war'
-}
+apply plugin: 'war'
 
 configurations {
     closureCompiler

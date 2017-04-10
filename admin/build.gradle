@@ -1,6 +1,4 @@
-plugins {
-	id 'war'
-}
+apply plugin: 'war'
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'

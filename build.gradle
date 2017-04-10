@@ -28,6 +28,8 @@ plugins {
 	id 'maven'
 	id 'jacoco'
 	id 'maven-publish'
+	id 'war'
+	id 'io.spring.dependency-management' version '1.0.1.RELEASE'
 	id 'com.github.ben-manes.versions' version '0.14.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
@@ -45,11 +47,11 @@ ext {
 }
 
 configure (allprojects) {
-	// the following list of applying plugins should not be needed in gradle 3.x, but I can't see why it breaks when removed.
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'groovy'
 	apply plugin: 'jacoco'
+	apply plugin: 'com.github.ben-manes.versions'
 
     //java compile should read java files in UTF-8
     //because some tests (ish.oncourse.services.textile.TextileUtilTest.test_unicodeQuotesEncoding)

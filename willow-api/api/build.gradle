@@ -1,11 +1,5 @@
-plugins {
-    id 'java'
-    id 'groovy'
-    id 'maven'
-    id 'application'
-    id 'maven-publish'
-    id "io.spring.dependency-management" version "1.0.1.RELEASE"
-}
+apply plugin: 'maven-publish'
+apply plugin: 'io.spring.dependency-management'
 
 repositories {
     maven {
