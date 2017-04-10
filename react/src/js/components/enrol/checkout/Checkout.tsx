@@ -1,8 +1,7 @@
 import * as React from "react";
 import {Summary} from "../summary/Summary";
-import {AddContact} from "../../../containers/enrol/AddContact";
-import {AddPayer} from "../../../containers/enrol/AddPayer";
-import {EditContact} from "../../../containers/enrol/EditContact";
+import EditContact from "../editContact/EditContact";
+import AddContact from "../addContact/AddContact";
 
 export class Checkout extends React.Component<CheckoutProps, CheckoutState> {
 
@@ -40,12 +39,7 @@ function getComponent(tab: number) {
   } else if (tab == 3) {
     return <Summary/>;
   } else {
-    return (
-    <div>
-      <AddContact/>
-      <AddPayer/>
-    </div>
-    );
+    return <AddContact/>;
   }
 }
 

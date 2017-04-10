@@ -1,94 +1,63 @@
 import * as React from "react";
-import {TextField} from "../form/TextField";
-import {Field, FormProps} from "redux-form";
-import {CreateContactParams} from "../../../model/CreateContactParams";
 
-export const AddContactComponent = (props: AddContactComponentProps) => {
-  const {submitAddContact, values, errors, pristine, invalid, submitting} = props;
+export default class AddContact extends React.Component<AddContactProps, AddContactState> {
+  constructor() {
+    super();
+  }
 
-  return (
-    <div>
-      {showFormErrors(errors)}
-
+  render() {
+    return (
       <div id="addstudent-block">
         <h2>Add a student</h2>
         <div className="message">
           <p>Please enter the details of a person enrolling, applying or making a purchase.</p>
         </div>
-
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          submitAddContact(values);
-        }}>
+        <form action="https://reactjs.local.oncourse.net.au/enrol/checkout.addcontact" method="post"
+              id="addContactForm">
           <div className="t-invisible">
             <input value="" name="t:formdata" type="hidden"/>
           </div>
           <fieldset>
             <br/>
-            <Field component={TextField}
-                   autocomplete="given-name"
-                   name="firstName"
-                   label="First name"
-                   type="text"
-                   required
-            />
-            <Field component={TextField}
-                   autocomplete="family-name"
-                   name="lastName"
-                   label="Last name"
-                   type="text"
-                   required
-            />
-            <Field component={TextField}
-                   autocomplete="email"
-                   name="email"
-                   label="Email"
-                   type="text"
-                   required
-            />
+            <p>
+              <label htmlFor="firstName">First name<em title="This field is required">*</em></label>
+              <span className="valid">
+                  <input className="input-fixed contact-field" autoComplete="given-name" id="firstName" name="firstName"
+                         type="text"/>
+                  <span className="validate-text"></span>
+                </span>
+            </p>
+            <p>
+              <label htmlFor="lastName">Last name <em title="This field is required">*</em></label>
+              <span className="valid">
+                  <input className="input-fixed contact-field" autoComplete="family-name" id="lastName" name="lastName"
+                         type="text"/>
+                    <span className="validate-text"></span>
+                </span>
+            </p>
+            <p>
+              <label htmlFor="email">Email<em title="This field is required">*</em></label>
+              <span className="valid">
+                  <input className="input-fixed contact-field" autoComplete="email" id="email" name="email"
+                         type="text"/>
+                  <span className="validate-text"></span>
+                </span>
+            </p>
           </fieldset>
           <p className="note">
-            <strong className="alert">Note</strong>: If you have been here before, please try to use the same email
-            address.
+            <strong className="alert">Note</strong>: If you have been here before, please try to use the same email address.
           </p>
           <div className="form-controls">
-            <input value="OK"
-                   className="btn btn-primary"
-                   name="submitContact"
-                   type="submit"
-                   disabled={invalid || pristine || submitting}
-            />
+            <input value="OK" className="btn btn-primary" id="submitContact" name="submitContact" type="submit"/>
           </div>
         </form>
       </div>
-    </div>
-  )
-};
-
-function showFormErrors(errors = []) {
-  if (!errors.length) {
-    return null;
+    );
   }
-
-  return (
-    <div className="validation">
-      <ul>
-        {errors.map((error, idx) => (
-          <li key={idx}>{error}</li>
-        ))}
-      </ul>
-    </div>
-  );
 }
 
-export interface AddContactComponentProps extends FormProps<AddContactFormFields, AddContactComponentProps, {}> {
-  errors?: string[];
-  values?: CreateContactParams;
-  submitAddContact?: (params: CreateContactParams) => void;
+interface AddContactProps {
 }
 
-export interface AddContactFormFields {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
+interface AddContactState {
 }

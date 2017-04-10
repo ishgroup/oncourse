@@ -42,8 +42,7 @@ export class Injector {
 }
 
 if (process.env.NODE_ENV === EnvironmentConstants.development) {
-  const injector = Injector.of();
-  // Overwrite Services for development without real server
+  const injector = Injector.of("SERVER");
   injector.setService("cartApi", new CartApiStub(injector.http));
   injector.setService("contactApi", new ContactApiStub(injector.http));
   injector.setService("courseClassesApi", new CourseClassesApiStub(injector.http));

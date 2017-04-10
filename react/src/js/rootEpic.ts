@@ -9,9 +9,6 @@ import {classesListSchema, classesSchema, productsListSchema, productsSchema, pr
 import {Store} from "redux";
 import uniq from "lodash/uniq";
 import {PromotionParams} from "./model/PromotionParams";
-import {enrolEpics} from "./epics/enrolEpics";
-import {mapError, mapPayload} from "./epics/epicsUtils";
-import {reduxFormEpics} from "./epics/reduxFormEpics";
 
 export const rootEpic = combineEpics(
   createCoursesEpic(IshActions.REQUEST_COURSE_CLASS),
@@ -29,8 +26,6 @@ export const rootEpic = combineEpics(
   createRemoveProductFromCartEpic(IshActions.REMOVE_PRODUCT_FROM_CART),
   createAddPromotionToCartEpic(IshActions.ADD_PROMOTION_TO_CART),
   createRemovePromotionFromCartEpic(IshActions.REMOVE_PROMOTION_FROM_CART),
-  enrolEpics,
-  reduxFormEpics
 );
 
 const {
@@ -243,6 +238,25 @@ function createLegacySyncEpic() {
     )
     .do(legacySyncStorage.sync)
     .filter(() => false);
+}
+
+function mapPayload(actionType: string) {
+  return function (payload: any) {
+    return {
+      type: FULFILLED(actionType),
+      payload
+    };
+  }
+}
+
+function mapError(actionType: string) {
+  return function (payload: any) {
+    return Observable.of({
+      type: REJECTED(actionType),
+      payload,
+      error: true
+    });
+  }
 }
 
 function createContactParams(state: IshState): ContactParams {

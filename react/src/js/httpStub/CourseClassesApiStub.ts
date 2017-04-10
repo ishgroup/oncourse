@@ -9,19 +9,21 @@ export class CourseClassesApiStub extends CourseClassesApi {
   getCourseClasses(courseClassesParams: CourseClassesParams): Promise<CourseClass[]> {
     return Promise.resolve([{
       "id": "5034095",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 96,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
       "isPaymentGatewayEnabled": true,
       "price": {
         "fee": "1000.00",
-        "feeOverriden": null,
+        "feeOverriden": "1000.00",
         "appliedDiscount": {
           "id": null,
           "expiryDate": null,
@@ -40,12 +42,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5034138",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+        "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 147,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -71,12 +75,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5034160",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 992,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -96,12 +102,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5034744",
-      "course": {"id": "5004590", "code": null, "name": "Archeology", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 99,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -127,12 +135,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5034760",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 199,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -158,12 +168,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5034827",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -189,12 +201,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5034864",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-05-12T14:00:10Z",
-      "end": "2017-09-08T16:00:10Z",
+      "start": {
+        "year": 2017,
+        "month": "MAY",
+        "monthValue": 5,
+        "dayOfMonth": 12,
+        "dayOfWeek": "FRIDAY",
+        "hour": 14,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 132,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "SEPTEMBER",
+        "monthValue": 9,
+        "dayOfMonth": 8,
+        "dayOfWeek": "FRIDAY",
+        "hour": 16,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 251,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -214,12 +252,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5034921",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -245,12 +285,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5034973",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-07-11T14:00:10Z",
-      "end": "2017-11-07T16:00:10Z",
+      "start": {
+        "year": 2017,
+        "month": "JULY",
+        "monthValue": 7,
+        "dayOfMonth": 11,
+        "dayOfWeek": "TUESDAY",
+        "hour": 14,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 192,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "NOVEMBER",
+        "monthValue": 11,
+        "dayOfMonth": 7,
+        "dayOfWeek": "TUESDAY",
+        "hour": 16,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 311,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -270,12 +336,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035011",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-06-11T14:00:10Z",
-      "end": "2017-10-08T16:00:10Z",
+      "start": {
+        "year": 2017,
+        "month": "JUNE",
+        "monthValue": 6,
+        "dayOfMonth": 11,
+        "dayOfWeek": "SUNDAY",
+        "hour": 14,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 162,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "OCTOBER",
+        "monthValue": 10,
+        "dayOfMonth": 8,
+        "dayOfWeek": "SUNDAY",
+        "hour": 16,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 281,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -295,12 +387,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035074",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -320,12 +414,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035140",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -345,12 +441,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035158",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -370,12 +468,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035235",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -395,12 +495,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035246",
-      "course": {"id": "5004590", "code": null, "name": "Archeology", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -426,12 +528,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035259",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 200,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -457,12 +561,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035296",
-      "course": {"id": "5004590", "code": null, "name": "Archeology", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -488,12 +594,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035330",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 200,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -519,12 +627,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035368",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 200,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -550,12 +660,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035401",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -575,12 +687,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035407",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 200,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -606,12 +720,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035429",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 200,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -637,12 +753,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035463",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-07-11T14:00:10Z",
-      "end": "2017-11-07T16:00:10Z",
+      "start": {
+        "year": 2017,
+        "month": "JULY",
+        "monthValue": 7,
+        "dayOfMonth": 11,
+        "dayOfWeek": "TUESDAY",
+        "hour": 14,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 192,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "NOVEMBER",
+        "monthValue": 11,
+        "dayOfMonth": 7,
+        "dayOfWeek": "TUESDAY",
+        "hour": 16,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 311,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -662,12 +804,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035530",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -687,12 +831,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035538",
-      "course": {"id": "5004590", "code": null, "name": "Archeology", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -718,12 +864,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035627",
-      "course": {"id": "5004590", "code": null, "name": "Archeology", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -749,12 +897,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035698",
-      "course": {"id": "5004588", "code": null, "name": "Payment Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2016-12-28T17:54:58Z",
-      "end": "2017-04-05T20:54:58Z",
+      "start": {
+        "year": 2016,
+        "month": "DECEMBER",
+        "monthValue": 12,
+        "dayOfMonth": 28,
+        "dayOfWeek": "WEDNESDAY",
+        "hour": 17,
+        "minute": 54,
+        "second": 58,
+        "nano": 0,
+        "dayOfYear": 363,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "APRIL",
+        "monthValue": 4,
+        "dayOfMonth": 5,
+        "dayOfWeek": "WEDNESDAY",
+        "hour": 20,
+        "minute": 54,
+        "second": 58,
+        "nano": 0,
+        "dayOfYear": 95,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 99,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -780,12 +954,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035705",
-      "course": {"id": "5004590", "code": null, "name": "Archeology", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -811,12 +987,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035706",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 200,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -842,12 +1020,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035715",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-08-10T14:00:10Z",
-      "end": "2017-12-07T16:00:10Z",
+      "start": {
+        "year": 2017,
+        "month": "AUGUST",
+        "monthValue": 8,
+        "dayOfMonth": 10,
+        "dayOfWeek": "THURSDAY",
+        "hour": 14,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 222,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "DECEMBER",
+        "monthValue": 12,
+        "dayOfMonth": 7,
+        "dayOfWeek": "THURSDAY",
+        "hour": 16,
+        "minute": 0,
+        "second": 10,
+        "nano": 0,
+        "dayOfYear": 341,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -867,12 +1071,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035766",
-      "course": {"id": "5004585", "code": null, "name": "Mega Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 200,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -898,12 +1104,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5035804",
-      "course": {"id": "5004587", "code": null, "name": "VET COurse 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -923,12 +1131,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036062",
-      "course": {"id": "5004588", "code": null, "name": "Payment Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2016-12-28T17:54:58Z",
-      "end": "2017-04-05T20:54:58Z",
+      "start": {
+        "year": 2016,
+        "month": "DECEMBER",
+        "monthValue": 12,
+        "dayOfMonth": 28,
+        "dayOfWeek": "WEDNESDAY",
+        "hour": 17,
+        "minute": 54,
+        "second": 58,
+        "nano": 0,
+        "dayOfYear": 363,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "APRIL",
+        "monthValue": 4,
+        "dayOfMonth": 5,
+        "dayOfWeek": "WEDNESDAY",
+        "hour": 20,
+        "minute": 54,
+        "second": 58,
+        "nano": 0,
+        "dayOfYear": 95,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -954,12 +1188,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036157",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-05-13T22:58:21Z",
-      "end": "2017-07-14T23:58:21Z",
+      "start": {
+        "year": 2017,
+        "month": "MAY",
+        "monthValue": 5,
+        "dayOfMonth": 13,
+        "dayOfWeek": "SATURDAY",
+        "hour": 22,
+        "minute": 58,
+        "second": 21,
+        "nano": 0,
+        "dayOfYear": 133,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "JULY",
+        "monthValue": 7,
+        "dayOfMonth": 14,
+        "dayOfWeek": "FRIDAY",
+        "hour": 23,
+        "minute": 58,
+        "second": 21,
+        "nano": 0,
+        "dayOfYear": 195,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -985,12 +1245,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036207",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-02-26T19:35:34Z",
-      "end": "2017-05-20T22:35:34Z",
+      "start": {
+        "year": 2017,
+        "month": "FEBRUARY",
+        "monthValue": 2,
+        "dayOfMonth": 26,
+        "dayOfWeek": "SUNDAY",
+        "hour": 19,
+        "minute": 35,
+        "second": 34,
+        "nano": 0,
+        "dayOfYear": 57,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "MAY",
+        "monthValue": 5,
+        "dayOfMonth": 20,
+        "dayOfWeek": "SATURDAY",
+        "hour": 22,
+        "minute": 35,
+        "second": 34,
+        "nano": 0,
+        "dayOfYear": 140,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1016,12 +1302,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036405",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1047,12 +1335,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036425",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1078,12 +1368,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036433",
-      "course": {"id": "5004588", "code": null, "name": "Payment Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-02-26T17:54:58Z",
-      "end": "2017-06-04T20:54:58Z",
+      "start": {
+        "year": 2017,
+        "month": "FEBRUARY",
+        "monthValue": 2,
+        "dayOfMonth": 26,
+        "dayOfWeek": "SUNDAY",
+        "hour": 17,
+        "minute": 54,
+        "second": 58,
+        "nano": 0,
+        "dayOfYear": 57,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "JUNE",
+        "monthValue": 6,
+        "dayOfMonth": 4,
+        "dayOfWeek": "SUNDAY",
+        "hour": 20,
+        "minute": 54,
+        "second": 58,
+        "nano": 0,
+        "dayOfYear": 155,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1109,12 +1425,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036460",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-02-12T22:58:21Z",
-      "end": "2017-04-15T23:58:21Z",
+      "start": {
+        "year": 2017,
+        "month": "FEBRUARY",
+        "monthValue": 2,
+        "dayOfMonth": 12,
+        "dayOfWeek": "SUNDAY",
+        "hour": 22,
+        "minute": 58,
+        "second": 21,
+        "nano": 0,
+        "dayOfYear": 43,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "APRIL",
+        "monthValue": 4,
+        "dayOfMonth": 15,
+        "dayOfWeek": "SATURDAY",
+        "hour": 23,
+        "minute": 58,
+        "second": 21,
+        "nano": 0,
+        "dayOfYear": 105,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1140,12 +1482,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036477",
-      "course": {"id": "5004588", "code": null, "name": "Payment Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-01-27T17:54:58Z",
-      "end": "2017-05-05T20:54:58Z",
+      "start": {
+        "year": 2017,
+        "month": "JANUARY",
+        "monthValue": 1,
+        "dayOfMonth": 27,
+        "dayOfWeek": "FRIDAY",
+        "hour": 17,
+        "minute": 54,
+        "second": 58,
+        "nano": 0,
+        "dayOfYear": 27,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "MAY",
+        "monthValue": 5,
+        "dayOfMonth": 5,
+        "dayOfWeek": "FRIDAY",
+        "hour": 20,
+        "minute": 54,
+        "second": 58,
+        "nano": 0,
+        "dayOfYear": 125,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1171,12 +1539,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036589",
-      "course": {"id": "5004588", "code": null, "name": "Payment Course 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-05-14T21:09:31Z",
-      "end": "2017-05-18T22:09:31Z",
+      "start": {
+        "year": 2017,
+        "month": "MAY",
+        "monthValue": 5,
+        "dayOfMonth": 14,
+        "dayOfWeek": "SUNDAY",
+        "hour": 21,
+        "minute": 9,
+        "second": 31,
+        "nano": 0,
+        "dayOfYear": 134,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "MAY",
+        "monthValue": 5,
+        "dayOfMonth": 18,
+        "dayOfWeek": "THURSDAY",
+        "hour": 22,
+        "minute": 9,
+        "second": 31,
+        "nano": 0,
+        "dayOfYear": 138,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1202,12 +1596,14 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036774",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
       "start": null,
       "end": null,
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1233,12 +1629,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036902",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-05-27T19:35:34Z",
-      "end": "2017-08-18T22:35:34Z",
+      "start": {
+        "year": 2017,
+        "month": "MAY",
+        "monthValue": 5,
+        "dayOfMonth": 27,
+        "dayOfWeek": "SATURDAY",
+        "hour": 19,
+        "minute": 35,
+        "second": 34,
+        "nano": 0,
+        "dayOfYear": 147,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "AUGUST",
+        "monthValue": 8,
+        "dayOfMonth": 18,
+        "dayOfWeek": "FRIDAY",
+        "hour": 22,
+        "minute": 35,
+        "second": 34,
+        "nano": 0,
+        "dayOfYear": 230,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1264,12 +1686,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5036974",
-      "course": {"id": "5004586", "code": null, "name": "Test Course", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-01-27T19:35:34Z",
-      "end": "2017-04-20T22:35:34Z",
+      "start": {
+        "year": 2017,
+        "month": "JANUARY",
+        "monthValue": 1,
+        "dayOfMonth": 27,
+        "dayOfWeek": "FRIDAY",
+        "hour": 19,
+        "minute": 35,
+        "second": 34,
+        "nano": 0,
+        "dayOfYear": 27,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "APRIL",
+        "monthValue": 4,
+        "dayOfMonth": 20,
+        "dayOfWeek": "THURSDAY",
+        "hour": 22,
+        "minute": 35,
+        "second": 34,
+        "nano": 0,
+        "dayOfYear": 110,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 100,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1295,12 +1743,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5037328",
-      "course": {"id": "5004760", "code": null, "name": "VET3", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2016-07-22T22:37:15Z",
-      "end": "2018-06-15T23:37:15Z",
+      "start": {
+        "year": 2016,
+        "month": "JULY",
+        "monthValue": 7,
+        "dayOfMonth": 22,
+        "dayOfWeek": "FRIDAY",
+        "hour": 22,
+        "minute": 37,
+        "second": 15,
+        "nano": 0,
+        "dayOfYear": 204,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2018,
+        "month": "JUNE",
+        "monthValue": 6,
+        "dayOfMonth": 15,
+        "dayOfWeek": "FRIDAY",
+        "hour": 23,
+        "minute": 37,
+        "second": 15,
+        "nano": 0,
+        "dayOfYear": 166,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 998,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1320,12 +1794,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5038511",
-      "course": {"id": "5004782", "code": null, "name": "UoC 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2015-12-01T21:13:11Z",
-      "end": "2018-05-01T21:13:11Z",
+      "start": {
+        "year": 2015,
+        "month": "DECEMBER",
+        "monthValue": 12,
+        "dayOfMonth": 1,
+        "dayOfWeek": "TUESDAY",
+        "hour": 21,
+        "minute": 13,
+        "second": 11,
+        "nano": 0,
+        "dayOfYear": 335,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2018,
+        "month": "MAY",
+        "monthValue": 5,
+        "dayOfMonth": 1,
+        "dayOfWeek": "TUESDAY",
+        "hour": 21,
+        "minute": 13,
+        "second": 11,
+        "nano": 0,
+        "dayOfYear": 121,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 998,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1345,12 +1845,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5038573",
-      "course": {"id": "5004783", "code": null, "name": "UOC 2", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-04-02T16:01:01Z",
-      "end": "2017-04-16T17:01:01Z",
+      "start": {
+        "year": 2017,
+        "month": "APRIL",
+        "monthValue": 4,
+        "dayOfMonth": 2,
+        "dayOfWeek": "SUNDAY",
+        "hour": 16,
+        "minute": 1,
+        "second": 1,
+        "nano": 0,
+        "dayOfYear": 92,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "APRIL",
+        "monthValue": 4,
+        "dayOfMonth": 16,
+        "dayOfWeek": "SUNDAY",
+        "hour": 17,
+        "minute": 1,
+        "second": 1,
+        "nano": 0,
+        "dayOfYear": 106,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
@@ -1370,12 +1896,38 @@ export class CourseClassesApiStub extends CourseClassesApi {
       }
     }, {
       "id": "5038575",
-      "course": {"id": "5004782", "code": null, "name": "UoC 1", "description": null},
+      "course": {
+        "id": "42",
+        "name": "Course Name"
+      },
       "code": null,
-      "start": "2017-04-03T16:02:50Z",
-      "end": "2017-04-17T17:02:50Z",
+      "start": {
+        "year": 2017,
+        "month": "APRIL",
+        "monthValue": 4,
+        "dayOfMonth": 3,
+        "dayOfWeek": "MONDAY",
+        "hour": 16,
+        "minute": 2,
+        "second": 50,
+        "nano": 0,
+        "dayOfYear": 93,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
+      "end": {
+        "year": 2017,
+        "month": "APRIL",
+        "monthValue": 4,
+        "dayOfMonth": 17,
+        "dayOfWeek": "MONDAY",
+        "hour": 17,
+        "minute": 2,
+        "second": 50,
+        "nano": 0,
+        "dayOfYear": 107,
+        "chronology": {"calendarType": "iso8601", "id": "ISO"}
+      },
       "hasAvailablePlaces": true,
-      "availableEnrolmentPlaces": 999,
       "isFinished": false,
       "isCancelled": false,
       "isAllowByApplication": false,
