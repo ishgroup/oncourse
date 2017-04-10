@@ -3,12 +3,14 @@ import {Promotion} from "../model/Promotion";
 import {CourseClass} from "../model/CourseClass";
 import {Product} from "../model/Product";
 import {Contact} from "../model/Contact";
+import {ValidationError} from "../model/ValidationError";
 
 export interface IshState {
   readonly cart: CartState;
   readonly popup: PopupState;
   readonly courses: CoursesState;
   readonly products: ProductsState;
+  readonly enrol: EnrolState;
 }
 
 export interface CartState {
@@ -16,7 +18,6 @@ export interface CartState {
   readonly courses: CourseClassCartState;
   readonly products: ProductCartState;
   readonly promotions: PromotionCartState;
-  readonly discounts: PromotionCartState; // replace with promotions
 }
 
 export interface PopupState {
@@ -51,7 +52,21 @@ export interface ProductCart extends Product {
 export interface PromotionCart extends Promotion {
 }
 
-interface Normalized<V> {
+//--- Enrol State
+export interface EnrolState {
+  payer: PayerState;
+}
+
+export interface PayerEntity extends Contact {
+
+}
+
+export interface PayerState {
+  entity: PayerEntity;
+  error: ValidationError;
+}
+
+export interface Normalized<V> {
   readonly entities: { [key: string]: V };
   readonly result: any;
 }

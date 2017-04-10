@@ -7,7 +7,6 @@ import {Root} from "./containers/Root";
 import {WindowService} from "./services/WindowService";
 import {CartRoot} from "./containers/CartRoot";
 import {Fees} from "./containers/Fees";
-import {defaultAxios} from "./services/DefaultHttpClient";
 import BuyButton from "./containers/BuyButton";
 import EnrolButton from "./containers/EnrolButton";
 import PopupContainer from "./containers/PopupContainer";

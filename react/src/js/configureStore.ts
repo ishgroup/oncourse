@@ -35,5 +35,8 @@ export function configureStore(): Store<IshState> {
     payload: []
   });
 
+
+  window["store"] = store;
+
   return store;
 }

@@ -3,22 +3,22 @@ import {TextField} from "../form/TextField";
 import {Field, FormProps} from "redux-form";
 import {CreateContactParams} from "../../../model/CreateContactParams";
 
-export const AddContactComponent = (props: AddContactComponentProps) => {
-  const {submitAddContact, values, errors, pristine, invalid, submitting} = props;
+export const AddPayerComponent = (props: AddPayerComponentProps) => {
+  const {submitAddPayer, values, errors, pristine, invalid, submitting} = props;
 
   return (
     <div>
       {showFormErrors(errors)}
 
       <div id="addstudent-block">
-        <h2>Add a student</h2>
+        <h2>Add a payer</h2>
         <div className="message">
-          <p>Please enter the details of a person enrolling, applying or making a purchase.</p>
+          <p>To continue, please enter the details of a business which will pay the invoice.</p>
         </div>
 
         <form onSubmit={(e) => {
           e.preventDefault();
-          submitAddContact(values);
+          submitAddPayer(values);
         }}>
           <div className="t-invisible">
             <input value="" name="t:formdata" type="hidden"/>
@@ -26,16 +26,9 @@ export const AddContactComponent = (props: AddContactComponentProps) => {
           <fieldset>
             <br/>
             <Field component={TextField}
-                   autocomplete="given-name"
-                   name="firstName"
-                   label="First name"
-                   type="text"
-                   required
-            />
-            <Field component={TextField}
-                   autocomplete="family-name"
-                   name="lastName"
-                   label="Last name"
+                   autocomplete="business-name"
+                   name="businessName"
+                   label="Business name"
                    type="text"
                    required
             />
@@ -47,11 +40,13 @@ export const AddContactComponent = (props: AddContactComponentProps) => {
                    required
             />
           </fieldset>
-          <p className="note">
-            <strong className="alert">Note</strong>: If you have been here before, please try to use the same email
-            address.
-          </p>
           <div className="form-controls">
+            <input value="Cancel"
+                   className="btn btn-primary"
+                   name="submitContact"
+                   type="submit"
+                   disabled={invalid || pristine || submitting}
+            />
             <input value="OK"
                    className="btn btn-primary"
                    name="submitContact"
@@ -81,14 +76,13 @@ function showFormErrors(errors = []) {
   );
 }
 
-export interface AddContactComponentProps extends FormProps<AddContactFormFields, AddContactComponentProps, {}> {
+export interface AddPayerComponentProps extends FormProps<AddPayerFormFields, AddPayerComponentProps, {}> {
   errors?: string[];
   values?: CreateContactParams;
-  submitAddContact?: (params: CreateContactParams) => void;
+  submitAddPayer?: (params: CreateContactParams) => void;
 }
 
-export interface AddContactFormFields {
-  firstName?: string;
-  lastName?: string;
+export interface AddPayerFormFields {
+  businessName?: string;
   email?: string;
 }

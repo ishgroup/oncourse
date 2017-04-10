@@ -89,7 +89,7 @@ class SummaryComponent extends React.Component<SummaryProps & ReactRouterContext
               </div>
             </div>
           </div>
-          <div className="clearboth"></div>
+          <div className="clearboth"/>
           <a onClick={() => router.push(Paths.payment)}
             id="proceedToPaymentEvent"
             className="btn btn-primary">
