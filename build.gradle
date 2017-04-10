@@ -8,8 +8,6 @@ buildscript {
 	}
 
 	repositories {
-		//mavenCentral()
-
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
@@ -140,7 +138,7 @@ configure (allprojects) {
 		ignoreFailures = true
 
 		jacoco {
-			enabled = project.hasProperty('jacoco-enabled') ? true : false;
+			enabled = project.hasProperty('jacoco-enabled')
 		}
 
 		// log each starting test

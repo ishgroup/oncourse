@@ -22,8 +22,8 @@ dependencies {
     compile 'io.milton:milton-server-ce:2.6.0.1'
     compile 'org.reflections:reflections:0.9.11'
 
-    compile 'com.google.javascript:closure-compiler:v20150315'
-    closureCompiler 'com.google.javascript:closure-compiler:v20150315'
+    compile 'com.google.javascript:closure-compiler:v20170218'
+    closureCompiler 'com.google.javascript:closure-compiler:v20170218'
 
     testCompile 'org.apache.tapestry:tapestry-test:5.2.6'
 
