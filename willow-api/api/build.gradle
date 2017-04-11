@@ -51,10 +51,9 @@ dependencies {
     //cache
     compile 'org.ehcache:ehcache:3.3.1'
 
-    compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
-    compile 'org.slf4j:log4j-over-slf4j:1.7.25'
     compile 'org.slf4j:slf4j-api:1.7.25'
-    
+    compile 'org.slf4j:log4j-over-slf4j:1.7.25'
+
     compile 'mysql:mysql-connector-java:5.1.38'
 
     testCompile 'junit:junit:4.12'
@@ -88,5 +87,17 @@ processResources.doLast {
 distZip {
     applicationDistribution.from( "${buildDir}/resources/VERSION" ) {
         into('.')
+    }
+}
+
+publishing {
+    // For deploying to our repo
+    publications {
+        executables(MavenPublication) {
+            artifact(distZip) {
+                classifier "executable"
+                extension "zip"
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ def projectsWithStaticResources = ['admin', 'enrol', 'portal', 'web', 'cms']
 allprojects.findAll { it.name in projectsWithStaticResources }.each { p ->
     configure(p) {
         //common tasks for combining java script and css
+        apply plugin: 'war'
         apply plugin: 'com.eriwen.gradle.js'
         apply plugin: 'com.github.robfletcher.compass'
 
