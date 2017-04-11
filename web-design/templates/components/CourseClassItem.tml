@@ -136,7 +136,8 @@
                                     <i class="event-tutor-icon"></i>
                                     <t:loop source="visibleTutorRoles" value="tutorRole" index="index">
                                         <span itemprop="performer" itemscope="itemscope" itemtype="http://schema.org/Person">
-                                            <a class="nyromodal" itemprop="mainEntityOfPage" href="https://${request.serverName}/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">
+                                            <meta content="https://${request.serverName}/tutor/${tutorRole.tutor.angelId}" itemprop="mainEntityOfPage" />
+                                            <a class="nyromodal" href="/tutor/${tutorRole.tutor.angelId}" title="View tutor profile">
                                                 <span itemprop="name">${tutorRole.tutor.fullName}</span>
                                             </a>
                                         </span>
