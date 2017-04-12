@@ -9,6 +9,7 @@ import org.apache.solr.common.params.CommonParams;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class SolrQueryBuilder {
     static final String DIGIT_PATTERN = "(\\d)+";
@@ -46,6 +47,7 @@ public class SolrQueryBuilder {
 
     static final String FILTER_TEMPLATE_collegeId = "+collegeId:%s +doctype:course end:[NOW TO *]";
     static final String FILTER_TEMPLATE_s = "(detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20)";
+    static final String EXTENED_FILTER_TEMPLATE_s = "%s || (%s)^100";
     static final String FILTER_TEMPLATE_price = "price:[* TO %s]";
     static final String FILTER_TEMPLATE_when = "when:%s";
     static final String FILTER_TEMPLATE_tagId = "tagId:%d";
@@ -211,7 +213,14 @@ public class SolrQueryBuilder {
     void appendFilterS(List<String> filters) {
         if (params.getS() != null) {
             String value = replaceSOLRSyntaxisCharacters(params.getS());
-            filters.add(String.format(FILTER_TEMPLATE_s, value, value, value, value));
+
+            String filter = String.format(FILTER_TEMPLATE_s, value, value, value, value);
+            
+            if (hasMoreThanOneWord(value)) {
+                String exactValue = String.format("\"%s\"", value);
+                filter = String.format(EXTENED_FILTER_TEMPLATE_s, filter, String.format(FILTER_TEMPLATE_s, exactValue, exactValue, exactValue, exactValue));
+            }
+            filters.add(filter);
         }
     }
 
@@ -353,6 +362,11 @@ public class SolrQueryBuilder {
         return original.replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, SPACE_REPLACEMENT_CHARACTER);
     }
 
+    private static boolean hasMoreThanOneWord(String text) {
+        StringTokenizer st = new StringTokenizer(text);
+        return st.countTokens() > 1;
+    } 
+    
     /**
      * The helper method appends filter not only for the tag also for its childrent.
      */
