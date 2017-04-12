@@ -28,7 +28,7 @@ plugins {
 	id 'maven'
 	id 'jacoco'
 	id 'maven-publish'
-	id 'application' apply false
+	id 'application'
 	id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
 	id 'com.github.ben-manes.versions' version '0.14.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
