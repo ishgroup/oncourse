@@ -138,6 +138,7 @@ old, aged, reclaimed
 query, question, challenge 
 study, attain, complete, undertake
 winery, vineyard
+childcare, child care
 
 
 # From CCE
