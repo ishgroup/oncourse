@@ -33,7 +33,7 @@ public class SolrQueryBuilderTest {
 			"end:[NOW TO *]&fq=%s" +
 			"&fq=%s" +
 			"&fq=%s&q={!boost b=$boostfunction v=$qq}" +
-			"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=((detail:(%s)^1 || tutor:(%s)^5 || course_code:(%s)^30 || name:(%s)^20) " +
+			"&boostfunction=recip(max(ms(startDate,NOW-1YEAR/DAY),0),1.15e-8,500,500)&qq=(%s " +
 			"AND price:[* TO 1999.99] AND when:Monday AND when:TIME AND class_start:[2012-01-01T00:00:00Z TO 2012-01-01T00:00:00Z] AND siteId:1000)" +
 			"&sort=score desc,startDate asc,name asc";
 	private static final String EXPECTED_AFTER_REPLACEMENT_S_PARAM = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19";
@@ -173,9 +173,15 @@ public class SolrQueryBuilderTest {
 
 		solrQueryBuilder.appendFilterS(filters);
 		assertEquals("Test filters.size for filter SearchParam.s", 1, filters.size());
-		assertEquals("Test filters.get(0) for filter SearchParam.s", String.format(SolrQueryBuilder.FILTER_TEMPLATE_s,
-				EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM,
-				EXPECTED_AFTER_REPLACEMENT_S_PARAM), filters.get(0));
+
+		String fullValue = String.format("\"%s\"", EXPECTED_AFTER_REPLACEMENT_S_PARAM);
+		String expectedFilterForS = String.format(SolrQueryBuilder.EXTENED_FILTER_TEMPLATE_s,
+				String.format(SolrQueryBuilder.FILTER_TEMPLATE_s,
+						EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM, EXPECTED_AFTER_REPLACEMENT_S_PARAM),
+				String.format(SolrQueryBuilder.FILTER_TEMPLATE_s,
+						fullValue, fullValue, fullValue, fullValue));
+
+		assertEquals("Test filters.get(0) for filter SearchParam.s", expectedFilterForS, filters.get(0));
 
 		filters.clear();
 		solrQueryBuilder.appendFilterPrice(filters);
@@ -210,10 +216,7 @@ public class SolrQueryBuilderTest {
 				tagQueries.get(0),
 				tagQueries.get(1),
 				tagQueries.get(2),
-				EXPECTED_AFTER_REPLACEMENT_S_PARAM,
-				EXPECTED_AFTER_REPLACEMENT_S_PARAM,
-				EXPECTED_AFTER_REPLACEMENT_S_PARAM,
-				EXPECTED_AFTER_REPLACEMENT_S_PARAM);
+				expectedFilterForS);
 		assertEquals("Query parameters", expectedValue, value);
 
 		//check that if tag1 or tag2 not specified everything works too
