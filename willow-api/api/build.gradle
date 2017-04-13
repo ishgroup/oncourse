@@ -69,6 +69,12 @@ mainClassName = 'ish.oncourse.willow.WillowApp'
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
 
+test{
+    systemProperty "oncourse.jdbc.url", System.getProperty("oncourse.jdbc.url")
+    systemProperty "oncourse.jdbc.user", System.getProperty("oncourse.jdbc.user")
+    systemProperty "oncourse.jdbc.password", System.getProperty("oncourse.jdbc.password")
+}
+
 compileGroovy {
     groovyOptions.configurationScript = file("config.groovy")
 }
