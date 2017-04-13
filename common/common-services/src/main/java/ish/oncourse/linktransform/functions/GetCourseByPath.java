@@ -1,15 +1,10 @@
 package ish.oncourse.linktransform.functions;
 
 import ish.oncourse.model.*;
-import ish.oncourse.services.course.functions.ApplyCourseCacheSettings;
 import ish.oncourse.services.courseclass.functions.GetCourseByCode;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.List;
 
 /**
  * Created by pavel on 3/27/17.
