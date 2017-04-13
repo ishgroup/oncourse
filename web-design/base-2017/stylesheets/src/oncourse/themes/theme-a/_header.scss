@@ -95,11 +95,16 @@
 		}
 	}
 
-	#headerToolbar #search_box #advanced_search .advanced-search-form {
-		#adv_search_time, #adv_search_day {
-			.checkbox>input {
-				width: 20px;
-				height: 20px;
+	#headerToolbar #search_box {
+		.advanced-search-button .show-advanced-search span {
+			line-height: 1;
+		}
+		#advanced_search .advanced-search-form {
+			#adv_search_time, #adv_search_day {
+				.checkbox>input {
+					width: 20px;
+					height: 20px;
+				}
 			}
 		}
 	}
