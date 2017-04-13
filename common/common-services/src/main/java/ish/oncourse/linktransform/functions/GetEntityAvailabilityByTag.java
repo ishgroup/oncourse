@@ -50,8 +50,9 @@ public class GetEntityAvailabilityByTag {
         if(webSite.getCoursesRootTagName() == null || webSite.getCoursesRootTagName().equals(StringUtils.EMPTY)){
             return true;
         }
-        // if entity belongs to one of taggable types
-        if (isTaggableEntity(entity)) {
+        Tag webSiteRootTag = GetTagByPath.valueOf(context, webSite, webSite.getCoursesRootTagName()).get();
+        // if entity belongs to one of taggable types and tags contains tag with name webSite.rootTagName
+        if (isTaggableEntity(entity) && webSiteRootTag != null) {
 
             List<Tag> attachedTags = null;
             ObjectSelect query = ObjectSelect.query(Tag.class).and(getQualifier(webSite.getCollege(), entity));
@@ -63,18 +64,19 @@ public class GetEntityAvailabilityByTag {
                 logger.error("Query resulted in Exception thrown. Query: {}", query, e);
                 //TODO: Should the exception be rethrown to indicate error condition to the client code?
             }
-            boolean entityAccessibility = false;
             if (attachedTags != null && !attachedTags.isEmpty()) {
                 for (Tag tag : attachedTags) {
-                    if (tag.getRoot().getName().equals(webSite.getCoursesRootTagName())) {
-                        return true;
-                    }
+                    do {
+                        if (tag.getId() == webSiteRootTag.getId()) {
+                            return true;
+                        }
+                        tag = tag.getParent();
+                    } while (tag != null);
                 }
             }
         }
         return false;
     }
-
 
     /**
      * Expression which select all tags assigned to entity in scope of college
