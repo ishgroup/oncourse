@@ -105,7 +105,6 @@ allprojects {
 			testCompile 'junit:junit:4.12'
         }
 
-
         deployerJars 'org.apache.maven.wagon:wagon-http:2.8'
 	}
 
@@ -150,8 +149,7 @@ allprojects {
 		}
 
 		// log each starting test
-		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
-		}
+		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor) }
 	}
 
 	group = 'ish.oncourse.willow'
