@@ -72,7 +72,7 @@ public class GetTagByPath {
             return null;
         }
         for (; i < tagNames.length; i++) {
-            Tag tag = rootTag.getAnyChildWithName(tagNames[i]);
+            Tag tag = getChildWithName(rootTag, tagNames[i]);
             if (tag == null) {
                 return null;
             } else {
@@ -84,15 +84,25 @@ public class GetTagByPath {
         return rootTag;
     }
 
+    private Tag getChildWithName(Tag tag, String childName){
+        List<Tag> tags = findByQualifier(context,
+                Tag.COLLEGE.eq(webSite.getCollege())
+                        .andExp(Tag.PARENT.eq(tag))
+                        .andExp(Tag.NAME.eq(childName)));
+        return (tags.size() > 0) ? tags.get(0) : null;
+    }
+
     private Tag getSubjectsTag(ObjectContext context, WebSite webSite) {
-        List<Tag> tags = findByQualifier(context, Tag.COLLEGE.eq(webSite.getCollege()).andExp(Tag.NAME.eq(Tag.SUBJECTS_TAG_NAME)));
+        List<Tag> tags = findByQualifier(context,
+                Tag.COLLEGE.eq(webSite.getCollege()).andExp(Tag.NAME.eq(Tag.SUBJECTS_TAG_NAME)));
         return (tags.size() > 0) ? tags.get(0) : null;
     }
 
     private Tag getTagGroupByName(ObjectContext context, WebSite webSite, String name) {
-        final List<Tag> tags = findByQualifier(context, Tag.COLLEGE.eq(webSite.getCollege())
-                .andExp(Tag.NAME.likeIgnoreCase(name))
-                .andExp(Tag.IS_TAG_GROUP.eq(Boolean.TRUE)));
+        final List<Tag> tags = findByQualifier(context,
+                Tag.COLLEGE.eq(webSite.getCollege())
+                    .andExp(Tag.NAME.likeIgnoreCase(name))
+                    .andExp(Tag.IS_TAG_GROUP.eq(Boolean.TRUE)));
         return (tags.size() > 0) ? tags.get(0) : null;
     }
 
