@@ -4,6 +4,7 @@
 package ish.oncourse.webservices.replication.services;
 
 
+import ish.common.types.AttendanceType;
 import ish.common.types.ContactDuplicateStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.webservices.util.GenericDeletedStub;
@@ -13,10 +14,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class MergeProcessor {
 
@@ -191,9 +189,9 @@ public class MergeProcessor {
 			for (Application application : new ArrayList<>(studentToDelet.getApplications())) {
 				application.setStudent(studentToUpdate);
 			}
-			for (Attendance attendance : new ArrayList<>( studentToDelet.getAttendances())) {
-				attendance.setStudent(studentToUpdate);
-			}
+
+			mergeAttendances(studentToUpdate, studentToDelet);
+
 			for (Certificate certificate : new ArrayList<>(studentToDelet.getCertificates())) {
 				certificate.setStudent(studentToUpdate);
 			}
@@ -215,6 +213,49 @@ public class MergeProcessor {
 			mergeDocumentRelation(STUDENT_IDENTIFIER, contactToDelete.getId(), contactToUpdate.getId(), contactToUpdate.getAngelId());
 			context.deleteObject(studentToDelet);
 		}
+	}
+
+	private void mergeAttendances(Student studentToUpdate, Student studentToDelete) {
+		for(Attendance aToDel : studentToDelete.getAttendances()){
+			Attendance aToUpd = null;
+			for (Attendance a: studentToUpdate.getAttendances()){
+				if (a.getSession().getId() == aToDel.getSession().getId()){
+					aToUpd = a;
+					break;
+				}
+			}
+			if (aToUpd != null){
+				if (compare(aToUpd, aToDel) == 1){
+					copyAttendanceToUpdatable(aToUpd, aToDel);
+				}
+				context.deleteObject(aToDel);
+			} else {
+				aToDel.setStudent(studentToUpdate);
+			}
+		}
+	}
+
+	//if a < b returns 1, a > b returns -1, a == b returns 0
+	private int compare(Attendance a, Attendance b) {
+		Integer[] v = new Integer[]{0, 3, 2, 4, 1};
+		List<Integer> compareVector = Arrays.asList(v);
+		if (!a.equals(b)) {
+			if (compareVector.indexOf(a.getAttendanceType()) < compareVector.indexOf(b.getAttendanceType()))
+				return 1;
+			else
+				return -1;
+		}
+		return 0;
+	}
+
+	private void copyAttendanceToUpdatable(Attendance upd, Attendance del) {
+		upd.setAttendanceType(del.getAttendanceType());
+		upd.setNote(del.getNote());
+		upd.setDurationMinutes(del.getDurationMinutes());
+		upd.setMarkedByTutor(del.getMarkedByTutor());
+		upd.setMarkedByTutorDate(del.getMarkedByTutorDate());
+		upd.setAngelId(del.getAngelId());
+		upd.setCreated(del.getCreated());
 	}
 
 	public GenericReplicationStub getContactDuplicateStub() {
