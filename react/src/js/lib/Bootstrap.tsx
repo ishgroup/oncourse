@@ -44,25 +44,29 @@ export class Bootstrap {
         const {Component, props} = this.components[cid];
 
         forEach(containers, (container: HTMLElement) => {
-          if (container.childElementCount != 0) {
-            Logger.log(new LogMessage(Level.DEBUG, "Container already has a children, that mean that React will not" +
-              " render this tag."));
-            return
+          try {
+            if (container.childElementCount != 0) {
+              Logger.log(new LogMessage(Level.DEBUG, "Container already has a children, that mean that React will not" +
+                  " render this tag."));
+              return
+            }
+
+            let realProps = {};
+
+            Object.keys(props).forEach((prop) => {
+              const value = container.getAttribute(`data-prop-${camelToDashCase(prop)}`);
+              realProps[prop] = Bootstrap.prepareProp(value, props[prop]);
+            });
+
+            render(
+                <Provider store={this.store}>
+                  <Component {...realProps}/>
+                </Provider>,
+                container
+            );
+          } catch (e) {
+            Logger.log(new LogMessage(Level.ERROR, `Component with cid=${cid} failed to instantiate.`, [e]))
           }
-
-          let realProps = {};
-
-          Object.keys(props).forEach((prop) => {
-            const value = container.getAttribute(`data-prop-${camelToDashCase(prop)}`);
-            realProps[prop] = Bootstrap.prepareProp(value, props[prop]);
-          });
-
-          render(
-            <Provider store={this.store}>
-              <Component {...realProps}/>
-            </Provider>,
-            container
-          );
         });
       });
     } catch (e) {

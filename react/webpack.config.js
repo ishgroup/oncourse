@@ -67,10 +67,7 @@ Build started with following configuration:
         use: [{
           loader: 'style-loader'
         }, {
-          loader: 'css-loader',
-          options: {
-            modules: true
-          }
+          loader: 'css-loader'
         }]
       }]
     },
@@ -124,7 +121,6 @@ function createListOfPlugins({NODE_ENV, API_ROOT}) {
       moduleResolution: 'node',
       module: 'es6'
     }, './src/js/'));
-
   }
 
   return plugins;
