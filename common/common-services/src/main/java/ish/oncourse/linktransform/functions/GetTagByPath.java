@@ -72,7 +72,7 @@ public class GetTagByPath {
             return null;
         }
         for (; i < tagNames.length; i++) {
-            Tag tag = rootTag.getChildWithName(tagNames[i]);
+            Tag tag = rootTag.getAnyChildWithName(tagNames[i]);
             if (tag == null) {
                 return null;
             } else {

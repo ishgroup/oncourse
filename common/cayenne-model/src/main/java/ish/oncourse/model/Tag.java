@@ -23,17 +23,18 @@ public class Tag extends _Tag implements Queueable {
 		return QueueableObjectUtils.getId(this);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Tag> getWebVisibleTags() {
+	private List<Tag> getTags(boolean showOnlyWebVisible){
 		List<Tag> visibleTags;
-		
+
 		if (getObjectId().isTemporary()) {
-			visibleTags = ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags());
+			visibleTags = showOnlyWebVisible ? ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags()) : getTags();
 		}
 		else {
 			SelectQuery  q = new SelectQuery(Tag.class);
 			q.andQualifier(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, this));
-			q.andQualifier(ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true));
+			if (showOnlyWebVisible) {
+				q.andQualifier(ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true));
+			}
 			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
 			q.setCacheGroups(Tag.class.getSimpleName());
 			visibleTags = getObjectContext().performQuery(q);
@@ -52,12 +53,33 @@ public class Tag extends _Tag implements Queueable {
 		return visibleTags;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Tag> getWebVisibleTags() {
+		return getTags(true);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Tag> getAnyTags() {
+		return getTags(false);
+	}
+
 	public boolean hasChildWithName(String name) {
 		return getChildWithName(name) != null;
 	}
 
 	public Tag getChildWithName(String name) {
 		for (Tag tag : getWebVisibleTags()) {
+			if (((tag.getShortName() != null) && tag.getShortName().equalsIgnoreCase(name))
+					|| ((tag.getName() != null) && tag.getName().equalsIgnoreCase(name))) {
+				return tag;
+			}
+		}
+
+		return null;
+	}
+
+	public Tag getAnyChildWithName(String name) {
+		for (Tag tag : getAnyTags()) {
 			if (((tag.getShortName() != null) && tag.getShortName().equalsIgnoreCase(name))
 					|| ((tag.getName() != null) && tag.getName().equalsIgnoreCase(name))) {
 				return tag;

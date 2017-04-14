@@ -55,8 +55,8 @@ public class GetEntityAvailabilityByTag {
         return haveRelationAnyToRoot(getTags(webSite, entity), rootTag);
     }
 
-    public boolean haveRelationAnyToRoot(List<Tag> tags, Tag rootTag) {
-        if (tags != null && !tags.isEmpty()) {
+    protected boolean haveRelationAnyToRoot(List<Tag> tags, Tag rootTag) {
+        if (rootTag != null && tags != null && !tags.isEmpty()) {
             for (Tag tag : tags) {
                 do {
                     if (tag.getId() == rootTag.getId()) {
@@ -69,10 +69,10 @@ public class GetEntityAvailabilityByTag {
         return false;
     }
 
-    protected List<Tag> getTags(WebSite webSite, Queueable entity){
+    protected List<Tag> getTags(WebSite webSite, Queueable entity) {
         Expression qualifier = Tag.COLLEGE.eq(webSite.getCollege())
                 .andExp(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_IDENTIFIER).eq(entity.getClass().getSimpleName())
-                .andExp(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId())));
+                        .andExp(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_WILLOW_ID).eq(entity.getId())));
 
         ObjectSelect query = ObjectSelect.query(Tag.class).and(qualifier);
         query.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, entity.getClass().getSimpleName());

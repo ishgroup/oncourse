@@ -13,7 +13,7 @@
 
     <Tag isWebVisible="1" name="Department" id="62296" collegeId="11612" isTagGroup="1" nodeType="1" weighting="1" created="2017-01-24T05:53:04Z" modified="2017-02-22T11:30:14Z" shortName="Disability Justice Project" detail="det" detail_textile="detTex"/>
 
-    <Tag isWebVisible="1" name="Corporate" id="62393" parentId="62296" collegeId="11612" isTagGroup="0" nodeType="1" weighting="4" created="2017-02-16T10:38:37Z" modified="2017-02-21T08:37:14Z" detail="Disability Justice Project Leaders' Forum events are by invite only." detail_textile="Disability Justice Project Leaders' Forum events are by invite only."/>
+    <Tag isWebVisible="0" name="Corporate" id="62393" parentId="62296" collegeId="11612" isTagGroup="0" nodeType="1" weighting="4" created="2017-02-16T10:38:37Z" modified="2017-02-21T08:37:14Z" detail="Disability Justice Project Leaders' Forum events are by invite only." detail_textile="Disability Justice Project Leaders' Forum events are by invite only."/>
 
     <Tag isWebVisible="1" name="CP-Public" id="62394" parentId="62393" collegeId="11612" isTagGroup="0" nodeType="1" weighting="4" created="2017-02-16T10:38:37Z" modified="2017-02-21T08:37:14Z" />
 
