@@ -94,16 +94,17 @@ allprojects {
 
 		//willow-api: projects don't use any dependencies from the main project
         if (!project.parent?.name?.equals("willow-api")) {
-			compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
 			compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
 			compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
 			compile "org.apache.logging.log4j:log4j-web:$log4j2Version"
 			compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+		}
 
-			testCompile 'org.mockito:mockito-all:1.10.19'
-			testCompile 'org.dbunit:dbunit:2.4.8'
-			testCompile 'junit:junit:4.12'
-        }
+		compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
+
+		testCompile 'org.mockito:mockito-all:1.10.19'
+		testCompile 'org.dbunit:dbunit:2.4.8'
+		testCompile 'junit:junit:4.12'
 
         deployerJars 'org.apache.maven.wagon:wagon-http:2.8'
 	}
