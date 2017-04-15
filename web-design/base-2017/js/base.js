@@ -1,6 +1,6 @@
 /*
   This is a core javascript file which will be built into your website.
-  
+
   All the require statements below will import further javascript, even though
   they look like comments.
 
@@ -14,10 +14,10 @@
 
 
 /*
-  
+
   Another javascript bundle named dynamic.js will be served to all users before all.js is loaded.
   It contains:
-  
+
   classnames 2.2.5
   react 0.14.8
   react-dom 0.14.8
@@ -25,8 +25,6 @@
   redux 3.6.0
   redux-thunk 2.1.0
   jquery 3.1.1
-  vex-3.0.0.js
-  vex.dialog-3.0.0.js
 
   It also contains onCourse code for driving the shopping basket and enrolment application.
 
@@ -41,22 +39,24 @@
 
 //= require main.js
 
-
-
 //= require vendor/assets.min.js
+
+/*
+  Additional vendor libraries which might be useful in your site
+*/
+
+//= require deprecated/jquery-migrate-3.0.0.js
+//= require deprecated/jquery.browser.js
+//= require deprecated/jquery-ui-1.9.1.min.js
 
 
 /*
   These files are due to be removed once the CMS application is rebuilt in 2017
 */
 
-//= require deprecated/jquery.nyroModal-2.0.0.min.js
 //= require deprecated/jquery.utils.js
 //= require deprecated/jquery.validate.min.js
 //= require deprecated/additional-methods.min.js
-//= require deprecated/jquery-migrate-3.0.0.js
-//= require deprecated/jquery.browser.js
-//= require deprecated/jquery-ui-1.9.1.min.js
 
 
 /*
@@ -64,8 +64,8 @@
   Don't remove them or the application may break
 */
 
-//= require gmap.js
 //= require application.js
+//= require gmap.js
 //= require search.js
 //= require shortlist.js
 //= require forms.js

@@ -61,7 +61,7 @@ function submitTellAFriend() {
 		url: "/tellAFriend",
 		data: dataString,
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
-		  //alert("Error: " + textStatus);
+			//alert("Error: " + textStatus);
 		},
 		success: function(msg) {
 		 // alert("Success: " + msg);
@@ -316,15 +316,38 @@ function deleteCookie( name, path, domain ) {
 		// open an inline lightbox using ajax content fetched from the link.
 		//$j('.nyromodal').nyroModal( {debug:false } );
 
+		var _modalCalled = false;
 		$j(document).on('click', '.nyromodal', function(e) {
 			e.preventDefault();
 			var href = $j(this).attr('href');
-			if(href != '') {
-				$j.nmManual(href);
+
+			if(!_modalCalled) {
+				_modalCalled = true;
+				$j.ajax({
+					url: href,
+					type: 'GET',
+					methodType: 'text',
+					success: function(data) {
+						if(data !== undefined) {
+							var closeFn = Ish.modal.openModal({
+								content: data,
+								animation: 'flip',
+								duration: 600,
+								width: 1000,
+								height: 400/*,
+								onClose: function() {
+									alert("close")
+								}*/
+							});
+							_modalCalled = false;
+						}
+					},
+					error: function(error) {
+						_modalCalled = false;
+					}
+				});
 			}
 		});
-
-		initNyromodal();
 
 		// hide the location map after it has been filled by Google (above), then reveal it when its control is clicked.
 		$j('.collapsedLocationMap').hide();
@@ -357,8 +380,17 @@ function deleteCookie( name, path, domain ) {
 			e.preventDefault();
 			e.stopPropagation();
 			var id = '#sessions_for_class_'+$j(this).parents('.classItem').attr('data-classid');
-			$j.nmObj({sizes: { minW: 940, minH: 580 }});
-			$j.nmData($j(id).html(), {autoSizable: true});
+
+			var closeFn = Ish.modal.openModal({
+				content: $j(id).html(),
+				animation: 'flip',
+				duration: 600,
+				width: 1000,
+				height: 400/*,
+				onClose: function() {
+					alert("close")
+				}*/
+			});
 		});
 
 		$j(document).on('click', '#overlay, #timelineClose', function(e) {
@@ -368,67 +400,67 @@ function deleteCookie( name, path, domain ) {
 		});
 
 
-	  // Add HTML5 placeholder in ie8
-	  $j(".ie8 input[type='text'], .ie9 input[type='text']").each(function() {
-	  	if ($j(this).val() == "" && $j(this).attr("placeholder") != "") {
-	  		$j(this).val($j(this).attr("placeholder"));
-	  		$j(this).on('focus', function() {
-	  			if ($j(this).val() == $j(this).attr("placeholder")) $j(this).val("");
-	  		});
-	  		$j(this).on('blur', function() {
-	  			if ($j(this).val() == "") $j(this).val($j(this).attr("placeholder"));
-	  		});
-	  	}
-	  });
+		// Add HTML5 placeholder in ie8
+		$j(".ie8 input[type='text'], .ie9 input[type='text']").each(function() {
+			if ($j(this).val() == "" && $j(this).attr("placeholder") != "") {
+				$j(this).val($j(this).attr("placeholder"));
+				$j(this).on('focus', function() {
+					if ($j(this).val() == $j(this).attr("placeholder")) $j(this).val("");
+				});
+				$j(this).on('blur', function() {
+					if ($j(this).val() == "") $j(this).val($j(this).attr("placeholder"));
+				});
+			}
+		});
 
 
-	  var _processing = false;
-	  $j(document).on('click', '#showMoreCourses', function() {
-	  	$j('#showMore').append("<div class='message'></div>");
-	  	var link = this.href;
-	  	_processing = true;
+		var _processing = false;
+		$j(document).on('click', '#showMoreCourses', function() {
+			$j('#showMore').append("<div class='message'></div>");
+			var link = this.href;
+			_processing = true;
 
-	  	$j.ajax({
-	  		type: "GET",
-	  		url:  link,
-	  		success: function(msg) {
-	  			$j('#showMore').replaceWith(msg);
+			$j.ajax({
+				type: "GET",
+				url:  link,
+				success: function(msg) {
+					$j('#showMore').replaceWith(msg);
 
-	  			// Since this call possibly returns react markers,
-				// we should told react about it.
-                window.Ish.react.bootstrap();
-                if($j.trim($j('#sitesParameter').text()) != '') {
-	  				$j.ajax({
-	  					type: "GET",
-	  					url:  "/coursesSitesMap?sites="+$j('#sitesParameter').text(),
-	  					success: function(msg1) {
-	  						$j('#sitesMap').replaceWith(msg1);
-	  						_processing = false;
-	  					}
-	  				});
-	  			}
-	  			else {
-	  				_processing = false;
-	  				clearInterval(loadCourses);
-	  			}
-	  		}
-	  	});
-	  	initNyromodal();
+					// Since this call possibly returns react markers,
+					// we should told react about it.
+					window.Ish.react.bootstrap();
+					if($j.trim($j('#sitesParameter').text()) != '') {
+						$j.ajax({
+							type: "GET",
+							url:  "/coursesSitesMap?sites="+$j('#sitesParameter').text(),
+							success: function(msg1) {
+								$j('#sitesMap').replaceWith(msg1);
+								_processing = false;
+							}
+						});
+					}
+					else {
+						_processing = false;
+						clearInterval(loadCourses);
+					}
+				}
+			});
+			//initNyromodal();
 			//initOtherClassesControl();
 			return false;
 		});
 
-	  $j(window).scroll(function() {
-	  	if(($j('#content').innerHeight() + $j("#showMore").height()) < ($j(window).scrollTop() + $j(window).height() - $j('#header').height()) && _processing == false) {
-	  		$j('#showMoreCourses').click();
-	  	}
-	  });
+		$j(window).scroll(function() {
+			if(($j('#content').innerHeight() + $j("#showMore").height()) < ($j(window).scrollTop() + $j(window).height() - $j('#header').height()) && _processing == false) {
+				$j('#showMoreCourses').click();
+			}
+		});
 
-	  function IpadScroll() {
-	  	if(($j('#content').innerHeight() + $j("#showMore").height()) < ($j(window).scrollTop() + $j(window).height() + $j('#header').height()) && _processing == false) {
-	  		$j('#showMoreCourses').click();
-	  	}
-	  }
+		function IpadScroll() {
+			if(($j('#content').innerHeight() + $j("#showMore").height()) < ($j(window).scrollTop() + $j(window).height() + $j('#header').height()) && _processing == false) {
+				$j('#showMoreCourses').click();
+			}
+		}
 
 		/*if( /iPhone|iPad/i.test(navigator.userAgent)) {
 			document.addEventListener("scroll", IpadScroll, false);
@@ -498,17 +530,17 @@ function initNyromodal(){
 
 function initOtherClassesControl(){
 
-  // display other location classes
-  $j(document).on('click', '.other-classes-control', function() {
-  	$j(this).hide();
-  	$j(this).nextAll('.other-classes').slideToggle(400);
-  });
+	// display other location classes
+	$j(document).on('click', '.other-classes-control', function() {
+		$j(this).hide();
+		$j(this).nextAll('.other-classes').slideToggle(400);
+	});
 
-  // display hidden cancelled or full classes
-  $j(document).on('click', '.full-classes-control', function() {
-  	$j(this).hide();
-  	$j(this).nextAll('.full-classes').slideToggle(400);
-  });
+	// display hidden cancelled or full classes
+	$j(document).on('click', '.full-classes-control', function() {
+		$j(this).hide();
+		$j(this).nextAll('.full-classes').slideToggle(400);
+	});
 }
 
 
@@ -520,34 +552,34 @@ function initOtherClassesControl(){
 // 		rel = 'session' or 'class' determines which will be fetched and displayed
 // 		timeZone = the time zone that will be used to position the classes
 /*function displayTimeline(link) {
-    var xmldata = link.href;
-    var reldata = String(link.getAttribute('rel'));
+		var xmldata = link.href;
+		var reldata = String(link.getAttribute('rel'));
 
-    var arrayPageSize = getPageSize();
-    $j('overlay').style.width = arrayPageSize[0] + 'px';
-    $j('overlay').style.height = arrayPageSize[1] + 'px';
-    var arrayPageScroll = getPageScroll();
-    var padding = 10; // $j('timeline-wrap').style.padding; // hmm doesn't seem to be available
-    $j('timeline-wrap').style.top = (arrayPageScroll[1] + (padding * 4)) + 'px';
-    $j('timeline-wrap').style.bottom = '0px';
-    $j('timeline-wrap').style.margin = '0px 0pt 0pt -375px';
-    //--------------------------------------------------------
+		var arrayPageSize = getPageSize();
+		$j('overlay').style.width = arrayPageSize[0] + 'px';
+		$j('overlay').style.height = arrayPageSize[1] + 'px';
+		var arrayPageScroll = getPageScroll();
+		var padding = 10; // $j('timeline-wrap').style.padding; // hmm doesn't seem to be available
+		$j('timeline-wrap').style.top = (arrayPageScroll[1] + (padding * 4)) + 'px';
+		$j('timeline-wrap').style.bottom = '0px';
+		$j('timeline-wrap').style.margin = '0px 0pt 0pt -375px';
+		//--------------------------------------------------------
 
-    new Effect.Appear('overlay', { duration: 0.2, from: 0.0, to: 0.4,
-        afterFinish: function() {
-            $j('timeline-wrap').style.visibility = 'visible';
-        }
-    });
+		new Effect.Appear('overlay', { duration: 0.2, from: 0.0, to: 0.4,
+				afterFinish: function() {
+						$j('timeline-wrap').style.visibility = 'visible';
+				}
+		});
 
-    // Sept 2009 - add table of sessions underneath the timeline bands in the lightbox
-    if (reldata == 'session') {
-        // copy the session table contents from the hidden div in the CourseClassListItem and display below bands
-        var classID = '#sessions_for_class_' + xmldata.substring(xmldata.indexOf('?ids=') + 5);
+		// Sept 2009 - add table of sessions underneath the timeline bands in the lightbox
+		if (reldata == 'session') {
+				// copy the session table contents from the hidden div in the CourseClassListItem and display below bands
+				var classID = '#sessions_for_class_' + xmldata.substring(xmldata.indexOf('?ids=') + 5);
 		$j('#timeline').html("");
-        $j('#timeline').append('<div class="timeline_stuffer"/>&nbsp;</div><div class="sessions_in_timeline" style="overflow:auto; height:387px;">' + $j(classID).html() + '</div>');
-    }
-    return false;
-  }*/
+				$j('#timeline').append('<div class="timeline_stuffer"/>&nbsp;</div><div class="sessions_in_timeline" style="overflow:auto; height:387px;">' + $j(classID).html() + '</div>');
+		}
+		return false;
+	}*/
 
 // Timeline support ----------------------
 
@@ -560,16 +592,16 @@ function getPageScroll() {
 	if (self.pageYOffset) {
 		yScroll = self.pageYOffset;
 		xScroll = self.pageXOffset;
-  } else if (document.documentElement && document.documentElement.scrollTop) {     // Explorer 6 Strict
-  	yScroll = document.documentElement.scrollTop;
-  	xScroll = document.documentElement.scrollLeft;
-  } else if (document.body) {// all other Explorers
-  	yScroll = document.body.scrollTop;
-  	xScroll = document.body.scrollLeft;
-  }
+	} else if (document.documentElement && document.documentElement.scrollTop) {     // Explorer 6 Strict
+		yScroll = document.documentElement.scrollTop;
+		xScroll = document.documentElement.scrollLeft;
+	} else if (document.body) {// all other Explorers
+		yScroll = document.body.scrollTop;
+		xScroll = document.body.scrollLeft;
+	}
 
-  arrayPageScroll = new Array(xScroll, yScroll)
-  return arrayPageScroll;
+	arrayPageScroll = new Array(xScroll, yScroll)
+	return arrayPageScroll;
 }
 
 function getPageSize() {
@@ -579,50 +611,50 @@ function getPageSize() {
 	if (window.innerHeight && window.scrollMaxY) {
 		xScroll = window.innerWidth + window.scrollMaxX;
 		yScroll = window.innerHeight + window.scrollMaxY;
-  } else if (document.body.scrollHeight > document.body.offsetHeight) { // all but Explorer Mac
-  	xScroll = document.body.scrollWidth;
-  	yScroll = document.body.scrollHeight;
-  } else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari
-  	xScroll = document.body.offsetWidth;
-  	yScroll = document.body.offsetHeight;
-  }
+	} else if (document.body.scrollHeight > document.body.offsetHeight) { // all but Explorer Mac
+		xScroll = document.body.scrollWidth;
+		yScroll = document.body.scrollHeight;
+	} else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari
+		xScroll = document.body.offsetWidth;
+		yScroll = document.body.offsetHeight;
+	}
 
-  var windowWidth, windowHeight;
+	var windowWidth, windowHeight;
 
 	// console.log(self.innerWidth);
 	// console.log(document.documentElement.clientWidth);
 
-  if (self.innerHeight) {    // all except Explorer
-  	if (document.documentElement.clientWidth) {
-  		windowWidth = document.documentElement.clientWidth;
-  	} else {
-  		windowWidth = self.innerWidth;
-  	}
-  	windowHeight = self.innerHeight;
-  } else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
-  	windowWidth = document.documentElement.clientWidth;
-  	windowHeight = document.documentElement.clientHeight;
-  } else if (document.body) { // other Explorers
-  	windowWidth = document.body.clientWidth;
-  	windowHeight = document.body.clientHeight;
-  }
+	if (self.innerHeight) {    // all except Explorer
+		if (document.documentElement.clientWidth) {
+			windowWidth = document.documentElement.clientWidth;
+		} else {
+			windowWidth = self.innerWidth;
+		}
+		windowHeight = self.innerHeight;
+	} else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
+		windowWidth = document.documentElement.clientWidth;
+		windowHeight = document.documentElement.clientHeight;
+	} else if (document.body) { // other Explorers
+		windowWidth = document.body.clientWidth;
+		windowHeight = document.body.clientHeight;
+	}
 
-  // for small pages with total height less then height of the viewport
-  if (yScroll < windowHeight) {
-  	pageHeight = windowHeight;
-  } else {
-  	pageHeight = yScroll;
-  }
+	// for small pages with total height less then height of the viewport
+	if (yScroll < windowHeight) {
+		pageHeight = windowHeight;
+	} else {
+		pageHeight = yScroll;
+	}
 
 	// console.log("xScroll " + xScroll)
 	// console.log("windowWidth " + windowWidth)
 
-  // for small pages with total width less then width of the viewport
-  if (xScroll < windowWidth) {
-  	pageWidth = xScroll;
-  } else {
-  	pageWidth = windowWidth;
-  }
+	// for small pages with total width less then width of the viewport
+	if (xScroll < windowWidth) {
+		pageWidth = xScroll;
+	} else {
+		pageWidth = windowWidth;
+	}
 
 	// console.log("pageWidth " + pageWidth)
 

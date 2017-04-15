@@ -26,7 +26,7 @@ body {
 // Following all the styles handles content, dialogbox, and nyromodal
 //
 
-.content, .dialogBox, .nyroModalCont {
+.content, .dialogBox, .nyroModalCont, .rodal-dialog {
 	line-height: 1.5;
 
 	// Content p tag's height and gap at bottom
@@ -196,7 +196,7 @@ body {
 					height: 30px;
 				}
 				textarea {
-				    width: 100%;
+						width: 100%;
 					max-width: 450px;
 				}
 			}
@@ -714,4 +714,19 @@ div#form_error {
 }
 .clearfix {
 	@include clearfix;
+}
+.rodal .rodal-dialog {
+	padding: 0 !important;
+	border: 4px solid #9a9a9a;
+	max-width: 1000px;
+	width: 90% !important;
+	.rodal-close {
+		right: 23px;
+		top: 11px;
+	}
+	>div {
+		height: 100%;
+		overflow: hidden;
+		overflow-y: visible;
+	}
 }
