@@ -131,6 +131,7 @@ function generateIndex() {
   </head>
   <body>
     <button onclick="append()">Add New Enrol Button</button>
+    <div data-cid="modal"></div>
     <div class="cart">${cart()}</div>
     <div class="popup">${popup()}</div>
     <div class="enrol-button">${fee(5038511)} ${enrolButton(5038511)}</div>
@@ -215,6 +216,7 @@ function generateCourses() {
                                 <a href="/contact">Contact</a>
                             </li>
                         </ul>
+                        <div data-cid="modal"></div>
                         ${cart()}
                         <a href="#" class="nav-toggle js-nav-toggle pull-right">
                             <div class="">

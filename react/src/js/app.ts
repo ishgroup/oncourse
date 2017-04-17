@@ -12,6 +12,7 @@ import BuyButton from "./containers/BuyButton";
 import EnrolButton from "./containers/EnrolButton";
 import PopupContainer from "./containers/PopupContainer";
 import Promotions from "./containers/Promotions";
+import {LegacyModal} from "./components/modal/LegacyModal";
 
 // Log application version before start.
 Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));
@@ -26,6 +27,7 @@ const react = new Bootstrap(store)
   .register("enrol-button", EnrolButton, {id: "string"})
   .register("buy-button", BuyButton, {id: "string"})
   .register("cart", CartRoot, {})
+  .register("modal", LegacyModal, {})
   .register("popup", PopupContainer, {})
   .register("promotions", Promotions, {})
   .start();

@@ -11,7 +11,6 @@ export const CartRoot = () => (
   // (when application become real SPA)
   <div>
     <Cart/>
-    <LegacyModal/>
     <Router history={browserHistory}>
       <Route path="/">
         <Route path={Paths.course} component={CoursePage}/>
