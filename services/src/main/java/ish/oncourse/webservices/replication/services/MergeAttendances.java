@@ -71,7 +71,6 @@ public class MergeAttendances {
         upd.setDurationMinutes(del.getDurationMinutes());
         upd.setMarkedByTutor(del.getMarkedByTutor());
         upd.setMarkedByTutorDate(del.getMarkedByTutorDate());
-        upd.setAngelId(del.getAngelId());
         upd.setCreated(del.getCreated());
     }
 }
