@@ -69,7 +69,7 @@
 				<p>
 					<label for="creditCardName">Name on Card<em title="${message:message-required}">*</em></label>
 					<span class="${validateHandler.validateClass('creditCardName')}">
-						<t:textfield value="paymentIn.creditCardName" t:id="creditCardName" maxlength="80"  
+						<t:textfield value="paymentRequest.name" t:id="creditCardName" maxlength="80"  
 							class="input-fixed ${validateHandler.errorClass('creditCardName')}" autocomplete = "off"/>
 						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardName')}"/>
 					</span>
@@ -77,7 +77,7 @@
 				<p>
 					<label for="creditCardNumber">Number<em title="${message:message-required}">*</em></label>
 					<span class="${validateHandler.validateClass('creditCardNumber')}">
-						<t:textfield value="paymentIn.creditCardNumber" t:id="creditCardNumber" maxlength="20"  
+						<t:textfield value="paymentRequest.number" t:id="creditCardNumber" maxlength="20"  
 							class="input-fixed ${validateHandler.errorClass('creditCardNumber')}" autocomplete = "off"/>
 						<span t:type="ui/HintComponent" validationMessage="${validateHandler.error('creditCardNumber')}"/>
 					</span>
@@ -85,7 +85,7 @@
 				<p>
 					<label for="creditCardCVV">CVV<em title="${message:message-required}">*</em></label>
 					<span class="${validateHandler.validateClass('creditCardCVV')}">
-						<t:textfield value="paymentIn.creditCardCVV" t:id="creditCardCVV" maxlength="4" autocomplete = "off" 
+						<t:textfield value="paymentRequest.cvv" t:id="creditCardCVV" maxlength="4" autocomplete = "off" 
 							class="input-fixed ${validateHandler.errorClass('creditCardCVV')}"/>
 						<img src="/s/img/cvv-image.png" alt="CVV" class="vcc-card-image"/>
 						<a id="cvvLink" href="/enrol/ui/cvv?wrap=false" class="nyromodal">What is CVV?</a>

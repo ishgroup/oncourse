@@ -4,8 +4,11 @@ import ish.common.types.CreditCardType;
 import ish.oncourse.enrol.checkout.IFieldsParser;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.services.payment.PaymentRequest;
 import ish.oncourse.util.payment.CreditCardParser;
+import ish.oncourse.util.payment.CreditCardValidator;
 import ish.oncourse.utils.StringUtilities;
+import ish.util.CreditCardUtil;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 
@@ -23,6 +26,8 @@ public class PaymentEditorParser implements IFieldsParser {
 
 	private boolean isCorporatePass;
 
+	private PaymentRequest paymentRequest;
+
 	private Map<String, String> errors = new HashMap<>();
 
 	public void parse() {
@@ -33,6 +38,8 @@ public class PaymentEditorParser implements IFieldsParser {
 			String expiryMonth = StringUtilities.cutToNull(request.getParameter(Field.expiryMonth.name()));
 			String expiryYear = StringUtilities.cutToNull(request.getParameter(Field.expiryYear.name()));
 			if (expiryMonth != null && expiryYear != null) {
+				paymentRequest.setMonth(expiryMonth);
+				paymentRequest.setMonth(expiryYear);
 				paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
 				if (!paymentIn.validateCCExpiry())
 					errors.put(Field.expiryMonth.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.expiryMonth.name())));
@@ -69,6 +76,7 @@ public class PaymentEditorParser implements IFieldsParser {
 					String errorMessage = paymentIn.validateCCNumber();
 					if (errorMessage != null)
 						errors.put(field.name(), errorMessage);
+					paymentIn.setCreditCardNumber(CreditCardUtil.obfuscateCCNumber(value));
 				} else
 					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.creditCardType.name())));
 				break;
@@ -76,11 +84,10 @@ public class PaymentEditorParser implements IFieldsParser {
 				paymentIn.setCreditCardCVV(value);
 				if (!paymentIn.validateCVV())
 					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, field)));
+				paymentIn.setCreditCardCVV(CreditCardUtil.obfuscateCVVNumber(value));
 				break;
 			case expiryMonth:
 			case expiryYear:
-				paymentIn.setCreditCardExpiry(value);
-				break;
 			case userAgreed:
 			case creditCardType:
 				break;
@@ -104,6 +111,10 @@ public class PaymentEditorParser implements IFieldsParser {
 	public void setPaymentIn(PaymentIn paymentIn) {
 		this.paymentIn = paymentIn;
 	}
+
+	public void  setPaymentRequest(PaymentRequest paymentRequest) {
+		this.paymentRequest = paymentRequest;
+	} 
 
 	public Map<String, String> getErrors() {
 		return errors;

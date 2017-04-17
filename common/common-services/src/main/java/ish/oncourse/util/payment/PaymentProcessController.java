@@ -7,6 +7,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.IPaymentService;
+import ish.oncourse.services.payment.PaymentRequest;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
 import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
@@ -41,6 +42,9 @@ public class PaymentProcessController {
 	private IPaymentService paymentService;
 	
     private PaymentInModel paymentInModel;
+
+    private PaymentRequest paymentRequest;
+
     private ObjectContext objectContext;
 
     private Runnable commitDelegate;
@@ -308,7 +312,7 @@ public class PaymentProcessController {
                 commitChanges();
                 return paymentInModel.getPaymentIn();
             }
-            paymentGatewayService.submit(paymentInModel);
+            paymentGatewayService.submit(paymentInModel, paymentRequest);
             if (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.SUCCESS) ||
                     (paymentInModel.getPaymentIn().getStatus().equals(PaymentStatus.IN_TRANSACTION) && PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(paymentInModel.getPaymentIn().getStatusNotes())))
                 commitChanges();
@@ -432,7 +436,9 @@ public class PaymentProcessController {
                                                     INewPaymentGatewayService paymentGatewayService,
                                                     ICayenneService cayenneService,
                                                     IPaymentService paymentService,
-                                                    PaymentInModel paymentInModel, Runnable commitDelegate) {
+                                                    PaymentInModel paymentInModel,
+                                                    PaymentRequest paymentRequest,
+                                                    Runnable commitDelegate) {
         PaymentProcessController result = new PaymentProcessController();
         result.parallelExecutor = parallelExecutor;
         result.paymentGatewayService = paymentGatewayService;
@@ -440,6 +446,7 @@ public class PaymentProcessController {
         result.paymentService = paymentService;
 
         result.paymentInModel = paymentInModel;
+        result.paymentRequest = paymentRequest;
         result.objectContext = paymentInModel.getObjectContext();
         result.commitDelegate = commitDelegate;
         result.startWatcher = false;

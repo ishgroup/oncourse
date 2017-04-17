@@ -8,6 +8,7 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.selectutils.ListValueEncoder;
+import ish.oncourse.services.payment.PaymentRequest;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.ValidateHandler;
@@ -141,6 +142,11 @@ public class PaymentEditor implements IPaymentControlDelegate {
 		return delegate.getPaymentIn();
 	}
 
+	public PaymentRequest getPaymentRequest()
+	{
+		return delegate.getPaymentRequest();
+	}
+
 	public Money getTotalPayment()
 	{
 		return getPaymentIn().getAmount();
@@ -203,6 +209,8 @@ public class PaymentEditor implements IPaymentControlDelegate {
         paymentEditorParser.setContacts(delegate.getContacts());
         paymentEditorParser.setMessages(messages);
         paymentEditorParser.setPaymentIn(delegate.getPaymentIn());
+		paymentEditorParser.setPaymentRequest(delegate.getPaymentRequest());
+
 		//when we parse payment page we should ignore entered corporate pass
 		paymentEditorParser.setCorporatePass(false);
         return paymentEditorParser;

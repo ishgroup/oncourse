@@ -1,12 +1,16 @@
 package ish.oncourse.enrol.checkout.payment;
 
 import ish.common.types.ConfirmationStatus;
+import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.enrol.checkout.PurchaseController;
 import ish.oncourse.enrol.checkout.model.InvoiceNode;
 import ish.oncourse.model.*;
+import ish.oncourse.services.payment.PaymentRequest;
+import ish.oncourse.util.payment.CreditCardValidator;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentProcessController;
+import ish.util.CreditCardUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,9 +28,10 @@ public class PaymentEditorController implements PaymentEditorDelegate {
     private PurchaseController purchaseController;
     private PaymentProcessController paymentProcessController;
     private Map<String, String> errors = new HashMap<>();
-
+	private PaymentRequest paymentRequest;
 
 	public void init() {
+		paymentRequest =  new PaymentRequest();
 		initPaymentProcessController();
 	}
 
@@ -148,6 +153,7 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 				purchaseController.getCayenneService(),
 				purchaseController.getPaymentService(),
 				getPaymentInModel(),
+				paymentRequest,
 				new Runnable() {
 					@Override
 					public void run() {
@@ -237,4 +243,10 @@ public class PaymentEditorController implements PaymentEditorDelegate {
 	public boolean payerCanBeChanged() {
 		return purchaseController.payerCanBeChanged();
 	}
+
+	@Override
+	public PaymentRequest getPaymentRequest() {
+		return paymentRequest;
+	}
+
 }

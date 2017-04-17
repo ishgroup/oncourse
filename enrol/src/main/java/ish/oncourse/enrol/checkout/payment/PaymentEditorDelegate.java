@@ -2,6 +2,7 @@ package ish.oncourse.enrol.checkout.payment;
 
 import ish.math.Money;
 import ish.oncourse.model.*;
+import ish.oncourse.services.payment.PaymentRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -49,4 +50,7 @@ public interface PaymentEditorDelegate {
 	College getCollege();
 
 	boolean payerCanBeChanged();
+
+	PaymentRequest getPaymentRequest();
+	
 }
