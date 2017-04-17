@@ -3,6 +3,7 @@
  */
 package ish.oncourse.webservices.replication.services;
 
+import ish.common.types.AttendanceType;
 import ish.common.types.ContactDuplicateStatus;
 import ish.common.types.UsiStatus;
 import ish.oncourse.model.*;
@@ -587,4 +588,23 @@ public class MergeProcessorTest extends ServiceTest {
 				.selectOne(context);
 		assertNull(customField2);
 	}
+
+    @Test
+    public void testAttendanceMerge() throws Exception {
+        ObjectContext context = cayenneService.newContext();
+        Student studentToUpdate = ObjectSelect.query(Student.class, Student.ANGEL_ID.eq(1L)).selectFirst(context);
+        Student studentToDelete = ObjectSelect.query(Student.class, Student.ANGEL_ID.eq(2L)).selectFirst(context);
+
+        MergeAttendances.valueOf(context, studentToUpdate, studentToDelete).merge();
+        context.commitChanges();
+
+        List<Attendance> mergeResult = ObjectSelect.query(Attendance.class).orderBy(Attendance.ANGEL_ID_PROPERTY).select(context);
+
+        assertEquals(3, mergeResult.size());
+
+        for (Attendance a : mergeResult) {
+            assertEquals(studentToUpdate.getId(), a.getStudent().getId());
+            assertEquals((Integer) AttendanceType.ATTENDED.ordinal(), a.getAttendanceType());
+        }
+    }
 }

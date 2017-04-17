@@ -25,7 +25,25 @@
 	<Contact id="2" angelId="2" collegeId="1" tutorId="2" studentId="2"  businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="1@kremlin.ru" familyName="1" givenName="1"  faxNumber="1234-567" suburb="Moscow"/>
 
 	<Course id="1" angelId="1" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
+
+	<Site id="1" collegeId="1" isWebVisible="1" name="site1" timeZone="Australia/Sydney" isVirtual="0"/>
+
+	<Room id="1" collegeId="1" siteId="1" capacity="50" name="room1"/>
+
 	<CourseClass isCancelled="0" isActive="1" id="1" angelId="1" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="1" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" isDistantLearningCourse="0"/>
+
+	<Session id="1" courseClassId="1" roomId="1" collegeId="1" angelId="1" startDate="2017-04-02 01:00:00" endDate="2017-04-02 02:00:00"/>
+	<Session id="2" courseClassId="1" roomId="1" collegeId="1" angelId="2" startDate="2017-04-03 01:00:00" endDate="2017-04-03 02:00:00"/>
+	<Session id="3" courseClassId="1" roomId="1" collegeId="1" angelId="3" startDate="2017-04-04 01:00:00" endDate="2017-04-04 02:00:00"/>
+
+	<Attendance id="1" collegeId="1" studentId="1" sessionId="1" attendanceType="1" angelId="1"/>
+	<Attendance id="2" collegeId="1" studentId="1" sessionId="2" attendanceType="4" durationMinutes="30" angelId="2"/>
+	<Attendance id="3" collegeId="1" studentId="1" sessionId="3" attendanceType="3" angelId="3"/>
+
+	<Attendance id="4" collegeId="1" studentId="2" sessionId="1" attendanceType="3" angelId="4"/>
+	<Attendance id="5" collegeId="1" studentId="2" sessionId="2" attendanceType="1" angelId="5"/>
+	<Attendance id="6" collegeId="1" studentId="2" sessionId="3" attendanceType="1" angelId="6"/>
+
 	<Enrolment id="1" angelId="1" collegeId="1" courseClassId="1" studentId="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" status="3" source="O" confirmationStatus="1" feehelpamount="0"/>
 	<Invoice id="1" angelId="1" source="O" amountOwing="0.00" contactId="2" collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00" totalGst="10.91"
 			 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
