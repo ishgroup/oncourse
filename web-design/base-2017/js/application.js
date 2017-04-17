@@ -309,6 +309,21 @@ function deleteCookie( name, path, domain ) {
 			fade: 250
 		});
 
+		$j(document).on('click', '.nyromodalreload', function(e) {
+			e.preventDefault();
+			var href = $j(this).attr('href');
+
+			var closeFn = Ish.modal.openModal({
+				content: '<iframe src="'+ href +'" width="100%" height="100%">'
+				  +'<p>Your browser does not support iframes.</p>'
+				+'</iframe>',
+				animation: 'flip',
+				duration: 600,
+				width: 1000,
+				height: 400
+			});
+		});
+
 		var _modalCalled = false;
 		$j(document).on('click', '.nyromodal', function(e) {
 			e.preventDefault();

@@ -5,6 +5,7 @@
 	<head>
 		<title>${title}</title>
 
+		<script type="text/javascript" src="/s/js/dynamic.js"></script>
 		<script type="text/javascript" src="/s/js/all.js"></script>
 		<link href="/s/stylesheets/css/site.css" media="screen" rel="stylesheet" />
 	</head>
