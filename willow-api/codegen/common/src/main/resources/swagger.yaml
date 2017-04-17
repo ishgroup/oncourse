@@ -162,6 +162,36 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /completion/{key}:
+    get:
+      summary: Autocomplete Endpoint
+      operationId: autocomplete
+      description: |
+        Provide autocomplete candidates for provided key and text
+      tags:
+       - Autocomplete
+      parameters:
+      - name: key
+        in: path
+        description: Autocomplete key
+        required: true
+        type: string
+      - name: text
+        in: query
+        description: User input
+        required: true
+        type: string
+      responses:
+        200:
+          description: List of autocomplete candidates
+          schema:
+            type: array
+            items:
+              type: string
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 parameters:
   XOrigin:
     name: X-Origin
