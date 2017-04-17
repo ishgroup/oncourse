@@ -33,7 +33,7 @@ public class RootTagAvailabilityTest extends ServiceTest {
         initTest("ish.oncourse.services", "service", ServiceModule.class);
 
         InputStream st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
-                "ish.oncourse.linktransform/RootTagAvailabilityTest.xml");
+                "ish/oncourse/linktransform/RootTagAvailabilityTest.xml");
 
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setColumnSensing(true).build(st);
         DataSource refDataSource = getDataSource("jdbc/oncourse");

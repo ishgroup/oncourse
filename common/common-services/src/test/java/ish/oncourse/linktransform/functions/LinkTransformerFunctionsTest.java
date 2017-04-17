@@ -35,7 +35,7 @@ public class LinkTransformerFunctionsTest extends ServiceTest {
         initTest("ish.oncourse.services", "service", ServiceModule.class);
 
         InputStream st = PaymentInSuccessFailAbandonTest.class.getClassLoader().getResourceAsStream(
-                "ish.oncourse.linktransform/PageLinkTransformerFunctionsTest.xml");
+                "ish/oncourse/linktransform/PageLinkTransformerFunctionsTest.xml");
 
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setColumnSensing(true).build(st);
         DataSource refDataSource = getDataSource("jdbc/oncourse");
