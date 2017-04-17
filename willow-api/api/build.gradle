@@ -51,9 +51,6 @@ dependencies {
     //cache
     compile 'org.ehcache:ehcache:3.3.1'
 
-    compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'org.slf4j:log4j-over-slf4j:1.7.25'
-
     compile 'mysql:mysql-connector-java:5.1.38'
 
     testCompile 'org.dbunit:dbunit:2.5.3'
@@ -66,7 +63,7 @@ mainClassName = 'ish.oncourse.willow.WillowApp'
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
 
-test{
+test {
     systemProperty "oncourse.jdbc.url", System.getProperty("oncourse.jdbc.url")
     systemProperty "oncourse.jdbc.user", System.getProperty("oncourse.jdbc.user")
     systemProperty "oncourse.jdbc.password", System.getProperty("oncourse.jdbc.password")
