@@ -309,13 +309,6 @@ function deleteCookie( name, path, domain ) {
 			fade: 250
 		});
 
-		// Convenience methods for nyroModal lightbox library, the successor to thickbox.
-		// Add one of these classes to a link, with the href pointing to the content to be loaded.
-		// See http://nyromodal.nyrodev.com/ for documentation
-
-		// open an inline lightbox using ajax content fetched from the link.
-		//$j('.nyromodal').nyroModal( {debug:false } );
-
 		var _modalCalled = false;
 		$j(document).on('click', '.nyromodal', function(e) {
 			e.preventDefault();
@@ -335,9 +328,7 @@ function deleteCookie( name, path, domain ) {
 								duration: 600,
 								width: 1000,
 								height: 400/*,
-								onClose: function() {
-									alert("close")
-								}*/
+								onClose: function() { }*/
 							});
 							_modalCalled = false;
 						}
@@ -387,9 +378,7 @@ function deleteCookie( name, path, domain ) {
 				duration: 600,
 				width: 1000,
 				height: 400/*,
-				onClose: function() {
-					alert("close")
-				}*/
+				onClose: function() { }*/
 			});
 		});
 
@@ -445,7 +434,6 @@ function deleteCookie( name, path, domain ) {
 					}
 				}
 			});
-			//initNyromodal();
 			//initOtherClassesControl();
 			return false;
 		});
@@ -510,21 +498,6 @@ function initHints(parentBlockId){
 			parent=parent.next();
 		}
 		parent.find('.reason').toggleClass('hidden-text');
-	});
-}
-
-function initNyromodal(){
-	// open an iFrame box, so forms will submit inside the box.
-	// note that for the iframe to be generated, the link must include target="_blank"
-	jQuery('.nyromodaliframe').nyroModal( {
-		type:'iframe'
-	} );
-
-	// open an iFrame box and reload the parent page on closing
-
-	jQuery('.nyromodalreload').nyroModal({
-		type:'iframe',
-		endRemove: function() {window.location.reload(true);}
 	});
 }
 
