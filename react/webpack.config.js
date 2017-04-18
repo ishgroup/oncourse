@@ -31,7 +31,7 @@ Build started with following configuration:
       ]
     },
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'build', 'dist'),
       filename: '[name].js',
       publicPath: '/'
     },
@@ -100,27 +100,40 @@ function createListOfPlugins({NODE_ENV, API_ROOT}) {
       },
       _API_ROOT: JSON.stringify(API_ROOT),
       _APP_VERSION: JSON.stringify(process.env.BUILD_NUMBER || "DEV")
-    }),
-    getHtmlWebpackPlugin("index.html"),
-    getHtmlWebpackPlugin("courses.html"),
-    getHtmlWebpackPlugin("enrol.html")
+    })
   ];
-
-  function getHtmlWebpackPlugin(name) {
-    return new HtmlWebpackPlugin({
-      filename: name,
-      template: path.resolve(__dirname, './dev-server/', name)
-    });
-  }
 
   if (NODE_ENV === "production") {
     plugins.push(new TypedocWebpackPlugin({
-      jsx: 'react',
-      target: 'es6',
+      jsx: "react",
+      target: "es6",
+      lib: [
+        "lib.dom.d.ts",
+        "lib.es5.d.ts",
+        "lib.es2015.d.ts",
+        "lib.es2016.d.ts",
+        "lib.es2017.d.ts"
+      ],
       allowSyntheticDefaultImports: true,
-      moduleResolution: 'node',
-      module: 'es6'
-    }, './src/js/'));
+      moduleResolution: "node",
+      module: "es6",
+      out: "../docs" // relative to output
+    }, "./src/js/"));
+  }
+
+  if (NODE_ENV === "development") {
+    plugins.push(
+      getHtmlWebpackPlugin("index.html"),
+      getHtmlWebpackPlugin("courses.html"),
+      getHtmlWebpackPlugin("enrol.html")
+    )
+  }
+
+  function getHtmlWebpackPlugin(name) {
+    return new HtmlWebpackPlugin({
+      filename: `dev/${name}`,
+      template: path.resolve(__dirname, "./dev-server/", name)
+    });
   }
 
   return plugins;

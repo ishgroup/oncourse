@@ -5,7 +5,7 @@ import {Checkout} from "../components/enrol/checkout/Checkout";
 import {Paths} from "../config/Paths";
 import {IndexPage} from "./IndexPage";
 
-export const Root = () => (
+export const EnrolRoot = () => (
   <Router history={browserHistory}>
     <Route path="/">
       <Route path={Paths.checkout} component={Checkout}/>

@@ -1,7 +1,7 @@
-import * as React from 'react';
-import {render, findDOMNode} from 'react-dom';
-import {Provider} from 'react-redux';
-import {camelToDashCase} from './utils';
+import * as React from "react";
+import {render, findDOMNode} from "react-dom";
+import {Provider} from "react-redux";
+import {camelToDashCase} from "./utils";
 import {Store} from "redux";
 import {IshState} from "../services/IshState";
 import {whenReady} from "../services/jq";
@@ -9,16 +9,17 @@ import forEach from "lodash/forEach";
 import ComponentClass = React.ComponentClass;
 import {Logger, Level, LogMessage} from "../services/Logger";
 import {StatelessComponent} from "react";
+import {MarkerToComponent} from "../MarkerComponents";
 
 export class Bootstrap {
-  private components: {[key: string]: BootstrapComponent} = {};
+  private components: { [key: string]: BootstrapComponent } = {};
 
   constructor(private store: Store<IshState>) {
   }
 
-  register(id: string, Component: Component, props?: {[key: string]: string}) {
+  register({component, props, id}: MarkerToComponent) {
     this.components[id] = {
-      Component,
+      Component: component,
       props
     };
     return this;
@@ -31,7 +32,7 @@ export class Bootstrap {
 
   private static prepareProp(value, type) {
     if (!(type in Bootstrap.prepareType)) {
-      throw new Error('unexpected type');
+      throw new Error("unexpected type");
     }
 
     return Bootstrap.prepareType[type](value);
@@ -47,8 +48,8 @@ export class Bootstrap {
           try {
             if (container.childElementCount != 0) {
               Logger.log(new LogMessage(Level.DEBUG, "Container already has a children, that mean that React will not" +
-                  " render this tag."));
-              return
+                " render this tag."));
+              return;
             }
 
             let realProps = {};
@@ -59,13 +60,13 @@ export class Bootstrap {
             });
 
             render(
-                <Provider store={this.store}>
-                  <Component {...realProps}/>
-                </Provider>,
-                container
+              <Provider store={this.store}>
+                <Component {...realProps}/>
+              </Provider>,
+              container
             );
           } catch (e) {
-            Logger.log(new LogMessage(Level.ERROR, `Component with cid=${cid} failed to instantiate.`, [e]))
+            Logger.log(new LogMessage(Level.ERROR, `Component with cid=${cid} failed to instantiate.`, [e]));
           }
         });
       });
@@ -76,26 +77,26 @@ export class Bootstrap {
 
   private static prepareType = {
     boolean(value) {
-      if (['true', 'false'].indexOf(value) === -1) {
-        throw new Error('expected boolean type');
+      if (["true", "false"].indexOf(value) === -1) {
+        throw new Error("expected boolean type");
       }
 
-      return value === 'true';
+      return value === "true";
     },
 
     number(value) {
       let v = Number(value);
 
       if (isNaN(v)) {
-        throw new Error('expected number type');
+        throw new Error("expected number type");
       }
 
       return v;
     },
 
     string(value) {
-      if (typeof value !== 'string') {
-        throw new Error('expected string type');
+      if (typeof value !== "string") {
+        throw new Error("expected string type");
       }
 
       return value;
@@ -105,7 +106,7 @@ export class Bootstrap {
       let v = JSON.parse(value);
 
       if (!(v instanceof Array)) {
-        throw new Error('expected array type');
+        throw new Error("expected array type");
       }
 
       return v;
@@ -114,8 +115,8 @@ export class Bootstrap {
     object(value) {
       let v = JSON.parse(value);
 
-      if (typeof v !== 'object' || v instanceof Array) {
-        throw new Error('expected object type');
+      if (typeof v !== "object" || v instanceof Array) {
+        throw new Error("expected object type");
       }
 
       return v;
