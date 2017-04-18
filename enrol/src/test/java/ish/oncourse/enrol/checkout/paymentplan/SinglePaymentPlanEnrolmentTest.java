@@ -71,6 +71,27 @@ public class SinglePaymentPlanEnrolmentTest extends ACheckoutTest {
 	}
 
 	@Test
+	public void testZeroAmountPayment() throws Exception {
+		createPurchaseController(1002);
+		addFirstContact(1001);
+		
+		payNowMoreThanRequired();
+
+		Money value = (Money) MoneyFormatter.getInstance().stringToValue("$10");
+		ActionChangePayNow action = changePayNow.createAction(purchaseController);
+		action.setPayNow(value);
+		purchaseController.performAction(action, changePayNow);
+
+		value = (Money) MoneyFormatter.getInstance().stringToValue("$0.00");
+		action = changePayNow.createAction(purchaseController);
+		action.setPayNow(value);
+		purchaseController.performAction(action, changePayNow);
+		assertTrue(purchaseController.getErrors().isEmpty());
+		assertEquals(Money.ZERO, purchaseController.getModel().getPaymentPlanInvoices().get(0).getPaymentAmount());
+		
+	}
+	
+	@Test
 	public void testCorporatePass() throws Exception {
 		initEnrolment();
 

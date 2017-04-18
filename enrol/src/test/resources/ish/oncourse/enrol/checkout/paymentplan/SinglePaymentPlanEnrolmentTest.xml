@@ -69,6 +69,22 @@
 								courseClassId = "1001" dayOffset="2" amount="60"/>
 
 
+	<CourseClass id="1002" collegeId="1" code="2" courseId="1001"
+				 roomId="1" angelId="1002" startDate="[class1001_startDate]"
+				 endDate="[class1001_endDate]" isWebVisible="1" isCancelled="0"  isActive="1"
+				 created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+				 maximumPlaces="3" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
+				 feeExGst="100.00" feeGst="10.00" isDistantLearningCourse="0"/>
+
+	<CourseClassPaymentPlanLine id="3" angelId="3" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+								courseClassId = "1002" amount="0"/>
+
+	<CourseClassPaymentPlanLine id="4" angelId="4" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+								dayOffset="0" courseClassId = "1002" amount="50"/>
+
+	<CourseClassPaymentPlanLine id="5" angelId="5" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+								courseClassId = "1002" dayOffset="2" amount="60"/>
+
     <Preference id="1" collegeId="1" name="license.ccprocessing"
 		value_string="true" />
 	<Preference id="2" collegeId="1" name="payment.gateway.type"

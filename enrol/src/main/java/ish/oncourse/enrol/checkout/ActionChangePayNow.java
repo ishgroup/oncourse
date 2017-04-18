@@ -13,17 +13,22 @@ public class ActionChangePayNow extends APurchaseAction {
 
 	@Override
 	protected void makeAction() {
-		if (payNow.equals(getController().getPayNow())){
+		if (payNow.equals(getController().getPayNow())) {
 			return;
 		}
 
 		Money left = payNow.subtract(getModel().getInvoice().getTotalGst());
 		left = left.subtract(getModel().getPreviousOwing());
 
-		for (InvoiceNode invoiceNode: getModel().getPaymentPlanInvoices()) {
+		for (InvoiceNode invoiceNode : getModel().getPaymentPlanInvoices()) {
 			left = left.subtract(invoiceNode.getMinPaymentAmount());
 		}
-		if (left.isGreaterThan(Money.ZERO)) {
+
+		if (left.equals(Money.ZERO)) {
+			for (InvoiceNode invoiceNode: getModel().getPaymentPlanInvoices()) {
+				invoiceNode.setPaymentAmount(invoiceNode.getMinPaymentAmount());
+			}
+		} else if (left.isGreaterThan(Money.ZERO)) {
 			for (InvoiceNode invoiceNode: getModel().getPaymentPlanInvoices()) {
 				Money payNow = invoiceNode.getInvoice().getTotalGst().subtract(invoiceNode.getMinPaymentAmount()).subtract(left);
 				if (payNow.isNegative()) {
