@@ -1,3 +1,26 @@
 dependencies {
     compile("io.swagger:swagger-codegen:2.2.2")
 }
+
+/**
+ * Start Swagger editor, this task requires docker on PATH
+ */
+task startEditor() {
+    doFirst {
+        pull.execute()
+        open.execute()
+        run.execute()
+    }
+    task open(type: Exec) {
+        executable "open"
+        args  'http://localhost:8080'
+    }
+    task pull(type: Exec){
+        executable "docker"
+        args  'pull', 'swaggerapi/swagger-editor'
+    }
+    task run(type: Exec) {
+        executable "docker"
+        args  'run', '-p', '8080:8080', 'swaggerapi/swagger-editor'
+    }
+}
