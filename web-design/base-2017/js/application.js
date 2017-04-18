@@ -86,7 +86,7 @@ function initAddConcessionButtons(){
 function initSuburbAutoComplete(){
 
 	if ($j(".suburb-autocomplete")) {
-		$j(".suburb-autocomplete").autocomplete({source: '/ui/internal/autocomplete.sub', minLength: 3,
+		$j(".suburb-autocomplete").autocomplete({source: '/ish/internal/autocomplete.sub', minLength: 3,
 			select: function(event, ui) {
 				setPostcodeAndStateFromSuburb(this.form, ui.item.value);
 			}
