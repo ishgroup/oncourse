@@ -43,7 +43,6 @@ dependencies {
     compile 'io.bootique:bootique'
     compile 'io.bootique.jetty:bootique-jetty'
     compile 'io.bootique.jcache:bootique-jcache'
-    compile 'io.bootique.logback:bootique-logback'
     //cannot use the latest bootique-cayenne
     //cayenne 4.0.M5 is not compatible with groovy and @CompileStatic
     compile 'io.bootique.cayenne:bootique-cayenne:0.18'
