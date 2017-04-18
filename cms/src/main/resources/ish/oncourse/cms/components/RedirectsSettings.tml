@@ -11,13 +11,18 @@
         </div>
     </div>
 
+
     <t:block t:id="redirectItem">
         <div class="cms-redirect">
             <input type="hidden" name="id"/>
-            <label>Redirect</label>
-            <input type="text" name="urlPath"/>
-            <label>to</label>
-            <input type="text" name="redirectTo"/>
+            <div class="cms-redirect-field" data-name="urlPath">
+                <label>Redirect</label>
+                <input type="text" name="urlPath"/>
+            </div>
+            <div class="cms-redirect-field" data-name="redirectTo">
+                <label>to</label>
+                <input type="text" name="redirectTo"/>
+            </div>
             <span class="cms-ico-save"></span>
             <a class='cms-redirect-save' shape="rect" href="#">Save</a>
             <span class="cms-ico-del"></span>

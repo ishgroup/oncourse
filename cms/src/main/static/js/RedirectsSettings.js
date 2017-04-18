@@ -39,8 +39,10 @@ RedirectsSettings.prototype = {
                 return;
             }
 
-            var data = item.children('input').serialize();
-
+            var data = {};
+            item.children('input').each(function( index, input ) {
+                data[input.name] = input.value;
+            });
             $j.ajax({
                 type: 'POST',
                 url: '/ui/internal/page.pagestructure.cmsnavigation.sitesettings.redirectssettings:deleteItem',
@@ -73,8 +75,11 @@ RedirectsSettings.prototype = {
 
     //init event handling for save action
     initSave: function (item) {
-        item.children('.cms-redirect-save').click(function () {
-            var data = item.children('input').serialize();
+        item.children('.cms-redirect-save').on('click', function () {
+            var data = {};
+            item.find('input').each(function( index, input ) {
+                data[input.name] = input.value;
+            });
             $j.ajax({
                 type: 'POST',
                 url: '/ui/internal/page.pagestructure.cmsnavigation.sitesettings.redirectssettings:saveItem',
@@ -83,21 +88,25 @@ RedirectsSettings.prototype = {
                 data: data,
                 dataType: 'json',
                 success: function (data, status, jqXHR) {
-                    var children;
+                    var field;
                     RedirectsSettings.prototype.cleanValidation(item);
                     if (data.error) {
                         if (data.error.key) {
-                            children = item.children('input[name=' + data.error.key + ']');
-                            children.addClass('cms-error');
-                            children.attr('title', data.error.message);
-                            children.tooltip({tooltipClass: 'cms-redirect-tooltip-error'});
-                            children.focus();
+                            field = item.children('div.cms-redirect-field[data-name='+ data.error.key + ']');
+                            var input = field.children('input');
+                            input.addClass('cms-error');
+                            input.focus();
+
+                            var text = $j('<div/>');
+                            text.addClass('cms-error-text');
+                            text.addClass('cms-error');
+                            text.text(data.error.message);
+                            field.append(text);
                         }
                     } else {
                         var isNew = RedirectsSettings.prototype.isNew(item);
                         RedirectsSettings.prototype.fillItem(item, data.value);
                         RedirectsSettings.prototype.showDeleteControl(item);
-                        item.effect('highlight');
                         //only if new item we saved we need controls for new item
                         if (isNew) {
                             RedirectsSettings.prototype.loadItemHtml(RedirectsSettings.prototype.addItem, isNew);
@@ -105,7 +114,7 @@ RedirectsSettings.prototype = {
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    $j(item).tooltip('option', 'show', { content: "Unexpected error!" });
+                    //$j(item).tooltip('option', 'show', { content: "Unexpected error!" });
                     console.log(textStatus, errorThrown);
                 }
             });
@@ -114,24 +123,28 @@ RedirectsSettings.prototype = {
 
     //fill data for redirect item
     fillItem: function (item, data) {
-        item.children('input[name=id]').attr('value', data.id);
-        item.children('input[name=urlPath]').attr('value', data.urlPath);
-        item.children('input[name=redirectTo]').attr('value', data.redirectTo);
+        item.find('input[name=id]').attr('value', data.id);
+        item.find('input[name=urlPath]').attr('value', data.urlPath);
+        item.find('input[name=redirectTo]').attr('value', data.redirectTo);
     },
 
     cleanValidation: function (item) {
-        var children = item.children('input');
+        var field = item.children('div.cms-redirect-field');
+        var children = field.find('input');
         children.removeClass('cms-error');
-        children.attr('title', null);
+        field.find('div.cms-error-text').remove();
     },
 
     //add html element for redirect
     addItem: function (item) {
-        $j('#cms-redirect-items').prepend(item);
-        RedirectsSettings.prototype.initDelete(item);
-        RedirectsSettings.prototype.initSave(item);
-        item.children('input[name=urlPath]').focus();
-        item.effect('highlight');
+        try {
+            $j('#cms-redirect-items').prepend(item);
+            RedirectsSettings.prototype.initDelete(item);
+            RedirectsSettings.prototype.initSave(item);
+            item.children('input[name="urlPath"]').focus();
+        } catch (e) {
+            console.log(e)
+        }
     },
 
     loadItems: function () {

@@ -449,35 +449,12 @@ function fixDialogButtons(element) {
 // Load all
 jQuery(document).ready(function() {
     isChrome();// Check Google Chrome
-
     toolTips(); // Tooltips
-
     customForms(); // Styling form controls
-
-    //hideEdit(); // Show Content Editor
-
     pageBar(); // Menu with pages options
-
-    //wrapHeight(); // Size & Position of all wrappers
-
-    //tabsContent(); // Main menu (Tabs)
-
     editArea(); // Show Edit area
-
-    //editThemes();
-
-    // Menu list (Menus tab).
     highlightMenuItem(jQuery(".cms-menu-pages li"));
-
-
-//    jQuery('#editSite').click();
-
-
     newTabs();
-
-
-
-
 });
 
 jQuery(window).resize(function() {
