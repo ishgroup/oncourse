@@ -8,7 +8,7 @@ dependencies {
 task startEditor() {
     doFirst {
         pull.execute()
-        open.execute()
+        println 'Open http://localhost:8080 in browser'
         run.execute()
     }
     task open(type: Exec) {
