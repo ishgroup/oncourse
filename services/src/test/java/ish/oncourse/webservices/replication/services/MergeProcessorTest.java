@@ -30,15 +30,14 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 import static ish.oncourse.webservices.util.SupportedVersions.*;
 import static ish.oncourse.webservices.v13.stubs.replication.Status.SUCCESS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class MergeProcessorTest extends ServiceTest {
 
@@ -602,9 +601,15 @@ public class MergeProcessorTest extends ServiceTest {
 
         assertEquals(3, mergeResult.size());
 
+        List<Long> expectedAngelIds = new ArrayList<>();
+        expectedAngelIds.add(1L);
+		expectedAngelIds.add(2L);
+		expectedAngelIds.add(3L);
+
         for (Attendance a : mergeResult) {
             assertEquals(studentToUpdate.getId(), a.getStudent().getId());
             assertEquals((Integer) AttendanceType.ATTENDED.ordinal(), a.getAttendanceType());
+            assertTrue(expectedAngelIds.contains(a.getAngelId()));
         }
     }
 }
