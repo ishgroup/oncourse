@@ -140,7 +140,7 @@ allprojects {
 	}
 
 	startScripts {
-		unixStartScriptGenerator.template = resources.text.fromFile("${project.rootDir}/buildSrc/src/main/resources/applicationStartScript.txt")
+		unixStartScriptGenerator.template = resources.text.fromFile("${project.rootDir}/buildSrc/src/main/resources/applicationStartScript.sh")
 	}
 
 	test {
