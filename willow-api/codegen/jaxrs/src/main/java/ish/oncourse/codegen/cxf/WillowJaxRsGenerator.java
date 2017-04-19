@@ -10,6 +10,7 @@ import ish.oncourse.codegen.common.Launcher;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Generates interfaces and models for Willow-Api project.
@@ -106,6 +107,38 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
         model.imports.remove("ApiModel");
         model.imports.remove("JsonSerialize");
         model.imports.remove("ToStringSerializer");
+    }
+
+    @Override
+    public Map<String, Object> postProcessModels(Map<String, Object> objs) {
+
+        for(CodegenProperty var : ((List<Map<String, CodegenModel>>) objs.get("models")).get(0).get("model").vars) {
+            if (var.isDate) {
+                List<Map<String, String>> imports = (List) objs.get("imports");
+
+                Map<String, String> newImportMap = new HashMap<>();
+                newImportMap.put("import","com.fasterxml.jackson.annotation.JsonFormat");
+                imports.add(newImportMap);
+                newImportMap = new HashMap<>();
+                newImportMap.put("import","com.fasterxml.jackson.databind.annotation.JsonDeserialize");
+                imports.add(newImportMap);
+                newImportMap = new HashMap<>();
+                newImportMap.put("import","com.fasterxml.jackson.databind.annotation.JsonSerialize");
+                imports.add(newImportMap);
+                newImportMap = new HashMap<>();
+                newImportMap.put("import","com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer");
+                imports.add(newImportMap);
+                newImportMap = new HashMap<>();
+                newImportMap.put("import","com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer");
+                imports.add(newImportMap);
+                newImportMap = new HashMap<>();
+                newImportMap.put("import","ish.oncourse.util.FormatUtils");
+                imports.add(newImportMap);
+                break;
+            }
+        }
+        
+       return super.postProcessModels(objs);
     }
 
     @Override
