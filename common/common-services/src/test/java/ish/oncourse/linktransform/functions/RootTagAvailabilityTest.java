@@ -32,7 +32,7 @@ public class RootTagAvailabilityTest extends ServiceTest {
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceModule.class);
 
-        InputStream st = this.getClass().getClassLoader().getResourceAsStream(
+        InputStream st = RootTagAvailabilityTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/linktransform/RootTagAvailabilityTest.xml");
 
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setColumnSensing(true).build(st);

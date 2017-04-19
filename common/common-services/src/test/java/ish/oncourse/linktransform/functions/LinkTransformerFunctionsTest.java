@@ -34,7 +34,7 @@ public class LinkTransformerFunctionsTest extends ServiceTest {
     public void setup() throws Exception {
         initTest("ish.oncourse.services", "service", ServiceModule.class);
 
-        InputStream st = this.getClass().getClassLoader().getResourceAsStream(
+        InputStream st = LinkTransformerFunctionsTest.class.getClassLoader().getResourceAsStream(
                 "ish/oncourse/linktransform/PageLinkTransformerFunctionsTest.xml");
 
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setColumnSensing(true).build(st);
