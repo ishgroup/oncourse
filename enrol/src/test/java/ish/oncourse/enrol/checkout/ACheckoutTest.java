@@ -215,10 +215,11 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	protected void makeInvalidPayment() throws InterruptedException {
 		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
-		delegate.getPaymentIn().setCreditCardCVV("1111");
-		delegate.getPaymentIn().setCreditCardExpiry("12/2020");
-		delegate.getPaymentIn().setCreditCardName("NAME NAME");
-		delegate.getPaymentIn().setCreditCardNumber("9999990000000378");
+		delegate.getPaymentRequest().setCvv("1111");
+		delegate.getPaymentRequest().setMonth("12");
+		delegate.getPaymentRequest().setYear("2020");
+		delegate.getPaymentRequest().setName("NAME NAME");
+		delegate.getPaymentRequest().setNumber("9999990000000378");
 		delegate.getPaymentIn().setCreditCardType(CreditCardType.VISA);
 		delegate.makePayment();
 		assertEquals(paymentProgress, purchaseController.getState());
@@ -230,10 +231,11 @@ public abstract class ACheckoutTest extends ServiceTest {
 
 	protected void makeValidPayment() throws InterruptedException {
 		PaymentEditorDelegate delegate = purchaseController.getPaymentEditorDelegate();
-		delegate.getPaymentIn().setCreditCardCVV(TestPaymentGatewayService.VISA.getCvv());
-		delegate.getPaymentIn().setCreditCardExpiry(TestPaymentGatewayService.VISA.getExpiry());
-		delegate.getPaymentIn().setCreditCardName(TestPaymentGatewayService.VISA.getName());
-		delegate.getPaymentIn().setCreditCardNumber(TestPaymentGatewayService.VISA.getNumber());
+		delegate.getPaymentRequest().setCvv(TestPaymentGatewayService.VISA.getCvv());
+		delegate.getPaymentRequest().setMonth(TestPaymentGatewayService.VISA.getExpiry().split("/")[0]);
+		delegate.getPaymentRequest().setYear(TestPaymentGatewayService.VISA.getExpiry().split("/")[1]);
+		delegate.getPaymentRequest().setName(TestPaymentGatewayService.VISA.getName());
+		delegate.getPaymentRequest().setNumber(TestPaymentGatewayService.VISA.getNumber());
 		delegate.getPaymentIn().setCreditCardType(TestPaymentGatewayService.VISA.getType());
 		delegate.makePayment();
 		assertEquals(paymentProgress, purchaseController.getState());
