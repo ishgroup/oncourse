@@ -57,6 +57,25 @@ allprojects.findAll { it.name in projectsWithStaticResources }.each { p ->
             imgDirectory = "${buildDir}/resource-assemble/img"
         }
 
+        /**
+         * Task build and copy js and css bundles to this artifact folder
+         */
+        task refreshIdeaArtifact {
+            doFirst {
+                ex.execute()
+                cp.execute()
+            }
+            task ex(type: GradleBuild){
+                tasks = ['cleanMinifyJs', 'gzipJs', 'gzipCss']
+            }
+            task cp(type: Copy) {
+                from('build/resource-assemble') {
+                    include '**/*.*'
+                }
+                into "build/libs/exploded/${project.name}.war"
+            }
+        }
+
         processResources.inputs.files gzipJs
         processResources.inputs.files gzipCss
         processResources.inputs.files combineSvg
