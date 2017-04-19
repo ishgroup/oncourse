@@ -6,7 +6,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.services.payment.PaymentRequest;
 import ish.oncourse.util.payment.CreditCardParser;
-import ish.oncourse.util.payment.CreditCardValidator;
 import ish.oncourse.utils.StringUtilities;
 import ish.util.CreditCardUtil;
 import org.apache.tapestry5.ioc.Messages;
@@ -39,7 +38,7 @@ public class PaymentEditorParser implements IFieldsParser {
 			String expiryYear = StringUtilities.cutToNull(request.getParameter(Field.expiryYear.name()));
 			if (expiryMonth != null && expiryYear != null) {
 				paymentRequest.setMonth(expiryMonth);
-				paymentRequest.setMonth(expiryYear);
+				paymentRequest.setYear(expiryYear);
 				paymentIn.setCreditCardExpiry(expiryMonth + "/" + expiryYear);
 				if (!paymentIn.validateCCExpiry())
 					errors.put(Field.expiryMonth.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.expiryMonth.name())));
@@ -76,6 +75,7 @@ public class PaymentEditorParser implements IFieldsParser {
 					String errorMessage = paymentIn.validateCCNumber();
 					if (errorMessage != null)
 						errors.put(field.name(), errorMessage);
+					paymentRequest.setNumber(value);
 					paymentIn.setCreditCardNumber(CreditCardUtil.obfuscateCCNumber(value));
 				} else
 					errors.put(field.name(), messages.format(String.format(MESSAGE_KEY_TEMPLATE, Field.creditCardType.name())));

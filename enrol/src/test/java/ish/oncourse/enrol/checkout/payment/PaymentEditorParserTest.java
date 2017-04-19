@@ -3,6 +3,7 @@ package ish.oncourse.enrol.checkout.payment;
 import ish.math.Money;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.PaymentIn;
+import ish.oncourse.services.payment.PaymentRequest;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.services.Request;
 import org.junit.Before;
@@ -134,6 +135,7 @@ public class PaymentEditorParserTest {
         paymentEditorParser.setContacts(contacts);
         paymentEditorParser.setMessages(messages);
 		paymentEditorParser.setCorporatePass(false);
+        paymentEditorParser.setPaymentRequest(new PaymentRequest());
         return paymentEditorParser;
     }
 }
