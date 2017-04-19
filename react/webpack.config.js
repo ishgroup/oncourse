@@ -125,14 +125,18 @@ function createListOfPlugins({NODE_ENV, API_ROOT}) {
     plugins.push(
       getHtmlWebpackPlugin("index.html"),
       getHtmlWebpackPlugin("courses.html"),
-      getHtmlWebpackPlugin("enrol.html")
+      getHtmlWebpackPlugin("enrol.html"),
+      getHtmlWebpackPlugin("enrol/checkout/index.html"),
+      getHtmlWebpackPlugin("courses/index.html"),
+      getHtmlWebpackPlugin("products/index.html")
     )
   }
 
   function getHtmlWebpackPlugin(name) {
     return new HtmlWebpackPlugin({
-      filename: `dev/${name}`,
-      template: path.resolve(__dirname, "./dev-server/", name)
+      filename: `${name}`,
+      template: path.resolve(__dirname, "./dev-server/", name),
+      inject: false
     });
   }
 
