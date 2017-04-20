@@ -1,6 +1,7 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.Preferences;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -24,7 +25,7 @@ public class CollectParentContactField {
     }
 
     public void save() {
-        preferenceController.setContactAgeWhenNeedParent(studentAgeWhenNeedParent != null ? studentAgeWhenNeedParent : PreferenceController.DEFAULT_contactAgeWhenNeedParent);
+        preferenceController.setContactAgeWhenNeedParent(studentAgeWhenNeedParent != null ? studentAgeWhenNeedParent : Preferences.DEFAULT_contactAgeWhenNeedParent);
         preferenceController.setCollectParentDetails(collectParentDetails != null? collectParentDetails: false);
     }
 }

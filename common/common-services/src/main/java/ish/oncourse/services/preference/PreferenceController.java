@@ -7,7 +7,6 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.URLUtils;
 import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,40 +14,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.util.Date;
 
-import static ish.oncourse.services.preference.PreferenceConstant.PAYMENT_GATEWAY_TYPE;
-import static ish.oncourse.services.preference.PreferenceConstant.STOP_WEB_ENROLMENTS_AGE;
-import static ish.oncourse.services.preference.PreferenceConstant.STOP_WEB_ENROLMENTS_AGE_TYPE;
+import static ish.oncourse.services.preference.Preferences.*;
 import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowCreateContact;
 
 public class PreferenceController extends CommonPreferenceController {
 
 	private static final Logger logger = LogManager.getLogger();
-
-	private static final String NTIS_LAST_UPDATE = "ntis.lastupdate";
-	private static final String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
-
-	static final String ENROLMENT_MIN_AGE = "enrolment.min.age";
-	private static final String REFUND_POLICY_URL = "enrolment.refund.policy.url";
-
-	private static final String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
-	private static final String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
-	private static final String OUTCOME_MARKING_VIA_PORTAL = "outcome.marking.via.portal";
-	private static final String ENABLE_SOCIAL_MEDIA_LINKS = "website.medialinks.enabled";
-	private static final String ENABLE_SOCIAL_MEDIA_LINKS_COURSE = "website.course.medialinks.enabled";
-	private static final String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
-	private static final String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
 	
-	private static final String ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED = "enrolment.corporatePass.payment.enabled";
-	private static final String ENROLMENT_CREDITCARD_PAYMENT_ENABLED = "enrolment.creditCard..payment.enabled";
-
-    private static final String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
-    private static final String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";
-    public static final int DEFAULT_contactAgeWhenNeedParent = 18;
-
-	private static final String HIDE_CLASS_ON_WEB_AGE = "hide.class.on.web.age";
-	private static final String HIDE_CLASS_ON_WEB_AGE_TYPE = "hide.class.on.web.age.type";
-	
-
     @Inject
 	private ICayenneService cayenneService;
 
@@ -69,13 +41,10 @@ public class PreferenceController extends CommonPreferenceController {
 
 	@Override
 	protected String getValue(String key, boolean isUserPref) {
-
 		if (isUserPref) {
 			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
 		}
-
-		Preference pref = getPreferenceByKey(key);
-		return (pref != null) ? pref.getValueString() : null;
+		return new GetPreference(webSiteService.getCurrentCollege(), key, cayenneService.sharedContext()).getValue();
 	}
 
 	@Override
@@ -85,7 +54,7 @@ public class PreferenceController extends CommonPreferenceController {
 			throw new IllegalArgumentException("Cannot fetch a user preference in willow.");
 		}
 
-		Preference pref = getPreferenceByKey(key);
+		Preference pref = new GetPreference(webSiteService.getCurrentCollege(), key, cayenneService.sharedContext()).getPreference();
 
 		ObjectContext context;
 		College college = null;
@@ -112,13 +81,6 @@ public class PreferenceController extends CommonPreferenceController {
 		logger.debug("committing changes to prefs: {}", context.uncommittedObjects());
 
 		context.commitChanges();
-	}
-
-	private Preference getPreferenceByKey(String key) {
-		return ObjectSelect.query(Preference.class)
-				.and(Preference.COLLEGE.eq(webSiteService.getCurrentCollege()))
-				.and(Preference.NAME.eq(key)).localCache(Preference.class.getSimpleName())
-				.selectOne(cayenneService.sharedContext());
 	}
 
 
@@ -265,7 +227,7 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public boolean isPaymentGatewayEnabled() {
-		return !PaymentGatewayType.DISABLED.equals(this.getPaymentGatewayType());
+		return new IsPaymentGatewayEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
 
 	public Integer getEnrolmentMinAge() {

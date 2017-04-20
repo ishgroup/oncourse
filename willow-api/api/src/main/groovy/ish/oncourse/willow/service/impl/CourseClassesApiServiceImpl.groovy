@@ -14,7 +14,7 @@ import ish.oncourse.services.discount.GetPossibleDiscounts
 import ish.oncourse.services.discount.WebDiscountUtils
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
-import ish.oncourse.services.preference.PreferenceConstant
+import ish.oncourse.services.preference.Preferences
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.model.Course
 import ish.oncourse.willow.model.CourseClassPrice
@@ -108,7 +108,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         it.isFinished = !c.cancelled && c.hasEnded()
                         it.isCancelled = c.cancelled
                         it.isAllowByApplication = allowByApplication
-                        it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college: c.college).get()
+                        it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(c.college, c.objectContext).get()
                         it.price = new CourseClassPrice().with { ccp ->
                             ccp.fee = c.feeIncGst.toBigDecimal().toString()
                             ccp.hasTax = !c.gstExempt
@@ -143,8 +143,8 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
     }
     
     private static boolean hasAvailablePlaces(ish.oncourse.model.CourseClass courseClass) {
-        String  age = new GetPreference(college: courseClass.college, key: PreferenceConstant.STOP_WEB_ENROLMENTS_AGE).get()
-        String type = new GetPreference(college: courseClass.college, key: PreferenceConstant.STOP_WEB_ENROLMENTS_AGE_TYPE).get()
+        String  age = new GetPreference(courseClass.college, Preferences.STOP_WEB_ENROLMENTS_AGE, courseClass.objectContext).getValue()
+        String type = new GetPreference(courseClass.college, Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, courseClass.objectContext).getValue()
         return courseClass.isHasAvailableEnrolmentPlaces() && new CheckClassAge().courseClass(courseClass).classAge(ClassAge.valueOf(age, type)).check()
     }
 }
