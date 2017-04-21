@@ -15,11 +15,13 @@ public interface ContactApi  {
     @PUT
     @Path("/contact")
     @Produces({ "application/json" })
+    @CollegeInfo
     Contact createOrGetContact(CreateContactParams createContactParams);
 
     @GET
     @Path("/contact/{studentUniqueIdentifier}")
     @Produces({ "application/json" })
+    @CollegeInfo
     Contact getContact(@PathParam("studentUniqueIdentifier") String studentUniqueIdentifier);
 }
 

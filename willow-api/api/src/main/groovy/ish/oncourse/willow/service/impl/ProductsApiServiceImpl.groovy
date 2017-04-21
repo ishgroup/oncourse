@@ -17,10 +17,13 @@ import org.apache.cayenne.query.QueryCacheStrategy
 class ProductsApiServiceImpl implements ProductsApi {
     
     private ServerRuntime cayenneRuntime
+    private CollegeService collegeService
 
     @Inject
-    ProductsApiServiceImpl(ServerRuntime cayenneRuntime) {
+    ProductsApiServiceImpl(ServerRuntime cayenneRuntime, CollegeService collegeService) {
         this.cayenneRuntime = cayenneRuntime
+        this.collegeService = collegeService
+
     }
     
     List<Product> getProducts(ProductsParams productsParams) {
@@ -28,8 +31,8 @@ class ProductsApiServiceImpl implements ProductsApi {
         ObjectContext context = cayenneRuntime.newContext()
         List<Product> result = []
 
-        ObjectSelect.query(ish.oncourse.model.Product)
-            .where(ExpressionFactory.inDbExp(ish.oncourse.model.Product.ID_PK_COLUMN, productsParams.productsIds))
+        (ObjectSelect.query(ish.oncourse.model.Product)
+                .where(ExpressionFactory.inDbExp(ish.oncourse.model.Product.ID_PK_COLUMN, productsParams.productsIds)) & ish.oncourse.model.Product.COLLEGE.eq(collegeService.college))
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .cacheGroups(ish.oncourse.model.Product.class.simpleName)
                 .select(context)

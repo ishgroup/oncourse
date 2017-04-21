@@ -7,11 +7,8 @@ import ish.oncourse.willow.model.Promotion
 import ish.oncourse.willow.service.PromotionApi
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cxf.interceptor.InInterceptors
-
 
 @CompileStatic
-@InInterceptors(classes = [RequestInterceptor.class])
 class PromotionApiServiceImpl implements PromotionApi {
 
     private ServerRuntime cayenneRuntime

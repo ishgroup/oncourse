@@ -13,6 +13,7 @@ public interface PromotionApi  {
     @GET
     @Path("/promotion/{code}")
     @Produces({ "application/json" })
+    @CollegeInfo
     Promotion getPromotion(@PathParam("code") String code);
 }
 

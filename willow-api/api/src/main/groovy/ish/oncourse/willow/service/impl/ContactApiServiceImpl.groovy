@@ -22,10 +22,12 @@ class ContactApiServiceImpl implements ContactApi{
     final static  Logger logger = LoggerFactory.getLogger(ContactApiServiceImpl.class)
 
     private ServerRuntime cayenneRuntime
+    private CollegeService collegeService
     
     @Inject
-    ContactApiServiceImpl(ServerRuntime cayenneRuntime) {
+    ContactApiServiceImpl(ServerRuntime cayenneRuntime, CollegeService collegeService) {
         this.cayenneRuntime = cayenneRuntime
+        this.collegeService = collegeService
     }
 
     @Override
@@ -43,8 +45,8 @@ class ContactApiServiceImpl implements ContactApi{
 
     @Override
     Contact getContact(String studentUniqueIdentifier) {
-        ish.oncourse.model.Contact contact = ObjectSelect.query(ish.oncourse.model.Contact)
-                .where(ish.oncourse.model.Contact.UNIQUE_CODE.eq(studentUniqueIdentifier))
+        ish.oncourse.model.Contact contact = (ObjectSelect.query(ish.oncourse.model.Contact)
+                .where(ish.oncourse.model.Contact.UNIQUE_CODE.eq(studentUniqueIdentifier)) & ish.oncourse.model.Contact.COLLEGE.eq(collegeService.college))
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .cacheGroups(ish.oncourse.model.Contact.class.simpleName)
                 .selectOne(cayenneRuntime.newContext())

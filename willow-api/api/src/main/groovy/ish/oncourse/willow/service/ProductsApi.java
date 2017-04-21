@@ -19,6 +19,7 @@ public interface ProductsApi  {
     @Path("/products")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
+    @CollegeInfo
     List<Product> getProducts(ProductsParams productsParams);
 }
 

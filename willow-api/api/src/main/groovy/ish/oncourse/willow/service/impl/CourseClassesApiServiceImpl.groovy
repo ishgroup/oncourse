@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.Application
+import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.DiscountCourseClass
 import ish.oncourse.services.application.FindOfferedApplication
@@ -38,14 +39,18 @@ import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 class CourseClassesApiServiceImpl implements CourseClassesApi {
 
     private ServerRuntime cayenneRuntime
+    private CollegeService collegeService
+
 
     @Inject
-    CourseClassesApiServiceImpl(ServerRuntime cayenneRuntime) {
+    CourseClassesApiServiceImpl(ServerRuntime cayenneRuntime, CollegeService collegeService) {
         this.cayenneRuntime = cayenneRuntime
+        this.collegeService = collegeService
     }
     
     List<CourseClass> getCourseClasses(CourseClassesParams courseClassesParams) {
 
+        College college = collegeService.college
         ObjectContext context = cayenneRuntime.newContext()
         List<CourseClass> result = []
         List<ish.oncourse.model.Discount> promotions = []
@@ -60,16 +65,16 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
         }
 
         if (courseClassesParams.promotions) {
-            promotions = ObjectSelect.query(ish.oncourse.model.Discount)
+            promotions = (ObjectSelect.query(ish.oncourse.model.Discount)
                     .where(ExpressionFactory.
-                    inDbExp(ish.oncourse.model.Discount.ID_PK_COLUMN, courseClassesParams.promotions*.id))
+                    inDbExp(ish.oncourse.model.Discount.ID_PK_COLUMN, courseClassesParams.promotions*.id)) & ish.oncourse.model.Discount.COLLEGE.eq(college))
                     .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                     .cacheGroups(ish.oncourse.model.Discount.class.simpleName)
                     .select(context)
         }
 
-        ObjectSelect.query(ish.oncourse.model.CourseClass)
-                .where(ExpressionFactory.inDbExp(ish.oncourse.model.CourseClass.ID_PK_COLUMN, courseClassesParams.courseClassesIds))
+        (ObjectSelect.query(ish.oncourse.model.CourseClass)
+                .where(ExpressionFactory.inDbExp(ish.oncourse.model.CourseClass.ID_PK_COLUMN, courseClassesParams.courseClassesIds)) & ish.oncourse.model.CourseClass.COLLEGE.eq(college))
                 .prefetch(ish.oncourse.model.CourseClass.COLLEGE.joint())
                 .prefetch(ish.oncourse.model.CourseClass.COURSE.joint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)

@@ -15,6 +15,6 @@ class CollegeService {
     }
     
     College getCollege() {
-       new GetWebSite(RequestInterceptor.ThreadLocalXOrigin.get(),runtime.newContext()).get().college
+       new GetWebSite(RequestFilter.ThreadLocalXOrigin.get(),runtime.newContext()).get().college
     }
 }

@@ -12,6 +12,7 @@ import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import ish.oncourse.willow.service.impl.HealthCheckApiServiceImpl
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
+import ish.oncourse.willow.service.impl.RequestFilter
 import ish.oncourse.willow.service.impl.ShutdownService
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.di.Module
@@ -29,6 +30,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(CollegeService)
         CXFModule.contributeResources(binder).addBinding().to(HealthCheckApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ShutdownService)
+        CXFModule.contributeResources(binder).addBinding().to(RequestFilter)
     }
 
     static class WillowApiCayenneModule implements Module {
