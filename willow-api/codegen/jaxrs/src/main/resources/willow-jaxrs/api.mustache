@@ -24,6 +24,9 @@ public interface {{classname}}  {
 {{#hasProduces}}
     @Produces({ {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} })
 {{/hasProduces}}
+{{#vendorExtensions.x-filter}}
+    @{{vendorExtensions.x-filter}}
+{{/vendorExtensions.x-filter}}
     {{>returnTypes}} {{nickname}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
 {{/operation}}
 }
