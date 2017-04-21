@@ -3,10 +3,8 @@ info:
   title: Ish API
   description: Ish React App Api
   version: "1.0.0"
-host: ish.com
 schemes:
   - https
-basePath: /react
 produces:
   - application/json
 paths:
