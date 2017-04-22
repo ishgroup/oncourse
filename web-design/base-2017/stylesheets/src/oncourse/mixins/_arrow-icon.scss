@@ -1,0 +1,39 @@
+
+
+@mixin arrow-icon($arrow-width: 16, $arrow-height: 2, $color: #fff, $position: 'right', $posH: 2, $posV: -1) {
+  position: relative;
+  display: inline-block;
+  width: #{$arrow-width}px;
+  height: #{$arrow-height}px;
+  vertical-align: middle;
+  background: $color;
+  &::after, &::before {
+    content: "";
+    position: absolute;
+    height: #{($arrow-width - 4)}px;
+    background: $color;
+    width: #{$arrow-height}px;
+
+    @if $position == 'right' {
+      right: #{$posH}px;
+    } @else {
+      left: #{$posH}px;
+    }
+  }
+
+  $rotate-after: 45deg;
+  $rotate-before: -45deg;
+  @if $position == 'left' {
+    $rotate-after: -45deg;
+    $rotate-before: 45deg;
+  }
+
+  &::after {
+    transform: rotate($rotate-after);
+    top: #{$posV}px;
+  }
+  &::before {
+    transform: rotate($rotate-before);
+    bottom: #{$posV}px;
+  }
+}

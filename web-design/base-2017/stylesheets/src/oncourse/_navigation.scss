@@ -148,29 +148,29 @@
 			float: right;
 		}
 		> ul {
-			float: none;
-			width: 100%;
+			float: $navFloat;
+			width: $navListWidth;
 			background: $navBG;
 			border-top: $navBorderTop;
-			text-align: center;
+			text-align: $navTextAlign;
 
 			// Following function handles responsive media tablet screen
 			@include responsive($media-tablet) {
 				border-bottom: $navBorderBottom;
-				float: left;
-				text-align: left;
+				float: $navFloatTablet;
+				text-align: $navTextAlignTablet;
 			}
 			li {
 				display: $navDisplayItem;
 			}
 			a {
-				padding: 12px 19px 11px;
+				padding: $navAnchorItemPadding;
 				display: block;
 			}
 			> li {
-				float: none;
-				position: relative;
-				display: inline-block;
+				float: $navListFloat;
+				position: $navListPosition;
+				display: $navListDisplay;
 				border-bottom: $navListBottomBorder;
 				text-transform: $navListTextTransform;
 
@@ -179,8 +179,9 @@
 
 				// Following function handles responsive media tablet screen
 				@include responsive($media-tablet) {
-					float: left;
-					margin-right: 2px;
+					display: $navListDisplayTablet;
+					float: $navListFloatTablet;
+					margin-right: $navListMarginRight;
 					border-bottom: $navListBottomBorderMediaTablet;
 				}
 

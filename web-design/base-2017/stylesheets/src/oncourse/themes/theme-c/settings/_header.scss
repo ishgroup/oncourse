@@ -15,20 +15,21 @@ $headerContainerMarginBottom: 0px !default;
 $headerGroupPosition: relative !default;
 
 $headerTopBarFloat: none !default;
-$headerTopBarBG: #fbfbfb !default;
+$headerTopBarBG: $white !default;
 $headerTopBarTextColor: $bodyFontColor !default;
-$headerTopBarMarginBottom: 39px !default;
+$headerTopBarMarginBottom: 0 !default;
 
 $headerTopBarContactMargin: 6px 10px 0px 20px !default;
 $headerTopBarPhoneTextColor: $bodyFontColor !default;
 
 $headerTopBarPaddingTop: 0px !default;
-$headerTopBarHeight: 57px !default;
+$headerTopBarHeight: auto !default;
 $headerGroupSiteLogoFloatPosition: none !default;
 $headerGroupSiteLogoZIndex: 0 !default;
 
 // Navigation
 $navbarPaddingLeft: 0px !default;
+$navbarBackgroundColor: #e0e0e0 !default;
 $navFontSize: 12px !default;
 $navFontWeight: normal !default;
 $navWidth: auto !default;
@@ -120,7 +121,10 @@ $advancedSearchLocationWidth: 50% !default;
 $advancedSearchPriceWidth: $advancedSearchLocationWidth !default;
 $advancedSearchActiveRight: -6px !default;
 $advancedSearchActiveTop: 20px !default;
+$advancedSearchTitleColor-InternalPage: #00515f !default;
+$advancedSearchTitleColor-HomePage: $secondaryColor !default;
 
+$searchBoxBackground: $white !default;
 $searchBoxWidth: 190px !default;
 $searchBoxBorder: 1px solid #ddd !default;
 $searchBoxBorderRadius: 14px !default;

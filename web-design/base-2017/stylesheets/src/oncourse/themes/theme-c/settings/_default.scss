@@ -38,69 +38,82 @@ $bodyFontColor: #717171 !default;
 $discountBlockTextColor: $anchorColor !default;
 $discountBlockTitleColor: $bodyFontColor !default;
 
-$headerTopBarMarginBottom: 0 !default;
-$headerTopBarPaddingTop: 0 !default;
-$headerTopBarHeight: auto !default;
-$headerTopBarBG: #fff !default;
-
 // Content container
-$contentContainerMarginTop: 0px;
+$contentContainerMarginTop: 0px !default;
 
 // Courses
 $waitingListTitleHoverBG: $bodyFontColor !default;
 
 
-$h1InnerFontFamily: $bodyFontFamily;
+$h1InnerFontFamily: $bodyFontFamily !default;
 $h1InnerTextColor: $primaryColor !default;
 
 $discountBlockDisplay: none !default;
 $discountBlockActionLinkDisplay: none !default;
 
-$h1LinkColor: $primaryColor;
-$h1LinkHoverColor: $secondaryColor;
+$h1LinkColor: $primaryColor !default;
+$h1LinkHoverColor: $secondaryColor !default;
 
-$h2LinkColor: $primaryColor;
-$h2LinkHoverColor: $secondaryColor;
+$h2LinkColor: $primaryColor !default;
+$h2LinkHoverColor: $secondaryColor !default;
 
-$h3LinkColor: $primaryColor;
-$h3LinkHoverColor: $secondaryColor;
+$h3LinkColor: $primaryColor !default;
+$h3LinkHoverColor: $secondaryColor !default;
 
-$h4LinkColor: $primaryColor;
-$h4LinkHoverColor: $secondaryColor;
+$h4LinkColor: $primaryColor !default;
+$h4LinkHoverColor: $secondaryColor !default;
 
-$h5LinkColor: $primaryColor;
-$h5LinkHoverColor: $secondaryColor;
+$h5LinkColor: $primaryColor !default;
+$h5LinkHoverColor: $secondaryColor !default;
 
-$h6LinkColor: $primaryColor;
-$h6LinkHoverColor: $secondaryColor;
+$h6LinkColor: $primaryColor !default;
+$h6LinkHoverColor: $secondaryColor !default;
 
-$enrolActionFontFamily: $bodyFontFamily;
-$enrolActionBackground: $primaryColor;
-$enrolActionHoverBackground: $secondaryColor;
+$enrolActionFontFamily: $bodyFontFamily !default;
+$enrolActionBackground: $primaryColor !default;
+$enrolActionHoverBackground: $secondaryColor !default;
 
-$enrolActionBorder: 1px solid $primaryColor;
+$enrolActionBorder: 1px solid $primaryColor !default;
 $enrolActionAddedBackground: $secondaryColor !default;
 
 $coursesJoinButtonBackground: $primaryColor !default;
-$coursesJoinButtonHoverBackground: $primaryColor;
+$coursesJoinButtonHoverBackground: $primaryColor !default;
 $classItemBorderHoverColor: $primaryColor !default;
 $classItemBackgroundColor: transparent !default;
 
 $classItemBorder: 1px solid #dedede !default;
 $classItemBorderLeft: 6px solid #dedede !default;
 
-$coursesFontFamily: $bodyFontFamily;
-$coursesDetailsFontFamily: $bodyFontFamily;
-$normalFontFamily: $bodyFontFamily;
+$coursesFontFamily: $bodyFontFamily !default;
+$coursesDetailsFontFamily: $bodyFontFamily !default;
+$normalFontFamily: $bodyFontFamily !default;
 
 $courseItemBorderTop: 2px dotted $primaryColor !default;
 
 $courseMoreLinkColor: $secondaryColor !default;
 $courseMoreLinkHoverColor: $primaryColor !default;
 
-$btnBackgroundColor: $primaryColor;
-$btnBackgroundHoverColor: $secondaryColor;
+$btnBackgroundColor: $primaryColor !default;
+$btnBackgroundHoverColor: $secondaryColor !default;
 
-$btnType2BackgroundColor: $secondaryColor;
+$btnType2BackgroundColor: $secondaryColor !default;
+
+$appBtnBackgroundColor: $theme-color !default;
+$appBtnBackgroundHoverColor: darken($theme-color, 15%) !default;
+
+$squareBtnMargin: 35px auto 0 !default;
+$squareBtnDisplay: block !default;
+$squareBtnColor: $white !default;
+$squareBtnPadding: 10px 25px 10px !default;
+$squareBtnFontSize: 15px !default;
+$squareBtnBorderColor: $theme-color !default;
+$squareBtnBorderColorHover: $white !default;
+$squareBtnWidth: 189px !default;
+$squareBtnFontWeight: 700 !default;
+$squareBtnTextTransform: uppercase !default;
+$squareBtnBorderRadius: 2px !default;
+$squareBtnLetterSpacing: 2px !default;
+$squareBtnTextAlign: center !default;
+
 
 $classItemLinkHoverColor: $primaryColor !default;

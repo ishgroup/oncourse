@@ -411,9 +411,9 @@
 .classItem {
   zoom: 1 \9;
   position: relative;
-  padding: 10px 15px;
+  padding: $classItemPadding;
   background-color: $classItemBackgroundColor;
-  margin: 0 0 20px;
+  margin: $classItemMargin;
   border: $classItemBorder;
   border-left: $classItemBorderLeft;
   &::after {

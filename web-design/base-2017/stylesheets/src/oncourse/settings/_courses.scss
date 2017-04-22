@@ -198,8 +198,11 @@ $courseMoreLinkHoverColor: $primaryColor !default;
 // Following settings are handles class items style
 //
 
+$classItemPadding: 10px 15px !default;
 // Courses class item background color
 $classItemBackgroundColor: $white !default;
+
+$classItemMargin: 0 0 20px !default;
 // Courses class item border color
 $classItemBorderColor: #eee !default;
 // Courses class item border

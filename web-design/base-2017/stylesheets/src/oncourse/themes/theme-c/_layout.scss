@@ -48,28 +48,28 @@
 		line-height: 1.2;
 		letter-spacing: 1px;
 		font-weight: 300;
-		background: $theme-color;
+		background: $appBtnBackgroundColor;
 		&:hover {
-			background: $secondaryColor;
+			background: $appBtnBackgroundHoverColor;
 		}
 	}
 
 	.square-btn {
-		margin: 35px auto 0;
-		display: block;
-		color: $white;
-		padding: 10px 25px 10px;
-		font-size: 15px;
-		border: 2px solid $theme-color;
-		width: 189px;
-		font-weight: 700;
-		text-transform: uppercase;
-		border-radius: 2px;
-		letter-spacing: 2px;
+		margin: $squareBtnMargin;
+		display: $squareBtnDisplay;
+		color: $squareBtnColor;
+		padding: $squareBtnPadding;
+		font-size: $squareBtnFontSize;
+		border: 2px solid $squareBtnBorderColor;
+		width: $squareBtnWidth;
+		font-weight: $squareBtnFontWeight;
+		text-transform: $squareBtnTextTransform;
+		border-radius: $squareBtnBorderRadius;
+		letter-spacing: $squareBtnLetterSpacing;
 		text-decoration: none;
-		text-align: center;
+		text-align: $squareBtnTextAlign;
 		&:hover {
-			border-color: $white;
+			border-color: $squareBtnBorderColorHover;
 		}
 	}
 
@@ -307,7 +307,7 @@
 					}
 				}
 			}
-			&#about-us-gallery {
+			&.about-us-gallery {
 				.col-sm-12 {
 					padding: 80px 35px 80px 55px;
 					@include responsive($media-tablet) {
@@ -328,7 +328,7 @@
 					line-height: 26px;
 				}
 			}
-			&#newsletter-subscribe {
+			&.newsletter-subscribe {
 				text-align: center;
 				position: relative;
 				h3, p {
@@ -349,7 +349,7 @@
 					color: $white;
 				}
 			}
-			&#contact-us {
+			&.contact-us {
 				text-align: left;
 				.title-one, .title-two {
 					text-align: left;

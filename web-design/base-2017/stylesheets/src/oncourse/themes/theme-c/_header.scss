@@ -37,7 +37,7 @@
 							color: #202020;
 							.advanced-search-form {
 								.search-title {
-									color: #00515f;
+									color: $advancedSearchTitleColor-InternalPage;
 								}
 								input[type="text"], select, input[type="checkbox"] {
 									background: #cecece;
@@ -69,13 +69,13 @@
 			top: 0;
 			left: 0;
 			right: 0;
-			z-index: 999;
+			z-index: 106;
 		}
 		>p {
 			margin: 0px;
 		}
 		.header-container {
-			background: $white;
+			background: $headerTopBarBG;
 			padding-bottom: 16px;
 			padding-top: 16px;
 			.top-bar {
@@ -152,7 +152,7 @@
 								.search-title {
 									font-size: 30px;
 									font-weight: bold;
-									color: $secondaryColor;
+									color: $advancedSearchTitleColor-HomePage;
 									margin-bottom: 25px;
 								}
 								>div {
@@ -209,8 +209,11 @@
 								position: relative;
 							}
 						}
-						#search .quicksearch {
-							font-size: 13px;
+						#search {
+							background: $searchBoxBackground;
+							.quicksearch {
+								font-size: 13px;
+							}
 						}
 					}
 				}
@@ -222,7 +225,7 @@
 					text-align: center;
 					display: none;
 					margin: 0 auto;
-					background: #e0e0e0;
+					background: $navbarBackgroundColor;
 					z-index: 99;
 					box-shadow: 1px 1px 3px 1px #cacaca;
 					@include responsive($media-tablet) {

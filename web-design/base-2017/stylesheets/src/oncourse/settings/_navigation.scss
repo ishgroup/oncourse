@@ -29,16 +29,41 @@ $navWidth: auto !default;
 $navTabletDisplay: block !important !default;
 // Navbar margin
 $navMargin: 0px !default;
+
+$navFloat: none !default;
+
+$navListWidth: 100% !default;
+
 // Navbar background color
 $navBG: transparent !default;
 // Navbar border color
 $navBorderColor: transparent !default;
 // Navbar border top
 $navBorderTop: 1px solid $navBorderColor !default;
+
+$navTextAlign: center !default;
+
+$navTextAlignTablet: left !default;
+
+$navFloatTablet: left !default;
 // Navbar border bottom
 $navBorderBottom: 1px solid $navBorderColor !default;
 // Navbar display list item
 $navDisplayItem: list-item !important !default;
+
+$navAnchorItemPadding: 12px 19px 11px !default;
+
+$navListFloat: none !default;
+
+$navListFloatTablet: left !default;
+
+$navListPosition: relative !default;
+
+$navListDisplay: inline-block !default;
+
+$navListDisplayTablet: inline-block !default;
+
+$navListMarginRight: 2px !default;
 
 // Navbar list bottom border
 $navListBottomBorder: 1px solid $navBorderColor !default;

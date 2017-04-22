@@ -105,7 +105,7 @@
       width: $sliderControlWidth;
       height: $sliderControlHeight;
       text-indent: -9999px;
-      z-index: 9999;
+      z-index: 105;
       opacity: $sliderControlOpacity;
       &.disabled {
         display: none;

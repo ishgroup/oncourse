@@ -29,4 +29,6 @@
 	<div id="timeline-wrap" style="visibility: hidden;">
 		<div id="timeline" />
 	</div>
+
+	<div data-cid="modal" class="reactjs-component"></div>
 </section>
