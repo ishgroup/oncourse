@@ -140,10 +140,6 @@ allprojects {
 		}
 	}
 
-	startScripts {
-		unixStartScriptGenerator.template = resources.text.fromFile("${project.rootDir}/buildSrc/src/main/resources/applicationStartScript.sh")
-	}
-
 	test {
 		systemProperties 'java.awt.headless': 'true'
 		maxHeapSize = '1024m'
