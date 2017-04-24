@@ -162,7 +162,7 @@
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v15_replication" implementor="#v15_replicationPortType"
-					address="/v14/replication">
+					address="/v15/replication">
 		<jaxws:inInterceptors>
 			<ref bean="v4_communicationKeyInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
@@ -170,7 +170,7 @@
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v15_payment" implementor="#v15_paymentPortType"
-					address="/v14/payment">
+					address="/v15/payment">
 		<jaxws:inInterceptors>
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
