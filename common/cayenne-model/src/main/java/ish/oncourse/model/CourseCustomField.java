@@ -9,7 +9,7 @@ public class CourseCustomField extends _CourseCustomField {
 
     @Override
     public String getEntityIdentifier() {
-        return Course.class.getName();
+        return Course.class.getSimpleName();
     }
 
     @Override

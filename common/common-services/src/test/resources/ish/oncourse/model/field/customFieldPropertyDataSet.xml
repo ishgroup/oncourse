@@ -8,6 +8,6 @@
 
 	<Contact id="1" collegeId="1"  angelId="1" countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir" emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow" isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1"/>
 
-	<CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Custom field" fieldKey="customField" isMandatory="0"/>
+	<CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Custom field" fieldKey="customField" isMandatory="0" entityName="Contact"/>
 
 </dataset>

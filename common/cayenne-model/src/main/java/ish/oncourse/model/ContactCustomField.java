@@ -9,7 +9,7 @@ public class ContactCustomField extends _ContactCustomField {
 
     @Override
     public String getEntityIdentifier() {
-        return Contact.class.getName();
+        return Contact.class.getSimpleName();
     }
 
     @Override

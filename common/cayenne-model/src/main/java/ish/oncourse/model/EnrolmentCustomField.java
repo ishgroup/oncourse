@@ -9,7 +9,7 @@ public class EnrolmentCustomField extends _EnrolmentCustomField {
 
     @Override
     public String getEntityIdentifier() {
-        return Enrolment.class.getName();
+        return Enrolment.class.getSimpleName();
     }
 
     @Override
