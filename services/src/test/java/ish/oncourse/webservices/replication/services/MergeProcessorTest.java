@@ -329,8 +329,8 @@ public class MergeProcessorTest extends ServiceTest {
 				.selectOne(context);
 
 
-		List<CustomField> contact1CustomFields = ObjectSelect.query(CustomField.class)
-				.where(CustomField.RELATED_OBJECT.eq(contact1))
+		List<ContactCustomField> contact1CustomFields = ObjectSelect.query(ContactCustomField.class)
+				.where(ContactCustomField.RELATED_OBJECT.eq(contact1))
 				.select(context);
 
 		assertEquals(2, contact1CustomFields.size());
@@ -446,8 +446,8 @@ public class MergeProcessorTest extends ServiceTest {
 				.selectOne(context);
 
 
-		List<CustomField> contact1CustomFields = ObjectSelect.query(CustomField.class)
-				.where(CustomField.RELATED_OBJECT.eq(contact1))
+		List<ContactCustomField> contact1CustomFields = ObjectSelect.query(ContactCustomField.class)
+				.where(ContactCustomField.RELATED_OBJECT.eq(contact1))
 				.select(context);
 
 		assertEquals(2, contact1CustomFields.size());
@@ -568,8 +568,8 @@ public class MergeProcessorTest extends ServiceTest {
 				.selectOne(context);
 
 
-		List<CustomField> contact1CustomFields = ObjectSelect.query(CustomField.class)
-				.where(CustomField.RELATED_OBJECT.eq(contact1))
+		List<ContactCustomField> contact1CustomFields = ObjectSelect.query(ContactCustomField.class)
+				.where(ContactCustomField.RELATED_OBJECT.eq(contact1))
 				.select(context);
 
 		assertEquals(2, contact1CustomFields.size());

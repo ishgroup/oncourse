@@ -2,8 +2,6 @@ package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.enrol.checkout.*;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.CustomField;
-import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import org.apache.cayenne.ObjectContext;
 

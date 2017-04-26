@@ -4,7 +4,6 @@
 package ish.oncourse.webservices.replication.services;
 
 
-import ish.common.types.AttendanceType;
 import ish.common.types.ContactDuplicateStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.webservices.util.GenericDeletedStub;
@@ -354,8 +353,8 @@ public class MergeProcessor {
 	}
 
 	private void mergeCustomFieldRelations() {
-		List<CustomField> contactToUpdateCustomFields = new ArrayList<>(contactToUpdate.getCustomFields());
-		List<CustomField> contactToDeleteCustomFields = new ArrayList<>(contactToDelete.getCustomFields());
+		List<ContactCustomField> contactToUpdateCustomFields = new ArrayList<>(contactToUpdate.getCustomFields());
+		List<ContactCustomField> contactToDeleteCustomFields = new ArrayList<>(contactToDelete.getCustomFields());
 		for (CustomField contactToDeleteCustomField : contactToDeleteCustomFields) {
 			if (toDelete("CustomField", contactToDeleteCustomField.getId(), contactToDeleteCustomField.getAngelId())) {
 				context.deleteObject(contactToDeleteCustomField);

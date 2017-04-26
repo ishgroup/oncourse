@@ -152,8 +152,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(customFieldType.getRequireForMailingList()).thenReturn("Show");
 		when(customFieldType.getRequireForWaitingList()).thenReturn("Show");
 		when(college.getCustomFieldTypes()).thenReturn(Collections.singletonList(customFieldType));
-		
-		CustomField customField = mock(CustomField.class);
+
+		ContactCustomField customField = mock(ContactCustomField.class);
 		when(customField.getObjectContext()).thenReturn(context);
 		when(customField.getCustomFieldType()).thenReturn(customFieldType);
 		when(customField.getValue()).thenReturn("test value");
