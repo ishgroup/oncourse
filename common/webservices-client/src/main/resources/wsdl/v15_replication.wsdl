@@ -1385,7 +1385,7 @@
                             <xs:element name="defaultValue" type="xs:string"/>
                             <xs:element name="mandatory" type="xs:boolean"/>
                             <xs:element name="key" type="xs:string"/>
-                            <xs:element name="entityIdentifier" type="xs:string" />
+                            <xs:element name="entityName" type="xs:string"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1398,7 +1398,7 @@
                             <xs:element name="customFieldTypeId" type="xs:long"/>
                             <xs:element name="foreignId" type="xs:long"/>
                             <xs:element name="value" type="xs:string"/>
-                            <xs:element name="entityIdentifier" type="xs:string" />
+                            <xs:element name="entityName" type="xs:string"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

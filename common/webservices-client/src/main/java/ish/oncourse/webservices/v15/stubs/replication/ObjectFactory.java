@@ -139,14 +139,6 @@ public class ObjectFactory {
     private final static QName _ResultsResponse_QNAME = new QName("http://repl.v15.soap.webservices.oncourse.ish/", "resultsResponse");
     private final static QName _PaymentIn_QNAME = new QName("http://repl.v15.soap.webservices.oncourse.ish/", "paymentIn");
     private final static QName _FaultResponse_QNAME = new QName("http://repl.v15.soap.webservices.oncourse.ish/", "faultResponse");
-    private final static QName _CustomFieldStubForeignId_QNAME = new QName("", "foreignId");
-    private final static QName _CustomFieldStubCustomFieldTypeId_QNAME = new QName("", "customFieldTypeId");
-    private final static QName _CustomFieldStubValue_QNAME = new QName("", "value");
-    private final static QName _CustomFieldStubEntityIdentifier_QNAME = new QName("", "entityIdentifier");
-    private final static QName _CustomFieldTypeStubDefaultValue_QNAME = new QName("", "defaultValue");
-    private final static QName _CustomFieldTypeStubName_QNAME = new QName("", "name");
-    private final static QName _CustomFieldTypeStubMandatory_QNAME = new QName("", "mandatory");
-    private final static QName _CustomFieldTypeStubKey_QNAME = new QName("", "key");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ish.oncourse.webservices.v15.stubs.replication
@@ -1982,90 +1974,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v15.soap.webservices.oncourse.ish/", name = "faultResponse")
     public JAXBElement<FaultReason> createFaultResponse(FaultReason value) {
         return new JAXBElement<FaultReason>(_FaultResponse_QNAME, FaultReason.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Long }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "foreignId", scope = CustomFieldStub.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
-    public JAXBElement<Long> createCustomFieldStubForeignId(Long value) {
-        return new JAXBElement<Long>(_CustomFieldStubForeignId_QNAME, Long.class, CustomFieldStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Long }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "customFieldTypeId", scope = CustomFieldStub.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
-    public JAXBElement<Long> createCustomFieldStubCustomFieldTypeId(Long value) {
-        return new JAXBElement<Long>(_CustomFieldStubCustomFieldTypeId_QNAME, Long.class, CustomFieldStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "value", scope = CustomFieldStub.class)
-    public JAXBElement<String> createCustomFieldStubValue(String value) {
-        return new JAXBElement<String>(_CustomFieldStubValue_QNAME, String.class, CustomFieldStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "entityIdentifier", scope = CustomFieldStub.class)
-    public JAXBElement<String> createCustomFieldStubEntityIdentifier(String value) {
-        return new JAXBElement<String>(_CustomFieldStubEntityIdentifier_QNAME, String.class, CustomFieldStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "defaultValue", scope = CustomFieldTypeStub.class)
-    public JAXBElement<String> createCustomFieldTypeStubDefaultValue(String value) {
-        return new JAXBElement<String>(_CustomFieldTypeStubDefaultValue_QNAME, String.class, CustomFieldTypeStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "name", scope = CustomFieldTypeStub.class)
-    public JAXBElement<String> createCustomFieldTypeStubName(String value) {
-        return new JAXBElement<String>(_CustomFieldTypeStubName_QNAME, String.class, CustomFieldTypeStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "mandatory", scope = CustomFieldTypeStub.class)
-    @XmlJavaTypeAdapter(Adapter4 .class)
-    public JAXBElement<Boolean> createCustomFieldTypeStubMandatory(Boolean value) {
-        return new JAXBElement<Boolean>(_CustomFieldTypeStubMandatory_QNAME, Boolean.class, CustomFieldTypeStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "key", scope = CustomFieldTypeStub.class)
-    public JAXBElement<String> createCustomFieldTypeStubKey(String value) {
-        return new JAXBElement<String>(_CustomFieldTypeStubKey_QNAME, String.class, CustomFieldTypeStub.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "entityIdentifier", scope = CustomFieldTypeStub.class)
-    public JAXBElement<String> createCustomFieldTypeStubEntityIdentifier(String value) {
-        return new JAXBElement<String>(_CustomFieldStubEntityIdentifier_QNAME, String.class, CustomFieldTypeStub.class, value);
     }
 
 }

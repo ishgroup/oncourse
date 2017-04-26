@@ -1,15 +1,12 @@
 
 package ish.oncourse.webservices.v15.stubs.replication;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlElementRefs;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -25,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="customFieldTypeId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="foreignId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="entityIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -36,60 +33,122 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "customFieldStub", propOrder = {
-    "rest"
+    "customFieldTypeId",
+    "foreignId",
+    "value",
+    "entityName"
 })
 public class CustomFieldStub
     extends ReplicationStub
 {
 
-    @XmlElementRefs({
-        @XmlElementRef(name = "entityIdentifier", type = JAXBElement.class),
-        @XmlElementRef(name = "customFieldTypeId", type = JAXBElement.class),
-        @XmlElementRef(name = "foreignId", type = JAXBElement.class),
-        @XmlElementRef(name = "value", type = JAXBElement.class)
-    })
-    protected List<JAXBElement<? extends Serializable>> rest;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long customFieldTypeId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long foreignId;
+    @XmlElement(required = true)
+    protected String value;
+    @XmlElement(required = true)
+    protected String entityName;
 
     /**
-     * Gets the rest of the content model. 
+     * Gets the value of the customFieldTypeId property.
      * 
-     * <p>
-     * You are getting this "catch-all" property because of the following reason: 
-     * The field name "EntityIdentifier" is used by two different parts of a schema. See: 
-     * line 1401 of file:/Users/anarut/ish/projects/willow/willow/common/webservices-client/src/main/resources/wsdl/v15_replication.wsdl
-     * line 1053 of file:/Users/anarut/ish/projects/willow/willow/common/webservices-client/src/main/resources/wsdl/v15_replication.wsdl
-     * <p>
-     * To get rid of this property, apply a property customization to one 
-     * of both of the following declarations to change their names: 
-     * Gets the value of the rest property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the rest property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getRest().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link Long }{@code >}
-     * {@link JAXBElement }{@code <}{@link Long }{@code >}
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<JAXBElement<? extends Serializable>> getRest() {
-        if (rest == null) {
-            rest = new ArrayList<JAXBElement<? extends Serializable>>();
-        }
-        return this.rest;
+    public Long getCustomFieldTypeId() {
+        return customFieldTypeId;
+    }
+
+    /**
+     * Sets the value of the customFieldTypeId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCustomFieldTypeId(Long value) {
+        this.customFieldTypeId = value;
+    }
+
+    /**
+     * Gets the value of the foreignId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getForeignId() {
+        return foreignId;
+    }
+
+    /**
+     * Sets the value of the foreignId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setForeignId(Long value) {
+        this.foreignId = value;
+    }
+
+    /**
+     * Gets the value of the value property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * Sets the value of the value property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    /**
+     * Gets the value of the entityName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getEntityName() {
+        return entityName;
+    }
+
+    /**
+     * Sets the value of the entityName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEntityName(String value) {
+        this.entityName = value;
     }
 
 }

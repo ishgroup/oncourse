@@ -1,15 +1,12 @@
 
 package ish.oncourse.webservices.v15.stubs.replication;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlElementRefs;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -26,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="defaultValue" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="mandatory" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="key" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="entityIdentifier" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="entityName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -37,62 +34,147 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "customFieldTypeStub", propOrder = {
-    "rest"
+    "name",
+    "defaultValue",
+    "mandatory",
+    "key",
+    "entityName"
 })
 public class CustomFieldTypeStub
     extends ReplicationStub
 {
 
-    @XmlElementRefs({
-        @XmlElementRef(name = "name", type = JAXBElement.class),
-        @XmlElementRef(name = "entityIdentifier", type = JAXBElement.class),
-        @XmlElementRef(name = "mandatory", type = JAXBElement.class),
-        @XmlElementRef(name = "key", type = JAXBElement.class),
-        @XmlElementRef(name = "defaultValue", type = JAXBElement.class)
-    })
-    protected List<JAXBElement<? extends Serializable>> rest;
+    @XmlElement(required = true)
+    protected String name;
+    @XmlElement(required = true)
+    protected String defaultValue;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter4 .class)
+    @XmlSchemaType(name = "boolean")
+    protected Boolean mandatory;
+    @XmlElement(required = true)
+    protected String key;
+    @XmlElement(required = true)
+    protected String entityName;
 
     /**
-     * Gets the rest of the content model. 
+     * Gets the value of the name property.
      * 
-     * <p>
-     * You are getting this "catch-all" property because of the following reason: 
-     * The field name "EntityIdentifier" is used by two different parts of a schema. See: 
-     * line 1388 of file:/Users/anarut/ish/projects/willow/willow/common/webservices-client/src/main/resources/wsdl/v15_replication.wsdl
-     * line 1053 of file:/Users/anarut/ish/projects/willow/willow/common/webservices-client/src/main/resources/wsdl/v15_replication.wsdl
-     * <p>
-     * To get rid of this property, apply a property customization to one 
-     * of both of the following declarations to change their names: 
-     * Gets the value of the rest property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the rest property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getRest().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<JAXBElement<? extends Serializable>> getRest() {
-        if (rest == null) {
-            rest = new ArrayList<JAXBElement<? extends Serializable>>();
-        }
-        return this.rest;
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the value of the name property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
+
+    /**
+     * Gets the value of the defaultValue property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    /**
+     * Sets the value of the defaultValue property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDefaultValue(String value) {
+        this.defaultValue = value;
+    }
+
+    /**
+     * Gets the value of the mandatory property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Boolean isMandatory() {
+        return mandatory;
+    }
+
+    /**
+     * Sets the value of the mandatory property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMandatory(Boolean value) {
+        this.mandatory = value;
+    }
+
+    /**
+     * Gets the value of the key property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Sets the value of the key property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setKey(String value) {
+        this.key = value;
+    }
+
+    /**
+     * Gets the value of the entityName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getEntityName() {
+        return entityName;
+    }
+
+    /**
+     * Sets the value of the entityName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEntityName(String value) {
+        this.entityName = value;
     }
 
 }
