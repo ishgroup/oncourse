@@ -3,6 +3,7 @@ package ish.oncourse.willow.service
 import ish.oncourse.willow.model.Promotion
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
+import ish.oncourse.willow.service.impl.RequestFilter
 import ish.oncourse.willow.service.impl.RequestInterceptor
 import org.junit.Test
 
@@ -17,7 +18,7 @@ class PromotionApiTest extends ApiTest {
     @Test
     void getPromotionTest() {
 
-        RequestInterceptor.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
 
         PromotionApi api = new PromotionApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
 
