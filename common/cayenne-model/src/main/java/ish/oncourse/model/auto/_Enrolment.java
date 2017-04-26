@@ -20,6 +20,7 @@ import ish.math.Money;
 import ish.oncourse.model.AssessmentSubmission;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.model.EnrolmentCustomField;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Outcome;
 import ish.oncourse.model.Student;
@@ -57,6 +58,7 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final String ASSESSMENT_SUBMISSIONS_PROPERTY = "assessmentSubmissions";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASS_PROPERTY = "courseClass";
+    public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
     public static final String INVOICE_LINES_PROPERTY = "invoiceLines";
     public static final String OUTCOMES_PROPERTY = "outcomes";
     public static final String STUDENT_PROPERTY = "student";
@@ -86,6 +88,7 @@ public abstract class _Enrolment extends CayenneDataObject {
     public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = new Property<List<AssessmentSubmission>>("assessmentSubmissions");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
+    public static final Property<List<EnrolmentCustomField>> CUSTOM_FIELDS = new Property<List<EnrolmentCustomField>>("customFields");
     public static final Property<List<InvoiceLine>> INVOICE_LINES = new Property<List<InvoiceLine>>("invoiceLines");
     public static final Property<List<Outcome>> OUTCOMES = new Property<List<Outcome>>("outcomes");
     public static final Property<Student> STUDENT = new Property<Student>("student");
@@ -251,6 +254,18 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     public CourseClass getCourseClass() {
         return (CourseClass)readProperty("courseClass");
+    }
+
+
+    public void addToCustomFields(EnrolmentCustomField obj) {
+        addToManyTarget("customFields", obj, true);
+    }
+    public void removeFromCustomFields(EnrolmentCustomField obj) {
+        removeToManyTarget("customFields", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<EnrolmentCustomField> getCustomFields() {
+        return (List<EnrolmentCustomField>)readProperty("customFields");
     }
 
 

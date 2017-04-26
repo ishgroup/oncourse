@@ -1,11 +1,13 @@
 package ish.oncourse.model;
 
+import ish.oncourse.cayenne.ICustomField;
+import ish.oncourse.cayenne.IExpandable;
 import ish.oncourse.model.auto._CustomField;
 import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.util.Date;
 
-public class CustomField extends _CustomField implements Queueable {
+public abstract class CustomField extends _CustomField implements Queueable, ICustomField {
 
 	@Override
 	public Long getId() {
@@ -28,5 +30,13 @@ public class CustomField extends _CustomField implements Queueable {
 		if (getModified() == null) {
 			setModified(now);
 		}
+		
+		if (getEntityName() == null) {
+			setEntityName(getEntityIdentifier());
+		}
 	}
+	
+	public abstract String getEntityIdentifier();
+
+	public abstract void setRelatedObject(IExpandable relatedObject);
 }

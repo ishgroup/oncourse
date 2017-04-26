@@ -8,10 +8,10 @@ import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.AssessmentSubmission;
 import ish.oncourse.model.College;
+import ish.oncourse.model.ContactCustomField;
 import ish.oncourse.model.ContactRelation;
 import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Country;
-import ish.oncourse.model.CustomField;
 import ish.oncourse.model.DiscussionCommentContact;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.MessagePerson;
@@ -118,7 +118,7 @@ public abstract class _Contact extends CayenneDataObject {
     public static final Property<List<DiscussionCommentContact>> CONTACT_COMMENTS = new Property<List<DiscussionCommentContact>>("contactComments");
     public static final Property<List<CorporatePass>> CORPORATE_PASSES = new Property<List<CorporatePass>>("corporatePasses");
     public static final Property<Country> COUNTRY = new Property<Country>("country");
-    public static final Property<List<CustomField>> CUSTOM_FIELDS = new Property<List<CustomField>>("customFields");
+    public static final Property<List<ContactCustomField>> CUSTOM_FIELDS = new Property<List<ContactCustomField>>("customFields");
     public static final Property<List<ContactRelation>> FROM_CONTACTS = new Property<List<ContactRelation>>("fromContacts");
     public static final Property<List<Invoice>> INVOICES = new Property<List<Invoice>>("invoices");
     public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = new Property<List<MessagePerson>>("messagePeople");
@@ -401,15 +401,15 @@ public abstract class _Contact extends CayenneDataObject {
     }
 
 
-    public void addToCustomFields(CustomField obj) {
+    public void addToCustomFields(ContactCustomField obj) {
         addToManyTarget("customFields", obj, true);
     }
-    public void removeFromCustomFields(CustomField obj) {
+    public void removeFromCustomFields(ContactCustomField obj) {
         removeToManyTarget("customFields", obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<CustomField> getCustomFields() {
-        return (List<CustomField>)readProperty("customFields");
+    public List<ContactCustomField> getCustomFields() {
+        return (List<ContactCustomField>)readProperty("customFields");
     }
 
 

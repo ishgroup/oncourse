@@ -5,6 +5,7 @@ import ish.common.types.ConfirmationStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
+import ish.oncourse.cayenne.IExpandable;
 import ish.oncourse.model.auto._Enrolment;
 import ish.oncourse.utils.MessageFormat;
 import ish.oncourse.utils.QueueableObjectUtils;
@@ -20,7 +21,7 @@ import static ish.common.types.EnrolmentStatus.QUEUED;
 import static ish.common.types.EnrolmentStatus.SUCCESS;
 import static java.lang.String.format;
 
-public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueable {
+public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueable, IExpandable {
 
 	private static final long serialVersionUID = 8361159336001022666L;
 	private static final Logger logger = LogManager.getLogger();

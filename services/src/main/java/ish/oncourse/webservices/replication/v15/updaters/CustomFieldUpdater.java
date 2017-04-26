@@ -3,22 +3,42 @@
  */
 package ish.oncourse.webservices.replication.v15.updaters;
 
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CustomField;
-import ish.oncourse.model.CustomFieldType;
+import ish.oncourse.cayenne.IExpandable;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.v15.stubs.replication.CustomFieldStub;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CustomFieldUpdater extends AbstractWillowUpdater<CustomFieldStub, CustomField> {
 
+	private static final Logger logger = LogManager.getLogger();
+	
 	@Override
 	protected void updateEntity(CustomFieldStub stub, CustomField entity, RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
 		entity.setModified(stub.getModified());
 		
 		entity.setCustomFieldType(callback.updateRelationShip(stub.getCustomFieldTypeId(), CustomFieldType.class));
-		entity.setRelatedObject(callback.updateRelationShip(stub.getForeignId(), Contact.class));
 		entity.setValue(stub.getValue());
+		entity.setEntityName(stub.getEntityName());
+		
+		IExpandable relatedObject;
+		if (CONTACT_ENTITY_NAME.equals(stub.getEntityName())) {
+			relatedObject = callback.updateRelationShip(stub.getForeignId(), Contact.class);
+		} else if (ENROLMENT_ENTITY_NAME.equals(stub.getEntityName())) {
+			relatedObject = callback.updateRelationShip(stub.getForeignId(), Enrolment.class);
+		} else if (COURSE_ENTITY_NAME.equals(stub.getEntityName())) {
+			relatedObject = callback.updateRelationShip(stub.getForeignId(), Course.class);
+		} else {
+			String message = String.format("Unexpected related entity with type %s and angelId %s",
+					stub.getEntityName(), stub.getForeignId());
+			logger.error(message);
+			throw new UpdaterException(message);
+		}
+
+		entity.setRelatedObject(relatedObject);
 	}
 }

@@ -22,6 +22,7 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DEFAULT_VALUE_PROPERTY = "defaultValue";
+    public static final String ENTITY_NAME_PROPERTY = "entityName";
     public static final String IS_MANDATORY_PROPERTY = "isMandatory";
     public static final String KEY_PROPERTY = "key";
     public static final String MODIFIED_PROPERTY = "modified";
@@ -37,6 +38,7 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<String> DEFAULT_VALUE = new Property<String>("defaultValue");
+    public static final Property<String> ENTITY_NAME = new Property<String>("entityName");
     public static final Property<Boolean> IS_MANDATORY = new Property<Boolean>("isMandatory");
     public static final Property<String> KEY = new Property<String>("key");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
@@ -66,6 +68,13 @@ public abstract class _CustomFieldType extends CayenneDataObject {
     }
     public String getDefaultValue() {
         return (String)readProperty("defaultValue");
+    }
+
+    public void setEntityName(String entityName) {
+        writeProperty("entityName", entityName);
+    }
+    public String getEntityName() {
+        return (String)readProperty("entityName");
     }
 
     public void setIsMandatory(Boolean isMandatory) {

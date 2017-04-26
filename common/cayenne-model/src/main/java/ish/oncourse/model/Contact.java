@@ -4,6 +4,7 @@ import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
+import ish.oncourse.cayenne.IExpandable;
 import ish.oncourse.common.field.ContextType;
 import ish.oncourse.common.field.FieldProperty;
 import ish.oncourse.common.field.Property;
@@ -33,7 +34,7 @@ import java.util.Map;
 
 
 @Type(value = ContextType.CONTACT)
-public class Contact extends _Contact implements Queueable {
+public class Contact extends _Contact implements Queueable, IExpandable {
 	
 	private static final long serialVersionUID = -7158531319889954101L;
 
@@ -87,7 +88,7 @@ public class Contact extends _Contact implements Queueable {
 			if (customFieldType == null) {
 				return;
 			}
-			CustomField customField = context.newObject(CustomField.class);
+			ContactCustomField customField = context.newObject(ContactCustomField.class);
 			customField.setValue(value);
 			customField.setRelatedObject(this);
 			customField.setCustomFieldType(customFieldType);

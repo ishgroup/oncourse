@@ -18,5 +18,6 @@ public class CustomFieldTypeUpdater extends AbstractWillowUpdater<CustomFieldTyp
 		entity.setName(stub.getName());
 		entity.setDefaultValue(stub.getDefaultValue());
 		entity.setIsMandatory(stub.isMandatory());
+		entity.setEntityName(CONTACT_ENTITY_NAME);
 	}
 }

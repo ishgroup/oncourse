@@ -399,6 +399,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="customFieldTypeId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="entityName" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="foreignId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
@@ -409,6 +410,7 @@
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="defaultValue" type="VARCHAR" length="32000"/>
+		<db-attribute name="entityName" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="fieldKey" type="VARCHAR" length="200"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="isMandatory" type="SMALLINT" isMandatory="true"/>
@@ -1620,6 +1622,9 @@
 		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
+	<obj-entity name="ContactCustomField" superEntityName="CustomField" className="ish.oncourse.model.ContactCustomField">
+		<qualifier><![CDATA[entityName like "Contact"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="ContactDuplicate" className="ish.oncourse.model.ContactDuplicate" dbEntityName="ContactDuplicate">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="contactToDeleteAngelId" type="java.lang.Long" db-attribute-path="contactToDeleteAngelId"/>
@@ -1741,6 +1746,9 @@
 	<obj-entity name="CourseCourseRelation" superEntityName="EntityRelation" className="ish.oncourse.model.CourseCourseRelation">
 		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 1)]]></qualifier>
 	</obj-entity>
+	<obj-entity name="CourseCustomField" superEntityName="CustomField" className="ish.oncourse.model.CourseCustomField">
+		<qualifier><![CDATA[entityName like "Course"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="CourseModule" className="ish.oncourse.model.CourseModule" dbEntityName="CourseModule">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -1755,9 +1763,10 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="paidUntil" type="java.util.Date" db-attribute-path="paidUntil"/>
 	</obj-entity>
-	<obj-entity name="CustomField" className="ish.oncourse.model.CustomField" dbEntityName="CustomField">
+	<obj-entity name="CustomField" abstract="true" className="ish.oncourse.model.CustomField" dbEntityName="CustomField">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="entityName" type="java.lang.String" db-attribute-path="entityName"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 		<post-add method-name="onPostAdd"/>
@@ -1766,6 +1775,7 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="defaultValue" type="java.lang.String" db-attribute-path="defaultValue"/>
+		<obj-attribute name="entityName" type="java.lang.String" db-attribute-path="entityName"/>
 		<obj-attribute name="isMandatory" type="java.lang.Boolean" db-attribute-path="isMandatory"/>
 		<obj-attribute name="key" type="java.lang.String" db-attribute-path="fieldKey"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
@@ -1897,6 +1907,9 @@
 		<obj-attribute name="status" type="ish.common.types.EnrolmentStatus" db-attribute-path="status"/>
 		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
+	</obj-entity>
+	<obj-entity name="EnrolmentCustomField" superEntityName="CustomField" className="ish.oncourse.model.EnrolmentCustomField">
+		<qualifier><![CDATA[entityName like "Enrolment"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="EntityRelation" className="ish.oncourse.model.EntityRelation" dbEntityName="EntityRelation">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -3139,6 +3152,9 @@
 	<db-relationship name="courseToRelation" source="Course" target="EntityRelation" toMany="true">
 		<db-attribute-pair source="id" target="toRecordId"/>
 	</db-relationship>
+	<db-relationship name="customFields" source="Course" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
 	<db-relationship name="fieldConfigurationScheme" source="Course" target="FieldConfigurationScheme" toMany="false">
 		<db-attribute-pair source="fieldConfigurationSchemeId" target="id"/>
 	</db-relationship>
@@ -3211,7 +3227,13 @@
 	<db-relationship name="customFieldType" source="CustomField" target="CustomFieldType" toMany="false">
 		<db-attribute-pair source="customFieldTypeId" target="id"/>
 	</db-relationship>
-	<db-relationship name="relatedObject" source="CustomField" target="Contact" toMany="false">
+	<db-relationship name="relatedContact" source="CustomField" target="Contact" toMany="false">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedCourse" source="CustomField" target="Course" toMany="false">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment" toMany="false">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="CustomFieldType" target="College" toMany="false">
@@ -3327,6 +3349,9 @@
 	</db-relationship>
 	<db-relationship name="courseClass" source="Enrolment" target="CourseClass" toMany="false">
 		<db-attribute-pair source="courseClassId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="Enrolment" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="invoiceLines" source="Enrolment" target="InvoiceLine" toMany="true">
 		<db-attribute-pair source="id" target="enrolmentId"/>
@@ -4147,7 +4172,7 @@
 	<obj-relationship name="contactComments" source="Contact" target="DiscussionCommentContact" deleteRule="Deny" db-relationship-path="contactComments"/>
 	<obj-relationship name="corporatePasses" source="Contact" target="CorporatePass" deleteRule="Deny" db-relationship-path="corporatePasses"/>
 	<obj-relationship name="country" source="Contact" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
-	<obj-relationship name="customFields" source="Contact" target="CustomField" deleteRule="Deny" db-relationship-path="customFields"/>
+	<obj-relationship name="customFields" source="Contact" target="ContactCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Deny" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
@@ -4158,6 +4183,7 @@
 	<obj-relationship name="supportPassword" source="Contact" target="SupportPassword" deleteRule="Cascade" db-relationship-path="supportPassword"/>
 	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Deny" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Deny" db-relationship-path="tutor"/>
+	<obj-relationship name="relatedObject" source="ContactCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedContact"/>
 	<obj-relationship name="college" source="ContactDuplicate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" deleteRule="Nullify" db-relationship-path="contactToUpdate"/>
 	<obj-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
@@ -4187,6 +4213,7 @@
 	<obj-relationship name="college" source="Course" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Course" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="courseModules" source="Course" target="CourseModule" deleteRule="Deny" db-relationship-path="courseModules"/>
+	<obj-relationship name="customFields" source="Course" target="CourseCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="fieldConfigurationScheme" source="Course" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
 	<obj-relationship name="fromCourses" source="Course" target="CourseCourseRelation" deleteRule="Cascade" db-relationship-path="courseFromRelation"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
@@ -4208,6 +4235,7 @@
 	<obj-relationship name="courseClass" source="CourseClassPaymentPlanLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="fromCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationFromCourse"/>
 	<obj-relationship name="toCourse" source="CourseCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="relationToCourse"/>
+	<obj-relationship name="relatedObject" source="CourseCustomField" target="Course" deleteRule="Nullify" db-relationship-path="relatedCourse"/>
 	<obj-relationship name="college" source="CourseModule" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="CourseModule" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="module" source="CourseModule" target="Module" deleteRule="Nullify" db-relationship-path="module"/>
@@ -4216,7 +4244,6 @@
 	<obj-relationship name="college" source="CustomFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="CustomField" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFieldType" source="CustomField" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="customFieldType"/>
-	<obj-relationship name="relatedObject" source="CustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedObject"/>
 	<obj-relationship name="college" source="CustomFieldType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFields" source="CustomFieldType" target="CustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -4253,10 +4280,12 @@
 	<obj-relationship name="assessmentSubmissions" source="Enrolment" target="AssessmentSubmission" deleteRule="Deny" db-relationship-path="assessmentSubmissions"/>
 	<obj-relationship name="college" source="Enrolment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="customFields" source="Enrolment" target="EnrolmentCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="invoiceLines" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="outcomes" source="Enrolment" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="surveys" source="Enrolment" target="Survey" deleteRule="Deny" db-relationship-path="surveys"/>
+	<obj-relationship name="relatedObject" source="EnrolmentCustomField" target="Enrolment" deleteRule="Nullify" db-relationship-path="relatedEnrolment"/>
 	<obj-relationship name="college" source="EntityRelation" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="Field" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>

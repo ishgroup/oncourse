@@ -11,6 +11,7 @@ import ish.oncourse.model.Application;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseCourseRelation;
+import ish.oncourse.model.CourseCustomField;
 import ish.oncourse.model.CourseModule;
 import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.model.Qualification;
@@ -46,6 +47,7 @@ public abstract class _Course extends CayenneDataObject {
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_CLASSES_PROPERTY = "courseClasses";
     public static final String COURSE_MODULES_PROPERTY = "courseModules";
+    public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
     public static final String FIELD_CONFIGURATION_SCHEME_PROPERTY = "fieldConfigurationScheme";
     public static final String FROM_COURSES_PROPERTY = "fromCourses";
     public static final String QUALIFICATION_PROPERTY = "qualification";
@@ -74,6 +76,7 @@ public abstract class _Course extends CayenneDataObject {
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<List<CourseClass>> COURSE_CLASSES = new Property<List<CourseClass>>("courseClasses");
     public static final Property<List<CourseModule>> COURSE_MODULES = new Property<List<CourseModule>>("courseModules");
+    public static final Property<List<CourseCustomField>> CUSTOM_FIELDS = new Property<List<CourseCustomField>>("customFields");
     public static final Property<FieldConfigurationScheme> FIELD_CONFIGURATION_SCHEME = new Property<FieldConfigurationScheme>("fieldConfigurationScheme");
     public static final Property<List<CourseCourseRelation>> FROM_COURSES = new Property<List<CourseCourseRelation>>("fromCourses");
     public static final Property<Qualification> QUALIFICATION = new Property<Qualification>("qualification");
@@ -228,6 +231,18 @@ public abstract class _Course extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<CourseModule> getCourseModules() {
         return (List<CourseModule>)readProperty("courseModules");
+    }
+
+
+    public void addToCustomFields(CourseCustomField obj) {
+        addToManyTarget("customFields", obj, true);
+    }
+    public void removeFromCustomFields(CourseCustomField obj) {
+        removeToManyTarget("customFields", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<CourseCustomField> getCustomFields() {
+        return (List<CourseCustomField>)readProperty("customFields");
     }
 
 

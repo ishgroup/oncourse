@@ -1,5 +1,6 @@
 package ish.oncourse.model;
 
+import ish.oncourse.cayenne.IExpandable;
 import ish.oncourse.model.auto._Course;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
@@ -11,7 +12,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Course extends _Course implements Queueable {
+public class Course extends _Course implements Queueable, IExpandable {
+	
 	private static final long serialVersionUID = 254942637990278217L;
 	private static final Logger logger = LogManager.getLogger();
 

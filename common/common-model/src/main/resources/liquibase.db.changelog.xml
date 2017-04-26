@@ -4429,6 +4429,35 @@
 			alter table CourseClass modify column isCancelled tinyint(1) not null;
 		</sql>
 	</changeSet>
+
+	<changeSet id="297" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<columnExists tableName="CustomFieldType" columnName="entityName"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE CustomFieldType ADD COLUMN entityName VARCHAR(64);</sql>
+	</changeSet>
+	<changeSet id="298" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<columnExists tableName="CustomFieldType" columnName="entityName"/>
+		</preConditions>
+		<sql>UPDATE CustomFieldType SET entityName = 'Contact';</sql>
+	</changeSet>
 	
+	<changeSet id="299" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<columnExists tableName="CustomField" columnName="entityName"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE CustomField ADD COLUMN entityName VARCHAR(64);</sql>
+	</changeSet>
+	<changeSet id="300" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<columnExists tableName="CustomField" columnName="entityName"/>
+		</preConditions>
+		<sql>UPDATE CustomField SET entityName = 'Contact';</sql>
+	</changeSet>
 	
 </databaseChangeLog>

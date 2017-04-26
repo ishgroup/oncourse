@@ -20,5 +20,6 @@ public class CustomFieldUpdater extends AbstractWillowUpdater<CustomFieldStub, C
 		entity.setCustomFieldType(callback.updateRelationShip(stub.getCustomFieldTypeId(), CustomFieldType.class));
 		entity.setRelatedObject(callback.updateRelationShip(stub.getForeignId(), Contact.class));
 		entity.setValue(stub.getValue());
+		entity.setEntityName(CONTACT_ENTITY_NAME);
 	}
 }

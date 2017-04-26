@@ -6,7 +6,6 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
 import ish.oncourse.model.CustomFieldType;
 
 /**
@@ -21,21 +20,21 @@ public abstract class _CustomField extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
+    public static final String ENTITY_NAME_PROPERTY = "entityName";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String VALUE_PROPERTY = "value";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CUSTOM_FIELD_TYPE_PROPERTY = "customFieldType";
-    public static final String RELATED_OBJECT_PROPERTY = "relatedObject";
 
     public static final String ID_PK_COLUMN = "id";
 
     public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
     public static final Property<Date> CREATED = new Property<Date>("created");
+    public static final Property<String> ENTITY_NAME = new Property<String>("entityName");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<String> VALUE = new Property<String>("value");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<CustomFieldType> CUSTOM_FIELD_TYPE = new Property<CustomFieldType>("customFieldType");
-    public static final Property<Contact> RELATED_OBJECT = new Property<Contact>("relatedObject");
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);
@@ -49,6 +48,13 @@ public abstract class _CustomField extends CayenneDataObject {
     }
     public Date getCreated() {
         return (Date)readProperty("created");
+    }
+
+    public void setEntityName(String entityName) {
+        writeProperty("entityName", entityName);
+    }
+    public String getEntityName() {
+        return (String)readProperty("entityName");
     }
 
     public void setModified(Date modified) {
@@ -80,15 +86,6 @@ public abstract class _CustomField extends CayenneDataObject {
 
     public CustomFieldType getCustomFieldType() {
         return (CustomFieldType)readProperty("customFieldType");
-    }
-
-
-    public void setRelatedObject(Contact relatedObject) {
-        setToOneTarget("relatedObject", relatedObject, true);
-    }
-
-    public Contact getRelatedObject() {
-        return (Contact)readProperty("relatedObject");
     }
 
 

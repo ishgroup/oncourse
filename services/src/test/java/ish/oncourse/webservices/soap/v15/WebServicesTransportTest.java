@@ -133,7 +133,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	@Test
 	public void test_processPayment() throws Throwable {
 		TransactionGroup transactionGroup = createTransactionGroupWithAllStubs();
-		GenericParametersMap  parametersMap = PortHelper.createParametersMap(SupportedVersions.V14);
+		GenericParametersMap  parametersMap = PortHelper.createParametersMap(SupportedVersions.V15);
 		TransactionGroup transactionGroupResult = getPaymentPortType().processPayment(transactionGroup, (ParametersMap) parametersMap);
 		assertTransactionGroup(transactionGroupResult);
 	}
