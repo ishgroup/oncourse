@@ -1,9 +1,9 @@
 package ish.oncourse.willow.service.impl
 
 import ish.oncourse.model.College
+import ish.oncourse.model.Contact
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
-import ish.oncourse.willow.model.Contact
 import ish.oncourse.willow.model.CreateContactParams
 import ish.oncourse.willow.model.ValidationError
 import org.apache.cayenne.ObjectContext
@@ -28,12 +28,12 @@ class CreateOrGetContact {
     College college
     ObjectContext context
     Preferences.ContactFieldSet fieldSet
-    Contact result
+    String contactId
     ValidationError validationError = new ValidationError()
 
 
     def perform() {
-        ish.oncourse.model.Contact contact = findContact()
+        Contact contact = findContact()
 
         if (contact) {
             if  (!contact.student) {
@@ -42,7 +42,7 @@ class CreateOrGetContact {
             }
         } else if (contactCreationAllowed) {
             College localCollege = context.localObject(college)
-            contact = context.newObject(ish.oncourse.model.Contact.class)
+            contact = context.newObject(Contact.class)
             contact.setCollege(localCollege)
 
             contact.givenName = params.firstName
@@ -57,7 +57,7 @@ class CreateOrGetContact {
         } 
         
         if (contact) {
-            result = new Contact(id: contact.id, firstName: params.firstName, lastName: params.lastName, email: params.email )
+            contactId = contact.id.toString()
         } else {
             validationError.formErrors << NOT_ALLOW_CREATE_CONTACT
         }
@@ -68,8 +68,8 @@ class CreateOrGetContact {
         StringUtils.isBlank(value) ? true : Boolean.valueOf(value)
     }
     
-    private ish.oncourse.model.Contact findContact() {
-        List<ish.oncourse.model.Contact> results = (ObjectSelect.query(ish.oncourse.model.Contact)
+    private Contact findContact() {
+        List<Contact> results = (ObjectSelect.query(Contact)
                 .where(EMAIL_ADDRESS.eq(params.email)) & GIVEN_NAME.eq(params.firstName) & FAMILY_NAME.eq(params.lastName) & COLLEGE.eq(college))
                 .select(context)
 

@@ -32,7 +32,7 @@ class ContactApiServiceImpl implements ContactApi{
     }
 
     @Override
-    Contact createOrGetContact(CreateContactParams createContactParams) {
+    String createOrGetContact(CreateContactParams createContactParams) {
         throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(
                 new ValidationError().with {
                 formErrors = ['form error number one', 'form error number two']

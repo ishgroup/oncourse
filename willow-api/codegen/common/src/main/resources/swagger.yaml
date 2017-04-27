@@ -81,9 +81,9 @@ paths:
           $ref: '#/definitions/CreateContactParams'
       responses:
         200:
-          description: Contact
+          description: Contact Id
           schema:
-            $ref: '#/definitions/Contact'
+            type: string
         400:
           description: Validation error
           schema:
