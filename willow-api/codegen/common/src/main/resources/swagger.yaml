@@ -441,18 +441,16 @@ definitions:
       fieldsErrors:
         type: array
         items:
-          title: FieldErrors
+          title: FieldError
           type: object
           required:
           - name
-          - errors
+          - error
           properties:
             name:
               type: string
               description: Name of fiels with error
-            errors:
-              type: array
-              items:
-                type: string
+            error:
+              type: string
               description: Errors for particular field, or empty array
         description: Array of fields errors, or empty array

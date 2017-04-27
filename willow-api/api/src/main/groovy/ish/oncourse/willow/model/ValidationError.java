@@ -6,7 +6,7 @@ import java.util.List;
 public class ValidationError  {
   
     private List<String> formErrors = new ArrayList<String>();
-    private List<FieldErrors> fieldsErrors = new ArrayList<FieldErrors>();
+    private List<FieldError> fieldsErrors = new ArrayList<FieldError>();
 
     /**
      * Global error
@@ -34,20 +34,20 @@ public class ValidationError  {
      * Array of fields errors, or empty array
      * @return fieldsErrors
      */
-    public List<FieldErrors> getFieldsErrors() {
+    public List<FieldError> getFieldsErrors() {
         return fieldsErrors;
     }
 
-    public void setFieldsErrors(List<FieldErrors> fieldsErrors) {
+    public void setFieldsErrors(List<FieldError> fieldsErrors) {
        this.fieldsErrors = fieldsErrors;
     }
 
-    public ValidationError fieldsErrors(List<FieldErrors> fieldsErrors) {
+    public ValidationError fieldsErrors(List<FieldError> fieldsErrors) {
       this.fieldsErrors = fieldsErrors;
       return this;
     }
 
-    public ValidationError addFieldsErrorsItem(FieldErrors fieldsErrorsItem) {
+    public ValidationError addFieldsErrorsItem(FieldError fieldsErrorsItem) {
       this.fieldsErrors.add(fieldsErrorsItem);
       return this;
     }

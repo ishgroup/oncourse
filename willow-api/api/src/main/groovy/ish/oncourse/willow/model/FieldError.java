@@ -1,12 +1,10 @@
 package ish.oncourse.willow.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class FieldErrors  {
+public class FieldError  {
   
     private String name = null;
-    private List<String> errors = new ArrayList<String>();
+    private String error = null;
 
     /**
      * Name of fiels with error
@@ -20,30 +18,25 @@ public class FieldErrors  {
        this.name = name;
     }
 
-    public FieldErrors name(String name) {
+    public FieldError name(String name) {
       this.name = name;
       return this;
     }
 
     /**
      * Errors for particular field, or empty array
-     * @return errors
+     * @return error
      */
-    public List<String> getErrors() {
-        return errors;
+    public String getError() {
+        return error;
     }
 
-    public void setErrors(List<String> errors) {
-       this.errors = errors;
+    public void setError(String error) {
+       this.error = error;
     }
 
-    public FieldErrors errors(List<String> errors) {
-      this.errors = errors;
-      return this;
-    }
-
-    public FieldErrors addErrorsItem(String errorsItem) {
-      this.errors.add(errorsItem);
+    public FieldError error(String error) {
+      this.error = error;
       return this;
     }
 
@@ -51,10 +44,10 @@ public class FieldErrors  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class FieldErrors {\n");
+      sb.append("class FieldError {\n");
       
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
-      sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
+      sb.append("    error: ").append(toIndentedString(error)).append("\n");
       sb.append("}");
       return sb.toString();
     }
