@@ -4,7 +4,8 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.model.Contact
 import ish.oncourse.willow.model.CreateContactParams
-import ish.oncourse.willow.model.FieldErrors
+import ish.oncourse.willow.model.FieldError
+import ish.oncourse.willow.model.FieldError
 import ish.oncourse.willow.model.ValidationError
 import ish.oncourse.willow.service.ContactApi
 import org.apache.cayenne.configuration.server.ServerRuntime
@@ -35,8 +36,8 @@ class ContactApiServiceImpl implements ContactApi{
         throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(
                 new ValidationError().with {
                 formErrors = ['form error number one', 'form error number two']
-                fieldsErrors << new FieldErrors(name: 'firstName', errors: ['error1','error2'])
-                fieldsErrors << new FieldErrors(name: 'lastName', errors: ['error3','error4']) 
+                fieldsErrors << new FieldError(name: 'firstName', errors: ['error1','error2'])
+                fieldsErrors << new FieldError(name: 'lastName', errors: ['error3','error4']) 
                     it
             })
             .status(400)
