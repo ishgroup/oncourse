@@ -190,7 +190,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
+              $ref: '#/definitions/Suggestion'
         default:
           description: Unexpected error
           schema:
@@ -212,6 +212,15 @@ parameters:
     required: true
     type: string
 definitions:
+  Suggestion:
+    type: object
+    properties:
+      key:
+        type: string
+        description: Key which user see
+      value:
+        type: string
+        description: Value which will be send back
   Product:
     type: object
     properties:
