@@ -4,7 +4,6 @@ import ish.oncourse.willow.model.Promotion
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
 import ish.oncourse.willow.service.impl.RequestFilter
-import ish.oncourse.willow.service.impl.RequestInterceptor
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals

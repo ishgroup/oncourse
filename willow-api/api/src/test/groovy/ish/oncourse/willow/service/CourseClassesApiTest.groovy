@@ -2,10 +2,10 @@ package ish.oncourse.willow.service
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.model.ContactParams
-import ish.oncourse.willow.model.CourseClass;
+import ish.oncourse.willow.model.CourseClass
 import ish.oncourse.willow.model.CourseClassesParams
-import ish.oncourse.willow.model.PromotionParams;
-import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl;
+import ish.oncourse.willow.model.PromotionParams
+import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals;
