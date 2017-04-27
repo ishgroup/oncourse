@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.waitinglist;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet.waitinglist;
 
 /**
  * Java class for WaitingListForm.tml.

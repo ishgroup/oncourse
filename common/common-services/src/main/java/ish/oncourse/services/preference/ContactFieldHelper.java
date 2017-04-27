@@ -7,7 +7,7 @@ import ish.oncourse.model.CustomFieldType;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
 /**

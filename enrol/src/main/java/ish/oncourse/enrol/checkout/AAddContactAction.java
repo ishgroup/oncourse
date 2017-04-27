@@ -4,6 +4,7 @@ import ish.oncourse.enrol.checkout.contact.*;
 import ish.oncourse.model.*;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.Preferences;
 import org.apache.cayenne.ObjectContext;
 
 import static ish.oncourse.enrol.checkout.PurchaseController.Action.addCourseClass;
@@ -12,7 +13,7 @@ import static ish.oncourse.enrol.checkout.PurchaseController.Message.contactAlre
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.notAllowCreateContact;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.addContact;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.editContact;
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet.enrolment;
 
 public abstract class AAddContactAction extends APurchaseAction {
     private Contact contact;
@@ -221,7 +222,7 @@ public abstract class AAddContactAction extends APurchaseAction {
 	}
 
     protected boolean isAllowCreateContact() {
-        return getController().getPreferenceController().getAllowCreateContact(PreferenceController.ContactFieldSet.enrolment);
+        return getController().getPreferenceController().getAllowCreateContact(Preferences.ContactFieldSet.enrolment);
     }
 
 	@Override

@@ -11,6 +11,7 @@ import ish.oncourse.portal.util.PortalContactValidator;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.Preferences;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
@@ -122,7 +123,7 @@ public class ProfileForm {
 	@Cached
 	public ContactFieldHelper getContactFieldHelper() {
 		if (contactFieldHelper == null) {
-			contactFieldHelper = new ContactFieldHelper(preferenceController, PreferenceController.ContactFieldSet.enrolment);
+			contactFieldHelper = new ContactFieldHelper(preferenceController, Preferences.ContactFieldSet.enrolment);
 		}
 		return contactFieldHelper;
 	}

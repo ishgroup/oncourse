@@ -17,8 +17,8 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
-import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowCreateContact;
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.*;
+import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet.*;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 import static org.junit.Assert.*;
 

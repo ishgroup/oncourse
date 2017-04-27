@@ -28,6 +28,18 @@ public interface Preferences {
 
     String HIDE_CLASS_ON_WEB_AGE = "hide.class.on.web.age";
     String HIDE_CLASS_ON_WEB_AGE_TYPE = "hide.class.on.web.age.type";
-    
 
+    enum ConfigProperty {
+        allowCreateContact;
+        public String getPreferenceNameBy(ContactFieldSet contactFieldSet) {
+            return String.format("%s.contact.%s", contactFieldSet.name(), this.name());
+        }
+    }
+
+    enum ContactFieldSet {
+        enrolment,
+        waitinglist,
+        mailinglist,
+    }
+    
 }

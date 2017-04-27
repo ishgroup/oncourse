@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.util.*;
 
 import static ish.oncourse.enrol.utils.EnrolContactValidator.*;
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet.enrolment;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

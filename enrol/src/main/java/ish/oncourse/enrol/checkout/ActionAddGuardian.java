@@ -12,7 +12,7 @@ import java.util.List;
 import static ish.oncourse.enrol.checkout.PurchaseController.Message.guardianAgeIsWrong;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.addContact;
 import static ish.oncourse.enrol.checkout.PurchaseController.State.editContact;
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.enrolment;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet.enrolment;
 
 public class ActionAddGuardian extends AAddContactAction {
 

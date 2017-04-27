@@ -15,7 +15,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.Date;
 
 import static ish.oncourse.services.preference.Preferences.*;
-import static ish.oncourse.services.preference.PreferenceController.ConfigProperty.allowCreateContact;
+import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact;
 
 public class PreferenceController extends CommonPreferenceController {
 
@@ -345,18 +345,7 @@ public class PreferenceController extends CommonPreferenceController {
     }
 
 
-	public enum ConfigProperty {
-		allowCreateContact;
-		public String getPreferenceNameBy(ContactFieldSet contactFieldSet) {
-			return String.format("%s.contact.%s", contactFieldSet.name(), this.name());
-		}
-	}
-
-    public enum ContactFieldSet {
-		enrolment,
-		waitinglist,
-		mailinglist,
-	}
+	
 
 
 	public enum FieldDescriptor {

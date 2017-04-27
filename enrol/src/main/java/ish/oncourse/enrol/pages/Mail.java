@@ -26,7 +26,7 @@ import org.apache.tapestry5.services.Request;
 
 import java.util.List;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.mailinglist;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet.mailinglist;
 
 @Secure // this annotation is important. The page should use secure handling always
 public class Mail {

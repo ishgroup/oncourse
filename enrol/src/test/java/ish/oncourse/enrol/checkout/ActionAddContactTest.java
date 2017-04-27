@@ -4,6 +4,7 @@ import ish.oncourse.enrol.checkout.contact.ContactCredentials;
 import ish.oncourse.enrol.checkout.contact.ContactEditorController;
 import ish.oncourse.model.*;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.Preferences;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -63,7 +64,7 @@ public class ActionAddContactTest extends ACheckoutTest {
         assertNotNull(purchaseController.getContactEditorDelegate().getContact());
         assertFalse(purchaseController.getContactEditorDelegate().isFillRequiredProperties());
         assertFalse(purchaseController.getContactEditorDelegate().getVisibleFields().isEmpty());
-        assertEquals(PreferenceController.ContactFieldSet.enrolment, ((ContactEditorController) purchaseController.getContactEditorDelegate()).getContactFieldSet());
+        assertEquals(Preferences.ContactFieldSet.enrolment, ((ContactEditorController) purchaseController.getContactEditorDelegate()).getContactFieldSet());
         assertNotNull(purchaseController.getContactEditorDelegate().getConcessionDelegate());
 
         assertTrue(purchaseController.isEditContact());

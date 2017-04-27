@@ -20,7 +20,7 @@ import org.apache.tapestry5.services.Request;
 import java.util.List;
 
 import static ish.oncourse.services.preference.ContactFieldHelper.*;
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet.*;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet.*;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor.*;
 
 public class ContactEntrySettings {

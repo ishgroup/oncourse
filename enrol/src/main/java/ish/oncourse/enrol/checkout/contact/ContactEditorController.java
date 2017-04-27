@@ -7,7 +7,7 @@ import org.apache.cayenne.ObjectContext;
 
 import java.util.List;
 
-import static ish.oncourse.services.preference.PreferenceController.ContactFieldSet;
+import static ish.oncourse.services.preference.Preferences.ContactFieldSet;
 
 public class ContactEditorController extends ADelegate implements ContactEditorDelegate {
 
