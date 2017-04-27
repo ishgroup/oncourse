@@ -8,7 +8,7 @@ public class CourseCustomField extends _CourseCustomField {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public String getEntityIdentifier() {
+    public String getRelatedEntityName() {
         return Course.class.getSimpleName();
     }
 

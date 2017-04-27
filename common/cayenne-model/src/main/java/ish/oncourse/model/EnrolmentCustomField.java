@@ -8,7 +8,7 @@ public class EnrolmentCustomField extends _EnrolmentCustomField {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public String getEntityIdentifier() {
+    public String getRelatedEntityName() {
         return Enrolment.class.getSimpleName();
     }
 

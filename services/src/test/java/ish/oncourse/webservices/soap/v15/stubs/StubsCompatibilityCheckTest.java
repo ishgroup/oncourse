@@ -584,12 +584,14 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("defaultValue", String.class));
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("mandatory", Boolean.class));
 		customFieldTypeParameters.add(new ReplicationStubFieldParameter("key", String.class));
+		customFieldTypeParameters.add(new ReplicationStubFieldParameter("entityName", String.class));
 		stubsPropertyMap.put(getStubName(CustomFieldTypeStub.class), customFieldTypeParameters);
 		
 		List<ReplicationStubFieldParameter> customFieldParameters = fillDefaultReplicationStubFields();
 		customFieldParameters.add(new ReplicationStubFieldParameter("customFieldTypeId", Long.class));
 		customFieldParameters.add(new ReplicationStubFieldParameter("foreignId", Long.class));
 		customFieldParameters.add(new ReplicationStubFieldParameter("value", String.class));
+		customFieldParameters.add(new ReplicationStubFieldParameter("entityName", String.class));
 		stubsPropertyMap.put(getStubName(CustomFieldStub.class), customFieldParameters);
 
 		List<ReplicationStubFieldParameter> applicationParameters = fillDefaultReplicationStubFields();
