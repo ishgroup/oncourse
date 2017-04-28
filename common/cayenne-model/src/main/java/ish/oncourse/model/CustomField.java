@@ -30,13 +30,7 @@ public abstract class CustomField extends _CustomField implements Queueable, ICu
 		if (getModified() == null) {
 			setModified(now);
 		}
-		
-		if (getEntityName() == null) {
-			setEntityName(getRelatedEntityName());
-		}
 	}
-	
-	public abstract String getRelatedEntityName();
 
 	public abstract void setRelatedObject(IExpandable relatedObject);
 }

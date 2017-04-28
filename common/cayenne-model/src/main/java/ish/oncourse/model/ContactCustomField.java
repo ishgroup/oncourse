@@ -8,11 +8,6 @@ public class ContactCustomField extends _ContactCustomField {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public String getRelatedEntityName() {
-        return Contact.class.getSimpleName();
-    }
-
-    @Override
     public void setRelatedObject(IExpandable relatedObject) {
         setRelatedObject((Contact) relatedObject);
     }

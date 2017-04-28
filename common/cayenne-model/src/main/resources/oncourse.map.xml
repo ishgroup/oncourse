@@ -1623,7 +1623,7 @@
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="ContactCustomField" superEntityName="CustomField" className="ish.oncourse.model.ContactCustomField">
-		<qualifier><![CDATA[entityName like "Contact"]]></qualifier>
+		<qualifier><![CDATA[entityName = "Contact"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="ContactDuplicate" className="ish.oncourse.model.ContactDuplicate" dbEntityName="ContactDuplicate">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1747,7 +1747,7 @@
 		<qualifier><![CDATA[(fromEntityIdentifier = 1) and (toEntityIdentifier = 1)]]></qualifier>
 	</obj-entity>
 	<obj-entity name="CourseCustomField" superEntityName="CustomField" className="ish.oncourse.model.CourseCustomField">
-		<qualifier><![CDATA[entityName like "Course"]]></qualifier>
+		<qualifier><![CDATA[entityName = "Course"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="CourseModule" className="ish.oncourse.model.CourseModule" dbEntityName="CourseModule">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -1909,7 +1909,7 @@
 		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="EnrolmentCustomField" superEntityName="CustomField" className="ish.oncourse.model.EnrolmentCustomField">
-		<qualifier><![CDATA[entityName like "Enrolment"]]></qualifier>
+		<qualifier><![CDATA[entityName = "Enrolment"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="EntityRelation" className="ish.oncourse.model.EntityRelation" dbEntityName="EntityRelation">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
