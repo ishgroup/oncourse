@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- We need only Contact, Course, Enrolment, CustomField and CustomFieldType tables in this dataSet.
+		All other tables is to correct creation of needed tables-->
+<dataset>
+    <!-- for Contact correct creation-->
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+
+    <!-- for Contact and Enrolment correct creation-->
+    <College id="10" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
+             paymentGatewayPass="test1234"/>
+
+    <Contact id="1" collegeId="10"  angelId="1" countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" isCompany="0" isMale="1" familyName="Putin" givenName="Vladimir" emailAddress="putin@russia.gov" street="Kremlin 1" suburb="Moscow" isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1"/>
+    <Contact id="2" collegeId="10" angelId="1" countryId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" isCompany="0" isMale="0" familyName="Trump" givenName="Donald" emailAddress="trump@whiteHouse.gov" street="White house 1" suburb="Washington" isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1" isMarketingViaSMSAllowed="1"/>
+
+    <Course id="2" angelId="1" collegeId="10" enrolmentType="1"/>
+    <Course id="3" angelId="1" collegeId="10" enrolmentType="1"/>
+
+    <!-- for enrolment correct creation-->
+    <Site id="10" collegeId="10" angelId="10" isWebVisible="0"
+          created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+    <!-- for enrolment correct creation-->
+    <Room id="10" collegeId="10" siteId="10" angelId="10"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <!-- for enrolment correct creation-->
+    <Student id="10" collegeId="10" angelId="10"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+    <!-- for enrolment correct creation-->
+    <CourseClass isActive="1" id="12" collegeId="10" code="1" courseId="3"
+                 roomId="10" angelId="11" startDate="2011-09-12 00:56:01.0"
+                 endDate="2012-09-12 00:56:01.0" isWebVisible="1" isCancelled="0"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
+
+    <Enrolment id="3" source="O" collegeId="10" courseClassId="12"
+               studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="2" confirmationStatus="1" feehelpamount="0"/>
+    <Enrolment id="4" source="O" collegeId="10" courseClassId="12"
+               studentId="10" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
+               status="2" confirmationStatus="1" feehelpamount="0"/>
+
+    <CustomFieldType id="100" isMandatory="0" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" name="pasportNumber" fieldKey="dsdasd" entityName="Contact" collegeId="10"/>
+    <CustomFieldType id="200" isMandatory="0" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" name="courseNumber" fieldKey="afwrrvdv" entityName="Course" collegeId="10"/>
+    <CustomFieldType id="300" isMandatory="0" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" name="enrolmentNumber" fieldKey="qweqeq" entityName="Enrolment" collegeId="10"/>
+    <CustomFieldType id="400" isMandatory="0" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" name="pasportNumber2" fieldKey="hghkj" entityName="Contact" collegeId="10"/>
+
+    <CustomField id="10" entityName="Contact" foreignId="1" customFieldTypeId="100" value="value10" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>
+    <CustomField id="20" entityName="Contact" foreignId="2" customFieldTypeId="100" value="value20" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>
+    <CustomField id="30" entityName="Course" foreignId="2" customFieldTypeId="200" value="value30" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>
+    <CustomField id="40" entityName="Course" foreignId="3" customFieldTypeId="200" value="value40" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>
+    <CustomField id="50" entityName="Enrolment" foreignId="4" customFieldTypeId="300" value="value50" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>
+    <CustomField id="60" entityName="Enrolment" foreignId="3" customFieldTypeId="300" value="value60" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>
+    <CustomField id="70" entityName="Contact" foreignId="1" customFieldTypeId="400" value="value70" created="2017-04-17 19:22:59" modified="2017-04-17 19:23:29" collegeId="10"/>
+
+</dataset>
