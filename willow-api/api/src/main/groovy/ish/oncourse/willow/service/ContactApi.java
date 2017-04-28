@@ -16,6 +16,7 @@ public interface ContactApi  {
     @Path("/contact")
     @Produces({ "application/json" })
     @CollegeInfo
+    @ContactValidation
     String createOrGetContact(CreateContactParams createContactParams);
 
     @GET

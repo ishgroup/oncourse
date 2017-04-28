@@ -8,6 +8,7 @@ import ish.oncourse.cxf.CXFModule
 import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
+import ish.oncourse.willow.service.impl.ContactCredentialsValidator
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import ish.oncourse.willow.service.impl.HealthCheckApiServiceImpl
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
@@ -31,6 +32,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(HealthCheckApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ShutdownService)
         CXFModule.contributeResources(binder).addBinding().to(RequestFilter)
+        CXFModule.contributeResources(binder).addBinding().to(ContactCredentialsValidator)
     }
 
     static class WillowApiCayenneModule implements Module {

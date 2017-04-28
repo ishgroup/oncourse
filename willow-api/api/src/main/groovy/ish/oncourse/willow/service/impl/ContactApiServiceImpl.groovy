@@ -5,7 +5,6 @@ import groovy.transform.CompileStatic
 import ish.oncourse.willow.model.Contact
 import ish.oncourse.willow.model.CreateContactParams
 import ish.oncourse.willow.model.FieldError
-import ish.oncourse.willow.model.FieldError
 import ish.oncourse.willow.model.ValidationError
 import ish.oncourse.willow.service.ContactApi
 import org.apache.cayenne.configuration.server.ServerRuntime
@@ -33,15 +32,12 @@ class ContactApiServiceImpl implements ContactApi{
 
     @Override
     String createOrGetContact(CreateContactParams createContactParams) {
-        throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(
-                new ValidationError().with {
-                formErrors = ['form error number one', 'form error number two']
-                fieldsErrors << new FieldError(name: 'firstName', errors: ['error1','error2'])
-                fieldsErrors << new FieldError(name: 'lastName', errors: ['error3','error4']) 
-                    it
-            })
-            .status(400)
-            .build())
+        CreateOrGetContact createOrGet = new CreateOrGetContact(params:createContactParams, context: cayenneRuntime.newContext(), college: collegeService.college).perform()
+        if (!createOrGet.validationError.formErrors.empty || !createOrGet.validationError.fieldsErrors.empty) {
+            throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(createOrGet.validationError).build())
+        } else {
+            createOrGet.contactId
+        }
     }
 
     @Override

@@ -5,7 +5,6 @@ import ish.oncourse.model.Contact
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.CreateContactParams
-import ish.oncourse.willow.model.FieldSet
 import ish.oncourse.willow.model.ValidationError
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -19,7 +18,7 @@ import static ish.oncourse.model.auto._Contact.FAMILY_NAME
 import static ish.oncourse.model.auto._Contact.GIVEN_NAME
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact
 
-class CreateOrGetContact {
+class CreateOrGetContact  {
     final static Logger logger = LoggerFactory.getLogger(ContactApiServiceImpl.class)
 
     private final
@@ -28,18 +27,17 @@ class CreateOrGetContact {
     CreateContactParams params
     College college
     ObjectContext context
-    FieldSet fieldSet
     String contactId
     ValidationError validationError = new ValidationError()
 
 
-    def perform() {
+    CreateOrGetContact perform() {
         Contact contact = findContact()
 
         if (contact) {
             if  (!contact.student) {
                 contact.createNewStudent()
-                contact.objectContext
+                contact.objectContext.commitChanges()
             }
         } else if (contactCreationAllowed) {
             College localCollege = context.localObject(college)
@@ -54,7 +52,7 @@ class CreateOrGetContact {
             contact.isMarketingViaEmailAllowed = true
             contact.isMarketingViaPostAllowed = true
             contact.isMarketingViaSMSAllowed = true
-            contact.objectContext
+            contact.objectContext.commitChanges()
         } 
         
         if (contact) {
@@ -62,10 +60,12 @@ class CreateOrGetContact {
         } else {
             validationError.formErrors << NOT_ALLOW_CREATE_CONTACT
         }
+        
+        this
     }
 
    private boolean isContactCreationAllowed() {
-        String value = new GetPreference(college, allowCreateContact.getPreferenceNameBy(Preferences.ContactFieldSet.valueOf(fieldSet.name())), context)
+        String value = new GetPreference(college, allowCreateContact.getPreferenceNameBy(Preferences.ContactFieldSet.valueOf(params.fieldSet.toString())), context).getValue()
         StringUtils.isBlank(value) ? true : Boolean.valueOf(value)
     }
     
