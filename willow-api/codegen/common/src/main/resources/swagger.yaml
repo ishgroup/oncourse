@@ -10,7 +10,8 @@ produces:
 paths:
   /products:
     post:
-      x-filter: CollegeInfo
+      x-filter:  
+        - CollegeInfo
       summary: Get list of products
       operationId: getProducts
       description: Get list of products based on current shopping cart state
@@ -38,7 +39,8 @@ paths:
             $ref: '#/definitions/Error'
   /classes:
     post:
-      x-filter: CollegeInfo
+      x-filter: 
+        - CollegeInfo
       summary: Get list of CourseClasses
       operationId: getCourseClasses
       description: Get list of course classes based on current shopping cart state
@@ -66,7 +68,9 @@ paths:
             $ref: '#/definitions/Error'
   /contact:
     put:
-      x-filter: CollegeInfo
+      x-filter: 
+        - CollegeInfo
+        - ContactValidation
       summary: Create or get Contact
       operationId: createOrGetContact
       description: Create or get Contact for add student view operation
@@ -94,7 +98,8 @@ paths:
             $ref: '#/definitions/Error'
   /contact/{studentUniqueIdentifier}:
     get:
-      x-filter: CollegeInfo
+      x-filter: 
+        - CollegeInfo
       summary: Get contact for provided student unique identifier
       operationId: getContact
       description: Get contact for provided student unique identifier
@@ -117,7 +122,8 @@ paths:
             $ref: '#/definitions/Error'
   /promotion/{code}:
     get:
-      x-filter: CollegeInfo
+      x-filter: 
+      - CollegeInfo
       summary: Get promotion by code
       operationId: getPromotion
       description: Get promotion by code
