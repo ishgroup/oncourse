@@ -1,11 +1,13 @@
 package ish.oncourse.willow.model;
 
+import ish.oncourse.willow.model.FieldSet;
 
 public class CreateContactParams  {
   
     private String firstName = null;
     private String lastName = null;
     private String email = null;
+    private FieldSet fieldSet = null;
 
     /**
      * First Name of Contact
@@ -58,6 +60,23 @@ public class CreateContactParams  {
       return this;
     }
 
+    /**
+     * Get fieldSet
+     * @return fieldSet
+     */
+    public FieldSet getFieldSet() {
+        return fieldSet;
+    }
+
+    public void setFieldSet(FieldSet fieldSet) {
+       this.fieldSet = fieldSet;
+    }
+
+    public CreateContactParams fieldSet(FieldSet fieldSet) {
+      this.fieldSet = fieldSet;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -67,6 +86,7 @@ public class CreateContactParams  {
       sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
       sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
       sb.append("    email: ").append(toIndentedString(email)).append("\n");
+      sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
       sb.append("}");
       return sb.toString();
     }

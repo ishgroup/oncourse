@@ -5,6 +5,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.CreateContactParams
+import ish.oncourse.willow.model.FieldSet
 import ish.oncourse.willow.model.ValidationError
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -27,7 +28,7 @@ class CreateOrGetContact {
     CreateContactParams params
     College college
     ObjectContext context
-    Preferences.ContactFieldSet fieldSet
+    FieldSet fieldSet
     String contactId
     ValidationError validationError = new ValidationError()
 
@@ -64,7 +65,7 @@ class CreateOrGetContact {
     }
 
    private boolean isContactCreationAllowed() {
-        String value = new GetPreference(college, allowCreateContact.getPreferenceNameBy(fieldSet), context)
+        String value = new GetPreference(college, allowCreateContact.getPreferenceNameBy(Preferences.ContactFieldSet.valueOf(fieldSet.name())), context)
         StringUtils.isBlank(value) ? true : Boolean.valueOf(value)
     }
     

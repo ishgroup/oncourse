@@ -420,12 +420,19 @@ definitions:
       id:
         type: string
         description: Internal unique indetificator of promotion
+  FieldSet:
+    type: string
+    enum:
+      - enrolment
+      - waitinglist
+      - mailinglist
   CreateContactParams:
     type: object
     required:
     - firstName
     - lastName
     - email
+    - fieldSet
     properties:
       firstName:
         type: string
@@ -436,6 +443,8 @@ definitions:
       email:
         description: Email of Contact
         type: string
+      fieldSet:
+        $ref: '#/definitions/FieldSet'
   ValidationError:
     type: object
     required:
