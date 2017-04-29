@@ -4,18 +4,15 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
-import ish.oncourse.willow.model.CreateContactParams
-import ish.oncourse.willow.model.ValidationError
+import ish.oncourse.willow.model.common.ValidationError
+import ish.oncourse.willow.model.web.CreateContactParams
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import static ish.oncourse.model.auto._Contact.COLLEGE
-import static ish.oncourse.model.auto._Contact.EMAIL_ADDRESS
-import static ish.oncourse.model.auto._Contact.FAMILY_NAME
-import static ish.oncourse.model.auto._Contact.GIVEN_NAME
+import static ish.oncourse.model.auto._Contact.*
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact
 
 class CreateOrGetContact  {

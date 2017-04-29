@@ -1,8 +1,7 @@
 package ish.oncourse.willow.service;
 
+import ish.oncourse.willow.model.autocomplete.Item;
 import ish.oncourse.willow.model.common.Error;
-import ish.oncourse.willow.model.web.Product;
-import ish.oncourse.willow.model.web.ProductsParams;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,13 +12,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
-public interface ProductsApi  {
+public interface AutocompleteApi  {
 
-    @POST
-    @Path("/products")
-    @Consumes({ "application/json" })
+    @GET
+    @Path("/completion/{key}")
     @Produces({ "application/json" })
-    @CollegeInfo
-    List<Product> getProducts(ProductsParams productsParams);
+    List<Item> autocomplete(@PathParam("key") String key, @QueryParam("text")String text);
 }
 

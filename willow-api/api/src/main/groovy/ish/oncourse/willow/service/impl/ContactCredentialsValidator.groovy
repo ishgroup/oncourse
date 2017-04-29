@@ -1,9 +1,9 @@
 package ish.oncourse.willow.service.impl
 
 import ish.oncourse.common.field.FieldProperty
-import ish.oncourse.willow.model.CreateContactParams
 import ish.oncourse.willow.model.FieldError
-import ish.oncourse.willow.model.ValidationError
+import ish.oncourse.willow.model.common.ValidationError
+import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactValidation
 import ish.validation.ValidationUtil
 import org.apache.commons.lang3.StringUtils
@@ -14,7 +14,6 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 import javax.ws.rs.ext.ReaderInterceptor
 import javax.ws.rs.ext.ReaderInterceptorContext
-
 
 import static ish.oncourse.common.field.FieldProperty.*
 import static ish.validation.ContactValidator.Property.*

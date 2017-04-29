@@ -2,11 +2,10 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
-import ish.oncourse.model.Contact
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
-import ish.oncourse.willow.service.*
-import ish.oncourse.willow.model.Product
-import ish.oncourse.willow.model.ProductsParams
+import ish.oncourse.willow.model.web.Product
+import ish.oncourse.willow.model.web.ProductsParams
+import ish.oncourse.willow.service.ProductsApi
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.exp.ExpressionFactory

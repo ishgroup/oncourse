@@ -1,16 +1,50 @@
-package ish.oncourse.willow.model;
+package ish.oncourse.willow.model.web;
 
-import ish.oncourse.willow.model.FieldSet;
 
-public class CreateContactParams  {
+public class Contact  {
   
+    private String id = null;
+    private String uniqueIdentifier = null;
     private String firstName = null;
     private String lastName = null;
     private String email = null;
-    private FieldSet fieldSet = null;
 
     /**
-     * First Name of Contact
+     * Internal Unique identifier of course
+     * @return id
+     */
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+       this.id = id;
+    }
+
+    public Contact id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    /**
+     * Unique identifier of contact
+     * @return uniqueIdentifier
+     */
+    public String getUniqueIdentifier() {
+        return uniqueIdentifier;
+    }
+
+    public void setUniqueIdentifier(String uniqueIdentifier) {
+       this.uniqueIdentifier = uniqueIdentifier;
+    }
+
+    public Contact uniqueIdentifier(String uniqueIdentifier) {
+      this.uniqueIdentifier = uniqueIdentifier;
+      return this;
+    }
+
+    /**
+     * first name of contact
      * @return firstName
      */
     public String getFirstName() {
@@ -21,13 +55,13 @@ public class CreateContactParams  {
        this.firstName = firstName;
     }
 
-    public CreateContactParams firstName(String firstName) {
+    public Contact firstName(String firstName) {
       this.firstName = firstName;
       return this;
     }
 
     /**
-     * Last Name of Contact
+     * last name of contact
      * @return lastName
      */
     public String getLastName() {
@@ -38,13 +72,13 @@ public class CreateContactParams  {
        this.lastName = lastName;
     }
 
-    public CreateContactParams lastName(String lastName) {
+    public Contact lastName(String lastName) {
       this.lastName = lastName;
       return this;
     }
 
     /**
-     * Email of Contact
+     * email of contact
      * @return email
      */
     public String getEmail() {
@@ -55,25 +89,8 @@ public class CreateContactParams  {
        this.email = email;
     }
 
-    public CreateContactParams email(String email) {
+    public Contact email(String email) {
       this.email = email;
-      return this;
-    }
-
-    /**
-     * Get fieldSet
-     * @return fieldSet
-     */
-    public FieldSet getFieldSet() {
-        return fieldSet;
-    }
-
-    public void setFieldSet(FieldSet fieldSet) {
-       this.fieldSet = fieldSet;
-    }
-
-    public CreateContactParams fieldSet(FieldSet fieldSet) {
-      this.fieldSet = fieldSet;
       return this;
     }
 
@@ -81,12 +98,13 @@ public class CreateContactParams  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class CreateContactParams {\n");
+      sb.append("class Contact {\n");
       
+      sb.append("    id: ").append(toIndentedString(id)).append("\n");
+      sb.append("    uniqueIdentifier: ").append(toIndentedString(uniqueIdentifier)).append("\n");
       sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
       sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
       sb.append("    email: ").append(toIndentedString(email)).append("\n");
-      sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
       sb.append("}");
       return sb.toString();
     }

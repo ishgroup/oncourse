@@ -1,24 +1,24 @@
-package ish.oncourse.willow.model;
+package ish.oncourse.willow.model.web;
 
 
-public class InlineResponse404  {
+public class ContactParams  {
   
-    private String message = null;
+    private String id = null;
 
     /**
-     * Message to show on UI
-     * @return message
+     * Internal Unique identifier of course
+     * @return id
      */
-    public String getMessage() {
-        return message;
+    public String getId() {
+        return id;
     }
 
-    public void setMessage(String message) {
-       this.message = message;
+    public void setId(String id) {
+       this.id = id;
     }
 
-    public InlineResponse404 message(String message) {
-      this.message = message;
+    public ContactParams id(String id) {
+      this.id = id;
       return this;
     }
 
@@ -26,9 +26,9 @@ public class InlineResponse404  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class InlineResponse404 {\n");
+      sb.append("class ContactParams {\n");
       
-      sb.append("    message: ").append(toIndentedString(message)).append("\n");
+      sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("}");
       return sb.toString();
     }

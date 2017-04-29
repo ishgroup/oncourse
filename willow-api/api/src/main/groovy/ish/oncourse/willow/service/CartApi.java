@@ -1,7 +1,7 @@
 package ish.oncourse.willow.service;
 
-import ish.oncourse.willow.model.Error;
-import ish.oncourse.willow.model.Token;
+import ish.oncourse.willow.model.common.Error;
+import ish.oncourse.willow.model.web.Token;
 
 import java.io.InputStream;
 import java.io.OutputStream;

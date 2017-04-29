@@ -1,6 +1,6 @@
 package ish.oncourse.willow.service
 
-import ish.oncourse.willow.model.Promotion
+import ish.oncourse.willow.model.web.Promotion
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
 import ish.oncourse.willow.service.impl.RequestFilter

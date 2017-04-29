@@ -1,6 +1,5 @@
-package ish.oncourse.willow.model;
+package ish.oncourse.willow.model.web;
 
-import ish.oncourse.willow.model.Discount;
 import java.util.ArrayList;
 import java.util.List;
 

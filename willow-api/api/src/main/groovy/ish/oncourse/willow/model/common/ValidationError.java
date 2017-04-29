@@ -1,5 +1,6 @@
-package ish.oncourse.willow.model;
+package ish.oncourse.willow.model.common;
 
+import ish.oncourse.willow.model.FieldError;
 import java.util.ArrayList;
 import java.util.List;
 

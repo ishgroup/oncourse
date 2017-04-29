@@ -1,16 +1,7 @@
-package ish.oncourse.willow.service;
+package ish.oncourse.willow.service
 
-import ish.oncourse.willow.model.Error;
-import ish.oncourse.willow.model.Token;
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.junit.Before
+import org.junit.Test
 /**
  * API tests for CartApi
  */

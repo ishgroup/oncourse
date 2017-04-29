@@ -2,10 +2,8 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
-import ish.oncourse.willow.model.Contact
-import ish.oncourse.willow.model.CreateContactParams
-import ish.oncourse.willow.model.FieldError
-import ish.oncourse.willow.model.ValidationError
+import ish.oncourse.willow.model.web.Contact
+import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactApi
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect

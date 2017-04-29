@@ -1,4 +1,4 @@
-package ish.oncourse.willow.model;
+package ish.oncourse.willow.model.web;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

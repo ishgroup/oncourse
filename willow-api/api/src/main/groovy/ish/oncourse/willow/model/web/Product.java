@@ -1,4 +1,4 @@
-package ish.oncourse.willow.model;
+package ish.oncourse.willow.model.web;
 
 
 public class Product  {

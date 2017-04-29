@@ -25,18 +25,18 @@ paths:
         description: Params for request list of products
         required: true
         schema:
-          $ref: '#/definitions/ProductsParams'
+          $ref: '#/definitions/web.ProductsParams'
       responses:
         200:
           description: List of products
           schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
+              $ref: '#/definitions/web.Product'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/common.Error'
   /classes:
     post:
       x-filter: 
@@ -54,18 +54,18 @@ paths:
         description: Params for request list of course classes
         required: true
         schema:
-          $ref: '#/definitions/CourseClassesParams'
+          $ref: '#/definitions/web.CourseClassesParams'
       responses:
         200:
           description: List of products
           schema:
             type: array
             items:
-              $ref: '#/definitions/CourseClass'
+              $ref: '#/definitions/web.CourseClass'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/common.Error'
   /contact:
     put:
       x-filter: 
@@ -82,7 +82,7 @@ paths:
         description: Params for create or get contact
         required: true
         schema:
-          $ref: '#/definitions/CreateContactParams'
+          $ref: '#/definitions/web.CreateContactParams'
       responses:
         200:
           description: Contact Id
@@ -91,11 +91,11 @@ paths:
         400:
           description: Validation error
           schema:
-            $ref: '#/definitions/ValidationError'
+            $ref: '#/definitions/common.ValidationError'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/common.Error'
   /contact/{studentUniqueIdentifier}:
     get:
       x-filter: 
@@ -115,11 +115,11 @@ paths:
         200:
           description: Contact for provided id
           schema:
-            $ref: '#/definitions/Contact'
+            $ref: '#/definitions/web.Contact'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/common.Error'
   /promotion/{code}:
     get:
       x-filter: 
@@ -139,7 +139,7 @@ paths:
         200:
           description: Promotion for provided code
           schema:
-            $ref: '#/definitions/Promotion'
+            $ref: '#/definitions/web.Promotion'
         404:
           description: In case if promotion not avaliable for provided code
           schema:
@@ -152,7 +152,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/common.Error'
   /cart:
     post:
       summary: Create new Cart session
@@ -166,11 +166,11 @@ paths:
         200:
           description: Object with token
           schema:
-            $ref: '#/definitions/Token'
+            $ref: '#/definitions/web.Token'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/common.Error'
   /completion/{key}:
     get:
       summary: Autocomplete Endpoint
@@ -196,11 +196,11 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Suggestion'
+              $ref: '#/definitions/autocomplete.Item'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/common.Error'
 parameters:
   XOrigin:
     name: X-Origin
@@ -218,16 +218,16 @@ parameters:
     required: true
     type: string
 definitions:
-  Suggestion:
+  autocomplete.Item:
     type: object
     properties:
       key:
         type: string
-        description: Key which user see
+        description: Key which will be send back
       value:
         type: string
-        description: Value which will be send back
-  Product:
+        description: Value which user will see
+  web.Product:
     type: object
     properties:
       id:
@@ -248,7 +248,7 @@ definitions:
       canBuy:
         type: boolean
         description: Is on sale and is Web visible
-  Course:
+  web.Course:
     type: object
     properties:
       id:
@@ -263,7 +263,7 @@ definitions:
       description:
         type: string
         description: Description of course
-  CourseClass:
+  web.CourseClass:
     type: object
     properties:
       id:
@@ -302,9 +302,9 @@ definitions:
         type: boolean
         description: Is payment gateway enabled
       price:
-        $ref: '#/definitions/CourseClassPrice'
+        $ref: '#/definitions/web.CourseClassPrice'
         description: Prices attached to current course class
-  CourseClassPrice:
+  web.CourseClassPrice:
     type: object
     properties:
       fee:
@@ -314,16 +314,16 @@ definitions:
         type: string
         description: 'TODO:  feeOverriden'
       appliedDiscount:
-        $ref: '#/definitions/Discount'
+        $ref: '#/definitions/web.Discount'
       possibleDiscounts:
         type: array
         items:
-          $ref: '#/definitions/Discount'
+          $ref: '#/definitions/web.Discount'
         description: List discounts sorted by discounted fee
       hasTax:
         type: boolean
         description: Has tax
-  Discount:
+  web.Discount:
     type: object
     properties:
       id:
@@ -338,7 +338,7 @@ definitions:
         type: string
       title:
         type: string
-  Contact:
+  web.Contact:
     type: object
     properties:
       id:
@@ -356,7 +356,7 @@ definitions:
       email:
         type: string
         description: email of contact
-  Promotion:
+  web.Promotion:
     type: object
     properties:
       id:
@@ -368,13 +368,13 @@ definitions:
       name:
         type: string
         description: Name of promotion
-  Token:
+  web.Token:
     type: object
     properties:
       token:
         type: string
         description: Unique identifier for the user
-  Error:
+  common.Error:
     type: object
     properties:
       code:
@@ -384,7 +384,7 @@ definitions:
         type: string
       fields:
         type: string
-  CourseClassesParams:
+  web.CourseClassesParams:
     type: object
     properties:
       courseClassesIds:
@@ -395,11 +395,11 @@ definitions:
       promotions:
         type: array
         items:
-          $ref: '#/definitions/PromotionParams'
+          $ref: '#/definitions/web.PromotionParams'
         description: List of applied promotions
       contact:
-        $ref: '#/definitions/ContactParams'
-  ProductsParams:
+        $ref: '#/definitions/web.ContactParams'
+  web.ProductsParams:
     type: object
     properties:
       productsIds:
@@ -410,29 +410,29 @@ definitions:
       promotions:
         type: array
         items:
-          $ref: '#/definitions/PromotionParams'
+          $ref: '#/definitions/web.PromotionParams'
         description: List of applied promotions
       contact:
-        $ref: '#/definitions/ContactParams'
-  ContactParams:
+        $ref: '#/definitions/web.ContactParams'
+  web.ContactParams:
     type: object
     properties:
       id:
         type: string
         description: Internal Unique identifier of course
-  PromotionParams:
+  web.PromotionParams:
     type: object
     properties:
       id:
         type: string
         description: Internal unique indetificator of promotion
-  FieldSet:
+  web.FieldSet:
     type: string
     enum:
       - enrolment
       - waitinglist
       - mailinglist
-  CreateContactParams:
+  web.CreateContactParams:
     type: object
     required:
     - firstName
@@ -450,8 +450,8 @@ definitions:
         description: Email of Contact
         type: string
       fieldSet:
-        $ref: '#/definitions/FieldSet'
-  ValidationError:
+        $ref: '#/definitions/web.FieldSet'
+  common.ValidationError:
     type: object
     required:
     - formErrors

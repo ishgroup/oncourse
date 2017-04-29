@@ -1,50 +1,14 @@
-package ish.oncourse.willow.model;
+package ish.oncourse.willow.model.web;
 
-
-public class Contact  {
+public class CreateContactParams  {
   
-    private String id = null;
-    private String uniqueIdentifier = null;
     private String firstName = null;
     private String lastName = null;
     private String email = null;
+    private FieldSet fieldSet = null;
 
     /**
-     * Internal Unique identifier of course
-     * @return id
-     */
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-       this.id = id;
-    }
-
-    public Contact id(String id) {
-      this.id = id;
-      return this;
-    }
-
-    /**
-     * Unique identifier of contact
-     * @return uniqueIdentifier
-     */
-    public String getUniqueIdentifier() {
-        return uniqueIdentifier;
-    }
-
-    public void setUniqueIdentifier(String uniqueIdentifier) {
-       this.uniqueIdentifier = uniqueIdentifier;
-    }
-
-    public Contact uniqueIdentifier(String uniqueIdentifier) {
-      this.uniqueIdentifier = uniqueIdentifier;
-      return this;
-    }
-
-    /**
-     * first name of contact
+     * First Name of Contact
      * @return firstName
      */
     public String getFirstName() {
@@ -55,13 +19,13 @@ public class Contact  {
        this.firstName = firstName;
     }
 
-    public Contact firstName(String firstName) {
+    public CreateContactParams firstName(String firstName) {
       this.firstName = firstName;
       return this;
     }
 
     /**
-     * last name of contact
+     * Last Name of Contact
      * @return lastName
      */
     public String getLastName() {
@@ -72,13 +36,13 @@ public class Contact  {
        this.lastName = lastName;
     }
 
-    public Contact lastName(String lastName) {
+    public CreateContactParams lastName(String lastName) {
       this.lastName = lastName;
       return this;
     }
 
     /**
-     * email of contact
+     * Email of Contact
      * @return email
      */
     public String getEmail() {
@@ -89,8 +53,25 @@ public class Contact  {
        this.email = email;
     }
 
-    public Contact email(String email) {
+    public CreateContactParams email(String email) {
       this.email = email;
+      return this;
+    }
+
+    /**
+     * Get fieldSet
+     * @return fieldSet
+     */
+    public FieldSet getFieldSet() {
+        return fieldSet;
+    }
+
+    public void setFieldSet(FieldSet fieldSet) {
+       this.fieldSet = fieldSet;
+    }
+
+    public CreateContactParams fieldSet(FieldSet fieldSet) {
+      this.fieldSet = fieldSet;
       return this;
     }
 
@@ -98,13 +79,12 @@ public class Contact  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class Contact {\n");
+      sb.append("class CreateContactParams {\n");
       
-      sb.append("    id: ").append(toIndentedString(id)).append("\n");
-      sb.append("    uniqueIdentifier: ").append(toIndentedString(uniqueIdentifier)).append("\n");
       sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
       sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
       sb.append("    email: ").append(toIndentedString(email)).append("\n");
+      sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
       sb.append("}");
       return sb.toString();
     }

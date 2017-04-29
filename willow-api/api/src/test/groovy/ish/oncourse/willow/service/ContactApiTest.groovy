@@ -1,6 +1,6 @@
 package ish.oncourse.willow.service
 
-import ish.oncourse.willow.model.Contact
+import ish.oncourse.willow.model.web.Contact
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import org.junit.Test
 

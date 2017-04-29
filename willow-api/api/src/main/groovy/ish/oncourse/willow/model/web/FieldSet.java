@@ -1,11 +1,11 @@
-package ish.oncourse.willow.model;
+package ish.oncourse.willow.model.web;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Gets or Sets FieldSet
+ * Gets or Sets web.FieldSet
  */
 public enum FieldSet {
   

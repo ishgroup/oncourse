@@ -1,8 +1,8 @@
 package ish.oncourse.willow.service;
 
-import ish.oncourse.willow.model.CourseClass;
-import ish.oncourse.willow.model.CourseClassesParams;
-import ish.oncourse.willow.model.Error;
+import ish.oncourse.willow.model.common.Error;
+import ish.oncourse.willow.model.web.CourseClass;
+import ish.oncourse.willow.model.web.CourseClassesParams;
 
 import java.io.InputStream;
 import java.io.OutputStream;

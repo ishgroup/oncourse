@@ -17,12 +17,8 @@ import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.util.FormatUtils
-import ish.oncourse.willow.model.Course
-import ish.oncourse.willow.model.CourseClassPrice
-import ish.oncourse.willow.model.Discount
-import ish.oncourse.willow.service.*
-import ish.oncourse.willow.model.CourseClass
-import ish.oncourse.willow.model.CourseClassesParams
+import ish.oncourse.willow.model.web.*
+import ish.oncourse.willow.service.CourseClassesApi
 import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.configuration.server.ServerRuntime

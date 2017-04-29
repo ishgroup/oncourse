@@ -3,7 +3,7 @@ package ish.oncourse.willow.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.model.Discount
-import ish.oncourse.willow.model.Promotion
+import ish.oncourse.willow.model.web.Promotion
 import ish.oncourse.willow.service.PromotionApi
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect
