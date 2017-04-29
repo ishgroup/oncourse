@@ -61,11 +61,11 @@ public class GetDiscountTest extends ServiceTest {
 		};
 
 		List<DiscountCourseClass> applicableDiscounts = GetAppliedDiscounts.valueOf(courseClass,promotions).get();
-		assertEquals(2, applicableDiscounts.size());
+		assertEquals(3, applicableDiscounts.size());
 		Collections.sort(applicableDiscounts,idComparator);
 
 		assertEquals(Long.valueOf(1l), applicableDiscounts.get(0).getId());
-		assertEquals(Long.valueOf(5l), applicableDiscounts.get(1).getId());
+		assertEquals(Long.valueOf(2l), applicableDiscounts.get(1).getId());
 
 
 		List<DiscountCourseClass> potencialDiscounts = GetPossibleDiscounts.valueOf(courseClass).get();

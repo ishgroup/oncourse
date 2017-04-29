@@ -28,7 +28,6 @@ public class GetPossibleDiscounts {
 				where(DiscountCourseClass.COURSE_CLASS.eq(courseClass)).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.CODE).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.HIDE_ON_WEB).isFalse()).
-				and(DiscountCourseClass.DISCOUNT.dot(Discount.IS_AVAILABLE_ON_WEB).isTrue()).
 				and(
 						DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_ENROLLED_WITHIN_DAYS).isNotNull().
 								orExp(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_AGE).isNotNull()).

@@ -30,7 +30,6 @@ public class GetAppliedDiscounts {
 	public List<DiscountCourseClass> get() {
 		List<DiscountCourseClass> discounts =  ObjectSelect.query(DiscountCourseClass.class).
 				where(DiscountCourseClass.COURSE_CLASS.eq(courseClass)).
-				and(DiscountCourseClass.DISCOUNT.dot(Discount.IS_AVAILABLE_ON_WEB).isTrue()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.HIDE_ON_WEB).isFalse()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_ENROLLED_WITHIN_DAYS).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_AGE).isNull()).
