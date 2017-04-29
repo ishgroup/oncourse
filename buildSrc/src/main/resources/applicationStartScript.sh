@@ -14,7 +14,7 @@ command -v realpath >/dev/null 2>&1 || realpath() {
 PID_FILE="/var/run/onCourse/${applicationName}.pid"
 BASEDIR=\$(realpath \${0})
 APP_HOME=\$(dirname \${BASEDIR} | xargs dirname)
-cd $APP_HOME
+cd \$APP_HOME
 
 # Default JVM options. You can also use JAVA_OPTS and ${optsEnvironmentVar} to pass JVM options to this script.
 DEFAULT_JVM_OPTS=${defaultJvmOpts}
