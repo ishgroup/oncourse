@@ -72,3 +72,21 @@ input[type="url"], select, textarea {
 		color: $btnType2Color;
 	}
 }
+
+.responsive-image, .responsive-image-h {
+	>span {
+		width: 100%;
+		left: 0;
+		top: 0;
+	}
+}
+.responsive-image {
+	>span {
+		@include responsive-image(true);
+	}
+}
+.responsive-image-h {
+	>span {
+		@include responsive-image();
+	}
+}

@@ -2,10 +2,11 @@
 	<div class="clearfix courseItem${tagClasses}" itemscope="itemscope" itemtype="http://schema.org/Product">
 		<t:if t:test="isList" negate="true">
 			<t:if t:test="addThisEnabled">
-				<div class="addthis">
-					<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
+				<div class="clearfix">
+					<div class="addthis">
+						<span t:type="ui/socialmedia" addThisProfileId="addThisProfileId"/>
+					</div>
 				</div>
-				<div class="clearfix"></div>
 			</t:if>
 			<h1 itemprop="name" class="summary page-title">
 				<t:if t:test="courseItemModel.nrt">

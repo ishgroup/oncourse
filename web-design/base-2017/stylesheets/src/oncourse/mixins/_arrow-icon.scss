@@ -1,12 +1,16 @@
 
-
 @mixin arrow-icon($arrow-width: 16, $arrow-height: 2, $color: #fff, $position: 'right', $posH: 2, $posV: -1) {
   position: relative;
   display: inline-block;
-  width: #{$arrow-width}px;
-  height: #{$arrow-height}px;
   vertical-align: middle;
   background: $color;
+  @if $position == 'top' or $position == 'bottom' {
+    width: #{$arrow-height}px;
+    height: #{$arrow-width}px;
+  } @else {
+    width: #{$arrow-width}px;
+    height: #{$arrow-height}px;
+  }
   &::after, &::before {
     content: "";
     position: absolute;
@@ -16,24 +20,50 @@
 
     @if $position == 'right' {
       right: #{$posH}px;
-    } @else {
+    } @else if $position == 'left' {
       left: #{$posH}px;
     }
   }
 
   $rotate-after: 45deg;
   $rotate-before: -45deg;
-  @if $position == 'left' {
+  @if $position == 'left' or $position == 'top' {
     $rotate-after: -45deg;
     $rotate-before: 45deg;
   }
 
   &::after {
-    transform: rotate($rotate-after);
-    top: #{$posV}px;
+    @include transform(rotate($rotate-after));
+    @if $position == 'top' or $position == 'bottom' {
+      right: #{$posH}px;
+    }
+
+    @if $position == 'bottom' {
+      bottom: #{$posV}px;
+    } @else {
+      top: #{$posV}px;
+    }
   }
   &::before {
-    transform: rotate($rotate-before);
-    bottom: #{$posV}px;
+    @include transform(rotate($rotate-before));
+    @if $position == 'top' or $position == 'bottom' {
+      left: #{$posH}px;
+    }
+
+    @if $position == 'top' {
+      top: #{$posV}px;
+    } @else {
+      bottom: #{$posV}px;
+    }
   }
+}
+
+@mixin arrow-icon-color($color) {
+  &, &::after, &::before {
+    background: $color;
+  }
+}
+
+@mixin arrow-icon-vert($arrow-width: 16, $arrow-height: 2, $color: #fff, $position: 'bottom', $posH: -4, $posV: -2) {
+  @include arrow-icon($arrow-width, $arrow-height, $color, $position, $posH, $posV);
 }
