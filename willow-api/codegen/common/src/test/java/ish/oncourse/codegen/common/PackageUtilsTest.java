@@ -2,10 +2,10 @@ package ish.oncourse.codegen.common;
 
 import org.junit.Test;
 
-import static ish.oncourse.codegen.common.CodegenConstants.SEP;
 import static ish.oncourse.codegen.common.PackageUtils.containsPackage;
 import static ish.oncourse.codegen.common.PackageUtils.deletePackage;
 import static ish.oncourse.codegen.common.PackageUtils.getClassName;
+import static ish.oncourse.codegen.common.PackageUtils.withSeparator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -16,15 +16,15 @@ import static org.junit.Assert.assertTrue;
 public class PackageUtilsTest {
     @Test
     public void getClassNameTest() throws Exception {
-        final String actual = getClassName("com" + SEP + "ish" + SEP + "autocomplete" + SEP + "Item");
+        final String actual = getClassName(withSeparator("com", "ish", "autocomplete", "Item"));
 
         assertEquals("Item", actual);
     }
 
     @Test
     public void containsPackageTest() throws Exception {
-        assertTrue(containsPackage("com" + SEP + "ish" + SEP + "autocomplete" + SEP + "Item"));
-        assertTrue(containsPackage("autocomplete" + SEP + "Item"));
+        assertTrue(containsPackage(withSeparator("com", "ish", "autocomplete", "Item")));
+        assertTrue(containsPackage(withSeparator("autocomplete", "Item")));
 
         assertFalse(containsPackage("Item"));
     }
@@ -34,13 +34,13 @@ public class PackageUtilsTest {
         assertEquals(
                 "List<Product>",
                 deletePackage(
-                        "List<com" + SEP + "ish" + SEP + "web" + SEP + "Product>",
-                        "com" + SEP + "ish" + SEP + "web"
+                        withSeparator("List<com", "ish", "web", "Product>"),
+                        withSeparator("com", "ish", "web")
                 )
         );
         assertEquals(
                 "List<Product>",
-                deletePackage("List<web" + SEP + "Product>", "web")
+                deletePackage(withSeparator("List<web", "Product>"), "web")
         );
     }
 }

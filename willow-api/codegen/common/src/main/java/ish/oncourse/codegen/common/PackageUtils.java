@@ -1,6 +1,6 @@
 package ish.oncourse.codegen.common;
 
-import java.io.File;
+import org.apache.commons.lang3.StringUtils;
 
 import static ish.oncourse.codegen.common.CodegenConstants.SEP;
 
@@ -25,7 +25,7 @@ public final class PackageUtils {
     public static String getClassName(String name) {
         if (name == null) return null;
 
-        final int lastIndexOf = name.lastIndexOf(File.separator);
+        final int lastIndexOf = name.lastIndexOf(SEP);
 
         return name.substring(lastIndexOf + 1, name.length());
     }
@@ -40,7 +40,7 @@ public final class PackageUtils {
      * @return package
      */
     public static String getPackage(String name) {
-        final int lastIndexOf = name.lastIndexOf(File.separator);
+        final int lastIndexOf = name.lastIndexOf(SEP);
 
         return name.substring(0, lastIndexOf);
     }
@@ -63,6 +63,26 @@ public final class PackageUtils {
      * @return true if string contains package information
      */
     public static boolean containsPackage(String name) {
-        return name != null && name.contains(File.separator);
+        return name != null && name.contains(SEP);
+    }
+
+    /**
+     * Replace file system separator with package separator.
+     *
+     * @param pkg package
+     * @param packageSeparator "/" for node, "." for Java.
+     * @return package with appropriate separator
+     */
+    public static String normalizePackage(String pkg, String packageSeparator) {
+        return pkg.replaceAll(SEP, packageSeparator);
+    }
+
+    /**
+     * Join string with separator.
+     * @param parts parts to join.
+     * @return the joined string.
+     */
+    public static String withSeparator(String... parts) {
+        return StringUtils.join(parts, SEP);
     }
 }

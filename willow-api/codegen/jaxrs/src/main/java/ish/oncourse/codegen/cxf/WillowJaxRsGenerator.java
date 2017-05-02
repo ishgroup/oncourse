@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import static ish.oncourse.codegen.common.CodegenConstants.SEP;
+import static ish.oncourse.codegen.common.ModelUtils.processVars;
 import static ish.oncourse.codegen.common.PackageUtils.containsPackage;
-import static ish.oncourse.codegen.common.PackageUtils.deletePackage;
 import static ish.oncourse.codegen.common.PackageUtils.getClassName;
 import static ish.oncourse.codegen.common.PackageUtils.getPackage;
 
@@ -241,19 +241,7 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
                     model.classname = newClassName;
                 }
 
-                for (CodegenProperty var : model.vars) {
-                    if (containsPackage(var.datatypeWithEnum)) {
-                        var.baseType = getClassName(var.baseType);
-                        var.datatypeWithEnum = deletePackage(var.datatypeWithEnum, getPackage(var.complexType));
-                        var.defaultValue = deletePackage(var.defaultValue, getPackage(var.complexType));
-                        var.datatype = deletePackage(var.datatype, getPackage(var.complexType));
-
-                        if (var.items != null) {
-                            var.items.datatypeWithEnum = getClassName(var.items.datatypeWithEnum);
-                            var.items.datatype = getClassName(var.items.datatype);
-                        }
-                    }
-                }
+                processVars(model.vars);
             } else {
                 LOGGER.error("Unexpected behaviour in postProcessAllModels, objs value is not a Map");
             }

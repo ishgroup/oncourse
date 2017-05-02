@@ -2,7 +2,7 @@ package ish.oncourse.codegen.cxf;
 
 import org.junit.Test;
 
-import static ish.oncourse.codegen.common.CodegenConstants.SEP;
+import static ish.oncourse.codegen.common.PackageUtils.withSeparator;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -17,11 +17,11 @@ public class WillowJaxRsGeneratorTest {
 
         assertEquals("Item", generator.toModelName("Item"));
         assertEquals(
-                "autocomplete" + SEP + "Item",
+                withSeparator("autocomplete", "Item"),
                 generator.toModelName("autocomplete.Item")
         );
         assertEquals(
-                "com" + SEP + "ish" + SEP + "autocomplete" + SEP + "Item",
+                withSeparator("com", "ish", "autocomplete", "Item"),
                 generator.toModelName("com.ish.autocomplete.Item")
         );
     }
@@ -34,11 +34,11 @@ public class WillowJaxRsGeneratorTest {
 
         assertEquals("IshItemModel", generator.toModelName("Item"));
         assertEquals(
-                "autocomplete" + SEP + "IshItemModel",
+                withSeparator("autocomplete", "IshItemModel"),
                 generator.toModelName("autocomplete.Item")
         );
         assertEquals(
-                "com" + SEP + "ish" + SEP + "autocomplete" + SEP + "IshItemModel",
+                withSeparator("com", "ish", "autocomplete", "IshItemModel"),
                 generator.toModelName("com.ish.autocomplete.Item")
         );
     }
