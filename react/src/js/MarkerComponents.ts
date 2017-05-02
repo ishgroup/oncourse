@@ -1,12 +1,12 @@
 import {ComponentClass, StatelessComponent} from "react";
-import {EnrolRoot} from "./containers/EnrolRoot";
-import {Fees} from "./containers/Fees";
-import EnrolButton from "./containers/EnrolButton";
-import {CartRoot} from "./containers/CartRoot";
-import BuyButton from "./containers/BuyButton";
+import {EnrolRoot} from "./enrol/containers/EnrolRoot";
+import {Fees} from "./web/containers/Fees";
+import EnrolButton from "./web/containers/EnrolButton";
+import {CartRoot} from "./web/containers/CartRoot";
+import BuyButton from "./web/containers/BuyButton";
 import PopupContainer from "./containers/PopupContainer";
-import Promotions from "./containers/Promotions";
-import {LegacyModal} from "./components/modal/LegacyModal";
+import Promotions from "./web/containers/Promotions";
+import {LegacyModal} from "./web/components/modal/LegacyModal";
 
 export class MarkerComponents {
 

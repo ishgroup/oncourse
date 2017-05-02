@@ -1,4 +1,4 @@
-import {HttpService} from "../common/services/HttpService";
+import {HttpService} from "../services/HttpService";
 import { ModelError } from "../model/ModelError";
 import { Product } from "../model/Product";
 import { ProductsParams } from "../model/ProductsParams";

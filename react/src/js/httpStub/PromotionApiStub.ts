@@ -1,5 +1,5 @@
 import {PromotionApi} from "../http/PromotionApi";
-import {Promotion} from "../model/Promotion";
+import {Promotion} from "../model/web/Promotion";
 
 export class PromotionApiStub extends PromotionApi {
   getPromotion(code: string): Promise<Promotion> {

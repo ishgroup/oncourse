@@ -1,7 +1,5 @@
-import {DefaultHttpService, HttpService} from "../common/services/HttpService";
-import { CourseClass } from "../model/CourseClass";
-import { CourseClassesParams } from "../model/CourseClassesParams";
-import { ModelError } from "../model/ModelError";
+import { CourseClass } from "../model/web/CourseClass";
+import { CourseClassesParams } from "../model/web/CourseClassesParams";
 import {CourseClassesApi} from "../http/CourseClassesApi";
 
 export class CourseClassesApiStub extends CourseClassesApi {

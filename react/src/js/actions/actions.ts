@@ -1,6 +1,8 @@
+import {Suggestion} from "../selectors/autocomplete";
+
 export interface AutocompleteResponsePayload {
   readonly key: string;
-  readonly candidates: string[];
+  readonly candidates: Suggestion[];
 }
 
 export interface AutocompleteRequestPayload {

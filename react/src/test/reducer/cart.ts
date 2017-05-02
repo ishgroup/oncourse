@@ -1,6 +1,6 @@
 import {Action} from "redux";
 import {IshActions} from "../../js/constants/IshActions";
-import {cartReducer} from "../../js/reducers/cart";
+import {cartReducer} from "../../js/web/reducers/cart";
 
 xdescribe('cart reducer', () => {
     let course1, course2, product1, product2, state, initialState;

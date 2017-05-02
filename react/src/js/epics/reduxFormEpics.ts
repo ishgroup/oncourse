@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
 import {normalize} from "normalizr";
 import {contactsSchema} from "../schema";
 import {mapError, mapPayload} from "./epicsUtils";
-import {ValidationError} from "../model/ValidationError";
+import {ValidationError} from "../model/common/ValidationError";
 import {IshAction} from "../actions/IshAction";
 
 const {
@@ -58,7 +58,7 @@ function convertToReduxFormErrors<T>(backendError: ValidationError): FormErrors<
   const errors = {};
 
   backendError.fieldsErrors.forEach(field => {
-    errors[field.name] = field.errors.join(" ");
+    errors[field.name] = field.error;
   });
 
   errors["_error"] = backendError.formErrors.join(" ");

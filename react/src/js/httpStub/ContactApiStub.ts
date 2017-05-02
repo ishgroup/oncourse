@@ -1,9 +1,6 @@
 import {ContactApi} from "../http/ContactApi";
-import {Contact} from "../model/Contact";
-import {CourseClass} from "../model/CourseClass";
-import {CreateContactParams} from "../model/CreateContactParams";
-import {asap} from "rxjs/scheduler/asap";
-import {ValidationError} from "../model/ValidationError";
+import {Contact} from "../model/web/Contact";
+import {CreateContactParams} from "../model/web/CreateContactParams";
 import {AxiosResponse} from "axios";
 
 export class ContactApiStub extends ContactApi {

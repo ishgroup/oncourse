@@ -1,17 +1,16 @@
-import {HttpService} from "../common/services/HttpService";
-import {ModelError} from "../model/ModelError";
 import {AutocompleteApi} from "../http/AutocompleteApi";
+import {Suggestion} from "../selectors/autocomplete";
 
 export class AutocompleteApiStub extends AutocompleteApi {
-  autocomplete(key: string, text: string): Promise<string[]> {
-    return new Promise(function (resolve, reject) {
+  autocomplete(key: string, text: string): Promise<Suggestion[]> {
+    return new Promise(function (resolve) {
       setTimeout(() => {
         resolve([
-          `${text}1`,
-          `${text}2`,
-          `${text}3`,
-          `${text}4`,
-          `${text}5`
+          {key: `${text}1`, value: `value${text}1`},
+          {key: `${text}2`, value: `value${text}2`},
+          {key: `${text}3`, value: `value${text}3`},
+          {key: `${text}4`, value: `value${text}4`},
+          {key: `${text}5`, value: `value${text}5`}
         ])
       }, Math.floor((Math.random() * 1000) + 1));
     });

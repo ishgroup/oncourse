@@ -1,5 +1,10 @@
 import {IshState} from "../services/IshState";
 
-export function selectSuggestions(state: IshState, key: string): string[] {
+export interface Suggestion {
+  key: string;
+  value: string;
+}
+
+export function selectSuggestions(state: IshState, key: string): Suggestion[] {
   return state.autocomplete[key] || [];
 }

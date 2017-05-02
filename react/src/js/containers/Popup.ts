@@ -1,7 +1,6 @@
-///<reference path="../actions/popup.ts"/>
 import * as React from 'react';
 import {bindActionCreators} from 'redux';
-import {connect, ActionCreator} from 'react-redux';
+import {connect} from 'react-redux';
 import {updatePopup, hidePopup} from '../actions/popup';
 
 class Popup extends React.Component<PopupProps, {}> {

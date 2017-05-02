@@ -1,4 +1,5 @@
 import {AxiosRequestConfig} from "axios";
+import {ReactNode} from "react";
 
 export interface ReactRouter {
   push: (string) => void;
@@ -14,4 +15,8 @@ export interface RestError<T> {
   statusText: string;
   headers: any;
   config: AxiosRequestConfig;
+}
+
+export interface BaseProps {
+  readonly children?: ReactNode;
 }

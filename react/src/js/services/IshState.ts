@@ -1,9 +1,10 @@
-import {CourseClassPrice} from "../model/CourseClassPrice";
-import {Promotion} from "../model/Promotion";
-import {CourseClass} from "../model/CourseClass";
-import {Product} from "../model/Product";
-import {Contact} from "../model/Contact";
-import {ValidationError} from "../model/ValidationError";
+import {CourseClassPrice} from "../model/web/CourseClassPrice";
+import {Promotion} from "../model/web/Promotion";
+import {CourseClass} from "../model/web/CourseClass";
+import {Product} from "../model/web/Product";
+import {Contact} from "../model/web/Contact";
+import {ValidationError} from "../model/common/ValidationError";
+import {Suggestion} from "../selectors/autocomplete";
 
 export interface IshState {
   readonly cart: CartState;
@@ -70,7 +71,7 @@ export interface PayerState {
 //-- Autocomplete
 
 export interface AutocompleteState {
-  [key: string]: string[];
+  [key: string]: Suggestion[];
 }
 
 export interface Normalized<V> {
