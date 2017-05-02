@@ -1,5 +1,5 @@
 import assignIn from "lodash/assignIn";
-import {HttpService, DefaultHttpService} from "./services/HttpService";
+import {HttpService, DefaultHttpService} from "./common/services/HttpService";
 import {CartApi} from "./http/CartApi";
 import {ContactApi} from "./http/ContactApi";
 import {CourseClassesApi} from "./http/CourseClassesApi";

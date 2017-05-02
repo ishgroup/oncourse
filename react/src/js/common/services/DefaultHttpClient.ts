@@ -1,6 +1,6 @@
 import axios from "axios";
-import {DynamicConfig} from "../config/DynamicConfig";
-import *  as Constants from "../common/api/Constants";
+import {DynamicConfig} from "../../config/DynamicConfig";
+import *  as Constants from "../api/Constants";
 
 const instance = axios.create();
 instance.defaults.baseURL = Constants.CONTEXT;

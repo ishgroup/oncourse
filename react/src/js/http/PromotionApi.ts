@@ -1,4 +1,4 @@
-import {HttpService} from "../services/HttpService";
+import {HttpService} from "../common/services/HttpService";
 import { ModelError } from "../model/ModelError";
 import { Promotion } from "../model/Promotion";
 import { PromotionNotFound } from "../model/PromotionNotFound";

@@ -1,4 +1,4 @@
-import {DefaultHttpService, HttpService} from "../services/HttpService";
+import {DefaultHttpService, HttpService} from "../common/services/HttpService";
 import { CourseClass } from "../model/CourseClass";
 import { CourseClassesParams } from "../model/CourseClassesParams";
 import { ModelError } from "../model/ModelError";
