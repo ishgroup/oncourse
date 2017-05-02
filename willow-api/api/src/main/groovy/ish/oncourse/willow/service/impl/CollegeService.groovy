@@ -3,6 +3,7 @@ package ish.oncourse.willow.service.impl
 import com.google.inject.Inject
 import ish.oncourse.model.College
 import ish.oncourse.services.site.GetWebSite
+import ish.oncourse.willow.filters.RequestFilter
 import org.apache.cayenne.configuration.server.ServerRuntime
 
 class CollegeService {

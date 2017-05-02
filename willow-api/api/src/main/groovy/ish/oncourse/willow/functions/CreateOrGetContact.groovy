@@ -1,4 +1,4 @@
-package ish.oncourse.willow.service.impl
+package ish.oncourse.willow.functions
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -16,7 +16,7 @@ import static ish.oncourse.model.auto._Contact.*
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact
 
 class CreateOrGetContact  {
-    final static Logger logger = LoggerFactory.getLogger(ContactApiServiceImpl.class)
+    final static Logger logger = LoggerFactory.getLogger(CreateOrGetContact.class)
 
     private final
     static String NOT_ALLOW_CREATE_CONTACT = 'That person cannot be found and the system doesn\'t allow new students to be created here. Please check the details you are using are correct.'

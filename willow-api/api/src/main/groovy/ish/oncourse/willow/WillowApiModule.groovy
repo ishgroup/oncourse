@@ -8,12 +8,12 @@ import ish.oncourse.cxf.CXFModule
 import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
-import ish.oncourse.willow.service.impl.ContactCredentialsValidator
+import ish.oncourse.willow.filters.ContactCredentialsValidator
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import ish.oncourse.willow.service.impl.HealthCheckApiServiceImpl
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
-import ish.oncourse.willow.service.impl.RequestFilter
+import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.service.impl.ShutdownService
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.di.Module

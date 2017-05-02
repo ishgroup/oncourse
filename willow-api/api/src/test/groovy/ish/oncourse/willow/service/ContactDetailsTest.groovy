@@ -3,9 +3,8 @@ package ish.oncourse.willow.service
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Course
 import ish.oncourse.willow.model.FieldSet
-import ish.oncourse.willow.service.impl.ContactDetailsBuilder
+import ish.oncourse.willow.functions.ContactDetailsBuilder
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.junit.Test
 

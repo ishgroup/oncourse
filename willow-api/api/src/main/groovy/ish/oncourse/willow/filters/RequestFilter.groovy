@@ -1,4 +1,4 @@
-package ish.oncourse.willow.service.impl
+package ish.oncourse.willow.filters
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.service.CollegeInfo

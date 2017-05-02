@@ -1,4 +1,4 @@
-package ish.oncourse.willow.service.impl
+package ish.oncourse.willow.functions
 
 import ish.oncourse.common.field.ContextType
 import ish.oncourse.common.field.FieldProperty

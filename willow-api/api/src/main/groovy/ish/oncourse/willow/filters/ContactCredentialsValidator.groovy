@@ -1,4 +1,4 @@
-package ish.oncourse.willow.service.impl
+package ish.oncourse.willow.filters
 
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.willow.model.common.FieldError

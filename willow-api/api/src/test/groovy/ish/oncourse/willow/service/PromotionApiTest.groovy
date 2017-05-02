@@ -3,7 +3,7 @@ package ish.oncourse.willow.service
 import ish.oncourse.willow.model.web.Promotion
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
-import ish.oncourse.willow.service.impl.RequestFilter
+import ish.oncourse.willow.filters.RequestFilter
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals

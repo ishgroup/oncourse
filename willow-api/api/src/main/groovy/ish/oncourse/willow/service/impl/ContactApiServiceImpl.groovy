@@ -2,6 +2,7 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.model.web.Contact
 import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactApi
