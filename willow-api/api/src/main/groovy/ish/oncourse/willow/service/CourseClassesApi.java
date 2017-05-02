@@ -1,16 +1,13 @@
 package ish.oncourse.willow.service;
 
-import ish.oncourse.willow.model.common.Error;
 import ish.oncourse.willow.model.web.CourseClass;
 import ish.oncourse.willow.model.web.CourseClassesParams;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.List;
-import java.util.Map;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.MediaType;
 
 @Path("/")
 public interface CourseClassesApi  {

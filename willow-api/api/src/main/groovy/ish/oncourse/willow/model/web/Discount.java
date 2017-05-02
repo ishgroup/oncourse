@@ -1,13 +1,12 @@
 package ish.oncourse.willow.model.web;
 
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import ish.oncourse.util.FormatUtils;
-
-import java.time.LocalDateTime;
 
 public class Discount  {
   

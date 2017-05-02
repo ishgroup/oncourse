@@ -36,7 +36,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.Error'
+            $ref: '#/definitions/common.CommonError'
   /classes:
     post:
       x-filter: 
@@ -65,7 +65,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.Error'
+            $ref: '#/definitions/common.CommonError'
   /contact:
     put:
       x-filter: 
@@ -95,7 +95,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.Error'
+            $ref: '#/definitions/common.CommonError'
   /contact/{studentUniqueIdentifier}:
     get:
       x-filter: 
@@ -119,7 +119,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.Error'
+            $ref: '#/definitions/common.CommonError'
   /promotion/{code}:
     get:
       x-filter: 
@@ -143,7 +143,7 @@ paths:
         404:
           description: In case if promotion not avaliable for provided code
           schema:
-            title: PromotionNotFound
+            title: web.PromotionNotFound
             type: object
             properties:
               message:
@@ -152,7 +152,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.Error'
+            $ref: '#/definitions/common.CommonError'
   /cart:
     post:
       summary: Create new Cart session
@@ -170,7 +170,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.Error'
+            $ref: '#/definitions/common.CommonError'
   /completion/{key}:
     get:
       summary: Autocomplete Endpoint
@@ -200,7 +200,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/common.Error'
+            $ref: '#/definitions/common.CommonError'
 parameters:
   XOrigin:
     name: X-Origin
@@ -374,15 +374,13 @@ definitions:
       token:
         type: string
         description: Unique identifier for the user
-  common.Error:
+  common.CommonError:
     type: object
     properties:
       code:
         type: integer
         format: int32
       message:
-        type: string
-      fields:
         type: string
   web.CourseClassesParams:
     type: object
@@ -466,7 +464,7 @@ definitions:
       fieldsErrors:
         type: array
         items:
-          title: FieldError
+          title: common.FieldError
           type: object
           required:
           - name

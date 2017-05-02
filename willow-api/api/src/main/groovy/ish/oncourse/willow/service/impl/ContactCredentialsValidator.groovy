@@ -1,7 +1,7 @@
 package ish.oncourse.willow.service.impl
 
 import ish.oncourse.common.field.FieldProperty
-import ish.oncourse.willow.model.FieldError
+import ish.oncourse.willow.model.common.FieldError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactValidation

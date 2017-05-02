@@ -1,5 +1,7 @@
 package ish.oncourse.willow.model.web;
 
+import ish.oncourse.willow.model.web.FieldSet;
+
 public class CreateContactParams  {
   
     private String firstName = null;

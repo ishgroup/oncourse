@@ -160,9 +160,7 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
 
     @Override
     public String toModelName(final String name) {
-        final String sanitizedName = sanitizeName(name);
-
-        String nameOnly = sanitizedName;
+        String nameOnly = sanitizeName(name);
         String modelPackage = "";
         if (nameOnly.contains("_")) {
             final int lastIndexOf = nameOnly.lastIndexOf("_");
@@ -208,14 +206,14 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
     }
 
     @Override
-    public String toModelFilename(String name) {
+    public String toModelFilename(final String name) {
         // should be the same as the model name
         return toModelName(name);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, Object> postProcessAllModels(Map<String, Object> objs) {
+    public Map<String, Object> postProcessAllModels(final Map<String, Object> objs) {
         for (Map.Entry<String, Object> obj : objs.entrySet()) {
             // Since objs generalized as Object, we should check
             if (obj.getValue() instanceof Map<?, ?>) {
@@ -265,14 +263,14 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
     }
 
     @Override
-    public String toModelImport(String name) {
+    public String toModelImport(final String name) {
         final String nameWithPackage = name.replaceAll(SEP, ".");
         return super.toModelImport(nameWithPackage);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, Object> postProcessOperations(Map<String, Object> objs) {
+    public Map<String, Object> postProcessOperations(final Map<String, Object> objs) {
         final Map<String, Object> postProcessOperations = super.postProcessOperations(objs);
         final Map<String, Object> operations = (Map<String, Object>) postProcessOperations.get("operations");
         List<CodegenOperation> operationList = (List<CodegenOperation>) operations.get("operation");
