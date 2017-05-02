@@ -431,6 +431,7 @@ definitions:
     enum:
       - enrolment
       - waitinglist
+      - application
       - mailinglist
   web.CreateContactParams:
     type: object
