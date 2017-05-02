@@ -8,4 +8,4 @@ export const productsListSchema = new schema.Array(productsSchema);
 
 export const promotionsSchema = new schema.Entity('promotions');
 
-
+export const contactsSchema = new schema.Entity('contacts');

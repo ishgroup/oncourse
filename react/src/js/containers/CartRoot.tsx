@@ -7,7 +7,7 @@ import Cart from "./Cart";
 import {LegacyModal} from "../components/modal/LegacyModal";
 
 export const CartRoot = () => (
-  // Will be merged with Root in advance
+  // Will be merged with EnrolRoot in advance
   // (when application become real SPA)
   <div>
     <Cart/>

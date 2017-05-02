@@ -9,6 +9,11 @@ import {classesListSchema, classesSchema, productsListSchema, productsSchema, pr
 import {Store} from "redux";
 import uniq from "lodash/uniq";
 import {PromotionParams} from "./model/PromotionParams";
+import {enrolEpics} from "./epics/enrolEpics";
+import {mapError, mapPayload} from "./epics/epicsUtils";
+import {reduxFormEpics} from "./epics/reduxFormEpics";
+import {AutocompleteRequestPayload, AutocompleteResponsePayload} from "./actions/actions";
+import {IshAction} from "./actions/IshAction";
 
 export const rootEpic = combineEpics(
   createCoursesEpic(IshActions.REQUEST_COURSE_CLASS),
@@ -26,6 +31,9 @@ export const rootEpic = combineEpics(
   createRemoveProductFromCartEpic(IshActions.REMOVE_PRODUCT_FROM_CART),
   createAddPromotionToCartEpic(IshActions.ADD_PROMOTION_TO_CART),
   createRemovePromotionFromCartEpic(IshActions.REMOVE_PROMOTION_FROM_CART),
+  enrolEpics,
+  reduxFormEpics,
+  createAutocompleteEpic(IshActions.AUTOCOMPLETE)
 );
 
 const {
@@ -33,6 +41,7 @@ const {
   productsApi,
   promotionApi,
   contactApi,
+  autocompleteApi,
   mergeService,
   legacySyncStorage
 } = Injector.of();
@@ -240,23 +249,23 @@ function createLegacySyncEpic() {
     .filter(() => false);
 }
 
-function mapPayload(actionType: string) {
-  return function (payload: any) {
-    return {
-      type: FULFILLED(actionType),
-      payload
-    };
-  }
-}
-
-function mapError(actionType: string) {
-  return function (payload: any) {
-    return Observable.of({
-      type: REJECTED(actionType),
-      payload,
-      error: true
+function createAutocompleteEpic(actionType) {
+  return (action$, store: Store<IshState>) => action$
+    .ofType(actionType)
+    .mergeMap((action: IshAction<AutocompleteRequestPayload>) => {
+      return Observable
+        .fromPromise(autocompleteApi.autocomplete(action.payload.key, action.payload.text))
+        .takeUntil(action$.ofType(
+          actionType,
+          IshActions.AUTOCOMPLETE_CLEAR
+        )) // Prevent showing old results (old promise which returned after new one)
+        .map(payload => ({
+          key: action.payload.key,
+          candidates: payload
+        }) as AutocompleteResponsePayload)
+        .map(mapPayload(actionType))
+        .catch(mapError(actionType));
     });
-  }
 }
 
 function createContactParams(state: IshState): ContactParams {

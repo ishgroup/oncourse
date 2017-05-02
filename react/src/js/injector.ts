@@ -13,6 +13,8 @@ import {ContactApiStub} from "./httpStub/ContactApiStub";
 import {ProductsApiStub} from "./httpStub/ProductsApiStub";
 import {CourseClassesApiStub} from "./httpStub/CourseClassesApiStub";
 import {PromotionApiStub} from "./httpStub/PromotionApiStub";
+import {AutocompleteApi} from "./http/AutocompleteApi";
+import {AutocompleteApiStub} from "./httpStub/AutocompleteApiStub";
 
 export class Injector {
   readonly http: HttpService = new DefaultHttpService();
@@ -21,6 +23,7 @@ export class Injector {
   readonly courseClassesApi = new CourseClassesApi(this.http);
   readonly productsApi = new ProductsApi(this.http);
   readonly promotionApi = new PromotionApi(this.http);
+  readonly autocompleteApi = new AutocompleteApi(this.http);
   readonly mergeService = new MergeService();
   readonly legacySyncStorage = new LegacySyncStorage();
 
@@ -49,4 +52,5 @@ if (process.env.NODE_ENV === EnvironmentConstants.development) {
   injector.setService("courseClassesApi", new CourseClassesApiStub(injector.http));
   injector.setService("productsApi", new ProductsApiStub(injector.http));
   injector.setService("promotionApi", new PromotionApiStub(injector.http));
+  injector.setService("autocompleteApi", new AutocompleteApiStub(injector.http));
 }
