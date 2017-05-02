@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0"/>
+    
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+
+
+
+    <Student id="1001" collegeId="1" angelId="1000"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+
+    <Contact uniqueCode="1wjwestablished" id="1001" collegeId="1" studentId="1001"
+             angelId="1001" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Student1" givenName="Student1" emailAddress="Student1@Student1.net"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Favorite car maker" fieldKey="carMaker" defaultValue="BMW" isMandatory="0" entityName="Contact"/>
+
+
+    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration"/>
+
+    <FieldConfigurationScheme id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name"
+                              applicationFieldConfigurationId="1"
+                              enrolFieldConfigurationId="1"
+                              waitingListFieldConfigurationId="1"/>
+
+    <FieldHeading id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Heading"
+                  description="description" fieldConfigurationId="1"/>
+
+    <Field id="1"  collegeId="1"  angelId="1"
+           created="2011-09-20 11:14:54"  
+           modified="2011-09-20 11:14:54"
+           name="Date of Birth" 
+           description="Date of Birth"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           property="dateOfBirth"
+           mandatory="1"
+           defaultValue="01/01/1970"
+           fieldOrder="1"/>
+    
+    <Field id="2"  collegeId="1"  angelId="1"
+           created="2011-09-20 11:14:54"  
+           modified="2011-09-20 11:14:54"
+           name= "Labour force status"
+           description="Labour force status"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           property="labourForceStatus"
+           mandatory="1"
+           defaultValue="1"
+           fieldOrder="2"/>
+
+
+    <Field id="3"  collegeId="1"  angelId="1"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           property="customField.carMaker"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="3"/>
+    
+
+    <Course id="1001" collegeId="1" angelId="1001" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1" fieldConfigurationSchemeId="1"/>
+
+
+</dataset>
