@@ -8,7 +8,7 @@
 
 # There is no realpath command on OSX, so we need to fake it
 command -v realpath >/dev/null 2>&1 || realpath() {
-    cd "$(dirname "$1")"
+    cd \$(dirname \${1})
     pwd -P
 }
 
