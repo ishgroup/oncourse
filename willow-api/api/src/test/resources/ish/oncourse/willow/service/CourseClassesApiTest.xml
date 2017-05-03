@@ -16,6 +16,8 @@
           capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
           name="TestRoom" />
 
+    <CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Favorite car maker" fieldKey="carMaker" defaultValue="BMW" isMandatory="0" entityName="Contact"/>
+
 
 
     <Student id="1001" collegeId="1" angelId="1000"
