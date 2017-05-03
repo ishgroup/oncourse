@@ -47,7 +47,8 @@ class ContactDetailsTest extends  ApiTest{
         //check that all fields filled
         contact = SelectById.query(Contact, 1002L).selectOne(context)
         fields = new ContactDetailsBuilder().getContactDetails(contact, course, FieldSet.ENROLMENT)
-        assertTrue(fields.empty)
+        assertEquals(1, fields.size())
+        assertEquals('customField.carMaker', fields[0].property)
 
 
     }

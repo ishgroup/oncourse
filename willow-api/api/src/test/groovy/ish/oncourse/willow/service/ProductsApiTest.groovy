@@ -10,7 +10,9 @@ import static org.junit.Assert.assertEquals
 class ProductsApiTest extends ApiTest {
     @Test
     void getProductsTest() {
-        ProductsApi api = new ProductsApiServiceImpl(cayenneRuntime)
+        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+
+        ProductsApi api = new ProductsApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
 
         List<Product> products = api.getProducts(new ProductsParams(productsIds: ["7", "8", "9", "10", "11", "12", "13"]))
         assertEquals(products.size(), 7)

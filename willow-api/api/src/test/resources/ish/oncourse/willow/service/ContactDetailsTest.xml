@@ -398,21 +398,6 @@
             created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
             allowWaitingList="1" name="Managerial Accounting"
             enrolmentType="1" fieldConfigurationSchemeId="1"/>
-    
-    <Course id="1002" angelId="1" collegeId="1" enrolmentType="1"/>
-
-    <CourseClass isActive="1" id="1002" collegeId="1" code="1" courseId="1002"
-                 angelId="11" startDate="2011-09-12 00:56:01.0"
-                 endDate="2012-09-12 00:56:01.0" isWebVisible="1" isCancelled="0"
-                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
-                 maximumPlaces="30" minimumPlaces="30" countOfSessions="3"
-                 deliveryMode="1" feeExGst="454.55" feeGst="45.45" isDistantLearningCourse="0"/>
-
-    <Enrolment id="1002" source="O" collegeId="1" courseClassId="1002"
-               studentId="1002" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
-               status="3" confirmationStatus="1" feehelpamount="0"/>
-
-    <CustomField id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" customFieldTypeId="1" foreignId="1002" value="test" entityName="Contact"/>
 
 
 </dataset>

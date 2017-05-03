@@ -16,7 +16,8 @@ class ContactApiTest extends ApiTest {
     
     @Test
     void getContactTest() {
-        ContactApi api = new ContactApiServiceImpl(cayenneRuntime)
+        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
         
         Contact contact = api.getContact("1wjdestablisheq")
         assertEquals(contact.email, "Student3@Student3.net")
