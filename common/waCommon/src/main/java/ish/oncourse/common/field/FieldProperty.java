@@ -18,7 +18,6 @@ public enum FieldProperty {
 	FAX_NUMBER(ContextType.CONTACT, "Fax number", "faxNumber"),
 	MOBILE_PHONE_NUMBER(ContextType.CONTACT, "Mobile phone number", "mobilePhoneNumber"),
 	DATE_OF_BIRTH(ContextType.CONTACT, "Date of Birth", "dateOfBirth"),
-	SPECIAL_NEEDS(ContextType.CONTACT, "Special needs", "specialNeeds"),
 	ABN(ContextType.CONTACT, "ABN", "abn"),
 	IS_MALE(ContextType.CONTACT, "Gender", "isMale" ),
 	
@@ -33,8 +32,8 @@ public enum FieldProperty {
 	PRIOR_EDUCATION_CODE(ContextType.STUDENT, "Prior education code", "priorEducationCode" ),
 	LABOUR_FORCE_STATUS(ContextType.STUDENT, "Labour force status", "labourForceStatus" ),
 	DISABILITY_TYPE(ContextType.STUDENT, "Disability type", "disabilityType" ),
-		
-	
+	SPECIAL_NEEDS(ContextType.STUDENT, "Special needs", "specialNeeds"),
+
 	CUSTOM_FIELD(ContextType.CONTACT, "Custom Field ", "customField.key");
 
 	private ContextType contextType;
