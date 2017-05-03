@@ -4,6 +4,8 @@ import ish.oncourse.willow.model.web.Product
 import ish.oncourse.willow.model.web.ProductsParams
 import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
 import org.junit.Test
+import ish.oncourse.willow.service.impl.CollegeService
+import ish.oncourse.willow.filters.RequestFilter
 
 import static org.junit.Assert.assertEquals
 

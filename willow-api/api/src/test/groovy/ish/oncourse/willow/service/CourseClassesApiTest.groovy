@@ -5,6 +5,9 @@ import ish.oncourse.willow.model.web.CourseClass
 import ish.oncourse.willow.model.web.CourseClassesParams
 import ish.oncourse.willow.model.web.PromotionParams
 import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
+import ish.oncourse.willow.service.impl.CollegeService
+import ish.oncourse.willow.filters.RequestFilter
+
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals
