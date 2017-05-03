@@ -3,6 +3,8 @@
  */
 package ish.oncourse.common.field;
 
+import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN;
+
 public enum FieldProperty {
 	
 	FIRST_NAME(ContextType.CONTACT, "First name", "firstName"),
@@ -59,6 +61,10 @@ public enum FieldProperty {
 	}
 
 	public static FieldProperty getByKey(String key) {
+		if (key.startsWith(CUSTOM_FIELD_PROPERTY_PATTERN)) {
+			return CUSTOM_FIELD;
+		}
+		
 		for (FieldProperty property : FieldProperty.values()) {
 			if (property.getKey().equals(key)) {
 				return property;
