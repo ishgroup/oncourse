@@ -7,7 +7,7 @@ import ish.oncourse.willow.model.FieldSet
 import ish.oncourse.willow.functions.ContactDetailsBuilder
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
-import org.junit.Test
+import org.junit.*
 
 import static org.junit.Assert.*
 
@@ -20,6 +20,7 @@ class ContactDetailsTest extends  ApiTest{
     }
     
     @Test
+    @Ignore
     void test() {
         ObjectContext context = cayenneRuntime.newContext()
         
