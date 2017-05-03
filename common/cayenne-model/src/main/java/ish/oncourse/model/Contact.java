@@ -268,4 +268,162 @@ public class Contact extends _Contact implements Queueable, IExpandable {
 
 		return memberships;
 	}
+
+	@Property(value = FieldProperty.FIRST_NAME, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setGivenName(String givenName) {
+		super.setGivenName(givenName);
+	}
+
+	@Property(value = FieldProperty.FIRST_NAME, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getGivenName() {
+		return super.getGivenName();
+	}
+
+	@Property(value = FieldProperty.LAST_NAME, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setFamilyName(String familyName) {
+		super.setFamilyName(familyName);
+	}
+
+	@Property(value = FieldProperty.LAST_NAME, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getFamilyName() {
+		return super.getFamilyName();
+	}
+
+
+	@Property(value = FieldProperty.STREET, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setStreet(String street) {
+		super.setStreet(street);
+	}
+
+	@Property(value = FieldProperty.STREET, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getStreet() {
+		return super.getStreet();
+	}
+
+	@Property(value = FieldProperty.SUBURB, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setSuburb(String suburb) {
+		super.setSuburb(suburb);
+	}
+
+	@Property(value = FieldProperty.SUBURB, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getSuburb() {
+		return super.getSuburb();
+	}
+
+	@Property(value = FieldProperty.POSTCODE, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setPostcode(String postcode) {
+		super.setPostcode(postcode);
+	}
+
+	@Property(value = FieldProperty.POSTCODE, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getPostcode() {
+		return super.getPostcode();
+	}
+
+
+	@Property(value = FieldProperty.STATE, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setState(String state) {
+		super.setState(state);
+	}
+
+	@Property(value = FieldProperty.STATE, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getState() {
+		return super.getState();
+	}
+	
+	@Property(value = FieldProperty.COUNTRY, type = PropertyGetSetFactory.SET, params = {Country.class})
+	@Override
+	public void setCountry(Country country) {
+		super.setCountry(country);
+	}
+
+	@Property(value = FieldProperty.COUNTRY, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public Country getCountry() {
+		return super.getCountry();
+	}
+
+	@Property(value = FieldProperty.HOME_PHONE_NUMBER, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setHomePhoneNumber(String homePhoneNumber) {
+		super.setHomePhoneNumber(homePhoneNumber);
+	}
+
+	@Property(value = FieldProperty.HOME_PHONE_NUMBER, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getHomePhoneNumber() {
+		return super.getHomePhoneNumber();
+	}
+
+	@Property(value = FieldProperty.BUSINESS_PHONE_NUMBER, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setBusinessPhoneNumber(String businessPhoneNumber) {
+		super.setBusinessPhoneNumber(businessPhoneNumber);
+	}
+
+	@Property(value = FieldProperty.BUSINESS_PHONE_NUMBER, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getBusinessPhoneNumber() {
+		return super.getBusinessPhoneNumber();
+	}
+
+	@Property(value = FieldProperty.FAX_NUMBER, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setFaxNumber(String faxNumber) {
+		super.setFaxNumber(faxNumber);
+	}
+
+	@Property(value = FieldProperty.FAX_NUMBER, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getFaxNumber() {
+		return super.getFaxNumber();
+	}
+
+	@Property(value = FieldProperty.MOBILE_PHONE_NUMBER, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setMobilePhoneNumber(String mobilePhoneNumber) {
+		super.setMobilePhoneNumber(mobilePhoneNumber);
+	}
+
+	@Property(value = FieldProperty.MOBILE_PHONE_NUMBER, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getMobilePhoneNumber() {
+		return super.getMobilePhoneNumber();
+	}
+
+	@Property(value = FieldProperty.ABN, type = PropertyGetSetFactory.SET, params = {String.class})
+	@Override
+	public void setAbn(String abn) {
+		super.setAbn(abn);
+	}
+
+	@Property(value = FieldProperty.ABN, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public String getAbn() {
+		return super.getAbn();
+	}
+
+	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.SET, params = {Boolean.class})
+	@Override
+	public void setIsMale(Boolean isMale) {
+		super.setIsMale(isMale);
+	}
+
+	@Property(value = FieldProperty.IS_MALE, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public Boolean getIsMale() {
+		return super.getIsMale();
+	}
 }
