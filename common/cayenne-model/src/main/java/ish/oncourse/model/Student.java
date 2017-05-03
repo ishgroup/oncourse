@@ -1,9 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.*;
-import ish.oncourse.common.field.FieldProperty;
-import ish.oncourse.common.field.Property;
-import ish.oncourse.common.field.PropertyGetSetFactory;
+import ish.oncourse.common.field.*;
 import ish.oncourse.model.auto._Student;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.Expression;
@@ -17,6 +15,7 @@ import java.util.List;
 import static ish.oncourse.common.field.PropertyGetSetFactory.GET;
 import static ish.oncourse.common.field.PropertyGetSetFactory.SET;
 
+@Type(value = ContextType.STUDENT)
 public class Student extends _Student implements Queueable {
 	private static final long serialVersionUID = 8299657371084046806L;
     public static final int MIN_SCHOOL_COMPLETION_YEAR = 1940;
