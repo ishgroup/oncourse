@@ -8,7 +8,8 @@
 
 # There is no realpath command on OSX, so we need to fake it
 command -v realpath >/dev/null 2>&1 || realpath() {
-    [[ \$1 = /* ]] && echo "\$1" || echo "\$PWD/\${1#./}"
+    cd "$(dirname "$1")"
+    pwd -P
 }
 
 PID_FILE="/var/run/onCourse/${applicationName}.pid"
