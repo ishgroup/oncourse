@@ -243,7 +243,7 @@ public class Student extends _Student implements Queueable {
 		super.setSpecialNeeds(specialNeeds);
 	}
 
-	@Property(value = FieldProperty.DISABILITY_TYPE, type = GET, params = {})
+	@Property(value = FieldProperty.SPECIAL_NEEDS, type = GET, params = {})
 	@Override
 	public String getSpecialNeeds() {
 		return super.getSpecialNeeds();
