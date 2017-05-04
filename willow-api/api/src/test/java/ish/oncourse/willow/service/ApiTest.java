@@ -192,6 +192,14 @@ public abstract class ApiTest {
             map.getDbEntity("EntityRelation").removeRelationship(rel.getName());
         }
 
+        List<Relationship> customFieldRelationships = new ArrayList<>();
+        customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedContact"));
+        customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedEnrolment"));
+        customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedCourse"));
+        for (Relationship rel : customFieldRelationships) {
+            map.getDbEntity("CustomField").removeRelationship(rel.getName());
+        }
+
         DbGenerator generator = new DbGenerator(domain.getDefaultNode().getAdapter(), map, cayenneRuntime.getInjector().getInstance(JdbcEventLogger.class), Collections.<DbEntity>emptyList());
         generator.setShouldCreateTables(true);
         generator.setShouldCreateFKConstraints(true);
@@ -201,6 +209,10 @@ public abstract class ApiTest {
 
         for (Relationship rel : entityRelationshipsToRemove) {
             map.getDbEntity("EntityRelation").addRelationship(rel);
+        }
+
+        for (Relationship rel : customFieldRelationships) {
+            map.getDbEntity("CustomField").addRelationship(rel);
         }
     }
 

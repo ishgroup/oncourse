@@ -20,7 +20,6 @@ class ContactDetailsTest extends  ApiTest{
     }
     
     @Test
-    @Ignore
     void test() {
         ObjectContext context = cayenneRuntime.newContext()
         

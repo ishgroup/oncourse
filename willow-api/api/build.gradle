@@ -77,9 +77,8 @@ processResources.doLast {
 
 // the following block isn't working for me when placed in the top level build.gradle
 startScripts {
-    if(!project.hasProperty('apiScriptDefault') || apiScriptDefault == 'false') {
         unixStartScriptGenerator.template = resources.text.fromFile("${project.rootDir}/buildSrc/src/main/resources/applicationStartScript.sh")
-    }
+    
 }
 
 distZip {
