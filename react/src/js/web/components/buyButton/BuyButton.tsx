@@ -1,7 +1,8 @@
 import * as React from "react";
 import {MouseEvent} from "react";
 import classnames from "classnames";
-import {stopPropagation} from "../../../lib/utils";
+import {stopPropagation} from "../../../common/utils/HtmlUtils";
+
 import {ConfirmOrderDialog} from "../addButton/ConfirmOrderDialog";
 import {Product} from "../../../model/web/Product";
 

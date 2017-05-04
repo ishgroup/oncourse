@@ -1,7 +1,7 @@
 import * as React from "react";
 import $ from "jquery";
 import {findDOMNode} from "react-dom";
-import {stopPropagation} from "../../../lib/utils";
+import {stopPropagation} from "../../../common/utils/HtmlUtils";
 import {WindowService} from "../../../services/WindowService";
 import {ModalService} from "../../../services/ModalService";
 

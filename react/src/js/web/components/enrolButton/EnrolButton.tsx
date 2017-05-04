@@ -1,9 +1,10 @@
-import * as React from 'react';
-import {plural, stopPropagation} from '../../../lib/utils';
-import classnames from 'classnames';
+import * as React from "react";
+import classnames from "classnames";
 import {ConfirmOrderDialog} from "../addButton/ConfirmOrderDialog";
 import {CourseClassCart} from "../../../services/IshState";
 import {CourseClass} from "../../../model/web/CourseClass";
+import {plural, stopPropagation} from "../../../common/utils/HtmlUtils";
+
 
 export class EnrolButton extends React.Component<EnrolButtonProps, EnrolButtonState> {
 

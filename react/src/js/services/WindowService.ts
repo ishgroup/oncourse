@@ -1,5 +1,5 @@
 import {PublicApi} from "../external/PublicApi";
-import {Bootstrap} from "../lib/Bootstrap";
+import {Bootstrap} from "../common/utils/Bootstrap";
 import {ModalService} from "./ModalService";
 
 export class WindowService {

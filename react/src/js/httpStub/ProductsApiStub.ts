@@ -1,7 +1,5 @@
-import {HttpService} from "../services/HttpService";
-import { ModelError } from "../model/ModelError";
-import { Product } from "../model/Product";
-import { ProductsParams } from "../model/ProductsParams";
+import {Product} from "../model/web/Product";
+import {ProductsParams} from "../model/web/ProductsParams";
 import {ProductsApi} from "../http/ProductsApi";
 
 export class ProductsApiStub extends ProductsApi {

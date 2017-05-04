@@ -1,7 +1,7 @@
-import * as React from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {updatePopup, hidePopup} from '../actions/popup';
+import * as React from "react";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {hidePopup, updatePopup} from "../../actions/popup";
 
 class Popup extends React.Component<PopupProps, {}> {
 

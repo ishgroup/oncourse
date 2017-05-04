@@ -2,7 +2,7 @@ import * as React from "react";
 import CartClassItem from "./CartClassItem";
 import CartProductItem from "./CartProductItem";
 import classnames from "classnames";
-import {plural} from "../../../lib/utils";
+import {plural} from "../../../common/utils/HtmlUtils";
 import {CourseClassCart, CourseClassCartState, ProductCart, ProductCartState} from "../../../services/IshState";
 
 class Cart extends React.Component<CartProps, CartComponentState> {

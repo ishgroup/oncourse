@@ -1,10 +1,10 @@
 import {configureStore} from "./configureStore";
-import {Bootstrap} from "./lib/Bootstrap";
+import {Bootstrap} from "./common/utils/Bootstrap";
 import {PublicApi} from "./external/PublicApi";
-import {LogMessage, Level, Logger} from "./services/Logger";
+import {Level, Logger, LogMessage} from "./services/Logger";
 import {ConfigConstants} from "./config/ConfigConstants";
 import {WindowService} from "./services/WindowService";
-import {MarkerComponents} from "./MarkerComponents";
+import {HTMLMarkers} from "./common/services/HTMLMarker";
 
 // Log application version before start.
 Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));
@@ -14,14 +14,14 @@ const store = configureStore();
 WindowService.set("api", new PublicApi(store));
 
 const react = new Bootstrap(store)
-  .register(MarkerComponents.ENROL)
-  .register(MarkerComponents.FEES)
-  .register(MarkerComponents.ENROL_BUTTON)
-  .register(MarkerComponents.BUY_BUTTON)
-  .register(MarkerComponents.CART)
-  .register(MarkerComponents.MODAL)
-  .register(MarkerComponents.POPUP)
-  .register(MarkerComponents.PROMOTIONS)
+  .register(HTMLMarkers.ENROL)
+  .register(HTMLMarkers.FEES)
+  .register(HTMLMarkers.ENROL_BUTTON)
+  .register(HTMLMarkers.BUY_BUTTON)
+  .register(HTMLMarkers.CART)
+  .register(HTMLMarkers.MODAL)
+  .register(HTMLMarkers.POPUP)
+  .register(HTMLMarkers.PROMOTIONS)
   .start();
 
 // Set bootstrap function to Ish.react

@@ -3,7 +3,6 @@ import {IshAction} from "../actions/IshAction";
 import {LocalStorageService} from "./LocalStorageService";
 import differenceBy from "lodash/differenceBy";
 import unionBy from "lodash/unionBy";
-import {logDebug} from "../lib/utils";
 
 export class MergeService {
   merge(action: SyncAction): IshAction<any>[] {

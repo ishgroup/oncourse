@@ -1,14 +1,17 @@
 import {ComponentClass, StatelessComponent} from "react";
-import {EnrolRoot} from "./enrol/containers/EnrolRoot";
-import {Fees} from "./web/containers/Fees";
-import EnrolButton from "./web/containers/EnrolButton";
-import {CartRoot} from "./web/containers/CartRoot";
-import BuyButton from "./web/containers/BuyButton";
-import PopupContainer from "./containers/PopupContainer";
-import Promotions from "./web/containers/Promotions";
-import {LegacyModal} from "./web/components/modal/LegacyModal";
+import {EnrolRoot} from "../../enrol/containers/EnrolRoot";
+import {Fees} from "../../web/containers/Fees";
+import EnrolButton from "../../web/containers/EnrolButton";
+import {CartRoot} from "../../web/containers/CartRoot";
+import BuyButton from "../../web/containers/BuyButton";
+import PopupContainer from "../../web/containers/PopupContainer";
+import Promotions from "../../web/containers/Promotions";
+import {LegacyModal} from "../../web/components/modal/LegacyModal";
 
-export class MarkerComponents {
+export const ATTR_DATA_PROP_PREFIX: string = "data-prop-";
+export const ATTR_DATA_CID: string = "data-cid";
+
+export class HTMLMarkers {
 
   /**
    * Renders enrol application: add student, details, summary, payment.
@@ -17,7 +20,7 @@ export class MarkerComponents {
    * Example Usage: <div data-cid="enrol"></div>
    * Tapestry template to use: Checkout.tml
    */
-  static ENROL: MarkerToComponent = {
+  static ENROL: HTMLMarker = {
     id: "enrol",
     component: EnrolRoot,
     props: {}
@@ -30,7 +33,7 @@ export class MarkerComponents {
    * Example Usage: <div data-cid="cart"></div>
    * Tapestry template to use: ShortList.tml
    */
-  static CART: MarkerToComponent = {
+  static CART: HTMLMarker = {
     id: "cart",
     component: CartRoot,
     props: {}
@@ -43,7 +46,7 @@ export class MarkerComponents {
    * Example Usage: <div data-cid="promotions"></div>
    * Tapestry template to use: BodyHeader.tml
    */
-  static PROMOTIONS: MarkerToComponent = {
+  static PROMOTIONS: HTMLMarker = {
     id: "promotions",
     component: Promotions,
     props: {}
@@ -56,7 +59,7 @@ export class MarkerComponents {
    * Example Usage: <div data-cid="fees"  data-prop-id="${id}"></div>
    * Tapestry template to use: CourseClassItem.tml
    */
-  static FEES: MarkerToComponent = {
+  static FEES: HTMLMarker = {
     id: "fees",
     component: Fees,
     props: {id: "string"}
@@ -69,10 +72,21 @@ export class MarkerComponents {
    * Example Usage: <div data-cid="enrol-button"  data-prop-id="${id}"></div>
    * Tapestry template to use: CourseClassItem.tml
    */
-  static ENROL_BUTTON: MarkerToComponent = {
+  static ENROL_BUTTON: HTMLMarker = {
     id: "enrol-button",
     component: EnrolButton,
-    props: {id: "string"}
+    props: {
+      id: "string",
+      courseId: "string",
+      courseCode: "string",
+      code: "string",
+      hasAvailablePlaces: "boolean",
+      availableEnrolmentPlaces: "number",
+      isFinished: "boolean",
+      isCancelled: "boolean",
+      isAllowByApplication: "boolean",
+      isPaymentGatewayEnabled: "boolean"
+    }
   };
 
   /**
@@ -82,7 +96,7 @@ export class MarkerComponents {
    * Example Usage: <div data-cid="buy-button"  data-prop-id="${id}"></div>
    * Tapestry template to use: CourseClassItem.tml
    */
-  static BUY_BUTTON: MarkerToComponent = {
+  static BUY_BUTTON: HTMLMarker = {
     id: "buy-button",
     component: BuyButton,
     props: {id: "string"}
@@ -96,7 +110,7 @@ export class MarkerComponents {
    * Example Usage: <div data-cid="modal"></div>
    * Tapestry template to use: PageStructure.tml
    */
-  static MODAL: MarkerToComponent = {
+  static MODAL: HTMLMarker = {
     id: "modal",
     component: LegacyModal,
     props: {}
@@ -109,14 +123,14 @@ export class MarkerComponents {
    * Example Usage: <div data-cid="popup"></div>
    * Tapestry template to use: PageStructure.tml
    */
-  static POPUP: MarkerToComponent = {
+  static POPUP: HTMLMarker = {
     id: "popup",
     component: PopupContainer,
     props: {}
   };
 }
 
-export interface MarkerToComponent {
+export interface HTMLMarker {
   readonly id: string;
   readonly component: ComponentClass<any> | StatelessComponent<any>;
   readonly props: { [key: string]: string };
