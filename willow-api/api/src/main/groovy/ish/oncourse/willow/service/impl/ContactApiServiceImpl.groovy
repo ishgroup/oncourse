@@ -2,13 +2,21 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.model.CourseClass
+import ish.oncourse.willow.functions.ContactDetailsBuilder
 import ish.oncourse.willow.functions.CreateOrGetContact
+import ish.oncourse.willow.model.common.CommonError
+import ish.oncourse.willow.model.field.ContactFields
+import ish.oncourse.willow.model.field.ContactFieldsRequest
 import ish.oncourse.willow.model.web.Contact
 import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactApi
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.configuration.server.ServerRuntime
+import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
+import org.apache.cayenne.query.SelectById
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -37,6 +45,42 @@ class ContactApiServiceImpl implements ContactApi{
         } else {
             createOrGet.contactId
         }
+    }
+
+    @Override
+    ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest) {
+        ObjectContext context = cayenneRuntime.newContext()
+
+        if (!contactFieldsRequest.contactId) {
+            logger.error("contactId required, request param: $contactFieldsRequest")
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
+        }
+        if (contactFieldsRequest.classesIds.empty) {
+            logger.error("classesIds required, request param: $contactFieldsRequest")
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
+        }
+        if (!contactFieldsRequest.fieldSet) {
+            logger.error("fieldSet required, request param: $contactFieldsRequest")
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
+        }
+        ish.oncourse.model.Contact contact = SelectById.query(ish.oncourse.model.Contact, contactFieldsRequest.contactId).selectOne(context)
+        if (!contact) {
+            logger.error("contact is not exist, request param: $contactFieldsRequest")
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contact is not exist')).build())
+        }
+        
+        List<CourseClass> classes = (ObjectSelect.query(CourseClass).where(ExpressionFactory.inExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classesIds)) & CourseClass.COLLEGE.eq(collegeService.college)).select(context)
+        if (classes.empty) {
+            logger.error("classes  are not exist, request param: $contactFieldsRequest")
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classes  are not exist')).build())
+        }
+        
+        ContactFields result = new ContactFields(contactId: contact.id)
+
+        classes.each { clazz ->
+            result.classHeadings << new ContactDetailsBuilder().getContactDetails(contact, clazz, contactFieldsRequest.fieldSet)
+        }
+        result
     }
 
     @Override

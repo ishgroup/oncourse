@@ -1,13 +1,19 @@
 package ish.oncourse.willow.service;
 
+import ish.oncourse.willow.model.common.CommonError;
+import ish.oncourse.willow.model.common.ValidationError;
+import ish.oncourse.willow.model.field.ContactFields;
+import ish.oncourse.willow.model.field.ContactFieldsRequest;
 import ish.oncourse.willow.model.web.Contact;
 import ish.oncourse.willow.model.web.CreateContactParams;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 
 @Path("/")
 public interface ContactApi  {
@@ -24,5 +30,12 @@ public interface ContactApi  {
     @Produces({ "application/json" })
     @CollegeInfo
     Contact getContact(@PathParam("studentUniqueIdentifier") String studentUniqueIdentifier);
+
+    @POST
+    @Path("/contactFields")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @CollegeInfo
+    ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest);
 }
 
