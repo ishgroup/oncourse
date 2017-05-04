@@ -1,3 +1,4 @@
+const __common = require('./webpack/__common');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -10,14 +11,7 @@ module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development'; // 'production'
   const SOURCE_MAP = options.SOURCE_MAP || 'source-map'; // 'eval-source-map'
   const API_ROOT = options.API_ROOT || 'http://localhost:10080'; // 'https://ish.com.au/api/v1'
-
-  console.log(`
-Build started with following configuration:
-===========================================
-→ NODE_ENV: ${NODE_ENV}
-→ SOURCE_MAP: ${SOURCE_MAP}
-→ API_ROOT: ${API_ROOT}
-`);
+  __common.info(NODE_ENV, API_ROOT, API_ROOT);
 
   return {
     entry: {
@@ -35,42 +29,44 @@ Build started with following configuration:
       filename: '[name].js',
       publicPath: '/'
     },
-    externals: [function (context, request, callback) {
-      const p = path.resolve(context, request) + '.js';
-
-      if (/.custom.js$/.test(p)) {
-        fs.stat(p, (err) => {
-          if (err) {
-            callback(null, "{}");
-            return;
-          }
-
-          callback();
-        });
-        return;
-      }
-
-      callback();
-    }],
     resolve: {
+      modules: [path.resolve(__dirname, "src/js"),
+        "node_modules"],
       extensions: ['.ts', '.tsx', '.js']
     },
+    module: {
+        rules: [{
+            test: /\.tsx?$/,
+            loader: 'ts-loader',
+            exclude: /node_modules/,
+        }, {
+            test: /\.css$/,
+            use: [{
+                loader: 'style-loader'
+            }, {
+                loader: 'css-loader'
+            }]
+        }]
+    },
+    externals: [function (context, request, callback) {
+        const p = path.resolve(context, request) + '.js';
+
+        if (/.custom.js$/.test(p)) {
+            fs.stat(p, (err) => {
+                if (err) {
+                    callback(null, "{}");
+                    return;
+                }
+
+                callback();
+            });
+            return;
+        }
+
+        callback();
+    }],
     bail: false,
     devtool: SOURCE_MAP,
-    module: {
-      rules: [{
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-      }, {
-        test: /\.css$/,
-        use: [{
-          loader: 'style-loader'
-        }, {
-          loader: 'css-loader'
-        }]
-      }]
-    },
     plugins: createListOfPlugins({NODE_ENV, API_ROOT}),
     devServer: {
       inline: false,
@@ -82,10 +78,10 @@ Build started with following configuration:
       historyApiFallback: true,
       contentBase: './',
       proxy: [{
-        context: '/api',
+        context: '/a',
         target: API_ROOT,
         pathRewrite: {
-          '^/api/': ''
+          '^/a/': ''
         }
       }]
     }
