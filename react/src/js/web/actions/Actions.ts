@@ -16,6 +16,10 @@ export const Actions = {
   REQUEST_CONTACT: "REQUEST_CONTACT",
 
   SYNC_CART: "SYNC_CART",
+  /**
+   * Put a html loaded course class to this redux store
+   */
+  PutClassToStore: "web/courses/class/add",
 };
 
 

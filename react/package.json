@@ -8,7 +8,7 @@
     "clean": "rm -rf ./build",
     "build:prod": "npm run clean && webpack -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au",
     "build:prod:watch": "webpack --watch -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au",
-    "build:dev": "npm run clean && webpack --env.SOURCE_MAP eval-source-map",
+    "build:dev": "npm run clean && webpack",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "karma start ./karma.conf.js",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",

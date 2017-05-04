@@ -76,7 +76,7 @@ module.exports = function (options = {}) {
         colors: true
       },
       historyApiFallback: true,
-      contentBase: './',
+      contentBase: './build/dist',
       proxy: [{
         context: '/a',
         target: API_ROOT,
@@ -121,6 +121,7 @@ function createListOfPlugins({NODE_ENV, API_ROOT}) {
     plugins.push(
       getHtmlWebpackPlugin("enrol/checkout/index.html"),
       getHtmlWebpackPlugin("courses/index.html"),
+      getHtmlWebpackPlugin("courses/one_class.html"),
       getHtmlWebpackPlugin("products/index.html")
     )
   }

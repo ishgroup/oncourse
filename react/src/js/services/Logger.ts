@@ -21,4 +21,8 @@ export class Logger {
       console.error(message.message, message.data || "");
     }
   }
+
+  static logObject(message:any) {
+    (console.debug || console.log)(message);
+  }
 }

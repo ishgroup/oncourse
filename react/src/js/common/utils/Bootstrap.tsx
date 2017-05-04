@@ -7,8 +7,13 @@ import forEach from "lodash/forEach";
 
 import {IshState} from "../../services/IshState";
 import {Level, Logger, LogMessage} from "../../services/Logger";
-import {ATTR_DATA_CID, HTMLMarker} from "../services/HTMLMarker";
+import {ATTR_DATA_CID, HTMLMarker, HTMLMarkers} from "../services/HTMLMarker";
 import * as HtmlDataService from "./HtmlUtils";
+import {Actions} from "../../web/actions/Actions";
+import {htmlProps2CourseClass} from "../../web/services/CourseClassService";
+import {CourseClass} from "../../model/web/CourseClass";
+import {classesListSchema} from "../../schema";
+import {normalize} from "normalizr";
 
 import ComponentClass = React.ComponentClass;
 
@@ -37,7 +42,7 @@ export class Bootstrap {
         return;
       }
       const realProps = HtmlDataService.parse(container, marker);
-
+      this.addToStore(marker, realProps, this.store.dispatch);
       render(
         <Provider store={this.store}>
           <marker.component {...realProps}/>
@@ -48,6 +53,20 @@ export class Bootstrap {
       Logger.log(new LogMessage(Level.ERROR, `Component with cid:${marker.id} cannot be instantiated.`, [e]));
     }
   };
+
+  private addToStore = (marker: HTMLMarker, props:{ [key: string]: any }, dispatch) => {
+    switch (marker) {
+      case HTMLMarkers.ENROL_BUTTON:
+        const courseClass:CourseClass = htmlProps2CourseClass(props);
+        if (courseClass.course) {
+          dispatch({
+            type: Actions.PutClassToStore,
+            payload: normalize(courseClass, classesListSchema)
+          })
+        }
+    }
+  };
+
 
   private bootstrap = (): void => {
     try {

@@ -12,6 +12,7 @@ export const coursesReducer = combineReducers({
 function allIds(state = [], action: IshAction<CoursesState>) {
   switch (action.type) {
     case FULFILLED(Actions.REQUEST_COURSE_CLASS):
+    case Actions.PutClassToStore:
       return [
         ...state,
         ...action.payload.result
@@ -25,6 +26,7 @@ function allIds(state = [], action: IshAction<CoursesState>) {
 function byId(state = {}, action: IshAction<CoursesState>) {
   switch (action.type) {
     case FULFILLED(Actions.REQUEST_COURSE_CLASS):
+    case Actions.PutClassToStore:
       return {
         ...state,
         ...action.payload.entities.classes
