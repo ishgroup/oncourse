@@ -79,6 +79,8 @@ export class HTMLMarkers {
       id: "string",
       courseId: "string",
       courseCode: "string",
+      courseName: "string",
+      courseDescription: "string",
       code: "string",
       hasAvailablePlaces: "boolean",
       availableEnrolmentPlaces: "number",
