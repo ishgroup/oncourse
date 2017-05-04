@@ -1,0 +1,93 @@
+package ish.oncourse.willow.model.field;
+
+import ish.oncourse.willow.model.web.FieldSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ContactFieldsRequest  {
+  
+    private String contactId = null;
+    private List<String> classesIds = new ArrayList<String>();
+    private FieldSet fieldSet = null;
+
+    /**
+     * Requested contact id
+     * @return contactId
+     */
+    public String getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(String contactId) {
+       this.contactId = contactId;
+    }
+
+    public ContactFieldsRequest contactId(String contactId) {
+      this.contactId = contactId;
+      return this;
+    }
+
+    /**
+     * Requested classe's ids
+     * @return classesIds
+     */
+    public List<String> getClassesIds() {
+        return classesIds;
+    }
+
+    public void setClassesIds(List<String> classesIds) {
+       this.classesIds = classesIds;
+    }
+
+    public ContactFieldsRequest classesIds(List<String> classesIds) {
+      this.classesIds = classesIds;
+      return this;
+    }
+
+    public ContactFieldsRequest addClassesIdsItem(String classesIdsItem) {
+      this.classesIds.add(classesIdsItem);
+      return this;
+    }
+
+    /**
+     * Get fieldSet
+     * @return fieldSet
+     */
+    public FieldSet getFieldSet() {
+        return fieldSet;
+    }
+
+    public void setFieldSet(FieldSet fieldSet) {
+       this.fieldSet = fieldSet;
+    }
+
+    public ContactFieldsRequest fieldSet(FieldSet fieldSet) {
+      this.fieldSet = fieldSet;
+      return this;
+    }
+
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder();
+      sb.append("class ContactFieldsRequest {\n");
+      
+      sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
+      sb.append("    classesIds: ").append(toIndentedString(classesIds)).append("\n");
+      sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
+      sb.append("}");
+      return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private static String toIndentedString(java.lang.Object o) {
+      if (o == null) {
+        return "null";
+      }
+      return o.toString().replace("\n", "\n    ");
+    }
+}
+

@@ -120,6 +120,33 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /contactFields:
+    post:
+      x-filter: 
+        - CollegeInfo
+      summary: Get contact's empty fields that should be filled based on classes configs
+      operationId: getContactFields
+      description: Get contact's fields
+      tags:
+       - Contact
+      consumes:
+      - application/json
+      parameters:
+      - name: contactFieldsRequest
+        in: body
+        description: Params for get  contact's fields 
+        required: true
+        schema:
+          $ref: '#/definitions/field.ContactFieldsRequest'
+      responses:
+        200:
+          description: Contact Id
+          schema:
+            $ref: '#/definitions/field.ContactFields'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /promotion/{code}:
     get:
       x-filter: 
@@ -476,4 +503,119 @@ definitions:
             error:
               type: string
               description: Errors for particular field, or empty array
-        description: Array of fields errors, or empty array
+        description: Array of fields errors, or empty array  
+  field.ContactFieldsRequest:
+    type: object
+    requred:
+    - contactId
+    - classesIds
+    - fieldSet
+    properties:
+      contactId:
+        type: string
+        description: Requested contact id
+      classesIds:
+        type: array
+        items: 
+          type: string
+        description: Requested classe's ids
+      fieldSet:
+        $ref: '#/definitions/web.FieldSet'
+  field.DataType:
+    type: string
+    enum:
+      - strind
+      - boolean
+      - date
+      - dateTime
+      - int
+      - country
+      - language
+      - enum
+  field.Field: 
+    type: object
+    requred:
+    - id
+    - key
+    - name
+    - description
+    - mandatory
+    - dataType
+    - enumType
+    - value
+    - defaultValue
+    properties:
+      id:
+        type: string
+        description: Field id
+      name:
+        type: string
+        description: Field name
+      description:
+        type: string
+        description: Field description
+      mandatory:
+        type: string
+        description: Mandatory flag
+      dataType:
+        $ref: '#/definitions/field.DataType'
+        description: Data type of provaded value
+      enumType:
+        type: string
+        description: Enumeration name which is type for field value
+      value:
+        type: string
+        description: Value for corresponded property
+      defaultValue:
+        type: string
+        description: Default value for corresponded property
+  field.FieldHeading:
+    type: object
+    requred:
+    - name
+    - description
+    - fields
+    properties:
+      name:
+        type: string
+        description: Heading name
+      description:
+        type: string
+        description: Heading description
+      fields:
+        type: array
+        items:
+          $ref: '#/definitions/field.Field'
+      description: Fields set related to field heading
+  field.ClassHeadings:
+    type: object
+    requred:
+    - classId
+    - headings
+    - dummyHeading
+    properties:
+      classId:
+        type: string
+        description: Reffered class id
+      headings:
+        type: array
+        items:
+          $ref: '#/definitions/field.FieldHeading'
+        description: Related field headings
+      dummyHeading:
+        $ref: '#/definitions/field.FieldHeading'
+        description: Dummy headin filled by fields that not linked to any real Field Heading
+  field.ContactFields:
+    type: object
+    requred:
+    - contactId
+    - contactClassHeadings
+    properties:
+      contactId:
+        type: string
+        description: Contact Id
+      classHeadings:
+        type: array
+        items:
+          $ref: '#/definitions/field.ClassHeadings'
+        description: Field configurations for each contact's class 
