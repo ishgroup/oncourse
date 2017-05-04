@@ -40,8 +40,11 @@ start() {
             exit 1
         fi
     else
-        JAVACMD="java"
-        which java >/dev/null 2>&1 || echo "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH."; exit 1
+        JAVACMD=$(which java)
+        if [ ! -x "$JAVACMD" ] ; then
+            echo "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH."
+            exit 1
+        fi
     fi
 
     CMD="\$JAVACMD \\
