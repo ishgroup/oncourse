@@ -1,8 +1,8 @@
 import {connect} from "react-redux";
 import {BuyButton, BuyButtonProps} from "../components/buyButton/BuyButton";
 import {IshState, ProductCartState} from "../../services/IshState";
-import {IshActions} from "../../constants/IshActions";
 import {Product} from "../../model/web/Product";
+import {Actions} from "../actions/Actions";
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyButton);
 
@@ -15,13 +15,13 @@ function mapDispatchToProps(dispatch) {
   return {
     addProduct: (product: Product) => {
       dispatch({
-        type: IshActions.ADD_PRODUCT_TO_CART,
+        type: Actions.ADD_PRODUCT_TO_CART,
         payload: product
       });
     },
     requestProductById: (id: string) => {
       dispatch({
-        type: IshActions.REQUEST_PRODUCT,
+        type: Actions.REQUEST_PRODUCT,
         payload: id
       });
     }

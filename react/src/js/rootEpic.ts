@@ -9,10 +9,10 @@ import {mapError, mapPayload} from "./epics/epicsUtils";
 import {reduxFormEpics} from "./epics/reduxFormEpics";
 import {AutocompleteRequestPayload, AutocompleteResponsePayload} from "./actions/actions";
 import {IshAction} from "./actions/IshAction";
-import {webEpics} from "./web/epics/webEpics";
+import {WebEpics} from "./web/epics/webEpics";
 
 export const rootEpic = combineEpics(
-  webEpics,
+  WebEpics,
   enrolEpics,
   reduxFormEpics,
   createAutocompleteEpic(IshActions.AUTOCOMPLETE)

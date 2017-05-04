@@ -1,10 +1,11 @@
-import {Action, combineReducers} from "redux";
-import {FULFILLED, IshActions, REJECTED} from "../../constants/IshActions";
+import {combineReducers} from "redux";
+import {FULFILLED, REJECTED} from "../../common/actions/ActionUtils";
 import {IshAction} from "../../actions/IshAction";
 import {EnrolState, Normalized, PayerState} from "../../services/IshState";
 import {Contact} from "../../model/web/Contact";
 import {ValidationError} from "../../model/common/ValidationError";
 import {RestError} from "../../types";
+import {IshActions} from "../../constants/IshActions";
 
 export const enrolReducer = combineReducers<EnrolState>({
   payer: combineReducers<PayerState>({

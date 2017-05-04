@@ -1,12 +1,12 @@
 import {Store} from "react-redux";
 import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
-import {createStore, applyMiddleware, GenericStoreEnhancer} from "redux";
+import {applyMiddleware, createStore, GenericStoreEnhancer} from "redux";
 import {IshState} from "./services/IshState";
 import {rootEpic} from "./rootEpic";
 import {combinedReducers} from "./reducers/reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
-import {IshActions} from "./constants/IshActions";
+import {Actions} from "./web/actions/Actions";
 
 export function configureStore(): Store<IshState> {
   const store = createStore(
@@ -31,7 +31,7 @@ export function configureStore(): Store<IshState> {
 
   // Trigger syncing state with LocalStorage
   store.dispatch({
-    type: IshActions.SYNC_CART,
+    type: Actions.SYNC_CART,
     payload: []
   });
 

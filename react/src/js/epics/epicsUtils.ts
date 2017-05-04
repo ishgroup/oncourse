@@ -1,4 +1,4 @@
-import {FULFILLED, REJECTED} from "../constants/IshActions";
+import {FULFILLED, REJECTED} from "../common/actions/ActionUtils";
 import {Observable} from "rxjs";
 
 export function mapPayload(actionType: string) {

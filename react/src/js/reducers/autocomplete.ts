@@ -1,7 +1,9 @@
 import {IshAction} from "../actions/IshAction";
-import {FULFILLED, REJECTED, IshActions} from "../constants/IshActions";
+import {FULFILLED, REJECTED} from "../common/actions/ActionUtils";
+
 import {AutocompleteResponsePayload} from "../actions/actions";
 import {AutocompleteState} from "../services/IshState";
+import {IshActions} from "../constants/IshActions";
 
 export function autocompleteReducer(
   state: AutocompleteState = {},

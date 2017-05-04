@@ -1,7 +1,6 @@
 import {combineEpics} from "redux-observable";
-import {FULFILLED, IshActions, REJECTED} from "../constants/IshActions";
-import {FormErrors, startSubmit} from "redux-form";
-import {stopSubmit} from "redux-form";
+import {FULFILLED, REJECTED} from "../common/actions/ActionUtils";
+import {FormErrors, startSubmit, stopSubmit} from "redux-form";
 import {Injector} from "../injector";
 import {Observable} from "rxjs";
 import {normalize} from "normalizr";
@@ -9,6 +8,7 @@ import {contactsSchema} from "../schema";
 import {mapError, mapPayload} from "./epicsUtils";
 import {ValidationError} from "../model/common/ValidationError";
 import {IshAction} from "../actions/IshAction";
+import {IshActions} from "../constants/IshActions";
 
 const {
   contactApi

@@ -1,18 +1,19 @@
 import {combineReducers} from "redux";
 import {IshAction} from "../../actions/IshAction";
-import {FULFILLED, IshActions} from "../../constants/IshActions";
 import {CourseClassCartState, ProductCartState} from "../../services/IshState";
 import {Contact} from "../../model/web/Contact";
+import {FULFILLED} from "../../common/actions/ActionUtils";
+import {Actions} from "../actions/Actions";
 
 function classesAllIds(state = [], action: IshAction<CourseClassCartState>) {
   switch (action.type) {
-    case FULFILLED(IshActions.ADD_CLASS_TO_CART):
+    case FULFILLED(Actions.ADD_CLASS_TO_CART):
       return [
         ...state,
         ...[action.payload.result]
           .filter(t => !state.includes(t)) // dedup
       ];
-    case FULFILLED(IshActions.REMOVE_CLASS_FROM_CART):
+    case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
       return state.filter(it => it !== action.payload.result);
     default:
       return state;
@@ -21,12 +22,12 @@ function classesAllIds(state = [], action: IshAction<CourseClassCartState>) {
 
 function classesById(state = {}, action: IshAction<CourseClassCartState>) {
   switch (action.type) {
-    case FULFILLED(IshActions.ADD_CLASS_TO_CART):
+    case FULFILLED(Actions.ADD_CLASS_TO_CART):
       return {
         ...state,
         ...action.payload.entities.classes
       };
-    case FULFILLED(IshActions.REMOVE_CLASS_FROM_CART):
+    case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
       const nextState = {...state};
       delete nextState[action.payload.result];
       return nextState;
@@ -37,13 +38,13 @@ function classesById(state = {}, action: IshAction<CourseClassCartState>) {
 
 function productsAllIds(state = [], action: IshAction<ProductCartState>) {
   switch (action.type) {
-    case FULFILLED(IshActions.ADD_PRODUCT_TO_CART):
+    case FULFILLED(Actions.ADD_PRODUCT_TO_CART):
       return [
         ...state,
         ...[action.payload.result]
           .filter(t => !state.includes(t)) // dedup
       ];
-    case FULFILLED(IshActions.REMOVE_PRODUCT_FROM_CART):
+    case FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART):
       return state.filter(it => it !== action.payload.result);
     default:
       return state;
@@ -52,12 +53,12 @@ function productsAllIds(state = [], action: IshAction<ProductCartState>) {
 
 function productsById(state = {}, action: IshAction<ProductCartState>) {
   switch (action.type) {
-    case FULFILLED(IshActions.ADD_PRODUCT_TO_CART):
+    case FULFILLED(Actions.ADD_PRODUCT_TO_CART):
       return {
         ...state,
         ...action.payload.entities.products
       };
-    case FULFILLED(IshActions.REMOVE_PRODUCT_FROM_CART):
+    case FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART):
       const nextState = {...state};
       delete nextState[action.payload.result];
       return nextState;
@@ -68,13 +69,13 @@ function productsById(state = {}, action: IshAction<ProductCartState>) {
 
 function promotionsAllIds(state = [], action: IshAction<ProductCartState>) {
   switch (action.type) {
-    case FULFILLED(IshActions.ADD_PROMOTION_TO_CART):
+    case FULFILLED(Actions.ADD_PROMOTION_TO_CART):
       return [
         ...state,
         ...[action.payload.result]
           .filter(t => !state.includes(t)) // dedup
       ];
-    case FULFILLED(IshActions.REMOVE_PROMOTION_FROM_CART):
+    case FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART):
       return state.filter(it => it !== action.payload.result);
     default:
       return state;
@@ -83,12 +84,12 @@ function promotionsAllIds(state = [], action: IshAction<ProductCartState>) {
 
 function promotionsById(state = {}, action: IshAction<ProductCartState>) {
   switch (action.type) {
-    case FULFILLED(IshActions.ADD_PROMOTION_TO_CART):
+    case FULFILLED(Actions.ADD_PROMOTION_TO_CART):
       return {
         ...state,
         ...action.payload.entities.promotions
       };
-    case FULFILLED(IshActions.REMOVE_PROMOTION_FROM_CART):
+    case FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART):
       const nextState = {...state};
       delete nextState[action.payload.result];
       return nextState;
@@ -99,7 +100,7 @@ function promotionsById(state = {}, action: IshAction<ProductCartState>) {
 
 function contactReducer(state = {}, action: IshAction<Contact>) {
   switch (action.type) {
-    case FULFILLED(IshActions.REQUEST_CONTACT):
+    case FULFILLED(Actions.REQUEST_CONTACT):
       return action.payload;
     default:
       return state;

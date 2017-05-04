@@ -1,7 +1,8 @@
 import {CoursesState} from "../../services/IshState";
 import {IshAction} from "../../actions/IshAction";
-import {FULFILLED, IshActions} from "../../constants/IshActions";
 import {combineReducers} from "redux";
+import {FULFILLED} from "../../common/actions/ActionUtils";
+import {Actions} from "../actions/Actions";
 
 export const productsReducer = combineReducers({
   entities: byId,
@@ -10,7 +11,7 @@ export const productsReducer = combineReducers({
 
 function allIds(state = [], action: IshAction<CoursesState>) {
   switch (action.type) {
-    case FULFILLED(IshActions.REQUEST_PRODUCT):
+    case FULFILLED(Actions.REQUEST_PRODUCT):
       return [
         ...state,
         ...action.payload.result
@@ -23,7 +24,7 @@ function allIds(state = [], action: IshAction<CoursesState>) {
 
 function byId(state = {}, action: IshAction<CoursesState>) {
   switch (action.type) {
-    case FULFILLED(IshActions.REQUEST_PRODUCT):
+    case FULFILLED(Actions.REQUEST_PRODUCT):
       return {
         ...state,
         ...action.payload.entities.products

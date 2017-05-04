@@ -1,25 +1,25 @@
-import {IshActions} from "../constants/IshActions";
+import {Actions} from "../web/actions/Actions";
 
 const initialState = {
-    content: null
+  content: null
 };
 
 const handleActions = {
-    [IshActions.UPDATE_POPUP](state, action) {
-        return {
-            ...state,
-            content: action.content
-        };
-    },
+  [Actions.UPDATE_POPUP](state, action) {
+    return {
+      ...state,
+      content: action.content
+    };
+  },
 
-    [IshActions.HIDE_POPUP](state) {
-        return {
-            ...state,
-            content: null
-        };
-    }
+  [Actions.HIDE_POPUP](state) {
+    return {
+      ...state,
+      content: null
+    };
+  }
 };
 
-export default function(state = initialState, action) {
-    return handleActions[action.type] ? handleActions[action.type](state, action) : state;
+export default function (state = initialState, action) {
+  return handleActions[action.type] ? handleActions[action.type](state, action) : state;
 }

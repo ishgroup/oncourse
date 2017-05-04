@@ -2,8 +2,8 @@ import * as React from "react";
 import {connect} from "react-redux";
 import withRouter from "react-router/lib/withRouter";
 import {ReactRouter} from "../../types";
-import {LogMessage, Logger, Level} from "../../services/Logger";
-import {IshActions} from "../../constants/IshActions";
+import {Level, Logger, LogMessage} from "../../services/Logger";
+import {Actions} from "../actions/Actions";
 
 class CoursePageComponent extends React.Component<CoursePageProps, CoursePageState> {
   constructor() {
@@ -36,7 +36,7 @@ class CoursePageComponent extends React.Component<CoursePageProps, CoursePageSta
 const mapDispatchToProps = (dispatch) => ({
   requestStudentByUniqueId: (id: string) => {
     dispatch({
-      type: IshActions.REQUEST_CONTACT,
+      type: Actions.REQUEST_CONTACT,
       id
     });
   }

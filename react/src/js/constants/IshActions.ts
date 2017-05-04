@@ -1,22 +1,4 @@
 export const IshActions = {
-  ADD_CLASS_TO_CART: "ADD_CLASS_TO_CART",
-  REMOVE_CLASS_FROM_CART: "REMOVE_CLASS_FROM_CART",
-
-  ADD_PRODUCT_TO_CART: "ADD_PRODUCT_TO_CART",
-  REMOVE_PRODUCT_FROM_CART: "REMOVE_PRODUCT_FROM_CART",
-
-  ADD_PROMOTION_TO_CART: "ADD_PROMOTION_TO_CART",
-  REMOVE_PROMOTION_FROM_CART: "REMOVE_PROMOTION_FROM_CART",
-
-  HIDE_POPUP: "HIDE_POPUP",
-  UPDATE_POPUP: "UPDATE_POPUP",
-  REQUEST_COURSE_CLASS: "REQUEST_COURSE_CLASS",
-  REQUEST_PRODUCT: "REQUEST_PRODUCT",
-  REQUEST_PROMOTION: "REQUEST_PROMOTION",
-  REQUEST_CONTACT: "REQUEST_CONTACT",
-
-  SYNC_CART: "SYNC_CART",
-
   // Enrol
   GET_OR_CREATE_CONTACT: "GET_OR_CREATE_CONTACT",
 
@@ -28,15 +10,3 @@ export const IshActions = {
   AUTOCOMPLETE: "AUTOCOMPLETE",
   AUTOCOMPLETE_CLEAR: "AUTOCOMPLETE_CLEAR",
 };
-
-export function FULFILLED(actionType: string) {
-  return postfix(actionType, "FULFILLED");
-}
-
-export function REJECTED(actionType: string) {
-  return postfix(actionType, "REJECTED");
-}
-
-export function postfix(actionType: string, name: string) {
-  return `${actionType}_${name}`
-}

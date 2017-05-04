@@ -1,12 +1,11 @@
 import * as React from "react";
 import classnames from "classnames";
 import {ConfirmOrderDialog} from "../addButton/ConfirmOrderDialog";
-import {CourseClassCart} from "../../../services/IshState";
 import {CourseClass} from "../../../model/web/CourseClass";
 import {plural, stopPropagation} from "../../../common/utils/HtmlUtils";
 
 
-export class EnrolButton extends React.Component<EnrolButtonProps, EnrolButtonState> {
+export class EnrolButton extends React.Component<Props, State> {
 
   constructor() {
     super();
@@ -51,7 +50,6 @@ export class EnrolButton extends React.Component<EnrolButtonProps, EnrolButtonSt
 
   componentDidMount() {
     const {id, requestCourseClassById} = this.props;
-
     requestCourseClassById(id);
   }
 
@@ -112,15 +110,15 @@ export class EnrolButton extends React.Component<EnrolButtonProps, EnrolButtonSt
   }
 }
 
-export interface EnrolButtonProps {
+export interface Props {
   readonly id: string;
   readonly isAdded: boolean,
-  readonly courseClass: CourseClassCart; // TODO: actually just CourseClass, waiting for Artem fixes.
+  readonly courseClass: CourseClass;
   readonly requestCourseClassById: (id: string) => void;
   readonly addCourseClass?: (item: CourseClass) => void,
 }
 
-interface EnrolButtonState {
+interface State {
   showedPopup: boolean,
   isAlreadyAdded: boolean,
   pending: boolean

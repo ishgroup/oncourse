@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {FeesComponent, FeesComponentProps} from "../components/fees/FeesComponent";
 import {IshState} from "../../services/IshState";
-import {IshActions} from "../../constants/IshActions";
+import {Actions} from "../actions/Actions";
 
 class FeesContainer extends React.Component<FeesProps, FeesState> {
   constructor() {
@@ -25,7 +25,7 @@ class FeesContainer extends React.Component<FeesProps, FeesState> {
 const mapDispatchToProps = (dispatch) => ({
   requestCourseClassById: (id: string) => {
     dispatch({
-      type: IshActions.REQUEST_COURSE_CLASS,
+      type: Actions.REQUEST_COURSE_CLASS,
       payload: id
     });
   }
