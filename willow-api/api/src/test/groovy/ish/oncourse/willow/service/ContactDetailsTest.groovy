@@ -14,12 +14,12 @@ import static org.junit.Assert.*
 
 class ContactDetailsTest extends  ApiTest{
 
-    @Ignore
     @Override
     protected String getDataSetResource() {
         return 'ish/oncourse/willow/service/ContactDetailsTest.xml'
     }
     
+    @Ignore
     @Test
     void test() {
         ObjectContext context = cayenneRuntime.newContext()
