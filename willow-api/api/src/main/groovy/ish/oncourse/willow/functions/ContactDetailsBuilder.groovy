@@ -80,6 +80,7 @@ class ContactDetailsBuilder {
                 h.name = heading.name
                 h.description = heading.description
                 h.fields += headingFields.sort { fh -> fh.order }.collect { fh -> toField fh }
+                h
             }
         }
 
