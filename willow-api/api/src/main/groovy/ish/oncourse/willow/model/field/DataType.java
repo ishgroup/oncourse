@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum DataType {
   
-  STRIND("strind"),
+  STRING("string"),
   
   BOOLEAN("boolean"),
   
@@ -17,7 +17,7 @@ public enum DataType {
   
   DATETIME("dateTime"),
   
-  INT("int"),
+  INTEGER("integer"),
   
   COUNTRY("country"),
   

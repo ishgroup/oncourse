@@ -524,11 +524,11 @@ definitions:
   field.DataType:
     type: string
     enum:
-      - strind
+      - string
       - boolean
       - date
       - dateTime
-      - int
+      - integer
       - country
       - language
       - enum
@@ -548,6 +548,9 @@ definitions:
       id:
         type: string
         description: Field id
+      key:
+        type: string
+        description: Property key
       name:
         type: string
         description: Field name
@@ -555,7 +558,7 @@ definitions:
         type: string
         description: Field description
       mandatory:
-        type: string
+        type: boolean
         description: Mandatory flag
       dataType:
         $ref: '#/definitions/field.DataType'

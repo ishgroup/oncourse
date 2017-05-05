@@ -5,9 +5,10 @@ import ish.oncourse.willow.model.field.DataType;
 public class Field  {
   
     private String id = null;
+    private String key = null;
     private String name = null;
     private String description = null;
-    private String mandatory = null;
+    private Boolean mandatory = null;
     private DataType dataType = null;
     private String enumType = null;
     private String value = null;
@@ -27,6 +28,23 @@ public class Field  {
 
     public Field id(String id) {
       this.id = id;
+      return this;
+    }
+
+    /**
+     * Property key
+     * @return key
+     */
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+       this.key = key;
+    }
+
+    public Field key(String key) {
+      this.key = key;
       return this;
     }
 
@@ -68,15 +86,15 @@ public class Field  {
      * Mandatory flag
      * @return mandatory
      */
-    public String getMandatory() {
+    public Boolean getMandatory() {
         return mandatory;
     }
 
-    public void setMandatory(String mandatory) {
+    public void setMandatory(Boolean mandatory) {
        this.mandatory = mandatory;
     }
 
-    public Field mandatory(String mandatory) {
+    public Field mandatory(Boolean mandatory) {
       this.mandatory = mandatory;
       return this;
     }
@@ -156,6 +174,7 @@ public class Field  {
       sb.append("class Field {\n");
       
       sb.append("    id: ").append(toIndentedString(id)).append("\n");
+      sb.append("    key: ").append(toIndentedString(key)).append("\n");
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
       sb.append("    description: ").append(toIndentedString(description)).append("\n");
       sb.append("    mandatory: ").append(toIndentedString(mandatory)).append("\n");

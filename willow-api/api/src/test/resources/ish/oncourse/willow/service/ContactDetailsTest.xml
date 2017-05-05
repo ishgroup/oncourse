@@ -35,7 +35,7 @@
 
     <Contact uniqueCode="1wjwestablished" id="1001" collegeId="1" studentId="1001"
              angelId="1001" created="2011-09-12 00:51:00.0" isCompany="0"
-             familyName="Student1" givenName="Student1" emailAddress="Student1@Student1.net"
+             familyName="Student1" givenName="Student1"
              isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
              isMarketingViaSMSAllowed="1" />
 
@@ -85,7 +85,6 @@
            name= "Favorite car maker3"
            description="Favorite car maker"
            fieldConfigurationId="1"
-           fieldHeadingId="1"
            mandatory="1"
            defaultValue="BMW"
            fieldOrder="3"
@@ -398,6 +397,10 @@
             created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
             allowWaitingList="1" name="Managerial Accounting"
             enrolmentType="1" fieldConfigurationSchemeId="1"/>
+
+    <CourseClass isActive="1" id="1001" code="1" collegeId="1"  courseId="1001" deliveryMode="1" detail="Test Course Class 5-1" feeExGst="20.00" feeGst="1.25"  maximumPlaces="3"
+                 startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0" isDistantLearningCourse="0"/>
+
 
 
 </dataset>

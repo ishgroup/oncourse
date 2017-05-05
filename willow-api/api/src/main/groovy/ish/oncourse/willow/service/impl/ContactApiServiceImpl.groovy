@@ -2,7 +2,10 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.FieldConfiguration
+import ish.oncourse.model.FieldConfigurationScheme
 import ish.oncourse.willow.functions.ContactDetailsBuilder
 import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.model.common.CommonError
@@ -69,7 +72,16 @@ class ContactApiServiceImpl implements ContactApi{
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contact is not exist')).build())
         }
         
-        List<CourseClass> classes = (ObjectSelect.query(CourseClass).where(ExpressionFactory.inExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classesIds)) & CourseClass.COLLEGE.eq(collegeService.college)).select(context)
+        List<CourseClass> classes = (ObjectSelect.query(CourseClass)
+                .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classesIds)) 
+                & CourseClass.COLLEGE.eq(collegeService.college))
+                .prefetch(CourseClass.COURSE.joint())
+                .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).joint())
+                .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).joint())
+                .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).dot(FieldConfiguration.FIELDS).joint())
+                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                .cacheGroups(CourseClass.class.simpleName)
+                .select(context)
         if (classes.empty) {
             logger.error("classes  are not exist, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classes  are not exist')).build())

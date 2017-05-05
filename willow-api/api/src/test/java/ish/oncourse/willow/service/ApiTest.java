@@ -59,7 +59,8 @@ public abstract class ApiTest {
         InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", dataSource);
         
         DataDomain domain = cayenneRuntime.getDataDomain();
-
+        
+        truncateAllTables(true);
         if (createTables) {
             createTablesForDataSourceByParams(dataSource, domain.getDataMap("oncourse"));
         }

@@ -1,0 +1,280 @@
+class ContactFields {
+    contactId: 1001
+    classHeadings: [class ClassHeadings {
+        classId: 1001
+        headings: [class FieldHeading {
+            name: First Heading
+            description: description
+            fields: [class Field {
+                id: 4
+                key: street
+                name: Favorite car maker4
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 5
+                key: suburb
+                name: Favorite car maker5
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 6
+                key: postcode
+                name: Favorite car maker6
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 9
+                key: businessPhoneNumber
+                name: Favorite car maker9
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 10
+                key: faxNumber
+                name: Favorite car maker10
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 11
+                key: mobilePhoneNumber
+                name: Favorite car maker11
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 12
+                key: dateOfBirth
+                name: Favorite car maker12
+                description: Favorite car maker
+                mandatory: true
+                dataType: date
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 13
+                key: abn
+                name: Favorite car maker13
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 14
+                key: isMale
+                name: Favorite car maker14
+                description: Favorite car maker
+                mandatory: true
+                dataType: boolean
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 15
+                key: citizenship
+                name: Favorite car maker15
+                description: Favorite car maker
+                mandatory: true
+                dataType: enum
+                enumType: StudentCitizenship
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 16
+                key: countryOfBirth
+                name: Favorite car make16r
+                description: Favorite car maker
+                mandatory: true
+                dataType: country
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 17
+                key: languageHome
+                name: Favorite car mak17er
+                description: Favorite car maker
+                mandatory: true
+                dataType: language
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 18
+                key: yearSchoolCompleted
+                name: Favorite car maker18
+                description: Favorite car maker
+                mandatory: true
+                dataType: integer
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 19
+                key: englishProficiency
+                name: Favorite car maker19
+                description: Favorite car maker
+                mandatory: true
+                dataType: enum
+                enumType: AvetmissStudentEnglishProficiency
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 20
+                key: indigenousStatus
+                name: Favorite car make20r
+                description: Favorite car maker
+                mandatory: true
+                dataType: enum
+                enumType: AvetmissStudentIndigenousStatus
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 21
+                key: highestSchoolLevel
+                name: Favorite car maker21
+                description: Favorite car maker
+                mandatory: true
+                dataType: enum
+                enumType: AvetmissStudentSchoolLevel
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 22
+                key: isStillAtSchool
+                name: Favorite car maker22
+                description: Favorite car maker
+                mandatory: true
+                dataType: boolean
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 23
+                key: priorEducationCode
+                name: Favorite car maker23
+                description: Favorite car maker
+                mandatory: true
+                dataType: enum
+                enumType: AvetmissStudentPriorEducation
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 24
+                key: labourForceStatus
+                name: Favorite car 24
+                description: Favorite car maker
+                mandatory: true
+                dataType: enum
+                enumType: AvetmissStudentLabourStatus
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 25
+                key: disabilityType
+                name: Favorite car maker25
+                description: Favorite car maker
+                mandatory: true
+                dataType: enum
+                enumType: AvetmissStudentDisabilityType
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 26
+                key: specialNeeds
+                name: Favorite car maker26
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 27
+                key: country
+                name: Favorite car 27
+                description: Favorite car maker
+                mandatory: true
+                dataType: country
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 28
+                key: customField.carMaker
+                name: Favorite car maker
+                description: Favorite car maker28
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }]
+        }, class FieldHeading {
+            name: Second Heading
+            description: description
+            fields: [class Field {
+                id: 7
+                key: state
+                name: Favorite car maker7
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }, class Field {
+                id: 8
+                key: homePhoneNumber
+                name: Favorite car maker8
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }]
+        }]
+        dummyHeading: class FieldHeading {
+            name: Dummy
+            description: Dummy
+            fields: [class Field {
+                id: 3
+                key: emailAddress
+                name: Favorite car maker3
+                description: Favorite car maker
+                mandatory: true
+                dataType: string
+                enumType: null
+                value: null
+                defaultValue: BMW
+            }]
+        }
+    }]
+}

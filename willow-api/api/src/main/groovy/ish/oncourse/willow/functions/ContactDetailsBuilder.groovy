@@ -11,6 +11,7 @@ import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
 import ish.oncourse.willow.model.field.ClassHeadings
+import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.FieldHeading
 import ish.oncourse.willow.model.web.FieldSet
 import org.apache.cayenne.query.ObjectSelect
@@ -25,7 +26,7 @@ class ContactDetailsBuilder {
     ClassHeadings getContactDetails(Contact contact, CourseClass courseClass, FieldSet fieldSet) {
 
         PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
-        List<Field> fields = new ArrayList<>()
+        Map<Field, Class> fields = [:]
         
         
         FieldConfiguration configuration
@@ -66,20 +67,22 @@ class ContactDetailsBuilder {
             }
             
             PropertyGetSet getSet  = factory.get(f, source)
+            
             if (!getSet.get()) {
-                fields << f
+                fields[f] = getSet.type
             }
         }
         ClassHeadings classHeadings = new ClassHeadings(classId: courseClass.id.toString())
-        FieldHeading dummy = new FieldHeading(name: 'Dummy')
-        classHeadings.headings << dummy
-        dummy.fields += fields.findAll { !it.fieldHeading }.sort { it.order }.collect { toField it }
+        FieldHeading dummy = new FieldHeading(name: 'Dummy', description: 'Dummy')
+
+        classHeadings.dummyHeading = dummy
+        dummy.fields += fields.entrySet().findAll { !it.key.fieldHeading }.sort { it.key.order }.collect { toField it.key,it.value  }
         
-        fields.findAll { it.fieldHeading }.groupBy { it.fieldHeading }.each { heading, headingFields ->
+        fields.entrySet().findAll { it.key.fieldHeading }.groupBy { it.key.fieldHeading }.each { heading, headingFields ->
             classHeadings.headings << new FieldHeading().with { h ->
                 h.name = heading.name
                 h.description = heading.description
-                h.fields += headingFields.sort { fh -> fh.order }.collect { fh -> toField fh }
+                h.fields += headingFields.sort { it.key.order }.collect { toField it.key, it.value }
                 h
             }
         }
@@ -98,6 +101,7 @@ class ContactDetailsBuilder {
                 .prefetch(FieldConfiguration.FIELD_HEADINGS.joint())
                 .prefetch(FieldConfiguration.FIELDS.joint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                .cacheGroups(FieldConfiguration.class.simpleName)
                 .selectFirst(college.objectContext)
         
         if (!configuration) {
@@ -106,10 +110,23 @@ class ContactDetailsBuilder {
         }
     }
 
-    private ish.oncourse.willow.model.field.Field toField(Field field) {
-        new ish.oncourse.willow.model.field.Field().with {
-            it.id = field.id.toString()
-            it
+    private ish.oncourse.willow.model.field.Field toField(Field field, Class aClass) {
+        new ish.oncourse.willow.model.field.Field().with { f ->
+            f.id = field.id.toString()
+            f.name = field.name
+            f.description = field.description
+            f.mandatory = field.mandatory
+            f.key = field.property
+            f.defaultValue = field.defaultValue
+
+            if (aClass.enum) {
+                f.dataType = DataType.ENUM
+                f.enumType = aClass.simpleName
+            } else {
+                f.dataType = DataType.fromValue(aClass.simpleName.toLowerCase())
+            }
+            
+            f
         }
     }
 }
