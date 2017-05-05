@@ -1,6 +1,5 @@
 import {HttpService} from "../common/services/HttpService";
 import { Item } from "../model/autocomplete/Item";
-import { CommonError } from "../model/common/CommonError";
 
 export class AutocompleteApi {
   constructor(private http: HttpService) {

@@ -1,5 +1,5 @@
-import { ContactParams } from "./../web/ContactParams";
-import { PromotionParams } from "./../web/PromotionParams";
+import { ContactParams } from "./ContactParams";
+import { PromotionParams } from "./PromotionParams";
 
 export class CourseClassesParams {
 

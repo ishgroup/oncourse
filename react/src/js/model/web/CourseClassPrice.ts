@@ -1,4 +1,4 @@
-import { Discount } from "./../web/Discount";
+import { Discount } from "./Discount";
 
 export class CourseClassPrice {
 

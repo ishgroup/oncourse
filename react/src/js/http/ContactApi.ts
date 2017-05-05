@@ -1,6 +1,4 @@
 import {HttpService} from "../common/services/HttpService";
-import { CommonError } from "../model/common/CommonError";
-import { ValidationError } from "../model/common/ValidationError";
 import { Contact } from "../model/web/Contact";
 import { CreateContactParams } from "../model/web/CreateContactParams";
 
