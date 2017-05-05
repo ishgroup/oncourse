@@ -20,12 +20,16 @@ class Configuration {
             prop.load(new FileInputStream(propFile))
             System.setProperty('bq.jetty.connector.port', prop.get('port') as String)
             System.setProperty('bq.jetty.connector.host', prop.get('host') as String)
-            System.setProperty('bq.cxf.urlPattern', prop.get('path') as String)
             System.setProperty('bq.jdbc.ish.url', String.format(BD_URL, prop.get('db_host'), prop.get('db_port'), prop.get('db_name')))
             System.setProperty('bq.jdbc.ish.username', prop.get('db_user') as String)
             System.setProperty('bq.jdbc.ish.password', prop.get('db_pass') as String)
-            
-            
+
+            if (prop.get('path')) {
+                System.setProperty('bq.cxf.urlPattern',prop.get('path') as String)
+            }
+
+
+
             if (versionFile.exists()) {
                 System.setProperty(API_VERSION, versionFile.newReader().readLine())
             }
