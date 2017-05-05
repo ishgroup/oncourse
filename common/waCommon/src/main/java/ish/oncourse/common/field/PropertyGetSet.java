@@ -8,4 +8,5 @@ import java.lang.reflect.InvocationTargetException;
 public interface PropertyGetSet {
 	Object get();
 	void set(Object value);
+	Class getType();
 }

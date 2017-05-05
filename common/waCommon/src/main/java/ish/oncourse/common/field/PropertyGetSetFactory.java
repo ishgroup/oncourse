@@ -74,6 +74,11 @@ public class PropertyGetSetFactory {
 					throw new RuntimeException(e);
 				}
 			}
+			
+			@Override
+			public Class getType() {
+				return get.getReturnType();
+			}
 		};
 		
 	}
@@ -103,6 +108,11 @@ public class PropertyGetSetFactory {
 					logger.error(String.format("Unexpected exception occurred during perform  Set method, context type: %s, property name: %s, package: %s.", property.getContextType().name(), property.name(), packageName));
 					throw new RuntimeException(e);
 				}
+			}
+
+			@Override
+			public Class getType() {
+				return get.getReturnType();
 			}
 		};
 	}
