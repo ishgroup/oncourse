@@ -15,3 +15,6 @@ cayenne:
   datasource: ish
   configs:
     - cayenne-oncourse.xml
+cxf:
+  urlPattern: /a/*
+  
