@@ -1,12 +1,12 @@
 package ish.oncourse.willow.model.field;
 
-import ish.oncourse.willow.model.field.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FieldHeading  {
   
     private String name = null;
+    private String description = null;
     private List<Field> fields = new ArrayList<Field>();
 
     /**
@@ -27,7 +27,24 @@ public class FieldHeading  {
     }
 
     /**
-     * Get fields
+     * Heading description
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+       this.description = description;
+    }
+
+    public FieldHeading description(String description) {
+      this.description = description;
+      return this;
+    }
+
+    /**
+     * Fields set related to field heading
      * @return fields
      */
     public List<Field> getFields() {
@@ -55,6 +72,7 @@ public class FieldHeading  {
       sb.append("class FieldHeading {\n");
       
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
+      sb.append("    description: ").append(toIndentedString(description)).append("\n");
       sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
       sb.append("}");
       return sb.toString();

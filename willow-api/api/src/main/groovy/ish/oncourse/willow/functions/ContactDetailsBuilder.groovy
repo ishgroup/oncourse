@@ -70,12 +70,22 @@ class ContactDetailsBuilder {
                 fields << f
             }
         }
-        ClassHeadings classHeadings = new ClassHeadings(classId: courseClass.id)
+        ClassHeadings classHeadings = new ClassHeadings(classId: courseClass.id.toString())
         FieldHeading dummy = new FieldHeading(name: 'Dummy')
         classHeadings.headings << dummy
-        dummy.fields += fields.findAll { !it.fieldHeading }.collect { toField it}
+        dummy.fields += fields.findAll { !it.fieldHeading }.sort { it.order }.collect { toField it }
         
+        fields.findAll { it.fieldHeading }.groupBy { it.fieldHeading }.each { heading, headingFields ->
+            classHeadings << new FieldHeading().with { h ->
+                h.name = heading.name
+                h.description = heading.description
+                h.fields += headingFields.sort { fh -> fh.order }.collect { fh -> toField fh }
+            }
+        }
+
+        classHeadings.headings = classHeadings.headings.sort {it -> it.name}
         classHeadings
+        
     }
     
     private FieldConfiguration getDefaultFieldConfiguration(College college) {
@@ -98,7 +108,6 @@ class ContactDetailsBuilder {
     private ish.oncourse.willow.model.field.Field toField(Field field) {
         new ish.oncourse.willow.model.field.Field().with {
             it.id = field.id.toString()
-            
             it
         }
     }

@@ -586,7 +586,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/field.Field'
-      description: Fields set related to field heading
+        description: Fields set related to field heading
   field.ClassHeadings:
     type: object
     requred:
