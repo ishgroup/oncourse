@@ -8,9 +8,11 @@ import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
 import ish.oncourse.willow.functions.ContactDetailsBuilder
 import ish.oncourse.willow.functions.CreateOrGetContact
+import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
+import ish.oncourse.willow.model.field.SubmitFieldsRequest
 import ish.oncourse.willow.model.web.Contact
 import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactApi
@@ -93,6 +95,22 @@ class ContactApiServiceImpl implements ContactApi{
             result.classHeadings << new ContactDetailsBuilder().getContactDetails(contact, clazz, contactFieldsRequest.fieldSet)
         }
         result
+    }
+
+    @Override
+    void submitContactDetails(SubmitFieldsRequest contactFields) {
+        ObjectContext context = cayenneRuntime.newContext()
+        if (!contactFields.contactId) {
+            logger.error("contactId required, request param: $contactFields")
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
+        }
+
+        ish.oncourse.model.Contact contact = SelectById.query(ish.oncourse.model.Contact, contactFields.contactId).selectOne(context)
+        if (!contact) {
+            logger.error("contact is not exist, request param: $contactFields")
+            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contact is not exist')).build())
+        }
+        new SubmitContactFields().submitContactFields(contact, contactFields.fields)
     }
 
     @Override

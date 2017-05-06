@@ -23,6 +23,20 @@ class ContactDetailsBuilder {
     
     final static Logger logger = LoggerFactory.getLogger(ContactDetailsBuilder.class)
 
+    static Closure getContext = { ContextType contextType, Contact contact ->
+        
+        switch (contextType) {
+            case ContextType.CONTACT:
+                contact
+                break
+            case ContextType.STUDENT:
+               contact.student
+                break
+            default:
+                throw new IllegalArgumentException()
+        }
+    }
+
     ClassHeadings getContactDetails(Contact contact, CourseClass courseClass, FieldSet fieldSet) {
 
         PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
@@ -54,17 +68,8 @@ class ContactDetailsBuilder {
         configuration.fields.each { f ->
             
             FieldProperty property = FieldProperty.getByKey(f.property)
-            Object source
-            switch (property.contextType) {
-                case ContextType.CONTACT:
-                    source = contact
-                    break
-                case ContextType.STUDENT:
-                    source = contact.student
-                    break
-                default:
-                    throw new IllegalArgumentException()
-            }
+            Object source = getContext(property.contextType, contact)
+            
             
             PropertyGetSet getSet  = factory.get(f, source)
             

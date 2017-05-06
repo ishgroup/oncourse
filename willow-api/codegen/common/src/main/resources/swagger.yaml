@@ -147,6 +147,35 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /submitContactDetails:
+    put:
+      x-filter: 
+      - CollegeInfo
+      summary: Save contact details from web form
+      operationId: submitContactDetails
+      description: Save contact details
+      tags:
+      - Contact
+      consumes:
+      - application/json
+      parameters:
+      - name: contactFields
+        in: body
+        description: Contact fields
+        required: true
+        schema:
+            $ref: '#/definitions/field.SubmitFieldsRequest'
+      responses:
+        200:
+          description: Ok response
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/common.ValidationError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /promotion/{code}:
     get:
       x-filter: 
@@ -572,6 +601,20 @@ definitions:
       defaultValue:
         type: string
         description: Default value for corresponded property
+  field.SubmitFieldsRequest:
+    type: object
+    requred:
+    - contactId
+    - fields
+    properties:
+      contactId:
+        type: string
+        description: Submited contact id
+      fields:
+        type: array
+        items:
+          $ref: '#/definitions/field.Field'
+        description: Array of fields
   field.FieldHeading:
     type: object
     requred:
