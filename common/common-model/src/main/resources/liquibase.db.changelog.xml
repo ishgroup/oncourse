@@ -4459,5 +4459,11 @@
 		</preConditions>
 		<sql>UPDATE CustomField SET entityName = 'Contact';</sql>
 	</changeSet>
+	<changeSet id="301" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<foreignKeyConstraintExists foreignKeyTableName="CustomField" foreignKeyName="fk_CustomField_Contact" />
+		</preConditions>
+		<sql>ALTER TABLE CustomField DROP FOREIGN KEY fk_CustomField_Contact;</sql>
+	</changeSet>
 	
 </databaseChangeLog>

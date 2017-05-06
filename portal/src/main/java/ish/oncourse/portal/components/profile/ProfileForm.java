@@ -1,10 +1,7 @@
 package ish.oncourse.portal.components.profile;
 
 import ish.oncourse.components.AvetmissStrings;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Country;
-import ish.oncourse.model.CustomField;
-import ish.oncourse.model.CustomFieldType;
+import ish.oncourse.model.*;
 import ish.oncourse.portal.pages.Profile;
 import ish.oncourse.portal.pages.Timetable;
 import ish.oncourse.portal.util.PortalContactValidator;
@@ -254,7 +251,7 @@ public class ProfileForm {
 					field.setValue(customFieldEntry.getValue());
 				} else if (customFieldEntry.getValue() != null){
 					//create new custom field if value for such custom field type populated on form
-					CustomField newField = contact.getObjectContext().newObject(CustomField.class);
+					CustomField newField = contact.getObjectContext().newObject(ContactCustomField.class);
 					newField.setCustomFieldType(getCustomFieldTypeByName(customFieldEntry.getKey()));
 					newField.setValue(customFieldEntry.getValue());
 					newField.setRelatedObject(contact);

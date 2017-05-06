@@ -4,6 +4,7 @@
 package ish.oncourse.enrol.checkout.contact;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.ContactCustomField;
 import ish.oncourse.model.CustomField;
 import org.apache.commons.lang.StringUtils;
 
@@ -42,7 +43,7 @@ public class CustomFieldsBuilder {
 				String value = StringUtils.trimToNull(fieldHolder.getCustomFieldValue(name));
 				if (value != null) {
 
-					CustomField customField = contact.getObjectContext().newObject(CustomField.class);
+					CustomField customField = contact.getObjectContext().newObject(ContactCustomField.class);
 
 					customField.setCollege(contact.getCollege());
 					customField.setCustomFieldType(contact.getObjectContext().localObject(fieldHolder.getCustomFieldType(name)));
