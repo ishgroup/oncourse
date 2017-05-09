@@ -294,5 +294,6 @@
     <Product collegeId="1" SKU="24457" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="11$ product double edition" ID="13" ISONSALE="1"
              ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test VOUCHER product part 7" TYPE="3" angelId="12"
              TAXADJUSTMENT="0.00" feeGST="0.00"/>
+    <CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Favorite car maker" fieldKey="carMaker" defaultValue="BMW" isMandatory="0" entityName="Contact"/>
 
 </dataset>
