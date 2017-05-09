@@ -68,7 +68,7 @@ class ContactDetailsBuilder {
         configuration.fields.each { f ->
             
             FieldProperty property = FieldProperty.getByKey(f.property)
-            Object source = getContext(property.contextType, contact)
+            Object source = getContext.call(property.contextType, contact)
             
             
             PropertyGetSet getSet  = factory.get(f, source)
