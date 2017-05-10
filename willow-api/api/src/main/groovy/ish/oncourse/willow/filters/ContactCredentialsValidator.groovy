@@ -1,6 +1,7 @@
 package ish.oncourse.willow.filters
 
 import ish.oncourse.common.field.FieldProperty
+import ish.oncourse.util.contact.CommonContactValidator
 import ish.oncourse.willow.model.common.FieldError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.model.web.CreateContactParams
@@ -26,7 +27,6 @@ class ContactCredentialsValidator implements ReaderInterceptor {
              (LAST_NAME) : new ErrorHolder(emptyError: 'The student\'s last name is required.', maxLength: lastName.length),
              (EMAIL_ADDRESS) : new ErrorHolder(emptyError: 'The student\'s email is required.', maxLength: email.length) ]
 
-    private static final String INCORRECT_PROPERTY_LENGTH ='The %s cannot exceed %d characters.'
     private static final String INVALID_EMAIL = 'The email address does not appear to be valid.'
 
     @Override
@@ -69,7 +69,7 @@ class ContactCredentialsValidator implements ReaderInterceptor {
         if (StringUtils.isBlank(value)) {
             fieldsErrors << new FieldError(name: field.key, error: IS_BLANK_ERRORS.get(field).emptyError)
         } else if (value.length() >  IS_BLANK_ERRORS.get(field).maxLength) {
-            fieldsErrors << new FieldError(name: field.key, error: String.format(INCORRECT_PROPERTY_LENGTH, field.displayName,  IS_BLANK_ERRORS.get(field).maxLength))
+            fieldsErrors << new FieldError(name: field.key, error: String.format(CommonContactValidator.INCORRECT_PROPERTY_LENGTH, field.displayName,  IS_BLANK_ERRORS.get(field).maxLength))
         }
 
         fieldsErrors

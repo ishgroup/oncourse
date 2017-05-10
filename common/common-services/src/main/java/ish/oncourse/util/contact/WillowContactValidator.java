@@ -2,30 +2,18 @@ package ish.oncourse.util.contact;
 
 import ish.oncourse.components.ContactDetailStrings;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.util.FormatUtils;
 import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.Map;
 
 public class WillowContactValidator {
 
-	public static final Date MIN_DATE_OF_BIRTH;
-
-	static{
-		try {
-			MIN_DATE_OF_BIRTH = DateUtils.truncate(new SimpleDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT).parse("01/01/1900"), Calendar.YEAR);
-		} catch (ParseException e) {
-			throw new IllegalStateException(e);
-		}
-	}
+	
 	
 	public static class DateOfBirthValidator {
 		private Date value;
@@ -41,7 +29,7 @@ public class WillowContactValidator {
 						message = messages.get(ContactDetailStrings.KEY_ERROR_dateOfBirth_shouldBeInPast);
 					}
 				}
-				if (message == null && MIN_DATE_OF_BIRTH.compareTo(value) > 0) {
+				if (message == null && CommonContactValidator.MIN_DATE_OF_BIRTH.compareTo(value) > 0) {
 					message = messages.get(ContactDetailStrings.KEY_ERROR_MESSAGE_birthdate_old);
 				}
 			}
