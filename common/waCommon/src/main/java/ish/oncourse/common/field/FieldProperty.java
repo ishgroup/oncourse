@@ -39,12 +39,12 @@ public enum FieldProperty {
 	DISABILITY_TYPE(ContextType.STUDENT, "Disability type", "disabilityType" ),
 	SPECIAL_NEEDS(ContextType.STUDENT, "Special needs", "specialNeeds"),
 
-	CUSTOM_FIELD_CONTACT(ContextType.CONTACT, "Custom Field ", CUSTOM_FIELD_PROPERTY_PATTERN + "." + ContextType.CONTACT.getIdentifier()),
-	CUSTOM_FIELD_STUDENT(ContextType.STUDENT, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + "." + ContextType.STUDENT.getIdentifier()),
-	CUSTOM_FIELD_COURSE(ContextType.COURSE, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + "." + ContextType.COURSE.getIdentifier()),
-	CUSTOM_FIELD_ENROLMENT(ContextType.ENROLMENT, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + "." + ContextType.ENROLMENT.getIdentifier()),
-	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + "." + ContextType.APPLICATION.getIdentifier()),
-	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + "." + ContextType.WAITING_LIST.getIdentifier());
+	CUSTOM_FIELD_CONTACT(ContextType.CONTACT, "Custom Field ", CUSTOM_FIELD_PROPERTY_PATTERN   + ContextType.CONTACT.getIdentifier()),
+	CUSTOM_FIELD_STUDENT(ContextType.STUDENT, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.STUDENT.getIdentifier()),
+	CUSTOM_FIELD_COURSE(ContextType.COURSE, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.COURSE.getIdentifier()),
+	CUSTOM_FIELD_ENROLMENT(ContextType.ENROLMENT, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.ENROLMENT.getIdentifier()),
+	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.APPLICATION.getIdentifier()),
+	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", CUSTOM_FIELD_PROPERTY_PATTERN  + ContextType.WAITING_LIST.getIdentifier());
 
 
 	private ContextType contextType;
