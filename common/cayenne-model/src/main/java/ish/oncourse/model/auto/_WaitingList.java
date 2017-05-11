@@ -9,6 +9,7 @@ import org.apache.cayenne.exp.Property;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Student;
+import ish.oncourse.model.WaitingListCustomField;
 import ish.oncourse.model.WaitingListSite;
 
 /**
@@ -28,6 +29,7 @@ public abstract class _WaitingList extends CayenneDataObject {
     public static final String POTENTIAL_STUDENTS_PROPERTY = "potentialStudents";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_PROPERTY = "course";
+    public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
     public static final String STUDENT_PROPERTY = "student";
     public static final String WAITING_LIST_SITES_PROPERTY = "waitingListSites";
 
@@ -40,6 +42,7 @@ public abstract class _WaitingList extends CayenneDataObject {
     public static final Property<Integer> POTENTIAL_STUDENTS = new Property<Integer>("potentialStudents");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Course> COURSE = new Property<Course>("course");
+    public static final Property<List<WaitingListCustomField>> CUSTOM_FIELDS = new Property<List<WaitingListCustomField>>("customFields");
     public static final Property<Student> STUDENT = new Property<Student>("student");
     public static final Property<List<WaitingListSite>> WAITING_LIST_SITES = new Property<List<WaitingListSite>>("waitingListSites");
 
@@ -93,6 +96,18 @@ public abstract class _WaitingList extends CayenneDataObject {
 
     public Course getCourse() {
         return (Course)readProperty("course");
+    }
+
+
+    public void addToCustomFields(WaitingListCustomField obj) {
+        addToManyTarget("customFields", obj, true);
+    }
+    public void removeFromCustomFields(WaitingListCustomField obj) {
+        removeToManyTarget("customFields", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<WaitingListCustomField> getCustomFields() {
+        return (List<WaitingListCustomField>)readProperty("customFields");
     }
 
 

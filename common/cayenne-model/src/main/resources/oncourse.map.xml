@@ -1457,6 +1457,8 @@
 		<obj-attribute name="status" type="ish.common.types.ApplicationStatus" db-attribute-path="status"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
+	<obj-entity name="ApplicationCustomField" superEntityName="CustomField" className="ish.oncourse.model.ApplicationCustomField">
+	</obj-entity>
 	<obj-entity name="Article" superEntityName="ProductItem" className="ish.oncourse.model.Article">
 		<qualifier><![CDATA[type = 1]]></qualifier>
 	</obj-entity>
@@ -2536,6 +2538,8 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="potentialStudents" type="java.lang.Integer" db-attribute-path="potentialStudents"/>
 	</obj-entity>
+	<obj-entity name="WaitingListCustomField" superEntityName="CustomField" className="ish.oncourse.model.WaitingListCustomField">
+	</obj-entity>
 	<obj-entity name="WaitingListSite" className="ish.oncourse.model.WaitingListSite" dbEntityName="WaitingListSite">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 	</obj-entity>
@@ -2629,6 +2633,9 @@
 	</db-relationship>
 	<db-relationship name="course" source="Application" target="Course" toMany="false">
 		<db-attribute-pair source="courseId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="Application" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="student" source="Application" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
@@ -3227,6 +3234,9 @@
 	<db-relationship name="customFieldType" source="CustomField" target="CustomFieldType" toMany="false">
 		<db-attribute-pair source="customFieldTypeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedApplication" source="CustomField" target="Application" toMany="false">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relatedContact" source="CustomField" target="Contact" toMany="false">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
@@ -3234,6 +3244,9 @@
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment" toMany="false">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedWaitingList" source="CustomField" target="WaitingList" toMany="false">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="college" source="CustomFieldType" target="College" toMany="false">
@@ -3929,6 +3942,9 @@
 	<db-relationship name="course" source="WaitingList" target="Course" toMany="false">
 		<db-attribute-pair source="courseId" target="id"/>
 	</db-relationship>
+	<db-relationship name="customFields" source="WaitingList" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
 	<db-relationship name="student" source="WaitingList" target="Student" toMany="false">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
@@ -4066,7 +4082,9 @@
 	</db-relationship>
 	<obj-relationship name="college" source="Application" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="Application" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
+	<obj-relationship name="customFields" source="Application" target="ApplicationCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="student" source="Application" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
+	<obj-relationship name="relatedObject" source="ApplicationCustomField" target="Application" deleteRule="Nullify" db-relationship-path="relatedApplication"/>
 	<obj-relationship name="assessmentClasses" source="Assessment" target="AssessmentClass" deleteRule="Deny" db-relationship-path="assessmentClasses"/>
 	<obj-relationship name="college" source="Assessment" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="assessment" source="AssessmentClass" target="Assessment" deleteRule="Nullify" db-relationship-path="assessment"/>
@@ -4467,7 +4485,9 @@
 	<obj-relationship name="college" source="WaitingList" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="WaitingList" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="student" source="WaitingList" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
+	<obj-relationship name="customFields" source="WaitingList" target="WaitingListCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
+	<obj-relationship name="relatedObject" source="WaitingListCustomField" target="WaitingList" deleteRule="Nullify" db-relationship-path="relatedWaitingList"/>
 	<obj-relationship name="college" source="WaitingListSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="site" source="WaitingListSite" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="waitingList" source="WaitingListSite" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingList"/>

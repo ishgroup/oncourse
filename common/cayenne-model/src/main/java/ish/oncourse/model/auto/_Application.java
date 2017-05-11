@@ -1,6 +1,7 @@
 package ish.oncourse.model.auto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
@@ -9,6 +10,7 @@ import ish.common.types.ApplicationStatus;
 import ish.common.types.ConfirmationStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
+import ish.oncourse.model.ApplicationCustomField;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.Student;
@@ -34,6 +36,7 @@ public abstract class _Application extends CayenneDataObject {
     public static final String STATUS_PROPERTY = "status";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String COURSE_PROPERTY = "course";
+    public static final String CUSTOM_FIELDS_PROPERTY = "customFields";
     public static final String STUDENT_PROPERTY = "student";
 
     public static final String ID_PK_COLUMN = "id";
@@ -49,6 +52,7 @@ public abstract class _Application extends CayenneDataObject {
     public static final Property<ApplicationStatus> STATUS = new Property<ApplicationStatus>("status");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<Course> COURSE = new Property<Course>("course");
+    public static final Property<List<ApplicationCustomField>> CUSTOM_FIELDS = new Property<List<ApplicationCustomField>>("customFields");
     public static final Property<Student> STUDENT = new Property<Student>("student");
 
     public void setAngelId(Long angelId) {
@@ -129,6 +133,18 @@ public abstract class _Application extends CayenneDataObject {
 
     public Course getCourse() {
         return (Course)readProperty("course");
+    }
+
+
+    public void addToCustomFields(ApplicationCustomField obj) {
+        addToManyTarget("customFields", obj, true);
+    }
+    public void removeFromCustomFields(ApplicationCustomField obj) {
+        removeToManyTarget("customFields", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<ApplicationCustomField> getCustomFields() {
+        return (List<ApplicationCustomField>)readProperty("customFields");
     }
 
 
