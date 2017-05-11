@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions
 
+import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.common.field.ContextType
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.common.field.PropertyGetSet
@@ -10,6 +11,7 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
+import ish.oncourse.willow.model.field.Choice
 import ish.oncourse.willow.model.field.ClassHeadings
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.FieldHeading
@@ -127,6 +129,11 @@ class ContactDetailsBuilder {
             if (aClass.enum) {
                 f.dataType = DataType.ENUM
                 f.enumType = aClass.simpleName
+                
+                aClass.enumConstants.each { DisplayableExtendedEnumeration item ->
+                    f.choices << new Choice(displayName: item.displayName, databaseValue: item.databaseValue as Integer)
+                }
+                
             } else {
                 f.dataType = DataType.fromValue(aClass.simpleName.toLowerCase())
             }

@@ -15,6 +15,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
+                choices: []
             }]
         }]
         dummyHeading: class FieldHeading {
