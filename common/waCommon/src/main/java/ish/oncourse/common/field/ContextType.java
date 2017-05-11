@@ -5,5 +5,9 @@ package ish.oncourse.common.field;
 
 public enum ContextType {
 	CONTACT,
-	STUDENT
+	STUDENT,
+	COURSE,
+	ENROLMENT,
+	APPLICATION,
+	WAITING_LIST
 }

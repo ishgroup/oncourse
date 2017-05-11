@@ -36,7 +36,13 @@ public enum FieldProperty {
 	DISABILITY_TYPE(ContextType.STUDENT, "Disability type", "disabilityType" ),
 	SPECIAL_NEEDS(ContextType.STUDENT, "Special needs", "specialNeeds"),
 
-	CUSTOM_FIELD(ContextType.CONTACT, "Custom Field ", "customField.key");
+	CUSTOM_FIELD_CONTACT(ContextType.CONTACT, "Custom Field ", "customField.contact"),
+	CUSTOM_FIELD_STUDENT(ContextType.STUDENT, "Custom field ", "customField.student"),
+	CUSTOM_FIELD_COURSE(ContextType.COURSE, "Custom field ", "customField.course"),
+	CUSTOM_FIELD_ENROLMENT(ContextType.ENROLMENT, "Custom field ","customField.enrolment"),
+	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", "customField.application"),
+	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", "customField.waitingList");
+
 
 	private ContextType contextType;
 	private String displayName;
