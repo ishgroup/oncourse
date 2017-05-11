@@ -49,8 +49,8 @@ public class PropertyGetSetFactory {
 	}
 
 	private PropertyGetSet customFieldGetSet(String propertyKey, final Object model) {
-		final Method get = findMethod(GET, FieldProperty.CUSTOM_FIELD);
-		final Method set = findMethod(SET, FieldProperty.CUSTOM_FIELD);
+		final Method get = findMethod(GET, FieldProperty.CUSTOM_FIELD_CONTACT);
+		final Method set = findMethod(SET, FieldProperty.CUSTOM_FIELD_CONTACT);
 		final String customFieldKey = propertyKey.replace(CUSTOM_FIELD_PROPERTY_PATTERN, "");
 
 		return new PropertyGetSet() {

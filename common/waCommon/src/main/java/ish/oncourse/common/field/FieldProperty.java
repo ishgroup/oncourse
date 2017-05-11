@@ -68,7 +68,7 @@ public enum FieldProperty {
 
 	public static FieldProperty getByKey(String key) {
 		if (key.startsWith(CUSTOM_FIELD_PROPERTY_PATTERN)) {
-			return CUSTOM_FIELD;
+			return CUSTOM_FIELD_CONTACT;
 		}
 		
 		for (FieldProperty property : FieldProperty.values()) {
