@@ -66,14 +66,14 @@ public class Contact extends _Contact implements Queueable, IExpandable {
 		super.setEmailAddress(emailAddress);
 	}
 
-	@Property(value = FieldProperty.CUSTOM_FIELD, type = PropertyGetSetFactory.GET, params = {String.class})
+	@Property(value = FieldProperty.CUSTOM_FIELD_CONTACT, type = PropertyGetSetFactory.GET, params = {String.class})
 	public String getCustomFieldValue(String key) {
 		CustomField field = getCustomField(key);
 		return  field == null ? null : field.getValue();
 	}
 	
 	
-	@Property(value = FieldProperty.CUSTOM_FIELD, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
+	@Property(value = FieldProperty.CUSTOM_FIELD_CONTACT, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
 	public void setCustomFieldValue(String key, String value){
 		CustomField field = getCustomField(key);
 		if (field != null) {
