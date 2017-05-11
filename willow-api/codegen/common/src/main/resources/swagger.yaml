@@ -571,7 +571,7 @@ definitions:
         type: string
         description: Display name fo choice
       databaseValue: 
-        type: int
+        type: integer
         description: Value of the enumeration item for unique binding
   field.Field: 
     type: object

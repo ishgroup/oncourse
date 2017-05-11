@@ -4,6 +4,7 @@ package ish.oncourse.willow.model.field;
 public class Choice  {
   
     private String displayName = null;
+    private Integer databaseValue = null;
 
     /**
      * Display name fo choice
@@ -22,6 +23,23 @@ public class Choice  {
       return this;
     }
 
+    /**
+     * Value of the enumeration item for unique binding
+     * @return databaseValue
+     */
+    public Integer getDatabaseValue() {
+        return databaseValue;
+    }
+
+    public void setDatabaseValue(Integer databaseValue) {
+       this.databaseValue = databaseValue;
+    }
+
+    public Choice databaseValue(Integer databaseValue) {
+      this.databaseValue = databaseValue;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -29,6 +47,7 @@ public class Choice  {
       sb.append("class Choice {\n");
       
       sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
+      sb.append("    databaseValue: ").append(toIndentedString(databaseValue)).append("\n");
       sb.append("}");
       return sb.toString();
     }
