@@ -110,7 +110,14 @@ class ContactApiServiceImpl implements ContactApi{
             logger.error("contact is not exist, request param: $contactFields")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contact is not exist')).build())
         }
-        new SubmitContactFields().submitContactFields(contact, contactFields.fields)
+        SubmitContactFields submit = new SubmitContactFields(objectContext: context).submitContactFields(contact, contactFields.fields)
+
+        if (submit.errors.fieldsErrors.empty && submit.errors.formErrors.empty) {
+            context.commitChanges()
+        } else {
+            logger.warn(" Vaidation error: $submit.errors")
+            throw new BadRequestException(Response.status(400).entity(submit.errors).build())
+        }
     }
 
     @Override

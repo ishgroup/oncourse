@@ -42,12 +42,10 @@ class SubmitContactFields {
     ValidationError errors = new ValidationError()
     ObjectContext objectContext
     boolean isDefaultCountry = false
+    
+    SubmitContactFields submitContactFields(Contact contact, List<Field> fields) {
 
-
-
-    void submitContactFields(Contact contact, List<Field> fields) {
-
-        PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.common')
+        PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
         PropertyGetSet getSet
 
         Field country = fields.find { FieldProperty.COUNTRY.key == it.key }
@@ -64,17 +62,16 @@ class SubmitContactFields {
                 return 
             }
             
-            Object value = normalizeValue(f)
-            value = normalizePhone(property, value)
-
-            FieldError error = validateValue(property, value)
-            if (error) {
-                errors.fieldsErrors << error
-            }
-            
+            Object value = normalizeValue(property, f)
             if (value) {
-                getSet = factory.get([property: {property.key}] as FieldInterface, getContext.call(property.contextType, contact))
-                getSet.set(value)
+                FieldError error = validateValue(property, value)
+                if (error) {
+                    errors.fieldsErrors << error
+                } else {
+                    getSet = factory.get([getProperty: {property.key}] as FieldInterface, getContext.call(property.contextType, contact))
+                    getSet.set(value)
+                }
+                
             }
             
         }
@@ -82,16 +79,18 @@ class SubmitContactFields {
         if (contact.getCountry() == null) {
             contact.setCountry(getCountryBy(CommonContactValidator.DEFAULT_COUNTRY_NAME))
         }
-
+        
+        this
     }
     
     
-    private Object normalizeValue(Field f) {
+    private Object normalizeValue(FieldProperty  property, Field f) {
         Object result = null
         if (StringUtils.trimToNull(f.value)) {
             switch (f.dataType) {
                 case STRING:
                     result = f.value
+                    result = normalizePhone(property, result)
                     break
                 case BOOLEAN:
                     result = Boolean.valueOf(f.value)
@@ -125,8 +124,9 @@ class SubmitContactFields {
                     }
                     break
                 case ENUM:
-                    result = TypesUtil.getEnumForDatabaseValue(f.value, this.class.classLoader.loadClass(f.enumType))
-                    if (!result) {
+                    if (org.apache.commons.lang.StringUtils.isNumeric(f.value)) {
+                        result = TypesUtil.getEnumForDatabaseValue(f.value, this.class.classLoader.loadClass("ish.common.types.$f.enumType"))
+                    } else {
                         errors.fieldsErrors << new FieldError(name: f.key, error: "${f.name} is incorrect")
                     }
                     break
@@ -214,7 +214,7 @@ class SubmitContactFields {
     }
     
     private String validateYearSchoolCompleted(Integer year) {
-        Map<String, StudentErrorCode> result = StudentValidator.valueOf([contact: null, yearSchoolCompleted: year] as StudentInterface).validate()
+        Map<String, StudentErrorCode> result = StudentValidator.valueOf([getContact: {null}, getYearSchoolCompleted: {year}] as StudentInterface).validate()
 
         StudentErrorCode code = result.get(StudentInterface.YEAR_SCHOOL_COMPLETED_KEY)
 
