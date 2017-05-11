@@ -19,6 +19,8 @@ public class CustomFieldStubBuilder extends AbstractWillowStubBuilder<CustomFiel
 		stub.setCustomFieldTypeId(entity.getCustomFieldType().getId());
 		stub.setForeignId(entity.getRelatedObject().getId());
 		stub.setValue(entity.getValue());
+
+		stub.setEntityIdentifier(CustomField.class.getSimpleName());
 		
 		return stub;
 	}
