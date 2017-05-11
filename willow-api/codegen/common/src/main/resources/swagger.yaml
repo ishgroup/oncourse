@@ -561,6 +561,18 @@ definitions:
       - country
       - language
       - enum
+  field.Choice:
+    type: object
+    requred:
+    - displayName
+    - databaseValue
+    properties:
+      displayName:
+        type: string
+        description: Display name fo choice
+      databaseValue: 
+        type: int
+        description: Value of the enumeration item for unique binding
   field.Field: 
     type: object
     requred:
@@ -573,6 +585,7 @@ definitions:
     - enumType
     - value
     - defaultValue
+    - choices
     properties:
       id:
         type: string
@@ -601,6 +614,11 @@ definitions:
       defaultValue:
         type: string
         description: Default value for corresponded property
+      choices:
+        type: array
+        items:
+          $ref: '#/definitions/field.Choice'
+        description: Combobox choices for enumeration types
   field.SubmitFieldsRequest:
     type: object
     requred:

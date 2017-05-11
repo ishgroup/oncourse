@@ -1,6 +1,9 @@
 package ish.oncourse.willow.model.field;
 
+import ish.oncourse.willow.model.field.Choice;
 import ish.oncourse.willow.model.field.DataType;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Field  {
   
@@ -13,6 +16,7 @@ public class Field  {
     private String enumType = null;
     private String value = null;
     private String defaultValue = null;
+    private List<Choice> choices = new ArrayList<Choice>();
 
     /**
      * Field id
@@ -167,6 +171,28 @@ public class Field  {
       return this;
     }
 
+    /**
+     * Combobox choices for enumeration types
+     * @return choices
+     */
+    public List<Choice> getChoices() {
+        return choices;
+    }
+
+    public void setChoices(List<Choice> choices) {
+       this.choices = choices;
+    }
+
+    public Field choices(List<Choice> choices) {
+      this.choices = choices;
+      return this;
+    }
+
+    public Field addChoicesItem(Choice choicesItem) {
+      this.choices.add(choicesItem);
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -182,6 +208,7 @@ public class Field  {
       sb.append("    enumType: ").append(toIndentedString(enumType)).append("\n");
       sb.append("    value: ").append(toIndentedString(value)).append("\n");
       sb.append("    defaultValue: ").append(toIndentedString(defaultValue)).append("\n");
+      sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
       sb.append("}");
       return sb.toString();
     }
