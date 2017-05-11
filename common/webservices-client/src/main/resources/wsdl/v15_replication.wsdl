@@ -1612,6 +1612,7 @@
                             <xs:element name="description" type="xs:string"/>
                             <xs:element name="name" type="xs:string"/>
                             <xs:element name="fieldConfigurationId" type="xs:long"/>
+                            <xs:element name="order" type="xs:int"/>
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

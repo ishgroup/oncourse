@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="fieldConfigurationId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="order" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "fieldHeadingStub", propOrder = {
     "description",
     "name",
-    "fieldConfigurationId"
+    "fieldConfigurationId",
+    "order"
 })
 public class FieldHeadingStub
     extends ReplicationStub
@@ -48,6 +50,10 @@ public class FieldHeadingStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long fieldConfigurationId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer order;
 
     /**
      * Gets the value of the description property.
@@ -119,6 +125,30 @@ public class FieldHeadingStub
      */
     public void setFieldConfigurationId(Long value) {
         this.fieldConfigurationId = value;
+    }
+
+    /**
+     * Gets the value of the order property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getOrder() {
+        return order;
+    }
+
+    /**
+     * Sets the value of the order property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setOrder(Integer value) {
+        this.order = value;
     }
 
 }
