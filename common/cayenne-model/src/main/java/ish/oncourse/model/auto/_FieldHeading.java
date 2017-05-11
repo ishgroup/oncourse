@@ -23,6 +23,7 @@ public abstract class _FieldHeading extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DESCRIPTION_PROPERTY = "description";
+    public static final String FIELD_ORDER_PROPERTY = "fieldOrder";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
     public static final String COLLEGE_PROPERTY = "college";
@@ -34,6 +35,7 @@ public abstract class _FieldHeading extends CayenneDataObject {
     public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<String> DESCRIPTION = new Property<String>("description");
+    public static final Property<Long> FIELD_ORDER = new Property<Long>("fieldOrder");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<String> NAME = new Property<String>("name");
     public static final Property<College> COLLEGE = new Property<College>("college");
@@ -59,6 +61,13 @@ public abstract class _FieldHeading extends CayenneDataObject {
     }
     public String getDescription() {
         return (String)readProperty("description");
+    }
+
+    public void setFieldOrder(Long fieldOrder) {
+        writeProperty("fieldOrder", fieldOrder);
+    }
+    public Long getFieldOrder() {
+        return (Long)readProperty("fieldOrder");
     }
 
     public void setModified(Date modified) {

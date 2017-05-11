@@ -4466,4 +4466,13 @@
 		<sql>ALTER TABLE CustomField DROP FOREIGN KEY fk_CustomField_Contact;</sql>
 	</changeSet>
 	
+	<changeSet id="302" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<preConditions>
+			<not>
+				<columnExists tableName="FieldHeading" columnName="fieldOrder"/>
+			</not>
+		</preConditions>
+		<sql>ALTER TABLE FieldHeading ADD COLUMN fieldOrder INTEGER;</sql>
+	</changeSet>
+	
 </databaseChangeLog>
