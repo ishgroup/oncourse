@@ -22,6 +22,9 @@ public enum FieldProperty {
 	DATE_OF_BIRTH(ContextType.CONTACT, "Date of Birth", "dateOfBirth"),
 	ABN(ContextType.CONTACT, "ABN", "abn"),
 	IS_MALE(ContextType.CONTACT, "Gender", "isMale" ),
+	IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY(ContextType.CONTACT, "E-mail", "isMarketingViaEmailAllowed"),
+	IS_MARKETING_VIA_POST_ALLOWED_PROPERTY(ContextType.CONTACT, "Post", "isMarketingViaPostAllowed"),
+	IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY(ContextType.CONTACT, "SMS", "isMarketingViaSMSAllowed"),
 	
 	CITIZENSHIP(ContextType.STUDENT, "Citizenship", "citizenship" ),
 	COUNTRY_OF_BIRTH(ContextType.STUDENT, "Country of birth", "countryOfBirth" ),
@@ -36,12 +39,12 @@ public enum FieldProperty {
 	DISABILITY_TYPE(ContextType.STUDENT, "Disability type", "disabilityType" ),
 	SPECIAL_NEEDS(ContextType.STUDENT, "Special needs", "specialNeeds"),
 
-	CUSTOM_FIELD_CONTACT(ContextType.CONTACT, "Custom Field ", "customField.contact"),
-	CUSTOM_FIELD_STUDENT(ContextType.STUDENT, "Custom field ", "customField.student"),
-	CUSTOM_FIELD_COURSE(ContextType.COURSE, "Custom field ", "customField.course"),
-	CUSTOM_FIELD_ENROLMENT(ContextType.ENROLMENT, "Custom field ","customField.enrolment"),
-	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", "customField.application"),
-	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", "customField.waitingList");
+	CUSTOM_FIELD_CONTACT(ContextType.CONTACT, "Custom Field ", "customField" + ContextType.CONTACT.getIdentifier()),
+	CUSTOM_FIELD_STUDENT(ContextType.STUDENT, "Custom field ", "customField" + ContextType.STUDENT.getIdentifier()),
+	CUSTOM_FIELD_COURSE(ContextType.COURSE, "Custom field ", "customField" + ContextType.COURSE.getIdentifier()),
+	CUSTOM_FIELD_ENROLMENT(ContextType.ENROLMENT, "Custom field ","customField" + ContextType.ENROLMENT.getIdentifier()),
+	CUSTOM_FIELD_APPLICATION(ContextType.APPLICATION, "Custom field ", "customField" + ContextType.APPLICATION.getIdentifier()),
+	CUSTOM_FIELD_WAITING_LIST(ContextType.WAITING_LIST, "Custom field ", "customField" + ContextType.WAITING_LIST.getIdentifier());
 
 
 	private ContextType contextType;
@@ -68,7 +71,23 @@ public enum FieldProperty {
 
 	public static FieldProperty getByKey(String key) {
 		if (key.startsWith(CUSTOM_FIELD_PROPERTY_PATTERN)) {
-			return CUSTOM_FIELD_CONTACT;
+			String contextIdentifier = key.split(".")[1];
+			ContextType context = ContextType.getByIdentifier(contextIdentifier);
+			switch (context) {
+				case CONTACT:
+					return  CUSTOM_FIELD_CONTACT;
+				case STUDENT:
+                    return  CUSTOM_FIELD_STUDENT;
+                case COURSE:
+                    return  CUSTOM_FIELD_COURSE;
+                case ENROLMENT:
+                    return  CUSTOM_FIELD_ENROLMENT;
+                case APPLICATION:
+                    return  CUSTOM_FIELD_APPLICATION;
+                case WAITING_LIST:
+                    return  CUSTOM_FIELD_WAITING_LIST;
+                default: throw new UnsupportedOperationException("Custom fields supported for Contact only");
+			}
 		}
 		
 		for (FieldProperty property : FieldProperty.values()) {

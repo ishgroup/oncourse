@@ -4,10 +4,30 @@
 package ish.oncourse.common.field;
 
 public enum ContextType {
-	CONTACT,
-	STUDENT,
-	COURSE,
-	ENROLMENT,
-	APPLICATION,
-	WAITING_LIST
+	CONTACT("contact"),
+	STUDENT("student"),
+	COURSE("course"),
+	ENROLMENT("enrolment"),
+	APPLICATION("application"),
+	WAITING_LIST("waitingList");
+
+	private String identifier;
+
+	private ContextType(String identifier) {
+		this.identifier = identifier;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public static ContextType getByIdentifier(String identifier) {
+		
+		for (ContextType context : ContextType.values()) {
+			if (context.identifier.equals(identifier)) {
+				return context;
+			}
+		}
+		return null;
+	}
 }
