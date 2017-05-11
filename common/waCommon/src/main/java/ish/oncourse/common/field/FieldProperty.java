@@ -71,7 +71,7 @@ public enum FieldProperty {
 
 	public static FieldProperty getByKey(String key) {
 		if (key.startsWith(CUSTOM_FIELD_PROPERTY_PATTERN)) {
-			String contextIdentifier = key.split(".")[1];
+			String contextIdentifier = key.split("\\.")[1];
 			ContextType context = ContextType.getByIdentifier(contextIdentifier);
 			switch (context) {
 				case CONTACT:

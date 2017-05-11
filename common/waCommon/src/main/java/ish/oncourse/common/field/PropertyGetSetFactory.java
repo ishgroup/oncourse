@@ -53,7 +53,7 @@ public class PropertyGetSetFactory {
 
 		final Method get = findMethod(GET, property);
 		final Method set = findMethod(SET, property);
-		final String customFieldKey = propertyKey.split(".")[2];
+		final String customFieldKey = propertyKey.split("\\.")[2];
 
 		return new PropertyGetSet() {
 
