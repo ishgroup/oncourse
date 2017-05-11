@@ -108,6 +108,8 @@ public class ContextUtils {
 		customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedContact"));
 		customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedEnrolment"));
 		customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedCourse"));
+		customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedApplication"));
+		customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedWaitingList"));
 		for (Relationship rel : customFieldRelationships) {
 			map.getDbEntity("CustomField").removeRelationship(rel.getName());
 		}
