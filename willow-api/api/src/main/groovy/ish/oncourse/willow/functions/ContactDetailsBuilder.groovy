@@ -16,6 +16,7 @@ import ish.oncourse.willow.model.field.ClassHeadings
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.FieldHeading
 import ish.oncourse.willow.model.web.FieldSet
+import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.slf4j.Logger
@@ -100,11 +101,9 @@ class ContactDetailsBuilder {
     }
     
     private FieldConfiguration getDefaultFieldConfiguration(College college) {
-       FieldConfiguration configuration =  (((ObjectSelect.query(FieldConfiguration)
-                .where(FieldConfiguration.COLLEGE.eq(college))
-                & FieldConfiguration.ENROL_FIELD_CONFIGURATION_SCHEMES.outer().isNull())
-                & FieldConfiguration.WAITING_LIST_FIELD_CONFIGURATION_SCHEMES.outer().isNull())
-                & FieldConfiguration.APPLICATION_FIELD_CONFIGURATION_SCHEMES.outer().isNull())
+       FieldConfiguration configuration =  (ObjectSelect.query(FieldConfiguration)
+               .where(FieldConfiguration.COLLEGE.eq(college)) 
+               & ExpressionFactory.matchDbExp(FieldConfiguration.ID_PK_COLUMN, -1))
                 .prefetch(FieldConfiguration.FIELD_HEADINGS.joint())
                 .prefetch(FieldConfiguration.FIELDS.joint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
