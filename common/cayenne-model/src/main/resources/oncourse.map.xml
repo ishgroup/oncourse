@@ -1950,7 +1950,7 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="fieldOrder" type="java.lang.Long" db-attribute-path="fieldOrder"/>
+		<obj-attribute name="fieldOrder" type="java.lang.Integer" db-attribute-path="fieldOrder"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
@@ -4486,8 +4486,8 @@
 	<obj-relationship name="voucherProduct" source="VoucherProductCourse" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="voucherProduct"/>
 	<obj-relationship name="college" source="WaitingList" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="WaitingList" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
-	<obj-relationship name="student" source="WaitingList" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="customFields" source="WaitingList" target="WaitingListCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
+	<obj-relationship name="student" source="WaitingList" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="waitingListSites" source="WaitingList" target="WaitingListSite" deleteRule="Deny" db-relationship-path="waitingListSites"/>
 	<obj-relationship name="relatedObject" source="WaitingListCustomField" target="WaitingList" deleteRule="Nullify" db-relationship-path="relatedWaitingList"/>
 	<obj-relationship name="college" source="WaitingListSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
