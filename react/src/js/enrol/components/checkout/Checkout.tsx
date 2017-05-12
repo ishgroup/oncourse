@@ -1,7 +1,6 @@
 import * as React from "react";
 import {Summary} from "../summary/Summary";
-import {AddContact} from "../../containers/AddContact";
-import {AddPayer} from "../../containers/AddPayer";
+import AddContactForm from "../../containers/contact/AddContactForm";
 import {EditContact} from "../../containers/EditContact";
 
 export class Checkout extends React.Component<CheckoutProps, CheckoutState> {
@@ -41,10 +40,9 @@ function getComponent(tab: number) {
     return <Summary/>;
   } else {
     return (
-    <div>
-      <AddContact/>
-      <AddPayer/>
-    </div>
+      <div>
+        <AddContactForm/>
+      </div>
     );
   }
 }

@@ -6,8 +6,8 @@ import {RadioGroupField} from "../form/RadioGroupField";
 import {TextField} from "../form/TextField";
 import {AutocompleteField} from "../form/AutocompleteField";
 import {DateField} from "../form/DateField";
-import {Concession} from "../addContact/Concession";
-import {AvetmissDetails} from "../addContact/AvetmissDetails";
+import {Concession} from "../contact/Concession";
+import {AvetmissDetails} from "../contact/AvetmissDetails";
 
 export class EditContactComponent extends React.Component<EditContactComponentProps, EditContactState> {
   constructor() {
