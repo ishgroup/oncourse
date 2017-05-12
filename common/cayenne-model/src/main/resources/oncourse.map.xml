@@ -1459,6 +1459,7 @@
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="ApplicationCustomField" superEntityName="CustomField" className="ish.oncourse.model.ApplicationCustomField">
+		<qualifier><![CDATA[entityName = "Application"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="Article" superEntityName="ProductItem" className="ish.oncourse.model.Article">
 		<qualifier><![CDATA[type = 1]]></qualifier>
@@ -2541,6 +2542,7 @@
 		<obj-attribute name="potentialStudents" type="java.lang.Integer" db-attribute-path="potentialStudents"/>
 	</obj-entity>
 	<obj-entity name="WaitingListCustomField" superEntityName="CustomField" className="ish.oncourse.model.WaitingListCustomField">
+		<qualifier><![CDATA[entityName = "WaitingList"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="WaitingListSite" className="ish.oncourse.model.WaitingListSite" dbEntityName="WaitingListSite">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
