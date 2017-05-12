@@ -457,7 +457,7 @@ class ContactFields {
                 name: Favorite car maker3
                 description: Favorite car maker
                 mandatory: true
-                dataType: string
+                dataType: email
                 enumType: null
                 value: null
                 defaultValue: BMW

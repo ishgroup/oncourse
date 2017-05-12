@@ -140,7 +140,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.key = 'homePhoneNumber'
                 f.name = 'homePhoneNumber'
                 f.dataType = DataType.STRING
-                f.value = 'homePhoneNumber'
+                f.value = '2255515'
                 f.mandatory = true
                 f
             }
@@ -148,7 +148,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.key = 'businessPhoneNumber'
                 f.name = 'businessPhoneNumber'
                 f.dataType = DataType.STRING
-                f.value = 'businessPhoneNumber'
+                f.value = '2255515'
                 f.mandatory = true
                 f
             }
@@ -156,7 +156,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.key = 'faxNumber'
                 f.name = 'faxNumber'
                 f.dataType = DataType.STRING
-                f.value = 'faxNumber'
+                f.value = '2255515'
                 f.mandatory = true
                 f
             }
@@ -164,7 +164,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.key = 'mobilePhoneNumber'
                 f.name = 'mobilePhoneNumber'
                 f.dataType = DataType.STRING
-                f.value = 'mobilePhoneNumber'
+                f.value = '2255515'
                 f.mandatory = true
                 f
             }
