@@ -326,7 +326,7 @@ definitions:
         type: string
         description: Internal Unique identifier of class
       course:
-        $ref: '#/definitions/Course'
+        $ref: '#/definitions/web.Course'
       code:
         type: string
         description: Code of class

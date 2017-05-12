@@ -21,6 +21,6 @@ public final class ReactModelUtils {
      */
     public static String getModelImportPathPrefix(final String name) {
         final int length = name.split(SEP).length;
-        return StringUtils.repeat("../", length - 1);
+        return StringUtils.repeat("../", length);
     }
 }

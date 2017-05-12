@@ -235,12 +235,13 @@ public class WillowClientGenerator extends AbstractTypeScriptClientCodegen imple
                     value.put("classname", newClassName);
                 }
 
+                String importPathPrefix = ReactModelUtils.getModelImportPathPrefix(obj.getKey());
                 // Overwrite imports in model
                 final ArrayList<CustomImport> customImports = new ArrayList<>();
                 for (String modelImport : model.imports) {
                     customImports.add(new CustomImport(
                             getClassName(modelImport),
-                            ReactModelUtils.getModelImportPathPrefix(modelImport) + normalizePackage(modelImport, "/"))
+                            importPathPrefix + normalizePackage(modelImport, "/"))
                     );
                 }
                 value.put("imports", customImports);
