@@ -17,6 +17,12 @@
 		overflow: hidden;
 		overflow-y: scroll;
 	}
+	.theme-color {
+		color: $theme-color;
+	}
+	.theme-bgcolor {
+		background: $theme-color;
+	}
 	#Main.main-page {
 		#content {
 			float: none;
@@ -77,6 +83,7 @@
 		position: relative;
 		margin-bottom: 45px;
 		line-height: 1.4;
+		text-align: center;
 		&::after {
 			content: "";
 			position: absolute;
@@ -87,6 +94,12 @@
 			margin: 0 auto;
 			left: 0;
 			right: 0;
+		}
+	}
+	.content, .dialogBox, .rodal-dialog {
+		.bottom-line {
+			margin-bottom: 45px;
+			line-height: 1.4;
 		}
 	}
 	.title-one {

@@ -10,6 +10,13 @@
 
 $header-theme: "b";
 
+$contentImageHeight: 501px !default;
+$contentImageDisplay: block !default;
+$contentImageBackground: url("/s/img/content/internal-bg.jpg") 0px 57px no-repeat !default;
+$contentImageBackgroundSize: contain !default;
+
+$contentContainerBackground: $white !default;
+
 $headerContainerPosition: relative !default;
 $headerContainerMarginBottom: 0px !default;
 $headerGroupPosition: relative !default;
@@ -26,6 +33,15 @@ $headerTopBarPaddingTop: 0px !default;
 $headerTopBarHeight: 57px !default;
 $headerGroupSiteLogoFloatPosition: none !default;
 $headerGroupSiteLogoZIndex: 0 !default;
+
+$headerContainerBackground: $white !default;
+$headerContainerBackground-Internal: none !default;
+$headerContainerPadding: 22px !default;
+$headerContainerZIndex: 9 !default;
+$headerContainerBoxShadow: none !default;
+$headerContainerBoxShadowSmall: 1px 1px 10px 2px #ddd !default;
+$headerContainerBorder: 0 !default;
+$headerContainerBorderBottom: 2px solid #ddd !default;
 
 // Navigation
 $navbarPaddingLeft: 0px !default;
@@ -72,6 +88,9 @@ $navToggleIconHeight: 4px !default;
 $navToggleIconBorderRadius: 100px !default;
 $navToggleIconLinePosition: -7px !default;
 $navToggleIconHoverColor: $secondaryColor !default;
+
+$navBGSmall: #EBEBEB !default;
+$navBoxShadowSmall: 1px 1px 6px 2px #ddd !default;
 
 // Short list
 $shortListOrderLinkFontSize: $bodyFontSize !default;
@@ -137,6 +156,8 @@ $searchMoreOptionsHeight: $searchTopHeight !default;
 $searchMoreOptionsPadding: 0px !default;
 $searchMoreOptionsMinWidth: $searchMoreOptionsWidth !default;
 $searchMoreOptionsDisplay: block !default;
+$searchMoreOptionBorderTopColor: #a0a0a0 !default;
+$searchMoreOptionBorderTopColorHover: #656565 !default;
 
 $sliderPagerItemBackground: transparent !default;
 $sliderPagerItemWidth: 13px !default;

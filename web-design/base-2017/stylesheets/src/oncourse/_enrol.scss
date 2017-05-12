@@ -231,12 +231,12 @@ span#addstudent {
 							line-height: 9px;
 						}
 						&.radio-btn {
-							width: auto;
+							width: auto !important;
 							float: none;
 							margin-left: 0px;
-							max-width: none;
-							display: block;
-							margin-bottom: 5px;
+							max-width: none !important;
+							display: block !important;
+							margin-bottom: 5px !important;
 							&.text-right {
 								text-align: right;
 								padding: 0;
@@ -642,14 +642,20 @@ div.clearboth {
 		padding-left: 20px;
 		font-weight: normal;
 	}
+	fieldset {
+		>p {
+			>span {
+				width: 100%;
+				@include responsive($media-small) {
+					width: 70%;
+				}
+			}
+		}
+	}
 	span {
 		display: inline-block;
 		vertical-align: top;
 		position: relative;
-		width: 100%;
-		@include responsive($media-small) {
-			width: 70%;
-		}
 		&.validate-text {
 			position: absolute;
 			z-index: 1;

@@ -27,14 +27,14 @@
 		&.internal-page {
 			.content-images {
 				width: 100%;
-				height: 501px;
+				height: $contentImageHeight;
 				position: absolute;
-				display: block;
-				background: url($imagePath + "content/internal-bg.jpg") 0px 57px no-repeat;
-				@include background-size(contain);
+				display: $contentImageDisplay;
+				background: $contentImageBackground;
+				@include background-size($contentImageBackgroundSize);
 			}
 			#contentContainer {
-				background: $white;
+				background: $contentContainerBackground;
 				position: relative;
 				padding: 30px;
 				@include responsive($media-tablet) {
@@ -49,7 +49,7 @@
 				.header-container {
 					margin-bottom: 0px;
 					@include responsive($media-small) {
-						background: none;
+						background: $headerContainerBackground-Internal;
 					}
 					.top-bar {
 						margin-bottom: 30px;
@@ -91,12 +91,12 @@
 		}
 		&.mobile-enabled {
 			position: absolute;
-			top: 58px;
+			top: 57px;
 			width: 100%;
 			z-index: 9999;
 			nav#nav {
-				background: #EBEBEB;
-				box-shadow: 1px 1px 6px 2px #ddd;
+				background: $navBGSmall;
+				box-shadow: $navBoxShadowSmall;
 			}
 		}
 	}
@@ -111,14 +111,14 @@
 			margin: 0px;
 		}
 		.header-container {
-			background: $white;
-			padding-bottom: 22px;
-			z-index: 9;
-			box-shadow: 1px 1px 10px 2px #ddd;
-			border-bottom: 2px solid #ddd;
+			background: $headerContainerBackground;
+			padding-bottom: $headerContainerPadding;
+			z-index: $headerContainerZIndex;
+			box-shadow: $headerContainerBoxShadowSmall;
+			border-bottom: $headerContainerBorderBottom;
 			@include responsive($media-small) {
-				box-shadow: none;
-				border: 0;
+				box-shadow: $headerContainerBoxShadow;
+				border: $headerContainerBorder;
 			}
 			.top-bar {
 				a.nav-logo {
@@ -239,7 +239,7 @@
 							&::before {
 								content: "";
 								border-right: 6px solid transparent;
-								border-top: 7px solid #a0a0a0;
+								border-top: 7px solid $searchMoreOptionBorderTopColor;
 								border-left: 6px solid transparent;
 								position: absolute;
 								left: 0px;
@@ -247,7 +247,7 @@
 							}
 							&:hover {
 								&::before {
-									border-top: 7px solid #656565;
+									border-top-color: $searchMoreOptionBorderTopColorHover;
 								}
 							}
 							.show-advanced-search span {
