@@ -1,5 +1,5 @@
 import {DataType} from "./../field/DataType";
-import {Item} from "./../../field/enumeration/Item";
+import {Item} from "./../field/enumeration/Item";
 
 export class Field {
 
