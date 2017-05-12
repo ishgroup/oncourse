@@ -561,6 +561,7 @@ definitions:
       - country
       - language
       - enum
+      - email
   field.Choice:
     type: object
     requred:

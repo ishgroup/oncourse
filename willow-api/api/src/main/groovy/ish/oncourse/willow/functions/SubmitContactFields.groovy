@@ -68,7 +68,7 @@ class SubmitContactFields {
                 if (error) {
                     errors.fieldsErrors << error
                 } else {
-                    getSet = factory.get([getProperty: {property.key}] as FieldInterface, getContext.call(property.contextType, contact))
+                    getSet = factory.get([getProperty: {f.key}] as FieldInterface, getContext.call(property.contextType, contact))
                     getSet.set(value)
                 }
                 
@@ -88,6 +88,7 @@ class SubmitContactFields {
         Object result = null
         if (StringUtils.trimToNull(f.value)) {
             switch (f.dataType) {
+                case EMAIL:
                 case STRING:
                     result = f.value
                     result = normalizePhone(property, result)

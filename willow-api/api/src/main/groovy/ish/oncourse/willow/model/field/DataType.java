@@ -23,8 +23,10 @@ public enum DataType {
   
   LANGUAGE("language"),
   
-  ENUM("enum");
+  ENUM("enum"),
 
+  EMAIL("email");
+  
   private String value;
 
   DataType(String value) {

@@ -125,14 +125,15 @@ class ContactDetailsBuilder {
             f.key = field.property
             f.defaultValue = field.defaultValue
 
-            if (aClass.enum) {
+            if (FieldProperty.EMAIL_ADDRESS.key == field.property) {
+                f.dataType = DataType.EMAIL
+            } else if (aClass.enum) {
                 f.dataType = DataType.ENUM
                 f.enumType = aClass.simpleName
                 
                 aClass.enumConstants.each { DisplayableExtendedEnumeration item ->
                     f.choices << new Choice(displayName: item.displayName, databaseValue: item.databaseValue as Integer)
                 }
-                
             } else {
                 f.dataType = DataType.fromValue(aClass.simpleName.toLowerCase())
             }
