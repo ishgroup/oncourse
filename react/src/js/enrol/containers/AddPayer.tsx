@@ -1,22 +1,19 @@
 import {connect} from "react-redux";
-import {
-  AddPayerComponent,
-  AddPayerComponentProps,
-  AddPayerFormFields
-} from "../components/addContact/AddPayer";
+import {AddPayerComponent, AddPayerComponentProps, AddPayerFormFields} from "../components/contact/AddPayer";
 import {IshState} from "../../services/IshState";
 import {getFormValues, reduxForm} from "redux-form";
-import {IshActions} from "../../constants/IshActions";
 import {CreateContactParams} from "../../model/web/CreateContactParams";
 import {Forms} from "../../constants/Forms";
+import * as Actions from "../actions/Actions";
+
 
 const AddPayerStore = connect(mapStateToProps, mapDispatchToProps)(AddPayerComponent);
 
 function mapDispatchToProps(dispatch) {
   return {
-    submitAddContact: (form: CreateContactParams) => {
+    submit: (form: CreateContactParams) => {
       dispatch({
-        type: IshActions.SUBMIT_ADD_PAYER_FORM,
+        type: Actions.ContactAddRequest,
         payload: form,
         meta: {
           form: Forms.ADD_PAYER
@@ -29,7 +26,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state: IshState, ownProps: AddPayerComponentProps) {
   return {
     values: getFormValues(Forms.ADD_PAYER)(state),
-    errors: state.enrol.payer.error.formErrors
+    errors: state.enrol.error.formErrors
   };
 }
 
