@@ -1,6 +1,6 @@
-import {createStringEnum} from "common/utils/EnumUtils";
+import {createStringEnum} from "../../common/utils/EnumUtils";
 
-const Enum = createStringEnum([
+export const DataType = createStringEnum([
       'string',
       'boolean',
       'date',
@@ -12,4 +12,6 @@ const Enum = createStringEnum([
       'email'
 ]);
 
-export type DataType = keyof typeof Enum;
+export type DataType = keyof typeof DataType;
+
+
