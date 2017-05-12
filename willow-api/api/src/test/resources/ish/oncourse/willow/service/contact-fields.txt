@@ -15,7 +15,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 5
                 key: suburb
@@ -26,7 +26,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 6
                 key: postcode
@@ -37,7 +37,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 9
                 key: businessPhoneNumber
@@ -48,7 +48,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 10
                 key: faxNumber
@@ -59,7 +59,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 11
                 key: mobilePhoneNumber
@@ -70,7 +70,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 12
                 key: dateOfBirth
@@ -81,7 +81,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 13
                 key: abn
@@ -92,7 +92,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 14
                 key: isMale
@@ -103,7 +103,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 15
                 key: citizenship
@@ -114,25 +114,25 @@ class ContactFields {
                 enumType: StudentCitizenship
                 value: null
                 defaultValue: BMW
-                choices: [class Choice {
+                enumItems: [class Item {
                     displayName: Australian citizen
                     databaseValue: 1
-                }, class Choice {
+                }, class Item {
                     displayName: New Zealand citizen
                     databaseValue: 2
-                }, class Choice {
+                }, class Item {
                     displayName: Students/Applicants with permanent visa
                     databaseValue: 3
-                }, class Choice {
+                }, class Item {
                     displayName: Student/Applicant has a temporary entry permit
                     databaseValue: 4
-                }, class Choice {
+                }, class Item {
                     displayName: Not one of the above categories
                     databaseValue: 5
-                }, class Choice {
+                }, class Item {
                     displayName: Students/Applicants with permanent humanitarian visa
                     databaseValue: 8
-                }, class Choice {
+                }, class Item {
                     displayName: No information
                     databaseValue: 9
                 }]
@@ -146,7 +146,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 17
                 key: languageHome
@@ -157,7 +157,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 18
                 key: yearSchoolCompleted
@@ -168,7 +168,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 19
                 key: englishProficiency
@@ -179,19 +179,19 @@ class ContactFields {
                 enumType: AvetmissStudentEnglishProficiency
                 value: null
                 defaultValue: BMW
-                choices: [class Choice {
+                enumItems: [class Item {
                     displayName: not stated
                     databaseValue: 0
-                }, class Choice {
+                }, class Item {
                     displayName: Very Well
                     databaseValue: 1
-                }, class Choice {
+                }, class Item {
                     displayName: Well
                     databaseValue: 2
-                }, class Choice {
+                }, class Item {
                     displayName: Not Well
                     databaseValue: 3
-                }, class Choice {
+                }, class Item {
                     displayName: Not at all
                     databaseValue: 4
                 }]
@@ -205,19 +205,19 @@ class ContactFields {
                 enumType: AvetmissStudentIndigenousStatus
                 value: null
                 defaultValue: BMW
-                choices: [class Choice {
+                enumItems: [class Item {
                     displayName: not stated
                     databaseValue: 0
-                }, class Choice {
+                }, class Item {
                     displayName: Aboriginal
                     databaseValue: 1
-                }, class Choice {
+                }, class Item {
                     displayName: Torres Strait Islander
                     databaseValue: 2
-                }, class Choice {
+                }, class Item {
                     displayName: Aboriginal and Torres Strait Islander
                     databaseValue: 3
-                }, class Choice {
+                }, class Item {
                     displayName: Neither
                     databaseValue: 4
                 }]
@@ -231,25 +231,25 @@ class ContactFields {
                 enumType: AvetmissStudentSchoolLevel
                 value: null
                 defaultValue: BMW
-                choices: [class Choice {
+                enumItems: [class Item {
                     displayName: not stated
                     databaseValue: 0
-                }, class Choice {
+                }, class Item {
                     displayName: Did not go to school
                     databaseValue: 1
-                }, class Choice {
+                }, class Item {
                     displayName: Year 8 or below
                     databaseValue: 2
-                }, class Choice {
+                }, class Item {
                     displayName: Year 9
                     databaseValue: 3
-                }, class Choice {
+                }, class Item {
                     displayName: Year 10
                     databaseValue: 4
-                }, class Choice {
+                }, class Item {
                     displayName: Year 11
                     databaseValue: 5
-                }, class Choice {
+                }, class Item {
                     displayName: Year 12
                     databaseValue: 6
                 }]
@@ -263,7 +263,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 23
                 key: priorEducationCode
@@ -274,34 +274,34 @@ class ContactFields {
                 enumType: AvetmissStudentPriorEducation
                 value: null
                 defaultValue: BMW
-                choices: [class Choice {
+                enumItems: [class Item {
                     displayName: not stated
                     databaseValue: 0
-                }, class Choice {
+                }, class Item {
                     displayName: Bachelor degree or higher degree level
                     databaseValue: 1
-                }, class Choice {
+                }, class Item {
                     displayName: Advanced diploma or associate degree level
                     databaseValue: 2
-                }, class Choice {
+                }, class Item {
                     displayName: Diploma level
                     databaseValue: 3
-                }, class Choice {
+                }, class Item {
                     displayName: Certificate IV
                     databaseValue: 4
-                }, class Choice {
+                }, class Item {
                     displayName: Certificate III
                     databaseValue: 5
-                }, class Choice {
+                }, class Item {
                     displayName: Certificate II
                     databaseValue: 6
-                }, class Choice {
+                }, class Item {
                     displayName: Certificate I
                     databaseValue: 7
-                }, class Choice {
+                }, class Item {
                     displayName: Miscellaneous education
                     databaseValue: 8
-                }, class Choice {
+                }, class Item {
                     displayName: None
                     databaseValue: 100
                 }]
@@ -315,31 +315,31 @@ class ContactFields {
                 enumType: AvetmissStudentLabourStatus
                 value: null
                 defaultValue: BMW
-                choices: [class Choice {
+                enumItems: [class Item {
                     displayName: not stated
                     databaseValue: 0
-                }, class Choice {
+                }, class Item {
                     displayName: Full-time employee
                     databaseValue: 1
-                }, class Choice {
+                }, class Item {
                     displayName: Part-time employee
                     databaseValue: 2
-                }, class Choice {
+                }, class Item {
                     displayName: Self-employed, not employing others
                     databaseValue: 3
-                }, class Choice {
+                }, class Item {
                     displayName: Employer
                     databaseValue: 4
-                }, class Choice {
+                }, class Item {
                     displayName: Employed - unpaid in family business
                     databaseValue: 5
-                }, class Choice {
+                }, class Item {
                     displayName: Unemployed - seeking full-time work
                     databaseValue: 6
-                }, class Choice {
+                }, class Item {
                     displayName: Unemployed - seeking part-time work
                     databaseValue: 7
-                }, class Choice {
+                }, class Item {
                     displayName: Not employed - not seeking employment
                     databaseValue: 8
                 }]
@@ -353,37 +353,37 @@ class ContactFields {
                 enumType: AvetmissStudentDisabilityType
                 value: null
                 defaultValue: BMW
-                choices: [class Choice {
+                enumItems: [class Item {
                     displayName: not stated
                     databaseValue: 0
-                }, class Choice {
+                }, class Item {
                     displayName: none
                     databaseValue: 100
-                }, class Choice {
+                }, class Item {
                     displayName: Hearing/Deaf
                     databaseValue: 1
-                }, class Choice {
+                }, class Item {
                     displayName: Physical
                     databaseValue: 2
-                }, class Choice {
+                }, class Item {
                     displayName: Intellectual
                     databaseValue: 3
-                }, class Choice {
+                }, class Item {
                     displayName: Learning
                     databaseValue: 4
-                }, class Choice {
+                }, class Item {
                     displayName: Mental illness
                     databaseValue: 5
-                }, class Choice {
+                }, class Item {
                     displayName: Acquired brain impairment
                     databaseValue: 6
-                }, class Choice {
+                }, class Item {
                     displayName: Vision
                     databaseValue: 7
-                }, class Choice {
+                }, class Item {
                     displayName: Medical condition
                     databaseValue: 8
-                }, class Choice {
+                }, class Item {
                     displayName: Other
                     databaseValue: 9
                 }]
@@ -397,7 +397,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 27
                 key: country
@@ -408,7 +408,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 28
                 key: customField.contact.carMaker
@@ -419,7 +419,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }]
         }, class FieldHeading {
             name: Second Heading
@@ -434,7 +434,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }, class Field {
                 id: 8
                 key: homePhoneNumber
@@ -445,7 +445,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }]
         }]
         dummyHeading: class FieldHeading {
@@ -461,7 +461,7 @@ class ContactFields {
                 enumType: null
                 value: null
                 defaultValue: BMW
-                choices: []
+                enumItems: []
             }]
         }
     }]

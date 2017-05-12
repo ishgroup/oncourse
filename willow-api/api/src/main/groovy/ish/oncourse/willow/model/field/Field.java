@@ -1,7 +1,7 @@
 package ish.oncourse.willow.model.field;
 
-import ish.oncourse.willow.model.field.Choice;
 import ish.oncourse.willow.model.field.DataType;
+import ish.oncourse.willow.model.field.enumeration.Item;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class Field  {
     private String enumType = null;
     private String value = null;
     private String defaultValue = null;
-    private List<Choice> choices = new ArrayList<Choice>();
+    private List<Item> enumItems = new ArrayList<Item>();
 
     /**
      * Field id
@@ -173,23 +173,23 @@ public class Field  {
 
     /**
      * Combobox choices for enumeration types
-     * @return choices
+     * @return enumItems
      */
-    public List<Choice> getChoices() {
-        return choices;
+    public List<Item> getEnumItems() {
+        return enumItems;
     }
 
-    public void setChoices(List<Choice> choices) {
-       this.choices = choices;
+    public void setEnumItems(List<Item> enumItems) {
+       this.enumItems = enumItems;
     }
 
-    public Field choices(List<Choice> choices) {
-      this.choices = choices;
+    public Field enumItems(List<Item> enumItems) {
+      this.enumItems = enumItems;
       return this;
     }
 
-    public Field addChoicesItem(Choice choicesItem) {
-      this.choices.add(choicesItem);
+    public Field addEnumItemsItem(Item enumItemsItem) {
+      this.enumItems.add(enumItemsItem);
       return this;
     }
 
@@ -208,7 +208,7 @@ public class Field  {
       sb.append("    enumType: ").append(toIndentedString(enumType)).append("\n");
       sb.append("    value: ").append(toIndentedString(value)).append("\n");
       sb.append("    defaultValue: ").append(toIndentedString(defaultValue)).append("\n");
-      sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
+      sb.append("    enumItems: ").append(toIndentedString(enumItems)).append("\n");
       sb.append("}");
       return sb.toString();
     }

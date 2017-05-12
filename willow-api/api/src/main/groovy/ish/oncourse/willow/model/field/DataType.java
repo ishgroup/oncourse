@@ -24,9 +24,9 @@ public enum DataType {
   LANGUAGE("language"),
   
   ENUM("enum"),
-
-  EMAIL("email");
   
+  EMAIL("email");
+
   private String value;
 
   DataType(String value) {

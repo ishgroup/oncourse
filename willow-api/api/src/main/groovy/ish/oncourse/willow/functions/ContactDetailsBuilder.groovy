@@ -15,6 +15,7 @@ import ish.oncourse.willow.model.field.Choice
 import ish.oncourse.willow.model.field.ClassHeadings
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.FieldHeading
+import ish.oncourse.willow.model.field.enumeration.Item
 import ish.oncourse.willow.model.web.FieldSet
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
@@ -132,7 +133,7 @@ class ContactDetailsBuilder {
                 f.enumType = aClass.simpleName
                 
                 aClass.enumConstants.each { DisplayableExtendedEnumeration item ->
-                    f.choices << new Choice(displayName: item.displayName, databaseValue: item.databaseValue as Integer)
+                    f.enumItems  << new Item(displayName: item.displayName, databaseValue: item.databaseValue as Integer)
                 }
             } else {
                 f.dataType = DataType.fromValue(aClass.simpleName.toLowerCase())

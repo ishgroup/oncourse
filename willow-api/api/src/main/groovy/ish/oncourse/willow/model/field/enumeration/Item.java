@@ -1,7 +1,7 @@
-package ish.oncourse.willow.model.field;
+package ish.oncourse.willow.model.field.enumeration;
 
 
-public class Choice  {
+public class Item  {
   
     private String displayName = null;
     private Integer databaseValue = null;
@@ -18,7 +18,7 @@ public class Choice  {
        this.displayName = displayName;
     }
 
-    public Choice displayName(String displayName) {
+    public Item displayName(String displayName) {
       this.displayName = displayName;
       return this;
     }
@@ -35,7 +35,7 @@ public class Choice  {
        this.databaseValue = databaseValue;
     }
 
-    public Choice databaseValue(Integer databaseValue) {
+    public Item databaseValue(Integer databaseValue) {
       this.databaseValue = databaseValue;
       return this;
     }
@@ -44,7 +44,7 @@ public class Choice  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class Choice {\n");
+      sb.append("class Item {\n");
       
       sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
       sb.append("    databaseValue: ").append(toIndentedString(databaseValue)).append("\n");

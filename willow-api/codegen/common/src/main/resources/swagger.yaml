@@ -562,7 +562,7 @@ definitions:
       - language
       - enum
       - email
-  field.Choice:
+  field.enumeration.Item:
     type: object
     requred:
     - displayName
@@ -586,7 +586,7 @@ definitions:
     - enumType
     - value
     - defaultValue
-    - choices
+    - enumItems
     properties:
       id:
         type: string
@@ -615,10 +615,10 @@ definitions:
       defaultValue:
         type: string
         description: Default value for corresponded property
-      choices:
+      enumItems:
         type: array
         items:
-          $ref: '#/definitions/field.Choice'
+          $ref: '#/definitions/field.enumeration.Item'
         description: Combobox choices for enumeration types
   field.SubmitFieldsRequest:
     type: object
