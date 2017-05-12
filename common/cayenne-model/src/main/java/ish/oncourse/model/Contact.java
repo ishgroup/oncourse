@@ -426,4 +426,39 @@ public class Contact extends _Contact implements Queueable, IExpandable {
 	public Boolean getIsMale() {
 		return super.getIsMale();
 	}
+
+	@Property(value = FieldProperty.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY, type = PropertyGetSetFactory.SET, params = {Boolean.class})
+	@Override
+	public void setIsMarketingViaEmailAllowed(Boolean isMarketingViaEmailAllowed) {
+		super.setIsMarketingViaEmailAllowed(isMarketingViaEmailAllowed);
+	}
+	@Property(value = FieldProperty.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public Boolean getIsMarketingViaEmailAllowed() {
+		return super.getIsMarketingViaEmailAllowed();
+	}
+	
+	@Property(value = FieldProperty.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY, type = PropertyGetSetFactory.SET, params = {Boolean.class})
+	@Override
+	public void setIsMarketingViaPostAllowed(Boolean isMarketingViaPostAllowed) {
+		super.setIsMarketingViaPostAllowed(isMarketingViaPostAllowed);
+	}
+	@Property(value = FieldProperty.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public Boolean getIsMarketingViaPostAllowed() {
+		return super.getIsMarketingViaPostAllowed();
+	}
+
+	@Property(value = FieldProperty.IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY, type = PropertyGetSetFactory.SET, params = {Boolean.class})
+	@Override
+	public void setIsMarketingViaSMSAllowed(Boolean isMarketingViaSMSAllowed) {
+		super.setIsMarketingViaSMSAllowed(isMarketingViaSMSAllowed);
+	}
+
+	@Property(value = FieldProperty.IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY, type = PropertyGetSetFactory.GET, params = {})
+	@Override
+	public Boolean getIsMarketingViaSMSAllowed() {
+		return super.getIsMarketingViaSMSAllowed();
+	}
+
 }
