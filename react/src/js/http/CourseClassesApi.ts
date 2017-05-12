@@ -1,6 +1,6 @@
 import {HttpService} from "../common/services/HttpService";
-import { CourseClass } from "../model/web/CourseClass";
-import { CourseClassesParams } from "../model/web/CourseClassesParams";
+import {CourseClass} from "../model/web/CourseClass";
+import {CourseClassesParams} from "../model/web/CourseClassesParams";
 
 export class CourseClassesApi {
   constructor(private http: HttpService) {

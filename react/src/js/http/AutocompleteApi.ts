@@ -1,5 +1,5 @@
 import {HttpService} from "../common/services/HttpService";
-import { Item } from "../model/autocomplete/Item";
+import {Item} from "../model/autocomplete/Item";
 
 export class AutocompleteApi {
   constructor(private http: HttpService) {
