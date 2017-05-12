@@ -1,0 +1,58 @@
+class ValidationError {
+    formErrors: []
+    fieldsErrors: [class FieldError {
+        name: street
+        error: The Street cannot exceed 200 characters.
+    }, class FieldError {
+        name: suburb
+        error: A suburb name cannot contain numeric digits.
+    }, class FieldError {
+        name: postcode
+        error: Enter 4 digit postcode for Australian postcodes.
+    }, class FieldError {
+        name: homePhoneNumber
+        error: Enter 10 digit Home phone number phone number including area code for Australian numbers
+    }, class FieldError {
+        name: businessPhoneNumber
+        error: Enter 10 digit Business phone number phone number including area code for Australian numbers
+    }, class FieldError {
+        name: faxNumber
+        error: Enter 10 digit Fax number phone number including area code for Australian numbers
+    }, class FieldError {
+        name: mobilePhoneNumber
+        error: Enter 10 digit mobile phone number including 04 area code for Australian numbers
+    }, class FieldError {
+        name: dateOfBirth
+        error: Only date of birth in format DD/MM/YYYY and after 01/01/1900 are valid
+    }, class FieldError {
+        name: citizenship
+        error: citizenship is incorrect
+    }, class FieldError {
+        name: countryOfBirth
+        error: Incorrect format of countryOfBirth
+    }, class FieldError {
+        name: languageHome
+        error: Language name languageHome is incorrect
+    }, class FieldError {
+        name: yearSchoolCompleted
+        error: Enter your yearSchoolCompleted in the form DD/MM/YYYY
+    }, class FieldError {
+        name: englishProficiency
+        error: englishProficiency is incorrect
+    }, class FieldError {
+        name: indigenousStatus
+        error: indigenousStatus is incorrect
+    }, class FieldError {
+        name: highestSchoolLevel
+        error: highestSchoolLevel is incorrect
+    }, class FieldError {
+        name: priorEducationCode
+        error: priorEducationCode is incorrect
+    }, class FieldError {
+        name: labourForceStatus
+        error: labourForceStatus is incorrect
+    }, class FieldError {
+        name: disabilityType
+        error: disabilityType is incorrect
+    }]
+}

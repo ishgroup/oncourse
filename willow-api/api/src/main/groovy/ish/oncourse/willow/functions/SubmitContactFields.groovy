@@ -63,7 +63,7 @@ class SubmitContactFields {
             }
             
             Object value = normalizeValue(property, f)
-            if (value) {
+            if (value != null) {
                 FieldError error = validateValue(property, value)
                 if (error) {
                     errors.fieldsErrors << error
@@ -99,7 +99,8 @@ class SubmitContactFields {
                 case DATE:
                 case DATETIME:
                     try {
-                        result = Date.parse(FormatUtils.DATE_FIELD_PARSE_FORMAT, f.value)
+                        result =  DateUtils.truncate(Date.parse(FormatUtils.DATE_FIELD_PARSE_FORMAT, f.value), Calendar.DAY_OF_MONTH)
+
                     } catch (ParseException e) {
                         result = null
                         errors.fieldsErrors << new FieldError(name: f.key, error: "Enter your ${f.name} in the form DD/MM/YYYY")
@@ -121,7 +122,7 @@ class SubmitContactFields {
                 case LANGUAGE:
                     result = getLanguageBy(f.value)
                     if (!result) {
-                        errors.fieldsErrors << new FieldError(name: f.key, error: "Languag name ${f.value} is incorrect")
+                        errors.fieldsErrors << new FieldError(name: f.key, error: "Language name ${f.value} is incorrect")
                     }
                     break
                 case ENUM:
@@ -146,7 +147,7 @@ class SubmitContactFields {
 
     private Object normalizePhone(FieldProperty property, Object value) {
         if ([FieldProperty.HOME_PHONE_NUMBER, FieldProperty.BUSINESS_PHONE_NUMBER, FieldProperty.FAX_NUMBER, FieldProperty.MOBILE_PHONE_NUMBER].contains(property)) {
-            StringUtils.removePattern(value as String, "[^0-9]")
+           return StringUtils.removePattern(value as String, "[^0-9]")
         }
         value
     }

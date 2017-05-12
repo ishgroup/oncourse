@@ -7,7 +7,7 @@ class ContactFields {
             description: description
             fields: [class Field {
                 id: 28
-                key: customField.carMaker
+                key: customField.contact.carMaker
                 name: Favorite car maker
                 description: Favorite car maker28
                 mandatory: true

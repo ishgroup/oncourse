@@ -1,5 +1,7 @@
 package ish.oncourse.willow.service
 
+import ish.oncourse.model.Contact
+import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
@@ -10,7 +12,8 @@ import ish.oncourse.willow.model.web.FieldSet
 
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
-
+import org.apache.cayenne.query.SelectById
+import org.apache.commons.lang3.time.DateUtils
 import org.junit.*
 
 import javax.ws.rs.BadRequestException
@@ -46,7 +49,7 @@ class ContactDetailsTest extends  ApiTest{
     }
 
     @Test
-    void testSubmit() {
+    void testSubmitWrongRequest() {
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
         ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
         
@@ -54,22 +57,58 @@ class ContactDetailsTest extends  ApiTest{
         try {
             api.submitContactDetails( wrongRequest())
         } catch (BadRequestException e) {
-            println e
+            def file = new File(getClass().getResource('/ish/oncourse/willow/service/validation-error.txt').toURI())
+            assertEquals(file.text, e.response.entity.toString() )
+            return
         }
+        assertFalse(true)
+    }
 
+    @Test
+    void testSubmitProperRequest() {
+        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
         
         api.submitContactDetails(propperRequest())
-        assertFalse(true)
+        
+        Contact contact = SelectById.query(Contact, 1001l).selectOne(cayenneRuntime.newContext())
+        assertEquals(contact.street, 'street')
+        assertEquals(contact.suburb, 'Parramata')
+        assertEquals(contact.postcode, '6797')
+        assertEquals(contact.country.name, 'Australia')
+        assertEquals(contact.homePhoneNumber, '0255515678')
+        assertEquals(contact.businessPhoneNumber, '0255515678')
+        assertEquals(contact.faxNumber, '0255515678')
+        assertEquals(contact.mobilePhoneNumber, '0491570156')
+        assertEquals(contact.dateOfBirth, DateUtils.truncate(Date.parse(FormatUtils.DATE_FIELD_PARSE_FORMAT, '20/07/1991'), Calendar.DAY_OF_MONTH))
+        assertEquals(contact.abn,'1234')
+        assertEquals(contact.isMale,true)
+        assertEquals(contact.isMarketingViaEmailAllowed,false)
+        assertEquals(contact.isMarketingViaPostAllowed,true)
+        assertEquals(contact.isMarketingViaSMSAllowed,true)
+        assertEquals(contact.student.citizenship.databaseValue,2)
+        assertEquals(contact.student.countryOfBirth.name,'Australia')
+        assertEquals(contact.student.languageHome.name,'English')
+        assertEquals(contact.student.yearSchoolCompleted,2009)
+        assertEquals(contact.student.indigenousStatus.databaseValue,3)
+        assertEquals(contact.student.highestSchoolLevel.databaseValue,6)
+        assertEquals(contact.student.isStillAtSchool, true)
+        assertEquals(contact.student.priorEducationCode.databaseValue,1)
+        assertEquals(contact.student.labourForceStatus.databaseValue,1)
+        assertEquals(contact.student.disabilityType.databaseValue,1)
+        assertEquals(contact.student.specialNeeds,'special needs')
+        assertEquals(contact.getCustomFieldValue('carMaker'),'BMW')
+        
     }
     
     private SubmitFieldsRequest wrongRequest() {
         new SubmitFieldsRequest().with {
             it.contactId = '1001'
             it.fields << new Field().with { f ->
-                f.key = 'streetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlong'
+                f.key = 'street'
                 f.name = 'Street'
                 f.dataType = DataType.STRING
-                f.value = 'street'
+                f.value = 'streetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlongstreetlong'
                 f.mandatory = true
                 f
             }
@@ -385,7 +424,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.key = 'isMale'
                 f.name = 'isMale'
                 f.dataType = DataType.BOOLEAN
-                f.value = 'isMale'
+                f.value = 'true'
                 f.mandatory = true
                 f
             }

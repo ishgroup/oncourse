@@ -389,7 +389,7 @@
            mandatory="1"
            defaultValue="BMW"
            fieldOrder="28"
-           property="customField.carMaker"/>
+           property="customField.contact.carMaker"/>
     
 
     <Course id="1001" collegeId="1" angelId="1001" code="AAV"
