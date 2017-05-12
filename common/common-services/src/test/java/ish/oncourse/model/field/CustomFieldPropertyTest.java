@@ -47,7 +47,7 @@ public class CustomFieldPropertyTest extends ServiceTest {
 		Contact contact = SelectById.query(Contact.class, 1l).selectOne(context);
 
 		FieldInterface customField = mock(FieldInterface.class);
-		when(customField.getProperty()).thenReturn("customField.customField");
+		when(customField.getProperty()).thenReturn("customField.contact.customField");
 
 		PropertyGetSetFactory factory = new PropertyGetSetFactory("ish.oncourse.model");
 		PropertyGetSet customFieldGetSet = factory.get(customField, contact);
