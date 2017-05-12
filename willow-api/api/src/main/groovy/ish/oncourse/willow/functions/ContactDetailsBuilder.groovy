@@ -11,7 +11,6 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
-import ish.oncourse.willow.model.field.Choice
 import ish.oncourse.willow.model.field.ClassHeadings
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.FieldHeading
