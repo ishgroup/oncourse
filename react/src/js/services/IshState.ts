@@ -3,8 +3,8 @@ import {Promotion} from "../model/web/Promotion";
 import {CourseClass} from "../model/web/CourseClass";
 import {Product} from "../model/web/Product";
 import {Contact} from "../model/web/Contact";
-import {ValidationError} from "../model/common/ValidationError";
 import {Suggestion} from "../selectors/autocomplete";
+import {EnrolState} from "../enrol/reducers/State";
 
 export interface IshState {
   readonly cart: CartState;
@@ -52,20 +52,6 @@ export interface ProductCart extends Product {
 }
 
 export interface PromotionCart extends Promotion {
-}
-
-//--- Enrol State
-export interface EnrolState {
-  payer: PayerState;
-}
-
-export interface PayerEntity extends Contact {
-
-}
-
-export interface PayerState {
-  entity: PayerEntity;
-  error: ValidationError;
 }
 
 //-- Autocomplete
