@@ -3,14 +3,14 @@
     * {{{description}}}
     */
 {{/description}}
-import {createStringEnum} from "common/utils/EnumUtils"
+import {createStringEnum} from "common/utils/EnumUtils";
 
-const {{classname}} = createStringEnum([
+const Enum = createStringEnum([
   {{#allowableValues}}
   {{#enumVars}}
       {{{value}}}{{^-last}},{{/-last}}
   {{/enumVars}}
   {{/allowableValues}}
-])
+]);
 
-type {{classname}} = keyof typeof {{classname}};
+export type {{classname}} = keyof typeof Enum;
