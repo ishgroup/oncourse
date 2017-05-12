@@ -1,4 +1,4 @@
-import { FieldSet } from "./FieldSet";
+import {FieldSet} from "./../web/FieldSet";
 
 export class CreateContactParams {
 

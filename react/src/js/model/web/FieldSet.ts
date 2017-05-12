@@ -1,4 +1,10 @@
+import {createStringEnum} from "common/utils/EnumUtils";
 
-export class FieldSet {
-}
+const Enum = createStringEnum([
+      'enrolment',
+      'waitinglist',
+      'application',
+      'mailinglist'
+]);
 
+export type FieldSet = keyof typeof Enum;

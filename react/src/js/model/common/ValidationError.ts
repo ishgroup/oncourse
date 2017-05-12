@@ -1,4 +1,4 @@
-import { FieldError } from "./FieldError";
+import {FieldError} from "./../common/FieldError";
 
 export class ValidationError {
 

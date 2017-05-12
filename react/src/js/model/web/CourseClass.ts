@@ -1,5 +1,5 @@
-import { Course } from "./Course";
-import { CourseClassPrice } from "./CourseClassPrice";
+import {Course} from "./Course";
+import {CourseClassPrice} from "./../web/CourseClassPrice";
 
 export class CourseClass {
 
