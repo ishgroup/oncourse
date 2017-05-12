@@ -57,9 +57,9 @@
   version "15.0.21"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.21.tgz#29d849427237c1463abfb7b370755ee3e5b5b375"
 
-"@types/redux-form@6.3.6":
-  version "6.3.6"
-  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-6.3.6.tgz#73fdb76a02555e79c7a8e4337daf847d8978a98a"
+"@types/redux-form@6.6.2":
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-6.6.2.tgz#f3384046ab3609578cc28daf6c50231c25860a06"
   dependencies:
     "@types/react" "*"
     redux "^3.6.0"
@@ -3999,9 +3999,9 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-redux-form@6.6.0:
-  version "6.6.0"
-  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-6.6.0.tgz#a26f05d5a2b317596733718031dec94126a0f05c"
+redux-form@6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-6.7.0.tgz#9fb0769e76f14febf1dd7686e02c4ab2d6f953aa"
   dependencies:
     deep-equal "^1.0.1"
     es6-error "^4.0.0"
@@ -4010,6 +4010,7 @@ redux-form@6.6.0:
     is-promise "^2.1.0"
     lodash "^4.17.3"
     lodash-es "^4.17.3"
+    prop-types "^15.5.6"
 
 redux-logger@3.0.0:
   version "3.0.0"
@@ -4186,11 +4187,11 @@ requizzle@~0.2.1:
   dependencies:
     underscore "~1.6.0"
 
-resolve@1.1.7, resolve@1.1.x, resolve@^1.1.6:
+resolve@1.1.7, resolve@1.1.x:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
-resolve@^1.2.0, resolve@^1.3.2:
+resolve@^1.1.6, resolve@^1.2.0, resolve@^1.3.2:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.3.3.tgz#655907c3469a8680dc2de3a275a8fdd69691f0e5"
   dependencies:
