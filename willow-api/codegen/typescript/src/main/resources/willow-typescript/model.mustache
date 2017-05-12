@@ -8,25 +8,4 @@ import { {{name}} } from "./{{path}}";
 /**
  * {{{description}}}
  */
-{{/description}}
-export class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{
-{{#vars}}
-  {{#description}}
-
-  /**
-   * {{{description}}}
-   */
-  {{/description}}
-  {{name}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}};
-{{/vars}}
-}
-
-    {{#hasEnums}}
-      {{#vars}}
-        {{#isEnum}}
-          export type {{{enumName}}} = {{#allowableValues}}{{#values}}"{{{.}}}"{{^-last}} | {{/-last}}{{/values}}{{/allowableValues}};
-        {{/isEnum}}
-      {{/vars}}
-    {{/hasEnums}}
-  {{/model}}
-{{/models}}
+{{/description}}{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{>plain}}{{/isEnum}}{{/model}}{{/models}}
