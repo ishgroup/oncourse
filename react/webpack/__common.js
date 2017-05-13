@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 const path = require("path");
 
 const _info = (NODE_ENV, SOURCE_MAP, API_ROOT) => {
@@ -56,8 +58,22 @@ const _common = (dirname) => {
 };
 
 
+/**
+ * The DefinePlugin allows you to create global constants which can be configured at compile time.
+ */
+const _DefinePlugin = (NODE_ENV, API_ROOT) => {
+    return new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(NODE_ENV)
+      },
+      _API_ROOT: JSON.stringify(API_ROOT),
+      _APP_VERSION: JSON.stringify(process.env.BUILD_NUMBER || "DEV")
+    });
+};
+
 
 module.exports = {
     info: _info,
-    common: _common
+    common: _common,
+    DefinePlugin: _DefinePlugin
 };

@@ -89,15 +89,7 @@ module.exports = function (options = {}) {
 };
 
 function createListOfPlugins({NODE_ENV, API_ROOT}) {
-  const plugins = [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify(NODE_ENV)
-      },
-      _API_ROOT: JSON.stringify(API_ROOT),
-      _APP_VERSION: JSON.stringify(process.env.BUILD_NUMBER || "DEV")
-    })
-  ];
+  const plugins = [ __common.DefinePlugin(NODE_ENV, API_ROOT) ];
 
   if (NODE_ENV === "production") {
     plugins.push(new TypedocWebpackPlugin({
