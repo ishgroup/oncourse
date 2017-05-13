@@ -17,7 +17,7 @@ class Messages extends React.Component<any, Props> {
       <div className={className}>
         <ul>
           {messages.map((error, idx) => (
-            <li key={idx}>{error}</li>
+            <li key={idx} dangerouslySetInnerHTML={{__html: error}}/>
           ))}
         </ul>
       </div>
