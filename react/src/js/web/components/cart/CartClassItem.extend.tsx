@@ -1,21 +1,22 @@
 import * as React from "react";
-import {CourseClassCart} from "../../../services/IshState";
+import classnames from "classnames";
+
 import moment from "moment";
 import {Formats} from "../../../constants/Formats";
 import {TimezoneService} from "../../../services/TImezoneService";
 
 export default {
   render() {
-    let courseClass: CourseClassCart = this.props.courseClass;
+    const {courseClass, pending} = this.props;
 
+    const url:string = `/class/${courseClass.course.code}-${courseClass.code}`;
+    const deleteClassName = classnames("deleteItem", {"loading": pending});
     return (
       <li>
-        <a href={`/class/${courseClass.id}`}>{courseClass.course.name}</a>
-        <span className={this.utils.classnames("deleteItem", {
-          "loading": this.props.pending
-        })} title="Remove item">
-                    <a onClick={this.methods.remove}>X</a>
-                </span>
+        <a href={url}>{courseClass.course.name}</a>
+        <span className={deleteClassName} title="Remove item">
+            <a onClick={this.methods.remove}>X</a>
+        </span>
         {courseClass.start && courseClass.end &&
         <div className="shortListOrderClasses">
           <abbr className="dtstart" title="">
