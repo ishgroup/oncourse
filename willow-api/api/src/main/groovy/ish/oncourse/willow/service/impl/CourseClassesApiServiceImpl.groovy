@@ -98,6 +98,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         it.id = c.id.toString()
                         it.course = new Course().with {
                             it.id = c.course.id.toString()
+                            it.code = c.course.code
                             it.name = c.course.name
                             it
                         }
