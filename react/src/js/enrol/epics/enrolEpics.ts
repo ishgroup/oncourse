@@ -1,16 +1,19 @@
 import {combineEpics} from "redux-observable";
-import {IshActions} from "../../constants/IshActions";
 import {Observable} from "rxjs";
+
+import {IshActions} from "../../constants/IshActions";
 import {Injector} from "../../injector";
 import {normalize} from "normalizr";
 import {mapError, mapPayload} from "../../epics/epicsUtils";
 import {contactsSchema} from "../../schema";
+import InitEpic from "./InitEpic";
 
 const {
   contactApi
 } = Injector.of();
 
 export const enrolEpics = combineEpics(
+  InitEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 
