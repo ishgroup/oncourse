@@ -22,13 +22,13 @@ const mapStateToProps = (state: IshState, props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addCourseClass: (courseClass: CourseClass) => {
+        addToCart: (courseClass: CourseClass) => {
             dispatch({
                 type: Actions.ADD_CLASS_TO_CART,
                 payload: courseClass
             });
         },
-        requestCourseClassById: (id: string) => {
+        loadById: (id: string) => {
             dispatch({
                 type: Actions.REQUEST_COURSE_CLASS,
                 payload: id

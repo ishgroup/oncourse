@@ -33,7 +33,7 @@ export class EnrolButton extends React.Component<Props, State> {
       this.setState({
         pending: true
       });
-      this.props.addCourseClass(this.props.courseClass);
+      this.props.addToCart(this.props.courseClass);
       this.setState({
         showedPopup: true,
         isAlreadyAdded: false,
@@ -49,8 +49,8 @@ export class EnrolButton extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    const {id, requestCourseClassById} = this.props;
-    requestCourseClassById(id);
+    const {id, loadById} = this.props;
+    loadById(id);
   }
 
   render() {
@@ -114,8 +114,8 @@ export interface Props {
   readonly id: string;
   readonly isAdded: boolean,
   readonly courseClass: CourseClass;
-  readonly requestCourseClassById: (id: string) => void;
-  readonly addCourseClass?: (item: CourseClass) => void,
+  readonly loadById: (id: string) => void;
+  readonly addToCart?: (item: CourseClass) => void,
 }
 
 interface State {
