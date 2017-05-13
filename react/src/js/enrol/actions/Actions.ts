@@ -1,7 +1,7 @@
 import {_toRejectType, _toRequestType} from "../../common/actions/ActionUtils";
 
 //initialize enrol application
-const Init:string = "enrol/init";
+export const Init:string = "enrol/init";
 export const InitRequest:string = _toRequestType(Init);
 export const InitReject:string = _toRejectType(Init);
 

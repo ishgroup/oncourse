@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Lodash from "lodash";
-import classnames from "classNames";
+import classnames from "classnames";
 
 /**
  * Progress bar for the enrol application
@@ -70,8 +70,4 @@ export interface Model {
 interface Props {
   model: Model
   onChange: (Tab) => void
-}
-
-interface State {
-  tab: Tab;
 }
