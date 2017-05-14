@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {Store} from "redux";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../actions/Actions";
+import * as EnrolActions from "../../enrol/actions/Actions";
 import {normalize} from "normalizr";
 import uniq from "lodash/uniq";
 import {classesListSchema, classesSchema, productsListSchema, productsSchema, promotionsSchema} from "../../schema";
@@ -21,7 +22,7 @@ const {
   legacySyncStorage
 } = Injector.of();
 
-export const WebEpics = combineEpics(
+export const WebEpic = combineEpics(
   createCoursesEpic(),
   createUpdateCoursesEpic(),
   createProductsEpic(),
@@ -210,7 +211,9 @@ function createSyncCartRequestEpic() {
       FULFILLED(Actions.ADD_PROMOTION_TO_CART),
       FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART),
       FULFILLED(Actions.REQUEST_PROMOTION),
-      FULFILLED(Actions.REQUEST_CONTACT)
+      FULFILLED(Actions.REQUEST_CONTACT),
+      Actions,
+      EnrolActions.ContactAdd,
     )
     .map(action => ({
       timestamp: new Date().getTime(),

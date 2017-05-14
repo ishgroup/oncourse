@@ -13,7 +13,7 @@ const {
   contactApi
 } = Injector.of();
 
-export const enrolEpics = combineEpics(
+export const EnrolEpic = combineEpics(
   InitEpic,
   ContactAddEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
