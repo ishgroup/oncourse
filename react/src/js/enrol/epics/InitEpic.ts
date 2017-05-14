@@ -5,7 +5,7 @@ import "rxjs";
 import * as Lodash from "lodash";
 
 import * as Actions from "../actions/Actions";
-import {CartState} from "../../services/IshState";
+import {CartState, IshState} from "../../services/IshState";
 import {ValidationError} from "../../model/common/ValidationError";
 import {ShoppingCardIsEmpty} from "../containers/checkout/Errors";
 import {Phase} from "../reducers/State";
@@ -19,11 +19,17 @@ const InitEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: Middle
     if (cartIsEmpty(store.getState().cart)) {
       const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
       result = [{type: Actions.InitReject, payload: error}]
+    } else if (hasContact(store.getState())) {
+      result = [{type: Actions.PhaseChange, payload: Phase.EditContactDetails}]
     } else {
       result = [{type: Actions.PhaseChange, payload: Phase.AddContact}]
     }
     return result;
   });
+};
+
+const hasContact = (state: IshState) => {
+    return !Lodash.isNil(state.cart.contact.id) || !Lodash.isNil(state.enrol.payer.entity.id);
 };
 
 const cartIsEmpty = (cart: CartState) => {
