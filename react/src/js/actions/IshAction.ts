@@ -1,5 +1,4 @@
 import {Action} from "redux";
-import extend = hbs.Utils.extend;
 
 export interface IAction extends Action {
   type: string;
