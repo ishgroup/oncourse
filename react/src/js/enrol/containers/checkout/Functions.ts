@@ -20,25 +20,25 @@ export const ProgressRedux = connect((state) => {
 export const progressModelBy = (phase: Phase): Model => {
   const result: Model = {
     active: null,
-    disabled: [Tab.details, Tab.summary, Tab.payment]
+    disabled: [Tab.Details, Tab.Summary, Tab.Payment]
   };
 
   switch (phase) {
     case Phase.Init:
       result.active = null;
-      result.disabled = [Tab.details, Tab.summary, Tab.payment];
+      result.disabled = [Tab.Details, Tab.Summary, Tab.Payment];
       break;
     case Phase.AddContact:
-      result.active = Tab.details;
-      result.disabled = [Tab.summary, Tab.payment];
+      result.active = Tab.Details;
+      result.disabled = [Tab.Summary, Tab.Payment];
       break;
     case Phase.EditContactDetails:
-      result.active = Tab.details;
-      result.disabled = [Tab.summary, Tab.payment];
+      result.active = Tab.Details;
+      result.disabled = [Tab.Summary, Tab.Payment];
       break;
     case Phase.Summary:
-      result.active = Tab.details;
-      result.disabled = [Tab.summary, Tab.payment];
+      result.active = Tab.Summary;
+      result.disabled = [Tab.Details, Tab.Payment];
       break;
   }
   return result;
