@@ -16,26 +16,20 @@ export class Progress extends React.Component<Props, any> {
 
   render() {
     const {onChange} = this.props;
-    const detailsClass = this.className(Tab.details);
-    const summaryClass = this.className(Tab.summary);
-    const paymentClass = classnames(Classes.last, this.className(Tab.payment));
+    const detailsClass = this.className(Tab.Details);
+    const summaryClass = this.className(Tab.Summary);
+    const paymentClass = classnames(Classes.last, this.className(Tab.Payment));
 
-    const onDetails = () => {
-      onChange(Tab.details)
-    };
-    const onSummary = () => {
-      onChange(Tab.summary)
-    };
-    const onPayment = () => {
-      onChange(Tab.payment)
+    const onClick = (tab: Tab) => {
+      !this.isDisabled(tab) && onChange(tab);
     };
 
     return (
       <div className="progress-steps">
         <ul>
-          <li className={detailsClass}><a onClick={onDetails} href="#">Your details</a></li>
-          <li className={summaryClass}><a onClick={onSummary} href="#">Summary</a></li>
-          <li className={paymentClass}><a onClick={onPayment} href="#">Payment</a></li>
+          <li className={detailsClass}><a onClick={() => onClick(Tab.Details)} href="#">Your details</a></li>
+          <li className={summaryClass}><a onClick={() => onClick(Tab.Summary)} href="#">Summary</a></li>
+          <li className={paymentClass}><a onClick={() => onClick(Tab.Payment)} href="#">Payment</a></li>
         </ul>
       </div>
     )
@@ -57,9 +51,9 @@ export class Progress extends React.Component<Props, any> {
 }
 
 export enum Tab {
-  details,
-  summary,
-  payment
+  Details,
+  Summary,
+  Payment
 }
 
 export interface Model {
