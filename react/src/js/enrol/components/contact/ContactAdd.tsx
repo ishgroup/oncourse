@@ -6,7 +6,7 @@ export interface Props {
   header?: string
 }
 
-export class AddContact extends React.Component<Props, any> {
+export class ContactAdd extends React.Component<Props, any> {
   render() {
     const {header = "Please enter the details of a person enrolling, applying or making a purchase."} = this.props;
     return (

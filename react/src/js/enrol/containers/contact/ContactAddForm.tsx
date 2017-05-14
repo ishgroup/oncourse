@@ -1,22 +1,22 @@
 import {reduxForm} from "redux-form";
 import * as React from "react";
-import {normalize} from "normalizr";
 import {connect} from "react-redux";
 
-import {AddContact} from "../../components/contact/AddContact";
+import {ContactAdd} from "../../components/contact/ContactAdd";
 import {validateContact} from "../../actions/Validations";
-import {contactsSchema} from "../../../schema";
-import {ContactAdd, ContactAddReject} from "../../actions/Actions";
-import {ContactApiStub} from "../../../httpStub/ContactApiStub";
+import {ContactAddAction, ContactAddRejectAction} from "../../actions/Actions";
+import {Injector} from "../../../injector";
+import {CreateContactParams} from "../../../model/web/CreateContactParams";
+import {FieldSet} from "../../../model/web/FieldSet";
 
-export const NAME = "AddContactForm";
+export const NAME = "ContactAddForm";
 
-class AddContactForm extends React.Component<any, any> {
+class ContactAddForm extends React.Component<any, any> {
   render() {
     const {handleSubmit, pristine, invalid, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
-        <AddContact/>
+        <ContactAdd/>
         <div className="form-controls">
           <input value="OK"
                  className="btn btn-primary"
@@ -33,25 +33,18 @@ class AddContactForm extends React.Component<any, any> {
 const Form = reduxForm({
   form: NAME,
   validate: validateContact,
-  onSubmitSuccess: (result, dispatch, props) => {
-    dispatch({
-      type: ContactAdd,
-      payload: normalize(result, contactsSchema),
-      meta: {
-        from: NAME
-      }
-    });
+  onSubmitSuccess: (result, dispatch, props: any) => {
+    dispatch(ContactAddAction(result, props.values));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
-    dispatch({
-      type: ContactAddReject,
-      payload: submitError.data,
-      meta: {
-        from: NAME
-      }
-    });
+    dispatch(ContactAddRejectAction(submitError.data));
   }
-})(AddContactForm);
+})(ContactAddForm);
+
+
+const {
+  contactApi,
+} = Injector.of();
 
 
 const mapStateToProps = (state) => {
@@ -61,8 +54,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (values): any => {
-      const api = new ContactApiStub(null);
-      return api.createOrGetContact(values);
+      const request:CreateContactParams = Object.assign({}, values, {fieldSet: FieldSet.enrolment});
+      return contactApi.createOrGetContact(request);
     },
   };
 };
