@@ -4,16 +4,16 @@ import {Injector} from "./injector";
 import {IshState} from "./services/IshState";
 import {IshActions} from "./constants/IshActions";
 import {Store} from "redux";
-import {enrolEpics} from "./enrol/epics/enrolEpics";
+import {EnrolEpic} from "./enrol/epics/EnrolEpic";
 import {mapError, mapPayload} from "./epics/epicsUtils";
 import {reduxFormEpics} from "./epics/reduxFormEpics";
 import {AutocompleteRequestPayload, AutocompleteResponsePayload} from "./actions/actions";
 import {IshAction} from "./actions/IshAction";
-import {WebEpics} from "./web/epics/webEpics";
+import {WebEpic} from "./web/epics/WebEpic";
 
-export const rootEpic = combineEpics(
-  WebEpics,
-  enrolEpics,
+export const RootEpic = combineEpics(
+  WebEpic,
+  EnrolEpic,
   reduxFormEpics,
   createAutocompleteEpic(IshActions.AUTOCOMPLETE)
 );

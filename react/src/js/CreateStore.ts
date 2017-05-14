@@ -3,7 +3,7 @@ import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
 import {applyMiddleware, createStore, GenericStoreEnhancer} from "redux";
 import {IshState} from "./services/IshState";
-import {RootEpic} from "./RootEpic";
+import {RootEpic} from "./RootEpics";
 import {combinedReducers} from "./reducers/reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
 import {Actions} from "./web/actions/Actions";

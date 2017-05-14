@@ -1,4 +1,4 @@
-import {configureStore} from "./configureStore";
+import {CreateStore} from "./CreateStore";
 import {Bootstrap} from "./common/utils/Bootstrap";
 import {PublicApi} from "./external/PublicApi";
 import {Level, Logger, LogMessage} from "./services/Logger";
@@ -9,7 +9,7 @@ import {HTMLMarkers} from "./common/services/HTMLMarker";
 // Log application version before start.
 Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));
 
-const store = configureStore();
+const store = CreateStore();
 
 WindowService.set("api", new PublicApi(store));
 
