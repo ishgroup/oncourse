@@ -34,12 +34,6 @@ export class ContactApiStub extends ContactApi {
       } as AxiosResponse);
     }
 
-    return Promise.resolve({
-      "id": "5138961",
-      "uniqueIdentifier": "5qHShQVb3a6nnYn2",
-      "firstName": "John",
-      "lastName": "Shepard",
-      "email": "tuchanka@tut.by"
-    } as Contact);
+    return Promise.resolve("5138961");
   }
 }
