@@ -1,11 +1,13 @@
 import * as React from "react";
 import {connect, Dispatch} from "react-redux";
 
-import AddContactForm from "../contact/AddContactForm";
+import ContactAddForm from "../contact/ContactAddForm";
+import ContactEditForm from "../contact/ContactEditForm"
 import {MessagesRedux, ProgressRedux} from "./Functions";
 import {Phase} from "../../reducers/State";
 import * as Actions from "../../../enrol/actions/Actions";
 import {IshState} from "../../../services/IshState";
+import {Summary} from "../../components/summary/Summary";
 
 interface Props {
   phase: Phase;
@@ -24,7 +26,9 @@ export class Checkout extends React.Component<Props, any> {
       <div id="checkout" className="payments">
         <ProgressRedux/>
         <MessagesRedux/>
-        {phase === Phase.AddContact && <AddContactForm/>}
+        {phase === Phase.AddContact && <ContactAddForm/>}
+        {phase === Phase.EditContactDetails && <ContactEditForm/>}
+        {phase === Phase.Summary && <Summary/>}
       </div>
     )
   }
