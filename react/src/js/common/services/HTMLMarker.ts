@@ -17,8 +17,10 @@ export class HTMLMarkers {
    * Renders enrol application: add student, details, summary, payment.
    *
    * Corresponding React Component: {@link EnrolRoot}
-   * Example Usage: <div data-cid="enrol"></div>
-   * Tapestry template to use: Checkout.tml
+   * Example Usage: <div data-cid="enrol" data-prop-enrol-path="/checkout"></div>
+   * To add this enrol app container to a college side, in cms we need create a new page
+   * and add in the content this marker, this page url should be use as data-prop-enrol-path
+   * for markers: ENROL and CART
    */
   static ENROL: HTMLMarker = {
     id: "enrol",
@@ -32,7 +34,7 @@ export class HTMLMarkers {
    * Renders cart component.
    *
    * Corresponding React Component: {@link CartRoot}
-   * Example Usage: <div data-cid="cart"></div>
+   * Example Usage: <div data-cid="cart" data-prop-enrol-path="/checkout"></div>
    * Tapestry template to use: ShortList.tml
    */
   static CART: HTMLMarker = {
