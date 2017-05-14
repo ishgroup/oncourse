@@ -10,7 +10,7 @@
     "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au",
     "build:dev": "npm run clean && webpack",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
-    "test": "karma start ./karma.conf.js",
+    "test": "jest",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",
     "jest": "jest",
     "start": "webpack-dev-server --env.SOURCE_MAP eval-source-map",
@@ -70,7 +70,7 @@
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "testRegex": "(/test/jest/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testRegex": "(/test/jest/.*\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleNameMapper": {
       "\\.(css|less)$": "identity-obj-proxy"
     },
