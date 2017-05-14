@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "build/ts",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "sourceMap": true,
