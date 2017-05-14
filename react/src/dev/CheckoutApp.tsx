@@ -2,11 +2,11 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {Provider} from "react-redux";
-import {configureStore} from "../js/configureStore";
+import {CreateStore} from "../js/CreateStore";
 import Checkout from "../js/enrol/containers/checkout/Checkout";
 import {Actions} from "../js/web/actions/Actions";
 
-const store = configureStore();
+const store = CreateStore();
 
 const loadCourseClasses = () => {
   store.dispatch({
