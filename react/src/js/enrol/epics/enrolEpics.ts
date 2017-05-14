@@ -7,6 +7,7 @@ import {normalize} from "normalizr";
 import {mapError, mapPayload} from "../../epics/epicsUtils";
 import {contactsSchema} from "../../schema";
 import InitEpic from "./InitEpic";
+import ContactAddEpic from "./ContactAddEpic";
 
 const {
   contactApi
@@ -14,6 +15,7 @@ const {
 
 export const enrolEpics = combineEpics(
   InitEpic,
+  ContactAddEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 
