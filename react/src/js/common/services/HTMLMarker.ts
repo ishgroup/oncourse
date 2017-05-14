@@ -1,5 +1,5 @@
 import {ComponentClass, StatelessComponent} from "react";
-import {EnrolRoot} from "../../enrol/containers/EnrolRoot";
+import Checkout from "../../enrol/containers/checkout/Checkout";
 import {Fees} from "../../web/containers/Fees";
 import EnrolButton from "../../web/containers/EnrolButton";
 import {CartRoot} from "../../web/containers/CartRoot";
@@ -22,7 +22,7 @@ export class HTMLMarkers {
    */
   static ENROL: HTMLMarker = {
     id: "enrol",
-    component: EnrolRoot,
+    component: Checkout,
     props: {
       enrolPath: "string"
     }
