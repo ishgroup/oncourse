@@ -52,6 +52,12 @@ def aliasCollection = { String alias, String collection ->
     println out
 }
 
+task addAlias {
+    doLast {
+        aliasCollection(alias, collection)
+    }
+}
+
 def createCollection = {String core ->
     def result = new JsonSlurper().parseText(new URL("http://$solrHost:$solrPort/solr/admin/collections?action=LIST&wt=json").text)
     if (!result.collections.contains(core)) {
