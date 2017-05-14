@@ -14,7 +14,7 @@ export const ATTR_DATA_CID: string = "data-cid";
 export class HTMLMarkers {
 
   /**
-   * Renders enrol application: add student, details, summary, payment.
+   * Renders enrol application: add contact, contact details, summary, payment.
    *
    * Corresponding React Component: {@link EnrolRoot}
    * Example Usage: <div data-cid="enrol" data-prop-enrol-path="/checkout"></div>

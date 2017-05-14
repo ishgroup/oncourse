@@ -18,8 +18,8 @@ export interface PayerState {
 
 
 export enum Phase {
-  init,
-  addContact,
-  details,
-  summary
+  Init,
+  AddContact,
+  EditContactDetails,
+  Summary
 }

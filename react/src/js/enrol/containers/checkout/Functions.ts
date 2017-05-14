@@ -24,19 +24,19 @@ export const progressModelBy = (phase: Phase): Model => {
   };
 
   switch (phase) {
-    case Phase.init:
+    case Phase.Init:
       result.active = null;
       result.disabled = [Tab.details, Tab.summary, Tab.payment];
       break;
-    case Phase.addContact:
+    case Phase.AddContact:
       result.active = Tab.details;
       result.disabled = [Tab.summary, Tab.payment];
       break;
-    case Phase.details:
+    case Phase.EditContactDetails:
       result.active = Tab.details;
       result.disabled = [Tab.summary, Tab.payment];
       break;
-    case Phase.summary:
+    case Phase.Summary:
       result.active = Tab.details;
       result.disabled = [Tab.summary, Tab.payment];
       break;

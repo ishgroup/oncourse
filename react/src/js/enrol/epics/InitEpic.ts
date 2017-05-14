@@ -20,7 +20,7 @@ const InitEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: Middle
       const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
       result = [{type: Actions.InitReject, payload: error}]
     } else {
-      result = [{type: Actions.PhaseChange, payload: Phase.addContact}]
+      result = [{type: Actions.PhaseChange, payload: Phase.AddContact}]
     }
     return result;
   });

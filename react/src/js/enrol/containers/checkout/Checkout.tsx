@@ -24,7 +24,7 @@ export class Checkout extends React.Component<Props, any> {
       <div id="checkout" className="payments">
         <ProgressRedux/>
         <MessagesRedux/>
-        {phase === Phase.addContact && <AddContactForm/>}
+        {phase === Phase.AddContact && <AddContactForm/>}
       </div>
     )
   }

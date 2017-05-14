@@ -26,7 +26,7 @@ const errorReducer = (state: ValidationError = null, action: any): any => {
   }
 };
 
-const phaseReducer = (state: Phase = Phase.init, action: any): any => {
+const phaseReducer = (state: Phase = Phase.Init, action: any): any => {
   switch (action.type) {
     case Actions.PhaseChange:
       return action.payload;
