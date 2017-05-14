@@ -16,7 +16,8 @@ const mapStateToProps = (state: IshState, props) => {
     return {
         id: courseClass.id,
         courseClass: state.courses.entities[courseClass.id] || {},
-        isAdded: isAdded(state.cart.courses, props.id)
+        isAdded: isAdded(state.cart.courses, props.id),
+        enrolPath: state.enrolPath
     };
 };
 

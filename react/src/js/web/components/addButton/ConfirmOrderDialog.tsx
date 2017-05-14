@@ -5,7 +5,8 @@ import {stopPropagation} from "../../../common/utils/HtmlUtils";
 import {WindowService} from "../../../services/WindowService";
 import {ModalService} from "../../../services/ModalService";
 
-export class ConfirmOrderDialog extends React.Component<ConfirmOrderDialogProps, {}> {
+
+export class ConfirmOrderDialog extends React.Component<Props, {}> {
   private modalService: ModalService;
   private $item: JQuery;
 
@@ -32,7 +33,7 @@ export class ConfirmOrderDialog extends React.Component<ConfirmOrderDialogProps,
   };
 
   render() {
-    const {close, isAlreadyAdded, name} = this.props;
+    const {close, isAlreadyAdded, name, enrolPath} = this.props;
 
     // TODO: connect via redux
     const date = this.$item.find(".class-item-info-l > .date a:first").text();
@@ -56,7 +57,7 @@ export class ConfirmOrderDialog extends React.Component<ConfirmOrderDialogProps,
           {classDescription}
         </div>
         <p className="confirm-proseed">
-          <a href="/enrol/" className="button">Proceed to Checkout</a>
+          <a href={enrolPath} className="button">Proceed to Checkout</a>
         </p>
         <p className="confirm-close-wrapper">
           <a className="button closeButton" onClick={close}>Continue browsing</a>
@@ -67,7 +68,8 @@ export class ConfirmOrderDialog extends React.Component<ConfirmOrderDialogProps,
   }
 }
 
-interface ConfirmOrderDialogProps {
+interface Props {
+  enrolPath: string
   isAlreadyAdded: boolean
   id: string
   name: string

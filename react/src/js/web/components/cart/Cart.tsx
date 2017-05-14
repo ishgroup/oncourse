@@ -5,7 +5,7 @@ import classnames from "classnames";
 import {plural} from "../../../common/utils/HtmlUtils";
 import {CourseClassCart, CourseClassCartState, ProductCart, ProductCartState} from "../../../services/IshState";
 
-class Cart extends React.Component<CartProps, CartComponentState> {
+class Cart extends React.Component<Props, State> {
 
   constructor() {
     super();
@@ -30,7 +30,7 @@ class Cart extends React.Component<CartProps, CartComponentState> {
   }
 
   render() {
-    const {removeClass, removeProduct, classes, products} = this.props;
+    const {removeClass, removeProduct, classes, products, enrolPath} = this.props;
     const countClasses = classes.result.length;
     const count = countClasses + products.result.length;
 
@@ -54,7 +54,7 @@ class Cart extends React.Component<CartProps, CartComponentState> {
                 return <CartProductItem key={productId} item={products.entities[productId]} remove={removeProduct}/>;
               })}
               <li className="shortListOrderEnrol">
-                <a className="shortlistLinkEnrol" href="/enrol/">{countClasses ? "Enrol" : "Purchase"}</a>
+                <a className="shortlistLinkEnrol" href={enrolPath}>{countClasses ? "Enrol" : "Purchase"}</a>
               </li>
             </ul>
             <div className="closeButton" onClick={this.toggleShortList}>X</div>
@@ -68,7 +68,7 @@ class Cart extends React.Component<CartProps, CartComponentState> {
                 <a>{(this.state.showShortList ? "Hide" : "Show") + " Shortlist"}</a>
               </li>
               <li className="shortlistActionEnrol">
-                <a href="/enrol/">{countClasses ? "Enrol" : "Purchase"}</a>
+                <a href={enrolPath}>{countClasses ? "Enrol" : "Purchase"}</a>
               </li>
             </ul>
           </div>
@@ -78,14 +78,15 @@ class Cart extends React.Component<CartProps, CartComponentState> {
   }
 }
 
-export interface CartProps {
+export interface Props {
+  readonly enrolPath?: string
   readonly classes?: CourseClassCartState;
   readonly products?: ProductCartState;
   readonly removeClass?: (courseClass: CourseClassCart) => void;
   readonly removeProduct?: (product: ProductCart) => void;
 }
 
-interface CartComponentState {
+interface State {
   readonly showShortList: boolean;
 }
 

@@ -1,14 +1,15 @@
-import Cart, {CartProps} from "../components/cart/Cart";
+import Cart, {Props} from "../components/cart/Cart";
 import {connect} from "react-redux";
 import {CourseClassCart, IshState, ProductCart} from "../../services/IshState";
 import {Actions} from "../actions/Actions";
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart as any);
 
-function mapStateToProps(state: IshState, ownProps: CartProps) {
+function mapStateToProps(state: IshState, ownProps: Props) {
   return {
     classes: state.cart.courses,
-    products: state.cart.products
+    products: state.cart.products,
+    enrolPath: state.enrolPath
   };
 }
 

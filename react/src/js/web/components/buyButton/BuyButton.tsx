@@ -56,7 +56,7 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
   }
 
   render() {
-    const {isAdded, id} = this.props;
+    const {isAdded, id, enrolPath} = this.props;
     const {canBuy, isPaymentGatewayEnabled, name} = this.props.product;
 
     if (!canBuy || !isPaymentGatewayEnabled) {
@@ -72,7 +72,8 @@ export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
         {this.state.showedPopup && <ConfirmOrderDialog id={id}
                                                        name={name}
                                                        isAlreadyAdded={this.state.isAlreadyAdded}
-                                                       close={this.closePopup}/>}
+                                                       close={this.closePopup}
+                                                       enrolPath={enrolPath}/>}
       </div>
     );
   }
@@ -82,6 +83,7 @@ export interface BuyButtonProps {
   readonly id: string;
   readonly product: Product;
   readonly isAdded: boolean;
+  readonly enrolPath: string;
   readonly addProduct: (product: Product) => void;
   readonly requestProductById: (id: string) => void;
 }

@@ -23,7 +23,9 @@ export class HTMLMarkers {
   static ENROL: HTMLMarker = {
     id: "enrol",
     component: EnrolRoot,
-    props: {}
+    props: {
+      enrolPath: "string"
+    }
   };
 
   /**
@@ -36,7 +38,9 @@ export class HTMLMarkers {
   static CART: HTMLMarker = {
     id: "cart",
     component: CartRoot,
-    props: {}
+    props: {
+      enrolPath: "string"
+    }
   };
 
   /**

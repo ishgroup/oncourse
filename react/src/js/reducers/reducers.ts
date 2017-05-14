@@ -7,6 +7,7 @@ import {coursesReducer} from "../web/reducers/courses";
 import {productsReducer} from "../web/reducers/products";
 import {Reducer as EnrolReducer} from "../enrol/reducers/Reducer";
 import {autocompleteReducer} from "./autocomplete";
+import {EnrolPathReducer} from "../common/reducers/Reducer";
 
 export const combinedReducers = combineReducers<IshState>({
   cart: cartReducer,
@@ -15,5 +16,6 @@ export const combinedReducers = combineReducers<IshState>({
   products: productsReducer,
   enrol: EnrolReducer,
   form: formReducer,
-  autocomplete: autocompleteReducer
+  autocomplete: autocompleteReducer,
+  enrolPath: EnrolPathReducer
 });

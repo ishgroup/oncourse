@@ -13,6 +13,7 @@ export interface IshState {
   readonly products: ProductsState;
   readonly enrol: EnrolState;
   readonly autocomplete: AutocompleteState;
+  readonly enrolPath: string;
 }
 
 export interface CartState {
