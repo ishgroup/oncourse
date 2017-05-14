@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {connect, Provider} from "react-redux";
-import AddContactForm from "../js/enrol/containers/contact/AddContactForm";
+import ContactAddForm from "../js/enrol/containers/contact/ContactAddForm";
 import {configureStore} from "../js/configureStore";
 import Messages from "../js/enrol/components/Messages";
 import {Progress, Tab} from "../js/enrol/components/Progress";
@@ -27,12 +27,12 @@ const render = () => ReactDOM.render(
     <div id="checkout" className="payments">
       <Progress onChange={(t) => {console.log(t)}}
         model = {{
-          active: Tab.details,
-          disabled: [Tab.summary, Tab.payment]
+          active: Tab.Details,
+          disabled: [Tab.Summary, Tab.Payment]
         }}
       />
       <MessagesRedux/>
-      <AddContactForm/>
+      <ContactAddForm/>
     </div>
   </Provider>,
   document.getElementById("root")
