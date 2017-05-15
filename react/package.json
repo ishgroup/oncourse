@@ -4,15 +4,15 @@
   "description": "ish project",
   "main": "webpack.config.js",
   "scripts": {
-    "packages:refresh": "npm prune && npm install",
+    "dependencies:update": "npm prune && npm install",
+    "dependencies:outdated": "npm outdated",
     "clean": "rm -rf ./build",
-    "build:prod": "npm run clean && webpack --progress -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au",
+    "build:prod": " npm run dependencies:update && npm run clean && webpack --progress -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au",
     "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production --env.API_ROOT https://ish.com.au",
     "build:dev": "npm run clean && webpack",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "jest",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",
-    "jest": "jest",
     "start": "webpack-dev-server --env.SOURCE_MAP eval-source-map",
     "start:dev": "webpack-dev-server --progress --open --config webpack.dev.config.js --content-base ./dev-server"
   },
