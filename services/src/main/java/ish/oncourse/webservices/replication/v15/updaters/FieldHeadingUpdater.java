@@ -17,6 +17,6 @@ public class FieldHeadingUpdater extends AbstractWillowUpdater<FieldHeadingStub,
 		entity.setName(stub.getName());
 		entity.setDescription(stub.getDescription());
 		entity.setFieldConfiguration(callback.updateRelationShip(stub.getFieldConfigurationId(), FieldConfiguration.class));
-		entity.setFieldOrder(stub.getOrder());
+		entity.setOrder(stub.getOrder());
 	}
 }

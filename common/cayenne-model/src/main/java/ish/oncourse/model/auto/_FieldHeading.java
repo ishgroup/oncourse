@@ -23,9 +23,9 @@ public abstract class _FieldHeading extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DESCRIPTION_PROPERTY = "description";
-    public static final String FIELD_ORDER_PROPERTY = "fieldOrder";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
+    public static final String ORDER_PROPERTY = "order";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String FIELD_CONFIGURATION_PROPERTY = "fieldConfiguration";
     public static final String FIELDS_PROPERTY = "fields";
@@ -35,9 +35,9 @@ public abstract class _FieldHeading extends CayenneDataObject {
     public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
     public static final Property<Date> CREATED = new Property<Date>("created");
     public static final Property<String> DESCRIPTION = new Property<String>("description");
-    public static final Property<Integer> FIELD_ORDER = new Property<Integer>("fieldOrder");
     public static final Property<Date> MODIFIED = new Property<Date>("modified");
     public static final Property<String> NAME = new Property<String>("name");
+    public static final Property<Integer> ORDER = new Property<Integer>("order");
     public static final Property<College> COLLEGE = new Property<College>("college");
     public static final Property<FieldConfiguration> FIELD_CONFIGURATION = new Property<FieldConfiguration>("fieldConfiguration");
     public static final Property<List<Field>> FIELDS = new Property<List<Field>>("fields");
@@ -63,13 +63,6 @@ public abstract class _FieldHeading extends CayenneDataObject {
         return (String)readProperty("description");
     }
 
-    public void setFieldOrder(Integer fieldOrder) {
-        writeProperty("fieldOrder", fieldOrder);
-    }
-    public Integer getFieldOrder() {
-        return (Integer)readProperty("fieldOrder");
-    }
-
     public void setModified(Date modified) {
         writeProperty("modified", modified);
     }
@@ -82,6 +75,13 @@ public abstract class _FieldHeading extends CayenneDataObject {
     }
     public String getName() {
         return (String)readProperty("name");
+    }
+
+    public void setOrder(Integer order) {
+        writeProperty("order", order);
+    }
+    public Integer getOrder() {
+        return (Integer)readProperty("order");
     }
 
     public void setCollege(College college) {

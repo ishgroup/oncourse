@@ -69,7 +69,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		attendanceParameters.add(new ReplicationStubFieldParameter("attendanceType", Integer.class));
 		attendanceParameters.add(new ReplicationStubFieldParameter("sessionId", Long.class));
 		attendanceParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
-        attendanceParameters.add(new ReplicationStubFieldParameter("durationMinutes", Integer.class,false));
+        attendanceParameters.add(new ReplicationStubFieldParameter("durationMinutes", Integer.class, false));
         attendanceParameters.add(new ReplicationStubFieldParameter("note", String.class, false));
 		attendanceParameters.add(new ReplicationStubFieldParameter("markedByTutorId", Long.class));
 		attendanceParameters.add(new ReplicationStubFieldParameter("markedByTutorDate", Date.class));
@@ -714,6 +714,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		fieldHeadingParameters.add(new ReplicationStubFieldParameter("fieldConfigurationId", Long.class));
 		fieldHeadingParameters.add(new ReplicationStubFieldParameter("name", String.class));
 		fieldHeadingParameters.add(new ReplicationStubFieldParameter("description", String.class));
+		fieldHeadingParameters.add(new ReplicationStubFieldParameter("order", Integer.class));
 		stubsPropertyMap.put(getStubName(FieldHeadingStub.class), fieldHeadingParameters);
 
 		List<ReplicationStubFieldParameter> fieldConfigurationParameters = fillDefaultReplicationStubFields();

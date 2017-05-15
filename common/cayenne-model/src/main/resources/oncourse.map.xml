@@ -1951,9 +1951,9 @@
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="fieldOrder" type="java.lang.Integer" db-attribute-path="fieldOrder"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="order" type="java.lang.Integer" db-attribute-path="fieldOrder"/>
 	</obj-entity>
 	<obj-entity name="Instruction" className="ish.oncourse.model.Instruction" dbEntityName="Instruction">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
