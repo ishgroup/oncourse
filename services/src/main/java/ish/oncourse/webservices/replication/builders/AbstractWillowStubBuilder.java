@@ -1,9 +1,7 @@
 package ish.oncourse.webservices.replication.builders;
 
 import ish.common.types.EntityMapping;
-import ish.oncourse.model.BinaryInfoRelation;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
@@ -34,6 +32,9 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 			soapStub = convert(entity, version);
 			if (entity instanceof BinaryInfoRelation) {
 				soapStub.setEntityIdentifier(EntityMapping.getAttachmentRelationIdentifer(((BinaryInfoRelation) entity).getEntityIdentifier()));
+			} else if (entity instanceof ContactCustomField){
+				String customFieldIdentifier = getCustomFieldIdentifier(version);
+				soapStub.setEntityIdentifier(customFieldIdentifier);
 			} else {
 				soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
 			}
@@ -69,4 +70,19 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 	}
 
 	protected abstract V createFullStub(T entity);
+	
+	
+	private String getCustomFieldIdentifier(SupportedVersions version) {
+		switch (version) {
+			case V10:
+			case V11:
+			case V12:
+			case V13:
+			case V14:
+				return CustomField.class.getSimpleName();
+			case V15:
+			default:
+				return ContactCustomField.class.getSimpleName();
+		}
+	}
 }
