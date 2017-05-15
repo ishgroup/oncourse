@@ -40,7 +40,7 @@ public abstract class ApiTest {
     private static Mysql mysql;
     private static boolean createSchema = false;
     private static boolean dropSchema = false;
-    private static boolean createTables = true;
+    private static boolean createTables = false;
     private static DataSource dataSource;
 
     protected static ServerRuntime cayenneRuntime;
@@ -60,7 +60,6 @@ public abstract class ApiTest {
         
         DataDomain domain = cayenneRuntime.getDataDomain();
         
-        truncateAllTables(true);
         if (createTables) {
             createTablesForDataSourceByParams(dataSource, domain.getDataMap("oncourse"));
         }
@@ -169,7 +168,7 @@ public abstract class ApiTest {
             statement.executeBatch();
         } finally {
 
-            if (statement != null) {
+             if (statement != null) {
                 statement.close();
             }
             if (preparedStatement != null) {
