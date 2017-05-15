@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		waCommonWebservicesClientVersion = '9.3.29'
+		waCommonWebservicesClientVersion = '9.3.31'
 		log4j2Version = '2.7'
 		cayenneVersion = '4.0.M3.2'
 		jettyVersion = '9.3.14.v20161028'
