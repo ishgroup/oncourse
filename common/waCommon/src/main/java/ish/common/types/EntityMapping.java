@@ -58,6 +58,8 @@ public final class EntityMapping {
 		ANGEL_TO_WILLOW.put("RoomTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("AssessmentTagRelation", "Taggable");
 		
+		ANGEL_TO_WILLOW.put("CustomField", "ContactCustomField");
+		
 		WILLOW_TO_ANGEL.put("BinaryData", "AttachmentData");
 		WILLOW_TO_ANGEL.put("BinaryInfo", "AttachmentInfo");
 		WILLOW_TO_ANGEL.put("BinaryInfoRelation", "AttachmentRelation");
