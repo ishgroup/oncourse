@@ -4,6 +4,7 @@ import {TextField} from "../form/TextField";
 import {AutocompleteField} from "../form/AutocompleteField";
 import {ComboboxField} from "../form/ComboboxField";
 
+/**
 export function AvetmissDetails(props: AtemnissDetailsComponentProps) {
   const {isOptional} = props;
 
@@ -14,6 +15,7 @@ export function AvetmissDetails(props: AtemnissDetailsComponentProps) {
     </div>
   );
 }
+
 
 const englishProficiency = [
   {key: "Please select...", value: "DEFAULT_POPUP_OPTION"},
@@ -91,7 +93,7 @@ function getForm(props: AtemnissDetailsComponentProps) {
   return (
     <fieldset id="questionnaire-block">
       <br/>
-      {/* Default: Australia */}
+      {/* Default: Australia *//*}
       <Field
         component={AutocompleteField}
         autocomplete="countryOfBirth"
@@ -164,4 +166,4 @@ function getMessage(isOptional: boolean) {
 
 interface AtemnissDetailsComponentProps {
   isOptional: boolean;
-}
+}*/

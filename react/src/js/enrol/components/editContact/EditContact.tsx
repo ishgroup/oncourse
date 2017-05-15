@@ -7,7 +7,7 @@ import {TextField} from "../form/TextField";
 import {AutocompleteField} from "../form/AutocompleteField";
 import {DateField} from "../form/DateField";
 import {Concession} from "../contact/Concession";
-import {AvetmissDetails} from "../contact/AvetmissDetails";
+// import {AvetmissDetails} from "../contact/AvetmissDetails";
 
 export class EditContactComponent extends React.Component<EditContactComponentProps, EditContactState> {
   constructor() {
@@ -132,7 +132,7 @@ export class EditContactComponent extends React.Component<EditContactComponentPr
 
         <Concession/>
 
-        <AvetmissDetails isOptional={false}/>
+        {/*<AvetmissDetails isOptional={false}/>*/}
 
         <div className="form-controls">
           <input value="OK"

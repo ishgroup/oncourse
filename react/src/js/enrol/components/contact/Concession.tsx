@@ -4,11 +4,12 @@ import {ComboboxField} from "../form/ComboboxField";
 import {TextField} from "../form/TextField";
 import {DateField} from "../form/DateField";
 import {CheckboxField} from "../form/CheckboxField";
+import {Item} from "../../../model/field/enumeration/Item";
 
-const concessionTypes = [
-  {key: "no concession", value: "-1"},
-  {key: "Seniors card", value: "0"},
-  {key: "Pension", value: "1"}
+const concessionTypes:Item[] = [
+  {displayName: "no concession", databaseValue: -1},
+  {displayName: "Seniors card", databaseValue: 0},
+  {displayName: "Pension", databaseValue: 1}
 ];
 
 export function Concession() {
@@ -17,7 +18,7 @@ export function Concession() {
       <fieldset className="concessions">
         <br/>
         <ComboboxField
-          suggestions={concessionTypes}
+          items={concessionTypes}
           name="concessionTypes"
           label="New Concession"
         />

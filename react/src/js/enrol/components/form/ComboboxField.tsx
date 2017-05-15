@@ -1,22 +1,27 @@
 import * as React from "react";
+import {Component} from "react";
 import classnames from "classnames";
 import {Field, WrappedFieldProps} from "redux-form";
 import {CommonFieldProps} from "./CommonFieldProps";
-import {Suggestion} from "../../../selectors/autocomplete";
 import {showError, ValidateText} from "./ValidateText";
 import {MouseHover, WrappedMouseHoverProps} from "../../../components/MouseHover";
 import {BaseProps} from "../../../types";
 import {FieldLabel} from "./FieldLabel";
+import {Item} from "../../../model/field/enumeration/Item";
 
-export function ComboboxField(props: ComboboxFieldProps) {
-  return (
-    <MouseHover component={ComboboxFieldComponent} componentProps={props}/>
-  );
+
+export class ComboboxField extends Component<any, any> {
+  render() {
+    return (
+      <MouseHover component={ComboboxFieldComponent} componentProps={this.props}/>
+    );
+  }
 }
+
 
 function ComboboxFieldComponent(props: ComboboxFieldProps & WrappedMouseHoverProps) {
   const {
-    suggestions,
+    items,
     ...selectProps
   } = props;
 
@@ -25,9 +30,9 @@ function ComboboxFieldComponent(props: ComboboxFieldProps & WrappedMouseHoverPro
       component={SelectInput}
       {...selectProps}
     >
-      {suggestions.map((suggestion: Suggestion) => {
+      {items.map((item: Item) => {
         return (
-          <option key={suggestion.key} value={suggestion.value}>{suggestion.key}</option>
+          <option key={item.displayName} value={item.databaseValue}>{item.displayName}</option>
         );
       })}
     </Field>
@@ -79,7 +84,7 @@ interface SelectInputProps extends ComboboxFieldProps, Partial<WrappedFieldProps
 }
 
 interface ComboboxFieldProps extends CommonFieldProps {
-  suggestions: Suggestion[];
+  items: Item[];
 }
 
 

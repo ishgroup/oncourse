@@ -4,6 +4,10 @@ import {connect} from "react-redux";
 
 import {Contact} from "../../../model/web/Contact";
 import {IshState} from "../../../services/IshState";
+import {ContactFields} from "../../../model/field/ContactFields";
+import {ContactEdit} from "../../components/contact/edit/ContactEdit";
+import MockContactFields from "../../../httpStub/MockContactFields"
+
 
 export const NAME = "EditContactForm";
 
@@ -11,16 +15,11 @@ class EditContactForm extends React.Component<any, any> {
   render() {
     const {handleSubmit, pristine, invalid, submitting} = this.props;
     const contact:Contact = this.props.contact;
+    const fields:ContactFields = this.props.fields;
+
     return (
-      <form onSubmit={handleSubmit}>
-        <div className="student">{contact.firstName} {contact.lastName} <span>- {contact.email}</span></div>
-        <div className="message">
-          <p>We require a few more details to create the contact record.
-            It is important that we have correct contact information in case we need to let you know about course
-            changes.
-            Please enter the details as you would like them to appear on a certificate or invoice.
-          </p>
-        </div>
+      <form onSubmit={handleSubmit} id="contactEditorForm">
+        <ContactEdit contact={contact} fields={fields}/>
         <div className="form-controls">
           <input value="OK"
                  className="btn btn-primary"
@@ -32,10 +31,16 @@ class EditContactForm extends React.Component<any, any> {
       </form>
     )
   }
+
+  componentWillMount() {
+    this.props.loadFields();
+  }
 }
 
 interface Props {
-  contact: Contact
+  contact: Contact,
+  contactFields: ContactFields,
+  loadFields: () => void;
 }
 
 const Form = reduxForm({
@@ -50,7 +55,9 @@ const Form = reduxForm({
 
 const mapStateToProps = (state:IshState) => {
   return {
-    contact: state.enrol.payer.entity
+    contact: state.enrol.payer.entity,
+    fields: MockContactFields ,
+    loadFields: () => {}
   }
 };
 

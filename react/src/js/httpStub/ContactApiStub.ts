@@ -2,6 +2,10 @@ import {ContactApi} from "../http/ContactApi";
 import {Contact} from "../model/web/Contact";
 import {CreateContactParams} from "../model/web/CreateContactParams";
 import {AxiosResponse} from "axios";
+import {ContactFieldsRequest} from "../model/field/ContactFieldsRequest";
+import {ContactFields} from "../model/field/ContactFields";
+
+import MockContactFields from "./MockContactFields";
 
 export class ContactApiStub extends ContactApi {
   getContact(studentUniqueIdentifier: string): Promise<Contact> {
@@ -35,5 +39,9 @@ export class ContactApiStub extends ContactApi {
     }
 
     return Promise.resolve("5138961");
+  }
+
+  getContactFields(contactFieldsRequest: ContactFieldsRequest): Promise<ContactFields> {
+    return Promise.resolve(MockContactFields)
   }
 }
