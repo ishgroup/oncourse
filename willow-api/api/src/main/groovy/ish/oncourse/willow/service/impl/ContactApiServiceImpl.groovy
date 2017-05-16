@@ -89,12 +89,9 @@ class ContactApiServiceImpl implements ContactApi{
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classes  are not exist')).build())
         }
         
-        ContactFields result = new ContactFields(contactId: contact.id.toString())
 
-        classes.each { clazz ->
-            result.classHeadings << new ContactDetailsBuilder().getContactDetails(contact, clazz, contactFieldsRequest.fieldSet)
-        }
-        result
+        new ContactDetailsBuilder().getContactDetails(contact, classes, !contactFieldsRequest.productIds.empty, contactFieldsRequest.fieldSet)
+      
     }
 
     @Override

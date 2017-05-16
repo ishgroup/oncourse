@@ -1,13 +1,13 @@
 package ish.oncourse.willow.model.field;
 
-import ish.oncourse.willow.model.field.ClassHeadings;
+import ish.oncourse.willow.model.field.FieldHeading;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactFields  {
   
     private String contactId = null;
-    private List<ClassHeadings> classHeadings = new ArrayList<ClassHeadings>();
+    private List<FieldHeading> headings = new ArrayList<FieldHeading>();
 
     /**
      * Contact Id
@@ -27,24 +27,24 @@ public class ContactFields  {
     }
 
     /**
-     * Field configurations for each contact's class
-     * @return classHeadings
+     * Related field headings
+     * @return headings
      */
-    public List<ClassHeadings> getClassHeadings() {
-        return classHeadings;
+    public List<FieldHeading> getHeadings() {
+        return headings;
     }
 
-    public void setClassHeadings(List<ClassHeadings> classHeadings) {
-       this.classHeadings = classHeadings;
+    public void setHeadings(List<FieldHeading> headings) {
+       this.headings = headings;
     }
 
-    public ContactFields classHeadings(List<ClassHeadings> classHeadings) {
-      this.classHeadings = classHeadings;
+    public ContactFields headings(List<FieldHeading> headings) {
+      this.headings = headings;
       return this;
     }
 
-    public ContactFields addClassHeadingsItem(ClassHeadings classHeadingsItem) {
-      this.classHeadings.add(classHeadingsItem);
+    public ContactFields addHeadingsItem(FieldHeading headingsItem) {
+      this.headings.add(headingsItem);
       return this;
     }
 
@@ -55,7 +55,7 @@ public class ContactFields  {
       sb.append("class ContactFields {\n");
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
-      sb.append("    classHeadings: ").append(toIndentedString(classHeadings)).append("\n");
+      sb.append("    headings: ").append(toIndentedString(headings)).append("\n");
       sb.append("}");
       return sb.toString();
     }

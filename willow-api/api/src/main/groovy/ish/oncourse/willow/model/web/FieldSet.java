@@ -13,8 +13,6 @@ public enum FieldSet {
   
   WAITINGLIST("waitinglist"),
   
-  APPLICATION("application"),
-  
   MAILINGLIST("mailinglist");
 
   private String value;

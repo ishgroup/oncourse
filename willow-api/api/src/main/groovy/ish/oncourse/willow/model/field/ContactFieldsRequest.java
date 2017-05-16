@@ -8,6 +8,7 @@ public class ContactFieldsRequest  {
   
     private String contactId = null;
     private List<String> classesIds = new ArrayList<String>();
+    private List<String> productIds = new ArrayList<String>();
     private FieldSet fieldSet = null;
 
     /**
@@ -50,6 +51,28 @@ public class ContactFieldsRequest  {
     }
 
     /**
+     * Requested product's ids
+     * @return productIds
+     */
+    public List<String> getProductIds() {
+        return productIds;
+    }
+
+    public void setProductIds(List<String> productIds) {
+       this.productIds = productIds;
+    }
+
+    public ContactFieldsRequest productIds(List<String> productIds) {
+      this.productIds = productIds;
+      return this;
+    }
+
+    public ContactFieldsRequest addProductIdsItem(String productIdsItem) {
+      this.productIds.add(productIdsItem);
+      return this;
+    }
+
+    /**
      * Get fieldSet
      * @return fieldSet
      */
@@ -74,6 +97,7 @@ public class ContactFieldsRequest  {
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classesIds: ").append(toIndentedString(classesIds)).append("\n");
+      sb.append("    productIds: ").append(toIndentedString(productIds)).append("\n");
       sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
       sb.append("}");
       return sb.toString();

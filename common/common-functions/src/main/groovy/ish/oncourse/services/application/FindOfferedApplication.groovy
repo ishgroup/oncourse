@@ -6,6 +6,9 @@ import ish.oncourse.model.Course
 import ish.oncourse.model.Student
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+
+import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
+
 class FindOfferedApplication {
     
     Course course
@@ -28,4 +31,15 @@ class FindOfferedApplication {
             self
         }).selectFirst(context)
     }
+    
+    boolean isApplcation() {
+        
+        if (ENROLMENT_BY_APPLICATION == course.enrolmentType) {
+            Application application = get()
+            application ? false : true
+        }
+        
+        false
+    }
+    
 }

@@ -252,7 +252,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/autocomplete.Item'
+              $ref: '#/definitions/common.Item'
         default:
           description: Unexpected error
           schema:
@@ -274,7 +274,7 @@ parameters:
     required: true
     type: string
 definitions:
-  autocomplete.Item:
+  common.Item:
     type: object
     properties:
       key:
@@ -485,7 +485,6 @@ definitions:
     enum:
       - enrolment
       - waitinglist
-      - application
       - mailinglist
   web.CreateContactParams:
     type: object
@@ -538,6 +537,7 @@ definitions:
     requred:
     - contactId
     - classesIds
+    - productIds
     - fieldSet
     properties:
       contactId:
@@ -548,6 +548,11 @@ definitions:
         items: 
           type: string
         description: Requested classe's ids
+      productIds:
+        type: array
+        items: 
+          type: string
+        description: Requested product's ids
       fieldSet:
         $ref: '#/definitions/web.FieldSet'
   field.DataType:
@@ -562,18 +567,6 @@ definitions:
       - language
       - enum
       - email
-  field.enumeration.Item:
-    type: object
-    requred:
-    - displayName
-    - databaseValue
-    properties:
-      displayName:
-        type: string
-        description: Display name fo choice
-      databaseValue: 
-        type: integer
-        description: Value of the enumeration item for unique binding
   field.Field: 
     type: object
     requred:
@@ -618,7 +611,7 @@ definitions:
       enumItems:
         type: array
         items:
-          $ref: '#/definitions/field.enumeration.Item'
+          $ref: '#/definitions/common.Item'
         description: Combobox choices for enumeration types
   field.SubmitFieldsRequest:
     type: object
@@ -652,35 +645,17 @@ definitions:
         items:
           $ref: '#/definitions/field.Field'
         description: Fields set related to field heading
-  field.ClassHeadings:
+  field.ContactFields:
     type: object
     requred:
-    - classId
+    - contactId
     - headings
-    - dummyHeading
     properties:
-      classId:
+      contactId:
         type: string
-        description: Reffered class id
+        description: Contact Id
       headings:
         type: array
         items:
           $ref: '#/definitions/field.FieldHeading'
         description: Related field headings
-      dummyHeading:
-        $ref: '#/definitions/field.FieldHeading'
-        description: Dummy headin filled by fields that not linked to any real Field Heading
-  field.ContactFields:
-    type: object
-    requred:
-    - contactId
-    - contactClassHeadings
-    properties:
-      contactId:
-        type: string
-        description: Contact Id
-      classHeadings:
-        type: array
-        items:
-          $ref: '#/definitions/field.ClassHeadings'
-        description: Field configurations for each contact's class 

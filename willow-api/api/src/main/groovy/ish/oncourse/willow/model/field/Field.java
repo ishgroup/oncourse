@@ -1,7 +1,7 @@
 package ish.oncourse.willow.model.field;
 
+import ish.oncourse.willow.model.common.Item;
 import ish.oncourse.willow.model.field.DataType;
-import ish.oncourse.willow.model.field.enumeration.Item;
 import java.util.ArrayList;
 import java.util.List;
 

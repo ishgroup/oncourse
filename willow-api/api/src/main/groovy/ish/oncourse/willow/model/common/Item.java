@@ -1,4 +1,4 @@
-package ish.oncourse.willow.model.autocomplete;
+package ish.oncourse.willow.model.common;
 
 
 public class Item  {

@@ -11,10 +11,12 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
-import ish.oncourse.willow.model.field.ClassHeadings
+import ish.oncourse.model.Product
+import ish.oncourse.willow.functions.field.GetFieldConfigurations
+import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.FieldHeading
-import ish.oncourse.willow.model.field.enumeration.Item
+import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.web.FieldSet
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
@@ -39,34 +41,20 @@ class ContactDetailsBuilder {
                 throw new IllegalArgumentException()
         }
     }
+    
+    ContactFields getContactDetails(Contact contact, List<CourseClass> classes, boolean mergeDefault, FieldSet fieldSet) {
 
-    ClassHeadings getContactDetails(Contact contact, CourseClass courseClass, FieldSet fieldSet) {
+        ContactFields result = new ContactFields(contactId: contact.id.toString())
 
+        List<FieldConfiguration> configurations =  
+                new GetFieldConfigurations(classes: classes, contact: contact, college: contact.college, mergeDefault: mergeDefault, fieldSet: fieldSet).get()
+
+
+        
+        
+        
         PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
         Map<Field, Class> fields = [:]
-        
-        
-        FieldConfiguration configuration
-        FieldConfigurationScheme scheme = courseClass.course.fieldConfigurationScheme
-        if(!scheme) {
-            configuration =  getDefaultFieldConfiguration(courseClass.course.college)
-        } else {
-            switch (fieldSet) {
-                case FieldSet.ENROLMENT:
-                    configuration = scheme.enrolFieldConfiguration
-                    break
-                case FieldSet.WAITINGLIST:
-                    configuration = scheme.waitingListFieldConfiguration
-                    break
-                case FieldSet.APPLICATION:
-                    configuration = scheme.applicationFieldConfiguration
-                    break
-                case FieldSet.MAILINGLIST:
-                    configuration = getDefaultFieldConfiguration(courseClass.course.college)
-                    break
-                default: throw new IllegalArgumentException()
-            }
-        }
         
         configuration.fields.each { f ->
             
@@ -76,14 +64,13 @@ class ContactDetailsBuilder {
             
             PropertyGetSet getSet  = factory.get(f, source)
             
-            if (!getSet.get()) {
+            if (getSet.get() != null) {
                 fields[f] = getSet.type
             }
         }
-        ClassHeadings classHeadings = new ClassHeadings(classId: courseClass.id.toString())
+
         FieldHeading dummy = new FieldHeading(name: 'Dummy', description: 'Dummy')
 
-        classHeadings.dummyHeading = dummy
         dummy.fields += fields.entrySet().findAll { !it.key.fieldHeading }.sort { it.key.order }.collect { toField it.key,it.value  }
         
         fields.entrySet().findAll { it.key.fieldHeading }.groupBy { it.key.fieldHeading }.each { heading, headingFields ->
@@ -98,22 +85,6 @@ class ContactDetailsBuilder {
         classHeadings.headings = classHeadings.headings.sort {it -> it.name}
         classHeadings
         
-    }
-    
-    private FieldConfiguration getDefaultFieldConfiguration(College college) {
-       FieldConfiguration configuration =  (ObjectSelect.query(FieldConfiguration)
-               .where(FieldConfiguration.COLLEGE.eq(college)) 
-               & ExpressionFactory.matchDbExp(FieldConfiguration.ID_PK_COLUMN, -1))
-                .prefetch(FieldConfiguration.FIELD_HEADINGS.joint())
-                .prefetch(FieldConfiguration.FIELDS.joint())
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroups(FieldConfiguration.class.simpleName)
-                .selectFirst(college.objectContext)
-        
-        if (!configuration) {
-            logger.error("College (id: $college.id) has no default field configuration")
-            throw new IllegalStateException()
-        }
     }
 
     private ish.oncourse.willow.model.field.Field toField(Field field, Class aClass) {
@@ -132,7 +103,7 @@ class ContactDetailsBuilder {
                 f.enumType = aClass.simpleName
                 
                 aClass.enumConstants.each { DisplayableExtendedEnumeration item ->
-                    f.enumItems  << new Item(displayName: item.displayName, databaseValue: item.databaseValue as Integer)
+                    f.enumItems  << new Item(value: item.displayName, key: item.databaseValue as Integer)
                 }
             } else {
                 f.dataType = DataType.fromValue(aClass.simpleName.toLowerCase())
