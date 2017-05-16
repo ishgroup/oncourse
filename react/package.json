@@ -43,7 +43,8 @@
     "jest": "19.0.2",
     "ts-jest": "19.0.14",
     "identity-obj-proxy": "3.0.0",
-    "tslint": "5.2.0"
+    "tslint": "5.2.0",
+    "redux-form-website-template": "0.0.41"
   },
   "dependencies": {
     "axios": "0.15.3",
