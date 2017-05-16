@@ -567,6 +567,9 @@ definitions:
       - language
       - enum
       - email
+      - suburb
+      - postcode
+      - phone
   field.Field: 
     type: object
     requred:

@@ -89,9 +89,13 @@ class SubmitContactFields {
         if (StringUtils.trimToNull(f.value)) {
             switch (f.dataType) {
                 case EMAIL:
+                case SUBURB:
+                case POSTCODE:
                 case STRING:
                     result = f.value
-                    result = normalizePhone(property, result)
+                    break
+                case PHONE:
+                    result = normalizePhone(property, f.value)
                     break
                 case BOOLEAN:
                     result = Boolean.valueOf(f.value)
@@ -146,10 +150,7 @@ class SubmitContactFields {
     }
 
     private Object normalizePhone(FieldProperty property, Object value) {
-        if ([FieldProperty.HOME_PHONE_NUMBER, FieldProperty.BUSINESS_PHONE_NUMBER, FieldProperty.FAX_NUMBER, FieldProperty.MOBILE_PHONE_NUMBER].contains(property)) {
-           return StringUtils.removePattern(value as String, "[^0-9]")
-        }
-        value
+        return StringUtils.removePattern(value as String, "[^0-9]")
     }
 
     private FieldError validateValue(FieldProperty  property, Object value) {

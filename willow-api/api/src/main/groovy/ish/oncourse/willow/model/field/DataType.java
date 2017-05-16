@@ -25,7 +25,13 @@ public enum DataType {
   
   ENUM("enum"),
   
-  EMAIL("email");
+  EMAIL("email"),
+  
+  SUBURB("suburb"),
+  
+  POSTCODE("postcode"),
+  
+  PHONE("phone");
 
   private String value;
 
