@@ -37,7 +37,7 @@ export class Checkout extends React.Component<Props, any> {
 
 const mapStateToProps = (state: IshState) => {
   return {
-    phase: state.enrol.phase
+    phase: state.checkout.phase
   };
 };
 

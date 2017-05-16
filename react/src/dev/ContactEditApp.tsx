@@ -33,7 +33,7 @@ store.dispatch({
 
 
 const MessagesRedux = connect((state) => {
-  return {error: state.enrol.error}
+  return {error: state.checkout.error}
 }, (dispatch) => {
   return {}
 })(Messages);

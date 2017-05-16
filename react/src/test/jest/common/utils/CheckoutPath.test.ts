@@ -12,7 +12,7 @@ test('reading enrol path from cart element', () => {
   const bootstrap = new Bootstrap(store);
   bootstrap.register(HTMLMarkers.CART);
   bootstrap.start(false);
-  expect(store.getState().enrolPath).toBe("/checkout");
+  expect(store.getState().checkoutPath).toBe("/checkout");
 });
 
 
@@ -23,9 +23,9 @@ test('reading enrol path from enrol element', () => {
 
   const store = CreateStore();
   const bootstrap = new Bootstrap(store);
-  bootstrap.register(HTMLMarkers.ENROL);
+  bootstrap.register(HTMLMarkers.CHECKOUT);
   bootstrap.start(false);
-  expect(store.getState().enrolPath).toBe("/checkout");
+  expect(store.getState().checkoutPath).toBe("/checkout");
 });
 
 

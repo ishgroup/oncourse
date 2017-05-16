@@ -11,10 +11,11 @@ import {Actions} from "./web/actions/Actions";
 export function CreateStore(): Store<IshState> {
   const store = createStore(
     combinedReducers,
-    getMiddlewares()
+    getMiddleware()
   );
 
-  function getMiddlewares(): GenericStoreEnhancer {
+
+  function getMiddleware(): GenericStoreEnhancer {
     const logger = createLogger({
       collapsed: true
     });
@@ -30,10 +31,10 @@ export function CreateStore(): Store<IshState> {
   }
 
   // Trigger syncing state with LocalStorage
-  store.dispatch({
-    type: Actions.SYNC_CART,
-    payload: []
-  });
+  // store.dispatch({
+  //   type: Actions.SYNC_CART,
+  //   payload: []
+  // });
 
   return store;
 }

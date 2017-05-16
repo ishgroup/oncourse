@@ -33,7 +33,7 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
   };
 
   render() {
-    const {close, isAlreadyAdded, name, enrolPath} = this.props;
+    const {close, isAlreadyAdded, name, checkoutPath} = this.props;
 
     // TODO: connect via redux
     const date = this.$item.find(".class-item-info-l > .date a:first").text();
@@ -57,7 +57,7 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
           {classDescription}
         </div>
         <p className="confirm-proseed">
-          <a href={enrolPath} className="button">Proceed to Checkout</a>
+          <a href={checkoutPath} className="button">Proceed to Checkout</a>
         </p>
         <p className="confirm-close-wrapper">
           <a className="button closeButton" onClick={close}>Continue browsing</a>
@@ -69,7 +69,7 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
 }
 
 interface Props {
-  enrolPath: string
+  checkoutPath: string
   isAlreadyAdded: boolean
   id: string
   name: string

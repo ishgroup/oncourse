@@ -14,7 +14,7 @@ const store = CreateStore();
 WindowService.set("api", new PublicApi(store));
 
 const react = new Bootstrap(store)
-  .register(HTMLMarkers.ENROL)
+  .register(HTMLMarkers.CHECKOUT)
   .register(HTMLMarkers.FEES)
   .register(HTMLMarkers.ENROL_BUTTON)
   .register(HTMLMarkers.BUY_BUTTON)

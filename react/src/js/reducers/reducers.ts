@@ -5,17 +5,17 @@ import {cartReducer} from "../web/reducers/cart";
 import popup from "./popup";
 import {coursesReducer} from "../web/reducers/courses";
 import {productsReducer} from "../web/reducers/products";
-import {Reducer as EnrolReducer} from "../enrol/reducers/Reducer";
+import {Reducer as CheckoutReducer} from "../enrol/reducers/Reducer";
 import {autocompleteReducer} from "./autocomplete";
-import {EnrolPathReducer} from "../common/reducers/Reducer";
+import {CheckoutPathReducer} from "../common/reducers/Reducer";
 
 export const combinedReducers = combineReducers<IshState>({
+  form: formReducer,
+  autocomplete: autocompleteReducer,
   cart: cartReducer,
   popup,
   courses: coursesReducer,
   products: productsReducer,
-  enrol: EnrolReducer,
-  form: formReducer,
-  autocomplete: autocompleteReducer,
-  enrolPath: EnrolPathReducer
+  checkout: CheckoutReducer,
+  checkoutPath: CheckoutPathReducer
 });

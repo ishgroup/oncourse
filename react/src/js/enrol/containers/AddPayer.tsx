@@ -26,7 +26,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state: IshState, ownProps: AddPayerComponentProps) {
   return {
     values: getFormValues(Forms.ADD_PAYER)(state),
-    errors: state.enrol.error.formErrors
+    errors: state.checkout.error.formErrors
   };
 }
 

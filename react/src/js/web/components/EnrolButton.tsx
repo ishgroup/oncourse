@@ -65,7 +65,7 @@ export class EnrolButton extends React.Component<Props, State> {
       availableEnrolmentPlaces
     } = this.props.courseClass;
 
-    const {isAdded, enrolPath} = this.props;
+    const {isAdded, checkoutPath} = this.props;
     const isActive = !isFinished && !isCancelled && hasAvailablePlaces && isPaymentGatewayEnabled;
     const showedPlaces = hasAvailablePlaces;
     const reverseElements = isFinished;
@@ -105,7 +105,7 @@ export class EnrolButton extends React.Component<Props, State> {
         {reverseElements ? elements.reverse() : elements}
         {this.state.showedPopup && <ConfirmOrderDialog id={id} name={course.name}
                                             isAlreadyAdded={this.state.isAlreadyAdded} close={this.closePopup}
-                                                       enrolPath={enrolPath}/>}
+                                                       checkoutPath={checkoutPath}/>}
       </div>
     );
   }
@@ -115,7 +115,7 @@ export interface Props {
   readonly id: string;
   readonly isAdded: boolean,
   readonly courseClass: CourseClass;
-  readonly enrolPath: string;
+  readonly checkoutPath: string;
   readonly loadById: (id: string) => void;
   readonly addToCart?: (item: CourseClass) => void,
 }

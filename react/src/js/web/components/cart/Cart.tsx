@@ -30,7 +30,7 @@ class Cart extends React.Component<Props, State> {
   }
 
   render() {
-    const {removeClass, removeProduct, classes, products, enrolPath} = this.props;
+    const {removeClass, removeProduct, classes, products, checkoutPath} = this.props;
     const countClasses = classes.result.length;
     const count = countClasses + products.result.length;
 
@@ -54,7 +54,7 @@ class Cart extends React.Component<Props, State> {
                 return <CartProductItem key={productId} item={products.entities[productId]} remove={removeProduct}/>;
               })}
               <li className="shortListOrderEnrol">
-                <a className="shortlistLinkEnrol" href={enrolPath}>{countClasses ? "Enrol" : "Purchase"}</a>
+                <a className="shortlistLinkEnrol" href={checkoutPath}>{countClasses ? "Enrol" : "Purchase"}</a>
               </li>
             </ul>
             <div className="closeButton" onClick={this.toggleShortList}>X</div>
@@ -68,7 +68,7 @@ class Cart extends React.Component<Props, State> {
                 <a>{(this.state.showShortList ? "Hide" : "Show") + " Shortlist"}</a>
               </li>
               <li className="shortlistActionEnrol">
-                <a href={enrolPath}>{countClasses ? "Enrol" : "Purchase"}</a>
+                <a href={checkoutPath}>{countClasses ? "Enrol" : "Purchase"}</a>
               </li>
             </ul>
           </div>
@@ -79,7 +79,7 @@ class Cart extends React.Component<Props, State> {
 }
 
 export interface Props {
-  readonly enrolPath?: string
+  readonly checkoutPath?: string
   readonly classes?: CourseClassCartState;
   readonly products?: ProductCartState;
   readonly removeClass?: (courseClass: CourseClassCart) => void;

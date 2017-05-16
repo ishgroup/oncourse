@@ -4,16 +4,17 @@ import {CourseClass} from "../model/web/CourseClass";
 import {Product} from "../model/web/Product";
 import {Contact} from "../model/web/Contact";
 import {Suggestion} from "../selectors/autocomplete";
-import {EnrolState} from "../enrol/reducers/State";
+import {CheckoutState} from "../enrol/reducers/State";
 
 export interface IshState {
+  readonly form: any;
   readonly cart: CartState;
   readonly popup: PopupState;
   readonly courses: CoursesState;
   readonly products: ProductsState;
-  readonly enrol: EnrolState;
+  readonly checkout: CheckoutState;
   readonly autocomplete: AutocompleteState;
-  readonly enrolPath: string;
+  readonly checkoutPath: string;
 }
 
 export interface CartState {

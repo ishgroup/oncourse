@@ -1,3 +1,3 @@
 export const Actions = {
-  EnrolPathUpdate: "common/enrolpath/update"
+  CheckoutPathUpdate: "common/checkoutPath/update"
 };

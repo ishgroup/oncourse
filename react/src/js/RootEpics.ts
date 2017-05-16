@@ -4,7 +4,7 @@ import {Injector} from "./injector";
 import {IshState} from "./services/IshState";
 import {IshActions} from "./constants/IshActions";
 import {Store} from "redux";
-import {EnrolEpic} from "./enrol/epics/EnrolEpic";
+import {CheckoutEpic} from "./enrol/epics/CheckoutEpic";
 import {mapError, mapPayload} from "./epics/epicsUtils";
 import {reduxFormEpics} from "./epics/reduxFormEpics";
 import {AutocompleteRequestPayload, AutocompleteResponsePayload} from "./actions/actions";
@@ -13,7 +13,7 @@ import {WebEpic} from "./web/epics/WebEpic";
 
 export const RootEpic = combineEpics(
   WebEpic,
-  EnrolEpic,
+  CheckoutEpic,
   reduxFormEpics,
   createAutocompleteEpic(IshActions.AUTOCOMPLETE)
 );

@@ -1,5 +1,5 @@
 export class Paths {
-  static checkout = "/enrol/checkout";
-  static payment = "/enrol/payment";
+  static checkout = "/checkout/summary";
+  static payment = "/checkout/payment";
   static course = "/course/:course";
 }

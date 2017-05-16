@@ -4,14 +4,14 @@ import {Phase} from "../../reducers/State";
 import {Model, Progress, Tab} from "../../components/Progress";
 
 export const MessagesRedux = connect((state) => {
-  return {error: state.enrol.error}
+  return {error: state.checkout.error}
 })(Messages);
 
 
 
 
 export const ProgressRedux = connect((state) => {
-  return {model: progressModelBy(state.enrol.phase)}
+  return {model: progressModelBy(state.checkout.phase)}
 }, (dispatch) => {
   return {onChange: (tab:Tab) => console.log(tab) }
 })(Progress);

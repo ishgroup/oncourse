@@ -17,7 +17,7 @@ const mapStateToProps = (state: IshState, props) => {
         id: courseClass.id,
         courseClass: state.courses.entities[courseClass.id] || {},
         isAdded: isAdded(state.cart.courses, props.id),
-        enrolPath: state.enrolPath
+        checkoutPath: state.checkoutPath
     };
 };
 

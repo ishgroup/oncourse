@@ -1,13 +1,13 @@
 import {Actions} from "../actions/Actions";
 
-export const DEFAULT_ENROL_PATH = "/enrol/";
+export const DEFAULT_ENROL_PATH = "/checkout/";
 
 /**
- * Handle changing enrolPath property.
+ * Handle changing checkoutPath property.
  */
-export const EnrolPathReducer = (state = DEFAULT_ENROL_PATH, action): any => {
+export const CheckoutPathReducer = (state = DEFAULT_ENROL_PATH, action): any => {
   switch (action.type) {
-    case Actions.EnrolPathUpdate:
+    case Actions.CheckoutPathUpdate:
       return action.payload;
     default:
       return state;
