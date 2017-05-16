@@ -227,23 +227,89 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /completion/{key}:
+  /postcode/{text}:
     get:
-      summary: Autocomplete Endpoint
-      operationId: autocomplete
-      description: |
-        Provide autocomplete candidates for provided key and text
+      summary: Postcode endpoint
+      operationId: getPostcodes
+      description: Provide autocomplete candidates for provided text
       tags:
-       - Autocomplete
+      - Autocomplete
       parameters:
-      - name: key
+      - name: text
         in: path
-        description: Autocomplete key
+        description: Text pattern to searche on
         required: true
         type: string
+      responses:
+        200:
+          description: List of autocomplete candidates
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/common.Item'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /suburb/{text}:
+    get:
+      summary: Suburb endpoint
+      operationId: getSuburbs
+      description: Provide autocomplete candidates for searche text
+      tags:
+      - Autocomplete
+      parameters:
       - name: text
-        in: query
-        description: User input
+        in: path
+        description: Text pattern to searche on
+        required: true
+        type: string
+      responses:
+        200:
+          description: List of autocomplete candidates
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/common.Item'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /language/{text}:
+    get:
+      summary: Suburb endpoint
+      operationId: getLanguages
+      description: Provide autocomplete candidates for searche text
+      tags:
+      - Autocomplete
+      parameters:
+      - name: text
+        in: path
+        description: Text pattern to searche on
+        required: true
+        type: string
+      responses:
+        200:
+          description: List of autocomplete candidates
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/common.Item'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /country/{text}:
+    get:
+      summary: Suburb endpoint
+      operationId: getCountries
+      description: Provide autocomplete candidates for searche text
+      tags:
+      - Autocomplete
+      parameters:
+      - name: text
+        in: path
+        description: Text pattern to searche on
         required: true
         type: string
       responses:
@@ -281,8 +347,20 @@ definitions:
         type: string
         description: Key which will be send back
       value:
-        type: string
+        type: object
         description: Value which user will see
+  field.Suburb:
+    type: object
+    properties:
+      state:
+        type: string
+        description: State that corresponds certain location
+      suburb:
+        type: string
+        description: Suburb that corresponds certain location
+      postcode:
+        type: string
+        description: Postcode that corresponds certain location
   web.Product:
     type: object
     properties:

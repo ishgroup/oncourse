@@ -4,7 +4,7 @@ package ish.oncourse.willow.model.common;
 public class Item  {
   
     private String key = null;
-    private String value = null;
+    private Object value = null;
 
     /**
      * Key which will be send back
@@ -27,15 +27,15 @@ public class Item  {
      * Value which user will see
      * @return value
      */
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
        this.value = value;
     }
 
-    public Item value(String value) {
+    public Item value(Object value) {
       this.value = value;
       return this;
     }

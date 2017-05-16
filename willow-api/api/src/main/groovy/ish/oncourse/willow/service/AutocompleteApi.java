@@ -15,8 +15,23 @@ import javax.ws.rs.core.MediaType;
 public interface AutocompleteApi  {
 
     @GET
-    @Path("/completion/{key}")
+    @Path("/country/{text}")
     @Produces({ "application/json" })
-    List<Item> autocomplete(@PathParam("key") String key, @QueryParam("text")String text);
+    List<Item> getCountries(@PathParam("text") String text);
+
+    @GET
+    @Path("/language/{text}")
+    @Produces({ "application/json" })
+    List<Item> getLanguages(@PathParam("text") String text);
+
+    @GET
+    @Path("/postcode/{text}")
+    @Produces({ "application/json" })
+    List<Item> getPostcodes(@PathParam("text") String text);
+
+    @GET
+    @Path("/suburb/{text}")
+    @Produces({ "application/json" })
+    List<Item> getSuburbs(@PathParam("text") String text);
 }
 
