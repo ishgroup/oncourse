@@ -6,7 +6,7 @@ import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.model.CourseClass
-import ish.oncourse.willow.model.web.FieldSet
+import ish.oncourse.willow.model.field.FieldSet
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
