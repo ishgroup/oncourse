@@ -1,6 +1,6 @@
 package ish.oncourse.willow.model.web;
 
-import ish.oncourse.willow.model.web.FieldSet;
+import ish.oncourse.willow.model.field.FieldSet;
 
 public class CreateContactParams  {
   

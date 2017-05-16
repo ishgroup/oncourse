@@ -17,6 +17,7 @@ public class Field  {
     private String value = null;
     private String defaultValue = null;
     private List<Item> enumItems = new ArrayList<Item>();
+    private Integer ordering = null;
 
     /**
      * Field id
@@ -193,6 +194,23 @@ public class Field  {
       return this;
     }
 
+    /**
+     * order position
+     * @return ordering
+     */
+    public Integer getOrdering() {
+        return ordering;
+    }
+
+    public void setOrdering(Integer ordering) {
+       this.ordering = ordering;
+    }
+
+    public Field ordering(Integer ordering) {
+      this.ordering = ordering;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -209,6 +227,7 @@ public class Field  {
       sb.append("    value: ").append(toIndentedString(value)).append("\n");
       sb.append("    defaultValue: ").append(toIndentedString(defaultValue)).append("\n");
       sb.append("    enumItems: ").append(toIndentedString(enumItems)).append("\n");
+      sb.append("    ordering: ").append(toIndentedString(ordering)).append("\n");
       sb.append("}");
       return sb.toString();
     }

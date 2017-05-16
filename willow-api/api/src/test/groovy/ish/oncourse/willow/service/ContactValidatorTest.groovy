@@ -11,7 +11,7 @@ import javax.ws.rs.BadRequestException
 import javax.ws.rs.ext.ReaderInterceptorContext
 
 import static ish.oncourse.common.field.FieldProperty.*
-import static ish.oncourse.willow.model.web.FieldSet.ENROLMENT
+import static ish.oncourse.willow.model.field.FieldSet.ENROLMENT
 import static ish.validation.ContactValidator.Property.email
 import static ish.validation.ContactValidator.Property.firstName
 import static ish.validation.ContactValidator.Property.lastName

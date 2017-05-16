@@ -8,7 +8,7 @@ import ish.oncourse.willow.model.field.ContactFieldsRequest
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.SubmitFieldsRequest
-import ish.oncourse.willow.model.web.FieldSet
+import ish.oncourse.willow.model.field.FieldSet
 
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl

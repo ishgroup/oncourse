@@ -1,6 +1,6 @@
 package ish.oncourse.willow.model.field;
 
-import ish.oncourse.willow.model.web.FieldSet;
+import ish.oncourse.willow.model.field.FieldSet;
 import java.util.ArrayList;
 import java.util.List;
 

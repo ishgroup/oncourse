@@ -8,7 +8,7 @@ import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import org.apache.cayenne.query.SelectById
 import org.junit.Test
 
-import static ish.oncourse.willow.model.web.FieldSet.ENROLMENT
+import static ish.oncourse.willow.model.field.FieldSet.ENROLMENT
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
 

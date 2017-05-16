@@ -480,7 +480,7 @@ definitions:
       id:
         type: string
         description: Internal unique indetificator of promotion
-  web.FieldSet:
+  field.FieldSet:
     type: string
     enum:
       - enrolment
@@ -504,7 +504,7 @@ definitions:
         description: Email of Contact
         type: string
       fieldSet:
-        $ref: '#/definitions/web.FieldSet'
+        $ref: '#/definitions/field.FieldSet'
   common.ValidationError:
     type: object
     required:
@@ -554,7 +554,7 @@ definitions:
           type: string
         description: Requested product's ids
       fieldSet:
-        $ref: '#/definitions/web.FieldSet'
+        $ref: '#/definitions/field.FieldSet'
   field.DataType:
     type: string
     enum:
@@ -580,6 +580,7 @@ definitions:
     - value
     - defaultValue
     - enumItems
+    - ordering
     properties:
       id:
         type: string
@@ -613,6 +614,10 @@ definitions:
         items:
           $ref: '#/definitions/common.Item'
         description: Combobox choices for enumeration types
+      ordering:
+        type: integer
+        format: int32
+        description: order position
   field.SubmitFieldsRequest:
     type: object
     requred:
