@@ -4,7 +4,7 @@ import FieldFactory from "../../../services/FieldFactory";
 
 
 interface Prop {
-  heading:FieldHeading;
+  heading: FieldHeading;
 }
 
 export class HeadingComp extends React.Component<Prop, any> {
@@ -12,12 +12,15 @@ export class HeadingComp extends React.Component<Prop, any> {
 
   render() {
     const {heading} = this.props;
-    const fields =  heading.fields.map((f,i) => {return this.factory.getComponent(f);});
+    const fields = heading.fields.map((f, i) => {
+      return this.factory.getComponent(f);
+    });
     return (
-        <fieldset>
-          <legend>{heading.name}</legend>
-          {fields}
-        </fieldset>
+      <fieldset>
+        <legend>{heading.name}</legend>
+        <div className="message" dangerouslySetInnerHTML={{__html: heading.description}}/>
+        {fields}
+      </fieldset>
     );
   }
 }

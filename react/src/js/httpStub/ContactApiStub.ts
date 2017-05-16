@@ -6,6 +6,7 @@ import {ContactFieldsRequest} from "../model/field/ContactFieldsRequest";
 import {ContactFields} from "../model/field/ContactFields";
 
 import MockContactFields from "./MockContactFields";
+import {SubmitFieldsRequest} from "../model/field/SubmitFieldsRequest";
 
 export class ContactApiStub extends ContactApi {
   getContact(studentUniqueIdentifier: string): Promise<Contact> {
@@ -42,6 +43,26 @@ export class ContactApiStub extends ContactApi {
   }
 
   getContactFields(contactFieldsRequest: ContactFieldsRequest): Promise<ContactFields> {
-    return Promise.resolve(MockContactFields)
+    return Promise.resolve(MockContactFields);
+  }
+
+
+  submitContactDetails(submit: SubmitFieldsRequest): Promise<any> {
+    return createPromiseReject({
+      formErrors: [],
+      fieldsErrors: [{
+          name: "isMale",
+          error: "You should choose between male or female"
+        }
+      ]
+    })
   }
 }
+
+
+const createPromiseReject = (data: any): Promise<any> => {
+  return Promise.reject({
+    data: data,
+    status: 400
+  } as AxiosResponse);
+};

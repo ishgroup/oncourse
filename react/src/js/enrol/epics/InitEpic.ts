@@ -11,7 +11,7 @@ import {ShoppingCardIsEmpty} from "../containers/checkout/Errors";
 import {Phase} from "../reducers/State";
 
 /**
- * This epic process Init action of enrol application and define Phase of the application
+ * This epic process Init action of checkout application and define Phase of the application
  */
 const InitEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
   return action$.ofType(Actions.InitRequest).flatMap((action) => {
@@ -29,7 +29,7 @@ const InitEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: Middle
 };
 
 const hasContact = (state: IshState) => {
-    return !Lodash.isNil(state.cart.contact.id) || !Lodash.isNil(state.enrol.payer.entity.id);
+    return !Lodash.isNil(state.cart.contact.id) || !Lodash.isNil(state.checkout.payer.entity.id);
 };
 
 const cartIsEmpty = (cart: CartState) => {

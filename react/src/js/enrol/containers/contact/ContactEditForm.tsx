@@ -6,7 +6,7 @@ import {Contact} from "../../../model/web/Contact";
 import {IshState} from "../../../services/IshState";
 import {ContactFields} from "../../../model/field/ContactFields";
 import {ContactEdit} from "../../components/contact/edit/ContactEdit";
-import MockContactFields from "../../../httpStub/MockContactFields"
+import * as Actions from "../../actions/Actions";
 
 
 export const NAME = "EditContactForm";
@@ -14,8 +14,8 @@ export const NAME = "EditContactForm";
 class EditContactForm extends React.Component<any, any> {
   render() {
     const {handleSubmit, pristine, invalid, submitting} = this.props;
-    const contact:Contact = this.props.contact;
-    const fields:ContactFields = this.props.fields;
+    const contact: Contact = this.props.contact;
+    const fields: ContactFields = this.props.fields;
 
     return (
       <form onSubmit={handleSubmit} id="contactEditorForm">
@@ -31,15 +31,11 @@ class EditContactForm extends React.Component<any, any> {
       </form>
     )
   }
-
-  componentWillMount() {
-    this.props.loadFields();
-  }
 }
 
 interface Props {
   contact: Contact,
-  contactFields: ContactFields,
+  fields: ContactFields,
   loadFields: () => void;
 }
 
@@ -53,17 +49,22 @@ const Form = reduxForm({
 })(EditContactForm);
 
 
-const mapStateToProps = (state:IshState) => {
+const mapStateToProps = (state: IshState) => {
+  const contact = state.checkout.payer.entity;
+  const fields = state.checkout.fields;
   return {
-    contact: state.enrol.payer.entity,
-    fields: MockContactFields ,
-    loadFields: () => {}
+    contact: contact,
+    fields: fields
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSubmit: (values): any => {},
+    onSubmit: (values): any => {
+    },
+    loadFields: (): void => {
+      dispatch({type: Actions.FieldsLoadRequest})
+    }
   };
 };
 

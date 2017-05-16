@@ -15,7 +15,8 @@ function inputComponent(props: TextFieldProps) {
     input,
     required,
     label,
-    type
+    placeholder,
+    type,
   } = props;
   const isShowError = showError(props);
 
@@ -33,7 +34,7 @@ function inputComponent(props: TextFieldProps) {
       })}>
         <input {...input}
              className={classnames('input-fixed', 'contact-field', {'t-error': isShowError})}
-             placeholder={label}
+             placeholder={placeholder}
              type={type}/>
         <ValidateText {...props}/>
       </span>

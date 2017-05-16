@@ -1,4 +1,5 @@
 import * as React from "react";
+import {isNil} from "lodash";
 import {Contact} from "../../../../model/web/Contact";
 import {ContactFields} from "../../../../model/field/ContactFields";
 import HeadingComp from "./HeadingComp";
@@ -13,8 +14,9 @@ export class ContactEdit extends React.Component<Props, any> {
   render() {
     const {contact, fields, header} = this.props;
 
-    const headings = fields.classHeadings[0].headings.map((h,index) => { return (<HeadingComp heading={h} key={index}/>)});
-
+    const headings = isNil(fields) ? [] : fields.classHeadings[0].headings.map((h, index) => {
+      return (<HeadingComp heading={h} key={index}/>)
+    });
 
     return (
       <div>

@@ -8,14 +8,16 @@ import {mapError, mapPayload} from "../../epics/epicsUtils";
 import {contactsSchema} from "../../schema";
 import InitEpic from "./InitEpic";
 import ContactAddEpic from "./ContactAddEpic";
+import FieldsLoadEpic from "./FieldsLoadEpic";
 
 const {
   contactApi
 } = Injector.of();
 
-export const EnrolEpic = combineEpics(
+export const CheckoutEpic = combineEpics(
   InitEpic,
   ContactAddEpic,
+  FieldsLoadEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 

@@ -3,6 +3,10 @@ import {WrappedFieldProps} from "redux-form";
 import {CommonFieldProps} from "./CommonFieldProps";
 import {FieldLabel} from "./FieldLabel";
 
+/**
+ * This implementation is very complicated,
+ * @Deprecated Use /components/RadioGroupFields.tsx
+ */
 export class RadioGroupField extends React.Component<RadioGroupFieldProps, RadioGroupFieldState> {
   constructor() {
     super();
@@ -28,7 +32,7 @@ export class RadioGroupField extends React.Component<RadioGroupFieldProps, Radio
           {options.map(option => {
             return (
               <span key={option}>
-                <input {...input} className={classes} type="radio"/>
+                <input {...input} className={classes} type="radio" value={option}/>
                 {' '}
                 {option}
               </span>

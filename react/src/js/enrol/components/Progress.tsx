@@ -3,7 +3,7 @@ import * as Lodash from "lodash";
 import classnames from "classnames";
 
 /**
- * Progress bar for the enrol application
+ * Progress bar for the checkout application
  */
 
 const Classes = {
