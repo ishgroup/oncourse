@@ -233,7 +233,7 @@ paths:
       operationId: getPostcodes
       description: Provide autocomplete candidates for provided text
       tags:
-      - Autocomplete
+      - Search
       parameters:
       - name: text
         in: path
@@ -257,7 +257,7 @@ paths:
       operationId: getSuburbs
       description: Provide autocomplete candidates for searche text
       tags:
-      - Autocomplete
+      - Search
       parameters:
       - name: text
         in: path
@@ -281,7 +281,7 @@ paths:
       operationId: getLanguages
       description: Provide autocomplete candidates for searche text
       tags:
-      - Autocomplete
+      - Search
       parameters:
       - name: text
         in: path
@@ -305,7 +305,7 @@ paths:
       operationId: getCountries
       description: Provide autocomplete candidates for searche text
       tags:
-      - Autocomplete
+      - Search
       parameters:
       - name: text
         in: path

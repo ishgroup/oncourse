@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
-public interface AutocompleteApi  {
+public interface SearchApi  {
 
     @GET
     @Path("/country/{text}")

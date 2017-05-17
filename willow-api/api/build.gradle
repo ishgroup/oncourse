@@ -48,6 +48,10 @@ dependencies {
 
     //cache
     compile 'org.ehcache:ehcache:3.3.1'
+    
+    //search
+    compile "org.apache.solr:solr-solrj:${solrVersion}"
+
 
     compile 'mysql:mysql-connector-java:5.1.38'
 
