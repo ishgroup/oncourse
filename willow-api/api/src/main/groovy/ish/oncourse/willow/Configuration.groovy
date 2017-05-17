@@ -6,7 +6,8 @@ class Configuration {
     static final String VERSION_FILE_NAME = 'VERSION'
     static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8'
     static final String API_VERSION = 'ish.api.version'
-    
+    static final String ZK_HOST_PROPERTY = 'zk.host.property'
+
 
     static configure() {
         
@@ -23,7 +24,8 @@ class Configuration {
             System.setProperty('bq.jdbc.ish.url', String.format(BD_URL, prop.get('db_host'), prop.get('db_port'), prop.get('db_name')))
             System.setProperty('bq.jdbc.ish.username', prop.get('db_user') as String)
             System.setProperty('bq.jdbc.ish.password', prop.get('db_pass') as String)
-
+            System.setProperty(ZK_HOST_PROPERTY, prop.get('zk_host') as String)
+            
             if (prop.get('path')) {
                 System.setProperty('bq.cxf.urlPattern',prop.get('path') as String)
             }
