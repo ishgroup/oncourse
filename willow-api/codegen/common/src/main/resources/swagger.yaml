@@ -229,6 +229,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /postcode/{text}:
     get:
+      x-filter:  
+      - SearchText
       summary: Postcode endpoint
       operationId: getPostcodes
       description: Provide autocomplete candidates for provided text
@@ -253,6 +255,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /suburb/{text}:
     get:
+      x-filter:  
+      - SearchText    
       summary: Suburb endpoint
       operationId: getSuburbs
       description: Provide autocomplete candidates for searche text
@@ -277,6 +281,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /language/{text}:
     get:
+      x-filter:  
+      - SearchText  
       summary: Suburb endpoint
       operationId: getLanguages
       description: Provide autocomplete candidates for searche text
@@ -301,6 +307,8 @@ paths:
             $ref: '#/definitions/common.CommonError'
   /country/{text}:
     get:
+      x-filter:  
+      - SearchText  
       summary: Suburb endpoint
       operationId: getCountries
       description: Provide autocomplete candidates for searche text

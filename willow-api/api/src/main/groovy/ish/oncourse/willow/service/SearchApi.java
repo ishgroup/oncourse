@@ -17,21 +17,25 @@ public interface SearchApi  {
     @GET
     @Path("/country/{text}")
     @Produces({ "application/json" })
+    @SearchFilter
     List<Item> getCountries(@PathParam("text") String text);
 
     @GET
     @Path("/language/{text}")
     @Produces({ "application/json" })
+    @SearchFilter
     List<Item> getLanguages(@PathParam("text") String text);
 
     @GET
     @Path("/postcode/{text}")
     @Produces({ "application/json" })
+    @SearchFilter
     List<Item> getPostcodes(@PathParam("text") String text);
 
     @GET
     @Path("/suburb/{text}")
     @Produces({ "application/json" })
+    @SearchFilter
     List<Item> getSuburbs(@PathParam("text") String text);
 }
 

@@ -6,6 +6,7 @@ import io.bootique.cayenne.CayenneModule
 import ish.math.MoneyType
 import ish.oncourse.cxf.CXFModule
 import ish.oncourse.willow.cache.JCacheModule
+import ish.oncourse.willow.filters.SearchFilter
 import ish.oncourse.willow.search.SearchApiImpl
 import ish.oncourse.willow.search.SearchService
 import ish.oncourse.willow.service.impl.CollegeService
@@ -38,6 +39,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(ContactCredentialsValidator)
         CXFModule.contributeResources(binder).addBinding().to(SearchService)
         CXFModule.contributeResources(binder).addBinding().to(SearchApiImpl)
+        CXFModule.contributeResources(binder).addBinding().to(SearchFilter)
 
     }
 

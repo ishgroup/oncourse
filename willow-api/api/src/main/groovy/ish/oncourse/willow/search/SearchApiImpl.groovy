@@ -1,14 +1,14 @@
 package ish.oncourse.willow.search
 
 import com.google.inject.Inject
-import ish.oncourse.willow.model.common.CommonError
+import ish.oncourse.model.Country
+import ish.oncourse.model.Language
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.service.SearchApi
 import org.apache.cayenne.configuration.server.ServerRuntime
-import org.apache.commons.lang3.StringUtils
+import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 
-import javax.ws.rs.BadRequestException
-import javax.ws.rs.core.Response
 
 
 class SearchApiImpl implements SearchApi {
@@ -26,29 +26,38 @@ class SearchApiImpl implements SearchApi {
     
     @Override
     List<Item> getCountries(String text) {
-        return null
+        List<Item> result = []
+
+        ObjectSelect.query(Country.class).
+                where(Country.NAME.likeIgnoreCase("%" + text + "%")).
+                cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+                cacheGroups(Country.class.simpleName).
+                select(cayenneRuntime.newContext()).each { c->
+                    result << new Item(key: c.id.toString(), value: c.name)
+                }
+        result
     }
 
     @Override
     List<Item> getLanguages(String text) {
-        return null
-    }
+        List<Item> result = []
+
+        ObjectSelect.query(Language.class).
+                where(Language.NAME.likeIgnoreCase(text + "%")).
+                cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+                cacheGroups(Language.class.simpleName).
+                select(cayenneRuntime.newContext()).each { l ->
+            result << new Item(key: l.id.toString(), value: l.name)
+        }
+        result    }
 
     @Override
     List<Item> getPostcodes(String text) {
-        if (StringUtils.trimToNull(text)) {
-            searchService.searchSuburbsByPostcode(text)
-        } else {
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Search string is empty')).build())
-        }
+        searchService.searchSuburbsByPostcode(text)
     }
 
     @Override
     List<Item> getSuburbs(String text) {
-        if (StringUtils.trimToNull(text)) {
-            searchService.searchSuburbsByName(text)
-        } else {
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Search string is empty')).build())
-        }    
+        searchService.searchSuburbsByName(text)
     }
 }
