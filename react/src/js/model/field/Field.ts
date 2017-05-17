@@ -1,5 +1,5 @@
-import {DataType} from "./../field/DataType";
-import {Item} from "./../field/enumeration/Item";
+import { Item } from "./../common/Item";
+import { DataType } from "./../field/DataType";
 
 export class Field {
 
@@ -52,5 +52,10 @@ export class Field {
    * Combobox choices for enumeration types
    */
   enumItems?: Item[];
+
+  /**
+   * order position
+   */
+  ordering?: number;
 }
 

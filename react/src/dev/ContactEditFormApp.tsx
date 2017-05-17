@@ -9,7 +9,7 @@ import {Progress, Tab} from "../js/enrol/components/Progress";
 import {ContactAdd, FieldsLoadRequest} from "../js/enrol/actions/Actions";
 import {normalize} from "normalizr";
 import {contactsSchema} from "../js/schema";
-import {FieldSet} from "../js/model/web/FieldSet";
+import {FieldSet} from "../js/model/field/FieldSet";
 import { Values } from 'redux-form-website-template';
 
 // const reducer = (state: any = {}): any => {

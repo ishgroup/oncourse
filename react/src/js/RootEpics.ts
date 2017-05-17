@@ -29,7 +29,7 @@ function createAutocompleteEpic(actionType) {
     .ofType(actionType)
     .mergeMap((action: IshAction<AutocompleteRequestPayload>) => {
       return Observable
-        .fromPromise(autocompleteApi.autocomplete(action.payload.key, action.payload.text))
+        .fromPromise(autocompleteApi.getCountries(action.payload.text))
         .takeUntil(action$.ofType(
           actionType,
           IshActions.AUTOCOMPLETE_CLEAR

@@ -7,7 +7,7 @@ import {showError, ValidateText} from "./ValidateText";
 import {MouseHover, WrappedMouseHoverProps} from "../../../components/MouseHover";
 import {BaseProps} from "../../../types";
 import {FieldLabel} from "./FieldLabel";
-import {Item} from "../../../model/field/enumeration/Item";
+import {Item} from "../../../model/common/Item";
 
 
 export class ComboboxField extends Component<any, any> {
@@ -32,7 +32,7 @@ function ComboboxFieldComponent(props: ComboboxFieldProps & WrappedMouseHoverPro
     >
       {items.map((item: Item) => {
         return (
-          <option key={item.displayName} value={item.databaseValue}>{item.displayName}</option>
+          <option key={item.key} value={item.key}>{item.value}</option>
         );
       })}
     </Field>

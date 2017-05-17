@@ -21,7 +21,6 @@
     ]
   },
   "exclude": [
-    "src/test/jest/**/*", //is handled by 'jest' configuration in package.json file
     "node_modules"
   ]
 }

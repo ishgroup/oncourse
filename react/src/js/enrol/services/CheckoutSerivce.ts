@@ -4,7 +4,7 @@ import {Product} from "../../model/web/Product";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Injector} from "../../injector";
 import {ContactFieldsRequest} from "../../model/field/ContactFieldsRequest";
-import {FieldSet} from "../../model/web/FieldSet";
+import {FieldSet} from "../../model/field/FieldSet";
 
 const {
   contactApi,

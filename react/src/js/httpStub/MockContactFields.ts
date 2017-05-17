@@ -276,17 +276,12 @@ const avetmissHeading = {
 
 const response: any = {
   "contactId": "1001",
-  "classHeadings": [
-    {
-      "classId": "1001",
-      "headings": [
-        genderHeading
-        // contactHeading,
-        // communicateHeading,
-        // avetmissHeading
-      ]
-    }
-  ]
+    "headings": [
+      genderHeading
+      // contactHeading,
+      // communicateHeading,
+      // avetmissHeading
+    ]
 };
 
 

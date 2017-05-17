@@ -1,7 +1,7 @@
 import * as React from "react";
 import {FieldLabel} from "../enrol/components/form/FieldLabel";
 import {Field} from "redux-form";
-import {Item} from "../model/autocomplete/Item";
+import {Item} from "../model/common/Item";
 /**
  * Redux-Form Fields implementation for Radio Group componenent
  */

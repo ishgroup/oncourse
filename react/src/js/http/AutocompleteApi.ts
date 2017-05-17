@@ -1,11 +1,21 @@
 import {HttpService} from "../common/services/HttpService";
-import {Item} from "../model/autocomplete/Item";
+import { CommonError } from "../model/common/CommonError";
+import { Item } from "../model/common/Item";
 
 export class AutocompleteApi {
   constructor(private http: HttpService) {
   }
 
-  autocomplete(key: string, text: string): Promise<Item[]> {
-    return this.http.GET(`/completion/${key}`, { params: { text }})
+  getCountries(text: string): Promise<Item[]> {
+    return this.http.GET(`/country/${text}`)
+  }
+  getLanguages(text: string): Promise<Item[]> {
+    return this.http.GET(`/language/${text}`)
+  }
+  getPostcodes(text: string): Promise<Item[]> {
+    return this.http.GET(`/postcode/${text}`)
+  }
+  getSuburbs(text: string): Promise<Item[]> {
+    return this.http.GET(`/suburb/${text}`)
   }
 }

@@ -1,4 +1,4 @@
-import {ClassHeadings} from "./../field/ClassHeadings";
+import { FieldHeading } from "./../field/FieldHeading";
 
 export class ContactFields {
 
@@ -8,8 +8,8 @@ export class ContactFields {
   contactId?: string;
 
   /**
-   * Field configurations for each contact's class
+   * Related field headings
    */
-  classHeadings?: ClassHeadings[];
+  headings?: FieldHeading[];
 }
 

@@ -1,9 +1,11 @@
 import {HttpService} from "../common/services/HttpService";
-import {ContactFields} from "../model/field/ContactFields";
-import {ContactFieldsRequest} from "../model/field/ContactFieldsRequest";
-import {SubmitFieldsRequest} from "../model/field/SubmitFieldsRequest";
-import {Contact} from "../model/web/Contact";
-import {CreateContactParams} from "../model/web/CreateContactParams";
+import { CommonError } from "../model/common/CommonError";
+import { ValidationError } from "../model/common/ValidationError";
+import { ContactFields } from "../model/field/ContactFields";
+import { ContactFieldsRequest } from "../model/field/ContactFieldsRequest";
+import { SubmitFieldsRequest } from "../model/field/SubmitFieldsRequest";
+import { Contact } from "../model/web/Contact";
+import { CreateContactParams } from "../model/web/CreateContactParams";
 
 export class ContactApi {
   constructor(private http: HttpService) {

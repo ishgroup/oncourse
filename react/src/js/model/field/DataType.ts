@@ -1,3 +1,4 @@
+
 import {createStringEnum} from "../../common/utils/EnumUtils";
 
 export const DataType = createStringEnum([
@@ -9,7 +10,10 @@ export const DataType = createStringEnum([
       'country',
       'language',
       'enum',
-      'email'
+      'email',
+      'suburb',
+      'postcode',
+      'phone'
 ]);
 
 export type DataType = keyof typeof DataType;

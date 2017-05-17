@@ -1,4 +1,4 @@
-import {FieldSet} from "./../web/FieldSet";
+import { FieldSet } from "./../field/FieldSet";
 
 export class ContactFieldsRequest {
 
@@ -11,6 +11,11 @@ export class ContactFieldsRequest {
    * Requested classe's ids
    */
   classesIds?: string[];
+
+  /**
+   * Requested product's ids
+   */
+  productIds?: string[];
   fieldSet?: FieldSet;
 }
 

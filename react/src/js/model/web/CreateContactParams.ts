@@ -1,4 +1,4 @@
-import {FieldSet} from "./../web/FieldSet";
+import { FieldSet } from "./../field/FieldSet";
 
 export class CreateContactParams {
 
@@ -16,6 +16,7 @@ export class CreateContactParams {
    * Email of Contact
    */
   email: string;
+
   fieldSet: FieldSet;
 }
 

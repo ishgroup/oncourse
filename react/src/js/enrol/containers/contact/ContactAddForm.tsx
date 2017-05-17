@@ -7,7 +7,7 @@ import {validateContact} from "../../actions/Validations";
 import {ContactAddAction, ContactAddRejectAction} from "../../actions/Actions";
 import {Injector} from "../../../injector";
 import {CreateContactParams} from "../../../model/web/CreateContactParams";
-import {FieldSet} from "../../../model/web/FieldSet";
+import {FieldSet} from "../../../model/field/FieldSet";
 
 export const NAME = "ContactAddForm";
 

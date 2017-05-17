@@ -14,7 +14,7 @@ export class ContactEdit extends React.Component<Props, any> {
   render() {
     const {contact, fields, header} = this.props;
 
-    const headings = isNil(fields) ? [] : fields.classHeadings[0].headings.map((h, index) => {
+    const headings = isNil(fields) ? [] : fields.headings.map((h, index) => {
       return (<HeadingComp heading={h} key={index}/>)
     });
 

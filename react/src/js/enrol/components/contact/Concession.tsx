@@ -4,12 +4,12 @@ import {ComboboxField} from "../form/ComboboxField";
 import {TextField} from "../form/TextField";
 import {DateField} from "../form/DateField";
 import {CheckboxField} from "../form/CheckboxField";
-import {Item} from "../../../model/field/enumeration/Item";
+import {Item} from "../../../model/common/Item";
 
 const concessionTypes:Item[] = [
-  {displayName: "no concession", databaseValue: -1},
-  {displayName: "Seniors card", databaseValue: 0},
-  {displayName: "Pension", databaseValue: 1}
+  {value: "no concession", key: "-1"},
+  {value: "Seniors card", key: "0"},
+  {value: "Pension", key: "1"}
 ];
 
 export function Concession() {
