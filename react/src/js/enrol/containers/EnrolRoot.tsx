@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Router, Route, browserHistory, IndexRoute} from "react-router";
 import {Payment} from "../components/payment/Payment";
-import {Checkout} from "./checkout/Checkout";
+import {Checkout} from "./Checkout";
 import {Paths} from "../../config/Paths";
 import {IndexPage} from "../../components/IndexPage";
 

@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "rootDirs": [
+      "src/js",
+      "src/dev",
+      "src/test"
+    ],
     "outDir": "build/ts",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

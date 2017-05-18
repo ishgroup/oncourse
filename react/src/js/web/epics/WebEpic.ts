@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {Store} from "redux";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../actions/Actions";
-import * as EnrolActions from "../../enrol/actions/Actions";
+import * as ContactAddActions from "../../enrol/containers/contact-add/actions/Actions";
 import {normalize} from "normalizr";
 import uniq from "lodash/uniq";
 import {classesListSchema, classesSchema, productsListSchema, productsSchema, promotionsSchema} from "../../schema";
@@ -213,7 +213,7 @@ function createSyncCartRequestEpic() {
       FULFILLED(Actions.REQUEST_PROMOTION),
       FULFILLED(Actions.REQUEST_CONTACT),
       Actions,
-      EnrolActions.ContactAdd,
+      ContactAddActions.ContactAdd,
     )
     .map(action => ({
       timestamp: new Date().getTime(),

@@ -1,5 +1,5 @@
 import {ComponentClass, StatelessComponent} from "react";
-import Checkout from "../../enrol/containers/checkout/Checkout";
+import Checkout from "../../enrol/containers/Checkout";
 import {Fees} from "../../web/containers/Fees";
 import EnrolButton from "../../web/containers/EnrolButton";
 import {CartRoot} from "../../web/containers/CartRoot";

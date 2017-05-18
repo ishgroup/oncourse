@@ -18,7 +18,7 @@ const InitEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: Middle
     let result;
     if (cartIsEmpty(store.getState().cart)) {
       const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
-      result = [{type: Actions.InitReject, payload: error}]
+      result = [{type: Actions.MessagesSet, payload: error}]
     } else if (hasContact(store.getState())) {
       result = [{type: Actions.PhaseChange, payload: Phase.EditContactDetails}]
     } else {

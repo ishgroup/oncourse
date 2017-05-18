@@ -31,10 +31,10 @@ export function CreateStore(): Store<IshState> {
   }
 
   // Trigger syncing state with LocalStorage
-  // store.dispatch({
-  //   type: Actions.SYNC_CART,
-  //   payload: []
-  // });
+  store.dispatch({
+    type: Actions.SYNC_CART,
+    payload: []
+  });
 
   return store;
 }

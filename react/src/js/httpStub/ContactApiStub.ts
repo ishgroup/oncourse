@@ -53,6 +53,10 @@ export class ContactApiStub extends ContactApi {
       fieldsErrors: [{
           name: "isMale",
           error: "You should choose between male or female"
+        },
+        {
+          name: "street",
+          error: "Please enter correct street name"
         }
       ]
     })

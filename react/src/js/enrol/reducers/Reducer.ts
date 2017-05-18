@@ -1,12 +1,14 @@
 import {combineReducers} from "redux";
 import {CheckoutState, PayerState, Phase} from "./State";
 import * as Actions from "../actions/Actions";
+import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
+import * as ContactAddActions from "../containers/contact-add/actions/Actions";
 import {ValidationError} from "../../model/common/ValidationError";
 import {ContactFields} from "../../model/field/ContactFields";
 
-const FieldsReducer = (state:ContactFields = null, action): any => {
+const FieldsReducer = (state: ContactFields = null, action): any => {
   switch (action.type) {
-    case Actions.FieldsLoad:
+    case ContactEditActions.FieldsLoad:
       return action.payload;
     case Actions.PhaseChange:
       return null;
@@ -17,7 +19,7 @@ const FieldsReducer = (state:ContactFields = null, action): any => {
 
 const ContactReducer = (state = {}, action): any => {
   switch (action.type) {
-    case Actions.ContactAdd:
+    case ContactAddActions.ContactAdd:
       return action.payload.entities.contacts[action.payload.result];
     default:
       return state;
@@ -26,14 +28,13 @@ const ContactReducer = (state = {}, action): any => {
 
 const ErrorReducer = (state: ValidationError = null, action: any): any => {
   switch (action.type) {
-    case Actions.InitReject:
-    case Actions.ContactAddReject:
-    case Actions.FieldsLoadReject:
+    case Actions.MessagesSet:
       return action.payload;
     case Actions.Init:
-    case Actions.ContactAdd:
     case Actions.PhaseChange:
-    case Actions.FieldsLoad:
+    case ContactAddActions.ContactAdd:
+    case ContactEditActions.FieldsLoad:
+    case ContactEditActions.FieldsSave:
       return {};
     default:
       return state;

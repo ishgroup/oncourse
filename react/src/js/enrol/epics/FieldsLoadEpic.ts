@@ -2,8 +2,9 @@ import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
 import {Observable} from "rxjs";
 import "rxjs";
-import * as Actions from "../actions/Actions";
+import * as Actions from "../containers/contact-edit/actions/Actions";
 import {loadFields} from "../services/CheckoutSerivce";
+import {MessagesSet} from "../actions/Actions";
 
 const FieldsLoadEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
   return action$
@@ -14,7 +15,7 @@ const FieldsLoadEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: 
     .map((data) => {
       return {type: Actions.FieldsLoad, payload: data};
     }).catch((data) => {
-      return Observable.of({type: Actions.FieldsLoadReject, payload: data.data});
+      return Observable.of({type: MessagesSet, payload: data.data});
     });
 };
 

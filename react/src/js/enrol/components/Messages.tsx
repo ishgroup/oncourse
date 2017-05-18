@@ -8,7 +8,7 @@ const CLASS_WARNINGS: string = "message";
 /**
  * Shows validation errors
  */
-class Messages extends React.Component<any, Props> {
+class Messages extends React.Component<Props, any> {
   private renderMessages = (messages: string[], className: string): any => {
     if (Lodash.isNil(messages) || !messages.length) {
       return null
@@ -29,9 +29,19 @@ class Messages extends React.Component<any, Props> {
     if (Lodash.isNil(error)) {
       return null
     } else {
+      let errors:string[] = [];
+
+      if (error.formErrors) {
+        errors = errors.concat(error.formErrors);
+      }
+
+      if (error.fieldsErrors) {
+        const fes =  error.fieldsErrors.map((e) => e.error);
+        errors = errors.concat(fes);
+      }
       return (
         <div>
-          {this.renderMessages(error.formErrors, CLASS_ERRORS)}
+          {this.renderMessages(errors, CLASS_ERRORS)}
         </div>
       );
     }

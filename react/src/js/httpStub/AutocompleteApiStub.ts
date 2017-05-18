@@ -1,8 +1,9 @@
 import {AutocompleteApi} from "../http/AutocompleteApi";
 import {Suggestion} from "../selectors/autocomplete";
+import {Item} from "../model/common/Item";
 
 export class AutocompleteApiStub extends AutocompleteApi {
-  autocomplete(key: string, text: string): Promise<Suggestion[]> {
+  getCountries(text: string): Promise<Item[]> {
     return new Promise(function (resolve) {
       setTimeout(() => {
         resolve([

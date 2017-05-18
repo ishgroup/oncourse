@@ -9,6 +9,7 @@ import {contactsSchema} from "../../schema";
 import InitEpic from "./InitEpic";
 import ContactAddEpic from "./ContactAddEpic";
 import FieldsLoadEpic from "./FieldsLoadEpic";
+import MessagesSetEpic from "./MessagesSetEpic";
 
 const {
   contactApi
@@ -18,6 +19,7 @@ export const CheckoutEpic = combineEpics(
   InitEpic,
   ContactAddEpic,
   FieldsLoadEpic,
+  MessagesSetEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 

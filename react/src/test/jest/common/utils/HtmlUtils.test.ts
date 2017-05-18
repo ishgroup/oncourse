@@ -1,12 +1,23 @@
+import * as L from "lodash"
+
 test('test', () => {
   const props = {
-    values: {
-      firstName: "Andrei",
-      lastName: "Koira",
-      email: "pervoliner@gmail.com"
-    }
+    headings: [
+      {
+        name: 'heading1',
+        fields: [
+          "field1",
+          "field1"
+        ]
+      },
+      {
+        name: 'heading2',
+        fields: [
+          "field1",
+          "field2"
+        ]
+      },
+    ]
   };
-
-  const result = Object.assign({}, props.values, {id: "123456"});
-  console.log(result);
+  console.log(L.flatMap(props.headings, (h)=> {return h.fields} ));
 });

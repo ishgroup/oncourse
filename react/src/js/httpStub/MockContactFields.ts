@@ -247,24 +247,24 @@ const avetmissHeading = {
       "description": "How well do you speak English?",
       "enumItems":  [
         {
-          "databaseValue": 0,
-          "displayName": "not stated"
+          "key": "0",
+          "value": "not stated"
         },
         {
-          "databaseValue": 1,
-          "displayName": "Very Well"
+          "key": "1",
+          "value": "Very Well"
         },
         {
-          "databaseValue": 2,
-          "displayName": "Well"
+          "key": "2",
+          "value": "Well"
         },
         {
-          "databaseValue": 3,
-          "displayName": "Not Well"
+          "key": "3",
+          "value": "Not Well"
         },
         {
-          "databaseValue": 4,
-          "displayName": "Not at all"
+          "key": "4",
+          "value": "Not at all"
         }
       ],
       "mandatory": true,
@@ -277,10 +277,10 @@ const avetmissHeading = {
 const response: any = {
   "contactId": "1001",
     "headings": [
-      genderHeading
-      // contactHeading,
-      // communicateHeading,
-      // avetmissHeading
+      genderHeading,
+      contactHeading,
+      communicateHeading,
+      avetmissHeading
     ]
 };
 
