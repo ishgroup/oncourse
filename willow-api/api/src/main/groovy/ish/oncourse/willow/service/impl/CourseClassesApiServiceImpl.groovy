@@ -17,6 +17,7 @@ import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.util.FormatUtils
+import ish.oncourse.willow.checkout.functions.BuildClassPrice
 import ish.oncourse.willow.model.web.*
 import ish.oncourse.willow.service.CourseClassesApi
 import ish.util.DiscountUtils
@@ -112,33 +113,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         it.isCancelled = c.cancelled
                         it.isAllowByApplication = allowByApplication
                         it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(c.college, c.objectContext).get()
-                        it.price = new CourseClassPrice().with { ccp ->
-                            ccp.fee = c.feeIncGst.toBigDecimal().toString()
-                            ccp.hasTax = !c.gstExempt
-                            ccp.feeOverriden = overridenFee ? (c.gstExempt ? overridenFee.toBigDecimal().toString() : overridenFee.multiply(BigDecimal.ONE.add(c.taxRate)).toBigDecimal().toString()) : null
-                            if (!feeOverriden) {
-                                DiscountCourseClass bestDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(GetAppliedDiscounts.valueOf(c, promotions).get(), c.feeExGst, c.taxRate)
-
-                                if (bestDiscount) {
-                                    ccp.appliedDiscount = new Discount().with { d ->
-                                        Money value = c.getDiscountedFeeIncTax(bestDiscount)
-                                        d.discountedFee = value.toBigDecimal().toString()
-                                        d.discountValue = c.feeIncGst.subtract(value).toBigDecimal().toString()
-                                        d.title = ((ish.oncourse.model.Discount) bestDiscount.discount).name
-                                        Date discountExpiryDate = WebDiscountUtils.expiryDate((ish.oncourse.model.Discount) bestDiscount.discount, c.startDate)
-                                        if (discountExpiryDate) {
-                                            d.title = d.title + " expires ${FormatUtils.getShortDateFormat(c.college.timeZone).format(discountExpiryDate)}"
-                                        }
-                                        d
-                                    }
-                                }
-        
-                                WebDiscountUtils.sortByDiscountValue(GetPossibleDiscounts.valueOf(c).get(), c.feeExGst, c.taxRate).each { d ->
-                                    ccp.possibleDiscounts << new Discount(discountedFee: d.feeIncTax.toBigDecimal().toString(), title: d.title)
-                                }
-                            }
-                            ccp
-                        }
+                        it.price =  new BuildClassPrice(c, contact.student, allowByApplication, overridenFee, promotions).build()
                         it
                     }
         }

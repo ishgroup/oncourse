@@ -39,19 +39,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 	 */
 	@Override
 	public Application findNewApplicationBy(Course course, Student student) {
-		List<Application> applications = findApplications(course, student, ApplicationStatus.NEW);
-		return applications.size() > 0 ? applications.get(0) : null;	
+		return  new FindNewApplication(course, student,cayenneService.sharedContext()).get();
 	}
-	
-	private List<Application> findApplications(Course course, Student student, ApplicationStatus status) {
-		
-		SelectQuery q = new SelectQuery(Application.class);
-		q.andQualifier(ExpressionFactory.matchExp(Application.COURSE_PROPERTY, course));
-		q.andQualifier(ExpressionFactory.matchExp(Application.STUDENT_PROPERTY, student));
-		q.andQualifier(ExpressionFactory.matchExp(Application.STATUS_PROPERTY, status));
-		
-		return cayenneService.sharedContext().performQuery(q);
-	}
-
 
 }
