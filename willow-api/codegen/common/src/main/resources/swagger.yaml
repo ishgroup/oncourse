@@ -8,6 +8,53 @@ schemes:
 produces:
   - application/json
 paths:
+#  /purchaseItems:
+#    post:
+#      x-filter:  
+#      - CollegeInfo
+#      operationId: getPurchaseItems
+#      summary: Get list of purchases 
+#      description: Get list of enrolments/applications/product items for certain contact based on selected classes/products
+#      tags:
+#      - Checkout
+#      consumes:
+#      - application/json
+#      parameters:
+#      - name: contactId
+#        in: body
+#        description: contact identifier
+#        required: true
+#        type: string
+#      - name: classesIds
+#        in: body
+#        description: list of added classes
+#        required: true
+#        schema:
+#          type: array
+#          items: string
+#      - name: productIds
+#        in: body
+#        description: list of added products
+#        required: true
+#        schema:
+#          type: array
+#          items: string
+#      - name: promotionIds
+#        in: body
+#        description: list of added products
+#        required: true
+#        schema:
+#          type: array
+#          items: string
+#      responses:
+#        200:
+#          description: List of products
+#          schema:
+#            $ref: '#/definitions/checkout.PurchaseItems'
+#        default:
+#          description: Unexpected error
+#          schema:
+#            $ref: '#/definitions/common.CommonError'
   /products:
     post:
       x-filter:  
@@ -753,3 +800,68 @@ definitions:
         items:
           $ref: '#/definitions/field.FieldHeading'
         description: Related field headings
+  checkout.PurchaseItem:
+      type: object
+      discriminator: itemType
+      properties:
+        enabled:
+          type: boolean
+        contactId:
+          type: string
+        title:
+          type: string
+        warnings:
+          type: array
+          items:
+           type: string
+        errors:
+          type: array
+          items:
+           type: string
+        price:
+          type: string
+        discount:
+          type: string
+  checkout.Enrolment:
+    description: Enrolment representation
+    allOf:
+    - $ref: '#/definitions/checkout.PurchaseItem'
+    - properties:
+        classId:
+          type: string
+  checkout.Application:
+    description: Application representation
+    allOf:
+    - $ref: '#/definitions/checkout.PurchaseItem'
+    - properties:
+        classId:
+          type: string
+  checkout.ProductItem:
+    description: Application representation
+    allOf:
+    - $ref: '#/definitions/checkout.PurchaseItem'
+    - properties:
+        productId:
+          type: string
+  checkout.PurchaseItems:
+    type: object
+    requred:
+    - contact
+    - enrolments
+    - applications
+    - productItems
+    properties:
+      contact:
+        $ref: '#/definitions/web.Contact'
+      enrolments:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.Enrolment'
+      applications:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.Application'
+      productItems:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.ProductItem'
