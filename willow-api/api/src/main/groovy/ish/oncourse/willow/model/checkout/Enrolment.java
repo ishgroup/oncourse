@@ -1,11 +1,33 @@
 package ish.oncourse.willow.model.checkout;
 
-import ish.oncourse.willow.model.checkout.PurchaseItem;
+import ish.oncourse.willow.model.web.CourseClassPrice;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Enrolment extends PurchaseItem {
+public class Enrolment  {
   
+    private String contactId = null;
     private String classId = null;
+    private CourseClassPrice price = null;
+    private List<String> warnings = new ArrayList<String>();
+    private List<String> errors = new ArrayList<String>();
+
+    /**
+     * Get contactId
+     * @return contactId
+     */
+    public String getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(String contactId) {
+       this.contactId = contactId;
+    }
+
+    public Enrolment contactId(String contactId) {
+      this.contactId = contactId;
+      return this;
+    }
 
     /**
      * Get classId
@@ -24,13 +46,78 @@ public class Enrolment extends PurchaseItem {
       return this;
     }
 
+    /**
+     * Get price
+     * @return price
+     */
+    public CourseClassPrice getPrice() {
+        return price;
+    }
+
+    public void setPrice(CourseClassPrice price) {
+       this.price = price;
+    }
+
+    public Enrolment price(CourseClassPrice price) {
+      this.price = price;
+      return this;
+    }
+
+    /**
+     * Get warnings
+     * @return warnings
+     */
+    public List<String> getWarnings() {
+        return warnings;
+    }
+
+    public void setWarnings(List<String> warnings) {
+       this.warnings = warnings;
+    }
+
+    public Enrolment warnings(List<String> warnings) {
+      this.warnings = warnings;
+      return this;
+    }
+
+    public Enrolment addWarningsItem(String warningsItem) {
+      this.warnings.add(warningsItem);
+      return this;
+    }
+
+    /**
+     * Get errors
+     * @return errors
+     */
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+       this.errors = errors;
+    }
+
+    public Enrolment errors(List<String> errors) {
+      this.errors = errors;
+      return this;
+    }
+
+    public Enrolment addErrorsItem(String errorsItem) {
+      this.errors.add(errorsItem);
+      return this;
+    }
+
 
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
       sb.append("class Enrolment {\n");
-      sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+      
+      sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classId: ").append(toIndentedString(classId)).append("\n");
+      sb.append("    price: ").append(toIndentedString(price)).append("\n");
+      sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
+      sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("}");
       return sb.toString();
     }

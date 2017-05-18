@@ -226,12 +226,6 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
 
                 if (containsPackage(className)) {
 
-                    if (model.parent != null  && model.parent.split("/").length == 2) {
-                        model.parent = model.parent.split("/")[1];
-                        model.imports.remove("ApiModel");
-                        ((List)value.get("imports")).remove(0);
-                    }
-                    
                     final String newClassName = getClassName(className);
                     LOGGER.info("Replace classname {} with {}.", className, newClassName);
                     value.put("classname", newClassName);

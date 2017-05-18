@@ -8,53 +8,57 @@ schemes:
 produces:
   - application/json
 paths:
-#  /purchaseItems:
-#    post:
-#      x-filter:  
-#      - CollegeInfo
-#      operationId: getPurchaseItems
-#      summary: Get list of purchases 
-#      description: Get list of enrolments/applications/product items for certain contact based on selected classes/products
-#      tags:
-#      - Checkout
-#      consumes:
-#      - application/json
-#      parameters:
-#      - name: contactId
-#        in: body
-#        description: contact identifier
-#        required: true
-#        type: string
-#      - name: classesIds
-#        in: body
-#        description: list of added classes
-#        required: true
-#        schema:
-#          type: array
-#          items: string
-#      - name: productIds
-#        in: body
-#        description: list of added products
-#        required: true
-#        schema:
-#          type: array
-#          items: string
-#      - name: promotionIds
-#        in: body
-#        description: list of added products
-#        required: true
-#        schema:
-#          type: array
-#          items: string
-#      responses:
-#        200:
-#          description: List of products
-#          schema:
-#            $ref: '#/definitions/checkout.PurchaseItems'
-#        default:
-#          description: Unexpected error
-#          schema:
-#            $ref: '#/definitions/common.CommonError'
+  /purchaseItems:
+    post:
+      x-filter:  
+      - CollegeInfo
+      operationId: getPurchaseItems
+      summary: Get list of purchases 
+      description: Get list of enrolments/applications/product items for certain contact based on selected classes/products
+      tags:
+      - Checkout
+      consumes:
+      - application/json
+      parameters:
+      - name: contactId
+        in: body
+        description: contact identifier
+        required: true
+        schema:
+          type: string
+      - name: classesIds
+        in: body
+        description: list of added classes
+        required: true
+        schema:
+          type: array
+          items:
+           type: string
+      - name: productIds
+        in: body
+        description: list of added products
+        required: true
+        schema:
+          type: array
+          items: 
+            type: string
+      - name: promotionIds
+        in: body
+        description: list of added products
+        required: true
+        schema:
+          type: array
+          items: 
+            type: string
+      responses:
+        200:
+          description: List of products
+          schema:
+            $ref: '#/definitions/checkout.PurchaseItems'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /products:
     post:
       x-filter:  
@@ -800,49 +804,72 @@ definitions:
         items:
           $ref: '#/definitions/field.FieldHeading'
         description: Related field headings
-  checkout.PurchaseItem:
-      type: object
-      discriminator: itemType
-      properties:
-        enabled:
-          type: boolean
-        contactId:
-          type: string
-        title:
-          type: string
-        warnings:
-          type: array
-          items:
-           type: string
-        errors:
-          type: array
-          items:
-           type: string
-        price:
-          type: string
-        discount:
-          type: string
   checkout.Enrolment:
-    description: Enrolment representation
-    allOf:
-    - $ref: '#/definitions/checkout.PurchaseItem'
-    - properties:
-        classId:
-          type: string
+    type: object
+    requred:
+    - contactId
+    - classId
+    - price
+    - warnings
+    - errors
+    properties:
+      contactId:
+        type: string
+      classId:
+        type: string
+      price:
+        $ref: '#/definitions/web.CourseClassPrice'
+      warnings:
+        type: array
+        items:
+         type: string
+      errors:
+        type: array
+        items:
+         type: string
   checkout.Application:
-    description: Application representation
-    allOf:
-    - $ref: '#/definitions/checkout.PurchaseItem'
-    - properties:
-        classId:
-          type: string
+    type: object
+    requred:
+    - contactId
+    - classId
+    - warnings
+    - errors
+    properties:
+      contactId:
+        type: string
+      classId:
+        type: string
+      warnings:
+        type: array
+        items:
+         type: string
+      errors:
+        type: array
+        items:
+         type: string
   checkout.ProductItem:
-    description: Application representation
-    allOf:
-    - $ref: '#/definitions/checkout.PurchaseItem'
-    - properties:
-        productId:
-          type: string
+    type: object
+    requred:
+    - contactId
+    - productId
+    - warnings
+    - errors
+    - price
+    properties:
+      contactId:
+        type: string
+      productId:
+        type: string
+      warnings:
+        type: array
+        items:
+         type: string
+      errors:
+        type: array
+        items:
+         type: string
+      price:
+        type: string
   checkout.PurchaseItems:
     type: object
     requred:
