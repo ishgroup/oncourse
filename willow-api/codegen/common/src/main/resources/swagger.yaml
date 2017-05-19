@@ -444,10 +444,12 @@ definitions:
         type: string
         description: Code of class
       start:
+        description: Class start date and time in UTC time zone (+00:00),date format is ISO 8601
         type: string
         format: date
         description: Start date of class
       end:
+        description: Class start date and time in UTC time zone (+00:00),date format is ISO 8601
         type: string
         format: date
         description: End date of class
@@ -956,7 +958,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/checkout.Membership'
-      vouchers:
+      memberships:
         type: array
         items:
           $ref: '#/definitions/checkout.Voucher'
