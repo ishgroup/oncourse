@@ -502,10 +502,10 @@ definitions:
     properties:
       fee:
         type: string
-        description: 'TODO:  fee'
+        description: Full class price
       feeOverriden:
         type: string
-        description: 'TODO:  feeOverriden'
+        description: Class price overriden by application
       appliedDiscount:
         $ref: '#/definitions/web.Discount'
       possibleDiscounts:
