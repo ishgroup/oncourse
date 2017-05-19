@@ -79,7 +79,7 @@ export class HTMLMarkers {
    * Tapestry template to use: CourseClassItem.tml
    */
   static ENROL_BUTTON: HTMLMarker = {
-    id: "checkout-button",
+    id: "enrol-button",
     component: EnrolButton,
     props: {
       id: "string",
