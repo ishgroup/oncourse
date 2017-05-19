@@ -12,12 +12,18 @@ Build started with following configuration:
 `);
 };
 
-const _common = (dirname) => {
+const KEYS = {
+  ENTRY: "entry"
+};
+
+const _common = (dirname, options) => {
+  console.log(options);
   return {
+    entry: [options[KEYS.ENTRY]],
     output: {
       path: path.resolve(dirname, "build"),
       publicPath: "/assets/",
-      filename: "bundle.js"
+      filename: "dynamic.js"
     },
     resolve: {
       modules: [
@@ -80,6 +86,7 @@ const _DefinePlugin = (NODE_ENV, API_ROOT) => {
 
 
 module.exports = {
+    KEYS: KEYS,
     info: _info,
     common: _common,
     DefinePlugin: _DefinePlugin
