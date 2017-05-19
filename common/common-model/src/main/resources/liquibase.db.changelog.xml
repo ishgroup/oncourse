@@ -4474,5 +4474,9 @@
 		</preConditions>
 		<sql>ALTER TABLE FieldHeading ADD COLUMN fieldOrder INTEGER;</sql>
 	</changeSet>
+
+	<changeSet id="303" author="anarut" runOnChange="false" runAlways="false" context="production">
+		<sql>ALTER TABLE Field DROP INDEX field_fieldOrder_fieldConfiguration_unique;</sql>
+	</changeSet>
 	
 </databaseChangeLog>
