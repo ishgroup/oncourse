@@ -66,8 +66,8 @@ class ContactDetailsBuilder {
         result.headings << dummy                                                        // add dummy heading and real headings 
         result.headings += headingsMap.values()                                         // to resulted container
         
-        result.headings =  result.headings.sort { a, b ->                               // sort all headings by name, dummy heading should be first
-            a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name)
+        result.headings =  result.headings.sort { a, b ->                               // sort all headings by ordering, dummy heading should be first
+            a.name == null ? 1 : b.name == null ? -1 : a.ordering <=> b.ordering
         }
         
         result.headings.each { h ->                                                     // sort fields inside each heading by sortOrdering
@@ -84,7 +84,7 @@ class ContactDetailsBuilder {
         
         FieldHeading result = headingsMap.get(heading.name)
         if (!result) {
-            result = new FieldHeading(name: heading.name, description: heading.description)
+            result = new FieldHeading(name: heading.name, description: heading.description, ordering: heading.order)
             headingsMap[heading.name] = result
         }
         result

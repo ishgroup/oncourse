@@ -778,6 +778,7 @@ definitions:
     - name
     - description
     - fields
+    - ordering
     properties:
       name:
         type: string
@@ -790,6 +791,10 @@ definitions:
         items:
           $ref: '#/definitions/field.Field'
         description: Fields set related to field heading
+      ordering:
+        type: integer
+        format: int32
+        description: order position
   field.ContactFields:
     type: object
     requred:

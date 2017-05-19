@@ -9,6 +9,7 @@ public class FieldHeading  {
     private String name = null;
     private String description = null;
     private List<Field> fields = new ArrayList<Field>();
+    private Integer ordering = null;
 
     /**
      * Heading name
@@ -66,6 +67,23 @@ public class FieldHeading  {
       return this;
     }
 
+    /**
+     * order position
+     * @return ordering
+     */
+    public Integer getOrdering() {
+        return ordering;
+    }
+
+    public void setOrdering(Integer ordering) {
+       this.ordering = ordering;
+    }
+
+    public FieldHeading ordering(Integer ordering) {
+      this.ordering = ordering;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -75,6 +93,7 @@ public class FieldHeading  {
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
       sb.append("    description: ").append(toIndentedString(description)).append("\n");
       sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
+      sb.append("    ordering: ").append(toIndentedString(ordering)).append("\n");
       sb.append("}");
       return sb.toString();
     }
