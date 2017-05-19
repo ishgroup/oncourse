@@ -20,36 +20,12 @@ paths:
       consumes:
       - application/json
       parameters:
-      - name: contactId
+      - name: purchaseItemsRequest
         in: body
-        description: contact identifier
+        description: Params for request list of products/classes
         required: true
         schema:
-          type: string
-      - name: classesIds
-        in: body
-        description: list of added classes
-        required: true
-        schema:
-          type: array
-          items:
-           type: string
-      - name: productIds
-        in: body
-        description: list of added products
-        required: true
-        schema:
-          type: array
-          items: 
-            type: string
-      - name: promotionIds
-        in: body
-        description: list of added products
-        required: true
-        schema:
-          type: array
-          items: 
-            type: string
+          $ref: '#/definitions/checkout.request.PurchaseItemsRequest'
       responses:
         200:
           description: List of products
@@ -494,6 +470,9 @@ definitions:
       isPaymentGatewayEnabled:
         type: boolean
         description: Is payment gateway enabled
+      distantLearning:
+        type: boolean
+        description: Self paced class
       price:
         $ref: '#/definitions/web.CourseClassPrice'
         description: Prices attached to current course class
@@ -852,7 +831,7 @@ definitions:
         type: array
         items:
          type: string
-  checkout.ProductItem:
+  checkout.Article:
     type: object
     requred:
     - contactId
@@ -875,16 +854,92 @@ definitions:
          type: string
       price:
         type: string
+  checkout.Membership:
+    type: object
+    requred:
+    - contactId
+    - productId
+    - warnings
+    - errors
+    - price
+    properties:
+      contactId:
+        type: string
+      productId:
+        type: string
+      warnings:
+        type: array
+        items:
+         type: string
+      errors:
+        type: array
+        items:
+         type: string
+      price:
+        type: string
+  checkout.Voucher:
+    type: object
+    requred:
+    - contactId
+    - productId
+    - warnings
+    - errors
+    - price
+    properties:
+      contactId:
+        type: string
+      productId:
+        type: string
+      warnings:
+        type: array
+        items:
+         type: string
+      errors:
+        type: array
+        items:
+         type: string
+      price:
+        type: string
+      value:
+        type: string
+      classes:
+        type: array
+        items:
+          type: string
+  checkout.request.PurchaseItemsRequest:
+      type: object
+      requred:
+      - contactId
+      - classesIds
+      - productIds
+      - promotionIds
+      properties:
+        contactId:
+          type: string
+        classesIds:
+          type: array
+          items:
+           type: string
+        productIds:
+          type: array
+          items: 
+            type: string
+        promotionIds:
+          type: array
+          items: 
+            type: string
   checkout.PurchaseItems:
     type: object
     requred:
-    - contact
+    - contactId
     - enrolments
     - applications
-    - productItems
+    - articles
+    - memberships
+    - vouchers
     properties:
-      contact:
-        $ref: '#/definitions/web.Contact'
+      contactId:
+        type: string
       enrolments:
         type: array
         items:
@@ -893,7 +948,15 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/checkout.Application'
-      productItems:
+      articles:
         type: array
         items:
-          $ref: '#/definitions/checkout.ProductItem'
+          $ref: '#/definitions/checkout.Article'
+      memberships:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.Membership'
+      vouchers:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.Voucher'

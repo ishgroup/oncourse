@@ -13,7 +13,7 @@ public class CourseClassPrice  {
     private Boolean hasTax = null;
 
     /**
-     * TODO:  fee
+     * Full class price
      * @return fee
      */
     public String getFee() {
@@ -30,7 +30,7 @@ public class CourseClassPrice  {
     }
 
     /**
-     * TODO:  feeOverriden
+     * Class price overriden by application
      * @return feeOverriden
      */
     public String getFeeOverriden() {

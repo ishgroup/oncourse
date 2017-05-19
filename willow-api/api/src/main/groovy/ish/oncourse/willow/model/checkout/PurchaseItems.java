@@ -1,33 +1,36 @@
 package ish.oncourse.willow.model.checkout;
 
 import ish.oncourse.willow.model.checkout.Application;
+import ish.oncourse.willow.model.checkout.Article;
 import ish.oncourse.willow.model.checkout.Enrolment;
-import ish.oncourse.willow.model.checkout.ProductItem;
-import ish.oncourse.willow.model.web.Contact;
+import ish.oncourse.willow.model.checkout.Membership;
+import ish.oncourse.willow.model.checkout.Voucher;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseItems  {
   
-    private Contact contact = null;
+    private String contactId = null;
     private List<Enrolment> enrolments = new ArrayList<Enrolment>();
     private List<Application> applications = new ArrayList<Application>();
-    private List<ProductItem> productItems = new ArrayList<ProductItem>();
+    private List<Article> articles = new ArrayList<Article>();
+    private List<Membership> memberships = new ArrayList<Membership>();
+    private List<Voucher> vouchers = new ArrayList<Voucher>();
 
     /**
-     * Get contact
-     * @return contact
+     * Get contactId
+     * @return contactId
      */
-    public Contact getContact() {
-        return contact;
+    public String getContactId() {
+        return contactId;
     }
 
-    public void setContact(Contact contact) {
-       this.contact = contact;
+    public void setContactId(String contactId) {
+       this.contactId = contactId;
     }
 
-    public PurchaseItems contact(Contact contact) {
-      this.contact = contact;
+    public PurchaseItems contactId(String contactId) {
+      this.contactId = contactId;
       return this;
     }
 
@@ -76,24 +79,68 @@ public class PurchaseItems  {
     }
 
     /**
-     * Get productItems
-     * @return productItems
+     * Get articles
+     * @return articles
      */
-    public List<ProductItem> getProductItems() {
-        return productItems;
+    public List<Article> getArticles() {
+        return articles;
     }
 
-    public void setProductItems(List<ProductItem> productItems) {
-       this.productItems = productItems;
+    public void setArticles(List<Article> articles) {
+       this.articles = articles;
     }
 
-    public PurchaseItems productItems(List<ProductItem> productItems) {
-      this.productItems = productItems;
+    public PurchaseItems articles(List<Article> articles) {
+      this.articles = articles;
       return this;
     }
 
-    public PurchaseItems addProductItemsItem(ProductItem productItemsItem) {
-      this.productItems.add(productItemsItem);
+    public PurchaseItems addArticlesItem(Article articlesItem) {
+      this.articles.add(articlesItem);
+      return this;
+    }
+
+    /**
+     * Get memberships
+     * @return memberships
+     */
+    public List<Membership> getMemberships() {
+        return memberships;
+    }
+
+    public void setMemberships(List<Membership> memberships) {
+       this.memberships = memberships;
+    }
+
+    public PurchaseItems memberships(List<Membership> memberships) {
+      this.memberships = memberships;
+      return this;
+    }
+
+    public PurchaseItems addMembershipsItem(Membership membershipsItem) {
+      this.memberships.add(membershipsItem);
+      return this;
+    }
+
+    /**
+     * Get vouchers
+     * @return vouchers
+     */
+    public List<Voucher> getVouchers() {
+        return vouchers;
+    }
+
+    public void setVouchers(List<Voucher> vouchers) {
+       this.vouchers = vouchers;
+    }
+
+    public PurchaseItems vouchers(List<Voucher> vouchers) {
+      this.vouchers = vouchers;
+      return this;
+    }
+
+    public PurchaseItems addVouchersItem(Voucher vouchersItem) {
+      this.vouchers.add(vouchersItem);
       return this;
     }
 
@@ -103,10 +150,12 @@ public class PurchaseItems  {
       StringBuilder sb = new StringBuilder();
       sb.append("class PurchaseItems {\n");
       
-      sb.append("    contact: ").append(toIndentedString(contact)).append("\n");
+      sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    enrolments: ").append(toIndentedString(enrolments)).append("\n");
       sb.append("    applications: ").append(toIndentedString(applications)).append("\n");
-      sb.append("    productItems: ").append(toIndentedString(productItems)).append("\n");
+      sb.append("    articles: ").append(toIndentedString(articles)).append("\n");
+      sb.append("    memberships: ").append(toIndentedString(memberships)).append("\n");
+      sb.append("    vouchers: ").append(toIndentedString(vouchers)).append("\n");
       sb.append("}");
       return sb.toString();
     }

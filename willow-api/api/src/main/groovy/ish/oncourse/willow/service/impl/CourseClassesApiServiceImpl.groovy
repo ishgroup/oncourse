@@ -111,6 +111,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         it.hasAvailablePlaces = hasAvailablePlaces(c)
                         it.isFinished = !c.cancelled && c.hasEnded()
                         it.isCancelled = c.cancelled
+                        it.distantLearning = c.isDistantLearningCourse
                         it.isAllowByApplication = allowByApplication
                         it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(c.college, c.objectContext).get()
                         it.price =  new BuildClassPrice(c, contact.student, allowByApplication, overridenFee, promotions).build()

@@ -1,7 +1,7 @@
 package ish.oncourse.willow.service;
 
-import java.util.List;
 import ish.oncourse.willow.model.checkout.PurchaseItems;
+import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest;
 import ish.oncourse.willow.model.common.CommonError;
 
 import java.io.InputStream;
@@ -20,6 +20,6 @@ public interface CheckoutApi  {
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
-    PurchaseItems getPurchaseItems(String contactId, List<String> classesIds, List<String> productIds, List<String> promotionIds);
+    PurchaseItems getPurchaseItems(PurchaseItemsRequest purchaseItemsRequest);
 }
 

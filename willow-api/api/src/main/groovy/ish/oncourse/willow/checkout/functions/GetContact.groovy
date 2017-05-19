@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
-class GetContact extends Get {
+class GetContact extends Get<Contact> {
 
     final static  Logger logger = LoggerFactory.getLogger(GetContact.class)
 

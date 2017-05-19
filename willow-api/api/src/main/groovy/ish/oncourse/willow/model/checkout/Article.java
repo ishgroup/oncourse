@@ -3,7 +3,7 @@ package ish.oncourse.willow.model.checkout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductItem  {
+public class Article  {
   
     private String contactId = null;
     private String productId = null;
@@ -23,7 +23,7 @@ public class ProductItem  {
        this.contactId = contactId;
     }
 
-    public ProductItem contactId(String contactId) {
+    public Article contactId(String contactId) {
       this.contactId = contactId;
       return this;
     }
@@ -40,7 +40,7 @@ public class ProductItem  {
        this.productId = productId;
     }
 
-    public ProductItem productId(String productId) {
+    public Article productId(String productId) {
       this.productId = productId;
       return this;
     }
@@ -57,12 +57,12 @@ public class ProductItem  {
        this.warnings = warnings;
     }
 
-    public ProductItem warnings(List<String> warnings) {
+    public Article warnings(List<String> warnings) {
       this.warnings = warnings;
       return this;
     }
 
-    public ProductItem addWarningsItem(String warningsItem) {
+    public Article addWarningsItem(String warningsItem) {
       this.warnings.add(warningsItem);
       return this;
     }
@@ -79,12 +79,12 @@ public class ProductItem  {
        this.errors = errors;
     }
 
-    public ProductItem errors(List<String> errors) {
+    public Article errors(List<String> errors) {
       this.errors = errors;
       return this;
     }
 
-    public ProductItem addErrorsItem(String errorsItem) {
+    public Article addErrorsItem(String errorsItem) {
       this.errors.add(errorsItem);
       return this;
     }
@@ -101,7 +101,7 @@ public class ProductItem  {
        this.price = price;
     }
 
-    public ProductItem price(String price) {
+    public Article price(String price) {
       this.price = price;
       return this;
     }
@@ -110,7 +110,7 @@ public class ProductItem  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class ProductItem {\n");
+      sb.append("class Article {\n");
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    productId: ").append(toIndentedString(productId)).append("\n");

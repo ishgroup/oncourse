@@ -29,6 +29,7 @@ public class CourseClass  {
     private Boolean isCancelled = null;
     private Boolean isAllowByApplication = null;
     private Boolean isPaymentGatewayEnabled = null;
+    private Boolean distantLearning = null;
     private CourseClassPrice price = null;
 
     /**
@@ -219,6 +220,23 @@ public class CourseClass  {
     }
 
     /**
+     * Self paced class
+     * @return distantLearning
+     */
+    public Boolean getDistantLearning() {
+        return distantLearning;
+    }
+
+    public void setDistantLearning(Boolean distantLearning) {
+       this.distantLearning = distantLearning;
+    }
+
+    public CourseClass distantLearning(Boolean distantLearning) {
+      this.distantLearning = distantLearning;
+      return this;
+    }
+
+    /**
      * Prices attached to current course class
      * @return price
      */
@@ -252,6 +270,7 @@ public class CourseClass  {
       sb.append("    isCancelled: ").append(toIndentedString(isCancelled)).append("\n");
       sb.append("    isAllowByApplication: ").append(toIndentedString(isAllowByApplication)).append("\n");
       sb.append("    isPaymentGatewayEnabled: ").append(toIndentedString(isPaymentGatewayEnabled)).append("\n");
+      sb.append("    distantLearning: ").append(toIndentedString(distantLearning)).append("\n");
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
       sb.append("}");
       return sb.toString();
