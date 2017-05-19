@@ -111,7 +111,7 @@ function createListOfPlugins({NODE_ENV, API_ROOT}) {
 
   if (NODE_ENV === "development") {
     plugins.push(
-      getHtmlWebpackPlugin("checkout/checkout/index.html"),
+      getHtmlWebpackPlugin("enrol/checkout/index.html"),
       getHtmlWebpackPlugin("courses/index.html"),
       getHtmlWebpackPlugin("courses/one_class.html"),
       getHtmlWebpackPlugin("products/index.html")

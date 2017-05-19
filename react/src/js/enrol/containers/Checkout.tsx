@@ -16,7 +16,7 @@ interface Props {
 
 export class Checkout extends React.Component<Props, any> {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.onInit();
   }
 

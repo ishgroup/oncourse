@@ -2,11 +2,13 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {Provider} from "react-redux";
-import {CreateStore} from "../../js/CreateStore";
+import {CreateStore, RestoreState} from "../../js/CreateStore";
 import Checkout from "../../js/enrol/containers/Checkout";
 import {Actions} from "../../js/web/actions/Actions";
+import {reduce} from "rxjs/operator/reduce";
 
 const store = CreateStore();
+RestoreState(store, () => render());
 
 const loadCourseClasses = () => {
   store.dispatch({
@@ -42,4 +44,3 @@ const render = () => ReactDOM.render(
   document.getElementById("root")
 );
 
-render();

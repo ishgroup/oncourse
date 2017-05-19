@@ -1,40 +1,39 @@
 import {Store} from "react-redux";
 import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
-import {applyMiddleware, createStore, GenericStoreEnhancer} from "redux";
+import {applyMiddleware, compose, createStore, GenericStoreEnhancer} from "redux";
 import {IshState} from "./services/IshState";
 import {RootEpic} from "./RootEpics";
 import {combinedReducers} from "./reducers/reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
-import {Actions} from "./web/actions/Actions";
-
-export function CreateStore(): Store<IshState> {
-  const store = createStore(
-    combinedReducers,
-    getMiddleware()
-  );
+import {autoRehydrate, getStoredState, OnComplete, persistStore} from "redux-persist";
+import {REHYDRATE} from "redux-persist/constants";
+import * as LocalForage from "localforage";
 
 
-  function getMiddleware(): GenericStoreEnhancer {
-    const logger = createLogger({
-      collapsed: true
-    });
-
-    /**
-     * Split middlewares which we using in development and in production.
-     */
-    if (process.env.NODE_ENV === EnvironmentConstants.development) {
-      return applyMiddleware(createEpicMiddleware(RootEpic), logger);
-    } else {
-      return applyMiddleware(createEpicMiddleware(RootEpic));
-    }
-  }
-
-  // Trigger syncing state with LocalStorage
-  store.dispatch({
-    type: Actions.SYNC_CART,
-    payload: []
+const getMiddleware = (): GenericStoreEnhancer => {
+  const logger = createLogger({
+    collapsed: true
   });
 
+  /**
+   * Split middlewares which we using in development and in production.
+   */
+  if (process.env.NODE_ENV === EnvironmentConstants.development) {
+    return applyMiddleware(createEpicMiddleware(RootEpic), logger);
+  } else {
+    return applyMiddleware(createEpicMiddleware(RootEpic));
+  }
+};
+
+export const CreateStore = (): Store<IshState> => {
+  const store: Store<IshState> = createStore(
+    combinedReducers,
+    compose(getMiddleware(), autoRehydrate())
+  ) as Store<IshState>;
   return store;
+};
+
+export const RestoreState = (store: Store<IshState>, onComplete: OnComplete<any>): void => {
+  persistStore(store, LocalForage, onComplete);
 }
