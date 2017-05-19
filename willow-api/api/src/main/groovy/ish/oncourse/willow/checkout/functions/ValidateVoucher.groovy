@@ -22,7 +22,7 @@ class ValidateVoucher extends Validate<Voucher>{
     ValidateVoucher validate(VoucherProduct product, Money price ) {
         
         if (product.redemptionCourses.empty && product.priceExTax == null && !price.isGreaterThan(Money.ZERO)) {
-            errors << "Please enter the correct price for voucher: $product.name"
+            errors << "Please enter the correct price for voucher: $product.name".toString()
         }
         this
     }

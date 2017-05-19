@@ -26,14 +26,14 @@ class ValidateMembership extends Validate<Membership>{
 
     ValidateMembership validate(MembershipProduct product, Contact contact) {
         if (contact.memberships.any { ACTIVE == it.status && it.product == product && it.product.expiryType == ExpiryType.LIFETIME }) {
-            errors << "$contact.fullName is already has this membership $product.sku."
+            errors << "$contact.fullName is already has this membership $product.sku.".toString()
         }
         this
     }
     
     private boolean validateVoucher(VoucherProduct product, Money price) {
         if (product.redemptionCourses.empty && product.priceExTax == null && !price.isGreaterThan(Money.ZERO)) {
-           errors << "Please enter the correct price for voucher: $product.name"
+           errors << "Please enter the correct price for voucher: $product.name".toString()
         }
     }
 

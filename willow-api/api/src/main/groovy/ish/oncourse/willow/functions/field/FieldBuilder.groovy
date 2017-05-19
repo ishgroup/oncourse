@@ -50,7 +50,7 @@ class FieldBuilder {
                     f.enumType = aClass.simpleName
 
                     aClass.enumConstants.each { DisplayableExtendedEnumeration item ->
-                        f.enumItems  << new Item(value: item.displayName, key: item.databaseValue as Integer)
+                        f.enumItems  << new Item(value: item.displayName, key: item.databaseValue.toString())
                     }
                     break
                 default:

@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions
 
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.ContextType
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.common.field.PropertyGetSet
@@ -16,12 +17,13 @@ import ish.oncourse.willow.model.field.FieldSet
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+@CompileStatic
 class ContactDetailsBuilder {
     
     final static Logger logger = LoggerFactory.getLogger(ContactDetailsBuilder.class)
     
     ContactFields result = new ContactFields()
-    FieldHeading dummy = new FieldHeading(name: null, description: null)
+    FieldHeading dummy = new FieldHeading()
     Map<String, FieldHeading> headingsMap = [:]
     
 
@@ -48,8 +50,8 @@ class ContactDetailsBuilder {
                 new GetFieldConfigurations(classes: classes, contact: contact, college: contact.college, mergeDefault: mergeDefault, fieldSet: fieldSet).get()
 
         PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
-        configurations*.fields.flatten()                                                // collect all fields in single list
-                .groupBy { Field f -> f.property }                                      // group by unique key to map like [key1: [field1, field2,...], key2: [field3, field4,...],... ]
+        (configurations*.fields.flatten()  as List<Field>)                                   // collect all fields in single list
+                .groupBy { f -> f.property }                                      // group by unique key to map like [key1: [field1, field2,...], key2: [field3, field4,...],... ]
                 .values()                                                               // get list of lists 
                 .collect { List<Field> list ->  list.sort { it.mandatory }[0] }         // get first mandatory field (if mandatory field there) from each list 
                 .each { f ->                                                            // sort out each field
@@ -59,7 +61,7 @@ class ContactDetailsBuilder {
                     
                     if (getSet.get() == null) {                                         // add field in result list if contact has no value for corresponded property
                         FieldHeading heading = getHeadingBy(f.fieldHeading)             // get heading by name or create new on if not exist
-                        heading << new FieldBuilder(field: f, aClass: getSet.type).build()                              // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
+                        heading.fields << new FieldBuilder(field: f, aClass: getSet.type).build()                              // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
                     }
                 }
         
