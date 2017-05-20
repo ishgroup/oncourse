@@ -14,7 +14,8 @@
     "test": "jest",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",
     "start": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/js/app.ts  --content-base ./dev-server",
-    "start:dev": "webpack-dev-server --progress --open --config webpack.dev.config.js --content-base ./dev-server"
+    "start:dev": "webpack-dev-server --progress --open --config webpack.dev.config.js --content-base ./dev-server",
+    "start:dev:SummaryApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/summary/SummaryApp.tsx  --content-base ./dev-server"
   },
   "devDependencies": {
     "@types/jquery": "2.0.40",
@@ -25,14 +26,15 @@
     "@types/webpack": "2.2.6",
     "@types/webpack-env": "1.13.0",
     "@types/jest": "19.2.2",
-    "css-loader": "0.28.0",
+    "css-loader": "0.28.1",
+    "node-sass": "4.5.3",
     "sass-loader": "6.0.5",
+    "style-loader": "0.17.0",
     "extract-text-webpack-plugin": "2.1.0",
     "html-webpack-plugin": "2.28.0",
     "jsdoc": "3.4.3",
     "null-loader": "0.1.1",
     "phantomjs-prebuilt": "2.1.14",
-    "style-loader": "0.16.1",
     "ts-loader": "2.0.3",
     "source-map-loader": "0.2.1",
     "typedoc": "0.5.10",
@@ -45,7 +47,10 @@
     "ts-jest": "19.0.14",
     "identity-obj-proxy": "3.0.0",
     "tslint": "5.2.0",
-    "redux-form-website-template": "0.0.41"
+    "redux-form-website-template": "0.0.41",
+
+    "mocker-data-generator": "2.0.0",
+    "faker": "4.1.0"
   },
   "dependencies": {
     "axios": "0.15.3",

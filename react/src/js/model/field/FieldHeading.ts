@@ -16,5 +16,10 @@ export class FieldHeading {
    * Fields set related to field heading
    */
   fields?: Field[];
+
+  /**
+   * order position
+   */
+  ordering?: number;
 }
 

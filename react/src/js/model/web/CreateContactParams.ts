@@ -16,7 +16,6 @@ export class CreateContactParams {
    * Email of Contact
    */
   email: string;
-
   fieldSet: FieldSet;
 }
 

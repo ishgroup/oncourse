@@ -3,6 +3,9 @@ import withRouter from "react-router/lib/withRouter";
 import {ReactRouterContext} from "../../../types";
 import {Paths} from "../../../config/Paths";
 
+/**
+ * @Deprecated
+ */
 class SummaryComponent extends React.Component<SummaryProps & ReactRouterContext, SummaryState> {
   constructor() {
     super();

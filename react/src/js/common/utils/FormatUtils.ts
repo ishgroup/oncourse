@@ -1,4 +1,3 @@
-import {Formats} from "../../constants/Formats";
 import moment from "moment";
 /**
  * this utils collect useful function to format different data types: date, string .....
@@ -8,5 +7,5 @@ import moment from "moment";
  * Format date string in ISO8601 to string with this pattern
  */
 export const formatDate = (dateISO8601: string, pattern: string): string => {
-  return moment(dateISO8601).add(moment().utcOffset(), "m").format(pattern)
+  return dateISO8601 ? moment(dateISO8601).add(moment().utcOffset(), "m").format(pattern) : null;
 };

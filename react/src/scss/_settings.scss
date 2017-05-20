@@ -1,0 +1,47 @@
+//
+//
+// settings.scss
+//
+// Contains all settings
+//
+//
+
+// Bootstrap
+$grid-columns: 24;
+
+$basePath: './src/assets';
+
+$black: #000;
+$white: #fff;
+
+$primaryColor: #f7941d;
+$secondaryColor: #37caad;
+
+$imgPath: $basePath + '/img/';
+
+// Our variables
+$base-font-family: sans-serif;
+$base-font-size:   16px;
+$base-font-weight: 300;
+$base-line-height: 1.5;
+$base-background-color: #fbf9f0;
+$base-text-color: #434343;
+
+$xsmall-screen: 544px;
+$small-screen: 768px;
+$tablet-screen: 992px;
+$desktop-screen: 1200px;
+
+$container-max-widths: (
+  sm: 768px,
+  md: 992px,
+  lg: 1200px,
+  xl: 1630px
+);
+
+$media-xsmall: 'xsmall';
+$media-small: 'small';
+$media-tablet: 'tablet';
+$media-desktop: 'desktop';
+$media-custom: 'custom';
+

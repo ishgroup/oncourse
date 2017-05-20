@@ -1,5 +1,6 @@
 import { Course } from "./../web/Course";
 import { CourseClassPrice } from "./../web/CourseClassPrice";
+import {Room} from "./Room";
 
 export class CourseClass {
 
@@ -58,5 +59,9 @@ export class CourseClass {
    * Prices attached to current course class
    */
   price?: CourseClassPrice;
+
+  distantLearning?: boolean;
+
+  room?: Room;
 }
 

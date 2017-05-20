@@ -18,7 +18,6 @@ export interface PayerState {
   entity: PayerEntity;
 }
 
-
 export enum Phase {
   Init,
   AddContact,

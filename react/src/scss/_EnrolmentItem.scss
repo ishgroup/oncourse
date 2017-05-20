@@ -1,0 +1,66 @@
+
+#content {
+  #checkout {
+    .enrolmentItem {
+      padding: 8px 0;
+      &.disabled {
+        color: #888;
+        span.fee-discounted {
+          color: #d2887d;
+        }
+      }
+      span {
+        vertical-align: middle;
+      }
+      input.enrolmentSelect {
+        margin-right: 2px;
+      }
+      label {
+        display: block !important;
+        width: auto !important;
+        max-width: 100% !important;
+        text-align: left !important;
+        span {
+          margin-left:2px;
+        }
+      }
+    }
+    div.amount-container {
+      .amount-content {
+        span {
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+.content {
+  .payments {
+    >.row {
+      margin-bottom: 18px;
+    }
+    .row {
+      .student-name {
+        padding: 8px 15px;
+        .student-info {
+          font-weight: bold;
+          padding-bottom: 5px;
+          position: relative;
+        }
+        .student-email {
+          color: #888888;
+          font-size: 11px;
+          font-weight: normal;
+          left: 0;
+          text-transform: lowercase;
+          top: 1px;
+          margin-right: 5px;
+        }
+      }
+      .alignright span+span {
+        color: #921;
+      }
+    }
+  }
+}

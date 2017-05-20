@@ -3,6 +3,7 @@ import {isNil} from "lodash";
 import {Contact} from "../../../../model/web/Contact";
 import {ContactFields} from "../../../../model/field/ContactFields";
 import HeadingComp from "./HeadingComp";
+import ContactInfo from "../../../components/ContactInfo";
 
 export interface Props {
   contact: Contact,
@@ -20,7 +21,7 @@ export class ContactEdit extends React.Component<Props, any> {
 
     return (
       <div>
-        <div className="student">{contact.firstName} {contact.lastName} <span>- {contact.email}</span></div>
+        <ContactInfo contact={contact}/>
         <div className="message">
           <p>We require a few more details to create the contact record.
             It is important that we have correct contact information in case we need to let you know about course
