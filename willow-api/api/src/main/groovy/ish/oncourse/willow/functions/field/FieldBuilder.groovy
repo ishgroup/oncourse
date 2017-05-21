@@ -23,7 +23,7 @@ class FieldBuilder {
             f.ordering = field.order
 
             
-            switch (valueOf(field.property)) {
+            switch (getByKey(field.property)) {
                 case EMAIL_ADDRESS:
                     f.dataType = DataType.EMAIL
                     break

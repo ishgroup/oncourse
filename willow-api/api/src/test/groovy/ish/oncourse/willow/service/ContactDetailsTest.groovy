@@ -128,7 +128,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'suburb'
                 f.name = 'Suburb'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.SUBURB
                 f.value = 'sub22urb'
                 f.mandatory = true
                 f
@@ -136,7 +136,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'postcode'
                 f.name = 'postcode'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.POSTCODE
                 f.value = 'postcode'
                 f.mandatory = true
                 f
@@ -152,7 +152,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'homePhoneNumber'
                 f.name = 'homePhoneNumber'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.PHONE
                 f.value = '2255515'
                 f.mandatory = true
                 f
@@ -160,7 +160,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'businessPhoneNumber'
                 f.name = 'businessPhoneNumber'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.PHONE
                 f.value = '2255515'
                 f.mandatory = true
                 f
@@ -168,7 +168,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'faxNumber'
                 f.name = 'faxNumber'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.PHONE
                 f.value = '2255515'
                 f.mandatory = true
                 f
@@ -176,7 +176,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'mobilePhoneNumber'
                 f.name = 'mobilePhoneNumber'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.PHONE
                 f.value = '2255515'
                 f.mandatory = true
                 f
@@ -364,7 +364,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'suburb'
                 f.name = 'Suburb'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.SUBURB
                 f.value = 'Parramata'
                 f.mandatory = true
                 f
@@ -372,7 +372,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'postcode'
                 f.name = 'postcode'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.POSTCODE
                 f.value = '6797'
                 f.mandatory = true
                 f
@@ -388,7 +388,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'homePhoneNumber'
                 f.name = 'homePhoneNumber'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.PHONE
                 f.value = '02 5551 5678'
                 f.mandatory = true
                 f
@@ -396,7 +396,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'businessPhoneNumber'
                 f.name = 'businessPhoneNumber'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.PHONE
                 f.value = '02 5551 5678'
                 f.mandatory = true
                 f
@@ -404,7 +404,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'faxNumber'
                 f.name = 'faxNumber'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.PHONE
                 f.value = '02 5551 5678'
                 f.mandatory = true
                 f
@@ -412,7 +412,7 @@ class ContactDetailsTest extends  ApiTest{
             it.fields << new Field().with { f ->
                 f.key = 'mobilePhoneNumber'
                 f.name = 'mobilePhoneNumber'
-                f.dataType = DataType.STRING
+                f.dataType = DataType.PHONE
                 f.value = '0491 570 156'
                 f.mandatory = true
                 f

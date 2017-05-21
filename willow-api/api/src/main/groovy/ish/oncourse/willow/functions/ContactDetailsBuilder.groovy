@@ -24,7 +24,7 @@ class ContactDetailsBuilder {
     
     ContactFields result = new ContactFields()
     FieldHeading dummy = new FieldHeading()
-    Map<String, FieldHeading> headingsMap = [:]
+    Map<String, FieldHeading> headingsMap = new HashMap<>()
     
 
     static Closure getContext = { ContextType contextType, Contact contact ->
@@ -53,7 +53,7 @@ class ContactDetailsBuilder {
         (configurations*.fields.flatten()  as List<Field>)                                   // collect all fields in single list
                 .groupBy { f -> f.property }                                      // group by unique key to map like [key1: [field1, field2,...], key2: [field3, field4,...],... ]
                 .values()                                                               // get list of lists 
-                .collect { List<Field> list ->  list.sort { it.mandatory }[0] }         // get first mandatory field (if mandatory field there) from each list 
+                .collect { List<Field> list ->  list.sort { !it.mandatory }[0] }         // get first mandatory field (if mandatory field there) from each list
                 .each { f ->                                                            // sort out each field
                     FieldProperty property = FieldProperty.getByKey(f.property)
                     Object source = getContext.call(property.contextType, contact)
@@ -69,7 +69,7 @@ class ContactDetailsBuilder {
         result.headings += headingsMap.values()                                         // to resulted container
         
         result.headings =  result.headings.sort { a, b ->                               // sort all headings by ordering, dummy heading should be first
-            a.name == null ? 1 : b.name == null ? -1 : a.ordering <=> b.ordering
+            a.name == null ? -1 : b.name == null ? 1 : a.ordering <=> b.ordering
         }
         
         result.headings.each { h ->                                                     // sort fields inside each heading by sortOrdering
@@ -81,7 +81,7 @@ class ContactDetailsBuilder {
     
     private FieldHeading getHeadingBy(ish.oncourse.model.FieldHeading heading) {
         if (!heading) {
-            dummy
+            return dummy
         } 
         
         FieldHeading result = headingsMap.get(heading.name)

@@ -1,27 +1,26 @@
 class ContactFields {
     contactId: 1002
-    classHeadings: [class ClassHeadings {
-        classId: 1001
-        headings: [class FieldHeading {
-            name: First Heading
-            description: description
-            fields: [class Field {
-                id: 28
-                key: customField.contact.carMaker
-                name: Favorite car maker
-                description: Favorite car maker28
-                mandatory: true
-                dataType: string
-                enumType: null
-                value: null
-                defaultValue: BMW
-                enumItems: []
-            }]
+    headings: [class FieldHeading {
+        name: null
+        description: null
+        fields: []
+        ordering: null
+    }, class FieldHeading {
+        name: First Heading
+        description: description
+        fields: [class Field {
+            id: 28
+            key: customField.contact.carMaker
+            name: Favorite car maker
+            description: Favorite car maker28
+            mandatory: true
+            dataType: string
+            enumType: null
+            value: null
+            defaultValue: BMW
+            enumItems: []
+            ordering: 28
         }]
-        dummyHeading: class FieldHeading {
-            name: Dummy
-            description: Dummy
-            fields: []
-        }
+        ordering: 1
     }]
 }

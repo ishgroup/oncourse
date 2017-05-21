@@ -449,7 +449,7 @@
            name= "Favorite car maker26"
            description="Favorite car maker"
            fieldConfigurationId="2"
-           fieldHeadingId="1"
+           fieldHeadingId="3"
            mandatory="4"
            defaultValue="BMW"
            fieldOrder="26"
