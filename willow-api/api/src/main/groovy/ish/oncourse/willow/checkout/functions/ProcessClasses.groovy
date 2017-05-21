@@ -58,19 +58,15 @@ class ProcessClasses {
             Money overridenFee = null
 
             if (ENROLMENT_BY_APPLICATION == c.course.enrolmentType) {
-                if (contact?.student) {
-                    ish.oncourse.model.Application application = new FindOfferedApplication(c.course, contact.student, context).get()
-                    if (application != null) {
-                        overridenFee = application.feeOverride
-                        allowByApplication = false
-                    }
+                ish.oncourse.model.Application application = new FindOfferedApplication(c.course, contact.student, context).get()
+                if (application != null) {
+                    overridenFee = application.feeOverride
+                    allowByApplication = false
                 } else {
-                    overridenFee = null
                     allowByApplication = true
                 }
             }
-            
-            
+
             if (allowByApplication) {
                 applications << new Application().with { a ->
                     a.contactId = contact.id.toString()
