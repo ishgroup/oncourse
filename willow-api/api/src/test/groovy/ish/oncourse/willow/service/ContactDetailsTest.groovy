@@ -1,6 +1,7 @@
 package ish.oncourse.willow.service
 
 import ish.oncourse.model.Contact
+import ish.oncourse.model.FieldHeading
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.field.ContactFields
@@ -12,6 +13,7 @@ import ish.oncourse.willow.model.field.FieldSet
 
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.time.DateUtils
 import org.junit.*
@@ -31,10 +33,21 @@ class ContactDetailsTest extends  ApiTest{
     
     @Test
     void testGet() {
+
+        ObjectContext context = cayenneRuntime.newContext()
+
+        SelectById.query(FieldHeading, 1l).selectOne(context).order = 1
+        SelectById.query(FieldHeading, 2l).selectOne(context).order = 2
+        SelectById.query(FieldHeading, 3l).selectOne(context).order = 1
+        SelectById.query(FieldHeading, 4l).selectOne(context).order = 2
+        SelectById.query(FieldHeading, 5l).selectOne(context).order = 3
+
+        context.commitChanges()
+
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
         ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
 
-        ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', classesIds: ['1001'], fieldSet: FieldSet.ENROLMENT))
+        ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', classesIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
         
         def file = new File(getClass().getResource('/ish/oncourse/willow/service/contact-fields.txt').toURI())
 
