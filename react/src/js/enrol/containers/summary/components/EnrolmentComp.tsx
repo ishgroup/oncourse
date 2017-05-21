@@ -29,8 +29,8 @@ class EnrolmentComp extends React.Component<Props, any> {
     const title: string = `${courseClass.course.name}`;
 
     let warning =  enrolment.warnings && enrolment.warnings.length ? this.props.enrolment.warnings[0] : null;
-    const error = enrolment.warnings && enrolment.errors.length ? this.props.enrolment.warnings[0] : null;
-    if (courseClass.start && moment(courseClass.start).isBefore(moment()) && warning) {
+    const error = enrolment.warnings && enrolment.errors.length ? this.props.enrolment.errors[0] : null;
+    if (!warning && courseClass.start && moment(courseClass.start).isBefore(moment())) {
       warning = ClassHasCommenced;
     }
     return (

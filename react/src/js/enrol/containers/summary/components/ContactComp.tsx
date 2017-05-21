@@ -1,8 +1,8 @@
 import * as React from "react";
 
 import {Contact} from "../../../../model/web/Contact";
-import ContactInfo from "../../../components/ContactInfo";
 import EnrolmentComp, {Props as EnrolmentProps} from "./EnrolmentComp";
+import ContactInfo from "../../../components/ContactInfo";
 
 export interface Props {
   contact: Contact
@@ -14,15 +14,21 @@ class ContactComp extends React.Component<Props, any> {
     const {contact, enrolments} = this.props;
     return (
       <div className="row">
-        <ContactInfo contact={contact}/>
+        <div className="col-xs-24 student-name">
+          <ContactInfo contact={contact} controls={<AddConcessionLink/>}/>
+        </div>
         <div className="col-xs-24 checkoutList">
-          {enrolments.map((ep) => {
-            return <EnrolmentComp {...ep}/>
+          {enrolments.map((props, index) => {
+            return <EnrolmentComp key={index} {...props}/>
           })}
         </div>
       </div>
     );
   }
 }
+
+const AddConcessionLink = (props) => {
+  return (<div><a className="add-concession" href="#">Add Concession</a></div>);
+};
 
 export default ContactComp;

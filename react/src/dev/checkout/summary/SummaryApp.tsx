@@ -7,14 +7,18 @@ import {MessagesRedux, ProgressRedux} from "../../../js/enrol/containers/Functio
 
 
 import "../../../scss/index.scss";
-import ContactComp from "../../../js/enrol/containers/summary/components/ContactComp";
 
-import {contact1Props, contact2Props} from "./SummaryApp.data";
-
+import {amount, contactPropses} from "./SummaryApp.data";
+import Summary from "../../../js/enrol/containers/summary/Summary";
 
 
 const store = CreateStore();
 RestoreState(store, () => render());
+
+const onAddContact = () => {
+};
+const onProceedToPayment = () => {
+};
 
 
 const render = () => ReactDOM.render(
@@ -22,8 +26,10 @@ const render = () => ReactDOM.render(
     <div id="checkout" className="payments">
       <ProgressRedux/>
       <MessagesRedux/>
-      <ContactComp {...contact1Props}/>
-      <ContactComp {...contact2Props}/>
+      <Summary contacts={[
+        contactPropses[0],
+        contactPropses[1]
+      ]} amount={amount} onAddContact={onAddContact} onProceedToPayment={onProceedToPayment}/>
     </div>
 
   </Provider>,
