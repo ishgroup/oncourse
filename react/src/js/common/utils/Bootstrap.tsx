@@ -49,7 +49,7 @@ export class Bootstrap {
       const realProps = HtmlDataService.parse(container, marker);
 
       if (!isNil(realProps.checkoutPath)) {
-        this.store.dispatch({type: CommonActions.CheckoutPathUpdate, payload: realProps.enrolPath})
+        this.store.dispatch({type: CommonActions.CheckoutPathUpdate, payload: realProps.checkoutPath})
       }
 
       render(
