@@ -11,7 +11,13 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
     case ContactEditActions.FieldsLoad:
       return action.payload;
     case Actions.PhaseChange:
-      return null;
+      switch (action.payload)
+      {
+        case Phase.EditContactDetails:
+          return state;
+        default:
+          return null;
+      }
     default:
       return state;
   }

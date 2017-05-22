@@ -31,7 +31,7 @@ export class Checkout extends React.Component<Props, any> {
     const onProceedToPayment = () => {
     };
     return (
-      <div id="checkout" className="payments">
+      <div id="checkout" className="col-xs-24 payments">
         <ProgressRedux/>
         <MessagesRedux/>
         {phase === Phase.AddContact && <ContactAddForm/>}

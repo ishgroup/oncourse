@@ -1,3 +1,6 @@
+import {ContactFields} from "../model/field/ContactFields";
+import {FieldHeading} from "../model/field/FieldHeading";
+import {ValidationError} from "../model/common/ValidationError";
 const genderHeading:any = {
   "description": "Contact Details",
   "name": "Contact Details",
@@ -165,7 +168,7 @@ const contactHeading: any = {
   ],
 };
 
-const communicateHeading = {
+const communicateHeading:FieldHeading = {
   "description": "I would like to receive information and offers via:",
   "name": "e-mail, sms, post",
   "fields": [
@@ -274,19 +277,26 @@ const avetmissHeading = {
   ]
 };
 
-const response: any = {
+export const ContactFieldsRequest:ContactFields = {
   "contactId": "1001",
     "headings": [
-      genderHeading,
-      contactHeading,
-      communicateHeading,
-      avetmissHeading
+      communicateHeading
     ]
 };
 
+export const ContactFieldsErrorResponse:ValidationError = {
+  formErrors: ["Form error example"],
+  fieldsErrors: [{
+    name: "isMale",
+    error: "isMale Field error example"
+  },
+    {
+      name: "street",
+      error: "street Field error example"
+    }
+  ]
+};
 
-
-export default response;
 
 
 

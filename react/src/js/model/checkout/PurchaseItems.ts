@@ -1,12 +1,15 @@
 import { Application } from "./../checkout/Application";
+import { Article } from "./../checkout/Article";
 import { Enrolment } from "./../checkout/Enrolment";
-import { ProductItem } from "./../checkout/ProductItem";
-import { Contact } from "./../web/Contact";
+import { Membership } from "./../checkout/Membership";
+import { Voucher } from "./../checkout/Voucher";
 
 export class PurchaseItems {
-  contact?: Contact;
+  contactId?: string;
   enrolments?: Enrolment[];
   applications?: Application[];
-  productItems?: ProductItem[];
+  articles?: Article[];
+  memberships?: Membership[];
+  vouchers?: Voucher[];
 }
 

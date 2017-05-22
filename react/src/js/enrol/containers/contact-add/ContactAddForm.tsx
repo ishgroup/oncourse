@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
 import {ContactAddAction} from "./actions/Actions";
-import * as CheckoutSerivce from "../../services/CheckoutSerivce";
+import CheckoutService from "../../services/CheckoutService";
 import {showErrors} from "../../actions/Actions";
 
 
@@ -15,17 +15,19 @@ class ContactAddForm extends React.Component<any, any> {
   render() {
     const {handleSubmit, pristine, invalid, submitting} = this.props;
     return (
-      <form onSubmit={handleSubmit}>
-        <ContactAdd/>
-        <div className="form-controls">
-          <input value="OK"
-                 className="btn btn-primary"
-                 name="submitContact"
-                 type="submit"
-                 disabled={invalid || pristine || submitting}
-          />
-        </div>
-      </form>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <ContactAdd/>
+          <div className="form-controls">
+            <input value="OK"
+                   className="btn btn-primary"
+                   name="submitContact"
+                   type="submit"
+                   disabled={invalid || pristine || submitting}
+            />
+          </div>
+        </form>
+      </div>
     )
   }
 }
@@ -42,14 +44,13 @@ const Form = reduxForm({
 })(ContactAddForm);
 
 
-
 const mapStateToProps = (state) => {
   return {}
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSubmit: CheckoutSerivce.createOrGetContact
+    onSubmit: CheckoutService.createOrGetContact
   };
 };
 

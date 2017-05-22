@@ -1,6 +1,6 @@
 import { Course } from "./../web/Course";
 import { CourseClassPrice } from "./../web/CourseClassPrice";
-import {Room} from "./Room";
+import { Room } from "./../web/Room";
 
 export class CourseClass {
 
@@ -56,12 +56,18 @@ export class CourseClass {
   isPaymentGatewayEnabled?: boolean;
 
   /**
+   * Self paced class
+   */
+  distantLearning?: boolean;
+
+  /**
    * Prices attached to current course class
    */
   price?: CourseClassPrice;
 
-  distantLearning?: boolean;
-
+  /**
+   * Room for the site
+   */
   room?: Room;
 }
 

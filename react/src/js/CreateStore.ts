@@ -7,8 +7,7 @@ import {RootEpic} from "./RootEpics";
 import {combinedReducers} from "./reducers/reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
 import {autoRehydrate, getStoredState, OnComplete, persistStore} from "redux-persist";
-import {REHYDRATE} from "redux-persist/constants";
-import * as LocalForage from "localforage";
+import localForage from "localforage";
 
 
 const getMiddleware = (): GenericStoreEnhancer => {
@@ -35,5 +34,5 @@ export const CreateStore = (): Store<IshState> => {
 };
 
 export const RestoreState = (store: Store<IshState>, onComplete: OnComplete<any>): void => {
-  persistStore(store, LocalForage, onComplete);
-}
+  persistStore(store, {storage: localForage, blacklist: ["form", "phase"]}, onComplete);
+};

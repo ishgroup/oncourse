@@ -8,8 +8,10 @@ import {mapError, mapPayload} from "../../epics/epicsUtils";
 import {contactsSchema} from "../../schema";
 import InitEpic from "./InitEpic";
 import ContactAddEpic from "./ContactAddEpic";
-import FieldsLoadEpic from "./FieldsLoadEpic";
 import MessagesSetEpic from "./MessagesSetEpic";
+import PhaseChangeEpic from "./PhaseChangeEpic";
+import OpenContactDetailsEpic from "./OpenContactDetailsEpic";
+import OpenSummaryEpic from "./OpenSummaryEpic";
 
 const {
   contactApi
@@ -17,8 +19,10 @@ const {
 
 export const CheckoutEpic = combineEpics(
   InitEpic,
+  PhaseChangeEpic,
   ContactAddEpic,
-  FieldsLoadEpic,
+  OpenContactDetailsEpic,
+  OpenSummaryEpic,
   MessagesSetEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );

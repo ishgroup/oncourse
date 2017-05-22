@@ -3,12 +3,12 @@ import { Discount } from "./../web/Discount";
 export class CourseClassPrice {
 
   /**
-   * TODO:  fee
+   * Full class price
    */
   fee?: string;
 
   /**
-   * TODO:  feeOverriden
+   * Class price overriden by application
    */
   feeOverriden?: string;
   appliedDiscount?: Discount;

@@ -1,4 +1,15 @@
+import { Site } from "./../web/Site";
+
 export class Room {
+
+  /**
+   * Room name
+   */
   name?: string;
-  site: Site
+
+  /**
+   * Site relation
+   */
+  site?: Site;
 }
+

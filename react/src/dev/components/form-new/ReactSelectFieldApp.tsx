@@ -70,7 +70,7 @@ function showResults(values) {
 
 const render = () => ReactDOM.render(
   <Provider store={store}>
-    <div id="select-field" className="select-field-form">
+    <div>
       <Form onSubmit={showResults}/>
       <Values form="ReactSelectForm" />
     </div>
