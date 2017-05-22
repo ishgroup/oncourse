@@ -104,8 +104,23 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                             it.name = c.course.name
                             it
                         }
+                        
                         it.availableEnrolmentPlaces = c.availableEnrolmentPlaces
-
+                        
+                        if (c.room?.site?.isWebVisible) {
+                            it.room = new Room().with { r ->
+                                r.name = c.room.name
+                                r.site = new Site().with { s ->
+                                    s.name = c.room.site.name
+                                    s.street = c.room.site.street
+                                    s.suburb = c.room.site.suburb
+                                    s.postcode = c.room.site.postcode
+                                    s
+                                }
+                                r
+                            }   
+                        }
+                        
                         it.start = c.startDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                         it.end = c.endDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                         it.hasAvailablePlaces = hasAvailablePlaces(c)

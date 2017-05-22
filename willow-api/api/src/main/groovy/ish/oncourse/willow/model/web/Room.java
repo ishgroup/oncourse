@@ -1,11 +1,11 @@
 package ish.oncourse.willow.model.web;
 
-import ish.oncourse.willow.model.web.Course;
+import ish.oncourse.willow.model.web.Site;
 
 public class Room  {
   
     private String name = null;
-    private Course site = null;
+    private Site site = null;
 
     /**
      * Room name
@@ -28,15 +28,15 @@ public class Room  {
      * Site relation
      * @return site
      */
-    public Course getSite() {
+    public Site getSite() {
         return site;
     }
 
-    public void setSite(Course site) {
+    public void setSite(Site site) {
        this.site = site;
     }
 
-    public Room site(Course site) {
+    public Room site(Site site) {
       this.site = site;
       return this;
     }

@@ -454,7 +454,7 @@ definitions:
         type: string
         description: Room name
       site:
-        $ref: '#/definitions/web.Course'
+        $ref: '#/definitions/web.Site'
         description: Site relation
   web.CourseClass:
     type: object
