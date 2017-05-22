@@ -8,6 +8,8 @@ import {Field, reducer as formReducer, reduxForm} from "redux-form";
 import { Values } from 'redux-form-website-template';
 
 import 'react-select/dist/react-select.css';
+import "../../../scss/_ReactSelect.scss";
+
 import {AutocompleteApiStub} from "../../../js/httpStub/AutocompleteApiStub";
 import SelectField from "../../../js/components/form-new/SelectField";
 import TextField from "../../../js/components/form-new/TextField";
@@ -42,7 +44,6 @@ class ReactSelectForm extends React.Component<any, any> {
           <TextField name="address" label="Street" required={true} meta={{error: "Error message", touched: true}}/>
           <TextField name="address" label="Street" required={true} meta={{warning: "Warning message", touched: true}}/>
           <TextField name="address" label="Street" required={true} meta={{}}/>
-        <fieldset/>
 
           <Field component={TextField} name="address" label="Street" required={true}/>
           <Field component={SelectField} name={"country"} label={"Country"} required={true} loadOptions={stub.getCountries}/>
@@ -69,7 +70,7 @@ function showResults(values) {
 
 const render = () => ReactDOM.render(
   <Provider store={store}>
-    <div id="checkout" className="payments">
+    <div id="select-field" className="select-field-form">
       <Form onSubmit={showResults}/>
       <Values form="ReactSelectForm" />
     </div>

@@ -1,0 +1,21 @@
+.content fieldset {
+  .Select-control {
+    span {
+      display: block;
+      vertical-align: middle;
+      position: static;
+      &.Select-arrow-zone {
+        position: relative;
+        display: table-cell;
+        vertical-align: middle;
+      }
+      &.Select-arrow {
+        vertical-align: middle;
+      }
+    }
+    .Select-input > input {
+      border: 0 none;
+      font-size: 14px;
+    }
+  }
+}
