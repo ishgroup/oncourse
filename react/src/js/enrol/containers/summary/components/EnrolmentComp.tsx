@@ -35,7 +35,7 @@ class EnrolmentComp extends React.Component<Props, any> {
     }
     return (
       <div className={divClass}>
-        <div className="col-xs-16 enrolmentInfo">
+        <div className="col-xs-16 col-md-17 enrolmentInfo">
           <label>
             <input className="enrolmentSelect"
                    type="checkbox"
@@ -65,7 +65,7 @@ const ClassPrice = (props): any => {
   const discount = price.appliedDiscount ? price.appliedDiscount.discountValue : null;
   const feeStyle = price.appliedDiscount ? {textDecoration: "line-through"} : null;
   return (
-    <div className="col-xs-8 alignright">
+    <div className="col-xs-8 col-md-7 alignright">
       <div className="row">
         { fee && <span className="col-xs-24 col-md-12 fee-full fullPrice text-right" style={ feeStyle }>${fee}</span> }
         { discountedFee &&
