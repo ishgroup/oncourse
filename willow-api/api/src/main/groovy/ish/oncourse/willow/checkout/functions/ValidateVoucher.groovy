@@ -16,14 +16,21 @@ class ValidateVoucher extends Validate<Voucher>{
     @Override
     ValidateVoucher validate(Voucher voucher) {
         Money price =  voucher.price ? new Money(voucher.price) : Money.ZERO
-        validate(new GetProduct(context, college, voucher.productId).get() as VoucherProduct, price)    }
+        validate(new GetProduct(context, college, voucher.productId).get() as VoucherProduct, price)  
+    }
 
 
     ValidateVoucher validate(VoucherProduct product, Money price ) {
         
         if (product.redemptionCourses.empty && product.priceExTax == null && !price.isGreaterThan(Money.ZERO)) {
             errors << "Please enter the correct price for voucher: $product.name".toString()
-        }
+        } else if (!product.redemptionCourses.empty) {
+            Money productPrice = new CalculatePrice(product.priceExTax, Money.ZERO, product.taxRate, product.taxAdjustment).calculate()
+            if (productPrice != price) {
+                errors << "Voucher price is wrong".toString()
+            }
+        } 
+        
         this
     }
 }

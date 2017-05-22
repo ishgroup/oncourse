@@ -708,14 +708,14 @@ definitions:
     type: object
     requred:
     - contactId
-    - classesIds
+    - classIds
     - productIds
     - fieldSet
     properties:
       contactId:
         type: string
         description: Requested contact id
-      classesIds:
+      classIds:
         type: array
         items: 
           type: string
@@ -966,13 +966,13 @@ definitions:
       type: object
       requred:
       - contactId
-      - classesIds
+      - classIds
       - productIds
       - promotionIds
       properties:
         contactId:
           type: string
-        classesIds:
+        classIds:
           type: array
           items:
            type: string
@@ -1030,7 +1030,7 @@ definitions:
   checkout.CheckoutModel:
     type: object
     properties: 
-      purchaseItems:
+      purchaseItemsList:
         type: array
         items:
           $ref: '#/definitions/checkout.PurchaseItems'

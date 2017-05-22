@@ -34,7 +34,9 @@ public class GetDiscountForEnrolment {
 	private CorporatePass corporatePass;
 	private int enabledEnrolmentsCount;
 	private Money totalInvoicesAmount;
-	private Enrolment currentEnrolment;
+	private Student currentStudent;
+	private CourseClass currentCourseClass;
+
 
 	private List<DiscountCourseClass> applicableDiscounts = new LinkedList<>();
 
@@ -43,6 +45,10 @@ public class GetDiscountForEnrolment {
 	private GetDiscountForEnrolment() {}
 	
 	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
+		return valueOf(classDiscounts, addedPromos, corporatePass,enabledEnrolmentsCount,totalInvoicesAmount, currentEnrolment.getStudent(), currentEnrolment.getCourseClass());
+	}
+
+	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Student currentStudent, CourseClass currentCourseClass) {
 
 		GetDiscountForEnrolment get = new GetDiscountForEnrolment();
 		get.setClassDiscounts(classDiscounts);
@@ -50,7 +56,8 @@ public class GetDiscountForEnrolment {
 		get.setCorporatePass(corporatePass);
 		get.setEnabledEnrolmentsCount(enabledEnrolmentsCount);
 		get.setTotalInvoicesAmount(totalInvoicesAmount);
-		get.setCurrentEnrolment(currentEnrolment);
+		get.setCurrentStudent(currentStudent);
+		get.setCurrentCourseClass(currentCourseClass);
 		return get;
 	}
 
@@ -59,13 +66,13 @@ public class GetDiscountForEnrolment {
 		for (DiscountCourseClass discountCourseClass : classDiscounts) {
 			if (discountCourseClass.getDiscount().isPromotion() && !addedPromos.contains(discountCourseClass.getDiscount())) {
 				continue;
-			} else if (isStudentEligibile(currentEnrolment.getStudent(), discountCourseClass.getDiscount()) && isDiscountEligibile(discountCourseClass.getDiscount())) {
+			} else if (isStudentEligibile(currentStudent, discountCourseClass.getDiscount()) && isDiscountEligibile(discountCourseClass.getDiscount())) {
 				applicableDiscounts.add(discountCourseClass);
 			}
 		}
 	
 		if (!applicableDiscounts.isEmpty()) {
-			chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(applicableDiscounts, currentEnrolment.getCourseClass().getFeeExGst(), currentEnrolment.getCourseClass().getTaxRate());
+			chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(applicableDiscounts, currentCourseClass.getFeeExGst(), currentCourseClass.getTaxRate());
 		}
 		
 		return this;
@@ -193,10 +200,14 @@ public class GetDiscountForEnrolment {
 		this.classDiscounts = classDiscounts;
 	}
 
-	public void setCurrentEnrolment(Enrolment currentEnrolment) {
-		this.currentEnrolment = currentEnrolment;
+	public void setCurrentStudent(Student currentStudent) {
+		this.currentStudent = currentStudent;
 	}
 
+	public void setCurrentCourseClass(CourseClass currentCourseClass) {
+		this.currentCourseClass = currentCourseClass;
+	}
+	
 	public void setTotalInvoicesAmount(Money totalInvoicesAmount) {
 		this.totalInvoicesAmount = totalInvoicesAmount;
 	}

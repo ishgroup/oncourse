@@ -7,7 +7,7 @@ import java.util.List;
 public class ContactFieldsRequest  {
   
     private String contactId = null;
-    private List<String> classesIds = new ArrayList<String>();
+    private List<String> classIds = new ArrayList<String>();
     private List<String> productIds = new ArrayList<String>();
     private FieldSet fieldSet = null;
 
@@ -30,23 +30,23 @@ public class ContactFieldsRequest  {
 
     /**
      * Requested classe's ids
-     * @return classesIds
+     * @return classIds
      */
-    public List<String> getClassesIds() {
-        return classesIds;
+    public List<String> getClassIds() {
+        return classIds;
     }
 
-    public void setClassesIds(List<String> classesIds) {
-       this.classesIds = classesIds;
+    public void setClassIds(List<String> classIds) {
+       this.classIds = classIds;
     }
 
-    public ContactFieldsRequest classesIds(List<String> classesIds) {
-      this.classesIds = classesIds;
+    public ContactFieldsRequest classIds(List<String> classIds) {
+      this.classIds = classIds;
       return this;
     }
 
-    public ContactFieldsRequest addClassesIdsItem(String classesIdsItem) {
-      this.classesIds.add(classesIdsItem);
+    public ContactFieldsRequest addClassIdsItem(String classIdsItem) {
+      this.classIds.add(classIdsItem);
       return this;
     }
 
@@ -96,7 +96,7 @@ public class ContactFieldsRequest  {
       sb.append("class ContactFieldsRequest {\n");
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
-      sb.append("    classesIds: ").append(toIndentedString(classesIds)).append("\n");
+      sb.append("    classIds: ").append(toIndentedString(classIds)).append("\n");
       sb.append("    productIds: ").append(toIndentedString(productIds)).append("\n");
       sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
       sb.append("}");

@@ -7,29 +7,29 @@ import java.util.List;
 
 public class CheckoutModel  {
   
-    private List<PurchaseItems> purchaseItems = new ArrayList<PurchaseItems>();
+    private List<PurchaseItems> purchaseItemsList = new ArrayList<PurchaseItems>();
     private Amount amount = null;
     private List<String> promotionIds = new ArrayList<String>();
 
     /**
-     * Get purchaseItems
-     * @return purchaseItems
+     * Get purchaseItemsList
+     * @return purchaseItemsList
      */
-    public List<PurchaseItems> getPurchaseItems() {
-        return purchaseItems;
+    public List<PurchaseItems> getPurchaseItemsList() {
+        return purchaseItemsList;
     }
 
-    public void setPurchaseItems(List<PurchaseItems> purchaseItems) {
-       this.purchaseItems = purchaseItems;
+    public void setPurchaseItemsList(List<PurchaseItems> purchaseItemsList) {
+       this.purchaseItemsList = purchaseItemsList;
     }
 
-    public CheckoutModel purchaseItems(List<PurchaseItems> purchaseItems) {
-      this.purchaseItems = purchaseItems;
+    public CheckoutModel purchaseItemsList(List<PurchaseItems> purchaseItemsList) {
+      this.purchaseItemsList = purchaseItemsList;
       return this;
     }
 
-    public CheckoutModel addPurchaseItemsItem(PurchaseItems purchaseItemsItem) {
-      this.purchaseItems.add(purchaseItemsItem);
+    public CheckoutModel addPurchaseItemsListItem(PurchaseItems purchaseItemsListItem) {
+      this.purchaseItemsList.add(purchaseItemsListItem);
       return this;
     }
 
@@ -78,7 +78,7 @@ public class CheckoutModel  {
       StringBuilder sb = new StringBuilder();
       sb.append("class CheckoutModel {\n");
       
-      sb.append("    purchaseItems: ").append(toIndentedString(purchaseItems)).append("\n");
+      sb.append("    purchaseItemsList: ").append(toIndentedString(purchaseItemsList)).append("\n");
       sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
       sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
       sb.append("}");

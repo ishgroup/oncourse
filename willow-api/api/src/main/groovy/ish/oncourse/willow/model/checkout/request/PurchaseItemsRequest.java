@@ -6,7 +6,7 @@ import java.util.List;
 public class PurchaseItemsRequest  {
   
     private String contactId = null;
-    private List<String> classesIds = new ArrayList<String>();
+    private List<String> classIds = new ArrayList<String>();
     private List<String> productIds = new ArrayList<String>();
     private List<String> promotionIds = new ArrayList<String>();
 
@@ -28,24 +28,24 @@ public class PurchaseItemsRequest  {
     }
 
     /**
-     * Get classesIds
-     * @return classesIds
+     * Get classIds
+     * @return classIds
      */
-    public List<String> getClassesIds() {
-        return classesIds;
+    public List<String> getClassIds() {
+        return classIds;
     }
 
-    public void setClassesIds(List<String> classesIds) {
-       this.classesIds = classesIds;
+    public void setClassIds(List<String> classIds) {
+       this.classIds = classIds;
     }
 
-    public PurchaseItemsRequest classesIds(List<String> classesIds) {
-      this.classesIds = classesIds;
+    public PurchaseItemsRequest classIds(List<String> classIds) {
+      this.classIds = classIds;
       return this;
     }
 
-    public PurchaseItemsRequest addClassesIdsItem(String classesIdsItem) {
-      this.classesIds.add(classesIdsItem);
+    public PurchaseItemsRequest addClassIdsItem(String classIdsItem) {
+      this.classIds.add(classIdsItem);
       return this;
     }
 
@@ -100,7 +100,7 @@ public class PurchaseItemsRequest  {
       sb.append("class PurchaseItemsRequest {\n");
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
-      sb.append("    classesIds: ").append(toIndentedString(classesIds)).append("\n");
+      sb.append("    classIds: ").append(toIndentedString(classIds)).append("\n");
       sb.append("    productIds: ").append(toIndentedString(productIds)).append("\n");
       sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
       sb.append("}");

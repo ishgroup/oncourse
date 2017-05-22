@@ -28,7 +28,6 @@ import static ish.common.types.ProductType.VOUCHER
 class ProcessProducts {
 
     final static  Logger logger = LoggerFactory.getLogger(ProcessClasses.class)
-    private static final Money DEFAULT_VOUCHER_PRICE = new Money("100.00");
 
     ObjectContext context
     Contact contact
@@ -54,67 +53,13 @@ class ProcessProducts {
         }
         
         productIds.each { id ->
-            Product p = new GetProduct(context, college, id).get()
-
-            ProductType productType =TypesUtil.getEnumForDatabaseValue(p.type, ProductType.class)
-            switch (productType) {
-                case ARTICLE:
-                    articles << new Article().with { a ->
-                        a.contactId = contact.id.toString()
-                        a.productId = p.id.toString()
-                        a.price = calculatePrice(p).toString()
-                        a
-                    }
-                    break
-                case MEMBERSHIP:
-                    memberships << new Membership().with { m ->
-                        m.contactId = contact.id.toString()
-                        m.productId = p.id.toString()
-                        m.price = calculatePrice(p).toString()
-                        ValidateMembership validateMembership = new ValidateMembership(context, college).validate(p as MembershipProduct, contact)
-                        m.errors += validateMembership.errors
-                        m.warnings += validateMembership.warnings
-                        m
-                    }
-                    break
-                case VOUCHER:
-                    vouchers << new Voucher().with { v ->
-                        VoucherProduct voucher = p as VoucherProduct
-                        v.contactId = contact.id.toString()
-                        v.productId = voucher.id.toString()
-
-                        Money value = Money.ZERO
-                        if (voucher.redemptionCourses.empty && voucher.priceExTax == null) {
-                            v.price =  DEFAULT_VOUCHER_PRICE.toString()
-                            value = DEFAULT_VOUCHER_PRICE
-                            v.value =  value.toString()
-                        } else if (p.priceExTax != null) {
-                            v.price = calculatePrice(p).toString()
-                            value = voucher.value
-                            v.value = value.toString()
-                        } else {
-                            v.price = calculatePrice(p).toString()
-                            v.classes += voucher.redemptionCourses.collect{c -> c.name}
-                        }
-                        
-                        ValidateVoucher validateVoucher = new ValidateVoucher(context, college).validate(voucher as VoucherProduct, value)
-                        v.errors += validateVoucher.errors
-                        v.warnings += validateVoucher.warnings
-                        v
-                    }
-                    break
-                default:
-                    throw new IllegalArgumentException()
-            }
+           ProcessProduct processProduct = new ProcessProduct(context, contact, college, id)
+            processProduct.article && articles << processProduct.article
+            processProduct.membership && memberships << processProduct.membership
+            processProduct.voucher && vouchers << processProduct.voucher
         }
         
         this
-    }
-    
-    private Money calculatePrice(Product p) {
-        InvoiceLine invoiceLine = new InvoiceLine()
-        InvoiceUtil.fillInvoiceLine(invoiceLine, p.priceExTax, Money.ZERO, p.taxRate, p.taxAdjustment)
-        invoiceLine.priceEachIncTax
     }
     
 }

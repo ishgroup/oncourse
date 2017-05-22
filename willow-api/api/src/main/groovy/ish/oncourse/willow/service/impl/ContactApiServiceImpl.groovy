@@ -60,7 +60,7 @@ class ContactApiServiceImpl implements ContactApi{
             logger.error("contactId required, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
         }
-        if (contactFieldsRequest.classesIds.empty) {
+        if (contactFieldsRequest.classIds.empty) {
             logger.error("classesIds required, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
         }
@@ -75,7 +75,7 @@ class ContactApiServiceImpl implements ContactApi{
         }
         
         List<CourseClass> classes = (ObjectSelect.query(CourseClass)
-                .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classesIds)) 
+                .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classIds)) 
                 & CourseClass.COLLEGE.eq(collegeService.college))
                 .prefetch(CourseClass.COURSE.joint())
                 .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).joint())
