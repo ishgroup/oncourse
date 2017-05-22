@@ -7,7 +7,7 @@ import {stopSubmit} from "redux-form";
 import {ValidationError} from "../../model/common/ValidationError";
 
 
-const Epic: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
+const MessagesSetEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
   return action$.ofType(MessagesSetRequest).flatMap((action) => {
     const data: ValidationError = action.payload.data;
     const form: string = action.meta.form;
@@ -19,4 +19,4 @@ const Epic: Epic<any, any> = (action$: ActionsObservable<any>, store: Middleware
   });
 };
 
-export default Epic;
+export default MessagesSetEpic;

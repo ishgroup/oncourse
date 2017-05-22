@@ -2,9 +2,9 @@ import {Bootstrap} from "../../../../js/common/utils/Bootstrap";
 import {CreateStore} from "../../../../js/CreateStore";
 import {HTMLMarkers} from "../../../../js/common/services/HTMLMarker";
 
-test('reading enrol path from cart element', () => {
+test('reading checkout path from cart element', () => {
   const container: HTMLElement = document.createElement('div');
-  container.innerHTML = '<div id="root"><div data-cid="cart" data-prop-enrol-path="/checkout"/></div>';
+  container.innerHTML = '<div id="root"><div data-cid="cart" data-prop-checkout-path="/checkout"/></div>';
 
   document.body.innerHTML = container.innerHTML;
 
@@ -16,9 +16,9 @@ test('reading enrol path from cart element', () => {
 });
 
 
-test('reading enrol path from enrol element', () => {
+test('reading checkout path from checkout element', () => {
   const container: HTMLElement = document.createElement('div');
-  container.innerHTML = '<div id="root"><div data-cid="enrol" data-prop-enrol-path="/checkout"/></div>';
+  container.innerHTML = '<div id="root"><div data-cid="checkout" data-prop-checkout-path="/checkout"/></div>';
   document.body.innerHTML = container.innerHTML;
 
   const store = CreateStore();

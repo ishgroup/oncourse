@@ -10,7 +10,6 @@ const CAMEL_CASE_SPLITTER: RegExp = /(.)([A-Z]+)/g;
 export const parse = (container: HTMLElement, marker: HTMLMarker): { [key: string]: any } => {
   const result: { [key: string]: any } = {};
   Object.keys(marker.props).forEach((key) => {
-    console.log(`${ATTR_DATA_PROP_PREFIX}${camelCase2DashCase(key)}`);
     const value = container.getAttribute(`${ATTR_DATA_PROP_PREFIX}${camelCase2DashCase(key)}`);
     result[key] = StringToTypedValue(marker.props[key], value);
   });
