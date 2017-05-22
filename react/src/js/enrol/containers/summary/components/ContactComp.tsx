@@ -14,9 +14,7 @@ class ContactComp extends React.Component<Props, any> {
     const {contact, enrolments} = this.props;
     return (
       <div className="row">
-        <div className="col-xs-24 student-name">
-          <ContactInfo contact={contact} controls={<AddConcessionLink/>}/>
-        </div>
+        <ContactInfo contact={contact} controls={<AddConcessionLink/>}/>
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) => {
             return <EnrolmentComp key={index} {...props}/>

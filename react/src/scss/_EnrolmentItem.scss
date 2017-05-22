@@ -21,7 +21,7 @@
         max-width: 100% !important;
         text-align: left !important;
         span {
-          margin-left:2px;
+          margin-left: 2px;
         }
       }
     }
@@ -37,8 +37,10 @@
 
 .content {
   .payments {
-    >.row {
-      margin-bottom: 18px;
+    .payment-summary {
+      > .row {
+        margin-bottom: 18px;
+      }
     }
     .row {
       .student-name {

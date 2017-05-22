@@ -23,14 +23,21 @@ class Summary extends React.Component<Props, any> {
   render() {
     const {contacts, amount, onAddContact, onProceedToPayment} = this.props;
     const hasEnabled: boolean = this.hasEnabled(contacts);
+
     return (
-      <div className="col-xs-24">
+      <div className="payment-summary">
+        {contacts.map((c, i) => <ContactComp key={i} {...c}/>)}
+        <AddAnotherContact onAddContact={onAddContact}/>
+
         <div className="row">
-          {contacts.map((c, i) => <ContactComp key={i} {...c}/>)}
-          <AddAnotherContact onAddContact={onAddContact}/>
-          <AmountComp amount={amount}/>
-          <ProceedToPayment disabled={!hasEnabled} onProceedToPayment={onProceedToPayment}/>
+          <div className="col-xs-24">
+            <div className="amount-container">
+              <AmountComp amount={amount}/>
+              <ProceedToPayment disabled={!hasEnabled} onProceedToPayment={onProceedToPayment}/>
+            </div>
+          </div>
         </div>
+
       </div>
     );
   }

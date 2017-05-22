@@ -23,7 +23,7 @@ const onProceedToPayment = () => {
 
 const render = () => ReactDOM.render(
   <Provider store={store}>
-    <div id="checkout" className="payments">
+    <div id="checkout" className="col-xs-24 payments">
       <ProgressRedux/>
       <MessagesRedux/>
       <Summary contacts={[
