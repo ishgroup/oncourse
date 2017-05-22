@@ -2,6 +2,7 @@ package ish.oncourse.willow.model.web;
 
 import ish.oncourse.willow.model.web.Course;
 import ish.oncourse.willow.model.web.CourseClassPrice;
+import ish.oncourse.willow.model.web.Room;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -31,6 +32,7 @@ public class CourseClass  {
     private Boolean isPaymentGatewayEnabled = null;
     private Boolean distantLearning = null;
     private CourseClassPrice price = null;
+    private Room room = null;
 
     /**
      * Internal Unique identifier of class
@@ -253,6 +255,23 @@ public class CourseClass  {
       return this;
     }
 
+    /**
+     * Room for the site
+     * @return room
+     */
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+       this.room = room;
+    }
+
+    public CourseClass room(Room room) {
+      this.room = room;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -272,6 +291,7 @@ public class CourseClass  {
       sb.append("    isPaymentGatewayEnabled: ").append(toIndentedString(isPaymentGatewayEnabled)).append("\n");
       sb.append("    distantLearning: ").append(toIndentedString(distantLearning)).append("\n");
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
+      sb.append("    room: ").append(toIndentedString(room)).append("\n");
       sb.append("}");
       return sb.toString();
     }

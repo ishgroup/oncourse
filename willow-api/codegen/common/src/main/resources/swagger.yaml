@@ -432,6 +432,30 @@ definitions:
       description:
         type: string
         description: Description of course
+  web.Site:
+    type: object
+    properties:
+      name:
+       type: string
+       description: Site name
+      street: 
+        type: string
+        description: Site address
+      suburb:
+        type: string
+        description: Site suburb
+      postcode:
+        type: string
+        description: Site postcode
+  web.Room:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Room name
+      site:
+        $ref: '#/definitions/web.Course'
+        description: Site relation
   web.CourseClass:
     type: object
     properties:
@@ -478,6 +502,9 @@ definitions:
       price:
         $ref: '#/definitions/web.CourseClassPrice'
         description: Prices attached to current course class
+      room:
+        $ref: '#/definitions/web.Room'
+        description: Room for the site
   web.CourseClassPrice:
     type: object
     properties:
@@ -958,7 +985,19 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/checkout.Membership'
-      memberships:
+      vouchers:
         type: array
         items:
           $ref: '#/definitions/checkout.Voucher'
+  checkout.Amount:
+    type: object
+    properties: 
+      owing:
+        type: string
+      total: 
+        type: string
+      discount: 
+        type: string
+      payNow: 
+        type: string
+  
