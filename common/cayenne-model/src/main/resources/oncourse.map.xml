@@ -4267,7 +4267,7 @@
 	<obj-relationship name="college" source="CustomField" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="customFieldType" source="CustomField" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="customFieldType"/>
 	<obj-relationship name="college" source="CustomFieldType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="customFields" source="CustomFieldType" target="CustomField" deleteRule="Deny" db-relationship-path="customFields"/>
+	<obj-relationship name="customFields" source="CustomFieldType" target="CustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 	<obj-relationship name="college" source="Discount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="corporatePassDiscounts" source="Discount" target="CorporatePassDiscount" deleteRule="Deny" db-relationship-path="corporatePassDiscounts"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discountConcessionTypes"/>
