@@ -35,6 +35,33 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /calculateAmount:
+    post:
+      x-filter:  
+      - CollegeInfo
+      operationId: calculateAmount
+      summary: Calculate total amount and price for each discounted enrolment
+      description: Calculate total amount and price for each discounted enrolment
+      tags:
+      - Checkout
+      consumes:
+      - application/json
+      parameters:
+      - name: checkoutModel
+        in: body
+        description: Whole Checkout Model which contains all enabled purchase items and list of added promotions
+        required: true
+        schema:
+          $ref: '#/definitions/checkout.CheckoutModel'
+      responses:
+        200:
+          description: Whole Checkout Model with calclated amount and actual prices for each purchase item
+          schema:
+            $ref: '#/definitions/checkout.CheckoutModel'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /products:
     post:
       x-filter:  
@@ -1000,4 +1027,16 @@ definitions:
         type: string
       payNow: 
         type: string
-  
+  checkout.CheckoutModel:
+    type: object
+    properties: 
+      purchaseItems:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.PurchaseItems'
+      amount:
+        $ref: '#/definitions/checkout.Amount'
+      promotionIds:
+        type: array
+        items:
+          type: string

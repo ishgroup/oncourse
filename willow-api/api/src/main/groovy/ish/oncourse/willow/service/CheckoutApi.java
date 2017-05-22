@@ -1,5 +1,6 @@
 package ish.oncourse.willow.service;
 
+import ish.oncourse.willow.model.checkout.CheckoutModel;
 import ish.oncourse.willow.model.checkout.PurchaseItems;
 import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest;
 import ish.oncourse.willow.model.common.CommonError;
@@ -14,6 +15,13 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/")
 public interface CheckoutApi  {
+
+    @POST
+    @Path("/calculateAmount")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @CollegeInfo
+    CheckoutModel calculateAmount(CheckoutModel checkoutModel);
 
     @POST
     @Path("/purchaseItems")

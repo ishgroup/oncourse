@@ -6,6 +6,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.ProcessClasses
 import ish.oncourse.willow.checkout.functions.ProcessProducts
+import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.PurchaseItems
 import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest
 import ish.oncourse.willow.model.common.CommonError
@@ -33,7 +34,12 @@ class CheckoutApiImpl implements CheckoutApi {
         this.cayenneRuntime = cayenneRuntime
         this.collegeService = collegeService
     }
-    
+
+    @Override
+    CheckoutModel calculateAmount(CheckoutModel checkoutModel) {
+        return null
+    }
+
     @Override
     PurchaseItems getPurchaseItems(PurchaseItemsRequest purchaseItemsRequest) {
 
