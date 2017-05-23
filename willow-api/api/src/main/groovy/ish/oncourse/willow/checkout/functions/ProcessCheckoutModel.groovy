@@ -26,6 +26,8 @@ class ProcessCheckoutModel {
     int enrolmentsCount = 0
 
     Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
+    Map<CourseClass, Integer> freePlacesMap  = [:]
+
 
     ProcessCheckoutModel(ObjectContext context, College college, CheckoutModel checkoutModel) {
         this.context = context
@@ -76,6 +78,9 @@ class ProcessCheckoutModel {
 
         if (processClass.enrolment == null) {
             e.errors << "Enrolment for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) avalible by application".toString()
+        } else  if (checkAndBookPlace(courseClass)) {
+            e.errors << "Unfortunately you just missed out. The class $courseClass.course.name ($courseClass.course.code - $courseClass.code) was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
+                    
         } else {
             e.errors += processClass.enrolment.errors
             e.warnings += processClass.enrolment.warnings
@@ -141,6 +146,21 @@ class ProcessCheckoutModel {
         if (v.errors.empty) {
             total = total.add(new Money(v.price))
         }
+    }
+
+    private  boolean checkAndBookPlace(CourseClass courseClass) {
+       Integer places = freePlacesMap.get(courseClass)
+       if (places == null) {
+           places = courseClass.availableEnrolmentPlaces
+           freePlacesMap.put(courseClass, places)
+       } 
+        
+       if (places > 0) {
+           freePlacesMap.put(courseClass, places - 1)
+           return true
+       } else {
+           return false
+       }
     }
 
 }
