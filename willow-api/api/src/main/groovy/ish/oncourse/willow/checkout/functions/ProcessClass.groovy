@@ -66,10 +66,11 @@ class ProcessClass {
                 e.warnings += validateEnrolment.warnings
                 if (errors.empty) {
                     e.price = new CourseClassPrice().with { ccp ->
+                        ccp.hasTax = !persistentClass.gstExempt 
                         if (overridenFee != null) {
                             ccp.feeOverriden =  persistentClass.gstExempt ? overridenFee.toBigDecimal().toPlainString() : overridenFee.multiply(BigDecimal.ONE.add(persistentClass.taxRate)).toBigDecimal().toPlainString()
                         } else {
-                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, persistentClass.taxRate, CalculatePrice.calculateTaxAdjustment(persistentClass)).calculate().toPlainString()
+                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, persistentClass.taxRate, CalculatePrice.calculateTaxAdjustment(persistentClass)).calculate().finalPriceToPayIncTax.toPlainString()
                         }
                         ccp
                     }
