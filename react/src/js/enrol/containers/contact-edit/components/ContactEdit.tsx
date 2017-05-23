@@ -22,6 +22,7 @@ export class ContactEdit extends React.Component<Props, any> {
     return (
       <div>
         <ContactInfo contact={contact}/>
+        <div className="clearfix" />
         <div className="message">
           <p>We require a few more details to create the contact record.
             It is important that we have correct contact information in case we need to let you know about course

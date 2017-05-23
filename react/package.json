@@ -19,7 +19,8 @@
     "start:dev:SummaryApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/summary/SummaryApp.tsx  --content-base ./dev-server",
     "start:dev:ContactEditFormApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/contact-edit/ContactEditFormApp.tsx --content-base ./dev-server",
     "start:dev:ReactSelectFieldApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/components/form-new/ReactSelectFieldApp.tsx --content-base ./dev-server",
-    "start:dev:AllComponentsInFormApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/components/form/AllComponentsInFormApp.tsx --content-base ./dev-server"
+    "start:dev:AllComponentsInFormApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/components/form/AllComponentsInFormApp.tsx --content-base ./dev-server",
+    "start:dev:PaymentApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/payment/PaymentApp.tsx --content-base ./dev-server"
   },
   "devDependencies": {
     "@types/jquery": "2.0.40",
