@@ -109,7 +109,7 @@ public class ISHObjectContext extends DataContext {
 	 */
 	private void commitChanges0(int retry) {
 		try {
-			super.commitChanges();
+			callSuperCommitChanges();
 		} catch (CayenneRuntimeException e) {
 			if (retry < 2) {
 				retry += 1;
@@ -119,5 +119,12 @@ public class ISHObjectContext extends DataContext {
 			}
 		}
 
+	}
+
+	/**
+	 * Utility method for ISHObjectContextTest.testDefaultCommitAttempts
+	 */
+	protected void callSuperCommitChanges(){
+		super.commitChanges();
 	}
 }
