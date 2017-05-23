@@ -1,6 +1,7 @@
 package ish.oncourse.willow.checkout.functions
 
 import ish.oncourse.model.College
+import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
@@ -26,7 +27,7 @@ class GetCourseClass extends Get<CourseClass> {
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classId required')).build())
         }
 
-        CourseClass courseClass = ObjectSelect.query(CourseClass).where(ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, id )).selectOne(context)
+        CourseClass courseClass = (ObjectSelect.query(CourseClass).where(ExpressionFactory.matchDbExp(CourseClass.ID_PK_COLUMN, id )) & CourseClass.COLLEGE.eq(college)).selectOne(context)
         if (!courseClass) {
             logger.error("Course Class is not exist, course class id: $id, collegeId: $college.id")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Course Class is not exist')).build())

@@ -28,7 +28,7 @@ class GetDiscount extends Get<Discount> {
             logger.error("discount Id required")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
         }
-        Discount discount = ObjectSelect.query(Discount).where(ExpressionFactory.matchDbExp(Discount.ID_PK_COLUMN, id)).selectOne(context)
+        Discount discount = (ObjectSelect.query(Discount).where(ExpressionFactory.matchDbExp(Discount.ID_PK_COLUMN, id)) & Discount.COLLEGE.eq(college)).selectOne(context)
         if (!discount) {
             logger.error("Discount is not exist, id:$id collegeId: $college.id")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Discount is not exist')).build())

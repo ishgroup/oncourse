@@ -2,6 +2,7 @@ package ish.oncourse.willow.checkout.functions
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.Discount
 import ish.oncourse.model.Product
 import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
@@ -30,7 +31,7 @@ class GetProduct extends Get<Product> {
             logger.error("product Id required")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'product id required')).build())
         }
-        Product product = ObjectSelect.query(Product).where(ExpressionFactory.matchDbExp(Product.ID_PK_COLUMN, id)).selectOne(context)
+        Product product = (ObjectSelect.query(Product).where(ExpressionFactory.matchDbExp(Product.ID_PK_COLUMN, id)) & Product.COLLEGE.eq(college)).selectOne(context)
         if (!product) {
             logger.error("Product is not exist, id:$id collegeId: $college.id")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Product is not exist')).build())

@@ -26,7 +26,7 @@ class GetContact extends Get<Contact> {
             logger.error("contact Id required")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
         }
-        Contact contact = ObjectSelect.query(Contact).where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, id)).selectOne(context)
+        Contact contact = (ObjectSelect.query(Contact).where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, id)) & Contact.COLLEGE.eq(college)).selectOne(context)
         if (!contact) {
             logger.error("Contact is not exist, id:$id collegeId: $college.id")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Contact is not exist')).build())
