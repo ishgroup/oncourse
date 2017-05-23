@@ -47,13 +47,13 @@ class ContactDetailsTest extends  ApiTest{
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
         ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
 
-        ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', classesIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
+        ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', productIds: ['13'], classIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
         
         def file = new File(getClass().getResource('/ish/oncourse/willow/service/contact-fields.txt').toURI())
 
         assertEquals(file.text, fields.toString())
 
-        fields = api.getContactFields(new ContactFieldsRequest(contactId: '1002', classesIds: ['1001'], fieldSet: FieldSet.ENROLMENT))
+        fields = api.getContactFields(new ContactFieldsRequest(contactId: '1002', classIds: ['1001'], fieldSet: FieldSet.ENROLMENT))
 
         file = new File(getClass().getResource('/ish/oncourse/willow/service/contact-fields-empty.txt').toURI())
         

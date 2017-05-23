@@ -56,34 +56,7 @@
                   description="description" fieldConfigurationId="1" />
 
 
-    <FieldConfiguration id="2" collegeId="1"  angelId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1"/>
-
-    <FieldConfigurationScheme id="2"  collegeId="1"  angelId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name1"
-                              applicationFieldConfigurationId="2"
-                              enrolFieldConfigurationId="2"
-                              waitingListFieldConfigurationId="2"/>
-
-    <FieldHeading id="3"  collegeId="1"  angelId="4" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="First Heading_2"
-                  description="description" fieldConfigurationId="2"/>
-
-
-    <FieldHeading id="4"  collegeId="1"  angelId="4" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Second Heading_2"
-                  description="description" fieldConfigurationId="2" />
-
-    <FieldHeading id="5"  collegeId="1"  angelId="5" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Trhread Heading_2"
-                  description="description" fieldConfigurationId="2" />
-
-        <Field id="1"  collegeId="1"  angelId="1"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker1"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="0"
-           defaultValue="BMW"
-           fieldOrder="1"
-           property="firstName"/>
+    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1"/>
 
     <Field id="101"  collegeId="1"  angelId="100"
            created="2011-09-20 11:14:54"
@@ -97,18 +70,6 @@
            fieldOrder="1"
            property="firstName"/>
     
-        <Field id="2"  collegeId="1"  angelId="2"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker2"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="0"
-           defaultValue="BMW"
-           fieldOrder="2"
-           property="lastName"/>
-
     <Field id="102"  collegeId="1"  angelId="2"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
@@ -120,17 +81,6 @@
            defaultValue="BMW"
            fieldOrder="2"
            property="lastName"/>
-    
-        <Field id="3"  collegeId="1"  angelId="3"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker3"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           mandatory="0"
-           defaultValue="BMW"
-           fieldOrder="3"
-           property="emailAddress"/>
 
     <Field id="103"  collegeId="1"  angelId="3"
            created="2011-09-20 11:14:54"
@@ -143,137 +93,17 @@
            fieldOrder="3"
            property="emailAddress"/>
     
-        <Field id="4"  collegeId="1"  angelId="4"
+    <Field id="126"  collegeId="1"  angelId="126"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
-           name= "Favorite car maker4"
+           name= "Favorite car maker26"
            description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="1"
+           fieldConfigurationId="2"
+           fieldHeadingId="3"
+           mandatory="4"
            defaultValue="BMW"
-           fieldOrder="4"
-           property="street"/>
-    
-        <Field id="5"  collegeId="1"  angelId="5"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker5"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="1"
-           defaultValue="BMW"
-           fieldOrder="5"
-           property="suburb"/>
-    
-        <Field id="6"  collegeId="1"  angelId="6"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker6"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="2"
-           defaultValue="BMW"
-           fieldOrder="6"
-           property="postcode"/>
-    
-        <Field id="7"  collegeId="1"  angelId="7"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker7"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="2"
-           mandatory="1"
-           defaultValue="BMW"
-           fieldOrder="7"
-           property="state"/>
-    
-        <Field id="27"  collegeId="1"  angelId="27"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car 27"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="1"
-           defaultValue="BMW"
-           fieldOrder="27"
-           property="country"/>
-    
-        <Field id="8"  collegeId="1"  angelId="8"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker8"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="2"
-           mandatory="1"
-           defaultValue="BMW"
-           fieldOrder="8"
-           property="homePhoneNumber"/>
-    
-        <Field id="9"  collegeId="1"  angelId="9"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker9"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="1"
-           defaultValue="BMW"
-           fieldOrder="9"
-           property="businessPhoneNumber"/>
-    
-        <Field id="10"  collegeId="1"  angelId="10"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker10"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="1"
-           defaultValue="BMW"
-           fieldOrder="10"
-           property="faxNumber"/>
-    
-        <Field id="11"  collegeId="1"  angelId="11"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker11"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="1"
-           defaultValue="BMW"
-           fieldOrder="11"
-           property="mobilePhoneNumber"/>
-    
-        <Field id="12"  collegeId="1"  angelId="12"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker12"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="1"
-           defaultValue="BMW"
-           fieldOrder="12"
-           property="dateOfBirth"/>
-    
-        <Field id="13"  collegeId="1"  angelId="13"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker13"
-           description="Favorite car maker"
-           fieldConfigurationId="1"
-           fieldHeadingId="1"
-           mandatory="0"
-           defaultValue="BMW"
-           fieldOrder="13"
-           property="abn"/>
+           fieldOrder="26"
+           property="specialNeeds"/>
 
     <Field id="113"  collegeId="1"  angelId="113"
            created="2011-09-20 11:14:54"
@@ -286,8 +116,196 @@
            defaultValue="BMW"
            fieldOrder="13"
            property="abn"/>
+
+    <FieldConfigurationScheme id="2"  collegeId="1"  angelId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name1"
+                              applicationFieldConfigurationId="2"
+                              enrolFieldConfigurationId="2"
+                              waitingListFieldConfigurationId="2"/>
+
+    <FieldHeading id="3"  collegeId="1"  angelId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="First Heading_2"
+                  description="description" fieldConfigurationId="2"/>
+
+
+    <FieldHeading id="4"  collegeId="1"  angelId="4" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Second Heading_2"
+                  description="description" fieldConfigurationId="2" />
+
+    <FieldHeading id="5"  collegeId="1"  angelId="5" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Trhread Heading_2"
+                  description="description" fieldConfigurationId="2" />
     
-        <Field id="14"  collegeId="1"  angelId="14"
+    <Field id="1"  collegeId="1"  angelId="1"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker1"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="1"
+           property="firstName"/>
+
+
+    
+    <Field id="2"  collegeId="1"  angelId="2"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker2"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="2"
+           property="lastName"/>
+
+
+    
+    <Field id="3"  collegeId="1"  angelId="3"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker3"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="3"
+           property="emailAddress"/>
+    
+    <Field id="4"  collegeId="1"  angelId="4"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker4"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="4"
+           property="street"/>
+    
+    <Field id="5"  collegeId="1"  angelId="5"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker5"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="5"
+           property="suburb"/>
+    
+    <Field id="6"  collegeId="1"  angelId="6"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker6"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="2"
+           defaultValue="BMW"
+           fieldOrder="6"
+           property="postcode"/>
+    
+    <Field id="7"  collegeId="1"  angelId="7"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker7"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="7"
+           property="state"/>
+    
+    <Field id="27"  collegeId="1"  angelId="27"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car 27"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="27"
+           property="country"/>
+    
+    <Field id="8"  collegeId="1"  angelId="8"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker8"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="8"
+           property="homePhoneNumber"/>
+    
+    <Field id="9"  collegeId="1"  angelId="9"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker9"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="9"
+           property="businessPhoneNumber"/>
+    
+    <Field id="10"  collegeId="1"  angelId="10"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker10"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="10"
+           property="faxNumber"/>
+    
+    <Field id="11"  collegeId="1"  angelId="11"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker11"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="11"
+           property="mobilePhoneNumber"/>
+    
+    <Field id="12"  collegeId="1"  angelId="12"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker12"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="12"
+           property="dateOfBirth"/>
+    
+    <Field id="13"  collegeId="1"  angelId="13"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker13"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="13"
+           property="abn"/>
+
+  
+    
+    <Field id="14"  collegeId="1"  angelId="14"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker14"
@@ -299,7 +317,7 @@
            fieldOrder="14"
            property="isMale"/>
     
-        <Field id="15"  collegeId="1"  angelId="15"
+    <Field id="15"  collegeId="1"  angelId="15"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker15"
@@ -311,7 +329,7 @@
            fieldOrder="15"
            property="citizenship"/>
     
-        <Field id="16"  collegeId="1"  angelId="16"
+    <Field id="16"  collegeId="1"  angelId="16"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car make16r"
@@ -323,7 +341,7 @@
            fieldOrder="16"
            property="countryOfBirth"/>
     
-        <Field id="17"  collegeId="1"  angelId="17"
+    <Field id="17"  collegeId="1"  angelId="17"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car mak17er"
@@ -335,7 +353,7 @@
            fieldOrder="17"
            property="languageHome"/>
     
-        <Field id="18"  collegeId="1"  angelId="18"
+    <Field id="18"  collegeId="1"  angelId="18"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker18"
@@ -347,7 +365,7 @@
            fieldOrder="18"
            property="yearSchoolCompleted"/>
     
-        <Field id="19"  collegeId="1"  angelId="19"
+    <Field id="19"  collegeId="1"  angelId="19"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker19"
@@ -359,7 +377,7 @@
            fieldOrder="19"
            property="englishProficiency"/>
     
-        <Field id="20"  collegeId="1"  angelId="20"
+    <Field id="20"  collegeId="1"  angelId="20"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car make20r"
@@ -371,7 +389,7 @@
            fieldOrder="20"
            property="indigenousStatus"/>
     
-        <Field id="21"  collegeId="1"  angelId="21"
+    <Field id="21"  collegeId="1"  angelId="21"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker21"
@@ -383,7 +401,7 @@
            fieldOrder="21"
            property="highestSchoolLevel"/>
     
-        <Field id="22"  collegeId="1"  angelId="22"
+    <Field id="22"  collegeId="1"  angelId="22"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker22"
@@ -395,7 +413,7 @@
            fieldOrder="22"
            property="isStillAtSchool"/>
     
-        <Field id="23"  collegeId="1"  angelId="23"
+    <Field id="23"  collegeId="1"  angelId="23"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker23"
@@ -407,7 +425,7 @@
            fieldOrder="23"
            property="priorEducationCode"/>
     
-        <Field id="24"  collegeId="1"  angelId="24"
+    <Field id="24"  collegeId="1"  angelId="24"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car 24"
@@ -419,7 +437,7 @@
            fieldOrder="24"
            property="labourForceStatus"/>
     
-        <Field id="25"  collegeId="1"  angelId="25"
+    <Field id="25"  collegeId="1"  angelId="25"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker25"
@@ -431,7 +449,7 @@
            fieldOrder="25"
            property="disabilityType"/>
     
-        <Field id="26"  collegeId="1"  angelId="26"
+    <Field id="26"  collegeId="1"  angelId="26"
            created="2011-09-20 11:14:54"
            modified="2011-09-20 11:14:54"
            name= "Favorite car maker26"
@@ -443,17 +461,7 @@
            fieldOrder="26"
            property="specialNeeds"/>
 
-    <Field id="126"  collegeId="1"  angelId="126"
-           created="2011-09-20 11:14:54"
-           modified="2011-09-20 11:14:54"
-           name= "Favorite car maker26"
-           description="Favorite car maker"
-           fieldConfigurationId="2"
-           fieldHeadingId="3"
-           mandatory="4"
-           defaultValue="BMW"
-           fieldOrder="26"
-           property="specialNeeds"/>
+
 
 
     <Field id="28"  collegeId="1"  angelId="28"
