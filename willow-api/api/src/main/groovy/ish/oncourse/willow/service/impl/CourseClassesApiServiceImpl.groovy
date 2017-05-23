@@ -129,7 +129,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         it.distantLearning = c.isDistantLearningCourse
                         it.isAllowByApplication = allowByApplication
                         it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(c.college, c.objectContext).get()
-                        it.price =  new BuildClassPrice(c, contact.student, allowByApplication, overridenFee, promotions).build()
+                        it.price =  new BuildClassPrice(c, allowByApplication, overridenFee, promotions).build()
                         it
                     }
         }
