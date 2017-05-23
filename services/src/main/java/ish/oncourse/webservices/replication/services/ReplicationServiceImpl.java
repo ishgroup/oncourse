@@ -234,8 +234,13 @@ public class ReplicationServiceImpl implements IReplicationService {
 			int numberDeleted = 0;
 
 			for (GenericReplicatedRecord record : request.getReplicatedRecord()) {
-				String entityIdentifier = EntityMapping.BINARY_RELATION_MAPPING.values().contains(record.getStub().getEntityIdentifier()) ? BinaryInfoRelation.class.getSimpleName() : record.getStub().getEntityIdentifier();
-						
+				String entityIdentifier = record.getStub().getEntityIdentifier();
+				if (EntityMapping.BINARY_RELATION_MAPPING.values().contains(entityIdentifier)) {
+					entityIdentifier = BinaryInfoRelation.class.getSimpleName();
+				} else if (CustomField.class.getSimpleName().equals(entityIdentifier)) {
+					entityIdentifier = ContactCustomField.class.getSimpleName();
+				}
+				
 				List<QueuedRecord> list = ObjectSelect.query(QueuedRecord.class)
 						.where(QueuedRecord.ENTITY_WILLOW_ID.eq(record.getStub().getWillowId()))
 						.and(QueuedRecord.ENTITY_IDENTIFIER.eq(entityIdentifier))
