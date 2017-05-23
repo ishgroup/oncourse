@@ -17,14 +17,12 @@ class BuildClassPrice {
 
 
     CourseClass c
-    Student student
     boolean allowByApplication = false
     Money overridenFee = null
     List<ish.oncourse.model.Discount> promotions
 
-    BuildClassPrice(CourseClass c, Student student, boolean allowByApplication, Money overridenFee, List<ish.oncourse.model.Discount> promotions) {
+    BuildClassPrice(CourseClass c, boolean allowByApplication, Money overridenFee, List<ish.oncourse.model.Discount> promotions) {
         this.c = c
-        this.student = student
         this.allowByApplication = allowByApplication
         this.overridenFee = overridenFee
         this.promotions = promotions
