@@ -1,11 +1,6 @@
 class ContactFields {
     contactId: 1002
     headings: [class FieldHeading {
-        name: null
-        description: null
-        fields: []
-        ordering: null
-    }, class FieldHeading {
         name: First Heading
         description: description
         fields: [class Field {

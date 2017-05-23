@@ -26,8 +26,8 @@ class GetFieldConfigurations {
     boolean mergeDefault = false
 
 
-    List<FieldConfiguration> get() {
-        List<FieldConfiguration> configurations = []
+    Set<FieldConfiguration> get() {
+        Set<FieldConfiguration> configurations = []
 
         if (mergeDefault) {
             configurations << getDefaultFieldConfiguration(college)
@@ -69,7 +69,7 @@ class GetFieldConfigurations {
     private FieldConfiguration getDefaultFieldConfiguration(College college) {
         FieldConfiguration configuration =  (ObjectSelect.query(FieldConfiguration)
                 .where(FieldConfiguration.COLLEGE.eq(college))
-                & ExpressionFactory.matchDbExp(FieldConfiguration.ID_PK_COLUMN, -1))
+                & FieldConfiguration.ANGEL_ID.eq(-1))
                 .prefetch(FieldConfiguration.FIELD_HEADINGS.joint())
                 .prefetch(FieldConfiguration.FIELDS.joint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
@@ -79,6 +79,8 @@ class GetFieldConfigurations {
         if (!configuration) {
             logger.error("College (id: $college.id) has no default field configuration")
             throw new IllegalStateException()
+        } else {
+            configuration
         }
     }
     

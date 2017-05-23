@@ -46,7 +46,7 @@ class ContactDetailsBuilder {
         result.contactId = contact.id.toString()
 
         //get corresponded field configuration for all classes 
-        List<FieldConfiguration> configurations =  
+        Set<FieldConfiguration> configurations =  
                 new GetFieldConfigurations(classes: classes, contact: contact, college: contact.college, mergeDefault: mergeDefault, fieldSet: fieldSet).get()
 
         PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
@@ -65,7 +65,9 @@ class ContactDetailsBuilder {
                     }
                 }
         
-        result.headings << dummy                                                        // add dummy heading and real headings 
+        if (!dummy.fields.empty) {
+            result.headings << dummy                                                    // add dummy heading and real headings 
+        }
         result.headings += headingsMap.values()                                         // to resulted container
         
         result.headings =  result.headings.sort { a, b ->                               // sort all headings by ordering, dummy heading should be first
