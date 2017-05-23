@@ -112,7 +112,8 @@ public class ISHObjectContext extends DataContext {
 			super.commitChanges();
 		} catch (CayenneRuntimeException e) {
 			if (retry < 2) {
-				commitChanges0(retry++);
+				retry += 1;
+				commitChanges0(retry);
 			} else {
 				throw e;
 			}
