@@ -1,17 +1,13 @@
 import React from "react";
-import {connect} from "react-redux";
 import {Field, reduxForm, FormProps, DataShape} from "redux-form";
 import classNames from "classnames";
 import {Amount} from "../../../../model/checkout/Amount";
-import {Props as ContactProps} from "../../summary/components/ContactComp";
-import any = jasmine.any;
 import CreditCardComp from "./CreditCardComp";
 import CorporatePassComp from "./CorporatePassComp";
-import {IshState} from "../../../../services/IshState";
-import Checkbox from "../../../../components/form-new/Checkbox";
+import {Contact} from "../../../../model/web/Contact";
 
 interface Props extends FormProps<DataShape, any, any> {
-	contacts: ContactProps[];
+	contacts: Contact[];
 	amount: Amount;
 	onSubmit: (data, dispatch, props) => any;
 }
@@ -44,10 +40,6 @@ class PaymentForm extends React.Component<Props, any> {
 			currentForm: currentTab
 		});
 	}
-
-	/*handleSubmit = (e) => {
-		e.preventDefault();
-	}*/
 
 	render() {
 		const {handleSubmit, contacts, amount} = this.props;
@@ -98,21 +90,15 @@ const PaymentFormNav = (props) => {
 	)
 }
 
-const PaymentForm1 = reduxForm({
+const Container = reduxForm({
 	form: NAME,
 	//validate: validate,
 	onSubmitSuccess: (result, dispatch, props: any) => {
-		console.log("onSubmitSuccess");
-		console.log(result);
-		console.log(props);
 		//dispatch({type: DispatchRequest});
 	},
 	onSubmitFail: (errors, dispatch, submitError, props) => {
 		//dispatch(showErrors(submitError, NAME));
-		console.log("onSubmitFail");
-		console.log(errors);
-		console.log(props);
 	}
 })(PaymentForm);
 
-export default PaymentForm1//connect(mapStateToProps, mapDispatchToProps)(PaymentForm1);
+export default Container;

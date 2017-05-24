@@ -13,11 +13,12 @@ interface Props{
 class TextField extends React.Component<any, any> {
 
   render() {
-    const {type} = this.props;
+    const {type, children} = this.props;
     const input:WrappedFieldInputProps = inputFrom(this.props);
     return (
       <Wrapper {...this.props}>
-        <input className="input-fixed contact-field" type={type} {...input} onFocus={input.onFocus} onBlur={input.onBlur} onChange={input.onChange}/>
+        <input className="input-fixed contact-field" type={type} {...input} id={input.name} onFocus={input.onFocus} onBlur={input.onBlur} onChange={input.onChange}/>
+        {children}
       </Wrapper>
     )
   }

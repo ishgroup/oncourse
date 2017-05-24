@@ -1,26 +1,19 @@
 import React from "react";
-import {Amount} from "../../../model/checkout/Amount";
 import AmountComp from "../../components/AmountComp";
 import PaymentForm from "./components/PaymentForm";
-import {Props as ContactProps} from "../summary/components/ContactComp";
+import {Amount} from "../../../model/checkout/Amount";
+import {Contact} from "../../../model/web/Contact";
 
 interface Props {
-	contacts: ContactProps[];
+	contacts: Contact[];
 	amount: Amount;
 }
 
 class Payment extends React.Component<Props, any> {
-	onPaymentFormSubmit = (data, dispatch, props) => {
-		console.log("onPaymentFormSubmit");
-		console.log(data);
-		console.log(props);
-	}
+	onPaymentFormSubmit = (data, dispatch, props) => {}
 
 	render() {
 		const {amount, contacts} = this.props;
-
-		console.log(amount);
-		console.log(contacts);
 
 		return (
 			<div>

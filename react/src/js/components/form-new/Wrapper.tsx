@@ -13,18 +13,18 @@ interface Props {
 
 class Wrapper extends React.Component<any, any> {
   render() {
-    const {label, required, children} = this.props;
+    const {label, input, required, children} = this.props;
     const {error, warning} = metaFrom(this.props);
-
     const divClass = classnames("form-group", error && "has-error", warning && "has-warning");
     return (
       <div className={divClass}>
-        <label className="control-label" htmlFor={name}>
-          <span dangerouslySetInnerHTML={{__html: label}}/>
-          <span>
-            {required && <em title="This field is required">*</em>}
-          </span>
-        </label>
+        {label &&
+          <label className="control-label" htmlFor={input.name}>
+            <span dangerouslySetInnerHTML={{__html: label}}/>
+            <span>
+              {required && <em title="This field is required">*</em>}
+            </span>
+          </label> }
         {children}
         {this.renderMessage()}
       </div>

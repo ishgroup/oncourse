@@ -9,7 +9,7 @@ import 'react-select/dist/react-select.css';
 import "../../../scss/_ReactSelect.scss";
 import "../../../scss/index.scss";
 
-import {amount, contactPropses} from "../summary/SummaryApp.data";
+import {amount, contactPropses} from "./PaymentApp.data";
 import Payment from "../../../js/enrol/containers/payment/Payment";
 
 const store = CreateStore();

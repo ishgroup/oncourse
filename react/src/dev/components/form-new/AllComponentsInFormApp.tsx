@@ -7,7 +7,8 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import {Field, FormErrors, FormProps, reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from "redux-form-website-template";
 
-//import "react-select/dist/react-select.css";
+import "react-select/dist/react-select.css";
+import "../../../scss/_ReactSelect.scss";
 import {AutocompleteApiStub} from "../../../js/httpStub/AutocompleteApiStub";
 
 import TextField from "../../../js/components/form-new/TextField";
