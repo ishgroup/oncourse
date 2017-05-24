@@ -1,13 +1,14 @@
 package ish.oncourse.willow.model.checkout.payment;
 
-import ish.oncourse.willow.model.checkout.PurchaseItems;
+import ish.oncourse.willow.model.checkout.CheckoutModel;
 
 public class PaymentRequest  {
   
-    private PurchaseItems checkoutModel = null;
+    private CheckoutModel checkoutModel = null;
     private String creditCardNumber = null;
     private String creditCardName = null;
-    private String creditCardExpiry = null;
+    private String expiryMonth = null;
+    private String expiryYear = null;
     private String creditCardCvv = null;
     private Boolean agreementFlag = null;
 
@@ -15,15 +16,15 @@ public class PaymentRequest  {
      * Get checkoutModel
      * @return checkoutModel
      */
-    public PurchaseItems getCheckoutModel() {
+    public CheckoutModel getCheckoutModel() {
         return checkoutModel;
     }
 
-    public void setCheckoutModel(PurchaseItems checkoutModel) {
+    public void setCheckoutModel(CheckoutModel checkoutModel) {
        this.checkoutModel = checkoutModel;
     }
 
-    public PaymentRequest checkoutModel(PurchaseItems checkoutModel) {
+    public PaymentRequest checkoutModel(CheckoutModel checkoutModel) {
       this.checkoutModel = checkoutModel;
       return this;
     }
@@ -63,19 +64,36 @@ public class PaymentRequest  {
     }
 
     /**
-     * Get creditCardExpiry
-     * @return creditCardExpiry
+     * Get expiryMonth
+     * @return expiryMonth
      */
-    public String getCreditCardExpiry() {
-        return creditCardExpiry;
+    public String getExpiryMonth() {
+        return expiryMonth;
     }
 
-    public void setCreditCardExpiry(String creditCardExpiry) {
-       this.creditCardExpiry = creditCardExpiry;
+    public void setExpiryMonth(String expiryMonth) {
+       this.expiryMonth = expiryMonth;
     }
 
-    public PaymentRequest creditCardExpiry(String creditCardExpiry) {
-      this.creditCardExpiry = creditCardExpiry;
+    public PaymentRequest expiryMonth(String expiryMonth) {
+      this.expiryMonth = expiryMonth;
+      return this;
+    }
+
+    /**
+     * Get expiryYear
+     * @return expiryYear
+     */
+    public String getExpiryYear() {
+        return expiryYear;
+    }
+
+    public void setExpiryYear(String expiryYear) {
+       this.expiryYear = expiryYear;
+    }
+
+    public PaymentRequest expiryYear(String expiryYear) {
+      this.expiryYear = expiryYear;
       return this;
     }
 
@@ -122,7 +140,8 @@ public class PaymentRequest  {
       sb.append("    checkoutModel: ").append(toIndentedString(checkoutModel)).append("\n");
       sb.append("    creditCardNumber: ").append(toIndentedString(creditCardNumber)).append("\n");
       sb.append("    creditCardName: ").append(toIndentedString(creditCardName)).append("\n");
-      sb.append("    creditCardExpiry: ").append(toIndentedString(creditCardExpiry)).append("\n");
+      sb.append("    expiryMonth: ").append(toIndentedString(expiryMonth)).append("\n");
+      sb.append("    expiryYear: ").append(toIndentedString(expiryYear)).append("\n");
       sb.append("    creditCardCvv: ").append(toIndentedString(creditCardCvv)).append("\n");
       sb.append("    agreementFlag: ").append(toIndentedString(agreementFlag)).append("\n");
       sb.append("}");

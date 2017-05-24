@@ -1075,12 +1075,14 @@ definitions:
     type: object
     properties:
       checkoutModel:
-        $ref: '#/definitions/checkout.PurchaseItems'
+        $ref: '#/definitions/checkout.CheckoutModel'
       creditCardNumber:
         type: string
       creditCardName:
         type: string
-      creditCardExpiry:
+      expiryMonth:
+        type: string
+      expiryYear:
         type: string
       creditCardCvv:
         type: string
