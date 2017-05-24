@@ -36,6 +36,7 @@ class CalculatePrice {
     Money getDiscountTotalIncTax() {
         invoiceLine.discountTotalIncTax
     }
+    
     Money getFinalPriceToPayIncTax() {
         invoiceLine.finalPriceToPayIncTax
     }

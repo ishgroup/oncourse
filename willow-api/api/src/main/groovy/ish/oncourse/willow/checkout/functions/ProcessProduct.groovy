@@ -25,21 +25,23 @@ class ProcessProduct {
     Contact contact
     College college
     String productId
+    String payerId
 
     Article article
     Membership membership
     Voucher voucher
     Product persistentProduct
     
-    ProcessProduct(ObjectContext context, Contact contact, College college, String productId) {
+    ProcessProduct(ObjectContext context, Contact contact, College college, String productId, String payerId) {
         this.context = context
         this.contact = contact
         this.college = college
         this.productId = productId
+        this.payerId = payerId
     }
 
     ProcessProduct process() {
-        Product persistentProduct = new GetProduct(context, college, productId).get()
+        persistentProduct = new GetProduct(context, college, productId).get()
         ProductType productType =TypesUtil.getEnumForDatabaseValue(persistentProduct.type, ProductType.class)
         
         switch (productType) {
@@ -47,15 +49,15 @@ class ProcessProduct {
                 article = new Article().with { a ->
                     a.contactId = contact.id.toString()
                     a.productId = persistentProduct.id.toString()
-                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().toPlainString()
+                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
                     a
                 }
                 break
             case MEMBERSHIP:
                 membership = new Membership().with { m ->
                     m.contactId = contact.id.toString()
-                    m.productId = p.id.toString()
-                    m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().toPlainString()
+                    m.productId = persistentProduct.id.toString()
+                    m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
                     ValidateMembership validateMembership = new ValidateMembership(context, college).validate(persistentProduct as MembershipProduct, contact)
                     m.errors += validateMembership.errors
                     m.warnings += validateMembership.warnings
@@ -63,6 +65,9 @@ class ProcessProduct {
                 }
                 break
             case VOUCHER:
+                if (payerId && payerId != contact.id.toString()) {
+                    break
+                }
                 voucher = new Voucher().with { v ->
                     VoucherProduct voucher = persistentProduct as VoucherProduct
                     v.contactId = contact.id.toString()
@@ -74,15 +79,15 @@ class ProcessProduct {
                         value = DEFAULT_VOUCHER_PRICE
                         v.value =  value.toPlainString()
                     } else if (persistentProduct.priceExTax != null) {
-                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().toPlainString()
+                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
                         value = voucher.value
                         v.value = value.toPlainString()
                     } else {
-                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().toPlainString()
+                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
                         v.classes += voucher.redemptionCourses.collect{c -> c.name}
                     }
 
-                    ValidateVoucher validateVoucher = new ValidateVoucher(context, college).validate(voucher as VoucherProduct, value)
+                    ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, value, v.contactId)
                     v.errors += validateVoucher.errors
                     v.warnings += validateVoucher.warnings
                     v

@@ -33,16 +33,18 @@ class ProcessProducts {
     Contact contact
     College college
     List<String> productIds
+    String payerId 
 
     List<Article> articles = []
     List<Membership> memberships = []
     List<Voucher> vouchers = []
     
-    ProcessProducts(ObjectContext context, Contact contact, College college, List<String> productIds) {
+    ProcessProducts(ObjectContext context, Contact contact, College college, List<String> productIds,  String payerId) {
         this.context = context
         this.contact = contact
         this.college = college
         this.productIds = productIds
+        this.payerId = payerId
     }
 
     ProcessProducts process() {
@@ -53,7 +55,7 @@ class ProcessProducts {
         }
         
         productIds.each { id ->
-           ProcessProduct processProduct = new ProcessProduct(context, contact, college, id)
+           ProcessProduct processProduct = new ProcessProduct(context, contact, college, id, payerId)
             processProduct.article && articles << processProduct.article
             processProduct.membership && memberships << processProduct.membership
             processProduct.voucher && vouchers << processProduct.voucher

@@ -111,7 +111,7 @@ class ProcessCheckoutModel {
     }
 
     void processArticle(Article a, Contact contact) {
-        ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId).process()
+        ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, checkoutModel.payerId).process()
         if (processProduct.article == null) {
             a.errors << "Purchase is wrong"
         } else {
@@ -125,7 +125,7 @@ class ProcessCheckoutModel {
     }
     
     void processMembership(Membership m, Contact contact) {
-        ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId).process()
+        ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, checkoutModel.payerId).process()
         if (processProduct.membership == null) {
             m.errors << "Purchase is wrong"
         } else {
@@ -140,7 +140,7 @@ class ProcessCheckoutModel {
     }
     
     void processVoucher(Voucher v) {
-        ValidateVoucher validateVoucher = new ValidateVoucher(context, college).validate(v)
+        ValidateVoucher validateVoucher = new ValidateVoucher(context, college, checkoutModel.payerId).validate(v)
         v.errors += validateVoucher.errors
         v.warnings += validateVoucher.warnings
         if (v.errors.empty) {
