@@ -2,6 +2,7 @@ package ish.oncourse.willow.service;
 
 import ish.oncourse.willow.model.checkout.CheckoutModel;
 import ish.oncourse.willow.model.checkout.PurchaseItems;
+import ish.oncourse.willow.model.checkout.payment.PaymentRequest;
 import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest;
 import ish.oncourse.willow.model.common.CommonError;
 
@@ -29,5 +30,12 @@ public interface CheckoutApi  {
     @Produces({ "application/json" })
     @CollegeInfo
     PurchaseItems getPurchaseItems(PurchaseItemsRequest purchaseItemsRequest);
+
+    @POST
+    @Path("/makePayment")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @CollegeInfo
+    CheckoutModel makePayment(PaymentRequest paymentRequest);
 }
 

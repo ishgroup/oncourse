@@ -10,6 +10,8 @@ public class CheckoutModel  {
     private List<PurchaseItems> purchaseItemsList = new ArrayList<PurchaseItems>();
     private Amount amount = null;
     private List<String> promotionIds = new ArrayList<String>();
+    private String payerId = null;
+    private String sessionId = null;
 
     /**
      * Get purchaseItemsList
@@ -72,6 +74,40 @@ public class CheckoutModel  {
       return this;
     }
 
+    /**
+     * Get payerId
+     * @return payerId
+     */
+    public String getPayerId() {
+        return payerId;
+    }
+
+    public void setPayerId(String payerId) {
+       this.payerId = payerId;
+    }
+
+    public CheckoutModel payerId(String payerId) {
+      this.payerId = payerId;
+      return this;
+    }
+
+    /**
+     * Get sessionId
+     * @return sessionId
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+       this.sessionId = sessionId;
+    }
+
+    public CheckoutModel sessionId(String sessionId) {
+      this.sessionId = sessionId;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -81,6 +117,8 @@ public class CheckoutModel  {
       sb.append("    purchaseItemsList: ").append(toIndentedString(purchaseItemsList)).append("\n");
       sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
       sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
+      sb.append("    payerId: ").append(toIndentedString(payerId)).append("\n");
+      sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
       sb.append("}");
       return sb.toString();
     }

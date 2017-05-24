@@ -6,9 +6,6 @@ import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
-import ish.oncourse.willow.checkout.functions.ApplayDiscounts
-import ish.oncourse.willow.checkout.functions.ApplyDiscounts
-import ish.oncourse.willow.checkout.functions.ApplyPaymentPlan
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
 import ish.oncourse.willow.checkout.functions.ProcessClass
@@ -19,6 +16,7 @@ import ish.oncourse.willow.checkout.functions.ValidateVoucher
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.PurchaseItems
+import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.service.CheckoutApi
@@ -82,14 +80,20 @@ class CheckoutApiImpl implements CheckoutApi {
         
         PurchaseItems items = new PurchaseItems()
         items.contactId = contact.id.toString()
+        
         ProcessClasses processClasses = new ProcessClasses(context, contact, college, purchaseItemsRequest.classIds, purchaseItemsRequest.promotionIds).process()
         items.enrolments = processClasses.enrolments
         items.applications = processClasses.applications
         
-        ProcessProducts processProducts = new ProcessProducts(context, contact, college, purchaseItemsRequest.productIds).process()
+        ProcessProducts processProducts = new ProcessProducts(context, contact, college, purchaseItemsRequest.productIds, null).process()
         items.articles += processProducts.articles
         items.memberships += processProducts.memberships
         items.vouchers += processProducts.vouchers
         items
+    }
+
+    @Override
+    CheckoutModel makePayment(PaymentRequest paymentRequest) {
+        return null
     }
 }

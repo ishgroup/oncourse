@@ -62,6 +62,33 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /makePayment:
+    post:
+      x-filter:  
+      - CollegeInfo
+      operationId: makePayment
+      summary: Validate model, save purchase items into db and send payment to DPS
+      description: Validate model, save purchase items into db and send payment to DPS
+      tags:
+      - Checkout
+      consumes:
+      - application/json
+      parameters:
+      - name: paymentRequest
+        in: body
+        description: Checkout model plus credit cadr data
+        required: true
+        schema:
+          $ref: '#/definitions/checkout.payment.PaymentRequest'
+      responses:
+        200:
+          description: Whole Checkout Model with sessionId populated
+          schema:
+            $ref: '#/definitions/checkout.CheckoutModel'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /products:
     post:
       x-filter:  
@@ -1040,3 +1067,22 @@ definitions:
         type: array
         items:
           type: string
+      payerId:
+        type: string
+      sessionId:
+        type: string
+  checkout.payment.PaymentRequest:
+    type: object
+    properties:
+      checkoutModel:
+        $ref: '#/definitions/checkout.PurchaseItems'
+      creditCardNumber:
+        type: string
+      creditCardName:
+        type: string
+      creditCardExpiry:
+        type: string
+      creditCardCvv:
+        type: string
+      agreementFlag:
+        type: boolean
