@@ -52,11 +52,11 @@ public class GetEntityAvailabilityByTag {
             return true;
         }
         Tag rootTag = GetTagByPath.valueOf(context, webSite, webSite.getCoursesRootTagName()).get();
-        return haveRelationAnyToRoot(getTags(webSite, entity), rootTag);
+        return rootTag != null ? haveRelationAnyToRoot(getTags(webSite, entity), rootTag) : true;
     }
 
     protected boolean haveRelationAnyToRoot(List<Tag> tags, Tag rootTag) {
-        if (rootTag != null && tags != null && !tags.isEmpty()) {
+        if (tags != null && !tags.isEmpty()) {
             for (Tag tag : tags) {
                 do {
                     if (tag.getId() == rootTag.getId()) {

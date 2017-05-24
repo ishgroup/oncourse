@@ -51,7 +51,6 @@ public class GetCourseClassByCode {
 
         ObjectSelect<CourseClass> query = ObjectSelect.query(CourseClass.class, ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, college)
                 .andExp(ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true))
-                .andExp(ExpressionFactory.matchExp(CourseClass.IS_WEB_VISIBLE_PROPERTY, true))
                 .andExp(getSearchStringPropertyQualifier(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY, courseCode))
                 .andExp(getSearchStringPropertyQualifier(CourseClass.CODE_PROPERTY, courseClassCode)));
 
