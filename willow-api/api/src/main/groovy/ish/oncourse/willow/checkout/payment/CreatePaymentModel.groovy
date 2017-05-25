@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.payment
 
+import com.sun.javaws.ui.ApplicationIconGenerator
 import ish.common.GetInvoiceDueDate
 import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
@@ -49,6 +50,8 @@ class CreatePaymentModel {
     WebSite webSite
     PaymentRequest paymentRequest
 
+    List<Application> applications = []
+    
     PaymentIn paymentIn
     Invoice mainInvoice
     Contact payer
@@ -149,6 +152,7 @@ class CreatePaymentModel {
         application.status = ApplicationStatus.NEW
         application.source = PaymentSource.SOURCE_WEB
         application.confirmationStatus = ConfirmationStatus.NOT_SENT
+        applications << application
     }
     
     

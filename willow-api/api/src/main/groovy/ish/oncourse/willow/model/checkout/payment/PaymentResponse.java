@@ -1,6 +1,8 @@
 package ish.oncourse.willow.model.checkout.payment;
 
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PaymentResponse  {
   
@@ -8,7 +10,7 @@ public class PaymentResponse  {
     private PaymentStatus paymentStatus = null;
     private String error = null;
     private String paymentReference = null;
-    private String applicationIds = null;
+    private List<String> applicationIds = new ArrayList<String>();
 
     /**
      * Get sessionId
@@ -82,16 +84,21 @@ public class PaymentResponse  {
      * Get applicationIds
      * @return applicationIds
      */
-    public String getApplicationIds() {
+    public List<String> getApplicationIds() {
         return applicationIds;
     }
 
-    public void setApplicationIds(String applicationIds) {
+    public void setApplicationIds(List<String> applicationIds) {
        this.applicationIds = applicationIds;
     }
 
-    public PaymentResponse applicationIds(String applicationIds) {
+    public PaymentResponse applicationIds(List<String> applicationIds) {
       this.applicationIds = applicationIds;
+      return this;
+    }
+
+    public PaymentResponse addApplicationIdsItem(String applicationIdsItem) {
+      this.applicationIds.add(applicationIdsItem);
       return this;
     }
 

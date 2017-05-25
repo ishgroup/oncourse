@@ -5,24 +5,20 @@ import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
-import ish.oncourse.model.CourseClass
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
-import ish.oncourse.willow.checkout.functions.ProcessClass
 import ish.oncourse.willow.checkout.functions.ProcessClasses
-import ish.oncourse.willow.checkout.functions.ProcessProduct
 import ish.oncourse.willow.checkout.functions.ProcessProducts
-import ish.oncourse.willow.checkout.functions.ValidateVoucher
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.HasErrors
-import ish.oncourse.willow.checkout.payment.ValidateCreditCard
 import ish.oncourse.willow.checkout.payment.ValidateCreditCardForm
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.PurchaseItems
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse
+import ish.oncourse.willow.model.checkout.payment.PaymentStatus
 import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
@@ -30,7 +26,6 @@ import ish.oncourse.willow.service.CheckoutApi
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.configuration.server.ServerRuntime
-import org.apache.commons.lang3.StringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

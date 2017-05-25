@@ -1109,4 +1109,6 @@ definitions:
       paymentReference:
         type: string
       applicationIds:
-        type: string
+        type: array
+        items:
+          type: string
