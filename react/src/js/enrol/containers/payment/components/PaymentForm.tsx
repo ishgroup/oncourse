@@ -13,7 +13,7 @@ interface Props extends FormProps<DataShape, any, any> {
 }
 
 const NAME = "PaymentForm";
-//FormProps<DataShape,Props,any> & Props
+
 class PaymentForm extends React.Component<Props, any> {
 
 	constructor(props) {
@@ -23,12 +23,6 @@ class PaymentForm extends React.Component<Props, any> {
 			selectedPayer: 0,
 			currentForm: "credit-card"
 		}
-	}
-
-	payerHandleChange = (index: number) => {
-		this.setState({
-			selectedPayer: index
-		});
 	}
 
 	paymentTabOnClick = (e) => {
@@ -48,7 +42,7 @@ class PaymentForm extends React.Component<Props, any> {
 				<div id="tabable-container">
 					<PaymentFormNav paymentTabOnClick={this.paymentTabOnClick} currentForm={this.state.currentForm} />
 					<div className="tab-content">
-						<CreditCardComp contacts={contacts} amount={amount} currentForm={this.state.currentForm} selectedPayer={this.state.selectedPayer} payerHandleChange={this.payerHandleChange} />
+						<CreditCardComp contacts={contacts} amount={amount} currentForm={this.state.currentForm} />
 						<CorporatePassComp currentForm={this.state.currentForm} />
 					</div>
 				</div>

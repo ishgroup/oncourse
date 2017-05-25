@@ -6,13 +6,12 @@ import TextField from "../../../../components/form-new/TextField";
 import RadioGroup from "../../../../components/form-new/RadioGroup";
 import {Amount} from "../../../../model/checkout/Amount";
 import {Contact} from "../../../../model/web/Contact";
+import PayerComp from "./PayerComp";
 
 interface Props {
 	contacts: Contact[];
 	amount: Amount;
 	currentForm: string;
-	selectedPayer: number;
-	payerHandleChange: (index: number) => void;
 }
 
 class CreditCardComp extends React.Component<Props, any> {
@@ -22,8 +21,7 @@ class CreditCardComp extends React.Component<Props, any> {
 	}
 
 	render() {
-		const {currentForm, contacts, amount, selectedPayer, payerHandleChange} = this.props;
-		const payerList = PayerList({contacts: contacts, payerHandleChange: payerHandleChange, selectedPayer: selectedPayer});
+		const {currentForm, contacts, amount} = this.props;
 
 		return (
 			<div id="credit-card" className={classNames("single-tab", { "active": currentForm === "credit-card" })}>
@@ -45,16 +43,7 @@ class CreditCardComp extends React.Component<Props, any> {
 									</span>
 								</p>
 
-								<div className="clearfix form-group">
-									<label htmlFor="contact">
-										Payer<em title="This field is required">*</em>
-										<small>(issue invoice to)</small>
-									</label>
-
-									<div className="select-payer">
-										<Field component={RadioGroup} name="payer" required={true} items={payerList} value={payerList[0].key} />
-									</div>
-								</div>
+								<PayerComp contacts={contacts} />
 
 								<div className="payer-selection">
 									<a className="button" href="#">Choose a different payer</a>
@@ -94,14 +83,6 @@ class CreditCardComp extends React.Component<Props, any> {
 			</div>
 		)
 	}
-}
-
-const PayerList = (props) => {
-	let payerList = [];
-	props.contacts.map((payer, index) => {
-		return payerList.push({key: payer.contact.id, value: payer.contact.firstName + " " + payer.contact.lastName });
-	});
-	return payerList;
 }
 
 const getExpiryMonths = () => {
