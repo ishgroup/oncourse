@@ -37,7 +37,7 @@ class SearchService {
     private List<Item> searchSuburbs(String qualifier, String value) {
         try {
 
-            value = normolizeString(value)
+            value = normalizeString(value)
             List<Item> result = []
 
             SolrQuery q = new SolrQuery()
@@ -70,8 +70,7 @@ class SearchService {
         searchSuburbs('postcode', term)
     }
 
-
-    static String normolizeString(String original) {
+    static String normalizeString(String original) {
         return original.toLowerCase().trim().replaceAll(SOLR_SYNTAX_CHARACTERS_STRING, ' ')
     }
 }
