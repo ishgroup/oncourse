@@ -1,5 +1,8 @@
 .content, #checkout, #waitingListForm, #mailingListForm {
   fieldset {
+    .conditions {
+      top: 0;
+    }
     .Select {
       width: 133px;
       display: inline-block;
