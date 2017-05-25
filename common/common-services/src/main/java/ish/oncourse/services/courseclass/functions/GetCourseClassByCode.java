@@ -50,15 +50,11 @@ public class GetCourseClassByCode {
         String courseClassCode = parts[1];
 
         ObjectSelect<CourseClass> query = ObjectSelect.query(CourseClass.class, CourseClass.COLLEGE.eq(college)
-                .andExp(CourseClass.IS_ACTIVE.eq(true)
-                        .orExp(CourseClass.IS_ACTIVE.eq(false).andExp(CourseClass.CANCELLED.eq(true))))
+                .andExp(CourseClass.IS_ACTIVE.isTrue()
+                        .orExp(CourseClass.IS_ACTIVE.isFalse().andExp(CourseClass.CANCELLED.isTrue().andExp(CourseClass.IS_WEB_VISIBLE.isTrue()))))
                 .andExp(CourseClass.CODE.eq(courseClassCode))
                 .andExp(CourseClass.COURSE.dot(Course.CODE).eq(courseCode)));
 
         return ApplyCourseClassCacheSettings.valueOf(query).apply().selectOne(context);
-    }
-
-    private Expression getSearchStringPropertyQualifier(String searchProperty, Object value) {
-        return ExpressionFactory.likeIgnoreCaseExp(searchProperty, value);
     }
 }
