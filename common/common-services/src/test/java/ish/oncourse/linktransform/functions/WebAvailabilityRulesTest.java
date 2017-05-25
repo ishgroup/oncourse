@@ -176,7 +176,7 @@ public class WebAvailabilityRulesTest extends ServiceTest {
     }
 
     private enum CourseClassAvailability {
-        DISABLED(false, false, false), ALLOWED(true, false, false), ALLOWED_AND_VISIBLE(true, true, false), CANCELLED(true, true, true);
+        DISABLED(false, false, false), ALLOWED(true, false, false), ALLOWED_AND_VISIBLE(true, true, false), CANCELLED(false, true, true);
 
         private boolean a;
         private boolean v;

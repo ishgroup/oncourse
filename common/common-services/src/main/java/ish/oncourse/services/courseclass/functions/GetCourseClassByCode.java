@@ -49,10 +49,11 @@ public class GetCourseClassByCode {
         String courseCode = parts[0];
         String courseClassCode = parts[1];
 
-        ObjectSelect<CourseClass> query = ObjectSelect.query(CourseClass.class, ExpressionFactory.matchExp(Course.COLLEGE_PROPERTY, college)
-                .andExp(ExpressionFactory.matchExp(CourseClass.IS_ACTIVE_PROPERTY, true))
-                .andExp(getSearchStringPropertyQualifier(CourseClass.COURSE_PROPERTY + "." + Course.CODE_PROPERTY, courseCode))
-                .andExp(getSearchStringPropertyQualifier(CourseClass.CODE_PROPERTY, courseClassCode)));
+        ObjectSelect<CourseClass> query = ObjectSelect.query(CourseClass.class, CourseClass.COLLEGE.eq(college)
+                .andExp(CourseClass.IS_ACTIVE.eq(true)
+                        .orExp(CourseClass.IS_ACTIVE.eq(false).andExp(CourseClass.CANCELLED.eq(true))))
+                .andExp(CourseClass.CODE.eq(courseClassCode))
+                .andExp(CourseClass.COURSE.dot(Course.CODE).eq(courseCode)));
 
         return ApplyCourseClassCacheSettings.valueOf(query).apply().selectOne(context);
     }
