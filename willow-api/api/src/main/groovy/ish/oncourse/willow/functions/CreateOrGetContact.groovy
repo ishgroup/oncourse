@@ -39,6 +39,7 @@ class CreateOrGetContact  {
         } else if (contactCreationAllowed) {
             College localCollege = context.localObject(college)
             contact = context.newObject(Contact.class)
+            contact.lastLoginTime = new Date()
             contact.setCollege(localCollege)
 
             contact.givenName = params.firstName

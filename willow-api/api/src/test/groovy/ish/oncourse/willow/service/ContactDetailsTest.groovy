@@ -1,9 +1,13 @@
 package ish.oncourse.willow.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import ish.common.types.StudentCitizenship
+import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.Contact
 import ish.oncourse.model.FieldHeading
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.filters.RequestFilter
+import ish.oncourse.willow.functions.field.FieldBuilder
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
 import ish.oncourse.willow.model.field.DataType
@@ -15,13 +19,17 @@ import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
+import org.apache.commons.lang3.RandomUtils
 import org.apache.commons.lang3.time.DateUtils
 import org.junit.*
+import org.mockito.Mockito
 
 import javax.ws.rs.BadRequestException
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
 
 class ContactDetailsTest extends  ApiTest{

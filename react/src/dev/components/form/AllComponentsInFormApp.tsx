@@ -8,14 +8,12 @@ import {Field, FormErrors, FormProps, reducer as formReducer, reduxForm} from "r
 import {Values} from "redux-form-website-template";
 
 //import "react-select/dist/react-select.css";
-import {AutocompleteApiStub} from "../../../js/httpStub/AutocompleteApiStub";
 
-import {TextField} from "components/form/TextField";
-import {CheckboxField} from "components/form/CheckboxField";
-import {ComboboxField} from "components/form/ComboboxField";
-import {DateField} from "components/form/DateField";
-import {TextAreaField} from "components/form/TextAreaField";
-import {RadioGroupField} from "components/form/RadioGroupField";
+import {TextField} from "../../../js/components/form/TextField";
+import {CheckboxField} from "../../../js/components/form/CheckboxField";
+import {ComboboxField} from "../../../js/components/form/ComboboxField";
+import {TextAreaField} from "../../../js/components/form/TextAreaField";
+import {RadioGroupField} from "../../../js/components/form/RadioGroupField";
 
 
 const store = createStore(
@@ -31,9 +29,6 @@ const options = [
 ];
 //https://gist.github.com/leocristofani/98312e61807db8f32e720c9f97a186e5
 //https://github.com/JedWatson/react-select/issues/1129
-
-
-const stub: AutocompleteApiStub = new AutocompleteApiStub(null);
 
 /**
  *  application for all components to test how they work inside redux-form

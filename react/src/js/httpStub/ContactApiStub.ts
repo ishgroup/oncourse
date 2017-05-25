@@ -3,13 +3,10 @@ import {Contact} from "../model/web/Contact";
 import {CreateContactParams} from "../model/web/CreateContactParams";
 import {ContactFieldsRequest} from "../model/field/ContactFieldsRequest";
 import {ContactFields} from "../model/field/ContactFields";
-
-import * as MockContactFields from "./mocks/MockContactFields";
 import {SubmitFieldsRequest} from "../model/field/SubmitFieldsRequest";
 
 import {MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
-import {config} from "shelljs";
 import {mockContact} from "./mocks/MockFunctions";
 export class ContactApiStub extends ContactApi {
 
@@ -28,7 +25,7 @@ export class ContactApiStub extends ContactApi {
   }
 
   createOrGetContact(request: CreateContactParams): Promise<Contact> {
-    let contact:Contact = this.config.db.getContactByDetails(request.firstName, request.lastName, request.email);
+    let contact: Contact = this.config.db.getContactByDetails(request.firstName, request.lastName, request.email);
     if (!contact) {
       contact = mockContact();
       contact.firstName = request.firstName;
@@ -39,8 +36,14 @@ export class ContactApiStub extends ContactApi {
     return this.config.createResponse(contact.id);
   }
 
-  getContactFields(contactFieldsRequest: ContactFieldsRequest): Promise<ContactFields> {
-    return this.config.createResponse(MockContactFields.ContactFieldsRequest);
+  getContactFields(request: ContactFieldsRequest): Promise<ContactFields> {
+    const result: ContactFields = {
+      contactId: request.contactId,
+      headings: [
+        this.config.db.getFieldHeadingBy(["street","suburb","country"])
+      ]
+    };
+    return this.config.createResponse(result);
   }
 
 

@@ -7,7 +7,7 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import {reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from "redux-form-website-template";
 
-import {AutocompleteApiStub} from "../../../js/httpStub/AutocompleteApiStub";
+import {SearchApiMock} from "../../../js/httpStub/SearchApiMock";
 import TextField from "../../../js/components/form-new/TextField";
 import Checkbox from "../../../js/components/form-new/Checkbox";
 import SelectField from "../../../js/components/form-new/SelectField";
@@ -28,7 +28,7 @@ const options = [
 ];
 
 
-const stub: AutocompleteApiStub = new AutocompleteApiStub(null);
+const stub: SearchApiMock = new SearchApiMock(null);
 
 const loadOptions = (text) => {
   return stub.getCountries(text).then((data) => Promise.resolve({options: data}));

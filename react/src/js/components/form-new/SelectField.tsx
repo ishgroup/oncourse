@@ -32,15 +32,15 @@ class SelectField extends React.Component<any, any> {
   };
 
   private onBlur = (e) => {
-    const input:WrappedFieldInputProps = inputFrom(this.props);
+    const input: WrappedFieldInputProps = inputFrom(this.props);
     const {onBlur} = input;
-    if (onBlur) {
-      onBlur(e)
+    if (this.select && onBlur) {
+      onBlur(this.select.value)
     }
   };
 
   private onFocus = (e) => {
-    const input:WrappedFieldInputProps = inputFrom(this.props);
+    const input: WrappedFieldInputProps = inputFrom(this.props);
     const {onFocus} = input;
     if (onFocus) {
       onFocus(e)
@@ -48,7 +48,7 @@ class SelectField extends React.Component<any, any> {
   };
 
   private onChange = (value) => {
-    const input:WrappedFieldInputProps = inputFrom(this.props);
+    const input: WrappedFieldInputProps = inputFrom(this.props);
     const {onChange} = input;
     if (onChange) {
       onChange(value.key)
@@ -56,22 +56,30 @@ class SelectField extends React.Component<any, any> {
   };
 
   render() {
-    const input:WrappedFieldInputProps = inputFrom(this.props);
+    const input: WrappedFieldInputProps = inputFrom(this.props);
+    const labelKey = this.props.labelKey ? this.props.labelKey : "value";
+    const valueKey = this.props.valueKey ? this.props.valueKey : "key";
+    const {filterOption, optionComponent, valueComponent} = this.props;
     return (
       <Wrapper {...this.props}>
-          <Select.Async
-            name={name}
-            labelKey={'value'}
-            valueKey={'key'}
-            searchable={true}
-            clearable={false}
-            value={input.value}
-            loadOptions={this.loadOptions}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            onChange={this.onChange}
-            ref={(input) => { this.select = input; }}
-          />
+        <Select.Async
+          name={name}
+          labelKey={labelKey}
+          valueKey={valueKey}
+          searchable={true}
+          clearable={false}
+          value={input.value}
+          loadOptions={this.loadOptions}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+          onChange={this.onChange}
+          optionComponent={optionComponent}
+          valueComponent={valueComponent}
+          filterOption={filterOption}
+          ref={(input) => {
+            this.select = input;
+          }}
+        />
       </Wrapper>
     );
   }

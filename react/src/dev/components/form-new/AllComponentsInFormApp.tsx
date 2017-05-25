@@ -9,7 +9,7 @@ import {Values} from "redux-form-website-template";
 
 import "react-select/dist/react-select.css";
 import "../../../scss/_ReactSelect.scss";
-import {AutocompleteApiStub} from "../../../js/httpStub/AutocompleteApiStub";
+import {SearchApiMock} from "../../../js/httpStub/SearchApiMock";
 
 import TextField from "../../../js/components/form-new/TextField";
 import Checkbox from "../../../js/components/form-new/Checkbox";
@@ -33,7 +33,7 @@ const options = [
 //https://github.com/JedWatson/react-select/issues/1129
 
 
-const stub: AutocompleteApiStub = new AutocompleteApiStub(null);
+const stub: SearchApiMock = new SearchApiMock(null);
 
 /**
  *  application for all components to test how they work inside redux-form

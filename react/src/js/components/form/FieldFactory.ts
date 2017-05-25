@@ -8,8 +8,15 @@ import {ComboboxField} from "./ComboboxField";
 import {CheckboxField} from "./CheckboxField";
 import {TextField} from "./TextField";
 import {RadioGroupField} from "./RadioGroupField";
-import {TextAreaField} from "./TextAreaField";
 import {DateField} from "./DateField";
+import SelectField from "../form-new/SelectField";
+import {Injector} from "../../injector";
+import {Item} from "../../model/common/Item";
+import {SuburbOption, SuburbValue} from "./Renders";
+
+const {
+  searchApi
+} = Injector.of();
 
 
 class FieldFactory {
@@ -18,7 +25,6 @@ class FieldFactory {
     const props: any = this.propsFrom(field);
     switch (field.dataType) {
       case DataType.string:
-      case DataType.country:
       case DataType.language:
         return React.createElement(Form.Field,
           Object.assign({}, props, {type: "string", component: TextField}));
@@ -31,13 +37,20 @@ class FieldFactory {
       case DataType.boolean:
         if (field.key === "isMale") {
           return React.createElement(Form.Field,
-            Object.assign({}, props, {component: RadioGroupField, items: [{key: "true", value: "Male"}, {key: "false", value: "Female"}]}));
+            Object.assign({}, props, {
+              component: RadioGroupField,
+              items: [{key: "true", value: "Male"}, {key: "false", value: "Female"}]
+            }));
         } else {
           return React.createElement(Form.Field,
             Object.assign({}, props, {component: CheckboxField}));
         }
       case DataType.date:
         return React.createElement(Form.Field, Object.assign({}, props, {component: DateField}));
+      case DataType.suburb:
+        return SuburbField(props);
+      case DataType.country:
+        return CountryField(props);
       default:
         return null;
     }
@@ -54,4 +67,31 @@ class FieldFactory {
     }
   }
 }
+
+const SuburbField = (props): any => {
+  const suburbs = (i: string): Promise<Item[]> => {
+    return searchApi.getSuburbs(i);
+  };
+  return React.createElement(Form.Field, Object.assign({}, props,
+    {
+      component: SelectField,
+      loadOptions: suburbs,
+      valueComponent: SuburbValue,
+      optionComponent: SuburbOption,
+      filterOption: (option, filter) => {
+        return filter ? option.value.suburb.toLowerCase().startsWith(filter) : true;
+      }
+    }));
+};
+
+const CountryField = (props): any => {
+  const countries = (i: string): Promise<Item[]> => {
+    return searchApi.getCountries(i);
+  };
+  return React.createElement(Form.Field, Object.assign({}, props, {
+    component: SelectField,
+    loadOptions: countries
+  }));
+};
+
 export default FieldFactory;

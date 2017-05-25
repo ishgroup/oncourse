@@ -5,6 +5,9 @@ import faker from "faker";
 import {CourseClassPrice} from "../../../js/model/web/CourseClassPrice";
 import {Room} from "../../../js/model/web/Room";
 import {Amount} from "../../../js/model/checkout/Amount";
+import {Field} from "../../model/field/Field";
+import {DataType} from "../../model/field/DataType";
+import {Item} from "../../model/common/Item";
 
 
 export const mockCourseClass = (): CourseClass => {
@@ -35,7 +38,7 @@ export const mockContact = (): Contact => {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    uniqueIdentifier: faker.random.alphaNumeric()
+    uniqueIdentifier: faker.random.alphaNumeric(10)
   }
 };
 
@@ -74,3 +77,31 @@ export const mockAmount = (): Amount => {
     payNow: faker.finance.amount()
   }
 };
+
+export const mockEnumField = (name:string, key: string, enumType: string, items: Item[]): Field => {
+  const r:Field = mockField(name, key, DataType.enum);
+  r.enumType = enumType;
+  r.enumItems = items;
+  return r;
+};
+
+
+export const mockField = (name:string, key: string, dateType: DataType): Field => {
+  return {
+    id: faker.random.number() as string,
+    key: key,
+    name: name,
+    description: faker.hacker.phrase(),
+    mandatory: true,
+    dataType: dateType,
+    enumType: null,
+    value: null,
+    defaultValue: null,
+    enumItems: [],
+    ordering: 0
+  }
+};
+
+
+
+

@@ -6,12 +6,10 @@ import popup from "./popup";
 import {coursesReducer} from "../web/reducers/courses";
 import {productsReducer} from "../web/reducers/products";
 import {Reducer as CheckoutReducer} from "../enrol/reducers/Reducer";
-import {autocompleteReducer} from "./autocomplete";
 import {CheckoutPathReducer} from "../common/reducers/Reducer";
 
 export const combinedReducers = combineReducers<IshState>({
   form: formReducer,
-  autocomplete: autocompleteReducer,
   cart: cartReducer,
   popup,
   courses: coursesReducer,

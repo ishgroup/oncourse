@@ -1,5 +1,4 @@
 import {HttpService} from "../common/services/HttpService";
-import { CommonError } from "../model/common/CommonError";
 import { Item } from "../model/common/Item";
 
 export class SearchApi {

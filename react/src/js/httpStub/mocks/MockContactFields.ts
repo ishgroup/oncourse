@@ -1,6 +1,11 @@
 import {ContactFields} from "../../model/field/ContactFields";
 import {FieldHeading} from "../../model/field/FieldHeading";
 import {ValidationError} from "../../model/common/ValidationError";
+import {Field} from "../../model/field/Field";
+import faker from "faker";
+import uuid from "uuid";
+
+
 const genderHeading:any = {
   "description": "Contact Details",
   "name": "Contact Details",

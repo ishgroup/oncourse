@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ConcessionDelegateTest extends ACheckoutTest{
+public class 	ConcessionDelegateTest extends ACheckoutTest{
 
 
 	@Before
