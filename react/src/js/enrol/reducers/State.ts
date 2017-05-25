@@ -22,5 +22,6 @@ export enum Phase {
   Init,
   AddContact,
   EditContactDetails,
-  Summary
+  Summary,
+  ProceedToPayment
 }

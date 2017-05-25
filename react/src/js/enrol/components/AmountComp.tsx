@@ -8,7 +8,6 @@ interface Props {
 class AmountComp extends React.Component<Props, any> {
   handlePromoCodeSubmit = (e) => {
     e.preventDefault();
-    console.log("handlePromoCodeSubmit");
   }
 
   public render(): JSX.Element {

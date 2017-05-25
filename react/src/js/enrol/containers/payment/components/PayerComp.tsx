@@ -20,7 +20,7 @@ class PayerComp extends React.Component<any, any> {
 				</label>
 
 				<div className="select-payer">
-					<Field component={RadioGroup} name="payer" required={true} items={payerList} value={payerList[0].key} />
+					<Field component={RadioGroup} name="payer" required={true} items={payerList} value={(payerList.length > 0 ? payerList[0].key : "")} />
 				</div>
 			</div>
 		)

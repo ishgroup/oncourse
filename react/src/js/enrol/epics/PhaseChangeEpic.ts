@@ -6,6 +6,7 @@ import {changePhase, PhaseChangeRequest} from "../actions/Actions";
 import {Phase} from "../reducers/State";
 import {FieldsLoadRequest, OpenContactDetailsRequest} from "../containers/contact-edit/actions/Actions";
 import {ItemsLoadRequest, OpenSummaryRequest} from "../containers/summary/actions/Actions";
+import {OpenProceedToPaymentRequest} from "../containers/payment/actions/Actions";
 
 const PhaseChangeEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
   return action$
@@ -15,6 +16,8 @@ const PhaseChangeEpic: Epic<any, any> = (action$: ActionsObservable<any>, store:
           return [{type: OpenContactDetailsRequest}];
         case Phase.Summary:
           return [{type: OpenSummaryRequest}];
+        case Phase.ProceedToPayment:
+          return [{type: OpenProceedToPaymentRequest}];
         default:
           return [changePhase(action.payload)];
       }

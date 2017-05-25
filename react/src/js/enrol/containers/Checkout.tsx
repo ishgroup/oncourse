@@ -10,10 +10,13 @@ import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
 import {Props as ContactProps} from "./summary/components/ContactComp";
 import {Amount} from "../../model/checkout/Amount";
+import {OpenProceedToPaymentRequest} from "./payment/actions/Actions";
+import Payment from "./payment/Payment";
 
 interface Props {
   phase: Phase;
   onInit: () => void;
+  onProceedToPayment: () => void;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -23,13 +26,12 @@ export class Checkout extends React.Component<Props, any> {
   }
 
   render() {
-    const {phase} = this.props;
+    const {phase, onProceedToPayment} = this.props;
     const contacts: ContactProps[] = [];
     const amount: Amount = {};
     const onAddContact = () => {
     };
-    const onProceedToPayment = () => {
-    };
+
     return (
       <div id="checkout" className="col-xs-24 payments">
         <ProgressRedux/>
@@ -40,6 +42,7 @@ export class Checkout extends React.Component<Props, any> {
                                              onAddContact={onAddContact}
                                              onProceedToPayment={onProceedToPayment}
         />}
+        {phase === Phase.ProceedToPayment && <Payment contacts={contacts} amount={amount} />}
       </div>
     )
   }
@@ -56,6 +59,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: (): void => {
       dispatch({type: Actions.InitRequest})
+    },
+    onProceedToPayment : (): void => {
+      dispatch({type: OpenProceedToPaymentRequest})
     }
   }
 };

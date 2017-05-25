@@ -18,7 +18,9 @@ class PaymentForm extends React.Component<Props, any> {
 
 	constructor(props) {
 		super(props);
+	}
 
+	componentWillMount() {
 		this.state = {
 			selectedPayer: 0,
 			currentForm: "credit-card"

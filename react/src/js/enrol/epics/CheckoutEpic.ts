@@ -12,6 +12,7 @@ import MessagesShowEpic from "./MessagesShowEpic";
 import PhaseChangeEpic from "./PhaseChangeEpic";
 import OpenContactDetailsEpic from "./OpenContactDetailsEpic";
 import OpenSummaryEpic from "./OpenSummaryEpic";
+import OpenProceedToPaymentEpic from "./OpenProceedToPaymentEpic";
 
 const {
   contactApi
@@ -24,6 +25,7 @@ export const CheckoutEpic = combineEpics(
   OpenContactDetailsEpic,
   OpenSummaryEpic,
   MessagesShowEpic,
+  OpenProceedToPaymentEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 
