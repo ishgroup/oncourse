@@ -6,6 +6,7 @@ import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.WebSite
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
 import ish.oncourse.willow.checkout.functions.ProcessClass
@@ -13,17 +14,23 @@ import ish.oncourse.willow.checkout.functions.ProcessClasses
 import ish.oncourse.willow.checkout.functions.ProcessProduct
 import ish.oncourse.willow.checkout.functions.ProcessProducts
 import ish.oncourse.willow.checkout.functions.ValidateVoucher
+import ish.oncourse.willow.checkout.payment.CreatePaymentModel
+import ish.oncourse.willow.checkout.payment.HasErrors
+import ish.oncourse.willow.checkout.payment.ValidateCreditCard
+import ish.oncourse.willow.checkout.payment.ValidateCreditCardForm
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.PurchaseItems
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
+import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest
 import ish.oncourse.willow.model.common.CommonError
+import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.service.CheckoutApi
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.configuration.server.ServerRuntime
-
+import org.apache.commons.lang3.StringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -93,7 +100,29 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    CheckoutModel makePayment(PaymentRequest paymentRequest) {
-        return null
+    PaymentResponse makePayment(PaymentRequest paymentRequest) {
+        ObjectContext context = cayenneRuntime.newContext()
+        WebSite webSite = collegeService.webSite
+        College college = webSite.college
+
+        CheckoutModel checkoutModel = calculateAmount(paymentRequest.checkoutModel)
+        
+        if (new HasErrors(checkoutModel).hasErrors()) {
+            checkoutModel.error = new CommonError(message: 'Purchase items are not valid')
+            throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
+        } else if (checkoutModel.amount != paymentRequest.checkoutModel.amount) {
+            checkoutModel.error = new CommonError(message: 'Payment amount is wrong')
+            throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
+        }
+
+        Money payNow = new Money(checkoutModel.amount.payNow)
+        
+        ValidationError validationError = new ValidateCreditCardForm(paymentRequest).validate(Money.ZERO == payNow)
+        if (!validationError.formErrors.empty || !validationError.fieldsErrors.empty) {
+            throw new BadRequestException(Response.status(400).entity(validationError).build())
+        }
+        
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest).create()
+        
     }
 }

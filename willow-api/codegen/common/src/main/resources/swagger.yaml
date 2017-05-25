@@ -82,9 +82,9 @@ paths:
           $ref: '#/definitions/checkout.payment.PaymentRequest'
       responses:
         200:
-          description: Whole Checkout Model with sessionId populated
+          description: Payment Response object with sessionId populated
           schema:
-            $ref: '#/definitions/checkout.CheckoutModel'
+            $ref: '#/definitions/checkout.payment.PaymentResponse'
         default:
           description: Unexpected error
           schema:
@@ -1057,6 +1057,8 @@ definitions:
   checkout.CheckoutModel:
     type: object
     properties: 
+      error:
+        $ref: '#/definitions/common.CommonError'
       purchaseItemsList:
         type: array
         items:
@@ -1068,8 +1070,6 @@ definitions:
         items:
           type: string
       payerId:
-        type: string
-      sessionId:
         type: string
   checkout.payment.PaymentRequest:
     type: object
@@ -1088,3 +1088,25 @@ definitions:
         type: string
       agreementFlag:
         type: boolean
+      sessionId:
+        type: string
+        description:
+  checkout.payment.PaymentStatus:
+    type: string
+    enum:
+      - in progress
+      - failed
+      - successful
+  checkout.payment.PaymentResponse:
+    type: object
+    properties:
+      sessionId:
+        type: string
+      paymentStatus:
+        $ref: '#/definitions/checkout.payment.PaymentStatus'
+      error:
+        type: string
+      paymentReference:
+        type: string
+      applicationIds:
+        type: string

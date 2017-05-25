@@ -11,6 +11,7 @@ public class PaymentRequest  {
     private String expiryYear = null;
     private String creditCardCvv = null;
     private Boolean agreementFlag = null;
+    private String sessionId = null;
 
     /**
      * Get checkoutModel
@@ -131,6 +132,23 @@ public class PaymentRequest  {
       return this;
     }
 
+    /**
+     * null
+     * @return sessionId
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+       this.sessionId = sessionId;
+    }
+
+    public PaymentRequest sessionId(String sessionId) {
+      this.sessionId = sessionId;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -144,6 +162,7 @@ public class PaymentRequest  {
       sb.append("    expiryYear: ").append(toIndentedString(expiryYear)).append("\n");
       sb.append("    creditCardCvv: ").append(toIndentedString(creditCardCvv)).append("\n");
       sb.append("    agreementFlag: ").append(toIndentedString(agreementFlag)).append("\n");
+      sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
       sb.append("}");
       return sb.toString();
     }

@@ -2,16 +2,34 @@ package ish.oncourse.willow.model.checkout;
 
 import ish.oncourse.willow.model.checkout.Amount;
 import ish.oncourse.willow.model.checkout.PurchaseItems;
+import ish.oncourse.willow.model.common.CommonError;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutModel  {
   
+    private CommonError error = null;
     private List<PurchaseItems> purchaseItemsList = new ArrayList<PurchaseItems>();
     private Amount amount = null;
     private List<String> promotionIds = new ArrayList<String>();
     private String payerId = null;
-    private String sessionId = null;
+
+    /**
+     * Get error
+     * @return error
+     */
+    public CommonError getError() {
+        return error;
+    }
+
+    public void setError(CommonError error) {
+       this.error = error;
+    }
+
+    public CheckoutModel error(CommonError error) {
+      this.error = error;
+      return this;
+    }
 
     /**
      * Get purchaseItemsList
@@ -91,34 +109,17 @@ public class CheckoutModel  {
       return this;
     }
 
-    /**
-     * Get sessionId
-     * @return sessionId
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-       this.sessionId = sessionId;
-    }
-
-    public CheckoutModel sessionId(String sessionId) {
-      this.sessionId = sessionId;
-      return this;
-    }
-
 
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
       sb.append("class CheckoutModel {\n");
       
+      sb.append("    error: ").append(toIndentedString(error)).append("\n");
       sb.append("    purchaseItemsList: ").append(toIndentedString(purchaseItemsList)).append("\n");
       sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
       sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
       sb.append("    payerId: ").append(toIndentedString(payerId)).append("\n");
-      sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
       sb.append("}");
       return sb.toString();
     }

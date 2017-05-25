@@ -68,6 +68,7 @@ class CalculateEnrolmentsPrice {
                 .enrolments.find {it.classId == courseClass.id.toString()}
                 .price
                 .appliedDiscount = new ish.oncourse.willow.model.web.Discount().with { d ->
+                    d.id = chosenDiscount.discount.id.toString()
                     d.title = chosenDiscount.discount.name
                     d.discountValue = price.discountTotalIncTax.toPlainString()
                     d.discountedFee = price.finalPriceToPayIncTax.toPlainString()
