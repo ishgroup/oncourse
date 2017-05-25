@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import "rxjs";
 import * as Actions from "../containers/contact-edit/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
-import {changePhase, changePhaseRequest, MessagesSet} from "../actions/Actions";
+import {changePhase, changePhaseRequest, MessagesShow} from "../actions/Actions";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Phase} from "../reducers/State";
 
@@ -12,7 +12,7 @@ const OpenContactDetailsEpic: Epic<any, any> = (action$: ActionsObservable<any>,
   return action$
     .ofType(Actions.OpenContactDetailsRequest)
     .mergeMap(action => Observable.fromPromise(
-      CheckoutService.loadFields(store.getState().checkout.payer, store.getState().classes, store.getState().products)
+      CheckoutService.loadFields(store.getState())
     ))
     .flatMap((data: ContactFields) => {
       if (data.headings.length > 0) {
@@ -21,7 +21,7 @@ const OpenContactDetailsEpic: Epic<any, any> = (action$: ActionsObservable<any>,
         return [changePhaseRequest(Phase.Summary)]
       }
     }).catch((data) => {
-      return Observable.of({type: MessagesSet, payload: data.data});
+      return Observable.of({type: MessagesShow, payload: data.data});
     });
 };
 export default OpenContactDetailsEpic;

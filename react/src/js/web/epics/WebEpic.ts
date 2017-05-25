@@ -6,7 +6,7 @@ import {Actions} from "../actions/Actions";
 import * as ContactAddActions from "../../enrol/containers/contact-add/actions/Actions";
 import {normalize} from "normalizr";
 import uniq from "lodash/uniq";
-import {classesListSchema, classesSchema, productsListSchema, productsSchema, promotionsSchema} from "../../schema";
+import {ClassesListSchema, ClassesSchema, ProductsListSchema, ProductsSchema, PromotionsSchema} from "../../NormalizeSchema";
 import {Injector} from "../../injector";
 import {PromotionParams} from "../../model/web/PromotionParams";
 import {IshState} from "../../services/IshState";
@@ -53,7 +53,7 @@ function createCoursesEpic() {
           contact: createContactParams(store.getState()),
           promotions: createPromotionParams(store.getState())
         }))
-        .map(payload => normalize(payload, classesListSchema))
+        .map(payload => normalize(payload, ClassesListSchema))
         .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
         .catch(mapError(Actions.REQUEST_COURSE_CLASS));
     });
@@ -72,7 +72,7 @@ function createProductsEpic() {
           contact: createContactParams(store.getState()),
           promotions: createPromotionParams(store.getState())
         }))
-        .map(payload => normalize(payload, productsListSchema))
+        .map(payload => normalize(payload, ProductsListSchema))
         .map(mapPayload(Actions.REQUEST_PRODUCT))
         .catch(mapError(Actions.REQUEST_PRODUCT));
     });
@@ -115,7 +115,7 @@ function createUpdateCoursesEpic() {
           contact: createContactParams(store.getState()),
           promotions: createPromotionParams(store.getState())
         }))
-        .map(payload => normalize(payload, classesListSchema))
+        .map(payload => normalize(payload, ClassesListSchema))
         .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
         .catch(mapError(Actions.REQUEST_COURSE_CLASS));
     });
@@ -138,7 +138,7 @@ function createUpdateProductsEpic() {
           contact: createContactParams(store.getState()),
           promotions: createPromotionParams(store.getState())
         }))
-        .map(payload => normalize(payload, productsListSchema))
+        .map(payload => normalize(payload, ProductsListSchema))
         .map(mapPayload(Actions.REQUEST_PRODUCT))
         .catch(mapError(Actions.REQUEST_PRODUCT));
     });
@@ -149,7 +149,7 @@ function createAddClassToCartEpic() {
     .ofType(Actions.ADD_CLASS_TO_CART)
     .map(action => ({
       type: FULFILLED(Actions.ADD_CLASS_TO_CART),
-      payload: normalize(store.getState().courses.entities[action.payload.id], classesSchema)
+      payload: normalize(store.getState().courses.entities[action.payload.id], ClassesSchema)
     }));
 }
 
@@ -158,7 +158,7 @@ function createRemoveClassFromCartEpic() {
     .ofType(Actions.REMOVE_CLASS_FROM_CART)
     .map(action => ({
       type: FULFILLED(Actions.REMOVE_CLASS_FROM_CART),
-      payload: normalize(action.payload, classesSchema)
+      payload: normalize(action.payload, ClassesSchema)
     }));
 }
 
@@ -167,7 +167,7 @@ function createAddProductToCartEpic() {
     .ofType(Actions.ADD_PRODUCT_TO_CART)
     .map(action => ({
       type: FULFILLED(Actions.ADD_PRODUCT_TO_CART),
-      payload: normalize(store.getState().products.entities[action.payload.id], productsSchema)
+      payload: normalize(store.getState().products.entities[action.payload.id], ProductsSchema)
     }));
 }
 
@@ -176,7 +176,7 @@ function createRemoveProductFromCartEpic() {
     .ofType(Actions.REMOVE_PRODUCT_FROM_CART)
     .map(action => ({
       type: FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART),
-      payload: normalize(action.payload, productsSchema)
+      payload: normalize(action.payload, ProductsSchema)
     }));
 }
 
@@ -186,7 +186,7 @@ function createAddPromotionToCartEpic() {
     .mergeMap(action => {
       return Observable
         .fromPromise(promotionApi.getPromotion(action.payload))
-        .map(payload => normalize(payload, promotionsSchema))
+        .map(payload => normalize(payload, PromotionsSchema))
         .map(mapPayload(Actions.ADD_PROMOTION_TO_CART))
         .catch(mapError(Actions.ADD_PROMOTION_TO_CART));
     });
@@ -197,7 +197,7 @@ function createRemovePromotionFromCartEpic() {
     .ofType(Actions.REMOVE_PROMOTION_FROM_CART)
     .map(action => ({
       type: FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART),
-      payload: normalize(action.payload, promotionsSchema)
+      payload: normalize(action.payload, PromotionsSchema)
     }));
 }
 

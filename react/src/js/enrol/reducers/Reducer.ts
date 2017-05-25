@@ -34,7 +34,7 @@ const ContactReducer = (state = {}, action): any => {
 
 const ErrorReducer = (state: ValidationError = null, action: any): any => {
   switch (action.type) {
-    case Actions.MessagesSet:
+    case Actions.MessagesShow:
       return action.payload;
     case Actions.Init:
     case Actions.PhaseChange:

@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as Lodash from "lodash";
+import * as L from "lodash";
 import {ValidationError} from "../../model/common/ValidationError";
 
 const CLASS_ERRORS: string = "validation";
@@ -10,7 +10,7 @@ const CLASS_WARNINGS: string = "message";
  */
 class Messages extends React.Component<Props, any> {
   private renderMessages = (messages: string[], className: string): any => {
-    if (Lodash.isNil(messages) || !messages.length) {
+    if (L.isNil(messages) || !messages.length) {
       return null
     }
     return (
@@ -26,17 +26,17 @@ class Messages extends React.Component<Props, any> {
 
   render() {
     const {error} = this.props;
-    if (Lodash.isNil(error)) {
+    if (L.isNil(error)) {
       return null
     } else {
-      let errors:string[] = [];
+      let errors: string[] = [];
 
-      if (error.formErrors) {
+      if (!L.isEmpty(error.formErrors)) {
         errors = errors.concat(error.formErrors);
       }
 
-      if (error.fieldsErrors) {
-        const fes =  error.fieldsErrors.map((e) => e.error);
+      if (!L.isEmpty(error.fieldsErrors)) {
+        const fes = error.fieldsErrors.map((e) => e.error);
         errors = errors.concat(fes);
       }
       return (

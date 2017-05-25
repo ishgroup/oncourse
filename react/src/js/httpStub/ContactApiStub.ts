@@ -1,14 +1,22 @@
 import {ContactApi} from "../http/ContactApi";
 import {Contact} from "../model/web/Contact";
 import {CreateContactParams} from "../model/web/CreateContactParams";
-import {AxiosResponse} from "axios";
 import {ContactFieldsRequest} from "../model/field/ContactFieldsRequest";
 import {ContactFields} from "../model/field/ContactFields";
 
-import * as MockContactFields from "./MockContactFields";
+import * as MockContactFields from "./mocks/MockContactFields";
 import {SubmitFieldsRequest} from "../model/field/SubmitFieldsRequest";
 
+import {MockConfig} from "./mocks/MockConfig";
+import uuid from "uuid";
+import {config} from "shelljs";
+import {mockContact} from "./mocks/MockFunctions";
 export class ContactApiStub extends ContactApi {
+
+  public config: MockConfig = MockConfig.CONFIG;
+
+  public id: string = uuid();
+
   getContact(studentUniqueIdentifier: string): Promise<Contact> {
     return Promise.resolve({
       "id": "5138961",
@@ -19,44 +27,26 @@ export class ContactApiStub extends ContactApi {
     } as Contact);
   }
 
-  createOrGetContact(createContactParams: CreateContactParams): Promise<Contact> {
-    if (new Date().getTime() % 3 === 0) {
-      return Promise.reject({
-        data: {
-          formErrors: [
-            "There are two student found.",
-            "Another global error."
-          ],
-          fieldsErrors: [{
-            name: "email",
-            errors: [
-              "Email format violation.",
-              "Maybe force be with you."
-            ]
-          }]
-        },
-        status: 400
-      } as AxiosResponse);
+  createOrGetContact(request: CreateContactParams): Promise<Contact> {
+    let contact:Contact = this.config.db.getContactByDetails(request.firstName, request.lastName, request.email);
+    if (!contact) {
+      contact = mockContact();
+      contact.firstName = request.firstName;
+      contact.lastName = request.lastName;
+      contact.email = request.email;
+      this.config.db.addContact(contact);
     }
-
-    return Promise.resolve("5138961");
+    return this.config.createResponse(contact.id);
   }
 
   getContactFields(contactFieldsRequest: ContactFieldsRequest): Promise<ContactFields> {
-    return Promise.resolve(MockContactFields.ContactFieldsRequest);
+    return this.config.createResponse(MockContactFields.ContactFieldsRequest);
   }
 
 
   submitContactDetails(submit: SubmitFieldsRequest): Promise<any> {
-    return Promise.resolve();
-    //createPromiseReject(MockContactFields.ContactFieldsErrorResponse)
+    return this.config.createResponse(Promise.resolve());
   }
+
 }
 
-
-const createPromiseReject = (data: any): Promise<any> => {
-  return Promise.reject({
-    data: data,
-    status: 400
-  } as AxiosResponse);
-};

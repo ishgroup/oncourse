@@ -20,7 +20,8 @@
     "start:dev:ContactEditFormApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/contact-edit/ContactEditFormApp.tsx --content-base ./dev-server",
     "start:dev:ReactSelectFieldApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/components/form-new/ReactSelectFieldApp.tsx --content-base ./dev-server",
     "start:dev:AllComponentsInFormApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/components/form/AllComponentsInFormApp.tsx --content-base ./dev-server",
-    "start:dev:PaymentApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/payment/PaymentApp.tsx --content-base ./dev-server"
+    "start:dev:PaymentApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/payment/PaymentApp.tsx --content-base ./dev-server",
+    "deploy": "cp -vf ./build/dist/dynamic.* /Users/akoiro/_data/_ish/tomonCourse/s/ak-react/js"
   },
   "devDependencies": {
     "@types/jquery": "2.0.40",
@@ -55,7 +56,8 @@
     "redux-form-website-template": "0.0.41",
 
     "mocker-data-generator": "2.0.0",
-    "faker": "4.1.0"
+    "faker": "4.1.0",
+    "uuid": "3.0.1"
   },
   "dependencies": {
     "axios": "0.15.3",

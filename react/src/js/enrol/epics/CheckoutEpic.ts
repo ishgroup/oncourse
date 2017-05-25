@@ -5,10 +5,10 @@ import {IshActions} from "../../constants/IshActions";
 import {Injector} from "../../injector";
 import {normalize} from "normalizr";
 import {mapError, mapPayload} from "../../epics/epicsUtils";
-import {contactsSchema} from "../../schema";
+import {ContactsSchema} from "../../NormalizeSchema";
 import InitEpic from "./InitEpic";
 import ContactAddEpic from "./ContactAddEpic";
-import MessagesSetEpic from "./MessagesSetEpic";
+import MessagesShowEpic from "./MessagesShowEpic";
 import PhaseChangeEpic from "./PhaseChangeEpic";
 import OpenContactDetailsEpic from "./OpenContactDetailsEpic";
 import OpenSummaryEpic from "./OpenSummaryEpic";
@@ -23,7 +23,7 @@ export const CheckoutEpic = combineEpics(
   ContactAddEpic,
   OpenContactDetailsEpic,
   OpenSummaryEpic,
-  MessagesSetEpic,
+  MessagesShowEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 
@@ -32,7 +32,7 @@ function createGetOrCreateContactEpic(actionType) {
     .ofType(actionType)
     .mergeMap(action => Observable
       .fromPromise(contactApi.createOrGetContact(action.payload))
-      .map(payload => normalize(payload, contactsSchema))
+      .map(payload => normalize(payload, ContactsSchema))
       .map(mapPayload(actionType))
       .catch(mapError(actionType))
     );

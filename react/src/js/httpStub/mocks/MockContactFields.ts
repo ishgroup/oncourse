@@ -1,6 +1,6 @@
-import {ContactFields} from "../model/field/ContactFields";
-import {FieldHeading} from "../model/field/FieldHeading";
-import {ValidationError} from "../model/common/ValidationError";
+import {ContactFields} from "../../model/field/ContactFields";
+import {FieldHeading} from "../../model/field/FieldHeading";
+import {ValidationError} from "../../model/common/ValidationError";
 const genderHeading:any = {
   "description": "Contact Details",
   "name": "Contact Details",

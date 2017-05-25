@@ -1,7 +1,4 @@
 import * as L from "lodash";
-
-import {Contact} from "../../model/web/Contact";
-import {CourseClass} from "../../model/web/CourseClass";
 import {Product} from "../../model/web/Product";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Injector} from "../../injector";
@@ -9,7 +6,7 @@ import {ContactFieldsRequest} from "../../model/field/ContactFieldsRequest";
 import {FieldSet} from "../../model/field/FieldSet";
 import {SubmitFieldsRequest} from "../../model/field/SubmitFieldsRequest";
 import {CreateContactParams} from "../../model/web/CreateContactParams";
-import {CartState, CourseClassCart} from "../../services/IshState";
+import {CartState, CourseClassCart, IshState} from "../../services/IshState";
 import {PurchaseItems} from "../../model/checkout/PurchaseItems";
 import {Promotion} from "../../model/web/Promotion";
 import {ContactApi} from "../../http/ContactApi";
@@ -20,12 +17,13 @@ export class CheckoutSerivce {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
   }
 
-  public loadFields = (contact: Contact, classes: CourseClass[] = [], products: Product[] = []): Promise<ContactFields> => {
+  public loadFields = (state: IshState): Promise<ContactFields> => {
     const request: ContactFieldsRequest = new ContactFieldsRequest();
-    request.contactId = contact.id;
-    request.classesIds = classes.map((c) => c.id);
+    request.contactId = state.checkout.payer.entity.id;
+    request.classIds = state.cart.courses.result;
+    request.productIds = state.cart.products.result;
     request.fieldSet = FieldSet.enrolment;
-    return this.contactApi.getContactFields(new ContactFieldsRequest());
+    return this.contactApi.getContactFields(request);
   };
 
   public submitContactDetails = (fields: ContactFields, values: any): Promise<any> => {
@@ -43,12 +41,12 @@ export class CheckoutSerivce {
   };
 
 
-  public getPurchaseItems = (cart: CartState): Promise<PurchaseItems> => {
-    const request:PurchaseItemsRequest = new PurchaseItemsRequest();
-    request.contactId = cart.contact.id;
-    request.classIds = cart.courses.result.map((c: CourseClassCart) => c.id);
-    request.productIds = cart.products.result.map((p: Product) => p.id);
-    request.promotionIds = cart.promotions.result.map((p: Promotion) => p.id);
+  public getPurchaseItems = (state: IshState): Promise<PurchaseItems> => {
+    const request: PurchaseItemsRequest = new PurchaseItemsRequest();
+    request.contactId = state.checkout.payer.entity.id;
+    request.classIds = state.cart.courses.result;
+    request.productIds = state.cart.products.result;
+    request.promotionIds = state.cart.promotions.result;
     return this.checkoutApi.getPurchaseItems(request);
   };
 }

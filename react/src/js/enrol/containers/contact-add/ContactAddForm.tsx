@@ -4,9 +4,9 @@ import {connect} from "react-redux";
 
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
-import {ContactAddAction} from "./actions/Actions";
+import {submitAddContact} from "./actions/Actions";
 import CheckoutService from "../../services/CheckoutService";
-import {showErrors} from "../../actions/Actions";
+import {showFormValidation} from "../../actions/Actions";
 
 
 export const NAME = "ContactAddForm";
@@ -16,7 +16,7 @@ class ContactAddForm extends React.Component<any, any> {
     const {handleSubmit, pristine, invalid, submitting} = this.props;
     return (
       <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="contactEditorForm">
           <ContactAdd/>
           <div className="form-controls">
             <input value="OK"
@@ -36,10 +36,10 @@ const Form = reduxForm({
   form: NAME,
   validate: validateContact,
   onSubmitSuccess: (result, dispatch, props: any) => {
-    dispatch(ContactAddAction(result, props.values));
+    dispatch(submitAddContact(result, props.values));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
-    dispatch(showErrors(submitError, NAME));
+    dispatch(showFormValidation(submitError, NAME));
   }
 })(ContactAddForm);
 

@@ -1,11 +1,12 @@
 import {_toRejectType, _toRequestType} from "../../common/actions/ActionUtils";
 import {Phase} from "../reducers/State";
 import * as L from "lodash";
+import {AxiosResponse} from "axios";
 
 //initialize checkout application
 
-export const MessagesSet: string = "checkout/messages/set";
-export const MessagesSetRequest: string = _toRequestType(MessagesSet);
+export const MessagesShow: string = "checkout/messages/show";
+export const MessagesShowRequest: string = _toRequestType(MessagesShow);
 
 export const Init: string = "checkout/init";
 export const InitRequest: string = _toRequestType(Init);
@@ -18,10 +19,10 @@ export const PayerSet: string = "checkout/payer/set";
 export const PayerSetRequest: string = _toRequestType(PayerSet);
 export const PayerSetReject: string = _toRejectType(PayerSet);
 
-export const showErrors = (error: any, form: string): any => {
+export const showFormValidation = (response: AxiosResponse, form: string): any => {
   return {
-    type: MessagesSetRequest,
-    payload: error,
+    type: MessagesShowRequest,
+    payload: response,
     meta: {
       form: form
     }

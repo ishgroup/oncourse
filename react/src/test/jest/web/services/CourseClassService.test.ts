@@ -4,7 +4,7 @@ import {HTMLMarkers} from "../../../../js/common/services/HTMLMarker";
 import * as HtmlUtils from "../../../../js/common/utils/HtmlUtils";
 import {CourseClass} from "../../../../js/model/web/CourseClass";
 import {normalize} from "normalizr";
-import {classesListSchema} from "../../../../js/schema";
+import {ClassesListSchema} from "../../../../js/NormalizeSchema";
 
 
 test('create CourseClass from html element properties', () => {
@@ -24,6 +24,6 @@ test('create CourseClass from html element properties', () => {
   expect(true).toBe(courseClass.isAllowByApplication);
   expect(true).toBe(courseClass.isPaymentGatewayEnabled);
 
-  console.log(normalize(courseClass, classesListSchema))
+  console.log(normalize(courseClass, ClassesListSchema))
 
 });

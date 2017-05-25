@@ -14,7 +14,7 @@ import {Actions as CommonActions} from "../../common/actions/Actions";
 
 import {htmlProps2CourseClass} from "../../web/services/CourseClassService";
 import {CourseClass} from "../../model/web/CourseClass";
-import {classesListSchema} from "../../schema";
+import {ClassesListSchema} from "../../NormalizeSchema";
 import {normalize} from "normalizr";
 
 import ComponentClass = React.ComponentClass;
@@ -73,7 +73,7 @@ export class Bootstrap {
         if (courseClass.course) {
           dispatch({
             type: Actions.PutClassToStore,
-            payload: normalize(courseClass, classesListSchema)
+            payload: normalize(courseClass, ClassesListSchema)
           })
         }
     }

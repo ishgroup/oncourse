@@ -8,7 +8,7 @@ import {ContactFields} from "../../../model/field/ContactFields";
 import {ContactEdit} from "./components/ContactEdit";
 import CheckoutService from "../../services/CheckoutService";
 import {ValidationError} from "../../../model/common/ValidationError";
-import {showErrors} from "../../actions/Actions";
+import {showFormValidation} from "../../actions/Actions";
 import {ItemsLoadRequest, OpenSummaryRequest} from "../summary/actions/Actions";
 
 
@@ -55,7 +55,7 @@ const Form = reduxForm({
     dispatch({type: OpenSummaryRequest});
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
-    dispatch(showErrors(submitError, NAME));
+    dispatch(showFormValidation(submitError, NAME));
   }
 })(ContactEditForm);
 

@@ -10,7 +10,7 @@ export class ContactFieldsRequest {
   /**
    * Requested classe's ids
    */
-  classesIds?: string[];
+  classIds?: string[];
 
   /**
    * Requested product's ids
