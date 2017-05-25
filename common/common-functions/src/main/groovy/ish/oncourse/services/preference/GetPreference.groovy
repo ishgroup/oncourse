@@ -27,4 +27,12 @@ class GetPreference {
                 .localCache(Preference.class.getSimpleName())
                 .selectOne(objectContext)
     }
+
+    Integer getInteger() {
+        String valueString = value
+        if (getPreference()) {
+            Integer.parseInt(valueString)
+        }
+        return 0
+    }
 }
