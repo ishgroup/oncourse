@@ -13,11 +13,11 @@ public class ReactModelUtilsTest {
 
     @Test
     public void getModelImportPathPrefixTest() throws Exception {
-        assertEquals("../", getModelImportPathPrefix("Model"));
-        assertEquals("../../", getModelImportPathPrefix(withSeparator("autocomplete", "Item")));
+        assertEquals("", getModelImportPathPrefix("Model"));
+        assertEquals("../", getModelImportPathPrefix("autocomplete.Item"));
         assertEquals(
-                "../../../../",
-                getModelImportPathPrefix(withSeparator("com", "ish", "autocomplete", "Item"))
+                "../../../",
+                getModelImportPathPrefix("com.ish.autocomplete.Item")
         );
     }
 }

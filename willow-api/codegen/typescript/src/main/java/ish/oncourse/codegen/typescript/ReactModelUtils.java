@@ -20,7 +20,7 @@ public final class ReactModelUtils {
      * @return prefix for path
      */
     public static String getModelImportPathPrefix(final String name) {
-        final int length = name.split(SEP).length;
-        return StringUtils.repeat("../", length);
+        final int length = name.split("\\.").length;
+        return StringUtils.repeat("../", length-1);
     }
 }
