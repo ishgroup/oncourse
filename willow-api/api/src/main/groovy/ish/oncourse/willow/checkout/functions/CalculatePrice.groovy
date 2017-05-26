@@ -14,13 +14,15 @@ class CalculatePrice {
     BigDecimal taxRate
     Money taxAdjustment
     
-    private InvoiceLine invoiceLine = new InvoiceLine()
+    private InvoiceLine invoiceLine
 
     CalculatePrice(Money priceEachEx, Money discountEachEx, BigDecimal taxRate, Money taxAdjustment) {
         this.priceEachEx = priceEachEx
         this.discountEachEx = discountEachEx
         this.taxRate = taxRate
         this.taxAdjustment = taxAdjustment
+        this.invoiceLine = new InvoiceLine()
+        this.invoiceLine.quantity = BigDecimal.ONE
     }
 
     CalculatePrice calculate() {

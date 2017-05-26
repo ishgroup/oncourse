@@ -13,11 +13,11 @@ class HasErrors {
     
     boolean hasErrors() {
         
-        errors  +=  checkoutModel.purchaseItemsList.enrolments.errors
-        errors  +=  checkoutModel.purchaseItemsList.applications.errors
-        errors  +=  checkoutModel.purchaseItemsList.articles.errors
-        errors  +=  checkoutModel.purchaseItemsList.memberships.errors
-        errors  +=  checkoutModel.purchaseItemsList.vouchers.errors
+        errors  +=  checkoutModel.purchaseItemsList.enrolments.errors.flatten()
+        errors  +=  checkoutModel.purchaseItemsList.applications.errors.flatten()
+        errors  +=  checkoutModel.purchaseItemsList.articles.errors.flatten()
+        errors  +=  checkoutModel.purchaseItemsList.memberships.errors.flatten()
+        errors  +=  checkoutModel.purchaseItemsList.vouchers.errors.flatten()
 
         return !errors.empty
     }

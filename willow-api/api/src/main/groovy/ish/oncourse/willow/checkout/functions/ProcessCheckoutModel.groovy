@@ -78,7 +78,7 @@ class ProcessCheckoutModel {
 
         if (processClass.enrolment == null) {
             e.errors << "Enrolment for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) avalible by application".toString()
-        } else  if (checkAndBookPlace(courseClass)) {
+        } else  if (!checkAndBookPlace(courseClass)) {
             e.errors << "Unfortunately you just missed out. The class $courseClass.course.name ($courseClass.course.code - $courseClass.code) was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
                     
         } else {

@@ -14,8 +14,9 @@ class ValidateCreditCardForm {
     PaymentRequest paymentRequest
     ObjectContext context
 
-    ValidateCreditCardForm(PaymentRequest paymentRequest) {
+    ValidateCreditCardForm(PaymentRequest paymentRequest, ObjectContext context) {
         this.paymentRequest = paymentRequest
+        this.context = context
     }
     
     ValidationError validate(boolean isZeroAmount) {

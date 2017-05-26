@@ -1,12 +1,14 @@
 package ish.oncourse.willow.model.checkout;
 
+import groovy.transform.AutoClone;
 import ish.oncourse.willow.model.checkout.Amount;
 import ish.oncourse.willow.model.checkout.PurchaseItems;
 import ish.oncourse.willow.model.common.CommonError;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckoutModel  {
+@AutoClone
+public class CheckoutModel implements Cloneable{
   
     private CommonError error = null;
     private List<PurchaseItems> purchaseItemsList = new ArrayList<PurchaseItems>();
@@ -133,6 +135,16 @@ public class CheckoutModel  {
         return "null";
       }
       return o.toString().replace("\n", "\n    ");
+    }
+    
+    public CheckoutModel clone() {
+        try {
+            return (CheckoutModel) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        } 
+        
     }
 }
 

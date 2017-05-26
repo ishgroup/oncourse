@@ -1,6 +1,5 @@
 package ish.oncourse.willow.checkout.payment
 
-import com.sun.javaws.ui.ApplicationIconGenerator
 import ish.common.GetInvoiceDueDate
 import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
@@ -31,11 +30,15 @@ import ish.oncourse.model.Voucher
 import ish.oncourse.model.VoucherProduct
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
+import ish.oncourse.util.payment.CreditCardValidator
+import ish.oncourse.util.payment.PaymentInModel
+import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.GetCourseClass
 import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.persistence.CommonPreferenceController
+import ish.util.CreditCardUtil
 import ish.util.ProductUtil
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
@@ -56,6 +59,7 @@ class CreatePaymentModel {
     Invoice mainInvoice
     Contact payer
     List<InvoiceNode> paymentPlan = []
+    PaymentInModel model
 
     CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest) {
         this.context = context
@@ -86,8 +90,13 @@ class CreatePaymentModel {
             }
         }
 
-        updateSumm()
-        adjustSortOrder()
+        if (paymentIn) {
+            updateSumm()
+            fillCCDetails()
+            createModel()
+            adjustSortOrder()
+        }
+        
         this
     }
 
@@ -102,7 +111,8 @@ class CreatePaymentModel {
         voucher.status = ProductStatus.NEW
         voucher.product = voucherProduct
         voucher.redeemedCoursesCount = 0
-
+        voucher.confirmationStatus = ConfirmationStatus.NOT_SENT
+        
         voucher.expiryDate = ProductUtil.calculateExpiryDate(new Date(), voucherProduct.expiryType, voucherProduct.expiryDays)
 
         InvoiceLine invoiceLine
@@ -128,6 +138,7 @@ class CreatePaymentModel {
         membership.expiryDate = ProductUtil.calculateExpiryDate(new Date(), mp.expiryType, mp.expiryDays)
         membership.product = mp
         membership.status = ProductStatus.NEW
+        membership.confirmationStatus = ConfirmationStatus.NOT_SENT
         InvoiceLine invoiceLine = new ProductItemInvoiceLine(membership, contact, membership.product.priceExTax).create()
         invoiceLine.invoice = getInvoice()
     }
@@ -139,6 +150,7 @@ class CreatePaymentModel {
         article.contact = contact
         article.setProduct(ap)
         article.status = ProductStatus.NEW
+        article.confirmationStatus = ConfirmationStatus.NOT_SENT
         InvoiceLine invoiceLine = new ProductItemInvoiceLine(article, contact, article.product.priceExTax).create()
         invoiceLine.invoice = getInvoice()
     }
@@ -157,12 +169,15 @@ class CreatePaymentModel {
     
     
     void createEnrolment(ish.oncourse.willow.model.checkout.Enrolment e, Contact contact) {
-        CourseClass courseClass = new GetCourseClass(context, college, e.contactId).get()
+        CourseClass courseClass = new GetCourseClass(context, college, e.classId).get()
         Enrolment enrolment = context.newObject(Enrolment)
         enrolment.courseClass =  courseClass
         enrolment.student = contact.student
         enrolment.status = EnrolmentStatus.IN_TRANSACTION
         enrolment.source = PaymentSource.SOURCE_WEB
+        enrolment.college = college
+        enrolment.confirmationStatus = ConfirmationStatus.NOT_SENT
+
         InvoiceLine invoiceLine = new EnrolmentInvoiceLine(enrolment, e.price).create()
         invoiceLine.setEnrolment(enrolment)
 
@@ -179,12 +194,12 @@ class CreatePaymentModel {
     }
     
     private void updateSumm() {
-        if (!paymentIn)  {
-            if (!mainInvoice) {
+        if (paymentIn)  {
+            if (mainInvoice) {
                 mainInvoice.invoiceLines.each { il ->
-                    paymentIn.amount = payment.amount.add(il.finalPriceToPayIncTax)
+                    paymentIn.amount = paymentIn.amount.add(il.finalPriceToPayIncTax)
                 }
-                invoice.paymentInLines[0].amount = paymentIn.amount
+                mainInvoice.paymentInLines[0].amount = paymentIn.amount
                 UpdateInvoiceAmount.valueOf(mainInvoice, null).update()
                 adjustDueDate()
             }
@@ -218,6 +233,9 @@ class CreatePaymentModel {
         payment.sessionId = paymentRequest.sessionId
         payment.college = college
         payment.setContact(payer)
+        payment.amount = Money.ZERO
+        payment.confirmationStatus = ConfirmationStatus.NOT_SENT
+
         payment
     }
 
@@ -232,6 +250,8 @@ class CreatePaymentModel {
         invoice.contact = payer
         invoice.webSite = webSite
         invoice.sessionId = paymentRequest.sessionId
+        invoice.confirmationStatus = ConfirmationStatus.NOT_SENT
+
 
 
         PaymentInLine paymentInLine = context.newObject(PaymentInLine)
@@ -246,7 +266,7 @@ class CreatePaymentModel {
     private void  adjustDueDate() {
         Integer defaultTerms = new GetPreference(college, CommonPreferenceController.ACCOUNT_INVOICE_TERMS, context).integer
         Integer contactTerms = payer.invoiceTerms
-        Date dueDate = GetInvoiceDueDate.valueOf(defaultTerms, contactTerms).get();
+        Date dueDate = GetInvoiceDueDate.valueOf(defaultTerms, contactTerms).get()
         mainInvoice.dateDue = dueDate
     }
 
@@ -258,11 +278,30 @@ class CreatePaymentModel {
     }
 
     private void adjustSortOrder(Invoice invoice) {
-        List<InvoiceLine> invoiceLines = invoice.invoiceLines
-        for (int i = 0; i < invoiceLines.size(); i++) {
-            InvoiceLine invoiceLine = invoiceLines[i]
-            invoiceLine.sortOrder = i
+        if (invoice) {
+            List<InvoiceLine> invoiceLines = invoice.invoiceLines
+            for (int i = 0; i < invoiceLines.size(); i++) {
+                InvoiceLine invoiceLine = invoiceLines[i]
+                invoiceLine.sortOrder = i
+            }
         }
     }
     
+    boolean isApplicationsOnly() {
+       return paymentIn == null && mainInvoice == null && paymentPlan.empty && !applications.empty
+    }
+
+    private void createModel() {
+        model = PaymentInModelFromPaymentInBuilder.valueOf(paymentIn).build().model
+    }
+    
+    private void fillCCDetails() {
+        paymentIn.creditCardType = CreditCardValidator.determineCreditCardType(paymentRequest.creditCardNumber)
+        paymentIn.creditCardCVV = CreditCardUtil.obfuscateCVVNumber(paymentRequest.creditCardCvv)
+        paymentIn.creditCardNumber = CreditCardUtil.obfuscateCCNumber(paymentRequest.creditCardNumber)
+        paymentIn.creditCardName = paymentRequest.creditCardName
+        paymentIn.creditCardExpiry = paymentRequest.expiryMonth + "/" + paymentRequest.expiryYear
+    }
+
+
 }
