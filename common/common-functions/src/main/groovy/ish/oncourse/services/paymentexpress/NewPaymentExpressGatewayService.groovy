@@ -12,10 +12,15 @@ import org.apache.cayenne.ObjectContext
 class NewPaymentExpressGatewayService implements INewPaymentGatewayService {
 
     private final ObjectContext nonReplicatingContext
-
+    private boolean abandonOnFail = false
 
     NewPaymentExpressGatewayService(ObjectContext nonReplicatingContext) {
+        this(nonReplicatingContext, false)
+    }
+
+    NewPaymentExpressGatewayService(ObjectContext nonReplicatingContext, boolean abandonOnFail) {
         this.nonReplicatingContext = nonReplicatingContext
+        this.abandonOnFail = abandonOnFail
     }
 
     def submit(PaymentInModel model, String billingId) {
@@ -42,7 +47,7 @@ class NewPaymentExpressGatewayService implements INewPaymentGatewayService {
 
         DPSResponse response = createGatewayHelper().submitRequest(request)
 
-        ProcessDPSResponse.valueOf(model, response).process()
+        ProcessDPSResponse.valueOf(model, response, abandonOnFail).process()
         ProcessPaymentTransaction.valueOf(currentTransaction, response).process()
     }
 
