@@ -42,13 +42,11 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
-import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService;
-import ish.oncourse.services.paymentexpress.PaymentExpressGatewayService;
+import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
+import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.property.IPropertyService;
 import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.reference.*;
@@ -81,6 +79,7 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
+import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 
 import java.util.List;
@@ -108,9 +107,12 @@ public class ServiceTestModule {
 		binder.bind(ICourseClassService.class, CourseClassService.class);
 		binder.bind(ICourseService.class, CourseService.class);
 		binder.bind(IPostCodeDbService.class, PostCodeDbService.class);
-		
-		binder.bind(CommonPreferenceController.class, PreferenceController.class).scope(ScopeConstants.PERTHREAD);
-		
+
+		binder.bind(PreferenceController.class);
+		binder.bind(PreferenceControllerFactory.class);
+		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
+
+
 		binder.bind(IRoomService.class, RoomService.class);
 		binder.bind(ISitesService.class, SitesService.class);
 		binder.bind(ITutorService.class, TutorService.class);
@@ -169,12 +171,16 @@ public class ServiceTestModule {
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPaymentGatewayService.class, PaymentExpressGatewayService.class).withId("PaymentGatewayService");
-		binder.bind(INewPaymentGatewayService.class, NewPaymentExpressGatewayService.class).withId("NewPaymentGatewayService");
 		
 		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
         binder.bind(IRequestCacheService.class, RequestCacheService.class);
 	}
-	
+
+
+	@Scope("perthread")
+	public static INewPaymentGatewayService buildNewPaymentGatewayService(INewPaymentGatewayServiceBuilder builder) {
+		return builder.buildService();
+	}
 	@EagerLoad
 	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
 		CayenneService cayenneService = new CayenneService(webSiteService, ServiceModule.buildCacheManager());

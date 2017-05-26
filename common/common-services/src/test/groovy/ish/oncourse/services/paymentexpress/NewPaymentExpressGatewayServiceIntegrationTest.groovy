@@ -36,7 +36,7 @@ class NewPaymentExpressGatewayServiceIntegrationTest extends ServiceTest {
 		def context = cayenneService.newContext()
 		def payment = SelectById.query(PaymentIn, 1l).selectOne(context)
 		def PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().model
-		def service = new NewPaymentExpressGatewayService(cayenneService)
+		def service = new NewPaymentExpressGatewayService(cayenneService.newNonReplicatingContext())
 		service.submit(model)
 
 		assertEquals(payment.status, PaymentStatus.SUCCESS)
@@ -54,7 +54,7 @@ class NewPaymentExpressGatewayServiceIntegrationTest extends ServiceTest {
 		def context = cayenneService.newContext()
 		def payment = SelectById.query(PaymentIn, 2l).selectOne(context)
 		def PaymentInModel model = PaymentInModelFromPaymentInBuilder.valueOf(payment).build().model
-		def service = new NewPaymentExpressGatewayService(cayenneService)
+		def service = new NewPaymentExpressGatewayService(cayenneService.newNonReplicatingContext())
 		service.submit(model)
 
 		assertEquals(payment.status, PaymentStatus.FAILED_CARD_DECLINED)
