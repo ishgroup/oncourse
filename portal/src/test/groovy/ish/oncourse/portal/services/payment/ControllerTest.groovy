@@ -68,7 +68,7 @@ class ControllerTest extends APortalTest {
             it.date = addYears(new Date(), 3).format("MM/YYYY")
         }
 
-        NewPaymentExpressGatewayService paymentExpressGatewayService = new NewPaymentExpressGatewayService(cayenneService)
+        NewPaymentExpressGatewayService paymentExpressGatewayService = new NewPaymentExpressGatewayService(cayenneService.newNonReplicatingContext())
         controller = new Controller(contact, objectContext, paymentExpressGatewayService)
 
         response = controller.process(request)
