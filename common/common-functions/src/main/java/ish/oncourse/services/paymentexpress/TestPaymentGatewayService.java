@@ -6,7 +6,6 @@ import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.PaymentTransaction;
-import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.util.payment.PaymentInFail;
 import ish.oncourse.util.payment.PaymentInModel;
 import ish.oncourse.util.payment.PaymentInSucceed;
@@ -36,7 +35,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
     public static final String NUMBER_ERROR = "Invalid credit card number.";
 
     private static final Logger LOG = LogManager.getLogger();
-    private ICayenneService cayenneService;
+    private ObjectContext nonReplicatingContext;
 
 
 
@@ -53,8 +52,8 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
         return result;
     }
 
-    public TestPaymentGatewayService(ICayenneService cayenneService) {
-        this.cayenneService = cayenneService;
+    public TestPaymentGatewayService(ObjectContext nonReplicatingContext) {
+        this.nonReplicatingContext = nonReplicatingContext;
     }
 
 
@@ -130,7 +129,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
     public void performGatewayOperation(PaymentInModel model) {
 
 		PaymentIn payment = model.getPaymentIn();
-        ObjectContext context = cayenneService.newNonReplicatingContext();
+        ObjectContext context = nonReplicatingContext;
         
         PaymentTransaction paymentTransaction = context.newObject(PaymentTransaction.class);
         paymentTransaction.setTxnReference(payment.getClientReference());
@@ -184,7 +183,7 @@ public class TestPaymentGatewayService implements IPaymentGatewayService {
 	@Override
 	public void performGatewayOperation(PaymentInModel model, String billingId) {
 		PaymentIn payment = model.getPaymentIn();
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = nonReplicatingContext;
 		
 		if (payment.isZeroPayment()) {
 			PaymentInSucceed.valueOf(model).perform();

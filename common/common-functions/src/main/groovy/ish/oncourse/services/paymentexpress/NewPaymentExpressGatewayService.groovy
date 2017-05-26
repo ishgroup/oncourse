@@ -5,20 +5,17 @@ import ish.oncourse.model.PaymentOut
 import ish.oncourse.model.PaymentOutTransaction
 import ish.oncourse.model.PaymentTransaction
 import ish.oncourse.services.payment.PaymentRequest
-import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.payment.PaymentInModel
 import org.apache.cayenne.ObjectContext
-import org.apache.tapestry5.ioc.annotations.Scope
 
-@Scope("perthread")
 @CompileStatic
 class NewPaymentExpressGatewayService implements INewPaymentGatewayService {
 
-    private final ICayenneService cayenneService;
+    private final ObjectContext nonReplicatingContext
 
 
-    NewPaymentExpressGatewayService(ICayenneService cayenneService) {
-        this.cayenneService = cayenneService
+    NewPaymentExpressGatewayService(ObjectContext nonReplicatingContext) {
+        this.nonReplicatingContext = nonReplicatingContext
     }
 
     def submit(PaymentInModel model, String billingId) {
@@ -38,7 +35,7 @@ class NewPaymentExpressGatewayService implements INewPaymentGatewayService {
 
     def submit(PaymentInModel model, DPSRequest request) {
 
-        ObjectContext transactionContext = cayenneService.newNonReplicatingContext()
+        ObjectContext transactionContext = nonReplicatingContext
         PaymentTransaction currentTransaction = transactionContext.newObject(PaymentTransaction.class)
         currentTransaction.setPayment(transactionContext.localObject(model.paymentIn))
         transactionContext.commitChanges()
@@ -51,7 +48,7 @@ class NewPaymentExpressGatewayService implements INewPaymentGatewayService {
 
     def submit(PaymentOut paymentOut) {
 
-        ObjectContext transactionContext = cayenneService.newNonReplicatingContext()
+        ObjectContext transactionContext = nonReplicatingContext
         PaymentOutTransaction currentTransaction = transactionContext.newObject(PaymentOutTransaction.class)
         currentTransaction.setCreated(new Date())
         currentTransaction.setModified(new Date())

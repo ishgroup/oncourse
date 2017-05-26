@@ -3,29 +3,29 @@ package ish.oncourse.services.paymentexpress
 import groovy.transform.CompileStatic
 import ish.oncourse.model.PaymentOut
 import ish.oncourse.services.payment.PaymentRequest
-import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInModel
+import org.apache.cayenne.ObjectContext
 
 @CompileStatic
 class NewTestPaymentGatewayService  implements INewPaymentGatewayService {
 
-	private final ICayenneService cayenneService
+	private final ObjectContext nonReplicatingContext
 
-	NewTestPaymentGatewayService(ICayenneService cayenneService) {
-		this.cayenneService = cayenneService
+	NewTestPaymentGatewayService(ObjectContext nonReplicatingContext) {
+		this.nonReplicatingContext = nonReplicatingContext
 	}
 
 	@Override
 	submit(PaymentInModel model, String billingId = null) {
-		def service = new TestPaymentGatewayService(cayenneService)
+		def service = new TestPaymentGatewayService(nonReplicatingContext)
 		billingId ? service.performGatewayOperation(model, billingId) : service.performGatewayOperation(model)
 	}
 
 
 	@Override
 	submit(PaymentOut paymentOut) {
-		new TestPaymentGatewayService(cayenneService).performGatewayOperation(paymentOut)
+		new TestPaymentGatewayService(nonReplicatingContext).performGatewayOperation(paymentOut)
 	}
 
 	@Override
@@ -37,7 +37,7 @@ class NewTestPaymentGatewayService  implements INewPaymentGatewayService {
 		model.paymentIn.creditCardExpiry= response.month + '/' +  response.year
 		model.paymentIn.creditCardType = CreditCardValidator.determineCreditCardType(response.number)
 
-		def service = new TestPaymentGatewayService(cayenneService)
+		def service = new TestPaymentGatewayService(nonReplicatingContext)
 		service.performGatewayOperation(model)
 		
 	}

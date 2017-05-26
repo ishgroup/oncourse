@@ -71,7 +71,7 @@ class GatewayHelper {
      * Initializes soap client.
      *
      * @return
-     * @throws javax.xml.rpc.ServiceException
+     * @throws ServiceException
      */
     PaymentExpressWSSoap12Stub soapClientStub() throws ServiceException {
         def serviceLocator = new PaymentExpressWSLocatorWithSoapResponseHandle()

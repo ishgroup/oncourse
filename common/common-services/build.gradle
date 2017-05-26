@@ -28,7 +28,6 @@ dependencies {
 	compile 'joda-time:joda-time:1.6.2'
 	compile "org.apache.solr:solr-solrj:${solrVersion}"
 	compile 'net.java.dev.textile-j:textile-j:2.2.864'
-	compile 'axis:axis:1.4'
 	compile 'net.htmlparser.jericho:jericho-html:3.2'
 
     //the jackson verson does not have problem with initializing in hot deployed wars

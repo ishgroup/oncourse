@@ -28,14 +28,14 @@ public class PaymentGatewayServiceBuilder implements IPaymentGatewayServiceBuild
 		boolean isInTestMode = Boolean.valueOf(System.getProperty(ServiceModule.APP_TEST_MODE));
 
 		if (isInTestMode) {
-			return new TestPaymentGatewayService(cayenneService);
+			return new TestPaymentGatewayService(cayenneService.newNonReplicatingContext());
 		}
 
 		switch (preferenceController.getPaymentGatewayType()) {
 		case PAYMENT_EXPRESS:
 			return new PaymentExpressGatewayService(cayenneService);
 		case TEST:
-			return new TestPaymentGatewayService(cayenneService);
+			return new TestPaymentGatewayService(cayenneService.newNonReplicatingContext());
 		case DISABLED:
 			return new DisabledPaymentGatewayService();
 		default:

@@ -1,3 +1,4 @@
+configurations { providedCompile }
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
@@ -13,4 +14,6 @@ compileTestGroovy.options.encoding = 'UTF-8'
 
 dependencies {
     compile project(':common:cayenne-model')
+    compile 'axis:axis:1.4'
+
 }

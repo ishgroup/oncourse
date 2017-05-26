@@ -63,7 +63,7 @@ public class TestPaymentGatewayServiceTest {
         when(objectContext.newObject(PaymentTransaction.class)).thenReturn(paymentTransaction);
         when(cayenneService.newNonReplicatingContext()).thenReturn(objectContext);
 
-        this.gatewayService = new TestPaymentGatewayService(cayenneService);
+        this.gatewayService = new TestPaymentGatewayService(cayenneService.newNonReplicatingContext());
     }
 
     /**

@@ -33,14 +33,14 @@ class NewPaymentGatewayServiceBuilder implements INewPaymentGatewayServiceBuilde
 		def isInTestMode = Boolean.valueOf(System.getProperty(ServiceModule.APP_TEST_MODE));
 
 		if (isInTestMode) {
-			return new NewTestPaymentGatewayService(cayenneService);
+			return new NewTestPaymentGatewayService(cayenneService.newNonReplicatingContext())
 		}
 
 		switch (preferenceController.paymentGatewayType) {
 			case PAYMENT_EXPRESS:
-				return new NewPaymentExpressGatewayService(cayenneService);
+				return new NewPaymentExpressGatewayService(cayenneService.newNonReplicatingContext())
 			case TEST:
-				return new NewTestPaymentGatewayService(cayenneService);
+				return new NewTestPaymentGatewayService(cayenneService.newNonReplicatingContext())
 			default:
 				return new NewDisabledPaymentGatewayService();
 		}
