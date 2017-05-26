@@ -52,8 +52,8 @@ public class GetCourseClassByCode {
         ObjectSelect<CourseClass> query = ObjectSelect.query(CourseClass.class, CourseClass.COLLEGE.eq(college)
                 .andExp(CourseClass.IS_ACTIVE.isTrue()
                         .orExp(CourseClass.IS_ACTIVE.isFalse().andExp(CourseClass.CANCELLED.isTrue().andExp(CourseClass.IS_WEB_VISIBLE.isTrue()))))
-                .andExp(CourseClass.CODE.eq(courseClassCode))
-                .andExp(CourseClass.COURSE.dot(Course.CODE).eq(courseCode)));
+                .andExp(CourseClass.CODE.likeIgnoreCase(courseClassCode))
+                .andExp(CourseClass.COURSE.dot(Course.CODE).likeIgnoreCase(courseCode)));
 
         return ApplyCourseClassCacheSettings.valueOf(query).apply().selectOne(context);
     }
