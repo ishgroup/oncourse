@@ -31,8 +31,10 @@
     <Tag isWebVisible="0" name="Leaders' Forum" id="62393" parentId="62296" collegeId="11612" angelId="242" isTagGroup="0" nodeType="1" weighting="4" created="2017-02-16T10:38:37Z" modified="2017-02-21T08:37:14Z" detail="Disability Justice Project Leaders' Forum events are by invite only." detail_textile="Disability Justice Project Leaders' Forum events are by invite only."/>
 
     <Taggable id="5626052" collegeId="11612" angelId="27" entityIdentifier="Course" entityWillowId="5021820" created="2017-02-16 14:00:14" modified="2017-02-16 14:00:14"/>
-
     <TaggableTag id="21477984695440588" tagId="62393" taggableId="5626052" collegeId="11612" created="2017-02-16 14:00:14" modified="2017-02-16 14:00:14"/>
+
+    <Taggable id="5626053" collegeId="11612" angelId="27" entityIdentifier="Course" entityWillowId="5137174" created="2017-02-16 14:00:14" modified="2017-02-16 14:00:14"/>
+    <TaggableTag id="21477984695440589" tagId="62296" taggableId="5626053" collegeId="11612" created="2017-02-16 14:00:14" modified="2017-02-16 14:00:14"/>
 
     <TagGroupRequirement id="51950" tagId="62296" collegeId="11612" angelId="203" allowsMultipleTags="1" isRequired="0" created="2017-01-24 08:53:04" modified="2017-01-24 08:53:04" entityIdentifier="Course"/>
 

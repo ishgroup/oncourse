@@ -86,7 +86,13 @@ public class WebAvailabilityRulesTest extends ServiceTest {
         assertNotNull(courseClassGetter.get());
         assertTrue(checkEnrolmentIsVisibile());
 
-        setStatus(CourseAvailability.ENABLED_AND_VISIBLE, CourseClassAvailability.CANCELLED);
+        setStatus(CourseAvailability.ENABLED_AND_VISIBLE, CourseClassAvailability.CANCELLED_INVISIBLE);
+        // special case of 'cancelled'
+        assertNotNull(courseGetter.get());
+        assertNull(courseClassGetter.get());
+        assertFalse(checkEnrolmentIsVisibile());
+
+        setStatus(CourseAvailability.ENABLED_AND_VISIBLE, CourseClassAvailability.CANCELLED_VISIBLE);
         // Course is included in the search results. If the class is still shown on the web, the enrol now button will be replaced with the word 'Cancelled'. No enrolments can be taken.
         assertNotNull(courseGetter.get());
         assertNotNull(courseClassGetter.get());
@@ -112,9 +118,15 @@ public class WebAvailabilityRulesTest extends ServiceTest {
         assertNotNull(courseClassGetter.get());
         assertTrue(checkEnrolmentIsVisibile());
 
-        setStatus(CourseAvailability.ENABLED, CourseClassAvailability.CANCELLED);
+        setStatus(CourseAvailability.ENABLED, CourseClassAvailability.CANCELLED_INVISIBLE);
         // The course and class are hidden from search, but provided the class has not be removed from the website the class URL will still be available;
         // The enrol now button will be replaced with the word 'cancelled' and no enrolments can be taken.
+        assertNull(courseGetter.get());
+        assertNull(courseClassGetter.get());
+        assertFalse(checkEnrolmentIsVisibile());
+
+        setStatus(CourseAvailability.ENABLED, CourseClassAvailability.CANCELLED_VISIBLE);
+        // special case of 'cancelled'
         assertNull(courseGetter.get());
         assertNotNull(courseClassGetter.get());
         assertFalse(checkEnrolmentIsVisibile());
@@ -156,7 +168,8 @@ public class WebAvailabilityRulesTest extends ServiceTest {
     }
 
     private enum CourseAvailability {
-        ENABLED_AND_VISIBLE(true, true), ENABLED(false, true);
+        ENABLED_AND_VISIBLE(true, true),
+        ENABLED(false, true);
 
         private boolean w;
         private boolean o;
@@ -176,7 +189,11 @@ public class WebAvailabilityRulesTest extends ServiceTest {
     }
 
     private enum CourseClassAvailability {
-        DISABLED(false, false, false), ALLOWED(true, false, false), ALLOWED_AND_VISIBLE(true, true, false), CANCELLED(false, true, true);
+        DISABLED(false, false, false),
+        ALLOWED(true, false, false),
+        ALLOWED_AND_VISIBLE(true, true, false),
+        CANCELLED_VISIBLE(false, true, true),
+        CANCELLED_INVISIBLE(false, false, true);
 
         private boolean a;
         private boolean v;

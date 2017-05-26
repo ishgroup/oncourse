@@ -69,12 +69,12 @@ public class LinkTransformerFunctionsTest extends ServiceTest {
         courseClass = GetCourseClassByPath
                 .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFTaggedInvisible-1")
                 .get();
-        assertNull(courseClass);
+        assertNotNull(courseClass);
 
         courseClass = GetCourseClassByPath
                 .valueOf(cayenneService.sharedContext(), webSiteService.getCurrentWebSite(), "/class/DJPLFUntaggedInvisible-1")
                 .get();
-        assertNull(courseClass);
+        assertNotNull(courseClass);
     }
 
     /**
