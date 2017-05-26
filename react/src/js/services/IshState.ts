@@ -3,7 +3,6 @@ import {Promotion} from "../model/web/Promotion";
 import {CourseClass} from "../model/web/CourseClass";
 import {Product} from "../model/web/Product";
 import {Contact} from "../model/web/Contact";
-import {Suggestion} from "../selectors/autocomplete";
 import {CheckoutState} from "../enrol/reducers/State";
 
 export interface IshState {
@@ -13,7 +12,6 @@ export interface IshState {
   readonly courses: CoursesState;
   readonly products: ProductsState;
   readonly checkout: CheckoutState;
-  readonly autocomplete: AutocompleteState;
   readonly checkoutPath: string;
 }
 
@@ -54,12 +52,6 @@ export interface ProductCart extends Product {
 }
 
 export interface PromotionCart extends Promotion {
-}
-
-//-- Autocomplete
-
-export interface AutocompleteState {
-  [key: string]: Suggestion[];
 }
 
 export interface Normalized<V> {

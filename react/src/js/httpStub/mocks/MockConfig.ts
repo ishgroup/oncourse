@@ -1,13 +1,13 @@
 import {AxiosResponse} from "axios";
 import faker from "faker";
 import uuid from "uuid";
-import {MockDB} from "./MockDB";
+import {MockDB, CreateMockDB} from "./MockDB";
 
 export class MockConfig {
   private id:string = uuid();
   public static CONFIG = new MockConfig();
 
-  public db: MockDB = new MockDB();
+  public db: MockDB = CreateMockDB();
   public commonError: boolean = false;
   public plainTextError: boolean = false;
   public validationError: boolean = false;

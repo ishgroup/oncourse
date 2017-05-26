@@ -24,6 +24,7 @@ import {CourseClass} from "../../../js/model/web/CourseClass";
 import {CheckoutApiMock} from "../../../js/httpStub/CheckoutApiMock";
 import {MockConfig} from "../../../js/httpStub/mocks/MockConfig";
 import {MockDB} from "../../../js/httpStub/mocks/MockDB";
+import SummaryComp from "../../../js/enrol/containers/summary/components/SummaryComp";
 
 
 const store = CreateStore();
@@ -46,8 +47,6 @@ const createEnrolmentProps = (e: Enrolment):EnrolmentProps => {
   return {
     contact: db.getContactById(e.contactId),
     courseClass: db.getCourseClassById(e.classId),
-    onSelect: (e,i) => {},
-    selected: e.errors.length == 0,
     enrolment: e
   };
 };
@@ -62,7 +61,7 @@ const createContactProps = (contact: Contact): ContactProps => {
 export const contactPropses: ContactProps[] = contacts.map(createContactProps);
 
 
-contactPropses[1].enrolments[0].selected = false;
+contactPropses[1].enrolments[0].enrolment.selected = false;
 contactPropses[1].enrolments[1].courseClass.start = faker.date.past();
 
 export const amount: Amount = mockAmount();
@@ -74,6 +73,8 @@ const onAddContact = () => {
 };
 const onProceedToPayment = () => {
 };
+const onSelect = (contact, item) => {
+};
 
 
 const render = () => ReactDOM.render(
@@ -81,10 +82,12 @@ const render = () => ReactDOM.render(
     <div id="checkout" className="col-xs-24 payments">
       <ProgressRedux/>
       <MessagesRedux/>
-      <Summary contacts={[
+      <SummaryComp contacts={[
         contactPropses[0],
         contactPropses[1]
-      ]} amount={amount} onAddContact={onAddContact} onProceedToPayment={onProceedToPayment}/>
+      ]} amount={amount} onAddContact={onAddContact} onProceedToPayment={onProceedToPayment}
+                   onSelect = {onSelect}
+      />
     </div>
 
   </Provider>,

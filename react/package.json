@@ -62,7 +62,8 @@
 
     "mocker-data-generator": "2.0.0",
     "faker": "4.1.0",
-    "uuid": "3.0.1"
+    "uuid": "3.0.1",
+    "react-inspector": "2.0.0"
   },
   "dependencies": {
     "axios": "0.15.3",

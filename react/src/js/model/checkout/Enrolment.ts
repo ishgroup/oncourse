@@ -6,5 +6,6 @@ export class Enrolment {
   price?: CourseClassPrice;
   warnings?: string[];
   errors?: string[];
+  selected: boolean;
 }
 

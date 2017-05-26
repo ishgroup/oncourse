@@ -16,9 +16,9 @@ class AmountComp extends React.Component<Props, any> {
       <div className="row">
         <EnterPromotional handlePromoCodeSubmit={this.handlePromoCodeSubmit.bind(this)} />
         <div className="col-xs-24 col-sm-8 amount-content text-right">
-          { amount.total && <Total total={amount.total}/> }
-          { amount.discount && <Discount discount={amount.discount}/>}
-          { amount.payNow && <PayNow payNow={amount.payNow}/>}
+          { amount && amount.total && <Total total={amount.total}/> }
+          { amount && amount.discount && <Discount discount={amount.discount}/>}
+          { amount && amount.payNow && <PayNow payNow={amount.payNow}/>}
         </div>
       </div>
     );

@@ -16,19 +16,17 @@ export interface Props {
   contact: Contact;
   enrolment: Enrolment;
   courseClass: CourseClass;
-  selected: boolean;
-  onSelect: (item: Enrolment, selected: boolean) => void;
+  onChange?: () => void;
 }
 
 class EnrolmentComp extends React.Component<Props, any> {
   public render(): JSX.Element {
-    const {enrolment, courseClass, selected, contact, onSelect} = this.props;
-    const divClass = classnames("row", "enrolmentItem", {"disabled": !selected});
+    const {enrolment, courseClass, contact, onChange} = this.props;
+    const divClass = classnames("row", "enrolmentItem", {"disabled": !enrolment.selected});
     const checkBoxName = `enrolment-${contact.id}-${enrolment.classId}`;
-    const onChange = () => onSelect(enrolment, !selected);
     const title: string = `${courseClass.course.name}`;
 
-    let warning =  enrolment.warnings && enrolment.warnings.length ? this.props.enrolment.warnings[0] : null;
+    let warning = enrolment.warnings && enrolment.warnings.length ? this.props.enrolment.warnings[0] : null;
     const error = enrolment.warnings && enrolment.errors.length ? this.props.enrolment.errors[0] : null;
     if (!warning && courseClass.start && moment(courseClass.start).isBefore(moment())) {
       warning = ClassHasCommenced;
@@ -41,7 +39,7 @@ class EnrolmentComp extends React.Component<Props, any> {
                    type="checkbox"
                    name={checkBoxName}
                    onChange={ onChange }
-                   checked={selected } disabled={!isNil(error)}/>
+                   checked={enrolment.selected } disabled={!isNil(error)}/>
             { title }
           </label>
           {warning && (<span dangerouslySetInnerHTML={{__html: warning}}/>)}
@@ -49,7 +47,7 @@ class EnrolmentComp extends React.Component<Props, any> {
           <br/>
           <ClassDetails courseClass={courseClass}/>
         </div>
-        {selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
+        {enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
       </div>
     );
   }

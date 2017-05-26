@@ -44,13 +44,8 @@ interface Props {
   errors: ValidationError,
 }
 
-const validate = (values) => {
-  return values;
-};
-
 const Form = reduxForm({
   form: NAME,
-  //validate: validate,
   onSubmitSuccess: (result, dispatch, props: any) => {
     dispatch({type: OpenSummaryRequest});
   },

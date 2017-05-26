@@ -38,10 +38,7 @@ export class Checkout extends React.Component<Props, any> {
         <MessagesRedux/>
         {phase === Phase.AddContact && <ContactAddForm/>}
         {phase === Phase.EditContactDetails && <ContactEditForm/>}
-        {phase === Phase.Summary && <Summary contacts={contacts} amount={amount}
-                                             onAddContact={onAddContact}
-                                             onProceedToPayment={onProceedToPayment}
-        />}
+        {phase === Phase.Summary && <Summary/>}
         {phase === Phase.ProceedToPayment && <Payment contacts={contacts} amount={amount} />}
       </div>
     )

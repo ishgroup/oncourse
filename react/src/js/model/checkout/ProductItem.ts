@@ -5,5 +5,6 @@ export class ProductItem {
   warnings?: string[];
   errors?: string[];
   price?: string;
+  selected: boolean;
 }
 

@@ -7,6 +7,7 @@ import CheckoutService from "../services/CheckoutService";
 import {changePhase, changePhaseRequest, MessagesShow} from "../actions/Actions";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Phase} from "../reducers/State";
+import {toValidationError} from "../../common/utils/ErrorUtils";
 
 const OpenContactDetailsEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
   return action$
@@ -21,7 +22,7 @@ const OpenContactDetailsEpic: Epic<any, any> = (action$: ActionsObservable<any>,
         return [changePhaseRequest(Phase.Summary)]
       }
     }).catch((data) => {
-      return Observable.of({type: MessagesShow, payload: data.data});
+      return Observable.of({type: MessagesShow, payload: toValidationError(data)});
     });
 };
 export default OpenContactDetailsEpic;

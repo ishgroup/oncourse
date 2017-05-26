@@ -4,38 +4,29 @@ import {Enrolment} from "../../../js/model/checkout/Enrolment";
 
 import {Contact} from "../../../js/model/web/Contact";
 import {CourseClass} from "../../../js/model/web/CourseClass";
+import {normalize} from "normalizr";
 
+import {ClassesListSchema} from "../../../js/NormalizeSchema";
 
 test('test MockDB', () => {
 
-  console.log(MockDB.DB.contacts);
-  console.log(MockDB.DB.classes);
+  const db:MockDB = new MockDB();
+  console.log(db.contacts);
+  console.log(db.classes);
+  console.log(db.contacts.result[0]);
+  console.log(db.classes.result[0]);
 
+  const enrolment: Enrolment = db.createEnrolment(db.contacts.result[0], db.classes.result[0]);
+  const contacts: Contact[] = [db.getContactByIndex(0), db.getContactByIndex(1)];
+  const classes: CourseClass[] = [db.getCourseClassByIndex(0), db.getCourseClassByIndex(1)];
 
-  console.log(MockDB.DB.contacts.result[0]);
-  console.log(MockDB.DB.classes.result[0]);
-
-  const enrolment: Enrolment = MockDB.DB.createEnrolment(MockDB.DB.contacts.result[0], MockDB.DB.classes.result[0]);
-
-  console.log(enrolment);
-
-  console.log(MockDB.DB.getCourseClassByIndex(0));
-
-  console.log(MockDB.DB.getContactByIndex(0));
-
-
-  const contacts: Contact[] = [MockDB.DB.getContactByIndex(0), MockDB.DB.getContactByIndex(1)];
-  const classes: CourseClass[] = [MockDB.DB.getCourseClassByIndex(0), MockDB.DB.getCourseClassByIndex(1)];
+  console.log(normalize(classes, ClassesListSchema));
 
 
   const result = contacts.map((c: Contact) => {
     return classes.map((cc: CourseClass) => {
-      return MockDB.DB.createEnrolment(c.id, cc.id)
+      return db.createEnrolment(c.id, cc.id)
     })
   });
-
-  console.log(L.flatten(result));
-
-
-  L.filter(MockDB.DB.contacts.entities.contacts, (c:Contact) => c.firstName === 'Leanne' )
+  L.filter(db.contacts.entities.contacts, (c:Contact) => c.firstName === 'Leanne' )
 });
