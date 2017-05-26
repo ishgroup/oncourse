@@ -12,7 +12,7 @@ class ConcessionForm extends React.Component<Props, any> {
 		const {concessions, onTypeChange} = this.props;
 
 		return (
-			<Field component={SelectField} name="concessionTypes" label="New Concession" loadOptions={() => Promise.resolve(concessions)} onChange={onTypeChange} />
+			<Field component={SelectField} name="concessionTypes" label="New Concession" loadOptions={() => Promise.resolve(concessions)} handleChange={onTypeChange} />
 		)
 	}
 }

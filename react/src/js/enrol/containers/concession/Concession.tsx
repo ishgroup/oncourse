@@ -3,6 +3,7 @@ import {Contact} from "../../../model/web/Contact";
 import ConcessionForm from "./components/ConcessionForm";
 import {Field, reduxForm} from "redux-form";
 import Checkbox from "../../../components/form-new/Checkbox";
+import {connect} from "react-redux";
 
 export interface Props {
 	contact: Contact
@@ -18,7 +19,8 @@ class Concession extends React.Component<any, any> {
 
 	componentWillMount() {
 		this.state = {
-			validConcession: false
+			validConcession: false,
+			isConcessionAgreed: false
 		}
 	}
 
@@ -26,6 +28,12 @@ class Concession extends React.Component<any, any> {
 		this.setState({
 			validConcession: (value.key !== -1 ? true : false)
 		})
+	}
+
+	onConcessionAgreed = (value) => {
+		this.setState({
+			isConcessionAgreed: !value.target.value
+		});
 	}
 
 	render() {
@@ -37,10 +45,11 @@ class Concession extends React.Component<any, any> {
 				<form onSubmit={handleSubmit}>
 					<fieldset>
 						<ConcessionForm concessions={concessions} onTypeChange={this.onTypeChange} />
-						{this.state.validConcession && <ConcessionText />}
+						{this.state.validConcession && <ConcessionText onConcessionAgreed={this.onConcessionAgreed} />}
 					</fieldset>
 					<p>
-						<button id="cancelConcession" className="btn" disabled={invalid || pristine || submitting}>Cancel</button>
+						{this.state.isConcessionAgreed && <button type="submit" className="btn" disabled={invalid || pristine || submitting}>Save Concession</button> }
+						<button id="cancelConcession" className="btn">Cancel</button>
 					</p>
 				</form>
 			</div>
@@ -48,10 +57,10 @@ class Concession extends React.Component<any, any> {
 	}
 }
 
-const ConcessionText = () => {
+const ConcessionText = (props) => {
 	return (
 		<div className="clearfix conditions">
-			<Field component={Checkbox} type="checkbox" name="concessionAgree" required={true} /> I certify that the concession I have claimed is valid and I understand that the details may be checked with the issuing body.
+			<Field component={Checkbox} type="checkbox" name="concessionAgree" required={true} onChange={props.onConcessionAgreed} value={true} /> I certify that the concession I have claimed is valid and I understand that the details may be checked with the issuing body.
 		</div>
 	)
 }

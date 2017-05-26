@@ -13,7 +13,8 @@ interface Props {
   filterOption: (option: any, filter: string) => boolean
   optionComponent: React.Component<any, any>
   valueComponent: React.Component<any, any>
-  newOptionCreator: (newOption: { label: string, labelKey: string, valueKey: string }) => any
+  newOptionCreator: (newOption: { label: string, labelKey: string, valueKey: string }) => any,
+  handleChange: (value: any) => void;
 }
 
 /**
@@ -55,6 +56,9 @@ class SelectField extends React.Component<any, any> {
     if (onChange) {
       onChange(value.key)
     }
+    if (this.props.handleChange) {
+      this.props.handleChange(value)
+    }
   };
 
 
@@ -62,7 +66,7 @@ class SelectField extends React.Component<any, any> {
     const input: WrappedFieldInputProps = inputFrom(this.props);
     const labelKey = this.props.labelKey ? this.props.labelKey : "value";
     const valueKey = this.props.valueKey ? this.props.valueKey : "key";
-    const {filterOption, optionComponent, valueComponent, newOptionCreator} = this.props;
+    const {filterOption, optionComponent, valueComponent, newOptionCreator, handleChange} = this.props;
     return {
       input: input,
       labelKey: labelKey,
@@ -70,7 +74,8 @@ class SelectField extends React.Component<any, any> {
       filterOption: filterOption,
       optionComponent: optionComponent,
       valueComponent: valueComponent,
-      newOptionCreator: newOptionCreator
+      newOptionCreator: newOptionCreator,
+      handleChange: handleChange
     };
   };
 

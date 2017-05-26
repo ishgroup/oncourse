@@ -14,12 +14,14 @@ import "../../../scss/_ReactSelect.scss";
 const store = CreateStore();
 RestoreState(store, () => render());
 
+const onConcessionSubmit = (data, dispatch, props) => {}
+
 const render = () => ReactDOM.render(
 	<Provider store={store}>
 		<div id="checkout" className="col-xs-24 payments">
 			<ProgressRedux/>
 			<MessagesRedux/>
-			<Concession contact={contact} concessions={concessions} />
+			<Concession contact={contact} concessions={concessions} onSubmit={onConcessionSubmit} />
 		</div>
 	</Provider>,
 	document.getElementById('root')
