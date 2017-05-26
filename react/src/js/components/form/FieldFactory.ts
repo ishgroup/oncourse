@@ -13,6 +13,7 @@ import SelectField from "../form-new/SelectField";
 import {Injector} from "../../injector";
 import {Item} from "../../model/common/Item";
 import {SuburbOption, SuburbValue} from "./Renders";
+import {Suburb} from "../../model/field/Suburb";
 
 const {
   searchApi
@@ -26,6 +27,8 @@ class FieldFactory {
     switch (field.dataType) {
       case DataType.string:
       case DataType.language:
+      case DataType.suburb:
+      case DataType.country:
         return React.createElement(Form.Field,
           Object.assign({}, props, {type: "string", component: TextField}));
       case DataType.integer:
@@ -47,10 +50,6 @@ class FieldFactory {
         }
       case DataType.date:
         return React.createElement(Form.Field, Object.assign({}, props, {component: DateField}));
-      case DataType.suburb:
-        return SuburbField(props);
-      case DataType.country:
-        return CountryField(props);
       default:
         return null;
     }
@@ -80,6 +79,13 @@ const SuburbField = (props): any => {
       optionComponent: SuburbOption,
       filterOption: (option, filter) => {
         return filter ? option.value.suburb.toLowerCase().startsWith(filter) : true;
+      },
+      newOptionCreator: (newOption: { label: string, labelKey: string, valueKey: string }) => {
+        const item:Item = new Item();
+        item.key = newOption.label;
+        item.value = new Suburb();
+        item.value.suburb = newOption.label;
+        return item;
       }
     }));
 };

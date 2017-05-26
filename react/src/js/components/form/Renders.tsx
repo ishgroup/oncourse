@@ -1,8 +1,18 @@
 import * as React from "react";
 
+interface Props {
+  children: any
+  className: string
+  option: any
+  value: any
+  onFocus: (option, event) => void
+  onSelect: (option, event) => void
+  isFocused: boolean
 
-export class SuburbOption extends React.Component<any, any> {
+  renderOption: (option: any) => JSX.Element
+}
 
+export class RenderOption extends React.Component<Props, any> {
   handleMouseDown = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -19,24 +29,40 @@ export class SuburbOption extends React.Component<any, any> {
   };
 
   render() {
-    const {children, className, option} = this.props;
+    const {children, className, renderOption} = this.props;
     return (<div className={className}
                  onMouseDown={this.handleMouseDown}
                  onMouseEnter={this.handleMouseEnter}
                  onMouseMove={this.handleMouseMove}>
-      {option.suburb}
-      {children.suburb}
+      {renderOption(children)}
     </div>)
+  }
+}
+
+export class RenderValue extends React.Component<Props, any> {
+  render() {
+    const {value, renderOption} = this.props;
+    return (<div className="Select-value">
+				<span className="Select-value-label">
+          {renderOption(value.value)}
+				</span>
+    </div>);
+  }
+}
+
+
+export class SuburbOption extends React.Component<any, any> {
+  render() {
+    return (<RenderOption {...this.props} renderOption={(option) => {
+      return option.suburb
+    }}/>)
   }
 }
 
 export class SuburbValue extends React.Component<any, any> {
   render() {
-    const {value, children} = this.props;
-    return (<div className="Select-value">
-				<span className="Select-value-label">
-          {value.value.suburb}
-				</span>
-    </div>);
+    return (<RenderValue {...this.props} renderOption={(option) => {
+      return option.suburb
+    }}/>);
   }
 }
