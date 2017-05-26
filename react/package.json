@@ -22,6 +22,10 @@
     "start:dev:AllComponentsInFormApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/components/form/AllComponentsInFormApp.tsx --content-base ./dev-server",
     "start:dev:PaymentApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/payment/PaymentApp.tsx --content-base ./dev-server",
     "start:dev:ConcessionApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/concession/ConcessionApp.tsx --content-base ./dev-server",
+    "start:dev:PaymentInProgressApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/result/PaymentInProgressApp.tsx --content-base ./dev-server",
+    "start:dev:PaymentRejectedApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/result/PaymentRejectedApp.tsx --content-base ./dev-server",
+    "start:dev:PaymentSuccessfulApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/result/PaymentSuccessfulApp.tsx --content-base ./dev-server",
+    "start:dev:PaymentErrorApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/result/PaymentErrorApp.tsx --content-base ./dev-server",
     "deploy": "cp -vf ./build/dist/dynamic.* /Users/akoiro/_data/_ish/tomonCourse/s/ak-react/js"
   },
   "devDependencies": {
