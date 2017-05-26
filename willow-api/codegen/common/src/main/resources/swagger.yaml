@@ -879,6 +879,7 @@ definitions:
     - price
     - warnings
     - errors
+    - selected
     properties:
       contactId:
         type: string
@@ -894,6 +895,8 @@ definitions:
         type: array
         items:
          type: string
+      selected:
+        type: boolean
   checkout.Application:
     type: object
     requred:
@@ -901,6 +904,7 @@ definitions:
     - classId
     - warnings
     - errors
+    - selected
     properties:
       contactId:
         type: string
@@ -914,6 +918,8 @@ definitions:
         type: array
         items:
          type: string
+      selected:
+        type: boolean
   checkout.Article:
     type: object
     requred:
@@ -922,6 +928,7 @@ definitions:
     - warnings
     - errors
     - price
+    - selected
     properties:
       contactId:
         type: string
@@ -937,6 +944,8 @@ definitions:
          type: string
       price:
         type: string
+      selected:
+        type: boolean
   checkout.Membership:
     type: object
     requred:
@@ -945,6 +954,7 @@ definitions:
     - warnings
     - errors
     - price
+    - selected
     properties:
       contactId:
         type: string
@@ -960,6 +970,8 @@ definitions:
          type: string
       price:
         type: string
+      selected:
+        type: boolean
   checkout.Voucher:
     type: object
     requred:
@@ -968,6 +980,7 @@ definitions:
     - warnings
     - errors
     - price
+    - selected
     properties:
       contactId:
         type: string
@@ -989,6 +1002,8 @@ definitions:
         type: array
         items:
           type: string
+      selected:
+        type: boolean
   checkout.request.PurchaseItemsRequest:
       type: object
       requred:

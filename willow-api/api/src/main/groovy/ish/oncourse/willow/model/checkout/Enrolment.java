@@ -11,6 +11,7 @@ public class Enrolment  {
     private CourseClassPrice price = null;
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
+    private Boolean selected = null;
 
     /**
      * Get contactId
@@ -107,6 +108,23 @@ public class Enrolment  {
       return this;
     }
 
+    /**
+     * Get selected
+     * @return selected
+     */
+    public Boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+       this.selected = selected;
+    }
+
+    public Enrolment selected(Boolean selected) {
+      this.selected = selected;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -118,6 +136,7 @@ public class Enrolment  {
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
       sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
+      sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
       sb.append("}");
       return sb.toString();
     }

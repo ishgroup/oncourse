@@ -10,6 +10,7 @@ public class Article  {
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
     private String price = null;
+    private Boolean selected = null;
 
     /**
      * Get contactId
@@ -106,6 +107,23 @@ public class Article  {
       return this;
     }
 
+    /**
+     * Get selected
+     * @return selected
+     */
+    public Boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+       this.selected = selected;
+    }
+
+    public Article selected(Boolean selected) {
+      this.selected = selected;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -117,6 +135,7 @@ public class Article  {
       sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
+      sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
       sb.append("}");
       return sb.toString();
     }
