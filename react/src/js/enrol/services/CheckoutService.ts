@@ -1,17 +1,17 @@
 import * as L from "lodash";
-import {Product} from "../../model/web/Product";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Injector} from "../../injector";
 import {ContactFieldsRequest} from "../../model/field/ContactFieldsRequest";
 import {FieldSet} from "../../model/field/FieldSet";
 import {SubmitFieldsRequest} from "../../model/field/SubmitFieldsRequest";
 import {CreateContactParams} from "../../model/web/CreateContactParams";
-import {CartState, CourseClassCart, IshState} from "../../services/IshState";
+import {IshState} from "../../services/IshState";
 import {PurchaseItems} from "../../model/checkout/PurchaseItems";
-import {Promotion} from "../../model/web/Promotion";
 import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
 import {PurchaseItemsRequest} from "../../model/checkout/request/PurchaseItemsRequest";
+import {Enrolment} from "../../model/checkout/Enrolment";
+import {State} from "../containers/summary/reducers/State";
 
 export class CheckoutSerivce {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
@@ -49,6 +49,21 @@ export class CheckoutSerivce {
     request.promotionIds = state.cart.promotions.result;
     return this.checkoutApi.getPurchaseItems(request);
   };
+
+  public updateEnrolment = (enrolment: Enrolment, state: IshState): Promise<Enrolment> => {
+    if (enrolment.selected) {
+      const request: PurchaseItemsRequest = new PurchaseItemsRequest();
+      request.contactId = enrolment.contactId;
+      request.classIds = [enrolment.classId];
+      request.promotionIds = state.cart.promotions.result;
+      return this.checkoutApi.getPurchaseItems(request)
+        .then((data) => {
+          return Promise.resolve(data.enrolments[0])
+        })
+    } else {
+      return Promise.resolve(enrolment);
+    }
+  }
 }
 
 

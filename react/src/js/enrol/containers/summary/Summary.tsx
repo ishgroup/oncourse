@@ -1,14 +1,20 @@
 import * as React from "react";
-import {Props as ContactProps} from "./components/ContactComp";
-import {Props as EnrolmentProps} from "./components/EnrolmentComp";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
 
+import {Props as ContactProps} from "./components/ContactComp";
+import {Props as EnrolmentProps} from "./components/EnrolmentComp";
 import SummaryComp from "./components/SummaryComp";
-import {PurchaseItems} from "../../../model/checkout/PurchaseItems";
 import {Enrolment} from "../../../model/checkout/Enrolment";
+import {selectItem} from "./actions/Actions";
+import {openContactAdd} from "../contact-add/actions/Actions";
+import {openPayment} from "../payment/actions/Actions";
+import {Voucher} from "../../../model/checkout/Voucher";
+import {Article} from "../../../model/checkout/Article";
+import {Membership} from "../../../model/checkout/Membership";
 
-const EnrolmentPropsBy = (enrolment: Enrolment, state: IshState): EnrolmentProps => {
+
+export const EnrolmentPropsBy = (enrolment: Enrolment, state: IshState): EnrolmentProps => {
   return {
     contact: state.checkout.payer.entity,
     courseClass: state.courses.entities[enrolment.classId],
@@ -16,36 +22,47 @@ const EnrolmentPropsBy = (enrolment: Enrolment, state: IshState): EnrolmentProps
   }
 };
 
-const ContactPropsBy = (items: PurchaseItems, state: IshState): ContactProps => {
+export const ContactPropsBy = (contactId: string, state: IshState): ContactProps => {
+  const ids = state.checkout.summary.entities.contacts[contactId].enrolments;
+  const enrolments = state.checkout.summary.entities.enrolments;
   return {
     contact: state.checkout.payer.entity,
-    enrolments: items.enrolments.map((e: Enrolment): EnrolmentProps => EnrolmentPropsBy(e, state)),
+    enrolments: ids.map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
   };
 };
 
-const mapStateToProps = (state: IshState) => {
+export const SummaryPropsBy = (state: IshState): any => {
   try {
-    const contacts: ContactProps[] = state.checkout.purchaseItems.map((i: PurchaseItems) => {
-      return ContactPropsBy(i, state)
+    const contacts: ContactProps[] = state.checkout.summary.result.map((id) => {
+      return ContactPropsBy(id, state)
     });
     return {
+      amount: state.checkout.amount,
       contacts: contacts
     };
   } catch (e) {
     console.log(e);
-    return {contacts: []}
+    return {
+      amount: {},
+      contacts: []
+    }
   }
-
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  const onSelect = (contact, item, selected): void => {
-  };
+export const SummaryFunctionsBy = (dispatch: Dispatch<any>) => {
   return {
-    onSelect: onSelect
-  }
+    onSelect: (item: Enrolment | Membership | Article | Voucher, selected: boolean): void => {
+      dispatch(selectItem(item, selected))
+    },
+    onAddContact: (): void => {
+      dispatch(openContactAdd())
+    },
+    onProceedToPayment: (): void => {
+      dispatch(openPayment())
+    }
+  };
 };
 
-const Container = connect(mapStateToProps, mapDispatchToProps)(SummaryComp);
+const Container = connect(SummaryPropsBy, SummaryFunctionsBy)(SummaryComp);
 
 export default Container

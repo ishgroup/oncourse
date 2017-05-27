@@ -1,4 +1,4 @@
-import {CheckoutModel} from "./../../checkout/CheckoutModel";
+import { CheckoutModel } from "./../../checkout/CheckoutModel";
 
 export class PaymentRequest {
   checkoutModel?: CheckoutModel;
@@ -8,5 +8,10 @@ export class PaymentRequest {
   expiryYear?: string;
   creditCardCvv?: string;
   agreementFlag?: boolean;
+
+  /**
+   * null
+   */
+  sessionId?: string;
 }
 

@@ -3,11 +3,11 @@ import {CheckoutState, PayerState, Phase} from "./State";
 import * as Actions from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
 import * as ContactAddActions from "../containers/contact-add/actions/Actions";
-import * as SummaryActions from "../containers/summary/actions/Actions";
 
 import {ValidationError} from "../../model/common/ValidationError";
 import {ContactFields} from "../../model/field/ContactFields";
-import {PurchaseItems} from "../../model/checkout/PurchaseItems";
+import {Amount} from "../../model/checkout/Amount";
+import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
 
 const FieldsReducer = (state: ContactFields = null, action): any => {
   switch (action.type) {
@@ -15,7 +15,7 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
       return action.payload;
     case Actions.PhaseChange:
       switch (action.payload) {
-        case Phase.EditContactDetails:
+        case Phase.EditContact:
           return state;
         default:
           return null;
@@ -34,22 +34,11 @@ const ContactReducer = (state = {}, action): any => {
   }
 };
 
-const SummaryReducer = (state: PurchaseItems[] = [], action: { type: string, payload: PurchaseItems }): any => {
+
+const AmountReducer = (state: Amount = {}, action: { type: string, payload: Amount }): Amount => {
   switch (action.type) {
-    case SummaryActions.ItemsLoad:
-      let found: boolean = false;
-      const ns = state.map((item) => {
-        if (item.contactId === action.payload.contactId) {
-          found = true;
-          return {...item, ...action.payload}
-        }
-        return item;
-      });
-      if (found)
-        return ns;
-      else {
-        return [...state, action.payload];
-      }
+    case Actions.AmountUpdate:
+      return action.payload;
     default:
       return state;
   }
@@ -84,7 +73,8 @@ export const Reducer = combineReducers<CheckoutState>({
   fields: FieldsReducer,
   phase: PhaseReducer,
   error: ErrorReducer,
-  purchaseItems: SummaryReducer,
+  summary: SummaryReducer,
+  amount: AmountReducer,
   payer: combineReducers<PayerState>({
     entity: ContactReducer,
   })

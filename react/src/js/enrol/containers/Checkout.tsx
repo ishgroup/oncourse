@@ -10,7 +10,7 @@ import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
 import {Props as ContactProps} from "./summary/components/ContactComp";
 import {Amount} from "../../model/checkout/Amount";
-import {OpenProceedToPaymentRequest} from "./payment/actions/Actions";
+import {OpenPayment} from "./payment/actions/Actions";
 import Payment from "./payment/Payment";
 
 interface Props {
@@ -26,20 +26,14 @@ export class Checkout extends React.Component<Props, any> {
   }
 
   render() {
-    const {phase, onProceedToPayment} = this.props;
-    const contacts: ContactProps[] = [];
-    const amount: Amount = {};
-    const onAddContact = () => {
-    };
-
+    const {phase} = this.props;
     return (
       <div id="checkout" className="col-xs-24 payments">
         <ProgressRedux/>
         <MessagesRedux/>
         {phase === Phase.AddContact && <ContactAddForm/>}
-        {phase === Phase.EditContactDetails && <ContactEditForm/>}
+        {phase === Phase.EditContact && <ContactEditForm/>}
         {phase === Phase.Summary && <Summary/>}
-        {phase === Phase.ProceedToPayment && <Payment contacts={contacts} amount={amount} />}
       </div>
     )
   }
@@ -57,9 +51,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onInit: (): void => {
       dispatch({type: Actions.InitRequest})
     },
-    onProceedToPayment : (): void => {
-      dispatch({type: OpenProceedToPaymentRequest})
-    }
   }
 };
 

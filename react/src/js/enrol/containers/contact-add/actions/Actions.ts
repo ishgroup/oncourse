@@ -3,6 +3,10 @@ import {normalize} from "normalizr";
 import {ContactsSchema} from "../../../../NormalizeSchema";
 import {NAME as ContactAddForm} from "../ContactAddForm";
 
+
+export const OpenContactAdd: string = "checkout/contact/add/open";
+
+
 export const ContactAdd: string = "checkout/contact/add";
 export const ContactAddRequest: string = _toRequestType(ContactAdd);
 export const ContactAddReject: string = _toRejectType(ContactAdd);
@@ -16,4 +20,10 @@ export const submitAddContact = (id: string, values: any): any => {
       from: ContactAddForm
     }
   };
+};
+
+export const openContactAdd = (): { type: string } => {
+  return {
+    type: OpenContactAdd
+  }
 };

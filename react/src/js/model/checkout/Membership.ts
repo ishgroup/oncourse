@@ -5,6 +5,6 @@ export class Membership {
   warnings?: string[];
   errors?: string[];
   price?: string;
-  selected: boolean;
+  selected?: boolean;
 }
 

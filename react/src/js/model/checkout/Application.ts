@@ -4,6 +4,6 @@ export class Application {
   classId?: string;
   warnings?: string[];
   errors?: string[];
-  selected: boolean;
+  selected?: boolean;
 }
 

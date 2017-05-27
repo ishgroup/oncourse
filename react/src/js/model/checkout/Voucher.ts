@@ -7,6 +7,6 @@ export class Voucher {
   price?: string;
   value?: string;
   classes?: string[];
-  selected: boolean;
+  selected?: boolean;
 }
 

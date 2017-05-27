@@ -19,7 +19,7 @@ export class CheckoutApiMock extends CheckoutApi {
     const classes: CourseClass[] = request.classIds.map((id) => this.config.db.getCourseClassById(id));
 
     result.enrolments = this.createEnrolmentsBy([contact], classes);
-    return this.config.createResponse([result]);
+    return this.config.createResponse(result);
   }
 
   public createEnrolmentsBy(contacts: Contact[], classes: CourseClass[]): Enrolment[] {

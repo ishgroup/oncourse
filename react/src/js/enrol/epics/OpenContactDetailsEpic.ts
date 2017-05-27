@@ -17,7 +17,7 @@ const OpenContactDetailsEpic: Epic<any, any> = (action$: ActionsObservable<any>,
     ))
     .flatMap((data: ContactFields) => {
       if (data.headings.length > 0) {
-        return [changePhase(Phase.EditContactDetails), {type: Actions.FieldsLoad, payload: data}];
+        return [changePhase(Phase.EditContact), {type: Actions.FieldsLoad, payload: data}];
       } else {
         return [changePhaseRequest(Phase.Summary)]
       }

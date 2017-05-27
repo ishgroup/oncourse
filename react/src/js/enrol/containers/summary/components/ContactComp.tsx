@@ -23,7 +23,7 @@ class ContactComp extends React.Component<Props, any> {
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) => {
             return <EnrolmentComp key={index} {...props}
-                                  onChange={ () => onSelect(props.enrolment, props.enrolment.selected)}/>
+                                  onChange={ () => onSelect(props.enrolment, !props.enrolment.selected)}/>
           })}
         </div>
       </div>

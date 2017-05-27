@@ -19,6 +19,9 @@ export const PayerSet: string = "checkout/payer/set";
 export const PayerSetRequest: string = _toRequestType(PayerSet);
 export const PayerSetReject: string = _toRejectType(PayerSet);
 
+export const AmountUpdate: string = "checkout/amount/update";
+export const AmountUpdateRequest: string = _toRequestType(AmountUpdate);
+
 export const showFormValidation = (response: AxiosResponse, form: string): any => {
   return {
     type: MessagesShowRequest,
@@ -44,5 +47,11 @@ export const changePhase = (phase: Phase) => {
   return {
     type: PhaseChange,
     payload: phase
+  }
+};
+
+export const updateAmount = (): { type: string } => {
+  return {
+    type: AmountUpdateRequest
   }
 };

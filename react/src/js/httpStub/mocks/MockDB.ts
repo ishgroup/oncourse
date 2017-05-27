@@ -36,7 +36,9 @@ export class MockDB {
 
   private id: string = uuid();
 
-  contacts: { entities: any, result: any } = null;
+  contacts: { entities: {
+    contacts: {[key: string]: Contact}
+  }, result: any } = null;
   classes: { entities: any, result: any } = null;
   fields: Field[] = [];
   countries: Item[] = [];

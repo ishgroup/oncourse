@@ -1,0 +1,96 @@
+import * as SummaryActions from "../../../../js/enrol/containers/summary/actions/Actions";
+
+import {PurchaseItems} from "../../../../js/model/checkout/PurchaseItems";
+
+import {convert, State} from "../../../../js/enrol/containers/summary/reducers/State";
+
+import {Reducer} from "../../../../js/enrol/containers/summary/reducers/Reducer";
+
+const state: State = convert([{
+  contactId: "00001",
+  enrolments: [
+    {
+      contactId: "00001",
+      classId: "00001",
+      selected: false
+    }, {
+      contactId: "00001",
+      classId: "00002",
+      selected: false
+    }
+  ]
+}, {
+  contactId: "00002",
+  enrolments: [
+    {
+      contactId: "00002",
+      classId: "00001",
+      selected: false
+    }, {
+      contactId: "00002",
+      classId: "00002",
+      selected: false
+    }, {
+      contactId: "00002",
+      classId: "00003",
+      selected: false
+    }
+  ]
+}]);
+
+
+test('test add contact ', () => {
+  const upi: PurchaseItems = {
+    contactId: "00003",
+    enrolments: [
+      {
+        contactId: "00003",
+        classId: "00001",
+        selected: false
+      }
+    ]
+  };
+
+  const ns: State = Reducer(state, {type: SummaryActions.ItemSelect, payload: convert([upi])});
+
+  expect(ns.result.length).toBe(3);
+  expect(ns.entities.enrolments['00003-00001'].contactId).toBe('00003');
+  expect(ns.entities.contacts['00003'].contactId).toBe('00003');
+});
+
+
+test('test add enrolment ', () => {
+  const upi: PurchaseItems = {
+    contactId: "00002",
+    enrolments: [
+      {
+        contactId: "00002",
+        classId: "00004",
+        selected: false
+      }
+    ]
+  };
+
+  const ns: State = Reducer(state, {type: SummaryActions.ItemSelect, payload: convert([upi])});
+
+  expect(ns.result.length).toBe(2);
+  expect(ns.entities.enrolments['00002-00004'].contactId).toBe('00002');
+  expect(ns.entities.contacts['00002'].enrolments[3]).toBe('00002-00004');
+});
+
+
+test('test update enrolment', () => {
+  const upi: PurchaseItems = {
+    contactId: "00002",
+    enrolments: [
+      {
+        contactId: "00002",
+        classId: "00003",
+        selected: true
+      }
+    ]
+  };
+  const ns: State = Reducer(state, {type: SummaryActions.ItemSelect, payload: convert([upi])});
+  expect(ns.result.length).toBe(2);
+  expect(ns.entities.enrolments['00002-00003'].selected).toBe(true);
+});

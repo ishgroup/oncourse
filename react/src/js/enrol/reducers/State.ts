@@ -2,14 +2,16 @@
 import {ValidationError} from "../../model/common/ValidationError";
 import {Contact} from "../../model/web/Contact";
 import {ContactFields} from "../../model/field/ContactFields";
-import {PurchaseItems} from "../../model/checkout/PurchaseItems";
+import {State as SummaryState} from "../containers/summary/reducers/State";
+import {Amount} from "../../model/checkout/Amount";
 
 export interface CheckoutState {
   phase: Phase,
   fields: ContactFields,
   error: ValidationError;
   payer: PayerState;
-  purchaseItems: PurchaseItems[]
+  summary: SummaryState;
+  amount: Amount
 }
 
 export interface PayerEntity extends Contact {
@@ -23,7 +25,7 @@ export interface PayerState {
 export enum Phase {
   Init,
   AddContact,
-  EditContactDetails,
+  EditContact,
   Summary,
-  ProceedToPayment
+  Payment
 }

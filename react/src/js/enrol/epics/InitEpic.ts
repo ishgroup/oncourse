@@ -25,7 +25,7 @@ const showCartIsEmptyMessage = (): any => {
 };
 
 const showContactDetails = (): any => {
-  return [changePhaseRequest(Phase.EditContactDetails)];
+  return [changePhaseRequest(Phase.EditContact)];
 };
 
 const showAddContact = (): any => {

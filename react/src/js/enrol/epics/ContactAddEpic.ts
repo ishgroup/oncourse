@@ -16,7 +16,7 @@ const ContactAddEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: 
     const result = [
       {type: ContactAdd, payload: action.payload},
       {type: FULFILLED(WebActions.REQUEST_CONTACT), payload: action.payload},
-      changePhaseRequest(Phase.EditContactDetails)
+      changePhaseRequest(Phase.EditContact)
     ];
     return result;
   });
