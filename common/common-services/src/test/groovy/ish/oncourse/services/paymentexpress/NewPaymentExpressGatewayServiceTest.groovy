@@ -50,7 +50,7 @@ class NewPaymentExpressGatewayServiceTest {
 	def void testRealGateway(){
 		def service = new GatewayHelper()
 		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
-		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
+		ProcessDPSResponse.valueOf(model, service.submitRequest(request), false).process()
 		checkSuccess()
 	}
 
@@ -82,7 +82,7 @@ class NewPaymentExpressGatewayServiceTest {
 		
 		when(paymentIn.status).thenReturn(FAILED_CARD_DECLINED)
 		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
-		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
+		ProcessDPSResponse.valueOf(model, service.submitRequest(request), false).process()
 		checkFail()
 	}
 
@@ -117,7 +117,7 @@ class NewPaymentExpressGatewayServiceTest {
 		def service = getCustomService(stub)
 
 		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
-		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
+		ProcessDPSResponse.valueOf(model, service.submitRequest(request),false).process()
 		checkSuccess()
 	}
 
@@ -135,7 +135,7 @@ class NewPaymentExpressGatewayServiceTest {
 		def service = getCustomService(stub)
 		when(paymentIn.status).thenReturn(FAILED_CARD_DECLINED)
 		DPSRequest request = DPSRequestBuilder.valueOf(model.paymentIn, (String) null).build()
-		ProcessDPSResponse.valueOf(model, service.submitRequest(request)).process()
+		ProcessDPSResponse.valueOf(model, service.submitRequest(request), false).process()
 		checkFail()
 	}
 	
