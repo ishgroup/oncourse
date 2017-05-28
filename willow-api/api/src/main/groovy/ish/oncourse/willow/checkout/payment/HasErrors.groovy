@@ -15,11 +15,11 @@ class HasErrors {
     
     boolean hasErrors() {
         
-        errors  +=  checkoutModel.purchaseItemsList.enrolments.errors.flatten()
-        errors  +=  checkoutModel.purchaseItemsList.applications.errors.flatten()
-        errors  +=  checkoutModel.purchaseItemsList.articles.errors.flatten()
-        errors  +=  checkoutModel.purchaseItemsList.memberships.errors.flatten()
-        errors  +=  checkoutModel.purchaseItemsList.vouchers.errors.flatten()
+        errors  +=  checkoutModel.purchaseItemsList.enrolments.errors.flatten() as List<String>
+        errors  +=  checkoutModel.purchaseItemsList.applications.errors.flatten() as List<String>
+        errors  +=  checkoutModel.purchaseItemsList.articles.errors.flatten() as List<String>
+        errors  +=  checkoutModel.purchaseItemsList.memberships.errors.flatten() as List<String>
+        errors  +=  checkoutModel.purchaseItemsList.vouchers.errors.flatten() as List<String>
 
         return !errors.empty
     }
