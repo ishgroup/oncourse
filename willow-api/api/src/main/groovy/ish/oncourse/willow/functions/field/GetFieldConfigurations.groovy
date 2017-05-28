@@ -69,7 +69,7 @@ class GetFieldConfigurations {
     private FieldConfiguration getDefaultFieldConfiguration(College college) {
         FieldConfiguration configuration =  (ObjectSelect.query(FieldConfiguration)
                 .where(FieldConfiguration.COLLEGE.eq(college))
-                & FieldConfiguration.ANGEL_ID.eq(-1))
+                & FieldConfiguration.ANGEL_ID.eq(-1L))
                 .prefetch(FieldConfiguration.FIELD_HEADINGS.disjoint())
                 .prefetch(FieldConfiguration.FIELDS.disjoint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
