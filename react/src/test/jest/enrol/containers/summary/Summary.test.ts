@@ -13,6 +13,9 @@ import {ClassesListSchema} from "../../../../../js/NormalizeSchema";
 
 
 import {ContactPropsBy} from "../../../../../js/enrol/containers/summary/Summary";
+
+import * as MockFunctions from "../../../../../dev/mocks/mocks/MockFunctions";
+
 import {inspect} from "util";
 
 const db: MockDB = new MockDB();
@@ -25,30 +28,8 @@ const items: PurchaseItems = {
   enrolments: [enrolment]
 };
 
-const nCourses = normalize([courseClass], ClassesListSchema);
-
-const state: IshState = {
-  checkout: {
-    summary: convert([items]),
-    payer: {
-      entity: contact
-    },
-    fields: null,
-    error: null,
-    amount: null,
-    phase: null
-  },
-  cart: null,
-  products: null,
-  checkoutPath: null,
-  form: null,
-  popup: null,
-  courses: {
-    entities: nCourses.entities.classes,
-    result: nCourses.result
-  }
-};
-
+const state: IshState = MockFunctions.mockState(contact, [courseClass], [items]);
+console.log(inspect(state, false, 10, true));
 
 test('test ContactProps By State', () => {
     const props = ContactPropsBy(contact.id, state);

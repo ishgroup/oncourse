@@ -9,8 +9,20 @@ import {Field} from "../../../js/model/field/Field";
 import {DataType} from "../../../js/model/field/DataType";
 import {Item} from "../../../js/model/common/Item";
 import {IshState} from "../../../js/services/IshState";
-import {MockDB} from "./MockDB";
+import {normalize} from "normalizr";
+import {ClassesListSchema} from "../../../js/NormalizeSchema";
+import {PurchaseItems} from "../../../js/model/checkout/PurchaseItems";
+import {convert} from "../../../js/enrol/containers/summary/reducers/State";
+import {Promotion} from "../../../js/model/web/Promotion";
 
+export const mockPromotion = (): Promotion => {
+  const result: Promotion = {
+    id: faker.random.number() as string,
+    code: faker.random.alphaNumeric(5).toUpperCase(),
+    name: faker.commerce.productName()
+  };
+  return result;
+}
 
 export const mockCourseClass = (): CourseClass => {
   return {
@@ -80,15 +92,15 @@ export const mockAmount = (): Amount => {
   }
 };
 
-export const mockEnumField = (name:string, key: string, enumType: string, items: Item[]): Field => {
-  const r:Field = mockField(name, key, DataType.enum);
+export const mockEnumField = (name: string, key: string, enumType: string, items: Item[]): Field => {
+  const r: Field = mockField(name, key, DataType.enum);
   r.enumType = enumType;
   r.enumItems = items;
   return r;
 };
 
 
-export const mockField = (name:string, key: string, dateType: DataType): Field => {
+export const mockField = (name: string, key: string, dateType: DataType): Field => {
   return {
     id: faker.random.number() as string,
     key: key,
@@ -104,8 +116,54 @@ export const mockField = (name:string, key: string, dateType: DataType): Field =
   }
 };
 
-export const mockState = (db:MockDB, classId:string[], ): IshState => {
-  return null;
+export const mockState = (contact: Contact,
+                          classes: CourseClass[] = [],
+                          items: PurchaseItems[] = [],
+                          promotions: Promotion[] = []): IshState => {
+
+  const nCourses = normalize(classes, ClassesListSchema);
+
+  const nPromotions = {
+    result: [],
+    entities: {}
+  };
+
+  promotions.forEach((p: Promotion) => {
+    nPromotions.result.push(p.id);
+    nPromotions.entities[p.id] = p
+  });
+
+  const state: IshState =
+    {
+      checkout: {
+        summary: convert(items),
+        payer: {
+          entity: contact
+        },
+        fields: null,
+        error: null,
+        amount: null,
+        phase: null
+      },
+      cart: {
+        contact: contact,
+        promotions: {
+          result: nPromotions.result,
+          entities: nPromotions.entities
+        },
+        courses: null,
+        products: null
+      },
+      products: null,
+      checkoutPath: null,
+      form: null,
+      popup: null,
+      courses: {
+        entities: nCourses.entities.classes,
+        result: nCourses.result
+      }
+    };
+  return state;
 };
 
 

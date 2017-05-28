@@ -1,10 +1,10 @@
-import * as SummaryActions from "../../../../js/enrol/containers/summary/actions/Actions";
+import * as SummaryActions from "../../../../../../js/enrol/containers/summary/actions/Actions";
 
-import {PurchaseItems} from "../../../../js/model/checkout/PurchaseItems";
+import {PurchaseItems} from "../../../../../../js/model/checkout/PurchaseItems";
 
-import {convert, State} from "../../../../js/enrol/containers/summary/reducers/State";
+import {convert, State} from "../../../../../../js/enrol/containers/summary/reducers/State";
 
-import {Reducer} from "../../../../js/enrol/containers/summary/reducers/Reducer";
+import {Reducer} from "../../../../../../js/enrol/containers/summary/reducers/Reducer";
 
 const state: State = convert([{
   contactId: "00001",

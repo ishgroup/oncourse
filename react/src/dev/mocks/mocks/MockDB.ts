@@ -431,7 +431,6 @@ export class MockDB {
     this.contacts.entities.contacts = {...this.contacts.entities.contacts, ...nc.entities.contacts};
     return contact.id;
   }
-  ;
 
   getContactByIndex(index: number): Contact {
     return this.contacts.entities.contacts[this.contacts.result[index]];

@@ -13,6 +13,7 @@ import {PurchaseItemsRequest} from "../../model/checkout/request/PurchaseItemsRe
 import {Enrolment} from "../../model/checkout/Enrolment";
 import {Field} from "../../model/field/Field";
 import {CheckoutModel} from "../../model/checkout/CheckoutModel";
+import {State} from "../containers/summary/reducers/State";
 
 export class CheckoutService {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
@@ -27,7 +28,7 @@ export class CheckoutService {
   };
 
   public createOrGetContact = (values: { [key: string]: string }): Promise<string> => {
-    return this.contactApi.createOrGetContact(BuilderCreateContactParams.fromValues(values));
+    return this.contactApi.createOrGetContact(BuildCreateContactParams.fromValues(values));
   };
 
 
@@ -45,10 +46,10 @@ export class CheckoutService {
     } else {
       return Promise.resolve(enrolment);
     }
-  }
+  };
 
   public calculateAmount(state: IshState): Promise<CheckoutModel> {
-    return null;
+    return this.checkoutApi.calculateAmount(BuildCheckoutModel.fromState(state));
   }
 }
 
@@ -102,13 +103,36 @@ export class BuildSubmitFieldsRequest {
   }
 }
 
-export class BuilderCreateContactParams {
+export class BuildCreateContactParams {
   static fromValues = (values: { [key: string]: string }) => {
     const result: CreateContactParams = new CreateContactParams();
     result.firstName = values['firstName'];
     result.lastName = values['lastName'];
     result.email = values['email'];
     result.fieldSet = FieldSet.enrolment;
+    return result;
+  }
+}
+
+export class BuildPurchaseItems {
+  static fromState = (state: State): PurchaseItems[] => {
+    return state.result.map((contactId) => {
+      const result: PurchaseItems = new PurchaseItems();
+      result.contactId = contactId;
+      result.enrolments = state.entities.contacts[contactId].enrolments.map((enrolmentId) => {
+        return state.entities.enrolments[enrolmentId];
+      });
+      return result;
+    })
+  };
+}
+
+export class BuildCheckoutModel {
+  static fromState = (state: IshState) => {
+    const result: CheckoutModel = new CheckoutModel();
+    result.payerId = state.checkout.payer.entity.id;
+    result.promotionIds = state.cart.promotions.result;
+    result.purchaseItemsList = BuildPurchaseItems.fromState(state.checkout.summary);
     return result;
   }
 }
