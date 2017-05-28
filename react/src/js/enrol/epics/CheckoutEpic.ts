@@ -14,6 +14,7 @@ import OpenContactEditEpic from "./OpenContactDetailsEpic";
 import OpenSummaryEpic from "./OpenSummaryEpic";
 import OpenProceedToPaymentEpic from "./OpenProceedToPaymentEpic";
 import EpicItemSelect from "./EpicItemSelect";
+import EpicUpdateAmount from "./EpicUpdateAmount";
 
 const {
   contactApi
@@ -27,6 +28,7 @@ export const CheckoutEpic = combineEpics(
   OpenContactEditEpic,
   OpenSummaryEpic,
   EpicItemSelect,
+  EpicUpdateAmount,
   OpenProceedToPaymentEpic,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );

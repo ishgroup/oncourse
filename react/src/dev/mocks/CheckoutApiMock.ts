@@ -7,6 +7,8 @@ import {Contact} from "../../js/model/web/Contact";
 import {CourseClass} from "../../js/model/web/CourseClass";
 import {Enrolment} from "../../js/model/checkout/Enrolment";
 import {MockConfig} from "./mocks/MockConfig";
+import {CheckoutModel} from "../../js/model/checkout/CheckoutModel";
+import {mockAmount} from "./mocks/MockFunctions";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig = MockConfig.CONFIG;
@@ -28,5 +30,11 @@ export class CheckoutApiMock extends CheckoutApi {
         return this.config.db.createEnrolment(c.id, cc.id)
       })
     }));
+  }
+
+
+  calculateAmount(checkoutModel: CheckoutModel): Promise<CheckoutModel> {
+    checkoutModel.amount = mockAmount();
+    return this.config.createResponse(checkoutModel);
   }
 }

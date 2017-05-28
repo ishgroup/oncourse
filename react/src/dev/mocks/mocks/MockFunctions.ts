@@ -22,7 +22,7 @@ export const mockPromotion = (): Promotion => {
     name: faker.commerce.productName()
   };
   return result;
-}
+};
 
 export const mockCourseClass = (): CourseClass => {
   return {

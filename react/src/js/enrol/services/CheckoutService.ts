@@ -14,6 +14,7 @@ import {Enrolment} from "../../model/checkout/Enrolment";
 import {Field} from "../../model/field/Field";
 import {CheckoutModel} from "../../model/checkout/CheckoutModel";
 import {State} from "../containers/summary/reducers/State";
+import {Amount} from "../../model/checkout/Amount";
 
 export class CheckoutService {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
@@ -48,8 +49,11 @@ export class CheckoutService {
     }
   };
 
-  public calculateAmount(state: IshState): Promise<CheckoutModel> {
-    return this.checkoutApi.calculateAmount(BuildCheckoutModel.fromState(state));
+  public getAmount(state: IshState): Promise<Amount> {
+    return this.checkoutApi.calculateAmount(BuildCheckoutModel.fromState(state))
+      .then((model: CheckoutModel): Promise<Amount> => {
+        return Promise.resolve(model.amount)
+      });
   }
 }
 
