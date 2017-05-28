@@ -37,7 +37,7 @@ class CheckoutApiTest extends ApiTest {
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
         PurchaseItemsRequest request = new PurchaseItemsRequest().with { request ->
             request.contactId = '1001'
-            request.classesIds = ['1001', '1002']
+            request.classIds = ['1001', '1002']
             request.productIds = ['7','8','12']
             request
         }
