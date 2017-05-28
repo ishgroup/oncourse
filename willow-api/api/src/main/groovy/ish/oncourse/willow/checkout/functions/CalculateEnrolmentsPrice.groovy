@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -16,6 +17,7 @@ import java.time.Instant
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
+@CompileStatic
 class CalculateEnrolmentsPrice {
 
     ObjectContext context
@@ -63,16 +65,17 @@ class CalculateEnrolmentsPrice {
     }
     
     private setDiscountedPrice(Contact contact, CourseClass courseClass, DiscountCourseClass chosenDiscount, CalculatePrice price) {
+        Discount discount = chosenDiscount.getDiscount()
         model.purchaseItemsList
                 .find {it.contactId == contact.id.toString()}
                 .enrolments.find {it.classId == courseClass.id.toString()}
                 .price
                 .appliedDiscount = new ish.oncourse.willow.model.web.Discount().with { d ->
-                    d.id = chosenDiscount.discount.id.toString()
-                    d.title = chosenDiscount.discount.name
+                    d.id = discount.id.toString()
+                    d.title = discount.name
                     d.discountValue = price.discountTotalIncTax.toPlainString()
                     d.discountedFee = price.finalPriceToPayIncTax.toPlainString()
-                    d.expiryDate = WebDiscountUtils.expiryDate(chosenDiscount.discount, courseClass.startDateTime)?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
+                    d.expiryDate = WebDiscountUtils.expiryDate(discount, courseClass.startDateTime)?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                     d
                 }
     }   
