@@ -1,7 +1,9 @@
 package ish.oncourse.willow.checkout.payment
 
+import groovy.transform.CompileStatic
 import ish.oncourse.willow.model.checkout.CheckoutModel
 
+@CompileStatic
 class HasErrors {
     
     CheckoutModel checkoutModel

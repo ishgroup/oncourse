@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.payment
 
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.Discount
 import ish.oncourse.model.DiscountCourseClass
@@ -15,6 +16,7 @@ import org.apache.commons.lang3.StringUtils
 
 import java.text.SimpleDateFormat
 
+@CompileStatic
 class EnrolmentInvoiceLine {
     
     private static final String DATE_FORMAT = 'dd-MM-yyyy h:mm a z'
@@ -55,7 +57,7 @@ class EnrolmentInvoiceLine {
                 DiscountCourseClass chosenDiscount = e.courseClass.discountCourseClasses
                         .find {it.id.toString() == price.appliedDiscount.id}
                 DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, e.courseClass.taxRate, taxAdjustment)
-                createInvoiceLineDiscounts(invoiceLine, chosenDiscount.discount, e.objectContext)
+                createInvoiceLineDiscounts(invoiceLine, chosenDiscount.discount as Discount, e.objectContext)
             }
         }
 
