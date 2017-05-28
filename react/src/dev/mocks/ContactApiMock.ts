@@ -1,14 +1,14 @@
-import {ContactApi} from "../http/ContactApi";
-import {Contact} from "../model/web/Contact";
-import {CreateContactParams} from "../model/web/CreateContactParams";
-import {ContactFieldsRequest} from "../model/field/ContactFieldsRequest";
-import {ContactFields} from "../model/field/ContactFields";
-import {SubmitFieldsRequest} from "../model/field/SubmitFieldsRequest";
+import {ContactApi} from "../../js/http/ContactApi";
+import {Contact} from "../../js/model/web/Contact";
+import {CreateContactParams} from "../../js/model/web/CreateContactParams";
+import {ContactFieldsRequest} from "../../js/model/field/ContactFieldsRequest";
+import {ContactFields} from "../../js/model/field/ContactFields";
+import {SubmitFieldsRequest} from "../../js/model/field/SubmitFieldsRequest";
 
 import {MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
 import {mockContact} from "./mocks/MockFunctions";
-export class ContactApiStub extends ContactApi {
+export class ContactApiMock extends ContactApi {
 
   public config: MockConfig = MockConfig.CONFIG;
 

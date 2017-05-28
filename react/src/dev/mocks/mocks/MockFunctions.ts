@@ -5,9 +5,11 @@ import faker from "faker";
 import {CourseClassPrice} from "../../../js/model/web/CourseClassPrice";
 import {Room} from "../../../js/model/web/Room";
 import {Amount} from "../../../js/model/checkout/Amount";
-import {Field} from "../../model/field/Field";
-import {DataType} from "../../model/field/DataType";
-import {Item} from "../../model/common/Item";
+import {Field} from "../../../js/model/field/Field";
+import {DataType} from "../../../js/model/field/DataType";
+import {Item} from "../../../js/model/common/Item";
+import {IshState} from "../../../js/services/IshState";
+import {MockDB} from "./MockDB";
 
 
 export const mockCourseClass = (): CourseClass => {
@@ -100,6 +102,10 @@ export const mockField = (name:string, key: string, dateType: DataType): Field =
     enumItems: [],
     ordering: 0
   }
+};
+
+export const mockState = (db:MockDB, classId:string[], ): IshState => {
+  return null;
 };
 
 

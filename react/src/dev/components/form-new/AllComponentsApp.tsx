@@ -7,7 +7,7 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import {reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from "redux-form-website-template";
 
-import {SearchApiMock} from "../../../js/httpStub/SearchApiMock";
+import {SearchApiMock} from "../../mocks/SearchApiMock";
 import TextField from "../../../js/components/form-new/TextField";
 import Checkbox from "../../../js/components/form-new/Checkbox";
 import SelectField from "../../../js/components/form-new/SelectField";

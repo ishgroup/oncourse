@@ -1,5 +1,5 @@
 import * as L from "lodash";
-import {MockDB} from "../../../js/httpStub/mocks/MockDB";
+import {MockDB} from "../../../dev/mocks/mocks/MockDB";
 import {Enrolment} from "../../../js/model/checkout/Enrolment";
 
 import {Contact} from "../../../js/model/web/Contact";

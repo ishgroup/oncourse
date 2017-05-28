@@ -7,16 +7,8 @@ import {ProductsApi} from "./http/ProductsApi";
 import {PromotionApi} from "./http/PromotionApi";
 import {MergeService} from "./services/MergeService";
 import {LegacySyncStorage} from "./services/LegacySyncStorage";
-import {EnvironmentConstants} from "./config/EnvironmentConstants";
-import {CartApiStub} from "./httpStub/CartApiStub";
-import {ContactApiStub} from "./httpStub/ContactApiStub";
-import {ProductsApiStub} from "./httpStub/ProductsApiStub";
-import {PromotionApiStub} from "./httpStub/PromotionApiStub";
 import {CheckoutApi} from "./http/CheckoutApi";
 import {SearchApi} from "./http/SearchApi";
-import {SearchApiMock} from "./httpStub/SearchApiMock";
-import {CheckoutApiMock} from "./httpStub/CheckoutApiMock";
-import {CourseClassesApiMock} from "./httpStub/CourseClassesApiMock";
 
 export class Injector {
   readonly http: HttpService = new DefaultHttpService();
@@ -45,16 +37,4 @@ export class Injector {
     this.injectors[name]  = injector;
     return injector;
   }
-}
-
-if (process.env.NODE_ENV === EnvironmentConstants.development) {
-  const injector = Injector.of();
-  // Overwrite Services for development without real server
-  injector.setService("cartApi", new CartApiStub(injector.http));
-  injector.setService("contactApi", new ContactApiStub(injector.http));
-  injector.setService("courseClassesApi", new CourseClassesApiMock(injector.http));
-  injector.setService("productsApi", new ProductsApiStub(injector.http));
-  injector.setService("promotionApi", new PromotionApiStub(injector.http));
-  injector.setService("checkoutApi", new CheckoutApiMock(injector.http));
-  injector.setService("searchApi", new SearchApiMock(injector.http));
 }

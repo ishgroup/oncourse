@@ -1,4 +1,4 @@
-import {MockDB} from "../../../../../js/httpStub/mocks/MockDB";
+import {MockDB} from "../../../../../dev/mocks/mocks/MockDB";
 
 import {Contact} from "../../../../../js/model/web/Contact";
 import {CourseClass} from "../../../../../js/model/web/CourseClass";

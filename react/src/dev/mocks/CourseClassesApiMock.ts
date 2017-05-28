@@ -1,6 +1,6 @@
-import { CourseClass } from "../model/web/CourseClass";
-import { CourseClassesParams } from "../model/web/CourseClassesParams";
-import {CourseClassesApi} from "../http/CourseClassesApi";
+import { CourseClass } from "../../js/model/web/CourseClass";
+import { CourseClassesParams } from "../../js/model/web/CourseClassesParams";
+import {CourseClassesApi} from "../../js/http/CourseClassesApi";
 import {MockConfig} from "./mocks/MockConfig";
 
 export class CourseClassesApiMock extends CourseClassesApi {

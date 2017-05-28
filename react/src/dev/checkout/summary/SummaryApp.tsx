@@ -9,7 +9,7 @@ import {MessagesRedux, ProgressRedux} from "../../../js/enrol/containers/Functio
 import "../../../scss/index.scss";
 
 import Summary from "../../../js/enrol/containers/summary/Summary";
-import {mockAmount} from "../../../js/httpStub/mocks/MockFunctions";
+import {mockAmount} from "../../mocks/mocks/MockFunctions";
 import {Amount} from "../../../js/model/checkout/Amount";
 import {Contact} from "../../../js/model/web/Contact";
 
@@ -21,9 +21,9 @@ import {Props as ContactProps} from "../../../js/enrol/containers/summary/compon
 
 import faker from "faker";
 import {CourseClass} from "../../../js/model/web/CourseClass";
-import {CheckoutApiMock} from "../../../js/httpStub/CheckoutApiMock";
-import {MockConfig} from "../../../js/httpStub/mocks/MockConfig";
-import {MockDB} from "../../../js/httpStub/mocks/MockDB";
+import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
+import {MockConfig} from "../../mocks/mocks/MockConfig";
+import {MockDB} from "../../mocks/mocks/MockDB";
 import SummaryComp from "../../../js/enrol/containers/summary/components/SummaryComp";
 
 

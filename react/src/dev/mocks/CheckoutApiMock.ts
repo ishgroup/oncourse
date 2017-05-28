@@ -1,11 +1,11 @@
 import * as L from "lodash";
 
-import {CheckoutApi} from "../http/CheckoutApi";
-import {PurchaseItemsRequest} from "../model/checkout/request/PurchaseItemsRequest";
-import {PurchaseItems} from "../model/checkout/PurchaseItems";
-import {Contact} from "../model/web/Contact";
-import {CourseClass} from "../model/web/CourseClass";
-import {Enrolment} from "../model/checkout/Enrolment";
+import {CheckoutApi} from "../../js/http/CheckoutApi";
+import {PurchaseItemsRequest} from "../../js/model/checkout/request/PurchaseItemsRequest";
+import {PurchaseItems} from "../../js/model/checkout/PurchaseItems";
+import {Contact} from "../../js/model/web/Contact";
+import {CourseClass} from "../../js/model/web/CourseClass";
+import {Enrolment} from "../../js/model/checkout/Enrolment";
 import {MockConfig} from "./mocks/MockConfig";
 
 export class CheckoutApiMock extends CheckoutApi {

@@ -7,12 +7,12 @@ import {Enrolment} from "../../../js/model/checkout/Enrolment";
 import {Contact} from "../../../js/model/web/Contact";
 import {mockContact, mockCourseClass, mockEnumField, mockField} from "./MockFunctions";
 import {normalize} from "normalizr";
-import {ClassesListSchema, ContactsListSchema} from "../../NormalizeSchema";
+import {ClassesListSchema, ContactsListSchema} from "../../../js/NormalizeSchema";
 
-import {Field} from "../../model/field/Field";
-import {DataType} from "../../model/field/DataType";
-import {FieldHeading} from "../../model/field/FieldHeading";
-import {Item} from "../../model/common/Item";
+import {Field} from "../../../js/model/field/Field";
+import {DataType} from "../../../js/model/field/DataType";
+import {FieldHeading} from "../../../js/model/field/FieldHeading";
+import {Item} from "../../../js/model/common/Item";
 
 import localForage from "localforage";
 

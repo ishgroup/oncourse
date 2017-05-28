@@ -1,8 +1,8 @@
-import {Product} from "../model/web/Product";
-import {ProductsParams} from "../model/web/ProductsParams";
-import {ProductsApi} from "../http/ProductsApi";
+import {Product} from "../../js/model/web/Product";
+import {ProductsParams} from "../../js/model/web/ProductsParams";
+import {ProductsApi} from "../../js/http/ProductsApi";
 
-export class ProductsApiStub extends ProductsApi {
+export class ProductsApiMock extends ProductsApi {
 
   getProducts(productsParams: ProductsParams): Promise<Product[]> {
     return Promise.resolve([{

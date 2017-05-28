@@ -9,7 +9,7 @@ import {Values} from "redux-form-website-template";
 
 import "react-select/dist/react-select.css";
 import "../../../scss/_ReactSelect.scss";
-import {SearchApiMock} from "../../../js/httpStub/SearchApiMock";
+import {SearchApiMock} from "../../mocks/SearchApiMock";
 
 import TextField from "../../../js/components/form-new/TextField";
 import Checkbox from "../../../js/components/form-new/Checkbox";

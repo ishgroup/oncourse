@@ -12,6 +12,7 @@ import {CheckoutApi} from "../../http/CheckoutApi";
 import {PurchaseItemsRequest} from "../../model/checkout/request/PurchaseItemsRequest";
 import {Enrolment} from "../../model/checkout/Enrolment";
 import {Field} from "../../model/field/Field";
+import {CheckoutModel} from "../../model/checkout/CheckoutModel";
 
 export class CheckoutService {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
@@ -44,6 +45,10 @@ export class CheckoutService {
     } else {
       return Promise.resolve(enrolment);
     }
+  }
+
+  public calculateAmount(state: IshState): Promise<CheckoutModel> {
+    return null;
   }
 }
 
