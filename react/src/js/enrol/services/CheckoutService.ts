@@ -11,51 +11,32 @@ import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
 import {PurchaseItemsRequest} from "../../model/checkout/request/PurchaseItemsRequest";
 import {Enrolment} from "../../model/checkout/Enrolment";
-import {State} from "../containers/summary/reducers/State";
+import {Field} from "../../model/field/Field";
 
-export class CheckoutSerivce {
+export class CheckoutService {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
   }
 
   public loadFields = (state: IshState): Promise<ContactFields> => {
-    const request: ContactFieldsRequest = new ContactFieldsRequest();
-    request.contactId = state.checkout.payer.entity.id;
-    request.classIds = state.cart.courses.result;
-    request.productIds = state.cart.products.result;
-    request.fieldSet = FieldSet.enrolment;
-    return this.contactApi.getContactFields(request);
+    return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(state));
   };
 
-  public submitContactDetails = (fields: ContactFields, values: any): Promise<any> => {
-    const request: SubmitFieldsRequest = new SubmitFieldsRequest();
-    request.contactId = fields.contactId;
-    request.fields = L.flatMap(fields.headings, (h) => {
-      return h.fields
-    });
-    return this.contactApi.submitContactDetails(request);
+  public submitContactDetails = (fields: ContactFields, values: { [key: string]: any }): Promise<any> => {
+    return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
   };
 
-  public createOrGetContact = (values: any): Promise<string> => {
-    const request: CreateContactParams = Object.assign({}, values, {fieldSet: FieldSet.enrolment});
-    return this.contactApi.createOrGetContact(request);
+  public createOrGetContact = (values: { [key: string]: string }): Promise<string> => {
+    return this.contactApi.createOrGetContact(BuilderCreateContactParams.fromValues(values));
   };
 
 
   public getPurchaseItems = (state: IshState): Promise<PurchaseItems> => {
-    const request: PurchaseItemsRequest = new PurchaseItemsRequest();
-    request.contactId = state.checkout.payer.entity.id;
-    request.classIds = state.cart.courses.result;
-    request.productIds = state.cart.products.result;
-    request.promotionIds = state.cart.promotions.result;
-    return this.checkoutApi.getPurchaseItems(request);
+    return this.checkoutApi.getPurchaseItems(BuildPurchaseItemsRequest.fromState(state));
   };
 
   public updateEnrolment = (enrolment: Enrolment, state: IshState): Promise<Enrolment> => {
     if (enrolment.selected) {
-      const request: PurchaseItemsRequest = new PurchaseItemsRequest();
-      request.contactId = enrolment.contactId;
-      request.classIds = [enrolment.classId];
-      request.promotionIds = state.cart.promotions.result;
+      const request: PurchaseItemsRequest = BuildPurchaseItemsRequest.fromEnrolment(enrolment, state);
       return this.checkoutApi.getPurchaseItems(request)
         .then((data) => {
           return Promise.resolve(data.enrolments[0])
@@ -72,5 +53,59 @@ const {
   checkoutApi
 } = Injector.of();
 
+export class BuildPurchaseItemsRequest {
+  static fromEnrolment = (enrolment: Enrolment, state: IshState): PurchaseItemsRequest => {
+    const result: PurchaseItemsRequest = new PurchaseItemsRequest();
+    result.contactId = enrolment.contactId;
+    result.classIds = [enrolment.classId];
+    result.promotionIds = state.cart.promotions.result;
+    return result;
+  };
 
-export default new CheckoutSerivce(contactApi, checkoutApi);
+  static fromState = (state: IshState): PurchaseItemsRequest => {
+    const result: PurchaseItemsRequest = new PurchaseItemsRequest();
+    result.contactId = state.checkout.payer.entity.id;
+    result.classIds = state.cart.courses.result;
+    result.productIds = state.cart.products.result;
+    result.promotionIds = state.cart.promotions.result;
+    return result;
+  };
+}
+
+export class BuildContactFieldsRequest {
+  static fromState = (state: IshState): ContactFieldsRequest => {
+    const result: ContactFieldsRequest = new ContactFieldsRequest();
+    result.contactId = state.checkout.payer.entity.id;
+    result.classIds = state.cart.courses.result;
+    result.productIds = state.cart.products.result;
+    result.fieldSet = FieldSet.enrolment;
+    return result;
+  }
+}
+
+export class BuildSubmitFieldsRequest {
+  static fromValues = (fields: ContactFields, values: { [key: string]: any }): SubmitFieldsRequest => {
+    const result: SubmitFieldsRequest = new SubmitFieldsRequest();
+    result.contactId = fields.contactId;
+    result.fields = L.flatMap(fields.headings, (h) => {
+      return h.fields
+    });
+    result.fields.forEach((f: Field) => {
+      f.value = values[f.key]
+    });
+    return result;
+  }
+}
+
+export class BuilderCreateContactParams {
+  static fromValues = (values: { [key: string]: string }) => {
+    const result: CreateContactParams = new CreateContactParams();
+    result.firstName = values['firstName'];
+    result.lastName = values['lastName'];
+    result.email = values['email'];
+    result.fieldSet = FieldSet.enrolment;
+    return result;
+  }
+}
+
+export default new CheckoutService(contactApi, checkoutApi);
