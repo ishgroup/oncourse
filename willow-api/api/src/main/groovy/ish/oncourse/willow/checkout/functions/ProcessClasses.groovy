@@ -49,6 +49,9 @@ class ProcessClasses {
             processClass.enrolment && enrolments << processClass.enrolment
         }
         
+        applications.each { a -> a.selected = a.errors.empty }
+        enrolments.each { e -> e.selected = e.errors.empty }
+        
         this
     }
     

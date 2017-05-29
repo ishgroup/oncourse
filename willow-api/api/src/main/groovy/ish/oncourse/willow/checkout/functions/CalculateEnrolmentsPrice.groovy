@@ -67,7 +67,7 @@ class CalculateEnrolmentsPrice {
     
     private setDiscountedPrice(Contact contact, CourseClass courseClass, DiscountCourseClass chosenDiscount, CalculatePrice price) {
         DiscountInterface discount = chosenDiscount.getDiscount()
-        model.purchaseItemsList
+        model.contactNodes
                 .find {it.contactId == contact.id.toString()}
                 .enrolments.find {it.classId == courseClass.id.toString()}
                 .price

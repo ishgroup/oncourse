@@ -30,29 +30,29 @@ paths:
         200:
           description: List of products
           schema:
-            $ref: '#/definitions/checkout.PurchaseItems'
+            $ref: '#/definitions/checkout.ContactNode'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /calculateAmount:
+  /getCheckoutModel:
     post:
       x-filter:  
       - CollegeInfo
-      operationId: calculateAmount
-      summary: Calculate total amount and price for each discounted enrolment
-      description: Calculate total amount and price for each discounted enrolment
+      operationId: getCheckoutModel
+      summary: Validate all purchase items. Calculate total amount and price for each discounted enrolment.
+      description: Validate all purchase items. Calculate total amount and price for each discounted enrolment
       tags:
       - Checkout
       consumes:
       - application/json
       parameters:
-      - name: checkoutModel
+      - name: checkoutModelRequest
         in: body
-        description: Whole Checkout Model which contains all enabled purchase items and list of added promotions
+        description: List of contact's purchases, current payer ID, list of added promotions 
         required: true
         schema:
-          $ref: '#/definitions/checkout.CheckoutModel'
+          $ref: '#/definitions/checkout.CheckoutModelRequest'
       responses:
         200:
           description: Whole Checkout Model with calclated amount and actual prices for each purchase item
@@ -1026,7 +1026,7 @@ definitions:
           type: array
           items: 
             type: string
-  checkout.PurchaseItems:
+  checkout.ContactNode:
     type: object
     requred:
     - contactId
@@ -1074,12 +1074,25 @@ definitions:
     properties: 
       error:
         $ref: '#/definitions/common.CommonError'
-      purchaseItemsList:
+      contactNodes:
         type: array
         items:
-          $ref: '#/definitions/checkout.PurchaseItems'
+          $ref: '#/definitions/checkout.ContactNode'
       amount:
         $ref: '#/definitions/checkout.Amount'
+      promotionIds:
+        type: array
+        items:
+          type: string
+      payerId:
+        type: string
+  checkout.CheckoutModelRequest:
+    type: object
+    properties: 
+      contactNodes:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.ContactNode'
       promotionIds:
         type: array
         items:
@@ -1089,8 +1102,8 @@ definitions:
   checkout.payment.PaymentRequest:
     type: object
     properties:
-      checkoutModel:
-        $ref: '#/definitions/checkout.CheckoutModel'
+      checkoutModelRequest:
+        $ref: '#/definitions/checkout.CheckoutModelRequest'
       creditCardNumber:
         type: string
       creditCardName:
@@ -1105,7 +1118,9 @@ definitions:
         type: boolean
       sessionId:
         type: string
-        description:
+        description: String length 16 of hexadecimal digits
+      payNow: 
+        type: string
   checkout.payment.PaymentStatus:
     type: string
     enum:

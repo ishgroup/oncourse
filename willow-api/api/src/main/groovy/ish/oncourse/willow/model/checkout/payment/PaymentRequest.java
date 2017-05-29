@@ -1,10 +1,10 @@
 package ish.oncourse.willow.model.checkout.payment;
 
-import ish.oncourse.willow.model.checkout.CheckoutModel;
+import ish.oncourse.willow.model.checkout.CheckoutModelRequest;
 
 public class PaymentRequest  {
   
-    private CheckoutModel checkoutModel = null;
+    private CheckoutModelRequest checkoutModelRequest = null;
     private String creditCardNumber = null;
     private String creditCardName = null;
     private String expiryMonth = null;
@@ -12,21 +12,22 @@ public class PaymentRequest  {
     private String creditCardCvv = null;
     private Boolean agreementFlag = null;
     private String sessionId = null;
+    private String payNow = null;
 
     /**
-     * Get checkoutModel
-     * @return checkoutModel
+     * Get checkoutModelRequest
+     * @return checkoutModelRequest
      */
-    public CheckoutModel getCheckoutModel() {
-        return checkoutModel;
+    public CheckoutModelRequest getCheckoutModelRequest() {
+        return checkoutModelRequest;
     }
 
-    public void setCheckoutModel(CheckoutModel checkoutModel) {
-       this.checkoutModel = checkoutModel;
+    public void setCheckoutModelRequest(CheckoutModelRequest checkoutModelRequest) {
+       this.checkoutModelRequest = checkoutModelRequest;
     }
 
-    public PaymentRequest checkoutModel(CheckoutModel checkoutModel) {
-      this.checkoutModel = checkoutModel;
+    public PaymentRequest checkoutModelRequest(CheckoutModelRequest checkoutModelRequest) {
+      this.checkoutModelRequest = checkoutModelRequest;
       return this;
     }
 
@@ -133,7 +134,7 @@ public class PaymentRequest  {
     }
 
     /**
-     * null
+     * String length 16 of hexadecimal digits
      * @return sessionId
      */
     public String getSessionId() {
@@ -149,13 +150,30 @@ public class PaymentRequest  {
       return this;
     }
 
+    /**
+     * Get payNow
+     * @return payNow
+     */
+    public String getPayNow() {
+        return payNow;
+    }
+
+    public void setPayNow(String payNow) {
+       this.payNow = payNow;
+    }
+
+    public PaymentRequest payNow(String payNow) {
+      this.payNow = payNow;
+      return this;
+    }
+
 
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
       sb.append("class PaymentRequest {\n");
       
-      sb.append("    checkoutModel: ").append(toIndentedString(checkoutModel)).append("\n");
+      sb.append("    checkoutModelRequest: ").append(toIndentedString(checkoutModelRequest)).append("\n");
       sb.append("    creditCardNumber: ").append(toIndentedString(creditCardNumber)).append("\n");
       sb.append("    creditCardName: ").append(toIndentedString(creditCardName)).append("\n");
       sb.append("    expiryMonth: ").append(toIndentedString(expiryMonth)).append("\n");
@@ -163,6 +181,7 @@ public class PaymentRequest  {
       sb.append("    creditCardCvv: ").append(toIndentedString(creditCardCvv)).append("\n");
       sb.append("    agreementFlag: ").append(toIndentedString(agreementFlag)).append("\n");
       sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
+      sb.append("    payNow: ").append(toIndentedString(payNow)).append("\n");
       sb.append("}");
       return sb.toString();
     }

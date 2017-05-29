@@ -27,7 +27,7 @@ import static ish.common.types.ProductType.VOUCHER
 
 class ProcessProducts {
 
-    final static  Logger logger = LoggerFactory.getLogger(ProcessClasses.class)
+    final static  Logger logger = LoggerFactory.getLogger(ProcessProducts.class)
 
     ObjectContext context
     Contact contact
@@ -60,6 +60,11 @@ class ProcessProducts {
             processProduct.membership && memberships << processProduct.membership
             processProduct.voucher && vouchers << processProduct.voucher
         }
+
+        articles.each { a -> a.selected = a.errors.empty }
+        memberships.each { m -> m.selected = m.errors.empty }
+        vouchers.each { v -> v.selected = v.errors.empty }
+
         
         this
     }

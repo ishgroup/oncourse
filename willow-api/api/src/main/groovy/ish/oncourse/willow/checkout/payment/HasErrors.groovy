@@ -2,25 +2,23 @@ package ish.oncourse.willow.checkout.payment
 
 import groovy.transform.CompileStatic
 import ish.oncourse.willow.model.checkout.CheckoutModel
+import ish.oncourse.willow.model.checkout.ContactNode
 
 @CompileStatic
 class HasErrors {
     
     CheckoutModel checkoutModel
-    List<String> errors = []
 
     HasErrors(CheckoutModel checkoutModel) {
         this.checkoutModel = checkoutModel
     }
     
     boolean hasErrors() {
-        
-        errors  +=  checkoutModel.purchaseItemsList.enrolments.errors.flatten() as List<String>
-        errors  +=  checkoutModel.purchaseItemsList.applications.errors.flatten() as List<String>
-        errors  +=  checkoutModel.purchaseItemsList.articles.errors.flatten() as List<String>
-        errors  +=  checkoutModel.purchaseItemsList.memberships.errors.flatten() as List<String>
-        errors  +=  checkoutModel.purchaseItemsList.vouchers.errors.flatten() as List<String>
-
-        return !errors.empty
+        List<ContactNode> nodes = checkoutModel.contactNodes
+        return nodes.enrolments.findAll {it.selected}.errors.flatten().empty ||
+          nodes.applications.findAll {it.selected}.errors.flatten().empty ||
+          nodes.articles.findAll {it.selected}.errors.flatten().empty ||
+          nodes.memberships.findAll {it.selected}.errors.flatten().empty ||
+          nodes.vouchers.findAll {it.selected}.errors.flatten().empty 
     }
 }

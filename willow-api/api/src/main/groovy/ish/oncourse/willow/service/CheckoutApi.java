@@ -1,7 +1,8 @@
 package ish.oncourse.willow.service;
 
 import ish.oncourse.willow.model.checkout.CheckoutModel;
-import ish.oncourse.willow.model.checkout.PurchaseItems;
+import ish.oncourse.willow.model.checkout.CheckoutModelRequest;
+import ish.oncourse.willow.model.checkout.ContactNode;
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest;
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse;
 import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest;
@@ -19,18 +20,18 @@ import javax.ws.rs.core.MediaType;
 public interface CheckoutApi  {
 
     @POST
-    @Path("/calculateAmount")
+    @Path("/getCheckoutModel")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
-    CheckoutModel calculateAmount(CheckoutModel checkoutModel);
+    CheckoutModel getCheckoutModel(CheckoutModelRequest checkoutModelRequest);
 
     @POST
     @Path("/purchaseItems")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
-    PurchaseItems getPurchaseItems(PurchaseItemsRequest purchaseItemsRequest);
+    ContactNode getPurchaseItems(PurchaseItemsRequest purchaseItemsRequest);
 
     @POST
     @Path("/makePayment")

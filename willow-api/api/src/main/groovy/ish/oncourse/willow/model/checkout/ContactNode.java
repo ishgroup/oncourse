@@ -8,7 +8,7 @@ import ish.oncourse.willow.model.checkout.Voucher;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseItems  {
+public class ContactNode  {
   
     private String contactId = null;
     private List<Enrolment> enrolments = new ArrayList<Enrolment>();
@@ -29,7 +29,7 @@ public class PurchaseItems  {
        this.contactId = contactId;
     }
 
-    public PurchaseItems contactId(String contactId) {
+    public ContactNode contactId(String contactId) {
       this.contactId = contactId;
       return this;
     }
@@ -46,12 +46,12 @@ public class PurchaseItems  {
        this.enrolments = enrolments;
     }
 
-    public PurchaseItems enrolments(List<Enrolment> enrolments) {
+    public ContactNode enrolments(List<Enrolment> enrolments) {
       this.enrolments = enrolments;
       return this;
     }
 
-    public PurchaseItems addEnrolmentsItem(Enrolment enrolmentsItem) {
+    public ContactNode addEnrolmentsItem(Enrolment enrolmentsItem) {
       this.enrolments.add(enrolmentsItem);
       return this;
     }
@@ -68,12 +68,12 @@ public class PurchaseItems  {
        this.applications = applications;
     }
 
-    public PurchaseItems applications(List<Application> applications) {
+    public ContactNode applications(List<Application> applications) {
       this.applications = applications;
       return this;
     }
 
-    public PurchaseItems addApplicationsItem(Application applicationsItem) {
+    public ContactNode addApplicationsItem(Application applicationsItem) {
       this.applications.add(applicationsItem);
       return this;
     }
@@ -90,12 +90,12 @@ public class PurchaseItems  {
        this.articles = articles;
     }
 
-    public PurchaseItems articles(List<Article> articles) {
+    public ContactNode articles(List<Article> articles) {
       this.articles = articles;
       return this;
     }
 
-    public PurchaseItems addArticlesItem(Article articlesItem) {
+    public ContactNode addArticlesItem(Article articlesItem) {
       this.articles.add(articlesItem);
       return this;
     }
@@ -112,12 +112,12 @@ public class PurchaseItems  {
        this.memberships = memberships;
     }
 
-    public PurchaseItems memberships(List<Membership> memberships) {
+    public ContactNode memberships(List<Membership> memberships) {
       this.memberships = memberships;
       return this;
     }
 
-    public PurchaseItems addMembershipsItem(Membership membershipsItem) {
+    public ContactNode addMembershipsItem(Membership membershipsItem) {
       this.memberships.add(membershipsItem);
       return this;
     }
@@ -134,12 +134,12 @@ public class PurchaseItems  {
        this.vouchers = vouchers;
     }
 
-    public PurchaseItems vouchers(List<Voucher> vouchers) {
+    public ContactNode vouchers(List<Voucher> vouchers) {
       this.vouchers = vouchers;
       return this;
     }
 
-    public PurchaseItems addVouchersItem(Voucher vouchersItem) {
+    public ContactNode addVouchersItem(Voucher vouchersItem) {
       this.vouchers.add(vouchersItem);
       return this;
     }
@@ -148,7 +148,7 @@ public class PurchaseItems  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class PurchaseItems {\n");
+      sb.append("class ContactNode {\n");
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    enrolments: ").append(toIndentedString(enrolments)).append("\n");

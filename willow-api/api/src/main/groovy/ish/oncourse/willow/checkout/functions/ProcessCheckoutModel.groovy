@@ -4,9 +4,11 @@ import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
+import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.Application
 import ish.oncourse.willow.model.checkout.Article
 import ish.oncourse.willow.model.checkout.CheckoutModel
+import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
@@ -16,135 +18,152 @@ class ProcessCheckoutModel {
     
     ObjectContext context
     College college
-    CheckoutModel checkoutModel
+    CheckoutModelRequest checkoutModelRequest
 
     Money total = Money.ZERO
     Money payNow = Money.ZERO
     Money totalDiscount = Money.ZERO
-    Money owing = Money.ZERO
 
     int enrolmentsCount = 0
 
     Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
     Map<CourseClass, Integer> freePlacesMap  = [:]
 
+    CheckoutModel model
 
-    ProcessCheckoutModel(ObjectContext context, College college, CheckoutModel checkoutModel) {
+
+    ProcessCheckoutModel(ObjectContext context, College college, CheckoutModelRequest checkoutModelRequest) {
         this.context = context
         this.college = college
-        this.checkoutModel = checkoutModel
+        this.checkoutModelRequest = checkoutModelRequest
+        this.model = new CheckoutModel()
+        this.model.payerId = checkoutModelRequest.payerId
+        this.model.promotionIds += checkoutModelRequest.promotionIds
     }
 
     ProcessCheckoutModel process() {
-        checkoutModel.purchaseItemsList.each { purchaseItems ->
-            Contact contact = new GetContact(context, college, purchaseItems.contactId).get()
-
-            purchaseItems.articles.each { a ->
+        checkoutModelRequest.contactNodes.each { contactNode ->
+            model.contactNodes << contactNode
+            
+            Contact contact = new GetContact(context, college, contactNode.contactId).get()
+            contactNode.articles.each { a ->
                 processArticle(a, contact)
             }
 
-            purchaseItems.memberships.each { m ->
+            contactNode.memberships.each { m ->
                 processMembership(m, contact)
             }
 
-            purchaseItems.vouchers.each { v ->
+            contactNode.vouchers.each { v ->
                 processVoucher(v)
             }
             //all products should be payed permanently
             payNow = Money.ZERO.add(total)
             
-            purchaseItems.enrolments.each { e ->
+            contactNode.enrolments.each { e ->
                 processEnrolment(e, contact)
             }
 
-            purchaseItems.applications.each { a ->
+            contactNode.applications.each { a ->
                 processApplication(a, contact)
             }
         }
         
-        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, total, enrolmentsCount, checkoutModel, enrolmentsToProceed).calculate()
-        checkoutModel = enrolmentsPrice.model
-        payNow = payNow.add(enrolmentsPrice.totalPayNow)
-        totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
-        owing = total.subtract(enrolmentsPrice.totalDiscount).subtract(enrolmentsPrice.totalPayNow)
+        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, total, enrolmentsCount, model, enrolmentsToProceed).calculate()
+        model.amount = new Amount().with { a ->
+            a.total = total.toPlainString()
+            a.owing = total.subtract(enrolmentsPrice.totalDiscount).subtract(enrolmentsPrice.totalPayNow).toPlainString()
+            a.payNow =  payNow.add(enrolmentsPrice.totalPayNow).toPlainString()
+            a.discount = totalDiscount.add(enrolmentsPrice.totalDiscount).toPlainString()
+            a
+        }
         
         this
     }
     
     
     void processEnrolment(Enrolment e, Contact contact) {
-        ProcessClass processClass = new ProcessClass(context, contact, college, e.classId).process()
-        CourseClass courseClass = processClass.persistentClass
+        if (e.selected) {
+            ProcessClass processClass = new ProcessClass(context, contact, college, e.classId).process()
+            CourseClass courseClass = processClass.persistentClass
 
-        if (processClass.enrolment == null) {
-            e.errors << "Enrolment for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) avalible by application".toString()
-        } else  if (!checkAndBookPlace(courseClass)) {
-            e.errors << "Unfortunately you just missed out. The class $courseClass.course.name ($courseClass.course.code - $courseClass.code) was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
-                    
-        } else {
-            e.errors += processClass.enrolment.errors
-            e.warnings += processClass.enrolment.warnings
-            if (e.errors.empty) {
-                enrolmentsCount++
-                e.price = processClass.enrolment.price
-                total = total.add(new Money(e.price.fee?:e.price.feeOverriden))
-                List<CourseClass> classes = enrolmentsToProceed.get(contact)
-                if (classes == null) {
-                    classes = new ArrayList<CourseClass>()
-                    enrolmentsToProceed.put(contact,classes)
+            if (processClass.enrolment == null) {
+                e.errors << "Enrolment for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) avalible by application".toString()
+            } else if (!checkAndBookPlace(courseClass)) {
+                e.errors << "Unfortunately you just missed out. The class $courseClass.course.name ($courseClass.course.code - $courseClass.code) was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
+
+            } else {
+                e.errors += processClass.enrolment.errors
+                e.warnings += processClass.enrolment.warnings
+                if (e.errors.empty) {
+                    enrolmentsCount++
+                    e.price = processClass.enrolment.price
+                    total = total.add(new Money(e.price.fee ?: e.price.feeOverriden))
+                    List<CourseClass> classes = enrolmentsToProceed.get(contact)
+                    if (classes == null) {
+                        classes = new ArrayList<CourseClass>()
+                        enrolmentsToProceed.put(contact, classes)
+                    }
+                    classes.add(courseClass)
                 }
-                classes.add(courseClass)
             }
         }
     }
     
     void processApplication(Application a, Contact contact) {
-        ProcessClass processClass = new ProcessClass(context, contact, college, a.classId).process()
-        CourseClass courseClass = processClass.persistentClass
+        if (a.selected) {
+            ProcessClass processClass = new ProcessClass(context, contact, college, a.classId).process()
+            CourseClass courseClass = processClass.persistentClass
 
-        if (processClass.application == null) {
-            a.errors << "Application for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) is wrong".toString()
-        } else {
-            a.errors += processClass.application.errors
-            a.warnings += processClass.application.warnings
+            if (processClass.application == null) {
+                a.errors << "Application for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) is wrong".toString()
+            } else {
+                a.errors += processClass.application.errors
+                a.warnings += processClass.application.warnings
+            }
         }
     }
 
     void processArticle(Article a, Contact contact) {
-        ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, checkoutModel.payerId).process()
-        if (processProduct.article == null) {
-            a.errors << "Purchase is wrong"
-        } else {
-            a.errors += processProduct.article.errors
-            a.warnings += processProduct.article.warnings
-            if (a.errors.empty) {
-                a.price = processProduct.article.price
-                total = total.add(new Money(a.price))
+        if (a.selected) {
+            ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, model.payerId).process()
+            if (processProduct.article == null) {
+                a.errors << "Purchase is wrong"
+            } else {
+                a.errors += processProduct.article.errors
+                a.warnings += processProduct.article.warnings
+                if (a.errors.empty) {
+                    a.price = processProduct.article.price
+                    total = total.add(new Money(a.price))
+                }
             }
         }
     }
     
     void processMembership(Membership m, Contact contact) {
-        ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, checkoutModel.payerId).process()
-        if (processProduct.membership == null) {
-            m.errors << "Purchase is wrong"
-        } else {
-            m.errors += processProduct.membership.errors
-            m.warnings += processProduct.membership.warnings
-            if (m.errors.empty) {
-                m.price = processProduct.membership.price
-                total = total.add(new Money(m.price))
-                
+        if (m.selected) {
+            ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, model.payerId).process()
+            if (processProduct.membership == null) {
+                m.errors << "Purchase is wrong"
+            } else {
+                m.errors += processProduct.membership.errors
+                m.warnings += processProduct.membership.warnings
+                if (m.errors.empty) {
+                    m.price = processProduct.membership.price
+                    total = total.add(new Money(m.price))
+                }
             }
         }
     }
     
     void processVoucher(Voucher v) {
-        ValidateVoucher validateVoucher = new ValidateVoucher(context, college, checkoutModel.payerId).validate(v)
-        v.errors += validateVoucher.errors
-        v.warnings += validateVoucher.warnings
-        if (v.errors.empty) {
-            total = total.add(new Money(v.price))
+        if (v.selected) {
+            ValidateVoucher validateVoucher = new ValidateVoucher(context, college, model.payerId).validate(v)
+            v.errors += validateVoucher.errors
+            v.warnings += validateVoucher.warnings
+            if (v.errors.empty) {
+                total = total.add(new Money(v.price))
+            }
         }
     }
 
