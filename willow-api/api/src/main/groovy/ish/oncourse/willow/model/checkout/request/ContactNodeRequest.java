@@ -3,7 +3,7 @@ package ish.oncourse.willow.model.checkout.request;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseItemsRequest  {
+public class ContactNodeRequest  {
   
     private String contactId = null;
     private List<String> classIds = new ArrayList<String>();
@@ -22,7 +22,7 @@ public class PurchaseItemsRequest  {
        this.contactId = contactId;
     }
 
-    public PurchaseItemsRequest contactId(String contactId) {
+    public ContactNodeRequest contactId(String contactId) {
       this.contactId = contactId;
       return this;
     }
@@ -39,12 +39,12 @@ public class PurchaseItemsRequest  {
        this.classIds = classIds;
     }
 
-    public PurchaseItemsRequest classIds(List<String> classIds) {
+    public ContactNodeRequest classIds(List<String> classIds) {
       this.classIds = classIds;
       return this;
     }
 
-    public PurchaseItemsRequest addClassIdsItem(String classIdsItem) {
+    public ContactNodeRequest addClassIdsItem(String classIdsItem) {
       this.classIds.add(classIdsItem);
       return this;
     }
@@ -61,12 +61,12 @@ public class PurchaseItemsRequest  {
        this.productIds = productIds;
     }
 
-    public PurchaseItemsRequest productIds(List<String> productIds) {
+    public ContactNodeRequest productIds(List<String> productIds) {
       this.productIds = productIds;
       return this;
     }
 
-    public PurchaseItemsRequest addProductIdsItem(String productIdsItem) {
+    public ContactNodeRequest addProductIdsItem(String productIdsItem) {
       this.productIds.add(productIdsItem);
       return this;
     }
@@ -83,12 +83,12 @@ public class PurchaseItemsRequest  {
        this.promotionIds = promotionIds;
     }
 
-    public PurchaseItemsRequest promotionIds(List<String> promotionIds) {
+    public ContactNodeRequest promotionIds(List<String> promotionIds) {
       this.promotionIds = promotionIds;
       return this;
     }
 
-    public PurchaseItemsRequest addPromotionIdsItem(String promotionIdsItem) {
+    public ContactNodeRequest addPromotionIdsItem(String promotionIdsItem) {
       this.promotionIds.add(promotionIdsItem);
       return this;
     }
@@ -97,7 +97,7 @@ public class PurchaseItemsRequest  {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("class PurchaseItemsRequest {\n");
+      sb.append("class ContactNodeRequest {\n");
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classIds: ").append(toIndentedString(classIds)).append("\n");

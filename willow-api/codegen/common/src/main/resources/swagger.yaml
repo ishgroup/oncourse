@@ -12,7 +12,7 @@ paths:
     post:
       x-filter:  
       - CollegeInfo
-      operationId: getPurchaseItems
+      operationId: getContactNode
       summary: Get list of purchases 
       description: Get list of enrolments/applications/product items for certain contact based on selected classes/products
       tags:
@@ -20,12 +20,12 @@ paths:
       consumes:
       - application/json
       parameters:
-      - name: purchaseItemsRequest
+      - name: contactNodeRequest
         in: body
         description: Params for request list of products/classes
         required: true
         schema:
-          $ref: '#/definitions/checkout.request.PurchaseItemsRequest'
+          $ref: '#/definitions/checkout.request.ContactNodeRequest'
       responses:
         200:
           description: List of products
@@ -1004,7 +1004,7 @@ definitions:
           type: string
       selected:
         type: boolean
-  checkout.request.PurchaseItemsRequest:
+  checkout.request.ContactNodeRequest:
       type: object
       requred:
       - contactId

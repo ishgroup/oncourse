@@ -5,7 +5,7 @@ import ish.oncourse.willow.model.checkout.CheckoutModelRequest;
 import ish.oncourse.willow.model.checkout.ContactNode;
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest;
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse;
-import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest;
+import ish.oncourse.willow.model.checkout.request.ContactNodeRequest;
 import ish.oncourse.willow.model.common.CommonError;
 
 import java.io.InputStream;
@@ -31,7 +31,7 @@ public interface CheckoutApi  {
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
-    ContactNode getPurchaseItems(PurchaseItemsRequest purchaseItemsRequest);
+    ContactNode getContactNode(ContactNodeRequest contactNodeRequest);
 
     @POST
     @Path("/makePayment")

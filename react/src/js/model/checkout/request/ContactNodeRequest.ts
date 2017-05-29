@@ -1,5 +1,5 @@
 
-export class PurchaseItemsRequest {
+export class ContactNodeRequest {
   contactId?: string;
   classIds?: string[];
   productIds?: string[];

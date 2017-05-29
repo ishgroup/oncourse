@@ -19,6 +19,7 @@ import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse
+import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
 import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
@@ -53,14 +54,14 @@ class CheckoutApiImpl implements CheckoutApi {
         ObjectContext context = cayenneRuntime.newContext()
         College college = collegeService.college
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest).process()
-        processModel.result
+        processModel.model
     }
     
 
     @Override
-    ContactNode getPurchaseItems(PurchaseItemsRequest purchaseItemsRequest) {
+    ContactNode getContactNode(ContactNodeRequest contactNodeRequest) {
 
-        if (purchaseItemsRequest.classIds.empty && purchaseItemsRequest.productIds.empty) {
+        if (contactNodeRequest.classIds.empty && contactNodeRequest.productIds.empty) {
             logger.error('There are not selected items for purchase')
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'there are not selected items for purchase')).build())
         }
@@ -68,16 +69,16 @@ class CheckoutApiImpl implements CheckoutApi {
         ObjectContext context = cayenneRuntime.newContext()
         College college = collegeService.college
         
-        Contact contact = new GetContact(context, college, purchaseItemsRequest.contactId).get()
+        Contact contact = new GetContact(context, college, contactNodeRequest.contactId).get()
 
         ContactNode items = new ContactNode()
         items.contactId = contact.id.toString()
         
-        ProcessClasses processClasses = new ProcessClasses(context, contact, college, purchaseItemsRequest.classIds, purchaseItemsRequest.promotionIds).process()
+        ProcessClasses processClasses = new ProcessClasses(context, contact, college, contactNodeRequest.classIds, contactNodeRequest.promotionIds).process()
         items.enrolments = processClasses.enrolments
         items.applications = processClasses.applications
         
-        ProcessProducts processProducts = new ProcessProducts(context, contact, college, purchaseItemsRequest.productIds, null).process()
+        ProcessProducts processProducts = new ProcessProducts(context, contact, college, contactNodeRequest.productIds, null).process()
         items.articles += processProducts.articles
         items.memberships += processProducts.memberships
         items.vouchers += processProducts.vouchers
