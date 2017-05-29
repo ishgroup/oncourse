@@ -2,7 +2,7 @@ import * as L from "lodash";
 
 import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {normalize, schema} from "normalizr";
-import {PurchaseItems} from "../../../../model/checkout/PurchaseItems";
+import {ContactNode} from "../../../../model/checkout/ContactNode";
 const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e) => `${e.contactId}-${e.classId}`});
 
 const SPurchaseItems = new schema.Entity('contacts', {
@@ -24,7 +24,7 @@ export interface State {
   }
 }
 
-export const convert = (input: PurchaseItems[]): State => {
+export const convert = (input: ContactNode[]): State => {
   return normalize(input, Schema);
 };
 

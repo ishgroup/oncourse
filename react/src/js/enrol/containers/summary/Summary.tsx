@@ -7,7 +7,7 @@ import {Props as EnrolmentProps} from "./components/EnrolmentComp";
 import SummaryComp from "./components/SummaryComp";
 import {Enrolment} from "../../../model/checkout/Enrolment";
 import {selectItem} from "./actions/Actions";
-import {openContactAdd} from "../contact-add/actions/Actions";
+import {openAddContactForm} from "../contact-add/actions/Actions";
 import {openPayment} from "../payment/actions/Actions";
 import {Voucher} from "../../../model/checkout/Voucher";
 import {Article} from "../../../model/checkout/Article";
@@ -55,7 +55,7 @@ export const SummaryFunctionsBy = (dispatch: Dispatch<any>) => {
       dispatch(selectItem(item, selected))
     },
     onAddContact: (): void => {
-      dispatch(openContactAdd())
+      dispatch(openAddContactForm())
     },
     onProceedToPayment: (): void => {
       dispatch(openPayment())

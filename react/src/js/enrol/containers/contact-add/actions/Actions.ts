@@ -1,20 +1,18 @@
-import {_toRejectType, _toRequestType} from "../../../../common/actions/ActionUtils";
-import {normalize} from "normalizr";
-import {ContactsSchema} from "../../../../NormalizeSchema";
+import {_toRequestType} from "../../../../common/actions/ActionUtils";
 import {NAME as ContactAddForm} from "../ContactAddForm";
+import {Contact} from "../../../../model/web/Contact";
 
 
-export const OpenContactAdd: string = "checkout/contact/add/open";
+export const OPEN_ADD_CONTACT_FORM: string = "checkout/open/add/contact";
 
 
-export const ContactAdd: string = "checkout/contact/add";
-export const ContactAddRequest: string = _toRequestType(ContactAdd);
-export const ContactAddReject: string = _toRejectType(ContactAdd);
+export const ADD_CONTACT: string = "checkout/contact/add";
+export const ADD_CONTACT_REQUEST: string = _toRequestType(ADD_CONTACT);
 
-export const submitAddContact = (id: string, values: any): any => {
-  const payload: any = normalize(Object.assign({}, values, {id: id}), ContactsSchema);
+export const addContactRequest = (id: string, values: any): any => {
+  const payload: Contact = Object.assign({}, values, {id: id});
   return {
-    type: ContactAddRequest,
+    type: ADD_CONTACT_REQUEST,
     payload: payload,
     meta: {
       from: ContactAddForm
@@ -22,8 +20,8 @@ export const submitAddContact = (id: string, values: any): any => {
   };
 };
 
-export const openContactAdd = (): { type: string } => {
+export const openAddContactForm = (): { type: string } => {
   return {
-    type: OpenContactAdd
+    type: OPEN_ADD_CONTACT_FORM
   }
 };

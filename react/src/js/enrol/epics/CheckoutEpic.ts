@@ -7,7 +7,7 @@ import {normalize} from "normalizr";
 import {mapError, mapPayload} from "../../epics/epicsUtils";
 import {ContactsSchema} from "../../NormalizeSchema";
 import InitEpic from "./InitEpic";
-import ContactAddEpic from "./ContactAddEpic";
+import {EpicAddContact} from "./EpicAddContact";
 import MessagesShowEpic from "./MessagesShowEpic";
 import PhaseChangeEpic from "./PhaseChangeEpic";
 import OpenContactEditEpic from "./OpenContactDetailsEpic";
@@ -24,7 +24,7 @@ export const CheckoutEpic = combineEpics(
   InitEpic,
   MessagesShowEpic,
   PhaseChangeEpic,
-  ContactAddEpic,
+  EpicAddContact,
   OpenContactEditEpic,
   OpenSummaryEpic,
   EpicItemSelect,

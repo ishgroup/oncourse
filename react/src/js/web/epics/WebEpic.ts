@@ -213,7 +213,7 @@ function createSyncCartRequestEpic() {
       FULFILLED(Actions.REQUEST_PROMOTION),
       FULFILLED(Actions.REQUEST_CONTACT),
       Actions,
-      ContactAddActions.ContactAdd,
+      ContactAddActions.ADD_CONTACT,
     )
     .map(action => ({
       timestamp: new Date().getTime(),

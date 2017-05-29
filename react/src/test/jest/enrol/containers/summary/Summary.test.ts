@@ -4,13 +4,9 @@ import {Contact} from "../../../../../js/model/web/Contact";
 import {CourseClass} from "../../../../../js/model/web/CourseClass";
 
 import {Enrolment} from "../../../../../js/model/checkout/Enrolment";
-import {PurchaseItems} from "../../../../../js/model/checkout/PurchaseItems";
+import {ContactNode} from "../../../../../js/model/checkout/ContactNode";
 
-import {convert} from "../../../../../js/enrol/containers/summary/reducers/State";
 import {IshState} from "../../../../../js/services/IshState";
-import {normalize} from "normalizr";
-import {ClassesListSchema} from "../../../../../js/NormalizeSchema";
-
 
 import {ContactPropsBy} from "../../../../../js/enrol/containers/summary/Summary";
 
@@ -23,7 +19,7 @@ const contact: Contact = db.getContactByIndex(0);
 const courseClass: CourseClass = db.getCourseClassByIndex(0);
 const enrolment: Enrolment = db.createEnrolment(contact.id, courseClass.id);
 
-const items: PurchaseItems = {
+const items: ContactNode = {
   contactId: contact.id,
   enrolments: [enrolment]
 };

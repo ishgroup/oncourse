@@ -1,6 +1,6 @@
 import * as SummaryActions from "../../../../../../js/enrol/containers/summary/actions/Actions";
 
-import {PurchaseItems} from "../../../../../../js/model/checkout/PurchaseItems";
+import {ContactNode} from "../../../../../../js/model/checkout/ContactNode";
 
 import {convert, State} from "../../../../../../js/enrol/containers/summary/reducers/State";
 
@@ -40,7 +40,7 @@ const state: State = convert([{
 
 
 test('test add contact ', () => {
-  const upi: PurchaseItems = {
+  const upi: ContactNode = {
     contactId: "00003",
     enrolments: [
       {
@@ -60,7 +60,7 @@ test('test add contact ', () => {
 
 
 test('test add enrolment ', () => {
-  const upi: PurchaseItems = {
+  const upi: ContactNode = {
     contactId: "00002",
     enrolments: [
       {
@@ -80,7 +80,7 @@ test('test add enrolment ', () => {
 
 
 test('test update enrolment', () => {
-  const upi: PurchaseItems = {
+  const upi: ContactNode = {
     contactId: "00002",
     enrolments: [
       {

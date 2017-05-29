@@ -5,13 +5,12 @@ import "react-select/dist/react-select.css";
 import "../../../scss/_ReactSelect.scss";
 
 import {Provider} from "react-redux";
-import {ContactAdd} from "../../../js/enrol/containers/contact-add/actions/Actions";
+import {ADD_CONTACT} from "../../../js/enrol/containers/contact-add/actions/Actions";
 import ContactEditForm, {NAME} from "../../../js/enrol/containers/contact-edit/ContactEditForm";
-import {FieldsLoadRequest, OpenContactDetailsRequest} from "../../../js/enrol/containers/contact-edit/actions/Actions";
+import {OpenContactDetailsRequest} from "../../../js/enrol/containers/contact-edit/actions/Actions";
 import {CreateStore} from "../../../js/CreateStore";
 import {normalize} from "normalizr";
 import {ContactsSchema} from "../../../js/NormalizeSchema";
-import {FieldSet} from "../../../js/model/field/FieldSet";
 import {Values} from "redux-form-website-template";
 import {Progress, Tab} from "../../../js/enrol/components/Progress";
 import {MessagesRedux} from "../../../js/enrol/containers/Functions";
@@ -26,13 +25,12 @@ const store = CreateStore();
 
 //add contact
 store.dispatch({
-  type: ContactAdd,
+  type: ADD_CONTACT,
   payload: normalize({
     id: 1001,
     firstName: 'Andrey',
     lastName: 'Koyro',
-    email: 'pervoliner@gmail.com',
-    fieldSet: FieldSet.enrolment
+    email: 'pervoliner@gmail.com'
   }, ContactsSchema)
 });
 

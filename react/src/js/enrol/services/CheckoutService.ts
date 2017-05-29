@@ -6,15 +6,16 @@ import {FieldSet} from "../../model/field/FieldSet";
 import {SubmitFieldsRequest} from "../../model/field/SubmitFieldsRequest";
 import {CreateContactParams} from "../../model/web/CreateContactParams";
 import {IshState} from "../../services/IshState";
-import {PurchaseItems} from "../../model/checkout/PurchaseItems";
 import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
-import {PurchaseItemsRequest} from "../../model/checkout/request/PurchaseItemsRequest";
 import {Enrolment} from "../../model/checkout/Enrolment";
 import {Field} from "../../model/field/Field";
 import {CheckoutModel} from "../../model/checkout/CheckoutModel";
 import {State} from "../containers/summary/reducers/State";
 import {Amount} from "../../model/checkout/Amount";
+import {ContactNode} from "../../model/checkout/ContactNode";
+import {CheckoutModelRequest} from "../../model/checkout/CheckoutModelRequest";
+import {ContactNodeRequest} from "../../model/checkout/request/ContactNodeRequest";
 
 export class CheckoutService {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
@@ -33,14 +34,14 @@ export class CheckoutService {
   };
 
 
-  public getPurchaseItems = (state: IshState): Promise<PurchaseItems> => {
-    return this.checkoutApi.getPurchaseItems(BuildPurchaseItemsRequest.fromState(state));
+  public getContactNode = (state: IshState): Promise<ContactNode> => {
+    return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromState(state));
   };
 
   public updateEnrolment = (enrolment: Enrolment, state: IshState): Promise<Enrolment> => {
     if (enrolment.selected) {
-      const request: PurchaseItemsRequest = BuildPurchaseItemsRequest.fromEnrolment(enrolment, state);
-      return this.checkoutApi.getPurchaseItems(request)
+      const request: ContactNodeRequest = BuildContactNodeRequest.fromEnrolment(enrolment, state);
+      return this.checkoutApi.getContactNode(request)
         .then((data) => {
           return Promise.resolve(data.enrolments[0])
         })
@@ -50,7 +51,7 @@ export class CheckoutService {
   };
 
   public getAmount(state: IshState): Promise<Amount> {
-    return this.checkoutApi.calculateAmount(BuildCheckoutModel.fromState(state))
+    return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state))
       .then((model: CheckoutModel): Promise<Amount> => {
         return Promise.resolve(model.amount)
       });
@@ -63,18 +64,18 @@ const {
   checkoutApi
 } = Injector.of();
 
-export class BuildPurchaseItemsRequest {
-  static fromEnrolment = (enrolment: Enrolment, state: IshState): PurchaseItemsRequest => {
-    const result: PurchaseItemsRequest = new PurchaseItemsRequest();
+export class BuildContactNodeRequest {
+  static fromEnrolment = (enrolment: Enrolment, state: IshState): ContactNodeRequest => {
+    const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = enrolment.contactId;
     result.classIds = [enrolment.classId];
     result.promotionIds = state.cart.promotions.result;
     return result;
   };
 
-  static fromState = (state: IshState): PurchaseItemsRequest => {
-    const result: PurchaseItemsRequest = new PurchaseItemsRequest();
-    result.contactId = state.checkout.payer.entity.id;
+  static fromState = (state: IshState): ContactNodeRequest => {
+    const result: ContactNodeRequest = new ContactNodeRequest();
+    result.contactId = state.cart.contact.id;
     result.classIds = state.cart.courses.result;
     result.productIds = state.cart.products.result;
     result.promotionIds = state.cart.promotions.result;
@@ -118,10 +119,10 @@ export class BuildCreateContactParams {
   }
 }
 
-export class BuildPurchaseItems {
-  static fromState = (state: State): PurchaseItems[] => {
+export class BuildContactNodes {
+  static fromState = (state: State): ContactNode[] => {
     return state.result.map((contactId) => {
-      const result: PurchaseItems = new PurchaseItems();
+      const result: ContactNode = new ContactNode();
       result.contactId = contactId;
       result.enrolments = state.entities.contacts[contactId].enrolments.map((enrolmentId) => {
         return state.entities.enrolments[enrolmentId];
@@ -131,12 +132,12 @@ export class BuildPurchaseItems {
   };
 }
 
-export class BuildCheckoutModel {
-  static fromState = (state: IshState) => {
-    const result: CheckoutModel = new CheckoutModel();
+export class BuildCheckoutModelRequest {
+  static fromState = (state: IshState): CheckoutModelRequest => {
+    const result: CheckoutModelRequest = new CheckoutModelRequest();
     result.payerId = state.checkout.payer.entity.id;
     result.promotionIds = state.cart.promotions.result;
-    result.purchaseItemsList = BuildPurchaseItems.fromState(state.checkout.summary);
+    result.contactNodes = BuildContactNodes.fromState(state.checkout.summary);
     return result;
   }
 }

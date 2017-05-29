@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
-import {submitAddContact} from "./actions/Actions";
+import {addContactRequest} from "./actions/Actions";
 import CheckoutService from "../../services/CheckoutService";
 import {showFormValidation} from "../../actions/Actions";
 
@@ -36,7 +36,7 @@ const Form = reduxForm({
   form: NAME,
   validate: validateContact,
   onSubmitSuccess: (result, dispatch, props: any) => {
-    dispatch(submitAddContact(result, props.values));
+    dispatch(addContactRequest(result, props.values));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     dispatch(showFormValidation(submitError, NAME));

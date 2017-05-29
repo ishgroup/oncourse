@@ -11,7 +11,7 @@ import {Item} from "../../../js/model/common/Item";
 import {IshState} from "../../../js/services/IshState";
 import {normalize} from "normalizr";
 import {ClassesListSchema} from "../../../js/NormalizeSchema";
-import {PurchaseItems} from "../../../js/model/checkout/PurchaseItems";
+import {ContactNode} from "../../../js/model/checkout/ContactNode";
 import {convert} from "../../../js/enrol/containers/summary/reducers/State";
 import {Promotion} from "../../../js/model/web/Promotion";
 
@@ -118,7 +118,7 @@ export const mockField = (name: string, key: string, dateType: DataType): Field 
 
 export const mockState = (contact: Contact,
                           classes: CourseClass[] = [],
-                          items: PurchaseItems[] = [],
+                          items: ContactNode[] = [],
                           promotions: Promotion[] = []): IshState => {
 
   const nCourses = normalize(classes, ClassesListSchema);

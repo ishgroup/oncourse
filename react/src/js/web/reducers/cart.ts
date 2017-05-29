@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
 import {IshAction} from "../../actions/IshAction";
-import {CourseClassCartState, ProductCartState} from "../../services/IshState";
+import {ContactState, CourseClassCartState, ProductCartState} from "../../services/IshState";
 import {Contact} from "../../model/web/Contact";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../actions/Actions";
@@ -98,7 +98,7 @@ function promotionsById(state = {}, action: IshAction<ProductCartState>) {
   }
 }
 
-function contactReducer(state = {}, action: IshAction<Contact>) {
+function contactReducer(state:ContactState = {}, action: IshAction<Contact>) {
   switch (action.type) {
     case FULFILLED(Actions.REQUEST_CONTACT):
       return action.payload;

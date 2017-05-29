@@ -27,7 +27,7 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
 
 const ContactReducer = (state = {}, action): any => {
   switch (action.type) {
-    case ContactAddActions.ContactAdd:
+    case ContactAddActions.ADD_CONTACT:
       return action.payload.entities.contacts[action.payload.result];
     default:
       return state;
@@ -50,7 +50,7 @@ const ErrorReducer = (state: ValidationError = null, action: any): any => {
       return action.payload;
     case Actions.Init:
     case Actions.PhaseChange:
-    case ContactAddActions.ContactAdd:
+    case ContactAddActions.ADD_CONTACT:
     case ContactEditActions.FieldsLoad:
     case ContactEditActions.FieldsSave:
       return {};
