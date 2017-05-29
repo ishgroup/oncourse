@@ -27,7 +27,7 @@ public interface CheckoutApi  {
     CheckoutModel getCheckoutModel(CheckoutModelRequest checkoutModelRequest);
 
     @POST
-    @Path("/purchaseItems")
+    @Path("/getContactNode")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo

@@ -8,7 +8,7 @@ schemes:
 produces:
   - application/json
 paths:
-  /purchaseItems:
+  /getContactNode:
     post:
       x-filter:  
       - CollegeInfo

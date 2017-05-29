@@ -15,7 +15,7 @@ export class CheckoutApi {
     return this.http.POST(`/getCheckoutModel`, checkoutModelRequest)
   }
   getContactNode(contactNodeRequest: ContactNodeRequest): Promise<ContactNode> {
-    return this.http.POST(`/purchaseItems`, contactNodeRequest)
+    return this.http.POST(`/getContactNode`, contactNodeRequest)
   }
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
     return this.http.POST(`/makePayment`, paymentRequest)
