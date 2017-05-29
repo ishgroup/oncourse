@@ -1,10 +1,10 @@
 import { Amount } from "./../checkout/Amount";
-import { PurchaseItems } from "./../checkout/PurchaseItems";
+import { ContactNode } from "./../checkout/ContactNode";
 import { CommonError } from "./../common/CommonError";
 
 export class CheckoutModel {
   error?: CommonError;
-  purchaseItemsList?: PurchaseItems[];
+  contactNodes?: ContactNode[];
   amount?: Amount;
   promotionIds?: string[];
   payerId?: string;

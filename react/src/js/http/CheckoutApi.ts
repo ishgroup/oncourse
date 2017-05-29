@@ -1,6 +1,7 @@
 import {HttpService} from "../common/services/HttpService";
 import { CheckoutModel } from "../model/checkout/CheckoutModel";
-import { PurchaseItems } from "../model/checkout/PurchaseItems";
+import { CheckoutModelRequest } from "../model/checkout/CheckoutModelRequest";
+import { ContactNode } from "../model/checkout/ContactNode";
 import { PaymentRequest } from "../model/checkout/payment/PaymentRequest";
 import { PaymentResponse } from "../model/checkout/payment/PaymentResponse";
 import { PurchaseItemsRequest } from "../model/checkout/request/PurchaseItemsRequest";
@@ -10,10 +11,10 @@ export class CheckoutApi {
   constructor(private http: HttpService) {
   }
 
-  calculateAmount(checkoutModel: CheckoutModel): Promise<CheckoutModel> {
-    return this.http.POST(`/calculateAmount`, checkoutModel)
+  getCheckoutModel(checkoutModelRequest: CheckoutModelRequest): Promise<CheckoutModel> {
+    return this.http.POST(`/getCheckoutModel`, checkoutModelRequest)
   }
-  getPurchaseItems(purchaseItemsRequest: PurchaseItemsRequest): Promise<PurchaseItems> {
+  getPurchaseItems(purchaseItemsRequest: PurchaseItemsRequest): Promise<ContactNode> {
     return this.http.POST(`/purchaseItems`, purchaseItemsRequest)
   }
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {

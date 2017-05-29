@@ -1,7 +1,7 @@
-import { CheckoutModel } from "./../../checkout/CheckoutModel";
+import { CheckoutModelRequest } from "./../../checkout/CheckoutModelRequest";
 
 export class PaymentRequest {
-  checkoutModel?: CheckoutModel;
+  checkoutModelRequest?: CheckoutModelRequest;
   creditCardNumber?: string;
   creditCardName?: string;
   expiryMonth?: string;
@@ -10,8 +10,9 @@ export class PaymentRequest {
   agreementFlag?: boolean;
 
   /**
-   * null
+   * String length 16 of hexadecimal digits
    */
   sessionId?: string;
+  payNow?: string;
 }
 

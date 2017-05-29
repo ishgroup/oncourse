@@ -4,7 +4,7 @@ import { Enrolment } from "./../checkout/Enrolment";
 import { Membership } from "./../checkout/Membership";
 import { Voucher } from "./../checkout/Voucher";
 
-export class PurchaseItems {
+export class ContactNode {
   contactId?: string;
   enrolments?: Enrolment[];
   applications?: Application[];
