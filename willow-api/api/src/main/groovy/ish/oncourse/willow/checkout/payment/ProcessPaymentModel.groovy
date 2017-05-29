@@ -3,6 +3,7 @@ package ish.oncourse.willow.checkout.payment
 import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.model.College
+import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
 import ish.oncourse.util.payment.PaymentInSucceed
 import ish.oncourse.willow.checkout.payment.execution.StartDPSExecution
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
@@ -62,13 +63,18 @@ class ProcessPaymentModel {
                 this
             } else {
                 context.commitChanges()
-                response =  new PaymentResponse().with { r ->
-                    r.sessionId =  createPaymentModel.paymentIn.sessionId
-                    r.paymentStatus = PaymentStatus.IN_PROGRESS
-                    r.applicationIds = createPaymentModel.applications.collect { it.id.toString() }
+                context.setUserProperty('replicationEnabled', false)
+                new NewPaymentExpressGatewayService(context, true).submit(createPaymentModel.model, new ish.oncourse.services.payment.PaymentRequest().with { r ->
+                    r.sessionId = paymentRequest.sessionId
+                    r.name = paymentRequest.creditCardName
+                    r.number = paymentRequest.creditCardNumber
+                    r.cvv = paymentRequest.creditCardCvv
+                    r.year = paymentRequest.expiryYear
+                    r.month = paymentRequest.expiryMonth
                     r
-                }
-                new StartDPSExecution(createPaymentModel.model, paymentRequest, context).execute()
+                })
+                
+                response = new GetPaymentStatus(context, paymentRequest.sessionId ).get()
                 this
             }
         }

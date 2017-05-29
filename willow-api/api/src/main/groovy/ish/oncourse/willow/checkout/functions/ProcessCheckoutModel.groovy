@@ -38,7 +38,6 @@ class ProcessCheckoutModel {
         this.checkoutModelRequest = checkoutModelRequest
         this.model = new CheckoutModel()
         this.model.payerId = checkoutModelRequest.payerId
-        this.model.promotionIds += checkoutModelRequest.promotionIds
     }
 
     ProcessCheckoutModel process() {
@@ -69,7 +68,7 @@ class ProcessCheckoutModel {
             }
         }
         
-        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, total, enrolmentsCount, model, enrolmentsToProceed).calculate()
+        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, total, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
         model.amount = new Amount().with { a ->
             a.total = total.toPlainString()
             a.owing = total.subtract(enrolmentsPrice.totalDiscount).subtract(enrolmentsPrice.totalPayNow).toPlainString()

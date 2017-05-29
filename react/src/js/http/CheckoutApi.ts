@@ -17,6 +17,9 @@ export class CheckoutApi {
   getContactNode(contactNodeRequest: ContactNodeRequest): Promise<ContactNode> {
     return this.http.POST(`/getContactNode`, contactNodeRequest)
   }
+  getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
+    return this.http.GET(`/getPaymentStatus/${sessionId}`)
+  }
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
     return this.http.POST(`/makePayment`, paymentRequest)
   }

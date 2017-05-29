@@ -89,6 +89,30 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /getPaymentStatus/{sessionId}:
+    get:
+      x-filter:  
+      - CollegeInfo
+      operationId: getPaymentStatus
+      summary: Get actual payment status
+      description: Get actual payment status
+      tags:
+      - Checkout
+      parameters:
+      - name: sessionId
+        in: path
+        description: Checkout model plus credit cadr data
+        required: true
+        type: string
+      responses:
+        200:
+          description: Payment Response object with sessionId populated
+          schema:
+            $ref: '#/definitions/checkout.payment.PaymentResponse'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /products:
     post:
       x-filter:  
@@ -1080,10 +1104,6 @@ definitions:
           $ref: '#/definitions/checkout.ContactNode'
       amount:
         $ref: '#/definitions/checkout.Amount'
-      promotionIds:
-        type: array
-        items:
-          type: string
       payerId:
         type: string
   checkout.CheckoutModelRequest:
@@ -1127,6 +1147,7 @@ definitions:
       - in progress
       - failed
       - successful
+      - error
   checkout.payment.PaymentResponse:
     type: object
     properties:

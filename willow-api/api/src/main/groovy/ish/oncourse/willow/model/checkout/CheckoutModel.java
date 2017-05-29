@@ -11,7 +11,6 @@ public class CheckoutModel  {
     private CommonError error = null;
     private List<ContactNode> contactNodes = new ArrayList<ContactNode>();
     private Amount amount = null;
-    private List<String> promotionIds = new ArrayList<String>();
     private String payerId = null;
 
     /**
@@ -71,28 +70,6 @@ public class CheckoutModel  {
     }
 
     /**
-     * Get promotionIds
-     * @return promotionIds
-     */
-    public List<String> getPromotionIds() {
-        return promotionIds;
-    }
-
-    public void setPromotionIds(List<String> promotionIds) {
-       this.promotionIds = promotionIds;
-    }
-
-    public CheckoutModel promotionIds(List<String> promotionIds) {
-      this.promotionIds = promotionIds;
-      return this;
-    }
-
-    public CheckoutModel addPromotionIdsItem(String promotionIdsItem) {
-      this.promotionIds.add(promotionIdsItem);
-      return this;
-    }
-
-    /**
      * Get payerId
      * @return payerId
      */
@@ -118,7 +95,6 @@ public class CheckoutModel  {
       sb.append("    error: ").append(toIndentedString(error)).append("\n");
       sb.append("    contactNodes: ").append(toIndentedString(contactNodes)).append("\n");
       sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-      sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
       sb.append("    payerId: ").append(toIndentedString(payerId)).append("\n");
       sb.append("}");
       return sb.toString();

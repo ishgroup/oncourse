@@ -33,6 +33,12 @@ public interface CheckoutApi  {
     @CollegeInfo
     ContactNode getContactNode(ContactNodeRequest contactNodeRequest);
 
+    @GET
+    @Path("/getPaymentStatus/{sessionId}")
+    @Produces({ "application/json" })
+    @CollegeInfo
+    PaymentResponse getPaymentStatus(@PathParam("sessionId") String sessionId);
+
     @POST
     @Path("/makePayment")
     @Consumes({ "application/json" })

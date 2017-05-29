@@ -33,15 +33,15 @@ class CalculateEnrolmentsPrice {
 
     List<Discount> promotions = []
 
-    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, int enrolmentsCount, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed) {
+    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, int enrolmentsCount, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, List<String> promotionIds) {
         this.context = context
         this.college = college
         this.total = total
         this.enrolmentsCount = enrolmentsCount
         this.model = model
         this.enrolmentsToProceed = enrolmentsToProceed
-
-        this.model.promotionIds.each { id ->
+        
+        promotionIds.each { id ->
             this.promotions << new GetDiscount(this.context, this.college, id).get()
         }
         

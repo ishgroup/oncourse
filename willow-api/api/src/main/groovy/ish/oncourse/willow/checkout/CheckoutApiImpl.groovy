@@ -11,6 +11,7 @@ import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
 import ish.oncourse.willow.checkout.functions.ProcessClasses
 import ish.oncourse.willow.checkout.functions.ProcessProducts
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
+import ish.oncourse.willow.checkout.payment.GetPaymentStatus
 import ish.oncourse.willow.checkout.payment.HasErrors
 import ish.oncourse.willow.checkout.payment.ProcessPaymentModel
 import ish.oncourse.willow.checkout.payment.ValidateCreditCardForm
@@ -82,6 +83,15 @@ class CheckoutApiImpl implements CheckoutApi {
         items.memberships += processProducts.memberships
         items.vouchers += processProducts.vouchers
         items
+    }
+
+    @Override
+    PaymentResponse getPaymentStatus(String sessionId) {
+        
+        ObjectContext context = cayenneRuntime.newContext()
+        College college = collegeService.college
+        
+        new GetPaymentStatus(context, college, sessionId).get()
     }
 
     @Override

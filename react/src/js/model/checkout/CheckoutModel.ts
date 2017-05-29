@@ -6,7 +6,6 @@ export class CheckoutModel {
   error?: CommonError;
   contactNodes?: ContactNode[];
   amount?: Amount;
-  promotionIds?: string[];
   payerId?: string;
 }
 

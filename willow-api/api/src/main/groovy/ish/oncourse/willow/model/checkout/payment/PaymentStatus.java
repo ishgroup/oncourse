@@ -13,7 +13,9 @@ public enum PaymentStatus {
   
   FAILED("failed"),
   
-  SUCCESSFUL("successful");
+  SUCCESSFUL("successful"),
+  
+  ERROR("error");
 
   private String value;
 
