@@ -36,6 +36,7 @@ import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.GetCourseClass
 import ish.oncourse.willow.checkout.functions.GetProduct
+import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.persistence.CommonPreferenceController
 import ish.util.CreditCardUtil
@@ -60,32 +61,34 @@ class CreatePaymentModel {
     Contact payer
     List<InvoiceNode> paymentPlan = []
     PaymentInModel model
+    CheckoutModel checkoutModel
 
-    CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest) {
+    CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest, CheckoutModel checkoutModel) {
         this.context = context
         this.webSite = this.context.localObject(webSite)
         this.college = this.context.localObject(college)
         this.paymentRequest = paymentRequest
-        payer = new GetContact(context, college, paymentRequest.checkoutModel.payerId).get()
+        this.checkoutModel = checkoutModel
+        this.payer = new GetContact(context, college, checkoutModel.payerId).get()
     }
 
     CreatePaymentModel create() {
-        paymentRequest.checkoutModel.purchaseItemsList.each { purchaseItems ->
-            Contact contact = new GetContact(context, college, purchaseItems.contactId).get()
+        checkoutModel.contactNodes.each { node ->
+            Contact contact = new GetContact(context, college, node.contactId).get()
             
-            purchaseItems.enrolments.each { e ->
+            node.enrolments.findAll{it.selected}.each { e ->
                 createEnrolment(e, contact)
             }
-            purchaseItems.applications.each { a ->
+            node.applications.findAll{it.selected}.each { a ->
                 createApplication(a, contact)
             }
-            purchaseItems.articles.each { a ->
+            node.articles.findAll{it.selected}.each { a ->
                 createArticle(a,contact)
             }
-            purchaseItems.memberships.each { m ->
+            node.memberships.findAll{it.selected}.each { m ->
                 createMembership(m,contact)
             }
-            purchaseItems.vouchers.each { v ->
+            node.vouchers.findAll{it.selected}.each { v ->
                 createVoucher(v,contact)
             }
         }

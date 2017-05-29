@@ -107,7 +107,8 @@ class CheckoutApiImpl implements CheckoutApi {
             throw new BadRequestException(Response.status(400).entity(validationError).build())
         }
         
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel).create()
+        
         ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, college,createPaymentModel, paymentRequest).process()
 
         if (processPaymentModel.error == null) {
