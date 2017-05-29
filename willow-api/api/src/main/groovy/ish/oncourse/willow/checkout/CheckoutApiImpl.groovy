@@ -20,7 +20,6 @@ import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
-import ish.oncourse.willow.model.checkout.request.PurchaseItemsRequest
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.service.CheckoutApi
