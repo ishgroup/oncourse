@@ -55,7 +55,7 @@ class ProcessProducts {
         }
         
         productIds.each { id ->
-           ProcessProduct processProduct = new ProcessProduct(context, contact, college, id, payerId)
+           ProcessProduct processProduct = new ProcessProduct(context, contact, college, id, payerId).process()
             processProduct.article && articles << processProduct.article
             processProduct.membership && memberships << processProduct.membership
             processProduct.voucher && vouchers << processProduct.voucher
