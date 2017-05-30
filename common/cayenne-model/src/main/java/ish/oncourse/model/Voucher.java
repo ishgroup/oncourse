@@ -9,6 +9,10 @@ import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 
+import static ish.common.types.ProductStatus.*;
+import static ish.common.types.ProductStatus.CANCELLED;
+import static ish.common.types.ProductStatus.EXPIRED;
+
 public class Voucher extends _Voucher implements Queueable {
 	private static final long serialVersionUID = -836996096054884238L;
 	public static final int VOUCHER_CODE_LENGTH = 8;
@@ -133,5 +137,27 @@ public class Voucher extends _Voucher implements Queueable {
     public boolean isExpired() {
         return ProductStatus.EXPIRED.equals(getStatus());
     }
-	
+
+	@Override
+	public void setStatus(ProductStatus newStatus) {
+		if (getStatus() != null && newStatus != null && newStatus != getStatus()) {
+				if (getStatus() == ACTIVE && newStatus == NEW){
+					throw new IllegalArgumentException("Voucher with status ACTIVE can not be changed to status NEW.");
+				}
+				if ((getStatus() == REDEEMED || getStatus() == CREDITED || getStatus() == CANCELLED || getStatus() == EXPIRED) && (newStatus == NEW || newStatus == ACTIVE)){
+					throw new IllegalArgumentException("Voucher with status final status can not be turned to ACTIVE or NEW status.");
+				}
+		}
+		super.setStatus(newStatus);
+	}
+
+	@Override
+	public void setRedeemedCoursesCount(Integer count) {
+    	if (getRedeemedCoursesCount() > 0 && count != null && count > 0){
+			if (getRedeemedCoursesCount() > count) {
+				throw new IllegalArgumentException("Voucher redeemed enrolment count can not be decreased.");
+			}
+		}
+    	super.setRedeemedCoursesCount(count);
+	}
 }

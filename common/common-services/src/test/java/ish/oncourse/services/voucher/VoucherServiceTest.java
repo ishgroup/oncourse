@@ -1,14 +1,16 @@
 package ish.oncourse.services.voucher;
 
+import ish.common.types.PaymentSource;
+import ish.common.types.ProductStatus;
 import ish.math.Money;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Voucher;
-import ish.oncourse.model.VoucherProduct;
+import ish.oncourse.model.*;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.test.ServiceTest;
+import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 import org.apache.tapestry5.services.Request;
 import org.dbunit.database.DatabaseConnection;
@@ -20,6 +22,7 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.sql.Date;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -110,7 +113,7 @@ public class VoucherServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void tesCreateVoucher() {
+	public void testCreateVoucher() {
 		Request request = mock(Request.class);
 		IWebSiteService webSiteService = new WebSiteService(request, cayenneService);
 		when(request.getServerName()).thenReturn("scc.oncourse.cc");
@@ -119,5 +122,34 @@ public class VoucherServiceTest extends ServiceTest {
 		VoucherService service = new VoucherService(webSiteService, cayenneService);
 		Voucher voucher = service.createVoucher(product);
 		assertNull("Willow voucher always can be redeemed by anyone", voucher.getContact());
+	}
+
+	@Test
+	public void testUpdateVoucher() {
+		ObjectContext context = cayenneService.newContext();
+		Voucher voucher = context.newObject(Voucher.class);
+		voucher.setCollege(ObjectSelect.query(College.class).selectFirst(context));
+		voucher.setInvoiceLine(ObjectSelect.query(InvoiceLine.class).selectFirst(context));
+		voucher.setProduct(ObjectSelect.query(Product.class).selectFirst(context));
+		voucher.setCode("code");
+		voucher.setExpiryDate(new Date(System.currentTimeMillis()));
+		voucher.setSource(PaymentSource.SOURCE_ONCOURSE);
+
+		voucher.setStatus(ProductStatus.ACTIVE);
+		cayenneService.sharedContext().commitChanges();
+		try {
+			voucher.setStatus(ProductStatus.NEW);
+		} catch (Exception ex){
+			assertEquals(IllegalArgumentException.class, ex.getClass());
+		}
+
+		voucher.setStatus(ProductStatus.CANCELLED);
+		cayenneService.sharedContext().commitChanges();
+
+		try {
+			voucher.setStatus(ProductStatus.ACTIVE);
+		} catch (Exception ex){
+			assertEquals(IllegalArgumentException.class, ex.getClass());
+		}
 	}
 }
