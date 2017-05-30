@@ -1,17 +1,10 @@
-import * as L from "lodash";
 import {CheckoutModel} from "../../../../js/model/checkout/CheckoutModel";
-import {CHANGE_PHASE, changePhase, updateAmount, SHOW_MESSAGES,SHOW_MESSAGES_REQUEST} from "../../../../js/enrol/actions/Actions";
+import {CHANGE_PHASE, SHOW_MESSAGES} from "../../../../js/enrol/actions/Actions";
 import {Phase} from "../../../../js/enrol/reducers/State";
-
-import {CommonError} from "../../../../js/model/common/CommonError";
-import {updateContactNode, UPDATE_CONTACT_NODE} from "../../../../js/enrol/containers/summary/actions/Actions";
-
-import {showCommonError} from "../../../../js/enrol/epics/EpicUtils";
-
-import {commonErrorToValidationError} from "../../../../js/common/utils/ErrorUtils";
+import {UPDATE_CONTACT_NODE} from "../../../../js/enrol/containers/summary/actions/Actions";
+import {ProcessCheckoutModel} from "../../../../js/enrol/epics/EpicProceedToPayment";
 
 import {ContactNode} from "../../../../js/model/checkout/ContactNode";
-import {inspect} from "util";
 
 import {MockDB} from "../../../../dev/mocks/mocks/MockDB";
 
@@ -22,36 +15,6 @@ import {Enrolment} from "../../../../js/model/checkout/Enrolment";
 
 import {mockAmount} from "../../../../dev/mocks/mocks/MockFunctions";
 
-class ProcessCheckoutModel {
-  static process = (model: CheckoutModel): any[] => {
-    let result = ProcessCheckoutModel.processError(model.error);
-    result = [...result, ... ProcessCheckoutModel.processNodes(model.contactNodes)];
-    result.push(updateAmount(model.amount));
-    return result;
-  };
-
-  static processNodes = (nodes: ContactNode[]): any[] => {
-    const result = [];
-    if (!L.isEmpty(nodes)) {
-      nodes.forEach((node: ContactNode) => {
-        if (node.enrolments.find((e) => !L.isEmpty(e.errors))) {
-          result.push(changePhase(Phase.Summary));
-        }
-        result.push(updateContactNode(node));
-      });
-    }
-    return result;
-  };
-
-  static processError = (error: CommonError): any[] => {
-    const result = [];
-    if (!L.isNil(error)) {
-      result.push(changePhase(Phase.Summary));
-      result.push(showCommonError(commonErrorToValidationError(error)))
-    }
-    return result;
-  }
-}
 
 const db: MockDB = new MockDB();
 const contact1: Contact = db.getContactByIndex(0);
