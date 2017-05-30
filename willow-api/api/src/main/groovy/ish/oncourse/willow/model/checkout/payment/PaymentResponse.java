@@ -8,7 +8,6 @@ public class PaymentResponse  {
   
     private String sessionId = null;
     private PaymentStatus paymentStatus = null;
-    private String error = null;
     private String paymentReference = null;
     private List<String> applicationIds = new ArrayList<String>();
 
@@ -43,23 +42,6 @@ public class PaymentResponse  {
 
     public PaymentResponse paymentStatus(PaymentStatus paymentStatus) {
       this.paymentStatus = paymentStatus;
-      return this;
-    }
-
-    /**
-     * Get error
-     * @return error
-     */
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-       this.error = error;
-    }
-
-    public PaymentResponse error(String error) {
-      this.error = error;
       return this;
     }
 
@@ -110,7 +92,6 @@ public class PaymentResponse  {
       
       sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
       sb.append("    paymentStatus: ").append(toIndentedString(paymentStatus)).append("\n");
-      sb.append("    error: ").append(toIndentedString(error)).append("\n");
       sb.append("    paymentReference: ").append(toIndentedString(paymentReference)).append("\n");
       sb.append("    applicationIds: ").append(toIndentedString(applicationIds)).append("\n");
       sb.append("}");

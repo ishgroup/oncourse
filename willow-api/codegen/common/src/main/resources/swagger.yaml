@@ -1147,7 +1147,7 @@ definitions:
       - in progress
       - failed
       - successful
-      - error
+      - undefined
   checkout.payment.PaymentResponse:
     type: object
     properties:
@@ -1155,8 +1155,6 @@ definitions:
         type: string
       paymentStatus:
         $ref: '#/definitions/checkout.payment.PaymentStatus'
-      error:
-        type: string
       paymentReference:
         type: string
       applicationIds:

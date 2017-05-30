@@ -3,7 +3,6 @@ package ish.oncourse.services.paymentexpress
 import groovy.transform.CompileStatic
 import ish.common.types.PaymentStatus
 import ish.oncourse.model.PaymentOut
-import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInFail
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInSucceed
@@ -19,10 +18,9 @@ class ProcessDPSResponse {
 	private PaymentOut paymentOut
 	private ProcessCase processCase
 
-	private boolean abandonOnFail
 
-	static ProcessDPSResponse valueOf(PaymentInModel model, DPSResponse response, boolean abandonOnFail) {
-		new ProcessDPSResponse(model: model, response: response, abandonOnFail: abandonOnFail,
+	static ProcessDPSResponse valueOf(PaymentInModel model, DPSResponse response) {
+		new ProcessDPSResponse(model: model, response: response,
 				processCase: new ProcessCase() {
 					@Override
 					void onSUCCESS() {
@@ -40,11 +38,8 @@ class ProcessDPSResponse {
 					void onFAILED() {
 						model.paymentIn.setStatusNotes(IPaymentGatewayService.FAILED_PAYMENT_IN);
 						model.paymentIn.setStatus(PaymentStatus.FAILED_CARD_DECLINED)
-						if (abandonOnFail) {
-							PaymentInAbandon.valueOf(model, false).perform()
-						} else {
-							PaymentInFail.valueOf(model).perform()
-						}
+						PaymentInFail.valueOf(model).perform()
+						
 		
 					}
 		

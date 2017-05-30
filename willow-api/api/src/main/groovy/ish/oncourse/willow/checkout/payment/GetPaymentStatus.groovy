@@ -5,6 +5,7 @@ import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
 import ish.oncourse.model.College
 import ish.oncourse.model.PaymentIn
+import ish.oncourse.services.paymentexpress.IPaymentGatewayService
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
@@ -14,6 +15,8 @@ import org.slf4j.LoggerFactory
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.willow.model.checkout.payment.PaymentStatus.*
 
 
 class GetPaymentStatus {
@@ -33,9 +36,11 @@ class GetPaymentStatus {
     
     
     PaymentResponse get() {
-        List<PaymentIn> payments = ((ObjectSelect.query(PaymentIn).where(PaymentIn.SESSION_ID.eq(sessionId)) 
-                & PaymentIn.TYPE.eq(PaymentType.CREDIT_CARD)) 
-                & PaymentIn.SOURCE.eq(PaymentSource.SOURCE_WEB)).select(context)
+        List<PaymentIn> payments = (((ObjectSelect.query(PaymentIn)
+                .where(PaymentIn.SESSION_ID.eq(sessionId))
+                & PaymentIn.TYPE.eq(PaymentType.CREDIT_CARD))
+                & PaymentIn.SOURCE.eq(PaymentSource.SOURCE_WEB)) 
+                & PaymentIn.COLLEGE.eq(college)).select(context)
         
         if (payments.empty) {
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Payment not exist')).build())
@@ -51,18 +56,19 @@ class GetPaymentStatus {
         
         
         switch (payment.status) {
-
             case PaymentStatus.IN_TRANSACTION:
                 if (payment.paymentTransactions.empty) {
-                    response.paymentStatus = ish.oncourse.willow.model.checkout.payment.PaymentStatus.ERROR
+                    response.paymentStatus = UNDEFINED
+                } else if (payment.paymentTransactions.find { !it.isFinalised }) {
+                    response.paymentStatus = IPaymentGatewayService.UNKNOW_RESULT_PAYMENT_IN == payment.statusNotes ? UNDEFINED : IN_PROGRESS
                 }
                 break
             case PaymentStatus.SUCCESS:
-                
+                response.paymentStatus = SUCCESSFUL
                 break
             case PaymentStatus.FAILED:
             case PaymentStatus.FAILED_CARD_DECLINED:
-            
+                response.paymentStatus = FAILED
                 break
             default:
                 logger.error("Unexpected payment status, paymentId: ${payment.id}")
@@ -70,7 +76,6 @@ class GetPaymentStatus {
         }
 
         response
-        
     }
 
     

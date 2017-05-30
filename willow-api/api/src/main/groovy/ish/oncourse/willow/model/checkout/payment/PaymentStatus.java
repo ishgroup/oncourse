@@ -15,7 +15,7 @@ public enum PaymentStatus {
   
   SUCCESSFUL("successful"),
   
-  ERROR("error");
+  UNDEFINED("undefined");
 
   private String value;
 
