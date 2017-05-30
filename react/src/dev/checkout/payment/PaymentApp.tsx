@@ -12,8 +12,9 @@ import "../../../scss/index.scss";
 import Payment from "../../../js/enrol/containers/payment/Payment";
 import {addContact} from "../../../js/enrol/containers/contact-add/actions/Actions";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
+import {updateAmount} from "../../../js/enrol/actions/Actions";
 
-
+import * as MockFunctions from "../../mocks/mocks/MockFunctions";
 
 const store = CreateStore();
 RestoreState(store, () => render());
@@ -21,7 +22,7 @@ RestoreState(store, () => render());
 const config: MockConfig = MockConfig.CONFIG;
 
 store.dispatch(addContact(config.db.getContactByIndex(0)));
-store.dispatch(addContact(config.db.getContactByIndex(0)));
+store.dispatch(updateAmount(MockFunctions.mockAmount()));
 
 
 const render = () => ReactDOM.render(
