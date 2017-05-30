@@ -1,34 +1,22 @@
 import React from "react";
-import AmountComp from "../../components/AmountComp";
-import PaymentForm from "./components/PaymentForm";
-import {Amount} from "../../../model/checkout/Amount";
-import {Contact} from "../../../model/web/Contact";
+import {connect, Dispatch} from "react-redux";
+import {IshState} from "../../../services/IshState";
+import {PaymentComp} from "./components/PaymentComp";
+import CreditCardComp from "./components/CreditCardComp";
+import {Container as CreditCartForm} from "./CreditCartForm"
 
-interface Props {
-	contacts: Contact[];
-	amount: Amount;
-}
+const PropsBy = (state: IshState): any => {
+  return {
+    contacts: [state.checkout.payer.entity],
+    amount: state.checkout.amount,
+    paymentForm: <CreditCartForm/>
+  }
+};
 
-class Payment extends React.Component<Props, any> {
-	onPaymentFormSubmit = (data, dispatch, props) => {}
+export const ActionsBy = (dispatch: Dispatch<any>): any => {
+  return {};
+};
 
-	render() {
-		const {amount, contacts} = this.props;
+const Container = connect(PropsBy, ActionsBy)(PaymentComp);
 
-		return (
-			<div>
-				<div className="row">
-					<div className="col-xs-24">
-						<div className="amount-container">
-							<AmountComp amount={amount}/>
-						</div>
-					</div>
-				</div>
-
-				<PaymentForm amount={amount} contacts={contacts} onSubmit={this.onPaymentFormSubmit} />
-			</div>
-		)
-	}
-}
-
-export default Payment;
+export default Container

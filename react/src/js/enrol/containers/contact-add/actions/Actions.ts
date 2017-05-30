@@ -1,6 +1,8 @@
-import {_toRequestType} from "../../../../common/actions/ActionUtils";
+import {_toRequestType, FULFILLED} from "../../../../common/actions/ActionUtils";
 import {NAME as ContactAddForm} from "../ContactAddForm";
 import {Contact} from "../../../../model/web/Contact";
+import {normalize} from "normalizr";
+import {ContactsSchema} from "../../../../NormalizeSchema";
 
 
 export const OPEN_ADD_CONTACT_FORM: string = "checkout/open/add/contact";
@@ -25,3 +27,9 @@ export const openAddContactForm = (): { type: string } => {
     type: OPEN_ADD_CONTACT_FORM
   }
 };
+
+export const addContact = function (contact: Contact) {
+  return {type: ADD_CONTACT, payload: normalize(contact, ContactsSchema)};
+};
+
+

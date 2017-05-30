@@ -12,7 +12,7 @@ import {IshState} from "../../../js/services/IshState";
 import {normalize} from "normalizr";
 import {ClassesListSchema} from "../../../js/NormalizeSchema";
 import {ContactNode} from "../../../js/model/checkout/ContactNode";
-import {convert} from "../../../js/enrol/containers/summary/reducers/State";
+import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/State";
 import {Promotion} from "../../../js/model/web/Promotion";
 
 export const mockPromotion = (): Promotion => {
@@ -136,7 +136,7 @@ export const mockState = (contact: Contact,
   const state: IshState =
     {
       checkout: {
-        summary: convert(items),
+        summary: ContactNodeToState(items),
         payer: {
           entity: contact
         },

@@ -2,11 +2,11 @@ import * as SummaryActions from "../../../../../../js/enrol/containers/summary/a
 
 import {ContactNode} from "../../../../../../js/model/checkout/ContactNode";
 
-import {convert, State} from "../../../../../../js/enrol/containers/summary/reducers/State";
+import {ContactNodeToState, State} from "../../../../../../js/enrol/containers/summary/reducers/State";
 
 import {Reducer} from "../../../../../../js/enrol/containers/summary/reducers/Reducer";
 
-const state: State = convert([{
+const state: State = ContactNodeToState([{
   contactId: "00001",
   enrolments: [
     {
@@ -51,7 +51,7 @@ test('test add contact ', () => {
     ]
   };
 
-  const ns: State = Reducer(state, {type: SummaryActions.ItemSelect, payload: convert([upi])});
+  const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
 
   expect(ns.result.length).toBe(3);
   expect(ns.entities.enrolments['00003-00001'].contactId).toBe('00003');
@@ -71,7 +71,7 @@ test('test add enrolment ', () => {
     ]
   };
 
-  const ns: State = Reducer(state, {type: SummaryActions.ItemSelect, payload: convert([upi])});
+  const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
 
   expect(ns.result.length).toBe(2);
   expect(ns.entities.enrolments['00002-00004'].contactId).toBe('00002');
@@ -90,7 +90,7 @@ test('test update enrolment', () => {
       }
     ]
   };
-  const ns: State = Reducer(state, {type: SummaryActions.ItemSelect, payload: convert([upi])});
+  const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
   expect(ns.result.length).toBe(2);
   expect(ns.entities.enrolments['00002-00003'].selected).toBe(true);
 });

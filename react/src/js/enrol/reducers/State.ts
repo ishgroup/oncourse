@@ -1,4 +1,3 @@
-//--- CheckoutState
 import {ValidationError} from "../../model/common/ValidationError";
 import {Contact} from "../../model/web/Contact";
 import {ContactFields} from "../../model/field/ContactFields";
@@ -14,12 +13,8 @@ export interface CheckoutState {
   amount: Amount
 }
 
-export interface PayerEntity extends Contact {
-
-}
-
 export interface PayerState {
-  entity: PayerEntity;
+  entity: Contact;
 }
 
 export enum Phase {

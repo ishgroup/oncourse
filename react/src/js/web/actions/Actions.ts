@@ -1,3 +1,5 @@
+import {Contact} from "../../model/web/Contact";
+import {FULFILLED} from "../../common/actions/ActionUtils";
 export const Actions = {
   ADD_CLASS_TO_CART: "ADD_CLASS_TO_CART",
   REMOVE_CLASS_FROM_CART: "REMOVE_CLASS_FROM_CART",
@@ -44,3 +46,7 @@ export function hidePopup() {
     type: Actions.HIDE_POPUP
   };
 }
+
+export const addContact = function (contact: Contact) {
+  return {type: FULFILLED(Actions.REQUEST_CONTACT), payload: contact};
+};

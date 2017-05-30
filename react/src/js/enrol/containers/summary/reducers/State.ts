@@ -24,7 +24,7 @@ export interface State {
   }
 }
 
-export const convert = (input: ContactNode[]): State => {
+export const ContactNodeToState = (input: ContactNode[]): State => {
   return normalize(input, Schema);
 };
 

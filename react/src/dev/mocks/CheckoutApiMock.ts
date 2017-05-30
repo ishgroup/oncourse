@@ -41,4 +41,5 @@ export class CheckoutApiMock extends CheckoutApi {
     result.payerId = request.payerId;
     return this.config.createResponse(result);
   }
+
 }

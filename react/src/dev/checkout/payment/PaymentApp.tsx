@@ -9,21 +9,27 @@ import 'react-select/dist/react-select.css';
 import "../../../scss/_ReactSelect.scss";
 import "../../../scss/index.scss";
 
-import {amount, contactPropses} from "./PaymentApp.data";
 import Payment from "../../../js/enrol/containers/payment/Payment";
+import {addContact} from "../../../js/enrol/containers/contact-add/actions/Actions";
+import {MockConfig} from "../../mocks/mocks/MockConfig";
+
+
 
 const store = CreateStore();
 RestoreState(store, () => render());
+
+const config: MockConfig = MockConfig.CONFIG;
+
+store.dispatch(addContact(config.db.getContactByIndex(0)));
+store.dispatch(addContact(config.db.getContactByIndex(0)));
+
 
 const render = () => ReactDOM.render(
 	<Provider store={store}>
 		<div id="checkout" className="col-xs-24 payments">
 			<ProgressRedux/>
 			<MessagesRedux/>
-			<Payment contacts={[
-				contactPropses[0],
-				contactPropses[1]
-			]} amount={amount} />
+			<Payment/>
 		</div>
 	</Provider>,
 	document.getElementById('root')

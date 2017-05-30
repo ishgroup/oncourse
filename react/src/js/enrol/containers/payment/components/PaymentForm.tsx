@@ -5,6 +5,11 @@ import {Amount} from "../../../../model/checkout/Amount";
 import CreditCardComp from "./CreditCardComp";
 import CorporatePassComp from "./CorporatePassComp";
 import {Contact} from "../../../../model/web/Contact";
+import {Conditions} from "./Conditions";
+
+/**
+ * @Deprecated will be remove, now it is used only as example
+ */
 
 interface Props extends FormProps<DataShape, any, any> {
 	contacts: Contact[];
@@ -44,24 +49,11 @@ class PaymentForm extends React.Component<Props, any> {
 				<div id="tabable-container">
 					<PaymentFormNav paymentTabOnClick={this.paymentTabOnClick} currentForm={this.state.currentForm} />
 					<div className="tab-content">
-						<CreditCardComp contacts={contacts} amount={amount} currentForm={this.state.currentForm} />
+						<CreditCardComp contacts={contacts} amount={amount} />
 						<CorporatePassComp currentForm={this.state.currentForm} />
 					</div>
 				</div>
-
-				<div>
-					<label>Conditions<em title="This field is required">*</em></label>
-				</div>
-
-				<div className="conditions">
-						<span className="valid">
-							<Field name="userAgreed" component="input" type="checkbox" value="1" />
-							<div className="conditions-text">
-								I understand the <a target="_blank" href="/terms-conditions">enrolment, sale and refund policy</a>.
-							</div>
-							<span className="validate-text" />
-						</span>
-				</div>
+				<Conditions/>
 
 				<div className="form-controls enrolmentsSelected">
 					<input value="Confirm" className="btn btn-primary" id="paymentSubmit" name="paymentSubmit" type="submit" />

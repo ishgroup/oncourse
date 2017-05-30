@@ -10,6 +10,7 @@ import {ContactNode} from "../../model/checkout/ContactNode";
 import {Phase} from "../reducers/State";
 import {CommonError} from "../../model/common/CommonError";
 import {commonErrorToValidationError} from "../../common/utils/ErrorUtils";
+import {Epic} from "redux-observable";
 
 
 const request: EpicUtils.Request<CheckoutModel, IshState> = {
@@ -19,6 +20,8 @@ const request: EpicUtils.Request<CheckoutModel, IshState> = {
     return ProcessCheckoutModel.process(value);
   }
 };
+
+export const EpicProceedToPayment: Epic<any, any> = EpicUtils.Create(request);
 
 
 /**

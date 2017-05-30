@@ -8,9 +8,6 @@ import {Phase} from "../reducers/State";
 import * as Actions from "../../enrol/actions/Actions";
 import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
-import {Props as ContactProps} from "./summary/components/ContactComp";
-import {Amount} from "../../model/checkout/Amount";
-import {OpenPayment} from "./payment/actions/Actions";
 import Payment from "./payment/Payment";
 
 interface Props {
@@ -34,6 +31,7 @@ export class Checkout extends React.Component<Props, any> {
         {phase === Phase.AddContact && <ContactAddForm/>}
         {phase === Phase.EditContact && <ContactEditForm/>}
         {phase === Phase.Summary && <Summary/>}
+        {phase === Phase.Payment && <Payment/>}
       </div>
     )
   }

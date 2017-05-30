@@ -1,4 +1,3 @@
-import {Props as ContactProps} from "../../../js/enrol/containers/payment/components/PayerComp";
 import {Contact} from "../../../js/model/web/Contact";
 
 import faker from "faker";
@@ -18,14 +17,6 @@ const contacts: Contact[] =
 		mockContact(),
 		mockContact()
 	];
-
-const createContactProps = (contact: Contact):ContactProps => {
-	return {
-		contact: contact
-	}
-};
-
-export const contactPropses: ContactProps[] = contacts.map(createContactProps);
 
 export const amount: Amount = {
 	total: faker.finance.amount(),

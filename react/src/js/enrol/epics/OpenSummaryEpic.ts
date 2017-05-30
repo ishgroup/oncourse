@@ -8,13 +8,13 @@ import {changePhase, SHOW_MESSAGES, updateAmountRequest} from "../actions/Action
 import {Phase} from "../reducers/State";
 import {toValidationError} from "../../common/utils/ErrorUtils";
 import * as EpicUtils from "./EpicUtils";
-import {convert} from "../containers/summary/reducers/State";
+import {ContactNodeToState} from "../containers/summary/reducers/State";
 
 const request: EpicUtils.Request<ContactNode, IshState> = {
   type: OpenSummaryRequest,
   getData: (payload, state) => CheckoutService.getContactNode(state),
   processData: (contactNode, state) => {
-    return [{type: ItemsLoad, payload: convert([contactNode])}, changePhase(Phase.Summary), updateAmountRequest()];
+    return [{type: ItemsLoad, payload: ContactNodeToState([contactNode])}, changePhase(Phase.Summary), updateAmountRequest()];
   },
   processError: (data) => {
     return {type: SHOW_MESSAGES, payload: toValidationError(data)}

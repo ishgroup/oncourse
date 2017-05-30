@@ -49,7 +49,7 @@ export const SummaryPropsBy = (state: IshState): any => {
   }
 };
 
-export const SummaryFunctionsBy = (dispatch: Dispatch<any>) => {
+export const SummaryActionsBy = (dispatch: Dispatch<any>):any => {
   return {
     onSelect: (item: Enrolment | Membership | Article | Voucher, selected: boolean): void => {
       dispatch(selectItem(item, selected))
@@ -63,6 +63,6 @@ export const SummaryFunctionsBy = (dispatch: Dispatch<any>) => {
   };
 };
 
-const Container = connect(SummaryPropsBy, SummaryFunctionsBy)(SummaryComp);
+const Container = connect(SummaryPropsBy, SummaryActionsBy)(SummaryComp);
 
 export default Container

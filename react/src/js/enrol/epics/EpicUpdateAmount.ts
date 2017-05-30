@@ -14,6 +14,4 @@ const request: EpicUtils.Request<Amount, IshState> = {
   }
 };
 
-const Epic: Epic<any, any> = EpicUtils.Create(request);
-
-export default Epic;
+export const EpicUpdateAmount: Epic<any, any> = EpicUtils.Create(request);
