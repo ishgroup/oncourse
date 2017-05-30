@@ -38,15 +38,16 @@ class CreditCardComp extends React.Component<Props, any> {
           <div className="enrolmentsSelected">
             <fieldset>
               <div className="form-details">
-                <p>
-                  <label>Pay now</label>
-                  <span id="cardtotalstring">
-										${ amount.payNow } <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
-									</span>
-                </p>
+                <div>
+                  <div>
+                    <label>Pay now</label>
+                    <span id="cardtotalstring">
+                      ${ amount.payNow } <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
+                    </span>
+                  </div>
+                </div>
 
-                <PayerSelect contacts={contacts} payer={contacts[0]} onChange={(c) => {
-                }}/>
+                <PayerSelect contacts={contacts} payer={contacts[0]} onChange={(c) => { }}/>
                 <PayerAdd/>
 
                 <Field component={TextField} maxLength={ 80 } className="input-fixed " autoComplete="off"
@@ -66,11 +67,10 @@ class CreditCardComp extends React.Component<Props, any> {
                     Expiry<em title="This field is required">*</em>
                   </label>
                   <span className="valid input-select-small">
-										<Field component={SelectField} name="expiryMonth" required={true} loadOptions={getExpiryMonths}/>
-										/
-										<Field component={SelectField} name="expiryYear" required={true}
-                           loadOptions={() => getExpiryYear()}/>
-									</span>
+                    <Field component={SelectField} name="expiryMonth" required={true} loadOptions={getExpiryMonths}/>
+                    /
+                    <Field component={SelectField} name="expiryYear" required={true} loadOptions={() => getExpiryYear()}/>
+                  </span>
                 </div>
               </div>
             </fieldset>

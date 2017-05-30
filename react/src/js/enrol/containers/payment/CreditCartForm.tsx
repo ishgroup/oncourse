@@ -19,16 +19,14 @@ class CreditCartForm extends React.Component<Props, any> {
   render() {
     const {amount, contacts, handleSubmit} = this.props;
     return (
-      <div id="tabable-container">
-        <div className="tab-content">
-          <form onSubmit={handleSubmit} id="payment-form">
-            <CreditCardComp amount={amount} contacts={contacts}/>
-            <Conditions/>
-            <div className="form-controls enrolmentsSelected">
-              <input value="Confirm" className="btn btn-primary" id="paymentSubmit" name="paymentSubmit" type="submit" />
-            </div>
-          </form>
-        </div>
+      <div>
+        <form onSubmit={handleSubmit} id="payment-form">
+          <CreditCardComp amount={amount} contacts={contacts}/>
+          <Conditions/>
+          <div className="form-controls enrolmentsSelected">
+            <input value="Confirm" className="btn btn-primary" id="paymentSubmit" name="paymentSubmit" type="submit" />
+          </div>
+        </form>
       </div>
     )
   }
