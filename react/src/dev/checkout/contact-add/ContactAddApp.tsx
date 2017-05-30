@@ -5,7 +5,7 @@ import {Provider} from "react-redux";
 import ContactAddForm from "enrol/containers/contact-add/ContactAddForm";
 import {CreateStore} from "CreateStore";
 import {Progress, Tab} from "enrol/components/Progress";
-import {MessagesRedux} from "enrol/containers/Functions";
+import {Messages} from "enrol/containers/Functions";
 
 // const reducer = (state: any = {}): any => {
 //   return state;
@@ -24,7 +24,7 @@ const render = () => ReactDOM.render(
           disabled: [Tab.Summary, Tab.Payment]
         }}
       />
-      <MessagesRedux/>
+      <Messages/>
       <ContactAddForm/>
     </div>
   </Provider>,

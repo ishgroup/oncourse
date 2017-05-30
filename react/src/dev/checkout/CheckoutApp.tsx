@@ -6,7 +6,10 @@ import {CreateStore, RestoreState} from "../../js/CreateStore";
 import Checkout from "../../js/enrol/containers/Checkout";
 import {Injector} from "../../js/injector";
 
+import 'react-select/dist/react-select.css';
+import "../../scss/_ReactSelect.scss";
 import "../../scss/index.scss";
+
 import * as MockInjector from "../mocks/MockInjector";
 import {MockControl} from "./MockControl";
 

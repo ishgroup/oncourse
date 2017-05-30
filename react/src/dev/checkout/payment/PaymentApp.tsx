@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import {Provider} from "react-redux";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
-import {MessagesRedux, ProgressRedux} from "../../../js/enrol/containers/Functions";
+import {Messages, Progress} from "../../../js/enrol/containers/Functions";
 
 import 'react-select/dist/react-select.css';
 import "../../../scss/_ReactSelect.scss";
@@ -28,8 +28,8 @@ store.dispatch(updateAmount(MockFunctions.mockAmount()));
 const render = () => ReactDOM.render(
 	<Provider store={store}>
 		<div id="checkout" className="col-xs-24 payments">
-			<ProgressRedux/>
-			<MessagesRedux/>
+			<Progress/>
+			<Messages/>
 			<Payment/>
 		</div>
 	</Provider>,

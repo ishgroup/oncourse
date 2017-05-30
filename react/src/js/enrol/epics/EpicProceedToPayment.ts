@@ -2,7 +2,7 @@ import * as L from "lodash";
 import {IshState} from "../../services/IshState";
 import CheckoutService from "../services/CheckoutService";
 import {PROCEED_TO_PAYMENT, updateContactNode} from "../containers/summary/actions/Actions";
-import {changePhase, updateAmount} from "../actions/Actions";
+import {CHANGE_PHASE, changePhase, updateAmount} from "../actions/Actions";
 import * as EpicUtils from "./EpicUtils";
 import {showCommonError} from "./EpicUtils";
 import {CheckoutModel} from "../../model/checkout/CheckoutModel";
@@ -32,6 +32,9 @@ export class ProcessCheckoutModel {
     let result = ProcessCheckoutModel.processError(model.error);
     result = [...result, ... ProcessCheckoutModel.processNodes(model.contactNodes)];
     result.push(updateAmount(model.amount));
+    if (!result.find((a) => a.type == CHANGE_PHASE && a.payload == Phase.Summary)) {
+      result.push(changePhase(Phase.Payment))
+    }
     return result;
   };
 

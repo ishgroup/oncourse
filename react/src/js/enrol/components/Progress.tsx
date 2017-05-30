@@ -12,6 +12,11 @@ const Classes = {
   last: "last"
 };
 
+interface Props {
+  model: Model
+  onChange: (Tab) => void
+}
+
 export class Progress extends React.Component<Props, any> {
 
   render() {
@@ -61,7 +66,3 @@ export interface Model {
   disabled: Tab[]
 }
 
-interface Props {
-  model: Model
-  onChange: (Tab) => void
-}

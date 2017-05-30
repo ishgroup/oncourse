@@ -8,7 +8,7 @@ const CLASS_WARNINGS: string = "message";
 /**
  * Shows validation errors
  */
-class Messages extends React.Component<Props, any> {
+export class Messages extends React.Component<Props, any> {
   private renderMessages = (messages: string[], className: string): any => {
     if (L.isNil(messages) || !messages.length) {
       return null
@@ -51,5 +51,3 @@ class Messages extends React.Component<Props, any> {
 export interface Props {
   error: ValidationError
 }
-
-export default Messages;

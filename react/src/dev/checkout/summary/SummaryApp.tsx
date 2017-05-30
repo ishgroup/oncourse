@@ -3,12 +3,11 @@ import * as ReactDOM from "react-dom";
 
 import {Provider} from "react-redux";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
-import {MessagesRedux, ProgressRedux} from "../../../js/enrol/containers/Functions";
+import {Messages, Progress} from "../../../js/enrol/containers/Functions";
 
 
 import "../../../scss/index.scss";
 
-import Summary from "../../../js/enrol/containers/summary/Summary";
 import {mockAmount} from "../../mocks/mocks/MockFunctions";
 import {Amount} from "../../../js/model/checkout/Amount";
 import {Contact} from "../../../js/model/web/Contact";
@@ -80,8 +79,8 @@ const onSelect = (contact, item) => {
 const render = () => ReactDOM.render(
   <Provider store={store}>
     <div id="checkout" className="col-xs-24 payments">
-      <ProgressRedux/>
-      <MessagesRedux/>
+      <Progress/>
+      <Messages/>
       <SummaryComp contacts={[
         contactPropses[0],
         contactPropses[1]

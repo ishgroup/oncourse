@@ -1,21 +1,37 @@
 import {connect} from "react-redux";
-import Messages from "../components/Messages";
+import {Messages as MessagesComp} from "../components/Messages";
 import {Phase} from "../reducers/State";
-import {Model, Progress, Tab} from "../components/Progress";
+import {Model, Progress as ProgressComp, Tab} from "../components/Progress";
+import {changePhase, changePhaseRequest} from "../actions/Actions";
 
-export const MessagesRedux = connect((state) => {
+export const Messages = connect((state) => {
   return {error: state.checkout.error}
-})(Messages);
+})(MessagesComp);
 
 
-
-
-export const ProgressRedux = connect((state) => {
+export const Progress = connect((state) => {
   return {model: progressModelBy(state.checkout.phase)}
 }, (dispatch) => {
-  return {onChange: (tab:Tab) => console.log(tab) }
-})(Progress);
+  return {
+    onChange: (tab: Tab): void => {
+      dispatch(changeTab(tab))
+    }
+  }
+})(ProgressComp);
 
+
+const changeTab = (tab: Tab): { type: string, payload: Phase } => {
+  switch (tab) {
+    case Tab.Payment:
+      return changePhaseRequest(Phase.Payment);
+    case Tab.Summary:
+      return changePhase(Phase.Summary);
+    case Tab.Details:
+      return changePhaseRequest(Phase.Payment);
+    default:
+      throw new Error()
+  }
+};
 
 export const progressModelBy = (phase: Phase): Model => {
   const result: Model = {
@@ -42,7 +58,7 @@ export const progressModelBy = (phase: Phase): Model => {
       break;
     case Phase.Payment:
       result.active = Tab.Payment;
-      result.disabled = [Tab.Details, Tab.Summary];
+      result.disabled = [Tab.Details];
       break;
   }
   return result;

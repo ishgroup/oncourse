@@ -13,7 +13,7 @@ import {normalize} from "normalizr";
 import {ContactsSchema} from "../../../js/NormalizeSchema";
 import {Values} from "redux-form-website-template";
 import {Progress, Tab} from "../../../js/enrol/components/Progress";
-import {MessagesRedux} from "../../../js/enrol/containers/Functions";
+import {Messages} from "../../../js/enrol/containers/Functions";
 
 // const reducer = (state: any = {}): any => {
 //   return state;
@@ -43,7 +43,7 @@ const render = () => ReactDOM.render(
   <Provider store={store}>
     <div id="checkout" className="payments">
       <Progress onChange={(t) => {}} model={{active: Tab.Details, disabled: [Tab.Summary, Tab.Payment]}}/>
-      <MessagesRedux/>
+      <Messages/>
       <ContactEditForm/>
       <Values form={NAME}/>
     </div>
