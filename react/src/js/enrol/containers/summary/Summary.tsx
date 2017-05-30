@@ -6,7 +6,7 @@ import {Props as ContactProps} from "./components/ContactComp";
 import {Props as EnrolmentProps} from "./components/EnrolmentComp";
 import SummaryComp from "./components/SummaryComp";
 import {Enrolment} from "../../../model/checkout/Enrolment";
-import {selectItem} from "./actions/Actions";
+import {proceedToPayment, selectItem} from "./actions/Actions";
 import {openAddContactForm} from "../contact-add/actions/Actions";
 import {openPayment} from "../payment/actions/Actions";
 import {Voucher} from "../../../model/checkout/Voucher";
@@ -58,7 +58,7 @@ export const SummaryFunctionsBy = (dispatch: Dispatch<any>) => {
       dispatch(openAddContactForm())
     },
     onProceedToPayment: (): void => {
-      dispatch(openPayment())
+      dispatch(proceedToPayment())
     }
   };
 };

@@ -56,6 +56,10 @@ export class CheckoutService {
         return Promise.resolve(model.amount)
       });
   }
+
+  public getCheckoutModel(state: IshState): Promise<CheckoutModel> {
+    return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state));
+  }
 }
 
 

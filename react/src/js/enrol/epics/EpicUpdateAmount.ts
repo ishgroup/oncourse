@@ -3,14 +3,14 @@ import "rxjs";
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import * as EpicUtils from "./EpicUtils";
-import {AmountUpdate, AmountUpdateRequest} from "../actions/Actions";
+import {UPDATE_AMOUNT_REQUEST, updateAmount} from "../actions/Actions";
 import {Amount} from "../../model/checkout/Amount";
 
 const request: EpicUtils.Request<Amount, IshState> = {
-  type: AmountUpdateRequest,
+  type: UPDATE_AMOUNT_REQUEST,
   getData: (payload, state: IshState) => CheckoutService.getAmount(state),
   processData: (value: Amount, state: IshState) => {
-    return [{type: AmountUpdate, payload: value}];
+    return [updateAmount(value)];
   }
 };
 

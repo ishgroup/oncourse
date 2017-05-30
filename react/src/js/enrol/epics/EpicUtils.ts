@@ -2,8 +2,10 @@ import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
 import {Observable} from "rxjs";
 import "rxjs";
-import {MessagesShow} from "../actions/Actions";
+import {SHOW_MESSAGES} from "../actions/Actions";
 import {toValidationError} from "../../common/utils/ErrorUtils";
+import {AxiosResponse} from "axios";
+import {CommonError} from "../../model/common/CommonError";
 
 
 export interface Request<V, S> {
@@ -14,9 +16,14 @@ export interface Request<V, S> {
 }
 
 
-const ProcessError = (data: any): { type: string, payload: any } => {
-  return {type: MessagesShow, payload: toValidationError(data)}
+export const showCommonError = (error: CommonError): { type: string, payload: any } => {
+  return {type: SHOW_MESSAGES, payload: error}
 };
+
+export const ProcessError = (data: AxiosResponse): { type: string, payload: any } => {
+  return {type: SHOW_MESSAGES, payload: toValidationError(data)}
+};
+
 
 export const Create = <V, S>(request: Request<V, S>): Epic<any, any> => {
   return (action$: ActionsObservable<any>, store: MiddlewareAPI<S>): Observable<any> => {

@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import "rxjs";
 import * as Actions from "../containers/contact-edit/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
-import {changePhase, changePhaseRequest, MessagesShow} from "../actions/Actions";
+import {changePhase, changePhaseRequest, SHOW_MESSAGES} from "../actions/Actions";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Phase} from "../reducers/State";
 import {toValidationError} from "../../common/utils/ErrorUtils";
@@ -22,7 +22,7 @@ const OpenContactDetailsEpic: Epic<any, any> = (action$: ActionsObservable<any>,
         return [changePhaseRequest(Phase.Summary)]
       }
     }).catch((data) => {
-      return Observable.of({type: MessagesShow, payload: toValidationError(data)});
+      return Observable.of({type: SHOW_MESSAGES, payload: toValidationError(data)});
     });
 };
 export default OpenContactDetailsEpic;

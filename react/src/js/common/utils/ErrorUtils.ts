@@ -16,6 +16,14 @@ export const isPlainTextError = (error: any): boolean => {
   return typeof error === "string";
 };
 
+export const commonErrorToValidationError = (error: CommonError):ValidationError => {
+  let messages: ValidationError = new ValidationError();
+  messages.formErrors = [];
+  messages.fieldsErrors = [];
+  messages.formErrors.push(error.message);
+  return messages;
+};
+
 export const toValidationError = (response: AxiosResponse) => {
   let messages: ValidationError = new ValidationError();
   messages.formErrors = [];

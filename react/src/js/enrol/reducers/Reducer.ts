@@ -13,7 +13,7 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
   switch (action.type) {
     case ContactEditActions.FieldsLoad:
       return action.payload;
-    case Actions.PhaseChange:
+    case Actions.CHANGE_PHASE:
       switch (action.payload) {
         case Phase.EditContact:
           return state;
@@ -37,7 +37,7 @@ const ContactReducer = (state = {}, action): any => {
 
 const AmountReducer = (state: Amount = {}, action: { type: string, payload: Amount }): Amount => {
   switch (action.type) {
-    case Actions.AmountUpdate:
+    case Actions.UPDATE_AMOUNT:
       return action.payload;
     default:
       return state;
@@ -46,10 +46,10 @@ const AmountReducer = (state: Amount = {}, action: { type: string, payload: Amou
 
 const ErrorReducer = (state: ValidationError = null, action: any): any => {
   switch (action.type) {
-    case Actions.MessagesShow:
+    case Actions.SHOW_MESSAGES:
       return action.payload;
     case Actions.Init:
-    case Actions.PhaseChange:
+    case Actions.CHANGE_PHASE:
     case ContactAddActions.ADD_CONTACT:
     case ContactEditActions.FieldsLoad:
     case ContactEditActions.FieldsSave:
@@ -61,7 +61,7 @@ const ErrorReducer = (state: ValidationError = null, action: any): any => {
 
 const PhaseReducer = (state: Phase = Phase.Init, action: any): any => {
   switch (action.type) {
-    case Actions.PhaseChange:
+    case Actions.CHANGE_PHASE:
       return action.payload;
     default:
       return state;

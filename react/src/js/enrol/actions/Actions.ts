@@ -2,29 +2,30 @@ import {_toRejectType, _toRequestType} from "../../common/actions/ActionUtils";
 import {Phase} from "../reducers/State";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
+import {Amount} from "../../model/checkout/Amount";
 
 //initialize checkout application
 
-export const MessagesShow: string = "checkout/messages/show";
-export const MessagesShowRequest: string = _toRequestType(MessagesShow);
+export const SHOW_MESSAGES: string = "checkout/messages/show";
+export const SHOW_MESSAGES_REQUEST: string = _toRequestType(SHOW_MESSAGES);
 
 export const Init: string = "checkout/init";
 export const InitRequest: string = _toRequestType(Init);
 
 //change current phase action
-export const PhaseChange: string = "checkout/phase/change";
-export const PhaseChangeRequest: string = _toRequestType(PhaseChange);
+export const CHANGE_PHASE: string = "checkout/phase/change";
+export const CHANGE_PHASE_REQUEST: string = _toRequestType(CHANGE_PHASE);
 
 export const PayerSet: string = "checkout/payer/set";
 export const PayerSetRequest: string = _toRequestType(PayerSet);
 export const PayerSetReject: string = _toRejectType(PayerSet);
 
-export const AmountUpdate: string = "checkout/amount/update";
-export const AmountUpdateRequest: string = _toRequestType(AmountUpdate);
+export const UPDATE_AMOUNT: string = "checkout/amount/update";
+export const UPDATE_AMOUNT_REQUEST: string = _toRequestType(UPDATE_AMOUNT);
 
 export const showFormValidation = (response: AxiosResponse, form: string): any => {
   return {
-    type: MessagesShowRequest,
+    type: SHOW_MESSAGES_REQUEST,
     payload: response,
     meta: {
       form: form
@@ -34,7 +35,7 @@ export const showFormValidation = (response: AxiosResponse, form: string): any =
 
 export const changePhaseRequest = (phase: Phase) => {
   return {
-    type: PhaseChangeRequest,
+    type: CHANGE_PHASE_REQUEST,
     payload: phase
   }
 };
@@ -45,13 +46,20 @@ export const changePhase = (phase: Phase) => {
     throw new Error();
 
   return {
-    type: PhaseChange,
+    type: CHANGE_PHASE,
     payload: phase
   }
 };
 
-export const updateAmount = (): { type: string } => {
+export const updateAmountRequest = (): { type: string } => {
   return {
-    type: AmountUpdateRequest
+    type: UPDATE_AMOUNT_REQUEST
+  }
+};
+
+export const updateAmount = (amount: Amount): { type: string, payload: Amount } => {
+  return {
+    type: UPDATE_AMOUNT,
+    payload: amount
   }
 };

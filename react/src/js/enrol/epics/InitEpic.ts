@@ -21,7 +21,7 @@ const cartIsEmpty = (cart: CartState) => {
 
 const showCartIsEmptyMessage = (): any => {
   const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
-  return [changePhase(Phase.Init),{type: Actions.MessagesShow, payload: error}];
+  return [changePhase(Phase.Init),{type: Actions.SHOW_MESSAGES, payload: error}];
 };
 
 const showContactDetails = (): any => {
