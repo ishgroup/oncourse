@@ -15,12 +15,6 @@ import {Values} from "redux-form-website-template";
 import {Progress, Tab} from "../../../js/enrol/components/Progress";
 import {Messages} from "../../../js/enrol/containers/Functions";
 
-// const reducer = (state: any = {}): any => {
-//   return state;
-// };
-//
-// const store = createStore(combineReducers({state: reducer, form: formReducer}));
-
 const store = CreateStore();
 
 //add contact

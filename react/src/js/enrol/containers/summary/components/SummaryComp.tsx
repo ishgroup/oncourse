@@ -19,10 +19,11 @@ export interface Props {
 
 
 class SummaryComp extends React.Component<Props, any> {
-  private hasEnabled = (contacts: ContactProps[]): boolean => {
-    return L.map(contacts, (c) => {
-        c.enrolments.find((e) => (e.enrolment.selected && e.enrolment.errors.length === 0))
-      }).length > 0;
+  private hasSelected = (contacts: ContactProps[]): boolean => {
+    const selected: ContactProps = L.find(contacts, (c) => {
+      return c.enrolments.find((e) => (e.enrolment.selected && e.enrolment.errors.length === 0))
+    });
+    return !!selected;
   };
 
   renderContact = (props: ContactProps) => {
@@ -33,7 +34,7 @@ class SummaryComp extends React.Component<Props, any> {
 
   render() {
     const {contacts, amount, onAddContact, onProceedToPayment} = this.props;
-    const hasEnabled: boolean = this.hasEnabled(contacts);
+    const hasEnabled: boolean = this.hasSelected(contacts);
 
     return (
       <div className="payment-summary">
@@ -62,7 +63,7 @@ const ProceedToPayment = (props) => {
     onProceedToPayment();
   };
   return (
-    <button className={className} onClick={onClick}>
+    <button className={className} onClick={onClick} disabled={disabled}>
       Proceed to Payment
     </button>
   );

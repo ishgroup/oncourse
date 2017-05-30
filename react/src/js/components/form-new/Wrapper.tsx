@@ -15,16 +15,16 @@ class Wrapper extends React.Component<any, any> {
   render() {
     const {label, input, required, children} = this.props;
     const {error, warning} = metaFrom(this.props);
-    const divClass = classnames("form-group", error && "has-error", warning && "has-warning");
+    const divClass = classnames("form-group field-error-tooltip", error && "has-error", warning && "has-warning");
     return (
       <div className={divClass}>
         {label &&
-          <label className="control-label" htmlFor={input.name}>
-            <span dangerouslySetInnerHTML={{__html: label}}/>
-            <span>
+        <label className="control-label" htmlFor={input.name}>
+          <span dangerouslySetInnerHTML={{__html: label}}/>
+          <span>
               {required && <em title="This field is required">*</em>}
             </span>
-          </label> }
+        </label> }
         {children}
         {this.renderMessage()}
       </div>
@@ -33,13 +33,10 @@ class Wrapper extends React.Component<any, any> {
 
   renderMessage() {
     const {touched, error, warning, active} = metaFrom(this.props);
-    if (active) {
-      return ((error && <span className="help-block" dangerouslySetInnerHTML={{__html: error}}/>) ||
-      (warning && <span className="help-block" dangerouslySetInnerHTML={{__html: warning}}/>))
-    } else {
-      return null;
-    }
+    const message = error ? error : warning;
+    return (message && <span className="field-error-tooltip-text help-block" dangerouslySetInnerHTML={{__html: message}}/>);
   }
+
 }
 
 export default Wrapper;

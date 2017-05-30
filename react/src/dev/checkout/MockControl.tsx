@@ -10,6 +10,9 @@ import Inspector from "react-inspector";
 
 import "../../scss/index.scss";
 import {IshState} from "../../js/services/IshState";
+import {Values} from "redux-form-website-template";
+import {NAME} from "../../js/enrol/containers/payment/CreditCartForm";
+
 
 interface Props {
   store: Store<IshState>
@@ -91,6 +94,7 @@ export class MockControl extends React.Component<Props, any> {
         <Inspector data={this.config.db.classes.entities.classes}/>
         <Inspector data={this.props.store.getState()}/>
       </fieldset>
+      <Values form={NAME}/>
     </div>)
   }
 

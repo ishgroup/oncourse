@@ -13,7 +13,7 @@ interface Props extends FormProps<DataShape, any, any> {
   onSubmit: (data, dispatch, props) => any;
 }
 
-const NAME = "CreditCartForm";
+export const NAME = "CreditCartForm";
 
 class CreditCartForm extends React.Component<Props, any> {
   render() {
@@ -35,9 +35,6 @@ class CreditCartForm extends React.Component<Props, any> {
 
 const Form = reduxForm({
   form: NAME,
-  validate: (values) => {
-    return values
-  },
   onSubmitSuccess: (result, dispatch, props: any) => {
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {

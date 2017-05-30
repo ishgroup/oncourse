@@ -7,12 +7,6 @@ import {CreateStore} from "CreateStore";
 import {Progress, Tab} from "enrol/components/Progress";
 import {Messages} from "enrol/containers/Functions";
 
-// const reducer = (state: any = {}): any => {
-//   return state;
-// };
-//
-// const store = createStore(combineReducers({state: reducer, form: formReducer}));
-
 const store = CreateStore();
 
 const render = () => ReactDOM.render(

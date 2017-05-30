@@ -8,7 +8,7 @@ import {reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from "redux-form-website-template";
 
 import {SearchApiMock} from "../../mocks/SearchApiMock";
-import TextField from "../../../js/components/form-new/TextField";
+import {TextField} from "../../../js/components/form-new/TextField";
 import Checkbox from "../../../js/components/form-new/Checkbox";
 import SelectField from "../../../js/components/form-new/SelectField";
 import RadioGroup from "../../../js/components/form-new/RadioGroup";
