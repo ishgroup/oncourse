@@ -98,6 +98,10 @@
     "moduleNameMapper": {
       "\\.(css|less)$": "identity-obj-proxy"
     },
+    "moduleDirectories": [
+      "node_modules",
+      "src/js",
+      "src/test"],
     "moduleFileExtensions": [
       "ts",
       "tsx",
