@@ -86,10 +86,11 @@ class GetContactFields {
     }
     
     private Set<Field> mergeFieldConfigurations(Set<FieldConfiguration> configurations) {
-        return (configurations*.fields.flatten()  as List<Field>)                                   // collect all fields in single list
+       (configurations*.fields.flatten()  as List<Field>)                                   // collect all fields in single list
                 .groupBy { f -> f.property }                                      // group by unique key to map like [key1: [field1, field2,...], key2: [field3, field4,...],... ]
                 .values()                                                               // get list of lists 
                 .collect { List<Field> list ->  list.sort { !it.mandatory }[0] }         // get first mandatory field (if mandatory field there) from each list
+                .toSet()
     }
     
     private void fillHeadingsByFields(Set<Field> fields ) {

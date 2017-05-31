@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory
 
 import java.text.ParseException
 
-import static ish.oncourse.willow.functions.ContactDetailsBuilder.getContext
+import static ish.oncourse.willow.functions.GetContactFields.getContext
 import static ish.oncourse.willow.model.field.DataType.*
 import static ish.oncourse.willow.model.field.DataType.BOOLEAN
 import static ish.oncourse.willow.model.field.DataType.STRING

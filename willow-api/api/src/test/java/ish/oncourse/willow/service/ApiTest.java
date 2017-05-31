@@ -7,14 +7,8 @@ package ish.oncourse.willow.service;
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import ish.math.MoneyType;
 import ish.oncourse.willow.cayenne.CayenneService;
-import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataNode;
-import org.apache.cayenne.access.DbGenerator;
 import org.apache.cayenne.configuration.server.ServerRuntime;
-import org.apache.cayenne.log.JdbcEventLogger;
-import org.apache.cayenne.map.DataMap;
-import org.apache.cayenne.map.DbEntity;
-import org.apache.cayenne.map.Relationship;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.database.DatabaseConfig;
@@ -34,9 +28,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public abstract class ApiTest {
     private static Mysql mysql;
