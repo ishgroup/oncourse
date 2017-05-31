@@ -4,14 +4,14 @@ import {connect, Dispatch} from "react-redux";
 
 import {Props as ContactProps} from "./components/ContactComp";
 import {Props as EnrolmentProps} from "./components/EnrolmentComp";
-import SummaryComp from "./components/SummaryComp";
+import {SummaryComp} from "./components/SummaryComp";
 import {Enrolment} from "../../../model/checkout/Enrolment";
 import {proceedToPayment, selectItem} from "./actions/Actions";
 import {openAddContactForm} from "../contact-add/actions/Actions";
-import {openPayment} from "../payment/actions/Actions";
 import {Voucher} from "../../../model/checkout/Voucher";
 import {Article} from "../../../model/checkout/Article";
 import {Membership} from "../../../model/checkout/Membership";
+import {StateService} from "../../services/StateService";
 
 
 export const EnrolmentPropsBy = (enrolment: Enrolment, state: IshState): EnrolmentProps => {
@@ -38,7 +38,8 @@ export const SummaryPropsBy = (state: IshState): any => {
     });
     return {
       amount: state.checkout.amount,
-      contacts: contacts
+      contacts: contacts,
+      hasSelected: StateService.hasSelected(state.checkout.summary)
     };
   } catch (e) {
     console.log(e);

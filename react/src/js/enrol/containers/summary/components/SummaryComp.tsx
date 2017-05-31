@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as L from "lodash";
 import classnames from "classnames";
 import AmountComp from "../../../components/AmountComp";
 import ContactComp, {Props as ContactProps} from "./ContactComp";
@@ -10,6 +9,7 @@ import {Membership} from "../../../../model/checkout/Membership";
 import {Article} from "../../../../model/checkout/Article";
 
 export interface Props {
+  hasSelected: boolean,
   contacts: ContactProps[]
   amount: Amount
   onAddContact?: () => void
@@ -18,14 +18,7 @@ export interface Props {
 }
 
 
-class SummaryComp extends React.Component<Props, any> {
-  private hasSelected = (contacts: ContactProps[]): boolean => {
-    const selected: ContactProps = L.find(contacts, (c) => {
-      return c.enrolments.find((e) => (e.enrolment.selected && e.enrolment.errors.length === 0))
-    });
-    return !!selected;
-  };
-
+export class SummaryComp extends React.Component<Props, any> {
   renderContact = (props: ContactProps) => {
     const {onSelect} = this.props;
     return (<ContactComp key={props.contact.id} {...props}
@@ -33,8 +26,7 @@ class SummaryComp extends React.Component<Props, any> {
   };
 
   render() {
-    const {contacts, amount, onAddContact, onProceedToPayment} = this.props;
-    const hasEnabled: boolean = this.hasSelected(contacts);
+    const {contacts, amount, onAddContact, onProceedToPayment, hasSelected} = this.props;
 
     return (
       <div className="payment-summary">
@@ -45,7 +37,7 @@ class SummaryComp extends React.Component<Props, any> {
           <div className="col-xs-24">
             <div className="amount-container">
               <AmountComp amount={amount}/>
-              <ProceedToPayment disabled={!hasEnabled} onProceedToPayment={onProceedToPayment}/>
+              <ProceedToPayment disabled={!hasSelected} onProceedToPayment={onProceedToPayment}/>
             </div>
           </div>
         </div>
@@ -83,5 +75,3 @@ const AddAnotherContact = (props) => {
     </div>
   )
 };
-
-export default SummaryComp

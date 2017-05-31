@@ -23,7 +23,7 @@ import {CourseClass} from "../../../js/model/web/CourseClass";
 import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
-import SummaryComp from "../../../js/enrol/containers/summary/components/SummaryComp";
+import {SummaryComp} from "../../../js/enrol/containers/summary/components/SummaryComp";
 
 
 const store = CreateStore();
@@ -86,6 +86,7 @@ const render = () => ReactDOM.render(
         contactPropses[1]
       ]} amount={amount} onAddContact={onAddContact} onProceedToPayment={onProceedToPayment}
                    onSelect = {onSelect}
+                   hasSelected = {true}
       />
     </div>
 

@@ -12,7 +12,12 @@ import {mockAmount} from "./mocks/MockFunctions";
 import {CheckoutModelRequest} from "../../js/model/checkout/CheckoutModelRequest";
 
 export class CheckoutApiMock extends CheckoutApi {
-  public config: MockConfig = MockConfig.CONFIG;
+  public config: MockConfig;
+
+  constructor(config: MockConfig) {
+    super(null);
+    this.config = config;
+  }
 
   getContactNode(request: ContactNodeRequest): Promise<ContactNode> {
     const result: ContactNode = new ContactNode();

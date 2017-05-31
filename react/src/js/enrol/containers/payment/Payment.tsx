@@ -17,6 +17,5 @@ export const ActionsBy = (dispatch: Dispatch<any>): any => {
   return {};
 };
 
-const Container = connect(PropsBy, ActionsBy)(PaymentComp);
+export const Payment = connect(PropsBy, ActionsBy)(PaymentComp);
 
-export default Container

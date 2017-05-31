@@ -10,9 +10,14 @@ import uuid from "uuid";
 import {mockContact} from "./mocks/MockFunctions";
 export class ContactApiMock extends ContactApi {
 
-  public config: MockConfig = MockConfig.CONFIG;
+  public config: MockConfig;
 
   public id: string = uuid();
+
+  constructor(config: MockConfig) {
+    super(null);
+    this.config = config;
+  }
 
   getContact(studentUniqueIdentifier: string): Promise<Contact> {
     return Promise.resolve({
@@ -39,10 +44,13 @@ export class ContactApiMock extends ContactApi {
   getContactFields(request: ContactFieldsRequest): Promise<ContactFields> {
     const result: ContactFields = {
       contactId: request.contactId,
-      headings: [
-        this.config.db.getFieldHeadingBy(["street","suburb","country"])
-      ]
+      headings: []
     };
+
+    if (!this.config.props.contactApi.contactFieldsIsEmpty) {
+      result.headings.push(this.config.db.getFieldHeadingBy(["street", "suburb", "country"]));
+    }
+
     return this.config.createResponse(result);
   }
 

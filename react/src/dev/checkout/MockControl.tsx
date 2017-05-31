@@ -1,102 +1,95 @@
 import * as React from "react";
-
-import {Store} from "react-redux";
+import * as L from "lodash";
 import {Actions} from "../../js/web/actions/Actions";
 import localForage from "localforage";
-import {Injector} from "../../js/injector";
 import {MockConfig} from "../mocks/mocks/MockConfig";
 
 import Inspector from "react-inspector";
 
 import "../../scss/index.scss";
-import {IshState} from "../../js/services/IshState";
 import {Values} from "redux-form-website-template";
 import {NAME} from "../../js/enrol/containers/payment/CreditCartForm";
+import {inspect} from "util";
 
 
 interface Props {
-  store: Store<IshState>
-  injector: Injector
+  config: MockConfig
 }
 
 export class MockControl extends React.Component<Props, any> {
-  private config: MockConfig = MockConfig.CONFIG;
 
   private resetLocalForage = () => {
     localForage.clear();
   };
 
   private loadCourseClasses = () => {
-    this.props.store.dispatch({
+    this.props.config.store.dispatch({
       type: Actions.REQUEST_COURSE_CLASS,
-      payload: [this.config.db.classes.result[0]],
+      payload: [this.props.config.db.classes.result[0]],
     });
   };
 
   private addCourseClass = () => {
-    this.props.store.dispatch({
+    this.props.config.store.dispatch({
       type: Actions.ADD_CLASS_TO_CART,
-      payload: {id: this.config.db.classes.result[0]}
+      payload: {id: this.props.config.db.classes.result[0]}
     });
   };
 
   private removeCourseClass = () => {
-    this.props.store.dispatch({
+    this.props.config.store.dispatch({
       type: Actions.REMOVE_CLASS_FROM_CART,
-      payload: {id: this.config.db.classes.result[0]}
+      payload: {id: this.props.config.db.classes.result[0]}
     });
   };
 
   private refresh() {
-    this.setState(this.state ? {refresh: !this.state.refresh} : {refresh: false})
+    this.setState(this.state ? {refresh: !this.state.refresh} : {refresh: false});
+    this.props.config.save();
   }
 
   render() {
-    const onPlainTextError = () => {
-      this.config.plainTextError = !this.config.plainTextError;
-      this.refresh();
-    };
-    const onCommonError = () => {
-      this.config.commonError = !this.config.commonError;
-      this.refresh();
-    };
-    const onValidationError = () => {
-      this.config.validationError = !this.config.validationError;
-      this.refresh();
-    };
+    const {config} = this.props;
     return (<div>
       <fieldset>
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" checked={this.config.plainTextError} onClick={onPlainTextError}/>
-            Throw Plain Text Error
-          </label>
-        </div>
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" checked={this.config.commonError} onClick={onCommonError}/>
-            Throw Common Error
-          </label>
-        </div>
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" checked={this.config.validationError} onClick={onValidationError}/>
-            Throw Validation Error
-          </label>
-        </div>
+        {this.renderProperty("plainTextError")}
+        {this.renderProperty("commonError")}
+        {this.renderProperty("validationError")}
+        {this.renderProperty("contactApi.contactFieldsIsEmpty")}
         <button className="btn" onClick={this.loadCourseClasses}>Load Classes</button>
         <button className="btn" onClick={this.addCourseClass}>Add Classes</button>
         <button className="btn" onClick={this.removeCourseClass}>Remove Classes</button>
         <button className="btn" onClick={this.resetLocalForage}>Reset LocalForage</button>
       </fieldset>
       <fieldset>
-        <Inspector data={this.config.db.contacts.entities.contacts}/>
-        <Inspector data={this.config.db.classes.entities.classes}/>
-        <Inspector data={this.props.store.getState()}/>
+        <Inspector data={config.db.contacts.entities.contacts}/>
+        <Inspector data={config.db.classes.entities.classes}/>
+        <Inspector data={config.store.getState()}/>
       </fieldset>
       <Values form={NAME}/>
     </div>)
   }
 
+  renderProperty = (path: string) => {
+    const {config} = this.props;
 
+    const onProps = (path: string) => {
+      L.set(config.props, path, !L.get(config.props, path));
+
+      console.log(inspect(config, true, 10, true));
+
+      this.refresh();
+    };
+    const checked = !!L.get(config.props, path);
+    return (
+      <div className="checkbox">
+        <label>
+          <input type="checkbox" checked={checked}
+                 onChange={() => onProps(path)}/>
+        </label>
+        {path}
+      </div>
+    )
+  }
 }
+

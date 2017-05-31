@@ -2,31 +2,29 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {Provider} from "react-redux";
-import {CreateStore, RestoreState} from "../../js/CreateStore";
 import Checkout from "../../js/enrol/containers/Checkout";
-import {Injector} from "../../js/injector";
 
-import 'react-select/dist/react-select.css';
+import "react-select/dist/react-select.css";
 import "../../scss/_ReactSelect.scss";
 import "../../scss/index.scss";
 
-import * as MockInjector from "../mocks/MockInjector";
 import {MockControl} from "./MockControl";
+import {MockConfig} from "../mocks/mocks/MockConfig";
 
 
-const store = CreateStore();
-RestoreState(store, () => render());
+const config = new MockConfig();
 
-const injector = Injector.of();
-MockInjector.init(injector);
+config.init((config:MockConfig) => {
+    render(config);
+});
 
-
-const render = () => ReactDOM.render(
-  <Provider store={store}>
+const render = (config) => ReactDOM.render(
+  <Provider store={config.store}>
     <div>
       <Checkout/>
-      <MockControl store={store} injector={injector}/>
+      <MockControl config={config}/>
     </div>
   </Provider>,
   document.getElementById("root")
 );
+

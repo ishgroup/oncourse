@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Router, Route, browserHistory, IndexRoute} from "react-router";
-import {Payment} from "../components/payment/Payment";
+import {browserHistory, IndexRoute, Route, Router} from "react-router";
+import {Payment} from "./payment/Payment";
 import {Checkout} from "./Checkout";
 import {Paths} from "../../config/Paths";
 import {IndexPage} from "../../components/IndexPage";

@@ -8,7 +8,7 @@ import {Phase} from "../reducers/State";
 import * as Actions from "../../enrol/actions/Actions";
 import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
-import Payment from "./payment/Payment";
+import {Payment} from "./payment/Payment";
 
 interface Props {
   phase: Phase;
