@@ -3,6 +3,7 @@ import * as L from "lodash";
 import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {normalize, schema} from "normalizr";
 import {ContactNode} from "../../../../model/checkout/ContactNode";
+import {Voucher} from "../../../../model/checkout/Voucher";
 const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e) => `${e.contactId}-${e.classId}`});
 
 const SPurchaseItems = new schema.Entity('contacts', {
@@ -15,6 +16,7 @@ export interface State {
   result: string[]
   entities: {
     enrolments: { [key: string]: Enrolment }
+    vouchers: { [key: string]: Voucher }
     contacts: {
       [key: string]: {
         contactId: string,

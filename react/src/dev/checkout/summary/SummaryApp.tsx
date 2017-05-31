@@ -16,7 +16,9 @@ import {Enrolment} from "../../../js/model/checkout/Enrolment";
 import {NoCourseClassPlaces} from "../../../js/enrol/containers/summary/Messages";
 
 import {Props as EnrolmentProps} from "../../../js/enrol/containers/summary/components/EnrolmentComp";
-import {Props as ContactProps} from "../../../js/enrol/containers/summary/components/ContactComp"
+import {Props as ContactProps} from "../../../js/enrol/containers/summary/components/ContactComp";
+
+import {Props as VoucherProps} from "../../../js/enrol/containers/summary/components/VoucherComp";
 
 import faker from "faker";
 import {CourseClass} from "../../../js/model/web/CourseClass";
@@ -24,6 +26,8 @@ import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
 import {SummaryComp} from "../../../js/enrol/containers/summary/components/SummaryComp";
+import {ProductClass} from "../../../js/model/web/ProductClass";
+import {Voucher} from "../../model/checkout/Voucher";
 
 
 const store = CreateStore();
@@ -38,6 +42,9 @@ const classes:CourseClass[]  = [db.getCourseClassByIndex(0),db.getCourseClassByI
 const contacts:Contact[]  = [db.getContactByIndex(0),db.getContactByIndex(1)];
 const enrolments:Enrolment[]  = checkoutApi.createEnrolmentsBy(contacts, classes);
 
+const products: ProductClass[] = [db.getProductClassByIndex(0), db.getProductClassByIndex(1), db.getProductClassByIndex(2), db.getProductClassByIndex(3)];
+const vouchers: Voucher[]  = checkoutApi.createVouchersBy(contacts, products);
+
 
 enrolments[0].errors = [NoCourseClassPlaces];
 
@@ -50,10 +57,19 @@ const createEnrolmentProps = (e: Enrolment):EnrolmentProps => {
   };
 };
 
+const createVoucherProps = (e: Voucher): VoucherProps => {
+  return {
+    contact: db.getContactById(e.contactId),
+    productClass: db.getProductClassById(e.productId),
+    voucher: e
+  };
+};
+
 const createContactProps = (contact: Contact): ContactProps => {
   return {
     contact: contact,
-    enrolments: enrolments.filter((e) => e.contactId == contact.id).map(createEnrolmentProps)
+    enrolments: enrolments.filter((e) => e.contactId == contact.id).map(createEnrolmentProps),
+    vouchers: vouchers.filter((e) => e.contactId == contact.id).map(createVoucherProps)
   }
 };
 

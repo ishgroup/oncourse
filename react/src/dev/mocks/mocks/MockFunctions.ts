@@ -14,6 +14,8 @@ import {ClassesListSchema} from "../../../js/NormalizeSchema";
 import {ContactNode} from "../../../js/model/checkout/ContactNode";
 import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/State";
 import {Promotion} from "../../../js/model/web/Promotion";
+import {Product} from "../../../js/model/web/Product";
+import {ProductClass} from "../../../js/model/web/ProductClass";
 
 export const mockPromotion = (): Promotion => {
   const result: Promotion = {
@@ -43,6 +45,21 @@ export const mockCourseClass = (): CourseClass => {
     isFinished: false,
     isPaymentGatewayEnabled: true,
     availableEnrolmentPlaces: faker.random.number()
+  }
+};
+
+export const mockProductClass = (): ProductClass => {
+  return {
+    id: faker.random.number() as string,
+    code: faker.random.number() as string,
+    product: {
+      code: faker.random.alphaNumeric(5).toUpperCase(),
+      name: faker.commerce.productName()
+    },
+    price: faker.commerce.price(),
+    isCancelled: false,
+    isPaymentGatewayEnabled: true,
+    canBuy: true
   }
 };
 

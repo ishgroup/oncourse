@@ -5,9 +5,9 @@ import uuid from "uuid";
 import {CourseClass} from "../../../js/model/web/CourseClass";
 import {Enrolment} from "../../../js/model/checkout/Enrolment";
 import {Contact} from "../../../js/model/web/Contact";
-import {mockContact, mockCourseClass, mockEnumField, mockField} from "./MockFunctions";
+import {mockContact, mockCourseClass, mockEnumField, mockField, mockProductClass} from "./MockFunctions";
 import {normalize} from "normalizr";
-import {ClassesListSchema, ContactsListSchema} from "../../../js/NormalizeSchema";
+import {ClassesListSchema, ContactsListSchema, ProductsListSchema} from "../../../js/NormalizeSchema";
 
 import {Field} from "../../../js/model/field/Field";
 import {DataType} from "../../../js/model/field/DataType";
@@ -15,6 +15,8 @@ import {FieldHeading} from "../../../js/model/field/FieldHeading";
 import {Item} from "../../../js/model/common/Item";
 
 import localForage from "localforage";
+import {Voucher} from "../../../js/model/checkout/Voucher";
+import {ProductClass} from "../../../js/model/web/ProductClass";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
@@ -40,6 +42,7 @@ export class MockDB {
     contacts: {[key: string]: Contact}
   }, result: any } = null;
   classes: { entities: any, result: any } = null;
+  products: { entities: any, result: any } = null;
   fields: Field[] = [];
   countries: Item[] = [];
   suburbs: Item[] = [];
@@ -59,6 +62,16 @@ export class MockDB {
       mockCourseClass(),
       mockCourseClass()
     ], ClassesListSchema);
+
+    this.products = normalize([
+      mockProductClass(),
+      mockProductClass(),
+      mockProductClass(),
+      mockProductClass(),
+      mockProductClass(),
+      mockProductClass(),
+      mockProductClass(),
+    ], ProductsListSchema);
 
     this.fields = [
       mockField("Street", "street", DataType.string),
@@ -425,6 +438,19 @@ export class MockDB {
     }
   }
 
+  createVoucher(contactId: string, productId: string, errors: boolean = false, warnings: boolean = false): Voucher {
+    return {
+      contactId: this.contacts.entities.contacts[contactId].id,
+      productId: this.products.entities.products[productId].id,
+      errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
+      warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
+      price: this.products.entities.products[productId].price,
+      value: this.products.entities.products[productId].price,
+      classes: [faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName()],
+      selected: !errors
+    }
+  }
+
   addContact(contact: Contact): string {
     const nc = normalize([contact], ContactsListSchema);
     this.contacts.result = [...this.contacts.result, ...nc.result];
@@ -446,12 +472,20 @@ export class MockDB {
     return this.classes.entities.classes[this.classes.result[index]];
   }
 
+  getProductClassByIndex(index: number): ProductClass {
+    return this.products.entities.products[this.products.result[index]];
+  }
+
   getContactById(id: string): Contact {
     return this.contacts.entities.contacts[id];
   }
 
   getCourseClassById(id: string): CourseClass {
     return this.classes.entities.classes[id];
+  }
+
+  getProductClassById(id: string): ProductClass {
+    return this.products.entities.products[id];
   }
 
   getFieldByKey(key: string): Field {

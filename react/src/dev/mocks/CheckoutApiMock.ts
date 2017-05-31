@@ -10,6 +10,8 @@ import {MockConfig} from "./mocks/MockConfig";
 import {CheckoutModel} from "../../js/model/checkout/CheckoutModel";
 import {mockAmount} from "./mocks/MockFunctions";
 import {CheckoutModelRequest} from "../../js/model/checkout/CheckoutModelRequest";
+import {Voucher} from "../../js/model/checkout/Voucher";
+import {ProductClass} from "../../js/model/web/ProductClass";
 import {PaymentResponse} from "../../js/model/checkout/payment/PaymentResponse";
 
 export class CheckoutApiMock extends CheckoutApi {
@@ -28,6 +30,10 @@ export class CheckoutApiMock extends CheckoutApi {
     const classes: CourseClass[] = request.classIds.map((id) => this.config.db.getCourseClassById(id));
 
     result.enrolments = this.createEnrolmentsBy([contact], classes);
+
+    const products: ProductClass[] = request.productIds.map((id) => this.config.db.getProductClassById(id));
+    result.vouchers = this.createVouchersBy([contact], products);
+
     return this.config.createResponse(result);
   }
 
@@ -35,6 +41,14 @@ export class CheckoutApiMock extends CheckoutApi {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
         return this.config.db.createEnrolment(c.id, cc.id)
+      })
+    }));
+  }
+
+  public createVouchersBy(contacts: Contact[], classes: CourseClass[]): Voucher[] {
+    return L.flatten(contacts.map((c: Contact) => {
+      return classes.map((cc: CourseClass) => {
+        return this.config.db.createVoucher(c.id, cc.id)
       })
     }));
   }

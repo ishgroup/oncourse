@@ -43,8 +43,8 @@ class CreditCardComp extends React.Component<Props, any> {
                 <p>
                   <label>Pay now</label>
                   <span id="cardtotalstring">
-										${ amount.payNow } <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
-									</span>
+                    ${ amount.payNow } <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
+                  </span>
                 </p>
 
                 <PayerSelect contacts={contacts} payer={contacts[0]} onChange={(c) => {
@@ -68,12 +68,12 @@ class CreditCardComp extends React.Component<Props, any> {
                     Expiry<em title="This field is required">*</em>
                   </label>
                   <span className="valid input-select-small">
-										<Field component={SelectField} name={FieldName.expiryMonth} required={true}
+                    <Field component={SelectField} name={FieldName.expiryMonth} required={true}
                            loadOptions={PaymentService.months}/>
-										/
-										<Field component={SelectField} name={FieldName.expiryYear} required={true}
+                    /
+                    <Field component={SelectField} name={FieldName.expiryYear} required={true}
                            loadOptions={PaymentService.years}/>
-									</span>
+                  </span>
                 </div>
               </div>
             </fieldset>

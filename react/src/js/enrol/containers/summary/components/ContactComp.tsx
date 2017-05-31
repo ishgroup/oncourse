@@ -7,16 +7,18 @@ import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {Membership} from "../../../../model/checkout/Membership";
 import {Article} from "../../../../model/checkout/Article";
 import {Voucher} from "../../../../model/checkout/Voucher";
+import VoucherComp, {Props as VoucherProps} from "./VoucherComp";
 
 export interface Props {
   contact: Contact
   enrolments: EnrolmentProps[]
+  vouchers: VoucherProps[],
   onSelect?: (item: Enrolment | Membership | Article | Voucher, selected: boolean) => void
 }
 
 class ContactComp extends React.Component<Props, any> {
   render() {
-    const {contact, enrolments, onSelect} = this.props;
+    const {contact, enrolments, vouchers, onSelect} = this.props;
     return (
       <div className="row">
         <ContactInfo contact={contact} controls={<AddConcessionLink/>}/>
@@ -24,7 +26,13 @@ class ContactComp extends React.Component<Props, any> {
           {enrolments.map((props, index) => {
             return <EnrolmentComp key={index} {...props}
                                   onChange={ () => onSelect(props.enrolment, !props.enrolment.selected)}/>
-          })}
+            })}
+
+            {vouchers.map((props, index) => {
+              return <VoucherComp key={index} {...props}
+                                  onChange={ () => onSelect(props.voucher, !props.voucher.selected)} />
+            })
+          }
         </div>
       </div>
     );

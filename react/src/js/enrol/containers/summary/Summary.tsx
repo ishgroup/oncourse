@@ -4,6 +4,7 @@ import {connect, Dispatch} from "react-redux";
 
 import {Props as ContactProps} from "./components/ContactComp";
 import {Props as EnrolmentProps} from "./components/EnrolmentComp";
+import {Props as VoucherProps} from "./components/VoucherComp";
 import {SummaryComp} from "./components/SummaryComp";
 import {Enrolment} from "../../../model/checkout/Enrolment";
 import {proceedToPayment, selectItem} from "./actions/Actions";
@@ -11,6 +12,7 @@ import {openAddContactForm} from "../contact-add/actions/Actions";
 import {Voucher} from "../../../model/checkout/Voucher";
 import {Article} from "../../../model/checkout/Article";
 import {Membership} from "../../../model/checkout/Membership";
+import {Product} from "../../../model/web/Product";
 import {SummaryService} from "./services/SummaryService";
 
 
@@ -22,12 +24,22 @@ export const EnrolmentPropsBy = (enrolment: Enrolment, state: IshState): Enrolme
   }
 };
 
+export const VoucherPropsBy = (voucher: Voucher, state: IshState): VoucherProps => {
+  return {
+    contact: state.checkout.payer.entity,
+    productClass: state.products.entities[voucher.productId],
+    voucher: voucher
+  }
+};
+
 export const ContactPropsBy = (contactId: string, state: IshState): ContactProps => {
   const ids = state.checkout.summary.entities.contacts[contactId].enrolments;
   const enrolments = state.checkout.summary.entities.enrolments;
+  const vouchers = state.checkout.summary.entities.vouchers;
   return {
     contact: state.checkout.payer.entity,
     enrolments: ids.map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
+    vouchers: ids.map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
   };
 };
 
