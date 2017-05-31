@@ -16,6 +16,11 @@ export class ContactFieldsRequest {
    * Requested product's ids
    */
   productIds?: string[];
+
+  /**
+   * Flag to show only mandatory fields
+   */
+  mandatoryOnly?: boolean;
   fieldSet?: FieldSet;
 }
 

@@ -6,6 +6,7 @@ import ish.oncourse.willow.model.field.ContactFields;
 import ish.oncourse.willow.model.field.ContactFieldsRequest;
 import ish.oncourse.willow.model.field.SubmitFieldsRequest;
 import ish.oncourse.willow.model.web.Contact;
+import ish.oncourse.willow.model.web.ContactId;
 import ish.oncourse.willow.model.web.CreateContactParams;
 
 import java.io.InputStream;
@@ -24,7 +25,7 @@ public interface ContactApi  {
     @Produces({ "application/json" })
     @CollegeInfo
     @ContactValidation
-    String createOrGetContact(CreateContactParams createContactParams);
+    ContactId createOrGetContact(CreateContactParams createContactParams);
 
     @GET
     @Path("/contact/{studentUniqueIdentifier}")

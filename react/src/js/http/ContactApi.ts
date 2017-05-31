@@ -5,13 +5,14 @@ import { ContactFields } from "../model/field/ContactFields";
 import { ContactFieldsRequest } from "../model/field/ContactFieldsRequest";
 import { SubmitFieldsRequest } from "../model/field/SubmitFieldsRequest";
 import { Contact } from "../model/web/Contact";
+import { ContactId } from "../model/web/ContactId";
 import { CreateContactParams } from "../model/web/CreateContactParams";
 
 export class ContactApi {
   constructor(private http: HttpService) {
   }
 
-  createOrGetContact(createContactParams: CreateContactParams): Promise<string> {
+  createOrGetContact(createContactParams: CreateContactParams): Promise<ContactId> {
     return this.http.PUT(`/contact`, createContactParams)
   }
   getContact(studentUniqueIdentifier: string): Promise<Contact> {

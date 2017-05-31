@@ -5,6 +5,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.common.ValidationError
+import ish.oncourse.willow.model.web.ContactId
 import ish.oncourse.willow.model.web.CreateContactParams
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -24,7 +25,7 @@ class CreateOrGetContact  {
     CreateContactParams params
     College college
     ObjectContext context
-    String contactId
+    ContactId contactId
     ValidationError validationError = new ValidationError()
 
 
@@ -51,10 +52,11 @@ class CreateOrGetContact  {
             contact.isMarketingViaPostAllowed = true
             contact.isMarketingViaSMSAllowed = true
             contact.objectContext.commitChanges()
+            contactId.newContact = true
         } 
         
         if (contact) {
-            contactId = contact.id.toString()
+            contactId.id = contact.id.toString()
         } else {
             validationError.formErrors << NOT_ALLOW_CREATE_CONTACT
         }

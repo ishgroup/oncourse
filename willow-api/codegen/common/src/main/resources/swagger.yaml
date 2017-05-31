@@ -190,9 +190,9 @@ paths:
           $ref: '#/definitions/web.CreateContactParams'
       responses:
         200:
-          description: Contact Id
+          description: ContactId object 
           schema:
-            type: string
+            $ref: '#/definitions/web.ContactId'
         400:
           description: Validation error
           schema:
@@ -617,6 +617,15 @@ definitions:
         type: string
       title:
         type: string
+  web.ContactId:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Contact id
+      newContact:
+        type: boolean
+        description: Indicates that new contact created
   web.Contact:
     type: object
     properties:
@@ -761,6 +770,7 @@ definitions:
     - contactId
     - classIds
     - productIds
+    - mandatoryOnly
     - fieldSet
     properties:
       contactId:
@@ -776,6 +786,9 @@ definitions:
         items: 
           type: string
         description: Requested product's ids
+      mandatoryOnly:
+        type: boolean
+        description: Flag to show only mandatory fields 
       fieldSet:
         $ref: '#/definitions/field.FieldSet'
   field.DataType:

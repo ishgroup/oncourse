@@ -2,12 +2,14 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
-import ish.oncourse.willow.functions.ContactDetailsBuilder
+import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.functions.CreateOrGetContact
+import ish.oncourse.willow.functions.GetContactFields
 import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.common.CommonError
@@ -15,6 +17,7 @@ import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
 import ish.oncourse.willow.model.field.SubmitFieldsRequest
 import ish.oncourse.willow.model.web.Contact
+import ish.oncourse.willow.model.web.ContactId
 import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactApi
 import org.apache.cayenne.ObjectContext
@@ -43,7 +46,7 @@ class ContactApiServiceImpl implements ContactApi{
     }
 
     @Override
-    String createOrGetContact(CreateContactParams createContactParams) {
+    ContactId createOrGetContact(CreateContactParams createContactParams) {
         CreateOrGetContact createOrGet = new CreateOrGetContact(params:createContactParams, context: cayenneService.newContext(), college: collegeService.college).perform()
         if (!createOrGet.validationError.formErrors.empty || !createOrGet.validationError.fieldsErrors.empty) {
             throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(createOrGet.validationError).build())
@@ -55,7 +58,8 @@ class ContactApiServiceImpl implements ContactApi{
     @Override
     ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest) {
         ObjectContext context = cayenneService.newContext()
-
+        College college = collegeService.college
+        
         if (!contactFieldsRequest.contactId) {
             logger.error("contactId required, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
@@ -68,15 +72,11 @@ class ContactApiServiceImpl implements ContactApi{
             logger.error("fieldSet required, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
         }
-        ish.oncourse.model.Contact contact = SelectById.query(ish.oncourse.model.Contact, contactFieldsRequest.contactId).selectOne(context)
-        if (!contact) {
-            logger.error("contact is not exist, request param: $contactFieldsRequest")
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contact is not exist')).build())
-        }
+        ish.oncourse.model.Contact contact = new GetContact(context, college, contactFieldsRequest.contactId).get()
         
         List<CourseClass> classes = (ObjectSelect.query(CourseClass)
                 .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classIds)) 
-                & CourseClass.COLLEGE.eq(collegeService.college))
+                & CourseClass.COLLEGE.eq(college))
                 .prefetch(CourseClass.COURSE.joint())
                 .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).joint())
                 .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).joint())
@@ -84,14 +84,12 @@ class ContactApiServiceImpl implements ContactApi{
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .cacheGroups(CourseClass.class.simpleName)
                 .select(context)
+        
         if (classes.empty) {
             logger.error("classes  are not exist, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classes  are not exist')).build())
         }
-        
-
-        new ContactDetailsBuilder().getContactDetails(contact, classes, !contactFieldsRequest.productIds.empty, contactFieldsRequest.fieldSet)
-      
+        new GetContactFields(contact, classes, !contactFieldsRequest.productIds.empty, contactFieldsRequest.fieldSet, contactFieldsRequest.mandatoryOnly).contactFields
     }
 
     @Override

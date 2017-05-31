@@ -9,6 +9,7 @@ public class ContactFieldsRequest  {
     private String contactId = null;
     private List<String> classIds = new ArrayList<String>();
     private List<String> productIds = new ArrayList<String>();
+    private Boolean mandatoryOnly = null;
     private FieldSet fieldSet = null;
 
     /**
@@ -73,6 +74,23 @@ public class ContactFieldsRequest  {
     }
 
     /**
+     * Flag to show only mandatory fields
+     * @return mandatoryOnly
+     */
+    public Boolean getMandatoryOnly() {
+        return mandatoryOnly;
+    }
+
+    public void setMandatoryOnly(Boolean mandatoryOnly) {
+       this.mandatoryOnly = mandatoryOnly;
+    }
+
+    public ContactFieldsRequest mandatoryOnly(Boolean mandatoryOnly) {
+      this.mandatoryOnly = mandatoryOnly;
+      return this;
+    }
+
+    /**
      * Get fieldSet
      * @return fieldSet
      */
@@ -98,6 +116,7 @@ public class ContactFieldsRequest  {
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classIds: ").append(toIndentedString(classIds)).append("\n");
       sb.append("    productIds: ").append(toIndentedString(productIds)).append("\n");
+      sb.append("    mandatoryOnly: ").append(toIndentedString(mandatoryOnly)).append("\n");
       sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
       sb.append("}");
       return sb.toString();
