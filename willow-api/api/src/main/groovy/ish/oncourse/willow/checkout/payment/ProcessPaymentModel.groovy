@@ -54,8 +54,8 @@ class ProcessPaymentModel {
         context.commitChanges()
 
         response =  new PaymentResponse().with { r ->
-            r.paymentStatus = PaymentStatus.SUCCESSFUL
-            r.applicationIds = createPaymentModel.applications.collect { it.id.toString() }
+            r.status = PaymentStatus.SUCCESSFUL
+            r.reference =  createPaymentModel.applications.collect { it.id.toString() }.join(', ')
             r
         }
         this
@@ -66,10 +66,9 @@ class ProcessPaymentModel {
         PaymentInSucceed.valueOf(createPaymentModel.model).perform()
         context.commitChanges()
         response =  new PaymentResponse().with { r ->
-            r.paymentReference = createPaymentModel.paymentIn.clientReference
+            r.reference = createPaymentModel.paymentIn.clientReference
             r.sessionId =  createPaymentModel.paymentIn.sessionId
-            r.paymentStatus = PaymentStatus.SUCCESSFUL
-            r.applicationIds = createPaymentModel.applications.collect { it.id.toString() }
+            r.status = PaymentStatus.SUCCESSFUL
             r
         }
         this
@@ -91,7 +90,7 @@ class ProcessPaymentModel {
 
         response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get()
 
-        if (PaymentStatus.FAILED == response.paymentStatus) {
+        if (PaymentStatus.FAILED == response.status) {
             PaymentInAbandon.valueOf(model, false).perform()
             context.commitChanges()
         }

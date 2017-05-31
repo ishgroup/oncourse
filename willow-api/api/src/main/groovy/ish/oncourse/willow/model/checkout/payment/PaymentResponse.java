@@ -1,15 +1,12 @@
 package ish.oncourse.willow.model.checkout.payment;
 
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PaymentResponse  {
   
     private String sessionId = null;
-    private PaymentStatus paymentStatus = null;
-    private String paymentReference = null;
-    private List<String> applicationIds = new ArrayList<String>();
+    private PaymentStatus status = null;
+    private String reference = null;
 
     /**
      * Get sessionId
@@ -29,58 +26,36 @@ public class PaymentResponse  {
     }
 
     /**
-     * Get paymentStatus
-     * @return paymentStatus
+     * Get status
+     * @return status
      */
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public PaymentStatus getStatus() {
+        return status;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-       this.paymentStatus = paymentStatus;
+    public void setStatus(PaymentStatus status) {
+       this.status = status;
     }
 
-    public PaymentResponse paymentStatus(PaymentStatus paymentStatus) {
-      this.paymentStatus = paymentStatus;
+    public PaymentResponse status(PaymentStatus status) {
+      this.status = status;
       return this;
     }
 
     /**
-     * Get paymentReference
-     * @return paymentReference
+     * Get reference
+     * @return reference
      */
-    public String getPaymentReference() {
-        return paymentReference;
+    public String getReference() {
+        return reference;
     }
 
-    public void setPaymentReference(String paymentReference) {
-       this.paymentReference = paymentReference;
+    public void setReference(String reference) {
+       this.reference = reference;
     }
 
-    public PaymentResponse paymentReference(String paymentReference) {
-      this.paymentReference = paymentReference;
-      return this;
-    }
-
-    /**
-     * Get applicationIds
-     * @return applicationIds
-     */
-    public List<String> getApplicationIds() {
-        return applicationIds;
-    }
-
-    public void setApplicationIds(List<String> applicationIds) {
-       this.applicationIds = applicationIds;
-    }
-
-    public PaymentResponse applicationIds(List<String> applicationIds) {
-      this.applicationIds = applicationIds;
-      return this;
-    }
-
-    public PaymentResponse addApplicationIdsItem(String applicationIdsItem) {
-      this.applicationIds.add(applicationIdsItem);
+    public PaymentResponse reference(String reference) {
+      this.reference = reference;
       return this;
     }
 
@@ -91,9 +66,8 @@ public class PaymentResponse  {
       sb.append("class PaymentResponse {\n");
       
       sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
-      sb.append("    paymentStatus: ").append(toIndentedString(paymentStatus)).append("\n");
-      sb.append("    paymentReference: ").append(toIndentedString(paymentReference)).append("\n");
-      sb.append("    applicationIds: ").append(toIndentedString(applicationIds)).append("\n");
+      sb.append("    status: ").append(toIndentedString(status)).append("\n");
+      sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
       sb.append("}");
       return sb.toString();
     }

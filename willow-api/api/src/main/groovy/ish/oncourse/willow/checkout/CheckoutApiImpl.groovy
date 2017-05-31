@@ -27,7 +27,6 @@ import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.service.CheckoutApi
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.configuration.server.ServerRuntime
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.payment
 
+import groovy.transform.CompileStatic
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
@@ -18,7 +19,7 @@ import javax.ws.rs.core.Response
 
 import static ish.oncourse.willow.model.checkout.payment.PaymentStatus.*
 
-
+@CompileStatic
 class GetPaymentStatus {
     final static  Logger logger = LoggerFactory.getLogger(GetPaymentStatus.class)
 
@@ -52,23 +53,23 @@ class GetPaymentStatus {
         PaymentIn payment = payments[0]
         PaymentResponse response = new PaymentResponse()
         response.sessionId = sessionId
-        response.paymentReference = payment.clientReference
+        response.reference = payment.clientReference
         
         
         switch (payment.status) {
             case PaymentStatus.IN_TRANSACTION:
                 if (payment.paymentTransactions.empty) {
-                    response.paymentStatus = UNDEFINED
+                    response.status = UNDEFINED
                 } else if (payment.paymentTransactions.find { !it.isFinalised }) {
-                    response.paymentStatus = IPaymentGatewayService.UNKNOW_RESULT_PAYMENT_IN == payment.statusNotes ? UNDEFINED : IN_PROGRESS
+                    response.status = IPaymentGatewayService.UNKNOW_RESULT_PAYMENT_IN == payment.statusNotes ? UNDEFINED : IN_PROGRESS
                 }
                 break
             case PaymentStatus.SUCCESS:
-                response.paymentStatus = SUCCESSFUL
+                response.status = SUCCESSFUL
                 break
             case PaymentStatus.FAILED:
             case PaymentStatus.FAILED_CARD_DECLINED:
-                response.paymentStatus = FAILED
+                response.status = FAILED
                 break
             default:
                 logger.error("Unexpected payment status, paymentId: ${payment.id}")

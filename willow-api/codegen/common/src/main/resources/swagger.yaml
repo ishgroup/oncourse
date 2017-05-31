@@ -1166,11 +1166,7 @@ definitions:
     properties:
       sessionId:
         type: string
-      paymentStatus:
+      status:
         $ref: '#/definitions/checkout.payment.PaymentStatus'
-      paymentReference:
+      reference:
         type: string
-      applicationIds:
-        type: array
-        items:
-          type: string
