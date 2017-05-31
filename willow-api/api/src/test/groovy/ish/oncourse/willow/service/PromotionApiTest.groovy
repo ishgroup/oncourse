@@ -19,7 +19,7 @@ class PromotionApiTest extends ApiTest {
 
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
 
-        PromotionApi api = new PromotionApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
+        PromotionApi api = new PromotionApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
         Promotion promotion = api.getPromotion('CODE')
 

@@ -37,7 +37,7 @@ import static ish.validation.ContactValidator.Property.*
 @CompileStatic
 class SubmitContactFields {
 
-    final static Logger logger = LoggerFactory.getLogger(CreateOrGetContact.class)
+    final static Logger logger = LoggerFactory.getLogger(SubmitContactFields.class)
     
     ValidationError errors = new ValidationError()
     ObjectContext objectContext

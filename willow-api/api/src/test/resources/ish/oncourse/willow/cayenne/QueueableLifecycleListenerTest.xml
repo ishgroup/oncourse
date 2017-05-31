@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Language id="1" name="English" isActive="1" ishVersion="1"/>
+
+    <Country id="1" ishVersion="1" name="Australia" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0"/>
+
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <Student id="1002" collegeId="1" angelId="1002"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="1"
+             priorEducationCode="0" labourForceType="0" citizenship="1" countryOfBirthId="1"
+             languageId="1" yearSchoolCompleted="1991" specialNeeds="specialNeeds"/>
+
+
+    <Contact uniqueCode="1wjwestablishwd" id="1002" collegeId="1" studentId="1002"
+             angelId="1002" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Student1" givenName="Student1" emailAddress="Student1@Student1.net"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk" postcode="123"
+             homePhoneNumber="1234567890" businessPhoneNumber="1234567890" faxNumber="1234567890" mobilePhoneNumber="1234567890"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1" abn="1234"
+             isMarketingViaSMSAllowed="1"  state="NWS" />
+
+
+    <Student id="1001" collegeId="1" angelId="1000"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+    />
+
+
+    <Contact uniqueCode="1wjwestablished" id="1001" collegeId="1" studentId="1001"
+             angelId="1001" created="2011-09-12 00:51:00.0" isCompany="0"
+             familyName="Student1" givenName="Student1"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+    <CustomFieldType id="1" collegeId="1"  angelId="1" created="2011-09-12 00:47:26.0" modified="2011-09-12 00:59:00.0" name="Favorite car maker" fieldKey="carMaker" defaultValue="BMW" isMandatory="0" entityName="Contact"/>
+
+    <FieldConfiguration id="1" collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration"/>
+
+    <FieldConfigurationScheme id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name"
+                              applicationFieldConfigurationId="1"
+                              enrolFieldConfigurationId="1"
+                              waitingListFieldConfigurationId="1"/>
+
+    <FieldHeading id="1"  collegeId="1"  angelId="1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="First Heading"
+                  description="description" fieldConfigurationId="1"/>
+
+
+    <FieldHeading id="2"  collegeId="1"  angelId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Second Heading"
+                  description="description" fieldConfigurationId="1" />
+
+
+    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1"/>
+
+    <Field id="101"  collegeId="1"  angelId="100"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker1"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           fieldHeadingId="3"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="1"
+           property="firstName"/>
+
+    <Field id="102"  collegeId="1"  angelId="2"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker2"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           fieldHeadingId="4"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="2"
+           property="lastName"/>
+
+    <Field id="103"  collegeId="1"  angelId="3"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker3"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="3"
+           property="emailAddress"/>
+
+    <Field id="126"  collegeId="1"  angelId="126"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker26"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           fieldHeadingId="3"
+           mandatory="4"
+           defaultValue="BMW"
+           fieldOrder="26"
+           property="specialNeeds"/>
+
+    <Field id="113"  collegeId="1"  angelId="113"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker13"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           fieldHeadingId="5"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="13"
+           property="abn"/>
+
+    <FieldConfigurationScheme id="2"  collegeId="1"  angelId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name1"
+                              applicationFieldConfigurationId="2"
+                              enrolFieldConfigurationId="2"
+                              waitingListFieldConfigurationId="2"/>
+
+    <FieldHeading id="3"  collegeId="1"  angelId="3" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="First Heading_2"
+                  description="description" fieldConfigurationId="2"/>
+
+
+    <FieldHeading id="4"  collegeId="1"  angelId="4" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Second Heading_2"
+                  description="description" fieldConfigurationId="2" />
+
+    <FieldHeading id="5"  collegeId="1"  angelId="5" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Trhread Heading_2"
+                  description="description" fieldConfigurationId="2" />
+
+    <Field id="1"  collegeId="1"  angelId="1"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker1"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="1"
+           property="firstName"/>
+
+
+
+    <Field id="2"  collegeId="1"  angelId="2"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker2"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="2"
+           property="lastName"/>
+
+
+
+    <Field id="3"  collegeId="1"  angelId="3"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker3"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="3"
+           property="emailAddress"/>
+
+    <Field id="4"  collegeId="1"  angelId="4"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker4"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="4"
+           property="street"/>
+
+    <Field id="5"  collegeId="1"  angelId="5"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker5"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="5"
+           property="suburb"/>
+
+    <Field id="6"  collegeId="1"  angelId="6"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker6"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="2"
+           defaultValue="BMW"
+           fieldOrder="6"
+           property="postcode"/>
+
+    <Field id="7"  collegeId="1"  angelId="7"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker7"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="7"
+           property="state"/>
+
+    <Field id="27"  collegeId="1"  angelId="27"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car 27"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="27"
+           property="country"/>
+
+    <Field id="8"  collegeId="1"  angelId="8"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker8"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="8"
+           property="homePhoneNumber"/>
+
+    <Field id="9"  collegeId="1"  angelId="9"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker9"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="9"
+           property="businessPhoneNumber"/>
+
+    <Field id="10"  collegeId="1"  angelId="10"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker10"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="10"
+           property="faxNumber"/>
+
+    <Field id="11"  collegeId="1"  angelId="11"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker11"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="11"
+           property="mobilePhoneNumber"/>
+
+    <Field id="12"  collegeId="1"  angelId="12"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker12"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="12"
+           property="dateOfBirth"/>
+
+    <Field id="13"  collegeId="1"  angelId="13"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker13"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="13"
+           property="abn"/>
+
+
+
+    <Field id="14"  collegeId="1"  angelId="14"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker14"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="14"
+           property="isMale"/>
+
+    <Field id="15"  collegeId="1"  angelId="15"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker15"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="15"
+           property="citizenship"/>
+
+    <Field id="16"  collegeId="1"  angelId="16"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car make16r"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="16"
+           property="countryOfBirth"/>
+
+    <Field id="17"  collegeId="1"  angelId="17"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car mak17er"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="17"
+           property="languageHome"/>
+
+    <Field id="18"  collegeId="1"  angelId="18"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker18"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="18"
+           property="yearSchoolCompleted"/>
+
+    <Field id="19"  collegeId="1"  angelId="19"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker19"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="19"
+           property="englishProficiency"/>
+
+    <Field id="20"  collegeId="1"  angelId="20"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car make20r"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="20"
+           property="indigenousStatus"/>
+
+    <Field id="21"  collegeId="1"  angelId="21"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker21"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="21"
+           property="highestSchoolLevel"/>
+
+    <Field id="22"  collegeId="1"  angelId="22"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker22"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="22"
+           property="isStillAtSchool"/>
+
+    <Field id="23"  collegeId="1"  angelId="23"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker23"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="23"
+           property="priorEducationCode"/>
+
+    <Field id="24"  collegeId="1"  angelId="24"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car 24"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="24"
+           property="labourForceStatus"/>
+
+    <Field id="25"  collegeId="1"  angelId="25"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker25"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="25"
+           property="disabilityType"/>
+
+    <Field id="26"  collegeId="1"  angelId="26"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker26"
+           description="Favorite car maker"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="0"
+           defaultValue="BMW"
+           fieldOrder="26"
+           property="specialNeeds"/>
+
+
+
+
+    <Field id="28"  collegeId="1"  angelId="28"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker"
+           description="Favorite car maker28"
+           fieldConfigurationId="1"
+           fieldHeadingId="1"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="28"
+           property="customField.contact.carMaker"/>
+
+
+    <Course id="1001" collegeId="1" angelId="1001" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1" fieldConfigurationSchemeId="1"/>
+
+    <CourseClass isActive="1" id="1001" code="1" collegeId="1"  courseId="1001" deliveryMode="1" detail="Test Course Class 5-1" feeExGst="20.00" feeGst="1.25"  maximumPlaces="3"
+                 startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0" isDistantLearningCourse="0"/>
+
+
+    <Course id="1002" collegeId="1" angelId="1002" code="AAVV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1" fieldConfigurationSchemeId="2"/>
+
+    <CourseClass isActive="1" id="1002" code="2" collegeId="1"  courseId="1002" deliveryMode="1" detail="Test Course Class 5-2" feeExGst="20.00" feeGst="1.25"  maximumPlaces="3"
+                 startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0" isDistantLearningCourse="0"/>
+
+
+
+</dataset>

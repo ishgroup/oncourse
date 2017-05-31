@@ -6,6 +6,7 @@ import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.WebSite
+import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
 import ish.oncourse.willow.checkout.functions.ProcessClasses
@@ -40,18 +41,18 @@ class CheckoutApiImpl implements CheckoutApi {
     final static  Logger logger = LoggerFactory.getLogger(CheckoutApiImpl.class)
 
 
-    private ServerRuntime cayenneRuntime
+    private CayenneService cayenneService
     private CollegeService collegeService
 
     @Inject
-    CheckoutApiImpl(ServerRuntime cayenneRuntime, CollegeService collegeService) {
-        this.cayenneRuntime = cayenneRuntime
+    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService) {
+        this.cayenneService = cayenneService
         this.collegeService = collegeService
     }
 
     @Override
     CheckoutModel getCheckoutModel(CheckoutModelRequest checkoutModelRequest) {
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest).process()
         processModel.model
@@ -66,7 +67,7 @@ class CheckoutApiImpl implements CheckoutApi {
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'there are not selected items for purchase')).build())
         }
         
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
         
         Contact contact = new GetContact(context, college, contactNodeRequest.contactId).get()
@@ -88,7 +89,7 @@ class CheckoutApiImpl implements CheckoutApi {
     @Override
     PaymentResponse getPaymentStatus(String sessionId) {
         
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
         
         new GetPaymentStatus(context, college, sessionId).get()
@@ -96,7 +97,7 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Override
     PaymentResponse makePayment(PaymentRequest paymentRequest) {
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
         WebSite webSite = collegeService.webSite
         College college = webSite.college
         
@@ -119,7 +120,7 @@ class CheckoutApiImpl implements CheckoutApi {
         
         CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel).create()
         
-        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, college,createPaymentModel, paymentRequest).process()
+        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext, college,createPaymentModel, paymentRequest).process()
 
         if (processPaymentModel.error == null) {
             return processPaymentModel.response

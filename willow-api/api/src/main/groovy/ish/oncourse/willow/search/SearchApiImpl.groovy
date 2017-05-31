@@ -1,25 +1,26 @@
 package ish.oncourse.willow.search
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.model.Country
 import ish.oncourse.model.Language
+import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.service.SearchApi
-import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 
 
-
+@CompileStatic
 class SearchApiImpl implements SearchApi {
 
 
-    ServerRuntime cayenneRuntime
+    CayenneService cayenneService
     SearchService searchService
 
     @Inject
-    ContactApiServiceImpl(ServerRuntime cayenneRuntime, SearchService searchService) {
-        this.cayenneRuntime = cayenneRuntime
+    ContactApiServiceImpl(CayenneService cayenneService, SearchService searchService) {
+        this.cayenneService = cayenneService
         this.searchService = searchService
     }
     
@@ -32,7 +33,7 @@ class SearchApiImpl implements SearchApi {
                 where(Country.NAME.likeIgnoreCase("%" + text + "%")).
                 cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
                 cacheGroups(Country.class.simpleName).
-                select(cayenneRuntime.newContext()).each { c->
+                select(cayenneService.newContext()).each { c->
                     result << new Item(key: c.id.toString(), value: c.name)
                 }
         result
@@ -46,7 +47,7 @@ class SearchApiImpl implements SearchApi {
                 where(Language.NAME.likeIgnoreCase(text + "%")).
                 cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
                 cacheGroups(Language.class.simpleName).
-                select(cayenneRuntime.newContext()).each { l ->
+                select(cayenneService.newContext()).each { l ->
             result << new Item(key: l.id.toString(), value: l.name)
         }
         result    }

@@ -5,15 +5,15 @@ import ish.oncourse.model.College
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.site.GetWebSite
 import ish.oncourse.willow.filters.RequestFilter
-import org.apache.cayenne.configuration.server.ServerRuntime
+import ish.oncourse.willow.cayenne.CayenneService
 
 class CollegeService {
 
-    private ServerRuntime runtime
+    private CayenneService cayenneService
 
     @Inject
-    CollegeService(ServerRuntime runtime) {
-        this.runtime = runtime
+    CollegeService(CayenneService cayenneService) {
+        this.cayenneService = cayenneService
     }
     
     College getCollege() {
@@ -21,7 +21,7 @@ class CollegeService {
     }
 
     WebSite getWebSite() {
-        new GetWebSite(RequestFilter.ThreadLocalXOrigin.get(),runtime.newContext()).get()
+        new GetWebSite(RequestFilter.ThreadLocalXOrigin.get(), cayenneService.newContext()).get()
     }
     
 }

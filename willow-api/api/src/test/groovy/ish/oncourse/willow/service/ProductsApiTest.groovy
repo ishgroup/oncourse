@@ -14,7 +14,7 @@ class ProductsApiTest extends ApiTest {
     void getProductsTest() {
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
 
-        ProductsApi api = new ProductsApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
+        ProductsApi api = new ProductsApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
         List<Product> products = api.getProducts(new ProductsParams(productsIds: ["7", "8", "9", "10", "11", "12", "13"]))
         assertEquals(products.size(), 7)

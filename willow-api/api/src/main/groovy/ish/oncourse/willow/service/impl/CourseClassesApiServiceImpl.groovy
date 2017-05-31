@@ -6,23 +6,17 @@ import ish.math.Money
 import ish.oncourse.model.Application
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
-import ish.oncourse.model.DiscountCourseClass
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.services.courseclass.CheckClassAge
 import ish.oncourse.services.courseclass.ClassAge
-import ish.oncourse.services.discount.GetAppliedDiscounts
-import ish.oncourse.services.discount.GetPossibleDiscounts
-import ish.oncourse.services.discount.WebDiscountUtils
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.services.preference.Preferences
-import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.checkout.functions.BuildClassPrice
+import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.web.*
 import ish.oncourse.willow.service.CourseClassesApi
-import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
@@ -35,20 +29,20 @@ import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 @CompileStatic
 class CourseClassesApiServiceImpl implements CourseClassesApi {
 
-    private ServerRuntime cayenneRuntime
+    private CayenneService cayenneService
     private CollegeService collegeService
 
 
     @Inject
-    CourseClassesApiServiceImpl(ServerRuntime cayenneRuntime, CollegeService collegeService) {
-        this.cayenneRuntime = cayenneRuntime
+    CourseClassesApiServiceImpl(CayenneService cayenneService, CollegeService collegeService) {
+        this.cayenneService = cayenneService
         this.collegeService = collegeService
     }
     
     List<CourseClass> getCourseClasses(CourseClassesParams courseClassesParams) {
 
         College college = collegeService.college
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
         List<CourseClass> result = []
         List<ish.oncourse.model.Discount> promotions = []
         Contact contact
@@ -76,7 +70,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                 .prefetch(ish.oncourse.model.CourseClass.COURSE.joint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .cacheGroups(ish.oncourse.model.CourseClass.class.simpleName)
-                .select(cayenneRuntime.newContext())
+                .select(cayenneService.newContext())
                 .each { c ->
 
                     boolean allowByApplication = false

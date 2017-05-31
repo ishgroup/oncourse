@@ -9,6 +9,7 @@ import ish.oncourse.model.FieldConfigurationScheme
 import ish.oncourse.willow.functions.ContactDetailsBuilder
 import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.functions.SubmitContactFields
+import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
@@ -17,7 +18,6 @@ import ish.oncourse.willow.model.web.Contact
 import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactApi
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
@@ -33,18 +33,18 @@ class ContactApiServiceImpl implements ContactApi{
 
     final static  Logger logger = LoggerFactory.getLogger(ContactApiServiceImpl.class)
 
-    private ServerRuntime cayenneRuntime
+    private CayenneService cayenneService
     private CollegeService collegeService
     
     @Inject
-    ContactApiServiceImpl(ServerRuntime cayenneRuntime, CollegeService collegeService) {
-        this.cayenneRuntime = cayenneRuntime
+    ContactApiServiceImpl(CayenneService cayenneService, CollegeService collegeService) {
+        this.cayenneService = cayenneService
         this.collegeService = collegeService
     }
 
     @Override
     String createOrGetContact(CreateContactParams createContactParams) {
-        CreateOrGetContact createOrGet = new CreateOrGetContact(params:createContactParams, context: cayenneRuntime.newContext(), college: collegeService.college).perform()
+        CreateOrGetContact createOrGet = new CreateOrGetContact(params:createContactParams, context: cayenneService.newContext(), college: collegeService.college).perform()
         if (!createOrGet.validationError.formErrors.empty || !createOrGet.validationError.fieldsErrors.empty) {
             throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(createOrGet.validationError).build())
         } else {
@@ -54,7 +54,7 @@ class ContactApiServiceImpl implements ContactApi{
 
     @Override
     ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest) {
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
 
         if (!contactFieldsRequest.contactId) {
             logger.error("contactId required, request param: $contactFieldsRequest")
@@ -96,7 +96,7 @@ class ContactApiServiceImpl implements ContactApi{
 
     @Override
     void submitContactDetails(SubmitFieldsRequest contactFields) {
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
         if (!contactFields.contactId) {
             logger.error("contactId required, request param: $contactFields")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
@@ -123,7 +123,7 @@ class ContactApiServiceImpl implements ContactApi{
                 .where(ish.oncourse.model.Contact.UNIQUE_CODE.eq(studentUniqueIdentifier)) & ish.oncourse.model.Contact.COLLEGE.eq(collegeService.college))
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .cacheGroups(ish.oncourse.model.Contact.class.simpleName)
-                .selectOne(cayenneRuntime.newContext())
+                .selectOne(cayenneService.newContext())
         if (contact) {
             new Contact(id: contact.id.toString(),
                     firstName: contact.givenName,

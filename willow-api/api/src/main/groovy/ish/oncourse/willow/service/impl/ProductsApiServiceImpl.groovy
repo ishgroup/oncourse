@@ -3,11 +3,11 @@ package ish.oncourse.willow.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
+import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.web.Product
 import ish.oncourse.willow.model.web.ProductsParams
 import ish.oncourse.willow.service.ProductsApi
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
@@ -15,19 +15,19 @@ import org.apache.cayenne.query.QueryCacheStrategy
 @CompileStatic
 class ProductsApiServiceImpl implements ProductsApi {
     
-    private ServerRuntime cayenneRuntime
+    private CayenneService cayenneService
     private CollegeService collegeService
 
     @Inject
-    ProductsApiServiceImpl(ServerRuntime cayenneRuntime, CollegeService collegeService) {
-        this.cayenneRuntime = cayenneRuntime
+    ProductsApiServiceImpl(CayenneService cayenneService, CollegeService collegeService) {
+        this.cayenneService = cayenneService
         this.collegeService = collegeService
 
     }
     
     List<Product> getProducts(ProductsParams productsParams) {
 
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
         List<Product> result = []
 
         (ObjectSelect.query(ish.oncourse.model.Product)

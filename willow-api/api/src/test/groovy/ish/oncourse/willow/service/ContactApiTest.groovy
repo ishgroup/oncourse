@@ -17,7 +17,7 @@ class ContactApiTest extends ApiTest {
     @Test
     void getContactTest() {
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
-        ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
+        ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         
         Contact contact = api.getContact("1wjdestablisheq")
         assertEquals(contact.email, "Student3@Student3.net")
@@ -33,7 +33,7 @@ class ContactApiTest extends ApiTest {
     @Test
     void getorCreateContact() {
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
-        ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
+        ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         String id = api.createOrGetContact(new CreateContactParams(firstName: 'Student1', lastName:'Student1', email:'Student1@Student1.net', fieldSet: ENROLMENT))
 
         assertEquals("1001", id)

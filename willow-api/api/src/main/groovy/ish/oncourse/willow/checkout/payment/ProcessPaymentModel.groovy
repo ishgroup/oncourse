@@ -7,7 +7,6 @@ import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
 import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInSucceed
-import ish.oncourse.willow.checkout.payment.execution.StartDPSExecution
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus
@@ -26,8 +25,9 @@ class ProcessPaymentModel {
     CommonError error
     PaymentResponse response
 
-    ProcessPaymentModel(ObjectContext context, College college, CreatePaymentModel createPaymentModel, PaymentRequest paymentRequest) {
+    ProcessPaymentModel(ObjectContext context, ObjectContext nonReplicatedContext, College college, CreatePaymentModel createPaymentModel, PaymentRequest paymentRequest) {
         this.context = context
+        this.nonReplicatedContext = nonReplicatedContext
         this.college = college
         this.createPaymentModel = createPaymentModel
         this.paymentRequest = paymentRequest

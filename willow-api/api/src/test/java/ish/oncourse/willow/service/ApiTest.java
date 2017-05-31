@@ -6,6 +6,7 @@ package ish.oncourse.willow.service;
 
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import ish.math.MoneyType;
+import ish.oncourse.willow.cayenne.CayenneService;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.access.DbGenerator;
@@ -22,6 +23,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -43,10 +45,11 @@ public abstract class ApiTest {
     private static boolean createTables = false;
     private static DataSource dataSource;
 
-    protected static ServerRuntime cayenneRuntime;
+    protected ServerRuntime cayenneRuntime;
+    protected CayenneService cayenneService;
 
     static {
-        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
+        
     }
     
     @BeforeClass
@@ -57,16 +60,6 @@ public abstract class ApiTest {
         
         InitialContextFactoryMock.bind("jdbc/oncourse", dataSource);
         InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", dataSource);
-        
-        DataDomain domain = cayenneRuntime.getDataDomain();
-        
-        if (createTables) {
-            createTablesForDataSourceByParams(dataSource, domain.getDataMap("oncourse"));
-        }
-
-        for (DataNode dataNode : cayenneRuntime.getDataDomain().getDataNodes()) {
-            dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
-        }
     }
 
     @Before
@@ -79,11 +72,21 @@ public abstract class ApiTest {
         dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
         truncateAllTables(false);
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+        
+        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
+        for (DataNode dataNode : cayenneRuntime.getDataDomain().getDataNodes()) {
+            dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
+        }
+        cayenneService = new CayenneService(cayenneRuntime);
     }
-
+    
+    @After
+    public void after() {
+        cayenneRuntime.shutdown();
+    }    
+    
     @AfterClass
     public static void afterClass() throws Exception {
-        cayenneRuntime.shutdown();
 
         AbandonedConnectionCleanupThread.shutdown();
 
@@ -179,43 +182,6 @@ public abstract class ApiTest {
             }
         }
 
-    }
-    
-    public static void createTablesForDataSourceByParams(DataSource dataSource, DataMap map) throws Exception {
-        DataDomain domain = cayenneRuntime.getDataDomain();
-        List<Relationship> entityRelationshipsToRemove = new ArrayList<Relationship>();
-        entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationToProduct"));
-        entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationFromProduct"));
-        entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationToCourse"));
-        entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationFromCourse"));
-        for (Relationship rel : entityRelationshipsToRemove) {
-            map.getDbEntity("EntityRelation").removeRelationship(rel.getName());
-        }
-
-        List<Relationship> customFieldRelationships = new ArrayList<>();
-        customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedContact"));
-        customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedEnrolment"));
-        customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedCourse"));
-        customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedApplication"));
-        customFieldRelationships.add(map.getDbEntity("CustomField").getRelationship("relatedWaitingList"));
-        for (Relationship rel : customFieldRelationships) {
-            map.getDbEntity("CustomField").removeRelationship(rel.getName());
-        }
-
-        DbGenerator generator = new DbGenerator(domain.getDefaultNode().getAdapter(), map, cayenneRuntime.getInjector().getInstance(JdbcEventLogger.class), Collections.<DbEntity>emptyList());
-        generator.setShouldCreateTables(true);
-        generator.setShouldCreateFKConstraints(true);
-        generator.setShouldCreatePKSupport(true);
-        
-        generator.runGenerator(dataSource);
-
-        for (Relationship rel : entityRelationshipsToRemove) {
-            map.getDbEntity("EntityRelation").addRelationship(rel);
-        }
-
-        for (Relationship rel : customFieldRelationships) {
-            map.getDbEntity("CustomField").addRelationship(rel);
-        }
     }
 
     

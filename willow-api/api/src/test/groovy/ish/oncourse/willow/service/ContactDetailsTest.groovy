@@ -42,7 +42,7 @@ class ContactDetailsTest extends  ApiTest{
     @Test
     void testGet() {
 
-        ObjectContext context = cayenneRuntime.newContext()
+        ObjectContext context = cayenneService.newContext()
 
         SelectById.query(FieldHeading, 1l).selectOne(context).order = 1
         SelectById.query(FieldHeading, 2l).selectOne(context).order = 2
@@ -53,7 +53,7 @@ class ContactDetailsTest extends  ApiTest{
         context.commitChanges()
 
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
-        ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
+        ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
         ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', productIds: ['13'], classIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
         
@@ -72,7 +72,7 @@ class ContactDetailsTest extends  ApiTest{
     @Test
     void testSubmitWrongRequest() {
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
-        ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
+        ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         
 
         try {
@@ -88,11 +88,11 @@ class ContactDetailsTest extends  ApiTest{
     @Test
     void testSubmitProperRequest() {
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
-        ContactApi api = new ContactApiServiceImpl(cayenneRuntime, new CollegeService(cayenneRuntime))
+        ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
         
         api.submitContactDetails(propperRequest())
         
-        Contact contact = SelectById.query(Contact, 1001l).selectOne(cayenneRuntime.newContext())
+        Contact contact = SelectById.query(Contact, 1001l).selectOne(cayenneService.newContext())
         assertEquals(contact.street, 'street')
         assertEquals(contact.suburb, 'Parramata')
         assertEquals(contact.postcode, '6797')
