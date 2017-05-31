@@ -1,4 +1,5 @@
 import React from "react";
+import classnames from "classnames";
 import {DataShape, FormProps, reduxForm} from "redux-form";
 import {Contact} from "../../../model/web/Contact";
 import {IshState} from "../../../services/IshState";
@@ -6,25 +7,30 @@ import {connect} from "react-redux";
 import CreditCardComp from "./components/CreditCardComp";
 import {Amount} from "../../../model/checkout/Amount";
 import {Conditions} from "./components/Conditions";
+import {schema} from "normalizr";
+import {makePaymentRequest} from "./actions/Actions";
+import Values = schema.Values;
 
 interface Props extends FormProps<DataShape, any, any> {
   amount: Amount;
   contacts: Contact[];
-  onSubmit: (data, dispatch, props) => any;
 }
 
 export const NAME = "CreditCartForm";
 
 class CreditCartForm extends React.Component<Props, any> {
   render() {
-    const {amount, contacts, handleSubmit} = this.props;
+    const {amount, contacts, handleSubmit, invalid, pristine, submitting} = this.props;
+    const disabled = (invalid || pristine || submitting);
+    const className = classnames("btn", "btn-primary", {"disabled": disabled});
     return (
       <div>
         <form onSubmit={handleSubmit} id="payment-form">
           <CreditCardComp amount={amount} contacts={contacts}/>
           <Conditions/>
           <div className="form-controls enrolmentsSelected">
-            <input value="Confirm" className="btn btn-primary" id="paymentSubmit" name="paymentSubmit" type="submit" />
+            <input className={className} id="paymentSubmit" name="paymentSubmit" type="submit"
+                   disabled={disabled}/>
           </div>
         </form>
       </div>
@@ -35,9 +41,8 @@ class CreditCartForm extends React.Component<Props, any> {
 
 const Form = reduxForm({
   form: NAME,
-  onSubmitSuccess: (result, dispatch, props: any) => {
-  },
-  onSubmitFail: (errors, dispatch, submitError, props) => {
+  onSubmit: (data: Values, dispatch, props): void => {
+    dispatch(makePaymentRequest(data));
   }
 })(CreditCartForm);
 
@@ -50,12 +55,8 @@ const mapStateToProps = (state: IshState) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    onSubmit: (data, dispatch, props): any => {
-    }
-  };
+  return {}
 };
-
 
 export const Container = connect(
   mapStateToProps,

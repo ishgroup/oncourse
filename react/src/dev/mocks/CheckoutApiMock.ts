@@ -10,6 +10,7 @@ import {MockConfig} from "./mocks/MockConfig";
 import {CheckoutModel} from "../../js/model/checkout/CheckoutModel";
 import {mockAmount} from "./mocks/MockFunctions";
 import {CheckoutModelRequest} from "../../js/model/checkout/CheckoutModelRequest";
+import {PaymentResponse} from "../../js/model/checkout/payment/PaymentResponse";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;
@@ -47,4 +48,9 @@ export class CheckoutApiMock extends CheckoutApi {
     return this.config.createResponse(result);
   }
 
+
+  makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
+    const result: PaymentResponse = new PaymentResponse();
+    return this.config.createResponse(result);
+  }
 }

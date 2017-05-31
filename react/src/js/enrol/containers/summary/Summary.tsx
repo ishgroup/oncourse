@@ -11,7 +11,7 @@ import {openAddContactForm} from "../contact-add/actions/Actions";
 import {Voucher} from "../../../model/checkout/Voucher";
 import {Article} from "../../../model/checkout/Article";
 import {Membership} from "../../../model/checkout/Membership";
-import {StateService} from "../../services/StateService";
+import {SummaryService} from "./services/SummaryService";
 
 
 export const EnrolmentPropsBy = (enrolment: Enrolment, state: IshState): EnrolmentProps => {
@@ -39,7 +39,7 @@ export const SummaryPropsBy = (state: IshState): any => {
     return {
       amount: state.checkout.amount,
       contacts: contacts,
-      hasSelected: StateService.hasSelected(state.checkout.summary)
+      hasSelected: SummaryService.hasSelected(state.checkout.summary)
     };
   } catch (e) {
     console.log(e);
@@ -50,7 +50,7 @@ export const SummaryPropsBy = (state: IshState): any => {
   }
 };
 
-export const SummaryActionsBy = (dispatch: Dispatch<any>):any => {
+export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
     onSelect: (item: Enrolment | Membership | Article | Voucher, selected: boolean): void => {
       dispatch(selectItem(item, selected))

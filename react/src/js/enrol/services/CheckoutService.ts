@@ -16,6 +16,9 @@ import {Amount} from "../../model/checkout/Amount";
 import {ContactNode} from "../../model/checkout/ContactNode";
 import {CheckoutModelRequest} from "../../model/checkout/CheckoutModelRequest";
 import {ContactNodeRequest} from "../../model/checkout/request/ContactNodeRequest";
+import {PaymentService, Values} from "../containers/payment/services/PaymentService";
+import {PaymentResponse} from "../../model/checkout/payment/PaymentResponse";
+import {PaymentRequest} from "../../model/checkout/payment/PaymentRequest";
 
 export class CheckoutService {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
@@ -59,6 +62,11 @@ export class CheckoutService {
 
   public getCheckoutModel(state: IshState): Promise<CheckoutModel> {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state));
+  }
+
+  public makePayment(values: Values, state: IshState): Promise<PaymentResponse> {
+    const request: PaymentRequest = PaymentService.valuesToRequest(values, state);
+    return this.checkoutApi.makePayment(request);
   }
 }
 

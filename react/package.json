@@ -62,7 +62,6 @@
 
     "mocker-data-generator": "2.0.0",
     "faker": "4.1.0",
-    "uuid": "3.0.1",
     "react-inspector": "2.0.0"
   },
   "dependencies": {
@@ -88,7 +87,8 @@
 
     "react-select": "1.0.0-rc.4",
     "rodal": "1.4.0",
-    "rxjs": "5.2.0"
+    "rxjs": "5.2.0",
+    "uuid": "3.0.1"
   },
   "jest": {
     "transform": {

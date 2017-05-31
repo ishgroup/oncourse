@@ -19,7 +19,7 @@ const getMiddleware = (): GenericStoreEnhancer => {
    * Split middlewares which we using in development and in production.
    */
   if (process.env.NODE_ENV === EnvironmentConstants.development) {
-    return applyMiddleware(createEpicMiddleware(RootEpic));
+    return applyMiddleware(createEpicMiddleware(RootEpic), logger);
   } else {
     return applyMiddleware(createEpicMiddleware(RootEpic));
   }

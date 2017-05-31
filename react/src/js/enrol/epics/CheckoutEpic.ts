@@ -11,10 +11,11 @@ import {EpicAddContact} from "./EpicAddContact";
 import MessagesShowEpic from "./MessagesShowEpic";
 import PhaseChangeEpic from "./PhaseChangeEpic";
 import OpenContactEditEpic from "./OpenContactDetailsEpic";
-import OpenSummaryEpic from "./OpenSummaryEpic";
+import {EpicOpenSummary} from "./EpicOpenSummary";
 import {EpicItemSelect} from "./EpicItemSelect";
 import {EpicUpdateAmount} from "./EpicUpdateAmount";
 import {EpicProceedToPayment} from "./EpicProceedToPayment";
+import {EpicMakePayment} from "./EpicMakePayment";
 
 const {
   contactApi
@@ -26,10 +27,11 @@ export const CheckoutEpic = combineEpics(
   PhaseChangeEpic,
   EpicAddContact,
   OpenContactEditEpic,
-  OpenSummaryEpic,
+  EpicOpenSummary,
   EpicItemSelect,
   EpicUpdateAmount,
   EpicProceedToPayment,
+  EpicMakePayment,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 

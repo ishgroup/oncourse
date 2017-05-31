@@ -75,9 +75,6 @@ export class MockControl extends React.Component<Props, any> {
 
     const onProps = (path: string) => {
       L.set(config.props, path, !L.get(config.props, path));
-
-      console.log(inspect(config, true, 10, true));
-
       this.refresh();
     };
     const checked = !!L.get(config.props, path);

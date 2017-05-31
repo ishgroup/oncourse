@@ -14,16 +14,18 @@ const request: EpicUtils.Request<ContactNode, IshState> = {
   type: OpenSummaryRequest,
   getData: (payload, state) => CheckoutService.getContactNode(state),
   processData: (contactNode, state) => {
-    return [{type: ItemsLoad, payload: ContactNodeToState([contactNode])}, changePhase(Phase.Summary), updateAmountRequest()];
+    return [{
+      type: ItemsLoad,
+      payload: ContactNodeToState([contactNode])
+    }, changePhase(Phase.Summary), updateAmountRequest()];
   },
   processError: (data) => {
-    return {type: SHOW_MESSAGES, payload: toValidationError(data)}
+    return [{type: SHOW_MESSAGES, payload: toValidationError(data)}]
   }
 };
 
 /**
  * This epic loads ContactNode for payer and change phase to Summary
  */
-const Epic: Epic<any, any> = EpicUtils.Create(request);
+export const EpicOpenSummary: Epic<any, any> = EpicUtils.Create(request);
 
-export default Epic;

@@ -31,13 +31,10 @@ export const toValidationError = (response: AxiosResponse) => {
   if (isValidationError(response.data)) {
     messages = Object.assign({}, messages, response.data);
   } else if (isCommonError(response.data)) {
-    console.error(response);
     messages.formErrors.push(response.data.message);
   } else if (isPlainTextError(response.data)) {
-    console.error(response);
     messages.formErrors.push(response.data);
   } else {
-    console.error(response);
     messages.formErrors.push("Unexpected error.")
   }
   return messages;

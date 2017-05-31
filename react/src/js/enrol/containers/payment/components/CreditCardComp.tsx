@@ -1,5 +1,3 @@
-import L from "lodash";
-import moment from "moment";
 import React from "react";
 import classNames from "classnames";
 import {Field} from "redux-form";
@@ -10,20 +8,7 @@ import {Contact} from "../../../../model/web/Contact";
 import {PayerSelect} from "./PayerSelect";
 import {PayerAdd} from "./PayerAdd";
 
-
-import {createStringEnum} from "../../../../common/utils/EnumUtils";
-import {Item} from "../../../../model/common/Item";
-
-export const FieldName = createStringEnum([
-  "creditCardName",
-  'creditCardNumber',
-  'expiryMonth',
-  'expiryYear',
-  'creditCardCvv',
-  'agreementFlag'
-]);
-
-export type FieldName = keyof typeof FieldName;
+import {FieldName, PaymentService} from "../services/PaymentService";
 
 interface Props {
   contacts: Contact[];
@@ -84,10 +69,10 @@ class CreditCardComp extends React.Component<Props, any> {
                   </label>
                   <span className="valid input-select-small">
 										<Field component={SelectField} name={FieldName.expiryMonth} required={true}
-                           loadOptions={months}/>
+                           loadOptions={PaymentService.months}/>
 										/
 										<Field component={SelectField} name={FieldName.expiryYear} required={true}
-                           loadOptions={years}/>
+                           loadOptions={PaymentService.years}/>
 									</span>
                 </div>
               </div>
@@ -98,22 +83,4 @@ class CreditCardComp extends React.Component<Props, any> {
     )
   }
 }
-
-const months = (): Promise<Item> => {
-  const result = L.range(1, 13).map((i) => {
-    const v = i < 10 ? `0${i}` : `${i}`;
-    return {key: v, value: v}
-  });
-  return Promise.resolve(result);
-};
-
-const years = (): Promise<Item> => {
-  const start: number = moment().get('year');
-  const result = L.range(start, start + 11).map((y) => {
-    const v = `${y}`;
-    return {key: v, value: v}
-  });
-  return Promise.resolve(result);
-};
-
 export default CreditCardComp;
