@@ -5,7 +5,7 @@ import {IshActions} from "../../constants/IshActions";
 import {Injector} from "../../injector";
 import {normalize} from "normalizr";
 import {mapError, mapPayload} from "../../epics/epicsUtils";
-import {ContactsSchema} from "../../NormalizeSchema";
+import {ContactSchema} from "../../NormalizeSchema";
 import InitEpic from "./InitEpic";
 import {EpicAddContact} from "./EpicAddContact";
 import MessagesShowEpic from "./MessagesShowEpic";
@@ -40,7 +40,7 @@ function createGetOrCreateContactEpic(actionType) {
     .ofType(actionType)
     .mergeMap(action => Observable
       .fromPromise(contactApi.createOrGetContact(action.payload))
-      .map(payload => normalize(payload, ContactsSchema))
+      .map(payload => normalize(payload, ContactSchema))
       .map(mapPayload(actionType))
       .catch(mapError(actionType))
     );

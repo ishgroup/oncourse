@@ -8,6 +8,7 @@ import {ValidationError} from "../../model/common/ValidationError";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Amount} from "../../model/checkout/Amount";
 import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
+import {ContactBox} from "../../NormalizeSchema";
 
 const FieldsReducer = (state: ContactFields = null, action): any => {
   switch (action.type) {
@@ -25,10 +26,10 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
   }
 };
 
-const ContactReducer = (state = {}, action): any => {
+const ContactReducer = (state = {}, action: { type: string, payload: ContactBox }): any => {
   switch (action.type) {
     case ContactAddActions.ADD_CONTACT:
-      return action.payload.entities.contacts[action.payload.result];
+      return action.payload.entities.contact[action.payload.result];
     default:
       return state;
   }

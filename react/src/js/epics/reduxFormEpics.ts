@@ -4,7 +4,7 @@ import {FormErrors, startSubmit, stopSubmit} from "redux-form";
 import {Injector} from "../injector";
 import {Observable} from "rxjs";
 import {normalize} from "normalizr";
-import {ContactsSchema} from "../NormalizeSchema";
+import {ContactSchema} from "../NormalizeSchema";
 import {mapError, mapPayload} from "./epicsUtils";
 import {ValidationError} from "../model/common/ValidationError";
 import {IshAction} from "../actions/IshAction";
@@ -25,7 +25,7 @@ function createStartSubmitAddContactFormEpic(actionType) {
     .ofType(actionType)
     .mergeMap(action => Observable
       .fromPromise(contactApi.createOrGetContact(action.payload))
-      .map(payload => normalize(payload, ContactsSchema))
+      .map(payload => normalize(payload, ContactSchema))
       .map(payload => ({...mapPayload(actionType)(payload), ...mapMeta(action)}))
       .catch(payload => mapError(actionType)(payload).map(error => ({...error, ...mapMeta(action)})))
     );

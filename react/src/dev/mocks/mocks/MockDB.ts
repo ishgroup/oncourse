@@ -7,7 +7,7 @@ import {Enrolment} from "../../../js/model/checkout/Enrolment";
 import {Contact} from "../../../js/model/web/Contact";
 import {mockContact, mockCourseClass, mockEnumField, mockField, mockProductClass} from "./MockFunctions";
 import {normalize} from "normalizr";
-import {ClassesListSchema, ContactsListSchema, ProductsListSchema} from "../../../js/NormalizeSchema";
+import {ClassesListSchema, ContactsBox, ContactsSchema, ProductsListSchema} from "../../../js/NormalizeSchema";
 
 import {Field} from "../../../js/model/field/Field";
 import {DataType} from "../../../js/model/field/DataType";
@@ -38,9 +38,7 @@ export class MockDB {
 
   private id: string = uuid();
 
-  contacts: { entities: {
-    contacts: {[key: string]: Contact}
-  }, result: any } = null;
+  contacts: ContactsBox = null;
   classes: { entities: any, result: any } = null;
   products: { entities: any, result: any } = null;
   fields: Field[] = [];
@@ -52,7 +50,7 @@ export class MockDB {
   }
 
   init(): void {
-    this.contacts = normalize([mockContact(), mockContact(), mockContact()], ContactsListSchema);
+    this.contacts = normalize([mockContact(), mockContact(), mockContact()], ContactsSchema);
     this.classes = normalize([
       mockCourseClass(),
       mockCourseClass(),
@@ -429,7 +427,7 @@ export class MockDB {
 
   createEnrolment(contactId: string, classId: string, errors: boolean = false, warnings: boolean = false): Enrolment {
     return {
-      contactId: this.contacts.entities.contacts[contactId].id,
+      contactId: this.contacts.entities.contact[contactId].id,
       classId: this.classes.entities.classes[classId].id,
       errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
@@ -440,7 +438,7 @@ export class MockDB {
 
   createVoucher(contactId: string, productId: string, errors: boolean = false, warnings: boolean = false): Voucher {
     return {
-      contactId: this.contacts.entities.contacts[contactId].id,
+      contactId: this.contacts.entities.contact[contactId].id,
       productId: this.products.entities.products[productId].id,
       errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
@@ -452,18 +450,19 @@ export class MockDB {
   }
 
   addContact(contact: Contact): string {
-    const nc = normalize([contact], ContactsListSchema);
+    const nc = normalize([contact], ContactsSchema);
     this.contacts.result = [...this.contacts.result, ...nc.result];
-    this.contacts.entities.contacts = {...this.contacts.entities.contacts, ...nc.entities.contacts};
+    this.contacts.entities.contact = {...this.contacts.entities.contact, ...nc.entities.contact};
+    localForage.setItem("MockDB", this);
     return contact.id;
   }
 
   getContactByIndex(index: number): Contact {
-    return this.contacts.entities.contacts[this.contacts.result[index]];
+    return this.contacts.entities.contact[this.contacts.result[index]];
   }
 
   getContactByDetails(firstName: String, lastName: String, email: String): Contact {
-    return L.find(this.contacts.entities.contacts,
+    return L.find(this.contacts.entities.contact,
       (c: Contact) => c.firstName === firstName && c.lastName == lastName && c.email == email);
   }
 
@@ -477,7 +476,7 @@ export class MockDB {
   }
 
   getContactById(id: string): Contact {
-    return this.contacts.entities.contacts[id];
+    return this.contacts.entities.contact[id];
   }
 
   getCourseClassById(id: string): CourseClass {

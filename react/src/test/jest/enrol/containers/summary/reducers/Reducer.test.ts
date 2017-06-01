@@ -55,7 +55,7 @@ test('test add contact ', () => {
 
   expect(ns.result.length).toBe(3);
   expect(ns.entities.enrolments['00003-00001'].contactId).toBe('00003');
-  expect(ns.entities.contacts['00003'].contactId).toBe('00003');
+  expect(ns.entities.contactNodes['00003'].contactId).toBe('00003');
 });
 
 
@@ -75,7 +75,7 @@ test('test add enrolment ', () => {
 
   expect(ns.result.length).toBe(2);
   expect(ns.entities.enrolments['00002-00004'].contactId).toBe('00002');
-  expect(ns.entities.contacts['00002'].enrolments[3]).toBe('00002-00004');
+  expect(ns.entities.contactNodes['00002'].enrolments[3]).toBe('00002-00004');
 });
 
 

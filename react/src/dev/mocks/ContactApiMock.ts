@@ -8,6 +8,7 @@ import {SubmitFieldsRequest} from "../../js/model/field/SubmitFieldsRequest";
 import {MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
 import {mockContact} from "./mocks/MockFunctions";
+import {ContactId} from "../../js/model/web/ContactId";
 export class ContactApiMock extends ContactApi {
 
   public config: MockConfig;
@@ -30,6 +31,7 @@ export class ContactApiMock extends ContactApi {
   }
 
   createOrGetContact(request: CreateContactParams): Promise<Contact> {
+    const result:ContactId = new ContactId();
     let contact: Contact = this.config.db.getContactByDetails(request.firstName, request.lastName, request.email);
     if (!contact) {
       contact = mockContact();
@@ -37,8 +39,10 @@ export class ContactApiMock extends ContactApi {
       contact.lastName = request.lastName;
       contact.email = request.email;
       this.config.db.addContact(contact);
+      result.newContact = true;
     }
-    return this.config.createResponse(contact.id);
+    result.id = contact.id;
+    return this.config.createResponse(result);
   }
 
   getContactFields(request: ContactFieldsRequest): Promise<ContactFields> {

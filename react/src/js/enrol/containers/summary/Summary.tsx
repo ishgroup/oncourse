@@ -32,8 +32,8 @@ export const VoucherPropsBy = (voucher: Voucher, state: IshState): VoucherProps 
 };
 
 export const ContactPropsBy = (contactId: string, state: IshState): ContactProps => {
-  const enrolmentIds = state.checkout.summary.entities.contacts[contactId].enrolments || [];
-  const voucherIds = state.checkout.summary.entities.contacts[contactId].vouchers || [];
+  const enrolmentIds = state.checkout.summary.entities.contactNodes[contactId].enrolments || [];
+  const voucherIds = state.checkout.summary.entities.contactNodes[contactId].vouchers || [];
   const enrolments = state.checkout.summary.entities.enrolments || [];
   const vouchers = state.checkout.summary.entities.vouchers || [];
   return {

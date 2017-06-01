@@ -1,4 +1,5 @@
 import {schema} from "normalizr";
+import {Contact} from "./model/web/Contact";
 
 export const ClassesSchema = new schema.Entity('classes');
 export const ClassesListSchema = new schema.Array(ClassesSchema);
@@ -8,5 +9,19 @@ export const ProductsListSchema = new schema.Array(ProductsSchema);
 
 export const PromotionsSchema = new schema.Entity('promotions');
 
-export const ContactsSchema = new schema.Entity('contacts');
-export const ContactsListSchema = new schema.Array(ContactsSchema);
+export interface ContactBox {
+  result: string
+  entities: {
+    contact: { [key: string]: Contact }
+  }
+}
+
+export interface ContactsBox {
+  result: string[]
+  entities: {
+    contact: { [key: string]: Contact }
+  }
+}
+
+export const ContactSchema = new schema.Entity('contact');
+export const ContactsSchema = new schema.Array(ContactSchema);

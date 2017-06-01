@@ -9,7 +9,6 @@ import Inspector from "react-inspector";
 import "../../scss/index.scss";
 import {Values} from "redux-form-website-template";
 import {NAME} from "../../js/enrol/containers/payment/CreditCartForm";
-import {inspect} from "util";
 
 
 interface Props {
@@ -62,7 +61,7 @@ export class MockControl extends React.Component<Props, any> {
         <button className="btn" onClick={this.resetLocalForage}>Reset LocalForage</button>
       </fieldset>
       <fieldset>
-        <Inspector data={config.db.contacts.entities.contacts}/>
+        <Inspector data={config.db.contacts.entities.contact}/>
         <Inspector data={config.db.classes.entities.classes}/>
         <Inspector data={config.store.getState()}/>
       </fieldset>

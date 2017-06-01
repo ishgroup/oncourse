@@ -81,6 +81,7 @@ export class BuildContactNodeRequest {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = enrolment.contactId;
     result.classIds = [enrolment.classId];
+    result.productIds = [];
     result.promotionIds = state.cart.promotions.result;
     return result;
   };
@@ -136,7 +137,7 @@ export class BuildContactNodes {
     return state.result.map((contactId) => {
       const result: ContactNode = new ContactNode();
       result.contactId = contactId;
-      result.enrolments = state.entities.contacts[contactId].enrolments.map((enrolmentId) => {
+      result.enrolments = state.entities.contactNodes[contactId].enrolments.map((enrolmentId) => {
         return state.entities.enrolments[enrolmentId];
       });
       return result;
