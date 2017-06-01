@@ -12,7 +12,6 @@ import {openAddContactForm} from "../contact-add/actions/Actions";
 import {Voucher} from "../../../model/checkout/Voucher";
 import {Article} from "../../../model/checkout/Article";
 import {Membership} from "../../../model/checkout/Membership";
-import {Product} from "../../../model/web/Product";
 import {SummaryService} from "./services/SummaryService";
 
 
@@ -33,13 +32,14 @@ export const VoucherPropsBy = (voucher: Voucher, state: IshState): VoucherProps 
 };
 
 export const ContactPropsBy = (contactId: string, state: IshState): ContactProps => {
-  const ids = state.checkout.summary.entities.contacts[contactId].enrolments;
-  const enrolments = state.checkout.summary.entities.enrolments;
-  const vouchers = state.checkout.summary.entities.vouchers;
+  const enrolmentIds = state.checkout.summary.entities.contacts[contactId].enrolments || [];
+  const voucherIds = state.checkout.summary.entities.contacts[contactId].vouchers || [];
+  const enrolments = state.checkout.summary.entities.enrolments || [];
+  const vouchers = state.checkout.summary.entities.vouchers || [];
   return {
     contact: state.checkout.payer.entity,
-    enrolments: ids.map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
-    vouchers: ids.map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
+    enrolments: enrolmentIds.map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
+    vouchers: voucherIds.map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
   };
 };
 
