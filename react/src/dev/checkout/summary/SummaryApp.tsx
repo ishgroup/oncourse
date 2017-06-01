@@ -29,14 +29,14 @@ import {SummaryComp} from "../../../js/enrol/containers/summary/components/Summa
 import {ProductClass} from "../../../js/model/web/ProductClass";
 import {Voucher} from "../../model/checkout/Voucher";
 
-
-const store = CreateStore();
-RestoreState(store, () => render());
-
-const checkoutApi:CheckoutApiMock = new CheckoutApiMock(null);
-const config: MockConfig = checkoutApi.config;
+let config: MockConfig = new MockConfig();
+const checkoutApi:CheckoutApiMock = new CheckoutApiMock(config);
+config = checkoutApi.config;
 const db:MockDB = config.db;
 
+config.init((config:MockConfig) => {
+  render(config);
+});
 
 const classes:CourseClass[]  = [db.getCourseClassByIndex(0),db.getCourseClassByIndex(1),db.getCourseClassByIndex(2), db.getCourseClassByIndex(3)];
 const contacts:Contact[]  = [db.getContactByIndex(0),db.getContactByIndex(1)];
@@ -92,8 +92,8 @@ const onSelect = (contact, item) => {
 };
 
 
-const render = () => ReactDOM.render(
-  <Provider store={store}>
+const render = (config) => ReactDOM.render(
+  <Provider store={config.store}>
     <div id="checkout" className="col-xs-24 payments">
       <Progress/>
       <Messages/>

@@ -72,8 +72,7 @@ export class MockConfig {
     );
   }
 
-  public
-  init(callback: (config: MockConfig) => void) {
+  public init(callback: (config: MockConfig) => void) {
     this.store = CreateStore();
     this.injector = Injector.of();
     if (process.env.NODE_ENV === EnvironmentConstants.development) {
@@ -90,8 +89,7 @@ export class MockConfig {
     RestoreState(this.store, (error, result) => {
       this.load(() => callback(this))
     });
-  }
-  ;
+  };
 
 
 }
