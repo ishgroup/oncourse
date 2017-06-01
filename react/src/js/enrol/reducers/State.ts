@@ -5,6 +5,7 @@ import {State as SummaryState} from "../containers/summary/reducers/State";
 import {Amount} from "../../model/checkout/Amount";
 
 export interface CheckoutState {
+  newContact: boolean,
   phase: Phase,
   fields: ContactFields,
   error: ValidationError;

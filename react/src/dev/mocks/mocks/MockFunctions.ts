@@ -153,6 +153,7 @@ export const mockState = (contact: Contact,
   const state: IshState =
     {
       checkout: {
+        newContact: false,
         summary: ContactNodeToState(items),
         payer: {
           entity: contact

@@ -23,6 +23,15 @@ export const PayerSetReject: string = _toRejectType(PayerSet);
 export const UPDATE_AMOUNT: string = "checkout/amount/update";
 export const UPDATE_AMOUNT_REQUEST: string = _toRequestType(UPDATE_AMOUNT);
 
+export const SET_NEW_CONTACT_FLAG = "checkout/set/new/contact/flag";
+
+export const setNewContactFlag = (newContact: boolean): {type: string, payload: boolean} => {
+  return {
+    type: SET_NEW_CONTACT_FLAG,
+    payload: newContact
+  }
+};
+
 export const showFormValidation = (response: AxiosResponse, form: string): any => {
   return {
     type: SHOW_MESSAGES_REQUEST,

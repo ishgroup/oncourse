@@ -103,6 +103,7 @@ export class BuildContactFieldsRequest {
     result.classIds = state.cart.courses.result;
     result.productIds = state.cart.products.result;
     result.fieldSet = FieldSet.enrolment;
+    result.mandatoryOnly = !state.checkout.newContact;
     return result;
   }
 }

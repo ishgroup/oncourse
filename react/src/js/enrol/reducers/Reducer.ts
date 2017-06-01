@@ -9,6 +9,18 @@ import {ContactFields} from "../../model/field/ContactFields";
 import {Amount} from "../../model/checkout/Amount";
 import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
 import {ContactBox} from "../../NormalizeSchema";
+import {Contact} from "../../model/web/Contact";
+
+const NewContactReducer = (state: boolean = false, action: { type: string, payload: boolean }): boolean => {
+  switch (action.type) {
+    case Actions.SET_NEW_CONTACT_FLAG:
+      return action.payload;
+    case ContactEditActions.FieldsSave:
+      return false;
+    default:
+      return state;
+  }
+};
 
 const FieldsReducer = (state: ContactFields = null, action): any => {
   switch (action.type) {
@@ -26,7 +38,7 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
   }
 };
 
-const ContactReducer = (state = {}, action: { type: string, payload: ContactBox }): any => {
+const ContactReducer = (state: Contact = {}, action: { type: string, payload: ContactBox }): any => {
   switch (action.type) {
     case ContactAddActions.ADD_CONTACT:
       return action.payload.entities.contact[action.payload.result];
@@ -71,6 +83,7 @@ const PhaseReducer = (state: Phase = Phase.Init, action: any): any => {
 
 
 export const Reducer = combineReducers<CheckoutState>({
+  newContact: NewContactReducer,
   fields: FieldsReducer,
   phase: PhaseReducer,
   error: ErrorReducer,
