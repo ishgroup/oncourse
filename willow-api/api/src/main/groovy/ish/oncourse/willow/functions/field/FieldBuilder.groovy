@@ -54,7 +54,7 @@ class FieldBuilder {
                     }
                     break
                 default:
-                    f.dataType = DataType.fromValue(aClass.simpleName.toLowerCase())
+                    f.dataType = DataType.fromValue(aClass.simpleName.toUpperCase())
                     break
             }
            

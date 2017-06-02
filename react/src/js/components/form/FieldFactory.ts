@@ -25,19 +25,19 @@ class FieldFactory {
   public getComponent = (field: Field): any => {
     const props: any = this.propsFrom(field);
     switch (field.dataType) {
-      case DataType.string:
-      case DataType.language:
-      case DataType.suburb:
-      case DataType.country:
+      case DataType.STRING:
+      case DataType.LANGUAGE:
+      case DataType.SUBURB:
+      case DataType.COUNTRY:
         return React.createElement(Form.Field,
           Object.assign({}, props, {type: "string", component: TextField}));
-      case DataType.integer:
+      case DataType.INTEGER:
         return React.createElement(Form.Field,
           Object.assign({}, props, {type: "number", component: TextField}));
-      case DataType.enum:
+      case DataType.ENUM:
         return React.createElement(ComboboxField,
           Object.assign({}, props, {items: field.enumItems}));
-      case DataType.boolean:
+      case DataType.BOOLEAN:
         if (field.key === "isMale") {
           return React.createElement(Form.Field,
             Object.assign({}, props, {
@@ -48,7 +48,7 @@ class FieldFactory {
           return React.createElement(Form.Field,
             Object.assign({}, props, {component: CheckboxField}));
         }
-      case DataType.date:
+      case DataType.DATE:
         return React.createElement(Form.Field, Object.assign({}, props, {component: DateField}));
       default:
         return null;

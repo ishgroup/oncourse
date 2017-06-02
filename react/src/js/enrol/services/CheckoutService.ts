@@ -102,7 +102,7 @@ export class BuildContactFieldsRequest {
     result.contactId = state.checkout.payer.entity.id;
     result.classIds = state.cart.courses.result;
     result.productIds = state.cart.products.result;
-    result.fieldSet = FieldSet.enrolment;
+    result.fieldSet = FieldSet.ENROLMENT;
     result.mandatoryOnly = !state.checkout.newContact;
     return result;
   }
@@ -128,7 +128,7 @@ export class BuildCreateContactParams {
     result.firstName = values['firstName'];
     result.lastName = values['lastName'];
     result.email = values['email'];
-    result.fieldSet = FieldSet.enrolment;
+    result.fieldSet = FieldSet.ENROLMENT;
     return result;
   }
 }
