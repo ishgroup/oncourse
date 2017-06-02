@@ -99,7 +99,7 @@ class GetContactFields {
             Object source = getContext.call(property.contextType, contact)
             PropertyGetSet getSet  = factory.get(f, source)
 
-            if (getSet.get() == null) {                                         // add field in result list if contact has no value for corresponded property
+            if (isMarketingField(property) || getSet.get() == null) {                                         // add field in result list if contact has no value for corresponded property
                 FieldHeading heading = getHeadingBy(f.fieldHeading)             // get heading by name or create new on if not exist
                 heading.fields << new FieldBuilder(field: f, aClass: getSet.type).build()                              // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
             }
@@ -117,6 +117,12 @@ class GetContactFields {
         result.headings.each { h ->                                                     // sort fields inside each heading by sortOrdering
             h.fields = h.fields.sort { it.ordering }
         }
+    }
+    
+    private boolean isMarketingField(FieldProperty property) {
+        return !mandatoryOnly && (FieldProperty.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY == property
+        || FieldProperty.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY == property
+        || FieldProperty.IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY == property)
     }
     
 }
