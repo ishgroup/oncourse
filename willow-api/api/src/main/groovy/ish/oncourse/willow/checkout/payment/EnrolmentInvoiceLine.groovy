@@ -55,7 +55,7 @@ class EnrolmentInvoiceLine {
 
             if (price.appliedDiscount) {
                 DiscountCourseClass chosenDiscount = e.courseClass.discountCourseClasses
-                        .find {it.id.toString() == price.appliedDiscount.id}
+                        .find {(it.discount as Discount).id.toString() == price.appliedDiscount.id}
                 DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, e.courseClass.taxRate, taxAdjustment)
                 createInvoiceLineDiscounts(invoiceLine, chosenDiscount.discount as Discount, e.objectContext)
             }

@@ -88,7 +88,7 @@ class CalculateEnrolmentsPrice {
 
         courseClass.paymentPlanLines.sort {it.dayOffset}.each { planLine ->
             Money amount = amountLeftToPay.isGreaterThan(planLine.amount) ? planLine.amount : amountLeftToPay
-            if (!planLine.dayOffset) {
+            if (planLine.dayOffset == null) {
                 payNow = payNow.add(amount)
             } else if ((ChronoUnit.DAYS.between(courseClass.startDate?.toInstant()?:now, now) as Integer) >= planLine.dayOffset) {
                 payNow = payNow.add(amount)

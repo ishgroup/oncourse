@@ -76,7 +76,7 @@ class ProcessPaymentModel {
 
     private ProcessPaymentModel performGatewayOperation() {
         context.commitChanges()
-        context.setUserProperty('replicationEnabled', false)
+        
         PaymentInModel model = createPaymentModel.model
         new NewPaymentExpressGatewayService(nonReplicatedContext).submit(createPaymentModel.model, new ish.oncourse.services.payment.PaymentRequest().with { r ->
             r.sessionId = paymentRequest.sessionId
@@ -90,7 +90,7 @@ class ProcessPaymentModel {
 
         response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get()
 
-        if (PaymentStatus.FAILED == response.status) {
+        if (PaymentStatus.FAIL == response.status) {
             PaymentInAbandon.valueOf(model, false).perform()
             context.commitChanges()
         }

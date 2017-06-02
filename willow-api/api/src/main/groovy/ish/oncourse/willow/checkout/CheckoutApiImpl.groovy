@@ -105,7 +105,7 @@ class CheckoutApiImpl implements CheckoutApi {
         if (new HasErrors(checkoutModel).hasErrors()) {
             checkoutModel.error = new CommonError(message: 'Purchase items are not valid')
             throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
-        } else if (checkoutModel.amount.payNow == paymentRequest.payNow) {
+        } else if (checkoutModel.amount.payNow != paymentRequest.payNow) {
             checkoutModel.error = new CommonError(message: 'Payment amount is wrong')
             throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
         }

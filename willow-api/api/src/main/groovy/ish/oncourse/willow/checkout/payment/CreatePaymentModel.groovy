@@ -192,7 +192,7 @@ class CreatePaymentModel {
             invoiceLine.invoice = paymentPlanInvoice
 
             List<InvoiceDueDate> selectedDueDates = PaymentPlanBuilder.valueOf(enrolment).build().selectedDueDates
-            paymentPlan << InvoiceNode.valueOf(invoice, paymentPlanInvoice.paymentInLines[0], invoiceLine, enrolment, selectedDueDates, null)
+            paymentPlan << InvoiceNode.valueOf(invoiceLine.invoice, paymentPlanInvoice.paymentInLines[0], invoiceLine, enrolment, selectedDueDates, null)
         }
     }
     
@@ -204,12 +204,14 @@ class CreatePaymentModel {
                 }
                 mainInvoice.paymentInLines[0].amount = paymentIn.amount
                 UpdateInvoiceAmount.valueOf(mainInvoice, null).update()
+                mainInvoice.updateAmountOwing()
                 adjustDueDate()
             }
             paymentPlan.each { node ->
                 paymentIn.amount = paymentIn.amount.add(node.paymentAmount)
                 node.paymentInLine.amount = node.paymentAmount
                 UpdateInvoiceAmount.valueOf(node.invoice, null).update()
+                node.invoice.updateAmountOwing()
             }
         }
     }
@@ -274,7 +276,7 @@ class CreatePaymentModel {
     }
 
     private void adjustSortOrder() {
-        adjustSortOrder(getInvoice())
+        adjustSortOrder(mainInvoice)
         for (InvoiceNode node : paymentPlan) {
             adjustSortOrder(node.invoice)
         }
