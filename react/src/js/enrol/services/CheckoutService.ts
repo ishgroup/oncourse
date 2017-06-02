@@ -5,7 +5,7 @@ import {ContactFieldsRequest} from "../../model/field/ContactFieldsRequest";
 import {FieldSet} from "../../model/field/FieldSet";
 import {SubmitFieldsRequest} from "../../model/field/SubmitFieldsRequest";
 import {CreateContactParams} from "../../model/web/CreateContactParams";
-import {IshState} from "../../services/IshState";
+import {CartState, IshState} from "../../services/IshState";
 import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
 import {Enrolment} from "../../model/checkout/Enrolment";
@@ -20,20 +20,38 @@ import {PaymentService, Values} from "../containers/payment/services/PaymentServ
 import {PaymentResponse} from "../../model/checkout/payment/PaymentResponse";
 import {PaymentRequest} from "../../model/checkout/payment/PaymentRequest";
 import {DataType} from "../../model/field/DataType";
+import {CheckoutState} from "../reducers/State";
+import {ContactId} from "../../model/web/ContactId";
+import {Values as ContactValues} from "../containers/contact-add/actions/Actions";
+import {PaymentStatus} from "../../model/checkout/payment/PaymentStatus";
+import {State as PaymentState} from "../containers/payment/reducers/State";
+
 
 export class CheckoutService {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
   }
 
+  public cartIsEmpty = (cart: CartState): boolean => {
+    return L.isEmpty(cart.courses.result) && L.isEmpty(cart.products.result)
+  };
+
+  public hasPayer = (state: CheckoutState): boolean => {
+    return !L.isNil(state.payer.entity);
+  };
+
+  public hasCartContact = (cart: CartState): boolean => {
+    return L.isNil(cart.contact);
+  };
+
   public loadFields = (state: IshState): Promise<ContactFields> => {
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(state));
   };
 
-  public submitContactDetails = (fields: ContactFields, values: { [key: string]: any }): Promise<any> => {
+  public submitContactDetails = (fields: ContactFields, values: ContactValues): Promise<any> => {
     return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
   };
 
-  public createOrGetContact = (values: { [key: string]: string }): Promise<string> => {
+  public createOrGetContact = (values: ContactValues): Promise<ContactId> => {
     return this.contactApi.createOrGetContact(BuildCreateContactParams.fromValues(values));
   };
 
@@ -54,21 +72,29 @@ export class CheckoutService {
     }
   };
 
-  public getAmount(state: IshState): Promise<Amount> {
+  public getAmount = (state: IshState): Promise<Amount> => {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state))
       .then((model: CheckoutModel): Promise<Amount> => {
         return Promise.resolve(model.amount)
       });
-  }
+  };
 
-  public getCheckoutModel(state: IshState): Promise<CheckoutModel> {
+  public getCheckoutModel = (state: IshState): Promise<CheckoutModel> => {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state));
-  }
+  };
 
-  public makePayment(values: Values, state: IshState): Promise<PaymentResponse> {
+  public makePayment = (values: Values, state: IshState): Promise<PaymentResponse> => {
     const request: PaymentRequest = PaymentService.valuesToRequest(values, state);
     return this.checkoutApi.makePayment(request);
-  }
+  };
+
+  public isPaymentInProgress = (state: PaymentState): boolean => {
+    return !L.isNil(state.value) && state.value.status == PaymentStatus.IN_PROGRESS;
+  };
+
+  public getPaymentStatus = (state: PaymentState): Promise<PaymentResponse> => {
+    return this.checkoutApi.getPaymentStatus(state.value.sessionId)
+  };
 }
 
 
@@ -117,24 +143,21 @@ export class BuildSubmitFieldsRequest {
       return h.fields
     });
     result.fields.forEach((f: Field) => {
-      
-      f.value = values[f.key]
-      
-      if (f.value == null && f.dataType == DataType.BOOLEAN ) {
-        f.value = 'false'
+      f.value = values[f.key];
+      if (f.value == null && f.dataType == DataType.BOOLEAN) {
+        f.value = 'false';
       }
-      
     });
     return result;
   }
 }
 
 export class BuildCreateContactParams {
-  static fromValues = (values: { [key: string]: string }) => {
+  static fromValues = (values: ContactValues) => {
     const result: CreateContactParams = new CreateContactParams();
-    result.firstName = values['firstName'];
-    result.lastName = values['lastName'];
-    result.email = values['email'];
+    result.firstName = values.firstName;
+    result.lastName = values.lastName;
+    result.email = values.email;
     result.fieldSet = FieldSet.ENROLMENT;
     return result;
   }

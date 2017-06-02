@@ -4,18 +4,11 @@ import {connect} from "react-redux";
 
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
-import {addContactRequest} from "./actions/Actions";
+import {addContactRequest, NAME, Values} from "./actions/Actions";
 import CheckoutService from "../../services/CheckoutService";
 import {showFormValidation} from "../../actions/Actions";
 import {ContactId} from "../../../model/web/ContactId";
 
-
-export const NAME = "ContactAddForm";
-export interface Values {
-  firstName: string
-  lastName: string
-  email: string
-}
 
 class ContactAddForm extends React.Component<any, any> {
   render() {

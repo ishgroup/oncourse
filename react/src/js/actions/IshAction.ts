@@ -1,10 +1,11 @@
 import {Action} from "redux";
 
-export interface IAction extends Action {
+export interface IAction<P> extends Action {
   type: string;
+  payload?: P
 }
 
-export interface IshAction<T> extends IAction {
+export interface IshAction<T> extends IAction<T> {
   payload: T;
   error?: boolean;
 }

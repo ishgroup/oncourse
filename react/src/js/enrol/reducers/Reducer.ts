@@ -8,6 +8,7 @@ import {ValidationError} from "../../model/common/ValidationError";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Amount} from "../../model/checkout/Amount";
 import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
+import {Reducer as PaymentReducer} from "../containers/payment/reducers/Reducer";
 import {ContactBox} from "../../NormalizeSchema";
 import {Contact} from "../../model/web/Contact";
 
@@ -38,7 +39,7 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
   }
 };
 
-const ContactReducer = (state: Contact = {}, action: { type: string, payload: ContactBox }): any => {
+const ContactReducer = (state: Contact = null, action: { type: string, payload: ContactBox }): Contact => {
   switch (action.type) {
     case ContactAddActions.ADD_CONTACT:
       return action.payload.entities.contact[action.payload.result];
@@ -48,7 +49,7 @@ const ContactReducer = (state: Contact = {}, action: { type: string, payload: Co
 };
 
 
-const AmountReducer = (state: Amount = {}, action: { type: string, payload: Amount }): Amount => {
+const AmountReducer = (state: Amount = null, action: { type: string, payload: Amount }): Amount => {
   switch (action.type) {
     case Actions.UPDATE_AMOUNT:
       return action.payload;
@@ -87,8 +88,9 @@ export const Reducer = combineReducers<CheckoutState>({
   fields: FieldsReducer,
   phase: PhaseReducer,
   error: ErrorReducer,
-  summary: SummaryReducer,
   amount: AmountReducer,
+  summary: SummaryReducer,
+  payment: PaymentReducer,
   payer: combineReducers<PayerState>({
     entity: ContactReducer,
   })

@@ -16,6 +16,7 @@ import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/
 import {Promotion} from "../../../js/model/web/Promotion";
 import {Product} from "../../../js/model/web/Product";
 import {ProductClass} from "../../../js/model/web/ProductClass";
+import {State as PaymentState} from "../../../js/enrol/containers/payment/reducers/State";
 
 export const mockPromotion = (): Promotion => {
   const result: Promotion = {
@@ -110,7 +111,7 @@ export const mockAmount = (): Amount => {
 };
 
 export const mockEnumField = (name: string, key: string, enumType: string, items: Item[]): Field => {
-  const r: Field = mockField(name, key, DataType.enum);
+  const r: Field = mockField(name, key, DataType.ENUM);
   r.enumType = enumType;
   r.enumItems = items;
   return r;
@@ -161,7 +162,8 @@ export const mockState = (contact: Contact,
         fields: null,
         error: null,
         amount: null,
-        phase: null
+        phase: null,
+        payment: {}
       },
       cart: {
         contact: contact,

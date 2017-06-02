@@ -28,5 +28,5 @@ test('test MockDB', () => {
       return db.createEnrolment(c.id, cc.id)
     })
   });
-  L.filter(db.contacts.entities.contact, (c:Contact) => c.firstName === contacts[] )
+  L.filter(db.contacts.entities.contact, (c:Contact) => c.firstName === contacts[0].firstName)
 });

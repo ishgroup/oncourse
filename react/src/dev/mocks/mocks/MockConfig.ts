@@ -1,4 +1,7 @@
+import * as L from "lodash";
+
 import {AxiosResponse} from "axios";
+
 import faker from "faker";
 import uuid from "uuid";
 import {CreateMockDB, MockDB} from "./MockDB";
@@ -15,12 +18,25 @@ import {PromotionApiMock} from "../PromotionApiMock";
 import {CheckoutApiMock} from "../CheckoutApiMock";
 import {SearchApiMock} from "../SearchApiMock";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
+import {ValidationError} from "../../../js/model/common/ValidationError";
 
 export interface Props {
   commonError: boolean,
   plainTextError: boolean,
   validationError: boolean,
   contactApi: { contactFieldsIsEmpty: boolean }
+  checkoutApi: {
+    makePayment: {
+      formError: boolean,
+      modelError: boolean,
+      result: {
+        success: boolean,
+        inProgress: boolean,
+        failed: boolean,
+        undefined: boolean
+      }
+    }
+  }
 }
 export class MockConfig {
   private id: string = uuid();
@@ -33,8 +49,30 @@ export class MockConfig {
     validationError: false,
     contactApi: {
       contactFieldsIsEmpty: false
+    },
+    checkoutApi: {
+      makePayment: {
+        formError: false,
+        modelError: false,
+        result: {
+          failed: false,
+          success: true,
+          undefined: false,
+          inProgress: false
+        }
+      }
     }
+
   };
+
+  createValidationError(formErrors: number = 3, field: string[]): ValidationError {
+    return {
+      formErrors: L.range(0, formErrors).map((i) => faker.hacker.phrase()),
+      fieldsErrors: field.map((f) => {
+        return {name: f, error: faker.hacker.phrase()}
+      })
+    }
+  }
 
 
   createResponse(response: any): Promise<any> {
@@ -46,10 +84,7 @@ export class MockConfig {
         message: faker.hacker.phrase()
       });
     } else if (this.props.validationError) {
-      return CreatePromiseReject({
-        formErrors: [faker.hacker.phrase(), faker.hacker.phrase(), faker.hacker.phrase()],
-        fieldsErrors: [{name: "email", error: faker.hacker.phrase()}, {name: "street", error: faker.hacker.phrase()}]
-      });
+      return CreatePromiseReject(this.createValidationError(2, ["email", "street"]));
     }
     else {
       return Promise.resolve(response);

@@ -1,10 +1,6 @@
 import React from "react";
 
-interface Props {
-	
-}
-
-class PaymentInProgress extends React.Component<Props, any> {
+export class PaymentInProgress extends React.Component<any, any> {
 	render() {
 		return (
 			<div>
@@ -19,5 +15,3 @@ class PaymentInProgress extends React.Component<Props, any> {
 		);
 	}
 }
-
-export default PaymentInProgress;

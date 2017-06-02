@@ -1,5 +1,4 @@
 import {_toRequestType} from "../../../../common/actions/ActionUtils";
-import {NAME as ContactAddForm, Values} from "../ContactAddForm";
 import {Contact} from "../../../../model/web/Contact";
 import {normalize} from "normalizr";
 import {ContactBox, ContactSchema} from "../../../../NormalizeSchema";
@@ -11,6 +10,14 @@ export const OPEN_ADD_CONTACT_FORM: string = "checkout/open/add/contact";
 
 export const ADD_CONTACT: string = "checkout/contact/add";
 export const ADD_CONTACT_REQUEST: string = _toRequestType(ADD_CONTACT);
+
+export const NAME = "ContactAddForm";
+export interface Values {
+  firstName: string
+  lastName: string
+  email: string
+}
+
 
 
 export interface AddContactPayload {
@@ -31,7 +38,7 @@ export const addContactRequest = (contactId: ContactId, values: Values): any => 
     type: ADD_CONTACT_REQUEST,
     payload: payload,
     meta: {
-      from: ContactAddForm
+      from: NAME
     }
   };
 };

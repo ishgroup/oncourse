@@ -6,13 +6,14 @@ import {SHOW_MESSAGES} from "../actions/Actions";
 import {toValidationError} from "../../common/utils/ErrorUtils";
 import {AxiosResponse} from "axios";
 import {CommonError} from "../../model/common/CommonError";
+import {IAction} from "../../actions/IshAction";
 
 
 export interface Request<V, S> {
   type: string,
   getData: (payload: any, state: S) => Promise<V>
-  processData: (value: V, state: S) => { type: string; payload?: any }[]
-  processError?: (data: any) => { type: string, payload?: any }[]
+  processData: (value: V, state: S) => IAction<any>[]
+  processError?: (data: any) => IAction<any>[]
 }
 
 

@@ -14,6 +14,12 @@ import {Voucher} from "../../js/model/checkout/Voucher";
 import {ProductClass} from "../../js/model/web/ProductClass";
 import {PaymentResponse} from "../../js/model/checkout/payment/PaymentResponse";
 
+import {CreatePromiseReject} from "./mocks/MockConfig";
+import {ValidationError} from "../../js/model/common/ValidationError";
+import {FieldName} from "../../js/enrol/containers/payment/services/PaymentService";
+import {PaymentRequest} from "../../js/model/checkout/payment/PaymentRequest";
+import {PaymentStatus} from "../../js/model/checkout/payment/PaymentStatus";
+
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;
 
@@ -64,7 +70,12 @@ export class CheckoutApiMock extends CheckoutApi {
 
 
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
+    if (this.config.props.checkoutApi.makePayment.formError) {
+      const error: ValidationError = this.config.createValidationError(1, [FieldName.creditCardNumber, FieldName.creditCardName]);
+      return CreatePromiseReject(error);
+    }
     const result: PaymentResponse = new PaymentResponse();
+    result.sessionId = paymentRequest.sessionId;
     return this.config.createResponse(result);
   }
 }

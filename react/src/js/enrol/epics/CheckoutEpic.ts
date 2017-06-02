@@ -6,7 +6,7 @@ import {Injector} from "../../injector";
 import {normalize} from "normalizr";
 import {mapError, mapPayload} from "../../epics/epicsUtils";
 import {ContactSchema} from "../../NormalizeSchema";
-import InitEpic from "./InitEpic";
+import {EpicInit} from "./EpicInit";
 import {EpicAddContact} from "./EpicAddContact";
 import MessagesShowEpic from "./MessagesShowEpic";
 import PhaseChangeEpic from "./PhaseChangeEpic";
@@ -22,7 +22,7 @@ const {
 } = Injector.of();
 
 export const CheckoutEpic = combineEpics(
-  InitEpic,
+  EpicInit,
   MessagesShowEpic,
   PhaseChangeEpic,
   EpicAddContact,

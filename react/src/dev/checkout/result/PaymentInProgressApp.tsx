@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
 import {Messages, Progress} from "../../../js/enrol/containers/Functions";
-import PaymentInProgress from "../../../js/enrol/containers/result/PaymentInProgress";
+import {PaymentInProgress} from "../../../js/enrol/containers/result/PaymentInProgress";
 
 const store = CreateStore();
 RestoreState(store, () => render());

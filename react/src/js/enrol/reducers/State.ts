@@ -2,16 +2,18 @@ import {ValidationError} from "../../model/common/ValidationError";
 import {Contact} from "../../model/web/Contact";
 import {ContactFields} from "../../model/field/ContactFields";
 import {State as SummaryState} from "../containers/summary/reducers/State";
+import {State as PaymentState} from "../containers/payment/reducers/State";
 import {Amount} from "../../model/checkout/Amount";
 
 export interface CheckoutState {
-  newContact: boolean,
-  phase: Phase,
-  fields: ContactFields,
+  newContact: boolean;
+  phase: Phase;
+  fields: ContactFields;
   error: ValidationError;
   payer: PayerState;
+  amount: Amount;
   summary: SummaryState;
-  amount: Amount
+  payment: PaymentState;
 }
 
 export interface PayerState {
@@ -23,5 +25,6 @@ export enum Phase {
   AddContact,
   EditContact,
   Summary,
-  Payment
+  Payment,
+  PaymentInProgress
 }

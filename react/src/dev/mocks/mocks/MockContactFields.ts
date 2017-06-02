@@ -1,6 +1,7 @@
 import {ContactFields} from "../../model/field/ContactFields";
 import {FieldHeading} from "../../model/field/FieldHeading";
 import {ValidationError} from "../../model/common/ValidationError";
+import {DataType} from "../../../js/model/field/DataType";
 import {Field} from "../../model/field/Field";
 import faker from "faker";
 import uuid from "uuid";
@@ -13,7 +14,7 @@ const genderHeading:any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "boolean",
+      "dataType": DataType.BOOLEAN,
       "id": "10",
       "key": "isMale",
       "description": "Gender",
@@ -34,7 +35,7 @@ const dateOfBirthHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "date",
+      "dataType": DataType.DATE,
       "id": "10",
       "key": "dateOfBirth",
       "description": "Date of Birth",
@@ -53,7 +54,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "string",
+      "dataType": DataType.STRING,
       "id": "1",
       "key": "street",
       "description": "Address",
@@ -65,7 +66,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "string",
+      "dataType": DataType.STRING,
       "id": "2",
       "key": "suburb",
       "description": "Suburb",
@@ -77,7 +78,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "country",
+      "dataType": DataType.COUNTRY,
       "id": "3",
       "key": "country",
       "description": "Country",
@@ -89,7 +90,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "string",
+      "dataType": DataType.POSTCODE,
       "id": "4",
       "key": "postcode",
       "description": "Postcode",
@@ -101,7 +102,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "string",
+      "dataType": DataType.STRING,
       "id": "5",
       "key": "state",
       "description": "State",
@@ -113,7 +114,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "string",
+      "dataType": DataType.PHONE,
       "id": "6",
       "key": "homePhoneNumber",
       "description": "Home phone number",
@@ -125,7 +126,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "string",
+      "dataType": DataType.PHONE,
       "id": "7",
       "key": "businessPhoneNumber",
       "description": "Business phone number",
@@ -137,7 +138,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "string",
+      "dataType": DataType.STRING,
       "id": "8",
       "key": "faxNumber",
       "description": "Fax number",
@@ -149,7 +150,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "string",
+      "dataType": DataType.STRING,
       "id": "9",
       "key": "mobilePhoneNumber",
       "description": "Mobile phone number",
@@ -161,7 +162,7 @@ const contactHeading: any = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "date",
+      "dataType": DataType.DATE,
       "id": "10",
       "key": "dateOfBirth",
       "description": "Date of Birth",
@@ -180,7 +181,7 @@ const communicateHeading:FieldHeading = {
     {
       "value": null,
       "defaultValue": "true",
-      "dataType": "boolean",
+      "dataType": DataType.BOOLEAN,
       "id": "15",
       "key": "isMarketingViaEmailAllowed",
       "description": "E-mail",
@@ -192,7 +193,7 @@ const communicateHeading:FieldHeading = {
     {
       "value": null,
       "defaultValue": "true",
-      "dataType": "boolean",
+      "dataType": DataType.BOOLEAN,
       "id": "16",
       "key": "isMarketingViaPostAllowed",
       "description": "Post",
@@ -204,7 +205,7 @@ const communicateHeading:FieldHeading = {
     {
       "value": null,
       "defaultValue": "true",
-      "dataType": "boolean",
+      "dataType": DataType.BOOLEAN,
       "id": "17",
       "key": "isMarketingViaSMSAllowed",
       "description": "SMS",
@@ -225,7 +226,7 @@ const avetmissHeading = {
     {
       "value": null,
       "defaultValue":  null,
-      "dataType": "country",
+      "dataType": DataType.COUNTRY,
       "id": "15",
       "key": "countryOfBirth",
       "description": "country",
@@ -237,7 +238,7 @@ const avetmissHeading = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "language",
+      "dataType": DataType.LANGUAGE,
       "id": "16",
       "key": "languageHome",
       "description": "language",
@@ -249,7 +250,7 @@ const avetmissHeading = {
     {
       "value": null,
       "defaultValue": null,
-      "dataType": "enum",
+      "dataType": DataType.ENUM,
       "id": "17",
       "key": "englishProficiency",
       "description": "How well do you speak English?",
@@ -301,84 +302,3 @@ export const ContactFieldsErrorResponse:ValidationError = {
     }
   ]
 };
-
-
-
-
-/* Default: Australia *//*}
- <ComboboxField
- name="englishProficiency"
- suggestions={englishProficiency}
- label="How well do you speak English?"
- />
- <ComboboxField
- name="indigenousStatus"
- suggestions={indigenousStatus}
- label="Are you of Aboriginal/Torres Strait Islander origin?"
- />
- <ComboboxField
- name="highestSchoolLevel"
- suggestions={highestSchoolLevel}
- label="What is your highest completed school level?"
- />
- <Field
- component={TextField}
- name="yearSchoolCompleted"
- label="In which year did you complete that school level?"
- type="text"
- />
- <ComboboxField
- name="stillAtSchool"
- suggestions={stillAtSchool}
- label="Are you still attending secondary school?"
- />
- <ComboboxField
- name="priorEducationCode"
- suggestions={priorEducationCode}
- label="What is the highest qualification level you have successfully completed?"
- />
- <ComboboxField
- name="labourForceStatus"
- suggestions={labourForceStatus}
- label="Of the following categories, which best describes your current employment status?"
- />
- <ComboboxField
- name="disabilityType"
- suggestions={disabilityType}
- label={disabilityTypeLabel}
- />
- </fieldset>
- );
- }
-
- function getMessage(isOptional: boolean) {
- return (
- <div className="message">
- <p>The Federal Government requires all Colleges to ask the following questions to help with
- educational planning. Your personal details will remain confidential and will not be identified in any National
- collection.
- {isOptional && <strong id="questionnaire" className="collapse">Answering these questions is optional</strong>}
- </p>
- </div>
- );
- }
-
- interface AtemnissDetailsComponentProps {
- isOptional: boolean;
- }*/
-
-/*
-CITIZENSHIP(ContextType.STUDENT, "Citizenship", "citizenship" ),
-  COUNTRY_OF_BIRTH(ContextType.STUDENT, "Country of birth", "countryOfBirth" ),
-  LANGUAGE_HOME(ContextType.STUDENT, "Language spoken at Home", "languageHome" ),
-  YEAR_SCHOOL_COMPLETED(ContextType.STUDENT, "Year school completed", "yearSchoolCompleted"),
-  ENGLISH_PROFICIENCY(ContextType.STUDENT, "English proficiency", "englishProficiency" ),
-  INDIGENOUS_STATUS(ContextType.STUDENT, "Indigenous Status", "indigenousStatus" ),
-  HIGHEST_SCHOOL_LEVEL(ContextType.STUDENT, "Highest school level", "highestSchoolLevel" ),
-  IS_STILL_AT_SCHOOL(ContextType.STUDENT, "Still at school", "isStillAtSchool"),
-  PRIOR_EDUCATION_CODE(ContextType.STUDENT, "Prior education code", "priorEducationCode" ),
-  LABOUR_FORCE_STATUS(ContextType.STUDENT, "Labour force status", "labourForceStatus" ),
-  DISABILITY_TYPE(ContextType.STUDENT, "Disability type", "disabilityType" ),
-  SPECIAL_NEEDS(ContextType.STUDENT, "Special needs", "specialNeeds"),
-
-*/

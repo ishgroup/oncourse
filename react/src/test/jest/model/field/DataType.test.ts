@@ -1,18 +1,18 @@
 import * as Types from "../../../../js/model/field/DataType";
 
 class Class1 {
-  type:Types.DataType;
+  type: Types.DataType;
 }
 
 test('test Enum1.ts', () => {
 
-  let class1:Class1 = createClass();
+  let class1: Class1 = createClass();
 
   expect(class1 instanceof Class1).toBe(true);
-  expect(class1.type).toBe(Types.DataType.string);
+  expect(class1.type).toBe(Types.DataType.STRING);
 
   switch (class1.type) {
-    case Types.DataType.string:
+    case Types.DataType.STRING:
       expect(true).toBe(true);
       break;
     default:
@@ -21,8 +21,8 @@ test('test Enum1.ts', () => {
 });
 
 
-const createClass = ():Class1 =>{
-  let class1:Class1 = new Class1();
-  class1.type = Types.DataType.string;
+const createClass = (): Class1 => {
+  let class1: Class1 = new Class1();
+  class1.type = Types.DataType.STRING;
   return class1;
 };

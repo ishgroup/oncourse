@@ -40,6 +40,8 @@ export class ContactApiMock extends ContactApi {
       contact.email = request.email;
       this.config.db.addContact(contact);
       result.newContact = true;
+    } else {
+      result.newContact = false;
     }
     result.id = contact.id;
     return this.config.createResponse(result);
