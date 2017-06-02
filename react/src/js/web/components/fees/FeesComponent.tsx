@@ -41,26 +41,25 @@ function getDiscountItems(props: FeesComponentProps) {
   const {possibleDiscounts} = props;
 
   return (
-    <div>
-
-    {possibleDiscounts.map(discount => (
-      <div key={discount.id}>
-        <span className="discount-price">/</span>
-        <abbr className="discount-price" title={discount.title}>
-          {formatMoney(discount.discountedFee)}
-        </abbr>
-      </div>
-    ))}
-    </div>
+      <span>
+        {possibleDiscounts.map(discount => (
+            <span>
+              <span className="discount-price">/</span>
+              <abbr className="discount-price" title={discount.title}>
+                {formatMoney(discount.discountedFee)}
+              </abbr>
+            </span>
+        ))}
+      </span>
   );
 }
 
 function getTax(hasTax) {
   return (
     <span className="gst">
-        {!hasTax && 'inc '}
+        {hasTax && 'inc '}
       <abbr title="Goods and Services Tax">GST</abbr>
-      {hasTax && ' free'}
+      {!hasTax && ' free'}
     </span>
   );
 }
