@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -14,14 +15,15 @@ import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class ProcessCheckoutModel {
     
     ObjectContext context
     College college
     CheckoutModelRequest checkoutModelRequest
 
-    Money total = Money.ZERO
-    Money payNow = Money.ZERO
+    Money totalAmount = Money.ZERO
+    Money payNowAmount = Money.ZERO
     Money totalDiscount = Money.ZERO
 
     int enrolmentsCount = 0
@@ -57,7 +59,7 @@ class ProcessCheckoutModel {
                 processVoucher(v)
             }
             //all products should be payed permanently
-            payNow = Money.ZERO.add(total)
+            payNowAmount = Money.ZERO.add(totalAmount)
             
             contactNode.enrolments.each { e ->
                 processEnrolment(e, contact)
@@ -68,11 +70,11 @@ class ProcessCheckoutModel {
             }
         }
         
-        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, total, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
+        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
         model.amount = new Amount().with { a ->
-            a.total = total.toPlainString()
-            a.owing = total.subtract(enrolmentsPrice.totalDiscount).subtract(enrolmentsPrice.totalPayNow).toPlainString()
-            a.payNow =  payNow.add(enrolmentsPrice.totalPayNow).toPlainString()
+            a.total = totalAmount.toPlainString()
+            a.owing = totalAmount.subtract(enrolmentsPrice.totalDiscount).subtract(enrolmentsPrice.totalPayNow).toPlainString()
+            a.payNow =  payNowAmount.add(enrolmentsPrice.totalPayNow).toPlainString()
             a.discount = totalDiscount.add(enrolmentsPrice.totalDiscount).toPlainString()
             a
         }
@@ -97,7 +99,7 @@ class ProcessCheckoutModel {
                 if (e.errors.empty) {
                     enrolmentsCount++
                     e.price = processClass.enrolment.price
-                    total = total.add(new Money(e.price.fee ?: e.price.feeOverriden))
+                    totalAmount = totalAmount.add(new Money(e.price.fee ?: e.price.feeOverriden))
                     List<CourseClass> classes = enrolmentsToProceed.get(contact)
                     if (classes == null) {
                         classes = new ArrayList<CourseClass>()
@@ -133,7 +135,7 @@ class ProcessCheckoutModel {
                 a.warnings += processProduct.article.warnings
                 if (a.errors.empty) {
                     a.price = processProduct.article.price
-                    total = total.add(new Money(a.price))
+                    totalAmount = totalAmount.add(new Money(a.price))
                 }
             }
         }
@@ -149,7 +151,7 @@ class ProcessCheckoutModel {
                 m.warnings += processProduct.membership.warnings
                 if (m.errors.empty) {
                     m.price = processProduct.membership.price
-                    total = total.add(new Money(m.price))
+                    totalAmount = totalAmount.add(new Money(m.price))
                 }
             }
         }
@@ -161,7 +163,7 @@ class ProcessCheckoutModel {
             v.errors += validateVoucher.errors
             v.warnings += validateVoucher.warnings
             if (v.errors.empty) {
-                total = total.add(new Money(v.price))
+                totalAmount = totalAmount.add(new Money(v.price))
             }
         }
     }
