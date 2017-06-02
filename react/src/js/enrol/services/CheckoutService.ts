@@ -19,6 +19,7 @@ import {ContactNodeRequest} from "../../model/checkout/request/ContactNodeReques
 import {PaymentService, Values} from "../containers/payment/services/PaymentService";
 import {PaymentResponse} from "../../model/checkout/payment/PaymentResponse";
 import {PaymentRequest} from "../../model/checkout/payment/PaymentRequest";
+import {DataType} from "../../model/field/DataType";
 
 export class CheckoutService {
   constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
@@ -116,7 +117,13 @@ export class BuildSubmitFieldsRequest {
       return h.fields
     });
     result.fields.forEach((f: Field) => {
+      
       f.value = values[f.key]
+      
+      if (f.value == null && f.dataType == DataType.BOOLEAN ) {
+        f.value = 'false'
+      }
+      
     });
     return result;
   }
