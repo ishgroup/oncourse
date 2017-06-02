@@ -25,7 +25,7 @@ class CreateOrGetContact  {
     CreateContactParams params
     College college
     ObjectContext context
-    ContactId contactId
+    ContactId contactId = new ContactId()
     ValidationError validationError = new ValidationError()
 
 
@@ -33,6 +33,7 @@ class CreateOrGetContact  {
         Contact contact = findContact()
 
         if (contact) {
+            contactId.newContact = false
             if  (!contact.student) {
                 contact.createNewStudent()
                 contact.objectContext.commitChanges()
@@ -65,7 +66,7 @@ class CreateOrGetContact  {
     }
 
    private boolean isContactCreationAllowed() {
-        String value = new GetPreference(college, allowCreateContact.getPreferenceNameBy(Preferences.ContactFieldSet.valueOf(params.fieldSet.toString())), context).getValue()
+        String value = new GetPreference(college, allowCreateContact.getPreferenceNameBy(Preferences.ContactFieldSet.valueOf(params.fieldSet.toString().toLowerCase())), context).getValue()
         StringUtils.isBlank(value) ? true : Boolean.valueOf(value)
     }
     
