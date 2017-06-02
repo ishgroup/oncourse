@@ -9,29 +9,29 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum DataType {
   
-  STRING("string"),
+  STRING("STRING"),
   
-  BOOLEAN("boolean"),
+  BOOLEAN("BOOLEAN"),
   
-  DATE("date"),
+  DATE("DATE"),
   
-  DATETIME("dateTime"),
+  DATETIME("DATETIME"),
   
-  INTEGER("integer"),
+  INTEGER("INTEGER"),
   
-  COUNTRY("country"),
+  COUNTRY("COUNTRY"),
   
-  LANGUAGE("language"),
+  LANGUAGE("LANGUAGE"),
   
-  ENUM("enum"),
+  ENUM("ENUM"),
   
-  EMAIL("email"),
+  EMAIL("EMAIL"),
   
-  SUBURB("suburb"),
+  SUBURB("SUBURB"),
   
-  POSTCODE("postcode"),
+  POSTCODE("POSTCODE"),
   
-  PHONE("phone");
+  PHONE("PHONE");
 
   private String value;
 

@@ -715,9 +715,9 @@ definitions:
   field.FieldSet:
     type: string
     enum:
-      - enrolment
-      - waitinglist
-      - mailinglist
+      - ENROLMENT
+      - WAITINGLIST
+      - MAILINGLIST
   web.CreateContactParams:
     type: object
     required:
@@ -794,18 +794,18 @@ definitions:
   field.DataType:
     type: string
     enum:
-      - string
-      - boolean
-      - date
-      - dateTime
-      - integer
-      - country
-      - language
-      - enum
-      - email
-      - suburb
-      - postcode
-      - phone
+      - STRING
+      - BOOLEAN
+      - DATE
+      - DATETIME
+      - INTEGER
+      - COUNTRY
+      - LANGUAGE
+      - ENUM
+      - EMAIL
+      - SUBURB
+      - POSTCODE
+      - PHONE
   field.Field: 
     type: object
     requred:
@@ -1157,10 +1157,10 @@ definitions:
   checkout.payment.PaymentStatus:
     type: string
     enum:
-      - in progress
-      - failed
-      - successful
-      - undefined
+      - IN_PROGRESS
+      - FAIL
+      - SUCCESSFUL
+      - UNDEFINED
   checkout.payment.PaymentResponse:
     type: object
     properties:

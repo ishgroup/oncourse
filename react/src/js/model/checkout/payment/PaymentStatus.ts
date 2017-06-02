@@ -2,10 +2,10 @@
 import {createStringEnum} from "common/utils/EnumUtils";
 
 export const PaymentStatus = createStringEnum([
-      'in progress',
-      'failed',
-      'successful',
-      'undefined'
+      'IN_PROGRESS',
+      'FAIL',
+      'SUCCESSFUL',
+      'UNDEFINED'
 ]);
 
 export type PaymentStatus = keyof typeof PaymentStatus;

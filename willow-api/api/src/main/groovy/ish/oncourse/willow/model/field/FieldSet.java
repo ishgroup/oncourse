@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum FieldSet {
   
-  ENROLMENT("enrolment"),
+  ENROLMENT("ENROLMENT"),
   
-  WAITINGLIST("waitinglist"),
+  WAITINGLIST("WAITINGLIST"),
   
-  MAILINGLIST("mailinglist");
+  MAILINGLIST("MAILINGLIST");
 
   private String value;
 

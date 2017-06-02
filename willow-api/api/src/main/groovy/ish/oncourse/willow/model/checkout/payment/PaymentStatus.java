@@ -9,13 +9,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum PaymentStatus {
   
-  IN_PROGRESS("in progress"),
+  IN_PROGRESS("IN_PROGRESS"),
   
-  FAILED("failed"),
+  FAIL("FAIL"),
   
-  SUCCESSFUL("successful"),
+  SUCCESSFUL("SUCCESSFUL"),
   
-  UNDEFINED("undefined");
+  UNDEFINED("UNDEFINED");
 
   private String value;
 
