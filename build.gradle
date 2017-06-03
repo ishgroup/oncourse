@@ -118,7 +118,17 @@ allprojects {
 		ignoreFailures = true
 		
 		// log each starting test
-		beforeTest { descriptor -> logger.lifecycle("Running: " + descriptor)
+		beforeTest { 
+			descriptor -> logger.lifecycle("Running: " + descriptor)
+		}
+	}
+
+	// needed until https://github.com/gradle/gradle/issues/1095 is fixed
+	tasks.withType(Test) {
+		if (executable == java9.java) {
+			jvmArgs += ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
+			jvmArgs += ['--add-opens', 'java.base/java.io=ALL-UNNAMED']
+			jvmArgs += ['--add-opens', 'java.base/java.util=ALL-UNNAMED']
 		}
 	}
 
