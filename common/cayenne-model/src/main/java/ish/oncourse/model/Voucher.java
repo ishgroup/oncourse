@@ -144,7 +144,7 @@ public class Voucher extends _Voucher implements Queueable {
 				if (getStatus() == ACTIVE && newStatus == NEW){
 					throw new IllegalArgumentException("Voucher with status ACTIVE can not be changed to status NEW.");
 				}
-				if ((getStatus() == REDEEMED || getStatus() == CREDITED || getStatus() == CANCELLED || getStatus() == EXPIRED) && (newStatus == NEW || newStatus == ACTIVE)){
+				if ((getStatus() == CREDITED || getStatus() == CANCELLED || getStatus() == EXPIRED) && (newStatus == NEW || newStatus == ACTIVE)){
 					throw new IllegalArgumentException("Voucher with status final status can not be turned to ACTIVE or NEW status.");
 				}
 		}
@@ -153,7 +153,7 @@ public class Voucher extends _Voucher implements Queueable {
 
 	@Override
 	public void setRedeemedCoursesCount(Integer count) {
-    	if (getRedeemedCoursesCount() > 0 && count != null && count > 0){
+    	if (getRedeemedCoursesCount() != null && getRedeemedCoursesCount() > 0 && count != null && count > 0){
 			if (getRedeemedCoursesCount() > count) {
 				throw new IllegalArgumentException("Voucher redeemed enrolment count can not be decreased.");
 			}
