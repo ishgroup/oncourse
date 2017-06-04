@@ -151,13 +151,4 @@ public class Voucher extends _Voucher implements Queueable {
 		super.setStatus(newStatus);
 	}
 
-	@Override
-	public void setRedeemedCoursesCount(Integer count) {
-    	if (getRedeemedCoursesCount() != null && getRedeemedCoursesCount() > 0 && count != null && count > 0){
-			if (getRedeemedCoursesCount() > count) {
-				throw new IllegalArgumentException("Voucher redeemed enrolment count can not be decreased.");
-			}
-		}
-    	super.setRedeemedCoursesCount(count);
-	}
 }
