@@ -9,7 +9,7 @@ class ContactFields {
             name: Favorite car maker3
             description: Favorite car maker
             mandatory: true
-            dataType: email
+            dataType: EMAIL
             enumType: null
             value: null
             defaultValue: BMW
@@ -26,7 +26,7 @@ class ContactFields {
             name: Favorite car maker26
             description: Favorite car maker
             mandatory: true
-            dataType: string
+            dataType: STRING
             enumType: null
             value: null
             defaultValue: BMW
@@ -43,7 +43,7 @@ class ContactFields {
             name: Favorite car maker4
             description: Favorite car maker
             mandatory: true
-            dataType: string
+            dataType: STRING
             enumType: null
             value: null
             defaultValue: BMW
@@ -55,7 +55,7 @@ class ContactFields {
             name: Favorite car maker5
             description: Favorite car maker
             mandatory: true
-            dataType: suburb
+            dataType: SUBURB
             enumType: null
             value: null
             defaultValue: BMW
@@ -67,7 +67,7 @@ class ContactFields {
             name: Favorite car maker6
             description: Favorite car maker
             mandatory: true
-            dataType: postcode
+            dataType: POSTCODE
             enumType: null
             value: null
             defaultValue: BMW
@@ -79,7 +79,7 @@ class ContactFields {
             name: Favorite car maker9
             description: Favorite car maker
             mandatory: true
-            dataType: phone
+            dataType: PHONE
             enumType: null
             value: null
             defaultValue: BMW
@@ -91,7 +91,7 @@ class ContactFields {
             name: Favorite car maker10
             description: Favorite car maker
             mandatory: true
-            dataType: phone
+            dataType: PHONE
             enumType: null
             value: null
             defaultValue: BMW
@@ -103,7 +103,7 @@ class ContactFields {
             name: Favorite car maker11
             description: Favorite car maker
             mandatory: true
-            dataType: phone
+            dataType: PHONE
             enumType: null
             value: null
             defaultValue: BMW
@@ -115,7 +115,7 @@ class ContactFields {
             name: Favorite car maker12
             description: Favorite car maker
             mandatory: true
-            dataType: date
+            dataType: DATE
             enumType: null
             value: null
             defaultValue: BMW
@@ -127,7 +127,7 @@ class ContactFields {
             name: Favorite car maker14
             description: Favorite car maker
             mandatory: true
-            dataType: boolean
+            dataType: BOOLEAN
             enumType: null
             value: null
             defaultValue: BMW
@@ -139,7 +139,7 @@ class ContactFields {
             name: Favorite car maker15
             description: Favorite car maker
             mandatory: true
-            dataType: enum
+            dataType: ENUM
             enumType: StudentCitizenship
             value: null
             defaultValue: BMW
@@ -172,7 +172,7 @@ class ContactFields {
             name: Favorite car make16r
             description: Favorite car maker
             mandatory: true
-            dataType: country
+            dataType: COUNTRY
             enumType: null
             value: null
             defaultValue: BMW
@@ -184,7 +184,7 @@ class ContactFields {
             name: Favorite car mak17er
             description: Favorite car maker
             mandatory: true
-            dataType: language
+            dataType: LANGUAGE
             enumType: null
             value: null
             defaultValue: BMW
@@ -196,7 +196,7 @@ class ContactFields {
             name: Favorite car maker18
             description: Favorite car maker
             mandatory: true
-            dataType: integer
+            dataType: INTEGER
             enumType: null
             value: null
             defaultValue: BMW
@@ -208,7 +208,7 @@ class ContactFields {
             name: Favorite car maker19
             description: Favorite car maker
             mandatory: true
-            dataType: enum
+            dataType: ENUM
             enumType: AvetmissStudentEnglishProficiency
             value: null
             defaultValue: BMW
@@ -235,7 +235,7 @@ class ContactFields {
             name: Favorite car make20r
             description: Favorite car maker
             mandatory: true
-            dataType: enum
+            dataType: ENUM
             enumType: AvetmissStudentIndigenousStatus
             value: null
             defaultValue: BMW
@@ -262,7 +262,7 @@ class ContactFields {
             name: Favorite car maker21
             description: Favorite car maker
             mandatory: true
-            dataType: enum
+            dataType: ENUM
             enumType: AvetmissStudentSchoolLevel
             value: null
             defaultValue: BMW
@@ -295,7 +295,7 @@ class ContactFields {
             name: Favorite car maker22
             description: Favorite car maker
             mandatory: true
-            dataType: boolean
+            dataType: BOOLEAN
             enumType: null
             value: null
             defaultValue: BMW
@@ -307,7 +307,7 @@ class ContactFields {
             name: Favorite car maker23
             description: Favorite car maker
             mandatory: true
-            dataType: enum
+            dataType: ENUM
             enumType: AvetmissStudentPriorEducation
             value: null
             defaultValue: BMW
@@ -349,7 +349,7 @@ class ContactFields {
             name: Favorite car 24
             description: Favorite car maker
             mandatory: true
-            dataType: enum
+            dataType: ENUM
             enumType: AvetmissStudentLabourStatus
             value: null
             defaultValue: BMW
@@ -388,7 +388,7 @@ class ContactFields {
             name: Favorite car maker25
             description: Favorite car maker
             mandatory: true
-            dataType: enum
+            dataType: ENUM
             enumType: AvetmissStudentDisabilityType
             value: null
             defaultValue: BMW
@@ -433,7 +433,7 @@ class ContactFields {
             name: Favorite car 27
             description: Favorite car maker
             mandatory: true
-            dataType: country
+            dataType: COUNTRY
             enumType: null
             value: null
             defaultValue: BMW
@@ -445,7 +445,7 @@ class ContactFields {
             name: Favorite car maker
             description: Favorite car maker28
             mandatory: true
-            dataType: string
+            dataType: STRING
             enumType: null
             value: null
             defaultValue: BMW
@@ -462,7 +462,7 @@ class ContactFields {
             name: Favorite car maker7
             description: Favorite car maker
             mandatory: true
-            dataType: string
+            dataType: STRING
             enumType: null
             value: null
             defaultValue: BMW
@@ -474,7 +474,7 @@ class ContactFields {
             name: Favorite car maker8
             description: Favorite car maker
             mandatory: true
-            dataType: phone
+            dataType: PHONE
             enumType: null
             value: null
             defaultValue: BMW
@@ -491,7 +491,7 @@ class ContactFields {
             name: Favorite car maker13
             description: Favorite car maker
             mandatory: true
-            dataType: string
+            dataType: STRING
             enumType: null
             value: null
             defaultValue: BMW

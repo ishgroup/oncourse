@@ -2,6 +2,7 @@ package ish.oncourse.willow.service
 
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.web.Contact
+import ish.oncourse.willow.model.web.ContactId
 import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
@@ -11,6 +12,7 @@ import org.junit.Test
 import static ish.oncourse.willow.model.field.FieldSet.ENROLMENT
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.assertTrue
 
 class ContactApiTest extends ApiTest {
     
@@ -34,24 +36,24 @@ class ContactApiTest extends ApiTest {
     void getorCreateContact() {
         RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
-        String id = api.createOrGetContact(new CreateContactParams(firstName: 'Student1', lastName:'Student1', email:'Student1@Student1.net', fieldSet: ENROLMENT))
+        ContactId contactId = api.createOrGetContact(new CreateContactParams(firstName: 'Student1', lastName:'Student1', email:'Student1@Student1.net', fieldSet: ENROLMENT))
 
-        assertEquals("1001", id)
+        assertEquals("1001", contactId.id)
+        assertEquals(false, contactId.newContact)
 
-        id = api.createOrGetContact(new CreateContactParams(firstName: 'Student2', lastName:'Student2', email:'Student2@Student2.net', fieldSet: ENROLMENT))
+        contactId = api.createOrGetContact(new CreateContactParams(firstName: 'Student2', lastName:'Student2', email:'Student2@Student2.net', fieldSet: ENROLMENT))
         
-        assertNotNull(id)
+        assertNotNull(contactId.id)
+        assertTrue(contactId.newContact)
 
-        ish.oncourse.model.Contact contact = SelectById.query(ish.oncourse.model.Contact, id).selectOne(cayenneRuntime.newContext())
+
+        ish.oncourse.model.Contact contact = SelectById.query(ish.oncourse.model.Contact, contactId.id).selectOne(cayenneRuntime.newContext())
 
         assertEquals('Student2', contact.givenName)
         assertEquals('Student2', contact.familyName)
         assertEquals('Student2@Student2.net', contact.emailAddress)
         assertNotNull(contact.uniqueCode)
 
-
-        assertEquals(id, api.createOrGetContact(new CreateContactParams(firstName: 'Student2', lastName:'Student2', email:'Student2@Student2.net', fieldSet: ENROLMENT)))
-        
     }
 
     @Override
