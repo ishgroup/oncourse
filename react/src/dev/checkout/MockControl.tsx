@@ -55,15 +55,21 @@ export class MockControl extends React.Component<Props, any> {
         {this.renderProperty("commonError")}
         {this.renderProperty("validationError")}
         {this.renderProperty("contactApi.contactFieldsIsEmpty")}
+        {this.renderProperty("checkoutApi.makePayment.formError")}
+        {this.renderProperty("checkoutApi.makePayment.modelError")}
+        {this.renderProperty("checkoutApi.makePayment.result.failed")}
+        {this.renderProperty("checkoutApi.makePayment.result.success")}
+        {this.renderProperty("checkoutApi.makePayment.result.inProgress")}
+        {this.renderProperty("checkoutApi.makePayment.result.undefined")}
         <button className="btn" onClick={this.loadCourseClasses}>Load Classes</button>
         <button className="btn" onClick={this.addCourseClass}>Add Classes</button>
         <button className="btn" onClick={this.removeCourseClass}>Remove Classes</button>
         <button className="btn" onClick={this.resetLocalForage}>Reset LocalForage</button>
       </fieldset>
       <fieldset>
-        <Inspector data={config.db.contacts.entities.contact}/>
-        <Inspector data={config.db.classes.entities.classes}/>
+        <Inspector data={config.db}/>
         <Inspector data={config.store.getState()}/>
+        <Inspector data={config.props}/>
       </fieldset>
       <Values form={NAME}/>
     </div>)

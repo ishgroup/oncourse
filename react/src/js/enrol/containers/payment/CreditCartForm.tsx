@@ -7,9 +7,8 @@ import {connect} from "react-redux";
 import CreditCardComp from "./components/CreditCardComp";
 import {Amount} from "../../../model/checkout/Amount";
 import {Conditions} from "./components/Conditions";
-import {schema} from "normalizr";
-import {makePaymentRequest} from "./actions/Actions";
-import Values = schema.Values;
+import {makePayment} from "./actions/Actions";
+import {Values} from "./services/PaymentService";
 
 interface Props extends FormProps<DataShape, any, any> {
   amount: Amount;
@@ -42,7 +41,7 @@ class CreditCartForm extends React.Component<Props, any> {
 const Form = reduxForm({
   form: NAME,
   onSubmit: (data: Values, dispatch, props): void => {
-    dispatch(makePaymentRequest(data));
+    dispatch(makePayment(data));
   }
 })(CreditCartForm);
 

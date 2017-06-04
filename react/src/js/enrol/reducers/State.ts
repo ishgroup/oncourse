@@ -26,5 +26,6 @@ export enum Phase {
   EditContact,
   Summary,
   Payment,
-  PaymentInProgress
+  PaymentInProgress,
+  Result
 }

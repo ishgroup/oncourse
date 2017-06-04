@@ -1,27 +1,45 @@
 import {_toRequestType} from "../../../../common/actions/ActionUtils";
-import {schema} from "normalizr";
 import {IAction} from "../../../../actions/IshAction";
-import Values = schema.Values;
+import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
+import {Values} from "../services/PaymentService";
 
 export const OpenPayment: string = "checkout/payment/open";
 export const OpenPaymentRequest: string = _toRequestType(OpenPayment);
 
 export const MAKE_PAYMENT: string = "checkout/payment/make/payment";
-export const MAKE_PAYMENT_REQUEST: string = _toRequestType(MAKE_PAYMENT);
+export const PROCESS_PAYMENT: string = "checkout/payment/process/payment";
+
+
 export const UPDATE_PAYMENT_STATUS = "checkout/payment/update/payment/status";
-export const UPDATE_PAYMENT_STATUS_REQUEST = _toRequestType(UPDATE_PAYMENT_STATUS);
+
+export const GET_PAYMENT_STATUS = "checkout/payment/get/payment/status";
 
 
-export const makePaymentRequest = (values: Values): IAction<Values> => {
+export const makePayment = (values: Values): IAction<Values> => {
   return {
-    type: MAKE_PAYMENT_REQUEST,
+    type: MAKE_PAYMENT,
     payload: values
   }
 };
 
+export const processPayment = (values: Values): IAction<Values> => {
+  return {
+    type: PROCESS_PAYMENT,
+    payload: values
+  }
+};
+
+
 export const getPaymentStatus = (): IAction<any> => {
   return {
-    type: UPDATE_PAYMENT_STATUS_REQUEST
+    type: GET_PAYMENT_STATUS
+  }
+};
+
+export const updatePaymentStatus = (response: PaymentResponse): IAction<PaymentResponse> => {
+  return {
+    type: UPDATE_PAYMENT_STATUS,
+    payload: response
   }
 };
 

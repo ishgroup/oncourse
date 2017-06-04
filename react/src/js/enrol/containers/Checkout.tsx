@@ -9,7 +9,8 @@ import * as Actions from "../../enrol/actions/Actions";
 import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
-import {PaymentInProgress} from "./result/PaymentInProgress";
+import {Result} from "./result/Result";
+import {PaymentInProgress} from "./result/components/PaymentInProgress";
 
 interface Props {
   phase: Phase;
@@ -34,6 +35,7 @@ export class Checkout extends React.Component<Props, any> {
         {phase === Phase.Summary && <Summary/>}
         {phase === Phase.Payment && <Payment/>}
         {phase === Phase.PaymentInProgress && <PaymentInProgress/>}
+        {phase === Phase.Result && <Result/>}
       </div>
     )
   }

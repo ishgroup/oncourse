@@ -88,8 +88,10 @@ export class CheckoutService {
     return this.checkoutApi.makePayment(request);
   };
 
-  public isPaymentInProgress = (state: PaymentState): boolean => {
-    return !L.isNil(state.value) && state.value.status == PaymentStatus.IN_PROGRESS;
+  public isPaymentInProgress = (value: PaymentResponse): boolean => {
+    return (L.isNil(value.status) ||
+      value.status == PaymentStatus.IN_PROGRESS
+    );
   };
 
   public getPaymentStatus = (state: PaymentState): Promise<PaymentResponse> => {

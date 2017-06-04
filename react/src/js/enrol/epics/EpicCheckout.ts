@@ -15,13 +15,13 @@ import {EpicOpenSummary} from "./EpicOpenSummary";
 import {EpicItemSelect} from "./EpicItemSelect";
 import {EpicUpdateAmount} from "./EpicUpdateAmount";
 import {EpicProceedToPayment} from "./EpicProceedToPayment";
-import {EpicMakePayment} from "./EpicMakePayment";
+import {EpicPayment} from "../containers/payment/epics/EpicPayment";
 
 const {
   contactApi
 } = Injector.of();
 
-export const CheckoutEpic = combineEpics(
+export const EpicCheckout = combineEpics(
   EpicInit,
   MessagesShowEpic,
   PhaseChangeEpic,
@@ -31,7 +31,7 @@ export const CheckoutEpic = combineEpics(
   EpicItemSelect,
   EpicUpdateAmount,
   EpicProceedToPayment,
-  EpicMakePayment,
+  EpicPayment,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 

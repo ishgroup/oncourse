@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
 import {Messages, Progress} from "../../../js/enrol/containers/Functions";
-import PaymentRejected from "../../../js/enrol/containers/result/PaymentRejected";
+import {PaymentRejected} from "../../../js/enrol/containers/result/components/PaymentRejected";
 
 const store = CreateStore();
 RestoreState(store, () => render());

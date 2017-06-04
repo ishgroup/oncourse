@@ -1,3 +1,4 @@
+import * as L from "lodash";
 import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
 import {Observable} from "rxjs";
@@ -16,6 +17,7 @@ import {ContactId} from "../../model/web/ContactId";
 import {ProcessError} from "./EpicUtils";
 import {AxiosResponse} from "axios";
 import {getPaymentStatus} from "../containers/payment/actions/Actions";
+import {IshState} from "../../services/IshState";
 
 const showCartIsEmptyMessage = (): IAction<any>[] => {
   const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
@@ -48,8 +50,17 @@ const setPayerFromCart = (contact: Contact): Observable<any> => {
 /**
  * This epic process Init action of checkout application and define Phase of the application
  */
-export const EpicInit: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
+export const EpicInit: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
   return action$.ofType(Actions.InitRequest).flatMap((action) => {
+
+    if (!L.isNil(store.getState().checkout.payment.value)) {
+      if (CheckoutService.isPaymentInProgress(store.getState().checkout.payment)) {
+        return showPaymentInProgress();
+      } else {
+        return [changePhase(Phase.Result)]
+      }
+    }
+
     if (CheckoutService.cartIsEmpty(store.getState().cart)) {
       return showCartIsEmptyMessage();
     }
@@ -60,10 +71,6 @@ export const EpicInit: Epic<any, any> = (action$: ActionsObservable<any>, store:
 
     if (CheckoutService.hasCartContact(store.getState().cart)) {
       return setPayerFromCart(store.getState().cart.contact)
-    }
-
-    if (CheckoutService.isPaymentInProgress(store.getState().checkout.payment)) {
-      return showPaymentInProgress();
     }
 
     return showAddContact();

@@ -3,7 +3,7 @@ import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
 import {applyMiddleware, compose, createStore, GenericStoreEnhancer} from "redux";
 import {IshState} from "./services/IshState";
-import {RootEpic} from "./RootEpics";
+import {EpicRoot} from "./EpicRoot";
 import {combinedReducers} from "./reducers/reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
 import {autoRehydrate, getStoredState, OnComplete, persistStore} from "redux-persist";
@@ -19,9 +19,9 @@ const getMiddleware = (): GenericStoreEnhancer => {
    * Split middlewares which we using in development and in production.
    */
   if (process.env.NODE_ENV === EnvironmentConstants.development) {
-    return applyMiddleware(createEpicMiddleware(RootEpic), logger);
+    return applyMiddleware(createEpicMiddleware(EpicRoot), logger);
   } else {
-    return applyMiddleware(createEpicMiddleware(RootEpic));
+    return applyMiddleware(createEpicMiddleware(EpicRoot));
   }
 };
 

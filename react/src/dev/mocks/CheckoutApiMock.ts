@@ -1,4 +1,5 @@
 import * as L from "lodash";
+import faker from "faker";
 
 import {CheckoutApi} from "../../js/http/CheckoutApi";
 import {ContactNodeRequest} from "../../js/model/checkout/request/ContactNodeRequest";
@@ -6,15 +7,13 @@ import {ContactNode} from "../../js/model/checkout/ContactNode";
 import {Contact} from "../../js/model/web/Contact";
 import {CourseClass} from "../../js/model/web/CourseClass";
 import {Enrolment} from "../../js/model/checkout/Enrolment";
-import {MockConfig} from "./mocks/MockConfig";
+import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
 import {CheckoutModel} from "../../js/model/checkout/CheckoutModel";
 import {mockAmount} from "./mocks/MockFunctions";
 import {CheckoutModelRequest} from "../../js/model/checkout/CheckoutModelRequest";
 import {Voucher} from "../../js/model/checkout/Voucher";
 import {ProductClass} from "../../js/model/web/ProductClass";
 import {PaymentResponse} from "../../js/model/checkout/payment/PaymentResponse";
-
-import {CreatePromiseReject} from "./mocks/MockConfig";
 import {ValidationError} from "../../js/model/common/ValidationError";
 import {FieldName} from "../../js/enrol/containers/payment/services/PaymentService";
 import {PaymentRequest} from "../../js/model/checkout/payment/PaymentRequest";
@@ -74,8 +73,38 @@ export class CheckoutApiMock extends CheckoutApi {
       const error: ValidationError = this.config.createValidationError(1, [FieldName.creditCardNumber, FieldName.creditCardName]);
       return CreatePromiseReject(error);
     }
+
+    if (this.config.props.checkoutApi.makePayment.modelError) {
+      return this.getCheckoutModel(paymentRequest.checkoutModelRequest).then((model: CheckoutModel) => {
+        model.error = {
+          code: 0,
+          message: faker.hacker.phrase()
+        };
+        return CreatePromiseReject(model);
+      });
+    }
+
     const result: PaymentResponse = new PaymentResponse();
     result.sessionId = paymentRequest.sessionId;
+    if (this.config.props.checkoutApi.makePayment.result.inProgress) {
+      result.status = PaymentStatus.IN_PROGRESS;
+    }
+    return this.config.createResponse(result);
+  }
+
+  getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
+    const result: PaymentResponse = new PaymentResponse();
+    result.sessionId = sessionId;
+    if (this.config.props.checkoutApi.makePayment.result.inProgress) {
+      result.status = PaymentStatus.IN_PROGRESS;
+    } else if (this.config.props.checkoutApi.makePayment.result.success) {
+      result.status = PaymentStatus.SUCCESSFUL;
+      result.reference = "TEST_REFERENCE";
+    } else if (this.config.props.checkoutApi.makePayment.result.failed) {
+      result.status = PaymentStatus.FAIL;
+    } else if (this.config.props.checkoutApi.makePayment.result.undefined) {
+      result.status = PaymentStatus.UNDEFINED;
+    }
     return this.config.createResponse(result);
   }
 }
