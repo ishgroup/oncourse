@@ -495,8 +495,6 @@ private ICayenneService cayenneService;
 		//link voucher for invoiceline
 		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 2);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Payment status should be in transaction", ProductStatus.ACTIVE, voucher.getStatus());
-		voucher.setStatus(ProductStatus.NEW);
 		voucher.setInvoiceLine(invoiceLine);
 		//unlink the enrollment
 		invoiceLine.setEnrolment(null);
@@ -569,8 +567,6 @@ private ICayenneService cayenneService;
 		//link voucher for invoiceline
 		Voucher voucher = Cayenne.objectForPK(context, Voucher.class, 2);
 		assertNotNull("Voucher for test should not be empty", voucher);
-		assertEquals("Payment status should be in transaction", ProductStatus.ACTIVE, voucher.getStatus());
-		voucher.setStatus(ProductStatus.NEW);
 		voucher.setInvoiceLine(invoiceLine);
 		//unlink the enrollment
 		invoiceLine.setEnrolment(null);

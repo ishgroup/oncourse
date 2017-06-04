@@ -173,7 +173,7 @@
 	<ProductItem collegeId="1" CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2013-07-01 00:00:00.001" ID="2"
 				 MODIFIEDON="2012-05-14 14:35:01.618" PRODUCTID="3" TYPE="3" angelId="2" code="qwerty_2"
 				 valueOnPurchase="101.00" value="101.00" redeemedCoursesCount="0" source="O"
-				 status="0" INVOICELINEID="12" confirmationStatus="1"/>
+				 status="4" INVOICELINEID="12" confirmationStatus="1"/>
 		
 	<Site id="1" collegeId="1" angelId="1" isWebVisible="0" created="2011-09-12 00:17:18.0"
 		modified="2011-09-12 00:47:30.0" name="TestSite" countryId="1"
