@@ -41,7 +41,7 @@ class ContactApiTest extends ApiTest {
         assertEquals("1001", contactId.id)
         assertEquals(false, contactId.newContact)
 
-        contactId = api.createOrGetContact(new CreateContactParams(firstName: 'Student2', lastName:'Student2', email:'Student2@Student2.net', fieldSet: ENROLMENT))
+        contactId = api.createOrGetContact(new CreateContactParams(firstName: 'Student5', lastName:'Student5', email:'Student5@Student5.net', fieldSet: ENROLMENT))
         
         assertNotNull(contactId.id)
         assertTrue(contactId.newContact)
@@ -49,9 +49,9 @@ class ContactApiTest extends ApiTest {
 
         ish.oncourse.model.Contact contact = SelectById.query(ish.oncourse.model.Contact, contactId.id).selectOne(cayenneRuntime.newContext())
 
-        assertEquals('Student2', contact.givenName)
-        assertEquals('Student2', contact.familyName)
-        assertEquals('Student2@Student2.net', contact.emailAddress)
+        assertEquals('Student5', contact.givenName)
+        assertEquals('Student5', contact.familyName)
+        assertEquals('Student5@Student5.net', contact.emailAddress)
         assertNotNull(contact.uniqueCode)
 
     }

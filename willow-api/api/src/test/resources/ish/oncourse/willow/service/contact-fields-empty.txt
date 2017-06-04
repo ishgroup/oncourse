@@ -9,7 +9,7 @@ class ContactFields {
             name: Favorite car maker
             description: Favorite car maker28
             mandatory: true
-            dataType: string
+            dataType: STRING
             enumType: null
             value: null
             defaultValue: BMW
