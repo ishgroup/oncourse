@@ -4,7 +4,7 @@ interface Props {
 
 }
 
-export class PaymentRejected extends React.Component<Props, any> {
+export class Failed extends React.Component<Props, any> {
   render() {
     return (
       <div>

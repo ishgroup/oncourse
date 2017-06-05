@@ -1,6 +1,6 @@
 import React from "react";
 
-export class PaymentInProgress extends React.Component<any, any> {
+export class InProgress extends React.Component<any, any> {
 	render() {
 		return (
 			<div>

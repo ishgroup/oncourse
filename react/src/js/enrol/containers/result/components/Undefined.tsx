@@ -4,7 +4,7 @@ interface Props {
 
 }
 
-class PaymentError extends React.Component<Props, any> {
+export class Undefined extends React.Component<Props, any> {
 	render() {
 		return (
 			<div>
@@ -13,5 +13,3 @@ class PaymentError extends React.Component<Props, any> {
 		);
 	}
 }
-
-export default PaymentError;

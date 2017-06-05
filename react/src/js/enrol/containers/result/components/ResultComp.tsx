@@ -1,9 +1,21 @@
 import * as React from "react";
 
-export class ResultComp extends React.Component<any, any> {
+import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
+import {PaymentStatus} from "../../../../model/checkout/payment/PaymentStatus";
+import {Successful} from "./Successful";
+import {Failed} from "./Failed";
+import {Undefined} from "./Undefined";
+
+interface Props {
+  response: PaymentResponse
+}
+export class ResultComp extends React.Component<Props, any> {
   render() {
+    const {response} = this.props;
     return (<div>
-      RESULT COMP NOT IMPLEMENTED YET
+      {response.status === PaymentStatus.SUCCESSFUL && <Successful refId={response.reference}/>}
+      {response.status === PaymentStatus.FAILED && <Failed/>}
+      {response.status === PaymentStatus.UNDEFINED && <Undefined/>}
     </div>);
   }
 }

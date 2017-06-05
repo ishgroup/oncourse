@@ -3,7 +3,9 @@ import {IshState} from "../../../services/IshState";
 import {ResultComp} from "./components/ResultComp";
 
 const PropsBy = (state: IshState): any => {
-  return {}
+  return {
+    response: state.checkout.payment.value
+  }
 };
 
 export const ActionsBy = (dispatch: Dispatch<any>): any => {

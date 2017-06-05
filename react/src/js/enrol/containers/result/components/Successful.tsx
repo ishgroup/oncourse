@@ -4,7 +4,7 @@ interface Props {
 	refId: string;
 }
 
-class PaymentSuccessful extends React.Component<Props, any> {
+export class Successful extends React.Component<Props, any> {
 	render() {
 		const {refId} = this.props;
 
@@ -20,5 +20,3 @@ class PaymentSuccessful extends React.Component<Props, any> {
 		);
 	}
 }
-
-export default PaymentSuccessful;
