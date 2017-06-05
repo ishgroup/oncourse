@@ -16,8 +16,8 @@ export const EpicAddContact: Epic<any, any> = (action$: ActionsObservable<any>, 
     const result = [
       addContact(payload.contact),
       addContactToCart(payload.contact),
+      setNewContactFlag(payload.newContact),
       changePhaseRequest(Phase.EditContact),
-      setNewContactFlag(payload.newContact)
     ];
     return result;
   });

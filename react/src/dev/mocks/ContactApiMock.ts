@@ -54,7 +54,7 @@ export class ContactApiMock extends ContactApi {
     };
 
     if (!this.config.props.contactApi.contactFieldsIsEmpty) {
-      result.headings.push(this.config.db.getFieldHeadingBy(["street", "suburb", "country"]));
+      result.headings.push(this.config.db.getFieldHeadingBy(["street", "suburb", "country", "citizenship"]));
     }
 
     return this.config.createResponse(result);

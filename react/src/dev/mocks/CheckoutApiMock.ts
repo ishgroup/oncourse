@@ -101,7 +101,7 @@ export class CheckoutApiMock extends CheckoutApi {
       result.status = PaymentStatus.SUCCESSFUL;
       result.reference = "TEST_REFERENCE";
     } else if (this.config.props.checkoutApi.makePayment.result.failed) {
-      result.status = PaymentStatus.FAIL;
+      result.status = PaymentStatus.FAILED;
     } else if (this.config.props.checkoutApi.makePayment.result.undefined) {
       result.status = PaymentStatus.UNDEFINED;
     }
