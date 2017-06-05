@@ -22,7 +22,7 @@ class GetContactFields {
     
     final static Logger logger = LoggerFactory.getLogger(GetContactFields.class)
     
-    static FieldProperty[] credentialProperty = [FieldProperty.FIRST_NAME, FieldProperty.LAST_NAME, FieldProperty.EMAIL_ADDRESS]
+    static FieldProperty[] credentialProperty = [FieldProperty.FIRST_NAME, FieldProperty.LAST_NAME, FieldProperty.EMAIL_ADDRESS] as FieldProperty[]
     
     ContactFields result = new ContactFields()
     FieldHeading dummy = new FieldHeading()
@@ -97,7 +97,7 @@ class GetContactFields {
             if (!credentialProperty.contains(property)) {
                 PropertyGetSet getSet  = factory.get(f, getContext.call(property.contextType, contact))
                 if (!mandatoryOnly || (f.mandatory && getSet.get() == null)) {
-                    getHeadingBy(f.fieldHeading) << new FieldBuilder(field: f, aClass: getSet.type).build()               // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
+                    getHeadingBy(f.fieldHeading).fields << new FieldBuilder(field: f, aClass: getSet.type).build()               // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
                 }
             }
         }
