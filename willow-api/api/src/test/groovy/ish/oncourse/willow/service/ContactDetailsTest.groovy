@@ -61,7 +61,7 @@ class ContactDetailsTest extends  ApiTest{
 
         assertEquals(file.text, fields.toString())
 
-        fields = api.getContactFields(new ContactFieldsRequest(contactId: '1002', classIds: ['1001'], fieldSet: FieldSet.ENROLMENT))
+        fields = api.getContactFields(new ContactFieldsRequest(contactId: '1002', classIds: ['1001'], fieldSet: FieldSet.ENROLMENT, mandatoryOnly: true))
 
         file = new File(getClass().getResource('/ish/oncourse/willow/service/contact-fields-empty.txt').toURI())
         

@@ -1,23 +1,6 @@
 class ContactFields {
     contactId: 1001
     headings: [class FieldHeading {
-        name: null
-        description: null
-        fields: [class Field {
-            id: 103
-            key: emailAddress
-            name: Favorite car maker3
-            description: Favorite car maker
-            mandatory: true
-            dataType: EMAIL
-            enumType: null
-            value: null
-            defaultValue: BMW
-            enumItems: []
-            ordering: 3
-        }]
-        ordering: null
-    }, class FieldHeading {
         name: First Heading_2
         description: description
         fields: [class Field {
