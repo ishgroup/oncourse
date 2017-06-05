@@ -22,6 +22,8 @@ class GetContactFields {
     
     final static Logger logger = LoggerFactory.getLogger(GetContactFields.class)
     
+    static FieldProperty[] credentialProperty = [FieldProperty.FIRST_NAME, FieldProperty.LAST_NAME, FieldProperty.EMAIL_ADDRESS]
+    
     ContactFields result = new ContactFields()
     FieldHeading dummy = new FieldHeading()
     Map<String, FieldHeading> headingsMap = new HashMap<>()
@@ -61,11 +63,6 @@ class GetContactFields {
         Set<FieldConfiguration> configurations =  new GetFieldConfigurations(classes: classes, contact: contact, college: contact.college, mergeDefault: mergeDefault, fieldSet: fieldSet).get()
         Set<Field> fields = mergeFieldConfigurations(configurations)
         
-        //sort out optional fields if contact is not new
-        if (mandatoryOnly) {
-            fields = fields.findAll {it.mandatory}
-        }
-        
         fillHeadingsByFields(fields)
         sortFields()
         
@@ -96,12 +93,12 @@ class GetContactFields {
     private void fillHeadingsByFields(Set<Field> fields ) {
         fields.each { f ->                                                            // sort out each field
             FieldProperty property = FieldProperty.getByKey(f.property)
-            Object source = getContext.call(property.contextType, contact)
-            PropertyGetSet getSet  = factory.get(f, source)
-
-            if (isMarketingField(property) || getSet.get() == null) {                                         // add field in result list if contact has no value for corresponded property
-                FieldHeading heading = getHeadingBy(f.fieldHeading)             // get heading by name or create new on if not exist
-                heading.fields << new FieldBuilder(field: f, aClass: getSet.type).build()                              // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
+            
+            if (!credentialProperty.contains(property)) {
+                PropertyGetSet getSet  = factory.get(f, getContext.call(property.contextType, contact))
+                if (!mandatoryOnly || (f.mandatory && getSet.get() == null)) {
+                    getHeadingBy(f.fieldHeading) << new FieldBuilder(field: f, aClass: getSet.type).build()               // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
+                }
             }
         }
     }
@@ -118,11 +115,4 @@ class GetContactFields {
             h.fields = h.fields.sort { it.ordering }
         }
     }
-    
-    private boolean isMarketingField(FieldProperty property) {
-        return !mandatoryOnly && (FieldProperty.IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY == property
-        || FieldProperty.IS_MARKETING_VIA_POST_ALLOWED_PROPERTY == property
-        || FieldProperty.IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY == property)
-    }
-    
 }
