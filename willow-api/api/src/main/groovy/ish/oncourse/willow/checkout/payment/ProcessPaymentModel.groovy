@@ -3,6 +3,7 @@ package ish.oncourse.willow.checkout.payment
 import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.model.College
+import ish.oncourse.model.PaymentIn
 import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
 import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInModel
@@ -87,13 +88,14 @@ class ProcessPaymentModel {
             r.month = paymentRequest.expiryMonth
             r
         })
+        
+        response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get(model.paymentIn)
 
-        response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get()
 
         if (PaymentStatus.FAILED == response.status) {
             PaymentInAbandon.valueOf(model, false).perform()
-            context.commitChanges()
         }
+        context.commitChanges()
 
         this
     }

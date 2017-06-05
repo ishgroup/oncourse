@@ -50,12 +50,16 @@ class GetPaymentStatus {
             throw new IllegalStateException("More that one credit card payment with the same sessionId")
         }
         
-        PaymentIn payment = payments[0]
+        return get(payments[0])
+   
+    }
+
+    PaymentResponse get(PaymentIn payment) {
+        
         PaymentResponse response = new PaymentResponse()
         response.sessionId = sessionId
         response.reference = payment.clientReference
-        
-        
+
         switch (payment.status) {
             case PaymentStatus.IN_TRANSACTION:
                 if (payment.paymentTransactions.empty) {
@@ -78,6 +82,6 @@ class GetPaymentStatus {
 
         response
     }
-
+    
     
 }
