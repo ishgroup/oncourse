@@ -3,8 +3,11 @@ package ish.oncourse.willow.checkout.payment
 import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.model.College
-import ish.oncourse.model.PaymentIn
+import ish.oncourse.model.PaymentGatewayType
+import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService
 import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
+import ish.oncourse.services.paymentexpress.NewTestPaymentGatewayService
+import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInSucceed
@@ -13,6 +16,8 @@ import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus
 import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
+
+import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
 
 class ProcessPaymentModel {
     
@@ -79,7 +84,8 @@ class ProcessPaymentModel {
         context.commitChanges()
         
         PaymentInModel model = createPaymentModel.model
-        new NewPaymentExpressGatewayService(nonReplicatedContext).submit(createPaymentModel.model, new ish.oncourse.services.payment.PaymentRequest().with { r ->
+        
+        paymentGatewayService.submit(createPaymentModel.model, new ish.oncourse.services.payment.PaymentRequest().with { r ->
             r.sessionId = paymentRequest.sessionId
             r.name = paymentRequest.creditCardName
             r.number = paymentRequest.creditCardNumber
@@ -100,5 +106,22 @@ class ProcessPaymentModel {
         this
     }
     
+    private getPaymentGatewayService() {
+        PaymentGatewayType gatewayType = PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
+
+        switch (gatewayType) {
+            case PaymentGatewayType.DISABLED:
+                return new NewDisabledPaymentGatewayService()
+                break
+            case PaymentGatewayType.TEST:
+                return new NewTestPaymentGatewayService(nonReplicatedContext)
+                break
+            case PaymentGatewayType.PAYMENT_EXPRESS:
+                return new NewPaymentExpressGatewayService(nonReplicatedContext)
+                break
+            default:
+                return new NewDisabledPaymentGatewayService()
+        }
+    }
     
 }
