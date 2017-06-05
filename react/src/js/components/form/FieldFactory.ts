@@ -29,6 +29,8 @@ class FieldFactory {
       case DataType.LANGUAGE:
       case DataType.SUBURB:
       case DataType.COUNTRY:
+      case DataType.POSTCODE:
+      case DataType.PHONE:
         return React.createElement(Form.Field,
           Object.assign({}, props, {type: "string", component: TextField}));
       case DataType.INTEGER:
