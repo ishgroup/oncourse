@@ -19,7 +19,6 @@ public class MergeProcessor {
 
 	private List<GenericReplicationStub> stubs;
 	private ObjectContext context;
-	private GenericReplicationStub contactDuplicateStub;
 
 	private Contact contactToUpdate;
 	private Student studentToUpdate;
@@ -212,20 +211,6 @@ public class MergeProcessor {
 			mergeDocumentRelation(STUDENT_IDENTIFIER, contactToDelete.getId(), contactToUpdate.getId(), contactToUpdate.getAngelId());
 			context.deleteObject(studentToDelet);
 		}
-	}
-
-	public GenericReplicationStub getContactDuplicateStub() {
-		if (contactDuplicateStub == null) {
-			List<GenericReplicationStub> contactDuplicateStubs = getStubBy(ContactDuplicate.class.getSimpleName(), false);
-
-			if (contactDuplicateStubs.size() == 1) {
-				contactDuplicateStub = contactDuplicateStubs.get(0);
-				return contactDuplicateStub;
-			} else {
-				throw new IllegalStateException("Merge transaction does not contains/contains more than one contactDuplicate stub"); 
-			} 
-		}
-		return contactDuplicateStub;
 	}
 
 	public List<GenericReplicationStub> getStubBy(String entityIdentifier, boolean isDeleteStub) {

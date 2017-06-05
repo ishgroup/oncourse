@@ -1,13 +1,7 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.EntityMapping;
-import ish.oncourse.model.BinaryInfo;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.QueuedStatistic;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tutor;
+import ish.oncourse.model.*;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
@@ -174,10 +168,11 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 					processSingleStub(contactToUpdate, group);
 				}
 			} else {
-				throw new IllegalStateException("Merge transaction does not contains Contact to update");
+				if (contactsToUpdate.size() > 1)
+					throw new IllegalStateException("Merge transaction contains more than one contact for update.");
 			}
-			
-			contactDuplicateRec = processSingleStub(processor.getContactDuplicateStub(), group);
+
+			contactDuplicateRec = processSingleStub(getContactDuplicateStub(processor), group);
 			
 			List<GenericReplicationStub> studentsToUpdate = processor.getStubBy(Student.class.getSimpleName(), false);
 			if (studentsToUpdate.size() == 1) {
@@ -211,6 +206,40 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				result.add(contactDuplicateRec);
 			}
 		}
+	}
+
+	/**
+	 * Get the ContactDuplicate stub from current transaction group with assigned QueuedRecord with action CREATE
+	 * @param processor merge processor
+	 * @return stub
+	 */
+	private GenericReplicationStub getContactDuplicateStub(MergeProcessor processor) {
+		List<GenericReplicationStub> contactDuplicateStubs = processor.getStubBy(ContactDuplicate.class.getSimpleName(), false);
+
+		List<Long> contactDuplicateAngelIds = new ArrayList<>();
+		for (GenericReplicationStub stub : contactDuplicateStubs){
+			contactDuplicateAngelIds.add(stub.getAngelId());
+		}
+
+		List<ContactDuplicate> contactDuplicateList = ObjectSelect.query(ContactDuplicate.class)
+				.where(ContactDuplicate.ANGEL_ID.in(contactDuplicateAngelIds)).select(atomicContext);
+
+		for (ContactDuplicate cd : contactDuplicateList){
+			contactDuplicateAngelIds.remove(cd.getAngelId());
+		}
+
+		GenericReplicationStub res = null;
+		if (contactDuplicateAngelIds.size() == 1){
+			for (GenericReplicationStub stub : contactDuplicateStubs){
+				if (stub.getAngelId() == contactDuplicateAngelIds.get(0)){
+					res = stub;
+				}
+			}
+		} else {
+			throw new IllegalStateException(String.format("Merge transaction group does not contains or contains more then one ContactDuplicate with action CREATE."));
+		}
+
+		return res;
 	}
 	
 	private GenericReplicatedRecord processSingleStub(GenericReplicationStub stub, GenericTransactionGroup group) {
