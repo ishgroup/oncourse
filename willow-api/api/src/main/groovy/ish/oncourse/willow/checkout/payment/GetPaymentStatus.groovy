@@ -69,7 +69,7 @@ class GetPaymentStatus {
                 break
             case PaymentStatus.FAILED:
             case PaymentStatus.FAILED_CARD_DECLINED:
-                response.status = FAIL
+                response.status = FAILED
                 break
             default:
                 logger.error("Unexpected payment status, paymentId: ${payment.id}")

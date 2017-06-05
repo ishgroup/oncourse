@@ -11,7 +11,7 @@ public enum PaymentStatus {
   
   IN_PROGRESS("IN_PROGRESS"),
   
-  FAIL("FAIL"),
+  FAILED("FAILED"),
   
   SUCCESSFUL("SUCCESSFUL"),
   

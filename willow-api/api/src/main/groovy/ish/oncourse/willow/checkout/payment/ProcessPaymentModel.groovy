@@ -90,7 +90,7 @@ class ProcessPaymentModel {
 
         response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get()
 
-        if (PaymentStatus.FAIL == response.status) {
+        if (PaymentStatus.FAILED == response.status) {
             PaymentInAbandon.valueOf(model, false).perform()
             context.commitChanges()
         }

@@ -3,7 +3,7 @@ import {createStringEnum} from "common/utils/EnumUtils";
 
 export const PaymentStatus = createStringEnum([
       'IN_PROGRESS',
-      'FAIL',
+      'FAILED',
       'SUCCESSFUL',
       'UNDEFINED'
 ]);

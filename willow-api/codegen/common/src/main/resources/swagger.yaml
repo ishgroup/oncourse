@@ -1158,7 +1158,7 @@ definitions:
     type: string
     enum:
       - IN_PROGRESS
-      - FAIL
+      - FAILED
       - SUCCESSFUL
       - UNDEFINED
   checkout.payment.PaymentResponse:
