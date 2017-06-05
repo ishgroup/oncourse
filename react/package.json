@@ -25,6 +25,8 @@
     "start:dev:PaymentInProgressApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/result/PaymentInProgressApp.tsx --content-base ./dev-server",
     "start:dev:PaymentAllComponentsApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/result/PaymentAllComponentsApp.tsx --content-base ./dev-server",
     "start:dev:ApplicationCompApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/summary/ApplicationCompApp.tsx --content-base ./dev-server",
+    "start:dev:MembershipCompApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/summary/MembershipCompApp.tsx --content-base ./dev-server",
+    "start:dev:ArticleCompApp": "webpack-dev-server --progress --open --config webpack.dev.config.js --env.entry=./src/dev/checkout/summary/ArticleCompApp.tsx --content-base ./dev-server",
     "deploy": "cp -vf ./build/dist/dynamic.* /Users/akoiro/_data/_ish/tomonCourse/s/ak-react/js"
   },
   "devDependencies": {

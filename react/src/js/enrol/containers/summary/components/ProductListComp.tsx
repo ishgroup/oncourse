@@ -15,7 +15,7 @@ export interface Props {
   contact: Contact;
   productItem: Voucher | Article | Membership;
   productClass: ProductClass;
-  onChange?: () => void;
+  onChange?: (item, contact) => void;
   onPriceValueChange?: () => void;
   type: Voucher | Article | Membership;
 }
@@ -37,7 +37,7 @@ class ProductListComp extends React.Component<Props, any> {
             <input className="productItemCheckbox"
                    type="checkbox"
                    name={checkBoxName}
-                   onChange={ onChange }
+                   onChange={ onChange.bind(this, productItem, contact) }
                    checked={productItem.selected } disabled={!isNil(error)} />
             { title }
           </label>

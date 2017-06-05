@@ -17,6 +17,8 @@ import {Item} from "../../../js/model/common/Item";
 import localForage from "localforage";
 import {Voucher} from "../../../js/model/checkout/Voucher";
 import {ProductClass} from "../../../js/model/web/ProductClass";
+import {Membership} from "../../../js/model/checkout/Membership";
+import {Article} from "../../../js/model/checkout/Article";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
@@ -445,6 +447,28 @@ export class MockDB {
       price: this.products.entities.products[productId].price,
       value: this.products.entities.products[productId].price,
       classes: [faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName()],
+      selected: !errors
+    }
+  }
+
+  createMembership(contactId: string, productId: string, errors: boolean = false, warnings: boolean = false): Membership {
+    return {
+      contactId: this.contacts.entities.contact[contactId].id,
+      productId: this.products.entities.products[productId].id,
+      errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
+      warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
+      price: this.products.entities.products[productId].price,
+      selected: !errors
+    }
+  }
+
+  createArticle(contactId: string, productId: string, errors: boolean = false, warnings: boolean = false): Article {
+    return {
+      contactId: this.contacts.entities.contact[contactId].id,
+      productId: this.products.entities.products[productId].id,
+      errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
+      warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
+      price: this.products.entities.products[productId].price,
       selected: !errors
     }
   }

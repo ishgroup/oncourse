@@ -34,7 +34,7 @@ class ApplicationComp extends React.Component<Props, any> {
             <input className="applicationSelect"
                    type="checkbox"
                    name={checkBoxName}
-                   onChange={ onChange.bind(this, contact) }
+                   onChange={ onChange.bind(this, application, contact) }
                    checked={application.selected } disabled={!isNil(error)}/>
             { title }
           </label>

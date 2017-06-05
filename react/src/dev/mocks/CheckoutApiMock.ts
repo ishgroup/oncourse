@@ -18,6 +18,8 @@ import {ValidationError} from "../../js/model/common/ValidationError";
 import {FieldName} from "../../js/enrol/containers/payment/services/PaymentService";
 import {PaymentRequest} from "../../js/model/checkout/payment/PaymentRequest";
 import {PaymentStatus} from "../../js/model/checkout/payment/PaymentStatus";
+import {Membership} from "../../js/model/checkout/Membership";
+import {Article} from "../../js/model/checkout/Article";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;
@@ -54,6 +56,22 @@ export class CheckoutApiMock extends CheckoutApi {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
         return this.config.db.createVoucher(c.id, cc.id)
+      })
+    }));
+  }
+
+  public createMembershipsBy(contacts: Contact[], classes: CourseClass[]): Membership[] {
+    return L.flatten(contacts.map((c: Contact) => {
+      return classes.map((cc: CourseClass) => {
+        return this.config.db.createMembership(c.id, cc.id)
+      })
+    }));
+  }
+
+  public createArticlesBy(contacts: Contact[], classes: CourseClass[]): Article[] {
+    return L.flatten(contacts.map((c: Contact) => {
+      return classes.map((cc: CourseClass) => {
+        return this.config.db.createArticle(c.id, cc.id)
       })
     }));
   }

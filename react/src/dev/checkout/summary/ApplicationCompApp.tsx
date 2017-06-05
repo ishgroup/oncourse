@@ -51,7 +51,7 @@ const createContactProps = (contact: Contact): ApplicationProps => {
 
 export const applicationPropses: ApplicationProps[] = contacts.map(createContactProps);
 
-const onSelect = (contact, item) => {
+const onSelect = (item, contact) => {
 };
 
 const render = (config) => ReactDOM.render(
@@ -60,7 +60,7 @@ const render = (config) => ReactDOM.render(
       <Progress/>
       <Messages/>
       {applicationPropses.map((props, index) => {
-        return <ApplicationComp key={index} contact={props.contact} application={props.application[0]} courseClass={props.courseClass[0]} onChange={onSelect} />
+        return <ApplicationComp key={index} contact={props.contact} application={props.application[0].application} courseClass={props.courseClass[0]} onChange={onSelect} />
       })}
     </div>
 
