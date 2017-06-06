@@ -1,6 +1,7 @@
 import {Actions} from "../actions/Actions";
+import {DEFAULT_ENROL_PATH} from "../services/HTMLMarker";
 
-export const DEFAULT_ENROL_PATH = "/checkout/";
+
 
 /**
  * Handle changing checkoutPath property.

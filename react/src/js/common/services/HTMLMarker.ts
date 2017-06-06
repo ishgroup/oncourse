@@ -10,6 +10,7 @@ import {LegacyModal} from "../../web/components/modal/LegacyModal";
 
 export const ATTR_DATA_PROP_PREFIX: string = "data-prop-";
 export const ATTR_DATA_CID: string = "data-cid";
+export const DEFAULT_ENROL_PATH = "/checkout";
 
 export class HTMLMarkers {
 
