@@ -10,16 +10,15 @@ export interface Props {
   article: Article;
   productClass: ProductClass;
   onChange?: (item, contact) => void;
-  onPriceValueChange?: () => void;
 }
 
 class ArticleComp extends React.Component<Props, any> {
   public render(): JSX.Element {
-    const {article, productClass, contact, onChange, onPriceValueChange} = this.props;
+    const {article, productClass, contact, onChange} = this.props;
 
     return (
       <div>
-        <ProductListComp type={Article} contact={contact} productItem={article} productClass={productClass} onChange={onChange} onPriceValueChange={onPriceValueChange} />
+        <ProductListComp type={Article} contact={contact} productItem={article} productClass={productClass} onChange={onChange} />
       </div>
     );
   }

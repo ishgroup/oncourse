@@ -8,5 +8,6 @@ export class Voucher {
   value?: string;
   classes?: string[];
   selected?: boolean;
+  isEditablePrice?: boolean;
 }
 

@@ -10,7 +10,7 @@ export interface Props {
 	voucher: Voucher;
 	productClass: ProductClass;
 	onChange?: () => void;
-	onPriceValueChange?: () => void;
+	onPriceValueChange?: (item: any) => void;
 }
 
 class VoucherComp extends React.Component<Props, any> {
@@ -19,7 +19,7 @@ class VoucherComp extends React.Component<Props, any> {
 
 		return (
 			<div>
-				<ProductListComp type={Voucher} contact={contact} productItem={voucher} productClass={productClass} onChange={onChange} onPriceValueChange={onPriceValueChange} />
+				<ProductListComp type={Voucher} contact={contact} productItem={voucher} productClass={productClass} onChange={onChange} onPriceValueChange={(item) => onPriceValueChange(item)} />
 			</div>
 		);
 	}

@@ -447,7 +447,8 @@ export class MockDB {
       price: this.products.entities.products[productId].price,
       value: this.products.entities.products[productId].price,
       classes: [faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName()],
-      selected: !errors
+      selected: !errors,
+      isEditablePrice: true
     }
   }
 

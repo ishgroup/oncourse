@@ -13,12 +13,13 @@ export interface Props {
   contact: Contact
   enrolments: EnrolmentProps[]
   vouchers: VoucherProps[],
-  onSelect?: (item: Enrolment | Membership | Article | Voucher, selected: boolean) => void
+  onSelect?: (item: Enrolment | Membership | Article | Voucher, selected: boolean) => void,
+  onPriceValueChange?: (item: any, product: VoucherProps[], productItem: Voucher) => void,
 }
 
 class ContactComp extends React.Component<Props, any> {
   render() {
-    const {contact, enrolments, vouchers, onSelect} = this.props;
+    const {contact, enrolments, vouchers, onSelect, onPriceValueChange} = this.props;
     return (
       <div className="row">
         <ContactInfo contact={contact} controls={<AddConcessionLink/>}/>
@@ -30,7 +31,8 @@ class ContactComp extends React.Component<Props, any> {
 
             {vouchers.map((props, index) => {
               return <VoucherComp key={index} {...props}
-                                  onChange={ () => onSelect(props.voucher, !props.voucher.selected)} />
+                                  onChange={ () => onSelect(props.voucher, !props.voucher.selected) }
+                                  onPriceValueChange={(item) => onPriceValueChange(item, vouchers, props.voucher)} />
             })
           }
         </div>

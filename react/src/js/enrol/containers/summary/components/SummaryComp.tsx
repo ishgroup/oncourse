@@ -5,6 +5,7 @@ import ContactComp, {Props as ContactProps} from "./ContactComp";
 import {Amount} from "../../../../model/checkout/Amount";
 import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {Voucher} from "../../../../model/checkout/Voucher";
+import {Props as VoucherProps} from "./VoucherComp";
 import {Membership} from "../../../../model/checkout/Membership";
 import {Article} from "../../../../model/checkout/Article";
 
@@ -15,14 +16,16 @@ export interface Props {
   onAddContact?: () => void
   onProceedToPayment?: () => void
   onSelect?: (item: Enrolment | Membership | Article | Voucher, selected: boolean) => void
+  onPriceValueChange?: (item: any, product: VoucherProps[], productItem: Voucher) => void
 }
 
 
 export class SummaryComp extends React.Component<Props, any> {
   renderContact = (props: ContactProps) => {
-    const {onSelect} = this.props;
+    const {onSelect, onPriceValueChange} = this.props;
     return (<ContactComp key={props.contact.id} {...props}
-                         onSelect={(item, selected) => onSelect(item, selected)}/>)
+                         onSelect={(item, selected) => onSelect(item, selected)}
+                         onPriceValueChange={(item, product, productItem) => onPriceValueChange(item, product, productItem)} />)
   };
 
   render() {

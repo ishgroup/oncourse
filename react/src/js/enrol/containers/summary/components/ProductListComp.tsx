@@ -10,13 +10,12 @@ import {ProductClass} from "../../../../model/web/ProductClass";
 import {Article} from "../../../../model/checkout/Article";
 import {Membership} from "../../../../model/checkout/Membership";
 
-
 export interface Props {
   contact: Contact;
   productItem: Voucher | Article | Membership;
   productClass: ProductClass;
   onChange?: (item, contact) => void;
-  onPriceValueChange?: () => void;
+  onPriceValueChange?: (item: any) => void;
   type: Voucher | Article | Membership;
 }
 
@@ -54,16 +53,15 @@ class ProductListComp extends React.Component<Props, any> {
 
 
 const ClassPrice = (props): any => {
-  const product: Voucher | Article | Membership = props.product;
+  const product = props.product;
   const price = product.price;
 
   return (
     <div className="col-xs-8 col-md-7 alignright priceValue">
       <div className="row">
-        { (price === "0" || price === "") ?
+        { product.isEditablePrice ?
           <div className="col-xs-24 col-md-24 fee-full fullPrice text-right">
             <input type="text" name="priceValue" value={price} onChange={props.onPriceValueChange.bind(this)} />
-            <div className="button update-voucher-price display-none priceValue">Update</div>
           </div>
           : <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">${ price }</span>
         }

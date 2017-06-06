@@ -82,13 +82,13 @@ contactPropses[1].enrolments[1].courseClass.start = faker.date.past();
 export const amount: Amount = mockAmount();
 
 
-
-
 const onAddContact = () => {
 };
 const onProceedToPayment = () => {
 };
 const onSelect = (contact, item) => {
+};
+const onPriceValueChange = (item, products, productItem) => {
 };
 
 
@@ -102,6 +102,7 @@ const render = (config) => ReactDOM.render(
         contactPropses[1]
       ]} amount={amount} onAddContact={onAddContact} onProceedToPayment={onProceedToPayment}
                    onSelect = {onSelect}
+                   onPriceValueChange={onPriceValueChange}
                    hasSelected = {true}
       />
     </div>
