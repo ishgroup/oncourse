@@ -1,9 +1,11 @@
 package ish.oncourse.willow.checkout.payment
 
+import groovy.transform.CompileStatic
 import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.PaymentGatewayType
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayService
 import ish.oncourse.services.paymentexpress.NewDisabledPaymentGatewayService
 import ish.oncourse.services.paymentexpress.NewPaymentExpressGatewayService
 import ish.oncourse.services.paymentexpress.NewTestPaymentGatewayService
@@ -19,6 +21,7 @@ import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
 
+@CompileStatic
 class ProcessPaymentModel {
     
     ObjectContext context
@@ -106,7 +109,7 @@ class ProcessPaymentModel {
         this
     }
     
-    private getPaymentGatewayService() {
+    private INewPaymentGatewayService getPaymentGatewayService() {
         PaymentGatewayType gatewayType = PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
 
         switch (gatewayType) {
