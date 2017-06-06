@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 import "rxjs";
 
 import * as Actions from "../actions/Actions";
-import {changePhase, changePhaseRequest} from "../actions/Actions";
+import {changePhase, changePhaseRequest, resetState} from "../actions/Actions";
 import {ValidationError} from "../../model/common/ValidationError";
 import {ShoppingCardIsEmpty} from "../containers/checkout/Errors";
 import {Phase} from "../reducers/State";
@@ -18,6 +18,7 @@ import {ProcessError} from "./EpicUtils";
 import {AxiosResponse} from "axios";
 import {getPaymentStatus} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";
+import {PaymentStatus} from "../../model/checkout/payment/PaymentStatus";
 
 const showCartIsEmptyMessage = (): IAction<any>[] => {
   const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
@@ -30,10 +31,6 @@ const showContactDetails = (): IAction<any>[] => {
 
 const showAddContact = (): IAction<any>[] => {
   return [changePhase(Phase.AddContact)]
-};
-
-const showPaymentInProgress = (): IAction<any>[] => {
-  return [changePhase(Phase.PaymentInProgress), getPaymentStatus()]
 };
 
 const setPayerFromCart = (contact: Contact): Observable<any> => {
@@ -54,10 +51,14 @@ export const EpicInit: Epic<any, any> = (action$: ActionsObservable<any>, store:
   return action$.ofType(Actions.InitRequest).flatMap((action) => {
 
     if (!L.isNil(store.getState().checkout.payment.value)) {
-      if (CheckoutService.isPaymentInProgress(store.getState().checkout.payment)) {
-        return showPaymentInProgress();
-      } else {
-        return [changePhase(Phase.Result)]
+      switch (store.getState().checkout.payment.value) {
+        case PaymentStatus.IN_PROGRESS:
+          return [changePhase(Phase.Result), getPaymentStatus()];
+        case PaymentStatus.SUCCESSFUL:
+        case PaymentStatus.UNDEFINED:
+          return [resetState()];
+        default:
+          return [changePhase(Phase.Result)]
       }
     }
 

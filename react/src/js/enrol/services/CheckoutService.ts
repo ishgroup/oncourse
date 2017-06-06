@@ -90,9 +90,15 @@ export class CheckoutService {
 
   public isPaymentInProgress = (value: PaymentResponse): boolean => {
     return (L.isNil(value.status) ||
-      value.status == PaymentStatus.IN_PROGRESS
+      value.status === PaymentStatus.IN_PROGRESS
     );
   };
+
+
+  public isPaymentSuccessfull = (value: PaymentResponse): boolean => {
+    return (value.status === PaymentStatus.SUCCESSFUL);
+  };
+
 
   public getPaymentStatus = (state: PaymentState): Promise<PaymentResponse> => {
     return this.checkoutApi.getPaymentStatus(state.value.sessionId)

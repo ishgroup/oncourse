@@ -3,6 +3,7 @@ import {Phase} from "../reducers/State";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
 import {Amount} from "../../model/checkout/Amount";
+import {IAction} from "../../actions/IshAction";
 
 //initialize checkout application
 
@@ -24,6 +25,8 @@ export const UPDATE_AMOUNT: string = "checkout/amount/update";
 export const UPDATE_AMOUNT_REQUEST: string = _toRequestType(UPDATE_AMOUNT);
 
 export const SET_NEW_CONTACT_FLAG = "checkout/set/new/contact/flag";
+
+export const RESET_STATE = "checkout/reset/state";
 
 export const setNewContactFlag = (newContact: boolean): {type: string, payload: boolean} => {
   return {
@@ -66,9 +69,15 @@ export const updateAmountRequest = (): { type: string } => {
   }
 };
 
-export const updateAmount = (amount: Amount): { type: string, payload: Amount } => {
+export const updateAmount = (amount: Amount): IAction<Amount> => {
   return {
     type: UPDATE_AMOUNT,
     payload: amount
+  }
+};
+
+export const resetState = (): IAction<any> => {
+  return {
+    type: RESET_STATE
   }
 };

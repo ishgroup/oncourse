@@ -33,7 +33,7 @@ const request: Request<PaymentResponse, IshState> = {
     if (CheckoutService.isPaymentInProgress(response)) {
       return of(getPaymentStatus()).delay(DELAY)
     } else {
-      return [updatePaymentStatus(response), changePhase(Phase.Result)]
+      return [updatePaymentStatus(response)]
     }
   },
   processError: (response: AxiosResponse): IAction<any>[] => {
@@ -60,7 +60,7 @@ const MakePayment: Epic<any, any> = (action$: ActionsObservable<any>, store: Mid
     const response: PaymentResponse = new PaymentResponse();
     response.sessionId = uuid();
     response.status = PaymentStatus.IN_PROGRESS;
-    return [updatePaymentStatus(response), changePhase(Phase.PaymentInProgress), processPayment(action.payload)];
+    return [updatePaymentStatus(response), changePhase(Phase.Result), processPayment(action.payload)];
   });
 };
 

@@ -10,7 +10,6 @@ import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
-import {InProgress} from "./result/components/InProgress";
 
 interface Props {
   phase: Phase;
@@ -34,7 +33,6 @@ export class Checkout extends React.Component<Props, any> {
         {phase === Phase.EditContact && <ContactEditForm/>}
         {phase === Phase.Summary && <Summary/>}
         {phase === Phase.Payment && <Payment/>}
-        {phase === Phase.PaymentInProgress && <InProgress/>}
         {phase === Phase.Result && <Result/>}
       </div>
     )
