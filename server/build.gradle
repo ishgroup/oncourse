@@ -108,6 +108,7 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
 
 	compile 'org.apache.activemq:activemq-broker:5.12.1'
+	compile 'org.yaml:snakeyaml:+'
 	compile ('org.apache.activemq:activemq-http:5.12.1') {
 		exclude group: 'org.eclipse.jetty.aggregate'
 	}
