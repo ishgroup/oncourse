@@ -26,7 +26,9 @@ export const UPDATE_AMOUNT_REQUEST: string = _toRequestType(UPDATE_AMOUNT);
 
 export const SET_NEW_CONTACT_FLAG = "checkout/set/new/contact/flag";
 
-export const RESET_STATE = "checkout/reset/state";
+export const RESET_CHECKOUT_STATE = "checkout/reset/state";
+
+export const FINISH_CHECKOUT_PROCESS = "checkout/finish/process";
 
 export const setNewContactFlag = (newContact: boolean): {type: string, payload: boolean} => {
   return {
@@ -76,8 +78,14 @@ export const updateAmount = (amount: Amount): IAction<Amount> => {
   }
 };
 
-export const resetState = (): IAction<any> => {
+export const finishCheckoutProcess = (): IAction<any> => {
   return {
-    type: RESET_STATE
+    type: FINISH_CHECKOUT_PROCESS
+  }
+};
+
+export const resetCheckoutState = (): IAction<any> => {
+  return {
+    type: RESET_CHECKOUT_STATE
   }
 };

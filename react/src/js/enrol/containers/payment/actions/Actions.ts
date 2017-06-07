@@ -14,6 +14,8 @@ export const UPDATE_PAYMENT_STATUS = "checkout/payment/update/payment/status";
 
 export const GET_PAYMENT_STATUS = "checkout/payment/get/payment/status";
 
+export const RESET_PAYMENT_STATE = "checkout/payment/reset/payment/state";
+
 
 export const makePayment = (values: Values): IAction<Values> => {
   return {
@@ -43,8 +45,8 @@ export const updatePaymentStatus = (response: PaymentResponse): IAction<PaymentR
   }
 };
 
-export const openPayment = (): IAction<any> => {
+export const resetPaymentState = () => {
   return {
-    type: OpenPaymentRequest
+    type: RESET_PAYMENT_STATE
   }
 };

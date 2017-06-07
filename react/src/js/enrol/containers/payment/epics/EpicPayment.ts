@@ -1,3 +1,5 @@
+import * as L from "lodash";
+
 import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
 import {ActionsObservable, combineEpics, Epic} from "redux-observable";
@@ -5,7 +7,14 @@ import {ActionsObservable, combineEpics, Epic} from "redux-observable";
 import uuid from "uuid";
 
 import {Create, ProcessError, Request} from "../../../epics/EpicUtils";
-import {getPaymentStatus, MAKE_PAYMENT, PROCESS_PAYMENT, processPayment, updatePaymentStatus} from "../actions/Actions";
+import {
+  getPaymentStatus,
+  MAKE_PAYMENT,
+  PROCESS_PAYMENT,
+  processPayment,
+  resetPaymentState,
+  updatePaymentStatus
+} from "../actions/Actions";
 
 import CheckoutService from "../../../services/CheckoutService";
 
@@ -41,7 +50,7 @@ const request: Request<PaymentResponse, IshState> = {
     if (data.payerId && data.amount && data.contactNodes) {
       return ProcessCheckoutModel.process(data as CheckoutModel);
     } else {
-      return ProcessError(response);
+      return L.concat(ProcessError(response), resetPaymentState(), changePhase(Phase.Payment));
     }
   }
 };

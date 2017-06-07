@@ -17,6 +17,7 @@ const NewContactReducer = (state: boolean = false, action: { type: string, paylo
     case Actions.SET_NEW_CONTACT_FLAG:
       return action.payload;
     case ContactEditActions.FieldsSave:
+    case Actions.RESET_CHECKOUT_STATE:
       return false;
     default:
       return state;
@@ -34,6 +35,8 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
         default:
           return null;
       }
+    case Actions.RESET_CHECKOUT_STATE:
+      return null;
     default:
       return state;
   }
@@ -43,6 +46,8 @@ const ContactReducer = (state: Contact = null, action: { type: string, payload: 
   switch (action.type) {
     case ContactAddActions.ADD_CONTACT:
       return action.payload.entities.contact[action.payload.result];
+    case Actions.RESET_CHECKOUT_STATE:
+      return null;
     default:
       return state;
   }
@@ -53,6 +58,8 @@ const AmountReducer = (state: Amount = null, action: { type: string, payload: Am
   switch (action.type) {
     case Actions.UPDATE_AMOUNT:
       return action.payload;
+    case Actions.RESET_CHECKOUT_STATE:
+      return null;
     default:
       return state;
   }
@@ -77,6 +84,8 @@ const PhaseReducer = (state: Phase = Phase.Init, action: any): any => {
   switch (action.type) {
     case Actions.CHANGE_PHASE:
       return action.payload;
+    case Actions.RESET_CHECKOUT_STATE:
+      return Phase.Init;
     default:
       return state;
   }
