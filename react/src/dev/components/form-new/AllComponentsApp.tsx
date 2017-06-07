@@ -42,10 +42,14 @@ class AllComponentsFrom extends React.Component<any, any> {
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
-      <form onSubmit={handleSubmit}>
+      <div>
+        <form onSubmit={handleSubmit}>
+
         <fieldset>
-          <TextField name="address" type={"number"} label="Street" required={true} meta={{error: "Error message", touched: true}}/>
-          <TextField name="address1" label="Street" required={true} meta={{warning: "Warning message", touched: true}}/>
+          <TextField name="address" type={"number"} label="Street" required={true}
+                     meta={{error: "address Error message", touched: true}}/>
+          <TextField name="address1" label="Street" required={true}
+                     meta={{warning: "address Warning message", touched: true}}/>
           <TextField name="address2" label="Street" required={true} meta={{}}/>
         </fieldset>
         <fieldset>
@@ -71,6 +75,7 @@ class AllComponentsFrom extends React.Component<any, any> {
           <TextArea name="needs2" label="Special Needs" required={true} meta={{}}/>
         </fieldset>
       </form>
+      </div>
     );
   }
 }
