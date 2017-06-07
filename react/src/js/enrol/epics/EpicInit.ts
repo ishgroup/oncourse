@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 import "rxjs";
 
 import * as Actions from "../actions/Actions";
-import {changePhase, changePhaseRequest, resetState} from "../actions/Actions";
+import {changePhase, changePhaseRequest, finishCheckoutProcess} from "../actions/Actions";
 import {ValidationError} from "../../model/common/ValidationError";
 import {ShoppingCardIsEmpty} from "../containers/checkout/Errors";
 import {Phase} from "../reducers/State";
@@ -56,7 +56,7 @@ export const EpicInit: Epic<any, any> = (action$: ActionsObservable<any>, store:
           return [changePhase(Phase.Result), getPaymentStatus()];
         case PaymentStatus.SUCCESSFUL:
         case PaymentStatus.UNDEFINED:
-          return [resetState()];
+          return [finishCheckoutProcess()];
         default:
           return [changePhase(Phase.Result)]
       }

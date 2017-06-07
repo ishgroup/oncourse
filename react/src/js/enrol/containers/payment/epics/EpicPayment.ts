@@ -50,7 +50,7 @@ const request: Request<PaymentResponse, IshState> = {
     if (data.payerId && data.amount && data.contactNodes) {
       return ProcessCheckoutModel.process(data as CheckoutModel);
     } else {
-      return L.concat(ProcessError(response), resetPaymentState(), changePhase(Phase.Payment));
+      return L.concat([changePhase(Phase.Payment), resetPaymentState()], ProcessError(response));
     }
   }
 };
