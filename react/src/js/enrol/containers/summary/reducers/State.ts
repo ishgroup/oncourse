@@ -1,4 +1,3 @@
-import * as L from "lodash";
 
 import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {Application} from "../../../../model/checkout/Application";
@@ -52,76 +51,4 @@ export const ItemToState = (input: Enrolment | Application): State => {
       ...data
     }
   ], Schema);
-};
-
-enum Case {
-  addContact,
-  addEnrolment,
-  addApplication,
-  updateEnrolment,
-  updateApplication,
-  refresh
-}
-
-const getCase = (state: State, payload: State): Case => {
-  const contactId: string = payload.result[0];
-
-  if (state.result.length == 0) {
-    return Case.refresh;
-  } else if (state.result.indexOf(contactId) < 0) {
-    return Case.addContact
-  }
-
-  if (payload.entities.contactNodes[payload.result[0]].enrolments) {
-    const enrolmentId: string = payload.entities.contactNodes[payload.result[0]].enrolments[0];
-
-    if (L.isNil(state.entities.enrolments[enrolmentId])) {
-      return Case.addEnrolment
-    } else {
-      return Case.updateEnrolment
-    }
-  } else if (payload.entities.contactNodes[payload.result[0]].applications)  {
-    const applicationId: string = payload.entities.contactNodes[payload.result[0]].applications[0];
-
-    if (L.isNil(state.entities.applications[applicationId])) {
-      return Case.addApplication
-    } else {
-      return Case.updateApplication
-    }
-  }
-  return Case.refresh
-};
-
-export const merge = (state: State, payload: State): State => {
-  const ns: State = L.cloneDeep(state);
-  switch (getCase(state, payload)) {
-    case Case.addContact:
-      ns.result = [...ns.result, ...payload.result];
-      ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
-      ns.entities.contactNodes = {...ns.entities.contactNodes, ...payload.entities.contactNodes};
-      break;
-    case Case.addEnrolment:
-      payload.result.forEach((id) => {
-        ns.entities.contactNodes[id].enrolments = [...ns.entities.contactNodes[id].enrolments, ...payload.entities.contactNodes[id].enrolments]
-      });
-      ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
-      break;
-    case Case.addApplication:
-      payload.result.forEach((id) => {
-        ns.entities.contactNodes[id].applications = [...ns.entities.contactNodes[id].applications, ...payload.entities.contactNodes[id].applications]
-      });
-      ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
-      break;
-    case Case.updateEnrolment:
-      ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
-      break;
-    case Case.updateApplication:
-      ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
-      break;
-    case Case.refresh:
-      return payload;
-    default:
-      throw new Error();
-  }
-  return ns;
 };
