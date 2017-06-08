@@ -14,6 +14,9 @@ import SelectField from "../../../js/components/form-new/SelectField";
 import RadioGroup from "../../../js/components/form-new/RadioGroup";
 import TextArea from "../../../js/components/form-new/TextArea";
 
+import "react-select/dist/react-select.css";
+import "../../../scss/_ReactSelect.scss";
+import "../../../scss/_ReactTooltip.scss";
 
 const store = createStore(
   combineReducers({form: formReducer}), applyMiddleware(createLogger())

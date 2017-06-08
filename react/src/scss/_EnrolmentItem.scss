@@ -57,8 +57,10 @@
       .form-details {
         .form-group {
           .select-payer {
-            float: right;
-            width: 80%;
+            @media only screen and (min-width: 640px) {
+              float: right;
+              width: 80%;
+            }
             .radio-list {
               >span {
                 display: block;
@@ -69,6 +71,7 @@
             .form-group {
               width: 55px;
               display: inline-block;
+              position: static;
               .Select {
                 width: 55px;
               }

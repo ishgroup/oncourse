@@ -1,0 +1,41 @@
+.__react_component_tooltip {
+  position: absolute !important;
+  display: none !important;
+  width: 65%;
+  left: 80px !important;
+  top: 20px !important;
+  font-size: 11px !important;
+  @media only screen and (min-width: 640px) {
+    top: 0 !important;
+    left: 270px !important;
+    width: 270px;
+  }
+
+  &::before, &::after {
+    top: 12px !important;
+  }
+  &.show {
+    padding: 0 12px;
+    display: block !important;
+    >span {
+      width: auto !important;
+    }
+    .help-block, .radio, .checkbox {
+      margin-top: 4px;
+      margin-bottom: 7px;
+    }
+
+    .radio-inline, .checkbox-inline {
+      padding: 1px 0;
+    }
+  }
+}
+.has-error, .has-warning, .has-success, .has-info {
+  .help-block, .radio, .checkbox, .radio-inline, .checkbox-inline {
+    color: #fff;
+  }
+  .control-label, label {
+    color: #000000;
+  }
+}
+
