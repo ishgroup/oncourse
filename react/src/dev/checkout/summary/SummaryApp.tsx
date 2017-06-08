@@ -16,6 +16,7 @@ import {Enrolment} from "../../../js/model/checkout/Enrolment";
 import {NoCourseClassPlaces} from "../../../js/enrol/containers/summary/Messages";
 
 import {Props as EnrolmentProps} from "../../../js/enrol/containers/summary/components/EnrolmentComp";
+import {Props as ApplicationProps} from "../../../js/enrol/containers/summary/components/ApplicationComp";
 import {Props as ContactProps} from "../../../js/enrol/containers/summary/components/ContactComp";
 
 import {Props as VoucherProps} from "../../../js/enrol/containers/summary/components/VoucherComp";
@@ -28,6 +29,7 @@ import {MockDB} from "../../mocks/mocks/MockDB";
 import {SummaryComp} from "../../../js/enrol/containers/summary/components/SummaryComp";
 import {ProductClass} from "../../../js/model/web/ProductClass";
 import {Voucher} from "../../model/checkout/Voucher";
+import {Application} from "../../../js/model/checkout/Application";
 
 let config: MockConfig = new MockConfig();
 const checkoutApi:CheckoutApiMock = new CheckoutApiMock(config);
@@ -41,6 +43,7 @@ config.init((config:MockConfig) => {
 const classes:CourseClass[]  = [db.getCourseClassByIndex(0),db.getCourseClassByIndex(1),db.getCourseClassByIndex(2), db.getCourseClassByIndex(3)];
 const contacts:Contact[]  = [db.getContactByIndex(0),db.getContactByIndex(1)];
 const enrolments:Enrolment[]  = checkoutApi.createEnrolmentsBy(contacts, classes);
+const applications:Application[]  = checkoutApi.createApplicationBy(contacts, classes);
 
 const products: ProductClass[] = [db.getProductClassByIndex(0), db.getProductClassByIndex(1), db.getProductClassByIndex(2), db.getProductClassByIndex(3)];
 const vouchers: Voucher[]  = checkoutApi.createVouchersBy(contacts, products);
@@ -57,6 +60,14 @@ const createEnrolmentProps = (e: Enrolment):EnrolmentProps => {
   };
 };
 
+const createApplicationProps = (a: Application):ApplicationProps => {
+  return {
+    contact: db.getContactById(a.contactId),
+    courseClass: db.getCourseClassById(a.classId),
+    application: a
+  };
+};
+
 const createVoucherProps = (e: Voucher): VoucherProps => {
   return {
     contact: db.getContactById(e.contactId),
@@ -69,6 +80,7 @@ const createContactProps = (contact: Contact): ContactProps => {
   return {
     contact: contact,
     enrolments: enrolments.filter((e) => e.contactId == contact.id).map(createEnrolmentProps),
+    applications: applications.filter((a) => a.contactId == contact.id).map(createApplicationProps),
     vouchers: vouchers.filter((e) => e.contactId == contact.id).map(createVoucherProps)
   }
 };

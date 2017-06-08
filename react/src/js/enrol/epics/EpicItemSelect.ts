@@ -5,15 +5,15 @@ import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import * as EpicUtils from "./EpicUtils";
 import {Enrolment} from "../../model/checkout/Enrolment";
-import {EnrolmentToState} from "../containers/summary/reducers/State";
+import {ItemToState} from "../containers/summary/reducers/State";
 import {updateAmountRequest} from "../actions/Actions";
 import {Application} from "../../model/checkout/Application";
 
 const request: EpicUtils.Request<Enrolment | Application, IshState> = {
   type: SELECT_ITEM_REQUEST,
-  getData: CheckoutService.updateEnrolment,
+  getData: CheckoutService.updateItem,
   processData: (value: Enrolment | Application, state: IshState) => {
-    return [{type: SELECT_ITEM, payload: EnrolmentToState(value)}, updateAmountRequest()];
+    return [{type: SELECT_ITEM, payload: ItemToState(value)}, updateAmountRequest()];
   }
 };
 

@@ -1,8 +1,8 @@
-import {EnrolmentToState, State} from "../../../../../../js/enrol/containers/summary/reducers/State";
+import {ItemToState, State} from "../../../../../../js/enrol/containers/summary/reducers/State";
 
 test('test convertFromEnrolment ', () => {
 
-  const state: State = EnrolmentToState(
+  const state: State = ItemToState(
     {
       contactId: "10000",
       classId: "20000",

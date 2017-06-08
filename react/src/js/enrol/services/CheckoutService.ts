@@ -32,6 +32,7 @@ import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actio
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
+import {Application} from "../../model/checkout/Application";
 
 
 export class CheckoutService {
@@ -67,15 +68,15 @@ export class CheckoutService {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromState(state));
   };
 
-  public updateEnrolment = (enrolment: Enrolment, state: IshState): Promise<Enrolment> => {
-    if (enrolment.selected) {
-      const request: ContactNodeRequest = BuildContactNodeRequest.fromEnrolment(enrolment, state);
+  public updateItem = (item: Enrolment, state: IshState): Promise<Enrolment> => {
+    if (item.selected) {
+      const request: ContactNodeRequest = BuildContactNodeRequest.fromClass(item, state);
       return this.checkoutApi.getContactNode(request)
         .then((data) => {
-          return Promise.resolve(data.enrolments[0])
+          return Promise.resolve(data.enrolments[0] ? data.enrolments[0] : data.applications[0])
         })
     } else {
-      return Promise.resolve(enrolment);
+      return Promise.resolve(item);
     }
   };
 
@@ -136,10 +137,10 @@ const {
 } = Injector.of();
 
 export class BuildContactNodeRequest {
-  static fromEnrolment = (enrolment: Enrolment, state: IshState): ContactNodeRequest => {
+  static fromClass = (item: Enrolment | Application, state: IshState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
-    result.contactId = enrolment.contactId;
-    result.classIds = [enrolment.classId];
+    result.contactId = item.contactId;
+    result.classIds = [item.classId];
     result.productIds = [];
     result.promotionIds = state.cart.promotions.result;
     return result;

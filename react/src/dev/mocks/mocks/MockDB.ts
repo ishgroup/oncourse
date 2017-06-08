@@ -19,6 +19,7 @@ import {Voucher} from "../../../js/model/checkout/Voucher";
 import {ProductClass} from "../../../js/model/web/ProductClass";
 import {Membership} from "../../../js/model/checkout/Membership";
 import {Article} from "../../../js/model/checkout/Article";
+import {Application} from "../../../js/model/checkout/Application";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
@@ -438,6 +439,18 @@ export class MockDB {
     }
   }
 
+  createApplication(contactId: string, classId: string, errors: boolean = false, warnings: boolean = false): Application {
+    return {
+      contactId: this.contacts.entities.contact[contactId].id,
+      classId: this.classes.entities.classes[classId].id,
+      errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
+      warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
+      selected: !errors
+    }
+  }
+
+
+  
   createVoucher(contactId: string, productId: string, errors: boolean = false, warnings: boolean = false): Voucher {
     return {
       contactId: this.contacts.entities.contact[contactId].id,

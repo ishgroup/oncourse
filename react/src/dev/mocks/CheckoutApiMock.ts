@@ -20,6 +20,7 @@ import {PaymentRequest} from "../../js/model/checkout/payment/PaymentRequest";
 import {PaymentStatus} from "../../js/model/checkout/payment/PaymentStatus";
 import {Membership} from "../../js/model/checkout/Membership";
 import {Article} from "../../js/model/checkout/Article";
+import {Application} from "../../js/model/checkout/Application";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;
@@ -51,6 +52,15 @@ export class CheckoutApiMock extends CheckoutApi {
       })
     }));
   }
+  
+  public createApplicationBy(contacts: Contact[], classes: CourseClass[]): Application[] {
+    return L.flatten(contacts.map((c: Contact) => {
+      return classes.map((cc: CourseClass) => {
+        return this.config.db.createApplication(c.id, cc.id)
+      })
+    }));
+  }
+  
 
   public createVouchersBy(contacts: Contact[], classes: CourseClass[]): Voucher[] {
     return L.flatten(contacts.map((c: Contact) => {
