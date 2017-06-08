@@ -104,19 +104,19 @@
             modified="2011-09-20 11:14:54"
             paymentInId="2"/>
 
-    <QueuedTransaction id="1" collegeId="1" transactionKey="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
-    <QueuedRecord id="1" transactionId="1" collegeId="1" action="DELETE" entityIdentifier="Contact" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+    <QueuedTransaction id="100" collegeId="1" transactionKey="1" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+    <QueuedRecord id="100" transactionId="100" collegeId="1" action="DELETE" entityIdentifier="Contact" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
 
-    <QueuedTransaction id="2" collegeId="1" transactionKey="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
-    <QueuedRecord id="2" transactionId="2" collegeId="1" action="DELETE" entityIdentifier="Student" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+    <QueuedTransaction id="200" collegeId="1" transactionKey="2" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+    <QueuedRecord id="200" transactionId="200" collegeId="1" action="DELETE" entityIdentifier="Student" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
 
-    <QueuedTransaction id="3" collegeId="1" transactionKey="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
-    <QueuedRecord id="3" transactionId="3" collegeId="1" action="DELETE" entityIdentifier="Contact" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-    <QueuedRecord id="4" transactionId="3" collegeId="1" action="DELETE" entityIdentifier="Student" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-    <QueuedRecord id="5" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="Enrolment" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-    <QueuedRecord id="6" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="Invoice" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-    <QueuedRecord id="7" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="PaymentIn" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
-    <QueuedRecord id="8" transactionId="3" collegeId="1" action="UPDATE" entityIdentifier="InvoiceLine" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+    <QueuedTransaction id="300" collegeId="1" transactionKey="3" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+    <QueuedRecord id="300" transactionId="300" collegeId="1" action="DELETE" entityIdentifier="Contact" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+    <QueuedRecord id="400" transactionId="300" collegeId="1" action="DELETE" entityIdentifier="Student" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+    <QueuedRecord id="500" transactionId="300" collegeId="1" action="UPDATE" entityIdentifier="Enrolment" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+    <QueuedRecord id="600" transactionId="300" collegeId="1" action="UPDATE" entityIdentifier="Invoice" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+    <QueuedRecord id="700" transactionId="300" collegeId="1" action="UPDATE" entityIdentifier="PaymentIn" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
+    <QueuedRecord id="800" transactionId="300" collegeId="1" action="UPDATE" entityIdentifier="InvoiceLine" entityWillowId="1" angelId="1" lastAttemptTimestamp="2010-02-03 09:18:09" numberOfAttempts="0"/>
 
 	<ContactRelationType id="1"
 						 angelId="1"
@@ -146,4 +146,11 @@
 
 	<ContactRelation id="2" angelId="2" collegeId="1" createdOn ="2011-09-12 00:51:00.0" modifiedOn="2011-09-12 00:51:00.0"
 					 fromContactId="4"  toContactId="5" typeId="2"/>
+
+	<Contact id="6" angelId="6" collegeId="1" emailAddress="a@a.com" givenName="DuplicatedContactG" familyName="DuplicatedContactF"/>
+	<Contact id="7" angelId="7" collegeId="1" emailAddress="b@a.com" givenName="UpdateContactG" familyName="UpdateContactF"/>
+
+	<ContactDuplicate id="10" angelId="10" collegeId="1" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" contactToUpdateId="6" contactToDeleteId="15" contactToDeleteAngelId="15" description="description" status="3"/>
+	<ContactDuplicate id="11" angelId="11" collegeId="1" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" contactToUpdateId="6" contactToDeleteId="14" contactToDeleteAngelId="14" description="description" status="3"/>
+
 </dataset>

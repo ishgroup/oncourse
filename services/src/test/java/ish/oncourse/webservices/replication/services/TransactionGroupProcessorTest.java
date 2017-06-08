@@ -9,11 +9,10 @@ import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v13.stubs.replication.BinaryInfoRelationStub;
-import ish.oncourse.webservices.v13.stubs.replication.CourseStub;
-import ish.oncourse.webservices.v13.stubs.replication.DocumentStub;
+import ish.oncourse.webservices.v13.stubs.replication.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -28,6 +27,9 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import static ish.oncourse.webservices.replication.services.TransactionGroupProcessorTestUtils.generateContactDuplicateV13Stub;
+import static ish.oncourse.webservices.replication.services.TransactionGroupProcessorTestUtils.generateContactV13Stub;
+import static ish.oncourse.webservices.replication.services.TransactionGroupProcessorTestUtils.generateDeleteV13Stub;
 import static ish.oncourse.webservices.util.SupportedVersions.V13;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -732,7 +734,6 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 		transactionGroupProcessor.processGroup(transactionGroup);
 
-
 		ObjectContext context = cayenneService.newContext();
 		List<BinaryInfoRelation> relations = ObjectSelect.query(BinaryInfoRelation.class).select(context);
 		assertEquals(1, relations.size());
@@ -741,6 +742,45 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 		Course course = ObjectSelect.query(Course.class).where(Course.ANGEL_ID.eq(1L)).selectOne(context);
 		assertEquals(course.getId(), relations.get(0).getEntityWillowId());
-		
+	}
+
+	@Test
+	public void testMergeProcessingV13() throws Exception {
+    	Long updContactId = 7L;
+    	Long delContactId = 6L;
+
+		ObjectContext context = cayenneService.newContext();
+		Contact delContact = ObjectSelect.query(Contact.class)
+				.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, delContactId)).selectOne(context);
+		Contact updContact = ObjectSelect.query(Contact.class)
+				.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, updContactId)).selectOne(context);
+
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(V13);
+
+		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+				generateContactV13Stub(updContact.getAngelId(),updContact.getId(), updContact.getGivenName(), updContact.getFamilyName()));
+		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+
+				generateDeleteV13Stub("Contact", delContact.getAngelId(), delContact.getId()));
+		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+
+				generateContactDuplicateV13Stub(10L,10L, delContactId,14L,14L));
+		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+
+				generateContactDuplicateV13Stub(11L,11L, delContactId,15L,15L));
+		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+
+				generateContactDuplicateV13Stub(12L,null, updContactId, delContactId, delContactId));
+
+		group.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
+		group.getTransactionKeys().add("MERGE");
+
+		transactionGroupProcessor.processGroup(group);
+
+		Contact updated = ObjectSelect.query(Contact.class).where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, updContactId)).selectOne(context);
+		Contact deleted = ObjectSelect.query(Contact.class).where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, delContactId)).selectOne(context);
+
+		assertNotNull(updated);
+		assertNull(deleted);
 	}
 }

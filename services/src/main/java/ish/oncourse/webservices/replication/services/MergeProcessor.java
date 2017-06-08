@@ -42,7 +42,7 @@ public class MergeProcessor {
 		return processor;
 	}
 
-	public void processMerge(GenericReplicatedRecord contactDuplicateRec, GenericReplicatedRecord studentToUpdateRec, GenericReplicatedRecord tutorToUpdateRec) {
+	public ContactDuplicate processMerge(GenericReplicatedRecord contactDuplicateRec) {
 		
 		ContactDuplicate contactDuplicate = SelectById.query(ContactDuplicate.class, contactDuplicateRec.getStub().getWillowId()).selectOne(context);
 		
@@ -53,7 +53,7 @@ public class MergeProcessor {
 		if (contactDuplicate.getContactToDeleteId() != null) {
 			contactToDelete = SelectById.query(Contact.class, contactDuplicate.getContactToDeleteId()).selectOne(context);
 		} else if (contactDuplicate.getAngelId() != null) {
-			contactToDelete = ObjectSelect.query(Contact.class).where(Contact.ANGEL_ID.eq(contactDuplicate.getAngelId())).and(Contact.COLLEGE.eq(contactDuplicate.getCollege())).selectOne(context);
+			contactToDelete = ObjectSelect.query(Contact.class).where(Contact.ANGEL_ID.eq(contactDuplicate.getContactToDeleteAngelId())).and(Contact.COLLEGE.eq(contactDuplicate.getCollege())).selectOne(context);
 			if (contactToDelete != null) {
 				contactDuplicate.setContactToDeleteId(contactToDelete.getId());
 			}
@@ -62,7 +62,7 @@ public class MergeProcessor {
 		}
 		
 		if (contactToDelete == null) {
-			return;
+			return contactDuplicate;
 		} else if (!toDelete(CONTACT_IDENTIFIER, contactToDelete.getId(), contactToDelete.getAngelId())) {
 			throw new IllegalStateException(String.format("Contact to delete  does not present in MERGE transactionGroup, ContactDuplicate collegeId: %d, angelId:%d, willowId:%d.", contactDuplicate.getCollege().getId(), contactDuplicate.getAngelId(), contactDuplicate.getId()));
 		}
@@ -107,16 +107,7 @@ public class MergeProcessor {
 		mergeTagRelations();
 		mergeCustomFieldRelations();
 
-		if (studentToUpdateRec != null) {
-			if (studentToUpdate != null && studentToUpdate.getId().equals(studentToUpdateRec.getStub().getWillowId())) {
-				mergeStudents(studentToUpdate, studentToDelete);
-			} else if (studentToDelete != null && studentToDelete.getId().equals(studentToUpdateRec.getStub().getWillowId())) {
-				mergeStudents(studentToDelete, studentToUpdate);
-			} else {
-				throw new IllegalStateException(String.format("Unknown student to update, ContactDuplicate collegeId: %d, angelId:%d, willowId:%d", contactDuplicate.getCollege().getId(), contactDuplicate.getAngelId(), contactDuplicate.getId()));
-			}
-			
-		} else if ((studentToUpdate != null && studentToDelete == null) || (studentToUpdate == null && studentToDelete == null))  {
+		if ((studentToUpdate != null && studentToDelete == null) || (studentToUpdate == null && studentToDelete == null))  {
 			//nothing to relink
 		} else if (studentToUpdate == null && studentToDelete != null) {
 			mergeStudents(studentToDelete, studentToUpdate);
@@ -124,17 +115,7 @@ public class MergeProcessor {
 			mergeStudents(studentToUpdate, studentToDelete);
 		}
 
-
-		if (tutorToUpdateRec != null) {
-			if (tutorToUpdate != null && tutorToUpdate.getId().equals(tutorToUpdateRec.getStub().getWillowId())) {
-				mergeTutor(tutorToUpdate, tutorToDelete);
-			} else if (tutorToDelete != null && tutorToDelete.getId().equals(tutorToUpdateRec.getStub().getWillowId())) {
-				mergeTutor(tutorToDelete, tutorToUpdate);
-			} else {
-				throw new IllegalStateException(String.format("Unknown tutor to update, ContactDuplicate collegeId: %d, angelId:%d, willowId:%d", contactDuplicate.getCollege().getId(), contactDuplicate.getAngelId(), contactDuplicate.getId()));
-			}
-
-		} else if ((tutorToUpdate != null && tutorToDelete == null) || (tutorToUpdate == null && tutorToDelete == null))  {
+		if ((tutorToUpdate != null && tutorToDelete == null) || (tutorToUpdate == null && tutorToDelete == null))  {
 			//nothing to relink
 		} else if (tutorToUpdate == null && tutorToDelete != null) {
 			mergeTutor(tutorToDelete, tutorToUpdate);
@@ -150,6 +131,7 @@ public class MergeProcessor {
 		builder.append(new Date());
 		contactDuplicate.setDescription(builder.toString());
 		context.commitChanges();
+		return contactDuplicate;
 	}
 
 	private void mergeTutor(Tutor tutorToUpdate, Tutor tutorToDelete) {

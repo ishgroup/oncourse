@@ -154,44 +154,20 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	}
 
 	private void processMergeTransaction(GenericTransactionGroup group) {
-		GenericReplicatedRecord contactDuplicateRec = null;
+		GenericReplicatedRecord replicatedContactDuplicate = null;
 		try {
-			MergeProcessor processor = MergeProcessor.valueOf(atomicContext, group.getGenericAttendanceOrBinaryDataOrBinaryInfo());
-			
-			GenericReplicatedRecord studentToUpdateRec = null;
-			GenericReplicatedRecord tutorToUpdateRec = null;
-
-			List<GenericReplicationStub> contactsToUpdate = processor.getStubBy(Contact.class.getSimpleName(), false);
-			if (contactsToUpdate.size() > 0) {
-				//not only Contact (with UPDATE action) for merge can be in merge transaction group, ContactRelation -> toContact/fromContact also can be in merge transaction group
-				for (GenericReplicationStub contactToUpdate : contactsToUpdate) {
-					processSingleStub(contactToUpdate, group);
-				}
-			} else {
-				if (contactsToUpdate.size() > 1)
-					throw new IllegalStateException("Merge transaction contains more than one contact for update.");
-			}
-
-			contactDuplicateRec = processSingleStub(getContactDuplicateStub(processor), group);
-			
-			List<GenericReplicationStub> studentsToUpdate = processor.getStubBy(Student.class.getSimpleName(), false);
-			if (studentsToUpdate.size() == 1) {
-				studentToUpdateRec = processSingleStub(studentsToUpdate.get(0), group);
-			} else if (studentsToUpdate.size() > 1) {
-				throw new IllegalStateException("Merge transaction  contains more than one Student to update");
-			}
-
-			List<GenericReplicationStub> tutorsToUpdate = processor.getStubBy(Tutor.class.getSimpleName(), false);
-			if (tutorsToUpdate.size() == 1) {
-				tutorToUpdateRec = processSingleStub(tutorsToUpdate.get(0), group);
-			} else if (tutorsToUpdate.size() > 1) {
-				throw new IllegalStateException("Merge transaction  contains more than one Tutor to update");
-			}
-
+			GenericReplicationStub contactDuplicateStub = getContactDuplicateStub(group);
+			replicatedContactDuplicate = processSingleStub(contactDuplicateStub, group);
 			atomicContext.commitChanges();
 			fillWillowIds();
 
-			processor.processMerge(contactDuplicateRec, studentToUpdateRec, tutorToUpdateRec);
+			cleanContactDuplicateStubs(group);
+
+			ContactDuplicate contactDuplicate = MergeProcessor
+					.valueOf(atomicContext, group.getGenericAttendanceOrBinaryDataOrBinaryInfo())
+					.processMerge(replicatedContactDuplicate);
+
+			removeStub(group, Contact.class.getSimpleName(), contactDuplicate.getContactToDeleteId(), contactDuplicate.getContactToDeleteAngelId());
 
 			try {
 				processRegularTransaction(group);
@@ -202,25 +178,47 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		} finally {
 			//leave contactDuplicate for angel response only
 			result.clear();
-			if (contactDuplicateRec != null) {
-				result.add(contactDuplicateRec);
+			if (replicatedContactDuplicate != null) {
+				result.add(replicatedContactDuplicate);
 			}
 		}
 	}
 
+	public Integer cleanContactDuplicateStubs(GenericTransactionGroup group){
+		Integer	countOfRemoved = 0;
+		Iterator<GenericReplicationStub> groupIterator = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().iterator();
+		while(groupIterator.hasNext()){
+			if (ContactDuplicate.class.getSimpleName().equals(groupIterator.next().getEntityIdentifier())) {
+				groupIterator.remove();
+				countOfRemoved++;
+			}
+		}
+		return countOfRemoved;
+	}
+
+	public boolean removeStub(GenericTransactionGroup group, String entityIdentifier, Long willowId, Long angelId){
+		GenericReplicationStub forRemove = null;
+		for (GenericReplicationStub s : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()){
+			if ((s.getEntityIdentifier().equals(entityIdentifier) && (s.getAngelId() == angelId || s.getWillowId() == willowId))){
+				forRemove = s;
+				break;
+			}
+		}
+		return group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(forRemove);
+	}
+
 	/**
 	 * Get the ContactDuplicate stub from current transaction group with assigned QueuedRecord with action CREATE
-	 * @param processor merge processor
+	 * @param group transaction group
 	 * @return stub
 	 */
-	private GenericReplicationStub getContactDuplicateStub(MergeProcessor processor) {
-		List<GenericReplicationStub> contactDuplicateStubs = processor.getStubBy(ContactDuplicate.class.getSimpleName(), false);
-
+	private GenericReplicationStub getContactDuplicateStub(GenericTransactionGroup group) {
 		List<Long> contactDuplicateAngelIds = new ArrayList<>();
-		for (GenericReplicationStub stub : contactDuplicateStubs){
-			contactDuplicateAngelIds.add(stub.getAngelId());
+		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()){
+			if (ContactDuplicate.class.getSimpleName().equals(stub.getEntityIdentifier())){
+				contactDuplicateAngelIds.add(stub.getAngelId());
+			}
 		}
-
 		List<ContactDuplicate> contactDuplicateList = ObjectSelect.query(ContactDuplicate.class)
 				.where(ContactDuplicate.ANGEL_ID.in(contactDuplicateAngelIds)).select(atomicContext);
 
@@ -230,13 +228,14 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 		GenericReplicationStub res = null;
 		if (contactDuplicateAngelIds.size() == 1){
-			for (GenericReplicationStub stub : contactDuplicateStubs){
+			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()){
 				if (stub.getAngelId() == contactDuplicateAngelIds.get(0)){
 					res = stub;
+					break;
 				}
 			}
 		} else {
-			throw new IllegalStateException(String.format("Merge transaction group does not contains or contains more then one ContactDuplicate with action CREATE."));
+			throw new IllegalStateException(String.format("Merge transaction {college: %d, transaction key: %s} contain more than one ContactDuplicate.", group));
 		}
 
 		return res;
