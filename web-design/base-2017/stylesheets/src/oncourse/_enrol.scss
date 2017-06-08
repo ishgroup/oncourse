@@ -208,7 +208,31 @@ span#addstudent {
 				position: relative;
 			}
 			.form-details {
-				p {
+				.form-group {
+					.select-payer {
+						float: right;
+						width: 80%;
+						.radio-list {
+							>span {
+								display: block;
+							}
+						}
+					}
+					.input-select-small {
+						.form-group {
+							width: 55px;
+							display: inline-block;
+							.Select {
+								width: 55px;
+							}
+						}
+					}
+				}
+				p, .form-group {
+					margin-bottom: 18px;
+					.form-group {
+						margin-bottom: 0;
+					}
 					label {
 						font-weight: bold !important;
 						text-align: left;
@@ -256,6 +280,11 @@ span#addstudent {
 						width: 100%;
 						@include responsive($media-small) {
 							width: 70%;
+						}
+						&.select-payer {
+							label.radio-btn {
+								text-align: left !important;
+							}
 						}
 						#cvvLink {
 							margin-left: 11px !important;
