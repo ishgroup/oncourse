@@ -5,11 +5,11 @@ import ContactAddForm from "./contact-add/ContactAddForm";
 import ContactEditForm from "./contact-edit/ContactEditForm";
 import {Messages, Progress} from "./Functions";
 import {Phase} from "../reducers/State";
-import * as Actions from "../../enrol/actions/Actions";
 import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
+import {sendInitRequest} from "../actions/Actions";
 
 interface Props {
   phase: Phase;
@@ -49,7 +49,7 @@ const mapStateToProps = (state: IshState) => {
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: (): void => {
-      dispatch({type: Actions.InitRequest})
+      dispatch(sendInitRequest())
     },
   }
 };

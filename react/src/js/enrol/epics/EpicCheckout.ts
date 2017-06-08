@@ -16,6 +16,7 @@ import {EpicItemSelect} from "./EpicItemSelect";
 import {EpicUpdateAmount} from "./EpicUpdateAmount";
 import {EpicProceedToPayment} from "./EpicProceedToPayment";
 import {EpicPayment} from "../containers/payment/epics/EpicPayment";
+import {FinishCheckoutProcess} from "./EpicFinishCheckoutProcess";
 
 const {
   contactApi
@@ -32,6 +33,7 @@ export const EpicCheckout = combineEpics(
   EpicUpdateAmount,
   EpicProceedToPayment,
   EpicPayment,
+  FinishCheckoutProcess,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
 );
 

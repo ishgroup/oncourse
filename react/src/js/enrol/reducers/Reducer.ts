@@ -69,7 +69,6 @@ const ErrorReducer = (state: ValidationError = null, action: any): any => {
   switch (action.type) {
     case Actions.SHOW_MESSAGES:
       return action.payload;
-    case Actions.Init:
     case Actions.CHANGE_PHASE:
     case ContactAddActions.ADD_CONTACT:
     case ContactEditActions.FieldsLoad:

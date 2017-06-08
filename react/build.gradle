@@ -18,6 +18,9 @@ task jest(type: NodeTask, dependsOn: 'yarn_install') {
     script = project.file('node_modules/.bin/jest')
 }
 
+
+sourceSets { main { resources { srcDirs 'src/js', 'src/dev'  } } }
+
 test.dependsOn(jest)
 
 build.dependsOn(webpack)

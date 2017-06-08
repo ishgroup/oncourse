@@ -10,8 +10,7 @@ import {IAction} from "../../actions/IshAction";
 export const SHOW_MESSAGES: string = "checkout/messages/show";
 export const SHOW_MESSAGES_REQUEST: string = _toRequestType(SHOW_MESSAGES);
 
-export const Init: string = "checkout/init";
-export const InitRequest: string = _toRequestType(Init);
+export const INIT_REQUEST: string = "checkout/init/request";
 
 //change current phase action
 export const CHANGE_PHASE: string = "checkout/phase/change";
@@ -30,7 +29,13 @@ export const RESET_CHECKOUT_STATE = "checkout/reset/state";
 
 export const FINISH_CHECKOUT_PROCESS = "checkout/finish/process";
 
-export const setNewContactFlag = (newContact: boolean): {type: string, payload: boolean} => {
+export const sendInitRequest = (): IAction<any> => {
+  return {
+    type: INIT_REQUEST
+  };
+};
+
+export const setNewContactFlag = (newContact: boolean): { type: string, payload: boolean } => {
   return {
     type: SET_NEW_CONTACT_FLAG,
     payload: newContact

@@ -48,10 +48,10 @@ const setPayerFromCart = (contact: Contact): Observable<any> => {
  * This epic process Init action of checkout application and define Phase of the application
  */
 export const EpicInit: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
-  return action$.ofType(Actions.InitRequest).flatMap((action) => {
+  return action$.ofType(Actions.INIT_REQUEST).flatMap((action) => {
 
     if (!L.isNil(store.getState().checkout.payment.value)) {
-      switch (store.getState().checkout.payment.value) {
+      switch (store.getState().checkout.payment.value.status) {
         case PaymentStatus.IN_PROGRESS:
           return [changePhase(Phase.Result), getPaymentStatus()];
         case PaymentStatus.SUCCESSFUL:
