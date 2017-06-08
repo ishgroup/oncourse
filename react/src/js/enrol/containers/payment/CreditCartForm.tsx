@@ -70,6 +70,8 @@ const Form = reduxForm({
   },
   
   onSubmit: (data: Values, dispatch, props): void => {
+    data.creditCardNumber = data.creditCardNumber.replace(/\s+/, "")
+    data.creditCardCvv = data.creditCardCvv.trim()
     dispatch(makePayment(data));
   }
 })(CreditCartForm);
