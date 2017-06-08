@@ -104,6 +104,7 @@ export class CheckoutApiMock extends CheckoutApi {
 
     const result: PaymentResponse = new PaymentResponse();
     result.sessionId = paymentRequest.sessionId;
+    result.status = PaymentStatus.SUCCESSFUL;
     if (this.config.props.checkoutApi.makePayment.result.inProgress) {
       result.status = PaymentStatus.IN_PROGRESS;
     }

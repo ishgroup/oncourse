@@ -83,8 +83,6 @@ const PhaseReducer = (state: Phase = Phase.Init, action: any): any => {
   switch (action.type) {
     case Actions.CHANGE_PHASE:
       return action.payload;
-    case Actions.RESET_CHECKOUT_STATE:
-      return Phase.Init;
     default:
       return state;
   }

@@ -8,7 +8,6 @@ import uuid from "uuid";
 
 import {Create, ProcessError, Request} from "../../../epics/EpicUtils";
 import {
-  getPaymentStatus,
   MAKE_PAYMENT,
   PROCESS_PAYMENT,
   processPayment,
@@ -26,12 +25,9 @@ import {ProcessCheckoutModel} from "../../../epics/EpicProceedToPayment";
 import {IAction} from "../../../../actions/IshAction";
 import {Values} from "../services/PaymentService";
 import {PaymentStatus} from "../../../../model/checkout/payment/PaymentStatus";
-import {of} from "rxjs/observable/of";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
 import {changePhase} from "../../../actions/Actions";
-
-const DELAY: number = 5000;
 
 const request: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT,
@@ -39,11 +35,7 @@ const request: Request<PaymentResponse, IshState> = {
     return CheckoutService.makePayment(payload, state);
   },
   processData: (response: PaymentResponse, state: IshState): IAction<any>[] | Observable<any> => {
-    if (CheckoutService.isPaymentInProgress(response)) {
-      return of(getPaymentStatus()).delay(DELAY)
-    } else {
-      return [updatePaymentStatus(response)]
-    }
+    return CheckoutService.processPaymentResponse(response);
   },
   processError: (response: AxiosResponse): IAction<any>[] => {
     const data: any = response.data;

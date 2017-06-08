@@ -20,11 +20,18 @@ import {PaymentService, Values} from "../containers/payment/services/PaymentServ
 import {PaymentResponse} from "../../model/checkout/payment/PaymentResponse";
 import {PaymentRequest} from "../../model/checkout/payment/PaymentRequest";
 import {DataType} from "../../model/field/DataType";
-import {CheckoutState} from "../reducers/State";
+import {CheckoutState, Phase} from "../reducers/State";
 import {ContactId} from "../../model/web/ContactId";
 import {Values as ContactValues} from "../containers/contact-add/actions/Actions";
 import {PaymentStatus} from "../../model/checkout/payment/PaymentStatus";
 import {State as PaymentState} from "../containers/payment/reducers/State";
+import {IAction} from "../../actions/IshAction";
+import {Observable} from "rxjs/Observable";
+import {of} from "rxjs/observable/of";
+import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actions/Actions";
+import {changePhase, finishCheckoutProcess} from "../actions/Actions";
+
+const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
 
 export class CheckoutService {
@@ -95,14 +102,31 @@ export class CheckoutService {
   };
 
 
-  public isPaymentSuccessfull = (value: PaymentResponse): boolean => {
-    return (value.status === PaymentStatus.SUCCESSFUL);
+  public isFinalStatus = (value: PaymentResponse): boolean => {
+    return (value.status === PaymentStatus.SUCCESSFUL ||
+    value.status === PaymentStatus.UNDEFINED);
   };
 
 
   public getPaymentStatus = (state: PaymentState): Promise<PaymentResponse> => {
     return this.checkoutApi.getPaymentStatus(state.value.sessionId)
   };
+
+
+  public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {
+    switch (response.status) {
+      case PaymentStatus.IN_PROGRESS:
+        return of(getPaymentStatus()).delay(DELAY_NEXT_PAYMENT_STATUS);
+      case PaymentStatus.SUCCESSFUL:
+      case PaymentStatus.UNDEFINED:
+        return [changePhase(Phase.Result), updatePaymentStatus(response), finishCheckoutProcess()];
+      case PaymentStatus.FAILED:
+        return [changePhase(Phase.Result), updatePaymentStatus(response)];
+      default:
+        throw new Error(`Unknown status ${response.status}`);
+    }
+  };
+
 }
 
 
