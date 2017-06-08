@@ -53,5 +53,5 @@ test('test CheckoutModel processing', () => {
   expect(actions[1].payload.formErrors[0]).toBe("Common Error Message");
   expect(actions[2].type).toBe(UPDATE_CONTACT_NODE);
   expect(actions[2].payload.result.length).toBe(1);
-  expect(actions[2].payload.entities.contacts[node1.contactId].enrolments.length).toBe(2);
+  expect(actions[2].payload.entities.contactNodes[node1.contactId].enrolments.length).toBe(2);
 });
