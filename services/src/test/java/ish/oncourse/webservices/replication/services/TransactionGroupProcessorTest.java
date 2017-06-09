@@ -744,6 +744,11 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		assertEquals(course.getId(), relations.get(0).getEntityWillowId());
 	}
 
+	/**
+	 * Test for merging two contacts in TransactionGroupProcessor by transaction group with several
+	 * ContactDuplicate stubs
+	 * @throws Exception
+	 */
 	@Test
 	public void testMergeProcessingV13() throws Exception {
     	Long updContactId = 7L;

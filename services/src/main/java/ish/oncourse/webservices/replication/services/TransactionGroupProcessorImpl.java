@@ -1,20 +1,17 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.EntityMapping;
-import ish.oncourse.model.*;
+import ish.oncourse.model.BinaryInfo;
+import ish.oncourse.model.College;
+import ish.oncourse.model.Queueable;
+import ish.oncourse.model.QueuedStatistic;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.util.GenericBinaryDataStub;
-import ish.oncourse.webservices.util.GenericDeletedStub;
-import ish.oncourse.webservices.util.GenericQueuedStatisticStub;
-import ish.oncourse.webservices.util.GenericReplicatedRecord;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.util.StubUtils;
+import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -25,6 +22,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.reflect.ArcProperty;
 import org.apache.cayenne.reflect.ClassDescriptor;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -118,7 +116,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		
         try {
 			if (transactionGroup.getTransactionKeys().contains(MERGE_KEY)) {
-				processMergeTransaction(group);
+				ProcessMergeTransaction.valueOf(group, atomicContext, this).process();
 			} else {
 				processRegularTransaction(group);
 			}
@@ -136,8 +134,8 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		}
 		return result;
 	}
-	
-	private void processRegularTransaction(GenericTransactionGroup group) {
+
+	void processRegularTransaction(GenericTransactionGroup group) {
 
 		for (GenericReplicationStub currentStub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
@@ -153,104 +151,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		fillWillowIds();
 	}
 
-	private void processMergeTransaction(GenericTransactionGroup group) {
-		GenericReplicatedRecord replicatedContactDuplicate = null;
-		try {
-			GenericReplicationStub contactDuplicateStub = getContactDuplicateStub(group);
-			replicatedContactDuplicate = processSingleStub(contactDuplicateStub, group);
-			atomicContext.commitChanges();
-			fillWillowIds();
 
-			cleanContactDuplicateStubs(group);
-
-			ContactDuplicate contactDuplicate = MergeProcessor
-					.valueOf(atomicContext, group.getGenericAttendanceOrBinaryDataOrBinaryInfo())
-					.processMerge(replicatedContactDuplicate);
-
-			removeStub(group, Contact.class.getSimpleName(), contactDuplicate.getContactToDeleteId(), contactDuplicate.getContactToDeleteAngelId());
-
-			try {
-				processRegularTransaction(group);
-			} catch (Exception e) {
-				logger.error("Merge operation was completed on willow side. Unexpected error occurred during process merge stubs by regular mechanism.", e);
-				throw e;
-			}
-		} finally {
-			//leave contactDuplicate for angel response only
-			result.clear();
-			if (replicatedContactDuplicate != null) {
-				result.add(replicatedContactDuplicate);
-			}
-		}
-	}
-
-	public Integer cleanContactDuplicateStubs(GenericTransactionGroup group){
-		Integer	countOfRemoved = 0;
-		Iterator<GenericReplicationStub> groupIterator = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().iterator();
-		while(groupIterator.hasNext()){
-			if (ContactDuplicate.class.getSimpleName().equals(groupIterator.next().getEntityIdentifier())) {
-				groupIterator.remove();
-				countOfRemoved++;
-			}
-		}
-		return countOfRemoved;
-	}
-
-	public boolean removeStub(GenericTransactionGroup group, String entityIdentifier, Long willowId, Long angelId){
-		GenericReplicationStub forRemove = null;
-		for (GenericReplicationStub s : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()){
-			if ((s.getEntityIdentifier().equals(entityIdentifier) && (s.getAngelId() == angelId || s.getWillowId() == willowId))){
-				forRemove = s;
-				break;
-			}
-		}
-		return group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(forRemove);
-	}
-
-	/**
-	 * Get the ContactDuplicate stub from current transaction group with assigned QueuedRecord with action CREATE
-	 * @param group transaction group
-	 * @return stub
-	 */
-	private GenericReplicationStub getContactDuplicateStub(GenericTransactionGroup group) {
-		List<Long> contactDuplicateAngelIds = new ArrayList<>();
-		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()){
-			if (ContactDuplicate.class.getSimpleName().equals(stub.getEntityIdentifier())){
-				contactDuplicateAngelIds.add(stub.getAngelId());
-			}
-		}
-		List<ContactDuplicate> contactDuplicateList = ObjectSelect.query(ContactDuplicate.class)
-				.where(ContactDuplicate.ANGEL_ID.in(contactDuplicateAngelIds)).select(atomicContext);
-
-		for (ContactDuplicate cd : contactDuplicateList){
-			contactDuplicateAngelIds.remove(cd.getAngelId());
-		}
-
-		GenericReplicationStub res = null;
-		if (contactDuplicateAngelIds.size() == 1){
-			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()){
-				if (stub.getAngelId() == contactDuplicateAngelIds.get(0)){
-					res = stub;
-					break;
-				}
-			}
-		} else {
-			throw new IllegalStateException(String.format("Merge transaction {college: %d, transaction key: %s} contain more than one ContactDuplicate.", group));
-		}
-
-		return res;
-	}
-	
-	private GenericReplicatedRecord processSingleStub(GenericReplicationStub stub, GenericTransactionGroup group) {
-		GenericReplicatedRecord replicationRec = toReplicatedRecord(stub, false);
-		result.add(replicationRec);
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(stub);
-		processStub(stub);
-		return replicationRec;
-	}
-
-    private void fillWillowIds() {
-        for (GenericReplicatedRecord r : result) {
+	void fillWillowIds() {
+		for (GenericReplicatedRecord r : result) {
             String willowIdentifier = EntityMapping.getWillowEntityIdentifer(r.getStub().getEntityIdentifier());
 
             if (QueuedStatistic.class.getSimpleName().equals(willowIdentifier))
@@ -328,7 +231,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	 *            replication stub.
 	 * @return cayenne object which was updated/deleted.
 	 */
-	private Queueable processStub(GenericReplicationStub currentStub) {
+	Queueable processStub(GenericReplicationStub currentStub) {
 
 		logger.info("Process stub for {} with angelId: {} and willowId: {}.", currentStub.getEntityIdentifier(),
 				currentStub.getAngelId(), currentStub.getWillowId());
@@ -577,6 +480,14 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
     {
         return new RelationShipCallbackImpl();
     }
+
+	void cleanResult() {
+		this.result.clear();
+	}
+
+	boolean addToResult(GenericReplicatedRecord record) {
+		return this.result.add(record);
+	}
 
 	/**
 	 * Callback for updating relationships.
