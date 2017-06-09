@@ -50,7 +50,7 @@ dependencies {
     compile 'org.ehcache:ehcache:3.3.1'
     
     //search
-    compile "org.apache.solr:solr-solrj:${solrVersion}"
+    compile "org.apache.solr:solr-solrj:6.6.0"
 
 
     compile 'mysql:mysql-connector-java:5.1.38'
