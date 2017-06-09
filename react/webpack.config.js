@@ -31,8 +31,9 @@ module.exports = function (options = {}) {
     },
     resolve: {
       modules: [path.resolve(__dirname, "src/js"),
+          path.resolve(__dirname, 'src/scss'),
         "node_modules"],
-      extensions: ['.ts', '.tsx', '.js']
+        extensions: [".ts", ".tsx", ".js", ".css"]
     },
     module: {
         rules: [{
@@ -41,11 +42,16 @@ module.exports = function (options = {}) {
             exclude: /node_modules/,
         }, {
             test: /\.css$/,
-            use: [{
-                loader: 'style-loader'
-            }, {
-                loader: 'css-loader'
-            }]
+            loaders: ['style-loader', 'css-loader'],
+            include: [
+                path.resolve(__dirname, 'node_modules')
+            ]
+        }, {
+            test: /\.scss$/,
+            loaders: ['style-loader', 'css-loader', 'sass-loader'],
+            include: [
+                path.resolve(__dirname, "src/scss"),
+            ]
         }]
     },
     externals: [function (context, request, callback) {
@@ -84,8 +90,9 @@ module.exports = function (options = {}) {
           '^/a/': ''
         }
       }]
-    }
-  }
+    }  
+
+}
 };
 
 function createListOfPlugins({NODE_ENV, API_ROOT}) {
