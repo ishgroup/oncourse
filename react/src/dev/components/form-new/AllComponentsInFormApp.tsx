@@ -8,7 +8,7 @@ import {Field, FormErrors, FormProps, reducer as formReducer, reduxForm} from "r
 import {Values} from "redux-form-website-template";
 
 import "react-select/dist/react-select.css";
-import "../../../scss/_ReactSelect.scss";
+import "../../../scss/index.scss";
 import {SearchApiMock} from "../../mocks/SearchApiMock";
 
 import TextField from "../../../js/components/form-new/TextField";

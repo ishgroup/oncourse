@@ -1,4 +1,64 @@
 
+%form-group {
+  .form-group, > div > div {
+    margin-bottom: 18px;
+    .form-group {
+      margin-bottom: 0;
+    }
+    label {
+      font-weight: normal !important;
+      text-align: left;
+      padding-left: 0px !important;
+      padding-right: 0;
+      margin-bottom: 3px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      line-height: normal;
+      @media only screen and (min-width: 640px) {
+        width: 20% !important;
+        max-width: 140px !important;
+      }
+      > small {
+        color: #999;
+        font-size: 9px;
+        display: block;
+        line-height: 9px;
+      }
+      &.radio-btn {
+        width: auto !important;
+        float: none;
+        margin-left: 0px;
+        max-width: none !important;
+        display: block !important;
+        margin-bottom: 5px !important;
+        &.text-right {
+          text-align: right;
+          padding: 0;
+        }
+        input[type=radio] {
+          float: left;
+          margin-left: 0px !important;
+          margin-right: 5px !important;
+        }
+      }
+    }
+    > span {
+      width: 100%;
+      @media only screen and (min-width: 640px) {
+        width: 70%
+      }
+      &.select-payer {
+        label.radio-btn {
+          text-align: left !important;
+        }
+      }
+      #cvvLink {
+        margin-left: 11px !important;
+      }
+    }
+  }
+}
+
 #content {
   #checkout {
     .enrolmentItem {
@@ -32,6 +92,16 @@
       .amount-content {
         span {
           padding: 0;
+        }
+      }
+    }
+    fieldset {
+      @extend %form-group;
+      >div >div {
+        label {
+          font-weight: bold !important;
+          line-height: 28px;
+          padding-bottom: 0;
         }
       }
     }
@@ -78,62 +148,7 @@
             }
           }
         }
-        .form-group, > div > div {
-          margin-bottom: 18px;
-          .form-group {
-            margin-bottom: 0;
-          }
-          label {
-            font-weight: normal !important;
-            text-align: left;
-            padding-left: 0px !important;
-            padding-right: 0;
-            margin-bottom: 3px !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            @media only screen and (min-width: 640px) {
-              width: 20% !important;
-              max-width: 140px !important;
-            }
-            > small {
-              color: #999;
-              font-size: 9px;
-              display: block;
-              line-height: 9px;
-            }
-            &.radio-btn {
-              width: auto !important;
-              float: none;
-              margin-left: 0px;
-              max-width: none !important;
-              display: block !important;
-              margin-bottom: 5px !important;
-              &.text-right {
-                text-align: right;
-                padding: 0;
-              }
-              input[type=radio] {
-                float: left;
-                margin-left: 0px !important;
-                margin-right: 5px !important;
-              }
-            }
-          }
-          > span {
-            width: 100%;
-            @media only screen and (min-width: 640px) {
-              width: 70%
-            }
-            &.select-payer {
-              label.radio-btn {
-                text-align: left !important;
-              }
-            }
-            #cvvLink {
-              margin-left: 11px !important;
-            }
-          }
-        }
+        @extend %form-group;
         select {
           width: 188px;
           &[id*="expiryMonth"], &[id*="expiryYear"] {

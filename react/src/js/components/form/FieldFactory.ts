@@ -32,7 +32,7 @@ class FieldFactory {
       case DataType.POSTCODE:
       case DataType.PHONE:
         return React.createElement(Form.Field,
-          Object.assign({}, props, {type: "string", component: TextField}));
+          Object.assign({}, props, {type: "text", component: TextField}));
       case DataType.INTEGER:
         return React.createElement(Form.Field,
           Object.assign({}, props, {type: "number", component: TextField}));
@@ -62,7 +62,7 @@ class FieldFactory {
       key: field.id,
       name: field.key,
       label: field.name,
-      type: "string",
+      type: "text",
       required: field.mandatory,
       placeholder: field.description
     }
