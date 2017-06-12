@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {Provider} from "react-redux";
-import {CreateStore, RestoreState} from "../../../js/CreateStore";
 import {Messages, Progress} from "../../../js/enrol/containers/Functions";
 
 
@@ -28,7 +27,7 @@ import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
 import {SummaryComp} from "../../../js/enrol/containers/summary/components/SummaryComp";
 import {ProductClass} from "../../../js/model/web/ProductClass";
-import {Voucher} from "../../model/checkout/Voucher";
+import {Voucher} from "../../../js/model/checkout/Voucher";
 import {Application} from "../../../js/model/checkout/Application";
 
 let config: MockConfig = new MockConfig();

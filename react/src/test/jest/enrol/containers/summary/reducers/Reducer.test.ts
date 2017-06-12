@@ -5,6 +5,9 @@ import {ContactNode} from "../../../../../../js/model/checkout/ContactNode";
 import {ContactNodeToState, State} from "../../../../../../js/enrol/containers/summary/reducers/State";
 
 import {Reducer} from "../../../../../../js/enrol/containers/summary/reducers/Reducer";
+import * as L from "lodash";
+import {inspect} from "util";
+
 
 const state: State = ContactNodeToState([{
   contactId: "00001",
@@ -33,6 +36,13 @@ const state: State = ContactNodeToState([{
     }, {
       contactId: "00002",
       classId: "00003",
+      selected: false
+    }
+  ],
+  applications: [
+    {
+      contactId: "00002",
+      classId: "00004",
       selected: false
     }
   ]
@@ -93,4 +103,28 @@ test('test update enrolment', () => {
   const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
   expect(ns.result.length).toBe(2);
   expect(ns.entities.enrolments['00002-00003'].selected).toBe(true);
+});
+
+
+test('test update enrolment', () => {
+  const upi: ContactNode = {
+    contactId: "00002",
+    applications: [
+      {
+        contactId: "00002",
+        classId: "00005",
+        selected: true
+      }
+    ]
+  };
+
+  const payload: State = ContactNodeToState([upi]);
+
+  const ns = L.cloneDeep(state);
+
+  ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
+  ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
+
+  console.log(inspect(ns, true, 10, true))
+
 });

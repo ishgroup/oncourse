@@ -11,9 +11,6 @@ import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
 import {sendInitRequest} from "../actions/Actions";
 
-import "react-select/dist/react-select.css";
-import "../../../scss/index.scss";
-
 interface Props {
   phase: Phase;
   onInit: () => void;

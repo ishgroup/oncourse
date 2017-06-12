@@ -1,4 +1,3 @@
-
 import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {Application} from "../../../../model/checkout/Application";
 import {normalize, schema} from "normalizr";
@@ -42,13 +41,10 @@ export const ContactNodeToState = (input: ContactNode[]): State => {
 
 export const ItemToState = (input: Enrolment | Application): State => {
 
-  const data  = input instanceof Enrolment ? { enrolments: [input] } : { applications: [input] }
-  
-  return normalize([
-    {
-      contactId: input.contactId,
-      
-      ...data
-    }
-  ], Schema);
+  const node: ContactNode = new ContactNode();
+  node.contactId = input.contactId;
+  node.enrolments = input instanceof Enrolment ? [input] : [];
+  node.applications = input instanceof Application ? [input] : [];
+
+  return ContactNodeToState([node]);
 };

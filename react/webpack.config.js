@@ -11,7 +11,7 @@ module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development'; // 'production'
   const SOURCE_MAP = options.SOURCE_MAP || 'source-map'; // 'eval-source-map'
   const API_ROOT = options.API_ROOT || 'http://localhost:10080'; // 'https://ish.com.au/api/v1'
-  __common.info(NODE_ENV, API_ROOT, API_ROOT);
+  __common.info(NODE_ENV, SOURCE_MAP, API_ROOT);
 
   return {
     entry: {
