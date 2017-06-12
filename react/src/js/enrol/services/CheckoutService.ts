@@ -68,12 +68,12 @@ export class CheckoutService {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromState(state));
   };
 
-  public updateItem = (item: Enrolment, state: IshState): Promise<Enrolment> => {
+  public updateItem = (item: Enrolment | Application, state: IshState): Promise<Enrolment | Application> => {
     if (item.selected) {
       const request: ContactNodeRequest = BuildContactNodeRequest.fromClass(item, state);
       return this.checkoutApi.getContactNode(request)
         .then((data) => {
-          return Promise.resolve(data.enrolments[0] ? data.enrolments[0] : data.applications[0])
+          return Promise.resolve(data.enrolments[0] ? Object.assign(new Enrolment(), data.enrolments[0]) : Object.assign(new Application(), data.applications[0]))
         })
     } else {
       return Promise.resolve(item);
@@ -203,6 +203,9 @@ export class BuildContactNodes {
       result.contactId = contactId;
       result.enrolments = state.entities.contactNodes[contactId].enrolments.map((enrolmentId) => {
         return state.entities.enrolments[enrolmentId];
+      });
+      result.applications = state.entities.contactNodes[contactId].applications.map((applicationId) => {
+        return state.entities.applications[applicationId];
       });
       return result;
     })

@@ -159,7 +159,7 @@ class CreatePaymentModel {
     }
 
     void createApplication(ish.oncourse.willow.model.checkout.Application a, Contact contact) {
-        CourseClass courseClass = new GetCourseClass(context, college, a.contactId).get()
+        CourseClass courseClass = new GetCourseClass(context, college, a.classId).get()
         Application application = context.newObject(Application)
         application.college = college
         application.student = contact.student

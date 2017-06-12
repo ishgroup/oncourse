@@ -2,6 +2,7 @@ import {_toRequestType} from "../../../../common/actions/ActionUtils";
 import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {ContactNode} from "../../../../model/checkout/ContactNode";
 import {ContactNodeToState, State} from "../reducers/State";
+import {Application} from "../../../../model/checkout/Application";
 
 export const OpenSummaryRequest: string = _toRequestType("checkout/summary/open");
 export const PROCEED_TO_PAYMENT: string = "checkout/summary/proceed/to/payment";
@@ -19,11 +20,11 @@ export const SELECT_ITEM_REQUEST: string = _toRequestType(SELECT_ITEM);
 /**
  * an user has selected/unselected this item and we need to update all related components
  */
-export const selectItem = (item: Enrolment, selected: boolean): { type: string, payload: Enrolment } => {
-  const payload: Enrolment = {...item, selected: selected};
+export const selectItem = (item: Enrolment | Application, selected: boolean): { type: string, payload: Enrolment | Application } => {
+  item.selected = selected;
   return {
     type: SELECT_ITEM_REQUEST,
-    payload: payload
+    payload: item
   }
 };
 

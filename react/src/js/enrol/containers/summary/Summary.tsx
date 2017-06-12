@@ -79,7 +79,7 @@ export const SummaryPropsBy = (state: IshState): any => {
 
 export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
-    onSelect: (item: Enrolment | Membership | Article | Voucher, selected: boolean): void => {
+    onSelect: (item: Enrolment | Application | Membership | Article | Voucher, selected: boolean): void => {
       dispatch(selectItem(item, selected))
     },
     onAddContact: (): void => {

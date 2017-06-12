@@ -9,6 +9,9 @@ import {Membership} from "../../../../model/checkout/Membership";
 import {Article} from "../../../../model/checkout/Article";
 import {Voucher} from "../../../../model/checkout/Voucher";
 import VoucherComp, {Props as VoucherProps} from "./VoucherComp";
+import {Application} from "../../../../model/checkout/Application";
+
+
 
 export interface Props {
   contact: Contact
@@ -28,18 +31,18 @@ class ContactComp extends React.Component<Props, any> {
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) => {
             return <EnrolmentComp key={index} {...props}
-                                  onChange={ () => onSelect(props.enrolment, !props.enrolment.selected)}/>
+                                  onChange={ () => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}/>
             })}
 
             {vouchers.map((props, index) => {
               return <VoucherComp key={index} {...props}
-                                  onChange={ () => onSelect(props.voucher, !props.voucher.selected) }
+                                  onChange={ () => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected) }
                                   onPriceValueChange={(item) => onPriceValueChange(item, vouchers, props.voucher)} />
             })}
             
             {applications.map((props, index) => {
                 return <ApplicationComp key={index} {...props}
-                                      onChange={ () => onSelect(props.application, !props.application.selected)}/>
+                                      onChange={ () => onSelect(Object.assign(new Application(), props.application), !props.application.selected)}/>
             })}
             
             

@@ -38,13 +38,13 @@ const getCase = (state: State, payload: State): Case => {
   const enrolments = payload.entities.contactNodes[contactId].enrolments;
   const applications = payload.entities.contactNodes[contactId].applications;
   
-  if (enrolments) {
+  if (enrolments.length > 0) {
     if (L.isNil(state.entities.enrolments[enrolments[0]])) {
       return Case.addItem
     } else {
       return Case.updateItem
     }
-  } else if (applications)  {
+  } else if (applications.length > 0)  {
     if (L.isNil(state.entities.applications[applications[0]])) {
       return Case.addItem
     } else {
@@ -71,6 +71,9 @@ const merge = (state: State, payload: State): State => {
         stateNode.enrolments = [...stateNode.enrolments, ...payloadNode.enrolments];
         stateNode.applications = [...stateNode.applications, ...payloadNode.applications];
       });
+      ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
+      ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
+      break;
     case Case.updateItem:
       ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
       ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
