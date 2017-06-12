@@ -1,11 +1,13 @@
 import React from "react";
 
 interface Props {
-
+  onCancel: () => void,
+  onAnotherCard: () => void,
 }
 
 export class Failed extends React.Component<Props, any> {
   render() {
+    const {onCancel, onAnotherCard} = this.props;
     return (
       <div>
         <h2>Enrolment <span>»</span> Payment rejected</h2>
@@ -14,9 +16,10 @@ export class Failed extends React.Component<Props, any> {
         <p>Please check your credit card details or credit balance and try again. In particular, check the CVV and
           expiry date have been entered correctly.</p>
         <p>
-          <a title="Proceed with this enrolment" href="/enrol/payment">
-            Try again with another card or reenter details
-          </a>{" "}Or{" "}<a href="/enrol/payment.paymentresult:abandon">Abandon</a>{" "}this enrolment.
+          <a title="Proceed with this enrolment" href="#" onClick={onAnotherCard}>
+            Try again with another card or reenter details</a>
+          {" Or "}
+          <a href="#" onClick={onCancel}>Abandon</a>{" this enrolment"}.
         </p>
       </div>
     );

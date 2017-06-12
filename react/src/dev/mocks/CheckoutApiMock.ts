@@ -52,7 +52,7 @@ export class CheckoutApiMock extends CheckoutApi {
       })
     }));
   }
-  
+
   public createApplicationBy(contacts: Contact[], classes: CourseClass[]): Application[] {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
@@ -60,7 +60,7 @@ export class CheckoutApiMock extends CheckoutApi {
       })
     }));
   }
-  
+
 
   public createVouchersBy(contacts: Contact[], classes: CourseClass[]): Voucher[] {
     return L.flatten(contacts.map((c: Contact) => {
@@ -114,26 +114,29 @@ export class CheckoutApiMock extends CheckoutApi {
 
     const result: PaymentResponse = new PaymentResponse();
     result.sessionId = paymentRequest.sessionId;
-    result.status = PaymentStatus.SUCCESSFUL;
-    if (this.config.props.checkoutApi.makePayment.result.inProgress) {
-      result.status = PaymentStatus.IN_PROGRESS;
-    }
+    result.status = this.paymentStatusValue();
     return this.config.createResponse(result);
   }
 
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
     const result: PaymentResponse = new PaymentResponse();
     result.sessionId = sessionId;
-    if (this.config.props.checkoutApi.makePayment.result.inProgress) {
-      result.status = PaymentStatus.IN_PROGRESS;
-    } else if (this.config.props.checkoutApi.makePayment.result.success) {
-      result.status = PaymentStatus.SUCCESSFUL;
-      result.reference = "TEST_REFERENCE";
-    } else if (this.config.props.checkoutApi.makePayment.result.failed) {
-      result.status = PaymentStatus.FAILED;
-    } else if (this.config.props.checkoutApi.makePayment.result.undefined) {
-      result.status = PaymentStatus.UNDEFINED;
-    }
+    result.reference = "TEST_REFERENCE";
+    result.status = this.paymentStatusValue();
     return this.config.createResponse(result);
+  }
+
+  private paymentStatusValue(): PaymentStatus {
+    if (this.config.props.checkoutApi.makePayment.result.inProgress) {
+      return PaymentStatus.IN_PROGRESS;
+    } else if (this.config.props.checkoutApi.makePayment.result.success) {
+      return PaymentStatus.SUCCESSFUL;
+    } else if (this.config.props.checkoutApi.makePayment.result.failed) {
+      return PaymentStatus.FAILED;
+    } else if (this.config.props.checkoutApi.makePayment.result.undefined) {
+      return PaymentStatus.UNDEFINED;
+    } else {
+      return PaymentStatus.IN_PROGRESS;
+    }
   }
 }

@@ -17,7 +17,11 @@ const render = () => ReactDOM.render(
       <Progress />
       <InProgress />
       <Progress />
-      <Failed/>
+      <Failed onCancel={() => {
+        console.log("onCancel")
+      }} onAnotherCard={() => {
+        console.log("onAnotherCard")
+      }}/>
       <Progress />
       <Successful refId={"W1367014"}/>
       <Progress />
