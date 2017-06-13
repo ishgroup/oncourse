@@ -1,11 +1,11 @@
 import * as React from "react";
 import {CourseClassPriceState} from "../../../services/IshState";
 
-export interface FeesComponentProps extends CourseClassPriceState {
+export interface Props extends CourseClassPriceState {
   isPaymentGatewayEnabled: boolean;
 }
 
-export const FeesComponent = (props: FeesComponentProps) => {
+export const FeesComponent = (props: Props) => {
   const {fee, feeOverriden, hasTax} = props;
 
   if (feeOverriden) {
@@ -25,7 +25,7 @@ export const FeesComponent = (props: FeesComponentProps) => {
 
 };
 
-function getFee(props: FeesComponentProps) {
+function getFee(props: Props) {
   const {hasTax, isPaymentGatewayEnabled} = props;
 
   return (
@@ -37,13 +37,13 @@ function getFee(props: FeesComponentProps) {
   );
 }
 
-function getDiscountItems(props: FeesComponentProps) {
+function getDiscountItems(props: Props) {
   const {possibleDiscounts} = props;
 
   return (
-      <span>
+    <span>
         {possibleDiscounts.map(discount => (
-            <span>
+          <span>
               <span className="discount-price">/</span>
               <abbr className="discount-price" title={discount.title}>
                 {formatMoney(discount.discountedFee)}
@@ -68,7 +68,7 @@ function hasFee(fee) {
   return !!fee;
 }
 
-function getDiscount(props: FeesComponentProps) {
+function getDiscount(props: Props) {
   const {fee, appliedDiscount} = props;
 
   if (appliedDiscount) {

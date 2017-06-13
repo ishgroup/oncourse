@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {FeesComponent, FeesComponentProps} from "../components/fees/FeesComponent";
+import {FeesComponent, Props} from "../components/fees/FeesComponent";
 import {IshState} from "../../services/IshState";
 import {Actions} from "../actions/Actions";
 
@@ -46,7 +46,7 @@ export const Fees = connect(mapStateToProps, mapDispatchToProps)(FeesContainer);
 
 interface FeesProps {
   id: string;
-  price: FeesComponentProps;
+  price: Props;
   requestCourseClassById: (id: string) => void;
 }
 
