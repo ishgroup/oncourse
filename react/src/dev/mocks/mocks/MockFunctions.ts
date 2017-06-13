@@ -14,9 +14,19 @@ import {ClassesListSchema} from "../../../js/NormalizeSchema";
 import {ContactNode} from "../../../js/model/checkout/ContactNode";
 import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/State";
 import {Promotion} from "../../../js/model/web/Promotion";
-import {Product} from "../../../js/model/web/Product";
 import {ProductClass} from "../../../js/model/web/ProductClass";
-import {State as PaymentState} from "../../../js/enrol/containers/payment/reducers/State";
+import {Discount} from "../../../js/model/web/Discount";
+
+
+export const mockDiscount = (): Discount => {
+  const result: Discount = new Discount();
+  result.id = faker.random.number() as string;
+  result.discountedFee = faker.finance.amount();
+  result.discountValue = faker.finance.amount();
+  result.title = faker.commerce.productName();
+  result.expiryDate = faker.date.future();
+  return result;
+};
 
 export const mockPromotion = (): Promotion => {
   const result: Promotion = {
@@ -79,13 +89,8 @@ export const mockCourseClassPrice = (): CourseClassPrice => {
     fee: faker.commerce.price(),
     feeOverriden: faker.commerce.price(),
     hasTax: true,
-    appliedDiscount: {
-      id: faker.random.number() as string,
-      discountedFee: faker.finance.amount(),
-      discountValue: faker.finance.amount(),
-      title: faker.commerce.productName(),
-      expiryDate: faker.date.future()
-    }
+    appliedDiscount: mockDiscount(),
+    possibleDiscounts: [mockDiscount(), mockDiscount()]
   }
 };
 

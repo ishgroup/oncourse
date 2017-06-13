@@ -1,47 +1,47 @@
 import * as React from "react";
 import {CourseClassPriceState} from "../../../services/IshState";
+import {formatMoney} from "../../../common/utils/FormatUtils";
 
 export interface Props extends CourseClassPriceState {
   isPaymentGatewayEnabled: boolean;
 }
 
-export const FeesComponent = (props: Props) => {
-  const {fee, feeOverriden, hasTax} = props;
+export class FeesComponent extends React.Component<Props, any> {
+  render() {
+    const {fee, feeOverriden, hasTax} = this.props;
+    if (feeOverriden) {
+      return (
+        <div className="price">
+          {formatMoney(feeOverriden)}
+          {hasTax && this.tax()}
+        </div>
+      );
+    } else {
+      return (
+        <div className="price">
+          {fee ? this.fee() : <abbr title="To Be Advised">TBA</abbr>}
+        </div>
+      );
+    }
+  }
 
-  if (feeOverriden) {
+  private fee() {
+    const {hasTax, isPaymentGatewayEnabled} = this.props;
+
     return (
-      <div className="price">
-        {formatMoney(feeOverriden)}
-        {hasTax && getTax(hasTax)}
-      </div>
-    );
-  } else {
-    return (
-      <div className="price">
-        {hasFee(fee) ? getFee(props) : <abbr title="To Be Advised">TBA</abbr>}
+      <div>
+        {this.discount()}
+        {hasTax && this.tax()}
+        {isPaymentGatewayEnabled && this.discountItems()}
       </div>
     );
   }
 
-};
+  private discountItems() {
+    const {possibleDiscounts} = this.props;
 
-function getFee(props: Props) {
-  const {hasTax, isPaymentGatewayEnabled} = props;
-
-  return (
-    <div>
-      {getDiscount(props)}
-      {hasTax && getTax(hasTax)}
-      {isPaymentGatewayEnabled && getDiscountItems(props)}
-    </div>
-  );
-}
-
-function getDiscountItems(props: Props) {
-  const {possibleDiscounts} = props;
-
-  return (
-    <span>
+    return (
+      <span>
         {possibleDiscounts.map(discount => (
           <span>
               <span className="discount-price">/</span>
@@ -51,48 +51,45 @@ function getDiscountItems(props: Props) {
             </span>
         ))}
       </span>
-  );
-}
+    );
+  }
 
-function getTax(hasTax) {
-  return (
-    <span className="gst">
-        {hasTax && 'inc '}
-      <abbr title="Goods and Services Tax">GST</abbr>
-      {!hasTax && ' free'}
-    </span>
-  );
-}
-
-function hasFee(fee) {
-  return !!fee;
-}
-
-function getDiscount(props: Props) {
-  const {fee, appliedDiscount} = props;
-
-  if (appliedDiscount) {
+  private tax() {
+    const {hasTax} = this.props;
     return (
-      <div>
+      <span className="gst">
+        {hasTax && 'inc '}
+        <abbr title="Goods and Services Tax">GST</abbr>
+        {!hasTax && ' free'}
+    </span>
+    );
+  }
+
+  private discount() {
+    const {fee, appliedDiscount} = this.props;
+
+    if (appliedDiscount) {
+      return (
+        <div>
         <span className="fee-disabled">
           {formatMoney(fee)}
         </span>
-        <span className="fee-discounted">
+          <span className="fee-discounted">
           <abbr title={appliedDiscount.title}>
             {formatMoney(appliedDiscount.discountedFee)}
           </abbr>
         </span>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        {formatMoney(fee)}
-      </div>
-    );
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {formatMoney(fee)}
+        </div>
+      );
+    }
   }
 }
 
-function formatMoney(value) {
-  return `$${value} `;
-}
+
+
