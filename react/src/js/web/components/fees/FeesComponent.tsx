@@ -11,14 +11,14 @@ export class FeesComponent extends React.Component<Props, any> {
     const {fee, feeOverriden, hasTax} = this.props;
     if (feeOverriden) {
       return (
-        <div>
+        <div className="price">
           {formatMoney(feeOverriden)}
           {hasTax && this.tax()}
         </div>
       );
     } else {
       return (
-        <div>
+        <div className="price">
           {fee ? this.fee() : <abbr title="To Be Advised">TBA</abbr>}
         </div>
       );
