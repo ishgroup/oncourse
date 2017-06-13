@@ -11,14 +11,14 @@ export class FeesComponent extends React.Component<Props, any> {
     const {fee, feeOverriden, hasTax} = this.props;
     if (feeOverriden) {
       return (
-        <div className="price">
+        <div>
           {formatMoney(feeOverriden)}
           {hasTax && this.tax()}
         </div>
       );
     } else {
       return (
-        <div className="price">
+        <div>
           {fee ? this.fee() : <abbr title="To Be Advised">TBA</abbr>}
         </div>
       );
@@ -58,7 +58,7 @@ export class FeesComponent extends React.Component<Props, any> {
     const {hasTax} = this.props;
     return (
       <span className="gst">
-        {hasTax && 'inc '}
+        {hasTax && ' inc '}
         <abbr title="Goods and Services Tax">GST</abbr>
         {!hasTax && ' free'}
     </span>
@@ -70,22 +70,22 @@ export class FeesComponent extends React.Component<Props, any> {
 
     if (appliedDiscount) {
       return (
-        <div>
-        <span className="fee-disabled">
-          {formatMoney(fee)}
+        <span>
+          <span className="fee-disabled">
+            {formatMoney(fee)}
+          </span>
+            <span className="fee-discounted">
+            <abbr title={appliedDiscount.title}>
+              {formatMoney(appliedDiscount.discountedFee)}
+            </abbr>
+          </span>
         </span>
-          <span className="fee-discounted">
-          <abbr title={appliedDiscount.title}>
-            {formatMoney(appliedDiscount.discountedFee)}
-          </abbr>
-        </span>
-        </div>
       );
     } else {
       return (
-        <div>
+        <span>
           {formatMoney(fee)}
-        </div>
+        </span>
       );
     }
   }
