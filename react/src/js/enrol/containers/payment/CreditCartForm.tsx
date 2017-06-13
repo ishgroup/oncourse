@@ -25,7 +25,7 @@ class CreditCartForm extends React.Component<Props, any> {
     return (
       <div>
         <form onSubmit={handleSubmit} id="payment-form">
-          <CreditCardComp amount={amount} contacts={contacts}/>
+          {amount.payNow != "0.00" && <CreditCardComp amount={amount} contacts={contacts}/> }
           <Conditions/>
           <div className="form-controls enrolmentsSelected">
             <input className={className} id="paymentSubmit" name="paymentSubmit" type="submit"
@@ -40,38 +40,42 @@ class CreditCartForm extends React.Component<Props, any> {
 
 const Form = reduxForm({
   form: NAME,
-  validate: (data: Values, props): FormErrors<FormData> => {
+  validate: (data: Values, props: Props): FormErrors<FormData> => {
     const errors = {};
     
     if (!data.agreementFlag) {
       errors[FieldName.agreementFlag] =  'You must agree to the policies before proceeding.';
     } 
-    if (!data.creditCardName ) {
-      errors[FieldName.creditCardName] =  'Please supply your name as printed on the card (maximum 40 characters)';
-    }
+    if (props.amount.payNow != "0.00") {
+      if (!data.creditCardName) {
+        errors[FieldName.creditCardName] = 'Please supply your name as printed on the card (maximum 40 characters)';
+      }
 
-    if (!data.creditCardNumber) {
-      errors[FieldName.creditCardNumber] =  'The credit card number cannot be blank.';
-    }
+      if (!data.creditCardNumber) {
+        errors[FieldName.creditCardNumber] = 'The credit card number cannot be blank.';
+      }
 
-    if (!data.creditCardCvv) {
-      errors[FieldName.creditCardCvv] =  'The credit card CVV cannot be blank.';
-    }
+      if (!data.creditCardCvv) {
+        errors[FieldName.creditCardCvv] = 'The credit card CVV cannot be blank.';
+      }
 
-    if (!data.expiryMonth) {
-      errors[FieldName.expiryMonth] =  'The credit card expiry month cannot be blank.';
-    }
+      if (!data.expiryMonth) {
+        errors[FieldName.expiryMonth] = 'The credit card expiry month cannot be blank.';
+      }
 
-    if (!data.expiryYear) {
-      errors[FieldName.expiryYear] =  'The credit card expiry year cannot be blank.';
+      if (!data.expiryYear) {
+        errors[FieldName.expiryYear] = 'The credit card expiry year cannot be blank.';
+      }
     }
     
     return errors
   },
   
   onSubmit: (data: Values, dispatch, props): void => {
-    data.creditCardNumber = data.creditCardNumber.replace(/\s+/, "")
-    data.creditCardCvv = data.creditCardCvv.trim()
+    if (props.amount.payNow != "0.00") {
+      data.creditCardNumber = data.creditCardNumber.replace(/\s+/g, "");
+      data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "")
+    }
     dispatch(makePayment(data));
   }
 })(CreditCartForm);
