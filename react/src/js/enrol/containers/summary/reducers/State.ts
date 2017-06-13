@@ -16,13 +16,13 @@ const SContactNodes = new schema.Entity('contactNodes', {
 
 const Schema = new schema.Array(SContactNodes);
 
-export interface ContactNodesStorage {
-  [key: string]: {
-    contactId: string,
-    enrolments: string[]
-    applications: string[]
-    vouchers: string[]
-  }
+export interface ContactNodeStorage {
+  contactId: string,
+  enrolments: string[]
+  applications: string[]
+  vouchers: string[]
+}
+export interface ContactNodesStorage {[key: string]: ContactNodeStorage
 }
 
 export interface State {

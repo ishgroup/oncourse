@@ -1,5 +1,4 @@
 import * as React from "react";
-import {isNil} from "lodash";
 import {Formats} from "../../../../constants/Formats";
 import * as FormatUtils from "../../../../common/utils/FormatUtils";
 
@@ -10,6 +9,7 @@ import {CourseClass} from "../../../../model/web/CourseClass";
 import {CourseClassPrice} from "../../../../model/web/CourseClassPrice";
 import moment from "moment";
 import {ClassHasCommenced} from "../Messages";
+import {ItemWrapper} from "./ItemWrapper";
 
 
 export interface Props {
@@ -23,7 +23,7 @@ class EnrolmentComp extends React.Component<Props, any> {
   public render(): JSX.Element {
     const {enrolment, courseClass, contact, onChange} = this.props;
     const divClass = classnames("row", "enrolmentItem", {"disabled": !enrolment.selected});
-    const checkBoxName = `enrolment-${contact.id}-${enrolment.classId}`;
+    const name = `enrolment-${contact.id}-${enrolment.classId}`;
     const title: string = `${courseClass.course.name}`;
 
     let warning = enrolment.warnings && enrolment.warnings.length ? this.props.enrolment.warnings[0] : null;
@@ -33,20 +33,10 @@ class EnrolmentComp extends React.Component<Props, any> {
     }
     return (
       <div className={divClass}>
-        <div className="col-xs-16 col-md-17 enrolmentInfo">
-          <label>
-            <input className="enrolmentSelect"
-                   type="checkbox"
-                   name={checkBoxName}
-                   onChange={ onChange }
-                   checked={enrolment.selected } disabled={!isNil(error)}/>
-            { title }
-          </label>
-          {warning && (<span dangerouslySetInnerHTML={{__html: warning}}/>)}
-          {error && <span className="disabled" dangerouslySetInnerHTML={{__html: error}}/>}
-          <br/>
+        <ItemWrapper title={title} name={name} error={error} warning={warning} selected={enrolment.selected}
+                     onChange={onChange}>
           <ClassDetails courseClass={courseClass}/>
-        </div>
+        </ItemWrapper>
         {enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
       </div>
     );

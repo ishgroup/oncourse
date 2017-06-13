@@ -11,7 +11,7 @@ import {CheckoutApi} from "../../http/CheckoutApi";
 import {Enrolment} from "../../model/checkout/Enrolment";
 import {Field} from "../../model/field/Field";
 import {CheckoutModel} from "../../model/checkout/CheckoutModel";
-import {State} from "../containers/summary/reducers/State";
+import {ContactNodeStorage, State} from "../containers/summary/reducers/State";
 import {Amount} from "../../model/checkout/Amount";
 import {ContactNode} from "../../model/checkout/ContactNode";
 import {CheckoutModelRequest} from "../../model/checkout/CheckoutModelRequest";
@@ -30,9 +30,9 @@ import {Observable} from "rxjs/Observable";
 import {of} from "rxjs/observable/of";
 import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actions/Actions";
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
+import {Application} from "../../model/checkout/Application";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
-import {Application} from "../../model/checkout/Application";
 
 
 export class CheckoutService {
@@ -199,17 +199,23 @@ export class BuildCreateContactParams {
 export class BuildContactNodes {
   static fromState = (state: State): ContactNode[] => {
     return state.result.map((contactId) => {
-      const result: ContactNode = new ContactNode();
-      result.contactId = contactId;
-      result.enrolments = state.entities.contactNodes[contactId].enrolments.map((enrolmentId) => {
-        return state.entities.enrolments[enrolmentId];
-      });
-      result.applications = state.entities.contactNodes[contactId].applications.map((applicationId) => {
-        return state.entities.applications[applicationId];
-      });
-      return result;
+      return BuildContactNodes.contactNodeBy(state.entities.contactNodes[contactId], state);
     })
   };
+
+  private static contactNodeBy = (storage: ContactNodeStorage, state: State): ContactNode => {
+    const result: ContactNode = new ContactNode();
+    result.contactId = storage.contactId;
+    if (storage.enrolments) {
+      result.enrolments = storage.enrolments.map((id) => state.entities.enrolments[id])
+    }
+
+    if (storage.applications) {
+      result.applications = storage.applications.map((id) => state.entities.applications[id])
+    }
+    return result;
+
+  }
 }
 
 export class BuildCheckoutModelRequest {
