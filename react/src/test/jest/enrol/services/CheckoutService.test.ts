@@ -24,7 +24,9 @@ test('test build CheckoutModel from State', () => {
 
   const items: ContactNode = {
     contactId: contact.id,
-    enrolments: [enrolment]
+    enrolments: [enrolment],
+    applications: []
+
   };
   const state: IshState = MockFunctions.mockState(contact, [courseClass], [items], [promotion]);
   const result: CheckoutModelRequest = BuildCheckoutModelRequest.fromState(state);
