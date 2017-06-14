@@ -11,11 +11,12 @@ import "react-select/dist/react-select.css";
 import "../../../scss/index.scss";
 import {SearchApiMock} from "../../mocks/SearchApiMock";
 
-import TextField from "../../../js/components/form-new/TextField";
+import {TextField} from "../../../js/components/form-new/TextField";
 import Checkbox from "../../../js/components/form-new/Checkbox";
 import SelectField from "../../../js/components/form-new/SelectField";
 import RadioGroup from "../../../js/components/form-new/RadioGroup";
 import TextArea from "../../../js/components/form-new/TextArea";
+import {MockConfig} from "../../mocks/mocks/MockConfig";
 
 
 const store = createStore(
@@ -32,8 +33,8 @@ const options = [
 //https://gist.github.com/leocristofani/98312e61807db8f32e720c9f97a186e5
 //https://github.com/JedWatson/react-select/issues/1129
 
-
-const stub: SearchApiMock = new SearchApiMock(null);
+const config: MockConfig = new MockConfig();
+const stub: SearchApiMock = new SearchApiMock(config);
 
 /**
  *  application for all components to test how they work inside redux-form
@@ -50,7 +51,7 @@ class AllComponentsFrom extends React.Component<any, any> {
           <Field component={Checkbox} name="email" label="E-mail" required={true}/>
         </fieldset>
         <fieldset>
-          <Field component={SelectField} name="suburb" label="Suburb" required={true} loadOptions={stub.getCountries}/>
+          <Field component={SelectField} name="suburb" label="Suburb" required={true} loadOptions={(text) => stub.getCountries(text)}/>
         </fieldset>
         <fieldset>
           <Field component={RadioGroup} name="Gender" label="Gender" required={true} items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]}/>

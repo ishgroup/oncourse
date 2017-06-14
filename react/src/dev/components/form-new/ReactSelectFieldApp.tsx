@@ -12,15 +12,18 @@ import "../../../scss/_ReactSelect.scss";
 
 import {SearchApiMock} from "../../mocks/SearchApiMock";
 import SelectField from "../../../js/components/form-new/SelectField";
-import TextField from "../../../js/components/form-new/TextField";
+import {TextField} from "../../../js/components/form-new/TextField";
 import {SuburbOption} from "../../../js/components/form/Renders";
+import {MockConfig} from "../../mocks/mocks/MockConfig";
 
 const store = createStore(
   combineReducers({form: formReducer}), applyMiddleware(createLogger())
 );
 
 
-const stub:SearchApiMock = new SearchApiMock(null);
+const config: MockConfig = new MockConfig();
+const stub: SearchApiMock = new SearchApiMock(config);
+
 
 const loadOptions = (text) => {
   return stub.getSuburbs(text);
@@ -37,7 +40,14 @@ class ReactSelectForm extends React.Component<any, any> {
           <Field component={TextField} name="address" label="Street" required={true} meta={{}}/>
 
           <Field component={TextField} name="address" label="Street" required={true}/>
-          <Field component={SelectField} name={"country"} label={"Country"} required={true} loadOptions={loadOptions} valueComponent={SuburbOption}/>
+          <Field
+            component={SelectField}
+            name="country"
+            label="Country"
+            required={true}
+            loadOptions={(text) => loadOptions(text)}
+            newOptionEnable={true}
+          />
         </fieldset>
         <div>
           <button type="submit" disabled={pristine || submitting}>Submit</button>
