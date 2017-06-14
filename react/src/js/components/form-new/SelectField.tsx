@@ -22,7 +22,7 @@ class SelectField extends React.Component<any, any> {
     const {loadOptions} = this.props;
     if (loadOptions) {
       return loadOptions(input).then((data: Item[]) => {
-        return {options: data.map(item => ({key: item.key, value: item.value.suburb}))}
+        return {options: data.map(item => ({key: item.key, value: item.value}))}
       });
     } else {
       return Promise.resolve([]);

@@ -29,7 +29,7 @@ export class Field {
   mandatory?: boolean;
 
   /**
-   * Data type of provaded value
+   * Data type of provided value
    */
   dataType?: DataType;
 
