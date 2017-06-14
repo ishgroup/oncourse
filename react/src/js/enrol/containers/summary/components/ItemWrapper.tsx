@@ -7,12 +7,14 @@ export interface Props {
   selected: boolean
   error: string
   warning: string
-  onChange: (boolean) => void
+  item: any
+  contact: any
+  onChange: (item, contact) => void
 }
 
 export class ItemWrapper extends React.Component<Props, any> {
   public render(): JSX.Element {
-    const {name, title, selected, error, warning, onChange, children} = this.props;
+    const {name, title, selected, error, warning, onChange, item, contact, children} = this.props;
 
     return (
       <div className="col-xs-16 col-md-17 enrolmentInfo">
@@ -20,8 +22,8 @@ export class ItemWrapper extends React.Component<Props, any> {
           <input className="enrolmentSelect"
                  type="checkbox"
                  name={name}
-                 onChange={ onChange }
-                 checked={selected } disabled={!isNil(error)}/>
+                 onChange={ onChange.bind(this, item, contact) }
+                 checked={selected} disabled={!isNil(error)}/>
           { title }
         </label>
         {warning && (<span dangerouslySetInnerHTML={{__html: warning}}/>)}

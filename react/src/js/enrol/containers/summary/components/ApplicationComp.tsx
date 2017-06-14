@@ -6,6 +6,7 @@ import {CourseClass} from "../../../../model/web/CourseClass";
 import moment from "moment";
 import {ClassHasCommenced} from "../Messages";
 import {Application} from "../../../../model/checkout/Application";
+import {ItemWrapper} from "./ItemWrapper";
 
 
 export interface Props {
@@ -19,7 +20,7 @@ class ApplicationComp extends React.Component<Props, any> {
   public render(): JSX.Element {
     const {application, courseClass, contact, onChange} = this.props;
     const divClass = classnames("row", "enrolmentItem", {"disabled": !application.selected});
-    const checkBoxName = `application-${contact.id}-${application.classId}`;
+    const name = `application-${contact.id}-${application.classId}`;
     const title: string = `${courseClass.course.name}`;
 
     let warning = application.warnings && application.warnings.length ? this.props.application.warnings[0] : null;
@@ -29,23 +30,15 @@ class ApplicationComp extends React.Component<Props, any> {
     }
     return (
       <div className={divClass}>
-        <div className="col-xs-16 col-md-17 enrolmentInfo">
-          <label>
-            <input className="applicationSelect"
-                   type="checkbox"
-                   name={checkBoxName}
-                   onChange={ onChange.bind(this, application, contact) }
-                   checked={application.selected } disabled={!isNil(error)}/>
-            { title }
-          </label>
-          {warning && (<span dangerouslySetInnerHTML={{__html: warning}}/>)}
-          {error && <span className="disabled" dangerouslySetInnerHTML={{__html: error}}/>}
-          <br/>
+        <ItemWrapper title={title} name={name} error={error} warning={warning} selected={application.selected} item={application} contact={contact}
+                     onChange={onChange}>
           <span className="applicationOnly">(Application only)</span>
-        </div>
+        </ItemWrapper>
       </div>
     );
   }
 }
 
 export default ApplicationComp;
+
+

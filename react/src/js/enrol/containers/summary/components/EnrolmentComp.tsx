@@ -16,7 +16,7 @@ export interface Props {
   contact: Contact;
   enrolment: Enrolment;
   courseClass: CourseClass;
-  onChange?: () => void;
+  onChange?: (item, contact) => void;
 }
 
 class EnrolmentComp extends React.Component<Props, any> {
@@ -33,7 +33,7 @@ class EnrolmentComp extends React.Component<Props, any> {
     }
     return (
       <div className={divClass}>
-        <ItemWrapper title={title} name={name} error={error} warning={warning} selected={enrolment.selected}
+        <ItemWrapper title={title} name={name} error={error} warning={warning} selected={enrolment.selected} item={enrolment} contact={contact}
                      onChange={onChange}>
           <ClassDetails courseClass={courseClass}/>
         </ItemWrapper>
