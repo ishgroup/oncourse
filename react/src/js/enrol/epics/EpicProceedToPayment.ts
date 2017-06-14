@@ -42,7 +42,11 @@ export class ProcessCheckoutModel {
     const result = [];
     if (!L.isEmpty(nodes)) {
       nodes.forEach((node: ContactNode) => {
-        if (node.enrolments.find((e) => !L.isEmpty(e.errors))) {
+        if (node.enrolments.find((e) => !L.isEmpty(e.errors) && e.selected) 
+            || node.applications.find((a) => !L.isEmpty(a.errors) && a.selected) 
+            || node.memberships.find((m) => !L.isEmpty(m.errors) && m.selected)
+            || node.articles.find((ar) => !L.isEmpty(ar.errors)  && ar.selected)
+            || node.vouchers.find((v) => !L.isEmpty(v.errors) && v.selected)) {
           result.push(changePhase(Phase.Summary));
         }
         result.push(updateContactNode(node));
