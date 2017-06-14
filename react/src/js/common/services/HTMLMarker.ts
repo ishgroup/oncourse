@@ -63,7 +63,7 @@ export class HTMLMarkers {
    * Renders fees component.
    *
    * Corresponding React Component: {@link Fees}
-   * Example Usage: <div data-cid="fees"  data-prop-id="${id}"></div>
+   * Example Usage: <div data-cid="fees"  data-prop-id="${courseClass.id}"></div>
    * Tapestry template to use: CourseClassItem.tml
    */
   static FEES: HTMLMarker = {

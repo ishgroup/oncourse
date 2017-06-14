@@ -33,6 +33,10 @@ import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 import {Application} from "../../model/checkout/Application";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
+import {Membership} from "../../model/checkout/Membership";
+import {Article} from "../../model/checkout/Article";
+import {Voucher} from "../../model/checkout/Voucher";
+import {ContactNodeService} from "./ContactNodeService";
 
 
 export class CheckoutService {
@@ -68,12 +72,12 @@ export class CheckoutService {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromState(state));
   };
 
-  public updateItem = (item: Enrolment | Application, state: IshState): Promise<Enrolment | Application> => {
+  public updateItem = (item: Enrolment | Application | Membership | Article | Voucher, state: IshState): Promise<Enrolment | Application | Membership | Article | Voucher> => {
     if (item.selected) {
-      const request: ContactNodeRequest = BuildContactNodeRequest.fromClass(item, state);
+      const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);
       return this.checkoutApi.getContactNode(request)
         .then((data) => {
-          return Promise.resolve(data.enrolments[0] ? Object.assign(new Enrolment(), data.enrolments[0]) : Object.assign(new Application(), data.applications[0]))
+          return Promise.resolve(ContactNodeService.getPurchaseItem(data))
         })
     } else {
       return Promise.resolve(item);
@@ -137,11 +141,11 @@ const {
 } = Injector.of();
 
 export class BuildContactNodeRequest {
-  static fromClass = (item: Enrolment | Application, state: IshState): ContactNodeRequest => {
+  static fromPurchaseItem = (item:any, state: IshState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = item.contactId;
-    result.classIds = [item.classId];
-    result.productIds = [];
+    result.classIds = item.classId ? [item.classId] : [];
+    result.productIds =  item.productId ? [item.productId] : [];
     result.promotionIds = state.cart.promotions.result;
     return result;
   };
@@ -206,13 +210,11 @@ export class BuildContactNodes {
   private static contactNodeBy = (storage: ContactNodeStorage, state: State): ContactNode => {
     const result: ContactNode = new ContactNode();
     result.contactId = storage.contactId;
-    if (storage.enrolments) {
-      result.enrolments = storage.enrolments.map((id) => state.entities.enrolments[id])
-    }
-
-    if (storage.applications) {
-      result.applications = storage.applications.map((id) => state.entities.applications[id])
-    }
+    result.enrolments = storage.enrolments ? storage.enrolments.map((id) => state.entities.enrolments[id]) : [];
+    result.applications = storage.applications ? storage.applications.map((id) => state.entities.applications[id]) : [];
+    result.memberships = storage.memberships ? storage.memberships.map((id) => state.entities.memberships[id]) : [];
+    result.articles = storage.articles ? storage.articles.map((id) => state.entities.articles[id]) : [];
+    
     return result;
 
   }

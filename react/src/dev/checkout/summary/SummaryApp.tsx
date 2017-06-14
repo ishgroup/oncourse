@@ -70,7 +70,7 @@ const createApplicationProps = (a: Application):ApplicationProps => {
 const createVoucherProps = (e: Voucher): VoucherProps => {
   return {
     contact: db.getContactById(e.contactId),
-    productClass: db.getProductClassById(e.productId),
+    product: db.getProductClassById(e.productId),
     voucher: e
   };
 };
@@ -80,7 +80,9 @@ const createContactProps = (contact: Contact): ContactProps => {
     contact: contact,
     enrolments: enrolments.filter((e) => e.contactId == contact.id).map(createEnrolmentProps),
     applications: applications.filter((a) => a.contactId == contact.id).map(createApplicationProps),
-    vouchers: vouchers.filter((e) => e.contactId == contact.id).map(createVoucherProps)
+    vouchers: vouchers.filter((e) => e.contactId == contact.id).map(createVoucherProps),
+    memberships: [],
+    articles: []
   }
 };
 

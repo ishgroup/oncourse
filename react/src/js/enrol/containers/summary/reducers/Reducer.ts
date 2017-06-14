@@ -37,7 +37,9 @@ const getCase = (state: State, payload: State): Case => {
   
   const enrolments = payload.entities.contactNodes[contactId].enrolments;
   const applications = payload.entities.contactNodes[contactId].applications;
-  
+  const memberships = payload.entities.contactNodes[contactId].memberships;
+  const articles = payload.entities.contactNodes[contactId].articles;
+
   if (enrolments.length > 0) {
     if (L.isNil(state.entities.enrolments[enrolments[0]])) {
       return Case.addItem
@@ -50,6 +52,18 @@ const getCase = (state: State, payload: State): Case => {
     } else {
       return Case.updateItem
     }
+  } else if (articles.length > 0)  {
+    if (L.isNil(state.entities.articles[articles[0]])) {
+      return Case.addItem
+    } else {
+      return Case.updateItem
+    }
+  } else if (memberships.length > 0)  {
+    if (L.isNil(state.entities.memberships[memberships[0]])) {
+      return Case.addItem
+    } else {
+      return Case.updateItem
+    }
   } else {
     return Case.refresh
   }
@@ -58,10 +72,10 @@ const getCase = (state: State, payload: State): Case => {
 
 const merge = (state: State, payload: State): State => {
   const ns: State = L.cloneDeep(state);
-  switch (getCase(state, payload)) {
+  switch (getCase(ns, payload)) {
     case Case.addContact:
+      mergePurchases(state, payload);
       ns.result = [...ns.result, ...payload.result];
-      ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
       ns.entities.contactNodes = {...ns.entities.contactNodes, ...payload.entities.contactNodes};
       break;
     case Case.addItem:
@@ -70,13 +84,14 @@ const merge = (state: State, payload: State): State => {
         const payloadNode: ContactNode = payload.entities.contactNodes[id];
         stateNode.enrolments = [...stateNode.enrolments, ...payloadNode.enrolments];
         stateNode.applications = [...stateNode.applications, ...payloadNode.applications];
+        stateNode.memberships = [...stateNode.memberships, ...payloadNode.memberships];
+        stateNode.articles = [...stateNode.articles, ...payloadNode.articles];
+        stateNode.vouchers = [...stateNode.vouchers, ...payloadNode.vouchers];
       });
-      ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
-      ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
+      mergePurchases(ns, payload);
       break;
     case Case.updateItem:
-      ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
-      ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
+      mergePurchases(ns, payload);
       break;
     case Case.refresh:
       return payload;
@@ -84,4 +99,13 @@ const merge = (state: State, payload: State): State => {
       throw new Error();
   }
   return ns;
+};
+
+const mergePurchases = (ns: State, payload: State): State => {
+  ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
+  ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
+  ns.entities.memberships = {...ns.entities.memberships, ...payload.entities.memberships};
+  ns.entities.articles = {...ns.entities.articles, ...payload.entities.articles};
+  ns.entities.vouchers = {...ns.entities.vouchers, ...payload.entities.vouchers};
+  return ns
 };

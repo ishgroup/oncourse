@@ -38,7 +38,7 @@ article[0].errors = [NoCourseClassPlaces];
 const createArticleProps = (e: Article): ArticleProps => {
   return {
     contact: db.getContactById(e.contactId),
-    productClass: db.getProductClassById(e.productId),
+    product: db.getProductClassById(e.productId),
     article: e
   };
 };
@@ -47,7 +47,7 @@ const createContactProps = (contact: Contact): ArticleProps => {
   return {
     contact: contact,
     article: article.filter((e) => e.contactId == contact.id).map(createArticleProps),
-    productClass: article.filter((e) => e.contactId == contact.id).map((e: Article) => db.getProductClassById(e.productId)),
+    product: article.filter((e) => e.contactId == contact.id).map((e: Article) => db.getProductClassById(e.productId)),
   }
 };
 
@@ -63,7 +63,7 @@ const render = (config) => ReactDOM.render(
       <Progress/>
       <Messages/>
       {articlePropses.map((props, index) => {
-        return <ArticleComp key={index} contact={props.contact} article={props.article[0].article} productClass={props.productClass[0]} onChange={onSelect} />
+        return <ArticleComp key={index} contact={props.contact} article={props.article} product={props.product} onChange={onSelect} />
       })}
     </div>
 

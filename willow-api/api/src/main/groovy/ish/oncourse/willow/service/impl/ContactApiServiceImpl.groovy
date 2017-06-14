@@ -64,7 +64,7 @@ class ContactApiServiceImpl implements ContactApi{
             logger.error("contactId required, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
         }
-        if (contactFieldsRequest.classIds.empty) {
+        if (contactFieldsRequest.classIds.empty &&  contactFieldsRequest.productIds.empty) {
             logger.error("classesIds required, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
         }
@@ -74,21 +74,21 @@ class ContactApiServiceImpl implements ContactApi{
         }
         ish.oncourse.model.Contact contact = new GetContact(context, college, contactFieldsRequest.contactId).get()
         
-        List<CourseClass> classes = (ObjectSelect.query(CourseClass)
-                .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classIds)) 
-                & CourseClass.COLLEGE.eq(college))
-                .prefetch(CourseClass.COURSE.joint())
-                .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).joint())
-                .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).joint())
-                .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).dot(FieldConfiguration.FIELDS).joint())
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroups(CourseClass.class.simpleName)
-                .select(context)
+        List<CourseClass> classes = []
         
-        if (classes.empty) {
-            logger.error("classes  are not exist, request param: $contactFieldsRequest")
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classes  are not exist')).build())
+        if (!contactFieldsRequest.classIds.empty) {
+            classes = (ObjectSelect.query(CourseClass)
+                    .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classIds))
+                    & CourseClass.COLLEGE.eq(college))
+                    .prefetch(CourseClass.COURSE.joint())
+                    .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).joint())
+                    .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).joint())
+                    .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).dot(FieldConfiguration.FIELDS).joint())
+                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                    .cacheGroups(CourseClass.class.simpleName)
+                    .select(context)
         }
+        
         new GetContactFields(contact, classes, !contactFieldsRequest.productIds.empty, contactFieldsRequest.fieldSet, contactFieldsRequest.mandatoryOnly).contactFields
     }
 

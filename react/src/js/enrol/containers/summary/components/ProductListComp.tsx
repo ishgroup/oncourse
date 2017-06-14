@@ -9,11 +9,12 @@ import {Voucher} from "../../../../model/checkout/Voucher";
 import {ProductClass} from "../../../../model/web/ProductClass";
 import {Article} from "../../../../model/checkout/Article";
 import {Membership} from "../../../../model/checkout/Membership";
+import {Product} from "../../../../model/web/Product";
 
 export interface Props {
   contact: Contact;
   productItem: Voucher | Article | Membership;
-  productClass: ProductClass;
+  product: Product;
   onChange?: (item, contact) => void;
   onPriceValueChange?: (item: any) => void;
   type: Voucher | Article | Membership;
@@ -21,10 +22,10 @@ export interface Props {
 
 class ProductListComp extends React.Component<Props, any> {
   public render(): JSX.Element {
-    const {productItem, productClass, contact, onChange, onPriceValueChange, type} = this.props;
+    const {productItem, product, contact, onChange, onPriceValueChange, type} = this.props;
     const divClass = classnames("row", "enrolmentItem", {"disabled": !productItem.selected});
     const checkBoxName = `productItem-${contact.id}-${productItem.productId}`;
-    const title: string = `${productClass.product.name}`;
+    const title: string = `${product.name}`;
 
     let warning = productItem.warnings && productItem.warnings.length ? this.props.productItem.warnings[0] : null;
     const error = productItem.warnings && productItem.errors.length ? this.props.productItem.errors[0] : null;
@@ -45,7 +46,7 @@ class ProductListComp extends React.Component<Props, any> {
           <br/>
           <VoucherDetails productItem={productItem} type={type} />
         </div>
-        {productItem.selected && productClass.price && <ClassPrice product={productItem} onPriceValueChange={onPriceValueChange} />}
+        {productItem.selected && productItem.price && <ClassPrice product={product} price ={productItem.price} onPriceValueChange={onPriceValueChange} />}
       </div>
     );
   }
@@ -54,7 +55,7 @@ class ProductListComp extends React.Component<Props, any> {
 
 const ClassPrice = (props): any => {
   const product = props.product;
-  const price = product.price;
+  const price = props.price;
 
   return (
     <div className="col-xs-8 col-md-7 alignright priceValue">

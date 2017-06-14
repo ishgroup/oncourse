@@ -82,6 +82,7 @@ class CheckoutApiImpl implements CheckoutApi {
         items.articles += processProducts.articles
         items.memberships += processProducts.memberships
         items.vouchers += processProducts.vouchers
+        
         items
     }
 

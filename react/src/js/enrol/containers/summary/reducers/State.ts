@@ -3,24 +3,31 @@ import {Application} from "../../../../model/checkout/Application";
 import {normalize, schema} from "normalizr";
 import {ContactNode} from "../../../../model/checkout/ContactNode";
 import {Voucher} from "../../../../model/checkout/Voucher";
+import {Article} from "../../../../model/checkout/Article";
+import {Membership} from "../../../../model/checkout/Membership";
 const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e: Enrolment) => `${e.contactId}-${e.classId}`});
 const SApplications = new schema.Entity('applications', {}, {idAttribute: (a: Application) => `${a.contactId}-${a.classId}`});
+const SMemberships = new schema.Entity('memberships', {}, {idAttribute: (m: Membership) => `${m.contactId}-${m.productId}`});
+const SArticles = new schema.Entity('articles', {}, {idAttribute: (a: Article) => `${a.contactId}-${a.productId}`});
 const SVouchers = new schema.Entity('vouchers', {}, {idAttribute: (v: Voucher) => `${v.contactId}-${v.productId}`});
 
 const SContactNodes = new schema.Entity('contactNodes', {
-  enrolments: [SEnrolments],
-  applications: [SApplications],
-
-  vouchers: [SVouchers]
-}, {idAttribute: "contactId"});
+    enrolments: [SEnrolments],
+    applications: [SApplications],
+    memberships: [SMemberships],
+    articles: [SArticles],
+    vouchers: [SVouchers]
+  }, {idAttribute: "contactId"});
 
 const Schema = new schema.Array(SContactNodes);
 
 export interface ContactNodeStorage {
-  contactId: string,
-  enrolments: string[]
-  applications: string[]
-  vouchers: string[]
+    contactId: string,
+    enrolments: string[]
+    applications: string[]
+    vouchers: string[]
+    articles: string[]
+    memberships: string[]
 }
 export interface ContactNodesStorage {[key: string]: ContactNodeStorage
 }
@@ -31,6 +38,8 @@ export interface State {
     enrolments: { [key: string]: Enrolment }
     applications: { [key: string]: Application }
     vouchers: { [key: string]: Voucher }
+    articles: { [key: string]: Article }
+    memberships: { [key: string]: Membership }
     contactNodes: ContactNodesStorage
   }
 }
@@ -45,6 +54,9 @@ export const ItemToState = (input: Enrolment | Application): State => {
   node.contactId = input.contactId;
   node.enrolments = input instanceof Enrolment ? [input] : [];
   node.applications = input instanceof Application ? [input] : [];
+  node.memberships = input instanceof Membership ? [input] : [];
+  node.articles = input instanceof Article ? [input] : [];
+  node.vouchers = input instanceof Voucher ? [input] : [];
 
   return ContactNodeToState([node]);
 };

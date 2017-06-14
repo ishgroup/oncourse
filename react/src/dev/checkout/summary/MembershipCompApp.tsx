@@ -38,7 +38,7 @@ membership[0].errors = [NoCourseClassPlaces];
 const createMembershipProps = (e: Membership): MembershipProps => {
   return {
     contact: db.getContactById(e.contactId),
-    productClass: db.getProductClassById(e.productId),
+    product: db.getProductClassById(e.productId),
     membership: e
   };
 };
@@ -47,7 +47,7 @@ const createContactProps = (contact: Contact): MembershipProps => {
   return {
     contact: contact,
     membership: membership.filter((e) => e.contactId == contact.id).map(createMembershipProps),
-    productClass: membership.filter((e) => e.contactId == contact.id).map((e: Membership) => db.getProductClassById(e.productId)),
+    product: membership.filter((e) => e.contactId == contact.id).map((e: Membership) => db.getProductClassById(e.productId)),
   }
 };
 
@@ -63,7 +63,7 @@ const render = (config) => ReactDOM.render(
       <Progress/>
       <Messages/>
       {menbershipPropses.map((props, index) => {
-        return <MembershipComp key={index} contact={props.contact} membership={props.membership[0].membership} productClass={props.productClass[0]} onChange={onSelect} />
+        return <MembershipComp key={index} contact={props.contact} membership={props.membership} product={props.product} onChange={onSelect} />
       })}
     </div>
 
