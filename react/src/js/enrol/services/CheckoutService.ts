@@ -31,12 +31,13 @@ import {of} from "rxjs/observable/of";
 import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actions/Actions";
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 import {Application} from "../../model/checkout/Application";
-
-const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 import {Membership} from "../../model/checkout/Membership";
 import {Article} from "../../model/checkout/Article";
 import {Voucher} from "../../model/checkout/Voucher";
 import {ContactNodeService} from "./ContactNodeService";
+
+
+const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
 
 export class CheckoutService {
@@ -100,13 +101,6 @@ export class CheckoutService {
     return this.checkoutApi.makePayment(request);
   };
 
-  public isPaymentInProgress = (value: PaymentResponse): boolean => {
-    return (L.isNil(value.status) ||
-      value.status === PaymentStatus.IN_PROGRESS
-    );
-  };
-
-
   public isFinalStatus = (value: PaymentResponse): boolean => {
     return (value.status === PaymentStatus.SUCCESSFUL ||
     value.status === PaymentStatus.UNDEFINED);
@@ -141,11 +135,11 @@ const {
 } = Injector.of();
 
 export class BuildContactNodeRequest {
-  static fromPurchaseItem = (item:any, state: IshState): ContactNodeRequest => {
+  static fromPurchaseItem = (item: any, state: IshState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
     result.contactId = item.contactId;
     result.classIds = item.classId ? [item.classId] : [];
-    result.productIds =  item.productId ? [item.productId] : [];
+    result.productIds = item.productId ? [item.productId] : [];
     result.promotionIds = state.cart.promotions.result;
     return result;
   };
@@ -214,7 +208,7 @@ export class BuildContactNodes {
     result.applications = storage.applications ? storage.applications.map((id) => state.entities.applications[id]) : [];
     result.memberships = storage.memberships ? storage.memberships.map((id) => state.entities.memberships[id]) : [];
     result.articles = storage.articles ? storage.articles.map((id) => state.entities.articles[id]) : [];
-    
+
     return result;
 
   }
