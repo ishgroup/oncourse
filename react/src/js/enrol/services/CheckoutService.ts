@@ -200,11 +200,11 @@ export class BuildContactNodes {
   private static contactNodeBy = (storage: ContactNodeStorage, state: State): ContactNode => {
     const result: ContactNode = new ContactNode();
     result.contactId = storage.contactId;
-    result.enrolments = storage.enrolments ? storage.enrolments.map((id) => state.entities.enrolments[id]) : [];
-    result.applications = storage.applications ? storage.applications.map((id) => state.entities.applications[id]) : [];
-    result.memberships = storage.memberships ? storage.memberships.map((id) => state.entities.memberships[id]) : [];
-    result.articles = storage.articles ? storage.articles.map((id) => state.entities.articles[id]) : [];
-
+    result.enrolments = storage.enrolments ? storage.enrolments.map(id => state.entities.enrolments[id]) : [];
+    result.applications = storage.applications ? storage.applications.map(id => state.entities.applications[id]) : [];
+    result.memberships = storage.memberships ? storage.memberships.map(id => state.entities.memberships[id]) : [];
+    result.articles = storage.articles ? storage.articles.map(id => state.entities.articles[id]) : [];
+    result.vouchers = storage.vouchers ? storage.vouchers.map(id => state.entities.articles[id]) : [];
     return result;
 
   }
