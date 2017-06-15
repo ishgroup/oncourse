@@ -23,16 +23,14 @@ class FieldFactory extends React.Component<any, any> {
       label: field.name,
       type: "text",
       required: field.mandatory,
-      placeholder: field.description
-    }
+      placeholder: field.description,
+    };
   };
 
   private getComponent = (field: Field): any => {
     const props: any = this.propsFrom(field);
     switch (field.dataType) {
       case DataType.STRING:
-      case DataType.LANGUAGE:
-      case DataType.POSTCODE:
       case DataType.PHONE:
         return <Form.Field {...props} component={TextField} type="text"/>;
 
@@ -63,17 +61,24 @@ class FieldFactory extends React.Component<any, any> {
 
       case DataType.SUBURB:
         return SuburbField(props);
+
+      case DataType.LANGUAGE:
+        return LanguageField(props);
+
+      case DataType.POSTCODE:
+        return PostcodeField(props);
+
       default:
         return null;
     }
-  };
+  }
 
   render() {
     return (
       <div>
         {this.getComponent(this.props.field)}
       </div>
-    )
+    );
   }
 }
 
@@ -99,7 +104,32 @@ const CountryField = (props): any => {
     component={SelectField}
     loadOptions={countries}
     required={true}
-  />
+  />;
+};
+
+const LanguageField = (props): any => {
+  const langs = (i: string): Promise<Item[]> => {
+    return SearchService.getLanguages(i);
+  };
+  return <Form.Field
+    {...props}
+    component={SelectField}
+    loadOptions={langs}
+    required={true}
+  />;
+};
+
+const PostcodeField = (props): any => {
+  const codes = (i: string): Promise<Item[]> => {
+    return SearchService.getPostcodes(i);
+  };
+  return <Form.Field
+    {...props}
+    component={SelectField}
+    loadOptions={codes}
+    required={true}
+    newOptionEnable={true}
+  />;
 };
 
 export default FieldFactory;

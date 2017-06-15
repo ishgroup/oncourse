@@ -47,6 +47,8 @@ export class MockDB {
   fields: Field[] = [];
   countries: Item[] = [];
   suburbs: Item[] = [];
+  languages: Item[] = [];
+  postcodes: Item[] = [];
 
   constructor() {
     this.init();
@@ -54,15 +56,15 @@ export class MockDB {
 
   init(): void {
     this.contacts = normalize([mockContact(), mockContact(), mockContact()], ContactsSchema);
-    this.classes = normalize([
-      mockCourseClass(),
-      mockCourseClass(),
-      mockCourseClass(),
-      mockCourseClass(),
-      mockCourseClass(),
-      mockCourseClass(),
-      mockCourseClass()
-    ], ClassesListSchema);
+    this.classes = normalize(
+      [mockCourseClass(),
+        mockCourseClass(),
+        mockCourseClass(),
+        mockCourseClass(),
+        mockCourseClass(),
+        mockCourseClass(),
+        mockCourseClass()],
+      ClassesListSchema);
 
     this.products = normalize([
       mockProductClass(),
@@ -72,7 +74,7 @@ export class MockDB {
       mockProductClass(),
       mockProductClass(),
       mockProductClass(),
-    ], ProductsListSchema);
+    ],                        ProductsListSchema);
 
     this.fields = [
       mockField("Street", "street", DataType.STRING),
@@ -98,8 +100,8 @@ export class MockDB {
           {key: "4", value: "Student/Applicant has a temporary entry permit"},
           {key: "5", value: "Not one of the above categories"},
           {key: "8", value: "Students/Applicants with permanent humanitarian visa"},
-          {key: "9", value: "No information"}
-        ]
+          {key: "9", value: "No information"},
+        ],
       ),
       mockField("Country of birth", "countryOfBirth", DataType.COUNTRY),
       mockField("Language spoken at Home", "languageHome", DataType.LANGUAGE),
@@ -122,7 +124,7 @@ export class MockDB {
           {key: "3", value: "Year 9"},
           {key: "4", value: "Year 10"},
           {key: "5", value: "Year 11"},
-          {key: "6", value: "Year 12"}
+          {key: "6", value: "Year 12"},
         ]),
       mockField("Still at school", "isStillAtSchool", DataType.BOOLEAN),
       mockEnumField("Prior education code", "priorEducationCode", "AvetmissStudentPriorEducation", [
@@ -135,7 +137,7 @@ export class MockDB {
         {key: "6", value: "Certificate II"},
         {key: "7", value: "Certificate I"},
         {key: "8", value: "Miscellaneous education"},
-        {key: "100", value: "None"}
+        {key: "100", value: "None"},
       ]),
       mockEnumField("Labour force status", "labourForceStatus", "AvetmissStudentLabourStatus", [
         {key: "0", value: "not stated"},
@@ -409,24 +411,263 @@ export class MockDB {
       {key: "245", value: "Uganda"},
       {key: "246", value: "Zambia"},
       {key: "247", value: "Zimbabwe"},
-      {key: "248", value: "Southern and East Africa, nec"}
+      {key: "248", value: "Southern and East Africa, nec"},
+    ];
+
+    this.languages = [
+      {
+        key: "10",
+        value: "European",
+      },
+      {
+        key: "69",
+        value: "Eastern Creole",
+      },
+      {
+        key: "90",
+        value: "Erse",
+      },
+      {
+        key: "112",
+        value: "England",
+      },
+      {
+        key: "113",
+        value: "English",
+      },
+      {
+        key: "172",
+        value: "Estonian",
+      },
+      {
+        key: "185",
+        value: "European south",
+      },
+      {
+        key: "220",
+        value: "El Salvadorian",
+      },
+      {
+        key: "221",
+        value: "Espagnol",
+      },
+      {
+        key: "222",
+        value: "Espanish",
+      },
+      {
+        key: "223",
+        value: "Espanol",
+      },
+      {
+        key: "261",
+        value: "Eastern European",
+      },
+      {
+        key: "276",
+        value: "East Slavic",
+      },
+      {
+        key: "438",
+        value: "Egyptian",
+      },
+      {
+        key: "439",
+        value: "Egytion",
+      },
+      {
+        key: "771",
+        value: "Eastern Asian",
+      },
+      {
+        key: "889",
+        value: "East Aboriginal",
+      },
+      {
+        key: "1066",
+        value: "Emmi",
+      },
+      {
+        key: "1132",
+        value: "English Djambarrpuyngou",
+      },
+      {
+        key: "1148",
+        value: "English Gupapuyngu",
+      },
+      {
+        key: "1260",
+        value: "Eacham",
+      },
+      {
+        key: "1452",
+        value: "Eastern Arrada",
+      },
+      {
+        key: "1453",
+        value: "Eastern Arrante",
+      },
+      {
+        key: "1454",
+        value: "Eastern Arrente",
+      },
+      {
+        key: "1827",
+        value: "Ebonics",
+      },
+      {
+        key: "1828",
+        value: "Eskimo",
+      },
+      {
+        key: "1841",
+        value: "Eritrean",
+      },
+      {
+        key: "1842",
+        value: "Ethiopa",
+      },
+      {
+        key: "1843",
+        value: "Ethiopian",
+      },
+      {
+        key: "1890",
+        value: "Ewe",
+      },
+      {
+        key: "1938",
+        value: "Edo",
+      },
+      {
+        key: "1939",
+        value: "Edo Ishan",
+      },
+      {
+        key: "1940",
+        value: "Efik",
+      },
+      {
+        key: "2058",
+        value: "English Pidgeon",
+      },
+      {
+        key: "2059",
+        value: "English Pidgin",
+      },
+      {
+        key: "2060",
+        value: "English Pigin",
+      },
+      {
+        key: "2112",
+        value: "Esperanto",
+      },
+      {
+        key: "2142",
+        value: "English signed",
+      },
+    ];
+
+    this.postcodes = [
+      {
+        key: "1200",
+        value: {
+          state: null,
+          suburb: "SYDNEY",
+          postcode: "1200",
+        },
+      },
+      {
+        key: "1201",
+        value: {
+          state: null,
+          suburb: "SYDNEY",
+          postcode: "1201",
+        },
+      },
+      {
+        key: "1202",
+        value: {
+          state: null,
+          suburb: "SYDNEY",
+          postcode: "1202",
+        },
+      },
+      {
+        key: "1203",
+        value: {
+          state: null,
+          suburb: "SYDNEY",
+          postcode: "1203",
+        },
+      },
+      {
+        key: "1204",
+        value: {
+          state: null,
+          suburb: "SYDNEY",
+          postcode: "1204",
+        },
+      },
+      {
+        key: "1205",
+        value: {
+          state: null,
+          suburb: "SYDNEY",
+          postcode: "1205",
+        },
+      },
+      {
+        key: "1206",
+        value: {
+          state: null,
+          suburb: "SYDNEY",
+          postcode: "1206",
+        },
+      },
+      {
+        key: "1207",
+        value: {
+          state: null,
+          suburb: "SYDNEY",
+          postcode: "1207",
+        },
+      },
+      {
+        key: "1208",
+        value: {
+          state: null,
+          suburb: "HAYMARKET",
+          postcode: "1208",
+        },
+      },
+      {
+        key: "1209",
+        value: {
+          state: null,
+          suburb: "AUSTRALIA SQUARE",
+          postcode: "1209",
+        },
+      },
     ];
 
     this.suburbs = [
       {
         key: "2250",
-        value: {state: "NSW", suburb: "LISAROW", postcode: "2250"}
+        value: {state: "NSW", suburb: "LISAROW", postcode: "2250"},
       },
       {
         key: "2000",
-        value: {state: "NSW", suburb: "DAWES POINT", postcode: "2000"}
+        value: {state: "NSW", suburb: "DAWES POINT", postcode: "2000"},
       },
       {
         key: "3000",
-        value: {state: "NSW", suburb: "MELBOURNE", postcode: "3000"}
-      }
-    ]
+        value: {state: "NSW", suburb: "MELBOURNE", postcode: "3000"},
+      },
+    ];
   }
+
 
   createEnrolment(contactId: string, classId: string, errors: boolean = false, warnings: boolean = false): Enrolment {
     return {
@@ -435,8 +676,8 @@ export class MockDB {
       errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       price: this.classes.entities.classes[classId].price,
-      selected: !errors
-    }
+      selected: !errors,
+    };
   }
 
   createApplication(contactId: string, classId: string, errors: boolean = false, warnings: boolean = false): Application {
@@ -445,12 +686,11 @@ export class MockDB {
       classId: this.classes.entities.classes[classId].id,
       errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
-      selected: !errors
-    }
+      selected: !errors,
+    };
   }
 
 
-  
   createVoucher(contactId: string, productId: string, errors: boolean = false, warnings: boolean = false): Voucher {
     return {
       contactId: this.contacts.entities.contact[contactId].id,
@@ -461,8 +701,8 @@ export class MockDB {
       value: this.products.entities.products[productId].price,
       classes: [faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName(), faker.commerce.productName()],
       selected: !errors,
-      isEditablePrice: true
-    }
+      isEditablePrice: true,
+    };
   }
 
   createMembership(contactId: string, productId: string, errors: boolean = false, warnings: boolean = false): Membership {
@@ -472,8 +712,8 @@ export class MockDB {
       errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       price: this.products.entities.products[productId].price,
-      selected: !errors
-    }
+      selected: !errors,
+    };
   }
 
   createArticle(contactId: string, productId: string, errors: boolean = false, warnings: boolean = false): Article {
@@ -483,8 +723,8 @@ export class MockDB {
       errors: errors ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       warnings: warnings ? [faker.hacker.phrase(), faker.hacker.phrase()] : [],
       price: this.products.entities.products[productId].price,
-      selected: !errors
-    }
+      selected: !errors,
+    };
   }
 
   addContact(contact: Contact): string {
@@ -501,7 +741,7 @@ export class MockDB {
 
   getContactByDetails(firstName: String, lastName: String, email: String): Contact {
     return L.find(this.contacts.entities.contact,
-      (c: Contact) => c.firstName === firstName && c.lastName == lastName && c.email == email);
+                  (c: Contact) => c.firstName === firstName && c.lastName == lastName && c.email == email);
   }
 
 
@@ -539,10 +779,7 @@ export class MockDB {
   }
 
   searchCountryBy(search: string): Item[] {
-    return this.countries.filter((i: Item) => i.value.toLowerCase().startsWith(search))
+    return this.countries.filter((i: Item) => i.value.toLowerCase().startsWith(search));
   }
 }
-
-
-
 

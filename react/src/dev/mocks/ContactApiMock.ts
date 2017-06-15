@@ -22,11 +22,11 @@ export class ContactApiMock extends ContactApi {
 
   getContact(studentUniqueIdentifier: string): Promise<Contact> {
     return Promise.resolve({
-      "id": "5138961",
-      "uniqueIdentifier": "5qHShQVb3a6nnYn2",
-      "firstName": "John",
-      "lastName": "Shepard",
-      "email": "tuchanka@tut.by"
+      id: "5138961",
+      uniqueIdentifier: "5qHShQVb3a6nnYn2",
+      firstName: "John",
+      lastName: "Shepard",
+      email: "tuchanka@tut.by",
     } as Contact);
   }
 
@@ -50,11 +50,11 @@ export class ContactApiMock extends ContactApi {
   getContactFields(request: ContactFieldsRequest): Promise<ContactFields> {
     const result: ContactFields = {
       contactId: request.contactId,
-      headings: []
+      headings: [],
     };
 
     if (!this.config.props.contactApi.contactFieldsIsEmpty) {
-      result.headings.push(this.config.db.getFieldHeadingBy(["street", "suburb", "country", "citizenship"]));
+      result.headings.push(this.config.db.getFieldHeadingBy(["street", "postcode", "suburb", "country", "citizenship", "languageHome"]));
     }
 
     return this.config.createResponse(result);

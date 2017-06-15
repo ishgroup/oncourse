@@ -19,11 +19,11 @@ export class SearchApiMock extends SearchApi {
   }
 
   getLanguages(text: string): Promise<Item[]> {
-    return this.config.createResponse([]);
+    return this.config.createResponse(this.config.db.languages);
   }
 
   getPostcodes(text: string): Promise<Item[]> {
-    return this.config.createResponse([]);
+    return this.config.createResponse(this.config.db.postcodes);
   }
 
   getSuburbs(text: string): Promise<Item[]> {
