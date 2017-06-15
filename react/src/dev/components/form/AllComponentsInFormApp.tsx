@@ -7,7 +7,7 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import {Field, FormErrors, FormProps, reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from "redux-form-website-template";
 
-//import "react-select/dist/react-select.css";
+// import "react-select/dist/react-select.css";
 
 import {TextField} from "../../../js/components/form/TextField";
 import {CheckboxField} from "../../../js/components/form/CheckboxField";
@@ -17,7 +17,7 @@ import {RadioGroupField} from "../../../js/components/form/RadioGroupField";
 
 
 const store = createStore(
-  combineReducers({form: formReducer}), applyMiddleware(createLogger())
+  combineReducers({form: formReducer}), applyMiddleware(createLogger()),
 );
 
 const options = [
@@ -27,13 +27,14 @@ const options = [
   {key: 'five', value: 'Five'},
 
 ];
-//https://gist.github.com/leocristofani/98312e61807db8f32e720c9f97a186e5
-//https://github.com/JedWatson/react-select/issues/1129
+// https://gist.github.com/leocristofani/98312e61807db8f32e720c9f97a186e5
+// https://github.com/JedWatson/react-select/issues/1129
 
 /**
  *  application for all components to test how they work inside redux-form
  */
 class AllComponentsFrom extends React.Component<any, any> {
+
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
@@ -42,13 +43,14 @@ class AllComponentsFrom extends React.Component<any, any> {
           <Field component={TextField} name="address" type={"number"} label="Street" required={true}/>
         </fieldset>
         <fieldset>
-          <Field component={CheckboxField} name="email" label="E-mail" required={true}/>
+          <Field asd component={CheckboxField} name="email" label="E-mail" required={true}/>
         </fieldset>
         <fieldset>
           <ComboboxField name="suburb" label="Suburb" required={true} items={options}/>
         </fieldset>
         <fieldset>
-          <Field component={RadioGroupField} name="Gender" label="Gender" required={true} items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]}/>
+          <Field component={RadioGroupField} name="Gender" label="Gender" required={true}
+                 items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]}/>
         </fieldset>
         <fieldset>
           <Field component={TextAreaField} name="needs" label="Special Needs" required={true}/>
@@ -59,14 +61,14 @@ class AllComponentsFrom extends React.Component<any, any> {
   }
 }
 
-const validate = (values: FormData, props: FormProps<FormData, any, any> & any): FormErrors<FormData> => {
+const validate = (values: FormData) => {
   const errors = Object.assign({}, values);
   return errors;
 };
 
 const Form = reduxForm({
+  validate,
   form: "AllComponentsFrom",
-  validate: validate
 })(AllComponentsFrom);
 
 
@@ -81,7 +83,7 @@ const render = () => ReactDOM.render(
       <Values form="AllComponentsFrom"/>
     </div>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
 render();

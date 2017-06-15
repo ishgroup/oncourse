@@ -20,7 +20,7 @@ import {MockConfig} from "../../mocks/mocks/MockConfig";
 
 
 const store = createStore(
-  combineReducers({form: formReducer}), applyMiddleware(createLogger())
+  combineReducers({form: formReducer}), applyMiddleware(createLogger()),
 );
 
 const options = [
@@ -30,8 +30,8 @@ const options = [
   {key: 'five', value: 'Five'},
 
 ];
-//https://gist.github.com/leocristofani/98312e61807db8f32e720c9f97a186e5
-//https://github.com/JedWatson/react-select/issues/1129
+// https://gist.github.com/leocristofani/98312e61807db8f32e720c9f97a186e5
+// https://github.com/JedWatson/react-select/issues/1129
 
 const config: MockConfig = new MockConfig();
 const stub: SearchApiMock = new SearchApiMock(config);
@@ -51,10 +51,13 @@ class AllComponentsFrom extends React.Component<any, any> {
           <Field component={Checkbox} name="email" label="E-mail" required={true}/>
         </fieldset>
         <fieldset>
-          <Field component={SelectField} name="suburb" label="Suburb" required={true} loadOptions={(text) => stub.getCountries(text)}/>
+          <Field component={SelectField} name="suburb" label="Suburb" required={true}
+                 loadOptions={text => stub.getCountries(text)}
+          />
         </fieldset>
         <fieldset>
-          <Field component={RadioGroup} name="Gender" label="Gender" required={true} items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]}/>
+          <Field component={RadioGroup} name="Gender" label="Gender" required={true}
+                 items={[{key: "1", value: "Male"}, {key: "2", value: "Female"}]}/>
         </fieldset>
         <fieldset>
           <Field component={TextArea} name="needs" label="Special Needs" required={true}/>
@@ -65,14 +68,14 @@ class AllComponentsFrom extends React.Component<any, any> {
   }
 }
 
-const validate = (values: FormData, props: FormProps<FormData, any, any> & any): FormErrors<FormData> => {
+const validate = (values: FormData) => {
   const errors = Object.assign({}, values);
   return errors;
 };
 
 const Form = reduxForm({
+  validate,
   form: "AllComponentsFrom",
-  validate: validate
 })(AllComponentsFrom);
 
 
@@ -87,7 +90,7 @@ const render = () => ReactDOM.render(
       <Values form="AllComponentsFrom"/>
     </div>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
 render();

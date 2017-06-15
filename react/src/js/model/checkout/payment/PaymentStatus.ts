@@ -8,4 +8,3 @@ export const PaymentStatus = createStringEnum([
 ]);
 
 export type PaymentStatus = keyof typeof PaymentStatus;
-
