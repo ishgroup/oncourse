@@ -16,21 +16,21 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
     this.modalService = WindowService.get("modal");
   }
 
-  componentWillMount = () => {
+  componentWillMount() {
     $(document).on("click", this.props.close);
-  };
+  }
 
-  componentDidMount = () => {
+  componentDidMount() {
     $(findDOMNode(this))
       .show()
       .offset({top: this.$item.offset().top} as JQueryCoordinates)
       .css("right", "150px")
       .fadeIn("fast");
-  };
+  }
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     $(document).off("click", this.props.close);
-  };
+  }
 
   render() {
     const {close, isAlreadyAdded, name, checkoutPath} = this.props;
@@ -38,7 +38,8 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
     // TODO: connect via redux
     const date = this.$item.find(".class-item-info-l > .date a:first").text();
 
-    let commonText, classDescription = [];
+    let commonText: string = null;
+    let classDescription: any[] = null;
 
     if (isAlreadyAdded) {
       commonText = "You've already added this class to your shortlist. Do you want to proceed to checkout?";
@@ -46,7 +47,7 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
       commonText = "Thanks for adding:";
       classDescription = [
         <p key="className" className="className">{name}</p>,
-        <p key="classDate" className="classDate">{date}</p>
+        <p key="classDate" className="classDate">{date}</p>,
       ];
     }
 
@@ -69,10 +70,10 @@ export class ConfirmOrderDialog extends React.Component<Props, {}> {
 }
 
 interface Props {
-  checkoutPath: string
-  isAlreadyAdded: boolean
-  id: string
-  name: string
-  date?: string
-  close: () => void
+  checkoutPath: string;
+  isAlreadyAdded: boolean;
+  id: string;
+  name: string;
+  date?: string;
+  close: () => void;
 }

@@ -5,17 +5,17 @@ import {hidePopup, updatePopup} from "../actions/Actions";
 
 class Popup extends React.Component<PopupProps, {}> {
 
-  componentWillMount = () => {
+  componentWillMount() {
     this.props.update(this.props.children);
-  };
+  }
 
-  componentWillReceiveProps = () => {
+  componentWillReceiveProps() {
     this.props.update(this.props.children);
-  };
+  }
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     this.props.hide();
-  };
+  }
 
   render() {
     return null;
@@ -25,7 +25,7 @@ class Popup extends React.Component<PopupProps, {}> {
 export default connect(null, (dispatch) => {
   return bindActionCreators({
     updatePopup,
-    hidePopup
+    hidePopup,
   }, dispatch);
 })(Popup as any);
 

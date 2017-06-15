@@ -8,7 +8,6 @@ import {CreateContactParams} from "../../model/web/CreateContactParams";
 import {CartState, IshState} from "../../services/IshState";
 import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
-import {Enrolment} from "../../model/checkout/Enrolment";
 import {Field} from "../../model/field/Field";
 import {CheckoutModel} from "../../model/checkout/CheckoutModel";
 import {ContactNodeStorage, State} from "../containers/summary/reducers/State";
@@ -30,11 +29,8 @@ import {Observable} from "rxjs/Observable";
 import {of} from "rxjs/observable/of";
 import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actions/Actions";
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
-import {Application} from "../../model/checkout/Application";
-import {Membership} from "../../model/checkout/Membership";
-import {Article} from "../../model/checkout/Article";
-import {Voucher} from "../../model/checkout/Voucher";
 import {ContactNodeService} from "./ContactNodeService";
+import {PurchaseItem} from "../../model/checkout/Index";
 
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
@@ -73,13 +69,13 @@ export class CheckoutService {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromState(state));
   };
 
-  public updateItem = (item: Enrolment | Application | Membership | Article | Voucher, state: IshState): Promise<Enrolment | Application | Membership | Article | Voucher> => {
+  public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
     if (item.selected) {
       const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);
       return this.checkoutApi.getContactNode(request)
         .then((data) => {
-          return Promise.resolve(ContactNodeService.getPurchaseItem(data))
-        })
+          return Promise.resolve(ContactNodeService.getPurchaseItem(data, item.constructor.name));
+        });
     } else {
       return Promise.resolve(item);
     }

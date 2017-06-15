@@ -2,24 +2,23 @@ import * as React from "react";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
 
-import {Props as ContactProps} from "./components/ContactComp";
-import {Props as EnrolmentProps} from "./components/EnrolmentComp";
-import {Props as ApplicationProps} from "./components/ApplicationComp";
-import {Props as VoucherProps} from "./components/VoucherComp";
-import {Props as MembershipProps} from "./components/MembershipComp";
-import {Props as ArticleProps} from "./components/ArticleComp";
+import {Application, Article, Enrolment, Membership, Voucher} from "../../../model/checkout";
+import {
+  ApplicationProps,
+  ArticleProps,
+  ContactProps,
+  EnrolmentProps,
+  MembershipProps,
+  VoucherProps
+} from "./components";
+
 import {SummaryComp} from "./components/SummaryComp";
-import {Enrolment} from "../../../model/checkout/Enrolment";
 import {proceedToPayment, selectItem} from "./actions/Actions";
 import {openAddContactForm} from "../contact-add/actions/Actions";
-import {Voucher} from "../../../model/checkout/Voucher";
-import {Article} from "../../../model/checkout/Article";
-import {Membership} from "../../../model/checkout/Membership";
 import {SummaryService} from "./services/SummaryService";
-import {Application} from "../../../model/checkout/Application";
 
 
-export const EnrolmentPropsBy = (enrolment: Enrolment, state: IshState): EnrolmentProps => {
+export const EnrolmentPropsBy = (enrolment, state: IshState): EnrolmentProps => {
   return {
     contact: state.checkout.payer.entity,
     courseClass: state.courses.entities[enrolment.classId],
