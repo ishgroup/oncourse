@@ -8,21 +8,21 @@ import ContactInfo from "../../../components/ContactInfo";
 export interface Props {
   contact: Contact,
   fields: ContactFields,
-  header?: string
+  header?: string,
 }
 
 export class ContactEdit extends React.Component<Props, any> {
   render() {
     const {contact, fields, header} = this.props;
 
-    const headings = isNil(fields) ? [] : fields.headings.map((h, index) => {
-      return (<HeadingComp heading={h} key={index}/>)
-    });
+    const headings = isNil(fields) ? [] : fields.headings.map((h, index) => (
+      <HeadingComp heading={h} key={index}/>
+    ));
 
     return (
       <div>
         <ContactInfo contact={contact}/>
-        <div className="clearfix" />
+        <div className="clearfix"/>
         <div className="message">
           <p>We require a few more details to create the contact record.
             It is important that we have correct contact information in case we need to let you know about course

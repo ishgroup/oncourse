@@ -15,7 +15,7 @@ const render = () => ReactDOM.render(
       <Progress onChange={(t) => {console.log(t)}}
         model = {{
           active: Tab.Details,
-          disabled: [Tab.Summary, Tab.Payment]
+          disabled: [Tab.Summary, Tab.Payment],
         }}
       />
       <Messages/>

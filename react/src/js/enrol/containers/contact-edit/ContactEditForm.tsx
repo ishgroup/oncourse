@@ -34,14 +34,14 @@ class ContactEditForm extends React.Component<any, any> {
           </div>
         </form>
       </div>
-    )
+    );
   }
 }
 
 interface Props {
-  contact: Contact,
-  fields: ContactFields,
-  errors: ValidationError,
+  contact: Contact;
+  fields: ContactFields;
+  errors: ValidationError;
 }
 
 const Form = reduxForm({
@@ -51,7 +51,7 @@ const Form = reduxForm({
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     dispatch(showFormValidation(submitError, NAME));
-  }
+  },
 })(ContactEditForm);
 
 
@@ -60,24 +60,24 @@ const mapStateToProps = (state: IshState) => {
   const fields = state.checkout.fields;
   const errors = state.checkout.error;
   return {
-    contact: contact,
-    fields: fields,
-    errors: errors
-  }
+    contact,
+    fields,
+    errors,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (data, dispatch, props): any => {
       return CheckoutService.submitContactDetails(props.fields, data);
-    }
+    },
   };
 };
 
 
 const Container = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Form);
 
 

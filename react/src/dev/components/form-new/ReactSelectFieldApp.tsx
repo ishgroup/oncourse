@@ -5,7 +5,7 @@ import {Provider} from "react-redux";
 import {createLogger} from "redux-logger";
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {Field, reducer as formReducer, reduxForm} from "redux-form";
-import { Values } from 'redux-form-website-template';
+import {Values} from 'redux-form-website-template';
 
 import 'react-select/dist/react-select.css';
 import "../../../scss/_ReactSelect.scss";
@@ -17,7 +17,7 @@ import {SuburbOption} from "../../../js/components/form/Renders";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 
 const store = createStore(
-  combineReducers({form: formReducer}), applyMiddleware(createLogger())
+  combineReducers({form: formReducer}), applyMiddleware(createLogger()),
 );
 
 
@@ -45,7 +45,7 @@ class ReactSelectForm extends React.Component<any, any> {
             name="country"
             label="Country"
             required={true}
-            loadOptions={(text) => loadOptions(text)}
+            loadOptions={text => loadOptions(text)}
             newOptionEnable={true}
           />
         </fieldset>
@@ -76,7 +76,7 @@ const render = () => ReactDOM.render(
       <Values form="ReactSelectForm" />
     </div>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
 render();

@@ -1,5 +1,5 @@
-import { Item } from "./../common/Item";
-import { DataType } from "./../field/DataType";
+import {Item} from "./../common/Item";
+import {DataType} from "./../field/DataType";
 
 export class Field {
 
@@ -58,4 +58,3 @@ export class Field {
    */
   ordering?: number;
 }
-
