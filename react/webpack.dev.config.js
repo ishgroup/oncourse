@@ -4,7 +4,6 @@ const __DEFAULT_ENTRY = "./src/dev/checkout/CheckoutApp.tsx";
 
 const config = {
     entry: ["./src/dev/checkout/CheckoutApp.tsx"],
-    plugins: [ __common.DefinePlugin('development', 'http://localhost:10080') ]
 };
 
 module.exports = (options = {}) => {

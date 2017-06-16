@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const path = require("path");
 
@@ -37,20 +38,6 @@ const _common = (dirname, options) => {
     module: {
       rules: [
         {
-          test: /\.css$/,
-          loaders: ['style-loader', 'css-loader'],
-          include: [
-            path.resolve(dirname, 'node_modules')
-          ]
-        },
-        {
-          test: /\.scss$/,
-          loaders: ['style-loader', 'css-loader', 'sass-loader'],
-          include: [
-            path.resolve(dirname, "src/scss"),
-          ]
-        },
-        {
           test: /\.tsx?$/,
           loader: 'ts-loader',
           include: [
@@ -59,10 +46,36 @@ const _common = (dirname, options) => {
           ],
         },
         {
+          test: /\.css$/,
+          loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}),
+          include: [
+            path.resolve(dirname, 'node_modules')
+          ]
+        },
+        {
+          test: /\.scss$/,
+          loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']}),
+          include: [
+            path.resolve(dirname, "src/scss"),
+          ]
+        },
+        {
+          test: /\.(jpg|jpeg|gif|png)$/,
+          loader: 'url-loader?limit=1024&name=images/[name].[ext]'
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|svg)$/,
+          loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'
+        },
+        {
           enforce: "pre", test: /\.js$/, loader: "source-map-loader"
         }
       ]
     },
+    plugins: [
+      _DefinePlugin('development', 'http://localhost:10080'),
+      new ExtractTextPlugin("[name].css")
+    ],
     devServer: {
       inline: false
     },
