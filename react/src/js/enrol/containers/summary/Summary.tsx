@@ -16,6 +16,8 @@ import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem} from "./actions/Actions";
 import {openAddContactForm} from "../contact-add/actions/Actions";
 import {SummaryService} from "./services/SummaryService";
+import {Application} from "../../../model/checkout/Application";
+import {addCode} from "../../actions/Actions";
 
 
 export const EnrolmentPropsBy = (enrolment, state: IshState): EnrolmentProps => {
@@ -26,36 +28,36 @@ export const EnrolmentPropsBy = (enrolment, state: IshState): EnrolmentProps => 
   }
 };
 
-export const ApplicationPropsBy = (application: Application, state: IshState): ApplicationProps => {
+export const ApplicationPropsBy = (a: Application, state: IshState): ApplicationProps => {
   return {
     contact: state.checkout.payer.entity,
-    courseClass: state.courses.entities[application.classId],
-    application: application
-  }
+    courseClass: state.courses.entities[a.classId],
+    application: a,
+  };
 };
 
-export const VoucherPropsBy = (voucher: Voucher, state: IshState): VoucherProps => {
+export const VoucherPropsBy = (v: Voucher, state: IshState): VoucherProps => {
   return {
     contact: state.checkout.payer.entity,
-    product: state.products.entities[voucher.productId],
-    voucher: voucher
-  }
+    product: state.products.entities[v.productId],
+    voucher: v,
+  };
 };
 
-export const MembershipPropsBy = (membership: Membership, state: IshState): MembershipProps => {
+export const MembershipPropsBy = (m: Membership, state: IshState): MembershipProps => {
   return {
     contact: state.checkout.payer.entity,
-    product: state.products.entities[membership.productId],
-    membership: membership
-  }
+    product: state.products.entities[m.productId],
+    membership: m,
+  };
 };
 
-export const ArticlePropsBy = (article: Article, state: IshState): ArticleProps => {
+export const ArticlePropsBy = (a: Article, state: IshState): ArticleProps => {
   return {
     contact: state.checkout.payer.entity,
-    product: state.products.entities[article.productId],
-    article: article
-  }
+    product: state.products.entities[a.productId],
+    article: a,
+  };
 };
 
 export const ContactPropsBy = (contactId: string, state: IshState): ContactProps => {
@@ -77,43 +79,47 @@ export const ContactPropsBy = (contactId: string, state: IshState): ContactProps
     applications: applicationIds.map((id: string): ApplicationProps => ApplicationPropsBy(applications[id], state)),
     vouchers: voucherIds.map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
     memberships: membershipIds.map((id: string): MembershipProps => MembershipPropsBy(memberships[id], state)),
-    articles: articleIds.map((id: string): ArticleProps => ArticlePropsBy(articles[id], state))
+    articles: articleIds.map((id: string): ArticleProps => ArticlePropsBy(articles[id], state)),
   };
 };
 
 export const SummaryPropsBy = (state: IshState): any => {
   try {
-    const contacts: ContactProps[] = state.checkout.summary.result.map((id) => {
-      return ContactPropsBy(id, state)
+    const contactsArray: ContactProps[] = state.checkout.summary.result.map((id) => {
+      return ContactPropsBy(id, state);
     });
     return {
       amount: state.checkout.amount,
-      contacts: contacts,
-      hasSelected: SummaryService.hasSelected(state.checkout.summary)
+      contacts: contactsArray,
+      promotions:  Object.values(state.cart.promotions.entities),
+      hasSelected: SummaryService.hasSelected(state.checkout.summary),
     };
   } catch (e) {
     console.log(e);
     return {
       amount: {},
-      contacts: []
-    }
+      contacts: [],
+    };
   }
 };
 
 export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
     onSelect: (item: Enrolment | Application | Membership | Article | Voucher, selected: boolean): void => {
-      dispatch(selectItem(item, selected))
+      dispatch(selectItem(item, selected));
     },
     onAddContact: (): void => {
-      dispatch(openAddContactForm())
+      dispatch(openAddContactForm());
     },
     onProceedToPayment: (): void => {
-      dispatch(proceedToPayment())
-    }
+      dispatch(proceedToPayment());
+    },
+    onAddCode: (code: string): void => {
+      dispatch(addCode(code));
+    },
   };
 };
 
 const Container = connect(SummaryPropsBy, SummaryActionsBy)(SummaryComp);
 
-export default Container
+export default Container;

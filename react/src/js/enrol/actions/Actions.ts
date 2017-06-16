@@ -29,17 +29,36 @@ export const RESET_CHECKOUT_STATE = "checkout/reset/state";
 
 export const FINISH_CHECKOUT_PROCESS = "checkout/finish/process";
 
+export const ADD_CODE: string = "checkout/summary/add/code";
+export const ADD_CODE_REQUEST: string = _toRequestType(ADD_CODE);
+
+export const UPDATE_SUMMARY : string = "checkout/summary/update";
+export const UPDATE_SUMMARY_REQUEST: string = _toRequestType(UPDATE_SUMMARY);
+
+export const addCode = (code: string): { type: string, payload: string } => {
+  return {
+    type: ADD_CODE_REQUEST,
+    payload: code,
+  };
+};
+
+export const updateSummaryRequest = (): { type: string } => {
+  return {
+    type: UPDATE_SUMMARY_REQUEST,
+  };
+};
+
 export const sendInitRequest = (): IAction<any> => {
   return {
-    type: INIT_REQUEST
+    type: INIT_REQUEST,
   };
 };
 
 export const setNewContactFlag = (newContact: boolean): { type: string, payload: boolean } => {
   return {
     type: SET_NEW_CONTACT_FLAG,
-    payload: newContact
-  }
+    payload: newContact,
+  };
 };
 
 export const showFormValidation = (response: AxiosResponse, form: string): any => {
@@ -47,9 +66,9 @@ export const showFormValidation = (response: AxiosResponse, form: string): any =
     type: SHOW_MESSAGES_REQUEST,
     payload: response,
     meta: {
-      form: form
-    }
-  }
+      form: form,
+    },
+  };
 };
 
 export const changePhaseRequest = (phase: Phase) => {

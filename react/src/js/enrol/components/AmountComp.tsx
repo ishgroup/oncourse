@@ -1,20 +1,21 @@
 import React from "react";
 import {Amount} from "../../model/checkout/Amount";
+import AddCodeComp from "./AddCodeComp";
+import {Promotion} from "../../model/web/Promotion";
 
 interface Props {
-  amount: Amount
+  amount: Amount;
+  onAddCode: (code: string) => void;
+  promotions: Promotion[];
 }
 
 class AmountComp extends React.Component<Props, any> {
-  handlePromoCodeSubmit = (e) => {
-    e.preventDefault();
-  }
 
   public render(): JSX.Element {
-    const {amount} = this.props;
+    const {amount, onAddCode, promotions} = this.props;
     return (
       <div className="row">
-        <EnterPromotional handlePromoCodeSubmit={this.handlePromoCodeSubmit.bind(this)} />
+        <AddCodeComp onAdd = {onAddCode} promotions={promotions}/>
         <div className="col-xs-24 col-sm-8 amount-content text-right">
           { amount && amount.total && <Total total={amount.total}/> }
           { amount && amount.discount && <Discount discount={amount.discount}/>}
@@ -24,20 +25,6 @@ class AmountComp extends React.Component<Props, any> {
     );
   }
 }
-
-const EnterPromotional = (props) => {
-  return (
-    <div className="col-xs-24 col-sm-16 code-info">
-      <div className="form-inline mb-2">
-        <form onSubmit={props.handlePromoCodeSubmit}>
-          <input className="form-control mb-2 mr-sm-2 mb-sm-0 code_input" name="add_code" type="text"/>
-          <button type="submit" className="btn btn-primary button" id="addCode">Add Code</button>
-        </form>
-      </div>
-      <p>Promotional Code,Gift Certificate or Voucher</p>
-    </div>
-  )
-};
 
 const Total = (props) => {
   return (

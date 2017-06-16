@@ -8,15 +8,18 @@ import {Voucher} from "../../../../model/checkout/Voucher";
 import {Props as VoucherProps} from "./VoucherComp";
 import {Membership} from "../../../../model/checkout/Membership";
 import {Article} from "../../../../model/checkout/Article";
+import {Promotion} from "../../../../model/web/Promotion";
 
 export interface Props {
-  hasSelected: boolean,
-  contacts: ContactProps[]
-  amount: Amount
-  onAddContact?: () => void
-  onProceedToPayment?: () => void
-  onSelect?: (item: Enrolment | Membership | Article | Voucher, selected: boolean) => void
-  onPriceValueChange?: (item: any, product: VoucherProps[], productItem: Voucher) => void
+  hasSelected: boolean;
+  contacts: ContactProps[];
+  amount: Amount;
+  onAddContact?: () => void;
+  onAddCode: (code: string) => void;
+  promotions: Promotion[];
+  onProceedToPayment?: () => void;
+  onSelect?: (item: Enrolment | Membership | Article | Voucher, selected: boolean) => void;
+  onPriceValueChange?: (item: any, product: VoucherProps[], productItem: Voucher) => void;
 }
 
 
@@ -25,11 +28,11 @@ export class SummaryComp extends React.Component<Props, any> {
     const {onSelect, onPriceValueChange} = this.props;
     return (<ContactComp key={props.contact.id} {...props}
                          onSelect={(item, selected) => onSelect(item, selected)}
-                         onPriceValueChange={(item, product, productItem) => onPriceValueChange(item, product, productItem)} />)
-  };
+                         onPriceValueChange={(item, product, productItem) => onPriceValueChange(item, product, productItem)} />);
+  }
 
   render() {
-    const {contacts, amount, onAddContact, onProceedToPayment, hasSelected} = this.props;
+    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, hasSelected, promotions} = this.props;
 
     return (
       <div className="payment-summary">
@@ -39,7 +42,7 @@ export class SummaryComp extends React.Component<Props, any> {
         <div className="row">
           <div className="col-xs-24">
             <div className="amount-container">
-              <AmountComp amount={amount}/>
+              <AmountComp amount={amount} onAddCode={onAddCode} promotions={promotions}/>
               <ProceedToPayment disabled={!hasSelected} onProceedToPayment={onProceedToPayment}/>
             </div>
           </div>

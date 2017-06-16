@@ -103,6 +103,9 @@ const onSelect = (contact, item) => {
 };
 const onPriceValueChange = (item, products, productItem) => {
 };
+const onAddCode = (code: string): void => {
+  alert(code);
+};
 
 
 const render = (config) => ReactDOM.render(
@@ -113,7 +116,7 @@ const render = (config) => ReactDOM.render(
       <SummaryComp contacts={[
         contactPropses[0],
         contactPropses[1]
-      ]} amount={amount} onAddContact={onAddContact} onProceedToPayment={onProceedToPayment}
+      ]} amount={amount} promotions={[]} onAddContact={onAddContact} onAddCode={onAddCode} onProceedToPayment={onProceedToPayment}
                    onSelect = {onSelect}
                    onPriceValueChange={onPriceValueChange}
                    hasSelected = {true}

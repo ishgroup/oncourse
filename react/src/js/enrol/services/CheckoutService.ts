@@ -30,6 +30,8 @@ import {of} from "rxjs/observable/of";
 import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actions/Actions";
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 import {ContactNodeService} from "./ContactNodeService";
+import {PromotionApi} from "../../http/PromotionApi";
+import {Promotion} from "../../model/web/Promotion";
 import {PurchaseItem} from "../../model/checkout/Index";
 
 
@@ -37,7 +39,7 @@ const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
 
 export class CheckoutService {
-  constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi) {
+  constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi, private promotionApi: PromotionApi) {
   }
 
   public cartIsEmpty = (cart: CartState): boolean => {
@@ -68,6 +70,10 @@ export class CheckoutService {
   public getContactNode = (state: IshState): Promise<ContactNode> => {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromState(state));
   };
+  
+  public getPromotion = (code: string, state: IshState): Promise<Promotion> => {
+    return this.promotionApi.getPromotion(code);
+  }
 
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
     if (item.selected) {
@@ -127,7 +133,8 @@ export class CheckoutService {
 
 const {
   contactApi,
-  checkoutApi
+  promotionApi,
+  checkoutApi,
 } = Injector.of();
 
 export class BuildContactNodeRequest {
@@ -220,4 +227,4 @@ export class BuildCheckoutModelRequest {
   }
 }
 
-export default new CheckoutService(contactApi, checkoutApi);
+export default new CheckoutService(contactApi, checkoutApi, promotionApi);

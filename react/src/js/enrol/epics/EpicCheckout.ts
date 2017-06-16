@@ -18,6 +18,8 @@ import {EpicProceedToPayment} from "./EpicProceedToPayment";
 import {EpicPayment} from "../containers/payment/epics/EpicPayment";
 import {FinishCheckoutProcess} from "./EpicFinishCheckoutProcess";
 import {EpicResult} from "../containers/result/epics/EpicResult";
+import {EpicAddCode} from "./EpicAddCode";
+import {EpicUpdateSummary} from "./EpicUpdateSummary";
 
 const {
   contactApi
@@ -29,9 +31,11 @@ export const EpicCheckout = combineEpics(
   PhaseChangeEpic,
   EpicAddContact,
   OpenContactEditEpic,
+  EpicAddCode,
   EpicOpenSummary,
   EpicItemSelect,
   EpicUpdateAmount,
+  EpicUpdateSummary,
   EpicProceedToPayment,
   EpicPayment,
   FinishCheckoutProcess,

@@ -5,6 +5,7 @@ import {ContactNode} from "../../../../model/checkout/ContactNode";
 import {Voucher} from "../../../../model/checkout/Voucher";
 import {Article} from "../../../../model/checkout/Article";
 import {Membership} from "../../../../model/checkout/Membership";
+import {Promotion} from "../../../../model/web/Promotion";
 const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e: Enrolment) => `${e.contactId}-${e.classId}`});
 const SApplications = new schema.Entity('applications', {}, {idAttribute: (a: Application) => `${a.contactId}-${a.classId}`});
 const SMemberships = new schema.Entity('memberships', {}, {idAttribute: (m: Membership) => `${m.contactId}-${m.productId}`});
@@ -48,7 +49,7 @@ export const ContactNodeToState = (input: ContactNode[]): State => {
   return normalize(input, Schema);
 };
 
-export const ItemToState = (input: Enrolment | Application): State => {
+export const ItemToState = (input: Enrolment | Application | Membership | Article | Voucher): State => {
 
   const node: ContactNode = new ContactNode();
   node.contactId = input.contactId;
