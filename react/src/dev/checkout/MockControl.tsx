@@ -1,12 +1,11 @@
 import * as React from "react";
 import * as L from "lodash";
 import {Actions} from "../../js/web/actions/Actions";
-import localForage from "localforage";
+import localforage from "localforage";
 import {MockConfig} from "../mocks/mocks/MockConfig";
 
-import Inspector from "react-inspector";
+import * as ReactInspector from "react-inspector";
 
-import "../../scss/index.scss";
 import {Values} from "redux-form-website-template";
 import {NAME} from "../../js/enrol/containers/payment/CreditCartForm";
 import {NAME as ContactEditFormName} from "../../js/enrol/containers/contact-edit/ContactEditForm";
@@ -19,7 +18,7 @@ interface Props {
 export class MockControl extends React.Component<Props, any> {
 
   private resetLocalForage = () => {
-    localForage.clear();
+    localforage.clear();
   };
 
   private loadCourseClasses = () => {
@@ -68,9 +67,9 @@ export class MockControl extends React.Component<Props, any> {
         <button className="btn" onClick={this.resetLocalForage}>Reset LocalForage</button>
       </fieldset>
       <fieldset>
-        <Inspector data={config.db}/>
-        <Inspector data={config.store.getState()}/>
-        <Inspector data={config.props}/>
+        <ReactInspector.Inspector data={config.db}/>
+        <ReactInspector.Inspector data={config.store.getState()}/>
+        <ReactInspector.Inspector data={config.props}/>
       </fieldset>
       <Values form={NAME}/>
       <Values form={ContactEditFormName}/>

@@ -5,7 +5,8 @@ import {ValidationError} from "../../model/common/ValidationError";
 import {AxiosResponse} from "axios";
 
 export const isValidationError = (error: any): boolean => {
-  return error instanceof ValidationError || !(isNil(error) || isUndefined(error.formErrors) && isUndefined(error.fieldsErrors));
+  return error instanceof ValidationError
+    || !(isNil(error) || isUndefined(error.formErrors) && isUndefined(error.fieldsErrors));
 };
 
 export const isCommonError = (error: any): boolean => {
@@ -17,7 +18,7 @@ export const isPlainTextError = (error: any): boolean => {
 };
 
 export const commonErrorToValidationError = (error: CommonError):ValidationError => {
-  let messages: ValidationError = new ValidationError();
+  const messages: ValidationError = new ValidationError();
   messages.formErrors = [];
   messages.fieldsErrors = [];
   messages.formErrors.push(error.message);
@@ -35,7 +36,7 @@ export const toValidationError = (response: AxiosResponse) => {
   } else if (isPlainTextError(response.data)) {
     messages.formErrors.push(response.data);
   } else {
-    messages.formErrors.push("Unexpected error.")
+    messages.formErrors.push("Unexpected error.");
   }
   return messages;
 };

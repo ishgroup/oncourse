@@ -5,7 +5,6 @@ import {Provider} from "react-redux";
 import Checkout from "../../js/enrol/containers/Checkout";
 
 import "react-select/dist/react-select.css";
-import "../../scss/_ReactSelect.scss";
 import "../../scss/index.scss";
 
 import {MockControl} from "./MockControl";

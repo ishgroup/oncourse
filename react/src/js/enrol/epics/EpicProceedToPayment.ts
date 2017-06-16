@@ -4,12 +4,10 @@ import CheckoutService from "../services/CheckoutService";
 import {PROCEED_TO_PAYMENT, updateContactNode} from "../containers/summary/actions/Actions";
 import {CHANGE_PHASE, changePhase, updateAmount} from "../actions/Actions";
 import * as EpicUtils from "./EpicUtils";
-import {showCommonError} from "./EpicUtils";
 import {CheckoutModel} from "../../model/checkout/CheckoutModel";
 import {ContactNode} from "../../model/checkout/ContactNode";
 import {Phase} from "../reducers/State";
 import {CommonError} from "../../model/common/CommonError";
-import {commonErrorToValidationError} from "../../common/utils/ErrorUtils";
 import {Epic} from "redux-observable";
 
 
@@ -18,7 +16,7 @@ const request: EpicUtils.Request<CheckoutModel, IshState> = {
   getData: (payload: any, state: IshState): Promise<CheckoutModel> => CheckoutService.getCheckoutModel(state),
   processData: (value: CheckoutModel, state: IshState) => {
     return ProcessCheckoutModel.process(value);
-  }
+  },
 };
 
 export const EpicProceedToPayment: Epic<any, any> = EpicUtils.Create(request);
@@ -32,8 +30,8 @@ export class ProcessCheckoutModel {
     let result = ProcessCheckoutModel.processError(model.error);
     result = [...result, ... ProcessCheckoutModel.processNodes(model.contactNodes)];
     result.push(updateAmount(model.amount));
-    if (!result.find((a) => a.type == CHANGE_PHASE && a.payload == Phase.Summary)) {
-      result.push(changePhase(Phase.Payment))
+    if (!result.find(a => a.type === CHANGE_PHASE && a.payload === Phase.Summary)) {
+      result.push(changePhase(Phase.Payment));
     }
     return result;
   };
@@ -59,7 +57,7 @@ export class ProcessCheckoutModel {
     const result = [];
     if (!L.isNil(error)) {
       result.push(changePhase(Phase.Summary));
-      result.push(showCommonError(commonErrorToValidationError(error)))
+      result.push(EpicUtils.showCommonError(error));
     }
     return result;
   }
