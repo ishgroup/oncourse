@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		cayenneVersion = '4.0.M3.2'
-		log4j2Version = '2.8'
+		log4j2Version = '2.8.2'
         waCommonWebservicesClientVersion = '9.3.32'
 		solrVersion = '5.5.3'
 		groovyVersion = '2.4.10'
@@ -30,7 +30,7 @@ plugins {
 	id 'maven-publish'
 	id 'application'
 	id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
-	id 'com.github.ben-manes.versions' version '0.14.0' // adds the task 'dependencyUpdates -Drevision=release'
+	id 'com.github.ben-manes.versions' version '0.15.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
 ext {
@@ -107,7 +107,7 @@ allprojects {
 		testCompile 'org.dbunit:dbunit:2.4.8'
 		testCompile 'junit:junit:4.12'
 
-        deployerJars 'org.apache.maven.wagon:wagon-http:2.8'
+        deployerJars 'org.apache.maven.wagon:wagon-http:2.12'
 	}
 
 	group = 'ish.oncourse.willow'
