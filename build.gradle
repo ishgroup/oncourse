@@ -1,9 +1,9 @@
 buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '9.3.31'
-		log4j2Version = '2.7'
-		cayenneVersion = '4.0.M3.2'
-		jettyVersion = '9.3.14.v20161028'
+		log4j2Version = '2.8.2'
+		cayenneVersion = '4.0.M5'
+		jettyVersion = '9.4.6.v20170531'
 	}
 	repositories {
 		maven {
@@ -15,20 +15,23 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
 		classpath "org.apache.cayenne:cayenne-tools:$cayenneVersion"
 	}
 }
 
+plugins {
+	id 'java'
+	id 'groovy'
+	id 'maven'
+	id 'jacoco' // adds the task 'jacocoTestReport'
+	id 'appBundler'
+	id 'maven-publish'
+	id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
+	id 'com.github.ben-manes.versions' version '0.15.0' // adds the task 'dependencyUpdates -Drevision=release'
+}
+
 allprojects {
-	apply plugin: 'java'
-	apply plugin: 'maven'
-	apply plugin: 'jacoco' // adds the task 'jacocoTestReport'
-	apply plugin: 'com.github.ben-manes.versions' // adds the task 'dependencyUpdates -Drevision=release'
-	apply plugin: 'idea' //adds tasks cleanIdeaModule and ideaModule
-	apply plugin: 'appBundler'
-	apply plugin: 'maven-publish'
-    apply plugin: 'findbugs'
 
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
@@ -58,7 +61,7 @@ allprojects {
 		compile "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"
 		//log4j2 to commons-logging bridge
 		compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
-        compile 'com.google.code.findbugs:jsr305:3.0.1'
+        compile 'com.google.code.findbugs:jsr305:3.0.2'
     }
 
 	group = 'ish.oncourse.angel'
