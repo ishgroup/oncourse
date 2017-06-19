@@ -17,32 +17,32 @@ const SContactNodes = new schema.Entity('contactNodes', {
     applications: [SApplications],
     memberships: [SMemberships],
     articles: [SArticles],
-    vouchers: [SVouchers]
+    vouchers: [SVouchers],
   }, {idAttribute: "contactId"});
 
 const Schema = new schema.Array(SContactNodes);
 
 export interface ContactNodeStorage {
-    contactId: string,
-    enrolments: string[]
-    applications: string[]
-    vouchers: string[]
-    articles: string[]
-    memberships: string[]
+  contactId: string;
+  enrolments: string[];
+  applications: string[];
+  vouchers: string[];
+  articles: string[];
+  memberships: string[];
 }
 export interface ContactNodesStorage {[key: string]: ContactNodeStorage
 }
 
 export interface State {
-  result: string[]
+  result: string[];
   entities: {
     enrolments: { [key: string]: Enrolment }
     applications: { [key: string]: Application }
     vouchers: { [key: string]: Voucher }
     articles: { [key: string]: Article }
     memberships: { [key: string]: Membership }
-    contactNodes: ContactNodesStorage
-  }
+    contactNodes: ContactNodesStorage;
+  };
 }
 
 export const ContactNodeToState = (input: ContactNode[]): State => {

@@ -29,7 +29,11 @@ const enrolment12: Enrolment = db.createEnrolment(contact1.id, courseClass2.id);
 
 const node1: ContactNode = {
   contactId: contact1.id,
-  enrolments: [enrolment11, enrolment12]
+  enrolments: [enrolment11, enrolment12],
+  applications: [],
+  articles: [],
+  vouchers: [],
+  memberships: [],
 };
 
 
@@ -39,13 +43,13 @@ test('test CheckoutModel processing', () => {
   model.contactNodes = [];
   model.error = {
     code: 0,
-    message: "Common Error Message"
+    message: "Common Error Message",
   };
   model.amount = mockAmount();
 
   model.contactNodes = [node1];
 
-  let actions: any[] = ProcessCheckoutModel.process(model);
+  const actions: any[] = ProcessCheckoutModel.process(model);
 
   expect(actions[0].type).toBe(CHANGE_PHASE);
   expect(actions[0].payload).toBe(Phase.Summary);

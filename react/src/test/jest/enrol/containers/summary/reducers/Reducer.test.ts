@@ -15,37 +15,37 @@ const state: State = ContactNodeToState([{
     {
       contactId: "00001",
       classId: "00001",
-      selected: false
+      selected: false,
     }, {
       contactId: "00001",
       classId: "00002",
-      selected: false
-    }
-  ]
+      selected: false,
+    },
+  ],
 }, {
   contactId: "00002",
   enrolments: [
     {
       contactId: "00002",
       classId: "00001",
-      selected: false
+      selected: false,
     }, {
       contactId: "00002",
       classId: "00002",
-      selected: false
+      selected: false,
     }, {
       contactId: "00002",
       classId: "00003",
-      selected: false
-    }
+      selected: false,
+    },
   ],
   applications: [
     {
       contactId: "00002",
       classId: "00004",
-      selected: false
-    }
-  ]
+      selected: false,
+    },
+  ],
 }]);
 
 
@@ -56,9 +56,9 @@ test('test add contact ', () => {
       {
         contactId: "00003",
         classId: "00001",
-        selected: false
-      }
-    ]
+        selected: false,
+      },
+    ],
   };
 
   const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
@@ -76,9 +76,9 @@ test('test add enrolment ', () => {
       {
         contactId: "00002",
         classId: "00004",
-        selected: false
-      }
-    ]
+        selected: false,
+      },
+    ],
   };
 
   const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
@@ -96,9 +96,9 @@ test('test update enrolment', () => {
       {
         contactId: "00002",
         classId: "00003",
-        selected: true
-      }
-    ]
+        selected: true,
+      },
+    ],
   };
   const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
   expect(ns.result.length).toBe(2);
@@ -113,9 +113,9 @@ test('test update enrolment', () => {
       {
         contactId: "00002",
         classId: "00005",
-        selected: true
-      }
-    ]
+        selected: true,
+      },
+    ],
   };
 
   const payload: State = ContactNodeToState([upi]);
@@ -125,6 +125,6 @@ test('test update enrolment', () => {
   ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
   ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
 
-  console.log(inspect(ns, true, 10, true))
+  console.log(inspect(ns, true, 10, true));
 
 });
