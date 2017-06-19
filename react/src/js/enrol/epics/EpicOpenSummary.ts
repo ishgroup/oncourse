@@ -4,7 +4,7 @@ import {ItemsLoad, OpenSummaryRequest} from "../containers/summary/actions/Actio
 import CheckoutService from "../services/CheckoutService";
 import {ContactNode} from "../../model/checkout/ContactNode";
 import {IshState} from "../../services/IshState";
-import {changePhase, SHOW_MESSAGES, updateAmountRequest} from "../actions/Actions";
+import {changePhase, SHOW_MESSAGES, updateAmountRequest, updateSummaryRequest} from "../actions/Actions";
 import {Phase} from "../reducers/State";
 import {toValidationError} from "../../common/utils/ErrorUtils";
 import * as EpicUtils from "./EpicUtils";
@@ -17,7 +17,7 @@ const request: EpicUtils.Request<ContactNode, IshState> = {
     return [{
       type: ItemsLoad,
       payload: ContactNodeToState([contactNode])
-    }, changePhase(Phase.Summary), updateAmountRequest()];
+    }, updateSummaryRequest(), changePhase(Phase.Summary)];
   },
   processError: (data) => {
     return [{type: SHOW_MESSAGES, payload: toValidationError(data)}]
