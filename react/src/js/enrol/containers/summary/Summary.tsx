@@ -9,23 +9,22 @@ import {
   ContactProps,
   EnrolmentProps,
   MembershipProps,
-  VoucherProps
+  VoucherProps,
 } from "./components";
 
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem} from "./actions/Actions";
 import {openAddContactForm} from "../contact-add/actions/Actions";
 import {SummaryService} from "./services/SummaryService";
-import {Application} from "../../../model/checkout/Application";
 import {addCode} from "../../actions/Actions";
 
 
-export const EnrolmentPropsBy = (enrolment, state: IshState): EnrolmentProps => {
+export const EnrolmentPropsBy = (e, state: IshState): EnrolmentProps => {
   return {
     contact: state.checkout.payer.entity,
-    courseClass: state.courses.entities[enrolment.classId],
-    enrolment: enrolment
-  }
+    courseClass: state.courses.entities[e.classId],
+    enrolment: e,
+  };
 };
 
 export const ApplicationPropsBy = (a: Application, state: IshState): ApplicationProps => {
