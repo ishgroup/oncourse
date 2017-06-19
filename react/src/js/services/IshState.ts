@@ -4,6 +4,7 @@ import {CourseClass} from "../model/web/CourseClass";
 import {Product} from "../model/web/Product";
 import {Contact} from "../model/web/Contact";
 import {CheckoutState} from "../enrol/reducers/State";
+import {Discount} from "../model/web/Discount";
 
 export interface IshState {
   readonly form: any;
@@ -39,6 +40,9 @@ export type ProductCartState = Normalized<ProductCart>;
 export type PromotionCartState = Normalized<PromotionCart>;
 
 //--- Extend backend model
+export interface DiscountState extends Discount {
+}
+
 export interface CourseClassPriceState extends CourseClassPrice {
 }
 
