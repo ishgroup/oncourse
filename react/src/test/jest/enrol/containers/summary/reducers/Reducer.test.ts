@@ -59,12 +59,21 @@ test('test add contact ', () => {
         selected: false,
       },
     ],
+    memberships: [
+      {
+        contactId: "00003",
+        productId: "00011",
+        selected: false,
+      },
+    ]
   };
 
   const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
+  console.log(inspect(ns, true, 10, true));
 
   expect(ns.result.length).toBe(3);
   expect(ns.entities.enrolments['00003-00001'].contactId).toBe('00003');
+  expect(ns.entities.memberships['00003-00011'].contactId).toBe('00003');
   expect(ns.entities.contactNodes['00003'].contactId).toBe('00003');
 });
 

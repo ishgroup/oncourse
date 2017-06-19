@@ -1,9 +1,9 @@
 import * as SummaryActions from "../actions/Actions";
+import {UPDATE_CONTACT_NODE} from "../actions/Actions";
 import {ContactNodeToState, State} from "./State";
 import {RESET_CHECKOUT_STATE} from "../../../actions/Actions";
 import * as L from "lodash";
 import {ContactNode} from "../../../../model/checkout/ContactNode";
-import {UPDATE_CONTACT_NODE} from "../actions/Actions";
 
 export const Reducer = (state: State = ContactNodeToState([]), action: { type: string, payload: State }): State => {
   switch (action.type) {
@@ -77,7 +77,7 @@ const merge = (state: State, payload: State): State => {
   const ns: State = L.cloneDeep(state);
   switch (getCase(ns, payload)) {
     case Case.addContact:
-      mergePurchases(state, payload);
+      mergePurchases(ns, payload);
       ns.result = [...ns.result, ...payload.result];
       ns.entities.contactNodes = {...ns.entities.contactNodes, ...payload.entities.contactNodes};
       break;
@@ -85,11 +85,11 @@ const merge = (state: State, payload: State): State => {
       payload.result.forEach((id) => {
         const stateNode: ContactNode = ns.entities.contactNodes[id];
         const payloadNode: ContactNode = payload.entities.contactNodes[id];
-        stateNode.enrolments = [...stateNode.enrolments, ...payloadNode.enrolments];
-        stateNode.applications = [...stateNode.applications, ...payloadNode.applications];
-        stateNode.memberships = [...stateNode.memberships, ...payloadNode.memberships];
-        stateNode.articles = [...stateNode.articles, ...payloadNode.articles];
-        stateNode.vouchers = [...stateNode.vouchers, ...payloadNode.vouchers];
+        stateNode.enrolments = L.concat(stateNode.enrolments, payloadNode.enrolments);
+        stateNode.applications = L.concat(stateNode.applications, payloadNode.applications);
+        stateNode.memberships = L.concat(stateNode.memberships, payloadNode.memberships);
+        stateNode.articles = L.concat(stateNode.articles, payloadNode.articles);
+        stateNode.vouchers = L.concat(stateNode.vouchers, ...payloadNode.vouchers);
       });
       mergePurchases(ns, payload);
       break;
