@@ -23,7 +23,9 @@ class GetContactFields {
     final static Logger logger = LoggerFactory.getLogger(GetContactFields.class)
     
     static FieldProperty[] credentialProperty = [FieldProperty.FIRST_NAME, FieldProperty.LAST_NAME, FieldProperty.EMAIL_ADDRESS] as FieldProperty[]
-    
+    static FieldProperty[] extendedCustomFields = [FieldProperty.CUSTOM_FIELD_STUDENT, FieldProperty.CUSTOM_FIELD_COURSE, FieldProperty.CUSTOM_FIELD_ENROLMENT,
+                                                   FieldProperty.CUSTOM_FIELD_APPLICATION, FieldProperty.CUSTOM_FIELD_WAITING_LIST] as FieldProperty[]
+
     ContactFields result = new ContactFields()
     FieldHeading dummy = new FieldHeading()
     Map<String, FieldHeading> headingsMap = new HashMap<>()
@@ -94,7 +96,7 @@ class GetContactFields {
         fields.each { f ->                                                            // sort out each field
             FieldProperty property = FieldProperty.getByKey(f.property)
             
-            if (!credentialProperty.contains(property)) {
+            if (!credentialProperty.contains(property) && !extendedCustomFields.contains(property)) {
                 PropertyGetSet getSet  = factory.get(f, getContext.call(property.contextType, contact))
                 if (!mandatoryOnly || (f.mandatory && getSet.get() == null)) {
                     getHeadingBy(f.fieldHeading).fields << new FieldBuilder(field: f, aClass: getSet.type).build()               // create rest 'field' based on data type and persistent 'field'. Add to corresponded heading
