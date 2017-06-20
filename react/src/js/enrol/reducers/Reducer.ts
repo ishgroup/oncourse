@@ -1,23 +1,37 @@
 import {combineReducers} from "redux";
-import {CheckoutState, PayerState, Phase} from "./State";
+import {CheckoutState, Phase} from "./State";
+import * as L from "lodash";
 import * as Actions from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
 import * as ContactAddActions from "../containers/contact-add/actions/Actions";
+import {SET_PAYER_TO_STATE} from "../containers/contact-add/actions/Actions";
 
 import {ValidationError} from "../../model/common/ValidationError";
 import {ContactFields} from "../../model/field/ContactFields";
 import {Amount} from "../../model/checkout/Amount";
 import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
 import {Reducer as PaymentReducer} from "../containers/payment/reducers/Reducer";
-import {ContactBox} from "../../NormalizeSchema";
-import {Contact} from "../../model/web/Contact";
+import {ContactsSchema, ContactsState} from "../../NormalizeSchema";
 import {Promotion} from "../../model/web/Promotion";
+import {IAction} from "../../actions/IshAction";
+import {normalize} from "normalizr";
 
-const NewContactReducer = (state: boolean = false, action: { type: string, payload: boolean }): boolean => {
+const PayerReducer = (state: string = null, action: IAction<string>): string => {
+  switch (action.type) {
+    case SET_PAYER_TO_STATE:
+      return action.payload;
+    case Actions.RESET_CHECKOUT_STATE:
+      return null;
+    default:
+      return state;
+  }
+};
+
+const NewContactReducer = (state: boolean = false, action: IAction<boolean>): boolean => {
   switch (action.type) {
     case Actions.SET_NEW_CONTACT_FLAG:
       return action.payload;
-    case ContactEditActions.FieldsSave:
+    case ContactEditActions.SET_FIELDS_TO_STATE:
     case Actions.RESET_CHECKOUT_STATE:
       return false;
     default:
@@ -27,7 +41,7 @@ const NewContactReducer = (state: boolean = false, action: { type: string, paylo
 
 const FieldsReducer = (state: ContactFields = null, action): any => {
   switch (action.type) {
-    case ContactEditActions.FieldsLoad:
+    case ContactEditActions.SET_FIELDS_TO_STATE:
       return action.payload;
     case Actions.CHANGE_PHASE:
       switch (action.payload) {
@@ -43,10 +57,13 @@ const FieldsReducer = (state: ContactFields = null, action): any => {
   }
 };
 
-const ContactReducer = (state: Contact = null, action: { type: string, payload: ContactBox }): Contact => {
+const ContactsReducer = (state: ContactsState = normalize([], ContactsSchema), action: IAction<ContactsState>): ContactsState => {
   switch (action.type) {
-    case ContactAddActions.ADD_CONTACT:
-      return action.payload.entities.contact[action.payload.result];
+    case ContactAddActions.ADD_CONTACT_TO_STATE:
+      const ns: ContactsState = L.cloneDeep(state);
+      ns.entities.contact = {...ns.entities.contact, ...action.payload.entities.contact};
+      ns.result = L.concat(ns.result, action.payload.result);
+      return ns;
     case Actions.RESET_CHECKOUT_STATE:
       return null;
     default:
@@ -55,7 +72,7 @@ const ContactReducer = (state: Contact = null, action: { type: string, payload: 
 };
 
 
-const AmountReducer = (state: Amount = null, action: { type: string, payload: Amount }): Amount => {
+const AmountReducer = (state: Amount = null, action: IAction<Amount>): Amount => {
   switch (action.type) {
     case Actions.UPDATE_AMOUNT:
       return action.payload;
@@ -71,9 +88,9 @@ const ErrorReducer = (state: ValidationError = null, action: any): any => {
     case Actions.SHOW_MESSAGES:
       return action.payload;
     case Actions.CHANGE_PHASE:
-    case ContactAddActions.ADD_CONTACT:
-    case ContactEditActions.FieldsLoad:
-    case ContactEditActions.FieldsSave:
+    case ContactAddActions.ADD_CONTACT_TO_STATE:
+    case ContactEditActions.SET_FIELDS_TO_STATE:
+    case ContactEditActions.RESET_FIELDS_STATE:
       return {};
     default:
       return state;
@@ -98,33 +115,16 @@ const AddCodeReducer = (state: Promotion = null, action: { type: string, payload
   }
 };
 
-const contactsState = {entities: {}, result: []};
-const ContactsReducer = (state: {entities: {}, result: any[]} = contactsState, action: {type: string, payload: ContactBox}): any => {
-  switch (action.type) {
-    case ContactAddActions.ADD_ADDITIONAL_CONTACT:
-      const contact = action.payload.entities.contact[action.payload.result];
-      return {
-        entities: {...state.entities, [contact.id]: contact},
-        result: state.result.concat(contact.id),
-      };
-    case Actions.RESET_CHECKOUT_STATE:
-      return null;
-    default:
-      return state;
-  }
-};
 
 export const Reducer = combineReducers<CheckoutState>({
   newContact: NewContactReducer,
   fields: FieldsReducer,
   phase: PhaseReducer,
-  addCode:AddCodeReducer,
+  addCode: AddCodeReducer,
   error: ErrorReducer,
   amount: AmountReducer,
   summary: SummaryReducer,
   payment: PaymentReducer,
-  payer: combineReducers<PayerState>({
-    entity: ContactReducer,
-  }),
+  payerId: PayerReducer,
   contacts: ContactsReducer,
 });

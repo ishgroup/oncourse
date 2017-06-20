@@ -21,7 +21,6 @@ import {PaymentStatus} from "../../js/model/checkout/payment/PaymentStatus";
 import {Membership} from "../../js/model/checkout/Membership";
 import {Article} from "../../js/model/checkout/Article";
 import {Application} from "../../js/model/checkout/Application";
-import {updateContactNode} from "../../js/enrol/containers/summary/actions/Actions";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;

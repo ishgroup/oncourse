@@ -9,7 +9,7 @@ import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
-import {sendInitRequest, changePhase} from "../actions/Actions";
+import {changePhase, sendInitRequest} from "../actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 
 
@@ -32,12 +32,12 @@ export class Checkout extends React.Component<Props, any> {
       <div id="checkout" className="col-xs-24 payments">
         <Progress/>
         <Messages/>
-        {phase === Phase.AddContact &&
+        {phase === Phase.AddPayer &&
           <ContactAddForm
             onSubmit={CheckoutService.createOrGetContact}
           />
         }
-        {phase === Phase.AddAdditionalContact &&
+        {phase === Phase.AddContact &&
           <ContactAddForm
             onSubmit={CheckoutService.createOrGetContact}
             onCancel={() => this.props.changePhase(Phase.Summary)}

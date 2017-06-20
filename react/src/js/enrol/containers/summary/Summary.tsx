@@ -9,21 +9,20 @@ import {
   ContactProps,
   EnrolmentProps,
   MembershipProps,
-  VoucherProps,
+  VoucherProps
 } from "./components";
 
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem} from "./actions/Actions";
-import {openAddContactForm} from "../contact-add/actions/Actions";
 import {changePhase} from "../../../enrol/actions/Actions";
 import {Phase} from "../../../enrol/reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import {addCode} from "../../actions/Actions";
 
 
-export const EnrolmentPropsBy = (e, state: IshState): EnrolmentProps => {
+export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
-    contact: state.checkout.payer.entity,
+    contact: state.checkout.contacts.entities.contact[e.contactId],
     courseClass: state.courses.entities[e.classId],
     enrolment: e,
   };
@@ -31,7 +30,7 @@ export const EnrolmentPropsBy = (e, state: IshState): EnrolmentProps => {
 
 export const ApplicationPropsBy = (a: Application, state: IshState): ApplicationProps => {
   return {
-    contact: state.checkout.payer.entity,
+    contact: state.checkout.contacts.entities.contact[a.contactId],
     courseClass: state.courses.entities[a.classId],
     application: a,
   };
@@ -39,7 +38,7 @@ export const ApplicationPropsBy = (a: Application, state: IshState): Application
 
 export const VoucherPropsBy = (v: Voucher, state: IshState): VoucherProps => {
   return {
-    contact: state.checkout.payer.entity,
+    contact: state.checkout.contacts.entities.contact[v.contactId],
     product: state.products.entities[v.productId],
     voucher: v,
   };
@@ -47,7 +46,7 @@ export const VoucherPropsBy = (v: Voucher, state: IshState): VoucherProps => {
 
 export const MembershipPropsBy = (m: Membership, state: IshState): MembershipProps => {
   return {
-    contact: state.checkout.payer.entity,
+    contact: state.checkout.contacts.entities.contact[m.contactId],
     product: state.products.entities[m.productId],
     membership: m,
   };
@@ -55,7 +54,7 @@ export const MembershipPropsBy = (m: Membership, state: IshState): MembershipPro
 
 export const ArticlePropsBy = (a: Article, state: IshState): ArticleProps => {
   return {
-    contact: state.checkout.payer.entity,
+    contact: state.checkout.contacts.entities.contact[a.contactId],
     product: state.products.entities[a.productId],
     article: a,
   };
@@ -75,7 +74,7 @@ export const ContactPropsBy = (contactId: string, state: IshState): ContactProps
   const articles = state.checkout.summary.entities.articles || [];
 
   return {
-    contact: state.checkout.payer.entity,
+    contact: state.checkout.contacts.entities.contact[contactId],
     enrolments: enrolmentIds.map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
     applications: applicationIds.map((id: string): ApplicationProps => ApplicationPropsBy(applications[id], state)),
     vouchers: voucherIds.map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
@@ -110,7 +109,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       dispatch(selectItem(item, selected));
     },
     onAddContact: (): void => {
-      dispatch(changePhase(Phase.AddAdditionalContact));
+      dispatch(changePhase(Phase.AddContact));
     },
     onProceedToPayment: (): void => {
       dispatch(proceedToPayment());

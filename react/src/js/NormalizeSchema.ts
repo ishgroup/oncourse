@@ -9,19 +9,13 @@ export const ProductsListSchema = new schema.Array(ProductsSchema);
 
 export const PromotionsSchema = new schema.Entity('promotions');
 
-export interface ContactBox {
-  result: string
-  entities: {
-    contact: { [key: string]: Contact }
-  }
-}
-
-export interface ContactsBox {
+export interface ContactsState {
   result: string[]
   entities: {
     contact: { [key: string]: Contact }
   }
 }
+
 
 export const ContactSchema = new schema.Entity('contact');
 export const ContactsSchema = new schema.Array(ContactSchema);

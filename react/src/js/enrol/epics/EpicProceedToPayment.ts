@@ -1,7 +1,7 @@
 import * as L from "lodash";
 import {IshState} from "../../services/IshState";
 import CheckoutService from "../services/CheckoutService";
-import {PROCEED_TO_PAYMENT, updateContactNode} from "../containers/summary/actions/Actions";
+import {addContactNodeToState, PROCEED_TO_PAYMENT} from "../containers/summary/actions/Actions";
 import {CHANGE_PHASE, changePhase, updateAmount} from "../actions/Actions";
 import * as EpicUtils from "./EpicUtils";
 import {CheckoutModel} from "../../model/checkout/CheckoutModel";
@@ -47,7 +47,7 @@ export class ProcessCheckoutModel {
           || node.vouchers.find(v => !L.isEmpty(v.errors) && v.selected)) {
           result.push(changePhase(Phase.Summary));
         }
-        result.push(updateContactNode(node));
+        result.push(addContactNodeToState(node));
       });
     }
     return result;

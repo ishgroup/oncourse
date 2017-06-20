@@ -3,18 +3,29 @@ import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {ContactNode} from "../../../../model/checkout/ContactNode";
 import {ContactNodeToState, State} from "../reducers/State";
 import {Application} from "../../../../model/checkout/Application";
+import {IAction} from "../../../../actions/IshAction";
+import {Contact} from "../../../../model/web/Contact";
 
-export const OpenSummaryRequest: string = _toRequestType("checkout/summary/open");
+export const ADD_CONTACT_TO_SUMMARY: string = _toRequestType("checkout/summary/add/contact/to/summary");
+
 export const PROCEED_TO_PAYMENT: string = "checkout/summary/proceed/to/payment";
 
 export const ItemsLoad: string = "checkout/summary/items/load";
-export const ItemsLoadRequest: string = _toRequestType(ItemsLoad);
 
-export const UPDATE_CONTACT_NODE: string = "checkout/summary/update/ContactNode";
+export const GET_CONTACT_NODE_FROM_BACKEND: string = "checkout/summary/get/ContactNode/from/backend";
+export const ADD_CONTACT_NODE_TO_STATE: string = "checkout/summary/update/ContactNode";
 
 
 export const SELECT_ITEM: string = "checkout/summary/select/item";
 export const SELECT_ITEM_REQUEST: string = _toRequestType(SELECT_ITEM);
+
+
+export const addContactToSummary = (contact: Contact): IAction<Contact> => {
+  return {
+    type: ADD_CONTACT_TO_SUMMARY,
+    payload: contact
+  }
+};
 
 
 /**
@@ -32,21 +43,20 @@ export const proceedToPayment = (): { type: string } => {
   return {type: PROCEED_TO_PAYMENT};
 };
 
+export const getContactNodeFromBackend = (contact: Contact): IAction<Contact> => {
+  return {
+    type: GET_CONTACT_NODE_FROM_BACKEND,
+    payload: contact
+  }
+};
+
 /**
  * the node has been got from backend and we need to update client state
  */
-export const updateContactNode = (node: ContactNode): { type: string, payload: State } => {
-  const payload:State = ContactNodeToState([node]);
+export const addContactNodeToState = (node: ContactNode): IAction<State> => {
+  const payload: State = ContactNodeToState([node]);
   return {
-    payload,
-    type: UPDATE_CONTACT_NODE,
-  };
-};
-
-export const addNewContact = (node: ContactNode): { type: string, payload: State } => {
-  const payload:State = ContactNodeToState([node]);
-  return {
-    payload,
-    type: UPDATE_CONTACT_NODE,
+    type: ADD_CONTACT_NODE_TO_STATE,
+    payload: payload,
   };
 };

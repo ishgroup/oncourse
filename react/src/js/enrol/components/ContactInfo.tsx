@@ -6,7 +6,7 @@ interface Props {
   controls?: any;
 }
 
-class ContactInfo extends React.Component<Props, any> {
+export class ContactInfo extends React.Component<Props, any> {
   public render() {
     const {contact, controls} = this.props;
     return (
@@ -19,5 +19,3 @@ class ContactInfo extends React.Component<Props, any> {
     );
   }
 }
-
-export default ContactInfo;

@@ -1,4 +1,4 @@
-import {_toRejectType, _toRequestType} from "../../common/actions/ActionUtils";
+import {_toRequestType} from "../../common/actions/ActionUtils";
 import {Phase} from "../reducers/State";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
@@ -17,11 +17,9 @@ export const CHANGE_PHASE: string = "checkout/phase/change";
 export const CHANGE_PHASE_REQUEST: string = _toRequestType(CHANGE_PHASE);
 
 export const PayerSet: string = "checkout/payer/set";
-export const PayerSetRequest: string = _toRequestType(PayerSet);
-export const PayerSetReject: string = _toRejectType(PayerSet);
 
-export const UPDATE_AMOUNT: string = "checkout/amount/update";
-export const UPDATE_AMOUNT_REQUEST: string = _toRequestType(UPDATE_AMOUNT);
+export const GET_AMOUNT: string = "checkout/get/amount";
+export const UPDATE_AMOUNT: string = "checkout/update/amount";
 
 export const SET_NEW_CONTACT_FLAG = "checkout/set/new/contact/flag";
 
@@ -32,8 +30,7 @@ export const FINISH_CHECKOUT_PROCESS = "checkout/finish/process";
 export const ADD_CODE: string = "checkout/summary/add/code";
 export const ADD_CODE_REQUEST: string = _toRequestType(ADD_CODE);
 
-export const UPDATE_SUMMARY : string = "checkout/summary/update";
-export const UPDATE_SUMMARY_REQUEST: string = _toRequestType(UPDATE_SUMMARY);
+export const GET_CHECKOUT_MODEL_FROM_BACKEND: string = "checkout/get/model/from/backend";
 
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
@@ -42,9 +39,9 @@ export const addCode = (code: string): { type: string, payload: string } => {
   };
 };
 
-export const updateSummaryRequest = (): { type: string } => {
+export const getCheckoutModelFromBackend = (): IAction<any> => {
   return {
-    type: UPDATE_SUMMARY_REQUEST,
+    type: GET_CHECKOUT_MODEL_FROM_BACKEND,
   };
 };
 
@@ -71,13 +68,6 @@ export const showFormValidation = (response: AxiosResponse, form: string): any =
   };
 };
 
-export const changePhaseRequest = (phase: Phase) => {
-  return {
-    type: CHANGE_PHASE_REQUEST,
-    payload: phase,
-  };
-};
-
 export const changePhase = (phase: Phase) => {
 
   if (L.isNil(phase))
@@ -89,9 +79,9 @@ export const changePhase = (phase: Phase) => {
   };
 };
 
-export const updateAmountRequest = (): { type: string } => {
+export const getAmount = (): { type: string } => {
   return {
-    type: UPDATE_AMOUNT_REQUEST,
+    type: GET_AMOUNT,
   };
 };
 

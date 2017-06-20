@@ -10,7 +10,7 @@ import {DataType} from "../../../js/model/field/DataType";
 import {Item} from "../../../js/model/common/Item";
 import {IshState} from "../../../js/services/IshState";
 import {normalize} from "normalizr";
-import {ClassesListSchema} from "../../../js/NormalizeSchema";
+import {ClassesListSchema, ContactsSchema} from "../../../js/NormalizeSchema";
 import {ContactNode} from "../../../js/model/checkout/ContactNode";
 import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/State";
 import {Promotion} from "../../../js/model/web/Promotion";
@@ -161,14 +161,13 @@ export const mockState = (contact: Contact,
       checkout: {
         newContact: false,
         summary: ContactNodeToState(items),
-        payer: {
-          entity: contact
-        },
+        payerId: contact.id,
         fields: null,
         error: null,
         amount: null,
         phase: null,
-        payment: {}
+        payment: {},
+        contacts: normalize([contact], ContactsSchema)
       },
       cart: {
         contact: contact,
@@ -186,7 +185,7 @@ export const mockState = (contact: Contact,
       courses: {
         entities: nCourses.entities.classes,
         result: nCourses.result
-      }
+      },
     };
   return state;
 };

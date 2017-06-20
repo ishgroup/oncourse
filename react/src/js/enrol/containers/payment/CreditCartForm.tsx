@@ -83,7 +83,7 @@ const Form = reduxForm({
 
 const mapStateToProps = (state: IshState) => {
   return {
-    contacts: [state.checkout.payer.entity],
+    contacts: Object.values(state.checkout.contacts.entities.contact),
     amount: state.checkout.amount
   }
 };

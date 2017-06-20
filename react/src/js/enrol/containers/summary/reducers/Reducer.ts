@@ -1,5 +1,5 @@
 import * as SummaryActions from "../actions/Actions";
-import {UPDATE_CONTACT_NODE} from "../actions/Actions";
+import {ADD_CONTACT_NODE_TO_STATE} from "../actions/Actions";
 import {ContactNodeToState, State} from "./State";
 import {RESET_CHECKOUT_STATE} from "../../../actions/Actions";
 import * as L from "lodash";
@@ -11,8 +11,8 @@ export const Reducer = (state: State = ContactNodeToState([]), action: { type: s
       return merge(state, action.payload);
     case SummaryActions.ItemsLoad:
       return action.payload;
-    case UPDATE_CONTACT_NODE:
-      return action.payload;
+    case ADD_CONTACT_NODE_TO_STATE:
+      return merge(state, action.payload);
     case RESET_CHECKOUT_STATE:
       return ContactNodeToState([]);
     default:

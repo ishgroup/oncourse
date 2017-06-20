@@ -5,7 +5,7 @@ import EnrolmentComp, {Props as EnrolmentProps} from "./EnrolmentComp";
 import ApplicationComp, {Props as ApplicationProps} from "./ApplicationComp";
 import MembershipComp, {Props as MembershipProps} from "./MembershipComp";
 import ArticleComp, {Props as ArticleProps} from "./ArticleComp";
-import ContactInfo from "../../../components/ContactInfo";
+import {ContactInfo} from "../../../components/ContactInfo";
 import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {Membership} from "../../../../model/checkout/Membership";
 import {Article} from "../../../../model/checkout/Article";

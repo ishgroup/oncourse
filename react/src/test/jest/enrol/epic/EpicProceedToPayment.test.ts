@@ -1,7 +1,7 @@
 import {CheckoutModel} from "../../../../js/model/checkout/CheckoutModel";
 import {CHANGE_PHASE, SHOW_MESSAGES} from "../../../../js/enrol/actions/Actions";
 import {Phase} from "../../../../js/enrol/reducers/State";
-import {UPDATE_CONTACT_NODE} from "../../../../js/enrol/containers/summary/actions/Actions";
+import {ADD_CONTACT_NODE_TO_STATE} from "../../../../js/enrol/containers/summary/actions/Actions";
 import {ProcessCheckoutModel} from "../../../../js/enrol/epics/EpicProceedToPayment";
 
 import {ContactNode} from "../../../../js/model/checkout/ContactNode";
@@ -55,7 +55,7 @@ test('test CheckoutModel processing', () => {
   expect(actions[0].payload).toBe(Phase.Summary);
   expect(actions[1].type).toBe(SHOW_MESSAGES);
   expect(actions[1].payload.formErrors[0]).toBe("Common Error Message");
-  expect(actions[2].type).toBe(UPDATE_CONTACT_NODE);
+  expect(actions[2].type).toBe(ADD_CONTACT_NODE_TO_STATE);
   expect(actions[2].payload.result.length).toBe(1);
   expect(actions[2].payload.entities.contactNodes[node1.contactId].enrolments.length).toBe(2);
 });

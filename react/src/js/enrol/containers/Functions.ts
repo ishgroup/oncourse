@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import {Messages as MessagesComp} from "../components/Messages";
 import {Phase} from "../reducers/State";
 import {Model, Progress as ProgressComp, Tab} from "../components/Progress";
-import {changePhase, changePhaseRequest} from "../actions/Actions";
+import {changePhase} from "../actions/Actions";
 
 export const Messages = connect(state => (
   {error: state.checkout.error}
@@ -20,11 +20,11 @@ export const Progress = connect(
 const changeTab = (tab: Tab): { type: string, payload: Phase } => {
   switch (tab) {
     case Tab.Payment:
-      return changePhaseRequest(Phase.Payment);
+      return changePhase(Phase.Payment);
     case Tab.Summary:
       return changePhase(Phase.Summary);
     case Tab.Details:
-      return changePhaseRequest(Phase.Payment);
+      return changePhase(Phase.EditContact);
     default:
       throw new Error();
   }
@@ -41,7 +41,7 @@ export const progressModelBy = (phase: Phase): Model => {
       result.active = null;
       result.disabled = [Tab.Details, Tab.Summary, Tab.Payment];
       break;
-    case Phase.AddContact:
+    case Phase.AddPayer:
       result.active = Tab.Details;
       result.disabled = [Tab.Summary, Tab.Payment];
       break;
@@ -53,7 +53,7 @@ export const progressModelBy = (phase: Phase): Model => {
       result.active = Tab.Summary;
       result.disabled = [Tab.Details, Tab.Payment];
       break;
-    case Phase.AddAdditionalContact:
+    case Phase.AddContact:
       result.active = Tab.Summary;
       result.disabled = [Tab.Details, Tab.Payment];
       break;

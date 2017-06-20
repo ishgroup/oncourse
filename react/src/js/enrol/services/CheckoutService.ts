@@ -33,6 +33,7 @@ import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
 import {Promotion} from "../../model/web/Promotion";
 import {PurchaseItem} from "../../model/checkout/Index";
+import {Contact} from "../../model/web/Contact";
 
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
@@ -47,15 +48,15 @@ export class CheckoutService {
   }
 
   public hasPayer = (state: CheckoutState): boolean => {
-    return !L.isNil(state.payer.entity);
+    return !L.isNil(state.payerId);
   }
 
   public hasCartContact = (cart: CartState): boolean => {
     return L.isNil(cart.contact);
   }
 
-  public loadFields = (state: IshState): Promise<ContactFields> => {
-    return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(state));
+  public loadFields = (contact: Contact, state: IshState): Promise<ContactFields> => {
+    return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(contact, state.cart, state.checkout.newContact));
   }
 
   public submitContactDetails = (fields: ContactFields, values: ContactValues): Promise<any> => {
@@ -67,9 +68,9 @@ export class CheckoutService {
   }
 
 
-  public getContactNode = (state: IshState): Promise<ContactNode> => {
-    return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromState(state));
-  }
+  public getContactNode = (contact: Contact, cart: CartState): Promise<ContactNode> => {
+    return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromContact(contact, cart));
+  };
   
   public getPromotion = (code: string, state: IshState): Promise<Promotion> => {
     return this.promotionApi.getPromotion(code);
@@ -147,24 +148,33 @@ export class BuildContactNodeRequest {
     return result;
   }
 
-  static fromState = (state: IshState): ContactNodeRequest => {
+  static fromState = (cart: CartState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
-    result.contactId = state.cart.contact.id;
-    result.classIds = state.cart.courses.result;
-    result.productIds = state.cart.products.result;
-    result.promotionIds = state.cart.promotions.result;
+    result.contactId = cart.contact.id;
+    result.classIds = cart.courses.result;
+    result.productIds = cart.products.result;
+    result.promotionIds = cart.promotions.result;
+    return result;
+  }
+
+  static fromContact = (contact: Contact, cart: CartState): ContactNodeRequest => {
+    const result: ContactNodeRequest = new ContactNodeRequest();
+    result.contactId = contact.id;
+    result.classIds = cart.courses.result;
+    result.productIds = cart.products.result;
+    result.promotionIds = cart.promotions.result;
     return result;
   }
 }
 
 export class BuildContactFieldsRequest {
-  static fromState = (state: IshState): ContactFieldsRequest => {
+  static fromState = (contact:Contact, cart: CartState, newContact: boolean): ContactFieldsRequest => {
     const result: ContactFieldsRequest = new ContactFieldsRequest();
-    result.contactId = state.checkout.payer.entity.id;
-    result.classIds = state.cart.courses.result;
-    result.productIds = state.cart.products.result;
+    result.contactId = contact.id;
+    result.classIds = cart.courses.result;
+    result.productIds = cart.products.result;
     result.fieldSet = FieldSet.ENROLMENT;
-    result.mandatoryOnly = !state.checkout.newContact;
+    result.mandatoryOnly = !newContact;
     return result;
   }
 }
@@ -220,7 +230,7 @@ export class BuildContactNodes {
 export class BuildCheckoutModelRequest {
   static fromState = (state: IshState): CheckoutModelRequest => {
     const result: CheckoutModelRequest = new CheckoutModelRequest();
-    result.payerId = state.checkout.payer.entity.id;
+    result.payerId = state.checkout.payerId;
     result.promotionIds = state.cart.promotions.result;
     result.contactNodes = BuildContactNodes.fromState(state.checkout.summary);
     return result;

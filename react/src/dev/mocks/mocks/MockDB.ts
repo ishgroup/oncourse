@@ -7,7 +7,7 @@ import {Enrolment} from "../../../js/model/checkout/Enrolment";
 import {Contact} from "../../../js/model/web/Contact";
 import {mockContact, mockCourseClass, mockEnumField, mockField, mockProductClass} from "./MockFunctions";
 import {normalize} from "normalizr";
-import {ClassesListSchema, ContactsBox, ContactsSchema, ProductsListSchema} from "../../../js/NormalizeSchema";
+import {ClassesListSchema, ContactsSchema, ContactsState, ProductsListSchema} from "../../../js/NormalizeSchema";
 
 import {Field} from "../../../js/model/field/Field";
 import {DataType} from "../../../js/model/field/DataType";
@@ -41,7 +41,7 @@ export class MockDB {
 
   private id: string = uuid();
 
-  contacts: ContactsBox = null;
+  contacts: ContactsState = null;
   classes: { entities: any, result: any } = null;
   products: { entities: any, result: any } = null;
   fields: Field[] = [];

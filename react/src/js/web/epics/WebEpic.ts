@@ -6,7 +6,13 @@ import {Actions} from "../actions/Actions";
 import * as ContactAddActions from "../../enrol/containers/contact-add/actions/Actions";
 import {normalize} from "normalizr";
 import uniq from "lodash/uniq";
-import {ClassesListSchema, ClassesSchema, ProductsListSchema, ProductsSchema, PromotionsSchema} from "../../NormalizeSchema";
+import {
+  ClassesListSchema,
+  ClassesSchema,
+  ProductsListSchema,
+  ProductsSchema,
+  PromotionsSchema
+} from "../../NormalizeSchema";
 import {Injector} from "../../injector";
 import {PromotionParams} from "../../model/web/PromotionParams";
 import {IshState} from "../../services/IshState";
@@ -213,7 +219,7 @@ function createSyncCartRequestEpic() {
       FULFILLED(Actions.REQUEST_PROMOTION),
       FULFILLED(Actions.REQUEST_CONTACT),
       Actions,
-      ContactAddActions.ADD_CONTACT,
+      ContactAddActions.ADD_CONTACT_TO_STATE,
     )
     .map(action => ({
       timestamp: new Date().getTime(),

@@ -3,7 +3,7 @@ import * as React from "react";
 
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
-import {addContactRequest, NAME, Values} from "./actions/Actions";
+import {NAME, submitAddContact, Values} from "./actions/Actions";
 import {showFormValidation} from "../../actions/Actions";
 import {ContactId} from "../../../model/web/ContactId";
 
@@ -43,7 +43,7 @@ const Form = reduxForm({
   form: NAME,
   validate: validateContact,
   onSubmitSuccess: (result, dispatch, props: any) => {
-    dispatch(addContactRequest(result as ContactId, props.values as Values));
+    dispatch(submitAddContact(result as ContactId, props.values as Values));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     dispatch(showFormValidation(submitError, NAME));

@@ -4,14 +4,15 @@ import {ContactFields} from "../../model/field/ContactFields";
 import {State as SummaryState} from "../containers/summary/reducers/State";
 import {State as PaymentState} from "../containers/payment/reducers/State";
 import {Amount} from "../../model/checkout/Amount";
+import {ContactsState} from "../../NormalizeSchema";
 
 export interface CheckoutState {
   newContact: boolean;
   phase: Phase;
   fields: ContactFields;
   error: ValidationError;
-  payer: PayerState;
-  contacts?: Contact[];
+  payerId: string;
+  contacts: ContactsState;
   amount: Amount;
   summary: SummaryState;
   payment: PaymentState;
@@ -23,10 +24,10 @@ export interface PayerState {
 
 export enum Phase {
   Init,
-  AddContact,
+  AddPayer,
   EditContact,
   Summary,
   Payment,
   Result,
-  AddAdditionalContact,
+  AddContact,
 }

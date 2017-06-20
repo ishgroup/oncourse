@@ -7,7 +7,7 @@ import {addCode} from "../../actions/Actions";
 
 const PropsBy = (state: IshState): any => {
   return {
-    contacts: [state.checkout.payer.entity],
+    contacts: Object.values(state.checkout.contacts.entities.contact),
     amount: state.checkout.amount,
     paymentForm: <CreditCartForm/>,
     promotions:  Object.values(state.cart.promotions.entities),

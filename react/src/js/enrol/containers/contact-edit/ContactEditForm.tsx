@@ -9,7 +9,7 @@ import {ContactEdit} from "./components/ContactEdit";
 import CheckoutService from "../../services/CheckoutService";
 import {ValidationError} from "../../../model/common/ValidationError";
 import {showFormValidation} from "../../actions/Actions";
-import {ItemsLoadRequest, OpenSummaryRequest} from "../summary/actions/Actions";
+import {submitEditContact} from "./actions/Actions";
 
 
 export const NAME = "ContactEditForm";
@@ -47,7 +47,7 @@ interface Props {
 const Form = reduxForm({
   form: NAME,
   onSubmitSuccess: (result, dispatch, props: any) => {
-    dispatch({type: OpenSummaryRequest});
+    dispatch(submitEditContact(props.contact));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     dispatch(showFormValidation(submitError, NAME));
@@ -56,7 +56,7 @@ const Form = reduxForm({
 
 
 const mapStateToProps = (state: IshState) => {
-  const contact = state.checkout.payer.entity;
+  const contact = state.checkout.contacts.entities.contact[state.checkout.fields.contactId];
   const fields = state.checkout.fields;
   const errors = state.checkout.error;
   return {
