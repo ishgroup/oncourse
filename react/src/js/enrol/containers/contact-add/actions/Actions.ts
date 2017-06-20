@@ -9,15 +9,15 @@ export const OPEN_ADD_CONTACT_FORM: string = "checkout/open/add/contact";
 
 
 export const ADD_CONTACT: string = "checkout/contact/add";
+export const ADD_ADDITIONAL_CONTACT: string = "checkout/contact/addAdditional";
 export const ADD_CONTACT_REQUEST: string = _toRequestType(ADD_CONTACT);
 
 export const NAME = "ContactAddForm";
 export interface Values {
-  firstName: string
-  lastName: string
-  email: string
+  firstName: string;
+  lastName: string;
+  email: string;
 }
-
 
 
 export interface AddContactPayload {
@@ -31,26 +31,29 @@ export const addContactRequest = (contactId: ContactId, values: Values): any => 
   contact.lastName = values.lastName;
   contact.email = values.email;
   const payload: AddContactPayload = {
-    contact: contact,
-    newContact: contactId.newContact
+    contact,
+    newContact: contactId.newContact,
   };
   return {
+    payload,
     type: ADD_CONTACT_REQUEST,
-    payload: payload,
     meta: {
-      from: NAME
-    }
+      from: NAME,
+    },
   };
 };
 
 export const openAddContactForm = (): { type: string } => {
   return {
-    type: OPEN_ADD_CONTACT_FORM
-  }
+    type: OPEN_ADD_CONTACT_FORM,
+  };
 };
 
 export const addContact = function (contact: Contact): { type: string, payload: ContactBox } {
   return {type: ADD_CONTACT, payload: normalize(contact, ContactSchema)};
 };
 
+export const addAdditionalContact = function (contact: Contact): { type: string, payload: ContactBox } {
+  return {type: ADD_ADDITIONAL_CONTACT, payload: normalize(contact, ContactSchema)};
+};
 

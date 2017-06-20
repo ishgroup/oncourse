@@ -6,7 +6,7 @@ import {Actions} from "../actions/Actions";
 
 export const coursesReducer = combineReducers({
   entities: byId,
-  result: allIds
+  result: allIds,
 });
 
 function allIds(state = [], action: IshAction<CoursesState>) {
@@ -16,7 +16,7 @@ function allIds(state = [], action: IshAction<CoursesState>) {
       return [
         ...state,
         ...action.payload.result
-          .filter(t => !state.includes(t)) // dedup
+          .filter(t => !state.includes(t)), // dedup
       ];
     default:
       return state;
@@ -29,7 +29,7 @@ function byId(state = {}, action: IshAction<CoursesState>) {
     case Actions.PutClassToStore:
       return {
         ...state,
-        ...action.payload.entities.classes
+        ...action.payload.entities.classes,
       };
     default:
       return state;

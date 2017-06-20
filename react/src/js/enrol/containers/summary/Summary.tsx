@@ -15,6 +15,8 @@ import {
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem} from "./actions/Actions";
 import {openAddContactForm} from "../contact-add/actions/Actions";
+import {changePhase} from "../../../enrol/actions/Actions";
+import {Phase} from "../../../enrol/reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import {addCode} from "../../actions/Actions";
 
@@ -108,7 +110,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       dispatch(selectItem(item, selected));
     },
     onAddContact: (): void => {
-      dispatch(openAddContactForm());
+      dispatch(changePhase(Phase.AddAdditionalContact));
     },
     onProceedToPayment: (): void => {
       dispatch(proceedToPayment());

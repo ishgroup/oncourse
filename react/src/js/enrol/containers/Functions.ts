@@ -4,20 +4,17 @@ import {Phase} from "../reducers/State";
 import {Model, Progress as ProgressComp, Tab} from "../components/Progress";
 import {changePhase, changePhaseRequest} from "../actions/Actions";
 
-export const Messages = connect((state) => {
-  return {error: state.checkout.error}
-})(MessagesComp);
+export const Messages = connect(state => (
+  {error: state.checkout.error}
+))(MessagesComp);
 
 
-export const Progress = connect((state) => {
-  return {model: progressModelBy(state.checkout.phase)}
-}, (dispatch) => {
-  return {
-    onChange: (tab: Tab): void => {
-      dispatch(changeTab(tab))
-    }
-  }
-})(ProgressComp);
+export const Progress = connect(
+  state => ({model: progressModelBy(state.checkout.phase)}),
+  dispatch => ({onChange: (tab: Tab): void => {
+    dispatch(changeTab(tab));
+  }}),
+)(ProgressComp);
 
 
 const changeTab = (tab: Tab): { type: string, payload: Phase } => {
@@ -29,14 +26,14 @@ const changeTab = (tab: Tab): { type: string, payload: Phase } => {
     case Tab.Details:
       return changePhaseRequest(Phase.Payment);
     default:
-      throw new Error()
+      throw new Error();
   }
 };
 
 export const progressModelBy = (phase: Phase): Model => {
   const result: Model = {
     active: null,
-    disabled: [Tab.Details, Tab.Summary, Tab.Payment]
+    disabled: [Tab.Details, Tab.Summary, Tab.Payment],
   };
 
   switch (phase) {
@@ -53,6 +50,10 @@ export const progressModelBy = (phase: Phase): Model => {
       result.disabled = [Tab.Summary, Tab.Payment];
       break;
     case Phase.Summary:
+      result.active = Tab.Summary;
+      result.disabled = [Tab.Details, Tab.Payment];
+      break;
+    case Phase.AddAdditionalContact:
       result.active = Tab.Summary;
       result.disabled = [Tab.Details, Tab.Payment];
       break;

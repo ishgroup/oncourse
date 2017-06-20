@@ -21,6 +21,7 @@ import {PaymentStatus} from "../../js/model/checkout/payment/PaymentStatus";
 import {Membership} from "../../js/model/checkout/Membership";
 import {Article} from "../../js/model/checkout/Article";
 import {Application} from "../../js/model/checkout/Application";
+import {updateContactNode} from "../../js/enrol/containers/summary/actions/Actions";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;
@@ -35,11 +36,11 @@ export class CheckoutApiMock extends CheckoutApi {
     result.contactId = request.contactId;
 
     const contact: Contact = this.config.db.getContactById(request.contactId);
-    const classes: CourseClass[] = request.classIds.map((id) => this.config.db.getCourseClassById(id));
+    const classes: CourseClass[] = request.classIds.map(id => this.config.db.getCourseClassById(id));
 
     result.enrolments = this.createEnrolmentsBy([contact], classes);
 
-    const products: ProductClass[] = request.productIds.map((id) => this.config.db.getProductClassById(id));
+    const products: ProductClass[] = request.productIds.map(id => this.config.db.getProductClassById(id));
     result.vouchers = this.createVouchersBy([contact], products);
 
     return this.config.createResponse(result);

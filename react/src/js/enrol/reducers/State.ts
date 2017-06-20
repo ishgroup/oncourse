@@ -11,6 +11,7 @@ export interface CheckoutState {
   fields: ContactFields;
   error: ValidationError;
   payer: PayerState;
+  contacts?: Contact[];
   amount: Amount;
   summary: SummaryState;
   payment: PaymentState;
@@ -26,5 +27,6 @@ export enum Phase {
   EditContact,
   Summary,
   Payment,
-  Result
+  Result,
+  AddAdditionalContact,
 }

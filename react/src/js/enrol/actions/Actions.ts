@@ -66,7 +66,7 @@ export const showFormValidation = (response: AxiosResponse, form: string): any =
     type: SHOW_MESSAGES_REQUEST,
     payload: response,
     meta: {
-      form: form,
+      form,
     },
   };
 };
@@ -74,8 +74,8 @@ export const showFormValidation = (response: AxiosResponse, form: string): any =
 export const changePhaseRequest = (phase: Phase) => {
   return {
     type: CHANGE_PHASE_REQUEST,
-    payload: phase
-  }
+    payload: phase,
+  };
 };
 
 export const changePhase = (phase: Phase) => {
@@ -85,31 +85,31 @@ export const changePhase = (phase: Phase) => {
 
   return {
     type: CHANGE_PHASE,
-    payload: phase
-  }
+    payload: phase,
+  };
 };
 
 export const updateAmountRequest = (): { type: string } => {
   return {
-    type: UPDATE_AMOUNT_REQUEST
-  }
+    type: UPDATE_AMOUNT_REQUEST,
+  };
 };
 
 export const updateAmount = (amount: Amount): IAction<Amount> => {
   return {
     type: UPDATE_AMOUNT,
-    payload: amount
-  }
+    payload: amount,
+  };
 };
 
 export const finishCheckoutProcess = (): IAction<any> => {
   return {
-    type: FINISH_CHECKOUT_PROCESS
-  }
+    type: FINISH_CHECKOUT_PROCESS,
+  };
 };
 
 export const resetCheckoutState = (): IAction<any> => {
   return {
-    type: RESET_CHECKOUT_STATE
-  }
+    type: RESET_CHECKOUT_STATE,
+  };
 };

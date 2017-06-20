@@ -98,6 +98,22 @@ const AddCodeReducer = (state: Promotion = null, action: { type: string, payload
   }
 };
 
+const contactsState = {entities: {}, result: []};
+const ContactsReducer = (state: {entities: {}, result: any[]} = contactsState, action: {type: string, payload: ContactBox}): any => {
+  switch (action.type) {
+    case ContactAddActions.ADD_ADDITIONAL_CONTACT:
+      const contact = action.payload.entities.contact[action.payload.result];
+      return {
+        entities: {...state.entities, [contact.id]: contact},
+        result: state.result.concat(contact.id),
+      };
+    case Actions.RESET_CHECKOUT_STATE:
+      return null;
+    default:
+      return state;
+  }
+};
+
 export const Reducer = combineReducers<CheckoutState>({
   newContact: NewContactReducer,
   fields: FieldsReducer,
@@ -110,5 +126,5 @@ export const Reducer = combineReducers<CheckoutState>({
   payer: combineReducers<PayerState>({
     entity: ContactReducer,
   }),
+  contacts: ContactsReducer,
 });
-

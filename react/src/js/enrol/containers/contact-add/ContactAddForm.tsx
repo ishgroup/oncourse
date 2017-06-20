@@ -1,33 +1,41 @@
 import {reduxForm} from "redux-form";
 import * as React from "react";
-import {connect} from "react-redux";
 
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
 import {addContactRequest, NAME, Values} from "./actions/Actions";
-import CheckoutService from "../../services/CheckoutService";
 import {showFormValidation} from "../../actions/Actions";
 import {ContactId} from "../../../model/web/ContactId";
 
 
 class ContactAddForm extends React.Component<any, any> {
   render() {
-    const {handleSubmit, pristine, invalid, submitting} = this.props;
+    const {handleSubmit, onCancel, pristine, invalid, submitting} = this.props;
     return (
       <div>
         <form onSubmit={handleSubmit} id="contactEditorForm">
           <ContactAdd/>
           <div className="form-controls">
-            <input value="OK"
-                   className="btn btn-primary"
-                   name="submitContact"
-                   type="submit"
-                   disabled={invalid || pristine || submitting}
+            <input
+              value="OK"
+              className="btn btn-primary"
+              name="submitContact"
+              type="submit"
+              disabled={invalid || pristine || submitting}
             />
+
+            {onCancel &&
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={onCancel}
+            > Cancel
+            </button>
+            }
           </div>
         </form>
       </div>
-    )
+    );
   }
 }
 
@@ -39,25 +47,8 @@ const Form = reduxForm({
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     dispatch(showFormValidation(submitError, NAME));
-  }
+  },
 })(ContactAddForm);
 
 
-const mapStateToProps = (state) => {
-  return {}
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSubmit: CheckoutService.createOrGetContact
-  };
-};
-
-
-const Container = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Form);
-
-
-export default Container;
+export default Form;

@@ -20,13 +20,11 @@ export const Reducer = (state: State = ContactNodeToState([]), action: { type: s
   }
 };
 
-
-
 enum Case {
   addContact,
   addItem,
   updateItem,
-  refresh
+  refresh,
 }
 
 const getCase = (state: State, payload: State): Case => {
@@ -35,7 +33,7 @@ const getCase = (state: State, payload: State): Case => {
   if (state.result.length == 0) {
     return Case.refresh;
   } else if (state.result.indexOf(contactId) < 0) {
-    return Case.addContact
+    return Case.addContact;
   }
   
   const enrolments = payload.entities.contactNodes[contactId].enrolments;
@@ -45,30 +43,30 @@ const getCase = (state: State, payload: State): Case => {
 
   if (enrolments.length > 0) {
     if (L.isNil(state.entities.enrolments[enrolments[0]])) {
-      return Case.addItem
+      return Case.addItem;
     } else {
-      return Case.updateItem
+      return Case.updateItem;
     }
   } else if (applications.length > 0)  {
     if (L.isNil(state.entities.applications[applications[0]])) {
-      return Case.addItem
+      return Case.addItem;
     } else {
-      return Case.updateItem
+      return Case.updateItem;
     }
   } else if (articles.length > 0)  {
     if (L.isNil(state.entities.articles[articles[0]])) {
-      return Case.addItem
+      return Case.addItem;
     } else {
-      return Case.updateItem
+      return Case.updateItem;
     }
   } else if (memberships.length > 0)  {
     if (L.isNil(state.entities.memberships[memberships[0]])) {
-      return Case.addItem
+      return Case.addItem;
     } else {
-      return Case.updateItem
+      return Case.updateItem;
     }
   } else {
-    return Case.refresh
+    return Case.refresh;
   }
   
 };
@@ -110,5 +108,5 @@ const mergePurchases = (ns: State, payload: State): State => {
   ns.entities.memberships = {...ns.entities.memberships, ...payload.entities.memberships};
   ns.entities.articles = {...ns.entities.articles, ...payload.entities.articles};
   ns.entities.vouchers = {...ns.entities.vouchers, ...payload.entities.vouchers};
-  return ns
+  return ns;
 };

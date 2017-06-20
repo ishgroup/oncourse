@@ -9,12 +9,15 @@ import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
-import {sendInitRequest} from "../actions/Actions";
+import {sendInitRequest, changePhase} from "../actions/Actions";
+import CheckoutService from "../services/CheckoutService";
+
 
 interface Props {
   phase: Phase;
   onInit: () => void;
   onProceedToPayment: () => void;
+  changePhase: (phase) => void;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -29,31 +32,44 @@ export class Checkout extends React.Component<Props, any> {
       <div id="checkout" className="col-xs-24 payments">
         <Progress/>
         <Messages/>
-        {phase === Phase.AddContact && <ContactAddForm/>}
+        {phase === Phase.AddContact &&
+          <ContactAddForm
+            onSubmit={CheckoutService.createOrGetContact}
+          />
+        }
+        {phase === Phase.AddAdditionalContact &&
+          <ContactAddForm
+            onSubmit={CheckoutService.createOrGetContact}
+            onCancel={() => this.props.changePhase(Phase.Summary)}
+          />
+        }
         {phase === Phase.EditContact && <ContactEditForm/>}
         {phase === Phase.Summary && <Summary/>}
         {phase === Phase.Payment && <Payment/>}
         {phase === Phase.Result && <Result/>}
       </div>
-    )
+    );
   }
 }
 
 
 const mapStateToProps = (state: IshState) => {
   return {
-    phase: state.checkout.phase
+    phase: state.checkout.phase,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: (): void => {
-      dispatch(sendInitRequest())
+      dispatch(sendInitRequest());
     },
-  }
+    changePhase: (phase) => {
+      dispatch(changePhase(phase));
+    },
+  };
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Checkout);
 
-export default Container
+export default Container;

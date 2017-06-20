@@ -24,12 +24,12 @@ export const selectItem = (item: Enrolment | Application, selected: boolean): { 
   item.selected = selected;
   return {
     type: SELECT_ITEM_REQUEST,
-    payload: item
-  }
+    payload: item,
+  };
 };
 
 export const proceedToPayment = (): { type: string } => {
-  return {type: PROCEED_TO_PAYMENT}
+  return {type: PROCEED_TO_PAYMENT};
 };
 
 /**
@@ -38,7 +38,15 @@ export const proceedToPayment = (): { type: string } => {
 export const updateContactNode = (node: ContactNode): { type: string, payload: State } => {
   const payload:State = ContactNodeToState([node]);
   return {
+    payload,
     type: UPDATE_CONTACT_NODE,
-    payload: payload
-  }
+  };
+};
+
+export const addNewContact = (node: ContactNode): { type: string, payload: State } => {
+  const payload:State = ContactNodeToState([node]);
+  return {
+    payload,
+    type: UPDATE_CONTACT_NODE,
+  };
 };

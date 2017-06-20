@@ -32,9 +32,9 @@ export const Actions = {
  */
 export function updatePopup(content) {
   return {
+    content,
     type: Actions.UPDATE_POPUP,
-    content
-  }
+  };
 }
 
 /**
@@ -43,7 +43,7 @@ export function updatePopup(content) {
  */
 export function hidePopup() {
   return {
-    type: Actions.HIDE_POPUP
+    type: Actions.HIDE_POPUP,
   };
 }
 

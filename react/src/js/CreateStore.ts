@@ -12,7 +12,7 @@ import localForage from "localforage";
 
 const getMiddleware = (): GenericStoreEnhancer => {
   const logger = createLogger({
-    collapsed: true
+    collapsed: true,
   });
 
   /**
@@ -28,7 +28,7 @@ const getMiddleware = (): GenericStoreEnhancer => {
 export const CreateStore = (): Store<IshState> => {
   const store: Store<IshState> = createStore(
     combinedReducers,
-    compose(getMiddleware(), autoRehydrate())
+    compose(getMiddleware(), autoRehydrate()),
   ) as Store<IshState>;
   return store;
 };

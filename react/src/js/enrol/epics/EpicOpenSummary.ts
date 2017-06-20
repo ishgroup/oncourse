@@ -16,12 +16,12 @@ const request: EpicUtils.Request<ContactNode, IshState> = {
   processData: (contactNode, state) => {
     return [{
       type: ItemsLoad,
-      payload: ContactNodeToState([contactNode])
+      payload: ContactNodeToState([contactNode]),
     }, updateSummaryRequest(), changePhase(Phase.Summary)];
   },
   processError: (data) => {
-    return [{type: SHOW_MESSAGES, payload: toValidationError(data)}]
-  }
+    return [{type: SHOW_MESSAGES, payload: toValidationError(data)}];
+  },
 };
 
 /**

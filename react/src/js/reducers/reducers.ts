@@ -9,11 +9,11 @@ import {Reducer as CheckoutReducer} from "../enrol/reducers/Reducer";
 import {CheckoutPathReducer} from "../common/reducers/Reducer";
 
 export const combinedReducers = combineReducers<IshState>({
+  popup,
   form: formReducer,
   cart: cartReducer,
-  popup,
   courses: coursesReducer,
   products: productsReducer,
   checkout: CheckoutReducer,
-  checkoutPath: CheckoutPathReducer
+  checkoutPath: CheckoutPathReducer,
 });
