@@ -211,7 +211,7 @@ export class BuildContactNodes {
     result.applications = storage.applications ? storage.applications.map(id => state.entities.applications[id]) : [];
     result.memberships = storage.memberships ? storage.memberships.map(id => state.entities.memberships[id]) : [];
     result.articles = storage.articles ? storage.articles.map(id => state.entities.articles[id]) : [];
-    result.vouchers = storage.vouchers ? storage.vouchers.map(id => state.entities.articles[id]) : [];
+    result.vouchers = storage.vouchers ? storage.vouchers.map(id => state.entities.vouchers[id]) : [];
     return result;
 
   }

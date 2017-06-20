@@ -74,17 +74,20 @@ class ProcessProduct {
                     v.productId = voucher.id.toString()
 
                     Money value = Money.ZERO
-                    if (voucher.redemptionCourses.empty && voucher.priceExTax == null) {
-                        v.price =  DEFAULT_VOUCHER_PRICE.toString()
+                    if (voucher.redemptionCourses.empty && voucher.value == null) {
+                        v.price =  DEFAULT_VOUCHER_PRICE.toPlainString()
                         value = DEFAULT_VOUCHER_PRICE
                         v.value =  value.toPlainString()
-                    } else if (persistentProduct.priceExTax != null) {
+                        v.isEditablePrice = true
+                    } else if (voucher.value != null) {
                         v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
                         value = voucher.value
                         v.value = value.toPlainString()
+                        v.isEditablePrice = false
                     } else {
                         v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
                         v.classes += voucher.redemptionCourses.collect{c -> c.name}
+                        v.isEditablePrice = false
                     }
 
                     ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, value, v.contactId)
