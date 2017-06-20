@@ -13,28 +13,28 @@ test("test ContactNodeService.getPurchaseItem", () => {
   };
 
   let input: any = new Items.Enrolment();
-  let result: any = ContactNodeService.getPurchaseItem(node, input.constructor.name);
+  let result: any = ContactNodeService.getPurchaseItem(node, input);
   expect(result instanceof Items.Enrolment).toBeTruthy();
   expect(result.contactId).toBe("1000");
 
   input = new Items.Application();
-  result = ContactNodeService.getPurchaseItem(node, input.constructor.name);
+  result = ContactNodeService.getPurchaseItem(node, input);
   expect(result instanceof Items.Application).toBeTruthy();
   expect(result.contactId).toBe("1001");
 
 
   input = new Items.Article();
-  result = ContactNodeService.getPurchaseItem(node, input.constructor.name);
+  result = ContactNodeService.getPurchaseItem(node, input);
   expect(result instanceof Items.Article).toBeTruthy();
   expect(result.contactId).toBe("1002");
 
   input = new Items.Membership();
-  result = ContactNodeService.getPurchaseItem(node, input.constructor.name);
+  result = ContactNodeService.getPurchaseItem(node, input);
   expect(result instanceof Items.Membership).toBeTruthy();
   expect(result.contactId).toBe("1003");
 
   input = new Items.Voucher();
-  result = ContactNodeService.getPurchaseItem(node, input.constructor.name);
+  result = ContactNodeService.getPurchaseItem(node, input);
   expect(result instanceof Items.Voucher).toBeTruthy();
   expect(result.contactId).toBe("1004");
 });

@@ -73,14 +73,14 @@ export class CheckoutService {
   
   public getPromotion = (code: string, state: IshState): Promise<Promotion> => {
     return this.promotionApi.getPromotion(code);
-  }
+  };
 
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
     if (item.selected) {
       const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);
       return this.checkoutApi.getContactNode(request)
         .then((data) => {
-          return Promise.resolve(ContactNodeService.getPurchaseItem(data, item.constructor.name));
+          return Promise.resolve(ContactNodeService.getPurchaseItem(data, item));
         });
     } else {
       return Promise.resolve(item);
