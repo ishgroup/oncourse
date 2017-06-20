@@ -56,7 +56,7 @@ start() {
 
     # FreeBSD has a daemon starting binary which creates the pidfile for us
     if [ -x "/usr/sbin/daemon" ] ; then
-        \$(/usr/sbin/daemon -p \$PID_FILE \$CMD)
+        /usr/sbin/daemon -p \$PID_FILE -f \$CMD
     else
         exec "\$JAVACMD" "\$@" & echo \$! > "\$pidfile"
     fi
