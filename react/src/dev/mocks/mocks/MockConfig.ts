@@ -21,10 +21,10 @@ import {CreateStore, RestoreState} from "../../../js/CreateStore";
 import {ValidationError} from "../../../js/model/common/ValidationError";
 
 export interface Props {
-  commonError: boolean,
-  plainTextError: boolean,
-  validationError: boolean,
-  contactApi: { contactFieldsIsEmpty: boolean }
+  commonError: boolean;
+  plainTextError: boolean;
+  validationError: boolean;
+  contactApi: { contactFieldsIsEmpty: boolean };
   checkoutApi: {
     makePayment: {
       formError: boolean,
@@ -33,10 +33,10 @@ export interface Props {
         success: boolean,
         inProgress: boolean,
         failed: boolean,
-        undefined: boolean
-      }
-    }
-  }
+        undefined: boolean,
+      },
+    },
+  };
 }
 export class MockConfig {
   private id: string = uuid();
@@ -48,7 +48,7 @@ export class MockConfig {
     plainTextError: false,
     validationError: false,
     contactApi: {
-      contactFieldsIsEmpty: false
+      contactFieldsIsEmpty: false,
     },
     checkoutApi: {
       makePayment: {
@@ -58,10 +58,10 @@ export class MockConfig {
           failed: false,
           success: true,
           undefined: false,
-          inProgress: false
-        }
-      }
-    }
+          inProgress: false,
+        },
+      },
+    },
 
   };
 
@@ -69,9 +69,9 @@ export class MockConfig {
     return {
       formErrors: L.range(0, formErrors).map((i) => faker.hacker.phrase()),
       fieldsErrors: field.map((f) => {
-        return {name: f, error: faker.hacker.phrase()}
-      })
-    }
+        return {name: f, error: faker.hacker.phrase()};
+      }),
+    };
   }
 
 
@@ -81,12 +81,11 @@ export class MockConfig {
     } else if (this.props.commonError) {
       return CreatePromiseReject({
         code: 1000,
-        message: faker.hacker.phrase()
+        message: faker.hacker.phrase(),
       });
     } else if (this.props.validationError) {
       return CreatePromiseReject(this.createValidationError(2, ["email", "street"]));
-    }
-    else {
+    } else {
       return Promise.resolve(response);
     }
   }
@@ -96,14 +95,14 @@ export class MockConfig {
   }
 
   public load(callback: () => void): void {
-    localForage.getItem("MockConfig",).then((props: Props) => {
-        if (props) {
-          this.props = props;
-        }
-        if (callback) {
-          callback();
-        }
+    localForage.getItem("MockConfig").then((props: Props) => {
+      if (props) {
+        this.props = props;
       }
+      if (callback) {
+        callback();
+      }
+    },
     );
   }
 
@@ -122,16 +121,16 @@ export class MockConfig {
     }
 
     RestoreState(this.store, (error, result) => {
-      this.load(() => callback(this))
+      this.load(() => callback(this));
     });
-  };
+  }
 
 
 }
 
 export const CreatePromiseReject = (data: any, code: number = 400): Promise<any> => {
   return Promise.reject({
-    data: data,
-    status: code
+    data,
+    status: code,
   } as AxiosResponse);
 };

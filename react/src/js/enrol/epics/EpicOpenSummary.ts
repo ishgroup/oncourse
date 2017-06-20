@@ -14,10 +14,14 @@ const request: EpicUtils.Request<ContactNode, IshState> = {
   type: OpenSummaryRequest,
   getData: (payload, state) => CheckoutService.getContactNode(state),
   processData: (contactNode, state) => {
-    return [{
-      type: ItemsLoad,
-      payload: ContactNodeToState([contactNode]),
-    }, updateSummaryRequest(), changePhase(Phase.Summary)];
+    return [
+      {
+        type: ItemsLoad,
+        payload: ContactNodeToState([contactNode]),
+      },
+      updateSummaryRequest(),
+      changePhase(Phase.Summary),
+    ];
   },
   processError: (data) => {
     return [{type: SHOW_MESSAGES, payload: toValidationError(data)}];

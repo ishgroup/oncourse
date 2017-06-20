@@ -11,7 +11,7 @@ function classesAllIds(state = [], action: IshAction<CourseClassCartState>) {
       return [
         ...state,
         ...[action.payload.result]
-          .filter(t => !state.includes(t)) // dedup
+          .filter(t => !state.includes(t)), // dedup
       ];
     case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
       return state.filter(it => it !== action.payload.result);
@@ -25,7 +25,7 @@ function classesById(state = {}, action: IshAction<CourseClassCartState>) {
     case FULFILLED(Actions.ADD_CLASS_TO_CART):
       return {
         ...state,
-        ...action.payload.entities.classes
+        ...action.payload.entities.classes,
       };
     case FULFILLED(Actions.REMOVE_CLASS_FROM_CART):
       const nextState = {...state};
@@ -42,7 +42,7 @@ function productsAllIds(state = [], action: IshAction<ProductCartState>) {
       return [
         ...state,
         ...[action.payload.result]
-          .filter(t => !state.includes(t)) // dedup
+          .filter(t => !state.includes(t)), // dedup
       ];
     case FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART):
       return state.filter(it => it !== action.payload.result);
@@ -56,7 +56,7 @@ function productsById(state = {}, action: IshAction<ProductCartState>) {
     case FULFILLED(Actions.ADD_PRODUCT_TO_CART):
       return {
         ...state,
-        ...action.payload.entities.products
+        ...action.payload.entities.products,
       };
     case FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART):
       const nextState = {...state};
@@ -73,7 +73,7 @@ function promotionsAllIds(state = [], action: IshAction<ProductCartState>) {
       return [
         ...state,
         ...[action.payload.result]
-          .filter(t => !state.includes(t)) // dedup
+          .filter(t => !state.includes(t)), // dedup
       ];
     case FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART):
       return state.filter(it => it !== action.payload.result);
@@ -87,7 +87,7 @@ function promotionsById(state = {}, action: IshAction<ProductCartState>) {
     case FULFILLED(Actions.ADD_PROMOTION_TO_CART):
       return {
         ...state,
-        ...action.payload.entities.promotions
+        ...action.payload.entities.promotions,
       };
     case FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART):
       const nextState = {...state};
@@ -110,15 +110,15 @@ function contactReducer(state:ContactState = {}, action: IshAction<Contact>) {
 export const cartReducer = combineReducers({
   courses: combineReducers({
     entities: classesById,
-    result: classesAllIds
+    result: classesAllIds,
   }),
   products: combineReducers({
     entities: productsById,
-    result: productsAllIds
+    result: productsAllIds,
   }),
   promotions: combineReducers({
     entities: promotionsById,
-    result: promotionsAllIds
+    result: promotionsAllIds,
   }),
-  contact: contactReducer
+  contact: contactReducer,
 });

@@ -43,33 +43,33 @@ export class CheckoutService {
   }
 
   public cartIsEmpty = (cart: CartState): boolean => {
-    return L.isEmpty(cart.courses.result) && L.isEmpty(cart.products.result)
-  };
+    return L.isEmpty(cart.courses.result) && L.isEmpty(cart.products.result);
+  }
 
   public hasPayer = (state: CheckoutState): boolean => {
     return !L.isNil(state.payer.entity);
-  };
+  }
 
   public hasCartContact = (cart: CartState): boolean => {
     return L.isNil(cart.contact);
-  };
+  }
 
   public loadFields = (state: IshState): Promise<ContactFields> => {
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(state));
-  };
+  }
 
   public submitContactDetails = (fields: ContactFields, values: ContactValues): Promise<any> => {
     return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
-  };
+  }
 
   public createOrGetContact = (values: ContactValues): Promise<ContactId> => {
     return this.contactApi.createOrGetContact(BuildCreateContactParams.fromValues(values));
-  };
+  }
 
 
   public getContactNode = (state: IshState): Promise<ContactNode> => {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromState(state));
-  };
+  }
   
   public getPromotion = (code: string, state: IshState): Promise<Promotion> => {
     return this.promotionApi.getPromotion(code);
@@ -85,33 +85,33 @@ export class CheckoutService {
     } else {
       return Promise.resolve(item);
     }
-  };
+  }
 
   public getAmount = (state: IshState): Promise<Amount> => {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state))
       .then((model: CheckoutModel): Promise<Amount> => {
-        return Promise.resolve(model.amount)
+        return Promise.resolve(model.amount);
       });
-  };
+  }
 
   public getCheckoutModel = (state: IshState): Promise<CheckoutModel> => {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state));
-  };
+  }
 
   public makePayment = (values: Values, state: IshState): Promise<PaymentResponse> => {
     const request: PaymentRequest = PaymentService.valuesToRequest(values, state);
     return this.checkoutApi.makePayment(request);
-  };
+  }
 
   public isFinalStatus = (value: PaymentResponse): boolean => {
     return (value.status === PaymentStatus.SUCCESSFUL ||
     value.status === PaymentStatus.UNDEFINED);
-  };
+  }
 
 
   public getPaymentStatus = (state: PaymentState): Promise<PaymentResponse> => {
-    return this.checkoutApi.getPaymentStatus(state.value.sessionId)
-  };
+    return this.checkoutApi.getPaymentStatus(state.value.sessionId);
+  }
 
 
   public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {
@@ -126,7 +126,7 @@ export class CheckoutService {
       default:
         throw new Error(`Unknown status ${response.status}`);
     }
-  };
+  }
 
 }
 
@@ -145,7 +145,7 @@ export class BuildContactNodeRequest {
     result.productIds = item.productId ? [item.productId] : [];
     result.promotionIds = state.cart.promotions.result;
     return result;
-  };
+  }
 
   static fromState = (state: IshState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
@@ -154,7 +154,7 @@ export class BuildContactNodeRequest {
     result.productIds = state.cart.products.result;
     result.promotionIds = state.cart.promotions.result;
     return result;
-  };
+  }
 }
 
 export class BuildContactFieldsRequest {
@@ -174,7 +174,7 @@ export class BuildSubmitFieldsRequest {
     const result: SubmitFieldsRequest = new SubmitFieldsRequest();
     result.contactId = fields.contactId;
     result.fields = L.flatMap(fields.headings, (h) => {
-      return h.fields
+      return h.fields;
     });
     result.fields.forEach((f: Field) => {
       f.value = values[f.key];
@@ -201,8 +201,8 @@ export class BuildContactNodes {
   static fromState = (state: State): ContactNode[] => {
     return state.result.map((contactId) => {
       return BuildContactNodes.contactNodeBy(state.entities.contactNodes[contactId], state);
-    })
-  };
+    });
+  }
 
   private static contactNodeBy = (storage: ContactNodeStorage, state: State): ContactNode => {
     const result: ContactNode = new ContactNode();

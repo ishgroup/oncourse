@@ -49,16 +49,16 @@ export class CheckoutApiMock extends CheckoutApi {
   public createEnrolmentsBy(contacts: Contact[], classes: CourseClass[]): Enrolment[] {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
-        return this.config.db.createEnrolment(c.id, cc.id)
-      })
+        return this.config.db.createEnrolment(c.id, cc.id);
+      });
     }));
   }
 
   public createApplicationBy(contacts: Contact[], classes: CourseClass[]): Application[] {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
-        return this.config.db.createApplication(c.id, cc.id)
-      })
+        return this.config.db.createApplication(c.id, cc.id);
+      });
     }));
   }
 
@@ -66,24 +66,24 @@ export class CheckoutApiMock extends CheckoutApi {
   public createVouchersBy(contacts: Contact[], classes: CourseClass[]): Voucher[] {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
-        return this.config.db.createVoucher(c.id, cc.id)
-      })
+        return this.config.db.createVoucher(c.id, cc.id);
+      });
     }));
   }
 
   public createMembershipsBy(contacts: Contact[], classes: CourseClass[]): Membership[] {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
-        return this.config.db.createMembership(c.id, cc.id)
-      })
+        return this.config.db.createMembership(c.id, cc.id);
+      });
     }));
   }
 
   public createArticlesBy(contacts: Contact[], classes: CourseClass[]): Article[] {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
-        return this.config.db.createArticle(c.id, cc.id)
-      })
+        return this.config.db.createArticle(c.id, cc.id);
+      });
     }));
   }
 
@@ -107,7 +107,7 @@ export class CheckoutApiMock extends CheckoutApi {
       return this.getCheckoutModel(paymentRequest.checkoutModelRequest).then((model: CheckoutModel) => {
         model.error = {
           code: 0,
-          message: faker.hacker.phrase()
+          message: faker.hacker.phrase(),
         };
         return CreatePromiseReject(model);
       });
