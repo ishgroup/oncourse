@@ -62,12 +62,26 @@ start() {
     fi
 }
 
+status() {
+    pid=`cat "\$PID_FILE" 2>/dev/null`
+    ps -p \$pid 2>/dev/null>/dev/null
+    if [ \$? -eq 0 ]; then
+        echo "${applicationName} is running as pid \$pid."
+    else
+        echo "${applicationName} is not running."
+        return 1
+    fi
+}
+
 case "\$1" in
     stop)
         stop
         ;;
     start)
         start
+        ;;
+    status)
+        status
         ;;
     *)
         usage
