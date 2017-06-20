@@ -13,6 +13,7 @@ public class Voucher  {
     private String value = null;
     private List<String> classes = new ArrayList<String>();
     private Boolean selected = null;
+    private Boolean isEditablePrice = null;
 
     /**
      * Get contactId
@@ -165,6 +166,23 @@ public class Voucher  {
       return this;
     }
 
+    /**
+     * Get isEditablePrice
+     * @return isEditablePrice
+     */
+    public Boolean getIsEditablePrice() {
+        return isEditablePrice;
+    }
+
+    public void setIsEditablePrice(Boolean isEditablePrice) {
+       this.isEditablePrice = isEditablePrice;
+    }
+
+    public Voucher isEditablePrice(Boolean isEditablePrice) {
+      this.isEditablePrice = isEditablePrice;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -179,6 +197,7 @@ public class Voucher  {
       sb.append("    value: ").append(toIndentedString(value)).append("\n");
       sb.append("    classes: ").append(toIndentedString(classes)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
+      sb.append("    isEditablePrice: ").append(toIndentedString(isEditablePrice)).append("\n");
       sb.append("}");
       return sb.toString();
     }

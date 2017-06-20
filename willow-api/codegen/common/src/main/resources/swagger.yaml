@@ -1018,6 +1018,7 @@ definitions:
     - errors
     - price
     - selected
+    - isEditablePrice
     properties:
       contactId:
         type: string
@@ -1040,6 +1041,8 @@ definitions:
         items:
           type: string
       selected:
+        type: boolean
+      isEditablePrice:
         type: boolean
   checkout.request.ContactNodeRequest:
       type: object
