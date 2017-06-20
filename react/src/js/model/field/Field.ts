@@ -1,5 +1,5 @@
-import {Item} from "./../common/Item";
-import {DataType} from "./../field/DataType";
+import {Item} from "../model/../common/Item";
+import {DataType} from "../model/../field/DataType";
 
 export class Field {
 
@@ -29,7 +29,7 @@ export class Field {
   mandatory?: boolean;
 
   /**
-   * Data type of provided value
+   * Data type of provaded value
    */
   dataType?: DataType;
 
@@ -58,3 +58,4 @@ export class Field {
    */
   ordering?: number;
 }
+

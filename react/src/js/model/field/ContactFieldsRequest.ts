@@ -1,4 +1,4 @@
-import { FieldSet } from "./../field/FieldSet";
+import {FieldSet} from "../model/../field/FieldSet";
 
 export class ContactFieldsRequest {
 

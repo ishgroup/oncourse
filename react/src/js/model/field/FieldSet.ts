@@ -1,3 +1,4 @@
+
 import {createStringEnum} from "common/utils/EnumUtils";
 
 export const FieldSet = createStringEnum([
@@ -7,4 +8,3 @@ export const FieldSet = createStringEnum([
 ]);
 
 export type FieldSet = keyof typeof FieldSet;
-

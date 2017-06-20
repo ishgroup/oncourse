@@ -1,4 +1,4 @@
-import { Field } from "./../field/Field";
+import {Field} from "../model/../field/Field";
 
 export class SubmitFieldsRequest {
 

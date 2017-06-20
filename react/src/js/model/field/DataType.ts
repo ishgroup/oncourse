@@ -1,3 +1,4 @@
+
 import {createStringEnum} from "common/utils/EnumUtils";
 
 export const DataType = createStringEnum([
@@ -16,5 +17,3 @@ export const DataType = createStringEnum([
 ]);
 
 export type DataType = keyof typeof DataType;
-
-

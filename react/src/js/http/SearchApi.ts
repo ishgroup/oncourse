@@ -9,15 +9,12 @@ export class SearchApi {
   getCountries(text: string): Promise<Item[]> {
     return this.http.GET(`/country/${text}`);
   }
-
   getLanguages(text: string): Promise<Item[]> {
     return this.http.GET(`/language/${text}`);
   }
-
   getPostcodes(text: string): Promise<Item[]> {
     return this.http.GET(`/postcode/${text}`);
   }
-
   getSuburbs(text: string): Promise<Item[]> {
     return this.http.GET(`/suburb/${text}`);
   }

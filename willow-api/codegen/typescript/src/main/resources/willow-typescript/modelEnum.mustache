@@ -8,11 +8,9 @@ import {createStringEnum} from "common/utils/EnumUtils";
 export const {{classname}} = createStringEnum([
   {{#allowableValues}}
   {{#enumVars}}
-      {{{value}}}{{^-last}},{{/-last}}
+  {{{value}}},
   {{/enumVars}}
   {{/allowableValues}}
 ]);
 
 export type {{classname}} = keyof typeof {{classname}};
-
-

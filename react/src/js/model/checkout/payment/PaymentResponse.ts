@@ -1,4 +1,4 @@
-import { PaymentStatus } from "./../../checkout/payment/PaymentStatus";
+import {PaymentStatus} from "../model/../../checkout/payment/PaymentStatus";
 
 export class PaymentResponse {
   sessionId?: string;

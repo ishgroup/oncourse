@@ -1,4 +1,4 @@
-import { CourseClassPrice } from "./../web/CourseClassPrice";
+import {CourseClassPrice} from "../model/../web/CourseClassPrice";
 
 export class Enrolment {
   contactId?: string;

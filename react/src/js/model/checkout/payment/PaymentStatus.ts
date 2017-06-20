@@ -1,3 +1,4 @@
+
 import {createStringEnum} from "common/utils/EnumUtils";
 
 export const PaymentStatus = createStringEnum([
