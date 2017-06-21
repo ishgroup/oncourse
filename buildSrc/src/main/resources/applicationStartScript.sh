@@ -29,6 +29,12 @@ stop() {
     cat "\$PID_FILE" | xargs kill
 }
 
+# Tell the application to return an error on the health check so we can drain all the remaining connections
+# and have haproxy remove the backend from the pool
+drain() {
+    cat "\$PID_FILE" | xargs kill -2
+}
+
 start() {
     CLASSPATH="${classpath}"
 
@@ -82,6 +88,9 @@ case "\$1" in
         ;;
     status)
         status
+        ;;
+    drain)
+        drain
         ;;
     *)
         usage
