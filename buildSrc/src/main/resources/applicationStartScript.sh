@@ -13,8 +13,11 @@ command -v realpath >/dev/null 2>&1 || realpath() {
 }
 
 PID_FILE="/var/run/onCourse/${applicationName}.pid"
+if [ -d "/var/run/onCourse" ]; then
+    mkdir /var/run/onCourse
+fi
 BASEDIR=\$(realpath \${0})
-APP_HOME=\$(dirname \${BASEDIR} | xargs dirname)
+APP_HOME=\$(dirname \${BASEDIR})
 cd \$APP_HOME
 
 # Default JVM options. You can also use JAVA_OPTS and ${optsEnvironmentVar} to pass JVM options to this script.
@@ -64,7 +67,8 @@ start() {
     if [ -x "/usr/sbin/daemon" ] ; then
         /usr/sbin/daemon -p \$PID_FILE -f \$CMD
     else
-        exec "\$JAVACMD" "\$@" & echo \$! > "\$pidfile"
+        nohup "\$CMD" &>api.out  & 
+        echo \$! > "\$PID_FILE"
     fi
 }
 
