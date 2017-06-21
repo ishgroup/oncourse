@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+
+    <College id="1" name="Sydney Community College"  webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+
+    <Site id="1" collegeId="1" isWebVisible="1" name="site1" timeZone="Australia/Sydney" isVirtual="0"/>
+
+    <Room id="1" collegeId="1" siteId="1" capacity="50" name="room1"/>
+
+    <Student id="1" angelId="1" countryOfBirthId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Contact id="1" angelId="1" collegeId="1" studentId="1"  businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="1@kremlin.ru" familyName="updatable" givenName="contact"  faxNumber="1234-567" suburb="Moscow"/>
+
+    <Student id="2" angelId="2" countryOfBirthId="1" collegeId="1" disabilityType="1" englishProficiency="1" highestSchoolLevel="1"/>
+    <Contact id="2" angelId="2" collegeId="1" studentId="2"  businessPhoneNumber="234-456-789" countryId="1" dateOfBirth="1952-10-07" emailAddress="1@kremlin.ru" familyName="deletable" givenName="contact"  faxNumber="1234-568" suburb="Moscow"/>
+
+    <Course id="1" angelId="1" collegeId="1" code="def123" detail="Course description goes here." name="Basic computer skills" enrolmentType="1"/>
+
+    <CourseClass isCancelled="0" isActive="1" id="1" angelId="1" maximumPlaces="3" code="200701RW" collegeId="1" countOfSessions="3" courseId="1" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" isDistantLearningCourse="0"/>
+    <CourseClass isCancelled="0" isActive="1" id="2" angelId="2" maximumPlaces="3" code="200701RE" collegeId="1" countOfSessions="1" courseId="1" deliveryMode="1" detail="Test Course Class" feeExGst="20.00" feeGst="1.25" isDistantLearningCourse="0"/>
+
+    <!-- test cases:
+            sessions 1-3 has attendances of updatable student only
+            sessions 4-6 has attendances of updatable and deletable students
+            sessions 7-9 has attendances of deletable student only
+    -->
+
+    <Session id="1" courseClassId="1" roomId="1" collegeId="1" angelId="1" startDate="2017-04-04 01:00:00" endDate="2017-04-04 02:00:00"/>
+    <Session id="2" courseClassId="1" roomId="1" collegeId="1" angelId="2" startDate="2017-04-04 01:00:00" endDate="2017-04-04 02:00:00"/>
+    <Session id="3" courseClassId="1" roomId="1" collegeId="1" angelId="3" startDate="2017-04-04 01:00:00" endDate="2017-04-04 02:00:00"/>
+
+    <Session id="4" courseClassId="1" roomId="1" collegeId="1" angelId="4" startDate="2017-04-02 01:00:00" endDate="2017-04-02 02:00:00"/>
+    <Session id="5" courseClassId="1" roomId="1" collegeId="1" angelId="5" startDate="2017-04-03 01:00:00" endDate="2017-04-03 02:00:00"/>
+    <Session id="6" courseClassId="1" roomId="1" collegeId="1" angelId="6" startDate="2017-04-04 01:00:00" endDate="2017-04-04 02:00:00"/>
+
+    <Session id="7" courseClassId="2" roomId="1" collegeId="1" angelId="7" startDate="2017-04-02 01:00:00" endDate="2017-04-02 02:00:00"/>
+    <Session id="8" courseClassId="2" roomId="1" collegeId="1" angelId="8" startDate="2017-04-03 01:00:00" endDate="2017-04-03 02:00:00"/>
+    <Session id="9" courseClassId="2" roomId="1" collegeId="1" angelId="9" startDate="2017-04-04 01:00:00" endDate="2017-04-04 02:00:00"/>
+
+    <Attendance id="1" collegeId="1" studentId="1" sessionId="1" attendanceType="1" angelId="1"/>
+    <Attendance id="2" collegeId="1" studentId="1" sessionId="1" attendanceType="4" angelId="2" durationMinutes="30"/>
+    <Attendance id="3" collegeId="1" studentId="1" sessionId="1" attendanceType="3" angelId="3"/>
+
+    <Attendance id="4" collegeId="1" studentId="1" sessionId="1" attendanceType="1" angelId="4"/> <!-- attendance id : 4 has higher rank than 7 -->
+    <Attendance id="5" collegeId="1" studentId="1" sessionId="1" attendanceType="3" angelId="5"/> <!-- attendance id : 5 has lower rank than 8 -->
+    <Attendance id="6" collegeId="1" studentId="1" sessionId="1" attendanceType="3" angelId="6"/> <!-- attendance id : 4 has same rank as 9 -->
+
+    <Attendance id="7" collegeId="1" studentId="2" sessionId="1" attendanceType="3" angelId="7"/>
+    <Attendance id="8" collegeId="1" studentId="2" sessionId="1" attendanceType="2" angelId="8"/>
+    <Attendance id="9" collegeId="1" studentId="2" sessionId="1" attendanceType="3" angelId="9"/>
+
+    <Attendance id="10" collegeId="1" studentId="2" sessionId="2" attendanceType="0" angelId="10"/>
+    <Attendance id="11" collegeId="1" studentId="2" sessionId="2" attendanceType="2" angelId="11" node="note"/>
+    <Attendance id="12" collegeId="1" studentId="2" sessionId="2" attendanceType="4" angelId="12"/>
+
+</dataset>

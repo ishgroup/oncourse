@@ -587,29 +587,4 @@ public class MergeProcessorTest extends ServiceTest {
 				.selectOne(context);
 		assertNull(customField2);
 	}
-
-    @Test
-    public void testAttendanceMerge() throws Exception {
-        ObjectContext context = cayenneService.newContext();
-        Student studentToUpdate = ObjectSelect.query(Student.class, Student.ANGEL_ID.eq(1L)).selectFirst(context);
-        Student studentToDelete = ObjectSelect.query(Student.class, Student.ANGEL_ID.eq(2L)).selectFirst(context);
-
-        MergeAttendances.valueOf(context, studentToUpdate, studentToDelete).merge();
-        context.commitChanges();
-
-        List<Attendance> mergeResult = ObjectSelect.query(Attendance.class).orderBy(Attendance.ANGEL_ID_PROPERTY).select(context);
-
-        assertEquals(3, mergeResult.size());
-
-        List<Long> expectedAngelIds = new ArrayList<>();
-        expectedAngelIds.add(1L);
-		expectedAngelIds.add(2L);
-		expectedAngelIds.add(3L);
-
-        for (Attendance a : mergeResult) {
-            assertEquals(studentToUpdate.getId(), a.getStudent().getId());
-            assertEquals((Integer) AttendanceType.ATTENDED.ordinal(), a.getAttendanceType());
-            assertTrue(expectedAngelIds.contains(a.getAngelId()));
-        }
-    }
 }

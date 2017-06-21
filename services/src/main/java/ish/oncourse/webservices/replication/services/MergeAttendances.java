@@ -4,9 +4,7 @@ import ish.oncourse.model.Attendance;
 import ish.oncourse.model.Student;
 import org.apache.cayenne.ObjectContext;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Safe merge. Attendances that belongs to the same course class merges according to theirs priority
@@ -31,6 +29,7 @@ public class MergeAttendances {
 
     public void merge() {
         List<Attendance> removeList = new ArrayList<>();
+        List<Attendance> toUpdateAttendances = new ArrayList<>();
 
         for (Attendance aToDel : delete.getAttendances()) {
             Attendance aToUpd = null;
@@ -46,8 +45,12 @@ public class MergeAttendances {
                 }
                 removeList.add(aToDel);
             } else {
-                aToDel.setStudent(update);
+                toUpdateAttendances.add(aToDel);
             }
+        }
+
+        for(int i = 0; i < toUpdateAttendances.size(); i++){
+            toUpdateAttendances.get(i).setStudent(update);
         }
         context.deleteObjects(removeList);
     }
