@@ -74,7 +74,7 @@ const _common = (dirname, options) => {
     },
     plugins: [
       _DefinePlugin('development', 'http://localhost:10080'),
-      new ExtractTextPlugin("[name].css")
+      new ExtractTextPlugin("[name].css"),
     ],
     devServer: {
       inline: false

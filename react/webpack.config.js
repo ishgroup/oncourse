@@ -99,25 +99,29 @@ function createListOfPlugins({NODE_ENV, API_ROOT}) {
   const plugins = [ __common.DefinePlugin(NODE_ENV, API_ROOT) ];
 
   if (NODE_ENV === "production") {
-    plugins.push(new TypedocWebpackPlugin({
-      jsx: "react",
-      target: "es6",
-      lib: [
-        "lib.dom.d.ts",
-        "lib.es5.d.ts",
-        "lib.es2015.d.ts",
-        "lib.es2016.d.ts",
-        "lib.es2017.d.ts"
-      ],
-      allowSyntheticDefaultImports: true,
-      moduleResolution: "node",
-      module: "es6",
-      out: "../docs" // relative to output
-    }, "./src/js/"));
+    plugins.push(
+      new TypedocWebpackPlugin({
+        jsx: "react",
+        target: "es6",
+        lib: [
+          "lib.dom.d.ts",
+          "lib.es5.d.ts",
+          "lib.es2015.d.ts",
+          "lib.es2016.d.ts",
+          "lib.es2017.d.ts"
+        ],
+        allowSyntheticDefaultImports: true,
+        moduleResolution: "node",
+        module: "es6",
+        out: "../docs" // relative to output
+      }, "./src/js/"),
+      new webpack.optimize.ModuleConcatenationPlugin()
+    );
   }
 
   if (NODE_ENV === "development") {
     plugins.push(
+      new webpack.optimize.ModuleConcatenationPlugin(),
       getHtmlWebpackPlugin("enrol/checkout/index.html"),
       getHtmlWebpackPlugin("courses/index.html"),
       getHtmlWebpackPlugin("courses/one_class.html"),
