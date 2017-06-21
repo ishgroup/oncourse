@@ -4,20 +4,20 @@ import RadioGroup from "../../../../components/form-new/RadioGroup";
 import {Item} from "../../../../model/common/Item";
 
 export interface Props {
-  contacts: Contact[]
-  payer: Contact
-  onChange: (Contact) => void
+  contacts: Contact[];
+  payer: Contact;
+  onChange: (Contact) => void;
 }
 
 export class PayerSelect extends React.Component<Props, any> {
   render() {
     const {contacts, payer, onChange} = this.props;
     const items: Item[] = contacts.map((contact: Contact) => {
-      return {key: contact.id, value: `${contact.firstName} ${contact.lastName}`}
+      return {key: contact.id, value: `${contact.firstName} ${contact.lastName}`};
     });
 
     const input = {
-      value: payer.id
+      value: payer.id,
     };
 
     return (
@@ -30,6 +30,6 @@ export class PayerSelect extends React.Component<Props, any> {
           <RadioGroup name="payer" required={true} items={items} input={input} onChange={onChange}/>
         </div>
       </div>
-    )
+    );
   }
 }

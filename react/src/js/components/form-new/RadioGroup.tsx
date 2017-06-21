@@ -8,20 +8,20 @@ import {inputFrom} from "./FieldsUtils";
  */
 
 interface Props {
-  name: string,
-  label: string,
-  required: boolean,
-  items: Item[]
+  name: string;
+  label: string;
+  required: boolean;
+  items: Item[];
 }
 
 class RadioGroup extends React.Component<any, any> {
 
-  private onChange = (value) => {
-    const {onChange} = this.props.input;
+  private handleChange = (value) => {
+    const {onChange} = this.props;
     if (onChange) {
-      onChange(value)
+      onChange(value);
     }
-  };
+  }
 
   render() {
     const {name, items} = this.props;
@@ -30,20 +30,27 @@ class RadioGroup extends React.Component<any, any> {
     const fields = items.map((i) => {
       return (
         <span key={i.key}>
-          <input name={name} type="radio" value={i.key} checked={input.value == i.key}
-                 onChange={() => {this.onChange(i.key)}} onBlur={input.onBlur} onFocus={input.onFocus}/>
+          <input
+            name={name}
+            type="radio"
+            value={i.key}
+            checked={input.value === i.key}
+            onChange={() => { this.handleChange(i.key);}}
+            onBlur={input.onBlur}
+            onFocus={input.onFocus}
+          />
           {' '}
           {i.value}
         </span>
-      )
+      );
     });
 
     return (<Wrapper {...this.props}>
       <span className="radio-list">
         {fields}
       </span>
-    </Wrapper>)
+    </Wrapper>);
   }
 }
 
-export default RadioGroup
+export default RadioGroup;

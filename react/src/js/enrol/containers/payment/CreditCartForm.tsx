@@ -8,32 +8,49 @@ import CreditCardComp from "./components/CreditCardComp";
 import {Amount} from "../../../model/checkout/Amount";
 import {Conditions} from "./components/Conditions";
 import {makePayment} from "./actions/Actions";
+import {setPayer} from "../../actions/Actions";
 import {FieldName, Values} from "./services/PaymentService";
 
 interface Props extends FormProps<DataShape, any, any> {
   amount: Amount;
   contacts: Contact[];
+  onSetPayer: (Contact) => any;
+  payerId: string;
+
 }
 
 export const NAME = "CreditCartForm";
 
 class CreditCartForm extends React.Component<Props, any> {
   render() {
-    const {amount, contacts, handleSubmit, invalid, pristine, submitting} = this.props;
+    const {amount, contacts, handleSubmit, invalid, pristine, submitting, onSetPayer, payerId} = this.props;
     const disabled = (invalid || pristine || submitting);
-    const className = classnames("btn", "btn-primary", {"disabled": disabled});
+    const className = classnames("btn", "btn-primary", {disabled});
+
     return (
       <div>
         <form onSubmit={handleSubmit} id="payment-form">
-          {amount.payNow != "0.00" && <CreditCardComp amount={amount} contacts={contacts}/> }
+          {amount.payNow != "0.00" &&
+            <CreditCardComp
+              amount={amount}
+              contacts={contacts}
+              payerId={payerId}
+              onSetPayer={onSetPayer}
+            />
+          }
           <Conditions/>
           <div className="form-controls enrolmentsSelected">
-            <input className={className} id="paymentSubmit" name="paymentSubmit" type="submit"
-                   disabled={disabled}/>
+            <input
+              className={className}
+              id="paymentSubmit"
+              name="paymentSubmit"
+              type="submit"
+              disabled={disabled}
+            />
           </div>
         </form>
       </div>
-    )
+    );
   }
 }
 
@@ -68,33 +85,35 @@ const Form = reduxForm({
       }
     }
     
-    return errors
+    return errors;
   },
   
   onSubmit: (data: Values, dispatch, props): void => {
     if (props.amount.payNow != "0.00") {
       data.creditCardNumber = data.creditCardNumber.replace(/\s+/g, "");
-      data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "")
+      data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "");
     }
     dispatch(makePayment(data));
-  }
+  },
 })(CreditCartForm);
 
 
 const mapStateToProps = (state: IshState) => {
   return {
     contacts: Object.values(state.checkout.contacts.entities.contact),
-    amount: state.checkout.amount
-  }
+    amount: state.checkout.amount,
+    payerId: state.checkout.payerId,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    onSetPayer: id => dispatch(setPayer(id)),
+  };
 };
 
 export const Container = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Form);
-
 

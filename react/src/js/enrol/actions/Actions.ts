@@ -1,22 +1,23 @@
 import {_toRequestType} from "../../common/actions/ActionUtils";
 import {Phase} from "../reducers/State";
+import {Contact} from "../../model/web/Contact";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
 import {Amount} from "../../model/checkout/Amount";
 import {IAction} from "../../actions/IshAction";
 
-//initialize checkout application
+// initialize checkout application
 
 export const SHOW_MESSAGES: string = "checkout/messages/show";
 export const SHOW_MESSAGES_REQUEST: string = _toRequestType(SHOW_MESSAGES);
 
 export const INIT_REQUEST: string = "checkout/init/request";
 
-//change current phase action
+// change current phase action
 export const CHANGE_PHASE: string = "checkout/phase/change";
 export const CHANGE_PHASE_REQUEST: string = _toRequestType(CHANGE_PHASE);
 
-export const PayerSet: string = "checkout/payer/set";
+export const SET_PAYER_TO_STATE: string = "checkout/set/payer/to/state";
 
 export const GET_AMOUNT: string = "checkout/get/amount";
 export const UPDATE_AMOUNT: string = "checkout/update/amount";
@@ -102,4 +103,8 @@ export const resetCheckoutState = (): IAction<any> => {
   return {
     type: RESET_CHECKOUT_STATE,
   };
+};
+
+export const setPayer = function (id: string): { type: string, payload: string } {
+  return {type: SET_PAYER_TO_STATE, payload: id};
 };

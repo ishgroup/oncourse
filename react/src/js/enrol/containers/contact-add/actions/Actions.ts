@@ -4,15 +4,10 @@ import {ContactSchema, ContactsState} from "../../../../NormalizeSchema";
 import {ContactId} from "../../../../model/web/ContactId";
 import {IAction} from "../../../../actions/IshAction";
 
-
 export const OPEN_ADD_CONTACT_FORM: string = "checkout/open/add/contact";
-
 
 export const SUBMIT_ADD_CONTACT: string = "checkout/submit/add/contact";
 export const ADD_CONTACT_TO_STATE: string = "checkout/add/contact/to/state";
-export const SET_PAYER_TO_STATE: string = "checkout/set/payer/to/state";
-
-
 
 export const NAME = "ContactAddForm";
 export interface Values {
@@ -55,9 +50,3 @@ export const openAddContactForm = (): { type: string } => {
 export const addContact = function (contact: Contact): { type: string, payload: ContactsState } {
   return {type: ADD_CONTACT_TO_STATE, payload: normalize(contact, ContactSchema)};
 };
-
-export const setPayer = function (contact: Contact): { type: string, payload: string } {
-  return {type: SET_PAYER_TO_STATE, payload: contact.id};
-};
-
-

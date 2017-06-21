@@ -2,7 +2,8 @@ import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
 import {Observable} from "rxjs";
 import "rxjs";
-import {addContact, setPayer, SUBMIT_ADD_CONTACT, SubmitContact} from "../actions/Actions";
+import {addContact, SUBMIT_ADD_CONTACT, SubmitContact} from "../actions/Actions";
+import {setPayer} from "../../../actions/Actions";
 import {addContact as addContactToCart} from "../../../../web/actions/Actions";
 import {IshState} from "../../../../services/IshState";
 import {openEditContact} from "../../contact-edit/actions/Actions";
@@ -28,7 +29,7 @@ export const SubmitAddContact: Epic<any, IshState> = (action$: ActionsObservable
       return [
         addContact(payload.contact),
         setNewContactFlag(payload.newContact),
-        setPayer(payload.contact),
+        setPayer(payload.contact.id),
         addContactToCart(payload.contact),
         openEditContact(payload.contact),
       ];

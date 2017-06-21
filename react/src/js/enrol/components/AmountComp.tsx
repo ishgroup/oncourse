@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {Amount} from "../../model/checkout/Amount";
 import AddCodeComp from "./AddCodeComp";
 import {Promotion} from "../../model/web/Promotion";
@@ -32,7 +32,7 @@ const Total = (props) => {
       <label className="col-xs-12">Total</label>
       <span className="col-xs-12">{props.total}</span>
     </div>
-  )
+  );
 };
 
 const Discount = (props) => {
@@ -41,7 +41,7 @@ const Discount = (props) => {
       <label className="col-xs-12">Discount</label>
       <span className="col-xs-12">{props.discount}</span>
     </div>
-  )
+  );
 };
 
 const PayNow = (props) => {
@@ -49,7 +49,7 @@ const PayNow = (props) => {
     <div className="row grand-total">
       <label className="col-xs-12">Pay Now</label>
       <span className="col-xs-12">{props.payNow}</span>
-    </div>)
+    </div>);
 };
 
 export default AmountComp;

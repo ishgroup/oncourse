@@ -1,5 +1,5 @@
 import React from "react";
-import classNames from "classnames";
+import classnames from "classnames";
 import {Field} from "redux-form";
 import SelectField from "../../../../components/form-new/SelectField";
 import {TextField} from "../../../../components/form-new/TextField";
@@ -14,6 +14,8 @@ import {MaskedTextField} from "../../../../components/form-new/MaskedTextField";
 interface Props {
   contacts: Contact[];
   amount: Amount;
+  onSetPayer?: (id: string) => void;
+  payerId?: string;
 }
 
 const Header = () => {
@@ -22,7 +24,7 @@ const Header = () => {
       <h1>Secure credit card payment</h1>
       <span>This is a secure SSL encrypted payment.</span>
     </div>
-  </div>)
+  </div>);
 };
 
 class CreditCardComp extends React.Component<Props, any> {
@@ -32,10 +34,10 @@ class CreditCardComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount} = this.props;
+    const {contacts, amount, onSetPayer, payerId} = this.props;
 
     return (
-      <div id="credit-card" className={classNames("single-tab", "active")}>
+      <div id="credit-card" className={classnames("single-tab", "active")}>
         <div id="paymentEditor">
           <Header/>
           <div className="enrolmentsSelected">
@@ -48,8 +50,12 @@ class CreditCardComp extends React.Component<Props, any> {
                   </span>
                 </p>
 
-                <PayerSelect contacts={contacts} payer={contacts[0]} onChange={(c) => {
-                }}/>
+                <PayerSelect
+                  contacts={contacts}
+                  payer={contacts.filter(c => c.id === payerId)[0]}
+                  onChange={onSetPayer}
+                />
+
                 <PayerAdd/>
 
                 <Field component={TextField} maxLength={ 40 } className="input-fixed " autoComplete="off"
@@ -83,7 +89,7 @@ class CreditCardComp extends React.Component<Props, any> {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 export default CreditCardComp;

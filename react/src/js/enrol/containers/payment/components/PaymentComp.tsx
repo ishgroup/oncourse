@@ -5,7 +5,7 @@ import {FormDecorator} from "redux-form";
 import {Promotion} from "../../../../model/web/Promotion";
 
 export interface Props {
-  paymentForm: FormDecorator<FormData, any, any>
+  paymentForm: FormDecorator<FormData, any, any>;
   amount: Amount;
   onAddCode:(code: string) => void;
   promotions: Promotion[];

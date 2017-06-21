@@ -4,7 +4,6 @@ import * as L from "lodash";
 import * as Actions from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
 import * as ContactAddActions from "../containers/contact-add/actions/Actions";
-import {SET_PAYER_TO_STATE} from "../containers/contact-add/actions/Actions";
 
 import {ValidationError} from "../../model/common/ValidationError";
 import {ContactFields} from "../../model/field/ContactFields";
@@ -18,7 +17,7 @@ import {normalize} from "normalizr";
 
 const PayerReducer = (state: string = null, action: IAction<string>): string => {
   switch (action.type) {
-    case SET_PAYER_TO_STATE:
+    case Actions.SET_PAYER_TO_STATE:
       return action.payload;
     case Actions.RESET_CHECKOUT_STATE:
       return null;

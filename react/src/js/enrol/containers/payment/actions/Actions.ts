@@ -16,37 +16,36 @@ export const GET_PAYMENT_STATUS = "checkout/payment/get/payment/status";
 
 export const RESET_PAYMENT_STATE = "checkout/payment/reset/payment/state";
 
-
 export const makePayment = (values: Values): IAction<Values> => {
   return {
     type: MAKE_PAYMENT,
-    payload: values
-  }
+    payload: values,
+  };
 };
 
 export const processPayment = (values: Values): IAction<Values> => {
   return {
     type: PROCESS_PAYMENT,
-    payload: values
-  }
+    payload: values,
+  };
 };
 
 
 export const getPaymentStatus = (): IAction<any> => {
   return {
-    type: GET_PAYMENT_STATUS
-  }
+    type: GET_PAYMENT_STATUS,
+  };
 };
 
 export const updatePaymentStatus = (response: PaymentResponse): IAction<PaymentResponse> => {
   return {
     type: UPDATE_PAYMENT_STATUS,
-    payload: response
-  }
+    payload: response,
+  };
 };
 
 export const resetPaymentState = () => {
   return {
-    type: RESET_PAYMENT_STATE
-  }
+    type: RESET_PAYMENT_STATE,
+  };
 };
