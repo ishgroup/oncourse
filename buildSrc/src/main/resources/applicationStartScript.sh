@@ -24,7 +24,11 @@ cd \$APP_HOME
 DEFAULT_JVM_OPTS=${defaultJvmOpts}
 
 usage() {
-    echo "\$0 stop|start"
+    echo "\$0 stop|start|status|drain"
+    echo "start: start the application"
+    echo "stop: immediately stop the application"
+    echo "status: check to see whether the application is running. Return error 0 if running and 1 if not."
+    echo "drain: cause the health check to return an error, but keep the application running"
     exit 1;
 }
 
