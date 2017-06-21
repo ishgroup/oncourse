@@ -9,7 +9,6 @@ import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.checkout.CheckoutApiImpl
 import ish.oncourse.willow.filters.SearchFilter
-import ish.oncourse.willow.cayenne.QueueableLifecycleListener
 import ish.oncourse.willow.search.SearchApiImpl
 import ish.oncourse.willow.search.SearchService
 import ish.oncourse.willow.service.impl.CollegeService
@@ -36,7 +35,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(PromotionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(CollegeService)
         CXFModule.contributeResources(binder).addBinding().to(HealthCheckApiServiceImpl)
-        CXFModule.contributeResources(binder).addBinding().to(ShutdownService)
+        CXFModule.contributeResources(binder).addBinding().to(ShutdownService).asEagerSingleton()
         CXFModule.contributeResources(binder).addBinding().to(RequestFilter)
         CXFModule.contributeResources(binder).addBinding().to(ContactCredentialsValidator)
         CXFModule.contributeResources(binder).addBinding().to(ContactCredentialsValidator)
