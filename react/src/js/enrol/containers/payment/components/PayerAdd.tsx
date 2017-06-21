@@ -1,19 +1,52 @@
 import React from "react";
 
 export class PayerAdd extends React.Component<any, any> {
+  private listEl;
+
+  constructor() {
+    super();
+
+    this.state = {
+      showList: false,
+    };
+  }
+
+  handleBlur(e) {
+    if (this.listEl.contains(e.relatedTarget)) {
+      return;
+    }
+    this.toggleList(false);
+  }
+
+  toggleList(show) {
+    this.setState({showList: show});
+  }
+
   render() {
+    const {showList} = this.state;
+
     return (
       <div className="payer-selection">
-        <a className="button" href="#">Choose a different payer</a>
-        <ul className="new-payer-option">
+        <a
+          className="button"
+          href="#"
+          onClick={() => this.toggleList(!showList)}
+          onBlur={this.handleBlur.bind(this)}
+        > Choose a different payer
+        </a>
+        <ul
+          className="new-payer-option"
+          ref={ref => this.listEl = ref}
+          style={{display: showList ? 'block' : 'none'}}
+        >
           <li id="new-person">
-            <a href="#">a person</a>
+            <a href="#" onClick={() => console.log('select new person')}>a person</a>
           </li>
           <li id="new-company">
-            <a href="#">a business</a>
+            <a href="#" onClick={() => console.log('select new company')}>a business</a>
           </li>
         </ul>
       </div>
-    )
+    );
   }
 }
