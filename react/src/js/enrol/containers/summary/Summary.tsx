@@ -2,7 +2,7 @@ import * as React from "react";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
 
-import {Application, Article, Enrolment, Membership, Voucher} from "../../../model/checkout";
+import {Application, Article, Enrolment, Membership, Voucher} from "../../../model/checkout/Index";
 import {
   ApplicationProps,
   ArticleProps,
