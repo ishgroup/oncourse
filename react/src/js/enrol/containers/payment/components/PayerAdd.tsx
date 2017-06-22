@@ -24,6 +24,7 @@ export class PayerAdd extends React.Component<any, any> {
 
   render() {
     const {showList} = this.state;
+    const {onAddPayer, onAddCompany} = this.props;
 
     return (
       <div className="payer-selection">
@@ -40,10 +41,10 @@ export class PayerAdd extends React.Component<any, any> {
           style={{display: showList ? 'block' : 'none'}}
         >
           <li id="new-person">
-            <a href="#" onClick={() => console.log('select new person')}>a person</a>
+            <a href="#" onClick={() => onAddPayer()}>a person</a>
           </li>
           <li id="new-company">
-            <a href="#" onClick={() => console.log('select new company')}>a business</a>
+            <a href="#" onClick={() => onAddCompany()}>a business</a>
           </li>
         </ul>
       </div>

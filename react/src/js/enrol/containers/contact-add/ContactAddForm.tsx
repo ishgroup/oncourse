@@ -3,7 +3,7 @@ import * as React from "react";
 
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
-import {NAME, submitAddContact, Values} from "./actions/Actions";
+import {NAME, Values} from "./actions/Actions";
 import {showFormValidation} from "../../actions/Actions";
 import {ContactId} from "../../../model/web/ContactId";
 
@@ -11,6 +11,7 @@ import {ContactId} from "../../../model/web/ContactId";
 class ContactAddForm extends React.Component<any, any> {
   render() {
     const {handleSubmit, onCancel, pristine, invalid, submitting} = this.props;
+
     return (
       <div>
         <form onSubmit={handleSubmit} id="contactEditorForm">
@@ -25,12 +26,13 @@ class ContactAddForm extends React.Component<any, any> {
             />
 
             {onCancel &&
-            <button
+            <a
+              href="#"
               type="button"
-              className="btn btn-secondary"
+              className="cancel"
               onClick={onCancel}
             > Cancel
-            </button>
+            </a>
             }
           </div>
         </form>
@@ -43,7 +45,7 @@ const Form = reduxForm({
   form: NAME,
   validate: validateContact,
   onSubmitSuccess: (result, dispatch, props: any) => {
-    dispatch(submitAddContact(result as ContactId, props.values as Values));
+    dispatch(props.onSuccess(result as ContactId, props.values as Values));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     dispatch(showFormValidation(submitError, NAME));

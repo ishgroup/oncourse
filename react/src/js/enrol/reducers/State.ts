@@ -31,4 +31,5 @@ export enum Phase {
   Payment,
   Result,
   AddContact,
+  AddContactAsPayer,
 }

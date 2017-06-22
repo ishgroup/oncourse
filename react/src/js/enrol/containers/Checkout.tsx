@@ -10,6 +10,7 @@ import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
 import {changePhase, sendInitRequest} from "../actions/Actions";
+import {submitAddContactAsPayer, submitAddContact} from "./contact-add/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 
 
@@ -33,15 +34,24 @@ export class Checkout extends React.Component<Props, any> {
         <Progress/>
         <Messages/>
         {phase === Phase.AddPayer &&
-          <ContactAddForm
-            onSubmit={CheckoutService.createOrGetContact}
-          />
+        <ContactAddForm
+          onSubmit={CheckoutService.createOrGetContact}
+          onSuccess={submitAddContact}
+        />
         }
         {phase === Phase.AddContact &&
-          <ContactAddForm
-            onSubmit={CheckoutService.createOrGetContact}
-            onCancel={() => this.props.changePhase(Phase.Summary)}
-          />
+        <ContactAddForm
+          onSubmit={CheckoutService.createOrGetContact}
+          onSuccess={submitAddContact}
+          onCancel={() => this.props.changePhase(Phase.Summary)}
+        />
+        }
+        {phase === Phase.AddContactAsPayer &&
+        <ContactAddForm
+          onSubmit={CheckoutService.createOrGetContact}
+          onSuccess={submitAddContactAsPayer}
+          onCancel={abc => this.props.changePhase(Phase.Payment)}
+        />
         }
         {phase === Phase.EditContact && <ContactEditForm/>}
         {phase === Phase.Summary && <Summary/>}
@@ -53,18 +63,16 @@ export class Checkout extends React.Component<Props, any> {
 }
 
 
-const mapStateToProps = (state: IshState) => {
-  return {
-    phase: state.checkout.phase,
-  };
-};
+const mapStateToProps = state => ({
+  phase: state.checkout.phase,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: (): void => {
       dispatch(sendInitRequest());
     },
-    changePhase: (phase) => {
+    changePhase: phase => {
       dispatch(changePhase(phase));
     },
   };

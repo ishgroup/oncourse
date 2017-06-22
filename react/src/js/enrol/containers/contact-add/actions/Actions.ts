@@ -4,9 +4,8 @@ import {ContactSchema, ContactsState} from "../../../../NormalizeSchema";
 import {ContactId} from "../../../../model/web/ContactId";
 import {IAction} from "../../../../actions/IshAction";
 
-export const OPEN_ADD_CONTACT_FORM: string = "checkout/open/add/contact";
-
 export const SUBMIT_ADD_CONTACT: string = "checkout/submit/add/contact";
+export const SUBMIT_ADD_CONTACT_AS_PAYER: string = "checkout/submit/add/contact/payer";
 export const ADD_CONTACT_TO_STATE: string = "checkout/add/contact/to/state";
 
 export const NAME = "ContactAddForm";
@@ -16,6 +15,19 @@ export interface Values {
   email: string;
 }
 
+const getContactPayload = (contactId, values): SubmitContact => {
+  const contact: Contact = new Contact();
+  contact.id = contactId.id;
+  contact.firstName = values.firstName;
+  contact.lastName = values.lastName;
+  contact.email = values.email;
+
+  return {
+    contact: contact,
+    newContact: contactId.newContact,
+  };
+}
+
 
 export interface SubmitContact {
   contact: Contact;
@@ -23,27 +35,22 @@ export interface SubmitContact {
 }
 
 export const submitAddContact = (contactId: ContactId, values: Values): IAction<SubmitContact> => {
-  const contact: Contact = new Contact();
-  contact.id = contactId.id;
-  contact.firstName = values.firstName;
-  contact.lastName = values.lastName;
-  contact.email = values.email;
-  const payload: SubmitContact = {
-    contact: contact,
-    newContact: contactId.newContact,
-  };
   return {
     type: SUBMIT_ADD_CONTACT,
-    payload: payload,
+    payload: getContactPayload(contactId, values),
     meta: {
       from: NAME,
     },
   };
 };
 
-export const openAddContactForm = (): { type: string } => {
+export const submitAddContactAsPayer = (contactId: ContactId, values: Values): IAction<SubmitContact> => {
   return {
-    type: OPEN_ADD_CONTACT_FORM,
+    type: SUBMIT_ADD_CONTACT_AS_PAYER,
+    payload: getContactPayload(contactId, values),
+    meta: {
+      from: NAME,
+    },
   };
 };
 

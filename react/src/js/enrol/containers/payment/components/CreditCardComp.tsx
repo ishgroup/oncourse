@@ -15,6 +15,8 @@ interface Props {
   contacts: Contact[];
   amount: Amount;
   onSetPayer?: (id: string) => void;
+  onAddPayer?: () => any;
+  onAddCompany?: () => any;
   payerId?: string;
 }
 
@@ -34,7 +36,7 @@ class CreditCardComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onSetPayer, payerId} = this.props;
+    const {contacts, amount, onSetPayer, payerId, onAddPayer, onAddCompany} = this.props;
 
     return (
       <div id="credit-card" className={classnames("single-tab", "active")}>
@@ -56,7 +58,10 @@ class CreditCardComp extends React.Component<Props, any> {
                   onChange={onSetPayer}
                 />
 
-                <PayerAdd/>
+                <PayerAdd
+                  onAddPayer={onAddPayer}
+                  onAddCompany={onAddCompany}
+                />
 
                 <Field component={TextField} maxLength={ 40 } className="input-fixed " autoComplete="off"
                        name={FieldName.creditCardName} label="Name on Card" type="text" required={true}/>

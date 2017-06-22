@@ -15,12 +15,16 @@ const request: Request<ContactFields, IshState> = {
   getData: (contact: Contact, state: IshState) => CheckoutService.loadFields(contact, state),
   processData: (value: ContactFields, state: IshState) => {
     if (value.headings.length > 0) {
-      return [setFieldsToState(value), changePhase(Phase.EditContact)];
+      return [
+        setFieldsToState(value),
+        changePhase(Phase.EditContact),
+      ];
+    } else {
+      return [
+        addContactToSummary(state.checkout.contacts.entities.contact[value.contactId]),
+      ];
     }
-    else {
-      return [addContactToSummary(state.checkout.contacts.entities.contact[value.contactId])];
-    }
-  }
+  },
 };
 
 export const OpenEditContact: Epic<any, IshState> = Create(request);

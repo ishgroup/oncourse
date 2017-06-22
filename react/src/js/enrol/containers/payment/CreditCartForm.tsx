@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import {DataShape, FormErrors, FormProps, reduxForm} from "redux-form";
+import {change, DataShape, FormErrors, FormProps, reduxForm} from "redux-form";
 import {Contact} from "../../../model/web/Contact";
 import {IshState} from "../../../services/IshState";
 import {connect} from "react-redux";
@@ -8,13 +8,17 @@ import CreditCardComp from "./components/CreditCardComp";
 import {Amount} from "../../../model/checkout/Amount";
 import {Conditions} from "./components/Conditions";
 import {makePayment} from "./actions/Actions";
-import {setPayer} from "../../actions/Actions";
+import {changePhase, setPayer} from "../../actions/Actions";
+import {Phase} from "../../reducers/State";
+
 import {FieldName, Values} from "./services/PaymentService";
 
 interface Props extends FormProps<DataShape, any, any> {
   amount: Amount;
   contacts: Contact[];
   onSetPayer: (Contact) => any;
+  onAddPayer: () => any;
+  onAddCompany: () => any;
   payerId: string;
 
 }
@@ -23,7 +27,7 @@ export const NAME = "CreditCartForm";
 
 class CreditCartForm extends React.Component<Props, any> {
   render() {
-    const {amount, contacts, handleSubmit, invalid, pristine, submitting, onSetPayer, payerId} = this.props;
+    const {amount, contacts, handleSubmit, invalid, pristine, submitting, onSetPayer, payerId, onAddPayer, onAddCompany} = this.props;
     const disabled = (invalid || pristine || submitting);
     const className = classnames("btn", "btn-primary", {disabled});
 
@@ -36,6 +40,8 @@ class CreditCartForm extends React.Component<Props, any> {
               contacts={contacts}
               payerId={payerId}
               onSetPayer={onSetPayer}
+              onAddPayer={onAddPayer}
+              onAddCompany={onAddCompany}
             />
           }
           <Conditions/>
@@ -109,6 +115,8 @@ const mapStateToProps = (state: IshState) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSetPayer: id => dispatch(setPayer(id)),
+    onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
+    onAddCompany: () => dispatch(changePhase(Phase.AddContactAsPayer)),
   };
 };
 

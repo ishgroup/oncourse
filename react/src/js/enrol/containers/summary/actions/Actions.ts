@@ -23,8 +23,8 @@ export const SELECT_ITEM_REQUEST: string = _toRequestType(SELECT_ITEM);
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
   return {
     type: ADD_CONTACT_TO_SUMMARY,
-    payload: contact
-  }
+    payload: contact,
+  };
 };
 
 
@@ -46,8 +46,8 @@ export const proceedToPayment = (): { type: string } => {
 export const getContactNodeFromBackend = (contact: Contact): IAction<Contact> => {
   return {
     type: GET_CONTACT_NODE_FROM_BACKEND,
-    payload: contact
-  }
+    payload: contact,
+  };
 };
 
 /**
@@ -57,6 +57,6 @@ export const addContactNodeToState = (node: ContactNode): IAction<State> => {
   const payload: State = ContactNodeToState([node]);
   return {
     type: ADD_CONTACT_NODE_TO_STATE,
-    payload: payload,
+    payload,
   };
 };

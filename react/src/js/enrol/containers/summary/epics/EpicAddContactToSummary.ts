@@ -13,7 +13,11 @@ import {Contact} from "../../../../model/web/Contact";
 
 export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
   return action$.ofType(ADD_CONTACT_TO_SUMMARY).flatMap((action:IAction<Contact>) => {
-    return [getContactNodeFromBackend(action.payload), getCheckoutModelFromBackend(), changePhase(Phase.Summary)]
+    return [
+      getContactNodeFromBackend(action.payload),
+      getCheckoutModelFromBackend(),
+      changePhase(store.getState().checkout.page || Phase.Summary),
+    ];
   });
 };
 
