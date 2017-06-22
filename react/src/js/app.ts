@@ -9,9 +9,7 @@ import {HTMLMarkers} from "./common/services/HTMLMarker";
 // Log application version before start.
 Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));
 
-
-
-const start = (store) => {
+const start = store => {
   WindowService.set("api", new PublicApi(store));
 
   const react = new Bootstrap(store)
