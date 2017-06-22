@@ -1,4 +1,4 @@
-import {Field} from "../model/../field/Field";
+import {Field} from "./../field/Field";
 
 export class FieldHeading {
 

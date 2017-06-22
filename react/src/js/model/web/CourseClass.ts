@@ -1,6 +1,6 @@
-import {Course} from "../model/../web/Course";
-import {CourseClassPrice} from "../model/../web/CourseClassPrice";
-import {Room} from "../model/../web/Room";
+import {Course} from "./../web/Course";
+import {CourseClassPrice} from "./../web/CourseClassPrice";
+import {Room} from "./../web/Room";
 
 export class CourseClass {
 

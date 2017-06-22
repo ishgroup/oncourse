@@ -25,5 +25,10 @@ export class Contact {
    * email of contact
    */
   email?: string;
+
+  /**
+   * Is company flag
+   */
+  company?: boolean;
 }
 

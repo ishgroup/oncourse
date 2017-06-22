@@ -644,6 +644,9 @@ definitions:
       email:
         type: string
         description: email of contact
+      company: 
+        type: boolean
+        description: Is company flag
   web.Promotion:
     type: object
     properties:
@@ -737,6 +740,9 @@ definitions:
         type: string
       fieldSet:
         $ref: '#/definitions/field.FieldSet'
+      company: 
+        type: boolean
+        description: Is company flag
   common.ValidationError:
     type: object
     required:

@@ -1,4 +1,4 @@
-import {ContactNode} from "../model/../checkout/ContactNode";
+import {ContactNode} from "./../checkout/ContactNode";
 
 export class CheckoutModelRequest {
   contactNodes?: ContactNode[];

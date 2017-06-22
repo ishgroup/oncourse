@@ -1,4 +1,4 @@
-import {FieldHeading} from "../model/../field/FieldHeading";
+import {FieldHeading} from "./../field/FieldHeading";
 
 export class ContactFields {
 

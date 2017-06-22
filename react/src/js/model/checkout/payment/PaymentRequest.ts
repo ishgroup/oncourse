@@ -1,4 +1,4 @@
-import {CheckoutModelRequest} from "../model/../../checkout/CheckoutModelRequest";
+import {CheckoutModelRequest} from "./../../checkout/CheckoutModelRequest";
 
 export class PaymentRequest {
   checkoutModelRequest?: CheckoutModelRequest;

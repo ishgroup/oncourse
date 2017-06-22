@@ -1,4 +1,4 @@
-import {FieldSet} from "../model/../field/FieldSet";
+import {FieldSet} from "./../field/FieldSet";
 
 export class CreateContactParams {
 
@@ -17,5 +17,10 @@ export class CreateContactParams {
    */
   email: string;
   fieldSet: FieldSet;
+
+  /**
+   * Is company flag
+   */
+  company?: boolean;
 }
 

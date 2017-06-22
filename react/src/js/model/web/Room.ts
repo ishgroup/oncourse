@@ -1,4 +1,4 @@
-import {Site} from "../model/../web/Site";
+import {Site} from "./../web/Site";
 
 export class Room {
 

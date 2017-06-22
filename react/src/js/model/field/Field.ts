@@ -1,5 +1,5 @@
-import {Item} from "../model/../common/Item";
-import {DataType} from "../model/../field/DataType";
+import {Item} from "./../common/Item";
+import {DataType} from "./../field/DataType";
 
 export class Field {
 
