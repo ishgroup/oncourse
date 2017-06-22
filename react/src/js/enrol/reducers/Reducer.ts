@@ -2,6 +2,7 @@ import {combineReducers} from "redux";
 import {CheckoutState, Phase} from "./State";
 import * as L from "lodash";
 import * as Actions from "../actions/Actions";
+import {CHANGE_PHASE} from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
 import * as ContactAddActions from "../containers/contact-add/actions/Actions";
 
@@ -14,6 +15,23 @@ import {ContactsSchema, ContactsState} from "../../NormalizeSchema";
 import {Promotion} from "../../model/web/Promotion";
 import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
+
+
+const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phase => {
+    switch (action.type) {
+      case CHANGE_PHASE:
+        switch (action.payload) {
+          case Phase.Summary:
+          case Phase.Payment:
+          case Phase.Result:
+            return action.payload;
+          default:
+            return state;
+        }
+      default:
+        return state;
+    }
+};
 
 const PayerReducer = (state: string = null, action: IAction<string>): string => {
   switch (action.type) {
@@ -119,6 +137,7 @@ export const Reducer = combineReducers<CheckoutState>({
   newContact: NewContactReducer,
   fields: FieldsReducer,
   phase: PhaseReducer,
+  page: PageReducer,
   addCode: AddCodeReducer,
   error: ErrorReducer,
   amount: AmountReducer,

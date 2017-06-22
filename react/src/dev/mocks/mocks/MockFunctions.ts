@@ -16,6 +16,7 @@ import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/
 import {Promotion} from "../../../js/model/web/Promotion";
 import {ProductClass} from "../../../js/model/web/ProductClass";
 import {Discount} from "../../../js/model/web/Discount";
+import {Phase} from "../../../js/enrol/reducers/State";
 
 
 export const mockDiscount = (): Discount => {
@@ -157,7 +158,7 @@ export const mockState = (contact: Contact,
   });
 
   const state: IshState =
-    {
+    <IshState>{
       checkout: {
         newContact: false,
         summary: ContactNodeToState(items),
@@ -166,6 +167,7 @@ export const mockState = (contact: Contact,
         error: null,
         amount: null,
         phase: null,
+        page: Phase.Summary,
         payment: {},
         contacts: normalize([contact], ContactsSchema)
       },

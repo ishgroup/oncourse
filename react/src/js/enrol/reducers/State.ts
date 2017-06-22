@@ -9,6 +9,7 @@ import {ContactsState} from "../../NormalizeSchema";
 export interface CheckoutState {
   newContact: boolean;
   phase: Phase;
+  page: Phase //Summary, Payment, Result
   fields: ContactFields;
   error: ValidationError;
   payerId: string;
