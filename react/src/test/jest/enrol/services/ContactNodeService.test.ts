@@ -1,4 +1,4 @@
-import * as Items from "../../../../js/model/checkout";
+import * as Items from "../../../../js/model/checkout/Index";
 import {ContactNode} from "../../../../js/model/checkout/ContactNode";
 import {ContactNodeService} from "../../../../js/enrol/services/ContactNodeService";
 

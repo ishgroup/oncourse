@@ -1,5 +1,5 @@
 import {ContactNode} from "../../model/checkout/ContactNode";
-import * as Items from "../../model/checkout";
+import * as Items from "../../model/checkout/Index";
 import {PurchaseItem} from "../../model/checkout/Index";
 import {inspect} from "util";
 
