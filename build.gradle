@@ -23,7 +23,7 @@ buildscript {
 
 plugins {
 	id 'jacoco' // adds the task 'jacocoTestReport'
-	id 'maven-publish'
+
 	id 'findbugs'
 	id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
 	id 'com.github.ben-manes.versions' version '0.15.0' // adds the task 'dependencyUpdates -Drevision=release'
@@ -35,6 +35,7 @@ allprojects {
 	apply plugin: 'maven'
 	apply plugin: 'groovy'
 	apply plugin: 'appBundler'
+	apply plugin: 'maven-publish'
 
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
