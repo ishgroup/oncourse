@@ -2,7 +2,7 @@ buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '9.3.31'
 		log4j2Version = '2.8.2'
-		cayenneVersion = '4.0.M5'
+		cayenneVersion = '4.0.M4'
 		jettyVersion = '9.4.6.v20170531'
 	}
 	repositories {
@@ -17,20 +17,24 @@ buildscript {
 	dependencies {
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
 		classpath "org.apache.cayenne:cayenne-tools:$cayenneVersion"
+		// classpath "org.apache.cayenne:cayenne-ant:$cayenneVersion"
 	}
 }
 
 plugins {
-	id 'java'
-	id 'groovy'
-	id 'maven'
 	id 'jacoco' // adds the task 'jacocoTestReport'
 	id 'maven-publish'
+	id 'findbugs'
 	id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
 	id 'com.github.ben-manes.versions' version '0.15.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
 allprojects {
+
+	apply plugin: 'java'
+	apply plugin: 'maven'
+	apply plugin: 'groovy'
+	apply plugin: 'appBundler'
 
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') ? project.releaseVersion : "SNAPSHOT"
@@ -126,7 +130,7 @@ allprojects {
 	}
 
 	findbugs {
-		sourceSets = []
+
 	}
 
 	// special Java 9 hack needed for gradle

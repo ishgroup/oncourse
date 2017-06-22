@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-apply plugin: 'groovy'
-
-
-version = '1.0'
-
-dependencies {
-	compile gradleApi()
+plugins {
+    id 'java-gradle-plugin'
+    id 'groovy'
 }
