@@ -10,7 +10,7 @@ import {
   EnrolmentProps,
   MembershipProps,
   VoucherProps
-} from "./components";
+} from "./components/Index";
 
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem} from "./actions/Actions";
