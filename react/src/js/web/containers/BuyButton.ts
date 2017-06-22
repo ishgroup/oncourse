@@ -31,6 +31,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state: IshState, ownProps: BuyButtonProps) {
   return {
     product: state.products.entities[ownProps.id] || {},
-    isAdded: isAdded(state.cart.products, ownProps.id)
+    isAdded: isAdded(state.cart.products, ownProps.id),
+    checkoutPath: state.checkoutPath,
   };
 }
