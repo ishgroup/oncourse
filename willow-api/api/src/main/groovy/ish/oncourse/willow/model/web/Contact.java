@@ -8,6 +8,7 @@ public class Contact  {
     private String firstName = null;
     private String lastName = null;
     private String email = null;
+    private Boolean company = null;
 
     /**
      * Internal Unique identifier of course
@@ -94,6 +95,23 @@ public class Contact  {
       return this;
     }
 
+    /**
+     * Is company flag
+     * @return company
+     */
+    public Boolean getCompany() {
+        return company;
+    }
+
+    public void setCompany(Boolean company) {
+       this.company = company;
+    }
+
+    public Contact company(Boolean company) {
+      this.company = company;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -105,6 +123,7 @@ public class Contact  {
       sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
       sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
       sb.append("    email: ").append(toIndentedString(email)).append("\n");
+      sb.append("    company: ").append(toIndentedString(company)).append("\n");
       sb.append("}");
       return sb.toString();
     }

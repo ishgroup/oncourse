@@ -8,6 +8,7 @@ public class CreateContactParams  {
     private String lastName = null;
     private String email = null;
     private FieldSet fieldSet = null;
+    private Boolean company = null;
 
     /**
      * First Name of Contact
@@ -77,6 +78,23 @@ public class CreateContactParams  {
       return this;
     }
 
+    /**
+     * Is company flag
+     * @return company
+     */
+    public Boolean getCompany() {
+        return company;
+    }
+
+    public void setCompany(Boolean company) {
+       this.company = company;
+    }
+
+    public CreateContactParams company(Boolean company) {
+      this.company = company;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -87,6 +105,7 @@ public class CreateContactParams  {
       sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
       sb.append("    email: ").append(toIndentedString(email)).append("\n");
       sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
+      sb.append("    company: ").append(toIndentedString(company)).append("\n");
       sb.append("}");
       return sb.toString();
     }
