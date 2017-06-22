@@ -61,7 +61,7 @@
     "tslint-config-airbnb": "5.1.2",
     "typedoc": "0.5.10",
     "typedoc-webpack-plugin": "1.1.4",
-    "typescript": "2.4.0",
+    "typescript": "2.3.4",
     "webpack": "3.0.0",
     "webpack-dev-server": "2.4.5"
   },
