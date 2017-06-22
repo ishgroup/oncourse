@@ -17,7 +17,7 @@ if [ ! -d "/var/run/onCourse" ]; then
     mkdir /var/run/onCourse
 fi
 BASEDIR=\$(realpath \${0})
-APP_HOME=\$(dirname \${BASEDIR})
+APP_HOME=\$(dirname \${BASEDIR} | xargs dirname)
 cd \$APP_HOME
 
 # Default JVM options. You can also use JAVA_OPTS and ${optsEnvironmentVar} to pass JVM options to this script.
