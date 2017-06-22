@@ -1,8 +1,10 @@
 import * as React from "react";
+import {ReactElement} from "react";
 import {connect} from "react-redux";
+import {IshState} from "../../services/IshState";
 
-class PopupContainer extends React.Component<PopupContainerProps, {}> {
-  render() {
+class PopupContainer extends React.Component<Props, any> {
+  render():ReactElement<any> {
     return (
       <div>
         {this.props.content}
@@ -11,12 +13,12 @@ class PopupContainer extends React.Component<PopupContainerProps, {}> {
   }
 }
 
-export default connect((state) => {
+export default connect((state:IshState) => {
   return {
     content: state.popup.content
   };
-})(PopupContainer);
+})(PopupContainer as any);
 
-interface PopupContainerProps {
+interface Props {
   content: string;
 }

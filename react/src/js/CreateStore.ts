@@ -1,7 +1,7 @@
 import {Store} from "react-redux";
 import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
-import {applyMiddleware, compose, createStore, GenericStoreEnhancer} from "redux";
+import {applyMiddleware, compose, createStore, GenericStoreEnhancer, StoreEnhancer} from "redux";
 import {IshState} from "./services/IshState";
 import {EpicRoot} from "./EpicRoot";
 import {combinedReducers} from "./reducers/reducers";
@@ -28,7 +28,7 @@ const getMiddleware = (): GenericStoreEnhancer => {
 export const CreateStore = (): Store<IshState> => {
   const store: Store<IshState> = createStore(
     combinedReducers,
-    compose(getMiddleware(), autoRehydrate()),
+    <StoreEnhancer<IshState>>compose(getMiddleware(), autoRehydrate()),
   ) as Store<IshState>;
   return store;
 };

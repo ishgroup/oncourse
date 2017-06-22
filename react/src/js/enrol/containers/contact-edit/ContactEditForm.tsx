@@ -1,4 +1,4 @@
-import {reduxForm} from "redux-form";
+import {FormProps, reduxForm} from "redux-form";
 import * as React from "react";
 import {connect} from "react-redux";
 
@@ -14,7 +14,7 @@ import {submitEditContact} from "./actions/Actions";
 
 export const NAME = "ContactEditForm";
 
-class ContactEditForm extends React.Component<any, any> {
+class ContactEditForm extends React.Component<Props, any> {
   render() {
     const {handleSubmit, pristine, invalid, submitting} = this.props;
     const contact: Contact = this.props.contact;
@@ -38,7 +38,7 @@ class ContactEditForm extends React.Component<any, any> {
   }
 }
 
-interface Props {
+interface Props extends FormProps<FormData, Props, any> {
   contact: Contact;
   fields: ContactFields;
   errors: ValidationError;
@@ -78,7 +78,7 @@ const mapDispatchToProps = (dispatch) => {
 const Container = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Form);
+)(Form as any);
 
 
 export default Container;

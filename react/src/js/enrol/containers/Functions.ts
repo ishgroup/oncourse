@@ -6,7 +6,7 @@ import {changePhase} from "../actions/Actions";
 
 export const Messages = connect(state => (
   {error: state.checkout.error}
-))(MessagesComp);
+))(MessagesComp as any);
 
 
 export const Progress = connect(
@@ -54,12 +54,16 @@ export const progressModelBy = (phase: Phase): Model => {
       result.disabled = [Tab.Details, Tab.Payment];
       break;
     case Phase.AddContact:
-      result.active = Tab.Summary;
-      result.disabled = [Tab.Details, Tab.Payment];
+      result.active = Tab.Details;
+      result.disabled = [Tab.Summary, Tab.Payment];
       break;
     case Phase.Payment:
       result.active = Tab.Payment;
       result.disabled = [Tab.Details];
+      break;
+    case Phase.Result:
+      result.active = Tab.Payment;
+      result.disabled = [Tab.Details, Tab.Summary];
       break;
   }
   return result;
