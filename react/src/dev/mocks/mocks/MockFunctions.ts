@@ -33,7 +33,7 @@ export const mockPromotion = (): Promotion => {
   const result: Promotion = {
     id: faker.random.number() as string,
     code: faker.random.alphaNumeric(5).toUpperCase(),
-    name: faker.commerce.productName()
+    name: faker.commerce.productName(),
   };
   return result;
 };
@@ -44,7 +44,7 @@ export const mockCourseClass = (): CourseClass => {
     code: faker.random.number() as string,
     course: {
       code: faker.random.alphaNumeric(5).toUpperCase(),
-      name: faker.commerce.productName()
+      name: faker.commerce.productName(),
     },
     start: faker.date.future(),
     end: faker.date.future(),
@@ -56,8 +56,8 @@ export const mockCourseClass = (): CourseClass => {
     isCancelled: false,
     isFinished: false,
     isPaymentGatewayEnabled: true,
-    availableEnrolmentPlaces: faker.random.number()
-  }
+    availableEnrolmentPlaces: faker.random.number(),
+  };
 };
 
 export const mockProductClass = (): ProductClass => {
@@ -66,13 +66,13 @@ export const mockProductClass = (): ProductClass => {
     code: faker.random.number() as string,
     product: {
       code: faker.random.alphaNumeric(5).toUpperCase(),
-      name: faker.commerce.productName()
+      name: faker.commerce.productName(),
     },
     price: faker.commerce.price(),
     isCancelled: false,
     isPaymentGatewayEnabled: true,
-    canBuy: true
-  }
+    canBuy: true,
+  };
 };
 
 export const mockContact = (): Contact => {
@@ -81,8 +81,9 @@ export const mockContact = (): Contact => {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    uniqueIdentifier: faker.random.alphaNumeric(10)
-  }
+    uniqueIdentifier: faker.random.alphaNumeric(10),
+    company: false,
+  };
 };
 
 export const mockCourseClassPrice = (): CourseClassPrice => {
@@ -91,8 +92,8 @@ export const mockCourseClassPrice = (): CourseClassPrice => {
     feeOverriden: faker.commerce.price(),
     hasTax: true,
     appliedDiscount: mockDiscount(),
-    possibleDiscounts: [mockDiscount(), mockDiscount()]
-  }
+    possibleDiscounts: [mockDiscount(), mockDiscount()],
+  };
 };
 
 export const mockRoom = (): Room => {
@@ -102,9 +103,9 @@ export const mockRoom = (): Room => {
       name: `${faker.address.city()}, ${faker.company.companyName()}`,
       postcode: faker.address.zipCode(),
       suburb: faker.address.city(),
-      street: faker.address.streetAddress()
-    }
-  }
+      street: faker.address.streetAddress(),
+    },
+  };
 };
 
 export const mockAmount = (): Amount => {
@@ -112,8 +113,8 @@ export const mockAmount = (): Amount => {
     total: faker.finance.amount(),
     owing: faker.finance.amount(),
     discount: faker.finance.amount(),
-    payNow: faker.finance.amount()
-  }
+    payNow: faker.finance.amount(),
+  };
 };
 
 export const mockEnumField = (name: string, key: string, enumType: string, items: Item[]): Field => {
@@ -127,8 +128,8 @@ export const mockEnumField = (name: string, key: string, enumType: string, items
 export const mockField = (name: string, key: string, dateType: DataType): Field => {
   return {
     id: faker.random.number() as string,
-    key: key,
-    name: name,
+    key,
+    name,
     description: faker.hacker.phrase(),
     mandatory: true,
     dataType: dateType,
@@ -136,8 +137,8 @@ export const mockField = (name: string, key: string, dateType: DataType): Field 
     value: null,
     defaultValue: null,
     enumItems: [],
-    ordering: 0
-  }
+    ordering: 0,
+  };
 };
 
 export const mockState = (contact: Contact,
@@ -149,12 +150,12 @@ export const mockState = (contact: Contact,
 
   const nPromotions = {
     result: [],
-    entities: {}
+    entities: {},
   };
 
   promotions.forEach((p: Promotion) => {
     nPromotions.result.push(p.id);
-    nPromotions.entities[p.id] = p
+    nPromotions.entities[p.id] = p;
   });
 
   const state: IshState =
@@ -169,16 +170,16 @@ export const mockState = (contact: Contact,
         phase: null,
         page: Phase.Summary,
         payment: {},
-        contacts: normalize([contact], ContactsSchema)
+        contacts: normalize([contact], ContactsSchema),
       },
       cart: {
-        contact: contact,
+        contact,
         promotions: {
           result: nPromotions.result,
-          entities: nPromotions.entities
+          entities: nPromotions.entities,
         },
         courses: null,
-        products: null
+        products: null,
       },
       products: null,
       checkoutPath: null,
@@ -186,12 +187,9 @@ export const mockState = (contact: Contact,
       popup: null,
       courses: {
         entities: nCourses.entities.classes,
-        result: nCourses.result
+        result: nCourses.result,
       },
     };
   return state;
 };
-
-
-
 

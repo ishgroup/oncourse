@@ -16,7 +16,7 @@ interface Props {
 
 class RadioGroup extends React.Component<any, any> {
 
-  private handleChange = (value) => {
+  private handleChange = value => {
     const {onChange} = this.props;
     if (onChange) {
       onChange(value);
@@ -27,10 +27,11 @@ class RadioGroup extends React.Component<any, any> {
     const {name, items} = this.props;
     const input:WrappedFieldInputProps = inputFrom(this.props);
 
-    const fields = items.map((i) => {
+    const fields = items.map(i => {
       return (
         <span key={i.key}>
           <input
+            id={`${i.key}`}
             name={name}
             type="radio"
             value={i.key}
@@ -39,8 +40,7 @@ class RadioGroup extends React.Component<any, any> {
             onBlur={input.onBlur}
             onFocus={input.onFocus}
           />
-          {' '}
-          {i.value}
+          <span htmlFor={i.key}>&nbsp; {i.value}</span>
         </span>
       );
     });

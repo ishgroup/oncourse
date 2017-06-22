@@ -16,7 +16,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     return [
       getContactNodeFromBackend(action.payload),
       getCheckoutModelFromBackend(),
-      changePhase(store.getState().checkout.page || Phase.Summary),
+      changePhase(store.getState().checkout.page),
     ];
   });
 };

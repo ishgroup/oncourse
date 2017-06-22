@@ -6,6 +6,7 @@ import {IAction} from "../../../../actions/IshAction";
 
 export const SUBMIT_ADD_CONTACT: string = "checkout/submit/add/contact";
 export const SUBMIT_ADD_CONTACT_AS_PAYER: string = "checkout/submit/add/contact/payer";
+
 export const ADD_CONTACT_TO_STATE: string = "checkout/add/contact/to/state";
 
 export const NAME = "ContactAddForm";
@@ -13,6 +14,7 @@ export interface Values {
   firstName: string;
   lastName: string;
   email: string;
+  company?: boolean;
 }
 
 const getContactPayload = (contactId, values): SubmitContact => {

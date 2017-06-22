@@ -14,7 +14,7 @@ import CheckoutService from "../../../services/CheckoutService";
  * This epic process Init action of checkout application and define Phase of the application
  */
 export const SubmitAddContact: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
-  return action$.ofType(SUBMIT_ADD_CONTACT).flatMap((action) => {
+  return action$.ofType(SUBMIT_ADD_CONTACT).flatMap(action => {
     const payload: SubmitContact = action.payload;
     const state: IshState = store.getState();
 
@@ -37,7 +37,7 @@ export const SubmitAddContact: Epic<any, IshState> = (action$: ActionsObservable
 };
 
 export const SubmitAddContactAsPayer: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
-  return action$.ofType(SUBMIT_ADD_CONTACT_AS_PAYER).flatMap((action) => {
+  return action$.ofType(SUBMIT_ADD_CONTACT_AS_PAYER).flatMap(action => {
     const payload: SubmitContact = action.payload;
 
     return [

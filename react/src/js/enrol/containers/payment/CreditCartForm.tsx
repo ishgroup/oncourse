@@ -116,7 +116,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSetPayer: id => dispatch(setPayer(id)),
     onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
-    onAddCompany: () => dispatch(changePhase(Phase.AddContactAsPayer)),
+    onAddCompany: () => dispatch(changePhase(Phase.AddContactAsCompany)),
   };
 };
 

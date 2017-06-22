@@ -8,9 +8,12 @@ import {Contact} from "../../../../model/web/Contact";
 import {addContactToSummary} from "../../summary/actions/Actions";
 
 export const SubmitEditContact: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
-  return action$.ofType(SUBMIT_EDIT_CONTACT).flatMap((action) => {
+  return action$.ofType(SUBMIT_EDIT_CONTACT).flatMap(action => {
     const contact: Contact = action.payload;
-    return [resetFieldsState(), addContactToSummary(contact)];
+    return [
+      resetFieldsState(),
+      addContactToSummary(contact),
+    ];
   });
 };
 

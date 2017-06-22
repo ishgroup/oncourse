@@ -13,7 +13,7 @@ export class PayerSelect extends React.Component<Props, any> {
   render() {
     const {contacts, payer, onChange} = this.props;
     const items: Item[] = contacts.map((contact: Contact) => {
-      return {key: contact.id, value: `${contact.firstName} ${contact.lastName}`};
+      return {key: contact.id, value: `${contact.firstName || ''} ${contact.lastName}`};
     });
 
     const input = {

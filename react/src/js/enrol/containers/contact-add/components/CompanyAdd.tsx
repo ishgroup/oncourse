@@ -3,10 +3,10 @@ import {Field} from "redux-form";
 import {TextField} from "../../../../components/form/TextField";
 
 export interface Props {
-  header?: string,
+  header?: string;
 }
 
-export class ContactAdd extends React.Component<Props, any> {
+export class CompanyAdd extends React.Component<Props, any> {
   render() {
     const {header = "Please enter the details of a person enrolling, applying or making a purchase."} = this.props;
     return (
@@ -18,16 +18,8 @@ export class ContactAdd extends React.Component<Props, any> {
           <br/>
           <Field component={TextField}
                  autocomplete="off"
-                 name="firstName"
-                 label="First name"
-                 type="text"
-                 autoFocus
-                 required
-          />
-          <Field component={TextField}
-                 autocomplete="off"
                  name="lastName"
-                 label="Last name"
+                 label="Company name"
                  type="text"
                  required
           />
@@ -43,6 +35,6 @@ export class ContactAdd extends React.Component<Props, any> {
           <strong className="alert">Note</strong>: If you have been here before, please try to use the same email
           address.
         </p>
-      </div>)
+      </div>);
   }
 }
