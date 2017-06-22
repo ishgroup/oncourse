@@ -13,7 +13,7 @@ command -v realpath >/dev/null 2>&1 || realpath() {
 }
 
 PID_FILE="/var/run/onCourse/${applicationName}.pid"
-if [ -d "/var/run/onCourse" ]; then
+if [ ! -d "/var/run/onCourse" ]; then
     mkdir /var/run/onCourse
 fi
 BASEDIR=\$(realpath \${0})
