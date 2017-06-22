@@ -141,6 +141,9 @@ public class Voucher extends _Voucher implements Queueable {
 	@Override
 	public void setStatus(ProductStatus newStatus) {
 		if (getStatus() != null && newStatus != null && newStatus != getStatus()) {
+				if (getStatus() == NEW && (newStatus == REDEEMED || newStatus == CREDITED || newStatus == CANCELLED || newStatus == EXPIRED)){
+					throw new IllegalArgumentException("Voucher with status NEW can be changed to ACTIVE status only.");
+				}
 				if (getStatus() == ACTIVE && newStatus == NEW){
 					throw new IllegalArgumentException("Voucher with status ACTIVE can not be changed to status NEW.");
 				}

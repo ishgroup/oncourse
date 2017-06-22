@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.Date;
 
+import static ish.common.types.ProductStatus.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -127,6 +128,51 @@ public class VoucherServiceTest extends ServiceTest {
 	@Test
 	public void testUpdateVoucher() {
 		ObjectContext context = cayenneService.newContext();
+
+		// case 1: try to turn NEW to REDEEMED CREDITED CANCELLED EXPIRED (disallowed)
+		assertFalse(checkStatusChange(context, NEW, REDEEMED));
+		assertFalse(checkStatusChange(context, NEW, CREDITED));
+		assertFalse(checkStatusChange(context, NEW, CANCELLED));
+		assertFalse(checkStatusChange(context, NEW, EXPIRED));
+
+		// case 2: try to turn REDEEMED CREDITED CANCELLED EXPIRED to ACTIVE (disallowed)
+
+		assertTrue(checkStatusChange(context, REDEEMED, ACTIVE));
+		assertFalse(checkStatusChange(context, CREDITED, ACTIVE));
+		assertFalse(checkStatusChange(context, CANCELLED, ACTIVE));
+		assertFalse(checkStatusChange(context, EXPIRED, ACTIVE));
+
+		// case 3: try to turn REDEEMED CREDITED CANCELLED EXPIRED to NEW (disallowed)
+
+		assertTrue(checkStatusChange(context, REDEEMED, NEW));
+		assertFalse(checkStatusChange(context, CREDITED, NEW));
+		assertFalse(checkStatusChange(context, CANCELLED, NEW));
+		assertFalse(checkStatusChange(context, EXPIRED, NEW));
+
+		// case 4: try to turn NEW to ACTIVE (allowed)
+
+		assertTrue(checkStatusChange(context, NEW, ACTIVE));
+
+		// case 5: try to turn ACTIVE to REDEEMED CREDITED CANCELLED EXPIRED (allowed)
+
+		assertTrue(checkStatusChange(context, ACTIVE, REDEEMED));
+		assertTrue(checkStatusChange(context, ACTIVE, CREDITED));
+		assertTrue(checkStatusChange(context, ACTIVE, CANCELLED));
+		assertTrue(checkStatusChange(context, ACTIVE, EXPIRED));
+	}
+
+	private boolean checkStatusChange(ObjectContext context, ProductStatus sourceType, ProductStatus newType){
+		boolean isChangeStatusFailed = false;
+		Voucher voucher = createVoucherWithStatus(context, sourceType);
+		try {
+			voucher.setStatus(newType);
+		} catch (Exception ex){
+			isChangeStatusFailed = true;
+		}
+		return !isChangeStatusFailed;
+	}
+
+	private Voucher createVoucherWithStatus(ObjectContext context, ProductStatus status){
 		Voucher voucher = context.newObject(Voucher.class);
 		voucher.setCollege(ObjectSelect.query(College.class).selectFirst(context));
 		voucher.setInvoiceLine(ObjectSelect.query(InvoiceLine.class).selectFirst(context));
@@ -134,22 +180,7 @@ public class VoucherServiceTest extends ServiceTest {
 		voucher.setCode("code");
 		voucher.setExpiryDate(new Date(System.currentTimeMillis()));
 		voucher.setSource(PaymentSource.SOURCE_ONCOURSE);
-
-		voucher.setStatus(ProductStatus.ACTIVE);
-		cayenneService.sharedContext().commitChanges();
-		try {
-			voucher.setStatus(ProductStatus.NEW);
-		} catch (Exception ex){
-			assertEquals(IllegalArgumentException.class, ex.getClass());
-		}
-
-		voucher.setStatus(ProductStatus.CANCELLED);
-		cayenneService.sharedContext().commitChanges();
-
-		try {
-			voucher.setStatus(ProductStatus.ACTIVE);
-		} catch (Exception ex){
-			assertEquals(IllegalArgumentException.class, ex.getClass());
-		}
+		voucher.setStatus(status);
+		return voucher;
 	}
 }
