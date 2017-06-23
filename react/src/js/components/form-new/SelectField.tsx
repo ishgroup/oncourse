@@ -7,10 +7,10 @@ import {inputFrom} from "./FieldsUtils";
 import {WrappedFieldInputProps} from "redux-form";
 
 interface Props {
-  input: WrappedFieldInputProps
-  labelKey: string
-  valueKey: string
-  newOptionEnable: boolean
+  input: WrappedFieldInputProps;
+  labelKey: string;
+  valueKey: string;
+  newOptionEnable: boolean;
 }
 
 /**
@@ -22,37 +22,37 @@ class SelectField extends React.Component<any, any> {
     const {loadOptions} = this.props;
     if (loadOptions) {
       return loadOptions(input).then((data: Item[]) => {
-        return {options: data.map(item => ({key: item.key, value: item.value}))}
+        return {options: data.map(item => ({key: item.key, value: item.value}))};
       });
     } else {
       return Promise.resolve([]);
     }
-  };
+  }
 
-  private onChange = (value) => {
+  private onChange = res => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
-    input.onChange(value)
-  };
+    input.onChange(res.value);
+  }
 
-  private onBlur = (e) => {
+  private onBlur = e => {
     const val = e.target.value;
     const props: Props = this.toProps();
 
     if (val && props.newOptionEnable) {
-      this.onChange({key: val, value: val})
+      this.onChange({key: val, value: val});
     }
-  };
+  }
 
   toProps = (): Props => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
 
     return {
-      input: input,
+      input,
       labelKey: this.props.labelKey ? this.props.labelKey : "value",
       valueKey: this.props.valueKey ? this.props.valueKey : "key",
       newOptionEnable: this.props.newOptionEnable || false,
     };
-  };
+  }
 
   render() {
     const props: Props = this.toProps();
@@ -65,7 +65,7 @@ class SelectField extends React.Component<any, any> {
           valueKey={props.valueKey}
           searchable={true}
           clearable={false}
-          value={props.input.value}
+          value={props.input}
           loadOptions={this.loadOptions}
           onBlur={this.onBlur}
           onChange={this.onChange}
