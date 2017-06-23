@@ -138,19 +138,17 @@ public class Voucher extends _Voucher implements Queueable {
         return ProductStatus.EXPIRED.equals(getStatus());
     }
 
+	/**
+	 * setter for ProductStatus, forbids to change final status to initial
+	 * @param newStatus
+	 */
 	@Override
 	public void setStatus(ProductStatus newStatus) {
-		if (getStatus() != null && newStatus != null && newStatus != getStatus()) {
-				if (getStatus() == NEW && (newStatus == REDEEMED || newStatus == CREDITED || newStatus == CANCELLED || newStatus == EXPIRED)){
-					throw new IllegalArgumentException("Voucher with status NEW can be changed to ACTIVE status only.");
-				}
-				if (getStatus() == ACTIVE && newStatus == NEW){
-					throw new IllegalArgumentException("Voucher with status ACTIVE can not be changed to status NEW.");
-				}
-				if ((getStatus() == CREDITED || getStatus() == CANCELLED || getStatus() == EXPIRED) && (newStatus == NEW || newStatus == ACTIVE)){
-					throw new IllegalArgumentException("Voucher with status final status can not be turned to ACTIVE or NEW status.");
-				}
-		}
+    	ProductStatus oldStatus = getStatus();
+    	if ((oldStatus == CREDITED || oldStatus == REDEEMED || oldStatus == CANCELLED || oldStatus == EXPIRED || oldStatus == ACTIVE) && newStatus == NEW){
+			throw new IllegalArgumentException("Voucher with final status can not be turned to initial status (NEW).");
+    	}
+
 		super.setStatus(newStatus);
 	}
 

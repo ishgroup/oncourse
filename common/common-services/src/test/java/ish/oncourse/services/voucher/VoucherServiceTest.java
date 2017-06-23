@@ -129,36 +129,22 @@ public class VoucherServiceTest extends ServiceTest {
 	public void testUpdateVoucher() {
 		ObjectContext context = cayenneService.newContext();
 
-		// case 1: try to turn NEW to REDEEMED CREDITED CANCELLED EXPIRED (disallowed)
-		assertFalse(checkStatusChange(context, NEW, REDEEMED));
-		assertFalse(checkStatusChange(context, NEW, CREDITED));
-		assertFalse(checkStatusChange(context, NEW, CANCELLED));
-		assertFalse(checkStatusChange(context, NEW, EXPIRED));
+		// case 1: try to turn NEW to REDEEMED CREDITED CANCELLED EXPIRED ACTIVE
+		assertTrue(checkStatusChange(context, NEW, REDEEMED));
+		assertTrue(checkStatusChange(context, NEW, CREDITED));
+		assertTrue(checkStatusChange(context, NEW, CANCELLED));
+		assertTrue(checkStatusChange(context, NEW, EXPIRED));
+		assertTrue(checkStatusChange(context, NEW, ACTIVE));
 
-		// case 2: try to turn REDEEMED CREDITED CANCELLED EXPIRED to ACTIVE (disallowed)
+		// case 2: try to turn REDEEMED CREDITED CANCELLED EXPIRED ACTIVE to NEW
 
-		assertTrue(checkStatusChange(context, REDEEMED, ACTIVE));
-		assertFalse(checkStatusChange(context, CREDITED, ACTIVE));
-		assertFalse(checkStatusChange(context, CANCELLED, ACTIVE));
-		assertFalse(checkStatusChange(context, EXPIRED, ACTIVE));
-
-		// case 3: try to turn REDEEMED CREDITED CANCELLED EXPIRED to NEW (disallowed)
-
-		assertTrue(checkStatusChange(context, REDEEMED, NEW));
+		assertFalse(checkStatusChange(context, REDEEMED, NEW));
 		assertFalse(checkStatusChange(context, CREDITED, NEW));
 		assertFalse(checkStatusChange(context, CANCELLED, NEW));
 		assertFalse(checkStatusChange(context, EXPIRED, NEW));
+		assertFalse(checkStatusChange(context, ACTIVE, NEW));
 
-		// case 4: try to turn NEW to ACTIVE (allowed)
-
-		assertTrue(checkStatusChange(context, NEW, ACTIVE));
-
-		// case 5: try to turn ACTIVE to REDEEMED CREDITED CANCELLED EXPIRED (allowed)
-
-		assertTrue(checkStatusChange(context, ACTIVE, REDEEMED));
-		assertTrue(checkStatusChange(context, ACTIVE, CREDITED));
-		assertTrue(checkStatusChange(context, ACTIVE, CANCELLED));
-		assertTrue(checkStatusChange(context, ACTIVE, EXPIRED));
+		assertTrue(checkStatusChange(context, REDEEMED, ACTIVE));
 	}
 
 	private boolean checkStatusChange(ObjectContext context, ProductStatus sourceType, ProductStatus newType){
