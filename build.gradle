@@ -2,7 +2,7 @@ buildscript {
 	ext {
 		waCommonWebservicesClientVersion = '9.3.31'
 		log4j2Version = '2.8.2'
-		cayenneVersion = '4.0.M3.2'
+		cayenneVersion = '4.0.M4'
 		jettyVersion = '9.4.6.v20170531'
 	}
 	repositories {
@@ -29,11 +29,12 @@ plugins {
 	id 'com.github.ben-manes.versions' version '0.15.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
+apply plugin: 'idea'
+
 allprojects {
 
 	apply plugin: 'java'
 	apply plugin: 'maven'
-	apply plugin: 'groovy'
 	apply plugin: 'appBundler'
 	apply plugin: 'maven-publish'
 

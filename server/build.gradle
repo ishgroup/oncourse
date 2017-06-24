@@ -2,9 +2,11 @@ apply plugin: 'groovy'
 apply plugin: 'apidoc'
 apply plugin: 'cayenne'
 
+// compile everything with the groovy plugin which can handle mixed groovy and Java files
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
-
+sourceSets.test.java.srcDirs = []
+sourceSets.test.groovy.srcDir 'src/text/java'
 
 dependencies {
 
@@ -112,6 +114,7 @@ dependencies {
 		exclude group: 'org.eclipse.jetty.aggregate'
 	}
 
+	testCompile "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testCompile 'org.mockito:mockito-core:1.10.19'
  	testCompile 'org.apache.derby:derbytools:10.13.1.1'
 	testCompile 'dbunit:dbunit:2.4.8'
