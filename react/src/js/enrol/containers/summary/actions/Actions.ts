@@ -18,6 +18,8 @@ export const ADD_CONTACT_NODE_TO_STATE: string = "checkout/summary/update/Contac
 export const SELECT_ITEM: string = "checkout/summary/select/item";
 export const SELECT_ITEM_REQUEST: string = _toRequestType(SELECT_ITEM);
 
+export const UPDATE_ITEM: string = "checkout/summary/update/item";
+
 
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
   return {
