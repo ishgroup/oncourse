@@ -14,8 +14,11 @@ const request: EpicUtils.Request<Enrolment | Application, IshState> = {
   type: SELECT_ITEM_REQUEST,
   getData: CheckoutService.updateItem,
   processData: (value: PurchaseItem, state: IshState) => {
-    return [{type: SELECT_ITEM, payload: ItemToState(value)}, getAmount()];
-  }
+    return [
+      {type: SELECT_ITEM, payload: ItemToState(value)},
+      getAmount(),
+    ];
+  },
 };
 
 export const EpicItemSelect: Epic<any, any> = EpicUtils.Create(request);

@@ -30,6 +30,7 @@ export const CreateMockDB = (): MockDB => {
       result.fields = db.fields;
       result.countries = db.countries;
       result.suburbs = db.suburbs;
+      result.products = db.products;
     } else {
       localForage.setItem("MockDB", result);
     }

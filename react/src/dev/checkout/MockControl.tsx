@@ -12,35 +12,49 @@ import {NAME as ContactEditFormName} from "../../js/enrol/containers/contact-edi
 
 
 interface Props {
-  config: MockConfig
+  config: MockConfig;
 }
 
 export class MockControl extends React.Component<Props, any> {
 
   private resetLocalForage = () => {
     localforage.clear();
-  };
+  }
 
   private loadCourseClasses = () => {
     this.props.config.store.dispatch({
       type: Actions.REQUEST_COURSE_CLASS,
       payload: [this.props.config.db.classes.result[0]],
     });
-  };
+  }
 
   private addCourseClass = () => {
     this.props.config.store.dispatch({
       type: Actions.ADD_CLASS_TO_CART,
-      payload: {id: this.props.config.db.classes.result[0]}
+      payload: {id: this.props.config.db.classes.result[0]},
     });
-  };
+  }
+
+  private loadVoucher = () => {
+    this.props.config.store.dispatch({
+      type: Actions.REQUEST_PRODUCT,
+      payload: [this.props.config.db.products.result[0]],
+    });
+  }
+
+  private addVoucher = () => {
+    this.props.config.store.dispatch({
+      type: Actions.ADD_PRODUCT_TO_CART,
+      payload: {id: this.props.config.db.products.result[0]},
+    });
+  }
 
   private removeCourseClass = () => {
     this.props.config.store.dispatch({
       type: Actions.REMOVE_CLASS_FROM_CART,
-      payload: {id: this.props.config.db.classes.result[0]}
+      payload: {id: this.props.config.db.classes.result[0]},
     });
-  };
+  }
 
   private refresh() {
     this.setState(this.state ? {refresh: !this.state.refresh} : {refresh: false});
@@ -64,6 +78,8 @@ export class MockControl extends React.Component<Props, any> {
         <button className="btn" onClick={this.loadCourseClasses}>Load Classes</button>
         <button className="btn" onClick={this.addCourseClass}>Add Classes</button>
         <button className="btn" onClick={this.removeCourseClass}>Remove Classes</button>
+        <button className="btn" onClick={this.loadVoucher}>Load Voucher</button>
+        <button className="btn" onClick={this.addVoucher}>Add Voucher</button>
         <button className="btn" onClick={this.resetLocalForage}>Reset LocalForage</button>
       </fieldset>
       <fieldset>
@@ -73,7 +89,7 @@ export class MockControl extends React.Component<Props, any> {
       </fieldset>
       <Values form={NAME}/>
       <Values form={ContactEditFormName}/>
-    </div>)
+    </div>);
   }
 
   renderProperty = (path: string) => {
@@ -92,7 +108,7 @@ export class MockControl extends React.Component<Props, any> {
         </label>
         {path}
       </div>
-    )
+    );
   }
 }
 

@@ -80,7 +80,7 @@ export class CheckoutService {
     if (item.selected) {
       const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);
       return this.checkoutApi.getContactNode(request)
-        .then((data) => {
+        .then(data => {
           return Promise.resolve(ContactNodeService.getPurchaseItem(data, item));
         });
     } else {
@@ -183,12 +183,12 @@ export class BuildSubmitFieldsRequest {
   static fromValues = (fields: ContactFields, values: { [key: string]: any }): SubmitFieldsRequest => {
     const result: SubmitFieldsRequest = new SubmitFieldsRequest();
     result.contactId = fields.contactId;
-    result.fields = L.flatMap(fields.headings, (h) => {
+    result.fields = L.flatMap(fields.headings, h => {
       return h.fields;
     });
     result.fields.forEach((f: Field) => {
       f.value = values[f.key];
-      if (f.value == null && f.dataType == DataType.BOOLEAN) {
+      if (f.value == null && f.dataType === DataType.BOOLEAN) {
         f.value = 'false';
       }
     });
@@ -209,7 +209,7 @@ export class BuildCreateContactParams {
 
 export class BuildContactNodes {
   static fromState = (state: State): ContactNode[] => {
-    return state.result.map((contactId) => {
+    return state.result.map(contactId => {
       return BuildContactNodes.contactNodeBy(state.entities.contactNodes[contactId], state);
     });
   }

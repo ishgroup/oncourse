@@ -13,8 +13,11 @@ const request: Request<ContactNode, IshState> = {
   type: Actions.GET_CONTACT_NODE_FROM_BACKEND,
   getData: (contact: Contact, state: IshState) => CheckoutService.getContactNode(contact, state.cart),
   processData: (value: ContactNode, state: IshState) => {
-    return [addContactNodeToState(value), getAmount()]
-  }
+    return [
+      addContactNodeToState(value),
+      getAmount(),
+    ];
+  },
 };
 
 export const GetContactNode: Epic<any, IshState> = Create(request);

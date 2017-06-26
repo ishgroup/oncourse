@@ -26,7 +26,7 @@ class AmountComp extends React.Component<Props, any> {
   }
 }
 
-const Total = (props) => {
+const Total = props => {
   return (
     <div className="row total-amount">
       <label className="col-xs-12">Total</label>
@@ -35,7 +35,7 @@ const Total = (props) => {
   );
 };
 
-const Discount = (props) => {
+const Discount = props => {
   return (
     <div className="row total-discount">
       <label className="col-xs-12">Discount</label>
@@ -44,7 +44,7 @@ const Discount = (props) => {
   );
 };
 
-const PayNow = (props) => {
+const PayNow = props => {
   return (
     <div className="row grand-total">
       <label className="col-xs-12">Pay Now</label>

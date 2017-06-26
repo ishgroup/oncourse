@@ -114,7 +114,7 @@ export class MockConfig {
       this.injector.setService("cartApi", new CartApiMock(this.injector.http));
       this.injector.setService("contactApi", new ContactApiMock(this));
       this.injector.setService("courseClassesApi", new CourseClassesApiMock(this));
-      this.injector.setService("productsApi", new ProductsApiMock(this.injector.http));
+      this.injector.setService("productsApi", new ProductsApiMock(this));
       this.injector.setService("promotionApi", new PromotionApiMock(this.injector.http));
       this.injector.setService("checkoutApi", new CheckoutApiMock(this));
       this.injector.setService("searchApi", new SearchApiMock(this));

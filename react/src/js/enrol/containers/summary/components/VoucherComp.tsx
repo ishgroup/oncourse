@@ -17,10 +17,11 @@ export interface Props {
 class VoucherComp extends React.Component<Props, any> {
 	public render(): JSX.Element {
 		const {voucher, product, contact, onChange, onPriceValueChange} = this.props;
-		const divClass = classnames("row", "enrolmentItem", {"disabled": !voucher.selected});
-		let warning = voucher.warnings && voucher.warnings.length ? this.props.voucher.warnings[0] : null;
+		const divClass = classnames("row", "enrolmentItem", {disabled: !voucher.selected});
+		const warning = voucher.warnings && voucher.warnings.length ? this.props.voucher.warnings[0] : null;
 		const error = voucher.warnings && voucher.errors.length ? this.props.voucher.errors[0] : null;
 		const name = `voucher-${contact.id}-${voucher.productId}`;
+
 		return (
 			<div className={divClass}>
 				<ItemWrapper title={product.name} name={name} error={error} warning={warning} selected={voucher.selected} item={voucher} contact={contact}
@@ -61,7 +62,7 @@ const VoucherDetails = (props): any => {
 				</div>) 
 			}
 		</div>
-	)
+	);
 };
 
 const VoucherPrice = (props): any => {
@@ -78,7 +79,7 @@ const VoucherPrice = (props): any => {
 				}
 			</div>
 		</div>
-	)
+	);
 };
 
 export default VoucherComp;

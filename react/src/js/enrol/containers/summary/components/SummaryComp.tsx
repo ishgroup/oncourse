@@ -10,6 +10,7 @@ import {Props as VoucherProps} from "./VoucherComp";
 import {Membership} from "../../../../model/checkout/Membership";
 import {Article} from "../../../../model/checkout/Article";
 import {Promotion} from "../../../../model/web/Promotion";
+import {PurchaseItem} from "../../../../model/checkout/Index";
 
 export interface Props {
   hasSelected: boolean;
@@ -19,8 +20,8 @@ export interface Props {
   onAddCode: (code: string) => void;
   promotions: Promotion[];
   onProceedToPayment?: () => void;
-  onSelect?: (item: Enrolment | Membership | Article | Voucher, selected: boolean) => void;
-  onPriceValueChange?: (item: any, product: VoucherProps[], productItem: Voucher) => void;
+  onSelect?: (item: PurchaseItem, selected: boolean) => void;
+  onPriceValueChange?: (productItem: PurchaseItem, value: string) => void;
 }
 
 
@@ -33,7 +34,7 @@ export class SummaryComp extends React.Component<Props, any> {
         {...props}
         key={props.contact.id}
         onSelect={(item, selected) => onSelect(item, selected)}
-        onPriceValueChange={(item, product, productItem) => onPriceValueChange(item, product, productItem)}
+        onPriceValueChange={(productItem, value) => onPriceValueChange(productItem, value)}
       />
     );
   }
@@ -60,11 +61,11 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 }
 
-const ProceedToPayment = (props) => {
+const ProceedToPayment = props => {
   const {disabled, onProceedToPayment} = props;
   const className = classnames("btn", "btn-primary", {disabled});
 
-  const onClick = (e) => {
+  const onClick = e => {
     e.preventDefault();
     onProceedToPayment();
   };
@@ -76,7 +77,7 @@ const ProceedToPayment = (props) => {
   );
 };
 
-const AddAnotherContact = (props) => {
+const AddAnotherContact = props => {
   const {onAddContact} = props;
 
   const onClick = (e) => {

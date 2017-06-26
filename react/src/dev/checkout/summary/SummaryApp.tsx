@@ -99,7 +99,7 @@ const onProceedToPayment = () => {
 };
 const onSelect = (contact, item) => {
 };
-const onPriceValueChange = (item, products, productItem) => {
+const onPriceValueChange = (productItem, value) => {
 };
 const onAddCode = (code: string): void => {
   alert(code);

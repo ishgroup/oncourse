@@ -34,11 +34,11 @@ const openPayerDetails = (state: CheckoutState): IAction<any>[] => {
 const setPayerFromCart = (contact: Contact): Observable<any> => {
   return Observable.fromPromise(CheckoutService.createOrGetContact(contact as Values))
     .flatMap((data: ContactId) => {
-      return [submitAddContact(data, contact as Values)]
+      return [submitAddContact(data, contact as Values)];
     })
     .catch((data: AxiosResponse) => {
-      return ProcessError(data)
-    })
+      return ProcessError(data);
+    });
 };
 
 
@@ -46,11 +46,11 @@ const setPayerFromCart = (contact: Contact): Observable<any> => {
  * This epic process Init action of checkout application and define Phase of the application
  */
 export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
-  return action$.ofType(Actions.INIT_REQUEST).flatMap((action) => {
+  return action$.ofType(Actions.INIT_REQUEST).flatMap(action => {
 
     if (!L.isNil(store.getState().checkout.payment.value)) {
       if (CheckoutService.isFinalStatus(store.getState().checkout.payment.value)) {
-        return [changePhase(Phase.Init), resetPaymentState(), sendInitRequest()]
+        return [changePhase(Phase.Init), resetPaymentState(), sendInitRequest()];
       } else {
         return CheckoutService.processPaymentResponse(store.getState().checkout.payment.value);
       }
@@ -65,7 +65,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     }
 
     if (CheckoutService.hasCartContact(store.getState().cart)) {
-      return setPayerFromCart(store.getState().cart.contact)
+      return setPayerFromCart(store.getState().cart.contact);
     }
     return [changePhase(Phase.AddPayer)];
   });

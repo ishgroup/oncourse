@@ -74,9 +74,9 @@ function add(id: string, name: string) {
 
     const newIds = [...ids, id].join("%");
 
-    CookieService.set(name, newIds)
+    CookieService.set(name, newIds);
   } else {
-    CookieService.set(name, id)
+    CookieService.set(name, id);
   }
 }
 
@@ -98,6 +98,6 @@ function remove(id: string, name: string) {
       .filter(it => it !== id)
       .join("%");
 
-    CookieService.set(name, newIds)
+    CookieService.set(name, newIds);
   }
 }

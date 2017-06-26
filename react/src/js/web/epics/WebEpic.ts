@@ -11,7 +11,7 @@ import {
   ClassesSchema,
   ProductsListSchema,
   ProductsSchema,
-  PromotionsSchema
+  PromotionsSchema,
 } from "../../NormalizeSchema";
 import {Injector} from "../../injector";
 import {PromotionParams} from "../../model/web/PromotionParams";
@@ -25,7 +25,7 @@ const {
   promotionApi,
   contactApi,
   mergeService,
-  legacySyncStorage
+  legacySyncStorage,
 } = Injector.of();
 
 export const WebEpic = combineEpics(
@@ -43,7 +43,7 @@ export const WebEpic = combineEpics(
   createAddProductToCartEpic(),
   createRemoveProductFromCartEpic(),
   createAddPromotionToCartEpic(),
-  createRemovePromotionFromCartEpic()
+  createRemovePromotionFromCartEpic(),
 );
 
 function createCoursesEpic() {
@@ -57,7 +57,7 @@ function createCoursesEpic() {
         .fromPromise(courseClassesApi.getCourseClasses({
           courseClassesIds: uniq(ids),
           contact: createContactParams(store.getState()),
-          promotions: createPromotionParams(store.getState())
+          promotions: createPromotionParams(store.getState()),
         }))
         .map(payload => normalize(payload, ClassesListSchema))
         .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
@@ -76,7 +76,7 @@ function createProductsEpic() {
         .fromPromise(productsApi.getProducts({
           productsIds: uniq(ids),
           contact: createContactParams(store.getState()),
-          promotions: createPromotionParams(store.getState())
+          promotions: createPromotionParams(store.getState()),
         }))
         .map(payload => normalize(payload, ProductsListSchema))
         .map(mapPayload(Actions.REQUEST_PRODUCT))
@@ -85,22 +85,22 @@ function createProductsEpic() {
 }
 
 function createPromotionsEpic() {
-  return (action$) => action$
+  return action$ => action$
     .ofType(Actions.REQUEST_PROMOTION)
     .mergeMap(action => Observable
       .fromPromise(promotionApi.getPromotion(action.code))
       .map(mapPayload(Actions.REQUEST_PROMOTION))
-      .catch(mapError(Actions.REQUEST_PROMOTION))
+      .catch(mapError(Actions.REQUEST_PROMOTION)),
     );
 }
 
 function createContactEpic() {
-  return (action$) => action$
+  return action$ => action$
     .ofType(Actions.REQUEST_CONTACT)
     .mergeMap(action => Observable
       .fromPromise(contactApi.getContact(action.id))
       .map(mapPayload(Actions.REQUEST_CONTACT))
-      .catch(mapError(Actions.REQUEST_CONTACT))
+      .catch(mapError(Actions.REQUEST_CONTACT)),
     );
 }
 
@@ -109,7 +109,7 @@ function createUpdateCoursesEpic() {
     .ofType(
       FULFILLED(Actions.REQUEST_CONTACT),
       FULFILLED(Actions.ADD_PROMOTION_TO_CART),
-      FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART)
+      FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART),
     )
     .filter(action => store.getState().courses.result.length)
     .mergeMap(action => {
@@ -119,7 +119,7 @@ function createUpdateCoursesEpic() {
         .fromPromise(courseClassesApi.getCourseClasses({
           courseClassesIds: ids,
           contact: createContactParams(store.getState()),
-          promotions: createPromotionParams(store.getState())
+          promotions: createPromotionParams(store.getState()),
         }))
         .map(payload => normalize(payload, ClassesListSchema))
         .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
@@ -132,7 +132,7 @@ function createUpdateProductsEpic() {
     .ofType(
       FULFILLED(Actions.REQUEST_CONTACT),
       FULFILLED(Actions.ADD_PROMOTION_TO_CART),
-      FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART)
+      FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART),
     )
     .filter(action => store.getState().products.result.length)
     .mergeMap(action => {
@@ -142,7 +142,7 @@ function createUpdateProductsEpic() {
         .fromPromise(productsApi.getProducts({
           productsIds: ids,
           contact: createContactParams(store.getState()),
-          promotions: createPromotionParams(store.getState())
+          promotions: createPromotionParams(store.getState()),
         }))
         .map(payload => normalize(payload, ProductsListSchema))
         .map(mapPayload(Actions.REQUEST_PRODUCT))
@@ -155,7 +155,7 @@ function createAddClassToCartEpic() {
     .ofType(Actions.ADD_CLASS_TO_CART)
     .map(action => ({
       type: FULFILLED(Actions.ADD_CLASS_TO_CART),
-      payload: normalize(store.getState().courses.entities[action.payload.id], ClassesSchema)
+      payload: normalize(store.getState().courses.entities[action.payload.id], ClassesSchema),
     }));
 }
 
@@ -164,17 +164,18 @@ function createRemoveClassFromCartEpic() {
     .ofType(Actions.REMOVE_CLASS_FROM_CART)
     .map(action => ({
       type: FULFILLED(Actions.REMOVE_CLASS_FROM_CART),
-      payload: normalize(action.payload, ClassesSchema)
+      payload: normalize(action.payload, ClassesSchema),
     }));
 }
 
 function createAddProductToCartEpic() {
   return (action$, store: Store<IshState>) => action$
     .ofType(Actions.ADD_PRODUCT_TO_CART)
-    .map(action => ({
-      type: FULFILLED(Actions.ADD_PRODUCT_TO_CART),
-      payload: normalize(store.getState().products.entities[action.payload.id], ProductsSchema)
-    }));
+    .map(action => {
+      return {
+        type: FULFILLED(Actions.ADD_PRODUCT_TO_CART),
+        payload: normalize(store.getState().products.entities[action.payload.id], ProductsSchema),
+    };});
 }
 
 function createRemoveProductFromCartEpic() {
@@ -182,7 +183,7 @@ function createRemoveProductFromCartEpic() {
     .ofType(Actions.REMOVE_PRODUCT_FROM_CART)
     .map(action => ({
       type: FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART),
-      payload: normalize(action.payload, ProductsSchema)
+      payload: normalize(action.payload, ProductsSchema),
     }));
 }
 
@@ -203,7 +204,7 @@ function createRemovePromotionFromCartEpic() {
     .ofType(Actions.REMOVE_PROMOTION_FROM_CART)
     .map(action => ({
       type: FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART),
-      payload: normalize(action.payload, PromotionsSchema)
+      payload: normalize(action.payload, PromotionsSchema),
     }));
 }
 
@@ -223,24 +224,24 @@ function createSyncCartRequestEpic() {
     )
     .map(action => ({
       timestamp: new Date().getTime(),
-      ...action
+      ...action,
     }))
     .bufferTime(100)
     .filter(actions => actions.length)
     .map(actions => ({
       type: Actions.SYNC_CART,
-      payload: actions
+      payload: actions,
     }));
 }
 
 function createSyncCartEpic() {
-  return (action$) => action$
+  return action$ => action$
     .ofType(Actions.SYNC_CART)
     .mergeMap(action => Observable.from(mergeService.merge(action)));
 }
 
 function createLegacySyncEpic() {
-  return (action$) => action$
+  return action$ => action$
     .ofType(
       FULFILLED(Actions.ADD_CLASS_TO_CART),
       FULFILLED(Actions.REMOVE_CLASS_FROM_CART),
@@ -259,12 +260,12 @@ function createContactParams(state: IshState): ContactParams {
   }
 
   return {
-    id: contact.id
+    id: contact.id,
   };
 }
 
 function createPromotionParams(state: IshState): PromotionParams[] {
   return state.cart.promotions.result.map(promotionId => ({
-    id: promotionId
+    id: promotionId,
   }));
 }

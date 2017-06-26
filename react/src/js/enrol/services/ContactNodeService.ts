@@ -31,6 +31,6 @@ export class ContactNodeService {
       return Object.assign(new Items.Voucher(), node.vouchers[0]);
     }
 
-    throw new Error(`Unsupported purchase item: ${inspect(original, true, 10, true)}`)
+    throw new Error(`Unsupported purchase item: ${inspect(original, true, 10, true)}`);
   }
 }

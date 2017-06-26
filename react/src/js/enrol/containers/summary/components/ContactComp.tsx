@@ -12,6 +12,7 @@ import {Article} from "../../../../model/checkout/Article";
 import {Voucher} from "../../../../model/checkout/Voucher";
 import VoucherComp, {Props as VoucherProps} from "./VoucherComp";
 import {Application} from "../../../../model/checkout/Application";
+import {PurchaseItem} from "../../../../model/checkout/Index";
 
 
 export interface Props {
@@ -21,8 +22,8 @@ export interface Props {
   vouchers: VoucherProps[];
   memberships: MembershipProps[];
   articles: ArticleProps[];
-  onSelect?: (item: Enrolment | Membership | Article | Voucher, selected: boolean) => void;
-  onPriceValueChange?: (item: any, product: VoucherProps[], productItem: Voucher) => void;
+  onSelect?: (item: PurchaseItem, selected: boolean) => void;
+  onPriceValueChange?: (productItem: PurchaseItem, value: string) => void;
 }
 
 class ContactComp extends React.Component<Props, any> {
@@ -48,7 +49,7 @@ class ContactComp extends React.Component<Props, any> {
             return <VoucherComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected) }
-              onPriceValueChange={(item) => onPriceValueChange(item, vouchers, props.voucher)}/>;
+              onPriceValueChange={item => onPriceValueChange(Object.assign(new Voucher(), props.voucher), item.target.value)}/>;
           })}
 
           {memberships.map((props, index) => {
@@ -70,7 +71,7 @@ class ContactComp extends React.Component<Props, any> {
   }
 }
 
-const AddConcessionLink = (props) => {
+const AddConcessionLink = props => {
   return (<div><a className="add-concession" href="#">Add Concession</a></div>);
 };
 

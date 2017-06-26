@@ -14,16 +14,16 @@ import {MockConfig} from "../mocks/mocks/MockConfig";
 const config = new MockConfig();
 
 config.init((config:MockConfig) => {
-    render(config);
+  render(config);
 });
 
-const render = (config) => ReactDOM.render(
+const render = config => ReactDOM.render(
   <Provider store={config.store}>
     <div>
       <Checkout/>
       <MockControl config={config}/>
     </div>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 

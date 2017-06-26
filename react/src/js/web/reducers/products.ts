@@ -6,7 +6,7 @@ import {Actions} from "../actions/Actions";
 
 export const productsReducer = combineReducers({
   entities: byId,
-  result: allIds
+  result: allIds,
 });
 
 function allIds(state = [], action: IshAction<CoursesState>) {
@@ -15,7 +15,7 @@ function allIds(state = [], action: IshAction<CoursesState>) {
       return [
         ...state,
         ...action.payload.result
-          .filter(t => !state.includes(t)) // dedup
+          .filter(t => !state.includes(t)), // dedup
       ];
     default:
       return state;
@@ -27,7 +27,7 @@ function byId(state = {}, action: IshAction<CoursesState>) {
     case FULFILLED(Actions.REQUEST_PRODUCT):
       return {
         ...state,
-        ...action.payload.entities.products
+        ...action.payload.entities.products,
       };
     default:
       return state;

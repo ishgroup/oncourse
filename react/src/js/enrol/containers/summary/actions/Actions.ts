@@ -4,6 +4,7 @@ import {ContactNodeToState, State} from "../reducers/State";
 import {IAction} from "../../../../actions/IshAction";
 import {Contact} from "../../../../model/web/Contact";
 import {PurchaseItem} from "../../../../model/checkout/Index";
+import {Voucher} from "../../../../model/checkout/Voucher";
 
 export const ADD_CONTACT_TO_SUMMARY: string = _toRequestType("checkout/summary/add/contact/to/summary");
 
@@ -19,6 +20,7 @@ export const SELECT_ITEM: string = "checkout/summary/select/item";
 export const SELECT_ITEM_REQUEST: string = _toRequestType(SELECT_ITEM);
 
 export const UPDATE_ITEM: string = "checkout/summary/update/item";
+export const UPDATE_ITEM_REQUEST: string = _toRequestType(UPDATE_ITEM);
 
 
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
@@ -36,6 +38,13 @@ export const selectItem = (item: PurchaseItem, selected: boolean): { type: strin
   item.selected = selected;
   return {
     type: SELECT_ITEM_REQUEST,
+    payload: item,
+  };
+};
+
+export const updateItem = (item: PurchaseItem): { type: string, payload: PurchaseItem } => {
+  return {
+    type: UPDATE_ITEM,
     payload: item,
   };
 };

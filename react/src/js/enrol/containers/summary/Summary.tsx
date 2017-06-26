@@ -1,6 +1,7 @@
 import * as React from "react";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
+import {ItemToState} from "./reducers/State";
 
 import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model/checkout/Index";
 import {
@@ -9,16 +10,14 @@ import {
   ContactProps,
   EnrolmentProps,
   MembershipProps,
-  VoucherProps
+  VoucherProps,
 } from "./components/Index";
 
 import {SummaryComp} from "./components/SummaryComp";
-import {proceedToPayment, selectItem} from "./actions/Actions";
-import {changePhase} from "../../../enrol/actions/Actions";
-import {Phase} from "../../../enrol/reducers/State";
+import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
+import {changePhase, addCode, getCheckoutModelFromBackend} from "../../actions/Actions";
+import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
-import {addCode} from "../../actions/Actions";
-
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
@@ -85,7 +84,7 @@ export const ContactPropsBy = (contactId: string, state: IshState): ContactProps
 
 export const SummaryPropsBy = (state: IshState): any => {
   try {
-    const contactsArray: ContactProps[] = state.checkout.summary.result.map((id) => {
+    const contactsArray: ContactProps[] = state.checkout.summary.result.map(id => {
       return ContactPropsBy(id, state);
     });
     return {
@@ -116,6 +115,10 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onAddCode: (code: string): void => {
       dispatch(addCode(code));
+    },
+    onPriceValueChange: (productItem: PurchaseItem, val): void => {
+      const product = Object.assign(productItem, {price: val, value: val});
+      dispatch(updateItem(ItemToState(product)));
     },
   };
 };

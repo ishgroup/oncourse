@@ -11,7 +11,7 @@ const request: EpicUtils.Request<Amount, IshState> = {
   getData: (payload, state: IshState) => CheckoutService.getAmount(state),
   processData: (value: Amount, state: IshState) => {
     return [updateAmount(value)];
-  }
+  },
 };
 
 export const EpicUpdateAmount: Epic<any, any> = EpicUtils.Create(request);
