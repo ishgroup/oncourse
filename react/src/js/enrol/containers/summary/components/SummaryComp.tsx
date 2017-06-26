@@ -22,13 +22,12 @@ export interface Props {
   onProceedToPayment?: () => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem) => void;
-  updateCheckoutModel?: () => void;
 }
 
 
 export class SummaryComp extends React.Component<Props, any> {
   renderContact = (props: ContactProps) => {
-    const {onSelect, onPriceValueChange, updateCheckoutModel} = this.props;
+    const {onSelect, onPriceValueChange} = this.props;
 
     return (
       <ContactComp
@@ -36,7 +35,6 @@ export class SummaryComp extends React.Component<Props, any> {
         key={props.contact.id}
         onSelect={(item, selected) => onSelect(item, selected)}
         onPriceValueChange={productItem => onPriceValueChange(productItem)}
-        updateCheckoutModel={updateCheckoutModel}
       />
     );
   }
@@ -82,7 +80,7 @@ const ProceedToPayment = props => {
 const AddAnotherContact = props => {
   const {onAddContact} = props;
 
-  const onClick = (e) => {
+  const onClick = e => {
     e.preventDefault();
     onAddContact();
   };

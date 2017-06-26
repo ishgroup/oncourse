@@ -104,7 +104,7 @@ export const SummaryPropsBy = (state: IshState): any => {
   }
 };
 
-const getCheckoutModelDebounced = debounce(dispatch => dispatch(getCheckoutModelFromBackend()), 1000);
+const getCheckoutModelDebounced = debounce(dispatch => dispatch(getCheckoutModelFromBackend()), 300);
 
 export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
@@ -123,9 +123,6 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onPriceValueChange: (productItem: PurchaseItem): void => {
       dispatch(updateItem(ItemToState(productItem)));
       getCheckoutModelDebounced(dispatch);
-    },
-    updateCheckoutModel: () => {
-      // dispatch(getCheckoutModelFromBackend());
     },
   };
 };

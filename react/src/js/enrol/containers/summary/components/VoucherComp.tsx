@@ -1,6 +1,5 @@
 import * as React from "react";
 import classnames from "classnames";
-import {debounce} from "lodash";
 
 import {Contact} from "../../../../model/web/Contact";
 import {Voucher} from "../../../../model/checkout/Voucher";
@@ -19,20 +18,9 @@ export interface Props {
 
 class VoucherComp extends React.Component<Props, any> {
 
-	constructor(props) {
-		// todo: move debounce to summary.ts or epic
-		super(props);
-		this.updatePrice = debounce(this.updatePrice, 300);
-	}
-
-	private setPrice = item => {
+	private updatePrice = item => {
 		const val = item.target.value;
 		this.props.onPriceValueChange(val);
-		this.updatePrice();
-	}
-
-	private updatePrice = () => {
-		this.props.updateCheckoutModel();
 	}
 
 	public render(): JSX.Element {
@@ -48,7 +36,7 @@ class VoucherComp extends React.Component<Props, any> {
 							 onChange={onChange}>
 					<VoucherDetails voucher={voucher} />
 				</ItemWrapper>
-				{voucher.selected && <VoucherPrice voucher={voucher} onPriceValueChange={item => this.setPrice(item)}/>}
+				{voucher.selected && <VoucherPrice voucher={voucher} onPriceValueChange={item => this.updatePrice(item)}/>}
 			</div>
 		);
 	}
