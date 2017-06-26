@@ -119,6 +119,8 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onPriceValueChange: (productItem: PurchaseItem, val): void => {
       const product = Object.assign(productItem, {price: val, value: val});
       dispatch(updateItem(ItemToState(product)));
+      dispatch(getCheckoutModelFromBackend());
+
     },
   };
 };

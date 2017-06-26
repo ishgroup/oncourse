@@ -6,7 +6,6 @@ import {Observable} from "rxjs/Observable";
 
 import {ADD_CONTACT_TO_SUMMARY, getContactNodeFromBackend} from "../actions/Actions";
 import {changePhase, getCheckoutModelFromBackend} from "../../../actions/Actions";
-import {Phase} from "../../../reducers/State";
 import {IAction} from "../../../../actions/IshAction";
 import {Contact} from "../../../../model/web/Contact";
 
