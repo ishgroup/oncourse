@@ -1,10 +1,9 @@
 import {_toRequestType} from "../../../../common/actions/ActionUtils";
-import {Enrolment} from "../../../../model/checkout/Enrolment";
 import {ContactNode} from "../../../../model/checkout/ContactNode";
 import {ContactNodeToState, State} from "../reducers/State";
-import {Application} from "../../../../model/checkout/Application";
 import {IAction} from "../../../../actions/IshAction";
 import {Contact} from "../../../../model/web/Contact";
+import {PurchaseItem} from "../../../../model/checkout/Index";
 
 export const ADD_CONTACT_TO_SUMMARY: string = _toRequestType("checkout/summary/add/contact/to/summary");
 
@@ -31,7 +30,7 @@ export const addContactToSummary = (contact: Contact): IAction<Contact> => {
 /**
  * an user has selected/unselected this item and we need to update all related components
  */
-export const selectItem = (item: Enrolment | Application, selected: boolean): { type: string, payload: Enrolment | Application } => {
+export const selectItem = (item: PurchaseItem, selected: boolean): { type: string, payload: PurchaseItem } => {
   item.selected = selected;
   return {
     type: SELECT_ITEM_REQUEST,

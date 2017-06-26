@@ -2,7 +2,7 @@ import * as React from "react";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
 
-import {Application, Article, Enrolment, Membership, Voucher} from "../../../model/checkout/Index";
+import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model/checkout/Index";
 import {
   ApplicationProps,
   ArticleProps,
@@ -105,7 +105,7 @@ export const SummaryPropsBy = (state: IshState): any => {
 
 export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
-    onSelect: (item: Enrolment | Application | Membership | Article | Voucher, selected: boolean): void => {
+    onSelect: (item: PurchaseItem, selected: boolean): void => {
       dispatch(selectItem(item, selected));
     },
     onAddContact: (): void => {

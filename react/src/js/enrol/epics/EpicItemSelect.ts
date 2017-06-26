@@ -8,11 +8,12 @@ import {Enrolment} from "../../model/checkout/Enrolment";
 import {ItemToState} from "../containers/summary/reducers/State";
 import {getAmount} from "../actions/Actions";
 import {Application} from "../../model/checkout/Application";
+import {PurchaseItem} from "../../model/checkout/Index";
 
 const request: EpicUtils.Request<Enrolment | Application, IshState> = {
   type: SELECT_ITEM_REQUEST,
   getData: CheckoutService.updateItem,
-  processData: (value: Enrolment | Application, state: IshState) => {
+  processData: (value: PurchaseItem, state: IshState) => {
     return [{type: SELECT_ITEM, payload: ItemToState(value)}, getAmount()];
   }
 };
