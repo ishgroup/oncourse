@@ -20,7 +20,6 @@ export const SELECT_ITEM: string = "checkout/summary/select/item";
 export const SELECT_ITEM_REQUEST: string = _toRequestType(SELECT_ITEM);
 
 export const UPDATE_ITEM: string = "checkout/summary/update/item";
-export const UPDATE_ITEM_REQUEST: string = _toRequestType(UPDATE_ITEM);
 
 
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {

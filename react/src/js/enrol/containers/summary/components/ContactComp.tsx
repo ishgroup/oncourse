@@ -23,12 +23,13 @@ export interface Props {
   memberships: MembershipProps[];
   articles: ArticleProps[];
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
-  onPriceValueChange?: (productItem: PurchaseItem, value: string) => void;
+  onPriceValueChange?: (productItem: PurchaseItem) => void;
+  updateCheckoutModel?: () => void;
 }
 
 class ContactComp extends React.Component<Props, any> {
   render() {
-    const {contact, enrolments, applications, vouchers, memberships, articles, onSelect, onPriceValueChange} = this.props;
+    const {contact, enrolments, applications, vouchers, memberships, articles, onSelect, onPriceValueChange, updateCheckoutModel} = this.props;
     return (
       <div className="row">
         <ContactInfo contact={contact} controls={<AddConcessionLink/>}/>
@@ -49,7 +50,9 @@ class ContactComp extends React.Component<Props, any> {
             return <VoucherComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected) }
-              onPriceValueChange={item => onPriceValueChange(Object.assign(new Voucher(), props.voucher), item.target.value)}/>;
+              onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher, {value: val, price: val}))}
+              updateCheckoutModel={updateCheckoutModel}/>;
+
           })}
 
           {memberships.map((props, index) => {

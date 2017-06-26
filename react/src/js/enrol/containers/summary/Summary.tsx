@@ -2,6 +2,7 @@ import * as React from "react";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
 import {ItemToState} from "./reducers/State";
+import {debounce} from "lodash";
 
 import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model/checkout/Index";
 import {
@@ -18,6 +19,7 @@ import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
 import {changePhase, addCode, getCheckoutModelFromBackend} from "../../actions/Actions";
 import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
+import log = Handlebars.log;
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
@@ -102,6 +104,8 @@ export const SummaryPropsBy = (state: IshState): any => {
   }
 };
 
+const getCheckoutModelDebounced = debounce(dispatch => dispatch(getCheckoutModelFromBackend()), 1000);
+
 export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
     onSelect: (item: PurchaseItem, selected: boolean): void => {
@@ -116,11 +120,12 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onAddCode: (code: string): void => {
       dispatch(addCode(code));
     },
-    onPriceValueChange: (productItem: PurchaseItem, val): void => {
-      const product = Object.assign(productItem, {price: val, value: val});
-      dispatch(updateItem(ItemToState(product)));
-      dispatch(getCheckoutModelFromBackend());
-
+    onPriceValueChange: (productItem: PurchaseItem): void => {
+      dispatch(updateItem(ItemToState(productItem)));
+      getCheckoutModelDebounced(dispatch);
+    },
+    updateCheckoutModel: () => {
+      // dispatch(getCheckoutModelFromBackend());
     },
   };
 };

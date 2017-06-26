@@ -1,9 +1,11 @@
 import * as React from "react";
+import classnames from "classnames";
+import {debounce} from "lodash";
+
 import {Contact} from "../../../../model/web/Contact";
 import {Voucher} from "../../../../model/checkout/Voucher";
 import {Product} from "../../../../model/web/Product";
 import {ItemWrapper} from "./ItemWrapper";
-import classnames from "classnames";
 
 
 export interface Props {
@@ -11,12 +13,30 @@ export interface Props {
 	voucher: Voucher;
 	product: Product;
 	onChange?: () => void;
-	onPriceValueChange?: (item: any) => void;
+	onPriceValueChange?: (item: any) => any;
+	updateCheckoutModel?: () => void;
 }
 
 class VoucherComp extends React.Component<Props, any> {
+
+	constructor(props) {
+		// todo: move debounce to summary.ts or epic
+		super(props);
+		this.updatePrice = debounce(this.updatePrice, 300);
+	}
+
+	private setPrice = item => {
+		const val = item.target.value;
+		this.props.onPriceValueChange(val);
+		this.updatePrice();
+	}
+
+	private updatePrice = () => {
+		this.props.updateCheckoutModel();
+	}
+
 	public render(): JSX.Element {
-		const {voucher, product, contact, onChange, onPriceValueChange} = this.props;
+		const {voucher, product, contact, onChange} = this.props;
 		const divClass = classnames("row", "enrolmentItem", {disabled: !voucher.selected});
 		const warning = voucher.warnings && voucher.warnings.length ? this.props.voucher.warnings[0] : null;
 		const error = voucher.warnings && voucher.errors.length ? this.props.voucher.errors[0] : null;
@@ -28,7 +48,7 @@ class VoucherComp extends React.Component<Props, any> {
 							 onChange={onChange}>
 					<VoucherDetails voucher={voucher} />
 				</ItemWrapper>
-				{voucher.selected && <VoucherPrice voucher={voucher} onPriceValueChange={onPriceValueChange}/>}
+				{voucher.selected && <VoucherPrice voucher={voucher} onPriceValueChange={item => this.setPrice(item)}/>}
 			</div>
 		);
 	}

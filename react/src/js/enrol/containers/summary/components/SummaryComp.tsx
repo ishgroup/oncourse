@@ -21,20 +21,22 @@ export interface Props {
   promotions: Promotion[];
   onProceedToPayment?: () => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
-  onPriceValueChange?: (productItem: PurchaseItem, value: string) => void;
+  onPriceValueChange?: (productItem: PurchaseItem) => void;
+  updateCheckoutModel?: () => void;
 }
 
 
 export class SummaryComp extends React.Component<Props, any> {
   renderContact = (props: ContactProps) => {
-    const {onSelect, onPriceValueChange} = this.props;
+    const {onSelect, onPriceValueChange, updateCheckoutModel} = this.props;
 
     return (
       <ContactComp
         {...props}
         key={props.contact.id}
         onSelect={(item, selected) => onSelect(item, selected)}
-        onPriceValueChange={(productItem, value) => onPriceValueChange(productItem, value)}
+        onPriceValueChange={productItem => onPriceValueChange(productItem)}
+        updateCheckoutModel={updateCheckoutModel}
       />
     );
   }

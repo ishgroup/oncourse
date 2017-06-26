@@ -23,7 +23,7 @@ import {OpenEditContact} from "../containers/contact-edit/epics/EpicOpenEditCont
 import {SubmitEditContact} from "../containers/contact-edit/epics/EpicSubmitEditContact";
 
 const {
-  contactApi
+  contactApi,
 } = Injector.of();
 
 export const EpicCheckout = combineEpics(
