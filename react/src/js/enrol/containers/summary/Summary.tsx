@@ -104,6 +104,7 @@ export const SummaryPropsBy = (state: IshState): any => {
   }
 };
 
+// debounce for optimize api requests
 const getCheckoutModelDebounced = debounce(dispatch => dispatch(getCheckoutModelFromBackend()), 300);
 
 export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {

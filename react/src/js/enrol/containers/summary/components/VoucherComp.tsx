@@ -20,7 +20,13 @@ class VoucherComp extends React.Component<Props, any> {
 
 	private updatePrice = item => {
 		const val = item.target.value;
-		this.props.onPriceValueChange(val);
+		const reg = (/^[0-9]+\.?[0-9]*$/);
+
+		if (val > 0 && reg.test(val)) {
+			this.props.onPriceValueChange(val);
+		}
+
+		return false;
 	}
 
 	public render(): JSX.Element {
