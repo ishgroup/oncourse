@@ -52,7 +52,7 @@ import static org.mockito.Mockito.when;
  * @author ksenia
  * 
  */
-@PowerMockIgnore(value = {"org.apache.axis.*", "com.paymentexpress.stubs.*", "org.apache.axis.utils.*", "javax.xml.parsers.*", "org.apache.logging.log4j.*", "org.apache.xerces.*", "ish.oncourse.paymentexpress.customization.*", "org.codehaus.groovy.*", "groovy.lang.*"})
+@PowerMockIgnore(value = {"com.sun.org.apache.xerces.*", "org.apache.axis.*", "com.paymentexpress.stubs.*", "org.apache.axis.utils.*", "javax.xml.parsers.*", "org.apache.logging.log4j.*", "org.apache.xerces.*", "ish.oncourse.paymentexpress.customization.*", "org.codehaus.groovy.*", "groovy.lang.*"})
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(value = {PaymentInFail.class, PaymentInSucceed.class})
 public class PaymentExpressGatewayServiceTest {
