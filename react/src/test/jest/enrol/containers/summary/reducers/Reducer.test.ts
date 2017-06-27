@@ -68,7 +68,7 @@ test('test add contact ', () => {
     ]
   };
 
-  const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
+  const ns: State = Reducer(state, {type: SummaryActions.ADD_CONTACT_NODE_TO_STATE, payload: ContactNodeToState([upi])});
   console.log(inspect(ns, true, 10, true));
 
   expect(ns.result.length).toBe(3);
@@ -115,7 +115,7 @@ test('test update enrolment', () => {
 });
 
 
-test('test update enrolment', () => {
+test('test update application', () => {
   const upi: ContactNode = {
     contactId: "00002",
     applications: [
