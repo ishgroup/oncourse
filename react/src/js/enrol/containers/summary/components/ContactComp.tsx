@@ -24,14 +24,15 @@ export interface Props {
   articles: ArticleProps[];
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem) => void;
+  onAddConcession?: () => void;
 }
 
 class ContactComp extends React.Component<Props, any> {
   render() {
-    const {contact, enrolments, applications, vouchers, memberships, articles, onSelect, onPriceValueChange} = this.props;
+    const {contact, enrolments, applications, vouchers, memberships, articles, onSelect, onPriceValueChange, onAddConcession} = this.props;
     return (
       <div className="row">
-        <ContactInfo contact={contact} controls={<AddConcessionLink/>}/>
+        <ContactInfo contact={contact} controls={<AddConcessionLink onAddConcession={onAddConcession} contact={contact}/>}/>
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) => {
             return <EnrolmentComp
@@ -73,7 +74,11 @@ class ContactComp extends React.Component<Props, any> {
 }
 
 const AddConcessionLink = props => {
-  return (<div><a className="add-concession" href="#">Add Concession</a></div>);
+  return (
+    <div>
+      <a className="add-concession" href="#" onClick={() => props.onAddConcession(props.contact.id)}>Add Concession</a>
+    </div>
+  );
 };
 
 export default ContactComp;

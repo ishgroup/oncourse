@@ -3,7 +3,7 @@ import {Field} from "redux-form";
 import SelectField from "../../../../components/form-new/SelectField";
 
 interface Props {
-	concessions: any[],
+	concessions: any[];
 	onTypeChange: any;
 }
 
@@ -12,8 +12,14 @@ class ConcessionForm extends React.Component<Props, any> {
 		const {concessions, onTypeChange} = this.props;
 
 		return (
-			<Field component={SelectField} name="concessionTypes" label="New Concession" loadOptions={() => Promise.resolve(concessions)} handleChange={onTypeChange} />
-		)
+			<Field
+        component={SelectField}
+        required={true}
+        name="concessionTypes"
+        label="New Concession"
+        loadOptions={() => Promise.resolve(concessions)}
+      />
+		);
 	}
 }
 

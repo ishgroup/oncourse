@@ -17,6 +17,7 @@ import {
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
 import {changePhase, addCode, getCheckoutModelFromBackend} from "../../actions/Actions";
+import {updateConcessionContact} from "../../containers/concession/actions/Actions";
 import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import log = Handlebars.log;
@@ -124,6 +125,10 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onPriceValueChange: (productItem: PurchaseItem): void => {
       dispatch(updateItem(ItemToState(productItem)));
       getCheckoutModelDebounced(dispatch);
+    },
+    onAddConcession: (contactId): void => {
+      dispatch(updateConcessionContact(contactId));
+      dispatch(changePhase(Phase.AddConcession));
     },
   };
 };

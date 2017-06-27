@@ -3,15 +3,16 @@ import {connect, Dispatch} from "react-redux";
 
 import ContactAddForm from "./contact-add/ContactAddForm";
 import CompanyAddForm from "./contact-add/CompanyAddForm";
+import Concession from './concession/Concession';
 import ContactEditForm from "./contact-edit/ContactEditForm";
 import {Messages, Progress} from "./Functions";
 import {Phase} from "../reducers/State";
-import {IshState} from "../../services/IshState";
 import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
 import {changePhase, sendInitRequest} from "../actions/Actions";
 import {submitAddContactAsPayer, submitAddContact} from "./contact-add/actions/Actions";
+import ConcessionForm from "./concession/components/ConcessionForm";
 
 interface Props {
   phase: Phase;
@@ -58,6 +59,11 @@ export class Checkout extends React.Component<Props, any> {
           onCancel={() => this.props.changePhase(page)}
         />
         }
+
+        {phase === Phase.AddConcession &&
+        <Concession />
+        }
+
 
         {phase === Phase.EditContact && <ContactEditForm/>}
         {phase === Phase.Summary && <Summary/>}

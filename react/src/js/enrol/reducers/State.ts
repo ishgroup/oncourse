@@ -17,6 +17,7 @@ export interface CheckoutState {
   amount: Amount;
   summary: SummaryState;
   payment: PaymentState;
+  concession: any;
 }
 
 export interface PayerState {
@@ -33,4 +34,5 @@ export enum Phase {
   AddContact,
   AddContactAsPayer,
   AddContactAsCompany,
+  AddConcession,
 }

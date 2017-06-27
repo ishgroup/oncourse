@@ -22,8 +22,8 @@ const render = () => ReactDOM.render(
     <div id="checkout" className="col-xs-24 payments">
       <Progress/>
       <Messages/>
-      <Concession contact={contact} concessions={concessions} onSubmit={onConcessionSubmit}/>
+      <Concession/>
     </div>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

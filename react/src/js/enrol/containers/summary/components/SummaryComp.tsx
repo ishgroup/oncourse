@@ -22,12 +22,13 @@ export interface Props {
   onProceedToPayment?: () => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem) => void;
+  onAddConcession?: () => void;
 }
 
 
 export class SummaryComp extends React.Component<Props, any> {
   renderContact = (props: ContactProps) => {
-    const {onSelect, onPriceValueChange} = this.props;
+    const {onSelect, onPriceValueChange, onAddConcession} = this.props;
 
     return (
       <ContactComp
@@ -35,6 +36,7 @@ export class SummaryComp extends React.Component<Props, any> {
         key={props.contact.id}
         onSelect={(item, selected) => onSelect(item, selected)}
         onPriceValueChange={productItem => onPriceValueChange(productItem)}
+        onAddConcession={onAddConcession}
       />
     );
   }

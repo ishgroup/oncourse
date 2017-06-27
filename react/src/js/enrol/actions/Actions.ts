@@ -1,6 +1,5 @@
 import {_toRequestType} from "../../common/actions/ActionUtils";
 import {Phase} from "../reducers/State";
-import {Contact} from "../../model/web/Contact";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
 import {Amount} from "../../model/checkout/Amount";
@@ -15,7 +14,6 @@ export const INIT_REQUEST: string = "checkout/init/request";
 
 // change current phase action
 export const CHANGE_PHASE: string = "checkout/phase/change";
-export const CHANGE_PHASE_REQUEST: string = _toRequestType(CHANGE_PHASE);
 
 export const SET_PAYER_TO_STATE: string = "checkout/set/payer/to/state";
 
