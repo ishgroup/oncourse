@@ -12,7 +12,7 @@ export interface Props {
 	voucher: Voucher;
 	product: Product;
 	onChange?: () => void;
-	onPriceValueChange?: (item: any) => any;
+	onPriceValueChange?: (val: any) => any;
 	updateCheckoutModel?: () => void;
 }
 

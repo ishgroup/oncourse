@@ -111,7 +111,7 @@ const getCheckoutModelDebounced = debounce(dispatch => dispatch(getCheckoutModel
 export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
     onSelect: (item: PurchaseItem, selected: boolean): void => {
-      dispatch(selectItem(item, selected));
+      dispatch(selectItem(Object.assign(item, {selected})));
     },
     onAddContact: (): void => {
       dispatch(changePhase(Phase.AddContact));
@@ -122,8 +122,9 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onAddCode: (code: string): void => {
       dispatch(addCode(code));
     },
-    onPriceValueChange: (productItem: PurchaseItem): void => {
-      dispatch(updateItem(ItemToState(productItem)));
+    onPriceValueChange: (productItem: PurchaseItem, val: any): void => {
+      const item = Object.assign(productItem, {value: val, price: val});
+      dispatch(updateItem(ItemToState(item)));
       getCheckoutModelDebounced(dispatch);
     },
     onAddConcession: (contactId): void => {

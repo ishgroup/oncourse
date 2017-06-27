@@ -23,7 +23,7 @@ export interface Props {
   memberships: MembershipProps[];
   articles: ArticleProps[];
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
-  onPriceValueChange?: (productItem: PurchaseItem) => void;
+  onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
 }
 
@@ -50,7 +50,7 @@ class ContactComp extends React.Component<Props, any> {
             return <VoucherComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected) }
-              onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher, {value: val, price: val}))}/>;
+              onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher), val)}/>;
 
           })}
 

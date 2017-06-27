@@ -21,7 +21,7 @@ export interface Props {
   promotions: Promotion[];
   onProceedToPayment?: () => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
-  onPriceValueChange?: (productItem: PurchaseItem) => void;
+  onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
 }
 
@@ -35,7 +35,7 @@ export class SummaryComp extends React.Component<Props, any> {
         {...props}
         key={props.contact.id}
         onSelect={(item, selected) => onSelect(item, selected)}
-        onPriceValueChange={productItem => onPriceValueChange(productItem)}
+        onPriceValueChange={(productItem, val) => onPriceValueChange(productItem, val)}
         onAddConcession={onAddConcession}
       />
     );

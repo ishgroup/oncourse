@@ -33,8 +33,7 @@ export const addContactToSummary = (contact: Contact): IAction<Contact> => {
 /**
  * an user has selected/unselected this item and we need to update all related components
  */
-export const selectItem = (item: PurchaseItem, selected: boolean): { type: string, payload: PurchaseItem } => {
-  item.selected = selected;
+export const selectItem = (item: PurchaseItem): { type: string, payload: PurchaseItem } => {
   return {
     type: SELECT_ITEM_REQUEST,
     payload: item,
