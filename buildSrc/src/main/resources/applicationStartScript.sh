@@ -8,8 +8,7 @@
 
 # There is no realpath command on OSX, so we need to fake it
 command -v realpath >/dev/null 2>&1 || realpath() {
-    cd \$(dirname \${1})
-    pwd -P
+    echo "\$(cd "\$(dirname "\${BASH_SOURCE[0]}")" && pwd)/\$(basename "\${BASH_SOURCE[0]}")"
 }
 
 PID_FILE="/var/run/onCourse/${applicationName}.pid"
@@ -71,7 +70,7 @@ start() {
     if [ -x "/usr/sbin/daemon" ] ; then
         /usr/sbin/daemon -p \$PID_FILE -f \$CMD
     else
-        nohup "\$CMD" &>api.out  & 
+        nohup \$CMD &>api.out  &
         echo \$! > "\$PID_FILE"
     fi
 }
