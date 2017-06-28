@@ -9,7 +9,6 @@ export const Reducer = (state: State = ContactNodeToState([]), action: { type: s
 
   switch (action.type) {
     case  SummaryActions.UPDATE_ITEM:
-    case SummaryActions.SELECT_ITEM:
       action.payload.result.forEach(id => {
         const stateNode: ContactNode = ns.entities.contactNodes[id];
         const payloadNode: ContactNode = action.payload.entities.contactNodes[id];

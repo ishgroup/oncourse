@@ -4,7 +4,6 @@ import {ContactNodeToState, State} from "../reducers/State";
 import {IAction} from "../../../../actions/IshAction";
 import {Contact} from "../../../../model/web/Contact";
 import {PurchaseItem} from "../../../../model/checkout/Index";
-import {Voucher} from "../../../../model/checkout/Voucher";
 
 export const ADD_CONTACT_TO_SUMMARY: string = _toRequestType("checkout/summary/add/contact/to/summary");
 
@@ -15,9 +14,7 @@ export const ItemsLoad: string = "checkout/summary/items/load";
 export const GET_CONTACT_NODE_FROM_BACKEND: string = "checkout/summary/get/ContactNode/from/backend";
 export const ADD_CONTACT_NODE_TO_STATE: string = "checkout/summary/update/ContactNode";
 
-
-export const SELECT_ITEM: string = "checkout/summary/select/item";
-export const SELECT_ITEM_REQUEST: string = _toRequestType(SELECT_ITEM);
+export const SELECT_ITEM_REQUEST: string = "checkout/summary/select/item/request";
 
 export const UPDATE_ITEM: string = "checkout/summary/update/item";
 

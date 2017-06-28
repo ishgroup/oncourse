@@ -90,7 +90,7 @@ test('test add enrolment ', () => {
     ],
   };
 
-  const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
+  const ns: State = Reducer(state, {type: SummaryActions.UPDATE_ITEM, payload: ContactNodeToState([upi])});
 
   expect(ns.result.length).toBe(2);
   expect(ns.entities.enrolments['00002-00004'].contactId).toBe('00002');
@@ -109,7 +109,7 @@ test('test update enrolment', () => {
       },
     ],
   };
-  const ns: State = Reducer(state, {type: SummaryActions.SELECT_ITEM, payload: ContactNodeToState([upi])});
+  const ns: State = Reducer(state, {type: SummaryActions.UPDATE_ITEM, payload: ContactNodeToState([upi])});
   expect(ns.result.length).toBe(2);
   expect(ns.entities.enrolments['00002-00003'].selected).toBe(true);
 });

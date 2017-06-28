@@ -1,6 +1,6 @@
 import {Epic} from "redux-observable";
 import "rxjs";
-import {SELECT_ITEM, SELECT_ITEM_REQUEST} from "../containers/summary/actions/Actions";
+import {SELECT_ITEM_REQUEST, UPDATE_ITEM} from "../containers/summary/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import * as EpicUtils from "./EpicUtils";
@@ -15,7 +15,7 @@ const request: EpicUtils.Request<Enrolment | Application, IshState> = {
   getData: CheckoutService.updateItem,
   processData: (value: PurchaseItem, state: IshState) => {
     return [
-      {type: SELECT_ITEM, payload: ItemToState(value)},
+      {type: UPDATE_ITEM, payload: ItemToState(value)},
       getAmount(),
     ];
   },
