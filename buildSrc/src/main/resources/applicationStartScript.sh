@@ -8,7 +8,7 @@
 
 # There is no realpath command on OSX, so we need to fake it
 command -v realpath >/dev/null 2>&1 || realpath() {
-    echo "\$(cd "\$(dirname "\${BASH_SOURCE[0]}")" && pwd)/\$(basename "\${BASH_SOURCE[0]}")"
+    echo \$(cd \$(dirname \$1) && pwd)/\$(basename \$1)
 }
 
 PID_FILE="/var/run/onCourse/${applicationName}.pid"
