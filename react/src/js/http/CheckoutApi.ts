@@ -23,4 +23,7 @@ export class CheckoutApi {
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
     return this.http.POST(`/makePayment`, paymentRequest);
   }
+  getConcessionTypes(): Promise<any> {
+    return this.http.GET(`/getConcessionTypes`);
+  }
 }

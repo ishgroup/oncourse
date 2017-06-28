@@ -7,7 +7,7 @@ import {MouseHover, WrappedMouseHoverProps} from "./MouseHover";
 import {showError, ValidateText} from "./ValidateText";
 import {FieldLabel} from "./FieldLabel";
 
-export const DateField = (props) => (
+export const DateField = props => (
   <MouseHover component={inputComponent} componentProps={props}/>
 );
 
@@ -16,7 +16,7 @@ function inputComponent(props: DateFieldProps) {
     input,
     required,
     label,
-    type
+    type,
   } = props;
   const isShowError = showError(props);
 
@@ -30,7 +30,7 @@ function inputComponent(props: DateFieldProps) {
       <span className={classnames({
         valid: !isShowError,
         validate: isShowError,
-        "has-error": isShowError
+        "has-error": isShowError,
       })}>
         <MaskedTextInput
           mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}

@@ -1,4 +1,5 @@
-import {UPDATE_CONCESSION_CONTACT} from "../actions/Actions";
+import {GET_CONCESSION_TYPES_REQUEST, UPDATE_CONCESSION_CONTACT} from "../actions/Actions";
+import {FULFILLED} from "../../../../common/actions/ActionUtils";
 
 export interface ConcessionState {
   contactId: string;
@@ -12,6 +13,8 @@ export const Reducer = (state: ConcessionState = defaultState, action: {type: st
   switch (action.type) {
     case UPDATE_CONCESSION_CONTACT:
       return {...state, contactId: action.payload};
+    case FULFILLED(GET_CONCESSION_TYPES_REQUEST):
+      return {...state, types: action.payload};
     default:
       return state;
   }

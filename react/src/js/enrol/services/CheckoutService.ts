@@ -76,6 +76,10 @@ export class CheckoutService {
     return this.promotionApi.getPromotion(code);
   };
 
+  public getConcessionTypes = () => {
+    return this.checkoutApi.getConcessionTypes();
+  }
+
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
     if (item.selected) {
       const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);

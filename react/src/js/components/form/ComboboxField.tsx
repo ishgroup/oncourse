@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Component} from "react";
 import classnames from "classnames";
 import {Field, WrappedFieldProps} from "redux-form";
 import {CommonFieldProps} from "./CommonFieldProps";
@@ -10,24 +9,24 @@ import {FieldLabel} from "./FieldLabel";
 import {Item} from "../../model/common/Item";
 
 
-export class ComboboxField extends Component<any, any> {
+export class ComboboxField extends React.Component<any, any> {
   render() {
     return (
-      <MouseHover component={ComboboxFieldComponent} componentProps={this.props}/>
+      <MouseHover component={comboboxFieldComponent} componentProps={this.props}/>
     );
   }
 }
 
 
-function ComboboxFieldComponent(props: ComboboxFieldProps & WrappedMouseHoverProps) {
+function comboboxFieldComponent(props: ComboboxFieldProps & WrappedMouseHoverProps) {
   const {
     items,
-    ...selectProps
+    ...selectProps,
   } = props;
 
   return (
     <Field
-      component={SelectInput}
+      component={selectInput}
       {...selectProps}
     >
       {items.map((item: Item) => {
@@ -39,12 +38,12 @@ function ComboboxFieldComponent(props: ComboboxFieldProps & WrappedMouseHoverPro
   );
 }
 
-function SelectInput(props: SelectInputProps) {
+function selectInput(props: SelectInputProps) {
   const {
     input,
     children,
     required,
-    label
+    label,
   } = props;
 
   const isShowError = showError(props);
@@ -59,7 +58,7 @@ function SelectInput(props: SelectInputProps) {
       <span className={classnames({
         valid: !isShowError,
         validate: isShowError,
-        "has-error": isShowError
+        "has-error": isShowError,
       })}>
       <select
         {...input}
@@ -86,6 +85,4 @@ interface SelectInputProps extends ComboboxFieldProps, Partial<WrappedFieldProps
 interface ComboboxFieldProps extends CommonFieldProps {
   items: Item[];
 }
-
-
 

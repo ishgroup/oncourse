@@ -9,6 +9,7 @@ import {CourseClass} from "../../js/model/web/CourseClass";
 import {Enrolment} from "../../js/model/checkout/Enrolment";
 import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
 import {CheckoutModel} from "../../js/model/checkout/CheckoutModel";
+import {ConcessionTypeModel} from "../../js/model/checkout/ConcessionType";
 import {mockAmount} from "./mocks/MockFunctions";
 import {CheckoutModelRequest} from "../../js/model/checkout/CheckoutModelRequest";
 import {Voucher} from "../../js/model/checkout/Voucher";
@@ -116,6 +117,23 @@ export class CheckoutApiMock extends CheckoutApi {
     result.sessionId = paymentRequest.sessionId;
     result.status = this.paymentStatusValue();
     return this.config.createResponse(result);
+  }
+
+  getConcessionTypes() {
+    // move to mock db
+    const result1: ConcessionTypeModel = new ConcessionTypeModel();
+    result1.key = '1';
+    result1.value = 'Student';
+    const result2: ConcessionTypeModel = new ConcessionTypeModel();
+    result2.key = '2';
+    result2.value = 'Man';
+    result2.hasExpireDate = true;
+    result2.hasNumber = true;
+    const result3: ConcessionTypeModel = new ConcessionTypeModel();
+    result3.key = '-1';
+    result3.value = 'No concession';
+
+    return this.config.createResponse([result1, result2, result3]);
   }
 
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {

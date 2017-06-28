@@ -6,7 +6,7 @@ import ConcessionForm from "./components/ConcessionForm";
 import {Field, reduxForm} from "redux-form";
 import Checkbox from "../../../components/form-new/Checkbox";
 import {changePhase} from "../../actions/Actions";
-
+import {getConcessionTypes} from "./actions/Actions";
 
 export interface Props {
   contact: Contact;
@@ -27,6 +27,10 @@ class Concession extends React.Component<any, any> {
     };
   }
 
+  componentDidMount() {
+    this.props.onInit();
+  }
+
   onTypeChange = value => {
     this.setState({
       validConcession: (value.key !== -1),
@@ -40,14 +44,16 @@ class Concession extends React.Component<any, any> {
   }
 
   render() {
-    const {contact, concessions, handleSubmit, pristine, invalid, submitting, onCancel, page} = this.props;
+    const {contact, handleSubmit, pristine, invalid, submitting, onCancel, page, concessionTypes} = this.props;
 
     return (
       <div className="concessionEditor">
         <h3>Add concession for {contact.firstName + " " + contact.lastName}</h3>
         <form onSubmit={handleSubmit}>
           <fieldset>
-            <ConcessionForm concessions={concessions} onTypeChange={this.onTypeChange}/>
+            {concessionTypes &&
+              <ConcessionForm concessionTypes={concessionTypes} onTypeChange={this.onTypeChange}/>
+            }
             {this.state.validConcession &&
             <ConcessionText onConcessionAgreed={this.onConcessionAgreed}/>
             }
@@ -97,16 +103,20 @@ const mapStateToProps = (state: IshState) => {
   return {
     contact: state.checkout.contacts.entities.contact[state.checkout.concession.contactId],
     page: state.checkout.page,
+    concessionTypes: state.checkout.concession.types,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     onSubmit: (data, dispatch, props): any => {
       return '';
     },
     onCancel: phase => {
       dispatch(changePhase(phase));
+    },
+    onInit: () => {
+      dispatch(getConcessionTypes());
     },
   };
 };

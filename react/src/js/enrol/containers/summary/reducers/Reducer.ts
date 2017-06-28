@@ -13,11 +13,11 @@ export const Reducer = (state: State = ContactNodeToState([]), action: { type: s
       action.payload.result.forEach(id => {
         const stateNode: ContactNode = ns.entities.contactNodes[id];
         const payloadNode: ContactNode = action.payload.entities.contactNodes[id];
-        stateNode.enrolments = Array.from(new Set(L.concat(stateNode.enrolments || [], payloadNode.enrolments)));
-        stateNode.applications = Array.from(new Set(L.concat(stateNode.applications || [], payloadNode.applications)));
-        stateNode.memberships = Array.from(new Set(L.concat(stateNode.memberships || [], payloadNode.memberships)));
-        stateNode.articles = Array.from(new Set(L.concat(stateNode.articles || [], payloadNode.articles)));
-        stateNode.vouchers = Array.from(new Set(L.concat(stateNode.vouchers || [], ...payloadNode.vouchers)));
+        stateNode.enrolments = Array.from(new Set([...stateNode.enrolments || [], ...payloadNode.enrolments]));
+        stateNode.applications = Array.from(new Set([...stateNode.applications || [], ...payloadNode.applications]));
+        stateNode.memberships = Array.from(new Set([...stateNode.memberships || [], ...payloadNode.memberships]));
+        stateNode.articles = Array.from(new Set([...stateNode.articles || [], ...payloadNode.articles]));
+        stateNode.vouchers = Array.from(new Set([...stateNode.vouchers || [], ...payloadNode.vouchers]));
       });
       mergePurchases(ns, action.payload);
       return ns;

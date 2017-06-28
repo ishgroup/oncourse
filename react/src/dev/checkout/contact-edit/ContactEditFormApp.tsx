@@ -22,18 +22,16 @@ const contact:Contact = Object.assign(new Contact(), {
   id: 1001,
   firstName: 'Andrey',
   lastName: 'Koyro',
-  email: 'pervoliner@gmail.com'
+  email: 'pervoliner@gmail.com',
 });
-
-
 
 
 config.init((config: MockConfig) => {
 
-  //add contact
+  // add contact
   config.store.dispatch({
     type: ADD_CONTACT_TO_STATE,
-    payload: normalize(contact, ContactSchema)
+    payload: normalize(contact, ContactSchema),
   });
 
   config.store.dispatch(openEditContact(contact));
@@ -43,15 +41,15 @@ config.init((config: MockConfig) => {
 });
 
 
-const render = (config) => ReactDOM.render(
+const render = config => ReactDOM.render(
   <Provider store={config.store}>
     <div id="checkout" className="payments">
-      <Progress onChange={(t) => {
+      <Progress onChange={t => {
       }} model={{active: Tab.Details, disabled: [Tab.Summary, Tab.Payment]}}/>
       <Messages/>
       <ContactEditForm/>
       <Values form={NAME}/>
     </div>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );

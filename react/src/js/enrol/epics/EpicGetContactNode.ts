@@ -1,6 +1,5 @@
 import "rxjs";
 import * as Actions from "../containers/summary/actions/Actions";
-import {addContactNodeToState} from "../containers/summary/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import {Create, Request} from "./EpicUtils";
@@ -14,7 +13,7 @@ const request: Request<ContactNode, IshState> = {
   getData: (contact: Contact, state: IshState) => CheckoutService.getContactNode(contact, state.cart),
   processData: (value: ContactNode, state: IshState) => {
     return [
-      addContactNodeToState(value),
+      Actions.addContactNodeToState(value),
       getAmount(),
     ];
   },

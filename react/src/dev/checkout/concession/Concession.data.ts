@@ -6,17 +6,16 @@ const mockContact = () : Contact => {
 		id: faker.random.number() as string,
 		firstName: faker.name.firstName(),
 		lastName: faker.name.lastName(),
-		email: faker.internet.email()
-	}
-}
+		email: faker.internet.email(),
+	};
+};
 
 export const contact: Contact = mockContact();
 
 export const concessions : any[] =
 	[
 		{key: -1, value: "no concession"},
-		{key: 0, value: "CHSP/CCSP Worker"}
+		{key: 0, value: "CHSP/CCSP Worker"},
 	];
 
-
-
+
