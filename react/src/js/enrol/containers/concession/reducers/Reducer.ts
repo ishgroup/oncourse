@@ -7,6 +7,8 @@ export interface ConcessionState {
 
 const defaultState = {
   contactId: null,
+  types: [],
+  concessions: {},
 };
 
 export const Reducer = (state: ConcessionState = defaultState, action: {type: string, payload: any}): any => {

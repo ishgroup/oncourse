@@ -133,7 +133,7 @@ export class CheckoutApiMock extends CheckoutApi {
     result3.key = '-1';
     result3.value = 'No concession';
 
-    return this.config.createResponse([result1, result2, result3]);
+    return this.config.createResponse([result3, result2, result1]);
   }
 
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {

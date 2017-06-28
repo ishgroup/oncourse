@@ -3,14 +3,13 @@ import {connect} from "react-redux";
 import {IshState} from "../../../services/IshState";
 import {Contact} from "../../../model/web/Contact";
 import ConcessionForm from "./components/ConcessionForm";
-import {Field, reduxForm} from "redux-form";
-import Checkbox from "../../../components/form-new/Checkbox";
+import {reduxForm, FormErrors} from "redux-form";
 import {changePhase} from "../../actions/Actions";
 import {getConcessionTypes} from "./actions/Actions";
 
 export interface Props {
   contact: Contact;
-  concessions: any[];
+  concessionTypes: any[];
 }
 
 export const NAME = "Concession";
@@ -31,10 +30,8 @@ class Concession extends React.Component<any, any> {
     this.props.onInit();
   }
 
-  onTypeChange = value => {
-    this.setState({
-      validConcession: (value.key !== -1),
-    });
+  onTypeChange = () => {
+    this.props.reset();
   }
 
   onConcessionAgreed = value => {
@@ -54,14 +51,12 @@ class Concession extends React.Component<any, any> {
             {concessionTypes &&
               <ConcessionForm concessionTypes={concessionTypes} onTypeChange={this.onTypeChange}/>
             }
-            {this.state.validConcession &&
-            <ConcessionText onConcessionAgreed={this.onConcessionAgreed}/>
-            }
+
           </fieldset>
           <p>
-            {this.state.isConcessionAgreed &&
-            <button type="submit" className="btn" disabled={invalid || pristine || submitting}>Save Concession</button>
-            }
+
+            <button type="submit" className="btn" disabled={pristine || submitting}>Save Concession</button>
+
             <button id="cancelConcession" className="btn" onClick={() => onCancel(page)}>Cancel</button>
           </p>
         </form>
@@ -70,26 +65,32 @@ class Concession extends React.Component<any, any> {
   }
 }
 
-const ConcessionText = props => {
-  return (
-    <div className="clearfix conditions">
-      <Field
-        component={Checkbox}
-        type="checkbox"
-        name="concessionAgree"
-        required={true}
-        onChange={props.onConcessionAgreed}
-        value={true}
-      />
-      I certify that the concession I have claimed is valid and
-      I understand that the details may be checked with the issuing body.
-    </div>
-  );
+export const validate = (data, props) => {
+  const errors = {};
+
+  // skip validation if concession type not set
+  if (!data.concessionType) return errors;
+
+  const concessionType = props.concessionTypes.find(item => item.key === data.concessionType);
+
+  if (concessionType.hasExpireDate && !data.date) {
+    errors['date'] =  'Date is incorrect';
+  }
+
+  if (concessionType.hasNumber && !data.number) {
+    errors['number'] = 'The number cannot be blank.';
+  }
+
+  if (concessionType.key !== '-1' && !data.concessionAgree) {
+    errors['concessionAgree'] = 'You must agree to the policies before proceeding.';
+  }
+
+  return errors;
 };
 
 const Form = reduxForm({
+  validate,
   form: NAME,
-  // validate: validate,
   onSubmitSuccess: (result, dispatch, props: any) => {
 
   },
@@ -110,7 +111,7 @@ const mapStateToProps = (state: IshState) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSubmit: (data, dispatch, props): any => {
-      return '';
+      console.log(data);
     },
     onCancel: phase => {
       dispatch(changePhase(phase));

@@ -29,6 +29,9 @@ export const toValidationError = (response: AxiosResponse) => {
   let messages: ValidationError = new ValidationError();
   messages.formErrors = [];
   messages.fieldsErrors = [];
+
+  if (!response) return messages;
+
   if (isValidationError(response.data)) {
     messages = Object.assign({}, messages, response.data);
   } else if (isCommonError(response.data)) {
