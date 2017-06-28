@@ -6,7 +6,7 @@ import {Actions} from "../web/actions/Actions";
 import {Level, Logger, LogMessage} from "./Logger";
 
 class KEYS {
-  static shorlist: string = "shorlist";
+  static shortlist: string = "shortlist";
   static productShortList: string = "productShortList";
   static promotions: string = "promotions";
 
@@ -14,11 +14,11 @@ class KEYS {
 
 export class LegacySyncStorage {
   addCourse(id: string) {
-    add(id, KEYS.shorlist);
+    add(id, KEYS.shortlist);
   }
 
   removeCourse(id: string) {
-    remove(id, KEYS.shorlist);
+    remove(id, KEYS.shortlist);
   }
 
   addProduct(id: string) {
