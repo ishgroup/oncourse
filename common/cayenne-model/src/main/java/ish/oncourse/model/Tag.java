@@ -4,8 +4,8 @@ import ish.oncourse.model.auto._Tag;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.TagsTextileEntityTypes;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -31,12 +31,12 @@ public class Tag extends _Tag implements Queueable {
 			visibleTags = ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true).filterObjects(getTags());
 		}
 		else {
-			SelectQuery  q = new SelectQuery(Tag.class);
-			q.andQualifier(ExpressionFactory.matchExp(Tag.PARENT_PROPERTY, this));
-			q.andQualifier(ExpressionFactory.matchExp(IS_WEB_VISIBLE_PROPERTY, true));
-			q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-			q.setCacheGroups(Tag.class.getSimpleName());
-			visibleTags = getObjectContext().performQuery(q);
+			visibleTags = ObjectSelect.query(Tag.class).
+					where(Tag.PARENT.eq(this)).
+					and(Tag.IS_WEB_VISIBLE.isTrue()).
+					cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+					cacheGroup(Tag.class.getSimpleName()).
+					select(getObjectContext());
 		}
 
 		Collections.sort(visibleTags, new Comparator<Tag>() {

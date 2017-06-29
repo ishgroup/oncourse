@@ -2,13 +2,10 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._Tutor;
 import ish.oncourse.utils.QueueableObjectUtils;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -41,34 +38,15 @@ public class Tutor extends _Tutor implements Queueable {
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 
-		Expression validRolesQualifier = ExpressionFactory
-				.matchExp(
-						TutorRole.COURSE_CLASS_PROPERTY + "."
-								+ CourseClass.CANCELLED_PROPERTY, false)
-				.andExp(ExpressionFactory.matchExp(
-						TutorRole.COURSE_CLASS_PROPERTY + "."
-								+ CourseClass.CANCELLED_PROPERTY, false))
-				.andExp(ExpressionFactory.noMatchExp(
-						TutorRole.COURSE_CLASS_PROPERTY + "."
-								+ CourseClass.END_DATE_PROPERTY, null));
-
-		Expression qualifier = validRolesQualifier.andExp(ExpressionFactory
-				.matchExp(TutorRole.TUTOR_PROPERTY, this)
-				.andExp(ExpressionFactory.matchExp(TutorRole.IN_PUBLICITY_PROPERTY, true))
-				.andExp(ExpressionFactory.greaterOrEqualExp(
-						TutorRole.COURSE_CLASS_PROPERTY + "."
-								+ CourseClass.END_DATE_PROPERTY,
-						calendar.getTime()))
-				.andExp(ExpressionFactory.matchExp(
-						TutorRole.COURSE_CLASS_PROPERTY + "."
-								+ CourseClass.IS_WEB_VISIBLE_PROPERTY, true)));
-
-		SelectQuery query = new SelectQuery(TutorRole.class, qualifier);
-
-		@SuppressWarnings("unchecked")
-		List<TutorRole> result = getObjectContext().performQuery(query);
-
-		return result == null ? new ArrayList<TutorRole>() : result;
+		return ObjectSelect.query(TutorRole.class).
+				where(TutorRole.COURSE_CLASS.dot( CourseClass.CANCELLED).isFalse()).
+				and(TutorRole.COURSE_CLASS.dot( CourseClass.CANCELLED).isFalse()).
+				and(TutorRole.COURSE_CLASS.dot(CourseClass.END_DATE).isNotNull()).
+				and(TutorRole.TUTOR.eq(this)).
+				and(TutorRole.IN_PUBLICITY.isTrue()).
+				and(TutorRole.COURSE_CLASS.dot(CourseClass.END_DATE).gte(calendar.getTime())).
+				and(TutorRole.COURSE_CLASS.dot(CourseClass.IS_WEB_VISIBLE).isTrue()).
+				select(getObjectContext());
 	}
 
 	@Override

@@ -7,10 +7,8 @@ import ish.oncourse.model.auto._Invoice;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.oncourse.utils.invoice.GetAmountOwing;
 import org.apache.cayenne.Cayenne;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectIdQuery;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -59,11 +57,11 @@ public class Invoice extends _Invoice implements Queueable {
 
 	@SuppressWarnings("unchecked")
 	public List<Invoice> getRefundedInvoices() {
-		Expression expr = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, getContact());
-		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.COLLEGE_PROPERTY, getCollege()));
-		expr = expr.andExp(ExpressionFactory.matchExp(Invoice.AMOUNT_OWING_PROPERTY, Money.ZERO.subtract(getAmountOwing())));
-		SelectQuery q = new SelectQuery(Invoice.class, expr);
-		return getObjectContext().performQuery(q);
+		return ObjectSelect.query(Invoice.class).
+				where(Invoice.CONTACT.eq(getContact())).
+				and(Invoice.COLLEGE.eq(getCollege())).
+				and(Invoice.AMOUNT_OWING.eq(Money.ZERO.subtract(getAmountOwing()))).
+				select(getObjectContext());
 	}
 
 	public void updateAmountOwing() {

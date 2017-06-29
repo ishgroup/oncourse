@@ -2,9 +2,8 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._QueuedRecord;
 import ish.oncourse.utils.QueueableObjectUtils;
-import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -44,15 +43,13 @@ public class QueuedRecord extends _QueuedRecord {
 	}
 
 	public Queueable getLinkedRecord() {
-		@SuppressWarnings("unchecked")
 		Class<? extends Queueable> entityClass = (Class<? extends Queueable>) getObjectContext().getEntityResolver()
 				.getObjEntity(getEntityIdentifier()).getJavaClass();
 
-		SelectQuery q = new SelectQuery(entityClass);
-		q.andQualifier(ExpressionFactory.matchDbExp("id", getEntityWillowId()));
-		q.andQualifier(ExpressionFactory.matchExp("college", getCollege()));
-
-		return (Queueable) Cayenne.objectForQuery(getObjectContext(), q);
+		return ObjectSelect.query(Queueable.class).
+				where(ExpressionFactory.matchDbExp("id", getEntityWillowId())).
+				and(ExpressionFactory.matchExp("college", getCollege())).
+				selectFirst(getObjectContext());
 	}
 
 	@Override

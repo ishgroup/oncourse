@@ -3,14 +3,12 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._WebNodeType;
 import ish.oncourse.model.visitor.IVisitor;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.lifecycle.cache.CacheGroups;
-import org.apache.cayenne.query.*;
+import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.QueryCacheStrategy;
 
 import java.util.Date;
 import java.util.List;
-
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
 
 @CacheGroups(value = {"WebNodeType", "WebNode", "WebContentVisibility", "WebContent"})
 public class WebNodeType extends _WebNodeType {
@@ -35,13 +33,11 @@ public class WebNodeType extends _WebNodeType {
 	}
 
 	public static WebNodeType forName(ObjectContext ctx, String name) {
-		SelectQuery q = new SelectQuery(WebNodeType.class);
-		q.setCacheStrategy(LOCAL_CACHE);
-		q.setCacheGroups(WebNodeType.class.getSimpleName());
-
-		q.andQualifier(ExpressionFactory.matchExp(WebNodeType.NAME_PROPERTY,
-				name));
-		return (WebNodeType) ctx.performQuery(q);
+		return ObjectSelect.query(WebNodeType.class).
+				where(WebNodeType.NAME.eq(name)).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+				cacheGroup(WebNodeType.class.getSimpleName()).
+				selectFirst(ctx);
 	}
 
 	@SuppressWarnings("unchecked")
