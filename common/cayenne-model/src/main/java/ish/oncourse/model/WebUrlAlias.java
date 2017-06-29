@@ -2,13 +2,11 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._WebUrlAlias;
 import ish.oncourse.utils.QueueableObjectUtils;
-import org.apache.cayenne.lifecycle.cache.CacheGroups;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
-@CacheGroups("WebUrlAlias")
 public class WebUrlAlias extends _WebUrlAlias {
 	private static final long serialVersionUID = 8310897606553438218L;
 

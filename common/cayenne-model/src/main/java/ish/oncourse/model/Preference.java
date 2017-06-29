@@ -3,9 +3,7 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._Preference;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.persistence.CommonPreferenceController;
-import org.apache.cayenne.lifecycle.cache.CacheGroups;
 
-@CacheGroups("Preference")
 public class Preference extends _Preference implements Queueable {
 	private static final long serialVersionUID = 8309390847931508840L;
 

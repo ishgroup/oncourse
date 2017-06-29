@@ -3,7 +3,6 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._WebContent;
 import ish.oncourse.model.visitor.IVisitor;
 import ish.oncourse.utils.QueueableObjectUtils;
-import org.apache.cayenne.lifecycle.cache.CacheGroups;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Date;
 import java.util.List;
 
-@CacheGroups("WebContent")
 public class WebContent extends _WebContent implements Comparable<WebContent> {
 	
 	/**

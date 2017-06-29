@@ -3,14 +3,12 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._WebNodeType;
 import ish.oncourse.model.visitor.IVisitor;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.lifecycle.cache.CacheGroups;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
 import java.util.Date;
 import java.util.List;
 
-@CacheGroups(value = {"WebNodeType", "WebNode", "WebContentVisibility", "WebContent"})
 public class WebNodeType extends _WebNodeType {
 	private static final long serialVersionUID = -1945260610761430515L;
 	public static final String PAGE = "page";

@@ -272,7 +272,7 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 				.prefetch(Session.ROOM.joint())
 				.prefetch(Session.ROOM.dot(Room.SITE).joint())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
-				.cacheGroups(Session.class.getSimpleName());
+				.cacheGroup(Session.class.getSimpleName());
 		return select.select(getObjectContext());
 	}
 
