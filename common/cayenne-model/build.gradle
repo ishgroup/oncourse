@@ -3,7 +3,7 @@ configurations {
 }
 
 dependencies {
-    cayenneTools "org.apache.cayenne:cayenne-tools:$cayenneVersion"
+    cayenneTools "org.apache.cayenne:cayenne-ant:$cayenneVersion"
 }
 
 dependencies {

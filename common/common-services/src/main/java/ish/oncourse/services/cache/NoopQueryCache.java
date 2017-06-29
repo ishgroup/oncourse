@@ -48,6 +48,9 @@ public class NoopQueryCache implements QueryCache {
 	public void removeGroup(String groupKey) {}
 
 	@Override
+	public void removeGroup(String groupKey, Class<?> keyType, Class<?> valueType) {}
+
+	@Override
 	public void clear() {}
 
 	@Override

@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		cayenneVersion = '4.0.M3.2'
+		cayenneVersion = '4.0.B1'
 		log4j2Version = '2.8.2'
         waCommonWebservicesClientVersion = '9.3.32'
 		solrVersion = '5.5.3'
@@ -16,7 +16,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "org.apache.cayenne:cayenne-tools:$cayenneVersion"
+		classpath "org.apache.cayenne:cayenne-ant:$cayenneVersion"
 		classpath "com.github.robfletcher:compass-gradle-plugin:2.0.6"
 		classpath "com.eriwen:gradle-js-plugin:2.14.1"
 	}
@@ -24,6 +24,7 @@ buildscript {
 
 plugins {
 	id 'java'
+	id 'idea'
 	id 'groovy'
 	id 'maven'
 	id 'jacoco'

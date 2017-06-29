@@ -172,7 +172,7 @@ public class WebContentService extends BaseService<WebContent> implements IWebCo
 	public WebContent getBlockByName(String webContentName) {
 		return ObjectSelect.query(WebContent.class)
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
-				.cacheGroups(WebContent.class.getSimpleName())
+				.cacheGroup(WebContent.class.getSimpleName())
 				.and(WebContent.WEB_SITE_VERSION.eq(webSiteVersionService.getCurrentVersion()))
 				.and(WebContent.NAME.eq(webContentName))
 				.and(getBlockQualifier())

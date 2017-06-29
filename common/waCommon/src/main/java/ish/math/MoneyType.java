@@ -50,6 +50,11 @@ public class MoneyType implements ExtendedType {
 		return new Money(object.toString());
 	}
 
+	@Override
+	public String toString(Object value) {
+		return ((Money) value).toBigDecimal().toString();
+	}
+
 	/**
 	 * @see org.apache.cayenne.access.types.ExtendedType#setJdbcObject(java.sql.PreparedStatement, java.lang.Object, int, int, int)
 	 */
