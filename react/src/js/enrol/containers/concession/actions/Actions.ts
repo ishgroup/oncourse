@@ -1,15 +1,14 @@
 import {IAction} from "../../../../actions/IshAction";
-import {_toRequestType} from "../../../../common/actions/ActionUtils";
 
-
-export const UPDATE_CONCESSION_CONTACT: string = "checkout/update/concession/contact";
+export const UPDATE_CONTACT_CONCESSION: string = "checkout/update/concession/contact";
 
 export const GET_CONCESSION_TYPES_REQUEST: string = "checkout/get/concessionTypes/request";
-export const ADD_CONCESSION_TYPES_TO_STATE: string = "checkout/update/concessionTypes";
+
+export const GET_CONTACT_CONCESSIONS_REQUEST: string = "checkout/summary/get/contactConcessions/request";
 
 export const updateConcessionContact = (id): IAction<any> => {
   return {
-    type: UPDATE_CONCESSION_CONTACT,
+    type: UPDATE_CONTACT_CONCESSION,
     payload: id,
   };
 };
@@ -17,6 +16,12 @@ export const updateConcessionContact = (id): IAction<any> => {
 export const getConcessionTypes = (): IAction<any> => {
   return {
     type: GET_CONCESSION_TYPES_REQUEST,
+  };
+};
+
+export const getContactConcessions = () => {
+  return {
+    type: GET_CONTACT_CONCESSIONS_REQUEST,
   };
 };
 

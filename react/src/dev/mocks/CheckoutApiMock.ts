@@ -136,6 +136,13 @@ export class CheckoutApiMock extends CheckoutApi {
     return this.config.createResponse([result3, result2, result1]);
   }
 
+  getContactConcessions(ids) {
+    const result1: ConcessionTypeModel = new ConcessionTypeModel();
+    result1.key = '1';
+    result1.value = 'Student';
+    return this.config.createResponse({[ids[0]]: [result1]});
+  }
+
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
     const result: PaymentResponse = new PaymentResponse();
     result.sessionId = sessionId;

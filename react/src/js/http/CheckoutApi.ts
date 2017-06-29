@@ -26,4 +26,7 @@ export class CheckoutApi {
   getConcessionTypes(): Promise<any> {
     return this.http.GET(`/getConcessionTypes`);
   }
+  getContactConcessions(ids): Promise<any> {
+    return this.http.GET(`/getContactConcessions`);
+  }
 }

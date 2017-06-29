@@ -65,7 +65,7 @@ test('test add contact ', () => {
         productId: "00011",
         selected: false,
       },
-    ]
+    ],
   };
 
   const ns: State = Reducer(state, {type: SummaryActions.ADD_CONTACT_NODE_TO_STATE, payload: ContactNodeToState([upi])});

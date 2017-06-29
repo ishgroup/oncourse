@@ -80,6 +80,10 @@ export class CheckoutService {
     return this.checkoutApi.getConcessionTypes();
   }
 
+  public getContactConcessions = (payload, state) => {
+    return this.checkoutApi.getContactConcessions(state.checkout.contacts.result);
+  }
+
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
     if (item.selected) {
       const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);

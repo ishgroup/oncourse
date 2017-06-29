@@ -14,6 +14,7 @@ import {EpicUpdateAmount} from "./EpicUpdateAmount";
 import {EpicProceedToPayment} from "./EpicProceedToPayment";
 import {EpicPayment} from "../containers/payment/epics/EpicPayment";
 import {EpicGetConcessionTypes} from "../containers/concession/epics/EpicGetConcessionTypes";
+import {GetContactConcessions} from "../containers/concession/epics/EpicGetContactConcessions";
 import {FinishCheckoutProcess} from "./EpicFinishCheckoutProcess";
 import {EpicResult} from "../containers/result/epics/EpicResult";
 import {EpicAddCode} from "./EpicAddCode";
@@ -41,7 +42,7 @@ export const EpicCheckout = combineEpics(
   EpicUpdateSummary,
   EpicProceedToPayment,
   EpicPayment,
-  EpicGetConcessionTypes,
+  EpicGetConcessionTypes, GetContactConcessions,
   FinishCheckoutProcess,
   EpicResult,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)

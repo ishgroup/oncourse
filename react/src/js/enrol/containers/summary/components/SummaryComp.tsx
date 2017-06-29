@@ -23,12 +23,24 @@ export interface Props {
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
+  onInit?: () => void;
+  concessions?: any;
 }
 
 
 export class SummaryComp extends React.Component<Props, any> {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    if (this.props.onInit) {
+      this.props.onInit();
+    }
+  }
+
   renderContact = (props: ContactProps) => {
-    const {onSelect, onPriceValueChange, onAddConcession} = this.props;
+    const {onSelect, onPriceValueChange, onAddConcession, concessions} = this.props;
 
     return (
       <ContactComp
@@ -37,6 +49,7 @@ export class SummaryComp extends React.Component<Props, any> {
         onSelect={(item, selected) => onSelect(item, selected)}
         onPriceValueChange={(productItem, val) => onPriceValueChange(productItem, val)}
         onAddConcession={onAddConcession}
+        concessions={concessions[props.contact.id]}
       />
     );
   }

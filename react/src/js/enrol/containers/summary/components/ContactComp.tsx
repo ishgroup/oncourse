@@ -25,14 +25,21 @@ export interface Props {
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
+  concessions?: any;
 }
 
 class ContactComp extends React.Component<Props, any> {
   render() {
-    const {contact, enrolments, applications, vouchers, memberships, articles, onSelect, onPriceValueChange, onAddConcession} = this.props;
+    const {contact, enrolments, applications, vouchers, memberships, concessions,
+      articles, onSelect, onPriceValueChange, onAddConcession} = this.props;
+
     return (
       <div className="row">
-        <ContactInfo contact={contact} controls={<AddConcessionLink onAddConcession={onAddConcession} contact={contact}/>}/>
+        <ContactInfo
+          contact={contact}
+          controls={<AddConcessionLink onAddConcession={onAddConcession} contact={contact}/>}
+          concessions={concessions}
+        />
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) => {
             return <EnrolmentComp

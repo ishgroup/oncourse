@@ -17,7 +17,7 @@ import {
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
 import {changePhase, addCode, getCheckoutModelFromBackend} from "../../actions/Actions";
-import {updateConcessionContact} from "../../containers/concession/actions/Actions";
+import {updateConcessionContact, getContactConcessions} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import log = Handlebars.log;
@@ -95,6 +95,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       contacts: contactsArray,
       promotions:  Object.values(state.cart.promotions.entities),
       hasSelected: SummaryService.hasSelected(state.checkout.summary),
+      concessions: state.checkout.concession.concessions,
     };
   } catch (e) {
     console.log(e);
@@ -108,7 +109,7 @@ export const SummaryPropsBy = (state: IshState): any => {
 // debounce for optimize api requests
 const getCheckoutModelDebounced = debounce(dispatch => dispatch(getCheckoutModelFromBackend()), 300);
 
-export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
+export const SummaryActionsBy = (dispatch: Dispatch<any>, state): any => {
   return {
     onSelect: (item: PurchaseItem, selected: boolean): void => {
       dispatch(selectItem(Object.assign(item, {selected})));
@@ -130,6 +131,9 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onAddConcession: (contactId): void => {
       dispatch(updateConcessionContact(contactId));
       dispatch(changePhase(Phase.AddConcession));
+    },
+    onInit: () => {
+      dispatch(getContactConcessions());
     },
   };
 };

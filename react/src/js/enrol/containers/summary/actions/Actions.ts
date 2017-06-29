@@ -18,7 +18,6 @@ export const SELECT_ITEM_REQUEST: string = "checkout/summary/select/item/request
 
 export const UPDATE_ITEM: string = "checkout/summary/update/item";
 
-
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
   return {
     type: ADD_CONTACT_TO_SUMMARY,
@@ -61,7 +60,7 @@ export const getContactNodeFromBackend = (contact: Contact): IAction<Contact> =>
 export const addContactNodeToState = (node: ContactNode): IAction<State> => {
   const payload: State = ContactNodeToState([node]);
   return {
-    type: ADD_CONTACT_NODE_TO_STATE,
     payload,
+    type: ADD_CONTACT_NODE_TO_STATE,
   };
 };
