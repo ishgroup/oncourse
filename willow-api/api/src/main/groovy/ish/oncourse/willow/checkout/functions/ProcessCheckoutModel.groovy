@@ -71,10 +71,11 @@ class ProcessCheckoutModel {
         }
         
         CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
+        payNowAmount = payNowAmount.add(enrolmentsPrice.totalPayNow)
         model.amount = new Amount().with { a ->
             a.total = totalAmount.toPlainString()
-            a.owing = totalAmount.subtract(enrolmentsPrice.totalDiscount).subtract(enrolmentsPrice.totalPayNow).toPlainString()
-            a.payNow =  payNowAmount.add(enrolmentsPrice.totalPayNow).toPlainString()
+            a.owing = totalAmount.subtract(enrolmentsPrice.totalDiscount).subtract(payNowAmount).toPlainString()
+            a.payNow =  payNowAmount.toPlainString()
             a.discount = totalDiscount.add(enrolmentsPrice.totalDiscount).toPlainString()
             a
         }
