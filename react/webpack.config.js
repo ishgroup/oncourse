@@ -11,7 +11,8 @@ module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development'; // 'production'
   const SOURCE_MAP = options.SOURCE_MAP || 'source-map'; // 'eval-source-map'
   const API_ROOT = options.API_ROOT || 'http://localhost:10080'; // 'https://ish.com.au/api/v1'
-  __common.info(NODE_ENV, SOURCE_MAP, API_ROOT);
+  const BUILD_NUMBER = options.BUILD_NUMBER || 'DEV';
+  __common.info(NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER);
 
   return {
     entry: {
@@ -73,7 +74,7 @@ module.exports = function (options = {}) {
     }],
     bail: false,
     devtool: SOURCE_MAP,
-    plugins: createListOfPlugins({NODE_ENV, API_ROOT}),
+    plugins: createListOfPlugins({NODE_ENV, API_ROOT, BUILD_NUMBER}),
     devServer: {
       inline: false,
       port: 1707,
@@ -95,8 +96,8 @@ module.exports = function (options = {}) {
 }
 };
 
-function createListOfPlugins({NODE_ENV, API_ROOT}) {
-  const plugins = [ __common.DefinePlugin(NODE_ENV, API_ROOT) ];
+function createListOfPlugins({NODE_ENV, API_ROOT, BUILD_NUMBER}) {
+  const plugins = [ __common.DefinePlugin(NODE_ENV, API_ROOT, BUILD_NUMBER) ];
 
   if (NODE_ENV === "production") {
     plugins.push(

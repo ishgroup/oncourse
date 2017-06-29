@@ -3,13 +3,14 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const path = require("path");
 
-const _info = (NODE_ENV, SOURCE_MAP, API_ROOT) => {
+const _info = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   console.log(`
 Build started with following configuration:
 ===========================================
 → NODE_ENV: ${NODE_ENV}
 → SOURCE_MAP: ${SOURCE_MAP}
 → API_ROOT: ${API_ROOT}
+→ BUILD_NUMBER: ${BUILD_NUMBER}
 `);
 };
 
@@ -73,7 +74,7 @@ const _common = (dirname, options) => {
       ]
     },
     plugins: [
-      _DefinePlugin('development', 'http://localhost:10080'),
+      _DefinePlugin('development', 'http://localhost:10080', options.BUILD_NUMBER),
       new ExtractTextPlugin("[name].css"),
     ],
     devServer: {
@@ -87,13 +88,14 @@ const _common = (dirname, options) => {
 /**
  * The DefinePlugin allows you to create global constants which can be configured at compile time.
  */
-const _DefinePlugin = (NODE_ENV, API_ROOT) => {
+const _DefinePlugin = (NODE_ENV, API_ROOT, BUILD_NUMBER) => {
+    console.log(process.env);
     return new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(NODE_ENV)
       },
       _API_ROOT: JSON.stringify(API_ROOT),
-      _APP_VERSION: JSON.stringify(process.env.BUILD_NUMBER || "DEV")
+      _APP_VERSION: JSON.stringify(BUILD_NUMBER || "DEV")
     });
 };
 
