@@ -8,6 +8,7 @@ import {productsReducer} from "../web/reducers/products";
 import {Reducer as CheckoutReducer} from "../enrol/reducers/Reducer";
 import {CheckoutPathReducer} from "../common/reducers/Reducer";
 
+
 export const combinedReducers = combineReducers<IshState>({
   popup,
   form: formReducer,
