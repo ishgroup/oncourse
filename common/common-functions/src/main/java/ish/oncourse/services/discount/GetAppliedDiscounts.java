@@ -47,7 +47,7 @@ public class GetAppliedDiscounts {
 				).
 				prefetch(DiscountCourseClass.DISCOUNT.joint()).
 				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-				cacheGroups(DiscountCourseClass.class.getSimpleName()).
+				cacheGroup(DiscountCourseClass.class.getSimpleName()).
 				select(courseClass.getObjectContext());
 		
 		return WebDiscountUtils.filterValidDateRange(discounts, courseClass.getStartDate());

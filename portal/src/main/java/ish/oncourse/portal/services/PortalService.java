@@ -253,17 +253,14 @@ public class PortalService implements IPortalService {
 
     private List<CourseClass> getStudentCourseClasses(Contact contact, CourseClassFilter filter) {
         if (contact.getStudent() != null) {
-            Expression expr = getStudentClassesExpression();
 
-            SelectQuery q = new SelectQuery(CourseClass.class, expr);
-            q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-            q.setCacheGroups(CourseClass.class.getSimpleName());
-            q.addPrefetch(CourseClass.SESSIONS_PROPERTY);
-
-            List<CourseClass> courseClasses = cayenneService.sharedContext().performQuery(q);
+            List<CourseClass> courseClasses = ObjectSelect.query(CourseClass.class, getStudentClassesExpression()).
+                    cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+                    cacheGroup(CourseClass.class.getSimpleName()).
+                    prefetch(CourseClass.SESSIONS.disjoint()).
+                    select(cayenneService.sharedContext());
 
             switch (filter) {
-
                 case CURRENT:
                     return getCurrentStudentClasses(courseClasses, contact);
                 case PAST:
@@ -282,8 +279,10 @@ public class PortalService implements IPortalService {
         if (contact.getTutor() != null) {
 
             List<CourseClass> courseClasses = ObjectSelect.query(CourseClass.class, getTutorClassesExpression()).
-            cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, CourseClass.class.getSimpleName())
-                    .prefetch(CourseClass.SESSIONS.disjoint()).select(cayenneService.newContext());
+                    cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+                    cacheGroup(CourseClass.class.getSimpleName()).
+                    prefetch(CourseClass.SESSIONS.disjoint()).
+                    select(cayenneService.newContext());
 
             switch (filter) {
                 case UNCONFIRMED:

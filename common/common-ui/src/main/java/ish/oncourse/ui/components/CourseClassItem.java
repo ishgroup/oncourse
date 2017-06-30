@@ -165,7 +165,7 @@ public class CourseClassItem extends ISHCommon {
 				.prefetch(TutorRole.TUTOR.joint())
 				.prefetch(TutorRole.TUTOR.dot(Tutor.CONTACT).joint())
 				.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
-				.cacheGroups(TutorRole.class.getSimpleName()).select(courseClass.getObjectContext());
+				.cacheGroup(TutorRole.class.getSimpleName()).select(courseClass.getObjectContext());
 	}
 
 	public boolean isHasTutorRoles() {

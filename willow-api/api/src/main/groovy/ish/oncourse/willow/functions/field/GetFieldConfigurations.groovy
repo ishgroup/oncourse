@@ -1,13 +1,8 @@
 package ish.oncourse.willow.functions.field
 
-import ish.oncourse.model.College
-import ish.oncourse.model.Contact
-import ish.oncourse.model.FieldConfiguration
-import ish.oncourse.model.FieldConfigurationScheme
+import ish.oncourse.model.*
 import ish.oncourse.services.application.FindOfferedApplication
-import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.model.field.FieldSet
-import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.slf4j.Logger
@@ -73,7 +68,7 @@ class GetFieldConfigurations {
                 .prefetch(FieldConfiguration.FIELD_HEADINGS.disjoint())
                 .prefetch(FieldConfiguration.FIELDS.disjoint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroups(FieldConfiguration.class.simpleName)
+                .cacheGroup(FieldConfiguration.class.simpleName)
                 .selectFirst(college.objectContext)
 
         if (!configuration) {

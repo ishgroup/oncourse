@@ -85,7 +85,7 @@ class ContactApiServiceImpl implements ContactApi{
                     .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).joint())
                     .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).dot(FieldConfiguration.FIELDS).joint())
                     .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                    .cacheGroups(CourseClass.class.simpleName)
+                    .cacheGroup(CourseClass.class.simpleName)
                     .select(context)
         }
         

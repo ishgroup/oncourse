@@ -33,7 +33,7 @@ class ProductsApiServiceImpl implements ProductsApi {
         (ObjectSelect.query(ish.oncourse.model.Product)
                 .where(ExpressionFactory.inDbExp(ish.oncourse.model.Product.ID_PK_COLUMN, productsParams.productsIds)) & ish.oncourse.model.Product.COLLEGE.eq(collegeService.college))
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroups(ish.oncourse.model.Product.class.simpleName)
+                .cacheGroup(ish.oncourse.model.Product.class.simpleName)
                 .select(context)
             .each { p ->
                 result << new Product().with { pr ->

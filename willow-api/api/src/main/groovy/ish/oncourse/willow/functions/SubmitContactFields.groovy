@@ -249,14 +249,14 @@ class SubmitContactFields {
     private Country getCountryBy(String name) {
         ObjectSelect.query(Country).where(Country.NAME.eq(name))
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroups(Country.class.simpleName)
+                .cacheGroup(Country.class.simpleName)
                 .selectFirst(objectContext)
     }
 
     private Language getLanguageBy(String name) {
         ObjectSelect.query(Language).where(Language.NAME.eq(name))
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroups(Language.class.simpleName)
+                .cacheGroup(Language.class.simpleName)
                 .selectFirst(objectContext)
     }
 }

@@ -32,7 +32,7 @@ class SearchApiImpl implements SearchApi {
         ObjectSelect.query(Country.class).
                 where(Country.NAME.likeIgnoreCase("%" + text + "%")).
                 cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
-                cacheGroups(Country.class.simpleName).
+                cacheGroup(Country.class.simpleName).
                 select(cayenneService.newContext()).each { c->
                     result << new Item(key: c.id.toString(), value: c.name)
                 }
@@ -46,7 +46,7 @@ class SearchApiImpl implements SearchApi {
         ObjectSelect.query(Language.class).
                 where(Language.NAME.likeIgnoreCase(text + "%")).
                 cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
-                cacheGroups(Language.class.simpleName).
+                cacheGroup(Language.class.simpleName).
                 select(cayenneService.newContext()).each { l ->
             result << new Item(key: l.id.toString(), value: l.name)
         }

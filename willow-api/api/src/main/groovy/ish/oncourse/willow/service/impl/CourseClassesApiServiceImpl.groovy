@@ -51,7 +51,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
             contact = SelectById.query(Contact, courseClassesParams.contact.id)
                     .prefetch(Contact.STUDENT.joint())
                     .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                    .cacheGroups(Contact.class.simpleName)
+                    .cacheGroup(Contact.class.simpleName)
                     .selectOne(context)
         }
 
@@ -69,7 +69,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                 .prefetch(ish.oncourse.model.CourseClass.COLLEGE.joint())
                 .prefetch(ish.oncourse.model.CourseClass.COURSE.joint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroups(ish.oncourse.model.CourseClass.class.simpleName)
+                .cacheGroup(ish.oncourse.model.CourseClass.class.simpleName)
                 .select(cayenneService.newContext())
                 .each { c ->
 
