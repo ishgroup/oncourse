@@ -48,6 +48,7 @@ dependencies {
     compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
     compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
     compile "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"
+    compile "org.apache.cayenne:cayenne-di:$cayenneVersion"
 
     //cache
     compile 'org.ehcache:ehcache:3.3.1'
