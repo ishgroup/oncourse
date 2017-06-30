@@ -26,39 +26,37 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		DataRowStore snapshotCache = createDataRowStore(dataDomain);
 		ISHObjectContext context = new ISHObjectContext(parent, objectStoreFactory.createObjectStore(snapshotCache));
 
-		fillContext(context, dataDomain);
-		return context;
+		return initContext(context, dataDomain.isValidatingObjectsOnCommit(), ContextUtil.isObjectCacheEnabled()
+				&& dataDomain.isSharedCacheEnabled());
 	}
 
 	protected ObjectContext createFromDataContext(DataContext parent) {
 		ObjectStore objectStore = objectStoreFactory.createObjectStore(null);
 		ISHObjectContext context = new ISHObjectContext(parent, objectStore);
-
-		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
-		context.setUsingSharedSnapshotCache(parent.isUsingSharedSnapshotCache());
-		context.setTransactionFactory(transactionFactory);
-		context.setQueryCache(new NestedQueryCache(queryCache));
-		context.setRecordQueueingEnabled(true);
-		return context;
+		return initContext(context, parent.isValidatingObjectsOnCommit(),
+				parent.isUsingSharedSnapshotCache());
 	}
 
 	protected ObjectContext createdFromDataDomain(DataDomain parent) {
 		DataRowStore snapshotCache = createDataRowStore(parent);
 		ISHObjectContext context = new ISHObjectContext(parent, objectStoreFactory.createObjectStore(snapshotCache));
 
-		fillContext(context, parent);
+		initContext(context, parent.isValidatingObjectsOnCommit(),
+				ContextUtil.isObjectCacheEnabled()
+				&& parent.isSharedCacheEnabled());
 		return context;
 	}
 
-	private void fillContext(ISHObjectContext context, DataDomain parent) {
-		context.setUsingSharedSnapshotCache(ContextUtil.isObjectCacheEnabled() && parent.isSharedCacheEnabled());
-		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
+	private ISHObjectContext initContext(ISHObjectContext context, boolean validatingObjectsOnCommit, boolean usingSharedSnapshotCache) {
+		context.setUsingSharedSnapshotCache(usingSharedSnapshotCache);
+		context.setValidatingObjectsOnCommit(validatingObjectsOnCommit);
 		context.setTransactionFactory(transactionFactory);
-		context.setRecordQueueingEnabled(true);
 		context.setQueryCache(new NestedQueryCache(queryCache));
+		context.setRecordQueueingEnabled(true);
+		return context;
 	}
 
-	protected DataRowStore createDataRowStore(DataDomain parent) {
+	private DataRowStore createDataRowStore(DataDomain parent) {
 		if (parent.isSharedCacheEnabled()) {
 			return parent.getSharedSnapshotCache();
 		}
