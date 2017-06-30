@@ -114,6 +114,8 @@ export const mockAmount = (): Amount => {
     owing: faker.finance.amount(),
     discount: faker.finance.amount(),
     payNow: faker.finance.amount(),
+    minPayNow: '10',
+    isEditable: true,
   };
 };
 

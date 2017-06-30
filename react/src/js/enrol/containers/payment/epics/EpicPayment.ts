@@ -12,7 +12,7 @@ import {
   PROCESS_PAYMENT,
   processPayment,
   resetPaymentState,
-  updatePaymentStatus
+  updatePaymentStatus,
 } from "../actions/Actions";
 
 import CheckoutService from "../../../services/CheckoutService";
@@ -44,7 +44,7 @@ const request: Request<PaymentResponse, IshState> = {
     } else {
       return L.concat([changePhase(Phase.Payment), resetPaymentState()], ProcessError(response));
     }
-  }
+  },
 };
 
 /**

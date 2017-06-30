@@ -11,8 +11,6 @@ import {MockControl} from "./MockControl";
 import {MockConfig} from "../mocks/mocks/MockConfig";
 import {ConfigConstants} from "../../js/config/ConfigConstants";
 
-console.log(ConfigConstants.APP_VERSION);
-
 const config = new MockConfig();
 
 config.init((config:MockConfig) => {

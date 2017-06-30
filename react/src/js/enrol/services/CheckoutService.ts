@@ -122,6 +122,19 @@ export class CheckoutService {
     return this.checkoutApi.getPaymentStatus(state.value.sessionId);
   }
 
+  public validatePayNow = (amount: Amount) => {
+    const errors = [];
+    // TODO: Fix validate messages/update conditions
+
+    if (amount.payNow < amount.minPayNow) {
+      errors.push('low value');
+    } else if (Number(amount.payNow) > Number(amount.total) - Number(amount.discount)) {
+      errors.push('big value');
+    }
+
+    return errors;
+  }
+
 
   public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {
     switch (response.status) {
@@ -129,9 +142,16 @@ export class CheckoutService {
         return of(getPaymentStatus()).delay(DELAY_NEXT_PAYMENT_STATUS);
       case PaymentStatus.SUCCESSFUL:
       case PaymentStatus.UNDEFINED:
-        return [changePhase(Phase.Result), updatePaymentStatus(response), finishCheckoutProcess()];
+        return [
+          changePhase(Phase.Result),
+          updatePaymentStatus(response),
+          finishCheckoutProcess(),
+        ];
       case PaymentStatus.FAILED:
-        return [changePhase(Phase.Result), updatePaymentStatus(response)];
+        return [
+          changePhase(Phase.Result),
+          updatePaymentStatus(response),
+        ];
       default:
         throw new Error(`Unknown status ${response.status}`);
     }

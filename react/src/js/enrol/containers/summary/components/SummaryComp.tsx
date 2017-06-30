@@ -25,6 +25,7 @@ export interface Props {
   onAddConcession?: () => void;
   onInit?: () => void;
   concessions?: any;
+  onUpdatePayNow?: (amount, val) => void;
 }
 
 
@@ -55,7 +56,7 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, hasSelected, promotions} = this.props;
+    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, hasSelected, promotions, onUpdatePayNow} = this.props;
 
     return (
       <div className="payment-summary">
@@ -65,7 +66,12 @@ export class SummaryComp extends React.Component<Props, any> {
         <div className="row">
           <div className="col-xs-24">
             <div className="amount-container">
-              <AmountComp amount={amount} onAddCode={onAddCode} promotions={promotions}/>
+              <AmountComp
+                amount={amount}
+                onUpdatePayNow={val => amount.isEditable ? onUpdatePayNow(amount, val) : undefined}
+                onAddCode={onAddCode}
+                promotions={promotions}
+              />
               <ProceedToPayment disabled={!hasSelected} onProceedToPayment={onProceedToPayment}/>
             </div>
           </div>

@@ -4,5 +4,7 @@ export class Amount {
   total?: string;
   discount?: string;
   payNow?: string;
+  minPayNow?: string;
+  isEditable?: boolean;
 }
 
