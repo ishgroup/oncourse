@@ -12,6 +12,7 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataRowStore;
 import org.apache.cayenne.access.ObjectStore;
+import org.apache.cayenne.cache.NestedQueryCache;
 import org.apache.cayenne.configuration.DefaultRuntimeProperties;
 import org.apache.cayenne.configuration.RuntimeProperties;
 import org.apache.cayenne.configuration.server.DataContextFactory;
@@ -36,10 +37,7 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
 		context.setUsingSharedSnapshotCache(parent.isUsingSharedSnapshotCache());
 		context.setTransactionFactory(transactionFactory);
-
-//		QueryCache queryCache = injector.getInstance(Key.get(QueryCache.class, QUERY_CACHE_INJECTION_KEY));
-//		context.setQueryCache(queryCache);
-
+		context.setQueryCache(new NestedQueryCache(queryCache));
 		context.setRecordQueueingEnabled(true);
 		return context;
 	}
@@ -56,11 +54,8 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		context.setUsingSharedSnapshotCache(ContextUtil.isObjectCacheEnabled() && parent.isSharedCacheEnabled());
 		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
 		context.setTransactionFactory(transactionFactory);
-
-//		QueryCache queryCache = injector.getInstance(Key.get(QueryCache.class, QUERY_CACHE_INJECTION_KEY));
-//		context.setQueryCache(queryCache);
-
 		context.setRecordQueueingEnabled(true);
+		context.setQueryCache(new NestedQueryCache(queryCache));
 	}
 
 	protected DataRowStore createDataRowStore(DataDomain parent) {
