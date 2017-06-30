@@ -64,6 +64,11 @@ class JCacheQueryCache implements QueryCache {
     }
 
     @Override
+    void removeGroup(String groupKey, Class<?> keyType, Class<?> valueType) {
+        removeGroup(groupKey);
+    }
+
+    @Override
      void clear() {
         for (String name : seenCacheNames) {
             getCache(name).clear()

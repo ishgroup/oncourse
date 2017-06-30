@@ -120,7 +120,7 @@ class ContactApiServiceImpl implements ContactApi{
         ish.oncourse.model.Contact contact = (ObjectSelect.query(ish.oncourse.model.Contact)
                 .where(ish.oncourse.model.Contact.UNIQUE_CODE.eq(studentUniqueIdentifier)) & ish.oncourse.model.Contact.COLLEGE.eq(collegeService.college))
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroups(ish.oncourse.model.Contact.class.simpleName)
+                .cacheGroup(ish.oncourse.model.Contact.class.simpleName)
                 .selectOne(cayenneService.newContext())
         if (contact) {
             new Contact(id: contact.id.toString(),

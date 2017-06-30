@@ -12,13 +12,10 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataRowStore;
 import org.apache.cayenne.access.ObjectStore;
-import org.apache.cayenne.cache.QueryCache;
+import org.apache.cayenne.configuration.DefaultRuntimeProperties;
+import org.apache.cayenne.configuration.RuntimeProperties;
 import org.apache.cayenne.configuration.server.DataContextFactory;
-import org.apache.cayenne.di.Key;
 
-/**
- * @author marek
- */
 public class ISHObjectContextFactory extends DataContextFactory {
 
 	public static final String QUERY_CACHE_INJECTION_KEY = "local";
@@ -40,8 +37,8 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		context.setUsingSharedSnapshotCache(parent.isUsingSharedSnapshotCache());
 		context.setTransactionFactory(transactionFactory);
 
-		QueryCache queryCache = injector.getInstance(Key.get(QueryCache.class, QUERY_CACHE_INJECTION_KEY));
-		context.setQueryCache(queryCache);
+//		QueryCache queryCache = injector.getInstance(Key.get(QueryCache.class, QUERY_CACHE_INJECTION_KEY));
+//		context.setQueryCache(queryCache);
 
 		context.setRecordQueueingEnabled(true);
 		return context;
@@ -60,16 +57,19 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		context.setValidatingObjectsOnCommit(parent.isValidatingObjectsOnCommit());
 		context.setTransactionFactory(transactionFactory);
 
-		QueryCache queryCache = injector.getInstance(Key.get(QueryCache.class, QUERY_CACHE_INJECTION_KEY));
-		context.setQueryCache(queryCache);
+//		QueryCache queryCache = injector.getInstance(Key.get(QueryCache.class, QUERY_CACHE_INJECTION_KEY));
+//		context.setQueryCache(queryCache);
 
 		context.setRecordQueueingEnabled(true);
 	}
 
 	protected DataRowStore createDataRowStore(DataDomain parent) {
-		return parent.isSharedCacheEnabled() ?
-				parent.getSharedSnapshotCache() :
-				new DataRowStore(parent.getName(), parent.getProperties(), eventManager);
+		if (parent.isSharedCacheEnabled()) {
+			return parent.getSharedSnapshotCache();
+		}
+
+		RuntimeProperties properties = new DefaultRuntimeProperties(parent.getProperties());
+		return new DataRowStore(parent.getName(), properties, eventManager);
 	}
 
 }

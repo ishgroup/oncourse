@@ -52,7 +52,7 @@ public class WebNodeTypeService extends BaseService<WebNodeType> implements
 
         SelectQuery selectQuery = new SelectQuery(WebNodeType.class, expression);
         selectQuery.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-        selectQuery.setCacheGroups(WebNodeType.class.getSimpleName());
+        selectQuery.setCacheGroup(WebNodeType.class.getSimpleName());
         selectQuery.addOrdering(WebNodeType.MODIFIED_PROPERTY, SortOrder.DESCENDING);
 
         return context.performQuery(selectQuery);

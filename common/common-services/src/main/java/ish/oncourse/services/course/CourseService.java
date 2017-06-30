@@ -182,7 +182,7 @@ public class CourseService implements ICourseService {
 				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
 				.prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
 				.cacheStrategy(LOCAL_CACHE)
-				.cacheGroups(Course.class.getSimpleName())
+				.cacheGroup(Course.class.getSimpleName())
 				.selectOne(cayenneService.sharedContext());
 	}
 	

@@ -108,29 +108,28 @@ public class GetTagByPath {
 
     public List<Tag> findByQualifier(ObjectContext context, Expression qualifier) {
 
-        List<Tag> results = null;
-        ObjectSelect query = ObjectSelect.query(Tag.class);
-        query.cacheGroups(Tag.class.getSimpleName());
-        query.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-        query.and(qualifier);
-
         try {
-            results = (List<Tag>) context.performQuery(query);
+        List<Tag> results = ObjectSelect.query(Tag.class, qualifier).
+                cacheGroup(Tag.class.getSimpleName()).
+                cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+                select(context);
+
+            if (results == null) {
+                results = new ArrayList<>();
+            }
+
+            if (results.isEmpty()) {
+                if (logger.isInfoEnabled()) {
+                    logger.info("Query returned no results.");
+                }
+            }
+
+            return results;
+
         } catch (Exception e) {
-            logger.error("Query resulted in Exception thrown. Query: {}", query, e);
+            logger.error("Query resulted in Exception thrown.", e);
             //TODO: Should the exception be rethrown to indicate error condition to the client code?
         }
-
-        if (results == null) {
-            results = new ArrayList<>();
-        }
-
-        if (results.isEmpty()) {
-            if (logger.isInfoEnabled()) {
-                logger.info("Query returned no results: {}", query);
-            }
-        }
-
-        return results;
+        return null;
     }
 }

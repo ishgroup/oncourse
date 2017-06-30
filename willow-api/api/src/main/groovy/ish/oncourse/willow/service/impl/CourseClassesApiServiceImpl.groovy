@@ -60,7 +60,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                     .where(ExpressionFactory.
                     inDbExp(ish.oncourse.model.Discount.ID_PK_COLUMN, courseClassesParams.promotions*.id)) & ish.oncourse.model.Discount.COLLEGE.eq(college))
                     .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                    .cacheGroups(ish.oncourse.model.Discount.class.simpleName)
+                    .cacheGroup(ish.oncourse.model.Discount.class.simpleName)
                     .select(context)
         }
 
