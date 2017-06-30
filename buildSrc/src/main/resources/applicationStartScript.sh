@@ -70,7 +70,7 @@ start() {
     if [ -x "/usr/sbin/daemon" ] ; then
         /usr/sbin/daemon -p \$PID_FILE -f \$CMD
     else
-        nohup \$CMD &>api.out  &
+        nohup \$CMD > api.out 2>&1 &
         echo \$! > "\$PID_FILE"
     fi
 }
