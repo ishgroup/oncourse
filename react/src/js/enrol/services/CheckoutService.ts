@@ -215,7 +215,7 @@ export class BuildSubmitFieldsRequest {
       return h.fields;
     });
     result.fields.forEach((f: Field) => {
-      f.value = values[f.key];
+      f.value = values[f.key] || null;
       if (f.value == null && f.dataType === DataType.BOOLEAN) {
         f.value = 'false';
       }
