@@ -1,6 +1,5 @@
 package ish.oncourse.services;
 
-import ish.oncourse.model.Queueable;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.Persistent;
@@ -8,7 +7,6 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -64,59 +62,46 @@ public class BaseService<T extends Persistent> implements IBaseService<T> {
 	@Override
 	public T findById(Long willowId) {
 
-		T record = null;
-
 		if ((willowId != null) && (willowId > 0)) {
 
 			try {
-				Expression qualifier = ExpressionFactory.matchDbExp(
-						IBaseService.ID_PK_COLUMN, willowId);
+				return ObjectSelect.query(getEntityClass()).
+						where(ExpressionFactory.matchDbExp(IBaseService.ID_PK_COLUMN, willowId)).
+						cacheGroup(getEntityClass().getSimpleName()).
+						cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+						selectOne(getCayenneService().sharedContext());
 
-				List<T> results = findByQualifier(qualifier);
-
-				if (results.size() == 1) {
-					record = results.get(0);
-				} else {
-					logger.error("Query returned multiple results where only one expected. willowId: {}", willowId);
-					//TODO: Should an exception be thrown to indicate the condition to the client?
-				}
 			} catch (Exception e) {
 				logger.error("Query resulted in Exception thrown. willowId: {}", willowId, e);
 				//TODO: Should the exception be rethrown to indicate error condition to the client code?
 			}
 		}
-
-		return record;
+		return null;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<T> findByQualifier(Expression qualifier) {
 
-		List<T> results = null;
-		SelectQuery query = new SelectQuery(getEntityClass());
-		query.setCacheGroups(getEntityClass().getSimpleName());
-		query.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		query.andQualifier(qualifier);
-
 		try {
-			results = (List<T>) getCayenneService().sharedContext().performQuery(query);
-		} catch (Exception e) {
-			logger.error("Query resulted in Exception thrown. Query: {}", query, e);
-			//TODO: Should the exception be rethrown to indicate error condition to the client code?
-		}
 
-		if (results == null) {
-			results = new ArrayList<>();
-		}
+		List<T> results = ObjectSelect.query(getEntityClass(), qualifier).
+				cacheGroup(getEntityClass().getSimpleName()).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
+				select(getCayenneService().sharedContext());
 
 		if (results.isEmpty()) {
 			if (logger.isInfoEnabled()) {
-				logger.info("Query returned no results: {}", query);
+				logger.info("Query returned no results: {}", qualifier);
 			}
 		}
 
 		return results;
+
+		} catch (Exception e) {
+			logger.error("Query resulted in Exception thrown. Query: {}", qualifier, e);
+			//TODO: Should the exception be rethrown to indicate error condition to the client code?
+			return new ArrayList<>();
+		}
 	}
 
 	/**
