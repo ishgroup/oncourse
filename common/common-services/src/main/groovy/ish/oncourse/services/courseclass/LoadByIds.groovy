@@ -1,5 +1,6 @@
 package ish.oncourse.services.courseclass
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
@@ -18,7 +19,6 @@ class LoadByIds {
         }
 
         List<Long> longIds = stringIds.findAll { it && it.isLong() }.collect { it.toLong() }
-
         List<Course> courseList = ObjectSelect.query(Course.class)
                 .where(Course.COLLEGE.eq(college))
                 .and(Course.IS_WEB_VISIBLE.isTrue())
@@ -28,8 +28,7 @@ class LoadByIds {
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.SESSIONS).joint())
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).joint())
                 .prefetch(Course.COURSE_CLASSES.dot(CourseClass.ROOM).dot(Room.SITE).joint())
-                .cacheStrategy(LOCAL_CACHE)
-                .cacheGroups(Course.class.getSimpleName())
+                .cacheStrategy(LOCAL_CACHE, Course.class.getSimpleName())
                 .select(context)
 
         return courseList.sort { longIds.indexOf(it.id) }
