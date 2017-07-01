@@ -6,6 +6,8 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.test.TestContextUtil;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.cache.EhCacheQueryCache;
+import org.apache.cayenne.cache.NestedQueryCache;
+import org.apache.cayenne.cache.OSQueryCache;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +28,7 @@ public class ISHObjectContextTest extends ServiceTest {
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		ISHObjectContext context = (ISHObjectContext) cayenneService.newContext();
 		assertNotNull("Context should be created.", context);
-		assertTrue("If we use OSQueryCache for entities we also should use it for the queries", context.getQueryCache() instanceof EhCacheQueryCache);
+		assertTrue("If we use OSQueryCache for entities we also should use it for the queries", ((NestedQueryCache)context.getQueryCache()).getDelegate() instanceof EhCacheQueryCache);
 	}
 
 	//@Test
