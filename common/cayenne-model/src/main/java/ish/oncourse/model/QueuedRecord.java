@@ -3,6 +3,7 @@ package ish.oncourse.model;
 import ish.oncourse.model.auto._QueuedRecord;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang.StringUtils;
@@ -43,13 +44,17 @@ public class QueuedRecord extends _QueuedRecord {
 	}
 
 	public Queueable getLinkedRecord() {
-		Class<? extends Queueable> entityClass = (Class<? extends Queueable>) getObjectContext().getEntityResolver()
-				.getObjEntity(getEntityIdentifier()).getJavaClass();
-
-		return ObjectSelect.query(Queueable.class).
-				where(ExpressionFactory.matchDbExp("id", getEntityWillowId())).
-				and(ExpressionFactory.matchExp("college", getCollege())).
-				selectFirst(getObjectContext());
+		try {
+			ObjEntity entity = getObjectContext().getEntityResolver()
+					.getObjEntity(getEntityIdentifier());
+			Class<? extends Queueable> aClass = (Class<? extends Queueable>) Class.forName(entity.getJavaClassName());
+			return ObjectSelect.query(aClass).
+					where(ExpressionFactory.matchDbExp("id", getEntityWillowId())).
+					and(ExpressionFactory.matchExp("college", getCollege())).
+					selectFirst(getObjectContext());
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
 	@Override
