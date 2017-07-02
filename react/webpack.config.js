@@ -6,11 +6,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 module.exports = function (options = {}) {
-  // Settings
-  // --env.API_ROOT root --env.SOURCE_MAP source-map ...
-  const NODE_ENV = options.NODE_ENV || 'development'; // 'production'
-  const SOURCE_MAP = options.SOURCE_MAP || 'source-map'; // 'eval-source-map'
-  const API_ROOT = options.API_ROOT || 'http://localhost:10080'; // 'https://ish.com.au/api/v1'
+  const NODE_ENV = options.NODE_ENV || 'development';
+  const SOURCE_MAP = options.SOURCE_MAP || 'source-map';
+  const API_ROOT = options.API_ROOT || 'http://localhost:10080';
   const BUILD_NUMBER = options.BUILD_NUMBER || 'DEV';
   __common.info(NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER);
 
@@ -74,7 +72,7 @@ module.exports = function (options = {}) {
     }],
     bail: false,
     devtool: SOURCE_MAP,
-    plugins: createListOfPlugins({NODE_ENV, API_ROOT, BUILD_NUMBER}),
+    plugins: createListOfPlugins({NODE_ENV, BUILD_NUMBER}),
     devServer: {
       inline: false,
       port: 1707,
@@ -96,8 +94,8 @@ module.exports = function (options = {}) {
 }
 };
 
-function createListOfPlugins({NODE_ENV, API_ROOT, BUILD_NUMBER}) {
-  const plugins = [ __common.DefinePlugin(NODE_ENV, API_ROOT, BUILD_NUMBER) ];
+function createListOfPlugins({NODE_ENV, BUILD_NUMBER}) {
+  const plugins = [ __common.DefinePlugin(NODE_ENV, BUILD_NUMBER) ];
 
   if (NODE_ENV === "production") {
     plugins.push(
