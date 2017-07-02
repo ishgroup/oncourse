@@ -91,6 +91,9 @@
     "uuid": "3.1.0"
   },
   "jest": {
+    "globals": {
+      "_APP_VERSION": "DEV"
+    },
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
