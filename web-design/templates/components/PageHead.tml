@@ -35,7 +35,8 @@
 	<!--[if lt IE 9]><script src="/s/js/base-2017/vendor/html5shiv-printshiv.min.js"></script><![endif]-->
 	<link href="/s/stylesheets/css/site.css?v=${ciVersion}" media="screen, print" rel="stylesheet" />
 
-	<script type="text/javascript" src="/s/js/dynamic.js?v=${ciVersion}"></script>
+
+	<script type="text/javascript" src="/s/oncourse/js/dynamic.js?v=${ciVersion}"></script>
 	<script type="text/javascript" src="/s/js/all.js?v=${ciVersion}"></script>
 
 </t:container>
