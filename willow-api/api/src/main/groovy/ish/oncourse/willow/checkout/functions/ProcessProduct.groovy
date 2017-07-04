@@ -1,5 +1,7 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.common.types.ProductType
 import ish.common.types.TypesUtil
 import ish.math.Money
@@ -39,7 +41,8 @@ class ProcessProduct {
         this.productId = productId
         this.payerId = payerId
     }
-
+    
+    @CompileStatic(TypeCheckingMode.SKIP)
     ProcessProduct process() {
         persistentProduct = new GetProduct(context, college, productId).get()
         ProductType productType =TypesUtil.getEnumForDatabaseValue(persistentProduct.type, ProductType.class)
@@ -49,7 +52,7 @@ class ProcessProduct {
                 article = new Article().with { a ->
                     a.contactId = contact.id.toString()
                     a.productId = persistentProduct.id.toString()
-                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
+                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
                     a
                 }
                 break
@@ -57,7 +60,7 @@ class ProcessProduct {
                 membership = new Membership().with { m ->
                     m.contactId = contact.id.toString()
                     m.productId = persistentProduct.id.toString()
-                    m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
+                    m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
                     ValidateMembership validateMembership = new ValidateMembership(context, college).validate(persistentProduct as MembershipProduct, contact)
                     m.errors += validateMembership.errors
                     m.warnings += validateMembership.warnings
@@ -75,17 +78,17 @@ class ProcessProduct {
 
                     Money value = Money.ZERO
                     if (voucher.redemptionCourses.empty && voucher.value == null) {
-                        v.price =  DEFAULT_VOUCHER_PRICE.toPlainString()
+                        v.price =  DEFAULT_VOUCHER_PRICE.doubleValue()
                         value = DEFAULT_VOUCHER_PRICE
-                        v.value =  value.toPlainString()
+                        v.value =  value.doubleValue()
                         v.isEditablePrice = true
                     } else if (voucher.value != null) {
-                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
+                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
                         value = voucher.value
-                        v.value = value.toPlainString()
+                        v.value = value.doubleValue()
                         v.isEditablePrice = false
                     } else {
-                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.toPlainString()
+                        v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
                         v.classes += voucher.redemptionCourses.collect{c -> c.name}
                         v.isEditablePrice = false
                     }

@@ -12,7 +12,7 @@ public class PaymentRequest  {
     private String creditCardCvv = null;
     private Boolean agreementFlag = null;
     private String sessionId = null;
-    private String payNow = null;
+    private Double payNow = null;
 
     /**
      * Get checkoutModelRequest
@@ -154,15 +154,15 @@ public class PaymentRequest  {
      * Get payNow
      * @return payNow
      */
-    public String getPayNow() {
+    public Double getPayNow() {
         return payNow;
     }
 
-    public void setPayNow(String payNow) {
+    public void setPayNow(Double payNow) {
        this.payNow = payNow;
     }
 
-    public PaymentRequest payNow(String payNow) {
+    public PaymentRequest payNow(Double payNow) {
       this.payNow = payNow;
       return this;
     }

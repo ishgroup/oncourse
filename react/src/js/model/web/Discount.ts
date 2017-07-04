@@ -6,8 +6,8 @@ export class Discount {
    */
   id?: string;
   expiryDate?: string;
-  discountedFee?: string;
-  discountValue?: string;
+  discountedFee?: number;
+  discountValue?: number;
   title?: string;
 }
 

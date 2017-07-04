@@ -2,6 +2,7 @@ package ish.oncourse.willow.checkout
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -25,12 +26,19 @@ import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.service.CheckoutApi
+import ish.oncourse.willow.service.CollegeInfo
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import javax.ws.rs.BadRequestException
+import javax.ws.rs.Consumes
+import javax.ws.rs.GET
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+import javax.ws.rs.Produces
 import javax.ws.rs.core.Response
 
 
@@ -96,6 +104,7 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
+    @CompileStatic(TypeCheckingMode.SKIP)
     PaymentResponse makePayment(PaymentRequest paymentRequest) {
         ObjectContext context = cayenneService.newContext()
         WebSite webSite = collegeService.webSite
@@ -110,8 +119,7 @@ class CheckoutApiImpl implements CheckoutApi {
             checkoutModel.error = new CommonError(message: 'Payment amount is wrong')
             throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
         }
-
-        Money payNow = new Money(checkoutModel.amount.payNow)
+        Money payNow = checkoutModel.amount.payNow.toMoney()
         
         ValidationError validationError = new ValidateCreditCardForm(paymentRequest, context).validate(Money.ZERO == payNow)
         if (!validationError.formErrors.empty || !validationError.fieldsErrors.empty) {

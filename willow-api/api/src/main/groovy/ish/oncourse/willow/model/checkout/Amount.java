@@ -3,24 +3,24 @@ package ish.oncourse.willow.model.checkout;
 
 public class Amount  {
   
-    private String owing = null;
-    private String total = null;
-    private String discount = null;
-    private String payNow = null;
+    private Double owing = null;
+    private Double total = null;
+    private Double discount = null;
+    private Double payNow = null;
 
     /**
      * Get owing
      * @return owing
      */
-    public String getOwing() {
+    public Double getOwing() {
         return owing;
     }
 
-    public void setOwing(String owing) {
+    public void setOwing(Double owing) {
        this.owing = owing;
     }
 
-    public Amount owing(String owing) {
+    public Amount owing(Double owing) {
       this.owing = owing;
       return this;
     }
@@ -29,15 +29,15 @@ public class Amount  {
      * Get total
      * @return total
      */
-    public String getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(Double total) {
        this.total = total;
     }
 
-    public Amount total(String total) {
+    public Amount total(Double total) {
       this.total = total;
       return this;
     }
@@ -46,15 +46,15 @@ public class Amount  {
      * Get discount
      * @return discount
      */
-    public String getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(String discount) {
+    public void setDiscount(Double discount) {
        this.discount = discount;
     }
 
-    public Amount discount(String discount) {
+    public Amount discount(Double discount) {
       this.discount = discount;
       return this;
     }
@@ -63,15 +63,15 @@ public class Amount  {
      * Get payNow
      * @return payNow
      */
-    public String getPayNow() {
+    public Double getPayNow() {
         return payNow;
     }
 
-    public void setPayNow(String payNow) {
+    public void setPayNow(Double payNow) {
        this.payNow = payNow;
     }
 
-    public Amount payNow(String payNow) {
+    public Amount payNow(Double payNow) {
       this.payNow = payNow;
       return this;
     }

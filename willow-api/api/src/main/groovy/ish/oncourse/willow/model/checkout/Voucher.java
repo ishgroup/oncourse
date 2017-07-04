@@ -9,8 +9,8 @@ public class Voucher  {
     private String productId = null;
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
-    private String price = null;
-    private String value = null;
+    private Double price = null;
+    private Double value = null;
     private List<String> classes = new ArrayList<String>();
     private Boolean selected = null;
     private Boolean isEditablePrice = null;
@@ -97,15 +97,15 @@ public class Voucher  {
      * Get price
      * @return price
      */
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
        this.price = price;
     }
 
-    public Voucher price(String price) {
+    public Voucher price(Double price) {
       this.price = price;
       return this;
     }
@@ -114,15 +114,15 @@ public class Voucher  {
      * Get value
      * @return value
      */
-    public String getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Double value) {
        this.value = value;
     }
 
-    public Voucher value(String value) {
+    public Voucher value(Double value) {
       this.value = value;
       return this;
     }

@@ -4,7 +4,7 @@ export class Voucher {
   productId?: string;
   warnings?: string[];
   errors?: string[];
-  price?: string;
+  price?: number;
   value?: string;
   classes?: string[];
   selected?: boolean;

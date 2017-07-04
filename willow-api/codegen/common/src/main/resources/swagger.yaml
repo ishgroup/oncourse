@@ -587,10 +587,10 @@ definitions:
     type: object
     properties:
       fee:
-        type: string
+        type: number
         description: Full class price
       feeOverriden:
-        type: string
+        type: number
         description: Class price overriden by application
       appliedDiscount:
         $ref: '#/definitions/web.Discount'
@@ -612,9 +612,9 @@ definitions:
         type: string
         format: date
       discountedFee:
-        type: string
+        type: number
       discountValue:
-        type: string
+        type: number
       title:
         type: string
   web.ContactId:
@@ -986,7 +986,7 @@ definitions:
         items:
          type: string
       price:
-        type: string
+        type: number
       selected:
         type: boolean
   checkout.Membership:
@@ -1012,7 +1012,7 @@ definitions:
         items:
          type: string
       price:
-        type: string
+        type: number
       selected:
         type: boolean
   checkout.Voucher:
@@ -1039,9 +1039,9 @@ definitions:
         items:
          type: string
       price:
-        type: string
+        type: number
       value:
-        type: string
+        type: number
       classes:
         type: array
         items:
@@ -1108,13 +1108,13 @@ definitions:
     type: object
     properties: 
       owing:
-        type: string
+        type: number
       total: 
-        type: string
+        type: number
       discount: 
-        type: string
+        type: number
       payNow: 
-        type: string
+        type: number
   checkout.CheckoutModel:
     type: object
     properties: 
@@ -1162,7 +1162,7 @@ definitions:
         type: string
         description: String length 16 of hexadecimal digits
       payNow: 
-        type: string
+        type: number
   checkout.payment.PaymentStatus:
     type: string
     enum:

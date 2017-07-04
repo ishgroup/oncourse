@@ -9,7 +9,7 @@ public class Membership  {
     private String productId = null;
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
-    private String price = null;
+    private Double price = null;
     private Boolean selected = null;
 
     /**
@@ -94,15 +94,15 @@ public class Membership  {
      * Get price
      * @return price
      */
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
        this.price = price;
     }
 
-    public Membership price(String price) {
+    public Membership price(Double price) {
       this.price = price;
       return this;
     }

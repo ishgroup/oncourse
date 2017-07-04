@@ -4,7 +4,7 @@ export class Membership {
   productId?: string;
   warnings?: string[];
   errors?: string[];
-  price?: string;
+  price?: number;
   selected?: boolean;
 }
 

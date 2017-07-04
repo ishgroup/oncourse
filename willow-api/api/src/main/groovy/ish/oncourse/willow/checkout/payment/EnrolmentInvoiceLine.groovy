@@ -1,6 +1,8 @@
 package ish.oncourse.willow.checkout.payment
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+import ish.math.DoubleMethods
 import ish.math.Money
 import ish.oncourse.model.Discount
 import ish.oncourse.model.DiscountCourseClass
@@ -29,6 +31,7 @@ class EnrolmentInvoiceLine {
         this.price = price
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     InvoiceLine create() {
         InvoiceLine invoiceLine = e.objectContext.newObject(InvoiceLine)
         invoiceLine.title = "$e.student.contact.fullName $e.courseClass.uniqueIdentifier"
@@ -42,11 +45,11 @@ class EnrolmentInvoiceLine {
 
         invoiceLine.quantity = BigDecimal.ONE
         invoiceLine.college = e.college
-
-        if (StringUtils.trimToNull(price.feeOverriden)) {
+        
+        if (price.feeOverriden != null) {
             //Calculate enrolment fee (for enrolments whose courses has ENROLMENT_BY_APPLICATION type) as application.feeOverride if !=null.
             //Application.feeOverride doesn't need to combine with discounts.
-            Money feeOverriden = new Money(price.feeOverriden)
+            Money feeOverriden = price.feeOverriden.toMoney()
             InvoiceUtil.fillInvoiceLine(invoiceLine, feeOverriden, Money.ZERO, e.courseClass.taxRate, Money.ZERO)
         } else {
             Money taxAdjustment = CalculatePrice.calculateTaxAdjustment(e.courseClass)

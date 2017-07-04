@@ -1,5 +1,7 @@
 package ish.oncourse.willow.checkout.payment
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.common.GetInvoiceDueDate
 import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
@@ -102,8 +104,8 @@ class CreatePaymentModel {
         
         this
     }
-
-
+    
+    @CompileStatic(TypeCheckingMode.SKIP)
     void createVoucher(ish.oncourse.willow.model.checkout.Voucher v, Contact contact) {
         VoucherProduct voucherProduct = new GetProduct(context, college, v.productId).get() as VoucherProduct
         Voucher voucher = context.newObject(Voucher)
@@ -121,7 +123,7 @@ class CreatePaymentModel {
         InvoiceLine invoiceLine
         Money price = null
         if (voucherProduct.redemptionCourses.empty && voucherProduct.priceExTax == null) {
-            price = new Money(v.value)
+            price = v.value.toMoney()
             voucher.redemptionValue = price
             voucher.valueOnPurchase = price
         } else if (voucherProduct.priceExTax != null) {

@@ -15,8 +15,8 @@ public class Discount  {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime expiryDate = null;
-    private String discountedFee = null;
-    private String discountValue = null;
+    private Double discountedFee = null;
+    private Double discountValue = null;
     private String title = null;
 
     /**
@@ -57,15 +57,15 @@ public class Discount  {
      * Get discountedFee
      * @return discountedFee
      */
-    public String getDiscountedFee() {
+    public Double getDiscountedFee() {
         return discountedFee;
     }
 
-    public void setDiscountedFee(String discountedFee) {
+    public void setDiscountedFee(Double discountedFee) {
        this.discountedFee = discountedFee;
     }
 
-    public Discount discountedFee(String discountedFee) {
+    public Discount discountedFee(Double discountedFee) {
       this.discountedFee = discountedFee;
       return this;
     }
@@ -74,15 +74,15 @@ public class Discount  {
      * Get discountValue
      * @return discountValue
      */
-    public String getDiscountValue() {
+    public Double getDiscountValue() {
         return discountValue;
     }
 
-    public void setDiscountValue(String discountValue) {
+    public void setDiscountValue(Double discountValue) {
        this.discountValue = discountValue;
     }
 
-    public Discount discountValue(String discountValue) {
+    public Discount discountValue(Double discountValue) {
       this.discountValue = discountValue;
       return this;
     }

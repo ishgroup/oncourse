@@ -1,11 +1,12 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.VoucherProduct
 import ish.oncourse.willow.model.checkout.Voucher
 import org.apache.cayenne.ObjectContext
-
 
 class ValidateVoucher extends Validate<Voucher>{
 
@@ -21,8 +22,9 @@ class ValidateVoucher extends Validate<Voucher>{
     }
 
     @Override
+    @CompileStatic(TypeCheckingMode.SKIP)
     ValidateVoucher validate(Voucher voucher) {
-        Money price =  voucher.price ? new Money(voucher.price) : Money.ZERO
+        Money price =  voucher.price?.toMoney() ?: Money.ZERO
         validate(new GetProduct(context, college, voucher.productId).get() as VoucherProduct, price, voucher.contactId)  
     }
 

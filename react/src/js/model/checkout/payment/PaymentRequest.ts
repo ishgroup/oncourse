@@ -13,6 +13,6 @@ export class PaymentRequest {
    * String length 16 of hexadecimal digits
    */
   sessionId?: string;
-  payNow?: string;
+  payNow?: number;
 }
 

@@ -74,8 +74,8 @@ class CalculateEnrolmentsPrice {
                 .appliedDiscount = new ish.oncourse.willow.model.web.Discount().with { d ->
                     d.id = (discount as Discount).id.toString()
                     d.title = (discount as Discount).name
-                    d.discountValue = price.discountTotalIncTax.toPlainString()
-                    d.discountedFee = price.finalPriceToPayIncTax.toPlainString()
+                    d.discountValue = price.discountTotalIncTax.doubleValue()
+                    d.discountedFee = price.finalPriceToPayIncTax.doubleValue()
                     d.expiryDate = WebDiscountUtils.expiryDate(discount as Discount, courseClass.startDateTime)?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                     d
                 }

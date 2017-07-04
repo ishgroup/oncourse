@@ -31,17 +31,17 @@ class BuildClassPrice {
     CourseClassPrice build() {
 
         new CourseClassPrice().with { ccp ->
-            ccp.fee = c.feeIncGst.toBigDecimal().toString()
+            ccp.fee = c.feeIncGst.doubleValue()
             ccp.hasTax = !c.gstExempt
-            ccp.feeOverriden = overridenFee ? (c.gstExempt ? overridenFee.toBigDecimal().toString() : overridenFee.multiply(BigDecimal.ONE.add(c.taxRate)).toBigDecimal().toString()) : null
+            ccp.feeOverriden = overridenFee ? (c.gstExempt ? overridenFee.doubleValue() : overridenFee.multiply(BigDecimal.ONE.add(c.taxRate)).doubleValue()) : (Double) null
             if (!feeOverriden) {
                 DiscountCourseClass bestDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(GetAppliedDiscounts.valueOf(c, promotions).get(), c.feeExGst, c.taxRate)
 
                 if (bestDiscount) {
                     ccp.appliedDiscount = new Discount().with { d ->
                         Money value = c.getDiscountedFeeIncTax(bestDiscount)
-                        d.discountedFee = value.toBigDecimal().toString()
-                        d.discountValue = c.feeIncGst.subtract(value).toBigDecimal().toString()
+                        d.discountedFee = value.doubleValue()
+                        d.discountValue = c.feeIncGst.subtract(value).doubleValue()
                         d.title = ((ish.oncourse.model.Discount) bestDiscount.discount).name
                         Date discountExpiryDate = WebDiscountUtils.expiryDate((ish.oncourse.model.Discount) bestDiscount.discount, c.startDate)
                         if (discountExpiryDate) {
@@ -52,7 +52,7 @@ class BuildClassPrice {
                 }
                 
                 WebDiscountUtils.sortByDiscountValue(GetPossibleDiscounts.valueOf(c).get(), c.feeExGst, c.taxRate).each { d ->
-                    ccp.possibleDiscounts << new Discount(discountedFee: d.feeIncTax.toBigDecimal().toString(), title: d.title)
+                    ccp.possibleDiscounts << new Discount(discountedFee: d.feeIncTax.doubleValue(), title: d.title)
                 }
             }
             ccp

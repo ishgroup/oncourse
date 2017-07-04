@@ -1,6 +1,7 @@
 package ish.oncourse.willow.checkout.functions
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -42,6 +43,7 @@ class ProcessCheckoutModel {
         this.model.payerId = checkoutModelRequest.payerId
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     ProcessCheckoutModel process() {
         checkoutModelRequest.contactNodes.each { contactNode ->
             model.contactNodes << contactNode
@@ -73,17 +75,17 @@ class ProcessCheckoutModel {
         CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
         payNowAmount = payNowAmount.add(enrolmentsPrice.totalPayNow)
         model.amount = new Amount().with { a ->
-            a.total = totalAmount.toPlainString()
-            a.owing = totalAmount.subtract(enrolmentsPrice.totalDiscount).subtract(payNowAmount).toPlainString()
-            a.payNow =  payNowAmount.toPlainString()
-            a.discount = totalDiscount.add(enrolmentsPrice.totalDiscount).toPlainString()
+            a.total = totalAmount.doubleValue()
+            a.owing = totalAmount.subtract(enrolmentsPrice.totalDiscount).subtract(payNowAmount).doubleValue()
+            a.payNow =  payNowAmount.doubleValue()
+            a.discount = totalDiscount.add(enrolmentsPrice.totalDiscount).doubleValue()
             a
         }
         
         this
     }
     
-    
+    @CompileStatic(TypeCheckingMode.SKIP)
     void processEnrolment(Enrolment e, Contact contact) {
         if (e.selected) {
             ProcessClass processClass = new ProcessClass(context, contact, college, e.classId).process()
@@ -100,7 +102,7 @@ class ProcessCheckoutModel {
                 if (e.errors.empty) {
                     enrolmentsCount++
                     e.price = processClass.enrolment.price
-                    totalAmount = totalAmount.add(new Money(e.price.fee ?: e.price.feeOverriden))
+                    totalAmount = totalAmount.add(e.price.fee?.toMoney() ?: e.price.feeOverriden.toMoney())
                     List<CourseClass> classes = enrolmentsToProceed.get(contact)
                     if (classes == null) {
                         classes = new ArrayList<CourseClass>()
@@ -126,6 +128,8 @@ class ProcessCheckoutModel {
         }
     }
 
+
+    @CompileStatic(TypeCheckingMode.SKIP)
     void processArticle(Article a, Contact contact) {
         if (a.selected) {
             ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, model.payerId).process()
@@ -136,12 +140,13 @@ class ProcessCheckoutModel {
                 a.warnings += processProduct.article.warnings
                 if (a.errors.empty) {
                     a.price = processProduct.article.price
-                    totalAmount = totalAmount.add(new Money(a.price))
+                    totalAmount = totalAmount.add(a.price.toMoney())
                 }
             }
         }
     }
-    
+
+    @CompileStatic(TypeCheckingMode.SKIP)
     void processMembership(Membership m, Contact contact) {
         if (m.selected) {
             ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, model.payerId).process()
@@ -152,19 +157,20 @@ class ProcessCheckoutModel {
                 m.warnings += processProduct.membership.warnings
                 if (m.errors.empty) {
                     m.price = processProduct.membership.price
-                    totalAmount = totalAmount.add(new Money(m.price))
+                    totalAmount = totalAmount.add(m.price.toMoney())
                 }
             }
         }
     }
-    
+
+    @CompileStatic(TypeCheckingMode.SKIP)
     void processVoucher(Voucher v) {
         if (v.selected) {
             ValidateVoucher validateVoucher = new ValidateVoucher(context, college, model.payerId).validate(v)
             v.errors += validateVoucher.errors
             v.warnings += validateVoucher.warnings
             if (v.errors.empty) {
-                totalAmount = totalAmount.add(new Money(v.price))
+                totalAmount = totalAmount.add(v.price.toMoney())
             }
         }
     }

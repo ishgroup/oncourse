@@ -1,5 +1,7 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -31,6 +33,7 @@ class ProcessClass {
         this.classId = classId
     }
 
+    @CompileStatic(TypeCheckingMode.SKIP)
     ProcessClass process() {
 
         persistentClass = new GetCourseClass(context, college, classId).get()
@@ -68,9 +71,9 @@ class ProcessClass {
                     e.price = new CourseClassPrice().with { ccp ->
                         ccp.hasTax = !persistentClass.gstExempt 
                         if (overridenFee != null) {
-                            ccp.feeOverriden =  persistentClass.gstExempt ? overridenFee.toBigDecimal().toPlainString() : overridenFee.multiply(BigDecimal.ONE.add(persistentClass.taxRate)).toBigDecimal().toPlainString()
+                            ccp.feeOverriden = persistentClass.gstExempt ? overridenFee.doubleValue() : overridenFee.multiply(BigDecimal.ONE.add(persistentClass.taxRate)).doubleValue()
                         } else {
-                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, persistentClass.taxRate, CalculatePrice.calculateTaxAdjustment(persistentClass)).calculate().finalPriceToPayIncTax.toPlainString()
+                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, persistentClass.taxRate, CalculatePrice.calculateTaxAdjustment(persistentClass)).calculate().finalPriceToPayIncTax.doubleValue()
                         }
                         ccp
                     }

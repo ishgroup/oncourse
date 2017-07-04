@@ -6,8 +6,8 @@ import java.util.List;
 
 public class CourseClassPrice  {
   
-    private String fee = null;
-    private String feeOverriden = null;
+    private Double fee = null;
+    private Double feeOverriden = null;
     private Discount appliedDiscount = null;
     private List<Discount> possibleDiscounts = new ArrayList<Discount>();
     private Boolean hasTax = null;
@@ -16,15 +16,15 @@ public class CourseClassPrice  {
      * Full class price
      * @return fee
      */
-    public String getFee() {
+    public Double getFee() {
         return fee;
     }
 
-    public void setFee(String fee) {
+    public void setFee(Double fee) {
        this.fee = fee;
     }
 
-    public CourseClassPrice fee(String fee) {
+    public CourseClassPrice fee(Double fee) {
       this.fee = fee;
       return this;
     }
@@ -33,15 +33,15 @@ public class CourseClassPrice  {
      * Class price overriden by application
      * @return feeOverriden
      */
-    public String getFeeOverriden() {
+    public Double getFeeOverriden() {
         return feeOverriden;
     }
 
-    public void setFeeOverriden(String feeOverriden) {
+    public void setFeeOverriden(Double feeOverriden) {
        this.feeOverriden = feeOverriden;
     }
 
-    public CourseClassPrice feeOverriden(String feeOverriden) {
+    public CourseClassPrice feeOverriden(Double feeOverriden) {
       this.feeOverriden = feeOverriden;
       return this;
     }

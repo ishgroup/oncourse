@@ -5,12 +5,12 @@ export class CourseClassPrice {
   /**
    * Full class price
    */
-  fee?: string;
+  fee?: number;
 
   /**
    * Class price overriden by application
    */
-  feeOverriden?: string;
+  feeOverriden?: number;
   appliedDiscount?: Discount;
 
   /**

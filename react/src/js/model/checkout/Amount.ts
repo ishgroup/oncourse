@@ -1,11 +1,9 @@
 
 export class Amount {
-  owing?: string;
-  total?: string;
-  discount?: string;
-  payNow?: string;
-  minPayNow?: string;
-  isEditable?: boolean;
+  owing?: number;
+  total?: number;
+  discount?: number;
+  payNow?: number;
   voucherPayments?: any[];
 }
 

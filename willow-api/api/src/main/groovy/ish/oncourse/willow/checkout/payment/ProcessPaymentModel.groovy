@@ -1,7 +1,9 @@
 package ish.oncourse.willow.checkout.payment
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.common.types.PaymentType
+import ish.math.DoubleMethods
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.PaymentGatewayType
@@ -41,13 +43,14 @@ class ProcessPaymentModel {
         this.createPaymentModel = createPaymentModel
         this.paymentRequest = paymentRequest
     }
-
+    
+    @CompileStatic(TypeCheckingMode.SKIP)
     ProcessPaymentModel process() {
         if (createPaymentModel.applicationsOnly) {
             saveApplications()
         } else {
             Money actualAmount = createPaymentModel.paymentIn.amount
-            if (actualAmount != new Money(paymentRequest.payNow)) {
+            if (actualAmount != paymentRequest.payNow.toMoney()) {
                 context.rollbackChanges()
                 error = new CommonError(message: 'Payment amount is wrong')
                 this
