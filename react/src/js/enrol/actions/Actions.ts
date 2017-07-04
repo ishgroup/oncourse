@@ -31,6 +31,10 @@ export const ADD_CODE_REQUEST: string = _toRequestType(ADD_CODE);
 
 export const GET_CHECKOUT_MODEL_FROM_BACKEND: string = "checkout/get/model/from/backend";
 
+export const ADD_REDEEM_VOUCHER_TO_STATE: string = "checkout/add/redeemVoucher";
+
+export const TOGGLE_VOUCHER_ACTIVITY: string = "checkout/set/voucher/activity";
+
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
     type: ADD_CODE_REQUEST,
@@ -90,6 +94,13 @@ export const updateAmount = (amount: Amount): IAction<Amount> => {
     payload: amount,
   };
 };
+
+export const toggleVoucher = (id: string, enabled: boolean): IAction<any> => {
+  return {
+    type: TOGGLE_VOUCHER_ACTIVITY,
+    payload: {id, enabled},
+  };
+}
 
 export const finishCheckoutProcess = (): IAction<any> => {
   return {

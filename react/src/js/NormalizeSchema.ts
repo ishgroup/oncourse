@@ -10,10 +10,10 @@ export const ProductsListSchema = new schema.Array(ProductsSchema);
 export const PromotionsSchema = new schema.Entity('promotions');
 
 export interface ContactsState {
-  result: string[]
+  result: string[];
   entities: {
-    contact: { [key: string]: Contact }
-  }
+    contact: { [key: string]: Contact },
+  };
 }
 
 

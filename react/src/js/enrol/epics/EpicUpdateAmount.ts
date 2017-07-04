@@ -10,7 +10,9 @@ const request: EpicUtils.Request<Amount, IshState> = {
   type: GET_AMOUNT,
   getData: (payload, state: IshState) => CheckoutService.getAmount(state),
   processData: (value: Amount, state: IshState) => {
-    return [updateAmount(value)];
+    return [
+      updateAmount(value),
+    ];
   },
 };
 

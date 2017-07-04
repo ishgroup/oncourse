@@ -16,14 +16,14 @@ function mapDispatchToProps(dispatch) {
     addPromotion: (code: string) => {
       dispatch({
         type: Actions.ADD_PROMOTION_TO_CART,
-        payload: code
+        payload: code,
       });
     },
     removePromotion: (promotion: PromotionCart) => {
       dispatch({
         type: Actions.REMOVE_PROMOTION_FROM_CART,
-        payload: promotion
+        payload: promotion,
       });
-    }
+    },
   };
 }

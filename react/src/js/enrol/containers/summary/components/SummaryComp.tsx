@@ -4,11 +4,7 @@ import classnames from "classnames";
 import AmountComp from "../../../components/AmountComp";
 import ContactComp, {Props as ContactProps} from "./ContactComp";
 import {Amount} from "../../../../model/checkout/Amount";
-import {Enrolment} from "../../../../model/checkout/Enrolment";
-import {Voucher} from "../../../../model/checkout/Voucher";
-import {Props as VoucherProps} from "./VoucherComp";
-import {Membership} from "../../../../model/checkout/Membership";
-import {Article} from "../../../../model/checkout/Article";
+import {RedeemVoucher} from "../../../../model/web/RedeemVoucher";
 import {Promotion} from "../../../../model/web/Promotion";
 import {PurchaseItem} from "../../../../model/checkout/Index";
 
@@ -19,6 +15,8 @@ export interface Props {
   onAddContact?: () => void;
   onAddCode: (code: string) => void;
   promotions: Promotion[];
+  redeemVouchers?: RedeemVoucher[];
+  onToggleVoucher?: (id, enabled) => void;
   onProceedToPayment?: () => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
@@ -56,7 +54,8 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, hasSelected, promotions, onUpdatePayNow} = this.props;
+    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment,
+      redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher} = this.props;
 
     return (
       <div className="payment-summary">
@@ -70,6 +69,8 @@ export class SummaryComp extends React.Component<Props, any> {
                 amount={amount}
                 onUpdatePayNow={val => amount.isEditable ? onUpdatePayNow(amount, val) : undefined}
                 onAddCode={onAddCode}
+                onToggleVoucher={onToggleVoucher}
+                redeemVouchers={redeemVouchers}
                 promotions={promotions}
               />
               <ProceedToPayment disabled={!hasSelected} onProceedToPayment={onProceedToPayment}/>

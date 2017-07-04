@@ -18,6 +18,7 @@ export interface CheckoutState {
   summary: SummaryState;
   payment: PaymentState;
   concession: any;
+  redeemVouchers: any;
 }
 
 export interface PayerState {

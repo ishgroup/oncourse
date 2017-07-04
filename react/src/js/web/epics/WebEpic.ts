@@ -88,7 +88,7 @@ function createPromotionsEpic() {
   return action$ => action$
     .ofType(Actions.REQUEST_PROMOTION)
     .mergeMap(action => Observable
-      .fromPromise(promotionApi.getPromotion(action.code))
+      .fromPromise(promotionApi.submitCode(action.code))
       .map(mapPayload(Actions.REQUEST_PROMOTION))
       .catch(mapError(Actions.REQUEST_PROMOTION)),
     );
@@ -192,7 +192,7 @@ function createAddPromotionToCartEpic() {
     .ofType(Actions.ADD_PROMOTION_TO_CART)
     .mergeMap(action => {
       return Observable
-        .fromPromise(promotionApi.getPromotion(action.payload))
+        .fromPromise(promotionApi.submitCode(action.payload))
         .map(payload => normalize(payload, PromotionsSchema))
         .map(mapPayload(Actions.ADD_PROMOTION_TO_CART))
         .catch(mapError(Actions.ADD_PROMOTION_TO_CART));

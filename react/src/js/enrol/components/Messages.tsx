@@ -11,7 +11,7 @@ const CLASS_WARNINGS: string = "message";
 export class Messages extends React.Component<Props, any> {
   private renderMessages = (messages: string[], className: string): any => {
     if (L.isNil(messages) || !messages.length) {
-      return null
+      return null;
     }
     return (
       <div className={className}>
@@ -22,12 +22,12 @@ export class Messages extends React.Component<Props, any> {
         </ul>
       </div>
     );
-  };
+  }
 
   render() {
     const {error} = this.props;
     if (L.isNil(error)) {
-      return null
+      return null;
     } else {
       let errors: string[] = [];
 
@@ -36,7 +36,7 @@ export class Messages extends React.Component<Props, any> {
       }
 
       if (!L.isEmpty(error.fieldsErrors)) {
-        const fes = error.fieldsErrors.map((e) => e.error);
+        const fes = error.fieldsErrors.map(e => e.error);
         errors = errors.concat(fes);
       }
       return (
@@ -49,5 +49,5 @@ export class Messages extends React.Component<Props, any> {
 }
 
 export interface Props {
-  error: ValidationError
+  error: ValidationError;
 }

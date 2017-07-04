@@ -4,6 +4,7 @@ import classnames from "classnames";
 import {Amount} from "../../model/checkout/Amount";
 import AddCodeComp from "./AddCodeComp";
 import {Promotion} from "../../model/web/Promotion";
+import {RedeemVoucher as RedeemVoucherModel} from "../../model/web/RedeemVoucher";
 import CheckoutService from "../services/CheckoutService";
 import log = Handlebars.log;
 
@@ -11,7 +12,9 @@ interface Props {
   amount: Amount;
   onAddCode: (code: string) => void;
   promotions: Promotion[];
+  redeemVouchers?: RedeemVoucherModel[];
   onUpdatePayNow?: (val) => void;
+  onToggleVoucher?: (id, enabled) => void;
 }
 
 class AmountComp extends React.Component<Props, any> {
@@ -32,14 +35,26 @@ class AmountComp extends React.Component<Props, any> {
   }
 
   public render(): JSX.Element {
-    const {amount, onAddCode, promotions, onUpdatePayNow} = this.props;
+    const {amount, onAddCode, promotions, onUpdatePayNow, redeemVouchers, onToggleVoucher} = this.props;
 
     return (
       <div className="row">
         <AddCodeComp onAdd={onAddCode} promotions={promotions}/>
         <div className="col-xs-24 col-sm-8 amount-content text-right">
           { amount && amount.total && <Total total={amount.total}/> }
+
+          { amount && redeemVouchers &&
+            redeemVouchers.map(v => (
+              <RedeemVoucher
+                key={v.id}
+                redeemVoucher={v}
+                voucherPayment={amount.voucherPayments.find(vp => vp.id === v.id)}
+                onChange={onToggleVoucher}
+              />
+            ))}
+
           { amount && amount.discount && <Discount discount={amount.discount}/>}
+
           { amount && amount.payNow &&
           <PayNow
             payNow={amount.payNow}
@@ -67,6 +82,26 @@ const Discount = props => {
     <div className="row total-discount">
       <label className="col-xs-12">Discount</label>
       <span className="col-xs-12">{props.discount}</span>
+    </div>
+  );
+};
+
+const RedeemVoucher = props => {
+  const {redeemVoucher, voucherPayment, onChange} = props;
+  console.log(redeemVoucher);
+
+  return (
+    <div className="row">
+      <label htmlFor="">
+        <input
+          type="checkbox"
+          value="true"
+          onChange={e => onChange(redeemVoucher.id, e.target.checked)}
+          checked={redeemVoucher.enabled}
+        />
+        {redeemVoucher.name}
+      </label>
+      <span className="col-xs-12">{redeemVoucher.enabled ? voucherPayment.value : 0}</span>
     </div>
   );
 };

@@ -72,8 +72,8 @@ export class CheckoutService {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromContact(contact, cart));
   };
   
-  public getPromotion = (code: string, state: IshState): Promise<Promotion> => {
-    return this.promotionApi.getPromotion(code);
+  public submitCode = (code: string, state: IshState): Promise<Promotion> => {
+    return this.promotionApi.submitCode(code);
   };
 
   public getConcessionTypes = () => {
@@ -260,7 +260,9 @@ export class BuildCheckoutModelRequest {
     const result: CheckoutModelRequest = new CheckoutModelRequest();
     result.payerId = state.checkout.payerId;
     result.promotionIds = state.cart.promotions.result;
+    result.redeemedVoucherIds = state.checkout.redeemVouchers.filter(v => v.enabled).map(v => v.id);
     result.contactNodes = BuildContactNodes.fromState(state.checkout.summary);
+    console.log(result);
     return result;
   }
 }

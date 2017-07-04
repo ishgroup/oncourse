@@ -16,7 +16,9 @@ import {
 
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
-import {changePhase, addCode, getCheckoutModelFromBackend, updateAmount} from "../../actions/Actions";
+import {
+  changePhase, addCode, getCheckoutModelFromBackend, updateAmount, toggleVoucher, getAmount,
+} from "../../actions/Actions";
 import {updateConcessionContact, getContactConcessions} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
@@ -94,6 +96,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       amount: state.checkout.amount,
       contacts: contactsArray,
       promotions:  Object.values(state.cart.promotions.entities),
+      redeemVouchers: state.checkout.redeemVouchers,
       hasSelected: SummaryService.hasSelected(state.checkout.summary),
       concessions: state.checkout.concession.concessions,
     };
@@ -137,6 +140,10 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onUpdatePayNow: (amount, val): void => {
       dispatch(updateAmount({...amount, payNow: val}));
+    },
+    onToggleVoucher: (id, enabled) => {
+      dispatch(toggleVoucher(id, enabled));
+      dispatch(getAmount());
     },
   };
 };

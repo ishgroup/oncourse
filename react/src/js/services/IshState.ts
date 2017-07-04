@@ -39,7 +39,7 @@ export type CourseClassCartState = Normalized<CourseClassCart>;
 export type ProductCartState = Normalized<ProductCart>;
 export type PromotionCartState = Normalized<PromotionCart>;
 
-//--- Extend backend model
+// --- Extend backend model
 export interface DiscountState extends Discount {
 }
 

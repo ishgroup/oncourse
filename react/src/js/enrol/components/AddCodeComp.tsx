@@ -23,27 +23,44 @@ class AddCodeComp extends React.Component<Props, State> {
     });
   }
 
+  handleClick() {
+    const {onAdd} = this.props;
+
+    onAdd(this.state.value);
+    this.setState({value: ""});
+  }
+
 
   public render(): JSX.Element {
-    const {onAdd,promotions} = this.props;
+    const {promotions} = this.props;
+    const {value} = this.state;
+
     return (
       <div className="code-info">
-        <input className="form-control mb-2 mr-sm-2 mb-sm-0 code_input" name="code" type="text"
-               onChange={e => this.handleChange(e)} value={this.state.value}/>
-        <button disabled={!this.state.value} type="submit" className="btn btn-primary button" id="addCode"
-                onClick={() => { 
-                  onAdd(this.state.value);
-                  this.setState({value: ''});
-                }
-                }>Add Code
+        <input
+          className="form-control mb-2 mr-sm-2 mb-sm-0 code_input"
+          name="code"
+          type="text"
+          onChange={e => this.handleChange(e)}
+          value={value}
+        />
+        <button
+          disabled={!value}
+          type="submit"
+          className="btn btn-primary button"
+          id="addCode"
+          onClick={() => this.handleClick()}
+        >
+          Add Code
         </button>
-        <p>Promotional Code,Gift Certificate or Voucher</p>
-        {promotions && promotions.map((promotion: Promotion) => 
-          <p className="discountAddedMessage">Code "{promotion.code}" successfully added</p>)
-        }
+        <p>Promotional Code, Gift Certificate or Voucher</p>
+        {promotions && promotions.map((promotion: Promotion) => (
+          <p key={promotion.id} className="discountAddedMessage">Code "{promotion.code}" successfully added</p>
+        ))}
       </div>
     );
   }
 }
+
 export default AddCodeComp;
 

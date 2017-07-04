@@ -8,6 +8,7 @@ export const Reducer = (state: State = ContactNodeToState([]), action: { type: s
   const ns: State = L.cloneDeep(state);
 
   switch (action.type) {
+
     case  SummaryActions.UPDATE_ITEM:
       action.payload.result.forEach(id => {
         const stateNode: ContactNode = ns.entities.contactNodes[id];
@@ -20,15 +21,19 @@ export const Reducer = (state: State = ContactNodeToState([]), action: { type: s
       });
       mergePurchases(ns, action.payload);
       return ns;
+
     case SummaryActions.ADD_CONTACT_NODE_TO_STATE:
       ns.result = Array.from(new Set([...ns.result, ...action.payload.result]));
       ns.entities.contactNodes = {...ns.entities.contactNodes, ...action.payload.entities.contactNodes};
       mergePurchases(ns, action.payload);
       return ns;
+
     case SummaryActions.ItemsLoad:
       return action.payload;
+
     case RESET_CHECKOUT_STATE:
       return ContactNodeToState([]);
+
     default:
       return state;
   }

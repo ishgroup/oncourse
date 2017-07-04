@@ -6,5 +6,6 @@ export class Amount {
   payNow?: string;
   minPayNow?: string;
   isEditable?: boolean;
+  voucherPayments?: any[];
 }
 

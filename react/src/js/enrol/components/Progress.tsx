@@ -9,12 +9,12 @@ import classnames from "classnames";
 const Classes = {
   active: "active",
   disable: "disable",
-  last: "last"
+  last: "last",
 };
 
 interface Props {
-  model: Model
-  onChange: (Tab) => void
+  model: Model;
+  onChange: (Tab) => void;
 }
 
 export class Progress extends React.Component<Props, any> {
@@ -37,32 +37,32 @@ export class Progress extends React.Component<Props, any> {
           <li className={paymentClass}><a onClick={() => onClick(Tab.Payment)} href="#">Payment</a></li>
         </ul>
       </div>
-    )
+    );
   }
 
   private className = (tab: Tab): string => {
-    return this.isActive(tab) ? Classes.active : this.isDisabled(tab) ? Classes.disable : ""
-  };
+    return this.isActive(tab) ? Classes.active : this.isDisabled(tab) ? Classes.disable : "";
+  }
 
   private isActive = (tab: Tab): boolean => {
     const {model} = this.props;
     return model.active === tab;
-  };
+  }
 
   private isDisabled = (tab: Tab): boolean => {
     const {model} = this.props;
-    return !Lodash.isNil(model.disabled.find((t) => t === tab));
+    return !Lodash.isNil(model.disabled.find(t => t === tab));
   }
 }
 
 export enum Tab {
   Details,
   Summary,
-  Payment
+  Payment,
 }
 
 export interface Model {
-  active: Tab,
-  disabled: Tab[]
+  active: Tab;
+  disabled: Tab[];
 }
 

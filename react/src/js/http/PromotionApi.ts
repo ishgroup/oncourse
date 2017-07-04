@@ -7,7 +7,7 @@ export class PromotionApi {
   constructor(private http: HttpService) {
   }
 
-  getPromotion(code: string): Promise<Promotion> {
+  submitCode(code: string): Promise<Promotion> {
     return this.http.GET(`/promotion/${code}`);
   }
 }
