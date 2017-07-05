@@ -34,6 +34,7 @@ import {PromotionApi} from "../../http/PromotionApi";
 import {Promotion} from "../../model/web/Promotion";
 import {PurchaseItem} from "../../model/checkout/Index";
 import {Contact} from "../../model/web/Contact";
+import {Concession} from "../../model/checkout/concession/Concession";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
@@ -79,8 +80,12 @@ export class CheckoutService {
     return this.contactApi.getConcessionTypes();
   }
 
-  public getContactConcessions = (payload, state) => {
+  public getContactConcessions = (payload, state: IshState) => {
     return this.contactApi.getContactConcessions(state.checkout.contacts.result);
+  }
+
+  public submitConcession = (payload, props) => {
+    return this.contactApi.submitConcession(BuildConcessionRequest.fromValues(payload, props));
   }
 
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
@@ -202,6 +207,17 @@ export class BuildContactFieldsRequest {
     result.productIds = cart.products.result;
     result.fieldSet = FieldSet.ENROLMENT;
     result.mandatoryOnly = !newContact;
+    return result;
+  }
+}
+
+export class BuildConcessionRequest {
+  static fromValues = (values, state) => {
+    const result: Concession = new Concession();
+    result.contactId = state.contact.id;
+    result.concessionTypeId = values.concessionType;
+    result.date = values.date || null;
+    result.number = values.number || null;
     return result;
   }
 }

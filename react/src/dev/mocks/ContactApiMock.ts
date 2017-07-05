@@ -90,5 +90,9 @@ export class ContactApiMock extends ContactApi {
     return this.config.createResponse(Promise.resolve());
   }
 
+  submitConcession(request) {
+    return this.config.createResponse(Promise.resolve());
+  }
+
 }
 

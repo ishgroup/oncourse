@@ -6,6 +6,7 @@ import ConcessionForm from "./components/ConcessionForm";
 import {reduxForm, FormErrors} from "redux-form";
 import {changePhase} from "../../actions/Actions";
 import {getConcessionTypes} from "./actions/Actions";
+import CheckoutService from "../../services/CheckoutService";
 
 export interface Props {
   contact: Contact;
@@ -92,7 +93,7 @@ const Form = reduxForm({
   validate,
   form: NAME,
   onSubmitSuccess: (result, dispatch, props: any) => {
-
+    dispatch(changePhase(props.page));
   },
   onSubmitFail: (error, dispatch, submitError, props) => {
 
@@ -111,7 +112,7 @@ const mapStateToProps = (state: IshState) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSubmit: (data, dispatch, props): any => {
-      console.log(data);
+      CheckoutService.submitConcession(data, props);
     },
     onCancel: phase => {
       dispatch(changePhase(phase));

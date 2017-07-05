@@ -96,7 +96,7 @@ const mapStateToProps = (state: IshState) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSubmit: (data, dispatch, props): any => {
-      return CheckoutService.submitContactDetails(props.fields, data);
+      return CheckoutService.submitContactDetails(data, props);
     },
     onInit: () => {
       dispatch(getConcessionTypes());
