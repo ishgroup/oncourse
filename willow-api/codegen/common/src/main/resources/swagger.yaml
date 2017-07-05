@@ -436,6 +436,82 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /getConcessionTypes:
+    get:
+      x-filter:  
+      - CollegeInfo  
+      summary: Provide list of awalible concessions for college
+      operationId: getConcessionTypes
+      description: Provide list of awalible concessions for college
+      tags:
+      - Contact
+      responses:
+        200:
+          description: List of awalible concessions
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/checkout.concession.ConcessionType'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getContactConcessions:
+    post:
+      x-filter:  
+      - CollegeInfo  
+      summary: Provide list of student concessions
+      operationId: getContactConcessions
+      description: Provide list of student concessions
+      tags:
+      - Contact
+      parameters:
+      - name: contactIds
+        in: body
+        description: conact's ids
+        required: true
+        schema: 
+          type: array
+          items:
+            type: string
+      responses:
+        200:
+          description:  Provide list of student concessions
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/checkout.concession.Concession'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /submitConcession:
+    put:
+      x-filter:  
+      - CollegeInfo  
+      summary: Save conact's concession
+      operationId: submitConcession
+      description: Save conact's concession
+      tags:
+      - Contact
+      parameters:
+      - name: concession
+        in: body
+        description: conact's concession
+        required: true
+        schema:
+          $ref: '#/definitions/checkout.concession.Concession'
+      responses:
+        200:
+          description: Ok response
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/common.ValidationError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
 parameters:
   XOrigin:
     name: X-Origin
@@ -868,6 +944,7 @@ definitions:
     requred:
     - contactId
     - fields
+    - concession
     properties:
       contactId:
         type: string
@@ -877,6 +954,9 @@ definitions:
         items:
           $ref: '#/definitions/field.Field'
         description: Array of fields
+      concession:
+        $ref: '#/definitions/checkout.concession.Concession'
+        description: Contact's concession
   field.FieldHeading:
     type: object
     requred:
@@ -1178,4 +1258,28 @@ definitions:
       status:
         $ref: '#/definitions/checkout.payment.PaymentStatus'
       reference:
+        type: string
+  checkout.concession.ConcessionType:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      hasExpireDate: 
+        type: boolean
+      hasNumber: 
+        type: boolean
+  checkout.concession.Concession:
+    type: object
+    properties:
+      concessionTypeId:
+        type: string
+      contactId:
+        type: string
+      name:
+        type: string
+      date: 
+        type: string
+      number: 
         type: string

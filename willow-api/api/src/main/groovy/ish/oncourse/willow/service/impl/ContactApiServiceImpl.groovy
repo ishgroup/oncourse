@@ -12,6 +12,8 @@ import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.functions.GetContactFields
 import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.cayenne.CayenneService
+import ish.oncourse.willow.model.checkout.concession.Concession
+import ish.oncourse.willow.model.checkout.concession.ConcessionType
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
@@ -91,7 +93,7 @@ class ContactApiServiceImpl implements ContactApi{
         
         new GetContactFields(contact, classes, !contactFieldsRequest.productIds.empty, contactFieldsRequest.fieldSet, contactFieldsRequest.mandatoryOnly).contactFields
     }
-
+    
     @Override
     void submitContactDetails(SubmitFieldsRequest contactFields) {
         ObjectContext context = cayenneService.newContext()
@@ -134,4 +136,19 @@ class ContactApiServiceImpl implements ContactApi{
         }
 
     }
+
+    @Override
+    List<Concession> getContactConcessions(List<String> contactIds) {
+        return null
+    }
+
+    @Override
+    List<ConcessionType> getConcessionTypes() {
+        return null
+    }
+
+    @Override
+    void submitConcession(Concession concession) {
+    }
+
 }

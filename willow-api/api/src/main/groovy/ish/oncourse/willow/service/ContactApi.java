@@ -1,5 +1,8 @@
 package ish.oncourse.willow.service;
 
+import java.util.List;
+import ish.oncourse.willow.model.checkout.concession.Concession;
+import ish.oncourse.willow.model.checkout.concession.ConcessionType;
 import ish.oncourse.willow.model.common.CommonError;
 import ish.oncourse.willow.model.common.ValidationError;
 import ish.oncourse.willow.model.field.ContactFields;
@@ -28,10 +31,22 @@ public interface ContactApi  {
     ContactId createOrGetContact(CreateContactParams createContactParams);
 
     @GET
+    @Path("/getConcessionTypes")
+    @Produces({ "application/json" })
+    @CollegeInfo
+    List<ConcessionType> getConcessionTypes();
+
+    @GET
     @Path("/contact/{studentUniqueIdentifier}")
     @Produces({ "application/json" })
     @CollegeInfo
     Contact getContact(@PathParam("studentUniqueIdentifier") String studentUniqueIdentifier);
+
+    @POST
+    @Path("/getContactConcessions")
+    @Produces({ "application/json" })
+    @CollegeInfo
+    List<Concession> getContactConcessions(List<String> contactIds);
 
     @POST
     @Path("/contactFields")
@@ -39,6 +54,12 @@ public interface ContactApi  {
     @Produces({ "application/json" })
     @CollegeInfo
     ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest);
+
+    @PUT
+    @Path("/submitConcession")
+    @Produces({ "application/json" })
+    @CollegeInfo
+    void submitConcession(Concession concession);
 
     @PUT
     @Path("/submitContactDetails")

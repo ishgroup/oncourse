@@ -1,5 +1,6 @@
 package ish.oncourse.willow.model.field;
 
+import ish.oncourse.willow.model.checkout.concession.Concession;
 import ish.oncourse.willow.model.field.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ public class SubmitFieldsRequest  {
   
     private String contactId = null;
     private List<Field> fields = new ArrayList<Field>();
+    private Concession concession = null;
 
     /**
      * Submited contact id
@@ -48,6 +50,23 @@ public class SubmitFieldsRequest  {
       return this;
     }
 
+    /**
+     * Contact's concession
+     * @return concession
+     */
+    public Concession getConcession() {
+        return concession;
+    }
+
+    public void setConcession(Concession concession) {
+       this.concession = concession;
+    }
+
+    public SubmitFieldsRequest concession(Concession concession) {
+      this.concession = concession;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -56,6 +75,7 @@ public class SubmitFieldsRequest  {
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
+      sb.append("    concession: ").append(toIndentedString(concession)).append("\n");
       sb.append("}");
       return sb.toString();
     }
