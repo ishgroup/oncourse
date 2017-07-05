@@ -51,7 +51,7 @@ class MakePaymentTest extends ApiTest {
         PaymentRequest request = buildPaymentRequest()
         CheckoutModel model = api.getCheckoutModel(request.checkoutModelRequest)
         assertNull(model.error)
-        assertEquals(request.payNow, model.amount.payNow)
+        assertEquals(request.payNow, model.amount.payNow, 0)
         assertEquals(1, model.contactNodes.size())
         assertEquals(1, model.contactNodes[0].enrolments.size())
         assertTrue(model.contactNodes[0].enrolments[0].selected)
@@ -130,7 +130,7 @@ class MakePaymentTest extends ApiTest {
             paymentRequest.expiryYear = '2027'
             paymentRequest.creditCardCvv = '321'
             paymentRequest.agreementFlag = true
-            paymentRequest.payNow = "200.00"
+            paymentRequest.payNow = 200.00
             paymentRequest.checkoutModelRequest = new CheckoutModelRequest().with { modelRequest ->
                 modelRequest.contactNodes = [new ContactNode().with { cNode ->
                     cNode.contactId = '1001'
@@ -138,12 +138,12 @@ class MakePaymentTest extends ApiTest {
                         e.classId = '1001'
                         e.contactId = '1001'
                         e.price = new CourseClassPrice().with { price ->
-                            price.fee = '110'
+                            price.fee = 110.00
                             price.hasTax = true
                             price.appliedDiscount = new Discount().with { discount ->
                                 discount.id = '1003'
-                                discount.discountedFee = '66.00'
-                                discount.discountValue = '44.00'
+                                discount.discountedFee = 66.00
+                                discount.discountValue = 44.00
                                 discount.title = 'title'
                                 discount
                             }
@@ -159,8 +159,8 @@ class MakePaymentTest extends ApiTest {
                         a
                     }]
                     cNode.vouchers = [new Voucher().with { v ->
-                        v.price = '100.00'
-                        v.value = '100.00'
+                        v.price = 100.00
+                        v.value = 100.00
                         v.productId = '7'
                         v.contactId = '1001'
                         v.selected = true
@@ -173,7 +173,7 @@ class MakePaymentTest extends ApiTest {
                 modelRequest.payerId = '1001'
                 modelRequest
             }
-            paymentRequest.payNow = '166.00'
+            paymentRequest.payNow = 166.00
             paymentRequest
         }
     }

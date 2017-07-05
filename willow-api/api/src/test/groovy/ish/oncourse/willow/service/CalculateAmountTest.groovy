@@ -41,8 +41,8 @@ class CalculateAmountTest extends ApiTest {
                     a
                 }]
                 cNode.vouchers = [new Voucher().with { v ->
-                    v.price = '150.00'
-                    v.value = '150.00'
+                    v.price = 150.00
+                    v.value = 150.00
                     v.productId = '7'
                     v.contactId = '1001'
                     v.selected = true
@@ -60,10 +60,10 @@ class CalculateAmountTest extends ApiTest {
         CheckoutModel model = api.getCheckoutModel(checkoutModelRequest)
         
         assertNotNull(model.amount)
-        assertEquals('370.00', model.amount.total)
-        assertEquals('22.00', model.amount.discount)
-        assertEquals('320.00', model.amount.payNow)
-        assertEquals('28.00', model.amount.owing)
+        assertEquals(370.00, model.amount.total, 0)
+        assertEquals(22.00, model.amount.discount,0)
+        assertEquals(320.00, model.amount.payNow,0)
+        assertEquals(28.00, model.amount.owing,0)
         
     }
 }

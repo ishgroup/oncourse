@@ -51,8 +51,8 @@ class GetContactNodeTest extends ApiTest {
         assertEquals('7', node.vouchers[0].productId)
         assertTrue(node.vouchers[0].errors.empty)
         assertTrue(node.vouchers[0].selected)
-        assertEquals('100.00',node.vouchers[0].value)
-        assertEquals('100.00',node.vouchers[0].price)
+        assertEquals(100.00, node.vouchers[0].value, 0)
+        assertEquals(100.00,node.vouchers[0].price, 0)
         assertTrue(node.vouchers[0].isEditablePrice)
         
         assertEquals(1, node.articles.size())
