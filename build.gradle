@@ -1,8 +1,8 @@
 buildscript {
 	ext {
-		waCommonWebservicesClientVersion = '9.3.31'
+		waCommonWebservicesClientVersion = '9.3.35'
 		log4j2Version = '2.8.2'
-		cayenneVersion = '4.0.M4'
+		cayenneVersion = '4.0.B1'
 		jettyVersion = '9.4.6.v20170531'
 	}
 	repositories {
@@ -16,8 +16,7 @@ buildscript {
 
 	dependencies {
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-		classpath "org.apache.cayenne:cayenne-tools:$cayenneVersion"
-		// classpath "org.apache.cayenne:cayenne-ant:$cayenneVersion"
+		classpath "org.apache.cayenne:cayenne-ant:$cayenneVersion"
 	}
 }
 
@@ -67,6 +66,13 @@ allprojects {
 		//log4j2 to commons-logging bridge
 		compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
         compile 'com.google.code.findbugs:jsr305:3.0.2'
+
+		// The following is needed until we upgrade waCommon which is forcing Cayenne back to 4.0M3.2
+		configurations.all {
+			resolutionStrategy {
+				force "org.apache.cayenne:cayenne-server:$cayenneVersion"
+			}
+		}
     }
 
 	group = 'ish.oncourse.angel'

@@ -1,8 +1,5 @@
 apply plugin: 'groovy'
 
-version = '1.0'
-
-
 repositories {
     maven {
         url 'https://repo.ish.com.au/content/groups/public'

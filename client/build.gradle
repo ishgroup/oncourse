@@ -5,7 +5,7 @@ dependencies {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
 
-	compile "org.apache.cayenne:cayenne-client:$cayenneVersion"
+	compile "org.apache.cayenne:cayenne-client-jetty:$cayenneVersion"
 	compile "org.apache.cayenne:cayenne-protostuff:$cayenneVersion"
 	compile 'foxtrot:foxtrot-core:4.0'
 	compile 'com.miglayout:miglayout-swing:4.2'
