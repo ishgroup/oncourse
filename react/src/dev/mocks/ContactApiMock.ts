@@ -4,6 +4,7 @@ import {CreateContactParams} from "../../js/model/web/CreateContactParams";
 import {ContactFieldsRequest} from "../../js/model/field/ContactFieldsRequest";
 import {ContactFields} from "../../js/model/field/ContactFields";
 import {SubmitFieldsRequest} from "../../js/model/field/SubmitFieldsRequest";
+import {ConcessionType as ConcessionTypeModel} from "../../js/model/checkout/concession/ConcessionType";
 
 import {MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
@@ -58,6 +59,30 @@ export class ContactApiMock extends ContactApi {
     }
 
     return this.config.createResponse(result);
+  }
+
+  getConcessionTypes() {
+    // move to mock db
+    const result1: ConcessionTypeModel = new ConcessionTypeModel();
+    result1.id = '1';
+    result1.name = 'Student';
+    const result2: ConcessionTypeModel = new ConcessionTypeModel();
+    result2.id = '2';
+    result2.name = 'Man';
+    result2.hasExpireDate = true;
+    result2.hasNumber = true;
+    const result3: ConcessionTypeModel = new ConcessionTypeModel();
+    result3.id = '-1';
+    result3.name = 'No concession';
+
+    return this.config.createResponse([result3, result2, result1]);
+  }
+
+  getContactConcessions(ids) {
+    const result1: ConcessionTypeModel = new ConcessionTypeModel();
+    result1.id = '1';
+    result1.name = 'Student';
+    return this.config.createResponse({[ids[0]]: [result1]});
   }
 
 

@@ -4,7 +4,7 @@ import * as Form from "redux-form";
 import {DateField} from "../../../../components/form/DateField";
 import {TextField} from "../../../../components/form/TextField";
 import Checkbox from "../../../../components/form-new/Checkbox";
-import {ConcessionTypeModel} from "../../../../model/checkout/ConcessionType";
+import {ConcessionType as ConcessionTypeModel} from "../../../../model/checkout/concession/ConcessionType";
 
 
 interface Props {
@@ -25,7 +25,7 @@ class ConcessionForm extends React.Component<Props, any> {
 
   handleChange(key) {
     const {concessionTypes, onTypeChange} = this.props;
-    const selectedType = concessionTypes.find(item => item.key === key);
+    const selectedType = concessionTypes.find(item => item.id === key.toString());
 
     this.setState({
       concessionType: selectedType,
@@ -46,7 +46,7 @@ class ConcessionForm extends React.Component<Props, any> {
           required={true}
           name="concessionType"
           label="New Concession"
-          items={concessionTypes}
+          items={concessionTypes.map(t => ({key: t.id, value: t.name}))}
           onChange={(event, key) => this.handleChange(key)}
         />
 

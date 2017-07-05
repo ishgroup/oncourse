@@ -77,11 +77,11 @@ export class CheckoutService {
   };
 
   public getConcessionTypes = () => {
-    return this.checkoutApi.getConcessionTypes();
+    return this.contactApi.getConcessionTypes();
   }
 
   public getContactConcessions = (payload, state) => {
-    return this.checkoutApi.getContactConcessions(state.checkout.contacts.result);
+    return this.contactApi.getContactConcessions(state.checkout.contacts.result);
   }
 
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {

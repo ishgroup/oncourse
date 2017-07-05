@@ -71,7 +71,7 @@ export const validate = (data, props) => {
   // skip validation if concession type not set
   if (!data.concessionType) return errors;
 
-  const concessionType = props.concessionTypes.find(item => item.key === data.concessionType);
+  const concessionType = props.concessionTypes.find(item => item.id === data.concessionType);
 
   if (concessionType.hasExpireDate && !data.date) {
     errors['date'] =  'Date is incorrect';
