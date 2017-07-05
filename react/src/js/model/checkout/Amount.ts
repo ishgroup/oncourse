@@ -4,6 +4,8 @@ export class Amount {
   total?: number;
   discount?: number;
   payNow?: number;
+  minPayNow?: number;
   voucherPayments?: any[];
+  isEditable?: boolean;
 }
 

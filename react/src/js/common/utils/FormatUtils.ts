@@ -22,6 +22,6 @@ export const formatDate = (dateISO8601: string, pattern: string): string => {
 /**
  * Return string with a currency symbol
  */
-export const formatMoney = (value: string): string => {
-  return MONEY_FORMAT.format(Number.parseFloat(value))
+export const formatMoney = (value: number): string => {
+  return MONEY_FORMAT.format(value);
 };

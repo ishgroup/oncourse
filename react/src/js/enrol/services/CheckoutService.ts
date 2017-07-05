@@ -262,7 +262,6 @@ export class BuildCheckoutModelRequest {
     result.promotionIds = state.cart.promotions.result;
     result.redeemedVoucherIds = state.checkout.redeemVouchers.filter(v => v.enabled).map(v => v.id);
     result.contactNodes = BuildContactNodes.fromState(state.checkout.summary);
-    console.log(result);
     return result;
   }
 }

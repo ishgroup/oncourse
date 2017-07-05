@@ -25,7 +25,7 @@ test('test build CheckoutModel from State', () => {
   const items: ContactNode = {
     contactId: contact.id,
     enrolments: [enrolment],
-    applications: []
+    applications: [],
 
   };
   const state: IshState = MockFunctions.mockState(contact, [courseClass], [items], [promotion]);
@@ -35,5 +35,4 @@ test('test build CheckoutModel from State', () => {
   expect(result.promotionIds[0]).toBe(promotion.id);
   expect(result.contactNodes[0].contactId).toBe(contact.id);
   expect(result.contactNodes[0].enrolments[0].classId).toBe(courseClass.id);
-
 });

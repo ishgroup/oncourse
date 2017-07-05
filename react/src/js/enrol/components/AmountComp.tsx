@@ -88,7 +88,6 @@ const Discount = props => {
 
 const RedeemVoucher = props => {
   const {redeemVoucher, voucherPayment, onChange} = props;
-  console.log(redeemVoucher);
 
   return (
     <div className="row">

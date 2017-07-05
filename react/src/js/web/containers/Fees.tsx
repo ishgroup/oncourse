@@ -22,13 +22,13 @@ class FeesContainer extends React.Component<FeesProps, FeesState> {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   requestCourseClassById: (id: string) => {
     dispatch({
       type: Actions.REQUEST_COURSE_CLASS,
-      payload: id
+      payload: id,
     });
-  }
+  },
 });
 
 const mapStateToProps = (state: IshState, ownProps: FeesProps) => {
@@ -37,8 +37,8 @@ const mapStateToProps = (state: IshState, ownProps: FeesProps) => {
   return {
     price: {
       ...course.price,
-      isPaymentGatewayEnabled: course.isPaymentGatewayEnabled
-    }
+      isPaymentGatewayEnabled: course.isPaymentGatewayEnabled,
+    },
   };
 };
 

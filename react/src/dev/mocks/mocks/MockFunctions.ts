@@ -114,7 +114,7 @@ export const mockAmount = (): Amount => {
     owing: faker.finance.amount(),
     discount: faker.finance.amount(),
     payNow: faker.finance.amount(),
-    minPayNow: '10',
+    minPayNow: 10,
     voucherPayments: [{id: '100', value: 555}, {id: '200', value: 666}],
     isEditable: true,
   };
@@ -174,6 +174,7 @@ export const mockState = (contact: Contact,
         page: Phase.Summary,
         payment: {},
         contacts: normalize([contact], ContactsSchema),
+        redeemVouchers: [],
       },
       cart: {
         contact,

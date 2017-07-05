@@ -34,7 +34,7 @@ class CreditCartForm extends React.Component<Props, any> {
     return (
       <div>
         <form onSubmit={handleSubmit} id="payment-form">
-          {amount.payNow != "0.00" &&
+          {amount.payNow !== 0 &&
             <CreditCardComp
               amount={amount}
               contacts={contacts}
@@ -65,11 +65,11 @@ const Form = reduxForm({
   form: NAME,
   validate: (data: Values, props: Props): FormErrors<FormData> => {
     const errors = {};
-    
+
     if (!data.agreementFlag) {
       errors[FieldName.agreementFlag] =  'You must agree to the policies before proceeding.';
     } 
-    if (props.amount.payNow != "0.00") {
+    if (props.amount.payNow !== 0) {
       if (!data.creditCardName) {
         errors[FieldName.creditCardName] = 'Please supply your name as printed on the card (maximum 40 characters)';
       }
@@ -95,7 +95,7 @@ const Form = reduxForm({
   },
   
   onSubmit: (data: Values, dispatch, props): void => {
-    if (props.amount.payNow != "0.00") {
+    if (props.amount.payNow !== 0) {
       data.creditCardNumber = data.creditCardNumber.replace(/\s+/g, "");
       data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "");
     }
@@ -112,7 +112,7 @@ const mapStateToProps = (state: IshState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     onSetPayer: id => dispatch(setPayer(id)),
     onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
