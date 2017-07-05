@@ -35,7 +35,6 @@ import {Promotion} from "../../model/web/Promotion";
 import {PurchaseItem} from "../../model/checkout/Index";
 import {Contact} from "../../model/web/Contact";
 
-
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
 
@@ -220,6 +219,16 @@ export class BuildSubmitFieldsRequest {
         f.value = 'false';
       }
     });
+
+    if (values.concessionType && values.concessionType !== "-1") {
+      result.concession = {
+        concessionTypeId: values.concessionType,
+        contactId: fields.contactId,
+        date: values.date || null,
+        number: values.number || null,
+      };
+    }
+
     return result;
   }
 }
