@@ -1,12 +1,22 @@
 package ish.oncourse.willow.model.checkout.concession;
 
+import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import ish.oncourse.util.FormatUtils;
 
 public class Concession  {
   
     private String concessionTypeId = null;
     private String contactId = null;
     private String name = null;
-    private String date = null;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime expiryDate = null;
     private String number = null;
 
     /**
@@ -61,19 +71,19 @@ public class Concession  {
     }
 
     /**
-     * Get date
-     * @return date
+     * Get expiryDate
+     * @return expiryDate
      */
-    public String getDate() {
-        return date;
+    public LocalDateTime getExpiryDate() {
+        return expiryDate;
     }
 
-    public void setDate(String date) {
-       this.date = date;
+    public void setExpiryDate(LocalDateTime expiryDate) {
+       this.expiryDate = expiryDate;
     }
 
-    public Concession date(String date) {
-      this.date = date;
+    public Concession expiryDate(LocalDateTime expiryDate) {
+      this.expiryDate = expiryDate;
       return this;
     }
 
@@ -103,7 +113,7 @@ public class Concession  {
       sb.append("    concessionTypeId: ").append(toIndentedString(concessionTypeId)).append("\n");
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
-      sb.append("    date: ").append(toIndentedString(date)).append("\n");
+      sb.append("    expiryDate: ").append(toIndentedString(expiryDate)).append("\n");
       sb.append("    number: ").append(toIndentedString(number)).append("\n");
       sb.append("}");
       return sb.toString();

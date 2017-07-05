@@ -12,6 +12,8 @@ import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.functions.GetContactFields
 import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.cayenne.CayenneService
+import ish.oncourse.willow.functions.concession.GetConcessionTypes
+import ish.oncourse.willow.functions.concession.GetContactConcessions
 import ish.oncourse.willow.model.checkout.concession.Concession
 import ish.oncourse.willow.model.checkout.concession.ConcessionType
 import ish.oncourse.willow.model.common.CommonError
@@ -139,16 +141,17 @@ class ContactApiServiceImpl implements ContactApi{
 
     @Override
     List<Concession> getContactConcessions(List<String> contactIds) {
-        return null
+        new GetContactConcessions(college: collegeService.college, context: cayenneService.newContext(), contactIds: contactIds).get()
     }
 
     @Override
     List<ConcessionType> getConcessionTypes() {
-        return null
+        new GetConcessionTypes(context: cayenneService.newContext(), college: collegeService.college).get()
     }
 
     @Override
     void submitConcession(Concession concession) {
+        
     }
 
 }

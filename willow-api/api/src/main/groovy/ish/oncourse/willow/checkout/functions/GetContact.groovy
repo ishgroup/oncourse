@@ -20,8 +20,12 @@ class GetContact extends Get<Contact> {
     GetContact(ObjectContext context, College college, String id) {
         super(context, college, id)
     }
-
+    
     Contact get() {
+        get(true)
+    }
+
+    Contact get(boolean checkStudent) {
         if (!StringUtils.trimToNull(id)) {
             logger.error("contact Id required")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
@@ -30,7 +34,7 @@ class GetContact extends Get<Contact> {
         if (!contact) {
             logger.error("Contact is not exist, id:$id collegeId: $college.id")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Contact is not exist')).build())
-        } else if (!contact.student) {
+        } else if (checkStudent && !contact.student) {
             logger.error("Contact has no student related, contact:$contact, collegeId: $college.id")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'Contact has no student related')).build())
         }
