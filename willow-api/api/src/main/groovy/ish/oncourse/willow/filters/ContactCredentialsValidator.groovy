@@ -52,7 +52,9 @@ class ContactCredentialsValidator implements ReaderInterceptor {
     private ValidationError validate(CreateContactParams contactParams) {
         ValidationError validationError = new ValidationError()
 
-        validationError.fieldsErrors.addAll( emptyCheck(contactParams.firstName, FIRST_NAME))
+        if (!contactParams.company) {
+            validationError.fieldsErrors.addAll(emptyCheck(contactParams.firstName, FIRST_NAME))
+        }
         validationError.fieldsErrors.addAll( emptyCheck(contactParams.lastName, LAST_NAME))
         
         //if email is not empty and length is normal (addAll() return 'false') - continue validate  email  

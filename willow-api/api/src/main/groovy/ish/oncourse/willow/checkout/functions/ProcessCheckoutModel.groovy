@@ -14,6 +14,7 @@ import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
+import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
 
 @CompileStatic
@@ -48,7 +49,7 @@ class ProcessCheckoutModel {
         checkoutModelRequest.contactNodes.each { contactNode ->
             model.contactNodes << contactNode
             
-            Contact contact = new GetContact(context, college, contactNode.contactId).get()
+            Contact contact = new GetContact(context, college, contactNode.contactId).get(false)
             contactNode.articles.each { a ->
                 processArticle(a, contact)
             }
@@ -63,13 +64,18 @@ class ProcessCheckoutModel {
             //all products should be payed permanently
             payNowAmount = Money.ZERO.add(totalAmount)
             
-            contactNode.enrolments.each { e ->
-                processEnrolment(e, contact)
-            }
+            if (contact.student) {
+                contactNode.enrolments.each { e ->
+                    processEnrolment(e, contact)
+                }
 
-            contactNode.applications.each { a ->
-                processApplication(a, contact)
+                contactNode.applications.each { a ->
+                    processApplication(a, contact)
+                }
+            } else if (!contactNode.enrolments.empty || !contactNode.applications.empty ) {
+                model.error = new CommonError(message: 'Purchase items are not valid')
             }
+            
         }
         
         CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
@@ -95,7 +101,6 @@ class ProcessCheckoutModel {
                 e.errors << "Enrolment for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) avalible by application".toString()
             } else if (!checkAndBookPlace(courseClass)) {
                 e.errors << "Unfortunately you just missed out. The class $courseClass.course.name ($courseClass.course.code - $courseClass.code) was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
-
             } else {
                 e.errors += processClass.enrolment.errors
                 e.warnings += processClass.enrolment.warnings

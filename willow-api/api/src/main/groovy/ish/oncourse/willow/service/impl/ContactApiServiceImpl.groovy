@@ -65,10 +65,6 @@ class ContactApiServiceImpl implements ContactApi{
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
         
-        if (!contactFieldsRequest.contactId) {
-            logger.error("contactId required, request param: $contactFieldsRequest")
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
-        }
         if (contactFieldsRequest.classIds.empty &&  contactFieldsRequest.productIds.empty) {
             logger.error("classesIds required, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
@@ -77,24 +73,28 @@ class ContactApiServiceImpl implements ContactApi{
             logger.error("fieldSet required, request param: $contactFieldsRequest")
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
         }
-        ish.oncourse.model.Contact contact = new GetContact(context, college, contactFieldsRequest.contactId).get()
         
-        List<CourseClass> classes = []
+        ish.oncourse.model.Contact contact = new GetContact(context, college, contactFieldsRequest.contactId).get(false)
         
-        if (!contactFieldsRequest.classIds.empty) {
-            classes = (ObjectSelect.query(CourseClass)
-                    .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classIds))
-                    & CourseClass.COLLEGE.eq(college))
-                    .prefetch(CourseClass.COURSE.joint())
-                    .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).joint())
-                    .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).joint())
-                    .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).dot(FieldConfiguration.FIELDS).joint())
-                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                    .cacheGroup(CourseClass.class.simpleName)
-                    .select(context)
+        if (contact.isCompany) {
+            return new ContactFields()
+        } else {
+            List<CourseClass> classes = []
+
+            if (!contactFieldsRequest.classIds.empty) {
+                classes = (ObjectSelect.query(CourseClass)
+                        .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classIds))
+                        & CourseClass.COLLEGE.eq(college))
+                        .prefetch(CourseClass.COURSE.joint())
+                        .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).joint())
+                        .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).joint())
+                        .prefetch(CourseClass.COURSE.dot(Course.FIELD_CONFIGURATION_SCHEME).dot(FieldConfigurationScheme.ENROL_FIELD_CONFIGURATION).dot(FieldConfiguration.FIELDS).joint())
+                        .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                        .cacheGroup(CourseClass.class.simpleName)
+                        .select(context)
+            }
+            new GetContactFields(contact, classes, !contactFieldsRequest.productIds.empty, contactFieldsRequest.fieldSet, contactFieldsRequest.mandatoryOnly).contactFields
         }
-        
-        new GetContactFields(contact, classes, !contactFieldsRequest.productIds.empty, contactFieldsRequest.fieldSet, contactFieldsRequest.mandatoryOnly).contactFields
     }
     
     @Override
@@ -130,7 +130,8 @@ class ContactApiServiceImpl implements ContactApi{
                     firstName: contact.givenName,
                     lastName: contact.familyName,
                     email: contact.emailAddress,
-                    uniqueIdentifier: studentUniqueIdentifier)
+                    uniqueIdentifier: studentUniqueIdentifier,
+                    company: contact.isCompany)
         } else {
             logger.error("There is no contact with uuid: ${studentUniqueIdentifier}")
             throw new IllegalArgumentException("There is no contact with uuid: ${studentUniqueIdentifier}")

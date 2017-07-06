@@ -34,7 +34,7 @@ class CreateOrGetContact  {
 
         if (contact) {
             contactId.newContact = false
-            if  (!contact.student) {
+            if  (!contact.isCompany && !contact.student) {
                 contact.createNewStudent()
                 contact.objectContext.commitChanges()
             }
@@ -44,10 +44,15 @@ class CreateOrGetContact  {
             contact.lastLoginTime = new Date()
             contact.setCollege(localCollege)
 
-            contact.givenName = params.firstName
-            contact.familyName = params.lastName
             contact.emailAddress = params.email
-            contact.createNewStudent()
+            contact.familyName = params.lastName
+            
+            if  (params.company) {
+                contact.isCompany = true
+            } else {
+                contact.givenName = params.firstName
+                contact.createNewStudent()
+            }
 
             contact.isMarketingViaEmailAllowed = true
             contact.isMarketingViaPostAllowed = true
@@ -71,9 +76,15 @@ class CreateOrGetContact  {
     }
     
     private Contact findContact() {
-        List<Contact> results = (ObjectSelect.query(Contact)
-                .where(EMAIL_ADDRESS.eq(params.email)) & GIVEN_NAME.eq(params.firstName) & FAMILY_NAME.eq(params.lastName) & COLLEGE.eq(college))
-                .select(context)
+        List<Contact> results
+        ObjectSelect select = (ObjectSelect.query(Contact)
+                .where(EMAIL_ADDRESS.eq(params.email)) & FAMILY_NAME.eq(params.lastName) & COLLEGE.eq(college))
+        
+        if (params.company) {
+            results  = (select & IS_COMPANY.eq(true)).select(context)
+        } else {
+            results  = (select & GIVEN_NAME.eq(params.firstName)  & IS_COMPANY.eq(false)).select(context)
+        }
 
         if (results.size() > 1) {
             logger.error("Duplicate student contact exists for {} {} ( {} ) with id {} used for this query.", params.firstName, params.lastName, params.email, results[0].id)

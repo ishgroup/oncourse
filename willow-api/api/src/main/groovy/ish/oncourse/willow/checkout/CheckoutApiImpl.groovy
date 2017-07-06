@@ -26,19 +26,12 @@ import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.service.CheckoutApi
-import ish.oncourse.willow.service.CollegeInfo
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import javax.ws.rs.BadRequestException
-import javax.ws.rs.Consumes
-import javax.ws.rs.GET
-import javax.ws.rs.POST
-import javax.ws.rs.Path
-import javax.ws.rs.PathParam
-import javax.ws.rs.Produces
 import javax.ws.rs.core.Response
 
 
@@ -62,10 +55,14 @@ class CheckoutApiImpl implements CheckoutApi {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest).process()
-        processModel.model
+        
+        if (processModel.model.error) {
+            throw new BadRequestException(Response.status(400).entity(processModel.model).build())
+        }  
+        
+        return processModel.model
     }
     
-
     @Override
     ContactNode getContactNode(ContactNodeRequest contactNodeRequest) {
 
@@ -77,14 +74,16 @@ class CheckoutApiImpl implements CheckoutApi {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
         
-        Contact contact = new GetContact(context, college, contactNodeRequest.contactId).get()
+        Contact contact = new GetContact(context, college, contactNodeRequest.contactId).get(false)
 
         ContactNode items = new ContactNode()
         items.contactId = contact.id.toString()
         
-        ProcessClasses processClasses = new ProcessClasses(context, contact, college, contactNodeRequest.classIds, contactNodeRequest.promotionIds).process()
-        items.enrolments = processClasses.enrolments
-        items.applications = processClasses.applications
+        if (!contact.isCompany) {
+            ProcessClasses processClasses = new ProcessClasses(context, contact, college, contactNodeRequest.classIds, contactNodeRequest.promotionIds).process()
+            items.enrolments = processClasses.enrolments
+            items.applications = processClasses.applications
+        }
         
         ProcessProducts processProducts = new ProcessProducts(context, contact, college, contactNodeRequest.productIds, null).process()
         items.articles += processProducts.articles
@@ -96,11 +95,7 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Override
     PaymentResponse getPaymentStatus(String sessionId) {
-        
-        ObjectContext context = cayenneService.newContext()
-        College college = collegeService.college
-        
-        new GetPaymentStatus(context, college, sessionId).get()
+        new GetPaymentStatus(cayenneService.newContext(), collegeService.college, sessionId).get()
     }
 
     @Override
@@ -127,9 +122,8 @@ class CheckoutApiImpl implements CheckoutApi {
         }
         
         CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel).create()
-        
         ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext, college,createPaymentModel, paymentRequest).process()
-
+        
         if (processPaymentModel.error == null) {
             return processPaymentModel.response
         } else {
