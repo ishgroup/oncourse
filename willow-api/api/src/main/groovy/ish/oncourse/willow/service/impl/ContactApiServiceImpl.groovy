@@ -12,11 +12,13 @@ import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.functions.GetContactFields
 import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.cayenne.CayenneService
+import ish.oncourse.willow.functions.concession.AddConcession
 import ish.oncourse.willow.functions.concession.GetConcessionTypes
 import ish.oncourse.willow.functions.concession.GetContactConcessions
 import ish.oncourse.willow.model.checkout.concession.Concession
 import ish.oncourse.willow.model.checkout.concession.ConcessionType
 import ish.oncourse.willow.model.common.CommonError
+import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
 import ish.oncourse.willow.model.field.SubmitFieldsRequest
@@ -28,7 +30,6 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
-import org.apache.cayenne.query.SelectById
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -98,20 +99,18 @@ class ContactApiServiceImpl implements ContactApi{
     
     @Override
     void submitContactDetails(SubmitFieldsRequest contactFields) {
+        
         ObjectContext context = cayenneService.newContext()
-        if (!contactFields.contactId) {
-            logger.error("contactId required, request param: $contactFields")
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contactId required')).build())
+        College college = collegeService.college
+        ish.oncourse.model.Contact contact = new GetContact(context, college, contactFields.contactId).get()
+        ValidationError errors = new ValidationError()
+        
+        SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors).submitContactFields(contact, contactFields.fields)
+        if (contactFields.concession) {
+            new AddConcession(objectContext: context, errors: errors, college: college).add(contactFields.concession)
         }
-
-        ish.oncourse.model.Contact contact = SelectById.query(ish.oncourse.model.Contact, contactFields.contactId).selectOne(context)
-        if (!contact) {
-            logger.error("contact is not exist, request param: $contactFields")
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'contact is not exist')).build())
-        }
-        SubmitContactFields submit = new SubmitContactFields(objectContext: context).submitContactFields(contact, contactFields.fields)
-
-        if (submit.errors.fieldsErrors.empty && submit.errors.formErrors.empty) {
+        
+        if (errors.fieldsErrors.empty && errors.formErrors.empty) {
             context.commitChanges()
         } else {
             logger.warn(" Vaidation error: $submit.errors")
@@ -152,6 +151,15 @@ class ContactApiServiceImpl implements ContactApi{
     @Override
     void submitConcession(Concession concession) {
         
+        ObjectContext context = cayenneService.newContext()
+        AddConcession addConcession = new AddConcession(college: collegeService.college, objectContext: context, errors: new ValidationError()).add concession
+        if (addConcession.errors.fieldsErrors.empty && addConcession.errors.formErrors.empty) {
+            context.commitChanges()   
+        } else {
+            context.rollbackChanges()
+            logger.warn(" Vaidation error: $addConcession.errors")
+            throw new BadRequestException(Response.status(400).entity(addConcession.errors).build())        
+        }
     }
 
 }

@@ -1281,6 +1281,5 @@ definitions:
         type: string
       expiryDate: 
          type: string
-         format: date
       number: 
         type: string

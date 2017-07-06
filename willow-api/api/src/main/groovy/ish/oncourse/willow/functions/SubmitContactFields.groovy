@@ -39,7 +39,7 @@ class SubmitContactFields {
 
     final static Logger logger = LoggerFactory.getLogger(SubmitContactFields.class)
     
-    ValidationError errors = new ValidationError()
+    ValidationError errors 
     ObjectContext objectContext
     boolean isDefaultCountry = false
     

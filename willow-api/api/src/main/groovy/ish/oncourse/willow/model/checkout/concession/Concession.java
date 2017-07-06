@@ -1,22 +1,12 @@
 package ish.oncourse.willow.model.checkout.concession;
 
-import java.time.LocalDateTime;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import ish.oncourse.util.FormatUtils;
 
 public class Concession  {
   
     private String concessionTypeId = null;
     private String contactId = null;
     private String name = null;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = FormatUtils.DATE_FORMAT_ISO8601)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime expiryDate = null;
+    private String expiryDate = null;
     private String number = null;
 
     /**
@@ -74,15 +64,15 @@ public class Concession  {
      * Get expiryDate
      * @return expiryDate
      */
-    public LocalDateTime getExpiryDate() {
+    public String getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(LocalDateTime expiryDate) {
+    public void setExpiryDate(String expiryDate) {
        this.expiryDate = expiryDate;
     }
 
-    public Concession expiryDate(LocalDateTime expiryDate) {
+    public Concession expiryDate(String expiryDate) {
       this.expiryDate = expiryDate;
       return this;
     }

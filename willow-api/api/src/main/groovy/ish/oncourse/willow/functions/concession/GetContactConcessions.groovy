@@ -2,13 +2,12 @@ package ish.oncourse.willow.functions.concession
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
-import ish.oncourse.model.StudentConcession
+import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.model.checkout.concession.Concession
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
 
-import java.time.ZoneOffset
+import java.text.SimpleDateFormat
 
 class GetContactConcessions {
 
@@ -28,7 +27,9 @@ class GetContactConcessions {
                         c.contactId = id
                         c.name = sc.concessionType.name
                         c.concessionTypeId = sc.concessionType.id.toString()
-                        c.expiryDate =  sc.expiresOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
+                        if (sc.expiresOn) {
+                            c.expiryDate = new SimpleDateFormat(FormatUtils.DATE_FIELD_PARSE_FORMAT).format(sc.expiresOn)
+                        }
                         c.number =  sc.concessionNumber
                         c
                     }
