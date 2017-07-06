@@ -7,7 +7,7 @@
     "dependencies:update": "npm prune && npm install",
     "dependencies:outdated": "npm outdated",
     "clean": "rm -rf ./build",
-    "build:prod": "npm run clean && webpack --progress -p --env.NODE_ENV production",
+    "build:prod": "npm run clean && webpack --progress --env.NODE_ENV production",
     "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production",
     "build:dev": "npm run clean && webpack --progress --config webpack.dev.config.js",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
@@ -85,7 +85,7 @@
     "redux-form": "6.8.0",
     "redux-logger": "3.0.6",
     "redux-observable": "0.14.1",
-    "redux-persist": "4.8.1",
+    "redux-persist": "^4.8.2",
     "rodal": "1.4.0",
     "rxjs": "5.2.0",
     "uuid": "3.1.0"

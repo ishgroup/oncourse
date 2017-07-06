@@ -34,7 +34,7 @@ export const CreateStore = (): Store<IshState> => {
 };
 
 export const RestoreState = (store: Store<IshState>, onComplete: OnComplete<any>): void => {
-  const presistStoreWrapper = () => {
+  const persistStoreWrapper = () => {
     persistStore(store, {storage: localForage, blacklist: ["form", "phase", "page"]}, onComplete);
     localForage.setItem('appVersion', ConfigConstants.APP_VERSION);
   };
@@ -43,10 +43,10 @@ export const RestoreState = (store: Store<IshState>, onComplete: OnComplete<any>
   localForage.getItem('appVersion').then(val => {
     if (val && val != ConfigConstants.APP_VERSION) {
       localForage.clear().then(() => {
-        presistStoreWrapper();
+        persistStoreWrapper();
       });
     } else {
-      presistStoreWrapper();
+      persistStoreWrapper();
     }
   });
 
