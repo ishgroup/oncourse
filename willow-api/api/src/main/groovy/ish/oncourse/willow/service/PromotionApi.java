@@ -1,5 +1,6 @@
 package ish.oncourse.willow.service;
 
+import ish.oncourse.willow.model.checkout.CodeResponse;
 import ish.oncourse.willow.model.common.CommonError;
 import ish.oncourse.willow.model.web.Promotion;
 import ish.oncourse.willow.model.web.PromotionNotFound;
@@ -20,5 +21,11 @@ public interface PromotionApi  {
     @Produces({ "application/json" })
     @CollegeInfo
     Promotion getPromotion(@PathParam("code") String code);
+
+    @GET
+    @Path("/submitCode/{code}")
+    @Produces({ "application/json" })
+    @CollegeInfo
+    CodeResponse submitCode(@PathParam("code") String code);
 }
 
