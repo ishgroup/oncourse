@@ -12,6 +12,7 @@ import {changePhase, setPayer} from "../../actions/Actions";
 import {Phase} from "../../reducers/State";
 
 import {FieldName, Values} from "./services/PaymentService";
+import CheckoutService from "../../services/CheckoutService";
 
 interface Props extends FormProps<DataShape, any, any> {
   amount: Amount;
@@ -20,14 +21,16 @@ interface Props extends FormProps<DataShape, any, any> {
   onAddPayer: () => any;
   onAddCompany: () => any;
   payerId: string;
-
+  voucherPayerEnabled?: boolean;
 }
 
 export const NAME = "CreditCartForm";
 
 class CreditCartForm extends React.Component<Props, any> {
   render() {
-    const {amount, contacts, handleSubmit, invalid, pristine, submitting, onSetPayer, payerId, onAddPayer, onAddCompany} = this.props;
+    const {amount, contacts, handleSubmit, invalid, pristine, submitting,
+      onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled} = this.props;
+
     const disabled = (invalid || pristine || submitting);
     const className = classnames("btn", "btn-primary", {disabled});
 
@@ -42,6 +45,7 @@ class CreditCartForm extends React.Component<Props, any> {
               onSetPayer={onSetPayer}
               onAddPayer={onAddPayer}
               onAddCompany={onAddCompany}
+              voucherPayerEnabled={voucherPayerEnabled}
             />
           }
           <Conditions/>
@@ -61,7 +65,7 @@ class CreditCartForm extends React.Component<Props, any> {
 }
 
 
-const Form = reduxForm({
+const Form: any = reduxForm({
   form: NAME,
   validate: (data: Values, props: Props): FormErrors<FormData> => {
     const errors = {};
@@ -109,6 +113,7 @@ const mapStateToProps = (state: IshState) => {
     contacts: Object.values(state.checkout.contacts.entities.contact),
     amount: state.checkout.amount,
     payerId: state.checkout.payerId,
+    voucherPayerEnabled: CheckoutService.hasActiveVoucherPayer(state.checkout),
   };
 };
 

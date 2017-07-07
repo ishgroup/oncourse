@@ -20,9 +20,10 @@ import {EpicResult} from "../containers/result/epics/EpicResult";
 import {EpicAddCode} from "./EpicAddCode";
 import {EpicUpdateSummary} from "./EpicLoadCheckoutModel";
 import {GetContactNode} from "./EpicGetContactNode";
-import {SubmitAddContact, SubmitAddContactAsPayer} from "../containers/contact-add/epics/EpicSubmitAddContact";
+import {SubmitAddContact, SubmitAddContactAsPayer, AddPayerFromVoucher} from "../containers/contact-add/epics/EpicSubmitAddContact";
 import {OpenEditContact} from "../containers/contact-edit/epics/EpicOpenEditContact";
 import {SubmitEditContact} from "../containers/contact-edit/epics/EpicSubmitEditContact";
+import {EpicToggleRedeemVoucher} from "./EpicToggleRedeemVoucher";
 
 const {
   contactApi,
@@ -31,7 +32,7 @@ const {
 export const EpicCheckout = combineEpics(
   EpicInit,
   MessagesShowEpic,
-  SubmitAddContact, SubmitAddContactAsPayer,
+  SubmitAddContact, SubmitAddContactAsPayer, AddPayerFromVoucher,
   SubmitEditContact,
   OpenEditContact,
   GetContactNode,
@@ -45,7 +46,8 @@ export const EpicCheckout = combineEpics(
   EpicGetConcessionTypes, GetContactConcessions,
   FinishCheckoutProcess,
   EpicResult,
-  createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT)
+  EpicToggleRedeemVoucher,
+  createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT),
 );
 
 function createGetOrCreateContactEpic(actionType) {
@@ -55,6 +57,6 @@ function createGetOrCreateContactEpic(actionType) {
       .fromPromise(contactApi.createOrGetContact(action.payload))
       .map(payload => normalize(payload, ContactSchema))
       .map(mapPayload(actionType))
-      .catch(mapError(actionType))
+      .catch(mapError(actionType)),
     );
 }

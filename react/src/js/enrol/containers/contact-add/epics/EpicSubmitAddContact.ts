@@ -2,7 +2,9 @@ import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
 import {Observable} from "rxjs";
 import "rxjs";
-import {addContact, SUBMIT_ADD_CONTACT, SUBMIT_ADD_CONTACT_AS_PAYER, SubmitContact} from "../actions/Actions";
+import {
+  ADD_PAYER_FROM_VOUCHER, addContact, SUBMIT_ADD_CONTACT, SUBMIT_ADD_CONTACT_AS_PAYER, SubmitContact,
+} from "../actions/Actions";
 import {setPayer, setNewContactFlag} from "../../../actions/Actions";
 import {addContact as addContactToCart} from "../../../../web/actions/Actions";
 import {IshState} from "../../../../services/IshState";
@@ -49,3 +51,14 @@ export const SubmitAddContactAsPayer: Epic<any, IshState> = (action$: ActionsObs
   });
 };
 
+export const AddPayerFromVoucher: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
+  return action$.ofType(ADD_PAYER_FROM_VOUCHER).flatMap(action => {
+    const payload: SubmitContact = action.payload;
+
+    return [
+      addContact(payload.contact),
+      setNewContactFlag(payload.newContact),
+      setPayer(payload.contact.id),
+    ];
+  });
+};

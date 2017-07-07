@@ -3,7 +3,7 @@ import AmountComp from "../../../components/AmountComp";
 import {Amount} from "../../../../model/checkout/Amount";
 import {FormDecorator} from "redux-form";
 import {Promotion} from "../../../../model/web/Promotion";
-import {RedeemVoucher} from "../../../../model/web/RedeemVoucher";
+import {RedeemVoucher} from "../../../../model/checkout/RedeemVoucher";
 
 export interface Props {
   paymentForm: FormDecorator<FormData, any, any>;
@@ -11,12 +11,11 @@ export interface Props {
   onAddCode:(code: string) => void;
   promotions: Promotion[];
   redeemVouchers?: RedeemVoucher[];
-  onToggleVoucher?: (id, enabled) => void;
+  onToggleVoucher?: (redeemVoucher, enabled) => void;
   onUpdatePayNow?: (amount, val) => void;
-
 }
 
-export class PaymentComp extends React.Component<Props, any> {
+export class   PaymentComp extends React.Component<Props, any> {
   render() {
     const {amount,onAddCode, paymentForm, promotions, onUpdatePayNow, onToggleVoucher, redeemVouchers} = this.props;
     return (

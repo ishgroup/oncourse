@@ -115,7 +115,7 @@ export const mockAmount = (): Amount => {
     discount: faker.finance.amount(),
     payNow: faker.finance.amount(),
     minPayNow: 10,
-    voucherPayments: [{id: '100', value: 555}, {id: '200', value: 666}],
+    voucherPayments: [{id: '1-100', value: 555}, {id: '2-100', value: 666}],
     isEditable: true,
   };
 };

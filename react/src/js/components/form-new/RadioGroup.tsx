@@ -24,7 +24,7 @@ class RadioGroup extends React.Component<any, any> {
   }
 
   render() {
-    const {name, items} = this.props;
+    const {name, items, disabled} = this.props;
     const input:WrappedFieldInputProps = inputFrom(this.props);
 
     const fields = items.map(i => {
@@ -39,6 +39,7 @@ class RadioGroup extends React.Component<any, any> {
             onChange={() => { this.handleChange(i.key);}}
             onBlur={input.onBlur}
             onFocus={input.onFocus}
+            disabled={disabled}
           />
           <span htmlFor={i.key}>&nbsp; {i.value}</span>
         </span>

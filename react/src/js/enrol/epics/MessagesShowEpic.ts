@@ -9,14 +9,14 @@ import {isCommonError, isPlainTextError, isValidationError, toValidationError} f
 
 
 const MessagesShowEpic: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<any>): Observable<any> => {
-  return action$.ofType(SHOW_MESSAGES_REQUEST).flatMap((action) => {
+  return action$.ofType(SHOW_MESSAGES_REQUEST).flatMap(action => {
     const messages: ValidationError = toValidationError(action.payload);
     const form: string = action.meta.form;
     const _formErrors = {};
-    messages.fieldsErrors.forEach((e) => {
+    messages.fieldsErrors.forEach(e => {
       _formErrors[e.name] = e.error;
     });
-    return [stopSubmit(form, _formErrors), {type: SHOW_MESSAGES, payload: messages}]
+    return [stopSubmit(form, _formErrors), {type: SHOW_MESSAGES, payload: messages}];
   });
 };
 

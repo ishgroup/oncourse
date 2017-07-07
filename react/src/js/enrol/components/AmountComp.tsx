@@ -4,7 +4,7 @@ import classnames from "classnames";
 import {Amount} from "../../model/checkout/Amount";
 import AddCodeComp from "./AddCodeComp";
 import {Promotion} from "../../model/web/Promotion";
-import {RedeemVoucher as RedeemVoucherModel} from "../../model/web/RedeemVoucher";
+import {RedeemVoucher as RedeemVoucherModel} from "../../model/checkout/RedeemVoucher";
 import CheckoutService from "../services/CheckoutService";
 import log = Handlebars.log;
 
@@ -12,9 +12,9 @@ interface Props {
   amount: Amount;
   onAddCode: (code: string) => void;
   promotions: Promotion[];
-  redeemVouchers?: RedeemVoucherModel[];
+  redeemVouchers?: any;
   onUpdatePayNow?: (val) => void;
-  onToggleVoucher?: (id, enabled) => void;
+  onToggleVoucher?: (redeemVoucher, enabled) => void;
 }
 
 class AmountComp extends React.Component<Props, any> {
@@ -36,6 +36,7 @@ class AmountComp extends React.Component<Props, any> {
 
   public render(): JSX.Element {
     const {amount, onAddCode, promotions, onUpdatePayNow, redeemVouchers, onToggleVoucher} = this.props;
+    const activeVoucherWithPayer = redeemVouchers.find(v => v.payer && v.enabled);
 
     return (
       <div className="row">
@@ -49,6 +50,7 @@ class AmountComp extends React.Component<Props, any> {
                 key={v.id}
                 redeemVoucher={v}
                 voucherPayment={amount.voucherPayments.find(vp => vp.id === v.id)}
+                disabled={!!(activeVoucherWithPayer && activeVoucherWithPayer.id !== v.id)}
                 onChange={onToggleVoucher}
               />
             ))}
@@ -87,7 +89,7 @@ const Discount = props => {
 };
 
 const RedeemVoucher = props => {
-  const {redeemVoucher, voucherPayment, onChange} = props;
+  const {redeemVoucher, voucherPayment, onChange, disabled} = props;
 
   return (
     <div className="row">
@@ -95,8 +97,9 @@ const RedeemVoucher = props => {
         <input
           type="checkbox"
           value="true"
-          onChange={e => onChange(redeemVoucher.id, e.target.checked)}
+          onChange={e => onChange(redeemVoucher, e.target.checked)}
           checked={redeemVoucher.enabled}
+          disabled={disabled}
         />
         {redeemVoucher.name}
       </label>

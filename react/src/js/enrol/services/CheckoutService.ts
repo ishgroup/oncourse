@@ -51,6 +51,10 @@ export class CheckoutService {
     return !L.isNil(state.payerId);
   }
 
+  public hasActiveVoucherPayer = (state: CheckoutState): boolean => {
+    return !!state.redeemVouchers.filter(v => v.payer && v.enabled).length;
+  }
+
   public hasCartContact = (cart: CartState): boolean => {
     return L.isNil(cart.contact);
   }

@@ -16,36 +16,36 @@ export const FieldName = createStringEnum([
   "expiryMonth",
   "expiryYear",
   "creditCardCvv",
-  "agreementFlag"
+  "agreementFlag",
 ]);
 export type FieldName = keyof typeof FieldName;
 
 export interface Values {
-  creditCardName: string
-  creditCardNumber: string
-  expiryMonth: string
-  expiryYear: string
-  creditCardCvv: string
-  agreementFlag: boolean
+  creditCardName: string;
+  creditCardNumber: string;
+  expiryMonth: string;
+  expiryYear: string;
+  creditCardCvv: string;
+  agreementFlag: boolean;
 }
 
 export class PaymentService {
   static months = (): Promise<Item> => {
-    const result = L.range(1, 13).map((i) => {
+    const result = L.range(1, 13).map(i => {
       const v = i < 10 ? `0${i}` : `${i}`;
-      return {key: v, value: v}
+      return {key: v, value: v};
     });
     return Promise.resolve(result);
-  };
+  }
 
   static years = (): Promise<Item> => {
     const start: number = moment().get('year');
-    const result = L.range(start, start + 11).map((y) => {
+    const result = L.range(start, start + 11).map(y => {
       const v = `${y}`;
-      return {key: v, value: v}
+      return {key: v, value: v};
     });
     return Promise.resolve(result);
-  };
+  }
 
   static valuesToRequest = (values: Values, state: IshState): PaymentRequest => {
     const result: PaymentRequest = new PaymentRequest();
@@ -59,7 +59,6 @@ export class PaymentService {
     result.payNow = state.checkout.amount.payNow;
     result.sessionId = uuid();
     return result;
-  };
+  }
 }
-
 

@@ -2,38 +2,45 @@ import {Epic} from "redux-observable";
 import "rxjs";
 import {IshState} from "../../services/IshState";
 import * as EpicUtils from "./EpicUtils";
-import {ADD_CODE_REQUEST, getCheckoutModelFromBackend, ADD_REDEEM_VOUCHER_TO_STATE} from "../actions/Actions";
+import {ADD_CODE_REQUEST, getCheckoutModelFromBackend, addRedeemVoucherToState} from "../actions/Actions";
 import {Actions} from "../../web/actions/Actions";
-import {SubmitCodeResponse} from "../../model/web/SubmitCodeResponse";
+import {CodeResponse} from "../../model/checkout/CodeResponse";
 import CheckoutService from "../services/CheckoutService";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {normalize} from "normalizr";
 import {PromotionsSchema} from "../../NormalizeSchema";
+import {addPayerFromVoucher} from "../containers/contact-add/actions/Actions";
+import {addContactToSummary} from "../containers/summary/actions/Actions";
 
 
-const request: EpicUtils.Request<SubmitCodeResponse, IshState> = {
+const request: EpicUtils.Request<CodeResponse, IshState> = {
   type: ADD_CODE_REQUEST,
   getData: CheckoutService.submitCode,
-  processData: (value: SubmitCodeResponse, state: IshState) => {
+  processData: (value: CodeResponse, state: IshState) => {
     const result = [];
 
-    if (value.promotion) {
-      result.push(
-        {
-          type: FULFILLED(Actions.ADD_PROMOTION_TO_CART),
-          payload: normalize(value.promotion, PromotionsSchema),
-        },
-      );
+    const {promotion, voucher} = value;
+    const hasActiveVoucherPayer = CheckoutService.hasActiveVoucherPayer(state.checkout);
+    const preventAddVoucher = voucher && voucher.payer && hasActiveVoucherPayer;
+
+    if (promotion) {
+      result.push({
+        type: FULFILLED(Actions.ADD_PROMOTION_TO_CART),
+        payload: normalize(promotion, PromotionsSchema),
+      });
     }
 
-    if (value.voucher) {
-      result.push(
-        {
-          type: FULFILLED(ADD_REDEEM_VOUCHER_TO_STATE),
-          payload: value.voucher,
-        },
-      );
+
+    if (voucher && !preventAddVoucher) {
+      result.push(addRedeemVoucherToState(voucher));
+
+      if (voucher.payer) {
+        result.push(addPayerFromVoucher(voucher.payer));
+        result.push(addContactToSummary(voucher.payer));
+      }
     }
+
+    if (preventAddVoucher) {console.log('You already have selected voucher with payer');}
 
     result.push(getCheckoutModelFromBackend());
 

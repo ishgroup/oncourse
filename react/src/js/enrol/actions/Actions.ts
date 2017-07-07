@@ -1,4 +1,4 @@
-import {_toRequestType} from "../../common/actions/ActionUtils";
+import {_toRequestType, FULFILLED} from "../../common/actions/ActionUtils";
 import {Phase} from "../reducers/State";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
@@ -33,7 +33,8 @@ export const GET_CHECKOUT_MODEL_FROM_BACKEND: string = "checkout/get/model/from/
 
 export const ADD_REDEEM_VOUCHER_TO_STATE: string = "checkout/add/redeemVoucher";
 
-export const TOGGLE_VOUCHER_ACTIVITY: string = "checkout/set/voucher/activity";
+export const SET_REDEEM_VOUCHER_ACTIVITY: string = "checkout/set/voucher/activity";
+export const TOGGLE_REDEEM_VOUCHER: string = "checkout/toggle/redeemVoucher";
 
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
@@ -95,12 +96,19 @@ export const updateAmount = (amount: Amount): IAction<Amount> => {
   };
 };
 
-export const toggleVoucher = (id: string, enabled: boolean): IAction<any> => {
+export const setRedeemVoucherActivity = (id: string, enabled: boolean): IAction<any> => {
   return {
-    type: TOGGLE_VOUCHER_ACTIVITY,
+    type: SET_REDEEM_VOUCHER_ACTIVITY,
     payload: {id, enabled},
   };
-}
+};
+
+export const toggleRedeemVoucher = (voucher, enabled: boolean): IAction<any> => {
+  return {
+    type: TOGGLE_REDEEM_VOUCHER,
+    payload: {voucher, enabled},
+  };
+};
 
 export const finishCheckoutProcess = (): IAction<any> => {
   return {
@@ -117,3 +125,8 @@ export const resetCheckoutState = (): IAction<any> => {
 export const setPayer = function (id: string): { type: string, payload: string } {
   return {type: SET_PAYER_TO_STATE, payload: id};
 };
+
+export const addRedeemVoucherToState = voucher => ({
+  type: FULFILLED(ADD_REDEEM_VOUCHER_TO_STATE),
+  payload: voucher,
+});

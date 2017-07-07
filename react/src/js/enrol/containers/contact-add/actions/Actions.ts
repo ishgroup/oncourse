@@ -7,6 +7,8 @@ import {IAction} from "../../../../actions/IshAction";
 export const SUBMIT_ADD_CONTACT: string = "checkout/submit/add/contact";
 export const SUBMIT_ADD_CONTACT_AS_PAYER: string = "checkout/submit/add/contact/payer";
 
+export const ADD_PAYER_FROM_VOUCHER: string = "checkout/add/payer/from/voucher";
+
 export const ADD_CONTACT_TO_STATE: string = "checkout/add/contact/to/state";
 
 export const NAME = "ContactAddForm";
@@ -25,10 +27,10 @@ const getContactPayload = (contactId, values): SubmitContact => {
   contact.email = values.email;
 
   return {
-    contact: contact,
+    contact,
     newContact: contactId.newContact,
   };
-}
+};
 
 
 export interface SubmitContact {
@@ -50,6 +52,16 @@ export const submitAddContactAsPayer = (contactId: ContactId, values: Values): I
   return {
     type: SUBMIT_ADD_CONTACT_AS_PAYER,
     payload: getContactPayload(contactId, values),
+    meta: {
+      from: NAME,
+    },
+  };
+};
+
+export const addPayerFromVoucher = (contact: Contact): IAction<SubmitContact> => {
+  return {
+    type: ADD_PAYER_FROM_VOUCHER,
+    payload: {contact, newContact: false},
     meta: {
       from: NAME,
     },

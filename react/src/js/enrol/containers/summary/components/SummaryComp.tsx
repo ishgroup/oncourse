@@ -4,7 +4,7 @@ import classnames from "classnames";
 import AmountComp from "../../../components/AmountComp";
 import ContactComp, {Props as ContactProps} from "./ContactComp";
 import {Amount} from "../../../../model/checkout/Amount";
-import {RedeemVoucher} from "../../../../model/web/RedeemVoucher";
+import {RedeemVoucher} from "../../../../model/checkout/RedeemVoucher";
 import {Promotion} from "../../../../model/web/Promotion";
 import {PurchaseItem} from "../../../../model/checkout/Index";
 
@@ -16,7 +16,7 @@ export interface Props {
   onAddCode: (code: string) => void;
   promotions: Promotion[];
   redeemVouchers?: RedeemVoucher[];
-  onToggleVoucher?: (id, enabled) => void;
+  onToggleVoucher?: (redeemVoucher: RedeemVoucher, enabled) => void;
   onProceedToPayment?: () => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;

@@ -13,12 +13,11 @@ import {Reducer as PaymentReducer} from "../containers/payment/reducers/Reducer"
 import {Reducer as ConcessionReducer} from "../containers/concession/reducers/Reducer";
 import {ContactsSchema, ContactsState} from "../../NormalizeSchema";
 import {Promotion} from "../../model/web/Promotion";
-import {RedeemVoucher} from "../../model/web/RedeemVoucher";
+import {RedeemVoucher} from "../../model/checkout/RedeemVoucher";
 import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import log = Handlebars.log;
-
 
 const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phase => {
     switch (action.type) {
@@ -95,7 +94,7 @@ const ContactsReducer = (state: ContactsState = normalize([], ContactsSchema), a
 
       const ns: ContactsState = L.cloneDeep(state);
       ns.entities.contact = {...ns.entities.contact, ...action.payload.entities.contact};
-      ns.result = L.concat(ns.result, action.payload.result);
+      ns.result = Array.from(new Set([...ns.result, ...action.payload.result]));
       return ns;
 
     case Actions.RESET_CHECKOUT_STATE:
@@ -160,14 +159,14 @@ const AddCodeReducer = (state: Promotion = null, action: { type: string, payload
   }
 };
 
-const RedeemVouchers = (state: RedeemVoucher[] = [], action: { type: string, payload: RedeemVoucher }): any => {
+const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: { type: string, payload: any }): any => {
   switch (action.type) {
 
     case FULFILLED(Actions.ADD_REDEEM_VOUCHER_TO_STATE):
       const voucher = action.payload;
       return state.filter(v => v.id === voucher.id).length ? state : state.concat(voucher);
 
-    case Actions.TOGGLE_VOUCHER_ACTIVITY:
+    case Actions.SET_REDEEM_VOUCHER_ACTIVITY:
       const {id, enabled} = action.payload;
       return state.map(v => v.id === id ? {...v, enabled} : v);
 
@@ -189,5 +188,5 @@ export const Reducer = combineReducers<CheckoutState>({
   payerId: PayerReducer,
   contacts: ContactsReducer,
   concession: ConcessionReducer,
-  redeemVouchers: RedeemVouchers,
+  redeemVouchers: RedeemVouchersReducer,
 });

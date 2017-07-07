@@ -18,6 +18,7 @@ interface Props {
   onAddPayer?: () => any;
   onAddCompany?: () => any;
   payerId?: string;
+  voucherPayerEnabled?: boolean;
 }
 
 const Header = () => {
@@ -36,7 +37,7 @@ class CreditCardComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onSetPayer, payerId, onAddPayer, onAddCompany} = this.props;
+    const {contacts, amount, onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled} = this.props;
 
     return (
       <div id="credit-card" className={classnames("single-tab", "active")}>
@@ -56,6 +57,7 @@ class CreditCardComp extends React.Component<Props, any> {
                   contacts={contacts}
                   payer={contacts.filter(c => c.id === payerId)[0]}
                   onChange={onSetPayer}
+                  voucherPayerEnabled={voucherPayerEnabled}
                 />
 
                 <PayerAdd

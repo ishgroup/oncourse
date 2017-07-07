@@ -30,15 +30,15 @@ export class Bootstrap {
   public register = (marker: HTMLMarker): Bootstrap => {
     this.components[marker.id] = marker;
     return this;
-  };
+  }
 
   /**
    * onEven parameter needs to have a possibility to start bootstrap from tests
    */
   public start = (onEvent:boolean = true): Bootstrap => {
-    onEvent ? whenReady(() => this.bootstrap()): this.bootstrap();
+    onEvent ? whenReady(() => this.bootstrap()) : this.bootstrap();
     return this;
-  };
+  }
 
   private render = (container: HTMLElement, marker: HTMLMarker) => {
     try {
@@ -49,19 +49,19 @@ export class Bootstrap {
       const realProps = HtmlDataService.parse(container, marker);
 
       if (!isNil(realProps.checkoutPath)) {
-        this.store.dispatch({type: CommonActions.CheckoutPathUpdate, payload: realProps.checkoutPath})
+        this.store.dispatch({type: CommonActions.CheckoutPathUpdate, payload: realProps.checkoutPath});
       }
 
       render(
         <Provider store={this.store}>
           <marker.component {...realProps}/>
         </Provider>,
-        container
+        container,
       );
     } catch (e) {
       Logger.log(new LogMessage(Level.ERROR, `Component with cid:${marker.id} cannot be instantiated.`, [e]));
     }
-  };
+  }
 
   /**
    * This function convert loaded html properties to correspondent object and add this object to the react store
@@ -73,16 +73,16 @@ export class Bootstrap {
         if (courseClass.course) {
           dispatch({
             type: Actions.PutClassToStore,
-            payload: normalize(courseClass, ClassesListSchema)
-          })
+            payload: normalize(courseClass, ClassesListSchema),
+          });
         }
     }
-  };
+  }
 
 
   private bootstrap = (): void => {
     try {
-      Object.keys(this.components).forEach((cid) => {
+      Object.keys(this.components).forEach(cid => {
         const containers = document.querySelectorAll(`[${ATTR_DATA_CID}='${cid}']`);
         const marker: HTMLMarker = this.components[cid];
         forEach(containers, (container: HTMLElement) => {

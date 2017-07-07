@@ -7,11 +7,12 @@ export interface Props {
   contacts: Contact[];
   payer: Contact;
   onChange: (Contact) => void;
+  voucherPayerEnabled?: boolean;
 }
 
 export class PayerSelect extends React.Component<Props, any> {
   render() {
-    const {contacts, payer, onChange} = this.props;
+    const {contacts, payer, onChange, voucherPayerEnabled} = this.props;
     const items: Item[] = contacts.map((contact: Contact) => {
       return {key: contact.id, value: `${contact.firstName || ''} ${contact.lastName}`};
     });
@@ -27,7 +28,14 @@ export class PayerSelect extends React.Component<Props, any> {
           <small>(issue invoice to)</small>
         </label>
         <div className="select-payer">
-          <RadioGroup name="payer" required={true} items={items} input={input} onChange={onChange}/>
+          <RadioGroup
+            name="payer"
+            required={true}
+            items={items}
+            input={input}
+            onChange={onChange}
+            disabled={voucherPayerEnabled}
+          />
         </div>
       </div>
     );
