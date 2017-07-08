@@ -94,3 +94,15 @@ distZip {
         into('.')
     }
 }
+
+publishing {
+// For deploying to our repo
+    publications {
+        executables(MavenPublication) {
+            artifact(distZip) {
+                classifier "executable"
+                extension "zip"
+            }
+        }
+    }
+}
