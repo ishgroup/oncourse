@@ -24,7 +24,6 @@ buildscript {
 
 plugins {
 	id 'java'
-	id 'idea'
 	id 'groovy'
 	id 'maven'
 	id 'jacoco'
@@ -180,16 +179,6 @@ allprojects {
 				credentials {
 					username nexusUsername
 					password nexusPassword
-				}
-			}
-		}
-
-		// For deploying to our repo
-		publications {
-			executables(MavenPublication) {
-				artifact(distZip) {
-					classifier "executable"
-					extension "zip"
 				}
 			}
 		}
