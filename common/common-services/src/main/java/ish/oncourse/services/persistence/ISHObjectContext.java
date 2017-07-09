@@ -106,11 +106,13 @@ public class ISHObjectContext extends DataContext {
 	 * This mechanism has been introduced as the simplest workaround for
 	 * "MySQLTransactionRollbackException: Deadlock found when trying to get lock; try restarting transaction at"
 	 * exception
+	 *
+	 * The method should be "friendly" because we use it in junits
 	 */
-	private void commitChanges0(int retry) {
+	void commitChanges0(int retry) {
 		try {
-			callSuperCommitChanges();
-		} catch (CayenneRuntimeException e) {
+			super.commitChanges();
+		} catch (RuntimeException e) {
 			if (retry < 2) {
 				retry += 1;
 				commitChanges0(retry);
@@ -120,11 +122,5 @@ public class ISHObjectContext extends DataContext {
 		}
 
 	}
-
-	/**
-	 * Utility method for ISHObjectContextTest.testDefaultCommitAttempts
-	 */
-	protected void callSuperCommitChanges(){
-		super.commitChanges();
-	}
 }
+
