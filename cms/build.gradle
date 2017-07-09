@@ -15,7 +15,6 @@ dependencies {
 	compile 'org.apache.tapestry:tapestry-core:5.2.6'
 	compile 'org.apache.tapestry:tapestry-json:5.2.6'
 	compile 'org.apache.tapestry:tapestry-upload:5.2.6'
-	compile 'opensymphony:oscache:2.4.1'
     compile 'io.milton:milton-api:2.6.0.1'
     compile 'io.milton:milton-server-ce:2.6.0.1'
     compile 'org.reflections:reflections:0.9.11'
