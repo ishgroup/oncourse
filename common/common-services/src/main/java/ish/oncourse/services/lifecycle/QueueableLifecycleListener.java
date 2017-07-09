@@ -88,15 +88,10 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
                 stack.push(frame);
                 return filterChain.onSync(originatingContext, changes, syncType);
             }
-            catch (Throwable e)
-            {
-                logger.error("QueueableLifecycleListener thrown an exception", e);
-                throw new RuntimeException(e);
-            }
             finally {
-                /**
-                 * Pop and commit are called from finally block because they should be called always.
-                 * Otherwise we can lose uncommitted QueuedRecords when  filterChain.onSync will throw any exception.
+                /*
+                  Pop and commit are called from finally block because they should be called always.
+                  Otherwise we can lose uncommitted QueuedRecords when filterChain.onSync throws am exception.
                  */
                 stack.pop();
                 if (stack.isEmpty()) {
@@ -107,7 +102,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         catch (Throwable e)
         {
             logger.error("QueueableLifecycleListener thrown an exception", e);
-            throw new RuntimeException(e);
+			throw e instanceof RuntimeException ? (RuntimeException) e: new CayenneRuntimeException(e);
         }
         finally {
             if (STACK_STORAGE.get() != null && STACK_STORAGE.get().isEmpty()) {
@@ -294,7 +289,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         //properly handle commit() which touches records across several colleges
         String queuedTransactionKey = String.format("%s:%s", college.getId(), transactionKey);
         QueuedTransaction t = STACK_STORAGE.get().peek().getTransactionMapping().get(queuedTransactionKey);
-        
+
         if (t == null) {
             t = currentContext.newObject(QueuedTransaction.class);
             Date today = new Date();
@@ -304,7 +299,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
             t.setCollege(college);
             STACK_STORAGE.get().peek().getTransactionMapping().put(queuedTransactionKey, t);
         }
-        
+
         String entityName = entity.getObjectId().getEntityName();
         Long entityId = entity.getId();
         Long angelId = entity.getAngelId();
