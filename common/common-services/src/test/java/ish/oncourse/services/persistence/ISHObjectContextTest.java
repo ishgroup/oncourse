@@ -41,7 +41,7 @@ public class ISHObjectContextTest extends ServiceTest {
 		assertTrue("If we not use OSQueryCache for entities we also should not use it for the queries", context.getQueryCache() instanceof NoopQueryCache);
 	}
 
-	@Test(expected = CayenneRuntimeException.class)
+	@Test(expected = RuntimeException.class)
 	public void testDefaultCommitAttempts() throws Exception {
 		System.setProperty(TestContextUtil.TEST_IS_QUERY_CACHE_DISABLED, "true");
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
@@ -51,8 +51,9 @@ public class ISHObjectContextTest extends ServiceTest {
 		context.setChannel(null);
 		try {
 			context.commitChanges();
+			verify(context, times(1)).commitChanges0(anyInt());
 		} catch (Exception ex) {
-			verify(context, times(3)).callSuperCommitChanges();
+			verify(context, times(3)).commitChanges0(anyInt());
 			throw ex;
 		}
 	}
