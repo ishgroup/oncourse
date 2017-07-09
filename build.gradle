@@ -17,8 +17,6 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.apache.cayenne:cayenne-ant:$cayenneVersion"
-		classpath "com.github.robfletcher:compass-gradle-plugin:2.0.6"
-		classpath "com.eriwen:gradle-js-plugin:2.14.1"
 	}
 }
 
@@ -28,6 +26,8 @@ plugins {
 	id 'maven'
 	id 'jacoco'
 	id 'maven-publish'
+	id "com.eriwen.gradle.js" version "2.14.1" apply false
+	id "com.github.robfletcher.compass" version "2.0.6" apply false
 	id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
 	id 'com.github.ben-manes.versions' version '0.15.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
