@@ -112,7 +112,7 @@ class MakePaymentTest extends ApiTest {
         assertEquals(new Money('100.00'), voucher.valueOnPurchase)
         assertEquals(1003l, paymentInModel.invoices[0].invoiceLines[0].invoiceLineDiscounts[0].discount.id)
 
-        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(ctx, cayenneService.newNonReplicatingContext, college, createPaymentModel, request).process()
+        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(ctx, cayenneService.newNonReplicatingContext(), college, createPaymentModel, request).process()
         assertEquals(PaymentStatus.SUCCESSFUL,  processPaymentModel.response.status)
 
         assertEquals(ish.common.types.PaymentStatus.SUCCESS, paymentInModel.paymentIn.status)

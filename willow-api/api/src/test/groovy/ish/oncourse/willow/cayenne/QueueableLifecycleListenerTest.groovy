@@ -36,7 +36,7 @@ class QueueableLifecycleListenerTest extends ApiTest {
     @Test
     void nonReplicatedContextTest() {
 
-        ObjectContext context = cayenneService.newNonReplicatingContext
+        ObjectContext context = cayenneService.newNonReplicatingContext()
 
         addContact(context)
 

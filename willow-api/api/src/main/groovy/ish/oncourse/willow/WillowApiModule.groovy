@@ -5,6 +5,7 @@ import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
 import ish.math.MoneyType
 import ish.oncourse.cxf.CXFModule
+import ish.oncourse.services.persistence.ISHObjectContextFactory
 import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.checkout.CheckoutApiImpl
@@ -21,6 +22,7 @@ import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.service.impl.ShutdownService
 import org.apache.cayenne.configuration.Constants
+import org.apache.cayenne.configuration.ObjectContextFactory
 import org.apache.cayenne.di.Module
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
@@ -50,7 +52,8 @@ class WillowApiModule extends ConfigModule {
     static class WillowApiCayenneModule implements Module {
         @Override
         void configure(org.apache.cayenne.di.Binder binder) {
-            binder.bindList(Constants.SERVER_DEFAULT_TYPES_LIST).add(new MoneyType())
+            binder.bind(ObjectContextFactory).to(ISHObjectContextFactory)
+            binder.bindList(MoneyType, Constants.SERVER_DEFAULT_TYPES_LIST).add(new MoneyType())
         }
     }
 }

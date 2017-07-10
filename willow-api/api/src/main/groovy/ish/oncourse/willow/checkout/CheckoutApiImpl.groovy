@@ -122,7 +122,7 @@ class CheckoutApiImpl implements CheckoutApi {
         }
         
         CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel).create()
-        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext, college,createPaymentModel, paymentRequest).process()
+        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext(), college,createPaymentModel, paymentRequest).process()
         
         if (processPaymentModel.error == null) {
             return processPaymentModel.response
