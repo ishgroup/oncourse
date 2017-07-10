@@ -22,7 +22,6 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.reflect.ArcProperty;
 import org.apache.cayenne.reflect.ClassDescriptor;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -116,7 +115,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		
         try {
 			if (transactionGroup.getTransactionKeys().contains(MERGE_KEY)) {
-				ProcessMergeTransaction.valueOf(group, atomicContext, this).process();
+				ProcessMergeTransaction
+						.valueOf(atomicContext, group, this, webSiteService.getCurrentCollege())
+						.process();
 			} else {
 				processRegularTransaction(group);
 			}

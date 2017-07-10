@@ -153,4 +153,8 @@
 	<ContactDuplicate id="10" angelId="10" collegeId="1" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" contactToUpdateId="6" contactToDeleteId="15" contactToDeleteAngelId="15" description="description" status="3"/>
 	<ContactDuplicate id="11" angelId="11" collegeId="1" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" contactToUpdateId="6" contactToDeleteId="14" contactToDeleteAngelId="14" description="description" status="3"/>
 
+	<College id="2" name="CollegeForTestContactDuplicateFiltering" webServicesSecurityCode="245ttn44$%9" communication_key="7059522699886202881" communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09" timezone="Australia/Sydney" requiresAvetmiss="0"/>
+	<Contact id="8" angelId="8" collegeId="2" emailAddress="c@a.com" givenName="College2ContactGivenName" familyName="College2ContactFamilyName"/>
+	<ContactDuplicate id="12" angelId="12" collegeId="2" created="2011-09-20 11:14:54" modified="2011-09-20 11:14:54" contactToUpdateId="8" contactToDeleteId="77" contactToDeleteAngelId="77" description="contact duplicate for college 2" status="3"/>
+
 </dataset>

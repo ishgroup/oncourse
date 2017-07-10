@@ -769,10 +769,10 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 				generateDeleteV13Stub("Contact", delContact.getAngelId(), delContact.getId()));
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
 
-				generateContactDuplicateV13Stub(10L,10L, delContactId,14L,14L));
+				generateContactDuplicateV13Stub(10L,null, delContactId,14L,14L));
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
 
-				generateContactDuplicateV13Stub(11L,11L, delContactId,15L,15L));
+				generateContactDuplicateV13Stub(11L,null, delContactId,15L,15L));
 		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
 
 				generateContactDuplicateV13Stub(12L,null, updContactId, delContactId, delContactId));

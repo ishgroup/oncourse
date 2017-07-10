@@ -3,6 +3,7 @@
  */
 package ish.oncourse.webservices.replication.services;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.ContactDuplicate;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
@@ -31,6 +32,7 @@ public class ProcessMergeTransaction {
 	private TransactionGroupProcessorImpl processor;
 
 	private GenericTransactionGroup group;
+	private College currentCollege = null;
 
 	private ProcessMergeTransaction() {
 		super();
@@ -41,6 +43,7 @@ public class ProcessMergeTransaction {
 		try {
 			GenericReplicationStub contactDuplicateStub = getContactDuplicateStub(group);
 			replicatedContactDuplicate = processSingleStub(contactDuplicateStub, group);
+
 			context.commitChanges();
 			processor.fillWillowIds();
 
@@ -106,7 +109,8 @@ public class ProcessMergeTransaction {
 		if (contactDuplicateAngelIds.size() > 0){
 			if (contactDuplicateAngelIds.size() > 1) {
 				List<ContactDuplicate> contactDuplicateList = ObjectSelect.query(ContactDuplicate.class)
-						.where(ContactDuplicate.ANGEL_ID.in(contactDuplicateAngelIds)).select(context);
+						.where(ContactDuplicate.ANGEL_ID.in(contactDuplicateAngelIds).andExp(ContactDuplicate.COLLEGE.eq(currentCollege)))
+							.select(context);
 
 				// all contact duplicate stubs that not found in database accept as new (CREATED)
 				for (ContactDuplicate cd : contactDuplicateList) {
@@ -159,8 +163,9 @@ public class ProcessMergeTransaction {
 		return replicationRec;
 	}
 
-	public static ProcessMergeTransaction valueOf(GenericTransactionGroup group, ObjectContext context, TransactionGroupProcessorImpl processor) {
+	public static ProcessMergeTransaction valueOf(ObjectContext context, GenericTransactionGroup group,  TransactionGroupProcessorImpl processor, College currentCollege) {
 		ProcessMergeTransaction result = new ProcessMergeTransaction();
+		result.currentCollege = currentCollege;
 		result.group = group;
 		result.context = context;
 		result.processor = processor;
