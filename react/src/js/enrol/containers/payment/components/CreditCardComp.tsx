@@ -57,12 +57,13 @@ class CreditCardComp extends React.Component<Props, any> {
                   contacts={contacts}
                   payer={contacts.filter(c => c.id === payerId)[0]}
                   onChange={onSetPayer}
-                  voucherPayerEnabled={voucherPayerEnabled}
+                  disabled={voucherPayerEnabled}
                 />
 
                 <PayerAdd
                   onAddPayer={onAddPayer}
                   onAddCompany={onAddCompany}
+                  disabled={voucherPayerEnabled}
                 />
 
                 <Field component={TextField} maxLength={ 40 } className="input-fixed " autoComplete="off"

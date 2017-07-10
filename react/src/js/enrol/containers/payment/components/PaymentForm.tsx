@@ -33,7 +33,7 @@ class PaymentForm extends React.Component<any, any> {
     };
   }
 
-  paymentTabOnClick = (e) => {
+  paymentTabOnClick = e => {
     e.preventDefault();
     const tabPart = e.target.href.split("#");
     const currentTab = tabPart[tabPart.length - 1];
@@ -66,7 +66,7 @@ class PaymentForm extends React.Component<any, any> {
   }
 }
 
-const PaymentFormNav = (props) => {
+const PaymentFormNav = props => {
   const {paymentTabOnClick, currentForm} = props;
 
   return (

@@ -7,12 +7,12 @@ export interface Props {
   contacts: Contact[];
   payer: Contact;
   onChange: (Contact) => void;
-  voucherPayerEnabled?: boolean;
+  disabled?: boolean;
 }
 
 export class PayerSelect extends React.Component<Props, any> {
   render() {
-    const {contacts, payer, onChange, voucherPayerEnabled} = this.props;
+    const {contacts, payer, onChange, disabled} = this.props;
     const items: Item[] = contacts.map((contact: Contact) => {
       return {key: contact.id, value: `${contact.firstName || ''} ${contact.lastName}`};
     });
@@ -34,7 +34,7 @@ export class PayerSelect extends React.Component<Props, any> {
             items={items}
             input={input}
             onChange={onChange}
-            disabled={voucherPayerEnabled}
+            disabled={disabled}
           />
         </div>
       </div>

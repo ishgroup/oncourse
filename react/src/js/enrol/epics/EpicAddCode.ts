@@ -2,7 +2,10 @@ import {Epic} from "redux-observable";
 import "rxjs";
 import {IshState} from "../../services/IshState";
 import * as EpicUtils from "./EpicUtils";
-import {ADD_CODE_REQUEST, getCheckoutModelFromBackend, addRedeemVoucherToState} from "../actions/Actions";
+import {
+  ADD_CODE_REQUEST, getCheckoutModelFromBackend, addRedeemVoucherToState,
+  SHOW_MESSAGES_REQUEST,
+} from "../actions/Actions";
 import {Actions} from "../../web/actions/Actions";
 import {CodeResponse} from "../../model/checkout/CodeResponse";
 import CheckoutService from "../services/CheckoutService";
@@ -40,7 +43,19 @@ const request: EpicUtils.Request<CodeResponse, IshState> = {
       }
     }
 
-    if (preventAddVoucher) {console.log('You already have selected voucher with payer');}
+    if (preventAddVoucher) {
+      return [
+        {
+          type: SHOW_MESSAGES_REQUEST,
+          payload: {
+            data: 'You already have selected voucher with payer'
+          },
+          meta: {
+            form: null,
+          },
+        },
+      ];
+    }
 
     result.push(getCheckoutModelFromBackend());
 

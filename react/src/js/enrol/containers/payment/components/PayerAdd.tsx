@@ -1,6 +1,13 @@
 import React from "react";
+import classnames from "classnames";
 
-export class PayerAdd extends React.Component<any, any> {
+export interface Props {
+  onAddPayer: () => void;
+  onAddCompany: () => void;
+  disabled?: boolean;
+}
+
+export class PayerAdd extends React.Component<Props, any> {
   private listEl;
 
   constructor() {
@@ -19,17 +26,20 @@ export class PayerAdd extends React.Component<any, any> {
   }
 
   toggleList(show) {
+    const {disabled} = this.props;
+    if (disabled) return;
+
     this.setState({showList: show});
   }
 
   render() {
     const {showList} = this.state;
-    const {onAddPayer, onAddCompany} = this.props;
+    const {onAddPayer, onAddCompany, disabled} = this.props;
 
     return (
       <div className="payer-selection">
         <a
-          className="button"
+          className={classnames('button', {disabled})}
           href="#"
           onClick={() => this.toggleList(!showList)}
           onBlur={this.handleBlur.bind(this)}
