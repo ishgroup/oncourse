@@ -4,5 +4,6 @@ export class RedeemVoucher {
   id?: string;
   payer?: Contact;
   name?: string;
+  code?: string;
 }
 

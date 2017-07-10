@@ -22,6 +22,7 @@ class GetVoucherByCode {
             return new RedeemVoucher().with { v ->
                 v.name = voucher.product.name
                 v.id = voucher.id.toString()
+                v.code = code
                 if (voucher.contact) {
                     v.payer = new Contact().with { c ->
                         c.id = voucher.contact.id.toString()

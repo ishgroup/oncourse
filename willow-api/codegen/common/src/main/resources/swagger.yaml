@@ -1333,6 +1333,8 @@ definitions:
          $ref: '#/definitions/web.Contact'
       name:
         type: string
+      code: 
+        type: string
   checkout.CodeResponse:
     type: object
     properties:

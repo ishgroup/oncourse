@@ -7,6 +7,7 @@ public class RedeemVoucher  {
     private String id = null;
     private Contact payer = null;
     private String name = null;
+    private String code = null;
 
     /**
      * Get id
@@ -59,6 +60,23 @@ public class RedeemVoucher  {
       return this;
     }
 
+    /**
+     * Get code
+     * @return code
+     */
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+       this.code = code;
+    }
+
+    public RedeemVoucher code(String code) {
+      this.code = code;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -68,6 +86,7 @@ public class RedeemVoucher  {
       sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("    payer: ").append(toIndentedString(payer)).append("\n");
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
+      sb.append("    code: ").append(toIndentedString(code)).append("\n");
       sb.append("}");
       return sb.toString();
     }
