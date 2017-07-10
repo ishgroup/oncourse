@@ -105,7 +105,6 @@ const ContactsReducer = (state: ContactsState = normalize([], ContactsSchema), a
   }
 };
 
-
 const AmountReducer = (state: Amount = null, action: IAction<Amount>): Amount => {
   switch (action.type) {
 
@@ -130,6 +129,7 @@ const ErrorReducer = (state: ValidationError = null, action: any): any => {
     case ContactAddActions.ADD_CONTACT_TO_STATE:
     case ContactEditActions.SET_FIELDS_TO_STATE:
     case ContactEditActions.RESET_FIELDS_STATE:
+    case Actions.UPDATE_AMOUNT:
       return {};
 
     default:
@@ -144,17 +144,6 @@ const PhaseReducer = (state: Phase = Phase.Init, action: any): any => {
       return action.payload;
 
     default:
-      return state;
-  }
-};
-
-const AddCodeReducer = (state: Promotion = null, action: { type: string, payload: Promotion }): any => {
-  switch (action.type) {
-
-    case Actions.ADD_CODE:
-      return action.payload;
-    default:
-
       return state;
   }
 };
@@ -180,7 +169,6 @@ export const Reducer = combineReducers<CheckoutState>({
   fields: FieldsReducer,
   phase: PhaseReducer,
   page: PageReducer,
-  addCode: AddCodeReducer,
   error: ErrorReducer,
   amount: AmountReducer,
   summary: SummaryReducer,

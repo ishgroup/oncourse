@@ -15,7 +15,7 @@ export interface Props {
   onUpdatePayNow?: (amount, val) => void;
 }
 
-export class   PaymentComp extends React.Component<Props, any> {
+export class PaymentComp extends React.Component<Props, any> {
   render() {
     const {amount,onAddCode, paymentForm, promotions, onUpdatePayNow, onToggleVoucher, redeemVouchers} = this.props;
     return (

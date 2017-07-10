@@ -47,6 +47,13 @@ export class CheckoutService {
     return L.isEmpty(cart.courses.result) && L.isEmpty(cart.products.result);
   }
 
+  public ifCodeExist = (code, state): boolean => {
+    const promotions = state.cart.promotions.entities;
+    const inPromotions = Object.keys(promotions).filter(key => promotions[key].code === code).length;
+    const inRedeemVouchers = state.checkout.redeemVouchers.filter(v => v.key === code).length;
+    return !!(inPromotions || inRedeemVouchers);
+  }
+
   public hasPayer = (state: CheckoutState): boolean => {
     return !L.isNil(state.payerId);
   }
@@ -78,7 +85,7 @@ export class CheckoutService {
   
   public submitCode = (code: string, state: IshState): Promise<Promotion> => {
     return this.promotionApi.submitCode(code);
-  };
+  }
 
   public getConcessionTypes = () => {
     return this.contactApi.getConcessionTypes();
