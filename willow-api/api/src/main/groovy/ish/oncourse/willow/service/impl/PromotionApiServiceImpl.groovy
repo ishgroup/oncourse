@@ -42,7 +42,7 @@ class PromotionApiServiceImpl implements PromotionApi {
     CodeResponse submitCode(String code) {
         CodeResponse response = new SearchByCode(context: cayenneService.newContext(), college: collegeService.college).get(code)
 
-        if (response.voucher || response.promotiom) {
+        if (response.voucher || response.promotion) {
             response
         } else {
             throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(new CommonError(message: 'The code you have entered was incorrect or not available.')).build())

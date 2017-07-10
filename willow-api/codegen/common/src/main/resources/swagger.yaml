@@ -1208,6 +1208,15 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/checkout.Voucher'
+  checkout.VoucherPayment:
+    type: object
+    properties:
+      redeemVoucherId:
+        type: string
+      name:
+        type: string
+      amount:
+        type: number
   checkout.Amount:
     type: object
     properties: 
@@ -1219,6 +1228,10 @@ definitions:
         type: number
       payNow: 
         type: number
+      voucherPayments:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.VoucherPayment'
   checkout.CheckoutModel:
     type: object
     properties: 
@@ -1240,6 +1253,10 @@ definitions:
         items:
           $ref: '#/definitions/checkout.ContactNode'
       promotionIds:
+        type: array
+        items:
+          type: string
+      redeemedVoucherIds:
         type: array
         items:
           type: string
@@ -1319,7 +1336,7 @@ definitions:
   checkout.CodeResponse:
     type: object
     properties:
-      promotiom:
+      promotion:
         $ref: '#/definitions/web.Promotion'
       voucher:
         $ref: '#/definitions/checkout.RedeemVoucher'

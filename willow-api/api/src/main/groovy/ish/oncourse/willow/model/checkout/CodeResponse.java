@@ -5,23 +5,23 @@ import ish.oncourse.willow.model.web.Promotion;
 
 public class CodeResponse  {
   
-    private Promotion promotiom = null;
+    private Promotion promotion = null;
     private RedeemVoucher voucher = null;
 
     /**
-     * Get promotiom
-     * @return promotiom
+     * Get promotion
+     * @return promotion
      */
-    public Promotion getPromotiom() {
-        return promotiom;
+    public Promotion getPromotion() {
+        return promotion;
     }
 
-    public void setPromotiom(Promotion promotiom) {
-       this.promotiom = promotiom;
+    public void setPromotion(Promotion promotion) {
+       this.promotion = promotion;
     }
 
-    public CodeResponse promotiom(Promotion promotiom) {
-      this.promotiom = promotiom;
+    public CodeResponse promotion(Promotion promotion) {
+      this.promotion = promotion;
       return this;
     }
 
@@ -48,7 +48,7 @@ public class CodeResponse  {
       StringBuilder sb = new StringBuilder();
       sb.append("class CodeResponse {\n");
       
-      sb.append("    promotiom: ").append(toIndentedString(promotiom)).append("\n");
+      sb.append("    promotion: ").append(toIndentedString(promotion)).append("\n");
       sb.append("    voucher: ").append(toIndentedString(voucher)).append("\n");
       sb.append("}");
       return sb.toString();

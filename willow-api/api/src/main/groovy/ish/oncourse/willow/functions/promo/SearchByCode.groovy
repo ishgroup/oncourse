@@ -10,8 +10,8 @@ class SearchByCode {
     CodeResponse response = new CodeResponse()
     
     CodeResponse get(String code) {
-        response.promotiom = new GetPromoByCode(context: context, college: college).get(code)
-        if (!response.promotiom) {
+        response.promotion = new GetPromoByCode(context: context, college: college).get(code)
+        if (!response.promotion) {
             response.voucher = new GetVoucherByCode(context: context, college: college).get(code)
         }
         response

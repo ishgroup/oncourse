@@ -8,6 +8,7 @@ public class CheckoutModelRequest  {
   
     private List<ContactNode> contactNodes = new ArrayList<ContactNode>();
     private List<String> promotionIds = new ArrayList<String>();
+    private List<String> redeemedVoucherIds = new ArrayList<String>();
     private String payerId = null;
 
     /**
@@ -55,6 +56,28 @@ public class CheckoutModelRequest  {
     }
 
     /**
+     * Get redeemedVoucherIds
+     * @return redeemedVoucherIds
+     */
+    public List<String> getRedeemedVoucherIds() {
+        return redeemedVoucherIds;
+    }
+
+    public void setRedeemedVoucherIds(List<String> redeemedVoucherIds) {
+       this.redeemedVoucherIds = redeemedVoucherIds;
+    }
+
+    public CheckoutModelRequest redeemedVoucherIds(List<String> redeemedVoucherIds) {
+      this.redeemedVoucherIds = redeemedVoucherIds;
+      return this;
+    }
+
+    public CheckoutModelRequest addRedeemedVoucherIdsItem(String redeemedVoucherIdsItem) {
+      this.redeemedVoucherIds.add(redeemedVoucherIdsItem);
+      return this;
+    }
+
+    /**
      * Get payerId
      * @return payerId
      */
@@ -79,6 +102,7 @@ public class CheckoutModelRequest  {
       
       sb.append("    contactNodes: ").append(toIndentedString(contactNodes)).append("\n");
       sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
+      sb.append("    redeemedVoucherIds: ").append(toIndentedString(redeemedVoucherIds)).append("\n");
       sb.append("    payerId: ").append(toIndentedString(payerId)).append("\n");
       sb.append("}");
       return sb.toString();
