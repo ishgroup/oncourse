@@ -6,6 +6,7 @@ import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
+import ish.oncourse.willow.functions.voucher.ProcessRedeemedVouchers
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.Application
 import ish.oncourse.willow.model.checkout.Article
@@ -46,9 +47,36 @@ class ProcessCheckoutModel {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     ProcessCheckoutModel process() {
+        
+        processNodes()
+        
+        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
+        totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
+        
+        ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, totalAmount.subtract(totalDiscount), enrolmentsPrice.enrolmentNodes).process()
+        payNowAmount = enrolmentsPrice.totalPayNow.min(redeemedVouchers.leftToPay)
+
+        if (redeemedVouchers.error) {
+            model.error = redeemedVouchers.error
+            return this
+        }
+        
+        model.amount = new Amount().with { a ->
+            a.total = totalAmount.doubleValue()
+            a.owing = totalAmount.subtract(totalDiscount).subtract(payNowAmount).doubleValue()
+            a.payNow =  payNowAmount.doubleValue()
+            a.discount = totalDiscount.doubleValue()
+            a.voucherPayments = redeemedVouchers.voucherPayments
+            a
+        }
+        
+        this
+    }
+    
+    void processNodes() {
         checkoutModelRequest.contactNodes.each { contactNode ->
             model.contactNodes << contactNode
-            
+
             Contact contact = new GetContact(context, college, contactNode.contactId).get(false)
             contactNode.articles.each { a ->
                 processArticle(a, contact)
@@ -63,7 +91,7 @@ class ProcessCheckoutModel {
             }
             //all products should be payed permanently
             payNowAmount = Money.ZERO.add(totalAmount)
-            
+
             if (contact.student) {
                 contactNode.enrolments.each { e ->
                     processEnrolment(e, contact)
@@ -75,21 +103,10 @@ class ProcessCheckoutModel {
             } else if (!contactNode.enrolments.empty || !contactNode.applications.empty ) {
                 model.error = new CommonError(message: 'Purchase items are not valid')
             }
-            
+
         }
-        
-        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
-        payNowAmount = payNowAmount.add(enrolmentsPrice.totalPayNow)
-        model.amount = new Amount().with { a ->
-            a.total = totalAmount.doubleValue()
-            a.owing = totalAmount.subtract(enrolmentsPrice.totalDiscount).subtract(payNowAmount).doubleValue()
-            a.payNow =  payNowAmount.doubleValue()
-            a.discount = totalDiscount.add(enrolmentsPrice.totalDiscount).doubleValue()
-            a
-        }
-        
-        this
     }
+    
     
     @CompileStatic(TypeCheckingMode.SKIP)
     void processEnrolment(Enrolment e, Contact contact) {

@@ -5,6 +5,7 @@ import ish.math.Money
 import ish.oncourse.cayenne.DiscountInterface
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Discount
 import ish.oncourse.model.DiscountCourseClass
@@ -30,6 +31,7 @@ class CalculateEnrolmentsPrice {
     
     Money totalDiscount = Money.ZERO
     Money totalPayNow = Money.ZERO
+    List<EnrolmentNode> enrolmentNodes = []
 
     List<Discount> promotions = []
 
@@ -50,15 +52,22 @@ class CalculateEnrolmentsPrice {
     CalculateEnrolmentsPrice calculate() {
         enrolmentsToProceed.each { contact, classes ->
             classes.each { courseClass ->
-                CalculatePrice price = new CalculatePrice(courseClass.feeExGst, Money.ZERO, courseClass.taxRate, CalculatePrice.calculateTaxAdjustment(courseClass)).calculate()
 
-                price = applyDiscount(contact, courseClass, price)
+                Money classPrice = getOverridenFee(contact, courseClass)
+                
+                if (!classPrice) {
+                    CalculatePrice price = new CalculatePrice(courseClass.feeExGst, Money.ZERO, courseClass.taxRate, CalculatePrice.calculateTaxAdjustment(courseClass)).calculate()
+                    price = applyDiscount(contact, courseClass, price)
+                    classPrice = price.finalPriceToPayIncTax
+                }
 
                 if (courseClass.paymentPlanLines.empty) {
-                    totalPayNow = totalPayNow.add(price.finalPriceToPayIncTax)
+                    totalPayNow = totalPayNow.add(classPrice)
                 } else {
-                    totalPayNow = totalPayNow.add(getPayNow(courseClass, price))
+                    totalPayNow = totalPayNow.add(getPayNow(courseClass, classPrice))
                 }
+
+                enrolmentNodes << new EnrolmentNode(finalPrice: classPrice, contact: contact, course: courseClass.course)
             }
         }
         
@@ -79,11 +88,19 @@ class CalculateEnrolmentsPrice {
                     d.expiryDate = WebDiscountUtils.expiryDate(discount as Discount, courseClass.startDateTime)?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                     d
                 }
-    }   
+    }
+
+    private Money getOverridenFee(Contact contact, CourseClass courseClass) {
+       Double feeOverriden =  model.contactNodes
+                .find {it.contactId == contact.id.toString()}
+                .enrolments.find {it.classId == courseClass.id.toString()}
+                .price.feeOverriden
+        
+        return feeOverriden?.toMoney()
+    }
     
-    private Money getPayNow(CourseClass courseClass, CalculatePrice price) {
+    private Money getPayNow(CourseClass courseClass, Money amountLeftToPay) {
         Money payNow = Money.ZERO
-        Money amountLeftToPay = price.finalPriceToPayIncTax
         Instant now = new Date().toInstant()
 
         courseClass.paymentPlanLines.sort {it.dayOffset}.each { planLine ->

@@ -40,10 +40,12 @@ class PromotionApiServiceImpl implements PromotionApi {
 
     @Override
     CodeResponse submitCode(String code) {
-        CodeResponse response = new SearchByCode(context: cayenneService.newContext(), college: collegeService.college).get(code)
+        SearchByCode searchByCode = new SearchByCode(context: cayenneService.newContext(), college: collegeService.college).get(code)
 
-        if (response.voucher || response.promotion) {
-            response
+        if (searchByCode.error) {
+            throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(searchByCode.error).build())
+        } else if (searchByCode.response.voucher || searchByCode.response.promotion) {
+            searchByCode.response
         } else {
             throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(new CommonError(message: 'The code you have entered was incorrect or not available.')).build())
         }

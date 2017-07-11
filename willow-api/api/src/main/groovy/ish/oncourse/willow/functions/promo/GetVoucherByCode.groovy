@@ -4,22 +4,30 @@ import ish.common.types.ProductStatus
 import ish.oncourse.model.College
 import ish.oncourse.model.Voucher
 import ish.oncourse.willow.model.checkout.RedeemVoucher
+import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.web.Contact
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+
+
 
 class GetVoucherByCode {
 
     ObjectContext context
     College college
-    
-    RedeemVoucher get(String code) {
+    CommonError error
+
+    RedeemVoucher redeemVoucher
+
+    GetVoucherByCode get(String code) {
         Voucher voucher = (((ObjectSelect.query(Voucher).where(Voucher.COLLEGE.eq(college))
                 & Voucher.CODE.eq(code)) & Voucher.STATUS.eq(ProductStatus.ACTIVE)) & Voucher.EXPIRY_DATE.gt(new Date()).orExp(Voucher.EXPIRY_DATE.isNull()))
                 .selectFirst(context)
-
-        if (voucher) {
-            return new RedeemVoucher().with { v ->
+        
+        if (voucher.inUse) {
+            error = new CommonError(message: 'Selected voucher cannot be added right now since it is currently being used in another payment process. Please try again later.')
+        } else if (voucher) {
+            redeemVoucher = new RedeemVoucher().with { v ->
                 v.name = voucher.product.name
                 v.id = voucher.id.toString()
                 v.code = code
@@ -35,6 +43,9 @@ class GetVoucherByCode {
                 v
             }
         }
+        
+        return this
+        
     } 
     
 }
