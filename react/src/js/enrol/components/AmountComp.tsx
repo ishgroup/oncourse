@@ -49,7 +49,7 @@ class AmountComp extends React.Component<Props, any> {
               <RedeemVoucher
                 key={v.id}
                 redeemVoucher={v}
-                voucherPayment={amount.voucherPayments.find(vp => vp.id === v.id)}
+                voucherPayment={amount.voucherPayments.find(vp => vp.redeemVoucherId === v.id)}
                 disabled={!!(activeVoucherWithPayer && activeVoucherWithPayer.id !== v.id)}
                 onChange={onToggleVoucher}
               />
@@ -103,7 +103,7 @@ const RedeemVoucher = props => {
         />
         {redeemVoucher.name}
       </label>
-      <span className="col-xs-12">{redeemVoucher.enabled ? voucherPayment.value : 0}</span>
+      <span className="col-xs-12">{redeemVoucher.enabled ? voucherPayment.amount : 0}</span>
     </div>
   );
 };
