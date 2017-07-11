@@ -67,7 +67,6 @@ public class MergeProcessorTest extends ServiceTest {
 	@Test
 	public void processMergeTransaction() {
 		
-		
 		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V13);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();

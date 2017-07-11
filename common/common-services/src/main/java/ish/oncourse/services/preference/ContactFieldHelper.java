@@ -135,28 +135,34 @@ public class ContactFieldHelper {
 	}
 	
 	public boolean isCustomFieldTypeVisible(CustomFieldType customFieldType) {
-		switch (contactFieldSet) {
-			case enrolment:
-				return isShow(customFieldType.getRequireForEnrolment());
-			case waitinglist:
-				return isShow(customFieldType.getRequireForWaitingList());
-			case mailinglist:
-				return isShow(customFieldType.getRequireForMailingList());
-			default:
-				throw new IllegalArgumentException("Unknown field set type.");
+		if (customFieldType != null) {
+			switch (contactFieldSet) {
+				case enrolment:
+					return isShow(customFieldType.getRequireForEnrolment());
+				case waitinglist:
+					return isShow(customFieldType.getRequireForWaitingList());
+				case mailinglist:
+					return isShow(customFieldType.getRequireForMailingList());
+				default:
+					throw new IllegalArgumentException("Unknown field set type.");
+			}
 		}
+		return false;
 	}
 
 	public boolean isCustomFieldTypeRequired(CustomFieldType customFieldType) {
-		switch (contactFieldSet) {
-			case enrolment:
-				return VALUE_Required.equals(customFieldType.getRequireForEnrolment());
-			case waitinglist:
-				return VALUE_Required.equals(customFieldType.getRequireForWaitingList());
-			case mailinglist:
-				return VALUE_Required.equals(customFieldType.getRequireForMailingList());
-			default:
-				throw new IllegalArgumentException("Unknown field set type.");
+		if (customFieldType != null) {
+			switch (contactFieldSet) {
+				case enrolment:
+					return VALUE_Required.equals(customFieldType.getRequireForEnrolment());
+				case waitinglist:
+					return VALUE_Required.equals(customFieldType.getRequireForWaitingList());
+				case mailinglist:
+					return VALUE_Required.equals(customFieldType.getRequireForMailingList());
+				default:
+					throw new IllegalArgumentException("Unknown field set type.");
+			}
 		}
+		return false;
 	}
 }
