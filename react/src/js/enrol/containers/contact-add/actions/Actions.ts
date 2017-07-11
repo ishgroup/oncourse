@@ -29,6 +29,7 @@ const getContactPayload = (contactId, values): SubmitContact => {
   return {
     contact,
     newContact: contactId.newContact,
+    parentRequired: contactId.parentRequired,
   };
 };
 
@@ -36,6 +37,7 @@ const getContactPayload = (contactId, values): SubmitContact => {
 export interface SubmitContact {
   contact: Contact;
   newContact: boolean;
+  parentRequired?: boolean;
 }
 
 export const submitAddContact = (contactId: ContactId, values: Values): IAction<SubmitContact> => {

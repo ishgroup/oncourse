@@ -4,6 +4,7 @@ import * as L from "lodash";
 import {AxiosResponse} from "axios";
 import {Amount} from "../../model/checkout/Amount";
 import {IAction} from "../../actions/IshAction";
+import {CheckoutService} from "../services/CheckoutService";
 
 // initialize checkout application
 
@@ -16,6 +17,7 @@ export const INIT_REQUEST: string = "checkout/init/request";
 export const CHANGE_PHASE: string = "checkout/phase/change";
 
 export const SET_PAYER_TO_STATE: string = "checkout/set/payer/to/state";
+export const SET_PARENT_TO_STATE: string = "checkout/set/parent/to/state";
 
 export const GET_AMOUNT: string = "checkout/get/amount";
 export const UPDATE_AMOUNT: string = "checkout/update/amount";
@@ -127,6 +129,11 @@ export const resetCheckoutState = (): IAction<any> => {
 export const setPayer = function (id: string): { type: string, payload: string } {
   return {type: SET_PAYER_TO_STATE, payload: id};
 };
+
+export const setParent = (id: string): {type: string, payload: string} => ({
+  type: SET_PARENT_TO_STATE,
+  payload: id,
+});
 
 export const addRedeemVoucherToState = voucher => ({
   type: FULFILLED(ADD_REDEEM_VOUCHER_TO_STATE),

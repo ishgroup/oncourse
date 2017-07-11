@@ -5,7 +5,7 @@ import "rxjs";
 import {
   ADD_PAYER_FROM_VOUCHER, addContact, SUBMIT_ADD_CONTACT, SubmitContact,
 } from "../actions/Actions";
-import {setPayer, setNewContactFlag, updateContactAddProcess} from "../../../actions/Actions";
+import {setPayer, setNewContactFlag, updateContactAddProcess, setParent} from "../../../actions/Actions";
 import {IshState} from "../../../../services/IshState";
 import {openEditContact} from "../../contact-edit/actions/Actions";
 
@@ -20,6 +20,7 @@ export const SubmitAddContact: Epic<any, IshState> = (action$: ActionsObservable
     return [
       updateContactAddProcess(payload.contact, state.checkout.phase),
       setNewContactFlag(payload.newContact),
+      setParent(!payload.parentRequired ? state.checkout.parentId || payload.contact.id : state.checkout.parentId),
       openEditContact(payload.contact),
     ];
   });

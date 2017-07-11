@@ -17,7 +17,7 @@ import {
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
 import {
-  changePhase, addCode, getCheckoutModelFromBackend, updateAmount, toggleRedeemVoucher
+  changePhase, addCode, getCheckoutModelFromBackend, updateAmount, toggleRedeemVoucher,
 } from "../../actions/Actions";
 import {updateConcessionContact, getContactConcessions} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
@@ -99,6 +99,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       redeemVouchers: state.checkout.redeemVouchers,
       hasSelected: SummaryService.hasSelected(state.checkout.summary),
       concessions: state.checkout.concession.concessions,
+      parentExist: !!state.checkout.parentId,
     };
   } catch (e) {
     console.log(e);

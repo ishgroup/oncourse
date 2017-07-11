@@ -120,6 +120,7 @@ const render = config => ReactDOM.render(
         onSelect={onSelect}
         onPriceValueChange={onPriceValueChange}
         hasSelected={true}
+        parentExist={true}
       />
     </div>
 

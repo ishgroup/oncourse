@@ -13,6 +13,7 @@ export interface CheckoutState {
   fields: ContactFields;
   error: ValidationError;
   payerId: string;
+  parentId: string;
   contacts: ContactsState;
   amount: Amount;
   summary: SummaryState;

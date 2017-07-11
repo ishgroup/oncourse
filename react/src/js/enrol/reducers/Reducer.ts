@@ -51,6 +51,20 @@ const PayerReducer = (state: string = null, action: IAction<string>): string => 
   }
 };
 
+const ParentReducer = (state: string = null, action: IAction<string>): string => {
+  switch (action.type) {
+
+    case Actions.SET_PARENT_TO_STATE:
+      return action.payload;
+
+    case Actions.RESET_CHECKOUT_STATE:
+      return null;
+
+    default:
+      return state;
+  }
+};
+
 const NewContactReducer = (state: boolean = false, action: IAction<boolean>): boolean => {
   switch (action.type) {
 
@@ -176,8 +190,6 @@ const ContactAddProcess = (state: any = {}, action: { type: string, payload: any
   }
 };
 
-
-
 export const Reducer = combineReducers<CheckoutState>({
   newContact: NewContactReducer,
   fields: FieldsReducer,
@@ -188,6 +200,7 @@ export const Reducer = combineReducers<CheckoutState>({
   summary: SummaryReducer,
   payment: PaymentReducer,
   payerId: PayerReducer,
+  parentId: ParentReducer,
   contacts: ContactsReducer,
   concession: ConcessionReducer,
   redeemVouchers: RedeemVouchersReducer,

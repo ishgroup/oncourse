@@ -44,6 +44,8 @@ export class ContactApiMock extends ContactApi {
     } else {
       result.newContact = false;
     }
+
+    result.parentRequired = true;
     result.id = contact.id;
     return this.config.createResponse(result);
   }
