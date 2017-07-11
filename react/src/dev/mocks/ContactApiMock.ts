@@ -86,7 +86,7 @@ export class ContactApiMock extends ContactApi {
   }
 
 
-  submitContactDetails(submit: SubmitFieldsRequest): Promise<any> {
+  submitContactDetails(submit: SubmitFieldsRequest): Promise<ContactId> {
     return this.config.createResponse(Promise.resolve());
   }
 

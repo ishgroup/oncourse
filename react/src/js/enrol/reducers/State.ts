@@ -19,6 +19,7 @@ export interface CheckoutState {
   payment: PaymentState;
   concession: any;
   redeemVouchers: any;
+  contactAddProcess: any;
 }
 
 export interface PayerState {

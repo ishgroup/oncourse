@@ -20,7 +20,7 @@ import {EpicResult} from "../containers/result/epics/EpicResult";
 import {EpicAddCode} from "./EpicAddCode";
 import {EpicUpdateSummary} from "./EpicLoadCheckoutModel";
 import {GetContactNode} from "./EpicGetContactNode";
-import {SubmitAddContact, SubmitAddContactAsPayer, AddPayerFromVoucher} from "../containers/contact-add/epics/EpicSubmitAddContact";
+import {SubmitAddContact, AddPayerFromVoucher} from "../containers/contact-add/epics/EpicSubmitAddContact";
 import {OpenEditContact} from "../containers/contact-edit/epics/EpicOpenEditContact";
 import {SubmitEditContact} from "../containers/contact-edit/epics/EpicSubmitEditContact";
 import {EpicToggleRedeemVoucher} from "./EpicToggleRedeemVoucher";
@@ -32,7 +32,7 @@ const {
 export const EpicCheckout = combineEpics(
   EpicInit,
   MessagesShowEpic,
-  SubmitAddContact, SubmitAddContactAsPayer, AddPayerFromVoucher,
+  SubmitAddContact, AddPayerFromVoucher,
   SubmitEditContact,
   OpenEditContact,
   GetContactNode,

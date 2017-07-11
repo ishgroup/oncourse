@@ -81,7 +81,8 @@ const Form = reduxForm({
 
 
 const mapStateToProps = (state: IshState) => {
-  const contact = state.checkout.contacts.entities.contact[state.checkout.fields.contactId];
+  // state.checkout.contacts.entities.contact[state.checkout.fields.contactId]
+  const contact = state.checkout.contactAddProcess.contact;
   const fields = state.checkout.fields;
   const errors = state.checkout.error;
   const concessionTypes = state.checkout.concession.types;

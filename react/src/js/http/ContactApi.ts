@@ -32,7 +32,7 @@ export class ContactApi {
   submitConcession(concession: Concession): Promise<any> {
     return this.http.PUT(`/submitConcession`, concession);
   }
-  submitContactDetails(contactFields: SubmitFieldsRequest): Promise<any> {
+  submitContactDetails(contactFields: SubmitFieldsRequest): Promise<ContactId> {
     return this.http.PUT(`/submitContactDetails`, contactFields);
   }
 }

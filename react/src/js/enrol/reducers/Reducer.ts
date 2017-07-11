@@ -164,6 +164,20 @@ const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: { type: stri
   }
 };
 
+const ContactAddProcess = (state: any = {}, action: { type: string, payload: any }): any => {
+  switch (action.type) {
+
+    case Actions.UPDATE_CONTACT_ADD_PROCESS:
+      const {contact, type} = action.payload;
+      return {...state, contact, type};
+
+    default:
+      return state;
+  }
+};
+
+
+
 export const Reducer = combineReducers<CheckoutState>({
   newContact: NewContactReducer,
   fields: FieldsReducer,
@@ -177,4 +191,5 @@ export const Reducer = combineReducers<CheckoutState>({
   contacts: ContactsReducer,
   concession: ConcessionReducer,
   redeemVouchers: RedeemVouchersReducer,
+  contactAddProcess: ContactAddProcess,
 });

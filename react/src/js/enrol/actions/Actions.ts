@@ -36,6 +36,8 @@ export const ADD_REDEEM_VOUCHER_TO_STATE: string = "checkout/add/redeemVoucher";
 export const SET_REDEEM_VOUCHER_ACTIVITY: string = "checkout/set/voucher/activity";
 export const TOGGLE_REDEEM_VOUCHER: string = "checkout/toggle/redeemVoucher";
 
+export const UPDATE_CONTACT_ADD_PROCESS: string = "checkout/update/process/contact-add";
+
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
     type: ADD_CODE_REQUEST,
@@ -130,3 +132,9 @@ export const addRedeemVoucherToState = voucher => ({
   type: FULFILLED(ADD_REDEEM_VOUCHER_TO_STATE),
   payload: voucher,
 });
+
+export const updateContactAddProcess = (contact, type) => ({
+  type: UPDATE_CONTACT_ADD_PROCESS,
+  payload: {contact, type},
+});
+

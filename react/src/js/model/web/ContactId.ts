@@ -10,5 +10,10 @@ export class ContactId {
    * Indicates that new contact created
    */
   newContact?: boolean;
+
+  /**
+   * Flag if parent is required
+   */
+  parentRequired?: boolean;
 }
 

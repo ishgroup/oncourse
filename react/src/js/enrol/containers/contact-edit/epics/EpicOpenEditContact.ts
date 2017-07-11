@@ -21,7 +21,7 @@ const request: Request<ContactFields, IshState> = {
       ];
     } else {
       return [
-        addContactToSummary(state.checkout.contacts.entities.contact[value.contactId]),
+        addContactToSummary(state.checkout.contactAddProcess.contact),
       ];
     }
   },

@@ -41,21 +41,15 @@ export class Checkout extends React.Component<Props, any> {
           onSuccess={submitAddContact}
         />
         }
-        {phase === Phase.AddContact &&
+        {(phase === Phase.AddContact || phase === Phase.AddContactAsPayer) &&
         <ContactAddForm
           onSuccess={submitAddContact}
           onCancel={() => this.props.changePhase(page)}
         />
         }
-        {phase === Phase.AddContactAsPayer &&
-        <ContactAddForm
-          onSuccess={submitAddContactAsPayer}
-          onCancel={() => this.props.changePhase(page)}
-        />
-        }
         {phase === Phase.AddContactAsCompany &&
         <CompanyAddForm
-          onSuccess={submitAddContactAsPayer}
+          onSuccess={submitAddContact}
           onCancel={() => this.props.changePhase(page)}
         />
         }
