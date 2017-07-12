@@ -5,7 +5,9 @@ import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.courseclass.ClassAgeType;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.ContextUtil;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -58,6 +60,9 @@ public class PreferenceControllerTest extends ServiceTest {
 	
 	@Before
 	public void setup() throws Exception {
+		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
 		
 		InputStream st = PreferenceControllerTest.class.getClassLoader().getResourceAsStream(
