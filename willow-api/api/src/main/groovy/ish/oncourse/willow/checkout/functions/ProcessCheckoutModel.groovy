@@ -54,7 +54,8 @@ class ProcessCheckoutModel {
         totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
         
         ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, totalAmount.subtract(totalDiscount), enrolmentsPrice.enrolmentNodes).process()
-        payNowAmount = enrolmentsPrice.totalPayNow.min(redeemedVouchers.leftToPay)
+//        payNowAmount = enrolmentsPrice.totalPayNow.min(redeemedVouchers.leftToPay)
+        payNowAmount = payNowAmount.add(enrolmentsPrice.totalPayNow)
 
         if (redeemedVouchers.error) {
             model.error = redeemedVouchers.error
