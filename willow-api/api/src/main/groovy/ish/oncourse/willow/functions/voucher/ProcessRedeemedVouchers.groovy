@@ -35,7 +35,7 @@ class ProcessRedeemedVouchers {
 
     ProcessRedeemedVouchers process() {
         if (checkoutModelRequest.redeemedVoucherIds.empty) {
-            return
+            return this
         }
         vouchers = checkoutModelRequest.redeemedVoucherIds.collect { id -> new GetVoucher(context, college, id).get() }
 
