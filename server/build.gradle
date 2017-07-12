@@ -5,8 +5,8 @@ apply plugin: 'cayenne'
 // compile everything with the groovy plugin which can handle mixed groovy and Java files
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
-sourceSets.test.java.srcDirs = []
-sourceSets.test.groovy.srcDir 'src/test/java'
+//sourceSets.test.java.srcDirs = []
+//sourceSets.test.groovy.srcDir 'src/test/java'
 
 dependencies {
 
