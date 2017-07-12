@@ -89,5 +89,6 @@
 		value_string="true" />
 	<Preference id="2" collegeId="1" name="payment.gateway.type"
 				value_string="TEST" />
-		
+	<Preference id="3" collegeId="1" name="account.invoice.terms"
+				value_string="0" />
 </dataset>
