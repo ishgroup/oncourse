@@ -7,7 +7,7 @@ import {MockConfig} from "../mocks/mocks/MockConfig";
 import * as ReactInspector from "react-inspector";
 
 import {Values} from "redux-form-website-template";
-import {NAME} from "../../js/enrol/containers/payment/CreditCartForm";
+import {NAME} from "../../js/enrol/containers/payment/components/PaymentForm";
 import {NAME as ContactEditFormName} from "../../js/enrol/containers/contact-edit/ContactEditForm";
 import {NAME as ConcessionAddForm} from "../../js/enrol/containers/concession/Concession";
 

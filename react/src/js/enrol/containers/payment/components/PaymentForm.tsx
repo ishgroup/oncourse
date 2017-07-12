@@ -1,11 +1,18 @@
 import React from "react";
-import {Field, reduxForm, FormProps, DataShape} from "redux-form";
+import {Field, reduxForm, FormProps, FormErrors, DataShape} from "redux-form";
 import classNames from "classnames";
 import {Amount} from "../../../../model/checkout/Amount";
 import CreditCardComp from "./CreditCardComp";
 import CorporatePassComp from "./CorporatePassComp";
 import {Contact} from "../../../../model/web/Contact";
 import {Conditions} from "./Conditions";
+import {FieldName, Values} from "../services/PaymentService";
+import {makePayment} from "../actions/Actions";
+import {connect} from "react-redux";
+import {changePhase, setPayer} from "../../../actions/Actions";
+import {Phase} from "../../../reducers/State";
+import CheckoutService from "../../../services/CheckoutService";
+import {IshState} from "../../../../services/IshState";
 
 /**
  * @Deprecated will be remove, now it is used only as example
@@ -18,7 +25,7 @@ interface Props extends FormProps<DataShape, any, any> {
   payerId: string;
 }
 
-const NAME = "PaymentForm";
+export const NAME = "PaymentForm";
 
 class PaymentForm extends React.Component<any, any> {
 
@@ -35,32 +42,62 @@ class PaymentForm extends React.Component<any, any> {
 
   paymentTabOnClick = e => {
     e.preventDefault();
-    const tabPart = e.target.href.split("#");
-    const currentTab = tabPart[tabPart.length - 1];
-
     this.setState({
-      currentForm: currentTab,
+      currentForm: e.target.getAttribute('href').replace('#', ''),
     });
   }
 
   render() {
-    const {handleSubmit, contacts, amount, payerId} = this.props;
+    const {
+      handleSubmit, contacts, amount, invalid, pristine, submitting,
+      onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled,
+    } = this.props;
+
+    const disabled = (invalid || pristine || submitting);
+
+
     const {currentForm} = this.state;
 
     return (
       <form onSubmit={handleSubmit} id="paymentform">
-        <div id="tabable-container">
-          <PaymentFormNav paymentTabOnClick={this.paymentTabOnClick} currentForm={currentForm}/>
-          <div className="tab-content">
-            <CreditCardComp contacts={contacts} amount={amount} payerId={payerId}/>
-            <CorporatePassComp currentForm={currentForm}/>
+        {amount.payNow !== 0 &&
+        <div>
+          <div id="tabable-container">
+            <PaymentFormNav paymentTabOnClick={this.paymentTabOnClick} currentForm={currentForm}/>
+            <div className="tab-content">
+
+              {currentForm === 'credit-card' &&
+              <CreditCardComp
+                amount={amount}
+                contacts={contacts}
+                payerId={payerId}
+                onSetPayer={onSetPayer}
+                onAddPayer={onAddPayer}
+                onAddCompany={onAddCompany}
+                voucherPayerEnabled={voucherPayerEnabled}
+              />
+              }
+
+              {currentForm === 'corporate-pass' &&
+              <CorporatePassComp currentForm={currentForm}/>
+              }
+
+            </div>
+          </div>
+          <Conditions/>
+
+          <div className="form-controls enrolmentsSelected">
+            <input
+              disabled={disabled}
+              value="Confirm"
+              className={classNames("btn btn-primary", {disabled})}
+              id="paymentSubmit"
+              name="paymentSubmit"
+              type="submit"
+            />
           </div>
         </div>
-        <Conditions/>
-
-        <div className="form-controls enrolmentsSelected">
-          <input value="Confirm" className="btn btn-primary" id="paymentSubmit" name="paymentSubmit" type="submit"/>
-        </div>
+        }
       </form>
     );
   }
@@ -81,15 +118,73 @@ const PaymentFormNav = props => {
   );
 };
 
-const Container = reduxForm({
+const Form = reduxForm({
   form: NAME,
-  //validate: validate,
+  validate: (data: Values, props: Props): FormErrors<FormData> => {
+    const errors = {};
+
+    if (!data.agreementFlag) {
+      errors[FieldName.agreementFlag] = 'You must agree to the policies before proceeding.';
+    }
+    if (props.amount.payNow !== 0) {
+      if (!data.creditCardName) {
+        errors[FieldName.creditCardName] = 'Please supply your name as printed on the card (maximum 40 characters)';
+      }
+
+      if (!data.creditCardNumber) {
+        errors[FieldName.creditCardNumber] = 'The credit card number cannot be blank.';
+      }
+
+      if (!data.creditCardCvv) {
+        errors[FieldName.creditCardCvv] = 'The credit card CVV cannot be blank.';
+      }
+
+      if (!data.expiryMonth) {
+        errors[FieldName.expiryMonth] = 'The credit card expiry month cannot be blank.';
+      }
+
+      if (!data.expiryYear) {
+        errors[FieldName.expiryYear] = 'The credit card expiry year cannot be blank.';
+      }
+    }
+
+    return errors;
+  },
   onSubmitSuccess: (result, dispatch, props: any) => {
-    //dispatch({type: DispatchRequest});
+    // dispatch({type: DispatchRequest});
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
-    //dispatch(showErrors(submitError, NAME));
+    // dispatch(showErrors(submitError, NAME));
+  },
+  onSubmit: (data: Values, dispatch, props): void => {
+    if (props.amount.payNow !== 0) {
+      data.creditCardNumber = data.creditCardNumber.replace(/\s+/g, "");
+      data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "");
+    }
+    dispatch(makePayment(data));
   },
 })(PaymentForm);
+
+const mapStateToProps = (state: IshState) => {
+  return {
+    contacts: Object.values(state.checkout.contacts.entities.contact),
+    amount: state.checkout.amount,
+    payerId: state.checkout.payerId,
+    voucherPayerEnabled: CheckoutService.hasActiveVoucherPayer(state.checkout),
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetPayer: id => dispatch(setPayer(id)),
+    onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
+    onAddCompany: () => dispatch(changePhase(Phase.AddContactAsCompany)),
+  };
+};
+
+export const Container = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Form);
 
 export default Container;

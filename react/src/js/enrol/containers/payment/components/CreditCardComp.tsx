@@ -40,7 +40,7 @@ class CreditCardComp extends React.Component<Props, any> {
     const {contacts, amount, onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled} = this.props;
 
     return (
-      <div id="credit-card" className={classnames("single-tab", "active")}>
+      <div id="credit-card" className="single-tab active">
         <div id="paymentEditor">
           <Header/>
           <div className="enrolmentsSelected">
