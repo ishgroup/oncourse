@@ -24,7 +24,6 @@ export const SubmitAddContact: Epic<any, IshState> = (action$: ActionsObservable
     return [
       updateContactAddProcess(contact, state.checkout.phase),
       setNewContactFlag(payload.newContact),
-      // setParent(!payload.parentRequired ? state.checkout.parentId || contact.id : state.checkout.parentId),
       openEditContact(contact),
     ];
   });
