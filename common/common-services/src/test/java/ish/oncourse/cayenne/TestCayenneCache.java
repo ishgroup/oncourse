@@ -3,7 +3,9 @@ package ish.oncourse.cayenne;
 import ish.oncourse.model.Country;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
@@ -32,10 +34,10 @@ public class TestCayenneCache extends ServiceTest {
         assertNull(country);
         createNewObject();
 
-        //todo test passes if add a delay
-        //Thread.sleep(1000L);
+        //default ehcache.timeToLiveSeconds is 1 sec
+        Thread.sleep(1000L);
         country = get(sharedContext, QueryCacheStrategy.LOCAL_CACHE);
-        assertNotNull(country);
+         assertNotNull(country);
 
     }
 
@@ -48,8 +50,8 @@ public class TestCayenneCache extends ServiceTest {
         assertNull(country);
         createNewObject();
 
-        //todo test passes if add a delay
-        //Thread.sleep(1000L);
+        //default ehcache.timeToLiveSeconds is 1 sec
+        Thread.sleep(1000L);
         country = get(sharedContext, QueryCacheStrategy.SHARED_CACHE);
         assertNotNull(country);
 
