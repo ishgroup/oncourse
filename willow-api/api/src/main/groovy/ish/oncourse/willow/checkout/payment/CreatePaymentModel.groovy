@@ -32,12 +32,14 @@ import ish.oncourse.model.Voucher
 import ish.oncourse.model.VoucherProduct
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
+import ish.oncourse.services.voucher.VoucherRedemptionHelper
 import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.GetCourseClass
 import ish.oncourse.willow.checkout.functions.GetProduct
+import ish.oncourse.willow.functions.voucher.GetVoucher
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.persistence.CommonPreferenceController
@@ -49,8 +51,7 @@ import org.apache.commons.lang3.time.DateUtils
 
 
 class CreatePaymentModel {
-
-
+    
     ObjectContext context
     College college
     WebSite webSite
@@ -96,6 +97,7 @@ class CreatePaymentModel {
         }
 
         if (paymentIn) {
+            updateVoucherPayments()
             updateSumm()
             fillCCDetails()
             createModel()
@@ -103,6 +105,28 @@ class CreatePaymentModel {
         }
         
         this
+    }
+
+    private void updateVoucherPayments() {
+        VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper(context, college)
+
+        List<Voucher> vouchers = checkoutModel.amount.voucherPayments
+                .findAll { it.amount.toMoney().isGreaterThan(Money.ZERO) }
+                .collect {new GetVoucher(context, college, it.redeemVoucherId).get()}
+                
+        for (Voucher voucher : vouchers) {
+            voucherRedemptionHelper.addVoucher(voucher, voucher.valueRemaining)
+        }
+
+        if (mainInvoice) {
+            voucherRedemptionHelper.addInvoiceLines(mainInvoice.invoiceLines)
+        }
+        
+        for (InvoiceNode node : paymentPlan) {
+            voucherRedemptionHelper.addInvoiceLines(node.invoice.invoiceLines)
+        }
+        
+        voucherRedemptionHelper.processAgainstInvoices()
     }
     
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -200,22 +224,39 @@ class CreatePaymentModel {
     
     private void updateSumm() {
         if (paymentIn)  {
+            
             if (mainInvoice) {
-                mainInvoice.invoiceLines.each { il ->
-                    paymentIn.amount = paymentIn.amount.add(il.finalPriceToPayIncTax)
-                }
-                mainInvoice.paymentInLines[0].amount = paymentIn.amount
+
+                mainInvoice.paymentInLines.find { it.paymentIn == paymentIn }.amount = calculatePaymentAmountForInvoice(mainInvoice)
+                
                 UpdateInvoiceAmount.valueOf(mainInvoice, null).update()
                 mainInvoice.updateAmountOwing()
                 adjustDueDate()
             }
+            
             paymentPlan.each { node ->
-                paymentIn.amount = paymentIn.amount.add(node.paymentAmount)
-                node.paymentInLine.amount = node.paymentAmount
+                node.paymentInLine.amount = calculatePaymentAmountForInvoice(node.invoice).min(node.paymentAmount)
                 UpdateInvoiceAmount.valueOf(node.invoice, null).update()
                 node.invoice.updateAmountOwing()
             }
+
+            paymentIn.paymentInLines.each { paymentIn.amount = paymentIn.amount.add(it.amount)}
+            
+            if (paymentIn.amount == Money.ZERO) {
+                paymentIn.type = PaymentType.INTERNAL
+            }
         }
+    }
+
+    private Money calculatePaymentAmountForInvoice(Invoice invoice) {
+        
+        Money voucherPaymentsTotal = Money.ZERO
+        invoice.paymentInLines.findAll { it.paymentIn.type == PaymentType.VOUCHER }.each { voucherPaymentsTotal = voucherPaymentsTotal.add(it.amount) }
+
+        Money invoiceTotal = Money.ZERO
+        invoice.invoiceLines.each { invoiceTotal = invoiceTotal.add(it.finalPriceToPayIncTax) }
+
+        invoiceTotal.subtract(voucherPaymentsTotal).max(Money.ZERO)
     }
 
     private PaymentIn getPayment() {
