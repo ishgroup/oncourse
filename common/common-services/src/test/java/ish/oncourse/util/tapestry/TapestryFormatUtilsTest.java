@@ -98,6 +98,18 @@ public class TapestryFormatUtilsTest {
         //case for null input
         assertEquals(StringUtils.EMPTY,
                 formatUtils.truncate(null, 5));
+
+        //case when length is greater than string
+        assertEquals("This class is available for all ages",
+                formatUtils.truncate("This class is available for all ages", 200));
+
+        //case when length is equals string
+        assertEquals("This class is available for all ages",
+                formatUtils.truncate("This class is available for all ages", 36));
+
+        //case when length is less than string
+        assertEquals("This class is available for all",
+                formatUtils.truncate("This class is available for all ages", 35));
     }
 
     /**

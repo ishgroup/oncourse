@@ -156,8 +156,12 @@ public class TapestryFormatUtils {
         try {
             BreakIterator bi = BreakIterator.getWordInstance();
             bi.setText(src);
-            int first_after = bi.preceding(length + 1);
-            truncated = src.substring(0, first_after).trim();
+            if (src.length() > length) {
+                int first_after = bi.preceding(length + 1);
+                truncated = src.substring(0, first_after).trim();
+            } else {
+                truncated = src;
+            }
         } catch (Exception ex) {
             logger.error(
                     String.format("in Tapestry component during string truncation (string: %s; maxlength: %d).", src, length),
