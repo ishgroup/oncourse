@@ -1,8 +1,8 @@
-import {Application} from "./../checkout/Application";
-import {Article} from "./../checkout/Article";
-import {Enrolment} from "./../checkout/Enrolment";
-import {Membership} from "./../checkout/Membership";
-import {Voucher} from "./../checkout/Voucher";
+import {Application} from "./Application";
+import {Article} from "./Article";
+import {Enrolment} from "./Enrolment";
+import {Membership} from "./Membership";
+import {Voucher} from "./Voucher";
 
 export class ContactNode {
   contactId?: string;

@@ -1,4 +1,3 @@
-
 export class Voucher {
   contactId?: string;
   productId?: string;

@@ -1,6 +1,17 @@
 import React from "react";
 
-class CorporatePassComp extends React.Component<any, any> {
+interface Props {
+  onSubmitPass: (code: string) => void;
+}
+
+class CorporatePassComp extends React.Component<Props, any> {
+  private passInput;
+
+  handleClick() {
+    const {onSubmitPass} = this.props;
+    onSubmitPass(this.passInput.value);
+  }
+
   render() {
     return (
       <div id="corporate-pass" className="single-tab active">
@@ -11,9 +22,15 @@ class CorporatePassComp extends React.Component<any, any> {
           </p>
 
           <label htmlFor="corporatePass" className="corporatePass-label">Code</label>
-          <input className="input-fixed" name="corporatePass" id="corporatePass" type="text"/>
+          <input
+            className="input-fixed"
+            name="corporatePass"
+            id="corporatePass"
+            type="text"
+            ref={ref => this.passInput = ref}
+          />
 
-          <div className="button" id="addCorporatePass">Submit</div>
+          <div className="button" id="addCorporatePass" onClick={() => this.handleClick()}>Submit</div>
         </fieldset>
       </div>
     );

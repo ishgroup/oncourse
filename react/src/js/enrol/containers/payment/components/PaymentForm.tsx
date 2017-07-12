@@ -1,13 +1,13 @@
-import React from "react";
-import {Field, reduxForm, FormProps, FormErrors, DataShape} from "redux-form";
-import classNames from "classnames";
+import * as React from "react";
+import {reduxForm, FormProps, FormErrors, DataShape} from "redux-form";
+import classnames from "classnames";
 import {Amount} from "../../../../model/checkout/Amount";
 import CreditCardComp from "./CreditCardComp";
 import CorporatePassComp from "./CorporatePassComp";
 import {Contact} from "../../../../model/web/Contact";
 import {Conditions} from "./Conditions";
 import {FieldName, Values} from "../services/PaymentService";
-import {makePayment} from "../actions/Actions";
+import {getCorporatePass, makePayment} from "../actions/Actions";
 import {connect} from "react-redux";
 import {changePhase, setPayer} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
@@ -23,6 +23,7 @@ interface Props extends FormProps<DataShape, any, any> {
   amount: Amount;
   onSubmit: (data, dispatch, props) => any;
   payerId: string;
+  onSubmitPass?: (code: string) => any;
 }
 
 export const NAME = "PaymentForm";
@@ -49,7 +50,7 @@ class PaymentForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, contacts, amount, invalid, pristine, submitting,
+      handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled,
     } = this.props;
 
@@ -79,7 +80,7 @@ class PaymentForm extends React.Component<any, any> {
               }
 
               {currentForm === 'corporate-pass' &&
-              <CorporatePassComp currentForm={currentForm}/>
+              <CorporatePassComp onSubmitPass={onSubmitPass}/>
               }
 
             </div>
@@ -90,7 +91,7 @@ class PaymentForm extends React.Component<any, any> {
             <input
               disabled={disabled}
               value="Confirm"
-              className={classNames("btn btn-primary", {disabled})}
+              className={classnames("btn btn-primary", {disabled})}
               id="paymentSubmit"
               name="paymentSubmit"
               type="submit"
@@ -108,10 +109,10 @@ const PaymentFormNav = props => {
 
   return (
     <ul className="nav">
-      <li className={classNames("first", {active: currentForm === "credit-card"})}>
+      <li className={classnames("first", {active: currentForm === "credit-card"})}>
         <a href="#credit-card" onClick={paymentTabOnClick.bind(this)}>Credit card</a>
       </li>
-      <li className={classNames({active: currentForm === "corporate-pass"})}>
+      <li className={classnames({active: currentForm === "corporate-pass"})}>
         <a href="#corporate-pass" onClick={paymentTabOnClick.bind(this)}>CorporatePass</a>
       </li>
     </ul>
@@ -179,6 +180,7 @@ const mapDispatchToProps = dispatch => {
     onSetPayer: id => dispatch(setPayer(id)),
     onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
     onAddCompany: () => dispatch(changePhase(Phase.AddContactAsCompany)),
+    onSubmitPass: code => dispatch(getCorporatePass(code)),
   };
 };
 

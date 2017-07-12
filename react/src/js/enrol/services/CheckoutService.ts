@@ -158,6 +158,9 @@ export class CheckoutService {
     this.checkoutApi.updateParentChilds(parentId, childIds)
   )
 
+  public getCorporatePass = (code): Promise<any> => (
+    this.checkoutApi.getCorporatePass(code)
+  )
 
   public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {
     switch (response.status) {

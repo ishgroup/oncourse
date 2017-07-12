@@ -8,6 +8,7 @@ import uuid from "uuid";
 
 import {Create, ProcessError, Request} from "../../../epics/EpicUtils";
 import {
+  GET_CORPORATE_PASS,
   MAKE_PAYMENT,
   PROCESS_PAYMENT,
   processPayment,
@@ -69,5 +70,23 @@ const MakePayment: Epic<any, any> = (action$: ActionsObservable<any>, store: Mid
   });
 };
 
+const corporatePassRequest: Request<PaymentResponse, IshState> = {
+  type: GET_CORPORATE_PASS,
+  getData: (payload: any, state: IshState): Promise<PaymentResponse> => {
+    return CheckoutService.getCorporatePass(payload);
+  },
+  processData: (response: PaymentResponse, state: IshState): IAction<any>[] | Observable<any> => {
+    console.log(response);
+    return [];
+  },
+  processError: (response: AxiosResponse): IAction<any>[] => {
+    console.log(response);
+    return [];
+  },
 
-export const EpicPayment = combineEpics(MakePayment, ProcessPayment, GetPaymentStatus);
+};
+
+const GetCorporatePass: Epic<any, any> = Create(corporatePassRequest);
+
+
+export const EpicPayment = combineEpics(MakePayment, ProcessPayment, GetPaymentStatus, GetCorporatePass);

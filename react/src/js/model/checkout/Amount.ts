@@ -1,4 +1,4 @@
-import {VoucherPayment} from "./../checkout/VoucherPayment";
+import {VoucherPayment} from "./VoucherPayment";
 
 export class Amount {
   owing?: number;

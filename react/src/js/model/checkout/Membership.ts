@@ -1,4 +1,3 @@
-
 export class Membership {
   contactId?: string;
   productId?: string;

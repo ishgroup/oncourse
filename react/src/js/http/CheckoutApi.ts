@@ -5,7 +5,6 @@ import {ContactNode} from "../model/checkout/ContactNode";
 import {PaymentRequest} from "../model/checkout/payment/PaymentRequest";
 import {PaymentResponse} from "../model/checkout/payment/PaymentResponse";
 import {ContactNodeRequest} from "../model/checkout/request/ContactNodeRequest";
-import {CommonError} from "../model/common/CommonError";
 
 export class CheckoutApi {
   constructor(private http: HttpService) {
@@ -25,5 +24,8 @@ export class CheckoutApi {
   }
   updateParentChilds(parentId:string, childIds: string[]): Promise<any> {
     return this.http.POST('/updateParentChilds', {parentId, childIds});
+  }
+  getCorporatePass(code: string): Promise<any> {
+    return this.http.GET('/getCorporatePass', code);
   }
 }

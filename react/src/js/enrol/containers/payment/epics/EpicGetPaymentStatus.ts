@@ -11,11 +11,11 @@ import {PaymentResponse} from "../../../../model/checkout/payment/PaymentRespons
 const request: Request<PaymentResponse, IshState> = {
   type: GET_PAYMENT_STATUS,
   getData: (payload: any, state: IshState): Promise<PaymentResponse> => {
-    return CheckoutService.getPaymentStatus(state.checkout.payment)
+    return CheckoutService.getPaymentStatus(state.checkout.payment);
   },
   processData: (response: PaymentResponse, state: IshState): IAction<any>[] | Observable<any> => {
     return CheckoutService.processPaymentResponse(response);
-  }
+  },
 };
 
 export const GetPaymentStatus: Epic<any, any> = Reply(request, 3);

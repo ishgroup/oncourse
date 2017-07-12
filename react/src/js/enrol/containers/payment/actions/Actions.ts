@@ -16,6 +16,8 @@ export const GET_PAYMENT_STATUS = "checkout/payment/get/payment/status";
 
 export const RESET_PAYMENT_STATE = "checkout/payment/reset/payment/state";
 
+export const GET_CORPORATE_PASS = "checkout/payment/get/corporatePass";
+
 export const makePayment = (values: Values): IAction<Values> => {
   return {
     type: MAKE_PAYMENT,
@@ -49,3 +51,8 @@ export const resetPaymentState = () => {
     type: RESET_PAYMENT_STATE,
   };
 };
+
+export const getCorporatePass = (code: string) => ({
+  type: GET_CORPORATE_PASS,
+  payload: code,
+});

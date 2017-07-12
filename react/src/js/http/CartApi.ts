@@ -1,5 +1,4 @@
 import {HttpService} from "../common/services/HttpService";
-import {CommonError} from "../model/common/CommonError";
 import {Token} from "../model/web/Token";
 
 export class CartApi {

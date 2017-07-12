@@ -1,6 +1,6 @@
-import {Amount} from "./../checkout/Amount";
-import {ContactNode} from "./../checkout/ContactNode";
-import {CommonError} from "./../common/CommonError";
+import {Amount} from "./Amount";
+import {ContactNode} from "./ContactNode";
+import {CommonError} from "../common/CommonError";
 
 export class CheckoutModel {
   error?: CommonError;

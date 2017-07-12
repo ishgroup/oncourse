@@ -130,6 +130,10 @@ export class CheckoutApiMock extends CheckoutApi {
     return this.config.createResponse(result);
   }
 
+  getCorporatePass(code: string): Promise<any> {
+    return code === '1' ? this.config.createResponse('success') : CreatePromiseReject('incorrect pass');
+  }
+
   private paymentStatusValue(): PaymentStatus {
     if (this.config.props.checkoutApi.makePayment.result.inProgress) {
       return PaymentStatus.IN_PROGRESS;

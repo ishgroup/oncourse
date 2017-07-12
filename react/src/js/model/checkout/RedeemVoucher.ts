@@ -1,4 +1,4 @@
-import {Contact} from "./../web/Contact";
+import {Contact} from "../web/Contact";
 
 export class RedeemVoucher {
   id?: string;
