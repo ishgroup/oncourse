@@ -49,6 +49,7 @@ public abstract class ACheckoutTest extends ServiceTest {
 		InitialContext context = new InitialContext();
 		context.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 
 		initTest("ish.oncourse.enrol", "enrol", EnrolTestModule.class);
 		if (dbResource != null)

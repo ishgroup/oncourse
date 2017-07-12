@@ -95,6 +95,9 @@ public class ActionAddContactTest extends ACheckoutTest {
 
         createPurchaseController(1002);
         purchaseController.getPreferenceController().setCollectParentDetails(true);
+        assertTrue(purchaseController.getPreferenceController().isCollectParentDetails());
+
+
         purchaseController.getPreferenceController().setContactAgeWhenNeedParent(18);
 
         //contact 1002
