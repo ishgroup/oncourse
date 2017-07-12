@@ -29,7 +29,7 @@ public class ISHModule implements Module {
 	public void configure(Binder binder) {
 
 		//needs for case insensitive queries
-		binder.bindMap(Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
+		binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
 
 		binder.bind(ObjectContextFactory.class).to(ISHObjectContextFactory.class);
 
