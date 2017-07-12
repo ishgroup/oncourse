@@ -6,6 +6,7 @@ package ish.oncourse.willow.service;
 
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import ish.math.MoneyType;
+import ish.oncourse.willow.WillowApiModule;
 import ish.oncourse.willow.cayenne.CayenneService;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
@@ -64,7 +65,7 @@ public abstract class ApiTest {
         truncateAllTables(false);
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
         
-        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
+        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowApiModule.WillowApiCayenneModule());
         for (DataNode dataNode : cayenneRuntime.getDataDomain().getDataNodes()) {
             dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
         }
