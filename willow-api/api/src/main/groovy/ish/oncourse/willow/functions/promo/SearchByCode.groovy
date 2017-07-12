@@ -19,6 +19,11 @@ class SearchByCode {
             error = voucherByCode.error
             response.voucher = voucherByCode.redeemVoucher
         }
+
+        if (!response.voucher && !error) {
+            error = new CommonError(message: 'The code you have entered was incorrect or not available.')
+        }
+        
         this
     }
 }

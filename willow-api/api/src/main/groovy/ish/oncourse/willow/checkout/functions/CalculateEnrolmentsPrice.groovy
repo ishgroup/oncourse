@@ -1,11 +1,11 @@
 package ish.oncourse.willow.checkout.functions
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.cayenne.DiscountInterface
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
-import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Discount
 import ish.oncourse.model.DiscountCourseClass
@@ -89,7 +89,8 @@ class CalculateEnrolmentsPrice {
                     d
                 }
     }
-
+    
+    @CompileStatic(TypeCheckingMode.SKIP)
     private Money getOverridenFee(Contact contact, CourseClass courseClass) {
        Double feeOverriden =  model.contactNodes
                 .find {it.contactId == contact.id.toString()}
