@@ -14,7 +14,7 @@ const request: Request<ContactFields, IshState> = {
   type: OPEN_EDIT_CONTACT,
   getData: (contact: Contact, state: IshState) => CheckoutService.loadFields(contact, state),
   processData: (value: ContactFields, state: IshState) => {
-    if (value.headings.length > 0) {
+    if (value.headings.length > 0 && state.checkout.contactAddProcess.contact.id) {
       return [
         setFieldsToState(value),
         changePhase(Phase.EditContact),

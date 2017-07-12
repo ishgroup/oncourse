@@ -58,6 +58,10 @@ export class CheckoutService {
     return !L.isNil(state.payerId);
   }
 
+  public getAllChildIds = (state: CheckoutState): string[] => (
+    state.contacts.result.filter(id => state.contacts.entities.contact[id].parentRequired)
+  )
+
   public hasActiveVoucherPayer = (state: CheckoutState): boolean => {
     return !!state.redeemVouchers.filter(v => v.payer && v.enabled).length;
   }
@@ -70,7 +74,7 @@ export class CheckoutService {
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(contact, state.cart, state.checkout.newContact));
   }
 
-  public submitContactDetails = (fields: ContactFields, values: ContactValues): Promise<any> => {
+  public submitContactDetails = (values: ContactFields, fields: ContactValues): Promise<any> => {
     return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
   }
 
@@ -82,7 +86,7 @@ export class CheckoutService {
   public getContactNode = (contact: Contact, cart: CartState): Promise<ContactNode> => {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromContact(contact, cart));
   };
-  
+
   public submitCode = (code: string, state: IshState): Promise<Promotion> => {
     return this.promotionApi.submitCode(code);
   }
@@ -149,6 +153,10 @@ export class CheckoutService {
 
     return errors;
   }
+
+  public updateParentChilds = (parentId, childIds): Promise<any> => (
+    this.checkoutApi.updateParentChilds(parentId, childIds)
+  )
 
 
   public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {

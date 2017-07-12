@@ -39,7 +39,7 @@ class RadioGroup extends React.Component<any, any> {
             onChange={() => { this.handleChange(i.key);}}
             onBlur={input.onBlur}
             onFocus={input.onFocus}
-            disabled={disabled}
+            disabled={disabled || i.disabled}
           />
           <span htmlFor={i.key}>&nbsp; {i.value}</span>
         </span>

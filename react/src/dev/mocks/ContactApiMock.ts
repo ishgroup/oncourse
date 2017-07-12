@@ -45,7 +45,7 @@ export class ContactApiMock extends ContactApi {
       result.newContact = false;
     }
 
-    result.parentRequired = true;
+    result.parentRequired = request.firstName == 'child';
     result.id = contact.id;
     return this.config.createResponse(result);
   }
@@ -89,7 +89,11 @@ export class ContactApiMock extends ContactApi {
 
 
   submitContactDetails(submit: SubmitFieldsRequest): Promise<ContactId> {
-    return this.config.createResponse(Promise.resolve());
+    const contactId = new ContactId();
+    contactId.id = submit.contactId;
+    contactId.parentRequired = false;
+
+    return this.config.createResponse(Promise.resolve(contactId));
   }
 
   submitConcession(request) {

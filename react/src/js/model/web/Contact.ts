@@ -30,5 +30,10 @@ export class Contact {
    * Is company flag
    */
   company?: boolean;
+
+  /**
+   * if parent required flag
+   */
+  parentRequired?: boolean;
 }
 

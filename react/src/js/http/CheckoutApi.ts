@@ -23,4 +23,7 @@ export class CheckoutApi {
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
     return this.http.POST(`/makePayment`, paymentRequest);
   }
+  updateParentChilds(parentId:string, childIds: string[]): Promise<any> {
+    return this.http.POST('/updateParentChilds', {parentId, childIds});
+  }
 }

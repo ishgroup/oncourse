@@ -72,7 +72,7 @@ const Form = reduxForm({
     return {...errors, ...concessionErrors};
   },
   onSubmitSuccess: (result, dispatch, props: any) => {
-    dispatch(submitEditContact(props.contact));
+    dispatch(submitEditContact({...props.contact, parentRequired: result.parentRequired}));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
     dispatch(showFormValidation(submitError, NAME));
@@ -97,7 +97,7 @@ const mapStateToProps = (state: IshState) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSubmit: (data, dispatch, props): any => {
-      return CheckoutService.submitContactDetails(data, props);
+      return CheckoutService.submitContactDetails(data, props.fields);
     },
     onInit: () => {
       dispatch(getConcessionTypes());

@@ -40,6 +40,9 @@ export const TOGGLE_REDEEM_VOUCHER: string = "checkout/toggle/redeemVoucher";
 
 export const UPDATE_CONTACT_ADD_PROCESS: string = "checkout/update/process/contact-add";
 
+export const UPDATE_PARENT_CHILDS: string = "checkout/update/parent/childs";
+
+
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
     type: ADD_CODE_REQUEST,
@@ -145,3 +148,9 @@ export const updateContactAddProcess = (contact, type) => ({
   payload: {contact, type},
 });
 
+export const updateParentChilds = (parentId: string, childIds: string[]): IAction<any> => {
+  return {
+    type: UPDATE_PARENT_CHILDS,
+    payload: {parentId, childIds},
+  };
+};

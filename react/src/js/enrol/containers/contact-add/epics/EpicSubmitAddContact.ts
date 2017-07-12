@@ -16,12 +16,16 @@ export const SubmitAddContact: Epic<any, IshState> = (action$: ActionsObservable
   return action$.ofType(SUBMIT_ADD_CONTACT).flatMap(action => {
     const payload: SubmitContact = action.payload;
     const state: IshState = store.getState();
+    const contact = {
+      ...payload.contact,
+      parentRequired: payload.parentRequired,
+    };
 
     return [
-      updateContactAddProcess(payload.contact, state.checkout.phase),
+      updateContactAddProcess(contact, state.checkout.phase),
       setNewContactFlag(payload.newContact),
-      setParent(!payload.parentRequired ? state.checkout.parentId || payload.contact.id : state.checkout.parentId),
-      openEditContact(payload.contact),
+      // setParent(!payload.parentRequired ? state.checkout.parentId || contact.id : state.checkout.parentId),
+      openEditContact(contact),
     ];
   });
 };
