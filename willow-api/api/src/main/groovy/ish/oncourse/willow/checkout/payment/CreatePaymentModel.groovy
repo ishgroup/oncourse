@@ -106,7 +106,8 @@ class CreatePaymentModel {
         
         this
     }
-
+    
+    @CompileStatic(TypeCheckingMode.SKIP)
     private void updateVoucherPayments() {
         VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper(context, college)
 
