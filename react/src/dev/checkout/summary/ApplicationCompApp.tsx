@@ -29,9 +29,9 @@ config.init((config:MockConfig) => {
 const classes:CourseClass[]  = [db.getCourseClassByIndex(0),db.getCourseClassByIndex(1)];
 const contacts:Contact[]  = [db.getContactByIndex(0)];
 
-const application:Application[]  = checkoutApi.createEnrolmentsBy(contacts, classes);
+const applications:Application[]  = checkoutApi.createEnrolmentsBy(contacts, classes);
 
-application[0].errors = [NoCourseClassPlaces];
+applications[0].errors = [NoCourseClassPlaces];
 
 const createEnrolmentProps = (e: Application): ApplicationProps => {
   return {
@@ -44,8 +44,8 @@ const createEnrolmentProps = (e: Application): ApplicationProps => {
 const createContactProps = (contact: Contact): ApplicationProps => {
   return {
     contact: contact,
-    application: application.filter((e) => e.contactId == contact.id).map(createEnrolmentProps),
-    courseClass: application.filter((e) => e.contactId == contact.id).map((e: Application) => db.getCourseClassById(e.classId)),
+    application: applications.filter((e) => e.contactId == contact.id)[0],
+    courseClass: applications.filter((e) => e.contactId == contact.id).map((e: Application) => db.getCourseClassById(e.classId))[0],
   }
 };
 

@@ -80,7 +80,7 @@ const NewContactReducer = (state: boolean = false, action: IAction<boolean>): bo
   }
 };
 
-const FieldsReducer = (state: ContactFields = null, action): any => {
+const FieldsReducer = (state: ContactFields = null, action: IAction<ContactFields>): ContactFields => {
   switch (action.type) {
 
     case ContactEditActions.SET_FIELDS_TO_STATE:
@@ -133,7 +133,7 @@ const AmountReducer = (state: Amount = null, action: IAction<Amount>): Amount =>
   }
 };
 
-const ErrorReducer = (state: ValidationError = null, action: any): any => {
+const ErrorReducer = (state: ValidationError = null, action: IAction<ValidationError>): ValidationError => {
   switch (action.type) {
 
     case Actions.SHOW_MESSAGES:
@@ -144,14 +144,13 @@ const ErrorReducer = (state: ValidationError = null, action: any): any => {
     case ContactEditActions.SET_FIELDS_TO_STATE:
     case ContactEditActions.RESET_FIELDS_STATE:
     case Actions.UPDATE_AMOUNT:
-      return {};
-
+      return null;
     default:
       return state;
   }
 };
 
-const PhaseReducer = (state: Phase = Phase.Init, action: any): any => {
+const PhaseReducer = (state: Phase = Phase.Init, action: IAction<Phase>): Phase => {
   switch (action.type) {
 
     case Actions.CHANGE_PHASE:
@@ -162,7 +161,7 @@ const PhaseReducer = (state: Phase = Phase.Init, action: any): any => {
   }
 };
 
-const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: { type: string, payload: any }): any => {
+const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: IAction<any>): RedeemVoucher[] => {
   switch (action.type) {
 
     case FULFILLED(Actions.ADD_REDEEM_VOUCHER_TO_STATE):
@@ -178,7 +177,7 @@ const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: { type: stri
   }
 };
 
-const ContactAddProcess = (state: any = {}, action: { type: string, payload: any }): any => {
+const ContactAddProcess = (state: any = {}, action: IAction<any>): any => {
   switch (action.type) {
 
     case Actions.UPDATE_CONTACT_ADD_PROCESS:

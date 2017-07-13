@@ -137,6 +137,20 @@ export class HTMLMarkers {
     component: PopupContainer,
     props: {}
   };
+
+  /**
+   * Renders fees-range component.
+   *
+   * Corresponding React Component: {@link Fees}
+   * Example Usage: <div data-cid="fees"  data-prop-id="${courseClass.id}"></div>
+   * Tapestry template to use: CourseClassItem.tml
+   */
+  static FEES_RANGE: HTMLMarker = {
+    id: "fees-range",
+    component: Fees,
+    props: {id: "string"}
+  };
+
 }
 
 export interface HTMLMarker {

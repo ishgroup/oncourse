@@ -13,7 +13,6 @@ import "../../../scss/_ReactSelect.scss";
 import {SearchApiMock} from "../../mocks/SearchApiMock";
 import SelectField from "../../../js/components/form-new/SelectField";
 import {TextField} from "../../../js/components/form-new/TextField";
-import {SuburbOption} from "../../../js/components/form/Renders";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 
 const store = createStore(

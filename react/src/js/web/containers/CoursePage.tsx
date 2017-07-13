@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import withRouter from "react-router/lib/withRouter";
+import {withRouter} from "react-router";
 import {ReactRouter} from "../../types";
 import {Level, Logger, LogMessage} from "../../services/Logger";
 import {Actions} from "../actions/Actions";

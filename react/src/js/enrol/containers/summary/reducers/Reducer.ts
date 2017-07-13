@@ -1,18 +1,18 @@
 import * as SummaryActions from "../actions/Actions";
-import {ContactNodeToState, State} from "./State";
+import {ContactNodeStorage, ContactNodeToState, State} from "./State";
 import {RESET_CHECKOUT_STATE} from "../../../actions/Actions";
 import * as L from "lodash";
-import {ContactNode} from "../../../../model/checkout/ContactNode";
+import {IAction} from "../../../../actions/IshAction";
 
-export const Reducer = (state: State = ContactNodeToState([]), action: { type: string, payload: State }): State => {
+export const Reducer = (state: State = ContactNodeToState([]), action: IAction<State>): State => {
   const ns: State = L.cloneDeep(state);
 
   switch (action.type) {
 
     case  SummaryActions.UPDATE_ITEM:
       action.payload.result.forEach(id => {
-        const stateNode: ContactNode = ns.entities.contactNodes[id];
-        const payloadNode: ContactNode = action.payload.entities.contactNodes[id];
+        const stateNode: ContactNodeStorage = ns.entities.contactNodes[id];
+        const payloadNode: ContactNodeStorage = action.payload.entities.contactNodes[id];
         stateNode.enrolments = Array.from(new Set([...stateNode.enrolments || [], ...payloadNode.enrolments]));
         stateNode.applications = Array.from(new Set([...stateNode.applications || [], ...payloadNode.applications]));
         stateNode.memberships = Array.from(new Set([...stateNode.memberships || [], ...payloadNode.memberships]));

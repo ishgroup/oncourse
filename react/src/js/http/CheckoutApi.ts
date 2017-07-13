@@ -26,6 +26,6 @@ export class CheckoutApi {
     return this.http.POST('/updateParentChilds', {parentId, childIds});
   }
   getCorporatePass(code: string): Promise<any> {
-    return this.http.GET('/getCorporatePass', code);
+    return null;
   }
 }

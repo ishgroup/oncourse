@@ -1,6 +1,6 @@
 import * as React from "react";
 import Rodal from "rodal";
-import "rodal/src/rodal.css";
+import "rodal/lib/rodal.css";
 
 export class Modal extends React.Component<ModalComponentProps, ModalComponentState> {
   constructor(props) {

@@ -17,7 +17,7 @@ import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
 import {Membership} from "../../../js/model/checkout/Membership";
-import {ProductClass} from "../../../js/model/web/ProductClass";
+import {Product} from "../../../js/model/web/Product";
 
 let config: MockConfig = new MockConfig();
 const checkoutApi:CheckoutApiMock = new CheckoutApiMock(config);
@@ -28,10 +28,10 @@ config.init((config:MockConfig) => {
   render(config);
 });
 
-const classes:ProductClass[]  = [db.getProductClassByIndex(0),db.getProductClassByIndex(1)];
+const products:Product[]  = [db.getProductClassByIndex(0),db.getProductClassByIndex(1)];
 const contacts:Contact[]  = [db.getContactByIndex(0)];
 
-const membership:Membership[]  = checkoutApi.createMembershipsBy(contacts, classes);
+const membership:Membership[]  = checkoutApi.createMembershipsBy(contacts, products);
 
 membership[0].errors = [NoCourseClassPlaces];
 
@@ -46,8 +46,8 @@ const createMembershipProps = (e: Membership): MembershipProps => {
 const createContactProps = (contact: Contact): MembershipProps => {
   return {
     contact: contact,
-    membership: membership.filter((e) => e.contactId == contact.id).map(createMembershipProps),
-    product: membership.filter((e) => e.contactId == contact.id).map((e: Membership) => db.getProductClassById(e.productId)),
+    membership: membership.filter((e) => e.contactId == contact.id)[0],
+    product: membership.filter((e) => e.contactId == contact.id).map((e: Membership) => db.getProductClassById(e.productId))[0],
   }
 };
 

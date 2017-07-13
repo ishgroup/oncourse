@@ -1,7 +1,6 @@
 import * as React from "react";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
-import {ItemToState} from "./reducers/State";
 import {debounce} from "lodash";
 
 import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model/checkout/Index";
@@ -129,7 +128,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onPriceValueChange: (productItem: PurchaseItem, val: any): void => {
       const item = Object.assign(productItem, {value: val, price: val});
-      dispatch(updateItem(ItemToState(item)));
+      dispatch(updateItem(item));
       getCheckoutModelDebounced(dispatch);
     },
     onAddConcession: (contactId): void => {

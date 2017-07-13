@@ -7,8 +7,6 @@ import {Item} from "../../../../model/common/Item";
 import {IshState} from "../../../../services/IshState";
 import {PaymentRequest} from "../../../../model/checkout/payment/PaymentRequest";
 import {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
-import {AxiosResponse} from "axios";
-import {isCommonError} from "../../../../common/utils/ErrorUtils";
 
 export const FieldName = createStringEnum([
   "creditCardName",
@@ -30,7 +28,7 @@ export interface Values {
 }
 
 export class PaymentService {
-  static months = (): Promise<Item> => {
+  static months = (): Promise<Item[]> => {
     const result = L.range(1, 13).map(i => {
       const v = i < 10 ? `0${i}` : `${i}`;
       return {key: v, value: v};
@@ -38,7 +36,7 @@ export class PaymentService {
     return Promise.resolve(result);
   }
 
-  static years = (): Promise<Item> => {
+  static years = (): Promise<Item[]> => {
     const start: number = moment().get('year');
     const result = L.range(start, start + 11).map(y => {
       const v = `${y}`;

@@ -9,7 +9,7 @@ export const productsReducer = combineReducers({
   result: allIds,
 });
 
-function allIds(state = [], action: IshAction<CoursesState>) {
+function allIds(state:any = [], action: IshAction<CoursesState>):any {
   switch (action.type) {
     case FULFILLED(Actions.REQUEST_PRODUCT):
       return [
@@ -22,7 +22,7 @@ function allIds(state = [], action: IshAction<CoursesState>) {
   }
 }
 
-function byId(state = {}, action: IshAction<CoursesState>) {
+function byId(state:any = {}, action: IshAction<CoursesState>): any {
   switch (action.type) {
     case FULFILLED(Actions.REQUEST_PRODUCT):
       return {

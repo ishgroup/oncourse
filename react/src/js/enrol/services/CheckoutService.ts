@@ -31,10 +31,10 @@ import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actio
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
-import {Promotion} from "../../model/web/Promotion";
 import {PurchaseItem} from "../../model/checkout/Index";
 import {Contact} from "../../model/web/Contact";
 import {Concession} from "../../model/checkout/concession/Concession";
+import {CodeResponse} from "../../model/checkout/CodeResponse";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
@@ -74,7 +74,7 @@ export class CheckoutService {
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(contact, state.cart, state.checkout.newContact));
   }
 
-  public submitContactDetails = (values: ContactFields, fields: ContactValues): Promise<any> => {
+  public submitContactDetails = (values: ContactFields, fields: { [key: string]: any }): Promise<any> => {
     return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
   }
 
@@ -87,7 +87,7 @@ export class CheckoutService {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromContact(contact, cart));
   };
 
-  public submitCode = (code: string, state: IshState): Promise<Promotion> => {
+  public submitCode = (code: string, state: IshState): Promise<CodeResponse> => {
     return this.promotionApi.submitCode(code);
   }
 
@@ -222,7 +222,7 @@ export class BuildContactNodeRequest {
 }
 
 export class BuildContactFieldsRequest {
-  static fromState = (contact:Contact, cart: CartState, newContact: boolean): ContactFieldsRequest => {
+  static fromState = (contact: Contact, cart: CartState, newContact: boolean): ContactFieldsRequest => {
     const result: ContactFieldsRequest = new ContactFieldsRequest();
     result.contactId = contact.id;
     result.classIds = cart.courses.result;

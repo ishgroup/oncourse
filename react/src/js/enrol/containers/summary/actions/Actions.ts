@@ -1,6 +1,6 @@
 import {_toRequestType} from "../../../../common/actions/ActionUtils";
 import {ContactNode} from "../../../../model/checkout/ContactNode";
-import {ContactNodeToState, State} from "../reducers/State";
+import {ContactNodeToState, ItemToState, State} from "../reducers/State";
 import {IAction} from "../../../../actions/IshAction";
 import {Contact} from "../../../../model/web/Contact";
 import {PurchaseItem} from "../../../../model/checkout/Index";
@@ -36,10 +36,10 @@ export const selectItem = (item: PurchaseItem): { type: string, payload: Purchas
   };
 };
 
-export const updateItem = (item: PurchaseItem): { type: string, payload: PurchaseItem } => {
+export const updateItem = (item: PurchaseItem): IAction<State> => {
   return {
     type: UPDATE_ITEM,
-    payload: item,
+    payload: ItemToState(item),
   };
 };
 

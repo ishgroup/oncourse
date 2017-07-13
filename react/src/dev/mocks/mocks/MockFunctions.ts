@@ -14,7 +14,7 @@ import {ClassesListSchema, ContactsSchema} from "../../../js/NormalizeSchema";
 import {ContactNode} from "../../../js/model/checkout/ContactNode";
 import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/State";
 import {Promotion} from "../../../js/model/web/Promotion";
-import {ProductClass} from "../../../js/model/web/ProductClass";
+import {Product} from "../../../js/model/web/Product";
 import {Discount} from "../../../js/model/web/Discount";
 import {Phase} from "../../../js/enrol/reducers/State";
 
@@ -60,16 +60,11 @@ export const mockCourseClass = (): CourseClass => {
   };
 };
 
-export const mockProductClass = (): ProductClass => {
+export const mockProduct = (): Product => {
   return {
     id: faker.random.number() as string,
     code: faker.random.number() as string,
-    product: {
-      code: faker.random.alphaNumeric(5).toUpperCase(),
-      name: faker.commerce.productName(),
-    },
-    price: faker.commerce.price(),
-    isCancelled: false,
+    name: faker.commerce.productName(),
     isPaymentGatewayEnabled: true,
     canBuy: true,
   };
@@ -95,6 +90,17 @@ export const mockCourseClassPrice = (): CourseClassPrice => {
     possibleDiscounts: [mockDiscount(), mockDiscount()],
   };
 };
+
+export const mockCourseClassWithFeesRange = (): CourseClassPrice => {
+  return {
+    fee: faker.commerce.price(),
+    feeOverriden: faker.commerce.price(),
+    hasTax: true,
+    appliedDiscount: mockDiscount(),
+    possibleDiscounts: [mockDiscount(), mockDiscount(), mockDiscount(), mockDiscount(), mockDiscount()],
+  };
+};
+
 
 export const mockRoom = (): Room => {
   return {

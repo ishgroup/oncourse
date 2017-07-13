@@ -40,7 +40,7 @@ export class Bootstrap {
     return this;
   }
 
-  private render = (container: HTMLElement, marker: HTMLMarker) => {
+  private renderMarker = (container: HTMLElement, marker: HTMLMarker) => {
     try {
       if (container.childElementCount != 0) {
         Logger.log(new LogMessage(Level.DEBUG, `Container ${marker.id} contains children, the application doesn't handle such containers.`));
@@ -86,7 +86,7 @@ export class Bootstrap {
         const containers = document.querySelectorAll(`[${ATTR_DATA_CID}='${cid}']`);
         const marker: HTMLMarker = this.components[cid];
         forEach(containers, (container: HTMLElement) => {
-          this.render(container, marker);
+          this.renderMarker(container, marker);
         });
       });
     } catch (e) {

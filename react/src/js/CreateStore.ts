@@ -10,7 +10,7 @@ import {combinedReducers} from "./reducers/reducers";
 import {EnvironmentConstants} from "./config/EnvironmentConstants";
 import {autoRehydrate, getStoredState, OnComplete, persistStore} from "redux-persist";
 
-const getMiddleware = (): GenericStoreEnhancer => {
+const getMiddleware = (): StoreEnhancer<IshState> => {
   const logger = createLogger({
     collapsed: true,
   });

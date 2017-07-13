@@ -26,7 +26,7 @@ import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
 import {SummaryComp} from "../../../js/enrol/containers/summary/components/SummaryComp";
-import {ProductClass} from "../../../js/model/web/ProductClass";
+import {Product} from "../../../js/model/web/Product";
 import {Voucher} from "../../../js/model/checkout/Voucher";
 import {Application} from "../../../js/model/checkout/Application";
 
@@ -44,7 +44,7 @@ const contacts: Contact[] = [db.getContactByIndex(0), db.getContactByIndex(1)];
 const enrolments: Enrolment[] = checkoutApi.createEnrolmentsBy(contacts, classes);
 const applications: Application[] = checkoutApi.createApplicationBy(contacts, classes);
 
-const products: ProductClass[] = [db.getProductClassByIndex(0), db.getProductClassByIndex(1), db.getProductClassByIndex(2), db.getProductClassByIndex(3)];
+const products: Product[] = [db.getProductClassByIndex(0), db.getProductClassByIndex(1), db.getProductClassByIndex(2), db.getProductClassByIndex(3)];
 const vouchers: Voucher[] = checkoutApi.createVouchersBy(contacts, products);
 
 

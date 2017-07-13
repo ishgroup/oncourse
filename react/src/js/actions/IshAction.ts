@@ -7,6 +7,6 @@ export interface IAction<P> extends Action {
 }
 
 export interface IshAction<T> extends IAction<T> {
-  payload: T;
+  payload?: T;
   error?: boolean;
 }

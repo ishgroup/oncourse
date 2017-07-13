@@ -5,7 +5,7 @@ import uuid from "uuid";
 import {CourseClass} from "../../../js/model/web/CourseClass";
 import {Enrolment} from "../../../js/model/checkout/Enrolment";
 import {Contact} from "../../../js/model/web/Contact";
-import {mockContact, mockCourseClass, mockEnumField, mockField, mockProductClass} from "./MockFunctions";
+import {mockContact, mockCourseClass, mockEnumField, mockField, mockProduct} from "./MockFunctions";
 import {normalize} from "normalizr";
 import {ClassesListSchema, ContactsSchema, ContactsState, ProductsListSchema} from "../../../js/NormalizeSchema";
 
@@ -16,7 +16,7 @@ import {Item} from "../../../js/model/common/Item";
 
 import localForage from "localforage";
 import {Voucher} from "../../../js/model/checkout/Voucher";
-import {ProductClass} from "../../../js/model/web/ProductClass";
+import {Product} from "../../../js/model/web/Product";
 import {Membership} from "../../../js/model/checkout/Membership";
 import {Article} from "../../../js/model/checkout/Article";
 import {Application} from "../../../js/model/checkout/Application";
@@ -68,14 +68,14 @@ export class MockDB {
       ClassesListSchema);
 
     this.products = normalize([
-      mockProductClass(),
-      mockProductClass(),
-      mockProductClass(),
-      mockProductClass(),
-      mockProductClass(),
-      mockProductClass(),
-      mockProductClass(),
-    ],                        ProductsListSchema);
+      mockProduct(),
+      mockProduct(),
+      mockProduct(),
+      mockProduct(),
+      mockProduct(),
+      mockProduct(),
+      mockProduct(),
+    ], ProductsListSchema);
 
     this.fields = [
       mockField("Street", "street", DataType.STRING),
@@ -742,7 +742,7 @@ export class MockDB {
 
   getContactByDetails(firstName: String, lastName: String, email: String): Contact {
     return L.find(this.contacts.entities.contact,
-                  (c: Contact) => c.firstName === firstName && c.lastName == lastName && c.email == email);
+      (c: Contact) => c.firstName === firstName && c.lastName == lastName && c.email == email);
   }
 
 
@@ -750,7 +750,7 @@ export class MockDB {
     return this.classes.entities.classes[this.classes.result[index]];
   }
 
-  getProductClassByIndex(index: number): ProductClass {
+  getProductClassByIndex(index: number): Product {
     return this.products.entities.products[this.products.result[index]];
   }
 
@@ -762,7 +762,7 @@ export class MockDB {
     return this.classes.entities.classes[id];
   }
 
-  getProductClassById(id: string): ProductClass {
+  getProductClassById(id: string): Product {
     return this.products.entities.products[id];
   }
 

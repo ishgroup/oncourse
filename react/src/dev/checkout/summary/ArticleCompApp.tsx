@@ -16,8 +16,8 @@ import {
 import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
-import {ProductClass} from "../../../js/model/web/ProductClass";
 import {Article} from "../../../js/model/checkout/Article";
+import {Product} from "../../../js/model/web/Product";
 
 let config: MockConfig = new MockConfig();
 const checkoutApi:CheckoutApiMock = new CheckoutApiMock(config);
@@ -28,26 +28,18 @@ config.init((config:MockConfig) => {
   render(config);
 });
 
-const classes:ProductClass[]  = [db.getProductClassByIndex(0),db.getProductClassByIndex(1)];
+const products:Product[]  = [db.getProductClassByIndex(0),db.getProductClassByIndex(1)];
 const contacts:Contact[]  = [db.getContactByIndex(0)];
 
-const article:Article[]  = checkoutApi.createArticlesBy(contacts, classes);
+const article:Article[]  = checkoutApi.createArticlesBy(contacts, products);
 
 article[0].errors = [NoCourseClassPlaces];
-
-const createArticleProps = (e: Article): ArticleProps => {
-  return {
-    contact: db.getContactById(e.contactId),
-    product: db.getProductClassById(e.productId),
-    article: e
-  };
-};
 
 const createContactProps = (contact: Contact): ArticleProps => {
   return {
     contact: contact,
-    article: article.filter((e) => e.contactId == contact.id).map(createArticleProps),
-    product: article.filter((e) => e.contactId == contact.id).map((e: Article) => db.getProductClassById(e.productId)),
+    article: article.filter((e) => e.contactId == contact.id)[0],
+    product: article.filter((e) => e.contactId == contact.id).map((e: Article) => db.getProductClassById(e.productId))[0],
   }
 };
 

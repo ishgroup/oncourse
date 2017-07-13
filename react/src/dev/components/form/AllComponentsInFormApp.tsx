@@ -43,7 +43,7 @@ class AllComponentsFrom extends React.Component<any, any> {
           <Field component={TextField} name="address" type={"number"} label="Street" required={true}/>
         </fieldset>
         <fieldset>
-          <Field asd component={CheckboxField} name="email" label="E-mail" required={true}/>
+          <Field component={CheckboxField} name="email" label="E-mail" required={true}/>
         </fieldset>
         <fieldset>
           <ComboboxField name="suburb" label="Suburb" required={true} items={options}/>
