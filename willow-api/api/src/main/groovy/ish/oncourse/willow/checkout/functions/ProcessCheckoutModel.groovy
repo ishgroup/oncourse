@@ -53,9 +53,9 @@ class ProcessCheckoutModel {
         CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
         totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
         
-        ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, totalAmount.subtract(totalDiscount), enrolmentsPrice.enrolmentNodes).process()
-//        payNowAmount = enrolmentsPrice.totalPayNow.min(redeemedVouchers.leftToPay)
-        payNowAmount = payNowAmount.add(enrolmentsPrice.totalPayNow)
+        ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNowAmount.add(enrolmentsPrice.totalPayNow), enrolmentsPrice.enrolmentNodes).process()
+       
+        payNowAmount = redeemedVouchers.leftToPay
 
         if (redeemedVouchers.error) {
             model.error = redeemedVouchers.error
@@ -64,10 +64,10 @@ class ProcessCheckoutModel {
         
         model.amount = new Amount().with { a ->
             a.total = totalAmount.doubleValue()
-            a.owing = totalAmount.subtract(totalDiscount).subtract(payNowAmount).doubleValue()
             a.payNow =  payNowAmount.doubleValue()
             a.discount = totalDiscount.doubleValue()
             a.voucherPayments = redeemedVouchers.voucherPayments
+            a.owing = totalAmount.subtract(totalDiscount).subtract(payNowAmount).subtract(redeemedVouchers.vouchersTotal).doubleValue()
             a
         }
         

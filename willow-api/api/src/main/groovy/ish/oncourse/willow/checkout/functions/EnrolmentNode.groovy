@@ -8,4 +8,5 @@ class EnrolmentNode {
     Money finalPrice
     Course course
     Contact contact
+    Money payNow
 }

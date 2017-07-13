@@ -60,14 +60,14 @@ class CalculateEnrolmentsPrice {
                     price = applyDiscount(contact, courseClass, price)
                     classPrice = price.finalPriceToPayIncTax
                 }
-
+                Money payNow 
                 if (courseClass.paymentPlanLines.empty) {
-                    totalPayNow = totalPayNow.add(classPrice)
+                    payNow = classPrice
                 } else {
-                    totalPayNow = totalPayNow.add(getPayNow(courseClass, classPrice))
+                    payNow = getPayNow(courseClass, classPrice)
                 }
-
-                enrolmentNodes << new EnrolmentNode(finalPrice: classPrice, contact: contact, course: courseClass.course)
+                totalPayNow = totalPayNow.add(payNow)
+                enrolmentNodes << new EnrolmentNode(finalPrice: classPrice, contact: contact, course: courseClass.course, payNow: payNow)
             }
         }
         
@@ -105,7 +105,7 @@ class CalculateEnrolmentsPrice {
         Instant now = new Date().toInstant()
 
         courseClass.paymentPlanLines.sort {it.dayOffset}.each { planLine ->
-            Money amount = amountLeftToPay.isGreaterThan(planLine.amount) ? planLine.amount : amountLeftToPay
+            Money amount = amountLeftToPay.min(planLine.amount)
             if (planLine.dayOffset == null) {
                 payNow = payNow.add(amount)
             } else if ((ChronoUnit.DAYS.between(courseClass.startDate?.toInstant()?:now, now) as Integer) >= planLine.dayOffset) {

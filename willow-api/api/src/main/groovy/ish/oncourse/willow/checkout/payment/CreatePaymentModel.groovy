@@ -32,7 +32,6 @@ import ish.oncourse.model.Voucher
 import ish.oncourse.model.VoucherProduct
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
-import ish.oncourse.services.voucher.VoucherRedemptionHelper
 import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
@@ -40,6 +39,7 @@ import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.GetCourseClass
 import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.functions.voucher.GetVoucher
+import ish.oncourse.willow.functions.voucher.VoucherRedemptionHelper
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.persistence.CommonPreferenceController
@@ -73,6 +73,8 @@ class CreatePaymentModel {
         this.paymentRequest = paymentRequest
         this.checkoutModel = checkoutModel
         this.payer = new GetContact(context, college, checkoutModel.payerId).get()
+
+        paymentPlan.collectEntries{}
     }
 
     CreatePaymentModel create() {
@@ -109,7 +111,8 @@ class CreatePaymentModel {
     
     @CompileStatic(TypeCheckingMode.SKIP)
     private void updateVoucherPayments() {
-        VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper(context, college)
+        
+        VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper(context, college, payer)
 
         List<Voucher> vouchers = checkoutModel.amount.voucherPayments
                 .findAll { it.amount.toMoney().isGreaterThan(Money.ZERO) }
@@ -125,9 +128,10 @@ class CreatePaymentModel {
         
         for (InvoiceNode node : paymentPlan) {
             voucherRedemptionHelper.addInvoiceLines(node.invoice.invoiceLines)
+            voucherRedemptionHelper.addPaymentPlan(node.invoice, node.paymentAmount)
         }
         
-        voucherRedemptionHelper.processAgainstInvoices()
+        voucherRedemptionHelper.createPaymentsForVouchers()
     }
     
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -228,7 +232,7 @@ class CreatePaymentModel {
             
             if (mainInvoice) {
 
-                mainInvoice.paymentInLines.find { it.paymentIn == paymentIn }.amount = calculatePaymentAmountForInvoice(mainInvoice)
+                mainInvoice.paymentInLines.find { it.paymentIn == paymentIn }.amount = calculatePaymentAmountForInvoice(mainInvoice, null)
                 
                 UpdateInvoiceAmount.valueOf(mainInvoice, null).update()
                 mainInvoice.updateAmountOwing()
@@ -236,7 +240,7 @@ class CreatePaymentModel {
             }
             
             paymentPlan.each { node ->
-                node.paymentInLine.amount = calculatePaymentAmountForInvoice(node.invoice).min(node.paymentAmount)
+                node.paymentInLine.amount = calculatePaymentAmountForInvoice(node.invoice, node.paymentAmount).min(node.paymentAmount)
                 UpdateInvoiceAmount.valueOf(node.invoice, null).update()
                 node.invoice.updateAmountOwing()
             }
@@ -249,13 +253,17 @@ class CreatePaymentModel {
         }
     }
 
-    private Money calculatePaymentAmountForInvoice(Invoice invoice) {
+    private Money calculatePaymentAmountForInvoice(Invoice invoice, Money payNow) {
         
         Money voucherPaymentsTotal = Money.ZERO
         invoice.paymentInLines.findAll { it.paymentIn.type == PaymentType.VOUCHER }.each { voucherPaymentsTotal = voucherPaymentsTotal.add(it.amount) }
 
         Money invoiceTotal = Money.ZERO
-        invoice.invoiceLines.each { invoiceTotal = invoiceTotal.add(it.finalPriceToPayIncTax) }
+        if (payNow) {
+            invoiceTotal = invoiceTotal.add(payNow)
+        } else {
+            invoice.invoiceLines.each { invoiceTotal = invoiceTotal.add(it.finalPriceToPayIncTax) }
+        }
 
         invoiceTotal.subtract(voucherPaymentsTotal).max(Money.ZERO)
     }

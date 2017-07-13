@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
+             paymentGatewayPass="test1234"/>
+
+    <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
+    <Preference id="2" collegeId="1" name="license.ccprocessing"
+                value_string="true" />
+    
+    <Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
+          created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <Room id="1" collegeId="1" siteId="1" angelId="1000"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <Student id="1001" collegeId="1" angelId="1000"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+    
+    <Contact uniqueCode="1wjwestablished" id="1001" collegeId="1" studentId="1001"
+             angelId="1001" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Student1" givenName="Student1" emailAddress="Student1@Student1.net"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" postcode="ABS" />
+
+    <Invoice id="1001" angelId="1" source="O" amountOwing="0.00" contactId="1001" collegeId="1" dateDue="2011-09-20 11:14:54"
+             description="invoice for testing" invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="0.00" totalGst="0.00"
+             created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0" confirmationStatus="1"/>
+
+    <InvoiceLine id="1001" angelId="1" collegeId="1" invoiceId="1001" quantity="1.0" discountEachExTax="0.00" priceEachExTax="0.00"
+                 taxEach="0.00" title="Test Invoice Line"
+                 created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+
+
+    <InvoiceLine id="1002" angelId="2" collegeId="1" invoiceId="1001" quantity="1.0" discountEachExTax="0.00" priceEachExTax="0.00"
+                 taxEach="0.00" title="Test Invoice Line"
+                 created="2011-09-12 00:38:54.0" modified="2011-09-12 00:38:55.0"/>
+
+    <Course id="1001" collegeId="1" angelId="1001" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1"/>
+
+    <CourseClass id="1001" collegeId="1" code="1" courseId="1001"
+                 roomId="1" angelId="1001" startDate="2111-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="100.00" feeGst="10.00" isDistantLearningCourse="0"/>
+
+    <CourseClassPaymentPlanLine id="2" angelId="2" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                                courseClassId = "1001" dayOffset="0" amount="30.00"/>
+
+    <CourseClassPaymentPlanLine id="1" angelId="1" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                                courseClassId = "1001" amount="20.00"/>
+    
+    <CourseClassPaymentPlanLine id="3" angelId="3" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                                courseClassId = "1001" dayOffset="20000" amount="30.00"/>
+
+    <CourseClassPaymentPlanLine id="4" angelId="4" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                                courseClassId = "1001" dayOffset="30000" amount="30.00"/>
+    
+    
+    <Course id="1002" collegeId="1" angelId="1002" code="AAA"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1"/>
+
+    <CourseClass id="1002" collegeId="1" code="1" courseId="1002"
+                 roomId="1" angelId="1002" startDate="2111-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="100" feeGst="10" isDistantLearningCourse="0"/>
+
+    <CourseClassPaymentPlanLine id="5" angelId="5" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                                courseClassId = "1002" amount="20.00"/>
+
+    <CourseClassPaymentPlanLine id="6" angelId="6" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                                courseClassId = "1002" dayOffset="0" amount="30.00"/>
+
+    <CourseClassPaymentPlanLine id="7" angelId="7" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                                courseClassId = "1002" dayOffset="20000" amount="30.00"/>
+
+    <CourseClassPaymentPlanLine id="8" angelId="8" collegeId="1" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"
+                                courseClassId = "1002" dayOffset="30000" amount="30.00"/>
+    
+    <Course id="1003" collegeId="1" angelId="1003" code="AAB"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1"/>
+
+    <CourseClass id="1003" collegeId="1" code="1" courseId="1003"
+                 roomId="1" angelId="1003" startDate="2011-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="100" feeGst="10" isDistantLearningCourse="0"/>
+    
+    <Discount
+            id="1001"
+            angelId="1"
+            collegeId="1"
+            combinationType="0"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountAmount="10.0"
+            discountType="2"
+            modified="2011-09-12 00:56:00.0"
+            name="name_1"
+            roundingMode="1"
+            timeZone="timeZone"
+            validFrom="2011-09-12 00:56:00.0"
+            validTo="2111-09-12 00:56:00.0"
+            hideOnWeb="0"
+            isAvailableOnWeb="1"
+            minEnrolments="1"
+            minValue="0"/>
+
+    <DiscountCourseClass id="1001" angelId="1001" collegeId="1" courseClassId="1001"
+                         created="2011-09-12 00:56:00.0"
+                         modified="2011-09-12 00:56:00.0"
+                         discountId="1001"/>
+
+    <DiscountCourseClass id="1002" angelId="1002" collegeId="1" courseClassId="1002"
+                         created="2011-09-12 00:56:00.0"
+                         modified="2011-09-12 00:56:00.0"
+                         discountId="1001"/>
+
+    <DiscountCourseClass id="1003" angelId="1003" collegeId="1" courseClassId="1003"
+                         created="2011-09-12 00:56:00.0"
+                         modified="2011-09-12 00:56:00.0"
+                         discountId="1001"/>
+
+
+    <Product collegeId="1" SKU="23456" createdOn="2012-05-10 17:59:42.384" description="Course voucher" expiryType="4" id="1001" isOnSale="1"
+             isWebVisible="1" modifiedOn="2012-05-15 16:29:23.13" name="Course voucher" type="3" angelId="7"
+             taxAdjustment="0.00" feeGST="0.00" maxCoursesRedemption="3" priceExTax="100.00"/>
+
+
+    <ProductItem  id="1001"
+        angelId="1001"
+        collegeId="1"
+        createdOn="2017-01-31 21:31:37"
+        expiryDate="2019-01-31 00:00:00"
+        invoiceLineId="1001"
+        modifiedOn="2017-06-22 00:21:30"
+        productId="1001"
+        type="3"
+        code="xbUSPrhr"
+        value="10"
+        redeemedCoursesCount="0"
+        status="0"
+        source="O"
+        valueOnPurchase="10"
+        confirmationStatus="2"/>
+
+
+    <VoucherProductCourse id="1001" angelId="1" collegeId="1" created="2012-05-10 17:59:42.384" modified="2012-05-10 17:59:42.384" courseId="1001" voucherProductId="1001"/>
+    
+
+    <Product collegeId="1" SKU="23356" createdOn="2012-05-10 17:59:42.384" description="Money voucher" expiryType="4" id="1002" isOnSale="1"
+             isWebVisible="1" modifiedOn="2012-05-15 16:29:23.13" name="Money voucher" type="3" angelId="7"
+             taxAdjustment="0.00" feeGST="0.00" priceExTax="100.00" value="150"/>
+
+    <ProductItem  id="1002"
+                  angelId="1002"
+                  collegeId="1"
+                  createdOn="2017-01-31 21:31:37"
+                  expiryDate="2019-01-31 00:00:00"
+                  invoiceLineId="1002"
+                  modifiedOn="2017-06-22 00:21:30"
+                  productId="1002"
+                  type="3"
+                  code="xbUSerhr"
+                  value="150"
+                  status="0"
+                  source="O"
+                  confirmationStatus="2"/>
+    
+    <Product collegeId="1" SKU="23356" createdOn="2012-05-10 17:59:42.384" description="Article " expiryType="4" id="1003" isOnSale="1"
+             isWebVisible="1" modifiedOn="2012-05-15 16:29:23.13" name="Article" type="1" angelId="8"
+             taxAdjustment="0.00" feeGST="0.00" priceExTax="100.00"/>
+    
+</dataset>

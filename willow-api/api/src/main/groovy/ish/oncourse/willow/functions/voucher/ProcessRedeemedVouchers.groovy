@@ -21,6 +21,7 @@ class ProcessRedeemedVouchers {
     private List<Voucher> vouchers
 
     Money leftToPay = Money.ZERO
+    Money vouchersTotal = Money.ZERO
     CommonError error
     List<VoucherPayment> voucherPayments = []
 
@@ -43,6 +44,7 @@ class ProcessRedeemedVouchers {
             processCourseVouchers()
             processMoneyVouchers()
         }
+        context.rollbackChanges()
         return this
     }
     
@@ -65,7 +67,7 @@ class ProcessRedeemedVouchers {
             for (EnrolmentNode node : unprocessedNodes) {
                 
                 amount = amount.add(node.finalPrice)
-                leftToPay = leftToPay.subtract(node.finalPrice)
+                leftToPay = leftToPay.subtract(node.payNow)
                 processedNodes << node
                 voucher.redeemedCoursesCount = voucher.redeemedCoursesCount + 1
 
@@ -75,6 +77,8 @@ class ProcessRedeemedVouchers {
                 
             }
             payment.amount = amount.doubleValue()
+            vouchersTotal = vouchersTotal.add(amount)
+
             voucherPayments << payment
         }
     }
@@ -92,6 +96,8 @@ class ProcessRedeemedVouchers {
             }
             
             payment.amount = amount.doubleValue()
+            vouchersTotal = vouchersTotal.add(amount)
+
             voucherPayments << payment
         }
     }
