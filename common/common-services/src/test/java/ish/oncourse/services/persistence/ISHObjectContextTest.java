@@ -11,6 +11,7 @@ import org.apache.cayenne.cache.OSQueryCache;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -22,13 +23,14 @@ public class ISHObjectContextTest extends ServiceTest {
 	}
 
 	@Test
-	public void testOSQueryCache() throws Exception {
+	public void testEhCacheQueryCache() throws Exception {
 		System.setProperty(TestContextUtil.TEST_IS_QUERY_CACHE_DISABLED, "false");
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		ISHObjectContext context = (ISHObjectContext) cayenneService.newContext();
 		assertNotNull("Context should be created.", context);
-		assertTrue("If we use OSQueryCache for entities we also should use it for the queries", ((NestedQueryCache)context.getQueryCache()).getDelegate() instanceof EhCacheQueryCache);
+		assertEquals("If we use EhCacheQueryCache for entities we also should use it for the queries", EhCacheQueryCache.class,
+				((NestedQueryCache)context.getQueryCache()).getDelegate().getClass());
 	}
 
 	//@Test
