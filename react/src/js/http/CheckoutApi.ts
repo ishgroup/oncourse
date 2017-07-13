@@ -28,4 +28,7 @@ export class CheckoutApi {
   getCorporatePass(code: string): Promise<any> {
     return null;
   }
+  submitPaymentCorporatePass(request): Promise<any> {
+    throw new Error('api not found');
+  }
 }

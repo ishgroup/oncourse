@@ -15,7 +15,10 @@ import {Amount} from "../../model/checkout/Amount";
 import {ContactNode} from "../../model/checkout/ContactNode";
 import {CheckoutModelRequest} from "../../model/checkout/CheckoutModelRequest";
 import {ContactNodeRequest} from "../../model/checkout/request/ContactNodeRequest";
-import {PaymentService, Values} from "../containers/payment/services/PaymentService";
+import {
+  PaymentService, CreditCardFormValues,
+  CorporatePassFormValues
+} from "../containers/payment/services/PaymentService";
 import {PaymentResponse} from "../../model/checkout/payment/PaymentResponse";
 import {PaymentRequest} from "../../model/checkout/payment/PaymentRequest";
 import {DataType} from "../../model/field/DataType";
@@ -126,9 +129,14 @@ export class CheckoutService {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state));
   }
 
-  public makePayment = (values: Values, state: IshState): Promise<PaymentResponse> => {
-    const request: PaymentRequest = PaymentService.valuesToRequest(values, state);
+  public makePayment = (values: CreditCardFormValues, state: IshState): Promise<PaymentResponse> => {
+    const request: PaymentRequest = PaymentService.creditFormValuesToRequest(values, state);
     return this.checkoutApi.makePayment(request);
+  }
+
+  public submitPaymentCorporatePass = (values: CorporatePassFormValues, state): Promise<any> => {
+    const request: any = PaymentService.corporatePassValuesToRequest(values, state);
+    return this.checkoutApi.submitPaymentCorporatePass(request);
   }
 
   public isFinalStatus = (value: PaymentResponse): boolean => {

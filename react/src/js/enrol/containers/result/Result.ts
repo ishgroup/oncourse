@@ -5,14 +5,14 @@ import {cancelCheckoutProcess, tryAnotherCard} from "./actions/Actions";
 
 const PropsBy = (state: IshState): any => {
   return {
-    response: state.checkout.payment.value
-  }
+    response: state.checkout.payment.value,
+  };
 };
 
 export const ActionsBy = (dispatch: Dispatch<IshState>): any => {
   return {
     onCancel: () => dispatch(cancelCheckoutProcess()),
-    onAnotherCard: () => dispatch(tryAnotherCard())
+    onAnotherCard: () => dispatch(tryAnotherCard()),
   };
 };
 

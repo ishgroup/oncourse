@@ -6,6 +6,7 @@ import {createStringEnum} from "../../../../common/utils/EnumUtils";
 import {Item} from "../../../../model/common/Item";
 import {IshState} from "../../../../services/IshState";
 import {PaymentRequest} from "../../../../model/checkout/payment/PaymentRequest";
+import {CorporatePassPaymentRequest} from "../../../../model/checkout/payment/CorporatePassPaymentRequest";
 import {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
 
 export const FieldName = createStringEnum([
@@ -18,12 +19,17 @@ export const FieldName = createStringEnum([
 ]);
 export type FieldName = keyof typeof FieldName;
 
-export interface Values {
+export interface CreditCardFormValues {
   creditCardName: string;
   creditCardNumber: string;
   expiryMonth: string;
   expiryYear: string;
   creditCardCvv: string;
+  agreementFlag: boolean;
+}
+
+export interface CorporatePassFormValues {
+  reference: string;
   agreementFlag: boolean;
 }
 
@@ -45,7 +51,7 @@ export class PaymentService {
     return Promise.resolve(result);
   }
 
-  static valuesToRequest = (values: Values, state: IshState): PaymentRequest => {
+  static creditFormValuesToRequest = (values: CreditCardFormValues, state: IshState): PaymentRequest => {
     const result: PaymentRequest = new PaymentRequest();
     result.creditCardName = values.creditCardName;
     result.creditCardNumber = values.creditCardNumber;
@@ -55,6 +61,16 @@ export class PaymentService {
     result.agreementFlag = values.agreementFlag;
     result.checkoutModelRequest = BuildCheckoutModelRequest.fromState(state);
     result.payNow = state.checkout.amount.payNow;
+    result.sessionId = uuid();
+    return result;
+  }
+
+  static corporatePassValuesToRequest = (values, state: IshState): CorporatePassPaymentRequest => {
+    const result: CorporatePassPaymentRequest = new CorporatePassPaymentRequest();
+    result.agreementFlag = values.agreementFlag;
+    result.reference = values.reference || null;
+    result.checkoutModelRequest = BuildCheckoutModelRequest.fromState(state);
+    result.corporatePassId = state.checkout.payment.corporatePass.id;
     result.sessionId = uuid();
     return result;
   }

@@ -1,11 +1,17 @@
 import React from "react";
+import {Field} from "redux-form";
+
+import {CorporatePassResponse} from "../../../../model/checkout/payment/CorporatePassResponse";
+import {TextField} from "../../../../components/form-new/TextField";
 
 interface Props {
   onSubmitPass: (code: string) => void;
+  corporatePass?: CorporatePassResponse;
 }
 
 class CorporatePassComp extends React.Component<Props, any> {
   private passInput;
+  private referenceInput;
 
   handleClick() {
     const {onSubmitPass} = this.props;
@@ -13,6 +19,41 @@ class CorporatePassComp extends React.Component<Props, any> {
   }
 
   render() {
+    const {corporatePass} = this.props;
+
+    const passField = () => (
+      <div>
+        <Field
+          component={TextField}
+          maxLength={40}
+          className="input-fixed"
+          autoComplete="off"
+          name="corporatePass"
+          label="Code"
+          type="text"
+          required={true}
+          ref={ref => this.passInput = ref}
+        />
+
+        <div className="button" id="addCorporatePass" onClick={() => this.handleClick()}>Submit</div>
+      </div>
+    );
+
+    const referenceField = () => (
+      <div>
+        <Field
+          component={TextField}
+          maxLength={40}
+          className="input-fixed "
+          autoComplete="off"
+          name="reference"
+          label="Your Reference (Optional)"
+          type="text"
+          ref={ref => this.referenceInput = ref}
+        />
+      </div>
+    );
+
     return (
       <div id="corporate-pass" className="single-tab active">
         <fieldset>
@@ -21,16 +62,19 @@ class CorporatePassComp extends React.Component<Props, any> {
             CorporatePass is available to pre-approved corporate clients only.
           </p>
 
-          <label htmlFor="corporatePass" className="corporatePass-label">Code</label>
-          <input
-            className="input-fixed"
-            name="corporatePass"
-            id="corporatePass"
-            type="text"
-            ref={ref => this.passInput = ref}
-          />
+          {!corporatePass.id &&
+            passField()
+          }
+          {corporatePass.id &&
+            referenceField()
+          }
 
-          <div className="button" id="addCorporatePass" onClick={() => this.handleClick()}>Submit</div>
+          {corporatePass.message &&
+            <div className="message">
+              {corporatePass.message}
+            </div>
+          }
+
         </fieldset>
       </div>
     );

@@ -1,12 +1,13 @@
 import {_toRequestType} from "../../../../common/actions/ActionUtils";
 import {IAction} from "../../../../actions/IshAction";
 import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
-import {Values} from "../services/PaymentService";
+import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
 
 export const OpenPayment: string = "checkout/payment/open";
 export const OpenPaymentRequest: string = _toRequestType(OpenPayment);
 
-export const MAKE_PAYMENT: string = "checkout/payment/make/payment";
+export const SUBMIT_PAYMENT_CREDIT_CARD: string = "checkout/payment/submit/creditCard";
+export const SUBMIT_PAYMENT_CORPORATE_PASS: string = "checkout/payment/submit/corporatePass";
 export const PROCESS_PAYMENT: string = "checkout/payment/process/payment";
 
 
@@ -17,15 +18,26 @@ export const GET_PAYMENT_STATUS = "checkout/payment/get/payment/status";
 export const RESET_PAYMENT_STATE = "checkout/payment/reset/payment/state";
 
 export const GET_CORPORATE_PASS = "checkout/payment/get/corporatePass";
+export const APPLY_CORPORATE_PASS = "checkout/payment/apply/corporatePass";
+export const RESET_CORPORATE_PASS = "checkout/payment/reset/corporatePass";
 
-export const makePayment = (values: Values): IAction<Values> => {
+export const CHANGE_TAB = "checkout/payment/change/tab";
+
+export const submitPaymentCreditCard = (values: CreditCardFormValues): IAction<CreditCardFormValues> => {
   return {
-    type: MAKE_PAYMENT,
+    type: SUBMIT_PAYMENT_CREDIT_CARD,
     payload: values,
   };
 };
 
-export const processPayment = (values: Values): IAction<Values> => {
+export const submitPaymentCorporatePass = (values: CorporatePassFormValues): IAction<CorporatePassFormValues> => {
+  return {
+    type: SUBMIT_PAYMENT_CORPORATE_PASS,
+    payload: values,
+  };
+};
+
+export const processPayment = (values: CreditCardFormValues): IAction<CreditCardFormValues> => {
   return {
     type: PROCESS_PAYMENT,
     payload: values,
@@ -56,3 +68,18 @@ export const getCorporatePass = (code: string) => ({
   type: GET_CORPORATE_PASS,
   payload: code,
 });
+
+export const applyCorporatePass = pass => ({
+  type: APPLY_CORPORATE_PASS,
+  payload: pass,
+});
+
+export const resetCorporatePass = () => ({
+  type: RESET_CORPORATE_PASS,
+});
+
+export const changeTab = tab => ({
+  type: CHANGE_TAB,
+  payload: tab,
+})
+

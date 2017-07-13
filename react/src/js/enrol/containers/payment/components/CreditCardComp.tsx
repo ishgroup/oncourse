@@ -66,16 +66,40 @@ class CreditCardComp extends React.Component<Props, any> {
                   disabled={voucherPayerEnabled}
                 />
 
-                <Field component={TextField} maxLength={ 40 } className="input-fixed " autoComplete="off"
-                       name={FieldName.creditCardName} label="Name on Card" type="text" required={true}/>
+                <Field
+                  component={TextField}
+                  maxLength={ 40 }
+                  className="input-fixed"
+                  autoComplete="off"
+                  name={FieldName.creditCardName}
+                  label="Name on Card"
+                  type="text"
+                  required={true}
+                />
 
-                <Field component={MaskedTextField} maxLength={ 24 } className="input-fixed " autoComplete="off"
-                       name={FieldName.creditCardNumber} label="Number" type="text" required={true}
-                       mask={[/\d/, /\d/, /\d/, /\d/, " ", /\d/,/\d/,/\d/,/\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/]}/>
+                <Field
+                  component={MaskedTextField}
+                  maxLength={ 24 }
+                  className="input-fixed "
+                  autoComplete="off"
+                  name={FieldName.creditCardNumber}
+                  label="Number"
+                  type="text"
+                  required={true}
+                  mask={[/\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/, " ", /\d/, /\d/, /\d/, /\d/]}
+                />
 
-                <Field component={MaskedTextField} maxLength={ 4 } className="input-fixed " autoComplete="off"
-                       name={FieldName.creditCardCvv} label="CVV" type="text" required={true}
-                       mask={[/\d/,/\d/,/\d/,/\d/]}>
+                <Field
+                  component={MaskedTextField}
+                  maxLength={ 4 }
+                  className="input-fixed "
+                  autoComplete="off"
+                  name={FieldName.creditCardCvv}
+                  label="CVV"
+                  type="text"
+                  required={true}
+                  mask={[/\d/, /\d/, /\d/, /\d/]}
+                >
                   <img className="vcc-card-image" alt="CVV" src="/s/img/cvv-image.png"/>
                   <a className="nyromodal" href="/enrol/ui/cvv?wrap=false" id="cvvLink">What is CVV?</a>
                 </Field>
@@ -85,11 +109,19 @@ class CreditCardComp extends React.Component<Props, any> {
                     Expiry<em title="This field is required">*</em>
                   </label>
                   <span className="valid input-select-small">
-                    <Field component={SelectField} name={FieldName.expiryMonth} required={true}
-                           loadOptions={PaymentService.months}/>
+                    <Field
+                      component={SelectField}
+                      name={FieldName.expiryMonth}
+                      required={true}
+                      loadOptions={PaymentService.months}
+                    />
                     /
-                    <Field component={SelectField} name={FieldName.expiryYear} required={true}
-                           loadOptions={PaymentService.years}/>
+                    <Field
+                      component={SelectField}
+                      name={FieldName.expiryYear}
+                      required={true}
+                      loadOptions={PaymentService.years}
+                    />
                   </span>
                 </div>
               </div>
