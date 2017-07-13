@@ -5,9 +5,9 @@ import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
 import ish.math.MoneyType
 import ish.oncourse.cxf.CXFModule
-import ish.oncourse.services.persistence.ISHObjectContextFactory
 import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.cayenne.CayenneService
+import ish.oncourse.willow.cayenne.ISHObjectContextFactory
 import ish.oncourse.willow.checkout.CheckoutApiImpl
 import ish.oncourse.willow.filters.SearchFilter
 import ish.oncourse.willow.search.SearchApiImpl
