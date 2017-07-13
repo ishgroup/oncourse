@@ -9,6 +9,8 @@ import org.apache.cayenne.configuration.server.DataContextFactory
 class ISHObjectContextFactory extends DataContextFactory {
     
     protected DataContext newInstance(DataChannel parent, ObjectStore objectStore) {
-        return new ISHObjectContext(parent, objectStore)
+        ISHObjectContext context = new ISHObjectContext(parent, objectStore)
+        context.recordQueueingEnabled = true
+        return context
     }
 }
