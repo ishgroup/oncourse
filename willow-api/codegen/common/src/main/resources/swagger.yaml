@@ -1228,6 +1228,10 @@ definitions:
         type: number
       payNow: 
         type: number
+      minPayNow:
+        type: number
+      isEditable:
+        type: boolean
       voucherPayments:
         type: array
         items:

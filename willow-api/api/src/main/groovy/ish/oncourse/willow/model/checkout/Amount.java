@@ -10,6 +10,8 @@ public class Amount  {
     private Double total = null;
     private Double discount = null;
     private Double payNow = null;
+    private Double minPayNow = null;
+    private Boolean isEditable = null;
     private List<VoucherPayment> voucherPayments = new ArrayList<VoucherPayment>();
 
     /**
@@ -81,6 +83,40 @@ public class Amount  {
     }
 
     /**
+     * Get minPayNow
+     * @return minPayNow
+     */
+    public Double getMinPayNow() {
+        return minPayNow;
+    }
+
+    public void setMinPayNow(Double minPayNow) {
+       this.minPayNow = minPayNow;
+    }
+
+    public Amount minPayNow(Double minPayNow) {
+      this.minPayNow = minPayNow;
+      return this;
+    }
+
+    /**
+     * Get isEditable
+     * @return isEditable
+     */
+    public Boolean getIsEditable() {
+        return isEditable;
+    }
+
+    public void setIsEditable(Boolean isEditable) {
+       this.isEditable = isEditable;
+    }
+
+    public Amount isEditable(Boolean isEditable) {
+      this.isEditable = isEditable;
+      return this;
+    }
+
+    /**
      * Get voucherPayments
      * @return voucherPayments
      */
@@ -112,6 +148,8 @@ public class Amount  {
       sb.append("    total: ").append(toIndentedString(total)).append("\n");
       sb.append("    discount: ").append(toIndentedString(discount)).append("\n");
       sb.append("    payNow: ").append(toIndentedString(payNow)).append("\n");
+      sb.append("    minPayNow: ").append(toIndentedString(minPayNow)).append("\n");
+      sb.append("    isEditable: ").append(toIndentedString(isEditable)).append("\n");
       sb.append("    voucherPayments: ").append(toIndentedString(voucherPayments)).append("\n");
       sb.append("}");
       return sb.toString();
