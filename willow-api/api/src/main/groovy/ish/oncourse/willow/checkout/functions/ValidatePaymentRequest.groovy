@@ -1,5 +1,7 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.willow.checkout.payment.HasErrors
 import ish.oncourse.willow.checkout.payment.ValidateCreditCardForm
@@ -24,8 +26,8 @@ class ValidatePaymentRequest {
     
     CommonError commonError
     ValidationError validationError
-    
-    
+
+    @CompileStatic(TypeCheckingMode.SKIP)
     ValidatePaymentRequest validate() {
         
         Money minPayNow = checkoutModel.amount.payNow.toMoney()
