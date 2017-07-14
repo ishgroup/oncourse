@@ -73,14 +73,27 @@ class CreatePaymentModel {
         this.paymentRequest = paymentRequest
         this.checkoutModel = checkoutModel
         this.payer = new GetContact(context, college, checkoutModel.payerId).get()
-
-        paymentPlan.collectEntries{}
     }
 
     CreatePaymentModel create() {
+        processNodes()
+        
+        if (paymentIn) {
+            updateVoucherPayments()
+            updateSumm()
+            allocateExtraMoney()
+            fillCCDetails()
+            createModel()
+            adjustSortOrder()
+        }
+        
+        this
+    }
+
+    private void processNodes() {
         checkoutModel.contactNodes.each { node ->
             Contact contact = new GetContact(context, college, node.contactId).get()
-            
+
             node.enrolments.findAll{it.selected}.each { e ->
                 createEnrolment(e, contact)
             }
@@ -97,16 +110,6 @@ class CreatePaymentModel {
                 createVoucher(v,contact)
             }
         }
-
-        if (paymentIn) {
-            updateVoucherPayments()
-            updateSumm()
-            fillCCDetails()
-            createModel()
-            adjustSortOrder()
-        }
-        
-        this
     }
     
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -116,7 +119,7 @@ class CreatePaymentModel {
 
         List<Voucher> vouchers = checkoutModel.amount.voucherPayments
                 .findAll { it.amount.toMoney().isGreaterThan(Money.ZERO) }
-                .collect {new GetVoucher(context, college, it.redeemVoucherId).get()}
+                .collect { new GetVoucher(context, college, it.redeemVoucherId).get() }
                 
         for (Voucher voucher : vouchers) {
             voucherRedemptionHelper.addVoucher(voucher, voucher.valueRemaining)
@@ -267,6 +270,27 @@ class CreatePaymentModel {
 
         invoiceTotal.subtract(voucherPaymentsTotal).max(Money.ZERO)
     }
+    
+    @CompileStatic(TypeCheckingMode.SKIP)
+    private allocateExtraMoney() {
+        Money offeredAmount = checkoutModel.amount.payNow.toMoney()
+        Money extraAmount = offeredAmount.subtract(paymentIn.amount)
+
+        if (checkoutModel.amount.isEditable && offeredAmount.isGreaterThan(paymentIn.amount)) {
+            for(InvoiceNode node : paymentPlan) {
+                Money leftToPay = node.invoice.amountOwing.subtract(node.paymentAmount)
+                Money amountToAdd = leftToPay.min(extraAmount)
+                node.paymentInLine.amount = node.paymentInLine.amount.add(amountToAdd)
+                paymentIn.amount = paymentIn.amount.add(amountToAdd)
+                extraAmount = extraAmount.subtract(amountToAdd)
+                
+                if (!extraAmount.isGreaterThan(Money.ZERO)) {
+                    break
+                }
+            }
+        }
+    }
+    
 
     private PaymentIn getPayment() {
         if (!paymentIn) {

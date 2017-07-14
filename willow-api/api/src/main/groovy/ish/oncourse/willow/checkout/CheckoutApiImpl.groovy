@@ -12,6 +12,7 @@ import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
 import ish.oncourse.willow.checkout.functions.ProcessClasses
 import ish.oncourse.willow.checkout.functions.ProcessProducts
+import ish.oncourse.willow.checkout.functions.ValidatePaymentRequest
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.GetPaymentStatus
 import ish.oncourse.willow.checkout.payment.HasErrors
@@ -106,23 +107,16 @@ class CheckoutApiImpl implements CheckoutApi {
         College college = webSite.college
         
         CheckoutModel checkoutModel = getCheckoutModel(paymentRequest.checkoutModelRequest)
-
-        if (new HasErrors(checkoutModel).hasErrors()) {
-            checkoutModel.error = new CommonError(message: 'Purchase items are not valid')
-            throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
-        } else if (checkoutModel.amount.payNow != paymentRequest.payNow) {
-            checkoutModel.error = new CommonError(message: 'Payment amount is wrong')
-            throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
-        }
-        Money payNow = checkoutModel.amount.payNow.toMoney()
+        ValidatePaymentRequest validatePaymentRequest = new ValidatePaymentRequest(checkoutModel, paymentRequest, context)
         
-        ValidationError validationError = new ValidateCreditCardForm(paymentRequest, context).validate(Money.ZERO == payNow)
-        if (!validationError.formErrors.empty || !validationError.fieldsErrors.empty) {
-            throw new BadRequestException(Response.status(400).entity(validationError).build())
+        if (validatePaymentRequest.commonError) {
+            throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
+        } else if (validatePaymentRequest.validationError) {
+            throw new BadRequestException(Response.status(400).entity(validatePaymentRequest.validationError).build())
         }
         
         CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel).create()
-        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext(), college,createPaymentModel, paymentRequest).process()
+        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext(), college, createPaymentModel, paymentRequest).process()
         
         if (processPaymentModel.error == null) {
             return processPaymentModel.response
