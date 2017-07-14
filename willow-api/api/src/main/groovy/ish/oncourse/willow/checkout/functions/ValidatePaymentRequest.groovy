@@ -29,7 +29,7 @@ class ValidatePaymentRequest {
     ValidatePaymentRequest validate() {
         
         Money minPayNow = checkoutModel.amount.payNow.toMoney()
-        Money maxPayNow = checkoutModel.amount.total.toMoney().subtract(checkoutModel.amount.discount.toMoney())
+        Money maxPayNow = minPayNow.add(checkoutModel.amount.owing.toMoney())
 
         Money actualPayNow = paymentRequest.payNow?.toMoney() ?: Money.ZERO
         

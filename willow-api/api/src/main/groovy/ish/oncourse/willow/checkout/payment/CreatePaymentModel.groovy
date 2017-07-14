@@ -48,6 +48,8 @@ import ish.util.ProductUtil
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.time.DateUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 
 class CreatePaymentModel {
@@ -66,6 +68,9 @@ class CreatePaymentModel {
     PaymentInModel model
     CheckoutModel checkoutModel
 
+    final static Logger logger = LoggerFactory.getLogger(CreatePaymentModel.class)
+
+
     CreatePaymentModel(ObjectContext context, College college, WebSite webSite, PaymentRequest paymentRequest, CheckoutModel checkoutModel) {
         this.context = context
         this.webSite = this.context.localObject(webSite)
@@ -81,7 +86,6 @@ class CreatePaymentModel {
         if (paymentIn) {
             updateVoucherPayments()
             updateSumm()
-            allocateExtraMoney()
             fillCCDetails()
             createModel()
             adjustSortOrder()
@@ -249,7 +253,9 @@ class CreatePaymentModel {
             }
 
             paymentIn.paymentInLines.each { paymentIn.amount = paymentIn.amount.add(it.amount)}
-            
+
+            allocateExtraMoney()
+
             if (paymentIn.amount == Money.ZERO) {
                 paymentIn.type = PaymentType.INTERNAL
             }
@@ -273,7 +279,7 @@ class CreatePaymentModel {
     
     @CompileStatic(TypeCheckingMode.SKIP)
     private allocateExtraMoney() {
-        Money offeredAmount = checkoutModel.amount.payNow.toMoney()
+        Money offeredAmount = paymentRequest.payNow.toMoney()
         Money extraAmount = offeredAmount.subtract(paymentIn.amount)
 
         if (checkoutModel.amount.isEditable && offeredAmount.isGreaterThan(paymentIn.amount)) {
@@ -288,6 +294,12 @@ class CreatePaymentModel {
                     break
                 }
             }
+        }
+        
+        if (extraAmount.isGreaterThan(Money.ZERO)) {
+            context.rollbackChanges()
+            logger.error("Payment amount is wrong, Extra amount supplied, offered amount: $offeredAmount, checkout model: $checkoutModel, paymen request: $paymentRequest")
+            throw new IllegalStateException('Payment amount is wrong, Extra amount supplied')
         }
     }
     
@@ -383,6 +395,4 @@ class CreatePaymentModel {
         paymentIn.creditCardName = paymentRequest.creditCardName
         paymentIn.creditCardExpiry = paymentRequest.expiryMonth + "/" + paymentRequest.expiryYear
     }
-
-
 }
