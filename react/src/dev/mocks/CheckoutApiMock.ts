@@ -118,7 +118,7 @@ export class CheckoutApiMock extends CheckoutApi {
     return this.config.createResponse(result);
   }
 
-  updateParentChilds(parentId, childIds): Promise<any> {
+  createParentChildrenRelation(parentId, childIds): Promise<any> {
     return this.config.createResponse(`success bind parent ${parentId} width childs ${childIds}`);
   }
 

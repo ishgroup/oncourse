@@ -162,8 +162,8 @@ export class CheckoutService {
     return errors;
   }
 
-  public updateParentChilds = (parentId, childIds): Promise<any> => (
-    this.checkoutApi.updateParentChilds(parentId, childIds)
+  public createParentChildrenRelation = (parentId, childIds): Promise<any> => (
+    this.checkoutApi.createParentChildrenRelation(parentId, childIds)
   )
 
   public getCorporatePass = (code): Promise<any> => (

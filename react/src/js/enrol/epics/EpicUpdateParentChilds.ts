@@ -8,7 +8,7 @@ import {Amount} from "../../model/checkout/Amount";
 
 const request: EpicUtils.Request<any, IshState> = {
   type: UPDATE_PARENT_CHILDS,
-  getData: (payload, state: IshState) => CheckoutService.updateParentChilds(payload.parentId, payload.childIds),
+  getData: (payload, state: IshState) => CheckoutService.createParentChildrenRelation(payload.parentId, payload.childIds),
   processData: (response, state: IshState) => {
     console.log(response);
     return [
