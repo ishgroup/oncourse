@@ -106,7 +106,8 @@ class CreditCardComp extends React.Component<Props, any> {
 
                 <div className="clearfix form-group">
                   <label>
-                    Expiry<em title="This field is required">*</em>
+                    <span>Expiry</span>
+                    <span><em title="This field is required">*</em></span>
                   </label>
                   <span className="valid input-select-small">
                     <Field
@@ -115,7 +116,7 @@ class CreditCardComp extends React.Component<Props, any> {
                       required={true}
                       loadOptions={PaymentService.months}
                     />
-                    /
+                    <span className="date-separator">/</span>
                     <Field
                       component={SelectField}
                       name={FieldName.expiryYear}

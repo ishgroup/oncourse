@@ -6,7 +6,7 @@
       margin-bottom: 0;
     }
     label {
-      font-weight: normal !important;
+      font-weight: bold !important;
       text-align: left;
       padding-left: 0px !important;
       padding-right: 0;
@@ -14,16 +14,20 @@
       width: 100% !important;
       max-width: 100% !important;
       line-height: normal;
+      
       @media only screen and (min-width: 640px) {
         width: 20% !important;
         max-width: 140px !important;
       }
+      
       > small {
         color: #999;
+
         font-size: 9px;
         display: block;
         line-height: 9px;
       }
+
       &.radio-btn {
         width: auto !important;
         float: none;
@@ -31,6 +35,7 @@
         max-width: none !important;
         display: block !important;
         margin-bottom: 5px !important;
+        
         &.text-right {
           text-align: right;
           padding: 0;
@@ -42,16 +47,24 @@
         }
       }
     }
+    
     > span {
       width: 100%;
+      
       @media only screen and (min-width: 640px) {
         width: 70%
       }
+      
       &.select-payer {
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+  
         label.radio-btn {
           text-align: left !important;
         }
       }
+      
       #cvvLink {
         margin-left: 11px !important;
       }
@@ -79,7 +92,8 @@
         display: block !important;
         width: auto !important;
         max-width: 100% !important;
-        text-align: left !important;
+        text-align: right;
+
         span {
           margin-left: 2px;
         }
@@ -97,11 +111,19 @@
     }
     fieldset {
       @extend %form-group;
-      >div >div {
+      div  div {
         label {
           font-weight: bold !important;
           line-height: 28px;
           padding-bottom: 0;
+          text-align: right !important;
+          padding-right: 20px !important;
+          
+          em {
+            position: absolute;
+            right: -5px;
+            top: 0;
+          }
         }
       }
     }
@@ -115,15 +137,23 @@
         margin-bottom: 18px;
       }
     }
+    
     .row {
-      .alignright span+span {
+      .alignright span + span {
         color: #921;
       }
     }
+    
     #payment-form {
       .enrolmentsSelected fieldset {
         position: relative;
       }
+      
+      .date-separator {
+        line-height: 28px;
+        padding: 0 3px;
+      }
+      
       .form-details {
         .form-group {
           .select-payer {
@@ -132,7 +162,7 @@
               width: 80%;
             }
             .radio-list {
-              >span {
+              > span {
                 display: block;
               }
             }
@@ -143,6 +173,7 @@
               display: inline-block;
               position: static;
               .Select {
+                
                 width: 55px;
               }
             }
@@ -161,10 +192,12 @@
         position: absolute;
         top: 60px;
         right: -4px;
+        
         > a.button {
           float: none;
           text-decoration: none;
         }
+        
         ul {
           position: absolute;
           top: 100%;
@@ -256,28 +289,34 @@
       }
       .single-tab {
         display: none;
+
+        .active {
+          display: block;
+        }
+
         .info-content {
           padding: 0 10px;
         }
       }
+
       #paypal {
         min-height: 150px;
       }
+      
       #corporate-pass {
         margin-top: 10px;
+        
         label.corporatePass-label {
           max-width: 100%;
           width: 100%;
           text-align: left;
           margin-bottom: 3px;
         }
+        
         > fieldset {
           border: 0;
           padding-right: 0;
         }
-      }
-      .single-tab.active {
-        display: block;
       }
 
       .vcc-card-image {
@@ -285,9 +324,11 @@
         margin-left: 5px;
         margin-bottom: 2px;
       }
+      
       #cardtotalstring {
         margin-top: -7px;
         vertical-align: middle;
+        
         img {
           vertical-align: middle;
         }

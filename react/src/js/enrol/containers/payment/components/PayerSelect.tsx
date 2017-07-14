@@ -28,7 +28,8 @@ export class PayerSelect extends React.Component<Props, any> {
     return (
       <div className="clearfix form-group">
         <label htmlFor="payer">
-          Payer<em title="This field is required">*</em>
+          <span>Payer</span>
+           <span><em title="This field is required">*</em></span>
           <small>(issue invoice to)</small>
         </label>
         <div className="select-payer">
