@@ -12,7 +12,8 @@ public enum SystemEventType implements DisplayableExtendedEnumeration<Integer> {
 
 	ENROLMENT_SUCCESSFUL(1, "Enrolment successful"),
 	ENROLMENT_CANCELLED(2, "Enrolment cancelled"),
-	CLASS_CANCELLED(3, "Class cancelled");
+	CLASS_CANCELLED(3, "Class cancelled"),
+	CLASS_PUBLISHED(4, "Class published");
 
 	private int value;
 	private String displayName;
