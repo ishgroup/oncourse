@@ -16,19 +16,8 @@ import SearchService from "../../enrol/services/SearchService";
 
 class FieldFactory extends React.Component<any, any> {
 
-  private propsFrom = (field: Field): any => {
-    return {
-      key: field.id,
-      name: field.key,
-      label: field.name,
-      type: "text",
-      required: field.mandatory,
-      placeholder: field.description,
-    };
-  };
-
   private getComponent = (field: Field): any => {
-    const props: any = this.propsFrom(field);
+    const props: any = toFormFieldProps(field);
     switch (field.dataType) {
       case DataType.STRING:
       case DataType.PHONE:
@@ -81,6 +70,18 @@ class FieldFactory extends React.Component<any, any> {
     );
   }
 }
+
+export const toFormFieldProps = (field: Field): any => {
+  return {
+    key: field.id,
+    name: field.key,
+    label: field.name,
+    type: "text",
+    required: field.mandatory,
+    placeholder: field.description,
+  };
+};
+
 
 const SuburbField = (props): any => {
   const suburbs = (i: string): Promise<Item[]> => {
