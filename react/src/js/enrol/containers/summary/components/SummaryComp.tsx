@@ -24,7 +24,7 @@ export interface Props {
   onInit?: () => void;
   concessions?: any;
   onUpdatePayNow?: (amount, val) => void;
-  parentExist?: boolean;
+  needParent?: boolean;
 }
 
 
@@ -56,7 +56,7 @@ export class SummaryComp extends React.Component<Props, any> {
 
   render() {
     const {contacts, amount, onAddContact, onAddCode, onProceedToPayment,
-      redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, parentExist} = this.props;
+      redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent} = this.props;
 
     return (
       <div className="payment-summary">
@@ -75,9 +75,9 @@ export class SummaryComp extends React.Component<Props, any> {
                 promotions={promotions}
               />
               <ProceedToPayment
-                parentExist={parentExist}
+                needParent={needParent}
                 disabled={!hasSelected}
-                onProceedToPayment={() => parentExist ? onProceedToPayment() : onAddContact()}
+                onProceedToPayment={() => needParent ? onAddContact() : onProceedToPayment()}
               />
             </div>
           </div>
@@ -89,7 +89,7 @@ export class SummaryComp extends React.Component<Props, any> {
 }
 
 const ProceedToPayment = props => {
-  const {disabled, onProceedToPayment, parentExist} = props;
+  const {disabled, onProceedToPayment, needParent} = props;
   const className = classnames("btn", "btn-primary", {disabled});
 
   const onClick = e => {
@@ -99,7 +99,7 @@ const ProceedToPayment = props => {
 
   return (
     <button className={className} onClick={onClick} disabled={disabled}>
-      {parentExist ? 'Proceed to Payment' : 'Add Guardian'}
+      {needParent ? 'Add Guardian' : 'Proceed to Payment'}
     </button>
   );
 };

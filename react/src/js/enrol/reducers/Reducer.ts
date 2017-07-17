@@ -12,7 +12,6 @@ import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer"
 import {Reducer as PaymentReducer} from "../containers/payment/reducers/Reducer";
 import {Reducer as ConcessionReducer} from "../containers/concession/reducers/Reducer";
 import {ContactsSchema, ContactsState} from "../../NormalizeSchema";
-import {Promotion} from "../../model/web/Promotion";
 import {RedeemVoucher} from "../../model/checkout/RedeemVoucher";
 import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
@@ -41,20 +40,6 @@ const PayerReducer = (state: string = null, action: IAction<string>): string => 
   switch (action.type) {
 
     case Actions.SET_PAYER_TO_STATE:
-      return action.payload;
-
-    case Actions.RESET_CHECKOUT_STATE:
-      return null;
-
-    default:
-      return state;
-  }
-};
-
-const ParentReducer = (state: string = null, action: IAction<string>): string => {
-  switch (action.type) {
-
-    case Actions.SET_PARENT_TO_STATE:
       return action.payload;
 
     case Actions.RESET_CHECKOUT_STATE:
@@ -103,12 +88,19 @@ const FieldsReducer = (state: ContactFields = null, action: IAction<ContactField
 };
 
 const ContactsReducer = (state: ContactsState = normalize([], ContactsSchema), action: IAction<ContactsState>): ContactsState => {
+  let ns: ContactsState;
+
   switch (action.type) {
     case ContactAddActions.ADD_CONTACT_TO_STATE:
 
-      const ns: ContactsState = L.cloneDeep(state);
+      ns = L.cloneDeep(state);
       ns.entities.contact = {...ns.entities.contact, ...action.payload.entities.contact};
       ns.result = Array.from(new Set([...ns.result, ...action.payload.result]));
+      return ns;
+
+    case Actions.UPDATE_PARENT_CHILDS:
+      ns = L.cloneDeep(state);
+      ns.result.map(id => ns.entities.contact[id].parentRequired = false);
       return ns;
 
     case Actions.RESET_CHECKOUT_STATE:
@@ -181,8 +173,8 @@ const ContactAddProcess = (state: any = {}, action: IAction<any>): any => {
   switch (action.type) {
 
     case Actions.UPDATE_CONTACT_ADD_PROCESS:
-      const {contact, type} = action.payload;
-      return {...state, contact, type};
+      const {contact, type, parent} = action.payload;
+      return {...state, contact, type, parent};
 
     default:
       return state;
@@ -199,7 +191,6 @@ export const Reducer = combineReducers<CheckoutState>({
   summary: SummaryReducer,
   payment: PaymentReducer,
   payerId: PayerReducer,
-  parentId: ParentReducer,
   contacts: ContactsReducer,
   concession: ConcessionReducer,
   redeemVouchers: RedeemVouchersReducer,

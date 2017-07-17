@@ -118,10 +118,6 @@ export class CheckoutApiMock extends CheckoutApi {
     return this.config.createResponse(result);
   }
 
-  createParentChildrenRelation(parentId, childIds): Promise<any> {
-    return this.config.createResponse(`success bind parent ${parentId} width childs ${childIds}`);
-  }
-
   getPaymentStatus(sessionId: string): Promise<PaymentResponse> {
     const result: PaymentResponse = new PaymentResponse();
     result.sessionId = sessionId;

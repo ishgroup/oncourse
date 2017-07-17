@@ -22,6 +22,7 @@ import {updateConcessionContact, getContactConcessions} from "../concession/acti
 import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import log = Handlebars.log;
+import CheckoutService from "../../services/CheckoutService";
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
@@ -98,7 +99,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       redeemVouchers: state.checkout.redeemVouchers,
       hasSelected: SummaryService.hasSelected(state.checkout.summary),
       concessions: state.checkout.concession.concessions,
-      parentExist: !!state.checkout.parentId,
+      needParent: !!CheckoutService.getAllSingleChildIds(state.checkout).length,
     };
   } catch (e) {
     console.log(e);

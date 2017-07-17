@@ -17,7 +17,7 @@ import {CheckoutModelRequest} from "../../model/checkout/CheckoutModelRequest";
 import {ContactNodeRequest} from "../../model/checkout/request/ContactNodeRequest";
 import {
   PaymentService, CreditCardFormValues,
-  CorporatePassFormValues
+  CorporatePassFormValues,
 } from "../containers/payment/services/PaymentService";
 import {PaymentResponse} from "../../model/checkout/payment/PaymentResponse";
 import {PaymentRequest} from "../../model/checkout/payment/PaymentRequest";
@@ -61,7 +61,7 @@ export class CheckoutService {
     return !L.isNil(state.payerId);
   }
 
-  public getAllChildIds = (state: CheckoutState): string[] => (
+  public getAllSingleChildIds = (state: CheckoutState): string[] => (
     state.contacts.result.filter(id => state.contacts.entities.contact[id].parentRequired)
   )
 
@@ -88,7 +88,7 @@ export class CheckoutService {
 
   public getContactNode = (contact: Contact, cart: CartState): Promise<ContactNode> => {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromContact(contact, cart));
-  };
+  }
 
   public submitCode = (code: string, state: IshState): Promise<CodeResponse> => {
     return this.promotionApi.submitCode(code);
@@ -163,7 +163,7 @@ export class CheckoutService {
   }
 
   public createParentChildrenRelation = (parentId, childIds): Promise<any> => (
-    this.checkoutApi.createParentChildrenRelation(parentId, childIds)
+    this.contactApi.createParentChildrenRelation({parentId, childrenIds: childIds})
   )
 
   public getCorporatePass = (code): Promise<any> => (

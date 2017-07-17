@@ -10,6 +10,7 @@ import {MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
 import {mockContact} from "./mocks/MockFunctions";
 import {ContactId} from "../../js/model/web/ContactId";
+import {CreateParentChildrenRequest} from "../../js/model/checkout/CreateParentChildrenRequest";
 export class ContactApiMock extends ContactApi {
 
   public config: MockConfig;
@@ -45,7 +46,12 @@ export class ContactApiMock extends ContactApi {
       result.newContact = false;
     }
 
-    result.parentRequired = request.firstName == 'child';
+    result.parentRequired = request.firstName == 'child' || request.firstName == 'childp';
+
+    result.parent = request.firstName == 'childp'
+      ? this.config.db.contacts.entities.contact[this.config.db.contacts.result[0]]
+      : null;
+
     result.id = contact.id;
     return this.config.createResponse(result);
   }
@@ -61,6 +67,12 @@ export class ContactApiMock extends ContactApi {
     }
 
     return this.config.createResponse(result);
+  }
+
+  createParentChildrenRelation(contactFields: CreateParentChildrenRequest): Promise<any> {
+    return this.config.createResponse(
+      `success bind parent ${contactFields.parentId} width childs ${contactFields.childrenIds}`,
+    );
   }
 
   getConcessionTypes() {
