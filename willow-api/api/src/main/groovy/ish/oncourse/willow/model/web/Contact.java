@@ -9,6 +9,7 @@ public class Contact  {
     private String lastName = null;
     private String email = null;
     private Boolean company = null;
+    private Boolean parentRequired = null;
 
     /**
      * Internal Unique identifier of course
@@ -112,6 +113,23 @@ public class Contact  {
       return this;
     }
 
+    /**
+     * Get parentRequired
+     * @return parentRequired
+     */
+    public Boolean getParentRequired() {
+        return parentRequired;
+    }
+
+    public void setParentRequired(Boolean parentRequired) {
+       this.parentRequired = parentRequired;
+    }
+
+    public Contact parentRequired(Boolean parentRequired) {
+      this.parentRequired = parentRequired;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -124,6 +142,7 @@ public class Contact  {
       sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
       sb.append("    email: ").append(toIndentedString(email)).append("\n");
       sb.append("    company: ").append(toIndentedString(company)).append("\n");
+      sb.append("    parentRequired: ").append(toIndentedString(parentRequired)).append("\n");
       sb.append("}");
       return sb.toString();
     }

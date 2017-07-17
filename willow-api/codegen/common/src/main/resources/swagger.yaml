@@ -783,6 +783,8 @@ definitions:
       company: 
         type: boolean
         description: Is company flag
+      parentRequired:
+        type: boolean
   web.Promotion:
     type: object
     properties:
