@@ -11,8 +11,6 @@ import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
 class IsPaymentGatewayEnabled extends GetPreference {
     
     static Logger logger = LogManager.getLogger()
-    College college
-    ObjectContext context
 
     IsPaymentGatewayEnabled(College college, ObjectContext context) {
         super(college, PAYMENT_GATEWAY_TYPE, context)
