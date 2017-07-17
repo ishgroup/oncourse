@@ -3,6 +3,7 @@ package ish.oncourse.willow.functions.field
 import ish.oncourse.model.*
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.willow.model.field.FieldSet
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.slf4j.Logger
@@ -15,6 +16,7 @@ class GetFieldConfigurations {
 
     List<CourseClass> classes
     Contact contact
+    ObjectContext context
 
     FieldSet fieldSet
     College college
@@ -25,7 +27,7 @@ class GetFieldConfigurations {
         Set<FieldConfiguration> configurations = []
 
         if (mergeDefault) {
-            configurations << getDefaultFieldConfiguration(college)
+            configurations << new GetDefaultFieldConfiguration(college, context).get()
         }
         
         switch (fieldSet) {
@@ -37,13 +39,13 @@ class GetFieldConfigurations {
                     
                     if (c.course.fieldConfigurationScheme) {
                         scheme = c.course.fieldConfigurationScheme
-                        if (new FindOfferedApplication(c.course, contact.student, contact.objectContext).applcation) {
+                        if (new FindOfferedApplication(c.course, contact.student, context).applcation) {
                             configurations << scheme.applicationFieldConfiguration
                         } else {
                             configurations << scheme.enrolFieldConfiguration
                         }
                     } else if (!mergeDefault) {
-                        configurations << getDefaultFieldConfiguration(college)
+                        configurations <<  new GetDefaultFieldConfiguration(college, context).get()
                         mergeDefault = true
                     }
                     
@@ -60,23 +62,4 @@ class GetFieldConfigurations {
         }
         configurations
     }
-
-    private FieldConfiguration getDefaultFieldConfiguration(College college) {
-        FieldConfiguration configuration =  (ObjectSelect.query(FieldConfiguration)
-                .where(FieldConfiguration.COLLEGE.eq(college))
-                & FieldConfiguration.ANGEL_ID.eq(-1L))
-                .prefetch(FieldConfiguration.FIELD_HEADINGS.disjoint())
-                .prefetch(FieldConfiguration.FIELDS.disjoint())
-                .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                .cacheGroup(FieldConfiguration.class.simpleName)
-                .selectFirst(college.objectContext)
-
-        if (!configuration) {
-            logger.error("College (id: $college.id) has no default field configuration")
-            throw new IllegalStateException()
-        } else {
-            configuration
-        }
-    }
-    
 }

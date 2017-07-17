@@ -1,6 +1,8 @@
 package ish.oncourse.willow.service
 
 import ish.math.Money
+import ish.oncourse.common.field.ContextType
+import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.College
 import ish.oncourse.model.PaymentInLine
 import ish.oncourse.model.WebSite
@@ -12,6 +14,7 @@ import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
+import ish.oncourse.willow.model.field.FieldSet
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.junit.Test
@@ -24,6 +27,14 @@ class PaymentPlanTest extends ApiTest {
     protected String getDataSetResource() {
         return 'ish/oncourse/willow/service/PaymentPlanTest.xml'
     }
+
+
+    @Test
+    void test123() {
+        println "${FieldSet.ENROLMENT}.${ContextType.CONTACT}.${FieldProperty.ABN}.required".toLowerCase()
+    }
+    
+    
     
     @Test
     void testAmount() {

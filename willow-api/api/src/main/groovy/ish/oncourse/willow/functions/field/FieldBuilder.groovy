@@ -14,7 +14,7 @@ class FieldBuilder {
     
     ish.oncourse.willow.model.field.Field build() {
         new ish.oncourse.willow.model.field.Field().with { f ->
-            f.id = field.id.toString()
+            f.id = field.id?.toString()
             f.name = field.name
             f.description = field.description
             f.mandatory = field.mandatory

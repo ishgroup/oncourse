@@ -11,6 +11,7 @@ import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.functions.CheckParent
 import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.functions.CreateParentChildrenRelation
+import ish.oncourse.willow.functions.GetCompanyFields
 import ish.oncourse.willow.functions.GetContactFields
 import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.cayenne.CayenneService
@@ -82,21 +83,21 @@ class ContactApiServiceImpl implements ContactApi{
     ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest) {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
-        
-        if (contactFieldsRequest.classIds.empty &&  contactFieldsRequest.productIds.empty) {
-            logger.error("classesIds required, request param: $contactFieldsRequest")
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
-        }
-        if (!contactFieldsRequest.fieldSet) {
-            logger.error("fieldSet required, request param: $contactFieldsRequest")
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
-        }
-        
         ish.oncourse.model.Contact contact = new GetContact(context, college, contactFieldsRequest.contactId).get(false)
         
         if (contact.isCompany) {
-            return new ContactFields()
+            return new GetCompanyFields(contact, college, context, contactFieldsRequest.mandatoryOnly).get()
         } else {
+            
+            if (contactFieldsRequest.classIds.empty &&  contactFieldsRequest.productIds.empty) {
+                logger.error("classesIds required, request param: $contactFieldsRequest")
+                throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
+            }
+            if (!contactFieldsRequest.fieldSet) {
+                logger.error("fieldSet required, request param: $contactFieldsRequest")
+                throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
+            }
+            
             List<CourseClass> classes = []
 
             if (!contactFieldsRequest.classIds.empty) {
@@ -120,25 +121,23 @@ class ContactApiServiceImpl implements ContactApi{
         
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
-        ish.oncourse.model.Contact contact = new GetContact(context, college, contactFields.contactId).get()
+        ish.oncourse.model.Contact contact = new GetContact(context, college, contactFields.contactId).get(false)
         ValidationError errors = new ValidationError()
         
         SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors).submitContactFields(contact, contactFields.fields)
-        if (contactFields.concession) {
-            new AddConcession(objectContext: context, errors: errors, college: college).add(contactFields.concession)
-        }
+        ContactId response = new ContactId().id(contact.id.toString()).newContact(false).parentRequired(false)
         
-        CheckParent checkParent = new CheckParent(college, context, contact).perform()
+        if (!contact.isCompany) {
+            if (contactFields.concession) {
+                new AddConcession(objectContext: context, errors: errors, college: college).add(contactFields.concession)
+            }
+            CheckParent checkParent = new CheckParent(college, context, contact).perform()
+            response = response.parentRequired(checkParent.parentRequired).parent(checkParent.parent)
+        }
         
         if (errors.fieldsErrors.empty && errors.formErrors.empty) {
             context.commitChanges()
-            return new ContactId().with { c ->
-                c.id = contact.id.toString()
-                c.newContact = false
-                c.parentRequired = checkParent.parentRequired
-                c.parent = checkParent.parent
-                c
-            }
+            return response
         } else {
             logger.warn(" Vaidation error: $submit.errors")
             throw new BadRequestException(Response.status(400).entity(submit.errors).build())
