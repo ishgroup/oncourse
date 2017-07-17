@@ -1,10 +1,13 @@
 package ish.oncourse.willow.model.web;
 
+import ish.oncourse.willow.model.web.Contact;
 
 public class ContactId  {
   
     private String id = null;
     private Boolean newContact = null;
+    private Boolean parentRequired = null;
+    private Contact parent = null;
 
     /**
      * Contact id
@@ -40,6 +43,40 @@ public class ContactId  {
       return this;
     }
 
+    /**
+     * Indicates that parent required
+     * @return parentRequired
+     */
+    public Boolean getParentRequired() {
+        return parentRequired;
+    }
+
+    public void setParentRequired(Boolean parentRequired) {
+       this.parentRequired = parentRequired;
+    }
+
+    public ContactId parentRequired(Boolean parentRequired) {
+      this.parentRequired = parentRequired;
+      return this;
+    }
+
+    /**
+     * Related parant, not null if parent required and parent exist
+     * @return parent
+     */
+    public Contact getParent() {
+        return parent;
+    }
+
+    public void setParent(Contact parent) {
+       this.parent = parent;
+    }
+
+    public ContactId parent(Contact parent) {
+      this.parent = parent;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -48,6 +85,8 @@ public class ContactId  {
       
       sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("    newContact: ").append(toIndentedString(newContact)).append("\n");
+      sb.append("    parentRequired: ").append(toIndentedString(parentRequired)).append("\n");
+      sb.append("    parent: ").append(toIndentedString(parent)).append("\n");
       sb.append("}");
       return sb.toString();
     }

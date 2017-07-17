@@ -1,6 +1,7 @@
 package ish.oncourse.willow.service;
 
 import java.util.List;
+import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest;
 import ish.oncourse.willow.model.checkout.concession.Concession;
 import ish.oncourse.willow.model.checkout.concession.ConcessionType;
 import ish.oncourse.willow.model.common.CommonError;
@@ -29,6 +30,13 @@ public interface ContactApi  {
     @CollegeInfo
     @ContactValidation
     ContactId createOrGetContact(CreateContactParams createContactParams);
+
+    @PUT
+    @Path("/createParentChildrenRelation")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @CollegeInfo
+    void createParentChildrenRelation(CreateParentChildrenRequest contactFields);
 
     @GET
     @Path("/getConcessionTypes")
@@ -61,11 +69,11 @@ public interface ContactApi  {
     @CollegeInfo
     void submitConcession(Concession concession);
 
-    @PUT
+    @POST
     @Path("/submitContactDetails")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
-    void submitContactDetails(SubmitFieldsRequest contactFields);
+    ContactId submitContactDetails(SubmitFieldsRequest contactFields);
 }
 

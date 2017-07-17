@@ -15,6 +15,7 @@ import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.functions.concession.AddConcession
 import ish.oncourse.willow.functions.concession.GetConcessionTypes
 import ish.oncourse.willow.functions.concession.GetContactConcessions
+import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest
 import ish.oncourse.willow.model.checkout.concession.Concession
 import ish.oncourse.willow.model.checkout.concession.ConcessionType
 import ish.oncourse.willow.model.common.CommonError
@@ -61,6 +62,11 @@ class ContactApiServiceImpl implements ContactApi{
     }
 
     @Override
+    void createParentChildrenRelation(CreateParentChildrenRequest contactFields) {
+
+    }
+
+    @Override
     ContactFields getContactFields(ContactFieldsRequest contactFieldsRequest) {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
@@ -98,7 +104,7 @@ class ContactApiServiceImpl implements ContactApi{
     }
     
     @Override
-    void submitContactDetails(SubmitFieldsRequest contactFields) {
+    ContactId submitContactDetails(SubmitFieldsRequest contactFields) {
         
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
@@ -112,6 +118,7 @@ class ContactApiServiceImpl implements ContactApi{
         
         if (errors.fieldsErrors.empty && errors.formErrors.empty) {
             context.commitChanges()
+            new ContactId()
         } else {
             logger.warn(" Vaidation error: $submit.errors")
             throw new BadRequestException(Response.status(400).entity(submit.errors).build())

@@ -252,8 +252,36 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /submitContactDetails:
+  /createParentChildrenRelation:
     put:
+      x-filter: 
+      - CollegeInfo
+      summary: Create parent children relation
+      operationId: createParentChildrenRelation
+      tags:
+      - Contact
+      consumes:
+      - application/json
+      parameters:
+      - name: contactFields
+        in: body
+        description: Contact fields
+        required: true
+        schema:
+            $ref: '#/definitions/checkout.CreateParentChildrenRequest'
+      responses:
+        200:
+          description: Ok response
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/common.ValidationError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /submitContactDetails:
+    post:
       x-filter: 
       - CollegeInfo
       summary: Save contact details from web form
@@ -272,7 +300,9 @@ paths:
             $ref: '#/definitions/field.SubmitFieldsRequest'
       responses:
         200:
-          description: Ok response
+          description: ContactId object 
+          schema:
+            $ref: '#/definitions/web.ContactId'
         400:
           description: Validation error
           schema:
@@ -726,6 +756,12 @@ definitions:
       newContact:
         type: boolean
         description: Indicates that new contact created
+      parentRequired: 
+        type: boolean
+        description: Indicates that parent required 
+      parent:
+        $ref: '#/definitions/web.Contact'
+        description: Related parant, not null if parent required and parent exist
   web.Contact:
     type: object
     properties:
@@ -1346,3 +1382,12 @@ definitions:
         $ref: '#/definitions/web.Promotion'
       voucher:
         $ref: '#/definitions/checkout.RedeemVoucher'
+  checkout.CreateParentChildrenRequest:
+    type: object
+    properties:
+      parentId:
+        type: string
+      childrenIds:
+        type: array
+        items:
+          type: string

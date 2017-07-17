@@ -22,9 +22,6 @@ export class CheckoutApi {
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
     return this.http.POST(`/makePayment`, paymentRequest);
   }
-  createParentChildrenRelation(parentId:string, childIds: string[]): Promise<any> {
-    return this.http.POST('/createParentChildrenRelation', {parentId, childIds});
-  }
   getCorporatePass(code: string): Promise<any> {
     return null;
   }
