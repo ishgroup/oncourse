@@ -27,14 +27,6 @@ class PaymentPlanTest extends ApiTest {
     protected String getDataSetResource() {
         return 'ish/oncourse/willow/service/PaymentPlanTest.xml'
     }
-
-
-    @Test
-    void test123() {
-        println "${FieldSet.ENROLMENT}.${ContextType.CONTACT}.${FieldProperty.ABN}.required".toLowerCase()
-    }
-    
-    
     
     @Test
     void testAmount() {
