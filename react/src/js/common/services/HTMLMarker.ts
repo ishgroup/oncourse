@@ -27,8 +27,8 @@ export class HTMLMarkers {
     id: "checkout",
     component: Checkout,
     props: {
-      checkoutPath: "string"
-    }
+      checkoutPath: "string",
+    },
   };
 
   /**
@@ -42,8 +42,8 @@ export class HTMLMarkers {
     id: "cart",
     component: CartRoot,
     props: {
-      checkoutPath: "string"
-    }
+      checkoutPath: "string",
+    },
   };
 
   /**
@@ -56,7 +56,7 @@ export class HTMLMarkers {
   static PROMOTIONS: HTMLMarker = {
     id: "promotions",
     component: Promotions,
-    props: {}
+    props: {},
   };
 
   /**
@@ -69,7 +69,7 @@ export class HTMLMarkers {
   static FEES: HTMLMarker = {
     id: "fees",
     component: Fees,
-    props: {id: "string"}
+    props: {id: "string"},
   };
 
   /**
@@ -94,8 +94,8 @@ export class HTMLMarkers {
       isFinished: "boolean",
       isCancelled: "boolean",
       isAllowByApplication: "boolean",
-      isPaymentGatewayEnabled: "boolean"
-    }
+      isPaymentGatewayEnabled: "boolean",
+    },
   };
 
   /**
@@ -108,7 +108,7 @@ export class HTMLMarkers {
   static BUY_BUTTON: HTMLMarker = {
     id: "buy-button",
     component: BuyButton,
-    props: {id: "string"}
+    props: {id: "string"},
   };
 
   /**
@@ -122,7 +122,7 @@ export class HTMLMarkers {
   static MODAL: HTMLMarker = {
     id: "modal",
     component: LegacyModal,
-    props: {}
+    props: {},
   };
 
   /**
@@ -135,7 +135,7 @@ export class HTMLMarkers {
   static POPUP: HTMLMarker = {
     id: "popup",
     component: PopupContainer,
-    props: {}
+    props: {},
   };
 
   /**
@@ -148,7 +148,7 @@ export class HTMLMarkers {
   static FEES_RANGE: HTMLMarker = {
     id: "fees-range",
     component: Fees,
-    props: {id: "string"}
+    props: {id: "string"},
   };
 
 }

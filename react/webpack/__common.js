@@ -19,7 +19,6 @@ const KEYS = {
 };
 
 const _common = (dirname, options) => {
-  console.log(options);
   return {
     entry: [options[KEYS.ENTRY]],
     output: {

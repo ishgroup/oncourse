@@ -6,11 +6,14 @@ import moment from "moment";
 /**
  * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
  */
-const MONEY_FORMAT = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 2,
-});
+const MONEY_FORMAT = global.Intl ?
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }) : {
+    format: val => (val.toString()),
+  };
 
 /**
  * Format date string in ISO8601 to string with this pattern
