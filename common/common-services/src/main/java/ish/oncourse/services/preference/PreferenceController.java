@@ -292,8 +292,7 @@ public class PreferenceController extends CommonPreferenceController {
 
     public Integer getContactAgeWhenNeedParent()
     {
-        String value = StringUtils.trimToNull(getValue(ENROLMENT_contactAgeWhenNeedParent, false));
-        return (value != null && StringUtils.isNumeric(value)) ? Integer.valueOf(value): DEFAULT_contactAgeWhenNeedParent;
+    	return new GetContactAgeWhenNeedParent(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
     }
 
     public void setContactAgeWhenNeedParent(Integer value)
@@ -303,7 +302,7 @@ public class PreferenceController extends CommonPreferenceController {
 
     public boolean isCollectParentDetails()
     {
-        return Boolean.valueOf(StringUtils.trimToNull(getValue(ENROLMENT_collectParentDetails, false)));
+        return new IsCollectParentDetails(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
     }
 
     public void setCollectParentDetails(boolean value)

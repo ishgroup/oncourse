@@ -36,7 +36,7 @@ public interface ContactApi  {
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @CollegeInfo
-    void createParentChildrenRelation(CreateParentChildrenRequest contactFields);
+    void createParentChildrenRelation(CreateParentChildrenRequest request);
 
     @GET
     @Path("/getConcessionTypes")

@@ -8,20 +8,19 @@ import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
 
-class IsPaymentGatewayEnabled {
+class IsPaymentGatewayEnabled extends GetPreference {
     
     static Logger logger = LogManager.getLogger()
     College college
     ObjectContext context
 
     IsPaymentGatewayEnabled(College college, ObjectContext context) {
-        this.college = college
-        this.context = context
+        super(college, PAYMENT_GATEWAY_TYPE, context)
     }
     
     boolean get() {
         try {
-            PaymentGatewayType.DISABLED != PaymentGatewayType.valueOf(new GetPreference(college, PAYMENT_GATEWAY_TYPE, context).getValue())
+            PaymentGatewayType.DISABLED != PaymentGatewayType.valueOf(getValue())
         } catch (Exception ignored) {
             logger.error('Can not determine payment gateway type for college id:{}', college.id)
             false

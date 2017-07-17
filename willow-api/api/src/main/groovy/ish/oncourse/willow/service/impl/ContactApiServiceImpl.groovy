@@ -8,7 +8,9 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
 import ish.oncourse.willow.checkout.functions.GetContact
+import ish.oncourse.willow.functions.CheckParent
 import ish.oncourse.willow.functions.CreateOrGetContact
+import ish.oncourse.willow.functions.CreateParentChildrenRelation
 import ish.oncourse.willow.functions.GetContactFields
 import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.cayenne.CayenneService
@@ -62,8 +64,18 @@ class ContactApiServiceImpl implements ContactApi{
     }
 
     @Override
-    void createParentChildrenRelation(CreateParentChildrenRequest contactFields) {
+    void createParentChildrenRelation(CreateParentChildrenRequest request) {
+        ObjectContext context = cayenneService.newContext()
+        College college = collegeService.college
+        CreateParentChildrenRelation createRelation = new CreateParentChildrenRelation(college, context, request).create()
 
+        if (createRelation.error) {
+            context.rollbackChanges()
+            logger.error("Can not create parent children relation, college id: ${college.id}, request: ${request}")
+            throw new BadRequestException(Response.status(400).entity(createRelation.error).build())
+        } else {
+            context.commitChanges()
+        }
     }
 
     @Override
@@ -116,9 +128,17 @@ class ContactApiServiceImpl implements ContactApi{
             new AddConcession(objectContext: context, errors: errors, college: college).add(contactFields.concession)
         }
         
+        CheckParent checkParent = new CheckParent(college, context, contact).perform()
+        
         if (errors.fieldsErrors.empty && errors.formErrors.empty) {
             context.commitChanges()
-            new ContactId()
+            return new ContactId().with { c ->
+                c.id = contact.id.toString()
+                c.newContact = false
+                c.parentRequired = checkParent.parentRequired
+                c.parent = checkParent.parent
+                c
+            }
         } else {
             logger.warn(" Vaidation error: $submit.errors")
             throw new BadRequestException(Response.status(400).entity(submit.errors).build())

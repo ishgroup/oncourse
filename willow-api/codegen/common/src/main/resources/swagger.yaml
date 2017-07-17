@@ -263,7 +263,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - name: contactFields
+      - name: request
         in: body
         description: Contact fields
         required: true

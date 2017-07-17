@@ -18,8 +18,8 @@ export class ContactApi {
   createOrGetContact(createContactParams: CreateContactParams): Promise<ContactId> {
     return this.http.PUT(`/contact`, createContactParams);
   }
-  createParentChildrenRelation(contactFields: CreateParentChildrenRequest): Promise<any> {
-    return this.http.PUT(`/createParentChildrenRelation`, contactFields);
+  createParentChildrenRelation(request: CreateParentChildrenRequest): Promise<any> {
+    return this.http.PUT(`/createParentChildrenRelation`, request);
   }
   getConcessionTypes(): Promise<ConcessionType[]> {
     return this.http.GET(`/getConcessionTypes`);
