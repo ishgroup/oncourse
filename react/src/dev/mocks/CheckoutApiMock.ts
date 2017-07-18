@@ -126,26 +126,6 @@ export class CheckoutApiMock extends CheckoutApi {
     return this.config.createResponse(result);
   }
 
-  getCorporatePass(code: string): Promise<any> {
-    const corporatePassResponse = {
-      code: '1',
-      message: 'Valid code entered. ' +
-      'This transaction will be invoiced to SSV Normandy when you press the Confirm Purchase button below. ' +
-      'Your details will be forwarded to the relevant manager at SSV Normandy. ' +
-      'This corporatePass has caused a discount of $3.15 to be applied to this sale.',
-      id: '1',
-    };
-
-    return code === '1' ? this.config.createResponse(corporatePassResponse) : CreatePromiseReject('incorrect pass');
-  }
-
-  submitPaymentCorporatePass(request): Promise<any> {
-    const response = new PaymentResponse();
-    response.status = PaymentStatus.SUCCESSFUL;
-    response.sessionId = request.sessionId;
-    return this.config.createResponse(response);
-  }
-
   private paymentStatusValue(): PaymentStatus {
     if (this.config.props.checkoutApi.makePayment.result.inProgress) {
       return PaymentStatus.IN_PROGRESS;

@@ -30,6 +30,7 @@ export class ProcessCheckoutModel {
     let result = ProcessCheckoutModel.processError(model.error);
     result = [...result, ... ProcessCheckoutModel.processNodes(model.contactNodes)];
     result.push(updateAmount(model.amount));
+    
     if (!result.find(a => a.type === CHANGE_PHASE && a.payload === Phase.Summary)) {
       result.push(changePhase(Phase.Payment));
     }

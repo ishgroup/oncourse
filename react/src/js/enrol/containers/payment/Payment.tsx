@@ -3,6 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {IshState} from "../../../services/IshState";
 import {PaymentComp} from "./components/PaymentComp";
 import PaymentForm from "./components/PaymentForm";
+import {checkIfCorporatePassEnabled} from "./actions/Actions";
 import {addCode, toggleRedeemVoucher, updateAmount} from "../../actions/Actions";
 
 const PropsBy = (state: IshState): any => {
@@ -25,6 +26,9 @@ export const ActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onToggleVoucher: (voucher, enabled) => {
       dispatch(toggleRedeemVoucher(voucher, enabled));
+    },
+    onInit: () => {
+      dispatch(checkIfCorporatePassEnabled());
     },
   };
 };

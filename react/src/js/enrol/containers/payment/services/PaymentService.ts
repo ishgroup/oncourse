@@ -6,7 +6,7 @@ import {createStringEnum} from "../../../../common/utils/EnumUtils";
 import {Item} from "../../../../model/common/Item";
 import {IshState} from "../../../../services/IshState";
 import {PaymentRequest} from "../../../../model/checkout/payment/PaymentRequest";
-import {CorporatePassPaymentRequest} from "../../../../model/checkout/payment/CorporatePassPaymentRequest";
+import {MakeCorporatePassRequest} from "../../../../model/checkout/corporatepass/MakeCorporatePassRequest";
 import {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
 
 export const FieldName = createStringEnum([
@@ -65,13 +65,12 @@ export class PaymentService {
     return result;
   }
 
-  static corporatePassValuesToRequest = (values, state: IshState): CorporatePassPaymentRequest => {
-    const result: CorporatePassPaymentRequest = new CorporatePassPaymentRequest();
+  static corporatePassValuesToRequest = (values, state: IshState): MakeCorporatePassRequest => {
+    const result: MakeCorporatePassRequest = new MakeCorporatePassRequest();
     result.agreementFlag = values.agreementFlag;
     result.reference = values.reference || null;
     result.checkoutModelRequest = BuildCheckoutModelRequest.fromState(state);
     result.corporatePassId = state.checkout.payment.corporatePass.id;
-    result.sessionId = uuid();
     return result;
   }
 }

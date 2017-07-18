@@ -16,7 +16,7 @@ import {changePhase, setPayer} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
-import {CorporatePassResponse} from "../../../../model/checkout/payment/CorporatePassResponse";
+import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
 import {Tabs} from "../reducers/State";
 import {PaymentStatus} from "../../../../model/checkout/payment/PaymentStatus";
 
@@ -31,13 +31,14 @@ interface Props extends FormProps<DataShape, any, any> {
   payerId: string;
   voucherPayerEnabled: boolean;
   onSubmitPass?: (code: string) => any;
-  corporatePass?: CorporatePassResponse;
+  corporatePass?: CorporatePass;
   currentTab: Tabs;
   resetPass?: () => void;
   onSetPayer?: () => void;
   onAddPayer?: () => void;
   onAddCompany?: () => void;
   onChangeTab?: (tab) => void;
+  corporatePassAvailable?: boolean;
 }
 
 export const NAME = "PaymentForm";
@@ -58,7 +59,7 @@ class PaymentForm extends React.Component<Props, any> {
   render() {
     const {
       handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass,
-      onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab,
+      onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable
     } = this.props;
 
     const disabled = (invalid || pristine || submitting);
@@ -68,7 +69,12 @@ class PaymentForm extends React.Component<Props, any> {
         {amount.payNow !== 0 &&
         <div>
           <div id="tabable-container">
-            <PaymentFormNav paymentTabOnClick={this.paymentTabOnClick} currentTab={currentTab}/>
+            <PaymentFormNav
+              paymentTabOnClick={this.paymentTabOnClick}
+              currentTab={currentTab}
+              corporatePassAvailable={corporatePassAvailable}
+            />
+
             <div className="tab-content">
 
               {currentTab === Tabs.creditCard &&
@@ -109,16 +115,18 @@ class PaymentForm extends React.Component<Props, any> {
 }
 
 const PaymentFormNav = props => {
-  const {paymentTabOnClick, currentTab} = props;
+  const {paymentTabOnClick, currentTab, corporatePassAvailable} = props;
 
   return (
     <ul className="nav">
       <li className={classnames("first", {active: currentTab === Tabs.creditCard})}>
         <a href={`#${Tabs.creditCard}`} onClick={paymentTabOnClick.bind(this)}>Credit card</a>
       </li>
+      {corporatePassAvailable &&
       <li className={classnames({active: currentTab === Tabs.corporatePass})}>
         <a href={`#${Tabs.corporatePass}`} onClick={paymentTabOnClick.bind(this)}>CorporatePass</a>
       </li>
+      }
     </ul>
   );
 };
@@ -206,6 +214,7 @@ const mapStateToProps = (state: IshState) => {
     voucherPayerEnabled: CheckoutService.hasActiveVoucherPayer(state.checkout),
     corporatePass: state.checkout.payment.corporatePass,
     currentTab: state.checkout.payment.currentTab,
+    corporatePassAvailable: state.checkout.payment.corporatePassAvailable,
   };
 };
 

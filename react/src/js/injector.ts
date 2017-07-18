@@ -5,6 +5,7 @@ import {ContactApi} from "./http/ContactApi";
 import {CourseClassesApi} from "./http/CourseClassesApi";
 import {ProductsApi} from "./http/ProductsApi";
 import {PromotionApi} from "./http/PromotionApi";
+import {CorporatePassApi} from "./http/CorporatePassApi";
 import {MergeService} from "./services/MergeService";
 import {LegacySyncStorage} from "./services/LegacySyncStorage";
 import {CheckoutApi} from "./http/CheckoutApi";
@@ -19,6 +20,7 @@ export class Injector {
   readonly promotionApi = new PromotionApi(this.http);
   readonly checkoutApi = new CheckoutApi(this.http);
   readonly searchApi = new SearchApi(this.http);
+  readonly corporatePassApi = new CorporatePassApi(this.http);
   readonly mergeService = new MergeService();
   readonly legacySyncStorage = new LegacySyncStorage();
 

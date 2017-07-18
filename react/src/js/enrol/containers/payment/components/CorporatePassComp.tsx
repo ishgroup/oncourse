@@ -1,12 +1,12 @@
 import React from "react";
 import {Field} from "redux-form";
 
-import {CorporatePassResponse} from "../../../../model/checkout/payment/CorporatePassResponse";
+import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
 import {TextField} from "../../../../components/form-new/TextField";
 
 interface Props {
   onSubmitPass: (code: string) => void;
-  corporatePass?: CorporatePassResponse;
+  corporatePass?: CorporatePass;
 }
 
 class CorporatePassComp extends React.Component<Props, any> {

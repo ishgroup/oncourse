@@ -13,6 +13,7 @@ import {EnvironmentConstants} from "../../../js/config/EnvironmentConstants";
 import {CartApiMock} from "../CartApiMock";
 import {ContactApiMock} from "../ContactApiMock";
 import {CourseClassesApiMock} from "../CourseClassesApiMock";
+import {CorporatePassApiMock} from "../CorporatePassApiMock";
 import {ProductsApiMock} from "../ProductsApiMock";
 import {PromotionApiMock} from "../PromotionApiMock";
 import {CheckoutApiMock} from "../CheckoutApiMock";
@@ -117,6 +118,7 @@ export class MockConfig {
       this.injector.setService("productsApi", new ProductsApiMock(this));
       this.injector.setService("promotionApi", new PromotionApiMock(this));
       this.injector.setService("checkoutApi", new CheckoutApiMock(this));
+      this.injector.setService("corporatePassApi", new CorporatePassApiMock(this));
       this.injector.setService("searchApi", new SearchApiMock(this));
     }
 

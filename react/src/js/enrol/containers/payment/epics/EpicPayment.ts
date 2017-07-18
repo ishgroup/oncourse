@@ -15,7 +15,7 @@ import {
   PROCESS_PAYMENT,
   processPayment,
   resetPaymentState,
-  updatePaymentStatus,
+  updatePaymentStatus, CHECK_IF_CORPORATE_PASS_ENABLED, toggleCorporatePassAvailability,
 } from "../actions/Actions";
 
 import CheckoutService from "../../../services/CheckoutService";
@@ -31,7 +31,7 @@ import {PaymentStatus} from "../../../../model/checkout/payment/PaymentStatus";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
 import {changePhase} from "../../../actions/Actions";
-import {CorporatePassResponse} from "../../../../model/checkout/payment/CorporatePassResponse";
+import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
 
 const request: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT,
@@ -91,9 +91,9 @@ const SubmitPaymentCorporatePass: Epic<any, any> = Create(SubmitPaymentCorporate
 const corporatePassRequest: Request<PaymentResponse, IshState> = {
   type: GET_CORPORATE_PASS,
   getData: (payload: any, state: IshState): Promise<PaymentResponse> => {
-    return CheckoutService.getCorporatePass(payload);
+    return CheckoutService.getCorporatePass(payload, state);
   },
-  processData: (response: CorporatePassResponse, state: IshState): IAction<any>[] | Observable<any> => {
+  processData: (response: CorporatePass, state: IshState): IAction<any>[] | Observable<any> => {
     return [
       applyCorporatePass(response),
     ];
@@ -107,5 +107,30 @@ const corporatePassRequest: Request<PaymentResponse, IshState> = {
 
 const GetCorporatePass: Epic<any, any> = Create(corporatePassRequest);
 
+const checkCorporatePassEnableRequest: Request<PaymentResponse, IshState> = {
+  type: CHECK_IF_CORPORATE_PASS_ENABLED,
+  getData: (payload: any, state: IshState): Promise<PaymentResponse> => {
+    return CheckoutService.checkIfCorporatePassEnabled();
+  },
+  processData: (response: boolean, state: IshState): IAction<any>[] | Observable<any> => {
+    return [
+      toggleCorporatePassAvailability(response),
+    ];
+  },
+  processError: (response: AxiosResponse): IAction<any>[] => {
+    console.log(response);
+    return [];
+  },
 
-export const EpicPayment = combineEpics(SubmitPaymentCreditCard, SubmitPaymentCorporatePass, ProcessPayment, GetPaymentStatus, GetCorporatePass);
+};
+
+const CheckIfCorporatePassEnabled: Epic<any, any> = Create(checkCorporatePassEnableRequest);
+
+export const EpicPayment = combineEpics(
+  SubmitPaymentCreditCard,
+  SubmitPaymentCorporatePass,
+  CheckIfCorporatePassEnabled,
+  ProcessPayment,
+  GetPaymentStatus,
+  GetCorporatePass,
+);

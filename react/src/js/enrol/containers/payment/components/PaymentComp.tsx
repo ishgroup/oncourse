@@ -13,9 +13,14 @@ export interface Props {
   redeemVouchers?: RedeemVoucher[];
   onToggleVoucher?: (redeemVoucher, enabled) => void;
   onUpdatePayNow?: (amount, val) => void;
+  onInit?: () => void;
 }
 
 export class PaymentComp extends React.Component<Props, any> {
+  componentDidMount() {
+    this.props.onInit();
+  }
+
   render() {
     const {amount,onAddCode, paymentForm, promotions, onUpdatePayNow, onToggleVoucher, redeemVouchers} = this.props;
     return (

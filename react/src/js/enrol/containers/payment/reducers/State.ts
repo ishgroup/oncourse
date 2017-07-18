@@ -1,9 +1,10 @@
 import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
-import {CorporatePassResponse} from "../../../../model/checkout/payment/CorporatePassResponse";
+import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
 
 export class State {
   value?: PaymentResponse;
-  corporatePass?: CorporatePassResponse;
+  corporatePass?: CorporatePass;
+  corporatePassAvailable: boolean = false;
   currentTab: Tabs = Tabs.creditCard;
 }
 

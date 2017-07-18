@@ -21,6 +21,7 @@ import {
 } from "../containers/payment/services/PaymentService";
 import {PaymentResponse} from "../../model/checkout/payment/PaymentResponse";
 import {PaymentRequest} from "../../model/checkout/payment/PaymentRequest";
+import {GetCorporatePassRequest} from "../../model/checkout/corporatepass/GetCorporatePassRequest";
 import {DataType} from "../../model/field/DataType";
 import {CheckoutState, Phase} from "../reducers/State";
 import {ContactId} from "../../model/web/ContactId";
@@ -34,16 +35,23 @@ import {getPaymentStatus, updatePaymentStatus} from "../containers/payment/actio
 import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
+import {CorporatePassApi} from "../../http/CorporatePassApi";
 import {PurchaseItem} from "../../model/checkout/Index";
 import {Contact} from "../../model/web/Contact";
 import {Concession} from "../../model/checkout/concession/Concession";
 import {CodeResponse} from "../../model/checkout/CodeResponse";
 
+
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
 
 export class CheckoutService {
-  constructor(private contactApi: ContactApi, private checkoutApi: CheckoutApi, private promotionApi: PromotionApi) {
+  constructor(
+    private contactApi: ContactApi,
+    private checkoutApi: CheckoutApi,
+    private promotionApi: PromotionApi,
+    private corporatePassApi: CorporatePassApi,
+  ) {
   }
 
   public cartIsEmpty = (cart: CartState): boolean => {
@@ -136,7 +144,7 @@ export class CheckoutService {
 
   public submitPaymentCorporatePass = (values: CorporatePassFormValues, state): Promise<any> => {
     const request: any = PaymentService.corporatePassValuesToRequest(values, state);
-    return this.checkoutApi.submitPaymentCorporatePass(request);
+    return this.corporatePassApi.makeCorporatePass(request);
   }
 
   public isFinalStatus = (value: PaymentResponse): boolean => {
@@ -166,8 +174,12 @@ export class CheckoutService {
     this.contactApi.createParentChildrenRelation({parentId, childrenIds: childIds})
   )
 
-  public getCorporatePass = (code): Promise<any> => (
-    this.checkoutApi.getCorporatePass(code)
+  public getCorporatePass = (code: string, state: IshState): Promise<any> => (
+    this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
+  )
+
+  public checkIfCorporatePassEnabled = (): Promise<any> => (
+    this.corporatePassApi.isCorporatePassEnabled()
   )
 
   public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {
@@ -193,11 +205,11 @@ export class CheckoutService {
 
 }
 
-
 const {
   contactApi,
   promotionApi,
   checkoutApi,
+  corporatePassApi,
 } = Injector.of();
 
 export class BuildContactNodeRequest {
@@ -321,4 +333,27 @@ export class BuildCheckoutModelRequest {
   }
 }
 
-export default new CheckoutService(contactApi, checkoutApi, promotionApi);
+export class BuildGetCorporatePassRequest {
+  static fromState = (state: IshState, code: string): GetCorporatePassRequest => {
+    const result: GetCorporatePassRequest = new GetCorporatePassRequest();
+    const entities = state.checkout.summary.entities;
+    const products = ['memberships', 'vouchers', 'articles'];
+    const productIds = [];
+
+    const classIds = Array.from(new Set(Object.keys(entities.enrolments)
+      .filter(key => entities.enrolments[key].selected)
+      .map(key => entities.enrolments[key].classId)));
+
+    products.map(p => Object.keys(entities[p])
+      .filter(key => entities[p][key].selected)
+      .map(key => productIds.push(entities[p][key].productId)))
+
+    result.classIds = classIds;
+    result.productIds = productIds;
+    result.code = code;
+
+    return result;
+  }
+}
+
+export default new CheckoutService(contactApi, checkoutApi, promotionApi, corporatePassApi);
