@@ -566,6 +566,76 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /isCorporatePassEnabled:
+    get:
+      x-filter:  
+      - CollegeInfo 
+      summary: Check if Corporate Pass process enabled for college
+      operationId: isCorporatePassEnabled
+      description: Check if Corporate Pass process enabled for college
+      tags:
+      - CorporatePass
+      responses:
+        200:
+          description: Enabled flag
+          schema:
+            type: boolean
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /getCorporatePass:
+    post:
+      x-filter:  
+      - CollegeInfo 
+      summary: Check if Corporate Pass avalible
+      operationId: getCorporatePass
+      description: Check if Corporate Pass by provided code exist and avalible for choosen Classes/Products
+      tags:
+      - CorporatePass
+      parameters:
+      - name: request
+        in: body
+        description: Get corporate pass request
+        required: true
+        schema:
+          $ref: '#/definitions/checkout.corporatepass.GetCorporatePassRequest'
+      responses:
+        200:
+          description: Corporate Pass model
+          schema:
+            $ref: '#/definitions/checkout.corporatepass.CorporatePass'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
+  /makeCorporatePass:
+    post:
+      x-filter:  
+      - CollegeInfo 
+      summary: Make corporate pass process
+      operationId: makeCorporatePass
+      description: Validate model, save purchase items into db, tine invoices to corporate pass contact
+      tags:
+      - CorporatePass
+      parameters:
+      - name: request
+        in: body
+        description: Make corporate pass request
+        required: true
+        schema:
+          $ref: '#/definitions/checkout.corporatepass.MakeCorporatePassRequest'
+      responses:
+        200:
+          description: Ok response
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/common.ValidationError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
 parameters:
   XOrigin:
     name: X-Origin
@@ -1393,3 +1463,37 @@ definitions:
         type: array
         items:
           type: string
+  checkout.corporatepass.GetCorporatePassRequest:
+    type: object
+    properties:
+      code:
+        type: string
+      classIds:
+        type: array
+        items:
+          type: string
+      productIds:
+        type: array
+        items:
+          type: string
+  checkout.corporatepass.MakeCorporatePassRequest:
+    type: object
+    properties:
+      checkoutModelRequest:
+        $ref: '#/definitions/checkout.CheckoutModelRequest'
+      agreementFlag:
+        type: boolean
+      corporatePassId: 
+        types: tring
+      reference:
+        types: string
+  checkout.corporatepass.CorporatePass:
+    type: object
+    properties:
+      id:
+        type: string
+      code:
+        type: string
+      message:
+        type: string
+
