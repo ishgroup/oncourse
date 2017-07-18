@@ -267,10 +267,7 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public boolean isCorporatePassPaymentEnabled() {
-		String value = StringUtils.trimToNull(getValue(ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED, false));
-		if (value == null)
-			return true;
-		return Boolean.valueOf(value);
+		return new IsCorporatePassEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
 
 	public boolean isCreditCardPaymentEnabled() {
