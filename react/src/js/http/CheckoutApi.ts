@@ -5,6 +5,7 @@ import {ContactNode} from "../model/checkout/ContactNode";
 import {PaymentRequest} from "../model/checkout/payment/PaymentRequest";
 import {PaymentResponse} from "../model/checkout/payment/PaymentResponse";
 import {ContactNodeRequest} from "../model/checkout/request/ContactNodeRequest";
+import {CommonError} from "../model/common/CommonError";
 
 export class CheckoutApi {
   constructor(private http: HttpService) {
@@ -21,11 +22,5 @@ export class CheckoutApi {
   }
   makePayment(paymentRequest: PaymentRequest): Promise<PaymentResponse> {
     return this.http.POST(`/makePayment`, paymentRequest);
-  }
-  getCorporatePass(code: string): Promise<any> {
-    return null;
-  }
-  submitPaymentCorporatePass(request): Promise<any> {
-    throw new Error('api not found');
   }
 }
