@@ -21,8 +21,10 @@ import ish.oncourse.willow.service.impl.ProductsApiServiceImpl
 import ish.oncourse.willow.service.impl.PromotionApiServiceImpl
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.service.impl.ShutdownService
+import org.apache.cayenne.access.types.ExtendedType
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.configuration.ObjectContextFactory
+import org.apache.cayenne.configuration.server.ServerModule
 import org.apache.cayenne.di.Module
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
@@ -53,7 +55,7 @@ class WillowApiModule extends ConfigModule {
         @Override
         void configure(org.apache.cayenne.di.Binder binder) {
             binder.bind(ObjectContextFactory).to(ISHObjectContextFactory)
-            binder.bindList(MoneyType, Constants.SERVER_DEFAULT_TYPES_LIST).add(new MoneyType())
+            ServerModule.contributeUserTypes(binder).add(MoneyType)
         }
     }
 }
