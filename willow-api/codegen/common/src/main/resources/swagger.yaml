@@ -1374,6 +1374,8 @@ definitions:
           type: string
       payerId:
         type: string
+      corporatePassId:
+        type: string
   checkout.payment.PaymentRequest:
     type: object
     properties:
