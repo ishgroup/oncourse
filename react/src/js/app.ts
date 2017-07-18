@@ -6,6 +6,23 @@ import {ConfigConstants} from "./config/ConfigConstants";
 import {WindowService} from "./services/WindowService";
 import {HTMLMarkers} from "./common/services/HTMLMarker";
 
+import {MockConfig} from "../dev/mocks/mocks/MockConfig";
+
+import "../scss/index.scss";
+
+const appStart = () => {
+  const store = CreateStore();
+  RestoreState(store, () => {
+    start(store);
+  });
+}
+
+const config = new MockConfig();
+
+config.init((config:MockConfig) => {
+  appStart();
+});
+
 // Log application version before start.
 Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));
 
@@ -29,9 +46,5 @@ const start = store => {
   WindowService.set("react", react);
 };
 
-const store = CreateStore();
-RestoreState(store, () => {
-  start(store);
-});
 
 

@@ -1,4 +1,4 @@
-$img: "/s/img";
+$img: '/s/img';
 
 @mixin general-gradient {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
@@ -8,14 +8,14 @@ $img: "/s/img";
   background-image: -moz-linear-gradient(top, #08C, #04C);
 }
 
-@import "EnrolmentItem";
-@import "ContactInfo";
-@import "ReactSelect";
-@import "ReactTooltip";
+@import 'EnrolmentItem';
+@import 'ContactInfo';
+@import 'ReactSelect';
+@import 'ReactTooltip';
 
-@import "progress-steps.scss";
-@import "payment-tab.scss";
-@import "amount-block.scss";
+@import 'progress-steps';
+@import 'payment-tab';
+@import 'amount-block';
 
 div.clearboth {
   clear: both;
@@ -81,7 +81,7 @@ div.clearboth {
         top: 2px;
         width: 12px;
         background: {
-          image: url($img + "/message-pointers.gif");
+          image: url($img + '/message-pointers.gif');
           position: right top;
           repeat: no-repeat;
         }
@@ -104,7 +104,7 @@ div.clearboth {
         top: 2px;
         width: 12px;
         background: {
-          image: url($img + "/message-pointers.gif");
+          image: url($img + '/message-pointers.gif');
           position: -13px top;
           repeat: no-repeat;
         }

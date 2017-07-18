@@ -1,6 +1,6 @@
-import * as React from "react";
+import React, {KeyboardEvent} from "react";
+import Rodal from "rodal";
 import {PromotionCart, PromotionCartState} from "../../../services/IshState";
-import {KeyboardEvent} from "react";
 
 export default class Promotions extends React.Component<PromotionsProps, PromotionsState> {
 
@@ -9,32 +9,50 @@ export default class Promotions extends React.Component<PromotionsProps, Promoti
 
     this.state = {
       value: "",
-      error: null
+      error: null,
+      visible: false,
     };
   }
 
-  onChange = (e) => {
+  show = () => {
     this.setState({
-      value: e.target.value
+      visible: true,
     });
-  };
+  }
 
-  add = (e) => {
+  close = () => {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  onChange = e => {
+    this.setState({
+      value: e.target.value,
+    });
+  }
+
+  add = e => {
     e.preventDefault();
     this.props.addPromotion(this.state.value);
-  };
+  }
 
   addEnter = (e: KeyboardEvent<any>) => {
     if (e.key === "13") {
       this.add(e);
     }
-  };
+  }
 
   remove = (e, promotion: PromotionCart) => {
     e.preventDefault();
 
     this.props.removePromotion(promotion);
-  };
+  }
+
+  handleClick = e => {
+    e.preventDefault();
+    this.show();
+  }
 
   render() {
     const {error, value} = this.state;
@@ -43,19 +61,31 @@ export default class Promotions extends React.Component<PromotionsProps, Promoti
 
     return (
       <div>
-        <p>
-          Sometimes we are able to offer discounts on a selection of our classes.
-          If you have a discount code, then please enter it into the box below
-        </p>
-        <form id="addDiscountForm">
-          <label htmlFor="promo">Discount code:</label>
-          <input id="promo" value={value} onKeyPress={this.addEnter} onChange={this.onChange}/>
-          <button id="addDiscountButton" onClick={this.add} disabled={!value}>Add</button>
-          {!!error && getError(error)}
-        </form>
+        <a href="#" onClick={e => this.handleClick(e)}>Add Promotions</a>
 
-        {!!count && getDiscountOptions(promotions, removePromotion)}
-        <Note/>
+        <Rodal
+          visible={this.state.visible}
+          onClose={this.close}
+          animation="flip"
+          height={1000}
+          customStyles={{maxHeight: 400, minHeight: 300}}
+        >
+          <div className="rodal-content">
+            <p>
+              Sometimes we are able to offer discounts on a selection of our classes.
+              If you have a discount code, then please enter it into the box below
+            </p>
+            <form id="addDiscountForm">
+              <label htmlFor="promo">Discount code: </label>
+              <input id="promo" value={value} onKeyPress={this.addEnter} onChange={this.onChange}/>
+              <button id="addDiscountButton" onClick={this.add} disabled={!value}>Add</button>
+              {!!error && getError(error)}
+            </form>
+
+            {!!count && getDiscountOptions(promotions, removePromotion)}
+            {note()}
+          </div>
+        </Rodal>
       </div>
     );
   }
@@ -67,10 +97,10 @@ function getError(error: string) {
   );
 }
 
-function Note() {
+function note() {
   return (
     <p className="note">
-      <strong className="alert">Please note:</strong>
+      <strong className="alert">Please note: </strong>
       Our discounts are usually only available until a certain date, so you may not
       be able to use an old discount code.
     </p>
@@ -82,7 +112,7 @@ function getDiscountOptions(promotions: PromotionCartState, removePromotion: (pr
     <div>
       <p className="discount_options">You have entered the following codes.</p>
       <br/>
-      {promotions.result.map((promotionId) => {
+      {promotions.result.map(promotionId => {
         const promotion = promotions.entities[promotionId];
 
         return (
@@ -108,4 +138,5 @@ export interface PromotionsProps {
 interface PromotionsState {
   value: string;
   error: any;
+  visible: boolean;
 }
