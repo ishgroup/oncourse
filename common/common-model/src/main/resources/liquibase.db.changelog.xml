@@ -4478,5 +4478,9 @@
 	<changeSet id="303" author="anarut" runOnChange="false" runAlways="false" context="production">
 		<sql>ALTER TABLE Field DROP INDEX field_fieldOrder_fieldConfiguration_unique;</sql>
 	</changeSet>
+
+	<changeSet id="304" author="pnikanovich" runOnChange="false" runAlways="false" context="production">
+		<sql>ALTER TABLE CustomField MODIFY entityName varchar(64) NOT NULL;</sql>
+	</changeSet>
 	
 </databaseChangeLog>
