@@ -1484,9 +1484,9 @@ definitions:
       agreementFlag:
         type: boolean
       corporatePassId: 
-        types: tring
+        type: string
       reference:
-        types: string
+        type: string
   checkout.corporatepass.CorporatePass:
     type: object
     properties:

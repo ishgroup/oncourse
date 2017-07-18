@@ -6,6 +6,8 @@ public class MakeCorporatePassRequest  {
   
     private CheckoutModelRequest checkoutModelRequest = null;
     private Boolean agreementFlag = null;
+    private String corporatePassId = null;
+    private String reference = null;
 
     /**
      * Get checkoutModelRequest
@@ -41,6 +43,40 @@ public class MakeCorporatePassRequest  {
       return this;
     }
 
+    /**
+     * Get corporatePassId
+     * @return corporatePassId
+     */
+    public String getCorporatePassId() {
+        return corporatePassId;
+    }
+
+    public void setCorporatePassId(String corporatePassId) {
+       this.corporatePassId = corporatePassId;
+    }
+
+    public MakeCorporatePassRequest corporatePassId(String corporatePassId) {
+      this.corporatePassId = corporatePassId;
+      return this;
+    }
+
+    /**
+     * Get reference
+     * @return reference
+     */
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+       this.reference = reference;
+    }
+
+    public MakeCorporatePassRequest reference(String reference) {
+      this.reference = reference;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -49,6 +85,8 @@ public class MakeCorporatePassRequest  {
       
       sb.append("    checkoutModelRequest: ").append(toIndentedString(checkoutModelRequest)).append("\n");
       sb.append("    agreementFlag: ").append(toIndentedString(agreementFlag)).append("\n");
+      sb.append("    corporatePassId: ").append(toIndentedString(corporatePassId)).append("\n");
+      sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
       sb.append("}");
       return sb.toString();
     }
