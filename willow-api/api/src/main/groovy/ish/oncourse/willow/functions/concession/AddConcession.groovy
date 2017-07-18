@@ -46,8 +46,10 @@ class AddConcession {
         validateStudent(contact.student, concessionType, expiryOn)
         
         if (errors.formErrors.empty && errors.fieldsErrors.empty) {
-            objectContext.deleteObject deletingConcession
-            StudentConcession studentConcession = objectContext.newObject StudentConcession
+            if(deletingConcession) {
+                objectContext.deleteObject(deletingConcession)
+            }
+            StudentConcession studentConcession = objectContext.newObject(StudentConcession)
             studentConcession.student = contact.student
             studentConcession.college = objectContext.localObject college
             studentConcession.concessionType = concessionType
