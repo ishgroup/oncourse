@@ -19,7 +19,7 @@ import {PromotionApiMock} from "../PromotionApiMock";
 import {CheckoutApiMock} from "../CheckoutApiMock";
 import {SearchApiMock} from "../SearchApiMock";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
-import {ValidationError} from "../../../js/model/common/ValidationError";
+import {ValidationError} from "../../../js/model";
 
 export interface Props {
   commonError: boolean;

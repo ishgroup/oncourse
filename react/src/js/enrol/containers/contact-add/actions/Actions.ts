@@ -1,7 +1,6 @@
-import {Contact} from "../../../../model/web/Contact";
+import {Contact, ContactId} from "../../../../model";
 import {normalize} from "normalizr";
 import {ContactSchema, ContactsState} from "../../../../NormalizeSchema";
-import {ContactId} from "../../../../model/web/ContactId";
 import {IAction} from "../../../../actions/IshAction";
 
 export const SUBMIT_ADD_CONTACT: string = "checkout/submit/add/contact";

@@ -2,12 +2,10 @@ import {FormProps, reduxForm} from "redux-form";
 import * as React from "react";
 import {connect} from "react-redux";
 
-import {Contact} from "../../../model/web/Contact";
+import {Contact, ValidationError, ContactFields} from "../../../model";
 import {IshState} from "../../../services/IshState";
-import {ContactFields} from "../../../model/field/ContactFields";
 import {ContactEdit} from "./components/ContactEdit";
 import CheckoutService from "../../services/CheckoutService";
-import {ValidationError} from "../../../model/common/ValidationError";
 import {showFormValidation} from "../../actions/Actions";
 import {submitEditContact} from "./actions/Actions";
 import {getConcessionTypes} from "../concession/actions/Actions";

@@ -12,7 +12,7 @@ import {
 import {addContact as addContactToCart} from "../../../../web/actions/Actions";
 
 import {IAction} from "../../../../actions/IshAction";
-import {Contact} from "../../../../model/web/Contact";
+import {Contact} from "../../../../model";
 import CheckoutService from "../../../services/CheckoutService";
 import {addContact} from "../../contact-add/actions/Actions";
 import {Phase} from "../../../reducers/State";

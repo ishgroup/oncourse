@@ -1,9 +1,7 @@
 import * as React from "react";
 import AmountComp from "../../../components/AmountComp";
-import {Amount} from "../../../../model/checkout/Amount";
 import {FormDecorator} from "redux-form";
-import {Promotion} from "../../../../model/web/Promotion";
-import {RedeemVoucher} from "../../../../model/checkout/RedeemVoucher";
+import {Promotion, RedeemVoucher, Amount} from "../../../../model";
 
 export interface Props {
   paymentForm: FormDecorator<FormData, any, any>;

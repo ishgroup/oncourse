@@ -5,15 +5,12 @@ import {Observable} from "rxjs";
 import "rxjs";
 
 import * as Actions from "../actions/Actions";
-import {changePhase, sendInitRequest} from "../actions/Actions";
-import {ValidationError} from "../../model/common/ValidationError";
+import {ValidationError, Contact, ContactId} from "../../model";
 import {ShoppingCardIsEmpty} from "../containers/checkout/Errors";
 import {CheckoutState, Phase} from "../reducers/State";
 import CheckoutService from "../services/CheckoutService";
 import {submitAddContact, Values} from "../containers/contact-add/actions/Actions";
 import {IAction} from "../../actions/IshAction";
-import {Contact} from "../../model/web/Contact";
-import {ContactId} from "../../model/web/ContactId";
 import {ProcessError} from "./EpicUtils";
 import {AxiosResponse} from "axios";
 import {resetPaymentState} from "../containers/payment/actions/Actions";
@@ -22,7 +19,7 @@ import {openEditContact} from "../containers/contact-edit/actions/Actions";
 
 const showCartIsEmptyMessage = (): IAction<any>[] => {
   const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
-  return [changePhase(Phase.Init), {type: Actions.SHOW_MESSAGES, payload: error}];
+  return [Actions.changePhase(Phase.Init), {type: Actions.SHOW_MESSAGES, payload: error}];
 };
 
 const openPayerDetails = (state: CheckoutState): IAction<any>[] => {
@@ -50,7 +47,11 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
 
     if (!L.isNil(store.getState().checkout.payment.value)) {
       if (CheckoutService.isFinalStatus(store.getState().checkout.payment.value)) {
-        return [changePhase(Phase.Init), resetPaymentState(), sendInitRequest()];
+        return [
+          Actions.changePhase(Phase.Init),
+          resetPaymentState(),
+          Actions.sendInitRequest(),
+        ];
       } else {
         return CheckoutService.processPaymentResponse(store.getState().checkout.payment.value);
       }
@@ -67,7 +68,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     if (CheckoutService.hasCartContact(store.getState().cart)) {
       return setPayerFromCart(store.getState().cart.contact);
     }
-    return [changePhase(Phase.AddPayer)];
+    return [Actions.changePhase(Phase.AddPayer)];
   });
 };
 

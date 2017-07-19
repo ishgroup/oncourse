@@ -1,6 +1,6 @@
 import {_toRequestType} from "../../../../common/actions/ActionUtils";
 import {IAction} from "../../../../actions/IshAction";
-import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
+import {PaymentResponse} from "../../../../model";
 import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
 
 export const OpenPayment: string = "checkout/payment/open";

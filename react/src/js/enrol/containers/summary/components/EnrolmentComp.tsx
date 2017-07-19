@@ -1,13 +1,10 @@
 import * as React from "react";
+import classnames from "classnames";
+import moment from "moment";
+
 import {Formats} from "../../../../constants/Formats";
 import * as FormatUtils from "../../../../common/utils/FormatUtils";
-
-import classnames from "classnames";
-import {Enrolment} from "../../../../model/checkout/Enrolment";
-import {Contact} from "../../../../model/web/Contact";
-import {CourseClass} from "../../../../model/web/CourseClass";
-import {CourseClassPrice} from "../../../../model/web/CourseClassPrice";
-import moment from "moment";
+import {Enrolment, Contact, CourseClass, CourseClassPrice} from "../../../../model";
 import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
 

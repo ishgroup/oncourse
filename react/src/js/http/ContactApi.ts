@@ -1,15 +1,6 @@
 import {HttpService} from "../common/services/HttpService";
-import {CreateParentChildrenRequest} from "../model/checkout/CreateParentChildrenRequest";
-import {Concession} from "../model/checkout/concession/Concession";
-import {ConcessionType} from "../model/checkout/concession/ConcessionType";
-import {CommonError} from "../model/common/CommonError";
-import {ValidationError} from "../model/common/ValidationError";
-import {ContactFields} from "../model/field/ContactFields";
-import {ContactFieldsRequest} from "../model/field/ContactFieldsRequest";
-import {SubmitFieldsRequest} from "../model/field/SubmitFieldsRequest";
-import {Contact} from "../model/web/Contact";
-import {ContactId} from "../model/web/ContactId";
-import {CreateContactParams} from "../model/web/CreateContactParams";
+import {CreateParentChildrenRequest, Concession, ConcessionType, ContactFields, ContactFieldsRequest,
+  SubmitFieldsRequest, Contact, ContactId, CreateContactParams} from "../model";
 
 export class ContactApi {
   constructor(private http: HttpService) {

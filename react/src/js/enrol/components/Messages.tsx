@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as L from "lodash";
-import {ValidationError} from "../../model/common/ValidationError";
+import {ValidationError} from "../../model";
 
 const CLASS_ERRORS: string = "validation";
 const CLASS_WARNINGS: string = "message";

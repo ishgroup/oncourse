@@ -6,7 +6,7 @@ import {Messages, Progress} from "../../../js/enrol/containers/Functions";
 
 import "../../../scss/index.scss";
 
-import {Contact} from "../../../js/model/web/Contact";
+import {Contact, Membership, Product} from "../../../js/model";
 import {NoCourseClassPlaces} from "../../../js/enrol/containers/summary/Messages";
 import {
   default as MembershipComp,
@@ -16,8 +16,6 @@ import {
 import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
-import {Membership} from "../../../js/model/checkout/Membership";
-import {Product} from "../../../js/model/web/Product";
 
 let config: MockConfig = new MockConfig();
 const checkoutApi:CheckoutApiMock = new CheckoutApiMock(config);

@@ -6,7 +6,7 @@ import {showError, ValidateText} from "./ValidateText";
 import {MouseHover, WrappedMouseHoverProps} from "./MouseHover";
 import {BaseProps} from "../../types";
 import {FieldLabel} from "./FieldLabel";
-import {Item} from "../../model/common/Item";
+import {Item} from "../../model";
 
 
 export class ComboboxField extends React.Component<any, any> {

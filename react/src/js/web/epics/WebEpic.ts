@@ -14,9 +14,8 @@ import {
   PromotionsSchema,
 } from "../../NormalizeSchema";
 import {Injector} from "../../injector";
-import {PromotionParams} from "../../model/web/PromotionParams";
+import {PromotionParams, ContactParams} from "../../model";
 import {IshState} from "../../services/IshState";
-import {ContactParams} from "../../model/web/ContactParams";
 import {mapError, mapPayload} from "../../epics/epicsUtils";
 
 const {

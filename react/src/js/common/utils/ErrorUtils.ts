@@ -1,7 +1,6 @@
 import {isNil} from "lodash";
 import {isUndefined} from "util";
-import {CommonError} from "../../model/common/CommonError";
-import {ValidationError} from "../../model/common/ValidationError";
+import {CommonError, ValidationError} from "../../model";
 import {AxiosResponse} from "axios";
 
 export const isValidationError = (error: any): boolean => {

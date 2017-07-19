@@ -1,10 +1,8 @@
 import {CorporatePassApi} from "../../js/http/CorporatePassApi";
 import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
-import {GetCorporatePassRequest} from "../../js/model/checkout/corporatepass/GetCorporatePassRequest";
-import {CorporatePass} from "../../js/model/checkout/corporatepass/CorporatePass";
-import {MakeCorporatePassRequest} from "../../js/model/checkout/corporatepass/MakeCorporatePassRequest";
-import {PaymentStatus} from "../../js/model/checkout/payment/PaymentStatus";
-import {PaymentResponse} from "../../js/model/checkout/payment/PaymentResponse";
+import {
+  GetCorporatePassRequest, CorporatePass, PaymentStatus, MakeCorporatePassRequest, PaymentResponse
+} from "../../js/model";
 
 export class CorporatePassApiMock extends CorporatePassApi {
   public config: MockConfig;

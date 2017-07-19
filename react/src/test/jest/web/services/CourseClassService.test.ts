@@ -2,7 +2,7 @@ import * as CourseClassService from "../../../../js/web/services/CourseClassServ
 import * as TestUtils from "../../common/services/TestUtils";
 import {HTMLMarkers} from "../../../../js/common/services/HTMLMarker";
 import * as HtmlUtils from "../../../../js/common/utils/HtmlUtils";
-import {CourseClass} from "../../../../js/model/web/CourseClass";
+import {CourseClass} from "../../../../js/model";
 import {normalize} from "normalizr";
 import {ClassesListSchema} from "../../../../js/NormalizeSchema";
 

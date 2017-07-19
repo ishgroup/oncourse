@@ -4,7 +4,7 @@ import classnames from "classnames";
 import {stopPropagation} from "../../../common/utils/HtmlUtils";
 
 import {ConfirmOrderDialog} from "../addButton/ConfirmOrderDialog";
-import {Product} from "../../../model/web/Product";
+import {Product} from "../../../model";
 
 export class BuyButton extends React.Component<BuyButtonProps, BuyButtonState> {
   constructor() {

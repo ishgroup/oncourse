@@ -1,11 +1,8 @@
 import * as React from "react";
-import {isNil} from "lodash";
 import classnames from "classnames";
-import {Contact} from "../../../../model/web/Contact";
-import {CourseClass} from "../../../../model/web/CourseClass";
+import {Contact, CourseClass, Application} from "../../../../model";
 import moment from "moment";
 import {ClassHasCommenced} from "../Messages";
-import {Application} from "../../../../model/checkout/Application";
 import {ItemWrapper} from "./ItemWrapper";
 
 
@@ -19,7 +16,7 @@ export interface Props {
 class ApplicationComp extends React.Component<Props, any> {
   public render(): JSX.Element {
     const {application, courseClass, contact, onChange} = this.props;
-    const divClass = classnames("row", "enrolmentItem", {"disabled": !application.selected});
+    const divClass = classnames("row", "enrolmentItem", {disabled: !application.selected});
     const name = `application-${contact.id}-${application.classId}`;
     const title: string = `${courseClass.course.name}`;
 
@@ -30,7 +27,8 @@ class ApplicationComp extends React.Component<Props, any> {
     }
     return (
       <div className={divClass}>
-        <ItemWrapper title={title} name={name} error={error} warning={warning} selected={application.selected} item={application} contact={contact}
+        <ItemWrapper title={title} name={name} error={error} warning={warning} selected={application.selected}
+                     item={application} contact={contact}
                      onChange={onChange}>
           <span className="applicationOnly">(Application only)</span>
         </ItemWrapper>
@@ -41,4 +39,4 @@ class ApplicationComp extends React.Component<Props, any> {
 
 export default ApplicationComp;
 
-
+

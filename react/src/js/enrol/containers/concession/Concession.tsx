@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import {IshState} from "../../../services/IshState";
-import {Contact} from "../../../model/web/Contact";
+import {Contact} from "../../../model";
 import ConcessionForm from "./components/ConcessionForm";
 import {reduxForm, FormErrors} from "redux-form";
 import {changePhase} from "../../actions/Actions";

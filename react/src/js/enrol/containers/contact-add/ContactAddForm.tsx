@@ -5,7 +5,7 @@ import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
 import {NAME, Values} from "./actions/Actions";
 import {showFormValidation} from "../../actions/Actions";
-import {ContactId} from "../../../model/web/ContactId";
+import {ContactId} from "../../../model";
 import CheckoutService from "../../services/CheckoutService";
 
 

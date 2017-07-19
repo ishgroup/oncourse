@@ -5,7 +5,7 @@ import "rxjs";
 import {SHOW_MESSAGES} from "../actions/Actions";
 import {commonErrorToValidationError, toValidationError} from "../../common/utils/ErrorUtils";
 import {AxiosResponse} from "axios";
-import {CommonError} from "../../model/common/CommonError";
+import {CommonError} from "../../model";
 import {IAction} from "../../actions/IshAction";
 
 

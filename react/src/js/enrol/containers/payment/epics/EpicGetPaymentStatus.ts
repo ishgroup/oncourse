@@ -5,7 +5,7 @@ import {GET_PAYMENT_STATUS} from "../actions/Actions";
 import {Reply, Request} from "../../../epics/EpicUtils";
 import {Observable} from "rxjs/Observable";
 import {Epic} from "redux-observable";
-import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
+import {PaymentResponse} from "../../../../model";
 
 
 const request: Request<PaymentResponse, IshState> = {

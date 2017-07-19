@@ -1,7 +1,6 @@
 import {PromotionApi} from "../../js/http/PromotionApi";
-import {Promotion} from "../../js/model/web/Promotion";
 import {MockConfig} from "./mocks/MockConfig";
-import {CodeResponse} from "../../js/model/checkout/CodeResponse";
+import {CodeResponse} from "../../js/model";
 
 export class PromotionApiMock extends PromotionApi {
   public config: MockConfig;

@@ -1,6 +1,4 @@
-import {CourseClassesParams} from "../../model/web/CourseClassesParams";
-import {CourseClass} from "../../model/web/CourseClass";
-import {Course} from "../../model/web/Course";
+import {CourseClassesParams, CourseClass, Course} from "../../model";
 import {CourseClassesApi} from "../../http/CourseClassesApi";
 
 export class CourseClassService {
@@ -12,9 +10,8 @@ export class CourseClassService {
 
   getCourseClasses = (params: CourseClassesParams): Promise<CourseClass[]> => {
     return this.api.getCourseClasses(params);
-  };
+  }
 }
-
 
 /**
  * Convert html properties which was got from HTMLElement with marker HTMLMarkers.ENROL_BUTTON to CourseClass

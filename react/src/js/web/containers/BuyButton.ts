@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import {BuyButton, BuyButtonProps} from "../components/buyButton/BuyButton";
 import {IshState, ProductCartState} from "../../services/IshState";
-import {Product} from "../../model/web/Product";
+import {Product} from "../../model";
 import {Actions} from "../actions/Actions";
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyButton);

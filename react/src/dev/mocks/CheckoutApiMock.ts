@@ -2,25 +2,13 @@ import * as L from "lodash";
 import faker from "faker";
 
 import {CheckoutApi} from "../../js/http/CheckoutApi";
-import {ContactNodeRequest} from "../../js/model/checkout/request/ContactNodeRequest";
-import {ContactNode} from "../../js/model/checkout/ContactNode";
-import {Contact} from "../../js/model/web/Contact";
-import {CourseClass} from "../../js/model/web/CourseClass";
-import {Enrolment} from "../../js/model/checkout/Enrolment";
+import {
+  ContactNodeRequest, ContactNode, Contact, CourseClass, Enrolment, CheckoutModel, Product, Membership,
+  CheckoutModelRequest, Voucher, PaymentResponse, ValidationError, PaymentRequest, PaymentStatus, Article, Application,
+} from "../../js/model";
 import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
-import {CheckoutModel} from "../../js/model/checkout/CheckoutModel";
 import {mockAmount} from "./mocks/MockFunctions";
-import {CheckoutModelRequest} from "../../js/model/checkout/CheckoutModelRequest";
-import {Voucher} from "../../js/model/checkout/Voucher";
-import {PaymentResponse} from "../../js/model/checkout/payment/PaymentResponse";
-import {ValidationError} from "../../js/model/common/ValidationError";
 import {FieldName} from "../../js/enrol/containers/payment/services/PaymentService";
-import {PaymentRequest} from "../../js/model/checkout/payment/PaymentRequest";
-import {PaymentStatus} from "../../js/model/checkout/payment/PaymentStatus";
-import {Membership} from "../../js/model/checkout/Membership";
-import {Article} from "../../js/model/checkout/Article";
-import {Application} from "../../js/model/checkout/Application";
-import {Product} from "../../js/model/web/Product";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;

@@ -4,11 +4,9 @@ import {SELECT_ITEM_REQUEST, UPDATE_ITEM} from "../containers/summary/actions/Ac
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import * as EpicUtils from "./EpicUtils";
-import {Enrolment} from "../../model/checkout/Enrolment";
+import {Enrolment, Application, PurchaseItem} from "../../model";
 import {ItemToState} from "../containers/summary/reducers/State";
 import {getAmount} from "../actions/Actions";
-import {Application} from "../../model/checkout/Application";
-import {PurchaseItem} from "../../model/checkout/Index";
 
 const request: EpicUtils.Request<Enrolment | Application, IshState> = {
   type: SELECT_ITEM_REQUEST,

@@ -5,14 +5,11 @@ import * as Actions from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
 import * as ContactAddActions from "../containers/contact-add/actions/Actions";
 
-import {ValidationError} from "../../model/common/ValidationError";
-import {ContactFields} from "../../model/field/ContactFields";
-import {Amount} from "../../model/checkout/Amount";
+import {ValidationError, ContactFields, Amount, RedeemVoucher} from "../../model";
 import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
 import {Reducer as PaymentReducer} from "../containers/payment/reducers/Reducer";
 import {Reducer as ConcessionReducer} from "../containers/concession/reducers/Reducer";
 import {ContactsSchema, ContactsState} from "../../NormalizeSchema";
-import {RedeemVoucher} from "../../model/checkout/RedeemVoucher";
 import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";

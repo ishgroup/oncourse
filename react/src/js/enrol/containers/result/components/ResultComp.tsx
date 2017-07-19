@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
-import {PaymentStatus} from "../../../../model/checkout/payment/PaymentStatus";
+import {PaymentResponse, PaymentStatus} from "../../../../model";
+
 import {Successful} from "./Successful";
 import {Failed} from "./Failed";
 import {Undefined} from "./Undefined";

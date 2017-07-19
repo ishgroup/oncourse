@@ -1,5 +1,5 @@
 import React from "react";
-import {Contact} from "../../model/web/Contact";
+import {Contact} from "../../model";
 
 interface Props {
   contact: Contact;

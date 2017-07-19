@@ -1,21 +1,13 @@
-import {CourseClass} from "../../../js/model/web/CourseClass";
-import {Contact} from "../../../js/model/web/Contact";
+import {
+  CourseClass, Contact, Room, Amount, Field, Item, ContactNode, Product, Discount, Promotion, DataType,
+  CourseClassPrice,
+} from "../../../js/model";
 
 import faker from "faker";
-import {CourseClassPrice} from "../../../js/model/web/CourseClassPrice";
-import {Room} from "../../../js/model/web/Room";
-import {Amount} from "../../../js/model/checkout/Amount";
-import {Field} from "../../../js/model/field/Field";
-import {DataType} from "../../../js/model/field/DataType";
-import {Item} from "../../../js/model/common/Item";
 import {IshState} from "../../../js/services/IshState";
 import {normalize} from "normalizr";
 import {ClassesListSchema, ContactsSchema} from "../../../js/NormalizeSchema";
-import {ContactNode} from "../../../js/model/checkout/ContactNode";
 import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/State";
-import {Promotion} from "../../../js/model/web/Promotion";
-import {Product} from "../../../js/model/web/Product";
-import {Discount} from "../../../js/model/web/Discount";
 import {Phase} from "../../../js/enrol/reducers/State";
 
 

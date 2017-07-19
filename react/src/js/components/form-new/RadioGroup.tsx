@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Item} from "../../model/common/Item";
+import {Item} from "../../model";
 import Wrapper from "./Wrapper";
 import {WrappedFieldInputProps} from "redux-form";
 import {inputFrom} from "./FieldsUtils";

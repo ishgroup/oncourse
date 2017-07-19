@@ -1,7 +1,6 @@
 import React from "react";
-import {Contact} from "../../../../model/web/Contact";
+import {Contact, Item} from "../../../../model";
 import RadioGroup from "../../../../components/form-new/RadioGroup";
-import {Item} from "../../../../model/common/Item";
 
 export interface Props {
   contacts: Contact[];
@@ -29,7 +28,7 @@ export class PayerSelect extends React.Component<Props, any> {
       <div className="clearfix form-group">
         <label htmlFor="payer">
           <span>Payer</span>
-           <span><em title="This field is required">*</em></span>
+          <span><em title="This field is required">*</em></span>
           <small>(issue invoice to)</small>
         </label>
         <div className="select-payer">

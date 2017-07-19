@@ -4,13 +4,12 @@ import * as Form from "redux-form";
 import {DateField} from "../../../../components/form/DateField";
 import {TextField} from "../../../../components/form/TextField";
 import Checkbox from "../../../../components/form-new/Checkbox";
-import {ConcessionType as ConcessionTypeModel} from "../../../../model/checkout/concession/ConcessionType";
+import {ConcessionType as ConcessionTypeModel} from "../../../../model";
 
 
 interface Props {
   concessionTypes: ConcessionTypeModel[];
-	onTypeChange?: (obj: ConcessionTypeModel) => void;
-
+  onTypeChange?: (obj: ConcessionTypeModel) => void;
 }
 
 class ConcessionForm extends React.Component<Props, any> {
@@ -35,13 +34,13 @@ class ConcessionForm extends React.Component<Props, any> {
     onTypeChange(selectedType);
   }
 
-	render(): JSX.Element {
-		const {concessionTypes} = this.props;
-		const {hasExpireDate, hasNumber} = this.state.concessionType;
-		const {isDefault} = this.state;
+  render(): JSX.Element {
+    const {concessionTypes} = this.props;
+    const {hasExpireDate, hasNumber} = this.state.concessionType;
+    const {isDefault} = this.state;
 
-		return (
-		  <div>
+    return (
+      <div>
         <ComboboxField
           required={true}
           name="concessionType"
@@ -62,8 +61,8 @@ class ConcessionForm extends React.Component<Props, any> {
         <ConcessionText />
         }
       </div>
-		);
-	}
+    );
+  }
 }
 
 const ConcessionText = props => {

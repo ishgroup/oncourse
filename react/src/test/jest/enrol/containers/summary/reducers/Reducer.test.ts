@@ -1,6 +1,6 @@
 import * as SummaryActions from "../../../../../../js/enrol/containers/summary/actions/Actions";
 
-import {ContactNode} from "../../../../../../js/model/checkout/ContactNode";
+import {ContactNode} from "../../../../../../js/model";
 
 import {ContactNodeToState, State} from "../../../../../../js/enrol/containers/summary/reducers/State";
 

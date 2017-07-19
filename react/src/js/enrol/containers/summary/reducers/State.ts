@@ -1,11 +1,7 @@
-import {Enrolment} from "../../../../model/checkout/Enrolment";
-import {Application} from "../../../../model/checkout/Application";
 import {normalize, schema} from "normalizr";
-import {ContactNode} from "../../../../model/checkout/ContactNode";
-import {Voucher} from "../../../../model/checkout/Voucher";
-import {Article} from "../../../../model/checkout/Article";
-import {Membership} from "../../../../model/checkout/Membership";
-import {PurchaseItem} from "../../../../model/checkout/Index";
+
+import {Enrolment, Application, ContactNode, Membership, Voucher, Article, PurchaseItem} from "../../../../model";
+
 const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e: Enrolment) => `${e.contactId}-${e.classId}`});
 const SApplications = new schema.Entity('applications', {}, {idAttribute: (a: Application) => `${a.contactId}-${a.classId}`});
 const SMemberships = new schema.Entity('memberships', {}, {idAttribute: (m: Membership) => `${m.contactId}-${m.productId}`});
@@ -13,12 +9,12 @@ const SArticles = new schema.Entity('articles', {}, {idAttribute: (a: Article) =
 const SVouchers = new schema.Entity('vouchers', {}, {idAttribute: (v: Voucher) => `${v.contactId}-${v.productId}`});
 
 const SContactNodes = new schema.Entity('contactNodes', {
-    enrolments: [SEnrolments],
-    applications: [SApplications],
-    memberships: [SMemberships],
-    articles: [SArticles],
-    vouchers: [SVouchers],
-  }, {idAttribute: "contactId"});
+  enrolments: [SEnrolments],
+  applications: [SApplications],
+  memberships: [SMemberships],
+  articles: [SArticles],
+  vouchers: [SVouchers],
+}, {idAttribute: "contactId"});
 
 const Schema = new schema.Array(SContactNodes);
 

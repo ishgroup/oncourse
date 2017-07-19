@@ -1,20 +1,16 @@
-import {CommonError}  from "../../../../js/model/common/CommonError";
-import {ValidationError}  from "../../../../js/model/common/ValidationError";
+import {CommonError, ValidationError}  from "../../../../js/model";
 import * as ErrorUtils from "../../../../js/common/utils/ErrorUtils";
-
-
-
 
 test('backend error handler', () => {
 
   const validationError:Object = {
     formErrors: [],
-    fieldsErrors: []
+    fieldsErrors: [],
   };
 
   const commonError:Object = {
     code: 1,
-    message: "Message"
+    message: "Message",
   };
 
   const plainText:Object = "Plain Text Error";

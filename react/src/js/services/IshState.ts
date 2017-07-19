@@ -1,10 +1,5 @@
-import {CourseClassPrice} from "../model/web/CourseClassPrice";
-import {Promotion} from "../model/web/Promotion";
-import {CourseClass} from "../model/web/CourseClass";
-import {Product} from "../model/web/Product";
-import {Contact} from "../model/web/Contact";
+import {CourseClassPrice, Promotion, CourseClass, Product, Contact, Discount} from "../model";
 import {CheckoutState} from "../enrol/reducers/State";
-import {Discount} from "../model/web/Discount";
 
 export interface IshState {
   readonly form: any;

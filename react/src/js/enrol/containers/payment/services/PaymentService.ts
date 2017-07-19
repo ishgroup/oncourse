@@ -3,10 +3,8 @@ import moment from "moment";
 import uuid from "uuid";
 
 import {createStringEnum} from "../../../../common/utils/EnumUtils";
-import {Item} from "../../../../model/common/Item";
+import {Item, PaymentRequest, MakeCorporatePassRequest} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
-import {PaymentRequest} from "../../../../model/checkout/payment/PaymentRequest";
-import {MakeCorporatePassRequest} from "../../../../model/checkout/corporatepass/MakeCorporatePassRequest";
 import {BuildCheckoutModelRequest} from "../../../services/CheckoutService";
 
 export const FieldName = createStringEnum([

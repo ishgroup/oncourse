@@ -1,7 +1,7 @@
 import * as React from "react";
 import Select from "react-select";
 
-import {Item} from "../../model/common/Item";
+import {Item} from "../../model";
 import Wrapper from "./Wrapper";
 import {inputFrom} from "./FieldsUtils";
 import {WrappedFieldInputProps} from "redux-form";

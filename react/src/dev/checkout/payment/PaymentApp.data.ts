@@ -1,26 +1,24 @@
-import {Contact} from "../../../js/model/web/Contact";
-
 import faker from "faker";
-import {Amount} from "../../../js/model/checkout/Amount";
+import {Contact, Amount} from "../../../js/model";
 
 const mockContact = (): Contact => {
-	return {
-		id: faker.random.number() as string,
-		firstName: faker.name.firstName(),
-		lastName: faker.name.lastName(),
-		email: faker.internet.email(),
-	};
+  return {
+    id: faker.random.number() as string,
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+  };
 };
 
 const contacts: Contact[] =
-	[
-		mockContact(),
-		mockContact(),
-	];
+  [
+    mockContact(),
+    mockContact(),
+  ];
 
 export const amount: Amount = {
-	total: faker.finance.amount(),
-	owing: faker.finance.amount(),
-	discount: faker.finance.amount(),
-	payNow: faker.finance.amount(),
+  total: faker.finance.amount(),
+  owing: faker.finance.amount(),
+  discount: faker.finance.amount(),
+  payNow: faker.finance.amount(),
 };

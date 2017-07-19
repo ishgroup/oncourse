@@ -1,6 +1,6 @@
 import uuid from "uuid";
 
-import {Item} from "../../js/model/common/Item";
+import {Item} from "../../js/model";
 import {SearchApi} from "../../js/http/SearchApi";
 import {MockConfig} from "./mocks/MockConfig";
 

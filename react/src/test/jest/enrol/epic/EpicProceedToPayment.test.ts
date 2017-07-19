@@ -1,17 +1,10 @@
-import {CheckoutModel} from "../../../../js/model/checkout/CheckoutModel";
+import {CheckoutModel, ContactNode, Contact, CourseClass, Enrolment} from "../../../../js/model";
 import {CHANGE_PHASE, SHOW_MESSAGES} from "../../../../js/enrol/actions/Actions";
 import {Phase} from "../../../../js/enrol/reducers/State";
 import {ADD_CONTACT_NODE_TO_STATE} from "../../../../js/enrol/containers/summary/actions/Actions";
 import {ProcessCheckoutModel} from "../../../../js/enrol/epics/EpicProceedToPayment";
 
-import {ContactNode} from "../../../../js/model/checkout/ContactNode";
-
 import {MockDB} from "../../../../dev/mocks/mocks/MockDB";
-
-import {Contact} from "../../../../js/model/web/Contact";
-import {CourseClass} from "../../../../js/model/web/CourseClass";
-
-import {Enrolment} from "../../../../js/model/checkout/Enrolment";
 
 import {mockAmount} from "../../../../dev/mocks/mocks/MockFunctions";
 

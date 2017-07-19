@@ -2,7 +2,7 @@ import {_toRequestType, FULFILLED} from "../../common/actions/ActionUtils";
 import {Phase} from "../reducers/State";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
-import {Amount} from "../../model/checkout/Amount";
+import {Amount} from "../../model";
 import {IAction} from "../../actions/IshAction";
 import {CheckoutService} from "../services/CheckoutService";
 

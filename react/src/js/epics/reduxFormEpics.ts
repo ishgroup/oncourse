@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 import {normalize} from "normalizr";
 import {ContactSchema} from "../NormalizeSchema";
 import {mapError, mapPayload} from "./epicsUtils";
-import {ValidationError} from "../model/common/ValidationError";
+import {ValidationError} from "../model";
 import {IshAction} from "../actions/IshAction";
 import {IshActions} from "../constants/IshActions";
 

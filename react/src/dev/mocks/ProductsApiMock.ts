@@ -1,5 +1,4 @@
-import {Product} from "../../js/model/web/Product";
-import {ProductsParams} from "../../js/model/web/ProductsParams";
+import {Product, ProductsParams} from "../../js/model";
 import {ProductsApi} from "../../js/http/ProductsApi";
 import {MockConfig} from "./mocks/MockConfig";
 

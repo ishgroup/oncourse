@@ -1,18 +1,10 @@
 import {MockDB} from "../../../../dev/mocks/mocks/MockDB";
+import {Contact, CourseClass, Enrolment, ContactNode, CheckoutModelRequest, Promotion} from "../../../../js/model";
 
-import {Contact} from "../../../../js/model/web/Contact";
-import {CourseClass} from "../../../../js/model/web/CourseClass";
-
-import {Enrolment} from "../../../../js/model/checkout/Enrolment";
-import {ContactNode} from "../../../../js/model/checkout/ContactNode";
 import {IshState} from "../../../../js/services/IshState";
-
 import * as MockFunctions from "../../../../dev/mocks/mocks/MockFunctions";
 
-import {CheckoutModelRequest} from "../../../../js/model/checkout/CheckoutModelRequest";
-
 import {BuildCheckoutModelRequest} from "../../../../js/enrol/services/CheckoutService";
-import {Promotion} from "../../../../js/model/web/Promotion";
 
 
 test('test build CheckoutModel from State', () => {

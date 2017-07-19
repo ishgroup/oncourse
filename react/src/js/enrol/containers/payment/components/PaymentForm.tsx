@@ -1,10 +1,8 @@
 import * as React from "react";
 import {reduxForm, FormProps, FormErrors, DataShape} from "redux-form";
 import classnames from "classnames";
-import {Amount} from "../../../../model/checkout/Amount";
 import CreditCardComp from "./CreditCardComp";
 import CorporatePassComp from "./CorporatePassComp";
-import {Contact} from "../../../../model/web/Contact";
 import {Conditions} from "./Conditions";
 import {FieldName, CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
 import {
@@ -16,9 +14,8 @@ import {changePhase, getAmount, setPayer} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
-import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
 import {Tabs} from "../reducers/State";
-import {PaymentStatus} from "../../../../model/checkout/payment/PaymentStatus";
+import {PaymentStatus, CorporatePass, Contact, Amount} from "../../../../model";
 
 /**
  * @Deprecated will be remove, now it is used only as example

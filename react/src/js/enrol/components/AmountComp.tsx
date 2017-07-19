@@ -1,10 +1,8 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import {Amount} from "../../model/checkout/Amount";
+import {Amount, Promotion, RedeemVoucher as RedeemVoucherModel} from "../../model";
 import AddCodeComp from "./AddCodeComp";
-import {Promotion} from "../../model/web/Promotion";
-import {RedeemVoucher as RedeemVoucherModel} from "../../model/checkout/RedeemVoucher";
 import CheckoutService from "../services/CheckoutService";
 import log = Handlebars.log;
 

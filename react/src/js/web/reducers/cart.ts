@@ -1,7 +1,7 @@
 import {combineReducers} from "redux";
 import {IshAction} from "../../actions/IshAction";
 import {ContactState, CourseClassCartState, ProductCartState} from "../../services/IshState";
-import {Contact} from "../../model/web/Contact";
+import {Contact} from "../../model";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../actions/Actions";
 

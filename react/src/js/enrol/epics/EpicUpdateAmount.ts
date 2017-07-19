@@ -4,7 +4,7 @@ import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import * as EpicUtils from "./EpicUtils";
 import {GET_AMOUNT, updateAmount} from "../actions/Actions";
-import {Amount} from "../../model/checkout/Amount";
+import {Amount} from "../../model";
 
 const request: EpicUtils.Request<Amount, IshState> = {
   type: GET_AMOUNT,

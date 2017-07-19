@@ -1,9 +1,5 @@
 import {HttpService} from "../common/services/HttpService";
-import {CorporatePass} from "../model/checkout/corporatepass/CorporatePass";
-import {GetCorporatePassRequest} from "../model/checkout/corporatepass/GetCorporatePassRequest";
-import {MakeCorporatePassRequest} from "../model/checkout/corporatepass/MakeCorporatePassRequest";
-import {CommonError} from "../model/common/CommonError";
-import {ValidationError} from "../model/common/ValidationError";
+import {CorporatePass, GetCorporatePassRequest, MakeCorporatePassRequest} from "../model";
 
 export class CorporatePassApi {
   constructor(private http: HttpService) {

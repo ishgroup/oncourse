@@ -2,7 +2,7 @@ import * as React from "react";
 import {WrappedFieldProps} from "redux-form";
 import {CommonFieldProps} from "./CommonFieldProps";
 import {FieldLabel} from "./FieldLabel";
-import {Item} from "../../model/common/Item";
+import {Item} from "../../model";
 
 /**
  * This implementation is very complicated,
@@ -19,7 +19,7 @@ export class RadioGroupField extends React.Component<RadioGroupFieldProps, Radio
       input,
       label,
       classes,
-      required
+      required,
     } = this.props;
 
     return (
@@ -46,7 +46,7 @@ export class RadioGroupField extends React.Component<RadioGroupFieldProps, Radio
 }
 
 export interface RadioGroupFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps {
-  items: Item[]
+  items: Item[];
 }
 
 export interface RadioGroupFieldState {

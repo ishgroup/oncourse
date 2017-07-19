@@ -1,7 +1,7 @@
 import React from "react";
 import {Field} from "redux-form";
 
-import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
+import {CorporatePass} from "../../../../model";
 import {TextField} from "../../../../components/form-new/TextField";
 
 interface Props {

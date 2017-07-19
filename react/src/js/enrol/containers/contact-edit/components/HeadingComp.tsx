@@ -1,5 +1,5 @@
 import * as React from "react";
-import {FieldHeading} from "../../../../model/field/FieldHeading";
+import {FieldHeading} from "../../../../model";
 import FieldFactory from "../../../../components/form/FieldFactory";
 
 

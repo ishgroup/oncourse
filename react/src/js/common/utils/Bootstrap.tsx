@@ -13,7 +13,7 @@ import {Actions} from "../../web/actions/Actions";
 import {Actions as CommonActions} from "../../common/actions/Actions";
 
 import {htmlProps2CourseClass} from "../../web/services/CourseClassService";
-import {CourseClass} from "../../model/web/CourseClass";
+import {CourseClass} from "../../model";
 import {ClassesListSchema} from "../../NormalizeSchema";
 import {normalize} from "normalizr";
 

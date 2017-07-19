@@ -3,7 +3,7 @@ import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
 import {debounce} from "lodash";
 
-import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model/checkout/Index";
+import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model";
 import {
   ApplicationProps,
   ArticleProps,

@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as Form from "redux-form";
 
-import {Field} from "../../model/field/Field";
-import {DataType} from "../../model/field/DataType";
+import {Field, DataType, Item} from "../../model";
 
 import {ComboboxField} from "./ComboboxField";
 import {CheckboxField} from "./CheckboxField";
@@ -10,7 +9,6 @@ import {TextField} from "./TextField";
 import {RadioGroupField} from "./RadioGroupField";
 import {DateField} from "./DateField";
 import SelectField from "../form-new/SelectField";
-import {Item} from "../../model/common/Item";
 import SearchService from "../../enrol/services/SearchService";
 
 

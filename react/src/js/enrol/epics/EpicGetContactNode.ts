@@ -3,9 +3,8 @@ import * as Actions from "../containers/summary/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import {Create, Request} from "./EpicUtils";
-import {Contact} from "../../model/web/Contact";
+import {Contact, ContactNode} from "../../model";
 import {Epic} from "redux-observable";
-import {ContactNode} from "../../model/checkout/ContactNode";
 import {getAmount} from "../actions/Actions";
 
 const request: Request<ContactNode, IshState> = {

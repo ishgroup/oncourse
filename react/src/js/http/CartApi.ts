@@ -1,5 +1,5 @@
 import {HttpService} from "../common/services/HttpService";
-import {Token} from "../model/web/Token";
+import {Token} from "../model";
 
 export class CartApi {
   constructor(private http: HttpService) {

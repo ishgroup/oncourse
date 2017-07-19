@@ -1,10 +1,6 @@
 import {MockDB} from "../../../../../dev/mocks/mocks/MockDB";
 
-import {Contact} from "../../../../../js/model/web/Contact";
-import {CourseClass} from "../../../../../js/model/web/CourseClass";
-
-import {Enrolment} from "../../../../../js/model/checkout/Enrolment";
-import {ContactNode} from "../../../../../js/model/checkout/ContactNode";
+import {Contact, CourseClass, Enrolment, ContactNode} from "../../../../../js/model";
 
 import {IshState} from "../../../../../js/services/IshState";
 
@@ -28,8 +24,8 @@ const state: IshState = MockFunctions.mockState(contact, [courseClass], [items])
 console.log(inspect(state, false, 10, true));
 
 test('test ContactProps By State', () => {
-    const props = ContactPropsBy(contact.id, state);
-    expect(props.contact.id).toBe(contact.id);
-    expect(props.enrolments[0].contact.id).toBe(contact.id);
-    expect(props.enrolments[0].courseClass.id).toBe(courseClass.id);
+  const props = ContactPropsBy(contact.id, state);
+  expect(props.contact.id).toBe(contact.id);
+  expect(props.enrolments[0].contact.id).toBe(contact.id);
+  expect(props.enrolments[0].courseClass.id).toBe(courseClass.id);
 });

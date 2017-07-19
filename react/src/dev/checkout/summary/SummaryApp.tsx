@@ -8,10 +8,8 @@ import {Messages, Progress} from "../../../js/enrol/containers/Functions";
 import "../../../scss/index.scss";
 
 import {mockAmount} from "../../mocks/mocks/MockFunctions";
-import {Amount} from "../../../js/model/checkout/Amount";
-import {Contact} from "../../../js/model/web/Contact";
+import {Amount, Contact, Enrolment, CourseClass, Product, Voucher, Application} from "../../../js/model";
 
-import {Enrolment} from "../../../js/model/checkout/Enrolment";
 import {NoCourseClassPlaces} from "../../../js/enrol/containers/summary/Messages";
 
 import {Props as EnrolmentProps} from "../../../js/enrol/containers/summary/components/EnrolmentComp";
@@ -21,14 +19,10 @@ import {Props as ContactProps} from "../../../js/enrol/containers/summary/compon
 import {Props as VoucherProps} from "../../../js/enrol/containers/summary/components/VoucherComp";
 
 import faker from "faker";
-import {CourseClass} from "../../../js/model/web/CourseClass";
 import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
 import {SummaryComp} from "../../../js/enrol/containers/summary/components/SummaryComp";
-import {Product} from "../../../js/model/web/Product";
-import {Voucher} from "../../../js/model/checkout/Voucher";
-import {Application} from "../../../js/model/checkout/Application";
 
 let config: MockConfig = new MockConfig();
 const checkoutApi: CheckoutApiMock = new CheckoutApiMock(config);

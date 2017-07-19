@@ -6,18 +6,16 @@ import {Messages, Progress} from "../../../js/enrol/containers/Functions";
 
 import "../../../scss/index.scss";
 
-import {Contact} from "../../../js/model/web/Contact";
+import {Contact, Article, Product} from "../../../js/model";
 import {NoCourseClassPlaces} from "../../../js/enrol/containers/summary/Messages";
 import {
   default as ArticleComp,
-  Props as ArticleProps
+  Props as ArticleProps,
 } from "../../../js/enrol/containers/summary/components/ArticleComp";
 
 import {CheckoutApiMock} from "../../mocks/CheckoutApiMock";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
 import {MockDB} from "../../mocks/mocks/MockDB";
-import {Article} from "../../../js/model/checkout/Article";
-import {Product} from "../../../js/model/web/Product";
 
 let config: MockConfig = new MockConfig();
 const checkoutApi:CheckoutApiMock = new CheckoutApiMock(config);

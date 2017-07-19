@@ -1,5 +1,5 @@
 import {mockContact} from "../../dev/mocks/mocks/MockFunctions";
-import {Contact} from "../../js/model/web/Contact";
+import {Contact} from "../../js/model";
 import {normalize} from "normalizr";
 import {ContactSchema, ContactsSchema} from "../../js/NormalizeSchema";
 import {inspect} from "util";

@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as Form from "redux-form";
 
-import {Field} from "../../model/field/Field";
-import {DataType} from "../../model/field/DataType";
+import {Field, DataType} from "../../model";
 
 import SelectField from "./SelectField";
 import Checkbox from "./Checkbox";
@@ -31,7 +30,10 @@ class FieldFactory {
       case DataType.BOOLEAN:
         if (field.key === "isMale") {
           return React.createElement(Form.Field,
-            Object.assign({}, props, {component: RadioGroup, items: [{key: "true", value: "Male"}, {key: "false", value: "Female"}]}));
+            Object.assign({}, props, {
+              component: RadioGroup,
+              items: [{key: "true", value: "Male"}, {key: "false", value: "Female"}],
+            }));
         } else {
           return React.createElement(Form.Field,
             Object.assign({}, props, {component: Checkbox}));
@@ -50,8 +52,8 @@ class FieldFactory {
       label: field.name,
       type: "string",
       required: field.mandatory,
-      placeholder: field.description
-    }
+      placeholder: field.description,
+    };
   }
 }
 export default FieldFactory;

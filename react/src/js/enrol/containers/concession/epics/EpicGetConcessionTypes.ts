@@ -4,7 +4,7 @@ import {IshState} from "../../../../services/IshState";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import {GET_CONCESSION_TYPES_REQUEST} from "../actions/Actions";
 import CheckoutService from "../../../services/CheckoutService";
-import {ConcessionType as ConcessionTypeModel} from "../../../../model/checkout/concession/ConcessionType";
+import {ConcessionType as ConcessionTypeModel} from "../../../../model";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
 
 const request: EpicUtils.Request<any, IshState> = {

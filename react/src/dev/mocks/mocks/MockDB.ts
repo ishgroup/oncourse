@@ -1,25 +1,13 @@
 import * as L from "lodash";
 import faker from "faker";
 import uuid from "uuid";
+import localForage from "localforage";
 
-import {CourseClass} from "../../../js/model/web/CourseClass";
-import {Enrolment} from "../../../js/model/checkout/Enrolment";
-import {Contact} from "../../../js/model/web/Contact";
+import {CourseClass, Enrolment, Contact, Field, DataType, FieldHeading, Item,
+  Voucher, Product, Membership, Article, Application} from "../../../js/model";
 import {mockContact, mockCourseClass, mockEnumField, mockField, mockProduct} from "./MockFunctions";
 import {normalize} from "normalizr";
 import {ClassesListSchema, ContactsSchema, ContactsState, ProductsListSchema} from "../../../js/NormalizeSchema";
-
-import {Field} from "../../../js/model/field/Field";
-import {DataType} from "../../../js/model/field/DataType";
-import {FieldHeading} from "../../../js/model/field/FieldHeading";
-import {Item} from "../../../js/model/common/Item";
-
-import localForage from "localforage";
-import {Voucher} from "../../../js/model/checkout/Voucher";
-import {Product} from "../../../js/model/web/Product";
-import {Membership} from "../../../js/model/checkout/Membership";
-import {Article} from "../../../js/model/checkout/Article";
-import {Application} from "../../../js/model/checkout/Application";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();

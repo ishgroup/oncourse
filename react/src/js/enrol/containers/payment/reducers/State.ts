@@ -1,5 +1,4 @@
-import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
-import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
+import {PaymentResponse, CorporatePass} from "../../../../model";
 
 export class State {
   value?: PaymentResponse;

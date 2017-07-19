@@ -1,10 +1,8 @@
 import React from "react";
-import classnames from "classnames";
 import {Field} from "redux-form";
 import SelectField from "../../../../components/form-new/SelectField";
 import {TextField} from "../../../../components/form-new/TextField";
-import {Amount} from "../../../../model/checkout/Amount";
-import {Contact} from "../../../../model/web/Contact";
+import {Amount, Contact} from "../../../../model";
 import {PayerSelect} from "./PayerSelect";
 import {PayerAdd} from "./PayerAdd";
 

@@ -1,9 +1,8 @@
 import "rxjs";
 import {Epic} from "redux-observable";
-import {ContactFields} from "../../../../model/field/ContactFields";
+import {ContactFields, Contact} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
 import {OPEN_EDIT_CONTACT, setFieldsToState} from "../actions/Actions";
-import {Contact} from "../../../../model/web/Contact";
 import CheckoutService from "../../../services/CheckoutService";
 import {changePhase} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";

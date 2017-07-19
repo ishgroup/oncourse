@@ -14,7 +14,7 @@ import {Values} from "redux-form-website-template";
 import {Progress, Tab} from "../../../js/enrol/components/Progress";
 import {Messages} from "../../../js/enrol/containers/Functions";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
-import {Contact} from "../../../js/model/web/Contact";
+import {Contact} from "../../../js/model";
 
 const config = new MockConfig();
 

@@ -1,5 +1,4 @@
-import { CourseClass } from "../../js/model/web/CourseClass";
-import { CourseClassesParams } from "../../js/model/web/CourseClassesParams";
+import {CourseClass, CourseClassesParams} from "../../js/model";
 import {CourseClassesApi} from "../../js/http/CourseClassesApi";
 import {MockConfig} from "./mocks/MockConfig";
 

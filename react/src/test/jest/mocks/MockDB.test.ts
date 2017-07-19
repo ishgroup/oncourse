@@ -1,9 +1,7 @@
 import * as L from "lodash";
 import {MockDB} from "../../../dev/mocks/mocks/MockDB";
-import {Enrolment} from "../../../js/model/checkout/Enrolment";
+import {Enrolment, Contact, CourseClass} from "../../../js/model";
 
-import {Contact} from "../../../js/model/web/Contact";
-import {CourseClass} from "../../../js/model/web/CourseClass";
 import {normalize} from "normalizr";
 
 import {ClassesListSchema} from "../../../js/NormalizeSchema";

@@ -1,4 +1,4 @@
-import {Contact} from "../../model/web/Contact";
+import {Contact} from "../../model";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 export const Actions = {
   ADD_CLASS_TO_CART: "ADD_CLASS_TO_CART",

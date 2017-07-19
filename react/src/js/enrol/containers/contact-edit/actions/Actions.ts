@@ -1,6 +1,5 @@
-import {ContactFields} from "../../../../model/field/ContactFields";
+import {ContactFields, Contact} from "../../../../model";
 import {IAction} from "../../../../actions/IshAction";
-import {Contact} from "../../../../model/web/Contact";
 
 export const OPEN_EDIT_CONTACT: string = "checkout/open/edit/contact";
 export const SUBMIT_EDIT_CONTACT: string = "checkout/submit/edit/contact";

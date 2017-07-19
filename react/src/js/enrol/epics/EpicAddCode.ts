@@ -6,7 +6,7 @@ import {
   ADD_CODE_REQUEST, getCheckoutModelFromBackend, addRedeemVoucherToState,
 } from "../actions/Actions";
 import {Actions} from "../../web/actions/Actions";
-import {CodeResponse} from "../../model/checkout/CodeResponse";
+import {CodeResponse} from "../../model";
 import CheckoutService from "../services/CheckoutService";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {normalize} from "normalizr";

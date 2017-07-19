@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {FeesRangeComponent, Props, Values} from "../../../../js/web/components/fees/FeesRangeComponent";
 import {mockCourseClassWithFeesRange, mockField} from "../../../mocks/mocks/MockFunctions";
-import {DataType} from "../../../../js/model/field/DataType";
+import {DataType} from "../../../../js/model";
 import {connect, Dispatch, Provider, Store} from "react-redux";
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {reducer as formReducer} from "redux-form";
@@ -18,8 +18,8 @@ const reducer = combineReducers({
       case "SET":
         return action.payload;
     }
-    return state
-  }
+    return state;
+  },
 });
 
 export const store: Store<any> = createStore(reducer, applyMiddleware(createLogger()));
@@ -37,9 +37,9 @@ const props: Props = {
       mockField("I have left school.", "leftSchool", DataType.BOOLEAN),
       mockField("I live or work in NSW.", "liveInNsw", DataType.BOOLEAN),
       mockField("I am an Australian citizen or Australian permanent resident or humanitarian visa holder or New Zealand citizen.",
-        "citizen", DataType.BOOLEAN)
-    ]
-  }
+                "citizen", DataType.BOOLEAN),
+    ],
+  },
 };
 
 const render = () => ReactDOM.render(
@@ -48,18 +48,18 @@ const render = () => ReactDOM.render(
       <Comp/>
     </div>
   </Provider>,
-  document.getElementById("react-fees-range-component")
+  document.getElementById("react-fees-range-component"),
 );
 
-const Comp = connect((state) => {
+const Comp = connect(state => {
   return {
     model: props.model,
-    estimatedDiscountIndex: state.estimatedDiscountIndex
-  }
-}, (dispatch: Dispatch<any>): any => {
+    estimatedDiscountIndex: state.estimatedDiscountIndex,
+  };
+},                   (dispatch: Dispatch<any>): any => {
   return {
-    onSubmit: values => dispatch({type: "SET", payload: 1})
-  }
+    onSubmit: values => dispatch({type: "SET", payload: 1}),
+  };
 })(FeesRangeComponent);
 
 render();

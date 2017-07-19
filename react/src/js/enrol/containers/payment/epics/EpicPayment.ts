@@ -1,9 +1,8 @@
 import * as L from "lodash";
-
+import {AxiosResponse} from "axios";
 import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
 import {ActionsObservable, combineEpics, Epic} from "redux-observable";
-
 import uuid from "uuid";
 
 import {Create, ProcessError, Request} from "../../../epics/EpicUtils";
@@ -20,18 +19,14 @@ import {
 
 import CheckoutService from "../../../services/CheckoutService";
 
-import {PaymentResponse} from "../../../../model/checkout/payment/PaymentResponse";
+import {PaymentResponse, CheckoutModel, PaymentStatus, CorporatePass} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
-import {AxiosResponse} from "axios";
-import {CheckoutModel} from "../../../../model/checkout/CheckoutModel";
 import {ProcessCheckoutModel} from "../../../epics/EpicProceedToPayment";
 import {IAction} from "../../../../actions/IshAction";
 import {CreditCardFormValues} from "../services/PaymentService";
-import {PaymentStatus} from "../../../../model/checkout/payment/PaymentStatus";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
 import {changePhase, getAmount} from "../../../actions/Actions";
-import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
 
 const request: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT,

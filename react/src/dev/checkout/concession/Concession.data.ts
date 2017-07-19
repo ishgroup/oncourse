@@ -1,4 +1,4 @@
-import {Contact} from "../../../js/model/web/Contact";
+import {Contact} from "../../../js/model";
 import faker from "faker";
 
 const mockContact = () : Contact => {
@@ -18,4 +18,4 @@ export const concessions : any[] =
 		{key: 0, value: "CHSP/CCSP Worker"},
 	];
 
-
+

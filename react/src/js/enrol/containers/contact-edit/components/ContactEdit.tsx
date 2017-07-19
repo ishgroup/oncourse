@@ -1,7 +1,6 @@
 import * as React from "react";
 import {isNil} from "lodash";
-import {Contact} from "../../../../model/web/Contact";
-import {ContactFields} from "../../../../model/field/ContactFields";
+import {Contact, ContactFields} from "../../../../model";
 import HeadingComp from "./HeadingComp";
 import {ContactInfo} from "../../../components/ContactInfo";
 

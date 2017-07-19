@@ -1,7 +1,7 @@
 import * as React from "react";
 import classnames from "classnames";
 import {ConfirmOrderDialog} from "./addButton/ConfirmOrderDialog";
-import {CourseClass} from "../../model/web/CourseClass";
+import {CourseClass} from "../../model";
 import {plural, stopPropagation} from "../../common/utils/HtmlUtils";
 
 

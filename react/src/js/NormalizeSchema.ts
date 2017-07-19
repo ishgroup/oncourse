@@ -1,5 +1,5 @@
 import {schema} from "normalizr";
-import {Contact} from "./model/web/Contact";
+import {Contact} from "./model";
 
 export const ClassesSchema = new schema.Entity('classes');
 export const ClassesListSchema = new schema.Array(ClassesSchema);

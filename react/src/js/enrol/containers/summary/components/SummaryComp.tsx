@@ -3,10 +3,7 @@ import classnames from "classnames";
 
 import AmountComp from "../../../components/AmountComp";
 import ContactComp, {Props as ContactProps} from "./ContactComp";
-import {Amount} from "../../../../model/checkout/Amount";
-import {RedeemVoucher} from "../../../../model/checkout/RedeemVoucher";
-import {Promotion} from "../../../../model/web/Promotion";
-import {PurchaseItem} from "../../../../model/checkout/Index";
+import {Amount, RedeemVoucher, Promotion, PurchaseItem} from "../../../../model";
 
 export interface Props {
   hasSelected: boolean;

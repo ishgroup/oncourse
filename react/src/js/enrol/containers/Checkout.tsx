@@ -11,8 +11,7 @@ import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
 import {changePhase, sendInitRequest} from "../actions/Actions";
-import {submitAddContactAsPayer, submitAddContact} from "./contact-add/actions/Actions";
-import ConcessionForm from "./concession/components/ConcessionForm";
+import {submitAddContact} from "./contact-add/actions/Actions";
 
 interface Props {
   phase: Phase;

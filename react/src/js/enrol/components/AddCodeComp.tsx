@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Promotion} from "../../model/web/Promotion";
+import {Promotion} from "../../model";
 
 interface Props {
   onAdd: (code: string) => void;

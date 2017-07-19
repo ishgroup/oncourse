@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import "rxjs";
 import {SHOW_MESSAGES, SHOW_MESSAGES_REQUEST} from "../actions/Actions";
 import {stopSubmit} from "redux-form";
-import {ValidationError} from "../../model/common/ValidationError";
+import {ValidationError} from "../../model";
 import {isCommonError, isPlainTextError, isValidationError, toValidationError} from "../../common/utils/ErrorUtils";
 
 

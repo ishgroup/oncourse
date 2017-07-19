@@ -1,32 +1,21 @@
 import * as L from "lodash";
-import {ContactFields} from "../../model/field/ContactFields";
+import {
+  ContactFields, ContactFieldsRequest, SubmitFieldsRequest, CreateContactParams, Field, CheckoutModel, Amount,
+  ContactNode, CheckoutModelRequest, ContactNodeRequest, PaymentResponse, PaymentRequest, DataType,
+  GetCorporatePassRequest, ContactId, PaymentStatus, Contact, Concession, CodeResponse, FieldSet, PurchaseItem}
+  from "../../model";
+
 import {Injector} from "../../injector";
-import {ContactFieldsRequest} from "../../model/field/ContactFieldsRequest";
-import {FieldSet} from "../../model/field/FieldSet";
-import {SubmitFieldsRequest} from "../../model/field/SubmitFieldsRequest";
-import {CreateContactParams} from "../../model/web/CreateContactParams";
 import {CartState, IshState} from "../../services/IshState";
 import {ContactApi} from "../../http/ContactApi";
 import {CheckoutApi} from "../../http/CheckoutApi";
-import {Field} from "../../model/field/Field";
-import {CheckoutModel} from "../../model/checkout/CheckoutModel";
 import {ContactNodeStorage, State} from "../containers/summary/reducers/State";
-import {Amount} from "../../model/checkout/Amount";
-import {ContactNode} from "../../model/checkout/ContactNode";
-import {CheckoutModelRequest} from "../../model/checkout/CheckoutModelRequest";
-import {ContactNodeRequest} from "../../model/checkout/request/ContactNodeRequest";
 import {
   PaymentService, CreditCardFormValues,
   CorporatePassFormValues,
 } from "../containers/payment/services/PaymentService";
-import {PaymentResponse} from "../../model/checkout/payment/PaymentResponse";
-import {PaymentRequest} from "../../model/checkout/payment/PaymentRequest";
-import {GetCorporatePassRequest} from "../../model/checkout/corporatepass/GetCorporatePassRequest";
-import {DataType} from "../../model/field/DataType";
 import {CheckoutState, Phase} from "../reducers/State";
-import {ContactId} from "../../model/web/ContactId";
 import {Values as ContactValues} from "../containers/contact-add/actions/Actions";
-import {PaymentStatus} from "../../model/checkout/payment/PaymentStatus";
 import {State as PaymentState} from "../containers/payment/reducers/State";
 import {IAction} from "../../actions/IshAction";
 import {Observable} from "rxjs/Observable";
@@ -36,10 +25,6 @@ import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
-import {PurchaseItem} from "../../model/checkout/Index";
-import {Contact} from "../../model/web/Contact";
-import {Concession} from "../../model/checkout/concession/Concession";
-import {CodeResponse} from "../../model/checkout/CodeResponse";
 
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
