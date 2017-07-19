@@ -10,7 +10,7 @@ import {
   submitPaymentCorporatePass, updatePaymentStatus,
 } from "../actions/Actions";
 import {connect} from "react-redux";
-import {changePhase, getAmount, setPayer} from "../../../actions/Actions";
+import {changePhase, getAmount, setPayer, togglePayNowVisibility} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
@@ -229,9 +229,12 @@ const mapDispatchToProps = dispatch => {
     onSubmitPass: code => dispatch(getCorporatePass(code)),
     onChangeTab: tab => {
       dispatch(changeTab(tab));
-      dispatch(resetCorporatePass());
     },
-    onUnmountPassComponent: () => dispatch(getAmount()),
+    onUnmountPassComponent: () => {
+      dispatch(getAmount());
+      dispatch(resetCorporatePass());
+      dispatch(togglePayNowVisibility(true));
+    },
   };
 };
 

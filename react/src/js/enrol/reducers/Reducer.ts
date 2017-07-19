@@ -16,21 +16,21 @@ import {FULFILLED} from "../../common/actions/ActionUtils";
 import log = Handlebars.log;
 
 const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phase => {
-    switch (action.type) {
+  switch (action.type) {
 
-      case Actions.CHANGE_PHASE:
-        switch (action.payload) {
-          case Phase.Summary:
-          case Phase.Payment:
-          case Phase.Result:
-            return action.payload;
-          default:
-            return state;
-        }
+    case Actions.CHANGE_PHASE:
+      switch (action.payload) {
+        case Phase.Summary:
+        case Phase.Payment:
+        case Phase.Result:
+          return action.payload;
+        default:
+          return state;
+      }
 
-      default:
-        return state;
-    }
+    default:
+      return state;
+  }
 };
 
 const PayerReducer = (state: string = null, action: IAction<string>): string => {
@@ -108,14 +108,21 @@ const ContactsReducer = (state: ContactsState = normalize([], ContactsSchema), a
   }
 };
 
-const AmountReducer = (state: Amount = null, action: IAction<Amount>): Amount => {
+const AmountReducer = (state: Amount = new Amount(), action: IAction<any>): Amount => {
   switch (action.type) {
 
     case Actions.UPDATE_AMOUNT:
-      return action.payload;
+      const amount: Amount = action.payload;
+      return {...amount, payNowVisibility: state.payNowVisibility};
 
     case Actions.RESET_CHECKOUT_STATE:
-      return null;
+      return new Amount();
+
+    case Actions.TOGGLE_PAYNOW_VISIBILITY:
+      return {
+        ...state,
+        payNowVisibility: action.payload,
+      }
 
     default:
       return state;

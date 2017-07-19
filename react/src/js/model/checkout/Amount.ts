@@ -8,5 +8,6 @@ export class Amount {
   minPayNow?: number;
   isEditable?: boolean;
   voucherPayments?: VoucherPayment[];
+  payNowVisibility?: boolean = true;
 }
 

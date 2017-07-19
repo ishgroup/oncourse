@@ -4,10 +4,8 @@ import * as L from "lodash";
 import {AxiosResponse} from "axios";
 import {Amount} from "../../model";
 import {IAction} from "../../actions/IshAction";
-import {CheckoutService} from "../services/CheckoutService";
 
 // initialize checkout application
-
 export const SHOW_MESSAGES: string = "checkout/messages/show";
 export const SHOW_MESSAGES_REQUEST: string = _toRequestType(SHOW_MESSAGES);
 
@@ -41,6 +39,7 @@ export const UPDATE_CONTACT_ADD_PROCESS: string = "checkout/update/process/conta
 
 export const UPDATE_PARENT_CHILDS: string = "checkout/update/parent/childs";
 
+export const TOGGLE_PAYNOW_VISIBILITY: string = "checkout/update/payNow/visibility";
 
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
@@ -146,5 +145,12 @@ export const updateParentChilds = (parentId: string, childIds: string[]): IActio
   return {
     type: UPDATE_PARENT_CHILDS,
     payload: {parentId, childIds},
+  };
+};
+
+export const togglePayNowVisibility = (val: boolean): IAction<any> => {
+  return {
+    type: TOGGLE_PAYNOW_VISIBILITY,
+    payload: val,
   };
 };

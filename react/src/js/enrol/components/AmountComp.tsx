@@ -55,7 +55,7 @@ class AmountComp extends React.Component<Props, any> {
 
           { amount && amount.discount && <Discount discount={amount.discount}/>}
 
-          { amount && amount.payNow &&
+          { amount && amount.payNow && amount.payNowVisibility &&
           <PayNow
             payNow={amount.payNow}
             onChange={val => onUpdatePayNow ? this.handleChangePayNow(val) : undefined}

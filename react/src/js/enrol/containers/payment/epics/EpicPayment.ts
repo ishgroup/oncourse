@@ -26,7 +26,7 @@ import {IAction} from "../../../../actions/IshAction";
 import {CreditCardFormValues} from "../services/PaymentService";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
-import {changePhase, getAmount} from "../../../actions/Actions";
+import {changePhase, getAmount, togglePayNowVisibility} from "../../../actions/Actions";
 
 const request: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT,
@@ -92,6 +92,7 @@ const corporatePassRequest: Request<PaymentResponse, IshState> = {
     return [
       applyCorporatePass(response),
       getAmount(),
+      togglePayNowVisibility(false),
     ];
   },
   processError: (response: AxiosResponse): IAction<any>[] => {
