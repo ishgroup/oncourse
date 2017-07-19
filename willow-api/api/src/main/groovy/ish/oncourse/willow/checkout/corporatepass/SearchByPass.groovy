@@ -51,21 +51,18 @@ class SearchByPass {
         List<CourseClass> classes = request.classIds.collect { id -> new GetCourseClass(context, college, id).get()}
         List<Product> products = request.classIds.collect { id -> new GetProduct(context, college, id).get()}
 
-        ValidateCorporatePass validate = new ValidateCorporatePass(context, college, )
+        ValidateCorporatePass validatePass = new ValidateCorporatePass(pass, classes, products)
 
-
-        if (!pass) {
-            validationError.formErrors << 'This code is not valid or has expired. Please contact the college.'
-            validationError.fieldsErrors << new FieldError(name: 'code', error: 'This code is not valid or has expired. Please contact the college.')       
-        }
-        
-        if (validateClasses() && validateProducts()) {
+        if (validatePass.validate()) {
             result = new ish.oncourse.willow.model.checkout.corporatepass.CorporatePass().with { corpPass ->
                 corpPass.id = pass.id.toString()
                 corpPass.code = pass.password
                 corpPass.message = "Valid code entered. This transaction will be invoiced to ${pass.contact.fullName} when you press the Confirm Purchase button below. Your details will be forwarded to the relevant manager at ${pass.contact.fullName}."
                 corpPass
             }
+        } else {
+            validationError.formErrors << validatePass.error.message
+            validationError.fieldsErrors << new FieldError(name: 'code', error: validatePass.error.message)
         }
         
         return this
