@@ -44,6 +44,6 @@ class CreateEnrolment {
         InvoiceLine invoiceLine = new EnrolmentInvoiceLine(enrolment, e.price).create()
         invoiceLine.enrolment = enrolment
         
-        setInvoice.call(invoiceLine, courseClass)
+        setInvoice.call(enrolment, invoiceLine)
     }
 }

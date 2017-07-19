@@ -12,6 +12,7 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CorporatePass
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.Enrolment
 import ish.oncourse.model.Invoice
 import ish.oncourse.model.InvoiceLine
 import ish.oncourse.model.WebSite
@@ -65,10 +66,9 @@ class CreateCorpPassModel {
             Contact contact = new GetContact(context, college, node.contactId).get()
 
             node.enrolments.findAll{it.selected}.each { e ->
-                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.SUCCESS, { CourseClass c, InvoiceLine il ->
-                    if (c.paymentPlanLines.empty) {
+                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.SUCCESS, { Enrolment enrolment, InvoiceLine il ->
+                    if (enrolment.courseClass.paymentPlanLines.empty) {
                         il.invoice = getInvoice()
-
                     } else {
                         Invoice paymentPlanInvoice = createInvoice()
                         il.invoice = paymentPlanInvoice

@@ -38,6 +38,11 @@ import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.GetCourseClass
 import ish.oncourse.willow.checkout.functions.GetProduct
+import ish.oncourse.willow.checkout.persistent.CreateApplication
+import ish.oncourse.willow.checkout.persistent.CreateArticle
+import ish.oncourse.willow.checkout.persistent.CreateEnrolment
+import ish.oncourse.willow.checkout.persistent.CreateMembership
+import ish.oncourse.willow.checkout.persistent.CreateVoucher
 import ish.oncourse.willow.functions.voucher.GetVoucher
 import ish.oncourse.willow.functions.voucher.VoucherRedemptionHelper
 import ish.oncourse.willow.model.checkout.CheckoutModel
@@ -99,19 +104,29 @@ class CreatePaymentModel {
             Contact contact = new GetContact(context, college, node.contactId).get()
 
             node.enrolments.findAll{it.selected}.each { e ->
-                createEnrolment(e, contact)
+                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.IN_TRANSACTION, { Enrolment enrolment, InvoiceLine il ->
+                    if (enrolment.courseClass.paymentPlanLines.empty) {
+                        il.invoice = getInvoice()
+                    } else {
+                        Invoice paymentPlanInvoice = createInvoice()
+                        il.invoice = paymentPlanInvoice
+
+                        List<InvoiceDueDate> selectedDueDates = PaymentPlanBuilder.valueOf(enrolment).build().selectedDueDates
+                        paymentPlan << InvoiceNode.valueOf(il.invoice, paymentPlanInvoice.paymentInLines[0], il, enrolment, selectedDueDates, null)
+                    }}).create()
             }
+
             node.applications.findAll{it.selected}.each { a ->
-                createApplication(a, contact)
+                applications << new CreateApplication(context, college, a, contact).create()
             }
             node.articles.findAll{it.selected}.each { a ->
-                createArticle(a,contact)
+                new CreateArticle(context, college, a, contact, getInvoice(), ProductStatus.NEW).create()
             }
             node.memberships.findAll{it.selected}.each { m ->
-                createMembership(m,contact)
+                new CreateMembership(context, college, m, contact, getInvoice(), ProductStatus.NEW).create()
             }
             node.vouchers.findAll{it.selected}.each { v ->
-                createVoucher(v,contact)
+                new CreateVoucher(context, college, v, contact, getInvoice(), ProductStatus.NEW).create()
             }
         }
     }
@@ -139,99 +154,6 @@ class CreatePaymentModel {
         }
         
         voucherRedemptionHelper.createPaymentsForVouchers()
-    }
-    
-    @CompileStatic(TypeCheckingMode.SKIP)
-    void createVoucher(ish.oncourse.willow.model.checkout.Voucher v, Contact contact) {
-        VoucherProduct voucherProduct = new GetProduct(context, college, v.productId).get() as VoucherProduct
-        Voucher voucher = context.newObject(Voucher)
-        voucher.code = SecurityUtil.generateRandomPassword(Voucher.VOUCHER_CODE_LENGTH)
-        voucher.college = college
-
-        voucher.source = PaymentSource.SOURCE_WEB
-        voucher.status = ProductStatus.NEW
-        voucher.product = voucherProduct
-        voucher.redeemedCoursesCount = 0
-        voucher.confirmationStatus = ConfirmationStatus.NOT_SENT
-        
-        voucher.expiryDate = ProductUtil.calculateExpiryDate(new Date(), voucherProduct.expiryType, voucherProduct.expiryDays)
-
-        InvoiceLine invoiceLine
-        Money price = null
-        if (voucherProduct.redemptionCourses.empty && voucherProduct.priceExTax == null) {
-            price = v.value.toMoney()
-            voucher.redemptionValue = price
-            voucher.valueOnPurchase = price
-        } else if (voucherProduct.priceExTax != null) {
-            voucher.redemptionValue = voucherProduct.value
-            voucher.valueOnPurchase = voucherProduct.value
-            price = voucherProduct.priceExTax
-        }
-        invoiceLine = new ProductItemInvoiceLine(voucher, contact, price?: voucherProduct.priceExTax).create()
-        invoiceLine.invoice = getInvoice()
-    }
-    
-    void createMembership(ish.oncourse.willow.model.checkout.Membership m, Contact contact) {
-        MembershipProduct mp = new GetProduct(context, college, m.productId).get() as MembershipProduct
-        Membership membership = context.newObject(Membership)
-        membership.college = college
-        membership.contact = contact
-        membership.expiryDate = ProductUtil.calculateExpiryDate(new Date(), mp.expiryType, mp.expiryDays)
-        membership.product = mp
-        membership.status = ProductStatus.NEW
-        membership.confirmationStatus = ConfirmationStatus.NOT_SENT
-        InvoiceLine invoiceLine = new ProductItemInvoiceLine(membership, contact, membership.product.priceExTax).create()
-        invoiceLine.invoice = getInvoice()
-    }
-    
-    void createArticle(ish.oncourse.willow.model.checkout.Article a, Contact contact) {
-        ArticleProduct ap = new GetProduct(context, college, a.productId).get() as ArticleProduct
-        Article article = context.newObject(Article)
-        article.college = college
-        article.contact = contact
-        article.setProduct(ap)
-        article.status = ProductStatus.NEW
-        article.confirmationStatus = ConfirmationStatus.NOT_SENT
-        InvoiceLine invoiceLine = new ProductItemInvoiceLine(article, contact, article.product.priceExTax).create()
-        invoiceLine.invoice = getInvoice()
-    }
-
-    void createApplication(ish.oncourse.willow.model.checkout.Application a, Contact contact) {
-        CourseClass courseClass = new GetCourseClass(context, college, a.classId).get()
-        Application application = context.newObject(Application)
-        application.college = college
-        application.student = contact.student
-        application.course = courseClass.course
-        application.status = ApplicationStatus.NEW
-        application.source = PaymentSource.SOURCE_WEB
-        application.confirmationStatus = ConfirmationStatus.NOT_SENT
-        applications << application
-    }
-    
-    
-    void createEnrolment(ish.oncourse.willow.model.checkout.Enrolment e, Contact contact) {
-        CourseClass courseClass = new GetCourseClass(context, college, e.classId).get()
-        Enrolment enrolment = context.newObject(Enrolment)
-        enrolment.courseClass =  courseClass
-        enrolment.student = contact.student
-        enrolment.status = EnrolmentStatus.IN_TRANSACTION
-        enrolment.source = PaymentSource.SOURCE_WEB
-        enrolment.college = college
-        enrolment.confirmationStatus = ConfirmationStatus.NOT_SENT
-
-        InvoiceLine invoiceLine = new EnrolmentInvoiceLine(enrolment, e.price).create()
-        invoiceLine.setEnrolment(enrolment)
-
-        if (courseClass.paymentPlanLines.empty) {
-            invoiceLine.invoice = getInvoice()
-
-        } else {
-            Invoice paymentPlanInvoice = createInvoice()
-            invoiceLine.invoice = paymentPlanInvoice
-
-            List<InvoiceDueDate> selectedDueDates = PaymentPlanBuilder.valueOf(enrolment).build().selectedDueDates
-            paymentPlan << InvoiceNode.valueOf(invoiceLine.invoice, paymentPlanInvoice.paymentInLines[0], invoiceLine, enrolment, selectedDueDates, null)
-        }
     }
     
     private void updateSumm() {
