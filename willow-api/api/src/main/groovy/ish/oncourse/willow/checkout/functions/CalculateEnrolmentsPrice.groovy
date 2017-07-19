@@ -6,6 +6,7 @@ import ish.math.Money
 import ish.oncourse.cayenne.DiscountInterface
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.CorporatePass
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Discount
 import ish.oncourse.model.DiscountCourseClass
@@ -28,6 +29,7 @@ class CalculateEnrolmentsPrice {
     int enrolmentsCount
     CheckoutModel model
     Map<Contact, List<CourseClass>> enrolmentsToProceed
+    CorporatePass corporatePass
     
     Money totalDiscount = Money.ZERO
     Money totalPayNow = Money.ZERO
@@ -35,13 +37,14 @@ class CalculateEnrolmentsPrice {
 
     List<Discount> promotions = []
 
-    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, int enrolmentsCount, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, List<String> promotionIds) {
+    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, int enrolmentsCount, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, List<String> promotionIds, CorporatePass corporatePass) {
         this.context = context
         this.college = college
         this.total = total
         this.enrolmentsCount = enrolmentsCount
         this.model = model
         this.enrolmentsToProceed = enrolmentsToProceed
+        this.corporatePass = corporatePass
         
         promotionIds.each { id ->
             this.promotions << new GetDiscount(this.context, this.college, id).get()
@@ -124,7 +127,7 @@ class CalculateEnrolmentsPrice {
                 select(context)
 
 
-        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, null, enrolmentsCount, total, contact.student,  courseClass).get()
+        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsCount, total, contact.student,  courseClass).get()
         DiscountCourseClass chosenDiscount = discounts.chosenDiscount
 
         if (chosenDiscount != null) {

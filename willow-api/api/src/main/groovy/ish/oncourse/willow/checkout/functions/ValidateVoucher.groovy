@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.model.College
+import ish.oncourse.model.Product
 import ish.oncourse.model.VoucherProduct
 import ish.oncourse.willow.model.checkout.Voucher
 import org.apache.cayenne.ObjectContext
@@ -11,6 +12,7 @@ import org.apache.cayenne.ObjectContext
 class ValidateVoucher extends Validate<Voucher>{
 
     String payerId
+    Product persistentProduct
 
     ValidateVoucher(ObjectContext context, College college, String payerId) {
         this(context, college)
@@ -25,7 +27,8 @@ class ValidateVoucher extends Validate<Voucher>{
     @CompileStatic(TypeCheckingMode.SKIP)
     ValidateVoucher validate(Voucher voucher) {
         Money price =  voucher.price?.toMoney() ?: Money.ZERO
-        validate(new GetProduct(context, college, voucher.productId).get() as VoucherProduct, price, voucher.contactId)  
+        persistentProduct = new GetProduct(context, college, voucher.productId).get()
+        validate(persistentProduct as VoucherProduct, price, voucher.contactId)  
     }
 
 

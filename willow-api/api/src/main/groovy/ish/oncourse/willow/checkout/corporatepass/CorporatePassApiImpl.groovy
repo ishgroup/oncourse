@@ -5,8 +5,6 @@ import ish.oncourse.model.College
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.willow.cayenne.CayenneService
-import ish.oncourse.willow.checkout.functions.ValidatePaymentRequest
-import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.corporatepass.CorporatePass
 import ish.oncourse.willow.model.checkout.corporatepass.GetCorporatePassRequest
 import ish.oncourse.willow.model.checkout.corporatepass.MakeCorporatePassRequest
@@ -40,12 +38,12 @@ class CorporatePassApiImpl implements CorporatePassApi {
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'CorporatePass payment method is not enabled for this college.')).build())
         }
 
-        GetCorporatePass getCorporatePass = new GetCorporatePass(cayenneService.newContext(), collegeService.college, request).get()
+        SearchByPass searchByPass = new SearchByPass(cayenneService.newContext(), collegeService.college, request).get()
         
-        if (getCorporatePass.validationError.fieldsErrors.empty && getCorporatePass.validationError.formErrors.empty) {
-            return getCorporatePass.resulr   
+        if (searchByPass.validationError.fieldsErrors.empty && searchByPass.validationError.formErrors.empty) {
+            return searchByPass.result   
         } else {
-            throw new BadRequestException(Response.status(400).entity(getCorporatePass.validationError).build())
+            throw new BadRequestException(Response.status(400).entity(searchByPass.validationError).build())
         }
     }
 

@@ -13,7 +13,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 
-class GetCorporatePass {
+class SearchByPass {
     
     private ObjectContext context
     private College college
@@ -25,14 +25,14 @@ class GetCorporatePass {
     private CorporatePass pass
 
 
-    GetCorporatePass(ObjectContext context, College college, GetCorporatePassRequest request) {
+    SearchByPass(ObjectContext context, College college, GetCorporatePassRequest request) {
         this.context = context
         this.college = college
         this.request = request
     }
 
 
-    GetCorporatePass get() {
+    SearchByPass get() {
         
         String code = StringUtils.trimToNull(request.code)
 
@@ -46,7 +46,14 @@ class GetCorporatePass {
                 & CorporatePass.COLLEGE.eq(college))
                 & CorporatePass.EXPIRY_DATE.gte(new Date()).orExp(CorporatePass.EXPIRY_DATE.isNull())).
                 selectFirst(context)
-        
+
+
+        List<CourseClass> classes = request.classIds.collect { id -> new GetCourseClass(context, college, id).get()}
+        List<Product> products = request.classIds.collect { id -> new GetProduct(context, college, id).get()}
+
+        ValidateCorporatePass validate = new ValidateCorporatePass(context, college, )
+
+
         if (!pass) {
             validationError.formErrors << 'This code is not valid or has expired. Please contact the college.'
             validationError.fieldsErrors << new FieldError(name: 'code', error: 'This code is not valid or has expired. Please contact the college.')       
@@ -64,50 +71,11 @@ class GetCorporatePass {
         return this
     }
 
-    boolean validateClasses() {
-        List<CourseClass> validClasses = pass.validClasses
-
-        if (validClasses.empty) {
-            //if no classes specified, all the classes should pass as valid
-            return true
-        }
-
-        List<CourseClass> classes = request.classIds.collect { id -> new GetCourseClass(context, college, id).get()}
-
-        for (CourseClass courseClass : classes) {
-            if (!validClasses.contains(courseClass)) {
-                validationError.formErrors << "This CorporatePass is not valid for class ${courseClass.course.name} (${courseClass.course.code}-${courseClass.code})".toString()
-                validationError.fieldsErrors << new FieldError(name: 'code', error: "This CorporatePass is not valid for class ${courseClass.course.name} (${courseClass.course.code}-${courseClass.code})")
-                return false
-            }
-        }
-        return true
-    }
-    
-    boolean validateProducts() {
-        List<Product> validProducts = pass.validProducts
-        
-        if (validProducts.empty) {
-            return true
-        }
-        List<Product> products = request.classIds.collect { id -> new GetProduct(context, college, id).get()}
-        
-        for (Product product : products) {
-            if (!validProducts.contains(product)) {
-                validationError.formErrors << "This CorporatePass is not valid for product ${product.name}".toString()
-                validationError.fieldsErrors << new FieldError(name: 'code', error: "This CorporatePass is not valid for product ${product.name}")
-                return false
-            }
-        }
-        return true
-    }
-    
-
     ValidationError getValidationError() {
         return validationError
     }
 
-    ish.oncourse.willow.model.checkout.corporatepass.CorporatePass getResulr() {
+    ish.oncourse.willow.model.checkout.corporatepass.CorporatePass getResult() {
         return result
     }
 }

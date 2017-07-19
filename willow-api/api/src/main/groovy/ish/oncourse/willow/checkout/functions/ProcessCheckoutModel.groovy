@@ -5,36 +5,45 @@ import groovy.transform.TypeCheckingMode
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.CorporatePass
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.Product
+import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
 import ish.oncourse.willow.functions.voucher.ProcessRedeemedVouchers
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.Application
 import ish.oncourse.willow.model.checkout.Article
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
+import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
 import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
+import org.apache.commons.lang3.StringUtils
 
 @CompileStatic
 class ProcessCheckoutModel {
     
-    ObjectContext context
-    College college
-    CheckoutModelRequest checkoutModelRequest
+    private ObjectContext context
+    private College college
+    private CheckoutModelRequest checkoutModelRequest
 
-    Money totalAmount = Money.ZERO
-    Money payNowAmount = Money.ZERO
-    Money totalDiscount = Money.ZERO
+    private Money totalAmount = Money.ZERO
+    private Money payNowAmount = Money.ZERO
+    private Money totalDiscount = Money.ZERO
 
-    int enrolmentsCount = 0
+    private int enrolmentsCount = 0
 
-    Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
-    Map<CourseClass, Integer> freePlacesMap  = [:]
+    private Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
+    private List<Product> products = []
 
-    CheckoutModel model
+    private Map<CourseClass, Integer> freePlacesMap  = [:]
+    private CorporatePass corporatePass
+    private ContactNode corporatePassNode
+    
+    private CheckoutModel model
 
 
     ProcessCheckoutModel(ObjectContext context, College college, CheckoutModelRequest checkoutModelRequest) {
@@ -47,37 +56,51 @@ class ProcessCheckoutModel {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     ProcessCheckoutModel process() {
-        
         processNodes()
-        
-        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds).calculate()
-        totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
-        
-        ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNowAmount.add(enrolmentsPrice.totalPayNow), enrolmentsPrice.enrolmentNodes).process()
-       
-        payNowAmount = redeemedVouchers.leftToPay
-
-        if (redeemedVouchers.error) {
-            model.error = redeemedVouchers.error
-            return this
-        }
-        
-        model.amount = new Amount().with { a ->
-            a.total = totalAmount.doubleValue()
-            a.payNow =  payNowAmount.doubleValue()
-            a.minPayNow = a.payNow
-            a.discount = totalDiscount.doubleValue()
-            a.voucherPayments = redeemedVouchers.voucherPayments
-            Money owing = totalAmount.subtract(totalDiscount).subtract(payNowAmount).subtract(redeemedVouchers.vouchersTotal)
-            a.owing = owing.doubleValue()
-            a.isEditable = owing.isGreaterThan(Money.ZERO)
-            a
+        if (corporatePass) {
+            enrolmentsToProceed.values().flatten().unique()
+            ValidateCorporatePass corporatePassValidate = new ValidateCorporatePass(corporatePass, enrolmentsToProceed.values().flatten().unique(), products.unique())
+            if (corporatePassValidate.validate()) {
+                model.error = corporatePassValidate.error
+                return this
+            }
+            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass).calculate()
+            model.amount = new Amount().with { a ->
+                a.total = totalAmount.doubleValue()
+                a.discount = enrolmentsPrice.totalDiscount.doubleValue()
+                a
+            }
+        } else {
+            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, null).calculate()
+            totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
+            
+            ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNowAmount.add(enrolmentsPrice.totalPayNow), enrolmentsPrice.enrolmentNodes).process()
+            if (redeemedVouchers.error) {
+                model.error = redeemedVouchers.error
+                return this
+            }
+            
+            payNowAmount = redeemedVouchers.leftToPay
+            
+            model.amount = new Amount().with { a ->
+                a.total = totalAmount.doubleValue()
+                a.payNow =  payNowAmount.doubleValue()
+                a.minPayNow = a.payNow
+                a.discount = totalDiscount.doubleValue()
+                a.voucherPayments = redeemedVouchers.voucherPayments
+                Money owing = totalAmount.subtract(totalDiscount).subtract(payNowAmount).subtract(redeemedVouchers.vouchersTotal)
+                a.owing = owing.doubleValue()
+                a.isEditable = owing.isGreaterThan(Money.ZERO)
+                a
+            }
         }
         
         this
     }
     
     void processNodes() {
+        
+        processCorporatePass()
         checkoutModelRequest.contactNodes.each { contactNode ->
             model.contactNodes << contactNode
 
@@ -107,7 +130,16 @@ class ProcessCheckoutModel {
             } else if (!contactNode.enrolments.empty || !contactNode.applications.empty ) {
                 model.error = new CommonError(message: 'Purchase items are not valid')
             }
-
+            
+            if (corporatePass) {
+                corporatePassNode.vouchers += contactNode.vouchers.findAll { it.selected && it.errors.empty }.each { it.contactId = corporatePass.contact.id.toString() }
+                contactNode.vouchers.clear()
+            }
+        }
+        
+        if (corporatePassNode && !corporatePassNode.vouchers.empty) {
+            model.contactNodes << corporatePassNode
+            model.payerId = corporatePass.contact.id.toString()
         }
     }
     
@@ -165,6 +197,7 @@ class ProcessCheckoutModel {
                 a.errors += processProduct.article.errors
                 a.warnings += processProduct.article.warnings
                 if (a.errors.empty) {
+                    products << processProduct.persistentProduct
                     a.price = processProduct.article.price
                     totalAmount = totalAmount.add(a.price.toMoney())
                 }
@@ -182,6 +215,7 @@ class ProcessCheckoutModel {
                 m.errors += processProduct.membership.errors
                 m.warnings += processProduct.membership.warnings
                 if (m.errors.empty) {
+                    products << processProduct.persistentProduct
                     m.price = processProduct.membership.price
                     totalAmount = totalAmount.add(m.price.toMoney())
                 }
@@ -196,6 +230,7 @@ class ProcessCheckoutModel {
             v.errors += validateVoucher.errors
             v.warnings += validateVoucher.warnings
             if (v.errors.empty) {
+                products << validateVoucher.persistentProduct
                 totalAmount = totalAmount.add(v.price.toMoney())
             }
         }
@@ -215,5 +250,17 @@ class ProcessCheckoutModel {
            return false
        }
     }
-
+    
+    void processCorporatePass() {
+        String corporatePassId = StringUtils.trimToNull(checkoutModelRequest.corporatePassId)
+        if (corporatePassId) {
+            corporatePass = new GetCorporatePass(context, college, corporatePassId).get()
+            corporatePassNode = new ContactNode(contactId: model.payerId )
+        }
+    }
+    
+    CheckoutModel getModel() {
+        return model
+    }
+    
 }
