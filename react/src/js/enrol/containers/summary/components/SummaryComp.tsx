@@ -65,7 +65,7 @@ export class SummaryComp extends React.Component<Props, any> {
             <div className="amount-container">
               <AmountComp
                 amount={amount}
-                onUpdatePayNow={val => amount.isEditable ? onUpdatePayNow(amount, val) : undefined}
+                onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
                 onAddCode={onAddCode}
                 onToggleVoucher={onToggleVoucher}
                 redeemVouchers={redeemVouchers}

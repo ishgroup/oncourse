@@ -30,7 +30,7 @@ export class PaymentComp extends React.Component<Props, any> {
                 amount={amount}
                 onAddCode={onAddCode}
                 promotions={promotions}
-                onUpdatePayNow={val => amount.isEditable ? onUpdatePayNow(amount, val) : undefined}
+                onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
                 onToggleVoucher={onToggleVoucher}
                 redeemVouchers={redeemVouchers}
               />

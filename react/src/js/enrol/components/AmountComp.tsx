@@ -11,7 +11,7 @@ interface Props {
   onAddCode: (code: string) => void;
   promotions: Promotion[];
   redeemVouchers?: any;
-  onUpdatePayNow?: (val) => void;
+  onUpdatePayNow?: (amount, val) => void;
   onToggleVoucher?: (redeemVoucher, enabled) => void;
 }
 
@@ -27,7 +27,7 @@ class AmountComp extends React.Component<Props, any> {
     const reg = (/^[0-9]+\.?[0-9]*$/);
 
     if (val > 0 && reg.test(val)) {
-      onUpdatePayNow(val);
+      onUpdatePayNow(amount, val);
       this.setState({errors: CheckoutService.validatePayNow({...amount, payNow: val})});
     }
   }
@@ -58,7 +58,7 @@ class AmountComp extends React.Component<Props, any> {
           { amount && amount.payNow && amount.payNowVisibility &&
           <PayNow
             payNow={amount.payNow}
-            onChange={val => onUpdatePayNow ? this.handleChangePayNow(val) : undefined}
+            onChange={onUpdatePayNow ? this.handleChangePayNow : undefined}
             errors={this.state.errors}
           />
           }
