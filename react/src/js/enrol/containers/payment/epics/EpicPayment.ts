@@ -83,9 +83,9 @@ const SubmitPaymentCorporatePassRequest: Request<any, IshState> = {
 
 const SubmitPaymentCorporatePass: Epic<any, any> = Create(SubmitPaymentCorporatePassRequest);
 
-const corporatePassRequest: Request<PaymentResponse, IshState> = {
+const corporatePassRequest: Request<CorporatePass, IshState> = {
   type: GET_CORPORATE_PASS,
-  getData: (payload: any, state: IshState): Promise<PaymentResponse> => {
+  getData: (payload: any, state: IshState): Promise<CorporatePass> => {
     return CheckoutService.getCorporatePass(payload, state);
   },
   processData: (response: CorporatePass, state: IshState): IAction<any>[] | Observable<any> => {
@@ -104,9 +104,9 @@ const corporatePassRequest: Request<PaymentResponse, IshState> = {
 
 const GetCorporatePass: Epic<any, any> = Create(corporatePassRequest);
 
-const checkCorporatePassEnableRequest: Request<PaymentResponse, IshState> = {
+const checkCorporatePassEnableRequest: Request<boolean, IshState> = {
   type: CHECK_IF_CORPORATE_PASS_ENABLED,
-  getData: (payload: any, state: IshState): Promise<PaymentResponse> => {
+  getData: (payload: any, state: IshState): Promise<boolean> => {
     return CheckoutService.checkIfCorporatePassEnabled();
   },
   processData: (response: boolean, state: IshState): IAction<any>[] | Observable<any> => {
