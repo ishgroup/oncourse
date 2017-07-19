@@ -28,6 +28,9 @@ const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phas
           return state;
       }
 
+    case Actions.RESET_CHECKOUT_STATE:
+      return Phase.Summary;
+
     default:
       return state;
   }
@@ -101,7 +104,7 @@ const ContactsReducer = (state: ContactsState = normalize([], ContactsSchema), a
       return ns;
 
     case Actions.RESET_CHECKOUT_STATE:
-      return null;
+      return normalize([], ContactsSchema);
 
     default:
       return state;
