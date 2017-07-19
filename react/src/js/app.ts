@@ -16,12 +16,13 @@ const appStart = () => {
     start(store);
   });
 }
+appStart();
 
-const config = new MockConfig();
-
-config.init((config:MockConfig) => {
-  appStart();
-});
+// const config = new MockConfig();
+//
+// config.init((config:MockConfig) => {
+//   appStart();
+// });
 
 // Log application version before start.
 Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.APP_VERSION}"`));
@@ -45,6 +46,4 @@ const start = store => {
 // to get notifications about new react-markers
   WindowService.set("react", react);
 };
-
-
 
