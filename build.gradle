@@ -60,6 +60,8 @@ allprojects {
 
 	dependencies {
 		testCompile 'junit:junit:4.12'
+		testCompile 'org.dbunit:dbunit:2.4.8'
+
 		compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-1.2-api:$log4j2Version"

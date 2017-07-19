@@ -117,7 +117,6 @@ dependencies {
 	testCompile "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testCompile 'org.mockito:mockito-core:1.10.19'
  	testCompile 'org.apache.derby:derbytools:10.13.1.1'
-	testCompile 'dbunit:dbunit:2.4.8'
 	testCompile 'commons-dbcp:commons-dbcp:1.4'
 	testCompile 'xmlunit:xmlunit:1.6' //used for xml export validation tests
 	testCompile 'org.kohsuke:wordnet-random-name:1.3'
