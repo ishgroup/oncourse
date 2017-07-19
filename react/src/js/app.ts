@@ -8,8 +8,6 @@ import {HTMLMarkers} from "./common/services/HTMLMarker";
 
 import {MockConfig} from "../dev/mocks/mocks/MockConfig";
 
-import "../scss/index.scss";
-
 const appStart = () => {
   const store = CreateStore();
   RestoreState(store, () => {
