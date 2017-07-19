@@ -12,7 +12,7 @@ import {
   submitPaymentCorporatePass, updatePaymentStatus,
 } from "../actions/Actions";
 import {connect} from "react-redux";
-import {changePhase, setPayer} from "../../../actions/Actions";
+import {changePhase, getAmount, setPayer} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
@@ -38,6 +38,7 @@ interface Props extends FormProps<DataShape, any, any> {
   onAddPayer?: () => void;
   onAddCompany?: () => void;
   onChangeTab?: (tab) => void;
+  onUnmountPassComponent?: () => void;
   corporatePassAvailable?: boolean;
 }
 
@@ -59,7 +60,8 @@ class PaymentForm extends React.Component<Props, any> {
   render() {
     const {
       handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass,
-      onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable
+      onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable,
+      onUnmountPassComponent,
     } = this.props;
 
     const disabled = (invalid || pristine || submitting);
@@ -90,7 +92,11 @@ class PaymentForm extends React.Component<Props, any> {
               }
 
               {currentTab === Tabs.corporatePass &&
-              <CorporatePassComp onSubmitPass={onSubmitPass} corporatePass={corporatePass}/>
+              <CorporatePassComp
+                onSubmitPass={onSubmitPass}
+                corporatePass={corporatePass}
+                onUnmount={onUnmountPassComponent}
+              />
               }
 
             </div>
@@ -228,6 +234,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeTab(tab));
       dispatch(resetCorporatePass());
     },
+    onUnmountPassComponent: () => dispatch(getAmount()),
   };
 };
 

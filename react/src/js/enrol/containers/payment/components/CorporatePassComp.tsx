@@ -7,11 +7,20 @@ import {TextField} from "../../../../components/form-new/TextField";
 interface Props {
   onSubmitPass: (code: string) => void;
   corporatePass?: CorporatePass;
+  onUnmount?: () => void;
 }
 
 class CorporatePassComp extends React.Component<Props, any> {
   private passInput;
   private referenceInput;
+
+  componentWillUnmount() {
+    // recalculate amount after reset corporate pass
+    const {corporatePass, onUnmount} = this.props;
+    if (corporatePass.id) {
+      onUnmount();
+    }
+  }
 
   handleClick() {
     const {onSubmitPass} = this.props;

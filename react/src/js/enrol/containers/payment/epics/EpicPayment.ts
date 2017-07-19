@@ -30,7 +30,7 @@ import {CreditCardFormValues} from "../services/PaymentService";
 import {PaymentStatus} from "../../../../model/checkout/payment/PaymentStatus";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
-import {changePhase} from "../../../actions/Actions";
+import {changePhase, getAmount} from "../../../actions/Actions";
 import {CorporatePass} from "../../../../model/checkout/corporatepass/CorporatePass";
 
 const request: Request<PaymentResponse, IshState> = {
@@ -96,6 +96,7 @@ const corporatePassRequest: Request<PaymentResponse, IshState> = {
   processData: (response: CorporatePass, state: IshState): IAction<any>[] | Observable<any> => {
     return [
       applyCorporatePass(response),
+      getAmount(),
     ];
   },
   processError: (response: AxiosResponse): IAction<any>[] => {
