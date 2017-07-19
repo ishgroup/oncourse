@@ -262,5 +262,8 @@ class ProcessCheckoutModel {
     CheckoutModel getModel() {
         return model
     }
+    CorporatePass getCorporatePass() {
+        return corporatePass
+    }
     
 }

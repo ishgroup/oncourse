@@ -5,6 +5,9 @@ import ish.oncourse.model.College
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.willow.cayenne.CayenneService
+import ish.oncourse.willow.checkout.functions.GetCorporatePass
+import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
+import ish.oncourse.willow.checkout.payment.HasErrors
 import ish.oncourse.willow.model.checkout.corporatepass.CorporatePass
 import ish.oncourse.willow.model.checkout.corporatepass.GetCorporatePassRequest
 import ish.oncourse.willow.model.checkout.corporatepass.MakeCorporatePassRequest
@@ -49,19 +52,16 @@ class CorporatePassApiImpl implements CorporatePassApi {
 
     @Override
     Boolean isCorporatePassEnabled() {
-        new IsCorporatePassEnabled(collegeService.college, cayenneService.newContext())
+        new IsCorporatePassEnabled(collegeService.college, cayenneService.newContext()).get()
     }
 
     @Override
     void makeCorporatePass(MakeCorporatePassRequest request) {
-        if (!corporatePassEnabled) {
-            logger.error("Attempt to use corporate pass, college id: ${collegeService.college.id}")
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'CorporatePass payment method is not enabled for this college.')).build())
-        }
-        
         ObjectContext context = cayenneService.newContext()
         WebSite webSite = collegeService.webSite
         College college = webSite.college
-
+        ProcessCorporatePassRequest processRequest = new ProcessCorporatePassRequest(context, college, request).process()
+        new CreateCorpPassModel(context, college, webSite, request.reference, processRequest.pass, processRequest.model).create()
+        context.commitChanges()
     }
 }
