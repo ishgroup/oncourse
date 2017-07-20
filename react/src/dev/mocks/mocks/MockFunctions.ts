@@ -132,7 +132,7 @@ export const mockField = (name: string, key: string, dateType: DataType): Field 
     name,
     id: faker.random.number() as string,
     description: faker.hacker.phrase(),
-    mandatory: true,
+    mandatory: false,
     dataType: dateType,
     enumType: null,
     value: null,

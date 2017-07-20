@@ -98,20 +98,21 @@ class PaymentForm extends React.Component<Props, any> {
 
             </div>
           </div>
-          <Conditions/>
-
-          <div className="form-controls enrolmentsSelected">
-            <input
-              disabled={disabled}
-              value="Confirm"
-              className={classnames("btn btn-primary", {disabled})}
-              id="paymentSubmit"
-              name="paymentSubmit"
-              type="submit"
-            />
-          </div>
         </div>
         }
+
+        <Conditions/>
+
+        <div className="form-controls enrolmentsSelected">
+          <input
+            disabled={disabled}
+            value="Confirm"
+            className={classnames("btn btn-primary", {disabled})}
+            id="paymentSubmit"
+            name="paymentSubmit"
+            type="submit"
+          />
+        </div>
       </form>
     );
   }
