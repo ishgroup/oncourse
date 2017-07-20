@@ -12,41 +12,47 @@
       width: 120px;
       display: inline-block;
       vertical-align: middle;
+      
+      &.t-error {
+        .Select-control {
+          background: #FEF0F0;
+        }
+      }
+  
+      .Select-control {
+        border-radius: 0;
+        height: 26px;
+        background: whiteSmoke;
+    
+        span {
+          display: block;
+          vertical-align: middle;
+          position: static;
+          height: 26px;
+      
+          &.Select-arrow-zone {
+            width: 20px;
+            position: relative;
+            display: table-cell;
+            vertical-align: middle;
+          }
+      
+          &.Select-arrow {
+            vertical-align: middle;
+            height: auto;
+          }
+        }
+    
+        .Select-input > input {
+          border: 0 none;
+          font-size: 14px;
+          padding: 4px 0 6px;
+          width: 100%;
+        }
+      }
     }
     
-    .Select-control {
-      -webkit-border-radius: 0px;
-      -moz-border-radius: 0px;
-      border-radius: 0px;
-      height: 26px;
-      background: whiteSmoke;
-  
-      span {
-        display: block;
-        vertical-align: middle;
-        position: static;
-        height: 26px;
-        
-        &.Select-arrow-zone {
-          width: 20px;
-          position: relative;
-          display: table-cell;
-          vertical-align: middle;
-        }
-        
-        &.Select-arrow {
-          vertical-align: middle;
-          height: auto;
-        }
-      }
-      
-      .Select-input > input {
-        border: 0 none;
-        font-size: 14px;
-        padding: 4px 0 6px;
-        width: 100%;
-      }
-    }
+    
     
     .Select-placeholder, .Select--single > .Select-control .Select-value, .Select-input {
       height: 26px;

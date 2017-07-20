@@ -16,6 +16,8 @@ class FieldFactory extends React.Component<any, any> {
 
   private getComponent = (field: Field): any => {
     const props: any = toFormFieldProps(field);
+    props.onBlurSelect = this.props.onBlurSelect;
+
     switch (field.dataType) {
       case DataType.STRING:
       case DataType.PHONE:

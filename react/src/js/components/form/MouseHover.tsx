@@ -9,17 +9,17 @@ export class MouseHover extends React.Component<MouseHoverProps, MouseHoverState
     super();
 
     this.state = {
-      isInside: false
+      isInside: false,
     };
   }
 
   onEnter = () => {
     this.setState({isInside: true});
-  };
+  }
 
   onLeave = () => {
     this.setState({isInside: false});
-  };
+  }
 
   /**
    * Since it possible that cursor will be already inside component,
@@ -27,7 +27,7 @@ export class MouseHover extends React.Component<MouseHoverProps, MouseHoverState
    */
   onMove = () => {
     this.setState({isInside: true});
-  };
+  }
 
   render() {
     const {component, componentProps} = this.props;
@@ -41,7 +41,7 @@ export class MouseHover extends React.Component<MouseHoverProps, MouseHoverState
         {React.createElement(
           component,
           {mouseInside: this.state.isInside, ...componentProps},
-          null
+          null,
         )}
       </div>
     );

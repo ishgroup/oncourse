@@ -4,12 +4,12 @@ import {metaFrom} from "./FieldsUtils";
 import ReactTooltip from "react-tooltip";
 
 interface Props {
-  label: string,
-  required: boolean
-  children: any
-  touched: boolean
-  error: string
-  warning: string
+  label: string;
+  required: boolean;
+  children: any;
+  touched: boolean;
+  error: string;
+  warning: string;
 }
 
 class Wrapper extends React.Component<any, any> {
@@ -19,8 +19,8 @@ class Wrapper extends React.Component<any, any> {
     let input = this.props.input;
     if (!input) {
       input = {
-        name: this.props.name
-      }
+        name: this.props.name,
+      };
     }
 
     const {error, warning} = metaFrom(this.props);
@@ -39,7 +39,7 @@ class Wrapper extends React.Component<any, any> {
         </span>
         {this.renderMessage(input.name)}
       </div>
-    )
+    );
   }
 
   renderMessage(id: string) {

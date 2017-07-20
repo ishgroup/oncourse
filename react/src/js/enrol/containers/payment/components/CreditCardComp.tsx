@@ -107,7 +107,7 @@ class CreditCardComp extends React.Component<Props, any> {
                     <span>Expiry</span>
                     <span><em title="This field is required">*</em></span>
                   </label>
-                  <span className="valid input-select-small">
+                  <span className="input-select-small inline-form">
                     <Field
                       component={SelectField}
                       name={FieldName.expiryMonth}

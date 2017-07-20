@@ -24,18 +24,21 @@ class ContactEditForm extends React.Component<Props, any> {
   }
 
   render() {
-    const {handleSubmit, pristine, invalid, submitting, concessionTypes} = this.props;
+    const {handleSubmit, pristine, touch, invalid, submitting, concessionTypes} = this.props;
     const contact: Contact = this.props.contact;
     const fields: ContactFields = this.props.fields;
 
     return (
       <div>
         <form onSubmit={handleSubmit} id="contactEditorForm">
-          <ContactEdit contact={contact} fields={fields}/>
+          <ContactEdit touch={touch} contact={contact} fields={fields}/>
 
           {concessionTypes &&
             <fieldset>
-              <ConcessionForm concessionTypes={concessionTypes} onTypeChange={() => console.log('todo: partial reset')}/>
+              <ConcessionForm
+                concessionTypes={concessionTypes}
+                onTypeChange={() => console.log('todo: partial reset')}
+              />
             </fieldset>
           }
 
@@ -44,7 +47,7 @@ class ContactEditForm extends React.Component<Props, any> {
                    className="btn btn-primary"
                    name="submitContact"
                    type="submit"
-                   disabled={pristine || submitting}
+                   disabled={invalid || submitting}
             />
           </div>
         </form>
@@ -63,9 +66,14 @@ interface Props extends FormProps<FormData, Props, any> {
 
 const Form = reduxForm({
   form: NAME,
-  validate: (data, props) => {
+  validate: (data, props: Props) => {
     const errors = {};
     const concessionErrors = concessionFormValidate(data, props);
+    props.fields.headings.map(headings =>
+      headings.fields.map(field =>
+        (field.mandatory && !data[field.key]) ? errors[field.key] = `Field '${field.name}' is required` : field,
+      ),
+    );
 
     return {...errors, ...concessionErrors};
   },

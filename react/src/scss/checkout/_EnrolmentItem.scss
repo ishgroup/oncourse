@@ -149,6 +149,15 @@
         position: relative;
       }
       
+      .inline-form {
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        
+        .Select {
+          max-width: 55px;
+        }
+      }
+      
       .date-separator {
         line-height: 28px;
         padding: 0 3px;

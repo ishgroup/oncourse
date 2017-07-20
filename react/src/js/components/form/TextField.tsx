@@ -6,7 +6,7 @@ import {MouseHover, WrappedMouseHoverProps} from "./MouseHover";
 import {showError, ValidateText} from "./ValidateText";
 import {FieldLabel} from "./FieldLabel";
 
-export const TextField = (props) => (
+export const TextField = props => (
   <MouseHover component={inputComponent} componentProps={props}/>
 );
 
@@ -30,12 +30,15 @@ function inputComponent(props: TextFieldProps) {
       <span className={classnames({
         valid: !isShowError,
         validate: isShowError,
-        'has-error': isShowError
+        'has-error': isShowError,
       })}>
-        <input {...input}
-             className={classnames('input-fixed', 'contact-field', {'t-error': isShowError})}
-             placeholder={placeholder}
-             type={type}/>
+        <input
+          {...input}
+          className={classnames('input-fixed', 'contact-field', {'t-error': isShowError})}
+          placeholder={placeholder}
+          type={type}
+          required={required}
+        />
         <ValidateText {...props}/>
       </span>
     </div>
