@@ -48,6 +48,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="middleName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="abn" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="invoiceTerms" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="taxOverrideId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -85,7 +86,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "tutorId",
     "middleName",
     "abn",
-    "invoiceTerms"
+    "invoiceTerms",
+    "taxOverrideId"
 })
 public class ContactStub
     extends ReplicationStub
@@ -167,6 +169,10 @@ public class ContactStub
     @XmlJavaTypeAdapter(Adapter3 .class)
     @XmlSchemaType(name = "int")
     protected Integer invoiceTerms;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "long")
+    protected Long taxOverrideId;
 
     /**
      * Gets the value of the businessPhoneNumber property.
@@ -838,6 +844,30 @@ public class ContactStub
      */
     public void setInvoiceTerms(Integer value) {
         this.invoiceTerms = value;
+    }
+
+    /**
+     * Gets the value of the taxOverrideId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Long getTaxOverrideId() {
+        return taxOverrideId;
+    }
+
+    /**
+     * Sets the value of the taxOverrideId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTaxOverrideId(Long value) {
+        this.taxOverrideId = value;
     }
 
 }

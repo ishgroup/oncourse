@@ -94,6 +94,7 @@
             <xs:element name="fieldConfiguration" type="tns:fieldConfigurationStub"/>
             <xs:element name="fieldConfigurationScheme" type="tns:fieldConfigurationSchemeStub"/>
             <xs:element name="fieldHeading" type="tns:fieldHeadingStub"/>
+            <xs:element name="tax" type="tns:taxStub"/>
             <xs:element name="hollow" type="tns:hollowStub" />
             <xs:element name="deleted" type="tns:deletedStub" />
             <xs:element name="confirmExecution" type="tns:confirmExecution" />
@@ -456,6 +457,7 @@
                             <xs:element name="middleName" type="xs:string" />
                             <xs:element name="abn" type="xs:string" />
                             <xs:element name="invoiceTerms" type="xs:int" />
+                            <xs:element name="taxOverrideId" type="xs:long" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -1617,7 +1619,20 @@
                     </xs:extension>
                 </xs:complexContent>
             </xs:complexType>
-
+            
+            <xs:complexType name="taxStub">
+                <xs:complexContent>
+                    <xs:extension base="tns:replicationStub">
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string"/>
+                            <xs:element name="isGSTTaxType" type="xs:boolean"/>
+                            <xs:element name="rate" type="xs:decimal"/>
+                            <xs:element name="taxCode" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            
             <xs:complexType name="confirmExecution">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="id" type="xs:long" />

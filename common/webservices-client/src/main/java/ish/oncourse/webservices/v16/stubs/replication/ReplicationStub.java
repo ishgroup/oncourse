@@ -96,6 +96,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     FieldConfigurationSchemeStub.class,
     DiscountConcessionTypeStub.class,
     WaitingListStub.class,
+    TaxStub.class,
     FieldHeadingStub.class,
     CustomFieldStub.class,
     TutorStub.class,
