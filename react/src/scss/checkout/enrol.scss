@@ -39,7 +39,7 @@ div.clearboth {
     vertical-align: middle;
     font-weight: bold;
   }
-
+  
   .conditions label {
     display: block;
     width: auto;
@@ -49,21 +49,21 @@ div.clearboth {
     padding-left: 20px;
     font-weight: normal;
   }
-
+  
   span {
     display: inline-block;
     vertical-align: top;
     position: relative;
-
+    
     &.validate-text {
       position: absolute;
       z-index: 1;
       font-size: 11px;
       margin-left: 20px;
       max-width: 220px;
-      left: 120px;
+      left: 180px;
       top: 0;
-
+      
       .reason {
         position: relative;
         display: block;
@@ -72,7 +72,7 @@ div.clearboth {
         border: 1px solid #FCC5C5;
         font-weight: bold;
       }
-
+      
       .reason-pointer {
         display: block;
         height: 15px;
@@ -86,7 +86,7 @@ div.clearboth {
           repeat: no-repeat;
         }
       }
-
+      
       .hint {
         background-color: #FDF6D6;
         border: 1px solid #F9E99C;
@@ -95,7 +95,7 @@ div.clearboth {
         display: block;
         padding: 3px;
       }
-
+      
       .hint-pointer {
         display: block;
         height: 15px;
@@ -109,41 +109,41 @@ div.clearboth {
           repeat: no-repeat;
         }
       }
-
+      
       .hidden-text {
         display: none;
       }
     }
   }
-
+  
   input {
-
+    
     border: 1px solid #ddd;
     font-size: 11px;
-
+    
     &[type="text"],
     &[type="password"] {
       padding: 3px;
       background-color: whiteSmoke;
-      width: 120px;
+      width: 180px;
     }
-
+    
     &:hover {
       border-color: #aaaaaa;
     }
-
+    
     &:focus {
       outline: none;
       border-color: #000;
     }
-
+    
     &.t-error {
       font-style: normal;
       background-color: #FEF0F0;
     }
-
+    
   }
-
+  
   textarea {
     padding: 3px;
     background-color: whiteSmoke;
@@ -152,7 +152,7 @@ div.clearboth {
     height: 150px;
     width: 44%;
   }
-
+  
   img.t-error-icon {
     display: none;
     vertical-align: text-top;
@@ -160,7 +160,7 @@ div.clearboth {
     top: -10px;
     left: -14px;
   }
-
+  
   .enrolmentsSelected {
     .form-controls {
       margin-bottom: 10px;
@@ -172,18 +172,18 @@ div.clearboth {
       border: 0;
     }
   }
-
+  
   .header-content {
     color: #333;
     font-size: 23px;
     border-radius: 0 5px 0px 0px;
     position: relative;
     margin-bottom: 25px;
-
+    
     .header {
       padding: 10px 0 0 11px;
       background: url("/s/img/Padlock.png") 7px 5px no-repeat;
-
+      
       h1 {
         text-transform: none;
         font-size: 23px;
@@ -192,7 +192,7 @@ div.clearboth {
         line-height: 26px;
         padding-left: 45px;
       }
-
+      
       span {
         color: #666;
         font-size: 14px;
@@ -201,7 +201,7 @@ div.clearboth {
       }
     }
   }
-
+  
   #addCorporatePass {
     margin-top: 0;
     display: inline-block;
@@ -215,20 +215,20 @@ div.clearboth {
     vertical-align: middle;
     cursor: pointer;
   }
-
+  
   .small-textbox {
     width: 80px;
     padding: 4px 3px;
   }
-
+  
   [id*=creditCardCVV] {
     width: 80px;
   }
-
+  
   #cvvLink {
     margin: 5px 0 0 50px;
   }
-
+  
   label {
     display: inline-block;
     text-align: right;
@@ -238,12 +238,12 @@ div.clearboth {
     vertical-align: middle;
     line-height: 16px;
   }
-
+  
   input[type="checkbox"], input[type="radio"] {
     margin-top: 2px;
     margin-right: 5px;
   }
-
+  
   .conditions label {
     display: block;
     width: auto;
@@ -253,22 +253,22 @@ div.clearboth {
     padding-left: 20px;
     font-weight: normal;
   }
-
+  
   th {
     text-align: left;
     border: 0 !important;
     font-weight: normal !important;
   }
-
+  
   tbody td {
     border: none;
     vertical-align: middle;
-
+    
     &#total {
       width: 124px;
     }
   }
-
+  
   .button {
     float: left;
     margin: 0 0 0 10px;
@@ -287,30 +287,30 @@ div.clearboth {
     -webkit-border-radius: 3px;
     border-radius: 3px;
   }
-
+  
   #addContact {
     background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
     margin: 0;
     padding: 5px 0 5px 24px;
     cursor: pointer;
   }
-
+  
   /**ConcessionEditor component*/
-
+  
   div.concessionEditor {
     width: 100%;
     font-weight: bold;
-
+    
     .cancelConcession, .deleteConcession, .saveConcession {
       cursor: pointer;
     }
-
+    
     .conditions label {
       padding-left: 0;
       margin: 30px 0 0 0;
     }
   }
-
+  
   .applicationOnly {
     color: #ff0000;
   }
@@ -338,24 +338,34 @@ div.clearboth {
 }
 
 .content {
+  .radio-list {
+    > span {
+      margin-right: 10px;
+  
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  
   .payments {
-
+    
     tr {
-
+      
       div.drop-down {
         float: left;
       }
-
+      
       td .student-info {
         // color: #345;
         // font-size: 20px;
-
+        
         .left i {
           font-size: 12px;
           margin-left: 10px;
         }
       }
-
+      
       > span {
         cursor: pointer;
         color: white;
@@ -377,7 +387,7 @@ div.clearboth {
         border-width: 1px;
         border-color: #04C #04C #002A80;
         border-style: solid;
-
+        
         b.caret {
           margin-top: 8px;
           border-top-color: white;
@@ -391,7 +401,7 @@ div.clearboth {
           border-left: 4px solid transparent;
           content: "";
         }
-
+        
         .drop-down-content {
           z-index: 999;
           position: absolute;
@@ -411,10 +421,10 @@ div.clearboth {
           background-clip: padding-box;
           padding: 5px 0;
           display: none;
-
+          
           li {
             font-size: 12px;
-
+            
             div.payer {
               text-decoration: none;
               color: white;
@@ -428,19 +438,19 @@ div.clearboth {
               text-decoration: none;
               color: #333;
             }
-
+            
             &:hover {
               background-color: #006DCC;
               @include general-gradient;
               background-repeat: repeat-x;
               border-color: #04C #04C #002A80;
-
+              
               div.contact, div.payer {
                 color: #fff;
               }
-
+              
             }
-
+            
             div.contact {
               font-size: 12px;
               color: #333;
@@ -448,11 +458,11 @@ div.clearboth {
               padding: 5px;
             }
           }
-
+          
           &.visible {
             display: block;
           }
-
+          
           &::before {
             position: absolute;
             top: -7px;
@@ -464,7 +474,7 @@ div.clearboth {
             border-bottom-color: rgba(0, 0, 0, 0.2);
             content: '';
           }
-
+          
           &::after {
             position: absolute;
             top: -6px;
@@ -475,10 +485,10 @@ div.clearboth {
             border-left: 6px solid transparent;
             content: '';
           }
-
+          
         }
       }
-
+      
       .validation {
         color: #B94A48;
         background-color: #F2DEDE;
@@ -490,7 +500,7 @@ div.clearboth {
         padding: 8px 35px 8px 14px;
         margin: 0 10px 25px 10px;
       }
-
+      
     }
     label {
       margin-bottom: 0;
@@ -502,39 +512,48 @@ div.clearboth {
 }
 
 .content {
-
+  fieldset {
+    select {
+      width: 180px;
+    }
+  }
+  
   fieldset.opt-in {
-
+    
     .fieldset-intro {
       margin-left: 0;
       max-width: none;
       width: 100%;
     }
   }
-
+  
   .payments {
-
+    
     fieldset {
+      select {
+        width: 180px;
+      }
+      
       .radio-list {
         margin-left: 0;
         padding-left: 0;
         top: auto;
       }
     }
-
+    
     textarea {
-      min-width: 120px;
-      width: 120px;
+      min-width: 180px;
+      width: 180px;
       min-height: 78px;
       height: 78px;
     }
-
+    
     tr {
       .student-info {
         font-weight: bold;
         padding-bottom: 5px; // 25px for alt. scheme
         position: relative;
-
+        
         .student-email {
           color: #888888;
           font-size: 11px;
@@ -544,7 +563,7 @@ div.clearboth {
           text-transform: lowercase;
           top: 1px; // 18px for alt. scheme
           margin-right: 5px;
-
+          
           // &:before {						// for alt. scheme
           //     content: "\2709";			// e-mail icon
           //  font-size: 21px;				// instead of brakets
@@ -555,11 +574,11 @@ div.clearboth {
           //  top: 2px;
           // }
         }
-
+        
         .student-affilation {
           color: #888888;
           font-weight: normal;
-
+          
           strong {
             margin-right: 6px;
           }
@@ -574,12 +593,12 @@ div.clearboth {
     td {
       padding: 4px 21px 4px 8px;
     }
-
+    
     .student-name td {
       padding-top: 20px;
     }
   }
-
+  
   tbody#totals td {
     padding-top: 10px;
   }
@@ -587,14 +606,14 @@ div.clearboth {
 
 tbody.checkoutList {
   border-bottom: 1px solid #D6D6D6;
-
+  
   > tr.enrolmentItem {
-
+    
     > td.enrolmentInfo {
       width: 500px;
       border-width: 0 0 0 1px !important;
     }
-
+    
     > td.alignright {
       border-width: 0 1px 0 0 !important;
     }
@@ -606,11 +625,11 @@ tbody.checkoutList {
     .student-name td {
       border-top: 1px solid #ccc;
     }
-
+    
     td em {
       margin-left: 20px;
     }
-
+    
     td.alignright {
       span.fullPrice, span.totalPrice {
         float: right;
@@ -619,7 +638,7 @@ tbody.checkoutList {
       }
     }
   }
-
+  
   > thead > tr:first-child > th {
     color: #345;
     font-size: 18px;
@@ -628,17 +647,17 @@ tbody.checkoutList {
     border: none;
     border-bottom: 3px solid #CCC;
   }
-
+  
   tbody td.alignright {
     width: auto;
     padding: 4px 43px 4px 8px;
-
+    
     span.fullPrice {
       width: auto;
       margin-right: 0;
       float: none;
     }
-
+    
     span + span {
       margin-left: 10px;
       width: 55px;
@@ -655,7 +674,7 @@ tr.enrolmentItem {
     max-width: 100% !important;
     text-align: left !important;
   }
-
+  
   > td > em {
     > span.ended, > span.started {
       vertical-align: baseline;
@@ -691,11 +710,11 @@ tr.enrolmentItem {
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-
+  
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box;
-
+  
   .active > a, .active > a:hover {
     color: #333;
     text-decoration: none;
@@ -708,7 +727,7 @@ tr.enrolmentItem {
     background-repeat: repeat-x;
     outline: 0;
   }
-
+  
   li > a {
     display: block;
     padding: 3px 20px;
@@ -726,7 +745,7 @@ tr.enrolmentItem {
   padding: 0;
   width: 100%;
   border: none;
-
+  
   span {
     color: #AAA;
     font-size: 13px;
@@ -794,13 +813,13 @@ input.priceValue {
 
 #checkout div.amount-container .amount-content #vouchers {
   white-space: nowrap;
-
+  
   input[type="checkbox"] {
     margin-top: 2px;
     width: initial;
     margin-right: initial;
   }
-
+  
   p label {
     display: inline-block;
     text-overflow: ellipsis;
@@ -834,25 +853,25 @@ input.priceValue {
   border: none;
   width: 100%;
   margin-bottom: 20px;
-
+  
   br {
     display: none;
   }
-
+  
   .left {
     float: left;
   }
-
+  
   .right {
     float: right;
   }
-
+  
   th {
     text-align: left;
     border: 0 !important;
     font-weight: normal !important;
   }
-
+  
   > thead > tr:first-child > th {
     color: #334455;
     font-size: 18px;
@@ -866,7 +885,7 @@ input.priceValue {
       vertical-align: middle;
     }
   }
-
+  
   tbody td {
     border: none;
     border-bottom: 1px solid #D6D6D6;
@@ -895,28 +914,28 @@ input.priceValue {
       text-decoration: line-through !important;
       color: gray !important;
     }
-
+    
     span.collapse {
       display: none;
     }
-
+    
   }
-
+  
   tbody.totals td {
     border-top: 1px solid #D6D6D6;
     font-weight: bold;
   }
-
+  
   .collapse {
     display: none;
   }
-
+  
   .add-concession {
     cursor: pointer;
     background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
     padding: 5px 0 5px 24px;
   }
-
+  
   .concessionEditor {
     width: 100%;
     font-weight: bold;
@@ -924,7 +943,7 @@ input.priceValue {
       font-size: 13px;
     }
   }
-
+  
   tbody form {
     label {
       display: block !important;
@@ -994,7 +1013,7 @@ span.ended {
     border-radius: 4px;
     margin: 0 10px 25px 10px;
   }
-
+  
   .validation {
     color: #B94A48;
     background-color: #F2DEDE;

@@ -9,7 +9,7 @@
     }
     
     .Select {
-      width: 120px;
+      width: 180px;
       display: inline-block;
       vertical-align: middle;
       
@@ -51,8 +51,16 @@
         }
       }
     }
-    
-    
+  
+  
+    .Select-placeholder, .Select--single > .Select-control .Select-value {
+      padding-right: 22px;
+    }
+  
+    .Select-placeholder, .Select--single > .Select-control .Select-value .Select-value-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     
     .Select-placeholder, .Select--single > .Select-control .Select-value, .Select-input {
       height: 26px;

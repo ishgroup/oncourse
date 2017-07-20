@@ -69,6 +69,7 @@ const Form = reduxForm({
   validate: (data, props: Props) => {
     const errors = {};
     const concessionErrors = concessionFormValidate(data, props);
+
     props.fields.headings.map(headings =>
       headings.fields.map(field =>
         (field.mandatory && !data[field.key]) ? errors[field.key] = `Field '${field.name}' is required` : field,

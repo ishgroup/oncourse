@@ -114,7 +114,7 @@
       div  div {
         label {
           font-weight: bold !important;
-          line-height: 28px;
+          line-height: 1em;
           padding-bottom: 0;
           text-align: right !important;
           padding-right: 20px !important;
@@ -154,13 +154,13 @@
         display: inline-flex;
         
         .Select {
-          max-width: 55px;
+          max-width: 80px;
         }
       }
       
       .date-separator {
         line-height: 28px;
-        padding: 0 3px;
+        padding: 0 7px;
       }
       
       .form-details {
