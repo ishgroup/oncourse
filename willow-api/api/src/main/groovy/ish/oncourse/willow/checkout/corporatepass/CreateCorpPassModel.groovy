@@ -63,7 +63,7 @@ class CreateCorpPassModel {
 
     private void processNodes() {
         checkoutModel.contactNodes.each { node ->
-            Contact contact = new GetContact(context, college, node.contactId).get()
+            Contact contact = new GetContact(context, college, node.contactId).get(false)
 
             node.enrolments.findAll{it.selected}.each { e ->
                 new CreateEnrolment(context, college, e, contact, EnrolmentStatus.SUCCESS, { Enrolment enrolment, InvoiceLine il ->

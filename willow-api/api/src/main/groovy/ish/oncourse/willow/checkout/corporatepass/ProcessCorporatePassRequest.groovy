@@ -32,7 +32,6 @@ class ProcessCorporatePassRequest {
         this.context = context
         this.college = college
         this.request = request
-        this.processModel = new ProcessCheckoutModel(context, college, request.checkoutModelRequest)
     }
 
     ProcessCorporatePassRequest process() {
@@ -47,12 +46,13 @@ class ProcessCorporatePassRequest {
         }
 
         request.checkoutModelRequest.corporatePassId = request.corporatePassId
-        ProcessCheckoutModel processModel = processModel.process()
-
+        
+        processModel = new ProcessCheckoutModel(context, college, request.checkoutModelRequest).process()
+        
         if (processModel.model.error) {
             throw new BadRequestException(Response.status(400).entity(processModel.model).build())
         }
-
+        
         if (new HasErrors(processModel.model).hasErrors()) {
             processModel.model.error = new CommonError(message: 'Purchase items are not valid')
             throw new BadRequestException(Response.status(400).entity(processModel.model).build())
@@ -63,6 +63,8 @@ class ProcessCorporatePassRequest {
             error.fieldsErrors << new FieldError(name: 'agreementFlag', error: 'You must agree to the policies before proceeding.')
             throw new BadRequestException(Response.status(400).entity(error).build())
         }
+        
+        return this
     }
 
 

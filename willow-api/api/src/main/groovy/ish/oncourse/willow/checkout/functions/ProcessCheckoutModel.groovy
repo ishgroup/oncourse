@@ -60,7 +60,7 @@ class ProcessCheckoutModel {
         if (corporatePass) {
             enrolmentsToProceed.values().flatten().unique()
             ValidateCorporatePass corporatePassValidate = new ValidateCorporatePass(corporatePass, enrolmentsToProceed.values().flatten().unique(), products.unique())
-            if (corporatePassValidate.validate()) {
+            if (!corporatePassValidate.validate()) {
                 model.error = corporatePassValidate.error
                 return this
             }
@@ -255,7 +255,7 @@ class ProcessCheckoutModel {
         String corporatePassId = StringUtils.trimToNull(checkoutModelRequest.corporatePassId)
         if (corporatePassId) {
             corporatePass = new GetCorporatePass(context, college, corporatePassId).get()
-            corporatePassNode = new ContactNode(contactId: model.payerId )
+            corporatePassNode = new ContactNode(contactId: corporatePass.contact.id.toString() )
         }
     }
     
