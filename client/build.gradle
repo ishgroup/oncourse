@@ -127,9 +127,10 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 		configurations.runtime.files.each { file ->
 			ant.jar(destFile: "${distsDir}/webstart/Libraries/${file.name}", filesetmanifest: "merge") {
 				zipfileset(src: file) {
-                   exclude(name: '**/*SF')
-                   exclude(name: '**/*RSA')
-                   exclude(name: '**/*DSA')
+					exclude(name: '**/*MF')
+					exclude(name: '**/*SF')
+					exclude(name: '**/*RSA')
+					exclude(name: '**/*DSA')
 				}
                 delegate.manifest {
                     attribute(name: 'codebase', value: '*')
