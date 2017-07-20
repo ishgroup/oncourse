@@ -16,7 +16,9 @@ export class HeadingComp extends React.Component<Prop, any> {
     return (
       <fieldset>
         <legend>{heading.name}</legend>
-        <div className="message" dangerouslySetInnerHTML={{__html: heading.description}}/>
+        {heading.description &&
+          <div className="message" dangerouslySetInnerHTML={{__html: heading.description}}/>
+        }
         {heading.fields.map((field, i) => <FieldFactory key={i} field={field} onBlurSelect={touch} />)}
       </fieldset>
     );
