@@ -72,7 +72,7 @@ const Total = props => {
   return (
     <div className="row total-amount">
       <label className="col-xs-12">Total</label>
-      <span className="col-xs-12">{props.total}</span>
+      <span className="col-xs-12">${props.total}</span>
     </div>
   );
 };
@@ -81,7 +81,7 @@ const Discount = props => {
   return (
     <div className="row total-discount">
       <label className="col-xs-12">Discount</label>
-      <span className="col-xs-12">{props.discount}</span>
+      <span className="col-xs-12">${props.discount}</span>
     </div>
   );
 };
@@ -101,7 +101,7 @@ const RedeemVoucher = props => {
         />
         {redeemVoucher.name}
       </label>
-      <span className="col-xs-12">{redeemVoucher.enabled ? voucherPayment.amount : 0}</span>
+      <span className="col-xs-12">${redeemVoucher.enabled ? voucherPayment.amount : 0}</span>
     </div>
   );
 };
@@ -123,7 +123,7 @@ const PayNow = props => {
   );
 
   const renderPayNowValue = () => (
-    <span className="col-xs-12">{props.payNow}</span>
+    <span className="col-xs-12">${props.payNow}</span>
   );
 
   return (

@@ -76,12 +76,19 @@
   #checkout {
     .enrolmentItem {
       padding: 8px 0;
+      
       &.disabled {
         color: #888;
+        
         span.fee-discounted {
           color: #d2887d;
         }
       }
+      
+      .enrolmentInfo {
+        line-height: 22px;
+      }
+      
       span {
         vertical-align: middle;
       }
@@ -99,11 +106,21 @@
         }
       }
       div.alignright {
-        padding-right: 43px;
+        padding-right: 60px;
+        
+        .row + .row {
+          span {
+            color: #921;
+          }
+        }
       }
     }
     div.amount-container {
       .amount-content {
+        label {
+          line-height: 22px;
+        }
+        
         span {
           padding: 0;
         }

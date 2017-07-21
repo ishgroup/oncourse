@@ -19,7 +19,7 @@ export interface Props {
 class EnrolmentComp extends React.Component<Props, any> {
   public render(): JSX.Element {
     const {enrolment, courseClass, contact, onChange} = this.props;
-    const divClass = classnames("row", "enrolmentItem", {"disabled": !enrolment.selected});
+    const divClass = classnames("row", "enrolmentItem", {disabled: !enrolment.selected});
     const name = `enrolment-${contact.id}-${enrolment.classId}`;
     const title: string = `${courseClass.course.name}`;
 
@@ -30,8 +30,16 @@ class EnrolmentComp extends React.Component<Props, any> {
     }
     return (
       <div className={divClass}>
-        <ItemWrapper title={title} name={name} error={error} warning={warning} selected={enrolment.selected} item={enrolment} contact={contact}
-                     onChange={onChange}>
+        <ItemWrapper
+          title={title}
+          name={name}
+          error={error}
+          warning={warning}
+          selected={enrolment.selected}
+          item={enrolment}
+          contact={contact}
+          onChange={onChange}
+        >
           <ClassDetails courseClass={courseClass}/>
         </ItemWrapper>
         {enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
@@ -51,14 +59,23 @@ const ClassPrice = (props): any => {
   const feeStyle = price.appliedDiscount ? {textDecoration: "line-through"} : null;
   return (
     <div className="col-xs-8 col-md-7 alignright">
-      <div className="row">
-        { fee && <span className="col-xs-24 col-md-12 fee-full fullPrice text-right" style={ feeStyle }>${fee}</span> }
-        { discountedFee &&
-        <span className="col-xs-24 col-md-12 fee-discounted discountedPrice text-right">${ discountedFee }</span> }
-        { discount && <span style={{display: "none"}} className="discount">${discount}</span> }
+      {fee &&
+      <div className="row text-right">
+        <span className="fee-full fullPrice" style={feeStyle}>${fee}</span>
       </div>
+      }
+
+      {discountedFee &&
+      <div className="row text-right">
+        <span className="fee-discounted discountedPrice">${discountedFee}</span>
+      </div>
+      }
+
+      {discount &&
+      <span style={{display: "none"}} className="discount">${discount}</span>
+      }
     </div>
-  )
+  );
 };
 
 const ClassDetails = (props): any => {
@@ -72,7 +89,7 @@ const ClassDetails = (props): any => {
       {start && end &&
       <span><span className="started">{start}</span>&nbsp;-&nbsp;<span className="ended">{end}</span></span>}
     </em>
-  )
+  );
 };
 
 

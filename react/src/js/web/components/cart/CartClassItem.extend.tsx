@@ -10,7 +10,7 @@ export default {
     const {courseClass, pending} = this.props;
 
     const url:string = `/class/${courseClass.course.code}-${courseClass.code}`;
-    const deleteClassName = classnames("deleteItem", {"loading": pending});
+    const deleteClassName = classnames("deleteItem", {loading: pending});
     return (
       <li>
         <a href={url}>{courseClass.course.name}</a>
@@ -30,8 +30,6 @@ export default {
         </div>}
       </li>
     );
-  }
+  },
 };
-
-
 
