@@ -636,6 +636,24 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /getPreferences:
+      get:
+        x-filter:  
+        - CollegeInfo 
+        summary: Get set of college's preferences
+        operationId: getPreferences
+        description: Get set of college's preferences
+        tags:
+        - Preference
+        responses:
+          200:
+            description: Corporate Pass model
+            schema:
+              $ref: '#/definitions/common.Preferences'
+          default:
+            description: Unexpected error
+            schema:
+              $ref: '#/definitions/common.CommonError'
 parameters:
   XOrigin:
     name: X-Origin
@@ -662,6 +680,15 @@ definitions:
       value:
         type: object
         description: Value which user will see
+  common.Preferences:
+    type: object
+    properties:
+      corporatePassEnabled:
+        type: boolean
+        description: is corporate pass enabled preference
+      successLink:
+        type: string
+        description: After payment successful redirect user to URL
   field.Suburb:
     type: object
     properties:

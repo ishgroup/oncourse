@@ -29,7 +29,7 @@ class CorporatePassApiImpl implements CorporatePassApi {
     private CollegeService collegeService
 
     @Inject
-    CheckoutApiImpl(CayenneService cayenneService, CollegeService collegeService) {
+    CorporatePassApiImpl(CayenneService cayenneService, CollegeService collegeService) {
         this.cayenneService = cayenneService
         this.collegeService = collegeService
     }

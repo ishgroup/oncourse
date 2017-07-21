@@ -11,6 +11,7 @@ import ish.oncourse.willow.cayenne.ISHObjectContextFactory
 import ish.oncourse.willow.checkout.CheckoutApiImpl
 import ish.oncourse.willow.checkout.corporatepass.CorporatePassApiImpl
 import ish.oncourse.willow.filters.SearchFilter
+import ish.oncourse.willow.preference.PreferenceApiImpl
 import ish.oncourse.willow.search.SearchApiImpl
 import ish.oncourse.willow.search.SearchService
 import ish.oncourse.willow.service.impl.CollegeService
@@ -49,6 +50,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(SearchFilter)
         CXFModule.contributeResources(binder).addBinding().to(CheckoutApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(CorporatePassApiImpl)
+        CXFModule.contributeResources(binder).addBinding().to(PreferenceApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(CayenneService)
 
     }
