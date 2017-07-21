@@ -4482,5 +4482,41 @@
 	<changeSet id="304" author="pnikanovich" runOnChange="false" runAlways="false" context="production">
 		<sql>ALTER TABLE CustomField MODIFY entityName varchar(64) NOT NULL;</sql>
 	</changeSet>
+
+    <changeSet id="305" author="artyom" runOnChange="false" runAlways="false" context="production">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="Tax"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE Tax (
+            id BIGINT NOT NULL AUTO_INCREMENT,
+            angelId BIGINT NOT NULL,
+            collegeId BIGINT NOT NULL,
+            created DATETIME NOT NULL,
+            modified DATETIME NOT NULL,
+            isGSTTaxType TINYINT(1) NOT NULL,
+            code VARCHAR(10) NOT NULL,
+            rate DECIMAL(6, 4) NOT NULL,
+            description VARCHAR(500) NULL,
+            PRIMARY KEY (id),
+            CONSTRAINT fk_Tax_College FOREIGN KEY (collegeId) REFERENCES College(id),
+            CONSTRAINT tax_angelId_college_unique UNIQUE (collegeId, angelId));
+        </sql>
+    </changeSet>
+
+    <changeSet id="306" author="artyom" runOnChange="false" context="production">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="Contact" columnName="taxOverrideId"/>
+            </not>
+        </preConditions>
+        <sql>
+            ALTER TABLE Contact
+            ADD COLUMN taxOverrideId BIGINT NULL,
+            ADD CONSTRAINT fk_Contact_Tax FOREIGN KEY (taxOverrideId) REFERENCES Tax (id);
+        </sql>
+    </changeSet>
 	
 </databaseChangeLog>
