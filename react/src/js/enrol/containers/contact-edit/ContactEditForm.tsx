@@ -34,20 +34,21 @@ class ContactEditForm extends React.Component<Props, any> {
           <ContactEdit touch={touch} contact={contact} fields={fields}/>
 
           {concessionTypes &&
-            <fieldset>
-              <ConcessionForm
-                concessionTypes={concessionTypes}
-                onTypeChange={() => console.log('todo: partial reset')}
-              />
-            </fieldset>
+          <fieldset>
+            <ConcessionForm
+              concessionTypes={concessionTypes}
+              onTypeChange={() => console.log('todo: partial reset')}
+            />
+          </fieldset>
           }
 
           <div className="form-controls">
-            <input value="OK"
-                   className="btn btn-primary"
-                   name="submitContact"
-                   type="submit"
-                   disabled={invalid || submitting}
+            <input
+              value="OK"
+              className="btn btn-primary"
+              name="submitContact"
+              type="submit"
+              disabled={invalid || submitting}
             />
           </div>
         </form>
@@ -77,7 +78,8 @@ const Form = reduxForm({
     );
 
     return {...errors, ...concessionErrors};
-  },
+  }
+,
   onSubmitSuccess: (result, dispatch, props: any) => {
     dispatch(submitEditContact({...props.contact, parentRequired: result.parentRequired}));
   },
