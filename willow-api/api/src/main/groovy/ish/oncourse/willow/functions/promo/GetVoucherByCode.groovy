@@ -24,9 +24,12 @@ class GetVoucherByCode {
                 & Voucher.CODE.eq(code)) & Voucher.STATUS.eq(ProductStatus.ACTIVE)) & Voucher.EXPIRY_DATE.gt(new Date()).orExp(Voucher.EXPIRY_DATE.isNull()))
                 .selectFirst(context)
         
-        if (voucher.inUse) {
-            error = new CommonError(message: 'Selected voucher cannot be added right now since it is currently being used in another payment process. Please try again later.')
-        } else if (voucher) {
+        if (voucher) {
+            if (voucher.inUse) {
+                error = new CommonError(message: 'Selected voucher cannot be added right now since it is currently being used in another payment process. Please try again later.')
+                return this
+            }
+
             redeemVoucher = new RedeemVoucher().with { v ->
                 v.name = voucher.product.name
                 v.id = voucher.id.toString()
