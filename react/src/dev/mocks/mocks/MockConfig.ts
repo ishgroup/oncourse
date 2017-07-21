@@ -18,6 +18,7 @@ import {ProductsApiMock} from "../ProductsApiMock";
 import {PromotionApiMock} from "../PromotionApiMock";
 import {CheckoutApiMock} from "../CheckoutApiMock";
 import {SearchApiMock} from "../SearchApiMock";
+import {PreferenceApiMock} from "../PreferenceApiMock";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
 import {ValidationError} from "../../../js/model";
 
@@ -120,6 +121,7 @@ export class MockConfig {
       this.injector.setService("checkoutApi", new CheckoutApiMock(this));
       this.injector.setService("corporatePassApi", new CorporatePassApiMock(this));
       this.injector.setService("searchApi", new SearchApiMock(this));
+      this.injector.setService("preferenceApi", new PreferenceApiMock(this));
     }
 
     RestoreState(this.store, (error, result) => {

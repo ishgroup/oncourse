@@ -25,6 +25,8 @@ import {changePhase, finishCheckoutProcess} from "../actions/Actions";
 import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
+import {PreferenceApi} from "../../http/PreferenceApi";
+import {Preferences} from "../../model/common/Preferences";
 
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
@@ -36,6 +38,7 @@ export class CheckoutService {
     private checkoutApi: CheckoutApi,
     private promotionApi: PromotionApi,
     private corporatePassApi: CorporatePassApi,
+    private preferenceApi: PreferenceApi,
   ) {
   }
 
@@ -97,6 +100,10 @@ export class CheckoutService {
 
   public submitConcession = (payload, props) => {
     return this.contactApi.submitConcession(BuildConcessionRequest.fromValues(payload, props));
+  }
+
+  public getPreferences = (): Promise<Preferences> => {
+    return this.preferenceApi.getPreferences();
   }
 
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
@@ -195,6 +202,7 @@ const {
   promotionApi,
   checkoutApi,
   corporatePassApi,
+  preferenceApi,
 } = Injector.of();
 
 export class BuildContactNodeRequest {
@@ -342,4 +350,4 @@ export class BuildGetCorporatePassRequest {
   }
 }
 
-export default new CheckoutService(contactApi, checkoutApi, promotionApi, corporatePassApi);
+export default new CheckoutService(contactApi, checkoutApi, promotionApi, corporatePassApi, preferenceApi);

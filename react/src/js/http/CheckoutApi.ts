@@ -1,6 +1,7 @@
 import {HttpService} from "../common/services/HttpService";
-import {CheckoutModel, CheckoutModelRequest, ContactNode, PaymentRequest, PaymentResponse, ContactNodeRequest}
-  from "../model";
+import {
+  CheckoutModel, CheckoutModelRequest, ContactNode, PaymentRequest, PaymentResponse, ContactNodeRequest, Preferences
+} from "../model";
 
 export class CheckoutApi {
   constructor(private http: HttpService) {

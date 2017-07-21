@@ -218,7 +218,7 @@ const mapStateToProps = (state: IshState) => {
     voucherPayerEnabled: CheckoutService.hasActiveVoucherPayer(state.checkout),
     corporatePass: state.checkout.payment.corporatePass,
     currentTab: state.checkout.payment.currentTab,
-    corporatePassAvailable: state.checkout.payment.corporatePassAvailable,
+    corporatePassAvailable: state.checkout.preferences.corporatePassEnabled,
   };
 };
 

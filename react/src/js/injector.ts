@@ -10,6 +10,7 @@ import {MergeService} from "./services/MergeService";
 import {LegacySyncStorage} from "./services/LegacySyncStorage";
 import {CheckoutApi} from "./http/CheckoutApi";
 import {SearchApi} from "./http/SearchApi";
+import {PreferenceApi} from "./http/PreferenceApi";
 
 export class Injector {
   readonly http: HttpService = new DefaultHttpService();
@@ -20,6 +21,7 @@ export class Injector {
   readonly promotionApi = new PromotionApi(this.http);
   readonly checkoutApi = new CheckoutApi(this.http);
   readonly searchApi = new SearchApi(this.http);
+  readonly preferenceApi = new PreferenceApi(this.http);
   readonly corporatePassApi = new CorporatePassApi(this.http);
   readonly mergeService = new MergeService();
   readonly legacySyncStorage = new LegacySyncStorage();

@@ -13,7 +13,7 @@ import {ContactsSchema, ContactsState} from "../../NormalizeSchema";
 import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
-import log = Handlebars.log;
+import {Preferences} from "../../model/common/Preferences";
 
 const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phase => {
   switch (action.type) {
@@ -188,6 +188,20 @@ const ContactAddProcess = (state: any = {}, action: IAction<any>): any => {
   }
 };
 
+const PreferencesReducer = (state: Preferences = {}, action: IAction<Preferences>): Preferences => {
+  switch (action.type) {
+
+    case Actions.ADD_PREFERENCES_TO_STATE:
+      return {
+        ...state,
+        ...action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
 export const Reducer = combineReducers<CheckoutState>({
   newContact: NewContactReducer,
   fields: FieldsReducer,
@@ -202,4 +216,5 @@ export const Reducer = combineReducers<CheckoutState>({
   concession: ConcessionReducer,
   redeemVouchers: RedeemVouchersReducer,
   contactAddProcess: ContactAddProcess,
+  preferences: PreferencesReducer,
 });

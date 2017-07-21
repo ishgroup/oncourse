@@ -20,8 +20,6 @@ export const RESET_PAYMENT_STATE = "checkout/payment/reset/payment/state";
 export const GET_CORPORATE_PASS = "checkout/payment/get/corporatePass";
 export const APPLY_CORPORATE_PASS = "checkout/payment/apply/corporatePass";
 export const RESET_CORPORATE_PASS = "checkout/payment/reset/corporatePass";
-export const CHECK_IF_CORPORATE_PASS_ENABLED = "checkout/payment/check/corporatePass";
-export const TOGGLE_CORPORATE_PASS_AVAILABILITY = "checkout/payment/toggle/availability/corporatePass";
 
 export const CHANGE_TAB = "checkout/payment/change/tab";
 
@@ -85,10 +83,3 @@ export const changeTab = tab => ({
   payload: tab,
 })
 
-export const checkIfCorporatePassEnabled = () => ({
-  type: CHECK_IF_CORPORATE_PASS_ENABLED,
-})
-export const toggleCorporatePassAvailability = val => ({
-  type: TOGGLE_CORPORATE_PASS_AVAILABILITY,
-  payload: val,
-})

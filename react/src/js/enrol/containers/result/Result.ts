@@ -6,6 +6,7 @@ import {cancelCheckoutProcess, tryAnotherCard} from "./actions/Actions";
 const PropsBy = (state: IshState): any => {
   return {
     response: state.checkout.payment.value,
+    successLink: state.checkout.preferences.successLink,
   };
 };
 

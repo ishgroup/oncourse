@@ -17,7 +17,6 @@ export {Room} from './web/Room';
 export {Site} from './web/Site';
 export {Token} from './web/Token';
 
-
 // Field models
 export {ClassHeadings} from "./field/ClassHeadings";
 export {ContactFields} from "./field/ContactFields";
@@ -34,6 +33,7 @@ export {CommonError} from "./common/CommonError";
 export {FieldError} from "./common/FieldError";
 export {Item} from "./common/Item";
 export {ValidationError} from "./common/ValidationError";
+export {Preferences} from "./common/Preferences";
 
 // Checkout/concessions models
 export {Concession} from "./checkout/concession/Concession";

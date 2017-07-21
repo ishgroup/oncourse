@@ -17,6 +17,7 @@ import {resetPaymentState} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";
 import {openEditContact} from "../containers/contact-edit/actions/Actions";
 import {getContactNodeFromBackend} from "../containers/summary/actions/Actions";
+import {getPreferences} from "../actions/Actions";
 
 const updateContactNodes = contacts => {
   const result = [];
@@ -60,31 +61,34 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
   return action$.ofType(Actions.INIT_REQUEST).flatMap(action => {
     const state = store.getState();
 
+    const result = [];
+
+    result.push(getPreferences());
+
     if (!L.isNil(state.checkout.payment.value)) {
       if (CheckoutService.isFinalStatus(state.checkout.payment.value)) {
-        return [
-          Actions.changePhase(Phase.Init),
-          resetPaymentState(),
-          Actions.sendInitRequest(),
-        ];
+        result.push(Actions.changePhase(Phase.Init))
+        result.push(resetPaymentState())
+        result.push(Actions.sendInitRequest())
+        return result;
       } else {
-        return CheckoutService.processPaymentResponse(state.checkout.payment.value);
+        return result.concat(CheckoutService.processPaymentResponse(state.checkout.payment.value));
       }
     }
 
     if (CheckoutService.cartIsEmpty(state.cart)) {
-      return showCartIsEmptyMessage();
+      return result.concat(showCartIsEmptyMessage());
     }
 
     if (CheckoutService.hasPayer(state.checkout)) {
-      return openPayerDetails(state);
+      return result.concat(openPayerDetails(state));
     }
 
     if (CheckoutService.hasCartContact(state.cart)) {
-      return setPayerFromCart(state);
+      return result.concat(setPayerFromCart(state));
     }
 
-    return [Actions.changePhase(Phase.AddPayer)];
+    return result.concat([Actions.changePhase(Phase.AddPayer)]);
   });
 };
 
