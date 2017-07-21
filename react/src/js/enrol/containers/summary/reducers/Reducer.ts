@@ -28,10 +28,6 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<S
       mergePurchases(ns, action.payload, true);
       return ns;
 
-    case SummaryActions.SYNC_CART_AND_NOES:
-
-      return state;
-
     case SummaryActions.ItemsLoad:
       return action.payload;
 
