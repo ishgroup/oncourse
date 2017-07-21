@@ -63,7 +63,7 @@ export class CheckoutService {
   }
 
   public hasCartContact = (cart: CartState): boolean => {
-    return L.isNil(cart.contact);
+    return Object.keys(cart.contact).length !== 0;
   }
 
   public loadFields = (contact: Contact, state: IshState): Promise<ContactFields> => {

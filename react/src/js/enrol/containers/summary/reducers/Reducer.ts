@@ -19,14 +19,18 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<S
         stateNode.articles = Array.from(new Set([...stateNode.articles || [], ...payloadNode.articles]));
         stateNode.vouchers = Array.from(new Set([...stateNode.vouchers || [], ...payloadNode.vouchers]));
       });
-      mergePurchases(ns, action.payload);
+      mergePurchases(ns, action.payload, false);
       return ns;
 
     case SummaryActions.ADD_CONTACT_NODE_TO_STATE:
       ns.result = Array.from(new Set([...ns.result, ...action.payload.result]));
       ns.entities.contactNodes = {...ns.entities.contactNodes, ...action.payload.entities.contactNodes};
-      mergePurchases(ns, action.payload);
+      mergePurchases(ns, action.payload, true);
       return ns;
+
+    case SummaryActions.SYNC_CART_AND_NOES:
+
+      return state;
 
     case SummaryActions.ItemsLoad:
       return action.payload;
@@ -39,11 +43,21 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<S
   }
 };
 
-const mergePurchases = (ns: State, payload: State): State => {
-  ns.entities.enrolments = {...ns.entities.enrolments, ...payload.entities.enrolments};
-  ns.entities.applications = {...ns.entities.applications, ...payload.entities.applications};
-  ns.entities.memberships = {...ns.entities.memberships, ...payload.entities.memberships};
-  ns.entities.articles = {...ns.entities.articles, ...payload.entities.articles};
-  ns.entities.vouchers = {...ns.entities.vouchers, ...payload.entities.vouchers};
+const mergePurchases = (ns: State, payload: State, leaveExisting: boolean): State => {
+  ns.entities.enrolments = leaveExisting
+    ? {...payload.entities.enrolments, ...ns.entities.enrolments}
+    : {...ns.entities.enrolments, ...payload.entities.enrolments};
+  ns.entities.applications = leaveExisting
+    ? {...payload.entities.applications, ...ns.entities.applications}
+    : {...ns.entities.applications, ...payload.entities.applications};
+  ns.entities.memberships = leaveExisting
+    ? {...payload.entities.memberships, ...ns.entities.memberships}
+    : {...ns.entities.memberships, ...payload.entities.memberships};
+  ns.entities.articles = leaveExisting
+    ? {...payload.entities.articles, ...ns.entities.articles}
+    : {...ns.entities.articles, ...payload.entities.articles};
+  ns.entities.vouchers = leaveExisting
+    ? {...payload.entities.vouchers, ...ns.entities.vouchers}
+    : {...ns.entities.vouchers, ...payload.entities.vouchers};
   return ns;
 };

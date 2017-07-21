@@ -7,7 +7,7 @@ import "rxjs";
 import * as Actions from "../actions/Actions";
 import {ValidationError, Contact, ContactId} from "../../model";
 import {ShoppingCardIsEmpty} from "../containers/checkout/Errors";
-import {CheckoutState, Phase} from "../reducers/State";
+import {Phase} from "../reducers/State";
 import CheckoutService from "../services/CheckoutService";
 import {submitAddContact, Values} from "../containers/contact-add/actions/Actions";
 import {IAction} from "../../actions/IshAction";
@@ -16,22 +16,36 @@ import {AxiosResponse} from "axios";
 import {resetPaymentState} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";
 import {openEditContact} from "../containers/contact-edit/actions/Actions";
+import {getContactNodeFromBackend} from "../containers/summary/actions/Actions";
+
+const updateContactNodes = contacts => {
+  const result = [];
+  contacts.result.map(id => result.push(getContactNodeFromBackend(contacts.entities.contact[id])));
+
+  return result;
+};
 
 const showCartIsEmptyMessage = (): IAction<any>[] => {
   const error: ValidationError = {formErrors: [ShoppingCardIsEmpty], fieldsErrors: []};
   return [Actions.changePhase(Phase.Init), {type: Actions.SHOW_MESSAGES, payload: error}];
 };
 
-const openPayerDetails = (state: CheckoutState): IAction<any>[] => {
-  const contact: Contact = state.contacts.entities.contact[state.payerId];
-  return [openEditContact(contact)];
+const openPayerDetails = (state: IshState): IAction<any>[] => {
+  const contact: Contact = state.checkout.contacts.entities.contact[state.checkout.payerId];
+  return [
+    openEditContact(contact),
+    ...updateContactNodes(state.checkout.contacts),
+  ];
 };
 
 
-const setPayerFromCart = (contact: Contact): Observable<any> => {
-  return Observable.fromPromise(CheckoutService.createOrGetContact(contact as Values))
+const setPayerFromCart = (state: IshState): Observable<any> => {
+  return Observable.fromPromise(CheckoutService.createOrGetContact(state.cart.contact as Values))
     .flatMap((data: ContactId) => {
-      return [submitAddContact(data, contact as Values)];
+      return [
+        submitAddContact(data, state.cart.contact as Values),
+        ...updateContactNodes(state.checkout.contacts),
+      ];
     })
     .catch((data: AxiosResponse) => {
       return ProcessError(data);
@@ -44,30 +58,32 @@ const setPayerFromCart = (contact: Contact): Observable<any> => {
  */
 export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
   return action$.ofType(Actions.INIT_REQUEST).flatMap(action => {
+    const state = store.getState();
 
-    if (!L.isNil(store.getState().checkout.payment.value)) {
-      if (CheckoutService.isFinalStatus(store.getState().checkout.payment.value)) {
+    if (!L.isNil(state.checkout.payment.value)) {
+      if (CheckoutService.isFinalStatus(state.checkout.payment.value)) {
         return [
           Actions.changePhase(Phase.Init),
           resetPaymentState(),
           Actions.sendInitRequest(),
         ];
       } else {
-        return CheckoutService.processPaymentResponse(store.getState().checkout.payment.value);
+        return CheckoutService.processPaymentResponse(state.checkout.payment.value);
       }
     }
 
-    if (CheckoutService.cartIsEmpty(store.getState().cart)) {
+    if (CheckoutService.cartIsEmpty(state.cart)) {
       return showCartIsEmptyMessage();
     }
 
-    if (CheckoutService.hasPayer(store.getState().checkout)) {
-      return openPayerDetails(store.getState().checkout);
+    if (CheckoutService.hasPayer(state.checkout)) {
+      return openPayerDetails(state);
     }
 
-    if (CheckoutService.hasCartContact(store.getState().cart)) {
-      return setPayerFromCart(store.getState().cart.contact);
+    if (CheckoutService.hasCartContact(state.cart)) {
+      return setPayerFromCart(state);
     }
+
     return [Actions.changePhase(Phase.AddPayer)];
   });
 };

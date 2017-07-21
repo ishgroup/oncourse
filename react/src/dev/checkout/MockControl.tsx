@@ -22,17 +22,17 @@ export class MockControl extends React.Component<Props, any> {
     localforage.clear();
   }
 
-  private loadCourseClasses = () => {
+  private loadCourseClasses = (i) => {
     this.props.config.store.dispatch({
       type: Actions.REQUEST_COURSE_CLASS,
-      payload: [this.props.config.db.classes.result[0]],
+      payload: [this.props.config.db.classes.result[i]],
     });
   }
 
-  private addCourseClass = () => {
+  private addCourseClass = i => {
     this.props.config.store.dispatch({
       type: Actions.ADD_CLASS_TO_CART,
-      payload: {id: this.props.config.db.classes.result[0]},
+      payload: {id: this.props.config.db.classes.result[i]},
     });
   }
 
@@ -76,8 +76,12 @@ export class MockControl extends React.Component<Props, any> {
         {this.renderProperty("checkoutApi.makePayment.result.success")}
         {this.renderProperty("checkoutApi.makePayment.result.inProgress")}
         {this.renderProperty("checkoutApi.makePayment.result.undefined")}
-        <button className="btn" onClick={this.loadCourseClasses}>Load Classes</button>
-        <button className="btn" onClick={this.addCourseClass}>Add Classes</button>
+        <button className="btn" onClick={() => this.loadCourseClasses(0)}>Load Classes 1 </button>
+        <button className="btn" onClick={() => this.addCourseClass(0)}>Add Classes 1</button>
+        <br/>
+        <button className="btn" onClick={() => this.loadCourseClasses(1)}>Load Classes 2</button>
+        <button className="btn" onClick={() => this.addCourseClass(1)}>Add Classes 2</button>
+        <br/>
         <button className="btn" onClick={this.removeCourseClass}>Remove Classes</button>
         <button className="btn" onClick={this.loadVoucher}>Load Voucher</button>
         <button className="btn" onClick={this.addVoucher}>Add Voucher</button>

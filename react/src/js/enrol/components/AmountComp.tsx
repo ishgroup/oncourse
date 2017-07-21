@@ -22,7 +22,7 @@ class AmountComp extends React.Component<Props, any> {
     this.state = {errors: []};
   }
 
-  private handleChangePayNow(val) {
+  handleChangePayNow(val) {
     const {onUpdatePayNow, amount} = this.props;
     const reg = (/^[0-9]+\.?[0-9]*$/);
 
@@ -32,9 +32,9 @@ class AmountComp extends React.Component<Props, any> {
     }
   }
 
-  public render(): JSX.Element {
+  render(): JSX.Element {
     const {amount, onAddCode, promotions, onUpdatePayNow, redeemVouchers, onToggleVoucher} = this.props;
-    const activeVoucherWithPayer = redeemVouchers.find(v => v.payer && v.enabled);
+    const activeVoucherWithPayer = redeemVouchers && redeemVouchers.find(v => v.payer && v.enabled);
 
     return (
       <div className="row">
@@ -55,10 +55,10 @@ class AmountComp extends React.Component<Props, any> {
 
           { amount && amount.discount && <Discount discount={amount.discount}/>}
 
-          { amount && (amount.payNow || amount.payNow ===0) && amount.payNowVisibility &&
+          { amount && (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow
             payNow={amount.payNow}
-            onChange={onUpdatePayNow ? this.handleChangePayNow : undefined}
+            onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
             errors={this.state.errors}
           />
           }
