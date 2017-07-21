@@ -20,6 +20,7 @@ import ish.oncourse.model.PaymentOut;
 import ish.oncourse.model.ProductItem;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.SupportPassword;
+import ish.oncourse.model.Tax;
 import ish.oncourse.model.Tutor;
 
 /**
@@ -77,58 +78,60 @@ public abstract class _Contact extends CayenneDataObject {
     public static final String PRODUCTS_PROPERTY = "products";
     public static final String STUDENT_PROPERTY = "student";
     public static final String SUPPORT_PASSWORD_PROPERTY = "supportPassword";
+    public static final String TAX_OVERRIDE_PROPERTY = "taxOverride";
     public static final String TO_CONTACTS_PROPERTY = "toContacts";
     public static final String TUTOR_PROPERTY = "tutor";
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> ABN = new Property<String>("abn");
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<String> BUSINESS_PHONE_NUMBER = new Property<String>("businessPhoneNumber");
-    public static final Property<String> COOKIE_HASH = new Property<String>("cookieHash");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> DATE_OF_BIRTH = new Property<Date>("dateOfBirth");
-    public static final Property<String> EMAIL_ADDRESS = new Property<String>("emailAddress");
-    public static final Property<String> FAMILY_NAME = new Property<String>("familyName");
-    public static final Property<String> FAX_NUMBER = new Property<String>("faxNumber");
-    public static final Property<String> GIVEN_NAME = new Property<String>("givenName");
-    public static final Property<String> HOME_PHONE_NUMBER = new Property<String>("homePhoneNumber");
-    public static final Property<Integer> INVOICE_TERMS = new Property<Integer>("invoiceTerms");
-    public static final Property<Boolean> IS_COMPANY = new Property<Boolean>("isCompany");
-    public static final Property<Boolean> IS_MALE = new Property<Boolean>("isMale");
-    public static final Property<Boolean> IS_MARKETING_VIA_EMAIL_ALLOWED = new Property<Boolean>("isMarketingViaEmailAllowed");
-    public static final Property<Boolean> IS_MARKETING_VIA_POST_ALLOWED = new Property<Boolean>("isMarketingViaPostAllowed");
-    public static final Property<Boolean> IS_MARKETING_VIA_SMSALLOWED = new Property<Boolean>("isMarketingViaSMSAllowed");
-    public static final Property<Date> LAST_LOGIN_TIME = new Property<Date>("lastLoginTime");
-    public static final Property<String> MIDDLE_NAME = new Property<String>("middleName");
-    public static final Property<String> MOBILE_PHONE_NUMBER = new Property<String>("mobilePhoneNumber");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> PASSWORD = new Property<String>("password");
-    public static final Property<String> PASSWORD_HASH = new Property<String>("passwordHash");
-    public static final Property<Date> PASSWORD_RECOVER_EXPIRE = new Property<Date>("passwordRecoverExpire");
-    public static final Property<String> PASSWORD_RECOVERY_KEY = new Property<String>("passwordRecoveryKey");
-    public static final Property<String> POSTCODE = new Property<String>("postcode");
-    public static final Property<String> STATE = new Property<String>("state");
-    public static final Property<String> STREET = new Property<String>("street");
-    public static final Property<String> SUBURB = new Property<String>("suburb");
-    public static final Property<String> TAX_FILE_NUMBER = new Property<String>("taxFileNumber");
-    public static final Property<String> UNIQUE_CODE = new Property<String>("uniqueCode");
-    public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = new Property<List<AssessmentSubmission>>("assessmentSubmissions");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<DiscussionCommentContact>> CONTACT_COMMENTS = new Property<List<DiscussionCommentContact>>("contactComments");
-    public static final Property<List<CorporatePass>> CORPORATE_PASSES = new Property<List<CorporatePass>>("corporatePasses");
-    public static final Property<Country> COUNTRY = new Property<Country>("country");
-    public static final Property<List<ContactCustomField>> CUSTOM_FIELDS = new Property<List<ContactCustomField>>("customFields");
-    public static final Property<List<ContactRelation>> FROM_CONTACTS = new Property<List<ContactRelation>>("fromContacts");
-    public static final Property<List<Invoice>> INVOICES = new Property<List<Invoice>>("invoices");
-    public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = new Property<List<MessagePerson>>("messagePeople");
-    public static final Property<List<PaymentIn>> PAYMENTS_IN = new Property<List<PaymentIn>>("paymentsIn");
-    public static final Property<List<PaymentOut>> PAYMENTS_OUT = new Property<List<PaymentOut>>("paymentsOut");
-    public static final Property<List<ProductItem>> PRODUCTS = new Property<List<ProductItem>>("products");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
-    public static final Property<SupportPassword> SUPPORT_PASSWORD = new Property<SupportPassword>("supportPassword");
-    public static final Property<List<ContactRelation>> TO_CONTACTS = new Property<List<ContactRelation>>("toContacts");
-    public static final Property<Tutor> TUTOR = new Property<Tutor>("tutor");
+    public static final Property<String> ABN = Property.create("abn", String.class);
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<String> BUSINESS_PHONE_NUMBER = Property.create("businessPhoneNumber", String.class);
+    public static final Property<String> COOKIE_HASH = Property.create("cookieHash", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> DATE_OF_BIRTH = Property.create("dateOfBirth", Date.class);
+    public static final Property<String> EMAIL_ADDRESS = Property.create("emailAddress", String.class);
+    public static final Property<String> FAMILY_NAME = Property.create("familyName", String.class);
+    public static final Property<String> FAX_NUMBER = Property.create("faxNumber", String.class);
+    public static final Property<String> GIVEN_NAME = Property.create("givenName", String.class);
+    public static final Property<String> HOME_PHONE_NUMBER = Property.create("homePhoneNumber", String.class);
+    public static final Property<Integer> INVOICE_TERMS = Property.create("invoiceTerms", Integer.class);
+    public static final Property<Boolean> IS_COMPANY = Property.create("isCompany", Boolean.class);
+    public static final Property<Boolean> IS_MALE = Property.create("isMale", Boolean.class);
+    public static final Property<Boolean> IS_MARKETING_VIA_EMAIL_ALLOWED = Property.create("isMarketingViaEmailAllowed", Boolean.class);
+    public static final Property<Boolean> IS_MARKETING_VIA_POST_ALLOWED = Property.create("isMarketingViaPostAllowed", Boolean.class);
+    public static final Property<Boolean> IS_MARKETING_VIA_SMSALLOWED = Property.create("isMarketingViaSMSAllowed", Boolean.class);
+    public static final Property<Date> LAST_LOGIN_TIME = Property.create("lastLoginTime", Date.class);
+    public static final Property<String> MIDDLE_NAME = Property.create("middleName", String.class);
+    public static final Property<String> MOBILE_PHONE_NUMBER = Property.create("mobilePhoneNumber", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> PASSWORD = Property.create("password", String.class);
+    public static final Property<String> PASSWORD_HASH = Property.create("passwordHash", String.class);
+    public static final Property<Date> PASSWORD_RECOVER_EXPIRE = Property.create("passwordRecoverExpire", Date.class);
+    public static final Property<String> PASSWORD_RECOVERY_KEY = Property.create("passwordRecoveryKey", String.class);
+    public static final Property<String> POSTCODE = Property.create("postcode", String.class);
+    public static final Property<String> STATE = Property.create("state", String.class);
+    public static final Property<String> STREET = Property.create("street", String.class);
+    public static final Property<String> SUBURB = Property.create("suburb", String.class);
+    public static final Property<String> TAX_FILE_NUMBER = Property.create("taxFileNumber", String.class);
+    public static final Property<String> UNIQUE_CODE = Property.create("uniqueCode", String.class);
+    public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = Property.create("assessmentSubmissions", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<DiscussionCommentContact>> CONTACT_COMMENTS = Property.create("contactComments", List.class);
+    public static final Property<List<CorporatePass>> CORPORATE_PASSES = Property.create("corporatePasses", List.class);
+    public static final Property<Country> COUNTRY = Property.create("country", Country.class);
+    public static final Property<List<ContactCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
+    public static final Property<List<ContactRelation>> FROM_CONTACTS = Property.create("fromContacts", List.class);
+    public static final Property<List<Invoice>> INVOICES = Property.create("invoices", List.class);
+    public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = Property.create("messagePeople", List.class);
+    public static final Property<List<PaymentIn>> PAYMENTS_IN = Property.create("paymentsIn", List.class);
+    public static final Property<List<PaymentOut>> PAYMENTS_OUT = Property.create("paymentsOut", List.class);
+    public static final Property<List<ProductItem>> PRODUCTS = Property.create("products", List.class);
+    public static final Property<Student> STUDENT = Property.create("student", Student.class);
+    public static final Property<SupportPassword> SUPPORT_PASSWORD = Property.create("supportPassword", SupportPassword.class);
+    public static final Property<Tax> TAX_OVERRIDE = Property.create("taxOverride", Tax.class);
+    public static final Property<List<ContactRelation>> TO_CONTACTS = Property.create("toContacts", List.class);
+    public static final Property<Tutor> TUTOR = Property.create("tutor", Tutor.class);
 
     public void setAbn(String abn) {
         writeProperty("abn", abn);
@@ -500,6 +503,15 @@ public abstract class _Contact extends CayenneDataObject {
 
     public SupportPassword getSupportPassword() {
         return (SupportPassword)readProperty("supportPassword");
+    }
+
+
+    public void setTaxOverride(Tax taxOverride) {
+        setToOneTarget("taxOverride", taxOverride, true);
+    }
+
+    public Tax getTaxOverride() {
+        return (Tax)readProperty("taxOverride");
     }
 
 

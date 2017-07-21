@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<data-map xmlns="http://cayenne.apache.org/schema/8/modelMap"
+<data-map xmlns="http://cayenne.apache.org/schema/9/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/8/modelMap http://cayenne.apache.org/schema/8/modelMap.xsd"
-	 project-version="8">
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap http://cayenne.apache.org/schema/9/modelMap.xsd"
+	 project-version="9">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
 	<db-entity name="Application">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -219,6 +219,7 @@
 		<db-attribute name="studentId" type="BIGINT" length="19"/>
 		<db-attribute name="suburb" type="VARCHAR" length="128"/>
 		<db-attribute name="taxFileNumber" type="VARCHAR" length="64"/>
+		<db-attribute name="taxOverrideId" type="BIGINT" length="19"/>
 		<db-attribute name="tutorId" type="BIGINT" length="19"/>
 		<db-attribute name="uniqueCode" type="VARCHAR" length="16"/>
 	</db-entity>
@@ -1237,6 +1238,17 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="tagId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="taggableId" type="BIGINT" isMandatory="true" length="19"/>
+	</db-entity>
+	<db-entity name="Tax">
+		<db-attribute name="angelId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="10"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="description" type="VARCHAR" length="500"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="isGSTTaxType" type="BIT" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="rate" type="DECIMAL" isMandatory="true" length="6" scale="2"/>
 	</db-entity>
 	<db-entity name="TrainingPackage">
 		<db-attribute name="copyrightCategory" type="VARCHAR" length="64"/>
@@ -2472,6 +2484,15 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 	</obj-entity>
+	<obj-entity name="Tax" className="ish.oncourse.model.Tax" dbEntityName="Tax">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="isGSTTaxType" type="java.lang.Boolean" db-attribute-path="isGSTTaxType"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="rate" type="java.math.BigDecimal" db-attribute-path="rate"/>
+	</obj-entity>
 	<obj-entity name="TrainingPackage" className="ish.oncourse.model.TrainingPackage" dbEntityName="TrainingPackage">
 		<obj-attribute name="copyrightCategory" type="java.lang.String" db-attribute-path="copyrightCategory"/>
 		<obj-attribute name="copyrightContact" type="java.lang.String" db-attribute-path="copyrightContact"/>
@@ -2983,6 +3004,9 @@
 	<db-relationship name="tags" source="College" target="Tag" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="taxes" source="College" target="Tax" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="tutorRoles" source="College" target="TutorRole" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -3057,6 +3081,9 @@
 	</db-relationship>
 	<db-relationship name="supportPassword" source="Contact" target="SupportPassword" toMany="false">
 		<db-attribute-pair source="id" target="contactId"/>
+	</db-relationship>
+	<db-relationship name="taxOverride" source="Contact" target="Tax" toMany="false">
+		<db-attribute-pair source="taxOverrideId" target="id"/>
 	</db-relationship>
 	<db-relationship name="toContacts" source="Contact" target="ContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="fromContactId"/>
@@ -3883,6 +3910,12 @@
 	<db-relationship name="taggable" source="TaggableTag" target="Taggable" toMany="false">
 		<db-attribute-pair source="taggableId" target="id"/>
 	</db-relationship>
+	<db-relationship name="college" source="Tax" target="College" toMany="false">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="contacts" source="Tax" target="Contact" toMany="true">
+		<db-attribute-pair source="id" target="taxOverrideId"/>
+	</db-relationship>
 	<db-relationship name="assessmentClassTutors" source="Tutor" target="AssessmentClassTutor" toMany="true">
 		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
@@ -4203,6 +4236,7 @@
 	<obj-relationship name="products" source="Contact" target="ProductItem" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="student" source="Contact" target="Student" deleteRule="Deny" db-relationship-path="student"/>
 	<obj-relationship name="supportPassword" source="Contact" target="SupportPassword" deleteRule="Cascade" db-relationship-path="supportPassword"/>
+	<obj-relationship name="taxOverride" source="Contact" target="Tax" deleteRule="Nullify" db-relationship-path="taxOverride"/>
 	<obj-relationship name="toContacts" source="Contact" target="ContactRelation" deleteRule="Deny" db-relationship-path="toContacts"/>
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Deny" db-relationship-path="tutor"/>
 	<obj-relationship name="relatedObject" source="ContactCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedContact"/>
@@ -4465,6 +4499,7 @@
 	<obj-relationship name="college" source="TaggableTag" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="tag" source="TaggableTag" target="Tag" deleteRule="Nullify" db-relationship-path="tag"/>
 	<obj-relationship name="taggable" source="TaggableTag" target="Taggable" deleteRule="Nullify" db-relationship-path="taggable"/>
+	<obj-relationship name="college" source="Tax" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="assessmentClassTutors" source="Tutor" target="AssessmentClassTutor" deleteRule="Deny" db-relationship-path="assessmentClassTutors"/>
 	<obj-relationship name="attendances" source="Tutor" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="college" source="Tutor" target="College" deleteRule="Nullify" db-relationship-path="college"/>
