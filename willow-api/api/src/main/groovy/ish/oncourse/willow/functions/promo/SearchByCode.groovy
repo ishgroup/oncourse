@@ -14,7 +14,9 @@ class SearchByCode {
     
     SearchByCode get(String code) {
         response.promotion = new GetPromoByCode(context: context, college: college).get(code)
-        if (!response.promotion) {
+        if (response.promotion) {
+            return this
+        } else {
             GetVoucherByCode voucherByCode = new GetVoucherByCode(context: context, college: college).get(code)
             error = voucherByCode.error
             response.voucher = voucherByCode.redeemVoucher
