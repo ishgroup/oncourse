@@ -2,29 +2,24 @@ package ish.oncourse.services.persistence;
 
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.cache.NoopQueryCache;
+import ish.oncourse.test.InitialContextFactoryMock;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.test.TestContextUtil;
-import org.apache.cayenne.CayenneRuntimeException;
+import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.cache.EhCacheQueryCache;
 import org.apache.cayenne.cache.NestedQueryCache;
-import org.apache.cayenne.cache.OSQueryCache;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class ISHObjectContextTest extends ServiceTest {
 	
-	@Before
-	public void setup() throws Exception {
-	}
-
 	@Test
 	public void testEhCacheQueryCache() throws Exception {
-		System.setProperty(TestContextUtil.TEST_IS_QUERY_CACHE_DISABLED, "false");
+		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.TRUE);
+		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.TRUE);
+
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		ISHObjectContext context = (ISHObjectContext) cayenneService.newContext();
@@ -33,19 +28,24 @@ public class ISHObjectContextTest extends ServiceTest {
 				((NestedQueryCache)context.getQueryCache()).getDelegate().getClass());
 	}
 
-	//@Test
+	@Test
 	public void testNoopQueryCache() throws Exception {
-		System.setProperty(TestContextUtil.TEST_IS_QUERY_CACHE_DISABLED, "true");
+		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
 		ICayenneService cayenneService = getService(ICayenneService.class);
 		ISHObjectContext context = (ISHObjectContext) cayenneService.newContext();
 		assertNotNull("Context should be created.", context);
-		assertTrue("If we not use OSQueryCache for entities we also should not use it for the queries", context.getQueryCache() instanceof NoopQueryCache);
+		assertEquals("If we not use EhCacheQueryCache for entities we also should not use it for the queries",
+				NoopQueryCache.class, ((NestedQueryCache) context.getQueryCache()).getDelegate().getClass());
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void testDefaultCommitAttempts() throws Exception {
-		System.setProperty(TestContextUtil.TEST_IS_QUERY_CACHE_DISABLED, "true");
+		InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+		InitialContextFactoryMock.bind(ContextUtil.QUERY_CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+
 		initTest("ish.oncourse.services", "", ServiceTestModule.class);
 		ICayenneService cayenneService = getService(ICayenneService.class);
 
