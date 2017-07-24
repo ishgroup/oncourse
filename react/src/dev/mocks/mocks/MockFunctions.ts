@@ -109,6 +109,7 @@ export const mockRoom = (): Room => {
 export const mockAmount = (): Amount => {
   return {
     total: faker.finance.amount(),
+    subTotal: faker.finance.amount(),
     owing: faker.finance.amount(),
     discount: faker.finance.amount(),
     payNow: faker.finance.amount(),

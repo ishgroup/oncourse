@@ -40,7 +40,7 @@ class AmountComp extends React.Component<Props, any> {
       <div className="row">
         <AddCodeComp onAdd={onAddCode} promotions={promotions}/>
         <div className="col-xs-24 col-sm-8 amount-content text-right">
-          { amount && amount.total && <Total total={amount.total}/> }
+          { amount && amount.total && <Total total={amount.subTotal}/> }
 
           { amount && redeemVouchers &&
             redeemVouchers.map(v => (
@@ -69,6 +69,7 @@ class AmountComp extends React.Component<Props, any> {
 }
 
 const Total = props => {
+  // show subTotal instead total
   return (
     <div className="row total-amount">
       <label className="col-xs-12">Total</label>
