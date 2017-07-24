@@ -9,9 +9,9 @@ props.feeOverriden = null;
 
 const render = () => ReactDOM.render(
   <div>
-    <FeesComponent {...props}/>
+    <FeesComponent {...props}/>,
   </div>,
-  document.getElementById("react-fees-component")
+  document.getElementById("react-fees-component"),
 );
 
 render();

@@ -42,8 +42,8 @@ export class FeesComponent extends React.Component<Props, any> {
 
     return (
       <span>
-        {possibleDiscounts.map((discount) => (
-          <span key={discount.id}>
+        {possibleDiscounts.map((discount, i) => (
+          <span key={i}>
               <span className="discount-price">/</span>
               <abbr className="discount-price" title={discount.title}>
                 {formatMoney(discount.discountedFee)}
