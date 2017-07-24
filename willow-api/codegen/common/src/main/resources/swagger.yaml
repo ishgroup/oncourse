@@ -1357,18 +1357,28 @@ definitions:
     properties: 
       owing:
         type: number
+        description: outstanding amount
       total: 
         type: number
+        description: total price excluding discounts
+      subTotal: 
+        type: number
+        description: total price including discounts (discounted price)
       discount: 
         type: number
+        description: total discount amount
       payNow: 
         type: number
+        description: total amount allocated for payment/payments (equalse subTotal if payment plan invoices not presented)
       minPayNow:
         type: number
+        description: min amount for cc payment (can be less than subTotal if payment plan invoices precented)
       isEditable:
         type: boolean
+        description: true if owing greate that zero
       voucherPayments:
         type: array
+        description: voucher payments list - appears if redeem any kind of vouchers
         items:
           $ref: '#/definitions/checkout.VoucherPayment'
   checkout.CheckoutModel:

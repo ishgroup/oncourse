@@ -8,6 +8,7 @@ public class Amount  {
   
     private Double owing = null;
     private Double total = null;
+    private Double subTotal = null;
     private Double discount = null;
     private Double payNow = null;
     private Double minPayNow = null;
@@ -15,7 +16,7 @@ public class Amount  {
     private List<VoucherPayment> voucherPayments = new ArrayList<VoucherPayment>();
 
     /**
-     * Get owing
+     * outstanding amount
      * @return owing
      */
     public Double getOwing() {
@@ -32,7 +33,7 @@ public class Amount  {
     }
 
     /**
-     * Get total
+     * total price excluding discounts
      * @return total
      */
     public Double getTotal() {
@@ -49,7 +50,24 @@ public class Amount  {
     }
 
     /**
-     * Get discount
+     * total price including discounts (discounted price)
+     * @return subTotal
+     */
+    public Double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(Double subTotal) {
+       this.subTotal = subTotal;
+    }
+
+    public Amount subTotal(Double subTotal) {
+      this.subTotal = subTotal;
+      return this;
+    }
+
+    /**
+     * total discount amount
      * @return discount
      */
     public Double getDiscount() {
@@ -66,7 +84,7 @@ public class Amount  {
     }
 
     /**
-     * Get payNow
+     * total amount allocated for payment/payments (equalse subTotal if payment plan invoices not presented)
      * @return payNow
      */
     public Double getPayNow() {
@@ -83,7 +101,7 @@ public class Amount  {
     }
 
     /**
-     * Get minPayNow
+     * min amount for cc payment (can be less than subTotal if payment plan invoices precented)
      * @return minPayNow
      */
     public Double getMinPayNow() {
@@ -100,7 +118,7 @@ public class Amount  {
     }
 
     /**
-     * Get isEditable
+     * true if owing greate that zero
      * @return isEditable
      */
     public Boolean getIsEditable() {
@@ -117,7 +135,7 @@ public class Amount  {
     }
 
     /**
-     * Get voucherPayments
+     * voucher payments list - appears if redeem any kind of vouchers
      * @return voucherPayments
      */
     public List<VoucherPayment> getVoucherPayments() {
@@ -146,6 +164,7 @@ public class Amount  {
       
       sb.append("    owing: ").append(toIndentedString(owing)).append("\n");
       sb.append("    total: ").append(toIndentedString(total)).append("\n");
+      sb.append("    subTotal: ").append(toIndentedString(subTotal)).append("\n");
       sb.append("    discount: ").append(toIndentedString(discount)).append("\n");
       sb.append("    payNow: ").append(toIndentedString(payNow)).append("\n");
       sb.append("    minPayNow: ").append(toIndentedString(minPayNow)).append("\n");

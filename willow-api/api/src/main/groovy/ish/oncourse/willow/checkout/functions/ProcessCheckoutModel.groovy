@@ -65,9 +65,11 @@ class ProcessCheckoutModel {
                 return this
             }
             CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass).calculate()
+            totalDiscount =  totalDiscount.add(enrolmentsPrice.totalDiscount)
             model.amount = new Amount().with { a ->
                 a.total = totalAmount.doubleValue()
-                a.discount = enrolmentsPrice.totalDiscount.doubleValue()
+                a.discount = totalDiscount.doubleValue()
+                a.subTotal = totalAmount.subtract(totalDiscount).doubleValue()
                 a
             }
         } else {
@@ -88,7 +90,9 @@ class ProcessCheckoutModel {
                 a.minPayNow = a.payNow
                 a.discount = totalDiscount.doubleValue()
                 a.voucherPayments = redeemedVouchers.voucherPayments
-                Money owing = totalAmount.subtract(totalDiscount).subtract(payNowAmount).subtract(redeemedVouchers.vouchersTotal)
+                Money subTotal = totalAmount.subtract(totalDiscount)
+                a.subTotal = subTotal.doubleValue()
+                Money owing = subTotal.subtract(payNowAmount).subtract(redeemedVouchers.vouchersTotal)
                 a.owing = owing.doubleValue()
                 a.isEditable = owing.isGreaterThan(Money.ZERO)
                 a
