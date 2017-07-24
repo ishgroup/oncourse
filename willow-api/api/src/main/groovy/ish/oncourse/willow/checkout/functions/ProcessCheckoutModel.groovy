@@ -116,8 +116,6 @@ class ProcessCheckoutModel {
             contactNode.vouchers.each { v ->
                 processVoucher(v)
             }
-            //all products should be payed permanently
-            payNowAmount = Money.ZERO.add(totalAmount)
 
             if (contact.student) {
                 contactNode.enrolments.each { e ->
@@ -200,6 +198,7 @@ class ProcessCheckoutModel {
                     products << processProduct.persistentProduct
                     a.price = processProduct.article.price
                     totalAmount = totalAmount.add(a.price.toMoney())
+                    payNowAmount = payNowAmount.add(a.price.toMoney())
                 }
             }
         }
@@ -218,6 +217,7 @@ class ProcessCheckoutModel {
                     products << processProduct.persistentProduct
                     m.price = processProduct.membership.price
                     totalAmount = totalAmount.add(m.price.toMoney())
+                    payNowAmount = payNowAmount.add(m.price.toMoney())
                 }
             }
         }
@@ -232,6 +232,7 @@ class ProcessCheckoutModel {
             if (v.errors.empty) {
                 products << validateVoucher.persistentProduct
                 totalAmount = totalAmount.add(v.price.toMoney())
+                payNowAmount = payNowAmount.add(v.price.toMoney())
             }
         }
     }
