@@ -61,18 +61,18 @@ const ClassPrice = (props): any => {
     <div className="col-xs-8 col-md-7 alignright">
       {fee &&
       <div className="row text-right">
-        <span className="fee-full fullPrice" style={feeStyle}>${fee}</span>
+        <span className="fee-full fullPrice" style={feeStyle}>${fee.toFixed(2)}</span>
       </div>
       }
 
       {discountedFee &&
       <div className="row text-right">
-        <span className="fee-discounted discountedPrice">${discountedFee}</span>
+        <span className="fee-discounted discountedPrice">${discountedFee.toFixed(2)}</span>
       </div>
       }
 
       {discount &&
-      <span style={{display: "none"}} className="discount">${discount}</span>
+      <span style={{display: "none"}} className="discount">${discount.toFixed(2)}</span>
       }
     </div>
   );
