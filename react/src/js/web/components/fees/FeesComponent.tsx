@@ -44,7 +44,7 @@ export class FeesComponent extends React.Component<Props, any> {
       <span>
         {possibleDiscounts.map((discount, i) => (
           <span key={i}>
-              <span className="discount-price">/</span>
+              <span className="discount-price"> / </span>
               <abbr className="discount-price" title={discount.title}>
                 {formatMoney(discount.discountedFee)}
               </abbr>
@@ -69,18 +69,18 @@ export class FeesComponent extends React.Component<Props, any> {
     const {fee, appliedDiscount} = this.props;
 
     if (appliedDiscount) {
-      return (
-        <span>
-          <span className="fee-disabled">
+      return ([
+        <span key="fee-disabled" className="fee-disabled">
             {formatMoney(fee)}
-          </span>
-            <span className="fee-discounted">
-            <abbr title={appliedDiscount.title}>
+          </span>,
+        <span key="fee-discounted" className="fee-discounted">
+          <abbr title={appliedDiscount.title}>
+            <span>
               {formatMoney(appliedDiscount.discountedFee)}
-            </abbr>
-          </span>
-        </span>
-      );
+            </span>
+          </abbr>
+        </span>,
+      ]);
     } else {
       return (
         <span>
@@ -90,6 +90,3 @@ export class FeesComponent extends React.Component<Props, any> {
     }
   }
 }
-
-
-

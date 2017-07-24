@@ -4,7 +4,6 @@ import {FeesComponent, Props} from "../../../../js/web/components/fees/FeesCompo
 import {mockCourseClassPrice} from "../../../mocks/mocks/MockFunctions";
 
 const props: Props = Object.assign({isPaymentGatewayEnabled: true}, mockCourseClassPrice());
-console.log(props);
 props.feeOverriden = null;
 
 const render = () => ReactDOM.render(
