@@ -12,7 +12,7 @@
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "jest",
     "test:watch": "karma start ./karma.conf.js --auto-watch --no-single-run",
-    "start": "webpack-dev-server --progress --open --env.entry=./src/js/app.ts  --content-base ./dev-server"
+    "start": "webpack-dev-server --history-api-fallback=true --progress --open --env.entry=./src/js/app.tsx"
   },
   "devDependencies": {
     "@types/jest": "20.0.4",
@@ -50,25 +50,27 @@
     "axios": "0.16.2",
     "babel-polyfill": "6.23.0",
     "classnames": "2.2.5",
-    "localforage": "1.5.0",
+    "localforage": "^1.5.0",
     "lodash": "4.17.4",
     "moment": "2.18.1",
     "normalizr": "3.2.3",
     "react": "15.6.1",
+    "react-addons-css-transition-group": "^15.6.0",
+    "react-addons-transition-group": "^15.6.0",
     "react-dom": "15.6.1",
     "react-redux": "5.0.5",
     "react-router": "4.1.2",
+    "react-router-dom": "^4.1.2",
+    "react-router-redux": "^4.0.8",
     "react-select": "1.0.0-rc.5",
     "react-text-mask": "5.0.2",
-    "react-tooltip": "3.3.0",
+    "reactstrap": "^4.8.0",
     "redux": "3.7.2",
     "redux-form": "7.0.2",
     "redux-logger": "3.0.6",
     "redux-observable": "0.14.1",
     "redux-persist": "4.8.2",
-    "rodal": "1.5.4",
-    "rxjs": "5.4.2",
-    "uuid": "3.1.0"
+    "rxjs": "5.4.2"
   },
   "jest": {
     "globals": {

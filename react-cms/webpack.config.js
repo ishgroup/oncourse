@@ -1,9 +1,9 @@
 const path = require("path");
 const __common = require("./webpack/__common");
-const __DEFAULT_ENTRY = "./src/js/app.ts";
+const __DEFAULT_ENTRY = "./src/js/app.tsx";
 
 const config = {
-  entry: ["./src/js/app.ts"],
+  entry: ["./src/js/app.tsx"],
 };
 
 module.exports = (options = {}) => {

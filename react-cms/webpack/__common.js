@@ -33,7 +33,7 @@ const _common = (dirname, options) => {
         path.resolve(dirname, 'src/scss'),
         path.resolve(dirname, 'node_modules')
       ],
-      extensions: [".ts", ".tsx", ".js", ".css"]
+      extensions: [".ts", ".tsx", ".js", ".css", "scss"]
     },
     module: {
       rules: [
@@ -75,6 +75,7 @@ const _common = (dirname, options) => {
     plugins: [
       _DefinePlugin('development', 'http://localhost:10080', options.BUILD_NUMBER),
       new ExtractTextPlugin("[name].css"),
+      new webpack.optimize.ModuleConcatenationPlugin(),
     ],
     devServer: {
       inline: false
