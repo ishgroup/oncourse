@@ -56,4 +56,5 @@ class FieldFactory {
     };
   }
 }
+
 export default FieldFactory;
