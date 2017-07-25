@@ -155,7 +155,7 @@ export class CheckoutService {
 
     if (amount.payNow < amount.minPayNow) {
       errors.push('low value');
-    } else if (Number(amount.payNow) > Number(amount.total) - Number(amount.discount)) {
+    } else if (Number(amount.payNow) > Number(amount.subTotal)) {
       errors.push('big value');
     }
 

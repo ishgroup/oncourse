@@ -32,6 +32,11 @@ class AmountComp extends React.Component<Props, any> {
     }
   }
 
+  handleBlur(el) {
+    const {onUpdatePayNow, amount} = this.props;
+    onUpdatePayNow(amount, Number(el.value).toFixed(2));
+  }
+
   render(): JSX.Element {
     const {amount, onAddCode, promotions, onUpdatePayNow, redeemVouchers, onToggleVoucher} = this.props;
     const activeVoucherWithPayer = redeemVouchers && redeemVouchers.find(v => v.payer && v.enabled);
@@ -59,6 +64,7 @@ class AmountComp extends React.Component<Props, any> {
           <PayNow
             payNow={amount.payNow}
             onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
+            onBlur={el => this.handleBlur(el)}
             errors={this.state.errors}
           />
           }
@@ -115,6 +121,7 @@ const PayNow = props => {
         type="text"
         value={props.payNow}
         onChange={e => props.onChange(e.target.value)}
+        onBlur={e => props.onBlur(e.target)}
         className={classnames({'t-error': props.errors.length})}
       />
       {props.errors.map((text, i) => (
