@@ -1,5 +1,5 @@
 .sidebar-wrapper {
-  background: $sidebar-bg;
+  background: $main-blue;
 }
 
 .sidebar {
@@ -14,5 +14,9 @@
   
   a {
     color: $white;
+    
+    &.active {
+      color: $main-green;
+    }
   }
 }

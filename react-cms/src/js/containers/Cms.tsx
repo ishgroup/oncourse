@@ -1,41 +1,21 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col} from 'reactstrap';
-import {Route, Link, Redirect, withRouter} from 'react-router-dom';
+import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
 import {routes} from '../routes';
-import {Login} from "./Login/Login";
 import {Layout} from './components/Layout/Layout';
 
 export class Cms extends React.Component<any, any> {
 
-  getContent() {
-    const {isAuthenticated} = this.props;
-
-    return (
-      <div>
-        {routes.map((item, index) => (
-          <PrivateRoute
-            key={index}
-            path={item.path}
-            exact={item.exact}
-            component={item.main}
-            isAuthenticated={isAuthenticated}
-          />
-        ))}
-
-        <Route path="/login" component={Login}/>
-      </div>
-    );
-  }
-
   render() {
     const {isAuthenticated} = this.props.auth;
+    console.log(this.props);
 
     return (
       <Container>
         <Layout
           sidebar={isAuthenticated ? <Sidebar/> : undefined}
-          content={this.getContent()}
+          content={<Content isAuthenticated={isAuthenticated}/>}
           fullHeight={true}
         />
       </Container>
@@ -43,20 +23,39 @@ export class Cms extends React.Component<any, any> {
   }
 }
 
+const Content = props => {
+  return (
+    <div>
+      {routes.map((route, index) => (
+        <RouteWrapper
+          key={index}
+          path={route.path}
+          exact={route.exact}
+          isPublic={route.isPublic}
+          component={route.main}
+          isAuthenticated={props.isAuthenticated}
+        />
+      ))}
+    </div>
+  );
+}
+
 const Sidebar = () => (
   <div className="sidebar">
     <ul>
-      {routes.map((route, index) => (
-        <li key={index}><Link to={route.path}>{route.title}</Link></li>
+      {routes.filter(route => !route.isPublic).map((route, index) => (
+        <li key={index}>
+          <NavLink exact={route.exact} to={route.path} activeClassName="active">{route.title}</NavLink>
+        </li>
       ))}
     </ul>
   </div>
 )
 
-const PrivateRoute = ({component: Component, ...rest}) => {
+const RouteWrapper = ({component: Component, ...rest}) => {
   return (
     <Route {...rest} render={props => (
-      rest.isAuthenticated ? (
+      rest.isAuthenticated || rest.isPublic ? (
         <Component {...props}/>
       ) : (
         <Redirect to={{

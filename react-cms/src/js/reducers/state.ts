@@ -3,6 +3,6 @@ export class State {
 }
 
 class AuthState {
-  isAuthenticated: boolean = true;
+  isAuthenticated: boolean = false;
   token: string;
 }
