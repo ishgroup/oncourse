@@ -1,0 +1,18 @@
+.sidebar-wrapper {
+  background: $sidebar-bg;
+}
+
+.sidebar {
+  position: fixed;
+  height: 100vh;
+  
+  ul {
+    li {
+      padding: 10px 0;
+    }
+  }
+  
+  a {
+    color: $white;
+  }
+}

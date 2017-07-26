@@ -1,5 +1,10 @@
-@import "./base/normilize.css";
+// vendors
+@import 'vendors/bootstrap';
+@import 'vendors/normilize';
 
-#cms-root {
-  background: #000;
-}
+// base
+@import 'base/base';
+@import 'base/theme';
+
+// layout
+@import 'layout/sidebar';

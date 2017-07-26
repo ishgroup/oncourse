@@ -6,6 +6,8 @@ import {applyMiddleware, compose, createStore, GenericStoreEnhancer, StoreEnhanc
 import {EpicRoot} from "./EpicRoot";
 import {autoRehydrate, getStoredState, OnComplete, persistStore} from "redux-persist";
 
+import {reducer} from "./reducers";
+
 const getMiddleware = (): StoreEnhancer<any> => {
   const logger = createLogger({
     collapsed: true,
@@ -20,9 +22,9 @@ const getMiddleware = (): StoreEnhancer<any> => {
 export const CreateStore = (): Store<any> => {
   const store: Store<any> = createStore(
     combineReducers({
-
+      cms: reducer,
     }),
-    <any>compose(getMiddleware(), autoRehydrate()),
+    <any>compose(getMiddleware()),
   ) as Store<any>;
   return store;
 };
