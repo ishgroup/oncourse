@@ -1,12 +1,11 @@
 import {Actions} from "../actions/Actions";
-import {DEFAULT_ENROL_PATH} from "../services/HTMLMarker";
-
+import {DEFAULT_CHECKOUT_PATH} from "../services/HTMLMarker";
 
 
 /**
  * Handle changing checkoutPath property.
  */
-export const CheckoutPathReducer = (state = DEFAULT_ENROL_PATH, action): any => {
+export const CheckoutPathReducer = (state = DEFAULT_CHECKOUT_PATH, action): any => {
   switch (action.type) {
     case Actions.CheckoutPathUpdate:
       return action.payload;
