@@ -4,12 +4,16 @@ import {Container, Row, Col} from 'reactstrap';
 import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
 import {routes} from '../routes';
 import {Layout} from './components/Layout/Layout';
+import {setHistoryInstance} from "../history";
 
 export class Cms extends React.Component<any, any> {
 
+  componentDidMount() {
+    setHistoryInstance(this.props.history);
+  }
+
   render() {
     const {isAuthenticated} = this.props.auth;
-    console.log(this.props);
 
     return (
       <Container>

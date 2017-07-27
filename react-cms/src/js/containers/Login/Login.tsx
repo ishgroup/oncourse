@@ -1,15 +1,17 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
+import {withRouter} from 'react-router-dom';
 
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {submitLoginForm} from "./Actions/index";
+import {getHistoryInstance} from "../../history";
 
 interface Props {
   onSubmit: (form) => void;
+  history?: any;
 }
 
 export class Login extends React.Component<Props, any> {
-
   handleSubmit(e) {
     const {onSubmit} = this.props;
     e.preventDefault();
@@ -41,17 +43,15 @@ export class Login extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
-
-});
+const mapStateToProps = state => ({ });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onSubmit(form) {
-
       dispatch(submitLoginForm(form));
+      getHistoryInstance().push('/');
     },
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Login));
