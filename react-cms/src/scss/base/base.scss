@@ -4,6 +4,14 @@ ul {
   list-style: none;
 }
 
+a {
+  &:focus,
+  &:hover,
+  &:active {
+    text-decoration: none;
+  }
+}
+
 .full-height {
   min-height: 100vh;
 }

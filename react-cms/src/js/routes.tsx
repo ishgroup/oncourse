@@ -1,10 +1,10 @@
 import React from 'react';
-import {Content} from './containers/Content/Content';
-import {Blocks} from './containers/Blocks/Blocks';
-import {Pages} from './containers/Pages/Pages';
-import {Design} from './containers/Design/Design';
-import {Menus} from './containers/Menus/Menus';
-import Login from "./containers/Login/Login";
+import {Content} from './containers/content/Content';
+import {Blocks} from './containers/blocks/Blocks';
+import {Pages} from './containers/pages/Pages';
+import {Design} from './containers/design/Design';
+import {Menus} from './containers/menus/Menus';
+import Login from "./containers/login/Login";
 
 export const routes = [
   {

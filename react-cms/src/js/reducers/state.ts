@@ -1,8 +1,8 @@
-export class State {
-  auth: AuthState = new AuthState();
+export interface State {
+  auth: AuthState;
 }
 
-class AuthState {
+export class AuthState {
   isAuthenticated: boolean = false;
   token: string;
 }

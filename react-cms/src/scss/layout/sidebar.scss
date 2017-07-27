@@ -6,14 +6,14 @@
   position: fixed;
   height: 100vh;
   
-  ul {
-    li {
-      padding: 10px 0;
-    }
-  }
-  
   a {
     color: $white;
+    display: block;
+    padding: 10px;
+    
+    &:hover:not(.active) {
+      opacity: .7;
+    }
     
     &.active {
       color: $main-green;

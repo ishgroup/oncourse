@@ -16,13 +16,13 @@ export class Cms extends React.Component<any, any> {
     const {isAuthenticated} = this.props.auth;
 
     return (
-      <Container>
+      <div>
         <Layout
           sidebar={isAuthenticated ? <Sidebar/> : undefined}
           content={<Content isAuthenticated={isAuthenticated}/>}
           fullHeight={true}
         />
-      </Container>
+      </div>
     );
   }
 }
@@ -72,7 +72,7 @@ const RouteWrapper = ({component: Component, ...rest}) => {
 };
 
 const mapStateToProps = state => ({
-  auth: state.cms.auth,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
