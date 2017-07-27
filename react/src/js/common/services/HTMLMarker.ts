@@ -1,8 +1,8 @@
 import {ComponentClass, StatelessComponent} from "react";
 import Checkout from "../../enrol/containers/Checkout";
+import Cart from "../../web/containers/Cart";
 import {Fees} from "../../web/containers/Fees";
 import EnrolButton from "../../web/containers/EnrolButton";
-import {CartRoot} from "../../web/containers/CartRoot";
 import BuyButton from "../../web/containers/BuyButton";
 import PopupContainer from "../../web/containers/PopupContainer";
 import Promotions from "../../web/containers/Promotions";
@@ -40,7 +40,7 @@ export class HTMLMarkers {
    */
   static CART: HTMLMarker = {
     id: "cart",
-    component: CartRoot,
+    component: Cart,
     props: {
       checkoutPath: "string",
     },

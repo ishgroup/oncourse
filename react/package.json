@@ -78,7 +78,6 @@
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-redux": "5.0.5",
-    "react-router": "4.1.2",
     "react-select": "1.0.0-rc.5",
     "react-text-mask": "5.0.2",
     "react-tooltip": "3.3.0",
