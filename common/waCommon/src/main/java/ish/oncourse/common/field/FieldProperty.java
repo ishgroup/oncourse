@@ -22,9 +22,9 @@ public enum FieldProperty {
 	DATE_OF_BIRTH(ContextType.CONTACT, "Date of Birth", "dateOfBirth"),
 	ABN(ContextType.CONTACT, "ABN", "abn"),
 	IS_MALE(ContextType.CONTACT, "Gender", "isMale" ),
-	IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY(ContextType.CONTACT, "E-mail", "isMarketingViaEmailAllowed"),
-	IS_MARKETING_VIA_POST_ALLOWED_PROPERTY(ContextType.CONTACT, "Post", "isMarketingViaPostAllowed"),
-	IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY(ContextType.CONTACT, "SMS", "isMarketingViaSMSAllowed"),
+	IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY(ContextType.CONTACT, "E-mail", "isMarketingViaEmailAllowed", "accept email marketing material"),
+	IS_MARKETING_VIA_POST_ALLOWED_PROPERTY(ContextType.CONTACT, "Post", "isMarketingViaPostAllowed", "accept postal marketing material"),
+	IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY(ContextType.CONTACT, "SMS", "isMarketingViaSMSAllowed", "accept sms marketing material"),
 	
 	CITIZENSHIP(ContextType.STUDENT, "Citizenship", "citizenship" ),
 	COUNTRY_OF_BIRTH(ContextType.STUDENT, "Country of birth", "countryOfBirth" ),
@@ -50,6 +50,7 @@ public enum FieldProperty {
 	private ContextType contextType;
 	private String displayName;
 	private String key;
+	private String defaultDescription;
 	
 	public String getDisplayName() {
 		return displayName;
@@ -62,11 +63,23 @@ public enum FieldProperty {
 	public ContextType getContextType() {
 		return contextType;
 	}
-	
+
+	public String getDefaultDescription() {
+		return defaultDescription;
+	}
+
 	private FieldProperty(ContextType contextType, String displayName, String key) {
 		this.contextType = contextType;
 		this.displayName = displayName;
 		this.key = key;
+		this.defaultDescription = null;
+	}
+
+	private FieldProperty(ContextType contextType, String displayName, String key, String defaultDescription) {
+		this.contextType = contextType;
+		this.displayName = displayName;
+		this.key = key;
+		this.defaultDescription = defaultDescription;
 	}
 
 	public static FieldProperty getByKey(String key) {
