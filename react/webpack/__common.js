@@ -88,7 +88,6 @@ const _common = (dirname, options) => {
  * The DefinePlugin allows you to create global constants which can be configured at compile time.
  */
 const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => {
-    console.log(process.env);
     return new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(NODE_ENV)
