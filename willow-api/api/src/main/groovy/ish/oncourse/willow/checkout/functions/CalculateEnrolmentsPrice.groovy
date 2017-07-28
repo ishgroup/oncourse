@@ -77,7 +77,7 @@ class CalculateEnrolmentsPrice {
         this
     }
     
-    private setDiscountedPrice(Contact contact, CourseClass courseClass, DiscountCourseClass chosenDiscount, CalculatePrice price) {
+    private setDiscountedPrice(Contact contact, CourseClass courseClass, DiscountCourseClass chosenDiscount, Money discountValue, Money discountedFee) {
         DiscountInterface discount = chosenDiscount.getDiscount()
         model.contactNodes
                 .find {it.contactId == contact.id.toString()}
@@ -86,8 +86,8 @@ class CalculateEnrolmentsPrice {
                 .appliedDiscount = new ish.oncourse.willow.model.web.Discount().with { d ->
                     d.id = (discount as Discount).id.toString()
                     d.title = (discount as Discount).name
-                    d.discountValue = price.discountTotalIncTax.doubleValue()
-                    d.discountedFee = price.finalPriceToPayIncTax.doubleValue()
+                    d.discountValue = discountValue.doubleValue()
+                    d.discountedFee = discountedFee.doubleValue()
                     d.expiryDate = WebDiscountUtils.expiryDate(discount as Discount, courseClass.startDateTime)?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                     d
                 }
@@ -131,9 +131,11 @@ class CalculateEnrolmentsPrice {
         DiscountCourseClass chosenDiscount = discounts.chosenDiscount
 
         if (chosenDiscount != null) {
+            Money fullPrice = price.finalPriceToPayIncTax
             price.applyDiscount(chosenDiscount)
-            totalDiscount = totalDiscount.add(price.discountTotalIncTax)
-            setDiscountedPrice(contact, courseClass, chosenDiscount, price)
+            Money discount = fullPrice.subtract(price.finalPriceToPayIncTax)
+            totalDiscount = totalDiscount.add(discount)
+            setDiscountedPrice(contact, courseClass, chosenDiscount, discount, price.finalPriceToPayIncTax)
         }
         price
     }

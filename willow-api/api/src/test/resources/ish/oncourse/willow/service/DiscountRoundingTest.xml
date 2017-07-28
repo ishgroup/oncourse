@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
+    <College id="1" name="Sydney Community College"
+             webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
+             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
+             timezone="Australia/Sydney"
+             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
+             paymentGatewayPass="test1234"/>
+
+    <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
+
+    <Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
+          created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
+
+    <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <Room id="1" collegeId="1" siteId="1" angelId="1000"
+          capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"
+          name="TestRoom" />
+
+    <Student id="1001" collegeId="1" angelId="1000"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+
+    <Contact uniqueCode="1wjwestablished" id="1001" collegeId="1" studentId="1001"
+             angelId="1001" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Student1" givenName="Student1" emailAddress="Student1@Student1.net"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" postcode="ABS" />
+
+    <Student id="1002" collegeId="1" angelId="1002"
+             created="2011-09-12 00:51:00.0" modified="2011-09-12 00:51:00.0"
+             disabilityType="0" englishProficiency="0" highestSchoolLevel="0"
+             indigenousStatus="0" isOverseasClient="0" isStillAtSchool="0"
+             priorEducationCode="0" labourForceType="0" />
+
+
+    <Contact uniqueCode="1wjdestablished" id="1002" collegeId="1" studentId="1002"
+             angelId="1002" countryId="1" created="2011-09-12 00:51:00.0" isCompany="0"
+             isMale="1" familyName="Student2" givenName="Student2" emailAddress="Student2@Student2.net"
+             dateOfBirth="2011-09-08" street="Independence av. 13" suburb="Minsk"
+             isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
+             isMarketingViaSMSAllowed="1" />
+
+
+    <Course id="1001" collegeId="1" angelId="1001" code="AAV"
+            isWebVisible="1" isVETCourse="0" isSufficientForQualification="0"
+            created="2011-09-12 00:50:59.0" modified="2011-09-12 00:58:00.0"
+            allowWaitingList="1" name="Managerial Accounting"
+            enrolmentType="1"/>
+
+    <CourseClass id="1001" collegeId="1" code="1" courseId="1001"
+                 roomId="1" angelId="1001" startDate="2011-10-12 00:55:59.0"
+                 endDate="2111-10-16 01:55:59.0" isWebVisible="1" isCancelled="0" isActive="1"
+                 created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:01.0"
+                 maximumPlaces="4" minimumPlaces="30" countOfSessions="3"
+                 deliveryMode="1" feeExGst="95.24" feeGst="9.52" isDistantLearningCourse="0"/>
+
+    <Discount
+            id="1001"
+            angelId="3"
+            collegeId="1"
+            combinationType="0"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountRate="0.2"
+            discountType="1"
+            modified="2011-09-12 00:56:00.0"
+            name="negative discount"
+            roundingMode="0"
+            timeZone="timeZone"
+            validFrom="2011-09-12 00:56:00.0"
+            validTo="2111-09-12 00:56:00.0"
+            hideOnWeb="0"
+            isAvailableOnWeb="1"
+            minEnrolments="1"
+            minValue="0"/>
+
+    <DiscountCourseClass id="1001" angelId="1001" collegeId="1" courseClassId="1001"
+                         created="2011-09-12 00:56:00.0"
+                         modified="2011-09-12 00:56:00.0"
+                         discountId="1001"/>
+
+
+</dataset>

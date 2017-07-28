@@ -85,16 +85,16 @@ class ProcessCheckoutModel {
             payNowAmount = redeemedVouchers.leftToPay
             
             model.amount = new Amount().with { a ->
-                a.total = totalAmount.doubleValue()
-                a.payNow =  payNowAmount.doubleValue()
-                a.minPayNow = a.payNow
-                a.discount = totalDiscount.doubleValue()
-                a.voucherPayments = redeemedVouchers.voucherPayments
                 Money subTotal = totalAmount.subtract(totalDiscount)
-                a.subTotal = subTotal.doubleValue()
                 Money owing = subTotal.subtract(payNowAmount).subtract(redeemedVouchers.vouchersTotal)
                 a.owing = owing.doubleValue()
+                a.total = totalAmount.doubleValue()
+                a.subTotal = subTotal.doubleValue()
+                a.discount = totalDiscount.doubleValue()
+                a.payNow =  payNowAmount.doubleValue()
+                a.minPayNow = a.payNow
                 a.isEditable = owing.isGreaterThan(Money.ZERO)
+                a.voucherPayments = redeemedVouchers.voucherPayments
                 a
             }
         }

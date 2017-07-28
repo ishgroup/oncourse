@@ -34,10 +34,6 @@ class CalculatePrice {
         DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, taxRate, taxAdjustment)
         this
     }
-
-    Money getDiscountTotalIncTax() {
-        invoiceLine.discountTotalIncTax
-    }
     
     Money getFinalPriceToPayIncTax() {
         invoiceLine.finalPriceToPayIncTax
