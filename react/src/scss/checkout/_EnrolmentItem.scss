@@ -176,6 +176,12 @@
         
         .Select {
           max-width: 80px;
+          
+          .Select-input {
+            > input {
+              min-width: 0;
+            }
+          }
         }
       }
       

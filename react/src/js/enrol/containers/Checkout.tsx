@@ -19,6 +19,7 @@ interface Props {
   onInit: () => void;
   onProceedToPayment: () => void;
   changePhase: (phase) => void;
+  isNewContact: boolean;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -28,22 +29,17 @@ export class Checkout extends React.Component<Props, any> {
   }
 
   render() {
-    const {phase, page} = this.props;
+    const {phase, page, isNewContact} = this.props;
 
     return (
       <div id="checkout" className="col-xs-24 payments">
         <Progress/>
         <Messages/>
 
-        {phase === Phase.AddPayer &&
+        {(phase === Phase.AddPayer || phase === Phase.AddContact || phase === Phase.AddContactAsPayer) &&
         <ContactAddForm
           onSuccess={submitAddContact}
-        />
-        }
-        {(phase === Phase.AddContact || phase === Phase.AddContactAsPayer) &&
-        <ContactAddForm
-          onSuccess={submitAddContact}
-          onCancel={() => this.props.changePhase(page)}
+          onCancel={!isNewContact ? () => this.props.changePhase(page) : undefined}
         />
         }
         {phase === Phase.AddContactAsCompany &&
@@ -71,6 +67,7 @@ export class Checkout extends React.Component<Props, any> {
 const mapStateToProps = state => ({
   phase: state.checkout.phase,
   page: state.checkout.page,
+  isNewContact: !state.checkout.contacts.result.length,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

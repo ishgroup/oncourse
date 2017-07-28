@@ -35,6 +35,11 @@
         border-radius: 0;
         height: 26px;
         background: whiteSmoke;
+        border-color: #ddd;
+        
+        &:hover {
+          border-color: #aaaaaa;
+        }
     
         span {
           display: block;

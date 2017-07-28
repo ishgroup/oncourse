@@ -7,7 +7,7 @@ import {Contact, ValidationError, ContactFields} from "../../../model";
 import {IshState} from "../../../services/IshState";
 import {ContactEdit} from "./components/ContactEdit";
 import CheckoutService from "../../services/CheckoutService";
-import {showFormValidation} from "../../actions/Actions";
+import {changePhase, showFormValidation} from "../../actions/Actions";
 import {submitEditContact} from "./actions/Actions";
 import {getConcessionTypes} from "../concession/actions/Actions";
 import {validate as concessionFormValidate} from "../concession/Concession";
@@ -25,7 +25,7 @@ class ContactEditForm extends React.Component<Props, any> {
   }
 
   render() {
-    const {handleSubmit, pristine, touch, invalid, submitting, concessionTypes} = this.props;
+    const {handleSubmit, pristine, touch, invalid, submitting, concessionTypes, isNewContact, onCancel, page} = this.props;
     const contact: Contact = this.props.contact;
     const fields: ContactFields = this.props.fields;
 
@@ -51,6 +51,17 @@ class ContactEditForm extends React.Component<Props, any> {
               type="submit"
               disabled={invalid || submitting}
             />
+
+            {!isNewContact &&
+              <a
+                href="#"
+                type="button"
+                className="cancel"
+                onClick={() => onCancel(page)}
+              >
+                Cancel
+              </a>
+            }
           </div>
         </form>
       </div>
@@ -63,7 +74,10 @@ interface Props extends FormProps<FormData, Props, any> {
   fields: ContactFields;
   errors: ValidationError;
   onInit: () => void;
+  onCancel: (page) => void;
   concessionTypes: any;
+  isNewContact: boolean;
+  page: number;
 }
 
 const Form = reduxForm({
@@ -97,11 +111,16 @@ const mapStateToProps = (state: IshState) => {
   const fields = state.checkout.fields;
   const errors = state.checkout.error;
   const concessionTypes = state.checkout.concession.types;
+  const isNewContact = !state.checkout.contacts.result.length;
+  const page = state.checkout.page;
+
   return {
     contact,
     fields,
     errors,
     concessionTypes,
+    isNewContact,
+    page,
   };
 };
 
@@ -112,6 +131,9 @@ const mapDispatchToProps = dispatch => {
     },
     onInit: () => {
       dispatch(getConcessionTypes());
+    },
+    onCancel: page => {
+      dispatch(changePhase(page));
     },
   };
 };
