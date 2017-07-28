@@ -42,7 +42,6 @@ class ConcessionForm extends React.Component<Props, any> {
     return (
       <div>
         <ComboboxField
-          required={true}
           name="concessionType"
           label="New Concession"
           items={concessionTypes.map(t => ({key: t.id, value: t.name}))}

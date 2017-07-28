@@ -30,7 +30,7 @@ class SelectField extends React.Component<any, any> {
 
   private loadOptions = (input: string): Promise<any> => {
     const {loadOptions} = this.props;
-    if (loadOptions) {
+    if (loadOptions && input.length > 0) {
       return loadOptions(input).then((data: Item[]) => {
         return {options: data.map(item => ({key: item.key, value: item.value}))};
       });

@@ -18,7 +18,19 @@
           background: #FEF0F0;
         }
       }
+      
+      .Select-loading-zone {
+        position: absolute !important;
+        top: 50%;
+        right: 30px;
+        margin-top: -10px;
   
+        .Select-loading {
+          width: 20px;
+          height: 20px;
+        }
+      }
+      
       .Select-control {
         border-radius: 0;
         height: 26px;

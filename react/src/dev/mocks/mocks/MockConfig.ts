@@ -88,7 +88,11 @@ export class MockConfig {
     } else if (this.props.validationError) {
       return CreatePromiseReject(this.createValidationError(2, ["email", "street"]));
     } else {
-      return Promise.resolve(response);
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          resolve();
+        }, 300000); // Wait 3s then resolve.
+      });
     }
   }
 

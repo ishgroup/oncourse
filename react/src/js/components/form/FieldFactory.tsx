@@ -91,7 +91,6 @@ const SuburbField = (props): any => {
     {...props}
     component={SelectField}
     loadOptions={suburbs}
-    required={true}
     newOptionEnable={true}
   />;
 };
@@ -100,11 +99,11 @@ const CountryField = (props): any => {
   const countries = (i: string): Promise<Item[]> => {
     return SearchService.getCountries(i);
   };
+
   return <Form.Field
     {...props}
     component={SelectField}
     loadOptions={countries}
-    required={true}
   />;
 };
 
@@ -116,7 +115,6 @@ const LanguageField = (props): any => {
     {...props}
     component={SelectField}
     loadOptions={langs}
-    required={true}
   />;
 };
 
@@ -128,7 +126,6 @@ const PostcodeField = (props): any => {
     {...props}
     component={SelectField}
     loadOptions={codes}
-    required={true}
     newOptionEnable={true}
   />;
 };
