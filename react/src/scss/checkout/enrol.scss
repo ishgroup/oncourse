@@ -964,6 +964,18 @@ span#addstudent, span#questionnaire {
   display: none;
 }
 
+#contactEditorForm {
+  .form-controls {
+    input, a {
+      display: inline-block;
+      font-size: 12px;
+      line-height: 12px;
+      vertical-align: top;
+      margin: 0 3px;
+    }
+  }
+}
+
 #paymentform {
   .conditions {
     position: relative;
