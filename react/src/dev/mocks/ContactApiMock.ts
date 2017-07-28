@@ -79,11 +79,8 @@ export class ContactApiMock extends ContactApi {
     result2.name = 'Man';
     result2.hasExpireDate = true;
     result2.hasNumber = true;
-    const result3: ConcessionTypeModel = new ConcessionTypeModel();
-    result3.id = '-1';
-    result3.name = 'No concession';
 
-    return this.config.createResponse([result3, result2, result1]);
+    return this.config.createResponse([result2, result1]);
   }
 
   getContactConcessions(ids) {

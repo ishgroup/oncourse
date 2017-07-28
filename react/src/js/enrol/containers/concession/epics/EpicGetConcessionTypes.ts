@@ -11,9 +11,15 @@ const request: EpicUtils.Request<any, IshState> = {
   type: GET_CONCESSION_TYPES_REQUEST,
   getData: () => CheckoutService.getConcessionTypes(),
   processData: (value: ConcessionTypeModel[], state: IshState) => {
+
+    // prepend default concession
+    const defaultConcession:ConcessionTypeModel = new ConcessionTypeModel();
+    defaultConcession.id = '-1';
+    defaultConcession.name = 'No concession';
+
     return [{
       type: FULFILLED(GET_CONCESSION_TYPES_REQUEST),
-      payload: value,
+      payload: [defaultConcession].concat(value),
     }];
   },
 };

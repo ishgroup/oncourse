@@ -59,7 +59,8 @@
           border: 0 none;
           font-size: 14px;
           padding: 4px 0 6px;
-          width: 100%;
+          min-width: 143px;
+          max-width: 143px;
         }
       }
     }
