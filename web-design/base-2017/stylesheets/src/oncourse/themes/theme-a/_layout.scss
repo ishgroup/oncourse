@@ -10,54 +10,54 @@
 
 
 @include theme('a') {
-	#Main.main-page {
-		#content {
-			float: none;
-			width: 100%;
-		}
-		#sidebarRight {
-			display: none;
-		}
-	}
-	.container {
-		h1.courses-title {
-			display: block !important;
-		}
-	}
-	.content {
-		h1 {
-			font-weight: normal;
-		}
-		ul li {
-			margin-bottom: 0px;
-		}
-		.home-slider {
-			ul {
-				margin-left: 0px;
-				li>img {
-					width: 100%;
-				}
+  #Main.main-page {
+    #content {
+      float: none;
+      width: 100%;
+    }
+    #sidebarRight {
+      display: none;
+    }
+  }
+  .container {
+    h1.courses-title {
+      display: block !important;
+    }
+  }
+  .content {
+    h1 {
+      font-weight: normal;
+    }
+    ul li {
+      margin-bottom: 0px;
+    }
+    .home-slider {
+      ul {
+        margin-left: 0px;
+        li>img {
+          width: 100%;
+        }
 
-			}
-		}
-	}
-	.rodal-dialog #popup-content .tutors_details {
-		ul.attachedImages, .tutor_pic {
-			position: initial;
-			width: 213px;
-			float: right;
-			margin-left: 20px;
-			margin-bottom: 20px;
-			right: 0px;
-		}
-		.tutors_classes {
-			display: table;
-			width: 100%;
-		}
-	}
-	#footer {
-		.footer-text {
-			margin-bottom: 0px;
-		}
-	}
+      }
+    }
+  }
+  .rodal-dialog #popup-content .tutors_details {
+    ul.attachedImages, .tutor_pic {
+      position: initial;
+      width: 213px;
+      float: right;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      right: 0px;
+    }
+    .tutors_classes {
+      display: table;
+      width: 100%;
+    }
+  }
+  #footer {
+    .footer-text {
+      margin-bottom: 0px;
+    }
+  }
 }

@@ -10,146 +10,146 @@
 
 
 @include theme('a', 'footer') {
-	#footer {
-		color: $footerTextColor;
-		background: $footerBG;
-		font-size: 14px;
-		line-height: 26px;
-		padding-top: 25px;
+  #footer {
+    color: $footerTextColor;
+    background: $footerBG;
+    font-size: 14px;
+    line-height: 26px;
+    padding-top: 25px;
 
-		@include responsive($media-tablet) {
-			padding-top: 70px;
-		}
+    @include responsive($media-tablet) {
+      padding-top: 70px;
+    }
 
-		@include clearfix;
-		.left {
-			+ br {
-				display: none;
-			}
-			> br, > img + p {
-				display: none;
-			}
+    @include clearfix;
+    .left {
+      + br {
+        display: none;
+      }
+      > br, > img + p {
+        display: none;
+      }
 
-			> p {
-				float: left;
-			}
-			.social-content {
-				@include responsive($media-tablet) {
-					@include bootstrap(false) {
-						float: left;
-					}
-				}
-				> br {
-					display: none;
-				}
-				> img {
-					background-color: #FFFFFF;
-				}
-				.social-links {
-					margin-top: 25px;
-					li {
-						display: inline-block;
+      > p {
+        float: left;
+      }
+      .social-content {
+        @include responsive($media-tablet) {
+          @include bootstrap(false) {
+            float: left;
+          }
+        }
+        > br {
+          display: none;
+        }
+        > img {
+          background-color: #FFFFFF;
+        }
+        .social-links {
+          margin-top: 25px;
+          li {
+            display: inline-block;
 
-						&:first-child {
-							margin-left: 0;
-						}
-					}
-				}
-			}
-			.address-info {
-				@include bootstrap(false) {
-					float: left;
-				}
-				.title {
-					text-transform: uppercase;
-					color: $footerTitleColor;
-				}
+            &:first-child {
+              margin-left: 0;
+            }
+          }
+        }
+      }
+      .address-info {
+        @include bootstrap(false) {
+          float: left;
+        }
+        .title {
+          text-transform: uppercase;
+          color: $footerTitleColor;
+        }
 
-				.address {
-					margin-bottom: 20px;
-				}
-			}
-		}
+        .address {
+          margin-bottom: 20px;
+        }
+      }
+    }
 
-		.right {
-			@include bootstrap(false) {
-				float: right;
-				display: table;
-				width: 100%;
-				@include responsive($media-tablet) {
-					width: 50%;
-				}
-			}
-			> p {
-				display: none;
-			}
-			%right-content {
-				> li:first-child {
-					color: $footerTitleColor;
-					text-transform: uppercase;
-				}
-				a {
-					color: $footerAnchorColor;
-					text-decoration: none;
-					&:hover {
-						color: $footerAnchorHoverColor;
-					}
-				}
-			}
+    .right {
+      @include bootstrap(false) {
+        float: right;
+        display: table;
+        width: 100%;
+        @include responsive($media-tablet) {
+          width: 50%;
+        }
+      }
+      > p {
+        display: none;
+      }
+      %right-content {
+        > li:first-child {
+          color: $footerTitleColor;
+          text-transform: uppercase;
+        }
+        a {
+          color: $footerAnchorColor;
+          text-decoration: none;
+          &:hover {
+            color: $footerAnchorHoverColor;
+          }
+        }
+      }
 
-			@include bootstrap(false) {
-				.row {
-					display: table;
-					width: 100%;
-				}
-				.row>ul, >ul {
-					@include responsive($media-tablet) {
-						display: table-cell;
-					}
-					@extend %right-content;
-				}
-			}
+      @include bootstrap(false) {
+        .row {
+          display: table;
+          width: 100%;
+        }
+        .row>ul, >ul {
+          @include responsive($media-tablet) {
+            display: table-cell;
+          }
+          @extend %right-content;
+        }
+      }
 
-			@include bootstrap(true) {
-				.row>ul {
-					@extend %right-content;
-				}
-			}
-		}
-		.courses-list, .quicklinks {
-			ul >li {
-				>a, &:first-child {
-					text-transform: capitalize;
-				}
-				ul {
-					display: none;
-				}
-			}
-		}
+      @include bootstrap(true) {
+        .row>ul {
+          @extend %right-content;
+        }
+      }
+    }
+    .courses-list, .quicklinks {
+      ul >li {
+        >a, &:first-child {
+          text-transform: capitalize;
+        }
+        ul {
+          display: none;
+        }
+      }
+    }
 
-		.footer-text {
-			padding-top: 15px;
-			clear: both;
-			@include responsive($media-tablet) {
-				padding-top: 80px;
-			}
-			@include clearfix;
-			.footer-left {
-				float: left;
-			}
-			.footer-right {
-				float: right;
-			}
-			.footer-logo {
-				a {
-					.ish {
-						color: #80A306;
-					}
-					&:hover {
-						color: $anchorColor;
-					}
-				}
-			}
-		}
-	}
+    .footer-text {
+      padding-top: 15px;
+      clear: both;
+      @include responsive($media-tablet) {
+        padding-top: 80px;
+      }
+      @include clearfix;
+      .footer-left {
+        float: left;
+      }
+      .footer-right {
+        float: right;
+      }
+      .footer-logo {
+        a {
+          .ish {
+            color: #80A306;
+          }
+          &:hover {
+            color: $anchorColor;
+          }
+        }
+      }
+    }
+  }
 }

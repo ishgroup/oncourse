@@ -10,102 +10,102 @@
 
 
 @include theme('a', 'header') {
-	#header {
-		margin-bottom: 20px;
-		@include responsive($media-tablet) {
-			margin-bottom: 25px;
-		}
+  #header {
+    margin-bottom: 20px;
+    @include responsive($media-tablet) {
+      margin-bottom: 25px;
+    }
 
-		a.phone-number {
-			color: $white;
-			text-decoration: none;
-		}
-		#siteLogo {
-			z-index: 10;
-			width: 130px;
-		}
-	}
+    a.phone-number {
+      color: $white;
+      text-decoration: none;
+    }
+    #siteLogo {
+      z-index: 10;
+      width: 130px;
+    }
+  }
 
-	.navbar {
-		nav#nav {
-			display: none;
-			margin-left: 0px;
-			@include responsive($media-tablet) {
-				margin-left: 148px;
-			}
-			@include responsive($media-desktop) {
-				margin-left: 281px;
-			}
-			> ul {
-				background: transparent;
-				border: 0px;
-				&:after {
-					content: "";
-					display: block;
-					clear: both;
-				}
-				> li {
-					margin-left: 0px;
-					border-bottom: 2px solid transparent;
-					&:first-child {
-						margin-left: 0;
-					}
+  .navbar {
+    nav#nav {
+      display: none;
+      margin-left: 0px;
+      @include responsive($media-tablet) {
+        margin-left: 148px;
+      }
+      @include responsive($media-desktop) {
+        margin-left: 281px;
+      }
+      > ul {
+        background: transparent;
+        border: 0px;
+        &:after {
+          content: "";
+          display: block;
+          clear: both;
+        }
+        > li {
+          margin-left: 0px;
+          border-bottom: 2px solid transparent;
+          &:first-child {
+            margin-left: 0;
+          }
 
-					@include responsive($media-tablet) {
-						float: left;
-						margin-left: 33px;
-					}
-					> a {
-						color: $navColor;
-						text-decoration: none;
-						font-size: 16px;
-						display: block;
-						text-transform: initial;
-						font-weight: normal;
-						&:hover {
-							background: transparent;
-							color: initial;
-						}
-					}
-					> ul {
-						display: none;
-						background: $subNavBgColor;
-						top: 100%;
-						left: 0;
-						z-index: 9;
-						@include responsive($media-tablet) {
-							position: absolute;
-						}
-						> li {
-							padding: 0px;
-							> a {
-								white-space: nowrap;
-								color: $subNavColor;
-								text-decoration: none;
-								font-size: 14px;
-							}
-						}
-					}
+          @include responsive($media-tablet) {
+            float: left;
+            margin-left: 33px;
+          }
+          > a {
+            color: $navColor;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            text-transform: initial;
+            font-weight: normal;
+            &:hover {
+              background: transparent;
+              color: initial;
+            }
+          }
+          > ul {
+            display: none;
+            background: $subNavBgColor;
+            top: 100%;
+            left: 0;
+            z-index: 9;
+            @include responsive($media-tablet) {
+              position: absolute;
+            }
+            > li {
+              padding: 0px;
+              > a {
+                white-space: nowrap;
+                color: $subNavColor;
+                text-decoration: none;
+                font-size: 14px;
+              }
+            }
+          }
 
-					&:hover {
-						border-bottom: 2px solid #49bed0;
-					}
-				}
-			}
-		}
-	}
+          &:hover {
+            border-bottom: 2px solid #49bed0;
+          }
+        }
+      }
+    }
+  }
 
-	#headerToolbar #search_box {
-		.advanced-search-button .show-advanced-search span {
-			line-height: 1;
-		}
-		#advanced_search .advanced-search-form {
-			#adv_search_time, #adv_search_day {
-				.checkbox>input {
-					width: 20px;
-					height: 20px;
-				}
-			}
-		}
-	}
+  #headerToolbar #search_box {
+    .advanced-search-button .show-advanced-search span {
+      line-height: 1;
+    }
+    #advanced_search .advanced-search-form {
+      #adv_search_time, #adv_search_day {
+        .checkbox>input {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
 }

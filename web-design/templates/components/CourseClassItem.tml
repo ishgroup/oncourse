@@ -22,7 +22,7 @@
             <meta itemprop="eventStatus" content="available" />
             <meta content="https://${request.serverName}/s/img/blank.png" itemprop="image" />
 
-            <div class="col-xs-24 col-md-17 class-item-info">
+            <div class="col-xs-24 col-sm-19 col-md-17 class-item-info">
                 <div class="col-xs-24 col-sm-12 class-item-info-l">
                     <div class="row">
                         <t:if t:test="courseClass.firstSession">
@@ -159,7 +159,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-24 col-md-7">
+            <div class="col-xs-24 col-sm-5 col-md-7">
                 <div class="reactjs-component"
                      data-cid="enrol-button"
                      data-prop-id="${courseClass.id}"

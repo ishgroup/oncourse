@@ -14,83 +14,83 @@
 //
 
 .courses-menu {
-	>ul, ul.courses-list {
-		margin: $coursesMenuMargin;
-		background: $coursesMenuBackground;
-		padding: $coursesMenuPadding;
-		>ul > li {
-			color: $coursesMenuItemColor;
-			padding: $coursesMenuItemPadding;
-			border-bottom: $coursesMenuItemBorderBottom;
-			margin-right: -6px;
-			> a {
-				background: $coursesMenuItemLinkBackground;
-				color: $coursesMenuItemLinkColor;
-				padding: $coursesMenuItemLinkPadding;
-				border-bottom: $coursesMenuItemLinkBottomBorder;
-				font-size: $coursesMenuItemLinkFontSize;
-				font-weight: bold;
-				&:hover {
-					background: $coursesMenuItemLinkHoverBackground;
-					color: $coursesMenuItemLinkHoverColor;
-					border-bottom: $coursesMenuItemLinkHoverBottomBorder;
-				}
-			}
-		}
-	}
-	.courses-list {
-		> li {
-			display: none;
-		}
-		> ul li:first-child {
-			border-top: 0;
-		}
-	}
+  >ul, ul.courses-list {
+    margin: $coursesMenuMargin;
+    background: $coursesMenuBackground;
+    padding: $coursesMenuPadding;
+    >ul > li {
+      color: $coursesMenuItemColor;
+      padding: $coursesMenuItemPadding;
+      border-bottom: $coursesMenuItemBorderBottom;
+      margin-right: -6px;
+      > a {
+        background: $coursesMenuItemLinkBackground;
+        color: $coursesMenuItemLinkColor;
+        padding: $coursesMenuItemLinkPadding;
+        border-bottom: $coursesMenuItemLinkBottomBorder;
+        font-size: $coursesMenuItemLinkFontSize;
+        font-weight: bold;
+        &:hover {
+          background: $coursesMenuItemLinkHoverBackground;
+          color: $coursesMenuItemLinkHoverColor;
+          border-bottom: $coursesMenuItemLinkHoverBottomBorder;
+        }
+      }
+    }
+  }
+  .courses-list {
+    > li {
+      display: none;
+    }
+    > ul li:first-child {
+      border-top: 0;
+    }
+  }
 
-	li {
-		position: relative;
-		padding-left: 14px;
-		> a {
-			color: $coursesMenuChildLinkColor;
-			display: block;
-			padding: 6px 0;
-			outline: none;
-			font-size: 14px;
-		}
-		> ul {
-			display: block;
-		}
-	}
-	>p, br {
-		display: none;
-	}
+  li {
+    position: relative;
+    padding-left: 14px;
+    > a {
+      color: $coursesMenuChildLinkColor;
+      display: block;
+      padding: 6px 0;
+      outline: none;
+      font-size: 14px;
+    }
+    > ul {
+      display: block;
+    }
+  }
+  >p, br {
+    display: none;
+  }
 }
 
 // Courses menu list toggle
 .courses-menu-toggle {
-	background: $primaryColor;
-	color: #fff;
-	cursor: pointer;
-	display: none;
-	font-size: 18px;
-	font-weight: bold;
-	padding: 16px 0 14px;
-	text-align: center;
+  background: $primaryColor;
+  color: #fff;
+  cursor: pointer;
+  display: none;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px 0 14px;
+  text-align: center;
 
-	&:hover,
-	&.is-active {
-		background: darken($primaryColor, 5%);
-	}
+  &:hover,
+  &.is-active {
+    background: darken($primaryColor, 5%);
+  }
 }
 
 // Courses menu list
 .courses-menu-list {
-	margin-bottom: 20px;
-	&, &.show {
-		display: none !important;
-	}
+  margin-bottom: 20px;
+  &, &.show {
+    display: none !important;
+  }
 
-	.courses-menu {
-		padding: 15px 20px 13px;
-	}
+  .courses-menu {
+    padding: 15px 20px 13px;
+  }
 }

@@ -6,83 +6,82 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
-
+//
 
 //
 // Following style handles site wrapper section
 //
 
 a, button {
-	@include transition(all 0.5s);
+  @include transition(all 0.5s);
 }
 
 ul {
-	@include blocks("&.grid", $media-tablet, "table");
-	@include blocks("&.column", $media-tablet);
+  @include blocks("&.grid", $media-tablet, "table");
+  @include blocks("&.column", $media-tablet);
 }
 
 #cmsWrapper {
-	a {
-		@include transition(none);
-	}
+  a {
+    @include transition(none);
+  }
 }
 
 .site-wrapper {
-	width: 100%;
-	margin: 0 auto;
+  width: 100%;
+  margin: 0 auto;
 
-	// List
-	ul, ol {
+  // List
+  ul, ol {
 
-		// List type disc
-		&.list-type-disc {
-			list-style-type: disc;
-			list-style-position: $listStyleDiscPosition;
-			margin: $listStyleDiscMargin;
-		}
+    // List type disc
+    &.list-type-disc {
+      list-style-type: disc;
+      list-style-position: $listStyleDiscPosition;
+      margin: $listStyleDiscMargin;
+    }
 
-		// List type circle
-		&.list-type-circle {
-			list-style-type: circle;
-			list-style-position: $listStyleCirclePosition;
-			margin: $listStyleCircleMargin;
-		}
+    // List type circle
+    &.list-type-circle {
+      list-style-type: circle;
+      list-style-position: $listStyleCirclePosition;
+      margin: $listStyleCircleMargin;
+    }
 
-		// List type decimal
-		&.list-type-decimal {
-			list-style-type: decimal;
-			list-style-position: $listStyleDecimalPosition;
-			margin: $listStyleDecimalMargin;
-		}
+    // List type decimal
+    &.list-type-decimal {
+      list-style-type: decimal;
+      list-style-position: $listStyleDecimalPosition;
+      margin: $listStyleDecimalMargin;
+    }
 
-		// List type square
-		&.list-type-square {
-			list-style-type: square;
-			list-style-position: $listStyleSquarePosition;
-			margin: $listStyleSquareMargin;
-		}
+    // List type square
+    &.list-type-square {
+      list-style-type: square;
+      list-style-position: $listStyleSquarePosition;
+      margin: $listStyleSquareMargin;
+    }
 
-		// List type other (can specify style type of list)
-		&.list-type-other {
-			list-style-type: $listStyleOtherType;
-			list-style-position: $listStyleOtherPosition;
-			margin: $listStyleOtherMargin;
-		}
-	}
+    // List type other (can specify style type of list)
+    &.list-type-other {
+      list-style-type: $listStyleOtherType;
+      list-style-position: $listStyleOtherPosition;
+      margin: $listStyleOtherMargin;
+    }
+  }
 }
 
 // Main container
 .container {
-	width: 100%;
-	max-width: $containerWidth;
-	@include bootstrap(false) {
-		margin-right: auto;
+  width: 100%;
+  max-width: $containerWidth;
+  @include bootstrap(false) {
+    margin-right: auto;
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
     @include clearfix;
-	}
+  }
 }
 
 //
@@ -90,95 +89,95 @@ ul {
 //
 
 #contentContainer {
-	// Following function handles responsive media tablet screen
-	@include responsive($media-tablet) {
-		margin-top: $contentContainerMarginTop;
-	}
+  // Following function handles responsive media tablet screen
+  @include responsive($media-tablet) {
+    margin-top: $contentContainerMarginTop;
+  }
 }
 
 // All page content
 .content {
-	> h1.page-title:first-child {
-		display: none;
-	}
-	h1 {
-		font-weight: bold;
-		font-family: $h1InnerFontFamily;
-		padding: 0;
-		margin: 0 0 15px;
-		color: $h1InnerTextColor;
-	}
+  > h1.page-title:first-child {
+    display: none;
+  }
+  h1 {
+    font-weight: bold;
+    font-family: $h1InnerFontFamily;
+    padding: 0;
+    margin: 0 0 15px;
+    color: $h1InnerTextColor;
+  }
 
-	#z_content {
-		background-color: transparent !important;
-		> h1 {
-			display: none;
-		}
-	}
+  #z_content {
+    background-color: transparent !important;
+    > h1 {
+      display: $pageTitleDisplay;
+    }
+  }
 }
 
 // Question field block
 p.question-field {
-	padding-left: 10%;
-	font-weight: bold;
-	margin-bottom: 5px;
-	label {
-		padding-left: 0;
-	}
+  padding-left: 10%;
+  font-weight: bold;
+  margin-bottom: 5px;
+  label {
+    padding-left: 0;
+  }
 }
 
 // Form content
 .form-content {
-	fieldset {
-		label {
-			max-width: none
-		}
-		>p>label {
-			padding: 4px 10px 0 10%;
-			width: auto;
-			text-align: left
-		}
-	}
-	h4 {
-		font-weight: bold;
-		margin-left: 10%;
-		border-bottom: 1px solid #ccc
-	}
+  fieldset {
+    label {
+      max-width: none
+    }
+    >p>label {
+      padding: 4px 10px 0 10%;
+      width: auto;
+      text-align: left
+    }
+  }
+  h4 {
+    font-weight: bold;
+    margin-left: 10%;
+    border-bottom: 1px solid #ccc
+  }
 }
 
 // Image container right aligned
 .image-container {
-	float: right;
-	margin-left: 25px
+  float: right;
+  margin-left: 25px
 }
 
 #mc_embed_signup {
-	clear: both
+  clear: both
 }
 
 .gm-style {
-	.gm-style-iw {
-		div {
-			>h1, >h2, >h3, >h4, >h5, >h6, >p {
-				margin: 0px;
-				color: #0C2F61 !important;
-			}
-			h4 {
-				font-size: 14px !important;
-				font-weight: 700 !important;
-			}
-			h5 {
-				font-size: 13px !important;
-				font-weight: 400 !important;
-			}
-			a {
-				padding: 0px !important;
-				color: #90b244 !important;
-				font-size: 12px !important;
-				&:hover {
-					color: #648733 !important;
-				}
-			}
-		}
-	}
+  .gm-style-iw {
+    div {
+      >h1, >h2, >h3, >h4, >h5, >h6, >p {
+        margin: 0px;
+        color: #0C2F61 !important;
+      }
+      h4 {
+        font-size: 14px !important;
+        font-weight: 700 !important;
+      }
+      h5 {
+        font-size: 13px !important;
+        font-weight: 400 !important;
+      }
+      a {
+        padding: 0px !important;
+        color: #90b244 !important;
+        font-size: 12px !important;
+        &:hover {
+          color: #648733 !important;
+        }
+      }
+    }
+  }
 }

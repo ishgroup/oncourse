@@ -16,10 +16,10 @@ strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fiel
 label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details,
 embed, figure, figcaption, footer, header, hgroup, menu, nav, output, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	vertical-align: baseline
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline
 }
 
 //
@@ -27,254 +27,249 @@ time, mark, audio, video {
 //
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, main, nav, section, summary {
-	display: block;
+  display: block;
 }
 
 audio, canvas, video {
-	display: inline-block;
+  display: inline-block;
 }
 
 audio:not([controls]) {
-	display: none;
-	height: 0;
+  display: none;
+  height: 0;
 }
 
 [hidden],
 template {
-	display: none;
+  display: none;
 }
 
 html {
-	font-family: $bodyFontFamily;
- 	-webkit-text-size-adjust: 100%;
-	-ms-text-size-adjust: 100%;
+  font-family: $bodyFontFamily;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 * {
-	// Following function handles text backface visibility
-	@include backface-visibility(hidden);
-}
-
-* {
-	&, &::after, &::before {
-		box-sizing: border-box;
-	}
+  &, &::after, &::before {
+    box-sizing: border-box;
+  }
 }
 
 #cmsWrapper * {
-	&, &::after, &::before {
-		box-sizing: initial;
-	}
+  &, &::after, &::before {
+    box-sizing: initial;
+  }
 }
 
 a {
-	background: transparent;
-	color: $anchorColor;
-	text-decoration: none;
-	cursor: pointer;
-	&:active, &:hover {
-		outline: 0;
-		color: $anchorHoverColor;
-	}
-	&:hover, &:focus {
-		text-decoration: none;
-	}
+  background: transparent;
+  color: $anchorColor;
+  text-decoration: none;
+  cursor: pointer;
+  &:active, &:hover {
+    outline: 0;
+    color: $anchorHoverColor;
+  }
+  &:hover, &:focus {
+    text-decoration: none;
+  }
 }
 
 b,
 strong {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 dfn {
-	font-style: italic;
+  font-style: italic;
 }
 
 hr {
-	box-sizing: content-box;
-	height: 0;
+  box-sizing: content-box;
+  height: 0;
 }
 
 mark {
-	background: #ff0;
-	color: $black;
+  background: #ff0;
+  color: $black;
 }
 
 code,
 kbd,
 pre,
 samp {
-	font-family: monospace, serif;
-	font-size: 1em;
+  font-family: monospace, serif;
+  font-size: 1em;
 }
 
 pre {
-	white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 
 q {
-	quotes: "\201C" "\201D" "\2018" "\2019";
+  quotes: "\201C" "\201D" "\2018" "\2019";
 }
 
 blockquote, q {
-	&::before, &::after {
-		content: '';
-		content: none;
-	}
-	quotes: none
+  &::before, &::after {
+    content: '';
+    content: none;
+  }
+  quotes: none
 }
 
 small {
-	font-size: 80%;
+  font-size: 80%;
 }
 
 sub,
 sup {
-	font-size: 75%;
-	line-height: 0;
-	position: relative;
-	vertical-align: baseline;
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
 }
 
 sup {
-	top: -0.5em;
+  top: -0.5em;
 }
 
 sub {
-	bottom: -0.25em;
+  bottom: -0.25em;
 }
 
 img {
-	border: 0;
-	height: auto;
-	max-width: 100%;
-	-ms-interpolation-mode: bicubic;
+  border: 0;
+  height: auto;
+  max-width: 100%;
+  -ms-interpolation-mode: bicubic;
 }
 
 a img {
-	border: none;
+  border: none;
 }
 
 svg:not(:root) {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 figure {
-	margin: 0;
+  margin: 0;
 }
 
 fieldset {
-	border: 1px solid #c0c0c0;
-	margin: 0 2px;
-	padding: 0.35em 0.625em 0.75em;
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
 }
 
 legend {
-	border: 0;
-	padding: 0;
+  border: 0;
+  padding: 0;
 }
 
 button,
 input,
 select,
 textarea {
-	font-family: inherit;
-	font-size: 100%;
-	margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
 }
 
 button,
 input {
-	line-height: normal;
+  line-height: normal;
 }
 
 button,
 select {
-	text-transform: none;
+  text-transform: none;
 }
 
 button,
 html input[type="button"],
 input[type="reset"],
 input[type="submit"] {
-	@include appearance(button);
-	cursor: pointer;
-	border: none;
-	outline: 0;
+  @include appearance(button);
+  cursor: pointer;
+  border: none;
+  outline: 0;
 }
 
 button[disabled],
 html input[disabled] {
-	cursor: default;
+  cursor: default;
 }
 
 input[type="checkbox"],
 input[type="radio"] {
-	box-sizing: border-box;
-	padding: 0;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 input[type="search"] {
-	@include appearance(textfield);
-	box-sizing: content-box;
+  @include appearance(textfield);
+  box-sizing: content-box;
 }
 
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
-	@include appearance(none);
+  @include appearance(none);
 }
 
 button::-moz-focus-inner,
 input::-moz-focus-inner {
-	border: 0;
-	padding: 0;
+  border: 0;
+  padding: 0;
 }
 
 textarea {
-	overflow: auto;
-	vertical-align: top;
+  overflow: auto;
+  vertical-align: top;
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 h1, h2, h3, h4, h5 {
-	padding: 0;
-	margin: 0;
-	margin-bottom: 14px;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 14px;
 }
 
 p {
-	margin: 0;
-	margin-bottom: 15px;
+  margin: 0;
+  margin-bottom: 15px;
 }
 
 ul, ol {
-	list-style: none;
-	padding: 0;
-	margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 img,
 object,
 embed {
-	max-width: 100%;
+  max-width: 100%;
 }
 
 @include bootstrap(false) {
-	.hide {
-		display: none !important;
-	}
+  .hide {
+    display: none !important;
+  }
 
-	.show {
-		display: block !important;
-	}
-	.pull-left {
-		float: left;
-	}
-	.pull-right {
-		float: right;
-	}
+  .show {
+    display: block !important;
+  }
+  .pull-left {
+    float: left;
+  }
+  .pull-right {
+    float: right;
+  }
 }

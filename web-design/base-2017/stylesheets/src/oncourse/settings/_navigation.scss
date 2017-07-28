@@ -12,6 +12,8 @@
 // Following all the settings handles navigation style
 //
 
+$navbarPosition: relative !default;
+$navbarZIndex: 4 !default;
 // Navbar position (left, right)
 $navbarFloatPosition: none !default;
 // Navbar left gaps
@@ -24,9 +26,14 @@ $navFontWeight: 600 !default;
 // Navbar text transformation
 $navTextTransform: uppercase !default;
 // Navbar width
+
+$navWidthSmall: 100% !default;
 $navWidth: auto !default;
 // Display Navbar after tablet screen
 $navTabletDisplay: block !important !default;
+
+$navTagFloat: none !default;
+$navTagFloatTablet: right !default;
 // Navbar margin
 $navMargin: 0px !default;
 

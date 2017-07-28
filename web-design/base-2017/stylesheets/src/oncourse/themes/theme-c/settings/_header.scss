@@ -10,6 +10,11 @@
 
 $header-theme: "c";
 
+$contentContainerBackground: none !default;
+$contentContainerPaddingSidebarLeftTablet: 75px 75px 35px 15px !default;
+$contentContainerPaddingSidebarRightTablet: 75px 75px 35px 75px !default;
+
+
 $headerContainerPosition: relative !default;
 $headerContainerMarginBottom: 0px !default;
 $headerGroupPosition: relative !default;
@@ -107,22 +112,32 @@ $advanceSearchButtonClearPosition: right !default;
 $advanceSearchButtonSubmitPosition: left !default;
 
 $advanceSearchColor: #202020 !default;
+$advanceSearchColor-Internal: #202020 !default;
 $advanceSearchButtonBG: $theme-color !default;
+$advanceSearchButtonBG-Internal: $theme-color !default;;
+
 $advanceSearchButtonClearBackground: #d3eaec !default;
+$advanceSearchButtonClearBackground-Internal: #d3eaec !default;
+
 $searchActiveButtonBG: $advanceSearchButtonBG !default;
 
 $toggleSearchActiveBackground: $theme-color !default;
 
 // Advanced search
 $advanceSearchBG: #fbfbfb !default;
+$advanceSearchBG-Internal: $white !default;
 $advanceSearchBGRGB: $advanceSearchBG !default;
 $advancedSearchPriceDisplay: block !default;
 $advancedSearchLocationWidth: 50% !default;
 $advancedSearchPriceWidth: $advancedSearchLocationWidth !default;
 $advancedSearchActiveRight: -6px !default;
 $advancedSearchActiveTop: 20px !default;
+$advanceSearchTitleColor: $secondaryColor !default;
 $advancedSearchTitleColor-InternalPage: #00515f !default;
-$advancedSearchTitleColor-HomePage: $secondaryColor !default;
+
+$advanceSearchInputBG-Internal: #cecece !default;
+$advanceSearchInputBG-Home: #cecece !default;
+$advanceSearchTitleColor: $secondaryColor !default;
 
 $searchBoxBackground: $white !default;
 $searchBoxWidth: 190px !default;

@@ -6,8 +6,7 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
-
+//
 
 //
 // Following style handles course item's page title, first image of content item
@@ -16,7 +15,7 @@
 #DetailsPage {
   .courseItem {
     .page-title {
-      font-size: $coursesHeaderItemFontSize;
+      font-size: $coursesPageTitleFontSize;
       font-weight: normal;
     }
     .addthis {
@@ -43,7 +42,7 @@
         // Following backface-visibility used for text backface visibility
         @include backface-visibility(hidden);
         border-top: $courseItemBorderTop;
-        padding-top: 20px;
+        padding-top: $courseItemPaddingTop;
       }
     }
     .content-container {
@@ -105,12 +104,14 @@
       h2 {
         margin: 0 0 5px;
         font-size: $coursesHeaderItemFontSize;
+        &, a {
+          color: $coursesHeaderItemTextColor;
+        }
+        a:hover {
+          color: $coursesHeaderItemTextColorHover;
+        }
       }
-      h4 {
-        font-weight: bold;
-        margin-bottom: 3px;
-      }
-      h5 a {
+      h4, h5 a {
         font-weight: bold;
       }
       .NRTLogo {
@@ -165,6 +166,7 @@
         p {
           color: $courseDescriptionTextColor;
         }
+        @extend %header-tags;
       }
 
       // Courses short description
@@ -202,25 +204,7 @@
           font-weight: bold;
           margin-bottom: 18px;
         }
-        h1 {
-          font-size: 20px
-        }
-
-        h2 {
-          font-size: 18px
-        }
-
-        h3 {
-          font-size: 16px
-        }
-
-        h4 {
-          font-size: 14px
-        }
-
-        h5 {
-          font-size: 12px
-        }
+        @extend %header-tags;
       }
 
       .class-starting-dates {
@@ -449,7 +433,7 @@
   // Inner info of class item block
   .class-item-info {
     zoom: 1 \9;
-    font-size: 13px;
+    font-size: $classItemInfoFontSize;
 
     @include bootstrap(false) {
       float: left;
@@ -496,14 +480,14 @@
         width: 100%;
         @include responsive($media-small) {
           width: 48%;
-          border-right: 1px solid #eee;
+          border-right: $classItemInfoLeftBorderRight;
         }
       }
 
       @include bootstrap(true) {
         // Following function handles responsive media screen
         @include responsive($media-custom, 768px) {
-          border-right: 1px solid #eee;
+          border-right: $classItemInfoLeftBorderRight;
         }
       }
     }
@@ -546,7 +530,7 @@
       }
 
       .date-time {
-        border-bottom: 1px dotted;
+        border-bottom: $coursesClassItemDateTimeBorderBottom;
       }
     }
     .date-link {
@@ -603,6 +587,9 @@
       acronym.discount-price {
         cursor: help
       }
+      abbr {
+        border-bottom: 0 none;
+      }
     }
     .link-timetable-location {
       padding: 4px 0 0;
@@ -611,7 +598,7 @@
   .location,
   .class-item-info .link-timetable-location {
     a {
-      border-bottom: 1px dotted;
+      border-bottom: $coursesClassItemDateTimeBorderBottom;
     }
   }
 
@@ -620,9 +607,9 @@
    */
 
   .classAction {
-    text-align: right;
-    font-size: 11px;
-    line-height: 1.5;
+    text-align: $classActionTextAlign;
+    font-size: $classActionFontSize;
+    line-height: $classActionLineHeight;
 
     @include bootstrap(false) {
       float: right;
@@ -637,23 +624,23 @@
     }
     .enrolAction {
       font-family: $enrolActionFontFamily;
-      display: inline-block;
+      display: $enrolActionDisplay;
       background: $enrolActionBackground;
       color: $enrolActionColor;
       text-transform: $enrolActionTextTransform;
-      font-weight: bold;
-      text-decoration: none;
-      width: 100%;
-      min-width: 110px;
+      font-weight: $enrolActionFontWeight;
+      text-decoration: $enrolActionTextDecoration;
+      width: $enrolActionWidthSmall;
+      min-width: $enrolActionMinWidth;
       padding: $enrolActionPadding;
-      margin: 5px 0 0;
+      margin: $enrolActionMargin;
       font-size: $enrolActionFontSize;
       line-height: $enrolActionLineHeight;
-      text-align: center;
+      text-align: $enrolActionTextAlign;
       border: $enrolActionBorder;
 
       // Enrol action button's curved
-      @include border-radius(4px);
+      @include border-radius($enrolActionBorderRadiusSmall);
 
       // Following function handles responsive media screen
       @include responsive($media-tablet) {
@@ -663,7 +650,13 @@
       }
       &.enrol-added-class {
         background: $enrolActionAddedBackground;
-        border: 1px solid $enrolActionHoverBorderColor;
+        border: $enrolActionAddedBorder;
+        color: $enrolActionAddedColor;
+        &:hover {
+          background: $enrolActionAddedBackgroundHover;
+          border: $enrolActionAddedBorderHover;
+          color: $enrolActionAddedColorHover;
+        }
       }
 
       &:hover {
@@ -676,13 +669,15 @@
       &.disabled {
         background: $enrolActionDisabled;
         text-indent: 0;
-        text-align: center;
-        border: 1px solid $enrolActionDisabledBorderColor;
+        text-align: $enrolActionTextAlign;
+        border: $enrolActionDisabledBorder;
         color: $enrolActionDisabledTextColor;
-        font-size: 13px;
+        font-size: $enrolActionFontSize;
         cursor: default;
         &:hover {
-          color: darken($enrolActionDisabledTextColor, 5%);
+          background: $enrolActionDisabledBackgroundHover;
+          border: $enrolActionDisabledBorderHover;
+          color: $enrolActionDisabledTextColorHover;
         }
       }
     }
@@ -735,25 +730,25 @@
 .bubbleInfo {
   display: none;
   font-family: $normalFontFamily;
-  font-size: 12px;
-  width: 256px;
-  border-collapse: collapse;
-  padding: 0 23px 0 0;
-  position: absolute;
+  font-size: $coursesBubbleInfoFontSize;
+  width: $coursesBubbleInfoWidth;
+  border-collapse: $coursesBubbleInfoBorderCollapse;
+  padding: $coursesBubbleInfoPadding;
+  position: $coursesBubbleInfoPosition;
   left: $coursesBubbleInfoPositionLeft;
   right: $coursesBubbleInfoPositionRight;
-  top: -20px;
-  z-index: 10;
+  top: $coursesBubbleInfoPositionTop;
+  z-index: $coursesBubbleInfoZIndex;
   .arrow {
     position: absolute;
     right: $coursesBubbleInfoArrowPositionRight;
     left: $coursesBubbleInfoArrowPositionLeft;
-    top: 16px;
-    width: 23px;
-    height: 27px;
+    top: $coursesBubbleInfoArrowPositionTop;
+    width: $coursesBubbleInfoArrowWidth;
+    height: $coursesBubbleInfoArrowHeight;
     background-image: url($coursesBubbleInfoArrowImage);
-    background-position: right top;
-    background-repeat: no-repeat
+    background-position: $coursesBubbleInfoArrowBackgroundPosition;
+    background-repeat: $coursesBubbleInfoArrowBackgroundRepeat;
   }
   .tooltip_popup {
     position: relative;
@@ -1072,50 +1067,54 @@
 // Confirm order dialog
 //
 .confirmOrderDialog {
-  display: none;
-  width: 250px;
-  position: absolute;
-  right: 150px;
-  top: 100px;
-  left: 50%;
-  margin-left: -125px;
-  padding: 20px;
-  background: #fff;
-  border: 1px solid #444;
-  z-index: 5;
-  font-size: 14px;
-  box-shadow: 0px 0px 20px rgba(68, 68, 68, 0.3);
-  @include border-radius(4px);
+  display: $confirmOrderDialogDisplay;
+  width: $confirmOrderDialogWidth;
+  position: $confirmOrderDialogPosition;
+  right: $confirmOrderDialogPositionRight;
+  top: $confirmOrderDialogPositionTop;
+  left: $confirmOrderDialogPositionLeft;
+  margin-left: $confirmOrderDialogMarginLeft;
+  padding: $confirmOrderDialogPadding;
+  background: $confirmOrderDialogBackground;
+  border: $confirmOrderDialogBorder;
+  z-index: $confirmOrderDialogZIndex;
+  font-size: $confirmOrderDialogFontSize;
+  @include box-shadow($confirmOrderDialogBoxShadow);
+  @include border-radius($confirmOrderDialogBorderRadius);
+  text-align: $confirmOrderDialogTextAlign;
   div.closeButton {
-    display: none
+    display: $confirmOrderDialogCloseButtonDisplay;
   }
   div {
-    margin-bottom: 3px
+    margin-bottom: $confirmOrderDialogDivsMarginBottom;
   }
-
+  .confirm-message {
+    .confirm-txt {
+      font-size: $confirmedMessageFontSize;
+    }
+  }
   .confirm-proseed {
-    text-align: center;
+    text-align: $confirmOrderProceedTextAlign;
     .button {
-      display: inline-block;
-      padding: 5px 10px;
+      display: $confirmedProceedDisplay;
+      padding: $confirmedProceedPadding;
       background: $confirmedProceedBackground;
       color: $confirmedProceedColor;
-      text-transform: uppercase;
-      border: 0;
-      text-decoration: none;
+      text-transform: $confirmedProceedTextTransform;
+      border: $confirmedProceedBorder;
+      text-decoration: $confirmedProceedTextDecoration;
       font-size: $confirmedProceedFontSize;
-      font-weight: 700;
+      font-weight: $confirmedProceedFontWeight;
     }
   }
   .classDate {
-    font-size: 11px;
-    color: #666
+    font-size: $confirmedClassDateFontSize;
+    color: $confirmedClassDateColor;
   }
-
   .confirm-close-wrapper {
-    border-top: 1px solid #444;
-    padding: 10px 0 0 0;
-    text-align: center;
-    font-size: 16px
+    border-top: $confirmedCloseWrapperBorderTop;
+    padding: $confirmedCloseWrapperPadding;
+    text-align: $confirmedCloseWrapperTextAlign;
+    font-size: $confirmedCloseWrapperFontSize;
   }
 }

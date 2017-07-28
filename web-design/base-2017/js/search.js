@@ -9,6 +9,12 @@
 *
 */
 
+if(searchMoreText === undefined)
+	var searchMoreText = "More options";
+
+if(searchFewerText === undefined)
+	var searchFewerText = "Fewer options";
+
 
 // open the infoWindow on the map with the site details for the site ID specified
 function showSiteOnMap(siteID) {
@@ -100,6 +106,14 @@ jQuery.fn.ClearTypeFadeOut = function(options) {
 
 /* -----*/
 
+if(advancedSearchAction === undefined)
+	var advancedSearchAction = function(isVisible) { }
+
+function advancedSearchCheck(isVisible) {
+	if(advancedSearchAction !== undefined && typeof advancedSearchAction == "function")
+		advancedSearchAction(isVisible);
+}
+
 function toggleAdvancedSearch() {
 	if($j('#advanced_search').is(':visible')) {
 		hideAdvancedSearch();
@@ -109,11 +123,13 @@ function toggleAdvancedSearch() {
 }
 
 function showAdvancedSearch() {
-	$j('a.show-advanced-search span').addClass('adv_search_active').text("Fewer options");
+	$j('a.show-advanced-search span').addClass('adv_search_active').text(searchFewerText);
 
 	$j('form#search').ClearTypeFadeTo({ speed: 450, opacity: 0.4 });
 	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 0.4 });
 	$j('#advanced_search').show('slow', function() { });
+
+	advancedSearchCheck(true);
 
 	// install watcher to detect clicks on the background
 	$j(document).bind('mousedown', function(e) {
@@ -131,7 +147,9 @@ function hideAdvancedSearch() {
 	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 1 });
 	$j('#advanced_search').hide('slow');
 
-	$j('a.show-advanced-search span').removeClass('adv_search_active').text("More options");
+	$j('a.show-advanced-search span').removeClass('adv_search_active').text(searchMoreText);
+
+	advancedSearchCheck(false);
 
 }
 

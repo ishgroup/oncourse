@@ -6,70 +6,65 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
+//
 
-
-
-//---------------------------------------------------------------------------
-//  TAGS (FILTERS)
-//---------------------------------------------------------------------------
-
-$nav-border: #dedee0;
+// TAGS (FILTERS)
 @if $fs-enable == true {
   .filters-container {
-    position: relative;
-    margin-left: 25px;
-    padding-right: 25px;
+    position: $fstContainerPosition;
+    margin-left: $fstContainerMarginLeft;
+    padding-right: $fstContainerPaddingLeft;
     br {
       display: none;
     }
     &.active {
-      position: absolute;
-      top: 0;
-      left: -21px;
-      right: -21px;
-      border-top: 0;
-      display: block;
+      position: $fstContainerActivePosition;
+      top: $fstContainerActivePositionTop;
+      left: $fstContainerActivePositionLeft;
+      right: $fstContainerActivePositionRight;
+      border-top: $fstContainerActiveBorderTop;
+      display: $fstContainerActiveDisplay;
     }
 
     .fst-main {
-      font-weight: bold;
+      font-weight: $fstMainFontWeight;
     }
 
     .fst-inner, h3 {
-      background: transparent;
-      color: $primaryColor;
-      padding: 9px 0px 13px 8px;
-      border-bottom: 1px dotted $nav-border;
-      font-size: 14px;
+      background: $fstTitleBackground;
+      color: $fstTitleColor;
+      padding: $fstTitlePadding;
+      border-bottom: $fstTitleBorderBottom;
+      font-size: $fstTitleFontSize;
     }
     a {
-      padding: 0;
-      border-width: 0;
+      padding: $fstLinkPadding;
+      border-width: $fstLinkBorderWidth;
     }
 
     .filters-clear-all {
-      position: absolute;
-      right: 25px;
-      font-weight: normal;
+      position: $fstClearAllPosition;
+      right: $fstClearAllPositionRight;
+      font-weight: $fstClearAllFontWeight;
     }
 
     .side-box {
-      border-bottom: 1px dotted $nav-border;
-      border-width: 0 0 1px;
-      padding-bottom: 15px;
-      margin-bottom: 25px;
+      border-bottom: $fstSideBoxBorderBottom;
+      border-width: $fstSideBoxBorderWidth;
+      padding-bottom: $fstSideBoxPaddingBottom;
+      margin-bottom: $fstSideBoxMarginBottom;
 
       &:last-child {
-        border-width: 0;
+        border-width: $fstSideBoxBorderWidthLastChild;
       }
 
       .courses-list {
-        margin-left: 0;
-        padding-right: 6px;
+        margin-left: $fstCoursesListMarginLeft;
+        padding-right: $fstCoursesListPaddingRight;
         > li:first-child {
-          margin-top: 0;
+          margin-top: $fstCoursesListFirstChildMarginTop;
           & > a {
-            margin-bottom: 16px;
+            margin-bottom: $fstCoursesListFirstChildLinkMarginBottom;
           }
         }
       }
@@ -79,14 +74,14 @@ $nav-border: #dedee0;
           display: none;
         }
         ul li {
-          padding-left: 0;
-          margin-bottom: 10px;
+          padding-left: $fstLocationListChildPaddingLeft;
+          margin-bottom: $fstLocationListChildMarginBottom;
           >span {
-            display: none;
+            display: $fstLocationListChildSpan;
           }
         }
         input[type=radio] {
-          display: none;
+          display: $fstLocationListInputRadio;
         }
       }
     }
@@ -94,58 +89,57 @@ $nav-border: #dedee0;
     .tags-list,
     .courses-list-sub {
       li {
-        margin-bottom: 10px;
-        padding-left: 0;
+        margin-bottom: $fstTagsListChildMarginBottom;
+        padding-left: $fstTagsListChildPaddingLeft;
       }
     }
     ul ul li ul.tag-list {
-      padding-left: 35px;
+      padding-left: $fstTagsListPaddingLeft;
       //display: none;
     }
 
     .filter-option {
-      position: relative;
-      overflow: hidden;
+      position: $fstOptionPosition;
+      overflow: $fstOptionOverflow;
 
       .filter-option-counter {
-        position: absolute;
-        right: 0;
-        top: 3px;
-        border: 1px solid #ddd;
-        border-radius: 16px;
-        font-size: 10px;
-        padding: 3px 8px;
-        line-height: 1.0;
+        position: $fstOptionCounterPosition;
+        right: $fstOptionCounterPositionRight;
+        top: $fstOptionCounterPositionTop;
+        border: $fstOptionCounterBorder;
+        border-radius: $fstOptionCounterBorderRadius;
+        font-size: $fstOptionCounterFontSize;
+        padding: $fstOptionCounterPadding;
+        line-height: $fstOptionCounterLineHeight;
       }
 
       > .tag-list li {
-        margin-bottom: 0;
-        margin-top: 10px;
+        margin-bottom: $fstOptionTagListChildMarginBottom;
+        margin-top: $fstOptionTagListChildMarginTop;
       }
 
       > .filter-option-control {
-        display: none;
+        display: $fstOptionControlDisplay;
       }
     }
 
-    //---------------------------------------------------------------------------
-    //  FILTER OPTION ($CUSTOM CHECKBOXES UPD)
-    //---------------------------------------------------------------------------
-
+    // FILTER OPTION ($CUSTOM CHECKBOXES UPD)
     input[type=checkbox].filter-option-control, .icheckbox_flat {
-      //position:absolute; z-index:-1000; left:-1000px;
+      // position: absolute;
+      // z-index:-1000;
+      // left:-1000px;
 
       & + label.filter-option-label,
       & + label.filter-option-label.clr {
-        margin-bottom: 0;
-        // height:22px;
-        display:inline-block;
-        background-repeat:no-repeat;
+        margin-bottom: $fstOptionLabelMarginBottom;
+        // height: 22px;
+        display: $fstOptionLabelDisplay;
+        background-repeat: no-repeat;
         background-position: 0 0;
-        vertical-align:middle;
-        cursor:pointer;
-        width: auto;
-        position: initial;
+        vertical-align: middle;
+        cursor: pointer;
+        width: $fstOptionLabelWidth;
+        position: $fstOptionLabelPosition;
       }
 
       &:checked + label.filter-option-label,
@@ -158,7 +152,6 @@ $nav-border: #dedee0;
     }
 
     label.filter-option-label {
-
       &:before {
         // background-image:url(""+$images-general+"/chckbx-sprite.png");
         // -webkit-touch-callout: none;
@@ -169,15 +162,15 @@ $nav-border: #dedee0;
         // user-select: none;
         // color: $color-default;
 
-        content: "";
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        position: absolute;
-        top: 3px;
-        left: 0;
+        content: $fstOptionLabelBeforeContent;
+        display: $fstOptionLabelBeforeDisplay;
+        width: $fstOptionLabelBeforeWidth;
+        height: $fstOptionLabelBeforeHeight;
+        position: $fstOptionLabelBeforePosition;
+        top: $fstOptionLabelBeforePositionTop;
+        left: $fstOptionLabelBeforePositionLeft;
 
-        font: normal normal normal 11px/1 FontAwesome;
+        font: $fstOptionLabelBeforeFont;
         text-rendering: auto;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -185,12 +178,11 @@ $nav-border: #dedee0;
     }
     // FILTER CHECKBOXES
     input[type=checkbox].filter-option-control {
-
       & + label.filter-option-label,
       & + label.filter-option-label.clr {
-        background-repeat:no-repeat;
+        background-repeat: no-repeat;
         background-position: 0 0;
-        cursor:pointer;
+        cursor: pointer;
         font-weight: normal;
         vertical-align: top;
         margin-top: 0;
@@ -201,42 +193,32 @@ $nav-border: #dedee0;
       & + label.filter-option-label.chk {
         // background-position: 0 -22px;
         &:before {
-          content: "\f00c";
-          padding-top: 1px;
-          padding-left: 1px;
-          background-color: $primaryColor;
-          border-color: $primaryColor;
-          color: $white;
+          content: $fstOptionLabelBeforeCheckedContent;
+          padding-top: $fstOptionLabelBeforeCheckedPaddingTop;
+          padding-left: $fstOptionLabelBeforeCheckedPaddingLeft;
+          background-color: $fstOptionLabelBeforeCheckedBackgroundColor;
+          border-color: $fstOptionLabelBeforeCheckedBorderColor;
+          color: $fstOptionLabelBeforeCheckedTextColor;
         }
       }
     }
 
-
     // NORMAL STATE
     label.filter-option-label {
-      // background-image:url(""+$images-general+"/chckbx-sprite.png");
-      // -webkit-touch-callout: none;
-      // -webkit-user-select: none;
-      // -khtml-user-select: none;
-      // -moz-user-select: none;
-      // -ms-user-select: none;
-      // user-select: none;
-      // color: $color-default;
-
-      font-family: $bodyFontFamily;
-      font-size: 14px;
-      line-height: 22px;
-      padding-left: 23px;
-      padding-right: 35px;
+      font-family:  $fstOptionLabelFontFamily;
+      font-size: $fstOptionLabelFontSize;
+      line-height: $fstOptionLabelLineHeight;
+      padding-left: $fstOptionLabelPaddingLeft;
+      padding-right: $fstOptionLabelPaddingRight;
 
       &:before {
-        border: 1px solid #cbcbcb;
-        border-radius: 2px;
-        background-color: #fff;
+        border: $fstOptionLabelBeforeBorder;
+        border-radius: $fstOptionLabelBeforeBorderRadius;
+        background-color: $fstOptionLabelBeforeBackgroundColor;
       }
       &.hasOptionChild::before {
-        background: none !important;
-        border: none !important;
+        background: $fstOptionLabelHasOptionChildBeforeBackground;
+        border: $fstOptionLabelHasOptionChildBeforeBorder;
       }
     }
 
@@ -244,46 +226,40 @@ $nav-border: #dedee0;
     input:disabled.filter-option-control + label.filter-option-label,
     input[disabled='disabled'].filter-option-control + label.filter-option-label,
     div.disabled + label.filter-option-label {
-      color: #c5c5c5;
-
+      color: $fstOptionLabelDisabledTextColor;
       &:before {
-        border-color: #e5e5e5;
+        border-color: $fstOptionLabelDisabledBeforeBorderColor;
       }
 
       & + .filter-option-counter {
-        color: #c5c5c5;
+        color: $fstOptionCounterDisabledTextColor;
       }
     }
   }
 
   //TABS
   .locations-list {
-    padding-left: 20px;
+    padding-left: $fstLocationListPaddingLeft;
     section {
-      //padding-top: 15px;//25px
-      display: block;//none
-      //margin-bottom: 15px;
-      // padding: 20px 0 10px .25em; // padding: 20px 0 0;
-      // border-top: 1px solid #ddd;
-      // border-bottom: 1px solid #ddd;
+      display: $fstLocationListSectionDisplay;
     }
 
     > input[type=radio] {
-      display: none;
+      display: $fstLocationListInputRadioDisplay;
     }
 
     > label {
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-      margin-bottom: 10px;
+      display: $fstLocationListLabelDisplay;
+      margin: $fstLocationListLabelMargin;
+      padding: $fstLocationListLabelPadding;
+      margin-bottom: $fstLocationListLabelMarginBottom;
       cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: $fstLocationListLabelFontSize;
+      font-weight: $fstLocationListLabelFontWeight;
     }
 
     > label[for='loc1'] {
-      margin-left: 0;
+      margin-left: $fstLocationListLabelMarginLeft;
     }
 
     // > input[type=radio]:checked + label {
@@ -299,101 +275,101 @@ $nav-border: #dedee0;
     #loc8:checked ~ #loc8_tags,
     #loc9:checked ~ #loc9_tags,
     #loc10:checked ~ #loc10_tags {
-      display: block;
+      display: $fstLocationListTagsDisplay;
     }
   }
 
   .internal-page #contentContainer {
     .courses-filter-header {
-      margin-bottom: 20px;
-      position: relative;
-      top: -56px;
-      z-index: 2;
-      padding: 20px 0px 20px;
-      background: #efefef;
+      margin-bottom: $fstHeaderMarginBottom;
+      position: $fstHeaderPosition;
+      top: $fstHeaderPositionTop;
+      z-index: $fstHeaderZIndex;
+      padding: $fstHeaderPadding;
+      background: $fstHeaderBackground;
       @include responsive($media-tablet) {
-        padding: 31px 0px;
+        padding: $fstHeaderPaddingTablet;
       }
 
       &::before, &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        background: #efefef;
-        z-index: -1;
-        display: block;
-        width: 200%;
+        content: $fstHeaderBeforeContent;
+        position: $fstHeaderBeforePosition;
+        top: $fstHeaderBeforePositionTop;
+        bottom: $fstHeaderBeforePositionBottom;
+        background: $fstHeaderBeforeBackground;
+        z-index: $fstHeaderBeforeZIndex;
+        display: $fstHeaderBeforeDisplay;
+        width: $fstHeaderBeforeWidth;
       }
       &::before {
-        left: -200%;
+        left: $fstHeaderBeforePositionLeft;
       }
       &::after {
-        right: -200%;
+        right: $fstHeaderAfterPositionRight;
       }
 
       .courses-filter-added {
-        width: 100%;
-        display: inline-block;
-        vertical-align: top;
+        width: $fstAddedWidth;
+        display: $fstAddedDisplay;
+        vertical-align: $fstAddedVerticalAlign;
         //padding-right: 130px;
         @include responsive($media-small) {
-          width: 79%;
-          padding-right: 0px;
+          width: $fstAddedWidthSmall;
+          padding-right: $fstAddedPaddingRight;
         }
 
         .courses-filter-title {
-          color: $primaryColor;
-          font-family: $bodyFontFamily;
-          font-size: 23px;
-          display: inline-block;
-          vertical-align: top;
+          color: $fstAddedTitleColor;
+          font-family: $fstAddedTitleFontFamily;
+          font-size: $fstAddedTitleFontSize;
+          display: $fstAddedTitleDisplay;
+          vertical-align: $fstAddedTitleVerticalAlign;
         }
 
         .courses-filter-list {
-          list-style: none;
-          display: inline-block;
-          vertical-align: top;
-          margin-bottom: 0;
-          margin-top: 5px;
-          width: 100%;
-          margin-left: 0;
+          list-style: $fstAddedListStyle;
+          display: $fstAddedListDisplay;
+          vertical-align: $fstAddedListVerticalAlign;
+          margin-bottom: $fstAddedListMarginBottom;
+          margin-top: $fstAddedListMarginTop;
+          margin-left: $fstAddedListMarginLeft;
+          width: $fstAddedListWidth;
           @include responsive($media-small) {
-            width: auto;
+            width: $fstAddedListWidthSmall;
           }
 
           li {
             // display: inline-block;
-            float: left;
-            font-size: 14px;
-            padding: 0 13px;
-            margin: 4px 0;
+            float: $fstAddedListChildFloat;
+            font-size: $fstAddedListChildFontSize;
+            padding: $fstAddedListChildPadding;
+            margin: $fstAddedListChildMargin;
             //border: 1px solid #dadada;
-            text-transform: capitalize;
+            text-transform: $fstAddedListChildTextTransform;
             // margin-left: -4px;
 
             &:last-child {
-              border-width: 0;
+              border-width: $fstAddedListChildLastBorderWidth;
             }
             a.courses-filter-clear-all {
-              text-transform: initial;
+              text-transform: $fstAddedListChildClearAllTextTransform;
             }
 
             &:before {
-              content: none;
+              content: $fstAddedListChildBeforeContent;
             }
 
             span {
-              display: inline-block;
-              margin-right: 6px;
-              color: #2e3138;
+              display: $fstAddedListChildSpanDisplay;
+              margin-right: $fstAddedListChildSpanMarginRight;
+              color: $fstAddedListChildSpanTextColor;
             }
 
             .courses-filter-clear-all, .courses-filter-clear-option {
-              color: $primaryColor;
+              color: $fstAddedListClearOptionTextColor;
 
               &:hover {
-                color: #2e3138;
+                color: $fstAddedListClearOptionTextColorHover;
               }
             }
           }
@@ -401,22 +377,22 @@ $nav-border: #dedee0;
       }
 
       .courses-filter-refine {
-        width: auto;
-        display: inline-block;
-        font-size: 14px;
-        text-align: right;
-        margin-left: -4px;
-        margin-top: 5px;
-        position: absolute;
-        top: 25px;
-        right: 10px;
+        width: $fstRefineWidth;
+        display: $fstRefineWidthDisplay;
+        font-size: $fstRefineWidthFontSize;
+        text-align: $fstRefineWidthTextAlign;
+        margin-left: $fstRefineWidthMarginLeft;
+        margin-top: $fstRefineWidthMaginTop;
+        position: $fstRefineWidthPosition;
+        top: $fstRefineWidthPositionTop;
+        right: $fstRefineWidthPositionRight;
         @include responsive($media-tablet) {
-          top: 33px;
+          top: $fstRefineWidthPositionTopTablet;
         }
 
         .courses-filter-found,
         .courses-filter-refine-option {
-          display: inline-block;
+          display: $fstRefineOptionFoundDisplay;
         }
 
         .courses-filter-found {
@@ -425,54 +401,50 @@ $nav-border: #dedee0;
           //     border: 1px solid #dadada;
           //     border-width: 0 1px 0 0;
           // }
-
           .courses-filter-found-counter {
-            color: $primaryColor;
-            font-size: 14px;
-            font-family: $bodyFontFamily;
+            color: $fstFoundCounterTextColor;
+            font-size: $fstFoundCounterFontSize;
+            font-family: $fstFoundCounterFontFamily;
           }
 
           .courses-filter-found-label {
-            color: #2e3138;
-            text-transform: capitalize;
+            color: $fstFoundLabelTextColor;
+            text-transform: $fstFoundLabelTextTransform;
           }
         }
         .courses-filter-refine-option {
-          display: none;
-          padding: 0 0 0 13px;
-          margin-left: -4px;
+          display: $fstRefineOptionDisplay;
+          padding: $fstRefineOptionPadding;
+          margin-left: $fstRefineOptionMarginLeft;
         }
 
         .courses-filter-refine-custom {
-
           &:before {
-            position: relative;
-            content: "";
-            bottom: -7px;
-            right: 8px;
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid #000;
-            z-index: 100;
-            float: right;
-            margin-left: 5px;
+            position: $fstRefineCustomPosition;
+            content: $fstRefineCustomContent;
+            bottom: $fstRefineCustomPositionBottom;
+            right: $fstRefineCustomPositionRight;
+            width: $fstRefineCustomWidth;
+            height: $fstRefineCustomHeight;
+            border-left: $fstRefineCustomBorderLeft;
+            border-right: $fstRefineCustomBorderRight;
+            border-top: $fstRefineCustomBorderTop;
+            z-index: $fstRefineCustomZIndex;
+            float: $fstRefineCustomFloat;
+            margin-left: $fstRefineCustomMarginLeft;
           }
 
           &.courses-filter-refine-customOpen,
           &.courses-filter-refine-customHover {
-
-            color: $primaryColor;
-
+            color: $fstRefineCustomHoverTextColor;
             &:before {
-              border-top-color: $primaryColor;
+              border-top-color: $fstRefineCustomHoverBeforeBorderTopColor;
             }
           }
 
           .courses-filter-refine-customInner {
-            text-align: left;
-            max-width: 142px;
+            text-align: $fstRefineCustomInnerTextAlign;
+            max-width: $fstRefineCustomInnerMaxWidth;
           }
         }
       }

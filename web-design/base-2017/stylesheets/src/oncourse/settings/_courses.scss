@@ -6,8 +6,7 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
-
+//
 
 //
 //
@@ -21,6 +20,10 @@ $coursesDetailsFontFamily: $bodyFontFamily !default;
 // Normal font family used for bubble info on course page
 $normalFontFamily: $bodyFontFamily !default;
 
+$classActionTextAlign: right !default;
+$classActionFontSize: 11px !default;
+$classActionLineHeight: 1.5 !default;
+
 //
 //
 // Following all the settings handles Enrol button style
@@ -30,6 +33,11 @@ $normalFontFamily: $bodyFontFamily !default;
 $enrolActionHoverTextColor: $white !default;
 // Enrol button font family
 $enrolActionFontFamily: $bodyFontFamily !default;
+$enrolActionDisplay: inline-block !default;
+$enrolActionFontWeight: bold !default;
+$enrolActionTextDecoration: none !default;
+$enrolActionWidthSmall: 100% !default;
+$enrolActionMinWidth: 110px !default;
 // Enrol button background color, default set to site primary color
 $enrolActionBackground: $primaryColor !default;
 // Enrol button background hover color, default set to site secondary color
@@ -38,6 +46,7 @@ $enrolActionHoverBackground: $secondaryColor !default;
 $enrolActionHoverBorderColor: #CCC !default;
 
 $enrolActionPadding: 10px 5px !default;
+$enrolActionMargin: 5px 0 0 !default;
 
 // Enrol button font size
 $enrolActionFontSize: 14px !default;
@@ -47,20 +56,35 @@ $enrolActionColor: $white !default;
 $enrolActionTextTransform: uppercase !default;
 // Enrol button top and bottom height
 $enrolActionLineHeight: 12px !default;
+$enrolActionTextAlign: center !default;
 // Enrol button border
 $enrolActionBorder: 1px solid $primaryColor !default;
 
+$enrolActionBorderRadiusSmall: 4px !default;
 $enrolActionBorderRadius: 5px 5px 5px 13px !default;
 $enrolActionWidth: 110px !default;
 
 // Enrol button background color when it is disabled
 $enrolActionDisabled: #F9F9F9 !default;
+$enrolActionDisabledBackgroundHover: #F9F9F9 !default;
 // Enrol button border color when it is disabled
 $enrolActionDisabledBorderColor: #CCC !default;
 // Enrol button text color when it is disabled
 $enrolActionDisabledTextColor: #888 !default;
+$enrolActionDisabledTextColorHover: darken($enrolActionDisabledTextColor, 5%) !default;
+
+$enrolActionDisabledBorder: 1px solid $enrolActionDisabledBorderColor !default;
+$enrolActionDisabledBorderHover: 1px solid $enrolActionDisabledBorderColor !default;
 
 $enrolActionAddedBackground: $secondaryColor !default;
+$enrolActionAddedBackgroundHover: $secondaryColor !default;
+
+$enrolActionAddedBorder: 1px solid $enrolActionHoverBorderColor !default;
+$enrolActionAddedBorderHover: 1px solid $enrolActionHoverBorderColor !default;
+
+$enrolActionAddedColor: $enrolActionColor !default;
+$enrolActionAddedColorHover: $enrolActionColor !default;
+
 
 
 //
@@ -131,6 +155,7 @@ $coursesContentFontSize: 13px !default;
 //
 
 $courseItemBorderTop: 2px dotted $primaryColor !default;
+$courseItemPaddingTop: 20px !default;
 
 // Courses short description rows
 $coursesDescriptionRows: 5 !default;
@@ -138,7 +163,11 @@ $coursesDescriptionRows: 5 !default;
 $coursesDescriptionLineHeight: 19px !default;
 
 // Course item header font size
+$coursesPageTitleFontSize: 28px !default;
 $coursesHeaderItemFontSize: 28px !default;
+
+$coursesHeaderItemTextColor: $primaryColor !default;
+$coursesHeaderItemTextColorHover: $secondaryColor !default;
 // Adjust courses thumbnail max width
 $coursesThumbnailWidth: 120px !default;
 // Course description text color
@@ -198,6 +227,8 @@ $courseMoreLinkHoverColor: $primaryColor !default;
 // Following settings are handles class items style
 //
 
+$classItemInfoFontSize: 13px !default;
+
 $classItemPadding: 10px 15px !default;
 // Courses class item background color
 $classItemBackgroundColor: $white !default;
@@ -214,17 +245,56 @@ $classItemBorderHoverColor: $primaryColor !default;
 $classItemLinkColor: #4D4D4D !default;
 $classItemLinkHoverColor: $primaryColor!default;
 
+$classItemInfoLeftBorderRight: 1px solid #eee !default;
+
 //
 //
 // Following settings are handles confirmed checkout popup style
 //
 
+$confirmOrderDialogDisplay: none !default;
+$confirmOrderDialogWidth: 250px !default;
+$confirmOrderDialogPosition: absolute !default;
+$confirmOrderDialogPositionRight: 150px !default;
+$confirmOrderDialogPositionTop: 100px !default;
+$confirmOrderDialogPositionLeft: 50% !default;
+$confirmOrderDialogMarginLeft: -125px !default;
+$confirmOrderDialogPadding: 20px !default;
+$confirmOrderDialogBackground: $white !default;
+$confirmOrderDialogBorder: 1px solid #444 !default;
+$confirmOrderDialogZIndex: 5 !default;
+$confirmOrderDialogFontSize: 14px !default;
+$confirmOrderDialogBoxShadow: 0px 0px 20px rgba(68, 68, 68, 0.3) !default;
+$confirmOrderDialogBorderRadius: 4px !default;
+$confirmOrderDialogTextAlign: left !default;
+
+$confirmOrderDialogCloseButtonDisplay: none !default;
+
+$confirmOrderDialogDivsMarginBottom: 3px !default;
+$confirmedMessageFontSize: 16px !default;
+
+$confirmOrderProceedTextAlign: center !default;
+
+$confirmedProceedDisplay: inline-block !default;
+$confirmedProceedPadding: 5px 10px !default;
 // Confirmed to checkout popup's background
 $confirmedProceedBackground: #A90E1F !default;
 // Confirmed to checkout popup's text color
 $confirmedProceedColor: $white !default;
+$confirmedProceedTextTransform: uppercase !default;
+$confirmedProceedBorder: 0 !default;
+$confirmedProceedTextDecoration: none !default;
 // Confirmed to checkout popup's text size
 $confirmedProceedFontSize: 11px !default;
+$confirmedProceedFontWeight: 700 !default;
+
+$confirmedClassDateFontSize: 11px !default;
+$confirmedClassDateColor: #666 !default;
+
+$confirmedCloseWrapperBorderTop: 1px solid #444 !default;
+$confirmedCloseWrapperPadding: 10px 0 0 0 !default;
+$confirmedCloseWrapperTextAlign: center !default;
+$confirmedCloseWrapperFontSize: 16px !default;
 
 //
 //
@@ -232,6 +302,20 @@ $confirmedProceedFontSize: 11px !default;
 //
 
 $coursesBubbleInfoDisplay: block !default;
+$coursesBubbleInfoFontSize: 12px !default;
+$coursesBubbleInfoWidth: 256px !default;
+$coursesBubbleInfoBorderCollapse: collapse !default;
+$coursesBubbleInfoPadding: 0 23px 0 0 !default;
+$coursesBubbleInfoPosition: absolute !default;
+$coursesBubbleInfoPositionTop: -20px !default;
+$coursesBubbleInfoZIndex: 10 !default;
+
+$coursesBubbleInfoArrowPositionTop: 16px !default;
+$coursesBubbleInfoArrowWidth: 23px !default;
+$coursesBubbleInfoArrowHeight: 27px !default;
+$coursesBubbleInfoArrowBackgroundPosition: right top !default;
+$coursesBubbleInfoArrowBackgroundRepeat: no-repeat !default;
+
 $coursesBubbleInfoPositionLeft: -260px;
 $coursesBubbleInfoPositionRight: auto;
 $coursesBubbleInfoArrowPositionRight: -23px;
@@ -251,6 +335,8 @@ $coursesClassItemDateImage: $imagePath + "icon/calendar.png" !default;
 $coursesClassItemDateDisplay: inline-block !default;
 $coursesClassItemTimeDisplay: inline-block !default;
 $coursesClassItemSessionDisplay: inline-block !default;
+
+$coursesClassItemDateTimeBorderBottom: 1px dotted !default;
 
 $coursesClassItemTutorDisplay: block !default;
 $coursesClassItemTutorImage: "/s/img/icon/person.png" !default;

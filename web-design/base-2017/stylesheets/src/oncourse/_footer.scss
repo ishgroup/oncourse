@@ -14,206 +14,206 @@
 //
 
 #footer {
-	color: $footerTextColor;
-	background: $footerBG;
-	font-size: $footerFontSize;
-	text-align: $footerTextAlign;
-	padding: $footerPadding;
-	line-height: $footerLineHeight;
+  color: $footerTextColor;
+  background: $footerBG;
+  font-size: $footerFontSize;
+  text-align: $footerTextAlign;
+  padding: $footerPadding;
+  line-height: $footerLineHeight;
 
-	// Following function handles responsive media screen
-	@include responsive($media-tablet) {
-		text-align: $footerTextAlignMediaTablet;
-	}
+  // Following function handles responsive media screen
+  @include responsive($media-tablet) {
+    text-align: $footerTextAlignMediaTablet;
+  }
 
-	p {
-		margin-bottom: 0;
-	}
+  p {
+    margin-bottom: 0;
+  }
 
-	// Footer inner container
-	.container {
-		// Left content of footer
-		@include bootstrap(false) {
-			.pull-left {
-				display: table;
-				width: 100%;
-				@include responsive($media-tablet) {
-					width: 50%;
-				}
+  // Footer inner container
+  .container {
+    // Left content of footer
+    @include bootstrap(false) {
+      .pull-left {
+        display: table;
+        width: 100%;
+        @include responsive($media-tablet) {
+          width: 50%;
+        }
 
-				// Social content like: facebook, twitter, gplus, or etc.
-				.social-content {
-					width: 100%;
-					.social-links {
-						margin-top: 25px;
-						>li {
-							display: inline-block;
-							padding: 0px 3px;
-						}
-					}
-					// Following function handles responsive media screen
-					@include responsive($media-tablet) {
-						float: left;
-						width: 34.863%;
-						margin-right: 10px;
-					}
-				}
-			}
+        // Social content like: facebook, twitter, gplus, or etc.
+        .social-content {
+          width: 100%;
+          .social-links {
+            margin-top: 25px;
+            >li {
+              display: inline-block;
+              padding: 0px 3px;
+            }
+          }
+          // Following function handles responsive media screen
+          @include responsive($media-tablet) {
+            float: left;
+            width: 34.863%;
+            margin-right: 10px;
+          }
+        }
+      }
 
-			// Right content of footer
-			.pull-right {
-				display: table;
-				width: 100%;
-				>ul {
-					display: block;
-					margin-bottom: 15px;
+      // Right content of footer
+      .pull-right {
+        display: table;
+        width: 100%;
+        >ul {
+          display: block;
+          margin-bottom: 15px;
 
-					// Following function handles responsive media screen
-					@include responsive($media-tablet) {
-						display: table-cell;
-						margin-bottom: 0px;
-					}
-				}
+          // Following function handles responsive media screen
+          @include responsive($media-tablet) {
+            display: table-cell;
+            margin-bottom: 0px;
+          }
+        }
 
-				// Following function handles responsive media screen
-				@include responsive($media-tablet) {
-					width: 50%;
-				}
-			}
-		}
+        // Following function handles responsive media screen
+        @include responsive($media-tablet) {
+          width: 50%;
+        }
+      }
+    }
 
-		@include bootstrap(true) {
-			.left {
-				// Social content like: facebook, twitter, gplus, or etc.
-				.social-content {
-					.social-links {
-						>li {
-							display: inline-block;
-							padding: 0px 3px;
-						}
-					}
-				}
-			}
+    @include bootstrap(true) {
+      .left {
+        // Social content like: facebook, twitter, gplus, or etc.
+        .social-content {
+          .social-links {
+            >li {
+              display: inline-block;
+              padding: 0px 3px;
+            }
+          }
+        }
+      }
 
-			// Right content of footer
-			.right {
-				.row>ul {
-					margin-bottom: 15px;
-					// Following function handles responsive media screen
-					@include responsive($media-tablet) {
-						margin-bottom: 0px;
-					}
-				}
-			}
-		}
+      // Right content of footer
+      .right {
+        .row>ul {
+          margin-bottom: 15px;
+          // Following function handles responsive media screen
+          @include responsive($media-tablet) {
+            margin-bottom: 0px;
+          }
+        }
+      }
+    }
 
-		// Contact of the footer
-		.contact-courses {
-			line-height: 26px;
-			margin-top: 20px;
-			text-align: center;
+    // Contact of the footer
+    .contact-courses {
+      line-height: 26px;
+      margin-top: 20px;
+      text-align: center;
 
-			// Following function handles responsive media screen
-			@include responsive($media-tablet) {
-				text-align: left;
-			}
-		}
+      // Following function handles responsive media screen
+      @include responsive($media-tablet) {
+        text-align: left;
+      }
+    }
 
-		// Footer address information
-		.address-info {
-			@include bootstrap(false) {
-				float: left;
-				width: 100%;
+    // Footer address information
+    .address-info {
+      @include bootstrap(false) {
+        float: left;
+        width: 100%;
 
-				// Following function handles responsive media screen
-				@include responsive($media-tablet) {
-					width: 50%;
-				}
-			}
+        // Following function handles responsive media screen
+        @include responsive($media-tablet) {
+          width: 50%;
+        }
+      }
 
-			// Address information contact title
-			.contact-title {
-				margin-bottom: 0;
-				text-decoration: underline;
-			}
-		}
+      // Address information contact title
+      .contact-title {
+        margin-bottom: 0;
+        text-decoration: underline;
+      }
+    }
 
-		// Footer container at bottom of page
-		.footer-container {
-			float: $footerContainerFloat;
-			width: $footerContainerWidth;
-			margin: $footerContainerMargin;
-			.footer-info {
-				float: none;
-				text-align: center;
+    // Footer container at bottom of page
+    .footer-container {
+      float: $footerContainerFloat;
+      width: $footerContainerWidth;
+      margin: $footerContainerMargin;
+      .footer-info {
+        float: none;
+        text-align: center;
 
-				// Following function handles responsive media screen
-				@include responsive($media-tablet) {
-					float: $footerContainerInfoFloat;
-					text-align: $footerContainerInfoTextAlign;
-				}
-			}
+        // Following function handles responsive media screen
+        @include responsive($media-tablet) {
+          float: $footerContainerInfoFloat;
+          text-align: $footerContainerInfoTextAlign;
+        }
+      }
 
-			// Footer ish onCourse logo
-			.footer-logo {
-				float: none;
-				text-align: center;
+      // Footer ish onCourse logo
+      .footer-logo {
+        float: none;
+        text-align: center;
 
-				// Following function handles responsive media screen
-				@include responsive($media-tablet) {
-					float: $footerContainerLogoFloat;
-					text-align: $footerContainerLogoTextAlign;
-				}
+        // Following function handles responsive media screen
+        @include responsive($media-tablet) {
+          float: $footerContainerLogoFloat;
+          text-align: $footerContainerLogoTextAlign;
+        }
 
-				a {
-					.ish {
-						color: #80A306;
-					}
-					&:hover {
-						color: #7d8087;
-					}
-				}
-			}
-			.footer-copyright {
-				@include responsive($media-tablet) {
-					float: $footerContainerCopyrightFloat;
-				}
-			}
-			.right-block {
-				@include responsive($media-tablet) {
-					float: $footerContainerRightBlockFloat;
-					width: $footerContainerRightBlockWidth;
-				}
-				.footer-info {
-					@include responsive($media-tablet) {
-						>li {
-							display: $footerContainerInfoDisplay;
-							>a {
-								padding: $footerContainerInfoPadding;
-							}
-						}
-					}
-					a {
-						color: $footerContainerInfoLinkColor;
-						&:hover {
-							text-decoration: underline;
-							color: $footerContainerInfoLinkHoverColor;
-						}
-					}
-					.line>a {
-						text-decoration: underline;
-					}
-				}
-			}
+        a {
+          .ish {
+            color: #80A306;
+          }
+          &:hover {
+            color: #7d8087;
+          }
+        }
+      }
+      .footer-copyright {
+        @include responsive($media-tablet) {
+          float: $footerContainerCopyrightFloat;
+        }
+      }
+      .right-block {
+        @include responsive($media-tablet) {
+          float: $footerContainerRightBlockFloat;
+          width: $footerContainerRightBlockWidth;
+        }
+        .footer-info {
+          @include responsive($media-tablet) {
+            >li {
+              display: $footerContainerInfoDisplay;
+              >a {
+                padding: $footerContainerInfoPadding;
+              }
+            }
+          }
+          a {
+            color: $footerContainerInfoLinkColor;
+            &:hover {
+              text-decoration: underline;
+              color: $footerContainerInfoLinkHoverColor;
+            }
+          }
+          .line>a {
+            text-decoration: underline;
+          }
+        }
+      }
 
-		}
-	}
-	.info-links {
-		background: $infoLinksBackground;
-		margin: $infoLinksMargin;
-		padding: $infoLinksPadding;
-		.container {
-			color: $infoLinksBlockColor;
-		}
-	}
+    }
+  }
+  .info-links {
+    background: $infoLinksBackground;
+    margin: $infoLinksMargin;
+    padding: $infoLinksPadding;
+    .container {
+      color: $infoLinksBlockColor;
+    }
+  }
 }

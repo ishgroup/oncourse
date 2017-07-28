@@ -11,6 +11,41 @@
 
 // All input's text color
 $inputColor: #1a1a1a !default;
+$inputBorderRadius: 3px !default;
+$inputBackground: $white !default;
+$inputBorder: 1px solid #ccc !default;
+$inputWidth: 100% !default;
+$inputMaxWidth: 250px !default;
+$inputHeight: 30px !default;
+$inputPadding: 6px 12px !default;
+$inputMargin: 0 0 10px !default;
+$inputFontSize: 14px !default;
+$inputLineHeight: 1 !default;
+$inputOutline: none !default;
+
+$inputBoxShadow: inset 0 1px 1px rgba(0,0,0,.075) !default;
+$inputTransition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !default;
+
+$inputBorderColorFocus: #66afe9 !default;
+$inputOutlineFocus: 0 !default;
+$inputBoxShadowFocus: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6) !default;
+
+$inputPlaceholderColor: #999 !default;
+
+$textAreaMaxWidth: 450px !default;
+
+
+$labelTextAlign: left !default;
+$labelMaxWidth: 100% !default;
+$labelWidth: 100% !default;
+$labelMarginBottom: 5px !default;
+$labelPaddingTop: 6px !default;
+$labelPaddingRight: 0px !default;
+$labelFontWeight: 700 !default;
+$labelFontSize: 14px !default;
+$labelLineHeight: 1.42857143 !default;
+
+$labelMarginError: 2px 0px 0px 7px !important !default;
 
 //
 //
@@ -38,3 +73,22 @@ $btnFontWeight: 700 !default;
 $btnType2BackgroundColor: $secondaryColor !default;
 // Button type 2 text color
 $btnType2Color: $white !default;
+
+$appBtnDisplay: inline-block !default;
+$appBtnPaddingSmall: 7.5px 17px !default;
+$appBtnPaddingTablet: 12.5px 27px !default;
+$appBtnBorderRadius: 2em !default;
+$appBtnBorder: 2px solid !default;
+$appBtnLetterSpacing: 0px !default;
+$appBtnHeightSmall: 35px !default;
+$appBtnHeightTablet: 45px !default;
+$appBtnFontSizeSmall: 13px !default;
+$appBtnFontSizeTablet: 14px !default;
+$appBtnLineHeight: 1.2 !default;
+$appBtnFontWeight: 300 !default;
+$appBtnBackgroundColor: $primaryColor !default;
+$appBtnBackgroundHoverColor: $secondaryColor !default;
+
+
+$defaultSpriteImage: url("/s/img/sprite.svg") !default;
+$defaultSocialImage: url("/s/img/icons/social-icons.png") !default;

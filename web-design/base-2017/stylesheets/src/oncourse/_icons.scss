@@ -11,31 +11,31 @@
 
 // Icon styles
 .sicon::after {
-	background: url("/s/img/sprite.svg") no-repeat;
-	content: "";
-	display: block;
-	position: absolute;
-	height: 17px;
-	width: 17px;
+  background: $defaultSpriteImage no-repeat;
+  content: "";
+  display: block;
+  position: absolute;
+  height: 17px;
+  width: 17px;
 }
 .search-icon::after {
-	background-position: -17px 0;
+  background-position: -17px 0;
 }
 .phone-icon::after {
-	left: -26px;
-	top: 1px;
-	background-position: 0px 0px;
+  left: -26px;
+  top: 1px;
+  background-position: 0px 0px;
 }
 .toggle-icon::after {
-	background-position: -33px 0;
-	height: 12px;
-	margin-top: 5px;
-	left: -27px;
+  background-position: -33px 0;
+  height: 12px;
+  margin-top: 5px;
+  left: -27px;
 }
 .delete-icon::after {
-	background-position: -0px -33px;
-	width: 9px;
-	height: 9px;
+  background-position: -0px -33px;
+  width: 9px;
+  height: 9px;
 }
 
 //
@@ -43,35 +43,35 @@
 //
 
 .social-icon {
-	display: block;
-	&::after {
-		background: url("/s/img/icons/social-icons.png") no-repeat;
-		content: "";
-		display: block;
-		position: relative;
-		height: 25px;
-		width: 25px;
-		margin: 0 auto;
-	}
+  display: block;
+  &::after {
+    background: $defaultSocialImage no-repeat;
+    content: "";
+    display: block;
+    position: relative;
+    height: 25px;
+    width: 25px;
+    margin: 0 auto;
+  }
 }
 .facebook::after {
-	background-position: 0px 0px;
+  background-position: 0px 0px;
 }
 .facebook-white::after {
-	background-position: 0px -25px;
+  background-position: 0px -25px;
 }
 .twitter::after {
-	background-position: -52px 0px;
+  background-position: -52px 0px;
 }
 .twitter-white::after {
-	background-position: -28px -24px;
+  background-position: -28px -24px;
 }
 .youtube-white::after {
-	background-position: -55px -27px;
+  background-position: -55px -27px;
 }
 .gplus::after {
-	background-position: -26px 0px;
+  background-position: -26px 0px;
 }
 .instagram::after {
-	background-position: -78px 0px;
+  background-position: -78px 0px;
 }

@@ -1,0 +1,232 @@
+//
+//
+// faceted-search.scss
+//
+// Contains faceted search settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$fstContainerPosition: relative !default;
+$fstContainerMarginLeft: 25px !default;
+$fstContainerPaddingLeft: 25px !default;
+
+$fstContainerActivePosition: absolute !default;
+$fstContainerActivePositionTop: 0 !default;
+$fstContainerActivePositionLeft: -21px !default;
+$fstContainerActivePositionRight: -21px !default;
+$fstContainerActiveBorderTop: 0 !default;
+$fstContainerActiveDisplay: block !default;
+
+$fstMainFontWeight: bold !default;
+
+$fstTitleBackground: transparent !default;
+$fstTitleColor: $primaryColor !default;
+$fstTitlePadding: 9px 0px 13px 8px !default;
+$fstTitleFontSize: 14px !default;
+$fstTitleBorderBottom: 1px dotted #dedee0 !default;
+
+$fstLinkPadding: 0 !default;
+$fstLinkBorderWidth: 0 !default;
+
+$fstClearAllPosition: absolute !default;
+$fstClearAllPositionRight: 25px !default;
+$fstClearAllFontWeight: normal !default;
+
+$fstSideBoxBorderBottom: 1px dotted #dedee0 !default;
+$fstSideBoxBorderWidth: 0 0 1px !default;
+$fstSideBoxBorderWidthLastChild: 0 !default;
+$fstSideBoxPaddingBottom: 15px !default;
+$fstSideBoxMarginBottom: 25px !default;
+
+$fstCoursesListMarginLeft: 0 !default;
+$fstCoursesListPaddingRight: 6px !default;
+
+$fstCoursesListFirstChildMarginTop: 0 !default;
+$fstCoursesListFirstChildLinkMarginBottom: 16px !default;
+
+$fstLocationListChildPaddingLeft: 0 !default;
+$fstLocationListChildMarginBottom: 10px !default;
+$fstLocationListChildSpan: none !default;
+
+$fstLocationListInputRadio: none !default;
+
+$fstTagsListChildMarginBottom: 10px !default;
+$fstTagsListChildPaddingLeft: 0 !default;
+
+$fstTagsListPaddingLeft: 35px !default;
+
+$fstOptionPosition: relative !default;
+$fstOptionOverflow: hidden !default;
+
+$fstOptionCounterPosition: absolute !default;
+$fstOptionCounterPositionRight: 0 !default;
+$fstOptionCounterPositionTop: 3px !default;
+$fstOptionCounterBorder: 1px solid #ddd !default;
+$fstOptionCounterBorderRadius: 16px !default;
+$fstOptionCounterFontSize: 10px !default;
+$fstOptionCounterPadding: 3px 8px !default;
+$fstOptionCounterLineHeight: 1.0 !default;
+
+$fstOptionTagListChildMarginBottom: 0 !default;
+$fstOptionTagListChildMarginTop: 10px !default;
+
+$fstOptionControlDisplay: none !default;
+
+$fstOptionLabelMarginBottom: 0 !default;
+$fstOptionLabelDisplay: inline-block !default;
+$fstOptionLabelWidth: auto !default;
+$fstOptionLabelPosition: initial !default;
+
+$fstOptionLabelBeforeContent: "" !default;
+$fstOptionLabelBeforeDisplay: inline-block !default;
+$fstOptionLabelBeforeWidth: 14px !default;
+$fstOptionLabelBeforeHeight: 14px !default;
+$fstOptionLabelBeforePosition: absolute !default;
+$fstOptionLabelBeforePositionTop: 3px !default;
+$fstOptionLabelBeforePositionLeft: 0 !default;
+$fstOptionLabelBeforeFont: normal normal normal 11px/1 FontAwesome !default;
+
+$fstOptionLabelBeforeCheckedContent: "\f00c" !default;
+$fstOptionLabelBeforeCheckedPaddingTop: 1px !default;
+$fstOptionLabelBeforeCheckedPaddingLeft: 1px !default;
+$fstOptionLabelBeforeCheckedBackgroundColor: $primaryColor !default;
+$fstOptionLabelBeforeCheckedBorderColor: $primaryColor !default;
+$fstOptionLabelBeforeCheckedTextColor: $white !default;
+
+$fstOptionLabelFontFamily: $bodyFontFamily !default;
+$fstOptionLabelFontSize: 14px !default;
+$fstOptionLabelLineHeight: 22px !default;
+$fstOptionLabelPaddingLeft: 23px !default;
+$fstOptionLabelPaddingRight: 35px !default;
+
+$fstOptionLabelBeforeBorder: 1px solid #cbcbcb !default;
+$fstOptionLabelBeforeBorderRadius: 2px !default;
+$fstOptionLabelBeforeBackgroundColor: $white !default;
+
+$fstOptionLabelHasOptionChildBeforeBackground: none !important !default;
+$fstOptionLabelHasOptionChildBeforeBorder: none !important !default;
+
+$fstOptionLabelDisabledTextColor: #c5c5c5 !default;
+$fstOptionLabelDisabledBeforeBorderColor: #e5e5e5 !default;
+$fstOptionCounterDisabledTextColor: $fstOptionLabelDisabledTextColor !default;
+
+$fstLocationListPaddingLeft: 20px !default;
+
+$fstLocationListSectionDisplay: block !default;
+
+$fstLocationListInputRadioDisplay: none !default;
+
+$fstLocationListLabelDisplay: inline-block !default;
+$fstLocationListLabelMargin: 0 !default;
+$fstLocationListLabelPadding: 0 !default;
+$fstLocationListLabelMarginBottom: 10px !default;
+$fstLocationListLabelFontSize: 14px !default;
+$fstLocationListLabelFontWeight: 600 !default;
+
+$fstLocationListLabelMarginLeft: 0 !default;
+
+$fstLocationListTagsDisplay: block !default;
+
+$fstHeaderMarginBottom: 20px !default;
+$fstHeaderPosition: relative !default;
+$fstHeaderPositionTop: -56px !default;
+$fstHeaderZIndex: 2 !default;
+$fstHeaderPadding: 20px 0px 20px !default;
+$fstHeaderPaddingTablet: 31px 0px !default;
+$fstHeaderBackground: #efefef !default;
+
+$fstHeaderBeforeContent: "" !default;
+$fstHeaderBeforePosition: absolute !default;
+$fstHeaderBeforePositionTop: 0 !default;
+$fstHeaderBeforePositionBottom: 0 !default;
+$fstHeaderBeforeBackground: #efefef !default;
+$fstHeaderBeforeZIndex: -1 !default;
+$fstHeaderBeforeDisplay: block !default;
+$fstHeaderBeforeWidth: 200% !default;
+$fstHeaderBeforePositionLeft: -200% !default;
+$fstHeaderAfterPositionRight: $fstHeaderBeforePositionLeft !default;
+
+$fstAddedWidth:  100% !default;
+$fstAddedWidthSmall: 79% !default;
+$fstAddedDisplay: inline-block !default;
+$fstAddedVerticalAlign: top !default;
+$fstAddedPaddingRight: 0px !default;
+
+$fstAddedTitleColor: $primaryColor !default;
+$fstAddedTitleFontFamily: $bodyFontFamily !default;
+$fstAddedTitleFontSize: 23px !default;
+$fstAddedTitleDisplay: inline-block !default;
+$fstAddedTitleVerticalAlign: top !default;
+
+$fstAddedListStyle: none !default;
+$fstAddedListDisplay: inline-block !default;
+$fstAddedListVerticalAlign: top !default;
+$fstAddedListMarginBottom: 0 !default;
+$fstAddedListMarginTop: 5px !default;
+$fstAddedListMarginLeft: 0 !default;
+$fstAddedListWidth: 100% !default;
+$fstAddedListWidthSmall: auto !default;
+
+$fstAddedListChildFloat: left !default;
+$fstAddedListChildFontSize: 14px !default;
+$fstAddedListChildPadding: 0 13px !default;
+$fstAddedListChildMargin: 4px 0 !default;
+$fstAddedListChildTextTransform: capitalize !default;
+
+$fstAddedListChildLastBorderWidth: 0 !default;
+
+$fstAddedListChildClearAllTextTransform: initial !default;
+
+$fstAddedListChildBeforeContent: none !default;
+
+$fstAddedListChildSpanDisplay: inline-block !default;
+$fstAddedListChildSpanMarginRight: 6px !default;
+$fstAddedListChildSpanTextColor: #2e3138 !default;
+
+$fstAddedListClearOptionTextColor: $primaryColor !default;
+$fstAddedListClearOptionTextColorHover: #2e3138 !default;
+
+$fstRefineWidth: auto !default;
+$fstRefineWidthDisplay: inline-block !default;
+$fstRefineWidthFontSize: 14px !default;
+$fstRefineWidthTextAlign: right !default;
+$fstRefineWidthMarginLeft: -4px !default;
+$fstRefineWidthMaginTop: 5px !default;
+$fstRefineWidthPosition: absolute !default;
+$fstRefineWidthPositionTop: 25px !default;
+$fstRefineWidthPositionTopTablet: 33px !default;
+$fstRefineWidthPositionRight: 10px !default;
+
+$fstRefineOptionFoundDisplay: inline-block !default;
+
+$fstFoundCounterTextColor: $primaryColor !default;
+$fstFoundCounterFontSize: 14px !default;
+$fstFoundCounterFontFamily: $bodyFontFamily !default;
+
+$fstFoundLabelTextColor: #2e3138 !default;
+$fstFoundLabelTextTransform: capitalize !default;
+
+$fstRefineOptionDisplay: none !default;
+$fstRefineOptionPadding: 0 0 0 13px !default;
+$fstRefineOptionMarginLeft: -4px !default;
+
+$fstRefineCustomPosition: relative !default;
+$fstRefineCustomContent: "" !default;
+$fstRefineCustomPositionBottom: -7px !default;
+$fstRefineCustomPositionRight: 8px !default;
+$fstRefineCustomWidth: 0 !default;
+$fstRefineCustomHeight: 0 !default;
+$fstRefineCustomBorderLeft: 5px solid transparent !default;
+$fstRefineCustomBorderRight: 5px solid transparent !default;
+$fstRefineCustomBorderTop: 5px solid #000 !default;
+$fstRefineCustomZIndex: 100 !default;
+$fstRefineCustomFloat: right !default;
+$fstRefineCustomMarginLeft: 5px !default;
+
+$fstRefineCustomHoverTextColor: $primaryColor !default;
+$fstRefineCustomHoverBeforeBorderTopColor: $primaryColor !default;
+
+$fstRefineCustomInnerTextAlign: left !default;
+$fstRefineCustomInnerMaxWidth: 142px !default;

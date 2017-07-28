@@ -48,13 +48,14 @@
 //= require deprecated/jquery-migrate-3.0.0.js
 //= require deprecated/jquery.browser.js
 //= require deprecated/jquery-ui-1.9.1.min.js
+//= require deprecated/jquery.customSelect.min.js
 
 
 /*
   These files are due to be removed once the CMS application is rebuilt in 2017
 */
 
-//= require deprecated/jquery.utils.js
+/*//= require deprecated/jquery.utils.js*/
 //= require deprecated/jquery.validate.min.js
 //= require deprecated/additional-methods.min.js
 

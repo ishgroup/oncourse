@@ -39,7 +39,7 @@
         <div itemtype="http://schema.org/EducationEvent" itemscope="itemscope" class="clearfix classItem vevent" data-classid="${product.id}">
             <div class="row">
                 <div itemprop="name" class="col-xs-24 summary">${product.name}</div>
-                <div class="col-xs-24 col-md-17 class-item-info">
+                <div class="col-xs-24 col-sm-19 col-md-17 class-item-info">
                     <div class="class-item-info-l">
                         <div class="info">
                             <div class="label">Price</div>
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                <div class="col-xs-24 col-md-7">
+                <div class="col-xs-24 col-sm-5 col-md-7">
                     <div class="reactjs-component"
                         data-cid="buy-button"
                         data-prop-can-buy="${canBuy()}"

@@ -6,7 +6,7 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
+//
 
 
 //
@@ -17,10 +17,14 @@
 // All search text boxes
 //
 
+$headerToolbarFloat: right !default;
+$headerToolbarMargin: 0px !default;
+
 // Search text box height
 $searchTextBoxHeight: 31px !default;
 // Search text box spaces
 $searchTextBoxPadding: 5px 10px !default;
+$searchTextBoxFloat: left !default;
 // Search text box width
 $searchTextBoxWidth: 65.49% !default;
 
@@ -29,15 +33,35 @@ $searchTopHeight: 31px !default;
 
 // Search button background
 $searchButtonBG: #f89a1d !default;
+$searchButtonFloat: left !default;
+$searchButtonPaddingLeft: 12px !default;
+$searchButtonPaddingRight: 12px !default;
+$searchButtonTextTransform: none !default;
+$searchButtonMarginTop: 0 !default;
+$searchButtonFontFamily: $normalFontFamily !default;
+$searchButtonBorderRadius: 0px !default;
+$searchButtonOverflow: hidden !default;
 // Search button height
 $searchButtonHeight: $searchTopHeight !default;
 // Search button width
 $searchButtonWidth: 35px !default;
+$searchButtonColor: transparent !default;
 // Search button spaces
 $searchButtonPadding: 7.5px 10px 5.5px !default;
 
+
+$headerSearchToggleFloat: right !default;
+$headerSearchTogglePosition: relative !default;
+$headerSearchToggleWidth: 35px !default;
+$headerSearchToggleHeight: 31px !default;
+$headerSearchTogglePadding: 8px 10px !default;
+$headerSearchToggleMarginRight: 10px !default;
+$headerSearchToggleOpacity: 0.6 !default;
+$headerSearchToggleOpacityActive: 1 !default;
+
 // Search button toggle display
 $toggleSearchDisplay: block !default;
+$toggleSearchDisplayTablet: none !important !default;
 // Search button toggle background
 $toggleSearchBackground: transparent !default;
 // Search button toggle background changed on mouse over
@@ -49,8 +73,15 @@ $toggleSearchActiveBackground: $searchButtonBG !default;
 
 $searchBoxFloat: right !default;
 $searchBoxDisplay: block !important !default;
+$searchBoxDisplaySmall: none !default;
+
+$searchBoxHeadingDisplay: none !default;
+
+$searchBoxFloat: right !default;
 // Search box width
 $searchBoxWidth: 290px !default;
+$searchBoxMarginRightSmall: 10px !default;
+$searchBoxMarginRightTablet: 0px !default;
 // Search box border
 $searchBoxBorder: 0px !default;
 // Search box curved
@@ -59,6 +90,7 @@ $searchBoxBorderRadius: 0px !default;
 $searchBoxInputWidth: 65.49% !default;
 // Search box input height
 $searchBoxInputHeight: $searchTopHeight !default;
+$searchBoxInputMargin: 0px !default;
 // Search box input spaces
 $searchBoxInputPadding: 7.5px 10px 5.5px !default;
 // Search box input border
@@ -75,6 +107,7 @@ $advancedSearchOpenFromLeft: "" !default;
 // Advanced search box open from right side
 $advancedSearchOpenFromRight: "" !default;
 
+$advanceSearchDisplay: none !default;
 // Advanced search box background color
 $advanceSearchBG: #f89a1d !default;
 // Advanced search box background color rgb
@@ -153,7 +186,12 @@ $discountBlockNyromodalLinkDisplay: none !default;
 // Search more option background color
 $searchMoreOptions: #fdb713 !default;
 // Search more option width
+$searchMoreOptionsDisplaySmall: none !default;
+// Search more option visibility
+$searchMoreOptionsDisplay: inline-block !default;
+
 $searchMoreOptionsWidth: 22.41% !default;
+$searchMoreOptionsTextAlign: center !default;
 // Search more option height
 $searchMoreOptionsHeight: $searchTopHeight !default;
 // Search more option height gap
@@ -162,12 +200,11 @@ $searchMoreOptionsLineHeight: 0.9 !default;
 $searchMoreOptionsPadding: 0px 5px !default;
 // Search more option min width
 $searchMoreOptionsMinWidth: 60px !default;
-// Search more option visibility
-$searchMoreOptionsDisplay: inline-block !default;
 
 $searchMoreOptionsText: 13px !default;
 $searchMoreOptionsTextPadding: 0px !default;
 $searchMoreOptionsTextLineHeight: 0.9 !default;
+$searchMoreOptionsColor: $white !default;
 
 // Show advanced search on mobile screen
 $showAdvancedSearchOnMobile: "on" !default;

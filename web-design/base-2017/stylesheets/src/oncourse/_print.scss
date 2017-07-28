@@ -14,163 +14,163 @@
 //
 
 @media print {
-	* {
-		color: black !important;
-		width: auto !important;
-		min-height: auto !important;
-		max-height: auto !important;
-		max-width: auto !important;
-		min-width: auto !important;
-		text-shadow: none !important;
-		filter: none !important;
-		-ms-filter: none !important;
-		float: none !important;
-		overflow: visible !important;
-		padding: 0 !important;
-		margin: 0 !important;
-		position: static !important;
-		font: sans-serif !important;
-		font-size: inherit !important;
-		@include border-radius(none !important);
-		border: none !important;
-		text-align: left !important;
-		background: transparent !important
-	}
+  * {
+    color: black !important;
+    width: auto !important;
+    min-height: auto !important;
+    max-height: auto !important;
+    max-width: auto !important;
+    min-width: auto !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -ms-filter: none !important;
+    float: none !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: static !important;
+    font: sans-serif !important;
+    font-size: inherit !important;
+    @include border-radius(none !important);
+    border: none !important;
+    text-align: left !important;
+    background: transparent !important
+  }
 
-	#content {
-		font-family: 'Times New Roman', Times, serif;
-		font-size: 12pt;
-		.highlight {
-			border-left: 2px solid gray !important;
-			padding-left: 5pt !important;
-			margin-left: 20pt !important;
-			margin-right: 20pt !important
-		}
+  #content {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 12pt;
+    .highlight {
+      border-left: 2px solid gray !important;
+      padding-left: 5pt !important;
+      margin-left: 20pt !important;
+      margin-right: 20pt !important
+    }
 
-		// Course item block
-		.courseItem {
-			padding-bottom: 3pt !important;
-			border-bottom: 1px dashed #000000 !important;
-			margin-bottom: 1em !important;
+    // Course item block
+    .courseItem {
+      padding-bottom: 3pt !important;
+      border-bottom: 1px dashed #000000 !important;
+      margin-bottom: 1em !important;
 
-			// Course description and class item
-			.description, .classItem {
-				margin-left: 10pt !important
-			}
-		}
+      // Course description and class item
+      .description, .classItem {
+        margin-left: 10pt !important
+      }
+    }
 
-		// Courses class item info left and right block
-		.class-item-info {
-			.class-item-info-l,	.class-item-info-r {
-				padding-bottom: 10pt !important
-			}
-		}
+    // Courses class item info left and right block
+    .class-item-info {
+      .class-item-info-l, .class-item-info-r {
+        padding-bottom: 10pt !important
+      }
+    }
 
-		// Class more description and courses short description
-		.class-more-descr, .courseShortDescription {
-			height: auto !important;
-			min-height: inherit !important;
-			position: static !important
-		}
+    // Class more description and courses short description
+    .class-more-descr, .courseShortDescription {
+      height: auto !important;
+      min-height: inherit !important;
+      position: static !important
+    }
 
-		// Left gap of list
-		ol, ul {
-			margin-left: 1.5em !important
-		}
+    // Left gap of list
+    ol, ul {
+      margin-left: 1.5em !important
+    }
 
-		// Hiding google map showing on course page
-		#mapStatic {
-			display: none !important
-		}
-	}
+    // Hiding google map showing on course page
+    #mapStatic {
+      display: none !important
+    }
+  }
 
-	// Defining font size of header tag h1
-	h1 {
-		font-size: 1.5em !important
-	}
+  // Defining font size of header tag h1
+  h1 {
+    font-size: 1.5em !important
+  }
 
-	// Defining font size of header tag h2
-	h2 {
-		font-size: 1.3em !important
-	}
+  // Defining font size of header tag h2
+  h2 {
+    font-size: 1.3em !important
+  }
 
-	// Defining font size of header tag h3
-	h3 {
-		font-size: 1.1em !important
-	}
+  // Defining font size of header tag h3
+  h3 {
+    font-size: 1.1em !important
+  }
 
-	// Defining gap at bottom of header tag h1,...,h6, and p tag
-	h1, h2, h3, h4, h5, h6, p {
-		margin-bottom: 0.6em !important
-	}
+  // Defining gap at bottom of header tag h1,...,h6, and p tag
+  h1, h2, h3, h4, h5, h6, p {
+    margin-bottom: 0.6em !important
+  }
 
-	// Defining gap at bottom of p tag
-	p {
-		margin-bottom: 0.8em !important
-	}
+  // Defining gap at bottom of p tag
+  p {
+    margin-bottom: 0.8em !important
+  }
 
-	// Defining text color of header tag h1,...,h6
-	h1, h2, h3, h4, h5, h6 {
-		color: darkblue !important
-	}
+  // Defining text color of header tag h1,...,h6
+  h1, h2, h3, h4, h5, h6 {
+    color: darkblue !important
+  }
 
-	#header h1 {
-		border-bottom: 2px solid gray !important;
-		padding-bottom: 10pt !important;
-		color: darkgreen !important;
-		font-size: 1.7em !important;
-		height: auto !important;
-		a {
-			text-indent: 0 !important;
-			color: darkgreen !important
-		}
-	}
+  #header h1 {
+    border-bottom: 2px solid gray !important;
+    padding-bottom: 10pt !important;
+    color: darkgreen !important;
+    font-size: 1.7em !important;
+    height: auto !important;
+    a {
+      text-indent: 0 !important;
+      color: darkgreen !important
+    }
+  }
 
-	// Defining default visited link text color
-	#container {
-		a, a:visited {
-			color: #444 !important;
-			text-decoration: none
-		}
-	}
+  // Defining default visited link text color
+  #container {
+    a, a:visited {
+      color: #444 !important;
+      text-decoration: none
+    }
+  }
 
-	// Defining text color of link inside header tag h1, h2, h3, h4
-	h1, h2, h3, h4 {
-		a, a:visited {
-			color: darkblue !important;
-		}
-	}
+  // Defining text color of link inside header tag h1, h2, h3, h4
+  h1, h2, h3, h4 {
+    a, a:visited {
+      color: darkblue !important;
+    }
+  }
 
-	// Border of pre and bq tag
-	pre, blockquote {
-		border: 1px solid #999;
-		page-break-inside: avoid
-	}
+  // Border of pre and bq tag
+  pre, blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid
+  }
 
-	// Table header group
-	thead {
-		display: table-header-group
-	}
+  // Table header group
+  thead {
+    display: table-header-group
+  }
 
-	tr, img {
-		page-break-inside: avoid
-	}
+  tr, img {
+    page-break-inside: avoid
+  }
 
-	// Defining print page gap
-	@page {
-		margin: 0.5cm
-	}
+  // Defining print page gap
+  @page {
+    margin: 0.5cm
+  }
 
-	p, h2, h3 {
-		orphans: 3;
-		widows: 3
-	}
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3
+  }
 
-	h2, h3 {
-		page-break-after: avoid
-	}
+  h2, h3 {
+    page-break-after: avoid
+  }
 
-	.header-toolbar, .site-nav, .sidebar-left, .sidebar-right, .center-banner, .site-footer, .dialogContainer, .search-terms, #showMoreCourses, .enrolAction, .waiting-list-title, .class-more, #fp_feed_container, #nav-global, #gmapCanvas, .classStatus, .print-page, .directions-wrapper, .bubbleInfo, .global-navi, #frontpage_slider, #frontpage_slider_pager, .more, .header-contacts, #link-grid, .header-block, #sidebar {
-		display: none !important
-	}
+  .header-toolbar, .site-nav, .sidebar-left, .sidebar-right, .center-banner, .site-footer, .dialogContainer, .search-terms, #showMoreCourses, .enrolAction, .waiting-list-title, .class-more, #fp_feed_container, #nav-global, #gmapCanvas, .classStatus, .print-page, .directions-wrapper, .bubbleInfo, .global-navi, #frontpage_slider, #frontpage_slider_pager, .more, .header-contacts, #link-grid, .header-block, #sidebar {
+    display: none !important
+  }
 }

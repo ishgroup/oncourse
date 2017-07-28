@@ -14,60 +14,60 @@
 //
 
 .producItem {
-	// Class item block
-	.classItem {
-		// Hiding bubble info on mouse over of products item
-		&:hover .bubbleInfo {
-			display: none
-		}
+  // Class item block
+  .classItem {
+    // Hiding bubble info on mouse over of products item
+    &:hover .bubbleInfo {
+      display: none
+    }
 
-		// Product class item left and right info
-		.class-item-info {
-			.class-item-info-l, .class-item-info-r {
-				@include bootstrap(false) {
-					width: auto;
-					float: none;
-				}
-				.info {
-					padding-left: 0;
-					padding-top: 0;
-					ul {
-						margin-left: 65px
-					}
-					abbr, span, a {
-						color: #000;
-					}
-					div.label {
-						padding: 0 3px 0 0;
-						float: left;
-						min-width: 57px;
-						color: #808080;
-						background: none;
-						text-shadow: none;
-						font-weight: normal;
-						font-size: 13px;
-						text-align: left;
-						&, +div {
-							line-height: 1.5;
-						}
-						+div {
-							color: #000;
-							padding-left: 0;
-							padding-top: 0
-						}
-					}
-				}
-			}
+    // Product class item left and right info
+    .class-item-info {
+      .class-item-info-l, .class-item-info-r {
+        @include bootstrap(false) {
+          width: auto;
+          float: none;
+        }
+        .info {
+          padding-left: 0;
+          padding-top: 0;
+          ul {
+            margin-left: 65px
+          }
+          abbr, span, a {
+            color: #000;
+          }
+          div.label {
+            padding: 0 3px 0 0;
+            float: left;
+            min-width: 57px;
+            color: #808080;
+            background: none;
+            text-shadow: none;
+            font-weight: normal;
+            font-size: 13px;
+            text-align: left;
+            &, +div {
+              line-height: 1.5;
+            }
+            +div {
+              color: #000;
+              padding-left: 0;
+              padding-top: 0
+            }
+          }
+        }
+      }
 
-			// Class item right info
-			.class-item-info-r {
-				width: 55%
-			}
-		}
+      // Class item right info
+      .class-item-info-r {
+        width: 55%
+      }
+    }
 
-		// Text transformation of date start and date end
-		.dtend, .dtstart {
-			text-transform: none
-		}
-	}
+    // Text transformation of date start and date end
+    .dtend, .dtstart {
+      text-transform: none
+    }
+  }
 }

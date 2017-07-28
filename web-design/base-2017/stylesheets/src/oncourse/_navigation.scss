@@ -13,109 +13,109 @@
 //
 
 .nav-toggle {
-	float: left;
-	width: 100%;
-	display: block;
-	color: $navToggleTextColor;
-	background: $navToggleBG;
-	font-size: 16px;
-	font-weight: 600;
-	margin-top: 5px;
-	margin-right: 0px;
-	margin-bottom: 10px;
-	padding: 8px 15px;
-	position: relative;
-	text-transform: uppercase;
-	line-height: 1.5;
-	@include border-radius(4px);
+  float: left;
+  width: 100%;
+  display: block;
+  color: $navToggleTextColor;
+  background: $navToggleBG;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  padding: 8px 15px;
+  position: relative;
+  text-transform: uppercase;
+  line-height: 1.5;
+  @include border-radius(4px);
 
   // Following function handles responsive media small screen align to right of page
   @include responsive($media-small) {
-  	float: right;
-  	width: 105px;
+    float: right;
+    width: 105px;
   }
 
   // Nav toggle removed in desktop screen
   @include responsive($media-tablet) {
-  	display: none;
+    display: none;
   }
   &:hover {
-  	background: $navToggleHoverBG;
-  	color: $navToggleHoverTextColor;
+    background: $navToggleHoverBG;
+    color: $navToggleHoverTextColor;
   }
   >div {
-  	width: 76px;
-  	margin: 0 auto;
+    width: 76px;
+    margin: 0 auto;
   }
   .toggle-title {
-  	display: block;
-  	margin-right: 4px;
-  	position: relative;
-  	>i.toggle-icon {
-  		display: block;
-  	}
+    display: block;
+    margin-right: 4px;
+    position: relative;
+    >i.toggle-icon {
+      display: block;
+    }
   }
 }
 
 @if $enableHamburgerMenu == true {
-	.nav-toggle {
-	  .nav-title {
-	    display: none;
-	  }
-	  .nav-toggle-icon {
-	    display: inline-block;
-	    vertical-align: middle;
-	  }
+  .nav-toggle {
+    .nav-title {
+      display: none;
+    }
+    .nav-toggle-icon {
+      display: inline-block;
+      vertical-align: middle;
+    }
 
-	  .nav-toggle-icon {
-	    padding: 0;
-	    position: relative;
-	    margin-right: 10px;
-	    &, &::before, &::after {
-	      width: $navToggleIconWidth;
-	      background: $navToggleIconColor;
-	      height: $navToggleIconHeight;
-	      left: 0;
-	      right: 0;
-	      @include transition(all 0.2s linear);
-	      border-radius: $navToggleIconBorderRadius;
-	      line-height: 0px;
-	      font-size: 0px;
-	      display: inline-block;
-	      text-indent: -9999px;
-	    }
-	    &::before, &::after {
-	      content: "";
-	      position: absolute
-	    }
+    .nav-toggle-icon {
+      padding: 0;
+      position: relative;
+      margin-right: 10px;
+      &, &::before, &::after {
+        width: $navToggleIconWidth;
+        background: $navToggleIconColor;
+        height: $navToggleIconHeight;
+        left: 0;
+        right: 0;
+        @include transition(all 0.2s linear);
+        border-radius: $navToggleIconBorderRadius;
+        line-height: 0px;
+        font-size: 0px;
+        display: inline-block;
+        text-indent: -9999px;
+      }
+      &::before, &::after {
+        content: "";
+        position: absolute
+      }
 
-	    /*5 (32) => 11 x -13*/
-	    /*2 (23) => 6 x -8*/
-	    &::before {
-	      top: $navToggleIconLinePosition;
-	    }
-	    &::after {
-	      bottom: $navToggleIconLinePosition;
-	    }
-	  }
-	  &.active {
-	    .nav-toggle-icon {
-	      background: transparent;
-	      border: 0 none;
-	      &::before,
-	      &::after {
-	        top: -1px;
-	        background: $navToggleIconHoverColor;
-	      }
-	      &::before {
-	        @include transform(rotate(45deg));
-	      }
-	      &::after {
-	        @include transform(rotate(-45deg));
-	      }
-	    }
-	  }
-	}
+      /*5 (32) => 11 x -13*/
+      /*2 (23) => 6 x -8*/
+      &::before {
+        top: $navToggleIconLinePosition;
+      }
+      &::after {
+        bottom: $navToggleIconLinePosition;
+      }
+    }
+    &.active {
+      .nav-toggle-icon {
+        background: transparent;
+        border: 0 none;
+        &::before,
+        &::after {
+          top: -1px;
+          background: $navToggleIconHoverColor;
+        }
+        &::before {
+          @include transform(rotate(45deg));
+        }
+        &::after {
+          @include transform(rotate(-45deg));
+        }
+      }
+    }
+  }
 }
 
 //
@@ -123,217 +123,217 @@
 //
 
 .navbar {
-	position: relative;
-	z-index: 4;
-	float: $navbarFloatPosition;
+  position: $navbarPosition;
+  z-index: $navbarZIndex;
+  float: $navbarFloatPosition;
 
-	// Following function handles responsive media tablet screen
-	@include responsive($media-tablet) {
-		padding-left: $navbarPaddingLeft;
-	}
+  // Following function handles responsive media tablet screen
+  @include responsive($media-tablet) {
+    padding-left: $navbarPaddingLeft;
+  }
 
-	#nav {
-		z-index: 50;
-		float: none;
-		width: 100%;
-		font-size: $navFontSize;
-		font-weight: $navFontWeight;
-		text-transform: $navTextTransform;
-		margin: $navMargin;
+  #nav {
+    z-index: 50;
+    float: $navTagFloat;
+    width: $navWidthSmall;
+    font-size: $navFontSize;
+    font-weight: $navFontWeight;
+    text-transform: $navTextTransform;
+    margin: $navMargin;
 
-		// Following function handles responsive media tablet screen
-		@include responsive($media-tablet) {
-			width: $navWidth;
-			display: $navTabletDisplay;
-			float: right;
-		}
-		> ul {
-			float: $navFloat;
-			width: $navListWidth;
-			background: $navBG;
-			border-top: $navBorderTop;
-			text-align: $navTextAlign;
+    // Following function handles responsive media tablet screen
+    @include responsive($media-tablet) {
+      width: $navWidth;
+      display: $navTabletDisplay;
+      float: $navTagFloatTablet;
+    }
+    > ul {
+      float: $navFloat;
+      width: $navListWidth;
+      background: $navBG;
+      border-top: $navBorderTop;
+      text-align: $navTextAlign;
 
-			// Following function handles responsive media tablet screen
-			@include responsive($media-tablet) {
-				border-bottom: $navBorderBottom;
-				float: $navFloatTablet;
-				text-align: $navTextAlignTablet;
-			}
-			li {
-				display: $navDisplayItem;
-			}
-			a {
-				padding: $navAnchorItemPadding;
-				display: block;
-			}
-			> li {
-				float: $navListFloat;
-				position: $navListPosition;
-				display: $navListDisplay;
-				border-bottom: $navListBottomBorder;
-				text-transform: $navListTextTransform;
+      // Following function handles responsive media tablet screen
+      @include responsive($media-tablet) {
+        border-bottom: $navBorderBottom;
+        float: $navFloatTablet;
+        text-align: $navTextAlignTablet;
+      }
+      li {
+        display: $navDisplayItem;
+      }
+      a {
+        padding: $navAnchorItemPadding;
+        display: block;
+      }
+      > li {
+        float: $navListFloat;
+        position: $navListPosition;
+        display: $navListDisplay;
+        border-bottom: $navListBottomBorder;
+        text-transform: $navListTextTransform;
 
-				// Navigation list animation effects
-				@include transition($navListTransition);
+        // Navigation list animation effects
+        @include transition($navListTransition);
 
-				// Following function handles responsive media tablet screen
-				@include responsive($media-tablet) {
-					display: $navListDisplayTablet;
-					float: $navListFloatTablet;
-					margin-right: $navListMarginRight;
-					border-bottom: $navListBottomBorderMediaTablet;
-				}
+        // Following function handles responsive media tablet screen
+        @include responsive($media-tablet) {
+          display: $navListDisplayTablet;
+          float: $navListFloatTablet;
+          margin-right: $navListMarginRight;
+          border-bottom: $navListBottomBorderMediaTablet;
+        }
 
-				> a {
-					position: relative;
-					color: $navAnchorColor;
-					font-size: $navAnchorTopFontSize;
-					padding: $navAnchorPadding;
-					height: $navAnchorHeight;
-					line-height: $navAnchorLineHeight;
-					display: block;
-				}
-				&:first-child {
-					>a {
-						padding: $navFirstChildAnchorPadding;
-					}
-				}
-				&:last-child {
-					>a {
-						padding: $navLastChildAnchorPadding;
-					}
-				}
+        > a {
+          position: relative;
+          color: $navAnchorColor;
+          font-size: $navAnchorTopFontSize;
+          padding: $navAnchorPadding;
+          height: $navAnchorHeight;
+          line-height: $navAnchorLineHeight;
+          display: block;
+        }
+        &:first-child {
+          >a {
+            padding: $navFirstChildAnchorPadding;
+          }
+        }
+        &:last-child {
+          >a {
+            padding: $navLastChildAnchorPadding;
+          }
+        }
 
-				&:first-child {
-					> ul a {
-						padding-left: 3px;
-					}
-				}
+        &:first-child {
+          > ul a {
+            padding-left: 3px;
+          }
+        }
 
-				// Parent menu has its children menu
-				&.hasChild {
-					> a {
-						&::before {
-							display: none;
-							position: absolute;
-							content: "";
-							bottom: $navAnchorArrowPositionBottom;
-							left: $navAnchorArrowPositionLeft;
-							z-index: 100;
-							border: 0px solid transparent;
-							border-#{$navAnchorArrowPositionSide}-color: $navAnchorArrowColor;
-							border-width: $navAnchorArrowBorderWidth;
-							@include responsive($media-tablet) {
-								left: $navAnchorArrowPositionLeftMediaTablet;
-							}
-						}
-					}
+        // Parent menu has its children menu
+        &.hasChild {
+          > a {
+            &::before {
+              display: none;
+              position: absolute;
+              content: "";
+              bottom: $navAnchorArrowPositionBottom;
+              left: $navAnchorArrowPositionLeft;
+              z-index: 100;
+              border: 0px solid transparent;
+              border-#{$navAnchorArrowPositionSide}-color: $navAnchorArrowColor;
+              border-width: $navAnchorArrowBorderWidth;
+              @include responsive($media-tablet) {
+                left: $navAnchorArrowPositionLeftMediaTablet;
+              }
+            }
+          }
 
-					> ul {
-						display: $navChildMenuDisplay;
-						padding: $firstChildMenuPadding;
-						@include responsive($media-tablet) {
-							padding: $firstChildMenuTablePadding;
-						}
+          > ul {
+            display: $navChildMenuDisplay;
+            padding: $firstChildMenuPadding;
+            @include responsive($media-tablet) {
+              padding: $firstChildMenuTablePadding;
+            }
 
-						> .full-width-menu-drop {
-							display: $displayFullWidthMenu;
-							position: absolute;
-							background: $first-accent-color;
-							height: 100%;
-							width: $firstDropMenufullWidth;
-							z-index: -1;
-							margin: $firstDropMenuMargin;
-							top: 0;
-							bottom: 0;
-						}
+            > .full-width-menu-drop {
+              display: $displayFullWidthMenu;
+              position: absolute;
+              background: $first-accent-color;
+              height: 100%;
+              width: $firstDropMenufullWidth;
+              z-index: -1;
+              margin: $firstDropMenuMargin;
+              top: 0;
+              bottom: 0;
+            }
 
-						> li {
-							width: 100%;
-							float: none;
-							clear: both;
-							text-transform: $firstAccentNavTextTransform;
-							@include responsive($media-tablet) {
-								float: left;
-							}
+            > li {
+              width: 100%;
+              float: none;
+              clear: both;
+              text-transform: $firstAccentNavTextTransform;
+              @include responsive($media-tablet) {
+                float: left;
+              }
 
-							> a {
-								color: $firstAccentNavAnchorColor;
-								padding: $firstAccentNavAnchorPadding;
+              > a {
+                color: $firstAccentNavAnchorColor;
+                padding: $firstAccentNavAnchorPadding;
 
-								&:hover {
-									text-decoration: none;
-								}
-							}
-						}
-					}
-					ul {
-						li {
-							a {
-								&:hover {
-									background: $navChildMenuLinkHoverBG;
-									color: $navChildMenuLinkHoverColor;
-								}
-							}
-						}
-					}
-				}
-				> ul {
-					display: $navChildMenuDisplay;
-					position: $navChildMenuPosition;
-					background: $first-accent-color;
-					width: auto;
-					top: $navChildMenuTop;
-					margin-top: -2px;
-					left: 0;
-					z-index: 9;
-					text-align: $navChildMenuTextAlign;
-					@include responsive($media-tablet) {
-						position: absolute;
-						width: $first-accent-width;
-						min-width: 200px;
-						text-align: $navChildMenuTextAlignTablet;
-					}
-				}
+                &:hover {
+                  text-decoration: none;
+                }
+              }
+            }
+          }
+          ul {
+            li {
+              a {
+                &:hover {
+                  background: $navChildMenuLinkHoverBG;
+                  color: $navChildMenuLinkHoverColor;
+                }
+              }
+            }
+          }
+        }
+        > ul {
+          display: $navChildMenuDisplay;
+          position: $navChildMenuPosition;
+          background: $first-accent-color;
+          width: auto;
+          top: $navChildMenuTop;
+          margin-top: -2px;
+          left: 0;
+          z-index: 9;
+          text-align: $navChildMenuTextAlign;
+          @include responsive($media-tablet) {
+            position: absolute;
+            width: $first-accent-width;
+            min-width: 200px;
+            text-align: $navChildMenuTextAlignTablet;
+          }
+        }
 
-				// Changed background on mouse over and for mobile screen size
-				&:hover, >a:hover, &.opened {
-					background: $navAnchorHoverBG;
-					> a {
-						color: $navAnchorHoverTextColor;
-					}
-				}
+        // Changed background on mouse over and for mobile screen size
+        &:hover, >a:hover, &.opened {
+          background: $navAnchorHoverBG;
+          > a {
+            color: $navAnchorHoverTextColor;
+          }
+        }
 
-				// Show for mobile screen
-				&.opened, &.opened:hover {
-					>a::before {
-						display: block;
-					}
-					>ul {
-						top: 100%;
-					}
-				}
+        // Show for mobile screen
+        &.opened, &.opened:hover {
+          >a::before {
+            display: block;
+          }
+          >ul {
+            top: 100%;
+          }
+        }
 
-				// Following function handles responsive media tablet screen
-				@include responsive($media-tablet) {
-					&:hover {
-						>a::before {
-							display: $navChildMenuHoverLinkDisplayMediaTablet;
-						}
-						>ul {
-							display: $navChildMenuHoverDisplay;
-							top: $navChildMenuHoverTop;
-						}
-					}
-				}
+        // Following function handles responsive media tablet screen
+        @include responsive($media-tablet) {
+          &:hover {
+            >a::before {
+              display: $navChildMenuHoverLinkDisplayMediaTablet;
+            }
+            >ul {
+              display: $navChildMenuHoverDisplay;
+              top: $navChildMenuHoverTop;
+            }
+          }
+        }
 
-				&.hoverOff:hover {
-					> a::before, > ul {
-						display: none;
-					}
-				}
-			}
-		}
-	}
+        &.hoverOff:hover {
+          > a::before, > ul {
+            display: none;
+          }
+        }
+      }
+    }
+  }
 }

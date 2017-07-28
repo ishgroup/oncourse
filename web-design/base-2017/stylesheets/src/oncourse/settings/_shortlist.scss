@@ -6,8 +6,7 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
-
+//
 
 //
 // Following all the settings handles courses shortlist (selected courses list) style
@@ -19,9 +18,22 @@ $shortListPosition: relative !default;
 $shortListPadding: 0 10px !default;
 $shortListMarginRightTablet: 20px !default;
 
+$shortListBeforeBackgroundPosition: -33px -12px !default;
+$shortListBeforeBackgroundRepeat: no-repeat !default;
+$shortListBeforeDisplay: block !default;
+$shortListBeforeDisplayTablet: none !default;
+$shortListBeforePosition: absolute !default;
+$shortListBeforeTop: 6px !default;
+$shortListBeforeLeft: -12px !default;
+$shortListBeforeWidth: 17px !default;
+$shortListBeforeHeight: 16px !default;
+
+$shortListTitleBlock: none !default;
+
 $shortListInfoSpanBGColor: transparent !default;
 // Short list info item color
 $shortListInfoSpanColor: #fdc913 !default;
+$shortListInfoSpanFloat: left !default;
 // Short list info item text size
 $shortListInfoSpanFontSize: 21px !default;
 // Short list info item text height
@@ -30,6 +42,9 @@ $shortListInfoSpanLineHeight: 1.38095 !default;
 $shortListInfoSpanMargin: 0 7px 0 0 !default;
 
 // Short list info item count margin
+$shortListInfoPtagFloat: left !default;
+$shortListInfoPtagDisplay: none !default;
+$shortListInfoPtagDisplayTablet: block !default;
 $shortListInfoPtagMargin: 0px !default;
 // Short list info item count text height
 $shortListInfoPtagLineHeight: 2.07143 !default;
@@ -37,9 +52,11 @@ $shortListInfoPtagLineHeight: 2.07143 !default;
 $shortListInfoPtagFontSize: 14px !default;
 
 // Short list of courses order's background color
+$shortListOrderDisplay: none !default;
 $shortListOrderBackground: #e61b23 !default;
 // Short list of courses order's box highlighting
 $shortListOrderBoxShadow: 0 1px 3px rgba(0,0,0,0.3) !default;
+$shortListOrderBorderRadius: 4px !default;
 // Short list of courses order's width
 $shortListOrderWidth: 220px !default;
 // Short list of courses order's position left
@@ -74,8 +91,11 @@ $shortListOrderListPadding: 5px 18px 5px 0 !default;
 // Short list of courses order's bottom border
 $shortListOrderListBottomBorder: 1px dotted $white !default;
 
+$shortListOrderBeforeDisplay: inline-block !default;
 // Short list of courses order's before border color
 $shortListOrderBeforeBorderColor: $shortListOrderBackground !default;
+$shortListOrderBeforeBorderStyle: solid !default;
+$shortListOrderBeforeBorderWidth: 0 7px 7px 7px !default;
 // Short list of courses order's before position left
 $shortListOrderBeforePositionLeft: auto !default;
 // Short list of courses order's before position left for media screen tablet
@@ -95,6 +115,8 @@ $shortListOrderLinkColor: $white !default;
 $shortListOrderLinkFontSize: $bodyFontSize !default;
 // Short list of courses order's link text weight
 $shortListOrderLinkFontWeight: $bodyFontStyle !default;
+$shortListOrderLinkTextDecoration: none !default;
+$shortListOrderLinkDisplay: block !default;
 // Short list of courses order's link mouse over color
 $shortListOrderLinkHoverColor: #231f20 !default;
 // Short list of courses order's link delete icon background and image
@@ -102,11 +124,22 @@ $shortListOrderDeleteIconBackground: transparent url("/s/img/b-cut.png") no-repe
 // Short list of courses order's link delete icon background color
 $shortListOrderDeleteIconBackgroundColor: transparent !default;
 // Short list of courses order's link delete text color
+$shortListOrderDeleteDisplay: inline-block !default;
+$shortListOrderDeletePosition: absolute !default;
+$shortListOrderDeleteFontSize: 10px !default;
 $shortListOrderDeleteColor: $white !default;
+$shortListOrderDeleteTextIndent: -9999px !default;
+$shortListOrderDeleteWidth: 16px !default;
+$shortListOrderDeleteHeight: 16px !default;
+$shortListOrderDeleteRight: -4px !default;
+$shortListOrderDeleteTop: 7px !default;
 // Short list of courses order's link delete icon background color on mouse over
 $shortListOrderDeleteIconHoverBackgroundColor: #990000 !default;
+$shortListOrderDeleteIconOpacityHover: 0.9 !default;
 
 // Short list enrol button background
+$shortListOrderEnrolPaddingRight: 0 !default;
+$shortListOrderEnrolTextAlign: right !default;
 $shortListOrderEnrolLinkBackground: #f89a1d !default;
 // Short list enrol button background color
 $shortListOrderEnrolLinkBackgroundColor: #f89a1d !default;
@@ -116,10 +149,14 @@ $shortListOrderEnrolLinkColor: $white !default;
 $shortListOrderEnrolLinkAlign: right !default;
 // Short list enrol button spaces
 $shortListOrderEnrolLinkPadding: 2px 10px !default;
+$shortListOrderEnrolLinkTextTransform: uppercase !default;
+$shortListOrderEnrolLinkTextDecoration: none !default;
 // Short list enrol button test size
 $shortListOrderEnrolLinkFontSize: 11px !default;
 // Short list enrol button text weight
 $shortListOrderEnrolLinkFontWeight: bold !default;
+$shortListOrderEnrolLinkBorder: 0px !default;
+$shortListOrderEnrolLinkBorderHover: 0px !default;
 
 $shortListOrderEnrolLinkHoverBackgroundColor: darken($shortListOrderEnrolLinkBackgroundColor, 5%) !default;
 // Short list enrol button link mouse over color

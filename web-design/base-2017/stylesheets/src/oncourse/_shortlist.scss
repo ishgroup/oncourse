@@ -6,255 +6,252 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
-
+//
 
 //
 // Following all the styels handles shortlist of selected courses
 //
 
 #shortlist {
-	float: $shortListFloat;
-	margin-right: $shortListMarginRightSmall;
-	position: $shortListPosition;
-	padding: $shortListPadding;
-	@include responsive($media-tablet) {
-		margin-right: $shortListMarginRightTablet;
-	}
+  float: $shortListFloat;
+  margin-right: $shortListMarginRightSmall;
+  position: $shortListPosition;
+  padding: $shortListPadding;
+  @include responsive($media-tablet) {
+    margin-right: $shortListMarginRightTablet;
+  }
 
-	// Displaying cart icon before shortlist courses count
-	&::before {
-		background-image: url("/s/img/sprite.svg");
-		background-position: -33px -12px;
-		background-repeat: no-repeat;
-		content: '';
-		display: block;
-		position: absolute;
-		top: 6px;
-		left: -12px;
-		width: 17px;
-		height: 16px;
-		@include responsive($media-tablet) {
-			display: none
-		}
-	}
-	.title-block {
-		display: none;
-	}
+  // Displaying cart icon before shortlist courses count
+  &::before {
+    background-image: $defaultSpriteImage;
+    background-position: $shortListBeforeBackgroundPosition;
+    background-repeat: $shortListBeforeBackgroundRepeat;
+    content: "";
+    display: $shortListBeforeDisplay;
+    position: $shortListBeforePosition;
+    top: $shortListBeforeTop;
+    left: $shortListBeforeLeft;
+    width: $shortListBeforeWidth;
+    height: $shortListBeforeHeight;
+    @include responsive($media-tablet) {
+      display: $shortListBeforeDisplayTablet;
+    }
+  }
+  .title-block {
+    display: $shortListTitleBlock;
+  }
 
-	// Short list info displaying selected courses count and text
-	.shortlistInfo {
-		span {
-			background: $shortListInfoSpanBGColor;
-			color: $shortListInfoSpanColor;
-			float: left;
-			font-size: $shortListInfoSpanFontSize;
-			line-height: $shortListInfoSpanLineHeight;
-			margin: $shortListInfoSpanMargin;
-		}
-		p {
-			float: left;
-			display: none;
-			margin: $shortListInfoPtagMargin;
-			line-height: $shortListInfoPtagLineHeight;
-			font-size: $shortListInfoPtagFontSize;
+  // Short list info displaying selected courses count and text
+  .shortlistInfo {
+    span {
+      background: $shortListInfoSpanBGColor;
+      color: $shortListInfoSpanColor;
+      float: $shortListInfoSpanFloat;
+      font-size: $shortListInfoSpanFontSize;
+      line-height: $shortListInfoSpanLineHeight;
+      margin: $shortListInfoSpanMargin;
+    }
+    p {
+      float: $shortListInfoPtagFloat;
+      display: $shortListInfoPtagDisplay;
+      margin: $shortListInfoPtagMargin;
+      line-height: $shortListInfoPtagLineHeight;
+      font-size: $shortListInfoPtagFontSize;
 
-			// Following function handles responsive media screen, shown after on mobile screen
-			@include responsive($media-tablet) {
-				display: block;
-			}
-		}
-	}
+      // Following function handles responsive media screen, shown after on mobile screen
+      @include responsive($media-tablet) {
+        display: $shortListInfoPtagDisplayTablet;
+      }
+    }
+  }
 
-	// Short list order of courses
-	ul.shortListOrder {
-		display: none;
-		background: $shortListOrderBackground;
-		-webkit-box-shadow: $shortListOrderBoxShadow;
-		   -moz-box-shadow: $shortListOrderBoxShadow;
-			-ms-box-shadow: $shortListOrderBoxShadow;
-			 -o-box-shadow: $shortListOrderBoxShadow;
-				box-shadow: $shortListOrderBoxShadow;
-		@include border-radius(4px);
-		width: $shortListOrderWidth;
-		position: $shortListOrderPosition;
-		left: $shortListOrderLeft;
-		top: $shortListOrderTop;
-		right: $shortListOrderRight;
-		font-size: $shortListOrderFontSize;
-		padding: $shortListOrderPadding;
-		overflow: visible !important;
-		z-index: $shortListOrderZindex;
-		@include responsive($media-tablet) {
-			right: $shortListOrderRightMediaTablet;
-			left: $shortListOrderLeftMediaTablet;
-		}
-		li {
-			color: $shortListOrderListColor;
-			position: $shortListOrderListPosition;
-			margin: $shortListOrderListMargin;
-			line-height: $shortListOrderListLineHeight;
-			padding: $shortListOrderListPadding;
-			border-bottom: $shortListOrderListBottomBorder;
+  // Short list order of courses
+  ul.shortListOrder {
+    display: $shortListOrderDisplay;
+    background: $shortListOrderBackground;
+    @include box-shadow($shortListOrderBoxShadow);
+    @include border-radius($shortListOrderBorderRadius);
+    width: $shortListOrderWidth;
+    position: $shortListOrderPosition;
+    left: $shortListOrderLeft;
+    top: $shortListOrderTop;
+    right: $shortListOrderRight;
+    font-size: $shortListOrderFontSize;
+    padding: $shortListOrderPadding;
+    overflow: visible !important;
+    z-index: $shortListOrderZindex;
+    @include responsive($media-tablet) {
+      right: $shortListOrderRightMediaTablet;
+      left: $shortListOrderLeftMediaTablet;
+    }
+    li {
+      color: $shortListOrderListColor;
+      position: $shortListOrderListPosition;
+      margin: $shortListOrderListMargin;
+      line-height: $shortListOrderListLineHeight;
+      padding: $shortListOrderListPadding;
+      border-bottom: $shortListOrderListBottomBorder;
 
-			&.shortListOrderEnrol {
-				border-bottom: 0;
-				margin-bottom: 0;
-			}
-			>div {
-				display: none
-			}
-		}
+      &.shortListOrderEnrol {
+        border-bottom: 0;
+        margin-bottom: 0;
+      }
+      >div {
+        display: none
+      }
+    }
 
-		// Showing top arrow of short list courses
-		&::before {
-			display: inline-block;
-			border-color: transparent transparent $shortListOrderBeforeBorderColor transparent;
-			border-style: solid;
-			border-width: 0 7px 7px 7px;
-			content: "";
-			position: absolute;
-			left: $shortListOrderBeforePositionLeft;
-			top: $shortListOrderBeforePositionTop;
-			right: $shortListOrderBeforePositionRight;
-			margin-left: $shortListOrderBeforeMarginLeft;
-			@include responsive($media-tablet) {
-				left: $shortListOrderBeforePositionLeftMediaTablet;
-				right: $shortListOrderBeforePositionRightMediaTablet;
-			}
-		}
-		a {
-			color: $shortListOrderLinkColor;
-			font-size: $shortListOrderLinkFontSize;
-			font-weight: $shortListOrderLinkFontWeight;
-			text-decoration: none;
-			display: block;
-			&:hover {
-				color: $shortListOrderLinkHoverColor
-			}
-		}
+    // Showing top arrow of short list courses
+    &::before {
+      display: $shortListOrderBeforeDisplay;
+      border-color: transparent transparent $shortListOrderBeforeBorderColor transparent;
+      border-style: $shortListOrderBeforeBorderStyle;
+      border-width: $shortListOrderBeforeBorderWidth;
+      content: "";
+      position: absolute;
+      left: $shortListOrderBeforePositionLeft;
+      top: $shortListOrderBeforePositionTop;
+      right: $shortListOrderBeforePositionRight;
+      margin-left: $shortListOrderBeforeMarginLeft;
+      @include responsive($media-tablet) {
+        left: $shortListOrderBeforePositionLeftMediaTablet;
+        right: $shortListOrderBeforePositionRightMediaTablet;
+      }
+    }
+    a {
+      color: $shortListOrderLinkColor;
+      font-size: $shortListOrderLinkFontSize;
+      font-weight: $shortListOrderLinkFontWeight;
+      text-decoration: $shortListOrderLinkTextDecoration;
+      display: $shortListOrderLinkDisplay;
+      &:hover {
+        color: $shortListOrderLinkHoverColor
+      }
+    }
 
-		// Delete icon link of short list courses
-		.deleteItem {
-			display: inline-block;
-			position: absolute;
-			background: $shortListOrderDeleteIconBackground;
-			background-color: $shortListOrderDeleteIconBackgroundColor;
-			font-size: 10px;
-			color: $shortListOrderDeleteColor;
-			text-indent: -9999px;
-			width: 16px;
-			height: 16px;
-			right: -4px;
-			top: 7px;
-			a {
-				height: 16px;
-			}
-			&:hover {
-				background-color: $shortListOrderDeleteIconHoverBackgroundColor;
-				opacity: 0.9
-			}
-			&.loading {
-				background: transparent url("/s/img/icon/ajax-loader.gif") no-repeat left top
-			}
-		}
+    // Delete icon link of short list courses
+    .deleteItem {
+      display: $shortListOrderDeleteDisplay;
+      position: $shortListOrderDeletePosition;
+      background: $shortListOrderDeleteIconBackground;
+      background-color: $shortListOrderDeleteIconBackgroundColor;
+      font-size: $shortListOrderDeleteFontSize;
+      color: $shortListOrderDeleteColor;
+      text-indent: $shortListOrderDeleteTextIndent;
+      width: $shortListOrderDeleteWidth;
+      height: $shortListOrderDeleteHeight;
+      right: $shortListOrderDeleteRight;
+      top: $shortListOrderDeleteTop;
+      a {
+        height: $shortListOrderDeleteHeight;
+      }
+      &:hover {
+        background-color: $shortListOrderDeleteIconHoverBackgroundColor;
+        opacity: $shortListOrderDeleteIconOpacityHover;
+      }
+      &.loading {
+        background: transparent url("/s/img/icon/ajax-loader.gif") no-repeat left top
+      }
+    }
 
-		// Short list enrol button
-		.shortListOrderEnrol {
-			padding-right: 0;
-			text-align: right;
-			.shortlistLinkEnrol {
-				background: $shortListOrderEnrolLinkBackground;
-				background-color: $shortListOrderEnrolLinkBackgroundColor;
-				color: $shortListOrderEnrolLinkColor;
-				float: $shortListOrderEnrolLinkAlign;
-				padding: $shortListOrderEnrolLinkPadding;
-				text-transform: uppercase;
-				text-decoration: none;
-				font-size: $shortListOrderEnrolLinkFontSize;
-				font-weight: $shortListOrderEnrolLinkFontWeight;
-				&:hover {
-					background: $shortListOrderEnrolLinkHoverBackgroundColor;
-					color: $shortListOrderEnrolLinkHoverColor;
-				}
-			}
-			&::after {
-				content: "";
-				clear: both;
-				display: table;
-			}
-		}
-	}
-	.shortListOrderClasses, .closeButton {
-		display: none
-	}
+    // Short list enrol button
+    .shortListOrderEnrol {
+      padding-right: $shortListOrderEnrolPaddingRight;
+      text-align: $shortListOrderEnrolTextAlign;
+      .shortlistLinkEnrol {
+        background: $shortListOrderEnrolLinkBackground;
+        background-color: $shortListOrderEnrolLinkBackgroundColor;
+        color: $shortListOrderEnrolLinkColor;
+        float: $shortListOrderEnrolLinkAlign;
+        padding: $shortListOrderEnrolLinkPadding;
+        text-transform: $shortListOrderEnrolLinkTextTransform;
+        text-decoration: $shortListOrderEnrolLinkTextDecoration;
+        font-size: $shortListOrderEnrolLinkFontSize;
+        font-weight: $shortListOrderEnrolLinkFontWeight;
+        border: $shortListOrderEnrolLinkBorder;
+        &:hover {
+          background: $shortListOrderEnrolLinkHoverBackgroundColor;
+          color: $shortListOrderEnrolLinkHoverColor;
+          border: $shortListOrderEnrolLinkBorderHover;
+        }
+      }
+      &::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+    }
+  }
+  .shortListOrderClasses, .closeButton {
+    display: none
+  }
 
-	// List of actions of courses shortlist
-	.shortlistAction {
-		position: $shortlistActionPosition;
-		left: $shortlistActionLeft;
-		top: $shortlistActionTop;
-		width: $shortlistActionWidth;
-		.shortlistControls {
-			display: $shortlistActionControlsDisplay;
-			zoom:1\9;
-			&::after {
-				visibility: hidden;
-				display: block;
-				font-size: 0;
-				content: " ";
-				clear: both;
-				height: 0
-			}
-			.shortlistActionShow a {
-				display: $shortlistActionLinkDisplay;
-				overflow: $shortlistActionLinkOverflow;
-				white-space: $shortlistActionLinkWhiteSpace;
-			}
-			li {
-				padding: $shortlistActionLinkListPadding;
-				line-height: $shortlistActionLinkListLineHeight;
-				&:first-child:hover, &.active {
-					background-color: $shortlistActionLinkListFirstChildBackground;
-					color: $shortlistActionLinkListFirstChildTextColor;
-					a {
-						color: $shortlistActionLinkListFirstChildLinkColor;
-					}
-				}
-				a {
-					color: $shortlistActionLinkListLinkColor;
-					background: $shortlistActionLinkListLinkBackground;
-					text-decoration: $shortlistActionLinkListLinkTextDecoration;
-					text-indent: $shortlistActionLinkListLinkTextIndent;
-					display: $shortlistActionLinkListLinkDisplay;
-					height: $shortlistActionLinkListLinkHeight;
-					text-transform: $shortlistActionLinkListLinkTextTransform;
-					font-size: $shortlistActionLinkListLinkFontSize;
-					padding-top: $shortlistActionLinkListLinkPaddingTop;
-				}
-			}
-			.shortlistActionEnrol {
-				display: $shortlistActionEnrolDisplay;
-			}
-			.shortlistActionHide {
-				cursor: pointer;
-				display: none ;
-				margin-top: 0px;
-				a {
-					text-align: center;
-					@include border-radius(5px 5px 0 0);
-					behavior: url(/s/stylesheets/css/PIE.htc)
-				}
-				&.active {
-					display: block;
-					overflow: hidden;
-					white-space: nowrap
-				}
-			}
-		}
-	}
+  // List of actions of courses shortlist
+  .shortlistAction {
+    position: $shortlistActionPosition;
+    left: $shortlistActionLeft;
+    top: $shortlistActionTop;
+    width: $shortlistActionWidth;
+    .shortlistControls {
+      display: $shortlistActionControlsDisplay;
+      zoom:1\9;
+      &::after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0
+      }
+      .shortlistActionShow a {
+        display: $shortlistActionLinkDisplay;
+        overflow: $shortlistActionLinkOverflow;
+        white-space: $shortlistActionLinkWhiteSpace;
+      }
+      li {
+        padding: $shortlistActionLinkListPadding;
+        line-height: $shortlistActionLinkListLineHeight;
+        &:first-child:hover, &.active {
+          background-color: $shortlistActionLinkListFirstChildBackground;
+          color: $shortlistActionLinkListFirstChildTextColor;
+          a {
+            color: $shortlistActionLinkListFirstChildLinkColor;
+          }
+        }
+        a {
+          color: $shortlistActionLinkListLinkColor;
+          background: $shortlistActionLinkListLinkBackground;
+          text-decoration: $shortlistActionLinkListLinkTextDecoration;
+          text-indent: $shortlistActionLinkListLinkTextIndent;
+          display: $shortlistActionLinkListLinkDisplay;
+          height: $shortlistActionLinkListLinkHeight;
+          text-transform: $shortlistActionLinkListLinkTextTransform;
+          font-size: $shortlistActionLinkListLinkFontSize;
+          padding-top: $shortlistActionLinkListLinkPaddingTop;
+        }
+      }
+      .shortlistActionEnrol {
+        display: $shortlistActionEnrolDisplay;
+      }
+      .shortlistActionHide {
+        cursor: pointer;
+        display: none ;
+        margin-top: 0px;
+        a {
+          text-align: center;
+          @include border-radius(5px 5px 0 0);
+          behavior: url(/s/stylesheets/css/PIE.htc)
+        }
+        &.active {
+          display: block;
+          overflow: hidden;
+          white-space: nowrap
+        }
+      }
+    }
+  }
 }
 
 .no-svg #shortlist::before {
-	background-image: url("/s/img/sprite.png")
+  background-image: url("/s/img/sprite.png")
 }

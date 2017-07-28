@@ -14,103 +14,103 @@
 //
 
 header {
-	.header-container {
-		position: $headerContainerPosition;
+  .header-container {
+    position: $headerContainerPosition;
 
-		// Following function handles responsive media screen and added gap at bottom of header container
-		@include responsive($media-tablet) {
-			margin-bottom: $headerContainerMarginBottom;
-		}
+    // Following function handles responsive media screen and added gap at bottom of header container
+    @include responsive($media-tablet) {
+      margin-bottom: $headerContainerMarginBottom;
+    }
 
-		// Header top bar panel including contact, phone number, shortlist, advanced search
-		.top-bar {
-			float: $headerTopBarFloat;
-			width: $headerTopBarWidth;
-			background: $headerTopBarBG;
-			color: $headerTopBarTextColor;
-			margin-bottom: $headerTopBarMarginBottom;
-			padding-top: $headerTopBarPaddingTop;
-			height: $headerTopBarHeight;
-			.container {
-				padding: 0px;
-				position: relative;
+    // Header top bar panel including contact, phone number, shortlist, advanced search
+    .top-bar {
+      float: $headerTopBarFloat;
+      width: $headerTopBarWidth;
+      background: $headerTopBarBG;
+      color: $headerTopBarTextColor;
+      margin-bottom: $headerTopBarMarginBottom;
+      padding-top: $headerTopBarPaddingTop;
+      height: $headerTopBarHeight;
+      .container {
+        padding: 0px;
+        position: relative;
 
-				// Contact number
-				.contact {
-					float: left;
-					display: $headerTopBarContactDisplay;
-					padding: $headerTopBarContactPadding;
-					line-height: $headerTopBarContactLineHeight;
-					font-size: $headerTopBarContactFontSize;
-					margin: $headerTopBarContactMargin;
-					.phone {
-						position: relative;
-						a {
-							color: $headerTopBarPhoneTextColor;
-						}
-					}
-				}
+        // Contact number
+        .contact {
+          float: left;
+          display: $headerTopBarContactDisplay;
+          padding: $headerTopBarContactPadding;
+          line-height: $headerTopBarContactLineHeight;
+          font-size: $headerTopBarContactFontSize;
+          margin: $headerTopBarContactMargin;
+          .phone {
+            position: relative;
+            a {
+              color: $headerTopBarPhoneTextColor;
+            }
+          }
+        }
 
-				// Following function handles responsive media screen
-				@include responsive($media-tablet) {
-					padding: 0 10px;
-				}
-			}
+        // Following function handles responsive media screen
+        @include responsive($media-tablet) {
+          padding: 0 10px;
+        }
+      }
 
-			// Social media icons
-			.header-social-media {
-				display: none;
-				float: left;
-				padding: 0 0 5px 10px;
-			    margin-right: 12.39754%;
-			    margin-top: 3px;
-				.social-media-title {
-					padding-right: 10px;
-					line-height: 29px;
-				}
-				.social-media-links {
-					padding-top: 4px;
-					li {
-						float: left;
-						filter: alpha(opacity=60);
-						opacity: 0.6;
-						zoom: 1;
-						margin-left: 10px;
+      // Social media icons
+      .header-social-media {
+        display: none;
+        float: left;
+        padding: 0 0 5px 10px;
+          margin-right: 12.39754%;
+          margin-top: 3px;
+        .social-media-title {
+          padding-right: 10px;
+          line-height: 29px;
+        }
+        .social-media-links {
+          padding-top: 4px;
+          li {
+            float: left;
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+            zoom: 1;
+            margin-left: 10px;
 
-						// Handles animation of social media icons
-						@include transition(all 0.2s ease-out);
-						line-height: 29px;
-						&:hover {
-							filter: alpha(opacity=100);
-							opacity: 1;
-							zoom: 1;
-						}
-					}
-				}
+            // Handles animation of social media icons
+            @include transition(all 0.2s ease-out);
+            line-height: 29px;
+            &:hover {
+              filter: alpha(opacity=100);
+              opacity: 1;
+              zoom: 1;
+            }
+          }
+        }
 
-				// Following function handles responsive media screen
-				@include responsive($media-custom, 800px) {
-					display: block;
-				}
-			}
-		}
+        // Following function handles responsive media screen
+        @include responsive($media-custom, 800px) {
+          display: block;
+        }
+      }
+    }
 
-		// Header group site logo
-		.header-hgroup {
-			#siteLogo {
-				float: none;
-				text-align: $headerGroupSiteLogoTextAlign;
-				z-index: $headerGroupSiteLogoZIndex;
-				@include responsive($media-small) {
-					float: $headerGroupSiteLogoFloatPosition;
-				}
-				@include responsive($media-tablet) {
-					position: $headerGroupPosition;
-				}
-			}
-			#siteTitle {
-				display: none;
-			}
-		}
-	}
+    // Header group site logo
+    .header-hgroup {
+      #siteLogo {
+        float: none;
+        text-align: $headerGroupSiteLogoTextAlign;
+        z-index: $headerGroupSiteLogoZIndex;
+        @include responsive($media-small) {
+          float: $headerGroupSiteLogoFloatPosition;
+        }
+        @include responsive($media-tablet) {
+          position: $headerGroupPosition;
+        }
+      }
+      #siteTitle {
+        display: none;
+      }
+    }
+  }
 }

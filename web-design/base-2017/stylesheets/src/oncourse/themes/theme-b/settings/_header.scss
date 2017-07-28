@@ -10,21 +10,25 @@
 
 $header-theme: "b";
 
+$headerSiteLogoDisplay: block !default;
+$headerSiteLogoDisplay-Internal: none !default;
+$headerSiteLogoDisplaySmall-Internal: block !default;
+
 $contentImageHeight: 501px !default;
 $contentImageDisplay: block !default;
 $contentImageBackground: url("/s/img/content/internal-bg.jpg") 0px 57px no-repeat !default;
 $contentImageBackgroundSize: contain !default;
 
-$contentContainerBackground: $white !default;
-
 $headerContainerPosition: relative !default;
 $headerContainerMarginBottom: 0px !default;
+$headerContainerMarginBottom-Internal: 0px !default;
 $headerGroupPosition: relative !default;
 
 $headerTopBarFloat: none !default;
 $headerTopBarBG: #fbfbfb !default;
 $headerTopBarTextColor: $bodyFontColor !default;
 $headerTopBarMarginBottom: 39px !default;
+$headerTopBarMarginBottom-Internal: 30px !default;
 
 $headerTopBarContactMargin: 6px 10px 0px 20px !default;
 $headerTopBarPhoneTextColor: $bodyFontColor !default;
@@ -118,6 +122,7 @@ $advanceSearchButtonClearPosition: right !default;
 $advanceSearchButtonSubmitPosition: left !default;
 
 $advanceSearchColor: #202020 !default;
+$advanceSearchColor-Internal: $white !default;
 $advanceSearchButtonBG: #d0e64b !default;
 $advanceSearchButtonBG-Internal: #d0e64b !default;
 
@@ -135,6 +140,7 @@ $advanceSearchBGRGB: $advanceSearchBG !default;
 $advancedSearchPriceDisplay: block !default;
 $advancedSearchLocationWidth: 50% !default;
 $advancedSearchPriceWidth: $advancedSearchLocationWidth !default;
+$advancedSearchTitleColor-InternalPage: $white !default;
 
 $advanceSearchInputBG-Internal: #f1fed4 !default;
 $advanceSearchInputBG-Home: #cecece !default;

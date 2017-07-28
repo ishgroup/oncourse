@@ -6,439 +6,440 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
-
+//
 
 //
 // Following all the styles handles header advanced search toolbar
 //
 
 #headerToolbar {
-	float: right;
-	margin: 0px;
+  float: $headerToolbarFloat;
+  margin: $headerToolbarMargin;
 
-	// Quicksearch and all search's input text
-	.quicksearch, input[type="text"] {
-		height: $searchTextBoxHeight;
-		padding: $searchTextBoxPadding;
-		float: left;
-		width: $searchTextBoxWidth;
-	}
+  // Quicksearch and all search's input text
+  .quicksearch, input[type="text"] {
+    height: $searchTextBoxHeight;
+    padding: $searchTextBoxPadding;
+    float: $searchTextBoxFloat;
+    width: $searchTextBoxWidth;
+  }
 
-	// Advanced search toggle box for mobile size screen
-	.header-search-toggle {
-		float: right;
-		position: relative;
-		width: 35px;
-		height: 31px;
-		padding: 8px 10px;
-		margin-right: 10px;
-		display: $toggleSearchDisplay;
-		opacity: 0.6;
-		@include transition(background-color 0.2s ease-out);
-		background: $toggleSearchBackground;
-		&:hover, &.is-active {
-			opacity: 1;
-			background: $toggleSearchActiveBackground;
-		}
-		@include responsive($media-tablet) {
-			display: none !important;
-		}
-	}
+  // Advanced search toggle box for mobile size screen
+  .header-search-toggle {
+    float: $headerSearchToggleFloat;
+    position: $headerSearchTogglePosition;
+    width: $headerSearchToggleWidth;
+    height: $headerSearchToggleHeight;
+    padding: $headerSearchTogglePadding;
+    margin-right: $headerSearchToggleMarginRight;
+    display: $toggleSearchDisplay;
+    opacity: $headerSearchToggleOpacity;
+    @include transition(background-color 0.2s ease-out);
+    background: $toggleSearchBackground;
+    &:hover, &.is-active {
+      opacity: $headerSearchToggleOpacityActive;
+      background: $toggleSearchActiveBackground;
+    }
+    @include responsive($media-tablet) {
+      display: $toggleSearchDisplayTablet;
+    }
+  }
 
-	// Advanced search button
-	.find.btn {
-		float: left;
-		background: $searchButtonBG;
-		padding-left: 12px;
-		padding-right: 12px;
-		text-transform: none;
-		margin-top: 0;
-		font-family: $normalFontFamily;
-		border-radius: 0px;
-		overflow: hidden;
-		height: $searchButtonHeight;
-		width: $searchButtonWidth;
-		color: transparent;
-		padding: $searchButtonPadding;
-		&:hover {
-			background: darken($searchButtonBG, 5%);
-		}
-	}
+  // Advanced search button
+  .find.btn {
+    float: $searchButtonFloat;
+    background: $searchButtonBG;
+    padding-left: $searchButtonPaddingLeft;
+    padding-right: $searchButtonPaddingRight;
+    text-transform: $searchButtonTextTransform;
+    margin-top: $searchButtonMarginTop;
+    font-family: $searchButtonFontFamily;
+    border-radius: $searchButtonBorderRadius;
+    overflow: $searchButtonOverflow;
+    height: $searchButtonHeight;
+    width: $searchButtonWidth;
+    color: $searchButtonColor;
+    padding: $searchButtonPadding;
+    &:hover {
+      background: darken($searchButtonBG, 5%);
+    }
+  }
 
-	// Header top bar search box
-	#search_box {
-		float: $searchBoxFloat;
-		display: none;
+  // Header top bar search box
+  #search_box {
+    float: $searchBoxFloat;
+    display: $searchBoxDisplaySmall;
 
-		@include responsive($media-tablet) {
-			display: $searchBoxDisplay;
-		}
+    @include responsive($media-tablet) {
+      display: $searchBoxDisplay;
+    }
 
-		// Hiding header of search box
-		h3 {
-			display: none
-		}
-		#search {
-			float: right;
-			width: $searchBoxWidth;
-			margin-right: 10px;
-			@include responsive($media-tablet) {
-				border: $searchBoxBorder;
-				border-radius: $searchBoxBorderRadius;
-				margin-right: 0px;
-			}
+    // Hiding header of search box
+    h3 {
+      display: $searchBoxHeadingDisplay;
+    }
+    #search {
+      float: $searchBoxFloat;
+      width: $searchBoxWidth;
+      margin-right: $searchBoxMarginRightSmall;
+      @include responsive($media-tablet) {
+        border: $searchBoxBorder;
+        border-radius: $searchBoxBorderRadius;
+        margin-right: $searchBoxMarginRightTablet;
+      }
 
-			// Quicksearch text box
-			.quicksearch {
-				width: $searchBoxInputWidth;
-				height: $searchBoxInputHeight;
-				margin: 0px;
-				border: $searchBoxInputBorder;
-				padding: $searchBoxInputPadding;
-				@include border-radius($searchBoxInputBorderRadius);
-			}
-		}
-		#advanced_search_container {
-			position: relative
-		}
+      // Quicksearch text box
+      .quicksearch {
+        width: $searchBoxInputWidth;
+        height: $searchBoxInputHeight;
+        margin: $searchBoxInputMargin;
+        border: $searchBoxInputBorder;
+        padding: $searchBoxInputPadding;
+        @include border-radius($searchBoxInputBorderRadius);
+      }
+    }
+    #advanced_search_container {
+      position: relative
+    }
 
-		// Advanced search wrapper
-		#advanced_search {
-			display: none;
-			background-color: $advanceSearchBG;
-			background-color: $advanceSearchBGRGB;
-			margin: $advanceSearchMargin;
-			padding: $advanceSearchPadding;
-			z-index: $advanceSearchZIndex;
-			width: $advanceSearchWidth;
-			top: $advanceSearchTop;
-			position: $advanceSearchPosition;
-			color: $advanceSearchColor;
-			// Advanced search open from left side (default open from left side)
-			left: $advanceSearchLeft;
-			// Advanced search open from right side
-			right: $advanceSearchRight;
-			// Advanced search form
-			.advanced-search-form {
-				zoom: 1 \9;
-				width: 100%;
-				&::after {
-					visibility: hidden;
-					display: block;
-					font-size: 0;
-					content: " ";
-					clear: both;
-					height: 0
-				}
-				> div {
-					position: relative;
-					float: left;
-					width: 100%;
-					margin: 0;
-					margin-bottom: 10px;
-					padding: 0;
-					text-align: left;
-					display: none;
-					@include responsive($media-tablet) {
-						width: $advancedSearchFormBlocksTabletWidth;
-						padding: $advancedSearchFormBlocksTabletPadding;
-					}
+    // Advanced search wrapper
+    #advanced_search {
+      display: $advanceSearchDisplay;
+      background-color: $advanceSearchBG;
+      background-color: $advanceSearchBGRGB;
+      margin: $advanceSearchMargin;
+      padding: $advanceSearchPadding;
+      z-index: $advanceSearchZIndex;
+      width: $advanceSearchWidth;
+      top: $advanceSearchTop;
+      position: $advanceSearchPosition;
+      color: $advanceSearchColor;
+      // Advanced search open from left side (default open from left side)
+      left: $advanceSearchLeft;
+      // Advanced search open from right side
+      right: $advanceSearchRight;
+      // Advanced search form
+      .advanced-search-form {
+        zoom: 1 \9;
+        width: 100%;
+        &::after {
+          visibility: hidden;
+          display: block;
+          font-size: 0;
+          content: " ";
+          clear: both;
+          height: 0
+        }
+        > div {
+          position: relative;
+          float: left;
+          width: 100%;
+          margin: 0;
+          margin-bottom: 10px;
+          padding: 0;
+          text-align: left;
+          display: none;
+          @include responsive($media-tablet) {
+            width: $advancedSearchFormBlocksTabletWidth;
+            padding: $advancedSearchFormBlocksTabletPadding;
+          }
 
-					label {
-						font-size: 13px;
-						vertical-align: middle;
-						margin-bottom: 5px;
-						margin-top: 0;
-						font-weight: normal;
-						>input {
-							position: relative;
-						}
-					}
-					&:last-child {
-						padding-top: 7px;
-						margin: 0px;
-					}
-					&#adv_search_keyword, &#adv_search_tag,
-					&#adv_search_location, &#adv_search_price,
-					&#adv_search_time, &#adv_search_day,
-					&#adv_search_submit {
-						display: $advancedSearchFormBlocksDisplay;
-					}
+          label {
+            font-size: 13px;
+            vertical-align: middle;
+            margin-bottom: 5px;
+            margin-top: 0;
+            font-weight: normal;
+            >input {
+              position: relative;
+            }
+          }
+          &:last-child {
+            padding-top: 7px;
+            margin: 0px;
+          }
+          &#adv_search_keyword, &#adv_search_tag,
+          &#adv_search_location, &#adv_search_price,
+          &#adv_search_time, &#adv_search_day,
+          &#adv_search_submit {
+            display: $advancedSearchFormBlocksDisplay;
+          }
 
-					// Advanced search location
-					&#adv_search_location {
-						display: $advancedSearchLocationDisplay;
-						@include responsive($media-tablet) {
-							width: $advancedSearchLocationWidth;
-						}
-					}
+          // Advanced search location
+          &#adv_search_location {
+            display: $advancedSearchLocationDisplay;
+            @include responsive($media-tablet) {
+              width: $advancedSearchLocationWidth;
+            }
+          }
 
-					// Advanced search price
-					&#adv_search_price {
-						display: $advancedSearchPriceDisplay;
-						@include responsive($media-tablet) {
-							width: $advancedSearchPriceWidth;
-						}
-						label {
-							display: block;
-							margin: 0 0 3px
-						}
-					}
-				}
-				select, input {
-					margin: 0
-				}
-				input {
-					vertical-align: middle;
-				}
-				input[type="text"], select {
-					height: 32px;
-					width: 100%;
-				}
-				#adv_search_time, #adv_search_day {
-					padding-bottom: 6px;
-					padding-top: 6px;
-					width: 50%;
-					margin-top: 10px;
+          // Advanced search price
+          &#adv_search_price {
+            display: $advancedSearchPriceDisplay;
+            @include responsive($media-tablet) {
+              width: $advancedSearchPriceWidth;
+            }
+            label {
+              display: block;
+              margin: 0 0 3px
+            }
+          }
+        }
+        select, input {
+          margin: 0
+        }
+        input {
+          vertical-align: middle;
+        }
+        input[type="text"], select {
+          height: 32px;
+          width: 100%;
+        }
+        #adv_search_time, #adv_search_day {
+          padding-bottom: 6px;
+          padding-top: 6px;
+          width: 50%;
+          margin-top: 10px;
 
-					label.time, label.day {
-						display: block;
-					}
-				}
+          label.time, label.day {
+            display: block;
+          }
+        }
 
-				// Advanced search submit button and clear search text
-				#adv_search_submit {
-					zoom: 1 \9;
-					padding-top: 6px;
-					width: $advanceSearchSubmitButtonWidth;
-					&::after {
-						visibility: hidden;
-						display: block;
-						font-size: 0;
-						content: " ";
-						clear: both;
-						height: 0
-					}
-					button, a {
-						cursor: pointer;
-						width: 100%;
-						margin-bottom: 7px;
-						padding: $advanceSearchButtonPadding;
-						background: $advanceSearchButtonBG;
-						@include border-radius($advanceSearchButtonBorderRadius);
-						&:hover {
-							background: darken($advanceSearchButtonBG, 5%);
-							color: $advanceSearchButtonColorHover;
-						}
-						@include responsive($media-tablet) {
-							width: $advanceSearchButtonWidth;
-						}
-					}
-					a {
-						background: $advanceSearchButtonClearBackground;
-						display: $advanceSearchButtonClearDisplay;
-						float: $advanceSearchButtonClearPosition;
-						margin: 0;
-						&:hover {
-							background: darken($advanceSearchButtonClearBackground, 5%);
-							color: $advanceSearchButtonClearColorHover;
-							text-decoration: none;
-						}
-					}
-					button {
-						float: $advanceSearchButtonSubmitPosition;
-					}
-				}
-				#adv_search_keyword, #adv_search_tag, #adv_search_location {
-					label {
-						display: block;
-						margin: 0 0 3px
-					}
-				}
-			}
-		}
+        // Advanced search submit button and clear search text
+        #adv_search_submit {
+          zoom: 1 \9;
+          padding-top: 6px;
+          width: $advanceSearchSubmitButtonWidth;
+          &::after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0
+          }
+          button, a {
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 7px;
+            padding: $advanceSearchButtonPadding;
+            background: $advanceSearchButtonBG;
+            @include border-radius($advanceSearchButtonBorderRadius);
+            border-color: darken($advanceSearchButtonBG, 5%);
+            &:hover {
+              background: darken($advanceSearchButtonBG, 5%);
+              color: $advanceSearchButtonColorHover;
+            }
+            @include responsive($media-tablet) {
+              width: $advanceSearchButtonWidth;
+            }
+          }
+          a {
+            background: $advanceSearchButtonClearBackground;
+            border-color: darken($advanceSearchButtonClearBackground, 5%);
+            display: $advanceSearchButtonClearDisplay;
+            float: $advanceSearchButtonClearPosition;
+            margin: 0;
+            &:hover {
+              background: darken($advanceSearchButtonClearBackground, 5%);
+              color: $advanceSearchButtonClearColorHover;
+              text-decoration: none;
+            }
+          }
+          button {
+            float: $advanceSearchButtonSubmitPosition;
+          }
+        }
+        #adv_search_keyword, #adv_search_tag, #adv_search_location {
+          label {
+            display: block;
+            margin: 0 0 3px
+          }
+        }
+      }
+    }
 
-		// Advanced search more option link
-		.advanced-search-button {
-			float: $advancedSearchButtonFloat;
-			width: $advancedSearchButtonWidth;
-			margin: $advancedSearchButtonMargin;
+    // Advanced search more option link
+    .advanced-search-button {
+      float: $advancedSearchButtonFloat;
+      width: $advancedSearchButtonWidth;
+      margin: $advancedSearchButtonMargin;
 
-			&.more-options {
-				display: none;
-				width: $searchMoreOptionsWidth;
-				text-align: center;
-				height: $searchMoreOptionsHeight;
-				line-height: $searchMoreOptionsLineHeight;
-				background-color: $searchMoreOptions;
-				padding: $searchMoreOptionsPadding;
-				min-width: $searchMoreOptionsMinWidth;
-				>a {
-					display: block;
-					width: 100%;
-					height: 100%;
-				}
+      &.more-options {
+        display: $searchMoreOptionsDisplaySmall;
+        width: $searchMoreOptionsWidth;
+        text-align: $searchMoreOptionsTextAlign;
+        height: $searchMoreOptionsHeight;
+        line-height: $searchMoreOptionsLineHeight;
+        background-color: $searchMoreOptions;
+        padding: $searchMoreOptionsPadding;
+        min-width: $searchMoreOptionsMinWidth;
+        >a {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
 
-				&:hover {
-					background: darken($searchMoreOptions, 5%);
-				}
-				@include responsive($media-tablet) {
-					display: $searchMoreOptionsDisplay;
-				}
-			}
-			.show-advanced-search {
-				display: table-cell;
-				vertical-align: middle;
-				span {
-					font-size: $searchMoreOptionsText;
-					color: $white;
-					cursor: pointer !important;
-					padding: $searchMoreOptionsTextPadding;
-					//line-height: $searchMoreOptionsTextLineHeight;
-				}
-			}
-		}
-		.advanced-search-form {
-			width: 100%;
-			float: left;
-		}
+        &:hover {
+          background: darken($searchMoreOptions, 5%);
+        }
+        @include responsive($media-tablet) {
+          display: $searchMoreOptionsDisplay;
+        }
+      }
+      .show-advanced-search {
+        display: table-cell;
+        vertical-align: middle;
+        span {
+          font-size: $searchMoreOptionsText;
+          color: $searchMoreOptionsColor;
+          cursor: pointer !important;
+          padding: $searchMoreOptionsTextPadding;
+          //line-height: $searchMoreOptionsTextLineHeight;
+        }
+      }
+    }
+    .advanced-search-form {
+      width: 100%;
+      float: left;
+    }
 
-		&.active {
-			display: block;
-			position: absolute;
-			right: $advancedSearchActiveRight;
-			top: $advancedSearchActiveTop;
-			z-index: 9;
-			background: $searchButtonBG;
-			padding: $advancedSearchActivePadding;
-			width: 250px;
-			#search {
-				display: $advancedSearchActiveTextSearchDisplay;
-				width: 100%;
-				margin-right: 0px;
-				.quicksearch, input[type="text"] {
-					float: none;
-					width: 100%;
-				}
-				.find.btn {
-					color: $white;
-					width: 100%;
-					background: $searchActiveButtonBG;
-					&:hover {
-						background: darken($searchActiveButtonBG, 5%);
-					}
-					@include border-radius(4px);
-					.search-icon {
-						display: none;
-					}
-				}
-			}
-		}
-	}
-	.t-invisible {
-		display: none;
-	}
-	.discount-block {
-		display: $discountBlockDisplay;
-		a {
-			color: $discountBlockTextColor;
-			&:hover {
-				color: $discountBlockTextHoverColor;
-			}
-		}
-		.title-block {
-			display: $discountBlockTitleDisplay;
-			color: $discountBlockTitleColor;
-		}
-		.actionLink {
-			display: $discountBlockActionLinkDisplay;
-		}
-		.nyromodalreload {
-			display: $discountBlockNyromodalLinkDisplay;
-		}
-	}
+    &.active {
+      display: block;
+      position: absolute;
+      right: $advancedSearchActiveRight;
+      top: $advancedSearchActiveTop;
+      z-index: 9;
+      background: $searchButtonBG;
+      padding: $advancedSearchActivePadding;
+      width: 250px;
+      #search {
+        display: $advancedSearchActiveTextSearchDisplay;
+        width: 100%;
+        margin-right: 0px;
+        .quicksearch, input[type="text"] {
+          float: none;
+          width: 100%;
+        }
+        .find.btn {
+          color: $white;
+          width: 100%;
+          background: $searchActiveButtonBG;
+          &:hover {
+            background: darken($searchActiveButtonBG, 5%);
+          }
+          @include border-radius(4px);
+          .search-icon {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .t-invisible {
+    display: none;
+  }
+  .discount-block {
+    display: $discountBlockDisplay;
+    a {
+      color: $discountBlockTextColor;
+      &:hover {
+        color: $discountBlockTextHoverColor;
+      }
+    }
+    .title-block {
+      display: $discountBlockTitleDisplay;
+      color: $discountBlockTitleColor;
+    }
+    .actionLink {
+      display: $discountBlockActionLinkDisplay;
+    }
+    .nyromodalreload {
+      display: $discountBlockNyromodalLinkDisplay;
+    }
+  }
 }
 
 div#search_box #search .quicksearch:focus {
-	outline: 0
+  outline: 0
 }
 
 // Search result popup box
 .ui-autocomplete {
-	background: #ffffff;
-	width: 187px;
-	padding: 10px 0;
-	font-size: 11px;
-	z-index: 10 !important;
-	-moz-box-shadow: 0 1px 3px #444;
-	-webkit-box-shadow: 0 1px 3px #444;
-	box-shadow: 0 1px 3px #444;
-	a {
-		text-decoration: none;
-		display: block;
-		padding: 3px 15px;
-		color: #323232 !important;
-		cursor: pointer;
-		&:hover {
-			color: #000;
-			text-decoration: none;
-			background-color: #EEEEEE
-		}
-	}
+  background: #ffffff;
+  width: 187px;
+  padding: 10px 0;
+  font-size: 11px;
+  z-index: 10 !important;
+  -moz-box-shadow: 0 1px 3px #444;
+  -webkit-box-shadow: 0 1px 3px #444;
+  box-shadow: 0 1px 3px #444;
+  a {
+    text-decoration: none;
+    display: block;
+    padding: 3px 15px;
+    color: #323232 !important;
+    cursor: pointer;
+    &:hover {
+      color: #000;
+      text-decoration: none;
+      background-color: #EEEEEE
+    }
+  }
 }
 
 .quicksearch-wrap {
-	position: absolute;
-	margin: 0;
-	background: $white;
-	top: 30px;
-	width: 189px;
-	font-size: 11px;
-	z-index: 10;
-	display: none;
-	-moz-box-shadow: 0 1px 3px #444;
-	-webkit-box-shadow: 0 1px 3px #444;
-	box-shadow: 0 1px 3px #444;
-	>div {
-		padding: 10px 0 1px;
-		ul {
-			margin: 0 0 8px 0;
-			padding-bottom: 3px;
-			max-height: 400px;
-			overflow: auto;
-			&:last-child {
-				border-bottom: none
-			}
-			li:first-child {
-				padding: 4px 10px;
-				font-size: 11px;
-				text-align: right;
-				font-weight: bold;
-				background-color: darkgray;
-				color: #fff !important;
-				margin: 0 0 3px 0
-			}
-			li {
-				line-height: 1.5
-			}
-		}
-		a {
-			text-decoration: none;
-			display: block;
-			padding: 3px 15px;
-			color: #323232 !important;
-			&:hover {
-				color: #000;
-				text-decoration: none;
-				background-color: #EEEEEE
-			}
-		}
-		.quicksearch-all {
-			display: none
-		}
-	}
-	&.show-quick-search {
-		display: block
-	}
+  position: absolute;
+  margin: 0;
+  background: $white;
+  top: 30px;
+  width: 189px;
+  font-size: 11px;
+  z-index: 10;
+  display: none;
+  -moz-box-shadow: 0 1px 3px #444;
+  -webkit-box-shadow: 0 1px 3px #444;
+  box-shadow: 0 1px 3px #444;
+  >div {
+    padding: 10px 0 1px;
+    ul {
+      margin: 0 0 8px 0;
+      padding-bottom: 3px;
+      max-height: 400px;
+      overflow: auto;
+      &:last-child {
+        border-bottom: none
+      }
+      li:first-child {
+        padding: 4px 10px;
+        font-size: 11px;
+        text-align: right;
+        font-weight: bold;
+        background-color: darkgray;
+        color: #fff !important;
+        margin: 0 0 3px 0
+      }
+      li {
+        line-height: 1.5
+      }
+    }
+    a {
+      text-decoration: none;
+      display: block;
+      padding: 3px 15px;
+      color: #323232 !important;
+      &:hover {
+        color: #000;
+        text-decoration: none;
+        background-color: #EEEEEE
+      }
+    }
+    .quicksearch-all {
+      display: none
+    }
+  }
+  &.show-quick-search {
+    display: block
+  }
 }

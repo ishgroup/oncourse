@@ -10,337 +10,337 @@
 
 
 @include theme('a') {
-	a {
-		color: $anchorColor;
-		&:hover {
-			color: $anchorHoverColor;
-		}
-	}
+  a {
+    color: $anchorColor;
+    &:hover {
+      color: $anchorHoverColor;
+    }
+  }
 
-	#Main {
-		background: url($imagePath + 'header-bg.png') 36px 25px repeat-x;
-		#content h1.page-title {
-			display: none;
-		}
+  #Main {
+    background: url($imagePath + 'header-bg.png') 36px 25px repeat-x;
+    #content h1.page-title {
+      display: none;
+    }
 
-		.addthis {
-			display: none;
-		}
-	}
+    .addthis {
+      display: none;
+    }
+  }
 
-	.container {
-		.slider {
-			list-style: none;
-			margin: 0 0 16px 0;
-			min-height: 445px;
-			li {
-				position: relative;
-				.slider-container {
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					.content-block {
-						display: table;
-						width: 100%;
-						height: 100%;
-						.slider-content {
-							display: table-cell;
-							vertical-align: middle;
-							text-align: center;
-							color: #ffffff;
+  .container {
+    .slider {
+      list-style: none;
+      margin: 0 0 16px 0;
+      min-height: 445px;
+      li {
+        position: relative;
+        .slider-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          .content-block {
+            display: table;
+            width: 100%;
+            height: 100%;
+            .slider-content {
+              display: table-cell;
+              vertical-align: middle;
+              text-align: center;
+              color: #ffffff;
 
-							> h3 {
-								margin-bottom: 5px;
-								font-size: 30px;
-								color: #ffffff;
-							}
+              > h3 {
+                margin-bottom: 5px;
+                font-size: 30px;
+                color: #ffffff;
+              }
 
-							a {
-								display: inline-block;
-								border: 4px solid #FFF;
-								color: #ffffff;
-								text-decoration: none;
-								text-transform: uppercase;
-								padding: 10px 15px;
-								border-radius: 30px;
-							}
-						}
-					}
-				}
-			}
-		}
+              a {
+                display: inline-block;
+                border: 4px solid #FFF;
+                color: #ffffff;
+                text-decoration: none;
+                text-transform: uppercase;
+                padding: 10px 15px;
+                border-radius: 30px;
+              }
+            }
+          }
+        }
+      }
+    }
 
-		.blocks {
-			list-style: none;
-			margin: 0 -15px 15px;
-			background: $white;
-			display: block;
-			width: auto;
-			@include responsive($media-tablet) {
-				border-bottom: 1px solid #ddd;
-				margin: 0 -10px 60px;
-			}
-			@include responsive($media-custom, 1090px) {
-				display: table;
-				width: 100%;
-				margin: 0 0 60px 0;
-			}
-			> li {
-				padding: 30px 44px;
-				border-bottom: 1px solid #dfdfdf;
-				text-align: center;
-				&:first-child {
-					border-left: 0;
-				}
+    .blocks {
+      list-style: none;
+      margin: 0 -15px 15px;
+      background: $white;
+      display: block;
+      width: auto;
+      @include responsive($media-tablet) {
+        border-bottom: 1px solid #ddd;
+        margin: 0 -10px 60px;
+      }
+      @include responsive($media-custom, 1090px) {
+        display: table;
+        width: 100%;
+        margin: 0 0 60px 0;
+      }
+      > li {
+        padding: 30px 44px;
+        border-bottom: 1px solid #dfdfdf;
+        text-align: center;
+        &:first-child {
+          border-left: 0;
+        }
 
-				@include responsive($media-tablet) {
-					border-left: 1px solid #dfdfdf;
-					border-bottom: 0px;
-				}
+        @include responsive($media-tablet) {
+          border-left: 1px solid #dfdfdf;
+          border-bottom: 0px;
+        }
 
-				> span {
-					display: block;
-					padding: 20px 0;
-					font-weight: bold;
-					font-size: 14px;
-				}
+        > span {
+          display: block;
+          padding: 20px 0;
+          font-weight: bold;
+          font-size: 14px;
+        }
 
-				> i {
-					background: url($imagePath + 'icon-sprite.png') 0 0 no-repeat;
-					text-indent: -9999px;
-					display: inline-block;
-					width: 34px;
-					height: 34px;
-					text-align: center;
-					&.icon-progress {
-						background-position: 0px -12px;
-					}
-					&.icon-laptop {
-						background-position: -38px -12px;
-					}
-					&.icon-code {
-						background-position: -76px -12px;
-					}
-				}
-			}
-		}
-		.popular-courses-list {
-			background: #eeeff3;
-			list-style: none;
-			margin: 0;
-			margin-bottom: 15px;
-			padding: 0;
+        > i {
+          background: url($imagePath + 'icon-sprite.png') 0 0 no-repeat;
+          text-indent: -9999px;
+          display: inline-block;
+          width: 34px;
+          height: 34px;
+          text-align: center;
+          &.icon-progress {
+            background-position: 0px -12px;
+          }
+          &.icon-laptop {
+            background-position: -38px -12px;
+          }
+          &.icon-code {
+            background-position: -76px -12px;
+          }
+        }
+      }
+    }
+    .popular-courses-list {
+      background: #eeeff3;
+      list-style: none;
+      margin: 0;
+      margin-bottom: 15px;
+      padding: 0;
 
-			@include bootstrap(false) {
-				width: 100%;
-				float: left;
-			}
+      @include bootstrap(false) {
+        width: 100%;
+        float: left;
+      }
 
-			@include responsive($media-tablet) {
-				margin-bottom: 0px;
+      @include responsive($media-tablet) {
+        margin-bottom: 0px;
 
-				@include bootstrap(false) {
-					width: 33.33333%;
-				}
-			}
+        @include bootstrap(false) {
+          width: 33.33333%;
+        }
+      }
 
-			+ p {
-				display: none;
-			}
+      + p {
+        display: none;
+      }
 
-			> li {
-				border-bottom: 1px solid #d8d9dd;
+      > li {
+        border-bottom: 1px solid #d8d9dd;
 
-				&:first-child {
-					padding: 20px 21px;
-					text-transform: uppercase;
-				}
-				a {
-					text-decoration: none;
-					padding: 10px 0 10px 21px;
-					display: block;
-					position: relative;
-					font-size: 14px;
-					&:after {
-						content: "";
-						display: inline-block;
-						background: url($imagePath + 'arrow-icon-sprite.png') -1px 0 no-repeat;
-						width: 6px;
-						height: 10px;
-						position: absolute;
-						right: 20px;
-						top: 50%;
-						margin-top: -5px;
-					}
-					&:hover:after {
-						background-position: -1px -17px;
-					}
-				}
-			}
-		}
-		.courses-info {
-			padding: 25px 0;
-			text-align: center;
-			background: url($imagePath + 'texture.png') center center repeat-x;
-			color: #FFFFFF;
-			margin-bottom: 60px;
-			font-size: 26px;
+        &:first-child {
+          padding: 20px 21px;
+          text-transform: uppercase;
+        }
+        a {
+          text-decoration: none;
+          padding: 10px 0 10px 21px;
+          display: block;
+          position: relative;
+          font-size: 14px;
+          &:after {
+            content: "";
+            display: inline-block;
+            background: url($imagePath + 'arrow-icon-sprite.png') -1px 0 no-repeat;
+            width: 6px;
+            height: 10px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            margin-top: -5px;
+          }
+          &:hover:after {
+            background-position: -1px -17px;
+          }
+        }
+      }
+    }
+    .courses-info {
+      padding: 25px 0;
+      text-align: center;
+      background: url($imagePath + 'texture.png') center center repeat-x;
+      color: #FFFFFF;
+      margin-bottom: 60px;
+      font-size: 26px;
 
-			a {
-				color: #000000;
-				text-decoration: none;
-			}
-		}
-	}
+      a {
+        color: #000000;
+        text-decoration: none;
+      }
+    }
+  }
 
-	.featured-block {
-		background: url($imagePath + 'featured-bg.png') center center no-repeat;
-		background-size:  cover;
-		padding: 34px 30px 32px 30px;
-		color: #dfdfdf;
-		margin-bottom: 30px;
-		min-height: 273px;
+  .featured-block {
+    background: url($imagePath + 'featured-bg.png') center center no-repeat;
+    background-size:  cover;
+    padding: 34px 30px 32px 30px;
+    color: #dfdfdf;
+    margin-bottom: 30px;
+    min-height: 273px;
 
-		@include bootstrap(false) {
-			float: right;
-			width: 100%;
-		}
+    @include bootstrap(false) {
+      float: right;
+      width: 100%;
+    }
 
-		@include responsive($media-tablet) {
-			margin-bottom: 60px;
+    @include responsive($media-tablet) {
+      margin-bottom: 60px;
 
-			@include bootstrap(false) {
-				width: 66.66667%;
-			}
-		}
+      @include bootstrap(false) {
+        width: 66.66667%;
+      }
+    }
 
-		> p, > br {
-			display: none;
-		}
+    > p, > br {
+      display: none;
+    }
 
-		> a {
-			float: right;
-			text-transform: uppercase;
-			text-decoration: none;
-			color: #FFF;
-			padding: 5px 7px;
-			border-radius: 3px;
-			background: $primaryColor;
-		}
+    > a {
+      float: right;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #FFF;
+      padding: 5px 7px;
+      border-radius: 3px;
+      background: $primaryColor;
+    }
 
-		ul {
-			font-size: 14px;
-			margin-bottom: 5px;
-			list-style: none;
-			margin-left: 0;
+    ul {
+      font-size: 14px;
+      margin-bottom: 5px;
+      list-style: none;
+      margin-left: 0;
 
-			li {
-				&:before {
-					content: "\2022";
-					font-size: 30px;
-					line-height: 30px;
-					display: inline-block;
-					vertical-align: middle;
-					margin-right: 8px;
-					color: #38b7ca;
-				}
-			}
-		}
+      li {
+        &:before {
+          content: "\2022";
+          font-size: 30px;
+          line-height: 30px;
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 8px;
+          color: #38b7ca;
+        }
+      }
+    }
 
-		h1 {
-			color: #dfdfdf;
-			font-size: 40px;
-	    	font-weight: normal;
-	    	margin-bottom: 18px;
-		}
-	}
+    h1 {
+      color: #dfdfdf;
+      font-size: 40px;
+        font-weight: normal;
+        margin-bottom: 18px;
+    }
+  }
 
-	h1.courses-title {
-		text-align: center;
-		font-size: 40px;
-		padding-top: 30px;
-		margin-bottom: 30px;
-		clear: both;
-		vertical-align: top;
-		border-top: 1px solid #DFDFDF;
-		@include responsive($media-tablet) {
-			padding-top: 60px;
-		}
-		&:before {
-			display: inline-block;
-			background: url($imagePath + 'icon-sourse.png') no-repeat;
-			content: "";
-			width: 34px;
-			height: 34px;
-			margin-right: 10px;
-			vertical-align: middle;
-		}
-	}
+  h1.courses-title {
+    text-align: center;
+    font-size: 40px;
+    padding-top: 30px;
+    margin-bottom: 30px;
+    clear: both;
+    vertical-align: top;
+    border-top: 1px solid #DFDFDF;
+    @include responsive($media-tablet) {
+      padding-top: 60px;
+    }
+    &:before {
+      display: inline-block;
+      background: url($imagePath + 'icon-sourse.png') no-repeat;
+      content: "";
+      width: 34px;
+      height: 34px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+  }
 
-	.courses {
-		ul.courses-list {
-			margin: 0;
-			> li {
-				display: none;
-			}
-			> ul > li > a {
-				color: $black;
-				border-bottom: 1px dotted #dedee0;
-				font-weight: bold;
-			}
-		}
+  .courses {
+    ul.courses-list {
+      margin: 0;
+      > li {
+        display: none;
+      }
+      > ul > li > a {
+        color: $black;
+        border-bottom: 1px dotted #dedee0;
+        font-weight: bold;
+      }
+    }
 
-		ul.courses-list-sub {
-			margin: 0;
-			list-style: none;
-			display: table;
-			width: 100%;
-			> li {
-				display: inline-block;
-				vertical-align: top;
-				width: 100%;
-				@include responsive($media-small) {
-					width: 33%;
-				}
-				@include responsive($media-tablet) {
-					display: table-cell;
-					width: 2.28%;
-				}
-				> a {
-					font-weight: bold;
-					text-transform: uppercase;
-				}
-				> ul {
-					list-style: none;
-					padding-top: 5px;
-					margin: 0;
-				}
-			}
+    ul.courses-list-sub {
+      margin: 0;
+      list-style: none;
+      display: table;
+      width: 100%;
+      > li {
+        display: inline-block;
+        vertical-align: top;
+        width: 100%;
+        @include responsive($media-small) {
+          width: 33%;
+        }
+        @include responsive($media-tablet) {
+          display: table-cell;
+          width: 2.28%;
+        }
+        > a {
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        > ul {
+          list-style: none;
+          padding-top: 5px;
+          margin: 0;
+        }
+      }
 
-			li {
-				font-size: 16px;
-				margin-bottom: 5px;
-				a {
-					text-decoration: none;
-				}
-			}
-			.courses-list-sub2 .courses-list-sub2 {
-				margin: 0;
-				list-style: none;
-			}
-		}
+      li {
+        font-size: 16px;
+        margin-bottom: 5px;
+        a {
+          text-decoration: none;
+        }
+      }
+      .courses-list-sub2 .courses-list-sub2 {
+        margin: 0;
+        list-style: none;
+      }
+    }
 
-		+ p {
-			display: none;
-		}
-	}
+    + p {
+      display: none;
+    }
+  }
 
-	.classItem .enrolAction.enrol-added-class,
-	.classItem .enrolAction {
-		background: $primaryColor;
-		color: #ffffff;
-		text-decoration: none;
-	}
+  .classItem .enrolAction.enrol-added-class,
+  .classItem .enrolAction {
+    background: $primaryColor;
+    color: #ffffff;
+    text-decoration: none;
+  }
 }

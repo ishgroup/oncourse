@@ -13,13 +13,18 @@
 // Following all the styles handles body content
 //
 
+* {
+  // Following function handles text backface visibility
+  @include backface-visibility($pageBackfaceVisibility);
+}
+
 body {
-	background: $bodyBackground;
-	font-family: $bodyFontFamily;
-	font-size: $bodyFontSize;
-	line-height: $bodyLineHeight;
-	color: $bodyFontColor;
-	margin: 0;
+  background: $bodyBackground;
+  font-family: $bodyFontFamily;
+  font-size: $bodyFontSize;
+  line-height: $bodyLineHeight;
+  color: $bodyFontColor;
+  margin: 0;
 }
 
 //
@@ -27,432 +32,444 @@ body {
 //
 
 .content, .dialogBox, .rodal-dialog {
-	line-height: 1.5;
+  line-height: 1.5;
 
-	// Content p tag's height and gap at bottom
-	p {
-		line-height: 1.5;
-		margin-bottom: $pTagMarginBottom;
-	}
+  // Content p tag's height and gap at bottom
+  p {
+    line-height: 1.5;
+    margin-bottom: $pTagMarginBottom;
+  }
 
-	// Default header tag h1, ..., h6 height, gap and font styles
-	h1, h2, h3, h4, h5, h6 {
-		margin-bottom: 18px;
-		line-height: 1.5;
-		font-weight: normal;
-	}
+  // Default header tag h1, ..., h6 height, gap and font styles
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 18px;
+    line-height: 1.5;
+    font-weight: normal;
+  }
 
-	// Content header tag h1 text size and its link styles
-	h1 {
-		@include header-tag($h1FontSize, $h1LineHeight, $h1FontWeight, $h1LinkColor, $h1LinkHoverColor);
-	}
+  %header-tags {
+    // Content header tag h1 text size and its link styles
+    h1 {
+      @include header-tag($h1FontSize, $h1LineHeight, $h1FontWeight, $h1LinkColor, $h1LinkHoverColor);
+    }
 
-	// Content header tag h2 text size and its link styles
-	h2 {
-		@include header-tag($h2FontSize, $h2LineHeight, $h2FontWeight, $h2LinkColor, $h2LinkHoverColor);
-	}
+    // Content header tag h2 text size and its link styles
+    h2 {
+      @include header-tag($h2FontSize, $h2LineHeight, $h2FontWeight, $h2LinkColor, $h2LinkHoverColor);
+    }
 
-	// Content header tag h3 text size and its link styles
-	h3 {
-		@include header-tag($h3FontSize, $h3LineHeight, $h3FontWeight, $h3LinkColor, $h3LinkHoverColor);
-	}
+    // Content header tag h3 text size and its link styles
+    h3 {
+      @include header-tag($h3FontSize, $h3LineHeight, $h3FontWeight, $h3LinkColor, $h3LinkHoverColor);
+    }
 
-	// Content header tag h4 text size and its link styles
-	h4 {
-		@include header-tag($h4FontSize, $h4LineHeight, $h4FontWeight, $h4LinkColor, $h4LinkHoverColor);
-	}
+    // Content header tag h4 text size and its link styles
+    h4 {
+      @include header-tag($h4FontSize, $h4LineHeight, $h4FontWeight, $h4LinkColor, $h4LinkHoverColor);
+    }
 
-	// Content header tag h5 text size and its link styles
-	h5 {
-		@include header-tag($h5FontSize, $h5LineHeight, $h5FontWeight, $h5LinkColor, $h5LinkHoverColor);
-	}
+    // Content header tag h5 text size and its link styles
+    h5 {
+      @include header-tag($h5FontSize, $h5LineHeight, $h5FontWeight, $h5LinkColor, $h5LinkHoverColor);
+    }
 
-	// Content header tag h6 text size and its link styles
-	h6 {
-		@include header-tag($h6FontSize, $h6LineHeight, $h6FontWeight, $h6LinkColor, $h6LinkHoverColor);
-	}
+    // Content header tag h6 text size and its link styles
+    h6 {
+      @include header-tag($h6FontSize, $h6LineHeight, $h6FontWeight, $h6LinkColor, $h6LinkHoverColor);
+    }
+  }
 
-	// List style disc
-	ul {
-		list-style: outside disc;
-		margin-left: 20px;
-		margin-bottom: 18px;
-	}
+  @extend %header-tags;
 
-	// List style decimal
-	ol {
-		list-style: outside decimal;
-		margin-left: 20px;
-		margin-bottom: 18px;
-	}
+  // List style disc
+  ul {
+    list-style: outside disc;
+    margin-left: 20px;
+    margin-bottom: 18px;
+  }
 
-	ul, ol {
-		&.un-list {
-			list-style: none;
-			margin: 0 0 16px 0;
-			li {
-				margin-bottom: 15px;
-			}
-		}
-	}
+  // List style decimal
+  ol {
+    list-style: outside decimal;
+    margin-left: 20px;
+    margin-bottom: 18px;
+  }
 
-	// Default list child height
-	li {
-		line-height: 1.5;
-	}
+  ul, ol {
+    &.un-list {
+      list-style: none;
+      margin: 0 0 16px 0;
+      li {
+        margin-bottom: 15px;
+      }
+    }
+  }
 
-	// Text default weight
-	strong, b {
-		font-weight: bold;
-	}
+  // Default list child height
+  li {
+    line-height: 1.5;
+  }
 
-	// Text showing in italic style
-	em, i {
-		font-style: italic;
-	}
+  // Text default weight
+  strong, b {
+    font-weight: bold;
+  }
 
-	// Default table gap and its table header and row gap
-	table {
-		margin-bottom: 18px;
-		td, th {
-			padding: 8px;
-		}
-		th {
-			font-weight: bold;
-		}
-	}
+  // Text showing in italic style
+  em, i {
+    font-style: italic;
+  }
 
-	// Form fieldset
-	fieldset {
-		margin: 0 0 18px 0;
-		padding: 15px 20px 10px;
-		border: 1px solid silver;
-		@include border-radius(8px);
-		>p, .form-details p {
-			zoom: 1 \9;
-			&::after {
-				visibility: hidden;
-				display: block;
-				font-size: 0;
-				content: " ";
-				clear: both;
-				height: 0
-			}
+  // Default table gap and its table header and row gap
+  table {
+    margin-bottom: 18px;
+    td, th {
+      padding: 8px;
+    }
+    th {
+      font-weight: bold;
+    }
+  }
 
-			// Form label left alignment
-			>label {
-				float: left;
-			}
+  // Form fieldset
+  fieldset {
+    margin: 0 0 18px 0;
+    padding: 15px 20px 10px;
+    border: 1px solid silver;
+    @include border-radius(8px);
+    >p, .form-details p {
+      zoom: 1 \9;
+      &::after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0
+      }
 
-			// Form span tag left alignment
-			>span {
-				float: left;
-				width: 70%
-			}
+      // Form label left alignment
+      >label {
+        float: left;
+      }
 
-			// Form input's parent p tag rows
-			&.form-cont-row {
-				margin-bottom: 5px;
-				>br {
-					display: none;
-				}
-				label {
-					text-align: left;
-					max-width: 100%;
-					width: 100%;
-					margin-bottom: 5px;
-					padding-top: 6px;
-					padding-right: 0px;
-					font-weight: 700;
-					font-size: 14px;
-					line-height: 1.42857143;
-					&.error {
-						margin: 2px 0px 0px 7px !important;
-					}
-				}
-				input[type="text"], input[type="password"], select, textarea {
-					padding: 6px 12px;
-					font-size: 14px;
-					line-height: 1.42857143;
-					color: #555;
-					background-color: #fff;
-					background-image: none;
-					border: 1px solid #ccc;
-					@include border-radius(4px);
-					-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-					-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-					box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-					@include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
-					&:focus {
-						border-color: #66afe9;
-						outline: 0;
-						-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-								box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-					}
-					&::-moz-placeholder {
-						color: #999;
-						opacity: 1;
-					}
-					&:-ms-input-placeholder {
-						color: #999;
-					}
-					&::-webkit-input-placeholder {
-						color: #999;
-					}
-				}
-				input[type="text"], input[type="password"], select {
-					width: 100%;
-					max-width: 250px;
-					height: 30px;
-				}
-				textarea {
-						width: 100%;
-					max-width: 450px;
-				}
-			}
-		}
-	}
-	#paymentform p>a.nyromodal {
-		position: absolute;
-		margin-left: 50%;
-		z-index: 0;
-		margin-top: 4px;
-	}
-	.text-required {
-		color: $contentFieldsetLabelRequiredColor;
-	}
+      // Form span tag left alignment
+      >span {
+        float: left;
+        width: 70%
+      }
 
-	// Default form fieldset and payments form
-	fieldset, .payments {
-		label {
-			display: inline-block;
-			text-align: right;
-			max-width: 180px;
-			width: 26%;
-			padding-right: 20px;
-			vertical-align: middle;
-			font-weight: bold;
-			em {
-				font-size: $contentFieldsetLabelInnerTextFontSize;
-			}
-			>sup {
-				color: $contentFieldsetLabelRequiredColor;
-			}
-		}
-		.conditions label {
-			display: block;
-			width: auto;
-			max-width: 100%;
-			text-align: left;
-			margin-left: 26%;
-			padding-left: 20px;
-			font-weight: normal;
-		}
-		span {
-			display: inline-block;
-			vertical-align: top;
-			position: relative;
+      // Form input's parent p tag rows
+      &.form-cont-row {
+        margin-bottom: 5px;
+        >br {
+          display: none;
+        }
+        label {
+          text-align: $labelTextAlign;
+          max-width: $labelMaxWidth;
+          width: $labelWidth;
+          margin-bottom: $labelMarginBottom;
+          padding-top: $labelPaddingTop;
+          padding-right: $labelPaddingRight;
+          font-weight: $labelFontWeight;
+          font-size: $labelFontSize;
+          line-height: $labelLineHeight;
+          &.error {
+            margin: $labelMarginError;
+          }
+        }
+        input[type="text"], input[type="password"],
+        input[type="date"], input[type="datetime"],
+        input[type="datetime-local"], input[type="month"],
+        input[type="week"], input[type="email"],
+        input[type="number"], input[type="search"],
+        input[type="tel"], input[type="time"],
+        input[type="url"], select, textarea {
+          padding: $inputPadding;
+          font-size: $inputFontSize;
+          line-height: $inputLineHeight;
+          color: $inputColor;
+          background: $inputBackground;
+          border: $inputBorder;
+          @include border-radius($inputBorderRadius);
+          @include prefixer(box-shadow, $inputBoxShadow, webkit moz ms o spec);
+          @include transition($inputTransition);
+          &:focus {
+            border-color: $inputBorderColorFocus;
+            outline: $inputOutlineFocus;
+            @include prefixer(box-shadow, $inputBoxShadowFocus, webkit moz ms o spec);
+          }
+          &::-moz-placeholder {
+            color: $inputPlaceholderColor;
+            opacity: 1;
+          }
+          &:-ms-input-placeholder {
+            color: $inputPlaceholderColor;
+          }
+          &::-webkit-input-placeholder {
+            color: $inputPlaceholderColor;
+          }
+        }
+        input[type="text"], input[type="password"],
+        input[type="date"], input[type="datetime"],
+        input[type="datetime-local"], input[type="month"],
+        input[type="week"], input[type="email"],
+        input[type="number"], input[type="search"],
+        input[type="tel"], input[type="time"],
+        input[type="url"], select {
+          width: $inputWidth;
+          max-width: $inputMaxWidth;
+          height: $inputHeight;
+        }
+        textarea {
+          width: $inputWidth;
+          max-width: $textAreaMaxWidth;
+        }
+      }
+    }
+  }
+  #paymentform p>a.nyromodal {
+    position: absolute;
+    margin-left: 50%;
+    z-index: 0;
+    margin-top: 4px;
+  }
+  .text-required {
+    color: $contentFieldsetLabelRequiredColor;
+  }
 
-			// Payments validate text
-			&.validate-text {
-				position: absolute;
-				z-index: 1;
-				font-size: 11px;
-				margin-left: 20px;
-				max-width: 220px;
-				left: 120px;
-				margin-left: 20px;
-				top: 0;
+  // Default form fieldset and payments form
+  fieldset, .payments {
+    label {
+      display: inline-block;
+      text-align: right;
+      max-width: 180px;
+      width: 26%;
+      padding-right: 20px;
+      vertical-align: middle;
+      font-weight: bold;
+      em {
+        font-size: $contentFieldsetLabelInnerTextFontSize;
+      }
+      >sup {
+        color: $contentFieldsetLabelRequiredColor;
+      }
+    }
+    .conditions label {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      text-align: left;
+      margin-left: 26%;
+      padding-left: 20px;
+      font-weight: normal;
+    }
+    span {
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
 
-				// Validate text reasons
-				.reason {
-					position: relative;
-					display: block;
-					padding: 3px;
-					background-color: #FEF0F0;
-					border: 1px solid #FCC5C5;
-					font-weight: bold;
-				}
+      // Payments validate text
+      &.validate-text {
+        position: absolute;
+        z-index: 1;
+        font-size: 11px;
+        margin-left: 20px;
+        max-width: 220px;
+        left: 120px;
+        margin-left: 20px;
+        top: 0;
 
-				// Validate text hint
-				.hint {
-					background-color: #FDF6D6;
-					border: 1px solid #F9E99C;
-					font-weight: bold;
-					position: relative;
-					display: block;
-					padding: 3px
-				}
+        // Validate text reasons
+        .reason {
+          position: relative;
+          display: block;
+          padding: 3px;
+          background-color: #FEF0F0;
+          border: 1px solid #FCC5C5;
+          font-weight: bold;
+        }
 
-				// Validate text reason pointer arrow
-				.reason-pointer {
-					display: block;
-					height: 15px;
-					left: -12px;
-					position: absolute;
-					top: 2px;
-					width: 12px;
-					background-image: url("/s/img/message-pointers.gif");
-					background-position: right top;
-					background-repeat: no-repeat;
-				}
+        // Validate text hint
+        .hint {
+          background-color: #FDF6D6;
+          border: 1px solid #F9E99C;
+          font-weight: bold;
+          position: relative;
+          display: block;
+          padding: 3px
+        }
 
-				// Validate text hide specific content
-				.hidden-text {
-					display: none;
-				}
-			}
-		}
+        // Validate text reason pointer arrow
+        .reason-pointer {
+          display: block;
+          height: 15px;
+          left: -12px;
+          position: absolute;
+          top: 2px;
+          width: 12px;
+          background-image: url("/s/img/message-pointers.gif");
+          background-position: right top;
+          background-repeat: no-repeat;
+        }
 
-		// Payments input
-		input {
-			border: 1px solid #ddd;
-			font-size: 11px;
-			&:hover {
-				border-color: #aaaaaa;
-			}
-			&:focus {
-				outline: none;
-				border-color: #000
-			}
-			&.t-error {
-				font-style: normal;
-				background-color: #FEF0F0;
-			}
-		}
+        // Validate text hide specific content
+        .hidden-text {
+          display: none;
+        }
+      }
+    }
 
-		// Payments input text, password, and dropdown gap, background, and width
-		input[type="text"], input[type="password"], select {
-			padding: 3px;
-			background-color: whiteSmoke;
-			width: 120px
-		}
-		textarea {
-			padding: 3px;
-			background-color: whiteSmoke;
-			border: 1px solid #ddd;
-			font-size: 11px;
-			height: 150px;
-			width: 50%;
-		}
-		img.t-error-icon {
-			display: none;
-			vertical-align: text-top;
-			position: relative;
-			top: -10px;
-			left: -14px
-		}
+    // Payments input
+    input {
+      border: 1px solid #ddd;
+      font-size: 11px;
+      &:hover {
+        border-color: #aaaaaa;
+      }
+      &:focus {
+        outline: none;
+        border-color: #000
+      }
+      &.t-error {
+        font-style: normal;
+        background-color: #FEF0F0;
+      }
+    }
 
-		// Displaying hint pointer arrows
-		.hint-pointer {
-			display: block;
-			height: 15px;
-			left: -12px;
-			position: absolute;
-			top: 2px;
-			width: 12px;
-			background-image: url("/s/img/message-pointers.gif");
-			background-position: -13px top;
-			background-repeat: no-repeat
-		}
+    // Payments input text, password, and dropdown gap, background, and width
+    input[type="text"], input[type="password"], select {
+      padding: 3px;
+      background-color: whiteSmoke;
+      width: 120px
+    }
+    textarea {
+      padding: 3px;
+      background-color: whiteSmoke;
+      border: 1px solid #ddd;
+      font-size: 11px;
+      height: 150px;
+      width: 50%;
+    }
+    img.t-error-icon {
+      display: none;
+      vertical-align: text-top;
+      position: relative;
+      top: -10px;
+      left: -14px
+    }
 
-		// Default radio list and fieldset intro
-		.radio-list, .fieldset-intro {
-			margin-left: 26%;
-			font-weight: bold;
-			padding-left: 20px;
-			max-width: 180px
-		}
-		.radio-list {
-			position: relative;
-			top: -37px;
-			font-weight: normal
-		}
-	}
+    // Displaying hint pointer arrows
+    .hint-pointer {
+      display: block;
+      height: 15px;
+      left: -12px;
+      position: absolute;
+      top: 2px;
+      width: 12px;
+      background-image: url("/s/img/message-pointers.gif");
+      background-position: -13px top;
+      background-repeat: no-repeat
+    }
 
-	// Form button
-	.form-controls {
-		button, input[type="submit"], input[type="reset"] {
-			border: 1px solid #d1d1d1;
-			padding: 3px 10px;
-			color: #000;
-			cursor: pointer;
-			background: #eee url("/s/img/blank.png") repeat-x;
-			@include background(linear-gradient(top, #ffffff 0%, #eeeeee 100%));
-			@include border-radius(3px);
-			&:active {
-				background: #fff url("/s/img/blank.png") repeat-x;
-				@include background(linear-gradient(top, #eeeeee 0%, #ffffff 100%));
-			}
-			&:hover {
-				border-color: #aaaaaa;
-			}
-		}
-	}
-	div.t-error li {
-		margin-left: 20px !important;
-	}
+    // Default radio list and fieldset intro
+    .radio-list, .fieldset-intro {
+      margin-left: 26%;
+      font-weight: bold;
+      padding-left: 20px;
+      max-width: 180px
+    }
+    .radio-list {
+      position: relative;
+      top: -37px;
+      font-weight: normal
+    }
+  }
+
+  // Form button
+  .form-controls {
+    button, input[type="submit"], input[type="reset"] {
+      border: 1px solid #d1d1d1;
+      padding: 3px 10px;
+      color: #000;
+      cursor: pointer;
+      background: #eee url("/s/img/blank.png") repeat-x;
+      @include background(linear-gradient(top, #ffffff 0%, #eeeeee 100%));
+      @include border-radius(3px);
+      &:active {
+        background: #fff url("/s/img/blank.png") repeat-x;
+        @include background(linear-gradient(top, #eeeeee 0%, #ffffff 100%));
+      }
+      &:hover {
+        border-color: #aaaaaa;
+      }
+    }
+  }
+  div.t-error li {
+    margin-left: 20px !important;
+  }
 }
 
 // Displaying error block of form
 #content {
-	form fieldset label.error {
-		float: none;
-		padding: 3px 10px;
-		width: auto;
-		margin: 0px 0px 0px 7px;
-		background-color: #8B0000;
-		text-shadow: none;
-		border: none;
-		@include border-radius(4px);
-		color: #fff;
-		vertical-align: top;
-		font-weight: normal;
-		position: relative;
-		&::after {
-			content: '';
-			position: absolute;
-			border-style: solid;
-			left: -8px;
-			border-width: 8px 8px 8px 0;
-			border-color: transparent #8B0000 transparent transparent;
-			top: 4px
-		}
-	}
+  form fieldset label.error {
+    float: none;
+    padding: 3px 10px;
+    width: auto;
+    margin: 0px 0px 0px 7px;
+    background-color: #8B0000;
+    text-shadow: none;
+    border: none;
+    @include border-radius(4px);
+    color: #fff;
+    vertical-align: top;
+    font-weight: normal;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      border-style: solid;
+      left: -8px;
+      border-width: 8px 8px 8px 0;
+      border-color: transparent #8B0000 transparent transparent;
+      top: 4px
+    }
+  }
 }
 
 // Default responsive video container for iframe, object, and embed
 .video-container {
-	max-width: $videoContainerMaxWidth;
-	width: $videoContainerWidth;
-	position: relative;
-	padding-bottom: $videoContainerPaddingBottom;
-	padding-top: $videoContainerPaddingTop;
-	height: 0;
-	overflow: hidden;
-	iframe, object, embed {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		max-width: $videoContainerMaxWidth;
-	}
+  max-width: $videoContainerMaxWidth;
+  width: $videoContainerWidth;
+  position: relative;
+  padding-bottom: $videoContainerPaddingBottom;
+  padding-top: $videoContainerPaddingTop;
+  height: 0;
+  overflow: hidden;
+  iframe, object, embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-width: $videoContainerMaxWidth;
+  }
 }
 
 .clearboth {
-	clear: both
+  clear: both
 }
 
 // Handles table row and header
 #ListPage, , #DetailsPage {
-	.content {
-		table {
-			td, th {
-				border: 1px solid gray;
-			}
-		}
-	}
+  .content {
+    table {
+      td, th {
+        border: 1px solid gray;
+      }
+    }
+  }
 }
 
 //
@@ -460,80 +477,80 @@ body {
 //
 
 .class-note-important {
-	clear: both;
-	background-color: #F7F7F7;
-	padding: 0 0 0 18px;
-	&:hover {
-		background-color: #eee;
-	}
-	&::before {
-		content: "FYI: "; //Important Information:
-		color: #E18A1A;
-		font-weight: bold;
-		float: left;
-		margin-right: 6px
-	}
+  clear: both;
+  background-color: $classNoteBackgroundColor;
+  padding: $classNotePadding;
+  &:hover {
+    background-color: $classNoteBackgroundColorHover;
+  }
+  &::before {
+    content: $classNoteText; //Important Information:
+    color: $classNoteBeforeTextColor;
+    font-weight: $classNoteBeforeFontWeight;
+    float: $classNoteBeforeFloat;
+    margin-right: $classNoteBeforeMarginRight;
+  }
 }
 
 // Showing alert icon block
 .note {
-	margin-top: 18px;
-	color: #777;
-	font-size: 11px;
-	strong {
-		color: #333333;
-	}
-	.alert {
-		background: transparent url("/s/img/alert.png") no-repeat scroll 0 0;
-		padding-left: 18px;
-	}
+  margin-top: 18px;
+  color: #777;
+  font-size: 11px;
+  strong {
+    color: #333333;
+  }
+  .alert {
+    background: transparent url("/s/img/alert.png") no-repeat scroll 0 0;
+    padding-left: 18px;
+  }
 }
 
 //
 // Following all the style handles message and error blocks
 //
 .message, .error {
-	background-color: pink;
-	padding: 4px 8px;
-	margin-bottom: 1.6em;
-	border: 1px solid #ddd;
-	@include border-radius(8px);
+  background-color: pink;
+  padding: 4px 8px;
+  margin-bottom: 1.6em;
+  border: 1px solid #ddd;
+  @include border-radius(8px);
 }
 
 .message {
-	background-color: #EEF6FF;
-	border-color: #A3E0F0;
-	color: #0066AA
+  background-color: #EEF6FF;
+  border-color: #A3E0F0;
+  color: #0066AA
 }
 
 .error {
-	background-color: #FEF0F0;
-	border-color: #FCC5C5;
-	color: #990000;
-	ul {
-		margin-top: 7px;
-	}
+  background-color: #FEF0F0;
+  border-color: #FCC5C5;
+  color: #990000;
+  ul {
+    margin-top: 7px;
+  }
 }
 
 .validation {
-	&>div {
-		background-color: #FEF0F0;
-		border: 1px solid #FCC5C5;
-		color: #990000;
-		padding: 4px 8px;
-		@include border-radius(8px);
-		margin-bottom: 18px;
-	}
-	&>ul {
-		margin-left: 35px;
-	}
+  &>div {
+    background-color: #FEF0F0;
+    border: 1px solid #FCC5C5;
+    color: #990000;
+    padding: 4px 8px;
+    @include border-radius(8px);
+    margin-bottom: 18px;
+  }
+  &>ul {
+    margin-left: 35px;
+  }
 }
 
 .error, .validation {
-	p {
-		margin: 0px;
-		color: #990000
-	}
+  p {
+    margin: 0px;
+    color: #990000
+  }
 }
 
 //
@@ -541,38 +558,38 @@ body {
 //
 
 div {
-	&.form-controls {
-		margin: 12px 0 12px 180px;
-		padding: 0 20px;
-		input#submitContact {
-			padding: 2px 10px 3px 10px;
-			margin: 0 0 0 5px;
-		}
-		a.cancel {
-			border: 1px solid #D1D1D1;
-			padding: 3px 10px;
-			color: black;
-			cursor: pointer;
-			background: #EEE url("/s/img/blank.png") repeat-x;
-			@include background(linear-gradient(top, #fff 0%, #EEE 100%));
-			@include border-radius(3px);
-			text-decoration: none;
-			&:hover {
-				border-color: #AAA
-			}
-		}
-	}
+  &.form-controls {
+    margin: 12px 0 12px 180px;
+    padding: 0 20px;
+    input#submitContact {
+      padding: 2px 10px 3px 10px;
+      margin: 0 0 0 5px;
+    }
+    a.cancel {
+      border: 1px solid #D1D1D1;
+      padding: 3px 10px;
+      color: black;
+      cursor: pointer;
+      background: #EEE url("/s/img/blank.png") repeat-x;
+      @include background(linear-gradient(top, #fff 0%, #EEE 100%));
+      @include border-radius(3px);
+      text-decoration: none;
+      &:hover {
+        border-color: #AAA
+      }
+    }
+  }
 
-	// Highlighting block
-	&.highlight {
-		padding: 10px;
-		background-color: #FDEFC9
-	}
+  // Highlighting block
+  &.highlight {
+    padding: 10px;
+    background-color: #FDEFC9
+  }
 
-	&.message p {
-		margin-bottom: 0px;
-		color: #0066AA
-	}
+  &.message p {
+    margin-bottom: 0px;
+    color: #0066AA
+  }
 }
 
 
@@ -580,40 +597,40 @@ div {
 // Following all the styles handles form errors
 //
 div#form_error {
-	form {
-		margin: 0;
-	}
-	fieldset {
-		border: 0px;
-		padding: 0;
-		margin-top: 10px;
-		margin-bottom: 0px;
-		label, textarea {
-			font-size: 140%;
-			clear: both;
-			width: 100%;
-			border: 0px solid red;
-			display: block;
-			margin-bottom: 20px
-		}
-		textarea {
-			width: 94%;
-			height: 200px;
-			border: 1px solid #888;
-			&:focus {
-				outline: 0px;
-			}
-		}
-		label input {
-			display: block;
-			&:focus {
-				outline: 0px;
-			}
-		}
-		a.button {
-			float: right
-		}
-	}
+  form {
+    margin: 0;
+  }
+  fieldset {
+    border: 0px;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    label, textarea {
+      font-size: 140%;
+      clear: both;
+      width: 100%;
+      border: 0px solid red;
+      display: block;
+      margin-bottom: 20px
+    }
+    textarea {
+      width: 94%;
+      height: 200px;
+      border: 1px solid #888;
+      &:focus {
+        outline: 0px;
+      }
+    }
+    label input {
+      display: block;
+      &:focus {
+        outline: 0px;
+      }
+    }
+    a.button {
+      float: right
+    }
+  }
 }
 
 //
@@ -622,121 +639,121 @@ div#form_error {
 //
 
 .siteList {
-	list-style: none !important;
-	margin: 0 !important;
-	li {
-		margin: 0 0 18px 0;
-		padding: 7px;
-		border: 1px solid #eee;
-		@include border-radius(5px);
-	}
-	>li {
-		h3 {
-			margin-bottom: 10px;
-			color: #000;
-			a {
-				color: inherit;
-				text-decoration: none;
-				&:hover {
-					text-decoration: underline;
-				}
-			}
-			&:first-child {
-				display: none;
-			}
-		}
-	}
+  list-style: none !important;
+  margin: 0 !important;
+  li {
+    margin: 0 0 18px 0;
+    padding: 7px;
+    border: 1px solid #eee;
+    @include border-radius(5px);
+  }
+  >li {
+    h3 {
+      margin-bottom: 10px;
+      color: #000;
+      a {
+        color: inherit;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      &:first-child {
+        display: none;
+      }
+    }
+  }
 
-	.sites-loc-wrapper {
-		zoom: 1 \9;
-		&::after {
-			visibility: hidden;
-			display: block;
-			font-size: 0;
-			content: " ";
-			clear: both;
-			height: 0
-		}
-		.sites-map-link {
-			float: left;
-			width: 45%;
-			a {
-				padding-left: 18px;
-			}
-		}
-		.class_location {
-			padding: 2px 0 2px 18px;
-			background-image: url("/s/img/icon/location.png");
-			background-position: left top;
-			background-repeat: no-repeat;
-		}
-		.siteAddress {
-			float: right;
-			width: 45%;
-			text-align: right;
-			>span {
-				display: block;
-			}
-			.street-address {
-				margin: 0 0 3px 0;
-				font-weight: bold;
-			}
-		}
-	}
-	.directions-wrapper {
-		margin-bottom: 18px
-	}
+  .sites-loc-wrapper {
+    zoom: 1 \9;
+    &::after {
+      visibility: hidden;
+      display: block;
+      font-size: 0;
+      content: " ";
+      clear: both;
+      height: 0
+    }
+    .sites-map-link {
+      float: left;
+      width: 45%;
+      a {
+        padding-left: 18px;
+      }
+    }
+    .class_location {
+      padding: 2px 0 2px 18px;
+      background-image: url("/s/img/icon/location.png");
+      background-position: left top;
+      background-repeat: no-repeat;
+    }
+    .siteAddress {
+      float: right;
+      width: 45%;
+      text-align: right;
+      >span {
+        display: block;
+      }
+      .street-address {
+        margin: 0 0 3px 0;
+        font-weight: bold;
+      }
+    }
+  }
+  .directions-wrapper {
+    margin-bottom: 18px
+  }
 }
 
 // Showing site location info
 .locationInfo {
-	margin-bottom: 18px;
-	.adr-site-name {
-		margin-bottom: 5px;
-		font-weight: bold;
-	}
+  margin-bottom: 18px;
+  .adr-site-name {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
 }
 
 .content #mapStatic {
-	display: none
+  display: none
 }
 
 // Addthis widget showing on right aligned
 .addthis {
-	float: right;
-	margin-bottom: 10px;
+  float: right;
+  margin-bottom: 10px;
 }
 
 // // Page title of courses page
 // .page-title {
-// 	float: left
+//  float: left
 // }
 
 // Page overlay
 #overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 11;
-	width: 100%;
-	text-align: center;
-	background-color: black
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  width: 100%;
+  text-align: center;
+  background-color: black
 }
 .clearfix {
-	@include clearfix;
+  @include clearfix;
 }
 .rodal .rodal-dialog {
-	padding: 0 !important;
-	border: 4px solid #9a9a9a;
-	max-width: 1000px;
-	width: 90% !important;
-	.rodal-close {
-		right: 23px;
-		top: 11px;
-	}
-	>div {
-		height: 100%;
-		overflow: hidden;
-		overflow-y: visible;
-	}
+  padding: 0 !important;
+  border: 4px solid #9a9a9a;
+  max-width: 1000px;
+  width: 90% !important;
+  .rodal-close {
+    right: 23px;
+    top: 11px;
+  }
+  >div {
+    height: 100%;
+    overflow: hidden;
+    overflow-y: visible;
+  }
 }

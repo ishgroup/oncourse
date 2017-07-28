@@ -14,7 +14,7 @@
 				<h3>${site.name}</h3>
 				<t:if t:test="site.hasCoordinates">
 					<h3 class="fn org">
-						<a class="url" href="/site/${site.angelId}">${site.name}</a>
+						<a class="url" href="/site/${site.angelId}" latitude="${site.latitude}" longitude="${site.longitude}">${site.name}</a>
 					</h3>
 					<div class="sites-loc-wrapper">
 						<div class="sites-map-link">

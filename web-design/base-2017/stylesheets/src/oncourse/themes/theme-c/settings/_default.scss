@@ -107,6 +107,9 @@ $btnType2BackgroundColor: $secondaryColor !default;
 
 $appBtnBackgroundColor: $theme-color !default;
 $appBtnBackgroundHoverColor: darken($theme-color, 15%) !default;
+$appBtnPaddingSmall: 13px 25px !default;
+$appBtnLetterSpacing: 1px !default;
+$appBtnFontSizeSmall: 14px !default;
 
 $squareBtnMargin: 35px auto 0 !default;
 $squareBtnDisplay: block !default;

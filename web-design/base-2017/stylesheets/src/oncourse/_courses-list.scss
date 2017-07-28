@@ -12,170 +12,170 @@
 // Search terms of course's searched list
 
 .search-terms {
-	zoom: 1 \9;
-	color: black;
-	padding: 4px 0px 4px 30px;
-	margin: 0 0 6px 0;
-	border: 1px solid transparent;
-	min-height: 16px;
-	line-height: 1.6;
-	background-image: url("/s/img/search2.png");
-	background-repeat: no-repeat;
-	background-position: 7px 10px;
-	&::after {
-		visibility: hidden;
-		display: block;
-		font-size: 0;
-		content: " ";
-		clear: both;
-		height: 0
-	}
-	&:hover {
-		border: 1px solid gray
-	}
-	span.search-value {
-		margin: 0;
-	}
-	img {
-		margin-bottom: -4px;
-	}
-	#search_query {
-		width: auto;
-		max-width: 924px;
-		float: left;
-		line-height: 1.7;
-		color: #5a6c7a;
-		>div, >span {
-			display: inline-block;
-		}
-		.highlighter {
-			background-color: transparent;
-			border: 1px solid transparent;
-		}
-		.search-highlight {
-			background-color: #fcf4b2;
-		}
-		.no-highlight {
-			border: 1px solid transparent;
-			&:hover {
-				border: 1px solid #e4b92e;
-			}
-		}
-		.tag-crumb-title {
-			color: $black;
-			padding: 0px;
-		}
-	}
-	.search-value {
-		border: 1px solid transparent;
-		padding: 2px 3px 2px 2px;
-		img {
-			display: inline;
-			padding: 2px;
-			border: 1px solid transparent;
-			background-repeat: no-repeat;
-			background-position: 2px 2px;
-			margin-top: -6px;
-		}
-		.search-remove {
-			margin-left: -8px;
-			padding: 0;
-			margin-right: -6px;
-		}
-		&:hover .search-remove img {
-			background-image: url("/s/img/x.png");
-			background-repeat: no-repeat;
-			background-position: left top;
-		}
-		&:hover .search-remove:hover img {
-			border: 1px solid red;
-			background-color: white;
+  zoom: 1 \9;
+  color: black;
+  padding: 4px 0px 4px 30px;
+  margin: 0 0 6px 0;
+  border: 1px solid transparent;
+  min-height: 16px;
+  line-height: 1.6;
+  background-image: url("/s/img/search2.png");
+  background-repeat: no-repeat;
+  background-position: 7px 10px;
+  &::after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0
+  }
+  &:hover {
+    border: 1px solid gray
+  }
+  span.search-value {
+    margin: 0;
+  }
+  img {
+    margin-bottom: -4px;
+  }
+  #search_query {
+    width: auto;
+    max-width: 924px;
+    float: left;
+    line-height: 1.7;
+    color: #5a6c7a;
+    >div, >span {
+      display: inline-block;
+    }
+    .highlighter {
+      background-color: transparent;
+      border: 1px solid transparent;
+    }
+    .search-highlight {
+      background-color: #fcf4b2;
+    }
+    .no-highlight {
+      border: 1px solid transparent;
+      &:hover {
+        border: 1px solid #e4b92e;
+      }
+    }
+    .tag-crumb-title {
+      color: $black;
+      padding: 0px;
+    }
+  }
+  .search-value {
+    border: 1px solid transparent;
+    padding: 2px 3px 2px 2px;
+    img {
+      display: inline;
+      padding: 2px;
+      border: 1px solid transparent;
+      background-repeat: no-repeat;
+      background-position: 2px 2px;
+      margin-top: -6px;
+    }
+    .search-remove {
+      margin-left: -8px;
+      padding: 0;
+      margin-right: -6px;
+    }
+    &:hover .search-remove img {
+      background-image: url("/s/img/x.png");
+      background-repeat: no-repeat;
+      background-position: left top;
+    }
+    &:hover .search-remove:hover img {
+      border: 1px solid red;
+      background-color: white;
 
-			// Search term remove curved on image of mouse over
-			@include border-radius(3px);
-		}
-	}
+      // Search term remove curved on image of mouse over
+      @include border-radius(3px);
+    }
+  }
 
-	// Toggled result map of courses
-	#toggle-results-map {
-		float: right;
-		margin: 0 7px 0 0;
-		a {
-			color: #5a6c7a;
-			border: 1px solid transparent;
-			padding: 2px;
-			&:hover {
-				border: 1px dotted silver;
-			}
-		}
-		.toggle_locations {
-			background-image: url("/s/img/icon/location.png");
-			background-repeat: no-repeat;
-			background-position: left 2px;
-			padding-left: 16px;
-		}
-	}
+  // Toggled result map of courses
+  #toggle-results-map {
+    float: right;
+    margin: 0 7px 0 0;
+    a {
+      color: #5a6c7a;
+      border: 1px solid transparent;
+      padding: 2px;
+      &:hover {
+        border: 1px dotted silver;
+      }
+    }
+    .toggle_locations {
+      background-image: url("/s/img/icon/location.png");
+      background-repeat: no-repeat;
+      background-position: left 2px;
+      padding-left: 16px;
+    }
+  }
 }
 
 // Show more courses at bottom of courses list page
 #showMore {
-	.message {
-		text-align: center;
-		background: #fff;
-		border: 1px solid #ccc;
-		padding: 5px 0;
-		border-radius: 10px;
-		background-image: url("/s/img/loading.gif");
-		background-repeat: no-repeat;
-		background-position: center center;
-		height: 35px
-	}
-	.showMoreAction {
-		display: none;
-		background-image: url("/s/img/icon/go-down.png");
-		background-position: 5px center;
-		background-repeat: no-repeat;
-		padding: 10px;
-		padding-left: 50px;
-		color: brown;
-		font-weight: bold;
-		font-size: 14px;
-		line-height: 1.5;
-		margin: 18px 0 28px 0;
-		border: 1px solid silver;
-		text-decoration: none !important;
-		cursor: pointer;
-		visibility: hidden;
-		height: 0px;
-		@include border-radius(10px);
-		&:hover {
-			background-color: #f0f0f0
-		}
-	}
+  .message {
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 5px 0;
+    border-radius: 10px;
+    background-image: url("/s/img/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 35px
+  }
+  .showMoreAction {
+    display: none;
+    background-image: url("/s/img/icon/go-down.png");
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    padding: 10px;
+    padding-left: 50px;
+    color: brown;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 18px 0 28px 0;
+    border: 1px solid silver;
+    text-decoration: none !important;
+    cursor: pointer;
+    visibility: hidden;
+    height: 0px;
+    @include border-radius(10px);
+    &:hover {
+      background-color: #f0f0f0
+    }
+  }
 }
 
 a[id*="showMoreCourses"], a[id*="showMoreCourses"] {
-	text-decoration: none !important
+  text-decoration: none !important
 }
 
 // Google map showing on courses list page
 #gmapCanvas {
-	height: 300px;
-	margin-bottom: 18px;
-	width: 100%
+  height: 300px;
+  margin-bottom: 18px;
+  width: 100%
 }
 #sitesMap {
-	visibility: hidden;
-	height: 0px;
-	overflow: hidden;
-	position: relative;
-	margin-bottom: 0px;
+  visibility: hidden;
+  height: 0px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 0px;
 
-	// Animation effect of sitemap
-	@include transition(height 200ms ease-in-out, visibility 200ms ease-in-out);
-	&.show {
-		visibility: visible;
-		height: 300px;
-		margin-bottom: 18px;
-	}
+  // Animation effect of sitemap
+  @include transition(height 200ms ease-in-out, visibility 200ms ease-in-out);
+  &.show {
+    visibility: visible;
+    height: 300px;
+    margin-bottom: 18px;
+  }
 }

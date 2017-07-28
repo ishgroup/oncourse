@@ -8,6 +8,7 @@
 // It is licensed to you under the Apache License, version 2.0
 
 
+$pageBackfaceVisibility: hidden !default;
 
 //
 // Following all the settings handles form content style
@@ -32,3 +33,12 @@ $videoContainerPaddingBottom: 32.25% !default;
 $videoContainerPaddingTop: 70px !default;
 
 $pTagMarginBottom: 18px !default;
+
+$classNoteBackgroundColor: #F7F7F7 !default;
+$classNoteBackgroundColorHover: #eee !default;
+$classNotePadding: 0 0 0 18px !default;
+$classNoteText: "FYI: " !default;
+$classNoteBeforeTextColor: #E18A1A !default;
+$classNoteBeforeFontWeight: bold !default;
+$classNoteBeforeFloat: left !default;
+$classNoteBeforeMarginRight: 6px !default;

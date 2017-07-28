@@ -20,73 +20,73 @@ input[type="week"], input[type="email"],
 input[type="number"], input[type="search"],
 input[type="tel"], input[type="time"],
 input[type="url"], select, textarea {
-	@include border-radius(0px);
-	background: $white;
-	border: 1px #d5d5d5 solid;
-	width: 100%;
-	height: 28px;
-	padding: 5px 10px;
-	margin: 0 0 10px;
-	font-size: 14px;
-	color: $inputColor;
-	line-height: 1;
-	outline: none;
+  @include border-radius($inputBorderRadius);
+  background: $inputBackground;
+  border: $inputBorder;
+  width: $inputWidth;
+  height: $inputHeight;
+  padding: $inputPadding;
+  margin: $inputMargin;
+  font-size: $inputFontSize;
+  color: $inputColor;
+  line-height: $inputLineHeight;
+  outline: $inputOutline;
 }
 
 // Default button style
 .btn, form button.form-submit-button {
-	background: $btnBackgroundColor;
-	color: $btnColor;
-	text-transform: uppercase;
-	display: inline-block;
-	padding: $btnPadding;
-	margin-bottom: 0;
-	font-size: $btnFontSize;
-	font-weight: $btnFontWeight;
-	line-height: 1.42857143;
-	text-align: center;
-	white-space: nowrap;
-	vertical-align: middle;
-	-ms-touch-action: manipulation;
-		touch-action: manipulation;
-	cursor: pointer;
+  background: $btnBackgroundColor;
+  color: $btnColor;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: $btnPadding;
+  margin-bottom: 0;
+  font-size: $btnFontSize;
+  font-weight: $btnFontWeight;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+    touch-action: manipulation;
+  cursor: pointer;
 
-	// Prevent to user from select text of button
-	@include user-select(none);
-	background-image: none;
-	border: 1px solid transparent;
+  // Prevent to user from select text of button
+  @include user-select(none);
+  background-image: none;
+  border: 1px solid transparent;
 
-	// Button curved
-	@include border-radius($btnBorderRadius);
+  // Button curved
+  @include border-radius($btnBorderRadius);
 
-	// Animation effect of button
-	@include transition(all 0.5s);
+  // Animation effect of button
+  @include transition(all 0.5s);
 
-	&:hover {
-		text-decoration: none;
-		background: $btnBackgroundHoverColor;
-		color: $btnHoverTextColor;
-	}
-	&.type1 {
-		background: $btnType2BackgroundColor;
-		color: $btnType2Color;
-	}
+  &:hover {
+    text-decoration: none;
+    background: $btnBackgroundHoverColor;
+    color: $btnHoverTextColor;
+  }
+  &.type1 {
+    background: $btnType2BackgroundColor;
+    color: $btnType2Color;
+  }
 }
 
 .responsive-image, .responsive-image-h {
-	>span {
-		width: 100%;
-		left: 0;
-		top: 0;
-	}
+  >span {
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
 }
 .responsive-image {
-	>span {
-		@include responsive-image(true);
-	}
+  >span {
+    @include responsive-image(true);
+  }
 }
 .responsive-image-h {
-	>span {
-		@include responsive-image();
-	}
+  >span {
+    @include responsive-image();
+  }
 }

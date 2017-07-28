@@ -10,118 +10,118 @@
 
 
 @include theme('b') {
-	$home-slider-height-mobile-small: 200px;
-	$home-slider-height-mobile: 300px;
-	$home-slider-height: 531px;
+  $home-slider-height-mobile-small: 200px;
+  $home-slider-height-mobile: 300px;
+  $home-slider-height: 531px;
 
-	.flexslider {
-		&.home-slider {
-			height: $home-slider-height-mobile-small;
-			overflow: hidden;
-			@include responsive($media-small) {
-				height: $home-slider-height-mobile;
-			}
-			@include responsive($media-tablet) {
-				height: $home-slider-height;
-			}
-		}
-		>p {
-			margin: 0px;
-		}
-		.bx-wrapper {
-			margin: 0px;
-			ul li {
-				img {
-					width: 100%;
-				}
-				.block {
-					position: relative;
-					height: $home-slider-height-mobile-small;
-					@include responsive($media-small) {
-						height: $home-slider-height-mobile;
-					}
-					@include responsive($media-tablet) {
-						height: $home-slider-height;
-					}
-					img {
-						position: absolute;
-						z-index: 1;
-						height: $home-slider-height-mobile-small;
-						@include responsive($media-small) {
-							height: $home-slider-height-mobile;
-						}
-						@include responsive($media-tablet) {
-							height: $home-slider-height;
-						}
-					}
-					.container {
-						position: relative;
-						top: 16.3%;
-						z-index: 2;
-						@include responsive($media-tablet) {
-							top: 129px;
-						}
-						.text-content {
-							background: $black;
-							background: rgba(0,0,0,0.54);
-							color: #fff;
-							width: 85%;
-							padding: 10px 20px;
-							@include responsive($media-small) {
-								width: 90%;
-								padding: 29px 35px 31px;
-							}
-							@include responsive($media-desktop) {
-								width: 822px;
-							}
-							h1 {
-								font-size: 20px;
-								letter-spacing: -0.5px;
-								font-weight: bold;
-								@include responsive($media-small) {
-									font-size: 25px;
-									letter-spacing: -1px;
-								}
-								@include responsive($media-tablet) {
-									font-size: 74px;
-									letter-spacing: -4.7px;
-								}
-								@include responsive($media-desktop) {
-									font-size: 74px;
-								}
-							}
-							p {
-								font-size: 12px;
-								padding-top: 2px;
-								@include responsive($media-small) {
-									font-size: 15px;
-								}
-								@include responsive($media-tablet) {
-									font-size: 37px;
-								}
-								@include responsive($media-desktop) {
-									font-size: 37px;
-								}
-							}
-						}
-					}
-				}
-			}
-			.bx-pager {
-				text-align: right;
-				bottom: 25px;
-				padding-right: 25px;
-				max-width: 1260px;
-				margin: 0 auto;
-				left: 0;
-				right: 0;
-				@include responsive($media-small) {
-					bottom: 95px;
-				}
-			}
-			.bx-controls-direction a {
-				display: none;
-			}
-		}
-	}
+  .flexslider {
+    &.home-slider {
+      height: $home-slider-height-mobile-small;
+      overflow: hidden;
+      @include responsive($media-small) {
+        height: $home-slider-height-mobile;
+      }
+      @include responsive($media-tablet) {
+        height: $home-slider-height;
+      }
+    }
+    >p {
+      margin: 0px;
+    }
+    .bx-wrapper {
+      margin: 0px;
+      ul li {
+        img {
+          width: 100%;
+        }
+        .block {
+          position: relative;
+          height: $home-slider-height-mobile-small;
+          @include responsive($media-small) {
+            height: $home-slider-height-mobile;
+          }
+          @include responsive($media-tablet) {
+            height: $home-slider-height;
+          }
+          img {
+            position: absolute;
+            z-index: 1;
+            height: $home-slider-height-mobile-small;
+            @include responsive($media-small) {
+              height: $home-slider-height-mobile;
+            }
+            @include responsive($media-tablet) {
+              height: $home-slider-height;
+            }
+          }
+          .container {
+            position: relative;
+            top: 16.3%;
+            z-index: 2;
+            @include responsive($media-tablet) {
+              top: 129px;
+            }
+            .text-content {
+              background: $black;
+              background: rgba(0,0,0,0.54);
+              color: #fff;
+              width: 85%;
+              padding: 10px 20px;
+              @include responsive($media-small) {
+                width: 90%;
+                padding: 29px 35px 31px;
+              }
+              @include responsive($media-desktop) {
+                width: 822px;
+              }
+              h1 {
+                font-size: 20px;
+                letter-spacing: -0.5px;
+                font-weight: bold;
+                @include responsive($media-small) {
+                  font-size: 25px;
+                  letter-spacing: -1px;
+                }
+                @include responsive($media-tablet) {
+                  font-size: 74px;
+                  letter-spacing: -4.7px;
+                }
+                @include responsive($media-desktop) {
+                  font-size: 74px;
+                }
+              }
+              p {
+                font-size: 12px;
+                padding-top: 2px;
+                @include responsive($media-small) {
+                  font-size: 15px;
+                }
+                @include responsive($media-tablet) {
+                  font-size: 37px;
+                }
+                @include responsive($media-desktop) {
+                  font-size: 37px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .bx-pager {
+        text-align: right;
+        bottom: 25px;
+        padding-right: 25px;
+        max-width: 1260px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        @include responsive($media-small) {
+          bottom: 95px;
+        }
+      }
+      .bx-controls-direction a {
+        display: none;
+      }
+    }
+  }
 }

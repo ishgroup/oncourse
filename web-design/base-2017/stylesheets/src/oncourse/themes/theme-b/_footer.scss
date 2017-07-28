@@ -10,177 +10,177 @@
 
 
 @include theme('b', 'footer') {
-	#footer {
-		position: relative;
-		font-weight: 300;
-		font-size: 15px;
-		&::before {
-			content: "";
-			background: $footerZigZagBackground;
-			background-position: 4px;
-			width: 100%;
-			height: 8px;
-			position: absolute;
-			top: -8px;
-			left: 0;
-		}
+  #footer {
+    position: relative;
+    font-weight: 300;
+    font-size: 15px;
+    &::before {
+      content: "";
+      background: $footerZigZagBackground;
+      background-position: 4px;
+      width: 100%;
+      height: 8px;
+      position: absolute;
+      top: -8px;
+      left: 0;
+    }
 
-		.address {
-			line-height: 2;
-		}
-		.info-links {
-			background: $footerInfoLinksBackground;
-			margin-top: 30px;
-			.container {
-				color: $footerInfoLinksTextColor;
-				a {
-					color: $footerInfoLinksAnchorColor;
-					&:hover {
-						color: $footerInfoLinksAnchorHoverColor;
-					}
-				}
-			}
-		}
-		.contact-courses {
-			.address-info .title, .courses-tags>li:first-child, .quicklinks>li {
-				color: $footerContactTitleColor;
-				font-weight: $footerContactTitleFontWeight;
-				text-transform: $footerContactTitleTextTransform;
-			}
-			.address-info >p {
-				color: $footerInfoColor;
-				line-height: 2;
-			}
-			ul ul li a {
-				color: $footerInfoColor;
-				line-height: 2;
-				&:hover {
-					color: $footerInfoHoverColor;
-				}
-			}
-			.social-links {
-				li {
-					margin-left: 6px;
-					padding: 0;
-					width: auto;
-					float: left;
-				}
-			}
-		}
-		.courses-list, .quicklinks {
-			ul >li {
-				>a, &:first-child {
-					text-transform: capitalize;
-				}
-				ul {
-					display: none;
-				}
-			}
-		}
-		ul.footer-info {
-			margin: 0px;
-			list-style: none;
-			li {
-				@include responsive($media-small) {
-					float: left;
-					margin-right: 30px;
-				}
-			}
-		}
-		.container {
-			a {
-				color: $footerInfoColor;
-				&:hover {
-					color: $footerInfoHoverColor;
-				}
-			}
-			.footer-container {
-				margin-top: 15px;
-				margin-bottom: 14px;
-			}
-			.contact-courses {
-				.top {
-					border-bottom: $footerContactBorderBottom;
-					padding: 30px 0px;
-					margin-bottom: 40px;
-					.links {
-						margin-bottom: 20px;
-						@include responsive($media-tablet) {
-							float: left;
-							margin-bottom: 0px;
-						}
-						>a {
-							font-size: 17px;
-							color: $footerContactLinkColor;
-							display: block;
-							&:hover {
-								color: $footerContactLinkHoverColor;
-							}
-							@include responsive($media-small) {
-								display: inline-block;
-								padding-right: 26px;
-							}
-						}
-					}
-					>ul {
-						width: 100px;
-						margin: 0 auto;
-						@include responsive($media-tablet) {
-							width: auto;
-							float: right;
-						}
-					}
-				}
-			}
-			.pull-left {
-				text-align: center;
-				.social-content {
-					float: none;
-					width: 100%;
-					margin-top: 20px;
-					margin-bottom: 30px;
-					@include responsive($media-tablet) {
-						margin-top: 45px;
-						margin-bottom: 0px;
-					}
-				}
-				@include responsive($media-tablet) {
-					width: 35%;
-				}
-			}
-			.pull-right {
-				display: block;
-				@include responsive($media-tablet) {
-					display: table;
-				}
+    .address {
+      line-height: 2;
+    }
+    .info-links {
+      background: $footerInfoLinksBackground;
+      margin-top: 30px;
+      .container {
+        color: $footerInfoLinksTextColor;
+        a {
+          color: $footerInfoLinksAnchorColor;
+          &:hover {
+            color: $footerInfoLinksAnchorHoverColor;
+          }
+        }
+      }
+    }
+    .contact-courses {
+      .address-info .title, .courses-tags>li:first-child, .quicklinks>li {
+        color: $footerContactTitleColor;
+        font-weight: $footerContactTitleFontWeight;
+        text-transform: $footerContactTitleTextTransform;
+      }
+      .address-info >p {
+        color: $footerInfoColor;
+        line-height: 2;
+      }
+      ul ul li a {
+        color: $footerInfoColor;
+        line-height: 2;
+        &:hover {
+          color: $footerInfoHoverColor;
+        }
+      }
+      .social-links {
+        li {
+          margin-left: 6px;
+          padding: 0;
+          width: auto;
+          float: left;
+        }
+      }
+    }
+    .courses-list, .quicklinks {
+      ul >li {
+        >a, &:first-child {
+          text-transform: capitalize;
+        }
+        ul {
+          display: none;
+        }
+      }
+    }
+    ul.footer-info {
+      margin: 0px;
+      list-style: none;
+      li {
+        @include responsive($media-small) {
+          float: left;
+          margin-right: 30px;
+        }
+      }
+    }
+    .container {
+      a {
+        color: $footerInfoColor;
+        &:hover {
+          color: $footerInfoHoverColor;
+        }
+      }
+      .footer-container {
+        margin-top: 15px;
+        margin-bottom: 14px;
+      }
+      .contact-courses {
+        .top {
+          border-bottom: $footerContactBorderBottom;
+          padding: 30px 0px;
+          margin-bottom: 40px;
+          .links {
+            margin-bottom: 20px;
+            @include responsive($media-tablet) {
+              float: left;
+              margin-bottom: 0px;
+            }
+            >a {
+              font-size: 17px;
+              color: $footerContactLinkColor;
+              display: block;
+              &:hover {
+                color: $footerContactLinkHoverColor;
+              }
+              @include responsive($media-small) {
+                display: inline-block;
+                padding-right: 26px;
+              }
+            }
+          }
+          >ul {
+            width: 100px;
+            margin: 0 auto;
+            @include responsive($media-tablet) {
+              width: auto;
+              float: right;
+            }
+          }
+        }
+      }
+      .pull-left {
+        text-align: center;
+        .social-content {
+          float: none;
+          width: 100%;
+          margin-top: 20px;
+          margin-bottom: 30px;
+          @include responsive($media-tablet) {
+            margin-top: 45px;
+            margin-bottom: 0px;
+          }
+        }
+        @include responsive($media-tablet) {
+          width: 35%;
+        }
+      }
+      .pull-right {
+        display: block;
+        @include responsive($media-tablet) {
+          display: table;
+        }
 
-				>ul {
-					vertical-align: top;
-				}
-				@include responsive($media-tablet) {
-					width: 65%;
-				}
-				.courses-tags {
-					float: left;
-					width: 100%;
-					margin-top: 30px;
-					@include responsive($media-tablet) {
-						float: none;
-						width: auto;
-						margin-top: 0px;
-					}
-				}
-				.quicklinks {
-					float: left;
-					width: 100%;
-					margin-top: 10px;
-					@include responsive($media-tablet) {
-						float: none;
-						width: auto;
-						margin-top: 0px;
-					}
-				}
-			}
-		}
-	}
+        >ul {
+          vertical-align: top;
+        }
+        @include responsive($media-tablet) {
+          width: 65%;
+        }
+        .courses-tags {
+          float: left;
+          width: 100%;
+          margin-top: 30px;
+          @include responsive($media-tablet) {
+            float: none;
+            width: auto;
+            margin-top: 0px;
+          }
+        }
+        .quicklinks {
+          float: left;
+          width: 100%;
+          margin-top: 10px;
+          @include responsive($media-tablet) {
+            float: none;
+            width: auto;
+            margin-top: 0px;
+          }
+        }
+      }
+    }
+  }
 }

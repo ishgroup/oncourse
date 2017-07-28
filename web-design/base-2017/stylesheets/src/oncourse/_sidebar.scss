@@ -15,41 +15,41 @@
 //
 
 @if $sidebarLeft == on or $sidebarRight == on {
-	//Content on left side
-	$content: left;
-	//Sidebar on right side
-	$sidebar: right;
-	//Main content width
-	$sidebarContentWidth: $contentWidth;
-	//Sidebar width
-	$mSidebarWidth: $sidebarWidth;
+  //Content on left side
+  $content: left;
+  //Sidebar on right side
+  $sidebar: right;
+  //Main content width
+  $sidebarContentWidth: $contentWidth;
+  //Sidebar width
+  $mSidebarWidth: $sidebarWidth;
 
-	@if $sidebarLeft == on { //Enable left sidebar
-		$content: right;
-		$sidebar: left;
-	}
-	@else if $sidebarRight == on { //Enable right sidebar
-		$content: left;
-		$sidebar: right;
-	}
+  @if $sidebarLeft == on { //Enable left sidebar
+    $content: right;
+    $sidebar: left;
+  }
+  @else if $sidebarRight == on { //Enable right sidebar
+    $content: left;
+    $sidebar: right;
+  }
 
-	#content {
-		float: $content;
-		width: 100%;
+  #content {
+    float: $content;
+    width: 100%;
 
-		// Responsive media for tablet
-		@include responsive($media-tablet) {
-			width: $sidebarContentWidth;
-		}
-	}
-	##{$sidebarWrapper} {
-		float: $sidebar;
-		width: 100%;
+    // Responsive media for tablet
+    @include responsive($media-tablet) {
+      width: $sidebarContentWidth;
+    }
+  }
+  ##{$sidebarWrapper} {
+    float: $sidebar;
+    width: 100%;
 
-		// Responsive media for tablet
-		@include responsive($media-tablet) {
-			width: $mSidebarWidth;
-			min-width: 160px;
-		}
-	}
+    // Responsive media for tablet
+    @include responsive($media-tablet) {
+      width: $mSidebarWidth;
+      min-width: 160px;
+    }
+  }
 }

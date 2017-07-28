@@ -10,584 +10,593 @@
 
 
 @include theme('b') {
-	html {
-		height: auto !important;
-	}
+  html {
+    height: auto !important;
+  }
 
-	#Main.main-page {
-		#content {
-			float: none;
-			width: 100%;
-		}
-		#sidebarRight, #sidebarLeft {
-			display: none;
-		}
-	}
-	.content {
-		h1 {
-			font-weight: normal;
-		}
-	}
+  #Main.main-page {
+    #content {
+      float: none;
+      width: 100%;
+    }
+    #sidebarRight, #sidebarLeft {
+      display: none;
+    }
+  }
+  .content {
+    h1 {
+      font-weight: normal;
+    }
+  }
 
-	.box-green {
-		background: $colorTypeOne;
-		border-bottom: 8px solid $colorTypeTwo;
-	}
-	.box-yellow {
-		background: $colorTypeThree;
-		border-bottom: 8px solid $colorTypeFour;
-	}
-	.box-blue {
-		background: $colorTypeFive;
-		border-bottom: 8px solid $colorTypeSix;
-	}
+  .box-green {
+    background: $colorTypeOne;
+    border-bottom: 8px solid $colorTypeTwo;
+  }
+  .box-yellow {
+    background: $colorTypeThree;
+    border-bottom: 8px solid $colorTypeFour;
+  }
+  .box-blue {
+    background: $colorTypeFive;
+    border-bottom: 8px solid $colorTypeSix;
+  }
 
-	// App Button */
-	.app-btn {
-		display: inline-block;
-		padding: 7.5px 17px;
-		border-radius: 2em;
-		border: 2px solid;
-		letter-spacing: 0px;
-		height: 35px;
-		font-size: 13px;
-		line-height: 1.2;
-		@include responsive($media-tablet) {
-			font-size: 14px;
-			height: 45px;
-			padding: 12.5px 27px;
-		}
-	}
+  // App Button */
+  .app-btn {
+    display: $appBtnDisplay;
+    padding: $appBtnPaddingSmall;
+    border-radius: $appBtnBorderRadius;
+    border: $appBtnBorder;
+    letter-spacing: $appBtnLetterSpacing;
+    height: $appBtnHeightSmall;
+    font-size: $appBtnFontSizeSmall;
+    line-height: $appBtnLineHeight;
+    background: $appBtnBackgroundColor;
+    @include responsive($media-tablet) {
+      font-size: $appBtnFontSizeTablet;
+      height: $appBtnHeightTablet;
+      padding: $appBtnPaddingTablet;
+    }
+    &:hover {
+      background: $appBtnBackgroundHoverColor;
+    }
+  }
 
-	#container {
-		.slider-wrapper {
-			position: relative;
-		}
-		.content-blocks {
-			width: 100%;
-			position: relative;
-			top: 0px;
-			list-style: none;
-			margin: 25px 0px;
-			z-index: 8;
-			@include responsive($media-small) {
-				top: -78px;
-				margin: 0px;
-			}
-			@include responsive($media-tablet) {
-				margin: 0 0 22px 0;
-			}
-			> li {
-				text-align: center;
-				background: $colorTypeOne;
-				border-bottom: 8px solid $colorTypeTwo;
-				padding: 0;
+  #container {
+    .slider-wrapper {
+      position: relative;
+    }
+    .content-blocks {
+      width: 100%;
+      position: relative;
+      top: 0px;
+      list-style: none;
+      margin: 25px 0px;
+      z-index: 8;
+      @include responsive($media-small) {
+        top: -78px;
+        margin: 0px;
+      }
+      @include responsive($media-tablet) {
+        margin: 0 0 22px 0;
+      }
+      > li {
+        text-align: center;
+        background: $colorTypeOne;
+        border-bottom: 8px solid $colorTypeTwo;
+        padding: 0;
+        vertical-align: top;
 
-				.app-btn {
-					background: none;
-					color: $black;
-					border-color: $white;
-					font-weight: normal;
-					&:hover {
-						color: $white;
-						background: $colorTypeTwo;
-						border-color: darken($colorTypeTwo, 5%);
-					}
-				}
+        .app-btn {
+          background: none;
+          color: $black;
+          border-color: $white;
+          font-weight: normal;
+          &:hover {
+            color: $white;
+            background: $colorTypeTwo;
+            border-color: darken($colorTypeTwo, 5%);
+          }
+        }
 
-				&:nth-child(2) {
-					background: $colorTypeThree;
-					border-bottom: 8px solid $colorTypeFour;
+        &:nth-child(2) {
+          background: $colorTypeThree;
+          border-bottom: 8px solid $colorTypeFour;
 
-					.app-btn:hover {
-						background: $colorTypeFour;
-						border-color: darken($colorTypeFour, 5%);
-					}
-				}
+          .app-btn:hover {
+            background: $colorTypeFour;
+            border-color: darken($colorTypeFour, 5%);
+          }
+        }
 
-				&:nth-child(3) {
-					background: $colorTypeFive;
-					border-bottom: 8px solid $colorTypeSix;
+        &:nth-child(3) {
+          background: $colorTypeFive;
+          border-bottom: 8px solid $colorTypeSix;
 
-					.app-btn:hover {
-						background: $colorTypeSix;
-						border-color: darken($colorTypeSix, 5%);
-					}
-				}
+          .app-btn:hover {
+            background: $colorTypeSix;
+            border-color: darken($colorTypeSix, 5%);
+          }
+        }
 
-				>div {
-					border: 0px;
-					padding: 21px 44px 24px;
-					color: $black;
-					> span {
-						display: block;
-						padding: 4px 0 6px;
-						font-weight: bold;
-						font-size: 20px;
-						@include responsive($media-tablet) {
-							font-size: 24px;
-						}
-						@include responsive($media-desktop) {
-							font-size: 28px;
-						}
-					}
-					>p {
-						font-size: 12px;
-						margin-bottom: 15px;
-						line-height: 1.4;
-						@include responsive($media-small) {
-							font-size: 14px;
-							margin-bottom: 25px;
-						}
-						@include responsive($media-tablet) {
-							font-size: 16px;
-						}
-						@include responsive($media-desktop) {
-							font-size: 18px;
-						}
-					}
-				}
-			}
-		}
+        >div {
+          border: 0px;
+          padding: 21px 44px 24px;
+          color: $black;
+          > span {
+            display: block;
+            padding: 4px 0 6px;
+            font-weight: bold;
+            font-size: 20px;
+            @include responsive($media-tablet) {
+              font-size: 24px;
+            }
+            @include responsive($media-desktop) {
+              font-size: 28px;
+            }
+          }
+          >p {
+            font-size: 12px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            @include responsive($media-small) {
+              font-size: 14px;
+              margin-bottom: 25px;
+            }
+            @include responsive($media-tablet) {
+              font-size: 16px;
+            }
+            @include responsive($media-desktop) {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
 
-		#content {
-			.main-title {
-				color: $contentMainTitle;
-			}
-			.sub-title {
-				color: $contentSubTitle;
-			}
-			.home-design-starting {
-				@include responsive($media-tablet) {
-					padding: 0px 25px 0 30px;
-				}
-				@include responsive($media-desktop) {
-					padding: 0px 25px 0 72px;
-				}
-				h1 {
-					font-size: 24px;
-					font-weight: bold;
-					margin-bottom: 6px;
-					line-height: 1.2;
-					@include responsive($media-small) {
-						font-size: 28px;
-					}
-					@include responsive($media-tablet) {
-						font-size: 35px;
-					}
-					@include responsive($media-desktop) {
-						font-size: 37px;
-					}
-				}
-				h3 {
-					font-size: 20px;
-					font-weight: 300;
-					line-height: 1.2;
-					@include responsive($media-small) {
-						font-size: 23px;
-					}
-					@include responsive($media-tablet) {
-						font-size: 28.5px;
-					}
-					@include responsive($media-desktop) {
-						font-size: 30px;
-					}
-				}
-				.app-btn {
-					font-family: $fontFamilyOne;
-					background: $colorTypeFive;
-					color: $white;
-					border-color: $colorTypeFive;
-					&:hover {
-						background: $colorTypeFiveHover;
-						border-color: $colorTypeFiveBorderColorHover;
-					}
-				}
-				.left {
-					width: 100%;
-					float: left;
-					@include responsive($media-tablet) {
-						width: 54.644%;
-						padding-right: 10px;
-					}
-					@include responsive($media-desktop) {
-						width: 52%;
-					}
-					p {
-						font-size: 15px;
-						line-height: 1.2;
-						@include responsive($media-small) {
-							font-size: 18px;
-						}
-						@include responsive($media-tablet) {
-							font-size: 20px;
-						}
-					}
-					.app-btn {
-						margin-top: 12px;
-					}
-				}
-				.right {
-					width: 100%;
-					float: right;
-					margin-top: 15px;
-					border-top: 8px solid $colorTypeTwo;
-					padding-top: 20px;
-					@include responsive($media-tablet) {
-						width: 36%;
-						margin-top: 0px;
-						border-top: 0px;
-						padding-top: 0px;
-					}
-					.starting-soon {
-						list-style: none;
-						margin: 0px;
-						li {
-							margin-bottom: 40px;
-						}
-						.block {
-							display: table;
-							.date, .text-content {
-								display: table-cell;
-								font-size: 12px;
-								@include responsive($media-small) {
-									font-size: 13px;
-								}
-							}
-							.date {
-								color: $white;
-								padding-right: 23px;
-								vertical-align: top;
-								font-family: $fontFamilyOne;
-								>div {
-									border-radius: 5em;
-									width: 55px;
-									height: 55px;
-									padding: 12px;
-									text-align: center;
-									line-height: 1;
-									text-transform: uppercase;
-									@include responsive($media-small) {
-										width: 63px;
-										height: 63px;
-										padding: 14px;
-									}
-									>span {
-										font-size: 18px;
-										font-weight: bold;
-										@include responsive($media-small) {
-											font-size: 20px;
-										}
-									}
-									&.red {
-										background: #ef5c51;
-									}
-									&.orange {
-										background: #f37d50;
-									}
-									&.yellow {
-										background: #fbb94d;
-									}
-								}
-							}
-							.text-content {
-								>span {
-									font-size: 14px;
-									letter-spacing: -0.5px;
-									font-weight: bold;
-									line-height: 0.8;
-									@include responsive($media-small) {
-										letter-spacing: -0.6px;
-										font-size: 18px;
-									}
-									@include responsive($media-tablet) {
-										letter-spacing: -1px;
-										font-size: 20px;
-									}
-								}
-								a {
-									font-size: 15px;
-									color: #f37d50;
-									font-weight: 700;
-									@include responsive($media-small) {
-										font-size: 18px;
-									}
-									@include responsive($media-tablet) {
-										font-size: 20px;
-									}
-								}
-								p {
-									width: 100%;
-									font-size: 12px;
-									line-height: 1.2;
-									letter-spacing: 0;
-									margin-bottom: 6px;
-									margin-top: 6px;
-									@include responsive($media-small) {
-										font-size: 13px;
-									}
-									@include responsive($media-tablet) {
-										width: 230px;
-									}
-								}
-							}
-						}
-						ul.courseList {
-							>ul, & {
-								list-style: none;
-								margin: 0px;
-							}
-							ul>li {
-								margin-bottom: 40px;
-								h1, h2, h3, h4, h5, h6 {
-									font-size: 13px;
-								}
-								>a {
-									letter-spacing: -1px;
-									font-size: 20px;
-									font-weight: bold;
-									line-height: 0.8;
-									color: #333;
-									&:hover {
-										color: #37b8cb;
-									}
-								}
-								.courseDescription {
-									width: 100%;
-									max-width: 370px;
-									font-size: 13px;
-									line-height: 1.2;
-									letter-spacing: 0;
-									margin-bottom: 6px;
-									margin-top: 6px;
+    #content {
+      .main-title {
+        color: $contentMainTitle;
+      }
+      .sub-title {
+        color: $contentSubTitle;
+      }
+      .home-design-starting {
+        @include responsive($media-tablet) {
+          padding: 0px 25px 0 30px;
+        }
+        @include responsive($media-desktop) {
+          padding: 0px 25px 0 72px;
+        }
+        h1 {
+          font-size: 24px;
+          font-weight: bold;
+          margin-bottom: 6px;
+          line-height: 1.2;
+          @include responsive($media-small) {
+            font-size: 28px;
+          }
+          @include responsive($media-tablet) {
+            font-size: 35px;
+          }
+          @include responsive($media-desktop) {
+            font-size: 37px;
+          }
+        }
+        h3 {
+          font-size: 20px;
+          font-weight: 300;
+          line-height: 1.2;
+          @include responsive($media-small) {
+            font-size: 23px;
+          }
+          @include responsive($media-tablet) {
+            font-size: 28.5px;
+          }
+          @include responsive($media-desktop) {
+            font-size: 30px;
+          }
+        }
+        .app-btn {
+          font-family: $fontFamilyOne;
+          background: $colorTypeFive;
+          color: $white;
+          border-color: $colorTypeFive;
+          &:hover {
+            background: $colorTypeFiveHover;
+            border-color: $colorTypeFiveBorderColorHover;
+          }
+        }
+        .left {
+          width: 100%;
+          float: left;
+          @include responsive($media-tablet) {
+            width: 54.644%;
+            padding-right: 10px;
+          }
+          @include responsive($media-desktop) {
+            width: 52%;
+          }
+          p {
+            font-size: 15px;
+            line-height: 1.2;
+            @include responsive($media-small) {
+              font-size: 18px;
+            }
+            @include responsive($media-tablet) {
+              font-size: 20px;
+            }
+          }
+          .app-btn {
+            margin-top: 12px;
+          }
+        }
+        .right {
+          width: 100%;
+          float: right;
+          margin-top: 15px;
+          border-top: 8px solid $colorTypeTwo;
+          padding-top: 20px;
+          @include responsive($media-tablet) {
+            width: 36%;
+            margin-top: 0px;
+            border-top: 0px;
+            padding-top: 0px;
+          }
+          .starting-soon {
+            list-style: none;
+            margin: 0px;
+            li {
+              margin-bottom: 40px;
+            }
+            .block {
+              display: table;
+              .date, .text-content {
+                display: table-cell;
+                font-size: 12px;
+                @include responsive($media-small) {
+                  font-size: 13px;
+                }
+              }
+              .date {
+                color: $white;
+                padding-right: 23px;
+                vertical-align: top;
+                font-family: $fontFamilyOne;
+                >div {
+                  border-radius: 5em;
+                  width: 55px;
+                  height: 55px;
+                  padding: 12px;
+                  text-align: center;
+                  line-height: 1;
+                  text-transform: uppercase;
+                  @include responsive($media-small) {
+                    width: 63px;
+                    height: 63px;
+                    padding: 14px;
+                  }
+                  >span {
+                    font-size: 18px;
+                    font-weight: bold;
+                    @include responsive($media-small) {
+                      font-size: 20px;
+                    }
+                  }
+                  &.red {
+                    background: #ef5c51;
+                  }
+                  &.orange {
+                    background: #f37d50;
+                  }
+                  &.yellow {
+                    background: #fbb94d;
+                  }
+                }
+              }
+              .text-content {
+                >span {
+                  font-size: 14px;
+                  letter-spacing: -0.5px;
+                  font-weight: bold;
+                  line-height: 0.8;
+                  @include responsive($media-small) {
+                    letter-spacing: -0.6px;
+                    font-size: 18px;
+                  }
+                  @include responsive($media-tablet) {
+                    letter-spacing: -1px;
+                    font-size: 20px;
+                  }
+                }
+                a {
+                  font-size: 15px;
+                  color: #f37d50;
+                  font-weight: 700;
+                  @include responsive($media-small) {
+                    font-size: 18px;
+                  }
+                  @include responsive($media-tablet) {
+                    font-size: 20px;
+                  }
+                }
+                p {
+                  width: 100%;
+                  font-size: 12px;
+                  line-height: 1.2;
+                  letter-spacing: 0;
+                  margin-bottom: 6px;
+                  margin-top: 6px;
+                  @include responsive($media-small) {
+                    font-size: 13px;
+                  }
+                  @include responsive($media-tablet) {
+                    width: 230px;
+                  }
+                }
+              }
+            }
+            ul.courseList {
+              >ul, & {
+                list-style: none;
+                margin: 0px;
+              }
+              ul>li {
+                margin-bottom: 40px;
+                h1, h2, h3, h4, h5, h6 {
+                  font-size: 13px;
+                }
+                >a {
+                  letter-spacing: -1px;
+                  font-size: 20px;
+                  font-weight: bold;
+                  line-height: 0.8;
+                  color: #333;
+                  &:hover {
+                    color: #37b8cb;
+                  }
+                }
+                .courseDescription {
+                  width: 100%;
+                  max-width: 370px;
+                  font-size: 13px;
+                  line-height: 1.2;
+                  letter-spacing: 0;
+                  margin-bottom: 6px;
+                  margin-top: 6px;
 
-									height: 30px;
-									overflow: hidden;
-									@include responsive($media-tablet) {
-										max-width: 300px;
-									}
-									>p, >a, ul> ol {
-										margin: 0px;
-										line-height: 1.2;
-									}
+                  height: 30px;
+                  overflow: hidden;
+                  @include responsive($media-tablet) {
+                    max-width: 300px;
+                  }
+                  >p, >a, ul> ol {
+                    margin: 0px;
+                    line-height: 1.2;
+                  }
 
-								}
-								.course-more-link {
-									font-size: 15px;
-									color: #f37d50;
-									font-weight: 700;
-									@include responsive($media-small) {
-										font-size: 18px;
-									}
-									@include responsive($media-tablet) {
-										font-size: 20px;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			.home-info {
-				position: relative;
-				border-top: 8px solid $colorTypeTwo;
-				padding-top: 35px;
-				@include responsive($media-tablet) {
-					border-top: 0px;
-					padding-top: 0px;
-				}
-				>img {
-					width: 100%;
-					min-height: 110px;
-				}
-				>span {
-					font-size: 70%;
-					font-weight: bold;
-					color: $white;
-					border-top: 2px solid $white;
-					border-bottom: 2px solid $white;
-					position: absolute;
-					bottom: 15%;
-					right: 3.8%;
-					@include responsive($media-small) {
-						font-size: 19.5px;
-						border-top: 5px solid $white;
-						border-bottom: 5px solid $white;
-					}
-					@include responsive($media-tablet) {
-						font-size: 30.5px;
-						bottom: 43px;
-						right: 30px;
-					}
-					@include responsive($media-desktop) {
-						font-size: 41.28px;
-					}
-				}
-			}
-			.our-courses {
-				border-top: 8px solid $colorTypeTwo;
-				margin-top: 30px;
-				margin-bottom: 64px;
-				@include responsive($media-tablet) {
-					border-top: 0px;
-					margin-top: 0px;
-				}
+                }
+                .course-more-link {
+                  font-size: 15px;
+                  color: #f37d50;
+                  font-weight: 700;
+                  @include responsive($media-small) {
+                    font-size: 18px;
+                  }
+                  @include responsive($media-tablet) {
+                    font-size: 20px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .home-info {
+        position: relative;
+        border-top: 8px solid $colorTypeTwo;
+        padding-top: 35px;
+        @include responsive($media-tablet) {
+          border-top: 0px;
+          padding-top: 0px;
+        }
+        >img {
+          width: 100%;
+          min-height: 110px;
+        }
+        >span {
+          font-size: 70%;
+          font-weight: bold;
+          color: $white;
+          border-top: 2px solid $white;
+          border-bottom: 2px solid $white;
+          position: absolute;
+          bottom: 15%;
+          right: 3.8%;
+          @include responsive($media-small) {
+            font-size: 19.5px;
+            border-top: 5px solid $white;
+            border-bottom: 5px solid $white;
+          }
+          @include responsive($media-tablet) {
+            font-size: 30.5px;
+            bottom: 43px;
+            right: 30px;
+          }
+          @include responsive($media-desktop) {
+            font-size: 41.28px;
+          }
+        }
+      }
+      .our-courses {
+        border-top: 8px solid $colorTypeTwo;
+        margin-top: 30px;
+        margin-bottom: 64px;
+        @include responsive($media-tablet) {
+          border-top: 0px;
+          margin-top: 0px;
+        }
 
-				h1 {
-					font-size: 27px;
-					font-weight: bold;
-					margin-top: 15px;
-					margin-left: 15px;
-					margin-bottom: 24px;
-					@include responsive($media-small) {
-						font-size: 37px;
-						margin-top: 40px;
-						margin-left: 70px;
-					}
-				}
-				ul {
-					list-style: none;
-					margin-bottom: 0;
-					li {
-						list-style: none;
-						text-align: center;
-						vertical-align: middle;
-						padding-bottom: 20px;
-						.block {
-							position: relative;
-							width: 100%;
-							max-width: 299px;
-							height: 206px;
-							margin: 0 auto;
-							border-bottom: 6px solid $colorTypeTwo;
-							@include transition(all 0.5s);
-							&.type-2 {
-								border-color: $colorTypeFour;
-							}
-							&.type-3 {
-								border-color: $colorTypeSix;
-							}
-							@include responsive($media-small) {
-								height: 286px;
-								max-width: 399px;
-							}
-							>a {
-								display: table;
-								position: relative;
-								width: 100%;
-								height: 100%;
-								img {
-									width: 100%;
-									max-width: 299px;
-									height: 200px;
-									position: absolute;
-									left: 0;
-									right: 0;
-									@include transition(all 0.5s);
-									@include responsive($media-small) {
-										height: 280px;
-										max-width: 399px;
-									}
-								}
-								>span {
-									display: table-cell;
-									vertical-align: bottom;
-									position: relative;
-									>span {
-										position: relative;
-										bottom: 28px;
-										left: 0;
-										right: 0;
-										background: $black;
-										background: rgba(0,0,0,0.55);
-										width: 150px;
-										color: #fff;
-										font-size: 16px;
-										font-weight: bold;
-										padding: 10px;
-										display: block;
-										margin: 0 auto;
-										text-align: center;
-										@include transition(all 0.5s);
-										@include responsive($media-small) {
-											bottom: 50px;
-											width: 266px;
-											font-size: 30px;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+        h1 {
+          font-size: 27px;
+          font-weight: bold;
+          margin-top: 15px;
+          margin-left: 15px;
+          margin-bottom: 24px;
+          @include responsive($media-small) {
+            font-size: 37px;
+            margin-top: 40px;
+            margin-left: 70px;
+          }
+        }
+        ul {
+          list-style: none;
+          margin-bottom: 0;
+          li {
+            list-style: none;
+            text-align: center;
+            vertical-align: middle;
+            padding-bottom: 20px;
+            .block {
+              position: relative;
+              width: 100%;
+              max-width: 299px;
+              height: 206px;
+              margin: 0 auto;
+              border-bottom: 6px solid $colorTypeTwo;
+              @include transition(all 0.5s);
+              &.type-2 {
+                border-color: $colorTypeFour;
+              }
+              &.type-3 {
+                border-color: $colorTypeSix;
+              }
+              @include responsive($media-small) {
+                height: 286px;
+                max-width: 399px;
+              }
+              >a {
+                display: table;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                img {
+                  width: 100%;
+                  max-width: 299px;
+                  height: 200px;
+                  position: absolute;
+                  left: 0;
+                  right: 0;
+                  @include transition(all 0.5s);
+                  @include responsive($media-small) {
+                    height: 280px;
+                    max-width: 399px;
+                  }
+                }
+                >span {
+                  display: table-cell;
+                  vertical-align: bottom;
+                  position: relative;
+                  >span {
+                    position: relative;
+                    bottom: 28px;
+                    left: 0;
+                    right: 0;
+                    background: $black;
+                    background: rgba(0,0,0,0.55);
+                    width: 150px;
+                    color: #fff;
+                    font-size: 16px;
+                    font-weight: bold;
+                    padding: 10px;
+                    display: block;
+                    margin: 0 auto;
+                    text-align: center;
+                    @include transition(all 0.5s);
+                    @include responsive($media-small) {
+                      bottom: 50px;
+                      width: 266px;
+                      font-size: 30px;
+                    }
+                  }
+                }
+                &.oc-item {
+                  position: absolute;
+                  top: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
-	.courses {
-		ul.courses-list {
-			margin: 0;
-			> li {
-				display: none;
-			}
-		}
-		ul.courses-list-sub {
-			margin: 0;
-			list-style: none;
-			display: table;
-			width: 100%;
-			li {
-				font-size: 16px;
-				margin-bottom: 5px;
-				a {
-					text-decoration: none;
-				}
-			}
-			> li {
-				display: block;
-				vertical-align: top;
-				width: 100%;
-				margin-bottom: 10px;
-				border-bottom: 1px solid $secondaryColor;
-				@include responsive($media-tablet) {
-					border-bottom: 0px;
-					display: table-cell;
-					width: 14.28%;
-					margin-bottom: 5px;
-				}
-				> a {
-					font-weight: bold;
-					text-transform: uppercase;
-				}
-				> ul {
-					list-style: none;
-					padding-top: 5px;
-					@include responsive($media-tablet) {
-						margin: 0;
-					}
-					>li>ul {
-						display: none;
-					}
-				}
-			}
-		}
+  .courses {
+    ul.courses-list {
+      margin: 0;
+      > li {
+        display: none;
+      }
+    }
+    ul.courses-list-sub {
+      margin: 0;
+      list-style: none;
+      display: table;
+      width: 100%;
+      li {
+        font-size: 16px;
+        margin-bottom: 5px;
+        a {
+          text-decoration: none;
+        }
+      }
+      > li {
+        display: block;
+        vertical-align: top;
+        width: 100%;
+        margin-bottom: 10px;
+        border-bottom: 1px solid $secondaryColor;
+        @include responsive($media-tablet) {
+          border-bottom: 0px;
+          display: table-cell;
+          width: 14.28%;
+          margin-bottom: 5px;
+        }
+        > a {
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        > ul {
+          list-style: none;
+          padding-top: 5px;
+          @include responsive($media-tablet) {
+            margin: 0;
+          }
+          >li>ul {
+            display: none;
+          }
+        }
+      }
+    }
 
-		+ p {
-			display: none;
-		}
-	}
+    + p {
+      display: none;
+    }
+  }
 
-	.phone-icon::after {
-		left: -23px;
-	}
-	.courses-menu {
-		li {
-			padding-left: 20px;
-		}
-		>ul, ul.courses-list {
-			>ul>li>a {
-				border: 0px;
-			}
-		}
-	}
+  .phone-icon::after {
+    left: -23px;
+  }
+  .courses-menu {
+    li {
+      padding-left: 20px;
+    }
+    >ul, ul.courses-list {
+      >ul>li>a {
+        border: 0px;
+      }
+    }
+  }
 }
