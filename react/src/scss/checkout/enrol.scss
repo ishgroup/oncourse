@@ -30,6 +30,41 @@ div.clearboth {
 }
 
 #checkout, #waitingListForm, #mailingListForm {
+  form {
+    position: relative;
+    
+    &.submitting {
+      &:before {
+        background: rgba(255, 255, 255, .5);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        content: " ";
+        z-index: 444;
+      }
+      &:after {
+        position: absolute;
+        z-index: 999;
+        height: 25px;
+        width: 25px;
+        content: " ";
+        top: 50%;
+        left: 50%;
+        margin-top: -10px;
+        margin-left: -10px;
+        -webkit-animation: Animation-spin 400ms infinite linear;
+        -o-animation: Animation-spin 400ms infinite linear;
+        animation: Animation-spin 400ms infinite linear;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        border-right-color: #333;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+  
   label {
     display: inline-block;
     text-align: right;
@@ -1058,5 +1093,16 @@ span.ended {
 #checkout td.update-button {
   padding-left: 100px;
   padding-right: 0px;
+}
+
+@keyframes Animation-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@-webkit-keyframes Animation-spin {
+  to {
+    -webkit-transform: rotate(1turn);
+  }
 }
 

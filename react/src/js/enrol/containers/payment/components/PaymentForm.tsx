@@ -64,7 +64,7 @@ class PaymentForm extends React.Component<Props, any> {
     const disabled = (invalid || pristine || submitting);
 
     return (
-      <form onSubmit={handleSubmit} id="payment-form">
+      <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting})}>
         {amount.payNow !== 0 &&
         <div>
           <div id="tabable-container">

@@ -1,6 +1,7 @@
 import {FormProps, reduxForm} from "redux-form";
 import * as React from "react";
 import {connect} from "react-redux";
+import classnames from 'classnames';
 
 import {Contact, ValidationError, ContactFields} from "../../../model";
 import {IshState} from "../../../services/IshState";
@@ -30,7 +31,7 @@ class ContactEditForm extends React.Component<Props, any> {
 
     return (
       <div>
-        <form onSubmit={handleSubmit} id="contactEditorForm">
+        <form onSubmit={handleSubmit} id="contactEditorForm" className={classnames({submitting})}>
           <ContactEdit touch={touch} contact={contact} fields={fields}/>
 
           {concessionTypes &&

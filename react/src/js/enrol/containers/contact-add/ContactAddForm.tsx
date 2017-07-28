@@ -1,5 +1,6 @@
 import {reduxForm} from "redux-form";
 import * as React from "react";
+import classnames from "classnames";
 
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
@@ -15,7 +16,11 @@ class ContactAddForm extends React.Component<any, any> {
 
     return (
       <div>
-        <form onSubmit={handleSubmit(values => CheckoutService.createOrGetContact(values))} id="contactEditorForm">
+        <form
+          onSubmit={handleSubmit(values => CheckoutService.createOrGetContact(values))}
+          id="contactEditorForm"
+          className={classnames({submitting})}
+        >
           <ContactAdd/>
           <div className="form-controls">
             <input
