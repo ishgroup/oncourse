@@ -27,7 +27,7 @@ class FieldFactory extends React.Component<any, any> {
         return <Form.Field {...props} component={TextField} type="number"/>;
 
       case DataType.ENUM:
-        return <ComboboxField {...props} items={field.enumItems}/>;
+        return <ComboboxField {...props} items={withDefaultItem(field.enumItems)}/>;
 
       case DataType.BOOLEAN:
         if (field.key === "isMale") {
@@ -129,5 +129,13 @@ const PostcodeField = (props): any => {
     newOptionEnable={true}
   />;
 };
+
+const withDefaultItem = items => {
+  const defaultEnumItem = {
+    key: -1,
+    value: 'Please select...',
+  };
+  return [defaultEnumItem].concat(items);
+}
 
 export default FieldFactory;
