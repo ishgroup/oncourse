@@ -17,7 +17,6 @@ import {resetPaymentState} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";
 import {openEditContact} from "../containers/contact-edit/actions/Actions";
 import {getContactNodeFromBackend} from "../containers/summary/actions/Actions";
-import {getPreferences} from "../actions/Actions";
 
 const updateContactNodes = contacts => {
   const result = [];
@@ -63,13 +62,14 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
 
     const result = [];
 
-    result.push(getPreferences());
+    result.push(Actions.getPreferences());
+    result.push(Actions.updateContactAddProcess({}, null, null));
 
     if (!L.isNil(state.checkout.payment.value)) {
       if (CheckoutService.isFinalStatus(state.checkout.payment.value)) {
-        result.push(Actions.changePhase(Phase.Init))
-        result.push(resetPaymentState())
-        result.push(Actions.sendInitRequest())
+        result.push(Actions.changePhase(Phase.Init));
+        result.push(resetPaymentState());
+        result.push(Actions.sendInitRequest());
         return result;
       } else {
         return result.concat(CheckoutService.processPaymentResponse(state.checkout.payment.value));

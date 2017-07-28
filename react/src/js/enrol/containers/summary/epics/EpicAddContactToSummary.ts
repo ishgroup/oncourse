@@ -62,5 +62,3 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
     return result;
   });
 };
-
-
