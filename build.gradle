@@ -7,6 +7,9 @@ buildscript {
 	}
 	repositories {
 		maven {
+			url 'https://repo.ish.com.au/content/repositories/thirdparty'
+		}
+		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
 		maven {
@@ -50,6 +53,9 @@ allprojects {
 	}
 
 	repositories {
+		maven {
+			url 'https://repo.ish.com.au/content/repositories/thirdparty'
+		}
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
 		}
