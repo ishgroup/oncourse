@@ -17,68 +17,59 @@ public class TestUSIServiceEndpoint implements IUSIService {
 
     @Override
     public VerifyUSIResponseType verifyUSI(VerifyUSIType in) throws IUSIServiceVerifyUSIErrorInfoFaultFaultMessage {
-        VerifyUSIResponseType result;
-        if (in.getUSI().contains("_WS")) {
-            result = getSingleNameResult(in);
+        VerifyUSIResponseType result = null;
+
+        if (in != null && in.getUSI() != null) {
+            result = new VerifyUSIResponseType();
+            String usi = in.getUSI();
+            switch (usi) {
+                case "22A99SQAP5": {
+                    result.setUSIStatus(USIVerificationStatus.INVALID.getStringValue());
+                    result.setFamilyName(MatchResultType.MATCH);
+                    result.setFirstName(MatchResultType.MATCH);
+                    result.setDateOfBirth(MatchResultType.MATCH);
+                }
+                    break;
+                case "22AR5X7BUG": {
+                    result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+                    result.setFamilyName(MatchResultType.NO_MATCH);
+                    result.setFirstName(MatchResultType.MATCH);
+                    result.setDateOfBirth(MatchResultType.MATCH);
+                }
+                    break;
+                case "22DNVQFXQ7": {
+                    result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+                    result.setFamilyName(MatchResultType.MATCH);
+                    result.setFirstName(MatchResultType.NO_MATCH);
+                    result.setDateOfBirth(MatchResultType.MATCH);
+                }
+                    break;
+                case "22GNBFREYT" : {
+                    result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+                    result.setFamilyName(MatchResultType.MATCH);
+                    result.setFirstName(MatchResultType.MATCH);
+                    result.setDateOfBirth(MatchResultType.NO_MATCH);
+                }
+                    break;
+                case "22LKRAUYEA" : {
+                    result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+                    result.setFamilyName(MatchResultType.MATCH);
+                    result.setFirstName(MatchResultType.MATCH);
+                    result.setDateOfBirth(MatchResultType.MATCH);
+                }
+                    break;
+                default : {
+                    throw new RuntimeException("USI service is unavailable.");
+                }
+            }
         } else {
-             result = getFirstLastNameResult(in);
+            throw new RuntimeException("param for verify is null or USI is null.");
         }
+
         try {
             Thread.sleep(3*1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        return result;
-    }
-
-    private VerifyUSIResponseType getSingleNameResult(VerifyUSIType in) {
-        VerifyUSIResponseType result = new VerifyUSIResponseType();
-
-        if (in.getUSI().endsWith("_WS")) {
-            result.setUSIStatus(USIVerificationStatus.INVALID.getStringValue());
-        } else {
-            result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
-        }
-
-        if (in.getUSI().endsWith("_WSN")) {
-            result.setSingleName(MatchResultType.NO_MATCH);
-        } else {
-            result.setSingleName(MatchResultType.MATCH);
-        }
-
-        if (in.getUSI().endsWith("_WSD")) {
-            result.setDateOfBirth(MatchResultType.NO_MATCH);
-        } else {
-            result.setDateOfBirth(MatchResultType.MATCH);
-        }
-        return result;
-    }
-
-    private VerifyUSIResponseType getFirstLastNameResult(VerifyUSIType in) {
-        VerifyUSIResponseType result = new VerifyUSIResponseType();
-
-        if (in.getUSI().endsWith("_W")) {
-            result.setUSIStatus(USIVerificationStatus.INVALID.getStringValue());
-        } else {
-            result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
-        }
-
-        if (in.getUSI().endsWith("_WL")) {
-            result.setFamilyName(MatchResultType.NO_MATCH);
-        } else {
-            result.setFamilyName(MatchResultType.MATCH);
-        }
-
-        if (in.getUSI().endsWith("_WF")) {
-            result.setFirstName(MatchResultType.NO_MATCH);
-        } else {
-            result.setFirstName(MatchResultType.MATCH);
-        }
-
-        if (in.getUSI().endsWith("_WD")) {
-            result.setDateOfBirth(MatchResultType.NO_MATCH);
-        } else {
-            result.setDateOfBirth(MatchResultType.MATCH);
         }
         return result;
     }
