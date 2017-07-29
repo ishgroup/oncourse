@@ -13,12 +13,16 @@ public class TestUSIServiceEndpoint implements IUSIService {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private static final String USI_INVALID = "22A99SQAP5";
-	private static final String USI_NOT_MATCH_LAST_NAME = "22AR5X7BUG";
-	private static final String USI_NOT_MATCH_FIRST_NAME = "22DNVQFXQ7";
-	private static final String USI_NOT_MATCH_DOB = "22GNBFREYT";
-	private static final String USI_VALID = "22LKRAUYEA";
+	public static final String USI_INVALID = "SYWQ7D4YBT";
+	public static final String USI_NOT_MATCH_LAST_NAME = "ZTCP6RPU6M";
+	public static final String USI_NOT_MATCH_FIRST_NAME = "KLP2ZP6NCW";
+	public static final String USI_NOT_MATCH_DOB = "G2RN4G89SD";
+	public static final String USI_VALID = "PCVA64XU3D";
 
+	public static final String USI_NOT_MATCH_SINGLE_NAME = "CVPZXK7N9H";
+	public static final String USI_NOT_MATCH_SINGLE_DOB = "QBK9UZYQNJ";
+	public static final String USI_VALID_SINGLE = "W2NBT2FW66";
+	public static final String USI_INVALID_SINGLE = "TSXEDK8HVP";
 
 	public static final String USI_TEST_MODE = "test.usi.endpoint";
 
@@ -28,47 +32,60 @@ public class TestUSIServiceEndpoint implements IUSIService {
 
 	@Override
 	public VerifyUSIResponseType verifyUSI(VerifyUSIType in) throws IUSIServiceVerifyUSIErrorInfoFaultFaultMessage {
-		VerifyUSIResponseType result;
-
-		if (in != null && in.getUSI() != null) {
-			result = new VerifyUSIResponseType();
-			String usi = in.getUSI();
-			switch (usi) {
-				case USI_INVALID:
-					result.setUSIStatus(USIVerificationStatus.INVALID.getStringValue());
-					result.setFamilyName(MatchResultType.MATCH);
-					result.setFirstName(MatchResultType.MATCH);
-					result.setDateOfBirth(MatchResultType.MATCH);
-					break;
-				case USI_NOT_MATCH_LAST_NAME:
-					result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
-					result.setFamilyName(MatchResultType.NO_MATCH);
-					result.setFirstName(MatchResultType.MATCH);
-					result.setDateOfBirth(MatchResultType.MATCH);
-					break;
-				case USI_NOT_MATCH_FIRST_NAME:
-					result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
-					result.setFamilyName(MatchResultType.MATCH);
-					result.setFirstName(MatchResultType.NO_MATCH);
-					result.setDateOfBirth(MatchResultType.MATCH);
-					break;
-				case USI_NOT_MATCH_DOB:
-					result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
-					result.setFamilyName(MatchResultType.MATCH);
-					result.setFirstName(MatchResultType.MATCH);
-					result.setDateOfBirth(MatchResultType.NO_MATCH);
-					break;
-				case USI_VALID:
-					result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
-					result.setFamilyName(MatchResultType.MATCH);
-					result.setFirstName(MatchResultType.MATCH);
-					result.setDateOfBirth(MatchResultType.MATCH);
-					break;
-				default:
-					throw new RuntimeException("USI service is unavailable.");
-			}
-		} else {
-			throw new RuntimeException("param for verify is null or USI is null.");
+		VerifyUSIResponseType result = new VerifyUSIResponseType();
+		switch (in.getUSI()) {
+			case USI_INVALID:
+				result.setUSIStatus(USIVerificationStatus.INVALID.getStringValue());
+				result.setFamilyName(MatchResultType.MATCH);
+				result.setFirstName(MatchResultType.MATCH);
+				result.setDateOfBirth(MatchResultType.MATCH);
+				break;
+			case USI_NOT_MATCH_LAST_NAME:
+				result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+				result.setFamilyName(MatchResultType.NO_MATCH);
+				result.setFirstName(MatchResultType.MATCH);
+				result.setDateOfBirth(MatchResultType.MATCH);
+				break;
+			case USI_NOT_MATCH_FIRST_NAME:
+				result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+				result.setFamilyName(MatchResultType.MATCH);
+				result.setFirstName(MatchResultType.NO_MATCH);
+				result.setDateOfBirth(MatchResultType.MATCH);
+				break;
+			case USI_NOT_MATCH_DOB:
+				result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+				result.setFamilyName(MatchResultType.MATCH);
+				result.setFirstName(MatchResultType.MATCH);
+				result.setDateOfBirth(MatchResultType.NO_MATCH);
+				break;
+			case USI_VALID:
+				result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+				result.setFamilyName(MatchResultType.MATCH);
+				result.setFirstName(MatchResultType.MATCH);
+				result.setDateOfBirth(MatchResultType.MATCH);
+				break;
+			case USI_INVALID_SINGLE:
+				result.setUSIStatus(USIVerificationStatus.INVALID.getStringValue());
+				result.setSingleName(MatchResultType.MATCH);
+				result.setDateOfBirth(MatchResultType.MATCH);
+				break;
+			case USI_NOT_MATCH_SINGLE_NAME:
+				result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+				result.setSingleName(MatchResultType.NO_MATCH);
+				result.setDateOfBirth(MatchResultType.MATCH);
+				break;
+			case USI_NOT_MATCH_SINGLE_DOB:
+				result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+				result.setSingleName(MatchResultType.MATCH);
+				result.setDateOfBirth(MatchResultType.NO_MATCH);
+				break;
+			case USI_VALID_SINGLE:
+				result.setUSIStatus(USIVerificationStatus.VALID.getStringValue());
+				result.setSingleName(MatchResultType.MATCH);
+				result.setDateOfBirth(MatchResultType.MATCH);
+				break;
+			default:
+				throw new RuntimeException("USI service is unavailable.");
 		}
 
 		try {
