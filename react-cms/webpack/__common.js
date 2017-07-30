@@ -22,7 +22,7 @@ const _common = (dirname, options) => {
   return {
     entry: [options[KEYS.ENTRY]],
     output: {
-      path: path.resolve(dirname, "build"),
+      path: path.resolve(dirname, 'build', 'dist'),
       publicPath: "/assets/",
       filename: "cms.js"
     },
