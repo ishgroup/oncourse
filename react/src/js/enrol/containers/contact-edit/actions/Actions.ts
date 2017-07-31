@@ -1,7 +1,7 @@
 import {ContactFields, Contact} from "../../../../model";
 import {IAction} from "../../../../actions/IshAction";
 
-export const OPEN_EDIT_CONTACT: string = "checkout/open/edit/contact";
+export const OPEN_EDIT_CONTACT_REQUEST: string = "checkout/open/edit/contact";
 export const SUBMIT_EDIT_CONTACT: string = "checkout/submit/edit/contact";
 
 export const SET_FIELDS_TO_STATE: string = "checkout/set/fields/to/state";
@@ -17,7 +17,7 @@ export const submitEditContact = (contact: Contact): IAction<Contact> => {
 
 export const openEditContact = (contact: Contact): IAction<Contact> => {
   return {
-    type: OPEN_EDIT_CONTACT,
+    type: OPEN_EDIT_CONTACT_REQUEST,
     payload: contact,
   };
 };

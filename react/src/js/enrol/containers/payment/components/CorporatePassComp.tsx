@@ -1,5 +1,6 @@
 import React from "react";
 import {Field} from "redux-form";
+import classnames from 'classnames';
 
 import {CorporatePass} from "../../../../model";
 import {TextField} from "../../../../components/form-new/TextField";
@@ -7,7 +8,9 @@ import {TextField} from "../../../../components/form-new/TextField";
 interface Props {
   onSubmitPass: (code: string) => void;
   corporatePass?: CorporatePass;
+  corporatePassError?: string;
   onUnmount?: () => void;
+  fetching?: boolean;
 }
 
 class CorporatePassComp extends React.Component<Props, any> {
@@ -28,7 +31,7 @@ class CorporatePassComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {corporatePass} = this.props;
+    const {corporatePass, corporatePassError, fetching} = this.props;
 
     const passField = () => (
       <div>
@@ -43,7 +46,6 @@ class CorporatePassComp extends React.Component<Props, any> {
           required={true}
           ref={ref => this.passInput = ref}
         />
-
         <div className="button" id="addCorporatePass" onClick={() => this.handleClick()}>Submit</div>
       </div>
     );
@@ -64,7 +66,7 @@ class CorporatePassComp extends React.Component<Props, any> {
     );
 
     return (
-      <div id="corporate-pass" className="single-tab active">
+      <div id="corporate-pass" className={classnames("single-tab active", {fetching})}>
         <fieldset>
           <p className="info-content">
             Enter a CorporatePass code below to complete this transaction without any payment at this time.
@@ -74,15 +76,23 @@ class CorporatePassComp extends React.Component<Props, any> {
           {!corporatePass.id &&
             passField()
           }
+
           {corporatePass.id &&
             referenceField()
           }
 
           {corporatePass.message &&
-            <div className="message">
-              {corporatePass.message}
-            </div>
+          <div className="message">
+            {corporatePass.message}
+          </div>
           }
+
+          {corporatePassError &&
+          <div className="validation">
+            {corporatePassError}
+          </div>
+          }
+
 
         </fieldset>
       </div>

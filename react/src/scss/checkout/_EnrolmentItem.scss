@@ -342,11 +342,16 @@
       #corporate-pass {
         margin-top: 10px;
         
-        label.corporatePass-label {
+        label {
+          width: 30% !important;
+        }
+        
+        input {
           max-width: 100%;
-          width: 100%;
-          text-align: left;
-          margin-bottom: 3px;
+        }
+        
+        #addCorporatePass {
+          margin: 0 0 0 10px;
         }
         
         > fieldset {

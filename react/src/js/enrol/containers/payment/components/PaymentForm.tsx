@@ -29,6 +29,8 @@ interface Props extends FormProps<DataShape, any, any> {
   voucherPayerEnabled: boolean;
   onSubmitPass?: (code: string) => any;
   corporatePass?: CorporatePass;
+  corporatePassError?: string;
+  fetching?: boolean;
   currentTab: Tabs;
   resetPass?: () => void;
   onSetPayer?: () => void;
@@ -56,8 +58,8 @@ class PaymentForm extends React.Component<Props, any> {
 
   render() {
     const {
-      handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass,
-      onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable,
+      handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
+      onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
       onUnmountPassComponent,
     } = this.props;
 
@@ -93,6 +95,8 @@ class PaymentForm extends React.Component<Props, any> {
                 onSubmitPass={onSubmitPass}
                 corporatePass={corporatePass}
                 onUnmount={onUnmountPassComponent}
+                corporatePassError={corporatePassError}
+                fetching={fetching}
               />
               }
 
@@ -167,7 +171,7 @@ const validateCorporatePass = (data, props) => {
   const errors = {};
 
   if (!props.corporatePass.id || !data.corporatePass) {
-    errors['corporatePass'] = "You must apply a correct code";
+    errors['corporatePass'] = "";
   }
 
   return errors;
@@ -211,13 +215,16 @@ const Form = reduxForm({
 })(PaymentForm);
 
 const mapStateToProps = (state: IshState) => {
+  const corporatePassError = state.checkout.error && state.checkout.error.fieldsErrors.find(er => er.name === 'corporatePass');
   return {
     contacts: Object.values(state.checkout.contacts.entities.contact),
     amount: state.checkout.amount,
     payerId: state.checkout.payerId,
     voucherPayerEnabled: CheckoutService.hasActiveVoucherPayer(state.checkout),
     corporatePass: state.checkout.payment.corporatePass,
+    corporatePassError: corporatePassError && corporatePassError.error,
     currentTab: state.checkout.payment.currentTab,
+    fetching: state.checkout.payment.fetching,
     corporatePassAvailable: state.checkout.preferences.corporatePassEnabled,
   };
 };

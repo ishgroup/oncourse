@@ -1,8 +1,11 @@
 import {State} from "./State";
 import {
-  APPLY_CORPORATE_PASS, CHANGE_TAB, RESET_CORPORATE_PASS, RESET_PAYMENT_STATE, UPDATE_PAYMENT_STATUS,
+  APPLY_CORPORATE_PASS, CHANGE_TAB, GET_CORPORATE_PASS_REQUEST, RESET_CORPORATE_PASS, RESET_PAYMENT_STATE,
+  UPDATE_PAYMENT_STATUS,
 } from "../actions/Actions";
 import {IAction} from "../../../../actions/IshAction";
+import {FULFILLED} from "../../../../common/actions/ActionUtils";
+import {INIT_REQUEST, SHOW_MESSAGES} from "../../../actions/Actions";
 
 export const Reducer = (state: State = new State(), action: IAction<any>): State => {
   switch (action.type) {
@@ -29,6 +32,20 @@ export const Reducer = (state: State = new State(), action: IAction<any>): State
       return {
         ...state,
         currentTab: action.payload,
+      };
+
+    case GET_CORPORATE_PASS_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+      };
+
+    case FULFILLED(GET_CORPORATE_PASS_REQUEST):
+    case SHOW_MESSAGES:
+    case INIT_REQUEST:
+      return {
+        ...state,
+        fetching: false,
       };
 
     case RESET_PAYMENT_STATE:

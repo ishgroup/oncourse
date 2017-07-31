@@ -24,7 +24,7 @@ export class CorporatePassApiMock extends CorporatePassApi {
 
     return request.code === '1'
       ? this.config.createResponse(corporatePassResponse)
-      : CreatePromiseReject('incorrect pass');
+      : CreatePromiseReject(this.config.createValidationError(1, ['corporatePass']));
   }
   isCorporatePassEnabled(): Promise<boolean> {
     return this.config.createResponse(true);

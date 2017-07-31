@@ -5,10 +5,10 @@ import {Observable} from "rxjs/Observable";
 import {ActionsObservable, combineEpics, Epic} from "redux-observable";
 import uuid from "uuid";
 
-import {Create, ProcessError, Request} from "../../../epics/EpicUtils";
+import {Create, ProcessError, Request, showCommonError} from "../../../epics/EpicUtils";
 import {
   applyCorporatePass,
-  GET_CORPORATE_PASS,
+  GET_CORPORATE_PASS_REQUEST,
   SUBMIT_PAYMENT_CREDIT_CARD,
   SUBMIT_PAYMENT_CORPORATE_PASS,
   PROCESS_PAYMENT,
@@ -26,7 +26,8 @@ import {IAction} from "../../../../actions/IshAction";
 import {CreditCardFormValues} from "../services/PaymentService";
 import {GetPaymentStatus} from "./EpicGetPaymentStatus";
 import {Phase} from "../../../reducers/State";
-import {changePhase, getAmount, togglePayNowVisibility} from "../../../actions/Actions";
+import {changePhase, getAmount, SHOW_MESSAGES, togglePayNowVisibility} from "../../../actions/Actions";
+import {FULFILLED} from "../../../../common/actions/ActionUtils";
 
 const request: Request<PaymentResponse, IshState> = {
   type: PROCESS_PAYMENT,
@@ -84,21 +85,19 @@ const SubmitPaymentCorporatePassRequest: Request<any, IshState> = {
 const SubmitPaymentCorporatePass: Epic<any, any> = Create(SubmitPaymentCorporatePassRequest);
 
 const corporatePassRequest: Request<CorporatePass, IshState> = {
-  type: GET_CORPORATE_PASS,
+  type: GET_CORPORATE_PASS_REQUEST,
   getData: (payload: any, state: IshState): Promise<CorporatePass> => {
     return CheckoutService.getCorporatePass(payload, state);
   },
   processData: (response: CorporatePass, state: IshState): IAction<any>[] | Observable<any> => {
     return [
+      {type: FULFILLED(GET_CORPORATE_PASS_REQUEST)},
       applyCorporatePass(response),
       getAmount(),
       togglePayNowVisibility(false),
     ];
   },
-  processError: (response: AxiosResponse): IAction<any>[] => {
-    console.log(response);
-    return [];
-  },
+
 
 };
 

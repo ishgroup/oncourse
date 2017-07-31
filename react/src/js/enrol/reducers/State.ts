@@ -18,6 +18,7 @@ export interface CheckoutState {
   redeemVouchers: any;
   contactAddProcess: any;
   preferences: Preferences;
+  fetching?: boolean;
 }
 
 export interface PayerState {

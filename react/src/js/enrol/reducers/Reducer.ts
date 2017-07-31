@@ -14,6 +14,7 @@ import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Preferences} from "../../model/common/Preferences";
+import {CHANGE_TAB} from "../containers/payment/actions/Actions";
 
 const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phase => {
   switch (action.type) {
@@ -143,6 +144,7 @@ const ErrorReducer = (state: ValidationError = null, action: IAction<ValidationE
     case ContactEditActions.SET_FIELDS_TO_STATE:
     case ContactEditActions.RESET_FIELDS_STATE:
     case Actions.UPDATE_AMOUNT:
+    case CHANGE_TAB:
       return null;
     default:
       return state;
@@ -202,7 +204,24 @@ const PreferencesReducer = (state: Preferences = {}, action: IAction<Preferences
   }
 };
 
+const FetchingReducer = (state: boolean = false, action: IAction<any>): boolean => {
+  switch (action.type) {
+
+    case ContactEditActions.OPEN_EDIT_CONTACT_REQUEST:
+      return true;
+
+    case FULFILLED(ContactEditActions.OPEN_EDIT_CONTACT_REQUEST):
+    case Actions.CHANGE_PHASE:
+    case Actions.INIT_REQUEST:
+      return false;
+
+    default:
+      return state;
+  }
+}
+
 export const Reducer = combineReducers<CheckoutState>({
+  fetching: FetchingReducer,
   newContact: NewContactReducer,
   fields: FieldsReducer,
   phase: PhaseReducer,

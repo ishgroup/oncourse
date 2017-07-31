@@ -17,7 +17,7 @@ export const GET_PAYMENT_STATUS = "checkout/payment/get/payment/status";
 
 export const RESET_PAYMENT_STATE = "checkout/payment/reset/payment/state";
 
-export const GET_CORPORATE_PASS = "checkout/payment/get/corporatePass";
+export const GET_CORPORATE_PASS_REQUEST = "checkout/payment/get/corporatePass";
 export const APPLY_CORPORATE_PASS = "checkout/payment/apply/corporatePass";
 export const RESET_CORPORATE_PASS = "checkout/payment/reset/corporatePass";
 
@@ -65,7 +65,7 @@ export const resetPaymentState = () => {
 };
 
 export const getCorporatePass = (code: string) => ({
-  type: GET_CORPORATE_PASS,
+  type: GET_CORPORATE_PASS_REQUEST,
   payload: code,
 });
 
