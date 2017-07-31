@@ -2,6 +2,7 @@ import * as React from "react";
 import AmountComp from "../../../components/AmountComp";
 import {FormDecorator} from "redux-form";
 import {Promotion, RedeemVoucher, Amount} from "../../../../model";
+import {Tabs} from "../reducers/State";
 
 export interface Props {
   paymentForm: FormDecorator<FormData, any, any>;
@@ -12,11 +13,12 @@ export interface Props {
   onToggleVoucher?: (redeemVoucher, enabled) => void;
   onUpdatePayNow?: (amount, val) => void;
   onInit?: () => void;
+  currentTab: Tabs;
 }
 
 export class PaymentComp extends React.Component<Props, any> {
   render() {
-    const {amount,onAddCode, paymentForm, promotions, onUpdatePayNow, onToggleVoucher, redeemVouchers} = this.props;
+    const {amount,onAddCode, paymentForm, promotions, onUpdatePayNow, onToggleVoucher, redeemVouchers, currentTab} = this.props;
     return (
       <div>
         <div className="row">
@@ -29,6 +31,7 @@ export class PaymentComp extends React.Component<Props, any> {
                 onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
                 onToggleVoucher={onToggleVoucher}
                 redeemVouchers={redeemVouchers}
+                currentTab={currentTab}
               />
             </div>
           </div>

@@ -4,7 +4,7 @@ import classnames from "classnames";
 import {Amount, Promotion, RedeemVoucher as RedeemVoucherModel} from "../../model";
 import AddCodeComp from "./AddCodeComp";
 import CheckoutService from "../services/CheckoutService";
-import log = Handlebars.log;
+import {Tabs} from "../containers/payment/reducers/State";
 
 interface Props {
   amount: Amount;
@@ -13,6 +13,7 @@ interface Props {
   redeemVouchers?: any;
   onUpdatePayNow?: (amount, val) => void;
   onToggleVoucher?: (redeemVoucher, enabled) => void;
+  currentTab?: Tabs;
 }
 
 class AmountComp extends React.Component<Props, any> {
@@ -38,7 +39,7 @@ class AmountComp extends React.Component<Props, any> {
   }
 
   render(): JSX.Element {
-    const {amount, onAddCode, promotions, onUpdatePayNow, redeemVouchers, onToggleVoucher} = this.props;
+    const {amount, onAddCode, promotions, onUpdatePayNow, redeemVouchers, onToggleVoucher, currentTab} = this.props;
     const activeVoucherWithPayer = redeemVouchers && redeemVouchers.find(v => v.payer && v.enabled);
 
     return (
@@ -60,7 +61,8 @@ class AmountComp extends React.Component<Props, any> {
 
           { amount && amount.discount !== 0 && <Discount discount={amount.discount}/>}
 
-          { amount && (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
+          { (amount && currentTab !== Tabs.corporatePass) &&
+            (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow
             payNow={amount.payNow}
             onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
