@@ -2,7 +2,7 @@ import * as React from "react";
 import classnames from "classnames";
 import {ConfirmOrderDialog} from "./addButton/ConfirmOrderDialog";
 import {CourseClass} from "../../model";
-import {plural, stopPropagation} from "../../common/utils/HtmlUtils";
+import {stopPropagation} from "../../common/utils/HtmlUtils";
 
 
 export class EnrolButton extends React.Component<Props, State> {
@@ -96,7 +96,7 @@ export class EnrolButton extends React.Component<Props, State> {
         {text}
       </button>,
       showedPlaces && <div key="free_places" className="classStatus">
-        {availableEnrolmentPlaces > 5 ? 'There are places available' : `There ${plural(availableEnrolmentPlaces, ['is one place', `${availableEnrolmentPlaces} are places`])} available`}
+        {this.availablePlacesText(availableEnrolmentPlaces)}
       </div>
     ];
 
@@ -108,6 +108,12 @@ export class EnrolButton extends React.Component<Props, State> {
                                                        checkoutPath={checkoutPath}/>}
       </div>
     );
+  }
+
+  private availablePlacesText = (places: number): string => {
+    if (places > 5) return 'There are places available';
+    if (places === 1) return 'There is one place available';
+    return `There are ${places} available`;
   }
 }
 
