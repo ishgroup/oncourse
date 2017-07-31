@@ -25,7 +25,13 @@ export class ResultComp extends React.Component<Props, any> {
           successLink={successLink}
         />
         }
-        {response.status === PaymentStatus.FAILED && <Failed onAnotherCard={onAnotherCard} onCancel={onCancel}/>}
+        {response.status === PaymentStatus.FAILED &&
+          <Failed
+            onAnotherCard={onAnotherCard}
+            onCancel={onCancel}
+            successLink={successLink}
+          />
+        }
         {response.status === PaymentStatus.UNDEFINED && <Undefined/>}
         {response.status === PaymentStatus.IN_PROGRESS && <InProgress/>}
       </div>
