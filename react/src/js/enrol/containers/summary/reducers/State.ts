@@ -39,6 +39,7 @@ export interface State {
     memberships: { [key: string]: Membership }
     contactNodes: ContactNodesStorage;
   };
+  fetching?: boolean;
 }
 
 export const ContactNodeToState = (input: ContactNode[]): State => {

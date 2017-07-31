@@ -22,6 +22,7 @@ export interface Props {
   concessions?: any;
   onUpdatePayNow?: (amount, val) => void;
   needParent?: boolean;
+  fetching?: boolean;
 }
 
 
@@ -52,12 +53,14 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment,
+    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching,
       redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent} = this.props;
 
     return (
       <div className="payment-summary">
-        {contacts.map(c => this.renderContact(c))}
+        <div className={classnames("contacts-summary", {fetching})}>
+          {contacts.map(c => this.renderContact(c))}
+        </div>
         <AddAnotherContact onAddContact={onAddContact}/>
 
         <div className="row">

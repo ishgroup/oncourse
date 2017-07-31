@@ -39,33 +39,38 @@ class ContactComp extends React.Component<Props, any> {
           {enrolments.map((props, index) => {
             return <EnrolmentComp
               key={index} {...props}
-              onChange={() => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}/>;
+              onChange={() => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}
+            />;
           })}
 
           {applications.map((props, index) => {
             return <ApplicationComp
               key={index} {...props}
-              onChange={() => onSelect(Object.assign(new Application(), props.application), !props.application.selected)}/>;
+              onChange={() => onSelect(Object.assign(new Application(), props.application), !props.application.selected)}
+            />;
           })}
 
           {vouchers.map((props, index) => {
             return <VoucherComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected) }
-              onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher), val)}/>;
+              onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher), val)}
+            />;
 
           })}
 
           {memberships.map((props, index) => {
             return <MembershipComp
               key={index} {...props}
-              onChange={() => onSelect(Object.assign(new Membership(), props.membership), !props.membership.selected) }/>;
+              onChange={() => onSelect(Object.assign(new Membership(), props.membership), !props.membership.selected) }
+            />;
           })}
 
           {articles.map((props, index) => {
             return <ArticleComp
               key={index} {...props}
-              onChange={() => onSelect(Object.assign(new Article(), props.article), !props.article.selected) }/>;
+              onChange={() => onSelect(Object.assign(new Article(), props.article), !props.article.selected) }
+            />;
           })}
 
 

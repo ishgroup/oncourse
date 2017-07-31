@@ -45,7 +45,7 @@ class AmountComp extends React.Component<Props, any> {
       <div className="row">
         <AddCodeComp onAdd={onAddCode} promotions={promotions}/>
         <div className="col-xs-24 col-sm-8 amount-content text-right">
-          { amount && amount.total && <Total total={amount.subTotal}/> }
+          { amount && (amount.subTotal || amount.subTotal === 0) && <Total total={amount.subTotal}/> }
 
           { amount && redeemVouchers &&
             redeemVouchers.map(v => (
@@ -58,7 +58,7 @@ class AmountComp extends React.Component<Props, any> {
               />
             ))}
 
-          { amount && amount.discount && <Discount discount={amount.discount}/>}
+          { amount && amount.discount !== 0 && <Discount discount={amount.discount}/>}
 
           { amount && (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow

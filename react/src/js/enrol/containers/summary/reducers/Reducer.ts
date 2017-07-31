@@ -1,8 +1,9 @@
 import * as SummaryActions from "../actions/Actions";
 import {ContactNodeStorage, ContactNodeToState, State} from "./State";
-import {RESET_CHECKOUT_STATE} from "../../../actions/Actions";
+import {RESET_CHECKOUT_STATE, SHOW_MESSAGES} from "../../../actions/Actions";
 import * as L from "lodash";
 import {IAction} from "../../../../actions/IshAction";
+import {FULFILLED} from "../../../../common/actions/ActionUtils";
 
 export const Reducer = (state: State = ContactNodeToState([]), action: IAction<State>): State => {
   const ns: State = L.cloneDeep(state);
@@ -33,6 +34,19 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<S
 
     case RESET_CHECKOUT_STATE:
       return ContactNodeToState([]);
+
+    case SummaryActions.SELECT_ITEM_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+      };
+
+    case FULFILLED(SummaryActions.SELECT_ITEM_REQUEST):
+    case SHOW_MESSAGES:
+      return {
+        ...state,
+        fetching: false,
+      };
 
     default:
       return state;
