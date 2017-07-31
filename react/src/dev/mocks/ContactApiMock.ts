@@ -27,6 +27,7 @@ export class ContactApiMock extends ContactApi {
   }
 
   createOrGetContact(request: CreateContactParams): Promise<Contact> {
+    console.log(request);
     const result:ContactId = new ContactId();
     let contact: Contact = this.config.db.getContactByDetails(request.firstName, request.lastName, request.email);
     if (!contact) {

@@ -48,6 +48,7 @@ export class Checkout extends React.Component<Props, any> {
         <CompanyAddForm
           onSuccess={submitAddContact}
           onCancel={() => this.props.changePhase(page)}
+          fetching={fetching}
         />
         }
 

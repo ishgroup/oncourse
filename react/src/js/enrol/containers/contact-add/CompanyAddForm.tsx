@@ -1,5 +1,6 @@
 import {reduxForm} from "redux-form";
 import * as React from "react";
+import classnames from "classnames";
 
 import {CompanyAdd} from "./components/CompanyAdd";
 import {validateCompany} from "./actions/Validations";
@@ -11,12 +12,13 @@ import CheckoutService from "../../services/CheckoutService";
 
 class CompanyAddForm extends React.Component<any, any> {
   render() {
-    const {handleSubmit, onCancel, pristine, invalid, submitting} = this.props;
+    const {handleSubmit, onCancel, pristine, invalid, submitting, fetching} = this.props;
 
     return (
       <div>
         <form
           onSubmit={handleSubmit(values => CheckoutService.createOrGetContact({...values, company: true}))}
+          className={classnames({submitting: submitting || fetching})}
           id="contactEditorForm"
         >
           <CompanyAdd/>

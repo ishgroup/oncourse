@@ -291,6 +291,7 @@ export class BuildCreateContactParams {
     result.lastName = values.lastName;
     result.email = values.email;
     result.fieldSet = FieldSet.ENROLMENT;
+    result.company = values.company || false;
     return result;
   }
 }
