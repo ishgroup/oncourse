@@ -17,6 +17,8 @@ interface Props {
 }
 
 class AmountComp extends React.Component<Props, any> {
+  private payNowInput;
+
   constructor(props) {
     super(props);
 
@@ -33,9 +35,9 @@ class AmountComp extends React.Component<Props, any> {
     }
   }
 
-  handleBlur(el) {
+  handleBlur(value) {
     const {onUpdatePayNow, amount} = this.props;
-    onUpdatePayNow(amount, Number(el.value).toFixed(2));
+    onUpdatePayNow(amount, Number(value).toFixed(2));
   }
 
   render(): JSX.Element {
@@ -123,10 +125,11 @@ const PayNow = props => {
     <span className="col-xs-12">
       <input
         type="text"
-        value={props.payNow}
-        onChange={e => props.onChange(e.target.value)}
-        onBlur={e => props.onBlur(e.target)}
+        value={`$${props.payNow}`}
+        onChange={e => props.onChange(e.target.value.replace('$', ''))}
+        onBlur={e => props.onBlur(this.payNowInput.value.replace('$', ''))}
         className={classnames({'t-error': props.errors.length})}
+        ref={el => this.payNowInput = el}
       />
       {props.errors.map((text, i) => (
         <span key={i} className="validate-text">{text}</span>
