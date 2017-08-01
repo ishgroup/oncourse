@@ -11,7 +11,7 @@ interface Props {
   onAddCode: (code: string) => void;
   promotions: Promotion[];
   redeemVouchers?: any;
-  onUpdatePayNow?: (amount, val) => void;
+  onUpdatePayNow?: (val, validate?: boolean) => void;
   onToggleVoucher?: (redeemVoucher, enabled) => void;
   currentTab?: Tabs;
 }
@@ -21,22 +21,19 @@ class AmountComp extends React.Component<Props, any> {
 
   constructor(props) {
     super(props);
-
-    this.state = {errors: []};
   }
 
   handleChangePayNow(val) {
-    const {onUpdatePayNow, amount} = this.props;
+    const {onUpdatePayNow} = this.props;
     const reg = (/^[0-9]+\.?[0-9]*$/);
     if (val > 0 && reg.test(val)) {
-      onUpdatePayNow(amount, val);
-      this.setState({errors: CheckoutService.validatePayNow({...amount, payNow: val})});
+      onUpdatePayNow(val);
     }
   }
 
   handleBlur(value) {
-    const {onUpdatePayNow, amount} = this.props;
-    onUpdatePayNow(amount, Number(value).toFixed(2));
+    const {onUpdatePayNow} = this.props;
+    onUpdatePayNow(Number(value).toFixed(2), true);
   }
 
   render(): JSX.Element {
@@ -70,7 +67,6 @@ class AmountComp extends React.Component<Props, any> {
             payNow={amount.payNow}
             onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
             onBlur={el => this.handleBlur(el)}
-            errors={this.state.errors}
           />
           }
         </div>
@@ -127,12 +123,9 @@ const PayNow = props => {
         value={`$${props.payNow}`}
         onChange={e => props.onChange(e.target.value.replace('$', ''))}
         onBlur={e => props.onBlur(this.payNowInput.value.replace('$', ''))}
-        className={classnames({'t-error': props.errors.length})}
         ref={el => this.payNowInput = el}
       />
-      {props.errors.map((text, i) => (
-        <span key={i} className="validate-text">{text}</span>
-      ))}
+
     </span>
   );
 

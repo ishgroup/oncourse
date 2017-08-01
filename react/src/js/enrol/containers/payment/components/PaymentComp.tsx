@@ -11,7 +11,7 @@ export interface Props {
   promotions: Promotion[];
   redeemVouchers?: RedeemVoucher[];
   onToggleVoucher?: (redeemVoucher, enabled) => void;
-  onUpdatePayNow?: (amount, val) => void;
+  onUpdatePayNow?: (val, validate?: boolean) => void;
   onInit?: () => void;
   currentTab: Tabs;
 }

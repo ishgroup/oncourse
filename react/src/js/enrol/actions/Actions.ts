@@ -20,6 +20,7 @@ export const SET_PAYER_TO_STATE: string = "checkout/set/payer/to/state";
 
 export const GET_AMOUNT: string = "checkout/get/amount";
 export const UPDATE_AMOUNT: string = "checkout/update/amount";
+export const UPDATE_PAYNOW: string = "checkout/update/paynow";
 
 export const SET_NEW_CONTACT_FLAG = "checkout/set/new/contact/flag";
 
@@ -100,6 +101,13 @@ export const updateAmount = (amount: Amount): IAction<Amount> => {
   return {
     type: UPDATE_AMOUNT,
     payload: amount,
+  };
+};
+
+export const updatePayNow = (val: number, validate: boolean): IAction<any> => {
+  return {
+    type: UPDATE_PAYNOW,
+    payload: {val, validate},
   };
 };
 

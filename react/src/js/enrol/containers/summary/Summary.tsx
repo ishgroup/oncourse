@@ -16,7 +16,7 @@ import {
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
 import {
-  changePhase, addCode, getCheckoutModelFromBackend, updateAmount, toggleRedeemVoucher,
+  changePhase, addCode, getCheckoutModelFromBackend, updateAmount, toggleRedeemVoucher, updatePayNow,
 } from "../../actions/Actions";
 import {updateConcessionContact, getContactConcessions} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
@@ -139,8 +139,8 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onInit: () => {
       dispatch(getContactConcessions());
     },
-    onUpdatePayNow: (amount, val): void => {
-      dispatch(updateAmount({...amount, payNow: val}));
+    onUpdatePayNow: (val, validate): void => {
+      dispatch(updatePayNow(val, validate));
     },
     onToggleVoucher: (redeemVoucher, enabled) => {
       dispatch(toggleRedeemVoucher(redeemVoucher, enabled));

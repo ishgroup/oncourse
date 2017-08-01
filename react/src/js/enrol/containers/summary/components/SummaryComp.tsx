@@ -20,7 +20,7 @@ export interface Props {
   onAddConcession?: () => void;
   onInit?: () => void;
   concessions?: any;
-  onUpdatePayNow?: (amount, val) => void;
+  onUpdatePayNow?: (val, validate?: boolean) => void;
   needParent?: boolean;
   fetching?: boolean;
 }

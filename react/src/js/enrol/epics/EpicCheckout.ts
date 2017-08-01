@@ -11,6 +11,7 @@ import MessagesShowEpic from "./MessagesShowEpic";
 import {AddContactToSummary} from "../containers/summary/epics/EpicAddContactToSummary";
 import {EpicItemSelect} from "./EpicItemSelect";
 import {EpicUpdateAmount} from "./EpicUpdateAmount";
+import {EpicUpdatePayNow} from "./EpicUpdatePayNow";
 import {EpicProceedToPayment} from "./EpicProceedToPayment";
 import {EpicPayment} from "../containers/payment/epics/EpicPayment";
 import {EpicGetConcessionTypes} from "../containers/concession/epics/EpicGetConcessionTypes";
@@ -44,6 +45,7 @@ export const EpicCheckout = combineEpics(
   AddContactToSummary,
   EpicItemSelect,
   EpicUpdateAmount,
+  EpicUpdatePayNow,
   EpicUpdateSummary,
   EpicProceedToPayment,
   EpicPayment,
