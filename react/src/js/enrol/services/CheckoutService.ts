@@ -247,7 +247,7 @@ export class BuildConcessionRequest {
   static fromValues = (values, state) => {
     const result: Concession = new Concession();
     result.contactId = state.contact.id;
-    result.concessionTypeId = values.concessionType;
+    result.concessionTypeId = values.concessionType.key;
     result.expiryDate = values.date || null;
     result.number = values.number || null;
     return result;
