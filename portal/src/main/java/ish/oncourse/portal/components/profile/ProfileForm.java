@@ -27,9 +27,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * User: artem
@@ -37,6 +38,8 @@ import static ish.oncourse.services.preference.PreferenceController.FieldDescrip
  * Time: 5:49 PM
  */
 public class ProfileForm {
+
+    private static Logger logger = LogManager.getLogger();
 
     @Inject
     private ICayenneService cayenneService;
@@ -68,7 +71,7 @@ public class ProfileForm {
     private Contact contact;
 	
 	@Property
-	private String customFieldName;
+	private String customFieldKey;
 
 	private Map<String, String> customFieldContainer = new HashMap<>();
 
@@ -105,14 +108,14 @@ public class ProfileForm {
 		//collect all visible Custom field types provided by college
 		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
 			if (getContactFieldHelper().isCustomFieldTypeVisible(fieldType)) {
-				customFieldContainer.put(fieldType.getName(), null);
+				customFieldContainer.put(fieldType.getKey(), null);
 			}
 		}
 		
 		//fill values for fields which already predefined for contact
 		for (CustomField field : contact.getCustomFields()) {
 			if (getContactFieldHelper().isCustomFieldVisible(field)) {
-				customFieldContainer.put(field.getCustomFieldType().getName(), field.getValue());
+				customFieldContainer.put(field.getCustomFieldType().getKey(), field.getValue());
 			}
 		}
     }
@@ -132,33 +135,41 @@ public class ProfileForm {
     }
 
 	public String getDefaultValue() {
-		return getCustomFieldTypeByName(customFieldName).getDefaultValue();
+		return getCustomFieldTypeByKey(customFieldKey).getDefaultValue();
 	}
 	
 	public String getCurrentCustomFieldValue() {
-		return customFieldContainer.get(customFieldName);
+		return customFieldContainer.get(customFieldKey);
 	}
 
+	public String getCurrentCustomFieldName() {
+        return getCustomFieldTypeByKey(customFieldKey).getName();
+    }
+
 	public void setCurrentCustomFieldValue(String value) {
-		customFieldContainer.put(customFieldName, value);
+		customFieldContainer.put(customFieldKey, value);
 	}
 	
-	public Set<String> getCustomFieldNames() {
+	public Set<String> getCustomFieldKeys() {
 		return customFieldContainer.keySet();
 	}
 	
-	public boolean customFieldRequired(String customFieldName) {
-		return getContactFieldHelper().isCustomFieldTypeRequired(getCustomFieldTypeByName(customFieldName));
+	public boolean customFieldRequired(String customFieldKey) {
+		return getContactFieldHelper().isCustomFieldTypeRequired(getCustomFieldTypeByKey(customFieldKey));
 	}
 
-	public CustomFieldType getCustomFieldTypeByName(String name) {
+	public CustomFieldType getCustomFieldTypeByKey(String key) {
+        CustomFieldType res = null;
 		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
-			if (fieldType.getName().equals(name)) {
-				return fieldType;
+			if (fieldType.getKey().equals(key)) {
+				res = fieldType;
 			}
 		}
+		if (res == null) {
+		    logger.error("Custom field with name '{}' not found on college id : {}", key, contact.getCollege().getId());
+        }
 
-		return null;
+		return res;
 	}
 
     public boolean visible(String fieldName) {
@@ -240,7 +251,7 @@ public class ProfileForm {
 			
 			//collect all custom field which was already defined for contact
 			for (CustomField field : contact.getCustomFields()) {
-				contactFields.put(field.getCustomFieldType().getName(), field);
+				contactFields.put(field.getCustomFieldType().getKey(), field);
 			}
 			
 			//iterate by all fields from form
@@ -252,7 +263,7 @@ public class ProfileForm {
 				} else if (customFieldEntry.getValue() != null){
 					//create new custom field if value for such custom field type populated on form
 					CustomField newField = contact.getObjectContext().newObject(ContactCustomField.class);
-					newField.setCustomFieldType(getCustomFieldTypeByName(customFieldEntry.getKey()));
+					newField.setCustomFieldType(getCustomFieldTypeByKey(customFieldEntry.getKey()));
 					newField.setValue(customFieldEntry.getValue());
 					newField.setRelatedObject(contact);
 					newField.setCollege(contact.getCollege());

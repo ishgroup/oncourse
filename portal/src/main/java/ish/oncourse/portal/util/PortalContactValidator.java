@@ -55,13 +55,13 @@ public class PortalContactValidator extends WillowContactValidator {
 		return portalContactValidator;
 	}
 
-	private boolean customFieldRequired(String customFieldName) {
-		return contactFieldHelper.isCustomFieldTypeRequired(getCustomFieldTypeByName(customFieldName));
+	private boolean customFieldRequired(String customFieldKey) {
+		return contactFieldHelper.isCustomFieldTypeRequired(getCustomFieldTypeByKey(customFieldKey));
 	}
 
-	private CustomFieldType getCustomFieldTypeByName(String name) {
+	private CustomFieldType getCustomFieldTypeByKey(String name) {
 		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
-			if (fieldType.getName().equals(name)) {
+			if (fieldType.getKey().equals(name)) {
 				return fieldType;
 			}
 		}

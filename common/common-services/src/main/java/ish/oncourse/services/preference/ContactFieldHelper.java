@@ -135,7 +135,6 @@ public class ContactFieldHelper {
 	}
 	
 	public boolean isCustomFieldTypeVisible(CustomFieldType customFieldType) {
-		if (customFieldType != null) {
 			switch (contactFieldSet) {
 				case enrolment:
 					return isShow(customFieldType.getRequireForEnrolment());
@@ -146,12 +145,9 @@ public class ContactFieldHelper {
 				default:
 					throw new IllegalArgumentException("Unknown field set type.");
 			}
-		}
-		return false;
 	}
 
 	public boolean isCustomFieldTypeRequired(CustomFieldType customFieldType) {
-		if (customFieldType != null) {
 			switch (contactFieldSet) {
 				case enrolment:
 					return VALUE_Required.equals(customFieldType.getRequireForEnrolment());
@@ -162,7 +158,5 @@ public class ContactFieldHelper {
 				default:
 					throw new IllegalArgumentException("Unknown field set type.");
 			}
-		}
-		return false;
 	}
 }

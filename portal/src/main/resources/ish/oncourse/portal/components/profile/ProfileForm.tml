@@ -139,14 +139,14 @@
                         </div>
                     </div>
                 </div>
-				<t:loop source="customFieldNames" value="customFieldName">
+				<t:loop source="customFieldKeys" value="customFieldKey">
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label for="customField" class="control-label">${customFieldName}<t:if test="customFieldRequired(customFieldName)"><em title="${message:required}">*</em></t:if></label>
-								<div class="${validateHandler.validateClass(customFieldName)}">
-									<t:textfield t:id="customField" value="currentCustomFieldValue" class="form-control ${validateHandler.errorClass(customFieldName)}" data-default="${defaultValue}"/>
-									<span t:type="HintComponent" validationMessage="${validateHandler.error(customFieldName)}"/>
+								<label for="customField" class="control-label">${currentCustomFieldName}<t:if test="customFieldRequired(customFieldKey)"><em title="${message:required}">*</em></t:if></label>
+								<div class="${validateHandler.validateClass(customFieldKey)}">
+									<t:textfield t:id="customField" value="currentCustomFieldValue" class="form-control ${validateHandler.errorClass(customFieldKey)}" data-default="${defaultValue}"/>
+									<span t:type="HintComponent" validationMessage="${validateHandler.error(customFieldKey)}"/>
 								</div>
 							</div>
 						</div>
