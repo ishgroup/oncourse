@@ -19,6 +19,7 @@ interface Props {
   newOptionEnable: boolean;
   required: boolean;
   label: string;
+  searchable?: boolean;
   onBlurSelect?: (field) => void;
 }
 
@@ -28,9 +29,9 @@ interface Props {
 
 class SelectField extends React.Component<any, any> {
 
-  private loadOptions = (input: string): Promise<any> => {
+  private loadOptions = (input: string, showValuesOnInit: boolean): Promise<any> => {
     const {loadOptions} = this.props;
-    if (loadOptions && input.length > 0) {
+    if (loadOptions && (input.length > 0 || showValuesOnInit)) {
       return loadOptions(input).then((data: Item[]) => {
         return {options: data.map(item => ({key: item.key, value: item.value}))};
       });
@@ -57,12 +58,12 @@ class SelectField extends React.Component<any, any> {
   toProps = (): Props => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
     const meta = metaFrom(this.props);
-
     return {
       input,
       meta,
       required: this.props.required,
       label: this.props.label,
+      searchable: this.props.searchable !== false,
       labelKey: this.props.labelKey ? this.props.labelKey : "value",
       valueKey: this.props.valueKey ? this.props.valueKey : "key",
       newOptionEnable: this.props.newOptionEnable || false,
@@ -74,7 +75,8 @@ class SelectField extends React.Component<any, any> {
     const props: any = this.toProps();
     const RenderSelectWrapper = props.newOptionEnable ? Select.AsyncCreatable : Select.Async;
     const isShowError = showError(props);
-
+    const showValuesOnInit: boolean = !props.searchable;
+    
     const inner = props => (
       <div>
         {props.label &&
@@ -94,10 +96,10 @@ class SelectField extends React.Component<any, any> {
             name={name}
             labelKey={props.labelKey}
             valueKey={props.valueKey}
-            searchable={true}
+            searchable={props.searchable}
             clearable={false}
             value={props.input}
-            loadOptions={this.loadOptions}
+            loadOptions={input => this.loadOptions(input, showValuesOnInit)}
             onBlur={this.onBlur}
             onChange={this.onChange}
             promptTextCreator={label => `${label} `}

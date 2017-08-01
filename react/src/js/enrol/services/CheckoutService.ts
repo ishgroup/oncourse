@@ -152,7 +152,8 @@ export class CheckoutService {
   public validatePayNow = (amount: Amount) => {
     const errors = [];
     // TODO: Fix validate messages/update conditions
-
+    console.log(amount.payNow < amount.minPayNow);
+    console.log(amount.minPayNow);
     if (amount.payNow < amount.minPayNow) {
       errors.push('low value');
     } else if (Number(amount.payNow) > Number(amount.subTotal)) {

@@ -112,6 +112,7 @@ class CreditCardComp extends React.Component<Props, any> {
                     <Field
                       component={SelectField}
                       name={FieldName.expiryMonth}
+                      searchable={false}
                       required={true}
                       loadOptions={PaymentService.months}
                     />
@@ -119,6 +120,7 @@ class CreditCardComp extends React.Component<Props, any> {
                     <Field
                       component={SelectField}
                       name={FieldName.expiryYear}
+                      searchable={false}
                       required={true}
                       loadOptions={PaymentService.years}
                     />

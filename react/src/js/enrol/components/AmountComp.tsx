@@ -28,7 +28,6 @@ class AmountComp extends React.Component<Props, any> {
   handleChangePayNow(val) {
     const {onUpdatePayNow, amount} = this.props;
     const reg = (/^[0-9]+\.?[0-9]*$/);
-
     if (val > 0 && reg.test(val)) {
       onUpdatePayNow(amount, val);
       this.setState({errors: CheckoutService.validatePayNow({...amount, payNow: val})});
