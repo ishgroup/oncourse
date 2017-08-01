@@ -7,7 +7,7 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v14.stubs.replication.*;
 import org.apache.cayenne.Cayenne;
@@ -109,7 +109,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     
 	@Test
 	public void testBinaryDataProcessingV14() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V12);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V14);
 		transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
 
 		ish.oncourse.webservices.v14.stubs.replication.DocumentStub documentStub = new ish.oncourse.webservices.v14.stubs.replication.DocumentStub();

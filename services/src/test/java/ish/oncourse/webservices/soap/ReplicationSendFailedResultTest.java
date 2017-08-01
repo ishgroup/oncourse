@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v4;
+package ish.oncourse.webservices.soap;
 
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.IReplicationService;
@@ -24,7 +24,7 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 	public void setupDataSet() throws Exception {
         initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 		
-		InputStream st = ReplicationSendFailedResultTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/replicationDataSet.xml");
+		InputStream st = ReplicationSendFailedResultTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/replicationDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DataSource onDataSource = getDataSource("jdbc/oncourse");

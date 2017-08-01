@@ -3,7 +3,7 @@ package ish.oncourse.webservices.replication.updaters;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;

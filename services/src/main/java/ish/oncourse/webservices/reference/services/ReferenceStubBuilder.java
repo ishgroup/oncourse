@@ -11,16 +11,10 @@ import java.util.Map;
 
 public class ReferenceStubBuilder {
 
-	private Map<String, IReferenceStubBuilder> buildersv4 = new HashMap<>();
 	private Map<String, IReferenceStubBuilder> buildersv5 = new HashMap<>();
 	private Map<String, IReferenceStubBuilder> buildersv6 = new HashMap<>();
 
 	public ReferenceStubBuilder() {
-		buildersv4.put(getClassName(Country.class), new ish.oncourse.webservices.reference.v4.builders.CountryStubBuilder());
-		buildersv4.put(getClassName(Language.class), new ish.oncourse.webservices.reference.v4.builders.LanguageStubBuilder());
-		buildersv4.put(getClassName(Module.class), new ish.oncourse.webservices.reference.v4.builders.ModuleStubBuilder());
-		buildersv4.put(getClassName(Qualification.class), new ish.oncourse.webservices.reference.v4.builders.QualificationStubBuilder());
-		buildersv4.put(getClassName(TrainingPackage.class), new ish.oncourse.webservices.reference.v4.builders.TrainingPackageStubBuilder());
 
 		buildersv5.put(getClassName(Country.class), new ish.oncourse.webservices.reference.v5.builders.CountryStubBuilder());
 		buildersv5.put(getClassName(Language.class), new ish.oncourse.webservices.reference.v5.builders.LanguageStubBuilder());
@@ -41,9 +35,6 @@ public class ReferenceStubBuilder {
 		IReferenceStubBuilder builder;
 		
 		switch (version) {
-			case V4:
-				builder = buildersv4.get(key);
-				break;
 			case V5:
 				builder = buildersv5.get(key);
 				break;

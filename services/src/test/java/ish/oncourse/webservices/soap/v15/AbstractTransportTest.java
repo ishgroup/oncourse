@@ -1,13 +1,11 @@
 package ish.oncourse.webservices.soap.v15;
 
 import ish.oncourse.webservices.soap.StubPopulator;
-import ish.oncourse.webservices.soap.v15.PaymentPortType;
-import ish.oncourse.webservices.soap.v15.ReplicationPortType;
-import ish.oncourse.webservices.soap.v4.ReferencePortType;
+import ish.oncourse.webservices.soap.v6.ReferencePortType;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.v15.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v15.stubs.replication.TransactionGroup;
-import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
+import ish.oncourse.webservices.v6.stubs.reference.ReferenceStub;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.bus.spring.SpringBusFactory;
@@ -49,7 +47,7 @@ public abstract class AbstractTransportTest {
     //protected static TestServer server;
 
     public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v15.stubs.replication";
-    public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v4.stubs.reference";
+    public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v6.stubs.reference";
 
 
     protected static TestServer startServer() throws Exception {
@@ -169,7 +167,7 @@ public abstract class AbstractTransportTest {
     }
 
     protected ReferencePortType getReferencePortType() {
-        return getPortType("/services/v4/reference", new QName("http://ref.v4.soap.webservices.oncourse.ish/", "ReferenceService"), ReferencePortType.class);
+        return getPortType("/services/v6/reference", new QName("http://ref.v6.soap.webservices.oncourse.ish/", "ReferenceService"), ReferencePortType.class);
     }
 
     protected PaymentPortType getPaymentPortType() {

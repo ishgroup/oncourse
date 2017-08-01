@@ -12,7 +12,7 @@ import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.replication.v14.updaters.AbstractProductUpdater;
 import ish.oncourse.webservices.replication.v14.updaters.VoucherProductUpdater;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.v14.stubs.replication.VoucherProductStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;

@@ -6,7 +6,7 @@ package ish.oncourse.webservices.replication.builders;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.cayenne.Cayenne;
 import org.dbunit.database.DatabaseConfig;

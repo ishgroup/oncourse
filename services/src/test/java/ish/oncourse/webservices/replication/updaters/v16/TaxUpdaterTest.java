@@ -3,19 +3,14 @@
  */
 package ish.oncourse.webservices.replication.updaters.v16;
 
-import ish.common.types.ExpiryType;
-import ish.common.types.ProductType;
-import ish.math.Money;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.Tax;
-import ish.oncourse.model.VoucherProduct;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.replication.v16.updaters.TaxUpdater;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.v16.stubs.replication.TaxStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;

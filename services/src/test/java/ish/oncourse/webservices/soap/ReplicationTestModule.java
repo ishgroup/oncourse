@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v4;
+package ish.oncourse.webservices.soap;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.services.ModelModule;
@@ -19,6 +19,8 @@ import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
 import ish.oncourse.webservices.replication.services.*;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
+import ish.oncourse.webservices.soap.v6.ReferencePortType;
+import ish.oncourse.webservices.soap.v6.ReferencePortTypeImpl;
 import ish.oncourse.webservices.usi.USIVerificationService;
 import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Local;

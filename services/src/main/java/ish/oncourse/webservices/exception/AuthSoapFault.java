@@ -8,6 +8,6 @@ import javax.xml.namespace.QName;
 public class AuthSoapFault extends SoapFault {
 
 	public AuthSoapFault(String message) {
-		super(message, new QName("http://auth.v4.soap.webservices.oncourse.ish/"));
+		super(message, new QName("http://auth.v6.soap.webservices.oncourse.ish/"));
 	}
 }

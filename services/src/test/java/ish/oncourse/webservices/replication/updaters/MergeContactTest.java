@@ -6,7 +6,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ContextUtils;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
@@ -38,7 +38,7 @@ public class MergeContactTest extends ServiceTest {
 		params.put(ContextUtils.SHOULD_CREATE_FK_CONSTRAINTS, false);
 		initTestWithParams(params, "ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
         
-        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v4/updaters/MergeContactTest.xml");
+        InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v6/updaters/MergeContactTest.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
         DataSource onDataSource = getDataSource("jdbc/oncourse");

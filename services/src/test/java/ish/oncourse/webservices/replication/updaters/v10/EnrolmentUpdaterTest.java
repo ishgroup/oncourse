@@ -11,7 +11,7 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.updaters.UpdaterException;
 import ish.oncourse.webservices.replication.v10.updaters.EnrolmentUpdater;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.v10.stubs.replication.EnrolmentStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;

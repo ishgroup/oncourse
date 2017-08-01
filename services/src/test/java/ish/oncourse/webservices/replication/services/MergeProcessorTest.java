@@ -3,7 +3,6 @@
  */
 package ish.oncourse.webservices.replication.services;
 
-import ish.common.types.AttendanceType;
 import ish.common.types.ContactDuplicateStatus;
 import ish.common.types.UsiStatus;
 import ish.oncourse.model.*;
@@ -11,12 +10,12 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.*;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v14.stubs.replication.ContactDuplicateStub;
-import ish.oncourse.webservices.v14.stubs.replication.*;
+import ish.oncourse.webservices.v16.stubs.replication.ContactDuplicateStub;
+import ish.oncourse.webservices.v16.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
@@ -30,13 +29,12 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 import static ish.oncourse.webservices.util.SupportedVersions.*;
-import static ish.oncourse.webservices.v14.stubs.replication.Status.SUCCESS;
+import static ish.oncourse.webservices.v16.stubs.replication.Status.SUCCESS;
 import static org.junit.Assert.*;
 
 public class MergeProcessorTest extends ServiceTest {
@@ -67,7 +65,7 @@ public class MergeProcessorTest extends ServiceTest {
 	@Test
 	public void processMergeTransaction() {
 		
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V13);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V16);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
 		duplicateStub.setAngelId(1l);
@@ -221,7 +219,7 @@ public class MergeProcessorTest extends ServiceTest {
 	 */
 	@Test
 	public void customFieldMerge1() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V13);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V16);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
 		duplicateStub.setAngelId(1L);
@@ -349,7 +347,7 @@ public class MergeProcessorTest extends ServiceTest {
 	 */
 	@Test
 	public void customFieldMerge2() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V14);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V16);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
 		duplicateStub.setAngelId(1L);
@@ -468,7 +466,7 @@ public class MergeProcessorTest extends ServiceTest {
 	 */
 	@Test
 	public void customFieldMerge3() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V14);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V16);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
 		duplicateStub.setAngelId(1L);

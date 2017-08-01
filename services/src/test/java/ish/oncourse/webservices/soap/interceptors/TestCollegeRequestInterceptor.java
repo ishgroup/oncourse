@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v4.interceptors;
+package ish.oncourse.webservices.soap.interceptors;
 
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;

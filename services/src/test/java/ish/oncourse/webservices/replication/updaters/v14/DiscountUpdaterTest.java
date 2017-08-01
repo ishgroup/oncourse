@@ -8,7 +8,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.replication.v14.updaters.DiscountUpdater;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.v14.stubs.replication.DiscountStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -32,7 +32,7 @@ public class DiscountUpdaterTest extends ServiceTest {
     @Before
     public void setupDataSet() throws Exception {
         initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-        InputStream st = DiscountUpdaterTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v4/updaters/oncourseDataSet.xml");
+        InputStream st = DiscountUpdaterTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v6/updaters/oncourseDataSet.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
         DataSource onDataSource = getDataSource("jdbc/oncourse");
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);

@@ -1,16 +1,16 @@
-package ish.oncourse.webservices.soap.v4;
+package ish.oncourse.webservices.soap.v6;
 
 import ish.oncourse.webservices.soap.v14.AbstractTransportTest;
-import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
-import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
+import ish.oncourse.webservices.v6.stubs.reference.ReferenceResult;
+import ish.oncourse.webservices.v6.stubs.reference.ReferenceStub;
 import org.apache.cxf.annotations.EndpointProperty;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.v4.ReferencePortType",
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.v6.ReferencePortType",
 		serviceName = "ReferenceService",
-		portName = "ReferencePort", targetNamespace = "http://ref.v4.soap.webservices.oncourse.ish/")
+		portName = "ReferencePort", targetNamespace = "http://ref.v6.soap.webservices.oncourse.ish/")
 @EndpointProperty(key = "soap.no.validate.parts", value = "true")
 public class TestReferencePortTypeImpl implements ReferencePortType {
 	@Override

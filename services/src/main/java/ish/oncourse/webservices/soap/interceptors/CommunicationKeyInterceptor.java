@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v4.interceptors;
+package ish.oncourse.webservices.soap.interceptors;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.KeyStatus;

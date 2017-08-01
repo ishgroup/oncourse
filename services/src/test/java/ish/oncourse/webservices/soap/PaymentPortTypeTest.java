@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v4;
+package ish.oncourse.webservices.soap;
 
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
@@ -53,7 +53,7 @@ public class PaymentPortTypeTest extends ServiceTest {
 
 		cayenneService = getService(ICayenneService.class);
 
-		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/paymentDataSet.xml");
+		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/paymentDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		onDataSource = getDataSource("jdbc/oncourse");
 		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), dataSet);

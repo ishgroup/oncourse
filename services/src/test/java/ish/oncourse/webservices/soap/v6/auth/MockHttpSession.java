@@ -1,4 +1,4 @@
-package ish.oncourse.webservices.soap.v4.auth;
+package ish.oncourse.webservices.soap.v6.auth;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;

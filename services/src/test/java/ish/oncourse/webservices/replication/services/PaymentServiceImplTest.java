@@ -3,8 +3,8 @@ package ish.oncourse.webservices.replication.services;
 import ish.oncourse.model.College;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
-import ish.oncourse.webservices.soap.v4.ReplicationPortTypeTest;
-import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
+import ish.oncourse.webservices.soap.ReplicationPortTypeTest;
+import ish.oncourse.webservices.soap.ReplicationTestModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
@@ -26,7 +26,7 @@ public class PaymentServiceImplTest extends ServiceTest {
 	public void setupDataSet() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
 
-		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v4/paymentDataSet.xml");
+		InputStream st = ReplicationPortTypeTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/soap/v6/paymentDataSet.xml");
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
 		DataSource onDataSource = getDataSource("jdbc/oncourse");
