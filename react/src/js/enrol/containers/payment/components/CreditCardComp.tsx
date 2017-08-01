@@ -96,6 +96,7 @@ class CreditCardComp extends React.Component<Props, any> {
                   label="CVV"
                   type="text"
                   required={true}
+                  placeholderChar={' '}
                   mask={[/\d/, /\d/, /\d/, /\d/]}
                 >
                   <img className="vcc-card-image" alt="CVV" src="/s/img/cvv-image.png"/>

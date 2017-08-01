@@ -53,7 +53,9 @@ class AmountComp extends React.Component<Props, any> {
               <RedeemVoucher
                 key={v.id}
                 redeemVoucher={v}
-                voucherPayment={amount.voucherPayments.find(vp => vp.redeemVoucherId === v.id)}
+                voucherPayment={amount.voucherPayments && amount.voucherPayments.find(
+                  vp => vp.redeemVoucherId === v.id,
+                )}
                 disabled={!!(activeVoucherWithPayer && activeVoucherWithPayer.id !== v.id)}
                 onChange={onToggleVoucher}
               />
