@@ -30,6 +30,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -212,5 +214,19 @@ public abstract class AbstractTransportTest {
         URL cxfConfig = AbstractTransportTest.class.getClassLoader().getResource("ish/oncourse/webservices/soap/cxf-client.xml");
         Bus bus = busFactory.createBus(cxfConfig);
         BusFactory.setDefaultBus(bus);
+    }
+    
+    public static <T> ArrayList<T> createStubsBy(List<String> stubClassNames,String packageName,Class<T> parentStubClass) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        ArrayList<T> stubs = new ArrayList<>();
+        for (String stubClassName : stubClassNames) {
+            @SuppressWarnings("rawtypes")
+            Class aClass = Class.forName(String.format("%s.%s", packageName, stubClassName));
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+            Constructor constructor = aClass.getConstructor();
+            @SuppressWarnings("unchecked")
+            T replicationStub = (T) constructor.newInstance();
+            stubs.add(replicationStub);
+        }
+        return stubs;
     }
 }

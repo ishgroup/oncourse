@@ -54,49 +54,49 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		testCorrectRelation(prepareV10Updater(), prepareV10Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
 
 		//v11
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), Application.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), Certificate.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), Contact.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), Course.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), CourseClass.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), Enrolment.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), Invoice.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), Room.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), Session.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), Site.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), Student.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), Tag.class);
-		testCorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), Application.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), Certificate.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), Contact.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), Course.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), CourseClass.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), Enrolment.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), Invoice.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), Room.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), Session.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), Site.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), Student.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), Tag.class);
+		testCorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
 		
 		//v12
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), Application.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), Certificate.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), Contact.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), Course.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), CourseClass.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), Enrolment.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), Invoice.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), Room.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), Session.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), Site.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), Student.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), Tag.class);
-		testCorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), Application.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), Certificate.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), Contact.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), Course.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), CourseClass.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), Enrolment.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), Invoice.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), Room.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), Session.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), Site.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), Student.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), Tag.class);
+		testCorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
 		
 		//v13
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), Application.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), Certificate.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), Contact.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), Course.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), CourseClass.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), Enrolment.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), Invoice.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), Room.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), Session.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), Site.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), Student.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), Tag.class);
-		testCorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), Application.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), Certificate.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), Contact.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), Course.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), CourseClass.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), Enrolment.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), Invoice.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), Room.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), Session.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), Site.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), Student.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), Tag.class);
+		testCorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), Tutor.class);
 	}
 
 	@Test
@@ -122,60 +122,60 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 				getMessageForIllegalEntity(PaymentOut.class.getSimpleName()));
 
 		//V11
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), getMessage(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), getMessage(AbstractWillowUpdater.CONTACT_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), getMessage(AbstractWillowUpdater.INVOICE_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), getMessage(AbstractWillowUpdater.ROOM_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), getMessage(AbstractWillowUpdater.SESSION_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), getMessage(AbstractWillowUpdater.SITE_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.STUDENT_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), getMessage(AbstractWillowUpdater.TUTOR_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), getMessage(AbstractWillowUpdater.TAG_ENTITY_NAME));
-		testIncorrectRelation(prepareV11Updater(), prepareV11Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), getMessage(AbstractWillowUpdater.APPLICATION_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), getMessage(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), getMessage(AbstractWillowUpdater.CONTACT_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), getMessage(AbstractWillowUpdater.INVOICE_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), getMessage(AbstractWillowUpdater.ROOM_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), getMessage(AbstractWillowUpdater.SESSION_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), getMessage(AbstractWillowUpdater.SITE_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.STUDENT_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), getMessage(AbstractWillowUpdater.TUTOR_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), getMessage(AbstractWillowUpdater.TAG_ENTITY_NAME));
+		testIncorrectRelation(prepareV14Updater(), prepareV14Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), getMessage(AbstractWillowUpdater.APPLICATION_ENTITY_NAME));
 		//illegal entity
-		testIncorrectRelation(prepareV11Updater(),
-				prepareV11Stub(PaymentOut.class.getSimpleName()),
+		testIncorrectRelation(prepareV14Updater(),
+				prepareV14Stub(PaymentOut.class.getSimpleName()),
 				getMessageForIllegalEntity(PaymentOut.class.getSimpleName()));
 
 		//V12
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), getMessage(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), getMessage(AbstractWillowUpdater.CONTACT_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), getMessage(AbstractWillowUpdater.INVOICE_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), getMessage(AbstractWillowUpdater.ROOM_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), getMessage(AbstractWillowUpdater.SESSION_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), getMessage(AbstractWillowUpdater.SITE_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.STUDENT_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), getMessage(AbstractWillowUpdater.TUTOR_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), getMessage(AbstractWillowUpdater.TAG_ENTITY_NAME));
-		testIncorrectRelation(prepareV12Updater(), prepareV12Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), getMessage(AbstractWillowUpdater.APPLICATION_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), getMessage(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), getMessage(AbstractWillowUpdater.CONTACT_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), getMessage(AbstractWillowUpdater.INVOICE_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), getMessage(AbstractWillowUpdater.ROOM_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), getMessage(AbstractWillowUpdater.SESSION_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), getMessage(AbstractWillowUpdater.SITE_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.STUDENT_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), getMessage(AbstractWillowUpdater.TUTOR_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), getMessage(AbstractWillowUpdater.TAG_ENTITY_NAME));
+		testIncorrectRelation(prepareV15Updater(), prepareV15Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), getMessage(AbstractWillowUpdater.APPLICATION_ENTITY_NAME));
 		//illegal entity
-		testIncorrectRelation(prepareV12Updater(),
-				prepareV12Stub(PaymentOut.class.getSimpleName()),
+		testIncorrectRelation(prepareV15Updater(),
+				prepareV15Stub(PaymentOut.class.getSimpleName()),
 				getMessageForIllegalEntity(PaymentOut.class.getSimpleName()));
 
 		//V13
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), getMessage(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), getMessage(AbstractWillowUpdater.CONTACT_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), getMessage(AbstractWillowUpdater.INVOICE_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), getMessage(AbstractWillowUpdater.ROOM_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), getMessage(AbstractWillowUpdater.SESSION_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), getMessage(AbstractWillowUpdater.SITE_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.STUDENT_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), getMessage(AbstractWillowUpdater.TUTOR_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), getMessage(AbstractWillowUpdater.TAG_ENTITY_NAME));
-		testIncorrectRelation(prepareV13Updater(), prepareV13Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), getMessage(AbstractWillowUpdater.APPLICATION_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME), getMessage(AbstractWillowUpdater.CERTIFICATE_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.CONTACT_ENTITY_NAME), getMessage(AbstractWillowUpdater.CONTACT_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.COURSE_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME), getMessage(AbstractWillowUpdater.COURSE_CLASS_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.ENROLMENT_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.INVOICE_ENTITY_NAME), getMessage(AbstractWillowUpdater.INVOICE_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.ROOM_ENTITY_NAME), getMessage(AbstractWillowUpdater.ROOM_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.SESSION_ENTITY_NAME), getMessage(AbstractWillowUpdater.SESSION_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.SITE_ENTITY_NAME), getMessage(AbstractWillowUpdater.SITE_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.STUDENT_ENTITY_NAME), getMessage(AbstractWillowUpdater.STUDENT_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.TUTOR_ENTITY_NAME), getMessage(AbstractWillowUpdater.TUTOR_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.TAG_ENTITY_NAME), getMessage(AbstractWillowUpdater.TAG_ENTITY_NAME));
+		testIncorrectRelation(prepareV16Updater(), prepareV16Stub(AbstractWillowUpdater.APPLICATION_ENTITY_NAME), getMessage(AbstractWillowUpdater.APPLICATION_ENTITY_NAME));
 		//illegal entity
-		testIncorrectRelation(prepareV13Updater(),
-				prepareV13Stub(PaymentOut.class.getSimpleName()),
+		testIncorrectRelation(prepareV16Updater(),
+				prepareV16Stub(PaymentOut.class.getSimpleName()),
 				getMessageForIllegalEntity(PaymentOut.class.getSimpleName()));
 	}
 	
@@ -276,12 +276,12 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 	}
 
 
-	private ish.oncourse.webservices.replication.v11.updaters.BinaryInfoRelationUpdater prepareV11Updater() {
-		return new ish.oncourse.webservices.replication.v11.updaters.BinaryInfoRelationUpdater();
+	private ish.oncourse.webservices.replication.v14.updaters.BinaryInfoRelationUpdater prepareV14Updater() {
+		return new ish.oncourse.webservices.replication.v14.updaters.BinaryInfoRelationUpdater();
 	}
 
-	private ish.oncourse.webservices.v11.stubs.replication.BinaryInfoRelationStub prepareV11Stub(String entityName) {
-		ish.oncourse.webservices.v11.stubs.replication.BinaryInfoRelationStub stub = new ish.oncourse.webservices.v11.stubs.replication.BinaryInfoRelationStub();
+	private ish.oncourse.webservices.v14.stubs.replication.BinaryInfoRelationStub prepareV14Stub(String entityName) {
+		ish.oncourse.webservices.v14.stubs.replication.BinaryInfoRelationStub stub = new ish.oncourse.webservices.v14.stubs.replication.BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityAngelId(1l);
 		stub.setEntityWillowId(-1l);
@@ -291,12 +291,12 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		return stub;
 	}
 
-	private ish.oncourse.webservices.replication.v12.updaters.BinaryInfoRelationUpdater prepareV12Updater() {
-		return new ish.oncourse.webservices.replication.v12.updaters.BinaryInfoRelationUpdater();
+	private ish.oncourse.webservices.replication.v15.updaters.BinaryInfoRelationUpdater prepareV15Updater() {
+		return new ish.oncourse.webservices.replication.v15.updaters.BinaryInfoRelationUpdater();
 	}
 
-	private ish.oncourse.webservices.v12.stubs.replication.BinaryInfoRelationStub prepareV12Stub(String entityName) {
-		ish.oncourse.webservices.v12.stubs.replication.BinaryInfoRelationStub stub = new ish.oncourse.webservices.v12.stubs.replication.BinaryInfoRelationStub();
+	private ish.oncourse.webservices.v15.stubs.replication.BinaryInfoRelationStub prepareV15Stub(String entityName) {
+		ish.oncourse.webservices.v15.stubs.replication.BinaryInfoRelationStub stub = new ish.oncourse.webservices.v15.stubs.replication.BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityAngelId(1l);
 		stub.setEntityWillowId(-1l);
@@ -306,12 +306,12 @@ public class BinaryInfoRelationUpdaterTest extends ServiceTest {
 		return stub;
 	}
 
-	private ish.oncourse.webservices.replication.v13.updaters.BinaryInfoRelationUpdater prepareV13Updater() {
-		return new ish.oncourse.webservices.replication.v13.updaters.BinaryInfoRelationUpdater();
+	private ish.oncourse.webservices.replication.v16.updaters.BinaryInfoRelationUpdater prepareV16Updater() {
+		return new ish.oncourse.webservices.replication.v16.updaters.BinaryInfoRelationUpdater();
 	}
 
-	private ish.oncourse.webservices.v13.stubs.replication.BinaryInfoRelationStub prepareV13Stub(String entityName) {
-		ish.oncourse.webservices.v13.stubs.replication.BinaryInfoRelationStub stub = new ish.oncourse.webservices.v13.stubs.replication.BinaryInfoRelationStub();
+	private ish.oncourse.webservices.v16.stubs.replication.BinaryInfoRelationStub prepareV16Stub(String entityName) {
+		ish.oncourse.webservices.v16.stubs.replication.BinaryInfoRelationStub stub = new ish.oncourse.webservices.v16.stubs.replication.BinaryInfoRelationStub();
 		stub.setAngelId(1l);
 		stub.setEntityAngelId(1l);
 		stub.setEntityWillowId(-1l);

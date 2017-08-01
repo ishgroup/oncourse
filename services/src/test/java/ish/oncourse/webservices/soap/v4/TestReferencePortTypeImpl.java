@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.soap.v4;
 
-import ish.oncourse.webservices.soap.v12.AbstractTransportTest;
+import ish.oncourse.webservices.soap.v14.AbstractTransportTest;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v4.stubs.reference.ReferenceStub;
 import org.apache.cxf.annotations.EndpointProperty;

@@ -6,7 +6,7 @@ import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.soap.v4.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.SupportedVersions;
-import ish.oncourse.webservices.v11.stubs.replication.EnrolmentStub;
+import ish.oncourse.webservices.v10.stubs.replication.EnrolmentStub;
 import org.apache.cayenne.Cayenne;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;

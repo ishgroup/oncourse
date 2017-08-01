@@ -3,10 +3,10 @@
  */
 package ish.oncourse.webservices.usi;
 
-import ish.oncourse.webservices.soap.v11.RealWSTransportTest;
+import ish.oncourse.webservices.soap.v16.RealWSTransportTest;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.SupportedVersions;
-import ish.oncourse.webservices.v11.stubs.replication.ParametersMap;
+import ish.oncourse.webservices.v16.stubs.replication.ParametersMap;
 import org.junit.Test;
 
 public class V11USIVerificationServiceTest extends RealWSTransportTest {
@@ -26,7 +26,7 @@ public class V11USIVerificationServiceTest extends RealWSTransportTest {
 
 			@Override
 			public SupportedVersions getVersion() {
-				return SupportedVersions.V11;
+				return SupportedVersions.V16;
 			}
 		}).testUSI();
 	}
