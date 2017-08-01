@@ -2,11 +2,8 @@ package ish.oncourse.webservices.replication.builders;
 
 import ish.oncourse.model.Queueable;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.webservices.exception.BuilderNotFoundException;
-import ish.oncourse.webservices.replication.v10.builders.V10BuildersMap;
-import ish.oncourse.webservices.replication.v11.builders.V11BuildersMap;
-import ish.oncourse.webservices.replication.v7.builders.V7BuildersMap;
-import ish.oncourse.webservices.replication.v9.builders.V9BuildersMap;
+import ish.oncourse.webservices.exception.BuilderNotFoundException;<% replicationVersions.each { v -> %>
+import ish.oncourse.webservices.replication.v${v}.builders.V${v}BuildersMap;<% } %>
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.SupportedVersions;
 

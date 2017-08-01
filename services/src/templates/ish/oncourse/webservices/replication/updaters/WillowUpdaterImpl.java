@@ -5,11 +5,9 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.textile.ITextileConverter;
-import ish.oncourse.webservices.exception.UpdaterNotFoundException;
-import ish.oncourse.webservices.replication.v10.updaters.V10UpdatersMap;
-import ish.oncourse.webservices.replication.v11.updaters.V11UpdatersMap;
-import ish.oncourse.webservices.replication.v7.updaters.V7UpdatersMap;
-import ish.oncourse.webservices.replication.v9.updaters.V9UpdatersMap;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.webservices.exception.UpdaterNotFoundException;<% replicationVersions.each { v -> %>
+import ish.oncourse.webservices.replication.v${v}.updaters.V${v}UpdatersMap;<% } %>
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.SupportedVersions;
@@ -21,6 +19,8 @@ import java.util.Map;
 public class WillowUpdaterImpl implements IWillowUpdater {
 	@Inject
 	private IWebSiteService webSiteService;
+
+	private ICayenneService cayenneService;
 	
 	/**
 	 * Willow updaters mappings
@@ -64,5 +64,10 @@ public class WillowUpdaterImpl implements IWillowUpdater {
 			}	
 		}
 		updater.updateEntityFromStub(stub, entity, callback);
+	}
+	
+	@Override
+	public void setCayenneService(ICayenneService cayenneService) {
+		this.cayenneService = cayenneService;
 	}
 }
