@@ -27,7 +27,15 @@ class FieldFactory extends React.Component<any, any> {
         return <Form.Field {...props} component={TextField} type="number"/>;
 
       case DataType.ENUM:
-        return <ComboboxField {...props} items={withDefaultItem(field.enumItems)}/>;
+        return <Form.Field
+          {...props}
+          component={SelectField}
+          loadOptions={() => Promise.resolve(field.enumItems)}
+          newOptionEnable={false}
+          searchable={false}
+          returnType="object"
+          placeholder="Please Select..."
+        />
 
       case DataType.BOOLEAN:
         if (field.key === "isMale") {

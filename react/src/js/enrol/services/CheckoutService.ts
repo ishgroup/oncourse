@@ -262,21 +262,20 @@ export class BuildSubmitFieldsRequest {
       return h.fields;
     });
     result.fields.forEach((f: Field) => {
-      f.value = values[f.key] || null;
+      f.value = values[f.key] && values[f.key].key || values[f.key] || null;
       if (f.value == null && f.dataType === DataType.BOOLEAN) {
         f.value = 'false';
       }
     });
 
-    if (values.concessionType && values.concessionType !== "-1") {
+    if (values.concessionType && values.concessionType.key !== "-1") {
       result.concession = {
-        concessionTypeId: values.concessionType,
+        concessionTypeId: values.concessionType.key,
         contactId: fields.contactId,
         expiryDate: values.date || null,
         number: values.number || null,
       };
     }
-
     return result;
   }
 }

@@ -1,18 +1,19 @@
 import * as React from "react";
 import classnames from "classnames";
 import Select from "react-select";
-import {MouseHover, WrappedMouseHoverProps} from "../form/MouseHover";
+import {MouseHover} from "../form/MouseHover";
 import {showError, ValidateText} from "../form/ValidateText";
 import {FieldLabel} from "../form/FieldLabel";
 
 
 import {Item} from "../../model";
-import Wrapper from "./Wrapper";
 import {inputFrom, metaFrom} from "./FieldsUtils";
 import {WrappedFieldInputProps, WrappedFieldMetaProps} from "redux-form";
 
 interface Props {
   input: WrappedFieldInputProps;
+  placeholder?: string;
+  returnType?: string;
   meta: WrappedFieldMetaProps<any>;
   labelKey: string;
   valueKey: string;
@@ -42,7 +43,7 @@ class SelectField extends React.Component<any, any> {
 
   private onChange = res => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
-    input.onChange(res.value);
+    input.onChange(this.props.returnType === 'object' ? res : res.value);
   }
 
   private onBlur = e => {
@@ -61,6 +62,7 @@ class SelectField extends React.Component<any, any> {
     return {
       input,
       meta,
+      placeholder: this.props.placeholder || "Please Select...",
       required: this.props.required,
       label: this.props.label,
       searchable: this.props.searchable !== false,
@@ -76,7 +78,7 @@ class SelectField extends React.Component<any, any> {
     const RenderSelectWrapper = props.newOptionEnable ? Select.AsyncCreatable : Select.Async;
     const isShowError = showError(props);
     const showValuesOnInit: boolean = !props.searchable;
-    
+
     const inner = props => (
       <div>
         {props.label &&
@@ -93,12 +95,13 @@ class SelectField extends React.Component<any, any> {
         })}>
           <RenderSelectWrapper
             className={classnames({'t-error': isShowError})}
+            placeholder={props.placeholder}
             name={name}
             labelKey={props.labelKey}
             valueKey={props.valueKey}
             searchable={props.searchable}
             clearable={false}
-            value={props.input}
+            value={this.props.returnType === 'object' ? props.input.value.key : props.input.value && props.input}
             loadOptions={input => this.loadOptions(input, showValuesOnInit)}
             onBlur={this.onBlur}
             onChange={this.onChange}

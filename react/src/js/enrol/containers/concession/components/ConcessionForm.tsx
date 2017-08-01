@@ -1,5 +1,5 @@
 import React from "react";
-import {ComboboxField} from "../../../../components/form/ComboboxField";
+import SelectField from "../../../../components/form-new/SelectField";
 import * as Form from "redux-form";
 import {DateField} from "../../../../components/form/DateField";
 import {TextField} from "../../../../components/form/TextField";
@@ -41,11 +41,15 @@ class ConcessionForm extends React.Component<Props, any> {
 
     return (
       <div>
-        <ComboboxField
+        <Form.Field
+          component={SelectField}
           name="concessionType"
           label="New Concession"
-          items={concessionTypes.map(t => ({key: t.id, value: t.name}))}
-          onChange={(event, key) => this.handleChange(key)}
+          returnType="object"
+          searchable={false}
+          required={false}
+          onChange={result => this.handleChange(result.key)}
+          loadOptions={() => Promise.resolve(concessionTypes.map(t => ({key: t.id, value: t.name})))}
         />
 
         {hasExpireDate &&
@@ -64,7 +68,7 @@ class ConcessionForm extends React.Component<Props, any> {
   }
 }
 
-const ConcessionText = props => {
+const ConcessionText = () => {
   return (
     <div className="clearfix conditions">
       <Form.Field
