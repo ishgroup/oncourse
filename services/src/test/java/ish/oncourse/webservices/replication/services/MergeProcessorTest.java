@@ -266,6 +266,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub1.setModified(new Date());
 		customFieldTypeStub1.setName("test");
 		customFieldTypeStub1.setMandatory(false);
+		customFieldTypeStub1.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
 
 		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
@@ -276,6 +277,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub2.setModified(new Date());
 		customFieldTypeStub2.setName("test");
 		customFieldTypeStub2.setMandatory(false);
+		customFieldTypeStub2.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
 
 		CustomFieldStub customFieldStub1 = new CustomFieldStub();
@@ -286,6 +288,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub1.setForeignId(1L);
 		customFieldStub1.setCreated(new Date());
 		customFieldStub1.setModified(new Date());
+		customFieldStub1.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub1);
 
 		DeletedStub customFieldStub2 = new DeletedStub();
@@ -304,6 +307,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub3.setForeignId(1L);
 		customFieldStub3.setCreated(new Date());
 		customFieldStub3.setModified(new Date());
+		customFieldStub3.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub3);
 
 		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
@@ -394,6 +398,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub1.setModified(new Date());
 		customFieldTypeStub1.setName("test");
 		customFieldTypeStub1.setMandatory(false);
+		customFieldTypeStub1.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
 
 		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
@@ -404,6 +409,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub2.setModified(new Date());
 		customFieldTypeStub2.setName("test");
 		customFieldTypeStub2.setMandatory(false);
+		customFieldTypeStub2.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
 
 		DeletedStub customFieldStub3 = new DeletedStub();
@@ -513,6 +519,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub1.setModified(new Date());
 		customFieldTypeStub1.setName("test");
 		customFieldTypeStub1.setMandatory(false);
+		customFieldTypeStub1.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
 
 		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
@@ -523,6 +530,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub2.setModified(new Date());
 		customFieldTypeStub2.setName("test");
 		customFieldTypeStub2.setMandatory(false);
+		customFieldTypeStub2.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
 
 		CustomFieldStub customFieldStub1 = new CustomFieldStub();
@@ -533,6 +541,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub1.setForeignId(1L);
 		customFieldStub1.setCreated(new Date());
 		customFieldStub1.setModified(new Date());
+		customFieldStub1.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub1);
 
 		CustomFieldStub customFieldStub3 = new CustomFieldStub();
@@ -543,6 +552,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub3.setForeignId(1L);
 		customFieldStub3.setCreated(new Date());
 		customFieldStub3.setModified(new Date());
+		customFieldStub3.setEntityName("Contact");
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub3);
 
 		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
