@@ -174,7 +174,7 @@
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="v16_payment" implementor="#v16_paymentPortType"
-					address="/v15/payment">
+					address="/v16/payment">
 		<jaxws:inInterceptors>
 			<ref bean="v4_securityCodeInterceptor" />
 			<ref bean="v4_collegeRequestInterceptor" />
