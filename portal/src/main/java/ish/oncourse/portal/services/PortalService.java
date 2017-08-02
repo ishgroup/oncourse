@@ -59,6 +59,9 @@ public class PortalService implements IPortalService {
     private static final String ATTR_selectedContact = "portal.selectedContact";
     private static final String ATTR_usiController = "portal.usiController";
 
+    private static final Ordering ORDERING_CONTACT_GIVENNAME_ASC_INSENSITIVE = Contact.GIVEN_NAME.ascInsensitive();
+    private static final Ordering ORDERING_CONTACT_FAMILYNAME_ASC_INSENSITIVE = Contact.FAMILY_NAME.ascInsensitive();
+
     @Inject
     private IAuthenticationService authenticationService;
 
@@ -765,16 +768,37 @@ public class PortalService implements IPortalService {
     }
 
     public List<Contact> getChildContacts() {
-        ArrayList<Contact> result = new ArrayList<>();
         ObjectContext context = cayenneService.newContext();
         Contact parent = Cayenne.objectForPK(context, Contact.class, getAuthenticatedUser().getId());
         List<ContactRelation> contactRelations = parent.getToContacts();
         contactRelations = RELATION_TYPE.dot(DELEGATED_ACCESS_TO_CONTACT).eq(true).filterObjects(contactRelations);
-        result.add(getAuthenticatedUser());
-        for (ContactRelation contactRelation : contactRelations) {
-            result.add(contactRelation.getToContact());
+
+        return Collections.unmodifiableList(
+                getOrderedContactsWithFirstPlaced(getAuthenticatedUser(), contactRelations));
+    }
+
+    /**
+     * Creates sorted collection of contacts with contact that will placed first
+     * @param firstPlaced contact for place first
+     * @param relations ContactRelation list with contacts
+     * @return ordered list of contacts
+     */
+    private List<Contact> getOrderedContactsWithFirstPlaced(Contact firstPlaced, List<ContactRelation> relations){
+        List<Ordering> orderings = new ArrayList<>();
+        orderings.add(ORDERING_CONTACT_GIVENNAME_ASC_INSENSITIVE);
+        orderings.add(ORDERING_CONTACT_FAMILYNAME_ASC_INSENSITIVE);
+
+        List<Contact> forOrdering = new ArrayList<>();
+
+        for (ContactRelation contactRelation : relations) {
+            forOrdering.add(contactRelation.getToContact());
         }
-        return Collections.unmodifiableList(result);
+
+        List<Contact> result = new ArrayList<>();
+        result.add(firstPlaced);
+        result.addAll(Ordering.orderedList(forOrdering, orderings));
+
+        return result;
     }
 
     public Contact getSelectedContact() {
