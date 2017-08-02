@@ -127,13 +127,13 @@ export const mockEnumField = (name: string, key: string, enumType: string, items
 };
 
 
-export const mockField = (name: string, key: string, dateType: DataType): Field => {
+export const mockField = (name: string, key: string, dateType: DataType, required: boolean = false): Field => {
   return {
     key,
     name,
     id: faker.random.number() as string,
     description: faker.hacker.phrase(),
-    mandatory: false,
+    mandatory: required,
     dataType: dateType,
     enumType: null,
     value: null,

@@ -3,7 +3,6 @@ import * as Form from "redux-form";
 
 import {Field, DataType, Item} from "../../model";
 
-import {ComboboxField} from "./ComboboxField";
 import {CheckboxField} from "./CheckboxField";
 import {TextField} from "./TextField";
 import {RadioGroupField} from "./RadioGroupField";
@@ -82,13 +81,16 @@ class FieldFactory extends React.Component<any, any> {
 export const toFormFieldProps = (field: Field): any => {
   return {
     key: field.id,
-    name: field.key,
+    name: toFormKey(field.key),
     label: field.name,
     type: "text",
     required: field.mandatory,
     placeholder: field.description,
   };
 };
+
+// replace all dots to slashes, b/c redux form converts it to object
+export const toFormKey = name => (name.replace(/\./g, '/'));
 
 
 const SuburbField = (props): any => {

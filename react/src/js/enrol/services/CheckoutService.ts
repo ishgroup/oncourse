@@ -27,6 +27,7 @@ import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
 import {PreferenceApi} from "../../http/PreferenceApi";
 import {Preferences} from "../../model/common/Preferences";
+import {toFormKey} from "../../components/form/FieldFactory";
 
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
@@ -262,7 +263,9 @@ export class BuildSubmitFieldsRequest {
       return h.fields;
     });
     result.fields.forEach((f: Field) => {
-      f.value = values[f.key] && values[f.key].key || values[f.key] || null;
+      const formKey = toFormKey(f.key);
+
+      f.value = values[formKey] && values[formKey].key || values[formKey] || null;
       if (f.value == null && f.dataType === DataType.BOOLEAN) {
         f.value = 'false';
       }
@@ -276,6 +279,7 @@ export class BuildSubmitFieldsRequest {
         number: values.number || null,
       };
     }
+
     return result;
   }
 }
