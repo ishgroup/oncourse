@@ -4,6 +4,7 @@ import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.pages.Profile;
 import ish.oncourse.portal.pages.Timetable;
+import ish.oncourse.portal.util.GetCustomFieldTypeByKey;
 import ish.oncourse.portal.util.PortalContactValidator;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.ContactFieldHelper;
@@ -29,8 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * User: artem
@@ -38,8 +37,6 @@ import org.apache.logging.log4j.Logger;
  * Time: 5:49 PM
  */
 public class ProfileForm {
-
-    private static Logger logger = LogManager.getLogger();
 
     @Inject
     private ICayenneService cayenneService;
@@ -75,6 +72,8 @@ public class ProfileForm {
 
 	private Map<String, String> customFieldContainer = new HashMap<>();
 
+	private GetCustomFieldTypeByKey getterCFT = GetCustomFieldTypeByKey.valueOf(contact.getCollege());;
+
     /**
      * reset form method flag
      */
@@ -103,7 +102,6 @@ public class ProfileForm {
         {
            validateHandler  = new ValidateHandler();
         }
-
 
 		//collect all visible Custom field types provided by college
 		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
@@ -135,7 +133,7 @@ public class ProfileForm {
     }
 
 	public String getDefaultValue() {
-		return getCustomFieldTypeByKey(customFieldKey).getDefaultValue();
+        return getterCFT.get(customFieldKey).getDefaultValue();
 	}
 	
 	public String getCurrentCustomFieldValue() {
@@ -143,7 +141,7 @@ public class ProfileForm {
 	}
 
 	public String getCurrentCustomFieldName() {
-        return getCustomFieldTypeByKey(customFieldKey).getName();
+        return getterCFT.get(customFieldKey).getName();
     }
 
 	public void setCurrentCustomFieldValue(String value) {
@@ -155,21 +153,7 @@ public class ProfileForm {
 	}
 	
 	public boolean customFieldRequired(String customFieldKey) {
-		return getContactFieldHelper().isCustomFieldTypeRequired(getCustomFieldTypeByKey(customFieldKey));
-	}
-
-	public CustomFieldType getCustomFieldTypeByKey(String key) {
-        CustomFieldType res = null;
-		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
-			if (fieldType.getKey().equals(key)) {
-				res = fieldType;
-			}
-		}
-		if (res == null) {
-		    logger.error("Custom field with name '{}' not found on college id : {}", key, contact.getCollege().getId());
-        }
-
-		return res;
+		return getContactFieldHelper().isCustomFieldTypeRequired(getterCFT.get(customFieldKey));
 	}
 
     public boolean visible(String fieldName) {
@@ -263,7 +247,7 @@ public class ProfileForm {
 				} else if (customFieldEntry.getValue() != null){
 					//create new custom field if value for such custom field type populated on form
 					CustomField newField = contact.getObjectContext().newObject(ContactCustomField.class);
-					newField.setCustomFieldType(getCustomFieldTypeByKey(customFieldEntry.getKey()));
+					newField.setCustomFieldType(getterCFT.get(customFieldEntry.getKey()));
 					newField.setValue(customFieldEntry.getValue());
 					newField.setRelatedObject(contact);
 					newField.setCollege(contact.getCollege());

@@ -33,6 +33,7 @@ public class PortalContactValidator extends WillowContactValidator {
 	private Map<String, String> customFieldContainer;
 	private ContactFieldHelper contactFieldHelper;
 	private ValidateHandler validateHandler;
+	private GetCustomFieldTypeByKey getterCFT;
 
 
 	private boolean defaultCountry;
@@ -52,21 +53,12 @@ public class PortalContactValidator extends WillowContactValidator {
 		portalContactValidator.contactFieldHelper = contactFieldHelper;
 		portalContactValidator.validateHandler = validateHandler;
 		portalContactValidator.defaultCountry = ICountryService.DEFAULT_COUNTRY_NAME.equals(contact.getCountry().getName());
+		portalContactValidator.getterCFT = GetCustomFieldTypeByKey.valueOf(contact.getCollege());
 		return portalContactValidator;
 	}
 
 	private boolean customFieldRequired(String customFieldKey) {
-		return contactFieldHelper.isCustomFieldTypeRequired(getCustomFieldTypeByKey(customFieldKey));
-	}
-
-	private CustomFieldType getCustomFieldTypeByKey(String name) {
-		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
-			if (fieldType.getKey().equals(name)) {
-				return fieldType;
-			}
-		}
-
-		return null;
+		return contactFieldHelper.isCustomFieldTypeRequired(getterCFT.get(customFieldKey));
 	}
 
 	private String getRequiredMessage(PreferenceController.FieldDescriptor fieldDescriptor) {
