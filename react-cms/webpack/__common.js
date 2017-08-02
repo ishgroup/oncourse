@@ -35,6 +35,9 @@ const _common = (dirname, options) => {
       ],
       extensions: [".ts", ".tsx", ".js", ".css", "scss"]
     },
+    externals: {
+      fs: '{}'
+    },
     module: {
       rules: [
         {
@@ -75,7 +78,6 @@ const _common = (dirname, options) => {
     plugins: [
       _DefinePlugin('development', 'http://localhost:10080', options.BUILD_NUMBER),
       new ExtractTextPlugin("[name].css"),
-      new webpack.optimize.ModuleConcatenationPlugin(),
     ],
     devServer: {
       inline: false

@@ -3,7 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col} from 'reactstrap';
 import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
 import {routes} from '../routes';
-import {Layout} from './components/Layout/Layout';
+import {Layout} from '../components/Layout/Layout';
 import {setHistoryInstance} from "../history";
 
 export class Cms extends React.Component<any, any> {
