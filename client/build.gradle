@@ -115,6 +115,14 @@ task bundle_win(dependsOn: jar, type: au.com.ish.Exe4JTask) {
 	}
 }
 
+
+def checkManifest = {
+	def jarFile = file("${distsDir}/webstart/Libraries/common-${version}.jar")
+	if (!new URL("jar:${jarFile.toURI()}!/").openConnection().manifest.mainAttributes.getValue('Release-Version')) {
+		throw new RuntimeException("Manifest missed from ${jarFile.name}")
+	}
+}
+
 task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	description "Create the webstart application executable."
 	doFirst {
@@ -145,6 +153,7 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 				}
 			}
 		}
+		checkManifest()
 
 		if (project.hasProperty('osxKeychainPassword')) {
 			logger.lifecycle("Signing jars in webstart bundle")
