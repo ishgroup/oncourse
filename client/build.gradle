@@ -83,23 +83,19 @@ project.ext.webstartFiles = copySpec {
 		from file("${libsDir}/${project.name}-${project.version}.jar")
 	}
 
-	into('.') {
-		from("${projectDir}/src/packaging/webstart/onCourse.jnlp")
+	into('jnlp') {
+		from "${projectDir}/src/packaging/webstart/onCourse.jnlp"
+		rename 'onCourse.jnlp', "onCourse-${project.version}.jnlp"
 
 		expand([
-			sourceCompatibility: 			project.sourceCompatibility,
-			mainJarClasspath : 				"Libraries-${project.version}/${project.name}-${project.version}.jar",
-            dependenciesJars:               configurations.runtime.files.collect {
-                                                file -> "      <jar href=\"../clients/Libraries/${file.name}\"/>"
-                                            }.join("\n"),
-			version: 						version,
-			maxmemoryClient:				maxmemoryClient	
+			sourceCompatibility:	project.sourceCompatibility,
+			mainJarClasspath:		"Libraries-${project.version}/${project.name}-${project.version}.jar",
+			dependenciesJars:		configurations.runtime.files.collect {
+										file -> "      <jar href=\"../clients/Libraries/${file.name}\"/>"
+									}.join("\n"),
+			version:				version,
+			maxmemoryClient:		maxmemoryClient	
 		])
-		
-		from("${projectDir}/src/main/resources/resources") {
-			include '*.ico'
-			include '*.icns'
-		}
 	}
 }
 
