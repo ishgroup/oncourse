@@ -123,20 +123,26 @@ task bundle_webstart(dependsOn: [jar, prepareKeychains], type: Copy) {
 	with webstartFiles
 	into file("${distsDir}/webstart")
 	doLast {
-
 		configurations.runtime.files.each { file ->
-			ant.jar(destFile: "${distsDir}/webstart/Libraries/${file.name}", filesetmanifest: "merge") {
-				zipfileset(src: file) {
-					exclude(name: '**/*MF')
-					exclude(name: '**/*SF')
-					exclude(name: '**/*RSA')
-					exclude(name: '**/*DSA')
+			if (file.name == "common-${version}.jar") {
+				copy {
+					from file
+					into "${distsDir}/webstart/Libraries/"
 				}
-                delegate.manifest {
-                    attribute(name: 'codebase', value: '*')
-                    attribute(name: 'permissions', value: 'all-permissions')
-                    attribute(name: 'Trusted-Library', value: 'true')
-                }
+			} else {
+				ant.jar(destFile: "${distsDir}/webstart/Libraries/${file.name}", filesetmanifest: "merge") {
+					zipfileset(src: file) {
+						exclude(name: '**/*MF')
+						exclude(name: '**/*SF')
+						exclude(name: '**/*RSA')
+						exclude(name: '**/*DSA')
+					}
+					delegate.manifest {
+						attribute(name: 'codebase', value: '*')
+						attribute(name: 'permissions', value: 'all-permissions')
+						attribute(name: 'Trusted-Library', value: 'true')
+					}
+				}
 			}
 		}
 
