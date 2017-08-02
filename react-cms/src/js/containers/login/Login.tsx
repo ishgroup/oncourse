@@ -15,7 +15,10 @@ export class Login extends React.Component<Props, any> {
   handleSubmit(e) {
     const {onSubmit} = this.props;
     e.preventDefault();
-    onSubmit({});
+    onSubmit({
+      email: e.target.email.value,
+      password: e.target.password.value,
+    });
   }
 
   render() {
