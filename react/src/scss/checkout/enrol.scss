@@ -50,6 +50,19 @@ $img: '/s/img';
 @import 'payment-tab';
 @import 'amount-block';
 
+::-webkit-input-placeholder {
+  color: #aaa;
+}
+::-moz-placeholder {
+  color: #aaa;
+}
+:-ms-input-placeholder {
+  color: #aaa;
+}
+:-moz-placeholder {
+  color: #aaa;
+}
+
 div.clearboth {
   clear: both;
 }
@@ -165,8 +178,9 @@ div.clearboth {
     font-size: 11px;
     
     &[type="text"],
-    &[type="password"] {
-      padding: 3px;
+    &[type="password"],
+    &[type="number"]{
+      padding: 3px 6px 3px 10px;
       background-color: whiteSmoke;
       width: 180px;
     }
