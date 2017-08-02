@@ -4,7 +4,6 @@ package ish.oncourse.portal.util;
 import ish.oncourse.cayenne.ContactInterface;
 import ish.oncourse.components.ContactDetailStrings;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
@@ -33,7 +32,7 @@ public class PortalContactValidator extends WillowContactValidator {
 	private Map<String, String> customFieldContainer;
 	private ContactFieldHelper contactFieldHelper;
 	private ValidateHandler validateHandler;
-	private GetCustomFieldTypeByKey getterCFT;
+	private GetCustomFieldTypeByKey getCustomFieldType;
 
 
 	private boolean defaultCountry;
@@ -53,12 +52,12 @@ public class PortalContactValidator extends WillowContactValidator {
 		portalContactValidator.contactFieldHelper = contactFieldHelper;
 		portalContactValidator.validateHandler = validateHandler;
 		portalContactValidator.defaultCountry = ICountryService.DEFAULT_COUNTRY_NAME.equals(contact.getCountry().getName());
-		portalContactValidator.getterCFT = GetCustomFieldTypeByKey.valueOf(contact.getCollege());
+		portalContactValidator.getCustomFieldType = GetCustomFieldTypeByKey.valueOf(contact.getCollege());
 		return portalContactValidator;
 	}
 
 	private boolean customFieldRequired(String customFieldKey) {
-		return contactFieldHelper.isCustomFieldTypeRequired(getterCFT.get(customFieldKey));
+		return contactFieldHelper.isCustomFieldTypeRequired(getCustomFieldType.get(customFieldKey));
 	}
 
 	private String getRequiredMessage(PreferenceController.FieldDescriptor fieldDescriptor) {

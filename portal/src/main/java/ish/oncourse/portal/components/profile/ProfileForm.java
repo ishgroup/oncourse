@@ -72,7 +72,7 @@ public class ProfileForm {
 
 	private Map<String, String> customFieldContainer = new HashMap<>();
 
-	private GetCustomFieldTypeByKey getterCFT = GetCustomFieldTypeByKey.valueOf(contact.getCollege());;
+	private GetCustomFieldTypeByKey getCustomFieldType;
 
     /**
      * reset form method flag
@@ -102,6 +102,8 @@ public class ProfileForm {
         {
            validateHandler  = new ValidateHandler();
         }
+
+        getCustomFieldType = GetCustomFieldTypeByKey.valueOf(contact.getCollege());
 
 		//collect all visible Custom field types provided by college
 		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
@@ -133,7 +135,7 @@ public class ProfileForm {
     }
 
 	public String getDefaultValue() {
-        return getterCFT.get(customFieldKey).getDefaultValue();
+        return getCustomFieldType.get(customFieldKey).getDefaultValue();
 	}
 	
 	public String getCurrentCustomFieldValue() {
@@ -141,7 +143,7 @@ public class ProfileForm {
 	}
 
 	public String getCurrentCustomFieldName() {
-        return getterCFT.get(customFieldKey).getName();
+        return getCustomFieldType.get(customFieldKey).getName();
     }
 
 	public void setCurrentCustomFieldValue(String value) {
@@ -153,7 +155,7 @@ public class ProfileForm {
 	}
 	
 	public boolean customFieldRequired(String customFieldKey) {
-		return getContactFieldHelper().isCustomFieldTypeRequired(getterCFT.get(customFieldKey));
+		return getContactFieldHelper().isCustomFieldTypeRequired(getCustomFieldType.get(customFieldKey));
 	}
 
     public boolean visible(String fieldName) {
@@ -247,7 +249,7 @@ public class ProfileForm {
 				} else if (customFieldEntry.getValue() != null){
 					//create new custom field if value for such custom field type populated on form
 					CustomField newField = contact.getObjectContext().newObject(ContactCustomField.class);
-					newField.setCustomFieldType(getterCFT.get(customFieldEntry.getKey()));
+					newField.setCustomFieldType(getCustomFieldType.get(customFieldEntry.getKey()));
 					newField.setValue(customFieldEntry.getValue());
 					newField.setRelatedObject(contact);
 					newField.setCollege(contact.getCollege());
