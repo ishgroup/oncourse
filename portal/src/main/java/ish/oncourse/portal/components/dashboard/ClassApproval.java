@@ -14,7 +14,7 @@ public class ClassApproval {
 	@Property
 	private CourseClass classToApproval;
 	
-	public String getClassDate() {
+	public String getFormattedClassStartDate() {
 		return FormatUtils.getDateFormat("EEE d MMM h:mma", classToApproval.getTimeZone()).format(classToApproval.getStartDate());
 	}
 

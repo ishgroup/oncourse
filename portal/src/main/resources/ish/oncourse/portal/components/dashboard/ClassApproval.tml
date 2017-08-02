@@ -3,7 +3,7 @@
 		<p class="class-name text-overflow approval">${classToApproval.course.name}</p>
 		<p class="class-name text-overflow sing-line">(${classToApproval.uniqueIdentifier})</p>
 		<t:if test="classToApproval.startDate">
-			<p>Mon 17 Jan 2:30pm</p>
+			<p>${formattedClassStartDate}</p>
 		</t:if>
 		<hr/>
 		<a href="/portal/tutor/classapproval/${classToApproval.id}">Requries Approval</a>
