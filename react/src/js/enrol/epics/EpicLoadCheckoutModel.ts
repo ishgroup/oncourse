@@ -21,5 +21,3 @@ const request: EpicUtils.Request<CheckoutModel, IshState> = {
 };
 
 export const EpicUpdateSummary: Epic<any, any> = EpicUtils.Create(request);
-
-

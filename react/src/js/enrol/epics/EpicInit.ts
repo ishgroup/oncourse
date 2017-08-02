@@ -80,12 +80,17 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
       return result.concat(showCartIsEmptyMessage());
     }
 
-    if (CheckoutService.hasPayer(state.checkout)) {
-      return result.concat(openPayerDetails(state));
-    }
+    //
+    // if (CheckoutService.hasPayer(state.checkout)) {
+    //   return result.concat(openPayerDetails(state));
+    // }
+    //
+    // if (CheckoutService.hasCartContact(state.cart)) {
+    //   return result.concat(setPayerFromCart(state));
+    // }
 
-    if (CheckoutService.hasCartContact(state.cart)) {
-      return result.concat(setPayerFromCart(state));
+    if (state.checkout.summary.result.length) {
+      return result.concat(Actions.changePhase(state.checkout.page));
     }
 
     return result.concat([Actions.changePhase(Phase.AddPayer)]);
