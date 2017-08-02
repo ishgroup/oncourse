@@ -94,6 +94,7 @@ class SelectField extends React.Component<any, any> {
           'has-error': isShowError,
         })}>
           <RenderSelectWrapper
+            inputProps={{autoComplete: 'off', autoCorrect: 'off', spellCheck: 'off'}}
             className={classnames({'t-error': isShowError})}
             placeholder={props.placeholder}
             name={name}
@@ -110,7 +111,7 @@ class SelectField extends React.Component<any, any> {
           <ValidateText {...props}/>
         </span>
       </div>
-    )
+    );
 
     return (
       <MouseHover component={inner} componentProps={props}/>
