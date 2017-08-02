@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.WebServiceContext;
 import java.util.Date;
-import java.util.Random;
 
 public class AuthenticateServiceImpl implements IAuthenticateService {
 	private final static Logger logger = LogManager.getLogger();
@@ -94,17 +93,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 					logger.debug("Communication key: {} for college: {} in a HALT state.", lastCommKey, college.getId(), ex);
 					throw ex;
 				}
-				if (lastCommKey == currentKey) {
-					Long newKey = generateNewKey(college);
-					return newKey;
-				} else {
-					InternalAuthenticationException ex = new InternalAuthenticationException(String.format("Invalid communication key: %s.", lastCommKey), 
-						InternalErrorCode.INVALID_COMMUNICATION_KEY);
-					logger.warn("Invalid communication key: {}, for college: {}, expected: {}.", lastCommKey, college.getId(), currentKey, ex);
-					putCollegeInHaltState(college);
-					// TODO: !!!!! Here should be exception, since we're in HALT state !!!!!!
-					return generateNewKey(college);// throw ex;
-				}
+				return generateNewKey(college);
 			}
 		} catch (Exception e) {
 			if (e instanceof InternalAuthenticationException) {
@@ -121,7 +110,6 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 	public Long generateNewKey(College college) {
 		ObjectContext objectContext = takeCayenneService().newNonReplicatingContext();
 		College local = objectContext.localObject(college);
-		Random randomGen = new Random();
 		long newCommunicationKey = System.currentTimeMillis();
 		local.setCommunicationKey(newCommunicationKey);
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
