@@ -13,23 +13,22 @@ import static ish.oncourse.portal.certificate.ModelBuilder.Result.revoked
  * Date: 11/08/2016
  */
 class ModelBuilder {
-    private ICayenneService cayenneService
-    private PreferenceControllerFactory preferenceControllerFactory;
+    ICayenneService cayenneService
+    PreferenceControllerFactory preferenceControllerFactory;
 
-    private String code
+    String code
 
-    private Model model
+    Model model
 
-    public String getCode() {
-        return code;
+    String getCode() {
+        return code
     }
 
-    public Model getModel() {
-        println model
+    Model getModel() {
         return model
     }
 
-    public Result build() {
+    Result build() {
         code = StringUtils.trimToNull(code)
         if (code == null) {
             return Result.emptyCode
@@ -46,13 +45,12 @@ class ModelBuilder {
         model = Model.valueOf(certificate, preferenceControllerFactory.getPreferenceController(certificate.getCollege()))
 
         if (model.revoked != null) {
-            return revoked;
+            return revoked
         } else {
             return Result.successFull
         }
     }
 
-    public
     static ModelBuilder valueOf(String code, ICayenneService cayenneService, PreferenceControllerFactory preferenceControllerFactory) {
         ModelBuilder builder = new ModelBuilder()
         builder.code = code

@@ -12,33 +12,33 @@ import org.apache.commons.lang3.RandomStringUtils
  * Date: 10/08/2016
  */
 class Model {
-    def String number
-    def Date issued
-    def Date revoked
+    String number
+    Date issued
+    Date revoked
 
-    def String firstName
-    def String lastName
+    String firstName
+    String lastName
 
-    def String collegeName
-    def String rto
-    def String collegeUrl
+    String collegeName
+    String rto
+    String collegeUrl
 
-    def Qualification qualification
-    def List<Module> modules
-    def boolean nrt
+    Qualification qualification
+    List<Module> modules
+    boolean nrt
 
-    public static Model valueOf(Certificate certificate, PreferenceController preferenceController) {
+    static Model valueOf(Certificate certificate, PreferenceController preferenceController) {
         Model model = new Model()
         model.number = certificate.certificateNumber
         model.issued = certificate.issued
         model.firstName = certificate.studentFirstName
         model.lastName = certificate.studentLastName
-        model.collegeName = certificate.college.name
+        model.collegeName = preferenceController.avetmissCollegeName ?: preferenceController.avetmissCollegeShortName ?: certificate.college.name
         model.revoked = (certificate.revokedWhen != null && certificate.revokedWhen.before(new Date())) ? certificate.revokedWhen: null
         model.rto = preferenceController.avetmissID
         model.collegeUrl = PortalUtils.getDomainName(preferenceController)
         if (model.collegeUrl) {
-            model.collegeUrl = "http://" + model.collegeUrl
+            model.collegeUrl = "https://${model.collegeUrl}"
         }
 
         if (certificate.qualification) {
@@ -59,42 +59,17 @@ class Model {
         return model
     }
 
-    public static Model valueOf() {
-        new Model().with {
-            it.number = RandomStringUtils.randomNumeric(10)
-            it.issued = new Date()
-            it.firstName = "Andrei"
-            it.lastName = "Koira"
-            it.collegeName = "Byron Community College"
-            it.rto = "O326A"
-            it.collegeUrl = "https://cce.sydney.edu.au/"
-            it.qualification = new Qualification(code: "SIR30212", title: "Retail Operations", level: "Certificate III in", type: SKILLSET_TYPE)
-            it.modules = new ArrayList<>()
-            def i = 0
-            while (i < 10) {
-                Module module = new Module();
-                module.setCode(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
-                module.setTitle(RandomStringUtils.randomAlphanumeric(5) + " " +
-                        RandomStringUtils.randomAlphanumeric(5) + " " +
-                        RandomStringUtils.randomAlphanumeric(5));
-                it.modules.add(module);
-                i++;
-            }
-            return it
-        }
+    static class Qualification {
+        String code
+        String title
+        String level
+        QualificationType type
+        boolean qualification
     }
 
-    public static class Qualification {
-        def String code;
-        def String title;
-        def String level;
-        def QualificationType type
-        def boolean qualification
-    }
-
-    public static class Module {
-        def String code;
-        def String title;
+    static class Module {
+        String code
+        String title
     }
 
 }
