@@ -6,11 +6,13 @@ import {FieldLabel} from "./FieldLabel";
 export const CheckboxField = ({input, label, classes, required}: CheckboxFieldProps) => {
   return (
     <div>
-      <FieldLabel
-        name={input.name}
-        label={label}
-        required={required}
-      />
+      {label &&
+        <FieldLabel
+          name={input.name}
+          label={label}
+          required={required}
+        />
+      }
       <input {...input} className={classes} type="checkbox"/>
     </div>
   );

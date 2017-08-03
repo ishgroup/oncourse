@@ -1,7 +1,7 @@
 import {CorporatePassApi} from "../../js/http/CorporatePassApi";
 import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
 import {
-  GetCorporatePassRequest, CorporatePass, PaymentStatus, MakeCorporatePassRequest, PaymentResponse
+  GetCorporatePassRequest, CorporatePass, MakeCorporatePassRequest,
 } from "../../js/model";
 
 export class CorporatePassApiMock extends CorporatePassApi {
@@ -30,9 +30,6 @@ export class CorporatePassApiMock extends CorporatePassApi {
     return this.config.createResponse(true);
   }
   makeCorporatePass(request: MakeCorporatePassRequest): Promise<any> {
-    const response = new PaymentResponse();
-    response.status = PaymentStatus.SUCCESSFUL;
-    response.sessionId = '123asjdka sjl123 asd123123';
-    return this.config.createResponse(response);
+    return this.config.createResponse('');
   }
 }

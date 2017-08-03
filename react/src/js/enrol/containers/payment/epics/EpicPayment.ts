@@ -78,7 +78,7 @@ const SubmitPaymentCorporatePassRequest: Request<any, IshState> = {
     return CheckoutService.submitPaymentCorporatePass(payload, state);
   },
   processData: (response: any, state: IshState): IAction<any>[] | Observable<any> => {
-    return CheckoutService.processPaymentResponse(response);
+    return CheckoutService.processPaymentResponse({status: PaymentStatus.SUCCESSFUL});
   },
 };
 

@@ -362,9 +362,20 @@ div.clearboth {
       cursor: pointer;
     }
     
-    .conditions label {
-      padding-left: 0;
-      margin: 30px 0 0 0;
+    .conditions {
+      left: 20%;
+      margin: 0;
+      padding-left: 10px;
+      
+      .form-group {
+        position: absolute;
+        left: -10px;
+      }
+      
+      label {
+        padding-left: 0;
+        margin: 30px 0 0 0;
+      }
     }
   }
   
