@@ -47,7 +47,7 @@ export class SummaryComp extends React.Component<Props, any> {
         onSelect={(item, selected) => onSelect(item, selected)}
         onPriceValueChange={(productItem, val) => onPriceValueChange(productItem, val)}
         onAddConcession={onAddConcession}
-        concessions={concessions[props.contact.id]}
+        concessions={concessions.filter(item => item.contactId === props.contact.id)}
       />
     );
   }

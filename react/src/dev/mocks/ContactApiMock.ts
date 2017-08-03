@@ -5,6 +5,7 @@ import {Contact, CreateContactParams, ContactFieldsRequest, ContactFields, Submi
 import {MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
 import {mockContact} from "./mocks/MockFunctions";
+import {Concession} from "../../js/model/checkout/concession/Concession";
 export class ContactApiMock extends ContactApi {
 
   public config: MockConfig;
@@ -86,10 +87,10 @@ export class ContactApiMock extends ContactApi {
   }
 
   getContactConcessions(ids) {
-    const result1: ConcessionTypeModel = new ConcessionTypeModel();
-    result1.id = '1';
+    const result1: Concession = new Concession();
+    result1.contactId = ids[0];
     result1.name = 'Student';
-    return this.config.createResponse({[ids[0]]: [result1]});
+    return this.config.createResponse([result1]);
   }
 
 
