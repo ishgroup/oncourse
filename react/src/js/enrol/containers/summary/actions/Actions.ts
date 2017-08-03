@@ -10,7 +10,7 @@ export const PROCEED_TO_PAYMENT: string = "checkout/summary/proceed/to/payment";
 
 export const ItemsLoad: string = "checkout/summary/items/load";
 
-export const GET_CONTACT_NODE_FROM_BACKEND: string = "checkout/summary/get/ContactNode/from/backend";
+export const GET_CONTACT_NODE_AND_MODEL_FROM_BACKEND: string = "checkout/summary/get/ContactNode/from/backend";
 export const ADD_CONTACT_NODE_TO_STATE: string = "checkout/summary/update/ContactNode";
 
 export const SELECT_ITEM_REQUEST: string = "checkout/summary/select/item/request";
@@ -48,7 +48,7 @@ export const proceedToPayment = (): { type: string } => {
 
 export const getContactNodeFromBackend = (contact: Contact): IAction<Contact> => {
   return {
-    type: GET_CONTACT_NODE_FROM_BACKEND,
+    type: GET_CONTACT_NODE_AND_MODEL_FROM_BACKEND,
     payload: contact,
   };
 };
