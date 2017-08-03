@@ -49,7 +49,7 @@ class SearchByPass {
 
 
         List<CourseClass> classes = request.classIds.collect { id -> new GetCourseClass(context, college, id).get()}
-        List<Product> products = request.classIds.collect { id -> new GetProduct(context, college, id).get()}
+        List<Product> products = request.productIds.collect { id -> new GetProduct(context, college, id).get()}
 
         ValidateCorporatePass validatePass = new ValidateCorporatePass(pass, classes, products)
 
