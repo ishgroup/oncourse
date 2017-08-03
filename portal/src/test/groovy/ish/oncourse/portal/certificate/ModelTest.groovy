@@ -28,7 +28,7 @@ class ModelTest {
 
         assertEquals("1234567890", model.number)
         assertEquals("College1", model.collegeName)
-        assertEquals("http://college1.au", model.collegeUrl)
+        assertEquals("https://college1.au", model.collegeUrl)
         assertEquals("FirstName", model.firstName)
         assertEquals("LastName", model.lastName)
         assertEquals(certificate.issued, model.issued)
