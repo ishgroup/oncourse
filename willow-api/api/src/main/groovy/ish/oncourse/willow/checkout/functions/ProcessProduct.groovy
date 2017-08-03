@@ -76,16 +76,13 @@ class ProcessProduct {
                     v.contactId = contact.id.toString()
                     v.productId = voucher.id.toString()
 
-                    Money value = Money.ZERO
                     if (voucher.redemptionCourses.empty && voucher.value == null) {
                         v.price =  DEFAULT_VOUCHER_PRICE.doubleValue()
-                        value = DEFAULT_VOUCHER_PRICE
-                        v.value =  value.doubleValue()
+                        v.value = v.price
                         v.isEditablePrice = true
                     } else if (voucher.value != null) {
                         v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
-                        value = voucher.value
-                        v.value = value.doubleValue()
+                        v.value = voucher.value.doubleValue()
                         v.isEditablePrice = false
                     } else {
                         v.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
@@ -93,7 +90,7 @@ class ProcessProduct {
                         v.isEditablePrice = false
                     }
 
-                    ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, value, v.contactId)
+                    ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, v.price.toMoney() , v.contactId)
                     v.errors += validateVoucher.errors
                     v.warnings += validateVoucher.warnings
                     v

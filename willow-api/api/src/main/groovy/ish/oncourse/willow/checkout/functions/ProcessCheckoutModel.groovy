@@ -106,33 +106,38 @@ class ProcessCheckoutModel {
         
         processCorporatePass()
         checkoutModelRequest.contactNodes.each { contactNode ->
-            model.contactNodes << contactNode
+            ContactNode node = new ContactNode()
+            node.contactId = contactNode.contactId
 
             Contact contact = new GetContact(context, college, contactNode.contactId).get(false)
             contactNode.articles.each { a ->
-                processArticle(a, contact)
+                node.articles << processArticle(a, contact)
             }
 
             contactNode.memberships.each { m ->
-                processMembership(m, contact)
+                node.memberships << processMembership(m, contact)
             }
 
-            contactNode.vouchers.each { v ->
-                processVoucher(v)
+            if (model.payerId == node.contactId) {
+                contactNode.vouchers.each { v ->
+                    node.vouchers << processVoucher(v)
+                }
             }
 
             if (contact.student) {
                 contactNode.enrolments.each { e ->
-                    processEnrolment(e, contact)
+                   node.enrolments << processEnrolment(e, contact)
                 }
 
                 contactNode.applications.each { a ->
-                    processApplication(a, contact)
+                    node.applications << processApplication(a, contact)
                 }
             } else if (!contactNode.enrolments.empty || !contactNode.applications.empty ) {
                 model.error = new CommonError(message: 'Purchase items are not valid')
             }
-            
+
+            model.contactNodes << node
+
             if (corporatePass) {
                 corporatePassNode.vouchers += contactNode.vouchers.findAll { it.selected && it.errors.empty }.each { it.contactId = corporatePass.contact.id.toString() }
                 contactNode.vouchers.clear()
@@ -147,7 +152,9 @@ class ProcessCheckoutModel {
     
     
     @CompileStatic(TypeCheckingMode.SKIP)
-    void processEnrolment(Enrolment e, Contact contact) {
+    Enrolment processEnrolment(Enrolment e, Contact contact) {
+        e.errors.clear()
+        e.warnings.clear()
         if (e.selected) {
             ProcessClass processClass = new ProcessClass(context, contact, college, e.classId).process()
             CourseClass courseClass = processClass.persistentClass
@@ -169,12 +176,17 @@ class ProcessCheckoutModel {
                         enrolmentsToProceed.put(contact, classes)
                     }
                     classes.add(courseClass)
+                } else {
+                    e.selected = false
                 }
             }
         }
+        return e
     }
-    
-    void processApplication(Application a, Contact contact) {
+
+    Application processApplication(Application a, Contact contact) {
+        a.errors.clear()
+        a.warnings.clear()
         if (a.selected) {
             ProcessClass processClass = new ProcessClass(context, contact, college, a.classId).process()
             CourseClass courseClass = processClass.persistentClass
@@ -184,13 +196,19 @@ class ProcessCheckoutModel {
             } else {
                 a.errors += processClass.application.errors
                 a.warnings += processClass.application.warnings
+                if (!a.errors.empty) {
+                    a.selected = false
+                }
             }
         }
+        return a
     }
 
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    void processArticle(Article a, Contact contact) {
+    Article processArticle(Article a, Contact contact) {
+        a.errors.clear()
+        a.warnings.clear()
         if (a.selected) {
             ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, model.payerId).process()
             if (processProduct.article == null) {
@@ -203,13 +221,18 @@ class ProcessCheckoutModel {
                     a.price = processProduct.article.price
                     totalAmount = totalAmount.add(a.price.toMoney())
                     payNowAmount = payNowAmount.add(a.price.toMoney())
+                } else {
+                    a.selected = false
                 }
             }
         }
+        a
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    void processMembership(Membership m, Contact contact) {
+    Membership processMembership(Membership m, Contact contact) {
+        m.errors.clear()
+        m.warnings.clear()
         if (m.selected) {
             ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, model.payerId).process()
             if (processProduct.membership == null) {
@@ -222,13 +245,18 @@ class ProcessCheckoutModel {
                     m.price = processProduct.membership.price
                     totalAmount = totalAmount.add(m.price.toMoney())
                     payNowAmount = payNowAmount.add(m.price.toMoney())
+                } else {
+                    m.selected = false
                 }
             }
         }
+        return m
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    void processVoucher(Voucher v) {
+    Voucher processVoucher(Voucher v) {
+        v.errors.clear()
+        v.warnings.clear()
         if (v.selected) {
             ValidateVoucher validateVoucher = new ValidateVoucher(context, college, model.payerId).validate(v)
             v.errors += validateVoucher.errors
@@ -237,8 +265,11 @@ class ProcessCheckoutModel {
                 products << validateVoucher.persistentProduct
                 totalAmount = totalAmount.add(v.price.toMoney())
                 payNowAmount = payNowAmount.add(v.price.toMoney())
+            } else {
+                v.selected = false 
             }
         }
+        return v
     }
 
     private  boolean checkAndBookPlace(CourseClass courseClass) {
