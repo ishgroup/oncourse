@@ -41,7 +41,10 @@ export class PayerAdd extends React.Component<Props, any> {
         <a
           className={classnames('button', {disabled})}
           href="#"
-          onClick={() => this.toggleList(!showList)}
+          onClick={e => {
+            e.preventDefault();
+            this.toggleList(!showList);
+          }}
           onBlur={this.handleBlur.bind(this)}
         > Choose a different payer
         </a>

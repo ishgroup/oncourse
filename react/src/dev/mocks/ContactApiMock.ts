@@ -2,7 +2,7 @@ import {ContactApi} from "../../js/http/ContactApi";
 import {Contact, CreateContactParams, ContactFieldsRequest, ContactFields, SubmitFieldsRequest,
   ConcessionType as ConcessionTypeModel, ContactId, CreateParentChildrenRequest} from "../../js/model";
 
-import {MockConfig} from "./mocks/MockConfig";
+import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
 import {mockContact} from "./mocks/MockFunctions";
 import {Concession} from "../../js/model/checkout/concession/Concession";
@@ -28,7 +28,6 @@ export class ContactApiMock extends ContactApi {
   }
 
   createOrGetContact(request: CreateContactParams): Promise<Contact> {
-    console.log(request);
     const result:ContactId = new ContactId();
     let contact: Contact = this.config.db.getContactByDetails(request.firstName, request.lastName, request.email);
     if (!contact) {
@@ -104,6 +103,10 @@ export class ContactApiMock extends ContactApi {
 
   submitConcession(request) {
     return this.config.createResponse(Promise.resolve());
+    // return CreatePromiseReject({
+    //   formErrors:["This concession is already on file for this student."],
+    //   fieldsErrors:[{name:"expiryDate",error:"Expiry date shouldn't be at the past."}],
+    // });
   }
 
 }

@@ -249,7 +249,7 @@ export class BuildConcessionRequest {
     const result: Concession = new Concession();
     result.contactId = state.contact.id;
     result.concessionTypeId = values.concessionType.key;
-    result.expiryDate = values.date || null;
+    result.expiryDate = values.expiryDate || null;
     result.number = values.number || null;
     return result;
   }
@@ -275,7 +275,7 @@ export class BuildSubmitFieldsRequest {
       result.concession = {
         concessionTypeId: values.concessionType.key,
         contactId: fields.contactId,
-        expiryDate: values.date || null,
+        expiryDate: values.expiryDate || null,
         number: values.number || null,
       };
     }

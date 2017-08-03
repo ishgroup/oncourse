@@ -53,7 +53,7 @@ class ConcessionForm extends React.Component<Props, any> {
         />
 
         {hasExpireDate &&
-        <Form.Field name="date" type="text" label="Expire Date" required component={DateField}/>
+        <Form.Field name="expiryDate" type="text" label="Expire Date" required component={DateField}/>
         }
 
         {hasNumber &&
@@ -83,7 +83,6 @@ const ConcessionText = () => {
         I certify that the concession I have claimed is valid and
         I understand that the details may be checked with the issuing body.
       </span>
-
     </div>
   );
 };

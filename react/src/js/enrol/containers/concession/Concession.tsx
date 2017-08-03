@@ -1,10 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
+import classnames from "classnames";
 import {IshState} from "../../../services/IshState";
 import {Contact} from "../../../model";
 import ConcessionForm from "./components/ConcessionForm";
 import {reduxForm, FormErrors} from "redux-form";
-import {changePhase} from "../../actions/Actions";
+import {changePhase, showFormValidation} from "../../actions/Actions";
 import {getConcessionTypes} from "./actions/Actions";
 import CheckoutService from "../../services/CheckoutService";
 
@@ -43,11 +44,10 @@ class Concession extends React.Component<any, any> {
 
   render() {
     const {contact, handleSubmit, pristine, invalid, submitting, onCancel, page, concessionTypes} = this.props;
-
     return (
       <div className="concessionEditor">
         <h3>Add concession for {contact.firstName + " " + contact.lastName}</h3>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={classnames({submitting})}>
           <fieldset>
             {concessionTypes &&
               <ConcessionForm concessionTypes={concessionTypes} onTypeChange={this.onTypeChange}/>
@@ -74,8 +74,8 @@ export const validate = (data, props) => {
 
   const concessionType = props.concessionTypes.find(item => item.id === data.concessionType.key);
 
-  if (concessionType.hasExpireDate && !data.date) {
-    errors['date'] =  'Date is incorrect';
+  if (concessionType.hasExpireDate && !data.expiryDate) {
+    errors['expiryDate'] =  'Date is incorrect';
   }
 
   if (concessionType.hasNumber && !data.number) {
@@ -95,8 +95,8 @@ const Form = reduxForm({
   onSubmitSuccess: (result, dispatch, props: any) => {
     dispatch(changePhase(props.page));
   },
-  onSubmitFail: (error, dispatch, submitError, props) => {
-
+  onSubmitFail: (errors, dispatch, submitError, props) => {
+    dispatch(showFormValidation(submitError, NAME));
   },
 })(Concession);
 

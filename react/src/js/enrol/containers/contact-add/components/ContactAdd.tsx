@@ -3,7 +3,7 @@ import {Field} from "redux-form";
 import {TextField} from "../../../../components/form/TextField";
 
 export interface Props {
-  header?: string,
+  header?: string;
 }
 
 export class ContactAdd extends React.Component<Props, any> {
@@ -43,6 +43,7 @@ export class ContactAdd extends React.Component<Props, any> {
           <strong className="alert">Note</strong>: If you have been here before, please try to use the same email
           address.
         </p>
-      </div>)
+      </div>
+    );
   }
 }
