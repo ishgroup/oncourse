@@ -82,7 +82,7 @@ class CreatePaymentModel {
         this.college = this.context.localObject(college)
         this.paymentRequest = paymentRequest
         this.checkoutModel = checkoutModel
-        this.payer = new GetContact(context, college, checkoutModel.payerId).get()
+        this.payer = new GetContact(context, college, checkoutModel.payerId).get(false)
     }
 
     CreatePaymentModel create() {
