@@ -135,13 +135,13 @@ class ProcessCheckoutModel {
             } else if (!contactNode.enrolments.empty || !contactNode.applications.empty ) {
                 model.error = new CommonError(message: 'Purchase items are not valid')
             }
-
-            model.contactNodes << node
-
+            
             if (corporatePass) {
                 corporatePassNode.vouchers += contactNode.vouchers.findAll { it.selected && it.errors.empty }.each { it.contactId = corporatePass.contact.id.toString() }
-                contactNode.vouchers.clear()
+                node.vouchers.clear()
             }
+            
+            model.contactNodes << node
         }
         
         if (corporatePassNode && !corporatePassNode.vouchers.empty) {
