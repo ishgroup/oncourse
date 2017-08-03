@@ -191,13 +191,12 @@ public class TextileUtil {
 
 	public static String getReplacementForSyntaxErrorTag(String tag) {
 		return String.format("<span class=\"richtext_error\">Syntax error in \"%s\"</span>",tag);
-		//return "<!-- ERROR in " + tag + ". Syntax error --!> ";
 	}
 
 	public static String getReplacementForSyntaxErrorTag(String tag, ValidationErrors tempErrors) {
-		return String.format("<span class=\"richtext_error\">Syntax error in \"%s\"</span>" +
-				"%s", tag.length() > ERROR_TAG_MAX_LENGHT ? tag.substring(0, ERROR_TAG_MAX_LENGHT) + "...": tag, tempErrors.toString());
-		//return "<!-- ERROR in " + tag + ". Syntax error --!> ";
+		return String.format("<div class=\"richtext_error\"><span>Syntax error in \"%s\"</span><div>%s</div></div>",
+				tag.length() > ERROR_TAG_MAX_LENGHT ?
+						tag.substring(0, ERROR_TAG_MAX_LENGHT) + "...": tag, tempErrors.toString());
 	}
 
 
