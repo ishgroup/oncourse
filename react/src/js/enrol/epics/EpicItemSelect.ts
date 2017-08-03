@@ -5,7 +5,7 @@ import CheckoutService from "../services/CheckoutService";
 import {IshState} from "../../services/IshState";
 import * as EpicUtils from "./EpicUtils";
 import {Enrolment, Application, PurchaseItem} from "../../model";
-import {getAmount} from "../actions/Actions";
+import {getAmount, getCheckoutModelFromBackend} from "../actions/Actions";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 
 const request: EpicUtils.Request<Enrolment | Application, IshState> = {
@@ -15,7 +15,7 @@ const request: EpicUtils.Request<Enrolment | Application, IshState> = {
     return [
       {type: FULFILLED(SELECT_ITEM_REQUEST)},
       updateItem(value),
-      getAmount(),
+      getCheckoutModelFromBackend(),
     ];
   },
 };

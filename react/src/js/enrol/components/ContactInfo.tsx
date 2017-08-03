@@ -13,7 +13,8 @@ export class ContactInfo extends React.Component<Props, any> {
     return (
       <div className="col-xs-24 student-name">
         <div className="student-info">
-          { contact.firstName + " " + contact.lastName } <span className="student-email">({ contact.email })</span>
+          { `${contact.firstName || ''}  ${contact.lastName || ''} `}
+          <span className="student-email">({ contact.email })</span>
         </div>
         {concessions && concessions.map(item => (
           <div key={item.id}><i>{item.name}</i></div>
