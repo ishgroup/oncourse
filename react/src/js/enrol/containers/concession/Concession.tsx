@@ -5,7 +5,7 @@ import {Contact} from "../../../model";
 import ConcessionForm from "./components/ConcessionForm";
 import {reduxForm, FormErrors} from "redux-form";
 import {changePhase} from "../../actions/Actions";
-import {getConcessionTypes, getContactConcessions} from "./actions/Actions";
+import {getConcessionTypes} from "./actions/Actions";
 import CheckoutService from "../../services/CheckoutService";
 
 export interface Props {
@@ -93,7 +93,6 @@ const Form = reduxForm({
   validate,
   form: NAME,
   onSubmitSuccess: (result, dispatch, props: any) => {
-    dispatch(getContactConcessions());
     dispatch(changePhase(props.page));
   },
   onSubmitFail: (error, dispatch, submitError, props) => {
@@ -113,7 +112,7 @@ const mapStateToProps = (state: IshState) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSubmit: (data, dispatch, props): any => {
-      CheckoutService.submitConcession(data, props);
+      return CheckoutService.submitConcession(data, props);
     },
     onCancel: phase => {
       dispatch(changePhase(phase));
