@@ -38,7 +38,7 @@ class GetContactNodeTest extends ApiTest {
         assertTrue(node.enrolments[0].errors.empty)
         assertTrue(node.enrolments[0].selected)
         assertEquals('1005', node.enrolments[1].classId)
-        assertFalse(node.enrolments[1].selected)
+        assertTrue(node.enrolments[1].selected)
         assertEquals(1, node.enrolments[1].errors.size())
         assertEquals('Student1 Student1 is already enrolled in this class. Please select another class from <a href="/course/AAB"> this course</a>.', node.enrolments[1].errors[0])
         
@@ -62,7 +62,7 @@ class GetContactNodeTest extends ApiTest {
         
         assertEquals(1, node.memberships.size())
         assertEquals('8', node.memberships[0].productId)
-        assertFalse(node.memberships[0].selected)
+        assertTrue(node.memberships[0].selected)
         assertEquals(1, node.memberships[0].errors.size())
         assertEquals('Student1 Student1 is already has this membership 234567.', node.memberships[0].errors[0])
 

@@ -60,11 +60,6 @@ class ProcessProducts {
             processProduct.membership && memberships << processProduct.membership
             processProduct.voucher && vouchers << processProduct.voucher
         }
-
-        articles.each { a -> a.selected = a.errors.empty }
-        memberships.each { m -> m.selected = m.errors.empty }
-        vouchers.each { v -> v.selected = v.errors.empty }
-
         
         this
     }
