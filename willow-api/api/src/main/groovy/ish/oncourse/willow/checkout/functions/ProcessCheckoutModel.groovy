@@ -166,19 +166,20 @@ class ProcessCheckoutModel {
             } else {
                 e.errors += processClass.enrolment.errors
                 e.warnings += processClass.enrolment.warnings
-                if (e.errors.empty) {
-                    enrolmentsCount++
-                    e.price = processClass.enrolment.price
-                    totalAmount = totalAmount.add(e.price.fee != null ? e.price.fee .toMoney() : e.price.feeOverriden.toMoney())
-                    List<CourseClass> classes = enrolmentsToProceed.get(contact)
-                    if (classes == null) {
-                        classes = new ArrayList<CourseClass>()
-                        enrolmentsToProceed.put(contact, classes)
-                    }
-                    classes.add(courseClass)
-                } else {
-                    e.selected = false
+            }
+            
+            if (e.errors.empty) {
+                enrolmentsCount++
+                e.price = processClass.enrolment.price
+                totalAmount = totalAmount.add(e.price.fee != null ? e.price.fee .toMoney() : e.price.feeOverriden.toMoney())
+                List<CourseClass> classes = enrolmentsToProceed.get(contact)
+                if (classes == null) {
+                    classes = new ArrayList<CourseClass>()
+                    enrolmentsToProceed.put(contact, classes)
                 }
+                classes.add(courseClass)
+            } else {
+                e.selected = false
             }
         }
         return e
