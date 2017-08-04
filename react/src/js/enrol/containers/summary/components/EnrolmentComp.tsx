@@ -51,7 +51,7 @@ class EnrolmentComp extends React.Component<Props, any> {
 
 const ClassPrice = (props): any => {
   const enrolment: Enrolment = props.enrolment;
-  const price: CourseClassPrice = enrolment.price;
+  const price: CourseClassPrice = enrolment.price || {};
 
   const fee = price.feeOverriden ? price.feeOverriden : price.fee;
   const discountedFee = price.appliedDiscount ? price.appliedDiscount.discountedFee : null;
