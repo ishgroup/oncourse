@@ -28,8 +28,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CourseListTextileRendererTest {
 	private static final String SUCCESSFULLY_RENDERED = "success";
-
-	private static final  String ERRORS_RESULT = "<span class=\"richtext_error\">Syntax error in \"{courses broken syntax}\"</span><ol><li>The courseList tag '{courses broken syntax}' doesn't match {courses tag:\"/tag\" limit:\"digit\" sort:\"date|alphabetical|availability\" order:\"asc|desc\" style:\"titles|details\" showTags:\"true|false\"}</li></ol>";
+	private static final String BLOCK = "{courses broken syntax}";
 
 	@Mock
 	private ICourseService courseService;
@@ -78,10 +77,18 @@ public class CourseListTextileRendererTest {
 
 	@Test
 	public void failedCourseListRendering() {
-		String textile = "{courses broken syntax}";
-		String result = renderer.render(textile);
+		String result = renderer.render(BLOCK);
 		assertTrue(renderer.getErrors().hasFailures());
-		assertEquals(ERRORS_RESULT, result);
+		assertEquals("<div class=\"richtext_error\">" +
+									"<span>Syntax error in \"{courses broken syntax}\"</span>" +
+									"<div>" +
+										"<ol>" +
+											"<li>The courseList tag '{courses broken syntax}' doesn't match {courses tag:\"/tag\" limit:\"digit\" sort:\"date|alphabetical|availability\" order:\"asc|desc\" style:\"titles|details\" showTags:\"true|false\"}</li>" +
+										"</ol>" +
+									"</div>" +
+								"</div>", result);
 	}
+
+
 
 }

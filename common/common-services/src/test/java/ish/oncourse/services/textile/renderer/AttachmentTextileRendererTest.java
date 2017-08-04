@@ -68,8 +68,28 @@ public class AttachmentTextileRendererTest {
 		String textile = "{attachment with invalid syntax}";
 		String result = renderer.render(textile);
 		assertTrue(renderer.getErrors().hasFailures());
-		assertEquals("<span class=\"richtext_error\">Syntax error in \"{attachment with invalid syntax}\"</span><ol><li>The attachment tag '{attachment with invalid syntax}' doesn't match {attachment name:\"name\"}</li></ol>",
-				result);
+		assertEquals("<div class=\"richtext_error\">" +
+									"<span>Syntax error in \"{attachment with invalid syntax}\"</span>" +
+									"<div>" +
+										"<ol>" +
+											"<li>The attachment tag '{attachment with invalid syntax}' doesn't match {attachment name:\"name\"}</li>" +
+										"</ol>" +
+									"</div>" +
+								"</div>", result);
+
+		renderer.setRenderAlways(true);
+		result = renderer.render(textile);
+		assertTrue(renderer.getErrors().hasFailures());
+		assertEquals("<p>" +
+									"<div class=\"richtext_error\">" +
+										"<span>Syntax error in \"{attachment with invalid syntax}\"</span>" +
+										"<div>" +
+											"<ol>" +
+												"<li>The attachment tag '{attachment with invalid syntax}' doesn't match {attachment name:\"name\"}</li>" +
+											"</ol>" +
+										"</div>" +
+									"</div>" +
+								"</p>",	result);
 	}
 
 }

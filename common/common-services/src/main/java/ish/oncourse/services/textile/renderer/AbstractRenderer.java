@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
 public abstract class AbstractRenderer implements IRenderer {
 	protected static final String YES_REQUIRED_PARAM_VALUE = "yes";
 	protected IValidator validator;
@@ -48,7 +50,7 @@ public abstract class AbstractRenderer implements IRenderer {
 		{
 			String errorsHtml = TextileUtil.getReplacementForSyntaxErrorTag(tag, errors);
 			if (renderAlways)
-				result = String.format("<p>%s/p>%s", errorsHtml, result);
+				result = String.format("<p>%s</p>%s", errorsHtml, result != null ? result : EMPTY);
 			else
 				result = errorsHtml;
 		}

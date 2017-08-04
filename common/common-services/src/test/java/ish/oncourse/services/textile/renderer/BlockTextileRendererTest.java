@@ -17,6 +17,7 @@ import static org.mockito.Mockito.when;
 public class BlockTextileRendererTest {
 	
 	private static final String BLOCK_CONTENT = "block content";
+	private static final String BLOCK = "{block}";
 
 	@Mock
 	private IWebContentService webContentService;
@@ -42,7 +43,7 @@ public class BlockTextileRendererTest {
 	public void testRandomBlockRendering() {
 		when(webContentService.getWebContent(null, null))
 				.thenReturn(webContent);
-		String result = renderer.render("{block}");
+		String result = renderer.render(BLOCK);
 		assertFalse(renderer.getErrors().hasFailures());
 		assertEquals(BLOCK_CONTENT, result);
 	}
@@ -55,8 +56,21 @@ public class BlockTextileRendererTest {
 	public void testBlockNotFound() {
 		reset(webContentService);
 		when(webContentService.getWebContent(null, null)).thenReturn(null);
-		String result = renderer.render("{block}");
+		String result = renderer.render(BLOCK);
 		assertFalse(renderer.getErrors().hasFailures());
-		assertEquals("<span class=\"richtext_error\">Syntax error in \"{block}\"</span>", result);
+		assertEquals("<div class=\"richtext_error\">" +
+									"<span>Syntax error in \"{block}\"</span>" +
+									"<div></div>" +
+								"</div>", result);
+
+		renderer.setRenderAlways(true);
+		result = renderer.render(BLOCK);
+		assertFalse(renderer.getErrors().hasFailures());
+		assertEquals("<p>" +
+									"<div class=\"richtext_error\">" +
+										"<span>Syntax error in \"{block}\"</span>" +
+										"<div></div>" +
+									"</div>" +
+								"</p>", result);
 	}
 }
