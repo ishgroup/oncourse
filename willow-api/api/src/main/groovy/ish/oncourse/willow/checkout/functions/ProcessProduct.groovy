@@ -52,6 +52,7 @@ class ProcessProduct {
                 article = new Article().with { a ->
                     a.contactId = contact.id.toString()
                     a.productId = persistentProduct.id.toString()
+                    a.selected = true
                     a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
                     a
                 }
@@ -60,6 +61,7 @@ class ProcessProduct {
                 membership = new Membership().with { m ->
                     m.contactId = contact.id.toString()
                     m.productId = persistentProduct.id.toString()
+                    m.selected = true
                     m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
                     ValidateMembership validateMembership = new ValidateMembership(context, college).validate(persistentProduct as MembershipProduct, contact)
                     m.errors += validateMembership.errors
@@ -75,6 +77,7 @@ class ProcessProduct {
                     VoucherProduct voucher = persistentProduct as VoucherProduct
                     v.contactId = contact.id.toString()
                     v.productId = voucher.id.toString()
+                    v.selected = true
 
                     if (voucher.redemptionCourses.empty && voucher.value == null) {
                         v.price =  DEFAULT_VOUCHER_PRICE.doubleValue()

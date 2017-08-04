@@ -55,6 +55,7 @@ class ProcessClass {
             application = new Application().with { a ->
                 a.contactId = contact.id.toString()
                 a.classId = persistentClass.id.toString()
+                a.selected = true
                 ValidateApplication validateApplication = new ValidateApplication(context, college).validate(persistentClass.course, contact.student)
                 a.errors += validateApplication.errors
                 a.warnings += validateApplication.warnings
@@ -64,6 +65,7 @@ class ProcessClass {
             enrolment  = new Enrolment().with { e ->
                 e.contactId = contact.id.toString()
                 e.classId = persistentClass.id.toString()
+                e.selected = true
                 ValidateEnrolment validateEnrolment = new ValidateEnrolment(context, college).validate(persistentClass, contact.student)
                 e.errors += validateEnrolment.errors
                 e.warnings += validateEnrolment.warnings
