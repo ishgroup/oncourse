@@ -16,6 +16,7 @@ import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
 import {Tabs} from "../reducers/State";
 import {PaymentStatus, CorporatePass, Contact, Amount} from "../../../../model";
+import {getAllContactNodesFromBackend} from "../../summary/actions/Actions";
 
 /**
  * @Deprecated will be remove, now it is used only as example
@@ -231,7 +232,10 @@ const mapStateToProps = (state: IshState) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetPayer: id => dispatch(setPayer(id)),
+    onSetPayer: id => {
+      dispatch(setPayer(id));
+      dispatch(getAllContactNodesFromBackend());
+    },
     onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
     onAddCompany: () => dispatch(changePhase(Phase.AddContactAsCompany)),
     onSubmitPass: code => dispatch(getCorporatePass(code)),

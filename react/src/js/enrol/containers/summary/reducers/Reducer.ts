@@ -29,6 +29,12 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<S
       mergePurchases(ns, action.payload, false);
       return ns;
 
+    case SummaryActions.REWRITE_CONTACT_NODE_TO_STATE:
+      ns.result = Array.from(new Set([...ns.result, ...action.payload.result]));
+      ns.entities.contactNodes = {...ns.entities.contactNodes, ...action.payload.entities.contactNodes};
+      mergePurchases(ns, action.payload, false);
+      return ns;
+
     case SummaryActions.ItemsLoad:
       return action.payload;
 

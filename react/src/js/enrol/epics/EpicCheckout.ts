@@ -21,6 +21,7 @@ import {EpicResult} from "../containers/result/epics/EpicResult";
 import {EpicAddCode} from "./EpicAddCode";
 import {EpicUpdateSummary} from "./EpicLoadCheckoutModel";
 import {GetContactNode} from "./EpicGetContactNode";
+import {GetAllContactNodes} from "./EpicGetAllContactNodes";
 import {SubmitAddContact, AddPayerFromVoucher} from "../containers/contact-add/epics/EpicSubmitAddContact";
 import {EpicUpdateParentChilds} from "./EpicUpdateParentChilds";
 import {OpenEditContact} from "../containers/contact-edit/epics/EpicOpenEditContact";
@@ -41,6 +42,7 @@ export const EpicCheckout = combineEpics(
   SubmitEditContact,
   OpenEditContact,
   GetContactNode,
+  GetAllContactNodes,
   EpicAddCode,
   AddContactToSummary,
   EpicItemSelect,

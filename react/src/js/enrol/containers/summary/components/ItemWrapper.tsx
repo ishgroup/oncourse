@@ -2,14 +2,14 @@ import * as React from "react";
 import {isNil} from "lodash";
 
 export interface Props {
-  name: string
-  title: string
-  selected: boolean
-  error: string
-  warning: string
-  item: any
-  contact: any
-  onChange: (item, contact) => void
+  name: string;
+  title: string;
+  selected: boolean;
+  error: string;
+  warning: string;
+  item: any;
+  contact: any;
+  onChange: (item, contact) => void;
 }
 
 export class ItemWrapper extends React.Component<Props, any> {

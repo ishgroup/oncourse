@@ -3,7 +3,7 @@ import CheckoutService from "../services/CheckoutService";
 import * as EpicUtils from "./EpicUtils";
 import {CheckoutModel, ContactNode} from "../../model";
 import {GET_CHECKOUT_MODEL_FROM_BACKEND, updateAmount} from "../actions/Actions";
-import {addContactNodeToState} from "../containers/summary/actions/Actions";
+import {rewriteContactNodeToState} from "../containers/summary/actions/Actions";
 import {Epic} from "redux-observable";
 
 
@@ -13,7 +13,7 @@ const request: EpicUtils.Request<CheckoutModel, IshState> = {
   processData: (value: CheckoutModel, state: IshState) => {
     const result = [];
     value.contactNodes.forEach((node: ContactNode) => {
-      result.push(addContactNodeToState(node));
+      result.push(rewriteContactNodeToState(node));
     });
     result.push(updateAmount(value.amount));
     return result;
