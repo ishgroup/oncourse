@@ -169,7 +169,7 @@ class ProcessCheckoutModel {
                 if (e.errors.empty) {
                     enrolmentsCount++
                     e.price = processClass.enrolment.price
-                    totalAmount = totalAmount.add(e.price.fee?.toMoney() ?: e.price.feeOverriden.toMoney())
+                    totalAmount = totalAmount.add(e.price.fee != null ? e.price.fee .toMoney() : e.price.feeOverriden.toMoney())
                     List<CourseClass> classes = enrolmentsToProceed.get(contact)
                     if (classes == null) {
                         classes = new ArrayList<CourseClass>()

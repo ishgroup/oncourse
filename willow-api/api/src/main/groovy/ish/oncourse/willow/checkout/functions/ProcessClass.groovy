@@ -69,7 +69,7 @@ class ProcessClass {
                 ValidateEnrolment validateEnrolment = new ValidateEnrolment(context, college).validate(persistentClass, contact.student)
                 e.errors += validateEnrolment.errors
                 e.warnings += validateEnrolment.warnings
-                if (errors.empty) {
+                if (e.errors.empty) {
                     e.price = new CourseClassPrice().with { ccp ->
                         ccp.hasTax = !persistentClass.gstExempt 
                         if (overridenFee != null) {
