@@ -31,6 +31,46 @@ body {
 // Following all the styles handles content, dialogbox, and rodal-dialog
 //
 
+%default-header-tags {
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 18px;
+    line-height: 1.5;
+    font-weight: normal;
+  }
+}
+
+%header-tags {
+  // Content header tag h1 text size and its link styles
+  h1 {
+    @include header-tag($h1FontSize, $h1LineHeight, $h1FontWeight, $h1LinkColor, $h1LinkHoverColor);
+  }
+
+  // Content header tag h2 text size and its link styles
+  h2 {
+    @include header-tag($h2FontSize, $h2LineHeight, $h2FontWeight, $h2LinkColor, $h2LinkHoverColor);
+  }
+
+  // Content header tag h3 text size and its link styles
+  h3 {
+    @include header-tag($h3FontSize, $h3LineHeight, $h3FontWeight, $h3LinkColor, $h3LinkHoverColor);
+  }
+
+  // Content header tag h4 text size and its link styles
+  h4 {
+    @include header-tag($h4FontSize, $h4LineHeight, $h4FontWeight, $h4LinkColor, $h4LinkHoverColor);
+  }
+
+  // Content header tag h5 text size and its link styles
+  h5 {
+    @include header-tag($h5FontSize, $h5LineHeight, $h5FontWeight, $h5LinkColor, $h5LinkHoverColor);
+  }
+
+  // Content header tag h6 text size and its link styles
+  h6 {
+    @include header-tag($h6FontSize, $h6LineHeight, $h6FontWeight, $h6LinkColor, $h6LinkHoverColor);
+  }
+}
+
 .content, .dialogBox, .rodal-dialog {
   line-height: 1.5;
 
@@ -41,43 +81,7 @@ body {
   }
 
   // Default header tag h1, ..., h6 height, gap and font styles
-  h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 18px;
-    line-height: 1.5;
-    font-weight: normal;
-  }
-
-  %header-tags {
-    // Content header tag h1 text size and its link styles
-    h1 {
-      @include header-tag($h1FontSize, $h1LineHeight, $h1FontWeight, $h1LinkColor, $h1LinkHoverColor);
-    }
-
-    // Content header tag h2 text size and its link styles
-    h2 {
-      @include header-tag($h2FontSize, $h2LineHeight, $h2FontWeight, $h2LinkColor, $h2LinkHoverColor);
-    }
-
-    // Content header tag h3 text size and its link styles
-    h3 {
-      @include header-tag($h3FontSize, $h3LineHeight, $h3FontWeight, $h3LinkColor, $h3LinkHoverColor);
-    }
-
-    // Content header tag h4 text size and its link styles
-    h4 {
-      @include header-tag($h4FontSize, $h4LineHeight, $h4FontWeight, $h4LinkColor, $h4LinkHoverColor);
-    }
-
-    // Content header tag h5 text size and its link styles
-    h5 {
-      @include header-tag($h5FontSize, $h5LineHeight, $h5FontWeight, $h5LinkColor, $h5LinkHoverColor);
-    }
-
-    // Content header tag h6 text size and its link styles
-    h6 {
-      @include header-tag($h6FontSize, $h6LineHeight, $h6FontWeight, $h6LinkColor, $h6LinkHoverColor);
-    }
-  }
+  @extend %default-header-tags;
 
   @extend %header-tags;
 
@@ -750,6 +754,7 @@ div#form_error {
   .rodal-close {
     right: 23px;
     top: 11px;
+    z-index: 1;
   }
   >div {
     height: 100%;
