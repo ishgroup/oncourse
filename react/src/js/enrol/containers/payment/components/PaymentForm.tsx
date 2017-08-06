@@ -216,7 +216,7 @@ const Form = reduxForm({
 })(PaymentForm);
 
 const mapStateToProps = (state: IshState) => {
-  const corporatePassError = state.checkout.error && state.checkout.error.fieldsErrors.find(er => er.name === 'corporatePass');
+  const corporatePassError = state.checkout.error && state.checkout.error.fieldsErrors.find(er => er.name === 'code');
   return {
     contacts: Object.values(state.checkout.contacts.entities.contact),
     amount: state.checkout.amount,

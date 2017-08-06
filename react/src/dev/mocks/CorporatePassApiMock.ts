@@ -24,7 +24,7 @@ export class CorporatePassApiMock extends CorporatePassApi {
 
     return request.code === '1'
       ? this.config.createResponse(corporatePassResponse)
-      : CreatePromiseReject(this.config.createValidationError(1, ['corporatePass']));
+      : CreatePromiseReject({formErrors:["This code is not valid or has expired. Please contact the college."],fieldsErrors:[{name:"code",error:"This code is not valid or has expired. Please contact the college."}]});
   }
   isCorporatePassEnabled(): Promise<boolean> {
     return this.config.createResponse(true);

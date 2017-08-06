@@ -40,7 +40,7 @@ class CorporatePassComp extends React.Component<Props, any> {
           maxLength={40}
           className="input-fixed"
           autoComplete="off"
-          name="corporatePass"
+          name="code"
           label="Code"
           type="text"
           required={true}

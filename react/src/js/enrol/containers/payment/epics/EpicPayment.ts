@@ -98,7 +98,6 @@ const corporatePassRequest: Request<CorporatePass, IshState> = {
     ];
   },
 
-
 };
 
 const GetCorporatePass: Epic<any, any> = Create(corporatePassRequest);
