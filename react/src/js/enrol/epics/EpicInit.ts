@@ -16,7 +16,7 @@ import {AxiosResponse} from "axios";
 import {resetPaymentState} from "../containers/payment/actions/Actions";
 import {IshState} from "../../services/IshState";
 import {openEditContact} from "../containers/contact-edit/actions/Actions";
-import {getContactNodeFromBackend} from "../containers/summary/actions/Actions";
+import {getAllContactNodesFromBackend, getContactNodeFromBackend} from "../containers/summary/actions/Actions";
 
 const updateContactNodes = contacts => {
   const result = [];
@@ -81,7 +81,10 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     }
 
     if (state.checkout.summary.result.length) {
-      return result.concat(Actions.changePhase(state.checkout.page));
+      return result.concat([
+        Actions.changePhase(state.checkout.page),
+        getAllContactNodesFromBackend(),
+      ]);
     }
 
     return result.concat([Actions.changePhase(Phase.AddPayer)]);
