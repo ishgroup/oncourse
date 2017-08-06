@@ -17,7 +17,7 @@ export class Failed extends React.Component<Props, any> {
         <p>Please check your credit card details or credit balance and try again. In particular, check the CVV and
           expiry date have been entered correctly.</p>
         <p>
-          <a title="Proceed with this enrolment" href={successLink} onClick={onAnotherCard}>
+          <a title="Proceed with this enrolment" href="#" onClick={onAnotherCard}>
             Try again with another card or reenter details</a>
           {" Or "}
           <a href={successLink} onClick={onCancel}>Abandon</a>{" this enrolment"}.
