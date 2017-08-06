@@ -7,7 +7,7 @@ import {persistStore} from "redux-persist";
 const localForage = extendPrototype(localforage);
 
 export function syncCartStore(store) {
-  localForage.ready().then(() => {
+  typeof localForage.ready === 'function' && localForage.ready().then(() => {
 
     localForage.configObservables({
       crossTabNotification: true,
