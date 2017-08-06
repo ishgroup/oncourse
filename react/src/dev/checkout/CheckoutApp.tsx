@@ -9,7 +9,6 @@ import "../../scss/index.scss";
 
 import {MockControl} from "./MockControl";
 import {MockConfig} from "../mocks/mocks/MockConfig";
-import {ConfigConstants} from "../../js/config/ConfigConstants";
 
 const config = new MockConfig();
 
