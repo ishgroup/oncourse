@@ -70,16 +70,16 @@ const VoucherDetails = (props): any => {
         : (<div>
           This is a voucher with specified price.
           {voucher.classes && voucher.classes.length > 0 ? (
-            <div>
-              <dt className="label">This voucher valid for</dt>
-              <dd>{voucher.classes.map((c, i) =>
-                <li key={i}>{c}</li>)}
-              </dd>
-            </div>)
+              <div>
+                <dt className="label">This voucher valid for</dt>
+                <dd>{voucher.classes.map((c, i) =>
+                  <li key={i}>{c}</li>)}
+                </dd>
+              </div>)
             : (
               <div>
                 <dt className="label">Value</dt>
-                <dd>${voucher.value}</dd>
+                <dd>${Number(voucher.value).toFixed(2)}</dd>
               </div>)
           }
         </div>)
@@ -94,17 +94,24 @@ const VoucherPrice = (props): any => {
   return (
     <div className="col-xs-8 col-md-7 alignright priceValue">
       <div className="row">
-        { voucher.isEditablePrice ?
+        {voucher.isEditablePrice ?
           <div className="col-xs-24 col-md-24 fee-full fullPrice text-right">
             <input
               type="text"
+              className="text-right"
               name="priceValue"
               value={`$${voucher.price}`}
               onChange={e => props.onChange(e.target.value.replace('$', ''))}
-              onBlur={e => props.onBlur(e.currentTarget.value.replace('$', ''))}
+              onBlur={e => {
+                props.onBlur(e.currentTarget.value.replace('$', ''));
+                Number(e.currentTarget.value).toFixed(2);
+              }}
             />
           </div>
-          : <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">${ voucher.price }</span>
+          :
+          <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">
+          ${Number(voucher.price).toFixed(2)}
+          </span>
         }
       </div>
     </div>
