@@ -85,12 +85,14 @@ const ClassDetails = (props): any => {
   const start: string = FormatUtils.formatDate(courseClass.start, Formats.ClassDateFormat);
   const end: string = FormatUtils.formatDate(courseClass.end, Formats.ClassDateFormat);
   return (
-    <em>
-      {courseClass.room && <span>{`${courseClass.room.site.name} » `}</span>}
-      {courseClass.distantLearning && <span className="started">Self paced</span>}
-      {start && end &&
-      <span><span className="started">{start}</span>&nbsp;-&nbsp;<span className="ended">{end}</span></span>}
-    </em>
+    <div>
+      <em>
+        {courseClass.room && <span>{`${courseClass.room.site.name} » `}</span>}
+        {courseClass.distantLearning && <span className="started">Self paced</span>}
+        {start && end &&
+        <span><span className="started">{start}</span>&nbsp;-&nbsp;<span className="ended">{end}</span></span>}
+      </em>
+    </div>
   );
 };
 
