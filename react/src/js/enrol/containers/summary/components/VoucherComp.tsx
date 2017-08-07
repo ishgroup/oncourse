@@ -69,7 +69,7 @@ const VoucherDetails = (props): any => {
             : (
               <div>
                 <dt className="label">Value</dt>
-                <dd>{voucher.value}</dd>
+                <dd>${voucher.value}</dd>
               </div>)
           }
         </div>)
