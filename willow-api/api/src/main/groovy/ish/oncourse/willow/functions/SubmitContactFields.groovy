@@ -54,16 +54,15 @@ class SubmitContactFields {
         }
         
         fields.each { f ->
-
-            FieldProperty  property = FieldProperty.getByKey(f.key)
-            if (!property) {
-                logger.error "unsupported property ${f.name}".toString()
-                errors.formErrors << "unsupported property ${f.name}".toString()
-                return 
-            }
-            
-            Object value = normalizeValue(property, f)
+            Object value = normalizeValue(f)
             if (value != null) {
+                FieldProperty  property = FieldProperty.getByKey(f.key)
+                if (!property) {
+                    logger.error "unsupported property ${f.name}".toString()
+                    errors.formErrors << "unsupported property ${f.name}".toString()
+                    return
+                }
+                
                 FieldError error = validateValue(property, value)
                 if (error) {
                     errors.fieldsErrors << error
@@ -71,9 +70,7 @@ class SubmitContactFields {
                     getSet = factory.get([getProperty: {f.key}] as FieldInterface, getContext.call(property.contextType, contact))
                     getSet.set(value)
                 }
-                
             }
-            
         }
         
         if (contact.getCountry() == null) {
@@ -84,7 +81,7 @@ class SubmitContactFields {
     }
     
     
-    private Object normalizeValue(FieldProperty  property, Field f) {
+    private Object normalizeValue(Field f) {
         Object result = null
         if (StringUtils.trimToNull(f.value)) {
             switch (f.dataType) {
@@ -92,10 +89,8 @@ class SubmitContactFields {
                 case SUBURB:
                 case POSTCODE:
                 case STRING:
-                    result = f.value
-                    break
                 case PHONE:
-                    result = normalizePhone(property, f.value)
+                    result = f.value
                     break
                 case BOOLEAN:
                     result = Boolean.valueOf(f.value)
@@ -147,10 +142,6 @@ class SubmitContactFields {
             errors.fieldsErrors << new FieldError(name: f.key, error: "${f.name} is required")
         } 
         result
-    }
-
-    private Object normalizePhone(FieldProperty property, Object value) {
-        return StringUtils.removePattern(value as String, "[^0-9]")
     }
 
     private FieldError validateValue(FieldProperty  property, Object value) {
