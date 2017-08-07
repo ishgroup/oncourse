@@ -59,7 +59,7 @@ const VoucherDetails = (props): any => {
         </div>
         : (<div>
           This is a voucher with specified price.
-          {voucher.classes ? (
+          {voucher.classes && voucher.classes.length > 0 ? (
             <div>
               <dt className="label">This voucher valid for</dt>
               <dd>{voucher.classes.map((c, i) =>
