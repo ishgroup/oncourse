@@ -85,6 +85,12 @@
         }
       }
       
+      .priceValue {
+        input {
+          width: 100px;
+        }
+      }
+      
       .enrolmentInfo {
         line-height: 22px;
         
@@ -114,7 +120,7 @@
         }
       }
       div.alignright {
-        padding-right: 60px;
+        padding-right: 43px;
         
         .row + .row {
           span {

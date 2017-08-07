@@ -14,15 +14,30 @@ export interface Props {
   updateCheckoutModel?: () => void;
 }
 
-class VoucherComp extends React.Component<Props, any> {
+class VoucherComp extends React.PureComponent<Props, any> {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      price: props.voucher.price || 0,
+    };
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      price: Number(props.voucher.price).toFixed(2),
+    });
+  }
 
   private updatePrice = val => {
     const reg = (/^[0-9]+\.?[0-9]*$/);
 
     if (val > 0 && reg.test(val)) {
-      this.props.onPriceValueChange(val);
+      this.setState({
+        price: val,
+      });
     }
-
     return false;
   }
 
@@ -48,6 +63,7 @@ class VoucherComp extends React.Component<Props, any> {
         {voucher.selected &&
         <VoucherPrice
           voucher={voucher}
+          price={this.state.price}
           onChange={val => this.updatePrice(val)}
           onBlur={val => this.handleBlur(val)}
         />
@@ -90,6 +106,7 @@ const VoucherDetails = (props): any => {
 
 const VoucherPrice = (props): any => {
   const voucher = props.voucher;
+  const price = props.price;
 
   return (
     <div className="col-xs-8 col-md-7 alignright priceValue">
@@ -100,12 +117,9 @@ const VoucherPrice = (props): any => {
               type="text"
               className="text-right"
               name="priceValue"
-              value={`$${voucher.price}`}
+              value={`$${price}`}
               onChange={e => props.onChange(e.target.value.replace('$', ''))}
-              onBlur={e => {
-                props.onBlur(e.currentTarget.value.replace('$', ''));
-                Number(e.currentTarget.value).toFixed(2);
-              }}
+              onBlur={e => props.onBlur(e.currentTarget.value.replace('$', ''))}
             />
           </div>
           :

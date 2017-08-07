@@ -61,13 +61,13 @@ const ClassPrice = (props): any => {
   return (
     <div className="col-xs-8 col-md-7 alignright">
       {fee &&
-      <div className="row text-right">
+      <div className="text-right">
         <span className="fee-full fullPrice" style={feeStyle}>${Number(fee).toFixed(2)}</span>
       </div>
       }
 
       {discountedFee &&
-      <div className="row text-right">
+      <div className="text-right">
         <span className="fee-discounted discountedPrice">${Number(discountedFee).toFixed(2)}</span>
       </div>
       }

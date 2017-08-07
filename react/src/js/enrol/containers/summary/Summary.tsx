@@ -110,9 +110,6 @@ export const SummaryPropsBy = (state: IshState): any => {
   }
 };
 
-// debounce for optimize api requests
-const getCheckoutModelDebounced = debounce(dispatch => dispatch(getCheckoutModelFromBackend()), 300);
-
 export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
   return {
     onSelect: (item: PurchaseItem, selected: boolean): void => {
@@ -130,7 +127,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onPriceValueChange: (productItem: PurchaseItem, val: any): void => {
       const item = Object.assign(productItem, {value: val, price: val});
       dispatch(updateItem(item));
-      getCheckoutModelDebounced(dispatch);
+      dispatch(getCheckoutModelFromBackend());
     },
     onAddConcession: (contactId): void => {
       dispatch(updateConcessionContact(contactId));
