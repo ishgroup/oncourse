@@ -53,27 +53,28 @@ const ClassPrice = (props): any => {
   const enrolment: Enrolment = props.enrolment;
   const price: CourseClassPrice = enrolment.price || {};
 
-  const fee = price.feeOverriden ? price.feeOverriden : price.fee;
-  const discountedFee = price.appliedDiscount ? price.appliedDiscount.discountedFee : null;
-  const discount = price.appliedDiscount ? price.appliedDiscount.discountValue : null;
+  const fee = price.feeOverriden ? Number(price.feeOverriden).toFixed(2) : Number(price.fee).toFixed(2);
+  const discountedFee = price.appliedDiscount ? Number(price.appliedDiscount.discountedFee).toFixed(2) : null;
+  const discount = price.appliedDiscount ? Number(price.appliedDiscount.discountValue).toFixed(2) : null;
+
   const feeStyle = price.appliedDiscount ? {textDecoration: "line-through"} : null;
 
   return (
     <div className="col-xs-8 col-md-7 alignright">
-      {fee &&
+      {(fee || Number(fee) === 0) &&
       <div className="text-right">
-        <span className="fee-full fullPrice" style={feeStyle}>${Number(fee).toFixed(2)}</span>
+        <span className="fee-full fullPrice" style={feeStyle}>${fee}</span>
       </div>
       }
 
-      {discountedFee &&
+      {discountedFee !== null &&
       <div className="text-right">
-        <span className="fee-discounted discountedPrice">${Number(discountedFee).toFixed(2)}</span>
+        <span className="fee-discounted discountedPrice">${discountedFee}</span>
       </div>
       }
 
-      {discount &&
-      <span style={{display: "none"}} className="discount">${Number(discount).toFixed(2)}</span>
+      {discount !== null &&
+      <span style={{display: "none"}} className="discount">${discount}</span>
       }
     </div>
   );
