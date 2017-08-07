@@ -76,6 +76,11 @@ div.clearboth {
 }
 
 #checkout, #waitingListForm, #mailingListForm {
+  input[type="submit"]:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+  
   .new-student-link {
     padding: 8px;
     background: #f7f7f7;

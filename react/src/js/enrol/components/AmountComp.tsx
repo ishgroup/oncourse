@@ -45,25 +45,25 @@ class AmountComp extends React.Component<Props, any> {
       <div className="row">
         <AddCodeComp onAdd={onAddCode} promotions={promotions}/>
         <div className="col-xs-24 col-sm-8 amount-content text-right">
-          { amount && (amount.subTotal || amount.subTotal === 0) && <Total total={amount.subTotal}/> }
+          {amount && (amount.subTotal || amount.subTotal === 0) && <Total total={amount.subTotal}/>}
 
-          { amount && redeemVouchers &&
-            redeemVouchers.map(v => (
-              <RedeemVoucher
-                key={v.id}
-                redeemVoucher={v}
-                voucherPayment={amount.voucherPayments && amount.voucherPayments.find(
-                  vp => vp.redeemVoucherId === v.id,
-                )}
-                disabled={!!(activeVoucherWithPayer && activeVoucherWithPayer.id !== v.id)}
-                onChange={onToggleVoucher}
-              />
-            ))}
+          {amount && redeemVouchers &&
+          redeemVouchers.map(v => (
+            <RedeemVoucher
+              key={v.id}
+              redeemVoucher={v}
+              voucherPayment={amount.voucherPayments && amount.voucherPayments.find(
+                vp => vp.redeemVoucherId === v.id,
+              )}
+              disabled={!!(activeVoucherWithPayer && activeVoucherWithPayer.id !== v.id)}
+              onChange={onToggleVoucher}
+            />
+          ))}
 
-          { amount && amount.discount !== 0 && <Discount discount={amount.discount}/>}
+          {amount && amount.discount !== 0 && <Discount discount={amount.discount}/>}
 
-          { (amount && currentTab !== Tabs.corporatePass) &&
-            (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
+          {(amount && currentTab !== Tabs.corporatePass) &&
+          (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
           <PayNow
             payNow={amount.payNow}
             onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}

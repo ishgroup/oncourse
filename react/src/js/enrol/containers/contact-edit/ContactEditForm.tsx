@@ -12,6 +12,7 @@ import {submitEditContact} from "./actions/Actions";
 import {getConcessionTypes} from "../concession/actions/Actions";
 import {validate as concessionFormValidate} from "../concession/Concession";
 import ConcessionForm from "../concession/components/ConcessionForm";
+import {toFormKey} from "../../../components/form/FieldFactory";
 
 export const NAME = "ContactEditForm";
 
@@ -87,8 +88,8 @@ const Form = reduxForm({
     const concessionErrors = concessionFormValidate(data, props);
     props.fields.headings.map(headings =>
       headings.fields.map(field =>
-        (field.mandatory && (field.dataType !== "BOOLEAN" || field.key === "isMale") && !data[field.key])
-          ? errors[field.key] = `Field '${field.name}' is required`
+        (field.mandatory && (field.dataType !== "BOOLEAN" || field.key === "isMale") && !data[toFormKey(field.key)])
+          ? errors[toFormKey(field.key)] = `Field '${field.name}' is required`
           : field,
       ),
     );
