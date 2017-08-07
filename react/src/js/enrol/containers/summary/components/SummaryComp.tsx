@@ -115,7 +115,7 @@ const AddAnotherContact = props => {
   return (
     <div className="row" id="totals">
       <div className="col-xs-24">
-        <a id="addContact" href="#addContact" onClick={onClick}>Add another student</a>
+        <a className="new-student-link" id="addContact" href="#addContact" onClick={onClick}>Add another student</a>
       </div>
     </div>
   );

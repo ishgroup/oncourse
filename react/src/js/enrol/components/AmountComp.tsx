@@ -24,9 +24,10 @@ class AmountComp extends React.Component<Props, any> {
   }
 
   handleChangePayNow(val) {
-    const {onUpdatePayNow} = this.props;
+    const {onUpdatePayNow, amount} = this.props;
     const reg = (/^[0-9]+\.?[0-9]*$/);
-    if (val > 0 && reg.test(val)) {
+
+    if ((val > 0 || Number(val) === 0 && amount.minPayNow === 0) && reg.test(val)) {
       onUpdatePayNow(val);
     }
   }

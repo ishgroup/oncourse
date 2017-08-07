@@ -76,6 +76,11 @@ div.clearboth {
 }
 
 #checkout, #waitingListForm, #mailingListForm {
+  .new-student-link {
+    padding: 8px;
+    background: #f7f7f7;
+  }
+  
   form {
     &.submitting {
       @include spinner();
@@ -346,10 +351,13 @@ div.clearboth {
   }
   
   #addContact {
-    background: transparent url(/s/img/add.png) no-repeat scroll 3px 50%;
-    margin: 0;
-    padding: 5px 0 5px 24px;
+    background: #f7f7f7 url(/s/img/add.png) no-repeat scroll 3px 50%;
+    margin: 5px 0 0;
+    padding: 13px 10px 13px 24px;
     cursor: pointer;
+    display: block;
+    width: 100%;
+    border-radius: 5px;
   }
   
   /**ConcessionEditor component*/
