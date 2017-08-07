@@ -16,8 +16,7 @@ export interface Props {
 
 class VoucherComp extends React.Component<Props, any> {
 
-  private updatePrice = item => {
-    const val = item.target.value;
+  private updatePrice = val => {
     const reg = (/^[0-9]+\.?[0-9]*$/);
 
     if (val > 0 && reg.test(val)) {
@@ -25,6 +24,11 @@ class VoucherComp extends React.Component<Props, any> {
     }
 
     return false;
+  }
+
+  private handleBlur(val) {
+    const {onPriceValueChange} = this.props;
+    onPriceValueChange(Number(val).toFixed(2));
   }
 
   public render(): JSX.Element {
@@ -41,7 +45,13 @@ class VoucherComp extends React.Component<Props, any> {
                      onChange={onChange}>
           <VoucherDetails voucher={voucher}/>
         </ItemWrapper>
-        {voucher.selected && <VoucherPrice voucher={voucher} onPriceValueChange={item => this.updatePrice(item)}/>}
+        {voucher.selected &&
+        <VoucherPrice
+          voucher={voucher}
+          onChange={val => this.updatePrice(val)}
+          onBlur={val => this.handleBlur(val)}
+        />
+        }
       </div>
     );
   }
@@ -86,7 +96,13 @@ const VoucherPrice = (props): any => {
       <div className="row">
         { voucher.isEditablePrice ?
           <div className="col-xs-24 col-md-24 fee-full fullPrice text-right">
-            <input type="text" name="priceValue" value={voucher.price} onChange={props.onPriceValueChange.bind(this)}/>
+            <input
+              type="text"
+              name="priceValue"
+              value={`$${voucher.price}`}
+              onChange={e => props.onChange(e.target.value.replace('$', ''))}
+              onBlur={e => props.onBlur(e.currentTarget.value.replace('$', ''))}
+            />
           </div>
           : <span className="col-xs-24 col-md-24 fee-full fullPrice text-right">${ voucher.price }</span>
         }
