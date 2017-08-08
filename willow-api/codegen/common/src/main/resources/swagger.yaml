@@ -510,13 +510,13 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
-  /getContactConcessions:
+  /getContactConcessionsAndMemberships:
     post:
       x-filter:  
       - CollegeInfo  
-      summary: Provide list of student concessions
-      operationId: getContactConcessions
-      description: Provide list of student concessions
+      summary: Provide list of student concessions and active memberships
+      operationId: getContactConcessionsAndMemberships
+      description: Provide list of student concessions and active memberships
       tags:
       - Contact
       parameters:
@@ -532,9 +532,7 @@ paths:
         200:
           description:  Provide list of student concessions
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/checkout.concession.Concession'
+            $ref: '#/definitions/checkout.ConcessionsAndMemberships'
         default:
           description: Unexpected error
           schema:
@@ -1475,6 +1473,24 @@ definitions:
          type: string
       number: 
         type: string
+  checkout.StudentMembership:
+    type: object
+    properties:
+      contactId:
+        type: string
+      name:
+        type: string
+  checkout.ConcessionsAndMemberships:
+    type: object
+    properties:
+      concessions:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.concession.Concession'
+      memberships:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.StudentMembership'
   checkout.RedeemVoucher:
     type: object
     properties:

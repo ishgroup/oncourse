@@ -17,7 +17,8 @@ import ish.oncourse.willow.functions.SubmitContactFields
 import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.functions.concession.AddConcession
 import ish.oncourse.willow.functions.concession.GetConcessionTypes
-import ish.oncourse.willow.functions.concession.GetContactConcessions
+import ish.oncourse.willow.functions.concession.GetConcessionsAndMemberships
+import ish.oncourse.willow.model.checkout.ConcessionsAndMemberships
 import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest
 import ish.oncourse.willow.model.checkout.concession.Concession
 import ish.oncourse.willow.model.checkout.concession.ConcessionType
@@ -166,8 +167,8 @@ class ContactApiServiceImpl implements ContactApi{
     }
 
     @Override
-    List<Concession> getContactConcessions(List<String> contactIds) {
-        new GetContactConcessions(college: collegeService.college, context: cayenneService.newContext(), contactIds: contactIds).get()
+    ConcessionsAndMemberships getContactConcessionsAndMemberships(List<String> contactIds) {
+        new GetConcessionsAndMemberships(college: collegeService.college, context: cayenneService.newContext(), contactIds: contactIds).get()
     }
 
     @Override

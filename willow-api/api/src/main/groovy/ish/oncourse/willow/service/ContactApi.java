@@ -1,6 +1,7 @@
 package ish.oncourse.willow.service;
 
 import java.util.List;
+import ish.oncourse.willow.model.checkout.ConcessionsAndMemberships;
 import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest;
 import ish.oncourse.willow.model.checkout.concession.Concession;
 import ish.oncourse.willow.model.checkout.concession.ConcessionType;
@@ -51,10 +52,10 @@ public interface ContactApi  {
     Contact getContact(@PathParam("studentUniqueIdentifier") String studentUniqueIdentifier);
 
     @POST
-    @Path("/getContactConcessions")
+    @Path("/getContactConcessionsAndMemberships")
     @Produces({ "application/json" })
     @CollegeInfo
-    List<Concession> getContactConcessions(List<String> contactIds);
+    ConcessionsAndMemberships getContactConcessionsAndMemberships(List<String> contactIds);
 
     @POST
     @Path("/contactFields")
