@@ -6,6 +6,10 @@ import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
 import {mockContact} from "./mocks/MockFunctions";
 import {Concession} from "../../js/model/checkout/concession/Concession";
+import {ConcessionsAndMemberships} from "../../js/model/checkout/ConcessionsAndMemberships";
+import {StudentMembership} from "../../js/model/checkout/StudentMembership";
+
+
 export class ContactApiMock extends ContactApi {
 
   public config: MockConfig;
@@ -85,11 +89,19 @@ export class ContactApiMock extends ContactApi {
     return this.config.createResponse([result2, result1]);
   }
 
-  getContactConcessions(ids) {
-    const result1: Concession = new Concession();
-    result1.contactId = ids[0];
-    result1.name = 'Student';
-    return this.config.createResponse([result1]);
+  getContactConcessionsAndMemberships(ids): Promise<ConcessionsAndMemberships> {
+    const concession1: Concession = new Concession();
+    concession1.contactId = ids[0];
+    concession1.name = 'Student';
+
+    const membership1: StudentMembership = new StudentMembership();
+    membership1.contactId = ids[0];
+    membership1.name = 'Studend membership';
+
+    return this.config.createResponse({
+      concessions: [concession1],
+      memberships: [membership1],
+    });
   }
 
 

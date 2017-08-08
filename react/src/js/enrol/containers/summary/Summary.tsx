@@ -98,6 +98,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       redeemVouchers: state.checkout.redeemVouchers,
       hasSelected: SummaryService.hasSelected(state.checkout.summary),
       concessions: state.checkout.concession.concessions,
+      memberships: state.checkout.concession.memberships,
       needParent: !!CheckoutService.getAllSingleChildIds(state.checkout).length,
       fetching: state.checkout.summary.fetching,
     };

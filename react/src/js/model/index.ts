@@ -66,7 +66,9 @@ export {Membership} from "./checkout/Membership";
 export {RedeemVoucher} from "./checkout/RedeemVoucher";
 export {Voucher} from "./checkout/Voucher";
 export {VoucherPayment} from "./checkout/VoucherPayment";
-
+export {ConcessionsAndMemberships} from "./checkout/ConcessionsAndMemberships";
+export {StudentMembership} from "./checkout/StudentMembership";
+export {ChangeParentRequest} from "./checkout/ChangeParentRequest";
 
 // PurchaseItem model
 import {Enrolment} from "./checkout/Enrolment";

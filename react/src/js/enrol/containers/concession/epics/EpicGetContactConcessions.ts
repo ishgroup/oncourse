@@ -4,15 +4,15 @@ import {IshState} from "../../../../services/IshState";
 import * as EpicUtils from "../../../epics/EpicUtils";
 
 import CheckoutService from "../../../services/CheckoutService";
-import {GET_CONTACT_CONCESSIONS_REQUEST} from "../actions/Actions";
+import {GET_CONTACT_CONCESSIONS_AND_MEMBERSHIPS_REQUEST} from "../actions/Actions";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
 
 const request: EpicUtils.Request<any, IshState> = {
-  type: GET_CONTACT_CONCESSIONS_REQUEST,
-  getData: (payload, state: IshState) => CheckoutService.getContactConcessions(payload, state),
+  type: GET_CONTACT_CONCESSIONS_AND_MEMBERSHIPS_REQUEST,
+  getData: (payload, state: IshState) => CheckoutService.getContactConcessionsAndMemberships(payload, state),
   processData: (value, state: IshState) => {
     return [{
-      type: FULFILLED(GET_CONTACT_CONCESSIONS_REQUEST),
+      type: FULFILLED(GET_CONTACT_CONCESSIONS_AND_MEMBERSHIPS_REQUEST),
       payload: value,
     }];
   },

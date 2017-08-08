@@ -1,6 +1,8 @@
 import * as React from "react";
 
-import {Contact, Enrolment, Membership, Article, Voucher, Application, PurchaseItem} from "../../../../model";
+import {
+  Contact, Enrolment, Membership, Article, Voucher, Application, PurchaseItem, Concession, StudentMembership,
+} from "../../../../model";
 
 import EnrolmentComp, {Props as EnrolmentProps} from "./EnrolmentComp";
 import ApplicationComp, {Props as ApplicationProps} from "./ApplicationComp";
@@ -20,13 +22,14 @@ export interface Props {
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
-  concessions?: any;
+  concessions?: Concession[];
+  studentMemberships?: StudentMembership[];
 }
 
 class ContactComp extends React.Component<Props, any> {
   render() {
     const {contact, enrolments, applications, vouchers, memberships, concessions,
-      articles, onSelect, onPriceValueChange, onAddConcession} = this.props;
+      articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships} = this.props;
 
     return (
       <div className="row">
@@ -34,6 +37,7 @@ class ContactComp extends React.Component<Props, any> {
           contact={contact}
           controls={<AddConcessionLink onAddConcession={onAddConcession} contact={contact}/>}
           concessions={concessions}
+          memberships={studentMemberships}
         />
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) => {

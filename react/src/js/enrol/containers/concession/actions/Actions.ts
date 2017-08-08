@@ -4,7 +4,7 @@ export const UPDATE_CONTACT_CONCESSION: string = "checkout/update/concession/con
 
 export const GET_CONCESSION_TYPES_REQUEST: string = "checkout/get/concessionTypes/request";
 
-export const GET_CONTACT_CONCESSIONS_REQUEST: string = "checkout/summary/get/contactConcessions/request";
+export const GET_CONTACT_CONCESSIONS_AND_MEMBERSHIPS_REQUEST: string = "checkout/summary/get/contactConcessions/request";
 
 export const updateConcessionContact = (id): IAction<any> => {
   return {
@@ -21,7 +21,7 @@ export const getConcessionTypes = (): IAction<any> => {
 
 export const getContactConcessions = () => {
   return {
-    type: GET_CONTACT_CONCESSIONS_REQUEST,
+    type: GET_CONTACT_CONCESSIONS_AND_MEMBERSHIPS_REQUEST,
   };
 };
 

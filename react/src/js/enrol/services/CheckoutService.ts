@@ -2,8 +2,8 @@ import * as L from "lodash";
 import {
   ContactFields, ContactFieldsRequest, SubmitFieldsRequest, CreateContactParams, Field, CheckoutModel, Amount,
   ContactNode, CheckoutModelRequest, ContactNodeRequest, PaymentResponse, PaymentRequest, DataType,
-  GetCorporatePassRequest, ContactId, PaymentStatus, Contact, Concession, CodeResponse, FieldSet, PurchaseItem}
-  from "../../model";
+  GetCorporatePassRequest, ContactId, PaymentStatus, Contact, Concession, CodeResponse, FieldSet, PurchaseItem,
+} from "../../model";
 
 import {Injector} from "../../injector";
 import {CartState, IshState} from "../../services/IshState";
@@ -95,8 +95,8 @@ export class CheckoutService {
     return this.contactApi.getConcessionTypes();
   }
 
-  public getContactConcessions = (payload, state: IshState) => {
-    return this.contactApi.getContactConcessions(state.checkout.contacts.result);
+  public getContactConcessionsAndMemberships = (payload, state: IshState) => {
+    return this.contactApi.getContactConcessionsAndMemberships(state.checkout.contacts.result);
   }
 
   public submitConcession = (payload, props) => {

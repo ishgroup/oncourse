@@ -4,6 +4,8 @@ import classnames from "classnames";
 import AmountComp from "../../../components/AmountComp";
 import ContactComp, {Props as ContactProps} from "./ContactComp";
 import {Amount, RedeemVoucher, Promotion, PurchaseItem} from "../../../../model";
+import {StudentMembership} from "../../../../model/checkout/StudentMembership";
+import {Concession} from "../../../../model/checkout/concession/Concession";
 
 export interface Props {
   hasSelected: boolean;
@@ -19,7 +21,8 @@ export interface Props {
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
   onInit?: () => void;
-  concessions?: any;
+  concessions?: Concession[];
+  memberships?: StudentMembership[];
   onUpdatePayNow?: (val, validate?: boolean) => void;
   needParent?: boolean;
   fetching?: boolean;
@@ -38,7 +41,7 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   renderContact = (props: ContactProps) => {
-    const {onSelect, onPriceValueChange, onAddConcession, concessions} = this.props;
+    const {onSelect, onPriceValueChange, onAddConcession, concessions, memberships} = this.props;
 
     return (
       <ContactComp
@@ -48,6 +51,7 @@ export class SummaryComp extends React.Component<Props, any> {
         onPriceValueChange={(productItem, val) => onPriceValueChange(productItem, val)}
         onAddConcession={onAddConcession}
         concessions={concessions.filter(item => item.contactId === props.contact.id)}
+        studentMemberships={memberships.filter(item => item.contactId === props.contact.id)}
       />
     );
   }
