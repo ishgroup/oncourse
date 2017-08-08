@@ -8,6 +8,7 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.model.FieldConfigurationScheme
 import ish.oncourse.willow.checkout.functions.GetContact
+import ish.oncourse.willow.functions.ChangeParent
 import ish.oncourse.willow.functions.CheckParent
 import ish.oncourse.willow.functions.CreateOrGetContact
 import ish.oncourse.willow.functions.CreateParentChildrenRelation
@@ -18,6 +19,7 @@ import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.functions.concession.AddConcession
 import ish.oncourse.willow.functions.concession.GetConcessionTypes
 import ish.oncourse.willow.functions.concession.GetConcessionsAndMemberships
+import ish.oncourse.willow.model.checkout.ChangeParentRequest
 import ish.oncourse.willow.model.checkout.ConcessionsAndMemberships
 import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest
 import ish.oncourse.willow.model.checkout.concession.Concession
@@ -75,6 +77,20 @@ class ContactApiServiceImpl implements ContactApi{
             context.rollbackChanges()
             logger.error("Can not create parent children relation, college id: ${college.id}, request: ${request}")
             throw new BadRequestException(Response.status(400).entity(createRelation.error).build())
+        } else {
+            context.commitChanges()
+        }
+    }
+
+    @Override
+    void changeParent(ChangeParentRequest request) {
+        ObjectContext context = cayenneService.newContext()
+        College college = collegeService.college
+        ChangeParent changeParent = new ChangeParent(college, context, request).perform()
+        if (changeParent.error) {
+            context.rollbackChanges()
+            logger.error("Can not change parent, college id: ${college.id}, request: ${request}")
+            throw new BadRequestException(Response.status(400).entity(changeParent.error).build())
         } else {
             context.commitChanges()
         }

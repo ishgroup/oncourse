@@ -280,6 +280,34 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /changeParent:
+    put:
+      x-filter: 
+      - CollegeInfo
+      summary: change parent, create relationship to new parent and remove old relation 
+      operationId: changeParent
+      tags:
+      - Contact
+      consumes:
+      - application/json
+      parameters:
+      - name: request
+        in: body
+        description: child id, new parent id
+        required: true
+        schema:
+            $ref: '#/definitions/checkout.ChangeParentRequest'
+      responses:
+        200:
+          description: Ok response
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/definitions/common.ValidationError'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /submitContactDetails:
     post:
       x-filter: 
@@ -1518,6 +1546,13 @@ definitions:
         type: array
         items:
           type: string
+  checkout.ChangeParentRequest:
+    type: object
+    properties:
+      parentId:
+        type: string
+      childId:
+        type: string
   checkout.corporatepass.GetCorporatePassRequest:
     type: object
     properties:
