@@ -35,8 +35,4 @@ class ChangeParent extends AbstractSetParent {
     protected String getParentId() {
         return request.parentId
     }
-    
-    CommonError getError() {
-        return error
-    }
 }

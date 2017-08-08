@@ -19,7 +19,7 @@ abstract class AbstractSetParent {
     protected College college
     protected ObjectContext context
     protected ContactRelationType parentRelationType
-    protected CommonError error
+    private CommonError error
 
 
     AbstractSetParent(College college, ObjectContext context) {
@@ -58,5 +58,13 @@ abstract class AbstractSetParent {
             return null
         }
         return parent
+    }
+
+    CommonError getError() {
+        return error
+    }
+    
+    void setError(CommonError error) {
+        this.error = error
     }
 }

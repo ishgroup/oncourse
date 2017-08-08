@@ -28,7 +28,7 @@ class CreateParentChildrenRelation extends AbstractSetParent {
             
             if (!checkParent.parentRequired || checkParent.parent != null) {
                 logger.error("Can not create parent relation for, contact id: ${child.id}, college id: ${college.id}")
-                error = new CommonError(message: "Can not create parent relation for ${child.fullName}")
+                setError(new CommonError(message: "Can not create parent relation for ${child.fullName}"))
                 return this
             } else {
                 createRelation(parent, child)
@@ -36,10 +36,6 @@ class CreateParentChildrenRelation extends AbstractSetParent {
         }
         
         return this
-    }
-    
-    CommonError getError() {
-        return error
     }
 
     @Override
