@@ -13,6 +13,8 @@ import ish.common.util.DisplayableExtendedEnumeration;
 public enum ExportJurisdiction implements DisplayableExtendedEnumeration<Integer> {
 
 	PLAIN(1, "NCVER (Standard AVETMISS)"),
+	@Deprecated
+	NSW(2, "NSW Department of Education"),
 	OLIV(3, "Oliv (Community Colleges)"),
 	SMART(4, "STSOnline (NSW)"),
 	QLD(5, "DETConnect (Queensland)"),
@@ -20,6 +22,8 @@ public enum ExportJurisdiction implements DisplayableExtendedEnumeration<Integer
 	TAS(7, "Skills Tasmania"),
 	VIC(8, "Skills Victoria"),
 	WA(9, "STARS (WA)"),
+	@Deprecated
+	AQTF(10, "AQTF Competency Completions"),
 	RAPT(11, "WA RAPT"),
 	NTVETPP(12, "Northern Territories VET Provider Portal"),
 	AVETARS(13, "AVETARS (ACT)");
