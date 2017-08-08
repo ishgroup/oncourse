@@ -643,8 +643,24 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	AUDIT_LOGGING(102, "Audit logging", Mask.NONE, Mask.CREATE | Mask.EDIT | Mask.DELETE);
-	
+	AUDIT_LOGGING(102, "Audit logging", Mask.NONE, Mask.CREATE | Mask.EDIT | Mask.DELETE),
+
+
+	/**
+	 * Database value: 103
+	 *
+	 * Allow to access "Funding contract"
+	 */
+	@API
+	FUNDING_CONTRACT(103, "Funding contract"),
+
+	/**
+	 * Database value: 104
+	 *
+	 * Allow to access "Funding upload"
+	 */
+	@API
+	FUNDING_UPLOAD(104, "Funding upload")
 
 	private int value;
 	private String displayName;
