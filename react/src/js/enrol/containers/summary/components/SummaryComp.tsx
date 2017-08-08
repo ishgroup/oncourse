@@ -11,7 +11,7 @@ export interface Props {
   hasSelected: boolean;
   contacts: ContactProps[];
   amount: Amount;
-  onAddContact?: () => void;
+  onAddContact?: (guardian?: boolean) => void;
   onAddCode: (code: string) => void;
   promotions: Promotion[];
   redeemVouchers?: RedeemVoucher[];
@@ -41,7 +41,7 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   renderContact = (props: ContactProps) => {
-    const {onSelect, onPriceValueChange, onAddConcession, concessions, memberships} = this.props;
+    const {onSelect, onPriceValueChange, onAddConcession, concessions, memberships, onAddContact} = this.props;
 
     return (
       <ContactComp
@@ -49,6 +49,7 @@ export class SummaryComp extends React.Component<Props, any> {
         key={props.contact.id}
         onSelect={(item, selected) => onSelect(item, selected)}
         onPriceValueChange={(productItem, val) => onPriceValueChange(productItem, val)}
+        onChangeParent={() => onAddContact(true)}
         onAddConcession={onAddConcession}
         concessions={concessions.filter(item => item.contactId === props.contact.id)}
         studentMemberships={memberships.filter(item => item.contactId === props.contact.id)}

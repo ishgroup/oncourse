@@ -2,6 +2,7 @@ import {Contact, ContactId} from "../../../../model";
 import {normalize} from "normalizr";
 import {ContactSchema, ContactsState} from "../../../../NormalizeSchema";
 import {IAction} from "../../../../actions/IshAction";
+import {ContactState} from "../../../../services/IshState";
 
 export const SUBMIT_ADD_CONTACT: string = "checkout/submit/add/contact";
 export const SUBMIT_ADD_CONTACT_AS_PAYER: string = "checkout/submit/add/contact/payer";
@@ -71,6 +72,6 @@ export const addPayerFromVoucher = (contact: Contact): IAction<SubmitContact> =>
   };
 };
 
-export const addContact = function (contact: Contact): { type: string, payload: ContactsState } {
+export const addContact = function (contact: ContactState): { type: string, payload: ContactsState } {
   return {type: ADD_CONTACT_TO_STATE, payload: normalize(contact, ContactSchema)};
 };

@@ -45,6 +45,7 @@ export interface CourseClassCart extends CourseClass {
 }
 
 export interface ContactState extends Contact {
+  parent?: Contact;
 }
 
 export interface ProductCart extends Product {

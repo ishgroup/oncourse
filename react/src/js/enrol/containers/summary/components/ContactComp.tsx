@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {
-  Contact, Enrolment, Membership, Article, Voucher, Application, PurchaseItem, Concession, StudentMembership,
+  Enrolment, Membership, Article, Voucher, Application, PurchaseItem, Concession, StudentMembership,
 } from "../../../../model";
 
 import EnrolmentComp, {Props as EnrolmentProps} from "./EnrolmentComp";
@@ -10,10 +10,11 @@ import MembershipComp, {Props as MembershipProps} from "./MembershipComp";
 import ArticleComp, {Props as ArticleProps} from "./ArticleComp";
 import {ContactInfo} from "../../../components/ContactInfo";
 import VoucherComp, {Props as VoucherProps} from "./VoucherComp";
+import {ContactState} from "../../../../services/IshState";
 
 
 export interface Props {
-  contact: Contact;
+  contact: ContactState;
   enrolments: EnrolmentProps[];
   applications: ApplicationProps[];
   vouchers: VoucherProps[];
@@ -24,12 +25,13 @@ export interface Props {
   onAddConcession?: () => void;
   concessions?: Concession[];
   studentMemberships?: StudentMembership[];
+  onChangeParent?: () => void;
 }
 
 class ContactComp extends React.Component<Props, any> {
   render() {
     const {contact, enrolments, applications, vouchers, memberships, concessions,
-      articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships} = this.props;
+      articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent} = this.props;
 
     return (
       <div className="row">
@@ -38,6 +40,7 @@ class ContactComp extends React.Component<Props, any> {
           controls={<AddConcessionLink onAddConcession={onAddConcession} contact={contact}/>}
           concessions={concessions}
           memberships={studentMemberships}
+          onChangeParent={onChangeParent}
         />
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) => {

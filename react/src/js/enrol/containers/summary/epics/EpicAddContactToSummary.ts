@@ -48,14 +48,15 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
       result.push(updateParentChilds(contact.id, allChilds));
     }
 
-    if (parent) {
-      result.push(addContact(parent));
-      result.push(getContactNodeFromBackend(parent));
-    }
+    // if (parent && type === Phase.AddGuardian) {
+    //   result.push(addContact(parent));
+    //   result.push(getContactNodeFromBackend(parent));
+    // } else {
+    //
+    // }
 
-    result.push(addContact({...contact, parentRequired: (contact.parentRequired && !parent)}));
+    result.push(addContact({...contact, parent: parent || null, parentRequired: (contact.parentRequired && !parent)}));
     result.push(getContactNodeFromBackend(action.payload));
-    // result.push(getCheckoutModelFromBackend());
     result.push(updateContactAddProcess({}, null, null));
     result.push(changePhase(state.checkout.page));
 

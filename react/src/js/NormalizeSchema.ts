@@ -1,5 +1,5 @@
 import {schema} from "normalizr";
-import {Contact} from "./model";
+import {ContactState} from "./services/IshState";
 
 export const ClassesSchema = new schema.Entity('classes');
 export const ClassesListSchema = new schema.Array(ClassesSchema);
@@ -12,7 +12,7 @@ export const PromotionsSchema = new schema.Entity('promotions');
 export interface ContactsState {
   result: string[];
   entities: {
-    contact: { [key: string]: Contact },
+    contact: { [key: string]: ContactState },
   };
 }
 

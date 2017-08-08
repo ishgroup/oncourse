@@ -116,8 +116,8 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onSelect: (item: PurchaseItem, selected: boolean): void => {
       dispatch(selectItem(Object.assign(item, {selected})));
     },
-    onAddContact: (): void => {
-      dispatch(changePhase(Phase.AddContact));
+    onAddContact: (guardian = false): void => {
+      dispatch(changePhase(guardian ? Phase.AddGuardian : Phase.AddContact));
     },
     onProceedToPayment: (): void => {
       dispatch(proceedToPayment());

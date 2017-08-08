@@ -1,5 +1,5 @@
-import {Contact} from "../../model";
 import {FULFILLED} from "../../common/actions/ActionUtils";
+import {ContactState} from "../../services/IshState";
 export const Actions = {
   ADD_CLASS_TO_CART: "ADD_CLASS_TO_CART",
   REMOVE_CLASS_FROM_CART: "REMOVE_CLASS_FROM_CART",
@@ -47,6 +47,6 @@ export function hidePopup() {
   };
 }
 
-export const addContact = function (contact: Contact) {
+export const addContact = function (contact: ContactState) {
   return {type: FULFILLED(Actions.REQUEST_CONTACT), payload: contact};
 };
