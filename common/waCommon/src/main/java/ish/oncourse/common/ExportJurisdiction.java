@@ -11,17 +11,18 @@ import ish.common.util.DisplayableExtendedEnumeration;
  * It isn't so much a standard as a collection of mutually incompatible standards.
  */
 public enum ExportJurisdiction implements DisplayableExtendedEnumeration<Integer> {
-	PLAIN(1, "AVETMISS standard"),
-	NSW(2, "NSW Department of Education"),
-	OLIV(3, "NSW OLiV"),
-	SMART(4, "NSW Smart & Skilled"),
-	QLD(5, "QLD"),
-	SA(6, "SA"),
-	TAS(7, "TAS (Skills Tasmania)"),
-	VIC(8, "VIC (Skills Victoria Training System)"),
-	WA(9, "WA"),
-	AQTF(10, "AQTF Competency Completions"),
-	RAPT(11, "WA RAPT");
+
+	PLAIN(1, "NCVER (Standard AVETMISS)"),
+	OLIV(3, "Oliv (Community Colleges)"),
+	SMART(4, "STSOnline (NSW)"),
+	QLD(5, "DETConnect (Queensland)"),
+	SA(6, "STELA (South Australia)"),
+	TAS(7, "Skills Tasmania"),
+	VIC(8, "Skills Victoria"),
+	WA(9, "STARS (WA)"),
+	RAPT(11, "WA RAPT"),
+	NTVETPP(12, "Northern Territories VET Provider Portal"),
+	AVETARS(13, "AVETARS (ACT)");
 
 	private Integer value;
 	private String displayName;
