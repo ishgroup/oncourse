@@ -14,6 +14,8 @@ export class PreferenceApiMock extends PreferenceApi {
     return this.config.createResponse({
       corporatePassEnabled: true,
       successLink: '/courses',
+      refundPolicyUrl: '/courses',
+      featureEnrolmentDisclosure: '/products',
     });
   }
 }

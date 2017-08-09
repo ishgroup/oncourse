@@ -40,6 +40,10 @@ interface Props extends FormProps<DataShape, any, any> {
   onChangeTab?: (tab) => void;
   onUnmountPassComponent?: () => void;
   corporatePassAvailable?: boolean;
+  conditions?: {
+    refundPolicyUrl?: string,
+    featureEnrolmentDisclosure?: string,
+  };
 }
 
 export const NAME = "PaymentForm";
@@ -61,7 +65,7 @@ class PaymentForm extends React.Component<Props, any> {
     const {
       handleSubmit, contacts, amount, invalid, pristine, submitting, onSubmitPass, corporatePass, corporatePassError,
       onSetPayer, payerId, onAddPayer, onAddCompany, voucherPayerEnabled, currentTab, corporatePassAvailable, fetching,
-      onUnmountPassComponent,
+      onUnmountPassComponent, conditions,
     } = this.props;
 
     const disabled = (invalid || pristine || submitting);
@@ -106,7 +110,7 @@ class PaymentForm extends React.Component<Props, any> {
         </div>
         }
 
-        <Conditions/>
+        <Conditions conditions={conditions} />
 
         <div className="form-controls enrolmentsSelected">
           <input
@@ -227,6 +231,10 @@ const mapStateToProps = (state: IshState) => {
     currentTab: state.checkout.payment.currentTab,
     fetching: state.checkout.payment.fetching,
     corporatePassAvailable: state.checkout.preferences.corporatePassEnabled,
+    conditions: {
+      refundPolicyUrl: state.checkout.preferences.refundPolicyUrl,
+      featureEnrolmentDisclosure: state.checkout.preferences.featureEnrolmentDisclosure,
+    },
   };
 };
 
