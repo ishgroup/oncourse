@@ -53,7 +53,7 @@ class CreditCardComp extends React.Component<Props, any> {
 
                 <PayerSelect
                   contacts={contacts}
-                  payer={contacts.filter(c => c.id === payerId)[0]}
+                  payer={contacts.find(c => c.id === payerId)}
                   onChange={onSetPayer}
                   disabled={voucherPayerEnabled}
                 />

@@ -4,10 +4,9 @@ import {IshState} from "../../../../services/IshState";
 import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
 
-import {ADD_CONTACT_TO_SUMMARY, getContactNodeFromBackend} from "../actions/Actions";
+import {ADD_CONTACT_TO_SUMMARY, changeChildParent, getContactNodeFromBackend} from "../actions/Actions";
 import {
-  changePhase, getCheckoutModelFromBackend, setPayer, updateContactAddProcess,
-  updateParentChilds,
+  changePhase, setPayer, updateContactAddProcess, updateParentChilds,
 } from "../../../actions/Actions";
 import {addContact as addContactToCart} from "../../../../web/actions/Actions";
 
@@ -22,9 +21,9 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
   return action$.ofType(ADD_CONTACT_TO_SUMMARY).flatMap((action: IAction<Contact>) => {
     const state: IshState = store.getState();
 
-    const {type, parent} = state.checkout.contactAddProcess;
+    const {type, parent, forChild} = state.checkout.contactAddProcess;
     const contact = action.payload;
-    const payerId = (!contact.parentRequired && contact.id) || (parent && parent.id) || null;
+    const payerId = (!contact.parentRequired && contact.id) || null;
     const ifParentRequired = contact.parentRequired && !parent;
 
     const allChilds = CheckoutService
@@ -35,29 +34,32 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
 
     if (!contact.id) return [changePhase(state.checkout.page)];
 
+    // case: Set payer if it didn't exist
     if (!CheckoutService.hasPayer(state.checkout)) {
       result.push(setPayer(payerId));
       result.push(addContactToCart(contact));
     }
 
+    // case: Force set payer from payment screen if payer age is valid or have parent
     if ((type === Phase.AddContactAsPayer || type === Phase.AddContactAsCompany) && payerId) {
       result.push(setPayer(payerId));
     }
 
+    // case: Update parent for existing children
     if (allChilds.length && !contact.parentRequired) {
       result.push(updateParentChilds(contact.id, allChilds));
     }
 
-    // if (parent && type === Phase.AddGuardian) {
-    //   result.push(addContact(parent));
-    //   result.push(getContactNodeFromBackend(parent));
-    // } else {
-    //
-    // }
+    // case: Change parent for child if parent age is valid
+    if (forChild && !contact.parentRequired) {
+      result.push(changeChildParent(forChild, contact.id));
+    }
 
+    // case: add new contact to summary and update parentRequired flag
     result.push(addContact({...contact, parent: parent || null, parentRequired: (contact.parentRequired && !parent)}));
+
     result.push(getContactNodeFromBackend(action.payload));
-    result.push(updateContactAddProcess({}, null, null));
+    result.push(updateContactAddProcess({}, null, null, null));
     result.push(changePhase(state.checkout.page));
 
     return result;

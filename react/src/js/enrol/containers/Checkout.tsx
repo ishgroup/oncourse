@@ -37,7 +37,7 @@ export class Checkout extends React.Component<Props, any> {
         <Progress/>
         <Messages/>
 
-        {(phase === Phase.AddPayer || phase === Phase.AddContact || phase === Phase.AddContactAsPayer || phase === Phase.AddGuardian) &&
+        {(phase === Phase.AddPayer || phase === Phase.AddContact || phase === Phase.AddContactAsPayer) &&
         <ContactAddForm
           onSuccess={submitAddContact}
           onCancel={!isNewContact ? () => this.props.changePhase(page) : undefined}

@@ -1,4 +1,4 @@
-import {_toRequestType} from "../../../../common/actions/ActionUtils";
+import {_toRequestType, FULFILLED} from "../../../../common/actions/ActionUtils";
 import {ContactNode, Contact, PurchaseItem} from "../../../../model";
 
 import {ContactNodeToState, ItemToState, State} from "../reducers/State";
@@ -19,6 +19,9 @@ export const REWRITE_CONTACT_NODE_TO_STATE: string = "checkout/summary/rewrite/C
 export const SELECT_ITEM_REQUEST: string = "checkout/summary/select/item/request";
 
 export const UPDATE_ITEM: string = "checkout/summary/update/item";
+
+export const CHANGE_CHILD_PARENT_REQUEST: string = _toRequestType("checkout/summary/change/parent");
+export const CHANGE_CHILD_PARENT_FULFILLED: string = FULFILLED(CHANGE_CHILD_PARENT_REQUEST);
 
 export const addContactToSummary = (contact: Contact): IAction<Contact> => {
   return {
@@ -81,3 +84,11 @@ export const rewriteContactNodeToState = (node: ContactNode): IAction<State> => 
     type: REWRITE_CONTACT_NODE_TO_STATE,
   };
 };
+
+export const changeChildParent = (childId: string, parentId: string) => {
+  return {
+    type: CHANGE_CHILD_PARENT_REQUEST,
+    payload: {childId, parentId},
+  };
+};
+

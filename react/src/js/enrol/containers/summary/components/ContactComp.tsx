@@ -25,7 +25,7 @@ export interface Props {
   onAddConcession?: () => void;
   concessions?: Concession[];
   studentMemberships?: StudentMembership[];
-  onChangeParent?: () => void;
+  onChangeParent?: (contactId) => void;
 }
 
 class ContactComp extends React.Component<Props, any> {

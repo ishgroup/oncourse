@@ -8,11 +8,9 @@ import {
 export class ContactApi {
   constructor(private http: HttpService) {
   }
-
   changeParent(request: ChangeParentRequest): Promise<any> {
     return this.http.PUT(`/changeParent`, request);
   }
-
   createOrGetContact(createContactParams: CreateContactParams): Promise<ContactId> {
     return this.http.PUT(`/contact`, createContactParams);
   }

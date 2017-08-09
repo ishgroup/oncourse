@@ -75,6 +75,10 @@ export class ContactApiMock extends ContactApi {
     );
   }
 
+  changeParent(): Promise<any> {
+    return this.config.createResponse({});
+  }
+
   getConcessionTypes() {
     // move to mock db
     const result1: ConcessionTypeModel = new ConcessionTypeModel();

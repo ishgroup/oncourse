@@ -7,14 +7,16 @@ interface Props {
   controls?: any;
   concessions?: Concession[];
   memberships?: StudentMembership[];
-  onChangeParent?: () => void;
+  onChangeParent?: (contactId: string) => void;
 }
 
 export class ContactInfo extends React.Component<Props, any> {
 
   handleChangeGuardian(e) {
     e.preventDefault();
-    this.props.onChangeParent();
+
+    const {onChangeParent, contact} = this.props;
+    onChangeParent(contact.id);
   }
 
   public render() {

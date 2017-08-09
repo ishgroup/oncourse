@@ -10,10 +10,10 @@ import {IAction} from "../../actions/IshAction";
 
 
 export interface Request<V, S> {
-  type: string,
-  getData: (payload: any, state: S) => Promise<V>
-  processData: (value: V, state: S) => IAction<any>[] | Observable<any>
-  processError?: (data: any) => IAction<any>[] | Observable<any>
+  type: string;
+  getData: (payload: any, state: S) => Promise<V>;
+  processData: (value: V, state: S, payload?: any) => IAction<any>[] | Observable<any>;
+  processError?: (data: any) => IAction<any>[] | Observable<any>;
 }
 
 
@@ -31,8 +31,8 @@ export const Create = <V, S>(request: Request<V, S>): Epic<any, any> => {
     return action$
       .ofType(request.type).mergeMap(action => Observable
         .fromPromise(request.getData(action.payload, store.getState()))
-        .flatMap(data => request.processData(data, store.getState()))
-        .catch((data) => {
+        .flatMap(data => request.processData(data, store.getState(), action.payload))
+        .catch(data => {
           return request.processError ? request.processError(data) : ProcessError(data);
         }),
       );

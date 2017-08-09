@@ -36,5 +36,4 @@ export enum Phase {
   AddContactAsPayer,
   AddContactAsCompany,
   AddConcession,
-  AddGuardian,
 }

@@ -1,7 +1,6 @@
 import * as React from "react";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
-import {debounce} from "lodash";
 
 import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model";
 import {
@@ -16,7 +15,8 @@ import {
 import {SummaryComp} from "./components/SummaryComp";
 import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
 import {
-  changePhase, addCode, getCheckoutModelFromBackend, updateAmount, toggleRedeemVoucher, updatePayNow,
+  changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow,
+  updateContactAddProcess,
 } from "../../actions/Actions";
 import {updateConcessionContact, getContactConcessions} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
@@ -116,8 +116,12 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onSelect: (item: PurchaseItem, selected: boolean): void => {
       dispatch(selectItem(Object.assign(item, {selected})));
     },
-    onAddContact: (guardian = false): void => {
-      dispatch(changePhase(guardian ? Phase.AddGuardian : Phase.AddContact));
+    onAddContact: (): void => {
+      dispatch(changePhase(Phase.AddContact));
+    },
+    onChangeParent: (contactId): void => {
+      dispatch(updateContactAddProcess({}, Phase.AddContact, null, contactId));
+      dispatch(changePhase(Phase.AddContact));
     },
     onProceedToPayment: (): void => {
       dispatch(proceedToPayment());

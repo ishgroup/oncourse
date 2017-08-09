@@ -15,6 +15,7 @@ import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Preferences} from "../../model/common/Preferences";
 import {CHANGE_TAB} from "../containers/payment/actions/Actions";
+import {CHANGE_CHILD_PARENT_FULFILLED} from "../containers/summary/actions/Actions";
 
 const PageReducer = (state: Phase = Phase.Summary, action: IAction<Phase>): Phase => {
   switch (action.type) {
@@ -88,7 +89,11 @@ const FieldsReducer = (state: ContactFields = null, action: IAction<ContactField
   }
 };
 
-const ContactsReducer = (state: ContactsState = normalize([], ContactsSchema), action: IAction<ContactsState>): ContactsState => {
+const ContactsReducer = (
+  state: ContactsState = normalize([], ContactsSchema),
+  action: IAction<ContactsState & {childId?: string, parentId?: string, childIds?: string[]}>,
+): ContactsState => {
+
   let ns: ContactsState;
 
   switch (action.type) {
@@ -99,10 +104,32 @@ const ContactsReducer = (state: ContactsState = normalize([], ContactsSchema), a
       ns.result = Array.from(new Set([...ns.result, ...action.payload.result]));
       return ns;
 
-    case Actions.UPDATE_PARENT_CHILDS:
+    case Actions.UPDATE_PARENT_CHILDS_REQUEST:
       ns = L.cloneDeep(state);
       ns.result.map(id => ns.entities.contact[id].parentRequired = false);
       return ns;
+
+    case CHANGE_CHILD_PARENT_FULFILLED:
+      const {childId, parentId} = action.payload;
+      ns = L.cloneDeep(state);
+      ns.result.map(
+        id =>
+          ns.entities.contact[id].id === childId
+            ? ns.entities.contact[id].parent = ns.entities.contact[parentId] || null
+            : id);
+
+      return ns;
+
+    case Actions.UPDATE_PARENT_CHILDS_FULFILLED: {
+      const {childIds, parentId} = action.payload;
+      ns = L.cloneDeep(state);
+      ns.result.map(
+        id => childIds.includes(id) ? ns.entities.contact[id].parent = ns.entities.contact[parentId] || null : id,
+      );
+
+      return ns;
+    }
+
 
     case Actions.RESET_CHECKOUT_STATE:
       return normalize([], ContactsSchema);
@@ -182,8 +209,14 @@ const ContactAddProcess = (state: any = {}, action: IAction<any>): any => {
   switch (action.type) {
 
     case Actions.UPDATE_CONTACT_ADD_PROCESS:
-      const {contact, type, parent} = action.payload;
-      return {...state, contact, type, parent};
+      const {contact, type, parent, childId} = action.payload;
+      return {
+        ...state,
+        contact,
+        type,
+        parent,
+        forChild: childId || null,
+      };
 
     default:
       return state;

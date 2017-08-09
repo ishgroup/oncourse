@@ -40,7 +40,8 @@ export const TOGGLE_REDEEM_VOUCHER: string = "checkout/toggle/redeemVoucher";
 
 export const UPDATE_CONTACT_ADD_PROCESS: string = "checkout/update/process/contact-add";
 
-export const UPDATE_PARENT_CHILDS: string = "checkout/update/parent/childs";
+export const UPDATE_PARENT_CHILDS_REQUEST: string = _toRequestType("checkout/update/parent/childs");
+export const UPDATE_PARENT_CHILDS_FULFILLED: string = FULFILLED(UPDATE_PARENT_CHILDS_REQUEST);
 
 export const TOGGLE_PAYNOW_VISIBILITY: string = "checkout/update/payNow/visibility";
 
@@ -146,14 +147,14 @@ export const addRedeemVoucherToState = voucher => ({
   payload: voucher,
 });
 
-export const updateContactAddProcess = (contact, type, parent = null) => ({
+export const updateContactAddProcess = (contact, type, parent = null, childId) => ({
   type: UPDATE_CONTACT_ADD_PROCESS,
-  payload: {contact, type, parent},
+  payload: {contact, type, parent, childId},
 });
 
 export const updateParentChilds = (parentId: string, childIds: string[]): IAction<any> => {
   return {
-    type: UPDATE_PARENT_CHILDS,
+    type: UPDATE_PARENT_CHILDS_REQUEST,
     payload: {parentId, childIds},
   };
 };

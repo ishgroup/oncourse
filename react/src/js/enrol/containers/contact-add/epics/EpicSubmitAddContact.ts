@@ -22,7 +22,7 @@ export const SubmitAddContact: Epic<any, IshState> = (action$: ActionsObservable
     };
 
     const result = [];
-    result.push(updateContactAddProcess(contact, state.checkout.phase, payload.parent));
+    result.push(updateContactAddProcess(contact, state.checkout.phase, payload.parent, state.checkout.contactAddProcess.forChild));
     result.push(setNewContactFlag(payload.newContact));
     result.push(openEditContact(contact));
 
