@@ -1064,6 +1064,14 @@ span#addstudent, span#questionnaire {
 }
 
 #contactEditorForm {
+  
+  fieldset {
+    legend {
+      width: auto;
+      padding: 0 15px;
+    }
+  }
+  
   .form-controls {
     input, a {
       display: inline-block;

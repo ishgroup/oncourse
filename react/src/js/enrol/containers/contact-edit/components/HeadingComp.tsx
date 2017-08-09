@@ -15,7 +15,9 @@ export class HeadingComp extends React.Component<Prop, any> {
 
     return (
       <fieldset>
-        <legend>{heading.name}</legend>
+        {heading.name &&
+          <legend>{heading.name}</legend>
+        }
         {heading.description &&
           <div className="message" dangerouslySetInnerHTML={{__html: heading.description}}/>
         }
