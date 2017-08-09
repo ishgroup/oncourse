@@ -3,6 +3,8 @@ package ish.oncourse.willow.preference
 import com.google.inject.Inject
 import ish.oncourse.model.College
 import ish.oncourse.services.preference.GetEnrolSuccessUrl
+import ish.oncourse.services.preference.GetFeatureEnrolmentDisclosure
+import ish.oncourse.services.preference.GetRefundPolicyUrl
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.common.Preferences
@@ -32,6 +34,9 @@ class PreferenceApiImpl implements PreferenceApi {
         College college = collegeService.college
         preferences.corporatePassEnabled = new IsCorporatePassEnabled(college, context).get()
         preferences.successLink = new GetEnrolSuccessUrl(college, context).get()
+        preferences.refundPolicyUrl = new GetRefundPolicyUrl(college, context).get()
+        preferences.featureEnrolmentDisclosure = new GetFeatureEnrolmentDisclosure(college, context).get()
+
         return preferences
     }
 }

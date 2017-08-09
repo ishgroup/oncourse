@@ -10,5 +10,15 @@ export class Preferences {
    * After payment successful redirect user to URL
    */
   successLink?: string;
+
+  /**
+   * Terms and conditions page
+   */
+  refundPolicyUrl?: string;
+
+  /**
+   * Student Information
+   */
+  featureEnrolmentDisclosure?: string;
 }
 

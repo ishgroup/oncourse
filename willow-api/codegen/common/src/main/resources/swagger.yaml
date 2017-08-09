@@ -715,6 +715,12 @@ definitions:
       successLink:
         type: string
         description: After payment successful redirect user to URL
+      refundPolicyUrl:
+        type: string
+        description: Terms and conditions page
+      featureEnrolmentDisclosure:
+        type: string
+        description: Student Information
   field.Suburb:
     type: object
     properties:

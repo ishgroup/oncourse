@@ -5,6 +5,8 @@ public class Preferences  {
   
     private Boolean corporatePassEnabled = null;
     private String successLink = null;
+    private String refundPolicyUrl = null;
+    private String featureEnrolmentDisclosure = null;
 
     /**
      * is corporate pass enabled preference
@@ -40,6 +42,40 @@ public class Preferences  {
       return this;
     }
 
+    /**
+     * Terms and conditions page
+     * @return refundPolicyUrl
+     */
+    public String getRefundPolicyUrl() {
+        return refundPolicyUrl;
+    }
+
+    public void setRefundPolicyUrl(String refundPolicyUrl) {
+       this.refundPolicyUrl = refundPolicyUrl;
+    }
+
+    public Preferences refundPolicyUrl(String refundPolicyUrl) {
+      this.refundPolicyUrl = refundPolicyUrl;
+      return this;
+    }
+
+    /**
+     * Student Information
+     * @return featureEnrolmentDisclosure
+     */
+    public String getFeatureEnrolmentDisclosure() {
+        return featureEnrolmentDisclosure;
+    }
+
+    public void setFeatureEnrolmentDisclosure(String featureEnrolmentDisclosure) {
+       this.featureEnrolmentDisclosure = featureEnrolmentDisclosure;
+    }
+
+    public Preferences featureEnrolmentDisclosure(String featureEnrolmentDisclosure) {
+      this.featureEnrolmentDisclosure = featureEnrolmentDisclosure;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -48,6 +84,8 @@ public class Preferences  {
       
       sb.append("    corporatePassEnabled: ").append(toIndentedString(corporatePassEnabled)).append("\n");
       sb.append("    successLink: ").append(toIndentedString(successLink)).append("\n");
+      sb.append("    refundPolicyUrl: ").append(toIndentedString(refundPolicyUrl)).append("\n");
+      sb.append("    featureEnrolmentDisclosure: ").append(toIndentedString(featureEnrolmentDisclosure)).append("\n");
       sb.append("}");
       return sb.toString();
     }
