@@ -16,6 +16,7 @@ class CompanyAddForm extends React.Component<any, any> {
 
     return (
       <div>
+        <h2>Add a company</h2>
         <form
           onSubmit={handleSubmit(values => CheckoutService.createOrGetContact({...values, company: true}))}
           className={classnames({submitting: submitting || fetching})}

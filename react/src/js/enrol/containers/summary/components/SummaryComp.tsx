@@ -12,6 +12,7 @@ export interface Props {
   contacts: ContactProps[];
   amount: Amount;
   onAddContact?: () => void;
+  onAddParent?: () => void;
   onChangeParent?: (contactId: string) => void;
   onAddCode: (code: string) => void;
   promotions: Promotion[];
@@ -59,7 +60,7 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching,
+    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent,
       redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent} = this.props;
 
     return (
@@ -83,7 +84,7 @@ export class SummaryComp extends React.Component<Props, any> {
               <ProceedToPayment
                 needParent={needParent}
                 disabled={!hasSelected}
-                onProceedToPayment={() => needParent ? onAddContact() : onProceedToPayment()}
+                onProceedToPayment={() => needParent ? onAddParent() : onProceedToPayment()}
               />
             </div>
           </div>

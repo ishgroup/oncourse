@@ -8,14 +8,24 @@ import {NAME, Values} from "./actions/Actions";
 import {showFormValidation} from "../../actions/Actions";
 import {ContactId} from "../../../model";
 import CheckoutService from "../../services/CheckoutService";
+import {Phase} from "../../reducers/State";
 
 
 class ContactAddForm extends React.Component<any, any> {
   render() {
-    const {handleSubmit, onCancel, pristine, invalid, submitting, fetching} = this.props;
+    const {handleSubmit, onCancel, pristine, invalid, submitting, fetching, phase, childName} = this.props;
+
+    const getFormLabel = () => (
+      phase === Phase.ChangeParent && childName && `Change guardian or parent for ${childName}` ||
+      phase === Phase.AddContact && `Add a student` ||
+      phase === Phase.AddPayer && `Add a student` ||
+      phase === Phase.AddContactAsPayer && `Add a payer` ||
+      phase === Phase.AddParent && 'Add a parent or guardian'
+    )
 
     return (
       <div>
+        <h2>{getFormLabel()}</h2>
         <form
           onSubmit={handleSubmit(values => CheckoutService.createOrGetContact(values))}
           id="contactEditorForm"

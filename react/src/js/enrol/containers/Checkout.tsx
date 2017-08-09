@@ -6,7 +6,7 @@ import CompanyAddForm from "./contact-add/CompanyAddForm";
 import Concession from './concession/Concession';
 import ContactEditForm from "./contact-edit/ContactEditForm";
 import {Messages, Progress} from "./Functions";
-import {Phase} from "../reducers/State";
+import {CheckoutState, Phase} from "../reducers/State";
 import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
@@ -21,6 +21,7 @@ interface Props {
   changePhase: (phase) => void;
   isNewContact: boolean;
   fetching: boolean;
+  childName: any;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -30,15 +31,19 @@ export class Checkout extends React.Component<Props, any> {
   }
 
   render() {
-    const {phase, page, isNewContact, fetching} = this.props;
+    const {phase, page, isNewContact, fetching, childName} = this.props;
+    console.log(childName);
 
     return (
       <div id="checkout" className="col-xs-24 payments">
         <Progress/>
         <Messages/>
 
-        {(phase === Phase.AddPayer || phase === Phase.AddContact || phase === Phase.AddContactAsPayer) &&
+        {(phase === Phase.AddPayer || phase === Phase.AddContact || phase === Phase.AddContactAsPayer ||
+          phase === Phase.AddParent || phase === Phase.ChangeParent) &&
         <ContactAddForm
+          childName={childName}
+          phase={phase}
           onSuccess={submitAddContact}
           onCancel={!isNewContact ? () => this.props.changePhase(page) : undefined}
           fetching={fetching}
@@ -66,12 +71,20 @@ export class Checkout extends React.Component<Props, any> {
   }
 }
 
+const getChildFromProps = (state: CheckoutState) => {
+  const childId = state.contactAddProcess.forChild;
+  if (!childId) return null;
+
+  const child = state.contacts.entities.contact[childId];
+  return `${child.firstName} ${child.lastName}`;
+}
 
 const mapStateToProps = state => ({
   phase: state.checkout.phase,
   page: state.checkout.page,
   isNewContact: !state.checkout.contacts.result.length,
   fetching: state.checkout.fetching,
+  childName: getChildFromProps(state.checkout),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

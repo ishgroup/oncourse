@@ -119,9 +119,12 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onAddContact: (): void => {
       dispatch(changePhase(Phase.AddContact));
     },
+    onAddParent: (): void => {
+      dispatch(changePhase(Phase.AddParent));
+    },
     onChangeParent: (contactId): void => {
       dispatch(updateContactAddProcess({}, Phase.AddContact, null, contactId));
-      dispatch(changePhase(Phase.AddContact));
+      dispatch(changePhase(Phase.ChangeParent));
     },
     onProceedToPayment: (): void => {
       dispatch(proceedToPayment());
