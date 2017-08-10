@@ -3,7 +3,7 @@ import {IshState} from "../../../services/IshState";
 import {ResultComp} from "./components/ResultComp";
 import {tryAnotherCard} from "./actions/Actions";
 import {resetCheckoutState} from "../../actions/Actions";
-import {resetPaymentState} from "../payment/actions/Actions";
+import {resetPaymentStateOnInit} from "../payment/actions/Actions";
 
 const PropsBy = (state: IshState): any => {
   return {
@@ -16,6 +16,7 @@ export const ActionsBy = (dispatch: Dispatch<IshState>): any => {
   return {
     onCancel: () => {
       dispatch(resetCheckoutState());
+      dispatch(resetPaymentStateOnInit());
 
       // default redirect to courses page
       document.location.href = '/courses';
