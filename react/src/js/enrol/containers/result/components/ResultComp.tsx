@@ -19,21 +19,25 @@ export class ResultComp extends React.Component<Props, any> {
     const {response, onAnotherCard, onCancel, successLink} = this.props;
     return (
       <div>
-        {response.status === PaymentStatus.SUCCESSFUL &&
-        <Successful
-          refId={response.reference}
-          successLink={successLink}
-        />
-        }
-        {response.status === PaymentStatus.FAILED &&
+        {response &&
+        <div>
+          {response.status === PaymentStatus.SUCCESSFUL &&
+          <Successful
+            refId={response.reference}
+            successLink={successLink}
+          />
+          }
+          {response.status === PaymentStatus.FAILED &&
           <Failed
             onAnotherCard={onAnotherCard}
             onCancel={onCancel}
             successLink={successLink}
           />
+          }
+          {response.status === PaymentStatus.UNDEFINED && <Undefined/>}
+          {response.status === PaymentStatus.IN_PROGRESS && <InProgress/>}
+        </div>
         }
-        {response.status === PaymentStatus.UNDEFINED && <Undefined/>}
-        {response.status === PaymentStatus.IN_PROGRESS && <InProgress/>}
       </div>
     );
   }
