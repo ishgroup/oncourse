@@ -21,11 +21,25 @@ class AmountComp extends React.Component<Props, any> {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      payNowVal: '',
+    };
+  }
+
+  componentWillReceiveProps(props: Props) {
+    this.setState({
+      payNowVal: props.amount.payNow,
+    });
   }
 
   handleChangePayNow(val) {
     const {onUpdatePayNow, amount} = this.props;
     const reg = (/^[0-9]+\.?[0-9]*$/);
+
+    this.setState({
+      payNowVal: val,
+    });
 
     if ((val > 0 || Number(val) === 0 && amount.minPayNow === 0) && reg.test(val)) {
       onUpdatePayNow(val);
@@ -68,6 +82,7 @@ class AmountComp extends React.Component<Props, any> {
             payNow={amount.payNow}
             onChange={onUpdatePayNow ? val => this.handleChangePayNow(val) : undefined}
             onBlur={el => this.handleBlur(el)}
+            stateVal={this.state.payNowVal}
           />
           }
         </div>
@@ -121,7 +136,7 @@ const PayNow = props => {
     <span className="col-xs-12">
       <input
         type="text"
-        value={`$${props.payNow}`}
+        value={`$${props.stateVal === '' ? '' : props.payNow}`}
         onChange={e => props.onChange(e.target.value.replace('$', ''))}
         onBlur={e => props.onBlur(this.payNowInput.value.replace('$', ''))}
         ref={el => this.payNowInput = el}
