@@ -1,7 +1,7 @@
 import React from "react";
 import {Field} from "redux-form";
 import SelectField from "../../../../components/form-new/SelectField";
-import {TextField} from "../../../../components/form-new/TextField";
+import {TextField} from "../../../../components/form/TextField";
 import {Amount, Contact} from "../../../../model";
 import {PayerSelect} from "./PayerSelect";
 import {PayerAdd} from "./PayerAdd";
@@ -47,7 +47,7 @@ class CreditCardComp extends React.Component<Props, any> {
                 <p>
                   <label>Pay now</label>
                   <span id="cardtotalstring">
-                    ${ amount.payNow } <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
+                    ${amount.payNow} <img alt="visa card and master card" src="/s/img/visa-mastercard.png"/>
                   </span>
                 </p>
 
@@ -66,7 +66,7 @@ class CreditCardComp extends React.Component<Props, any> {
 
                 <Field
                   component={TextField}
-                  maxLength={ 40 }
+                  maxLength={40}
                   className="input-fixed"
                   autoComplete="off"
                   name={FieldName.creditCardName}
@@ -77,7 +77,7 @@ class CreditCardComp extends React.Component<Props, any> {
 
                 <Field
                   component={MaskedTextField}
-                  maxLength={ 24 }
+                  maxLength={24}
                   className="input-fixed "
                   autoComplete="off"
                   name={FieldName.creditCardNumber}
@@ -89,7 +89,7 @@ class CreditCardComp extends React.Component<Props, any> {
 
                 <Field
                   component={MaskedTextField}
-                  maxLength={ 4 }
+                  maxLength={4}
                   className="input-fixed "
                   autoComplete="off"
                   name={FieldName.creditCardCvv}
@@ -134,4 +134,5 @@ class CreditCardComp extends React.Component<Props, any> {
     );
   }
 }
+
 export default CreditCardComp;

@@ -38,7 +38,7 @@ class ContactAddForm extends React.Component<any, any> {
               className="btn btn-primary"
               name="submitContact"
               type="submit"
-              disabled={invalid || pristine || submitting}
+              disabled={pristine || submitting}
             />
 
             {onCancel &&

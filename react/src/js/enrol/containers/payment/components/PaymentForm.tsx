@@ -68,7 +68,7 @@ class PaymentForm extends React.Component<Props, any> {
       onUnmountPassComponent, conditions,
     } = this.props;
 
-    const disabled = (invalid || pristine || submitting);
+    const disabled = (pristine || submitting);
 
     return (
       <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting})}>
@@ -186,7 +186,7 @@ const Form = reduxForm({
   form: NAME,
   validate: (data: CreditCardFormValues & CorporatePassFormValues, props: Props): FormErrors<FormData> => {
     const errors = {};
-
+    console.log(data.agreementFlag);
     if (!data.agreementFlag) {
       errors[FieldName.agreementFlag] = 'You must agree to the policies before proceeding.';
     }

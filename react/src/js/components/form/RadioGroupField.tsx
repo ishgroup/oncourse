@@ -1,5 +1,6 @@
 import * as React from "react";
 import {WrappedFieldProps} from "redux-form";
+import classnames from "classnames";
 import {CommonFieldProps} from "./CommonFieldProps";
 import {FieldLabel} from "./FieldLabel";
 import {Item} from "../../model";
@@ -22,6 +23,8 @@ export class RadioGroupField extends React.Component<RadioGroupFieldProps, Radio
       required,
     } = this.props;
 
+    const showError = this.props.meta.invalid && this.props.meta.touched;
+
     return (
       <div>
         <FieldLabel
@@ -33,9 +36,17 @@ export class RadioGroupField extends React.Component<RadioGroupFieldProps, Radio
           {items.map(item => {
             return (
               <span key={item.key}>
-                <input {...input} className={classes} type="radio" value={item.key}/>
-                {' '}
-                {item.value}
+                <input
+                  {...input}
+                  className={classnames(classes, {'t-error': showError})}
+                  type="radio"
+                  value={item.key}
+                />
+                <span>
+                  {' '}
+                  {item.value}
+                </span>
+
               </span>
             );
           })}

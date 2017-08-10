@@ -5,6 +5,28 @@
   left: 80px !important;
   top: 20px !important;
   font-size: 11px !important;
+  max-width: 220px !important;
+  
+  &.place-left {
+    margin-left: 0 !important;
+  }
+  
+  &.type-error {
+    background-color: #FEF0F0 !important;
+    border: 1px solid #FCC5C5 !important;
+    font-weight: bold;
+    padding: 0 4px !important;
+    
+    span {
+      color: #111111;
+      margin: 4px 0 !important;
+    }
+  }
+
+  &:after {
+    border-left-color: #FCC5C5 !important;
+    border-right-color: #FCC5C5 !important;
+  }
   @media only screen and (min-width: 640px) {
     top: 0 !important;
     left: 315px !important;

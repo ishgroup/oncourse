@@ -332,6 +332,12 @@
             width: 80%;
           }
           
+          input[type="checkbox"].t-error {
+            + .conditions-text {
+              color: #ec6c6c;
+            }
+          }
+          
           > span {
             display: flex;
   

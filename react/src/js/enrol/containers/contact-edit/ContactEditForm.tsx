@@ -50,7 +50,7 @@ class ContactEditForm extends React.Component<Props, any> {
               className="btn btn-primary"
               name="submitContact"
               type="submit"
-              disabled={invalid || submitting}
+              disabled={submitting}
             />
 
             {!isNewContact &&

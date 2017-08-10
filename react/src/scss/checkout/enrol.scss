@@ -139,6 +139,7 @@ div.clearboth {
         background-color: #FEF0F0;
         border: 1px solid #FCC5C5;
         font-weight: bold;
+        border-radius: 3px;
       }
       
       .reason-pointer {
@@ -211,6 +212,16 @@ div.clearboth {
       background-color: #FEF0F0;
     }
     
+  }
+  
+  input {
+    &[type="radio"] {
+      &.t-error {
+        + span {
+          color: #ec6c6c;
+        }
+      }
+    }
   }
   
   textarea {
@@ -309,6 +320,7 @@ div.clearboth {
   }
   
   input[type="checkbox"], input[type="radio"] {
+    width: 16px;
     margin-top: 2px;
     margin-right: 5px;
   }
@@ -386,7 +398,7 @@ div.clearboth {
         position: absolute;
         left: -10px;
       }
-      
+
       label {
         padding-left: 0;
         margin: 30px 0 0 0;
