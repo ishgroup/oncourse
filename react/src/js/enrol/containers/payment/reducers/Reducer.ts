@@ -1,7 +1,7 @@
 import {State} from "./State";
 import {
   APPLY_CORPORATE_PASS, CHANGE_TAB, GET_CORPORATE_PASS_REQUEST, RESET_CORPORATE_PASS, RESET_PAYMENT_STATE,
-  RESET_PAYMENT_STATE_ON_DESTROY,
+  RESET_PAYMENT_STATE_ON_INIT,
   UPDATE_PAYMENT_STATUS,
 } from "../actions/Actions";
 import {IAction} from "../../../../actions/IshAction";
@@ -52,10 +52,10 @@ export const Reducer = (state: State = new State(), action: IAction<any>): State
     case RESET_PAYMENT_STATE:
       return new State();
 
-    case RESET_PAYMENT_STATE_ON_DESTROY:
+    case RESET_PAYMENT_STATE_ON_INIT:
       return {
         ...state,
-        resetOnDestroy: true,
+        resetOnInit: true,
       };
 
     default:
