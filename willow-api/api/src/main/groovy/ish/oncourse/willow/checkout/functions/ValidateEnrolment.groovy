@@ -83,7 +83,7 @@ class ValidateEnrolment extends Validate<Enrolment>{
                     errors << "The maximum age for this class is $maxEnrolmentAge. $student.contact.fullName is too old to enrol. If you intended to enrol your child, please click \"add another student\" below.".toString()
                 }
             } else if (globalMinEnrolmentAge != null && age < globalMinEnrolmentAge) {
-                errors << "The minimum age for this class is $minEnrolmentAge. $student.contact.fullName is too young to enrol.".toString()
+                errors << "The minimum age for this class is $globalMinEnrolmentAge. $student.contact.fullName is too young to enrol.".toString()
             }
         }
         this
