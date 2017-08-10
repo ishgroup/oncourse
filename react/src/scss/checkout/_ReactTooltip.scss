@@ -7,8 +7,16 @@
   font-size: 11px !important;
   max-width: 220px !important;
   
-  &.place-left {
-    margin-left: 0 !important;
+  &.place-right {
+    margin-left: 13px !important;
+    
+    &:after {
+      border-right-width: 12px !important;
+      border-top-width: 7px !important;
+      border-bottom-width: 7px !important;
+      left: -12px !important;
+      margin-top: -9px !important;
+    }
   }
   
   &.type-error {
@@ -24,8 +32,8 @@
   }
 
   &:after {
-    border-left-color: #FCC5C5 !important;
-    border-right-color: #FCC5C5 !important;
+    border-left-color: #FEF0F0 !important;
+    border-right-color: #FEF0F0 !important;
   }
   @media only screen and (min-width: 640px) {
     top: 0 !important;
