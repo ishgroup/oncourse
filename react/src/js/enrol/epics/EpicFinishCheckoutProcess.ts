@@ -4,7 +4,6 @@ import {Observable} from "rxjs";
 import "rxjs";
 import {FINISH_CHECKOUT_PROCESS, resetCheckoutState} from "../actions/Actions";
 import {IshState} from "../../services/IshState";
-import any = jasmine.any;
 
 /**
  * This epic process Init action of checkout application and define Phase of the application

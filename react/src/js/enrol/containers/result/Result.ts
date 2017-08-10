@@ -16,7 +16,6 @@ export const ActionsBy = (dispatch: Dispatch<IshState>): any => {
   return {
     onCancel: () => {
       dispatch(resetCheckoutState());
-      dispatch(resetPaymentState());
 
       // default redirect to courses page
       document.location.href = '/courses';
