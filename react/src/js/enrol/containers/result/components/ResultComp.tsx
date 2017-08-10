@@ -11,10 +11,33 @@ export interface Props {
   response: PaymentResponse;
   onAnotherCard?: () => void;
   onCancel?: () => void;
+  onDestroy?: () => void;
   successLink?: string;
+  resetOnDestroy?: boolean;
 }
 
 export class ResultComp extends React.Component<Props, any> {
+  constructor(props, context) {
+    super(props, context);
+    this.componentCleanup = this.componentCleanup.bind(this);
+  }
+
+  componentCleanup() {
+    const {resetOnDestroy, onDestroy} = this.props;
+    if (resetOnDestroy) {
+      onDestroy();
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.componentCleanup);
+  }
+
+  componentWillUnmount() {
+    this.componentCleanup();
+    window.removeEventListener('beforeunload', this.componentCleanup);
+  }
+
   render() {
     const {response, onAnotherCard, onCancel, successLink} = this.props;
     return (

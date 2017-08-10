@@ -65,10 +65,6 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     result.push(Actions.getPreferences());
     result.push(Actions.updateContactAddProcess({}, null, null, null));
 
-    if (state.checkout.payment.resetOnInit) {
-      result.push(resetPaymentState());
-    }
-
     if (!L.isNil(state.checkout.payment.value)) {
       if (CheckoutService.isFinalStatus(state.checkout.payment.value)) {
         result.push(Actions.changePhase(Phase.Init));
