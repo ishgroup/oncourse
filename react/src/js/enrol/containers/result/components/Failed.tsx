@@ -7,8 +7,14 @@ interface Props {
 }
 
 export class Failed extends React.Component<Props, any> {
+
+  handleAbandon(e) {
+    e.preventDefault();
+    this.props.onCancel();
+  }
+
   render() {
-    const {onCancel, onAnotherCard, successLink} = this.props;
+    const {onAnotherCard} = this.props;
     return (
       <div>
         <h2>Enrolment <span>»</span> Payment rejected</h2>
@@ -20,7 +26,7 @@ export class Failed extends React.Component<Props, any> {
           <a title="Proceed with this enrolment" href="#" onClick={onAnotherCard}>
             Try again with another card or reenter details</a>
           {" Or "}
-          <a href="#" onClick={onCancel}>Abandon</a>{" this enrolment"}.
+          <a href="#" onClick={e => this.handleAbandon(e)}>Abandon</a>{" this enrolment"}.
         </p>
       </div>
     );
