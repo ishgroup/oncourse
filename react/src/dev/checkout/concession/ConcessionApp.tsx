@@ -6,10 +6,7 @@ import {CreateStore, RestoreState} from "../../../js/CreateStore";
 import {Messages as Messages, Progress as Progress} from "../../../js/enrol/containers/Functions";
 
 import Concession from "../../../js/enrol/containers/concession/Concession";
-import {concessions, contact} from "./Concession.data";
-
-import "react-select/dist/react-select.css";
-import "../../../scss/_ReactSelect.scss";
+import "../../scss/index.scss";
 
 const store = CreateStore();
 RestoreState(store, () => render());

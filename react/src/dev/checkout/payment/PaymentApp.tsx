@@ -4,10 +4,7 @@ import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {Messages, Progress} from "../../../js/enrol/containers/Functions";
 
-import "react-select/dist/react-select.css";
-import "../../../scss/_ReactSelect.scss";
-import "../../../scss/_ReactTooltip.scss";
-import "../../../scss/index.scss";
+import "../../scss/index.scss";
 
 import {Payment} from "../../../js/enrol/containers/payment/Payment";
 import {addContact} from "../../../js/enrol/containers/contact-add/actions/Actions";

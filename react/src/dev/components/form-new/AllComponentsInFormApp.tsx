@@ -4,10 +4,9 @@ import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {createLogger} from "redux-logger";
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {Field, FormErrors, FormProps, reducer as formReducer, reduxForm} from "redux-form";
+import {Field, reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from "redux-form-website-template";
 
-import "react-select/dist/react-select.css";
 import "../../../scss/index.scss";
 import {SearchApiMock} from "../../mocks/SearchApiMock";
 
@@ -30,8 +29,6 @@ const options = [
   {key: 'five', value: 'Five'},
 
 ];
-// https://gist.github.com/leocristofani/98312e61807db8f32e720c9f97a186e5
-// https://github.com/JedWatson/react-select/issues/1129
 
 const config: MockConfig = new MockConfig();
 const stub: SearchApiMock = new SearchApiMock(config);

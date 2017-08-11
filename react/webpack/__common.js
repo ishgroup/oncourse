@@ -19,7 +19,7 @@ const KEYS = {
 };
 
 const _common = (dirname, options) => {
-  return {
+  let _main = {
     entry: [options[KEYS.ENTRY]],
     output: {
       path: path.resolve(dirname, "build"),
@@ -44,43 +44,51 @@ const _common = (dirname, options) => {
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
           ],
-        },
-        {
-          test: /\.css$/,
-          loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}),
-          include: [
-            path.resolve(dirname, 'node_modules')
-          ]
-        },
-        {
-          test: /\.scss$/,
-          loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']}),
-          include: [
-            path.resolve(dirname, "src/scss"),
-          ]
-        },
-        {
-          test: /\.(jpg|jpeg|gif|png)$/,
-          loader: 'url-loader?limit=1024&name=images/[name].[ext]'
-        },
-        {
-          test: /\.(woff|woff2|eot|ttf|svg)$/,
-          loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'
-        },
-        {
-          enforce: "pre", test: /\.js$/, loader: "source-map-loader"
         }
       ]
     },
     plugins: [
       _DefinePlugin('development', 'http://localhost:10080', options.BUILD_NUMBER),
       new ExtractTextPlugin("[name].css"),
+      new webpack.optimize.ModuleConcatenationPlugin(),
     ],
     devServer: {
       inline: false
     },
     devtool: 'source-map',
-  }
+  };
+  _main.module.rules = [..._main.module.rules, ..._styleModule(dirname)];
+  return _main;
+};
+
+const _styleModule = (dirname) => {
+  return [
+    {
+      test: /\.css$/,
+      loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}),
+      include: [
+        path.resolve(dirname, 'node_modules')
+      ]
+    },
+    {
+      test: /\.scss$/,
+      loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']}),
+      include: [
+        path.resolve(dirname, "src/scss"),
+      ]
+    },
+    {
+      test: /\.(jpg|jpeg|gif|png)$/,
+      loader: 'url-loader?limit=1024&name=images/[name].[ext]'
+    },
+    {
+      test: /\.(woff|woff2|eot|ttf|svg)$/,
+      loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'
+    },
+    {
+      enforce: "pre", test: /\.js$/, loader: "source-map-loader"
+    }
+  ]
 };
 
 
@@ -101,5 +109,6 @@ module.exports = {
     KEYS: KEYS,
     info: _info,
     common: _common,
+  styleModule: _styleModule,
     DefinePlugin: _DefinePlugin
 };

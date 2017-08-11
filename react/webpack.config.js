@@ -1,9 +1,13 @@
 const __common = require('./webpack/__common');
+
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development';
@@ -12,6 +16,12 @@ module.exports = function (options = {}) {
   const BUILD_NUMBER = options.BUILD_NUMBER || 'DEV';
   __common.info(NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER);
 
+  const main = _main(NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER);
+  main.module.rules = [...main.module.rules, ...__common.styleModule(__dirname)]
+  return main;
+};
+
+const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   return {
     entry: {
       dynamic: [
@@ -29,50 +39,42 @@ module.exports = function (options = {}) {
       publicPath: '/'
     },
     resolve: {
-      modules: [path.resolve(__dirname, "src/js"),
-          path.resolve(__dirname, 'src/scss'),
-        "node_modules"],
-        extensions: [".ts", ".tsx", ".js", ".css"]
+      modules: [
+        path.resolve(__dirname, "src/js"),
+        path.resolve(__dirname, 'src/scss'),
+        "node_modules"
+      ],
+      extensions: [".ts", ".tsx", ".js", ".css", ".scss"]
     },
     module: {
-        rules: [{
-            test: /\.tsx?$/,
-            loader: 'ts-loader',
-            exclude: /node_modules/,
-        }, {
-            test: /\.css$/,
-            loaders: ['style-loader', 'css-loader'],
-            include: [
-                path.resolve(__dirname, 'node_modules')
-            ]
-        }, {
-            test: /\.scss$/,
-            loaders: ['style-loader', 'css-loader', 'sass-loader'],
-            include: [
-                path.resolve(__dirname, "src/scss"),
-            ]
-        }]
+      rules: [
+        {
+          test: /\.tsx?$/,
+          loader: 'ts-loader',
+          exclude: /node_modules/,
+        }
+      ]
     },
     externals: [function (context, request, callback) {
-        const p = path.resolve(context, request) + '.js';
+      const p = path.resolve(context, request) + '.js';
 
-        if (/.custom.js$/.test(p)) {
-            fs.stat(p, (err) => {
-                if (err) {
-                    callback(null, "{}");
-                    return;
-                }
-
-                callback();
-            });
+      if (/.custom.js$/.test(p)) {
+        fs.stat(p, (err) => {
+          if (err) {
+            callback(null, "{}");
             return;
-        }
+          }
 
-        callback();
+          callback();
+        });
+        return;
+      }
+
+      callback();
     }],
     bail: false,
     devtool: SOURCE_MAP,
-    plugins: createListOfPlugins({NODE_ENV, BUILD_NUMBER}),
+    plugins: plugins(NODE_ENV, BUILD_NUMBER),
     devServer: {
       inline: false,
       port: 1707,
@@ -89,52 +91,60 @@ module.exports = function (options = {}) {
           '^/a/': ''
         }
       }]
-    }  
-
-}
+    }
+  };
 };
 
-function createListOfPlugins({NODE_ENV, BUILD_NUMBER}) {
-  const plugins = [ __common.DefinePlugin(NODE_ENV, BUILD_NUMBER) ];
+const plugins = (NODE_ENV, BUILD_NUMBER) => {
+  const plugins = [
+    __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
+    new ExtractTextPlugin("[name].css"),
+    new webpack.optimize.ModuleConcatenationPlugin(),
+  ];
 
-  if (NODE_ENV === "production") {
-    plugins.push(
-      new TypedocWebpackPlugin({
-        jsx: "react",
-        target: "es6",
-        lib: [
-          "lib.dom.d.ts",
-          "lib.es5.d.ts",
-          "lib.es2015.d.ts",
-          "lib.es2016.d.ts",
-          "lib.es2017.d.ts"
-        ],
-        allowSyntheticDefaultImports: true,
-        moduleResolution: "node",
-        module: "es6",
-        out: "../docs" // relative to output
-      }, "./src/js/"),
-      new webpack.optimize.ModuleConcatenationPlugin()
-    );
+  switch (NODE_ENV) {
+    case "production":
+      plugins.push(
+        new CompressionPlugin({
+          asset: "[path].gz[query]",
+          algorithm: "gzip",
+          test: /\.(js|html)$/,
+          threshold: 10240,
+          minRatio: 0.8
+        }),
+        new TypedocWebpackPlugin({
+          jsx: "react",
+          target: "es6",
+          lib: [
+            "lib.dom.d.ts",
+            "lib.es5.d.ts",
+            "lib.es2015.d.ts",
+            "lib.es2016.d.ts",
+            "lib.es2017.d.ts"
+          ],
+          allowSyntheticDefaultImports: true,
+          moduleResolution: "node",
+          module: "es6",
+          out: "../docs" // relative to output
+        }, "./src/js/")
+      );
+      break;
+    case "development":
+      plugins.push(
+        htmlPlugin("enrol/checkout/index.html"),
+        htmlPlugin("courses/index.html"),
+        htmlPlugin("courses/one_class.html"),
+        htmlPlugin("products/index.html")
+      );
+      break;
   }
-
-  if (NODE_ENV === "development") {
-    plugins.push(
-      new webpack.optimize.ModuleConcatenationPlugin(),
-      getHtmlWebpackPlugin("enrol/checkout/index.html"),
-      getHtmlWebpackPlugin("courses/index.html"),
-      getHtmlWebpackPlugin("courses/one_class.html"),
-      getHtmlWebpackPlugin("products/index.html")
-    )
-  }
-
-  function getHtmlWebpackPlugin(name) {
-    return new HtmlWebpackPlugin({
-      filename: `${name}`,
-      template: path.resolve(__dirname, "./dev-server/", name),
-      inject: false
-    });
-  }
-
   return plugins;
-}
+};
+
+const htmlPlugin = (name) => {
+  return new HtmlWebpackPlugin({
+    filename: `${name}`,
+    template: path.resolve(__dirname, "./dev-server/", name),
+    inject: false
+  });
+};

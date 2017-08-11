@@ -7,7 +7,6 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import {Field, reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from 'redux-form-website-template';
 
-import 'react-select/dist/react-select.css';
 import "../../../scss/_ReactSelect.scss";
 
 import {SearchApiMock} from "../../mocks/SearchApiMock";

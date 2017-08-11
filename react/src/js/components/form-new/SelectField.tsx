@@ -1,6 +1,9 @@
 import * as React from "react";
 import classnames from "classnames";
+
 import Select from "react-select";
+import "react-select/dist/react-select.css";
+
 import {MouseHover} from "../form/MouseHover";
 import {showError, ValidateText} from "../form/ValidateText";
 import {FieldLabel} from "../form/FieldLabel";
@@ -9,6 +12,7 @@ import {FieldLabel} from "../form/FieldLabel";
 import {Item} from "../../model";
 import {inputFrom, metaFrom} from "./FieldsUtils";
 import {WrappedFieldInputProps, WrappedFieldMetaProps} from "redux-form";
+
 
 interface Props {
   input: WrappedFieldInputProps;

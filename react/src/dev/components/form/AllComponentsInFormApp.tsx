@@ -4,10 +4,8 @@ import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {createLogger} from "redux-logger";
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {Field, FormErrors, FormProps, reducer as formReducer, reduxForm} from "redux-form";
+import {Field, reducer as formReducer, reduxForm} from "redux-form";
 import {Values} from "redux-form-website-template";
-
-// import "react-select/dist/react-select.css";
 
 import {TextField} from "../../../js/components/form/TextField";
 import {CheckboxField} from "../../../js/components/form/CheckboxField";
