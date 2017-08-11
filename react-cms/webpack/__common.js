@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 const path = require("path");
 
@@ -19,12 +20,12 @@ const KEYS = {
 };
 
 const _common = (dirname, options) => {
-  return {
+  let _main = {
     entry: [options[KEYS.ENTRY]],
     output: {
-      path: path.resolve(dirname, 'build', 'dist'),
+      path: path.resolve(dirname, "build"),
       publicPath: "/assets/",
-      filename: "cms.js"
+      filename: "dynamic.js"
     },
     resolve: {
       modules: [
@@ -33,10 +34,7 @@ const _common = (dirname, options) => {
         path.resolve(dirname, 'src/scss'),
         path.resolve(dirname, 'node_modules')
       ],
-      extensions: [".ts", ".tsx", ".js", ".css", "scss"]
-    },
-    externals: {
-      fs: '{}'
+      extensions: [".ts", ".tsx", ".js", ".css"]
     },
     module: {
       rules: [
@@ -47,43 +45,51 @@ const _common = (dirname, options) => {
             path.resolve(dirname, "src/js"),
             path.resolve(dirname, "src/dev"),
           ],
-        },
-        {
-          test: /\.css$/,
-          loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}),
-          include: [
-            path.resolve(dirname, 'node_modules')
-          ]
-        },
-        {
-          test: /\.scss$/,
-          loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']}),
-          include: [
-            path.resolve(dirname, "src/scss"),
-          ]
-        },
-        {
-          test: /\.(jpg|jpeg|gif|png)$/,
-          loader: 'url-loader?limit=1024&name=images/[name].[ext]'
-        },
-        {
-          test: /\.(woff|woff2|eot|ttf|svg)$/,
-          loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'
-        },
-        {
-          enforce: "pre", test: /\.js$/, loader: "source-map-loader"
         }
       ]
     },
     plugins: [
       _DefinePlugin('development', 'http://localhost:10080', options.BUILD_NUMBER),
       new ExtractTextPlugin("[name].css"),
+      new webpack.optimize.ModuleConcatenationPlugin(),
     ],
     devServer: {
       inline: false
     },
     devtool: 'source-map',
-  }
+  };
+  _main.module.rules = [..._main.module.rules, ..._styleModule(dirname)];
+  return _main;
+};
+
+const _styleModule = (dirname) => {
+  return [
+    {
+      test: /\.css$/,
+      loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}),
+      include: [
+        path.resolve(dirname, 'node_modules')
+      ]
+    },
+    {
+      test: /\.scss$/,
+      loaders: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']}),
+      include: [
+        path.resolve(dirname, "src/scss"),
+      ]
+    },
+    {
+      test: /\.(jpg|jpeg|gif|png)$/,
+      loader: 'url-loader?limit=1024&name=images/[name].[ext]'
+    },
+    {
+      test: /\.(woff|woff2|eot|ttf|svg)$/,
+      loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'
+    },
+    {
+      enforce: "pre", test: /\.js$/, loader: "source-map-loader"
+    }
+  ]
 };
 
 
@@ -91,7 +97,6 @@ const _common = (dirname, options) => {
  * The DefinePlugin allows you to create global constants which can be configured at compile time.
  */
 const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => {
-  console.log(process.env);
   return new webpack.DefinePlugin({
     'process.env': {
       'NODE_ENV': JSON.stringify(NODE_ENV)
@@ -100,10 +105,21 @@ const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => {
   });
 };
 
+const _CompressionPlugin = () => {
+  return new CompressionPlugin({
+    asset: "[path].gz[query]",
+    algorithm: "gzip",
+    test: /\.(js|html)$/,
+    threshold: 10240,
+    minRatio: 0.8
+  })
+};
 
 module.exports = {
   KEYS: KEYS,
   info: _info,
   common: _common,
-  DefinePlugin: _DefinePlugin
+  styleModule: _styleModule,
+  DefinePlugin: _DefinePlugin,
+  CompressionPlugin: _CompressionPlugin
 };
