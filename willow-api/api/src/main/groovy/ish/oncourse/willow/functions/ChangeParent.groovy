@@ -23,7 +23,7 @@ class ChangeParent extends AbstractSetParent {
             return this
         }
         
-        Contact child = new GetContact(context, college, request.parentId).get()
+        Contact child = new GetContact(context, college, request.childId).get()
         ContactRelation oldRelation = child.fromContacts.find { it.relationType == parentRelationType }
         if (oldRelation) {
             context.deleteObjects(oldRelation)

@@ -23,7 +23,7 @@ class CreateParentChildrenRelation extends AbstractSetParent {
         }
         
         for (String id: request.childrenIds) {
-            Contact child = new GetContact(context, college, request.parentId).get()
+            Contact child = new GetContact(context, college, id).get()
             CheckParent checkParent = new CheckParent(college, context, child).perform()
             
             if (!checkParent.parentRequired || checkParent.parent != null) {
