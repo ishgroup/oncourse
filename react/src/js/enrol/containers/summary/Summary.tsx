@@ -26,7 +26,7 @@ import CheckoutService from "../../services/CheckoutService";
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
     contact: state.checkout.contacts.entities.contact[e.contactId],
-    courseClass: state.courses.entities[e.classId],
+    courseClass: state.cart.courses.entities[e.classId],
     enrolment: e,
   };
 };
@@ -34,7 +34,7 @@ export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps 
 export const ApplicationPropsBy = (a: Application, state: IshState): ApplicationProps => {
   return {
     contact: state.checkout.contacts.entities.contact[a.contactId],
-    courseClass: state.courses.entities[a.classId],
+    courseClass: state.cart.courses.entities[a.classId],
     application: a,
   };
 };
