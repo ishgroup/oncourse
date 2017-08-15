@@ -62,12 +62,19 @@ Survey.prototype = {
         this.fillSurvey();
 
         if (self.survey.readOnly) {
-            $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to see reviews' });
+             $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to see reviews', position: {
+                     my: "center bottom",
+                     at: "center top-20"
+                 }
+             });
         }
         else {
-            $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to provide reviews' });
+            $j("div[data='" + self.id + "'].class-reviews").parent().find("span.rate-class").tooltip({ content: 'Click here to provide reviews', position: {
+                    my: "center bottom",
+                    at: "center top-20"
+                }
+            });
         }
-
     },
     //slide survey form
     slideSurveys: function () {
