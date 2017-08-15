@@ -66,7 +66,6 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
 
         (ObjectSelect.query(ish.oncourse.model.CourseClass)
                 .where(ExpressionFactory.inDbExp(ish.oncourse.model.CourseClass.ID_PK_COLUMN, courseClassesParams.courseClassesIds)) & ish.oncourse.model.CourseClass.COLLEGE.eq(college))
-                .prefetch(ish.oncourse.model.CourseClass.COLLEGE.joint())
                 .prefetch(ish.oncourse.model.CourseClass.COURSE.joint())
                 .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
                 .cacheGroup(ish.oncourse.model.CourseClass.class.simpleName)
@@ -122,7 +121,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         it.isCancelled = c.cancelled
                         it.distantLearning = c.isDistantLearningCourse
                         it.isAllowByApplication = allowByApplication
-                        it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(c.college, c.objectContext).get()
+                        it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college, c.objectContext).get()
                         it.price =  new BuildClassPrice(c, allowByApplication, overridenFee, promotions).build()
                         it
                     }
