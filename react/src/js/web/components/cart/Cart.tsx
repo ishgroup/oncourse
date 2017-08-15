@@ -11,20 +11,20 @@ class Cart extends React.Component<Props, State> {
     super();
 
     this.state = {
-      showShortList: false
+      showShortList: false,
     };
   }
 
   toggleShortList = () => {
     this.setState({
-      showShortList: !this.state.showShortList
+      showShortList: !this.state.showShortList,
     });
-  };
+  }
 
   componentWillReceiveProps(nextProps) {
     if (!nextProps.classes.length) {
       this.setState({
-        showShortList: false
+        showShortList: false,
       });
     }
   }
@@ -45,12 +45,12 @@ class Cart extends React.Component<Props, State> {
         </h3>,
           <div key="body" className="shortlistChoices dialogContainer">
             <ul className="shortListOrder shortlistChoices" style={{
-              "display": this.state.showShortList ? "block" : "none"
+              display: this.state.showShortList ? "block" : "none",
             }}>
-              {classes.result.map((courseClassId) => {
+              {classes.result.map(courseClassId => {
                 return <CartClassItem key={courseClassId} item={classes.entities[courseClassId]} remove={removeClass}/>;
               })}
-              {products.result.map((productId) => {
+              {products.result.map(productId => {
                 return <CartProductItem key={productId} item={products.entities[productId]} remove={removeProduct}/>;
               })}
               <li className="shortListOrderEnrol">
@@ -63,7 +63,7 @@ class Cart extends React.Component<Props, State> {
             <ul className="shortlistControls">
               <li className={classnames("active", {
                 shortlistActionHide: this.state.showShortList,
-                shortlistActionShow: !this.state.showShortList
+                shortlistActionShow: !this.state.showShortList,
               })} onClick={this.toggleShortList}>
                 <a>{(this.state.showShortList ? "Hide" : "Show") + " Shortlist"}</a>
               </li>
@@ -71,7 +71,7 @@ class Cart extends React.Component<Props, State> {
                 <a href={checkoutPath}>{countClasses ? "Enrol" : "Purchase"}</a>
               </li>
             </ul>
-          </div>
+          </div>,
         ]}
       </div>
     );
@@ -79,7 +79,7 @@ class Cart extends React.Component<Props, State> {
 }
 
 export interface Props {
-  readonly checkoutPath?: string
+  readonly checkoutPath?: string;
   readonly classes?: CourseClassCartState;
   readonly products?: ProductCartState;
   readonly removeClass?: (courseClass: CourseClassCart) => void;

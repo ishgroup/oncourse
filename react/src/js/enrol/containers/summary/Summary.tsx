@@ -42,7 +42,7 @@ export const ApplicationPropsBy = (a: Application, state: IshState): Application
 export const VoucherPropsBy = (v: Voucher, state: IshState): VoucherProps => {
   return {
     contact: state.checkout.contacts.entities.contact[v.contactId],
-    product: state.products.entities[v.productId],
+    product: state.cart.products.entities[v.productId],
     voucher: v,
   };
 };
@@ -50,7 +50,7 @@ export const VoucherPropsBy = (v: Voucher, state: IshState): VoucherProps => {
 export const MembershipPropsBy = (m: Membership, state: IshState): MembershipProps => {
   return {
     contact: state.checkout.contacts.entities.contact[m.contactId],
-    product: state.products.entities[m.productId],
+    product: state.cart.products.entities[m.productId],
     membership: m,
   };
 };
@@ -58,7 +58,7 @@ export const MembershipPropsBy = (m: Membership, state: IshState): MembershipPro
 export const ArticlePropsBy = (a: Article, state: IshState): ArticleProps => {
   return {
     contact: state.checkout.contacts.entities.contact[a.contactId],
-    product: state.products.entities[a.productId],
+    product: state.cart.products.entities[a.productId],
     article: a,
   };
 };

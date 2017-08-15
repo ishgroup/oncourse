@@ -17,7 +17,7 @@ const enrolment: Enrolment = db.createEnrolment(contact.id, courseClass.id);
 
 const items: ContactNode = {
   contactId: contact.id,
-  enrolments: [enrolment]
+  enrolments: [enrolment],
 };
 
 const state: IshState = MockFunctions.mockState(contact, [courseClass], [items]);

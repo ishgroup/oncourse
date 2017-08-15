@@ -27,7 +27,3 @@ test('reading checkout path from checkout element', () => {
   bootstrap.start(false);
   expect(store.getState().checkoutPath).toBe("/checkout");
 });
-
-
-
-

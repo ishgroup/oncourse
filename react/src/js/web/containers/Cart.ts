@@ -9,7 +9,7 @@ function mapStateToProps(state: IshState, ownProps: Props) {
   return {
     classes: state.cart.courses,
     products: state.cart.products,
-    checkoutPath: state.checkoutPath
+    checkoutPath: state.checkoutPath,
   };
 }
 
@@ -18,13 +18,13 @@ function mapDispatchToProps(dispatch) {
     removeClass: (courseClass: CourseClassCart) => {
       dispatch({
         type: Actions.REMOVE_CLASS_FROM_CART,
-        payload: courseClass
+        payload: courseClass,
       });
     },
     removeProduct: (product: ProductCart) => {
       dispatch({
         type: Actions.REMOVE_PRODUCT_FROM_CART,
-        payload: product
+        payload: product,
       });
     },
   };

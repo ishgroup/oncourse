@@ -76,7 +76,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
       }
     }
 
-    if (CheckoutService.cartIsEmpty(state.cart) || !state.courses.result.length) {
+    if (CheckoutService.cartIsEmpty(state.cart)) {
       return result.concat(showCartIsEmptyMessage());
     }
 
