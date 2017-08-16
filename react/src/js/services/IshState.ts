@@ -1,5 +1,6 @@
 import {CourseClassPrice, Promotion, CourseClass, Product, Contact, Discount} from "../model";
 import {CheckoutState} from "../enrol/reducers/State";
+import {WillowConfig} from "../configLoader";
 
 export interface IshState {
   readonly form: any;
@@ -8,7 +9,7 @@ export interface IshState {
   readonly courses: CoursesState;
   readonly products: ProductsState;
   readonly checkout: CheckoutState;
-  readonly checkoutPath: string;
+  readonly config: WillowConfig;
 }
 
 export interface CartState {

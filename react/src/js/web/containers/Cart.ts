@@ -9,7 +9,7 @@ function mapStateToProps(state: IshState, ownProps: Props) {
   return {
     classes: state.cart.courses,
     products: state.cart.products,
-    checkoutPath: state.checkoutPath,
+    checkoutPath: state.config.checkoutPath,
   };
 }
 

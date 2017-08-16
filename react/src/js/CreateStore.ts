@@ -40,7 +40,7 @@ export const CreateStore = (): Store<IshState> => {
 
 export const RestoreState = (store: Store<IshState>, onComplete: OnComplete<any>): void => {
   const persistStoreWrapper = () => {
-    persistStore(store, {storage: localforage, blacklist: ["form", "phase", "page", "contactAddProcess"]}, onComplete);
+    persistStore(store, {storage: localforage, blacklist: ["form", "phase", "page", "contactAddProcess", "config"]}, onComplete);
     localforage.setItem('appVersion', ConfigConstants.APP_VERSION);
   };
 

@@ -29,7 +29,7 @@ export function syncCartStore(store) {
         // Sync cart state between all tabs
         persistStore(store, {
           storage: localForage,
-          blacklist: ["form", "popup", "checkout", "products", "phase", "page", "contactAddProcess"],
+          blacklist: ["form", "popup", "checkout", "products", "phase", "page", "contactAddProcess", "config"],
         });
 
       },

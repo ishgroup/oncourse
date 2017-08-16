@@ -1,6 +1,7 @@
 import {Bootstrap} from "../../../../js/common/utils/Bootstrap";
 import {CreateStore} from "../../../../js/CreateStore";
 import {HTMLMarkers} from "../../../../js/common/services/HTMLMarker";
+import {DefaultConfig} from "../../../../js/constants/Config";
 
 test('reading checkout path from cart element', () => {
   const container: HTMLElement = document.createElement('div');
@@ -12,7 +13,7 @@ test('reading checkout path from cart element', () => {
   const bootstrap = new Bootstrap(store);
   bootstrap.register(HTMLMarkers.CART);
   bootstrap.start(false);
-  expect(store.getState().checkoutPath).toBe("/checkout");
+  expect(store.getState().config.checkoutPath).toBe(DefaultConfig.CHECKOUT_PATH);
 });
 
 
@@ -25,5 +26,5 @@ test('reading checkout path from checkout element', () => {
   const bootstrap = new Bootstrap(store);
   bootstrap.register(HTMLMarkers.CHECKOUT);
   bootstrap.start(false);
-  expect(store.getState().checkoutPath).toBe("/checkout");
+  expect(store.getState().config.checkoutPath).toBe(DefaultConfig.CHECKOUT_PATH);
 });

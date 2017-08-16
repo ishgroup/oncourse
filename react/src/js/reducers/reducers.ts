@@ -6,7 +6,7 @@ import popup from "./popup";
 import {coursesReducer} from "../web/reducers/courses";
 import {productsReducer} from "../web/reducers/products";
 import {Reducer as CheckoutReducer} from "../enrol/reducers/Reducer";
-import {CheckoutPathReducer, configReducer} from "../common/reducers/Reducer";
+import {configReducer} from "../common/reducers/Reducer";
 
 
 export const combinedReducers = combineReducers<IshState>({
@@ -17,5 +17,4 @@ export const combinedReducers = combineReducers<IshState>({
   products: productsReducer,
   checkout: CheckoutReducer,
   config: configReducer,
-  checkoutPath: CheckoutPathReducer,
 });

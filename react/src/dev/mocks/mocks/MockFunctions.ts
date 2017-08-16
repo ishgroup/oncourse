@@ -191,7 +191,6 @@ export const mockState = (contact: Contact,
         },
       },
       products: null,
-      checkoutPath: null,
       form: null,
       popup: null,
       courses: {

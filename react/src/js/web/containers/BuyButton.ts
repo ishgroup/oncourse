@@ -16,15 +16,15 @@ function mapDispatchToProps(dispatch) {
     addProduct: (product: Product) => {
       dispatch({
         type: Actions.ADD_PRODUCT_TO_CART,
-        payload: product
+        payload: product,
       });
     },
     requestProductById: (id: string) => {
       dispatch({
         type: Actions.REQUEST_PRODUCT,
-        payload: id
+        payload: id,
       });
-    }
+    },
   };
 }
 
@@ -32,6 +32,6 @@ function mapStateToProps(state: IshState, ownProps: BuyButtonProps) {
   return {
     product: state.products.entities[ownProps.id] || {},
     isAdded: isAdded(state.cart.products, ownProps.id),
-    checkoutPath: state.checkoutPath,
+    checkoutPath: state.config.checkoutPath,
   };
 }

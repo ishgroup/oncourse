@@ -48,10 +48,6 @@ export class Bootstrap {
       }
       const realProps = HtmlDataService.parse(container, marker);
 
-      if (!isNil(realProps.checkoutPath)) {
-        this.store.dispatch({type: CommonActions.CheckoutPathUpdate, payload: realProps.checkoutPath});
-      }
-
       render(
         <Provider store={this.store}>
           <marker.component {...realProps}/>

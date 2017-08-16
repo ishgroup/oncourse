@@ -1,19 +1,16 @@
 import scriptjs from "scriptjs";
 
 import {Actions} from "./common/actions/Actions";
+import {DefaultConfig} from "./constants/Config";
 
-const DEFAULT_CONFIG_URL = 'http://localhost:8000/config.js';
+const DEFAULT_CONFIG_URL = `https://newpalaven.oncourse.cc/s/js/config.js?${new Date().valueOf()}`;
 const DEFAULT_CONFIG_KEY = 'willow_config';
 
-const DEFAULTS = {
-  checkoutPath: '/checkout/',
-}
-
-class WillowConfig {
-  private checkoutPath: string;
+export class WillowConfig {
+  public checkoutPath?: string;
 
   constructor (props) {
-    this.checkoutPath = props.checkoutPath || DEFAULTS.checkoutPath;
+    this.checkoutPath = props.checkoutPath || DefaultConfig.CHECKOUT_PATH;
   }
 }
 
