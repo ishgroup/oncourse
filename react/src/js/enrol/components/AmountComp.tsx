@@ -116,6 +116,7 @@ const RedeemVoucher = props => {
   return (
     <div className="row">
       <label htmlFor="">
+        <span>
         <input
           type="checkbox"
           value="true"
@@ -123,7 +124,8 @@ const RedeemVoucher = props => {
           checked={redeemVoucher.enabled}
           disabled={disabled}
         />
-        {redeemVoucher.name}
+          {redeemVoucher.name}
+        </span>
       </label>
       <span className="col-xs-12">${redeemVoucher.enabled ? voucherPayment.amount : 0}</span>
     </div>
