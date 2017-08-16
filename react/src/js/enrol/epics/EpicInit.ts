@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import "rxjs";
 
 import * as Actions from "../actions/Actions";
+import {Actions as WebActions} from "../../web/actions/Actions";
 import {ValidationError, Contact, ContactId} from "../../model";
 import {ShoppingCardIsEmpty} from "../containers/checkout/Errors";
 import {Phase} from "../reducers/State";
@@ -57,7 +58,11 @@ const setPayerFromCart = (state: IshState): Observable<any> => {
  * This epic process Init action of checkout application and define Phase of the application
  */
 export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
-  return action$.ofType(Actions.INIT_REQUEST).flatMap(action => {
+  return action$.ofType(
+    Actions.INIT_REQUEST,
+    WebActions.REMOVE_CLASS_FROM_CART,
+    WebActions.REMOVE_PRODUCT_FROM_CART,
+  ).flatMap(action => {
     const state = store.getState();
 
     const result = [];

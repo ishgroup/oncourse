@@ -30,8 +30,10 @@ export interface Props {
 
 class ContactComp extends React.Component<Props, any> {
   render() {
-    const {contact, enrolments, applications, vouchers, memberships, concessions,
-      articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent} = this.props;
+    const {
+      contact, enrolments, applications, vouchers, memberships, concessions,
+      articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent,
+    } = this.props;
 
     return (
       <div className="row">
@@ -43,42 +45,42 @@ class ContactComp extends React.Component<Props, any> {
           onChangeParent={onChangeParent}
         />
         <div className="col-xs-24 checkoutList">
-          {enrolments.map((props, index) => {
-            return <EnrolmentComp
+
+          {enrolments.map((props, index) =>
+            props.courseClass && <EnrolmentComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}
-            />;
-          })}
+            />,
+          )}
 
-          {applications.map((props, index) => {
-            return <ApplicationComp
+          {applications.map((props, index) =>
+            props.courseClass && <ApplicationComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Application(), props.application), !props.application.selected)}
-            />;
-          })}
+            />,
+          )}
 
-          {vouchers.map((props, index) => {
-            return <VoucherComp
+          {vouchers.map((props, index) =>
+            props.product && <VoucherComp
               key={index} {...props}
-              onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected) }
+              onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected)}
               onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher), val)}
-            />;
+            />,
+          )}
 
-          })}
-
-          {memberships.map((props, index) => {
-            return <MembershipComp
+          {memberships.map((props, index) =>
+            props.product && <MembershipComp
               key={index} {...props}
-              onChange={() => onSelect(Object.assign(new Membership(), props.membership), !props.membership.selected) }
-            />;
-          })}
+              onChange={() => onSelect(Object.assign(new Membership(), props.membership), !props.membership.selected)}
+            />,
+          )}
 
-          {articles.map((props, index) => {
-            return <ArticleComp
+          {articles.map((props, index) =>
+            props.product && <ArticleComp
               key={index} {...props}
-              onChange={() => onSelect(Object.assign(new Article(), props.article), !props.article.selected) }
-            />;
-          })}
+              onChange={() => onSelect(Object.assign(new Article(), props.article), !props.article.selected)}
+            />,
+          )}
 
 
         </div>
