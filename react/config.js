@@ -1,4 +1,4 @@
 var willow_config = {
-  checkoutPath: '/enrol/',
-  other_property: '123',
+  checkoutPath: "/checkout",
+  other_property: '123'
 }
