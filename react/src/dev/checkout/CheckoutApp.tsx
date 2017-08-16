@@ -8,10 +8,13 @@ import "../../scss/index.scss";
 
 import {MockControl} from "./MockControl";
 import {MockConfig} from "../mocks/mocks/MockConfig";
+import {configLoader} from "../../js/configLoader";
 
 const config = new MockConfig();
 
 config.init((config:MockConfig) => {
+
+  configLoader(config.store);
   render(config);
 });
 

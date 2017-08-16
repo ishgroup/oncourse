@@ -14,3 +14,11 @@ export const CheckoutPathReducer = (state = DEFAULT_CHECKOUT_PATH, action): any 
   }
 };
 
+export const configReducer = (state = {}, action): any => {
+  switch (action.type) {
+    case Actions.UPDATE_WILLOW_CONFIG:
+      return action.payload;
+    default:
+      return state;
+  }
+}

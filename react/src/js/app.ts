@@ -1,6 +1,7 @@
 import {CreateStore, RestoreState} from "./CreateStore";
 import {Bootstrap} from "./common/utils/Bootstrap";
 import {PublicApi} from "./external/PublicApi";
+import {configLoader} from "./configLoader";
 import {Level, Logger, LogMessage} from "./services/Logger";
 import {ConfigConstants} from "./config/ConfigConstants";
 import {WindowService} from "./services/WindowService";
@@ -10,10 +11,14 @@ import "../scss/index.scss";
 
 const appStart = () => {
   const store = CreateStore();
+
+  configLoader(store);
+
   RestoreState(store, () => {
     start(store);
   });
-}
+};
+
 appStart();
 
 // Log application version before start.
