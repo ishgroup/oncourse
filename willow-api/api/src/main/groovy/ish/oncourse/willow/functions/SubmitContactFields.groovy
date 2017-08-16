@@ -49,7 +49,7 @@ class SubmitContactFields {
         PropertyGetSet getSet
 
         Field country = fields.find { FieldProperty.COUNTRY.key == it.key }
-        if (!country || CommonContactValidator.DEFAULT_COUNTRY_NAME == country.value) {
+        if (!country || !country.value || CommonContactValidator.DEFAULT_COUNTRY_NAME == country.value) {
             isDefaultCountry = true
         }
         
