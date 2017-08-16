@@ -99,8 +99,17 @@
       
       .payer-selection {
         position: absolute;
+        z-index:999;
         top: 50px;
         right: 20px;
+        
+        a {
+          &.disabled {
+            opacity: .5;
+            cursor: not-allowed;
+          }
+        }
+        
       }
       
       .payer-selection > a.button {
