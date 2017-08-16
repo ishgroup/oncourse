@@ -170,7 +170,7 @@ const validateCreditCard = (data, props) => {
   }
 
   return errors;
-}
+};
 
 const validateCorporatePass = (data, props) => {
   const errors = {};
@@ -180,13 +180,13 @@ const validateCorporatePass = (data, props) => {
   }
 
   return errors;
-}
+};
 
 const Form = reduxForm({
   form: NAME,
   validate: (data: CreditCardFormValues & CorporatePassFormValues, props: Props): FormErrors<FormData> => {
     const errors = {};
-    console.log(data.agreementFlag);
+
     if (!data.agreementFlag) {
       errors[FieldName.agreementFlag] = 'You must agree to the policies before proceeding.';
     }
