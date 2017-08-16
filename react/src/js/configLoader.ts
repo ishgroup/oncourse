@@ -3,7 +3,7 @@ import scriptjs from "scriptjs";
 import {Actions} from "./common/actions/Actions";
 import {DefaultConfig} from "./constants/Config";
 
-const DEFAULT_CONFIG_URL = `https://newpalaven.oncourse.cc/s/js/config.js?${new Date().valueOf()}`;
+const DEFAULT_CONFIG_URL = `/s/js/config.js?${new Date().valueOf()}`;
 const DEFAULT_CONFIG_KEY = 'willow_config';
 
 export class WillowConfig {
