@@ -31,7 +31,9 @@ public enum DataType {
   
   POSTCODE("POSTCODE"),
   
-  PHONE("PHONE");
+  PHONE("PHONE"),
+  
+  CHOICE("CHOICE");
 
   private String value;
 

@@ -1079,6 +1079,7 @@ definitions:
       - SUBURB
       - POSTCODE
       - PHONE
+      - CHOICE
   field.Field: 
     type: object
     requred:

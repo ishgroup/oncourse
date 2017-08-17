@@ -59,6 +59,12 @@ class FieldBuilder {
                         f.enumItems  << new Item(value: item.displayName, key: item.databaseValue.toString())
                     }
                     break
+                case CUSTOM_FIELD_CONTACT:
+                    ProcessCustomFieldType processor = new ProcessCustomFieldType(field).process()
+                    f.dataType = processor.dataType
+                    f.defaultValue = processor.defaultValue
+                    f.enumItems = processor.items
+                    break
                 default:
                     f.dataType = DataType.fromValue(aClass.simpleName.toUpperCase())
                     break
