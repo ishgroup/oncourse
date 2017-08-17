@@ -3,7 +3,7 @@ package ish.oncourse.admin.services.ntis;
 import au.gov.training.services.trainingcomponent.ITrainingComponentService;
 import ish.oncourse.admin.services.AdminTestModule;
 import ish.oncourse.test.ServiceTest;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,8 +34,8 @@ public class TrainingComponentServiceTest extends ServiceTest {
             double elapsedTime = (finishTime - startTime) / 1000d; // elapsed time in seconds
 
             System.out.println("Date retrieved - " + serverDate.toString() + " in " + elapsedTime + " seconds");
-            
-            Assert.assertNotNull(serverDate);
+
+			Assert.assertNotNull(serverDate);
         }
     }
 }
