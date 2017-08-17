@@ -6,6 +6,7 @@ export const PaymentStatus = createStringEnum([
   'FAILED',
   'SUCCESSFUL',
   'UNDEFINED',
+  'SUCCESSFUL_BY_PASS',
 ]);
 
 export type PaymentStatus = keyof typeof PaymentStatus;

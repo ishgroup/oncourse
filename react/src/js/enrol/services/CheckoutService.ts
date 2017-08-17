@@ -181,6 +181,7 @@ export class CheckoutService {
       case PaymentStatus.IN_PROGRESS:
         return of(getPaymentStatus()).delay(DELAY_NEXT_PAYMENT_STATUS);
       case PaymentStatus.SUCCESSFUL:
+      case PaymentStatus.SUCCESSFUL_BY_PASS:
       case PaymentStatus.UNDEFINED:
         return [
           changePhase(Phase.Result),
@@ -345,7 +346,7 @@ export class BuildGetCorporatePassRequest {
 
     products.map(p => Object.keys(entities[p])
       .filter(key => entities[p][key].selected)
-      .map(key => productIds.push(entities[p][key].productId)))
+      .map(key => productIds.push(entities[p][key].productId)));
 
     result.classIds = classIds;
     result.productIds = productIds;
