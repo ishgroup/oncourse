@@ -72,7 +72,7 @@ class PaymentForm extends React.Component<Props, any> {
 
     return (
       <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting})}>
-        {Number(amount.payNow) !== 0 &&
+        {Number(amount.payNow) !== 0 && !corporatePass.id &&
         <div>
           <div id="tabable-container">
             <PaymentFormNav
