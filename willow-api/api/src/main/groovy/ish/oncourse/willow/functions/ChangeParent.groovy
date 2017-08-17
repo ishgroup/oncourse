@@ -29,6 +29,7 @@ class ChangeParent extends AbstractSetParent {
             context.deleteObjects(oldRelation)
         }
         createRelation(parent, child)
+        this
     }
 
     @Override
