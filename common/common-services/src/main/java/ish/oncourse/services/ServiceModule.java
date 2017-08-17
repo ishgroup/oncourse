@@ -54,12 +54,7 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
-import ish.oncourse.services.paymentexpress.INewPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.NewPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.persistence.UnregisterMBeans;
@@ -77,9 +72,7 @@ import ish.oncourse.services.s3.S3Service;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteService;
-import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.sites.SitesService;
 import ish.oncourse.services.sms.DefaultSMSService;
@@ -127,10 +120,14 @@ import java.lang.management.ManagementFactory;
 public class ServiceModule {
 
 	public static final String APP_TEST_MODE = "application.test";
+	public static final String JAVA_PARAM_HTTPS_PROTOCOLS = "https.protocols";
+	public static final String TLS_V12 = "TLSv1.2";
+
 
 	private static Logger logger = LogManager.getLogger();
 
 	public static void bind(ServiceBinder binder) {
+		System.setProperty(JAVA_PARAM_HTTPS_PROTOCOLS, TLS_V12);
 
 		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(APP_TEST_MODE));
 
@@ -214,12 +211,12 @@ public class ServiceModule {
 
 		binder.bind(IDataLayerFactory.class, DataLayerFactory.class).scope(ScopeConstants.PERTHREAD);
 
-        binder.bind(IRequestCacheService.class, RequestCacheService.class);
+		binder.bind(IRequestCacheService.class, RequestCacheService.class);
 		binder.bind(IApplicationService.class, ApplicationServiceImpl.class);
 
 		binder.bind(IContentCacheService.class, ContentEHCacheService.class);
 		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
-    }
+	}
 
 	@Scope("perthread")
 	public static IPaymentGatewayService buildPaymentGatewayService(IPaymentGatewayServiceBuilder builder) {
@@ -247,11 +244,11 @@ public class ServiceModule {
 			UnregisterMBeans.valueOf(cacheManager, mBeanServer).unregister();
 			ManagementService.registerMBeans(cacheManager, mBeanServer, true, true, true, true);
 		} catch (Exception e) {
-			logger.error("Cannot register MBeans for  cacheManager \"{}\".",cacheManager.getName(), e);
+			logger.error("Cannot register MBeans for  cacheManager \"{}\".", cacheManager.getName(), e);
 		}
 		return cacheManager;
 	}
-	
+
 	@EagerLoad
 	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
 		CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
@@ -266,7 +263,7 @@ public class ServiceModule {
 		// CommonUtils.VERSION_development we need only when we start our applications from IDEs (eclipse, intellij IDEA ....).
 		try {
 			String version = environmentService.getCiVersion();
-			configuration.add(SymbolConstants.APPLICATION_VERSION, StringUtils.trimToNull(version) == null ? CommonUtils.VERSION_development: version);
+			configuration.add(SymbolConstants.APPLICATION_VERSION, StringUtils.trimToNull(version) == null ? CommonUtils.VERSION_development : version);
 		} catch (Exception e) {
 			/**
 			 * The catch was intruduce to exclude runtime exception for junits:

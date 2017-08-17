@@ -3,7 +3,6 @@ package ish.oncourse.services.paymentexpress;
 import com.paymentexpress.stubs.PaymentExpressWSLocator;
 import com.paymentexpress.stubs.PaymentExpressWSSoap12Stub;
 import com.paymentexpress.stubs.TransactionDetails;
-import com.paymentexpress.stubs.TransactionResult2;
 import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentOut;
@@ -31,6 +30,7 @@ import java.util.Date;
  */
 @Scope("perthread")
 public class PaymentExpressGatewayService extends AbstractPaymentGatewayService {
+	public static String URL = "https://sec.paymentexpress.com/WSV1/PXWS.asmx";
 
     /**
      * The number of retry attempts.
@@ -266,8 +266,8 @@ public class PaymentExpressGatewayService extends AbstractPaymentGatewayService 
      */
     PaymentExpressWSSoap12Stub soapClientStub() throws ServiceException {
         PaymentExpressWSLocator serviceLocator = new PaymentExpressWSLocatorWithSoapResponseHandle();
-        serviceLocator.setPaymentExpressWSSoapEndpointAddress("https://sec.paymentexpress.com/WSV1/PXWS.asmx");
-        PaymentExpressWSSoap12Stub stub = (PaymentExpressWSSoap12Stub) serviceLocator.getPaymentExpressWSSoap12();
+		serviceLocator.setPaymentExpressWSSoapEndpointAddress(URL);
+		PaymentExpressWSSoap12Stub stub = (PaymentExpressWSSoap12Stub) serviceLocator.getPaymentExpressWSSoap12();
         stub.setTimeout(TIMEOUT);
         return stub;
     }
