@@ -60,7 +60,7 @@ export const progressModelBy = (phase: Phase): Model => {
       break;
     case Phase.Result:
       result.active = Tab.Payment;
-      result.disabled = [Tab.Details, Tab.Summary];
+      result.disabled = [Tab.Details, Tab.Summary, Tab.Payment];
       break;
   }
   return result;

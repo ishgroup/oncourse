@@ -202,7 +202,7 @@ const Form = reduxForm({
     return errors;
   },
   onSubmit: (data: CreditCardFormValues & CorporatePassFormValues, dispatch, props): void => {
-    if (props.amount.payNow !== 0 && props.currentTab === Tabs.creditCard) {
+    if (Number(props.amount.payNow) !== 0 && props.currentTab === Tabs.creditCard) {
       data.creditCardNumber = data.creditCardNumber.replace(/\s+/g, "");
       data.creditCardCvv = data.creditCardCvv.replace(/\_/g, "");
     }
