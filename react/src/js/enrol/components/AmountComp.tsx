@@ -127,7 +127,7 @@ const RedeemVoucher = props => {
           {redeemVoucher.name}
         </span>
       </label>
-      <span className="col-xs-12">${redeemVoucher.enabled ? voucherPayment.amount : 0}</span>
+      <span className="col-xs-12">${redeemVoucher.enabled ? voucherPayment && voucherPayment.amount : 0}</span>
     </div>
   );
 };

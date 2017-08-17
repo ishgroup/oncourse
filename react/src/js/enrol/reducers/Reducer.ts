@@ -193,7 +193,7 @@ const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: IAction<any>
   switch (action.type) {
 
     case FULFILLED(Actions.ADD_REDEEM_VOUCHER_TO_STATE):
-      const voucher = action.payload;
+      const voucher = {...action.payload, enabled: true};
       return state.filter(v => v.id === voucher.id).length ? state : state.concat(voucher);
 
     case Actions.SET_REDEEM_VOUCHER_ACTIVITY:

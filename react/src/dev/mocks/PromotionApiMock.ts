@@ -1,6 +1,6 @@
 import {PromotionApi} from "../../js/http/PromotionApi";
 import {MockConfig} from "./mocks/MockConfig";
-import {CodeResponse} from "../../js/model";
+import {CodeResponse, RedeemVoucher} from "../../js/model";
 
 export class PromotionApiMock extends PromotionApi {
   public config: MockConfig;
@@ -11,10 +11,9 @@ export class PromotionApiMock extends PromotionApi {
   }
 
   submitCode(code: string): Promise<CodeResponse> {
-    const voucherMock = {
+    const voucherMock: RedeemVoucher = {
       name: `${code} voucher`,
       id: `${code}-100`,
-      enabled: true,
       payer: this.config.db.contacts.entities.contact[this.config.db.contacts.result[code]],
     };
     const promotionMock = {
