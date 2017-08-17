@@ -97,7 +97,6 @@ import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.management.ManagementService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
@@ -114,20 +113,20 @@ import org.apache.tapestry5.services.LibraryMapping;
 import javax.management.MBeanServer;
 import java.lang.management.ManagementFactory;
 
+import static org.apache.commons.lang3.StringUtils.trimToNull;
+
 /**
  * A Tapestry IoC module definition for all common services.
  */
 public class ServiceModule {
 
 	public static final String APP_TEST_MODE = "application.test";
-	public static final String JAVA_PARAM_HTTPS_PROTOCOLS = "https.protocols";
-	public static final String TLS_V12 = "TLSv1.2";
 
 
 	private static Logger logger = LogManager.getLogger();
 
 	public static void bind(ServiceBinder binder) {
-		System.setProperty(JAVA_PARAM_HTTPS_PROTOCOLS, TLS_V12);
+		CommonUtils.configureTLSProtocols();
 
 		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(APP_TEST_MODE));
 
@@ -263,7 +262,7 @@ public class ServiceModule {
 		// CommonUtils.VERSION_development we need only when we start our applications from IDEs (eclipse, intellij IDEA ....).
 		try {
 			String version = environmentService.getCiVersion();
-			configuration.add(SymbolConstants.APPLICATION_VERSION, StringUtils.trimToNull(version) == null ? CommonUtils.VERSION_development : version);
+			configuration.add(SymbolConstants.APPLICATION_VERSION, trimToNull(version) == null ? CommonUtils.VERSION_development : version);
 		} catch (Exception e) {
 			/**
 			 * The catch was intruduce to exclude runtime exception for junits:

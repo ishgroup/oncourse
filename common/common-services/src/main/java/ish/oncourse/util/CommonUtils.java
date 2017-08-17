@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
+import static org.apache.commons.lang3.StringUtils.join;
+
 public class CommonUtils {
 
 	private static final Logger logger = LogManager.getLogger();
@@ -14,32 +16,35 @@ public class CommonUtils {
 	public static final String VERSION_development = "development";
 	public static final String VERSION_trunk_SNAPSHOT = "trunk-SNAPSHOT";
 
-    public static final String VERSION_PREFIX_RELEASE = "release-";
-    public static final String VERSION_SUFFIX_SNAPSHOT = "-SNAPSHOT";
+	public static final String VERSION_PREFIX_RELEASE = "release-";
+	public static final String VERSION_SUFFIX_SNAPSHOT = "-SNAPSHOT";
 
-    public static final String VERSION_5_0 = "5.0A0";
+	public static final String VERSION_5_0 = "5.0A0";
+
+	public static final String JAVA_PARAM_HTTPS_PROTOCOLS = "https.protocols";
+	public static final String TLS_V1 = "TLSv1";
+	public static final String TLS_V11 = "TLSv1.1";
+	public static final String TLS_V12 = "TLSv1.2";
+
 
 	/**
-	 *
 	 * @param version1 not null
-	 * @param version2  not null
+	 * @param version2 not null
 	 */
-	public static int compare(String version1 , String version2)
-	{
-        //these tests need to exclude NPE
-        if (version1 == null)
-            return -1;
-        if (version2 == null)
-            return 1;
-        if (version1.equals(version2))
-            return 0;
+	public static int compare(String version1, String version2) {
+		//these tests need to exclude NPE
+		if (version1 == null)
+			return -1;
+		if (version2 == null)
+			return 1;
+		if (version1.equals(version2))
+			return 0;
 
-        // The code extracts version number from 'release-<version>-SNAPSHOT'
-        if (version1 != null && version1.startsWith(VERSION_PREFIX_RELEASE))
-        {
-            version1 = version1.replace(VERSION_PREFIX_RELEASE, StringUtils.EMPTY);
-            version1 = version1.replace(VERSION_SUFFIX_SNAPSHOT, StringUtils.EMPTY);
-        }
+		// The code extracts version number from 'release-<version>-SNAPSHOT'
+		if (version1 != null && version1.startsWith(VERSION_PREFIX_RELEASE)) {
+			version1 = version1.replace(VERSION_PREFIX_RELEASE, StringUtils.EMPTY);
+			version1 = version1.replace(VERSION_SUFFIX_SNAPSHOT, StringUtils.EMPTY);
+		}
 		if (VERSION_development.equalsIgnoreCase(version1) ||
 				VERSION_trunk_SNAPSHOT.equalsIgnoreCase(version1)) {
 			logger.info("pass the gradle development and trunk-SNAPSHOT version");
@@ -54,5 +59,9 @@ public class CommonUtils {
 	public static String getCurrentCollegeAngelVersion(Queueable entity) {
 		return entity.getCollege() != null && StringUtils.trimToNull(entity.getCollege().getAngelVersion()) != null ?
 				entity.getCollege().getAngelVersion() : College.UNDEFINED_ANGEL_VERSION;
+	}
+
+	public static void configureTLSProtocols() {
+		System.setProperty(JAVA_PARAM_HTTPS_PROTOCOLS, join(new String[]{TLS_V1, TLS_V11, TLS_V12}, ','));
 	}
 }
