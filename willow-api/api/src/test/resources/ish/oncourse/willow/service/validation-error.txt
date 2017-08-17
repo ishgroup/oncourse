@@ -11,13 +11,13 @@ class ValidationError {
         error: Enter 4 digit postcode for Australian postcodes.
     }, class FieldError {
         name: homePhoneNumber
-        error: Enter 10 digit Home phone number phone number including area code for Australian numbers
+        error: Enter 10 digit Home phone number including area code for Australian numbers
     }, class FieldError {
         name: businessPhoneNumber
-        error: Enter 10 digit Business phone number phone number including area code for Australian numbers
+        error: Enter 10 digit Business phone number including area code for Australian numbers
     }, class FieldError {
         name: faxNumber
-        error: Enter 10 digit Fax number phone number including area code for Australian numbers
+        error: Enter 10 digit Fax phone number including area code for Australian numbers
     }, class FieldError {
         name: mobilePhoneNumber
         error: Enter 10 digit mobile phone number including 04 area code for Australian numbers

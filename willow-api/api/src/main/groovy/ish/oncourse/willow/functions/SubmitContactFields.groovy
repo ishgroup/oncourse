@@ -173,7 +173,7 @@ class SubmitContactFields {
             case FieldProperty.BUSINESS_PHONE_NUMBER:
             case FieldProperty.FAX_NUMBER:
                 if (isDefaultCountry) {
-                    PhoneValidator.Validator validator = PhoneValidator.Validator.valueOf(value as String, property.displayName).validate()
+                    PhoneValidator.Validator validator = PhoneValidator.Validator.valueOf(value as String, property.displayName.split(' ')[0]).validate()
                     stringError = validator.message
                 } else {
                     if ((value as String).length() > 20) {
