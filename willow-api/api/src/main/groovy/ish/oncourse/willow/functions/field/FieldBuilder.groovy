@@ -15,12 +15,8 @@ import static ish.oncourse.common.field.FieldProperty.*
 
 class FieldBuilder {
     
-    private static final String OTHER_CHOICE = 'Other'
-    
     Field field
     Class aClass
-    College college
-    ObjectContext context
     
     ish.oncourse.willow.model.field.Field build() {
         new ish.oncourse.willow.model.field.Field().with { f ->
@@ -61,28 +57,6 @@ class FieldBuilder {
 
                     aClass.enumConstants.each { DisplayableExtendedEnumeration item ->
                         f.enumItems  << new Item(value: item.displayName, key: item.databaseValue.toString())
-                    }
-                    break
-                case CUSTOM_FIELD_CONTACT:
-                    f.dataType = DataType.STRING
-                    String key = field.property.replace("${CUSTOM_FIELD_CONTACT.key}.", '')
-                    
-                    CustomFieldType type = ObjectSelect.query(CustomFieldType)
-                            .where(CustomFieldType.ENTITY_NAME.eq(Contact.simpleName))
-                            .and(CustomFieldType.KEY.eq(key))
-                            .and(CustomFieldType.COLLEGE.eq(college))
-                            .selectOne(context)
-                    
-                    String defaultValue = StringUtils.trimToNull(type.getDefaultValue())
-                    if (defaultValue) {
-                        String[] choices = defaultValue.split(";")
-                        if (choices.length > 1) {
-                            choices.each { item ->
-                                f.enumItems  << new Item(value: item.trim() == '*' ? OTHER_CHOICE : item.trim(), key: item.trim())
-                            }
-                        } else {
-                            f.defaultValue = defaultValue
-                        }
                     }
                     break
                 default:
