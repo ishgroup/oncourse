@@ -1448,15 +1448,6 @@ public abstract class CommonPreferenceController {
 	public static final String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
 	public static final String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
 	public static final String LISTVIEW_COLUMN_SORTED = "listview.column.sorted.";
-	public static final String DASHBOARD_LAST_USED = "dashboard.lastUsed";
-
-	public String getDashboardLastUsed() {
-		return getValue(DASHBOARD_LAST_USED, true);
-	}
-
-	public void setDashboardLastUsed(String dashboardLastUsed) {
-		setValue(DASHBOARD_LAST_USED, true, dashboardLastUsed);
-	}
 
 	public String getToolbarActiveTab() {
 		return getValue(TOOLBAR_ACTIVE_TAB, true);
@@ -2121,8 +2112,6 @@ public abstract class CommonPreferenceController {
 			return getAccountInvoiceTerms();
 		} else if (AVETMISS_FEE_HELP_PROVIDER_CODE.equals(key)) {
 			return getAvetmissFeeHelpProviderCode();
-		} else if (DASHBOARD_LAST_USED.equals(key)) {
-			return getDashboardLastUsed();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -2338,8 +2327,6 @@ public abstract class CommonPreferenceController {
 			setAccountInvoiceTerms((Integer) value);
 		} else if (AVETMISS_FEE_HELP_PROVIDER_CODE.equals(key)) {
 			setAvetmissFeeHelpProviderCode((String) value);
-		} else if (DASHBOARD_LAST_USED.equals(key)) {
-			setDashboardLastUsed((String) value);
 		}
 	}
 
