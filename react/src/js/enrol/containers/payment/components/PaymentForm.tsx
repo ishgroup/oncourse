@@ -251,9 +251,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeTab(tab));
     },
     onUnmountPassComponent: () => {
-      dispatch(getAmount());
       dispatch(resetCorporatePass());
       dispatch(togglePayNowVisibility(true));
+      dispatch(getAmount());
     },
   };
 };
