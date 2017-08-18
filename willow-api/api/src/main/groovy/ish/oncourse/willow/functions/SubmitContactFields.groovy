@@ -7,12 +7,14 @@ import ish.oncourse.cayenne.StudentInterface
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.common.field.PropertyGetSet
 import ish.oncourse.common.field.PropertyGetSetFactory
+import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Country
 import ish.oncourse.model.Language
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.util.contact.CommonContactValidator
 import ish.oncourse.utils.PhoneValidator
+import ish.oncourse.willow.functions.field.ProcessCustomFieldType
 import ish.oncourse.willow.model.common.FieldError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.model.field.Field
@@ -41,6 +43,8 @@ class SubmitContactFields {
     
     ValidationError errors 
     ObjectContext objectContext
+    College college
+    
     boolean isDefaultCountry = false
     
     SubmitContactFields submitContactFields(Contact contact, List<Field> fields) {
@@ -63,7 +67,7 @@ class SubmitContactFields {
                     return
                 }
                 
-                FieldError error = validateValue(property, value)
+                FieldError error = validateValue(f.key, property, value)
                 if (error) {
                     errors.fieldsErrors << error
                 } else {
@@ -89,8 +93,9 @@ class SubmitContactFields {
                 case SUBURB:
                 case POSTCODE:
                 case STRING:
+                case CHOICE:
                 case PHONE:
-                    result = f.value
+                    result = f.value.trim()
                     break
                 case BOOLEAN:
                     result = Boolean.valueOf(f.value)
@@ -125,7 +130,9 @@ class SubmitContactFields {
                     }
                     break
                 case ENUM:
-                    if (org.apache.commons.lang.StringUtils.isNumeric(f.value)) {
+                    if (f.key.startsWith(FieldProperty.CUSTOM_FIELD_CONTACT.key)) {
+                        result = f.value
+                    } else if (org.apache.commons.lang.StringUtils.isNumeric(f.value)) {
                         result = TypesUtil.getEnumForDatabaseValue(f.value, this.class.classLoader.loadClass("ish.common.types.$f.enumType"))
                     } else {
                         errors.fieldsErrors << new FieldError(name: f.key, error: "${f.name} is incorrect")
@@ -144,7 +151,7 @@ class SubmitContactFields {
         result
     }
 
-    private FieldError validateValue(FieldProperty  property, Object value) {
+    private FieldError validateValue(String fieldKey, FieldProperty  property, Object value) {
         String stringError = null
         switch (property) {
             case FieldProperty.STREET:
@@ -197,12 +204,19 @@ class SubmitContactFields {
             case FieldProperty.YEAR_SCHOOL_COMPLETED:
                 stringError = validateYearSchoolCompleted(value as Integer)
                 break
+            case FieldProperty.CUSTOM_FIELD_CONTACT:
+                ProcessCustomFieldType processor = new ProcessCustomFieldType(fieldKey, objectContext, college).process()
+                if (ENUM == processor.dataType && !processor.items.collect { it.value }.contains(value)) {
+                    stringError = 'Please select a value from the drop-down list'
+                }
+                
+                break
             default: 
                 return null
         }
         
         if (stringError) {
-            return new FieldError(name: property.key, error: stringError)
+            return new FieldError(name: fieldKey, error: stringError)
         } 
         null
     }

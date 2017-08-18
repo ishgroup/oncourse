@@ -138,7 +138,7 @@ class ContactApiServiceImpl implements ContactApi{
         ish.oncourse.model.Contact contact = new GetContact(context, college, contactFields.contactId).get(false)
         ValidationError errors = new ValidationError()
         
-        SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors).submitContactFields(contact, contactFields.fields)
+        SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors, college: college).submitContactFields(contact, contactFields.fields)
         ContactId response = new ContactId().id(contact.id.toString()).newContact(false).parentRequired(false)
         
         if (!contact.isCompany) {

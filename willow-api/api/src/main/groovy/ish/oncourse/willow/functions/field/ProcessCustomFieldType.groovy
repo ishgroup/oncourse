@@ -1,10 +1,12 @@
 package ish.oncourse.willow.functions.field
 
+import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CustomFieldType
 import ish.oncourse.model.Field
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.field.DataType
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 
@@ -14,16 +16,26 @@ class ProcessCustomFieldType {
 
     private static final String OTHER_CHOICE = '*'
 
-    private Field field
-    
+
+    private String fieldKey
+    private ObjectContext objectContext
+    private College college
+
     private DataType dataType = DataType.STRING
     private String defaultValue = null
     private List<Item> items = new ArrayList<>()
 
     ProcessCustomFieldType(Field field) {
-        this.field = field
+        this.fieldKey = field.property
+        this.objectContext = field.objectContext
+        this.college = college 
     }
 
+    ProcessCustomFieldType(String fieldKey, ObjectContext objectContext, College college) {
+        this.fieldKey = fieldKey
+        this.objectContext = objectContext
+        this.college = college
+    }
     
     
     ProcessCustomFieldType process() {
@@ -49,13 +61,13 @@ class ProcessCustomFieldType {
     }
 
     private CustomFieldType selectCustomFieldType() {
-        String key = field.property.replace("${CUSTOM_FIELD_CONTACT.key}.", '')
+        String key = fieldKey.replace("${CUSTOM_FIELD_CONTACT.key}.", '')
 
         return ((ObjectSelect.query(CustomFieldType)
                 .where(CustomFieldType.ENTITY_NAME.eq(Contact.simpleName)) 
                 & CustomFieldType.KEY.eq(key)) 
-                & CustomFieldType.COLLEGE.eq(field.college))
-                .selectOne(field.objectContext)
+                & CustomFieldType.COLLEGE.eq(college))
+                .selectOne(objectContext)
     }
 
     DataType getDataType() {
