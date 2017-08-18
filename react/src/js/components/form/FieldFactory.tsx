@@ -64,6 +64,17 @@ class FieldFactory extends React.Component<any, any> {
       case DataType.POSTCODE:
         return PostcodeField(props);
 
+      case DataType.CHOICE:
+        return <Form.Field
+          {...props}
+          component={SelectField}
+          loadOptions={() => Promise.resolve(field.enumItems)}
+          newOptionEnable={true}
+          searchable={true}
+          showOnFocus={true}
+          placeholder="Please Select..."
+        />
+
       default:
         return null;
     }

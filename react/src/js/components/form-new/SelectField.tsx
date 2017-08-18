@@ -22,6 +22,7 @@ interface Props {
   labelKey: string;
   valueKey: string;
   newOptionEnable: boolean;
+  showOnFocus?: boolean;
   required: boolean;
   label: string;
   searchable?: boolean;
@@ -70,6 +71,7 @@ class SelectField extends React.Component<any, any> {
       required: this.props.required,
       label: this.props.label,
       searchable: this.props.searchable !== false,
+      showOnFocus: this.props.showOnFocus,
       labelKey: this.props.labelKey ? this.props.labelKey : "value",
       valueKey: this.props.valueKey ? this.props.valueKey : "key",
       newOptionEnable: this.props.newOptionEnable || false,
@@ -81,7 +83,7 @@ class SelectField extends React.Component<any, any> {
     const props: any = this.toProps();
     const RenderSelectWrapper = props.newOptionEnable ? Select.AsyncCreatable : Select.Async;
     const isShowError = showError(props);
-    const showValuesOnInit: boolean = !props.searchable;
+    const showValuesOnInit: boolean = !props.searchable || props.showOnFocus;
 
     const inner = props => (
       <div>
@@ -108,6 +110,7 @@ class SelectField extends React.Component<any, any> {
             clearable={false}
             value={this.props.returnType === 'object' ? props.input.value.key : props.input.value && props.input}
             loadOptions={input => this.loadOptions(input, showValuesOnInit)}
+            options={this.props.options}
             onBlur={this.onBlur}
             onChange={this.onChange}
             promptTextCreator={label => `${label} `}

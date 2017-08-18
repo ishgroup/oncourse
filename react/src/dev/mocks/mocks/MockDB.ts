@@ -5,7 +5,7 @@ import localForage from "localforage";
 
 import {CourseClass, Enrolment, Contact, Field, DataType, FieldHeading, Item,
   Voucher, Product, Membership, Article, Application} from "../../../js/model";
-import {mockContact, mockCourseClass, mockEnumField, mockField, mockProduct} from "./MockFunctions";
+import {mockChoiceField, mockContact, mockCourseClass, mockEnumField, mockField, mockProduct} from "./MockFunctions";
 import {normalize} from "normalizr";
 import {ClassesListSchema, ContactsSchema, ContactsState, ProductsListSchema} from "../../../js/NormalizeSchema";
 
@@ -83,6 +83,9 @@ export class MockDB {
       mockField("E-mail", "isMarketingViaEmailAllowed", DataType.BOOLEAN),
       mockField("Post", "isMarketingViaPostAllowed", DataType.BOOLEAN),
       mockField("SMS", "isMarketingViaSMSAllowed", DataType.BOOLEAN),
+      mockChoiceField("Passport type", "customField.contact.passportType", "Passport type",
+        [{key: "1", value: "MP"},
+          {key: "2", value: "MK"}]),
       mockEnumField("Citizenship", "citizenship", "StudentCitizenship",
         [{key: "1", value: "Australian citizen"},
           {key: "2", value: "New Zealand citizen"},
