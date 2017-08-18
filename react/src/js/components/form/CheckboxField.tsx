@@ -13,7 +13,7 @@ export const CheckboxField = ({input, label, classes, required}: CheckboxFieldPr
           required={required}
         />
       }
-      <input {...input} className={classes} type="checkbox"/>
+      <input {...input} checked={input.value} className={classes} type="checkbox"/>
     </div>
   );
 };

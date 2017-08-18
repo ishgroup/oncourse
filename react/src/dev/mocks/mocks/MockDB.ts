@@ -3,8 +3,10 @@ import faker from "faker";
 import uuid from "uuid";
 import localForage from "localforage";
 
-import {CourseClass, Enrolment, Contact, Field, DataType, FieldHeading, Item,
-  Voucher, Product, Membership, Article, Application} from "../../../js/model";
+import {
+  CourseClass, Enrolment, Contact, Field, DataType, FieldHeading, Item,
+  Voucher, Product, Membership, Article, Application
+} from "../../../js/model";
 import {mockChoiceField, mockContact, mockCourseClass, mockEnumField, mockField, mockProduct} from "./MockFunctions";
 import {normalize} from "normalizr";
 import {ClassesListSchema, ContactsSchema, ContactsState, ProductsListSchema} from "../../../js/NormalizeSchema";
@@ -66,10 +68,10 @@ export class MockDB {
     ], ProductsListSchema);
 
     this.fields = [
-      mockField("Street", "street", DataType.STRING),
+      mockField("Street", "street", DataType.STRING, false, 'Kirova'),
       mockField("Passport number", "customField.contact.passportNumber", DataType.STRING, true),
       mockField("Suburb", "suburb", DataType.SUBURB, true),
-      mockField("Postcode", "postcode", DataType.POSTCODE, true),
+      mockField("Postcode", "postcode", DataType.POSTCODE, true, "2202"),
       mockField("State", "state", DataType.STRING),
       mockField("Country", "country", DataType.COUNTRY),
       mockField("Street", "street", DataType.STRING),
@@ -77,15 +79,20 @@ export class MockDB {
       mockField("Business phone number", "businessPhoneNumber", DataType.PHONE),
       mockField("Fax number", "faxNumber", DataType.PHONE),
       mockField("Mobile phone number", "mobilePhoneNumber", DataType.PHONE),
-      mockField("Date of Birth", "dateOfBirth", DataType.DATE),
+      mockField("Date of Birth", "dateOfBirth", DataType.DATE, false, "22/12/1980"),
       mockField("ABN", "abn", DataType.STRING),
       mockField("Gender", "isMale", DataType.BOOLEAN),
-      mockField("E-mail", "isMarketingViaEmailAllowed", DataType.BOOLEAN),
+      mockField("E-mail", "isMarketingViaEmailAllowed", DataType.BOOLEAN, false, true),
       mockField("Post", "isMarketingViaPostAllowed", DataType.BOOLEAN),
       mockField("SMS", "isMarketingViaSMSAllowed", DataType.BOOLEAN),
-      mockChoiceField("Passport type", "customField.contact.passportType", "Passport type",
-        [{key: "1", value: "MP"},
-          {key: "2", value: "MK"}]),
+      mockChoiceField(
+        "Passport type",
+        "customField.contact.passportType",
+        "Passport type",
+        [{key: "1", value: "MP"}, {key: "2", value: "MK"}],
+        true,
+        "MPP",
+      ),
       mockEnumField("Citizenship", "citizenship", "StudentCitizenship",
         [{key: "1", value: "Australian citizen"},
           {key: "2", value: "New Zealand citizen"},
@@ -97,8 +104,8 @@ export class MockDB {
         ],
       ),
       mockField("Country of birth", "countryOfBirth", DataType.COUNTRY),
-      mockField("Language spoken at Home", "languageHome", DataType.LANGUAGE),
-      mockField("Year school completed", "yearSchoolCompleted", DataType.INTEGER),
+      mockField("Language spoken at Home", "languageHome", DataType.LANGUAGE, false, 'English'),
+      mockField("Year school completed", "yearSchoolCompleted", DataType.INTEGER, false, 1980),
       mockEnumField("English proficiency", "englishProficiency", "AvetmissStudentEnglishProficiency",
         [{key: "0", value: "not stated"},
           {key: "1", value: "Very Well"},

@@ -95,8 +95,7 @@ const Form = reduxForm({
     );
 
     return {...errors, ...concessionErrors};
-  }
-,
+  },
   onSubmitSuccess: (result, dispatch, props: any) => {
     dispatch(submitEditContact({...props.contact, parentRequired: result.parentRequired}));
   },
@@ -105,6 +104,17 @@ const Form = reduxForm({
   },
 })(ContactEditForm);
 
+const getInitialValues = fields => {
+  const initialValues = {};
+
+  fields.headings
+    .map(h => h.fields
+      .filter(f => f.defaultValue)
+      .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
+    );
+
+  return initialValues;
+}
 
 const mapStateToProps = (state: IshState) => {
   // state.checkout.contacts.entities.contact[state.checkout.fields.contactId]
@@ -114,6 +124,7 @@ const mapStateToProps = (state: IshState) => {
   const concessionTypes = state.checkout.concession.types;
   const isNewContact = !state.checkout.contacts.result.length;
   const page = state.checkout.page;
+  const initialValues = getInitialValues(fields);
 
   return {
     contact,
@@ -122,6 +133,7 @@ const mapStateToProps = (state: IshState) => {
     concessionTypes,
     isNewContact,
     page,
+    initialValues,
   };
 };
 

@@ -120,21 +120,21 @@ export const mockAmount = (): Amount => {
 };
 
 export const mockEnumField = (name: string, key: string, enumType: string, items: Item[]): Field => {
-  const r: Field = mockField(name, key, DataType.ENUM);
+  const r: Field = mockField(name, key, DataType.ENUM, false, items[0]);
   r.enumType = enumType;
   r.enumItems = items;
   return r;
 };
 
-export const mockChoiceField = (name: string, key: string, enumType: string, items: Item[]): Field => {
-  const r: Field = mockField(name, key, DataType.CHOICE, true);
+export const mockChoiceField = (name: string, key: string, enumType: string, items: Item[], required: boolean = false, defaultVal = null): Field => {
+  const r: Field = mockField(name, key, DataType.CHOICE, true, defaultVal);
   r.enumType = enumType;
   r.enumItems = items;
   return r;
 };
 
 
-export const mockField = (name: string, key: string, dateType: DataType, required: boolean = false): Field => {
+export const mockField = (name: string, key: string, dateType: DataType, required: boolean = false, defaultVal = null): Field => {
   return {
     key,
     name,
@@ -144,7 +144,7 @@ export const mockField = (name: string, key: string, dateType: DataType, require
     dataType: dateType,
     enumType: null,
     value: null,
-    defaultValue: null,
+    defaultValue: defaultVal,
     enumItems: [],
     ordering: 0,
   };
