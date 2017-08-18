@@ -147,7 +147,7 @@ const PaymentFormNav = props => {
 const validateCreditCard = (data, props) => {
   const errors = {};
 
-  if (props.amount.payNow !== 0) {
+  if (Number(props.amount.payNow) !== 0) {
     if (!data.creditCardName) {
       errors[FieldName.creditCardName] = 'Please supply your name as printed on the card (maximum 40 characters)';
     }
