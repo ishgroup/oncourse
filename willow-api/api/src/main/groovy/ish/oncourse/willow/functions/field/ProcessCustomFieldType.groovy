@@ -28,7 +28,7 @@ class ProcessCustomFieldType {
     ProcessCustomFieldType(Field field) {
         this.fieldKey = field.property
         this.objectContext = field.objectContext
-        this.college = college 
+        this.college = field.college 
     }
 
     ProcessCustomFieldType(String fieldKey, ObjectContext objectContext, College college) {
