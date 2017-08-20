@@ -13,6 +13,7 @@ import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.node.IWebNodeService;
@@ -23,7 +24,6 @@ import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
 import ish.oncourse.ui.services.UIModule;
 import ish.oncourse.ui.services.locale.PerSiteVariantThreadLocale;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -55,6 +55,7 @@ public class AppModule {
 		binder.bind(IInvoiceProcessingService.class, InvoiceProcessingService.class);
 		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
+		binder.bind(IRequestCacheService.class, RequestCacheService.class);
 	}
 
 	@EagerLoad

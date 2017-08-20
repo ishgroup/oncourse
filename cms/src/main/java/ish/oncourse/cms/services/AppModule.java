@@ -9,6 +9,7 @@ import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.node.IWebNodeService;
@@ -54,6 +55,7 @@ public class AppModule {
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(PageAccessDispatcher.class).withId("PageAccessDispatcher");
 		binder.bind(IWebSiteVersionService.class, CMSWebSiteVersionService.class);
+		binder.bind(IRequestCacheService.class, RequestCacheService.class);
 	}
 
 	public static void contributeApplicationDefaults(

@@ -6,8 +6,6 @@ import ish.oncourse.services.application.ApplicationServiceImpl;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
-import ish.oncourse.services.cache.IRequestCacheService;
-import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.content.IWebContentService;
@@ -210,7 +208,6 @@ public class ServiceModule {
 
 		binder.bind(IDataLayerFactory.class, DataLayerFactory.class).scope(ScopeConstants.PERTHREAD);
 
-		binder.bind(IRequestCacheService.class, RequestCacheService.class);
 		binder.bind(IApplicationService.class, ApplicationServiceImpl.class);
 
 		binder.bind(IContentCacheService.class, ContentEHCacheService.class);
