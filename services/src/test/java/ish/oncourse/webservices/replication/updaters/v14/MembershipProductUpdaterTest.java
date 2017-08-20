@@ -16,7 +16,8 @@ import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.v14.stubs.replication.MembershipProductStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ import static org.junit.Assert.assertTrue;
  * Time: 17:44
  */
 public class MembershipProductUpdaterTest extends ServiceTest {
-	private static Logger logger = Logger.getLogger(MembershipProductUpdaterTest.class.getName());
+	private static Logger logger = LogManager.getLogger(MembershipProductUpdaterTest.class.getName());
 
 	@Before
 	public void setupDataSet() throws Exception {
@@ -79,7 +80,7 @@ public class MembershipProductUpdaterTest extends ServiceTest {
 			assertEquals(entity.getExpiryType().getDatabaseValue(), stub.getExpiryType());
 			assertEquals(entity.getExpiryDays(), stub.getExpiryDays());
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			assertTrue(e.getMessage(), false);
 		} finally {
 			objectContext.rollbackChanges();
@@ -119,7 +120,7 @@ public class MembershipProductUpdaterTest extends ServiceTest {
 			updater.updateEntity(stub, entity, relationShipCallback);
 			assertTrue("Empty SKU should lead to updater exception", false);
 		} catch (UpdaterException e) {
-			logger.error( e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			assertEquals("Updater should throw an exception because SKU is empty!",
 					e.getMessage(),
 					String.format(AbstractProductUpdater.ERROR_SKU_MESSAGE_TEMPLATE,

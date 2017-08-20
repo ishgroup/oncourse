@@ -1,10 +1,6 @@
 package ish.oncourse.webservices.replication.updaters.v10;
 
-import ish.oncourse.model.College;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Queueable;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
@@ -14,16 +10,15 @@ import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.v10.stubs.replication.InvoiceLineStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class InvoiceLineUpdaterTest extends ServiceTest {
-	private static Logger logger = Logger.getLogger(InvoiceLineUpdaterTest.class.getName());
+	private static Logger logger = LogManager.getLogger(InvoiceLineUpdaterTest.class.getName());
 	
 	@Before
     public void setupDataSet() throws Exception {

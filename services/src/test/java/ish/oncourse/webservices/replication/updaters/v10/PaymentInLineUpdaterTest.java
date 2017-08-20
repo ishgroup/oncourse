@@ -14,7 +14,8 @@ import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.v10.stubs.replication.PaymentInLineStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,8 +23,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class PaymentInLineUpdaterTest extends ServiceTest {
-    
-    private static Logger logger = Logger.getLogger(PaymentInLineUpdaterTest.class.getName());
+
+    private static Logger logger = LogManager.getLogger(PaymentInLineUpdaterTest.class.getName());
 
 
     @Before

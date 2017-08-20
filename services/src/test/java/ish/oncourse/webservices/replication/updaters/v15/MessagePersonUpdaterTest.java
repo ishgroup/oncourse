@@ -2,12 +2,7 @@ package ish.oncourse.webservices.replication.updaters.v15;
 
 //import static org.junit.Assert.*;
 
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Message;
-import ish.oncourse.model.MessagePerson;
-import ish.oncourse.model.Queueable;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Tutor;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
@@ -17,7 +12,8 @@ import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.v15.stubs.replication.MessagePersonStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class MessagePersonUpdaterTest extends ServiceTest {
-	private static Logger logger = Logger.getLogger(MessagePersonUpdaterTest.class.getName());
+	private static Logger logger = LogManager.getLogger(MessagePersonUpdaterTest.class);
 	
 	@Before
     public void setupDataSet() throws Exception {
