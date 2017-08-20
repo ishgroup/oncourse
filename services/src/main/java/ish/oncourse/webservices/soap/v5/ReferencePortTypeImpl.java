@@ -11,7 +11,8 @@ import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v5.stubs.reference.ReferenceResult;
 import org.apache.cayenne.Persistent;
 import org.apache.cxf.annotations.EndpointProperty;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -68,7 +69,7 @@ public class ReferencePortTypeImpl implements ReferencePortType {
 	@Autowired
 	private ReferenceStubBuilder stubBuilder;
 
-	private static final Logger LOGGER = Logger.getLogger(ReferencePortTypeImpl.class);
+	private static final Logger LOGGER = LogManager.getLogger(ReferencePortTypeImpl.class);
 
 
 	/**
