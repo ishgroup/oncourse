@@ -9,6 +9,6 @@ class WillowApp {
         
         Bootique.app(args).args('--server', '--config=classpath:application.yml')
                 .module(new WillowApiModule())
-                .autoLoadModules().run()
+                .autoLoadModules().exec().exit()
     }
 }

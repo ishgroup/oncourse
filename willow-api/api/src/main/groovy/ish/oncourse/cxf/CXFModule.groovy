@@ -22,7 +22,7 @@ class CXFModule extends ConfigModule {
 
     @Override
     void configure(Binder binder) {
-        JettyModule.contributeMappedServlets(binder).addBinding().to(Key.get(MappedServlet, CXFServlet))
+        JettyModule.extend(binder).addMappedServlet(Key.get(MappedServlet, CXFServlet))
         contributeResources(binder).addBinding().to(CXFDefaultService)
     }
 
