@@ -71,16 +71,31 @@ sourceSets {
         }
     }
 }
-    
-war {
-	archiveName = 'services.war'
-	manifest {
-		from sharedManifest
-	}
+
+processResources.doLast {
+	file("${buildDir}/resources/VERSION").text = version ?: "SNAPSHOT"
 }
 
 task generateSources(type: Copy) {
     from 'src/templates'
     into 'src/main/generated'
     expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
+}
+
+distZip {
+	applicationDistribution.from( "${buildDir}/resources/VERSION" ) {
+		into('.')
+	}
+}
+
+publishing {
+// For deploying to our repo
+	publications {
+		executables(MavenPublication) {
+			artifact(distZip) {
+				classifier "executable"
+				extension "zip"
+			}
+		}
+	}
 }
