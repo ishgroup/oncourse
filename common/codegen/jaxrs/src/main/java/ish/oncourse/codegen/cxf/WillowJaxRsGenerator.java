@@ -42,7 +42,7 @@ public class WillowJaxRsGenerator extends AbstractJavaJAXRSServerCodegen {
         sourceFolder = "src/main/groovy";
         implFolder = "src/main/groovy";
         testFolder = "src/test/groovy";
-        outputFolder = "../../api";
+        outputFolder = "../../../checkout-api";
 
         apiTemplateFiles.put("apiServiceImpl.mustache", ".groovy");
         apiTestTemplateFiles.clear();

@@ -41,8 +41,8 @@ public class WillowClientGenerator extends AbstractTypeScriptClientCodegen imple
     public WillowClientGenerator() {
         super();
 
-        // working dir: /willow-api/codegen/typescript
-        outputFolder = "../../../react";
+        // working dir: /common/codegen/typescript
+        outputFolder = "../../../checkout";
 
         modelTemplateFiles.put("model.mustache", ".ts");
         apiTemplateFiles.put("api.mustache", ".ts");
