@@ -2,9 +2,6 @@ jetty:
   connector:
     port: 10080
     host: 127.0.0.1
-cxf:
-  urlPattern: '/*'
-  welcomeText: 'Willow REST API: 0.0.1'
 jdbc:
   ish:
     url: jdbc:mysql://localhost:3306/w2test_college?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8
@@ -27,5 +24,6 @@ cayenne:
   configs:
     - cayenne-oncourse.xml
 cxf:
+  welcomeText: 'Checkout REST API'
   urlPattern: /a/*
   
