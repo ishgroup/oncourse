@@ -186,7 +186,7 @@ export class CheckoutService {
         return [
           changePhase(Phase.Result),
           updatePaymentStatus(response),
-          finishCheckoutProcess(),
+          finishCheckoutProcess(response),
         ];
       case PaymentStatus.FAILED:
         return [

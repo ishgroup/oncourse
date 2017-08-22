@@ -126,9 +126,10 @@ export const toggleRedeemVoucher = (voucher, enabled: boolean): IAction<any> => 
   };
 };
 
-export const finishCheckoutProcess = (): IAction<any> => {
+export const finishCheckoutProcess = (response): IAction<any> => {
   return {
     type: FINISH_CHECKOUT_PROCESS,
+    payload: response,
   };
 };
 

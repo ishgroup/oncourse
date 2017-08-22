@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import "rxjs";
 import {FINISH_CHECKOUT_PROCESS, resetCheckoutState} from "../actions/Actions";
 import {IshState} from "../../services/IshState";
+import {checkoutFinishEvent} from "../../services/TagManagerService";
 
 /**
  * This epic process Init action of checkout application and define Phase of the application
@@ -11,6 +12,10 @@ import {IshState} from "../../services/IshState";
 export const FinishCheckoutProcess: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
   return action$.ofType(FINISH_CHECKOUT_PROCESS).flatMap(action => {
     // TODO need to remove purchased items from card
+
+    // TagManager event
+    // checkoutFinishEvent(action.payload);
+
     return [
       resetCheckoutState(),
     ];
