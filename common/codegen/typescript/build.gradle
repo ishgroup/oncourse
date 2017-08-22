@@ -3,5 +3,5 @@ apply plugin: "application"
 mainClassName = "ish.oncourse.codegen.typescript.WillowClientGenerator"
 
 dependencies {
-    compile(project(":willow-api:codegen:common"))
+    compile(project(":common:codegen:common"))
 }
