@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" monitorInterval="30">
     <Properties>
-        <Property name="name">willow-api</Property>
+        <Property name="name">checkout-api</Property>
     </Properties>
     <Appenders>
         <RollingFile name="FILE" fileName="${sys:user.dir}/logs/${name}.log" filePattern="${sys:catalina.base}/logs/${name}.log.%i">
