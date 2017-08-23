@@ -14,7 +14,6 @@ dependencyManagement {
 configurations { tapestryTest }
 
 dependencies {
-//    providedCompile 'javax.servlet:servlet-api:3.0'
 
 	compile project(':common:common-model')
 	
