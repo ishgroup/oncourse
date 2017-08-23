@@ -75,6 +75,13 @@ div.clearboth {
   font-size: 12px;
 }
 
+#checkout .form-controls {
+  @media only screen and (max-width: 640px) {
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
 #checkout, #waitingListForm, #mailingListForm {
   input[type="submit"]:disabled {
     opacity: .4;
@@ -196,6 +203,10 @@ div.clearboth {
       padding: 3px 6px 3px 10px;
       background-color: whiteSmoke;
       width: 180px;
+  
+      @media only screen and (max-width: 640px) {
+        width: 120px;
+      }
     }
     
     &:hover {
@@ -628,6 +639,10 @@ div.clearboth {
   fieldset {
     select {
       width: 180px;
+  
+      @media only screen and (max-width: 640px) {
+        width: 120px;
+      }
     }
   }
   
@@ -645,6 +660,10 @@ div.clearboth {
     fieldset {
       select {
         width: 180px;
+  
+        @media only screen and (max-width: 640px) {
+          width: 120px;
+        }
       }
       
       .radio-list {

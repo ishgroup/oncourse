@@ -19,6 +19,11 @@
         width: 20% !important;
         max-width: 140px !important;
       }
+  
+      @media only screen and (max-width: 640px) {
+        width: 33% !important;
+        max-width: 140px !important;
+      }
       
       > small {
         color: #999;
@@ -50,6 +55,10 @@
     
     > span {
       width: 100%;
+  
+      @media only screen and (max-width: 640px) {
+        width: auto !important;
+      }
       
       @media only screen and (min-width: 640px) {
         width: 70%
@@ -180,12 +189,22 @@
         position: relative;
       }
       
+      .cvv-help {
+        @media only screen and (max-width: 640px) {
+          display: block;
+        }
+      }
+      
       .inline-form {
         display: -ms-inline-flexbox;
         display: inline-flex;
         
         .Select {
           max-width: 80px;
+  
+          @media only screen and (max-width: 640px) {
+            max-width: 60px;
+          }
           
           .Select-input {
             > input {
