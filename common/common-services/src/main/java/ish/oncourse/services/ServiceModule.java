@@ -99,6 +99,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.LibraryMapping;
@@ -206,8 +207,12 @@ public class ServiceModule {
 		binder.bind(IContentCacheService.class, ContentEHCacheService.class);
 		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
 		binder.bind(CacheManager.class, new CacheManagerBuilder()).eagerLoad();
-		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();
 		binder.bind(INewPaymentGatewayService.class, new PaymentGatewayBuilder()).scope("perthread");
+	}
+
+	@EagerLoad
+	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
+		return new CayenneServiceBuilder().build(hub, webSiteService, cacheManager);
 	}
 
 	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration, @Local IEnvironmentService environmentService) {
@@ -265,26 +270,18 @@ public class ServiceModule {
 	}
 
 	public static class CayenneServiceBuilder implements ServiceBuilder<ICayenneService> {
-
-		private String webSiteServiceId;
-
-		public CayenneServiceBuilder() {
+		public ICayenneService build(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
+			CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
+			hub.addRegistryShutdownListener(cayenneService);
+			return cayenneService;
 		}
-
-		public CayenneServiceBuilder(String webSiteServiceId) {
-			this.webSiteServiceId = webSiteServiceId;
-		}
-
 
 		@Override
 		public ICayenneService buildService(ServiceResources resources) {
 			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
-			IWebSiteService webSiteService = webSiteServiceId != null ? resources.getService(webSiteServiceId, IWebSiteService.class) : resources.getService(IWebSiteService.class);
+			IWebSiteService webSiteService = resources.getService(IWebSiteService.class);
 			CacheManager cacheManager = resources.getService(CacheManager.class);
-
-			CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
-			hub.addRegistryShutdownListener(cayenneService);
-			return cayenneService;
+			return build(hub, webSiteService, cacheManager);
 		}
 	}
 
