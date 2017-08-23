@@ -1,11 +1,11 @@
-package ish.oncourse.willow
+package ish.oncourse.configuration
 
 class Configuration {
 
     static final String CONFIG_FILE_NAME = 'application.properties'
     static final String VERSION_FILE_NAME = 'VERSION'
     static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8'
-    static final String API_VERSION = 'ish.api.version'
+    public static final String API_VERSION = 'ish.api.version'
     static final String ZK_HOST_PROPERTY = 'zk.host.property'
     static final String JETTY_PORT_PROPERTY = 'bq.jetty.connector.port'
     static final String JETTY_HOST_PROPERTY = 'bq.jetty.connector.host'
@@ -17,7 +17,6 @@ class Configuration {
 
     static configure() {
         
-        System.out.println(System.getProperties().get('user.dir'))
         String userDir = System.getProperties().get('user.dir') as String
 
         File propFile = new File(userDir+'/'+ CONFIG_FILE_NAME)
@@ -30,14 +29,15 @@ class Configuration {
             System.setProperty(JDBC_URL_PROPERTY, String.format(BD_URL, prop.get('db_host'), prop.get('db_port'), prop.get('db_name')))
             System.setProperty(JDBC_USERNAME_PROPERTY, prop.get('db_user') as String)
             System.setProperty(JDBC_PASSWORD_PROPERTY, prop.get('db_pass') as String)
-            System.setProperty(ZK_HOST_PROPERTY, prop.get('zk_host') as String)
             
             if (prop.get('path')) {
                 System.setProperty(CXF_URLPATTERN_PROPERTY, prop.get('path') as String)
             }
-
-
-
+            
+            if (prop.get('zk_host')) {
+                System.setProperty(ZK_HOST_PROPERTY, prop.get('zk_host') as String)
+            }
+            
             if (versionFile.exists()) {
                 System.setProperty(API_VERSION, versionFile.newReader().readLine())
             }

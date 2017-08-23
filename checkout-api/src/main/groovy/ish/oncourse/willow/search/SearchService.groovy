@@ -1,7 +1,7 @@
 package ish.oncourse.willow.search
 
 import com.google.inject.Inject
-import ish.oncourse.willow.Configuration
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.field.Suburb
 import org.apache.solr.client.solrj.SolrClient

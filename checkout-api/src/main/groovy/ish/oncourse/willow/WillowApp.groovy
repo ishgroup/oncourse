@@ -1,6 +1,7 @@
 package ish.oncourse.willow
 
 import io.bootique.Bootique
+import ish.oncourse.configuration.Configuration
 
 class WillowApp {
     static void main(String[] args) {

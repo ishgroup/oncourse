@@ -10,6 +10,7 @@ import io.bootique.cayenne.CayenneModuleProvider;
 import io.bootique.jdbc.JdbcModuleProvider;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.JettyModuleProvider;
+import ish.oncourse.configuration.Configuration;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
@@ -24,6 +25,7 @@ import java.io.IOException;
  */
 public class ServicesApp {
 	public static void main(String[] args) {
+		Configuration.configure();
 		Bootique bootique = Bootique.app(args).args("--server", "--config=classpath:application.yml");
 		bootique.module(new JdbcModuleProvider());
 		bootique.module(new CayenneModuleProvider());

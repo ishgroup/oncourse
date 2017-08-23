@@ -1,7 +1,7 @@
 package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
-import ish.oncourse.willow.Configuration
+import ish.oncourse.configuration.Configuration
 import ish.oncourse.willow.service.HealthCheckApi
 
 import javax.ws.rs.BadRequestException

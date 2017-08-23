@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
+<head>
+</head>
+<body>
+${version}
+</body>
+</html>
