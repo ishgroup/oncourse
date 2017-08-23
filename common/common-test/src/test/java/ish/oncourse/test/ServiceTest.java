@@ -23,8 +23,8 @@ public class ServiceTest {
 		 * few junits tests which uses embedded jetty server (QEProcessTest fro example)
 		 */
 		DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
-		tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
 		ContextUtils.setupDataSources();
+		tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
 	}
 	
 	public void initTestWithParams(Map<String, Boolean> params, String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
