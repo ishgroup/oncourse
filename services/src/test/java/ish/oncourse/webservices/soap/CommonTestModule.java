@@ -1,4 +1,7 @@
-package ish.oncourse.webservices.soap.v14;
+/*
+ * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
+ */
+package ish.oncourse.webservices.soap;
 
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.alias.IWebUrlAliasService;
@@ -40,7 +43,6 @@ import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
 import ish.oncourse.services.paymentexpress.*;
-import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
@@ -84,16 +86,12 @@ import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
-import org.apache.tapestry5.ioc.annotations.EagerLoad;
-import org.apache.tapestry5.ioc.annotations.Scope;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 
 /**
- * Own services module real-services setup.
- * @author vdavidovich
- *
+ * User: akoiro
+ * Date: 23/8/17
  */
-public class PaymentServiceTestModule {
+public class CommonTestModule {
 	public static void bind(ServiceBinder binder) {
 
 		binder.bind(IComponentPageResponseRenderer.class, ComponentPageResponseRenderer.class);
@@ -113,26 +111,26 @@ public class PaymentServiceTestModule {
 		binder.bind(ICourseClassService.class, CourseClassService.class);
 		binder.bind(ICourseService.class, CourseService.class);
 		binder.bind(IPostCodeDbService.class, PostCodeDbService.class);
-		
+
 		binder.bind(PreferenceController.class);
 		binder.bind(PreferenceControllerFactory.class);
-		
+
 		binder.bind(IRoomService.class, RoomService.class);
 		binder.bind(ISitesService.class, SitesService.class);
 		binder.bind(ITutorService.class, TutorService.class);
 		binder.bind(IWebContentService.class, WebContentService.class);
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
-		
+
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId(WebSiteServiceOverride.class.getSimpleName());
-		
+
 		binder.bind(IWebUrlAliasService.class, WebUrlAliasService.class);
 		binder.bind(IWebNodeTypeService.class, WebNodeTypeService.class);
 		binder.bind(IDiscountService.class, DiscountService.class);
 		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IPaymentService.class, PaymentService.class);
-        binder.bind(IMessagePersonService.class, MessagePersonService.class);
-        binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
+		binder.bind(IMessagePersonService.class, MessagePersonService.class);
+		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
 
 		// Reference Data services
 		binder.bind(ICountryService.class, CountryService.class).withId("CountryService");
@@ -140,7 +138,7 @@ public class PaymentServiceTestModule {
 		binder.bind(IModuleService.class, ModuleService.class).withId("ModuleService");
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
-		
+
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
 		//this part added for test with manual services invoke
 		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
@@ -158,22 +156,7 @@ public class PaymentServiceTestModule {
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
 		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
-	}
-	
-	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
-		CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
-		hub.addRegistryShutdownListener(cayenneService);
-		return cayenneService;
-	}
-	
-	@Scope("perthread")
-	public static IPaymentGatewayService buildPaymentGatewayService(IPaymentGatewayServiceBuilder builder) {
-		return builder.buildService();
-	}
-
-	@Scope("perthread")
-	public static INewPaymentGatewayService buildNewPaymentGatewayService(INewPaymentGatewayServiceBuilder builder) {
-		return builder.buildService();
+		binder.bind(ICayenneService.class, new ServiceModule.CayenneServiceBuilder()).eagerLoad();
+		binder.bind(INewPaymentGatewayService.class, new ServiceModule.PaymentGatewayBuilder());
 	}
 }

@@ -7,7 +7,6 @@ package ish.oncourse.webservices.pages;
 import static ish.oncourse.configuration.Configuration.API_VERSION;
 
 public class ISHHealthCheck {
-    
     public String getVersion() {
         return  System.getProperty(API_VERSION);
     }
