@@ -19,22 +19,18 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 
 	private ServerRuntime cayenneRuntime;
 	private ObjectContext sharedContext;
-	
+
 	private static final Logger logger = LogManager.getLogger();
-	
-	public CayenneService(IWebSiteService webSiteService, CacheManager cacheManager) {
-		
+
+	public CayenneService(ServerRuntime serverRuntime, IWebSiteService webSiteService, CacheManager cacheManager) {
 		logger.info("Starting CayenneService....");
-		
-		try {
-			this.cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new ISHModule(cacheManager));
-			this.cayenneRuntime.getDataDomain().addFilter(new ChangeSetFilter());
-		} catch (Exception e) {
-			throw new RuntimeException("Error loading Cayenne stack", e);
-		}
-		
+
+		this.cayenneRuntime = serverRuntime;
+
+		this.cayenneRuntime.getDataDomain().addFilter(new ChangeSetFilter());
+
 		this.sharedContext = cayenneRuntime.newContext();
-		
+
 		QueueableLifecycleListener listener = new QueueableLifecycleListener(this);
 		cayenneRuntime.getDataDomain().addFilter(listener);
 		// cayenneRuntime.getDataDomain().addFilter(new CacheInvalidationFilter());
@@ -46,14 +42,21 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new QueuedTransactionListener(this));
 		cayenneRuntime.getChannel().getEntityResolver().getCallbackRegistry().addListener(new InvoiceListener());
 
-		for(DataNode dataNode: cayenneRuntime.getDataDomain().getDataNodes()){
+		for (DataNode dataNode : cayenneRuntime.getDataDomain().getDataNodes()) {
 			dataNode.getAdapter().getExtendedTypes().registerType(new MoneyType());
 		}
-		
+
 		logger.info("CayenneService starting SUCCESS.");
-		
 	}
-	
+
+
+	public CayenneService(IWebSiteService webSiteService, CacheManager cacheManager) {
+		this(ServerRuntime.builder()
+						.addConfig("cayenne-oncourse.xml")
+						.addModule(new ISHModule(cacheManager)).build(),
+				webSiteService, cacheManager);
+	}
+
 	/**
 	 * @see ICayenneService#newContext()
 	 */
@@ -85,21 +88,21 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 	public ObjectContext sharedContext() {
 		return sharedContext;
 	}
-	
-	
+
+
 	/**
 	 * Tapestry IOC container was shutted down, we need to clean up
 	 * cayenne stack to prevent leaking.
 	 */
 	@Override
 	public void registryDidShutdown() {
-		
+
 		if (cayenneRuntime != null) {
 			logger.info("Shutting down CayenneService...");
 			cayenneRuntime.shutdown();
 			cayenneRuntime = null;
-			logger.info("CayenneService shutting down SUCCESS.");			
+			logger.info("CayenneService shutting down SUCCESS.");
 		}
-		
+
 	}
 }
