@@ -30,7 +30,7 @@ const _common = (dirname, options) => {
     resolve: {
       modules: [
         path.resolve(dirname, 'src/js'),
-        path.resolve(dirname, 'src/dev'),
+        path.resolve(dirname, 'dev'),
         path.resolve(dirname, 'src/scss'),
         path.resolve(dirname, 'node_modules')
       ],
@@ -43,7 +43,7 @@ const _common = (dirname, options) => {
           loader: 'ts-loader',
           include: [
             path.resolve(dirname, "src/js"),
-            path.resolve(dirname, "src/dev"),
+            path.resolve(dirname, "dev"),
           ],
         }
       ]
