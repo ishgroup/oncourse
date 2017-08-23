@@ -4,14 +4,14 @@
         <Property name="name">services</Property>
     </Properties>
     <Appenders>
-        <RollingFile name="FILE" fileName="${sys:catalina.base}/logs/${name}.log" filePattern="${sys:catalina.base}/logs/${name}.log.%i">
+        <RollingFile name="FILE" fileName="${sys:user.dir}/logs/${name}.log" filePattern="${sys:user.dir}/logs/${name}.log.%i">
             <PatternLayout>
                 <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
             </PatternLayout>
             <SizeBasedTriggeringPolicy size="10M"/>
             <DefaultRolloverStrategy/>
         </RollingFile>
-        <RollingFile name="FILE_ERROR" fileName="${sys:catalina.base}/logs/${name}-error.log" filePattern="${sys:catalina.base}/logs/${name}-error.log.%i">
+        <RollingFile name="FILE_ERROR" fileName="${sys:user.dir}/logs/${name}-error.log" filePattern="${sys:user.dir}/logs/${name}-error.log.%i">
             <PatternLayout>
                 <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
             </PatternLayout>
