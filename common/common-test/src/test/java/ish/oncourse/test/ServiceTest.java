@@ -28,8 +28,8 @@ public class ServiceTest {
 	}
 	
 	public void initTestWithParams(Map<String, Boolean> params, String appPackage, String appName, Class<?>... moduleClasses) throws Exception {
-        tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
 		ContextUtils.setupDataSourcesWithParams(params);
+		tester = new PageTester(appPackage, appName, "src/main/webapp", moduleClasses);
 	}
 	
 	public void initTest(String appPackage, String appName, String contextPath, Class<?>... moduleClasses) throws Exception {
