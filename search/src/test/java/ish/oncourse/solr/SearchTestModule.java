@@ -35,7 +35,6 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
-import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
@@ -64,9 +63,8 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
+import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.annotations.EagerLoad;
-import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 
 public class SearchTestModule {
 	public static void bind(ServiceBinder binder) {
@@ -115,12 +113,7 @@ public class SearchTestModule {
 		binder.bind(IModuleService.class, ModuleService.class).withId("ModuleService");
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
-	}
-
-	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(webSiteService, ServiceModule.buildCacheManager());
-		hub.addRegistryShutdownListener(cayenneService);
-		return cayenneService;
+		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
+		binder.bind(ICayenneService.class, new ServiceModule.CayenneServiceBuilder()).eagerLoad();
 	}
 }
