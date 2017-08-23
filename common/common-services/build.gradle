@@ -41,7 +41,7 @@ dependencies {
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 
-	testCompile 'mysql:mysql-connector-java:5.1.41'
+	testCompile "mysql:mysql-connector-java:$mysqlVersion"
 }
 
 sourceSets.main.compileClasspath += configurations.providedCompile

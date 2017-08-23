@@ -5,6 +5,7 @@ buildscript {
         waCommonWebservicesClientVersion = '9.3.40'
 		solrVersion = '5.5.3'
 		groovyVersion = '2.4.10'
+		mysqlVersion = '5.1.43'
 	}
 
 	repositories {

@@ -71,8 +71,10 @@ dependencies {
 
 	compile 'org.apache.poi:poi:3.11-beta3'
 	compile 'org.apache.poi:poi-ooxml:3.11-beta3'
+	compile "mysql:mysql-connector-java:$mysqlVersion"
 
-    //we should use these dependences for test because TestServer is not started properly otherwise.
+
+	//we should use these dependences for test because TestServer is not started properly otherwise.
     def jettyVersion = '7.6.15.v20140411'
     testCompile "org.eclipse.jetty:jetty-util:${jettyVersion}"
     testCompile "org.eclipse.jetty:jetty-server:${jettyVersion}"
