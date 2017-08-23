@@ -2,18 +2,34 @@ apply plugin: 'application'
 apply plugin: 'io.spring.dependency-management'
 
 ext {
-    bootiqueVersion = "0.23"
+	tapestryVersion = '5.4.3'
+	springVersion = '3.0.5.RELEASE'
+	bootiqueVersion = '0.23'
+	jettyVersion = '9.3.6.v20151106'
 }
+
 
 dependencyManagement {
-    imports {
-        mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
-    }
+	imports {
+		mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
+	}
 }
 
-configurations { tapestryTest }
+configurations {
+	tapestryTest
+	all*.exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
+}
 
 dependencies {
+
+	//bootique
+	compile 'io.bootique:bootique'
+	compile 'io.bootique.jetty:bootique-jetty'
+	compile 'io.bootique.jcache:bootique-jcache'
+	compile 'io.bootique.cayenne:bootique-cayenne'
+	compile 'io.bootique.tapestry:bootique-tapestry'
+
+	compile "org.eclipse.jetty:jetty-jndi:$jettyVersion"
 
 	compile project(':common:common-model')
 	
@@ -32,20 +48,29 @@ dependencies {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
     compile ('org.apache.cxf:cxf-bundle:2.6.16') {
+		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
-	compile 'org.apache.tapestry:tapestry-spring:5.2.6'
-	compile ('org.apache.tapestry:tapestry-ioc:5.2.6') {
-		exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-	}
-	compile 'org.springframework:spring-core:3.0.5.RELEASE'
-	compile 'org.springframework:spring-beans:3.0.5.RELEASE'
-	compile 'org.springframework:spring-context:3.0.5.RELEASE'
-	compile 'org.springframework:spring-web:3.0.5.RELEASE'
+
+	compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
+	compile "org.apache.tapestry:plastic:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry5-annotations:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry-json:$tapestryVersion"
+	compile "org.apache.tapestry:tapestry-spring:$tapestryVersion"
+
+	compile "org.springframework:spring-core:$springVersion"
+	compile "org.springframework:spring-beans:$springVersion"
+	compile "org.springframework:spring-context:$springVersion"
+	compile "org.springframework:spring-web:$springVersion"
+
+
 	compile 'aopalliance:aopalliance:1.0'
 	compile 'commons-logging:commons-logging:1.1.1'
-	compile 'com.google.inject:guice:3.0'
+
+	compile 'org.apache.poi:poi:3.11-beta3'
+	compile 'org.apache.poi:poi-ooxml:3.11-beta3'
 
     //we should use these dependences for test because TestServer is not started properly otherwise.
     def jettyVersion = '7.6.15.v20140411'
@@ -64,10 +89,7 @@ dependencies {
 		exclude group: 'org.apache.tapestry', module: 'tapestry-test'
 	}
 
-	compile 'org.apache.poi:poi:3.11-beta3'
-	compile 'org.apache.poi:poi-ooxml:3.11-beta3'
-
-	tapestryTest ('org.apache.tapestry:tapestry-test:5.2.6')
+	tapestryTest ("org.apache.tapestry:tapestry-test:$tapestryVersion")
 }
 
 //workaround: put org.apache.tapestry:tapestry-test to end of test classpath
@@ -91,6 +113,12 @@ task generateSources(type: Copy) {
     into 'src/main/generated'
     expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
 }
+
+
+mainClassName = 'ish.oncourse.webservices.service.ServicesApp'
+
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'
 
 distZip {
 	applicationDistribution.from( "${buildDir}/resources/VERSION" ) {

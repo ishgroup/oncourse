@@ -4,7 +4,6 @@
  */
 package ish.oncourse.webservices.services;
 
-import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.jmx.IJMXInitService;
@@ -27,13 +26,7 @@ import ish.oncourse.webservices.replication.builders.ITransactionStubBuilder;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.replication.builders.TransactionStubBuilderImpl;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderImpl;
-import ish.oncourse.webservices.replication.services.IReplicationService;
-import ish.oncourse.webservices.replication.services.IWillowQueueService;
-import ish.oncourse.webservices.replication.services.InternalPaymentService;
-import ish.oncourse.webservices.replication.services.PaymentServiceImpl;
-import ish.oncourse.webservices.replication.services.ReplicationServiceImpl;
-import ish.oncourse.webservices.replication.services.TransactionGroupProcessorImpl;
-import ish.oncourse.webservices.replication.services.WillowQueueService;
+import ish.oncourse.webservices.replication.services.*;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.WillowUpdaterImpl;
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
@@ -55,7 +48,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  * @author marek
  */
 @SuppressWarnings("all")
-@SubModule({ ModelModule.class, ServiceModule.class })
+@SubModule({ServiceModule.class})
 public class AppModule {
 	private static final String WEB_SITE_SERVICE_OVERRIDE_NAME = WebSiteServiceOverride.class.getSimpleName();
 
@@ -86,37 +79,37 @@ public class AppModule {
 		binder.bind(UpdateAmountOwingJob.class);
 	}
 
-    @EagerLoad
-    public static CryptoKeys buildCryptoKeys(@Inject final PreferenceController preferenceController) {
-        return new CryptoKeys() {
-            @Override
-            public String getServicesSecurityKey() {
-                return preferenceController.getServicesSecurityKey();
-            }
+	@EagerLoad
+	public static CryptoKeys buildCryptoKeys(@Inject final PreferenceController preferenceController) {
+		return new CryptoKeys() {
+			@Override
+			public String getServicesSecurityKey() {
+				return preferenceController.getServicesSecurityKey();
+			}
 
-            @Override
-            public String getAuskeyCertificate() {
-                return preferenceController.getAuskeyCertificate();
-            }
+			@Override
+			public String getAuskeyCertificate() {
+				return preferenceController.getAuskeyCertificate();
+			}
 
-            @Override
-            public String getAuskeyPrivateKey() {
-                return preferenceController.getAuskeyPrivateKey();
-            }
+			@Override
+			public String getAuskeyPrivateKey() {
+				return preferenceController.getAuskeyPrivateKey();
+			}
 
-            @Override
-            public String getAuskeySalt() {
-                return preferenceController.getAuskeySalt();
-            }
+			@Override
+			public String getAuskeySalt() {
+				return preferenceController.getAuskeySalt();
+			}
 
-            @Override
-            public String getAuskeyPassword() {
-                return preferenceController.getAuskeyPassword();
-            }
-        };
-    }
+			@Override
+			public String getAuskeyPassword() {
+				return preferenceController.getAuskeyPassword();
+			}
+		};
+	}
 
-    @EagerLoad
+	@EagerLoad
 	public static USIService buildUSIService() {
 		if (TestUSIServiceEndpoint.useTestUSIEndpoint()) {
 			return USIService.valueOf(new TestUSIServiceEndpoint());
@@ -125,34 +118,35 @@ public class AppModule {
 			return USIService.valueOf(service.getWS2007FederationHttpBindingIUSIService());
 		}
 	}
-		
+
 	/**
 	 * Add initial values for ParallelExecutor
+	 *
 	 * @param configuration
 	 */
 	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
 		configuration.add(IOCSymbols.THREAD_POOL_CORE_SIZE, "3");
-        configuration.add(IOCSymbols.THREAD_POOL_MAX_SIZE, "50");
-        configuration.add(IOCSymbols.THREAD_POOL_KEEP_ALIVE, "1 m");
-        configuration.add(IOCSymbols.THREAD_POOL_ENABLED, "true");
+		configuration.add(IOCSymbols.THREAD_POOL_MAX_SIZE, "50");
+		configuration.add(IOCSymbols.THREAD_POOL_KEEP_ALIVE, "1 m");
+		configuration.add(IOCSymbols.THREAD_POOL_ENABLED, "true");
 		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
 	}
-	
+
 	@EagerLoad
 	public static IJMXInitService buildJMXInitService(ApplicationGlobals applicationGlobals, RegistryShutdownHub hub) {
-		JMXInitService jmxService = new JMXInitService(applicationGlobals,"services","ish.oncourse:type=ServicesApplicationData");
+		JMXInitService jmxService = new JMXInitService(applicationGlobals, "services", "ish.oncourse:type=ServicesApplicationData");
 		hub.addRegistryShutdownListener(jmxService);
 		return jmxService;
 	}
-	
+
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
 		configuration.add(IWebSiteService.class, webSiteService);
 	}
-	
-	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request, 
-		Response response) {
-		return new UIRequestExceptionHandler(componentSource, renderer, request, response, UIRequestExceptionHandler.DEFAULT_ERROR_PAGE, 
-			StringUtils.EMPTY, false) {
+
+	public RequestExceptionHandler buildAppRequestExceptionHandler(ComponentSource componentSource, ResponseRenderer renderer, Request request,
+																   Response response) {
+		return new UIRequestExceptionHandler(componentSource, renderer, request, response, UIRequestExceptionHandler.DEFAULT_ERROR_PAGE,
+				StringUtils.EMPTY, false) {
 
 			@Override
 			public String getErrorPageName(Throwable exception) {
@@ -177,7 +171,7 @@ public class AppModule {
 	public void contributeComponentClassResolver(Configuration<LibraryMapping> configuration) {
 		configuration.add(new LibraryMapping("ui", "ish.oncourse.ui"));
 	}
-	
+
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
 		configuration.add(RequestExceptionHandler.class, handler);
 	}
