@@ -12,6 +12,8 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.cookies.CookiesService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.property.IPropertyService;
@@ -51,6 +53,8 @@ public class EnrolTestModule {
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(ICookiesService.class, CookiesServiceOverride.class).withId("testCookiesService");
 		binder.bind(IPurchaseControllerBuilder.class, PurchaseControllerBuilder.class);
+		binder.bind(IRequestCacheService.class, RequestCacheService.class);
+
 	}
 
 	public static void contributeApplicationDefaults(
