@@ -73,8 +73,7 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
-import ish.persistence.CommonPreferenceController;
-import org.apache.tapestry5.ioc.ScopeConstants;
+import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.ServiceBuilder;
 import org.apache.tapestry5.ioc.ServiceResources;
@@ -174,6 +173,7 @@ public class ServiceTestModule {
 		
 		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
         binder.bind(IRequestCacheService.class, RequestCacheService.class);
+		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
 	}
 
 
@@ -182,8 +182,8 @@ public class ServiceTestModule {
 		return builder.buildService();
 	}
 	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(webSiteService, ServiceModule.buildCacheManager());
+	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
+		CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}

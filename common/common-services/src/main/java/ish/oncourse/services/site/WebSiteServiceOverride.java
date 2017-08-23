@@ -33,26 +33,14 @@ public class WebSiteServiceOverride implements IWebSiteService {
 	public College getCurrentCollege() {
 		Session session = request.getSession(false);
 		Long collegeId = null;
-		if (session != null && !session.isInvalidated()) {
-			if (session.getAttribute(SessionToken.SESSION_TOKEN_KEY) != null) {
-				SessionToken token = (SessionToken) session.getAttribute(SessionToken.SESSION_TOKEN_KEY);
-				collegeId = token.getCollegeId();
-			}
-			else if (session.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE) != null) {
-				collegeId = (Long) session.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE);
-			}
-		} else {
-			if (request.getAttribute(SessionToken.SESSION_TOKEN_KEY) != null) {
-				SessionToken token = (SessionToken) request.getAttribute(SessionToken.SESSION_TOKEN_KEY);
-				collegeId = token.getCollegeId();
-			} else if (request.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE) != null) {
-				collegeId = (Long) request.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE);
-			}
-		}
-		if (collegeId == null) {
+		GetAttribute<SessionToken> tokenA = new GetAttribute<>(session, request);
+		GetAttribute<Long> collegeA = new GetAttribute<>(session, request);
+		if (tokenA.get(SessionToken.SESSION_TOKEN_KEY) != null)
+			collegeId = tokenA.get(SessionToken.SESSION_TOKEN_KEY).getCollegeId();
+		else if (collegeA.get(College.REQUESTING_COLLEGE_ATTRIBUTE) != null)
+			collegeId = collegeA.get(College.REQUESTING_COLLEGE_ATTRIBUTE);
+		else
 			return null;
-		}
-		
 		return collegeService.findById(collegeId);
 	}
 
@@ -64,5 +52,27 @@ public class WebSiteServiceOverride implements IWebSiteService {
 	@Override
 	public List<WebSite> getSiteTemplates() {
 		throw new UnsupportedOperationException();
+	}
+
+
+	public class GetAttribute<T> {
+		private Session session;
+		private Request request;
+
+		public GetAttribute(Session session, Request request) {
+			this.session = session != null && !session.isInvalidated() ? session : null;
+			this.request = request;
+		}
+
+		public T get(String key) {
+			if (session != null) {
+				return (T) session.getAttribute(key);
+			}
+
+			if (request != null) {
+				return (T) request.getAttribute(key);
+			}
+			return null;
+		}
 	}
 }

@@ -64,6 +64,7 @@ import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.PageRenderer;
+import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
 import org.apache.tapestry5.ioc.annotations.Scope;
@@ -121,12 +122,12 @@ public class PaymentServiceTestModule {
 		
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-
+		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
 	}
 	
 	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService) {
-		CayenneService cayenneService = new CayenneService(webSiteService, ServiceModule.buildCacheManager());
+	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
+		CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
 		hub.addRegistryShutdownListener(cayenneService);
 		return cayenneService;
 	}

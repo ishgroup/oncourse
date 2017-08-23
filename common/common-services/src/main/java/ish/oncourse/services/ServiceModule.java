@@ -98,13 +98,8 @@ import net.sf.ehcache.management.ManagementService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.ScopeConstants;
-import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.annotations.EagerLoad;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.Scope;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.LibraryMapping;
 
@@ -191,9 +186,7 @@ public class ServiceModule {
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPostcodeService.class, PostcodeService.class).withId("PostcodeService");
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
-		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-
 
 		if (isInTestMode) {
 			binder.bind(ISMSService.class, TestModeSMSService.class);
@@ -212,44 +205,9 @@ public class ServiceModule {
 
 		binder.bind(IContentCacheService.class, ContentEHCacheService.class);
 		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
-	}
-
-	@Scope("perthread")
-	public static IPaymentGatewayService buildPaymentGatewayService(IPaymentGatewayServiceBuilder builder) {
-		return builder.buildService();
-	}
-
-	@Scope("perthread")
-	public static INewPaymentGatewayService buildNewPaymentGatewayService(INewPaymentGatewayServiceBuilder builder) {
-		return builder.buildService();
-	}
-
-
-	@EagerLoad
-	public static CacheManager buildCacheManager() {
-
-		CacheManager cacheManager = CacheManager.create(ServiceModule.class.getClassLoader().getResource("ehcache.xml"));
-
-		Integer cacheCapacity = ContextUtil.getCacheCapacity();
-
-		if (cacheCapacity != null) {
-			cacheManager.getConfiguration().getDefaultCacheConfiguration().setMaxEntriesLocalHeap(cacheCapacity);
-		}
-		try {
-			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-			UnregisterMBeans.valueOf(cacheManager, mBeanServer).unregister();
-			ManagementService.registerMBeans(cacheManager, mBeanServer, true, true, true, true);
-		} catch (Exception e) {
-			logger.error("Cannot register MBeans for  cacheManager \"{}\".", cacheManager.getName(), e);
-		}
-		return cacheManager;
-	}
-
-	@EagerLoad
-	public static ICayenneService buildCayenneService(RegistryShutdownHub hub, IWebSiteService webSiteService, CacheManager cacheManager) {
-		CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
-		hub.addRegistryShutdownListener(cayenneService);
-		return cayenneService;
+		binder.bind(CacheManager.class, new CacheManagerBuilder()).eagerLoad();
+		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();
+		binder.bind(INewPaymentGatewayService.class, new PaymentGatewayBuilder()).scope("perthread");
 	}
 
 	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration, @Local IEnvironmentService environmentService) {
@@ -284,4 +242,56 @@ public class ServiceModule {
 		configuration.add(new LibraryMapping("ish", "ish.oncourse"));
 	}
 
+
+	public static class CacheManagerBuilder implements ServiceBuilder<CacheManager> {
+		@Override
+		public CacheManager buildService(ServiceResources resources) {
+			CacheManager cacheManager = CacheManager.create(ServiceModule.class.getClassLoader().getResource("ehcache.xml"));
+
+			Integer cacheCapacity = ContextUtil.getCacheCapacity();
+
+			if (cacheCapacity != null) {
+				cacheManager.getConfiguration().getDefaultCacheConfiguration().setMaxEntriesLocalHeap(cacheCapacity);
+			}
+			try {
+				MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+				UnregisterMBeans.valueOf(cacheManager, mBeanServer).unregister();
+				ManagementService.registerMBeans(cacheManager, mBeanServer, true, true, true, true);
+			} catch (Exception e) {
+				logger.error("Cannot register MBeans for  cacheManager \"{}\".", cacheManager.getName(), e);
+			}
+			return cacheManager;
+		}
+	}
+
+	public static class CayenneServiceBuilder implements ServiceBuilder<ICayenneService> {
+		@Override
+		public ICayenneService buildService(ServiceResources resources) {
+			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
+			IWebSiteService webSiteService = resources.getService(IWebSiteService.class);
+			CacheManager cacheManager = resources.getService(CacheManager.class);
+
+			CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
+			hub.addRegistryShutdownListener(cayenneService);
+			return cayenneService;
+		}
+	}
+
+
+	public static class PaymentGatewayServiceBuilder implements ServiceBuilder<IPaymentGatewayService> {
+		@Override
+		public IPaymentGatewayService buildService(ServiceResources resources) {
+			IPaymentGatewayServiceBuilder builder = resources.getService(IPaymentGatewayServiceBuilder.class);
+			return builder.buildService();
+		}
+	}
+
+
+	public static class PaymentGatewayBuilder implements ServiceBuilder<INewPaymentGatewayService> {
+		@Override
+		public INewPaymentGatewayService buildService(ServiceResources resources) {
+			INewPaymentGatewayServiceBuilder builder = resources.getService(INewPaymentGatewayServiceBuilder.class);
+			return builder.buildService();
+		}
+	}
 }
