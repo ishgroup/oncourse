@@ -265,10 +265,21 @@ public class ServiceModule {
 	}
 
 	public static class CayenneServiceBuilder implements ServiceBuilder<ICayenneService> {
+
+		private String webSiteServiceId;
+
+		public CayenneServiceBuilder() {
+		}
+
+		public CayenneServiceBuilder(String webSiteServiceId) {
+			this.webSiteServiceId = webSiteServiceId;
+		}
+
+
 		@Override
 		public ICayenneService buildService(ServiceResources resources) {
 			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
-			IWebSiteService webSiteService = resources.getService(IWebSiteService.class);
+			IWebSiteService webSiteService = webSiteServiceId != null ? resources.getService(webSiteServiceId, IWebSiteService.class) : resources.getService(IWebSiteService.class);
 			CacheManager cacheManager = resources.getService(CacheManager.class);
 
 			CayenneService cayenneService = new CayenneService(webSiteService, cacheManager);
