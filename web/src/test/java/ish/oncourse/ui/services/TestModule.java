@@ -3,6 +3,8 @@ package ish.oncourse.ui.services;
 import ish.oncourse.model.*;
 import ish.oncourse.model.Session;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.courseclass.ICourseClassService;
 import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.jndi.ILookupService;
@@ -15,7 +17,6 @@ import ish.oncourse.services.property.Property;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
-import ish.oncourse.services.site.WebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
@@ -25,6 +26,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.*;
@@ -41,7 +43,11 @@ import static org.mockito.Mockito.when;
 public class TestModule {
 	
 	public static final String TEST_COLLEGE_ANGEL_VERSION_PROPERTY = "oncourse.test.server.angelversion";
-
+	
+	public static void bind(ServiceBinder binder) {
+		binder.bind(IRequestCacheService.class, RequestCacheService.class);
+	}
+	
 	public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
 		return new RequestFilter() {
 			public boolean service(Request request, Response response, RequestHandler handler) throws IOException {
