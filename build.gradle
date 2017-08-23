@@ -103,6 +103,7 @@ allprojects {
 		compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+		compile "org.apache.logging.log4j:log4j-jul:$log4j2Version"
 
 		testCompile 'org.mockito:mockito-all:1.10.19'
 		testCompile 'org.dbunit:dbunit:2.4.8'

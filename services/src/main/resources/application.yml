@@ -5,7 +5,7 @@ jetty:
     host: 127.0.0.1
 jdbc:
   ish:
-    url: jdbc:mysql://localhost:3306/w2test_college?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/w2test_college?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: user
     password: password
     driverClassName: com.mysql.jdbc.Driver

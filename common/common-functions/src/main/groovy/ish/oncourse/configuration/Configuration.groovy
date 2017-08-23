@@ -4,7 +4,8 @@ class Configuration {
 
     static final String CONFIG_FILE_NAME = 'application.properties'
     static final String VERSION_FILE_NAME = 'VERSION'
-    static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8'
+    static
+    final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
     public static final String API_VERSION = 'ish.api.version'
     static final String ZK_HOST_PROPERTY = 'zk.host.property'
     static final String JETTY_PORT_PROPERTY = 'bq.jetty.connector.port'

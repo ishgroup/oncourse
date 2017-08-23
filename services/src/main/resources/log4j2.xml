@@ -4,13 +4,6 @@
         <Property name="name">services</Property>
     </Properties>
     <Appenders>
-        <Appenders>
-            <Console name="STDOUT" target="SYSTEM_OUT">
-                <PatternLayout>
-                    <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
-                </PatternLayout>
-            </Console>
-        </Appenders>
         <RollingFile name="FILE" fileName="${sys:catalina.base}/logs/${name}.log"
                      filePattern="${sys:catalina.base}/logs/${name}.log.%i">
             <PatternLayout>
@@ -32,7 +25,6 @@
         <Root level="warn">
             <AppenderRef ref="FILE_ERROR" level="error"/>
             <AppenderRef ref="FILE" level="warn"/>
-            <AppenderRef ref="STDOUT" level="debug"/>
         </Root>
     </Loggers>
 </Configuration>
