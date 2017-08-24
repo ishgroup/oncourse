@@ -10,9 +10,11 @@ import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.tapestry.di.InjectorModuleDef;
-import ish.oncourse.services.ServiceModule;
-import ish.oncourse.services.persistence.ISHModule;
-import net.sf.ehcache.CacheManager;
+import ish.oncourse.services.cache.NoopQueryCache;
+import ish.oncourse.services.persistence.ISHObjectContextFactory;
+import org.apache.cayenne.cache.QueryCache;
+import org.apache.cayenne.configuration.Constants;
+import org.apache.cayenne.configuration.ObjectContextFactory;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
@@ -54,22 +56,10 @@ public class ServicesModule extends ConfigModule {
 	}
 
 
-	@Singleton
-	@Provides
-	CacheManager createCacheManager() {
-		return new ServiceModule.CacheManagerBuilder().buildService();
-	}
-
-	@Provides
-	@Singleton
-	ISHModule createISHModule(CacheManager cacheManager) {
-		return new ISHModule(cacheManager);
-	}
-
-
 	@Override
 	public void configure(Binder binder) {
-		CayenneModule.extend(binder).addModule(ISHModule.class);
+		CayenneModule.extend(binder).addModule(new ServicesCayenneModule());
+
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET);
@@ -111,5 +101,17 @@ public class ServicesModule extends ConfigModule {
 			filter.destroy();
 		}
 	}
+
+
+	public class ServicesCayenneModule implements org.apache.cayenne.di.Module {
+		@Override
+		public void configure(org.apache.cayenne.di.Binder binder) {
+			binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
+			binder.bind(ObjectContextFactory.class).to(ISHObjectContextFactory.class);
+			binder.bind(QueryCache.class).toInstance(new NoopQueryCache());
+			binder.bind(org.apache.cayenne.di.Key.get(QueryCache.class, ISHObjectContextFactory.QUERY_CACHE_INJECTION_KEY)).toInstance(new NoopQueryCache());
+		}
+	}
+
 
 }
