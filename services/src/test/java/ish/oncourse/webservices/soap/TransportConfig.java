@@ -3,6 +3,7 @@ package ish.oncourse.webservices.soap;
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.oncourse.webservices.util.SupportedVersions;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.bus.spring.SpringBusFactory;
@@ -18,6 +19,7 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 
@@ -44,6 +46,32 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	public static final long PAYMENT_SERVICE_TIMEOUT = 1000l * 60 * 25;
 
 
+	public static final String REPLICATION_SERVICE_NAME = "ReplicationService";
+	public static final String REFERENCE_SERVICE_NAME = "ReferenceService";
+
+	public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.%s.stubs.replication";
+	public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.%s.stubs.reference";
+
+	public static final String TRANSACTION_GROUP_CLASS_NAME = PACKAGE_NAME_REPLICATION_STUBS + ".TransactionGroup";
+	public static final String REPLICATION_STUB_CLASS_NAME = PACKAGE_NAME_REPLICATION_STUBS + ".ReplicationStub";
+	public static final String REFERENCE_STUB_CLASS_NAME = PACKAGE_NAME_REFERENCE_STUBS + ".ReferenceStub";
+
+	public static final String SOAP_PACKAGE = "ish.oncourse.webservices.soap.%s";
+	
+	public static final String REFERENCE_PORT_CLASS_NAME  = SOAP_PACKAGE + ".ReferencePortType";
+	public static final String PAYMENT_PORT_CLASS_NAME  = SOAP_PACKAGE + ".PaymentPortType";
+	public static final String REPLICATION_PORT_CLASS_NAME = SOAP_PACKAGE + ".ReplicationPortType";
+
+	public static final String REPLICATION_END_POINT = "/services/%s/replication";
+	public static final String PAYMENT_END_POINT = "/services/%s/payment";
+	public static final String REFERENCE_END_POINT = "/services/%s/reference";
+
+	public static final String REFERENCE_NAMESPACE_URI = "http://ref.%s.soap.webservices.oncourse.ish/";
+	public static final String REPLICATION_NAMESPACE_URI = "http://ref.%s.soap.webservices.oncourse.ish/";
+
+	private SupportedVersions replicationVersion;
+	private SupportedVersions referenceVersion;
+
 	static {
 		System.getProperties().put("org.apache.cxf.stax.allowInsecureParser", "true");
 	}
@@ -60,7 +88,6 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	private ReferencePortType referencePortType;
 	private PaymentPortType paymentPortType;
 	private ReplicationPortType replicationPortType;
-
 
 	Class getReplicationStubClass() {
 		return replicationStubClass;
@@ -212,85 +239,57 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
+			ReplicationPortType, PaymentPortType> init() {
+		try {
+			String replicationVersionString = replicationVersion.name().toLowerCase();
+			String referenceVersionString = referenceVersion.name().toLowerCase();
+			packageNameReplicationStubs = String.format(PACKAGE_NAME_REPLICATION_STUBS, replicationVersionString);
+			packageNameReferenceStubs = String.format(PACKAGE_NAME_REFERENCE_STUBS, referenceVersion);
+			transactionGroupClass = (Class<TransactionGroup>) getClass().getClassLoader().loadClass(String.format(TRANSACTION_GROUP_CLASS_NAME, replicationVersionString));
+			replicationStubClass = (Class<ReplicationStub>) getClass().getClassLoader().loadClass(String.format(REPLICATION_STUB_CLASS_NAME, replicationVersionString));
+			referenceStubClass = (Class<ReferenceStub>) getClass().getClassLoader().loadClass(String.format(REFERENCE_STUB_CLASS_NAME, referenceVersionString));
+
+			Class<ReferencePortType> referencePortTypeClass =  (Class<ReferencePortType>) getClass().getClassLoader().loadClass(String.format(REFERENCE_PORT_CLASS_NAME, referenceVersionString));
+			referencePortType = getPortType(String.format(REFERENCE_END_POINT, referenceVersion), new QName(String.format(REFERENCE_NAMESPACE_URI, referenceVersion), REFERENCE_SERVICE_NAME), referencePortTypeClass);
+
+			Class<PaymentPortType> paymentPortTypeClass = (Class<PaymentPortType>) getClass().getClassLoader().loadClass(String.format(PAYMENT_PORT_CLASS_NAME, replicationVersionString));
+			paymentPortType = getPortType(String.format(PAYMENT_END_POINT, replicationVersion), new QName(String.format(REPLICATION_NAMESPACE_URI, replicationVersion), REPLICATION_SERVICE_NAME), paymentPortTypeClass);
+			
+			Class<ReplicationPortType> replicationPortTypeClass = (Class<ReplicationPortType>) getClass().getClassLoader().loadClass(String.format(REPLICATION_PORT_CLASS_NAME, replicationVersionString));
+			replicationPortType = getPortType(String.format(REPLICATION_END_POINT, replicationVersion), new QName(String.format(REPLICATION_NAMESPACE_URI, replicationVersion), REPLICATION_SERVICE_NAME), replicationPortTypeClass);
+	
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return this;
+	}
+	
+
+	public TransportConfig<TransactionGroup,
+			ReplicationStub,
+			ReferenceStub,
+			ReferencePortType,
+			ReplicationPortType, PaymentPortType> replicationVersion(SupportedVersions v) {
+		replicationVersion = v;
+		return this;
+	}
+
+	public TransportConfig<TransactionGroup,
+			ReplicationStub,
+			ReferenceStub,
+			ReferencePortType,
+			ReplicationPortType, PaymentPortType> referenceVersion(SupportedVersions v) {
+		referenceVersion = v;
+		return this;
+	}
+
+	public TransportConfig<TransactionGroup,
+			ReplicationStub,
+			ReferenceStub,
+			ReferencePortType,
 			ReplicationPortType, PaymentPortType> server(TestServer server) {
 		this.server = server;
-		return this;
-	}
-
-	public TransportConfig<TransactionGroup,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> transactionGroupClass(Class transactionGroupClass) {
-		this.transactionGroupClass = transactionGroupClass;
-		return this;
-	}
-
-
-	public TransportConfig<TransactionGroup,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> replicationStubClass(Class<ReplicationStub> replicationStubClass) {
-		this.replicationStubClass = replicationStubClass;
-		return this;
-	}
-
-
-	public TransportConfig<TransactionGroup,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> referenceStubClass(Class<ReferenceStub> referenceStubClass) {
-		this.referenceStubClass = referenceStubClass;
-		return this;
-	}
-
-
-	public TransportConfig<TransactionGroup,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> packageNameReplicationStubs(String packageNameReplicationStubs) {
-		this.packageNameReplicationStubs = packageNameReplicationStubs;
-		return this;
-	}
-
-	public TransportConfig<TransactionGroup,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> packageNameReferenceStubs(String packageNameReferenceStubs) {
-		this.packageNameReferenceStubs = packageNameReferenceStubs;
-		return this;
-	}
-
-	public TransportConfig<TransactionGroup,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> referencePortType(ReferencePortType referencePortType) {
-		this.referencePortType = referencePortType;
-		return this;
-	}
-
-
-	public TransportConfig<TransactionGroup,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> paymentPortType(PaymentPortType paymentPortType) {
-		this.paymentPortType = paymentPortType;
-		return this;
-	}
-
-
-	public TransportConfig<TransactionGroup,
-			ReplicationStub,
-			ReferenceStub,
-			ReferencePortType,
-			ReplicationPortType, PaymentPortType> replicationPortType(ReplicationPortType replicationPortType) {
-		this.replicationPortType = replicationPortType;
 		return this;
 	}
 }

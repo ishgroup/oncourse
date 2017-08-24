@@ -10,11 +10,13 @@ import ish.oncourse.webservices.v10.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v10.stubs.replication.TransactionGroup;
 import ish.oncourse.webservices.v5.stubs.reference.ReferenceStub;
 
+import static ish.oncourse.webservices.util.SupportedVersions.*;
+
 public class V10TransportConfig extends TransportConfig<TransactionGroup, ReplicationStub, ReferenceStub, ReferencePortType, ReplicationPortType, PaymentPortType> {
     
     static V10TransportConfig valueOf(TestServer testServer) {
         V10TransportConfig config =  new V10TransportConfig();
-        config.server(testServer);
+        config.server(testServer).replicationVersion(V10).referenceVersion(V5).init();
         return config;
     }
 }
