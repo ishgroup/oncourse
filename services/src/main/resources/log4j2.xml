@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" monitorInterval="30">
     <Properties>
-        <Property name="name">services</Property>
+        <Property name="name">checkout-api</Property>
     </Properties>
     <Appenders>
-        <RollingFile name="FILE" fileName="${sys:catalina.base}/logs/${name}.log"
+        <RollingFile name="FILE" fileName="${sys:user.dir}/logs/${name}.log"
                      filePattern="${sys:catalina.base}/logs/${name}.log.%i">
             <PatternLayout>
                 <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
@@ -12,7 +12,7 @@
             <SizeBasedTriggeringPolicy size="10M"/>
             <DefaultRolloverStrategy/>
         </RollingFile>
-        <RollingFile name="FILE_ERROR" fileName="${sys:catalina.base}/logs/${name}-error.log"
+        <RollingFile name="FILE_ERROR" fileName="${sys:user.dir}/logs/${name}-error.log"
                      filePattern="${sys:catalina.base}/logs/${name}-error.log.%i">
             <PatternLayout>
                 <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>

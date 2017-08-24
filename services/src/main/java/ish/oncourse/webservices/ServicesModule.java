@@ -5,10 +5,14 @@ package ish.oncourse.webservices;
 
 import com.google.inject.*;
 import io.bootique.ConfigModule;
+import io.bootique.cayenne.CayenneModule;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.tapestry.di.InjectorModuleDef;
+import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.persistence.ISHModule;
+import net.sf.ehcache.CacheManager;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
@@ -50,8 +54,22 @@ public class ServicesModule extends ConfigModule {
 	}
 
 
+	@Singleton
+	@Provides
+	CacheManager createCacheManager() {
+		return new ServiceModule.CacheManagerBuilder().buildService();
+	}
+
+	@Provides
+	@Singleton
+	ISHModule createISHModule(CacheManager cacheManager) {
+		return new ISHModule(cacheManager);
+	}
+
+
 	@Override
 	public void configure(Binder binder) {
+		CayenneModule.extend(binder).addModule(ISHModule.class);
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET);

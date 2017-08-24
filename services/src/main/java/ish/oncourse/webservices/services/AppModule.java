@@ -6,7 +6,6 @@ package ish.oncourse.webservices.services;
 
 import com.google.inject.Injector;
 import io.bootique.jdbc.DataSourceFactory;
-import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -30,6 +29,8 @@ import ish.oncourse.services.enrol.EnrolmentServiceImpl;
 import ish.oncourse.services.enrol.IEnrolmentService;
 import ish.oncourse.services.environment.EnvironmentService;
 import ish.oncourse.services.environment.IEnvironmentService;
+import ish.oncourse.services.filestorage.FileStorageAssetService;
+import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
 import ish.oncourse.services.html.IPlainTextExtractor;
@@ -105,7 +106,6 @@ import ish.oncourse.webservices.usi.USIVerificationService;
 import ish.oncourse.webservices.usi.crypto.CryptoKeys;
 import ish.oncourse.webservices.usi.tapestry.CryptoKeysBuilder;
 import ish.oncourse.webservices.usi.tapestry.USIServiceBuilder;
-import net.sf.ehcache.CacheManager;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -197,6 +197,7 @@ public class AppModule {
 		binder.bind(IReplicationService.class, ReplicationServiceImpl.class);
 
 		binder.bind(ITransactionGroupProcessor.class, TransactionGroupProcessorImpl.class).scope(ScopeConstants.PERTHREAD);
+		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
 
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
@@ -206,7 +207,6 @@ public class AppModule {
 		binder.bind(SMSJob.class);
 		binder.bind(UpdateAmountOwingJob.class);
 
-		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder()).eagerLoad();
 		binder.bind(CryptoKeys.class, new CryptoKeysBuilder());
 		binder.bind(USIService.class, new USIServiceBuilder()).eagerLoad();
 		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();
@@ -274,12 +274,10 @@ public class AppModule {
 		public ICayenneService buildService(ServiceResources resources) {
 			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
 			IWebSiteService webSiteService = resources.getService(IWebSiteService.class);
-			CacheManager cacheManager = resources.getService(CacheManager.class);
 			Injector injector = resources.getService(Injector.class);
 
 			CayenneService cayenneService = new CayenneService(injector.getInstance(ServerRuntime.class),
-					webSiteService,
-					cacheManager);
+					webSiteService);
 			hub.addRegistryShutdownListener(cayenneService);
 			return cayenneService;
 		}

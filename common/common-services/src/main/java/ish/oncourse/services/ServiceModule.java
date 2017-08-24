@@ -252,8 +252,7 @@ public class ServiceModule {
 
 
 	public static class CacheManagerBuilder implements ServiceBuilder<CacheManager> {
-		@Override
-		public CacheManager buildService(ServiceResources resources) {
+		public CacheManager buildService() {
 			CacheManager cacheManager = CacheManager.create(ServiceModule.class.getClassLoader().getResource("ehcache.xml"));
 
 			Integer cacheCapacity = ContextUtil.getCacheCapacity();
@@ -269,6 +268,11 @@ public class ServiceModule {
 				logger.error("Cannot register MBeans for  cacheManager \"{}\".", cacheManager.getName(), e);
 			}
 			return cacheManager;
+		}
+
+		@Override
+		public CacheManager buildService(ServiceResources resources) {
+			return buildService();
 		}
 	}
 

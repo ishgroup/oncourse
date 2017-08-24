@@ -22,7 +22,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 
 	private static final Logger logger = LogManager.getLogger();
 
-	public CayenneService(ServerRuntime serverRuntime, IWebSiteService webSiteService, CacheManager cacheManager) {
+	public CayenneService(ServerRuntime serverRuntime, IWebSiteService webSiteService) {
 		logger.info("Starting CayenneService....");
 
 		this.cayenneRuntime = serverRuntime;
@@ -54,7 +54,7 @@ public class CayenneService implements ICayenneService, RegistryShutdownListener
 		this(ServerRuntime.builder()
 						.addConfig("cayenne-oncourse.xml")
 						.addModule(new ISHModule(cacheManager)).build(),
-				webSiteService, cacheManager);
+				webSiteService);
 	}
 
 	/**
