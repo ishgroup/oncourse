@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.soap.v15;
 
+import ish.oncourse.webservices.soap.AbstractServerTest;
 import ish.oncourse.webservices.soap.StubPopulator;
 import ish.oncourse.webservices.soap.v6.ReferencePortType;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -34,7 +35,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public abstract class AbstractTransportTest {
+public abstract class AbstractTransportTest extends AbstractServerTest {
     static {
         System.getProperties().put("org.apache.cxf.stax.allowInsecureParser", "true");
     }
@@ -49,23 +50,6 @@ public abstract class AbstractTransportTest {
     public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v15.stubs.replication";
     public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v6.stubs.reference";
 
-
-    protected static TestServer startServer() throws Exception {
-        /* please note, in actuality, for multiple tests you will have
-         to ensure a single version of the server is running only.
-
-		 For each test case, it will invoke start and will give an error.
-		 This is simplified for Blog consumption here only. */
-        TestServer server = new TestServer();
-        server.start();
-        return server;
-    }
-
-    protected abstract TestServer getServer();
-
-    protected static void stopServer(TestServer server) throws Exception {
-        server.stop();
-    }
 
     public Client initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
         bindingProvider.getRequestContext().put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);

@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.soap.v16;
 
-import ish.oncourse.webservices.soap.v16.ReplicationFault;
-import ish.oncourse.webservices.soap.v16.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.Sent2WillowInterceptor;
@@ -10,8 +8,6 @@ import ish.oncourse.webservices.v16.stubs.replication.*;
 import ish.oncourse.webservices.v6.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v6.stubs.reference.ReferenceStub;
 import org.apache.cxf.endpoint.Client;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBException;
@@ -24,8 +20,6 @@ import static org.junit.Assert.*;
  */
 public class WebServicesTransportTest extends AbstractTransportTest {
 
-	private static TestServer server;
-
     private Sent2WillowInterceptor sent2WillowInterceptor  = new Sent2WillowInterceptor();
 
     @Override
@@ -36,20 +30,6 @@ public class WebServicesTransportTest extends AbstractTransportTest {
     }
 
 
-    @BeforeClass
-	public static void before() throws Exception {
-        server = startServer();
-	}
-
-	@AfterClass
-	public static void after() throws Exception {
-		stopServer(server);
-	}
-	
-	@Override
-	protected TestServer getServer() {
-		return server;
-	}
 
 	@Test
 	public void testReplicationPortType_authenticate() throws Exception {

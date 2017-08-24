@@ -1,19 +1,9 @@
 package ish.oncourse.webservices.soap.v15;
 
-import ish.oncourse.model.Article;
-import ish.oncourse.model.College;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.Membership;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.Student;
-import ish.oncourse.model.Voucher;
-import ish.oncourse.model.VoucherPaymentIn;
+import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.soap.TestServer;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.SupportedVersions;
@@ -32,7 +22,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -42,9 +31,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -80,31 +67,9 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected ServiceTest serviceTest;
 	protected PageTester tester;
 	protected ICayenneService cayenneService;
-	private static TestServer server;
 	public org.apache.tapestry5.ioc.Messages messages;
 
 
-	@Override
-	protected final TestServer getServer() {
-		return server;
-	}
-
-	@BeforeClass
-	public static void initTestServer() throws Exception {
-		server = startRealWSServer(QE_REAL_WS_TEST_PORT);
-	}
-		
-	protected static TestServer startRealWSServer(int port) throws Exception {
-		TestServer server = new TestServer(port, TestServer.DEFAULT_CONTEXT_PATH, "src/main/webapp/WEB-INF", TestServer.DEFAULT_HOST, 
-			"src/main", TestServer.DEFAULT_WEB_XML_FILE_PATH);
-		server.start();
-		return server;
-	} 
-
-	protected void after() throws Exception {
-		stopServer(getServer());
-	}
-	
 	protected String getDataSetFile() {
 		return DEFAULT_DATASET_XML;
 	}
@@ -147,7 +112,6 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	@After
 	public void cleanup() throws Exception {
 		serviceTest.cleanup();
-		after();
 	}
 
 	protected boolean pingServer() {

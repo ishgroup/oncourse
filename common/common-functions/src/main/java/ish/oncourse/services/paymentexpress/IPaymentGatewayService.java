@@ -23,7 +23,9 @@ public interface IPaymentGatewayService {
 	 * Performs the gateway processing on the given paymentModel, 
 	 * depending on processing results, sets the appropriate statuses to the payment-related entities.
 	 * @param model the given paymentModel for processing.
+	 * @deprecated @see {@link INewPaymentGatewayService#}
 	 */
+	@Deprecated
 	void performGatewayOperation(PaymentInModel model);
 
 	void performGatewayOperation(PaymentInModel model, String billingId);

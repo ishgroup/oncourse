@@ -3,6 +3,7 @@ package ish.oncourse.webservices.soap.v16;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
+import ish.oncourse.webservices.soap.TestServer;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.SupportedVersions;
@@ -21,7 +22,6 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -48,7 +48,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	//current month and year numbers  as string (convert to string required to pass this data as tapestry params)
 	protected static final String VALID_EXPIRITY_MONTH = Calendar.getInstance().get(Calendar.MONTH) + 1 + StringUtils.EMPTY;
 	protected static final String VALID_EXPIRITY_YEAR = Calendar.getInstance().get(Calendar.YEAR) + StringUtils.EMPTY;
-	
+
 	protected static final String ID_ATTRIBUTE = "id";
 	protected static final String ENROLMENT_IDENTIFIER = Enrolment.class.getSimpleName();
 	protected static final String INVOICE_LINE_IDENTIFIER = InvoiceLine.class.getSimpleName();
@@ -67,31 +67,9 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected ServiceTest serviceTest;
 	protected PageTester tester;
 	protected ICayenneService cayenneService;
-	private static TestServer server;
 	public org.apache.tapestry5.ioc.Messages messages;
 
 
-	@Override
-	protected final TestServer getServer() {
-		return server;
-	}
-
-	@BeforeClass
-	public static void initTestServer() throws Exception {
-		server = startRealWSServer(QE_REAL_WS_TEST_PORT);
-	}
-		
-	protected static TestServer startRealWSServer(int port) throws Exception {
-		TestServer server = new TestServer(port, TestServer.DEFAULT_CONTEXT_PATH, "src/main/webapp/WEB-INF", TestServer.DEFAULT_HOST, 
-			"src/main", TestServer.DEFAULT_WEB_XML_FILE_PATH);
-		server.start();
-		return server;
-	} 
-
-	protected void after() throws Exception {
-		stopServer(getServer());
-	}
-	
 	protected String getDataSetFile() {
 		return DEFAULT_DATASET_XML;
 	}
@@ -107,34 +85,34 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 	protected ParametersMap castGenericParametersMap(GenericParametersMap parametersMap) {
 		return (ParametersMap) parametersMap;
 	}
-	
-	
+
+
 	@Before
 	public void setup() throws Exception {
 		serviceTest = new ServiceTest();
 		serviceTest.initTest("ish.oncourse.webservices", "services", PaymentServiceTestModule.class);
 		tester = serviceTest.getPageTester();
 		InputStream st = RealWSTransportTest.class.getClassLoader().getResourceAsStream(getDataSetFile());
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
+		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 		ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet);
 		replacementDataSet.addReplacementObject("[null]", null);
-        DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
-        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-        dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, replacementDataSet);
-        cayenneService = serviceTest.getService(ICayenneService.class);
+		DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
+		DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
+		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
+		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, replacementDataSet);
+		cayenneService = serviceTest.getService(ICayenneService.class);
 		messages = mock(org.apache.tapestry5.ioc.Messages.class);
 		when(messages.get(anyString())).thenReturn("Any string");
 	}
-	
+
 	/**
 	 * Cleanup required to prevent test fail on before database cleanup.
-	 * @throws Exception 
+	 *
+	 * @throws Exception
 	 */
 	@After
 	public void cleanup() throws Exception {
 		serviceTest.cleanup();
-		after();
 	}
 
 	protected boolean pingServer() {
@@ -156,7 +134,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		}
 		return false;
 	}
-	
+
 	protected void authenticate() throws Exception {
 		//firstly ping the server with 10 seconds timeout
 		assertTrue("Webservices not ready for call", pingServer());
@@ -180,7 +158,7 @@ public abstract class RealWSTransportTest extends AbstractTransportTest {
 		assertNotNull("Communication key should be not NULL", college.getCommunicationKey());
 		return college.getCommunicationKey();
 	}
-	
+
 	@Override
 	protected String getSecurityCode() {
 		ObjectContext context = cayenneService.newNonReplicatingContext();

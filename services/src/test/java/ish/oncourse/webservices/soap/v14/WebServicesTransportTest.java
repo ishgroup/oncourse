@@ -1,36 +1,24 @@
 package ish.oncourse.webservices.soap.v14;
 
-import ish.oncourse.webservices.soap.v14.ReplicationFault;
-import ish.oncourse.webservices.soap.v14.ReplicationPortType;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.Sent2WillowInterceptor;
 import ish.oncourse.webservices.util.SupportedVersions;
-import ish.oncourse.webservices.v14.stubs.replication.InstructionStub;
-import ish.oncourse.webservices.v14.stubs.replication.ParametersMap;
-import ish.oncourse.webservices.v14.stubs.replication.ReplicationRecords;
-import ish.oncourse.webservices.v14.stubs.replication.ReplicationResult;
-import ish.oncourse.webservices.v14.stubs.replication.TransactionGroup;
+import ish.oncourse.webservices.v14.stubs.replication.*;
 import ish.oncourse.webservices.v6.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v6.stubs.reference.ReferenceStub;
 import org.apache.cxf.endpoint.Client;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.BindingProvider;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  */
 public class WebServicesTransportTest extends AbstractTransportTest {
-
-	private static TestServer server;
 
     private Sent2WillowInterceptor sent2WillowInterceptor  = new Sent2WillowInterceptor();
 
@@ -41,21 +29,6 @@ public class WebServicesTransportTest extends AbstractTransportTest {
         return client;
     }
 
-
-    @BeforeClass
-	public static void before() throws Exception {
-        server = startServer();
-	}
-
-	@AfterClass
-	public static void after() throws Exception {
-		stopServer(server);
-	}
-	
-	@Override
-	protected TestServer getServer() {
-		return server;
-	}
 
 	@Test
 	public void testReplicationPortType_authenticate() throws Exception {
