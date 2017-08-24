@@ -9,6 +9,8 @@ import io.bootique.jdbc.DataSourceFactory;
 import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
+import ish.oncourse.services.application.ApplicationServiceImpl;
+import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.contact.ContactServiceImpl;
@@ -34,8 +36,6 @@ import ish.oncourse.services.filestorage.FileStorageAssetService;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.format.FormatService;
 import ish.oncourse.services.format.IFormatService;
-import ish.oncourse.services.html.IPlainTextExtractor;
-import ish.oncourse.services.html.JerichoPlainTextExtractor;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jndi.ILookupService;
 import ish.oncourse.services.jndi.LookupService;
@@ -65,12 +65,17 @@ import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.ResourceService;
 import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.room.RoomService;
+import ish.oncourse.services.s3.IS3Service;
+import ish.oncourse.services.s3.S3Service;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.WebSiteServiceOverride;
 import ish.oncourse.services.sites.ISitesService;
 import ish.oncourse.services.sites.SitesService;
+import ish.oncourse.services.sms.DefaultSMSService;
+import ish.oncourse.services.sms.ISMSService;
+import ish.oncourse.services.sms.TestModeSMSService;
 import ish.oncourse.services.system.CollegeService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.services.tag.ITagService;
@@ -86,6 +91,8 @@ import ish.oncourse.services.tutor.TutorService;
 import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.services.visitor.IParsedContentVisitor;
 import ish.oncourse.services.visitor.ParsedContentVisitor;
+import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
@@ -120,14 +127,25 @@ import org.apache.tapestry5.services.RequestExceptionHandler;
 
 import javax.sql.DataSource;
 
+import static ish.oncourse.services.ServiceModule.APP_TEST_MODE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
+import static org.apache.tapestry5.ioc.ScopeConstants.PERTHREAD;
 
 public class AppModule {
 
 	private static Logger logger = LogManager.getLogger();
 
 	public static void bind(ServiceBinder binder) {
+		boolean isInTestMode = "true".equalsIgnoreCase(System.getProperty(APP_TEST_MODE));
+
+		if (isInTestMode) {
+			logger.warn("This application is in TEST MODE. SMS and credit card processing is disabled.");
+		}
+
+		logger.info("Registering Willow Common Services");
+
+		// Tapestry and environment specific services
 		binder.bind(V5ReferenceService.class);
 		binder.bind(V6ReferenceService.class);
 
@@ -183,7 +201,18 @@ public class AppModule {
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPostcodeService.class, PostcodeService.class).withId("PostcodeService");
-		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
+
+		if (isInTestMode) {
+			binder.bind(ISMSService.class, TestModeSMSService.class);
+		} else {
+			binder.bind(ISMSService.class, DefaultSMSService.class);
+		}
+
+		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
+		binder.bind(IS3Service.class, S3Service.class).scope(PERTHREAD);
+		binder.bind(IVoucherService.class, VoucherService.class);
+
+		binder.bind(IApplicationService.class, ApplicationServiceImpl.class);
 
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(IWillowStubBuilder.class, WillowStubBuilderImpl.class);
@@ -191,8 +220,7 @@ public class AppModule {
 		binder.bind(IWillowQueueService.class, WillowQueueService.class);
 		binder.bind(IReplicationService.class, ReplicationServiceImpl.class);
 
-		binder.bind(ITransactionGroupProcessor.class, TransactionGroupProcessorImpl.class).scope(ScopeConstants.PERTHREAD);
-		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
+		binder.bind(ITransactionGroupProcessor.class, TransactionGroupProcessorImpl.class).scope(PERTHREAD);
 
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
 		binder.bind(ITransactionStubBuilder.class, TransactionStubBuilderImpl.class);
@@ -210,17 +238,16 @@ public class AppModule {
 
 
 		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
-		binder.bind(IPaymentGatewayService.class, new ServiceModule.PaymentGatewayServiceBuilder()).scope("perthread");
+		binder.bind(IPaymentGatewayService.class, new ServiceModule.PaymentGatewayServiceBuilder()).scope(PERTHREAD);
 
 		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(INewPaymentGatewayService.class, new ServiceModule.PaymentGatewayBuilder()).scope("perthread");
+		binder.bind(INewPaymentGatewayService.class, new ServiceModule.PaymentGatewayBuilder()).scope(PERTHREAD);
 	}
 
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local RequestExceptionHandler handler) {
 		configuration.add(RequestExceptionHandler.class, handler);
 	}
-
 
 	/**
 	 * Add initial values for ParallelExecutor
