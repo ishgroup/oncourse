@@ -187,7 +187,6 @@ public class ServiceModule {
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPostcodeService.class, PostcodeService.class).withId("PostcodeService");
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
-		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
 
 		if (isInTestMode) {
 			binder.bind(ISMSService.class, TestModeSMSService.class);
@@ -207,6 +206,10 @@ public class ServiceModule {
 		binder.bind(IContentCacheService.class, ContentEHCacheService.class);
 		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
 		binder.bind(CacheManager.class, new CacheManagerBuilder()).eagerLoad();
+
+		binder.bind(IPaymentGatewayServiceBuilder.class, ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder.class);
+		binder.bind(IPaymentGatewayService.class, new PaymentGatewayServiceBuilder()).scope("perthread");
+		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
 		binder.bind(INewPaymentGatewayService.class, new PaymentGatewayBuilder()).scope("perthread");
 	}
 
