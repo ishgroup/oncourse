@@ -1,5 +1,4 @@
 import * as React from "react";
-import $ from "jquery";
 import {findDOMNode} from "react-dom";
 import {stopPropagation} from "../../../common/utils/HtmlUtils";
 import {WindowService} from "../../../services/WindowService";
@@ -8,35 +7,35 @@ import {ModalService} from "../../../services/ModalService";
 
 export class ConfirmOrderDialog extends React.Component<Props, {}> {
   private modalService: ModalService;
-  private $item: JQuery;
+  private $item;
 
   constructor(props) {
     super();
-    this.$item = $(`.classItem[data-classid=${props.id}]`);
+    this.$item = document.querySelector(`.classItem[data-classid='${props.id}']`);
     this.modalService = WindowService.get("modal");
   }
 
   componentWillMount() {
-    $(document).on("click", this.props.close);
+    document.addEventListener("click", this.props.close);
   }
 
   componentDidMount() {
-    $(findDOMNode(this))
-      .show()
-      .offset({top: this.$item.offset().top} as JQueryCoordinates)
-      .css("right", "150px")
-      .fadeIn("fast");
+    const el = findDOMNode(this);
+    el.style.display = 'block';
+    el.style.right = '150px';
+    el.style.top = '-11px';
   }
 
   componentWillUnmount() {
-    $(document).off("click", this.props.close);
+    document.removeEventListener("click", this.props.close);
   }
 
   render() {
     const {close, isAlreadyAdded, name, checkoutPath} = this.props;
 
     // TODO: connect via redux
-    const date = this.$item.find(".class-item-info-l > .date a:first").text();
+    const dateEl = this.$item.querySelector('.class-item-info-l .date a');
+    const date = dateEl ? dateEl.innerText : '';
 
     let commonText: string = null;
     let classDescription: any[] = null;

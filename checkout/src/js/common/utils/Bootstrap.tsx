@@ -10,14 +10,12 @@ import {Level, Logger, LogMessage} from "../../services/Logger";
 import {ATTR_DATA_CID, HTMLMarker, HTMLMarkers} from "../services/HTMLMarker";
 import * as HtmlDataService from "./HtmlUtils";
 import {Actions} from "../../web/actions/Actions";
-import {Actions as CommonActions} from "../../common/actions/Actions";
 
 import {htmlProps2CourseClass} from "../../web/services/CourseClassService";
 import {CourseClass} from "../../model";
 import {ClassesListSchema} from "../../NormalizeSchema";
 import {normalize} from "normalizr";
 
-import ComponentClass = React.ComponentClass;
 
 export class Bootstrap {
   private components: { [key: string]: HTMLMarker } = {};

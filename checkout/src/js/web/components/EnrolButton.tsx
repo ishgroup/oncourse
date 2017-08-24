@@ -104,7 +104,8 @@ export class EnrolButton extends React.Component<Props, State> {
       <div className="classAction">
         {reverseElements ? elements.reverse() : elements}
         {this.state.showedPopup && <ConfirmOrderDialog id={id} name={course.name}
-                                            isAlreadyAdded={this.state.isAlreadyAdded} close={this.closePopup}
+                                                       isAlreadyAdded={this.state.isAlreadyAdded}
+                                                       close={this.closePopup}
                                                        checkoutPath={checkoutPath}/>}
       </div>
     );
