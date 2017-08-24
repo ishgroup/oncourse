@@ -119,6 +119,11 @@ task generateSources(type: Copy) {
 
 mainClassName = 'ish.oncourse.webservices.service.ServicesApp'
 
+
+startScripts {
+	unixStartScriptGenerator.template = resources.text.fromFile("${project.rootDir}/buildSrc/src/main/resources/applicationStartScript.sh")
+}
+
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
 
