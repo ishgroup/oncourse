@@ -66,7 +66,6 @@ public class AppModule {
 	}
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
-		configuration.add(SymbolConstants.SECURE_ENABLED, "true");
 		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, EMPTY);
 		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "false");
 

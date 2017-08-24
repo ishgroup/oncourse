@@ -64,7 +64,7 @@ public class AppModule {
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.COMPRESS_WHITESPACE, "false");
 		configuration.add(SymbolConstants.COMPACT_JSON, "false");
-        configuration.add(SymbolConstants.SECURE_ENABLED, "true");
+        
 		configuration.add(SearchService.ALIAS_SUFFIX_PROPERTY, "staging");
 		configuration.add(ParsedContentVisitor.WEB_CONTENT_CACHE, "false");
 	}
