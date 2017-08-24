@@ -6,6 +6,7 @@ package ish.oncourse.webservices.services;
 
 import com.google.inject.Injector;
 import io.bootique.jdbc.DataSourceFactory;
+import ish.oncourse.services.ServiceModule;
 import ish.oncourse.services.alias.IWebUrlAliasService;
 import ish.oncourse.services.alias.WebUrlAliasService;
 import ish.oncourse.services.binary.BinaryDataService;
@@ -52,10 +53,7 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
-import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.IPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.NewPaymentGatewayServiceBuilder;
-import ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder;
+import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -186,9 +184,6 @@ public class AppModule {
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 		binder.bind(IPostcodeService.class, PostcodeService.class).withId("PostcodeService");
 		binder.bind(IPlainTextExtractor.class, JerichoPlainTextExtractor.class);
-		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
-		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-
 
 		binder.bind(ReferenceStubBuilder.class);
 		binder.bind(IWillowStubBuilder.class, WillowStubBuilderImpl.class);
@@ -212,6 +207,13 @@ public class AppModule {
 		binder.bind(ICayenneService.class, new CayenneServiceBuilder()).eagerLoad();
 		binder.bind(IJMXInitService.class, new JMXInitServiceBuilder()).eagerLoad();
 		binder.bind(RequestExceptionHandler.class, ServiceRequestExceptionHandler.class).withId(ServiceRequestExceptionHandler.class.getSimpleName());
+
+
+		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
+		binder.bind(IPaymentGatewayService.class, new ServiceModule.PaymentGatewayServiceBuilder()).scope("perthread");
+
+		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
+		binder.bind(INewPaymentGatewayService.class, new ServiceModule.PaymentGatewayBuilder()).scope("perthread");
 	}
 
 
