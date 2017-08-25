@@ -5,6 +5,7 @@ import {CourseClassCartState, IshState} from "../../services/IshState";
 import {CourseClass} from "../../model";
 import {Actions} from "../actions/Actions";
 import * as CourseClassService from "../services/CourseClassService";
+import {GABuilder} from "../../services/GoogleAnalyticsService";
 
 const isAdded = (items: CourseClassCartState, id: string): boolean => {
   const item = items.result.find(itemId => itemId === id);
@@ -27,6 +28,9 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: Actions.ADD_CLASS_TO_CART,
         payload: courseClass,
+        meta: {
+          analytics: GABuilder.addItemToCart('Course Class', courseClass.id)
+        }
       });
     },
     loadById: (id: string) => {

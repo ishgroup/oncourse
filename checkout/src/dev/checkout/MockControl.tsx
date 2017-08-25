@@ -10,6 +10,7 @@ import {Values} from "redux-form-website-template";
 import {NAME} from "../../js/enrol/containers/payment/components/PaymentForm";
 import {NAME as ContactEditFormName} from "../../js/enrol/containers/contact-edit/ContactEditForm";
 import {NAME as ConcessionAddForm} from "../../js/enrol/containers/concession/Concession";
+import {GABuilder} from "../../js/services/GoogleAnalyticsService";
 
 
 interface Props {
@@ -33,6 +34,9 @@ export class MockControl extends React.Component<Props, any> {
     this.props.config.store.dispatch({
       type: Actions.ADD_CLASS_TO_CART,
       payload: {id: this.props.config.db.classes.result[i]},
+      meta: {
+        analytics: GABuilder.addItemToCart('Course Class', this.props.config.db.classes.result[i]),
+      },
     });
   }
 
@@ -40,6 +44,7 @@ export class MockControl extends React.Component<Props, any> {
     this.props.config.store.dispatch({
       type: Actions.REQUEST_PRODUCT,
       payload: [this.props.config.db.products.result[0]],
+
     });
   }
 
@@ -47,6 +52,9 @@ export class MockControl extends React.Component<Props, any> {
     this.props.config.store.dispatch({
       type: Actions.ADD_PRODUCT_TO_CART,
       payload: {id: this.props.config.db.products.result[0]},
+      meta: {
+        analytics: GABuilder.addItemToCart('Voucher', this.props.config.db.products.result[0])
+      }
     });
   }
 
@@ -54,6 +62,9 @@ export class MockControl extends React.Component<Props, any> {
     this.props.config.store.dispatch({
       type: Actions.REMOVE_CLASS_FROM_CART,
       payload: {id: this.props.config.db.classes.result[0]},
+      meta: {
+        analytics: GABuilder.removeItemFromCart('CourseClass', this.props.config.db.classes.result[0])
+      },
     });
   }
 
@@ -76,7 +87,7 @@ export class MockControl extends React.Component<Props, any> {
         {this.renderProperty("checkoutApi.makePayment.result.success")}
         {this.renderProperty("checkoutApi.makePayment.result.inProgress")}
         {this.renderProperty("checkoutApi.makePayment.result.undefined")}
-        <button className="btn" onClick={() => this.loadCourseClasses(0)}>Load Classes 1 </button>
+        <button className="btn" onClick={() => this.loadCourseClasses(0)}>Load Classes 1</button>
         <button className="btn" onClick={() => this.addCourseClass(0)}>Add Classes 1</button>
         <br/>
         <button className="btn" onClick={() => this.loadCourseClasses(1)}>Load Classes 2</button>

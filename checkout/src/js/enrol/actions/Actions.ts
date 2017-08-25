@@ -89,6 +89,12 @@ export const changePhase = (phase: Phase) => {
   return {
     type: CHANGE_PHASE,
     payload: phase,
+    meta: {
+      analytics: {
+        type: 'page',
+        title: Phase[phase]
+      }
+    }
   };
 };
 

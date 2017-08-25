@@ -3,6 +3,7 @@ import {BuyButton, BuyButtonProps} from "../components/buyButton/BuyButton";
 import {IshState, ProductCartState} from "../../services/IshState";
 import {Product} from "../../model";
 import {Actions} from "../actions/Actions";
+import {GABuilder} from "../../services/GoogleAnalyticsService";
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyButton);
 
@@ -17,6 +18,9 @@ function mapDispatchToProps(dispatch) {
       dispatch({
         type: Actions.ADD_PRODUCT_TO_CART,
         payload: product,
+        meta: {
+          analytics: GABuilder.addItemToCart('Product', product.id)
+        }
       });
     },
     requestProductById: (id: string) => {
