@@ -4,10 +4,17 @@
 package ish.oncourse.webservices.pages;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.util.TextStreamResponse;
+
 import static ish.oncourse.configuration.Configuration.API_VERSION;
 
 public class ISHHealthCheck {
-    public String getVersion() {
-        return  System.getProperty(API_VERSION);
-    }
+	private static final Logger logger = LogManager.getLogger();
+
+	StreamResponse onActivate() {
+		return new TextStreamResponse("text/plain", System.getProperty(API_VERSION));
+	}
 }
