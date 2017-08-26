@@ -16,8 +16,12 @@ import org.apache.xmlbeans.SystemProperties;
  */
 public class ServicesApp {
 	public static void main(String[] args) {
-		SystemProperties.getProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
 		Configuration.configure();
+		start(args);
+	}
+
+	public static void start(String[] args) {
+		SystemProperties.getProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
 		Bootique bootique = Bootique.app(args).args("--server", "--config=classpath:application.yml");
 		bootique.module(new JdbcModuleProvider());
 		bootique.module(new CayenneModuleProvider());

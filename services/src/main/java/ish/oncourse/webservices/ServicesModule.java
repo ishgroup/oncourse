@@ -9,22 +9,16 @@ import io.bootique.cayenne.CayenneModule;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.tapestry.di.InjectorModuleDef;
 import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.persistence.ISHObjectContextFactory;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.Constants;
 import org.apache.cayenne.configuration.ObjectContextFactory;
 import org.apache.cxf.transport.servlet.CXFServlet;
-import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.internal.InternalConstants;
-import org.apache.tapestry5.internal.spring.SpringModuleDef;
-import org.apache.tapestry5.ioc.def.ModuleDef;
-import org.apache.tapestry5.spring.TapestrySpringFilter;
 
-import javax.servlet.*;
-import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: akoiro
@@ -32,7 +26,11 @@ import java.util.Collections;
  */
 public class ServicesModule extends ConfigModule {
 	private static final String URL_PATTERN = "/*";
+
 	private static final String TAPESTRY_APP_NAME = "app";
+
+	private static final String CXF_APP_NAME = "cxf";
+	private static final String CXF_PARAM_HIDE_SERVICE_LIST_PAGE = "hide-service-list-page";
 
 	private static final TypeLiteral<MappedFilter<ServicesTapestryFilter>> TAPESTRY_FILTER =
 			new TypeLiteral<MappedFilter<ServicesTapestryFilter>>() {
@@ -52,54 +50,19 @@ public class ServicesModule extends ConfigModule {
 	@Singleton
 	@Provides
 	MappedServlet<CXFServlet> createCXFServlet() {
-		return new MappedServlet<>(new CXFServlet(), Collections.singleton(URL_PATTERN), "cxf");
+		Map<String, String> params = new HashMap<>();
+		params.put(CXF_PARAM_HIDE_SERVICE_LIST_PAGE, Boolean.TRUE.toString());
+		return new MappedServlet<>(new CXFServlet(), Collections.singleton(URL_PATTERN), CXF_APP_NAME,
+				params);
 	}
 
 
 	@Override
 	public void configure(Binder binder) {
 		CayenneModule.extend(binder).addModule(new ServicesCayenneModule());
-
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET);
-	}
-
-	private static class ServicesTapestryFilter implements Filter {
-		private Injector injector;
-
-		private ServicesTapestryFilter(Injector injector) {
-			this.injector = injector;
-		}
-
-		private TapestrySpringFilter filter = new TapestrySpringFilter() {
-			@Override
-			protected ModuleDef[] provideExtraModuleDefs(ServletContext context) {
-				return new ModuleDef[]{
-						new SpringModuleDef(context),
-						new InjectorModuleDef(injector)
-				};
-			}
-		};
-
-		@Override
-		public void init(FilterConfig filterConfig) throws ServletException {
-			filterConfig.getServletContext().setInitParameter(InternalConstants.TAPESTRY_APP_PACKAGE_PARAM, "ish.oncourse.webservices");
-			filterConfig.getServletContext().setInitParameter("contextConfigLocation", "classpath:application-context.xml");
-			filterConfig.getServletContext().setInitParameter(SymbolConstants.PRODUCTION_MODE, Boolean.TRUE.toString());
-			filter.init(filterConfig);
-		}
-
-		@Override
-		public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-			filter.doFilter(servletRequest, servletResponse, filterChain);
-		}
-
-
-		@Override
-		public void destroy() {
-			filter.destroy();
-		}
 	}
 
 
