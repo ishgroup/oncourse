@@ -9,19 +9,19 @@ import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v16.stubs.replication.ParametersMap;
 import org.junit.Test;
 
-public class V11USIVerificationServiceTest extends RealWSTransportTest {
+public class V16USIVerificationServiceTest extends RealWSTransportTest {
 	@Test
 	public void testUSI() throws Exception {
 
 		new USITest(new USITest.Parent() {
 			@Override
 			public GenericParametersMap verifyUSI(GenericParametersMap var1) throws Exception {
-				return getPaymentPortType().verifyUSI((ParametersMap) var1);
+				return testEnv.getPaymentPortType().verifyUSI((ParametersMap) var1);
 			}
 
 			@Override
 			public void authenticate() throws Exception {
-				V11USIVerificationServiceTest.this.authenticate();
+				testEnv.authenticate();
 			}
 
 			@Override

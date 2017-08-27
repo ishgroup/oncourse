@@ -24,6 +24,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import static ish.oncourse.webservices.ServicesTapestryFilter.SERVICES_APP_PACKAGE;
+import static ish.oncourse.webservices.usi.TestUSIServiceEndpoint.USI_TEST_MODE;
 
 /**
  * User: akoiro
@@ -64,6 +65,8 @@ public class TestEnv {
 	}
 
 	private void init() {
+		System.setProperty(USI_TEST_MODE, Boolean.TRUE.toString());
+		
 		runtime = ServicesApp.init(new String[]{}).createRuntime();
 		dataSourceFactory.set(runtime.getInstance(DataSourceFactory.class));
 		serverRuntime.set(runtime.getInstance(ServerRuntime.class));
