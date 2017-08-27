@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.soap.v14;
 
+import ish.oncourse.webservices.function.TransportConfig;
 import ish.oncourse.webservices.soap.TestServer;
-import ish.oncourse.webservices.soap.TransportConfig;
 import ish.oncourse.webservices.soap.v6.ReferencePortType;
 import ish.oncourse.webservices.v14.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v14.stubs.replication.TransactionGroup;
@@ -16,8 +16,6 @@ public class V14TransportConfig extends TransportConfig<TransactionGroup, Replic
 
     public static V14TransportConfig valueOf(TestServer server){
         V14TransportConfig config = new V14TransportConfig();
-        config.server(server);
-
         return config;
     }
 }

@@ -29,11 +29,11 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 
 	private void testRenderPaymentPageForExpiration(String sessionId) {
 		assertNotNull("Session id should not be null", sessionId);
-		Document doc = tester.renderPage("Payment/" + sessionId);
+		Document doc = testEnv.getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 		
 		//get session to check that processing in progress
-		Session session = serviceTest.getService(TestableRequest.class).getSession(false);
+		Session session = testEnv.getPageTester().getService(TestableRequest.class).getSession(false);
 		assertNotNull("Session should be inited for controller", session);
 		PaymentProcessController controller = (PaymentProcessController) session.getAttribute("state:Payment::paymentProcessController");
 		assertNotNull("controller should be not empty", controller);
@@ -74,7 +74,7 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 		//expire the payment
 		controller.processAction(PaymentAction.EXPIRE_PAYMENT);
 		//reload the page to receive the cancel payment message
-		doc = tester.renderPage("Payment/" + sessionId);
+		doc = testEnv.getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 		assertTrue("Controller state should be expired", controller.isExpired());
 		
@@ -194,27 +194,27 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 	@Ignore
 	public void testExpireQEByWatchdog() throws Exception {
 		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		checkQueueBeforeProcessing(context);
-		authenticate();
+		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
+		testEnv.checkQueueBeforeProcessing(context);
+		testEnv.authenticate();
 		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
+		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());
 
 		fillv16PaymentStubs(transaction, parametersMap);
 		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
+		transaction = testEnv.getPaymentPortType().processPayment(testEnv.castGenericTransactionGroup(transaction),
+				testEnv.castGenericParametersMap(parametersMap));
 		//check the response, validate the data and receive the sessionid
 		String sessionId = checkResponseAndReceiveSessionId(transaction);
-		checkQueueAfterProcessing(context);
+		testEnv.checkQueueAfterProcessing(context);
 		//check the status via service
-		checkNotProcessedResponse(getPaymentStatus(sessionId));
+		testEnv.checkNotProcessedResponse(testEnv.getPaymentStatus(sessionId));
 		//call page processing
 		testRenderPaymentPageForExpiration(sessionId);
 		//check that async replication works correct
 		checkAsyncReplication(context);
 		//check the status via service when processing complete
-		checkProcessedResponse(getPaymentStatus(sessionId));
+		checkProcessedResponse(testEnv.getPaymentStatus(sessionId));
 	}
-
 }

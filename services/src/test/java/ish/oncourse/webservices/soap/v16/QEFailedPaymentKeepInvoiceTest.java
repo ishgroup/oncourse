@@ -38,13 +38,13 @@ public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUIT
 				invoiceLinesFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				enrolmentsFound++;
-			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				membershipsFound++;
-			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				vouchersFound++;
-			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				articlesFound++;
-			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				contactFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
@@ -82,7 +82,7 @@ public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUIT
 					assertEquals("Oncourse enrollment should be success", EnrolmentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((GenericEnrolmentStub)stub).getStatus()), true);
+							((GenericEnrolmentStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof VoucherStub) {
 				assertEquals("Check of voucher status failed", ((VoucherStub) stub).getStatus(), ProductStatus.ACTIVE.getDatabaseValue());
@@ -108,16 +108,16 @@ public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUIT
 				assertEquals("Payment status should not change after this processing", PaymentStatus.IN_TRANSACTION.getDatabaseValue(), payment.getStatus());
 			} else if (ENROLMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.IN_TRANSACTION.name(),
-					((GenericEnrolmentStub) stub).getStatus());
+						((GenericEnrolmentStub) stub).getStatus());
 			} else if (MEMBERSHIP_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Membership status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((MembershipStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 			} else if (VOUCHER_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Voucher status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((VoucherStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 			} else if (ARTICLE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Article status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((ArticleStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 			}
 		}
 		return sessionId;
@@ -126,26 +126,27 @@ public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUIT
 	@Test
 	public void testQEKeepInvoice() throws Exception {
 		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		checkQueueBeforeProcessing(context);
-		authenticate();
+		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
+		testEnv.checkQueueBeforeProcessing(context);
+		testEnv.authenticate();
 		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
+		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());
 		fillv16PaymentStubs(transaction, parametersMap);
 		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
+		transaction = testEnv.getPaymentPortType().processPayment(testEnv.castGenericTransactionGroup(transaction),
+				testEnv.castGenericParametersMap(parametersMap));
 		//check the response, validate the data and receive the sessionid
 		String sessionId = checkResponseAndReceiveSessionId(transaction);
-		checkQueueAfterProcessing(context);
+		testEnv.checkQueueAfterProcessing(context);
 		//check the status via service
-		checkNotProcessedResponse(getPaymentStatus(sessionId));
+		testEnv.checkNotProcessedResponse(testEnv.getPaymentStatus(sessionId));
 		//call page processing
-		renderPaymentPageWithKeepInvoiceProcessing(sessionId);
+		testEnv.renderPaymentPageWithKeepInvoiceProcessing(sessionId);
 		//check that async replication works correct
 		checkAsyncReplication(context);
 		//check the status via service when processing complete
-		checkProcessedResponse(getPaymentStatus(sessionId));
+		checkProcessedResponse(testEnv.getPaymentStatus(sessionId));
 	}
 
 }

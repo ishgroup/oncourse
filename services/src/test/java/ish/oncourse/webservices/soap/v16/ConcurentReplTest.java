@@ -8,9 +8,7 @@ import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
-import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.soap.v16.ReplicationFault;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
@@ -22,8 +20,8 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
@@ -34,27 +32,25 @@ import java.util.concurrent.Future;
 
 import static org.junit.Assert.assertNull;
 
-public class ConcurentReplTest extends QEPaymentProcessTest {
+
+public class ConcurentReplTest extends RealWSTransportTest {
 
 	private static final Logger logger = LogManager.getLogger();
 
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/ConcurentDataSet.xml";
 
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
-	}
-
-
 	@Before
-	public void setup() throws Exception {
-		super.setup();
-		DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
-		Statement statement = onDataSource.getConnection().createStatement();
+	public void before() throws Exception {
+		testEnv = new V16TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
+		Connection connection = testEnv.getTestEnv().getDataSource().getConnection();
+		Statement statement = testEnv.getTestEnv().getDataSource().getConnection().createStatement();
 		statement.execute("ALTER TABLE ENROLMENT ADD CONSTRAINT angel_college_unique UNIQUE(ANGELID, COLLEGEID)");
 		statement.close();
+		connection.commit();
 	}
 
-	protected void fillv16PaymentStubs(GenericTransactionGroup transaction, GenericParametersMap parametersMap) {
+	private void fillv16PaymentStubs(GenericTransactionGroup transaction, GenericParametersMap parametersMap) {
 		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
@@ -93,7 +89,7 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		paymentInStub.setEntityIdentifier(PAYMENT_IDENTIFIER);
 		paymentInStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(paymentInStub);
-		parametersMap.getGenericEntry().add(createEntry(
+		parametersMap.getGenericEntry().add(testEnv.getTestEnv().createEntry(
 				String.format("%s_%d", ReplicationUtils.getEntityName(PaymentIn.class), paymentInStub.getAngelId()),
 				paymentInStub.getAngelId().toString()
 		));
@@ -111,9 +107,10 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		enrolmentStub.setStudentId(2l);
 		stubs.add(enrolmentStub);
 
-		parametersMap.getGenericEntry().add(createEntry(String.format("%s_%d", ReplicationUtils.getEntityName(Enrolment.class), enrolmentStub.getAngelId()),
+		parametersMap.getGenericEntry().add(testEnv.getTestEnv().createEntry(
+				String.format("%s_%d", ReplicationUtils.getEntityName(Enrolment.class), enrolmentStub.getAngelId()),
 				enrolmentStub.getAngelId().toString()));
-		
+
 		InvoiceStub invoiceStub = new InvoiceStub();
 		invoiceStub.setContactId(10l);
 		invoiceStub.setAmountOwing(hundredDollars.toBigDecimal());
@@ -129,7 +126,7 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		invoiceStub.setTotalGst(invoiceStub.getAmountOwing());
 		invoiceStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 
-		parametersMap.getGenericEntry().add(createEntry(
+		parametersMap.getGenericEntry().add(testEnv.getTestEnv().createEntry(
 				String.format("%s_%d", ReplicationUtils.getEntityName(Invoice.class), invoiceStub.getAngelId()),
 				invoiceStub.getAngelId().toString()
 		));
@@ -169,7 +166,7 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		invoiceLineStub0.setTaxEach(BigDecimal.ZERO);
 		invoiceLineStub0.setTitle(StringUtils.EMPTY);
 		stubs.add(invoiceLineStub0);
-		
+
 		InvoiceLineStub invoiceLineStub = new InvoiceLineStub();
 		invoiceLineStub.setAngelId(1l);
 		invoiceLineStub.setCreated(current);
@@ -225,7 +222,7 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		invoiceLineStub4.setTaxEach(BigDecimal.ZERO);
 		invoiceLineStub4.setTitle(StringUtils.EMPTY);
 		stubs.add(invoiceLineStub4);
-		
+
 		MembershipStub membershipStub = new MembershipStub();
 		membershipStub.setAngelId(1l);
 		membershipStub.setContactId(10l);
@@ -300,7 +297,7 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		studentStub.setModified(current);
 		studentStub.setEntityIdentifier(STUDENT_IDENTIFIER);
 		stubs.add(studentStub);
-		
+
 		InvoiceStub invoiceStub = new InvoiceStub();
 		invoiceStub.setContactId(10l);
 		invoiceStub.setAmountOwing(hundredDollars.toBigDecimal());
@@ -401,7 +398,7 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		invoiceLineStub0.setEnrolmentId(enrolmentStub.getAngelId());
 		stubs.add(enrolmentStub);
 
-		
+
 		MembershipStub membershipStub = new MembershipStub();
 		membershipStub.setAngelId(1l);
 		membershipStub.setContactId(10l);
@@ -446,16 +443,16 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		articleStub.setConfirmationStatus(ConfirmationStatus.DO_NOT_SEND.getDatabaseValue());
 		stubs.add(articleStub);
 	}
-	
+
 	@Test
 	public void testConcurentProcessing() throws Exception {
-		
-		ExecutorService asyncThreadExecutor = Executors.newFixedThreadPool(3);		
-		
-		authenticate();
+
+		ExecutorService asyncThreadExecutor = Executors.newFixedThreadPool(3);
+
+		testEnv.authenticate();
 		// prepare the stubs for replication
-		final GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		final GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
+		final GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getTestEnv().getSupportedVersion());
+		final GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getTestEnv().getSupportedVersion());
 		fillv16PaymentStubs(transaction, parametersMap);
 
 		final ReplicationRecords replicationRequest = new ReplicationRecords();
@@ -463,30 +460,22 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 
 		fillv16ReplStubs(group);
 		group.getTransactionKeys().add("tr_key");
-		replicationRequest.getGroups().add(castGenericTransactionGroup(group));
-		
-		
-		Callable async = new Callable() {
-			@Override
-			public ReplicationResult call() {
-				try {
-					return	getReplicationPortType().sendRecords(replicationRequest);
-				} catch (ReplicationFault replicationFault) {
-					logger.error(replicationFault);
-					throw new RuntimeException(replicationFault);
-				}
+		replicationRequest.getGroups().add(testEnv.castGenericTransactionGroup(group));
+
+
+		Callable async = () -> {
+			try {
+				return testEnv.getReplicationPortType().sendRecords(replicationRequest);
+			} catch (ReplicationFault replicationFault) {
+				throw new RuntimeException(replicationFault);
 			}
 		};
 
-		Callable sync = new Callable() {
-			@Override
-			public TransactionGroup call() {
-				try {
-					return getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
-				} catch (ReplicationFault replicationFault) {
-					logger.error(replicationFault);
-					throw new RuntimeException(replicationFault);
-				}
+		Callable sync = () -> {
+			try {
+				return testEnv.getPaymentPortType().processPayment(testEnv.castGenericTransactionGroup(transaction), testEnv.castGenericParametersMap(parametersMap));
+			} catch (ReplicationFault replicationFault) {
+				throw new RuntimeException(replicationFault);
 			}
 		};
 
@@ -497,5 +486,5 @@ public class ConcurentReplTest extends QEPaymentProcessTest {
 		syncFuture.get();
 
 	}
-	
+
 }

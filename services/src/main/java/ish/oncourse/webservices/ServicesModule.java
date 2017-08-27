@@ -27,6 +27,8 @@ import java.util.Map;
 public class ServicesModule extends ConfigModule {
 	private static final String URL_PATTERN = "/*";
 
+	public static final String DATA_SOURCE_NAME = "willow";
+
 	private static final String TAPESTRY_APP_NAME = "app";
 
 	private static final String CXF_APP_NAME = "cxf";
@@ -66,7 +68,7 @@ public class ServicesModule extends ConfigModule {
 	}
 
 
-	public class ServicesCayenneModule implements org.apache.cayenne.di.Module {
+	public static class ServicesCayenneModule implements org.apache.cayenne.di.Module {
 		@Override
 		public void configure(org.apache.cayenne.di.Binder binder) {
 			binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");

@@ -19,7 +19,6 @@ import ish.oncourse.services.tag.ITagService;
 import ish.oncourse.ui.services.UIModule;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
@@ -37,12 +36,6 @@ import static org.mockito.Mockito.*;
 
 @SubModule({ ModelModule.class, ServiceModule.class, UIModule.class })
 public class TestModule {
-
-    public static void contributeApplicationDefaults(
-            MappedConfiguration<String, String> configuration) {
-        //we need to use SECURE_ENABLED=false because  PageTester does not support secure handling
-        configuration.add(SymbolConstants.SECURE_ENABLED, "false");
-    }
 
 
     public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {

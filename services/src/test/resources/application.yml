@@ -1,14 +1,14 @@
 jetty:
   context: /services
   connector:
-    port: 8302
+    port: 9091
     host: 127.0.0.1
 jdbc:
-  ish:
-    url: jdbc:mysql://localhost:3306/w2test_college?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false
+  willow:
+    url: "jdbc:derby:memory:oncourse;create=true"
     username: user
     password: password
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: org.apache.derby.jdbc.EmbeddedDriver
     testWhileIdle: true
     validationQuery: SELECT 1
     validationInterval: 30000

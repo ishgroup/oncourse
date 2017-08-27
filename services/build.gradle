@@ -31,7 +31,6 @@ dependencies {
 	compile 'io.bootique.cayenne:bootique-cayenne'
 	compile 'io.bootique.tapestry:bootique-tapestry'
 
-	compile "org.eclipse.jetty:jetty-jndi:$jettyVersion"
 
 	compile project(':common:common-model')
 	
@@ -77,6 +76,9 @@ dependencies {
 
 
     testCompile 'wsdl4j:wsdl4j:1.6.3'
+	testCompile 'org.jodd:jodd-http:+'
+	testCompile 'org.apache.derby:derby:10.13.1.1'
+
 	// The odd next line is to work around gradle pulling in the wrong configuration
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile (project(path: ':common:common-test', configuration: 'testFixtures')) {

@@ -69,22 +69,7 @@ public class TestServer {
 		server.setConnectors(new Connector[]{connector});
 
 
-//		WebAppContext context = new WebAppContext();
-//		context.setServer(server);
-//		context.setContextPath(contextPath);
-		//context.setWar(warFilePath);
-
-		//Note: Set WAR assumes all resources etc in place like genuine WAR,
-		//in our case resources scattered across so use the following instead:
-//		context.setResourceBase(resourseBase);
-//		context.setDescriptor(webPath + webXmlFilePath);
-//		server.setHandler(context);
-
 		try {
-			//this is local workaround to pass the tests with this settings
-			//System.setProperty("https.proxyHost", "fish.ish.com.au");
-			//System.setProperty("https.proxyPort", "8080");
-
 			InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 			server.start();
 		} catch (Exception e) {
@@ -99,13 +84,10 @@ public class TestServer {
 		logger.info("[start] Started Server @ {}:{}", host, port);
 		logger.info("[start] Server Ready & Running - {}", server.isRunning());
 
-		Runnable runnable = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					server.join();
-				} catch (InterruptedException e) {
-				}
+		Runnable runnable = () -> {
+			try {
+				server.join();
+			} catch (InterruptedException e) {
 			}
 		};
 

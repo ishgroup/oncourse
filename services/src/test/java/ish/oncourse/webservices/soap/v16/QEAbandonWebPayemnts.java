@@ -9,8 +9,6 @@ import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -21,18 +19,11 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 import org.apache.commons.lang.StringUtils;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.ReplacementDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -45,37 +36,23 @@ public class QEAbandonWebPayemnts extends QEPaymentProcessTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEAbandonWebPayemntsDataSet.xml";
 	private Date current = new Date();
 
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
-	}
-
 
 	@Before
-	public void setup() throws Exception {
-		serviceTest = new ServiceTest();
-		serviceTest.initTest("ish.oncourse.webservices", "services", PaymentServiceTestModule.class);
-		tester = serviceTest.getPageTester();
-		InputStream st = RealWSTransportTest.class.getClassLoader().getResourceAsStream(getDataSetFile());
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet);
-		replacementDataSet.addReplacementObject("[now]", current);
-		DataSource onDataSource = ServiceTest.getDataSource("jdbc/oncourse");
-		DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, replacementDataSet);
-		cayenneService = serviceTest.getService(ICayenneService.class);
+	public void before() throws Exception {
+		testEnv = new V16TestEnv(DEFAULT_DATASET_XML, Collections.singletonMap("[now]", current));
+		testEnv.start();
 	}
 
 	@Test
 	public void test() throws Exception {
-		authenticate();
+		testEnv.authenticate();
 		// prepare the stubs for replication
-		final GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		final GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
+		final GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
+		final GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());
 		fillQERequest(transaction, parametersMap);
-		getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
+		testEnv.getPaymentPortType().processPayment(testEnv.castGenericTransactionGroup(transaction), testEnv.castGenericParametersMap(parametersMap));
 
-		ObjectContext context = cayenneService.newContext();
+		ObjectContext context = testEnv.getCayenneService().newContext();
 		Invoice invoice = SelectById.query(Invoice.class, 10l).selectOne(context);
 		assertEquals(EnrolmentStatus.FAILED, invoice.getInvoiceLines().get(0).getEnrolment().getStatus());
 		assertEquals(Money.ZERO, invoice.getAmountOwing());

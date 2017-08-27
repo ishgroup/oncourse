@@ -21,6 +21,9 @@ import static org.springframework.web.context.ContextLoader.CONFIG_LOCATION_PARA
  * Date: 26/8/17
  */
 public class ServicesTapestryFilter implements Filter {
+
+	public static final String SERVICES_APP_PACKAGE = "ish.oncourse.webservices";
+
 	private Injector injector;
 
 	ServicesTapestryFilter(Injector injector) {
@@ -39,7 +42,7 @@ public class ServicesTapestryFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		filterConfig.getServletContext().setInitParameter(TAPESTRY_APP_PACKAGE_PARAM, "ish.oncourse.webservices");
+		filterConfig.getServletContext().setInitParameter(TAPESTRY_APP_PACKAGE_PARAM, SERVICES_APP_PACKAGE);
 		filterConfig.getServletContext().setInitParameter(CONFIG_LOCATION_PARAM, "classpath:application-context.xml");
 		filterConfig.getServletContext().setInitParameter(PRODUCTION_MODE, Boolean.TRUE.toString());
 		filter.init(filterConfig);

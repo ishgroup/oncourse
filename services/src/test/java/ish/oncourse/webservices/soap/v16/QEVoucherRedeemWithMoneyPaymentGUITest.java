@@ -155,51 +155,51 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 	}
 
 	protected void testFailedGUICases() throws Exception {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
 
-		checkQueueBeforeProcessing(context);
+		testEnv.checkQueueBeforeProcessing(context);
 
 		GenericTransactionGroup transaction = processPayment();
 
 		String sessionId = checkResponseAndReceiveSessionId(transaction);
 
-		checkQueueAfterProcessing(context);
+		testEnv.checkQueueAfterProcessing(context);
 
-		transaction = getPaymentStatus(sessionId);
+		transaction = testEnv.getPaymentStatus(sessionId);
 
-		checkNotProcessedResponse(transaction);
+		testEnv.checkNotProcessedResponse(transaction);
 
 		//call page processing
 		testRenderPaymentPageWithReverseInvoice(sessionId);
 
 		checkAsyncReplication(context);
 
-		transaction = getPaymentStatus(sessionId);
+		transaction = testEnv.getPaymentStatus(sessionId);
 
 		checkProcessedResponse(transaction);
 	}
 
 	protected void testSuccessGUICases() throws Exception {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
 
-		checkQueueBeforeProcessing(context);
+		testEnv.checkQueueBeforeProcessing(context);
 
 		GenericTransactionGroup transaction = processPayment();
 
 		String sessionId = checkResponseAndReceiveSessionId(transaction);
 
-		checkQueueAfterProcessing(context);
+		testEnv.checkQueueAfterProcessing(context);
 
-		transaction = getPaymentStatus(sessionId);
+		transaction = testEnv.getPaymentStatus(sessionId);
 
-		checkNotProcessedResponse(transaction);
+		testEnv.checkNotProcessedResponse(transaction);
 
 		//call page processing
 		renderPaymentPageWithSuccessProcessing(sessionId);
 
 		checkAsyncReplication(context);
 
-		transaction = getPaymentStatus(sessionId);
+		transaction = testEnv.getPaymentStatus(sessionId);
 
 		checkProcessedResponse(transaction);
 	}

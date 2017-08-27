@@ -95,6 +95,7 @@ import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.*;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
+import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.jobs.PaymentInExpireJob;
 import ish.oncourse.webservices.jobs.SMSJob;
 import ish.oncourse.webservices.jobs.UpdateAmountOwingJob;
@@ -318,7 +319,7 @@ public class AppModule {
 		public IJMXInitService buildService(ServiceResources resources) {
 			ApplicationGlobals applicationGlobals = resources.getService(ApplicationGlobals.class);
 			DataSourceFactory dataSourceFactory = resources.getService(Injector.class).getInstance(DataSourceFactory.class);
-			DataSource dataSource = dataSourceFactory.forName("ish");
+			DataSource dataSource = dataSourceFactory.forName(ServicesModule.DATA_SOURCE_NAME);
 			RegistryShutdownHub hub = resources.getService(RegistryShutdownHub.class);
 
 			JMXInitService jmxService = new JMXInitService(applicationGlobals, dataSource);

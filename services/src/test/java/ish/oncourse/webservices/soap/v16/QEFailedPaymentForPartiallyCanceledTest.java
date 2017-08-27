@@ -11,6 +11,7 @@ import ish.oncourse.webservices.v16.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v16.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,8 +21,10 @@ import static org.junit.Assert.*;
 public class QEFailedPaymentForPartiallyCanceledTest extends QEPaymentProcess8CaseGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase8Dataset.xml";
 
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
+	@Before
+	public void before() throws Exception {
+		testEnv = new V16TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
 	}
 
 	@Override
@@ -44,13 +47,13 @@ public class QEFailedPaymentForPartiallyCanceledTest extends QEPaymentProcess8Ca
 				invoiceLinesFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				enrolmentsFound++;
-			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				membershipsFound++;
-			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				vouchersFound++;
-			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				articlesFound++;
-			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				contactFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
@@ -83,7 +86,7 @@ public class QEFailedPaymentForPartiallyCanceledTest extends QEPaymentProcess8Ca
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((GenericPaymentInStub) stub).getStatus()), true);
+							((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getAngelId() == 10l) {
@@ -94,42 +97,42 @@ public class QEFailedPaymentForPartiallyCanceledTest extends QEPaymentProcess8Ca
 					assertEquals("Oncourse enrollment should be refunded after expiration", EnrolmentStatus.CANCELLED, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((GenericEnrolmentStub)stub).getStatus()), true);
+							((GenericEnrolmentStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
 				if (stub.getAngelId() != 10l) {
 					assertFalse(String.format("Unexpected invoice stub with willowid= %s and angelid= %s found in a queue",
-						stub.getWillowId(), stub.getAngelId()), true);
+							stub.getWillowId(), stub.getAngelId()), true);
 				}
 			} else if (INVOICE_LINE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				if ((stub.getAngelId() != 10l) && (stub.getAngelId() != 11l)
 						&& (stub.getAngelId() != 2l) && (stub.getAngelId() != 3l) && (stub.getAngelId() != 4l)) {
 					assertFalse(String.format("Unexpected invoiceline stub with willowid= %s and angelid= %s found in a queue",
-						stub.getWillowId(), stub.getAngelId()), true);
+							stub.getWillowId(), stub.getAngelId()), true);
 				}
-			}  else if (stub instanceof VoucherStub) {
+			} else if (stub instanceof VoucherStub) {
 				if (stub.getAngelId().equals(2l)) {
 					assertEquals("Voucher status should be active because success enrolment in the same invoice can not be canceled",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Voucher with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((VoucherStub) stub).getStatus()), true);
+							((VoucherStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof ArticleStub) {
 				if (stub.getAngelId().equals(3l)) {
 					assertEquals("Article status should be active because success enrolment in the same invoice can not be canceled",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Article with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((ArticleStub) stub).getStatus()), true);
+							((ArticleStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof MembershipStub) {
 				if (stub.getAngelId().equals(1l)) {
 					assertEquals("Membership status should be active because success enrolment in the same invoice can not be canceled",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Membership with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((MembershipStub) stub).getStatus()), true);
+							((MembershipStub) stub).getStatus()), true);
 				}
 			}
 		}
@@ -159,43 +162,27 @@ public class QEFailedPaymentForPartiallyCanceledTest extends QEPaymentProcess8Ca
 				}
 			} else if (MEMBERSHIP_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Membership status should not change after this processing",
-						ProductStatus.NEW.getDatabaseValue(), ((MembershipStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 			} else if (VOUCHER_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Voucher status should not change after this processing",
-						ProductStatus.NEW.getDatabaseValue(), ((VoucherStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 			} else if (ARTICLE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Article status should not change after this processing",
-						ProductStatus.NEW.getDatabaseValue(), ((ArticleStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 			}
 		}
 		return sessionId;
 	}
 
+
 	@Test
 	public void testQEKeepInvoice() throws Exception {
-		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		checkQueueBeforeProcessing(context);
-
-		authenticate();
-		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
-
-		fillv16PaymentStubsForCases8(transaction, parametersMap);
-		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
-		//check the response, validate the data and receive the sessionid
-		String sessionId = checkResponseAndReceiveSessionId(transaction);
-		checkQueueAfterProcessing(context);
-		//check the status via service
-		checkNotProcessedResponse(getPaymentStatus(sessionId));
-		//call page processing
-		renderPaymentPageWithKeepInvoiceProcessing(sessionId);
-		//check that async replication works correct
-		checkAsyncReplication(context);
-
-		//check the status via service when processing complete
-		checkProcessedResponse(getPaymentStatus(sessionId));
+		new V16TestEnv.TestCase(
+				testEnv,
+				this::fillv16PaymentStubsForCases8,
+				this::checkResponseAndReceiveSessionId,
+				this.testEnv::renderPaymentPageWithKeepInvoiceProcessing,
+				this::checkAsyncReplication,
+				this::checkProcessedResponse).test();
 	}
 }

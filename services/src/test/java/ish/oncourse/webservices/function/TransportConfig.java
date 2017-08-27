@@ -1,9 +1,12 @@
-package ish.oncourse.webservices.soap;
+package ish.oncourse.webservices.function;
 
+import ish.oncourse.webservices.soap.StubPopulator;
 import ish.oncourse.webservices.util.GenericReferenceStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.SupportedVersions;
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.bus.spring.SpringBusFactory;
@@ -19,7 +22,6 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 
@@ -27,9 +29,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.assertTrue;
 
@@ -39,44 +43,50 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 		ReferencePortType,
 		ReplicationPortType,
 		PaymentPortType> {
-	public static final GZIPInInterceptor IN = new GZIPInInterceptor();
-	public static final GZIPOutInterceptor OUT = new GZIPOutInterceptor();
+	private static final GZIPInInterceptor IN = new GZIPInInterceptor();
+	private static final GZIPOutInterceptor OUT = new GZIPOutInterceptor();
 
-	public static final long DEFAULT_TIMEOUT = 1000l * 60 * 5;
+	private static final long DEFAULT_TIMEOUT = 1000l * 60 * 5;
 	public static final long PAYMENT_SERVICE_TIMEOUT = 1000l * 60 * 25;
 
 
-	public static final String REPLICATION_SERVICE_NAME = "ReplicationService";
-	public static final String REFERENCE_SERVICE_NAME = "ReferenceService";
+	private static final String REPLICATION_SERVICE_NAME = "ReplicationService";
+	private static final String REFERENCE_SERVICE_NAME = "ReferenceService";
 
-	public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.%s.stubs.replication";
+	private static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.%s.stubs.replication";
 	public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.%s.stubs.reference";
 
-	public static final String TRANSACTION_GROUP_CLASS_NAME = PACKAGE_NAME_REPLICATION_STUBS + ".TransactionGroup";
-	public static final String REPLICATION_STUB_CLASS_NAME = PACKAGE_NAME_REPLICATION_STUBS + ".ReplicationStub";
-	public static final String REFERENCE_STUB_CLASS_NAME = PACKAGE_NAME_REFERENCE_STUBS + ".ReferenceStub";
+	private static final String TRANSACTION_GROUP_CLASS_NAME = PACKAGE_NAME_REPLICATION_STUBS + ".TransactionGroup";
+	private static final String REPLICATION_STUB_CLASS_NAME = PACKAGE_NAME_REPLICATION_STUBS + ".ReplicationStub";
+	private static final String REFERENCE_STUB_CLASS_NAME = PACKAGE_NAME_REFERENCE_STUBS + ".ReferenceStub";
 
-	public static final String SOAP_PACKAGE = "ish.oncourse.webservices.soap.%s";
-	
-	public static final String REFERENCE_PORT_CLASS_NAME  = SOAP_PACKAGE + ".ReferencePortType";
-	public static final String PAYMENT_PORT_CLASS_NAME  = SOAP_PACKAGE + ".PaymentPortType";
-	public static final String REPLICATION_PORT_CLASS_NAME = SOAP_PACKAGE + ".ReplicationPortType";
+	private static final String SOAP_PACKAGE = "ish.oncourse.webservices.soap.%s";
 
-	public static final String REPLICATION_END_POINT = "/services/%s/replication";
-	public static final String PAYMENT_END_POINT = "/services/%s/payment";
-	public static final String REFERENCE_END_POINT = "/services/%s/reference";
+	private static final String REFERENCE_PORT_CLASS_NAME = SOAP_PACKAGE + ".ReferencePortType";
+	private static final String PAYMENT_PORT_CLASS_NAME = SOAP_PACKAGE + ".PaymentPortType";
+	private static final String REPLICATION_PORT_CLASS_NAME = SOAP_PACKAGE + ".ReplicationPortType";
 
-	public static final String REFERENCE_NAMESPACE_URI = "http://ref.%s.soap.webservices.oncourse.ish/";
-	public static final String REPLICATION_NAMESPACE_URI = "http://ref.%s.soap.webservices.oncourse.ish/";
+	private static final String REPLICATION_END_POINT = "/%s/replication";
+	private static final String PAYMENT_END_POINT = "/%s/payment";
+	private static final String REFERENCE_END_POINT = "/%s/reference";
+
+	private static final String REFERENCE_NAMESPACE_URI = "http://ref.%s.soap.webservices.oncourse.ish/";
+	private static final String REPLICATION_NAMESPACE_URI = "http://repl.%s.soap.webservices.oncourse.ish/";
 
 	private SupportedVersions replicationVersion;
 	private SupportedVersions referenceVersion;
+	private URI serverURI;
+
+	private Supplier<String> securityCode;
+	private Supplier<Long> communicationKey;
+
+	private Path replicationPath;
+	private Path paymentPath;
+	private Path referencePath;
 
 	static {
 		System.getProperties().put("org.apache.cxf.stax.allowInsecureParser", "true");
 	}
-
-	private TestServer server;
 
 	private Class<TransactionGroup> transactionGroupClass;
 	private Class<ReplicationStub> replicationStubClass;
@@ -124,11 +134,10 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 
-	public Client initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
+	private Client initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
 		bindingProvider.getRequestContext().put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
 		bindingProvider.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				String.format("%s%s", server.getServerUrl(), url));
-
+				String.format("%s%s", serverURI, url));
 
 		Client client = ClientProxy.getClient(bindingProvider);
 
@@ -147,19 +156,11 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 		conduit.setClient(httpClientPolicy);
 
 		List<Header> headers = new ArrayList<>();
-		headers.add(new Header(new QName("SecurityCode"), getSecurityCode(), new JAXBDataBinding(String.class)));
+		headers.add(new Header(new QName("SecurityCode"), securityCode.get(), new JAXBDataBinding(String.class)));
 		headers.add(new Header(new QName("AngelVersion"), "angelVersion", new JAXBDataBinding(String.class)));
-		headers.add(new Header(new QName("CommunicationKey"), getCommunicationKey(), new JAXBDataBinding(String.class)));
+		headers.add(new Header(new QName("CommunicationKey"), communicationKey.get(), new JAXBDataBinding(String.class)));
 		bindingProvider.getRequestContext().put(Header.HEADER_LIST, headers);
 		return client;
-	}
-
-	protected Long getCommunicationKey() {
-		return Long.MAX_VALUE;
-	}
-
-	protected String getSecurityCode() {
-		return "securityCode";
 	}
 
 	public <T> boolean containsStubBeanName(String stubBeanName, List<T> stubs) {
@@ -194,16 +195,16 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 
-	protected PaymentPortType getPaymentPortType() {
+	public PaymentPortType getPaymentPortType() {
 		return paymentPortType;
 	}
 
 
-	protected ReplicationPortType getReplicationPortType() {
+	public ReplicationPortType getReplicationPortType() {
 		return replicationPortType;
 	}
 
-	public <P> P getPortType(String endpointPath, QName serviceName, Class<P> portClass) {
+	private <P> P getPortType(String endpointPath, QName serviceName, Class<P> portClass) {
 		try {
 			Service service = getService(endpointPath, serviceName);
 			P portType = service.getPort(portClass);
@@ -215,11 +216,24 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 
+	public boolean pingReplicationPort() {
+		return replicationPath.ping();
+	}
+
+	public boolean pingReferencePort() {
+		return referencePath.ping();
+	}
+
+	public boolean pingPaymentPort() {
+		return paymentPath.ping();
+	}
+
+
 	private Service getService(String endpointPath, QName serviceName) {
 		try {
 			createBus();
 			// create service
-			URL wsdlURL = new URL(String.format("%s%s", server.getServerUrl(), endpointPath) + "?wsdl");
+			URL wsdlURL = new URL(String.format("%s%s", serverURI, endpointPath) + "?wsdl");
 
 			return Service.create(wsdlURL, serviceName);
 		} catch (Exception e) {
@@ -241,30 +255,48 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 			ReferencePortType,
 			ReplicationPortType, PaymentPortType> init() {
 		try {
-			String replicationVersionString = replicationVersion.name().toLowerCase();
-			String referenceVersionString = referenceVersion.name().toLowerCase();
-			packageNameReplicationStubs = String.format(PACKAGE_NAME_REPLICATION_STUBS, replicationVersionString);
-			packageNameReferenceStubs = String.format(PACKAGE_NAME_REFERENCE_STUBS, referenceVersion);
-			transactionGroupClass = (Class<TransactionGroup>) getClass().getClassLoader().loadClass(String.format(TRANSACTION_GROUP_CLASS_NAME, replicationVersionString));
-			replicationStubClass = (Class<ReplicationStub>) getClass().getClassLoader().loadClass(String.format(REPLICATION_STUB_CLASS_NAME, replicationVersionString));
-			referenceStubClass = (Class<ReferenceStub>) getClass().getClassLoader().loadClass(String.format(REFERENCE_STUB_CLASS_NAME, referenceVersionString));
+			initReferencePort();
 
-			Class<ReferencePortType> referencePortTypeClass =  (Class<ReferencePortType>) getClass().getClassLoader().loadClass(String.format(REFERENCE_PORT_CLASS_NAME, referenceVersionString));
-			referencePortType = getPortType(String.format(REFERENCE_END_POINT, referenceVersion), new QName(String.format(REFERENCE_NAMESPACE_URI, referenceVersion), REFERENCE_SERVICE_NAME), referencePortTypeClass);
+			initPaymentPort();
 
-			Class<PaymentPortType> paymentPortTypeClass = (Class<PaymentPortType>) getClass().getClassLoader().loadClass(String.format(PAYMENT_PORT_CLASS_NAME, replicationVersionString));
-			paymentPortType = getPortType(String.format(PAYMENT_END_POINT, replicationVersion), new QName(String.format(REPLICATION_NAMESPACE_URI, replicationVersion), REPLICATION_SERVICE_NAME), paymentPortTypeClass);
-			
-			Class<ReplicationPortType> replicationPortTypeClass = (Class<ReplicationPortType>) getClass().getClassLoader().loadClass(String.format(REPLICATION_PORT_CLASS_NAME, replicationVersionString));
-			replicationPortType = getPortType(String.format(REPLICATION_END_POINT, replicationVersion), new QName(String.format(REPLICATION_NAMESPACE_URI, replicationVersion), REPLICATION_SERVICE_NAME), replicationPortTypeClass);
-	
+			initReplicationPort();
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		
+
 		return this;
 	}
-	
+
+	private void initReplicationPort() throws ClassNotFoundException {
+		String replicationVersionString = replicationVersion.name().toLowerCase();
+		replicationPath = new Path(serverURI, replicationVersion, REPLICATION_END_POINT);
+
+		packageNameReplicationStubs = String.format(PACKAGE_NAME_REPLICATION_STUBS, replicationVersionString);
+		transactionGroupClass = (Class<TransactionGroup>) getClass().getClassLoader().loadClass(String.format(TRANSACTION_GROUP_CLASS_NAME, replicationVersionString));
+		replicationStubClass = (Class<ReplicationStub>) getClass().getClassLoader().loadClass(String.format(REPLICATION_STUB_CLASS_NAME, replicationVersionString));
+
+		Class<ReplicationPortType> replicationPortTypeClass = (Class<ReplicationPortType>) getClass().getClassLoader().loadClass(String.format(REPLICATION_PORT_CLASS_NAME, replicationVersionString));
+		replicationPortType = getPortType(replicationPath.path(), new QName(String.format(REPLICATION_NAMESPACE_URI, replicationVersionString), REPLICATION_SERVICE_NAME), replicationPortTypeClass);
+	}
+
+	private void initPaymentPort() throws ClassNotFoundException {
+		String replicationVersionString = replicationVersion.name().toLowerCase();
+
+		paymentPath = new Path(serverURI, replicationVersion, PAYMENT_END_POINT);
+		Class<PaymentPortType> paymentPortTypeClass = (Class<PaymentPortType>) getClass().getClassLoader().loadClass(String.format(PAYMENT_PORT_CLASS_NAME, replicationVersionString));
+		paymentPortType = getPortType(paymentPath.path(), new QName(String.format(REPLICATION_NAMESPACE_URI, replicationVersionString), REPLICATION_SERVICE_NAME), paymentPortTypeClass);
+	}
+
+	private void initReferencePort() throws ClassNotFoundException {
+		referencePath = new Path(serverURI, referenceVersion, REFERENCE_END_POINT);
+
+		String referenceVersionString = referenceVersion.name().toLowerCase();
+		packageNameReferenceStubs = String.format(PACKAGE_NAME_REFERENCE_STUBS, referenceVersionString);
+		referenceStubClass = (Class<ReferenceStub>) getClass().getClassLoader().loadClass(String.format(REFERENCE_STUB_CLASS_NAME, referenceVersionString));
+		Class<ReferencePortType> referencePortTypeClass = (Class<ReferencePortType>) getClass().getClassLoader().loadClass(String.format(REFERENCE_PORT_CLASS_NAME, referenceVersionString));
+		referencePortType = getPortType(referencePath.path(), new QName(String.format(REFERENCE_NAMESPACE_URI, referenceVersionString), REFERENCE_SERVICE_NAME), referencePortTypeClass);
+	}
+
 
 	public TransportConfig<TransactionGroup,
 			ReplicationStub,
@@ -288,9 +320,67 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
-			ReplicationPortType, PaymentPortType> server(TestServer server) {
-		this.server = server;
+			ReplicationPortType, PaymentPortType> securityCode(Supplier<String> securityCode) {
+		this.securityCode = securityCode;
 		return this;
+	}
+
+	public TransportConfig<TransactionGroup,
+			ReplicationStub,
+			ReferenceStub,
+			ReferencePortType,
+			ReplicationPortType, PaymentPortType> communicationKey(Supplier<Long> communicationKey) {
+		this.communicationKey = communicationKey;
+		return this;
+	}
+
+	public TransportConfig<TransactionGroup,
+			ReplicationStub,
+			ReferenceStub,
+			ReferencePortType,
+			ReplicationPortType, PaymentPortType> serverURI(URI serverURI) {
+		this.serverURI = serverURI;
+		return this;
+	}
+
+	public Long getCommunicationKey() {
+		return communicationKey.get();
+	}
+
+	public String getSecurityCode() {
+		return securityCode.get();
+	}
+
+
+	public static class Path {
+		private URI serverURI;
+		private SupportedVersions version;
+		private String endPoint;
+
+		public Path(URI serverURI, SupportedVersions version, String endPoint) {
+			this.serverURI = serverURI;
+			this.version = version;
+			this.endPoint = endPoint;
+		}
+
+		public String path() {
+			return format(endPoint, version);
+		}
+
+		private String format(String template, SupportedVersions version) {
+			return String.format(template, version.name().toLowerCase());
+		}
+
+		public String wsdl() {
+			return String.format("%s%s?wsdl", serverURI, path());
+		}
+
+		public boolean ping() {
+			HttpRequest httpRequest = HttpRequest.get(wsdl());
+			HttpResponse response = httpRequest.send();
+			return response.statusCode() == 200;
+		}
+
 	}
 }
 

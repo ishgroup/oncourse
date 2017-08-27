@@ -6,8 +6,10 @@ package ish.oncourse.webservices.soap.v16;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.TypesUtil;
-import ish.oncourse.webservices.util.*;
-import org.apache.cayenne.ObjectContext;
+import ish.oncourse.webservices.util.GenericEnrolmentStub;
+import ish.oncourse.webservices.util.GenericPaymentInStub;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +41,7 @@ public class QEFailedPaymentPlanKeepInvoicesTest extends QEPaymentPlanGUITest {
 					assertEquals("Oncourse enrollment should be success after processing", EnrolmentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-							((GenericEnrolmentStub)stub).getStatus()), true);
+							((GenericEnrolmentStub) stub).getStatus()), true);
 				}
 			}
 		}
@@ -47,32 +49,13 @@ public class QEFailedPaymentPlanKeepInvoicesTest extends QEPaymentPlanGUITest {
 
 	@Test
 	public void testPaymentPlanKeepInvoices() throws Exception {
-		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		checkQueueBeforeProcessing(context);
-		authenticate();
-		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
-
-		fillv16PaymentStubs(transaction, parametersMap);
-		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
-
-		//check the response, validate the data and receive the sessionid
-		String sessionId = checkResponseAndReceiveSessionId(transaction);
-		checkQueueAfterProcessing(context);
-
-		//check the status via service
-		checkNotProcessedResponse(getPaymentStatus(sessionId));
-
-		//call page processing
-		renderPaymentPageWithKeepInvoiceProcessing(sessionId);
-
-		//check that async replication works correct
-		checkAsyncReplication(context);
-
-		//check the status via service when processing complete
-		checkProcessedResponse(getPaymentStatus(sessionId));
+		new V16TestEnv.TestCase(
+				testEnv,
+				this::fillv16PaymentStubs,
+				this::checkResponseAndReceiveSessionId,
+				this.testEnv::renderPaymentPageWithKeepInvoiceProcessing,
+				this::checkAsyncReplication,
+				this::checkProcessedResponse
+		).test();
 	}
 }

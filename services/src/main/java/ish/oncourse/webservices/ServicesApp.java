@@ -17,17 +17,18 @@ import org.apache.xmlbeans.SystemProperties;
 public class ServicesApp {
 	public static void main(String[] args) {
 		Configuration.configure();
-		start(args);
+		Bootique bootique = init(args);
+		bootique.exec();
 	}
 
-	public static void start(String[] args) {
+	public static Bootique init(String[] args) {
 		SystemProperties.getProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
 		Bootique bootique = Bootique.app(args).args("--server", "--config=classpath:application.yml");
 		bootique.module(new JdbcModuleProvider());
 		bootique.module(new CayenneModuleProvider());
 		bootique.module(new JettyModuleProvider());
 		bootique.module(ServicesModule.class);
-		bootique.exec();
+		return bootique;
 	}
 }
 

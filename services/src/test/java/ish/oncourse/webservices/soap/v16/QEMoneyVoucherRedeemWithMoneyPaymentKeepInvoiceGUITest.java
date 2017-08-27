@@ -4,6 +4,7 @@ import ish.common.types.*;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v16.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -14,9 +15,10 @@ import static org.junit.Assert.assertFalse;
 public class QEMoneyVoucherRedeemWithMoneyPaymentKeepInvoiceGUITest extends QEMoneyVoucherRedeemWithMoneyPaymentTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEMoneyVoucherRedeemWithMoneyPaymentReverseInvoiceDataSet.xml";
 
-	@Override
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
+	@Before
+	public void before() throws Exception {
+		testEnv = new V16TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
 	}
 
 	@Override

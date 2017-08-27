@@ -5,7 +5,10 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.util.GenericEnrolmentStub;
+import ish.oncourse.webservices.util.GenericPaymentInStub;
+import ish.oncourse.webservices.util.GenericReplicationStub;
+import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v16.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v16.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v16.stubs.replication.VoucherStub;
@@ -26,7 +29,7 @@ public class QESuccessPaymentTest extends QEPaymentProcess1_4CasesGUITest {
 		assertFalse("Queue should not be empty after page processing", queuedRecords.isEmpty());
 		assertEquals("Queue should contain 11 records.", 11, queuedRecords.size());
 		int paymentsFound = 0, paymentLinesFound = 0, invoicesFound = 0, invoiceLinesFound = 0,
-			enrolmentsFound = 0, membershipsFound = 0, vouchersFound = 0, articlesFound = 0;
+				enrolmentsFound = 0, membershipsFound = 0, vouchersFound = 0, articlesFound = 0;
 		for (QueuedRecord record : queuedRecords) {
 			if (PAYMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				paymentsFound++;
@@ -38,11 +41,11 @@ public class QESuccessPaymentTest extends QEPaymentProcess1_4CasesGUITest {
 				invoiceLinesFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				enrolmentsFound++;
-			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				membershipsFound++;
-			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				vouchersFound++;
-			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				articlesFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
@@ -71,7 +74,7 @@ public class QESuccessPaymentTest extends QEPaymentProcess1_4CasesGUITest {
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((GenericPaymentInStub) stub).getStatus()), true);
+							((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getAngelId() == 1l) {
@@ -79,31 +82,31 @@ public class QESuccessPaymentTest extends QEPaymentProcess1_4CasesGUITest {
 					assertEquals("Oncourse enrollment should be success after processing", EnrolmentStatus.SUCCESS, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((GenericEnrolmentStub)stub).getStatus()), true);
+							((GenericEnrolmentStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof VoucherStub) {
 				if (stub.getAngelId().equals(2l)) {
 					assertEquals("Voucher status should be active",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Voucher with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((VoucherStub) stub).getStatus()), true);
+							((VoucherStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof ArticleStub) {
 				if (stub.getAngelId().equals(3l)) {
 					assertEquals("Article status should be active",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Article with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((ArticleStub) stub).getStatus()), true);
+							((ArticleStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof MembershipStub) {
 				if (stub.getAngelId().equals(1l)) {
 					assertEquals("Membership status should be active",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Membership with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((MembershipStub) stub).getStatus()), true);
+							((MembershipStub) stub).getStatus()), true);
 				}
 			}
 		}
@@ -123,16 +126,16 @@ public class QESuccessPaymentTest extends QEPaymentProcess1_4CasesGUITest {
 				assertEquals("Payment status should not change after this processing", PaymentStatus.IN_TRANSACTION.getDatabaseValue(), payment.getStatus());
 			} else if (ENROLMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.IN_TRANSACTION.name(),
-					((GenericEnrolmentStub) stub).getStatus());
+						((GenericEnrolmentStub) stub).getStatus());
 			} else if (MEMBERSHIP_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Membership status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((MembershipStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 			} else if (VOUCHER_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Voucher status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((VoucherStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 			} else if (ARTICLE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Article status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((ArticleStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 			}
 		}
 		return sessionId;
@@ -140,27 +143,12 @@ public class QESuccessPaymentTest extends QEPaymentProcess1_4CasesGUITest {
 
 	@Test
 	public void testSuccessQE() throws Exception {
-		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		checkQueueBeforeProcessing(context);
-		authenticate();
-		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
-		fillv16PaymentStubs(transaction, parametersMap);
-		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
-		//check the response, validate the data and receive the sessionid
-		String sessionId = checkResponseAndReceiveSessionId(transaction);
-		checkQueueAfterProcessing(context);
-		//check the status via service
-		checkNotProcessedResponse(getPaymentStatus(sessionId));
-		//call page processing
-		renderPaymentPageWithSuccessProcessing(sessionId);
-		//check that async replication works correct
-		checkAsyncReplication(context);
-		//check the status via service when processing complete
-		checkProcessedResponse(getPaymentStatus(sessionId));
+		new V16TestEnv.TestCase(testEnv,
+				this::fillv16PaymentStubs,
+				this::checkResponseAndReceiveSessionId,
+				this::renderPaymentPageWithSuccessProcessing,
+				this::checkAsyncReplication,
+				this::checkProcessedResponse).test();
 	}
-	
 }
+

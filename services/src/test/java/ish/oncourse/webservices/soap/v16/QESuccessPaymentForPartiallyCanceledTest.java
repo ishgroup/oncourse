@@ -11,6 +11,7 @@ import ish.oncourse.webservices.v16.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v16.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,8 +21,10 @@ import static org.junit.Assert.*;
 public class QESuccessPaymentForPartiallyCanceledTest extends QEPaymentProcess8CaseGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessCase8Dataset.xml";
 
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
+	@Before
+	public void before() throws Exception {
+		testEnv = new V16TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
 	}
 
 	@Override
@@ -166,26 +169,13 @@ public class QESuccessPaymentForPartiallyCanceledTest extends QEPaymentProcess8C
 
 	@Test
 	public void testSuccessQE() throws Exception {
-		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		checkQueueBeforeProcessing(context);
-		authenticate();
-		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
-		fillv16PaymentStubsForCases8(transaction, parametersMap);
-		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
-		//check the response, validate the data and receive the sessionid
-		String sessionId = checkResponseAndReceiveSessionId(transaction);
-		checkQueueAfterProcessing(context);
-		//check the status via service
-		checkNotProcessedResponse(getPaymentStatus(sessionId));
-		//call page processing
-		renderPaymentPageWithSuccessProcessing(sessionId);
-		//check that async replication works correct
-		checkAsyncReplication(context);
-		//check the status via service when processing complete
-		checkProcessedResponse(getPaymentStatus(sessionId));
+		new V16TestEnv.TestCase(
+				testEnv,
+				this::fillv16PaymentStubsForCases8,
+				this::checkResponseAndReceiveSessionId,
+				this::renderPaymentPageWithSuccessProcessing,
+				this::checkAsyncReplication,
+				this::checkProcessedResponse
+		).test();
 	}
 }
