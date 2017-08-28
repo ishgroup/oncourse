@@ -53,7 +53,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		Session session = request.getSession(false);
 		assertNull("Session should be null", session);
 
-		NewPaymentProcessController controller = testEnv.getController(sessionId);
+		NewPaymentProcessController controller = testEnv.getTestEnv().getPaymentProcessController(sessionId);
 
 		PaymentIn paymentIn = controller.getModel().getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
@@ -70,7 +70,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		paymentRequest.setMonth(VALID_EXPIRY_MONTH);
 		paymentRequest.setYear(VALID_EXPIRY_YEAR);
 
-		testEnv.getController(sessionId).processRequest(paymentRequest, paymentResponse);
+		testEnv.getTestEnv().getPaymentProcessController(sessionId).processRequest(paymentRequest, paymentResponse);
 
 		assertNotNull("response should not be empty", paymentResponse.getStatus());
 		assertEquals(GetPaymentState.PaymentState.CHOOSE_ABANDON_OTHER, paymentResponse.getStatus());
@@ -100,7 +100,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		paymentResponse = new PaymentResponse();
 		paymentRequest = new PaymentRequest();
 		paymentRequest.setAction(PaymentAction.CANCEL);
-		testEnv.getController(sessionId).processRequest(paymentRequest, paymentResponse);
+		testEnv.getTestEnv().getPaymentProcessController(sessionId).processRequest(paymentRequest, paymentResponse);
 		assertNotNull("response should not be empty", paymentResponse.getStatus());
 		assertEquals(GetPaymentState.PaymentState.FAILED, paymentResponse.getStatus());
 
@@ -162,7 +162,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		paymentRequest.setMonth(VALID_EXPIRY_MONTH);
 		paymentRequest.setYear(VALID_EXPIRY_YEAR);
 
-		testEnv.getController(sessionId).processRequest(paymentRequest, paymentResponse);
+		testEnv.getTestEnv().getPaymentProcessController(sessionId).processRequest(paymentRequest, paymentResponse);
 		assertNotNull("response should not be empty", paymentResponse.getStatus());
 		assertEquals(GetPaymentState.PaymentState.SUCCESS, paymentResponse.getStatus());
 		doc = testEnv.getPageTester().renderPage("Payment/" + sessionId);

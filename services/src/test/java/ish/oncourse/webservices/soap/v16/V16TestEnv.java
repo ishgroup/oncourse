@@ -7,7 +7,6 @@ import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.payment.*;
-import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.function.TestEnv;
 import ish.oncourse.webservices.soap.TestConstants;
@@ -113,15 +112,6 @@ public class V16TestEnv {
 	}
 
 
-	public NewPaymentProcessController getController(String sessionId) {
-		return new PaymentControllerBuilder(sessionId,
-				getPageTester().getService(INewPaymentGatewayServiceBuilder.class),
-				getCayenneService(),
-				getMessages(),
-				getPageTester().getService(TestableRequest.class)).build();
-	}
-
-
 	public final void checkQueueBeforeProcessing(ObjectContext context) {
 		assertTrue("Queue should be empty before processing", ObjectSelect.query(QueuedRecord.class).select(context).isEmpty());
 	}
@@ -170,7 +160,7 @@ public class V16TestEnv {
 		paymentRequest.setYear(VALID_EXPIRY_YEAR);
 
 
-		NewPaymentProcessController controller = getController(sessionId);
+		NewPaymentProcessController controller = testEnv.getPaymentProcessController(sessionId);
 
 		PaymentIn paymentIn = controller.getModel().getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
@@ -210,7 +200,7 @@ public class V16TestEnv {
 		paymentRequest = new PaymentRequest();
 		paymentRequest.setAction(PaymentAction.CANCEL);
 		paymentResponse = new PaymentResponse();
-		getController(sessionId).processRequest(paymentRequest, paymentResponse);
+		testEnv.getPaymentProcessController(sessionId).processRequest(paymentRequest, paymentResponse);
 
 		doc = testEnv.getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
@@ -238,16 +228,6 @@ public class V16TestEnv {
 			throw new RuntimeException(replicationFault);
 		}
 	}
-
-	public final GenericTransactionGroup processPayment(GenericTransactionGroup transaction, GenericParametersMap parametersMap) {
-		try {
-			return getPaymentPortType().processPayment(castGenericTransactionGroup(transaction),
-					castGenericParametersMap(parametersMap));
-		} catch (ReplicationFault replicationFault) {
-			throw new RuntimeException(replicationFault);
-		}
-	}
-
 
 	public static class TestCase {
 		private V16TestEnv testEnv;
@@ -281,7 +261,7 @@ public class V16TestEnv {
 			GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());
 			fillStubs.accept(transaction, parametersMap);
 			//process payment
-			transaction = testEnv.processPayment(transaction, parametersMap);
+			transaction = testEnv.getTestEnv().processPayment(transaction, parametersMap);
 			//check the response, validate the data and receive the sessionid
 			String sessionId = getSessionId.apply(transaction);
 			testEnv.checkQueueAfterProcessing(context);

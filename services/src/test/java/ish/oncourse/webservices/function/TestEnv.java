@@ -8,13 +8,15 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import io.bootique.BQRuntime;
 import io.bootique.jdbc.DataSourceFactory;
+import ish.oncourse.services.payment.NewPaymentProcessController;
+import ish.oncourse.services.payment.PaymentControllerBuilder;
+import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.webservices.ServicesApp;
 import ish.oncourse.webservices.ServicesModule;
-import ish.oncourse.webservices.util.GenericParameterEntry;
-import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.util.SupportedVersions;
+import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.configuration.server.ServerRuntime;
+import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.test.PageTester;
@@ -71,9 +73,19 @@ public class TestEnv<T extends TransportConfig> {
 
 	public void start() {
 		init();
+
 		new CreateTables(serverRuntime.get(), null).create();
 		loadDataSet.load(getDataSource());
 
+		startRealServer();
+
+		startTapestry();
+
+		transportConfig = transportConfigProvider.apply(this);
+		supportedVersion = transportConfig.getReplicationVersion();
+	}
+
+	private void startRealServer() {
 		executor.execute(() -> runtime.run());
 		while (!server.isStarted()) {
 			try {
@@ -82,14 +94,13 @@ public class TestEnv<T extends TransportConfig> {
 				throw new RuntimeException(e);
 			}
 		}
+	}
 
+	private void startTapestry() {
 		pageTester = new PageTester(SERVICES_APP_PACKAGE, "app", PageTester.DEFAULT_CONTEXT_PATH, TapestryTestModule.class);
 		cayenneService = pageTester.getService(ICayenneService.class);
 		messages = mock(Messages.class);
 		when(messages.get(anyString())).thenReturn("Any string");
-
-		transportConfig = transportConfigProvider.apply(this);
-		supportedVersion = transportConfig.getReplicationVersion();
 	}
 
 	private void init() {
@@ -145,9 +156,18 @@ public class TestEnv<T extends TransportConfig> {
 		return messages;
 	}
 
+	public NewPaymentProcessController getPaymentProcessController(String sessionId) {
+		return new PaymentControllerBuilder(sessionId,
+				getPageTester().getService(INewPaymentGatewayServiceBuilder.class),
+				getCayenneService(),
+				getMessages(),
+				getPageTester().getService(TestableRequest.class)).build();
+	}
+
 	public boolean ping() {
 		return transportConfig.pingReplicationPort();
 	}
+
 
 	public void authenticate() {
 		//firstly ping the server with 10 seconds timeout
@@ -158,6 +178,11 @@ public class TestEnv<T extends TransportConfig> {
 		assertNotNull("Received communication key should not be empty", newCommunicationKey);
 		assertTrue("Communication keys should be different before and after authenticate call", oldCommunicationKey.compareTo(newCommunicationKey) != 0);
 		assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(transportConfig.getCommunicationKey()) == 0);
+	}
+
+	public final GenericTransactionGroup processPayment(GenericTransactionGroup transaction, GenericParametersMap parametersMap) {
+		return transportConfig.processPayment(transportConfig.castGenericTransactionGroup(transaction),
+				transportConfig.castGenericParametersMap(parametersMap));
 	}
 
 

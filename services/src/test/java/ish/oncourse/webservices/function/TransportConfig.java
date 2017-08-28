@@ -1,10 +1,7 @@
 package ish.oncourse.webservices.function;
 
 import ish.oncourse.webservices.soap.StubPopulator;
-import ish.oncourse.webservices.util.GenericReferenceStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.util.SupportedVersions;
+import ish.oncourse.webservices.util.*;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import org.apache.cxf.Bus;
@@ -38,6 +35,7 @@ import java.util.function.Supplier;
 import static org.junit.Assert.assertTrue;
 
 public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
+		ParametersMap extends GenericParametersMap,
 		ReplicationStub extends GenericReplicationStub,
 		ReferenceStub extends GenericReferenceStub,
 		ReferencePortType,
@@ -109,6 +107,24 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 		}
 	}
 
+	public TransactionGroup processPayment(TransactionGroup transaction, ParametersMap paymentModel) {
+		try {
+			return (TransactionGroup) getPaymentPortType().getClass()
+					.getMethod("processPayment", transaction.getClass(), paymentModel.getClass())
+					.invoke(getPaymentPortType(), transaction, paymentModel);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
+	public TransactionGroup castGenericTransactionGroup(GenericTransactionGroup transaction) {
+		return (TransactionGroup) transaction;
+	}
+
+	public ParametersMap castGenericParametersMap(GenericParametersMap parametersMap) {
+		return (ParametersMap) parametersMap;
+	}
 
 	Class getReplicationStubClass() {
 		return replicationStubClass;
@@ -261,6 +277,7 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 	public TransportConfig<TransactionGroup,
+			ParametersMap,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -310,6 +327,7 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 
 
 	public TransportConfig<TransactionGroup,
+			ParametersMap,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -319,6 +337,7 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 	public TransportConfig<TransactionGroup,
+			ParametersMap,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -328,6 +347,7 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 	public TransportConfig<TransactionGroup,
+			ParametersMap,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -337,6 +357,7 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 	public TransportConfig<TransactionGroup,
+			ParametersMap,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -346,6 +367,7 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	}
 
 	public TransportConfig<TransactionGroup,
+			ParametersMap,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
