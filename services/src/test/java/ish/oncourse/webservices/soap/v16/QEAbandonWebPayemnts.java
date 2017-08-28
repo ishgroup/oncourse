@@ -47,12 +47,13 @@ public class QEAbandonWebPayemnts extends QEPaymentProcessTest {
 	public void test() throws Exception {
 		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
-		final GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
-		final GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());
+		final GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getTestEnv().getSupportedVersion());
+		final GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getTestEnv().getSupportedVersion());
 		fillQERequest(transaction, parametersMap);
-		testEnv.getPaymentPortType().processPayment(testEnv.castGenericTransactionGroup(transaction), testEnv.castGenericParametersMap(parametersMap));
+		testEnv.getTestEnv()
+				.processPayment(transaction, parametersMap);
 
-		ObjectContext context = testEnv.getCayenneService().newContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newContext();
 		Invoice invoice = SelectById.query(Invoice.class, 10l).selectOne(context);
 		assertEquals(EnrolmentStatus.FAILED, invoice.getInvoiceLines().get(0).getEnrolment().getStatus());
 		assertEquals(Money.ZERO, invoice.getAmountOwing());

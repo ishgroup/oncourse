@@ -7,6 +7,7 @@ import ish.oncourse.model.Voucher;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
+import ish.oncourse.webservices.v16.stubs.replication.TransactionGroup;
 import ish.oncourse.webservices.v16.stubs.replication.VoucherStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
@@ -28,9 +29,10 @@ public class QEVoucherValidationRequestTest extends RealWSTransportTest {
 		testEnv = new V16TestEnv(DATASET_XML, null);
 		testEnv.start();
 	}
+
 	@Test
 	public void testGetVouchersRequest() throws Exception {
-		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 
 		Voucher voucherInUse = Cayenne.objectForPK(context, Voucher.class, 1);
 		assertTrue(voucherInUse.isInUse());
@@ -39,7 +41,7 @@ public class QEVoucherValidationRequestTest extends RealWSTransportTest {
 				.select(context);
 		assertEquals(4, allVouchers.size());
 
-		GenericTransactionGroup request = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
+		GenericTransactionGroup request = PortHelper.createTransactionGroup(testEnv.getTestEnv().getSupportedVersion());
 
 		for (Voucher voucher : allVouchers) {
 			request.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(buildRequestStub(voucher));
@@ -48,7 +50,7 @@ public class QEVoucherValidationRequestTest extends RealWSTransportTest {
 
 		testEnv.getTestEnv().authenticate();
 
-		GenericTransactionGroup response = testEnv.getPaymentPortType().getVouchers(testEnv.castGenericTransactionGroup(request));
+		GenericTransactionGroup response = ((PaymentPortType) testEnv.getTestEnv().getTransportConfig().getPaymentPortType()).getVouchers((TransactionGroup) testEnv.getTestEnv().getTransportConfig().castGenericTransactionGroup(request));
 		assertEquals(3, response.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 
 		Map<Long, VoucherStub> reponseStubsMap = new HashMap<>();

@@ -27,7 +27,7 @@ public abstract class RealWSTransportTest implements TestConstants {
 	}
 
 	protected Long getCommunicationKey() {
-		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 		List<College> colleges = ObjectSelect.query(College.class)
 				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l))
 				.select(context);
@@ -39,7 +39,7 @@ public abstract class RealWSTransportTest implements TestConstants {
 	}
 
 	protected String getSecurityCode() {
-		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 		List<College> colleges = ObjectSelect.query(College.class)
 				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 1l))
 				.select(context);

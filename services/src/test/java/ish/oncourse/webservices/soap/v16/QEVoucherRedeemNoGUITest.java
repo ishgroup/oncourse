@@ -21,9 +21,9 @@ import java.util.List;
 public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 
 	protected void testNoGUICases() throws Exception {
-		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 
-		testEnv.checkQueueBeforeProcessing(context);
+		testEnv.getTestEnv().checkQueueBeforeProcessing(context);
 
 		GenericTransactionGroup transaction = processPayment();
 
@@ -139,15 +139,13 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 	protected final GenericTransactionGroup processPayment() throws Exception {
 		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getTestEnv().getSupportedVersion());
+		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getTestEnv().getSupportedVersion());
 		
 		prepareStubsForReplication(transaction, parametersMap);
 		
 		//process payment
-		transaction = testEnv.getPaymentPortType().processPayment(
-				testEnv.castGenericTransactionGroup(transaction),
-				testEnv.castGenericParametersMap(parametersMap));
+		transaction = testEnv.getTestEnv().processPayment(transaction, parametersMap);
 		return transaction;
 	}
 

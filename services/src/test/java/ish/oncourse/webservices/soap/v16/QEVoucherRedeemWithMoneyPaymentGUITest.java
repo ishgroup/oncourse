@@ -155,51 +155,51 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 	}
 
 	protected void testFailedGUICases() throws Exception {
-		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 
-		testEnv.checkQueueBeforeProcessing(context);
+		testEnv.getTestEnv().checkQueueBeforeProcessing(context);
 
 		GenericTransactionGroup transaction = processPayment();
 
 		String sessionId = checkResponseAndReceiveSessionId(transaction);
 
-		testEnv.checkQueueAfterProcessing(context);
+		testEnv.getTestEnv().checkQueueAfterProcessing(context);
 
-		transaction = testEnv.getPaymentStatus(sessionId);
+		transaction = testEnv.getTestEnv().getTransportConfig().getPaymentStatus(sessionId);
 
-		testEnv.checkNotProcessedResponse(transaction);
+		testEnv.getTestEnv().checkNotProcessedResponse(transaction);
 
 		//call page processing
 		testRenderPaymentPageWithReverseInvoice(sessionId);
 
 		checkAsyncReplication(context);
 
-		transaction = testEnv.getPaymentStatus(sessionId);
+		transaction = testEnv.getTestEnv().getTransportConfig().getPaymentStatus(sessionId);
 
 		checkProcessedResponse(transaction);
 	}
 
 	protected void testSuccessGUICases() throws Exception {
-		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 
-		testEnv.checkQueueBeforeProcessing(context);
+		testEnv.getTestEnv().checkQueueBeforeProcessing(context);
 
 		GenericTransactionGroup transaction = processPayment();
 
 		String sessionId = checkResponseAndReceiveSessionId(transaction);
 
-		testEnv.checkQueueAfterProcessing(context);
+		testEnv.getTestEnv().checkQueueAfterProcessing(context);
 
-		transaction = testEnv.getPaymentStatus(sessionId);
+		transaction = testEnv.getTestEnv().getTransportConfig().getPaymentStatus(sessionId);
 
-		testEnv.checkNotProcessedResponse(transaction);
+		testEnv.getTestEnv().checkNotProcessedResponse(transaction);
 
 		//call page processing
-		renderPaymentPageWithSuccessProcessing(sessionId);
+		testEnv.getTestEnv().successProcessing(sessionId);
 
 		checkAsyncReplication(context);
 
-		transaction = testEnv.getPaymentStatus(sessionId);
+		transaction = testEnv.getTestEnv().getTransportConfig().getPaymentStatus(sessionId);
 
 		checkProcessedResponse(transaction);
 	}

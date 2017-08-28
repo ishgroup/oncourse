@@ -36,6 +36,8 @@ import static org.junit.Assert.assertTrue;
 
 public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 		ParametersMap extends GenericParametersMap,
+		ReplicationRecords extends GenericReplicationRecords,
+		ReplicationResult extends GenericReplicationResult,
 		ReplicationStub extends GenericReplicationStub,
 		ReferenceStub extends GenericReferenceStub,
 		ReferencePortType,
@@ -109,9 +111,28 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 
 	public TransactionGroup processPayment(TransactionGroup transaction, ParametersMap paymentModel) {
 		try {
-			return (TransactionGroup) getPaymentPortType().getClass()
+			return (TransactionGroup) paymentPortType.getClass()
 					.getMethod("processPayment", transaction.getClass(), paymentModel.getClass())
 					.invoke(getPaymentPortType(), transaction, paymentModel);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public ReplicationResult sendRecords(ReplicationRecords records) {
+		try {
+			return (ReplicationResult) replicationPortType.getClass()
+					.getMethod("sendRecords", records.getClass())
+					.invoke(referencePortType, records);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public final TransactionGroup getPaymentStatus(String sessionId) {
+		try {
+			return (TransactionGroup) paymentPortType.getClass().getMethod("getPaymentStatus", String.class).invoke(paymentPortType,
+					sessionId);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -278,6 +299,8 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 
 	public TransportConfig<TransactionGroup,
 			ParametersMap,
+			ReplicationRecords,
+			ReplicationResult,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -328,6 +351,8 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 
 	public TransportConfig<TransactionGroup,
 			ParametersMap,
+			ReplicationRecords,
+			ReplicationResult,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -338,6 +363,8 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 
 	public TransportConfig<TransactionGroup,
 			ParametersMap,
+			ReplicationRecords,
+			ReplicationResult,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -348,6 +375,8 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 
 	public TransportConfig<TransactionGroup,
 			ParametersMap,
+			ReplicationRecords,
+			ReplicationResult,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -358,6 +387,8 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 
 	public TransportConfig<TransactionGroup,
 			ParametersMap,
+			ReplicationRecords,
+			ReplicationResult,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,
@@ -368,6 +399,8 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 
 	public TransportConfig<TransactionGroup,
 			ParametersMap,
+			ReplicationRecords,
+			ReplicationResult,
 			ReplicationStub,
 			ReferenceStub,
 			ReferencePortType,

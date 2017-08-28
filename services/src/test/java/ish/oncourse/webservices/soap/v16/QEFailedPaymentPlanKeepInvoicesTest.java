@@ -6,6 +6,7 @@ package ish.oncourse.webservices.soap.v16;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.TypesUtil;
+import ish.oncourse.webservices.function.TestCase;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -49,11 +50,11 @@ public class QEFailedPaymentPlanKeepInvoicesTest extends QEPaymentPlanGUITest {
 
 	@Test
 	public void testPaymentPlanKeepInvoices() throws Exception {
-		new V16TestEnv.TestCase(
-				testEnv,
+		new TestCase(
+				testEnv.getTestEnv(),
 				this::fillv16PaymentStubs,
 				this::checkResponseAndReceiveSessionId,
-				this.testEnv::renderPaymentPageWithKeepInvoiceProcessing,
+				this.testEnv.getTestEnv()::successProcessing,
 				this::checkAsyncReplication,
 				this::checkProcessedResponse
 		).test();

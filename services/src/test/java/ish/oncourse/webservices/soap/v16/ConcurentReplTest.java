@@ -460,24 +460,11 @@ public class ConcurentReplTest extends RealWSTransportTest {
 
 		fillv16ReplStubs(group);
 		group.getTransactionKeys().add("tr_key");
-		replicationRequest.getGroups().add(testEnv.castGenericTransactionGroup(group));
+		replicationRequest.getGroups().add((TransactionGroup) testEnv.getTestEnv().getTransportConfig().castGenericTransactionGroup(group));
 
+		Callable async = () -> testEnv.getTestEnv().getTransportConfig().sendRecords(replicationRequest);
 
-		Callable async = () -> {
-			try {
-				return testEnv.getReplicationPortType().sendRecords(replicationRequest);
-			} catch (ReplicationFault replicationFault) {
-				throw new RuntimeException(replicationFault);
-			}
-		};
-
-		Callable sync = () -> {
-			try {
-				return testEnv.getPaymentPortType().processPayment(testEnv.castGenericTransactionGroup(transaction), testEnv.castGenericParametersMap(parametersMap));
-			} catch (ReplicationFault replicationFault) {
-				throw new RuntimeException(replicationFault);
-			}
-		};
+		Callable sync = () -> testEnv.getTestEnv().processPayment(transaction, parametersMap);
 
 		Future<ReplicationResult> asyncFuture = asyncThreadExecutor.submit(async);
 		Future<TransactionGroup> syncFuture = asyncThreadExecutor.submit(sync);

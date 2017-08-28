@@ -5,6 +5,7 @@ import ish.common.types.PaymentType;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.function.TestCase;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -154,11 +155,11 @@ public class QEPreviouslyKeepNoActiveItemsWithNewInvoiceTest extends QEPaymentPr
 
 	@Test
 	public void testQEKeepInvoice() throws Exception {
-		new V16TestEnv.TestCase(
-				testEnv,
+		new TestCase(
+				testEnv.getTestEnv(),
 				this::fillv16PaymentStubs,
 				this::checkResponseAndReceiveSessionId,
-				this.testEnv::renderPaymentPageWithKeepInvoiceProcessing,
+				this.testEnv.getTestEnv()::failedProcessing,
 				this::checkAsyncReplication,
 				this::checkProcessedResponse
 		).test();

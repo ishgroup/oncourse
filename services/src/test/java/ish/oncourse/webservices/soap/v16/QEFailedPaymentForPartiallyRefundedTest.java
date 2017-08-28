@@ -5,6 +5,7 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.function.TestCase;
 import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v16.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v16.stubs.replication.MembershipStub;
@@ -46,13 +47,13 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 				invoiceLinesFound++;
 			} else if (ENROLMENT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				enrolmentsFound++;
-			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (MEMBERSHIP_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				membershipsFound++;
-			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (VOUCHER_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				vouchersFound++;
-			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (ARTICLE_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				articlesFound++;
-			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())){
+			} else if (CONTACT_IDENTIFIER.equals(record.getEntityIdentifier())) {
 				contactFound++;
 			} else {
 				assertFalse("Unexpected queued record found in a queue after QE processing for entity " + record.getEntityIdentifier(), true);
@@ -84,7 +85,7 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
 				} else {
 					assertFalse(String.format("Unexpected PaymentIn with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((GenericPaymentInStub) stub).getStatus()), true);
+							((GenericPaymentInStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericEnrolmentStub) {
 				if (stub.getAngelId() == 10l) {
@@ -95,42 +96,42 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 					assertEquals("Oncourse enrollment should be refunded", EnrolmentStatus.REFUNDED, status);
 				} else {
 					assertFalse(String.format("Unexpected Enrolment with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((GenericEnrolmentStub)stub).getStatus()), true);
+							((GenericEnrolmentStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
 				if ((stub.getAngelId() != 10l) && (stub.getAngelId() != 11l)) {
 					assertFalse(String.format("Unexpected invoice stub with willowid= %s and angelid= %s found in a queue",
-						stub.getWillowId(), stub.getAngelId()), true);
+							stub.getWillowId(), stub.getAngelId()), true);
 				}
 			} else if (INVOICE_LINE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				if ((stub.getAngelId() != 10l) && (stub.getAngelId() != 11l) && (stub.getAngelId() != 12l)
-					&& (stub.getAngelId() != 2l) && (stub.getAngelId() != 3l) && (stub.getAngelId() != 4l)) {
+						&& (stub.getAngelId() != 2l) && (stub.getAngelId() != 3l) && (stub.getAngelId() != 4l)) {
 					assertFalse(String.format("Unexpected invoiceline stub with willowid= %s and angelid= %s found in a queue",
-						stub.getWillowId(), stub.getAngelId()), true);
+							stub.getWillowId(), stub.getAngelId()), true);
 				}
 			} else if (stub instanceof VoucherStub) {
 				if (stub.getAngelId().equals(2l)) {
 					assertEquals("Voucher status should be active because success enrolment in the same invoice can not be canceled",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Voucher with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((VoucherStub) stub).getStatus()), true);
+							((VoucherStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof ArticleStub) {
 				if (stub.getAngelId().equals(3l)) {
 					assertEquals("Article status should be active because success enrolment in the same invoice can not be canceled",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Article with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((ArticleStub) stub).getStatus()), true);
+							((ArticleStub) stub).getStatus()), true);
 				}
 			} else if (stub instanceof MembershipStub) {
 				if (stub.getAngelId().equals(1l)) {
 					assertEquals("Membership status should be active because success enrolment in the same invoice can not be canceled",
-						ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
+							ProductStatus.ACTIVE.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected Membership with id= %s and status= %s found in a queue", stub.getWillowId(),
-						((MembershipStub) stub).getStatus()), true);
+							((MembershipStub) stub).getStatus()), true);
 				}
 			}
 		}
@@ -151,22 +152,22 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 			} else if (ENROLMENT_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				if (stub.getAngelId() == 10l) {
 					assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.SUCCESS.name(),
-						((GenericEnrolmentStub) stub).getStatus());
+							((GenericEnrolmentStub) stub).getStatus());
 				} else if (stub.getAngelId() == 11l) {
 					assertEquals("Enrolment status should not change after this processing", EnrolmentStatus.REFUNDED.name(),
-						((GenericEnrolmentStub) stub).getStatus());
+							((GenericEnrolmentStub) stub).getStatus());
 				} else {
 					assertFalse(String.format("Unexpected enrolment stub with angelid= %s and willowid= %s", stub.getAngelId(), stub.getWillowId()), true);
 				}
 			} else if (MEMBERSHIP_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Membership status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((MembershipStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((MembershipStub) stub).getStatus());
 			} else if (VOUCHER_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Voucher status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((VoucherStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((VoucherStub) stub).getStatus());
 			} else if (ARTICLE_IDENTIFIER.equals(stub.getEntityIdentifier())) {
 				assertEquals("Article status should not change after this processing",
-					ProductStatus.NEW.getDatabaseValue(), ((ArticleStub)stub).getStatus());
+						ProductStatus.NEW.getDatabaseValue(), ((ArticleStub) stub).getStatus());
 			}
 		}
 		return sessionId;
@@ -174,11 +175,10 @@ public class QEFailedPaymentForPartiallyRefundedTest extends QEPaymentProcess7Ca
 
 	@Test
 	public void testQEKeepInvoice() throws Exception {
-		new V16TestEnv.TestCase(
-				testEnv,
+		new TestCase(testEnv.getTestEnv(),
 				this::fillv16PaymentStubsForCases7,
 				this::checkResponseAndReceiveSessionId,
-				this.testEnv::renderPaymentPageWithKeepInvoiceProcessing,
+				this.testEnv.getTestEnv()::failedProcessing,
 				this::checkAsyncReplication,
 				this::checkProcessedResponse
 		).test();

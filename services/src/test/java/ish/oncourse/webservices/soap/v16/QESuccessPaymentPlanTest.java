@@ -7,6 +7,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.webservices.function.TestCase;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
@@ -82,14 +83,13 @@ public class QESuccessPaymentPlanTest extends QEPaymentPlanGUITest {
 
 	@Test
 	public void testSuccessPaymentPlanQE() throws Exception {
-		new V16TestEnv.TestCase(
-				testEnv,
+		new TestCase(
+				testEnv.getTestEnv(),
 				this::fillv16PaymentStubs,
 				this::checkResponseAndReceiveSessionId,
-				this::renderPaymentPageWithSuccessProcessing,
+				this.testEnv.getTestEnv()::successProcessing,
 				this::checkAsyncReplication,
 				this::checkProcessedResponse
 		).test();
-
 	}
 }
