@@ -2,6 +2,8 @@ import {_toRequestType} from "../../../../common/actions/ActionUtils";
 import {IAction} from "../../../../actions/IshAction";
 import {PaymentResponse} from "../../../../model";
 import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
+import {GABuilder} from "../../../../services/GoogleAnalyticsService";
+import {Phase} from "../../../reducers/State";
 
 export const OpenPayment: string = "checkout/payment/open";
 export const OpenPaymentRequest: string = _toRequestType(OpenPayment);
@@ -90,5 +92,8 @@ export const resetCorporatePass = () => ({
 export const changeTab = tab => ({
   type: CHANGE_TAB,
   payload: tab,
+  meta: {
+    analytics: GABuilder.setCheckoutStep(Phase.Payment, tab)
+  }
 });
 

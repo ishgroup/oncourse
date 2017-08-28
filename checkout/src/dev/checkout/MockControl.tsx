@@ -35,7 +35,7 @@ export class MockControl extends React.Component<Props, any> {
       type: Actions.ADD_CLASS_TO_CART,
       payload: {id: this.props.config.db.classes.result[i]},
       meta: {
-        analytics: GABuilder.addItemToCart('Course Class', this.props.config.db.classes.result[i]),
+        analytics: GABuilder.addCourseClassToCart('Course Class', this.props.config.db.classes.entities.classes[this.props.config.db.classes.result[i]]),
       },
     });
   }
@@ -53,7 +53,7 @@ export class MockControl extends React.Component<Props, any> {
       type: Actions.ADD_PRODUCT_TO_CART,
       payload: {id: this.props.config.db.products.result[0]},
       meta: {
-        analytics: GABuilder.addItemToCart('Voucher', this.props.config.db.products.result[0])
+        analytics: GABuilder.addProductToCart('Voucher', this.props.config.db.products.entities.products[this.props.config.db.products.result[0]])
       }
     });
   }
@@ -62,9 +62,6 @@ export class MockControl extends React.Component<Props, any> {
     this.props.config.store.dispatch({
       type: Actions.REMOVE_CLASS_FROM_CART,
       payload: {id: this.props.config.db.classes.result[0]},
-      meta: {
-        analytics: GABuilder.removeItemFromCart('CourseClass', this.props.config.db.classes.result[0])
-      },
     });
   }
 

@@ -4,6 +4,7 @@ import * as L from "lodash";
 import {AxiosResponse} from "axios";
 import {Amount, Preferences} from "../../model";
 import {IAction} from "../../actions/IshAction";
+import {GABuilder} from "../../services/GoogleAnalyticsService";
 
 // initialize checkout application
 export const SHOW_MESSAGES: string = "checkout/messages/show";
@@ -90,10 +91,7 @@ export const changePhase = (phase: Phase) => {
     type: CHANGE_PHASE,
     payload: phase,
     meta: {
-      analytics: {
-        type: 'page',
-        title: Phase[phase]
-      }
+      analytics: GABuilder.setCheckoutStep(phase)
     }
   };
 };
