@@ -6,7 +6,6 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.payment.*;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.webservices.function.LoadDataSet;
 import ish.oncourse.webservices.function.TestEnv;
 import ish.oncourse.webservices.soap.TestConstants;
 import ish.oncourse.webservices.util.GenericParametersMap;
@@ -56,9 +55,8 @@ public class V15TestEnv {
     }
 
     public V15TestEnv start() {
-        testEnv = new TestEnv(SupportedVersions.V15,
-                new LoadDataSet(dataSetFile, replacements));
-        testEnv.start();
+		testEnv = new TestEnv(null, null, null);
+		testEnv.start();
         cayenneService = testEnv.getPageTester().getService(ICayenneService.class);
 
         transportConfig = new V15TransportConfig(testEnv);
