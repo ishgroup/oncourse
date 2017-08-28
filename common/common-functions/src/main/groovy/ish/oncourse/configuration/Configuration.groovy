@@ -4,14 +4,13 @@ class Configuration {
 
     static final String CONFIG_FILE_NAME = 'application.properties'
     static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
-    public static final String API_VERSION = 'ish.api.version'
     static final String ZK_HOST_PROPERTY = 'zk.host.property'
     static final String JETTY_PORT_PROPERTY = 'bq.jetty.connector.port'
     static final String JETTY_HOST_PROPERTY = 'bq.jetty.connector.host'
     static final String JDBC_URL_PROPERTY = 'bq.jdbc.willow.url'
     static final String JDBC_USERNAME_PROPERTY = 'bq.jdbc.willow.username'
     static final String JDBC_PASSWORD_PROPERTY = 'bq.jdbc.willow.password'
-    static final String CXF_URLPATTERN_PROPERTY = 'bq.cxf.urlPattern'
+    static final String JETTY_CONTEXT_PROPERTY = 'bq.jetty.context'
 
 
     static configure() {
@@ -27,7 +26,7 @@ class Configuration {
             System.setProperty(JDBC_PASSWORD_PROPERTY, prop.get('db_pass') as String)
             
             if (prop.get('path')) {
-                System.setProperty(CXF_URLPATTERN_PROPERTY, prop.get('path') as String)
+                System.setProperty(JETTY_CONTEXT_PROPERTY, prop.get('path') as String)
             }
             
             if (prop.get('zk_host')) {

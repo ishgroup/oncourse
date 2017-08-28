@@ -3,7 +3,10 @@ package ish.oncourse.willow
 import com.google.inject.Binder
 import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
+import io.bootique.jetty.JettyModule
+import io.bootique.jetty.MappedServlet
 import ish.math.MoneyType
+import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.cxf.CXFModule
 import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.cayenne.CayenneService
@@ -26,14 +29,13 @@ class WillowApiModule extends ConfigModule {
     void configure(Binder binder) {
         CayenneModule.extend(binder).addModule(WillowApiCayenneModule)
         CayenneModule.extend(binder).addModule(JCacheModule)
+        JettyModule.extend(binder).addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(CourseClassesApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ContactApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ProductsApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(PromotionApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(CollegeService)
-        CXFModule.contributeResources(binder).addBinding().to(HealthCheckApiServiceImpl)
-        CXFModule.contributeResources(binder).addBinding().to(ShutdownService).asEagerSingleton()
         CXFModule.contributeResources(binder).addBinding().to(RequestFilter)
         CXFModule.contributeResources(binder).addBinding().to(ContactCredentialsValidator)
         CXFModule.contributeResources(binder).addBinding().to(ContactCredentialsValidator)

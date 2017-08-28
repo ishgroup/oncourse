@@ -1,9 +1,10 @@
 jetty:
+  context: /a
   connector:
     port: 10080
     host: 127.0.0.1
 jdbc:
-  ish:
+  willow:
     url: jdbc:mysql://localhost:3306/w2test_college?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8
     username: user
     password: pass
@@ -20,10 +21,8 @@ jdbc:
     logAbandoned: true
     jmxEnabled: true
 cayenne:
-  datasource: ish
+  datasource: willow
   configs:
     - cayenne-oncourse.xml
 cxf:
-  welcomeText: 'Checkout REST API'
-  urlPattern: /a/*
-  
+  welcomeText: 'Checkout REST API'  
