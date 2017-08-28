@@ -3,25 +3,20 @@ package ish.oncourse.configuration
 class Configuration {
 
     static final String CONFIG_FILE_NAME = 'application.properties'
-    static final String VERSION_FILE_NAME = 'VERSION'
-    static
-    final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
+    static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
     public static final String API_VERSION = 'ish.api.version'
     static final String ZK_HOST_PROPERTY = 'zk.host.property'
     static final String JETTY_PORT_PROPERTY = 'bq.jetty.connector.port'
     static final String JETTY_HOST_PROPERTY = 'bq.jetty.connector.host'
-    static final String JDBC_URL_PROPERTY = 'bq.jdbc.ish.url'
-    static final String JDBC_USERNAME_PROPERTY = 'bq.jdbc.ish.username'
-    static final String JDBC_PASSWORD_PROPERTY = 'bq.jdbc.ish.password'
+    static final String JDBC_URL_PROPERTY = 'bq.jdbc.willow.url'
+    static final String JDBC_USERNAME_PROPERTY = 'bq.jdbc.willow.username'
+    static final String JDBC_PASSWORD_PROPERTY = 'bq.jdbc.willow.password'
     static final String CXF_URLPATTERN_PROPERTY = 'bq.cxf.urlPattern'
 
 
     static configure() {
-        
         String userDir = System.getProperties().get('user.dir') as String
-
         File propFile = new File(userDir+'/'+ CONFIG_FILE_NAME)
-        File versionFile = new File(userDir +'/'+ VERSION_FILE_NAME)
         if (propFile.exists()) {
             Properties prop = new Properties()
             prop.load(new FileInputStream(propFile))
@@ -37,10 +32,6 @@ class Configuration {
             
             if (prop.get('zk_host')) {
                 System.setProperty(ZK_HOST_PROPERTY, prop.get('zk_host') as String)
-            }
-            
-            if (versionFile.exists()) {
-                System.setProperty(API_VERSION, versionFile.newReader().readLine())
             }
             
         } else {

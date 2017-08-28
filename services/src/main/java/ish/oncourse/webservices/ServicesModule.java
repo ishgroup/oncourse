@@ -9,6 +9,7 @@ import io.bootique.cayenne.CayenneModule;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
+import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.persistence.ISHObjectContextFactory;
 import org.apache.cayenne.cache.QueryCache;
@@ -42,6 +43,7 @@ public class ServicesModule extends ConfigModule {
 			new TypeLiteral<MappedServlet<CXFServlet>>() {
 			};
 
+	
 	@Singleton
 	@Provides
 	MappedFilter<ServicesTapestryFilter> createTapestryFilter(Injector injector) {
@@ -64,7 +66,9 @@ public class ServicesModule extends ConfigModule {
 		CayenneModule.extend(binder).addModule(new ServicesCayenneModule());
 		JettyModule.extend(binder)
 				.addMappedFilter(TAPESTRY_FILTER)
-				.addMappedServlet(CXF_SERVLET);
+				.addMappedServlet(CXF_SERVLET)
+				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
+		
 	}
 
 
