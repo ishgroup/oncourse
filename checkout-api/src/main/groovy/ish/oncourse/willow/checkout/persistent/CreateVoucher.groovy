@@ -62,7 +62,7 @@ class CreateVoucher {
             voucher.valueOnPurchase = voucherProduct.value
             price = voucherProduct.priceExTax
         }
-        invoiceLine = new ProductItemInvoiceLine(voucher, contact, price?: voucherProduct.priceExTax).create()
+        invoiceLine = new ProductItemInvoiceLine(voucher, contact, price?: voucherProduct.priceExTax, null).create()
         invoiceLine.invoice = invoice
     }
 

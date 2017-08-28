@@ -104,7 +104,7 @@ class CreatePaymentModel {
             Contact contact = new GetContact(context, college, node.contactId).get(false)
 
             node.enrolments.findAll{it.selected}.each { e ->
-                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.IN_TRANSACTION, { Enrolment enrolment, InvoiceLine il ->
+                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.IN_TRANSACTION, payer.taxOverride, { Enrolment enrolment, InvoiceLine il ->
                     if (enrolment.courseClass.paymentPlanLines.empty) {
                         il.invoice = getInvoice()
                     } else {
@@ -120,10 +120,10 @@ class CreatePaymentModel {
                 applications << new CreateApplication(context, college, a, contact).create()
             }
             node.articles.findAll{it.selected}.each { a ->
-                new CreateArticle(context, college, a, contact, getInvoice(), ProductStatus.NEW).create()
+                new CreateArticle(context, college, a, contact, getInvoice(), ProductStatus.NEW, payer.taxOverride).create()
             }
             node.memberships.findAll{it.selected}.each { m ->
-                new CreateMembership(context, college, m, contact, getInvoice(), ProductStatus.NEW).create()
+                new CreateMembership(context, college, m, contact, getInvoice(), ProductStatus.NEW, payer.taxOverride).create()
             }
             node.vouchers.findAll{it.selected}.each { v ->
                 new CreateVoucher(context, college, v, contact, getInvoice(), ProductStatus.NEW).create()

@@ -6,6 +6,7 @@ import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.Tax
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.willow.model.checkout.Application
 import ish.oncourse.willow.model.checkout.Enrolment
@@ -24,13 +25,15 @@ class ProcessClass {
     Enrolment enrolment
     Application application
 
-    CourseClass persistentClass 
+    CourseClass persistentClass
+    private Tax taxOverridden
     
-    ProcessClass(ObjectContext context, Contact contact, College college, String classId) {
+    ProcessClass(ObjectContext context, Contact contact, College college, String classId, Tax taxOverridden) {
         this.context = context
         this.contact = contact
         this.college = college
         this.classId = classId
+        this.taxOverridden = taxOverridden
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -73,9 +76,9 @@ class ProcessClass {
                     e.price = new CourseClassPrice().with { ccp ->
                         ccp.hasTax = !persistentClass.gstExempt 
                         if (overridenFee != null) {
-                            ccp.feeOverriden = persistentClass.gstExempt ? overridenFee.doubleValue() : overridenFee.multiply(BigDecimal.ONE.add(persistentClass.taxRate)).doubleValue()
+                            ccp.feeOverriden =  overridenFee.multiply(BigDecimal.ONE.add(taxOverridden?.rate?:persistentClass.taxRate)).doubleValue()
                         } else {
-                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, persistentClass.taxRate, CalculatePrice.calculateTaxAdjustment(persistentClass)).calculate().finalPriceToPayIncTax.doubleValue()
+                            ccp.fee = new CalculatePrice(persistentClass.feeExGst, Money.ZERO, taxOverridden?.rate?:persistentClass.taxRate, taxOverridden ? Money.ZERO : CalculatePrice.calculateTaxAdjustment(persistentClass)).calculate().finalPriceToPayIncTax.doubleValue()
                         }
                         ccp
                     }

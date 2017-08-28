@@ -15,9 +15,7 @@ import ish.oncourse.willow.checkout.functions.ProcessProducts
 import ish.oncourse.willow.checkout.functions.ValidatePaymentRequest
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.GetPaymentStatus
-import ish.oncourse.willow.checkout.payment.HasErrors
 import ish.oncourse.willow.checkout.payment.ProcessPaymentModel
-import ish.oncourse.willow.checkout.payment.ValidateCreditCardForm
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
@@ -25,7 +23,6 @@ import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.payment.PaymentResponse
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
 import ish.oncourse.willow.model.common.CommonError
-import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.service.CheckoutApi
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
@@ -86,7 +83,7 @@ class CheckoutApiImpl implements CheckoutApi {
             items.applications = processClasses.applications
         }
         
-        ProcessProducts processProducts = new ProcessProducts(context, contact, college, contactNodeRequest.productIds, null).process()
+        ProcessProducts processProducts = new ProcessProducts(context, contact, college, contactNodeRequest.productIds).process()
         items.articles += processProducts.articles
         items.memberships += processProducts.memberships
         items.vouchers += processProducts.vouchers

@@ -5,9 +5,6 @@ import ish.oncourse.model.College
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.willow.cayenne.CayenneService
-import ish.oncourse.willow.checkout.functions.GetCorporatePass
-import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
-import ish.oncourse.willow.checkout.payment.HasErrors
 import ish.oncourse.willow.model.checkout.corporatepass.CorporatePass
 import ish.oncourse.willow.model.checkout.corporatepass.GetCorporatePassRequest
 import ish.oncourse.willow.model.checkout.corporatepass.MakeCorporatePassRequest

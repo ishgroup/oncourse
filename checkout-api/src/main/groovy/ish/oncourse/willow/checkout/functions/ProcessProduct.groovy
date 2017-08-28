@@ -9,6 +9,7 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.MembershipProduct
 import ish.oncourse.model.Product
+import ish.oncourse.model.Tax
 import ish.oncourse.model.VoucherProduct
 import ish.oncourse.willow.model.checkout.Article
 import ish.oncourse.willow.model.checkout.Membership
@@ -33,13 +34,15 @@ class ProcessProduct {
     Membership membership
     Voucher voucher
     Product persistentProduct
+    private Tax taxOverridden
     
-    ProcessProduct(ObjectContext context, Contact contact, College college, String productId, String payerId) {
+    ProcessProduct(ObjectContext context, Contact contact, College college, String productId, String payerId, Tax taxOverridden) {
         this.context = context
         this.contact = contact
         this.college = college
         this.productId = productId
         this.payerId = payerId
+        this.taxOverridden = taxOverridden
     }
     
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -53,7 +56,7 @@ class ProcessProduct {
                     a.contactId = contact.id.toString()
                     a.productId = persistentProduct.id.toString()
                     a.selected = true
-                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
+                    a.price =  new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden?.rate?:persistentProduct.taxRate, taxOverridden ? Money.ZERO : persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
                     a
                 }
                 break
@@ -62,7 +65,7 @@ class ProcessProduct {
                     m.contactId = contact.id.toString()
                     m.productId = persistentProduct.id.toString()
                     m.selected = true
-                    m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, persistentProduct.taxRate, persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
+                    m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden?.rate?:persistentProduct.taxRate, taxOverridden ? Money.ZERO : persistentProduct.taxAdjustment).calculate().finalPriceToPayIncTax.doubleValue()
                     ValidateMembership validateMembership = new ValidateMembership(context, college).validate(persistentProduct as MembershipProduct, contact)
                     m.errors += validateMembership.errors
                     m.warnings += validateMembership.warnings

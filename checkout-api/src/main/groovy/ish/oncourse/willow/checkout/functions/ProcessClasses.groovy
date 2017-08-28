@@ -44,7 +44,7 @@ class ProcessClasses {
         }
 
         classesIds.each { id ->
-            ProcessClass processClass = new ProcessClass(context, contact, college, id).process()
+            ProcessClass processClass = new ProcessClass(context, contact, college, id, null).process()
             processClass.application && applications << processClass.application
             processClass.enrolment && enrolments << processClass.enrolment
         }

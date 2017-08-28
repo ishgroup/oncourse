@@ -8,6 +8,7 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Invoice
 import ish.oncourse.model.InvoiceLine
+import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.checkout.payment.ProductItemInvoiceLine
 import org.apache.cayenne.ObjectContext
@@ -20,14 +21,16 @@ class CreateArticle {
     private Contact contact
     private Invoice invoice
     private ProductStatus status
+    private Tax taxOverride
 
-    CreateArticle(ObjectContext context, College college, ish.oncourse.willow.model.checkout.Article a, Contact contact, Invoice invoice, ProductStatus status) {
+    CreateArticle(ObjectContext context, College college, ish.oncourse.willow.model.checkout.Article a, Contact contact, Invoice invoice, ProductStatus status, Tax taxOverride) {
         this.context = context
         this.college = college
         this.a = a
         this.contact = contact
         this.invoice = invoice
         this.status = status
+        this.taxOverride = taxOverride
     }
     
     void create() {
@@ -38,7 +41,7 @@ class CreateArticle {
         article.setProduct(ap)
         article.status = status
         article.confirmationStatus = ConfirmationStatus.NOT_SENT
-        InvoiceLine invoiceLine = new ProductItemInvoiceLine(article, contact, article.product.priceExTax).create()
+        InvoiceLine invoiceLine = new ProductItemInvoiceLine(article, contact, article.product.priceExTax, taxOverride).create()
         invoiceLine.invoice = invoice
     }
 }

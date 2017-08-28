@@ -8,6 +8,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.CorporatePass
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Product
+import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
 import ish.oncourse.willow.functions.voucher.ProcessRedeemedVouchers
 import ish.oncourse.willow.model.checkout.Amount
@@ -44,6 +45,7 @@ class ProcessCheckoutModel {
     private ContactNode corporatePassNode
     
     private CheckoutModel model
+    private Tax taxOverridden
 
 
     ProcessCheckoutModel(ObjectContext context, College college, CheckoutModelRequest checkoutModelRequest) {
@@ -56,7 +58,13 @@ class ProcessCheckoutModel {
 
     @CompileStatic(TypeCheckingMode.SKIP)
     ProcessCheckoutModel process() {
+        processCorporatePass()
+        if (!corporatePass) {
+            taxOverridden = new GetContact(context, college, this.model.payerId).get(false).taxOverride
+        }
+        
         processNodes()
+        
         if (corporatePass) {
             enrolmentsToProceed.values().flatten().unique()
             ValidateCorporatePass corporatePassValidate = new ValidateCorporatePass(corporatePass, enrolmentsToProceed.values().flatten().unique(), products.unique())
@@ -64,7 +72,7 @@ class ProcessCheckoutModel {
                 model.error = corporatePassValidate.error
                 return this
             }
-            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass).calculate()
+            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden).calculate()
             totalDiscount =  totalDiscount.add(enrolmentsPrice.totalDiscount)
             model.amount = new Amount().with { a ->
                 a.total = totalAmount.doubleValue()
@@ -73,7 +81,7 @@ class ProcessCheckoutModel {
                 a
             }
         } else {
-            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, null).calculate()
+            CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, enrolmentsCount, model, enrolmentsToProceed, checkoutModelRequest.promotionIds, null, taxOverridden).calculate()
             totalDiscount = totalDiscount.add(enrolmentsPrice.totalDiscount)
             
             ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNowAmount.add(enrolmentsPrice.totalPayNow), enrolmentsPrice.enrolmentNodes).process()
@@ -104,7 +112,6 @@ class ProcessCheckoutModel {
     
     void processNodes() {
         
-        processCorporatePass()
         checkoutModelRequest.contactNodes.each { contactNode ->
             ContactNode node = new ContactNode()
             node.contactId = contactNode.contactId
@@ -156,7 +163,7 @@ class ProcessCheckoutModel {
         e.errors.clear()
         e.warnings.clear()
         if (e.selected) {
-            ProcessClass processClass = new ProcessClass(context, contact, college, e.classId).process()
+            ProcessClass processClass = new ProcessClass(context, contact, college, e.classId, taxOverridden).process()
             CourseClass courseClass = processClass.persistentClass
 
             if (processClass.enrolment == null) {
@@ -189,7 +196,7 @@ class ProcessCheckoutModel {
         a.errors.clear()
         a.warnings.clear()
         if (a.selected) {
-            ProcessClass processClass = new ProcessClass(context, contact, college, a.classId).process()
+            ProcessClass processClass = new ProcessClass(context, contact, college, a.classId, taxOverridden).process()
             CourseClass courseClass = processClass.persistentClass
 
             if (processClass.application == null) {
@@ -211,7 +218,7 @@ class ProcessCheckoutModel {
         a.errors.clear()
         a.warnings.clear()
         if (a.selected) {
-            ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, model.payerId).process()
+            ProcessProduct processProduct = new ProcessProduct(context, contact, college, a.productId, model.payerId, taxOverridden).process()
             if (processProduct.article == null) {
                 a.errors << "Purchase is wrong"
             } else {
@@ -235,7 +242,7 @@ class ProcessCheckoutModel {
         m.errors.clear()
         m.warnings.clear()
         if (m.selected) {
-            ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, model.payerId).process()
+            ProcessProduct processProduct = new ProcessProduct(context, contact, college, m.productId, model.payerId, taxOverridden).process()
             if (processProduct.membership == null) {
                 m.errors << "Purchase is wrong"
             } else {
@@ -292,6 +299,7 @@ class ProcessCheckoutModel {
         String corporatePassId = StringUtils.trimToNull(checkoutModelRequest.corporatePassId)
         if (corporatePassId) {
             corporatePass = new GetCorporatePass(context, college, corporatePassId).get()
+            taxOverridden = corporatePass.contact.taxOverride
             corporatePassNode = new ContactNode(contactId: corporatePass.contact.id.toString() )
         }
     }

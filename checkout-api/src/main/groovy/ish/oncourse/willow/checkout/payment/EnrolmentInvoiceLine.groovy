@@ -9,6 +9,7 @@ import ish.oncourse.model.DiscountCourseClass
 import ish.oncourse.model.Enrolment
 import ish.oncourse.model.InvoiceLine
 import ish.oncourse.model.InvoiceLineDiscount
+import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.functions.CalculatePrice
 import ish.oncourse.willow.model.web.CourseClassPrice
 import ish.util.DiscountUtils
@@ -25,10 +26,12 @@ class EnrolmentInvoiceLine {
 
     Enrolment e
     CourseClassPrice price
+    private Tax taxOverridden
 
-    EnrolmentInvoiceLine(Enrolment e, CourseClassPrice price) {
+    EnrolmentInvoiceLine(Enrolment e, CourseClassPrice price, Tax taxOverridden) {
         this.e = e
         this.price = price
+        this.taxOverridden = taxOverridden
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -50,16 +53,16 @@ class EnrolmentInvoiceLine {
             //Calculate enrolment fee (for enrolments whose courses has ENROLMENT_BY_APPLICATION type) as application.feeOverride if !=null.
             //Application.feeOverride doesn't need to combine with discounts.
             Money feeOverriden = price.feeOverriden.toMoney()
-            InvoiceUtil.fillInvoiceLine(invoiceLine, feeOverriden, Money.ZERO, e.courseClass.taxRate, Money.ZERO)
+            InvoiceUtil.fillInvoiceLine(invoiceLine, feeOverriden, Money.ZERO, taxOverridden?.rate?:e.courseClass.taxRate, Money.ZERO)
         } else {
             Money taxAdjustment = CalculatePrice.calculateTaxAdjustment(e.courseClass)
             InvoiceUtil.fillInvoiceLine(invoiceLine, e.courseClass.feeExGst, Money.ZERO,
-                    e.courseClass.taxRate, taxAdjustment)
+                    taxOverridden?.rate?:e.courseClass.taxRate, taxOverridden ? Money.ZERO : taxAdjustment)
 
             if (price.appliedDiscount) {
                 DiscountCourseClass chosenDiscount = e.courseClass.discountCourseClasses
                         .find {(it.discount as Discount).id.toString() == price.appliedDiscount.id}
-                DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, e.courseClass.taxRate, taxAdjustment)
+                DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, taxOverridden?.rate?:e.courseClass.taxRate, taxOverridden ? Money.ZERO : taxAdjustment)
                 createInvoiceLineDiscounts(invoiceLine, chosenDiscount.discount as Discount, e.objectContext)
             }
         }

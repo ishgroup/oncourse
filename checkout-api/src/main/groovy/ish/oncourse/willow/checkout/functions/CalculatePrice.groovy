@@ -40,6 +40,6 @@ class CalculatePrice {
     }
 
     static Money calculateTaxAdjustment(CourseClass courseClass) {
-        return courseClass.feeIncGst.subtract(courseClass.feeExGst.multiply(courseClass.taxRate.add(BigDecimal.ONE)))
+        return courseClass.getFeeIncGst(null).subtract(courseClass.feeExGst.multiply(courseClass.taxRate.add(BigDecimal.ONE)))
     }
 }
