@@ -449,7 +449,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 
 		ExecutorService asyncThreadExecutor = Executors.newFixedThreadPool(3);
 
-		testEnv.authenticate();
+		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
 		final GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getTestEnv().getSupportedVersion());
 		final GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getTestEnv().getSupportedVersion());

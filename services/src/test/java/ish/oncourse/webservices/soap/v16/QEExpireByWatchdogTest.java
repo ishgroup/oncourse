@@ -196,7 +196,7 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 		//check that empty queuedRecords
 		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
 		testEnv.checkQueueBeforeProcessing(context);
-		testEnv.authenticate();
+		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
 		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());

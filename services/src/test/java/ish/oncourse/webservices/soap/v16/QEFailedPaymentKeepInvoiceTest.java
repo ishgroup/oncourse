@@ -128,7 +128,7 @@ public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUIT
 		//check that empty queuedRecords
 		ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
 		testEnv.checkQueueBeforeProcessing(context);
-		testEnv.authenticate();
+		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
 		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());

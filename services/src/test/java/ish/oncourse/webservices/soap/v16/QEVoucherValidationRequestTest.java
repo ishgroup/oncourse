@@ -46,7 +46,7 @@ public class QEVoucherValidationRequestTest extends RealWSTransportTest {
 		}
 		assertEquals(4, request.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());
 
-		testEnv.authenticate();
+		testEnv.getTestEnv().authenticate();
 
 		GenericTransactionGroup response = testEnv.getPaymentPortType().getVouchers(testEnv.castGenericTransactionGroup(request));
 		assertEquals(3, response.getGenericAttendanceOrBinaryDataOrBinaryInfo().size());

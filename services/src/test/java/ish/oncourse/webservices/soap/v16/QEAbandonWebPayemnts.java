@@ -45,7 +45,7 @@ public class QEAbandonWebPayemnts extends QEPaymentProcessTest {
 
 	@Test
 	public void test() throws Exception {
-		testEnv.authenticate();
+		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
 		final GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
 		final GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());

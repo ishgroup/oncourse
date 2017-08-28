@@ -9,7 +9,6 @@ import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.payment.*;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.webservices.function.LoadDataSet;
 import ish.oncourse.webservices.function.TestEnv;
 import ish.oncourse.webservices.soap.TestConstants;
 import ish.oncourse.webservices.util.GenericParametersMap;
@@ -37,9 +36,6 @@ import java.util.function.Function;
 
 import static ish.oncourse.webservices.soap.TestConstants.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * User: akoiro
@@ -48,10 +44,7 @@ import static org.mockito.Mockito.when;
 public class V16TestEnv {
 	private String dataSetFile;
 	private Map<Object, Object> replacements = Collections.singletonMap("[null]", null);
-	private TestEnv testEnv;
-	private V16TransportConfig transportConfig;
-	private ICayenneService cayenneService;
-	private org.apache.tapestry5.ioc.Messages messages;
+	private TestEnv<V16TransportConfig> testEnv;
 
 
 	public V16TestEnv(String dataSetFile, Map<Object, Object> replacements) {
@@ -60,19 +53,15 @@ public class V16TestEnv {
 	}
 
 	public V16TestEnv start() {
-		testEnv = new TestEnv(SupportedVersions.V16,
-				new LoadDataSet(dataSetFile, replacements));
+		testEnv = new TestEnv<>((TestEnv<V16TransportConfig> testEnv) -> {
+			V16TransportConfig transportConfig = new V16TransportConfig(testEnv);
+			transportConfig.init();
+			transportConfig.pingReplicationPort();
+			transportConfig.pingPaymentPort();
+			transportConfig.pingReferencePort();
+			return transportConfig;
+		}, this.dataSetFile, this.replacements);
 		testEnv.start();
-		cayenneService = testEnv.getPageTester().getService(ICayenneService.class);
-
-		transportConfig = new V16TransportConfig(testEnv);
-		transportConfig.init();
-		transportConfig.pingReplicationPort();
-		transportConfig.pingPaymentPort();
-		transportConfig.pingReferencePort();
-
-		messages = mock(org.apache.tapestry5.ioc.Messages.class);
-		when(messages.get(anyString())).thenReturn("Any string");
 		return this;
 
 	}
@@ -80,25 +69,6 @@ public class V16TestEnv {
 
 	public void shutdown() {
 		testEnv.shutdown();
-	}
-
-	public boolean ping() {
-		return transportConfig.pingReplicationPort();
-	}
-
-	public void authenticate() {
-		try {
-			//firstly ping the server with 10 seconds timeout
-			assertTrue("Webservices not ready for call", transportConfig.pingReplicationPort());
-			//authenticate
-			Long oldCommunicationKey = transportConfig.getCommunicationKey();
-			Long newCommunicationKey = getReplicationPortType().authenticate(transportConfig.getSecurityCode(), oldCommunicationKey);
-			assertNotNull("Received communication key should not be empty", newCommunicationKey);
-			assertTrue("Communication keys should be different before and after authenticate call", oldCommunicationKey.compareTo(newCommunicationKey) != 0);
-			assertTrue("New communication key should be equal to actual", newCommunicationKey.compareTo(transportConfig.getCommunicationKey()) == 0);
-		} catch (AuthFailure authFailure) {
-			throw new RuntimeException(authFailure);
-		}
 	}
 
 
@@ -111,15 +81,15 @@ public class V16TestEnv {
 	}
 
 	public ReplicationPortType getReplicationPortType() {
-		return transportConfig.getReplicationPortType();
+		return testEnv.getTransportConfig().getReplicationPortType();
 	}
 
 	public PaymentPortType getPaymentPortType() {
-		return transportConfig.getPaymentPortType();
+		return testEnv.getTransportConfig().getPaymentPortType();
 	}
 
 	public V16TransportConfig getTransportConfig() {
-		return transportConfig;
+		return testEnv.getTransportConfig();
 	}
 
 	public TestEnv getTestEnv() {
@@ -127,11 +97,11 @@ public class V16TestEnv {
 	}
 
 	public ICayenneService getCayenneService() {
-		return cayenneService;
+		return testEnv.getCayenneService();
 	}
 
 	public Messages getMessages() {
-		return messages;
+		return testEnv.getMessages();
 	}
 
 	public PageTester getPageTester() {
@@ -305,7 +275,7 @@ public class V16TestEnv {
 			//check that empty queuedRecords
 			ObjectContext context = testEnv.getCayenneService().newNonReplicatingContext();
 			testEnv.checkQueueBeforeProcessing(context);
-			testEnv.authenticate();
+			testEnv.getTestEnv().authenticate();
 			// prepare the stubs for replication
 			GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
 			GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());

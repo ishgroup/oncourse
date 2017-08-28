@@ -21,7 +21,7 @@ public class V16USIVerificationServiceTest extends RealWSTransportTest {
 
 			@Override
 			public void authenticate() throws Exception {
-				testEnv.authenticate();
+				testEnv.getTestEnv().authenticate();
 			}
 
 			@Override

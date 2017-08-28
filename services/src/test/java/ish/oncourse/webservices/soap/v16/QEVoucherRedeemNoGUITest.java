@@ -137,7 +137,7 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 	protected abstract void prepareStubsForReplication(GenericTransactionGroup transaction, GenericParametersMap parametersMap);
 
 	protected final GenericTransactionGroup processPayment() throws Exception {
-		testEnv.authenticate();
+		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
 		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getSupportedVersion());
 		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getSupportedVersion());

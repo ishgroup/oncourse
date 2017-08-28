@@ -99,6 +99,17 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 	private PaymentPortType paymentPortType;
 	private ReplicationPortType replicationPortType;
 
+
+	public long authenticate(String securityCode, long lastCommunicationKey) {
+		try {
+			return (long) replicationPortType.getClass().getMethod("authenticate", String.class, long.class)
+					.invoke(replicationPortType, securityCode, lastCommunicationKey);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
 	Class getReplicationStubClass() {
 		return replicationStubClass;
 	}
@@ -351,6 +362,9 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 		return securityCode.get();
 	}
 
+	public SupportedVersions getReplicationVersion() {
+		return replicationVersion;
+	}
 
 	public static class Path {
 		private URI serverURI;
