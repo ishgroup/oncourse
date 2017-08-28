@@ -62,7 +62,7 @@ public class DataLayerFactoryTest {
 			DataLayerFactory.Product product = getProductBy(cart.products, courseClass);
 			assertNotNull(product.category.primary);
 			assertEquals(courseClass.getFeeExGst(), product.price.base);
-			assertEquals(courseClass.getFeeIncGst(), product.price.withTax);
+			assertEquals(courseClass.getFeeIncGst(null), product.price.withTax);
 			assertEquals(courseClass.getFeeGst(), product.price.tax);
 		}
 
@@ -201,7 +201,7 @@ public class DataLayerFactoryTest {
 			Mockito.when(courseClass.getFeeExGst()).thenReturn(money);
 
 			money = Money.valueOf(new BigDecimal(RandomUtils.nextInt(100)));
-			Mockito.when(courseClass.getFeeIncGst()).thenReturn(money);
+			Mockito.when(courseClass.getFeeIncGst(null)).thenReturn(money);
 
 
 			money = Money.valueOf(new BigDecimal(RandomUtils.nextInt(100)));

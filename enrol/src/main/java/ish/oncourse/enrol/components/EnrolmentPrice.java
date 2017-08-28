@@ -1,3 +1,4 @@
+
 package ish.oncourse.enrol.components;
 
 import ish.math.Country;
@@ -49,6 +50,8 @@ public class EnrolmentPrice {
 	@Parameter
 	@Property
 	private Discount discount;
+
+	private BigDecimal taxRate;
 	
 	private Application application;
 
@@ -62,7 +65,8 @@ public class EnrolmentPrice {
 
 		Country country = preferenceService.getCountry();
 		Locale locale = (country != null) ? country.locale() : Country.AUSTRALIA.locale();
-
+		Tax taxOverride =  enrolment.getInvoiceLines().get(0).getInvoice().getContact().getTaxOverride();
+		taxRate = taxOverride == null ? null : taxOverride.getRate();
 		numberFormat = new DecimalFormat("0.00");
 		application = applicationService.findOfferedApplicationBy(enrolment.getCourseClass().getCourse(), enrolment.getStudent());
 	}
@@ -89,7 +93,7 @@ public class EnrolmentPrice {
 			}
 			return !discountedTotalExTax.isZero();
 		} else {
-			return discount != null && !enrolment.getCourseClass().getDiscountAmountExTax(discount).isZero();
+			return discount != null && !enrolment.getCourseClass().getDiscountAmountExTax(discount, taxRate).isZero();
 		}
 	}
 
@@ -105,9 +109,9 @@ public class EnrolmentPrice {
 				discountedPriceIncTax = discountedPriceIncTax.add(invoiceLine.getDiscountedPriceTotalIncTax());
 			}
 		} else if (discount != null) {
-			discountedPriceIncTax = enrolment.getCourseClass().getDiscountedFeeIncTax(enrolment.getCourseClass().getDiscountCourseClassBy(discount));
+			discountedPriceIncTax = enrolment.getCourseClass().getDiscountedFeeIncTax(enrolment.getCourseClass().getDiscountCourseClassBy(discount), taxRate);
 		} else {
-			discountedPriceIncTax =  enrolment.getCourseClass().getFeeIncGst();
+			discountedPriceIncTax =  enrolment.getCourseClass().getFeeIncGst(taxRate);
 		}
 		moneyFormat = FormatUtils.chooseMoneyFormat(discountedPriceIncTax);
 		return discountedPriceIncTax;
@@ -125,7 +129,7 @@ public class EnrolmentPrice {
 				discountIncTax = discountIncTax.add(invoiceLine.getDiscountTotalIncTax());
 			}
 		} else if (discount != null) {
-			discountIncTax = enrolment.getCourseClass().getDiscountAmountIncTax(enrolment.getCourseClass().getDiscountCourseClassBy(discount));
+			discountIncTax = enrolment.getCourseClass().getDiscountAmountIncTax(enrolment.getCourseClass().getDiscountCourseClassBy(discount), taxRate);
 		} else {
 			discountIncTax = Money.ZERO;
 		}
@@ -145,7 +149,7 @@ public class EnrolmentPrice {
 	}
 
 	public Money getFee() {
-		Money feeIncGst = courseClass.getFeeIncGst();
+		Money feeIncGst = courseClass.getFeeIncGst(taxRate);
 		moneyFormat = FormatUtils.chooseMoneyFormat(feeIncGst);
 		return feeIncGst;
 	}
@@ -160,7 +164,7 @@ public class EnrolmentPrice {
 		if (courseClass.isGstExempt()) {
 			return feeOverride;
 		} else {
-			return feeOverride.multiply(BigDecimal.ONE.add(courseClass.getTaxRate()));
+			return feeOverride.multiply(BigDecimal.ONE.add(taxRate != null ? taxRate : courseClass.getTaxRate()));
 		}
 	}
 }

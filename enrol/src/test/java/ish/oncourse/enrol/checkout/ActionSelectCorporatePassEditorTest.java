@@ -32,17 +32,17 @@ public class ActionSelectCorporatePassEditorTest extends ACheckoutTest {
         performAction(actionAddProduct, PurchaseController.Action.addProduct);
 
         proceedToPayment();
-        assertEquals(courseClass.getFeeIncGst().add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
+        assertEquals(courseClass.getFeeIncGst(null).add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
 
         selectCorporatePassEditor();
-        assertEquals(courseClass.getFeeIncGst().add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
+        assertEquals(courseClass.getFeeIncGst(null).add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
 
         selectCardEditor();
-        assertEquals(courseClass.getFeeIncGst().add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
+        assertEquals(courseClass.getFeeIncGst(null).add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
 
         selectCorporatePassEditor();
         addCorporatePass("password1");
-        assertEquals(courseClass.getFeeIncGst().add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
+        assertEquals(courseClass.getFeeIncGst(null).add(product.getPriceIncTax()), getModel().getInvoice().getTotalGst());
         assertNotNull(getModel().getAllEnabledProductItems().get(0));
         assertTrue(getModel().getAllEnabledProductItems().get(0) instanceof Voucher);
 

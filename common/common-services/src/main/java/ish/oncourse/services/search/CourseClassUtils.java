@@ -95,11 +95,11 @@ public class CourseClassUtils {
 	
 	private static float focusMatchForPrice(final CourseClass courseClass, Float price) {
 		float result = 0.0f;
-		if (courseClass.hasFeeIncTax()) {
-            if (courseClass.getFeeIncGst().floatValue() <= price){
+		if (courseClass.hasFeeIncTax(null)) {
+            if (courseClass.getFeeIncGst(null).floatValue() <= price){
                 result =  1.0f;
-            } else if (courseClass.getFeeIncGst().floatValue() > price) {
-				result = 0.75f - (courseClass.getFeeIncGst().floatValue() - price) / price * 0.25f;
+            } else if (courseClass.getFeeIncGst(null).floatValue() > price) {
+				result = 0.75f - (courseClass.getFeeIncGst(null).floatValue() - price) / price * 0.25f;
 				if (result < 0.25f) {
 					result = 0.25f;
 				}

@@ -105,7 +105,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 
 		PaymentIn payment = service.getPayments().get(courseVoucher);
 
-		assertEquals(cc.getFeeIncGst(), payment.getAmount());
+		assertEquals(cc.getFeeIncGst(null), payment.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment.getType());
 
 		context.commitChanges();
@@ -172,7 +172,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 
 		PaymentIn payment = service.getPayments().get(moneyVoucher);
 
-		assertEquals(cc.getFeeIncGst(), payment.getAmount());
+		assertEquals(cc.getFeeIncGst(null), payment.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment.getType());
 
 		context.commitChanges();
@@ -348,7 +348,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
         if (payment == null)
             payment = service.getPayments().get(voucher2);
 
-		assertEquals(cc.getFeeIncGst().multiply(2.0), payment.getAmount());
+		assertEquals(cc.getFeeIncGst(null).multiply(2.0), payment.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment.getType());
 
 		context.commitChanges();
@@ -380,7 +380,7 @@ public class VoucherRedemptionHelperTest extends ServiceTest {
 
 		PaymentIn payment1 = service.getPayments().get(voucher);
 
-		assertEquals(cc.getFeeIncGst(), payment1.getAmount());
+		assertEquals(cc.getFeeIncGst(null), payment1.getAmount());
 		assertEquals(PaymentType.VOUCHER, payment1.getType());
 
 		context.commitChanges();

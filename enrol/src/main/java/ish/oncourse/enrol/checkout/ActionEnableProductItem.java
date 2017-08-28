@@ -20,9 +20,11 @@ public class ActionEnableProductItem extends APurchaseAction {
 	private ProductItem productItem;
     //the value which payer entered in price field on gui for voucher without price
     private Money price;
+    private Tax taxOverride;
 
 	@Override
 	protected void makeAction() {
+		taxOverride = getModel().getPayer().getTaxOverride();
 		if (productItem instanceof Voucher) {
             enableVoucher();
 		} else if (productItem instanceof Membership){
@@ -39,7 +41,7 @@ public class ActionEnableProductItem extends APurchaseAction {
 	private void enableArticle() {
 		Article article = (Article) productItem;
 		InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForArticle(article,
-				productItem.getContact());
+				productItem.getContact(), taxOverride);
 		il.setInvoice(getModel().getInvoice());
 		article.setInvoiceLine(il);
 	}
@@ -47,7 +49,7 @@ public class ActionEnableProductItem extends APurchaseAction {
 	private void enableMembership() {
         Membership membership = (Membership) productItem;
         InvoiceLine il = getController().getInvoiceProcessingService().createInvoiceLineForMembership(membership,
-				productItem.getContact());
+				productItem.getContact(), taxOverride);
         il.setInvoice(getModel().getInvoice());
         membership.setInvoiceLine(il);
     }
@@ -64,16 +66,16 @@ public class ActionEnableProductItem extends APurchaseAction {
 			voucher.setRedemptionValue(price);
 			voucher.setValueOnPurchase(price);
 			il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
-					getModel().getPayer(), price);
+					getModel().getPayer(), price, null);
 		} else if (product.getPriceExTax() != null) {
 			voucher.setRedemptionValue(product.getValue());
 			voucher.setValueOnPurchase(product.getValue());
 			il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
-					getModel().getPayer(), product.getPriceExTax());
+					getModel().getPayer(), product.getPriceExTax(), null);
 
 		} else {
 			il = getController().getInvoiceProcessingService().createInvoiceLineForVoucher(voucher,
-					getModel().getPayer());
+					getModel().getPayer(), null);
 		}
 
 		il.setInvoice(getModel().getInvoice());

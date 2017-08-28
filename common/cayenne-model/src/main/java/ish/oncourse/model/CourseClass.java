@@ -160,17 +160,24 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		return dt.toString(ISODateTimeFormat.basicDate());
 	}
 
-	public boolean hasFeeIncTax() {
-		Money fee = getFeeIncGst();
+	public boolean hasFeeIncTax(BigDecimal overriddenTaxRate) {
+		Money fee = getFeeIncGst(overriddenTaxRate);
 		return fee != null && !fee.isZero();
 	}
 
-	public Money getFeeIncGst() {
-		Money feeGst = getFeeGst();
+	public Money getFeeIncGst(BigDecimal overriddenTaxRate) {
+		Money feeGst;
 		Money feeExGst = getFeeExGst();
-		if (feeGst == null || feeExGst == null) {
-			return feeExGst;
+		if (feeExGst == null) {
+			return null;
 		}
+
+		if (overriddenTaxRate == null) {
+			feeGst = getFeeGst();
+		} else {
+			feeGst = feeExGst.multiply(overriddenTaxRate);
+		}
+
 		return feeExGst.add(feeGst);
 	}
 
@@ -337,11 +344,11 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 * @param discount
 	 * @return
 	 */
-	public Money getDiscountAmountExTax(Discount discount) {
+	public Money getDiscountAmountExTax(Discount discount, BigDecimal overriddenTaxRate) {
 		if (discount == null) {
 			return Money.ZERO;
 		} else {
-			return DiscountUtils.discountValue(getDiscountCourseClassBy(discount), getFeeExGst(), getTaxRate());		
+			return DiscountUtils.discountValue(getDiscountCourseClassBy(discount), getFeeExGst(), overriddenTaxRate != null ? overriddenTaxRate : getTaxRate());		
 		}
 	}
 
@@ -352,8 +359,8 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 * @param discountCourseClass
 	 * @return
 	 */
-	public Money getDiscountAmountIncTax(DiscountCourseClass discountCourseClass) {
-		return getFeeIncGst().subtract(getDiscountedFeeIncTax(discountCourseClass));
+	public Money getDiscountAmountIncTax(DiscountCourseClass discountCourseClass, BigDecimal overriddenTaxRate) {
+		return getFeeIncGst(overriddenTaxRate).subtract(getDiscountedFeeIncTax(discountCourseClass, overriddenTaxRate));
 	}
 
 	/**
@@ -363,8 +370,8 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 * @param discount
 	 * @return
 	 */
-	public Money getDiscountedTax(Discount discount) {
-		return getDiscountedFeeIncTax(getDiscountCourseClassBy(discount)).subtract(getDiscountedFee(discount));
+	public Money getDiscountedTax(Discount discount, BigDecimal overriddenTaxRate) {
+		return getDiscountedFeeIncTax(getDiscountCourseClassBy(discount), overriddenTaxRate).subtract(getDiscountedFee(discount, overriddenTaxRate));
 	}
 
 	/**
@@ -374,11 +381,11 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 * @param discountCourseClass
 	 * @return
 	 */
-	public Money getDiscountedFeeIncTax(DiscountCourseClass discountCourseClass) {
+	public Money getDiscountedFeeIncTax(DiscountCourseClass discountCourseClass, BigDecimal overriddenTaxRate) {
 		if (discountCourseClass == null) {
-			return getFeeIncGst();
+			return getFeeIncGst(overriddenTaxRate);
 		} else {
-			return DiscountUtils.getDiscountedFee(discountCourseClass, getFeeExGst(), getTaxRate());	
+			return DiscountUtils.getDiscountedFee(discountCourseClass, getFeeExGst(),overriddenTaxRate != null ? overriddenTaxRate : getTaxRate());	
 		}
 	}
 
@@ -389,8 +396,8 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 	 * @param discount
 	 * @return
 	 */
-	public Money getDiscountedFee(Discount discount) {
-		return getFeeExGst().subtract(getDiscountAmountExTax(discount));
+	public Money getDiscountedFee(Discount discount, BigDecimal overriddenTaxRate) {
+		return getFeeExGst().subtract(getDiscountAmountExTax(discount, overriddenTaxRate));
 	}
 
 	public DiscountCourseClass getDiscountCourseClassBy(Discount discount) {

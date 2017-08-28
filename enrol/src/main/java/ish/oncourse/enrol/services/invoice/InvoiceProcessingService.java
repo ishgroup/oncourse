@@ -43,9 +43,10 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#createInvoiceLineForEnrolment(Enrolment)
+	 * @see ish.oncourse.enrol.services.invoice.IInvoiceProcessingService#createInvoiceLineForEnrolment(Enrolment, Tax)
 	 */
-	public InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment) {
+	public InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, Tax taxOverride) {
+		
 		ObjectContext context = enrolment.getObjectContext();
 		InvoiceLine invoiceLine = context.newObject(InvoiceLine.class);
 
@@ -69,30 +70,31 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		invoiceLine.setCollege(college);
 
 		Application application = applicationService.findOfferedApplicationBy(course, student);
+		BigDecimal taxRate =  taxOverride == null ? courseClass.getTaxRate() : taxOverride.getRate();
 		if (application != null && application.getFeeOverride() != null) {
 			//Calculate enrolment fee (for enrolments whose courses has ENROLMENT_BY_APPLICATION type) as application.feeOverride if !=null.
 			//Application.feeOverride doesn't need to combine with discounts.
-			InvoiceUtil.fillInvoiceLine(invoiceLine, application.getFeeOverride(), Money.ZERO, courseClass.getTaxRate(), Money.ZERO);
+			InvoiceUtil.fillInvoiceLine(invoiceLine, application.getFeeOverride(), Money.ZERO, taxRate, Money.ZERO);
 		} else {
 			invoiceLine.setPriceEachExTax(fee);
 			InvoiceUtil.fillInvoiceLine(invoiceLine, invoiceLine.getPriceEachExTax(), Money.ZERO,
-						courseClass.getTaxRate(), calculateTaxAdjustment(courseClass));
+					taxRate, taxOverride == null ? calculateTaxAdjustment(courseClass) : Money.ZERO);
 		}
 		return invoiceLine;
 	}
 
 	@Override
-	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact) {
-		return this.createInvoiceLineForVoucher(voucher, contact, voucher.getVoucherProduct().getPriceExTax());
+	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact,  Tax taxOverride) {
+		return this.createInvoiceLineForVoucher(voucher, contact, voucher.getVoucherProduct().getPriceExTax(), taxOverride);
 	}
 
 	@Override
-	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact, Money priceExTax) {
-		return createInvoiceLineForProductItem(voucher, contact, priceExTax);
+	public InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact, Money priceExTax, Tax taxOverride) {
+		return createInvoiceLineForProductItem(voucher, contact, priceExTax, taxOverride);
 
 	}
 
-	private InvoiceLine createInvoiceLineForProductItem(ProductItem productItem, Contact contact, Money priceExTax) {
+	private InvoiceLine createInvoiceLineForProductItem(ProductItem productItem, Contact contact, Money priceExTax, Tax taxOverride) {
 		ObjectContext context = productItem.getObjectContext();
 
 		Product product = productItem.getProduct();
@@ -106,7 +108,12 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 		invoiceLine.setTitle(String.format("%s %s", contact.getFullName(), product.getName()));
 
 		invoiceLine.setQuantity(BigDecimal.ONE);
-		InvoiceUtil.fillInvoiceLine(invoiceLine, priceExTax, Money.ZERO, product.getTaxRate(), product.getTaxAdjustment());
+
+		if (taxOverride == null) {
+			InvoiceUtil.fillInvoiceLine(invoiceLine, priceExTax, Money.ZERO, product.getTaxRate(), product.getTaxAdjustment());
+		} else {
+			InvoiceUtil.fillInvoiceLine(invoiceLine, priceExTax, Money.ZERO, taxOverride.getRate(), Money.ZERO);
+		}
 		productItem.setInvoiceLine(invoiceLine);
 
 		invoiceLine.setCollege(college);
@@ -115,16 +122,16 @@ public class InvoiceProcessingService implements IInvoiceProcessingService {
 	}
 
 	@Override
-	public InvoiceLine createInvoiceLineForMembership(Membership membership, Contact contact) {
-		return createInvoiceLineForProductItem(membership, contact, membership.getProduct().getPriceExTax());
+	public InvoiceLine createInvoiceLineForMembership(Membership membership, Contact contact,  Tax taxOverride) {
+		return createInvoiceLineForProductItem(membership, contact, membership.getProduct().getPriceExTax(), taxOverride);
 	}
 
 	@Override
-	public InvoiceLine createInvoiceLineForArticle(Article article, Contact contact) {
-		return createInvoiceLineForProductItem(article, contact, article.getProduct().getPriceExTax());
+	public InvoiceLine createInvoiceLineForArticle(Article article, Contact contact,  Tax taxOverride) {
+		return createInvoiceLineForProductItem(article, contact, article.getProduct().getPriceExTax(), taxOverride);
 	}
 
 	private Money calculateTaxAdjustment(final CourseClass courseClass) {
-		return courseClass.getFeeIncGst().subtract(courseClass.getFeeExGst().multiply(courseClass.getTaxRate().add(BigDecimal.ONE)));
+		return courseClass.getFeeIncGst(null).subtract(courseClass.getFeeExGst().multiply(courseClass.getTaxRate().add(BigDecimal.ONE)));
 	}
 }

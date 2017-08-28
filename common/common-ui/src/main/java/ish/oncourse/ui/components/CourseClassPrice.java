@@ -72,12 +72,12 @@ public class CourseClassPrice extends ISHCommon {
 	private void fillAppliedDiscounts() {
 		CourseContext context = (CourseContext) request.getAttribute(CourseItem.COURSE_CONTEXT);
 		List<Discount> promotions = context == null ? discountService.getPromotions() : context.getDiscounts();
-		List<DiscountCourseClass> allApplicable = GetAppliedDiscounts.valueOf(courseClass, promotions).get();
+		List<DiscountCourseClass> allApplicable = GetAppliedDiscounts.valueOf(courseClass, promotions, null).get();
 		DiscountCourseClass bestDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(allApplicable, courseClass.getFeeExGst(), courseClass.getTaxRate());
 		
 		if (bestDiscount != null) {
-			discountedFee = courseClass.getDiscountedFeeIncTax(bestDiscount);
-			discountValue = courseClass.getFeeIncGst().subtract(discountedFee);
+			discountedFee = courseClass.getDiscountedFeeIncTax(bestDiscount, null);
+			discountValue = courseClass.getFeeIncGst(null).subtract(discountedFee);
 			fillAppliedDiscountsTooltip(bestDiscount);
 		}
 	}
@@ -127,11 +127,11 @@ public class CourseClassPrice extends ISHCommon {
 	}
 
 	public boolean isShowTax() {
-		return courseClass.getFeeIncGst().isGreaterThan(Money.ZERO);
+		return courseClass.getFeeIncGst(null).isGreaterThan(Money.ZERO);
 	}
 
 	public Money getFee() {
-		Money feeIncGst = courseClass.getFeeIncGst();
+		Money feeIncGst = courseClass.getFeeIncGst(null);
 		feeFormat = FormatUtils.chooseMoneyFormat(feeIncGst);
 		return feeIncGst;
 	}

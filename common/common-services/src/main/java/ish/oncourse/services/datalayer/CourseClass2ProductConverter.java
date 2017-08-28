@@ -49,7 +49,7 @@ public class CourseClass2ProductConverter extends AbstractProductConverter<Cours
 	protected Price getPrice() {
 		Price price = new Price();
 		price.base = getValue().getFeeExGst();
-		price.withTax = getValue().getFeeIncGst();
+		price.withTax = getValue().getFeeIncGst(null);
 		price.tax = getValue().getFeeGst();
 		price.total = price.withTax;
 		return price;

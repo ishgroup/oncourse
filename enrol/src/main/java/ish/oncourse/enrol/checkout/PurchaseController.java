@@ -640,12 +640,14 @@ public class PurchaseController {
 					and(DiscountCourseClass.COURSE_CLASS.eq(enrolment.getCourseClass())).
 					and(Discount.getCurrentDateFilterForDiscountCourseClass(enrolment.getCourseClass().getStartDate())).
 					select(model.getObjectContext());
+			
+			BigDecimal taxRate = getOverridenTaxRate() != null ? getOverridenTaxRate()  : enrolment.getCourseClass().getTaxRate();
 
-			GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), model.getCorporatePass(), totalCount, totalAmount, enrolment).get();
+			GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, model.getDiscounts(), model.getCorporatePass(), totalCount, totalAmount, enrolment, taxRate).get();
 			DiscountCourseClass chosenDiscount = discounts.getChosenDiscount();
 
 			if (chosenDiscount != null) {
-				DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
+				DiscountUtils.applyDiscounts(chosenDiscount, invoiceLine, taxRate, calculateTaxAdjustment(enrolment.getCourseClass()));
 				createInvoiceLineDiscounts(invoiceLine, chosenDiscount.getDiscount(), chosenDiscount.getObjectContext());
 				if (enrolment.getCourseClass().getPaymentPlanLines().size() > 0) {
 					InvoiceNode node = model.getPaymentPlanInvoiceBy(enrolment);
@@ -672,7 +674,7 @@ public class PurchaseController {
 			model.getObjectContext().deleteObjects(invoiceLineDiscounts);
 
 			InvoiceUtil.fillInvoiceLine(invoiceLine, enrolment.getCourseClass().getFeeExGst(), Money.ZERO,
-					enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
+					getModel().getPayer().getTaxOverride() != null ? getModel().getPayer().getTaxOverride().getRate() : enrolment.getCourseClass().getTaxRate(), calculateTaxAdjustment(enrolment.getCourseClass()));
 		}
 	}
 
@@ -690,7 +692,7 @@ public class PurchaseController {
 			if (application != null && application.getFeeOverride() != null) {
 				totalAmount = totalAmount.add(application.getFeeOverride());
 			} else {
-				totalAmount = totalAmount.add(enrolment.getCourseClass().getFeeIncGst());
+				totalAmount = totalAmount.add(enrolment.getCourseClass().getFeeIncGst(getOverridenTaxRate() != null ? getOverridenTaxRate()  : enrolment.getCourseClass().getTaxRate()));
 			}
 		}
 
@@ -712,7 +714,12 @@ public class PurchaseController {
 	}
 
 	private Money calculateTaxAdjustment(final CourseClass courseClass) {
-		return courseClass.getFeeIncGst().subtract(courseClass.getFeeExGst().multiply(courseClass.getTaxRate().add(BigDecimal.ONE)));
+		
+		if (model.getPayer() != null && model.getPayer().getTaxOverride() != null) {
+			return Money.ZERO;
+		} else {
+			return courseClass.getFeeIncGst(null).subtract(courseClass.getFeeExGst().multiply(courseClass.getTaxRate().add(BigDecimal.ONE)));
+		}
 	}
 
     public void updateTotalDiscountAmountIncTax() {
@@ -730,6 +737,10 @@ public class PurchaseController {
 		getModel().setTotalDiscountAmountIncTax(totalDiscountAmountIncTax);
 	}
 
+	public BigDecimal getOverridenTaxRate() {
+		return  getModel().getPayer().getTaxOverride() != null ? getModel().getPayer().getTaxOverride().getRate() : null;
+	}
+	
 	String getClassName(CourseClass courseClass) {
 		return String.format("%s (%s-%s)", courseClass.getCourse().getName(), courseClass.getCourse().getCode(), courseClass.getCode());
 	}
@@ -931,8 +942,8 @@ public class PurchaseController {
 		editConcession(addConcession, removeConcession, cancelConcessionEditor),
 		addContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian),
 		editContact(Action.addContact, cancelAddContact, addPersonPayer, addCompanyPayer, cancelAddPayer, addGuardian, cancelAddGuardian, addVoucherPersonPayer, addVoucherCompanyPayer),
-		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow),
-		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor),
+		editPayment(makePayment, backToEditCheckout, addCode, selectVoucher, deselectVoucher, creditAccess, owingApply, changePayer, addPersonPayer, addCompanyPayer, selectCorporatePassEditor, changePayNow, updateTax),
+		editCorporatePass(makePayment, backToEditCheckout, addCorporatePass, selectCardEditor, updateTax),
 		paymentProgress(showPaymentResult),
 		paymentResult(proceedToPayment, showPaymentResult);
 
@@ -998,8 +1009,9 @@ public class PurchaseController {
         cancelAddGuardian(ActionCancelAddGuardian.class),
 		addVoucherPayer(ActionAddVoucherPayer.class),
 		addVoucherPersonPayer(ActionAddVoucherPersonPayer.class, Contact.class),
-		addVoucherCompanyPayer(ActionAddVoucherCompanyPayer.class, Contact.class);
-
+		addVoucherCompanyPayer(ActionAddVoucherCompanyPayer.class, Contact.class),
+		updateTax(ActionUpdateTax.class);
+		
 		private Class<? extends APurchaseAction> actionClass;
 		private List<Class<?>> paramTypes;
 

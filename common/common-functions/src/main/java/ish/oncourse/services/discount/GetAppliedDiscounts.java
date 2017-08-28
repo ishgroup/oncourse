@@ -3,27 +3,26 @@
  */
 package ish.oncourse.services.discount;
 
-import ish.oncourse.model.CorporatePassDiscount;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Discount;
-import ish.oncourse.model.DiscountConcessionType;
-import ish.oncourse.model.DiscountCourseClass;
-import ish.oncourse.model.DiscountMembership;
+import ish.oncourse.model.*;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class GetAppliedDiscounts {
 
 	private List<Discount> promotions;
 	private CourseClass courseClass;
+	private BigDecimal taxRate = null;
 
 	
-	public static GetAppliedDiscounts valueOf(CourseClass courseClass, List<Discount> promotions) {
+	public static GetAppliedDiscounts valueOf(CourseClass courseClass, List<Discount> promotions, BigDecimal taxRate) {
 		GetAppliedDiscounts get = new GetAppliedDiscounts();
 		get.courseClass = courseClass;
 		get.promotions = promotions;
+		get.taxRate = taxRate;
+
 		return get;
 	}
 	
@@ -35,7 +34,7 @@ public class GetAppliedDiscounts {
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_AGE).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.STUDENT_POSTCODES).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.MIN_ENROLMENTS).lte(1)).
-				and(DiscountCourseClass.DISCOUNT.dot(Discount.MIN_VALUE).lte(courseClass.getFeeIncGst())).
+				and(DiscountCourseClass.DISCOUNT.dot(Discount.MIN_VALUE).lte(courseClass.getFeeIncGst(taxRate))).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_CONCESSION_TYPES).outer().dot(DiscountConcessionType.CONCESSION_TYPE).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.CORPORATE_PASS_DISCOUNTS).outer().dot(CorporatePassDiscount.CREATED).isNull()).
 				and(DiscountCourseClass.DISCOUNT.dot(Discount.DISCOUNT_MEMBERSHIP_PRODUCTS).outer().dot(DiscountMembership.CREATED).isNull()).

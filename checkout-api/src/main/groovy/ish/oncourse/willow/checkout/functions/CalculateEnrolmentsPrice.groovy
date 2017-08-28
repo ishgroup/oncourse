@@ -11,6 +11,7 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Discount
 import ish.oncourse.model.DiscountCourseClass
 import ish.oncourse.model.GetDiscountForEnrolment
+import ish.oncourse.model.Tax
 import ish.oncourse.services.discount.WebDiscountUtils
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import org.apache.cayenne.ObjectContext
@@ -37,7 +38,9 @@ class CalculateEnrolmentsPrice {
 
     List<Discount> promotions = []
 
-    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, int enrolmentsCount, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, List<String> promotionIds, CorporatePass corporatePass) {
+    private Tax taxOverridden
+    
+    CalculateEnrolmentsPrice(ObjectContext context, College college, Money total, int enrolmentsCount, CheckoutModel model, Map<Contact, List<CourseClass>> enrolmentsToProceed, List<String> promotionIds, CorporatePass corporatePass, Tax taxOverridden) {
         this.context = context
         this.college = college
         this.total = total
@@ -45,7 +48,7 @@ class CalculateEnrolmentsPrice {
         this.model = model
         this.enrolmentsToProceed = enrolmentsToProceed
         this.corporatePass = corporatePass
-        
+        this.taxOverridden = taxOverridden
         promotionIds.each { id ->
             this.promotions << new GetDiscount(this.context, this.college, id).get()
         }
@@ -59,7 +62,7 @@ class CalculateEnrolmentsPrice {
                 Money classPrice = getOverridenFee(contact, courseClass)
                 
                 if (!classPrice) {
-                    CalculatePrice price = new CalculatePrice(courseClass.feeExGst, Money.ZERO, courseClass.taxRate, CalculatePrice.calculateTaxAdjustment(courseClass)).calculate()
+                    CalculatePrice price = new CalculatePrice(courseClass.feeExGst, Money.ZERO, taxOverridden?.rate?:courseClass.taxRate, taxOverridden ? Money.ZERO : CalculatePrice.calculateTaxAdjustment(courseClass)).calculate()
                     price = applyDiscount(contact, courseClass, price)
                     classPrice = price.finalPriceToPayIncTax
                 }
@@ -127,7 +130,7 @@ class CalculateEnrolmentsPrice {
                 select(context)
 
 
-        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsCount, total, contact.student,  courseClass).get()
+        GetDiscountForEnrolment discounts = GetDiscountForEnrolment.valueOf(classDiscounts, promotions, corporatePass, enrolmentsCount, total, contact.student,  courseClass, taxOverridden?.rate?:courseClass.taxRate).get()
         DiscountCourseClass chosenDiscount = discounts.chosenDiscount
 
         if (chosenDiscount != null) {

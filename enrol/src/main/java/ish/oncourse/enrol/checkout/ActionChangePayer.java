@@ -9,6 +9,7 @@ import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.util.payment.CompleteInTransactionPayments;
 import org.apache.cayenne.ObjectContext;
 
+import static ish.oncourse.enrol.checkout.PurchaseController.Action.updateTax;
 import static ish.oncourse.util.payment.CompleteInTransactionPayments.CompleteResult;
 
 public class ActionChangePayer extends APurchaseAction {
@@ -82,7 +83,9 @@ public class ActionChangePayer extends APurchaseAction {
 				}
 			}
 		}
-
+        ActionUpdateTax actionUpdateTax = updateTax.createAction(getController());
+        actionUpdateTax.action();
+		
         getController().getModelValidator().validate();
         getController().refreshPrevOwingStatus();
     }

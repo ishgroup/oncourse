@@ -60,7 +60,7 @@ public class GetDiscountTest extends ServiceTest {
 			}
 		};
 
-		List<DiscountCourseClass> applicableDiscounts = GetAppliedDiscounts.valueOf(courseClass,promotions).get();
+		List<DiscountCourseClass> applicableDiscounts = GetAppliedDiscounts.valueOf(courseClass,promotions, null).get();
 		assertEquals(3, applicableDiscounts.size());
 		Collections.sort(applicableDiscounts,idComparator);
 

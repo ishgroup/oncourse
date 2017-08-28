@@ -138,9 +138,9 @@ public class PaymentPlanAndRegularEnrolmentTest extends ACheckoutTest {
 		assertEquals(2, model.getPayment().getPaymentInLines().size());
 		for (PaymentInLine paymentInLine : purchaseController.getModel().getPayment().getPaymentInLines()) {
 			if (paymentInLine == invoiceNode.getPaymentInLine()) {
-				assertEquals("PaymentPlan paymentInLine", value.subtract(regularClass.getFeeIncGst()), paymentInLine.getAmount());
+				assertEquals("PaymentPlan paymentInLine", value.subtract(regularClass.getFeeIncGst(null)), paymentInLine.getAmount());
 			} else {
-				assertEquals("default paymentInLine", regularClass.getFeeIncGst(), paymentInLine.getAmount());
+				assertEquals("default paymentInLine", regularClass.getFeeIncGst(null), paymentInLine.getAmount());
 			}
 		}
 	}
@@ -205,34 +205,34 @@ public class PaymentPlanAndRegularEnrolmentTest extends ACheckoutTest {
 		assertEquals(contact, invoiceNode.getEnrolment().getStudent().getContact());
 
 		assertNotNull(invoiceNode.getInvoiceLine());
-		assertEquals(paymentPlanClass.getFeeIncGst(), invoiceNode.getInvoiceLine().getPriceTotalIncTax());
+		assertEquals(paymentPlanClass.getFeeIncGst(null), invoiceNode.getInvoiceLine().getPriceTotalIncTax());
 
 		assertNotNull(invoiceNode.getInvoice());
 		assertEquals(contact, invoiceNode.getInvoice().getContact());
 		//assertEquals(courseClass.getFeeIncGst(), invoiceNode.getInvoice().getAmountOwing());
-		assertEquals(paymentPlanClass.getFeeIncGst(), invoiceNode.getInvoice().getTotalGst());
+		assertEquals(paymentPlanClass.getFeeIncGst(null), invoiceNode.getInvoice().getTotalGst());
 
 		assertEquals(1, invoiceNode.getSelectedDueDates().size());
 		Money amountDueDates = invoiceNode.getSelectedDueDates().get(0).getAmount();
 
 		//assert PaymentLine
 		assertNotNull(invoiceNode.getPaymentInLine());
-		assertEquals(paymentPlanClass.getFeeIncGst(), invoiceNode.getInvoiceLine().getPriceTotalIncTax());
+		assertEquals(paymentPlanClass.getFeeIncGst(null), invoiceNode.getInvoiceLine().getPriceTotalIncTax());
 		assertEquals(2, model.getPayment().getPaymentInLines().size());
 		for (PaymentInLine paymentInLine : purchaseController.getModel().getPayment().getPaymentInLines()) {
 			if (paymentInLine == invoiceNode.getPaymentInLine()) {
 				assertEquals("PaymentPlan paymentInLine", amountDueDates, paymentInLine.getAmount());
 			} else {
-				assertEquals("default paymentInLine", regularClass.getFeeIncGst(), paymentInLine.getAmount());
+				assertEquals("default paymentInLine", regularClass.getFeeIncGst(null), paymentInLine.getAmount());
 			}
 		}
 
 		//assert paymentIn
-		assertEquals("Payment amount equals the dueDates's amount", amountDueDates.add(regularClass.getFeeIncGst()), model.getPayment().getAmount());
+		assertEquals("Payment amount equals the dueDates's amount", amountDueDates.add(regularClass.getFeeIncGst(null)), model.getPayment().getAmount());
 		assertEquals(PaymentType.CREDIT_CARD, model.getPayment().getType());
 
-		assertEquals(paymentPlanClass.getFeeIncGst().add(regularClass.getFeeIncGst()), model.getTotalGst());
-		assertEquals(amountDueDates.add(regularClass.getFeeIncGst()), purchaseController.getPayNow());
+		assertEquals(paymentPlanClass.getFeeIncGst(null).add(regularClass.getFeeIncGst(null)), model.getTotalGst());
+		assertEquals(amountDueDates.add(regularClass.getFeeIncGst(null)), purchaseController.getPayNow());
 	}
 
 	protected Enrolment disableEnrolment(Enrolment enrolment) {
@@ -245,13 +245,13 @@ public class PaymentPlanAndRegularEnrolmentTest extends ACheckoutTest {
 		assertDisabledEnrolment(model.getDisabledEnrolments(contact).get(0));
 
 		//assert default invoice
-		assertEquals(regularClass.getFeeIncGst(), model.getInvoice().getTotalGst());
+		assertEquals(regularClass.getFeeIncGst(null), model.getInvoice().getTotalGst());
 		assertEquals(regularClass.getFeeExGst(), model.getInvoice().getTotalExGst());
 
 		//assert payment
-		assertEquals(regularClass.getFeeIncGst(), model.getPayment().getAmount());
+		assertEquals(regularClass.getFeeIncGst(null), model.getPayment().getAmount());
 		assertEquals(1, model.getPayment().getPaymentInLines().size());
-		assertEquals(regularClass.getFeeIncGst(), model.getPayment().getPaymentInLines().get(0).getAmount());
+		assertEquals(regularClass.getFeeIncGst(null), model.getPayment().getPaymentInLines().get(0).getAmount());
 
 
 		//assert payment plan invoice

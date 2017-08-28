@@ -36,7 +36,7 @@ public interface IInvoiceProcessingService {
 	 * @param enrolment the given enrolment
 	 * @return invoiceLine object created
 	 */
-	InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment);
+	InvoiceLine createInvoiceLineForEnrolment(Enrolment enrolment, Tax taxOverride);
 	
 	/**
 	 * Creates the {@link InvoiceLine} object for the given voucher.
@@ -45,8 +45,8 @@ public interface IInvoiceProcessingService {
 	 * @param contact
 	 * @return invoiceLine object created
 	 */
-	InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact);
-    InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact, Money price);
+	InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact,  Tax taxOverride);
+    InvoiceLine createInvoiceLineForVoucher(Voucher voucher, Contact contact, Money price,  Tax taxOverride);
 	
 
     /**
@@ -55,7 +55,7 @@ public interface IInvoiceProcessingService {
      * @param contact
      * @return
      */
-    InvoiceLine createInvoiceLineForMembership(Membership membership, Contact contact);
+    InvoiceLine createInvoiceLineForMembership(Membership membership, Contact contact,  Tax taxOverride);
 
 	/**
 	 *
@@ -63,5 +63,5 @@ public interface IInvoiceProcessingService {
 	 * @param contact
 	 * @return
 	 */
-	InvoiceLine createInvoiceLineForArticle(Article article, Contact contact);
+	InvoiceLine createInvoiceLineForArticle(Article article, Contact contact,  Tax taxOverride);
 }

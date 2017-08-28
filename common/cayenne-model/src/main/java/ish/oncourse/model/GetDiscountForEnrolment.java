@@ -10,6 +10,7 @@ import ish.util.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +37,7 @@ public class GetDiscountForEnrolment {
 	private Money totalInvoicesAmount;
 	private Student currentStudent;
 	private CourseClass currentCourseClass;
+	private BigDecimal taxRateOverridden;
 
 
 	private List<DiscountCourseClass> applicableDiscounts = new LinkedList<>();
@@ -44,11 +46,11 @@ public class GetDiscountForEnrolment {
 
 	private GetDiscountForEnrolment() {}
 	
-	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment) {
-		return valueOf(classDiscounts, addedPromos, corporatePass,enabledEnrolmentsCount,totalInvoicesAmount, currentEnrolment.getStudent(), currentEnrolment.getCourseClass());
+	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Enrolment currentEnrolment, BigDecimal taxRateOverridden) {
+		return valueOf(classDiscounts, addedPromos, corporatePass,enabledEnrolmentsCount,totalInvoicesAmount, currentEnrolment.getStudent(), currentEnrolment.getCourseClass(),  taxRateOverridden);
 	}
 
-	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Student currentStudent, CourseClass currentCourseClass) {
+	public static GetDiscountForEnrolment valueOf(List<DiscountCourseClass> classDiscounts, List<Discount> addedPromos, CorporatePass corporatePass, int enabledEnrolmentsCount, Money totalInvoicesAmount, Student currentStudent, CourseClass currentCourseClass,  BigDecimal taxRateOverridden) {
 
 		GetDiscountForEnrolment get = new GetDiscountForEnrolment();
 		get.setClassDiscounts(classDiscounts);
@@ -58,6 +60,7 @@ public class GetDiscountForEnrolment {
 		get.setTotalInvoicesAmount(totalInvoicesAmount);
 		get.setCurrentStudent(currentStudent);
 		get.setCurrentCourseClass(currentCourseClass);
+		get.setTaxRateOverridden(taxRateOverridden);
 		return get;
 	}
 
@@ -72,7 +75,7 @@ public class GetDiscountForEnrolment {
 		}
 	
 		if (!applicableDiscounts.isEmpty()) {
-			chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(applicableDiscounts, currentCourseClass.getFeeExGst(), currentCourseClass.getTaxRate());
+			chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(applicableDiscounts, currentCourseClass.getFeeExGst(), taxRateOverridden);
 		}
 		
 		return this;
@@ -226,5 +229,8 @@ public class GetDiscountForEnrolment {
 
 	public DiscountCourseClass getChosenDiscount() {
 		return chosenDiscount;
+	}
+	public void setTaxRateOverridden(BigDecimal taxRate) {
+		this.taxRateOverridden = taxRate;
 	}
 }

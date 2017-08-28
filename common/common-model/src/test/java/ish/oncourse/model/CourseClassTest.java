@@ -363,19 +363,19 @@ public class CourseClassTest {
 		firstClass.setFeeGst(new Money("10"));
 		assertEquals(new Money("100"), firstClass.getFeeExGst());
 		assertEquals(new Money("10"), firstClass.getFeeGst());
-		assertEquals(new Money("110"), firstClass.getFeeIncGst());
+		assertEquals(new Money("110"), firstClass.getFeeIncGst(null));
 		// 20$ discount
 		currentPromotion.setDiscountAmount(new Money("20"));
 
-		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentPromotion));
-		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentPromotion)));
-		Money discountedFee = firstClass.getDiscountedFee(currentPromotion);
+		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentPromotion, null));
+		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentPromotion), null));
+		Money discountedFee = firstClass.getDiscountedFee(currentPromotion, null);
 		assertEquals(new Money("80"), discountedFee);
-		Money discountedTax = firstClass.getDiscountedTax(currentPromotion);
+		Money discountedTax = firstClass.getDiscountedTax(currentPromotion, null);
 		assertEquals(new Money("8"), discountedTax);
 		assertTrue(firstClass.getTaxRate().compareTo(
 				discountedTax.divide(discountedFee).toBigDecimal()) == 0);
-		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentPromotion)));
+		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentPromotion), null));
 
 	}
 
@@ -391,21 +391,21 @@ public class CourseClassTest {
 		firstClass.setFeeGst(new Money("10"));
 		assertEquals(new Money("100"), firstClass.getFeeExGst());
 		assertEquals(new Money("10"), firstClass.getFeeGst());
-		assertEquals(new Money("110"), firstClass.getFeeIncGst());
+		assertEquals(new Money("110"), firstClass.getFeeIncGst( null));
 		// 20% discount
 		currentConcession.setDiscountRate(new BigDecimal("0.2"));
 
 		
-		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentConcession));
-		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentConcession)));
-		Money discountedFee = firstClass.getDiscountedFee(currentConcession);
+		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentConcession, null));
+		assertEquals(new Money("22"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentConcession), null));
+		Money discountedFee = firstClass.getDiscountedFee(currentConcession, null);
 		assertEquals(new Money("80"), discountedFee);
-		Money discountedTax = firstClass.getDiscountedTax(currentConcession);
+		Money discountedTax = firstClass.getDiscountedTax(currentConcession, null);
 		assertEquals(new Money("8"), discountedTax);
 		assertTrue(firstClass.getTaxRate().compareTo(
 				discountedTax.divide(discountedFee).toBigDecimal()) == 0);
 
-		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentConcession)));
+		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentConcession), null));
 
 	}
 }
