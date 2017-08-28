@@ -23,6 +23,7 @@ import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteVersionService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.ui.services.UIModule;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -89,6 +90,13 @@ public class EnrolTestModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local ICookiesService cookiesService) {
 		configuration.add(ICookiesService.class, cookiesService);
 	}
+	
+	public static void contributeApplicationDefaults(
+			MappedConfiguration<String, String> configuration) {
+		//we need to use SECURE_ENABLED=false because  PageTester does not support secure handling
+		configuration.add(SymbolConstants.SECURE_ENABLED, "false");
+	}
+	
 
 
 	public static class WebSiteServiceOverride implements IWebSiteService {
