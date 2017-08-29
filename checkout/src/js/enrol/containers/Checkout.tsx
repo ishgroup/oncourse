@@ -74,8 +74,8 @@ const getChildFromProps = (state: CheckoutState) => {
   const childId = state.contactAddProcess.forChild;
   if (!childId) return null;
 
-  const child = state.contacts.entities.contact[childId];
-  return `${child.firstName} ${child.lastName}`;
+  const child = state.contacts.entities.contact && state.contacts.entities.contact[childId];
+  return child ? `${child.firstName} ${child.lastName}` : '';
 }
 
 const mapStateToProps = state => ({
