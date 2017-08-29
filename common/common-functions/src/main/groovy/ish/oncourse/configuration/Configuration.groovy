@@ -1,5 +1,7 @@
 package ish.oncourse.configuration
 
+import com.sun.javafx.runtime.SystemProperties
+
 class Configuration {
 
     static final String CONFIG_FILE_NAME = 'application.properties'
@@ -11,6 +13,7 @@ class Configuration {
     static final String JDBC_USERNAME_PROPERTY = 'bq.jdbc.willow.username'
     static final String JDBC_PASSWORD_PROPERTY = 'bq.jdbc.willow.password'
     static final String JETTY_CONTEXT_PROPERTY = 'bq.jetty.context'
+    static final String LOGS_PATH_PROPERTY = 'logs.path'
 
 
     static configure() {
@@ -32,6 +35,13 @@ class Configuration {
             if (prop.get('zk_host')) {
                 System.setProperty(ZK_HOST_PROPERTY, prop.get('zk_host') as String)
             }
+
+            if (prop.get('logs_path')) {
+                System.setProperty(LOGS_PATH_PROPERTY, prop.get('logs_path') as String)
+            } else {
+                System.setProperty(LOGS_PATH_PROPERTY, userDir)
+            }
+            
             
         } else {
             throw new IllegalArgumentException("application.properties file not found")
