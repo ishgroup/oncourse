@@ -11,64 +11,170 @@ interface ProductEvent {
   quantity?: number,
 }
 
-// TODO: get all item from cart, for each phase
-export const initGAEvent = data => {
-  console.log(data);
+export const initGAEvent = (data, state) => {
+
+  // proxy for debug mode
+  window['ga'] = window['ga'] ? window['ga'] : (...params) => {console.log(params);};
+
+  const cart = state.cart;
+  const amount = state.checkout.amount;
 
   try {
     if (window['ga'] && data) {
-      window['ga']('create', 'UA-XXXXX-YY', 'auto');
-      window['ga']('require', 'ec');
 
       switch (data.ecAction) {
         case 'addProduct':
           return sendItemToCartEvent(data);
 
-        case 'setCheckoutStep':
-          return setCheckoutStepEvent(data);
+        case 'removeProduct':
+          return sendRemoveItemFromCartEvent(data);
 
-        case 'setCheckoutStepOption':
-          return setCheckoutStepOptionEvent(data);
+        case 'checkoutStep':
+          return sendCheckoutStepEvent(data, cart);
+
+        case 'checkoutStepOption':
+          return sendCheckoutStepOptionEvent(data, cart);
+
+        case 'purchase':
+          return sendPurchaseCartEvent(data, cart, amount);
       }
-
-      window['ga']('send', 'pageview');
     }
   } catch (e) {
     console.log('unhandled error in google analytics service ' + e);
   }
+};
 
-
-
+const sendInitActions = () => {
+  window['ga']('create', 'UA-XXXXX-YY', 'auto');
+  window['ga']('require', 'ec');
 };
 
 const sendItemToCartEvent = (data: ProductEvent) => {
-  window['ga']('ec:addProduct', {  // Provide product details in an productFieldObject.
-    id: data.id,                   // Product ID (string).
-    name: data.name,               // Product name (string).
-    category: data.category,       // Product category (string).
-    quantity: 1                    // Product quantity (number).
+  sendInitActions();
+
+  window['ga']('ec:addProduct', {                             // Provide product details in an productFieldObject.
+    id: data.id,                                              // Product ID (string).
+    name: data.name,                                          // Product name (string).
+    category: data.category,                                  // Product category (string).
+    price: data.price,
+    quantity: 1                                               // Product quantity (number).
+  });
+
+  window['ga']('ec:setAction', 'add');
+
+  window['ga']('send', {
+    hitType: "event",
+    eventCategory: "ecommerce",
+    eventAction: "add item to cart",
   });
 };
 
-const setCheckoutStepEvent = (data) => {
-  const {step} = data;
+const sendRemoveItemFromCartEvent = (data: ProductEvent) => {
+  sendInitActions();
 
-  if (step && step.step) {
-    window['ga']('ec:setAction', 'checkout', {
-      step: step.step,
-      option: step.initialOption,
-    });
-  }
+  window['ga']('ec:addProduct', {                             // Provide product details in an productFieldObject.
+    id: data.id,                                              // Product ID (string).
+    name: data.name,                                          // Product name (string).
+    category: data.category,                                  // Product category (string).
+    price: data.price,
+    quantity: 1                                               // Product quantity (number).
+  });
+
+  window['ga']('ec:setAction', 'remove');
+
+  window['ga']('send', {
+    hitType: "event",
+    eventCategory: "ecommerce",
+    eventAction: "remove item from cart",
+  });
 };
 
-const setCheckoutStepOptionEvent = (data) => {
+const sendCheckoutStepEvent = (data, cart) => {
   const {step} = data;
 
-  if (step && step.option) {
-    window['ga']('ec:setAction', 'checkout_option', {
-      step: step.step,
-      option: step.option,
-    });
+  if (!step || !step.step) return;
+
+  sendInitActions();
+  sendAddProductsFromCart(cart);
+
+  window['ga']('ec:setAction', 'checkout', {
+    step: step.step,
+    option: step.initialOption,
+  });
+
+  window['ga']('send', {
+    hitType: "event",
+    eventCategory: "ecommerce",
+    eventAction: "set checkout step",
+    eventLabel: step.initialOption,
+  });
+};
+
+const sendCheckoutStepOptionEvent = (data, cart) => {
+  const {step} = data;
+
+  if (!step || !step.option) return;
+
+  sendInitActions();
+  sendAddProductsFromCart(cart);
+
+  window['ga']('ec:setAction', 'checkout_option', {
+    step: step.step,
+    option: step.option,
+  });
+
+  window['ga']('send', {
+    hitType: "event",
+    eventCategory: "ecommerce",
+    eventAction: "set checkout step",
+    eventLabel: step.option,
+  });
+};
+
+const sendPurchaseCartEvent = (data, cart, amount) => {
+  sendInitActions();
+  sendAddProductsFromCart(cart);
+
+  window['ga']('ec:setAction', 'purchase', {
+    'id': data.id,
+    'affiliation': data.type,
+    'revenue': amount.total,
+  });
+
+  window['ga']('send', {
+    hitType: "event",
+    eventCategory: "ecommerce",
+    eventAction: "checkout complete",
+    eventLabel: data.type,
+  });
+};
+
+const sendAddProductsFromCart = cart => {
+  const items = getItemsFromCart(cart);
+
+  if (items.products && items.products.length) {
+    items.products.map(product => {
+      window['ga']('ec:addProduct', {
+        id: product.id,                                                           // Product ID (string).
+        name: product.name,                                                       // Product name (string).
+        category: 'product',                                                      // Product category (string).
+        quantity: 1                                                               // Product quantity (number).
+      });
+    })
+  }
+
+  if (items.courses && items.courses.length) {
+    items.courses.map(course => {
+      const price = getCoursePrice(course.price);
+
+      window['ga']('ec:addProduct', {
+        id: course.id,                                // Product ID (string).
+        name: course.course.name,                     // Product name (string).
+        category: 'Course Class',                     // Product category (string).
+        price: price,                                 // Product price
+        quantity: 1                                   // Product quantity (number).
+      });
+    })
   }
 };
 
@@ -80,30 +186,43 @@ const setCheckoutStepOptionEvent = (data) => {
  **/
 export class GABuilder {
   static addProductToCart = (type, item) => {
-    console.log(item);
     return {
-      ecAction: 'addProduct',       // action key
-      id: item.id,                  // Product ID (string).
-      name: item.name,              // Product name (string).
-      category: type,               // Product category (string).
-      // price: '0.00',             // Product price (currency).
+      ecAction: 'addProduct',                         // action key
+      id: item.id,                                    // Product ID (string).
+      name: item.name,                                // Product name (string).
+      category: type,                                 // Product category (string).
+      quantity: 1,
+    }
+  };
+
+  static removeProductFromCart = (type, item) => {
+    return {
+      ecAction: 'removeProduct',                         // action key
+      id: item.id,                                    // Product ID (string).
+      name: item.name,                                // Product name (string).
+      category: type,                                 // Product category (string).
       quantity: 1,
     }
   };
 
   static addCourseClassToCart = (type, item) => {
-    console.log(item);
-    const price = item.price;
-    const fullPrice = price.feeOverriden ? Number(price.feeOverriden).toFixed(2) : Number(price.fee).toFixed(2);
-    const discountedPrice = price.appliedDiscount ? Number(price.appliedDiscount.discountedFee).toFixed(2) : null;
-
-
     return {
-      ecAction: 'addProduct',                                             // action key
-      id: item.id,                                                        // Product ID (string).
-      name: item.course && item.course.name,                              // Product name (string).
-      category: type,                                                     // Product category (string).
-      price: price && discountedPrice ? discountedPrice : fullPrice,      // Product price (currency).
+      ecAction: 'addProduct',                          // action key
+      id: item.id,                                     // Product ID (string).
+      name: item.course && item.course.name,           // Product name (string).
+      category: type,                                  // Product category (string).
+      price: getCoursePrice(item.price),               // Product price (currency).
+      quantity: 1,
+    }
+  };
+
+  static removeCourseClassFromCart = (type, item) => {
+    return {
+      ecAction: 'removeProduct',                          // action key
+      id: item.id,                                     // Product ID (string).
+      name: item.course && item.course.name,           // Product name (string).
+      category: type,                                  // Product category (string).
+      price: getCoursePrice(item.price),               // Product price (currency).
       quantity: 1,
     }
   };
@@ -117,18 +236,54 @@ export class GABuilder {
     }
 
     return {
-      ecAction: step.option ? 'setCheckoutStepOption' : 'setCheckoutStep',  // action key
+      ecAction: step.option ? 'checkoutStepOption' : 'checkoutStep',  // action key
       step: step
     }
-  }
+  };
 
+  static purchaseItems = response => {
+    if (response && response.status === 'SUCCESSFUL') {
+      return {
+        ecAction: 'purchase',
+        id: response.sessionId,
+        status: 'success',
+        type: 'credit card',
+      }
+    }
+
+    if (response && response.status === 'SUCCESSFUL_BY_PASS') {
+      return {
+        ecAction: 'purchase',
+        id: response.sessionId,
+        status: 'success',
+        type: 'corporate pass',
+      }
+    }
+
+    return null;
+  }
 }
+
 
 /**
  *
- *  Helper function for formatting data
+ *  Helper functions
  *
  **/
+const getItemsFromCart = cart => {
+  const products = cart.products.result.map(id => cart.products.entities[id]);
+  const courses = cart.courses.result.map(id => cart.courses.entities[id]);
+
+  return {products, courses};
+};
+
+const getCoursePrice = price => {
+  const fullPrice = price.feeOverriden ? Number(price.feeOverriden).toFixed(2) : Number(price.fee).toFixed(2);
+  const discountedPrice = price.appliedDiscount ? Number(price.appliedDiscount.discountedFee).toFixed(2) : null;
+
+  return price && discountedPrice ? discountedPrice : fullPrice;
+};
+
 const getCheckoutStepFromPhase = phase => {
   switch (phase) {
     case Phase.Init:
@@ -161,8 +316,8 @@ const getCheckoutStepFromPhase = phase => {
     case Phase.AddContactAsPayer:
       return {step: 5, initialOption: null, option: 'Add a payer'};
 
-    case Phase.Result:
-      return {step: 6, initialOption: 'Result page', option: null};
+    // case Phase.Result:
+    //   return {step: 6, initialOption: 'Result page', option: null};
 
     default:
       return {step: null, initialOption: null, option: null};

@@ -8,7 +8,7 @@ export const GoogleAnalyticsEpic: Epic<any, IshState> = (action$: ActionsObserva
   return action$
     .filter(action => action.meta && action.meta.analytics)
     .mergeMap(action => {
-      initGAEvent(action.meta.analytics);
+      initGAEvent(action.meta.analytics, store.getState());
       return [];
     })
 }

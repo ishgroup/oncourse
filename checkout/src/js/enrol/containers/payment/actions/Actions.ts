@@ -59,6 +59,9 @@ export const updatePaymentStatus = (response: PaymentResponse): IAction<PaymentR
   return {
     type: UPDATE_PAYMENT_STATUS,
     payload: response,
+    meta: {
+      analytics: GABuilder.purchaseItems(response),
+    }
   };
 };
 
