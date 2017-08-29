@@ -54,7 +54,7 @@ public class QEFailedPaymentPlanKeepInvoicesTest extends QEPaymentPlanGUITest {
 				testEnv.getTestEnv(),
 				this::fillv16PaymentStubs,
 				this::checkResponseAndReceiveSessionId,
-				this.testEnv.getTestEnv()::successProcessing,
+				this.testEnv.getTestEnv()::failedProcessing,
 				this::checkAsyncReplication,
 				this::checkProcessedResponse
 		).test();
