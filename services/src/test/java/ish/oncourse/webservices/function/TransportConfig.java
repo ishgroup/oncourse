@@ -113,7 +113,7 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 		try {
 			return (TransactionGroup) paymentPortType.getClass()
 					.getMethod("processPayment", transaction.getClass(), paymentModel.getClass())
-					.invoke(getPaymentPortType(), transaction, paymentModel);
+					.invoke(paymentPortType, transaction, paymentModel);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -123,7 +123,7 @@ public class TransportConfig<TransactionGroup extends GenericTransactionGroup,
 		try {
 			return (ReplicationResult) replicationPortType.getClass()
 					.getMethod("sendRecords", records.getClass())
-					.invoke(referencePortType, records);
+					.invoke(replicationPortType, records);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
