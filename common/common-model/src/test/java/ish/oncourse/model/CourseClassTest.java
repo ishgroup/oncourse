@@ -408,4 +408,47 @@ public class CourseClassTest {
 		assertEquals(new Money("88"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentConcession), null));
 
 	}
+
+	@Test
+	public void taxOverrideWithDiscountAmountTest() {
+		firstClass.setFeeExGst(new Money("100"));
+		firstClass.setFeeGst(new Money("10"));
+		currentPromotion.setDiscountAmount(new Money("20"));
+		
+		BigDecimal taxRate = new BigDecimal("0.15");
+
+		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentPromotion, taxRate));
+		
+		assertEquals(new Money("23"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentPromotion), taxRate));
+		Money discountedFee = firstClass.getDiscountedFee(currentPromotion, taxRate);
+		assertEquals(new Money("80"), discountedFee);
+		Money discountedTax = firstClass.getDiscountedTax(currentPromotion, taxRate);
+		assertEquals(new Money("12"), discountedTax);
+		assertTrue(taxRate.compareTo(
+				discountedTax.divide(discountedFee).toBigDecimal()) == 0);
+		assertEquals(new Money("92"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentPromotion), taxRate));
+
+	}
+
+	@Test
+	public void taxOverrideWithDiscountRateTest() {
+		firstClass.setFeeExGst(new Money("100"));
+		firstClass.setFeeGst(new Money("10"));
+
+		BigDecimal taxRate = new BigDecimal("0.15");
+		
+		currentConcession.setDiscountRate(new BigDecimal("0.2"));
+
+		assertEquals(new Money("20"), firstClass.getDiscountAmountExTax(currentConcession, taxRate));
+		assertEquals(new Money("23"), firstClass.getDiscountAmountIncTax(firstClass.getDiscountCourseClassBy(currentConcession), taxRate));
+		Money discountedFee = firstClass.getDiscountedFee(currentConcession, taxRate);
+		assertEquals(new Money("80"), discountedFee);
+		Money discountedTax = firstClass.getDiscountedTax(currentConcession, taxRate);
+		assertEquals(new Money("12"), discountedTax);
+		assertTrue(taxRate.compareTo(
+				discountedTax.divide(discountedFee).toBigDecimal()) == 0);
+
+		assertEquals(new Money("92"), firstClass.getDiscountedFeeIncTax(firstClass.getDiscountCourseClassBy(currentConcession), taxRate));
+
+	}
 }

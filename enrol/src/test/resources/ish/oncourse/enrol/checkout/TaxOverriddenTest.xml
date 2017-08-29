@@ -128,4 +128,32 @@
              ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="my test article product" TYPE="1" angelId="9"
              TAXADJUSTMENT="0.00" PRICEEXTAX="10.00" feeGST="0.00"/>
 
+    <Discount
+            id="2"
+            angelId="3"
+            collegeId="1"
+            code="concession"
+            combinationType="1"
+            created="2011-09-12 00:56:00.0"
+            detail="detail"
+            discountAmount="10.0"
+            discountType="2"
+            modified="2011-09-12 00:56:00.0"
+            name="name"
+            roundingMode="1"
+            timeZone="timeZone"
+            validFrom="2011-09-12 00:56:00.0"
+            validTo="2111-09-12 00:56:00.0"
+            hideOnWeb="0"
+            isAvailableOnWeb="1"
+            minEnrolments="1"
+            minValue="0"/>
+
+    <DiscountCourseClass id="1" discountId="2" courseClassId="1005" collegeId="1"/>
+    <DiscountCourseClass id="2" discountId="2" courseClassId="1006" collegeId="1"/>
+
+
+    <CorporatePass id="2001" collegeId="1" created="2011-09-12 00:56:00.0" modified="2011-09-12 00:56:00.0"
+                   contactId="1000" password="password"/>
+    
 </dataset>
