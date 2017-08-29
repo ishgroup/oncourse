@@ -6,12 +6,14 @@ package ish.oncourse.webservices;
 import com.google.inject.*;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
+import io.bootique.jdbc.DataSourceFactory;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.persistence.ISHObjectContextFactory;
+import ish.oncourse.util.log.LogDBInfo;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.Constants;
 import org.apache.cayenne.configuration.ObjectContextFactory;
@@ -43,10 +45,12 @@ public class ServicesModule extends ConfigModule {
 			new TypeLiteral<MappedServlet<CXFServlet>>() {
 			};
 
-	
+
 	@Singleton
 	@Provides
 	MappedFilter<ServicesTapestryFilter> createTapestryFilter(Injector injector) {
+		new LogDBInfo().log(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME));
+
 		ServicesTapestryFilter filter = new ServicesTapestryFilter(injector);
 		return new MappedFilter<>(filter, Collections.singleton(URL_PATTERN), TAPESTRY_APP_NAME, 0);
 	}
@@ -68,7 +72,7 @@ public class ServicesModule extends ConfigModule {
 				.addMappedFilter(TAPESTRY_FILTER)
 				.addMappedServlet(CXF_SERVLET)
 				.addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME));
-		
+
 	}
 
 

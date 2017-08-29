@@ -22,7 +22,10 @@
             <AppenderRef ref="FILE_ERROR" level="error"/>
             <AppenderRef ref="FILE" level="warn"/>
         </Root>
-        <Logger name="org.apache.cayenne.configuration.server" level="info">
+        <Logger name="ish.oncourse.util.log.LogDBInfo" level="info">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="io.bootique.jetty.server.ServerLifecycleLogger" level="info">
             <AppenderRef ref="FILE"/>
         </Logger>
     </Loggers>

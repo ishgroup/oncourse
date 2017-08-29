@@ -8,7 +8,6 @@ import io.bootique.cayenne.CayenneModuleProvider;
 import io.bootique.jdbc.JdbcModuleProvider;
 import io.bootique.jetty.JettyModuleProvider;
 import ish.oncourse.configuration.Configuration;
-import org.apache.xmlbeans.SystemProperties;
 
 /**
  * User: akoiro
@@ -22,7 +21,7 @@ public class ServicesApp {
 	}
 
 	public static Bootique init(String[] args) {
-		SystemProperties.getProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
+		System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
 		Bootique bootique = Bootique.app(args).args("--server", "--config=classpath:application.yml");
 		bootique.module(new JdbcModuleProvider());
 		bootique.module(new CayenneModuleProvider());
