@@ -5,8 +5,8 @@ import ish.oncourse.webservices.util.PortHelper;
 import ish.oncourse.webservices.util.Sent2WillowInterceptor;
 import ish.oncourse.webservices.util.SupportedVersions;
 import ish.oncourse.webservices.v10.stubs.replication.*;
-import ish.oncourse.webservices.v6.stubs.reference.ReferenceResult;
-import ish.oncourse.webservices.v6.stubs.reference.ReferenceStub;
+import ish.oncourse.webservices.v5.stubs.reference.ReferenceResult;
+import ish.oncourse.webservices.v5.stubs.reference.ReferenceStub;
 import org.apache.cxf.endpoint.Client;
 import org.junit.Test;
 
@@ -85,7 +85,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 
 	@Test
 	public void  testReferencePortType_getRecords() throws JAXBException {
-		ReferenceResult referenceResult = getReferencePortType().getRecords(Long.MAX_VALUE);
+ 		ReferenceResult referenceResult = getReferencePortType().getRecords(Long.MAX_VALUE);
 		List<ReferenceStub> resultStub = referenceResult.getCountryOrLanguageOrModule();
 		assertListStubs(resultStub,PACKAGE_NAME_REFERENCE_STUBS,ReferenceStub.class);
 	}

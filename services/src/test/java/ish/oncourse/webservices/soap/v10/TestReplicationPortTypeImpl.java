@@ -1,16 +1,7 @@
 package ish.oncourse.webservices.soap.v10;
 
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.soap.v10.AuthFailure;
-import ish.oncourse.webservices.soap.v10.ReplicationFault;
-import ish.oncourse.webservices.soap.v10.ReplicationPortType;
-import ish.oncourse.webservices.v10.stubs.replication.InstructionStub;
-import ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord;
-import ish.oncourse.webservices.v10.stubs.replication.ReplicationRecords;
-import ish.oncourse.webservices.v10.stubs.replication.ReplicationResult;
-import ish.oncourse.webservices.v10.stubs.replication.SiteStub;
-import ish.oncourse.webservices.v10.stubs.replication.TransactionGroup;
-import ish.oncourse.webservices.v10.stubs.replication.UnreplicatedEntitiesStub;
+import ish.oncourse.webservices.v10.stubs.replication.*;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;

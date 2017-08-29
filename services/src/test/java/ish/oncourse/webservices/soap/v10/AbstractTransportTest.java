@@ -2,11 +2,11 @@ package ish.oncourse.webservices.soap.v10;
 
 import ish.oncourse.webservices.soap.AbstractServerTest;
 import ish.oncourse.webservices.soap.StubPopulator;
-import ish.oncourse.webservices.soap.v6.ReferencePortType;
+import ish.oncourse.webservices.soap.v5.ReferencePortType;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.v10.stubs.replication.ReplicationStub;
 import ish.oncourse.webservices.v10.stubs.replication.TransactionGroup;
-import ish.oncourse.webservices.v6.stubs.reference.ReferenceStub;
+import ish.oncourse.webservices.v5.stubs.reference.ReferenceStub;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.bus.spring.SpringBusFactory;
@@ -29,6 +29,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +50,7 @@ public abstract class AbstractTransportTest extends AbstractServerTest {
     //protected static TestServer server;
 
     public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v10.stubs.replication";
-    public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v6.stubs.reference";
-
+    public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v5.stubs.reference";
 
 
     public Client initPortType(BindingProvider bindingProvider, String url) throws JAXBException {
@@ -152,7 +153,7 @@ public abstract class AbstractTransportTest extends AbstractServerTest {
     }
 
     protected ReferencePortType getReferencePortType() {
-        return getPortType("/services/v6/reference", new QName("http://ref.v6.soap.webservices.oncourse.ish/", "ReferenceService"), ReferencePortType.class);
+        return getPortType("/services/v5/reference", new QName("http://ref.v5.soap.webservices.oncourse.ish/", "ReferenceService"), ReferencePortType.class);
     }
 
     protected PaymentPortType getPaymentPortType() {
@@ -195,5 +196,19 @@ public abstract class AbstractTransportTest extends AbstractServerTest {
         URL cxfConfig = AbstractTransportTest.class.getClassLoader().getResource("ish/oncourse/webservices/soap/cxf-client.xml");
         Bus bus = busFactory.createBus(cxfConfig);
         BusFactory.setDefaultBus(bus);
+    }
+
+    public static <T> ArrayList<T> createStubsBy(List<String> stubClassNames, String packageName, Class<T> parentStubClass) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        ArrayList<T> stubs = new ArrayList<>();
+        for (String stubClassName : stubClassNames) {
+            @SuppressWarnings("rawtypes")
+            Class aClass = Class.forName(String.format("%s.%s", packageName, stubClassName));
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            Constructor constructor = aClass.getConstructor();
+            @SuppressWarnings("unchecked")
+            T replicationStub = (T) constructor.newInstance();
+            stubs.add(replicationStub);
+        }
+        return stubs;
     }
 }

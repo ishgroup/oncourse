@@ -6,13 +6,11 @@ package ish.oncourse.webservices.soap.v10;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.TypesUtil;
+import ish.oncourse.webservices.function.TestCase;
 import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericPaymentInStub;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.util.PortHelper;
-import org.apache.cayenne.ObjectContext;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -52,32 +50,13 @@ public class QEFailedPaymentPlanKeepInvoicesTest extends QEPaymentPlanGUITest {
 
 	@Test
 	public void testPaymentPlanKeepInvoices() throws Exception {
-		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
-		checkQueueBeforeProcessing(context);
-		authenticate();
-		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
-
-		fillv10PaymentStubs(transaction, parametersMap);
-		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
-
-		//check the response, validate the data and receive the sessionid
-		String sessionId = checkResponseAndReceiveSessionId(transaction);
-		checkQueueAfterProcessing(context);
-
-		//check the status via service
-		checkNotProcessedResponse(getPaymentStatus(sessionId));
-
-		//call page processing
-		renderPaymentPageWithKeepInvoiceProcessing(sessionId);
-
-		//check that async replication works correct
-		checkAsyncReplication(context);
-
-		//check the status via service when processing complete
-		checkProcessedResponse(getPaymentStatus(sessionId));
+		new TestCase(
+				testEnv.getTestEnv(),
+				this::fillv10PaymentStubs,
+				this::checkResponseAndReceiveSessionId,
+				this.testEnv.getTestEnv()::failedProcessing,
+				this::checkAsyncReplication,
+				this::checkProcessedResponse
+		).test();
 	}
 }

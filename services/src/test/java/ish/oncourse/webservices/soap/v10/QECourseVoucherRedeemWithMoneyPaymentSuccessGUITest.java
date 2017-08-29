@@ -3,14 +3,16 @@ package ish.oncourse.webservices.soap.v10;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import org.apache.cayenne.ObjectContext;
+import org.junit.Before;
 import org.junit.Test;
 
 public class QECourseVoucherRedeemWithMoneyPaymentSuccessGUITest extends QECourseVoucherRedeemWithMoneyPaymentTest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemWithMoneyPaymentSuccessDataSet.xml";
 
-	@Override
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
+	@Before
+	public void before() throws Exception {
+		testEnv = new V10TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
 	}
 
 	@Override

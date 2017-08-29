@@ -14,6 +14,7 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.v10.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -24,9 +25,10 @@ import static org.junit.Assert.assertFalse;
 public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedeemFailedNoGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemFailedNoPlacesDataSet.xml";
 
-	@Override
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
+	@Before
+	public void before() throws Exception {
+		testEnv = new V10TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
 	}
 
 	@Override

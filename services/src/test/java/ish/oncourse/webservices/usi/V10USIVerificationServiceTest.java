@@ -1,5 +1,6 @@
 package ish.oncourse.webservices.usi;
 
+import ish.oncourse.webservices.soap.v10.PaymentPortType;
 import ish.oncourse.webservices.soap.v10.RealWSTransportTest;
 import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.SupportedVersions;
@@ -16,12 +17,12 @@ public class V10USIVerificationServiceTest extends RealWSTransportTest {
 		new USITest(new USITest.Parent() {
 			@Override
 			public GenericParametersMap verifyUSI(GenericParametersMap var1) throws Exception {
-				return getPaymentPortType().verifyUSI((ParametersMap) var1);
+				return ((PaymentPortType) testEnv.getTestEnv().getTransportConfig().getPaymentPortType()).verifyUSI((ParametersMap) var1);
 			}
 
 			@Override
 			public void authenticate() throws Exception {
-				V10USIVerificationServiceTest.this.authenticate();
+				testEnv.getTestEnv().authenticate();
 			}
 
 			@Override
