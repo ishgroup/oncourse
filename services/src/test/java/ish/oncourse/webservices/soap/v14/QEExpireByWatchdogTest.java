@@ -4,24 +4,10 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
-import ish.oncourse.model.Article;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
-import ish.oncourse.model.InvoiceLineDiscount;
-import ish.oncourse.model.Membership;
-import ish.oncourse.model.PaymentIn;
-import ish.oncourse.model.PaymentInLine;
-import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.model.Voucher;
+import ish.oncourse.model.*;
 import ish.oncourse.util.payment.PaymentProcessController;
 import ish.oncourse.util.payment.PaymentProcessController.PaymentAction;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.util.PortHelper;
+import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v14.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v14.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v14.stubs.replication.VoucherStub;
@@ -37,21 +23,17 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 
 	private void testRenderPaymentPageForExpiration(String sessionId) {
 		assertNotNull("Session id should not be null", sessionId);
-		Document doc = tester.renderPage("Payment/" + sessionId);
+		Document doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 		
 		//get session to check that processing in progress
-		Session session = serviceTest.getService(TestableRequest.class).getSession(false);
+		Session session = testEnv.getTestEnv().getPageTester().getService(TestableRequest.class).getSession(false);
 		assertNotNull("Session should be inited for controller", session);
 		PaymentProcessController controller = (PaymentProcessController) session.getAttribute("state:Payment::paymentProcessController");
 		assertNotNull("controller should be not empty", controller);
@@ -92,7 +74,7 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 		//expire the payment
 		controller.processAction(PaymentAction.EXPIRE_PAYMENT);
 		//reload the page to receive the cancel payment message
-		doc = tester.renderPage("Payment/" + sessionId);
+		doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 		assertTrue("Controller state should be expired", controller.isExpired());
 		
@@ -212,16 +194,16 @@ public class QEExpireByWatchdogTest extends QEPaymentProcess1_4CasesGUITest {
 	@Ignore
 	public void testExpireQEByWatchdog() throws Exception {
 		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 		checkQueueBeforeProcessing(context);
-		authenticate();
+		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getTestEnv().getSupportedVersion());
+		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getTestEnv().getSupportedVersion());
 
 		fillv14PaymentStubs(transaction, parametersMap);
 		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
+		transaction = testEnv.getTestEnv().processPayment(transaction, parametersMap);
 		//check the response, validate the data and receive the sessionid
 		String sessionId = checkResponseAndReceiveSessionId(transaction);
 		checkQueueAfterProcessing(context);

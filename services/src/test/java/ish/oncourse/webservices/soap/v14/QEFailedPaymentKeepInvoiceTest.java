@@ -5,12 +5,7 @@ import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.QueuedRecord;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.util.PortHelper;
+import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v14.stubs.replication.ArticleStub;
 import ish.oncourse.webservices.v14.stubs.replication.MembershipStub;
 import ish.oncourse.webservices.v14.stubs.replication.VoucherStub;
@@ -20,10 +15,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUITest {
 
@@ -134,15 +126,15 @@ public class QEFailedPaymentKeepInvoiceTest extends QEPaymentProcess1_4CasesGUIT
 	@Test
 	public void testQEKeepInvoice() throws Exception {
 		//check that empty queuedRecords
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 		checkQueueBeforeProcessing(context);
-		authenticate();
+		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getTestEnv().getSupportedVersion());
+		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getTestEnv().getSupportedVersion());
 		fillv14PaymentStubs(transaction, parametersMap);
 		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
+		transaction = testEnv.getTestEnv().processPayment(transaction, parametersMap);
 		//check the response, validate the data and receive the sessionid
 		String sessionId = checkResponseAndReceiveSessionId(transaction);
 		checkQueueAfterProcessing(context);

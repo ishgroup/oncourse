@@ -1,28 +1,14 @@
 package ish.oncourse.webservices.soap.v14;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.ProductStatus;
-import ish.common.types.TypesUtil;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v14.stubs.replication.EnrolmentStub;
-import ish.oncourse.webservices.v14.stubs.replication.InvoiceLineStub;
-import ish.oncourse.webservices.v14.stubs.replication.InvoiceStub;
-import ish.oncourse.webservices.v14.stubs.replication.PaymentInLineStub;
-import ish.oncourse.webservices.v14.stubs.replication.PaymentInStub;
-import ish.oncourse.webservices.v14.stubs.replication.VoucherStub;
+import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.v14.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -33,10 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRedeemNoGUITest {
 
@@ -172,7 +155,7 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 	}
 
 	protected void testFailedGUICases() throws Exception {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 
 		checkQueueBeforeProcessing(context);
 
@@ -197,7 +180,7 @@ public abstract class QEVoucherRedeemWithMoneyPaymentGUITest extends QEVoucherRe
 	}
 
 	protected void testSuccessGUICases() throws Exception {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 
 		checkQueueBeforeProcessing(context);
 

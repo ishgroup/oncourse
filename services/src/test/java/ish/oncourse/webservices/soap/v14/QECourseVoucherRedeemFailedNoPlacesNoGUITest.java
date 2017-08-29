@@ -1,19 +1,10 @@
 package ish.oncourse.webservices.soap.v14;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.ProductStatus;
-import ish.common.types.TypesUtil;
-import ish.common.types.VoucherPaymentStatus;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericInvoiceStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.common.types.*;
+import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v14.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -24,14 +15,10 @@ import static org.junit.Assert.assertFalse;
 public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedeemFailedNoGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QECourseVoucherRedeemFailedNoPlacesDataSet.xml";
 
-	@Override
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
-	}
-
-	@Override
-	protected void prepareStubsForReplication(GenericTransactionGroup transaction, GenericParametersMap parametersMap) {
-		prepareCourseVoucherNoMoneyPayment(transaction, parametersMap);
+	@Before
+	public void before() throws Exception {
+		testEnv = new V14TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
 	}
 
 	@Override
@@ -102,5 +89,10 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedee
 	@Test
 	public void testQEFailedPayment() throws Exception {
 		testNoGUICases();
+	}
+
+	@Override
+	protected void prepareStubsForReplication(GenericTransactionGroup transaction, GenericParametersMap parametersMap) {
+		prepareCourseVoucherNoMoneyPayment(transaction, parametersMap);
 	}
 }

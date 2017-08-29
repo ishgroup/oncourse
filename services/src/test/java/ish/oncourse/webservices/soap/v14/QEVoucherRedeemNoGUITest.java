@@ -1,10 +1,6 @@
 package ish.oncourse.webservices.soap.v14;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.VoucherPaymentStatus;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -14,12 +10,7 @@ import ish.oncourse.webservices.util.GenericParametersMap;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v14.stubs.replication.EnrolmentStub;
-import ish.oncourse.webservices.v14.stubs.replication.InvoiceLineStub;
-import ish.oncourse.webservices.v14.stubs.replication.InvoiceStub;
-import ish.oncourse.webservices.v14.stubs.replication.PaymentInLineStub;
-import ish.oncourse.webservices.v14.stubs.replication.PaymentInStub;
-import ish.oncourse.webservices.v14.stubs.replication.VoucherPaymentInStub;
+import ish.oncourse.webservices.v14.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 
@@ -30,7 +21,7 @@ import java.util.List;
 public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 
 	protected void testNoGUICases() throws Exception {
-		ObjectContext context = cayenneService.newNonReplicatingContext();
+		ObjectContext context = testEnv.getTestEnv().getCayenneService().newNonReplicatingContext();
 
 		checkQueueBeforeProcessing(context);
 
@@ -146,15 +137,15 @@ public abstract class QEVoucherRedeemNoGUITest extends QEPaymentProcessTest {
 	protected abstract void prepareStubsForReplication(GenericTransactionGroup transaction, GenericParametersMap parametersMap);
 
 	protected final GenericTransactionGroup processPayment() throws Exception {
-		authenticate();
+		testEnv.getTestEnv().authenticate();
 		// prepare the stubs for replication
-		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(getSupportedVersion());
-		GenericParametersMap parametersMap = PortHelper.createParametersMap(getSupportedVersion());
+		GenericTransactionGroup transaction = PortHelper.createTransactionGroup(testEnv.getTestEnv().getSupportedVersion());
+		GenericParametersMap parametersMap = PortHelper.createParametersMap(testEnv.getTestEnv().getSupportedVersion());
 		
 		prepareStubsForReplication(transaction, parametersMap);
 		
 		//process payment
-		transaction = getPaymentPortType().processPayment(castGenericTransactionGroup(transaction), castGenericParametersMap(parametersMap));
+		transaction = testEnv.getTestEnv().processPayment(transaction, parametersMap);
 		return transaction;
 	}
 

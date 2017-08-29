@@ -1,10 +1,6 @@
 package ish.oncourse.webservices.soap.v14;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.TypesUtil;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -12,21 +8,13 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.replication.services.PaymentInModelValidator;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericInvoiceStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v14.stubs.replication.EnrolmentStub;
-import ish.oncourse.webservices.v14.stubs.replication.InvoiceLineStub;
-import ish.oncourse.webservices.v14.stubs.replication.InvoiceStub;
-import ish.oncourse.webservices.v14.stubs.replication.PaymentInLineStub;
-import ish.oncourse.webservices.v14.stubs.replication.PaymentInStub;
+import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.v14.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -39,9 +27,10 @@ import static org.junit.Assert.assertFalse;
 public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEDuplicateStudentEnrolmentNoGUITestDataSet.xml";
 
-	@Override
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
+	@Before
+	public void before() throws Exception {
+		testEnv = new V14TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
 	}
 
 	@Override

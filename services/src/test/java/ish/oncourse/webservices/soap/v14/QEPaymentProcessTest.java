@@ -5,7 +5,6 @@ import ish.common.types.PaymentStatus;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.payment.*;
-import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.webservices.util.GenericParameterEntry;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
@@ -24,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
 
 /**
  * Use cases described in squish task
@@ -32,18 +30,9 @@ import static org.junit.Assert.assertNull;
  */
 public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 
-	private NewPaymentProcessController getController(String sessionId) {
-		return new PaymentControllerBuilder(sessionId,
-				serviceTest.getService(INewPaymentGatewayServiceBuilder.class),
-				cayenneService,
-				messages,
-				serviceTest.getService(TestableRequest.class)).build();
-	}
-
-
 	protected final void testRenderPaymentPageWithReverseInvoice(String sessionId) {
 		assertNotNull("Session id should not be null", sessionId);
-		Document doc = tester.renderPage("Payment/" + sessionId);
+		Document doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 
 		Element paymentForm = doc.getElementById("paymentDetailsForm");
@@ -62,11 +51,11 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		assertNotNull("Payment form submit should be available", submitButton);
 
 		//get session to check that processing in progress
-		Request request = serviceTest.getService(TestableRequest.class);
+		Request request = testEnv.getTestEnv().getPageTester().getService(TestableRequest.class);
 		Session session = request.getSession(false);
 		assertNull("Session should be null", session);
 
-		NewPaymentProcessController controller = getController(sessionId);
+		NewPaymentProcessController controller = testEnv.getTestEnv().getPaymentProcessController(sessionId);
 
 		PaymentIn paymentIn = controller.getModel().getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
@@ -80,16 +69,16 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		paymentRequest.setNumber(DECLINED_CARD_NUMBER);
 		paymentRequest.setName(CARD_HOLDER_NAME);
 		paymentRequest.setCvv(CREDIT_CARD_CVV);
-		paymentRequest.setMonth(VALID_EXPIRITY_MONTH);
-		paymentRequest.setYear(VALID_EXPIRITY_YEAR);
+		paymentRequest.setMonth(VALID_EXPIRY_MONTH);
+		paymentRequest.setYear(VALID_EXPIRY_YEAR);
 
-		getController(sessionId).processRequest(paymentRequest, paymentResponse);
+		testEnv.getTestEnv().getPaymentProcessController(sessionId).processRequest(paymentRequest, paymentResponse);
 
 		assertNotNull("response should not be empty", paymentResponse.getStatus());
 		assertEquals(GetPaymentState.PaymentState.CHOOSE_ABANDON_OTHER, paymentResponse.getStatus());
 
 		//parse the response result
-		doc = tester.renderPage("Payment/" + sessionId);
+		doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		Element paymentResultDiv = doc.getRootElement().getElementByAttributeValue("class", "pay-form");
 		assertNotNull("Result div should be loaded", paymentResultDiv);
 		Element failPaymentDiv = paymentResultDiv.getElementByAttributeValue("class", "pay-fail");
@@ -113,12 +102,12 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		paymentResponse = new PaymentResponse();
 		paymentRequest = new PaymentRequest();
 		paymentRequest.setAction(PaymentAction.CANCEL);
-		getController(sessionId).processRequest(paymentRequest, paymentResponse);
+		testEnv.getTestEnv().getPaymentProcessController(sessionId).processRequest(paymentRequest, paymentResponse);
 		assertNotNull("response should not be empty", paymentResponse.getStatus());
 		assertEquals(GetPaymentState.PaymentState.FAILED, paymentResponse.getStatus());
 
 
-		doc = tester.renderPage("Payment/" + sessionId);
+		doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 
 		paymentResultDiv = doc.getRootElement().getElementByAttributeValue("class", "pay-form");
@@ -139,7 +128,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 
 	protected final void renderPaymentPageWithKeepInvoiceProcessing(String sessionId) {
 		assertNotNull("Session id should not be null", sessionId);
-		Document doc = tester.renderPage("Payment/" + sessionId);
+		Document doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 
 		Element paymentForm = doc.getElementById("paymentDetailsForm");
@@ -163,23 +152,23 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		paymentRequest.setNumber(DECLINED_CARD_NUMBER);
 		paymentRequest.setName(CARD_HOLDER_NAME);
 		paymentRequest.setCvv(CREDIT_CARD_CVV);
-		paymentRequest.setMonth(VALID_EXPIRITY_MONTH);
-		paymentRequest.setYear(VALID_EXPIRITY_YEAR);
+		paymentRequest.setMonth(VALID_EXPIRY_MONTH);
+		paymentRequest.setYear(VALID_EXPIRY_YEAR);
 
 
-		NewPaymentProcessController controller = getController(sessionId);
+		NewPaymentProcessController controller = testEnv.getTestEnv().getPaymentProcessController(sessionId);
 
 		PaymentIn paymentIn = controller.getModel().getPaymentIn();
 		assertNotNull("Payment should be loaded", paymentIn);
 		assertEquals("PaymentIn status should be CARD_DETAILS_REQUIRED", PaymentStatus.CARD_DETAILS_REQUIRED, paymentIn.getStatus());
 
 		//get session to check that processing in progress
-		Session session = serviceTest.getService(TestableRequest.class).getSession(false);
+		Session session = testEnv.getTestEnv().getPageTester().getService(TestableRequest.class).getSession(false);
 		assertNull("Session should be null", session);
 
 		controller.processRequest(paymentRequest, paymentResponse);
 		//parse the response result
-		doc = tester.renderPage("Payment/" + sessionId);
+		doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("response should not be empty", paymentResponse.getStatus());
 		assertEquals(GetPaymentState.PaymentState.CHOOSE_ABANDON_OTHER, paymentResponse.getStatus());
 
@@ -207,9 +196,9 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		paymentRequest = new PaymentRequest();
 		paymentRequest.setAction(PaymentAction.CANCEL);
 		paymentResponse = new PaymentResponse();
-		getController(sessionId).processRequest(paymentRequest, paymentResponse);
+		testEnv.getTestEnv().getPaymentProcessController(sessionId).processRequest(paymentRequest, paymentResponse);
 
-		doc = tester.renderPage("Payment/" + sessionId);
+		doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 
 		paymentResultDiv = doc.getRootElement().getElementByAttributeValue("class", "pay-form");
@@ -230,7 +219,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 
 	protected final void renderPaymentPageWithSuccessProcessing(String sessionId) {
 		assertNotNull("Session id should not be null", sessionId);
-		Document doc = tester.renderPage("Payment/" + sessionId);
+		Document doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		assertNotNull("Document should be loaded", doc);
 
 		Element paymentForm = doc.getElementById("paymentDetailsForm");
@@ -252,8 +241,8 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		fieldValues.put(cardName.getAttribute(ID_ATTRIBUTE), CARD_HOLDER_NAME);
 		fieldValues.put(cardNumber.getAttribute(ID_ATTRIBUTE), VALID_CARD_NUMBER);
 		fieldValues.put(cardCVV.getAttribute(ID_ATTRIBUTE), CREDIT_CARD_CVV);
-		fieldValues.put(expirityMonth.getAttribute(ID_ATTRIBUTE), VALID_EXPIRITY_MONTH);
-		fieldValues.put(expirityYear.getAttribute(ID_ATTRIBUTE), VALID_EXPIRITY_YEAR);
+		fieldValues.put(expirityMonth.getAttribute(ID_ATTRIBUTE), VALID_EXPIRY_MONTH);
+		fieldValues.put(expirityYear.getAttribute(ID_ATTRIBUTE), VALID_EXPIRY_YEAR);
 		fieldValues.put("cardTypeField", CreditCardType.VISA.getDisplayName());
 
 
@@ -263,13 +252,13 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 		paymentRequest.setNumber(VALID_CARD_NUMBER);
 		paymentRequest.setName(CARD_HOLDER_NAME);
 		paymentRequest.setCvv(CREDIT_CARD_CVV);
-		paymentRequest.setMonth(VALID_EXPIRITY_MONTH);
-		paymentRequest.setYear(VALID_EXPIRITY_YEAR);
+		paymentRequest.setMonth(VALID_EXPIRY_MONTH);
+		paymentRequest.setYear(VALID_EXPIRY_YEAR);
 
-		getController(sessionId).processRequest(paymentRequest, paymentResponse);
+		testEnv.getTestEnv().getPaymentProcessController(sessionId).processRequest(paymentRequest, paymentResponse);
 		assertNotNull("response should not be empty", paymentResponse.getStatus());
 		assertEquals(GetPaymentState.PaymentState.SUCCESS, paymentResponse.getStatus());
-		doc = tester.renderPage("Payment/" + sessionId);
+		doc = testEnv.getTestEnv().getPageTester().renderPage("Payment/" + sessionId);
 		//parse the response result
 		Element paymentResultDiv = doc.getRootElement().getElementByAttributeValue("class", "pay-form");
 		assertNotNull("Result div should be loaded", paymentResultDiv);
@@ -303,7 +292,7 @@ public abstract class QEPaymentProcessTest extends RealWSTransportTest {
 	}
 
 	protected final GenericTransactionGroup getPaymentStatus(String sessionId) throws Exception {
-		return getPaymentPortType().getPaymentStatus(sessionId);
+		return testEnv.getTestEnv().getTransportConfig().getPaymentStatus(sessionId);
 	}
 
 	protected final void checkNotProcessedResponse(GenericTransactionGroup transaction) {
