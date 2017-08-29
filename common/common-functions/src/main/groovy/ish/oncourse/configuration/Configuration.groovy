@@ -1,7 +1,5 @@
 package ish.oncourse.configuration
 
-import com.sun.javafx.runtime.SystemProperties
-
 class Configuration {
 
     static final String CONFIG_FILE_NAME = 'application.properties'
