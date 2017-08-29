@@ -13,7 +13,7 @@ import io.bootique.jetty.MappedServlet;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.services.cache.NoopQueryCache;
 import ish.oncourse.services.persistence.ISHObjectContextFactory;
-import ish.oncourse.util.log.LogDBInfo;
+import ish.oncourse.util.log.LogAppInfo;
 import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.configuration.Constants;
 import org.apache.cayenne.configuration.ObjectContextFactory;
@@ -49,7 +49,7 @@ public class ServicesModule extends ConfigModule {
 	@Singleton
 	@Provides
 	MappedFilter<ServicesTapestryFilter> createTapestryFilter(Injector injector) {
-		new LogDBInfo().log(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME));
+		new LogAppInfo().log(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME));
 
 		ServicesTapestryFilter filter = new ServicesTapestryFilter(injector);
 		return new MappedFilter<>(filter, Collections.singleton(URL_PATTERN), TAPESTRY_APP_NAME, 0);

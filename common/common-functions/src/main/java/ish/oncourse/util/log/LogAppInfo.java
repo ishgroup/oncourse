@@ -3,6 +3,7 @@
  */
 package ish.oncourse.util.log;
 
+import ish.oncourse.configuration.ApplicationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,13 +16,14 @@ import java.sql.SQLException;
  * User: akoiro
  * Date: 29/8/17
  */
-public class LogDBInfo {
+public class LogAppInfo {
 	private final static Logger LOGGER = LogManager.getLogger();
 
 	public void log(DataSource dataSource) {
 		try (Connection connection = dataSource.getConnection()) {
 			LOGGER.info(String.format("DB Address: %s", getHost(connection.getMetaData())));
 			connection.close();
+			LOGGER.info(String.format("Application deployed version: %s", ApplicationUtils.getAppVersion()));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
