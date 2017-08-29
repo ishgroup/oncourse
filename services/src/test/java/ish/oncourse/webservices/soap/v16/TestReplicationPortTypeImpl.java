@@ -1,9 +1,6 @@
 package ish.oncourse.webservices.soap.v16;
 
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.soap.v16.AuthFailure;
-import ish.oncourse.webservices.soap.v16.ReplicationFault;
-import ish.oncourse.webservices.soap.v16.ReplicationPortType;
 import ish.oncourse.webservices.v16.stubs.replication.*;
 
 import javax.jws.WebParam;

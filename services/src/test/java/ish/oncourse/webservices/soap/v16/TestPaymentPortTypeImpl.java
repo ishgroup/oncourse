@@ -1,7 +1,5 @@
 package ish.oncourse.webservices.soap.v16;
 
-import ish.oncourse.webservices.soap.v16.PaymentPortType;
-import ish.oncourse.webservices.soap.v16.ReplicationFault;
 import ish.oncourse.webservices.v16.stubs.replication.ParametersMap;
 import ish.oncourse.webservices.v16.stubs.replication.TransactionGroup;
 
