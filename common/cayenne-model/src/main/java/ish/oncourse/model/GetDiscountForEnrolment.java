@@ -75,7 +75,7 @@ public class GetDiscountForEnrolment {
 		}
 	
 		if (!applicableDiscounts.isEmpty()) {
-			chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(applicableDiscounts, currentCourseClass.getFeeExGst(), taxRateOverridden);
+			chosenDiscount = (DiscountCourseClass) DiscountUtils.chooseDiscountForApply(applicableDiscounts, currentCourseClass.getFeeExGst(), taxRateOverridden != null ? taxRateOverridden : currentCourseClass.getTaxRate());
 		}
 		
 		return this;
