@@ -27,6 +27,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -39,9 +40,10 @@ import static org.junit.Assert.assertFalse;
 public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITest {
 	private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEDuplicateStudentEnrolmentNoGUITestDataSet.xml";
 
-	@Override
-	protected String getDataSetFile() {
-		return DEFAULT_DATASET_XML;
+	@Before
+	public void before() throws Exception {
+		testEnv = new V15TestEnv(DEFAULT_DATASET_XML, null);
+		testEnv.start();
 	}
 
 	@Override
