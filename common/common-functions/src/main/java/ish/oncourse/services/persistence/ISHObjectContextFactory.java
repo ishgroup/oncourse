@@ -5,7 +5,6 @@
 
 package ish.oncourse.services.persistence;
 
-import ish.oncourse.util.ContextUtil;
 import org.apache.cayenne.DataChannel;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
@@ -20,13 +19,19 @@ import org.apache.cayenne.configuration.server.DataContextFactory;
 public class ISHObjectContextFactory extends DataContextFactory {
 
 	public static final String QUERY_CACHE_INJECTION_KEY = "local";
+	private boolean objectCacheEnabled = false;
+
+	public ISHObjectContextFactory(boolean objectCacheEnabled) {
+		this.objectCacheEnabled = objectCacheEnabled;
+	}
+
 
 	protected ObjectContext createFromGenericChannel(DataChannel parent) {
 
 		DataRowStore snapshotCache = createDataRowStore(dataDomain);
 		ISHObjectContext context = new ISHObjectContext(parent, objectStoreFactory.createObjectStore(snapshotCache));
 
-		return initContext(context, dataDomain.isValidatingObjectsOnCommit(), ContextUtil.isObjectCacheEnabled()
+		return initContext(context, dataDomain.isValidatingObjectsOnCommit(), objectCacheEnabled
 				&& dataDomain.isSharedCacheEnabled());
 	}
 
@@ -42,7 +47,7 @@ public class ISHObjectContextFactory extends DataContextFactory {
 		ISHObjectContext context = new ISHObjectContext(parent, objectStoreFactory.createObjectStore(snapshotCache));
 
 		initContext(context, parent.isValidatingObjectsOnCommit(),
-				ContextUtil.isObjectCacheEnabled()
+				objectCacheEnabled
 				&& parent.isSharedCacheEnabled());
 		return context;
 	}

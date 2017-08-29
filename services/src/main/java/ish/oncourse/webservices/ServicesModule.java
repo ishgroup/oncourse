@@ -76,7 +76,7 @@ public class ServicesModule extends ConfigModule {
 		@Override
 		public void configure(org.apache.cayenne.di.Binder binder) {
 			binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true");
-			binder.bind(ObjectContextFactory.class).to(ISHObjectContextFactory.class);
+			binder.bind(ObjectContextFactory.class).toInstance(new ISHObjectContextFactory(false));
 			binder.bind(QueryCache.class).toInstance(new NoopQueryCache());
 			binder.bind(org.apache.cayenne.di.Key.get(QueryCache.class, ISHObjectContextFactory.QUERY_CACHE_INJECTION_KEY)).toInstance(new NoopQueryCache());
 		}
