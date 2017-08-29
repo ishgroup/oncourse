@@ -17,17 +17,33 @@ import java.sql.SQLException;
  * Date: 29/8/17
  */
 public class LogAppInfo {
+	public final static String DATA_SOURSE_NAME = "willow";
 	private final static Logger LOGGER = LogManager.getLogger();
-
-	public void log(DataSource dataSource) {
+	
+	private DataSource dataSource;
+	
+	public LogAppInfo(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+	
+	public void log() {
+		logDataSource();
+		logVersion();
+	}
+	
+	private void logDataSource() {
 		try (Connection connection = dataSource.getConnection()) {
 			LOGGER.info(String.format("DB Address: %s", getHost(connection.getMetaData())));
 			connection.close();
-			LOGGER.info(String.format("Application deployed version: %s", ApplicationUtils.getAppVersion()));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
+
+	private void logVersion() {
+		LOGGER.info(String.format("Application Version: %s", ApplicationUtils.getAppVersion()));
+	}
+
 
 	private String getHost(DatabaseMetaData md) throws SQLException {
 		try {

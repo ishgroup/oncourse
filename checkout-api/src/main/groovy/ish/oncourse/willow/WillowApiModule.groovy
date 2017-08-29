@@ -1,13 +1,21 @@
 package ish.oncourse.willow
 
 import com.google.inject.Binder
+import com.google.inject.Inject
+import com.google.inject.Injector
+import com.google.inject.Provides
+import com.google.inject.Singleton
+import com.google.inject.TypeLiteral
 import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
+import io.bootique.jdbc.DataSourceFactory
 import io.bootique.jetty.JettyModule
+import io.bootique.jetty.MappedFilter
 import io.bootique.jetty.MappedServlet
 import ish.math.MoneyType
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.cxf.CXFModule
+import ish.oncourse.util.log.LogAppInfo
 import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.cayenne.ISHObjectContextFactory
@@ -26,10 +34,14 @@ import org.apache.cayenne.di.Module
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 class WillowApiModule extends ConfigModule {
+    private static final TypeLiteral<MappedServlet<ISHHealthCheckServlet>> ISH_HEALTH_CHECK_SERVLET =
+            new TypeLiteral<MappedServlet<ISHHealthCheckServlet>>() {
+            }
+    
     void configure(Binder binder) {
         CayenneModule.extend(binder).addModule(WillowApiCayenneModule)
         CayenneModule.extend(binder).addModule(JCacheModule)
-        JettyModule.extend(binder).addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
+        JettyModule.extend(binder).addMappedServlet(ISH_HEALTH_CHECK_SERVLET)
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(CourseClassesApiServiceImpl)
         CXFModule.contributeResources(binder).addBinding().to(ContactApiServiceImpl)
@@ -46,7 +58,14 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(CorporatePassApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(PreferenceApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(CayenneService)
+    }
 
+    @Singleton
+    @Provides
+    MappedServlet<ISHHealthCheckServlet> createHealthCheckServlet(Injector injector) {
+        LogAppInfo info = new LogAppInfo(injector.getInstance(DataSourceFactory.class).forName(LogAppInfo.DATA_SOURSE_NAME))
+        info.log()
+        new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME)
     }
 
     static class WillowApiCayenneModule implements Module {

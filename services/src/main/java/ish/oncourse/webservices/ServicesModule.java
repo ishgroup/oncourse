@@ -49,8 +49,8 @@ public class ServicesModule extends ConfigModule {
 	@Singleton
 	@Provides
 	MappedFilter<ServicesTapestryFilter> createTapestryFilter(Injector injector) {
-		new LogAppInfo().log(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME));
-
+		LogAppInfo info = new LogAppInfo(injector.getInstance(DataSourceFactory.class).forName(LogAppInfo.DATA_SOURSE_NAME));
+		info.log();
 		ServicesTapestryFilter filter = new ServicesTapestryFilter(injector);
 		return new MappedFilter<>(filter, Collections.singleton(URL_PATTERN), TAPESTRY_APP_NAME, 0);
 	}
