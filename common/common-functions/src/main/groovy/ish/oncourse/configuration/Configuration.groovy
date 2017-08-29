@@ -39,9 +39,8 @@ class Configuration {
             if (prop.get('logs_path')) {
                 System.setProperty(LOGS_PATH_PROPERTY, prop.get('logs_path') as String)
             } else {
-                System.setProperty(LOGS_PATH_PROPERTY, userDir)
+                System.setProperty(LOGS_PATH_PROPERTY, "${userDir}/logs/")
             }
-            
             
         } else {
             throw new IllegalArgumentException("application.properties file not found")
