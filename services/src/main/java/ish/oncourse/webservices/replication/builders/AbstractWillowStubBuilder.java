@@ -75,6 +75,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 	private String getCustomFieldIdentifier(SupportedVersions version) {
 		switch (version) {
 			case V10:
+			case V13:
 			case V14:
 				return CustomField.class.getSimpleName();
 			case V15:
