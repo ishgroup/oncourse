@@ -7,6 +7,7 @@ public class Preferences  {
     private String successLink = null;
     private String refundPolicyUrl = null;
     private String featureEnrolmentDisclosure = null;
+    private String googleTagmanagerAccount = null;
 
     /**
      * is corporate pass enabled preference
@@ -76,6 +77,23 @@ public class Preferences  {
       return this;
     }
 
+    /**
+     * Google tag manager account
+     * @return googleTagmanagerAccount
+     */
+    public String getGoogleTagmanagerAccount() {
+        return googleTagmanagerAccount;
+    }
+
+    public void setGoogleTagmanagerAccount(String googleTagmanagerAccount) {
+       this.googleTagmanagerAccount = googleTagmanagerAccount;
+    }
+
+    public Preferences googleTagmanagerAccount(String googleTagmanagerAccount) {
+      this.googleTagmanagerAccount = googleTagmanagerAccount;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -86,6 +104,7 @@ public class Preferences  {
       sb.append("    successLink: ").append(toIndentedString(successLink)).append("\n");
       sb.append("    refundPolicyUrl: ").append(toIndentedString(refundPolicyUrl)).append("\n");
       sb.append("    featureEnrolmentDisclosure: ").append(toIndentedString(featureEnrolmentDisclosure)).append("\n");
+      sb.append("    googleTagmanagerAccount: ").append(toIndentedString(googleTagmanagerAccount)).append("\n");
       sb.append("}");
       return sb.toString();
     }

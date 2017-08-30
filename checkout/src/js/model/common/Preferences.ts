@@ -20,5 +20,10 @@ export class Preferences {
    * Student Information
    */
   featureEnrolmentDisclosure?: string;
+
+  /**
+   * Google tag manager account
+   */
+  googleTagmanagerAccount?: string;
 }
 

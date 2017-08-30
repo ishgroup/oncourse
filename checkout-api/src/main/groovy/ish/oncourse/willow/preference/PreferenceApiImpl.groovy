@@ -36,7 +36,7 @@ class PreferenceApiImpl implements PreferenceApi {
         preferences.successLink = new GetEnrolSuccessUrl(college, context).get()
         preferences.refundPolicyUrl = new GetRefundPolicyUrl(college, context).get()
         preferences.featureEnrolmentDisclosure = new GetFeatureEnrolmentDisclosure(college, context).get()
-
+        preferences.googleTagmanagerAccount = collegeService.webSite.googleTagmanagerAccount
         return preferences
     }
 }

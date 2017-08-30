@@ -721,6 +721,9 @@ definitions:
       featureEnrolmentDisclosure:
         type: string
         description: Student Information
+      googleTagmanagerAccount:
+        type: string
+        description: Google tag manager account
   field.Suburb:
     type: object
     properties:
