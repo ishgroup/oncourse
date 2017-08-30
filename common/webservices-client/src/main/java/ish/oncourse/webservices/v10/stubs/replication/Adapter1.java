@@ -1,8 +1,8 @@
 
 package ish.oncourse.webservices.v10.stubs.replication;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Date;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class Adapter1
     extends XmlAdapter<String, Date>

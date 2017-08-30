@@ -15,6 +15,11 @@ public class StubUtils {
 						.setParameters((ish.oncourse.webservices.v10.stubs.replication.ParametersMap) parametersMap);
 				break;
 
+			case V13:
+				((ish.oncourse.webservices.v13.stubs.replication.InstructionStub) instructionStub)
+						.setParameters((ish.oncourse.webservices.v13.stubs.replication.ParametersMap) parametersMap);
+				break;
+
 			case V14:
 				((ish.oncourse.webservices.v14.stubs.replication.InstructionStub) instructionStub)
 						.setParameters((ish.oncourse.webservices.v14.stubs.replication.ParametersMap) parametersMap);
@@ -44,6 +49,10 @@ public class StubUtils {
 				return ish.oncourse.webservices.v10.stubs.replication.Status.SUCCESS.equals(
 						((ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord) record).getStatus());
 
+			case V13:
+				return ish.oncourse.webservices.v13.stubs.replication.Status.SUCCESS.equals(
+						((ish.oncourse.webservices.v13.stubs.replication.ReplicatedRecord) record).getStatus());
+
 			case V14:
 				return ish.oncourse.webservices.v14.stubs.replication.Status.SUCCESS.equals(
 						((ish.oncourse.webservices.v14.stubs.replication.ReplicatedRecord) record).getStatus());
@@ -70,6 +79,10 @@ public class StubUtils {
 				return ish.oncourse.webservices.v10.stubs.replication.Status.FAILED.equals(
 						((ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord) record).getStatus());
 
+			case V13:
+				return ish.oncourse.webservices.v13.stubs.replication.Status.FAILED.equals(
+						((ish.oncourse.webservices.v13.stubs.replication.ReplicatedRecord) record).getStatus());
+
 			case V14:
 				return ish.oncourse.webservices.v14.stubs.replication.Status.FAILED.equals(
 						((ish.oncourse.webservices.v14.stubs.replication.ReplicatedRecord) record).getStatus());
@@ -95,6 +108,11 @@ public class StubUtils {
 			case V10:
 				((ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v10.stubs.replication.Status.SUCCESS);
+				break;
+
+			case V13:
+				((ish.oncourse.webservices.v13.stubs.replication.ReplicatedRecord) record).setStatus(
+						ish.oncourse.webservices.v13.stubs.replication.Status.SUCCESS);
 				break;
 
 			case V14:
@@ -125,6 +143,11 @@ public class StubUtils {
 			case V10:
 				((ish.oncourse.webservices.v10.stubs.replication.ReplicatedRecord) record).setStatus(
 						ish.oncourse.webservices.v10.stubs.replication.Status.FAILED);
+				break;
+
+			case V13:
+				((ish.oncourse.webservices.v13.stubs.replication.ReplicatedRecord) record).setStatus(
+						ish.oncourse.webservices.v13.stubs.replication.Status.FAILED);
 				break;
 
 			case V14:
