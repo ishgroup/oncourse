@@ -1,10 +1,7 @@
-import scriptjs from "scriptjs";
-
 import {Actions} from "./common/actions/Actions";
 import {DefaultConfig} from "./constants/Config";
 
-const DEFAULT_CONFIG_URL = `/s/js/config.js?${new Date().valueOf()}`;
-const DEFAULT_CONFIG_KEY = 'willow_config';
+const DEFAULT_CONFIG_KEY = 'checkout_config';
 
 export class WillowConfig {
   public checkoutPath?: string;
@@ -16,24 +13,17 @@ export class WillowConfig {
 
 export const configLoader = store => {
 
-  scriptjs(
-    DEFAULT_CONFIG_URL,
-    () => checkAndLoadConfig(),
-  );
+    const loadConfigToState = config => {
+      store.dispatch({
+        type: Actions.UPDATE_WILLOW_CONFIG,
+        payload: config,
+      });
+    };
 
-  const checkAndLoadConfig = () => {
     const willowConfig =  new WillowConfig(window[DEFAULT_CONFIG_KEY] || {});
 
     if (willowConfig) {
       loadConfigToState(willowConfig);
     }
-  };
-
-  const loadConfigToState = config => {
-    store.dispatch({
-      type: Actions.UPDATE_WILLOW_CONFIG,
-      payload: config,
-    });
-  };
 }
 
