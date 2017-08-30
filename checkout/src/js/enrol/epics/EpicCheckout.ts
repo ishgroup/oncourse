@@ -27,7 +27,6 @@ import {EpicUpdateParentChilds} from "../containers/summary/epics/EpicUpdatePare
 import {OpenEditContact} from "../containers/contact-edit/epics/EpicOpenEditContact";
 import {SubmitEditContact} from "../containers/contact-edit/epics/EpicSubmitEditContact";
 import {EpicToggleRedeemVoucher} from "./EpicToggleRedeemVoucher";
-import {EpicGetPreferences} from "./EpicGetPreferences";
 import {EpicChangeChildParent} from "../containers/summary/epics/EpicChangeChildParent";
 
 
@@ -37,7 +36,6 @@ const {
 
 export const EpicCheckout = combineEpics(
   EpicInit,
-  EpicGetPreferences,
   MessagesShowEpic,
   SubmitAddContact, AddPayerFromVoucher,
   SubmitEditContact,

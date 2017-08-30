@@ -11,8 +11,6 @@ export const SHOW_MESSAGES: string = "checkout/messages/show";
 export const SHOW_MESSAGES_REQUEST: string = _toRequestType(SHOW_MESSAGES);
 
 export const INIT_REQUEST: string = "checkout/init/request";
-export const GET_PREFERENCES: string = "checkout/get/preferences";
-export const ADD_PREFERENCES_TO_STATE =  "checkout/add/preferences/to/state";
 
 // change current phase action
 export const CHANGE_PHASE: string = "checkout/phase/change";
@@ -168,18 +166,5 @@ export const togglePayNowVisibility = (val: boolean): IAction<any> => {
   return {
     type: TOGGLE_PAYNOW_VISIBILITY,
     payload: val,
-  };
-};
-
-export const getPreferences = () => {
-  return {
-    type: GET_PREFERENCES,
-  };
-};
-
-export const addPreferencesToState = (preferences: Preferences) => {
-  return {
-    type: ADD_PREFERENCES_TO_STATE,
-    payload: preferences,
   };
 };

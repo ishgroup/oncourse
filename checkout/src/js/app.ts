@@ -8,6 +8,7 @@ import {WindowService} from "./services/WindowService";
 import {HTMLMarkers} from "./common/services/HTMLMarker";
 
 import "../scss/index.scss";
+import {getPreferences} from "./common/actions/Actions";
 
 const appStart = () => {
   const store = CreateStore();
@@ -26,6 +27,9 @@ Logger.log(new LogMessage(Level.INFO, `Application version: "${ConfigConstants.A
 
 const start = store => {
   WindowService.set("api", new PublicApi(store));
+
+  // get global preferences
+  store.dispatch(getPreferences());
 
   const react = new Bootstrap(store)
     .register(HTMLMarkers.CHECKOUT)

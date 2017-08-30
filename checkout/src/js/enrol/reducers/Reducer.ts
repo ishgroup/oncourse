@@ -13,7 +13,6 @@ import {ContactsSchema, ContactsState} from "../../NormalizeSchema";
 import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
-import {Preferences} from "../../model/common/Preferences";
 import {CHANGE_TAB} from "../containers/payment/actions/Actions";
 import {CHANGE_CHILD_PARENT_FULFILLED} from "../containers/summary/actions/Actions";
 
@@ -223,20 +222,6 @@ const ContactAddProcess = (state: any = {}, action: IAction<any>): any => {
   }
 };
 
-const PreferencesReducer = (state: Preferences = {}, action: IAction<Preferences>): Preferences => {
-  switch (action.type) {
-
-    case Actions.ADD_PREFERENCES_TO_STATE:
-      return {
-        ...state,
-        ...action.payload,
-      };
-
-    default:
-      return state;
-  }
-};
-
 const FetchingReducer = (state: boolean = false, action: IAction<any>): boolean => {
   switch (action.type) {
 
@@ -268,5 +253,4 @@ export const Reducer = combineReducers<CheckoutState>({
   concession: ConcessionReducer,
   redeemVouchers: RedeemVouchersReducer,
   contactAddProcess: ContactAddProcess,
-  preferences: PreferencesReducer,
 });

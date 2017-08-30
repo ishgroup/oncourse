@@ -11,6 +11,8 @@ interface ProductEvent {
   quantity?: number,
 }
 
+let trackingId;
+
 export const initGAEvent = (data, state) => {
 
   // proxy for debug mode
@@ -18,6 +20,7 @@ export const initGAEvent = (data, state) => {
 
   const cart = state.cart;
   const amount = state.checkout.amount;
+  trackingId = state.preferences.trackingId;
 
   try {
     if (window['ga'] && data) {
@@ -45,7 +48,7 @@ export const initGAEvent = (data, state) => {
 };
 
 const sendInitActions = () => {
-  window['ga']('create', 'UA-XXXXX-YY', 'auto');
+  window['ga']('create', trackingId, 'auto');
   window['ga']('require', 'ec');
 };
 

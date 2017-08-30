@@ -1,14 +1,21 @@
 import {Actions} from "../actions/Actions";
+import {Preferences} from "../../model";
+import {IAction} from "../../actions/IshAction";
 
 /**
  * Handle changing global preferences.
  */
 
-export const configReducer = (state = {}, action): any => {
+export const preferencesReducer = (state: Preferences = {}, action: IAction<Preferences>): Preferences => {
   switch (action.type) {
-    case Actions.UPDATE_PREFERENCES_REQUEST_FULFILLED:
-      return action.payload;
+
+    case Actions.GET_PREFERENCES_REQUEST_FULFILLED:
+      return {
+        ...state,
+        ...action.payload,
+      };
+
     default:
       return state;
   }
-}
+};

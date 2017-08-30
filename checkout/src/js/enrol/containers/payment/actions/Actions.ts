@@ -60,7 +60,7 @@ export const updatePaymentStatus = (response: PaymentResponse): IAction<PaymentR
     type: UPDATE_PAYMENT_STATUS,
     payload: response,
     meta: {
-      analytics: GABuilder.purchaseItems(response),
+      analytics: GABuilder.purchaseItems(response)
     }
   };
 };
