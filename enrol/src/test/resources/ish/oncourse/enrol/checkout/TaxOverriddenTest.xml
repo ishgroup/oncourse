@@ -140,7 +140,7 @@
             discountType="2"
             modified="2011-09-12 00:56:00.0"
             name="name"
-            roundingMode="1"
+            roundingMode="0"
             timeZone="timeZone"
             validFrom="2011-09-12 00:56:00.0"
             validTo="2111-09-12 00:56:00.0"

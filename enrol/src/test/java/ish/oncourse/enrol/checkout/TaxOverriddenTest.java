@@ -138,6 +138,94 @@ public class TaxOverriddenTest extends ACheckoutTest {
         makeValidPayment();
     }
 
+
+    @Test
+    public void corporatePassWithOverriddenTax() throws InterruptedException {
+        init(Arrays.asList(1005L, 1006L), Arrays.asList(7L, 8L, 9L), Collections.singletonList(2L), false);
+
+        Contact contact = Cayenne.objectForPK(purchaseController.getModel().getObjectContext(), Contact.class, 1001L);
+
+        PurchaseController.ActionParameter param;
+        param = new PurchaseController.ActionParameter(PurchaseController.Action.addContact);
+        param.setValue(createContactCredentialsBy(contact));
+        performAction(param);
+
+
+        CourseClass courseClass1 = Cayenne.objectForPK(getModel().getObjectContext(), CourseClass.class, 1005L);
+        CourseClass courseClass2 = Cayenne.objectForPK(getModel().getObjectContext(), CourseClass.class, 1006L);
+
+        Enrolment enrolment1 = getModel().getEnrolmentBy(contact, courseClass1);
+        Enrolment enrolment2 = getModel().getEnrolmentBy(contact, courseClass2);
+
+        Product product1 = Cayenne.objectForPK(getModel().getObjectContext(), Product.class, 7L);
+        Product product2 = Cayenne.objectForPK(getModel().getObjectContext(), Product.class, 8L);
+        Product product3 = Cayenne.objectForPK(getModel().getObjectContext(), Product.class, 9L);
+
+        ProductItem voucher = getModel().getProductItemBy(contact, product1);
+        ProductItem membership = getModel().getProductItemBy(contact, product2);
+        ProductItem article = getModel().getProductItemBy(contact, product3);
+
+        assertEquals(new Money("454.55"), enrolment1.getInvoiceLines().get(0).getPriceEachExTax());
+        assertEquals(new Money("10.00"), enrolment1.getInvoiceLines().get(0).getDiscountEachExTax());
+        assertEquals(new Money("44.45"), enrolment1.getInvoiceLines().get(0).getTaxEach());
+
+        assertEquals(new Money("100.00"), enrolment2.getInvoiceLines().get(0).getPriceEachExTax());
+        assertEquals(new Money("10.00"), enrolment2.getInvoiceLines().get(0).getDiscountEachExTax());
+        assertEquals(new Money("9.00"), enrolment2.getInvoiceLines().get(0).getTaxEach());
+
+
+        assertEquals(new Money("10.00"), voucher.getInvoiceLine().getPriceEachExTax());
+        assertEquals(new Money("0.00"), voucher.getInvoiceLine().getDiscountEachExTax());
+        assertEquals(new Money("0.00"), voucher.getInvoiceLine().getTaxEach());
+
+
+        assertEquals(new Money("10.00"), membership.getInvoiceLine().getPriceEachExTax());
+        assertEquals(new Money("0.00"), membership.getInvoiceLine().getDiscountEachExTax());
+        assertEquals(new Money("0.00"), membership.getInvoiceLine().getTaxEach());
+
+        assertEquals(new Money("10.00"), article.getInvoiceLine().getPriceEachExTax());
+        assertEquals(new Money("0.00"), article.getInvoiceLine().getDiscountEachExTax());
+        assertEquals(new Money("0.00"), article.getInvoiceLine().getTaxEach());
+
+        proceedToPayment();
+
+        param = new PurchaseController.ActionParameter(PurchaseController.Action.selectCorporatePassEditor);
+        performAction(param);
+
+        param = new PurchaseController.ActionParameter(PurchaseController.Action.addCorporatePass);
+        param.setValue("password");
+        performAction(param);
+
+        enrolment1 = getModel().getEnrolmentBy(contact, courseClass1);
+        enrolment2 = getModel().getEnrolmentBy(contact, courseClass2);
+
+
+        voucher = getModel().getProductItemBy(getModel().getCorporatePass().getContact(), product1);
+        membership = getModel().getProductItemBy(contact, product2);
+        article = getModel().getProductItemBy(contact, product3);
+
+        assertEquals(new Money("454.55"), enrolment1.getInvoiceLines().get(0).getPriceEachExTax());
+        assertEquals(new Money("10.00"), enrolment1.getInvoiceLines().get(0).getDiscountEachExTax());
+        assertEquals(new Money("66.68"), enrolment1.getInvoiceLines().get(0).getTaxEach());
+
+        assertEquals(new Money("100.00"), enrolment2.getInvoiceLines().get(0).getPriceEachExTax());
+        assertEquals(new Money("10.00"), enrolment2.getInvoiceLines().get(0).getDiscountEachExTax());
+        assertEquals(new Money("13.50"), enrolment2.getInvoiceLines().get(0).getTaxEach());
+
+
+        assertEquals(new Money("10.00"), voucher.getInvoiceLine().getPriceEachExTax());
+        assertEquals(new Money("0.00"), voucher.getInvoiceLine().getDiscountEachExTax());
+        assertEquals(new Money("0.00"), voucher.getInvoiceLine().getTaxEach());
+        
+        assertEquals(new Money("10.00"), membership.getInvoiceLine().getPriceEachExTax());
+        assertEquals(new Money("0.00"), membership.getInvoiceLine().getDiscountEachExTax());
+        assertEquals(new Money("1.50"), membership.getInvoiceLine().getTaxEach());
+
+        assertEquals(new Money("10.00"), article.getInvoiceLine().getPriceEachExTax());
+        assertEquals(new Money("0.00"), article.getInvoiceLine().getDiscountEachExTax());
+        assertEquals(new Money("1.50"), article.getInvoiceLine().getTaxEach());
+
+    }
     
     
 }
