@@ -16,8 +16,7 @@ let trackingId;
 export const initGAEvent = (data, state) => {
 
   // proxy for debug mode
-  window['ga'] = window['ga'] ? window['ga'] : (...params) => {console.log(params);};
-
+  // window['ga'] = window['ga'] ? window['ga'] : (...params) => {console.log(params);};
   const cart = state.cart;
   const amount = state.checkout.amount;
   trackingId = state.preferences.trackingId;
@@ -48,8 +47,8 @@ export const initGAEvent = (data, state) => {
 };
 
 const sendInitActions = () => {
-  window['ga']('create', trackingId, 'auto');
-  window['ga']('require', 'ec');
+  // window['ga']('create', trackingId, 'auto');
+  // window['ga']('require', 'ec');
 };
 
 const sendItemToCartEvent = (data: ProductEvent) => {
