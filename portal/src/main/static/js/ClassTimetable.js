@@ -154,6 +154,8 @@ AttendanceCtrl.prototype = {
 
     init: function (attendance) {
         this.attendance = attendance;
+        this.attendance.sessionStart = moment(this.attendance.sessionStart).second(0).valueOf();
+        this.attendance.sessionEnd = moment(this.attendance.sessionEnd).second(0).valueOf();
         this.btnGroup = $j('#' + this.attendance.studentId + '> div.btn-group');
         this.btnCancel = this.btnGroup.children('a[is=cancel]');
         this.btnOk = this.btnGroup.children('a[is=ok]');
@@ -169,21 +171,35 @@ AttendanceCtrl.prototype = {
         this.txtReasonNote.val(this.attendance.note);
         this.txtPartialNote.val(this.attendance.note);
 
+        if (this.attendance.attendedFrom === null) {
+            this.attendance.attendedFrom = this.attendance.sessionStart;
+        }
+
+        if (this.attendance.attendedUntil === null) {
+            this.attendance.attendedUntil = this.attendance.sessionEnd;
+        }
+
         this.datePartialFrom = $j('#absent-partial-' + this.attendance.studentId + ' input.arrived');
         this.datePartialTo = $j('#absent-partial-' + this.attendance.studentId + ' input.departed');
 
-        this.datePartialFrom.prop("value", moment(this.attendance.startDate).format('hh:mm:a').toUpperCase());
-        this.datePartialFrom.prop('disabled', 'true');
+        this.datePartialFrom.prop("value", moment(this.attendance.attendedFrom).format('hh : mm : a').toUpperCase());
+        this.datePartialTo.prop("value", moment(this.attendance.attendedUntil).format('hh : mm : a').toUpperCase());
 
-        this.datePartialTo.timepicki({
-            start_time: [moment(this.attendance.endDate).format('hh'), moment(this.attendance.endDate).format('mm'), moment(this.attendance.endDate).format('a').toUpperCase()],
+        this.datePartialFrom.timepicki({
+            start_time: [moment(this.attendance.attendedFrom).format('hh'),
+                moment(this.attendance.attendedFrom).format('mm'),
+                moment(this.attendance.attendedFrom).format('a').toUpperCase()],
             increase_direction: 'up',
             step_size_minutes: 5
         });
 
-        if (this.attendance.durationMinutes) {
-            this.datePartialTo.prop("value", moment(this.attendance.startDate).add(this.attendance.durationMinutes, 'minutes').format('hh:mm:a').toUpperCase());
-        }
+        this.datePartialTo.timepicki({
+            start_time: [moment(this.attendance.attendedUntil).format('hh'),
+                moment(this.attendance.attendedUntil).format('mm'),
+                moment(this.attendance.attendedUntil).format('a').toUpperCase()],
+            increase_direction: 'up',
+            step_size_minutes: 5
+        });
 
         this.btnReasonSave = $j('#absent-reason-' + this.attendance.studentId + ' button');
         this.btnPartialSave = $j('#absent-partial-' + this.attendance.studentId + ' button');
@@ -262,23 +278,46 @@ AttendanceCtrl.prototype = {
 
         this.btnPartialSave.on('click', function () {
 
+            self.attendance.attendedFrom = moment(moment(self.attendance.attendedFrom).format('MM-DD-YYYY ') + self.datePartialFrom.val(), 'MM-DD-YYYY hh : mm : a').second(0).valueOf();
+            self.attendance.attendedUntil = moment(moment(self.attendance.attendedUntil).format('MM-DD-YYYY ') + self.datePartialTo.val(), 'MM-DD-YYYY hh : mm : a').second(0).valueOf();
+
+            if (self.datePartialFrom.val().length <= 0) {
+                alert('You have no ARRIVED time!');
+                return false;
+            }
+
             if (self.datePartialTo.val().length <= 0) {
                 alert('You have no DEPARTED time!');
                 return false;
             }
 
-            var departed = moment(moment(self.attendance.endDate).format('MM-DD-YYYY ') + self.datePartialTo.val(), 'MM-DD-YYYY hh : mm : a');
+            if (self.attendance.attendedFrom < self.attendance.sessionStart) {
+                alert('Arrived time must be after the session starts.');
+                return false;
+            } else if (self.attendance.attendedFrom > self.attendance.sessionEnd) {
+                alert('Arrived time must be before the session ends.');
+                return false;
+            }
 
-            if (departed > self.attendance.endDate) {
+            if (self.attendance.attendedUntil > self.attendance.sessionEnd) {
                 alert('Departed time must be before the session ends.');
                 return false;
-            } else if (departed < self.attendance.startDate) {
+            } else if (self.attendance.attendedUntil < self.attendance.sessionStart) {
                 alert('Departed time must be after the session starts.');
                 return false;
             }
 
+            if (self.attendance.attendedFrom > self.attendance.attendedUntil) {
+                alert('Arrived time is greater than departed.');
+                return false;
+            }
+
+            if (self.attendance.attendedFrom === self.attendance.attendedUntil) {
+                alert('Duration is zero.');
+                return false;
+            }
+
             self.attendance.type = 4;
-            self.attendance.durationMinutes = moment.duration(departed.diff(self.attendance.startDate)).asMinutes();
 
             if (self.txtPartialNote.val().length > 0) {
                 self.attendance.note = self.txtPartialNote.val();

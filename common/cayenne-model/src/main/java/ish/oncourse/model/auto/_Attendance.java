@@ -22,6 +22,8 @@ public abstract class _Attendance extends CayenneDataObject {
 
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String ATTENDANCE_TYPE_PROPERTY = "attendanceType";
+    public static final String ATTENDED_FROM_PROPERTY = "attendedFrom";
+    public static final String ATTENDED_UNTIL_PROPERTY = "attendedUntil";
     public static final String CREATED_PROPERTY = "created";
     public static final String DURATION_MINUTES_PROPERTY = "durationMinutes";
     public static final String MARKED_BY_TUTOR_DATE_PROPERTY = "markedByTutorDate";
@@ -34,17 +36,19 @@ public abstract class _Attendance extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Integer> ATTENDANCE_TYPE = new Property<Integer>("attendanceType");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Integer> DURATION_MINUTES = new Property<Integer>("durationMinutes");
-    public static final Property<Date> MARKED_BY_TUTOR_DATE = new Property<Date>("markedByTutorDate");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NOTE = new Property<String>("note");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Tutor> MARKED_BY_TUTOR = new Property<Tutor>("markedByTutor");
-    public static final Property<Session> SESSION = new Property<Session>("session");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Integer> ATTENDANCE_TYPE = Property.create("attendanceType", Integer.class);
+    public static final Property<Date> ATTENDED_FROM = Property.create("attendedFrom", Date.class);
+    public static final Property<Date> ATTENDED_UNTIL = Property.create("attendedUntil", Date.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Integer> DURATION_MINUTES = Property.create("durationMinutes", Integer.class);
+    public static final Property<Date> MARKED_BY_TUTOR_DATE = Property.create("markedByTutorDate", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NOTE = Property.create("note", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Tutor> MARKED_BY_TUTOR = Property.create("markedByTutor", Tutor.class);
+    public static final Property<Session> SESSION = Property.create("session", Session.class);
+    public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);
@@ -58,6 +62,20 @@ public abstract class _Attendance extends CayenneDataObject {
     }
     public Integer getAttendanceType() {
         return (Integer)readProperty("attendanceType");
+    }
+
+    public void setAttendedFrom(Date attendedFrom) {
+        writeProperty("attendedFrom", attendedFrom);
+    }
+    public Date getAttendedFrom() {
+        return (Date)readProperty("attendedFrom");
+    }
+
+    public void setAttendedUntil(Date attendedUntil) {
+        writeProperty("attendedUntil", attendedUntil);
+    }
+    public Date getAttendedUntil() {
+        return (Date)readProperty("attendedUntil");
     }
 
     public void setCreated(Date created) {

@@ -74,6 +74,8 @@
 	<db-entity name="Attendance">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="attendanceType" type="INTEGER" length="10"/>
+		<db-attribute name="attendedFrom" type="TIMESTAMP"/>
+		<db-attribute name="attendedUntil" type="TIMESTAMP"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="durationMinutes" type="INTEGER"/>
@@ -1516,6 +1518,8 @@
 	<obj-entity name="Attendance" className="ish.oncourse.model.Attendance" dbEntityName="Attendance">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="attendanceType" type="java.lang.Integer" db-attribute-path="attendanceType"/>
+		<obj-attribute name="attendedFrom" type="java.util.Date" db-attribute-path="attendedFrom"/>
+		<obj-attribute name="attendedUntil" type="java.util.Date" db-attribute-path="attendedUntil"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="durationMinutes" type="java.lang.Integer" db-attribute-path="durationMinutes"/>
 		<obj-attribute name="markedByTutorDate" type="java.util.Date" db-attribute-path="markedByTutorDate"/>

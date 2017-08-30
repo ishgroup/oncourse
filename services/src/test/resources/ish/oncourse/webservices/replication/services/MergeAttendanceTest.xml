@@ -38,7 +38,7 @@
     <Session id="9" courseClassId="2" roomId="1" collegeId="1" angelId="9" startDate="2017-04-04 01:00:00" endDate="2017-04-04 02:00:00"/>
 
     <Attendance id="1" collegeId="1" studentId="1" sessionId="1" attendanceType="1" angelId="1"/>
-    <Attendance id="2" collegeId="1" studentId="1" sessionId="1" attendanceType="4" angelId="2" durationMinutes="30"/>
+    <Attendance id="2" collegeId="1" studentId="1" sessionId="1" attendanceType="4" angelId="2" durationMinutes="30" attendedFrom="2017-04-02 01:00:00" attendedUntil="2017-04-02 01:30:00"/>
     <Attendance id="3" collegeId="1" studentId="1" sessionId="1" attendanceType="3" angelId="3"/>
 
     <Attendance id="4" collegeId="1" studentId="1" sessionId="1" attendanceType="1" angelId="4"/> <!-- attendance id : 4 has higher rank than 7 -->

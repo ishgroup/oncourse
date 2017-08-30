@@ -22,6 +22,8 @@ public class AttendanceStubBuilder extends AbstractWillowStubBuilder<Attendance,
 		stub.setDurationMinutes(entity.getDurationMinutes());
 		stub.setNote(entity.getNote());
 		stub.setMarkedByTutorDate(entity.getMarkedByTutorDate());
+		stub.setAttendedFrom(entity.getAttendedFrom());
+		stub.setAttendedUntil(entity.getAttendedUntil());
 		if (entity.getMarkedByTutor() != null) {
 			stub.setMarkedByTutorId(entity.getMarkedByTutor().getId());
 		}

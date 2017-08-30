@@ -4518,5 +4518,17 @@
             ADD CONSTRAINT fk_Contact_Tax FOREIGN KEY (taxOverrideId) REFERENCES Tax (id);
         </sql>
     </changeSet>
+
+	<changeSet id="307" author="pnikanovich" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Attendance" columnName="attendedFrom"/>
+				<columnExists tableName="Attendance" columnName="attendedUntil"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Attendance ADD COLUMN (attendedFrom DATETIME, attendedUntil DATETIME);
+		</sql>
+	</changeSet>
 	
 </databaseChangeLog>

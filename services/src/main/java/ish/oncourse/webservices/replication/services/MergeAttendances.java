@@ -75,5 +75,7 @@ public class MergeAttendances {
         upd.setMarkedByTutor(del.getMarkedByTutor());
         upd.setMarkedByTutorDate(del.getMarkedByTutorDate());
         upd.setCreated(del.getCreated());
+        upd.setAttendedFrom(del.getAttendedFrom());
+        upd.setAttendedUntil(del.getAttendedUntil());
     }
 }
