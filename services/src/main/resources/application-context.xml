@@ -95,7 +95,7 @@
 	<jaxws:endpoint id="v13_payment" implementor="#v13_paymentPortType"
 					address="/v13/payment">
 		<jaxws:inInterceptors>
-			<ref bean="communicationKeyInterceptor" />
+			<ref bean="securityCodeInterceptor" />
 			<ref bean="collegeRequestInterceptor" />
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
