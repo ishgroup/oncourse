@@ -2,6 +2,7 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col} from 'reactstrap';
 import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
+import classnames from 'classnames';
 import {routes} from '../routes';
 import {Layout} from '../components/Layout/Layout';
 import {setHistoryInstance} from "../history";
@@ -14,9 +15,14 @@ export class Cms extends React.Component<any, any> {
 
   render() {
     const {isAuthenticated} = this.props.auth;
+    const viewMode = this.props.history.location.pathname === '/';
+
+    // set left padding for site content (sidebar width)
+    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: 16.6%}`}}/>);
 
     return (
-      <div>
+      <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
+        {globalSiteStyle}
         <Layout
           sidebar={isAuthenticated ? <Sidebar/> : undefined}
           content={<Content isAuthenticated={isAuthenticated}/>}
@@ -42,7 +48,7 @@ const Content = props => {
       ))}
     </div>
   );
-}
+};
 
 const Sidebar = () => (
   <div className="sidebar">
@@ -54,7 +60,7 @@ const Sidebar = () => (
       ))}
     </ul>
   </div>
-)
+);
 
 const RouteWrapper = ({component: Component, ...rest}) => {
   return (

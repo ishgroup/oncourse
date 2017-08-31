@@ -25,7 +25,7 @@ const _common = (dirname, options) => {
     output: {
       path: path.resolve(dirname, "build"),
       publicPath: "/assets/",
-      filename: "dynamic.js"
+      filename: "cms.js"
     },
     resolve: {
       modules: [

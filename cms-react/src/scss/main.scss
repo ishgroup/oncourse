@@ -1,14 +1,19 @@
-// vendors
-@import 'vendors/bootstrap';
-@import 'vendors/normilize';
+// included for develop mode
+@import 'dev';
 
-// base
-@import 'base/base';
-@import 'base/theme';
+// include all styles in .cms scope
+.cms {
+  // vendors
+  @import 'vendors/bootstrap';
+  @import 'vendors/normilize';
 
-// layout
-@import 'layout/sidebar';
-
-
-// components
-@import 'components/login-form';
+  // base
+  @import 'base/base';
+  @import 'base/theme';
+  
+  // layout
+  @import 'layout/sidebar';
+  
+  // components
+  @import 'components/login-form';
+}

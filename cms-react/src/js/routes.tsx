@@ -8,9 +8,16 @@ import Login from "./containers/login/Login";
 
 export const routes = [
   {
-    title: 'Content',
+    title: 'Site',
     path: '/',
     exact: true,
+    isPublic: false,
+    main: () => <span/>,
+  },
+  {
+    title: 'Content',
+    path: '/content',
+    exact: false,
     isPublic: false,
     main: () => <Content/>,
   },

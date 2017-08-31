@@ -15,12 +15,12 @@ export const Layout = (props: Props) => {
     <Container fluid>
       <Row className={classnames({'full-height': fullHeight})}>
         {sidebar &&
-        <Col md="3" className="sidebar-wrapper">
+        <Col md="2" className="sidebar-wrapper">
           {sidebar}
         </Col>
         }
 
-        <Col md={sidebar ? 9 : 12}>
+        <Col md={sidebar ? 10 : 12}>
           {content}
         </Col>
       </Row>

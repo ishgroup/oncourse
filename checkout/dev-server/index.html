@@ -20,6 +20,8 @@
     <link rel="stylesheet" media="screen, print"
           href="https://newpalaven.oncourse.cc/s/stylesheets/css/site.css?v=r12472"/>
     <link rel="stylesheet" media="screen, print" href="/assets/main.css"/>
+    <link rel="stylesheet" media="screen, print" href="http://localhost:8081/assets/main.css" />
+
 
     <script
             src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -27,6 +29,7 @@
             crossorigin="anonymous"></script>
 
     <script src="/assets/dynamic.js?v=6"></script>
+
 </head>
 
 <body id="PaymentPage" class="internal-page">
@@ -42,10 +45,15 @@
         <section id="contentContainer" class="container content-container">
             <article id="content" class="content">
                 <div id="root"></div>
-                <div id="cms-root"></div>
             </article>
         </section>
     </section>
 </section>
+
+<div class="cms" id="cms-root"></div>
+
 </body>
+
+<script src="http://localhost:8081/assets/cms.js"></script>
+
 </html>

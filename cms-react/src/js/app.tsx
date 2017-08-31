@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
-import {BrowserRouter as Router} from 'react-router-dom';
+import {MemoryRouter as Router} from 'react-router-dom';
 import {initMockAdapter} from "../../dev/mock/MockAdapter";
 
 import {CreateStore} from "./CreateStore";
