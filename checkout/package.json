@@ -51,7 +51,6 @@
     "mocker-data-generator": "2.2.0",
     "node-sass": "4.5.3",
     "null-loader": "0.1.1",
-    "phantomjs-prebuilt": "2.1.14",
     "react-inspector": "2.1.4",
     "redux-form-website-template": "0.0.50",
     "sass-loader": "6.0.6",
