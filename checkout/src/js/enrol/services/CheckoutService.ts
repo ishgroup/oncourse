@@ -42,63 +42,63 @@ export class CheckoutService {
 
   public cartIsEmpty = (cart: CartState): boolean => {
     return L.isEmpty(cart.courses.result) && L.isEmpty(cart.products.result);
-  }
+  };
 
   public ifCodeExist = (code, state): boolean => {
     const promotions = state.cart.promotions.entities;
     const inPromotions = Object.keys(promotions).filter(key => promotions[key].code === code).length;
     const inRedeemVouchers = state.checkout.redeemVouchers.filter(v => v.key === code).length;
     return !!(inPromotions || inRedeemVouchers);
-  }
+  };
 
   public hasPayer = (state: CheckoutState): boolean => {
     return !L.isNil(state.payerId);
-  }
+  };
 
   public getAllSingleChildIds = (state: CheckoutState): string[] => (
     state.contacts.result.filter(id => state.contacts.entities.contact[id].parentRequired)
-  )
+  );
 
   public hasActiveVoucherPayer = (state: CheckoutState): boolean => {
     return !!state.redeemVouchers.filter(v => v.payer && v.enabled).length;
-  }
+  };
 
   public hasCartContact = (cart: CartState): boolean => {
     return Object.keys(cart.contact).length !== 0;
-  }
+  };
 
   public loadFields = (contact: Contact, state: IshState): Promise<ContactFields> => {
     return this.contactApi.getContactFields(BuildContactFieldsRequest.fromState(contact, state.cart, state.checkout.newContact));
-  }
+  };
 
   public submitContactDetails = (values: ContactFields, fields: { [key: string]: any }): Promise<any> => {
     return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
-  }
+  };
 
   public createOrGetContact = (values: ContactValues): Promise<ContactId> => {
     return this.contactApi.createOrGetContact(BuildCreateContactParams.fromValues(values));
-  }
+  };
 
 
   public getContactNode = (contact: Contact, cart: CartState): Promise<ContactNode> => {
     return this.checkoutApi.getContactNode(BuildContactNodeRequest.fromContact(contact, cart));
-  }
+  };
 
   public submitCode = (code: string, state: IshState): Promise<CodeResponse> => {
     return this.promotionApi.submitCode(code);
-  }
+  };
 
   public getConcessionTypes = () => {
     return this.contactApi.getConcessionTypes();
-  }
+  };
 
   public getContactConcessionsAndMemberships = (payload, state: IshState) => {
     return this.contactApi.getContactConcessionsAndMemberships(state.checkout.contacts.result);
-  }
+  };
 
   public submitConcession = (payload, props) => {
     return this.contactApi.submitConcession(BuildConcessionRequest.fromValues(payload, props));
-  }
+  };
 
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
     if (item.selected) {
@@ -110,38 +110,41 @@ export class CheckoutService {
     } else {
       return Promise.resolve(item);
     }
-  }
+  };
 
   public getAmount = (state: IshState): Promise<Amount> => {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state))
       .then((model: CheckoutModel): Promise<Amount> => {
         return Promise.resolve(model.amount);
       });
-  }
+  };
 
   public getCheckoutModel = (state: IshState): Promise<CheckoutModel> => {
     return this.checkoutApi.getCheckoutModel(BuildCheckoutModelRequest.fromState(state));
-  }
+  };
 
   public makePayment = (values: CreditCardFormValues, state: IshState): Promise<PaymentResponse> => {
     const request: PaymentRequest = PaymentService.creditFormValuesToRequest(values, state);
     return this.checkoutApi.makePayment(request);
-  }
+  };
 
   public submitPaymentCorporatePass = (values: CorporatePassFormValues, state): Promise<any> => {
     const request: any = PaymentService.corporatePassValuesToRequest(values, state);
     return this.corporatePassApi.makeCorporatePass(request);
-  }
+  };
 
   public isFinalStatus = (value: PaymentResponse): boolean => {
-    return (value.status === PaymentStatus.SUCCESSFUL ||
-    value.status === PaymentStatus.UNDEFINED);
-  }
+    return (
+      value.status === PaymentStatus.SUCCESSFUL ||
+      value.status === PaymentStatus.SUCCESSFUL_BY_PASS ||
+      value.status === PaymentStatus.UNDEFINED
+    );
+  };
 
 
   public getPaymentStatus = (state: PaymentState): Promise<PaymentResponse> => {
     return this.checkoutApi.getPaymentStatus(state.value.sessionId);
-  }
+  };
 
   public validatePayNow = (amount: Amount) => {
     const errors = [];
@@ -151,23 +154,23 @@ export class CheckoutService {
     }
 
     return errors;
-  }
+  };
 
   public createParentChildrenRelation = (parentId, childIds): Promise<any> => (
     this.contactApi.createParentChildrenRelation({parentId, childrenIds: childIds})
-  )
+  );
 
   public changeParent = (parentId, childId): Promise<any> => (
     this.contactApi.changeParent({parentId, childId})
-  )
+  );
 
   public getCorporatePass = (code: string, state: IshState): Promise<any> => (
     this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
-  )
+  );
 
   public checkIfCorporatePassEnabled = (): Promise<any> => (
     this.corporatePassApi.isCorporatePassEnabled()
-  )
+  );
 
   public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {
     switch (response.status) {
@@ -208,7 +211,7 @@ export class BuildContactNodeRequest {
     result.productIds = item.productId ? [item.productId] : [];
     result.promotionIds = state.cart.promotions.result;
     return result;
-  }
+  };
 
   static fromState = (cart: CartState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
@@ -217,7 +220,7 @@ export class BuildContactNodeRequest {
     result.productIds = cart.products.result;
     result.promotionIds = cart.promotions.result;
     return result;
-  }
+  };
 
   static fromContact = (contact: Contact, cart: CartState): ContactNodeRequest => {
     const result: ContactNodeRequest = new ContactNodeRequest();
@@ -298,7 +301,7 @@ export class BuildContactNodes {
     return state.result.map(contactId => {
       return BuildContactNodes.contactNodeBy(state.entities.contactNodes[contactId], state);
     });
-  }
+  };
 
   private static contactNodeBy = (storage: ContactNodeStorage, state: State): ContactNode => {
     const result: ContactNode = new ContactNode();
