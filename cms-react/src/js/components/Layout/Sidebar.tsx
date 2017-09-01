@@ -8,6 +8,7 @@ import {User} from "../../model";
 interface Props {
   slim?: boolean;
   user: User;
+  onLogout: () => void;
 }
 
 const firstChar = (str: string) => (
@@ -15,7 +16,7 @@ const firstChar = (str: string) => (
 );
 
 export const Sidebar = (props: Props) => {
-  const {slim, user} = props;
+  const {slim, user, onLogout} = props;
   const userName = slim
     ? `${firstChar(user.firstName)}${firstChar(user.lastName)}`
     : `${user.firstName} ${user.lastName}`;
@@ -45,7 +46,7 @@ export const Sidebar = (props: Props) => {
 
           <Row className="center">
             <Col md="6"><span className="user">{userName}</span></Col>
-            <Col md="6"><Button size="sm" color="secondary">Log out</Button></Col>
+            <Col md="6"><Button size="sm" color="secondary" onClick={onLogout}>Log out</Button></Col>
           </Row>
 
         </div>

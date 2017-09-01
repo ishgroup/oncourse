@@ -8,4 +8,6 @@ export function authApiMock(mock) {
       lastName: "Davidovich",
     },
   }));
+
+  mock.onPost('/logout').reply(config => promiseResolve(config));
 }

@@ -6,4 +6,8 @@ export class AuthApi {
   submitUser(values: any): Promise<any> {
     return this.http.POST('/getUser', values);
   }
+
+  logout(): Promise<any> {
+    return this.http.POST('/logout');
+  }
 }

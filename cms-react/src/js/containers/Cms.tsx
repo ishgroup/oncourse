@@ -6,6 +6,7 @@ import {Layout} from '../components/Layout/Layout';
 import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
 import {getHistoryInstance, setHistoryInstance} from "../history";
+import {logout} from "../actions/actions";
 
 export class Cms extends React.Component<any, any> {
 
@@ -20,7 +21,8 @@ export class Cms extends React.Component<any, any> {
   }
 
   render() {
-    const {isAuthenticated, user} = this.props.auth;
+    const {logout, auth} = this.props;
+    const {isAuthenticated, user} = auth;
     const viewMode: boolean = this.props.history.location.pathname === '/';
 
     // set left padding for site content (sidebar width)
@@ -30,7 +32,13 @@ export class Cms extends React.Component<any, any> {
       <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
         {globalSiteStyle}
         <Layout
-          sidebar={isAuthenticated && <Sidebar user={user} slim={viewMode}/>}
+          sidebar={
+            isAuthenticated &&
+            <Sidebar
+              user={user}
+              slim={viewMode}
+              onLogout={() => logout()}
+          />}
           content={<Content isAuthenticated={isAuthenticated}/>}
           fullHeight={true}
         />
@@ -44,7 +52,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {};
+  return {
+    logout: () => dispatch(logout()),
+  };
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Cms));
