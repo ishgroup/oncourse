@@ -1,3 +1,5 @@
+import {User} from "../model";
+
 export interface State {
   auth: AuthState;
 }
@@ -5,4 +7,5 @@ export interface State {
 export class AuthState {
   isAuthenticated: boolean = false;
   token: string;
+  user: User;
 }

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import {Layout} from '../components/Layout/Layout';
 import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
-import {setHistoryInstance} from "../history";
+import {getHistoryInstance, setHistoryInstance} from "../history";
 
 export class Cms extends React.Component<any, any> {
 
@@ -13,8 +13,14 @@ export class Cms extends React.Component<any, any> {
     setHistoryInstance(this.props.history);
   }
 
+  componentWillReceiveProps(props) {
+    if (this.props.auth.isAuthenticated === false && props.auth.isAuthenticated === true) {
+      getHistoryInstance().push('/');
+    }
+  }
+
   render() {
-    const {isAuthenticated} = this.props.auth;
+    const {isAuthenticated, user} = this.props.auth;
     const viewMode: boolean = this.props.history.location.pathname === '/';
 
     // set left padding for site content (sidebar width)
@@ -24,7 +30,7 @@ export class Cms extends React.Component<any, any> {
       <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
         {globalSiteStyle}
         <Layout
-          sidebar={isAuthenticated ? <Sidebar slim={viewMode}/> : undefined}
+          sidebar={isAuthenticated && <Sidebar user={user} slim={viewMode}/>}
           content={<Content isAuthenticated={isAuthenticated}/>}
           fullHeight={true}
         />
