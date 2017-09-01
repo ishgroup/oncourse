@@ -4530,5 +4530,16 @@
 			ALTER TABLE Attendance ADD COLUMN (attendedFrom DATETIME, attendedUntil DATETIME);
 		</sql>
 	</changeSet>
+
+	<changeSet id="308" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Invoice" columnName="type"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Invoice ADD COLUMN type INTEGER NOT NULL DEFAULT 1;
+		</sql>
+	</changeSet>
 	
 </databaseChangeLog>

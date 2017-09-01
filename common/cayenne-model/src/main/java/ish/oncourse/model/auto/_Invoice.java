@@ -7,6 +7,7 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.ConfirmationStatus;
+import ish.common.types.InvoiceType;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.College;
@@ -45,6 +46,7 @@ public abstract class _Invoice extends CayenneDataObject {
     public static final String SOURCE_PROPERTY = "source";
     public static final String TOTAL_EX_GST_PROPERTY = "totalExGst";
     public static final String TOTAL_GST_PROPERTY = "totalGst";
+    public static final String TYPE_PROPERTY = "type";
     public static final String AUTHORISED_REBILLING_CARD_PROPERTY = "authorisedRebillingCard";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
@@ -56,31 +58,32 @@ public abstract class _Invoice extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Money> AMOUNT_OWING = new Property<Money>("amountOwing");
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<String> BILL_TO_ADDRESS = new Property<String>("billToAddress");
-    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = new Property<ConfirmationStatus>("confirmationStatus");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> CUSTOMER_REFERENCE = new Property<String>("customerReference");
-    public static final Property<Date> DATE_DUE = new Property<Date>("dateDue");
-    public static final Property<String> DESCRIPTION = new Property<String>("description");
-    public static final Property<Date> INVOICE_DATE = new Property<Date>("invoiceDate");
-    public static final Property<Long> INVOICE_NUMBER = new Property<Long>("invoiceNumber");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> PUBLIC_NOTES = new Property<String>("publicNotes");
-    public static final Property<String> SESSION_ID = new Property<String>("sessionId");
-    public static final Property<String> SHIPPING_ADDRESS = new Property<String>("shippingAddress");
-    public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
-    public static final Property<Money> TOTAL_EX_GST = new Property<Money>("totalExGst");
-    public static final Property<Money> TOTAL_GST = new Property<Money>("totalGst");
-    public static final Property<PaymentIn> AUTHORISED_REBILLING_CARD = new Property<PaymentIn>("authorisedRebillingCard");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
-    public static final Property<CorporatePass> CORPORATE_PASS_USED = new Property<CorporatePass>("corporatePassUsed");
-    public static final Property<List<InvoiceDueDate>> INVOICE_DUE_DATES = new Property<List<InvoiceDueDate>>("invoiceDueDates");
-    public static final Property<List<InvoiceLine>> INVOICE_LINES = new Property<List<InvoiceLine>>("invoiceLines");
-    public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = new Property<List<PaymentInLine>>("paymentInLines");
-    public static final Property<WebSite> WEB_SITE = new Property<WebSite>("webSite");
+    public static final Property<Money> AMOUNT_OWING = Property.create("amountOwing", Money.class);
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<String> BILL_TO_ADDRESS = Property.create("billToAddress", String.class);
+    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = Property.create("confirmationStatus", ConfirmationStatus.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> CUSTOMER_REFERENCE = Property.create("customerReference", String.class);
+    public static final Property<Date> DATE_DUE = Property.create("dateDue", Date.class);
+    public static final Property<String> DESCRIPTION = Property.create("description", String.class);
+    public static final Property<Date> INVOICE_DATE = Property.create("invoiceDate", Date.class);
+    public static final Property<Long> INVOICE_NUMBER = Property.create("invoiceNumber", Long.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> PUBLIC_NOTES = Property.create("publicNotes", String.class);
+    public static final Property<String> SESSION_ID = Property.create("sessionId", String.class);
+    public static final Property<String> SHIPPING_ADDRESS = Property.create("shippingAddress", String.class);
+    public static final Property<PaymentSource> SOURCE = Property.create("source", PaymentSource.class);
+    public static final Property<Money> TOTAL_EX_GST = Property.create("totalExGst", Money.class);
+    public static final Property<Money> TOTAL_GST = Property.create("totalGst", Money.class);
+    public static final Property<InvoiceType> TYPE = Property.create("type", InvoiceType.class);
+    public static final Property<PaymentIn> AUTHORISED_REBILLING_CARD = Property.create("authorisedRebillingCard", PaymentIn.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
+    public static final Property<CorporatePass> CORPORATE_PASS_USED = Property.create("corporatePassUsed", CorporatePass.class);
+    public static final Property<List<InvoiceDueDate>> INVOICE_DUE_DATES = Property.create("invoiceDueDates", List.class);
+    public static final Property<List<InvoiceLine>> INVOICE_LINES = Property.create("invoiceLines", List.class);
+    public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = Property.create("paymentInLines", List.class);
+    public static final Property<WebSite> WEB_SITE = Property.create("webSite", WebSite.class);
 
     public void setAmountOwing(Money amountOwing) {
         writeProperty("amountOwing", amountOwing);
@@ -199,6 +202,13 @@ public abstract class _Invoice extends CayenneDataObject {
     }
     public Money getTotalGst() {
         return (Money)readProperty("totalGst");
+    }
+
+    public void setType(InvoiceType type) {
+        writeProperty("type", type);
+    }
+    public InvoiceType getType() {
+        return (InvoiceType)readProperty("type");
     }
 
     public void setAuthorisedRebillingCard(PaymentIn authorisedRebillingCard) {

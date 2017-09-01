@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.v16.updaters;
 
 import ish.common.types.ConfirmationStatus;
+import ish.common.types.InvoiceType;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
@@ -37,6 +38,9 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, Invoice> 
 		}
 		if (stub.getAuthorisedRebillingCardId() != null) {
 			entity.setAuthorisedRebillingCard(callback.updateRelationShip(stub.getAuthorisedRebillingCardId(), PaymentIn.class));
+		}
+		if (stub.getType() != null) {
+			entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), InvoiceType.class));
 		}
 	}
 

@@ -1,6 +1,7 @@
 package ish.oncourse.model;
 
 import ish.common.types.ConfirmationStatus;
+import ish.common.types.InvoiceType;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.model.auto._Invoice;
@@ -73,6 +74,9 @@ public class Invoice extends _Invoice implements Queueable {
 	protected void onPostAdd() {
 		if (getSource() == null) {
 			setSource(PaymentSource.SOURCE_WEB);
+		}
+		if (getType() == null) {
+			setType(InvoiceType.INVOICE);
 		}
 		if (getCreated() == null) {
 			setCreated(new Date());
