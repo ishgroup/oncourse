@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
-import {Container, Row, Col} from 'reactstrap';
 import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
 import classnames from 'classnames';
-import {routes} from '../routes';
 import {Layout} from '../components/Layout/Layout';
+import {Sidebar} from '../components/Layout/Sidebar';
+import {Content} from '../components/Layout/Content';
 import {setHistoryInstance} from "../history";
 
 export class Cms extends React.Component<any, any> {
@@ -15,16 +15,16 @@ export class Cms extends React.Component<any, any> {
 
   render() {
     const {isAuthenticated} = this.props.auth;
-    const viewMode = this.props.history.location.pathname === '/';
+    const viewMode: boolean = this.props.history.location.pathname === '/';
 
     // set left padding for site content (sidebar width)
-    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: 16.6%}`}}/>);
+    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: 4%}`}}/>);
 
     return (
       <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
         {globalSiteStyle}
         <Layout
-          sidebar={isAuthenticated ? <Sidebar/> : undefined}
+          sidebar={isAuthenticated ? <Sidebar slim={viewMode}/> : undefined}
           content={<Content isAuthenticated={isAuthenticated}/>}
           fullHeight={true}
         />
@@ -32,50 +32,6 @@ export class Cms extends React.Component<any, any> {
     );
   }
 }
-
-const Content = props => {
-  return (
-    <div>
-      {routes.map((route, index) => (
-        <RouteWrapper
-          key={index}
-          path={route.path}
-          exact={route.exact}
-          isPublic={route.isPublic}
-          component={route.main}
-          isAuthenticated={props.isAuthenticated}
-        />
-      ))}
-    </div>
-  );
-};
-
-const Sidebar = () => (
-  <div className="sidebar">
-    <ul>
-      {routes.filter(route => !route.isPublic).map((route, index) => (
-        <li key={index}>
-          <NavLink exact={route.exact} to={route.path} activeClassName="active">{route.title}</NavLink>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-const RouteWrapper = ({component: Component, ...rest}) => {
-  return (
-    <Route {...rest} render={props => (
-      rest.isAuthenticated || rest.isPublic ? (
-        <Component {...props}/>
-      ) : (
-        <Redirect to={{
-          pathname: '/login',
-          state: {from: props.location},
-        }}/>
-      )
-    )}/>
-  );
-};
 
 const mapStateToProps = state => ({
   auth: state.auth,

@@ -1,15 +1,88 @@
 .sidebar-wrapper {
   background: $main-blue;
+  transition: all .3s;
+  padding: 0;
+  min-width: 60px;
 }
 
 .sidebar {
   position: fixed;
   height: 100vh;
+  width: 16.666667%; // col-2 bootstrap width
+  
+  li:not(:first-child) {
+    border-top: 1px solid transparent;
+  }
+  
+  li:last-child {
+    border-bottom: 1px solid transparent;
+  }
+  
+  &__content {
+    height: 100%;
+    position: relative;
+  }
+  
+  &__footer {
+    position: absolute;
+    font-size: 12px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 15px;
+    color: $gray;
+    border-top: 1px solid $gray;
+    
+    .col {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    
+    .btn {
+      font-size: 12px;
+    }
+  }
+  
+  &--slim {
+    width: 4%;
+    min-width: 60px;
+    
+    li:not(:first-child) {
+      border-top: 1px solid $gray;
+    }
+    
+    li:last-child {
+      border-bottom: 1px solid $gray;
+    }
+    
+    a {
+      padding: 10px 0;
+      text-align: center;
+    }
+  
+    .sidebar__footer {
+      font-size: 10px;
+      
+      .btn {
+        font-size: 10px;
+      }
+      
+      .col {
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: center;
+        padding-left: 0;
+        padding-right: 0;
+      }
+      
+      
+    }
+  }
   
   a {
     color: $white;
     display: block;
-    padding: 10px;
+    padding: 10px 20px;
     
     &:hover:not(.active) {
       opacity: .7;
