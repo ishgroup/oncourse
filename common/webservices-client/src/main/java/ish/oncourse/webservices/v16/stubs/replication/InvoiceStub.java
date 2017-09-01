@@ -39,6 +39,7 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
  *         &lt;element name="corporatePassId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="confirmationStatus" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="authorisedRebillingCardId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -65,7 +66,8 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
     "contactId",
     "corporatePassId",
     "confirmationStatus",
-    "authorisedRebillingCardId"
+    "authorisedRebillingCardId",
+    "type"
 })
 public class InvoiceStub
     extends ReplicationStub
@@ -120,6 +122,10 @@ public class InvoiceStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long authorisedRebillingCardId;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer type;
 
     /**
      * Gets the value of the amountOwing property.
@@ -527,6 +533,30 @@ public class InvoiceStub
      */
     public void setAuthorisedRebillingCardId(Long value) {
         this.authorisedRebillingCardId = value;
+    }
+
+    /**
+     * Gets the value of the type property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * Sets the value of the type property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setType(Integer value) {
+        this.type = value;
     }
 
 }

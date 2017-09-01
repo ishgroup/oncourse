@@ -965,6 +965,7 @@
                             <xs:element name="corporatePassId" type="xs:long" />
                             <xs:element name="confirmationStatus" type="xs:int"/>
                             <xs:element name="authorisedRebillingCardId" type="xs:long"/>
+                            <xs:element name="type" type="xs:int" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
