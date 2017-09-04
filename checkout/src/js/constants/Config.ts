@@ -1,3 +1,3 @@
 export const DefaultConfig = {
-  CHECKOUT_PATH: '/checkout',
+  CHECKOUT_PATH: '/enrol/',
 };
