@@ -1,9 +1,10 @@
 import {combineReducers} from "redux";
 import {AuthState} from "./State";
 import {IAction} from "../actions/IshAction";
-import {SUBMIT_LOGIN_FORM_FULFILLED, SUBMIT_LOGIN_FORM_REQUEST} from "../containers/login/Actions/index";
+import {SUBMIT_LOGIN_FORM_FULFILLED, SUBMIT_LOGIN_FORM_REQUEST} from "../containers/login/Actions";
 import {LOG_OUT_FULFILLED} from "../actions/actions";
 import {User} from "../model";
+import {menuReducer} from "../containers/menus/reducers";
 
 const authReducer = (state: AuthState = new AuthState(), action: IAction<any>): AuthState => {
   switch (action.type) {
@@ -30,4 +31,5 @@ const authReducer = (state: AuthState = new AuthState(), action: IAction<any>): 
 
 export const combinedReducers = combineReducers({
   auth: authReducer,
+  menu: menuReducer,
 });

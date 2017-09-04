@@ -3,7 +3,7 @@ import {Content} from './containers/content/Content';
 import {Blocks} from './containers/blocks/Blocks';
 import {Pages} from './containers/pages/Pages';
 import {Design} from './containers/design/Design';
-import {Menus} from './containers/menus/Menus';
+import Menus from './containers/menus/Menus';
 import Login from "./containers/login/Login";
 
 export const routes = [

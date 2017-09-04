@@ -1,0 +1,51 @@
+.rst {
+  &__rowContents {
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+  
+  &__moveHandle {
+    background: $main-blue url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MiIgaGVpZ2h0PSI0MiI+PGcgc3Ryb2tlPSIjRkZGIiBzdHJva2Utd2lkdGg9IjIuOSIgPjxwYXRoIGQ9Ik0xNCAxNS43aDE0LjQiLz48cGF0aCBkPSJNMTQgMjEuNGgxNC40Ii8+PHBhdGggZD0iTTE0IDI3LjFoMTQuNCIvPjwvZz4KPC9zdmc+") no-repeat center;
+    border-color: $main-blue;
+  }
+  
+  &__rowLabel {
+    display: flex;
+    align-items: center;
+  }
+  
+  &__field {
+    margin-right: 20px;
+    
+    span {
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    input {
+      font-weight: normal;
+      font-size: 12px;
+      border-color: transparent;
+      border-radius: 0.25rem;
+      transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+      background: rgba(2, 117, 216, 0.14);
+  
+      &:hover {
+        cursor: pointer;
+      }
+  
+      &:focus {
+        cursor: text;
+        background-color: transparent;
+      }
+      
+    }
+  }
+  
+  &__rowToolbar {
+    button {
+      margin-right: 10px;
+    }
+  }
+
+}
+
