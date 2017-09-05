@@ -7,24 +7,25 @@
     }
     label {
       font-weight: bold !important;
-      text-align: left;
+      text-align: left !important;
       padding-left: 0px !important;
       padding-right: 0;
       margin-bottom: 3px !important;
       width: 100% !important;
       max-width: 100% !important;
       line-height: normal;
-      
-      @media only screen and (min-width: 640px) {
-        width: 20% !important;
-        max-width: 140px !important;
+
+      @media only screen and (min-width: 480px) {
+        width: 26% !important;
+        max-width: 180px !important;
+        text-align: right !important;
       }
-  
-      @media only screen and (max-width: 640px) {
-        width: 33% !important;
-        max-width: 140px !important;
-      }
-      
+
+      // @media only screen and (max-width: 640px) {
+      //   width: 33% !important;
+      //   max-width: 140px !important;
+      // }
+
       > small {
         color: #999;
 
@@ -40,7 +41,7 @@
         max-width: none !important;
         display: block !important;
         margin-bottom: 5px !important;
-        
+
         &.text-right {
           text-align: right;
           padding: 0;
@@ -52,28 +53,28 @@
         }
       }
     }
-    
+
     > span {
       width: 100%;
-  
-      @media only screen and (max-width: 640px) {
-        width: auto !important;
-      }
-      
-      @media only screen and (min-width: 640px) {
+
+      // @media only screen and (max-width: 640px) {
+      //   width: auto !important;
+      // }
+
+      @media only screen and (min-width: 480px) {
         width: 70%
       }
-      
+
       &.select-payer {
         display: inline-block;
         vertical-align: top;
         position: relative;
-  
+
         label.radio-btn {
           text-align: left !important;
         }
       }
-      
+
       #cvvLink {
         margin-left: 11px !important;
       }
@@ -85,33 +86,33 @@
   #checkout {
     .enrolmentItem {
       padding: 8px 0;
-      
+
       &.disabled {
         color: #888;
-        
+
         span.fee-discounted {
           color: #d2887d;
         }
       }
-      
+
       .priceValue {
         input {
           width: 100px;
         }
       }
-      
+
       .enrolmentInfo {
         line-height: 22px;
-        
+
         label {
           text-align: left;
         }
-        
+
         .label {
           color: #111;
         }
       }
-      
+
       span {
         vertical-align: middle;
       }
@@ -130,7 +131,7 @@
       }
       div.alignright {
         padding-right: 43px;
-        
+
         .row + .row {
           span {
             color: #921;
@@ -138,16 +139,30 @@
         }
       }
     }
+    #contactEditorForm .form-controls {
+      a, input {
+        line-height: 18px;
+      }
+    }
     div.amount-container {
       .amount-content {
         label {
           line-height: 22px;
         }
-        
+
         span {
           padding: 0;
         }
       }
+      #addCode {
+        text-transform: inherit;
+        font-weight: normal;
+      }
+    }
+    .code-info {
+      margin: 0;
+      padding-left: 15px;
+      padding-right: 15px;
     }
     fieldset {
       @extend %form-group;
@@ -156,9 +171,9 @@
           font-weight: bold !important;
           line-height: 1em;
           padding-bottom: 0;
-          text-align: right !important;
+          // text-align: right !important;
           padding-right: 20px !important;
-          
+
           em {
             position: absolute;
             right: -5px;
@@ -177,35 +192,35 @@
         margin-bottom: 18px;
       }
     }
-    
+
     .row {
       .alignright span + span {
         color: #921;
       }
     }
-    
+
     #payment-form {
       .enrolmentsSelected fieldset {
         position: relative;
       }
-      
+
       .cvv-help {
-        @media only screen and (max-width: 640px) {
-          display: block;
+        display: block;
+        @media only screen and (min-width: 640px) {
+          display: inline-block;
         }
       }
-      
+
       .inline-form {
         display: -ms-inline-flexbox;
         display: inline-flex;
-        
+
         .Select {
-          max-width: 80px;
-  
-          @media only screen and (max-width: 640px) {
-            max-width: 60px;
+          max-width: 60px;
+          @media only screen and (min-width: 640px) {
+            max-width: 80px;
           }
-          
+
           .Select-input {
             > input {
               min-width: 0;
@@ -213,18 +228,20 @@
           }
         }
       }
-      
+
       .date-separator {
         line-height: 28px;
         padding: 0 7px;
       }
-      
+
       .form-details {
         .form-group {
           .select-payer {
-            @media only screen and (min-width: 640px) {
-              float: right;
-              width: 80%;
+            float: left !important;
+            width: 100% !important;
+            @media only screen and (min-width: 480px) {
+              float: right !important;
+              width: 80% !important;
             }
             .radio-list {
               > span {
@@ -238,7 +255,7 @@
               display: inline-block;
               position: static;
               .Select {
-                
+
                 width: 55px;
               }
             }
@@ -257,12 +274,12 @@
         position: absolute;
         top: 60px;
         right: -4px;
-        
+
         > a.button {
           float: none;
           text-decoration: none;
         }
-        
+
         ul {
           position: absolute;
           top: 100%;
@@ -339,29 +356,40 @@
           width: 100% !important;
           max-width: 100% !important;
           float: left !important;
-          @media only screen and (min-width: 640px) {
-            width: 20% !important;
-            max-width: 140px !important;
+          @media only screen and (min-width: 480px) {
+            width: 26% !important;
+            max-width: 180px !important;
           }
         }
         .conditions {
           position: static;
           width: 100%;
-          @media only screen and (min-width: 640px) {
+          padding-left: 0px;
+          @media only screen and (min-width: 480px) {
             width: 80%;
+            position: relative;
+            padding-left: 20px;
           }
-          
+
           input[type="checkbox"].t-error {
             + .conditions-text {
               color: #ec6c6c;
             }
           }
-          
+
           > span {
-            display: flex;
-  
+            // display: flex;
+            width: 100%;
+            @media only screen and (min-width: 480px) {
+              width: 92%;
+            }
             .conditions-text {
               margin-left: 5px;
+              width: 80%;
+              font-weight: normal;
+            }
+            > input, .conditions-text {
+              float: left;
             }
           }
         }
@@ -381,22 +409,25 @@
       #paypal {
         min-height: 150px;
       }
-      
+
       #corporate-pass {
         margin-top: 10px;
-        
+
         label {
-          width: 30% !important;
+          width: 100% !important;
+          @media only screen and (min-width: 480px) {
+            width: 30% !important;
+          }
         }
-        
+
         input {
           max-width: 100%;
         }
-        
+
         #addCorporatePass {
           margin: 0 0 0 10px;
         }
-        
+
         > fieldset {
           border: 0;
           padding-right: 0;
@@ -408,14 +439,41 @@
         margin-left: 5px;
         margin-bottom: 2px;
       }
-      
+
       #cardtotalstring {
         margin-top: -7px;
         vertical-align: middle;
-        
+
         img {
           vertical-align: middle;
         }
+      }
+
+      #paymentSubmit {
+        color: white;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        background-color: #08C;
+        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08C), to(#04C));
+        background-image: -webkit-linear-gradient(top, #08C, #04C);
+        background-image: -o-linear-gradient(top, #08C, #04C);
+        background-image: linear-gradient(to bottom, #08C, #04C);
+        background-image: -moz-linear-gradient(top, #08C, #04C);
+        background-repeat: repeat-x;
+        display: inline-block;
+        padding: 3px 10px;
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -ms-border-radius: 3px;
+        -o-border-radius: 3px;
+        border-radius: 3px;
+        text-decoration: none;
+        border-width: 0px;
+        border-color: #04C #04C #002A80;
+        border-style: solid;
+        cursor: pointer;
+        font-size: 100%;
+        line-height: 22px;
       }
     }
   }
