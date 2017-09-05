@@ -11,6 +11,8 @@ import ish.oncourse.admin.services.ntis.TrainingComponentServiceBuilder;
 import ish.oncourse.admin.services.storage.S3ServiceBuilder;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.services.ServiceModule;
+import ish.oncourse.services.cache.IRequestCacheService;
+import ish.oncourse.services.cache.RequestCacheService;
 import ish.oncourse.services.jmx.IJMXInitService;
 import ish.oncourse.services.jmx.JMXInitService;
 import ish.oncourse.services.s3.IS3Service;
@@ -41,6 +43,7 @@ public class AppModule {
 		binder.bind(IWebSiteService.class, WebSiteServiceOverride.class).withId("WebSiteServiceAdmin");
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionServiceOverride.class).withId("WebSiteVersionServiceAdmin");
 		binder.bind(IS3Service.class, new S3ServiceBuilder()).withId("s3ServiceAdmin");
+		binder.bind(IRequestCacheService.class, RequestCacheService.class);
 	}
 	
 	@EagerLoad
