@@ -9,8 +9,20 @@ import Cms from "./containers/Cms";
 
 import "../scss/main.scss";
 
+const createRootComponent = () => {
+  if (document.getElementById('cms-root')) return;
+
+  const rootDiv = document.createElement('div');
+  rootDiv.id = 'cms-root';
+  rootDiv.className = 'cms';
+  document.body.appendChild(rootDiv);
+}
+
 // Enable in develop mode (move init to webpack)
 initMockAdapter();
+
+
+createRootComponent();
 
 const store = CreateStore();
 

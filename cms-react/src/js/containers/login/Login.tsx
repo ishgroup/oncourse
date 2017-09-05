@@ -29,16 +29,14 @@ export class Login extends React.Component<Props, any> {
             <Form onSubmit={e => this.handleSubmit(e)} className="login-form">
 
               <FormGroup>
-                <Label for="loginEmail">Email</Label>
                 <Input type="email" name="email" id="loginEmail" placeholder="Email" />
               </FormGroup>
 
               <FormGroup>
-                <Label for="loginPassword">Password</Label>
                 <Input type="password" name="password" id="loginPassword" placeholder="Password" />
               </FormGroup>
 
-              <Button color="secondary">Log in</Button>
+              <Button color="primary">Log in</Button>
 
             </Form>
 

@@ -1,3 +1,28 @@
 .login-form {
-  margin-top: 100px;
+  margin-top: 200px;
+  border-radius: 5px;
+  padding: 40px 30px;
+  background: #1e2833;
+  
+  input {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #434a52;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    color: gainsboro;
+    font-size: 14px;
+    
+    &:focus {
+      background: transparent;
+      color: gainsboro;
+    }
+  }
+  
+  .btn {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 14px;
+  }
 }

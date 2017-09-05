@@ -7,10 +7,16 @@
   pointer-events: none;
   
   &__container {
-    background: white;
     pointer-events: all;
-    
-    
+    background: #497199;
+    background: -moz-radial-gradient(center, ellipse cover, #497199 0%, #2a404d 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #497199), color-stop(100%, #2a404d));
+    background: -webkit-radial-gradient(center, ellipse cover, #497199 0%, #2a404d 100%);
+    background: -o-radial-gradient(center, ellipse cover, #497199 0%, #2a404d 100%);
+    background: -ms-radial-gradient(center, ellipse cover, #497199 0%, #2a404d 100%);
+    background: radial-gradient(ellipse at center, #497199 0%, #2a404d 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#497199', endColorstr='#2a404d', GradientType=1 );
+  
     &--view-mode {
       pointer-events: none;
       background: transparent;
