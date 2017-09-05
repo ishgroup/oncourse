@@ -9,12 +9,12 @@
     }
     
     .Select {
-      width: 180px;
+      width: 120px;
       display: inline-block;
       vertical-align: middle;
   
-      @media only screen and (max-width: 640px) {
-        width: 120px;
+      @media only screen and (max-width: 480px) {
+        width: 100%;
       }
       
       &.t-error {
@@ -68,12 +68,12 @@
           border: 0 none;
           font-size: 14px;
           padding: 4px 0 6px;
-          min-width: 143px;
-          max-width: 143px;
+          min-width: 83px;
+          max-width: 83px;
   
-          @media only screen and (max-width: 640px) {
-            min-width: 83px;
-            max-width: 83px;
+          @media only screen and (max-width: 480px) {
+            min-width: 160px;
+            max-width: 160px;
   
           }
         }

@@ -25,14 +25,13 @@ class Wrapper extends React.Component<any, any> {
 
     const {error, warning} = metaFrom(this.props);
     const divClass = classnames("form-group", error && "has-error", warning && "has-warning");
+    const requiredSign = required ? '<em title="This field is required">*</em>' : '';
+
     return (
       <div className={divClass}>
         {label &&
         <label className="control-label" htmlFor={input.name}>
-          <span dangerouslySetInnerHTML={{__html: label}}/>
-          <span>
-              {required && <em title="This field is required">*</em>}
-            </span>
+          <span dangerouslySetInnerHTML={{__html: label + requiredSign}}/>
         </label> }
         <span className="input-field" data-for={input.name} data-tip>
           {children}

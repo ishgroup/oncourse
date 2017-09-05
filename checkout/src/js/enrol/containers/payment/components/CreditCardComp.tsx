@@ -64,16 +64,18 @@ class CreditCardComp extends React.Component<Props, any> {
                   disabled={voucherPayerEnabled}
                 />
 
-                <Field
-                  component={TextField}
-                  maxLength={40}
-                  className="input-fixed"
-                  autoComplete="off"
-                  name={FieldName.creditCardName}
-                  label="Name on Card"
-                  type="text"
-                  required={true}
-                />
+                <div className="form-group">
+                  <Field
+                    component={TextField}
+                    maxLength={40}
+                    className="input-fixed"
+                    autoComplete="off"
+                    name={FieldName.creditCardName}
+                    label="Name on Card"
+                    type="text"
+                    required={true}
+                  />
+                </div>
 
                 <Field
                   component={MaskedTextField}
@@ -114,6 +116,7 @@ class CreditCardComp extends React.Component<Props, any> {
                   <span className="input-select-small inline-form">
                     <Field
                       component={SelectField}
+                      placeholder="MM"
                       name={FieldName.expiryMonth}
                       searchable={false}
                       required={true}
@@ -122,6 +125,7 @@ class CreditCardComp extends React.Component<Props, any> {
                     <span className="date-separator">/</span>
                     <Field
                       component={SelectField}
+                      placeholder="YYYY"
                       name={FieldName.expiryYear}
                       searchable={false}
                       required={true}

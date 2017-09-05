@@ -1,10 +1,11 @@
 import * as React from "react";
 
 export function FieldLabel({name, label, required}: FieldLabelProps) {
+  const requiredSign = required ? '<em title="This field is required">*</em>' : '';
+
   return (
     <label htmlFor={name}>
-      <span dangerouslySetInnerHTML={{__html: label}}/>
-      {requiredText(required)}
+      <span dangerouslySetInnerHTML={{__html: label + requiredSign}}/>
     </label>
   );
 }

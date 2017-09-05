@@ -54,6 +54,12 @@
       }
     }
 
+    label + span {
+      @media only screen and (max-width: 480px) {
+        width: 100%
+      }
+    }
+    
     > span {
       width: 100%;
 
@@ -191,6 +197,17 @@
       > .row {
         margin-bottom: 18px;
       }
+      
+      .student-info {
+        font-weight: normal;
+        font-size: 20px;
+      }
+    }
+    
+    .contacts-summary {
+      > .row {
+        margin-bottom: 18px;
+      }
     }
 
     .row {
@@ -214,9 +231,20 @@
       .inline-form {
         display: -ms-inline-flexbox;
         display: inline-flex;
+  
+        @media only screen and (max-width: 480px) {
+          > div {
+            width: 45%;
+    
+            > div > span {
+              width: 100%;
+            }
+          }
+        }
+        
 
         .Select {
-          max-width: 60px;
+          max-width: 100%;
           @media only screen and (min-width: 640px) {
             max-width: 80px;
           }
