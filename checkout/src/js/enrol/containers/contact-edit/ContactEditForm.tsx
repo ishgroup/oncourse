@@ -126,10 +126,11 @@ const mapStateToProps = (state: IshState) => {
   const page = state.checkout.page;
 
   // merge initial form values with concession initial value, set first concession type as default
-  const initialValues = {
-    ...getInitialValues(fields),
-    concessionType: {key: concessionTypes[0].id, value: concessionTypes[0].value},
-  };
+  const initialValues = getInitialValues(fields);
+
+  if (concessionTypes.length) {
+    initialValues['concessionType'] = {key: concessionTypes[0].id, value: concessionTypes[0].value};
+  }
 
   return {
     contact,
