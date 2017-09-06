@@ -16,7 +16,7 @@ const createRootComponent = () => {
   rootDiv.id = 'cms-root';
   rootDiv.className = 'cms';
   document.body.appendChild(rootDiv);
-}
+};
 
 // Enable in develop mode (move init to webpack)
 initMockAdapter();
