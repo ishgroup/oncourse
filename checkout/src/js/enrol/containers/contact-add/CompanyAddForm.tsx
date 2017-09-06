@@ -23,7 +23,18 @@ class CompanyAddForm extends React.Component<any, any> {
           id="contactEditorForm"
         >
           <CompanyAdd/>
-          <div className="form-controls">
+          <div className="form-controls flex">
+            <span>
+              {onCancel &&
+              <a
+                href="#"
+                type="button"
+                onClick={onCancel}
+              > Cancel
+              </a>
+              }
+            </span>
+
             <input
               value="OK"
               className="btn btn-primary"
@@ -32,15 +43,7 @@ class CompanyAddForm extends React.Component<any, any> {
               disabled={invalid || pristine || submitting}
             />
 
-            {onCancel &&
-            <a
-              href="#"
-              type="button"
-              className="cancel"
-              onClick={onCancel}
-            > Cancel
-            </a>
-            }
+
           </div>
         </form>
       </div>
