@@ -34,7 +34,7 @@ export class Checkout extends React.Component<Props, any> {
     const {phase, page, isNewContact, fetching, childName} = this.props;
 
     return (
-      <div id="checkout" className="col-xs-24 payments">
+      <div>
         <Progress/>
         <Messages/>
 
