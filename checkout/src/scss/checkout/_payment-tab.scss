@@ -231,12 +231,31 @@
         
         > fieldset {
           border: 0;
-          padding-right: 0;
+          padding-right: 20px;
+        }
+        
+        .info-content {
+          padding: 0;
+        }
+  
+        // react app styles
+        .pass-input {
+          margin-bottom: 10px;
         }
         
         .form-group {
           display: inline-block;
-          vertical-align: super;
+          vertical-align: middle;
+          margin-bottom: 0;
+  
+          @media only screen and (max-width: 480px) {
+            display: block;
+            margin-bottom: 10px;
+          }
+          
+          input {
+            margin-bottom: 0;
+          }
         }
       }
       

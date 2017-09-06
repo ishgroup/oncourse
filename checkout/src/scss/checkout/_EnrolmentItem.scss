@@ -453,11 +453,26 @@
 
       #corporate-pass {
         margin-top: 10px;
-
+        
         label {
           width: 100% !important;
           @media only screen and (min-width: 480px) {
             width: 30% !important;
+          }
+        }
+        
+        // react app styles
+        .pass-input {
+          label {
+            width: auto !important;
+  
+            @media only screen and (min-width: 480px) {
+              width: auto !important;
+            }
+          }
+          
+          .input-field {
+            width: auto;
           }
         }
 

@@ -34,7 +34,7 @@ class CorporatePassComp extends React.Component<Props, any> {
     const {corporatePass, corporatePassError, fetching} = this.props;
 
     const passField = () => (
-      <div>
+      <div className="pass-input">
         <Field
           component={TextField}
           maxLength={40}
@@ -51,7 +51,7 @@ class CorporatePassComp extends React.Component<Props, any> {
     );
 
     const referenceField = () => (
-      <div>
+      <div className="pass-input">
         <Field
           component={TextField}
           maxLength={40}
