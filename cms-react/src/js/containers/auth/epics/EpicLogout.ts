@@ -1,9 +1,9 @@
 import {Epic} from "redux-observable";
 import "rxjs";
-import * as EpicUtils from "./EpicUtils";
-import {LOG_OUT_FULFILLED, LOG_OUT_REQUEST} from "../actions/actions";
-import AuthService from "../services/AuthService";
-import {User} from "../model";
+import * as EpicUtils from "../../../epics/EpicUtils";
+import {LOG_OUT_FULFILLED, LOG_OUT_REQUEST} from "../actions";
+import AuthService from "../../../services/AuthService";
+import {User} from "../../../model";
 
 
 const request: EpicUtils.Request<any, any> = {

@@ -3,21 +3,14 @@ import {Content} from './containers/content/Content';
 import {Blocks} from './containers/blocks/Blocks';
 import {Pages} from './containers/pages/Pages';
 import {Design} from './containers/design/Design';
-import Menus from './containers/menus/Menus';
-import Login from "./containers/auth/Login";
+import {Menus} from './containers/menus/Menus';
+import Login from "./containers/login/Login";
 
 export const routes = [
   {
-    title: 'Site',
+    title: 'Content',
     path: '/',
     exact: true,
-    isPublic: false,
-    main: () => <span/>,
-  },
-  {
-    title: 'Content',
-    path: '/content',
-    exact: false,
     isPublic: false,
     main: () => <Content/>,
   },

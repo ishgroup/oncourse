@@ -6,7 +6,7 @@ import {Layout} from '../components/Layout/Layout';
 import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
 import {getHistoryInstance, setHistoryInstance} from "../history";
-import {logout} from "../actions/actions";
+import {logout} from "./auth/actions/index";
 
 export class Cms extends React.Component<any, any> {
 

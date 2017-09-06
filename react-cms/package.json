@@ -1,0 +1,102 @@
+{
+  "name": "cms-react",
+  "version": "0.0.1",
+  "description": "cms pure java script application",
+  "main": "webpack.config.js",
+  "scripts": {
+    "dependencies:outdated": "npm outdated",
+    "clean": "rm -rf ./build",
+    "build:prod": "npm run clean && webpack -p --progress --env.NODE_ENV production",
+    "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production",
+    "build:dev": "npm run clean && webpack --progress",
+    "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
+    "test": "jest",
+    "start": "webpack-dev-server --history-api-fallback=true --progress --open --env.entry=./src/js/app.tsx --content-base ./dev"
+  },
+  "devDependencies": {
+    "@types/jest": "20.0.6",
+    "@types/lodash": "4.14.72",
+    "@types/react-redux": "5.0.1",
+    "@types/redux-form": "7.0.2",
+    "@types/webpack": "3.0.8",
+    "@types/webpack-env": "1.13.0",
+    "css-loader": "0.28.4",
+    "extract-text-webpack-plugin": "3.0.0",
+    "compression-webpack-plugin": "1.0.0",
+    "faker": "4.1.0",
+    "html-webpack-plugin": "2.30.1",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "20.0.4",
+    "jsdoc": "3.5.4",
+    "mocker-data-generator": "2.2.0",
+    "node-sass": "4.5.3",
+    "null-loader": "0.1.1",
+    "react-inspector": "2.1.4",
+    "redux-form-website-template": "0.0.50",
+    "sass-loader": "6.0.6",
+    "source-map-loader": "0.2.1",
+    "style-loader": "0.18.2",
+    "ts-jest": "20.0.10",
+    "ts-loader": "2.3.2",
+    "tslint": "5.6.0",
+    "tslint-config-airbnb": "5.2.1",
+    "typedoc": "0.8.0",
+    "typedoc-webpack-plugin": "1.1.4",
+    "typescript": "2.4.2",
+    "webpack": "3.5.3",
+    "webpack-dev-server": "2.7.1"
+  },
+  "dependencies": {
+    "axios": "0.16.2",
+    "axios-mock-adapter": "1.9.0",
+    "babel-polyfill": "6.23.0",
+    "bootstrap": "4.0.0-beta",
+    "classnames": "2.2.5",
+    "history": "4.6.3",
+    "localforage": "1.5.0",
+    "lodash": "4.17.4",
+    "moment": "2.18.1",
+    "normalizr": "3.2.3",
+    "react": "15.6.1",
+    "react-addons-css-transition-group": "15.6.0",
+    "react-addons-transition-group": "15.6.0",
+    "react-dom": "15.6.1",
+    "react-redux": "5.0.6",
+    "react-router": "4.1.2",
+    "react-router-dom": "4.1.2",
+    "react-router-redux": "4.0.8",
+    "react-select": "1.0.0-rc.5",
+    "react-text-mask": "5.0.2",
+    "reactstrap": "4.8.0",
+    "redux": "3.7.2",
+    "redux-form": "7.0.3",
+    "redux-logger": "3.0.6",
+    "redux-observable": "0.15.0",
+    "redux-persist": "4.8.3",
+    "rxjs": "5.4.3"
+  },
+  "jest": {
+    "globals": {
+      "_APP_VERSION": "DEV"
+    },
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/test/jest/.*\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "moduleDirectories": [
+      "node_modules",
+      "src/js",
+      "src/test"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "testEnvironment": "jsdom"
+  }
+}
