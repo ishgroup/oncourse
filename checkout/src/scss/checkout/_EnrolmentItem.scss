@@ -169,6 +169,17 @@
       margin: 0;
       padding-left: 15px;
       padding-right: 15px;
+      
+      .code-input {
+        display: flex;
+        align-items: baseline;
+        margin-bottom: 10px;
+        
+        input, button {
+          float: none;
+          margin: 0;
+        }
+      }
     }
     fieldset {
       @extend %form-group;

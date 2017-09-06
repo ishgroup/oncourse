@@ -37,22 +37,25 @@ class AddCodeComp extends React.Component<Props, State> {
 
     return (
       <div className="code-info">
-        <input
-          className="form-control mb-2 mr-sm-2 mb-sm-0 code_input"
-          name="code"
-          type="text"
-          onChange={e => this.handleChange(e)}
-          value={value}
-        />
-        <button
-          disabled={!value}
-          type="submit"
-          className="btn btn-primary button"
-          id="addCode"
-          onClick={() => this.handleClick()}
-        >
-          Add Code
-        </button>
+        <div className="code-input">
+          <input
+            className="form-control mb-2 mr-sm-2 mb-sm-0 code_input"
+            name="code"
+            type="text"
+            onChange={e => this.handleChange(e)}
+            value={value}
+          />
+          <button
+            disabled={!value}
+            type="submit"
+            className="btn btn-primary button"
+            id="addCode"
+            onClick={() => this.handleClick()}
+          >
+
+            Add Code
+          </button>
+        </div>
         <p>Promotional Code, Gift Certificate or Voucher</p>
         {promotions && promotions.map((promotion: Promotion) => (
           <p key={promotion.id} className="discountAddedMessage">Code "{promotion.code}" successfully added</p>
