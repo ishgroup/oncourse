@@ -44,7 +44,17 @@ class ContactEditForm extends React.Component<Props, any> {
           </fieldset>
           }
 
-          <div className="form-controls">
+          <div className="form-controls flex">
+            {!isNewContact &&
+              <a
+                href="#"
+                type="button"
+                onClick={() => onCancel(page)}
+              >
+                Cancel
+              </a>
+            }
+
             <input
               value="OK"
               className="btn btn-primary"
@@ -52,17 +62,6 @@ class ContactEditForm extends React.Component<Props, any> {
               type="submit"
               disabled={submitting}
             />
-
-            {!isNewContact &&
-              <a
-                href="#"
-                type="button"
-                className="cancel"
-                onClick={() => onCancel(page)}
-              >
-                Cancel
-              </a>
-            }
           </div>
         </form>
       </div>
@@ -128,7 +127,7 @@ const mapStateToProps = (state: IshState) => {
   // merge initial form values with concession initial value, set first concession type as default
   const initialValues = getInitialValues(fields);
 
-  if (concessionTypes.length) {
+  if (concessionTypes && concessionTypes.length) {
     initialValues['concessionType'] = {key: concessionTypes[0].id, value: concessionTypes[0].value};
   }
 

@@ -56,9 +56,10 @@ class Concession extends React.Component<any, any> {
           </fieldset>
           <p>
 
-            <button type="submit" className="btn" disabled={pristine || submitting}>Save Concession</button>
-
-            <button id="cancelConcession" className="btn" onClick={() => onCancel(page)}>Cancel</button>
+            <div className="form-controls flex">
+              <a id="cancelConcession" onClick={() => onCancel(page)}>Cancel</a>
+              <button type="submit" className="btn" disabled={pristine || submitting}>Save Concession</button>
+            </div>
           </p>
         </form>
       </div>

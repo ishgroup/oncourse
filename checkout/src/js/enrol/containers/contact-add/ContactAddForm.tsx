@@ -32,7 +32,15 @@ class ContactAddForm extends React.Component<any, any> {
           className={classnames({submitting: submitting || fetching})}
         >
           <ContactAdd/>
-          <div className="form-controls">
+          <div className="form-controls flex">
+            {onCancel &&
+              <a
+                href="#"
+                onClick={onCancel}
+              > Cancel
+              </a>
+            }
+
             <input
               value="OK"
               className="btn btn-primary"
@@ -40,16 +48,6 @@ class ContactAddForm extends React.Component<any, any> {
               type="submit"
               disabled={pristine || submitting}
             />
-
-            {onCancel &&
-            <a
-              href="#"
-              type="button"
-              className="cancel"
-              onClick={onCancel}
-            > Cancel
-            </a>
-            }
           </div>
         </form>
       </div>
