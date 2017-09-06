@@ -199,6 +199,9 @@ const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: IAction<any>
       const {id, enabled} = action.payload;
       return state.map(v => v.id === id ? {...v, enabled} : v);
 
+    case Actions.RESET_CHECKOUT_STATE:
+      return [];
+
     default:
       return state;
   }
