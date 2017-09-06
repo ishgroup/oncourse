@@ -45,6 +45,7 @@ class ContactEditForm extends React.Component<Props, any> {
           }
 
           <div className="form-controls flex">
+            <span>
             {!isNewContact &&
               <a
                 href="#"
@@ -54,6 +55,7 @@ class ContactEditForm extends React.Component<Props, any> {
                 Cancel
               </a>
             }
+            </span>
 
             <input
               value="OK"

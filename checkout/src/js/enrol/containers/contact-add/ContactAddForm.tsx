@@ -33,13 +33,15 @@ class ContactAddForm extends React.Component<any, any> {
         >
           <ContactAdd/>
           <div className="form-controls flex">
-            {onCancel &&
-              <a
-                href="#"
-                onClick={onCancel}
-              > Cancel
-              </a>
-            }
+            <span>
+              {onCancel &&
+                <a
+                  href="#"
+                  onClick={onCancel}
+                > Cancel
+                </a>
+              }
+            </span>
 
             <input
               value="OK"
