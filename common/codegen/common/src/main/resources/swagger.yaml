@@ -1198,6 +1198,7 @@ definitions:
     - warnings
     - errors
     - selected
+    - fields
     properties:
       contactId:
         type: string
@@ -1215,6 +1216,10 @@ definitions:
          type: string
       selected:
         type: boolean
+      fields:
+        type: array
+        items:
+          $ref: '#/definitions/field.Field'
   checkout.Application:
     type: object
     requred:

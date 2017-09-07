@@ -1,5 +1,6 @@
 package ish.oncourse.willow.model.checkout;
 
+import ish.oncourse.willow.model.field.Field;
 import ish.oncourse.willow.model.web.CourseClassPrice;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public class Enrolment  {
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
     private Boolean selected = null;
+    private List<Field> fields = new ArrayList<Field>();
 
     /**
      * Get contactId
@@ -125,6 +127,28 @@ public class Enrolment  {
       return this;
     }
 
+    /**
+     * Get fields
+     * @return fields
+     */
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<Field> fields) {
+       this.fields = fields;
+    }
+
+    public Enrolment fields(List<Field> fields) {
+      this.fields = fields;
+      return this;
+    }
+
+    public Enrolment addFieldsItem(Field fieldsItem) {
+      this.fields.add(fieldsItem);
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -137,6 +161,7 @@ public class Enrolment  {
       sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
+      sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
       sb.append("}");
       return sb.toString();
     }
