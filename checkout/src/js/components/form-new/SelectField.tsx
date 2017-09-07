@@ -12,6 +12,7 @@ import {FieldLabel} from "../form/FieldLabel";
 import {Item} from "../../model";
 import {inputFrom, metaFrom} from "./FieldsUtils";
 import {WrappedFieldInputProps, WrappedFieldMetaProps} from "redux-form";
+import {logout} from "../../../../../cms-react/src/js/containers/auth/actions/index";
 
 
 interface Props {
@@ -48,6 +49,10 @@ class SelectField extends React.Component<any, any> {
 
   private onChange = res => {
     const input: WrappedFieldInputProps = inputFrom(this.props);
+
+    const props: Props = this.toProps();
+    props.onBlurSelect && props.onBlurSelect(props.input.name);
+
     input.onChange(this.props.returnType === 'object' ? res : res.value);
   }
 

@@ -144,6 +144,17 @@
           }
         }
       }
+      
+      .course-fields {
+        fieldset {
+          width: 100%;
+  
+          label {
+            text-align: left !important;
+          }
+        }
+        
+      }
     }
     #contactEditorForm .form-controls {
       a, input {

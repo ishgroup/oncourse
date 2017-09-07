@@ -77,9 +77,16 @@ export class CheckoutApiMock extends CheckoutApi {
 
   getCheckoutModel(request: CheckoutModelRequest): Promise<CheckoutModel> {
     const result: CheckoutModel = new CheckoutModel();
+
+    const keys = ["street", "postcode", "yearSchoolCompleted", "customField.contact.passportNumber"];
+    const fields = keys.map(key => this.config.db.getFieldByKey(key));
+
     result.contactNodes = L.cloneDeep(request.contactNodes);
+    result.contactNodes.map(node => node.enrolments.map(enrolment => enrolment.fields = fields));
+
     result.amount = mockAmount();
     result.payerId = request.payerId;
+
     return this.config.createResponse(result);
   }
 

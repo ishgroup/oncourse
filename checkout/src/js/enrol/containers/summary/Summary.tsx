@@ -13,7 +13,7 @@ import {
 } from "./components/Index";
 
 import {SummaryComp} from "./components/SummaryComp";
-import {proceedToPayment, selectItem, updateItem} from "./actions/Actions";
+import {proceedToPayment, selectItem, updateEnrolmentFields, updateItem} from "./actions/Actions";
 import {
   changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow,
   updateContactAddProcess,
@@ -149,6 +149,9 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onToggleVoucher: (redeemVoucher, enabled) => {
       dispatch(toggleRedeemVoucher(redeemVoucher, enabled));
+    },
+    onChangeEnrolmentFields: form => {
+      dispatch(updateEnrolmentFields(form));
     },
   };
 };

@@ -28,6 +28,7 @@ import {OpenEditContact} from "../containers/contact-edit/epics/EpicOpenEditCont
 import {SubmitEditContact} from "../containers/contact-edit/epics/EpicSubmitEditContact";
 import {EpicToggleRedeemVoucher} from "./EpicToggleRedeemVoucher";
 import {EpicChangeChildParent} from "../containers/summary/epics/EpicChangeChildParent";
+import {EpicUpdateEnrolmentFields} from "./EpicUpdateEnrolmentFields";
 
 
 const {
@@ -57,6 +58,7 @@ export const EpicCheckout = combineEpics(
   EpicUpdateParentChilds,
   EpicChangeChildParent,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT),
+  EpicUpdateEnrolmentFields,
 );
 
 function createGetOrCreateContactEpic(actionType) {

@@ -8,6 +8,8 @@ export const ADD_CONTACT_TO_SUMMARY: string = _toRequestType("checkout/summary/a
 
 export const PROCEED_TO_PAYMENT: string = "checkout/summary/proceed/to/payment";
 
+export const UPDATE_ENROLMENT_FIELDS: string = "checkout/summary/update/enrolment/fields";
+
 export const ItemsLoad: string = "checkout/summary/items/load";
 
 export const GET_CONTACT_NODE_AND_MODEL_FROM_BACKEND: string = "checkout/summary/get/ContactNode/from/backend";
@@ -89,6 +91,13 @@ export const changeChildParent = (childId: string, parentId: string) => {
   return {
     type: CHANGE_CHILD_PARENT_REQUEST,
     payload: {childId, parentId},
+  };
+};
+
+export const updateEnrolmentFields = form => {
+  return {
+    type: UPDATE_ENROLMENT_FIELDS,
+    payload: form,
   };
 };
 

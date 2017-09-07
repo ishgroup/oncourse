@@ -26,12 +26,13 @@ export interface Props {
   concessions?: Concession[];
   studentMemberships?: StudentMembership[];
   onChangeParent?: (contactId) => void;
+  onChangeEnrolmentFields?: (form) => any;
 }
 
 class ContactComp extends React.Component<Props, any> {
   render() {
     const {
-      contact, enrolments, applications, vouchers, memberships, concessions,
+      contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
       articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent,
     } = this.props;
 
@@ -50,6 +51,7 @@ class ContactComp extends React.Component<Props, any> {
             props.courseClass && <EnrolmentComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}
+              onChangeFields={onChangeEnrolmentFields}
             />,
           )}
 

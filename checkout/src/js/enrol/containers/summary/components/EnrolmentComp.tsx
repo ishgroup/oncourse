@@ -1,12 +1,14 @@
 import * as React from "react";
 import classnames from "classnames";
 import moment from "moment";
+import {reduxForm} from "redux-form";
 
 import {Formats} from "../../../../constants/Formats";
 import * as FormatUtils from "../../../../common/utils/FormatUtils";
 import {Enrolment, Contact, CourseClass, CourseClassPrice} from "../../../../model";
 import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
+import FieldFactory, {toFormKey} from "../../../../components/form/FieldFactory";
 
 
 export interface Props {
@@ -14,11 +16,26 @@ export interface Props {
   enrolment: Enrolment;
   courseClass: CourseClass;
   onChange?: (item, contact) => void;
+  onChangeFields?: (form) => any;
 }
 
 class EnrolmentComp extends React.Component<Props, any> {
+  getFieldInitialValues(fields) {
+    const initialValues = {};
+
+    if (fields && fields.length) {
+      fields
+        .filter(field => field.defaultValue)
+        .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue));
+
+      return initialValues;
+    }
+
+    return null;
+  }
+
   public render(): JSX.Element {
-    const {enrolment, courseClass, contact, onChange} = this.props;
+    const {enrolment, courseClass, contact, onChange, onChangeFields} = this.props;
     const divClass = classnames("row", "enrolmentItem", {disabled: !enrolment.selected});
     const name = `enrolment-${contact.id}-${enrolment.classId}`;
     const title: string = `${courseClass.course.name}`;
@@ -41,12 +58,47 @@ class EnrolmentComp extends React.Component<Props, any> {
           onChange={onChange}
         >
           <ClassDetails courseClass={courseClass}/>
+
         </ItemWrapper>
         {enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
+
+        <ClassFieldsForm
+          fields={enrolment.fields}
+          classId={enrolment.classId}
+          selected={enrolment.selected}
+          form={`${enrolment.contactId}-${enrolment.classId}`}
+          initialValues={this.getFieldInitialValues(enrolment.fields)}
+          onUpdate={form => onChangeFields(form)}
+        />
       </div>
     );
   }
 }
+
+class ClassFields extends React.Component<any, any> {
+
+  render() {
+    const {fields, classId, selected, onUpdate, form} = this.props;
+
+    return (
+      <div className="course-fields col-sm-24">
+        {fields && selected &&
+        <form  onBlur={() => onUpdate(form)}>
+          <fieldset>
+            {fields.map((field, i) => <FieldFactory
+              onBlurSelect={() => onUpdate(form)}
+              key={`${classId}-${i}`}
+              field={field}
+            />)}
+          </fieldset>
+        </form>
+
+        }
+      </div>
+    );
+  }
+}
+export const ClassFieldsForm = reduxForm({})(ClassFields);
 
 
 const ClassPrice = (props): any => {

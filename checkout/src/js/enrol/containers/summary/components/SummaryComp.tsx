@@ -28,6 +28,7 @@ export interface Props {
   onUpdatePayNow?: (val, validate?: boolean) => void;
   needParent?: boolean;
   fetching?: boolean;
+  onChangeEnrolmentFields?: (form) => any;
 }
 
 
@@ -43,7 +44,8 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   renderContact = (props: ContactProps) => {
-    const {onSelect, onPriceValueChange, onAddConcession, concessions, memberships, onChangeParent} = this.props;
+    const {onSelect, onPriceValueChange, onAddConcession, concessions, memberships, onChangeParent,
+      onChangeEnrolmentFields} = this.props;
 
     return (
       <ContactComp
@@ -55,6 +57,7 @@ export class SummaryComp extends React.Component<Props, any> {
         onAddConcession={onAddConcession}
         concessions={concessions.filter(item => item.contactId === props.contact.id)}
         studentMemberships={memberships.filter(item => item.contactId === props.contact.id)}
+        onChangeEnrolmentFields={onChangeEnrolmentFields}
       />
     );
   }

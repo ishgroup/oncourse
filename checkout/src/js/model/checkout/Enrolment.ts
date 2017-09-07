@@ -1,5 +1,6 @@
 import {Field} from "./../field/Field";
 import {CourseClassPrice} from "./../web/CourseClassPrice";
+import {Field} from "../field/Field";
 
 export class Enrolment {
   contactId?: string;
