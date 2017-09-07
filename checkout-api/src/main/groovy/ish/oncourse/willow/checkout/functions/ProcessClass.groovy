@@ -8,6 +8,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tax
 import ish.oncourse.services.application.FindOfferedApplication
+import ish.oncourse.willow.functions.field.GetEnrolmentFields
 import ish.oncourse.willow.model.checkout.Application
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.web.CourseClassPrice
@@ -83,6 +84,7 @@ class ProcessClass {
                         ccp
                     }
                 }
+                e.fields = new GetEnrolmentFields(persistentClass).get()
                 e
             }
         }

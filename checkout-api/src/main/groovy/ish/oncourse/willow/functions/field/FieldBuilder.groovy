@@ -1,16 +1,9 @@
 package ish.oncourse.willow.functions.field
 
 import ish.common.util.DisplayableExtendedEnumeration
-import ish.oncourse.model.College
-import ish.oncourse.model.Contact
-import ish.oncourse.model.CustomFieldType
 import ish.oncourse.model.Field
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.field.DataType
-import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
-
 import static ish.oncourse.common.field.FieldProperty.*
 
 class FieldBuilder {
@@ -60,6 +53,7 @@ class FieldBuilder {
                     }
                     break
                 case CUSTOM_FIELD_CONTACT:
+                case CUSTOM_FIELD_ENROLMENT:
                     ProcessCustomFieldType processor = new ProcessCustomFieldType(field).process()
                     f.dataType = processor.dataType
                     f.defaultValue = processor.defaultValue

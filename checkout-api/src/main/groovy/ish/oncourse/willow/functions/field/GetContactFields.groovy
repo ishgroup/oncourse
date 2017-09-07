@@ -1,12 +1,10 @@
-package ish.oncourse.willow.functions
+package ish.oncourse.willow.functions.field
 
 import groovy.transform.CompileStatic
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
-import ish.oncourse.willow.functions.field.ContactFieldHelper
-import ish.oncourse.willow.functions.field.GetFieldConfigurations
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.FieldSet
 import org.slf4j.Logger
