@@ -1251,6 +1251,7 @@ $mediaWidth: 640px;
     max-width: 220px !important;
     border: 1px solid #ddd;
     padding: 4px;
+    border-radius: 0;
     &.place-right, &.place-left {
       margin-left: 0px !important;
       top: auto !important;
@@ -1259,7 +1260,7 @@ $mediaWidth: 640px;
       left: 5px !important;
       @media only screen and (min-width: $mediaWidth) {
         bottom: 35px;
-        left: 142px !important;
+        left: 164px !important;
       }
       &::after {
         z-index: -1;
