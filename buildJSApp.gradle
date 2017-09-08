@@ -1,0 +1,24 @@
+apply plugin: 'com.moowork.node'
+
+node {
+    version = '8.4.0'
+    npmVersion = '5.4.1'
+    download = true
+}
+
+task webpack(type: NodeTask, dependsOn: 'yarn_install') {
+    script = file('node_modules/.bin/webpack')
+    args = ['--progress', '-p', '--env.NODE_ENV', 'production', '--env.API_ROOT', '/a', '--env.BUILD_NUMBER', System.getProperty('build_number') ?: 'local']
+}
+
+task jest(type: NodeTask, dependsOn: 'yarn_install') {
+    script = project.file('node_modules/.bin/jest')
+    args = ['--ci', '--testResultsProcessor=jest-junit']
+}
+
+
+sourceSets { main { resources { srcDirs 'src/js', 'src/dev'  } } }
+
+test.dependsOn(jest)
+
+build.dependsOn(webpack)

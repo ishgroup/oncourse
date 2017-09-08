@@ -33,6 +33,7 @@ plugins {
 	id "com.github.robfletcher.compass" version "2.0.6" apply false
 	id 'io.spring.dependency-management' version '1.0.3.RELEASE' apply false
 	id 'com.github.ben-manes.versions' version '0.15.0' // adds the task 'dependencyUpdates -Drevision=release'
+	id "com.moowork.node" version "1.2.0" apply false
 }
 
 ext {
