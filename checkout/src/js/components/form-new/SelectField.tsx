@@ -12,7 +12,6 @@ import {FieldLabel} from "../form/FieldLabel";
 import {Item} from "../../model";
 import {inputFrom, metaFrom} from "./FieldsUtils";
 import {WrappedFieldInputProps, WrappedFieldMetaProps} from "redux-form";
-import {logout} from "../../../../../cms-react/src/js/containers/auth/actions/index";
 
 
 interface Props {
