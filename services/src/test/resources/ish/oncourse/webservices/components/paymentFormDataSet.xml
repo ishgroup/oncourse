@@ -109,7 +109,7 @@
                studentId="1189150" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
                status="2" confirmationStatus="1" feehelpamount="0"/>
 
-    <Invoice id="2000" source="O" amountOwing="100.00" contactId="1189160"
+    <Invoice type="1" id="2000" source="O" amountOwing="100.00" contactId="1189160"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
              totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
@@ -377,7 +377,7 @@
                studentId="11891500" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"
                status="3" confirmationStatus="1" feehelpamount="0"/>
 
-    <Invoice id="20000" source="O" amountOwing="100.00" contactId="11891600"
+    <Invoice type="1" id="20000" source="O" amountOwing="100.00" contactId="11891600"
              collegeId="10" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
              totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>

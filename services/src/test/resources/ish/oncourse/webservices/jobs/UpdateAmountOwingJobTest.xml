@@ -58,7 +58,7 @@
 		contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 		source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
 
-	<Invoice id="2000" source="O" amountOwing="100.00" contactId="2000" angelId="2000"
+	<Invoice type="1" id="2000" source="O" amountOwing="100.00" contactId="2000" angelId="2000"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
 			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
@@ -80,7 +80,7 @@
 			   contactId="2000" created="2011-09-12 00:17:21.0" modified="2011-09-12 00:17:21.0"
 			   source="W" status="3" statusNotes="" type="2" confirmationStatus="1"/>
 
-	<Invoice id="2001" source="O" amountOwing="0.00" contactId="2001" angelId="2001"
+	<Invoice type="1" id="2001" source="O" amountOwing="0.00" contactId="2001" angelId="2001"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
 			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
@@ -115,7 +115,7 @@
 				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="2002"
 				   modified="2011-09-12 00:17:21.0" paymentInId="2003" />
 
-	<Invoice id="2002" source="O" amountOwing="100.00" contactId="2001" angelId="2001"
+	<Invoice type="1" id="2002" source="O" amountOwing="100.00" contactId="2001" angelId="2001"
 			 collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="321" totalExGst="320.00"
 			 totalGst="10.91" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>

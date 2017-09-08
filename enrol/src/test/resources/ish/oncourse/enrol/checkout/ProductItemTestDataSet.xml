@@ -104,7 +104,7 @@
                  maximumPlaces="2" minimumPlaces="2" countOfSessions="1" deliveryMode="1"
                  feeExGst="0.00" feeGst="0.00" isDistantLearningCourse="0"/>
 
-    <Invoice id="1000" source="O" amountOwing="0" contactId="1189158"
+    <Invoice type = "1" id="1000" source="O" amountOwing="0" contactId="1189158"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
              totalGst="10.91" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" confirmationStatus="1"/>
@@ -114,7 +114,7 @@
                  created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
 
 
-    <Invoice id="1002" source="O" amountOwing="-100" contactId="1189160"
+    <Invoice type = "1" id="1002" source="O" amountOwing="-100" contactId="1189160"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
              totalGst="10.91" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" confirmationStatus="1"/>
@@ -123,7 +123,7 @@
                  priceEachExTax="99" taxEach="1" title="Test Invoice Line"
                  created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0"/>
 
-    <Invoice id="1003" source="O" amountOwing="-100" contactId="1189160"
+    <Invoice type = "1" id="1003" source="O" amountOwing="-100" contactId="1189160"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="320.00"
              totalGst="10.91"

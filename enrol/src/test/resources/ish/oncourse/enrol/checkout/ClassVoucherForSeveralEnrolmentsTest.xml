@@ -61,7 +61,7 @@
 				 maximumPlaces="2" minimumPlaces="2" countOfSessions="5" deliveryMode="1"
 				 feeExGst="150.00" feeGst="15.00" isDistantLearningCourse="0"/>
 
-	<Invoice id="1003" source="O" amountOwing="0" contactId="1002"
+	<Invoice type = "1" id="1003" source="O" amountOwing="0" contactId="1002"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
 			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>

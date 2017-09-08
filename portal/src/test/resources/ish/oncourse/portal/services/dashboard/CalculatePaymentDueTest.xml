@@ -12,7 +12,7 @@
 
 	<Contact id="1" collegeId="1" familyName="Contact1" givenName="Contact1" emailAddress="Contact1@Contact1.au"/>
 	
-	<Invoice id="1" source="O" amountOwing="20.00" contactId="1"
+	<Invoice type = "1" id="1" source="O" amountOwing="20.00" contactId="1"
 			 collegeId="1" dateDue="[threeDaysLater]" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1" totalExGst="100.00"
 			 totalGst="0.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
@@ -30,7 +30,7 @@
 				   collegeId="1" created="2011-09-12 00:17:21.0" invoiceId="1"
 				   modified="2011-09-12 00:17:21.0" paymentInId="1"/>
 
-	<Invoice id="2" source="O" amountOwing="100.00" contactId="1"
+	<Invoice type = "1" id="2" source="O" amountOwing="100.00" contactId="1"
 			 collegeId="1" dateDue="[eightDaysLater]" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1" totalExGst="100.00"
 			 totalGst="0.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
@@ -40,7 +40,7 @@
 				 priceEachExTax="100.00" taxEach="0.00" title="Test Invoice Line"
 				 created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
-	<Invoice id="3" source="O" amountOwing="80.00" contactId="1"
+	<Invoice type = "1" id="3" source="O" amountOwing="80.00" contactId="1"
 			 collegeId="1" dateDue="[fourDaysLater]" description="invoice for testing"
 			 invoiceDate="2011-09-10 11:14:54" invoiceNumber="1" totalExGst="140.00"
 			 totalGst="140.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>

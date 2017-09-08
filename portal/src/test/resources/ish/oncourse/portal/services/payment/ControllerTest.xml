@@ -23,7 +23,7 @@
              isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1"
              yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
     <Contact id="1" collegeId="1" familyName="Contact1" givenName="Contact1" emailAddress="Contact1@Contact1.au" studentId="1"/>
-    <Invoice id="1" source="O" amountOwing="20.00" contactId="1"
+    <Invoice type = "1" id="1" source="O" amountOwing="20.00" contactId="1"
              collegeId="1" dateDue="[tomorrow]" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1" totalExGst="18.75"
              totalGst="1.75" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
@@ -40,7 +40,7 @@
              isStillAtSchool="1" labourForceType="1" modified="2011-09-12 00:56:00.0" priorEducationCode="1"
              yearSchoolCompleted="1" created="2011-09-12 00:56:00.0"/>
     <Contact id="2" collegeId="1" familyName="Contact2" givenName="Contact2" emailAddress="Contact2@Contact2.au" studentId="2"/>
-    <Invoice id="2" source="O" amountOwing="20.00" contactId="2"
+    <Invoice type = "1" id="2" source="O" amountOwing="20.00" contactId="2"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1" totalExGst="18.75"
              totalGst="1.75" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>

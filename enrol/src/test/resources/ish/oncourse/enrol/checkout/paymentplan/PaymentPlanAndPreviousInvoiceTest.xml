@@ -72,7 +72,7 @@
 
 
     //previous invoice
-    <Invoice id="1000" source="O" amountOwing="110.00" contactId="1001"
+    <Invoice type = "1" id="1000" source="O" amountOwing="110.00" contactId="1001"
              collegeId="1" dateDue="2011-09-20 11:14:54" description="Previous invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="1321" totalExGst="100.00"
              totalGst="10.00" created="2011-09-12 01:02:00.0" modified="2011-09-12 01:02:00.0" confirmationStatus="1"/>

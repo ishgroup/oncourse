@@ -65,7 +65,7 @@
 				 maximumPlaces="2" minimumPlaces="2" countOfSessions="5" deliveryMode="1"
 				 feeExGst="100.00" feeGst="10.00" isDistantLearningCourse="0"/>
 
-	<Invoice id="1003" source="O" amountOwing="0" contactId="1001"
+	<Invoice type = "1" id="1003" source="O" amountOwing="0" contactId="1001"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
 			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
@@ -79,7 +79,7 @@
 				 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
 				 MODIFIEDON="2012-05-14 14:35:01.618" confirmationStatus="1"/>
 
-	<Invoice id="1004" source="O" amountOwing="0" contactId="1001"
+	<Invoice type = "1" id="1004" source="O" amountOwing="0" contactId="1001"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
 			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>
@@ -93,7 +93,7 @@
 				 CREATEDON="2012-05-14 14:33:16.537" EXPIRYDATE="2113-07-01 00:00:00.001"
 				 MODIFIEDON="2012-05-14 14:35:01.618" confirmationStatus="1"/>
 	
-	<Invoice id="1005" source="O" amountOwing="0" contactId="1001"
+	<Invoice type = "1" id="1005" source="O" amountOwing="0" contactId="1001"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
 			 totalGst="20.00" created="2000-00-00 00:18:09" modified="2000-00-00 00:00:09" confirmationStatus="1"/>
@@ -107,7 +107,7 @@
 				 CREATEDON="2000-00-00 00:00:16" EXPIRYDATE="2001-00-00 00:00:01"
 				 MODIFIEDON="2000-00-00 00:00:01.618" confirmationStatus="1"/>
 
-	<Invoice id="1006" source="O" amountOwing="0" contactId="1001"
+	<Invoice type = "1" id="1006" source="O" amountOwing="0" contactId="1001"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
 			 totalGst="20.00" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09" confirmationStatus="1"/>

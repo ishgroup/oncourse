@@ -11,7 +11,7 @@
 			 isMarketingViaEmailAllowed="1" isMarketingViaPostAllowed="1"
 			 isMarketingViaSMSAllowed="1"/>
 
-	<Invoice id="1" source="W" amountOwing="0" contactId="1"
+	<Invoice type = "1" id="1" source="W" amountOwing="0" contactId="1"
 			 collegeId="1" dateDue="2010-02-03 09:18:09" description="invoice for testing"
 			 invoiceDate="2010-02-03 09:18:09" invoiceNumber="1321" totalExGst="200.00"
 			 totalGst="20.00" created="2000-00-00 00:18:09" modified="2000-00-00 00:00:09" confirmationStatus="1" webSiteId="1"/>
