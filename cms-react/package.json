@@ -10,7 +10,7 @@
     "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production",
     "build:dev": "npm run clean && webpack --progress",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
-    "test": "jest",
+    "test": "jest --ci  --testResultsProcessor=jest-junit",
     "start": "webpack-dev-server --history-api-fallback=true --progress --open --env.entry=./src/js/app.tsx --content-base ./dev"
   },
   "devDependencies": {
@@ -27,6 +27,7 @@
     "html-webpack-plugin": "2.30.1",
     "identity-obj-proxy": "3.0.0",
     "jest": "20.0.4",
+    "jest-junit": "3.0.0",
     "jsdoc": "3.5.4",
     "mocker-data-generator": "2.2.0",
     "node-sass": "4.5.3",
@@ -99,5 +100,13 @@
       "json"
     ],
     "testEnvironment": "jsdom"
+  },
+  "jest-junit": {
+    "suiteName": "cms tests",
+    "output": "./build/test-results/test/results.xml",
+    "classNameTemplate": "{classname}-{title}",
+    "titleTemplate": "{classname}-{title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "true"
   }
 }
