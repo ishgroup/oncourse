@@ -1,0 +1,64 @@
+//
+//
+// _elements.scss
+//
+// Contains all the styles of all the form elements w.r.t checkout
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+%checkout-submit-button {
+  background: $submitButtonBackground;
+  color: $submitButtonColor;
+  border: none;
+  border-radius: 0;
+  height: $submitButtonHeight;
+  padding: $submitButtonPadding;
+  text-align: center;
+  font-size: $submitButtonFontSize;
+  vertical-align: middle;
+  display: $submitButtonDisplay;
+  line-height: $submitButtonLineHeight;
+  margin: $submitButtonMargin;
+  cursor: pointer;
+  text-transform: $submitButtonTextTransform;
+  font-weight: $submitButtonFontWeight;
+  white-space: nowrap;
+
+  @include prefixer(touch-action, manipulation);
+  @include prefixer(user-select, none);
+  @include prefixer(transition, all 0.5s);
+  &:hover, &:active, &:focus {
+    background: $submitButtonBackgroundHover;
+  }
+}
+
+@include checkout-wrapper {
+  .form-controls {
+    margin: 0;
+    padding: 0;
+    display: block;
+    text-align: right;
+
+    input#submitContact {
+      padding: $submitContactPadding;
+      margin: $submitContactMargin;
+    }
+
+    a.cancel {
+      @extend %checkout-submit-button;
+      text-decoration: none;
+      background: $cancelButtonBackground;
+      font-weight: $cancelButtonFontWeight;
+      text-transform: $cancelButtonTextTransform;
+      &:hover, &:focus, &:active {
+        background: $cancelButtonBackgroundHover;
+      }
+    }
+
+    input[type="submit"] {
+      @extend %checkout-submit-button;
+    }
+  }
+}

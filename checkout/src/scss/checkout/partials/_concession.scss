@@ -1,0 +1,51 @@
+//
+//
+// concession.scss
+//
+// Contains all the styles which are w.r.t to concession and contact form contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include checkout-wrapper {
+  .concessionEditor, #contactEditorForm {
+    .conditions {
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding-left: 0;
+      @include responsive($media-default) {
+        padding-left: 25%;
+      }
+      >div, >span {
+        float: left;
+      }
+      >div {
+        margin-right: 5px;
+      }
+      >span {
+        width: 92%;
+      }
+    }
+    button, #cancelConcession {
+      @extend %checkout-submit-button;
+    }
+  }
+
+  #contactEditorForm {
+    fieldset {
+      >div>div>div {
+        >span {
+          width: 100%;
+          @include responsive($media-default) {
+            width: $formSpanTagWidthTablet;
+          }
+        }
+      }
+    }
+    .form-controls>span>a {
+      @extend %checkout-submit-button;
+    }
+  }
+}

@@ -1,0 +1,72 @@
+//
+//
+// _progress.scss
+//
+// Contains all the styles which are w.r.t to progress bar at the top
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include checkout-wrapper {
+  .progress-steps ul {
+    list-style: none;
+    margin-left: 0;
+    li {
+      width: 31.33%;
+      margin: 0 2% 0 0;
+      display: inline-block;
+      padding-right: 15px;
+      background: url($imgPath + "progress-arrow-default.png") center right no-repeat;
+      &:hover {
+        background: url($imgPath + "progress-arrow-hover.png") center right no-repeat;
+        a {
+          background: $progressStepListBackgoundHover;
+        }
+      }
+      &.disable {
+        background: url($imgPath + "progress-arrow-disable.png") center right no-repeat;
+        a {
+          cursor: default;
+          color: $progressStepListColorDisable;
+          background: $progressStepListBackgoundDisable;
+        }
+      }
+      &.active {
+        background: url($imgPath+ "progress-arrow-active.png") center right no-repeat;
+        a {
+          cursor: default;
+          color: $progressStepListColorActive;
+          background: $progressStepListBackgoundActive;
+        }
+      }
+
+      &:last-child {
+        margin: 0;
+        padding: 0
+      }
+      &.last {
+        background: none;
+        &:hover {
+          background: none;
+        }
+      }
+      a {
+        display: block;
+        padding: $progressStepListPadding;
+        color: $progressStepListColor;
+        text-decoration: none;
+        background: $progressStepListBackgound;
+        text-transform: $progressStepListTextTransform;
+        font-weight: $progressStepListFontWeight;
+        font-size: $progressStepListFontSizeSmall;
+        @include responsive($media-default) {
+          font-size: $progressStepListFontSizeTablet;
+        }
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

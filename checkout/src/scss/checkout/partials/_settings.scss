@@ -1,0 +1,326 @@
+//
+//
+// settings.scss
+//
+// Contains all the different variable settings which needs to be used
+// across the enrol checkout app
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$imgPath: "/s/img/";
+
+$small-screen: 480px;
+$tablet-screen: 640px;
+$desktop-screen: 1024px;
+
+$media-small: "small";
+$media-tablet: "tablet";
+$media-desktop: "desktop";
+
+$media-default: $media-tablet;
+
+$mediaWidth: 640px;
+
+//
+// Form submit button
+//
+
+$submitButtonBackground: #CF053C;
+$submitButtonBackgroundHover: #1F1F1F;
+
+$submitButtonColor: #fff;
+$submitButtonHeight: 32px;
+$submitButtonPadding: 7px 20px 6px 20px;
+$submitButtonFontSize: 14px;
+$submitButtonDisplay: inline-block;
+$submitButtonLineHeight: 1.5;
+$submitButtonMargin: 0 3px;
+$submitButtonTextTransform: uppercase;
+$submitButtonFontWeight: 700;
+
+
+$submitContactPadding: 2px 10px 3px 10px;
+$submitContactMargin: 0 0 0 5px;
+
+//
+// Form cancel button
+//
+
+$cancelButtonBackground: #247a83;
+$cancelButtonFontWeight: bold;
+$cancelButtonTextTransform: uppercase;
+$cancelButtonBackgroundHover: darken(#247a83, 15%);
+
+
+//
+// Checkout progress steps
+//
+
+$progressStepListBackgoundHover: #d5d5d5;
+$progressStepListColorDisable: #6B6B6B;
+$progressStepListBackgoundDisable: #F3F3F3;
+
+$progressStepListColorActive: #fff;
+$progressStepListBackgoundActive: #666666;
+
+$progressStepListPadding: 4px 0px 5px 10px;
+$progressStepListColor: #6B6B6B;
+$progressStepListBackgound: #e7e7e7;
+$progressStepListTextTransform: uppercase;
+$progressStepListFontWeight: bold;
+$progressStepListFontSizeSmall: 7px;
+$progressStepListFontSizeTablet: 12px;
+
+
+//
+// Form labels
+//
+
+$formLabelFontWeight: normal !important;
+$formLabelLineHeight: 1.5 !important;
+$formLabelPaddingSmall: 4px 0px 4px 0 !important;
+$formLabelMarginBottomSmall: 3px !important;
+$formLabelFontSize: 14px !important;
+
+$formLabelPaddingTablet: 4px 20px 3px 0 !important;
+$formLabelWidthTablet: 26% !important;
+$formLabelMaxWidthTablet: 180px !important;
+$formLabelMarginBottomTablet: 0px !important;
+
+//
+// Form small tags
+//
+
+$formSmallTagColor: #999;
+$formSmallTagFontSize: 9px;
+$formSmallTagLineHeight: 9px;
+
+$formEmTagFontSize: 11px;
+
+$formSupTagColor: red;
+
+$formSpanTagWidthTablet: 70%;
+
+$formCVVLinkMarginLeftTablet: 15px !important;
+
+
+//
+// Form validation
+//
+
+$formValidatePosition: absolute;
+$formValidateFontSize: 11px !important;
+$formValidatePositionLeft: 6px;
+$formValidatePositionTop: auto;
+$formValidateWidth: auto;
+$formValidatePositionBottomSmall: 72px;
+$formValidatePositionBottomTablet: 47px;
+
+$formValidateFontWeight: bold;
+$formValidatePadding: 3px;
+
+$formValidateReasonBackgroundColor: #FEF0F0 !important;
+$formValidateReasonBorder: 1px solid #FCC5C5 !important;
+
+$formValidateHintBackgroundColor: #FDF6D6;
+$formValidateHintBorder: #F9E99C;
+$formValidateHintPointerBorderTop: 8px solid #F9E99C;
+
+$formValidatePointerPositionLeft: 2px !important;
+$formValidatePointerPositionTop: auto !important;
+$formValidatePointerPositionBottom: -15px;
+
+
+$formValidatePointerBorderTop: 8px solid #FCC5C5 !important;
+$formValidatePointerBorderLeft: 11px solid transparent !important;
+$formValidatePointerBorderRight: 11px solid transparent !important;
+$formValidatePointerBackground: none;
+
+//
+// Form validation tooltip
+//
+
+$formTooltipWidth: 65%;
+$formTooltipMaxWidth: 220px !important;
+$formTooltipBorder: 1px solid #ddd;
+$formTooltipPadding: 4px;
+$formTooltipBorderRadius: 0;
+
+$formTootipPositionBottomSmall: 61px;
+$formTootipPositionTop: auto !important;
+$formTootipPositionLeftSmall: 5px !important;
+$formTootipPositionBottomTablet: 35px;
+$formTootipPositionLeftTablet: 27% !important;
+
+$formTooltipPointerPositionBottom: -8px;
+
+//
+// Form input
+//
+
+$formInputBorder: 1px solid #D5D5D5;
+$formInputFontSize: 11px;
+$formInputBorderColorHover: #aaaaaa;
+$formInputBorderColorFocus: #000;
+$formInputColor: #333;
+
+$formInputErrorBackgroundColor: #FEF0F0;
+$formInputErrorColor: #f00;
+
+
+$formInputPadding: 3px 7px;
+$formInputBackgroundColor: #fff;
+$formInputFontSize: 14px;
+$formInputHeight: 30px;
+$formInputLineHeight: 1.5;
+
+$formInputWidthTablet: 190px !important;
+$formInputMaxWidthTablet: 190px !important;
+
+$formTextAreaHeight: 150px;
+$formTextAreaWidthTablet: 50%;
+
+//
+// Form select
+//
+
+$formSelectBackgroundError: #FEF0F0;
+$formSelectColorError: #aaa !important;
+$formSelectFontWeightError: normal;
+
+
+//
+// Checkout wrapper
+//
+
+$checkoutFontSize: 14px;
+$checkoutMarginBottom: 20px;
+
+
+//
+// Checkout form validation message & error
+//
+
+$checkoutMessageBackgroundColor: #EEF6FF;
+$checkoutMessagePadding: 4px 8px;
+$checkoutMessageMarginBottom: 1.6em;
+$checkoutMessageBorder: 1px solid #A3E0F0;
+$checkoutMessageBorderRadius: 8px;
+$checkoutMessageColor: #0066AA;
+$checkoutMessageTextColor: #0066AA;
+
+$checkoutErrorBackgroundColor: #FEF0F0;
+$checkoutErrorBorderColor: #FCC5C5;
+$checkoutErrorColor: #990000;
+$checkoutErrorTextColor: #990000;
+
+$checkoutHighlightPadding: 10px;
+$checkoutHighlightBackgroundColor: #FDEFC9;
+
+$checkoutValidationColor: #B94A48;
+$checkoutValidationBackgroundColor: #F2DEDE;
+$checkoutValidationBorder: 1px solid #EED3D7;
+$checkoutValidationTextShadow: 0 1px 0 rgba(255,255,255,0.5);
+$checkoutValidationBorderRadius: 4px;
+$checkoutValidationPadding: 8px 35px 8px 14px;
+$checkoutValidationMargin: 0 10px 25px 10px;
+
+//
+// Checkout payment summary
+//
+
+$paymentStudentEmailColor: #888888;
+$paymentStudentEmailFontSize: 11px;
+$paymentStudentEmailFontWeight: normal;
+$paymentStudentEmailPositionLeft: 0;
+$paymentStudentEmailTextTransform: lowercase;
+$paymentStudentEmailPositionTop: 1px;
+$paymentStudentEmailMarginRight: 5px;
+
+$paymentStudentAffiliationColor: #888888;
+$paymentStudentAffiliationFontWeight: normal;
+
+$paymentSummaryFontSize: $checkoutFontSize;
+
+$paymentSummaryConcessionColor: #aaa;
+$paymentSummaryConcessionFontSize: 11px;
+$paymentSummaryConcessionMarginBottom: 5px;
+
+$paymentPlusLinkMarginBottom: 7px;
+$paymentPlusLinkPadding: 7px 0 7px 30px;
+$paymentPlusLinkBackground: #f7f7f7 url($imgPath + "add.png") no-repeat scroll 8px 50%;
+
+
+//
+// Checkout enrol items list
+//
+
+$checkoutListMarginBottom: 7px;
+
+$checkoutEnrolItemMarginBottom: 10px;
+
+$checkoutEnrolItemLabelFontWeight: bold;
+$checkoutEnrolItemLabelLineHeight: 16px;
+
+$checkoutEnrolItemEmTagColor: #888888;
+$checkoutEnrolItemEmTagFontSize: 11px;
+$checkoutEnrolItemEmTagFontWeight: normal;
+$checkoutEnrolItemEmTagMarginLeft: 18px;
+
+
+//
+// Checkout amount container
+//
+
+$checkoutAmountContainerBorder: 1px solid #D6D6D6;
+$checkoutAmountContainerBorderRadius: 7px;
+$checkoutAmountContainerPadding: 15px 10px;
+$checkoutAmountContainerBackground: #F7F7F7;
+$checkoutAmountContainerMarginBottom: 20px;
+
+$checkoutAmountContainerButtonMargin: 20px 0 0 0;
+
+$checkoutAmountContainerAddCodeTextTransform: inherit;
+$checkoutAmountContainerAddCodeFontWeight: normal;
+$checkoutAmountContainerAddCodeHeight: 30px;
+$checkoutAmountContainerAddCodePadding: 5px 15px;
+$checkoutAmountContainerAddCodeFontSize: 12px;
+
+$checkoutAmountContentWidth: 253px;
+$checkoutAmountContentFloat: right;
+$checkoutAmountContentMarginTopSmall: 20px;
+$checkoutAmountContentMarginTopTablet: 0px;
+
+$checkoutAmountContentLabelFontWeight: normal;
+$checkoutAmountContentLabelWidth: 145px;
+$checkoutAmountContentLabelTextAlign: right;
+$checkoutAmountContentLabelLineHeight: 21px;
+
+$checkoutAmountContentSpanWidth: 65px;
+$checkoutAmountContentSpanLineHeight: 21px;
+
+$checkoutAmountContentCreditAccessLinkColor: #125687;
+$checkoutAmountContentRemoveOwingLink: #125687;
+
+$checkoutAmountInputWidth: 65px;
+$checkoutAmountInputBackground: #FAFAFA;
+$checkoutAmountInputBorder: 1px solid #DDD;
+
+$checkoutAmountCodeInfoMargin: 0 0 20px 0;
+$checkoutAmountCodeInfoWidthTablet: 270px !important;
+
+$checkoutAmountCodeInfoTextFontSize: 11px;
+
+$checkoutAmountCodeInputWidthTablet: 120px;
+
+
+//
+// Checkout payment tabs
+//
+
+$checkoutTabMargin: 0 0 18px 0;
+$checkoutTabBorder: 1px solid silver;
+$checkoutTabBorderRadius: 8px;
+$checkoutTabBackground: #fcfcfc;

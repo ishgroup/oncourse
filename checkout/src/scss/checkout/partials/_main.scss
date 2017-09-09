@@ -1,0 +1,165 @@
+//
+//
+// main.scss
+//
+// Contains all the common styles which will be used across checkout
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include checkout-wrapper {
+  font-size: $checkoutFontSize;
+  margin-bottom: $checkoutMarginBottom;
+
+  form {
+    &.submitting {
+      @include spinner();
+    }
+  }
+
+  .fetching {
+    @include spinner();
+  }
+
+  .message, .error {
+    background-color: $checkoutMessageBackgroundColor;
+    padding: $checkoutMessagePadding;
+    margin-bottom: $checkoutMessageMarginBottom;
+    border: $checkoutMessageBorder;
+    border-radius: $checkoutMessageBorderRadius;
+  }
+
+  .message {
+    background-color: $checkoutMessageBackgroundColor;
+    border: $checkoutMessageBorder;
+    color: $checkoutMessageColor;
+
+    p {
+      margin-bottom: 0px;
+      color: $checkoutMessageTextColor;
+    }
+  }
+
+  .error {
+    background-color: $checkoutErrorBackgroundColor;
+    border-color: $checkoutErrorBorderColor;
+    color: $checkoutErrorColor;
+
+    ul {
+      margin-top: 7px;
+    }
+
+    p {
+      margin: 0px;
+      color: $checkoutErrorTextColor;
+    }
+  }
+
+  .highlight {
+    padding: $checkoutHighlightPadding;
+    background-color: $checkoutHighlightBackgroundColor;
+  }
+
+  .validation {
+    color: $checkoutValidationColor;
+    background-color: $checkoutValidationBackgroundColor;
+    border: $checkoutValidationBorder;
+    text-shadow: $checkoutValidationTextShadow;
+    border-radius: $checkoutValidationBorderRadius;
+    padding: $checkoutValidationPadding;
+    margin: $checkoutValidationMargin;
+  }
+
+  .__react_component_tooltip {
+    position: absolute !important;
+    display: none !important;
+    width: $formTooltipWidth;
+    font-size: $formValidateFontSize;
+    max-width: $formTooltipMaxWidth;
+    border: $formTooltipBorder;
+    padding: $formTooltipPadding;
+    border-radius: $formTooltipBorderRadius;
+
+    &.place-right,
+    &.place-left {
+      top: $formTootipPositionTop;
+      margin: 0;
+      margin-left: 0px !important;
+      bottom: $formTootipPositionBottomSmall;
+      left: $formTootipPositionLeftSmall;
+      @include responsive($media-default) {
+        bottom: $formTootipPositionBottomTablet;
+        left: $formTootipPositionLeftTablet;
+      }
+
+      &::after {
+        z-index: -1;
+        display: block;
+        position: absolute;
+        left: $formValidatePointerPositionLeft;
+        top: $formValidatePointerPositionTop;
+        bottom: $formTooltipPointerPositionBottom;
+        border: none !important;
+        border-top: $formValidatePointerBorderTop;
+        border-left: $formValidatePointerBorderLeft;
+        border-right: $formValidatePointerBorderRight;
+        background: $formValidatePointerBackground;
+        margin-top: 0 !important;
+      }
+    }
+
+    &.type-error {
+      background-color: $formValidateReasonBackgroundColor;
+      border: $formValidateReasonBorder;
+      font-weight: bold;
+
+      span {
+        color: #111111;
+        margin: 0 !important;
+      }
+    }
+
+    &::before {
+      top: 12px !important;
+    }
+
+    &.show {
+      display: block !important;
+
+      > span {
+        width: auto !important;
+      }
+
+      .help-block, .radio, .checkbox {
+        margin-top: 4px;
+        margin-bottom: 7px;
+      }
+
+      .radio-inline, .checkbox-inline {
+        padding: 1px 0;
+      }
+    }
+  }
+
+  .has-error, .has-warning,
+  .has-success, .has-info {
+
+    .help-block, .radio, .checkbox,
+    .radio-inline, .checkbox-inline {
+      color: #fff;
+    }
+
+    .control-label, label {
+      color: #000000;
+    }
+  }
+
+  img.t-error-icon {
+    display: none;
+    vertical-align: text-top;
+    position: relative;
+    top: -10px;
+    left: -14px;
+  }
+}
