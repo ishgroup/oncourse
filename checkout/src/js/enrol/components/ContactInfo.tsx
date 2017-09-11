@@ -1,5 +1,5 @@
 import React from "react";
-import {StudentMembership, Concession} from "../../model";
+import {Concession, StudentMembership} from "../../model";
 import {ContactState} from "../../services/IshState";
 
 interface Props {
@@ -24,11 +24,11 @@ export class ContactInfo extends React.Component<Props, any> {
     return (
       <div className="col-xs-24 student-name">
         <div className="student-info">
-          { `${contact.firstName || ''}  ${contact.lastName || ''} `}
-          <span className="student-email">({ contact.email })</span>
+          <h3>{`${contact.firstName || ''}  ${contact.lastName || ''} `}</h3>
+          <span className="student-email">{contact.email}</span>
 
           {contact.parent &&
-            <span className="student-affilation">
+          <span className="student-affilation">
               child of <strong>{` ${contact.parent.firstName} ${contact.parent.lastName} `}</strong>
               <a className="add-Guardian" href="#" onClick={e => this.handleChangeGuardian(e)}>change...</a>
             </span>
