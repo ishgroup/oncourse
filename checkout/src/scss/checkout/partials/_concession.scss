@@ -28,8 +28,11 @@
         width: 92%;
       }
     }
-    button, #cancelConcession {
+    button {
       @extend %checkout-submit-button;
+    }
+    #cancelConcession {
+      @extend %checkout-cancel-button;
     }
   }
 

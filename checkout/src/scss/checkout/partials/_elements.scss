@@ -34,6 +34,21 @@
   }
 }
 
+%checkout-cancel-button {
+  @extend %checkout-submit-button;
+  float: $cancelButtonFloat;
+  text-decoration: none;
+  background: $cancelButtonBackground;
+  font-weight: $cancelButtonFontWeight;
+  text-transform: $cancelButtonTextTransform;
+  margin-bottom: $cancelButtonMarginBottom;
+  color: $cancelButtonColor;
+  &:hover, &:focus, &:active {
+    background: $cancelButtonBackgroundHover;
+  }
+
+}
+
 @include checkout-wrapper {
   .form-controls {
     margin: 0;
@@ -46,15 +61,8 @@
       margin: $submitContactMargin;
     }
 
-    a.cancel {
-      @extend %checkout-submit-button;
-      text-decoration: none;
-      background: $cancelButtonBackground;
-      font-weight: $cancelButtonFontWeight;
-      text-transform: $cancelButtonTextTransform;
-      &:hover, &:focus, &:active {
-        background: $cancelButtonBackgroundHover;
-      }
+    a.cancel, >span>a {
+      @extend %checkout-cancel-button;
     }
 
     input[type="submit"] {

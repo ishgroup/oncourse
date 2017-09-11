@@ -48,10 +48,13 @@ $submitContactMargin: 0 0 0 5px;
 // Form cancel button
 //
 
-$cancelButtonBackground: #247a83;
-$cancelButtonFontWeight: bold;
+$cancelButtonFloat: left;
+$cancelButtonBackground: #252d30;
+$cancelButtonFontWeight: 700;
 $cancelButtonTextTransform: uppercase;
-$cancelButtonBackgroundHover: darken(#247a83, 15%);
+$cancelButtonBackgroundHover: darken(#252d30, 15%);
+$cancelButtonMarginBottom: 15px;
+$cancelButtonColor: blue;
 
 
 //
@@ -231,12 +234,13 @@ $checkoutValidationMargin: 0 10px 25px 10px;
 // Checkout payment summary
 //
 
+$paymentStudentEmailPosition: relative;
 $paymentStudentEmailColor: #888888;
-$paymentStudentEmailFontSize: 11px;
+$paymentStudentEmailFontSize: 14px;
 $paymentStudentEmailFontWeight: normal;
 $paymentStudentEmailPositionLeft: 0;
 $paymentStudentEmailTextTransform: lowercase;
-$paymentStudentEmailPositionTop: 1px;
+$paymentStudentEmailPositionTop: 0px;
 $paymentStudentEmailMarginRight: 5px;
 
 $paymentStudentAffiliationColor: #888888;
@@ -274,6 +278,8 @@ $checkoutEnrolItemEmTagMarginLeft: 18px;
 // Checkout amount container
 //
 
+$checkoutAmountContainerFloat: left;
+$checkoutAmountContainerWidth: 100%;
 $checkoutAmountContainerBorder: 1px solid #D6D6D6;
 $checkoutAmountContainerBorderRadius: 7px;
 $checkoutAmountContainerPadding: 15px 10px;
@@ -281,6 +287,7 @@ $checkoutAmountContainerBackground: #F7F7F7;
 $checkoutAmountContainerMarginBottom: 20px;
 
 $checkoutAmountContainerButtonMargin: 20px 0 0 0;
+$checkoutAmountContainerButtonFloat: right;
 
 $checkoutAmountContainerAddCodeTextTransform: inherit;
 $checkoutAmountContainerAddCodeFontWeight: normal;

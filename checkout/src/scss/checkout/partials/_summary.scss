@@ -16,6 +16,7 @@
         padding-bottom: 5px;
         position: relative;
         .student-email {
+          position: $paymentStudentEmailPosition;
           color: $paymentStudentEmailColor;
           font-size: $paymentStudentEmailFontSize;
           font-weight: $paymentStudentEmailFontWeight;
@@ -78,6 +79,9 @@
             font-size: $checkoutEnrolItemEmTagFontSize;
             font-style: $checkoutEnrolItemEmTagFontWeight;
             margin-left: $checkoutEnrolItemEmTagMarginLeft;
+            >span {
+              vertical-align: top;
+            }
           }
           >span {
             margin-left: 18px;
@@ -97,6 +101,8 @@
     }
   }
   div.amount-container {
+    float: $checkoutAmountContainerFloat;
+    width: $checkoutAmountContainerWidth;
     border: $checkoutAmountContainerBorder;
     border-radius: $checkoutAmountContainerBorderRadius;
     padding: $checkoutAmountContainerPadding;
@@ -105,6 +111,8 @@
     button.btn-primary {
       @extend %checkout-submit-button;
       margin: $checkoutAmountContainerButtonMargin;
+      float: $checkoutAmountContainerButtonFloat;
+
     }
     #addCode {
       text-transform: $checkoutAmountContainerAddCodeTextTransform;
@@ -113,6 +121,7 @@
       height: $checkoutAmountContainerAddCodeHeight;
       padding: $checkoutAmountContainerAddCodePadding;
       font-size: $checkoutAmountContainerAddCodeFontSize;
+      float: none;
     }
 
     .amount-content {
