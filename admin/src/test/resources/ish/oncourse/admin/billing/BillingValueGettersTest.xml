@@ -94,7 +94,7 @@
     <PaymentIn id="1002" amount="100" angelId="1002" collegeId="1001"
                contactId="1001" created="[IN_PERIOD]" modified="2011-09-12 00:17:21.0"
                source="W" status="3" statusNotes="" type="2" confirmationStatus="1" sessionId="999999999"/>
-    <Invoice id="1002" source="W" amountOwing="100.00" contactId="1001"
+    <Invoice type = "1" id="1002" source="W" amountOwing="100.00" contactId="1001"
              collegeId="1001" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="100.00"
              totalGst="100.00" created="[IN_PERIOD]" modified="2010-02-03 09:18:09" confirmationStatus="1" webSiteId="1002"/>
@@ -105,7 +105,7 @@
     <PaymentIn id="1003" amount="100" angelId="1003" collegeId="1001"
                contactId="1001" created="[IN_PERIOD]" modified="2011-09-12 00:17:21.0"
                source="W" status="6" statusNotes="" type="2" confirmationStatus="1" sessionId="999999999"/>
-    <Invoice id="1003" source="W" amountOwing="100.00" contactId="1001"
+    <Invoice type = "1" id="1003" source="W" amountOwing="100.00" contactId="1001"
              collegeId="1001" dateDue="2011-09-20 11:14:54" description="invoice for testing"
              invoiceDate="2011-09-10 11:14:54" invoiceNumber="322" totalExGst="100.00"
              totalGst="100.00" created="[IN_PERIOD]" modified="2010-02-03 09:18:09" confirmationStatus="1" webSiteId="1002"/>
