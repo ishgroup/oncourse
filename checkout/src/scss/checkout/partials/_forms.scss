@@ -9,6 +9,10 @@
 //
 
 @include checkout-wrapper {
+  fieldset legend {
+    width: auto;
+    display: none;
+  }
   fieldset, #tabable-container .tab-content {
     >div>div, >div>div>div, .form-details >div>div, .form-group, .form-group > div > div, .form-details > p {
       position: relative;
@@ -68,6 +72,11 @@
         @include responsive($media-default) {
           width: $formSpanTagWidthTablet;
         }
+        &:hover {
+          .validate-text {
+            display: block;
+          }
+        }
         &.select-payer {
           label.radio-btn {
             text-align: left;
@@ -98,6 +107,7 @@
         vertical-align: top;
         position: relative;
         &.validate-text {
+          display: none;
           position: $formValidatePosition;
           z-index: 1;
           font-size: $formValidateFontSize;
@@ -215,9 +225,10 @@
         padding: 0;
         border: none;
         margin: 0;
-        background: none;
+        margin-bottom: 10px;
+        background: $formInputErrorBackgroundColor;
         * {
-          background: none;
+          background: $formInputErrorBackgroundColor;
           color: #aaa !important;
           font-weight: normal;
         }
@@ -227,6 +238,7 @@
           .Select-placeholder {
             color: $formSelectColorError;
             font-weight: $formSelectFontWeightError;
+            line-height: 26px;
           }
         }
       }
@@ -287,7 +299,7 @@
           }
           &.Select-multi-value-wrapper {
             @include responsive($media-default) {
-              width: 118px;
+              width: $formSelectWrapperWidth;
             }
           }
         }
@@ -312,7 +324,7 @@
     .Select-placeholder, .Select--single > .Select-control .Select-value, .Select-input {
       height: 26px;
       line-height: 26px;
-      font-size: 11px;
+      font-size: $formInputFontSize;
       padding-left: 10px;
       padding-right: 10px;
       vertical-align: middle;
@@ -330,7 +342,7 @@
       bottom: 0;
       color: #aaa;
       left: 0;
-      line-height: 27px;
+      line-height: 29px;
       padding-left: 10px;
       padding-right: 22px;
       position: absolute;

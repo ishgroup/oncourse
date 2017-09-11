@@ -12,6 +12,7 @@
   background: $submitButtonBackground;
   color: $submitButtonColor;
   border: none;
+  outline: 0 none;
   border-radius: 0;
   height: $submitButtonHeight;
   padding: $submitButtonPadding;
@@ -43,10 +44,11 @@
   text-transform: $cancelButtonTextTransform;
   margin-bottom: $cancelButtonMarginBottom;
   color: $cancelButtonColor;
+  padding-left: $cancelButtonPaddingLeft;
   &:hover, &:focus, &:active {
     background: $cancelButtonBackgroundHover;
+    color: $cancelButtonColorHover;
   }
-
 }
 
 @include checkout-wrapper {
@@ -68,5 +70,16 @@
     input[type="submit"] {
       @extend %checkout-submit-button;
     }
+  }
+}
+
+@keyframes Animation-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@-webkit-keyframes Animation-spin {
+  to {
+    -webkit-transform: rotate(1turn);
   }
 }

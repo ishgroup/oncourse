@@ -15,6 +15,13 @@
         font-weight: bold;
         padding-bottom: 5px;
         position: relative;
+        h3 {
+          font-size: $paymentStudentTitleFontSize;
+          margin-bottom: $paymentStudentTitleMarginBottom;
+          font-weight: $paymentStudentTitleFontWeight;
+          display: $paymentStudentTitleDisplay;
+          color: $paymentStudentTitleColor;
+        }
         .student-email {
           position: $paymentStudentEmailPosition;
           color: $paymentStudentEmailColor;
@@ -59,10 +66,14 @@
       .enrolmentItem {
         margin-bottom: $checkoutEnrolItemMarginBottom;
         .enrolmentInfo {
+          padding-left: 35px;
           .enrolmentSelect {
             margin-right: 6px;
             vertical-align: top;
             margin-top: 1px;
+            position: absolute;
+            left: -19px;
+            top: 0;
           }
           label {
             width: 100%;
@@ -73,6 +84,8 @@
             vertical-align: middle;
             display: block;
             line-height: $checkoutEnrolItemLabelLineHeight;
+            position: relative;
+            padding-left: 0;
           }
           em {
             color: $checkoutEnrolItemEmTagColor;
@@ -84,7 +97,7 @@
             }
           }
           >span {
-            margin-left: 18px;
+            margin-left: 0px;
           }
           span {
             >span {

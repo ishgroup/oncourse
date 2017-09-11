@@ -48,7 +48,7 @@
       }
     }
     .form-controls>span>a {
-      @extend %checkout-submit-button;
+      @extend %checkout-cancel-button;
     }
   }
 }

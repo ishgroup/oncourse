@@ -49,12 +49,14 @@ $submitContactMargin: 0 0 0 5px;
 //
 
 $cancelButtonFloat: left;
-$cancelButtonBackground: #252d30;
+$cancelButtonBackground: none;
 $cancelButtonFontWeight: 700;
 $cancelButtonTextTransform: uppercase;
-$cancelButtonBackgroundHover: darken(#252d30, 15%);
+$cancelButtonBackgroundHover: none;
 $cancelButtonMarginBottom: 15px;
-$cancelButtonColor: blue;
+$cancelButtonColor: #252d30;
+$cancelButtonColorHover: darken(#252d30, 15%);
+$cancelButtonPaddingLeft: 0;
 
 
 //
@@ -104,7 +106,7 @@ $formEmTagFontSize: 11px;
 
 $formSupTagColor: red;
 
-$formSpanTagWidthTablet: 70%;
+$formSpanTagWidthTablet: auto;
 
 $formCVVLinkMarginLeftTablet: 15px !important;
 
@@ -164,8 +166,7 @@ $formTooltipPointerPositionBottom: -8px;
 //
 
 $formInputBorder: 1px solid #D5D5D5;
-$formInputFontSize: 11px;
-$formInputBorderColorHover: #aaaaaa;
+$formInputBorderColorHover: #D5D5D5;
 $formInputBorderColorFocus: #000;
 $formInputColor: #333;
 
@@ -192,6 +193,7 @@ $formTextAreaWidthTablet: 50%;
 $formSelectBackgroundError: #FEF0F0;
 $formSelectColorError: #aaa !important;
 $formSelectFontWeightError: normal;
+$formSelectWrapperWidth: 165px;
 
 
 //
@@ -234,6 +236,12 @@ $checkoutValidationMargin: 0 10px 25px 10px;
 // Checkout payment summary
 //
 
+$paymentStudentTitleFontSize: 14px;
+$paymentStudentTitleMarginBottom: 0;
+$paymentStudentTitleFontWeight: bold;
+$paymentStudentTitleDisplay: inline;
+$paymentStudentTitleColor: #1F1F1F;
+
 $paymentStudentEmailPosition: relative;
 $paymentStudentEmailColor: #888888;
 $paymentStudentEmailFontSize: 14px;
@@ -271,7 +279,7 @@ $checkoutEnrolItemLabelLineHeight: 16px;
 $checkoutEnrolItemEmTagColor: #888888;
 $checkoutEnrolItemEmTagFontSize: 11px;
 $checkoutEnrolItemEmTagFontWeight: normal;
-$checkoutEnrolItemEmTagMarginLeft: 18px;
+$checkoutEnrolItemEmTagMarginLeft: 0px;
 
 
 //
