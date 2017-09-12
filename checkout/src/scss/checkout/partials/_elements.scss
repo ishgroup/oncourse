@@ -27,9 +27,9 @@
   font-weight: $submitButtonFontWeight;
   white-space: nowrap;
 
-  @include prefixer(touch-action, manipulation);
-  @include prefixer(user-select, none);
-  @include prefixer(transition, all 0.5s);
+  @include prefixer(touch-action, manipulation, webkit moz ms o spec);
+  @include prefixer(user-select, none, webkit moz ms o spec);
+  @include prefixer(transition, all 0.5s, webkit moz ms o spec);
   &:hover, &:active, &:focus {
     background: $submitButtonBackgroundHover;
   }

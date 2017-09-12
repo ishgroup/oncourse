@@ -9,8 +9,8 @@
 //
 
 @include checkout-wrapper {
-  font-size: $checkoutFontSize;
-  margin-bottom: $checkoutMarginBottom;
+  font-size: $checkoutPageFontSize;
+  margin-bottom: $checkoutPageMarginBottom;
 
   form {
     &.submitting {
@@ -23,28 +23,28 @@
   }
 
   .message, .error {
-    background-color: $checkoutMessageBackgroundColor;
-    padding: $checkoutMessagePadding;
-    margin-bottom: $checkoutMessageMarginBottom;
-    border: $checkoutMessageBorder;
-    border-radius: $checkoutMessageBorderRadius;
+    background-color: $checkoutPageMessageBackgroundColor;
+    padding: $checkoutPageMessagePadding;
+    margin-bottom: $checkoutPageMessageMarginBottom;
+    border: $checkoutPageMessageBorder;
+    border-radius: $checkoutPageMessageBorderRadius;
   }
 
   .message {
-    background-color: $checkoutMessageBackgroundColor;
-    border: $checkoutMessageBorder;
-    color: $checkoutMessageColor;
+    background-color: $checkoutPageMessageBackgroundColor;
+    border: $checkoutPageMessageBorder;
+    color: $checkoutPageMessageColor;
 
     p {
       margin-bottom: 0px;
-      color: $checkoutMessageTextColor;
+      color: $checkoutPageMessageTextColor;
     }
   }
 
   .error {
-    background-color: $checkoutErrorBackgroundColor;
-    border-color: $checkoutErrorBorderColor;
-    color: $checkoutErrorColor;
+    background-color: $checkoutPageErrorBackgroundColor;
+    border-color: $checkoutPageErrorBorderColor;
+    color: $checkoutPageErrorColor;
 
     ul {
       margin-top: 7px;
@@ -52,23 +52,23 @@
 
     p {
       margin: 0px;
-      color: $checkoutErrorTextColor;
+      color: $checkoutPageErrorTextColor;
     }
   }
 
   .highlight {
-    padding: $checkoutHighlightPadding;
-    background-color: $checkoutHighlightBackgroundColor;
+    padding: $checkoutPageHighlightPadding;
+    background-color: $checkoutPageHighlightBackgroundColor;
   }
 
   .validation {
-    color: $checkoutValidationColor;
-    background-color: $checkoutValidationBackgroundColor;
-    border: $checkoutValidationBorder;
-    text-shadow: $checkoutValidationTextShadow;
-    border-radius: $checkoutValidationBorderRadius;
-    padding: $checkoutValidationPadding;
-    margin: $checkoutValidationMargin;
+    color: $checkoutPageValidationColor;
+    background-color: $checkoutPageValidationBackgroundColor;
+    border: $checkoutPageValidationBorder;
+    text-shadow: $checkoutPageValidationTextShadow;
+    border-radius: $checkoutPageValidationBorderRadius;
+    padding: $checkoutPageValidationPadding;
+    margin: $checkoutPageValidationMargin;
     >ul {
       list-style: none;
       margin: 0;
@@ -92,7 +92,7 @@
       margin-left: 0px !important;
       bottom: $formTootipPositionBottomSmall;
       left: $formTootipPositionLeftSmall;
-      @include responsive($media-default) {
+      @include responsive($checkout-media-default) {
         bottom: $formTootipPositionBottomTablet;
         left: $formTootipPositionLeftTablet;
       }

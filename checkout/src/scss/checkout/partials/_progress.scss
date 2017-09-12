@@ -17,15 +17,15 @@
       margin: 0 2% 0 0;
       display: inline-block;
       padding-right: 15px;
-      background: url($imgPath + "progress-arrow-default.png") center right no-repeat;
+      background: url($imagePath + "progress-arrow-default.png") center right no-repeat;
       &:hover {
-        background: url($imgPath + "progress-arrow-hover.png") center right no-repeat;
+        background: url($imagePath + "progress-arrow-hover.png") center right no-repeat;
         a {
           background: $progressStepListBackgoundHover;
         }
       }
       &.disable {
-        background: url($imgPath + "progress-arrow-disable.png") center right no-repeat;
+        background: url($imagePath + "progress-arrow-disable.png") center right no-repeat;
         a {
           cursor: default;
           color: $progressStepListColorDisable;
@@ -33,7 +33,7 @@
         }
       }
       &.active {
-        background: url($imgPath+ "progress-arrow-active.png") center right no-repeat;
+        background: url($imagePath + "progress-arrow-active.png") center right no-repeat;
         a {
           cursor: default;
           color: $progressStepListColorActive;
@@ -60,7 +60,7 @@
         text-transform: $progressStepListTextTransform;
         font-weight: $progressStepListFontWeight;
         font-size: $progressStepListFontSizeSmall;
-        @include responsive($media-default) {
+        @include responsive($checkout-media-default) {
           font-size: $progressStepListFontSizeTablet;
         }
         &:hover {

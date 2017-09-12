@@ -62,9 +62,9 @@
       background: $paymentPlusLinkBackground;
     }
     .checkoutList {
-      margin-bottom: $checkoutListMarginBottom;
+      margin-bottom: $checkoutPageListMarginBottom;
       .enrolmentItem {
-        margin-bottom: $checkoutEnrolItemMarginBottom;
+        margin-bottom: $checkoutPageEnrolItemMarginBottom;
         .enrolmentInfo {
           padding-left: 35px;
           .enrolmentSelect {
@@ -80,18 +80,18 @@
             max-width: none;
             text-align: left;
             padding-right: 0;
-            font-weight: $checkoutEnrolItemLabelFontWeight;
+            font-weight: $checkoutPageEnrolItemLabelFontWeight;
             vertical-align: middle;
             display: block;
-            line-height: $checkoutEnrolItemLabelLineHeight;
+            line-height: $checkoutPageEnrolItemLabelLineHeight;
             position: relative;
             padding-left: 0;
           }
           em {
-            color: $checkoutEnrolItemEmTagColor;
-            font-size: $checkoutEnrolItemEmTagFontSize;
-            font-style: $checkoutEnrolItemEmTagFontWeight;
-            margin-left: $checkoutEnrolItemEmTagMarginLeft;
+            color: $checkoutPageEnrolItemEmTagColor;
+            font-size: $checkoutPageEnrolItemEmTagFontSize;
+            font-style: $checkoutPageEnrolItemEmTagFontWeight;
+            margin-left: $checkoutPageEnrolItemEmTagMarginLeft;
             >span {
               vertical-align: top;
             }
@@ -114,43 +114,43 @@
     }
   }
   div.amount-container {
-    float: $checkoutAmountContainerFloat;
-    width: $checkoutAmountContainerWidth;
-    border: $checkoutAmountContainerBorder;
-    border-radius: $checkoutAmountContainerBorderRadius;
-    padding: $checkoutAmountContainerPadding;
-    background: $checkoutAmountContainerBackground;
-    margin-bottom: $checkoutAmountContainerMarginBottom;
+    float: $checkoutPageAmountContainerFloat;
+    width: $checkoutPageAmountContainerWidth;
+    border: $checkoutPageAmountContainerBorder;
+    border-radius: $checkoutPageAmountContainerBorderRadius;
+    padding: $checkoutPageAmountContainerPadding;
+    background: $checkoutPageAmountContainerBackground;
+    margin-bottom: $checkoutPageAmountContainerMarginBottom;
     button.btn-primary {
       @extend %checkout-submit-button;
-      margin: $checkoutAmountContainerButtonMargin;
-      float: $checkoutAmountContainerButtonFloat;
+      margin: $checkoutPageAmountContainerButtonMargin;
+      float: $checkoutPageAmountContainerButtonFloat;
 
     }
     #addCode {
-      text-transform: $checkoutAmountContainerAddCodeTextTransform;
-      font-weight: $checkoutAmountContainerAddCodeFontWeight;
+      text-transform: $checkoutPageAmountContainerAddCodeTextTransform;
+      font-weight: $checkoutPageAmountContainerAddCodeFontWeight;
       @extend %checkout-submit-button;
-      height: $checkoutAmountContainerAddCodeHeight;
-      padding: $checkoutAmountContainerAddCodePadding;
-      font-size: $checkoutAmountContainerAddCodeFontSize;
+      height: $checkoutPageAmountContainerAddCodeHeight;
+      padding: $checkoutPageAmountContainerAddCodePadding;
+      font-size: $checkoutPageAmountContainerAddCodeFontSize;
       float: none;
     }
 
     .amount-content {
-      width: $checkoutAmountContentWidth;
-      float: $checkoutAmountContentFloat;
-      margin-top: $checkoutAmountContentMarginTopSmall;
-      @include responsive($media-default) {
-        margin-top: $checkoutAmountContentMarginTopTablet;
+      width: $checkoutPageAmountContentWidth;
+      float: $checkoutPageAmountContentFloat;
+      margin-top: $checkoutPageAmountContentMarginTopSmall;
+      @include responsive($checkout-media-default) {
+        margin-top: $checkoutPageAmountContentMarginTopTablet;
       }
       label {
-        font-weight: $checkoutAmountContentLabelFontWeight;
-        width: $checkoutAmountContentLabelWidth;
-        text-align: $checkoutAmountContentLabelTextAlign;
+        font-weight: $checkoutPageAmountContentLabelFontWeight;
+        width: $checkoutPageAmountContentLabelWidth;
+        text-align: $checkoutPageAmountContentLabelTextAlign;
         margin-right: 10px;
         padding-right: 0px;
-        line-height: $checkoutAmountContentLabelLineHeight;
+        line-height: $checkoutPageAmountContentLabelLineHeight;
       }
       a {
         text-decoration: none;
@@ -160,19 +160,19 @@
       }
       span {
         display: inline-block;
-        width: $checkoutAmountContentSpanWidth;
+        width: $checkoutPageAmountContentSpanWidth;
         text-align: right;
         float: right;
-        line-height: $checkoutAmountContentSpanLineHeight;
+        line-height: $checkoutPageAmountContentSpanLineHeight;
         margin-right: 32px;
         &#creditAccessLink {
-          color: $checkoutAmountContentCreditAccessLinkColor;
+          color: $checkoutPageAmountContentCreditAccessLinkColor;
           cursor: pointer;
         }
         &#removeOwingLink {
           width: auto;
           margin: 0 0 0 5px;
-          color: $checkoutAmountContentRemoveOwingLink;
+          color: $checkoutPageAmountContentRemoveOwingLink;
         }
       }
       .total-amount {
@@ -183,12 +183,12 @@
       }
       input {
         display: inline-block;
-        width: $checkoutAmountInputWidth;
+        width: $checkoutPageAmountInputWidth;
         text-align: right;
         margin-right: 32px;
         font: inherit;
-        background-color: $checkoutAmountInputBackground;
-        border: $checkoutAmountInputBorder;
+        background-color: $checkoutPageAmountInputBackground;
+        border: $checkoutPageAmountInputBorder;
       }
 
       #vouchers {
@@ -208,14 +208,14 @@
     div.code-info {
       float: left;
       width: 100% !important;
-      margin: $checkoutAmountCodeInfoMargin;
-      @include responsive($media-default) {
-        width: $checkoutAmountCodeInfoWidthTablet;
+      margin: $checkoutPageAmountCodeInfoMargin;
+      @include responsive($checkout-media-default) {
+        width: $checkoutPageAmountCodeInfoWidthTablet;
       }
       p {
         margin-bottom: 0px;
         clear: both;
-        font-size: $checkoutAmountCodeInfoTextFontSize;
+        font-size: $checkoutPageAmountCodeInfoTextFontSize;
       }
       .code-input {
         margin-bottom: 10px;
@@ -235,8 +235,8 @@
       font-size: $formInputFontSize;
       float: left;
       height: $formInputHeight;
-      @include responsive($media-default) {
-        width: $checkoutAmountCodeInputWidthTablet;
+      @include responsive($checkout-media-default) {
+        width: $checkoutPageAmountCodeInputWidthTablet;
       }
     }
     #access-password-popup {
@@ -250,8 +250,8 @@
       background-color: white;
       border: 1px solid #CCC;
       border-radius: 6px;
-      @include prefixer(box-shadow, rgba(0, 0, 0, 0.19922) 0px 5px 10px);
-      @include prefixer(background-clip, padding-box);
+      @include prefixer(box-shadow, rgba(0, 0, 0, 0.19922) 0px 5px 10px, webkit moz ms o spec);
+      @include prefixer(background-clip, padding-box, webkit moz ms o spec);
       padding: 15px 10px 15px 10px;
     }
     .action-link {

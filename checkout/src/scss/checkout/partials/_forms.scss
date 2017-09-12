@@ -26,7 +26,7 @@
         padding: $formLabelPaddingSmall;
         margin-bottom: $formLabelMarginBottomSmall;
         font-size: $formLabelFontSize;
-        @include responsive($media-default) {
+        @include responsive($checkout-media-default) {
           padding: $formLabelPaddingTablet;
           width: $formLabelWidthTablet;
           max-width: $formLabelMaxWidthTablet;
@@ -60,7 +60,7 @@
             float: left;
             margin-left: 0px;
             margin-right: 5px;
-            @include responsive($media-default) {
+            @include responsive($checkout-media-default) {
               margin-left: -20px;
               margin-right: 0px;
             }
@@ -69,7 +69,7 @@
       }
       > span {
         width: 100%;
-        @include responsive($media-default) {
+        @include responsive($checkout-media-default) {
           width: $formSpanTagWidthTablet;
         }
         &:hover {
@@ -84,7 +84,7 @@
         }
         #cvvLink {
           margin-left: 11px;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             margin-left: $formCVVLinkMarginLeftTablet;
           }
         }
@@ -114,7 +114,7 @@
         &.validate-text {
           display: none;
           position: $formValidatePosition;
-          z-index: 1;
+          z-index: 3;
           font-size: $formValidateFontSize;
           margin-left: 0;
           max-width: none;
@@ -122,7 +122,7 @@
           top: $formValidatePositionTop;
           width: $formValidateWidth;
           bottom: $formValidatePositionBottomSmall;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             bottom: $formValidatePositionBottomTablet;
           }
           .reason, .hint {
@@ -185,7 +185,8 @@
         line-height: $formInputLineHeight;
         width: 100% !important;
         max-width: none !important;
-        @include responsive($media-default) {
+        border-radius: $formInputBorderRadius;
+        @include responsive($checkout-media-default) {
           width: $formInputWidthTablet;
           max-width: $formInputMaxWidthTablet;
         }
@@ -198,8 +199,9 @@
         height: $formTextAreaHeight;
         line-height: $formInputLineHeight;
         width: 100%;
-        @include responsive($media-default) {
+        @include responsive($checkout-media-default) {
           width: $formTextAreaWidthTablet;
+          min-width: $formInputWidthTablet;
         }
       }
       .radio-list {
@@ -222,7 +224,7 @@
       display: inline-block;
       vertical-align: middle;
       margin-bottom: 10px;
-      @include responsive($media-default) {
+      @include responsive($checkout-media-default) {
         width: $formInputWidthTablet;
       }
 
@@ -261,7 +263,7 @@
       }
 
       .Select-control {
-        border-radius: 0;
+        border-radius: $formInputBorderRadius;
         background-color: $formInputBackgroundColor;
         border: $formInputBorder;
         color: $formInputColor;
@@ -303,7 +305,7 @@
             height: auto;
           }
           &.Select-multi-value-wrapper {
-            @include responsive($media-default) {
+            @include responsive($checkout-media-default) {
               width: $formSelectWrapperWidth;
             }
           }
@@ -315,7 +317,7 @@
           padding: 4px 0 6px;
           min-width: 83px;
           max-width: 83px;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             min-width: 143px;
             max-width: 143px;
           }
@@ -374,7 +376,7 @@
           width: 90% !important;
           max-width: none !important;
           padding-left: 10px !important;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             width: $formLabelWidthTablet;
             max-width: $formLabelMaxWidthTablet;
             padding: $formLabelPaddingTablet;
@@ -387,7 +389,7 @@
         &[name="isMarketingViaSMSAllowed"] {
           float: left;
           margin-top: 7px;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             float: none;
             margin-top: 4px;
           }

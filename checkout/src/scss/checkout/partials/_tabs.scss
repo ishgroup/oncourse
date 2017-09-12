@@ -11,11 +11,11 @@
 
 @include checkout-wrapper {
   #tabable-container {
-    margin: $checkoutTabMargin;
+    margin: $checkoutPageTabMargin;
     padding: 0;
-    border: $checkoutTabBorder;
-    border-radius: $checkoutTabBorderRadius;
-    background: $checkoutTabBackground;
+    border: $checkoutPageTabBorder;
+    border-radius: $checkoutPageTabBorderRadius;
+    background: $checkoutPageTabBackground;
     &::after {
       display: block;
       visibility: hidden;
@@ -29,12 +29,12 @@
       float: left;
       list-style: none;
       width: 100% !important;
-      background: $checkoutTabBackground;
+      background: $checkoutPageTabBackground;
       border-top-left-radius: 9px;
       border-top: 1px solid transparent;
       border-top-right-radius: 9px;
       border-bottom: 1px solid #ddd;
-      @include responsive($media-default) {
+      @include responsive($checkout-media-default) {
         width: 19.8% !important;
         border-top-right-radius: 0px;
         border-bottom: 0;
@@ -43,7 +43,7 @@
         margin: 0;
         width: 50%;
         display: inline-block;
-        @include responsive($media-default) {
+        @include responsive($checkout-media-default) {
           width: 100%;
           display: block;
         }
@@ -52,7 +52,7 @@
             border-top-color: #ddd !important;
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
-            @include responsive($media-default) {
+            @include responsive($checkout-media-default) {
               border-top-color: transparent !important;
               border-top-left-radius: 6px;
               border-top-right-radius: 0px;
@@ -71,7 +71,7 @@
           border: 1px solid transparent;
           color: #555;
           text-decoration: none;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             margin-bottom: 0px;
             margin-right: -1px !important;
           }
@@ -81,7 +81,7 @@
             color: #333;
             border-top-right-radius: 6px;
             border-top-left-radius: 6px;
-            @include responsive($media-default) {
+            @include responsive($checkout-media-default) {
               border-top-right-radius: 0px;
               border-top-left-radius: 0px;
               border-color: #EEE #DDD #EEE #EEE !important;
@@ -95,7 +95,7 @@
           color: #555;
           border-top-left-radius: 6px;
           border-top-right-radius: 6px;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             border-color: #DDD transparent #DDD transparent !important;
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
@@ -113,7 +113,7 @@
       border-top-right-radius: 9px;
       border-bottom-right-radius: 9px;
       border-bottom-left-radius: 9px;
-      @include responsive($media-default) {
+      @include responsive($checkout-media-default) {
         border-left: 1px solid #ddd;
         border-bottom-left-radius: 0px;
         width: 80% !important;
@@ -125,7 +125,7 @@
         top: 70px;
         right: 0px;
         z-index: 2;
-        @include responsive($media-default) {
+        @include responsive($checkout-media-default) {
           top: 50px;
           right: 20px;
         }
@@ -153,8 +153,8 @@
           border: 1px solid #CCC;
           border: 1px solid rgba(0, 0, 0, 0.2);
           border-radius: 6px;
-          @include prefixer(box-shadow, 0 5px 10px rgba(0, 0, 0, 0.2));
-          @include prefixer(background-clip, padding-box);
+          @include prefixer(box-shadow, 0 5px 10px rgba(0, 0, 0, 0.2), webkit moz ms o spec);
+          @include prefixer(background-clip, padding-box, webkit moz ms o spec);
           top: 25px;
           left: 12px;
           &::before {
@@ -210,7 +210,7 @@
         position: relative;
         >p {
           margin-bottom: 30px;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             margin-bottom: 12px;
           }
         }
@@ -218,7 +218,7 @@
           .select-payer {
             float: left;
             width: 100%;
-            @include responsive($media-default) {
+            @include responsive($checkout-media-default) {
               float: right;
               width: 74%;
             }
@@ -233,17 +233,17 @@
               width: 117px;
               display: inline-block;
               vertical-align: middle;
-              @include responsive($media-default) {
+              @include responsive($checkout-media-default) {
                 width: 92px;
               }
               .Select {
                 width: 115px !important;
-                @include responsive($media-default) {
+                @include responsive($checkout-media-default) {
                   width: 92px !important;
                 }
                 .Select-control .Select-multi-value-wrapper {
                   width: 93px;
-                  @include responsive($media-default) {
+                  @include responsive($checkout-media-default) {
                     width: 70px;
                   }
                   .Select-placeholder {
@@ -264,7 +264,7 @@
           padding-left: 0;
           padding-right: 0;
           border: 0;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             padding-left: 20px;
             padding-right: 20px;
           }
@@ -277,7 +277,7 @@
           height: 30px;
           padding: 5px 20px 5px 20px;
           margin: 0px !important;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             margin: 0 0px 0 30.5% !important;
           }
         }
@@ -286,7 +286,7 @@
         vertical-align: top;
         margin-left: 0px;
         margin-bottom: 2px;
-        @include responsive($media-default) {
+        @include responsive($checkout-media-default) {
           margin-left: 5px;
         }
       }
@@ -308,7 +308,7 @@
     margin-bottom: 25px;
     .header {
       padding: 10px 0 0 11px;
-      background: url($imgPath + "Padlock.png") 7px 5px no-repeat;
+      background: url($imagePath + "Padlock.png") 7px 5px no-repeat;
       h1 {
         text-transform: none;
         font-size: 23px;
@@ -348,7 +348,7 @@
       width: 100%;
       max-width: none;
       text-align: left;
-      @include responsive($media-default) {
+      @include responsive($checkout-media-default) {
         text-align: right;
         width: 26%;
         max-width: 180px;
@@ -360,7 +360,7 @@
       left: auto;
       padding-left: 0px;
       top: 0px;
-      @include responsive($media-default) {
+      @include responsive($checkout-media-default) {
         width: 80%;
         left: 24%;
         top: -20px;
@@ -369,7 +369,7 @@
       > span {
         display: inline-block;
         width: 100%;
-        @include responsive($media-default) {
+        @include responsive($checkout-media-default) {
           width: 92%;
         }
         .conditions-text {

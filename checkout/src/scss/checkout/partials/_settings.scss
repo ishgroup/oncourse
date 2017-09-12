@@ -9,7 +9,7 @@
 // It is licensed to you under the Apache License, version 2.0
 //
 
-$imgPath: "/s/img/";
+$imagePath: "/s/img/";
 
 $small-screen: 480px;
 $tablet-screen: 640px;
@@ -19,325 +19,325 @@ $media-small: "small";
 $media-tablet: "tablet";
 $media-desktop: "desktop";
 
-$media-default: $media-tablet;
-
-$mediaWidth: 640px;
+$checkout-media-default: $media-tablet;
 
 //
 // Form submit button
 //
 
-$submitButtonBackground: #CF053C;
-$submitButtonBackgroundHover: #1F1F1F;
+$submitButtonBackground: #CF053C !default;
+$submitButtonBackgroundHover: #1F1F1F !default;
 
-$submitButtonColor: #fff;
-$submitButtonHeight: 32px;
-$submitButtonPadding: 7px 20px 6px 20px;
-$submitButtonFontSize: 14px;
-$submitButtonDisplay: inline-block;
-$submitButtonLineHeight: 1.5;
-$submitButtonMargin: 0 3px;
-$submitButtonTextTransform: uppercase;
-$submitButtonFontWeight: 700;
+$submitButtonColor: #fff !default;
+$submitButtonHeight: 32px !default;
+$submitButtonPadding: 7px 20px 6px 20px !default;
+$submitButtonFontSize: 14px !default;
+$submitButtonDisplay: inline-block !default;
+$submitButtonLineHeight: 1.5 !default;
+$submitButtonMargin: 0 3px !default;
+$submitButtonTextTransform: uppercase !default;
+$submitButtonFontWeight: 700 !default;
 
 
-$submitContactPadding: 2px 10px 3px 10px;
-$submitContactMargin: 0 0 0 5px;
+$submitContactPadding: 2px 10px 3px 10px !default;
+$submitContactMargin: 0 0 0 5px !default;
 
 //
 // Form cancel button
 //
 
-$cancelButtonFloat: left;
-$cancelButtonBackground: none;
-$cancelButtonFontWeight: 700;
-$cancelButtonTextTransform: uppercase;
-$cancelButtonBackgroundHover: none;
-$cancelButtonMarginBottom: 15px;
-$cancelButtonColor: #252d30;
-$cancelButtonColorHover: darken(#252d30, 15%);
-$cancelButtonPaddingLeft: 0;
+$cancelButtonFloat: left !default;
+$cancelButtonBackground: none !default;
+$cancelButtonFontWeight: 700 !default;
+$cancelButtonTextTransform: uppercase !default;
+$cancelButtonBackgroundHover: none !default;
+$cancelButtonMarginBottom: 15px !default;
+$cancelButtonColor: #252d30 !default;
+$cancelButtonColorHover: darken(#252d30, 15%) !default;
+$cancelButtonPaddingLeft: 0 !default;
 
 
 //
 // Checkout progress steps
 //
 
-$progressStepListBackgoundHover: #d5d5d5;
-$progressStepListColorDisable: #6B6B6B;
-$progressStepListBackgoundDisable: #F3F3F3;
+$progressStepListBackgoundHover: #d5d5d5 !default;
+$progressStepListColorDisable: #6B6B6B !default;
+$progressStepListBackgoundDisable: #F3F3F3 !default;
 
-$progressStepListColorActive: #fff;
-$progressStepListBackgoundActive: #666666;
+$progressStepListColorActive: #fff !default;
+$progressStepListBackgoundActive: #666666 !default;
 
-$progressStepListPadding: 4px 0px 5px 10px;
-$progressStepListColor: #6B6B6B;
-$progressStepListBackgound: #e7e7e7;
-$progressStepListTextTransform: uppercase;
-$progressStepListFontWeight: bold;
-$progressStepListFontSizeSmall: 7px;
-$progressStepListFontSizeTablet: 12px;
+$progressStepListPadding: 4px 0px 5px 10px !default;
+$progressStepListColor: #6B6B6B !default;
+$progressStepListBackgound: #e7e7e7 !default;
+$progressStepListTextTransform: uppercase !default;
+$progressStepListFontWeight: bold !default;
+$progressStepListFontSizeSmall: 7px !default;
+$progressStepListFontSizeTablet: 12px !default;
 
 
 //
 // Form labels
 //
 
-$formLabelFontWeight: normal !important;
-$formLabelLineHeight: 1.5 !important;
-$formLabelPaddingSmall: 4px 0px 4px 0 !important;
-$formLabelMarginBottomSmall: 3px !important;
-$formLabelFontSize: 14px !important;
+$formLabelFontWeight: normal !important !default;
+$formLabelLineHeight: 1.5 !important !default;
+$formLabelPaddingSmall: 4px 0px 4px 0 !important !default;
+$formLabelMarginBottomSmall: 3px !important !default;
+$formLabelFontSize: 14px !important !default;
 
-$formLabelPaddingTablet: 4px 20px 3px 0 !important;
-$formLabelWidthTablet: 26% !important;
-$formLabelMaxWidthTablet: 180px !important;
-$formLabelMarginBottomTablet: 0px !important;
+$formLabelPaddingTablet: 4px 20px 3px 0 !important !default;
+$formLabelWidthTablet: 26% !important !default;
+$formLabelMaxWidthTablet: 180px !important !default;
+$formLabelMarginBottomTablet: 0px !important !default;
 
 //
 // Form small tags
 //
 
-$formSmallTagColor: #999;
-$formSmallTagFontSize: 9px;
-$formSmallTagLineHeight: 9px;
+$formSmallTagColor: #999 !default;
+$formSmallTagFontSize: 9px !default;
+$formSmallTagLineHeight: 9px !default;
 
-$formEmTagFontSize: 11px;
+$formEmTagFontSize: 11px !default;
 
-$formSupTagColor: red;
+$formSupTagColor: red !default;
 
-$formSpanTagWidthTablet: auto;
+$formSpanTagWidthTablet: auto !default;
 
-$formCVVLinkMarginLeftTablet: 15px !important;
+$formCVVLinkMarginLeftTablet: 15px !important !default;
 
 
 //
 // Form validation
 //
 
-$formValidatePosition: absolute;
-$formValidateFontSize: 11px !important;
-$formValidatePositionLeft: 6px;
-$formValidatePositionTop: auto;
-$formValidateWidth: auto;
-$formValidatePositionBottomSmall: 72px;
-$formValidatePositionBottomTablet: 47px;
+$formValidatePosition: absolute !default;
+$formValidateFontSize: 11px !important !default;
+$formValidatePositionLeft: 6px !default;
+$formValidatePositionTop: auto !default;
+$formValidateWidth: auto !default;
+$formValidatePositionBottomSmall: 72px !default;
+$formValidatePositionBottomTablet: 47px !default;
 
-$formValidateFontWeight: bold;
-$formValidatePadding: 3px;
+$formValidateFontWeight: bold !default;
+$formValidatePadding: 3px !default;
 
-$formValidateReasonBackgroundColor: #FEF0F0 !important;
-$formValidateReasonBorder: 1px solid #FCC5C5 !important;
+$formValidateReasonBackgroundColor: #FEF0F0 !important !default;
+$formValidateReasonBorder: 1px solid #FCC5C5 !important !default;
 
-$formValidateHintBackgroundColor: #FDF6D6;
-$formValidateHintBorder: #F9E99C;
-$formValidateHintPointerBorderTop: 8px solid #F9E99C;
+$formValidateHintBackgroundColor: #FDF6D6 !default;
+$formValidateHintBorder: #F9E99C !default;
+$formValidateHintPointerBorderTop: 8px solid #F9E99C !default;
 
-$formValidatePointerPositionLeft: 2px !important;
-$formValidatePointerPositionTop: auto !important;
-$formValidatePointerPositionBottom: -15px;
+$formValidatePointerPositionLeft: 2px !important !default;
+$formValidatePointerPositionTop: auto !important !default;
+$formValidatePointerPositionBottom: -15px !default;
 
 
-$formValidatePointerBorderTop: 8px solid #FCC5C5 !important;
-$formValidatePointerBorderLeft: 11px solid transparent !important;
-$formValidatePointerBorderRight: 11px solid transparent !important;
-$formValidatePointerBackground: none;
+$formValidatePointerBorderTop: 8px solid #FCC5C5 !important !default;
+$formValidatePointerBorderLeft: 11px solid transparent !important !default;
+$formValidatePointerBorderRight: 11px solid transparent !important !default;
+$formValidatePointerBackground: none !default;
 
 //
 // Form validation tooltip
 //
 
-$formTooltipWidth: 65%;
-$formTooltipMaxWidth: 220px !important;
-$formTooltipBorder: 1px solid #ddd;
-$formTooltipPadding: 4px;
-$formTooltipBorderRadius: 0;
+$formTooltipWidth: 65% !default;
+$formTooltipMaxWidth: 220px !important !default;
+$formTooltipBorder: 1px solid #ddd !default;
+$formTooltipPadding: 4px !default;
+$formTooltipBorderRadius: 0 !default;
 
-$formTootipPositionBottomSmall: 61px;
-$formTootipPositionTop: auto !important;
-$formTootipPositionLeftSmall: 5px !important;
-$formTootipPositionBottomTablet: 35px;
-$formTootipPositionLeftTablet: 27% !important;
+$formTootipPositionBottomSmall: 61px !default;
+$formTootipPositionTop: auto !important !default;
+$formTootipPositionLeftSmall: 5px !important !default;
+$formTootipPositionBottomTablet: 35px !default;
+$formTootipPositionLeftTablet: 27% !important !default;
 
-$formTooltipPointerPositionBottom: -8px;
+$formTooltipPointerPositionBottom: -8px !default;
 
 //
 // Form input
 //
 
-$formInputBorder: 1px solid #D5D5D5;
-$formInputBorderColorHover: #D5D5D5;
-$formInputBorderColorFocus: #000;
-$formInputColor: #333;
+$formInputBorder: 1px solid #D5D5D5 !default;
+$formInputBorderColorHover: #D5D5D5 !default;
+$formInputBorderColorFocus: #000 !default;
+$formInputColor: #333 !default;
 
-$formInputErrorBackgroundColor: #FEF0F0;
-$formInputErrorColor: #f00;
+$formInputErrorBackgroundColor: #FEF0F0 !important !default;
+$formInputErrorColor: #f00 !default;
 
 
-$formInputPadding: 3px 7px;
-$formInputBackgroundColor: #fff;
-$formInputFontSize: 14px;
-$formInputHeight: 30px;
-$formInputLineHeight: 1.5;
+$formInputPadding: 3px 7px !default;
+$formInputBackgroundColor: #fff !default;
+$formInputFontSize: 14px !default;
+$formInputHeight: 30px !default;
+$formInputLineHeight: 1.5 !default;
 
-$formInputWidthTablet: 190px !important;
-$formInputMaxWidthTablet: 190px !important;
+$formInputBorderRadius: 0 !default;
 
-$formTextAreaHeight: 150px;
-$formTextAreaWidthTablet: 50%;
+$formInputWidthTablet: 190px !important !default;
+$formInputMaxWidthTablet: 190px !important !default;
+
+$formTextAreaHeight: 150px !default;
+$formTextAreaWidthTablet: 50% !default;
 
 //
 // Form select
 //
 
-$formSelectBackgroundError: #FEF0F0;
-$formSelectColorError: #696868 !important;
-$formSelectFontWeightError: normal;
-$formSelectWrapperWidth: 165px;
+$formSelectBackgroundError: #FEF0F0 !default;
+$formSelectColorError: #696868 !important !default;
+$formSelectFontWeightError: normal !default;
+$formSelectWrapperWidth: 165px !default;
 
-$formSelectPlaceholderColor: #696868;
+$formSelectPlaceholderColor: #696868 !default;
 
 
 //
 // Checkout wrapper
 //
 
-$checkoutFontSize: 14px;
-$checkoutMarginBottom: 20px;
+$checkoutPageFontSize: 14px !default;
+$checkoutPageMarginBottom: 20px !default;
 
 
 //
 // Checkout form validation message & error
 //
 
-$checkoutMessageBackgroundColor: #EEF6FF;
-$checkoutMessagePadding: 4px 8px;
-$checkoutMessageMarginBottom: 1.6em;
-$checkoutMessageBorder: 1px solid #A3E0F0;
-$checkoutMessageBorderRadius: 8px;
-$checkoutMessageColor: #0066AA;
-$checkoutMessageTextColor: #0066AA;
+$checkoutPageMessageBackgroundColor: #EEF6FF !default;
+$checkoutPageMessagePadding: 4px 8px !default;
+$checkoutPageMessageMarginBottom: 1.6em !default;
+$checkoutPageMessageBorder: 1px solid #A3E0F0 !default;
+$checkoutPageMessageBorderRadius: 8px !default;
+$checkoutPageMessageColor: #0066AA !default;
+$checkoutPageMessageTextColor: #0066AA !default;
 
-$checkoutErrorBackgroundColor: #FEF0F0;
-$checkoutErrorBorderColor: #FCC5C5;
-$checkoutErrorColor: #990000;
-$checkoutErrorTextColor: #990000;
+$checkoutPageErrorBackgroundColor: #FEF0F0 !default;
+$checkoutPageErrorBorderColor: #FCC5C5 !default;
+$checkoutPageErrorColor: #990000 !default;
+$checkoutPageErrorTextColor: #990000 !default;
 
-$checkoutHighlightPadding: 10px;
-$checkoutHighlightBackgroundColor: #FDEFC9;
+$checkoutPageHighlightPadding: 10px !default;
+$checkoutPageHighlightBackgroundColor: #FDEFC9 !default;
 
-$checkoutValidationColor: #B94A48;
-$checkoutValidationBackgroundColor: #F2DEDE;
-$checkoutValidationBorder: 1px solid #EED3D7;
-$checkoutValidationTextShadow: 0 1px 0 rgba(255,255,255,0.5);
-$checkoutValidationBorderRadius: 4px;
-$checkoutValidationPadding: 8px 35px 8px 14px;
-$checkoutValidationMargin: 0 10px 25px 10px;
+$checkoutPageValidationColor: #B94A48 !default;
+$checkoutPageValidationBackgroundColor: #F2DEDE !default;
+$checkoutPageValidationBorder: 1px solid #EED3D7 !default;
+$checkoutPageValidationTextShadow: 0 1px 0 rgba(255,255,255,0.5) !default;
+$checkoutPageValidationBorderRadius: 4px !default;
+$checkoutPageValidationPadding: 8px 35px 8px 14px !default;
+$checkoutPageValidationMargin: 0 10px 25px 10px !default;
 
 //
 // Checkout payment summary
 //
 
-$paymentStudentTitleFontSize: 14px;
-$paymentStudentTitleMarginBottom: 0;
-$paymentStudentTitleFontWeight: bold;
-$paymentStudentTitleDisplay: inline;
-$paymentStudentTitleColor: #1F1F1F;
+$paymentStudentTitleFontSize: 15px !default;
+$paymentStudentTitleMarginBottom: 0 !default;
+$paymentStudentTitleFontWeight: bold !default;
+$paymentStudentTitleDisplay: inline !default;
+$paymentStudentTitleColor: #1F1F1F !default;
 
-$paymentStudentEmailPosition: relative;
-$paymentStudentEmailColor: #888888;
-$paymentStudentEmailFontSize: 14px;
-$paymentStudentEmailFontWeight: normal;
-$paymentStudentEmailPositionLeft: 0;
-$paymentStudentEmailTextTransform: lowercase;
-$paymentStudentEmailPositionTop: 0px;
-$paymentStudentEmailMarginRight: 5px;
+$paymentStudentEmailPosition: relative !default;
+$paymentStudentEmailColor: #888888 !default;
+$paymentStudentEmailFontSize: 14px !default;
+$paymentStudentEmailFontWeight: normal !default;
+$paymentStudentEmailPositionLeft: 0 !default;
+$paymentStudentEmailTextTransform: lowercase !default;
+$paymentStudentEmailPositionTop: 0px !default;
+$paymentStudentEmailMarginRight: 5px !default;
 
-$paymentStudentAffiliationColor: #888888;
-$paymentStudentAffiliationFontWeight: normal;
+$paymentStudentAffiliationColor: #888888 !default;
+$paymentStudentAffiliationFontWeight: normal !default;
 
-$paymentSummaryFontSize: $checkoutFontSize;
+$paymentSummaryFontSize: $checkoutPageFontSize !default;
 
-$paymentSummaryConcessionColor: #aaa;
-$paymentSummaryConcessionFontSize: 11px;
-$paymentSummaryConcessionMarginBottom: 5px;
+$paymentSummaryConcessionColor: #aaa !default;
+$paymentSummaryConcessionFontSize: 11px !default;
+$paymentSummaryConcessionMarginBottom: 5px !default;
 
-$paymentPlusLinkMarginBottom: 7px;
-$paymentPlusLinkPadding: 7px 0 7px 30px;
-$paymentPlusLinkBackground: #f7f7f7 url($imgPath + "add.png") no-repeat scroll 8px 50%;
+$paymentPlusLinkMarginBottom: 7px !default;
+$paymentPlusLinkPadding: 7px 0 7px 30px !default;
+$paymentPlusLinkBackground: #f7f7f7 url($imagePath + "add.png") no-repeat scroll 8px 50% !default;
 
 
 //
 // Checkout enrol items list
 //
 
-$checkoutListMarginBottom: 7px;
+$checkoutPageListMarginBottom: 7px !default;
 
-$checkoutEnrolItemMarginBottom: 10px;
+$checkoutPageEnrolItemMarginBottom: 10px !default;
 
-$checkoutEnrolItemLabelFontWeight: bold;
-$checkoutEnrolItemLabelLineHeight: 16px;
+$checkoutPageEnrolItemLabelFontWeight: bold !default;
+$checkoutPageEnrolItemLabelLineHeight: 16px !default;
 
-$checkoutEnrolItemEmTagColor: #888888;
-$checkoutEnrolItemEmTagFontSize: 11px;
-$checkoutEnrolItemEmTagFontWeight: normal;
-$checkoutEnrolItemEmTagMarginLeft: 0px;
+$checkoutPageEnrolItemEmTagColor: #888888 !default;
+$checkoutPageEnrolItemEmTagFontSize: 11px !default;
+$checkoutPageEnrolItemEmTagFontWeight: normal !default;
+$checkoutPageEnrolItemEmTagMarginLeft: 0px !default;
 
 
 //
 // Checkout amount container
 //
 
-$checkoutAmountContainerFloat: left;
-$checkoutAmountContainerWidth: 100%;
-$checkoutAmountContainerBorder: 1px solid #D6D6D6;
-$checkoutAmountContainerBorderRadius: 7px;
-$checkoutAmountContainerPadding: 15px 10px;
-$checkoutAmountContainerBackground: #F7F7F7;
-$checkoutAmountContainerMarginBottom: 20px;
+$checkoutPageAmountContainerFloat: left !default;
+$checkoutPageAmountContainerWidth: 100% !default;
+$checkoutPageAmountContainerBorder: 1px solid #D6D6D6 !default;
+$checkoutPageAmountContainerBorderRadius: 7px !default;
+$checkoutPageAmountContainerPadding: 15px 10px !default;
+$checkoutPageAmountContainerBackground: #F7F7F7 !default;
+$checkoutPageAmountContainerMarginBottom: 20px !default;
 
-$checkoutAmountContainerButtonMargin: 20px 0 0 0;
-$checkoutAmountContainerButtonFloat: right;
+$checkoutPageAmountContainerButtonMargin: 20px 0 0 0 !default;
+$checkoutPageAmountContainerButtonFloat: right !default;
 
-$checkoutAmountContainerAddCodeTextTransform: inherit;
-$checkoutAmountContainerAddCodeFontWeight: normal;
-$checkoutAmountContainerAddCodeHeight: 30px;
-$checkoutAmountContainerAddCodePadding: 5px 15px;
-$checkoutAmountContainerAddCodeFontSize: 12px;
+$checkoutPageAmountContainerAddCodeTextTransform: inherit !default;
+$checkoutPageAmountContainerAddCodeFontWeight: normal !default;
+$checkoutPageAmountContainerAddCodeHeight: 30px !default;
+$checkoutPageAmountContainerAddCodePadding: 5px 15px !default;
+$checkoutPageAmountContainerAddCodeFontSize: 12px !default;
 
-$checkoutAmountContentWidth: 253px;
-$checkoutAmountContentFloat: right;
-$checkoutAmountContentMarginTopSmall: 20px;
-$checkoutAmountContentMarginTopTablet: 0px;
+$checkoutPageAmountContentWidth: 253px !default;
+$checkoutPageAmountContentFloat: right !default;
+$checkoutPageAmountContentMarginTopSmall: 20px !default;
+$checkoutPageAmountContentMarginTopTablet: 0px !default;
 
-$checkoutAmountContentLabelFontWeight: normal;
-$checkoutAmountContentLabelWidth: 145px;
-$checkoutAmountContentLabelTextAlign: right;
-$checkoutAmountContentLabelLineHeight: 21px;
+$checkoutPageAmountContentLabelFontWeight: normal !default;
+$checkoutPageAmountContentLabelWidth: 145px !default;
+$checkoutPageAmountContentLabelTextAlign: right !default;
+$checkoutPageAmountContentLabelLineHeight: 21px !default;
 
-$checkoutAmountContentSpanWidth: 65px;
-$checkoutAmountContentSpanLineHeight: 21px;
+$checkoutPageAmountContentSpanWidth: 65px !default;
+$checkoutPageAmountContentSpanLineHeight: 21px !default;
 
-$checkoutAmountContentCreditAccessLinkColor: #125687;
-$checkoutAmountContentRemoveOwingLink: #125687;
+$checkoutPageAmountContentCreditAccessLinkColor: #125687 !default;
+$checkoutPageAmountContentRemoveOwingLink: #125687 !default;
 
-$checkoutAmountInputWidth: 65px;
-$checkoutAmountInputBackground: #FAFAFA;
-$checkoutAmountInputBorder: 1px solid #DDD;
+$checkoutPageAmountInputWidth: 65px !default;
+$checkoutPageAmountInputBackground: #FAFAFA !default;
+$checkoutPageAmountInputBorder: 1px solid #DDD !default;
 
-$checkoutAmountCodeInfoMargin: 0 0 20px 0;
-$checkoutAmountCodeInfoWidthTablet: 270px !important;
+$checkoutPageAmountCodeInfoMargin: 0 0 20px 0 !default;
+$checkoutPageAmountCodeInfoWidthTablet: 270px !important !default;
 
-$checkoutAmountCodeInfoTextFontSize: 11px;
+$checkoutPageAmountCodeInfoTextFontSize: 11px !default;
 
-$checkoutAmountCodeInputWidthTablet: 120px;
+$checkoutPageAmountCodeInputWidthTablet: 120px !default;
 
 
 //
 // Checkout payment tabs
 //
 
-$checkoutTabMargin: 0 0 18px 0;
-$checkoutTabBorder: 1px solid silver;
-$checkoutTabBorderRadius: 8px;
-$checkoutTabBackground: #fcfcfc;
+$checkoutPageTabMargin: 0 0 18px 0 !default;
+$checkoutPageTabBorder: 1px solid silver !default;
+$checkoutPageTabBorderRadius: 8px !default;
+$checkoutPageTabBackground: #fcfcfc !default;

@@ -15,7 +15,7 @@
       left: 0;
       width: 100%;
       padding-left: 0;
-      @include responsive($media-default) {
+      @include responsive($checkout-media-default) {
         padding-left: 25%;
       }
       >div, >span {
@@ -47,7 +47,7 @@
       >div>div>div {
         >span {
           width: 100%;
-          @include responsive($media-default) {
+          @include responsive($checkout-media-default) {
             width: $formSpanTagWidthTablet;
           }
         }
