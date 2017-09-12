@@ -78,11 +78,26 @@ export class CheckoutApiMock extends CheckoutApi {
   getCheckoutModel(request: CheckoutModelRequest): Promise<CheckoutModel> {
     const result: CheckoutModel = new CheckoutModel();
 
-    const keys = ["street", "postcode", "yearSchoolCompleted", "customField.contact.passportNumber"];
-    const fields = keys.map(key => this.config.db.getFieldByKey(key));
+    const keys1 = ["street", "postcode"];
+    const fields1 = keys1.map(key => this.config.db.getFieldByKey(key));
+
+    const keys2 = ["yearSchoolCompleted", "customField.contact.passportNumber"];
+    const fields2 = keys2.map(key => this.config.db.getFieldByKey(key));
+
+    const mockHeadings = () => ([
+      {
+        fields: fields1,
+        name: 'heading 1',
+        description: 'description 1',
+      },
+      {
+        fields: fields2,
+        name: 'heading 2',
+      },
+    ]);
 
     result.contactNodes = L.cloneDeep(request.contactNodes);
-    result.contactNodes.map(node => node.enrolments.map(enrolment => enrolment.fields = fields));
+    result.contactNodes.map(node => node.enrolments.map(enrolment => enrolment.fieldHeadings = mockHeadings()));
 
     result.amount = mockAmount();
     result.payerId = request.payerId;

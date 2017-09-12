@@ -2,11 +2,13 @@ import {Epic, ActionsObservable} from "redux-observable";
 import {MiddlewareAPI} from "redux";
 import {Observable} from "rxjs/Observable";
 import * as L from "lodash";
+
 import {IAction} from "../../actions/IshAction";
 import "rxjs";
 import {IshState} from "../../services/IshState";
 import {REWRITE_CONTACT_NODE_TO_STATE, UPDATE_ENROLMENT_FIELDS} from "../containers/summary/actions/Actions";
 import {toFormKey} from "../../components/form/FieldFactory";
+import {Field, DataType} from "../../model";
 
 export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
 
@@ -19,14 +21,24 @@ export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObserv
     const form = action.payload;
 
     if (state.form[form] && state.form[form].values) {
-      const values = state.form[form].values;
 
-      const newFields = state.checkout.summary.entities.enrolments[form].fields.map(field =>
-        ({...field, value: values[toFormKey(field.key)] || field.value}),
-      );
+      const values = state.form[form].values;
+      const headings = state.checkout.summary.entities.enrolments[form].fieldHeadings;
+
+      headings.forEach(h => {
+        h.fields.forEach((f: Field) => {
+          const formKey = toFormKey(f.key);
+
+          f.value = values[formKey] && values[formKey].key || values[formKey] || null;
+          if (f.value == null && f.dataType === DataType.BOOLEAN) {
+            f.value = 'false';
+          }
+        });
+      });
 
       const newState = L.cloneDeep(state.checkout.summary);
-      newState.entities.enrolments[form].fields = newFields;
+      newState.entities.enrolments[form].fieldHeadings = headings;
+
 
       result.push({
         type: REWRITE_CONTACT_NODE_TO_STATE,

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {isNil} from "lodash";
 import {Contact, ContactFields} from "../../../../model";
-import HeadingComp from "./HeadingComp";
+import HeadingComp from "../../../components/HeadingComp";
 import {ContactInfo} from "../../../components/ContactInfo";
 
 export interface Props {

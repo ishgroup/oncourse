@@ -2,13 +2,15 @@ import * as React from "react";
 import classnames from "classnames";
 import moment from "moment";
 import {reduxForm} from "redux-form";
+import {isNil} from "lodash";
 
 import {Formats} from "../../../../constants/Formats";
 import * as FormatUtils from "../../../../common/utils/FormatUtils";
 import {Enrolment, Contact, CourseClass, CourseClassPrice} from "../../../../model";
 import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
-import FieldFactory, {toFormKey} from "../../../../components/form/FieldFactory";
+import {toFormKey} from "../../../../components/form/FieldFactory";
+import HeadingComp from "../../../components/HeadingComp";
 
 
 export interface Props {
@@ -20,13 +22,15 @@ export interface Props {
 }
 
 class EnrolmentComp extends React.Component<Props, any> {
-  getFieldInitialValues(fields) {
+  getFieldInitialValues(headings) {
     const initialValues = {};
 
-    if (fields && fields.length) {
-      fields
-        .filter(field => field.defaultValue)
-        .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue));
+    if (headings && headings.length) {
+      headings
+        .map(h => h.fields
+          .filter(f => f.defaultValue)
+          .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
+        );
 
       return initialValues;
     }
@@ -63,11 +67,11 @@ class EnrolmentComp extends React.Component<Props, any> {
         {enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
 
         <ClassFieldsForm
-          fields={enrolment.fields}
+          headings={enrolment.fieldHeadings}
           classId={enrolment.classId}
           selected={enrolment.selected}
           form={`${enrolment.contactId}-${enrolment.classId}`}
-          initialValues={this.getFieldInitialValues(enrolment.fields)}
+          initialValues={this.getFieldInitialValues(enrolment.fieldHeadings)}
           onUpdate={form => onChangeFields(form)}
         />
       </div>
@@ -78,19 +82,16 @@ class EnrolmentComp extends React.Component<Props, any> {
 class ClassFields extends React.Component<any, any> {
 
   render() {
-    const {fields, classId, selected, onUpdate, form} = this.props;
+    const {headings, classId, selected, onUpdate, form} = this.props;
+    const headingsComp = isNil(headings) ? [] : headings.map((h, index) => (
+      <HeadingComp heading={h} key={index} touch={() => onUpdate(form)} />
+    ));
 
     return (
       <div className="course-fields col-sm-24">
-        {fields && selected &&
-        <form  onBlur={() => onUpdate(form)}>
-          <fieldset>
-            {fields.map((field, i) => <FieldFactory
-              onBlurSelect={() => onUpdate(form)}
-              key={`${classId}-${i}`}
-              field={field}
-            />)}
-          </fieldset>
+        {headings && selected &&
+        <form onBlur={() => onUpdate(form)}>
+          {headingsComp}
         </form>
 
         }
@@ -98,6 +99,7 @@ class ClassFields extends React.Component<any, any> {
     );
   }
 }
+
 export const ClassFieldsForm = reduxForm({})(ClassFields);
 
 

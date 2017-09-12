@@ -1,6 +1,6 @@
 import * as React from "react";
-import {FieldHeading} from "../../../../model";
-import FieldFactory from "../../../../components/form/FieldFactory";
+import {FieldHeading} from "../../model";
+import FieldFactory from "../../components/form/FieldFactory";
 
 
 interface Prop {
