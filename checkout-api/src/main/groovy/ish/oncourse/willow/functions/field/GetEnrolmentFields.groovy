@@ -9,21 +9,14 @@ import ish.oncourse.willow.model.field.FieldHeading
 class GetEnrolmentFields {
     
     private CourseClass courseClass
-    private FieldHeading dummy = new FieldHeading()
-    private Map<String, FieldHeading> headingsMap = [:]
-    private List<FieldHeading> result = []
-
 
     GetEnrolmentFields(CourseClass courseClass) {
         this.courseClass = courseClass
     }
     
     List<FieldHeading> get() {
-        
         FieldConfiguration configuration = courseClass.course.fieldConfigurationScheme?.enrolFieldConfiguration?: new GetDefaultFieldConfiguration(courseClass.college, courseClass.objectContext).get()
-        List<ish.oncourse.model.Field> enrolmentCustomFields = configuration.fields.findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_ENROLMENT }
-//        enrolmentCustomFields.each { f -> getHeadingBy(f.fieldHeading)}
-
-        result
+        Set<ish.oncourse.model.Field> enrolmentCustomFields = configuration.fields.findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_ENROLMENT }.toSet()
+        return FieldHelper.valueOf(enrolmentCustomFields).buildFieldHeadings()
     }
 }

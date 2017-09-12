@@ -7,8 +7,6 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.services.preference.GetPreference
-import ish.oncourse.willow.functions.field.ContactFieldHelper
-import ish.oncourse.willow.functions.field.GetDefaultFieldConfiguration
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.FieldSet
 import org.apache.cayenne.ObjectContext
@@ -46,11 +44,11 @@ class GetCompanyFields {
     ContactFields get() {
         FieldConfiguration configuration = new GetDefaultFieldConfiguration(college, context).get()
         Set<Field> companyFields = configuration.fields.findAll { COMPANY_FIELDS.contains(getByKey(it.property)) }.toSet()
-        
-        addAbnField(companyFields) 
-        
-        return new ContactFieldHelper(mandatoryOnly, company, companyFields).buildContactFieldsResult()
-
+        addAbnField(companyFields)
+        ContactFields result = new ContactFields()
+        result.contactId = company.id.toString()
+        result.headings = FieldHelper.valueOf(mandatoryOnly, company, companyFields).buildFieldHeadings()
+        return result
     }
 
     void addAbnField(Set<Field> companyFields) {

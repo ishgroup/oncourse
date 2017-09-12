@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory
 
 import java.text.ParseException
 
-import static ish.oncourse.willow.functions.field.ContactFieldHelper.getContext
+import static ish.oncourse.willow.functions.field.FieldHelper.getContext
 import static ish.oncourse.willow.model.field.DataType.*
 import static ish.oncourse.willow.model.field.DataType.BOOLEAN
 import static ish.oncourse.willow.model.field.DataType.STRING

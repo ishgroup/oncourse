@@ -36,7 +36,10 @@ class GetContactFields {
         Set<FieldConfiguration> configurations =  new GetFieldConfigurations(classes: classes, contact: contact, college: contact.college, mergeDefault: mergeDefault, fieldSet: fieldSet, context: contact.objectContext).get()
         Set<Field> fields = mergeFieldConfigurations(configurations)
         
-        new ContactFieldHelper(mandatoryOnly, contact, fields).buildContactFieldsResult()
+        ContactFields result = new ContactFields()
+        result.contactId = contact.id.toString()
+        result.headings = FieldHelper.valueOf(mandatoryOnly, contact, fields).buildFieldHeadings()
+        return result
     }
     
     private Set<Field> mergeFieldConfigurations(Set<FieldConfiguration> configurations) {
