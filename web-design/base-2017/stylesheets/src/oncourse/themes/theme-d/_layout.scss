@@ -1,0 +1,389 @@
+//
+//
+// layout.scss
+//
+// Contains all the styles of different contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('d') {
+  &::selection {
+    background-color: $theme-color;
+    color: $white;
+  }
+  body {
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+  .theme-color {
+    color: $theme-color;
+  }
+  .theme-bgcolor {
+    background: $theme-color;
+  }
+  #Main.main-page {
+    #content {
+      float: none;
+      width: 100%;
+    }
+    #sidebarRight, #sidebarLeft {
+      display: none;
+    }
+  }
+  .content {
+    h1 {
+      font-weight: normal;
+    }
+  }
+  #content, #z_content {
+    >p {
+      margin-bottom: 0;
+    }
+  }
+
+  .btn, form button.form-submit-button {
+    letter-spacing: $appBtnLetterSpacing;
+  }
+
+  // App Button
+  .app-btn {
+    display: $appBtnDisplay;
+    padding: $btnPadding;
+    border-radius: $btnBorderRadius;
+    border: $appBtnBorder;
+    letter-spacing: $appBtnLetterSpacing;
+    font-size: $btnFontSize;
+    line-height: $appBtnLineHeight;
+    font-weight: $btnFontWeight;
+    background: $btnBackgroundColor;
+    color: $btnColor !important;
+    &:hover, &:focus, &:active {
+      background: $btnBackgroundHoverColor;
+      font-weight: $btnFontWeight;
+      font-size: $btnFontSize;
+      color: $btnHoverTextColor !important;
+    }
+  }
+
+  .square-btn {
+    margin: $squareBtnMargin;
+    display: $squareBtnDisplay;
+    color: $squareBtnColor;
+    padding: $squareBtnPadding;
+    font-size: $squareBtnFontSize;
+    border: 2px solid $squareBtnBorderColor;
+    width: $squareBtnWidth;
+    font-weight: $squareBtnFontWeight;
+    text-transform: $squareBtnTextTransform;
+    border-radius: $squareBtnBorderRadius;
+    letter-spacing: $squareBtnLetterSpacing;
+    text-decoration: none;
+    text-align: $squareBtnTextAlign;
+    &:hover {
+      border-color: $squareBtnBorderColorHover;
+    }
+  }
+
+  .bottom-line {
+    position: relative;
+    margin-bottom: 45px;
+    line-height: 1.4;
+    text-align: center;
+    &::after {
+      content: "";
+      position: absolute;
+      background: $theme-color;
+      height: 2px;
+      width: 100px;
+      bottom: -30px;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+    }
+  }
+  .content, .dialogBox, .rodal-dialog {
+    .bottom-line {
+      margin-bottom: 45px;
+      line-height: 1.4;
+    }
+  }
+  #container {
+    .slider-wrapper {
+      position: relative;
+    }
+
+    #content {
+      .main-title {
+        color: $secondaryColor;
+      }
+      .sub-title {
+        color: #0a3a4a;
+      }
+    }
+  }
+
+  section.block {
+    &.browse-courses {
+      position: relative;
+      height: 790px;
+      @extend .responsive-image-h;
+      >span {
+        height: 100%;
+      }
+      .bc-content {
+        position: relative;
+        margin-top: 260px;
+        font-size: 18px;
+        h1 {
+          text-transform: uppercase;
+          font-size: 32px;
+          font-weight: bold;
+          margin-bottom: 27px;
+          @include responsive($media-tablet) {
+            font-size: 40px;
+          }
+          &, a {
+            color: $browseCoursesHeaderColor;
+          }
+          a:hover {
+            color: $browseCoursesHeaderColorHover;
+          }
+        }
+        p {
+          max-width: 500px;
+          line-height: 1.5;
+          font-size: 23px;
+          color: $browseCoursesTextColor;
+          a.app-btn {
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+    &.top-blocks {
+      background: $topBlocksBackground;
+      padding: 40px 0;
+      @include responsive($media-small) {
+        padding: 80px 0;
+      }
+      .container {
+        >p {
+          display: none;
+        }
+        >ul {
+          text-align: center;
+          li {
+            margin-bottom: 40px;
+            vertical-align: top;
+            @include responsive($media-tablet) {
+              margin-bottom: 0px;
+            }
+            .t-item {
+              >img, >a>img {
+                margin-bottom: 30px;
+              }
+              .t-content {
+                color: $topBlocksTextColor;
+                line-height: 1.5;
+                max-width: 275px;
+                margin: 0 auto;
+                font-size: 20px;
+                h4 {
+                  font-size: 18px;
+                  text-transform: uppercase;
+                  letter-spacing: 1.1px;
+                  &, a {
+                    color: $topBlocksHeaderTextColor;
+                  }
+                  a:hover {
+                    color: $topBlocksHeaderTextColorHover;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &.our-courses {
+      background: $ourCoursesBackground;
+      padding: 70px 0;
+      color: $ourCoursesTextColor;
+      .container {
+        max-width: 740px;
+        text-align: center;
+      }
+      h3 {
+        font-size: 40px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: $ourCoursesTextColor;
+        margin-bottom: 35px;
+      }
+      p {
+        font-size: 21px;
+        line-height: 1.5;
+        max-width: 520px;
+        margin: 0 auto;
+      }
+      .courses-list {
+        margin-top: 60px;
+        >li {
+          display: none;
+        }
+        ul {
+          margin-left: 0;
+          list-style: none;
+          &.courses-list-sub {
+            >li {
+              background: $ourCoursesListBackground;
+              border-radius: 50px;
+              border: $ourCoursesListBorder;
+              margin-bottom: 10px;
+              @include responsive($media-small) {
+                display: inline-block;
+                margin-bottom: 25px;
+                margin-right: 20px;
+              }
+              &:hover {
+                background: $ourCoursesListBackgroundHover;
+                border: $ourCoursesListBorderHover;
+                a {
+                  color: $ourCoursesListTextColorHover;
+                }
+              }
+              a {
+                color: $ourCoursesListTextColor;
+                display: block;
+                padding: 12px 20px;
+                font-weight: bold;
+                font-size: 16px;
+              }
+              >ul {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    &.popular-courses {
+      background: $popularCoursesBackground;
+      padding: 70px 0;
+      text-align: center;
+      h3 {
+        font-size: 40px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: $popularCoursesHeaderTextColor;
+        margin-bottom: 50px;
+        @include responsive($media-small) {
+          margin-bottom: 90px;
+        }
+      }
+      .pc-slider {
+        margin-left: 0;
+        li {
+          width: 295px;
+          height: 275px;
+          background: $popularCoursesItemBackground;
+          color: $popularCoursesItemTextColor;
+          position: relative;
+          .pc-item {
+            position: absolute;
+            top: 50%;
+            @include transform(translateY(-50%));
+            padding: 20px;
+            font-size: 16px;
+            > a, > span {
+              font-weight: bold;
+              font-size: 20px;
+              color: $popularCoursesItemTitleColor;
+            }
+            >a:hover {
+              color: $popularCoursesItemTitleColorHover;
+            }
+          }
+        }
+      }
+    }
+  }
+  .courses {
+    ul.courses-list {
+      margin: 0;
+      > li {
+        display: none;
+      }
+    }
+    ul.courses-list-sub {
+      margin: 0;
+      list-style: none;
+      display: table;
+      width: 100%;
+      li {
+        font-size: 16px;
+        margin-bottom: 5px;
+        a {
+          text-decoration: none;
+        }
+      }
+      > li {
+        display: block;
+        vertical-align: top;
+        width: 100%;
+        margin-bottom: 10px;
+        border-bottom: 1px solid $secondaryColor;
+        @include responsive($media-tablet) {
+          border-bottom: 0px;
+          display: table-cell;
+          width: 14.28%;
+          margin-bottom: 5px;
+        }
+        > a {
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        > ul {
+          list-style: none;
+          padding-top: 5px;
+          @include responsive($media-tablet) {
+            margin: 0;
+          }
+          >li>ul {
+            display: none;
+          }
+        }
+      }
+    }
+
+    + p {
+      display: none;
+    }
+  }
+
+  .phone-icon::after {
+    left: -23px;
+  }
+  .courses-menu {
+    li {
+      padding-left: 20px;
+    }
+    >ul, ul.courses-list {
+      >ul>li>a {
+        border: 0px;
+      }
+    }
+  }
+  .footer-gmap {
+    height: 500px;
+    margin-bottom: 60px;
+    #gmap_contact {
+      height: 500px;
+      position: absolute !important;
+      width: 100%;
+      left: 0;
+    }
+  }
+}

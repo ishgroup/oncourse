@@ -1,0 +1,432 @@
+//
+//
+// footer.scss
+//
+// Contains all the styles of footer contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('d', 'footer') {
+  #footer {
+    position: relative;
+    font-weight: 300;
+    section.block {
+      &.the-latest {
+        background: $theLatestBackground;
+        padding: 70px 0;
+        position: relative;
+        text-align: left;
+        >p {
+          margin: 0;
+        }
+        h3 {
+          font-size: 40px;
+          text-transform: uppercase;
+          font-weight: bold;
+          color: $theLatestHeaderTextColor;
+          margin-bottom: 45px;
+          text-align: center;
+          @include responsive($media-small) {
+            margin-bottom: 75px;
+          }
+        }
+        ul {
+          max-width: 400px;
+          margin: 0 auto;
+          @include responsive($media-tablet) {
+            max-width: 100%
+          }
+          >li {
+            margin-bottom: 30px;
+            vertical-align: top;
+            @include responsive($media-small) {
+              padding-left: 20px;
+              padding-right: 20px;
+            }
+            @include responsive($media-tablet) {
+              margin-bottom: 0;
+            }
+          }
+        }
+        .tl-item {
+          position: relative;
+          background: $theLatestItemBackground;
+          border-style: solid;
+          border-color: $theLatestItemBorderColor;
+          border-width: $theLatestItemBorderWidth;
+          padding-top: $theLatestItemHeight;
+          @extend .responsive-image-h;
+          >span {
+            width: 100%;
+            height: $theLatestItemHeight;
+          }
+          .tl-date {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            top: 20px;
+            left: -10px;
+            background: $theLatestItemDateBackground;
+            color: $theLatestItemDateTextColor;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 8px;
+            line-height: 1.2;
+            text-align: center;
+            text-transform: uppercase;
+            z-index: 1;
+            &::after {
+              content: "";
+              position: absolute;
+              border-bottom: 9px solid transparent;
+              border-right: 9px solid $theLatestItemDateBackground;
+              left: 0;
+              top: 55px;
+            }
+          }
+          span.tl-tag {
+            color: $color-5;
+          }
+          &.events {
+            border-color: $theLatestItemBorderColorEvents;
+            span.tl-tag {
+              color: $color-3;
+            }
+          }
+          .tl-info {
+            padding: 20px;
+            background: $theLatestItemBackground;
+            border-top: $theLatestItemInfoBorderTop;
+            span.tl-tag {
+              font-size: 15px;
+              text-transform: uppercase;
+              letter-spacing: 2.2px;
+              font-weight: bold;
+              margin-bottom: 7px;
+              display: block;
+            }
+            h5 {
+              font-size: 20px;
+              font-weight: bold;
+              line-height: 1.5;
+              text-transform: uppercase;
+              margin-bottom: 5px;
+              &, a {
+                color: $theLatestItemHeaderColor;
+              }
+              a:hover {
+                color: $theLatestItemHeaderColorHover;
+              }
+            }
+            p {
+              font-size: 18px;
+              color: $theLatestItemTextColor;
+            }
+          }
+        }
+        a.see-link {
+          display: block;
+          margin-top: 60px;
+          text-align: center;
+          font-size: 18px;
+          text-transform: uppercase;
+          font-weight: bold;
+          letter-spacing: 1.2px;
+          color: $theLatestItemSeeLinkColor;
+        }
+      }
+      &.about-us {
+        background: $aboutUsBackground;
+        position: relative;
+        .cn-left, .cn-right {
+          width: 100%;
+          @include responsive($media-tablet) {
+            width: 50%;
+          }
+        }
+        .cn-left {
+          padding: 130px 60px;
+          @include responsive($media-tablet) {
+            float: left;
+          }
+          h4 {
+            font-size: 25px;
+            color: $aboutUsHeaderTextColor;
+            letter-spacing: 1.2px;
+            font-weight: bold;
+            @include responsive($media-tablet) {
+              font-size: 34px;
+            }
+          }
+          p {
+            font-size: 20px;
+            color: $aboutUsTextColor;
+            line-height: 1.7;
+            @include responsive($media-tablet) {
+              font-size: 28px;
+            }
+          }
+          .app-btn {
+            background: transparent;
+            border: 1px solid $aboutUsTextColor;
+            margin-top: 50px;
+          }
+        }
+        .cn-right {
+          position: relative;
+          height: 600px;
+          @extend .responsive-image-h;
+          >span {
+            height: 100%;
+            img {
+              min-height: 100%;
+            }
+          }
+          @include responsive($media-tablet) {
+            float: right;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+          }
+        }
+      }
+      &.news-subscribe {
+        background: $newsSubscribeBackground;
+        padding: 60px 0;
+        color: #171d1c;
+        font-size: 18px;
+        h5 {
+          font-size: 23px;
+          text-transform: capitalize;
+          font-weight: bold;
+          margin-bottom: 5px;
+          color: $newsSubscribeHeaderColor;
+        }
+        .col-sm-11 {
+          p {
+            max-width: 310px;
+            margin: 0 auto;
+            color: $newsSubscribeTextColor;
+            @include responsive($media-tablet) {
+              margin: 0;
+            }
+          }
+        }
+        .col-sm-13 {
+          padding: 20px 15px;
+        }
+        form {
+          max-width: 510px;
+          width: 78%;
+          margin: 30px auto 0;
+          @include responsive($media-tablet) {
+            margin: 0;
+          }
+          fieldset {
+            padding: 0;
+            margin: 0;
+            border: 0 none;
+            float: left;
+            width: 100%;
+            @include responsive($media-small) {
+              width: 59%;
+              max-width: 300px;
+            }
+            .form-cont-row {
+              >label {
+                display: none;
+              }
+              input {
+                padding: 8px 9px;
+                height: 40px;
+                font-size: 17px;
+                width: 100%;
+                max-width: none;
+                @include responsive($media-small) {
+                  border-top-right-radius: 0;
+                  border-bottom-right-radius: 0;
+                }
+              }
+            }
+          }
+          .form-submit-button {
+            float: left;
+            width: 100%;
+            padding: 7px 15px;
+            background: $newsSubscribeButtonBackground;
+            @include responsive($media-small) {
+              width: 40.96%;
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+            &:hover {
+              background: $newsSubscribeButtonBackgroundHover;
+            }
+          }
+        }
+      }
+      &.footer-main {
+        padding: 73px 0 0px;
+        .container {
+          padding-bottom: 55px;
+          .footer-logo {
+            margin-bottom: 30px;
+            display: block;
+          }
+          span.phone-text {
+            font-size: 20px;
+            color: $footerMainTitleTextColor;
+            font-weight: bold;
+            display: block;
+          }
+          .social-links {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            li {
+              width: 34px;
+              padding: 0 0 0px 10px;
+              display: inline-block;
+              a {
+                display: block;
+                &:hover {
+                  @include opacity(0.8);
+                }
+              }
+            }
+          }
+          .f-title {
+            font-weight: bold;
+            font-size: 20px;
+            color: $footerMainTitleTextColor;
+            display: block;
+            margin-bottom: 5px;
+          }
+          .courses-list {
+            margin-bottom: 20px;
+            >li {
+              display: none;
+            }
+            >ul > li {
+              font-weight: bold;
+              margin-bottom: 5px;
+              @include responsive($media-tablet) {
+                display: inline-block;
+                width: 49%;
+                vertical-align: top;
+              }
+            }
+          }
+          .fmain-link {
+            li {
+              margin-bottom: 28px;
+              a {
+                font-size: 20px;
+                font-weight: bold;
+                color: $footerMainTitleTextColor;
+                &:hover {
+                  color: $footerMainTitleTextColorHover;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .address {
+      line-height: 2;
+    }
+    .info-links {
+      background: $footerInfoLinksBackground;
+      margin-top: 5px;
+      .container {
+        color: $footerInfoLinksTextColor;
+        a {
+          color: $footerInfoLinksAnchorColor;
+          &:hover {
+            color: $footerInfoLinksAnchorHoverColor;
+          }
+        }
+        .footer-info {
+          width: 100%;
+          text-align: center;
+          @include responsive($media-tablet) {
+            text-align: left;
+            width: auto;
+          }
+          li {
+            position: relative;
+            color: $footerInfoTextColor;
+            @include responsive($media-tablet) {
+              float: left;
+              margin-right: 23px;
+            }
+            a {
+              color: $footerInfoTextColor;
+              &:hover {
+                color: $footerInfoTextColorHover;
+              }
+            }
+            @include responsive($media-tablet) {
+              &:first-child {
+                &::before {
+                  content: none;
+                }
+              }
+              &::before {
+                content: "";
+                position: absolute;
+                top: 10px;
+                left: -15px;
+                width: 5px;
+                height: 5px;
+                border-radius: 100%;
+                background: $footerInfoTextColor;
+              }
+            }
+          }
+        }
+      }
+    }
+    .courses-list, .quicklinks {
+      ul >li {
+        >a, &:first-child {
+          text-transform: capitalize;
+        }
+        ul {
+          display: none;
+        }
+      }
+    }
+    ul.footer-info {
+      margin: 0px;
+      list-style: none;
+    }
+    .container {
+      a {
+        color: $footerInfoColor;
+        &:hover {
+          color: $footerInfoHoverColor;
+        }
+      }
+      .footer-container {
+        margin-top: 0px;
+        margin-bottom: 14px;
+        padding-top: 20px;
+        border-top: $footerContainerBorderTop;
+        font-size: $bodyFontSize;
+        .footer-logo {
+          width: 100%;
+          text-align: center;
+          @include responsive($media-tablet) {
+            width: auto;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}

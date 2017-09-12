@@ -1,0 +1,337 @@
+//
+//
+// header.scss
+//
+// Contains all the styles of header contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+
+@include theme('d', 'header') {
+  body {
+    &.header-fixed {
+      padding-top: 74px;
+    }
+    .content-images {
+      display: none;
+    }
+    &.internal-page {
+      #contentContainer {
+        background: $contentContainerBackground;
+        position: $contentContainerPosition;
+        padding: $contentContainerPaddingSmall;
+        @include responsive($media-desktop) {
+          @if $sidebarLeft == on {
+            padding: $contentContainerPaddingSidebarLeftTablet;
+          } @else {
+            padding: $contentContainerPaddingSidebarRightTablet;
+          }
+        }
+      }
+      #header {
+        .header-container {
+          .top-bar {
+            #headerToolbar #search_box #advanced_search {
+              background: $advanceSearchBG-Internal;
+              color: $advanceSearchColor-Internal;
+              .advanced-search-form {
+                .search-title {
+                  color: $advancedSearchTitleColor-InternalPage;
+                }
+                input[type="text"], select, input[type="checkbox"] {
+                  background: $advanceSearchInputBG-Internal;
+                }
+                #adv_search_submit {
+                  button, a {
+                    background: $advanceSearchButtonBG-Internal;
+                    &:hover {
+                      background: darken($advanceSearchButtonBG-Internal, 10%);
+                    }
+                  }
+                  a {
+                    background: $advanceSearchButtonClearBackground-Internal;
+                    &:hover {
+                      background: darken($advanceSearchButtonClearBackground-Internal, 10%);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #header {
+    >p {
+      margin: 0px;
+    }
+    .header-container {
+      background: $headerTopBarBG;
+      .top-bar {
+        min-height: 90px;
+        a.nav-logo {
+          float: left;
+          margin: 12px 35px 12px 20px;
+        }
+        .nav-toggle {
+          margin: 0px;
+          width: 32px;
+          padding: 4px;
+          float: right;
+          overflow: hidden;
+        }
+        #headerToolbar {
+          margin-top: 10px;
+          position: relative;
+          .discount-block {
+            display: none;
+            float: left;
+            line-height: 1.38095;
+            margin-top: 6px;
+            margin-right: 7px;
+            text-transform: uppercase;
+            @include responsive($media-small) {
+              display: $discountBlockDisplay;
+            }
+            .actionLink.login-link {
+              text-indent: $loginLinkTextIndent;
+              width: $loginLinkWidth;
+              background: $loginLinkBackground;
+              background-size: $loginLinkBackgroundSize;
+            }
+            .title-block, .nyromodalreload.actionLink {
+              display: none;
+            }
+          }
+          #shortlist {
+            text-transform: uppercase;
+            position: relative;
+            height: 27px;
+            width: 40px;
+            margin-left: 20px;
+            &::before {
+              display: $shortListBeforeDisplay;
+            }
+            .shortlistInfo {
+              span {
+                position: absolute;
+                top: -3px;
+                left: 10px;
+                width: 20px;
+                height: 20px;
+                padding: 7.5px 0;
+                line-height: 0.5;
+                border-radius: 100%;
+                margin-top: 3px;
+                text-align: center;
+                overflow: hidden;
+                font-weight: bold;
+              }
+              p {
+                display: none;
+              }
+            }
+          }
+          .header-search-toggle {
+            display: block !important;
+            color: $headerTopBarTextColor;
+            @include opacity(0.8);
+            &:hover {
+              @include opacity(1);
+            }
+            i.search-icon {
+              &::after {
+                background: $headerSearchToggleAfterBackground;
+                background-size: $headerSearchToggleAfterBackgroundSize;
+                width: $headerSearchToggleAfterWidth;
+                height: $headerSearchToggleAfterHeight;
+                top: $headerSearchToggleAfterPositionTop;
+              }
+            }
+          }
+
+          #search_box {
+            right: 10px;
+            width: auto;
+            top: 8px;
+            position: absolute;
+            #advanced_search {
+              max-width: 410px;
+              min-width: 285px;
+              z-index: 9999;
+              .advanced-search-form {
+                input[type="text"], select, input[type="checkbox"] {
+                  background: $advanceSearchInputBG-Home;
+                }
+                .search-title {
+                  font-size: 30px;
+                  font-weight: bold;
+                  color: $advanceSearchTitleColor;
+                  margin-bottom: 25px;
+                }
+                >div {
+                  label {
+                    font-size: 17px;
+                  }
+                  &#adv_search_location, &#adv_search_time {
+                    @include responsive($media-tablet) {
+                      padding-right: 10px;
+                    }
+                  }
+                  &#adv_search_price, &#adv_search_day {
+                    @include responsive($media-tablet) {
+                      padding-left: 10px;
+                    }
+                  }
+                }
+
+                #adv_search_time , #adv_search_day {
+                  .checkbox>input {
+                    width: 25px;
+                    height: 25px;
+                  }
+                }
+              }
+            }
+
+            #advanced_search_container {
+              position: initial;
+              #advanced_search {
+                right: 0px;
+                left: auto;
+              }
+            }
+            .advanced-search-button.more-options {
+              position: relative;
+              @extend .fa;
+              @extend .fa-search;
+              font-size: $faFontSize;
+              margin-top: 5px;
+              width: 17px;
+              .show-advanced-search span {
+                display: block;
+                width: 100%;
+                height: 100%;
+              }
+              >a {
+                text-indent: -9999px;
+                position: absolute;
+                top: 0;
+              }
+            }
+            #search {
+              background: $searchBoxBackground;
+              display: none !important;
+              .quicksearch {
+                font-size: 13px;
+              }
+            }
+          }
+        }
+        .navbar {
+          position: absolute;
+          top: 0px;
+          left: 0;
+          right: 0;
+          text-align: center;
+          display: none;
+          margin: 0 auto;
+          background: $navbarBackgroundColor;
+          z-index: 99;
+          box-shadow: 1px 1px 3px 1px darken($navbarBackgroundColor, 15%);
+          @include responsive($media-tablet) {
+            background: none;
+            display: block !important;
+            box-shadow: none;
+            top: -72px;
+            width: 65%;
+            margin-right: 180px;
+
+          }
+          #nav {
+            float: none;
+            >ul {
+              float: none;
+              text-align: left;
+              @include responsive($media-tablet) {
+                text-align: right;
+              }
+              a {
+                letter-spacing: 1px;
+                font-weight: bold;
+              }
+              >li {
+                @include responsive($media-tablet) {
+                  float: none;
+                  display: inline-block !important;
+                  margin-right: 0;
+                }
+                >a, &:first-child>a, &:last-child>a {
+                  padding: 10px 20px;
+                  @include responsive($media-tablet) {
+                    padding: 10px 8px;
+                  }
+                  @include responsive($media-custom, $custom-screen) {
+                    padding: $navAnchorPadding;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .container {
+        max-width: $containerWidthHeader;
+      }
+      .header-hgroup {
+        padding: 18px 15px 32px;
+        #siteLogo {
+          float: left;
+          position: absolute;
+          top: 50%;
+          margin-top: -12px;
+          // min-height: 58px;
+          display: table;
+          a {
+            display: table-cell;
+            vertical-align: middle;
+          }
+        }
+      }
+      .navbar {
+        .site-nav {
+          .list-horizontal {
+            li.hasChild {
+              >ul {
+                z-index: 9999;
+                @include responsive($media-tablet) {
+                  left: 50%;
+                  margin-left: -100px;
+                  //box-shadow: 1px 1px 5px #ddd;
+                }
+                li {
+                  a {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    width: 100%;
+                    text-overflow: ellipsis;
+                  }
+                }
+                >li.hasChildren>ul {
+                  display: none;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.fixed-slider-wrapper {
+  display: none;
+}

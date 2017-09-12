@@ -1,0 +1,107 @@
+//
+//
+// enrol.scss
+//
+// Contains all the styles of enrol contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+#content {
+  .payments {
+    tr {
+      .student-info {
+        .student-email {
+          font-size: $checkoutStudentEmailFontSize;
+        }
+      }
+    }
+  }
+  #checkout {
+    div.amount-container {
+      #proceedToPaymentEvent {
+        @extend .btn;
+        @extend .app-btn;
+        padding: $checkoutBtnPadding;
+      }
+    }
+    #addCode {
+      @extend .btn;
+      @extend .app-btn;
+      padding: 6px 16px;
+      &, &:hover, &:focus, &:active {
+        font-size: 14px;
+        text-transform: inherit;
+      }
+    }
+    #addCorporatePass {
+      @extend .btn;
+      @extend .app-btn;
+      padding: 6px 20px;
+      height: auto;
+      &, &:hover, &:focus, &:active {
+        font-size: 14px;
+      }
+    }
+    div.concessionEditor {
+      button {
+        @extend .btn;
+        @extend .app-btn;
+        padding: $checkoutBtnPadding;
+        height: auto;
+        margin-right: 15px;
+      }
+      fieldset .conditions {
+        width: auto;
+        left: 0;
+        top: 0;
+        label {
+          width: 100% !important;
+          max-width: none !important;
+          text-align: left !important;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}
+
+#checkout #tabable-container {
+  .tab-content {
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+    .payer-selection>a.button {
+      @extend .btn;
+      @extend .app-btn;
+      padding: 6px 12px;
+      height: auto;
+      &, &:hover, &:focus, &:active {
+        font-size: 14px;
+        text-transform: inherit;
+      }
+    }
+  }
+}
+
+#checkout form, form#waitingListForm, form#mailingListForm,
+#addContactForm, [id*="addContactForm"], #contactEditorForm, #mc_embed_signup {
+  label {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  input[type="text"] {
+    height: 30px;
+  }
+  .form-controls {
+    input[type="submit"], a.cancel {
+      @extend .btn;
+      @extend .app-btn;
+      padding: $checkoutBtnPadding;
+      height: auto;
+    }
+    a.cancel {
+      margin-right: 15px;
+    }
+  }
+}

@@ -1,0 +1,159 @@
+//
+//
+// courses.scss
+//
+// Contains all the styles of courses contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+.search-terms {
+  background: $searchTermsBackground;
+  border-bottom: $searchTermsBorderBottom;
+  #toggle-results-map .toggle_locations {
+    background: $searchTermsToggleLocationsBackground;
+    padding-left: $searchTermsToggleLocationsLeft;
+  }
+}
+
+.classItem {
+  >.row {
+    margin: $classItemRowMargin;
+  }
+  .class-item-wrapper {
+    @include responsive($media-tablet) {
+      display: table;
+      width: 100%;
+    }
+    .classItem-left {
+      padding: $classItemLeftPadding;
+      min-height: $classItemLeftMinHeight;
+      @include responsive($media-tablet) {
+        display: table-cell;
+        width: 100%;
+      }
+      .class-item-info-l, .class-item-info-r {
+        @include responsive($media-small) {
+          width: 50%;
+        }
+      }
+    }
+    .classItem-right {
+      background: $classItemRightBackground;
+      padding: $classItemRightPadding;
+      @include responsive($media-tablet) {
+        display: table-cell;
+        float: none;
+        vertical-align: top;
+      }
+    }
+  }
+  .class-item-info {
+    .session-date-title {
+      margin-bottom: $classItemDateTitleMarginBottom;
+    }
+    .session-date {
+      font-size: $classItemSessionDateFontSize;
+      font-weight: $classItemSessionDateFontWeight;
+      margin-bottom: $classItemSessionDateMarginBottom;
+      color: $classItemSessionDateColor;
+    }
+    .class-item-info-l .date .timeline, .class-item-info-r .location, .class-item-info-r .tutor {
+      margin-bottom: 10px;
+      display: block;
+      border-bottom: 0;
+    }
+    div.date {
+      background: $classItemDateBackground;
+      padding-left: $classItemDatePaddingLeft;
+      .icon-session-time {
+        position: relative;
+        &::after {
+          content: "";
+          position: absolute;
+          background: $classItemDateSessionIconBackground;
+          width: $classItemDateSessionIconWidth;
+          height: $classItemDateSessionIconHeight;
+          top: $classItemDateSessionIconPositionTop;
+          left: $classItemDateSessionIconPositionLeft;
+        }
+      }
+    }
+  }
+  .price.course-item-price {
+    font-size: $classItemPriceFontSize;
+    color: $classItemPriceColor;
+    font-weight: $classItemPriceFontWeight;
+    .gst {
+      color: $classItemPriceGSTColor;
+    }
+    acronym.discount-price {
+      cursor: help;
+    }
+    .discount-price {
+      color: $classItemDiscountedPriceColor;
+    }
+    .fee-disabled {
+      text-decoration: line-through;
+      color: $classItemDisabledPriceColor;
+    }
+    .fee-discounted {
+      color: $coursesClassItemFeeDiscountColor;
+      margin-left: 5px
+    }
+  }
+}
+
+.internal-page {
+  &#ListPage, &#ProductsListPage {
+    .content {
+      .courseItem {
+        margin-bottom: $courseItemMarginBottom;
+      }
+    }
+  }
+  .content .courseItem {
+    .related-header {
+      font-size: $courseItemRelatedHeaderFontSize;
+      font-weight: $courseItemRelatedHeaderFontWeight;
+      float: $courseItemRelatedHeaderFloat;
+      margin-right: $courseItemRelatedHeaderMarginRight;
+      color: $courseItemRelatedHeaderColor;
+    }
+    .relatedCourses {
+      float: $relatedCoursesFloat;
+      > ul {
+        margin-left: $relatedCoursesMarginLeft;
+        margin-top: $relatedCoursesMarginTop;
+        >li {
+          display: $relatedCoursesListDisplay;
+          position: $relatedCoursesListPosition;
+          margin-left: $relatedCoursesListMarginLeft;
+          a {
+            color: $relatedCoursesListColor;
+            &:hover {
+              color: $relatedCoursesListColorHover;
+            }
+          }
+          &:first-child {
+            margin-left: $relatedCoursesListFirstChildMarginLeft;
+            &::before {
+              content: $relatedCoursesListFirstChildBeforeContent;
+            }
+          }
+          &::before {
+            content: $relatedCoursesListBeforeContent;
+            background: $relatedCoursesListBeforeBackground;
+            width: $relatedCoursesListBeforeWidth;
+            height: $relatedCoursesListBeforeHeight;
+            position: $relatedCoursesListBeforePosition;
+            top: $relatedCoursesListBeforePositionTop;
+            left: $relatedCoursesListBeforePositionLeft;
+            @include border-radius($relatedCoursesListBeforeBorderRadius);
+          }
+        }
+      }
+    }
+  }
+}

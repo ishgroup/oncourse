@@ -1,0 +1,61 @@
+//
+//
+// footer.scss
+//
+// Contains all settings used for footer content for theme "c"
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$footer-theme: "d";
+
+$footerBG: #171D1C no-repeat center top !default;
+$footerTextColor: #bebebe !default;
+$footerPadding: 0 !default;
+$footerFontSize: 18px !default;
+
+$footerInfoLinksBackground: transparent !default;
+$footerInfoLinksTextColor: #aaa !default;
+$footerInfoLinksAnchorColor: #aaa !default;
+$footerInfoLinksAnchorHoverColor: $theme-color !default;
+
+$footerInfoColor: #bebebe !default;
+$footerInfoHoverColor: $secondaryColor !default;
+
+$footerInfoTextColor: #878787 !default;
+$footerInfoTextColorHover: lighten($footerInfoTextColor, 15%) !default;
+
+$footerContactBorderBottom: 2px solid #124953 !default;
+$footerContactLinkColor: #17616f !default;
+$footerContactLinkHoverColor: $white !default;
+
+$theLatestBackground: #F0F0F0 !default;
+$theLatestHeaderTextColor: $bodyFontColor !default;
+$theLatestItemBackground: $white !default;
+$theLatestItemBorderColor: $color-4 !default;
+$theLatestItemBorderColorEvents: $color-4 !default;
+$theLatestItemBorderWidth: 1px !default;
+$theLatestItemHeight: 221px !default;
+$theLatestItemDateBackground: $color-3 !default;
+$theLatestItemDateTextColor: $white !default;
+$theLatestItemInfoBorderTop: 1px solid $color-4 !default;
+$theLatestItemHeaderColor: $bodyFontColor !default;
+$theLatestItemHeaderColorHover: $anchorHoverColor !default;
+$theLatestItemTextColor: #646464 !default;
+$theLatestItemSeeLinkColor: #353535 !default;
+
+$aboutUsBackground: $color-6 !default;
+$aboutUsHeaderTextColor: #bebebe !default;
+$aboutUsTextColor: #f0f0f0 !default;
+
+$newsSubscribeBackground: #f0f0f0 !default;
+$newsSubscribeHeaderColor: $bodyFontColor !default;
+$newsSubscribeTextColor: $bodyFontColor !default;
+$newsSubscribeButtonBackground: #0C0C0C !default;
+$newsSubscribeButtonBackgroundHover: $secondaryColor !default;
+
+$footerMainTitleTextColor: $white !default;
+$footerMainTitleTextColorHover: $secondaryColor !default;
+
+$footerContainerBorderTop: 1px solid #646464 !default;

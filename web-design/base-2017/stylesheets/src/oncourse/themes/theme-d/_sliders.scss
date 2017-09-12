@@ -1,0 +1,39 @@
+//
+//
+// sliders.scss
+//
+// Contains all the styles of slider contents
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include theme('d') {
+  .bx-wrapper {
+    .bx-controls-direction a {
+      width: 20px;
+    }
+    .bx-prev, .bx-next {
+      background: url($imagePath + 'icons/bx-controls.png') 0 0 no-repeat;
+    }
+    .bx-prev {
+      background-position: 0 0;
+      @include responsive($media-custom, $screen-1180) {
+        left: -75px;
+      }
+      &:hover, &:focus {
+        background-position: 0 0;
+      }
+    }
+    .bx-next {
+      background-position: -23px 0;
+      @include responsive($media-custom, $screen-1180) {
+        right: -75px;
+      }
+      &:hover, &:focus {
+        background-position: -23px 0;
+      }
+    }
+
+  }
+}

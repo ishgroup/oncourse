@@ -1,0 +1,283 @@
+//
+//
+// default.scss
+//
+// Contains all the settings used in different scss files
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+
+// Content settings
+$theme: "d";
+
+$theme-color: #0C0C0C !default;
+
+$containerWidth: 1080px !default;
+$containerWidthHeader: 1280px !default;
+
+$anchorColor: #0446bd !default;
+$anchorHoverColor: #37b8cb !default;
+
+$primaryColor: $theme-color !default; //btn primary color
+$secondaryColor: #0446bd !default;
+
+$color-1: #BFBFBF !default;
+$color-2: #353535 !default;
+$color-3: #2DA772 !default;
+$color-4: #D2D2D2 !default;
+$color-5: #2370df !default;
+$color-6: #202123 !default;
+$color-7: #589073 !default;
+
+// media: small, tablet, desktop
+$small-screen: 480px !default;
+$tablet-screen: 768px !default;
+$desktop-screen: 1080px !default;
+$custom-screen: 1060px !default;
+$screen-1180: 1180px !default;
+
+// Font Families
+
+$bodyBackground: $white !default;
+$bodyFontFamily: 'Source Sans Pro', sans-serif !default;
+$bodyFontSize: 15px !default;
+$bodyFontColor: #353535 !default;
+
+$discountBlockTextColor: $anchorColor !default;
+$discountBlockTitleColor: $bodyFontColor !default;
+
+// Content container
+$contentContainerMarginTop: 0px !default;
+
+$h1InnerFontFamily: $bodyFontFamily !default;
+$h1InnerTextColor: $primaryColor !default;
+
+$h1FontSize: 37px !default;
+$h1LinkColor: $primaryColor !default;
+$h1LinkHoverColor: $secondaryColor !default;
+
+$h2FontSize: 28px !default;
+$h2LinkColor: $primaryColor !default;
+$h2LinkHoverColor: $secondaryColor !default;
+$h2FontWeight: bold !default;
+
+$h3FontSize: 22px !default;
+$h3LinkColor: $primaryColor !default;
+$h3LinkHoverColor: $secondaryColor !default;
+
+$h4FontSize: 18px !default;
+$h4LinkColor: $primaryColor !default;
+$h4LinkHoverColor: $secondaryColor !default;
+
+$h5FontSize: 15px !default;
+$h5LinkColor: $primaryColor !default;
+$h5LinkHoverColor: $secondaryColor !default;
+
+$h6FontSize: 12px !default;
+$h6LinkColor: $primaryColor !default;
+$h6LinkHoverColor: $secondaryColor !default;
+
+$enrolActionFontFamily: $bodyFontFamily !default;
+$enrolActionBackground: #589073 !default;
+$enrolActionHoverBackground: $secondaryColor !default;
+
+$enrolActionPadding: 18px 5px !default;
+$enrolActionBorder: 1px solid #589073 !default;
+$enrolActionAddedBackground: $secondaryColor !default;
+
+$enrolActionWidth: 100% !default;
+$enrolActionBorderRadius: 4px !default;
+$enrolActionMargin: 5px 0 8px !default;
+
+$classItemInfoFontSize: $bodyFontSize !default;
+$coursesContentFontSize: $bodyFontSize !default;
+
+$coursesPageTitleFontSize: $h1FontSize !default;
+$coursesPageTitleFontWeight: bold !default;
+
+$classActionTextAlign: left !default;
+$classActionFontSize: $bodyFontSize !default;
+
+$classItemBorderHoverColor: $primaryColor !default;
+$classItemBackgroundColor: transparent !default;
+
+$classItemPadding: 0 !default;
+$classItemBorder: 1px solid #dedede !default;
+$classItemBorderLeft: 1px solid #dedede !default;
+
+$classItemInfoLeftBorderRight: 0 !default;
+
+$classItemRowMargin: 0 !default;
+$classItemDateTitleMarginBottom: 16px !default;
+
+$classItemSessionDateFontSize: 20px !default;
+$classItemSessionDateFontWeight: bold !default;
+$classItemSessionDateMarginBottom: 30px !default;
+$classItemSessionDateColor: #353831 !default;
+
+$classItemDateBackground: url("/s/img/icons/calendar.png") left 5px no-repeat !default;
+$classItemDatePaddingLeft: 33px !default;
+$classItemDateSessionIconBackground: url("/s/img/icons/session.png") 0 0 no-repeat !default;
+$classItemDateSessionIconWidth: 20px !default;
+$classItemDateSessionIconHeight: 20px !default;
+$classItemDateSessionIconPositionTop: 4px !default;
+$classItemDateSessionIconPositionLeft: -33px !default;
+
+$classItemLeftPadding: 30px 20px !default;
+$classItemLeftMinHeight: 170px !default;
+
+$coursesFontFamily: $bodyFontFamily !default;
+$coursesDetailsFontFamily: $bodyFontFamily !default;
+$normalFontFamily: $bodyFontFamily !default;
+
+$courseItemBorderTop: 0px dotted $primaryColor !default;
+$courseItemMarginBottom: 60px !default;
+
+$courseMoreLinkColor: $theme-color !default;
+$courseMoreLinkHoverColor: $primaryColor !default;
+
+$confirmedProceedPadding: 11px 17px !default;
+$confirmedProceedBackground: $theme-color !default;
+$confirmedProceedBackgroundHover: $secondaryColor !default;
+$confirmedProceedBorder: 1px solid darken($theme-color, 10%) !default;
+$confirmedProceedBorderHover: 1px solid darken($secondaryColor, 10%) !default;
+$confirmedProceedBorderRadius: 4px !default;
+$confirmedProceedFontSize: 12px !default;
+$confirmedProceedMargin: 15px !default;
+
+$confirmedCloseButtonColor: $theme-color !default;
+$confirmedCloseButtonColorHover: $secondaryColor !default;
+
+$courseShortDescriptionContent: none !default;
+
+$courseMoreDisplay: inline !default;
+$courseMorePosition: relative !default;
+
+$btnBackgroundColor: $primaryColor !default;
+$btnBackgroundHoverColor: $secondaryColor !default;
+$btnPadding: 16px 50px !default;
+$btnHeight: 40px !default;
+$btnFontSize: 17px !default;
+$btnFontWeight: bold !default;
+$btnBorderRadius: 5px !default;
+$appBtnBorder: 1px solid $theme-color !default;
+
+$btnType2BackgroundColor: $secondaryColor !default;
+
+$appBtnLetterSpacing: 1.2px !default;
+
+$squareBtnMargin: 35px auto 0 !default;
+$squareBtnDisplay: block !default;
+$squareBtnColor: $white !default;
+$squareBtnPadding: 10px 25px 10px !default;
+$squareBtnFontSize: 15px !default;
+$squareBtnBorderColor: $theme-color !default;
+$squareBtnBorderColorHover: $white !default;
+$squareBtnWidth: 189px !default;
+$squareBtnFontWeight: 700 !default;
+$squareBtnTextTransform: uppercase !default;
+$squareBtnBorderRadius: 2px !default;
+$squareBtnLetterSpacing: 2px !default;
+$squareBtnTextAlign: center !default;
+
+
+$classItemLinkHoverColor: $primaryColor !default;
+
+$browseCoursesHeaderColor: $bodyFontColor !default;
+$browseCoursesTextColor: $bodyFontColor !default;
+$browseCoursesHeaderColorHover: $anchorHoverColor !default;
+
+$topBlocksBackground: $black !default;
+$topBlocksTextColor: #f0f0f0 !default;
+$topBlocksHeaderTextColor: #bebebe !default;
+$topBlocksHeaderTextColorHover: $anchorHoverColor !default;
+
+$ourCoursesBackground: $color-6 !default;
+$ourCoursesTextColor: $white !default;
+$ourCoursesListBackground: #3e3e3e !default;
+$ourCoursesListBackgroundHover: darken($ourCoursesListBackground, 15%) !default;
+$ourCoursesListBorder: 1px solid lighten($ourCoursesListBackground, 10%) !default;
+$ourCoursesListBorderHover: 1px solid lighten($ourCoursesListBackground, 10%) !default;
+$ourCoursesListTextColor: $color-1 !default;
+$ourCoursesListTextColorHover: darken($ourCoursesListTextColor, 15%) !default;
+
+$popularCoursesBackground: $white !default;
+$popularCoursesHeaderTextColor: $bodyFontColor !default;
+$popularCoursesItemBackground: $color-3 !default;
+$popularCoursesItemTextColor: $white !default;
+$popularCoursesItemTitleColor: $white !default;
+$popularCoursesItemTitleColorHover: $anchorHoverColor !default;
+
+$waitingListTitleFontSize: 17px !default;
+$waitingListTitleBG: #F5F5F5 !default;
+$waitingListTitleAnchorColor: #505050 !default;
+$waitingListTitleHoverBG: $color-7 !default;
+
+$coursesJoinButtonBackground: none !default;
+$coursesJoinButtonHoverBackground: transparent !default;
+$coursesJoinButtonMinWidth: auto !default;
+$coursesJoinButtonPadding: 0 !default;
+$coursesJoinButtonFontSize: 17px !default;
+$coursesJoinButtonColor: #505050 !default;
+$coursesJoinButtonLineHeight: 1.5 !default;
+$coursesJoinButtonFontWeight: bold !default;
+
+$coursesClassItemLocationImage: '/s/img/icons/location.png' !default;
+$coursesClassItemLocationImageWidth: 23px !default;
+
+$coursesClassItemTutorImage: '/s/img/icons/person.png' !default;
+$coursesClassItemTutorImageWidth: 23px !default;
+$coursesClassItemTutorImageHeight: 21px !default;
+
+$courseItemClassDescriptionMargin: 10px 0 10px 0 !default;
+
+$classItemRightBackground: #efeff1 !default;
+$classItemRightPadding: 30px 18px !default;
+
+$classItemPriceColor: $black !default;
+$classItemPriceFontSize: 20px !default;
+$classItemPriceFontWeight: bold !default;
+$classItemPriceGSTColor: #938a8d !default;
+$classItemDiscountedPriceColor: #736565 !default;
+
+$classItemDisabledPriceColor: gray !default;
+$coursesClassItemFeeDiscountColor: $primaryColor !default;
+
+$checkoutBtnPadding: 9px 40px !default;
+
+$checkoutFontSize: $bodyFontSize !default;
+$checkoutStudentEmailFontSize: 14px !default;
+
+$searchTermsBackground: url("/s/img/icons/icon-search-courses.png") 7px 10px no-repeat !default;
+$searchTermsBorderBottom: 1px solid $color-4 !default;
+$searchTermsToggleLocationsBackground: url("/s/img/icons/location.png") left 2px no-repeat !default;
+$searchTermsToggleLocationsLeft: 23px !default;
+
+$courseItemRelatedHeaderFontSize: 20px !default;
+$courseItemRelatedHeaderFontWeight: bold !default;
+$courseItemRelatedHeaderFloat: left !default;
+$courseItemRelatedHeaderMarginRight: 10px !default;
+$courseItemRelatedHeaderColor: $color-3 !default;
+
+$relatedCoursesFloat: left !default;
+$relatedCoursesMarginLeft: 0 !default;
+$relatedCoursesMarginTop: 2.5px !default;
+$relatedCoursesListDisplay: inline-block !default;
+$relatedCoursesListPosition: relative !default;
+$relatedCoursesListMarginLeft: 19px !default;
+$relatedCoursesListColor: $color-3 !default;
+$relatedCoursesListColorHover: $secondaryColor !default;
+
+$relatedCoursesListFirstChildMarginLeft: 10px !default;
+$relatedCoursesListFirstChildBeforeContent: none !default;
+
+$relatedCoursesListBeforeContent: "" !default;
+$relatedCoursesListBeforeBackground: $color-3 !default;
+$relatedCoursesListBeforeWidth: 5px !default;
+$relatedCoursesListBeforeHeight: 5px !default;
+$relatedCoursesListBeforePosition: absolute !default;
+$relatedCoursesListBeforePositionTop: 10px !default;
+$relatedCoursesListBeforePositionLeft: -12px !default;
+$relatedCoursesListBeforeBorderRadius: 100% !default;
