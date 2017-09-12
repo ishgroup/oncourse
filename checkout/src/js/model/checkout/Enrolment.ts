@@ -1,4 +1,4 @@
-import {Field} from "./../field/Field";
+import {FieldHeading} from "./../field/FieldHeading";
 import {CourseClassPrice} from "./../web/CourseClassPrice";
 
 export class Enrolment {
@@ -8,6 +8,6 @@ export class Enrolment {
   warnings?: string[];
   errors?: string[];
   selected?: boolean;
-  fields?: Field[];
+  fieldHeadings?: FieldHeading[];
 }
 

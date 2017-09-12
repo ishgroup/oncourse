@@ -1,6 +1,6 @@
 package ish.oncourse.willow.model.checkout;
 
-import ish.oncourse.willow.model.field.Field;
+import ish.oncourse.willow.model.field.FieldHeading;
 import ish.oncourse.willow.model.web.CourseClassPrice;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ public class Enrolment  {
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
     private Boolean selected = null;
-    private List<Field> fields = new ArrayList<Field>();
+    private List<FieldHeading> fieldHeadings = new ArrayList<FieldHeading>();
 
     /**
      * Get contactId
@@ -128,24 +128,24 @@ public class Enrolment  {
     }
 
     /**
-     * Get fields
-     * @return fields
+     * Get fieldHeadings
+     * @return fieldHeadings
      */
-    public List<Field> getFields() {
-        return fields;
+    public List<FieldHeading> getFieldHeadings() {
+        return fieldHeadings;
     }
 
-    public void setFields(List<Field> fields) {
-       this.fields = fields;
+    public void setFieldHeadings(List<FieldHeading> fieldHeadings) {
+       this.fieldHeadings = fieldHeadings;
     }
 
-    public Enrolment fields(List<Field> fields) {
-      this.fields = fields;
+    public Enrolment fieldHeadings(List<FieldHeading> fieldHeadings) {
+      this.fieldHeadings = fieldHeadings;
       return this;
     }
 
-    public Enrolment addFieldsItem(Field fieldsItem) {
-      this.fields.add(fieldsItem);
+    public Enrolment addFieldHeadingsItem(FieldHeading fieldHeadingsItem) {
+      this.fieldHeadings.add(fieldHeadingsItem);
       return this;
     }
 
@@ -161,7 +161,7 @@ public class Enrolment  {
       sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
-      sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
+      sb.append("    fieldHeadings: ").append(toIndentedString(fieldHeadings)).append("\n");
       sb.append("}");
       return sb.toString();
     }

@@ -2,21 +2,28 @@ package ish.oncourse.willow.functions.field
 
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.willow.model.field.Field
+import ish.oncourse.willow.model.field.FieldHeading
 
 class GetEnrolmentFields {
     
     private CourseClass courseClass
+    private FieldHeading dummy = new FieldHeading()
+    private Map<String, FieldHeading> headingsMap = [:]
+    private List<FieldHeading> result = []
+
 
     GetEnrolmentFields(CourseClass courseClass) {
         this.courseClass = courseClass
     }
     
-    List<Field> get() {
-        List<ish.oncourse.model.Field> allFields = courseClass.course.fieldConfigurationScheme?.enrolFieldConfiguration?.fields?: new GetDefaultFieldConfiguration(courseClass.college, courseClass.objectContext).get().fields
-        List<Field> result = []
-        allFields.findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_ENROLMENT }
-                .each { f -> result << new FieldBuilder(field: f).build() }
+    List<FieldHeading> get() {
+        
+        FieldConfiguration configuration = courseClass.course.fieldConfigurationScheme?.enrolFieldConfiguration?: new GetDefaultFieldConfiguration(courseClass.college, courseClass.objectContext).get()
+        List<ish.oncourse.model.Field> enrolmentCustomFields = configuration.fields.findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_ENROLMENT }
+//        enrolmentCustomFields.each { f -> getHeadingBy(f.fieldHeading)}
+
         result
     }
 }

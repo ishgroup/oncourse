@@ -84,7 +84,7 @@ class ProcessClass {
                         ccp
                     }
                 }
-                e.fields = new GetEnrolmentFields(persistentClass).get()
+                e.fieldHeadings = new GetEnrolmentFields(persistentClass).get()
                 e
             }
         }
