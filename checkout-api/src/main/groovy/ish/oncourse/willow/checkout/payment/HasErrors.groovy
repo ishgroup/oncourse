@@ -19,6 +19,8 @@ class HasErrors {
           !nodes.applications.errors.flatten().empty ||
           !nodes.articles.errors.flatten().empty ||
           !nodes.memberships.errors.flatten().empty ||
-          !nodes.vouchers.errors.flatten().empty 
+          !nodes.vouchers.errors.flatten().empty || 
+          !checkoutModel.validationErrors.formErrors.empty || 
+          !checkoutModel.validationErrors.fieldsErrors.empty
     }
 }
