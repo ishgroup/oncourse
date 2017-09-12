@@ -27,6 +27,12 @@
       >span {
         width: 92%;
       }
+      .form-group .__react_component_tooltip.show {
+        width: 235px !important;
+        bottom: 30px;
+        left: -7px !important;
+        max-width: none !important;
+      }
     }
     button {
       @extend %checkout-submit-button;

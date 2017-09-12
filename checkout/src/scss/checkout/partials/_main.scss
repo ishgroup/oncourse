@@ -69,6 +69,10 @@
     border-radius: $checkoutValidationBorderRadius;
     padding: $checkoutValidationPadding;
     margin: $checkoutValidationMargin;
+    >ul {
+      list-style: none;
+      margin: 0;
+    }
   }
 
   .__react_component_tooltip {
