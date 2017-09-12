@@ -18,6 +18,10 @@
   @include backface-visibility($pageBackfaceVisibility);
 }
 
+html {
+  font-size: inherit;
+}
+
 body {
   background: $bodyBackground;
   font-family: $bodyFontFamily;

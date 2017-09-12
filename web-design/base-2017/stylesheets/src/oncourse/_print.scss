@@ -6,7 +6,7 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
+//
 
 
 //
@@ -53,6 +53,12 @@
       border-bottom: 1px dashed #000000 !important;
       margin-bottom: 1em !important;
 
+      .NRTLogo {
+        float: none !important;
+        display: block !important;
+        margin-bottom: 20px !important;
+      }
+
       // Course description and class item
       .description, .classItem {
         margin-left: 10pt !important
@@ -82,6 +88,15 @@
     #mapStatic {
       display: none !important
     }
+    ul.siteList {
+      > li {
+        margin-bottom: 20px !important;
+      }
+    }
+  }
+
+  a[href]:after {
+    content: "" !important;
   }
 
   // Defining font size of header tag h1
@@ -170,7 +185,42 @@
     page-break-after: avoid
   }
 
-  .header-toolbar, .site-nav, .sidebar-left, .sidebar-right, .center-banner, .site-footer, .dialogContainer, .search-terms, #showMoreCourses, .enrolAction, .waiting-list-title, .class-more, #fp_feed_container, #nav-global, #gmapCanvas, .classStatus, .print-page, .directions-wrapper, .bubbleInfo, .global-navi, #frontpage_slider, #frontpage_slider_pager, .more, .header-contacts, #link-grid, .header-block, #sidebar {
-    display: none !important
+  #cmsWrapper, .header-toolbar, .site-nav, .sidebar-left, .sidebar-right, .center-banner, .site-footer, .dialogContainer, .search-terms, #showMoreCourses, .enrolAction, .waiting-list-title, .class-more, #fp_feed_container, #nav-global, #gmapCanvas, .classStatus, .print-page, .directions-wrapper, .bubbleInfo, .global-navi, #frontpage_slider, #frontpage_slider_pager, .more, .header-contacts, #link-grid, .header-block, #sidebar {
+    display: none !important;
+  }
+
+  ul {
+    &, li {
+      margin-left: 0px !important;
+      padding-left: 0 !important;
+    }
+    &.column, &.grid {
+      margin: 0px !important;
+      li {
+        width: 100% !important;
+        float: none !important;
+        padding: 0 0 20px !important;
+        >div {
+          height: auto !important;
+          max-width: none !important;
+          margin: 0 !important;
+          >a {
+            display: block !important;
+            width: auto !important;
+            height: auto !important;
+            img {
+              position: static !important;
+            }
+            >span {
+              display: block !important;
+              position: static !important;
+            }
+          }
+        }
+      }
+    }
+  }
+  .app-btn {
+    padding: 0px !important;
   }
 }

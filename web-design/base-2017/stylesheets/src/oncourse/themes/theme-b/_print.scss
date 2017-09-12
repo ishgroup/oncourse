@@ -1,0 +1,35 @@
+//
+//
+// print.scss
+//
+// Contains all the styles of print
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@media print {
+  .slider-wrapper, .top-bar, body.internal-page .content-images {
+    display: none !important;
+  }
+  .starting-soon {
+    .courseDescription {
+      max-width: none !important;
+      height: auto !important;
+    }
+  }
+  .home-info {
+    >span {
+      bottom: 0 !important;
+      right: auto !important;
+      left: 0 !important
+    }
+  }
+  .our-courses {
+    h1.main-title {
+      margin-top: 20px !important;
+      margin-left: 0px !important;
+      margin-bottom: 20px !important;
+    }
+  }
+}

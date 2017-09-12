@@ -1,0 +1,25 @@
+//
+//
+// enrol.scss
+//
+// Contains enrol settings
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+$checkoutFontSize: 12px !default;
+$checkoutMargin: 10px 0 20px 0 !default;
+
+$checkoutAddCodeBackground: $secondaryColor !default;
+$checkoutAddCodeTextColor: $white !default;
+$checkoutAddCodeBorder: none !default;
+$checkoutAddCode: 0 !default;
+
+$checkoutStudentEmailColor: #888888 !default;
+$checkoutStudentEmailFontSize: 11px !default;
+$checkoutStudentEmailFontWeight: normal !default;
+$checkoutStudentEmailPositionLeft: 0 !default;
+$checkoutStudentEmailTextTransform: lowercase !default;
+$checkoutStudentEmailPositionTop: 1px !default;
+$checkoutStudentEmailMarginRight: 0 5px 0 0 !default;

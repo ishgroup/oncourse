@@ -138,6 +138,8 @@ $showOtherClassesImage: "/s/img/icon/go-down-18.png" !default;
 $showFullClassesImage: "/s/img/arrow-down.png" !default;
 // Waiting list join button top and bottom text height
 $coursesJoinButtonLineHeight: 12px !default;
+$coursesJoinButtonFontWeight: 300 !default;
+$coursesJoinButtonTextAlign: center !default;
 // Waiting list join button curved
 $coursesJoinButtonBorderRadius: 5px !default;
 
@@ -164,6 +166,8 @@ $coursesDescriptionLineHeight: 19px !default;
 
 // Course item header font size
 $coursesPageTitleFontSize: 28px !default;
+$coursesPageTitleFontWeight: normal !default;
+
 $coursesHeaderItemFontSize: 28px !default;
 
 $coursesHeaderItemTextColor: $primaryColor !default;
@@ -178,6 +182,8 @@ $courseDescriptionMargin: 0 0 35px 0 !default;
 $courseDescriptionFirstImageFloat: left !default;
 // Course description's first image position
 $courseDescriptionFirstImageMargin: 0px 15px 15px 0px !default;
+
+$courseShortDescriptionContent: "" !default;
 
 // Courses list item position (inside, outside)
 $courseItemListStylePosition: outside !default;
@@ -219,8 +225,20 @@ $courseModuleListPadding: 0 0 10px 6px !default;
 // Courses module child list left space
 $courseModuleListChildPaddingLeft: 6px !default;
 
+$courseMoreDisplay: block !default;
+$courseMoreFontWeight: normal !default;
+$courseMorePosition: absolute !default;
+$courseMorePositionBottom: 0px !default;
+$courseMorePositionRight: 0 !default;
+$courseMoreWidth: 100% !default;
+$courseMoreTextAlign: right !default;
+$courseMoreZIndex: 2 !default;
+
 $courseMoreLinkColor: $secondaryColor !default;
 $courseMoreLinkHoverColor: $primaryColor !default;
+$courseMoreLinkFontWeight: bold !default;
+$courseMoreLinkTextDecoration: none !default;
+$courseMoreLinkTextDecorationHover: underline !default;
 
 //
 //
@@ -279,14 +297,19 @@ $confirmedProceedDisplay: inline-block !default;
 $confirmedProceedPadding: 5px 10px !default;
 // Confirmed to checkout popup's background
 $confirmedProceedBackground: #A90E1F !default;
+$confirmedProceedBackgroundHover: #A90E1F !default;
 // Confirmed to checkout popup's text color
 $confirmedProceedColor: $white !default;
+$confirmedProceedColorHover: $white !default;
 $confirmedProceedTextTransform: uppercase !default;
 $confirmedProceedBorder: 0 !default;
+$confirmedProceedBorderHover: 0 !default;
+$confirmedProceedBorderRadius: 0 !default;
 $confirmedProceedTextDecoration: none !default;
 // Confirmed to checkout popup's text size
 $confirmedProceedFontSize: 11px !default;
 $confirmedProceedFontWeight: 700 !default;
+$confirmedProceedMargin: 0 !default;
 
 $confirmedClassDateFontSize: 11px !default;
 $confirmedClassDateColor: #666 !default;
@@ -296,12 +319,16 @@ $confirmedCloseWrapperPadding: 10px 0 0 0 !default;
 $confirmedCloseWrapperTextAlign: center !default;
 $confirmedCloseWrapperFontSize: 16px !default;
 
+$confirmedCloseButtonColor: $classItemLinkColor !default;
+$confirmedCloseButtonColorHover: $classItemLinkHoverColor !default;
+
 //
 //
 // Following settings support courses bubbleinfo
 //
 
 $coursesBubbleInfoDisplay: block !default;
+$coursesBubbleInfoFontFamily: $normalFontFamily !default;
 $coursesBubbleInfoFontSize: 12px !default;
 $coursesBubbleInfoWidth: 256px !default;
 $coursesBubbleInfoBorderCollapse: collapse !default;
@@ -340,9 +367,13 @@ $coursesClassItemDateTimeBorderBottom: 1px dotted !default;
 
 $coursesClassItemTutorDisplay: block !default;
 $coursesClassItemTutorImage: "/s/img/icon/person.png" !default;
+$coursesClassItemTutorImageWidth: 14px !default;
+$coursesClassItemTutorImageHeight: 13px !default;
 
 $coursesClassItemLocationDisplay: block !default;
 $coursesClassItemLocationImage: "/s/img/icon/location.png" !default;
+$coursesClassItemLocationImageWidth: 14px !default;
+$coursesClassItemLocationImageHeight: 22px !default;
 
 $coursesClassItemPriceDisplay: block !default;
 $coursesClassItemFeeDiscountColor: $primaryColor !default;

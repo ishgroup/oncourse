@@ -23,7 +23,7 @@
 
   // Displaying cart icon before shortlist courses count
   &::before {
-    background-image: $defaultSpriteImage;
+    background: $shortListBeforeBackground;
     background-position: $shortListBeforeBackgroundPosition;
     background-repeat: $shortListBeforeBackgroundRepeat;
     content: "";
@@ -147,7 +147,7 @@
       }
       &:hover {
         background-color: $shortListOrderDeleteIconHoverBackgroundColor;
-        opacity: $shortListOrderDeleteIconOpacityHover;
+        @include opacity($shortListOrderDeleteIconOpacityHover);
       }
       &.loading {
         background: transparent url("/s/img/icon/ajax-loader.gif") no-repeat left top

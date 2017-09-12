@@ -13,8 +13,8 @@
 
 #content {
   #checkout {
-    font-size: 12px;
-    margin-top: 10px;
+    font-size: $checkoutFontSize;
+    margin: $checkoutMargin;
 
     // Progress step list
     .progress-steps ul {
@@ -78,10 +78,10 @@
       }
     }
     #addCode {
-      background: $secondaryColor;
-      color: $white;
-      border: none;
-      border-radius: 0;
+      background: $checkoutAddCodeBackground;
+      color: $checkoutAddCodeTextColor;
+      border: $checkoutAddCodeBorder;
+      @include border-radius($checkoutAddCode);
     }
   }
 }
@@ -1046,13 +1046,13 @@ div.clearboth {
         padding-bottom: 5px;
         position: relative;
         .student-email {
-          color: #888888;
-          font-size: 11px;
-          font-weight: normal;
-          left: 0;
-          text-transform: lowercase;
-          top: 1px;
-          margin-right: 5px;
+          color: $checkoutStudentEmailColor;
+          font-size: $checkoutStudentEmailFontSize;
+          font-weight: $checkoutStudentEmailFontWeight;
+          left: $checkoutStudentEmailPositionLeft;
+          text-transform: $checkoutStudentEmailTextTransform;
+          top: $checkoutStudentEmailPositionTop;
+          margin: $checkoutStudentEmailMarginRight;
         }
         .student-affilation {
           color: #888888;

@@ -161,10 +161,14 @@
                     font-size: 17px;
                   }
                   &#adv_search_location, &#adv_search_time {
-                    padding-right: 10px;
+                    @include responsive($media-tablet) {
+                      padding-right: 10px;
+                    }
                   }
                   &#adv_search_price, &#adv_search_day {
-                    padding-left: 10px;
+                    @include responsive($media-tablet) {
+                      padding-left: 10px;
+                    }
                   }
                 }
 

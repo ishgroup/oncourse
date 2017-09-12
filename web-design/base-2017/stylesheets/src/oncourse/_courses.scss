@@ -16,7 +16,7 @@
   .courseItem {
     .page-title {
       font-size: $coursesPageTitleFontSize;
-      font-weight: normal;
+      font-weight: $coursesPageTitleFontWeight;
     }
     .addthis {
       width: auto;
@@ -75,9 +75,9 @@
     }
   }
 
-  /**
-   * Following style handles courses item lists and course description
-   */
+  //
+  // Following style handles courses item lists and course description
+  //
 
   .content {
     .align-left, .align-right {
@@ -269,25 +269,25 @@
 
       // More link of course
       .more {
-        display: block;
-        font-weight: normal;
+        display: $courseMoreDisplay;
+        font-weight: $courseMoreFontWeight;
         @include background(linear-gradient(left center, rgba(255, 255, 255, 0) 50%, #ffffff 95%));
-        position: absolute;
-        bottom: 0px;
-        width: 100%;
-        right: 0;
-        text-align: right;
+        position: $courseMorePosition;
+        bottom: $courseMorePositionBottom;
+        right: $courseMorePositionRight;
+        width: $courseMoreWidth;
+        text-align: $courseMoreTextAlign;
         color: $courseMoreLinkColor;
-        z-index: 2;
+        z-index: $courseMoreZIndex;
 
         a {
           color: $courseMoreLinkColor;
-          font-weight: bold;
-          text-decoration: none;
+          font-weight: $courseMoreLinkFontWeight;
+          text-decoration: $courseMoreLinkTextDecoration;
 
           &:hover {
             color: $courseMoreLinkHoverColor;
-            text-decoration: underline;
+            text-decoration: $courseMoreLinkTextDecorationHover;
           }
         }
       }
@@ -326,8 +326,8 @@
           font-size: $coursesJoinButtonFontSize;
           color: $coursesJoinButtonColor;
           line-height: $coursesJoinButtonLineHeight;
-          font-weight: 300;
-          text-align: center;
+          font-weight: $coursesJoinButtonFontWeight;
+          text-align: $coursesJoinButtonTextAlign;
           border-radius: $coursesJoinButtonBorderRadius;
         }
 
@@ -548,8 +548,8 @@
       display: $coursesClassItemTutorDisplay;
       .event-tutor-icon {
         background-image: url($coursesClassItemTutorImage);
-        width: 14px;
-        height: 13px;
+        width: $coursesClassItemTutorImageWidth;
+        height: $coursesClassItemTutorImageHeight;
         @extend .cd-icon;
       }
     }
@@ -559,8 +559,8 @@
       display: $coursesClassItemLocationDisplay;
       .event-location-icon {
         background-image: url($coursesClassItemLocationImage);
-        width: 14px;
-        height: 22px;
+        width: $coursesClassItemLocationImageWidth;
+        height: $coursesClassItemLocationImageHeight;
         @extend .cd-icon;
       }
     }
@@ -606,7 +606,7 @@
    * Courses enrol action button
    */
 
-  .classAction {
+   .classAction {
     text-align: $classActionTextAlign;
     font-size: $classActionFontSize;
     line-height: $classActionLineHeight;
@@ -729,7 +729,7 @@
 // Courses class's bubbleinfo
 .bubbleInfo {
   display: none;
-  font-family: $normalFontFamily;
+  font-family: $coursesBubbleInfoFontFamily;
   font-size: $coursesBubbleInfoFontSize;
   width: $coursesBubbleInfoWidth;
   border-collapse: $coursesBubbleInfoBorderCollapse;
@@ -909,7 +909,7 @@
     filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#00FFFFFF', EndColorStr='#FFFFFFFF');
     @include background(linear-gradient(left center, rgba(255,255,255,0) 50%,#ffffff 90%));
     bottom: 0px;
-    content: "";
+    content: $courseShortDescriptionContent;
     display: block;
     height: 20px;
     right: 0;
@@ -1103,9 +1103,16 @@
       color: $confirmedProceedColor;
       text-transform: $confirmedProceedTextTransform;
       border: $confirmedProceedBorder;
+      @include border-radius($confirmedProceedBorderRadius);
       text-decoration: $confirmedProceedTextDecoration;
       font-size: $confirmedProceedFontSize;
       font-weight: $confirmedProceedFontWeight;
+      margin: $confirmedProceedMargin;
+      &:hover {
+        background: $confirmedProceedBackgroundHover;
+        color: $confirmedProceedColorHover;
+        border: $confirmedProceedBorderHover;
+      }
     }
   }
   .classDate {
@@ -1117,5 +1124,11 @@
     padding: $confirmedCloseWrapperPadding;
     text-align: $confirmedCloseWrapperTextAlign;
     font-size: $confirmedCloseWrapperFontSize;
+    .closeButton {
+      color: $confirmedCloseButtonColor;
+      &:hover {
+        color: $confirmedCloseButtonColorHover;
+      }
+    }
   }
 }
