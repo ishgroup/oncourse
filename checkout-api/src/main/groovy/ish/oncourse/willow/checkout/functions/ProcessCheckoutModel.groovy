@@ -10,6 +10,7 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Product
 import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
+import ish.oncourse.willow.functions.field.ValidateEnrolmentFields
 import ish.oncourse.willow.functions.voucher.ProcessRedeemedVouchers
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.Application
@@ -21,6 +22,7 @@ import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
 import ish.oncourse.willow.model.common.CommonError
+import ish.oncourse.willow.model.common.ValidationError
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
@@ -53,6 +55,7 @@ class ProcessCheckoutModel {
         this.college = college
         this.checkoutModelRequest = checkoutModelRequest
         this.model = new CheckoutModel()
+        this.model.validationErrors = new ValidationError()
         this.model.payerId = checkoutModelRequest.payerId
     }
 
@@ -64,6 +67,9 @@ class ProcessCheckoutModel {
         }
         
         processNodes()
+        if (model.error) {
+            return this
+        }
         
         if (corporatePass) {
             enrolmentsToProceed.values().flatten().unique()
@@ -165,17 +171,28 @@ class ProcessCheckoutModel {
         if (e.selected) {
             ProcessClass processClass = new ProcessClass(context, contact, college, e.classId, taxOverridden).process()
             CourseClass courseClass = processClass.persistentClass
-
+            String className = "$courseClass.course.name ($courseClass.course.code - $courseClass.code)"
+            
             if (processClass.enrolment == null) {
-                e.errors << "Enrolment for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) avalible by application".toString()
+                e.errors << "Enrolment for $contact.fullName on $className avalible by application".toString()
             } else if (!checkAndBookPlace(courseClass)) {
-                e.errors << "Unfortunately you just missed out. The class $courseClass.course.name ($courseClass.course.code - $courseClass.code) was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
+                e.errors << "Unfortunately you just missed out. The class $className was removed from your shopping basket since the last place has now been filled. Please select another class from this course or join the waiting list. <a href=\"/course/$courseClass.course.code\">[ Show course ]</a>".toString()
             } else {
                 e.errors += processClass.enrolment.errors
                 e.warnings += processClass.enrolment.warnings
             }
             
             if (e.errors.empty) {
+                ValidateEnrolmentFields validateEnrolmentFields = ValidateEnrolmentFields.valueOf(e.fieldHeadings, processClass.enrolment.fieldHeadings, className)
+                validateEnrolmentFields.validate()
+                if (validateEnrolmentFields.commonError) {
+                    model.error = validateEnrolmentFields.commonError
+                }
+                validateEnrolmentFields.fieldErrors.each { fieldError -> 
+                    model.validationErrors.formErrors << fieldError.error
+                    model.validationErrors.fieldsErrors << fieldError
+                }
+                
                 enrolmentsCount++
                 e.price = processClass.enrolment.price
                 totalAmount = totalAmount.add(e.price.fee != null ? e.price.fee .toMoney() : e.price.feeOverriden.toMoney())

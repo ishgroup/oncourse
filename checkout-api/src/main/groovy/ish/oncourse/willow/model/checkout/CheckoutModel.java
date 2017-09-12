@@ -3,12 +3,14 @@ package ish.oncourse.willow.model.checkout;
 import ish.oncourse.willow.model.checkout.Amount;
 import ish.oncourse.willow.model.checkout.ContactNode;
 import ish.oncourse.willow.model.common.CommonError;
+import ish.oncourse.willow.model.common.ValidationError;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutModel  {
   
     private CommonError error = null;
+    private ValidationError validationErrors = null;
     private List<ContactNode> contactNodes = new ArrayList<ContactNode>();
     private Amount amount = null;
     private String payerId = null;
@@ -27,6 +29,23 @@ public class CheckoutModel  {
 
     public CheckoutModel error(CommonError error) {
       this.error = error;
+      return this;
+    }
+
+    /**
+     * Get validationErrors
+     * @return validationErrors
+     */
+    public ValidationError getValidationErrors() {
+        return validationErrors;
+    }
+
+    public void setValidationErrors(ValidationError validationErrors) {
+       this.validationErrors = validationErrors;
+    }
+
+    public CheckoutModel validationErrors(ValidationError validationErrors) {
+      this.validationErrors = validationErrors;
       return this;
     }
 
@@ -93,6 +112,7 @@ public class CheckoutModel  {
       sb.append("class CheckoutModel {\n");
       
       sb.append("    error: ").append(toIndentedString(error)).append("\n");
+      sb.append("    validationErrors: ").append(toIndentedString(validationErrors)).append("\n");
       sb.append("    contactNodes: ").append(toIndentedString(contactNodes)).append("\n");
       sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
       sb.append("    payerId: ").append(toIndentedString(payerId)).append("\n");

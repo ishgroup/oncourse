@@ -1427,6 +1427,8 @@ definitions:
     properties: 
       error:
         $ref: '#/definitions/common.CommonError'
+      validationErrors:
+        $ref: '#/definitions/common.ValidationError'
       contactNodes:
         type: array
         items:
