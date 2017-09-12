@@ -27,6 +27,7 @@ import ish.oncourse.webservices.usi.USIService;
 import ish.oncourse.webservices.usi.crypto.CryptoKeys;
 import ish.oncourse.webservices.usi.tapestry.CryptoKeysBuilder;
 import ish.oncourse.webservices.usi.tapestry.USIServiceBuilder;
+import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.internal.services.TapestrySessionFactory;
@@ -100,6 +101,10 @@ public class AppModule {
         configuration.add("AccessController", accessController, "before:PageRender");
         configuration.add("ExpiredSessionController", expiredSessionController, "before:ComponentEvent");
     }
+
+	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
+		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
+	}
 
     public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {
         configuration.add(SymbolConstants.HMAC_PASSPHRASE, HMAC_PASSPHRASE);
