@@ -6,6 +6,7 @@ import ish.oncourse.model.WebSite;
 import ish.oncourse.portal.services.AppModule;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.SubModule;
@@ -61,5 +62,9 @@ public class TestModule {
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
 			@Local ICourseClassService courseClassServiceOverride) {
 		configuration.add(ICourseClassService.class, courseClassServiceOverride);
+	}
+
+	public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration) {
+		configuration.override(SymbolConstants.SECURE_ENABLED, "false");
 	}
 }
