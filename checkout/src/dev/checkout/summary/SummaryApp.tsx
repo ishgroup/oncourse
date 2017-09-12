@@ -89,7 +89,7 @@ contactPropses[1].enrolments[1].courseClass.start = faker.date.past();
 export const amount: Amount = mockAmount();
 
 
-const onProceedToPayment = () => {
+const onProceedToPayment = (form: any):void =>  {
 };
 const onSelect = (contact, item) => {
 };
@@ -110,7 +110,7 @@ const render = config => ReactDOM.render(
         amount={amount}
         promotions={[]}
         onAddCode={onAddCode}
-        onProceedToPayment={onProceedToPayment}
+        onProceedToPayment={f => onProceedToPayment(f)}
         onSelect={onSelect}
         onPriceValueChange={onPriceValueChange}
         hasSelected={true}

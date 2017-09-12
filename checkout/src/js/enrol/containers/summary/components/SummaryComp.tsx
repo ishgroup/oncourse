@@ -18,7 +18,7 @@ export interface Props {
   promotions: Promotion[];
   redeemVouchers?: RedeemVoucher[];
   onToggleVoucher?: (redeemVoucher: RedeemVoucher, enabled) => void;
-  onProceedToPayment?: () => void;
+  onProceedToPayment?: (forms) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
@@ -29,6 +29,7 @@ export interface Props {
   needParent?: boolean;
   fetching?: boolean;
   onChangeEnrolmentFields?: (form) => any;
+  forms?: any;
 }
 
 
@@ -63,7 +64,7 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent,
+    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent, forms,
       redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent} = this.props;
 
     return (
@@ -87,7 +88,7 @@ export class SummaryComp extends React.Component<Props, any> {
               <ProceedToPayment
                 needParent={needParent}
                 disabled={!hasSelected}
-                onProceedToPayment={() => needParent ? onAddParent() : onProceedToPayment()}
+                onProceedToPayment={() => needParent ? onAddParent() : onProceedToPayment(forms)}
               />
             </div>
           </div>

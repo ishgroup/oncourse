@@ -1,6 +1,7 @@
 import * as React from "react";
 import {IshState} from "../../../services/IshState";
 import {connect, Dispatch} from "react-redux";
+import {submit} from 'redux-form';
 
 import {Application, Article, Enrolment, Membership, PurchaseItem, Voucher} from "../../../model";
 import {
@@ -13,10 +14,11 @@ import {
 } from "./components/Index";
 
 import {SummaryComp} from "./components/SummaryComp";
-import {proceedToPayment, selectItem, updateEnrolmentFields, updateItem} from "./actions/Actions";
 import {
-  changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow,
-  updateContactAddProcess,
+  proceedToPayment, selectItem, updateEnrolmentFields, updateItem,
+} from "./actions/Actions";
+import {
+  changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow, updateContactAddProcess,
 } from "../../actions/Actions";
 import {updateConcessionContact, getContactConcessions} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
@@ -101,6 +103,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       memberships: state.checkout.concession.memberships,
       needParent: !!CheckoutService.getAllSingleChildIds(state.checkout).length,
       fetching: state.checkout.summary.fetching,
+      forms: state.form,
     };
   } catch (e) {
     console.log(e);
@@ -126,7 +129,12 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       dispatch(updateContactAddProcess({}, Phase.AddContact, null, contactId));
       dispatch(changePhase(Phase.ChangeParent));
     },
-    onProceedToPayment: (): void => {
+    onProceedToPayment: (forms): void => {
+      forms && Object.keys(forms).map(form => dispatch(submit(form)));
+
+      const errors = Object.values(forms).filter(f => f.syncErrors);
+      if (errors && errors.length) return;
+
       dispatch(proceedToPayment());
     },
     onAddCode: (code: string): void => {

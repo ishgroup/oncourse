@@ -1,8 +1,6 @@
 import * as React from "react";
 import classnames from "classnames";
 import moment from "moment";
-import {reduxForm} from "redux-form";
-import {isNil} from "lodash";
 
 import {Formats} from "../../../../constants/Formats";
 import * as FormatUtils from "../../../../common/utils/FormatUtils";
@@ -10,7 +8,7 @@ import {Enrolment, Contact, CourseClass, CourseClassPrice} from "../../../../mod
 import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
 import {toFormKey} from "../../../../components/form/FieldFactory";
-import HeadingComp from "../../../components/HeadingComp";
+import {EnrolmentFieldsForm} from "./EnrolmentFieldsForm";
 
 
 export interface Props {
@@ -66,11 +64,12 @@ class EnrolmentComp extends React.Component<Props, any> {
         </ItemWrapper>
         {enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment}/>}
 
-        <ClassFieldsForm
+        <EnrolmentFieldsForm
           headings={enrolment.fieldHeadings}
           classId={enrolment.classId}
           selected={enrolment.selected}
           form={`${enrolment.contactId}-${enrolment.classId}`}
+          onSubmit={() => undefined}
           initialValues={this.getFieldInitialValues(enrolment.fieldHeadings)}
           onUpdate={form => onChangeFields(form)}
         />
@@ -78,30 +77,6 @@ class EnrolmentComp extends React.Component<Props, any> {
     );
   }
 }
-
-class ClassFields extends React.Component<any, any> {
-
-  render() {
-    const {headings, classId, selected, onUpdate, form} = this.props;
-    const headingsComp = isNil(headings) ? [] : headings.map((h, index) => (
-      <HeadingComp heading={h} key={index} touch={() => onUpdate(form)} />
-    ));
-
-    return (
-      <div className="course-fields col-sm-24">
-        {headings && selected &&
-        <form onBlur={() => onUpdate(form)}>
-          {headingsComp}
-        </form>
-
-        }
-      </div>
-    );
-  }
-}
-
-export const ClassFieldsForm = reduxForm({})(ClassFields);
-
 
 const ClassPrice = (props): any => {
   const enrolment: Enrolment = props.enrolment;
