@@ -45,14 +45,8 @@ class AttendanceTransportUtils {
 
             it.durationMinutes = attendance.durationMinutes
 
-            // if duration time filled only need to set attendedFrom, attendedUntil
-            if (attendance.durationMinutes != null && (it.attendedFrom == null || it.attendedUntil == null)) {
-                it.attendedUntil = shiftDateByTimezoneOffset.call(attendance.session.endDate, timezone)
-                it.attendedFrom = shiftDateByTimezoneOffset(new Date(attendance.session.endDate.time - attendance.durationMinutes * MILLIS_IN_MINUTE), timezone)
-            } else {
-                it.attendedFrom = shiftDateByTimezoneOffset.call(attendance.attendedFrom, timezone)
-                it.attendedUntil = shiftDateByTimezoneOffset.call(attendance.attendedUntil, timezone)
-            }
+            it.attendedFrom = shiftDateByTimezoneOffset.call(attendance.attendedFrom, timezone)
+            it.attendedUntil = shiftDateByTimezoneOffset.call(attendance.attendedUntil, timezone)
 
             return it
         }
