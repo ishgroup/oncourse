@@ -1,0 +1,268 @@
+//
+//
+// summary.scss
+//
+// Contains all the styles which are used in summary step
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+@include checkout-wrapper {
+  .payment-summary, #contactEditorForm {
+    .student-name {
+      .student-info {
+        font-weight: bold;
+        padding-bottom: 5px;
+        position: relative;
+        h3 {
+          font-size: $paymentStudentTitleFontSize;
+          margin-bottom: $paymentStudentTitleMarginBottom;
+          font-weight: $paymentStudentTitleFontWeight;
+          display: $paymentStudentTitleDisplay;
+          color: $paymentStudentTitleColor;
+        }
+        .student-email {
+          position: $paymentStudentEmailPosition;
+          color: $paymentStudentEmailColor;
+          font-size: $paymentStudentEmailFontSize;
+          font-weight: $paymentStudentEmailFontWeight;
+          left: $paymentStudentEmailPositionLeft;
+          text-transform: $paymentStudentEmailTextTransform;
+          top: $paymentStudentEmailPositionTop;
+          margin-right: $paymentStudentEmailMarginRight;
+        }
+        .student-affilation {
+          color: $paymentStudentAffiliationColor;
+          font-weight: $paymentStudentAffiliationFontWeight;
+          strong {
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+  }
+  .payment-summary {
+    font-size: $paymentSummaryFontSize;
+    .membership, .concession {
+      color: $paymentSummaryConcessionColor;
+      font-size: $paymentSummaryConcessionFontSize;
+      margin-bottom: $paymentSummaryConcessionMarginBottom;
+      i {
+        font-style: inherit;
+      }
+    }
+    .add-concession, .new-student-link {
+      width: 100%;
+      display: block;
+      margin-bottom: $paymentPlusLinkMarginBottom;
+      padding: $paymentPlusLinkPadding;
+
+      cursor: pointer;
+      background: $paymentPlusLinkBackground;
+    }
+    .checkoutList {
+      margin-bottom: $checkoutPageListMarginBottom;
+      .enrolmentItem {
+        margin-bottom: $checkoutPageEnrolItemMarginBottom;
+        .enrolmentInfo {
+          padding-left: 35px;
+          .enrolmentSelect {
+            margin-right: 6px;
+            vertical-align: top;
+            margin-top: 1px;
+            position: absolute;
+            left: -19px;
+            top: 0;
+          }
+          label {
+            width: 100%;
+            max-width: none;
+            text-align: left;
+            padding-right: 0;
+            font-weight: $checkoutPageEnrolItemLabelFontWeight;
+            vertical-align: middle;
+            display: block;
+            line-height: $checkoutPageEnrolItemLabelLineHeight;
+            position: relative;
+            padding-left: 0;
+          }
+          em {
+            color: $checkoutPageEnrolItemEmTagColor;
+            font-size: $checkoutPageEnrolItemEmTagFontSize;
+            font-style: $checkoutPageEnrolItemEmTagFontWeight;
+            margin-left: $checkoutPageEnrolItemEmTagMarginLeft;
+            >span {
+              vertical-align: top;
+            }
+          }
+          >span {
+            margin-left: 0px;
+          }
+          span {
+            >span {
+              &.started, &.ended {
+                vertical-align: top;
+              }
+            }
+          }
+        }
+        .alignright > .text-right {
+          padding-right: 31px;
+        }
+      }
+    }
+  }
+  div.amount-container {
+    float: $checkoutPageAmountContainerFloat;
+    width: $checkoutPageAmountContainerWidth;
+    border: $checkoutPageAmountContainerBorder;
+    border-radius: $checkoutPageAmountContainerBorderRadius;
+    padding: $checkoutPageAmountContainerPadding;
+    background: $checkoutPageAmountContainerBackground;
+    margin-bottom: $checkoutPageAmountContainerMarginBottom;
+    button.btn-primary {
+      @extend %checkout-submit-button;
+      margin: $checkoutPageAmountContainerButtonMargin;
+      float: $checkoutPageAmountContainerButtonFloat;
+
+    }
+    #addCode {
+      text-transform: $checkoutPageAmountContainerAddCodeTextTransform;
+      font-weight: $checkoutPageAmountContainerAddCodeFontWeight;
+      @extend %checkout-submit-button;
+      height: $checkoutPageAmountContainerAddCodeHeight;
+      padding: $checkoutPageAmountContainerAddCodePadding;
+      font-size: $checkoutPageAmountContainerAddCodeFontSize;
+      float: none;
+    }
+
+    .amount-content {
+      width: $checkoutPageAmountContentWidth;
+      float: $checkoutPageAmountContentFloat;
+      margin-top: $checkoutPageAmountContentMarginTopSmall;
+      @include responsive($checkout-media-default) {
+        margin-top: $checkoutPageAmountContentMarginTopTablet;
+      }
+      label {
+        font-weight: $checkoutPageAmountContentLabelFontWeight;
+        width: $checkoutPageAmountContentLabelWidth;
+        text-align: $checkoutPageAmountContentLabelTextAlign;
+        margin-right: 10px;
+        padding-right: 0px;
+        line-height: $checkoutPageAmountContentLabelLineHeight;
+      }
+      a {
+        text-decoration: none;
+      }
+      p {
+        margin: 0 0 5px 0;
+      }
+      span {
+        display: inline-block;
+        width: $checkoutPageAmountContentSpanWidth;
+        text-align: right;
+        float: right;
+        line-height: $checkoutPageAmountContentSpanLineHeight;
+        margin-right: 32px;
+        &#creditAccessLink {
+          color: $checkoutPageAmountContentCreditAccessLinkColor;
+          cursor: pointer;
+        }
+        &#removeOwingLink {
+          width: auto;
+          margin: 0 0 0 5px;
+          color: $checkoutPageAmountContentRemoveOwingLink;
+        }
+      }
+      .total-amount {
+        font-weight: bold;
+        label {
+          font-weight: bold;
+        }
+      }
+      input {
+        display: inline-block;
+        width: $checkoutPageAmountInputWidth;
+        text-align: right;
+        margin-right: 32px;
+        font: inherit;
+        background-color: $checkoutPageAmountInputBackground;
+        border: $checkoutPageAmountInputBorder;
+      }
+
+      #vouchers {
+        white-space: nowrap;
+        input[type="checkbox"] {
+          margin-top: 2px;
+          width: initial;
+          margin-right: initial;
+        }
+        p label {
+          display: inline-block;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+    }
+    div.code-info {
+      float: left;
+      width: 100% !important;
+      margin: $checkoutPageAmountCodeInfoMargin;
+      @include responsive($checkout-media-default) {
+        width: $checkoutPageAmountCodeInfoWidthTablet;
+      }
+      p {
+        margin-bottom: 0px;
+        clear: both;
+        font-size: $checkoutPageAmountCodeInfoTextFontSize;
+      }
+      .code-input {
+        margin-bottom: 10px;
+        .form-control {
+          padding: $formInputPadding;
+          &:focus {
+            box-shadow: none;
+          }
+        }
+      }
+    }
+    input.code_input {
+      padding: $formInputPadding;
+      background-color: $formInputBackgroundColor;
+      border: $formInputBorder;
+      width: 100%;
+      font-size: $formInputFontSize;
+      float: left;
+      height: $formInputHeight;
+      @include responsive($checkout-media-default) {
+        width: $checkoutPageAmountCodeInputWidthTablet;
+      }
+    }
+    #access-password-popup {
+      display: none;
+      z-index: 999;
+      position: absolute;
+      top: 5px;
+      list-style: none;
+      width: 200px;
+      margin: 0;
+      background-color: white;
+      border: 1px solid #CCC;
+      border-radius: 6px;
+      @include prefixer(box-shadow, rgba(0, 0, 0, 0.19922) 0px 5px 10px, webkit moz ms o spec);
+      @include prefixer(background-clip, padding-box, webkit moz ms o spec);
+      padding: 15px 10px 15px 10px;
+    }
+    .action-link {
+      cursor: pointer;
+      color: #85A918;
+      margin-left: 20px;
+    }
+  }
+  .code-info {
+    margin: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

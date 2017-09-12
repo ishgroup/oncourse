@@ -19,3 +19,6 @@ $bootstrap: true;
 
 // * jqueryUI. Do not use this library since it is being removed from onCourse.
 @import "jqueryui";
+
+// ReactSelect used for checkout's select boxes
+@import "react-select/select";

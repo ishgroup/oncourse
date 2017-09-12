@@ -1,0 +1,85 @@
+//
+//
+// _elements.scss
+//
+// Contains all the styles of all the form elements w.r.t checkout
+//
+// Copyright ish group (Australia) and part of ish onCourse.
+// It is licensed to you under the Apache License, version 2.0
+//
+
+%checkout-submit-button {
+  background: $submitButtonBackground;
+  color: $submitButtonColor;
+  border: none;
+  outline: 0 none;
+  border-radius: 0;
+  height: $submitButtonHeight;
+  padding: $submitButtonPadding;
+  text-align: center;
+  font-size: $submitButtonFontSize;
+  vertical-align: middle;
+  display: $submitButtonDisplay;
+  line-height: $submitButtonLineHeight;
+  margin: $submitButtonMargin;
+  cursor: pointer;
+  text-transform: $submitButtonTextTransform;
+  font-weight: $submitButtonFontWeight;
+  white-space: nowrap;
+
+  @include prefixer(touch-action, manipulation, webkit moz ms o spec);
+  @include prefixer(user-select, none, webkit moz ms o spec);
+  @include prefixer(transition, all 0.5s, webkit moz ms o spec);
+  &:hover, &:active, &:focus {
+    background: $submitButtonBackgroundHover;
+  }
+}
+
+%checkout-cancel-button {
+  @extend %checkout-submit-button;
+  float: $cancelButtonFloat;
+  text-decoration: none;
+  background: $cancelButtonBackground;
+  font-weight: $cancelButtonFontWeight;
+  text-transform: $cancelButtonTextTransform;
+  margin-bottom: $cancelButtonMarginBottom;
+  color: $cancelButtonColor;
+  padding-left: $cancelButtonPaddingLeft;
+  &:hover, &:focus, &:active {
+    background: $cancelButtonBackgroundHover;
+    color: $cancelButtonColorHover;
+  }
+}
+
+@include checkout-wrapper {
+  .form-controls {
+    margin: 0;
+    padding: 0;
+    display: block;
+    text-align: right;
+
+    input#submitContact {
+      padding: $submitContactPadding;
+      margin: $submitContactMargin;
+    }
+
+    a.cancel, >span>a {
+      @extend %checkout-cancel-button;
+    }
+
+    input[type="submit"] {
+      @extend %checkout-submit-button;
+    }
+  }
+}
+
+@keyframes Animation-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@-webkit-keyframes Animation-spin {
+  to {
+    -webkit-transform: rotate(1turn);
+  }
+}

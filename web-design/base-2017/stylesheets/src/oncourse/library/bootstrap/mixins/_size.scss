@@ -6,5 +6,5 @@
 }
 
 @mixin square($size) {
-  @include size($size, $size);
+  @include size($size $size);
 }
