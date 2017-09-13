@@ -18,6 +18,7 @@ import ish.oncourse.willow.functions.field.ProcessCustomFieldType
 import ish.oncourse.willow.model.common.FieldError
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.model.field.Field
+import ish.oncourse.willow.model.field.Suburb
 import ish.validation.StudentErrorCode
 import ish.validation.StudentValidator
 import org.apache.cayenne.ObjectContext
@@ -45,11 +46,14 @@ class SubmitContactFields {
     ObjectContext objectContext
     College college
     
+    private PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
     boolean isDefaultCountry = false
-    
+    private String postcodeAutoFill
+    private String stateAutoFill
+
+
     SubmitContactFields submitContactFields(Contact contact, List<Field> fields) {
 
-        PropertyGetSetFactory factory = new PropertyGetSetFactory('ish.oncourse.model')
         PropertyGetSet getSet
 
         Field country = fields.find { FieldProperty.COUNTRY.key == it.key }
@@ -76,6 +80,9 @@ class SubmitContactFields {
                 }
             }
         }
+
+        setAutoFillValues(FieldProperty.STATE, stateAutoFill, contact)
+        setAutoFillValues(FieldProperty.POSTCODE, postcodeAutoFill, contact)
         
         if (contact.getCountry() == null) {
             contact.setCountry(getCountryBy(CommonContactValidator.DEFAULT_COUNTRY_NAME))
@@ -90,12 +97,25 @@ class SubmitContactFields {
         if (StringUtils.trimToNull(f.value)) {
             switch (f.dataType) {
                 case EMAIL:
-                case SUBURB:
                 case POSTCODE:
                 case STRING:
                 case CHOICE:
                 case PHONE:
                     result = f.value.trim()
+                    break
+                case SUBURB:
+                    if (StringUtils.trimToNull(f.value)) {
+                        result = f.value.trim()
+                    } else if (f.itemValue) {
+                        try {
+                            Suburb suburb = f.itemValue.value as Suburb
+                            postcodeAutoFill = suburb.postcode
+                            stateAutoFill = suburb.state
+                            result = suburb.suburb
+                        } catch (ClassCastException e){
+                            errors.fieldsErrors << new FieldError(name: f.key, error: "${f.name} is incorrect")
+                        }
+                    }
                     break
                 case BOOLEAN:
                     result = Boolean.valueOf(f.value)
@@ -239,6 +259,19 @@ class SubmitContactFields {
         null
     }
 
+    private setAutoFillValues(FieldProperty property, String value, Contact contact) {
+        PropertyGetSet getSet = factory.get([getProperty: {property.key}] as FieldInterface, contact)
+
+        if (getSet.get() == null && value) {
+            FieldError error = validateValue(property.key, property, value)
+            if (error) {
+                errors.fieldsErrors << error
+            } else {
+                getSet.set(value)
+            }
+        }
+    }
+    
     private String validateBirthDay(Date dob) {
         Date birthDateTruncated = DateUtils.truncate(dob as Date, Calendar.DAY_OF_MONTH)
         Date currentDateTruncated = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH)
