@@ -1,0 +1,3 @@
+apply from: "$rootDir/buildAPIApp.gradle"
+
+mainClassName = 'ish.oncourse.willow.cms.CmsApp'

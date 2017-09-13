@@ -21,6 +21,7 @@ include 'admin',
 	'services',
 	'web',
 	'cms',
-	'cms-react', 
+	'cms-react',
+	'cms-api',
 	'checkout',
     'checkout-api'
