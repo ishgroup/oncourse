@@ -39,7 +39,7 @@ class SelectField extends React.Component<any, any> {
     const {loadOptions} = this.props;
     if (loadOptions && (input.length > 0 || showValuesOnInit)) {
       return loadOptions(input).then((data: Item[]) => {
-        return {options: data.map(item => ({key: item.key, value: item.value}))};
+        return {options: data.map(item => (item))};
       });
     } else {
       return Promise.resolve([]);
@@ -51,7 +51,6 @@ class SelectField extends React.Component<any, any> {
 
     const props: Props = this.toProps();
     props.onBlurSelect && props.onBlurSelect(props.input.name);
-
     input.onChange(this.props.returnType === 'object' ? res : res.value);
   }
 
@@ -112,7 +111,7 @@ class SelectField extends React.Component<any, any> {
             valueKey={props.valueKey}
             searchable={props.searchable}
             clearable={false}
-            value={this.props.returnType === 'object' ? props.input.value.key : props.input.value && props.input}
+            value={this.props.returnType === 'object' ? props.input.value : props.input.value && props.input}
             loadOptions={input => this.loadOptions(input, showValuesOnInit)}
             options={this.props.options}
             onBlur={this.onBlur}

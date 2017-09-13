@@ -1,4 +1,4 @@
-import {FormProps, reduxForm} from "redux-form";
+import {FormProps, reduxForm, change} from "redux-form";
 import * as React from "react";
 import {connect} from "react-redux";
 import classnames from 'classnames';
@@ -26,14 +26,22 @@ class ContactEditForm extends React.Component<Props, any> {
   }
 
   render() {
-    const {handleSubmit, pristine, touch, invalid, submitting, concessionTypes, isNewContact, onCancel, page} = this.props;
+    const {
+      handleSubmit, pristine, touch, invalid, submitting, concessionTypes, isNewContact, onCancel, page, form,
+      onChangeSuburb,
+    } = this.props;
     const contact: Contact = this.props.contact;
     const fields: ContactFields = this.props.fields;
 
     return (
       <div>
         <form onSubmit={handleSubmit} id="contactEditorForm" className={classnames({submitting})}>
-          <ContactEdit touch={touch} contact={contact} fields={fields}/>
+          <ContactEdit
+            touch={touch}
+            contact={contact}
+            fields={fields}
+            onChangeSuburb={item => onChangeSuburb(form, item)}
+          />
 
           {concessionTypes &&
           <fieldset>
@@ -80,6 +88,7 @@ interface Props extends FormProps<FormData, Props, any> {
   concessionTypes: any;
   isNewContact: boolean;
   page: number;
+  onChangeSuburb?: (form, item) => void;
 }
 
 const Form = reduxForm({
@@ -154,6 +163,10 @@ const mapDispatchToProps = dispatch => {
     },
     onCancel: page => {
       dispatch(changePhase(page));
+    },
+    onChangeSuburb: (form, item) => {
+      if (item && item.postcode) dispatch(change(form, 'postcode', item.postcode));
+      if (item && item.state) dispatch(change(form, 'state', item.state));
     },
   };
 };

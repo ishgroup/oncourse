@@ -7,7 +7,13 @@ export class SearchService {
 
   public getPreparedSuburbs = text => {
     return this.searchApi.getSuburbs(text).then(e =>
-      Promise.resolve(e.map(item => ({key: item.key, value: item.value.suburb}))),
+      Promise.resolve(e.map(item => ({
+        key: item.key,
+        value: `${item.value.suburb}, ${item.value.state}, ${item.value.postcode}`,
+        suburb: item.value.suburb,
+        state: item.value.state,
+        postcode: item.value.postcode,
+      }))),
     );
   }
 

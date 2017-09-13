@@ -6,12 +6,13 @@ import FieldFactory from "../../components/form/FieldFactory";
 interface Prop {
   heading: FieldHeading;
   touch?: (field) => void;
+  onChangeSuburb?: (item) => void;
 }
 
 export class HeadingComp extends React.Component<Prop, any> {
 
   render() {
-    const {heading, touch} = this.props;
+    const {heading, touch, onChangeSuburb} = this.props;
 
     return (
       <fieldset>
@@ -21,7 +22,12 @@ export class HeadingComp extends React.Component<Prop, any> {
         {heading.description &&
           <div className="message" dangerouslySetInnerHTML={{__html: heading.description}}/>
         }
-        {heading.fields.map((field, i) => <FieldFactory key={i} field={field} onBlurSelect={touch} />)}
+        {heading.fields.map((field, i) => <FieldFactory
+          key={i}
+          field={field}
+          onBlurSelect={touch}
+          onChangeSuburb={onChangeSuburb}
+        />)}
       </fieldset>
     );
   }

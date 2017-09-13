@@ -9,14 +9,15 @@ export interface Props {
   fields: ContactFields,
   header?: string,
   touch?: (field) => void; // hack: Fire touch event on blur react select
+  onChangeSuburb?: (item) => void;
 }
 
 export class ContactEdit extends React.Component<Props, any> {
   render() {
-    const {contact, fields, header, touch} = this.props;
+    const {contact, fields, header, touch, onChangeSuburb} = this.props;
 
     const headings = isNil(fields) ? [] : fields.headings.map((h, index) => (
-      <HeadingComp heading={h} key={index} touch={touch}/>
+      <HeadingComp heading={h} key={index} touch={touch} onChangeSuburb={onChangeSuburb}/>
     ));
 
     return (

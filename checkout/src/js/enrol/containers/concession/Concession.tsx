@@ -54,13 +54,11 @@ class Concession extends React.Component<any, any> {
             }
 
           </fieldset>
-          <p>
 
-            <div className="form-controls flex">
-              <a id="cancelConcession" onClick={() => onCancel(page)}>Cancel</a>
-              <button type="submit" className="btn" disabled={pristine || submitting}>Save Concession</button>
-            </div>
-          </p>
+          <div className="form-controls flex">
+            <a id="cancelConcession" onClick={() => onCancel(page)}>Cancel</a>
+            <button type="submit" className="btn" disabled={pristine || submitting}>Save Concession</button>
+          </div>
         </form>
       </div>
     );
@@ -83,7 +81,7 @@ export const validate = (data, props) => {
     errors['number'] = 'The number cannot be blank.';
   }
 
-  if (concessionType.key !== '-1' && !data.concessionAgree) {
+  if (concessionType.id !== '-1' && !data.concessionAgree) {
     errors['concessionAgree'] = 'You must agree to the policies before proceeding.';
   }
 

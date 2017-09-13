@@ -10,16 +10,17 @@ import {DateField} from "./DateField";
 import SelectField from "../form-new/SelectField";
 import SearchService from "../../enrol/services/SearchService";
 
-
 class FieldFactory extends React.Component<any, any> {
 
   private getComponent = (field: Field): any => {
     const props: any = toFormFieldProps(field);
     props.onBlurSelect = this.props.onBlurSelect;
+    props.onChangeSuburb = this.props.onChangeSuburb;
 
     switch (field.dataType) {
       case DataType.STRING:
       case DataType.PHONE:
+      case DataType.POSTCODE:
         return <Form.Field {...props} component={TextField} type="text"/>;
 
       case DataType.INTEGER:
@@ -60,9 +61,6 @@ class FieldFactory extends React.Component<any, any> {
 
       case DataType.LANGUAGE:
         return LanguageField(props);
-
-      case DataType.POSTCODE:
-        return PostcodeField(props);
 
       case DataType.CHOICE:
         return <Form.Field
@@ -108,11 +106,17 @@ const SuburbField = (props): any => {
   const suburbs = (i: string): Promise<Item[]> => {
     return SearchService.getPreparedSuburbs(i);
   };
+  const updateRelativeFields = value => {
+    props.onChangeSuburb && props.onChangeSuburb(value);
+  };
+
   return <Form.Field
     {...props}
     component={SelectField}
     loadOptions={suburbs}
     newOptionEnable={true}
+    returnType="object"
+    onChange={val => updateRelativeFields(val)}
   />;
 };
 
@@ -136,18 +140,6 @@ const LanguageField = (props): any => {
     {...props}
     component={SelectField}
     loadOptions={langs}
-  />;
-};
-
-const PostcodeField = (props): any => {
-  const codes = (i: string): Promise<Item[]> => {
-    return SearchService.getPostcodes(i);
-  };
-  return <Form.Field
-    {...props}
-    component={SelectField}
-    loadOptions={codes}
-    newOptionEnable={true}
   />;
 };
 

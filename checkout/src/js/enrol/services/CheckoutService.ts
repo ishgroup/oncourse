@@ -26,6 +26,7 @@ import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
 import {toFormKey} from "../../components/form/FieldFactory";
+import {Suburb} from "../../model";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
@@ -261,10 +262,24 @@ export class BuildSubmitFieldsRequest {
     });
     result.fields.forEach((f: Field) => {
       const formKey = toFormKey(f.key);
+      const value = values[formKey];
 
-      f.value = values[formKey] && values[formKey].key || values[formKey] || null;
+      f.value = value && value.key || value || null;
+      f.itemValue = null;
+
       if (f.value == null && f.dataType === DataType.BOOLEAN) {
         f.value = 'false';
+      }
+
+      if (value && value.suburb && f.dataType === DataType.SUBURB) {
+        const suburb: Suburb = {
+          postcode: value.postcode,
+          state: value.state,
+          suburb: value.suburb,
+        };
+
+        f.value = null;
+        f.itemValue = {key: value.key, value: suburb};
       }
     });
 
