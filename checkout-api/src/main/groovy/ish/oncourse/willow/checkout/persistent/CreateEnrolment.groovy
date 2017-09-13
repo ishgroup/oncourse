@@ -1,10 +1,9 @@
 package ish.oncourse.willow.checkout.persistent
 
+import groovy.transform.CompileStatic
 import ish.common.types.ConfirmationStatus
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
-import ish.oncourse.common.field.PropertyGetSet
-import ish.oncourse.common.field.PropertyGetSetFactory
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
@@ -17,9 +16,9 @@ import ish.oncourse.willow.model.field.Field
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
+@CompileStatic
 class CreateEnrolment {
-
-
+    
     private ObjectContext context
     private College college
     private ish.oncourse.willow.model.checkout.Enrolment e
@@ -52,8 +51,8 @@ class CreateEnrolment {
         invoiceLine.enrolment = enrolment
         
         setInvoice.call(enrolment, invoiceLine)
-        
-        e.fieldHeadings*.fields.flatten().each { Field f  -> 
+
+        (e.fieldHeadings.fields.flatten() as List<Field>).each { f  -> 
             
             String value = StringUtils.trimToNull(f.value)
             if (value) {
