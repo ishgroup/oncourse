@@ -1,0 +1,24 @@
+export const createRootComponent = () => {
+  const cmsId = "cms-root";
+
+  if (document.getElementById(cmsId)) return;
+
+  const rootDiv = document.createElement('div');
+  rootDiv.id = cmsId;
+  rootDiv.className = 'cms';
+  document.body.appendChild(rootDiv);
+};
+
+export const loadCmsCss = path => {
+  const cmsCssId = "cms-css";
+  if (document.getElementById(cmsCssId)) return;
+
+  const head  = document.getElementsByTagName('head')[0];
+  const link  = document.createElement('link');
+  link.id    = cmsCssId;
+  link.rel   = 'stylesheet';
+  link.type  = 'text/css';
+  link.href  = path;
+  link.media = 'all';
+  head.appendChild(link);
+};
