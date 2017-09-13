@@ -6,12 +6,15 @@ import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.cayenne.IExpandable;
+import ish.oncourse.common.field.*;
 import ish.oncourse.model.auto._Enrolment;
 import ish.oncourse.utils.MessageFormat;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.validation.EnrolmentStatusValidator;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectIdQuery;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +24,7 @@ import static ish.common.types.EnrolmentStatus.QUEUED;
 import static ish.common.types.EnrolmentStatus.SUCCESS;
 import static java.lang.String.format;
 
+@Type(value = ContextType.ENROLMENT)
 public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueable, IExpandable {
 
 	private static final long serialVersionUID = 8361159336001022666L;
@@ -203,4 +207,38 @@ public class Enrolment extends _Enrolment implements EnrolmentInterface, Queueab
 		return super.getCourseClass();
 	}
 
+
+	@Property(value = FieldProperty.CUSTOM_FIELD_ENROLMENT, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
+	public void setCustomFieldValue(String key, String value){
+		CustomField field = getCustomField(key);
+		if (field != null) {
+			field.setValue(value);
+		} else {
+			ObjectContext context = getObjectContext();
+			CustomFieldType customFieldType = ObjectSelect.query(CustomFieldType.class)
+					.where(CustomFieldType.COLLEGE.eq(getCollege()))
+					.and(CustomFieldType.KEY.eq(key))
+					.and(CustomFieldType.ENTITY_NAME.eq(Enrolment.class.getSimpleName()))
+					.selectFirst(context);
+
+			if (customFieldType == null) {
+				return;
+			}
+			EnrolmentCustomField customField = context.newObject(EnrolmentCustomField.class);
+			customField.setValue(value);
+			customField.setRelatedObject(this);
+			customField.setCustomFieldType(customFieldType);
+			customField.setCollege(getCollege());
+		}
+	}
+
+	private CustomField getCustomField(String key) {
+		for (CustomField customField : getCustomFields()) {
+			String customFieldKey = customField.getCustomFieldType().getKey();
+			if (customFieldKey != null && customFieldKey .equalsIgnoreCase(key)) {
+				return customField;
+			}
+		}
+		return null;
+	}
 }

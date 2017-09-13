@@ -3,6 +3,8 @@ package ish.oncourse.willow.checkout.persistent
 import ish.common.types.ConfirmationStatus
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
+import ish.oncourse.common.field.PropertyGetSet
+import ish.oncourse.common.field.PropertyGetSetFactory
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
@@ -11,7 +13,9 @@ import ish.oncourse.model.InvoiceLine
 import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.functions.GetCourseClass
 import ish.oncourse.willow.checkout.payment.EnrolmentInvoiceLine
+import ish.oncourse.willow.model.field.Field
 import org.apache.cayenne.ObjectContext
+import org.apache.commons.lang3.StringUtils
 
 class CreateEnrolment {
 
@@ -48,5 +52,13 @@ class CreateEnrolment {
         invoiceLine.enrolment = enrolment
         
         setInvoice.call(enrolment, invoiceLine)
+        
+        e.fieldHeadings*.fields.flatten().each { Field f  -> 
+            
+            String value = StringUtils.trimToNull(f.value)
+            if (value) {
+                enrolment.setCustomFieldValue(f.key.split("\\.")[2], value)     
+            }
+        }
     }
 }
