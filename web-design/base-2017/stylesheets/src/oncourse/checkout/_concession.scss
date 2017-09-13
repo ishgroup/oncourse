@@ -2,59 +2,57 @@
 //
 // concession.scss
 //
-// Contains all the styles which are w.r.t to concession and contact form contents
+// Styling for the concession and contact form used in the checkout
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
 //
 
-@include checkout-wrapper {
-  .concessionEditor, #contactEditorForm {
-    .conditions {
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding-left: 0;
-      @include responsive($checkout-media-default) {
-        padding-left: 25%;
-      }
-      >div, >span {
-        float: left;
-      }
-      >div {
-        margin-right: 5px;
-      }
-      >span {
-        width: 92%;
-      }
-      .form-group .__react_component_tooltip.show {
-        width: 235px !important;
-        bottom: 30px;
-        left: -7px !important;
-        max-width: none !important;
-      }
+.concessionEditor, #contactEditorForm {
+  .conditions {
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 0;
+    @include responsive($checkout-media-default) {
+      padding-left: 25%;
     }
-    button {
-      @extend %checkout-submit-button;
+    >div, >span {
+      float: left;
     }
-    #cancelConcession {
-      @extend %checkout-cancel-button;
+    >div {
+      margin-right: 5px;
+    }
+    >span {
+      width: 92%;
+    }
+    .form-group .__react_component_tooltip.show {
+      width: 235px !important;
+      bottom: 30px;
+      left: -7px !important;
+      max-width: none !important;
     }
   }
+  button {
+    @extend %checkout-submit-button;
+  }
+  #cancelConcession {
+    @extend %checkout-cancel-button;
+  }
+}
 
-  #contactEditorForm {
-    fieldset {
-      >div>div>div {
-        >span {
-          width: 100%;
-          @include responsive($checkout-media-default) {
-            width: $formSpanTagWidthTablet;
-          }
+#contactEditorForm {
+  fieldset {
+    >div>div>div {
+      >span {
+        width: 100%;
+        @include responsive($checkout-media-default) {
+          width: $checkoutFormSpanTagWidthTablet;
         }
       }
     }
-    .form-controls>span>a {
-      @extend %checkout-cancel-button;
-    }
+  }
+  .form-controls>span>a {
+    @extend %checkout-cancel-button;
   }
 }

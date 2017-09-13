@@ -10,10 +10,13 @@
 
 @import "settings";
 @import "mixins";
-@import "elements";
-@import "progress";
-@import "forms";
-@import "concession";
-@import "summary";
-@import "tabs";
-@import "main";
+
+#oncourse-checkout {
+  @import "elements";
+  @import "progress";
+  @import "forms";
+  @import "concession";
+  @import "summary";
+  @import "tabs";
+  @import "main";
+}

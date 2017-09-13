@@ -1,18 +1,12 @@
 //
 //
-// mixins.scss
+// checkout/mixins.scss
 //
 // Contains all the different functions i.e. mixins
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
 //
-
-@mixin checkout-wrapper {
-  #oncourse-checkout {
-    @content;
-  }
-}
 
 @mixin spinner() {
   position: relative;

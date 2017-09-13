@@ -1,75 +1,73 @@
 //
 //
-// _elements.scss
+// elements.scss
 //
-// Contains all the styles of all the form elements w.r.t checkout
+// Styling for the form elements used in the checkout
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
 //
 
 %checkout-submit-button {
-  background: $submitButtonBackground;
-  color: $submitButtonColor;
+  background: $checkoutSubmitButtonBackground;
+  color: $checkoutSubmitButtonColor;
   border: none;
   outline: 0 none;
   border-radius: 0;
-  height: $submitButtonHeight;
-  padding: $submitButtonPadding;
+  height: $checkoutSubmitButtonHeight;
+  padding: $checkoutSubmitButtonPadding;
   text-align: center;
-  font-size: $submitButtonFontSize;
+  font-size: $checkoutSubmitButtonFontSize;
   vertical-align: middle;
-  display: $submitButtonDisplay;
-  line-height: $submitButtonLineHeight;
-  margin: $submitButtonMargin;
+  display: $checkoutSubmitButtonDisplay;
+  line-height: $checkoutSubmitButtonLineHeight;
+  margin: $checkoutSubmitButtonMargin;
   cursor: pointer;
-  text-transform: $submitButtonTextTransform;
-  font-weight: $submitButtonFontWeight;
+  text-transform: $checkoutSubmitButtonTextTransform;
+  font-weight: $checkoutSubmitButtonFontWeight;
   white-space: nowrap;
 
   @include prefixer(touch-action, manipulation, webkit moz ms o spec);
   @include prefixer(user-select, none, webkit moz ms o spec);
   @include prefixer(transition, all 0.5s, webkit moz ms o spec);
   &:hover, &:active, &:focus {
-    background: $submitButtonBackgroundHover;
+    background: $checkoutSubmitButtonBackgroundHover;
   }
 }
 
 %checkout-cancel-button {
   @extend %checkout-submit-button;
-  float: $cancelButtonFloat;
+  float: $checkoutCancelButtonFloat;
   text-decoration: none;
-  background: $cancelButtonBackground;
-  font-weight: $cancelButtonFontWeight;
-  text-transform: $cancelButtonTextTransform;
-  margin-bottom: $cancelButtonMarginBottom;
-  color: $cancelButtonColor;
-  padding-left: $cancelButtonPaddingLeft;
+  background: $checkoutCancelButtonBackground;
+  font-weight: $checkoutCancelButtonFontWeight;
+  text-transform: $checkoutCancelButtonTextTransform;
+  margin-bottom: $checkoutCancelButtonMarginBottom;
+  color: $checkoutCancelButtonColor;
+  padding-left: $checkoutCancelButtonPaddingLeft;
   &:hover, &:focus, &:active {
-    background: $cancelButtonBackgroundHover;
-    color: $cancelButtonColorHover;
+    background: $checkoutCancelButtonBackgroundHover;
+    color: $checkoutCancelButtonColorHover;
   }
 }
 
-@include checkout-wrapper {
-  .form-controls {
-    margin: 0;
-    padding: 0;
-    display: block;
-    text-align: right;
+.form-controls {
+  margin: 0;
+  padding: 0;
+  display: block;
+  text-align: right;
 
-    input#submitContact {
-      padding: $submitContactPadding;
-      margin: $submitContactMargin;
-    }
+  input#submitContact {
+    padding: $checkoutSubmitContactPadding;
+    margin: $checkoutSubmitContactMargin;
+  }
 
-    a.cancel, >span>a {
-      @extend %checkout-cancel-button;
-    }
+  a.cancel, >span>a {
+    @extend %checkout-cancel-button;
+  }
 
-    input[type="submit"] {
-      @extend %checkout-submit-button;
-    }
+  input[type="submit"] {
+    @extend %checkout-submit-button;
   }
 }
 
