@@ -9,7 +9,7 @@
 // Bootstrap
 $grid-columns: 24;
 
-$basePath: './src/assets';
+$basePath: '/s';
 
 $black: #000;
 $white: #fff;
@@ -17,7 +17,7 @@ $white: #fff;
 $primaryColor: #f7941d;
 $secondaryColor: #37caad;
 
-$imgPath: $basePath + '/img/';
+$imagePath: $basePath + '/img/';
 
 // Our variables
 $base-font-family: sans-serif;

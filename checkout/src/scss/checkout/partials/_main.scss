@@ -2,13 +2,13 @@
 //
 // main.scss
 //
-// Contains all the common styles which will be used across checkout
+// Common styles which will be used across checkout
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
 //
 
-@include checkout-wrapper {
+& {
   font-size: $checkoutPageFontSize;
   margin-bottom: $checkoutPageMarginBottom;
 
@@ -78,44 +78,44 @@
   .__react_component_tooltip {
     position: absolute !important;
     display: none !important;
-    width: $formTooltipWidth;
-    font-size: $formValidateFontSize;
-    max-width: $formTooltipMaxWidth;
-    border: $formTooltipBorder;
-    padding: $formTooltipPadding;
-    border-radius: $formTooltipBorderRadius;
+    width: $checkoutFormTooltipWidth;
+    font-size: $checkoutFormValidateFontSize;
+    max-width: $checkoutFormTooltipMaxWidth;
+    border: $checkoutFormTooltipBorder;
+    padding: $checkoutFormTooltipPadding;
+    border-radius: $checkoutFormTooltipBorderRadius;
 
     &.place-right,
     &.place-left {
-      top: $formTootipPositionTop;
+      top: $checkoutFormTooltipPositionTop;
       margin: 0;
       margin-left: 0px !important;
-      bottom: $formTootipPositionBottomSmall;
-      left: $formTootipPositionLeftSmall;
+      bottom: $checkoutFormTooltipPositionBottomSmall;
+      left: $checkoutFormTooltipPositionLeftSmall;
       @include responsive($checkout-media-default) {
-        bottom: $formTootipPositionBottomTablet;
-        left: $formTootipPositionLeftTablet;
+        bottom: $checkoutFormTooltipPositionBottomTablet;
+        left: $checkoutFormTooltipPositionLeftTablet;
       }
 
       &::after {
         z-index: -1;
         display: block;
         position: absolute;
-        left: $formValidatePointerPositionLeft;
-        top: $formValidatePointerPositionTop;
-        bottom: $formTooltipPointerPositionBottom;
+        left: $checkoutFormValidatePointerPositionLeft;
+        top: $checkoutFormValidatePointerPositionTop;
+        bottom: $checkoutFormTooltipPointerPositionBottom;
         border: none !important;
-        border-top: $formValidatePointerBorderTop;
-        border-left: $formValidatePointerBorderLeft;
-        border-right: $formValidatePointerBorderRight;
-        background: $formValidatePointerBackground;
+        border-top: $checkoutFormValidatePointerBorderTop;
+        border-left: $checkoutFormValidatePointerBorderLeft;
+        border-right: $checkoutFormValidatePointerBorderRight;
+        background: $checkoutFormValidatePointerBackground;
         margin-top: 0 !important;
       }
     }
 
     &.type-error {
-      background-color: $formValidateReasonBackgroundColor;
-      border: $formValidateReasonBorder;
+      background-color: $checkoutFormValidateReasonBackgroundColor;
+      border: $checkoutFormValidateReasonBorder;
       font-weight: bold;
 
       span {

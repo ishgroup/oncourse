@@ -1,6 +1,6 @@
 //
 //
-// mixins.scss
+// checkout/partials/mixins.scss
 //
 // Contains all the different functions i.e. mixins
 //
@@ -46,12 +46,6 @@
     @media only screen and (min-width: $custom-width) {
       @content;
     }
-  }
-}
-
-@mixin checkout-wrapper {
-  #oncourse-checkout {
-    @content;
   }
 }
 

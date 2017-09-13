@@ -10,10 +10,13 @@
 
 @import "partials/settings";
 @import "partials/mixins";
-@import "partials/elements";
-@import "partials/progress";
-@import "partials/forms";
-@import "partials/concession";
-@import "partials/summary";
-@import "partials/tabs";
-@import "partials/main";
+
+#oncourse-checkout {
+  @import "partials/elements";
+  @import "partials/progress";
+  @import "partials/forms";
+  @import "partials/concession";
+  @import "partials/summary";
+  @import "partials/tabs";
+  @import "partials/main";
+}

@@ -2,397 +2,399 @@
 //
 // forms.scss
 //
-// Contains all the styles of different forms used in checkout
+// Styling for the forms used in checkout
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
 //
 
-@include checkout-wrapper {
-  fieldset legend {
-    width: auto;
-    // display: none;
-  }
-  fieldset, #tabable-container .tab-content {
-    >div>div, >div>div>div, .form-details >div>div, .form-group, .form-group > div > div, .form-details > p {
-      position: relative;
-      margin-bottom: 12px;
-      label {
-        font-weight: $formLabelFontWeight;
-        text-align: left !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        line-height: $formLabelLineHeight;
-        padding: $formLabelPaddingSmall;
-        margin-bottom: $formLabelMarginBottomSmall;
-        font-size: $formLabelFontSize;
-        @include responsive($checkout-media-default) {
-          padding: $formLabelPaddingTablet;
-          width: $formLabelWidthTablet;
-          max-width: $formLabelMaxWidthTablet;
-          margin-bottom: $formLabelMarginBottomTablet;
-          text-align: right !important;
-        }
-        > small {
-          color: $formSmallTagColor;
-          font-size: $formSmallTagFontSize;
-          display: block;
-          line-height: $formSmallTagLineHeight;
-        }
-        em {
-          font-size: $formEmTagFontSize;
-        }
-        >sup {
-          color: $formSupTagColor;
-        }
-        &.radio-btn {
-          width: auto;
-          float: none;
-          margin-left: 0px;
-          max-width: none;
-          display: block;
-          margin-bottom: 5px;
-          &.text-right {
-            text-align: right;
-            padding: 0;
-          }
-          input[type=radio] {
-            float: left;
-            margin-left: 0px;
-            margin-right: 5px;
-            @include responsive($checkout-media-default) {
-              margin-left: -20px;
-              margin-right: 0px;
-            }
-          }
-        }
-      }
-      > span {
-        width: 100%;
-        @include responsive($checkout-media-default) {
-          width: $formSpanTagWidthTablet;
-        }
-        &:hover {
-          .validate-text {
-            display: block;
-          }
-        }
-        &.select-payer {
-          label.radio-btn {
-            text-align: left;
-          }
-        }
-        #cvvLink {
-          margin-left: 11px;
-          @include responsive($checkout-media-default) {
-            margin-left: $formCVVLinkMarginLeftTablet;
-          }
-        }
-        &.validate.has-error {
-          .t-error {
-            background-color: $formInputErrorBackgroundColor;
-          }
-        }
-      }
-
-      .conditions {
-        top: 0;
-        label {
-          display: block;
-          width: auto;
-          max-width: 100%;
-          text-align: left;
-          margin-left: 26%;
-          padding-left: 20px;
-          font-weight: normal;
-        }
-      }
-      span {
-        display: inline-block;
-        vertical-align: top;
-        position: relative;
-        &.validate-text {
-          display: none;
-          position: $formValidatePosition;
-          z-index: 3;
-          font-size: $formValidateFontSize;
-          margin-left: 0;
-          max-width: none;
-          left: $formValidatePositionLeft;
-          top: $formValidatePositionTop;
-          width: $formValidateWidth;
-          bottom: $formValidatePositionBottomSmall;
-          @include responsive($checkout-media-default) {
-            bottom: $formValidatePositionBottomTablet;
-          }
-          .reason, .hint {
-            font-weight: $formValidateFontWeight;
-            position: relative;
-            display: block;
-            padding: $formValidatePadding;
-          }
-          .reason {
-            background-color: $formValidateReasonBackgroundColor;
-            border: $formValidateReasonBorder;
-          }
-          .hint {
-            background-color: $formValidateHintBackgroundColor;
-            border: $formValidateHintBorder;
-            .reason-pointer, .hint-pointer {
-              border-top: $formValidateHintPointerBorderTop;
-            }
-          }
-          .reason-pointer, .hint-pointer {
-            z-index: -1;
-            display: block;
-            position: absolute;
-            left: $formValidatePointerPositionLeft;
-            top: $formValidatePointerPositionTop;
-            bottom: $formValidatePointerPositionBottom;
-            border-top: $formValidatePointerBorderTop;
-            border-left: $formValidatePointerBorderLeft;
-            border-right: $formValidatePointerBorderRight;
-            background: $formValidatePointerBackground;
-          }
-          .hidden-text {
-            display: none;
-          }
-        }
-      }
-      input, textarea {
-        border: $formInputBorder;
-        font-size: $formInputFontSize;
-        &:hover {
-          border-color: $formInputBorderColorHover;
-        }
-        &:focus {
-          outline: none;
-          border-color: $formInputBorderColorFocus;
-        }
-        &.t-error {
-          font-style: normal;
-          background-color: $formInputErrorBackgroundColor;
-          color: $formInputErrorColor;
-        }
-      }
-
-      input[type="text"], input[type="password"], select {
-        border: $formInputBorder;
-        padding: $formInputPadding;
-        background-color: $formInputBackgroundColor;
-        font-size: $formInputFontSize;
-        height: $formInputHeight;
-        line-height: $formInputLineHeight;
-        width: 100% !important;
-        max-width: none !important;
-        border-radius: $formInputBorderRadius;
-        @include responsive($checkout-media-default) {
-          width: $formInputWidthTablet;
-          max-width: $formInputMaxWidthTablet;
-        }
-      }
-      textarea {
-        border: $formInputBorder;
-        padding: $formInputPadding;
-        background-color: $formInputBackgroundColor;
-        font-size: $formInputFontSize;
-        height: $formTextAreaHeight;
-        line-height: $formInputLineHeight;
-        width: 100%;
-        @include responsive($checkout-media-default) {
-          width: $formTextAreaWidthTablet;
-          min-width: $formInputWidthTablet;
-        }
-      }
-      .radio-list {
-        top: 0;
-        margin-left: 0;
-        margin-top: 6px;
-        padding-left: 0;
-        >span >span {
-          margin-right: 8px;
-        }
-        input {
-          margin-right: 5px;
-          margin-top: 1px;
-        }
-      }
-    }
-
-    .Select {
-      width: 100%;
-      display: inline-block;
-      vertical-align: middle;
-      margin-bottom: 10px;
+fieldset legend {
+  width: auto;
+  // display: none;
+}
+fieldset, #tabable-container .tab-content {
+  >div>div, >div>div>div, .form-details >div>div, .form-group, .form-group > div > div, .form-details > p {
+    position: relative;
+    margin-bottom: 12px;
+    label {
+      font-weight: $checkoutFormLabelFontWeight;
+      text-align: left !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      line-height: $checkoutFormLabelLineHeight;
+      padding: $checkoutFormLabelPaddingSmall;
+      margin-bottom: $checkoutFormLabelMarginBottomSmall;
+      font-size: $checkoutFormLabelFontSize;
       @include responsive($checkout-media-default) {
-        width: $formInputWidthTablet;
+        padding: $checkoutFormLabelPaddingTablet;
+        width: $checkoutFormLabelWidthTablet;
+        max-width: $checkoutFormLabelMaxWidthTablet;
+        margin-bottom: $checkoutFormLabelMarginBottomTablet;
+        text-align: right !important;
       }
-
-      &.t-error {
-        padding: 0;
-        border: none;
-        margin: 0;
-        margin-bottom: 10px;
-        background: $formInputErrorBackgroundColor;
-        * {
-          background: $formInputErrorBackgroundColor;
-          color: #aaa !important;
-          font-weight: normal;
-        }
-        .Select-control {
-          background: $formSelectBackgroundError;
+      > small {
+        color: $checkoutFormSmallTagColor;
+        font-size: $checkoutFormSmallTagFontSize;
+        display: block;
+        line-height: $checkoutFormSmallTagLineHeight;
+      }
+      em {
+        font-size: $checkoutFormEmTagFontSize;
+      }
+      >sup {
+        color: $checkoutFormSupTagColor;
+      }
+      &.radio-btn {
+        width: auto;
+        float: none;
+        margin-left: 0px;
+        max-width: none;
+        display: block;
+        margin-bottom: 5px;
+        &.text-right {
+          text-align: right;
           padding: 0;
-          .Select-placeholder {
-            color: $formSelectColorError;
-            font-weight: $formSelectFontWeightError;
-            line-height: 29px;
+        }
+        input[type=radio] {
+          float: left;
+          margin-left: 0px;
+          margin-right: 5px;
+          @include responsive($checkout-media-default) {
+            margin-left: -20px;
+            margin-right: 0px;
           }
         }
       }
-
-      .Select-loading-zone {
-        position: absolute !important;
-        top: 50%;
-        right: 30px;
-        margin-top: -10px;
-
-        .Select-loading {
-          width: 20px;
-          height: 20px;
-        }
+    }
+    > span {
+      width: 100%;
+      @include responsive($checkout-media-default) {
+        width: $checkoutFormSpanTagWidthTablet;
       }
-
-      .Select-control {
-        border-radius: $formInputBorderRadius;
-        background-color: $formInputBackgroundColor;
-        border: $formInputBorder;
-        color: $formInputColor;
-        cursor: default;
-        display: table;
-        border-spacing: 0;
-        border-collapse: separate;
-        height: $formInputHeight;
-        outline: none;
-        overflow: hidden;
-        position: relative;
-        width: 100%;
-
-        &:hover {
-          border-color: $formInputBorderColorHover;
-        }
-
-        span {
+      &:hover {
+        .validate-text {
           display: block;
-          vertical-align: middle;
-          position: static;
-          height: 24px;
-
-          &.Select-arrow-zone, &.Select-multi-value-wrapper {
-            position: relative;
-            display: table-cell;
-            vertical-align: middle;
-          }
-          &.Select-multi-value-wrapper {
-            display: block;
-          }
-
-          &.Select-arrow-zone {
-            width: 20px;
-          }
-
-          &.Select-arrow {
-            vertical-align: middle;
-            height: auto;
-          }
-          &.Select-multi-value-wrapper {
-            @include responsive($checkout-media-default) {
-              width: $formSelectWrapperWidth;
-            }
-          }
         }
-
-        .Select-input > input {
-          border: 0 none;
-          font-size: 14px;
-          padding: 4px 0 6px;
-          min-width: 83px;
-          max-width: 83px;
-          @include responsive($checkout-media-default) {
-            min-width: 143px;
-            max-width: 143px;
-          }
+      }
+      &.select-payer {
+        label.radio-btn {
+          text-align: left;
+        }
+      }
+      #cvvLink {
+        margin-left: 11px;
+        @include responsive($checkout-media-default) {
+          margin-left: $checkoutFormCVVLinkMarginLeftTablet;
+        }
+      }
+      &.validate.has-error {
+        .t-error {
+          background-color: $checkoutFormInputErrorBackgroundColor;
         }
       }
     }
-    .Select-placeholder, .Select--single > .Select-control .Select-value .Select-value-label {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .Select-placeholder, .Select--single > .Select-control .Select-value, .Select-input {
-      height: 26px;
-      line-height: 26px;
-      font-size: $formInputFontSize;
-      padding-left: 10px;
-      padding-right: 10px;
-      vertical-align: middle;
-    }
-    .Select-placeholder {
-      font-weight: normal;
-    }
 
-    .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label,
-    .has-value.Select--single > .Select-control .Select-value .Select-value-label {
-      color: $formInputColor;
-    }
-
-    .Select-placeholder, .Select--single > .Select-control .Select-value {
-      bottom: 0;
-      color: $formSelectPlaceholderColor;
-      left: 0;
-      line-height: 29px;
-      padding-left: 10px;
-      padding-right: 22px;
-      position: absolute;
-      right: 0;
+    .conditions {
       top: 0;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .is-focused:not(.is-open) {
-      > .Select-control {
-        border-color: #ccc;
-        box-shadow: none;
+      label {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        text-align: left;
+        margin-left: 26%;
+        padding-left: 20px;
+        font-weight: normal;
       }
     }
-  }
-  #contactEditorForm {
-    fieldset > div > div {
-      label {
-        &[for="isMarketingViaEmailAllowed"],
-        &[for="isMarketingViaPostAllowed"],
-        &[for="isMarketingViaSMSAllowed"] {
-          width: 90% !important;
-          max-width: none !important;
-          padding-left: 10px !important;
-          @include responsive($checkout-media-default) {
-            width: $formLabelWidthTablet;
-            max-width: $formLabelMaxWidthTablet;
-            padding: $formLabelPaddingTablet;
+    span {
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
+      &.validate-text {
+        display: none;
+        position: $checkoutFormValidatePosition;
+        z-index: 3;
+        font-size: $checkoutFormValidateFontSize;
+        margin-left: 0;
+        max-width: none;
+        left: $checkoutFormValidatePositionLeft;
+        top: $checkoutFormValidatePositionTop;
+        width: $checkoutFormValidateWidth;
+        bottom: $checkoutFormValidatePositionBottomSmall;
+        @include responsive($checkout-media-default) {
+          bottom: $checkoutFormValidatePositionBottomTablet;
+        }
+        .reason, .hint {
+          font-weight: $checkoutFormValidateFontWeight;
+          position: relative;
+          display: block;
+          padding: $checkoutFormValidatePadding;
+        }
+        .reason {
+          background-color: $checkoutFormValidateReasonBackgroundColor;
+          border: $checkoutFormValidateReasonBorder;
+        }
+        .hint {
+          background-color: $checkoutFormValidateHintBackgroundColor;
+          border: $checkoutFormValidateHintBorder;
+          .reason-pointer, .hint-pointer {
+            border-top: $checkoutFormValidateHintPointerBorderTop;
           }
         }
+        .reason-pointer, .hint-pointer {
+          z-index: -1;
+          display: block;
+          position: absolute;
+          left: $checkoutFormValidatePointerPositionLeft;
+          top: $checkoutFormValidatePointerPositionTop;
+          bottom: $checkoutFormValidatePointerPositionBottom;
+          border-top: $checkoutFormValidatePointerBorderTop;
+          border-left: $checkoutFormValidatePointerBorderLeft;
+          border-right: $checkoutFormValidatePointerBorderRight;
+          background: $checkoutFormValidatePointerBackground;
+        }
+        .hidden-text {
+          display: none;
+        }
+      }
+    }
+    input, textarea {
+      border: $checkoutFormInputBorder;
+      font-size: $checkoutFormInputFontSize;
+      &:hover {
+        border-color: $checkoutFormInputBorderColorHover;
+      }
+      &:focus {
+        outline: none;
+        border-color: $checkoutFormInputBorderColorFocus;
+      }
+      &.t-error {
+        font-style: normal;
+        background-color: $checkoutFormInputErrorBackgroundColor;
+        color: $checkoutFormInputErrorColor;
+      }
+    }
+
+    input[type="text"], input[type="password"], select {
+      border: $checkoutFormInputBorder;
+      padding: $checkoutFormInputPadding;
+      background-color: $checkoutFormInputBackgroundColor;
+      font-size: $checkoutFormInputFontSize;
+      height: $checkoutFormInputHeight;
+      line-height: $checkoutFormInputLineHeight;
+      width: 100% !important;
+      max-width: none !important;
+      border-radius: $checkoutFormInputBorderRadius;
+      @include responsive($checkout-media-default) {
+        width: $checkoutFormInputWidthTablet;
+        max-width: $checkoutFormInputMaxWidthTablet;
+      }
+    }
+    textarea {
+      border: $checkoutFormInputBorder;
+      padding: $checkoutFormInputPadding;
+      background-color: $checkoutFormInputBackgroundColor;
+      font-size: $checkoutFormInputFontSize;
+      height: $checkoutFormTextAreaHeight;
+      line-height: $checkoutFormInputLineHeight;
+      width: 100%;
+      @include responsive($checkout-media-default) {
+        width: $checkoutFormTextAreaWidthTablet;
+        min-width: $checkoutFormInputWidthTablet;
+      }
+    }
+    .radio-list {
+      top: 0;
+      margin-left: 0;
+      margin-top: 6px;
+      padding-left: 0;
+      >span >span {
+        margin-right: 8px;
+        line-height: 1.3;
       }
       input {
-        &[name="isMarketingViaEmailAllowed"],
-        &[name="isMarketingViaPostAllowed"],
-        &[name="isMarketingViaSMSAllowed"] {
-          float: left;
-          margin-top: 7px;
+        margin-right: 5px;
+        margin-top: 1px;
+        &.t-error + span {
+          color: $checkoutFormInputRadioErrorColor;
+        }
+      }
+    }
+  }
+
+  .Select {
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    @include responsive($checkout-media-default) {
+      width: $checkoutFormInputWidthTablet;
+    }
+
+    &.t-error {
+      padding: 0;
+      border: none;
+      margin: 0;
+      margin-bottom: 10px;
+      background: $checkoutFormInputErrorBackgroundColor;
+      * {
+        background: $checkoutFormInputErrorBackgroundColor;
+        color: #aaa !important;
+        font-weight: normal;
+      }
+      .Select-control {
+        background: $checkoutFormSelectBackgroundError;
+        padding: 0;
+        .Select-placeholder {
+          color: $checkoutFormSelectColorError;
+          font-weight: $checkoutFormSelectFontWeightError;
+          line-height: 29px;
+        }
+      }
+    }
+
+    .Select-loading-zone {
+      position: absolute !important;
+      top: 50%;
+      right: 30px;
+      margin-top: -10px;
+
+      .Select-loading {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .Select-control {
+      border-radius: $checkoutFormInputBorderRadius;
+      background-color: $checkoutFormInputBackgroundColor;
+      border: $checkoutFormInputBorder;
+      color: $checkoutFormInputColor;
+      cursor: default;
+      display: table;
+      border-spacing: 0;
+      border-collapse: separate;
+      height: $checkoutFormInputHeight;
+      outline: none;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+
+      &:hover {
+        border-color: $checkoutFormInputBorderColorHover;
+      }
+
+      span {
+        display: block;
+        vertical-align: middle;
+        position: static;
+        height: 24px;
+
+        &.Select-arrow-zone, &.Select-multi-value-wrapper {
+          position: relative;
+          display: table-cell;
+          vertical-align: middle;
+        }
+        &.Select-multi-value-wrapper {
+          display: block;
+        }
+
+        &.Select-arrow-zone {
+          width: 20px;
+        }
+
+        &.Select-arrow {
+          vertical-align: middle;
+          height: auto;
+        }
+        &.Select-multi-value-wrapper {
           @include responsive($checkout-media-default) {
-            float: none;
-            margin-top: 4px;
+            width: $checkoutFormSelectWrapperWidth;
           }
+        }
+      }
+
+      .Select-input > input {
+        border: 0 none;
+        font-size: 14px;
+        padding: 4px 0 6px;
+        min-width: 83px;
+        max-width: 83px;
+        @include responsive($checkout-media-default) {
+          min-width: 143px;
+          max-width: 143px;
+        }
+      }
+    }
+  }
+  .Select-placeholder, .Select--single > .Select-control .Select-value .Select-value-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .Select-placeholder, .Select--single > .Select-control .Select-value, .Select-input {
+    height: 26px;
+    line-height: 26px;
+    font-size: $checkoutFormInputFontSize;
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: middle;
+  }
+  .Select-placeholder {
+    font-weight: normal;
+  }
+
+  .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label,
+  .has-value.Select--single > .Select-control .Select-value .Select-value-label {
+    color: $checkoutFormInputColor;
+  }
+
+  .Select-placeholder, .Select--single > .Select-control .Select-value {
+    bottom: 0;
+    color: $checkoutFormSelectPlaceholderColor;
+    left: 0;
+    line-height: 29px;
+    padding-left: 10px;
+    padding-right: 22px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .is-focused:not(.is-open) {
+    > .Select-control {
+      border-color: #ccc;
+      box-shadow: none;
+    }
+  }
+}
+#contactEditorForm {
+  fieldset > div > div {
+    label {
+      &[for="isMarketingViaEmailAllowed"],
+      &[for="isMarketingViaPostAllowed"],
+      &[for="isMarketingViaSMSAllowed"] {
+        width: 90% !important;
+        max-width: none !important;
+        padding-left: 10px !important;
+        @include responsive($checkout-media-default) {
+          width: $checkoutFormLabelWidthTablet;
+          max-width: $checkoutFormLabelMaxWidthTablet;
+          padding: $checkoutFormLabelPaddingTablet;
+        }
+      }
+    }
+    input {
+      &[name="isMarketingViaEmailAllowed"],
+      &[name="isMarketingViaPostAllowed"],
+      &[name="isMarketingViaSMSAllowed"] {
+        float: left;
+        margin-top: 7px;
+        @include responsive($checkout-media-default) {
+          float: none;
+          margin-top: 4px;
         }
       }
     }
