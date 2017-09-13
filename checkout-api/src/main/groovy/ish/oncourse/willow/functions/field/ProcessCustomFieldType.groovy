@@ -1,7 +1,7 @@
 package ish.oncourse.willow.functions.field
 
+import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.College
-import ish.oncourse.model.Contact
 import ish.oncourse.model.CustomFieldType
 import ish.oncourse.model.Field
 import ish.oncourse.willow.model.common.Item
@@ -9,8 +9,6 @@ import ish.oncourse.willow.model.field.DataType
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
-
-import static ish.oncourse.common.field.FieldProperty.CUSTOM_FIELD_CONTACT
 
 class ProcessCustomFieldType {
 
@@ -61,11 +59,12 @@ class ProcessCustomFieldType {
     }
 
     private CustomFieldType selectCustomFieldType() {
-        String key = fieldKey.replace("${CUSTOM_FIELD_CONTACT.key}.", '')
+        FieldProperty fieldProperty = FieldProperty.getByKey(fieldKey)
+        String customFieldKey = fieldKey.replace("${fieldProperty.key}.", '')
 
         return ((ObjectSelect.query(CustomFieldType)
-                .where(CustomFieldType.ENTITY_NAME.eq(Contact.simpleName)) 
-                & CustomFieldType.KEY.eq(key)) 
+                .where(CustomFieldType.ENTITY_NAME.eq(fieldProperty.contextType.identifier.capitalize())) 
+                & CustomFieldType.KEY.eq(customFieldKey)) 
                 & CustomFieldType.COLLEGE.eq(college))
                 .selectOne(objectContext)
     }

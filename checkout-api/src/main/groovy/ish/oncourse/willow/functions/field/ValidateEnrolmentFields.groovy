@@ -40,9 +40,9 @@ class ValidateEnrolmentFields {
             Field correspondingField = correspondingFields[0]
             String value = correspondingField.value
             if (value && f.dataType == DataType.ENUM && !f.enumItems.collect { it.value }.contains(value)) {
-                fieldErrors << new FieldError(name: f.key, error: "${f.name} for class $className is required")
-            } else if (f.mandatory) {
                 fieldErrors << new FieldError(name: f.key, error: "Please select ${f.name} value for $className class from the drop-down list")
+            } else if (f.mandatory) {
+                fieldErrors << new FieldError(name: f.key, error: "${f.name} for class $className is required")
             }
         }
         
