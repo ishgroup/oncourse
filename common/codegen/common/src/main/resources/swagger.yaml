@@ -1122,6 +1122,9 @@ definitions:
       value:
         type: string
         description: Value for corresponded property
+      itemValue:
+        $ref: '#/definitions/common.Item'
+        description: Item value for corresponded property
       defaultValue:
         type: string
         description: Default value for corresponded property

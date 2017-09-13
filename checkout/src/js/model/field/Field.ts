@@ -44,6 +44,11 @@ export class Field {
   value?: string;
 
   /**
+   * Item value for corresponded property
+   */
+  itemValue?: Item;
+
+  /**
    * Default value for corresponded property
    */
   defaultValue?: string;

@@ -15,6 +15,7 @@ public class Field  {
     private DataType dataType = null;
     private String enumType = null;
     private String value = null;
+    private Item itemValue = null;
     private String defaultValue = null;
     private List<Item> enumItems = new ArrayList<Item>();
     private Integer ordering = null;
@@ -156,6 +157,23 @@ public class Field  {
     }
 
     /**
+     * Item value for corresponded property
+     * @return itemValue
+     */
+    public Item getItemValue() {
+        return itemValue;
+    }
+
+    public void setItemValue(Item itemValue) {
+       this.itemValue = itemValue;
+    }
+
+    public Field itemValue(Item itemValue) {
+      this.itemValue = itemValue;
+      return this;
+    }
+
+    /**
      * Default value for corresponded property
      * @return defaultValue
      */
@@ -225,6 +243,7 @@ public class Field  {
       sb.append("    dataType: ").append(toIndentedString(dataType)).append("\n");
       sb.append("    enumType: ").append(toIndentedString(enumType)).append("\n");
       sb.append("    value: ").append(toIndentedString(value)).append("\n");
+      sb.append("    itemValue: ").append(toIndentedString(itemValue)).append("\n");
       sb.append("    defaultValue: ").append(toIndentedString(defaultValue)).append("\n");
       sb.append("    enumItems: ").append(toIndentedString(enumItems)).append("\n");
       sb.append("    ordering: ").append(toIndentedString(ordering)).append("\n");
