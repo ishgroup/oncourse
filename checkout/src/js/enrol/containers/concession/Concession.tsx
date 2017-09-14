@@ -5,7 +5,7 @@ import {IshState} from "../../../services/IshState";
 import {Contact} from "../../../model";
 import ConcessionForm from "./components/ConcessionForm";
 import {reduxForm, FormErrors} from "redux-form";
-import {changePhase, showFormValidation} from "../../actions/Actions";
+import {changePhase, showFormValidation, showSyncErrors} from "../../actions/Actions";
 import {getConcessionTypes} from "./actions/Actions";
 import CheckoutService from "../../services/CheckoutService";
 
@@ -36,14 +36,8 @@ class Concession extends React.Component<any, any> {
     this.props.reset();
   }
 
-  onConcessionAgreed = value => {
-    this.setState({
-      isConcessionAgreed: !value.target.value,
-    });
-  }
-
   render() {
-    const {contact, handleSubmit, pristine, invalid, submitting, onCancel, page, concessionTypes} = this.props;
+    const {contact, handleSubmit, pristine, submitting, onCancel, page, concessionTypes} = this.props;
     return (
       <div className="concessionEditor">
         <h3>Add concession for {contact.firstName + " " + contact.lastName}</h3>
@@ -95,7 +89,11 @@ const Form = reduxForm({
     dispatch(changePhase(props.page));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
-    dispatch(showFormValidation(submitError, NAME));
+    if (errors && !submitError) {
+      dispatch(showSyncErrors(errors));
+    } else {
+      dispatch(showFormValidation(submitError, NAME));
+    }
   },
 })(Concession);
 

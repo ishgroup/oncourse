@@ -10,7 +10,7 @@ import {
   submitPaymentCorporatePass, updatePaymentStatus,
 } from "../actions/Actions";
 import {connect} from "react-redux";
-import {changePhase, getAmount, setPayer, togglePayNowVisibility} from "../../../actions/Actions";
+import {changePhase, getAmount, setPayer, showSyncErrors, togglePayNowVisibility} from "../../../actions/Actions";
 import {Phase} from "../../../reducers/State";
 import CheckoutService from "../../../services/CheckoutService";
 import {IshState} from "../../../../services/IshState";
@@ -217,10 +217,16 @@ const Form = reduxForm({
     }
 
   },
+  onSubmitFail: (errors, dispatch, submitError, props) => {
+    if (errors && !submitError) {
+      dispatch(showSyncErrors(errors));
+    }
+  },
 })(PaymentForm);
 
 const mapStateToProps = (state: IshState) => {
-  const corporatePassError = state.checkout.error && state.checkout.error.fieldsErrors.find(er => er.name === 'code');
+  const corporatePassError = state.checkout.error &&
+    state.checkout.error.fieldsErrors && state.checkout.error.fieldsErrors.find(er => er.name === 'code');
   return {
     contacts: Object.values(state.checkout.contacts.entities.contact),
     amount: state.checkout.amount,

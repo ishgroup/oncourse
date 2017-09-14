@@ -5,14 +5,14 @@ import classnames from "classnames";
 import {CompanyAdd} from "./components/CompanyAdd";
 import {validateCompany} from "./actions/Validations";
 import {NAME, Values} from "./actions/Actions";
-import {showFormValidation} from "../../actions/Actions";
+import {showFormValidation, showSyncErrors} from "../../actions/Actions";
 import {ContactId} from "../../../model";
 import CheckoutService from "../../services/CheckoutService";
 
 
 class CompanyAddForm extends React.Component<any, any> {
   render() {
-    const {handleSubmit, onCancel, pristine, invalid, submitting, fetching} = this.props;
+    const {handleSubmit, onCancel, pristine, submitting, fetching} = this.props;
 
     return (
       <div>
@@ -40,9 +40,8 @@ class CompanyAddForm extends React.Component<any, any> {
               className="btn btn-primary"
               name="submitContact"
               type="submit"
-              disabled={invalid || pristine || submitting}
+              disabled={pristine || submitting}
             />
-
 
           </div>
         </form>
@@ -58,7 +57,11 @@ const Form = reduxForm({
     dispatch(props.onSuccess(result as ContactId, props.values as Values));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
-    dispatch(showFormValidation(submitError, NAME));
+    if (errors && !submitError) {
+      dispatch(showSyncErrors(errors));
+    } else {
+      dispatch(showFormValidation(submitError, NAME));
+    }
   },
 })(CompanyAddForm);
 

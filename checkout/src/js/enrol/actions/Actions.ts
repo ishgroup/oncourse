@@ -89,8 +89,8 @@ export const changePhase = (phase: Phase) => {
     type: CHANGE_PHASE,
     payload: phase,
     meta: {
-      analytics: GABuilder.setCheckoutStep(phase)
-    }
+      analytics: GABuilder.setCheckoutStep(phase),
+    },
   };
 };
 
@@ -166,5 +166,12 @@ export const togglePayNowVisibility = (val: boolean): IAction<any> => {
   return {
     type: TOGGLE_PAYNOW_VISIBILITY,
     payload: val,
+  };
+};
+
+export const showSyncErrors = formErrors => {
+  return {
+    type: SHOW_MESSAGES,
+    payload: {formErrors: Object.values(formErrors).map(error => error)},
   };
 };

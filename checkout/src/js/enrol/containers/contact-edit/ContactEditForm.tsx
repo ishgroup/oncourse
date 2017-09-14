@@ -7,7 +7,7 @@ import {Contact, ValidationError, ContactFields} from "../../../model";
 import {IshState} from "../../../services/IshState";
 import {ContactEdit} from "./components/ContactEdit";
 import CheckoutService from "../../services/CheckoutService";
-import {changePhase, showFormValidation} from "../../actions/Actions";
+import {changePhase, showFormValidation, showSyncErrors} from "../../actions/Actions";
 import {submitEditContact} from "./actions/Actions";
 import {getConcessionTypes} from "../concession/actions/Actions";
 import {validate as concessionFormValidate} from "../concession/Concession";
@@ -27,8 +27,7 @@ class ContactEditForm extends React.Component<Props, any> {
 
   render() {
     const {
-      handleSubmit, pristine, touch, invalid, submitting, concessionTypes, isNewContact, onCancel, page, form,
-      onChangeSuburb,
+      handleSubmit, touch, submitting, concessionTypes, isNewContact, onCancel, page, form, onChangeSuburb,
     } = this.props;
     const contact: Contact = this.props.contact;
     const fields: ContactFields = this.props.fields;
@@ -110,7 +109,11 @@ const Form = reduxForm({
     dispatch(submitEditContact({...props.contact, parentRequired: result.parentRequired}));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
-    dispatch(showFormValidation(submitError, NAME));
+    if (errors && !submitError) {
+      dispatch(showSyncErrors(errors));
+    } else {
+      dispatch(showFormValidation(submitError, NAME));
+    }
   },
 })(ContactEditForm);
 
@@ -124,7 +127,7 @@ const getInitialValues = fields => {
     );
 
   return initialValues;
-}
+};
 
 const mapStateToProps = (state: IshState) => {
   // state.checkout.contacts.entities.contact[state.checkout.fields.contactId]

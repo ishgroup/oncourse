@@ -1,34 +1,60 @@
 import * as React from "react";
+import {connect} from 'react-redux';
 import {reduxForm} from "redux-form";
 import {isNil} from "lodash";
 
 import HeadingComp from "../../../components/HeadingComp";
 import {toFormKey} from "../../../../components/form/FieldFactory";
 
-
 class EnrolmentFields extends React.Component<any, any> {
 
+  getFormErrors() {
+    const {forms, form, submitFailed} = this.props;
+
+    if (forms && forms[form]) {
+      const formErrors = forms[form].syncErrors;
+
+      if (formErrors && submitFailed) {
+        const errors = Object.values(formErrors);
+
+        return errors.length > 0 && (
+          <div className="validation">
+            <ul>
+              {errors.map((er, i) => (
+                <li>
+                  {er}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+    }
+
+    return null;
+  }
+
   render() {
-    const {headings, classId, selected, onUpdate, form, handleSubmit, submit} = this.props;
+    const {headings, selected, onUpdate, form, handleSubmit} = this.props;
 
     const headingsComp = isNil(headings) ? [] : headings.map((h, index) => (
-      <HeadingComp heading={h} key={index} touch={() => onUpdate(form)} />
+      <HeadingComp heading={h} key={index} touch={() => onUpdate(form)}/>
     ));
 
     return (
       <div className="course-fields col-sm-24">
         {headings && selected &&
         <form onSubmit={handleSubmit} onBlur={() => onUpdate(form)}>
+          {this.getFormErrors()}
           {headingsComp}
         </form>
-
         }
       </div>
     );
   }
 }
 
-export const EnrolmentFieldsForm = reduxForm({
+const EnrolmentFieldsForm = reduxForm({
   validate: (data, props: any) => {
     const errors = {};
 
@@ -45,3 +71,6 @@ export const EnrolmentFieldsForm = reduxForm({
     return errors;
   },
 })(EnrolmentFields);
+
+const Container = connect<any, any, any>(state => ({forms: state.form}))(EnrolmentFieldsForm);
+export default Container;

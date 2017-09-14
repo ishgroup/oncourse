@@ -5,7 +5,7 @@ import classnames from "classnames";
 import {ContactAdd} from "./components/ContactAdd";
 import {validateContact} from "./actions/Validations";
 import {NAME, Values} from "./actions/Actions";
-import {showFormValidation} from "../../actions/Actions";
+import {showFormValidation, showSyncErrors} from "../../actions/Actions";
 import {ContactId} from "../../../model";
 import CheckoutService from "../../services/CheckoutService";
 import {Phase} from "../../reducers/State";
@@ -64,7 +64,11 @@ const Form = reduxForm({
     dispatch(props.onSuccess(result as ContactId, props.values as Values));
   },
   onSubmitFail: (errors, dispatch, submitError, props) => {
-    dispatch(showFormValidation(submitError, NAME));
+    if (errors && !submitError) {
+      dispatch(showSyncErrors(errors));
+    } else {
+      dispatch(showFormValidation(submitError, NAME));
+    }
   },
 })(ContactAddForm);
 

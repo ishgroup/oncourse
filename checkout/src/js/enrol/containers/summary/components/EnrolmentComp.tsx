@@ -8,7 +8,7 @@ import {Enrolment, Contact, CourseClass, CourseClassPrice} from "../../../../mod
 import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
 import {toFormKey} from "../../../../components/form/FieldFactory";
-import {EnrolmentFieldsForm} from "./EnrolmentFieldsForm";
+import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
 
 
 export interface Props {
