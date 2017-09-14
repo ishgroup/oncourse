@@ -418,6 +418,7 @@ paths:
     get:
       x-filter:  
       - SearchText
+      - CollegeInfo
       summary: Postcode endpoint
       operationId: getPostcodes
       description: Provide autocomplete candidates for provided text
@@ -443,7 +444,8 @@ paths:
   /suburb/{text}:
     get:
       x-filter:  
-      - SearchText    
+      - SearchText
+      - CollegeInfo
       summary: Suburb endpoint
       operationId: getSuburbs
       description: Provide autocomplete candidates for searche text

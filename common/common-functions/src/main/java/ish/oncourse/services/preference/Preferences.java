@@ -23,6 +23,7 @@ public interface Preferences {
     String ENROLMENT_CREDITCARD_PAYMENT_ENABLED = "enrolment.creditCard..payment.enabled";
     String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
     String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";
+    String SUBURB_AUTOCOMPLITE_STATE = "feature.suburb.autocomplete.states";
     
     int DEFAULT_contactAgeWhenNeedParent = 18;
 

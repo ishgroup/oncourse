@@ -4,9 +4,11 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.model.Country
 import ish.oncourse.model.Language
+import ish.oncourse.services.preference.GetAutoCompleteState
 import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.service.SearchApi
+import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 
@@ -17,11 +19,13 @@ class SearchApiImpl implements SearchApi {
 
     CayenneService cayenneService
     SearchService searchService
+    CollegeService collegeService
 
     @Inject
-    ContactApiServiceImpl(CayenneService cayenneService, SearchService searchService) {
+    ContactApiServiceImpl(CayenneService cayenneService, SearchService searchService, CollegeService collegeService) {
         this.cayenneService = cayenneService
         this.searchService = searchService
+        this.collegeService = collegeService
     }
     
     
@@ -54,11 +58,15 @@ class SearchApiImpl implements SearchApi {
 
     @Override
     List<Item> getPostcodes(String text) {
-        searchService.searchSuburbsByPostcode(text)
+        searchService.searchSuburbsByPostcode(text, stateFilter)
     }
 
     @Override
     List<Item> getSuburbs(String text) {
-        searchService.searchSuburbsByName(text)
+        searchService.searchSuburbsByName(text, stateFilter)
+    }
+    
+    private String getStateFilter() {
+        new GetAutoCompleteState(collegeService.college, cayenneService.newContext()).get()
     }
 }

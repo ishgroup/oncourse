@@ -34,14 +34,14 @@ class SearchService {
     }
 
 
-    private List<Item> searchSuburbs(String qualifier, String value) {
+    private List<Item> searchSuburbs(String qualifier, String value, String stateFilter) {
         try {
 
             value = normalizeString(value)
             List<Item> result = []
 
             SolrQuery q = new SolrQuery()
-            q.query = "doctype:suburb AND $qualifier:$value*"
+            q.query = "doctype:suburb AND $qualifier:$value* ${stateFilter ? "AND state:$stateFilter" : ""}"
 
             client.query('suburbs', q).results.each { doc ->
                 result << new Item().with { i ->
@@ -62,12 +62,12 @@ class SearchService {
         }
     }
     
-    List<Item> searchSuburbsByName(String term) {
-        searchSuburbs('suburb', term)
+    List<Item> searchSuburbsByName(String term, String stateFilter) {
+        searchSuburbs('suburb', term, stateFilter)
     }
 
-    List<Item> searchSuburbsByPostcode(String term) { 
-        searchSuburbs('postcode', term)
+    List<Item> searchSuburbsByPostcode(String term, String stateFilter) { 
+        searchSuburbs('postcode', term, stateFilter)
     }
 
     static String normalizeString(String original) {

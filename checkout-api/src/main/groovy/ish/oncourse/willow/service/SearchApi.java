@@ -30,12 +30,14 @@ public interface SearchApi  {
     @Path("/postcode/{text}")
     @Produces({ "application/json" })
     @SearchText
+    @CollegeInfo
     List<Item> getPostcodes(@PathParam("text") String text);
 
     @GET
     @Path("/suburb/{text}")
     @Produces({ "application/json" })
     @SearchText
+    @CollegeInfo
     List<Item> getSuburbs(@PathParam("text") String text);
 }
 
