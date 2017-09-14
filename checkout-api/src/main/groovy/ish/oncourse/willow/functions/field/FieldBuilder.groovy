@@ -59,6 +59,12 @@ class FieldBuilder {
                     f.defaultValue = processor.defaultValue
                     f.enumItems = processor.items
                     break
+                case IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY:
+                case IS_MARKETING_VIA_POST_ALLOWED_PROPERTY:
+                case IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY:
+                    f.defaultValue = Boolean.TRUE.toString()
+                    f.dataType = DataType.BOOLEAN
+                    break
                 default:
                     f.dataType = DataType.fromValue(aClass.simpleName.toUpperCase())
                     break
