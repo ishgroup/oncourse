@@ -26,6 +26,7 @@
     ]
   },
   "exclude": [
+    "out",
     "node_modules",
     "build/resources"
   ]

@@ -1,6 +1,6 @@
 import axiosMockAdapter from 'axios-mock-adapter';
-import {Container, Row, Col} from 'reactstrap';
-import {defaultAxios} from "../../src/js/common/services/DefaultHttpClient";
+import {Col, Container, Row} from 'reactstrap';
+import {defaultAxios} from "../../js/common/services/DefaultHttpClient";
 import {authApiMock} from "./AuthApiMock";
 import {menuApiMock} from "./MenuApiMock";
 
