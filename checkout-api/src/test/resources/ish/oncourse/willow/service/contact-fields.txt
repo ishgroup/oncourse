@@ -12,6 +12,7 @@ class ContactFields {
             dataType: STRING
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 26
@@ -29,6 +30,7 @@ class ContactFields {
             dataType: STRING
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 4
@@ -41,6 +43,7 @@ class ContactFields {
             dataType: SUBURB
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 5
@@ -53,6 +56,7 @@ class ContactFields {
             dataType: POSTCODE
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 6
@@ -65,6 +69,7 @@ class ContactFields {
             dataType: PHONE
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 9
@@ -77,6 +82,7 @@ class ContactFields {
             dataType: PHONE
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 10
@@ -89,6 +95,7 @@ class ContactFields {
             dataType: PHONE
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 11
@@ -101,6 +108,7 @@ class ContactFields {
             dataType: DATE
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 12
@@ -113,6 +121,7 @@ class ContactFields {
             dataType: BOOLEAN
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 14
@@ -125,6 +134,7 @@ class ContactFields {
             dataType: ENUM
             enumType: StudentCitizenship
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: [class Item {
                 key: 1
@@ -158,6 +168,7 @@ class ContactFields {
             dataType: COUNTRY
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 16
@@ -170,6 +181,7 @@ class ContactFields {
             dataType: LANGUAGE
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 17
@@ -182,6 +194,7 @@ class ContactFields {
             dataType: INTEGER
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 18
@@ -194,6 +207,7 @@ class ContactFields {
             dataType: ENUM
             enumType: AvetmissStudentEnglishProficiency
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: [class Item {
                 key: 0
@@ -221,6 +235,7 @@ class ContactFields {
             dataType: ENUM
             enumType: AvetmissStudentIndigenousStatus
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: [class Item {
                 key: 0
@@ -248,6 +263,7 @@ class ContactFields {
             dataType: ENUM
             enumType: AvetmissStudentSchoolLevel
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: [class Item {
                 key: 0
@@ -281,6 +297,7 @@ class ContactFields {
             dataType: BOOLEAN
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 22
@@ -293,6 +310,7 @@ class ContactFields {
             dataType: ENUM
             enumType: AvetmissStudentPriorEducation
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: [class Item {
                 key: 0
@@ -335,6 +353,7 @@ class ContactFields {
             dataType: ENUM
             enumType: AvetmissStudentLabourStatus
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: [class Item {
                 key: 0
@@ -374,6 +393,7 @@ class ContactFields {
             dataType: ENUM
             enumType: AvetmissStudentDisabilityType
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: [class Item {
                 key: 0
@@ -419,6 +439,7 @@ class ContactFields {
             dataType: COUNTRY
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 27
@@ -431,6 +452,7 @@ class ContactFields {
             dataType: STRING
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 28
@@ -448,6 +470,7 @@ class ContactFields {
             dataType: STRING
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 7
@@ -460,6 +483,7 @@ class ContactFields {
             dataType: PHONE
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 8
@@ -477,6 +501,7 @@ class ContactFields {
             dataType: STRING
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 13

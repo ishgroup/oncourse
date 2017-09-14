@@ -86,5 +86,62 @@
                          modified="2011-09-12 00:56:00.0"
                          discountId="1001"/>
 
+    <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1"/>
+
+    <Field id="101"  collegeId="1"  angelId="100"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker1"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="1"
+           property="firstName"/>
+
+    <Field id="102"  collegeId="1"  angelId="2"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker2"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="2"
+           property="lastName"/>
+
+    <Field id="103"  collegeId="1"  angelId="3"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker3"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="3"
+           property="emailAddress"/>
+
+    <Field id="126"  collegeId="1"  angelId="126"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker26"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="4"
+           defaultValue="BMW"
+           fieldOrder="26"
+           property="specialNeeds"/>
+
+    <Field id="113"  collegeId="1"  angelId="113"
+           created="2011-09-20 11:14:54"
+           modified="2011-09-20 11:14:54"
+           name= "Favorite car maker13"
+           description="Favorite car maker"
+           fieldConfigurationId="2"
+           mandatory="1"
+           defaultValue="BMW"
+           fieldOrder="13"
+           property="abn"/>
+
 
 </dataset>

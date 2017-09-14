@@ -12,6 +12,7 @@ class ContactFields {
             dataType: STRING
             enumType: null
             value: null
+            itemValue: null
             defaultValue: BMW
             enumItems: []
             ordering: 28
