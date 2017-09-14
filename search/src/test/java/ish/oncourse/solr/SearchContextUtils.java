@@ -174,9 +174,6 @@ public class SearchContextUtils {
 
 	public static void shutdownDataSources() throws Exception {
 		cayenneRuntime.shutdown();
-
-		AbandonedConnectionCleanupThread.shutdown();
-
 		if (dropSchema) {
 			dropMysqlSchema();
 		}
