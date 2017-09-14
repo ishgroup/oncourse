@@ -21,7 +21,7 @@ class EnrolmentFields extends React.Component<any, any> {
           <div className="validation">
             <ul>
               {errors.map((er, i) => (
-                <li>
+                <li key={i}>
                   {er}
                 </li>
               ))}
