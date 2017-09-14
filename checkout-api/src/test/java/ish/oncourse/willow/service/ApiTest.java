@@ -79,9 +79,7 @@ public abstract class ApiTest {
     
     @AfterClass
     public static void afterClass() throws Exception {
-
-        AbandonedConnectionCleanupThread.shutdown();
-
+        AbandonedConnectionCleanupThread.checkedShutdown();
         if (dropSchema) {
             dropMysqlSchema();
         }
