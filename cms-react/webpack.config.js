@@ -16,7 +16,7 @@ module.exports = (options = {}) => {
 };
 
 
-const plugins = (NODE_ENV) => {
+const plugins = ({NODE_ENV}) => {
   const plugins = [];
 
   switch (NODE_ENV) {
