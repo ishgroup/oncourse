@@ -83,8 +83,8 @@ const _styleModule = (dirname) => {
       loader: 'url-loader?limit=1024&name=images/[name].[ext]'
     },
     {
-      test: /\.(woff|woff2|eot|ttf|svg)$/,
-      loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'
+      test: /\.(otf|eot|ttf|woff|woff2|svg)$/,
+      loader: 'file-loader?name=fonts/[name].[ext]',
     },
     {
       enforce: "pre", test: /\.js$/, loader: "source-map-loader"
