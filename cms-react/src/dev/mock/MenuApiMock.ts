@@ -1,7 +1,8 @@
 import {promiseResolve} from "./MockAdapter";
+import {API} from "../../js/constants/Config";
 
 export function menuApiMock(mock) {
-  mock.onGet('/getMenuItems').reply(config => promiseResolve(
+  mock.onGet(API.GET_MENU).reply(config => promiseResolve(
     config,
     [
       {

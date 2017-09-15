@@ -3,3 +3,14 @@ export const DefaultConfig = {
   COOKIE_NAME: 'editor',
   CONTAINER_ID: "cms-root",
 };
+
+export const API = {
+
+  // Authorization end points
+  LOGIN: "/getUser",
+  LOGOUT: "/logout",
+
+  // Menu page
+  GET_MENU: "/getMenuItems",
+
+};
