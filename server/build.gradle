@@ -73,8 +73,8 @@ dependencies {
 	// can't go above 2.0.5 due to the bug in liquibase [https://liquibase.jira.com/browse/CORE-2265]
 	compile 'org.liquibase:liquibase-core:2.0.5-fix'
 
-	compile 'net.sourceforge.jtds:jtds:1.3.1'
 	compile 'mysql:mysql-connector-java:5.1.36'
+	compile 'com.microsoft.sqlserver:mssql-jdbc:6.2.1.jre8'
 	
 	//log4j2 to slf4j1.7 bridge
 	compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
