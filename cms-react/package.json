@@ -11,7 +11,7 @@
     "build:dev": "npm run clean && webpack --progress",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "jest --ci  --testResultsProcessor=jest-junit",
-    "start": "webpack-dev-server --history-api-fallback=true --progress --open --env.entry=./src/js/app.tsx --content-base ./src/dev"
+    "start": "webpack-dev-server --history-api-fallback=true --progress --open --config webpack.dev.config.js --env.entry=./src/js/app.tsx --content-base ./src/dev"
   },
   "devDependencies": {
     "@types/jest": "20.0.6",
@@ -53,6 +53,7 @@
     "babel-polyfill": "6.23.0",
     "bootstrap": "4.0.0-beta",
     "classnames": "2.2.5",
+    "file-loader": "^0.11.2",
     "history": "4.6.3",
     "localforage": "1.5.0",
     "lodash": "4.17.4",
