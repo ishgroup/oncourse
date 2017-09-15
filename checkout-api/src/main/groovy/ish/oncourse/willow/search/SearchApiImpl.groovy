@@ -19,13 +19,11 @@ class SearchApiImpl implements SearchApi {
 
     CayenneService cayenneService
     SearchService searchService
-    CollegeService collegeService
 
     @Inject
     ContactApiServiceImpl(CayenneService cayenneService, SearchService searchService, CollegeService collegeService) {
         this.cayenneService = cayenneService
         this.searchService = searchService
-        this.collegeService = collegeService
     }
     
     
@@ -58,15 +56,11 @@ class SearchApiImpl implements SearchApi {
 
     @Override
     List<Item> getPostcodes(String text) {
-        searchService.searchSuburbsByPostcode(text, stateFilter)
+        searchService.searchSuburbsByPostcode(text)
     }
 
     @Override
     List<Item> getSuburbs(String text) {
-        searchService.searchSuburbsByName(text, stateFilter)
-    }
-    
-    private String getStateFilter() {
-        new GetAutoCompleteState(collegeService.college, cayenneService.newContext()).get()
+        searchService.searchSuburbsByName(text)
     }
 }
