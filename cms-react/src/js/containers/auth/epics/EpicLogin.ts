@@ -16,8 +16,8 @@ const request: EpicUtils.Request<any, any> = {
     // add CMS Cookie
     CookieService.set(DefaultConfig.COOKIE_NAME, 'true');
 
-    if (document.location.pathname.indexOf('/editor') !== -1) {
-      history.replaceState('', '', '/');
+    if (document.location.hash === "#editor") {
+      history.replaceState("", document.title, window.location.pathname + window.location.search);
     }
 
     return [
