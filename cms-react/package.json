@@ -11,7 +11,7 @@
     "build:dev": "npm run clean && webpack --progress",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "jest --ci  --testResultsProcessor=jest-junit",
-    "start": "webpack-dev-server --history-api-fallback=true --progress --open --env.entry=./src/js/app.tsx --content-base ./dev"
+    "start": "webpack-dev-server --history-api-fallback=true --progress --open --env.entry=./src/js/app.tsx --content-base ./src/dev"
   },
   "devDependencies": {
     "@types/jest": "20.0.6",

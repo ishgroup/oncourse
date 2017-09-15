@@ -4,12 +4,22 @@ import * as EpicUtils from "../../../epics/EpicUtils";
 import {SUBMIT_LOGIN_FORM_FULFILLED, SUBMIT_LOGIN_FORM_REQUEST} from "../actions";
 import AuthService from "../../../services/AuthService";
 import {User} from "../../../model";
+import {CookieService} from "../../../services/CookieService";
+import {DefaultConfig} from "../../../constants/Config";
 
 
 const request: EpicUtils.Request<any, any> = {
   type: SUBMIT_LOGIN_FORM_REQUEST,
   getData: (payload, state) => AuthService.submitUser(payload),
   processData: (user: User, state: any) => {
+
+    // add CMS Cookie
+    CookieService.set(DefaultConfig.COOKIE_NAME, 'true');
+
+    if (document.location.pathname.indexOf('/editor') !== -1) {
+      document.location.href = "/";
+    }
+
     return [
       {
         type: SUBMIT_LOGIN_FORM_FULFILLED,
