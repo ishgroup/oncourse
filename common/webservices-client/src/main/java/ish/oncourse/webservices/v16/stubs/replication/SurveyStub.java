@@ -25,6 +25,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="venueScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="enrolmentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="publicComment" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="testimonial" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="netPromoterScore" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -40,7 +42,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "tutorScore",
     "venueScore",
     "enrolmentId",
-    "publicComment"
+    "publicComment",
+    "testimonial",
+    "netPromoterScore"
 })
 public class SurveyStub
     extends ReplicationStub
@@ -68,6 +72,12 @@ public class SurveyStub
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean publicComment;
+    @XmlElement(required = true)
+    protected String testimonial;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter3 .class)
+    @XmlSchemaType(name = "int")
+    protected Integer netPromoterScore;
 
     /**
      * Gets the value of the comment property.
@@ -211,6 +221,54 @@ public class SurveyStub
      */
     public void setPublicComment(Boolean value) {
         this.publicComment = value;
+    }
+
+    /**
+     * Gets the value of the testimonial property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTestimonial() {
+        return testimonial;
+    }
+
+    /**
+     * Sets the value of the testimonial property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTestimonial(String value) {
+        this.testimonial = value;
+    }
+
+    /**
+     * Gets the value of the netPromoterScore property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Integer getNetPromoterScore() {
+        return netPromoterScore;
+    }
+
+    /**
+     * Sets the value of the netPromoterScore property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNetPromoterScore(Integer value) {
+        this.netPromoterScore = value;
     }
 
 }
