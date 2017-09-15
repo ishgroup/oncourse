@@ -1,3 +1,4 @@
+import ReactDOM from "react-dom";
 import {Epic} from "redux-observable";
 import "rxjs";
 import * as EpicUtils from "../../../epics/EpicUtils";
@@ -13,8 +14,9 @@ const request: EpicUtils.Request<any, any> = {
   getData: (payload, state) => AuthService.logout(),
   processData: (user: User, state: any) => {
 
-    // remove CMS Cookie
+    // remove CMS Cookie and unmount CMS app
     CookieService.delete(DefaultConfig.COOKIE_NAME);
+    ReactDOM.unmountComponentAtNode(document.getElementById('cms-root'));
 
     return [
       {
