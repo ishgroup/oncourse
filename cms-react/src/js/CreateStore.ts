@@ -34,8 +34,6 @@ export const CreateStore = (): Store<any> => {
 };
 
 export const RestoreState = (store: Store<any>, onComplete: OnComplete<any>): void => {
-  const persistStoreWrapper = () => {
-    persistStore(store, {storage: localforage, blacklist: []}, onComplete);
-  };
+  persistStore(store, {storage: localforage, blacklist: []}, onComplete);
 };
 
