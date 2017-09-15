@@ -17,7 +17,7 @@ const request: EpicUtils.Request<any, any> = {
     CookieService.set(DefaultConfig.COOKIE_NAME, 'true');
 
     if (document.location.pathname.indexOf('/editor') !== -1) {
-      document.location.href = "/";
+      history.replaceState('', '', '/');
     }
 
     return [
