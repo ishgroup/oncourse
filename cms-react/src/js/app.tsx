@@ -9,6 +9,8 @@ import {configLoader} from "./configLoader";
 import Cms from "./containers/Cms";
 import {createRootComponent, loadCmsCss} from "./utils";
 
+import {DefaultConfig} from "./constants/Config";
+
 import "../scss/cms.scss";
 
 // Enable in develop mode (move init to webpack)
@@ -25,5 +27,5 @@ ReactDOM.render(
       <Cms/>
     </Router>
   </Provider>,
-  document.getElementById("cms-root"),
+  document.getElementById(DefaultConfig.CONTAINER_ID),
 );

@@ -1,5 +1,7 @@
+import {DefaultConfig} from "./constants/Config";
+
 export const createRootComponent = () => {
-  const cmsId = "cms-root";
+  const cmsId = DefaultConfig.CONTAINER_ID;
 
   if (document.getElementById(cmsId)) return;
 
