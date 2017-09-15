@@ -4541,5 +4541,18 @@
 			ALTER TABLE Invoice ADD COLUMN type INTEGER NOT NULL DEFAULT 1;
 		</sql>
 	</changeSet>
-	
+
+	<changeSet id="309" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Survey" columnName="testimonial"/>
+				<columnExists tableName="Survey" columnName="netPromoterScore"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Survey ADD COLUMN (testimonial TEXT, netPromoterScore INTEGER);
+		</sql>
+	</changeSet>
+
+
 </databaseChangeLog>

@@ -11,9 +11,11 @@ public class SurveyStubBuilder extends AbstractWillowStubBuilder<Survey, SurveyS
         surveyStub.setModified(entity.getModified());
         surveyStub.setCreated(entity.getCreated());
         surveyStub.setComment(entity.getComment());
+        surveyStub.setTestimonial(entity.getTestimonial());
         surveyStub.setCourseScore(entity.getCourseScore());
         surveyStub.setTutorScore(entity.getTutorScore());
         surveyStub.setVenueScore(entity.getVenueScore());
+        surveyStub.setNetPromoterScore(entity.getNetPromoterScore());
         surveyStub.setEnrolmentId(entity.getEnrolment().getId());
 		if (entity.getPublicComment() != null) {
 			surveyStub.setPublicComment(entity.getPublicComment());

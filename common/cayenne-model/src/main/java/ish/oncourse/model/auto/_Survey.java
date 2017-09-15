@@ -23,7 +23,9 @@ public abstract class _Survey extends CayenneDataObject {
     public static final String COURSE_SCORE_PROPERTY = "courseScore";
     public static final String CREATED_PROPERTY = "created";
     public static final String MODIFIED_PROPERTY = "modified";
+    public static final String NET_PROMOTER_SCORE_PROPERTY = "netPromoterScore";
     public static final String PUBLIC_COMMENT_PROPERTY = "publicComment";
+    public static final String TESTIMONIAL_PROPERTY = "testimonial";
     public static final String TUTOR_SCORE_PROPERTY = "tutorScore";
     public static final String VENUE_SCORE_PROPERTY = "venueScore";
     public static final String COLLEGE_PROPERTY = "college";
@@ -31,16 +33,18 @@ public abstract class _Survey extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<String> COMMENT = new Property<String>("comment");
-    public static final Property<Integer> COURSE_SCORE = new Property<Integer>("courseScore");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Boolean> PUBLIC_COMMENT = new Property<Boolean>("publicComment");
-    public static final Property<Integer> TUTOR_SCORE = new Property<Integer>("tutorScore");
-    public static final Property<Integer> VENUE_SCORE = new Property<Integer>("venueScore");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Enrolment> ENROLMENT = new Property<Enrolment>("enrolment");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<String> COMMENT = Property.create("comment", String.class);
+    public static final Property<Integer> COURSE_SCORE = Property.create("courseScore", Integer.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Integer> NET_PROMOTER_SCORE = Property.create("netPromoterScore", Integer.class);
+    public static final Property<Boolean> PUBLIC_COMMENT = Property.create("publicComment", Boolean.class);
+    public static final Property<String> TESTIMONIAL = Property.create("testimonial", String.class);
+    public static final Property<Integer> TUTOR_SCORE = Property.create("tutorScore", Integer.class);
+    public static final Property<Integer> VENUE_SCORE = Property.create("venueScore", Integer.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);
@@ -77,11 +81,25 @@ public abstract class _Survey extends CayenneDataObject {
         return (Date)readProperty("modified");
     }
 
+    public void setNetPromoterScore(Integer netPromoterScore) {
+        writeProperty("netPromoterScore", netPromoterScore);
+    }
+    public Integer getNetPromoterScore() {
+        return (Integer)readProperty("netPromoterScore");
+    }
+
     public void setPublicComment(Boolean publicComment) {
         writeProperty("publicComment", publicComment);
     }
     public Boolean getPublicComment() {
         return (Boolean)readProperty("publicComment");
+    }
+
+    public void setTestimonial(String testimonial) {
+        writeProperty("testimonial", testimonial);
+    }
+    public String getTestimonial() {
+        return (String)readProperty("testimonial");
     }
 
     public void setTutorScore(Integer tutorScore) {

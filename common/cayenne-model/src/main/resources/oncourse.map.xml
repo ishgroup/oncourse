@@ -1170,7 +1170,9 @@
 		<db-attribute name="enrolmentId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="netPromoterScore" type="INTEGER"/>
 		<db-attribute name="publicComment" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="testimonial" type="LONGVARCHAR"/>
 		<db-attribute name="tutorScore" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="venueScore" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
@@ -2432,7 +2434,9 @@
 		<obj-attribute name="courseScore" type="java.lang.Integer" db-attribute-path="courseScore"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="netPromoterScore" type="java.lang.Integer" db-attribute-path="netPromoterScore"/>
 		<obj-attribute name="publicComment" type="java.lang.Boolean" db-attribute-path="publicComment"/>
+		<obj-attribute name="testimonial" type="java.lang.String" db-attribute-path="testimonial"/>
 		<obj-attribute name="tutorScore" type="java.lang.Integer" db-attribute-path="tutorScore"/>
 		<obj-attribute name="venueScore" type="java.lang.Integer" db-attribute-path="venueScore"/>
 		<post-add method-name="onPostAdd"/>
