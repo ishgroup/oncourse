@@ -31,7 +31,7 @@ import java.util.Arrays;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ImportModule({AppModule.class, ish.oncourse.portal.TestModule.class})
+@ImportModule({AppModule.class})
 public class TestModule {
 
 	public static void bind(ServiceBinder binder) {
