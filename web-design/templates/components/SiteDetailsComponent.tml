@@ -7,8 +7,8 @@
 				<meta itemprop="latitude" content="${site.latitude}" />
 				<meta itemprop="longitude" content="${site.longitude}" />
 			</span>
+			<div id="gmapCanvas"></div>
 		</t:if>
-		<div id="gmapCanvas"></div>
 		<div class="adr" id="">
 			<t:if t:test="hasAddress">
 				<div class="hide-me site-postal-address" itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">

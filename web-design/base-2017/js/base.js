@@ -1,3 +1,6 @@
+//= require vendor/loadjs-3.5.1.js
+//= require vendor/jquery-3.1.1.js
+
 /*
   This is a core javascript file which will be built into your website.
 
@@ -55,7 +58,6 @@
   These files are due to be removed once the CMS application is rebuilt in 2017
 */
 
-/*//= require deprecated/jquery.utils.js*/
 //= require deprecated/jquery.validate.min.js
 //= require deprecated/additional-methods.min.js
 
