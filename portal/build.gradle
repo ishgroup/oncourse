@@ -1,62 +1,32 @@
-apply plugin: 'war'
+apply plugin: 'com.eriwen.gradle.js'
+apply plugin: 'com.github.robfletcher.compass'
 
+apply from: "$rootDir/buildTapestryApp.gradle"
 ext {
-	//cannot update to 5.4.*. Api for clustoring and JavaScript support were changed
-	tapestryVersion = '5.3.8'
+    staticSrcPath = "src/main/static"
+    staticBuildPath = "${buildDir}/resource-assemble/static"
 }
 
-sourceSets.main.java.srcDirs = []
-sourceSets.main.groovy.srcDir 'src/main/java'
-
-sourceSets.test.java.srcDirs = []
-sourceSets.test.groovy.srcDir 'src/test/java'
+mainClassName = 'ish.oncourse.portal.PortalApp'
 
 dependencies {
-    providedCompile 'javax.servlet:servlet-api:3.0'
-
-	compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
-	compile "org.apache.tapestry:plastic:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry5-annotations:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-json:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-spring:$tapestryVersion"
-	compile 'org.mnode.ical4j:ical4j:1.0.2'
-	compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.7'
+    compile 'org.mnode.ical4j:ical4j:1.0.2'
+    compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.7'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.5'
 
-	compile (project(':common:common-model')) {
-		exclude group:'org.apache.tapestry'
-	}
-	compile (project(':common:common-textile')) {
-		exclude group: 'axis', module: 'axis-wsdl4j'
-		exclude group:'org.apache.tapestry'
-	}
-	compile (project(':common:common-services')) {
-		exclude group: 'axis', module: 'axis-wsdl4j'
-		exclude group:'org.apache.tapestry'
-	}
-	compile project(':common:webservices-usi')
-
-	compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-
-	// The odd next line is to work around gradle pulling in the wrong configuration
-	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
-	testCompile "org.apache.tapestry:tapestry-test:$tapestryVersion"
-	testCompile (project(path: ':common:common-test', configuration: 'testFixtures')) {
-		exclude group:'org.apache.tapestry'
-	}
+    compile (project(':common:common-textile')) {
+        exclude group: 'axis', module: 'axis-wsdl4j'
+        exclude group:'org.apache.tapestry'
+    }
 }
 
-war {
-	archiveName = 'portal.war'
-	manifest {
-		from sharedManifest
-	}
+apply from: "build-static.gradle"
 
-    from 'build/resource-assemble'
-    from ('src/main/static') {
-        exclude 'js'
-        exclude 'src'
-		exclude 'img/.svg'
+jar {
+    from "${buildDir}/resource-assemble"
+    from ('src/main') {
+        include 'static/**/*'
+        exclude 'static/js'
+        exclude 'static/src'
     }
 }

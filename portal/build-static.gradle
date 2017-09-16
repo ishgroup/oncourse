@@ -1,0 +1,79 @@
+
+javascript.source {
+    production {
+        js {
+            srcDir "$staticSrcPath/js"
+            include "**/*.js"
+        }
+    }
+}
+
+minifyJs {
+    source = javascript.source.production.js.files
+    dest = file("$staticBuildPath/js/${project.name}-min.js")
+}
+
+gzipJs {
+    source = minifyJs
+    dest = file("$staticBuildPath/js/${project.name}-min.js.gz")
+}
+
+//css combining
+compass {
+    cssDir = file("$staticBuildPath/css")
+    sassDir = file("$staticSrcPath/src")
+    fontsDir = file("$staticSrcPath/fonts")
+    noLineComments = true
+    relativeAssets = true
+    debugInfo = false
+    environment = 'production'
+}
+
+task gzipCss(dependsOn: compassCompile) {
+    String srcPath = "$staticBuildPath/css/${project.name}.css"
+    inputs.file srcPath
+    outputs.file "${srcPath}.gz"
+    doLast {
+        ant.gzip(src: srcPath, destfile: "${srcPath}.gz")
+    }
+}
+
+task combineSvg(type: CombineSvg) {
+    projectName = "${project.name}"
+    imgDirectoryName = file("$staticSrcPath/img")
+    outputDirectoryName = "$staticBuildPath"
+}
+
+task cleanCombineSvg(type: CleanCombineSvg) {
+    imgDirectory = "$staticBuildPath"
+}
+
+/**
+ * Task build and copy js and css bundles to this artifact folder
+ */
+task refreshIdeaArtifact {
+    doFirst {
+        ex.execute()
+        cp.execute()
+    }
+    task ex(type: GradleBuild){
+        tasks = ['cleanMinifyJs', 'gzipJs', 'gzipCss']
+    }
+    task cp(type: Copy) {
+        from(staticBuildPath) {
+            include '**/*.*'
+        }
+        from(staticSrcPath) {
+            include '**/*.*'
+        }
+        into "out/resources/static"
+    }
+}
+
+processResources.inputs.files gzipJs
+processResources.inputs.files gzipCss
+processResources.inputs.files combineSvg
+
+clean.dependsOn cleanMinifyJs
+clean.dependsOn cleanCompassCompile
+clean.dependsOn cleanCombineSvg
