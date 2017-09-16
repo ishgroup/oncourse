@@ -1,26 +1,50 @@
 package ish.oncourse.portal.service;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSite;
+import ish.oncourse.portal.PortalModule;
 import ish.oncourse.portal.services.AppModule;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.courseclass.ICourseClassService;
+import ish.oncourse.services.persistence.CayenneService;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.test.ServiceTest;
+import net.sf.ehcache.CacheManager;
+import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.services.*;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SubModule(AppModule.class)
+@ImportModule({AppModule.class, ish.oncourse.portal.TestModule.class})
 public class TestModule {
-	
+
+	public static void bind(ServiceBinder binder) {
+		binder.bind(Injector.class, resources ->
+				Guice.createInjector((Module) binder1 ->
+						binder1.bind(ServerRuntime.class)
+								.toInstance(ServerRuntime.builder()
+										.dataSource(getDataSource())
+										.addConfig("cayenne-oncourse.xml")
+										.addModule(new PortalModule.PortalCayenneModule())
+										.build())));
+	}
+
 	public RequestFilter buildLogFilterOverride(org.slf4j.Logger log, RequestGlobals requestGlobals) {
 		return new RequestFilter() {
 			public boolean service(Request request, Response response, RequestHandler handler) throws IOException {
@@ -29,8 +53,21 @@ public class TestModule {
 		};
 	}
 
-	public static PortalSiteService buildPortalSiteServiceOverride() {
+	private static DataSource getDataSource() {
+		try {
+			return ServiceTest.getDataSource("jdbc/oncourse");
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
 
+
+	@Contribute(ICayenneService.class)
+	public static void setupCayenneService(MappedConfiguration<Class, Object> configuration, IWebSiteService webSiteService, CacheManager cacheManager) {
+		configuration.add(ICayenneService.class, new CayenneService(webSiteService, cacheManager));
+	}
+
+	public IWebSiteService decorateWebSiteService(final IWebSiteService delegate) {
 		WebSite webSite = mock(WebSite.class);
 
 		when(webSite.getName()).thenReturn("Sydney Community College Test Site");
@@ -50,17 +87,17 @@ public class TestModule {
 
 		when(mockService.getCurrentCollege()).thenReturn(college);
 		when(mockService.getCurrentWebSite()).thenReturn(webSite);
-		
+
 		return mockService;
 	}
-	
+
 	public ICourseClassService buildCourseClassServiceOverride() {
 		ICourseClassService mock = mock(ICourseClassService.class);
 		return mock;
 	}
 
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration,
-			@Local ICourseClassService courseClassServiceOverride) {
+										  @Local ICourseClassService courseClassServiceOverride) {
 		configuration.add(ICourseClassService.class, courseClassServiceOverride);
 	}
 

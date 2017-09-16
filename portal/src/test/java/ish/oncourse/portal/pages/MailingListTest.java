@@ -8,7 +8,7 @@ import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Tag;
 import ish.oncourse.model.TaggableTag;
-import ish.oncourse.portal.services.AppModule;
+import ish.oncourse.portal.service.TestModule;
 import ish.oncourse.portal.services.MailingListHelper;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
@@ -44,7 +44,7 @@ public class MailingListTest extends ServiceTest {
 	public void setup() throws Exception {
 		System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 
-		initTest("ish.oncourse.portal", "portal","src/main/resources/desktop/ish/oncourse/portal/pages", AppModule.class);
+		initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", TestModule.class);
 		InputStream st = MailingListTest.class.getClassLoader().getResourceAsStream("ish/oncourse/portal/pages/mailingListTestDataSet.xml");
 		FlatXmlDataSetBuilder builder =  new FlatXmlDataSetBuilder();
 		builder.setColumnSensing(true);

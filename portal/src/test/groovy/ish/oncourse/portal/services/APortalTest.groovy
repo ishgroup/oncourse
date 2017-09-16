@@ -1,7 +1,7 @@
 package ish.oncourse.portal.services
 
+import ish.oncourse.portal.service.TestModule
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayService
-import ish.oncourse.services.paymentexpress.IPaymentGatewayService
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.test.ServiceTest
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint
@@ -33,7 +33,7 @@ abstract class APortalTest extends ServiceTest {
     public void setup() throws Exception {
         System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 
-        initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", AppModule.class);
+        initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", TestModule.class);
 
         InputStream st = this.getClass().getResourceAsStream(getDataSetName());
         FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();

@@ -5,6 +5,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
 import ish.oncourse.model.Session;
 import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.service.TestModule;
 import ish.oncourse.services.courseclass.CourseClassFilter;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.ServiceTest;
@@ -28,7 +29,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * User: artem
@@ -41,8 +41,8 @@ public class PortalServiceTest extends ServiceTest {
     public void setup() throws Exception {
         System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
 
-        initTest("ish.oncourse.portal", "portal","src/main/resources/desktop/ish/oncourse/portal/pages", AppModule.class);
-        InputStream st = PortalServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/portal/services/oncourseDataSet.xml");
+		initTest("ish.oncourse.portal", "portal", "src/main/resources/desktop/ish/oncourse/portal/pages", TestModule.class);
+		InputStream st = PortalServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/portal/services/oncourseDataSet.xml");
         FlatXmlDataSetBuilder builder =  new FlatXmlDataSetBuilder();
         builder.setColumnSensing(true);
         FlatXmlDataSet dataSet = builder.build(st);
