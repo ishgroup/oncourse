@@ -1,3 +1,6 @@
+/**
+ * Common build file for projects which use boutique-tapestry-java8 stack
+ */
 apply plugin: 'application'
 apply plugin: 'io.spring.dependency-management'
 
