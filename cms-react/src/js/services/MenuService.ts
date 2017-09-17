@@ -1,5 +1,5 @@
 import {MenuApi} from "../http/MenuApi";
-import {MenuItem} from "../model/MenuItem";
+import {MenuItem} from "../model";
 
 class MenuService {
   readonly menuApi = new MenuApi();

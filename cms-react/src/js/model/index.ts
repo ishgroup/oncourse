@@ -7,3 +7,7 @@ export {MenuItem} from "./MenuItem";
 
 // User
 export {User} from "./User";
+
+// Pages
+export {Page} from "./Page";
+

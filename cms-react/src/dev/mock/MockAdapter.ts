@@ -3,11 +3,13 @@ import {Col, Container, Row} from 'reactstrap';
 import {defaultAxios} from "../../js/common/services/DefaultHttpClient";
 import {authApiMock} from "./AuthApiMock";
 import {menuApiMock} from "./MenuApiMock";
+import {pageApiMock} from "./PageApiMock";
 
 export function initMockAdapter() {
   const mock = new axiosMockAdapter(defaultAxios);
   authApiMock(mock);
   menuApiMock(mock);
+  pageApiMock(mock);
 }
 
 export const promiseResolve = (config, data = {}) => {

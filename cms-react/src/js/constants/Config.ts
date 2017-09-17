@@ -13,4 +13,6 @@ export const API = {
   // Menu page
   GET_MENU: "/getMenuItems",
 
+  // Pages
+  GET_PAGES: "/getPages",
 };

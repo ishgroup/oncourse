@@ -4,8 +4,15 @@ import {Container, Row, Col, Button} from 'reactstrap';
 import classnames from 'classnames';
 import SortableTree, {changeNodeAtPath, addNodeUnderParent, removeNodeAtPath} from 'react-sortable-tree';
 import {changeMenuTree, getMenuItems} from "./actions";
+import {MenuState} from "./reducers/State";
 
-export class Menus extends React.Component<any, any> {
+interface Props {
+  menu: MenuState;
+  onInit: () => any;
+  onChangeTree: (treeData) => any;
+}
+
+export class Menus extends React.Component<Props, any> {
 
   componentDidMount() {
     this.props.onInit();

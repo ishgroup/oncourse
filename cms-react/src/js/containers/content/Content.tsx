@@ -6,7 +6,7 @@ export class Content extends React.Component<any, any> {
   render() {
     return (
       <div>
-        Content page <span className="icon-ac_unit"></span>
+        Content page
       </div>
     );
   }
