@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE;
+import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE;
 
 /**
  * User: artem
@@ -71,7 +71,7 @@ public class InvoiceDetails {
                         ObjectSelect.query(InvoiceDueDate.class)
                                 .where(InvoiceDueDate.INVOICE.eq(this.invoice))
                                 .orderBy(InvoiceDueDate.DUE_DATE.asc())
-								.cacheStrategy(LOCAL_CACHE, InvoiceDueDate.class.getSimpleName())
+								.cacheStrategy(SHARED_CACHE, InvoiceDueDate.class.getSimpleName())
 								.select(cayenneService.sharedContext());
                 return null;
             } else {

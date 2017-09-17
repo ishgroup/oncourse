@@ -8,16 +8,16 @@ import ish.oncourse.utils.invoice.GetInvoiceOverdue
 import org.apache.cayenne.query.ObjectSelect
 
 import static ish.oncourse.portal.services.dashboard.CalculateAttendancePercent.DASHBOARD_CACHE
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
+import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE
 
 class CalculatePaymentDue {
-	
-	def Contact contact;
-	def List<Invoice>  owingInvoices;
-	def Date next7Days
-	
-	
-	def CalculatePaymentDue(Contact contact) {
+
+    private Contact contact
+    private List<Invoice> owingInvoices
+    private Date next7Days
+
+
+    CalculatePaymentDue(Contact contact) {
 		this.contact = contact
 		
 		use(TimeCategory) {
@@ -26,14 +26,14 @@ class CalculatePaymentDue {
 			next7Days = next7Days - 1.second
 		}
 	}
-	
-	def Money calculate() {
+
+    Money calculate() {
 		Money owing = Money.ZERO
 		getOwingInvoices().each { invoice ->  owing = owing.add(GetInvoiceOverdue.valueOf(invoice, next7Days).call().overdue) }
-		return owing;
+        return owing
 	}
-	
-	def List<Invoice> getOwingInvoices() {
+
+    List<Invoice> getOwingInvoices() {
 		if (!contact) {
 			return Collections.EMPTY_LIST
 		} else if (owingInvoices == null) {
@@ -44,7 +44,7 @@ class CalculatePaymentDue {
 					.prefetch(Invoice.INVOICE_LINES.disjoint())
 					.prefetch(Invoice.PAYMENT_IN_LINES.disjoint())
 					.prefetch(Invoice.INVOICE_DUE_DATES.disjoint())
-					.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)
+                    .cacheStrategy(SHARED_CACHE, DASHBOARD_CACHE)
 					.select(contact.getObjectContext())
 			return owingInvoices
 		}

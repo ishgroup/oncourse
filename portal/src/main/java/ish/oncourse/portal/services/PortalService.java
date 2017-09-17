@@ -255,8 +255,8 @@ public class PortalService implements IPortalService {
         if (contact.getStudent() != null) {
 
             List<CourseClass> courseClasses = ObjectSelect.query(CourseClass.class, getStudentClassesExpression()).
-                    cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-                    cacheGroup(CourseClass.class.getSimpleName()).
+					cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+					cacheGroup(CourseClass.class.getSimpleName()).
                     prefetch(CourseClass.SESSIONS.disjoint()).
                     select(cayenneService.sharedContext());
 
@@ -279,8 +279,8 @@ public class PortalService implements IPortalService {
         if (contact.getTutor() != null) {
 
             List<CourseClass> courseClasses = ObjectSelect.query(CourseClass.class, getTutorClassesExpression()).
-                    cacheStrategy(QueryCacheStrategy.LOCAL_CACHE).
-                    cacheGroup(CourseClass.class.getSimpleName()).
+					cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
+					cacheGroup(CourseClass.class.getSimpleName()).
                     prefetch(CourseClass.SESSIONS.disjoint()).
                     select(cayenneService.newContext());
 

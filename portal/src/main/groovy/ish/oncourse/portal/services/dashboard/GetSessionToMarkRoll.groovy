@@ -6,8 +6,9 @@ import ish.oncourse.model.Session
 import ish.oncourse.model.SessionTutor
 import ish.oncourse.model.Tutor
 import org.apache.cayenne.query.ObjectSelect
+
 import static ish.oncourse.portal.services.dashboard.CalculateAttendancePercent.DASHBOARD_CACHE
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
+import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE
 
 class GetSessionToMarkRoll {
 	
@@ -28,7 +29,7 @@ class GetSessionToMarkRoll {
 						.and(Session.COURSE_CLASS.dot(CourseClass.CANCELLED).isFalse())
 						.and(Session.START_DATE.lte(untilDate))
 						.orderBy(Session.START_DATE.desc())
-						.cacheStrategy(LOCAL_CACHE, DASHBOARD_CACHE)
+                        .cacheStrategy(SHARED_CACHE, DASHBOARD_CACHE)
 						.selectFirst(tutor.getObjectContext())
 			}
 		}
