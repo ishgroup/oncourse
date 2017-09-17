@@ -11,6 +11,7 @@
   &__rowLabel {
     display: flex;
     align-items: center;
+    padding-right: 5px;
   }
   
   &__field {
@@ -18,7 +19,8 @@
     
     span {
       font-size: 12px;
-      font-weight: bold;
+      color: $gray-dark;
+      font-weight: 500;
     }
     
     input {
@@ -37,13 +39,26 @@
         cursor: text;
         background-color: transparent;
       }
-      
     }
+  
+    &.invalid {
+      span {
+        color: $danger;
+      }
+      
+      input {
+        border-color: $danger;
+      }
+    }
+  }
+  
+  &__rowWrapper {
+    padding: 6px 10px 6px 0;
   }
   
   &__rowToolbar {
     button {
-      margin-right: 10px;
+      margin: 0 5px;
     }
   }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button} from 'reactstrap';
+import classnames from 'classnames';
 import SortableTree, {changeNodeAtPath, addNodeUnderParent, removeNodeAtPath} from 'react-sortable-tree';
 import {changeMenuTree, getMenuItems} from "./actions";
-
 
 export class Menus extends React.Component<any, any> {
 
@@ -11,135 +11,129 @@ export class Menus extends React.Component<any, any> {
     this.props.onInit();
   }
 
-  getTitleField = (node, path) => {
+  changeNode(props, node, path) {
     const getNodeKey = ({treeIndex}) => treeIndex;
+    const {onChangeTree, menu} = this.props;
 
+    const key = Object.keys(props)[0];
+    node.errors = node.errors || {};
+    node.errors[key] = props[key] === '';
+
+    onChangeTree(changeNodeAtPath({
+      path,
+      getNodeKey,
+      treeData: menu.items,
+      newNode: {...node, ...props},
+    }));
+  }
+
+  addNode(path) {
+    const getNodeKey = ({treeIndex}) => treeIndex;
+    const {onChangeTree, menu} = this.props;
+
+    onChangeTree(addNodeUnderParent({
+      getNodeKey,
+      treeData: menu.items,
+      parentKey: path[path.length - 1],
+      expandParent: true,
+      newNode: {
+        title: `new page`,
+        url: '/',
+      },
+    }).treeData);
+  }
+
+  removeNode(node, path) {
+    const getNodeKey = ({treeIndex}) => treeIndex;
+    const {onChangeTree, menu} = this.props;
+
+    const remove = () => {
+      onChangeTree(removeNodeAtPath({
+        path,
+        getNodeKey,
+        treeData: menu.items,
+      }));
+    };
+
+    if (node.children && node.children.length) {
+      if (confirm('Are you sure to delete item with sub-items?')) {
+        remove();
+      } else {
+        return;
+      }
+    }
+
+    remove();
+  }
+
+  addItem() {
+    const {onChangeTree, menu} = this.props;
+
+    onChangeTree(
+      menu.items.concat({
+        title: `new`,
+        url: '/',
+      }),
+    );
+  }
+
+  getTitleField = (node, path) => {
     return (
-      <div className="rst__field">
+      <div className={classnames("rst__field", {invalid: node.errors && node.errors.title})}>
         <span>Title: </span>
         <input
           value={node.title}
-          onChange={event => {
-            const title = event.target.value;
-
-            this.setState(state => ({
-              treeData: changeNodeAtPath({
-                path,
-                getNodeKey,
-                treeData: state.treeData,
-                newNode: {...node, title},
-              }),
-            }));
-          }}
+          onChange={event => this.changeNode({title: event.target.value}, node, path)}
         />
       </div>
     );
   }
 
   getSubTitleField = (node, path) => {
-    const getNodeKey = ({treeIndex}) => treeIndex;
-
     return (
-      <div className="rst__field">
+      <div className={classnames("rst__field", {invalid: node.errors && node.errors.url})}>
         <span>Url: </span>
         <input
           value={node.url}
-          onChange={event => {
-            const url = event.target.value;
-
-            this.setState(state => ({
-              treeData: changeNodeAtPath({
-                path,
-                getNodeKey,
-                treeData: state.treeData,
-                newNode: {...node, url},
-              }),
-            }));
-          }}
+          onChange={event => this.changeNode({url: event.target.value}, node, path)}
         />
       </div>
     );
   }
 
   getButtons = (node, path) => {
-    const getNodeKey = ({treeIndex}) => treeIndex;
-
     return (
       [
         <Button
-          color="info"
+          color="success"
           size="sm"
           outline
-          onClick={() =>
-            this.setState(state => ({
-              treeData: addNodeUnderParent({
-                getNodeKey,
-                treeData: state.treeData,
-                parentKey: path[path.length - 1],
-                expandParent: true,
-                newNode: {
-                  title: `new page`,
-                  url: '/',
-                },
-              }).treeData,
-            }))}
+          onClick={() => this.addNode(path)}
         >
-          Add Child
+          <span className="icon icon-add_circle"/>
+          Add child
         </Button>,
         <Button
           color="danger"
           size="sm"
-          onClick={() =>
-            this.setState(state => ({
-              treeData: removeNodeAtPath({
-                path,
-                getNodeKey,
-                treeData: state.treeData,
-              }),
-            }))}
+          onClick={() => this.removeNode(node, path)}
         >
+          <span className="icon icon-add_circle"/>
           Remove
         </Button>,
       ]
     );
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      treeData: [
-        {
-          title: 'Menu1 ',
-          expanded: true,
-          url: '/',
-          children: [
-            {
-              title: 'Sub - Menu 1',
-              url: '/',
-              expanded: true,
-              children: [
-                {
-                  title: 'Sub menu 2',
-                  url: '/',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    };
-  }
-
   render() {
-    const menuItems = this.props.menu;
     const {menu, onChangeTree} = this.props;
 
     return (
       <div style={{height: '700px'}} className="rst">
         <SortableTree
-          treeData={this.state.treeData}
-          onChange={treeData => this.setState({treeData})}
+          treeData={menu.items}
+          rowHeight={48}
+          onChange={treeData => onChangeTree(treeData)}
           generateNodeProps={({node, path}) => ({
             title: this.getTitleField(node, path),
             subtitle: this.getSubTitleField(node, path),
@@ -149,13 +143,7 @@ export class Menus extends React.Component<any, any> {
         <Button
           size="md"
           color="primary"
-          onClick={() =>
-            this.setState(state => ({
-              treeData: state.treeData.concat({
-                title: `new`,
-                url: '/',
-              }),
-            }))}
+          onClick={() => this.addItem()}
         >
           Add more
         </Button>

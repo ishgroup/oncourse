@@ -6,12 +6,22 @@ import {Design} from './containers/design/Design';
 import Menus from './containers/menus/Menus';
 import Login from "./containers/auth/Login";
 
+export interface Route {
+  title?: string;
+  path: string;
+  exact?: boolean;
+  isPublic?: boolean;
+  icon?: string;
+  main: () => any;
+}
+
 export const routes = [
   {
     title: 'Content',
     path: '/',
     exact: true,
     isPublic: false,
+    icon: 'icon-airplay',
     main: () => <Content/>,
   },
   {
@@ -19,6 +29,7 @@ export const routes = [
     path: '/blocks',
     exact: false,
     isPublic: false,
+    icon: 'icon-dashboard',
     main: () =>  <Blocks/>,
   },
   {
@@ -26,6 +37,7 @@ export const routes = [
     path: '/pages',
     exact: false,
     isPublic: false,
+    icon: 'icon-content_copy',
     main: () =>  <Pages/>,
   },
   {
@@ -33,6 +45,7 @@ export const routes = [
     path: '/menus',
     exact: false,
     isPublic: false,
+    icon: 'icon-menu',
     main: () =>  <Menus/>,
   },
   {
@@ -40,6 +53,7 @@ export const routes = [
     path: '/design',
     exact: false,
     isPublic: false,
+    icon: 'icon-photo_album',
     main: () =>  <Design/>,
   },
   {

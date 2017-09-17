@@ -7,9 +7,9 @@ export const CHANGE_MENU_TREE = "menus/change/tree";
 
 export const getMenuItems = () => ({
   type: GET_MENU_ITEMS_REQUEST,
-})
+});
 
 export const changeMenuTree = treeData => ({
   type: CHANGE_MENU_TREE,
   payload: treeData,
-})
+});

@@ -1,4 +1,10 @@
 .btn {
   font-size: 12px;
   border-radius: 4px;
+  
+  .icon {
+    &:before {
+      padding-right: 3px;
+    }
+  }
 }

@@ -3,5 +3,9 @@ export class MenuItem {
   title: string;
   url: string;
   expanded?: boolean;
+  errors?: {
+    title?: boolean,
+    url?: boolean,
+  };
 }
 
