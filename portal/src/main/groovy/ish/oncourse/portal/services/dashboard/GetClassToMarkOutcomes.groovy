@@ -3,6 +3,7 @@ package ish.oncourse.portal.services.dashboard
 import ish.oncourse.model.*
 import ish.oncourse.services.preference.PreferenceController
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 
 import static ish.common.types.OutcomeStatus.STATUS_NOT_SET
 import static ish.oncourse.portal.services.dashboard.CalculateAttendancePercent.DASHBOARD_CACHE
@@ -27,7 +28,7 @@ class GetClassToMarkOutcomes {
 					.and(CourseClass.END_DATE.lte(new Date()))
 					.and(CourseClass.ENROLMENTS.outer().dot(Enrolment.OUTCOMES).outer().dot(Outcome.STATUS).eq(STATUS_NOT_SET))
 					.orderBy(CourseClass.END_DATE.desc())
-                    .cacheStrategy(DASHBOARD_CACHE, DASHBOARD_CACHE)
+                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE, DASHBOARD_CACHE)
 					.selectFirst(tutor.objectContext)
 					
 		}
