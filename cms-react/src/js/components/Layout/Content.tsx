@@ -13,6 +13,7 @@ export const Content = props => {
           isPublic={route.isPublic}
           component={route.main}
           isAuthenticated={props.isAuthenticated}
+          routes={route.routes}
         />
       ))}
     </div>
@@ -23,7 +24,7 @@ const RouteWrapper = ({component: Component, ...rest}) => {
   return (
     <Route {...rest} render={props => (
       rest.isAuthenticated || rest.isPublic ? (
-        <Component {...props}/>
+        <Component {...props} routes={rest.routes}/>
       ) : (
         <Redirect to={{
           pathname: '/login',

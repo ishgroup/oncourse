@@ -1,12 +1,15 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button} from 'reactstrap';
+import {Route as SubRoute, withRouter} from 'react-router-dom';
 import {getPages} from "./actions";
-import {Page} from "../../model/Page";
+import {Page as PageModel} from "../../model";
+import {Route} from "../../routes";
 
 interface Props {
-  pages: Page[];
+  pages: PageModel[];
   onInit: () => any;
+  routes?: Route[];
 }
 
 export class Pages extends React.Component<Props, any> {
@@ -16,19 +19,16 @@ export class Pages extends React.Component<Props, any> {
   }
 
   render() {
-    const {pages} = this.props;
-
+    const {pages, routes} = this.props;
+    console.log(this.props);
     return (
       <div>
-        <p>Pages list (test)</p>
-        <ul>
-          {pages && pages.map(page => (
-            <li key={page.id}>
-              <p>{page.title}</p>
-              <p>{page.url}</p>
-            </li>
-          ))}
-        </ul>
+        <SubRoute
+          path={'/pages/:id'}
+          exact={false}
+          component={props => <Page {...props}>1123123123</Page>}
+          sidebar={<div>Page Sidebar</div>}
+        />
       </div>
     );
   }
@@ -44,4 +44,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pages);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Pages));
+
+
+const Page = props => {
+  return (<div>
+    page id - {props.match.params.id}
+  </div>);
+};

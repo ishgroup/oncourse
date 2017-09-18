@@ -2,6 +2,7 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
 import classnames from 'classnames';
+import {routes} from "../routes";
 import {Layout} from '../components/Layout/Layout';
 import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
@@ -18,6 +19,24 @@ export class Cms extends React.Component<any, any> {
     if (this.props.auth.isAuthenticated === false && props.auth.isAuthenticated === true) {
       getHistoryInstance().push('/menus');
     }
+  }
+
+  getActiveSubRoute() {
+    let subRoute;
+
+    // compare route path before :id
+    routes
+      .filter(r => r.routes)
+      .map(r => r.routes
+        .map(r => r.path.split(':')[0] === this.props.location.pathname.match(/^\D*/gm)[0] ? subRoute = r : undefined),
+    );
+
+    return subRoute;
+  }
+
+  getActiveRoute() {
+    const route = routes.find(route => (route.path === this.props.location.pathname));
+    return route ? route : this.getActiveSubRoute();
   }
 
   render() {
@@ -38,6 +57,7 @@ export class Cms extends React.Component<any, any> {
               user={user}
               slim={viewMode}
               onLogout={() => logout()}
+              activeRoute={this.getActiveRoute()}
           />}
           content={<Content isAuthenticated={isAuthenticated}/>}
           fullHeight={true}
