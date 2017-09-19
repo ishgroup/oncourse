@@ -1,7 +1,7 @@
 jetty:
   context: /editor
   connector:
-    port: 10080
+    port: 8303
     host: 127.0.0.1
 jdbc:
   willow:
