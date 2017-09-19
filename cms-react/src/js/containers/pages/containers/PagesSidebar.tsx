@@ -1,38 +1,46 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
-import {Container, Row, Col, Button} from 'reactstrap';
-import {NavLink} from 'react-router-dom';
 import {getHistoryInstance} from "../../../history";
+import {Page} from "../../../model";
+import {PagesList} from "../components/PageList";
+import {PageSettings} from "../components/PageSettings";
+import {URL} from "../../../routes";
+import {editPageSettings} from "../actions/index";
 
+interface Props {
+  pages: Page[];
+  match: any;
+  editPageSettings: (pageId, settings) => any;
+}
 
-export class PagesSidebar extends React.Component<any, any> {
+export class PagesSidebar extends React.Component<Props, any> {
 
   goBack() {
-    getHistoryInstance().push('/');
+    getHistoryInstance().push(URL.CONTENT);
+  }
+
+  resetActivePage() {
+    getHistoryInstance().push(URL.PAGES);
   }
 
   render() {
-    const {pages} = this.props;
+    const {pages, match, editPageSettings} = this.props;
+    const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
-      <ul>
-        <li>
-          <a href="#" onClick={() => this.goBack()}>
-            <span className="icon-arrow_back"/>
-          </a>
-        </li>
-        {pages.map(page => (
-          <li key={page.id}>
-            <NavLink
-              exact={false}
-              to={`/pages/${page.id}`}
-              activeClassName="active"
-            >
-              <span>{page.title}</span>
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      <div>
+        {!activePage &&
+          <PagesList pages={pages} onBack={this.goBack}/>
+        }
+
+        {activePage &&
+        <PageSettings
+          page={activePage}
+          onBack={this.resetActivePage}
+          onEdit={prop => editPageSettings(activePage.id, prop)}
+        />
+        }
+      </div>
     );
   }
 }
@@ -42,7 +50,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {};
+  return {
+    editPageSettings: (pageId, settings) => dispatch(editPageSettings(pageId, settings)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PagesSidebar);

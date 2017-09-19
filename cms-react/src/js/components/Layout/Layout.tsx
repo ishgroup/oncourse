@@ -20,7 +20,7 @@ export const Layout = (props: Props) => {
         </Col>
         }
 
-        <Col md={sidebar ? 10 : 12}>
+        <Col md={sidebar ? 10 : 12} className="content-wrapper">
           {content}
         </Col>
       </Row>

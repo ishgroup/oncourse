@@ -11,8 +11,8 @@
   @import 'vendors/normilize';
   
   // base
-  @import 'base/base';
   @import 'base/theme';
+  @import 'base/base';
   
   // layout
   @import 'layout/layout';
@@ -21,6 +21,7 @@
   //patterns
   @import 'patterns/button';
   @import 'patterns/link';
+  @import 'patterns/form';
   
   // components
   @import 'components/login-form';

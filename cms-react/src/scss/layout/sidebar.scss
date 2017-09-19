@@ -18,9 +18,26 @@
     border-bottom: 1px solid transparent;
   }
   
+  a {
+    small {
+      display: block;
+      color: $gray;
+      padding-top: 3px;
+    }
+  }
+  
   &__content {
     height: 100%;
     position: relative;
+  }
+  
+  &__settings {
+    padding: 10px 20px;
+    color: $white;
+    
+    input {
+      max-width: 100%;
+    }
   }
   
   &__footer {

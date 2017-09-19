@@ -7,6 +7,7 @@ import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
 import {getHistoryInstance, setHistoryInstance} from "../history";
 import {logout} from "./auth/actions/index";
+import {URL} from "../routes";
 
 export class Cms extends React.Component<any, any> {
 
@@ -16,7 +17,7 @@ export class Cms extends React.Component<any, any> {
 
   componentWillReceiveProps(props) {
     if (this.props.auth.isAuthenticated === false && props.auth.isAuthenticated === true) {
-      getHistoryInstance().push('/menus');
+      getHistoryInstance().push(URL.MENUS);
     }
   }
 

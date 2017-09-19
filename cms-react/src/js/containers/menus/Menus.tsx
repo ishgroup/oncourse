@@ -126,7 +126,7 @@ export class Menus extends React.Component<Props, any> {
           size="sm"
           onClick={() => this.removeNode(node, path)}
         >
-          <span className="icon icon-add_circle"/>
+          <span className={classnames("icon", node.children && node.children.length ? "icon-delete_sweep" :"icon-delete")}/>
           Remove
         </Button>,
       ]
