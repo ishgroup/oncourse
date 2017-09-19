@@ -12,11 +12,12 @@ import Login from "./containers/auth/Login";
 export interface Route {
   title?: string;
   path: string;
+  url?: string;
   exact?: boolean;
   isPublic?: boolean;
   icon?: string;
   main: (props) => any;
-  sidebar?: () => any;
+  sidebar?: (props?) => any;
   routes?: Route[];
 }
 
@@ -24,44 +25,44 @@ export const routes: Route[] = [
   {
     title: 'Content',
     path: '/',
+    url: '/',
     exact: true,
     icon: 'icon-airplay',
-    main: () => <Content/>,
+    main: props => <Content props/>,
   },
   {
     title: 'Blocks',
-    path: '/blocks',
+    path: '/blocks/:id?',
+    url: '/blocks',
     icon: 'icon-dashboard',
-    main: () =>  <Blocks/>,
+    main: props => <Blocks {...props}/>,
   },
   {
     title: 'Pages',
-    path: '/pages',
+    path: '/pages/:id?',
+    url: '/pages',
     icon: 'icon-content_copy',
-    main: props =>  <Pages {...props}/>,
-    sidebar: () => <PagesSidebar/>,
-    routes: [{
-      title: 'Pages',
-      path: '/pages/:id',
-      main: () =>  <Pages/>,
-      sidebar: () => <PagesSidebar/>,
-    }],
+    main: props => <Pages {...props}/>,
+    sidebar: props => <PagesSidebar {...props}/>,
   },
   {
     title: 'Menus',
     path: '/menus',
+    url: '/menus',
     icon: 'icon-menu',
-    main: () =>  <Menus/>,
+    main: props => <Menus {...props}/>,
   },
   {
     title: 'Design',
     path: '/design',
+    url: '/design',
     icon: 'icon-photo_album',
-    main: () =>  <Design/>,
+    main: props => <Design props/>,
   },
   {
     title: 'Login',
     path: '/login',
+    url: '/login',
     isPublic: true,
     main: () => <Login/>,
   },

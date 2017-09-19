@@ -1,15 +1,14 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button} from 'reactstrap';
-import {Route as SubRoute, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {getPages} from "./actions";
 import {Page as PageModel} from "../../model";
-import {Route} from "../../routes";
 
 interface Props {
   pages: PageModel[];
   onInit: () => any;
-  routes?: Route[];
+  match?: any;
 }
 
 export class Pages extends React.Component<Props, any> {
@@ -19,16 +18,13 @@ export class Pages extends React.Component<Props, any> {
   }
 
   render() {
-    const {pages, routes} = this.props;
-    console.log(this.props);
+    const {match} = this.props;
+
     return (
       <div>
-        <SubRoute
-          path={'/pages/:id'}
-          exact={false}
-          component={props => <Page {...props}>1123123123</Page>}
-          sidebar={<div>Page Sidebar</div>}
-        />
+        {match.params.id &&
+          <Page id={match.params.id}/>
+        }
       </div>
     );
   }
@@ -44,11 +40,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Pages));
+export default connect(mapStateToProps, mapDispatchToProps)(Pages);
 
 
 const Page = props => {
   return (<div>
-    page id - {props.match.params.id}
+    page id - {props.id}
   </div>);
 };

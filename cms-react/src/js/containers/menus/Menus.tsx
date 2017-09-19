@@ -10,6 +10,7 @@ interface Props {
   menu: MenuState;
   onInit: () => any;
   onChangeTree: (treeData) => any;
+  match: any;
 }
 
 export class Menus extends React.Component<Props, any> {
