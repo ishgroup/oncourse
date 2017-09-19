@@ -25,7 +25,7 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   return {
     entry: {
       cms: [
-        'babel-polyfill',
+        // 'babel-polyfill',
         'react',
         'redux',
         'react-redux',
