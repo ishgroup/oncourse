@@ -24,7 +24,7 @@ public class PortalApplicationServiceImpl implements IPortalApplicationService {
 				.where((Application.STATUS.eq(ApplicationStatus.NEW)).orExp(Application.STATUS.eq(ApplicationStatus.OFFERED).andExp(Application.ENROL_BY.gt(new Date()).orExp(Application.ENROL_BY.isNull()))))
 				.and(Application.STUDENT.eq(student))
 				.orderBy(Application.CREATED.desc())
-				.select(cayenneService.newContext());
+				.select(cayenneService.sharedContext());
 	}
 
 	@Override
@@ -32,6 +32,6 @@ public class PortalApplicationServiceImpl implements IPortalApplicationService {
 		return ObjectSelect.query(Application.class)
 				.where(Application.STUDENT.eq(student))
 				.orderBy(Application.CREATED.desc())
-				.select(cayenneService.newContext());
+				.select(cayenneService.sharedContext());
 	}
 }

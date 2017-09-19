@@ -10,6 +10,7 @@ import net.sf.ehcache.CacheManager
 import net.sf.ehcache.Element
 import org.apache.cayenne.query.ObjectSelect
 
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
 import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE
 
 @CompileStatic
@@ -17,7 +18,7 @@ class CalculateAttendancePercent {
 
     public static final String DASHBOARD_CACHE = 'dashboard'
 
-    public static final String ATTENDANCE_CACHE_KEY = 'dashboard.attendance.cache.%d';
+    public static final String ATTENDANCE_CACHE_KEY = 'dashboard.attendance.cache.%d'
 
     private Student student
     private CacheManager cacheManager
@@ -37,7 +38,7 @@ class CalculateAttendancePercent {
         if (element == null) {
             Integer value = AttendanceUtils.getAttendancePercent(getAttendance())
             cache.put(new Element(cacheKey, value))
-            return value;
+            return value
         } else {
             return (Integer) element.objectValue
         }
@@ -61,6 +62,6 @@ class CalculateAttendancePercent {
                     .cacheStrategy(SHARED_CACHE, DASHBOARD_CACHE)
                     .select(student.objectContext)
         }
-        return attendances;
+        return attendances
     }
 }

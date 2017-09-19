@@ -282,7 +282,7 @@ public class PortalService implements IPortalService {
 					cacheStrategy(QueryCacheStrategy.SHARED_CACHE).
 					cacheGroup(CourseClass.class.getSimpleName()).
                     prefetch(CourseClass.SESSIONS.disjoint()).
-                    select(cayenneService.newContext());
+                    select(cayenneService.sharedContext());
 
             switch (filter) {
                 case UNCONFIRMED:
@@ -349,7 +349,7 @@ public class PortalService implements IPortalService {
             if (IsCurrentTutorClass.valueOf(courseClass, date).is()) {
                 TutorRole tutorRole = ObjectSelect.query(TutorRole.class).where(TutorRole.TUTOR.eq(contact.getTutor()))
                         .and(TutorRole.COURSE_CLASS.eq(courseClass))
-                        .and(TutorRole.IS_CONFIRMED.isFalse()).selectFirst(cayenneService.newContext());
+                        .and(TutorRole.IS_CONFIRMED.isFalse()).selectFirst(cayenneService.sharedContext());
 
                 if (tutorRole != null) {
                     unconfirmed.add(courseClass);
@@ -415,7 +415,7 @@ public class PortalService implements IPortalService {
     }
 
     public CourseClass getCourseClassBy(long id) {
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.sharedContext();
         List<CourseClass> result = new ArrayList<>();
         if (getContact().getTutor() != null) {
             Expression expression = getTutorClassesExpression();
@@ -438,7 +438,7 @@ public class PortalService implements IPortalService {
     }
 
     public Invoice getInvoiceBy(long id) {
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.sharedContext();
         Expression expression = ExpressionFactory.matchExp(Invoice.CONTACT_PROPERTY, getContact());
         expression = expression.andExp(ExpressionFactory.matchDbExp(Invoice.ID_PK_COLUMN, id));
         SelectQuery q = new SelectQuery(Invoice.class, expression);
@@ -448,7 +448,7 @@ public class PortalService implements IPortalService {
 
 
     public PaymentIn getPaymentInBy(long id) {
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.sharedContext();
         Expression expression = ExpressionFactory.matchExp(PaymentIn.CONTACT_PROPERTY, getContact());
         expression = expression.andExp(ExpressionFactory.matchDbExp(PaymentIn.ID_PK_COLUMN, id));
         SelectQuery q = new SelectQuery(PaymentIn.class, expression);
@@ -457,7 +457,7 @@ public class PortalService implements IPortalService {
     }
 
     public Tag getMailingList(long id) {
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.sharedContext();
 
         Expression expression = ExpressionFactory.matchExp(Taggable.COLLEGE_PROPERTY, getContact().getCollege());
         expression = expression.andExp(ExpressionFactory.matchExp(Tag.TAGGABLE_TAGS_PROPERTY + "." +
@@ -766,7 +766,7 @@ public class PortalService implements IPortalService {
 
     public List<Contact> getChildContacts() {
         ArrayList<Contact> result = new ArrayList<>();
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.sharedContext();
         Contact parent = Cayenne.objectForPK(context, Contact.class, getAuthenticatedUser().getId());
         List<ContactRelation> contactRelations = parent.getToContacts();
         contactRelations = RELATION_TYPE.dot(DELEGATED_ACCESS_TO_CONTACT).eq(true).filterObjects(contactRelations);

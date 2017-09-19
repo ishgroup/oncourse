@@ -97,7 +97,7 @@ public class ClassDetailsNew {
 
 	@OnEvent(value = "getAttendences")
 	public StreamResponse getAttendences(Long sessionId) throws IOException {
-		Session session = Cayenne.objectForPK(cayenneService.newContext(), Session.class, sessionId);
+		Session session = Cayenne.objectForPK(cayenneService.sharedContext(), Session.class, sessionId);
 
 		List<ish.oncourse.portal.services.attendance.Attendance> list =
 				AttendanceTransportUtils.toContainerAttendanceList(session.getAttendances());
