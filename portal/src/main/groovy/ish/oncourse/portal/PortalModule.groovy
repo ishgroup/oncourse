@@ -11,11 +11,10 @@ import io.bootique.jdbc.DataSourceFactory
 import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedFilter
 import io.bootique.jetty.MappedServlet
+import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
-import ish.oncourse.services.cache.NoopQueryCache
 import ish.oncourse.services.persistence.ISHObjectContextFactory
 import ish.oncourse.util.log.LogAppInfo
-import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.Constants
 import org.apache.cayenne.configuration.ObjectContextFactory
 
@@ -50,7 +49,9 @@ class PortalModule extends ConfigModule {
 
     @Override
     void configure(Binder binder) {
-        CayenneModule.extend(binder).addModule(new PortalCayenneModule())
+        CayenneModule.extend(binder)
+                .addModule(new PortalCayenneModule())
+                .addModule(new JCacheModule())
         JettyModule.extend(binder)
                 .addMappedFilter(TAPESTRY_FILTER)
                 .addMappedServlet(new MappedServlet<>(new ISHHealthCheckServlet(), ISHHealthCheckServlet.urlPatterns, ISHHealthCheckServlet.SERVLET_NAME))
@@ -64,8 +65,6 @@ class PortalModule extends ConfigModule {
         void configure(org.apache.cayenne.di.Binder binder) {
             binder.bindMap(Object.class, Constants.PROPERTIES_MAP).put(Constants.CI_PROPERTY, "true")
             binder.bind(ObjectContextFactory.class).toInstance(new ISHObjectContextFactory(false))
-            binder.bind(QueryCache.class).toInstance(new NoopQueryCache())
-            binder.bind(org.apache.cayenne.di.Key.get(QueryCache.class, ISHObjectContextFactory.QUERY_CACHE_INJECTION_KEY)).toInstance(new NoopQueryCache())
         }
     }
 

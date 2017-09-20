@@ -1,10 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- see description in web/src/resources/ehcache.xml-->
-<ehcache
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-        updateCheck="false" name="portal" maxBytesLocalHeap="40M">
-    <defaultCache timeToLiveSeconds="1"/>
-    <cache name="CourseClass" timeToLiveSeconds="1"/>
-	<cache name="dashboard" timeToLiveSeconds="600"/>
-</ehcache>
+<ehcache:config
+        xmlns:ehcache="http://www.ehcache.org/v3">
+    <ehcache:cache alias="dashboard">
+        <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type>
+        <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">java.util.List</ehcache:value-type>
+
+        <ehcache:expiry>
+            <ehcache:tti unit="minutes">10</ehcache:tti>
+        </ehcache:expiry>
+
+        <ehcache:heap unit="entries">2000</ehcache:heap>
+    </ehcache:cache>
+
+    <ehcache:cache alias="CourseClass">
+        <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type>
+        <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">java.util.List</ehcache:value-type>
+
+        <ehcache:expiry>
+            <ehcache:tti unit="minutes">1</ehcache:tti>
+        </ehcache:expiry>
+
+        <ehcache:heap unit="entries">2000</ehcache:heap>
+    </ehcache:cache>
+
+</ehcache:config>

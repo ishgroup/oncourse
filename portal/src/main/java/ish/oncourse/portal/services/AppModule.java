@@ -84,6 +84,7 @@ import ish.oncourse.webservices.usi.USIService;
 import ish.oncourse.webservices.usi.crypto.CryptoKeys;
 import ish.oncourse.webservices.usi.tapestry.CryptoKeysBuilder;
 import ish.oncourse.webservices.usi.tapestry.USIServiceBuilder;
+import org.apache.cayenne.configuration.CayenneRuntime;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.SymbolConstants;
@@ -100,6 +101,7 @@ import org.apache.tapestry5.services.javascript.JavaScriptStackSource;
 import org.apache.tapestry5.services.javascript.StylesheetLink;
 import org.apache.tapestry5.services.linktransform.PageRenderLinkTransformer;
 
+import javax.cache.CacheManager;
 import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.List;
@@ -139,6 +141,7 @@ public class AppModule {
 		binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
 		binder.bind(TapestrySessionFactory.class, ISHTapestrySessionFactoryImpl.class).withId("ISHTapestrySessionFactoryImpl");
 		binder.bind(AccessLinksValidatorFactory.class, AccessLinksValidatorFactory.class);
+		binder.bind(CacheManager.class, new CacheManagerBuilder());
 		bindUSIServices(binder);
 	}
 
@@ -342,5 +345,16 @@ public class AppModule {
 			return service;
 		}
 	}
+
+	public static class CacheManagerBuilder implements ServiceBuilder<CacheManager> {
+		@Override
+		public CacheManager buildService(ServiceResources resources) {
+			Injector injector = resources.getService(Injector.class);
+
+			CayenneRuntime cayenneRuntime = injector.getInstance(ServerRuntime.class);
+			return cayenneRuntime.getInjector().getInstance(CacheManager.class);
+		}
+	}
+
 
 }

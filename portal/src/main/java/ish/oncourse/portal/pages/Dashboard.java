@@ -6,21 +6,13 @@ package ish.oncourse.portal.pages;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.services.IPortalService;
-import ish.oncourse.portal.services.dashboard.CalculateAttendancePercent;
-import ish.oncourse.portal.services.dashboard.CalculatePaymentDue;
-import ish.oncourse.portal.services.dashboard.GetApplicationToStudy;
-import ish.oncourse.portal.services.dashboard.GetClassToApproval;
-import ish.oncourse.portal.services.dashboard.GetClassToMarkOutcomes;
-import ish.oncourse.portal.services.dashboard.GetEnrolmentToSurvey;
-import ish.oncourse.portal.services.dashboard.GetNextSession;
-import ish.oncourse.portal.services.dashboard.GetSessionToMarkRoll;
-
-import ish.oncourse.portal.services.dashboard.UsiRequired;
+import ish.oncourse.portal.services.dashboard.*;
 import ish.oncourse.services.preference.PreferenceController;
-import net.sf.ehcache.CacheManager;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import javax.cache.CacheManager;
 
 
 public class Dashboard {

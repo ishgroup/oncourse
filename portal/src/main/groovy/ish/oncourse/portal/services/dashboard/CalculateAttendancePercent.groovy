@@ -5,12 +5,11 @@ import ish.oncourse.model.Attendance
 import ish.oncourse.model.Session
 import ish.oncourse.model.Student
 import ish.oncourse.portal.services.attendance.AttendanceUtils
-import net.sf.ehcache.Cache
-import net.sf.ehcache.CacheManager
-import net.sf.ehcache.Element
 import org.apache.cayenne.query.ObjectSelect
 
-import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
+import javax.cache.Cache
+import javax.cache.CacheManager
+
 import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE
 
 @CompileStatic
@@ -30,17 +29,17 @@ class CalculateAttendancePercent {
     }
 
     int calculate() {
-        Cache cache = cacheManager.getCache(DASHBOARD_CACHE)
+        Cache<String, Integer> cache = cacheManager.getCache(DASHBOARD_CACHE)
         String cacheKey = String.format(ATTENDANCE_CACHE_KEY, student.contact.id)
 
-        Element element = cache.get(cacheKey)
+        Integer value = cache.get(cacheKey)
 
-        if (element == null) {
-            Integer value = AttendanceUtils.getAttendancePercent(getAttendance())
-            cache.put(new Element(cacheKey, value))
+        if (value == null) {
+            value = AttendanceUtils.getAttendancePercent(getAttendance())
+            cache.put(cacheKey, value)
             return value
         } else {
-            return (Integer) element.objectValue
+            return value
         }
     }
 

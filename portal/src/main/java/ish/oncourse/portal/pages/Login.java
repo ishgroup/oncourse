@@ -24,18 +24,19 @@ public class Login {
 
 	private static final String PARAMETER_firstName = "firstName";
 	private static final String PARAMETER_lastName = "lastName";
-	private static final String PARAMETER_emailAddress = "emailAddress";
+	private static final String PARAMETER_email = "email";
+	private static final String PARAMETER_password = "password";
 	private static final String PARAMETER_firstTimeLogin = "e";
 
 	private static final String PARAMETER_oneTimePassword = "oneTimePassword";
 
 	@Inject
 	private ICayenneService cayenneService;
-	
+
 	@Persist
 	@Property
 	private String email;
-	
+
 	@Persist
 	@Property
 	private boolean firstTimeLogin;
@@ -80,8 +81,8 @@ public class Login {
 	@Inject
 	private IAuthenticationService authenticationService;
 
-    @Inject
-    private IPortalService portalService;
+	@Inject
+	private IPortalService portalService;
 
 	@Inject
 	private ICookiesService cookieService;
@@ -138,16 +139,15 @@ public class Login {
 	@Persist
 	private Map<String, String> errors;
 
-	private static final String ON =  "on";
+	private static final String ON = "on";
 
 	Object onActivate() {
-
 		if (portalService.getAuthenticatedUser() != null)
 			portalService.logout();
 
 		if (errors == null)
 			errors = new HashMap<>();
-		
+
 		String firstLoginEmail = StringUtils.trimToNull(request.getParameter(PARAMETER_firstTimeLogin));
 		if (firstLoginEmail != null) {
 			email = firstLoginEmail;
@@ -159,9 +159,9 @@ public class Login {
 				lastName = contact.getFamilyName();
 				return null;
 			}
-			
+
 		}
-		
+
 		String value = StringUtils.trimToNull(request.getParameter(PARAMETER_oneTimePassword));
 		if (value != null) {
 			if (authenticationService.authenticate(value)) {
@@ -170,7 +170,7 @@ public class Login {
 				loginForm.recordError("The attempt for support login was unsuccessful.");
 			}
 		}
-	
+
 		fillStudentFields();
 		return null;
 	}
@@ -202,9 +202,13 @@ public class Login {
 		if (value != null)
 			this.lastName = value;
 
-		value = StringUtils.trimToNull(request.getParameter(PARAMETER_emailAddress));
+		value = StringUtils.trimToNull(request.getParameter(PARAMETER_password));
 		if (value != null)
 			this.email = value;
+
+		value = StringUtils.trimToNull(request.getParameter(PARAMETER_password));
+		if (value != null)
+			this.password = value;
 	}
 
 	@OnEvent(value = "onForgotPasswordEvent")
@@ -220,32 +224,22 @@ public class Login {
 		return loginForm;
 
 	}
-	
-	Object onSuccess() throws IOException {
-		clearErrorFields();
 
-
+	void onValidate() throws IOException {
 		if (isCompany) {
 			if (StringUtils.isBlank(companyName)) {
-
 				errors.put("companyName", messages.get("companyNameErrorMessage"));
-
 				companyNameErrorMessage = messages.get("companyNameErrorMessage");
 				loginForm.recordError(companyNameErrorMessage);
 			}
 		} else {
 			if (StringUtils.isBlank(firstName)) {
-
 				errors.put("firstName", messages.get("firstNameErrorMessage"));
-
-
 				firstNameErrorMessage = messages.get("firstNameErrorMessage");
 				loginForm.recordError(firstNameErrorMessage);
 			}
 			if (StringUtils.isBlank(lastName)) {
-
 				errors.put("lastName", messages.get("secondNameErrorMessage"));
-
 				secondNameErrorMessage = messages.get("secondNameErrorMessage");
 				loginForm.recordError(secondNameErrorMessage);
 			}
@@ -253,28 +247,36 @@ public class Login {
 		}
 
 		if (StringUtils.isBlank(email)) {
-
 			errors.put("email", messages.get("emailNameErrorMessage"));
-
 			emailNameErrorMessage = messages.get("emailNameErrorMessage");
 			loginForm.recordError(emailNameErrorMessage);
 		}
 
 		if (!isForgotPassword && !firstTimeLogin) {
 			if (StringUtils.isBlank(password)) {
-
 				errors.put("password", messages.get("passwordNameErrorMessage"));
-
 				passwordNameErrorMessage = messages.get("passwordNameErrorMessage");
 				loginForm.recordError(passwordNameErrorMessage);
 			}
-		}
 
-
-		if (!loginForm.getHasErrors()) {
-			return isForgotPassword || firstTimeLogin ? resetPassword() : doLogin();
+			if (errors.isEmpty() && FindContact.valueOf(this).find().isEmpty()) {
+				emailNameErrorMessage = messages.get("emailNameErrorMessage");
+				passwordNameErrorMessage = messages.get("passwordNameErrorMessage");
+				companyNameErrorMessage = messages.get("companyNameErrorMessage");
+				secondNameErrorMessage = messages.get("secondNameErrorMessage");
+				firstNameErrorMessage = messages.get("firstNameErrorMessage");
+				loginForm.recordError("Login unsucessful! Invalid login name or password");
+			}
 		}
-		return this;
+	}
+
+	Object onSuccess() throws IOException {
+		if (isForgotPassword || firstTimeLogin) {
+			onValidate();
+			return resetPassword();
+		} else {
+			return doLogin();
+		}
 	}
 
 	private void clearErrorFields() {
@@ -286,20 +288,9 @@ public class Login {
 	}
 
 	private Object doLogin() {
-		List<Contact> users = new ArrayList<>();
-		if (isCompany) {
-			users = authenticationService.authenticateCompany(companyName, email, password);
-		} else {
-			users = authenticationService.authenticate(firstName, lastName, email, password);
-		}
+		List<Contact> users = FindContact.valueOf(this).find();
 
 		if (users.isEmpty()) {
-			emailNameErrorMessage = messages.get("emailNameErrorMessage");
-			passwordNameErrorMessage = messages.get("passwordNameErrorMessage");
-			companyNameErrorMessage = messages.get("companyNameErrorMessage");
-			secondNameErrorMessage = messages.get("secondNameErrorMessage");
-			firstNameErrorMessage = messages.get("firstNameErrorMessage");
-			loginForm.recordError("Login unsucessful! Invalid login name or password");
 			return this;
 		} else if (users.size() == 1) {
 			authenticationService.storeCurrentUser(users.get(0));
@@ -333,19 +324,12 @@ public class Login {
 	}
 
 	private Object resetPassword() {
-
-		List<Contact> users = new ArrayList<>();
-		if (isCompany) {
-			users = authenticationService.findCompanyForPasswordRecovery(companyName, email);
-		} else {
-			users = authenticationService.findForPasswordRecovery(firstName, lastName, email);
-		}
-
+		List<Contact> users = FindContact.valueOf(this).find();
 		if (users.isEmpty()) {
 			loginForm.recordError(messages.get("message-userNotExist"));
 			return this;
 		} else if (users.size() == 1) {
-			if(firstTimeLogin) {
+			if (firstTimeLogin) {
 				createAccount.setUser(users.get(0));
 				return createAccount;
 			} else {
@@ -396,9 +380,6 @@ public class Login {
 	}
 
 
-
-
-
 	public CompanyCheckStyle getCompanyCheckStyle() {
 		return new CompanyCheckStyle();
 	}
@@ -428,4 +409,26 @@ public class Login {
 		}
 
 	}
+
+
+	private static class FindContact {
+		private Login login;
+
+		public List<Contact> find() {
+			if (login.isCompany) {
+				return login.authenticationService.authenticateCompany(login.companyName, login.email, login.password);
+			} else {
+				return login.authenticationService.authenticate(login.firstName, login.lastName, login.email, login.password);
+			}
+		}
+
+		public static FindContact valueOf(Login login) {
+			FindContact result = new FindContact();
+			result.login = login;
+			return result;
+		}
+	}
+
 }
+
+
