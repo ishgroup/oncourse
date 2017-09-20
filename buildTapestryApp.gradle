@@ -32,6 +32,18 @@ configurations {
 
 
 dependencies {
+    compile project(':common:common-model')
+    compile(project(':common:common-services')) {
+        exclude group: 'axis', module: 'axis-wsdl4j'
+    }
+    compile(project(':common:webservices-usi')) {
+        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+    }
+    compile("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion") {
+        //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
+        exclude group: 'org.apache.cayenne', module: 'cayenne-server'
+        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
+    }
 
     //bootique
     compile 'io.bootique:bootique'
@@ -40,23 +52,8 @@ dependencies {
     compile 'io.bootique.cayenne:bootique-cayenne'
     compile 'io.bootique.tapestry:bootique-tapestry'
 
-
-    compile project(':common:common-model')
-
-    compile(project(':common:common-services')) {
-        exclude group: 'axis', module: 'axis-wsdl4j'
-    }
-
-    compile(project(':common:webservices-usi')) {
-        exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
-    }
-
-    compile("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion")
-            {
-                //we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
-                exclude group: 'org.apache.cayenne', module: 'cayenne-server'
-                exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
-            }
+    //cache
+    compile 'org.ehcache:ehcache:3.4.0'
 
     compile('org.apache.cxf:cxf-bundle:2.6.16') {
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
@@ -109,6 +106,10 @@ startScripts {
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
+
+processResources.doLast {
+    file("${buildDir}/resources/VERSION").text = version ?: "SNAPSHOT"
+}
 
 distZip {
     applicationDistribution.from("${buildDir}/resources/VERSION") {
