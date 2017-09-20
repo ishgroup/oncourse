@@ -1,5 +1,6 @@
 package ish.oncourse.willow.service
 
+import ish.common.types.ConfirmationStatus
 import ish.common.types.EnrolmentStatus
 import ish.common.types.ProductStatus
 import ish.math.Money
@@ -97,7 +98,7 @@ class CorporatePassTest extends ApiTest {
         assertEquals(3, invoices.size())
         
         Invoice mainInvoice = invoices.find { it.invoiceLines*.enrolment*.courseClass*.id.flatten().contains(1003L) }
-
+        assertEquals(ConfirmationStatus.NOT_SENT, mainInvoice.confirmationStatus)
         assertEquals(new Money('232.00'), mainInvoice.amountOwing)
         assertEquals(company, mainInvoice.contact)
         assertEquals(0, mainInvoice.paymentInLines.size())
@@ -106,6 +107,7 @@ class CorporatePassTest extends ApiTest {
         InvoiceLine invoiceLine1 = mainInvoice.invoiceLines.find { it.enrolment?.courseClass?.id == 1003L }
         assertNotNull(invoiceLine1)
         assertEquals(EnrolmentStatus.SUCCESS, invoiceLine1.enrolment.status)
+        assertEquals(ConfirmationStatus.NOT_SENT, invoiceLine1.enrolment.confirmationStatus)
         assertEquals(1001, invoiceLine1.enrolment.student.id)
         assertEquals(new Money('12.00'), invoiceLine1.totalTax)
         assertEquals(new Money('-20.00'), invoiceLine1.discountTotalExTax)
@@ -116,11 +118,13 @@ class CorporatePassTest extends ApiTest {
         assertEquals(1, invoiceLine2.productItems.size())
         assertEquals(ProductStatus.ACTIVE, invoiceLine2.productItems[0].status)
         assertEquals(null, invoiceLine2.productItems[0].contact)
+        assertEquals(ConfirmationStatus.NOT_SENT, invoiceLine2.productItems[0].confirmationStatus)
         assertEquals(new Money('0.00'), invoiceLine2.totalTax)
         assertEquals(new Money('0.00'), invoiceLine2.discountTotalExTax)
         assertEquals(new Money('100.00'), invoiceLine2.finalPriceToPayIncTax)
 
         Invoice ppInvoice1 = invoices.find { it.invoiceLines*.enrolment*.courseClass*.id.flatten().contains(1001L) }
+        assertEquals(ConfirmationStatus.NOT_SENT, ppInvoice1.confirmationStatus)
         assertEquals(new Money('132.00'), ppInvoice1.amountOwing)
         assertEquals(company, ppInvoice1.contact)
         assertEquals(0, ppInvoice1.paymentInLines.size())
@@ -136,6 +140,7 @@ class CorporatePassTest extends ApiTest {
 
 
         Invoice ppInvoice2 = invoices.find { it.invoiceLines*.enrolment*.courseClass*.id.flatten().contains(1002L) }
+        assertEquals(ConfirmationStatus.NOT_SENT, ppInvoice2.confirmationStatus)
         assertEquals(new Money('132.00'), ppInvoice1.amountOwing)
         assertEquals(company, ppInvoice2.contact)
         assertEquals(0, ppInvoice2.paymentInLines.size())
@@ -144,6 +149,8 @@ class CorporatePassTest extends ApiTest {
         InvoiceLine invoiceLine4 = ppInvoice2.invoiceLines[0]
         assertNotNull(invoiceLine4)
         assertEquals(EnrolmentStatus.SUCCESS, invoiceLine4.enrolment.status)
+        assertEquals(ConfirmationStatus.NOT_SENT, invoiceLine4.enrolment.confirmationStatus)
+
         assertEquals(1001, invoiceLine4.enrolment.student.id)
         assertEquals(new Money('12.00'), invoiceLine4.totalTax)
         assertEquals(new Money('-20.00'), invoiceLine4.discountTotalExTax)

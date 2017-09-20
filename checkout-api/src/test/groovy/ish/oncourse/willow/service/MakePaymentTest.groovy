@@ -1,6 +1,7 @@
 package ish.oncourse.willow.service
 
 import ish.common.types.ApplicationStatus
+import ish.common.types.ConfirmationStatus
 import ish.common.types.EnrolmentStatus
 import ish.common.types.ProductStatus
 import ish.math.Money
@@ -116,8 +117,49 @@ class MakePaymentTest extends AbstractPaymentTest {
         assertEquals(PaymentStatus.SUCCESSFUL,  processPaymentModel.response.status)
 
         assertEquals(ish.common.types.PaymentStatus.SUCCESS, paymentInModel.paymentIn.status)
-        assertEquals(EnrolmentStatus.SUCCESS, enrolment.status)
-        assertEquals(ProductStatus.ACTIVE, voucher.status)
+        assertEquals(ConfirmationStatus.NOT_SENT, paymentInModel.paymentIn.confirmationStatus)
 
+        assertEquals(ConfirmationStatus.NOT_SENT, paymentInModel.invoices[0].confirmationStatus)
+
+
+        assertEquals(EnrolmentStatus.SUCCESS, enrolment.status)
+        assertEquals(ConfirmationStatus.NOT_SENT, enrolment.confirmationStatus)
+
+        assertEquals(ProductStatus.ACTIVE, voucher.status)
+        assertEquals(ConfirmationStatus.NOT_SENT, voucher.confirmationStatus)
+    }
+
+    @Test
+    void makeFailedPayment() {
+        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        CollegeService service = new CollegeService(cayenneService)
+        WebSite webSite = service.webSite
+        College college = webSite.college
+
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, service)
+
+        PaymentRequest request = buildPaymentRequest()
+        CheckoutModel model = api.getCheckoutModel(request.checkoutModelRequest)
+
+        ObjectContext ctx = cayenneService.newContext()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(ctx, college, webSite, request, model).create()
+        PaymentInModel paymentInModel = createPaymentModel.model
+        ish.oncourse.model.Enrolment enrolment = paymentInModel.invoices[0].invoiceLines[0].enrolment
+        ish.oncourse.model.Voucher voucher = paymentInModel.invoices[0].invoiceLines[1].productItems[0] as ish.oncourse.model.Voucher
+
+        request.creditCardNumber = '5105105105105100'
+        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(ctx, cayenneService.newNonReplicatingContext(), college, createPaymentModel, request).process()
+        assertEquals(PaymentStatus.FAILED,  processPaymentModel.response.status)
+
+        assertEquals(ish.common.types.PaymentStatus.FAILED_CARD_DECLINED, paymentInModel.paymentIn.status)
+        assertEquals(ConfirmationStatus.DO_NOT_SEND, paymentInModel.paymentIn.confirmationStatus)
+
+        assertEquals(ConfirmationStatus.DO_NOT_SEND, paymentInModel.invoices[0].confirmationStatus)
+        
+        assertEquals(EnrolmentStatus.FAILED, enrolment.status)
+        assertEquals(ConfirmationStatus.DO_NOT_SEND, enrolment.confirmationStatus)
+
+        assertEquals(ProductStatus.CANCELLED, voucher.status)
+        assertEquals(ConfirmationStatus.DO_NOT_SEND, voucher.confirmationStatus)
     }
 }
