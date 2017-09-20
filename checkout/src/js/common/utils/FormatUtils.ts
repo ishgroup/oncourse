@@ -25,7 +25,7 @@ export const formatDate = (dateISO8601: string, pattern: string, timezone?: stri
     return dateISO8601 ? moment(dateISO8601).tz(timezone).format(pattern) : null;
   }
 
-  return dateISO8601 ? moment(dateISO8601).add(moment().utcOffset(), "m").format(pattern) : null;
+  return dateISO8601 ? moment(dateISO8601).format(pattern) : null;
 };
 
 /**

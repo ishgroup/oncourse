@@ -9,6 +9,7 @@ import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
 import {toFormKey} from "../../../../components/form/FieldFactory";
 import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
+import {Course} from "../../../../model/web/Course";
 
 
 export interface Props {
@@ -111,8 +112,8 @@ const ClassPrice = (props): any => {
 
 const ClassDetails = (props): any => {
   const {courseClass} = props;
-  const start: string = FormatUtils.formatDate(courseClass.start, Formats.ClassDateFormat);
-  const end: string = FormatUtils.formatDate(courseClass.end, Formats.ClassDateFormat);
+  const start: string = FormatUtils.formatDate(courseClass.start, Formats.ClassDateFormat, courseClass.timezone);
+  const end: string = FormatUtils.formatDate(courseClass.end, Formats.ClassDateFormat, courseClass.timezone);
   return (
     <div>
       <em>
