@@ -40,7 +40,6 @@ class CreateArticle {
         article.contact = contact
         article.setProduct(ap)
         article.status = status
-        article.confirmationStatus = ConfirmationStatus.NOT_SENT
         InvoiceLine invoiceLine = new ProductItemInvoiceLine(article, contact, article.product.priceExTax, taxOverride).create()
         invoiceLine.invoice = invoice
     }

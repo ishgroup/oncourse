@@ -66,7 +66,7 @@ class CreateCorpPassModel {
             Contact contact = new GetContact(context, college, node.contactId).get(false)
 
             node.enrolments.findAll{it.selected}.each { e ->
-                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.SUCCESS, pass.contact.taxOverride, { Enrolment enrolment, InvoiceLine il ->
+                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.SUCCESS, ConfirmationStatus.NOT_SENT, pass.contact.taxOverride, { Enrolment enrolment, InvoiceLine il ->
                     if (enrolment.courseClass.paymentPlanLines.empty) {
                         il.invoice = getInvoice()
                     } else {
@@ -86,7 +86,7 @@ class CreateCorpPassModel {
                 new CreateMembership(context, college, m, contact, getInvoice(), ProductStatus.ACTIVE, pass.contact.taxOverride).create()
             }
             node.vouchers.findAll{it.selected}.each { v ->
-                new CreateVoucher(context, college, v, contact, getInvoice(), ProductStatus.ACTIVE).create()
+                new CreateVoucher(context, college, v, contact, getInvoice(), ProductStatus.ACTIVE,  ConfirmationStatus.NOT_SENT).create()
             }
         }
     }

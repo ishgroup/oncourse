@@ -26,14 +26,16 @@ class CreateVoucher {
     private Contact contact
     private Invoice invoice
     private ProductStatus status
+    private ConfirmationStatus confirmationStatus
 
-    CreateVoucher(ObjectContext context, College college, ish.oncourse.willow.model.checkout.Voucher v, Contact contact, Invoice invoice, ProductStatus status) {
+    CreateVoucher(ObjectContext context, College college, ish.oncourse.willow.model.checkout.Voucher v, Contact contact, Invoice invoice, ProductStatus status, ConfirmationStatus confirmationStatus) {
         this.context = context
         this.college = college
         this.v = v
         this.contact = contact
         this.invoice = invoice
         this.status = status
+        this.confirmationStatus = confirmationStatus
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -47,7 +49,7 @@ class CreateVoucher {
         voucher.status = status
         voucher.product = voucherProduct
         voucher.redeemedCoursesCount = 0
-        voucher.confirmationStatus = ConfirmationStatus.NOT_SENT
+        voucher.confirmationStatus = confirmationStatus
 
         voucher.expiryDate = ProductUtil.calculateExpiryDate(new Date(), voucherProduct.expiryType, voucherProduct.expiryDays)
 

@@ -41,7 +41,6 @@ class CreateMembership {
         membership.expiryDate = ProductUtil.calculateExpiryDate(new Date(), mp.expiryType, mp.expiryDays)
         membership.product = mp
         membership.status = status
-        membership.confirmationStatus = ConfirmationStatus.NOT_SENT
         InvoiceLine invoiceLine = new ProductItemInvoiceLine(membership, contact, membership.product.priceExTax, taxOverridden).create()
         invoiceLine.invoice = invoice
     }

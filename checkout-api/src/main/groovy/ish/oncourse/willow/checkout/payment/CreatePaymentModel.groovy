@@ -104,7 +104,7 @@ class CreatePaymentModel {
             Contact contact = new GetContact(context, college, node.contactId).get(false)
 
             node.enrolments.findAll{it.selected}.each { e ->
-                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.IN_TRANSACTION, payer.taxOverride, { Enrolment enrolment, InvoiceLine il ->
+                new CreateEnrolment(context, college, e, contact, EnrolmentStatus.IN_TRANSACTION,  ConfirmationStatus.DO_NOT_SEND, payer.taxOverride, { Enrolment enrolment, InvoiceLine il ->
                     if (enrolment.courseClass.paymentPlanLines.empty) {
                         il.invoice = getInvoice()
                     } else {
@@ -126,7 +126,7 @@ class CreatePaymentModel {
                 new CreateMembership(context, college, m, contact, getInvoice(), ProductStatus.NEW, payer.taxOverride).create()
             }
             node.vouchers.findAll{it.selected}.each { v ->
-                new CreateVoucher(context, college, v, contact, getInvoice(), ProductStatus.NEW).create()
+                new CreateVoucher(context, college, v, contact, getInvoice(), ProductStatus.NEW, ConfirmationStatus.DO_NOT_SEND).create()
             }
         }
     }
@@ -249,7 +249,7 @@ class CreatePaymentModel {
         payment.college = college
         payment.setContact(payer)
         payment.amount = Money.ZERO
-        payment.confirmationStatus = ConfirmationStatus.NOT_SENT
+        payment.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
 
         payment
     }
@@ -265,7 +265,7 @@ class CreatePaymentModel {
         invoice.contact = payer
         invoice.webSite = webSite
         invoice.sessionId = paymentRequest.sessionId
-        invoice.confirmationStatus = ConfirmationStatus.NOT_SENT
+        invoice.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
 
 
 

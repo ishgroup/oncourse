@@ -26,8 +26,10 @@ class CreateEnrolment {
     private EnrolmentStatus status
     private Closure setInvoice
     private Tax taxOverridden
+    private ConfirmationStatus confirmationStatus
 
-    CreateEnrolment(ObjectContext context, College college, ish.oncourse.willow.model.checkout.Enrolment e, Contact contact, EnrolmentStatus status, Tax taxOverridden, Closure setInvoice) {
+
+    CreateEnrolment(ObjectContext context, College college, ish.oncourse.willow.model.checkout.Enrolment e, Contact contact, EnrolmentStatus status, ConfirmationStatus confirmationStatus, Tax taxOverridden, Closure setInvoice) {
         this.context = context
         this.college = college
         this.e = e
@@ -35,6 +37,7 @@ class CreateEnrolment {
         this.status = status
         this.setInvoice = setInvoice
         this.taxOverridden = taxOverridden
+        this.confirmationStatus = confirmationStatus
     }
 
     void create() {
@@ -45,7 +48,7 @@ class CreateEnrolment {
         enrolment.status = status
         enrolment.source = PaymentSource.SOURCE_WEB
         enrolment.college = college
-        enrolment.confirmationStatus = ConfirmationStatus.NOT_SENT
+        enrolment.confirmationStatus = confirmationStatus
 
         InvoiceLine invoiceLine = new EnrolmentInvoiceLine(enrolment, e.price, taxOverridden).create()
         invoiceLine.enrolment = enrolment

@@ -76,6 +76,7 @@ class ProcessPaymentModel {
     private ProcessPaymentModel saveZeroPayment() {
         createPaymentModel.paymentIn.type = PaymentType.INTERNAL
         PaymentInSucceed.valueOf(createPaymentModel.model).perform()
+        SetConfirmationStatus.valueOf(createPaymentModel.model).set()
         context.commitChanges()
         response =  new PaymentResponse().with { r ->
             r.reference = createPaymentModel.paymentIn.clientReference
@@ -107,8 +108,9 @@ class ProcessPaymentModel {
         if (PaymentStatus.FAILED == response.status) {
             PaymentInAbandon.valueOf(model, false).perform()
         }
+        
+        SetConfirmationStatus.valueOf(createPaymentModel.model).set()
         context.commitChanges()
-
         this
     }
     
