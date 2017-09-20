@@ -15,7 +15,7 @@ export const editPageSettings = (id, prop) => ({
   payload: {id, ...prop},
 });
 
-export const editPageContent = content => ({
+export const editPageContent = (id, html) => ({
   type: EDIT_PAGE_CONTENT,
-  payload: content,
+  payload: {id, html},
 });

@@ -1,6 +1,6 @@
 import {IAction} from "../../../actions/IshAction";
 import {PagesState} from "./State";
-import {GET_PAGES_REQUEST, GET_PAGES_FULFILLED, EDIT_PAGE_SETTINGS} from "../actions";
+import {GET_PAGES_REQUEST, GET_PAGES_FULFILLED, EDIT_PAGE_SETTINGS, EDIT_PAGE_CONTENT} from "../actions";
 
 export const pageReducer = (state: PagesState = new PagesState(), action: IAction<any>): PagesState => {
   switch (action.type) {
@@ -11,13 +11,23 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
         pages: action.payload,
       };
 
-    case EDIT_PAGE_SETTINGS:
+    case EDIT_PAGE_SETTINGS: {
       const {id, ...prop} = action.payload;
 
       return {
         ...state,
         pages: state.pages.map(page => page.id === id ? {...page, ...prop} : page),
       };
+    }
+
+    case EDIT_PAGE_CONTENT: {
+      const {id, html} = action.payload;
+
+      return {
+        ...state,
+        pages: state.pages.map(page => page.id === id ? {...page, html} : page),
+      };
+    }
 
     default:
       return state;

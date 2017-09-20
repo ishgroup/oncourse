@@ -3,6 +3,7 @@ export class Page {
   title: string;
   theme: string;
   layout: string;
+  html: string;
   url: string;
   visible: boolean;
 }
