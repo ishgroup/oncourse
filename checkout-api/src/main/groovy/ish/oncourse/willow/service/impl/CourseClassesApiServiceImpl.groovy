@@ -22,7 +22,10 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.apache.cayenne.query.SelectById
 
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.temporal.TemporalAccessor
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 
@@ -113,7 +116,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                                 r
                             }   
                         }
-                        
+
                         it.start = c.startDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                         it.end = c.endDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                         it.hasAvailablePlaces = hasAvailablePlaces(c)
@@ -123,6 +126,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                         it.isAllowByApplication = allowByApplication
                         it.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(college, c.objectContext).get()
                         it.price =  new BuildClassPrice(c, allowByApplication, overridenFee, promotions, contact).build()
+                        it.timezone = c.timeZone
                         it
                     }
         }

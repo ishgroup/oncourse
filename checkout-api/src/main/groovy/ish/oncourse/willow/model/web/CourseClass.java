@@ -33,6 +33,7 @@ public class CourseClass  {
     private Boolean distantLearning = null;
     private CourseClassPrice price = null;
     private Room room = null;
+    private String timezone = null;
 
     /**
      * Internal Unique identifier of class
@@ -272,6 +273,23 @@ public class CourseClass  {
       return this;
     }
 
+    /**
+     * Timezone for the class
+     * @return timezone
+     */
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+       this.timezone = timezone;
+    }
+
+    public CourseClass timezone(String timezone) {
+      this.timezone = timezone;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -292,6 +310,7 @@ public class CourseClass  {
       sb.append("    distantLearning: ").append(toIndentedString(distantLearning)).append("\n");
       sb.append("    price: ").append(toIndentedString(price)).append("\n");
       sb.append("    room: ").append(toIndentedString(room)).append("\n");
+      sb.append("    timezone: ").append(toIndentedString(timezone)).append("\n");
       sb.append("}");
       return sb.toString();
     }

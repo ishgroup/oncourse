@@ -847,6 +847,9 @@ definitions:
       room:
         $ref: '#/definitions/web.Room'
         description: Room for the site
+      timezone:
+        type: string
+        description: Timezone for the class
   web.CourseClassPrice:
     type: object
     properties:
