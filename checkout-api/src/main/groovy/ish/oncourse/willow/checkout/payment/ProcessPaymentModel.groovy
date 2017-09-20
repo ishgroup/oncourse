@@ -103,13 +103,12 @@ class ProcessPaymentModel {
         })
         
         response = new GetPaymentStatus(context, college, paymentRequest.sessionId).get(model.paymentIn)
-
-
         if (PaymentStatus.FAILED == response.status) {
             PaymentInAbandon.valueOf(model, false).perform()
+        } else if (PaymentStatus.SUCCESSFUL == response.status) {
+            SetConfirmationStatus.valueOf(model).set()
         }
         
-        SetConfirmationStatus.valueOf(createPaymentModel.model).set()
         context.commitChanges()
         this
     }
