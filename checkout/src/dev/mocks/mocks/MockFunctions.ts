@@ -49,6 +49,7 @@ export const mockCourseClass = (): CourseClass => {
     isFinished: false,
     isPaymentGatewayEnabled: true,
     availableEnrolmentPlaces: faker.random.number(),
+    timezone: 'Australia/Sydney',
   };
 };
 

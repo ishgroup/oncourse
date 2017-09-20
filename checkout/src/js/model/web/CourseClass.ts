@@ -69,5 +69,10 @@ export class CourseClass {
    * Room for the site
    */
   room?: Room;
+
+  /**
+   * Timezone for the class
+   */
+  timezone?: string;
 }
 

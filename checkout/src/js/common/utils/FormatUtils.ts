@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 /**
  * this utils collect useful function to format different data types: date, string .....
  */
@@ -18,7 +18,13 @@ const MONEY_FORMAT = global.Intl ?
 /**
  * Format date string in ISO8601 to string with this pattern
  */
-export const formatDate = (dateISO8601: string, pattern: string): string => {
+export const formatDate = (dateISO8601: string, pattern: string, timezone?: string): string => {
+
+  // apply timezone if it provided
+  if (timezone) {
+    return dateISO8601 ? moment(dateISO8601).tz(timezone).format(pattern) : null;
+  }
+
   return dateISO8601 ? moment(dateISO8601).add(moment().utcOffset(), "m").format(pattern) : null;
 };
 
