@@ -13,8 +13,8 @@ compileGroovy.options.encoding = 'UTF-8'
 compileTestGroovy.options.encoding = 'UTF-8'
 
 dependencies {
-    compile 'javax.servlet:servlet-api:3.0'
     compile project(':common:cayenne-model')
-    compile 'axis:axis:1.4'
-
+    compile group: 'javax.cache', name: 'cache-api', version: '1.0.0'
+    compile group: 'javax.servlet', name: 'servlet-api', version: '3.0'
+    compile group: 'axis', name : 'axis', version: '1.4'
 }

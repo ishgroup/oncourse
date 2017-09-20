@@ -1,22 +1,16 @@
 package ish.oncourse.willow
 
-import com.google.inject.Binder
-import com.google.inject.Inject
-import com.google.inject.Injector
-import com.google.inject.Provides
-import com.google.inject.Singleton
-import com.google.inject.TypeLiteral
+import com.google.inject.*
 import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
 import io.bootique.jdbc.DataSourceFactory
 import io.bootique.jetty.JettyModule
-import io.bootique.jetty.MappedFilter
 import io.bootique.jetty.MappedServlet
 import ish.math.MoneyType
+import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.cxf.CXFModule
 import ish.oncourse.util.log.LogAppInfo
-import ish.oncourse.willow.cache.JCacheModule
 import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.cayenne.ISHObjectContextFactory
 import ish.oncourse.willow.checkout.CheckoutApiImpl

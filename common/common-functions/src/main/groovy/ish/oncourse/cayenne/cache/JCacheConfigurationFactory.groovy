@@ -1,4 +1,4 @@
-package ish.oncourse.willow.cache
+package ish.oncourse.cayenne.cache
 
 import javax.cache.configuration.Configuration
 

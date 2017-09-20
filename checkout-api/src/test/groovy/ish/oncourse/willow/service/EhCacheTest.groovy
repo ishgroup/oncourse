@@ -1,7 +1,7 @@
 package ish.oncourse.willow.service
 
-import ish.oncourse.willow.cache.JCacheModule
-import ish.oncourse.willow.cache.JCacheQueryCache
+import ish.oncourse.cayenne.cache.JCacheModule
+import ish.oncourse.cayenne.cache.JCacheQueryCache
 import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.junit.Test
@@ -10,9 +10,8 @@ import javax.cache.CacheManager
 import javax.naming.Context
 import javax.naming.InitialContext
 
-import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertEquals
-
+import static org.junit.Assert.assertTrue
 
 class EhCacheTest {
     

@@ -1,4 +1,4 @@
-package ish.oncourse.willow.cache
+package ish.oncourse.cayenne.cache
 
 import org.apache.cayenne.CayenneRuntimeException
 import org.apache.cayenne.cache.QueryCacheEntryFactory

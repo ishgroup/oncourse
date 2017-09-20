@@ -1,4 +1,4 @@
-package ish.oncourse.willow.cache
+package ish.oncourse.cayenne.cache
 
 interface JCacheConstants {
     String DEFAULT_CACHE_NAME = 'cayenne.default.cache'
