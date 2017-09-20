@@ -2,6 +2,7 @@ package ish.oncourse.portal.services;
 
 import com.google.inject.Injector;
 import io.bootique.jdbc.DataSourceFactory;
+import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.PortalModule;
 import ish.oncourse.portal.access.AccessController;
@@ -83,7 +84,6 @@ import ish.oncourse.webservices.usi.USIService;
 import ish.oncourse.webservices.usi.crypto.CryptoKeys;
 import ish.oncourse.webservices.usi.tapestry.CryptoKeysBuilder;
 import ish.oncourse.webservices.usi.tapestry.USIServiceBuilder;
-import net.sf.ehcache.CacheManager;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.SymbolConstants;
@@ -139,9 +139,6 @@ public class AppModule {
 		binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
 		binder.bind(TapestrySessionFactory.class, ISHTapestrySessionFactoryImpl.class).withId("ISHTapestrySessionFactoryImpl");
 		binder.bind(AccessLinksValidatorFactory.class, AccessLinksValidatorFactory.class);
-
-		binder.bind(CacheManager.class, new ServiceModule.CacheManagerBuilder());
-
 		bindUSIServices(binder);
 	}
 
@@ -211,9 +208,8 @@ public class AppModule {
 		binder.bind(IApplicationService.class, ApplicationServiceImpl.class);
 	}
 
-	@Decorate(serviceInterface = JavaScriptStackSource.class)
-	public JavaScriptStackSource decorateJavaScriptStackSource(JavaScriptStackSource original) {
-		return new EmptyJavaScriptStackSource();
+	public static void contributeIgnoredPathsFilter(Configuration<String> configuration) {
+		configuration.add(ISHHealthCheckServlet.ISH_HEALTH_CHECK_PATTERN);
 	}
 
 	@Contribute(ServiceOverride.class)
@@ -243,17 +239,22 @@ public class AppModule {
 		configuration.add(RequestExceptionHandler.class, handler);
 	}
 
-	@Contribute(JavaScriptStackSource.class)
-	public static void deactiveJavaScript(MappedConfiguration<String, JavaScriptStack> configuration) {
-		configuration.overrideInstance(InternalConstants.CORE_STACK_NAME, DisableJavaScriptStack.class);
-	}
-
 	@Contribute(PageRenderLinkTransformer.class)
 	@Primary
 	public static void provideURLRewriting(OrderedConfiguration<PageRenderLinkTransformer> configuration) {
 		configuration.addInstance("PageLinkRule", PageLinkTransformer.class);
 	}
 
+
+	@Contribute(JavaScriptStackSource.class)
+	public static void deactiveJavaScript(MappedConfiguration<String, JavaScriptStack> configuration) {
+		configuration.overrideInstance(InternalConstants.CORE_STACK_NAME, DisableJavaScriptStack.class);
+	}
+
+	@Decorate(serviceInterface = JavaScriptStackSource.class)
+	public JavaScriptStackSource decorateJavaScriptStackSource(JavaScriptStackSource original) {
+		return new EmptyJavaScriptStackSource();
+	}
 
 	private static class EmptyJavaScriptStack implements JavaScriptStack {
 		private EmptyJavaScriptStack() {
@@ -313,7 +314,6 @@ public class AppModule {
 			return stack;
 		}
 	}
-
 
 	public static class CayenneServiceBuilder implements ServiceBuilder<ICayenneService> {
 		@Override
