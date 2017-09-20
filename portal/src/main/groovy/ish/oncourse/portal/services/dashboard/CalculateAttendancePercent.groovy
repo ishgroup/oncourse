@@ -16,6 +16,7 @@ import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE
 class CalculateAttendancePercent {
 
     public static final String DASHBOARD_CACHE = 'dashboard'
+    public static final String ATTENDANCE_CACHE = 'attendance'
 
     public static final String ATTENDANCE_CACHE_KEY = 'dashboard.attendance.cache.%d'
 
@@ -29,7 +30,7 @@ class CalculateAttendancePercent {
     }
 
     int calculate() {
-        Cache<String, Integer> cache = cacheManager.getCache(DASHBOARD_CACHE)
+        Cache<String, Integer> cache = cacheManager.getCache(ATTENDANCE_CACHE, String, Integer)
         String cacheKey = String.format(ATTENDANCE_CACHE_KEY, student.contact.id)
 
         Integer value = cache.get(cacheKey)

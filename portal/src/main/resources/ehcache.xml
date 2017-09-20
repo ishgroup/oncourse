@@ -11,6 +11,17 @@
         <ehcache:heap unit="entries">2000</ehcache:heap>
     </ehcache:cache>
 
+    <ehcache:cache alias="attendance">
+        <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type>
+        <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.Integer</ehcache:value-type>
+
+        <ehcache:expiry>
+            <ehcache:tti unit="minutes">10</ehcache:tti>
+        </ehcache:expiry>
+
+        <ehcache:heap unit="entries">1000</ehcache:heap>
+    </ehcache:cache>
+
     <ehcache:cache alias="CourseClass">
         <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type>
         <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">java.util.List</ehcache:value-type>
