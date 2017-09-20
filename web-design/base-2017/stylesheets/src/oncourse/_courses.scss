@@ -865,16 +865,19 @@
   }
 }
 #ClassDetailsPage, #DetailsPage.class-details {
-  .class-details-title>h1 {
-    margin: 0 210px 0 0 !important
+  .class-details-title {
+    padding-right: 0;
+    @include responsive($classDetailsTitleMedia) {
+      padding-right: $classDetailsTitlePaddingRightMedia;
+    }
   }
 }
 
 .class-details-title {
   zoom: 1 \9;
   position: relative;
-  min-height: 40px;
-  margin: 0 0 5px 0;
+  min-height: $classDetailsTitleMinHeight;
+  margin: $classDetailsTitleMargin;
   &::after {
     visibility: hidden;
     display: block;
@@ -884,19 +887,29 @@
     height: 0
   }
   >.print-page {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 6px 10px 6px 40px;
-    text-align: right;
-    color: brown;
-    font-weight: bold;
-    font-size: 14px;
-    border: 1px solid silver;
-    background-image: url("/s/img/icon/printer1.png");
-    background-position: 4px 4px;
-    background-repeat: no-repeat;
-    @include border-radius(10px);
+    cursor: pointer;
+    position: $classDetailsPrintPagePosition;
+    top: $classDetailsPrintPagePositionTop;
+    left: $classDetailsPrintPagePositionLeft;
+    padding: $classDetailsPrintPagePadding;
+    text-align: $classDetailsPrintPageTextAlign;
+    color: $classDetailsPrintPageColor;
+    font-weight: $classDetailsPrintPageFontWeight;
+    font-size: $classDetailsPrintPageFontSize;
+    border: $classDetailsPrintPageBorder;
+    background: $classDetailsPrintPageBackground;
+    @include border-radius($classDetailsPrintPageBorderRadius);
+    margin: $classDetailsPrintPageMargin;
+    display: $classDetailsPrintPageDisplay;
+    width: $classDetailsPrintPageWidth;
+
+    @include responsive($classDetailsTitleMedia) {
+      width: $classDetailsPrintPageWidthMedia;
+      position: $classDetailsPrintPagePositionMedia;
+      top: $classDetailsPrintPagePositionTopMedia;
+      right: $classDetailsPrintPagePositionRightMedia;
+      left: $classDetailsPrintPagePositionLeftMedia;
+    }
   }
 }
 

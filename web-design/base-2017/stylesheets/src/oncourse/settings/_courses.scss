@@ -382,3 +382,29 @@ $coursesRelatedItemsLinkHoverColor: $primaryColor !default;
 
 $coursesSessionTableLinkColor: $primaryColor !default;
 $coursesSessionTableLinkHoverColor: #444 !default;
+
+
+$classDetailsTitleMedia: $media-small !default;
+$classDetailsTitlePaddingRightMedia: 195px !default;
+$classDetailsPrintPagePosition: relative !default;
+$classDetailsPrintPagePositionTop: 0 !default;
+$classDetailsPrintPagePositionLeft: 0 !default;
+$classDetailsPrintPagePadding: 6px 10px 6px 40px !default;
+$classDetailsPrintPageTextAlign: center !default;
+$classDetailsPrintPageColor: brown !default;
+$classDetailsPrintPageFontWeight: bold !default;
+$classDetailsPrintPageFontSize: 14px !default;
+$classDetailsPrintPageBorder: 1px solid silver !default;
+$classDetailsPrintPageBackground: url("/s/img/icon/printer1.png") 4px 4px no-repeat !default;
+$classDetailsPrintPageBorderRadius: 10px !default;
+$classDetailsPrintPageMargin: 0 auto 15px !default;
+$classDetailsPrintPageDisplay: block !default;
+$classDetailsPrintPageWidth: 196px !default;
+$classDetailsPrintPageWidthMedia: auto !default;
+$classDetailsPrintPagePositionMedia: absolute !default;
+$classDetailsPrintPagePositionTopMedia: 0 !default;
+$classDetailsPrintPagePositionRightMedia: 0 !default;
+$classDetailsPrintPagePositionLeftMedia: auto !default;
+
+$classDetailsTitleMinHeight: 40px !default;
+$classDetailsTitleMargin: 0 0 5px 0 !default;
