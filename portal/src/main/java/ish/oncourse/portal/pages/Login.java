@@ -22,6 +22,7 @@ import java.util.*;
 
 public class Login {
 
+	private static final String PARAMETER_companyName = "companyName";
 	private static final String PARAMETER_firstName = "firstName";
 	private static final String PARAMETER_lastName = "lastName";
 	private static final String PARAMETER_email = "email";
@@ -33,27 +34,21 @@ public class Login {
 	@Inject
 	private ICayenneService cayenneService;
 
-	@Persist
 	@Property
 	private String email;
 
-	@Persist
 	@Property
 	private boolean firstTimeLogin;
 
-	@Persist
 	@Property
 	private String lastName;
 
-	@Persist
 	@Property
 	private String companyName;
 
-	@Persist
 	@Property
 	private Boolean isCompany;
 
-	@Persist
 	@Property
 	private String firstName;
 
@@ -106,7 +101,6 @@ public class Login {
 	 * the property should be persist because we set it over ajax request and
 	 * it should be available for the next requests
 	 */
-	@Persist
 	private boolean isForgotPassword;
 
 	@Inject
@@ -116,28 +110,22 @@ public class Login {
 	@Property
 	private Form loginForm;
 
-	@Persist
 	@Property
 	private String companyNameErrorMessage;
 
-	@Persist
 	@Property
 	private String firstNameErrorMessage;
 
-	@Persist
 	@Property
 	private String secondNameErrorMessage;
 
-	@Persist
 	@Property
 	private String emailNameErrorMessage;
 
-	@Persist
 	@Property
 	private String passwordNameErrorMessage;
 
-	@Persist
-	private Map<String, String> errors;
+	private Map<String, String> errors  = new HashMap<>();
 
 	private static final String ON = "on";
 
@@ -159,7 +147,7 @@ public class Login {
 				lastName = contact.getFamilyName();
 				return null;
 			}
-
+			
 		}
 
 		String value = StringUtils.trimToNull(request.getParameter(PARAMETER_oneTimePassword));
@@ -194,7 +182,11 @@ public class Login {
 	}
 
 	private void fillStudentFields() {
-		String value = StringUtils.trimToNull(request.getParameter(PARAMETER_firstName));
+		String value = StringUtils.trimToNull(request.getParameter(PARAMETER_companyName));
+		if (value != null)
+			this.companyName = value;
+		
+		value = StringUtils.trimToNull(request.getParameter(PARAMETER_firstName));
 		if (value != null)
 			this.firstName = value;
 
