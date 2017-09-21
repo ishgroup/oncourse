@@ -8,7 +8,6 @@ class GetNextSession {
 	
 	def Contact contact
 	def IPortalService portalService
-	def Session session
 	
 	def GetNextSession(Contact contact, IPortalService portalService) {
 		this.portalService = portalService
@@ -18,12 +17,12 @@ class GetNextSession {
 	def Session get() {
 		if (!contact) {
 			return null
-		} else if (!session) {
+		} else {
 			List<Session> sessions = portalService.getContactSessionsFrom(new Date(), contact)
 			if (!sessions.empty) {
-				session = sessions.get(0)
+				return sessions.get(0)
 			}
+			return null
 		}
-		return session
 	}
 }
