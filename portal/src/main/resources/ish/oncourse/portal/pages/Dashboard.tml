@@ -7,7 +7,7 @@
 			<t:dashboard.nextsession session="getNextSession.get()"/>
 		</t:if>
 
-		<t:if test="!attendanceCalculater.attendance.empty">
+		<t:if test="attendanceCalculater.showWiget">
 			<t:dashboard.attendance percent="attendanceCalculater.calculate()"/>
 		</t:if>
 

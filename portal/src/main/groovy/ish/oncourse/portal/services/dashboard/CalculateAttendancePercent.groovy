@@ -10,6 +10,7 @@ import org.apache.cayenne.query.ObjectSelect
 import javax.cache.Cache
 import javax.cache.CacheManager
 
+import static org.apache.cayenne.query.QueryCacheStrategy.LOCAL_CACHE
 import static org.apache.cayenne.query.QueryCacheStrategy.SHARED_CACHE
 
 @CompileStatic
@@ -20,15 +21,20 @@ class CalculateAttendancePercent {
 
     public static final String ATTENDANCE_CACHE_KEY = 'dashboard.attendance.cache.%d'
 
+    public static final int NO_ATTENDANCE = -1
+
     private Student student
     private CacheManager cacheManager
-    private List<Attendance> attendances
 
     CalculateAttendancePercent(Student student, CacheManager cacheManager) {
         this.student = student
         this.cacheManager = cacheManager
     }
 
+    boolean isShowWiget() {
+        return student && NO_ATTENDANCE != calculate()
+    }
+    
     int calculate() {
         Cache<String, Integer> cache = cacheManager.getCache(ATTENDANCE_CACHE, String, Integer)
         String cacheKey = String.format(ATTENDANCE_CACHE_KEY, student.contact.id)
@@ -36,7 +42,12 @@ class CalculateAttendancePercent {
         Integer value = cache.get(cacheKey)
 
         if (value == null) {
-            value = AttendanceUtils.getAttendancePercent(getAttendance())
+            List<Attendance> attendances = getAttendance()
+            if (attendances.empty) {
+                value = NO_ATTENDANCE
+            } else {
+                value = AttendanceUtils.getAttendancePercent(getAttendance())
+            }
             cache.put(cacheKey, value)
             return value
         } else {
@@ -46,22 +57,16 @@ class CalculateAttendancePercent {
 
 
     List<Attendance> getAttendance() {
-        if (!student) {
-            return Collections.EMPTY_LIST
-        } else if (attendances == null) {
 
-            Date now = new Date()
+        Date now = new Date()
+        
+        Calendar yearAgo = Calendar.instance
+        yearAgo.setTime(new Date())
+        yearAgo.add(Calendar.YEAR, -1)
 
-            Calendar yearAgo = Calendar.instance
-            yearAgo.setTime(new Date())
-            yearAgo.add(Calendar.YEAR, -1)
-
-            attendances = ObjectSelect.query(Attendance).where(Attendance.STUDENT.eq(student))
-                    .and(Attendance.SESSION.dot(Session.START_DATE).between(yearAgo.time, now))
-                    .prefetch(Attendance.SESSION.disjoint())
-                    .cacheStrategy(SHARED_CACHE, DASHBOARD_CACHE)
-                    .select(student.objectContext)
-        }
-        return attendances
+        return ObjectSelect.query(Attendance).where(Attendance.STUDENT.eq(student))
+                .and(Attendance.SESSION.dot(Session.START_DATE).between(yearAgo.time, now))
+                .prefetch(Attendance.SESSION.disjoint())
+                .select(student.objectContext)
     }
 }
