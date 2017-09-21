@@ -2,11 +2,14 @@ package ish.oncourse.portal.components.profile;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.util.ValidateHandler;
+import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+
+import static org.apache.tapestry5.EventConstants.VALIDATE;
 
 /**
  * User: artem
@@ -43,54 +46,32 @@ public class PasswordForm {
 
     @Property
     private String confirmPasswordErrorMessage;
-
-
-
-
+    
     @Parameter
     @Property
     private Contact contact;
 
-    @Persist
     @Property
-    private ValidateHandler validateHandler;
-
-
-     @SetupRender
-     void seetupRender(){
-        if(validateHandler == null)
-            validateHandler = new ValidateHandler();
-
-     }
+    private ValidateHandler validateHandler = new ValidateHandler();
 
     @AfterRender
     void afterRende(){
         success=false;
     }
 
-
-
-
-
-
-    @OnEvent(component = "passwordForm")
+    @OnEvent(component = "passwordForm",  value = EventConstants.SUCCESS)
     Object passwordSubmitted() {
-
-     if(validate()) {
         if (password != null) {
             contact.setPassword(password);
-
         }
-         success=true;
+        success=true;
         contact.getObjectContext().commitChanges();
-     }
         return this;
     }
-
-
-
-
+    
+    @OnEvent(component = "passwordForm", value = VALIDATE)
     boolean validate(){
+        validateHandler = new ValidateHandler();
         validateHandler.getErrors().clear();
 
         if (password != null && password.length() > 0 && confirmPassword != null && confirmPassword.length() > 0) {
@@ -106,16 +87,13 @@ public class PasswordForm {
             passwordForm.recordError(confirmPasswordErrorMessage);
             validateHandler.getErrors().put("confirmpassword",confirmPasswordErrorMessage);
             }
-
         }
-
-
+        
         if(confirmPassword==null){
             confirmPasswordErrorMessage = messages.get("message-confirmPasswordEmpty");
             passwordForm.recordError(confirmPasswordErrorMessage);
             validateHandler.getErrors().put("confirmpassword",confirmPasswordErrorMessage);
         }
-
 
         if(password==null){
             passwordErrorMessage = messages.get("message-passwordEmpty");
@@ -123,15 +101,10 @@ public class PasswordForm {
             validateHandler.getErrors().put("password", passwordErrorMessage);
         }
 
-
         return !passwordForm.getHasErrors();
-
     }
-
-
-
+    
     private String validatedPassword(String aValue, boolean isConfirm) {
-
         int minimumPasswordChars = 4;
         if (aValue == null || aValue.length() < minimumPasswordChars) {
             return messages.format("message-passwordMinChars", minimumPasswordChars);
@@ -144,5 +117,4 @@ public class PasswordForm {
         }
         return null;
     }
-
 }

@@ -17,6 +17,7 @@ import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
@@ -30,6 +31,8 @@ import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.Date;
 import java.util.Map;
+
+import static org.apache.tapestry5.EventConstants.VALIDATE;
 
 /**
  * User: artem
@@ -97,10 +100,8 @@ public class CensusForm {
     @Property
     private ISHEnumSelectModel citizenshipSelectModel;
 
-    @Persist
     @Property
-    private ValidateHandler validateHandler;
-
+    private ValidateHandler validateHandler = new ValidateHandler();
 
     /**
      * tapestry services
@@ -115,12 +116,8 @@ public class CensusForm {
 
 
     @SetupRender
+    @OnEvent(value = EventConstants.PREPARE_FOR_SUBMIT)
     void beforeRender() {
-
-        if (validateHandler == null)
-            validateHandler = new ValidateHandler();
-
-
         englishProficiencySelectModel = new ISHEnumSelectModel(
                 AvetmissStudentEnglishProficiency.class, getAvetmissMessages());
         indigenousStatusSelectModel = new ISHEnumSelectModel(
@@ -233,17 +230,15 @@ public class CensusForm {
         contact.getStudent().setIsStillAtSchool(selection.getValue());
     }
 
-    @OnEvent(component = "censusForm")
+    @OnEvent(component = "censusForm", value = EventConstants.SUCCESS)
     Object submitted() {
-
-        if (validate())
-            contact.getObjectContext().commitChanges();
-
+        contact.getObjectContext().commitChanges();
         return this;
     }
 
-
+    @OnEvent(component = "censusForm", value = VALIDATE)
     boolean validate() {
+        validateHandler = new ValidateHandler();
 
         countryOfBirthErrorMessage = validateHandler.error(Student.COUNTRY_OF_BIRTH.getName());
 
