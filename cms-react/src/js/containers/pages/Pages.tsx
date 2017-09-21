@@ -2,7 +2,7 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
 import {withRouter} from 'react-router-dom';
-import {editPageContent, getPages} from "./actions";
+import {savePageHtml, getPages} from "./actions";
 import {Page as PageModel} from "../../model";
 
 
@@ -136,7 +136,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getPages()),
-    editPageContent: (id, html) => dispatch(editPageContent(id, html)),
+    editPageContent: (id, html) => dispatch(savePageHtml(id, html)),
   };
 };
 

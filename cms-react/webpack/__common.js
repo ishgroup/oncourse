@@ -84,7 +84,7 @@ const _styleModule = (dirname) => {
     },
     {
       test: /\.(otf|eot|ttf|woff|woff2|svg)$/,
-      loader: 'file-loader?name=fonts/[name].[ext]',
+      loader: 'file-loader?name=fonts/[name].[ext]&publicPath=./',
     },
     {
       enforce: "pre", test: /\.js$/, loader: "source-map-loader"

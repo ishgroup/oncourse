@@ -4,6 +4,8 @@ import {withRouter} from 'react-router-dom';
 
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {submitLoginForm} from "./actions/index";
+import {DefaultConfig} from "../../constants/Config";
+import {CookieService} from "../../services/CookieService";
 
 interface Props {
   onSubmit: (form) => void;
@@ -11,6 +13,10 @@ interface Props {
 }
 
 export class Login extends React.Component<Props, any> {
+  componentDidMount() {
+    CookieService.delete(DefaultConfig.COOKIE_NAME);
+  }
+
   handleSubmit(e) {
     const {onSubmit} = this.props;
     e.preventDefault();

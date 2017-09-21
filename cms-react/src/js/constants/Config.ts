@@ -15,4 +15,6 @@ export const API = {
 
   // Pages
   GET_PAGES: "/getPages",
+  SAVE_PAGE_SETTINGS: "/savePageSettings",
+  SAVE_PAGE_HTML: "/savePageHtml",
 };

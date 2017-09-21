@@ -7,5 +7,6 @@ export interface State {
   auth: AuthState;
   menu: MenuState;
   page: PagesState;
+  notifications: any;
 }
 

@@ -1,4 +1,4 @@
-import {promiseResolve} from "./MockAdapter";
+import {promiseReject, promiseResolve} from "./MockAdapter";
 import {API} from "../../js/constants/Config";
 
 export function pageApiMock(mock) {
@@ -34,4 +34,15 @@ export function pageApiMock(mock) {
       },
     ],
   ));
+
+  mock.onPost(API.SAVE_PAGE_SETTINGS).reply(config => {
+    const request = JSON.parse(config.data);
+    return promiseResolve(config, {config});
+  });
+
+  mock.onPost(API.SAVE_PAGE_HTML).reply(config => promiseResolve(
+    config,
+    {config},
+    ),
+  );
 }

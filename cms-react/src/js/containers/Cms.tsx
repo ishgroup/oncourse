@@ -1,13 +1,15 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Route, NavLink, Redirect, withRouter} from 'react-router-dom';
+import Notifications from 'react-notification-system-redux';
 import classnames from 'classnames';
+
 import {Layout} from '../components/Layout/Layout';
 import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
 import {getHistoryInstance, setHistoryInstance} from "../history";
-import {logout} from "./auth/actions/index";
 import {URL} from "../routes";
+import {logout} from "./auth/actions/index";
 
 export class Cms extends React.Component<any, any> {
 
@@ -22,7 +24,7 @@ export class Cms extends React.Component<any, any> {
   }
 
   render() {
-    const {logout, auth} = this.props;
+    const {logout, auth, notifications} = this.props;
     const {isAuthenticated, user} = auth;
     const viewMode: boolean = this.props.history.location.pathname === '/';
 
@@ -32,6 +34,8 @@ export class Cms extends React.Component<any, any> {
     return (
       <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
         {globalSiteStyle}
+        <Notifications notifications={notifications} />
+
         <Layout
           sidebar={
             isAuthenticated &&
@@ -50,6 +54,7 @@ export class Cms extends React.Component<any, any> {
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  notifications: state.notifications,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

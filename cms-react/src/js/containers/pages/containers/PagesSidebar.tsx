@@ -5,7 +5,7 @@ import {Page} from "../../../model";
 import {PagesList} from "../components/PageList";
 import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../routes";
-import {editPageSettings} from "../actions/index";
+import {savePageSettings} from "../actions/index";
 
 interface Props {
   pages: Page[];
@@ -51,7 +51,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    editPageSettings: (pageId, settings) => dispatch(editPageSettings(pageId, settings)),
+    editPageSettings: (pageId, settings) => dispatch(savePageSettings(pageId, settings)),
   };
 };
 
