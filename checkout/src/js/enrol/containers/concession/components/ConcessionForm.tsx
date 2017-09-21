@@ -53,7 +53,7 @@ class ConcessionForm extends React.Component<Props, any> {
         />
 
         {hasExpireDate &&
-        <Form.Field name="expiryDate" type="text" label="Expire Date" required component={DateField}/>
+        <Form.Field name="expiryDate" type="text" label="Expiry Date" required component={DateField}/>
         }
 
         {hasNumber &&
