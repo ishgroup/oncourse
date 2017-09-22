@@ -12,6 +12,7 @@ interface ProductEvent {
 }
 
 let trackingId;
+let trackingName;
 
 export const initGAEvent = (data, state) => {
 
@@ -19,6 +20,10 @@ export const initGAEvent = (data, state) => {
   // window['ga'] = window['ga'] ? window['ga'] : (...params) => {console.log(params);};
   const cart = state.cart;
   const amount = state.checkout.amount;
+
+  // TODO: move to config.js
+  trackingName = 'gtmEC';
+
   trackingId = state.preferences.trackingId;
 
   try {
@@ -54,40 +59,40 @@ const sendInitActions = () => {
 const sendItemToCartEvent = (data: ProductEvent) => {
   sendInitActions();
 
-  window['ga']('ec:addProduct', {                             // Provide product details in an productFieldObject.
-    id: data.id,                                              // Product ID (string).
-    name: data.name,                                          // Product name (string).
-    category: data.category,                                  // Product category (string).
-    price: data.price,
-    quantity: 1                                               // Product quantity (number).
+  window['ga'](`${trackingName}.ec:addProduct`, {                             // Provide product details in an productFieldObject.
+    'id': data.id,                                              // Product ID (string).
+    'name': data.name,                                          // Product name (string).
+    'category': data.category,                                  // Product category (string).
+    'price': data.price,
+    'quantity': 1                                               // Product quantity (number).
   });
 
-  window['ga']('ec:setAction', 'add');
+  window['ga'](`${trackingName}.ec:setAction`, 'add');
 
   window['ga']('send', {
-    hitType: "event",
-    eventCategory: "ecommerce",
-    eventAction: "add item to cart",
+    'hitType': "event",
+    'eventCategory': "ecommerce",
+    'eventAction': "add item to cart",
   });
 };
 
 const sendRemoveItemFromCartEvent = (data: ProductEvent) => {
   sendInitActions();
 
-  window['ga']('ec:addProduct', {                             // Provide product details in an productFieldObject.
-    id: data.id,                                              // Product ID (string).
-    name: data.name,                                          // Product name (string).
-    category: data.category,                                  // Product category (string).
-    price: data.price,
-    quantity: 1                                               // Product quantity (number).
+  window['ga'](`${trackingName}.ec:addProduct`, {                             // Provide product details in an productFieldObject.
+    'id': data.id,                                              // Product ID (string).
+    'name': data.name,                                          // Product name (string).
+    'category': data.category,                                  // Product category (string).
+    'price': data.price,
+    'quantity': 1                                               // Product quantity (number).
   });
 
-  window['ga']('ec:setAction', 'remove');
+  window['ga'](`${trackingName}.ec:setAction`, 'remove');
 
-  window['ga']('send', {
-    hitType: "event",
-    eventCategory: "ecommerce",
-    eventAction: "remove item from cart",
+  window['ga'](`${trackingName}.send`, {
+    'hitType': "event",
+    'eventCategory': "ecommerce",
+    'eventAction': "remove item from cart",
   });
 };
 
@@ -99,16 +104,16 @@ const sendCheckoutStepEvent = (data, cart) => {
   sendInitActions();
   sendAddProductsFromCart(cart);
 
-  window['ga']('ec:setAction', 'checkout', {
-    step: step.step,
-    option: step.initialOption,
+  window['ga'](`${trackingName}.ec:setAction`, 'checkout', {
+    'step': step.step,
+    'option': step.initialOption,
   });
 
-  window['ga']('send', {
-    hitType: "event",
-    eventCategory: "ecommerce",
-    eventAction: "set checkout step",
-    eventLabel: step.initialOption,
+  window['ga'](`${trackingName}.send`, {
+    'hitType': "event",
+    'eventCategory': "ecommerce",
+    'eventAction': "set checkout step",
+    'eventLabel': step.initialOption,
   });
 };
 
@@ -120,16 +125,16 @@ const sendCheckoutStepOptionEvent = (data, cart) => {
   sendInitActions();
   sendAddProductsFromCart(cart);
 
-  window['ga']('ec:setAction', 'checkout_option', {
-    step: step.step,
-    option: step.option,
+  window['ga'](`${trackingName}.ec:setAction`, 'checkout_option', {
+    'step': step.step,
+    'option': step.option,
   });
 
-  window['ga']('send', {
-    hitType: "event",
-    eventCategory: "ecommerce",
-    eventAction: "set checkout step",
-    eventLabel: step.option,
+  window['ga'](`${trackingName}.send`, {
+    'hitType': "event",
+    'eventCategory': "ecommerce",
+    'eventAction': "set checkout step",
+    'eventLabel': step.option,
   });
 };
 
@@ -137,17 +142,17 @@ const sendPurchaseCartEvent = (data, cart, amount) => {
   sendInitActions();
   sendAddProductsFromCart(cart);
 
-  window['ga']('ec:setAction', 'purchase', {
+  window['ga'](`${trackingName}.ec:setAction`, 'purchase', {
     'id': data.id,
     'affiliation': data.type,
     'revenue': amount.total,
   });
 
-  window['ga']('send', {
-    hitType: "event",
-    eventCategory: "ecommerce",
-    eventAction: "checkout complete",
-    eventLabel: data.type,
+  window['ga'](`${trackingName}.send`, {
+    'hitType': "event",
+    'eventCategory': "ecommerce",
+    'eventAction': "checkout complete",
+    'eventLabel': data.type,
   });
 };
 
@@ -156,11 +161,11 @@ const sendAddProductsFromCart = cart => {
 
   if (items.products && items.products.length) {
     items.products.map(product => {
-      window['ga']('ec:addProduct', {
-        id: product.id,                                                           // Product ID (string).
-        name: product.name,                                                       // Product name (string).
-        category: 'product',                                                      // Product category (string).
-        quantity: 1                                                               // Product quantity (number).
+      window['ga'](`${trackingName}.ec:addProduct`, {
+        'id': product.id,                                                           // Product ID (string).
+        'name': product.name,                                                       // Product name (string).
+        'category': 'product',                                                      // Product category (string).
+        'quantity': 1                                                               // Product quantity (number).
       });
     })
   }
@@ -169,12 +174,12 @@ const sendAddProductsFromCart = cart => {
     items.courses.map(course => {
       const price = getCoursePrice(course.price);
 
-      window['ga']('ec:addProduct', {
-        id: course.id,                                // Product ID (string).
-        name: course.course.name,                     // Product name (string).
-        category: 'Course Class',                     // Product category (string).
-        price: price,                                 // Product price
-        quantity: 1                                   // Product quantity (number).
+      window['ga'](`${trackingName}.ec:addProduct`, {
+        'id': course.id,                                // Product ID (string).
+        'name': course.course.name,                     // Product name (string).
+        'category': 'Course Class',                     // Product category (string).
+        'price': price,                                 // Product price
+        'quantity': 1                                   // Product quantity (number).
       });
     })
   }
