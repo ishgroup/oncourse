@@ -11,12 +11,12 @@
 %checkout-submit-button {
   background: $checkoutSubmitButtonBackground;
   color: $checkoutSubmitButtonColor;
-  border: none;
+  border: $checkoutSubmitButtonBorder;
   outline: 0 none;
-  border-radius: 0;
+  border-radius: $checkoutSubmitButtonBorderRadius;
   height: $checkoutSubmitButtonHeight;
   padding: $checkoutSubmitButtonPadding;
-  text-align: center;
+  text-align: $checkoutSubmitButtonTextAlign;
   font-size: $checkoutSubmitButtonFontSize;
   vertical-align: middle;
   display: $checkoutSubmitButtonDisplay;
@@ -26,12 +26,16 @@
   text-transform: $checkoutSubmitButtonTextTransform;
   font-weight: $checkoutSubmitButtonFontWeight;
   white-space: nowrap;
+  letter-spacing: $checkoutSubmitButtonLetterSpacing;
 
   @include prefixer(touch-action, manipulation, webkit moz ms o spec);
   @include prefixer(user-select, none, webkit moz ms o spec);
   @include prefixer(transition, all 0.5s, webkit moz ms o spec);
   &:hover, &:active, &:focus {
     background: $checkoutSubmitButtonBackgroundHover;
+    color: $checkoutSubmitButtonColorHover;
+    font-weight: $checkoutSubmitButtonFontWeight;
+    font-size: $checkoutSubmitButtonFontSize;
   }
 }
 
@@ -48,6 +52,7 @@
   &:hover, &:focus, &:active {
     background: $checkoutCancelButtonBackgroundHover;
     color: $checkoutCancelButtonColorHover;
+    font-weight: $checkoutCancelButtonFontWeight;
   }
 }
 

@@ -183,6 +183,35 @@ $squareBtnLetterSpacing: 2px !default;
 $squareBtnTextAlign: center !default;
 
 
+//
+// Checkout input
+//
+
+$checkoutFormInputBorderRadius: 5px !default;
+
+
+//
+// Checkout button
+//
+
+$checkoutSubmitButtonBorderRadius: 5px !default;
+$checkoutSubmitButtonHeight: auto !default;
+$checkoutSubmitButtonPadding: 10px 24px !default;
+$checkoutSubmitButtonFontSize: 17px !default;
+$checkoutSubmitButtonLineHeight: 1.2 !default;
+$checkoutSubmitButtonFontWeight: bold !default;
+$checkoutSubmitButtonLetterSpacing: 1.2px !default;
+
+$checkoutPageAmountContainerAddCodeFontWeight: bold !default;
+$checkoutPageAmountContainerAddCodeFontSize: 14px !default;
+
+$checkoutCancelButtonFontWeight: bold !default;
+
+$checkoutCorporatePassButtonPadding: 7px 20px !default;
+
+$checkoutPayerButtonPadding: 5px 9px !default;
+
+
 $classItemLinkHoverColor: $primaryColor !default;
 
 $browseCoursesHeaderColor: $bodyFontColor !default;

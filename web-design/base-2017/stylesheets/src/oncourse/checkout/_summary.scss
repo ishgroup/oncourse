@@ -134,6 +134,10 @@ div.amount-container {
     padding: $checkoutPageAmountContainerAddCodePadding;
     font-size: $checkoutPageAmountContainerAddCodeFontSize;
     float: none;
+    &:hover, &:active, &:focus {
+      font-weight: $checkoutPageAmountContainerAddCodeFontWeight;
+      font-size: $checkoutPageAmountContainerAddCodeFontSize;
+    }
   }
 
   .amount-content {
@@ -234,6 +238,7 @@ div.amount-container {
     font-size: $checkoutFormInputFontSize;
     float: left;
     height: $checkoutFormInputHeight;
+    @include border-radius($checkoutFormInputBorderRadius);
     @include responsive($checkout-media-default) {
       width: $checkoutPageAmountCodeInputWidthTablet;
     }

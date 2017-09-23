@@ -132,10 +132,16 @@
         float: none;
         text-decoration: none;
         @extend %checkout-submit-button;
-        padding: 3px 9px;
-        height: auto;
-        text-transform: inherit;
-        font-size: 12px;
+        padding: $checkoutPayerButtonPadding;
+        height: $checkoutPayerButtonHeight;
+        text-transform: $checkoutPayerButtonTextTransform;
+        font-size: $checkoutPayerButtonFontSize;
+        letter-spacing: $checkoutPayerButtonLetterSpacing;
+        font-weight: $checkoutPayerButtonFontWeight;
+        &:hover, &:active, &:focus {
+          font-weight: $checkoutPayerButtonFontWeight;
+          font-size: $checkoutPayerButtonFontSize;
+        }
       }
       ul {
         position: absolute;
@@ -273,11 +279,15 @@
       }
       #addCorporatePass {
         @extend %checkout-submit-button;
-        height: 30px;
-        padding: 5px 20px 5px 20px;
-        margin: 0px !important;
+        height: $checkoutCorporatePassButtonHeight;
+        padding: $checkoutCorporatePassButtonPadding;
+        font-size: $checkoutCorporatePassButtonFontSize;
+        margin: $checkoutCorporatePassButtonMargin;
         @include responsive($checkout-media-default) {
-          margin: 0 0px 0 30.5% !important;
+          margin: $checkoutCorporatePassButtonMarginMedia;
+        }
+        &:hover, &:active, &:focus {
+          font-size: $checkoutCorporatePassButtonFontSize;
         }
       }
     }

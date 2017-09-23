@@ -16,18 +16,23 @@ $checkout-media-default: $media-tablet !default;
 // Form submit button
 //
 
-$checkoutSubmitButtonBackground: #CF053C !default;
-$checkoutSubmitButtonBackgroundHover: #1F1F1F !default;
+$checkoutSubmitButtonBackground: $primaryColor !default;
+$checkoutSubmitButtonBackgroundHover: $secondaryColor !default;
 
 $checkoutSubmitButtonColor: #fff !default;
+$checkoutSubmitButtonColorHover: #fff !default;
+$checkoutSubmitButtonBorder: none !default;
+$checkoutSubmitButtonBorderRadius: 0 !default;
 $checkoutSubmitButtonHeight: 32px !default;
-$checkoutSubmitButtonPadding: 7px 20px 6px 20px !default;
+$checkoutSubmitButtonPadding: 6px 20px 6px 20px !default;
+$checkoutSubmitButtonTextAlign: center !default;
 $checkoutSubmitButtonFontSize: 14px !default;
 $checkoutSubmitButtonDisplay: inline-block !default;
 $checkoutSubmitButtonLineHeight: 1.5 !default;
 $checkoutSubmitButtonMargin: 0 3px !default;
 $checkoutSubmitButtonTextTransform: uppercase !default;
 $checkoutSubmitButtonFontWeight: 700 !default;
+$checkoutSubmitButtonLetterSpacing: 0 !default;
 
 
 $checkoutSubmitContactPadding: 2px 10px 3px 10px !default;
@@ -50,24 +55,95 @@ $checkoutCancelButtonPaddingLeft: 0 !default;
 
 
 //
+// Payer selection button
+//
+
+$checkoutPayerButtonPadding: 3px 9px !default;
+$checkoutPayerButtonHeight: auto !default;
+$checkoutPayerButtonTextTransform: inherit !default;
+$checkoutPayerButtonFontSize: 12px !default;
+$checkoutPayerButtonLetterSpacing: 0 !default;
+$checkoutPayerButtonFontWeight: 700 !default;
+
+
+//
+// Corporate pass button
+//
+
+$checkoutCorporatePassButtonHeight: 30px !default;
+$checkoutCorporatePassButtonPadding: 5px 20px 5px 20px !default;
+$checkoutCorporatePassButtonFontSize: 14px !default;
+$checkoutCorporatePassButtonMargin: 0px !important !default;
+$checkoutCorporatePassButtonMarginMedia: 0 0px 0 30.5% !important !default;
+
+
+//
 // Checkout progress steps
 //
 
-$checkoutProgressStepListBackgoundHover: #d5d5d5 !default;
-$checkoutProgressStepListColorDisable: #6B6B6B !default;
-$checkoutProgressStepListBackgoundDisable: #F3F3F3 !default;
-
-$checkoutProgressStepListColorActive: #fff !default;
-$checkoutProgressStepListBackgoundActive: #666666 !default;
-
+$checkoutProgressStepShowDefaultArrows: false !default;
+$checkoutProgressStepBackground: none !default;
 $checkoutProgressStepListPadding: 4px 0px 5px 10px !default;
 $checkoutProgressStepListColor: #6B6B6B !default;
-$checkoutProgressStepListBackgound: #e7e7e7 !default;
+$checkoutProgressStepListColorHover: #6B6B6B !default;
+$checkoutProgressStepListLinkBackground: #e7e7e7 !default;
 $checkoutProgressStepListTextTransform: uppercase !default;
 $checkoutProgressStepListFontWeight: bold !default;
 $checkoutProgressStepListFontSizeSmall: 7px !default;
 $checkoutProgressStepListFontSizeTablet: 12px !default;
 
+$checkoutProgressStepListWidth: 31.33% !default;
+$checkoutProgressStepListMargin: 0 2% 0 0 !default;
+$checkoutProgressStepListDisplay: inline-block !default;
+$checkoutProgressStepListPaddingRight: 15px !default;
+
+$checkoutProgressStepListBackground: url($imagePath + "progress-arrow-default.png") center right no-repeat !default;
+
+$checkoutProgressStepListBackgroundHover: url($imagePath + "progress-arrow-hover.png") center right no-repeat !default;
+$checkoutProgressStepListLinkBackgroundHover: #d5d5d5 !default;
+
+$checkoutProgressStepListBackgroundDisable: url($imagePath + "progress-arrow-disable.png") center right no-repeat !default;
+$checkoutProgressStepListLinkBackgroundDisable: #F3F3F3 !default;
+$checkoutProgressStepListLinkColorDisable: #6B6B6B !default;
+
+$checkoutProgressStepListBackgroundActive: url($imagePath + "progress-arrow-active.png") center right no-repeat !default;
+$checkoutProgressStepListLinkBackgroundActive: $primaryColor !default; //#666666
+$checkoutProgressStepListLinkColorActive: #fff !default;
+
+$checkoutProgressStepArrowBeforeContent: none !default;
+$checkoutProgressStepArrowBeforeWidth: 13.5px !default;
+$checkoutProgressStepArrowBeforeWidthMedia: 17.5px !default;
+$checkoutProgressStepArrowBeforeColor: $white !default;
+
+$checkoutProgressStepArrowBeforePositionTop: -4px !default;
+$checkoutProgressStepArrowBeforePositionTopMedia: -4px !default;
+
+$checkoutProgressStepArrowBeforePositionRight: -4px !default;
+$checkoutProgressStepArrowBeforePositionRightMedia: -4px !default;
+
+$checkoutProgressStepArrowAfterContent: "" !default;
+$checkoutProgressStepArrowAfterWidth: 9.5px !default;
+$checkoutProgressStepArrowAfterWidthMedia: 13.5px !default;
+$checkoutProgressStepArrowAfterColor: $checkoutProgressStepListLinkBackground !default;
+
+$checkoutProgressStepArrowAfterPositionTop: 0 !default;
+$checkoutProgressStepArrowAfterPositionTopMedia: 0 !default;
+
+$checkoutProgressStepArrowAfterPositionRight: 6px !default;
+$checkoutProgressStepArrowAfterPositionRightMedia: 2px !default;
+
+$checkoutProgressStepListLastChildContent: none !default;
+
+
+@if($checkoutProgressStepShowDefaultArrows == false) {
+  $checkoutProgressStepListBackground: none;
+  $checkoutProgressStepListBackgroundHover: none;
+  $checkoutProgressStepListBackgroundDisable: none;
+  $checkoutProgressStepListBackgroundActive: none;
+} @else {
+  $checkoutProgressStepArrowBeforeContent: none;
+  $checkoutProgressStepArrowAfterContent: none;
+}
 
 //
 // Form labels
@@ -246,7 +322,7 @@ $checkoutPaymentStudentTitleFontSize: 18px !default;
 $checkoutPaymentStudentTitleMarginBottom: 0 !default;
 $checkoutPaymentStudentTitleFontWeight: bold !default;
 $checkoutPaymentStudentTitleDisplay: inline !default;
-$checkoutPaymentStudentTitleColor: #1F1F1F !default;
+$checkoutPaymentStudentTitleColor: $primaryColor !default;
 
 $checkoutPaymentStudentEmailPosition: relative !default;
 $checkoutPaymentStudentEmailColor: #888888 !default;
@@ -345,3 +421,4 @@ $checkoutPageTabMargin: 0 0 18px 0 !default;
 $checkoutPageTabBorder: 1px solid silver !default;
 $checkoutPageTabBorderRadius: 8px !default;
 $checkoutPageTabBackground: #fcfcfc !default;
+

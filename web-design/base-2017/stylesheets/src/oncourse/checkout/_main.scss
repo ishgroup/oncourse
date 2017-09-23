@@ -12,13 +12,7 @@
   font-size: $checkoutPageFontSize;
   margin-bottom: $checkoutPageMarginBottom;
 
-  form {
-    &.submitting {
-      @include spinner();
-    }
-  }
-
-  .fetching {
+  form.submitting, .fetching {
     @include spinner();
   }
 
