@@ -2,13 +2,13 @@ import {Phase} from "../enrol/reducers/State";
 import {Tabs} from "../enrol/containers/payment/reducers/State";
 
 interface ProductEvent {
-  id: string,                   // Product ID (string).
-  name: string,                 // Product name (string).
-  category: string,             // Product category (string).
-  brand?: string,               // Product brand (string).
-  variant?: string,             // Product variant (string).
-  price?: number,               // Product price (currency).
-  quantity?: number,
+  id: string;                   // Product ID (string).
+  name: string;                 // Product name (string).
+  category: string;             // Product category (string).
+  brand?: string;               // Product brand (string).
+  variant?: string;             // Product variant (string).
+  price?: number;               // Product price (currency).
+  quantity?: number;
 }
 
 let trackingId;
@@ -57,42 +57,74 @@ const sendInitActions = () => {
 };
 
 const sendItemToCartEvent = (data: ProductEvent) => {
-  sendInitActions();
+  // sendInitActions();
 
-  window['ga'](`${trackingName}.ec:addProduct`, {                             // Provide product details in an productFieldObject.
-    'id': data.id,                                              // Product ID (string).
-    'name': data.name,                                          // Product name (string).
-    'category': data.category,                                  // Product category (string).
-    'price': data.price,
-    'quantity': 1                                               // Product quantity (number).
+  // window['ga'](`${trackingName}.ec:addProduct`, {
+  //   'id': data.id,
+  //   'name': data.name,
+  //   'category': data.category,
+  //   'price': data.price,
+  //   'quantity': 1
+  // });
+  //
+  // window['ga'](`${trackingName}.ec:setAction`, 'add');
+
+  window['dataLayer'].push({
+    event: 'addToCart',
+    ecommerce: {
+      currencyCode: 'USD',
+      add: {
+        products: [{
+          name: data.name,
+          id: data.id,
+          price: data.price,
+          category: data.category,
+          quantity: 1,
+        }],
+      },
+    },
   });
 
-  window['ga'](`${trackingName}.ec:setAction`, 'add');
-
-  window['ga']('send', {
-    'hitType': "event",
-    'eventCategory': "ecommerce",
-    'eventAction': "add item to cart",
-  });
+  // window['ga']('send', {
+  //   'hitType': "event",
+  //   'eventCategory': "ecommerce",
+  //   'eventAction': "add item to cart",
+  // });
 };
 
 const sendRemoveItemFromCartEvent = (data: ProductEvent) => {
-  sendInitActions();
+  // sendInitActions();
 
-  window['ga'](`${trackingName}.ec:addProduct`, {                             // Provide product details in an productFieldObject.
-    'id': data.id,                                              // Product ID (string).
-    'name': data.name,                                          // Product name (string).
-    'category': data.category,                                  // Product category (string).
-    'price': data.price,
-    'quantity': 1                                               // Product quantity (number).
-  });
+  // window['ga'](`${trackingName}.ec:addProduct`, {
+  //   'id': data.id,
+  //   'name': data.name,
+  //   'category': data.category,
+  //   'price': data.price,
+  //   'quantity': 1
+  // });
+  //
+  // window['ga'](`${trackingName}.ec:setAction`, 'remove');
+  //
+  // window['ga'](`${trackingName}.send`, {
+  //   'hitType': "event",
+  //   'eventCategory': "ecommerce",
+  //   'eventAction': "remove item from cart",
+  // });
 
-  window['ga'](`${trackingName}.ec:setAction`, 'remove');
-
-  window['ga'](`${trackingName}.send`, {
-    'hitType': "event",
-    'eventCategory': "ecommerce",
-    'eventAction': "remove item from cart",
+  // Measure the removal of a product from a shopping cart.
+  window['dataLayer'].push({
+    event: 'removeFromCart',
+    ecommerce: {
+      remove: {                               // 'remove' actionFieldObject measures.
+        products: [{                          //  removing a product to a shopping cart.
+          name: data.name,
+          id: data.id,
+          price: data.price,
+          category: data.category,
+          quantity: 1,
+        }],
+      },
+    },
   });
 };
 
@@ -101,19 +133,37 @@ const sendCheckoutStepEvent = (data, cart) => {
 
   if (!step || !step.step) return;
 
-  sendInitActions();
-  sendAddProductsFromCart(cart);
+  // sendInitActions();
+  // sendAddProductsFromCart(cart);
 
-  window['ga'](`${trackingName}.ec:setAction`, 'checkout', {
-    'step': step.step,
-    'option': step.initialOption,
-  });
+  // window['ga'](`${trackingName}.ec:setAction`, 'checkout', {
+  //   step: step.step,
+  //   option: step.initialOption,
+  // });
+  //
+  // window['ga'](`${trackingName}.send`, {
+  //   hitType: "event",
+  //   eventCategory: "ecommerce",
+  //   eventAction: "set checkout step",
+  //   eventLabel: step.initialOption,
+  // });
 
-  window['ga'](`${trackingName}.send`, {
-    'hitType': "event",
-    'eventCategory': "ecommerce",
-    'eventAction': "set checkout step",
-    'eventLabel': step.initialOption,
+  const products = getProducts(cart);
+
+  window['dataLayer'].push({
+    event: 'checkout',
+    ecommerce: {
+      checkout: {
+        actionField: {step: step.step, option: step.initialOption},
+        products: products.map(product => ({
+          name: product.name,
+          id: product.id,
+          price: product.price,
+          category: product.category,
+          quantity: 1,
+        })),
+      },
+    },
   });
 };
 
@@ -122,38 +172,102 @@ const sendCheckoutStepOptionEvent = (data, cart) => {
 
   if (!step || !step.option) return;
 
-  sendInitActions();
-  sendAddProductsFromCart(cart);
+  // sendInitActions();
+  // sendAddProductsFromCart(cart);
+  //
+  // window['ga'](`${trackingName}.ec:setAction`, 'checkout_option', {
+  //   step: step.step,
+  //   option: step.option,
+  // });
+  //
+  // window['ga'](`${trackingName}.send`, {
+  //   hitType: "event",
+  //   eventCategory: "ecommerce",
+  //   eventAction: "set checkout step",
+  //   eventLabel: step.option,
+  // });
 
-  window['ga'](`${trackingName}.ec:setAction`, 'checkout_option', {
-    'step': step.step,
-    'option': step.option,
-  });
-
-  window['ga'](`${trackingName}.send`, {
-    'hitType': "event",
-    'eventCategory': "ecommerce",
-    'eventAction': "set checkout step",
-    'eventLabel': step.option,
+  window['dataLayer'].push({
+    event: 'checkoutOption',
+    ecommerce: {
+      checkout_option: {
+        actionField: {step: step.step, option: step.option},
+      },
+    },
   });
 };
 
 const sendPurchaseCartEvent = (data, cart, amount) => {
-  sendInitActions();
-  sendAddProductsFromCart(cart);
+  // sendInitActions();
+  // sendAddProductsFromCart(cart);
 
-  window['ga'](`${trackingName}.ec:setAction`, 'purchase', {
-    'id': data.id,
-    'affiliation': data.type,
-    'revenue': amount.total,
-  });
+  // window['ga'](`${trackingName}.ec:setAction`, 'purchase', {
+  //   id: data.id,
+  //   affiliation: data.type,
+  //   revenue: amount.total,
+  // });
 
-  window['ga'](`${trackingName}.send`, {
-    'hitType': "event",
-    'eventCategory': "ecommerce",
-    'eventAction': "checkout complete",
-    'eventLabel': data.type,
+  // window['ga'](`${trackingName}.send`, {
+  //   hitType: "event",
+  //   eventCategory: "ecommerce",
+  //   eventAction: "checkout complete",
+  //   eventLabel: data.type,
+  // });
+
+  const products = getProducts(cart);
+
+  window['dataLayer'].push({
+    ecommerce: {
+      purchase: {
+        actionField: {
+          id: data.id,                        // Transaction ID. Required for purchases and refunds.
+          affiliation: data.type,
+          revenue: amount.total,              // Total transaction value (incl. tax and shipping)
+        },
+        products: products.map(product => ({
+          name: product.name,
+          id: product.id,
+          price: product.price,
+          category: product.category,
+          quantity: 1,
+        })),
+      },
+    },
   });
+};
+
+const getProducts = cart => {
+  const items = getItemsFromCart(cart);
+  const products = [];
+
+  if (items.products && items.products.length) {
+    items.products.map(product => {
+      products.push({
+        id: product.id,
+        name: product.name,
+        category: 'product',
+        price: product.price || 0,
+        quantity: 1,
+      });
+    });
+  }
+
+  if (items.courses && items.courses.length) {
+    items.courses.map(course => {
+      const price = getCoursePrice(course.price);
+
+      products.push({
+        id: course.id,
+        name: course.course.name,
+        category: 'Course Class',
+        price,
+        quantity: 1,
+      });
+    });
+  }
+
+  return products;
+
 };
 
 const sendAddProductsFromCart = cart => {
@@ -162,12 +276,13 @@ const sendAddProductsFromCart = cart => {
   if (items.products && items.products.length) {
     items.products.map(product => {
       window['ga'](`${trackingName}.ec:addProduct`, {
-        'id': product.id,                                                           // Product ID (string).
-        'name': product.name,                                                       // Product name (string).
-        'category': 'product',                                                      // Product category (string).
-        'quantity': 1                                                               // Product quantity (number).
+        id: product.id,
+        name: product.name,
+        category: 'product',
+        price: product.price || 0,
+        quantity: 1,
       });
-    })
+    });
   }
 
   if (items.courses && items.courses.length) {
@@ -175,13 +290,13 @@ const sendAddProductsFromCart = cart => {
       const price = getCoursePrice(course.price);
 
       window['ga'](`${trackingName}.ec:addProduct`, {
-        'id': course.id,                                // Product ID (string).
-        'name': course.course.name,                     // Product name (string).
-        'category': 'Course Class',                     // Product category (string).
-        'price': price,                                 // Product price
-        'quantity': 1                                   // Product quantity (number).
+        id: course.id,
+        name: course.course.name,
+        category: 'Course Class',
+        price,
+        quantity: 1,
       });
-    })
+    });
   }
 };
 
@@ -194,45 +309,45 @@ const sendAddProductsFromCart = cart => {
 export class GABuilder {
   static addProductToCart = (type, item) => {
     return {
-      ecAction: 'addProduct',                         // action key
-      id: item.id,                                    // Product ID (string).
-      name: item.name,                                // Product name (string).
-      category: type,                                 // Product category (string).
+      ecAction: 'addProduct',
+      id: item.id,
+      name: item.name,
+      category: type,
       quantity: 1,
-    }
-  };
+    };
+  }
 
   static removeProductFromCart = (type, item) => {
     return {
-      ecAction: 'removeProduct',                         // action key
-      id: item.id,                                    // Product ID (string).
-      name: item.name,                                // Product name (string).
-      category: type,                                 // Product category (string).
+      ecAction: 'removeProduct',
+      id: item.id,
+      name: item.name,
+      category: type,
       quantity: 1,
-    }
-  };
+    };
+  }
 
   static addCourseClassToCart = (type, item) => {
     return {
-      ecAction: 'addProduct',                          // action key
-      id: item.id,                                     // Product ID (string).
-      name: item.course && item.course.name,           // Product name (string).
-      category: type,                                  // Product category (string).
-      price: getCoursePrice(item.price),               // Product price (currency).
+      ecAction: 'addProduct',
+      id: item.id,
+      name: item.course && item.course.name,
+      category: type,
+      price: getCoursePrice(item.price),
       quantity: 1,
-    }
-  };
+    };
+  }
 
   static removeCourseClassFromCart = (type, item) => {
     return {
-      ecAction: 'removeProduct',                          // action key
-      id: item.id,                                     // Product ID (string).
-      name: item.course && item.course.name,           // Product name (string).
-      category: type,                                  // Product category (string).
-      price: getCoursePrice(item.price),               // Product price (currency).
+      ecAction: 'removeProduct',
+      id: item.id,
+      name: item.course && item.course.name,
+      category: type,
+      price: getCoursePrice(item.price),
       quantity: 1,
-    }
-  };
+    };
+  }
 
   static setCheckoutStep = (phase, opt = null) => {
     const step = getCheckoutStepFromPhase(phase);
@@ -244,9 +359,9 @@ export class GABuilder {
 
     return {
       ecAction: step.option ? 'checkoutStepOption' : 'checkoutStep',  // action key
-      step: step
-    }
-  };
+      step,
+    };
+  }
 
   static purchaseItems = response => {
     if (response && response.status === 'SUCCESSFUL') {
@@ -255,7 +370,7 @@ export class GABuilder {
         id: response.sessionId,
         status: 'success',
         type: 'credit card',
-      }
+      };
     }
 
     if (response && response.status === 'SUCCESSFUL_BY_PASS') {
@@ -264,7 +379,7 @@ export class GABuilder {
         id: response.sessionId,
         status: 'success',
         type: 'corporate pass',
-      }
+      };
     }
 
     return null;
