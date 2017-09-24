@@ -35,14 +35,16 @@ export function pageApiMock(mock) {
     ],
   ));
 
-  mock.onPost(API.SAVE_PAGE_SETTINGS).reply(config => {
+  mock.onPost(API.SAVE_PAGE).reply(config => {
     const request = JSON.parse(config.data);
-    return promiseResolve(config, {config});
-  });
 
-  mock.onPost(API.SAVE_PAGE_HTML).reply(config => promiseResolve(
-    config,
-    {config},
-    ),
-  );
+    if (!request.title) {
+      return promiseReject(config, {message: 'Title can not be blank'});
+    }
+
+    return promiseResolve(
+      config,
+      JSON.parse(config.data),
+    );
+  });
 }

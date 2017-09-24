@@ -8,11 +8,7 @@ export class PageApi {
     return this.http.GET(API.GET_PAGES);
   }
 
-  savePageSettings(payload): Promise<any> {
-    return this.http.POST(API.SAVE_PAGE_SETTINGS, payload);
-  }
-
-  savePageHtml(payload): Promise<any> {
-    return this.http.POST(API.SAVE_PAGE_HTML, payload);
+  savePage(payload): Promise<any> {
+    return this.http.POST(API.SAVE_PAGE, payload);
   }
 }

@@ -1,10 +1,8 @@
 import {combineEpics} from "redux-observable";
 import {EpicGetPages} from "./EpicGetPages";
-import {EpicSavePageHtml} from "./EpicSavePageHtml";
-import {EpicSavePageSettings} from "./EpicSavePageSettings";
+import {EpicSavePage} from "./EpicSavePage";
 
 export const EpicPages = combineEpics(
   EpicGetPages,
-  EpicSavePageHtml,
-  EpicSavePageSettings,
+  EpicSavePage,
 );

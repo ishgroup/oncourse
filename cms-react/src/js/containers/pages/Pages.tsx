@@ -2,7 +2,7 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
 import {withRouter} from 'react-router-dom';
-import {savePageHtml, getPages} from "./actions";
+import {getPages, savePage} from "./actions";
 import {Page as PageModel} from "../../model";
 
 
@@ -104,7 +104,7 @@ interface Props {
   pages: PageModel[];
   onInit: () => any;
   match?: any;
-  editPageContent: (html) => any;
+  onEditHtml: (html) => any;
 }
 
 export class Pages extends React.Component<Props, any> {
@@ -114,14 +114,14 @@ export class Pages extends React.Component<Props, any> {
   }
 
   render() {
-    const {match, pages, editPageContent} = this.props;
+    const {match, pages, onEditHtml} = this.props;
 
     return (
       <div>
         {match.params.id &&
         <Page
           page={pages.find(page => page.id == match.params.id)}
-          onSave={editPageContent}
+          onSave={onEditHtml}
         />
         }
       </div>
@@ -136,7 +136,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getPages()),
-    editPageContent: (id, html) => dispatch(savePageHtml(id, html)),
+    onEditHtml: (id, html) => dispatch(savePage(id, {html})),
   };
 };
 

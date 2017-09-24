@@ -8,13 +8,18 @@ class PageService {
     return this.pageApi.getPages();
   }
 
-  public savePageSettings(payload): Promise<Page[]> {
-    return this.pageApi.savePageSettings(payload);
+  public savePage(props, state): Promise<Page[]> {
+    return this.pageApi.savePage(this.buildSavePageRequest(props, state));
   }
 
-  public savePageHtml(payload): Promise<Page[]> {
-    return this.pageApi.savePageHtml(payload);
+  public buildSavePageRequest(props, state) {
+    const page = state.page.pages.find(p => p.id === props.id);
+    return {
+      ...page,
+      ...props,
+    };
   }
+
 }
 
 export default new PageService();

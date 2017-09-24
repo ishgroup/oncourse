@@ -9,88 +9,121 @@ interface Props {
   onEdit?: (settings) => void;
 }
 
-export const PageSettings = (props: Props) => {
-  const {page, onBack, onEdit} = props;
+export class PageSettings extends React.Component<Props, any> {
 
-  const clickBack = e => {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      title: props.page.title,
+      layout: props.page.layout,
+      visible: props.page.visible,
+      theme: props.page.theme,
+    };
+  }
+
+  clickBack(e) {
+    const {onBack} = this.props;
     e.preventDefault();
     onBack();
-  };
+  }
 
-  const onChange = (event, key) => {
+  onChange(event, key) {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    onEdit({[key]: value});
-  };
+    this.setState({
+      [key]: value,
+    });
+  }
 
-  const clickRemove = e => {
-    e.preventDefault();
-  };
+  onBlur(key) {
+    const {onEdit, page} = this.props;
 
-  return (
-    <div>
+    if (page[key] !== this.state[key]) {
+      onEdit({[key]: this.state[key]});
+    }
+  }
 
-      <ul>
-        <li>
-          <a href="#" onClick={e => clickBack(e)}>
-            <IconBack text={page.title}/>
-          </a>
-        </li>
-      </ul>
+  render () {
+    const {page} = this.props;
+    const {title, visible, layout, theme} = this.state;
 
-      <div className="sidebar__settings">
-        <Form>
-          <FormGroup>
-            <Label for="pageTitle">Title</Label>
-            <Input
-              type="text"
-              name="pageTitle"
-              id="pageTitle"
-              placeholder="Page title"
-              value={page.title}
-              onChange={e => onChange(e, 'title')}
-            />
-          </FormGroup>
+    const clickRemove = e => {
+      e.preventDefault();
+    };
 
-          <FormGroup>
-            <Label htmlFor="pageTheme">Theme</Label>
-            <Input
-              type="text"
-              name="pageTheme"
-              id="pageTheme"
-              placeholder="Page theme"
-              value={page.theme}
-              onChange={e => onChange(e, 'theme')}
-            />
-          </FormGroup>
+    return (
+      <div>
 
-          <FormGroup>
-            <Label check>
-              <Input type="checkbox" checked={page.visible} onChange={e => onChange(e, 'visible')}/>{' '}
-              Visible
-            </Label>
-          </FormGroup>
+        <ul>
+          <li>
+            <a href="#" onClick={e => this.clickBack(e)}>
+              <IconBack text={page.title}/>
+            </a>
+          </li>
+        </ul>
 
-          <FormGroup>
-            <Label htmlFor="pageLayout">Layout</Label>
-            <Input
-              type="text"
-              name="pageLayout"
-              id="pageLayout"
-              placeholder="Page layout"
-              value={page.layout}
-              onChange={e => onChange(e, 'layout')}
-            />
-          </FormGroup>
+        <div className="sidebar__settings">
+          <Form>
+            <FormGroup>
+              <Label for="pageTitle">Title</Label>
+              <Input
+                type="text"
+                name="pageTitle"
+                id="pageTitle"
+                placeholder="Page title"
+                value={title}
+                onChange={e => this.onChange(e, 'title')}
+                onBlur={e => this.onBlur('title')}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <Button color="danger" onClick={e => clickRemove(e)}>
-              <span className="icon icon-delete"/>
-              Remove
-            </Button>
-          </FormGroup>
-        </Form>
+            <FormGroup>
+              <Label htmlFor="pageTheme">Theme</Label>
+              <Input
+                type="text"
+                name="pageTheme"
+                id="pageTheme"
+                placeholder="Page theme"
+                value={theme}
+                onChange={e => this.onChange(e, 'theme')}
+                onBlur={e => this.onBlur('theme')}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label check>
+                <Input
+                  type="checkbox"
+                  checked={visible}
+                  onChange={e => {this.onChange(e, 'visible'); this.onBlur('visible');}}
+                />
+                {' '} Visible
+              </Label>
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="pageLayout">Layout</Label>
+              <Input
+                type="text"
+                name="pageLayout"
+                id="pageLayout"
+                placeholder="Page layout"
+                value={layout}
+                onChange={e => this.onChange(e, 'layout')}
+                onBlur={e => this.onBlur('layout')}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Button color="danger" onClick={e => clickRemove(e)}>
+                <span className="icon icon-delete"/>
+                Remove
+              </Button>
+            </FormGroup>
+          </Form>
+        </div>
+
       </div>
-
-    </div>
-  );
-};
+    );
+  }
+}
