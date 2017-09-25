@@ -7,6 +7,7 @@ interface Props {
   page: Page;
   onBack: () => void;
   onEdit?: (settings) => void;
+  onDelete?: (id) => void;
 }
 
 export class PageSettings extends React.Component<Props, any> {
@@ -44,11 +45,15 @@ export class PageSettings extends React.Component<Props, any> {
   }
 
   render () {
-    const {page} = this.props;
+    const {page, onDelete} = this.props;
     const {title, visible, layout, theme} = this.state;
 
     const clickRemove = e => {
       e.preventDefault();
+
+      if (confirm('Are you sure?')) {
+        onDelete(page.id);
+      }
     };
 
     return (

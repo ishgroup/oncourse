@@ -47,4 +47,12 @@ export function pageApiMock(mock) {
       JSON.parse(config.data),
     );
   });
+
+
+  mock.onPost(API.DELETE_PAGE).reply(config => {
+    return promiseResolve(
+      config,
+      null,
+    );
+  });
 }

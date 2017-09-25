@@ -12,6 +12,10 @@ class PageService {
     return this.pageApi.savePage(this.buildSavePageRequest(props, state));
   }
 
+  public deletePage(id): Promise<Page[]> {
+    return this.pageApi.deletePage(id);
+  }
+
   public buildSavePageRequest(props, state) {
     const page = state.page.pages.find(p => p.id === props.id);
     return {

@@ -5,12 +5,13 @@ import {Page} from "../../../model";
 import {PagesList} from "../components/PageList";
 import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../routes";
-import {savePage} from "../actions/index";
+import {deletePage, savePage} from "../actions/index";
 
 interface Props {
   pages: Page[];
   match: any;
   onEditSettings: (pageId, settings) => any;
+  onDeletePage: (id) => any;
 }
 
 export class PagesSidebar extends React.Component<Props, any> {
@@ -24,7 +25,7 @@ export class PagesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {pages, match, onEditSettings} = this.props;
+    const {pages, match, onEditSettings, onDeletePage} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
@@ -38,6 +39,7 @@ export class PagesSidebar extends React.Component<Props, any> {
           page={activePage}
           onBack={this.resetActivePage}
           onEdit={prop => onEditSettings(activePage.id, prop)}
+          onDelete={id => onDeletePage(id)}
         />
         }
       </div>
@@ -52,6 +54,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (pageId, settings) => dispatch(savePage(pageId, settings)),
+    onDeletePage: id => dispatch(deletePage(id)),
   };
 };
 

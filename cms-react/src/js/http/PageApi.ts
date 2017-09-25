@@ -11,4 +11,8 @@ export class PageApi {
   savePage(payload): Promise<any> {
     return this.http.POST(API.SAVE_PAGE, payload);
   }
+
+  deletePage(id): Promise<any> {
+    return this.http.POST(API.DELETE_PAGE, id);
+  }
 }
