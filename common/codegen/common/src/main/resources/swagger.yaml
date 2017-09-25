@@ -1076,6 +1076,7 @@ definitions:
     type: string
     enum:
       - STRING
+      - LONG_STRING
       - BOOLEAN
       - DATE
       - DATETIME

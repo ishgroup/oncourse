@@ -23,6 +23,9 @@ class FieldBuilder {
 
             
             switch (getByKey(field.property)) {
+                case SPECIAL_NEEDS:
+                    f.dataType = DataType.LONG_STRING
+                    break
                 case EMAIL_ADDRESS:
                     f.dataType = DataType.EMAIL
                     break
