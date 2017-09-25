@@ -5,7 +5,7 @@ import {Page} from "../../../model";
 import {PagesList} from "../components/PageList";
 import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../routes";
-import {deletePage, savePage} from "../actions/index";
+import {deletePage, savePage} from "../actions";
 
 interface Props {
   pages: Page[];

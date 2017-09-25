@@ -11,3 +11,5 @@ export {User} from "./User";
 // Pages
 export {Page} from "./Page";
 
+// Blocks
+export {Block} from "./Block";

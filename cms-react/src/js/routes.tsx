@@ -1,6 +1,7 @@
 import React from 'react';
 import {Content} from './containers/content/Content';
-import {Blocks} from './containers/blocks/Blocks';
+import Blocks from './containers/blocks/Blocks';
+import BlockSidebar from './containers/blocks/containers/BlockSidebar';
 
 import Pages from './containers/pages/Pages';
 import PagesSidebar from './containers/pages/containers/PagesSidebar';
@@ -45,6 +46,7 @@ export const routes: Route[] = [
     url: URL.BLOCKS,
     icon: 'icon-dashboard',
     main: props => <Blocks {...props}/>,
+    sidebar: props => <BlockSidebar {...props}/>,
   },
   {
     title: 'Pages',
