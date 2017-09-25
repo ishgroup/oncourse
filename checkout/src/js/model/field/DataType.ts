@@ -15,6 +15,7 @@ export const DataType = createStringEnum([
   'POSTCODE',
   'PHONE',
   'CHOICE',
+  'LONG_STRING',
 ]);
 
 export type DataType = keyof typeof DataType;

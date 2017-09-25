@@ -70,6 +70,7 @@ export class MockDB {
     this.fields = [
       mockField("Street", "street", DataType.STRING, false, 'Kirova'),
       mockField("Passport number", "customField.contact.passportNumber", DataType.STRING, true),
+      mockField("Other info", "customField.contact.information", DataType.LONG_STRING, true),
       mockField("Suburb", "suburb", DataType.SUBURB, true),
       mockField("Postcode", "postcode", DataType.POSTCODE, true, "2202"),
       mockField("State", "state", DataType.STRING),

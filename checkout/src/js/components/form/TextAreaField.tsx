@@ -6,7 +6,7 @@ import {MouseHover, WrappedMouseHoverProps} from "./MouseHover";
 import {showError, ValidateText} from "./ValidateText";
 import {FieldLabel} from "./FieldLabel";
 
-export const TextAreaField = (props) => (
+export const TextAreaField = props => (
   <MouseHover component={inputComponent} componentProps={props}/>
 );
 
@@ -16,7 +16,7 @@ function inputComponent(props: TextAreaFieldProps) {
     required,
     label,
     rows,
-    classes
+    classes,
   } = props;
   const isShowError = showError(props);
 
@@ -30,7 +30,7 @@ function inputComponent(props: TextAreaFieldProps) {
       <span className={classnames({
         valid: !isShowError,
         validate: isShowError,
-        'has-error': isShowError
+        'has-error': isShowError,
       })}>
         <textarea {...input}
                   placeholder={label}

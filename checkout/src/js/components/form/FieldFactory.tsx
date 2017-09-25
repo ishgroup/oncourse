@@ -5,6 +5,7 @@ import {Field, DataType, Item} from "../../model";
 
 import {CheckboxField} from "./CheckboxField";
 import {TextField} from "./TextField";
+import {TextAreaField} from "./TextAreaField";
 import {RadioGroupField} from "./RadioGroupField";
 import {DateField} from "./DateField";
 import SelectField from "../form-new/SelectField";
@@ -22,6 +23,9 @@ class FieldFactory extends React.Component<any, any> {
       case DataType.PHONE:
       case DataType.POSTCODE:
         return <Form.Field {...props} component={TextField} type="text"/>;
+
+      case DataType.LONG_STRING:
+        return <Form.Field {...props} component={TextAreaField} type="text"/>;
 
       case DataType.INTEGER:
         return <Form.Field {...props} component={TextField} type="number"/>;
