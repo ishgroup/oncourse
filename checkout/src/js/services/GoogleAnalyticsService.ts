@@ -1,5 +1,5 @@
-import {Phase} from "../enrol/reducers/State";
-import {Tabs} from "../enrol/containers/payment/reducers/State";
+import {Phase} from '../enrol/reducers/State';
+import {Tabs} from '../enrol/containers/payment/reducers/State';
 
 interface ProductEvent {
   id: string;                   // Product ID (string).
@@ -70,25 +70,25 @@ const sendItemToCartEvent = (data: ProductEvent) => {
   // window['ga'](`${trackingName}.ec:setAction`, 'add');
 
   window['dataLayer'].push({
-    event: 'addToCart',
-    ecommerce: {
-      currencyCode: 'USD',
-      add: {
-        products: [{
-          name: data.name,
-          id: data.id,
-          price: data.price,
-          category: data.category,
-          quantity: 1,
+    'event': 'addToCart',
+    'ecommerce': {
+      'currencyCode': 'USD',
+      'add': {
+        'products': [{
+          'name': data.name,
+          'id': data.id,
+          'price': data.price,
+          'category': data.category,
+          'quantity': 1,
         }],
       },
     },
   });
 
   // window['ga']('send', {
-  //   'hitType': "event",
-  //   'eventCategory': "ecommerce",
-  //   'eventAction': "add item to cart",
+  //   'hitType': 'event',
+  //   'eventCategory': 'ecommerce',
+  //   'eventAction': 'add item to cart',
   // });
 };
 
@@ -106,22 +106,22 @@ const sendRemoveItemFromCartEvent = (data: ProductEvent) => {
   // window['ga'](`${trackingName}.ec:setAction`, 'remove');
   //
   // window['ga'](`${trackingName}.send`, {
-  //   'hitType': "event",
-  //   'eventCategory': "ecommerce",
-  //   'eventAction': "remove item from cart",
+  //   'hitType': 'event',
+  //   'eventCategory': 'ecommerce',
+  //   'eventAction': 'remove item from cart',
   // });
 
   // Measure the removal of a product from a shopping cart.
   window['dataLayer'].push({
-    event: 'removeFromCart',
-    ecommerce: {
-      remove: {                               // 'remove' actionFieldObject measures.
-        products: [{                          //  removing a product to a shopping cart.
-          name: data.name,
-          id: data.id,
-          price: data.price,
-          category: data.category,
-          quantity: 1,
+    'event': 'removeFromCart',
+    'ecommerce': {
+      'remove': {                               // 'remove' actionFieldObject measures.
+        'products': [{                          //  removing a product to a shopping cart.
+          'name': data.name,
+          'id': data.id,
+          'price': data.price,
+          'category': data.category,
+          'quantity': 1,
         }],
       },
     },
@@ -142,25 +142,28 @@ const sendCheckoutStepEvent = (data, cart) => {
   // });
   //
   // window['ga'](`${trackingName}.send`, {
-  //   hitType: "event",
-  //   eventCategory: "ecommerce",
-  //   eventAction: "set checkout step",
+  //   hitType: 'event',
+  //   eventCategory: 'ecommerce',
+  //   eventAction: 'set checkout step',
   //   eventLabel: step.initialOption,
   // });
 
   const products = getProducts(cart);
 
   window['dataLayer'].push({
-    event: 'checkout',
-    ecommerce: {
-      checkout: {
-        actionField: {step: step.step, option: step.initialOption},
-        products: products.map(product => ({
-          name: product.name,
-          id: product.id,
-          price: product.price,
-          category: product.category,
-          quantity: 1,
+    'event': 'checkout',
+    'ecommerce': {
+      'checkout': {
+        'actionField': {
+          'step': step.step,
+          'option': step.initialOption
+        },
+        'products': products.map(product => ({
+          'name': product.name,
+          'id': product.id,
+          'price': product.price,
+          'category': product.category,
+          'quantity': 1,
         })),
       },
     },
@@ -181,17 +184,20 @@ const sendCheckoutStepOptionEvent = (data, cart) => {
   // });
   //
   // window['ga'](`${trackingName}.send`, {
-  //   hitType: "event",
-  //   eventCategory: "ecommerce",
-  //   eventAction: "set checkout step",
+  //   hitType: 'event',
+  //   eventCategory: 'ecommerce',
+  //   eventAction: 'set checkout step',
   //   eventLabel: step.option,
   // });
 
   window['dataLayer'].push({
-    event: 'checkoutOption',
-    ecommerce: {
-      checkout_option: {
-        actionField: {step: step.step, option: step.option},
+    'event': 'checkoutOption',
+    'ecommerce': {
+      'checkout_option': {
+        'actionField': {
+          'step': step.step,
+          'option': step.option
+        },
       },
     },
   });
@@ -208,28 +214,28 @@ const sendPurchaseCartEvent = (data, cart, amount) => {
   // });
 
   // window['ga'](`${trackingName}.send`, {
-  //   hitType: "event",
-  //   eventCategory: "ecommerce",
-  //   eventAction: "checkout complete",
+  //   hitType: 'event',
+  //   eventCategory: 'ecommerce',
+  //   eventAction: 'checkout complete',
   //   eventLabel: data.type,
   // });
 
   const products = getProducts(cart);
 
   window['dataLayer'].push({
-    ecommerce: {
-      purchase: {
-        actionField: {
-          id: data.id,                        // Transaction ID. Required for purchases and refunds.
-          affiliation: data.type,
-          revenue: amount.total,              // Total transaction value (incl. tax and shipping)
+    'ecommerce': {
+      'purchase': {
+        'actionField': {
+          'id': data.id,                        // Transaction ID. Required for purchases and refunds.
+          'affiliation': data.type,
+          'revenue': amount.total,              // Total transaction value (incl. tax and shipping)
         },
-        products: products.map(product => ({
-          name: product.name,
-          id: product.id,
-          price: product.price,
-          category: product.category,
-          quantity: 1,
+        'products': products.map(product => ({
+          'name': product.name,
+          'id': product.id,
+          'price': product.price,
+          'category': product.category,
+          'quantity': 1,
         })),
       },
     },
