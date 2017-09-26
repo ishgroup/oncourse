@@ -11,7 +11,7 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     case GET_PAGES_FULFILLED:
       return {
         ...state,
-        pages: action.payload,
+        items: action.payload,
       };
 
     case SAVE_PAGE_FULFILLED: {
@@ -19,14 +19,14 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
 
       return {
         ...state,
-        pages: state.pages.map(page => page.id === id ? {...page, ...props} : page),
+        items: state.items.map(page => page.id === id ? {...page, ...props} : page),
       };
     }
 
     case DELETE_PAGE_FULFILLED: {
       const id = action.payload;
-      const index = state.pages.findIndex(page => page.id === id);
-      const newPages = state.pages;
+      const index = state.items.findIndex(page => page.id === id);
+      const newPages = state.items;
 
       if (index !== -1) {
         newPages.splice(index, 1);
@@ -34,7 +34,7 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
 
       return {
         ...state,
-        pages: newPages,
+        items: newPages,
       };
     }
 

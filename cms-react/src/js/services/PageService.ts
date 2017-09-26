@@ -1,5 +1,6 @@
 import {PageApi} from "../http/PageApi";
 import {Page} from "../model";
+import {State} from "../reducers/state";
 
 class PageService {
   readonly pageApi = new PageApi();
@@ -8,7 +9,7 @@ class PageService {
     return this.pageApi.getPages();
   }
 
-  public savePage(props, state): Promise<Page[]> {
+  public savePage(props, state: State): Promise<Page[]> {
     return this.pageApi.savePage(this.buildSavePageRequest(props, state));
   }
 
@@ -16,8 +17,8 @@ class PageService {
     return this.pageApi.deletePage(id);
   }
 
-  public buildSavePageRequest(props, state) {
-    const page = state.page.pages.find(p => p.id === props.id);
+  public buildSavePageRequest(props, state: State) {
+    const page = state.page.items.find(p => p.id === props.id);
     return {
       ...page,
       ...props,

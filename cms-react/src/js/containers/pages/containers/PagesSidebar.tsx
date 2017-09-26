@@ -48,7 +48,7 @@ export class PagesSidebar extends React.Component<Props, any> {
 }
 
 const mapStateToProps = state => ({
-  pages: state.page.pages,
+  pages: state.page.items,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

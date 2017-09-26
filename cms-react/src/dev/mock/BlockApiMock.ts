@@ -7,15 +7,18 @@ export function blockApiMock(mock) {
     [
       {
         id: 1,
-        title: 'Block - 1',
+        title: 'Header',
+        html: "<div><h1>Header Title</h1></div>",
       },
       {
         id: 2,
-        title: 'Block - 2',
+        title: 'Footer',
+        html: "<div><footer>Lorem ipsum dolor sit amet.</footer></div>",
       },
       {
         id: 3,
-        title: 'Block - 3',
+        title: 'Content',
+        html: "<div><ul><li>Lorem ipsum dolor sit amet.</li><li>Lorem ipsum.</li><li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li></ul></div>",
       },
     ],
   ));

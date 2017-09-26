@@ -1,5 +1,6 @@
 import {BlockApi} from "../http/BlockApi";
 import {Block} from "../model";
+import {State} from "../reducers/state";
 
 class BlockService {
   readonly blockApi = new BlockApi();
@@ -8,7 +9,7 @@ class BlockService {
     return this.blockApi.getBlocks();
   }
 
-  public saveBlock(props, state): Promise<Block[]> {
+  public saveBlock(props, state: State): Promise<Block[]> {
     return this.blockApi.saveBlock(this.buildSaveBlockRequest(props, state));
   }
 
@@ -16,8 +17,8 @@ class BlockService {
     return this.blockApi.deleteBlock(id);
   }
 
-  public buildSaveBlockRequest(props, state) {
-    const block = state.block.blocks.find(p => p.id === props.id);
+  public buildSaveBlockRequest(props, state: State) {
+    const block = state.block.items.find(p => p.id === props.id);
     return {
       ...block,
       ...props,

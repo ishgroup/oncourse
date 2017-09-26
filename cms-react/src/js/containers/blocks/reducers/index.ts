@@ -11,7 +11,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
     case GET_BLOCKS_FULFILLED:
       return {
         ...state,
-        blocks: action.payload,
+        items: action.payload,
       };
 
     case SAVE_BLOCK_FULFILLED: {
@@ -19,14 +19,14 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
 
       return {
         ...state,
-        blocks: state.blocks.map(block => block.id === id ? {...block, ...props} : block),
+        items: state.items.map(block => block.id === id ? {...block, ...props} : block),
       };
     }
 
     case DELETE_BLOCK_FULFILLED: {
       const id = action.payload;
-      const index = state.blocks.findIndex(block => block.id === id);
-      const newBlocks = state.blocks;
+      const index = state.items.findIndex(block => block.id === id);
+      const newBlocks = state.items;
 
       if (index !== -1) {
         newBlocks.splice(index, 1);
@@ -34,7 +34,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
 
       return {
         ...state,
-        blocks: newBlocks,
+        items: newBlocks,
       };
     }
 
