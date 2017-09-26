@@ -9,7 +9,7 @@ import {Phase} from "../../reducers/State";
 const PropsBy = (state: IshState): any => {
   return {
     response: state.checkout.payment.value,
-    successLink: state.preferences.successLink,
+    successLink: state.config.paymentSuccessURL,
     resetOnInit: state.checkout.payment.resetOnInit,
   };
 };

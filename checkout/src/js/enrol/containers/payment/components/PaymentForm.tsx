@@ -238,8 +238,8 @@ const mapStateToProps = (state: IshState) => {
     fetching: state.checkout.payment.fetching,
     corporatePassAvailable: state.preferences.corporatePassEnabled,
     conditions: {
-      refundPolicyUrl: state.preferences.refundPolicyUrl,
-      featureEnrolmentDisclosure: state.preferences.featureEnrolmentDisclosure,
+      refundPolicyUrl: state.config.termsAndConditions,
+      featureEnrolmentDisclosure: state.config.featureEnrolmentDisclosure,
     },
   };
 };

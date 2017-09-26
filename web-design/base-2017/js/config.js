@@ -35,6 +35,7 @@ checkout_config = {
   // Check the user ticks the 'accept terms' checkbox, the following link is available to them to see those terms
   // It can be a relative or absolute URL
   termsAndConditions: "/termsAndConditions",
+  featureEnrolmentDisclosure: "/policies/enrolment",
 
   // After the user is shown the payment successful page, they can be redirected to another URL of your choosing
   // It can be a relative or absolute URL

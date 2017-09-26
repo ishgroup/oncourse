@@ -15,7 +15,6 @@ export class PreferenceApiMock extends PreferenceApi {
       corporatePassEnabled: true,
       successLink: '/courses',
       refundPolicyUrl: '/courses',
-      featureEnrolmentDisclosure: '/products',
     });
   }
 }

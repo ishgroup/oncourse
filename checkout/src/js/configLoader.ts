@@ -5,9 +5,15 @@ const DEFAULT_CONFIG_KEY = 'checkout_config';
 
 export class WillowConfig {
   public checkoutPath?: string;
+  public paymentSuccessURL?: string;
+  public termsAndConditions?: string;
+  public featureEnrolmentDisclosure?: string;
 
   constructor(props) {
     this.checkoutPath = props.checkoutPath || DefaultConfig.CHECKOUT_PATH;
+    this.paymentSuccessURL = props.paymentSuccessURL || DefaultConfig.PAYMENT_SUCCESS_URL;
+    this.termsAndConditions = props.termsAndConditions || DefaultConfig.TERMS_AND_CONDITIONS;
+    this.featureEnrolmentDisclosure = props.featureEnrolmentDisclosure || DefaultConfig.FEATURE_ENROLMENT_DISCLOSURE;
   }
 }
 
