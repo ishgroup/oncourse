@@ -223,6 +223,7 @@ const sendPurchaseCartEvent = (data, cart, amount) => {
   const products = getProducts(cart);
 
   window['dataLayer'].push({
+    'event': 'purchase',
     'ecommerce': {
       'purchase': {
         'actionField': {
