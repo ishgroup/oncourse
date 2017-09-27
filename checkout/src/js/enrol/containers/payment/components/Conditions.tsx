@@ -38,9 +38,9 @@ export class Conditions extends React.Component<Props, any> {
                   <span>
                       I have read the
                       <a
-                        className="nyromodal"
                         title="Student information"
-                        href={`${featureEnrolmentDisclosure}?wrap=false`}
+                        href={`${featureEnrolmentDisclosure}`}
+                        target="_blank"
                       > Student Information </a>
                     or have had it explained to me, and I agree to accept these  conditions.{' '}
                     </span>
