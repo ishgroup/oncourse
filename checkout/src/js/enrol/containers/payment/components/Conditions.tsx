@@ -42,12 +42,12 @@ export class Conditions extends React.Component<Props, any> {
                         title="Student information"
                         href={`${featureEnrolmentDisclosure}?wrap=false`}
                       > Student Information </a>
-                    or have had it explained to me, and I agree to accept these  conditions.
+                    or have had it explained to me, and I agree to accept these  conditions.{' '}
                     </span>
                   }
 
                   {refundPolicyUrl &&
-                  <span>
+                    <span>
                       I understand the <a href={refundPolicyUrl} target="_blank"> enrolment, sale and refund policy</a>.
                     </span>
                   }
