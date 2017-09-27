@@ -1,6 +1,7 @@
 import React from 'react';
 import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
 import {Block as BlockModel} from "../../../model";
+import {Editor} from "../../../common/components/Editor";
 
 interface Props {
   block: BlockModel;
@@ -8,7 +9,6 @@ interface Props {
 }
 
 export class Block extends React.Component<Props, any> {
-  private editor;
 
   constructor(props) {
     super(props);
@@ -19,28 +19,16 @@ export class Block extends React.Component<Props, any> {
     };
   }
 
-  componentDidMount() {
-    this.initEventsHandler();
-  }
-
-  componentWillReceiveProps(props) {
-    setTimeout(() => this.initEventsHandler(), 300);
-  }
-
-  initEventsHandler() {
-    this.editor.querySelector('.editor-area').addEventListener('click', e => this.onClickArea(e));
-  }
-
   onClickArea(e) {
     this.setState({
       editMode: true,
-      html: this.editor.querySelector('.editor-area').innerHTML,
-      draftHtml: this.editor.querySelector('.editor-area').innerHTML,
+      html: e.currentTarget.querySelector('.editor-area').innerHTML,
+      draftHtml: e.currentTarget.querySelector('.editor-area').innerHTML,
     });
   }
 
-  onChangeArea(e) {
-    this.setState({draftHtml: e.target.value});
+  onChangeArea(val) {
+    this.setState({draftHtml: val});
   }
 
   onSave() {
@@ -56,8 +44,6 @@ export class Block extends React.Component<Props, any> {
       editMode: false,
       draftHtml: block.html,
     });
-
-    setTimeout(() => this.initEventsHandler(), 300);
   }
 
   render() {
@@ -68,13 +54,10 @@ export class Block extends React.Component<Props, any> {
         {this.state.editMode &&
           <div>
             <FormGroup>
-                <textarea
-                  className="form-control"
-                  name="block-editor"
-                  rows={20}
-                  value={this.state.draftHtml}
-                  onChange={e => this.onChangeArea(e)}
-                />
+              <Editor
+                value={this.state.draftHtml}
+                onChange={val => this.onChangeArea(val)}
+              />
             </FormGroup>
 
             <FormGroup>
@@ -85,11 +68,9 @@ export class Block extends React.Component<Props, any> {
 
         }
 
-        <div ref={editor => this.editor = editor}>
+        <div onClick={e => this.onClickArea(e)}>
           {!this.state.editMode &&
-            <div className="editor-area">
-              <div dangerouslySetInnerHTML={{__html: block.html}} />
-            </div>
+            <div className="editor-area" dangerouslySetInnerHTML={{__html: block.html}} />
           }
         </div>
 

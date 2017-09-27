@@ -1,14 +1,15 @@
 import React from 'react';
 import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
 import {Page as PageModel} from "../../../model";
+import {Editor} from "../../../common/components/Editor";
 
 interface PageProps {
   page: PageModel;
   onSave: (pageId, html) => void;
 }
 
+
 export class Page extends React.Component<PageProps, any> {
-  private editor;
 
   constructor(props) {
     super(props);
@@ -19,34 +20,22 @@ export class Page extends React.Component<PageProps, any> {
     };
   }
 
-  componentDidMount() {
-    this.initEventsHandler();
-  }
-
-  componentWillReceiveProps(props) {
-    setTimeout(() => this.initEventsHandler(), 300);
-  }
-
-  initEventsHandler() {
-    this.editor.querySelector('.editor-area').addEventListener('click', e => this.onClickArea(e));
-  }
-
   onClickArea(e) {
     this.setState({
       editMode: true,
-      html: this.editor.querySelector('.editor-area').innerHTML,
-      draftHtml: this.editor.querySelector('.editor-area').innerHTML,
+      html: e.currentTarget.querySelector('.editor-area').innerHTML,
+      draftHtml: e.currentTarget.querySelector('.editor-area').innerHTML,
     });
   }
 
-  onChangeArea(e) {
-    this.setState({draftHtml: e.target.value});
+  onChangeArea(val) {
+    this.setState({draftHtml: val});
   }
 
   onSave() {
     const {onSave, page} = this.props;
     this.setState({editMode: false});
-    onSave(page.id, `<div class='editor-area'>${this.state.draftHtml}</div>`);
+    onSave(page.id, this.state.draftHtml);
   }
 
   onCancel() {
@@ -56,8 +45,6 @@ export class Page extends React.Component<PageProps, any> {
       editMode: false,
       draftHtml: page.html,
     });
-
-    setTimeout(() => this.initEventsHandler(), 300);
   }
 
   render() {
@@ -68,13 +55,10 @@ export class Page extends React.Component<PageProps, any> {
         {this.state.editMode &&
         <div>
           <FormGroup>
-              <textarea
-                className="form-control"
-                name="page-editor"
-                rows={20}
-                value={this.state.draftHtml}
-                onChange={e => this.onChangeArea(e)}
-              />
+            <Editor
+              value={this.state.draftHtml}
+              onChange={val => this.onChangeArea(val)}
+            />
           </FormGroup>
 
           <FormGroup>
@@ -85,9 +69,9 @@ export class Page extends React.Component<PageProps, any> {
 
         }
 
-        <div ref={editor => this.editor = editor}>
+        <div onClick={e => this.onClickArea(e)}>
           {!this.state.editMode &&
-          <div dangerouslySetInnerHTML={{__html: page.html}} />
+            <div className="editor-area" dangerouslySetInnerHTML={{__html: page.html}} />
           }
         </div>
 

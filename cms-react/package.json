@@ -60,6 +60,7 @@
     "moment": "2.18.1",
     "normalizr": "3.2.3",
     "react": "15.6.1",
+    "react-ace": "^5.2.1",
     "react-addons-css-transition-group": "15.6.0",
     "react-addons-transition-group": "15.6.0",
     "react-dom": "15.6.1",

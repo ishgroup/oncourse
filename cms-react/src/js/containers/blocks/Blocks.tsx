@@ -9,6 +9,7 @@ interface Props {
   blocks: BlockModel[];
   onInit: () => any;
   match?: any;
+  onEditHtml: (id, html) => any;
 }
 
 export class Blocks extends React.Component<Props, any> {
@@ -18,14 +19,14 @@ export class Blocks extends React.Component<Props, any> {
   }
 
   render() {
-    const {match, blocks} = this.props;
+    const {match, blocks, onEditHtml} = this.props;
 
     return (
       <div>
         {match.params.id &&
         <Block
           block={blocks.find(block => block.id == match.params.id)}
-          onSave={() => undefined}
+          onSave={onEditHtml}
         />
         }
       </div>
@@ -40,6 +41,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getBlocks()),
+    onEditHtml: (id, html) => dispatch(saveBlock(id, {html})),
   };
 };
 
