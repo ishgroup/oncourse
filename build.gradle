@@ -121,7 +121,8 @@ allprojects {
 	}
 
 	test {
-		systemProperties 'java.awt.headless': 'true'
+		systemProperties 'java.awt.headless': 'true',
+		    'java.locale.providers': 'COMPAT,SPI'
 		maxHeapSize = '1024m'
 
 		// max number of parallel test executors, default to 4

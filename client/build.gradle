@@ -66,6 +66,7 @@ appBundler {
                   "-DJFileChooser.packageIsTraversable=true",
                   "-Dapple.awt.antialiasing=true",
                   "-Dapple.awt.showGrowBox=true",
+				  "-Djava.locale.providers=COMPAT,SPI",
                   "-Xmx${project.maxmemoryClient}"]
 }
 
