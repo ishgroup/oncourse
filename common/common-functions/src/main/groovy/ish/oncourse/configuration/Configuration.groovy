@@ -4,7 +4,7 @@ class Configuration {
 
     static final String CONFIG_FILE_NAME = 'application.properties'
     static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
-    static final String ZK_HOST_PROPERTY = 'zk.host.property'
+    public static final String ZK_HOST_PROPERTY = 'zk.host.property'
     static final String JETTY_PORT_PROPERTY = 'bq.jetty.connector.port'
     static final String JETTY_HOST_PROPERTY = 'bq.jetty.connector.host'
     static final String JDBC_URL_PROPERTY = 'bq.jdbc.willow.url'

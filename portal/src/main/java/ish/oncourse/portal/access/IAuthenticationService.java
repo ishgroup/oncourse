@@ -68,6 +68,18 @@ public interface IAuthenticationService {
 	 * @return
 	 */
 	Contact getUser();
+
+	/**
+	 * Gets selected child.
+	 * @return
+	 */
+	Contact getSelectedUser();
+
+	/**
+	 * Set selected child.
+	 * @return
+	 */
+	void selectUser(Contact contact);
 	
 	/**
 	 * Performs logout, cleanups cookies, invalidates http session.

@@ -5,9 +5,7 @@ import io.bootique.jdbc.DataSourceFactory;
 import ish.oncourse.configuration.ISHHealthCheckServlet;
 import ish.oncourse.model.services.ModelModule;
 import ish.oncourse.portal.PortalModule;
-import ish.oncourse.portal.access.AccessController;
-import ish.oncourse.portal.access.AuthenticationService;
-import ish.oncourse.portal.access.IAuthenticationService;
+import ish.oncourse.portal.access.*;
 import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
 import ish.oncourse.portal.services.application.IPortalApplicationService;
 import ish.oncourse.portal.services.application.PortalApplicationServiceImpl;
@@ -129,7 +127,8 @@ public class AppModule {
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(IWebContentService.class, WebContentService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
-
+		
+		binder.bind(IZKService.class, ZKService.class).scope(ScopeConstants.DEFAULT);
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(IDiscussionService.class, DiscussionServiceImpl.class);
 		binder.bind(AccessController.class).withId("AccessController");
@@ -138,7 +137,7 @@ public class AppModule {
 		binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
 		binder.bind(IPortalApplicationService.class, PortalApplicationServiceImpl.class);
 
-		binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
+//		binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
 		binder.bind(TapestrySessionFactory.class, ISHTapestrySessionFactoryImpl.class).withId("ISHTapestrySessionFactoryImpl");
 		binder.bind(AccessLinksValidatorFactory.class, AccessLinksValidatorFactory.class);
 		binder.bind(CacheManager.class, new CacheManagerBuilder());
@@ -221,10 +220,10 @@ public class AppModule {
 	}
 
 	public void contributeMasterDispatcher(OrderedConfiguration<Dispatcher> configuration,
-										   @InjectService("AccessController") Dispatcher accessController,
-										   @InjectService("ExpiredSessionController") Dispatcher expiredSessionController) {
+										   @InjectService("AccessController") Dispatcher accessController) {
+//										   @InjectService("ExpiredSessionController") Dispatcher expiredSessionController) {
 		configuration.add("AccessController", accessController, "before:PageRender");
-		configuration.add("ExpiredSessionController", expiredSessionController, "before:ComponentEvent");
+//		configuration.add("ExpiredSessionController", expiredSessionController, "before:ComponentEvent");
 	}
 
 	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {

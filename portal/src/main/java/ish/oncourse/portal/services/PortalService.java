@@ -97,8 +97,7 @@ public class PortalService implements IPortalService {
 
     @Override
     public Contact getContact() {
-        Contact selectedContact = getSelectedContact();
-        return selectedContact == null ? getAuthenticatedUser() : selectedContact;
+        return authenticationService.getSelectedUser();
     }
 
     @Override
@@ -783,10 +782,6 @@ public class PortalService implements IPortalService {
         return Collections.unmodifiableList(result);
     }
 
-    public Contact getSelectedContact() {
-        org.apache.tapestry5.services.Session session = request.getSession(false);
-        return session != null ? (Contact) session.getAttribute(ATTR_selectedContact) : null;
-    }
 
     public boolean isSelectedContact(Contact contact) {
         return getContact().getId().equals(contact.getId());
@@ -795,7 +790,7 @@ public class PortalService implements IPortalService {
     public void selectContact(Contact contact) {
         org.apache.tapestry5.services.Session session = request.getSession(false);
         if (session != null) {
-            session.setAttribute(ATTR_selectedContact, contact);
+            authenticationService.selectUser(contact);
             session.setAttribute(ATTR_usiController, null);
             session.setAttribute(ATTR_usiControllerModel, null);
         }

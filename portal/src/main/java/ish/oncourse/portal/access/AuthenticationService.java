@@ -6,11 +6,10 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SelectById;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -24,13 +23,16 @@ public class AuthenticationService implements IAuthenticationService {
 	private ICayenneService cayenneService;
 
 	@Inject
-	private ApplicationStateManager applicationStateManager;
-
+	private IZKService zkService;
+	
 	@Inject
 	private Request request;
 
 	@Inject
 	private ICookiesService cookieService;
+
+	private static final String SESSION_ID = "PORTAL_SESSION";
+
 
 	/**
 	 * @see IAuthenticationService#authenticate(String, String, String, String)
@@ -64,7 +66,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 		if (supportPassword != null) {
 			Contact contact = cayenneService.sharedContext().localObject(supportPassword.getContact());
-			applicationStateManager.set(Contact.class, contact);
+			cookieService.writeCookieValue(SESSION_ID, zkService.createContactSession(contact.getId()));
 			return true;
 		} else {
 			return true;
@@ -130,7 +132,44 @@ public class AuthenticationService implements IAuthenticationService {
 	 * @see IAuthenticationService#getUser()
 	 */
 	public Contact getUser() {
-		return applicationStateManager.getIfExists(Contact.class);
+		String sessionId = cookieService.getCookieValue(SESSION_ID);
+		
+		if (sessionId == null) {
+			return null;
+		}
+
+		Long contactId = zkService.getContactId(sessionId);
+		if (contactId != null) {
+			return SelectById.query(Contact.class, contactId).selectOne(cayenneService.sharedContext());
+		} else {
+			return null;
+		}
+	}
+
+
+	public Contact getSelectedUser() {
+		Contact authenticatedContact = getUser();
+		if (authenticatedContact == null) {
+			return null;
+		} 
+		String sessionId = cookieService.getCookieValue(SESSION_ID);
+		Long childId =  zkService.getSelectedChildId(sessionId, authenticatedContact.getId());
+		
+		if (childId == null) {
+			return authenticatedContact;
+		} else {
+			return SelectById.query(Contact.class, childId).selectOne(cayenneService.sharedContext());
+		}
+		
+	}
+
+	public void selectUser(Contact contact) {
+		Contact authenticatedContact = getUser();
+		if (authenticatedContact == null) {
+			throw new IllegalArgumentException("Authenticated user missed");
+		}
+		String sessionId = cookieService.getCookieValue(SESSION_ID);
+		zkService.selectChild(sessionId, authenticatedContact.getId(), contact.getId());
 	}
 
 	/**
@@ -156,16 +195,17 @@ public class AuthenticationService implements IAuthenticationService {
 
 		localUser.setLastLoginTime(new Date());
 		context.commitChanges();
-
-		applicationStateManager.set(Contact.class, user);
+		cookieService.writeCookieValue(SESSION_ID, zkService.createContactSession(user.getId()));
 	}
 
 	/**
 	 * @see IAuthenticationService#logout()
 	 */
 	public void logout() {
-		applicationStateManager.set(Contact.class, null);
+		String sessionId = cookieService.getCookieValue(SESSION_ID);
 
+		zkService.destroySession(sessionId);
+		
 		Session session = request.getSession(false);
 
 		if (session != null) {
