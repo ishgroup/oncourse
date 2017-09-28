@@ -2,10 +2,12 @@
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-package ish.common.types;
+package ish.common.types
 
-import ish.common.util.DisplayableExtendedEnumeration;
-import ish.oncourse.API;
+import ish.common.util.DisplayableExtendedEnumeration
+import ish.oncourse.API
+
+import static ish.common.types.Mask.*
 
 /**
  * Keycode values are used for access rights. Each value specified is attached to an entity or a specific part of user interface.
@@ -14,7 +16,7 @@ import ish.oncourse.API;
  * Some Keycodes have rights which cannot be disabled and other rights which can never be enabled.
  */
 @API
-public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
+enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 
 	/**
 	 * Database value: 1
@@ -24,7 +26,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: create & delete
 	 */
 	@API
-	NTIS_DATA(1, "Qualification reference data", Mask.VIEW + Mask.PRINT, Mask.CREATE + Mask.DELETE),
+	NTIS_DATA(1, "Qualification reference data", VIEW + PRINT, CREATE + DELETE),
 
 	/**
 	 * Database value: 2
@@ -49,7 +51,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: delete
 	 */
 	@API
-	ENROLMENT(4, "Enrolment", Mask.NONE, Mask.DELETE),
+	ENROLMENT(4, "Enrolment", NONE, DELETE),
 
 	/**
 	 * Database value: 5
@@ -57,7 +59,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Allow discount to be entered manually in Quick Enrol. Also allows negative charges' in QE.
 	 */
 	@API
-	ENROLMENT_DISCOUNT(5, "Custom enrolment discount", Mask.ALL - Mask.VIEW), // 
+	ENROLMENT_DISCOUNT(5, "Custom enrolment discount", ALL - VIEW), //
 
 	/**
 	 * Database value: 6
@@ -66,7 +68,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	SITE(6, "Site", Mask.VIEW),
+	SITE(6, "Site", VIEW),
 
 	/**
 	 * Database value: 7
@@ -75,7 +77,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	ROOM(7, "Room", Mask.VIEW),
+	ROOM(7, "Room", VIEW),
 
 	/**
 	 * Database value: 8
@@ -84,7 +86,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	COURSE(8, "Course", Mask.VIEW),
+	COURSE(8, "Course", VIEW),
 	
 	/**
 	 * Database value: 9
@@ -93,7 +95,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	VET_COURSE(9, "VET Course details", Mask.ALL - Mask.EDIT),
+	VET_COURSE(9, "VET Course details", ALL - EDIT),
 
 	/**
 	 * Database value: 10
@@ -102,7 +104,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	CLASS(10, "Class", Mask.VIEW),
+	CLASS(10, "Class", VIEW),
 
 	/**
 	 * Database value: 11
@@ -111,7 +113,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	OUTCOMES(11, "Enrolment outcomes", Mask.ALL - Mask.EDIT),
+	OUTCOMES(11, "Enrolment outcomes", ALL - EDIT),
 
 	/**
 	 * Database value: 12
@@ -129,7 +131,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: print
 	 */
 	@API
-	SESSION(13, "Session", Mask.VIEW, Mask.PRINT),
+	SESSION(13, "Session", VIEW, PRINT),
 
 	/**
 	 * Database value: 14
@@ -140,7 +142,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	DISCOUNT(14, "Discount"),
 	
 	@Deprecated
-	PROMO_CODE(15, "Promocode-obsolete", Mask.NONE, Mask.ALL),
+	PROMO_CODE(15, "Promocode-obsolete", NONE, ALL),
 
 	/**
 	 * Database value: 16
@@ -149,7 +151,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	CONTACT(16, "Contact", Mask.VIEW),
+	CONTACT(16, "Contact", VIEW),
 
 	/**
 	 * Database value: 19
@@ -157,7 +159,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Only the admin user is able to get to the access rights management views.
 	 */
 	@API
-	ACL_ROLE(19, "Access", Mask.NONE, Mask.ALL),
+	ACL_ROLE(19, "Access", NONE, ALL),
 
 	/**
 	 * Database value: 20
@@ -166,10 +168,10 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: delete
 	 */
 	@API
-	SYSTEMUSER(20, "Users", Mask.NONE, Mask.DELETE),
+	SYSTEMUSER(20, "Users", NONE, DELETE),
 	
 	@Deprecated
-	PURCHASE(21, "Purchase", Mask.NONE, Mask.DELETE),
+	PURCHASE(21, "Purchase", NONE, DELETE),
 
 	/**
 	 * Database value: 22
@@ -178,7 +180,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: delete
 	 */
 	@API
-	INVOICE(22, "Invoice", Mask.NONE, Mask.DELETE),
+	INVOICE(22, "Invoice", NONE, DELETE),
 
 	/**
 	 * Database value: 23
@@ -186,7 +188,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Right to create a credit note (not part of cancelling class)
 	 */
 	@API
-	INVOICE_CREDIT(23, "Credit note", Mask.ALL - Mask.CREATE),
+	INVOICE_CREDIT(23, "Credit note", ALL - CREATE),
 
 	/**
 	 * Database value: 24
@@ -194,7 +196,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Permission relates only to manual payment in records, not those created during Quick Enrol.
 	 */
 	@API
-	PAYMENT_IN(24, "Payment in", Mask.EDIT, Mask.DELETE),
+	PAYMENT_IN(24, "Payment in", EDIT, DELETE),
 
 	/**
 	 * Database value: 25
@@ -203,7 +205,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: delete
 	 */
 	@API
-	PAYMENT_OUT(25, "Payment out", Mask.EDIT, Mask.DELETE),
+	PAYMENT_OUT(25, "Payment out", EDIT, DELETE),
 
 	/**
 	 * Database value: 26
@@ -212,7 +214,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	BANKING(26, "Banking", Mask.ALL - Mask.VIEW),
+	BANKING(26, "Banking", ALL - VIEW),
 
 	/**
 	 * Database value: 27
@@ -221,7 +223,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	RECONCILIATION(27, "Reconciliation", Mask.ALL - Mask.VIEW),
+	RECONCILIATION(27, "Reconciliation", ALL - VIEW),
 
 	/**
 	 * Database value: 28
@@ -238,7 +240,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: delete & edit
 	 */
 	@API
-	TRANSACTION(29, "Transaction", Mask.ALL - Mask.VIEW - Mask.EDIT - Mask.DELETE, Mask.DELETE | Mask.EDIT),
+	TRANSACTION(29, "Transaction", ALL - VIEW - EDIT - DELETE, DELETE | EDIT),
 
 	/**
 	 * Database value: 30
@@ -247,7 +249,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view & print
 	 */
 	@API
-	REPORT(30, "Report", Mask.VIEW + Mask.PRINT),
+	REPORT(30, "Report", VIEW + PRINT),
 
 	/**
 	 * Database value: 31
@@ -255,7 +257,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view & print
 	 */
 	@API
-	ATTACHMENT_INFO(31, "Documents", Mask.VIEW + Mask.PRINT),
+	ATTACHMENT_INFO(31, "Documents", VIEW + PRINT),
 
 	/**
 	 * Database value: 32
@@ -264,10 +266,10 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	TAG(32, "Tag", Mask.VIEW + Mask.PRINT),
+	TAG(32, "Tag", VIEW + PRINT),
 
 	@Deprecated
-	WEBPAGE(33, "Web page", Mask.VIEW + Mask.PRINT),
+	WEBPAGE(33, "Web page", VIEW + PRINT),
 
 	/**
 	 * Database value: 34
@@ -276,7 +278,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	MAILING_LIST(34, "Mailing list", Mask.VIEW + Mask.PRINT),
+	MAILING_LIST(34, "Mailing list", VIEW + PRINT),
 
 	/**
 	 * Database value: 35
@@ -284,7 +286,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Permission to modify available concessions. This permission is not needed to add concession types to contact records.
 	 */
 	@API
-	CONCESSION_TYPE(35, "Concession type", Mask.NONE),
+	CONCESSION_TYPE(35, "Concession type", NONE),
 	
 	/**
 	 * Database value: 36
@@ -293,13 +295,13 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	PRODUCT(36, "Product", Mask.VIEW),
+	PRODUCT(36, "Product", VIEW),
 
 	/**
 	 * Database value: 37
 	 */
 	@API
-	PAY_PERIOD(37, "Pay period", Mask.NONE, Mask.CREATE + Mask.DELETE),
+	PAY_PERIOD(37, "Pay period", NONE, CREATE + DELETE),
 
 	/**
 	 * Database value: 38
@@ -307,7 +309,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * This permission relates to the creation and editing of payslips
 	 */
 	@API
-	PAYSLIP(38, "Tutor pay", Mask.NONE, Mask.NONE),
+	PAYSLIP(38, "Tutor pay", NONE, NONE),
 
 	/**
 	 * Database value: 39
@@ -333,7 +335,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	MEMBERSHIP(41, "Memberships", Mask.VIEW),
+	MEMBERSHIP(41, "Memberships", VIEW),
 	
 	/**
 	 * Database value: 42
@@ -342,7 +344,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	VOUCHER(42, "Vouchers", Mask.VIEW),
+	VOUCHER(42, "Vouchers", VIEW),
 	
 	/**
 	 * Database value: 43
@@ -351,7 +353,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	SALE(43, "Sales", Mask.VIEW),
+	SALE(43, "Sales", VIEW),
 	
 	/**
 	 * Database value: 60
@@ -359,7 +361,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * he onCourse preferences that set the default accounts for various transaction types
 	 */
 	@API
-	FINANCIAL_PREFERENCES(60, "Financial preferences", Mask.NONE, Mask.CREATE | Mask.PRINT | Mask.DELETE),
+	FINANCIAL_PREFERENCES(60, "Financial preferences", NONE, CREATE | PRINT | DELETE),
 
 	/**
 	 * Database value: 61
@@ -367,7 +369,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Relates to onCourse application preferences that affect all users
 	 */
 	@API
-	GENERAL_PREFERENCES(61, "General preferences", Mask.NONE, Mask.CREATE | Mask.PRINT | Mask.DELETE),
+	GENERAL_PREFERENCES(61, "General preferences", NONE, CREATE | PRINT | DELETE),
 
 	/**
 	 * Database value: 70
@@ -376,7 +378,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_DUPLICATE(70, "Class duplication/rollover", Mask.ALL - Mask.VIEW),
+	SPECIAL_DUPLICATE(70, "Class duplication/rollover", ALL - VIEW),
 
 	/**
 	 * Database value: 71
@@ -385,7 +387,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_CLASS_CANCEL(71, "Class cancellation", Mask.ALL - Mask.VIEW),
+	SPECIAL_CLASS_CANCEL(71, "Class cancellation", ALL - VIEW),
 
 	/**
 	 * Database value: 72
@@ -394,7 +396,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_EXPORT_XML(72, "Exporting to XML", Mask.ALL - Mask.VIEW),
+	SPECIAL_EXPORT_XML(72, "Exporting to XML", ALL - VIEW),
 
 	/**
 	 * Database value: 73
@@ -403,7 +405,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_CERTIFICATE(73, "Creating certificate from class", Mask.ALL - Mask.VIEW),
+	SPECIAL_CERTIFICATE(73, "Creating certificate from class", ALL - VIEW),
 
 	/**
 	 * Database value: 74
@@ -412,7 +414,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_SMS_50(74, "SMS up to 50 contacts", Mask.ALL - Mask.VIEW),
+	SPECIAL_SMS_50(74, "SMS up to 50 contacts", ALL - VIEW),
 
 	/**
 	 * Database value: 75
@@ -421,7 +423,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_EMAIL_50(75, "Email up to 50 contacts", Mask.ALL - Mask.VIEW),
+	SPECIAL_EMAIL_50(75, "Email up to 50 contacts", ALL - VIEW),
 
 	/**
 	 * Database value: 76
@@ -430,7 +432,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_SMS_MASS(76, "SMS over 50 contacts", Mask.ALL - Mask.VIEW),
+	SPECIAL_SMS_MASS(76, "SMS over 50 contacts", ALL - VIEW),
 
 	/**
 	 * Database value: 77
@@ -439,7 +441,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_EMAIL_MASS(77, "Email over 50 contacts", Mask.ALL - Mask.VIEW),
+	SPECIAL_EMAIL_MASS(77, "Email over 50 contacts", ALL - VIEW),
 
 	/**
 	 * Database value: 78
@@ -448,7 +450,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_DE_DUPE(78, "Contact merging", Mask.ALL - Mask.VIEW),
+	SPECIAL_DE_DUPE(78, "Contact merging", ALL - VIEW),
 
 	/**
 	 * Database value: 79
@@ -457,7 +459,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_CANCEL_TRANSFER_ENROLMENTS(79, "Enrolment cancellation and transferring", Mask.ALL - Mask.VIEW),
+	SPECIAL_CANCEL_TRANSFER_ENROLMENTS(79, "Enrolment cancellation and transferring", ALL - VIEW),
 
 	/**
 	 * Database value: 80
@@ -466,7 +468,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_AVETMISS_EXPORT(80, "Export AVETMISS", Mask.ALL - Mask.VIEW),
+	SPECIAL_AVETMISS_EXPORT(80, "Export AVETMISS", ALL - VIEW),
 
 	/**
 	 * Database value: 81
@@ -475,10 +477,10 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_IMPORT(81, "Data import", Mask.ALL - Mask.VIEW),
+	SPECIAL_IMPORT(81, "Data import", ALL - VIEW),
 
 	@Deprecated
-	SPECIAL_DET_EXPORT(82, "Export DET AVETMISS", Mask.ALL - Mask.VIEW),
+	SPECIAL_DET_EXPORT(82, "Export DET AVETMISS", ALL - VIEW),
 
 	/**
 	 * Database value: 83
@@ -487,7 +489,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_CHANGE_ADMINISTRATION_CENTRE(83, "Change administration centre", Mask.ALL - Mask.VIEW),
+	SPECIAL_CHANGE_ADMINISTRATION_CENTRE(83, "Change administration centre", ALL - VIEW),
 
 	/**
 	 * Database value: 84
@@ -505,7 +507,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	EXPORT_TEMPLATE(85, "ExportTemplate", Mask.VIEW),
+	EXPORT_TEMPLATE(85, "ExportTemplate", VIEW),
 
 	/**
 	 * Database value: 86
@@ -513,7 +515,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Setting up days (e.g. holidays) that will be marked unavailable in class timetable
 	 */
 	@API
-	UNAVAILABLE_RULE(86, "UnavailableRule", Mask.ALL), // TODO: really, who can do what?
+	UNAVAILABLE_RULE(86, "UnavailableRule", ALL),
 	
 	/**
 	 * Database value: 87
@@ -522,7 +524,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	EMAIL_TEMPLATE(87, "EmailTemplate", Mask.VIEW),
+	EMAIL_TEMPLATE(87, "EmailTemplate", VIEW),
 
 	/**
 	 * Database value: 88
@@ -539,7 +541,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_MYOB_EXPORT(89, "Export to MYOB", Mask.ALL - Mask.VIEW),
+	SPECIAL_MYOB_EXPORT(89, "Export to MYOB", ALL - VIEW),
 	
 	/**
 	 * Database value: 90
@@ -548,7 +550,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-    SPECIAL_TRIAL_BALANCE(90, "Trial balance", Mask.ALL - Mask.VIEW),
+    SPECIAL_TRIAL_BALANCE(90, "Trial balance", ALL - VIEW),
 
 	/**
 	 * Database value: 91
@@ -556,7 +558,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Ability to print certificates without a USI verified for that student
 	 */
 	@API
-	PRINT_CERTIFICATE_WITHOUT_VERIFIED_USI(91, "Print certificate without verified USI", Mask.ALL - Mask.VIEW),
+	PRINT_CERTIFICATE_WITHOUT_VERIFIED_USI(91, "Print certificate without verified USI", ALL - VIEW),
 
 	/**
 	 * Database value: 92
@@ -564,7 +566,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Ability to print certificates without a USI entered for that student
 	 */
 	@API
-	PRINT_CERTIFICATE_WITHOUT_USI(92, "Print certificate without USI", Mask.ALL - Mask.VIEW),
+	PRINT_CERTIFICATE_WITHOUT_USI(92, "Print certificate without USI", ALL - VIEW),
 
 	/**
 	 * Database value: 93
@@ -573,7 +575,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	SCRIPT_TEMPLATE(93, "Scripts", Mask.VIEW),
+	SCRIPT_TEMPLATE(93, "Scripts", VIEW),
 
 	/**
 	 * Database value: 94
@@ -582,7 +584,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	CONTACT_RELATION_TYPE(94, "Contact relation types", Mask.VIEW),
+	CONTACT_RELATION_TYPE(94, "Contact relation types", VIEW),
 
 	/**
 	 * Database value: 95
@@ -600,7 +602,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_EDIT_NOTES(96, "Edit/Delete Notes", Mask.ALL - Mask.VIEW),
+	SPECIAL_EDIT_NOTES(96, "Edit/Delete Notes", ALL - VIEW),
 
 	/**
 	 * Database value: 97
@@ -609,7 +611,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_TWO_FACTOR_AUTHENTICATION(97, "Require two factor authentication", Mask.ALL - Mask.VIEW),
+	SPECIAL_TWO_FACTOR_AUTHENTICATION(97, "Require two factor authentication", ALL - VIEW),
 
 	/**
 	 * Database value: 98
@@ -634,7 +636,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SUMMARY_EXTRACTS(101, "Summary extracts", Mask.ALL - Mask.VIEW),
+	SUMMARY_EXTRACTS(101, "Summary extracts", ALL - VIEW),
 	
 	/**
 	 * Database value: 101
@@ -643,7 +645,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	AUDIT_LOGGING(102, "Audit logging", Mask.NONE, Mask.CREATE | Mask.EDIT | Mask.DELETE),
+	AUDIT_LOGGING(102, "Audit logging", NONE, CREATE | EDIT | DELETE),
 
 
 	/**
@@ -660,15 +662,23 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Allow to access "Funding upload"
 	 */
 	@API
-	FUNDING_UPLOAD(104, "Funding upload")
+	FUNDING_UPLOAD(104, "Funding upload"),
 
-	private int value;
-	private String displayName;
-	private int alwaysAllowedMask;
-	private int neverAllowedMask;
+	/**
+	 * Database value: 105
+	 *
+	 * Allow to access private documents
+	 */
+	@API
+	PRIVATE_DOCUMENTS(105, "Private documents", NONE, PRINT + DELETE)
+
+	private int value
+	private String displayName
+	private int alwaysAllowedMask
+	private int neverAllowedMask
 
 	private KeyCode(int value, String displayName) {
-		this(value, displayName, Mask.NONE, Mask.NONE);
+		this(value, displayName, NONE, NONE)
 	}
 
 	/**
@@ -676,7 +686,7 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * @param alwaysAllowedMask bits in this mask are always set as allowed (that is, adding Mask.VIEW here means this key always allows access for view)
 	 */
 	private KeyCode(int value, String displayName, int alwaysAllowedMask) {
-		this(value, displayName, alwaysAllowedMask, Mask.NONE);
+		this(value, displayName, alwaysAllowedMask, NONE)
 	}
 
 	/**
@@ -685,18 +695,18 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * @param neverAllowedMask bits in this mask are never allowed
 	 */
 	private KeyCode(int value, String displayName, int alwaysAllowedMask, int neverAllowedMask) {
-		this.value = value;
-		this.alwaysAllowedMask = alwaysAllowedMask;
-		this.neverAllowedMask = neverAllowedMask;
-		this.displayName = displayName;
+		this.value = value
+		this.alwaysAllowedMask = alwaysAllowedMask
+		this.neverAllowedMask = neverAllowedMask
+		this.displayName = displayName
 	}
 
 	/**
 	 * @see ish.common.util.DisplayableExtendedEnumeration#getDatabaseValue()
 	 */
 	@Override
-	public Integer getDatabaseValue() {
-		return this.value;
+	Integer getDatabaseValue() {
+		return this.value
 	}
 
 	/**
@@ -704,8 +714,8 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * 
 	 * @return the alwaysAllowedMask
 	 */
-	public int getAlwaysAllowedMask() {
-		return this.alwaysAllowedMask;
+	int getAlwaysAllowedMask() {
+		return this.alwaysAllowedMask
 	}
 
 	/**
@@ -713,8 +723,8 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * 
 	 * @return the neverAllowedMask
 	 */
-	public int getNeverAllowedMask() {
-		return this.neverAllowedMask;
+	int getNeverAllowedMask() {
+		return this.neverAllowedMask
 	}
 
 	/**
@@ -723,8 +733,8 @@ public enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * @return the displayName
 	 */
 	@Override
-	public String getDisplayName() {
-		return this.displayName;
+	String getDisplayName() {
+		return this.displayName
 	}
 
 }
