@@ -11,9 +11,10 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.data.Stat;
+import org.springframework.util.SerializationUtils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ZKService implements  IZKService {
@@ -103,7 +104,8 @@ public class ZKService implements  IZKService {
             if (selectedChildId != null) {
                 remove(String.format(SELECTED_CHILD_NODE, sessionId, contactId, selectedChildId));
             }
-            getZk().create(String.format(SELECTED_CHILD_NODE, sessionId, contactId, childId),new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_WITH_TTL, new Stat(), portalSessionTimeOut);
+            byte[] timestamp = SerializationUtils.serialize(LocalDateTime.now());
+            getZk().create(String.format(SELECTED_CHILD_NODE, sessionId, contactId, childId), timestamp, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         } catch (KeeperException | InterruptedException e) {
             logger.catching(e);
             throw new RuntimeException(e);
@@ -114,8 +116,9 @@ public class ZKService implements  IZKService {
     public String createContactSession(Long contactId) {
         String sessionId = SecurityUtil.generateRandomPassword(20);
         try {
-            getZk().create(String.format(SESSION_NODE, sessionId), new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_WITH_TTL, new Stat(), portalSessionTimeOut);
-            getZk().create(String.format(CONTACT_NODE, sessionId, contactId), new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_WITH_TTL, new Stat(), portalSessionTimeOut);
+            byte[] timestamp = SerializationUtils.serialize(LocalDateTime.now());
+            getZk().create(String.format(SESSION_NODE, sessionId), timestamp, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            getZk().create(String.format(CONTACT_NODE, sessionId, contactId), timestamp, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         } catch (KeeperException | InterruptedException e) {
             logger.catching(e);
             throw new RuntimeException(e);

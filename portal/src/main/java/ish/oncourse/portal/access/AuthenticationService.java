@@ -33,7 +33,7 @@ public class AuthenticationService implements IAuthenticationService {
 	private ICookiesService cookieService;
 
 	private static final String SESSION_ID = "PORTAL_SESSION";
-
+	private static final int SESSION_ID_MAX_AGE = 86400;
 
 	/**
 	 * @see IAuthenticationService#authenticate(String, String, String, String)
@@ -67,7 +67,7 @@ public class AuthenticationService implements IAuthenticationService {
 
 		if (supportPassword != null) {
 			Contact contact = cayenneService.sharedContext().localObject(supportPassword.getContact());
-			cookieService.writeCookieValue(SESSION_ID, zkService.createContactSession(contact.getId()));
+			cookieService.writeCookieValue(SESSION_ID, zkService.createContactSession(contact.getId()), SESSION_ID_MAX_AGE);
 			return true;
 		} else {
 			return true;
