@@ -11,6 +11,7 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.data.Stat;
 import org.springframework.util.SerializationUtils;
 
 import java.io.IOException;
@@ -21,10 +22,6 @@ public class ZKService implements  IZKService {
 
  
     private static final int zkClientTimeOut = 20000;
-    /**
-     * 4  hours timeout for logged user
-     */
-    private static final int portalSessionTimeOut = 14400000;
 
     private static Logger logger = LogManager.getLogger();
 
@@ -85,7 +82,7 @@ public class ZKService implements  IZKService {
             if (children.size() == 1) {
                 //modify to keep node alive
                 Long childId = Long.valueOf(children.get(0));
-                getZk().setData(String.format(SELECTED_CHILD_NODE, sessionId, contactId, childId), new byte[0], -1);
+                getZk().setData(String.format(SELECTED_CHILD_NODE, sessionId, contactId, childId), generateExpiryDate(), -1);
                 return Long.valueOf(children.get(0));
             } else if (children.size() > 1) {
                 destroySession(sessionId);               
@@ -104,8 +101,7 @@ public class ZKService implements  IZKService {
             if (selectedChildId != null) {
                 remove(String.format(SELECTED_CHILD_NODE, sessionId, contactId, selectedChildId));
             }
-            byte[] timestamp = SerializationUtils.serialize(LocalDateTime.now());
-            getZk().create(String.format(SELECTED_CHILD_NODE, sessionId, contactId, childId), timestamp, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            getZk().create(String.format(SELECTED_CHILD_NODE, sessionId, contactId, childId), generateExpiryDate(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         } catch (KeeperException | InterruptedException e) {
             logger.catching(e);
             throw new RuntimeException(e);
@@ -116,7 +112,7 @@ public class ZKService implements  IZKService {
     public String createContactSession(Long contactId) {
         String sessionId = SecurityUtil.generateRandomPassword(20);
         try {
-            byte[] timestamp = SerializationUtils.serialize(LocalDateTime.now());
+            byte[] timestamp = generateExpiryDate();
             getZk().create(String.format(SESSION_NODE, sessionId), timestamp, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             getZk().create(String.format(CONTACT_NODE, sessionId, contactId), timestamp, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         } catch (KeeperException | InterruptedException e) {
@@ -130,12 +126,12 @@ public class ZKService implements  IZKService {
         List<String> children;
         try {
             String path = String.format(SESSION_NODE, sessionId);
-            if (getZk().exists(path, false) != null) {
+            if (valid(path)) {
                 children = getZk().getChildren(path, false);
                 if (children != null && children.size() == 1) {
                     //modify to keep node alive
                     Long contactId = Long.valueOf(children.get(0));
-                    getZk().setData(String.format(CONTACT_NODE, sessionId, contactId), new byte[0], -1);
+                    getZk().setData(String.format(CONTACT_NODE, sessionId, contactId), generateExpiryDate(), -1);
                     return contactId;
                 } else {
                     remove(path);
@@ -174,6 +170,30 @@ public class ZKService implements  IZKService {
 
         }
         getZk().delete(path, -1);
+    }
+
+    /**
+     * Keep session alive for next 4 hours
+     */
+    private byte[] generateExpiryDate() {
+        return SerializationUtils.serialize(LocalDateTime.now().plusHours(4));
+    }
+    
+    /**
+     * Check if session exist and valid (expiry date in future)
+     */
+    private boolean valid(String path) throws InterruptedException, KeeperException {
+        if (getZk().exists(path, false) != null) {
+            byte[] timestamp = getZk().getData(path, false, new Stat());
+            LocalDateTime expiryTime = (LocalDateTime) SerializationUtils.deserialize(timestamp);
+            if(expiryTime.isAfter(LocalDateTime.now())) {
+                return true;
+            }
+            remove(path);
+            return false;
+        } else {
+            return false;
+        }
     }
     
 }
