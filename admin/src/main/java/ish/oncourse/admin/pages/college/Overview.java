@@ -25,15 +25,13 @@ import org.bouncycastle.util.encoders.Base64;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 public class Overview {
 	
 	private static final Logger logger = LogManager.getLogger();
 	
-	private static final Collection<String> LICENSE_KEYS = new HashSet<>(Arrays.asList(new String[]{
+	private static final List<String> LICENSE_KEYS = Arrays.asList(
 			PreferenceController.LICENSE_ACCESS_CONTROL,
 			PreferenceController.LICENSE_LDAP,
 			PreferenceController.LICENSE_BUDGET,
@@ -42,8 +40,8 @@ public class Overview {
 			PreferenceController.LICENSE_SMS,
 			PreferenceController.LICENSE_CC_PROCESSING,
 			PreferenceController.LICENSE_PAYROLL,
-			PreferenceController.LICENSE_VOUCHER
-	}));
+			PreferenceController.LICENSE_VOUCHER,
+			PreferenceController.LICENSE_FUNDING_CONTRACT);
 	
 	@Inject
 	private ICollegeService collegeService;
