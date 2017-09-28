@@ -7,6 +7,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
@@ -134,7 +135,7 @@ public class AuthenticationService implements IAuthenticationService {
 	public Contact getUser() {
 		String sessionId = cookieService.getCookieValue(SESSION_ID);
 		
-		if (sessionId == null) {
+		if (StringUtils.trimToNull(sessionId) == null) {
 			return null;
 		}
 

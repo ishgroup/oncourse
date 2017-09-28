@@ -44,9 +44,11 @@ public class ZKService implements  IZKService {
         zooKeeper = createZk();
     }
     
-    private ZooKeeper getZk() {
+    private ZooKeeper getZk() throws InterruptedException {
         if (dead) {
+            zooKeeper.close();
             zooKeeper = createZk();
+            dead = false;
         } 
         return zooKeeper;
     }
@@ -80,6 +82,9 @@ public class ZKService implements  IZKService {
             String path = String.format(CONTACT_NODE, sessionId, contactId);
             List<String> children = getZk().getChildren(path, false);
             if (children.size() == 1) {
+                //modify to keep node alive
+                Long childId = Long.valueOf(children.get(0));
+                getZk().setData(String.format(SELECTED_CHILD_NODE, sessionId, contactId, childId), new byte[0], -1);
                 return Long.valueOf(children.get(0));
             } else if (children.size() > 1) {
                 destroySession(sessionId);               
