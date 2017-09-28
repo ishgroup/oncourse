@@ -51,7 +51,7 @@ export class Page extends React.Component<PageProps, any> {
     const {page} = this.props;
 
     return (
-      <div className="content-white">
+      <div>
         {this.state.editMode &&
         <div>
           <FormGroup>

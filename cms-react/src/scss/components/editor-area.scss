@@ -1,10 +1,10 @@
 .editor-area {
   border: 2px solid transparent;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 2px;
   cursor: pointer;
   
   &:hover {
-    border: 2px solid $gray;
+    border: 2px solid $primary;
   }
 }

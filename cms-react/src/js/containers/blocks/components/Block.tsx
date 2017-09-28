@@ -50,7 +50,7 @@ export class Block extends React.Component<Props, any> {
     const {block} = this.props;
 
     return (
-      <div className="content-white">
+      <div>
         {this.state.editMode &&
           <div>
             <FormGroup>

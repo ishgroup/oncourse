@@ -1,8 +1,11 @@
 .sidebar-wrapper {
-  background: $main-blue;
+  background-color: rgb(243, 243, 243);
+  color: rgba(0, 0, 0, 0.87);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
   transition: all .2s;
   padding: 0;
-  min-width: 60px;
+  min-width: 70px;
 }
 
 .sidebar {
@@ -62,7 +65,7 @@
   
   &--slim {
     width: 4%;
-    min-width: 60px;
+    min-width: 70px;
     
     li:not(:first-child) {
       border-top: 1px solid $gray;
@@ -97,17 +100,22 @@
     }
   }
   
+  label {
+    color: $black;
+  }
+  
   a {
-    color: $white;
+    color: $black;
     display: block;
-    padding: 10px 20px;
+    padding: 15px 20px;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
     
     &:hover:not(.active) {
-      opacity: .7;
+      background-color: rgba(0, 0, 0, .1);
     }
     
     &.active {
-      color: $main-green;
+      color: $primary;
     }
   }
 }

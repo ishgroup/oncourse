@@ -1,6 +1,20 @@
 .btn {
   font-size: 12px;
-  border-radius: 4px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  outline: 0;
+  border: none;
+  
+  &:active, &:focus, &:hover {
+    outline: 0;
+    border: none;
+  }
+  
+  &:active, &:focus {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.22) 2px 2px 4px;
+  }
+  
   
   .icon {
     &:before {

@@ -1,17 +1,19 @@
 $white: #ffffff;
 $gray:  #bbbbbb;
 $gray-dark: #656565;
-$black: #111111;
+$black: rgba(0, 0, 0, 0.87);
 
 $main-blue: #343d46;
 $main-green: #a3be8c;
 
-// Bootstrap colors
-$danger: #d9534f;
-$danger-hover: #c9302c;
+// Button colors
+$danger: #ff3547;
+$danger-hover: #ff4f5e;
+$danger-active: #e80015;
 
-$primary: #0275d8;
-$primary-hover: #025aa5;
+$primary: #4285F4;
+$primary-hover: #5a95f5;
+$primary-active: #0d5bdd;
 
 $success: #5cb85c;
 $success-hover: #459D4A;
