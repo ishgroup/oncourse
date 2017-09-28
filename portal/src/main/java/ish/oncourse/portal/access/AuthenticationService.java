@@ -203,7 +203,7 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	public void logout() {
 		String sessionId = cookieService.getCookieValue(SESSION_ID);
-
+		cookieService.removeCookieValue(SESSION_ID);
 		zkService.destroySession(sessionId);
 		
 		Session session = request.getSession(false);
