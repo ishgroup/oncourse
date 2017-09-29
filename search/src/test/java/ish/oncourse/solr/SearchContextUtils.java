@@ -29,22 +29,23 @@ import java.util.Map;
 
 
 public class SearchContextUtils {
-	private static Mysql mysql;
+	private Mysql mysql;
 	private static boolean createSchema = false;
 	private static boolean dropSchema = false;
 	private static boolean createTables = false;
-
-	private static ServerRuntime cayenneRuntime;
 
 	public static final String SHOULD_CREATE_TABLES = "createTables";
 	public static final String SHOULD_CREATE_FK_CONSTRAINTS = "createFKConstraints";
 	public static final String SHOULD_CREATE_PK_SUPPORT = "createPKSupport";
 
-	static {
+	private ServerRuntime cayenneRuntime;
+
+
+	public SearchContextUtils() {
 		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
 	}
 
-	public static ObjectContext createObjectContext() {
+	public ObjectContext createObjectContext() {
 		return cayenneRuntime.getContext();
 	}
 
@@ -53,11 +54,11 @@ public class SearchContextUtils {
 	 *
 	 * @throws Exception
 	 */
-	public static void setupDataSources() throws Exception {
+	public void setupDataSources() throws Exception {
 		setupDataSourcesWithParams(null);
 	}
 
-	public static void setupDataSourcesWithParams(Map<String, Boolean> params) throws Exception {
+	public void setupDataSourcesWithParams(Map<String, Boolean> params) throws Exception {
 		DataSource oncourse = createDataSource();
 
 		initJNDI(oncourse);
@@ -73,7 +74,7 @@ public class SearchContextUtils {
 		}
 	}
 
-	private static void initJNDI(DataSource oncourse) {
+	private void initJNDI(DataSource oncourse) {
 		try {
 			InitialContext ic = new InitialContext();
 
@@ -91,7 +92,7 @@ public class SearchContextUtils {
 	 * @param dataSource
 	 * @throws Exception
 	 */
-	public static void createTablesForDataSourceByParams(DataSource dataSource, DataMap map, Map<String, Boolean> params) throws Exception {
+	public void createTablesForDataSourceByParams(DataSource dataSource, DataMap map, Map<String, Boolean> params) throws Exception {
 		DataDomain domain = cayenneRuntime.getDataDomain();
 		List<Relationship> entityRelationshipsToRemove = new ArrayList<Relationship>();
 		entityRelationshipsToRemove.add(map.getDbEntity("EntityRelation").getRelationship("relationToProduct"));
@@ -121,7 +122,7 @@ public class SearchContextUtils {
 		}
 	}
 
-	public static DataSource getDataSource(String location) throws Exception {
+	public DataSource getDataSource(String location) throws Exception {
 		Context context = new InitialContext();
 		DataSource dataSource;
 		try {
@@ -139,13 +140,14 @@ public class SearchContextUtils {
 	 *
 	 * @return
 	 */
-	public static DataSource createDataSource() throws Exception {
+	public DataSource createDataSource() throws Exception {
 
 		String jdbcUrl = System.getProperty("oncourse.jdbc.url");
 		String jdbcUser = System.getProperty("oncourse.jdbc.user");
 		String jdbcPassword = System.getProperty("oncourse.jdbc.password");
 
 		String driverClass = com.mysql.jdbc.Driver.class.getName();
+		createSchema = Boolean.valueOf(System.getProperty("testCreateSchema"));
 		createTables = Boolean.valueOf(System.getProperty("testCreateTables"));
 
 		mysql = Mysql.valueOf(jdbcUrl, jdbcUser, jdbcPassword);
@@ -165,28 +167,29 @@ public class SearchContextUtils {
 		return dataSource;
 	}
 
-	private static void createMysqlSchema() throws SQLException {
+	private void createMysqlSchema() throws SQLException {
 		Connection connection = DriverManager.getConnection(mysql.mysqlUri, mysql.jdbcUser, mysql.jdbcPassword);
 		PreparedStatement preparedStatement = connection.prepareStatement(String.format("CREATE SCHEMA %s DEFAULT CHARACTER SET ascii ;", mysql.dbName));
 		preparedStatement.execute();
 		connection.close();
 	}
 
-	public static void shutdownDataSources() throws Exception {
+	public void shutdownDataSources() throws Exception {
 		cayenneRuntime.shutdown();
 		if (dropSchema) {
 			dropMysqlSchema();
 		}
+		AbandonedConnectionCleanupThread.uncheckedShutdown();
 	}
 
-	private static void dropMysqlSchema() throws SQLException {
+	private void dropMysqlSchema() throws SQLException {
 		Connection connection = DriverManager.getConnection(mysql.mysqlUri);
 		PreparedStatement preparedStatement = connection.prepareStatement(String.format("DROP DATABASE %s ;", mysql.dbName));
 		preparedStatement.execute();
 		connection.close();
 	}
 
-	public static void truncateAllTables(boolean dropTables) throws SQLException {
+	public void truncateAllTables(boolean dropTables) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		Statement statement = null;

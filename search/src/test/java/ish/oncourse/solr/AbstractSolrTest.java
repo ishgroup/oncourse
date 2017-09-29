@@ -33,12 +33,15 @@ import java.util.Map;
 
 
 public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
-    protected  ModelBuilder modelBuilder;
+
+	private static ThreadLocal<SearchContextUtils> searchContextUtils = new ThreadLocal<>();
+	protected  ModelBuilder modelBuilder;
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        SearchContextUtils.setupDataSources();
-        InitSolr.coursesCore().init();
+		searchContextUtils.set(new SearchContextUtils());
+		searchContextUtils.get().setupDataSources();
+		InitSolr.coursesCore().init();
     }
 
 
@@ -54,12 +57,12 @@ public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
 
         ReplacementDataSet rDataSet = initReplacement(dataSet);
 
-        SearchContextUtils.truncateAllTables(false);
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, rDataSet);
+		searchContextUtils.get().truncateAllTables(false);
+		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, rDataSet);
 
 
-        ObjectContext context = SearchContextUtils.createObjectContext();
-        College college = Cayenne.objectForPK(context, College.class, 10);
+		ObjectContext context = searchContextUtils.get().createObjectContext();
+		College college = Cayenne.objectForPK(context, College.class, 10);
         modelBuilder = ModelBuilder.valueOf(context, college);
 
 
@@ -79,8 +82,8 @@ public abstract class AbstractSolrTest extends SolrTestCaseJ4 {
 
     @AfterClass
     public static void afterClass() throws Exception {
-        SearchContextUtils.shutdownDataSources();
-        AbstractSolrTest.initCoreDataDir.deleteOnExit();
+		searchContextUtils.get().shutdownDataSources();
+		AbstractSolrTest.initCoreDataDir.deleteOnExit();
     }
 
 
