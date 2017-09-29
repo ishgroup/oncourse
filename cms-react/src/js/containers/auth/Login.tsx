@@ -3,7 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {withRouter} from 'react-router-dom';
 
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
-import {submitLoginForm} from "./actions/index";
+import {submitLoginForm} from "./actions";
 import {DefaultConfig} from "../../constants/Config";
 import {CookieService} from "../../services/CookieService";
 

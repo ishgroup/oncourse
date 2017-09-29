@@ -22,9 +22,11 @@
   @import 'patterns/button';
   @import 'patterns/link';
   @import 'patterns/form';
-  
+  @import 'patterns/checkbox';
+
   // components
   @import 'components/login-form';
   @import 'components/menu-editor';
   @import 'components/editor-area';
+  @import 'components/notifications';
 }

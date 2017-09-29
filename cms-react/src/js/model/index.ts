@@ -13,3 +13,6 @@ export {Page} from "./Page";
 
 // Blocks
 export {Block} from "./Block";
+
+// Themes
+export {Theme} from "./Theme";

@@ -1,6 +1,6 @@
 .rst {
   &__rowContents {
-    border-radius: 0 0.25rem 0.25rem 0;
+    border-radius: 0 2px 2px 0;
   }
   
   &__moveHandle {
@@ -27,9 +27,9 @@
       font-weight: normal;
       font-size: 12px;
       border-color: transparent;
-      border-radius: 0.25rem;
+      border-radius: 2px;
       transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
-      background: rgba(2, 117, 216, 0.14);
+      background: #E3F2FD;
   
       &:hover {
         cursor: pointer;
@@ -38,6 +38,7 @@
       &:focus {
         cursor: text;
         background-color: transparent;
+        box-shadow: none;
       }
     }
   
@@ -47,7 +48,7 @@
       }
       
       input {
-        border-color: $danger;
+        border: 2px solid $danger-hover;
       }
     }
   }
@@ -58,7 +59,42 @@
   
   &__rowToolbar {
     button {
-      margin: 0 5px;
+      box-shadow: none;
+      font-weight: 500;
+      
+      &.btn.btn-danger {
+        color: $danger;
+        background: transparent;
+        
+        &:hover, &:active, &:focus {
+          color: $danger-active;
+          background: transparent;
+          box-shadow: none;
+        }
+      }
+  
+      &.btn.btn-primary {
+        color: $primary;
+        background: transparent;
+    
+        &:hover, &:active, &:focus {
+          color: $primary-active;
+          background: transparent;
+          box-shadow: none;
+        }
+      }
+  
+      &.btn.btn-success {
+        color: $success;
+        background: transparent;
+    
+        &:hover, &:active, &:focus {
+          color: $success-active;
+          background: transparent;
+          box-shadow: none;
+        }
+      }
+      
     }
   }
 

@@ -9,7 +9,7 @@ import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
 import {getHistoryInstance, setHistoryInstance} from "../history";
 import {URL} from "../routes";
-import {logout} from "./auth/actions/index";
+import {logout} from "./auth/actions";
 
 export class Cms extends React.Component<any, any> {
 

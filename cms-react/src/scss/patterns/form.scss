@@ -3,3 +3,13 @@
   font-size: 14px;
   border-radius: 2px;
 }
+
+.form-group {
+  .btn {
+    margin-right: 20px;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

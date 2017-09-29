@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
-import {withRouter} from 'react-router-dom';
 import {getBlocks, saveBlock} from "./actions";
 import {Block as BlockModel} from "../../model";
 import {Block} from "./components/Block";

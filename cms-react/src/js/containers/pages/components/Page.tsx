@@ -62,7 +62,7 @@ export class Page extends React.Component<PageProps, any> {
           </FormGroup>
 
           <FormGroup>
-            <Button onClick={() => this.onSave()} color="success">Save</Button>
+            <Button onClick={() => this.onSave()} color="primary">Save</Button>
             <Button onClick={() => this.onCancel()} color="secondary">Cancel</Button>
           </FormGroup>
         </div>

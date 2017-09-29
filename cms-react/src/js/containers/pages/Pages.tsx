@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
-import {withRouter} from 'react-router-dom';
 import {getPages, savePage} from "./actions";
 import {Page as PageModel} from "../../model";
 import {Page} from "./components/Page";

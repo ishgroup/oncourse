@@ -5,8 +5,8 @@ export function authApiMock(mock) {
   mock.onPost(API.LOGIN).reply(config => promiseResolve(config, {
     user: {
       id: 1,
-      firstName: "Andrey",
-      lastName: "Davidovich",
+      firstName: "John",
+      lastName: "Doe",
     },
   }));
 

@@ -1,12 +1,15 @@
 import React from 'react';
 import {Content} from './containers/content/Content';
+
 import Blocks from './containers/blocks/Blocks';
 import BlockSidebar from './containers/blocks/containers/BlockSidebar';
 
 import Pages from './containers/pages/Pages';
 import PagesSidebar from './containers/pages/containers/PagesSidebar';
 
-import {Design} from './containers/design/Design';
+import Themes from './containers/themes/Themes';
+import ThemesSidebar from "./containers/themes/containers/ThemesSidebar";
+
 import Menus from './containers/menus/Menus';
 import Login from "./containers/auth/Login";
 
@@ -15,7 +18,7 @@ export const URL = {
   BLOCKS: '/blocks',
   PAGES: '/pages',
   MENUS: '/menus',
-  DESIGN: '/design',
+  THEMES: '/themes',
   LOGIN: '/login',
 };
 
@@ -64,11 +67,12 @@ export const routes: Route[] = [
     main: props => <Menus {...props}/>,
   },
   {
-    title: 'Design',
-    path: '/design',
-    url: URL.DESIGN,
+    title: 'Themes',
+    path: '/themes/:id?',
+    url: URL.THEMES,
     icon: 'icon-photo_album',
-    main: props => <Design props/>,
+    main: props => <Themes {...props}/>,
+    sidebar: props => <ThemesSidebar {...props}/>,
   },
   {
     title: 'Login',

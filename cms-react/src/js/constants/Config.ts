@@ -19,8 +19,10 @@ export const API = {
   DELETE_PAGE: "/deletePage",
 
   // Blocks
-  GET_BLOCKS: "getBlocks",
-  SAVE_BLOCK: "saveBlock",
-  DELETE_BLOCK: "deleteBlock",
+  GET_BLOCKS: "/getBlocks",
+  SAVE_BLOCK: "/saveBlock",
+  DELETE_BLOCK: "/deleteBlock",
 
+  // Themes
+  GET_THEMES: "getThemes",
 };

@@ -113,9 +113,8 @@ export class Menus extends React.Component<Props, any> {
     return (
       [
         <Button
-          color="success"
+          color="primary"
           size="sm"
-          outline
           onClick={() => this.addNode(path)}
         >
           <span className="icon icon-add_circle"/>
@@ -153,6 +152,7 @@ export class Menus extends React.Component<Props, any> {
           color="primary"
           onClick={() => this.addItem()}
         >
+          <span className="icon icon-add_circle"/>
           Add more
         </Button>
       </div>

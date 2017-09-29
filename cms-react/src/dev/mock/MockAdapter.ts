@@ -5,6 +5,7 @@ import {authApiMock} from "./AuthApiMock";
 import {menuApiMock} from "./MenuApiMock";
 import {pageApiMock} from "./PageApiMock";
 import {blockApiMock} from "./BlockApiMock";
+import {themeApiMock} from "./ThemeApiMock";
 
 export function initMockAdapter() {
   const mock = new axiosMockAdapter(defaultAxios);
@@ -12,6 +13,7 @@ export function initMockAdapter() {
   menuApiMock(mock);
   pageApiMock(mock);
   blockApiMock(mock);
+  themeApiMock(mock);
 }
 
 export const promiseResolve = (config, data = {}) => {

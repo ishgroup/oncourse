@@ -1,7 +1,8 @@
 import React from 'react';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
-import {Page} from "../../../model";
+import {Checkbox} from "../../../common/components/Checkbox";
 import {IconBack} from "../../../common/components/IconBack";
+import {Page} from "../../../model";
 
 interface Props {
   page: Page;
@@ -39,7 +40,7 @@ export class PageSettings extends React.Component<Props, any> {
   onBlur(key) {
     const {onEdit, page} = this.props;
 
-    if (page[key] !== this.state[key]) {
+    if (page[key] !== this.state[key] || key === 'visible') {
       onEdit({[key]: this.state[key]});
     }
   }
@@ -96,14 +97,12 @@ export class PageSettings extends React.Component<Props, any> {
             </FormGroup>
 
             <FormGroup>
-              <Label check>
-                <Input
-                  type="checkbox"
-                  checked={visible}
-                  onChange={e => {this.onChange(e, 'visible'); this.onBlur('visible');}}
-                />
-                {' '} Visible
-              </Label>
+              <Checkbox
+                label="Visible"
+                name="visible"
+                checked={visible}
+                onChange={e => {this.onChange(e, 'visible'); this.onBlur('visible');}}
+              />
             </FormGroup>
 
             <FormGroup>
