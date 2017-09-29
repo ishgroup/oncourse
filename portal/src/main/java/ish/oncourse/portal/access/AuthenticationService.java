@@ -24,7 +24,7 @@ public class AuthenticationService implements IAuthenticationService {
 	private ICayenneService cayenneService;
 
 	@Inject
-	private IZKService zkService;
+	private ISessionManager sessionManager;
 	
 	@Inject
 	private Request request;
@@ -32,8 +32,11 @@ public class AuthenticationService implements IAuthenticationService {
 	@Inject
 	private ICookiesService cookieService;
 
-	private static final String SESSION_ID = "PORTAL_SESSION";
-	private static final int SESSION_ID_MAX_AGE = 86400;
+	private static final String SESSION_TOKEN = "PORTAL_SESSION";
+	private static final String TOKEN_DELIMITER = "&";
+	private static final String TOKEN_PATTERN = "%s&%s";
+
+	private static final int SESSION_ID_MAX_AGE = 14400;
 
 	/**
 	 * @see IAuthenticationService#authenticate(String, String, String, String)
@@ -67,7 +70,8 @@ public class AuthenticationService implements IAuthenticationService {
 
 		if (supportPassword != null) {
 			Contact contact = cayenneService.sharedContext().localObject(supportPassword.getContact());
-			cookieService.writeCookieValue(SESSION_ID, zkService.createContactSession(contact.getId()), SESSION_ID_MAX_AGE);
+			String contactId = contact.getId().toString();
+			cookieService.writeCookieValue(SESSION_TOKEN, String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId)) , SESSION_ID_MAX_AGE);
 			return true;
 		} else {
 			return true;
@@ -133,15 +137,19 @@ public class AuthenticationService implements IAuthenticationService {
 	 * @see IAuthenticationService#getUser()
 	 */
 	public Contact getUser() {
-		String sessionId = cookieService.getCookieValue(SESSION_ID);
+		String token = cookieService.getCookieValue(SESSION_TOKEN);
+		if (StringUtils.trimToNull(token) == null) {
+			return null;
+		}
 		
-		if (StringUtils.trimToNull(sessionId) == null) {
+		String[] nodePath = token.split(TOKEN_DELIMITER);
+		if (nodePath.length != 2) {
 			return null;
 		}
 
-		Long contactId = zkService.getContactId(sessionId);
-		if (contactId != null) {
-			return SelectById.query(Contact.class, contactId).selectOne(cayenneService.sharedContext());
+
+		if (sessionManager.validSession(nodePath[0], nodePath[1])) {
+			return SelectById.query(Contact.class,  Long.valueOf(nodePath[0])).selectOne(cayenneService.sharedContext());
 		} else {
 			return null;
 		}
@@ -152,9 +160,11 @@ public class AuthenticationService implements IAuthenticationService {
 		Contact authenticatedContact = getUser();
 		if (authenticatedContact == null) {
 			return null;
-		} 
-		String sessionId = cookieService.getCookieValue(SESSION_ID);
-		Long childId =  zkService.getSelectedChildId(sessionId, authenticatedContact.getId());
+		}
+		String token = cookieService.getCookieValue(SESSION_TOKEN);
+		String[] nodePath = token.split(TOKEN_DELIMITER);
+		
+		Long childId =  sessionManager.getSelectedChildId(nodePath[0], nodePath[1]);
 		
 		if (childId == null) {
 			return authenticatedContact;
@@ -169,8 +179,10 @@ public class AuthenticationService implements IAuthenticationService {
 		if (authenticatedContact == null) {
 			throw new IllegalArgumentException("Authenticated user missed");
 		}
-		String sessionId = cookieService.getCookieValue(SESSION_ID);
-		zkService.selectChild(sessionId, authenticatedContact.getId(), contact.getId());
+		String token = cookieService.getCookieValue(SESSION_TOKEN);
+		String[] nodePath = token.split(TOKEN_DELIMITER);
+
+		sessionManager.selectChild(nodePath[1], nodePath[0], contact.getId().toString());
 	}
 
 	/**
@@ -196,23 +208,19 @@ public class AuthenticationService implements IAuthenticationService {
 
 		localUser.setLastLoginTime(new Date());
 		context.commitChanges();
-		cookieService.writeCookieValue(SESSION_ID, zkService.createContactSession(user.getId()));
+		String contactId = user.getId().toString();
+		cookieService.writeCookieValue(SESSION_TOKEN, String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId)), SESSION_ID_MAX_AGE);
 	}
 
 	/**
 	 * @see IAuthenticationService#logout()
 	 */
 	public void logout() {
-		String sessionId = cookieService.getCookieValue(SESSION_ID);
-		cookieService.removeCookieValue(SESSION_ID);
-		zkService.destroySession(sessionId);
-		
+		cookieService.removeCookieValue(SESSION_TOKEN);
 		Session session = request.getSession(false);
 
 		if (session != null) {
 			session.invalidate();
 		}
 	}
-
-
 }

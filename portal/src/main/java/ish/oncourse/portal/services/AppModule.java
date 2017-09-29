@@ -128,7 +128,7 @@ public class AppModule {
 		binder.bind(IWebContentService.class, WebContentService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
 		
-		binder.bind(IZKService.class, ZKService.class).scope(ScopeConstants.DEFAULT);
+		binder.bind(ISessionManager.class, ZKSessionManager.class).scope(ScopeConstants.DEFAULT);
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
 		binder.bind(IDiscussionService.class, DiscussionServiceImpl.class);
 		binder.bind(AccessController.class).withId("AccessController");
