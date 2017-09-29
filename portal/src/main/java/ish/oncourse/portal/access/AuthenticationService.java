@@ -182,7 +182,7 @@ public class AuthenticationService implements IAuthenticationService {
 		String token = cookieService.getCookieValue(SESSION_TOKEN);
 		String[] nodePath = token.split(TOKEN_DELIMITER);
 
-		sessionManager.selectChild(nodePath[1], nodePath[0], contact.getId().toString());
+		sessionManager.selectChild(nodePath[0], nodePath[1], contact.getId().toString());
 	}
 
 	/**

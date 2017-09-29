@@ -9,7 +9,7 @@ public interface ISessionManager {
     
     boolean validSession(String contactId, String sessionId);
     
-    Long getSelectedChildId(String sessionId, String contactId);
+    Long getSelectedChildId(String contactId, String sessionId);
     
-    void selectChild(String sessionId, String contactId, String newChildId);
+    void selectChild(String contactId, String sessionId, String newChildId);
 }

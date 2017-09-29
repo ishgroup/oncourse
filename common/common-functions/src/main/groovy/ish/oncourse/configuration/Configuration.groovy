@@ -31,9 +31,11 @@ class Configuration {
             }
             
             if (prop.get('zk_host')) {
-                System.setProperty(ZK_HOST_PROPERTY, prop.get('zk_host') as String)
+                String zkHostPort = prop.get('zk_host') as String
+                System.setProperty(ZK_HOST_PROPERTY, zkHostPort)
+                InitZKRootNode.valueOf(zkHostPort).init()
             }
-
+            
             if (prop.get('logs_path')) {
                 System.setProperty(LOGS_PATH_PROPERTY, prop.get('logs_path') as String)
             } else {

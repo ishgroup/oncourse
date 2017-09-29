@@ -4,6 +4,7 @@
 package ish.oncourse.portal.access;
 
 import ish.oncourse.configuration.Configuration;
+import ish.oncourse.configuration.InitZKRootNode;
 import ish.util.SecurityUtil;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +27,6 @@ public class ZKSessionManager implements  ISessionManager {
     /**
      * root portal node
      */
-    private static final String PORTAL_NODE = "%s/willow/sessions";
     private static final String CONTACT_NODE = "/%s";
     private static final String SESSION_NODE = "/%s/%s";
     private static final String CHILD_NODE = "/%s/%s/%s";
@@ -56,7 +56,7 @@ public class ZKSessionManager implements  ISessionManager {
             throw new IllegalStateException("Zookeeper host property undefined");
         }
         try {
-            return new ZooKeeper(String.format(PORTAL_NODE, zkHost), zkClientTimeOut, event -> {
+            return new ZooKeeper(String.format("%s%s", zkHost, InitZKRootNode.SESSIONS_NODE), zkClientTimeOut, event -> {
                 switch (event.getState()) {
                     case Expired:
                     case Disconnected:
@@ -73,7 +73,7 @@ public class ZKSessionManager implements  ISessionManager {
     }
 
 
-    public Long getSelectedChildId(String sessionId, String contactId) {
+    public Long getSelectedChildId(String contactId, String sessionId) {
         try {
             String path = String.format(SESSION_NODE, contactId, sessionId);
             List<String> children = getZk().getChildren(path, false);
@@ -90,10 +90,10 @@ public class ZKSessionManager implements  ISessionManager {
         }
     }
 
-    public void selectChild(String sessionId, String contactId, String newChildId) {
+    public void selectChild(String contactId, String sessionId, String newChildId) {
 
         try {
-            Long oldChildId = getSelectedChildId(sessionId, contactId);
+            Long oldChildId = getSelectedChildId(contactId, sessionId);
             if (oldChildId != null) {
                 remove(String.format(CHILD_NODE, contactId, sessionId, oldChildId));
             }
