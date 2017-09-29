@@ -42,16 +42,14 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<t:if test="firstTimeLogin">
-							<div class="text-right">
-								<input id="createAccount" class="btn-login btn btn-primary" value="Create account"/>
-							</div>
 							<div class="text-right collapse">	
-								<t:submit t:id="createAccountSignIn" class="btn-login btn btn-primary" value="Submit"/>
+								<t:submit t:id="createAccount" class="btn-login btn btn-primary" value="Create account"/>
 							</div>
-
 						</t:if>
 						<t:unless test="firstTimeLogin">
-							<div id="forgotPassword" class="forget-pwd" ><a href="#">Forgot Password?</a></div>
+							<div id="forgotPassword" class="forget-pwd" >
+								<t:submit t:id="forgotPassword" class="btn-login btn btn-primary" value="Forgot Password?"/>
+							</div>
 							<div class="text-right">
 								<t:submit t:id="signIn" class="btn-login btn btn-primary" value="Submit"/>
 							</div>

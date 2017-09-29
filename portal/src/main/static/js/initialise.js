@@ -34,37 +34,6 @@ function sendAjaxWithData(actionLink, formData, jdata, callback)
 	});
 }
 
-function forgotPasswordHandle()
-{
-	$j("[id*=forgotPassword]").click(function()
-	{
-		var actionLink = "/portal/login:onForgotPasswordEvent";
-		var f = $j("[id*=loginForm]");
-		var data = $j(f).serialize();
-		var jdata = $j(f).serializeArray();
-		sendAjaxWithData(actionLink, data, jdata, function()
-		{
-			//click submit button
-			$j("[id*=signIn]").click();
-		});
-	});
-}
-
-function createAccountHandle()
-{
-    $j("#createAccount").click(function()
-    {
-        var actionLink = "/portal/login:onCreateAccountEvent";
-        var f = $j("[id*=loginForm]");
-        var data = $j(f).serialize();
-        var jdata = $j(f).serializeArray();
-        sendAjaxWithData(actionLink, data, jdata, function()
-        {
-            //click submit button
-            $j("#createAccountSignIn").click();
-        });
-    });
-}
 /**
  * The method fill data to this form
  * @param data
@@ -104,8 +73,6 @@ function initHints()
 
 function initHandles()
 {
-	forgotPasswordHandle();
-    createAccountHandle();
 	initHints();
 }
 

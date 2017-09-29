@@ -8,6 +8,7 @@ import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
@@ -19,6 +20,7 @@ import org.apache.tapestry5.services.Request;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 public class Login {
 
@@ -202,21 +204,8 @@ public class Login {
 		if (value != null)
 			this.password = value;
 	}
-
-	@OnEvent(value = "onForgotPasswordEvent")
-	Object onForgotPassword() {
-		this.isForgotPassword = true;
-		return loginForm;
-
-	}
-
-	@OnEvent(value = "onCreateAccountEvent")
-	Object onCreateAccount() {
-		this.firstTimeLogin = true;
-		return loginForm;
-
-	}
-
+	
+	@OnEvent(value = EventConstants.VALIDATE, component = "loginForm")
 	void onValidate() throws IOException {
 		if (isCompany) {
 			if (StringUtils.isBlank(companyName)) {
@@ -262,9 +251,18 @@ public class Login {
 		}
 	}
 
+	@OnEvent(value = EventConstants.SELECTED, component = "forgotPassword")
+	void forgotPassword() {
+		this.isForgotPassword = true;
+	}
+
+	@OnEvent(value = "onCreateAccountEvent")
+	void createAccount() {
+		this.firstTimeLogin = true;
+	}
+	
 	Object onSuccess() throws IOException {
 		if (isForgotPassword || firstTimeLogin) {
-			onValidate();
 			return resetPassword();
 		} else {
 			return doLogin();

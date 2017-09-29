@@ -394,8 +394,24 @@
     }
 
     .forget-pwd {
-        padding-top: 10px;
+        padding-top: 0;
         float: left;
+        
+        input {
+        	background: transparent;
+            border: none;
+            color: #f48824;
+            font-weight: normal;
+            text-transform: inherit;
+            font-size: 13px;
+            
+            &:hover {
+            	color: #c8706b;
+            	text-decoration: underline;
+            	background: none;
+            }
+        }
+        
     }
 
     .alert-info {
