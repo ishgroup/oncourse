@@ -7,6 +7,7 @@ import {DELETE_PAGE_FULFILLED, DELETE_PAGE_REQUEST} from "../actions";
 import PageService from "../../../services/PageService";
 import {getHistoryInstance} from "../../../history";
 import {URL} from "../../../routes";
+import {notificationParams} from "../../../common/utils/NotificationSettings";
 
 const request: EpicUtils.Request<any, any> = {
   type: DELETE_PAGE_REQUEST,
@@ -20,12 +21,7 @@ const request: EpicUtils.Request<any, any> = {
         payload,
         type: DELETE_PAGE_FULFILLED,
       },
-      success({
-        title: 'Page deleted',
-        message: null,
-        position: 'tr',
-        autoDismiss: 3,
-      }),
+      success({...notificationParams, title: "Page deleted"}),
     ];
   },
 };

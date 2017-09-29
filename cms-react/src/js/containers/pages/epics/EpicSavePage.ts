@@ -1,24 +1,19 @@
 import {Epic} from "redux-observable";
 import "rxjs";
-import Notifications, {success} from 'react-notification-system-redux';
+import {success} from 'react-notification-system-redux';
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import {SAVE_PAGE_FULFILLED, SAVE_PAGE_REQUEST} from "../actions";
 import {Page} from "../../../model";
 import PageService from "../../../services/PageService";
+import {notificationParams} from "../../../common/utils/NotificationSettings";
 
 const request: EpicUtils.Request<any, any> = {
   type: SAVE_PAGE_REQUEST,
   getData: (props, state) => PageService.savePage(props, state),
   processData: (page: Page[], state: any) => {
     return [
-      success({
-        // uid: 'once-please', // you can specify your own uid if required
-        title: 'Save success',
-        message: null,
-        position: 'tr',
-        autoDismiss: 3,
-      }),
+      success(notificationParams),
       {
         payload: page,
         type: SAVE_PAGE_FULFILLED,

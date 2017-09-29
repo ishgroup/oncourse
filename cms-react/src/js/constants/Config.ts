@@ -24,5 +24,7 @@ export const API = {
   DELETE_BLOCK: "/deleteBlock",
 
   // Themes
-  GET_THEMES: "getThemes",
+  GET_THEMES: "/getThemes",
+  SAVE_THEME: "/saveTheme",
+  DELETE_THEME: "/deleteTheme",
 };

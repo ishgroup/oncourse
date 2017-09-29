@@ -7,4 +7,12 @@ export class ThemeApi {
   getThemes(): Promise<any> {
     return this.http.GET(API.GET_THEMES);
   }
+
+  saveTheme(payload): Promise<any> {
+    return this.http.POST(API.SAVE_THEME, payload);
+  }
+
+  deleteTheme(id): Promise<any> {
+    return this.http.POST(API.DELETE_THEME, id);
+  }
 }

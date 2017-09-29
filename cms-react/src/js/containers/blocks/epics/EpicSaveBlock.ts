@@ -6,19 +6,14 @@ import * as EpicUtils from "../../../epics/EpicUtils";
 import {SAVE_BLOCK_FULFILLED, SAVE_BLOCK_REQUEST} from "../actions";
 import {Block} from "../../../model";
 import BlockService from "../../../services/BlockService";
+import {notificationParams} from "../../../common/utils/NotificationSettings";
 
 const request: EpicUtils.Request<any, any> = {
   type: SAVE_BLOCK_REQUEST,
   getData: (props, state) => BlockService.saveBlock(props, state),
   processData: (block: Block[], state: any) => {
     return [
-      success({
-        // uid: 'once-please', // you can specify your own uid if required
-        title: 'Save success',
-        message: null,
-        position: 'tr',
-        autoDismiss: 3,
-      }),
+      success(notificationParams),
       {
         payload: block,
         type: SAVE_BLOCK_FULFILLED,

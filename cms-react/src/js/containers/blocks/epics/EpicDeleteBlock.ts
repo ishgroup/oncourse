@@ -7,6 +7,7 @@ import {DELETE_BLOCK_FULFILLED, DELETE_BLOCK_REQUEST} from "../actions";
 import {getHistoryInstance} from "../../../history";
 import {URL} from "../../../routes";
 import BlockService from "../../../services/BlockService";
+import {notificationParams} from "../../../common/utils/NotificationSettings";
 
 const request: EpicUtils.Request<any, any> = {
   type: DELETE_BLOCK_REQUEST,
@@ -20,12 +21,7 @@ const request: EpicUtils.Request<any, any> = {
         payload,
         type: DELETE_BLOCK_FULFILLED,
       },
-      success({
-        title: 'Block deleted',
-        message: null,
-        position: 'tr',
-        autoDismiss: 3,
-      }),
+      success({...notificationParams, title: "Block Deleted"}),
     ];
   },
 };
