@@ -1,5 +1,7 @@
 package ish.oncourse.portal.services;
 
+import ish.oncourse.configuration.Configuration;
+import ish.oncourse.configuration.InitZKRootNode;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.Document;
@@ -14,16 +16,21 @@ import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.zookeeper.server.ServerCnxnFactory;
+import org.apache.zookeeper.server.ZooKeeperServer;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -37,6 +44,22 @@ import static org.junit.Assert.*;
  */
 public class PortalServiceTest extends ServiceTest {
 
+    @BeforeClass
+    public static void beforeClass()throws Exception  {
+        String zkHostPort = "127.0.0.1:2183";
+        System.setProperty(Configuration.ZK_HOST_PROPERTY, zkHostPort);
+        ServerCnxnFactory cnxnFactory = ServerCnxnFactory.createFactory();
+        cnxnFactory.configure(new InetSocketAddress(2183), 10);
+
+        File home = File.createTempFile("test-generated-", "-tmpdir");
+        home.delete();
+        home.mkdirs();
+
+        ZooKeeperServer zkServer = new ZooKeeperServer(new File(home, "snap"), new File(home, "log"), 200);
+        cnxnFactory.startup(zkServer);
+        InitZKRootNode.valueOf(zkHostPort).init();
+    }
+    
     @Before
     public void setup() throws Exception {
         System.setProperty(TestUSIServiceEndpoint.USI_TEST_MODE, "true");
@@ -57,6 +80,7 @@ public class PortalServiceTest extends ServiceTest {
 
         DataSource onDataSource = getDataSource("jdbc/oncourse");
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(onDataSource.getConnection(), null), rDataSet);
+        
     }
 
     @Test
