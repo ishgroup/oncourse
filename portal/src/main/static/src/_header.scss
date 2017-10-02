@@ -50,11 +50,11 @@
 					background-position: -226px -17px;
 				}
 
-        small {
-          bottom: -3px;
-          right: -5px;
-          left: auto;
-        }
+				small {
+					bottom: -3px;
+					right: -5px;
+					left: auto;
+				}
 
 			}
 
@@ -67,19 +67,19 @@
 				}
 			}
 
-      small {
-        background: $menu-notification-badge;
-        position: absolute;
-        bottom: -7px;
-        left: 15px;
-        height: 14px;
-        width: 14px;
-        display: inline-block;
-        border-radius: 50%;
-        text-align: center;
-        color: $white;
-        font-size: 0.9rem;
-        padding: 1px 0;
+			small {
+				background: $menu-notification-badge;
+				position: absolute;
+				bottom: -7px;
+				left: 15px;
+				height: 14px;
+				width: 14px;
+				display: inline-block;
+				border-radius: 50%;
+				text-align: center;
+				color: $white;
+				font-size: 0.9rem;
+				padding: 1px 0;
 			}
 		}
 
@@ -158,7 +158,7 @@
 	}
 
 	.logged {
-    	z-index: 10;
+		z-index: 10;
 		padding: 18px;
 		position: relative;
 		float: right;
@@ -175,24 +175,24 @@
 		}
 
 
-    .diff-line {
-      border-right: 1px solid #DFDFDF;
-    }
+		.diff-line {
+			border-right: 1px solid #DFDFDF;
+		}
 
-    .user-links span {
-      font-size: 1.2rem;
-      margin: 15px 0;
-    }
+		.user-links span {
+			font-size: 1.2rem;
+			margin: 15px 0;
+		}
 
-    .user-list {
-      padding: 20px;
-      max-height: 150px;
-      overflow-y: scroll;
+		.user-list {
+			padding: 20px;
+			max-height: 150px;
+			overflow-y: scroll;
 
-      li a {
-        color: black;
-      }
-    }
+			li a {
+				color: black;
+			}
+		}
 
 		.user-action-links {
 			box-shadow: 0 6px 10px rgba(0,0,0,0.5);
@@ -211,14 +211,21 @@
 			float: left;
 			width: 100%;
 			strong {
+				max-width: 155px;
+				padding-right: 20px;
+				position: relative;
 				text-transform: uppercase;
 				float: left;
-				//width: 76%;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 				margin-right: 6px;
 				display: block !important;
+				.glyphicon-chevron-down {
+					position: absolute;
+					right: 2px;
+					top: 3px;
+				}
 			}
 		}
 
@@ -294,8 +301,8 @@
 				font-size: 1.1rem;
 				font-weight: 400;
 				padding-right: 0;
-			    position: absolute;
-			    right: 0;
+				position: absolute;
+				right: 0;
 				display: none !important;
 				// float: right;
 
