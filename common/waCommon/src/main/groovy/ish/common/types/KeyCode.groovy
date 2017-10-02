@@ -257,7 +257,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view & print
 	 */
 	@API
-	ATTACHMENT_INFO(31, "Documents", VIEW + PRINT),
+	ATTACHMENT_INFO(31, "Documents", VIEW + PRINT, NONE, ALL),
 
 	/**
 	 * Database value: 32
@@ -670,15 +670,16 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Allow to access private documents
 	 */
 	@API
-	PRIVATE_DOCUMENTS(105, "Private documents", NONE, PRINT + DELETE)
+	PRIVATE_DOCUMENTS(105, "Private documents", NONE, PRINT + DELETE, VIEW + EDIT + CREATE)
 
 	private int value
 	private String displayName
 	private int alwaysAllowedMask
 	private int neverAllowedMask
+	private int defaultValueMask
 
 	private KeyCode(int value, String displayName) {
-		this(value, displayName, NONE, NONE)
+		this(value, displayName, NONE, NONE, NONE)
 	}
 
 	/**
@@ -686,7 +687,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * @param alwaysAllowedMask bits in this mask are always set as allowed (that is, adding Mask.VIEW here means this key always allows access for view)
 	 */
 	private KeyCode(int value, String displayName, int alwaysAllowedMask) {
-		this(value, displayName, alwaysAllowedMask, NONE)
+		this(value, displayName, alwaysAllowedMask, NONE, NONE)
 	}
 
 	/**
@@ -695,18 +696,30 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * @param neverAllowedMask bits in this mask are never allowed
 	 */
 	private KeyCode(int value, String displayName, int alwaysAllowedMask, int neverAllowedMask) {
+		this(value, displayName, alwaysAllowedMask, neverAllowedMask, NONE)
+	}
+
+	/**
+	 * @param value as stored in the database
+	 * @param alwaysAllowedMask bits in this mask are always set as allowed (that is, adding Mask.VIEW here means this key always allows access for view)
+	 * @param neverAllowedMask bits in this mask are never allowed
+	 * @param defaultValueMask bits in this mask are default values
+	 */
+	private KeyCode(int value, String displayName, int alwaysAllowedMask, int neverAllowedMask, int defaultValueMask) {
 		this.value = value
 		this.alwaysAllowedMask = alwaysAllowedMask
 		this.neverAllowedMask = neverAllowedMask
 		this.displayName = displayName
+		this.defaultValueMask = defaultValueMask
 	}
+
 
 	/**
 	 * @see ish.common.util.DisplayableExtendedEnumeration#getDatabaseValue()
 	 */
 	@Override
 	Integer getDatabaseValue() {
-		return this.value
+		return value
 	}
 
 	/**
@@ -715,7 +728,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * @return the alwaysAllowedMask
 	 */
 	int getAlwaysAllowedMask() {
-		return this.alwaysAllowedMask
+		return alwaysAllowedMask
 	}
 
 	/**
@@ -724,7 +737,16 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * @return the neverAllowedMask
 	 */
 	int getNeverAllowedMask() {
-		return this.neverAllowedMask
+		return neverAllowedMask
+	}
+
+	/**
+	 * The mask for default rights if they haven't created yet.
+	 *
+	 * @return the defaultValueMask
+	 */
+	int getDefaultValueMask() {
+		return defaultValueMask
 	}
 
 	/**
@@ -734,7 +756,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 */
 	@Override
 	String getDisplayName() {
-		return this.displayName
+		return displayName
 	}
 
 }
