@@ -19,9 +19,9 @@ class Configuration {
             PORT.init(prop)
             HOST.init(prop)
             PATH.init(prop)
+            System.setProperty(JDBC_URL_PROPERTY, String.format(BD_URL, prop.get(DB_HOST.key), prop.get(DB_PORT.key), prop.get(DB_NAME.key)))
             DB_PASS.init(prop)
             DB_USER.init(prop)
-            System.setProperty(JDBC_URL_PROPERTY, String.format(BD_URL, prop.get(DB_HOST.key), prop.get(DB_PORT.key), prop.get(DB_NAME)))
             SMTP.init(prop)
 
             if (ZK_HOST.init(prop)) {
@@ -72,7 +72,7 @@ class Configuration {
         
         boolean init(Properties props) {
             if (props.get(key)) {
-                System.setProperty(systemProperty, props.get(PORT.key) as String)
+                System.setProperty(systemProperty, props.get(key) as String)
                 return true
             }
             return false
