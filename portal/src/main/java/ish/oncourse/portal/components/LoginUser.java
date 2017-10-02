@@ -24,6 +24,11 @@ public class LoginUser {
         this.contact = portalService.getAuthenticatedUser();
     }
 
+    public Object onActionFromLogout() throws Exception {
+        portalService.logout();
+        return login;
+    }
+
     public String getProfilePicturePath() {
         return portalService.getProfilePictureUrl(contact);
     }

@@ -71,19 +71,9 @@ function initHints()
     });
 }
 
-function initLogOut() {
-
-	$j("#logout").click(function() {
-		document.cookie = "PORTAL_SESSION=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-		location.reload();
-	});
-}
-
-
 function initHandles()
 {
 	initHints();
-	initLogOut();
 }
 
 // placeholder polyfill for browsers that not support them

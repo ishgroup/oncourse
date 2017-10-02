@@ -11,7 +11,7 @@
                 <a href="#" class="link-user-switch">View all users</a>
             </li>
             <li>
-              <a href="#" id="logout">Logout</a>
+              <a href="#" t:type="ActionLink" t:id="logout">Logout</a>
             </li>
 		</ul>
 		<span t:type="switchcontact"/>

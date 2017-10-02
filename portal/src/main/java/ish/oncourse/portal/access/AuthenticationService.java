@@ -216,7 +216,7 @@ public class AuthenticationService implements IAuthenticationService {
 	 * @see IAuthenticationService#logout()
 	 */
 	public void logout() {
-		cookieService.removeCookieValue(SESSION_TOKEN);
+		cookieService.writeCookieValue(SESSION_TOKEN, null, 0);
 		Session session = request.getSession(false);
 
 		if (session != null) {
