@@ -1,6 +1,5 @@
 package ish.oncourse.portal.services;
 
-import ish.oncourse.configuration.Configuration;
 import ish.oncourse.configuration.InitZKRootNode;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.CourseClass;
@@ -35,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import static ish.oncourse.configuration.Configuration.AppProperty.ZK_HOST;
 import static org.junit.Assert.*;
 
 /**
@@ -47,7 +47,7 @@ public class PortalServiceTest extends ServiceTest {
     @BeforeClass
     public static void beforeClass()throws Exception  {
         String zkHostPort = "127.0.0.1:2183";
-        System.setProperty(Configuration.ZK_HOST_PROPERTY, zkHostPort);
+        System.setProperty(ZK_HOST.getSystemProperty(), zkHostPort);
         ServerCnxnFactory cnxnFactory = ServerCnxnFactory.createFactory();
         cnxnFactory.configure(new InetSocketAddress(2183), 10);
 

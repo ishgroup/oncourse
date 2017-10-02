@@ -1,6 +1,5 @@
 package ish.oncourse.services.mail;
 
-import ish.oncourse.configuration.Configuration;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.commons.validator.EmailValidator;
@@ -16,6 +15,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
+
+import static ish.oncourse.configuration.Configuration.AppProperty.SMTP;
 
 public class MailService implements IMailService {
 
@@ -45,7 +46,7 @@ public class MailService implements IMailService {
 			return false;
 		}
 		Properties props = System.getProperties();
-		if (!props.containsKey(Configuration.SYSTEM_PROPERTY_SMTP_HOST)) {
+		if (!props.containsKey(SMTP.getSystemProperty())) {
 			logger.error("SMPT host is not defined!");
 		}
 		Session session = Session.getDefaultInstance(props, null);
@@ -112,7 +113,7 @@ public class MailService implements IMailService {
 
 	private Session getSession() {
 		Properties props = System.getProperties();
-		if (!props.containsKey(Configuration.SYSTEM_PROPERTY_SMTP_HOST)) {
+		if (!props.containsKey(SMTP.getSystemProperty())) {
 			logger.error("SMTP host is not defined!");
 		}
 		return Session.getDefaultInstance(props, null);
