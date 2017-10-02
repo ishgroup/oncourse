@@ -132,8 +132,10 @@ public class Login {
 	private static final String ON = "on";
 
 	Object onActivate() {
-		if (portalService.getAuthenticatedUser() != null)
+		if (portalService.getAuthenticatedUser() != null) {
 			portalService.logout();
+			return index;
+		}
 
 		if (errors == null)
 			errors = new HashMap<>();
@@ -256,7 +258,7 @@ public class Login {
 		this.isForgotPassword = true;
 	}
 
-	@OnEvent(value = "onCreateAccountEvent")
+	@OnEvent(value = EventConstants.SELECTED, component = "createAccount")
 	void createAccount() {
 		this.firstTimeLogin = true;
 	}
@@ -281,7 +283,7 @@ public class Login {
 		List<Contact> users = FindContact.valueOf(this).find();
 
 		if (users.isEmpty()) {
-			return this;
+			return null;
 		} else if (users.size() == 1) {
 			authenticationService.storeCurrentUser(users.get(0));
 			URL prevPage = cookieService.popPreviousPageURL();
@@ -305,7 +307,7 @@ public class Login {
 
 			if (colleges.size() < 1) {
 				loginForm.recordError(messages.get("message-unableToLoginDuplicateContacts"));
-				return this;
+				return null;
 			}
 
 			selectCollege.setTheUsers(users, collegesWithDuplicates);
@@ -314,10 +316,10 @@ public class Login {
 	}
 
 	private Object resetPassword() {
-		List<Contact> users = FindContact.valueOf(this).find();
+		List<Contact> users = FindContact.valueOf(this).findForPasswordRecovery();
 		if (users.isEmpty()) {
 			loginForm.recordError(messages.get("message-userNotExist"));
-			return this;
+			return null;
 		} else if (users.size() == 1) {
 			if (firstTimeLogin) {
 				createAccount.setUser(users.get(0));
@@ -346,7 +348,7 @@ public class Login {
 
 			if (colleges.size() < 1) {
 				loginForm.recordError(messages.get("message-unableToLoginDuplicateContacts"));
-				return this;
+				return null;
 			}
 
 			selectCollege.setTheUsers(users, collegesWithDuplicates);
@@ -409,6 +411,14 @@ public class Login {
 				return login.authenticationService.authenticateCompany(login.companyName, login.email, login.password);
 			} else {
 				return login.authenticationService.authenticate(login.firstName, login.lastName, login.email, login.password);
+			}
+		}
+
+		public List<Contact> findForPasswordRecovery() {
+			if (login.isCompany) {
+				return login.authenticationService.findCompanyForPasswordRecovery(login.companyName, login.email);
+			} else {
+				return login.authenticationService.findForPasswordRecovery(login.firstName, login.lastName, login.email);
 			}
 		}
 

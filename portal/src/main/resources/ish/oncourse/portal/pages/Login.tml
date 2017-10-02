@@ -42,11 +42,15 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<t:if test="firstTimeLogin">
-							<div class="text-right collapse">	
+							<div class="text-right">	
 								<t:submit t:id="createAccount" class="btn-login btn btn-primary" value="Create account"/>
 							</div>
 						</t:if>
 						<t:unless test="firstTimeLogin">
+							<!--Duplicate main submit (login) in first position, make it invisible.  It is necessary to catch 'Enter'
+							 key press action, since it has affect only on first 'submit' input-->
+							<input value="Submit" id="signIn" class="hidden" data-submit-mode="normal" name="signIn" type="submit"/>
+							
 							<div id="forgotPassword" class="forget-pwd" >
 								<t:submit t:id="forgotPassword" class="btn-login btn btn-primary" value="Forgot Password?"/>
 							</div>
