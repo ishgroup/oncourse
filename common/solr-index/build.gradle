@@ -1,0 +1,21 @@
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDir 'src/main/java'
+
+sourceSets.test.java.srcDirs = []
+sourceSets.test.groovy.srcDir 'src/test/java'
+
+compileGroovy.options.encoding = 'UTF-8'
+compileTestGroovy.options.encoding = 'UTF-8'
+
+dependencies {
+    compile project(':common:cayenne-model')
+    compile project(':common:job-scheduler')
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+    compile group: 'org.apache.solr', name: 'solr-solrj', version: '6.6.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.1'
+
+    testCompile project(':common:test-functions')
+}
+
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'

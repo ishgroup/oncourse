@@ -1,0 +1,18 @@
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDir 'src/main/java'
+
+sourceSets.test.java.srcDirs = []
+sourceSets.test.groovy.srcDir 'src/test/java'
+
+compileGroovy.options.encoding = 'UTF-8'
+compileTestGroovy.options.encoding = 'UTF-8'
+
+dependencies {
+    compile project(':common:cayenne-model')
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
+    compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.4.2'
+    compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1'
+}
+
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'

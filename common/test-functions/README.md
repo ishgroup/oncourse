@@ -1,0 +1,1 @@
+The module contains useful functions which simplify configuration env for tests
