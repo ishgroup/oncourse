@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'fontawesome-selected';
-  src: url("../font/fontawesome-selected.eot");
-  src: url("../font/fontawesome-selected.eot?#iefix") format('embedded-opentype'), url("../font/fontawesome-selected.woff") format('woff'), url("../font/fontawesome-selected.ttf") format('truetype'), url("../font/fontawesome-selected.svg#fontawesome-selected") format('svg');
+  src: url("../fonts/fontawesome-selected.eot");
+  src: url("../fonts/fontawesome-selected.eot?#iefix") format('embedded-opentype'), url("../fonts/fontawesome-selected.woff") format('woff'), url("../fonts/fontawesome-selected.ttf") format('truetype'), url("../fonts/fontawesome-selected.svg#fontawesome-selected") format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -376,17 +376,17 @@
 	.white-text {
 		color: white;
 	}
-	
+
 	.fc-past {
-		
+
 		.fc-date {
 			color: #DCDCDC;
 		}
-		
+
 		.white-text {
         	color: white;
         }
-        		
+
 		.fc-calendar-events {
 			.fc-calendar-event {
 				border-color: #DCDCDC;
@@ -410,7 +410,7 @@
 		  position: static;
 		  padding: 0;
 		  margin: 0 auto;
-	
+
 		  ul, time {
 			display: none;
 		  }
