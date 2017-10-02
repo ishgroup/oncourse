@@ -18,9 +18,9 @@ class ThemeService {
   }
 
   public buildSaveThemeRequest(props, state: State) {
-    const page = state.page.items.find(p => p.id === props.id);
+    const theme = state.theme.items.find(t => t.id === props.id);
     return {
-      ...page,
+      ...theme,
       ...props,
     };
   }

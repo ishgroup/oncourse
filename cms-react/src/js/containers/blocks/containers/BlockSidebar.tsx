@@ -2,10 +2,10 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {getHistoryInstance} from "../../../history";
 import {Block} from "../../../model";
-import {BlocksList} from "../components/BlocksList";
 import {BlockSettings} from "../components/BlockSettings";
 import {URL} from "../../../routes";
 import {deleteBlock, saveBlock} from "../actions";
+import {SidebarList} from "../../../components/Sidebar/SidebarList";
 
 interface Props {
   blocks: Block[];
@@ -31,7 +31,11 @@ export class BlockSidebar extends React.Component<Props, any> {
     return (
       <div>
         {!activeBlock &&
-          <BlocksList blocks={blocks} onBack={this.goBack}/>
+          <SidebarList
+            items={blocks}
+            onBack={this.goBack}
+            category="themes"
+          />
         }
 
         {activeBlock &&

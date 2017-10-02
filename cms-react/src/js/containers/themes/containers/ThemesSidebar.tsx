@@ -3,9 +3,9 @@ import {connect, Dispatch} from "react-redux";
 import {getHistoryInstance} from "../../../history";
 import {URL} from "../../../routes";
 import {Theme} from "../../../model";
-import {ThemesList} from "../components/ThemesList";
 import {ThemeSettings} from "../components/ThemeSettings";
 import {deleteTheme, saveTheme} from "../actions/index";
+import {SidebarList} from "../../../components/Sidebar/SidebarList";
 
 interface Props {
   themes: Theme[];
@@ -32,7 +32,11 @@ class ThemesSidebar extends React.Component<Props, any> {
     return (
       <div>
         {!activeTheme &&
-          <ThemesList themes={themes} onBack={this.goBack}/>
+          <SidebarList
+            items={themes}
+            onBack={this.goBack}
+            category="themes"
+          />
         }
 
         {activeTheme &&
@@ -49,7 +53,7 @@ class ThemesSidebar extends React.Component<Props, any> {
 }
 
 const mapStateToProps = state => ({
-  themes: state.themes.items,
+  themes: state.theme.items,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

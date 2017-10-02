@@ -2,10 +2,10 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {getHistoryInstance} from "../../../history";
 import {Page} from "../../../model";
-import {PagesList} from "../components/PageList";
 import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../routes";
 import {deletePage, savePage} from "../actions";
+import {SidebarList} from "../../../components/Sidebar/SidebarList";
 
 interface Props {
   pages: Page[];
@@ -31,7 +31,12 @@ export class PagesSidebar extends React.Component<Props, any> {
     return (
       <div>
         {!activePage &&
-          <PagesList pages={pages} onBack={this.goBack}/>
+          <SidebarList
+            items={pages}
+            onBack={this.goBack}
+            category="pages"
+            subTitleKey="url"
+          />
         }
 
         {activePage &&

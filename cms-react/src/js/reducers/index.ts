@@ -14,5 +14,5 @@ export const combinedReducers = combineReducers({
   config: configReducer,
   page: pageReducer,
   block: blockReducer,
-  themes: themesReducers,
+  theme: themesReducers,
 });

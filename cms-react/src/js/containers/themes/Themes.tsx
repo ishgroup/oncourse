@@ -35,7 +35,7 @@ export class Themes extends React.Component<Props, any> {
 }
 
 const mapStateToProps = state => ({
-  themes: state.themes.items,
+  themes: state.theme.items,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
