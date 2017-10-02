@@ -269,7 +269,7 @@ arrify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
 
-asap@^2.0.3, asap@~2.0.3:
+asap@^2.0.3, asap@^2.0.6, asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
 
@@ -1369,6 +1369,15 @@ dnd-core@^2.4.0:
     lodash "^4.2.0"
     redux "^3.2.0"
 
+dnd-core@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-2.5.3.tgz#a4163d59a01779860d2edbdadab5183ce321147c"
+  dependencies:
+    asap "^2.0.6"
+    invariant "^2.0.0"
+    lodash "^4.2.0"
+    redux "^3.7.1"
+
 dns-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dns-equal/-/dns-equal-1.0.0.tgz#b39e7f1da6eb0a75ba9c17324b34753c47e0654d"
@@ -2205,6 +2214,10 @@ hoek@2.x.x:
 hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
+
+hoist-non-react-statics@^2.1.0:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
 
 hoist-non-react-statics@^2.2.1:
   version "2.2.2"
@@ -4408,6 +4421,12 @@ react-dnd-html5-backend@^2.1.2:
   dependencies:
     lodash "^4.2.0"
 
+react-dnd-html5-backend@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-2.5.3.tgz#1158112e8129dfe672d4c72222f266dd05321f03"
+  dependencies:
+    lodash "^4.2.0"
+
 react-dnd-scrollzone@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-dnd-scrollzone/-/react-dnd-scrollzone-4.0.0.tgz#d707170c0cd3b7ab3d991dd6a8cc0b3712454139"
@@ -4428,6 +4447,17 @@ react-dnd-scrollzone@^4.0.0:
     invariant "^2.1.0"
     lodash "^4.2.0"
     prop-types "^15.5.8"
+
+react-dnd@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-2.5.3.tgz#ee5357da19d4ebd0e0da0a070a862bbc133e3241"
+  dependencies:
+    disposables "^1.0.1"
+    dnd-core "^2.5.3"
+    hoist-non-react-statics "^2.1.0"
+    invariant "^2.1.0"
+    lodash "^4.2.0"
+    prop-types "^15.5.10"
 
 react-dom@15.6.1, react-dom@^15.6.1:
   version "15.6.1"
@@ -4715,7 +4745,7 @@ redux-persist@4.8.3:
     lodash "^4.17.4"
     lodash-es "^4.17.4"
 
-redux@3.7.2, redux@^3.2.0, redux@^3.4.0, redux@^3.6.0:
+redux@3.7.2, redux@^3.2.0, redux@^3.4.0, redux@^3.6.0, redux@^3.7.1:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
   dependencies:

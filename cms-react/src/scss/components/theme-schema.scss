@@ -1,0 +1,15 @@
+.theme-schema {
+  .header {
+    display: block;
+    width: 100%;
+  }
+  
+  .middle {
+    display: flex;
+    justify-content: space-between;
+    
+    > div {
+      width: 100%;
+    }
+  }
+}

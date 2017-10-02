@@ -9,11 +9,41 @@ export function themeApiMock(mock) {
         id: 1,
         title: 'Custom Theme',
         layout: 'Custom',
+        schema: {
+          top: [{
+            id: 1,
+            position: 1,
+          }],
+          middle1: [],
+          middle2: [],
+          middle3: [],
+          bottom: [{
+            id: 2,
+            position: 2,
+          }],
+        },
       },
       {
         id: 2,
         title: 'Default Theme',
         layout: 'User',
+        schema: {
+          top: [],
+          middle1: [],
+          middle2: [{
+            id: 3,
+            position: 1,
+          },
+          {
+            id: 4,
+            position: 1,
+          }],
+          middle3: [],
+          bottom: [{
+            id: 5,
+            position: 2,
+          }],
+        },
       },
     ],
   ));

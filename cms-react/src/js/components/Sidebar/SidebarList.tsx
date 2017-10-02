@@ -36,11 +36,12 @@ export class SidebarList extends React.Component<Props, any> {
 
   render() {
     const {items, category, subTitleKey} = this.props;
+    const reg = new RegExp(this.state.filter, 'gi');
 
     return (
       <ul>
         <li>
-          <a href="#" onClick={e => this.clickBack(e)}>
+          <a href="#" className="link-back" onClick={e => this.clickBack(e)}>
             <IconBack text={category}/>
           </a>
         </li>
@@ -63,7 +64,13 @@ export class SidebarList extends React.Component<Props, any> {
                 to={`/${category}/${item.id}`}
                 activeClassName="active"
               >
-                <span>{item.title}</span>
+                {this.state.filter &&
+                  <span dangerouslySetInnerHTML={{__html: item.title.replace(reg, str => (`<mark>${str}</mark>`))}}/>
+                }
+
+                {!this.state.filter &&
+                  <span>{item.title}</span>
+                }
 
                 {item[subTitleKey] &&
                   <small>{item[subTitleKey]}</small>

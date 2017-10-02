@@ -17,8 +17,28 @@ export function blockApiMock(mock) {
       },
       {
         id: 3,
-        title: 'Content',
+        title: 'Content1',
         html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
+      },
+      {
+        id: 4,
+        title: 'Content2',
+        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
+      },
+      {
+        id: 5,
+        title: 'Content3',
+        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li></ul>\n</div>",
+      },
+      {
+        id: 6,
+        title: 'Content4',
+        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
+      },
+      {
+        id: 7,
+        title: 'Content5',
+        html: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
       },
     ],
   ));
