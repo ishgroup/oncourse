@@ -32,8 +32,11 @@
       background: $main-green;
     }
     
-    &.blocks {
-      background: $sidebar-color;
+    &.blocks{
+      &:not(.active) {
+        background: $sidebar-color;
+      }
+      height: 640px;
     }
   }
   
