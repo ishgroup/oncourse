@@ -17,7 +17,7 @@ export function themeApiMock(mock) {
           middle1: [],
           middle2: [],
           middle3: [],
-          bottom: [{
+          footer: [{
             id: 2,
             position: 2,
           }],
@@ -39,7 +39,7 @@ export function themeApiMock(mock) {
             position: 1,
           }],
           middle3: [],
-          bottom: [{
+          footer: [{
             id: 5,
             position: 2,
           }],

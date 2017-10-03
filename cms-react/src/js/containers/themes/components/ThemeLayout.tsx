@@ -20,24 +20,53 @@ export class ThemeLayout extends React.Component<Props, any> {
     };
 
     return (
-      <div className="theme-schema">
-        <div className="header">
-          <Source list={getThemeBlocks('top')}/>
-        </div>
-        <div className="middle">
-          <div>
-            <Source list={getThemeBlocks('middle1')}/>
-          </div>
-          <div>
-            <Source list={getThemeBlocks('middle2')}/>
-          </div>
-          <div>
-            <Source list={getThemeBlocks('middle3')}/>
-          </div>
-        </div>
-        <div className="footer">
-          <Source list={getThemeBlocks('bottom')}/>
-        </div>
+      <div className="theme__layout">
+        <Row>
+          <Col md="12">
+            <Source
+              placeholder="Header"
+              id="top"
+              list={getThemeBlocks('top')}
+            />
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md="4">
+            <Source
+              placeholder="Left"
+              id="middle1"
+              list={getThemeBlocks('middle1')}
+            />
+          </Col>
+
+          <Col md="4">
+            <Source
+              placeholder="Middle"
+              id="middle2"
+              list={getThemeBlocks('middle2')}
+            />
+          </Col>
+
+          <Col md="4">
+            <Source
+              placeholder="Right"
+              id="middle3"
+              list={getThemeBlocks('middle3')}
+            />
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md="12">
+            <Source
+              placeholder="Footer"
+              id="footer"
+              list={getThemeBlocks('footer')}
+            />
+          </Col>
+        </Row>
+
       </div>
     );
   }

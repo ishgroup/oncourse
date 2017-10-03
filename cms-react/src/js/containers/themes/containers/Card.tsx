@@ -1,24 +1,16 @@
 import React, {Component} from 'react';
 import {DragSource, DropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom';
+import classnames from 'classnames';
 import flow from 'lodash/flow';
-
-const style = {
-  border: '1px dashed gray',
-  padding: '0.5rem 1rem',
-  margin: '.5rem',
-  backgroundColor: 'white',
-  cursor: 'move',
-};
 
 class Card extends Component<any, any> {
 
   render() {
     const {card, isDragging, connectDragSource, connectDropTarget} = this.props;
-    const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(connectDropTarget(
-      <div style={{...style, opacity}}>
+      <div className={classnames('theme__card', {dragging: isDragging})}>
         {card.title}
       </div>,
     ));

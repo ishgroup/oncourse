@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import update from 'react/lib/update';
-import Block from "./Block";
+import classnames from 'classnames';
+import Card from "./Card";
 import {DropTarget} from 'react-dnd';
 
 interface Props {
@@ -48,20 +49,14 @@ class Source extends Component<any, any> {
 
   render() {
     const {cards} = this.state;
-    const {canDrop, isOver, connectDropTarget} = this.props;
+    const {canDrop, isOver, connectDropTarget, placeholder, className} = this.props;
     const isActive = canDrop && isOver;
-    const style = {
-      height: "200px",
-      border: '1px dashed gray',
-    };
-
-    const backgroundColor = isActive ? 'lightgreen' : '#FFF';
 
     return connectDropTarget(
-      <div style={{...style, backgroundColor}}>
+      <div className={classnames("theme__source", className, {active: isActive})} data-placeholder={placeholder}>
         {cards.map((card, i) => {
           return (
-            <Block
+            <Card
               key={card.id}
               index={i}
               listId={this.props.id}
