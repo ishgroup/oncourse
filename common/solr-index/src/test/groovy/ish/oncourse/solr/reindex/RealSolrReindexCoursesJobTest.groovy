@@ -61,6 +61,6 @@ class RealSolrReindexCoursesJobTest {
             it
         }
         return Collections.singleton(course).iterator()
-    } c
+    }
 
 }

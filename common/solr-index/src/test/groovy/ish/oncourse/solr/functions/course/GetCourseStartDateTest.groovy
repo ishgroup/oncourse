@@ -9,7 +9,7 @@ import org.mockito.Mockito
 import static org.junit.Assert.assertEquals
 
 class GetCourseStartDateTest {
-    private GetCourseStartDateTestData data = new GetCourseStartDateTestData().with {
+    private GetCourseTestData data = new GetCourseTestData().with {
         it.current = new Date()
         it
     }

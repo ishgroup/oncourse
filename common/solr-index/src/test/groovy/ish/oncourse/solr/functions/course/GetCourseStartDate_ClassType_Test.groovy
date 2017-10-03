@@ -2,11 +2,11 @@ package ish.oncourse.solr.functions.course
 
 import org.junit.Test
 
-import static ish.oncourse.solr.functions.course.GetCourseStartDate.ClassType.*
+import static ish.oncourse.solr.functions.course.ClassType.*
 import static org.junit.Assert.assertEquals
 
 class GetCourseStartDate_ClassType_Test {
-    private GetCourseStartDateTestData data = new GetCourseStartDateTestData().with {
+    private GetCourseTestData data = new GetCourseTestData().with {
         it.current = new Date()
         it
     }
