@@ -43,7 +43,6 @@ public class Sessions {
 	@Property
 	private Session session;
 
-	@Persist
 	@Property
 	private List<Session> sessions;
 

@@ -44,10 +44,6 @@ public class ClassDetailsNew {
 	@Property
 	private Enrolment enrolment;
 
-	@Persist
-	@Property
-	private Session session;
-
 	@Inject
 	private Request request;
 
