@@ -15,6 +15,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.1'
 
     testCompile project(':common:test-functions')
+    testCompile group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
 }
 
 targetCompatibility = '1.8'

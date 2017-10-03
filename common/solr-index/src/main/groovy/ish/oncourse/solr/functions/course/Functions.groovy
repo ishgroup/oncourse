@@ -8,6 +8,7 @@ import static ish.oncourse.model.auto._CourseClass.*
 import static org.apache.cayenne.query.ObjectSelect.query
 
 class Functions {
+
     static Closure<SolrCourse> getSolrCourse = { Course course ->
         return new SolrCourse().with {
             it.id = course.id
@@ -23,11 +24,14 @@ class Functions {
         return (query(CourseClass) &
                 COURSE.eq(course) &
                 IS_WEB_VISIBLE.eq(true) &
-                CANCELLED.eq(true) &
-                START_DATE.isNotNull())
+                CANCELLED.eq(false) &
+                START_DATE.gt(new Date()).andExp(IS_DISTANT_LEARNING_COURSE.eq(true))
+                        .orExp(IS_DISTANT_LEARNING_COURSE.eq(false)))
                 .orderBy(START_DATE.asc()).select(course.objectContext).findAll {
             it.availableEnrolmentPlaces > 0
         }
+
+
     }
 
     static Closure<Date> getStartDate = { Course course, Closure<List<CourseClass>> courseClasses = getCourseClasses ->
