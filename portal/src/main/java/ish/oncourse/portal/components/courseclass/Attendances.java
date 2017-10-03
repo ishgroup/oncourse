@@ -25,7 +25,6 @@ public class Attendances {
 	@Property
 	private Attendance attendance;
 
-	@Persist
 	@Property
 	private List<Attendance> attendances;
 
