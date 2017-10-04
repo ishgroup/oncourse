@@ -5,6 +5,7 @@ import ish.oncourse.portal.access.IAuthenticationService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
@@ -41,13 +42,21 @@ public class PasswordRecovery {
     private Messages messages;
 
 	@Property
-	@Persist
 	private Contact contact;
+
+	@Persist(value = "client")
+	private String recoveryKey;
+
 	
 	@InjectPage
     private Index index;
 	
 	void onActivate(String recoveryKey) {
+		this.recoveryKey = recoveryKey;
+	}
+
+	@SetupRender
+	void setupRender() {
 		Contact user = authService.findByPasswordRecoveryKey(recoveryKey);
 
 		if (user != null) {
@@ -64,28 +73,30 @@ public class PasswordRecovery {
 			}
 		}
 	}
-
-	Object onSuccess() throws IOException {
+	
+	@OnEvent(value = EventConstants.VALIDATE, component = "recoveryForm")
+	void onValidate() throws IOException {
 
 		if (StringUtils.isBlank(password)) {
 			recoveryForm.recordError(passwordField, messages.get("message-enterPassword"));
 		}
-        else if (StringUtils.isBlank(confirmpassword)) {
+		else if (StringUtils.isBlank(confirmpassword)) {
 			recoveryForm.recordError(confirmPasswordField, messages.get("message-confirmPassowrd"));
 		}
-        else if (!password.equals(confirmpassword)) {
+		else if (!password.equals(confirmpassword)) {
 			recoveryForm.recordError(confirmPasswordField, messages.get("message-confirmPassowrdNotMatch"));
 		}
+	}
+	
+	Object onSuccess() throws IOException {
+		Contact user = authService.findByPasswordRecoveryKey(recoveryKey);
+		ObjectContext newContext = cayenneService.newContext();
+		contact = newContext.localObject(user);
 		
-		if (recoveryForm.getHasErrors()) {
-			return this;
-		}
-
 		contact.setNewPassword(password);
-		contact.getObjectContext().commitChanges();
-		
+		newContext.commitChanges();
 		authService.storeCurrentUser(contact);
-
+		recoveryKey = null;
 		return getTimetablePage();
 	}
 	
