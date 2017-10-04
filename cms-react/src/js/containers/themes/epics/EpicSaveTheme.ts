@@ -12,6 +12,7 @@ const request: EpicUtils.Request<any, any> = {
   type: SAVE_THEME_REQUEST,
   getData: (props, state) => ThemeService.saveTheme(props, state),
   processData: (theme: Theme[], state: any) => {
+    console.log(state);
     return [
       success(notificationParams),
       {

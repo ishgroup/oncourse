@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Row, Col} from 'reactstrap';
 import {connect, Dispatch} from "react-redux";
-import {getThemes} from "./actions";
+import {getThemes, saveTheme, updateLayout} from "./actions";
 import {Theme as ThemeModel} from "../../model";
 import Theme from "./components/Theme";
 import {Block} from "../../model/Block";
@@ -13,7 +13,7 @@ interface Props {
   blocks: Block[];
   onInit: () => any;
   match?: any;
-  onEditLayout: (schema) => any;
+  onUpdateLayout: (themeId, blockId, items) => any;
 }
 
 export class Themes extends React.Component<Props, any> {
@@ -23,7 +23,7 @@ export class Themes extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onEditLayout, blocks} = this.props;
+    const {themes, match, onUpdateLayout, blocks} = this.props;
     const theme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
@@ -31,8 +31,8 @@ export class Themes extends React.Component<Props, any> {
         {theme &&
         <Col sm="12">
           <Theme
-            theme={themes.find(theme => theme.id == match.params.id)}
-            onSave={onEditLayout}
+            theme={theme}
+            onUpdateLayout={(blockId, items) => onUpdateLayout(theme, blockId, items)}
             blocks={blocks}
           />
         </Col>
@@ -53,7 +53,17 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
       dispatch(getThemes());
       dispatch(getBlocks());
     },
-    onEditLayout: schema => undefined,
+    onUpdateLayout: (theme, blockId, items) => {
+      dispatch(saveTheme(
+        theme.id,
+        {
+          ...theme,
+          schema: {
+            ...theme.schema,
+            [blockId]: items.map((block, index) => ({id: block.id, position: index}))},
+        },
+      ));
+    },
   };
 };
 

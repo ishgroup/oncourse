@@ -16,14 +16,20 @@ class Source extends Component<any, any> {
   }
 
   pushCard(card) {
+    const {id} = this.props;
+
     this.setState(update(this.state, {
       cards: {
         $push: [card],
       },
     }));
+
+    this.props.onUpdate && this.props.onUpdate(id, this.state.cards);
   }
 
   removeCard(index) {
+    const {id} = this.props;
+
     this.setState(update(this.state, {
       cards: {
         $splice: [
@@ -31,9 +37,12 @@ class Source extends Component<any, any> {
         ],
       },
     }));
+
+    this.props.onUpdate && this.props.onUpdate(id, this.state.cards);
   }
 
   moveCard(dragIndex, hoverIndex) {
+    const {id} = this.props;
     const {cards} = this.state;
     const dragCard = cards[dragIndex];
 
@@ -45,6 +54,8 @@ class Source extends Component<any, any> {
         ],
       },
     }));
+
+    this.props.onUpdate && this.props.onUpdate(id, this.state.cards);
   }
 
   render() {
@@ -71,7 +82,7 @@ class Source extends Component<any, any> {
 }
 
 const cardTarget = {
-  drop(props, monitor, component ) {
+  drop(props, monitor, component) {
     const {id} = props;
     const sourceObj = monitor.getItem();
     if ( id !== sourceObj.listId ) component.pushCard(sourceObj.card);

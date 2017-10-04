@@ -16,13 +16,13 @@ const getFreeBlocks = (theme, blocks) => {
 interface Props {
   theme: ThemeModel;
   blocks?: Block[];
-  onSave: (themeId, schema) => void;
+  onUpdateLayout: (blockId, items) => any;
 }
 
 class Theme extends React.Component<Props, any> {
 
   render() {
-    const {theme, blocks} = this.props;
+    const {theme, blocks, onUpdateLayout} = this.props;
 
     return (
       <div className="theme">
@@ -31,6 +31,7 @@ class Theme extends React.Component<Props, any> {
             <ThemeLayout
               theme={theme}
               blocks={blocks}
+              onUpdate={onUpdateLayout}
             />
           </Col>
 

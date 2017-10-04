@@ -1,4 +1,5 @@
 import {_toRequestType, FULFILLED} from "../../../common/actions/ActionUtils";
+import {Theme} from "../../../model";
 
 export const GET_THEMES_REQUEST = _toRequestType("themes/get/items");
 export const GET_THEMES_FULFILLED = FULFILLED(GET_THEMES_REQUEST);
@@ -8,6 +9,9 @@ export const SAVE_THEME_FULFILLED = FULFILLED(SAVE_THEME_REQUEST);
 
 export const DELETE_THEME_REQUEST = _toRequestType("themes/delete/theme");
 export const DELETE_THEME_FULFILLED = FULFILLED(DELETE_THEME_REQUEST);
+
+export const UPDATE_LAYOUT_REQUEST = _toRequestType("themes/update/layout");
+export const UPDATE_LAYOUT_FULFILLED = _toRequestType(UPDATE_LAYOUT_REQUEST);
 
 export const getThemes = () => ({
   type: GET_THEMES_REQUEST,
@@ -22,3 +26,9 @@ export const deleteTheme = id => ({
   type: DELETE_THEME_REQUEST,
   payload: id,
 });
+
+export const updateLayout = (themeId, blockId, items) => ({
+  type: UPDATE_LAYOUT_REQUEST,
+  payload: {themeId, blockId, items},
+});
+
