@@ -17,12 +17,13 @@ interface Props {
   theme: ThemeModel;
   blocks?: Block[];
   onUpdateLayout: (blockId, items) => any;
+  onSaveTheme: () => any;
 }
 
 class Theme extends React.Component<Props, any> {
 
   render() {
-    const {theme, blocks, onUpdateLayout} = this.props;
+    const {theme, blocks, onUpdateLayout, onSaveTheme} = this.props;
 
     return (
       <div className="theme">
@@ -44,6 +45,8 @@ class Theme extends React.Component<Props, any> {
             />
           </Col>
         </Row>
+
+        <Button onClick={onSaveTheme} color="primary">Save</Button>
       </div>
     );
   }
