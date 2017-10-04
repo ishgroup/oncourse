@@ -22,6 +22,9 @@ export function blockApiMock(mock) {
 
 
   this.api.onPost(API.DELETE_BLOCK).reply(config => {
+
+    this.db.deleteBlockById(JSON.parse(config.data));
+
     return promiseResolve(
       config,
       null,

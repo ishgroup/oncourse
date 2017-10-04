@@ -65,8 +65,8 @@ class Source extends Component<any, any> {
 
     return connectDropTarget(
       <div className={classnames("theme__source", className, {active: isActive})} data-placeholder={placeholder}>
-        {cards.map((card, i) => {
-          return (
+        {cards.map((card, i) => (
+          card &&
             <Card
               key={card.id}
               index={i}
@@ -74,8 +74,8 @@ class Source extends Component<any, any> {
               card={card}
               removeCard={this.removeCard.bind(this)}
               moveCard={this.moveCard.bind(this)}/>
-          );
-        })}
+          ),
+        )}
       </div>,
     );
   }
@@ -85,7 +85,7 @@ const cardTarget = {
   drop(props, monitor, component) {
     const {id} = props;
     const sourceObj = monitor.getItem();
-    if ( id !== sourceObj.listId ) component.pushCard(sourceObj.card);
+    if (id !== sourceObj.listId) component.pushCard(sourceObj.card);
     return {
       listId: id,
     };

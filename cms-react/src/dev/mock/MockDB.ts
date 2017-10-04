@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import localForage from "localforage";
+import update from 'react/lib/update';
 import {Page, Block, MenuItem, Theme, User} from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
@@ -214,6 +215,58 @@ export class MockDB {
     ];
   }
 
+  deleteThemeById(id: number) {
+    const index = this.themes.findIndex(item => item.id === id);
+    this.themes = update(this.themes, {
+      $splice: [
+        [index, 1],
+      ],
+    });
+  }
+
+  deletePageById(id: number) {
+    const index = this.pages.findIndex(item => item.id === id);
+    this.pages = update(this.pages, {
+      $splice: [
+        [index, 1],
+      ],
+    });
+  }
+
+  deleteBlockById(id: number) {
+    // const index = this.blocks.findIndex(item => item.id === id);
+    // this.blocks = update(this.blocks, {
+    //   $splice: [
+    //     [index, 1],
+    //   ],
+    // });
+    //
+    // this.themes.forEach(theme => this.deleteBlockFromTheme(theme.id, id));
+  }
+
+  deleteBlockFromTheme(themeId, blockId) {
+    const theme = this.themes.find(theme => theme.id === themeId);
+    const layoutKeys = Object.keys(theme.schema);
+
+    layoutKeys.forEach(key => {
+      const blockIndex = theme.schema[key].findIndex(key => key.id === blockId);
+      if (blockIndex !== -1) {
+        deleteBlockFromPart(themeId, key, blockIndex);
+      }
+    });
+
+    const deleteBlockFromPart = (themeId, part, blockIndex) => {
+      const newTheme = this.themes.find(theme => theme.id === themeId);
+      newTheme.schema[part] = update(theme.schema[part], {
+        $splice: [
+          [blockIndex, 1],
+        ],
+      });
+
+      this.themes = this.themes.map(theme => theme.id === themeId ? newTheme : theme);
+    };
+
+  }
 
   addContact(contact) {
     // const nc = normalize([contact], ContactsSchema);

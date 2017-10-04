@@ -22,6 +22,9 @@ export function pageApiMock() {
 
 
   this.api.onPost(API.DELETE_PAGE).reply(config => {
+
+    this.db.deletePageById(JSON.parse(config.data));
+
     return promiseResolve(
       config,
       null,

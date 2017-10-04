@@ -28,6 +28,7 @@ export const showCommonError = (error: any): { type: string, payload: any } => {
 };
 
 export const ProcessError = (data: AxiosResponse): { type: string, payload?: any }[] => {
+  console.log(data);
   return [error({
     // uid: 'once-please', // you can specify your own uid if required
     title: 'Save failed',
