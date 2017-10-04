@@ -103,9 +103,9 @@ public class MailingLists {
 		ObjectContext objectContext = cayenneService.newContext();
 		this.currentUser = objectContext.localObject(portalService.getContact());
 		
-        currentUser.setIsMarketingViaEmailAllowed(chkEmail);
-        currentUser.setIsMarketingViaSMSAllowed(chkSMS);
-        currentUser.setIsMarketingViaPostAllowed(chkPost);
+        currentUser.setIsMarketingViaEmailAllowed(request.getParameter("chkEmail") != null);
+        currentUser.setIsMarketingViaSMSAllowed(request.getParameter("chkSMS") != null);
+        currentUser.setIsMarketingViaPostAllowed(request.getParameter("chkPost") != null);
         
 		
 		Set<Tag> listOfUser = new HashSet<>(tagService.getMailingListsContactSubscribed(currentUser));
