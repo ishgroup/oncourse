@@ -1,7 +1,7 @@
 import {ThemeSchema} from "./ThemeSchema";
 
 export class Theme {
-  id: string;
+  id: number;
   title: string;
   layout: string;
   schema: ThemeSchema;

@@ -1,5 +1,5 @@
 export class Block {
-  id: string;
+  id: number;
   title: string;
   html: string;
 }

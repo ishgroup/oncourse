@@ -1,5 +1,5 @@
 export class MenuItem {
-  id?: string;
+  id?: number;
   title: string;
   url: string;
   expanded?: boolean;

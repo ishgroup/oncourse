@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {MemoryRouter as Router} from 'react-router-dom';
-import {initMockAdapter} from "../dev/mock/MockAdapter";
+import {MockAdapter} from "../dev/mock/MockAdapter";
 
 import {CreateStore, RestoreState} from "./CreateStore";
 import {configLoader} from "./configLoader";
@@ -14,7 +14,7 @@ import {DefaultConfig} from "./constants/Config";
 import "../scss/cms.scss";
 
 // Enable in develop mode (move init to webpack)
-initMockAdapter();
+new MockAdapter();
 
 const store = CreateStore();
 

@@ -34,7 +34,7 @@ export class BlockSidebar extends React.Component<Props, any> {
           <SidebarList
             items={blocks}
             onBack={this.goBack}
-            category="themes"
+            category="blocks"
           />
         }
 

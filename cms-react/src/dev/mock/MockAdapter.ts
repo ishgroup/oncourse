@@ -1,19 +1,26 @@
 import axiosMockAdapter from 'axios-mock-adapter';
 import {Col, Container, Row} from 'reactstrap';
 import {defaultAxios} from "../../js/common/services/DefaultHttpClient";
-import {authApiMock} from "./AuthApiMock";
-import {menuApiMock} from "./MenuApiMock";
-import {pageApiMock} from "./PageApiMock";
-import {blockApiMock} from "./BlockApiMock";
-import {themeApiMock} from "./ThemeApiMock";
+import {CreateMockDB, MockDB} from "./MockDB";
 
-export function initMockAdapter() {
-  const mock = new axiosMockAdapter(defaultAxios);
-  authApiMock(mock);
-  menuApiMock(mock);
-  pageApiMock(mock);
-  blockApiMock(mock);
-  themeApiMock(mock);
+import {authApiMock} from "./api/AuthApiMock";
+import {menuApiMock} from "./api/MenuApiMock";
+import {pageApiMock} from "./api/PageApiMock";
+import {blockApiMock} from "./api/BlockApiMock";
+import {themeApiMock} from "./api/ThemeApiMock";
+
+export class MockAdapter {
+  public api = new axiosMockAdapter(defaultAxios);
+  public db: MockDB = CreateMockDB();
+
+  constructor() {
+    authApiMock.apply(this);
+    menuApiMock.apply(this);
+    pageApiMock.apply(this);
+    blockApiMock.apply(this);
+    themeApiMock.apply(this);
+  }
+
 }
 
 export const promiseResolve = (config, data = {}) => {
