@@ -7,7 +7,6 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import org.apache.tapestry5.annotations.InjectPage;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -16,7 +15,6 @@ import static ish.oncourse.portal.services.dashboard.ClassTab.*;
 
 public class Class {
 
-    @Persist
 	@Property
 	private CourseClass courseClass;
 

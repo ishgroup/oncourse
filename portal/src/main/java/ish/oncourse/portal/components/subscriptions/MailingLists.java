@@ -2,12 +2,14 @@ package ish.oncourse.portal.components.subscriptions;
 
 import ish.oncourse.model.*;
 import ish.oncourse.portal.pages.Login;
+import ish.oncourse.portal.pages.Subscriptions;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.MailingListHelper;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.cayenne.ObjectContext;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
@@ -15,40 +17,31 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MailingLists {
 
 	private static final Logger logger = LogManager.getLogger();
 
-
-
     @Property
-    @Persist
     private boolean chkEmail;
 
     @Property
-    @Persist
     private boolean chkSMS;
 
     @Property
-    @Persist
     private boolean chkPost;
 
 	@Property
-	@Persist
 	private Contact currentUser;
 
-	@Property
-	@Persist
 	private List<Long> selectedMailingLists;
 
 	@Property
-	@Persist
 	private List<Tag> mailingLists;
-
+	
 	@Property
 	private int index;
-
 
 	@Inject
 	private ICayenneService cayenneService;
@@ -62,84 +55,66 @@ public class MailingLists {
     @Inject
 	private ITagService tagService;
 
-	@Property
-	@Persist
-	private boolean isSaved;
-
 	@Inject
 	private Request request;
 
 	@InjectPage
 	private Login loginPage;
-
+	
+	public static final String ITEM_ID_PATTERN = "mailingList_";
+	
 	@SetupRender
 	void beforeRender() {
         ObjectContext objectContext = cayenneService.newContext();
 		this.currentUser = objectContext.localObject(portalService.getContact());
-
 		this.mailingLists = tagService.getMailingLists();
-		this.selectedMailingLists = new ArrayList<>();
-
         this.chkPost = this.currentUser.getIsMarketingViaPostAllowed();
         this.chkSMS = this.currentUser.getIsMarketingViaSMSAllowed();
         this.chkEmail = this.currentUser.getIsMarketingViaEmailAllowed();
-
 		initSelectedLists();
 	}
-	
-	@AfterRender
-	void afterRender() {
-		if (isSaved) {
-			this.isSaved = false;
-		}
+
+	public boolean isSelected() {
+		return selectedMailingLists.contains(mailingLists.get(index).getId());
 	}
 
-	public Tag getMailingList()
-	{
-		return mailingLists.get(index);
+	public Long getId() {
+		return mailingLists.get(index).getId();
 	}
 
-	public boolean isSelected()
-	{
-		Tag tag =  mailingLists.get(index);
-		return selectedMailingLists.contains(tag.getId());
+	public String getName() {
+		return mailingLists.get(index).getName();
 	}
 
+	public String getDetail() {
+		return mailingLists.get(index).getDetail();
+	}
 
 	private void initSelectedLists() {
 		Set<Tag> listOfUser = tagService.getMailingListsContactSubscribed(currentUser);
+		selectedMailingLists =  new ArrayList<>();
 		for (Tag t : listOfUser) {
 			selectedMailingLists.add(t.getId());
 		}
 	}
-
-	public void addSelectedTag(Tag tag)
-	{
-		if (!selectedMailingLists.contains(tag.getId()))
-			selectedMailingLists.add(tag.getId());
-	}
-
-	public void removeSelectedTag(Tag tag)
-	{
-		selectedMailingLists.remove(tag.getId());
-	}
-
-
-	public void onSubmitFromMailingListForm() {
-
-        ObjectContext objectContext = currentUser.getObjectContext();
-
-		this.isSaved = true;
-
+	
+	@OnEvent(value = "saveMailingListForm")
+	public void saveMailingListForm() {
+		ObjectContext objectContext = cayenneService.newContext();
+		this.currentUser = objectContext.localObject(portalService.getContact());
 		
-
         currentUser.setIsMarketingViaEmailAllowed(chkEmail);
-
         currentUser.setIsMarketingViaSMSAllowed(chkSMS);
-
         currentUser.setIsMarketingViaPostAllowed(chkPost);
-
+        
+		
 		Set<Tag> listOfUser = new HashSet<>(tagService.getMailingListsContactSubscribed(currentUser));
+
+		selectedMailingLists = request.getParameterNames().stream()
+				.filter(s -> s.startsWith(ITEM_ID_PATTERN))
+				.map(s -> Long.valueOf(s.replace(ITEM_ID_PATTERN, StringUtils.EMPTY)))
+				.collect(Collectors.toList());
+		
 		
 		MailingListHelper.valueOf(tagService, selectedMailingLists, listOfUser, objectContext, currentUser, webSiteService.getCurrentCollege()).saveSubscriptions();
 

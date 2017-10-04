@@ -37,33 +37,42 @@
         </div>
 
 		<h6> The following mailing lists are available at ${collegeName}: </h6>
-
-		<t:if test="isSaved">
-      <div class="alert alert-success">
-        <p>Mailing lists subscription was updated</p>
-      </div>
-		</t:if>
-
+        
+          <div id="mailingLists-saved" class="alert alert-success hidden">
+            <p>Mailing lists subscription was updated</p>
+          </div>
 
 	    	<fieldset>
 				<t:loop source="mailingLists" index="index">
-					<span t:type="subscriptions/mailinglistitem" mailingList="mailingList" tagSelected="${selected}"/>
-				</t:loop>
+                    <div>
+                        <div class="checkbox">
+                            <t:if test="selected">
+                                <input checked="checked" id="mailingList_${id}" name="mailingList_${id}" type="checkbox"/>
+                                <p:else>
+                                    <input id="mailingList_${id}" name="mailingList_${id}" type="checkbox"/>
+                                </p:else>
+                            </t:if>
+                            
+                            <label for="mailingList_${id}">
+                                ${name}
+                            </label>
+                            <div>
+                                <t:outputraw value="${detail}" />
+                            </div>
+                        </div>
+                    </div>
+                </t:loop>
 	    	</fieldset>
 	    	<br/>
 			<div class="form-group" xml:space="preserve">
 		 		<t:submit  t:id="saveMailingLists" value="Save" class="btn btn-primary" />
 		 	</div>
-
 		</form>
-
 		<br/>
 
 
         <div class="alert alert-info">Please select any mailing lists above which you wish to subscribe to. If you are subscribed you will receive communication from us.
 		 You can unsubscribe at any time.</div>
-
-
 		<p:else>
 			<h3>${collegeName} has no available mailing lists.</h3>
 		</p:else>
