@@ -280,6 +280,18 @@ export class MockDB {
 
   }
 
+  addPage(page: Page) {
+    this.pages = update(this.pages, {
+      $push: [
+        page,
+      ],
+    });
+  }
+
+  editPage(page: Page) {
+    this.pages = this.pages.map(item => item.id === page.id ? {...item, ...page} : item);
+  }
+
   addContact(contact) {
     // const nc = normalize([contact], ContactsSchema);
     // this.contacts.result = [...this.contacts.result, ...nc.result];

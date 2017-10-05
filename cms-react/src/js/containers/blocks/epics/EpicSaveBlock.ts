@@ -15,7 +15,7 @@ const request: EpicUtils.Request<any, any> = {
   getData: (props, state) => BlockService.saveBlock(props, state),
   processData: (block: Block, state: any) => {
 
-    getHistoryInstance().push(`${URL.BLOCKS}/${block.id}`)
+    getHistoryInstance().push(`${URL.BLOCKS}/${block.id}`);
 
     return [
       success(notificationParams),

@@ -6,6 +6,7 @@ import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../routes";
 import {deletePage, savePage} from "../actions";
 import {SidebarList} from "../../../components/Sidebar/SidebarList";
+import {defaultPage} from "../Pages";
 
 interface Props {
   pages: Page[];
@@ -24,9 +25,13 @@ export class PagesSidebar extends React.Component<Props, any> {
     getHistoryInstance().push(URL.PAGES);
   }
 
+  onAddPage() {
+    getHistoryInstance().push(`${URL.PAGES}/-1`);
+  }
+
   render() {
     const {pages, match, onEditSettings, onDeletePage} = this.props;
-    const activePage = match.params.id && pages.find(page => page.id == match.params.id);
+    const activePage = match.params.id && (pages.find(page => page.id == match.params.id) || defaultPage);
 
     return (
       <div>
@@ -36,6 +41,7 @@ export class PagesSidebar extends React.Component<Props, any> {
             onBack={this.goBack}
             category="pages"
             subTitleKey="url"
+            onAdd={() => this.onAddPage()}
           />
         }
 

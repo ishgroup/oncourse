@@ -63,7 +63,7 @@ export class PageSettings extends React.Component<Props, any> {
         <ul>
           <li>
             <a href="#" onClick={e => this.clickBack(e)}>
-              <IconBack text={page.title}/>
+              <IconBack text={page.title || 'New Page'}/>
             </a>
           </li>
         </ul>

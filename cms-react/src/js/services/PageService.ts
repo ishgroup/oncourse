@@ -19,9 +19,11 @@ class PageService {
 
   public buildSavePageRequest(props, state: State) {
     const page = state.page.items.find(p => p.id === props.id);
+
     return {
       ...page,
       ...props,
+      id: props.id != -1 ? props.id : null,
     };
   }
 

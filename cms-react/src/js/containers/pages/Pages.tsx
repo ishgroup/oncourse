@@ -4,6 +4,8 @@ import {getPages, savePage} from "./actions";
 import {Page as PageModel} from "../../model";
 import {Page} from "./components/Page";
 
+export const defaultPage = {...new PageModel(), id: -1};
+
 interface Props {
   pages: PageModel[];
   onInit: () => any;
@@ -19,12 +21,13 @@ export class Pages extends React.Component<Props, any> {
 
   render() {
     const {match, pages, onEditHtml} = this.props;
+    const activePage = match.params.id && (pages.find(page => page.id == match.params.id) || defaultPage);
 
     return (
       <div>
-        {match.params.id &&
+        {activePage &&
         <Page
-          page={pages.find(page => page.id == match.params.id)}
+          page={activePage}
           onSave={onEditHtml}
         />
         }

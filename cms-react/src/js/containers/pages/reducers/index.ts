@@ -17,10 +17,16 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     case SAVE_PAGE_FULFILLED: {
       const {id, ...props} = action.payload;
 
-      return {
+      const ns = {
         ...state,
         items: state.items.map(page => page.id === id ? {...page, ...props} : page),
       };
+
+      if (!state.items.find(page => page.id === id)) {
+        ns.items.push({id, ...props});
+      }
+
+      return ns;
     }
 
     case DELETE_PAGE_FULFILLED: {
