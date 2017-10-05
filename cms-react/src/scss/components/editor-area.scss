@@ -1,8 +1,13 @@
 .editor-area {
-  border: 2px solid transparent;
+  border: 2px solid $sidebar-color;
   padding: 5px;
   border-radius: 2px;
   cursor: pointer;
+  min-height: 400px;
+  
+  &--empty {
+  
+  }
   
   &:hover {
     border: 2px solid $primary;

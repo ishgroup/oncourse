@@ -17,10 +17,16 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
     case SAVE_BLOCK_FULFILLED: {
       const {id, ...props} = action.payload;
 
-      return {
+      const ns = {
         ...state,
         items: state.items.map(block => block.id === id ? {...block, ...props} : block),
       };
+
+      if (!state.items.find(block => block.id === id)) {
+        ns.items.push({id, ...props});
+      }
+
+      return ns;
     }
 
     case DELETE_BLOCK_FULFILLED: {

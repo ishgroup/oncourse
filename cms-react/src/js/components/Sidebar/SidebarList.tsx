@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input} from 'reactstrap';
+import {Input, Button} from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 import {Page, Block, Theme} from "../../model";
 import {IconBack} from "../../common/components/IconBack";
@@ -9,6 +9,7 @@ interface Props {
   onBack: () => void;
   category: string;
   subTitleKey?: string;
+  onAdd?: () => any;
 }
 
 export class SidebarList extends React.Component<Props, any> {
@@ -35,16 +36,18 @@ export class SidebarList extends React.Component<Props, any> {
   }
 
   render() {
-    const {items, category, subTitleKey} = this.props;
+    const {items, category, subTitleKey, onAdd} = this.props;
     const reg = new RegExp(this.state.filter, 'gi');
 
     return (
       <ul>
+
         <li>
           <a href="#" className="link-back" onClick={e => this.clickBack(e)}>
             <IconBack text={category}/>
           </a>
         </li>
+
         <li>
           <div className="sidebar__settings">
             <Input
@@ -55,6 +58,15 @@ export class SidebarList extends React.Component<Props, any> {
             />
           </div>
         </li>
+
+        {onAdd &&
+          <li>
+            <div className="sidebar__settings">
+              <Button onClick={onAdd} color="primary"><span className="icon icon-add_circle"/>Add new</Button>
+            </div>
+          </li>
+        }
+
         {items && items
           .filter(item => item.title.toLocaleLowerCase().indexOf(this.state.filter.toLocaleLowerCase()) !== -1)
           .map(item => (
@@ -78,6 +90,7 @@ export class SidebarList extends React.Component<Props, any> {
               </NavLink>
             </li>
           ))}
+
       </ul>
     );
   }

@@ -244,6 +244,18 @@ export class MockDB {
     // this.themes.forEach(theme => this.deleteBlockFromTheme(theme.id, id));
   }
 
+  addBlock(block: Block) {
+    this.blocks = update(this.blocks, {
+      $push: [
+        block,
+      ],
+    });
+  }
+
+  editBlock(block: Block) {
+    this.blocks = this.blocks.map(item => item.id === block.id ? {...item, ...block} : item);
+  }
+
   deleteBlockFromTheme(themeId, blockId) {
     const theme = this.themes.find(theme => theme.id === themeId);
     const layoutKeys = Object.keys(theme.schema);

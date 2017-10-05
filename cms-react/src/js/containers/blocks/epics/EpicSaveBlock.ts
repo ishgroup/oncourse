@@ -7,11 +7,16 @@ import {SAVE_BLOCK_FULFILLED, SAVE_BLOCK_REQUEST} from "../actions";
 import {Block} from "../../../model";
 import BlockService from "../../../services/BlockService";
 import {notificationParams} from "../../../common/utils/NotificationSettings";
+import {getHistoryInstance} from "../../../history";
+import {URL} from "../../../routes";
 
 const request: EpicUtils.Request<any, any> = {
   type: SAVE_BLOCK_REQUEST,
   getData: (props, state) => BlockService.saveBlock(props, state),
-  processData: (block: Block[], state: any) => {
+  processData: (block: Block, state: any) => {
+
+    getHistoryInstance().push(`${URL.BLOCKS}/${block.id}`)
+
     return [
       success(notificationParams),
       {

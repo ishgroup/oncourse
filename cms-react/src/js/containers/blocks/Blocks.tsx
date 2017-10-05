@@ -11,6 +11,8 @@ interface Props {
   onEditHtml: (id, html) => any;
 }
 
+export const defaultBlock = {...new BlockModel(), id: -1};
+
 export class Blocks extends React.Component<Props, any> {
 
   componentDidMount() {
@@ -19,14 +21,15 @@ export class Blocks extends React.Component<Props, any> {
 
   render() {
     const {match, blocks, onEditHtml} = this.props;
+    const activeBlock = match.params.id && (blocks.find(block => block.id == match.params.id) || defaultBlock);
 
     return (
       <div>
-        {match.params.id &&
-        <Block
-          block={blocks.find(block => block.id == match.params.id)}
-          onSave={onEditHtml}
-        />
+        {activeBlock &&
+          <Block
+            block={activeBlock}
+            onSave={onEditHtml}
+          />
         }
       </div>
     );

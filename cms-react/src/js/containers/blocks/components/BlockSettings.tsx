@@ -58,7 +58,7 @@ export class BlockSettings extends React.Component<Props, any> {
         <ul>
           <li>
             <a href="#" onClick={e => this.clickBack(e)}>
-              <IconBack text={block.title}/>
+              <IconBack text={block.title || 'New Block'}/>
             </a>
           </li>
         </ul>

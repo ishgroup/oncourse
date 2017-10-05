@@ -19,9 +19,11 @@ class BlockService {
 
   public buildSaveBlockRequest(props, state: State) {
     const block = state.block.items.find(p => p.id === props.id);
+
     return {
       ...block,
       ...props,
+      id: props.id != -1 ? props.id : null,
     };
   }
 

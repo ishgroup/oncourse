@@ -1,5 +1,6 @@
 import React from 'react';
 import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
+import classnames from 'classnames';
 import {Block as BlockModel} from "../../../model";
 import {Editor} from "../../../common/components/Editor";
 
@@ -70,7 +71,10 @@ export class Block extends React.Component<Props, any> {
 
         <div onClick={e => this.onClickArea(e)}>
           {!this.state.editMode &&
-            <div className="editor-area" dangerouslySetInnerHTML={{__html: block.html}} />
+            <div
+              className={classnames("editor-area", {'editor-area--empty': block.id === -1})}
+              dangerouslySetInnerHTML={{__html: block.html}}
+            />
           }
         </div>
 

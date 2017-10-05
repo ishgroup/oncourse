@@ -101,8 +101,6 @@ export class ThemeSettings extends React.Component<Props, any> {
           </Form>
         </div>
 
-        <div className="separator"/>
-
       </div>
     );
   }

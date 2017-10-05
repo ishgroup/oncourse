@@ -12,7 +12,8 @@
     background: transparent;
     overflow: auto;
     position: relative;
-    
+    transition: all .3s;
+  
     &:after {
       position: absolute;
       width: 100%;
@@ -47,7 +48,7 @@
     background: white;
     cursor: move;
     opacity: 1;
-    
+  
     &.dragging {
       opacity: 0;
       max-width: 200px;

@@ -6,6 +6,7 @@ import {BlockSettings} from "../components/BlockSettings";
 import {URL} from "../../../routes";
 import {deleteBlock, saveBlock} from "../actions";
 import {SidebarList} from "../../../components/Sidebar/SidebarList";
+import {defaultBlock} from "../Blocks";
 
 interface Props {
   blocks: Block[];
@@ -24,9 +25,13 @@ export class BlockSidebar extends React.Component<Props, any> {
     getHistoryInstance().push(URL.BLOCKS);
   }
 
+  onAddBlock() {
+    getHistoryInstance().push(`${URL.BLOCKS}/-1`);
+  }
+
   render() {
     const {blocks, match, onEditSettings, onDeleteBlock} = this.props;
-    const activeBlock = match.params.id && blocks.find(block => block.id == match.params.id);
+    const activeBlock = match.params.id && (blocks.find(block => block.id == match.params.id) || defaultBlock);
 
     return (
       <div>
@@ -35,6 +40,7 @@ export class BlockSidebar extends React.Component<Props, any> {
             items={blocks}
             onBack={this.goBack}
             category="blocks"
+            onAdd={() => this.onAddBlock()}
           />
         }
 

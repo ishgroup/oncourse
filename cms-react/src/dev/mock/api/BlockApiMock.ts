@@ -1,3 +1,4 @@
+import faker from "faker";
 import {promiseReject, promiseResolve} from "../MockAdapter";
 import {API} from "../../../js/constants/Config";
 
@@ -14,9 +15,19 @@ export function blockApiMock(mock) {
       return promiseReject(config, {message: 'Title can not be blank'});
     }
 
+    if (!request.id) {
+
+      request.id = faker.random.number();
+      this.db.addBlock(request);
+
+    } else {
+      this.db.editBlock(request);
+    }
+
+
     return promiseResolve(
       config,
-      JSON.parse(config.data),
+      request,
     );
   });
 
