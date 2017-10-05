@@ -2,11 +2,23 @@ import React from 'react';
 import {Container, Row, Col} from 'reactstrap';
 import {connect, Dispatch} from "react-redux";
 import {getThemes, saveTheme, updateThemeState} from "./actions";
-import {Theme as ThemeModel} from "../../model";
+import {Theme as ThemeModel, Block, ThemeSchema} from "../../model";
 import Theme from "./components/Theme";
-import {Block} from "../../model/Block";
 import {State} from "../../reducers/state";
-import {getBlocks} from "../blocks/actions/index";
+import {getBlocks} from "../blocks/actions";
+
+export const getDefaultTheme = () => {
+  const defaultTheme = new ThemeModel();
+  defaultTheme.id = -1;
+  defaultTheme.schema = new ThemeSchema();
+  defaultTheme.schema.top = [];
+  defaultTheme.schema.footer = [];
+  defaultTheme.schema.middle1 = [];
+  defaultTheme.schema.middle2 = [];
+  defaultTheme.schema.middle3 = [];
+
+  return defaultTheme;
+};
 
 interface Props {
   themes: ThemeModel[];
@@ -25,7 +37,7 @@ export class Themes extends React.Component<Props, any> {
 
   render() {
     const {themes, match, onUpdateLayout, onSaveTheme, blocks} = this.props;
-    const theme = match.params.id && themes.find(theme => theme.id == match.params.id);
+    const theme = match.params.id && (themes.find(theme => theme.id == match.params.id) || getDefaultTheme());
 
     return (
       <div>

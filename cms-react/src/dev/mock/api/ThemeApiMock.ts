@@ -1,3 +1,4 @@
+import faker from 'faker';
 import {promiseReject, promiseResolve} from "../MockAdapter";
 import {API} from "../../../js/constants/Config";
 
@@ -14,9 +15,18 @@ export function themeApiMock() {
       return promiseReject(config, {message: 'Title can not be blank'});
     }
 
+    if (!request.id) {
+
+      request.id = faker.random.number();
+      this.db.addTheme(request);
+
+    } else {
+      this.db.editTheme(request);
+    }
+
     return promiseResolve(
       config,
-      JSON.parse(config.data),
+      request,
     );
   });
 

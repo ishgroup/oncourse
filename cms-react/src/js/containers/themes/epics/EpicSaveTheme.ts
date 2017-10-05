@@ -7,12 +7,16 @@ import {SAVE_THEME_REQUEST, SAVE_THEME_FULFILLED} from "../actions";
 import {Theme} from "../../../model";
 import ThemeService from "../../../services/ThemeService";
 import {notificationParams} from "../../../common/utils/NotificationSettings";
+import {URL} from "../../../routes";
+import {getHistoryInstance} from "../../../history";
 
 const request: EpicUtils.Request<any, any> = {
   type: SAVE_THEME_REQUEST,
   getData: (props, state) => ThemeService.saveTheme(props, state),
-  processData: (theme: Theme[], state: any) => {
-    console.log(state);
+  processData: (theme: Theme, state: any) => {
+
+    getHistoryInstance().push(`${URL.THEMES}/${theme.id}`);
+
     return [
       success(notificationParams),
       {

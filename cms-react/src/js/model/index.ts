@@ -16,3 +16,4 @@ export {Block} from "./Block";
 
 // Themes
 export {Theme} from "./Theme";
+export {ThemeSchema} from "./ThemeSchema";

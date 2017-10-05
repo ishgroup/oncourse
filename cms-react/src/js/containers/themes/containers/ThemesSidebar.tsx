@@ -6,6 +6,7 @@ import {Theme} from "../../../model";
 import {ThemeSettings} from "../components/ThemeSettings";
 import {deleteTheme, saveTheme} from "../actions/index";
 import {SidebarList} from "../../../components/Sidebar/SidebarList";
+import {getDefaultTheme} from "../Themes";
 
 interface Props {
   themes: Theme[];
@@ -24,9 +25,13 @@ class ThemesSidebar extends React.Component<Props, any> {
     getHistoryInstance().push(URL.THEMES);
   }
 
+  onAddTheme() {
+    getHistoryInstance().push(`${URL.THEMES}/-1`);
+  }
+
   render() {
     const {themes, match, onEditSettings, onDeleteTheme} = this.props;
-    const activeTheme = match.params.id && themes.find(theme => theme.id == match.params.id);
+    const activeTheme = match.params.id && (themes.find(theme => theme.id == match.params.id) || getDefaultTheme());
 
 
     return (
@@ -36,6 +41,7 @@ class ThemesSidebar extends React.Component<Props, any> {
             items={themes}
             onBack={this.goBack}
             category="themes"
+            onAdd={() => this.onAddTheme()}
           />
         }
 
@@ -43,7 +49,7 @@ class ThemesSidebar extends React.Component<Props, any> {
           <ThemeSettings
             theme={activeTheme}
             onBack={this.resetActiveTheme}
-            onEdit={prop => onEditSettings(activeTheme.id, prop)}
+            onEdit={prop => onEditSettings(activeTheme, prop)}
             onDelete={id => onDeleteTheme(id)}
           />
         }
@@ -58,7 +64,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    onEditSettings: (themeId, settings) => dispatch(saveTheme(themeId, settings)),
+    onEditSettings: (theme, settings) => dispatch(saveTheme(theme.id, {...theme, ...settings})),
     onDeleteTheme: id => dispatch(deleteTheme(id)),
   };
 };

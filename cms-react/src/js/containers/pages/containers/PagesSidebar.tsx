@@ -46,12 +46,12 @@ export class PagesSidebar extends React.Component<Props, any> {
         }
 
         {activePage &&
-        <PageSettings
-          page={activePage}
-          onBack={this.resetActivePage}
-          onEdit={prop => onEditSettings(activePage.id, prop)}
-          onDelete={id => onDeletePage(id)}
-        />
+          <PageSettings
+            page={activePage}
+            onBack={this.resetActivePage}
+            onEdit={prop => onEditSettings(activePage.id, prop)}
+            onDelete={id => onDeletePage(id)}
+          />
         }
       </div>
     );

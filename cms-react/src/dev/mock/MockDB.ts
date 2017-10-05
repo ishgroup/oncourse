@@ -292,6 +292,18 @@ export class MockDB {
     this.pages = this.pages.map(item => item.id === page.id ? {...item, ...page} : item);
   }
 
+  addTheme(theme: Theme) {
+    this.themes = update(this.themes, {
+      $push: [
+        theme,
+      ],
+    });
+  }
+
+  editTheme(theme: Theme) {
+    this.themes = this.themes.map(item => item.id === theme.id ? {...item, ...theme} : item);
+  }
+
   addContact(contact) {
     // const nc = normalize([contact], ContactsSchema);
     // this.contacts.result = [...this.contacts.result, ...nc.result];

@@ -1,5 +1,3 @@
-import {Block} from "./Block";
-
 interface BlockItem {
   id: number;
   position: number;

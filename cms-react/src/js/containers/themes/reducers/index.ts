@@ -17,10 +17,16 @@ export const themesReducers = (state: ThemesState = new ThemesState(), action: I
     case SAVE_THEME_FULFILLED: {
       const {id, ...props} = action.payload;
 
-      return {
+      const ns = {
         ...state,
         items: state.items.map(item => item.id === id ? {...item, ...props} : item),
       };
+
+      if (!state.items.find(theme => theme.id === id)) {
+        ns.items.push({id, ...props});
+      }
+
+      return ns;
     }
 
     case UPDATE_THEME_STATE: {

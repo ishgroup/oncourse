@@ -22,6 +22,7 @@ class ThemeService {
     return {
       ...theme,
       ...props,
+      id: props.id != -1 ? props.id : null,
     };
   }
 
