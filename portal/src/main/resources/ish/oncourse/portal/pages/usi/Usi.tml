@@ -4,17 +4,19 @@
         >
     <t:pageheader title="literal:Student Identification"/>
     <body id="usi-page">
+        <span id="usiStep" class="hidden" data-step="${step}"/>
         <t:delegate to="block:bodyheader"/>
         <div id="wrap">
             <div class="container">
                 <div class="col-md-5 col-sm-12 main-container usi-form-holder">
                     <h1>${contact.fullName}</h1>
                     <div class="row">
-                        <div class="col-sm-12 main-container">
-                            <t:delegate to="block:errors"/>
+                        <div id = "main-container" class="col-sm-12 main-container">
+                            <t:delegate to="block:progress"/>
                             <t:usi.currentstep usiController="usiController"/>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -33,8 +35,7 @@
             <t:usi.progress usiController="usiController"/>
         </div>
     </t:block>
-
-    <t:block t:id="errors">
-        <t:usi.errors validationResult="validationResult"/>
+    <t:block t:id="progress">
+        <t:usi.wait usiController="usiController" />
     </t:block>
 </html>

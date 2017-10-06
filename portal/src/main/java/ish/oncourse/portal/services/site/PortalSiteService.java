@@ -37,8 +37,7 @@ public class PortalSiteService implements IWebSiteService {
 	public College getCurrentCollege() {
         if (authService.getUser() == null) {
             // we need the code for usi page.
-            Session session = request.getSession(false);
-            Long collegeId = (Long) session.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE);
+            Long collegeId = (Long) request.getAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE);
             return collegeService.findById(collegeId);
         }
         else {

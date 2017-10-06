@@ -1,5 +1,7 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <t:delegate to="block"/>
+    <span  id="usi-main-form">
+        <t:delegate to="block"/>
+    </span>
 
     <t:block t:id="usiform">
         <t:usi.usiform usiController="usiController"/>

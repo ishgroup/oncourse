@@ -12,9 +12,13 @@ Usi = function () {
 
 Usi.prototype = {
     data: 0,
+    step: 0,
+    uniqueKey: 0,
+  
     initialize: function () {
         var self = this;
-
+			  this.step = $j("#usiStep").attr('data-step');
+			  this.uniqueKey = document.location.pathname.split('/')[3]
         $j("#usi-next").click(function () {
             self.next();
         });
@@ -29,6 +33,15 @@ Usi.prototype = {
         $j.each(this.data.values, function (index, value) {
             self.fillControl(value);
         });
+			  $j('#main-container').find('.error-message').remove();
+      if (this.data.errors && this.data.errors.length) {
+          var errorsHtml = '';
+					$j.each(this.data.errors, function (index, value) {
+            errorsHtml += '<li>' + value + '</li>';
+					});
+					
+					$j('#main-container').prepend($j('<div class="error-message"><ul>' + errorsHtml + '</ul></div>'))
+				}
     },
 
     fillControl: function (value) {
@@ -64,7 +77,7 @@ Usi.prototype = {
     loadData: function () {
         var self = this;
 
-        var actionLink = "/portal/usi/usi:value";
+        var actionLink = "/portal/usi/usi:value" + "/" + self.step + "/" + self.uniqueKey;
         $j.ajax({
             url: actionLink,
             type: 'post',
@@ -72,11 +85,8 @@ Usi.prototype = {
             cache: false,
             success: function (data) {
                 self.data = data;
+							  self.step = data.step;
                 self.showData();
-                //check current view is 'wait' view
-                if ($j('div.progress').length > 0) {
-                    self.reloadByTimeout();
-                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);
@@ -86,34 +96,41 @@ Usi.prototype = {
         });
     },
 
-    reloadByTimeout: function () {
-        var self = this;
-        setTimeout(function () {
-            window.location.reload();
-        }, 5000);
-    },
-
-    verifyUsi: function()
-    {
-            $j.ajax({
-                url: '/portal/usi/usi:verifyUsi',
-                type: 'post',
-                cache: false,
-                success: function (data) {
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(textStatus);
-                    console.log(errorThrown);
-                    window.location.reload();
-                }
-            });
+    verifyUsi: function() {
+			$j('#usi-main-form').hide();
+			$j('#main-container').find('.error-message').remove();
+			$j('.usi-progress').show();
+      var self = this;
+      var data = $j(".form-control").serialize();
+      
+			$j.ajax({
+            url: '/portal/usi/usi:verifyUsi' + "/" + self.step + "/" + self.uniqueKey,
+            type: 'post',
+            cache: false,
+				    data: data,
+            success: function (data) {
+							$j('#usi-main-form').show();
+							$j('.usi-progress').hide();
+							self.step = data.step;
+							self.data = data;
+              if (self.step === 'usi') {
+								self.showData();
+              } else {
+								self.reload();
+              }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+                console.log(errorThrown);
+                window.location.reload();
+            }
+        });
     },
 
     next: function () {
         var self = this;
         var data = $j(".form-control").serialize();
-        var actionLink = "/portal/usi/usi:next";
-        var currentStep = this.data.step;
+        var actionLink = "/portal/usi/usi:next" + "/" + self.step + "/" + self.uniqueKey;
         $j.ajax({
             url: actionLink,
             type: 'post',
@@ -123,13 +140,13 @@ Usi.prototype = {
             success: function (data) {
                 var oldStep = self.data.step;
                 self.data = data;
-                if (data.step == 'wait' && oldStep != 'wait')
-                {
-                    self.verifyUsi();
-                }
+							  self.step = data.step;
                 self.showData();
-                if (!data.hasErrors)
-                    window.location.reload();
+                if (data.step === 'wait' && oldStep !== 'wait') {
+                    self.verifyUsi();
+                } else if (!data.hasErrors) {
+									self.reload();
+								}
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);
@@ -137,6 +154,16 @@ Usi.prototype = {
                 window.location.reload();
             }
         });
+    },
+
+    reload: function () {
+			var self = this;
+			var search = document.location.search;
+        if (search.indexOf("&step=") !== -1) {
+            document.location.search  = search.replace(/(step=).*/, "$1" + self.step)
+        } else {
+            document.location.search += "&step=" + self.step
+				}
     }
 };
 

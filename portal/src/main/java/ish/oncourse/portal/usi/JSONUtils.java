@@ -45,6 +45,14 @@ public class JSONUtils {
         return jsonValues;
     }
 
+    public static JSONArray getJSONArray(Map<String, String> values) {
+        JSONArray jsonValues = new JSONArray();
+        for (Map.Entry<String, String> value : values.entrySet()) {
+            jsonValues.put(value.getValue());
+        }
+        return jsonValues;
+    }
+    
     public static Map<String, Value> getValuesFrom(Request request)
     {
         List<String> keys = request.getParameterNames();

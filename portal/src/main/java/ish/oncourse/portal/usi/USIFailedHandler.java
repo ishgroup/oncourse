@@ -13,6 +13,13 @@ import java.util.Map;
  */
 public class USIFailedHandler extends USIHandler {
 
+
+    @Override
+    public void init() {
+        super.init();
+        getUsiController().getValidationResult().addError("message-personalDetailsNotMatch", getUsiController().getMessages());
+    }
+
     @Override
     public Result getValue() {
 

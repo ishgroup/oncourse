@@ -1,5 +1,6 @@
 package ish.oncourse.portal.pages.usi;
 
+import ish.common.types.UsiStatus;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.pages.PageNotFound;
@@ -15,7 +16,6 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
@@ -49,19 +49,14 @@ public class Usi {
 
     @Inject
     private IUSIVerificationService usiVerificationService;
-
-    @Persist
+    
     private UsiControllerModel usiControllerModel;
+    
+    @Property
+    private Step step;
 
-
-    public Object onActivate() {
-
-        if (usiControllerModel == null) {
-            return PageNotFound.class;
-        } else {
-            return null;
-        }
-    }
+    private String uniqueCode;
+    
 
     @Cached
     public UsiController getUsiController() {
@@ -71,26 +66,31 @@ public class Usi {
     }
 
     public Object onActivate(String uniqueCode) {
-        if (usiControllerModel == null || !usiControllerModel.getContact().getUniqueCode().equals(uniqueCode)) {
-            Contact contact = parseUrl(uniqueCode);
-            if (contact != null) {
-                initUsiControllerModel(contact);
-                return null;
-            } else {
-                return PageNotFound.class;
-            }
-        } else {
+        if (request.getParameter("step") != null) {
+            step = Step.valueOf(request.getParameter("step"));
+        }
+        this.uniqueCode = uniqueCode;
+        Contact contact = parseUrl();
+        if (contact != null) {
+            initUsiControllerModel(contact);
             return null;
+        } else {
+            return PageNotFound.class;
         }
     }
 
     private void initUsiControllerModel(Contact contact) {
         ObjectContext context = cayenneService.newContext();
         usiControllerModel = UsiControllerModel.valueOf(context.localObject(contact));
-        usiControllerModel.setStep(usiControllerModel.isSkipContactInfo() ? Step.avetmissInfo : Step.contactInfo);
-
-        // we need put college id to the session for WebSiteService.getCurrentCollege() method
-        request.getSession(false).setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, contact.getCollege().getId());
+        
+        if (UsiStatus.VERIFIED.equals(contact.getStudent().getUsiStatus())) {
+            usiControllerModel.setStep(Step.done);
+        } else if (step != null) {
+            usiControllerModel.setStep(step);
+        } else {
+            step = usiControllerModel.isSkipContactInfo() ? Step.avetmissInfo : Step.contactInfo;
+            usiControllerModel.setStep(step);
+        }
     }
 
     public ValidationResult getValidationResult() {
@@ -101,7 +101,7 @@ public class Usi {
         return getUsiController().getContact();
     }
 
-    private Contact parseUrl(String uniqueCode) {
+    private Contact parseUrl() {
 
         String key = request.getParameter(UrlUtil.KEY);
         String valid = request.getParameter(UrlUtil.VALID_UNTIL);
@@ -110,6 +110,14 @@ public class Usi {
             return null;
         }
         String url = String.format("%s?valid=%s&key=%s", URLUtils.buildURLString(request, request.getPath(), true), valid, key);
+        Contact contact = findContact();
+
+        if (!UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
+            return null;
+        }
+        return contact;
+    }
+    private Contact findContact() {
         List<Contact> contacts = ObjectSelect.query(Contact.class).where(Contact.UNIQUE_CODE.eq(uniqueCode)).select(cayenneService.newNonReplicatingContext());
         if (contacts.isEmpty()) {
             return null;
@@ -119,26 +127,21 @@ public class Usi {
             throw new IllegalStateException(String.format("%s is not unique", uniqueCode));
         }
 
-        Contact contact = contacts.get(0);
-
-        if (!UrlUtil.validatePortalUsiLink(url, contact.getCollege().getWebServicesSecurityCode(), new Date())) {
-            return null;
-        }
-        return contact;
+       return contacts.get(0);
     }
 
     @OnEvent(value = "next")
-    public Object next() {
+    public Object next(String step, String uniqueCode) {
+        parseRequest(step, uniqueCode);
         Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
-
         Result result = getUsiController().next(inputValues);
         return getJSONResult(result);
     }
 
     @OnEvent(value = "value")
-    public Object value() {
+    public Object value(String step, String uniqueCode) {
+        parseRequest(step, uniqueCode);
         Result values = getUsiController().getValue();
-
         return getJSONResult(values);
     }
 
@@ -147,18 +150,31 @@ public class Usi {
      * usi.js uses this method
      */
     @OnEvent(value = "verifyUsi")
-    public Object verifyUsi() {
+    public Object verifyUsi(String step, String uniqueCode) {
+        parseRequest(step, uniqueCode);
         Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
-        Result values = getUsiController().next(inputValues);
-        return getJSONResult(values);
+        Result result = getUsiController().next(inputValues);
+        return getJSONResult(result);
+    }
+
+    private void parseRequest(String step, String uniqueCode) {
+        this.step = Step.valueOf(step);
+        this.uniqueCode = uniqueCode;
+        Contact contact = findContact();
+        request.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, contact.getCollege().getId());
+        initUsiControllerModel(contact);
     }
 
     private Object getJSONResult(Result result) {
         JSONObject jsoResult = new JSONObject();
         JSONArray jsonArray = JSONUtils.getJSONValues(result.getValue());
+        JSONArray errors = JSONUtils.getJSONArray(getUsiController().getValidationResult().getErrors());
+
         jsoResult.put("values", jsonArray);
         jsoResult.put("hasErrors", result.hasErrors());
         jsoResult.put("step", getUsiController().getStep().name());
+        jsoResult.put("errors", errors);
+
         return new TextStreamResponse("text/json", jsoResult.toString());
     }
 

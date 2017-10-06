@@ -1,5 +1,5 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd">
-    <div id="usi-form" class="">
+    <div id="usi-form" class="usi-progress" style="display: none">
         <div class="row">
             <div class="col-sm-12">
                 <fieldset>
