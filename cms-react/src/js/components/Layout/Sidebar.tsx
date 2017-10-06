@@ -5,6 +5,7 @@ import {NavLink} from 'react-router-dom';
 import classnames from 'classnames';
 import {Route, routes} from '../../routes';
 import {User} from "../../model";
+import {getHistoryInstance} from "../../history";
 
 interface Props {
   slim?: boolean;
@@ -23,10 +24,14 @@ export class Sidebar extends React.Component<Props, any> {
     this.state = {activeUrl: 'site'};
   }
 
-  onClick(url) {
+  onClickMenu(url) {
     this.setState({
       activeUrl: url,
     });
+  }
+
+  onClickHistory() {
+    getHistoryInstance().push('/history');
   }
 
   render() {
@@ -59,7 +64,7 @@ export class Sidebar extends React.Component<Props, any> {
               exact={route.exact}
               to={route.url}
               activeClassName="active"
-              onClick={e => this.onClick(route.url)}
+              onClick={e => this.onClickMenu(route.url)}
             >
               <span>{slim ? <span className={route.icon || ''}/> : route.title}</span>
             </NavLink>
@@ -87,7 +92,11 @@ export class Sidebar extends React.Component<Props, any> {
           <div className="sidebar__footer">
             <Row className="center">
               <Col md="6"><Button size="sm" color="primary">Publish</Button></Col>
-              <Col md="6"><span className="edits">25 Edits</span></Col>
+              <Col md="6">
+                <span onClick={() => this.onClickHistory()}>
+                  25 Edits
+               </span>
+              </Col>
             </Row>
 
             <Row className="center">

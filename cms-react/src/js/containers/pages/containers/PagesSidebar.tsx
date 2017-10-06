@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
-import {getHistoryInstance} from "../../../history";
 import {Page} from "../../../model";
 import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../routes";

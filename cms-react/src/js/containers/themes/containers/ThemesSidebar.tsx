@@ -1,10 +1,9 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
-import {getHistoryInstance} from "../../../history";
 import {URL} from "../../../routes";
 import {Theme} from "../../../model";
 import {ThemeSettings} from "../components/ThemeSettings";
-import {deleteTheme, saveTheme} from "../actions/index";
+import {deleteTheme, saveTheme} from "../actions";
 import {SidebarList} from "../../../components/Sidebar/SidebarList";
 import {getDefaultTheme} from "../Themes";
 

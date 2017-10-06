@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
-import {getHistoryInstance} from "../../../history";
 import {Block} from "../../../model";
 import {BlockSettings} from "../components/BlockSettings";
 import {URL} from "../../../routes";

@@ -4,6 +4,7 @@ import {EpicMenu} from "./containers/menus/epics";
 import {EpicPages} from "./containers/pages/epics";
 import {EpicBlocks} from "./containers/blocks/epics";
 import {EpicThemes} from "./containers/themes/epics";
+import {EpicHistory} from "./containers/history/epics";
 
 export const EpicRoot = combineEpics(
   EpicAuth,
@@ -11,4 +12,5 @@ export const EpicRoot = combineEpics(
   EpicPages,
   EpicBlocks,
   EpicThemes,
+  EpicHistory,
 );

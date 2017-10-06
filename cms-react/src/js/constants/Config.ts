@@ -27,4 +27,7 @@ export const API = {
   GET_THEMES: "/getThemes",
   SAVE_THEME: "/saveTheme",
   DELETE_THEME: "/deleteTheme",
+
+  // History
+  GET_HISTORY: "/getHistory",
 };

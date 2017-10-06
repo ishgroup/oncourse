@@ -17,3 +17,6 @@ export {Block} from "./Block";
 // Themes
 export {Theme} from "./Theme";
 export {ThemeSchema} from "./ThemeSchema";
+
+// History
+export {History} from "./History";

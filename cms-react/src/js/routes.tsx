@@ -13,6 +13,8 @@ import ThemesSidebar from "./containers/themes/containers/ThemesSidebar";
 import Menus from './containers/menus/Menus';
 import Login from "./containers/auth/Login";
 
+import History from './containers/history/History';
+
 export const URL = {
   SITE: '/',
   CONTENT: '/content',
@@ -22,6 +24,7 @@ export const URL = {
   DESIGN: '/design',
   THEMES: '/themes',
   SETTINGS: '/settings',
+  HISTORY: '/history',
   LOGIN: '/login',
 };
 
@@ -107,6 +110,15 @@ export const routes: Route[] = [
     url: URL.THEMES,
     main: props => <Themes {...props}/>,
     sidebar: props => <ThemesSidebar {...props}/>,
+  },
+
+  // History
+  {
+    title: 'History',
+    path: '/history',
+    url: URL.HISTORY,
+    parent: URL.SETTINGS,
+    main: props => <History {...props}/>,
   },
 
   // Login
