@@ -94,9 +94,10 @@ class SubmitContactFields {
     
     private Object normalizeValue(Field f) {
         Object result = null
-        if (StringUtils.trimToNull(f.value)) {
+        if (StringUtils.trimToNull(f.value) || f.itemValue) {
             switch (f.dataType) {
                 case EMAIL:
+                case LONG_STRING:
                 case POSTCODE:
                 case STRING:
                 case CHOICE:
