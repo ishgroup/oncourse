@@ -13,20 +13,21 @@ interface Props {
   match: any;
   onEditSettings: (blockId, settings) => any;
   onDeleteBlock: (id) => any;
+  history: any;
 }
 
 export class BlockSidebar extends React.Component<Props, any> {
 
   goBack() {
-    getHistoryInstance().push(URL.CONTENT);
+    this.props.history.push(URL.CONTENT);
   }
 
   resetActiveBlock() {
-    getHistoryInstance().push(URL.BLOCKS);
+    this.props.history.push(URL.BLOCKS);
   }
 
   onAddBlock() {
-    getHistoryInstance().push(`${URL.BLOCKS}/-1`);
+    this.props.history.push(`${URL.BLOCKS}/-1`);
   }
 
   render() {
@@ -38,8 +39,8 @@ export class BlockSidebar extends React.Component<Props, any> {
         {!activeBlock &&
           <SidebarList
             items={blocks}
-            onBack={this.goBack}
             category="blocks"
+            onBack={() => this.goBack()}
             onAdd={() => this.onAddBlock()}
           />
         }
@@ -47,7 +48,7 @@ export class BlockSidebar extends React.Component<Props, any> {
         {activeBlock &&
           <BlockSettings
             block={activeBlock}
-            onBack={this.resetActiveBlock}
+            onBack={() => this.resetActiveBlock()}
             onEdit={prop => onEditSettings(activeBlock.id, prop)}
             onDelete={id => onDeleteBlock(id)}
           />

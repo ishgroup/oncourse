@@ -14,40 +14,72 @@ import Menus from './containers/menus/Menus';
 import Login from "./containers/auth/Login";
 
 export const URL = {
-  CONTENT: '/',
+  SITE: '/',
+  CONTENT: '/content',
   BLOCKS: '/blocks',
   PAGES: '/pages',
   MENUS: '/menus',
+  DESIGN: '/design',
   THEMES: '/themes',
+  SETTINGS: '/settings',
   LOGIN: '/login',
 };
 
 export interface Route {
-  title?: string;
-  path: string;
-  url?: string;
+  title?: string;                                   // route title, displayed on sidebar
+  path: string;                                     // route path (regexp)
+  url?: string;                                     // route link
+  root?: boolean;                                   // root items displaying in main sidebar
   exact?: boolean;
   isPublic?: boolean;
-  icon?: string;
-  main: (props) => any;
-  sidebar?: (props?) => any;
-  routes?: Route[];
+  icon?: string;                                    // icon class for menu item in slim mode
+  main: (props) => any;                             // main component for route
+  sidebar?: (props?) => any;                        // sidebar component form route
+  parent?: string;                                  // parent item url for sub menu items
 }
 
 export const routes: Route[] = [
+  // Root menu items
   {
-    title: 'Content',
+    title: 'Site',
     path: '/',
-    url: URL.CONTENT,
+    url: URL.SITE,
     exact: true,
+    root: true,
     icon: 'icon-airplay',
     main: props => <Content props/>,
   },
   {
+    title: 'Content',
+    root: true,
+    path: '/content',
+    url: URL.CONTENT,
+    icon: 'icon-dashboard',
+    main: props => <span/>,
+  },
+  {
+    title: 'Settings',
+    root: true,
+    path: '/settings',
+    url: URL.SETTINGS,
+    icon: 'icon-settings',
+    main: props => <span/>,
+  },
+  {
+    title: 'Design',
+    root: true,
+    path: '/design',
+    url: URL.DESIGN,
+    icon: 'icon-photo_album',
+    main: props => <span/>,
+  },
+
+  // Content sub menu items
+  {
     title: 'Blocks',
     path: '/blocks/:id?',
     url: URL.BLOCKS,
-    icon: 'icon-dashboard',
+    parent: URL.CONTENT,
     main: props => <Blocks {...props}/>,
     sidebar: props => <BlockSidebar {...props}/>,
   },
@@ -55,25 +87,29 @@ export const routes: Route[] = [
     title: 'Pages',
     path: '/pages/:id?',
     url: URL.PAGES,
-    icon: 'icon-content_copy',
+    parent: URL.CONTENT,
     main: props => <Pages {...props}/>,
     sidebar: props => <PagesSidebar {...props}/>,
   },
   {
     title: 'Menus',
     path: '/menus',
+    parent: URL.CONTENT,
     url: URL.MENUS,
-    icon: 'icon-menu',
     main: props => <Menus {...props}/>,
   },
+
+  // Design sub menu items
   {
     title: 'Themes',
     path: '/themes/:id?',
+    parent: URL.DESIGN,
     url: URL.THEMES,
-    icon: 'icon-photo_album',
     main: props => <Themes {...props}/>,
     sidebar: props => <ThemesSidebar {...props}/>,
   },
+
+  // Login
   {
     title: 'Login',
     path: '/login',

@@ -13,12 +13,29 @@
   height: 100vh;
   width: 16.666667%; // col-2 bootstrap width
   
-  li:not(:first-child) {
-    border-top: 1px solid transparent;
-  }
   
-  li:last-child {
-    border-bottom: 1px solid transparent;
+
+  
+  li {
+    &.sub {
+      a {
+        padding: 10px 20px 10px 40px;
+      }
+    }
+    //transition: all .3s;
+    //height:46px;
+    
+    &.hidden {
+      display: none;
+    }
+  
+    &:not(:first-child) {
+      border-top: 1px solid transparent;
+    }
+  
+    &:last-child {
+      border-bottom: 1px solid transparent;
+    }
   }
   
   a {

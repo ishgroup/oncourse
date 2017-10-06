@@ -13,20 +13,21 @@ interface Props {
   match: any;
   onEditSettings: (pageId, settings) => any;
   onDeletePage: (id) => any;
+  history: any;
 }
 
 export class PagesSidebar extends React.Component<Props, any> {
 
   goBack() {
-    getHistoryInstance().push(URL.CONTENT);
+    this.props.history.push(URL.CONTENT);
   }
 
   resetActivePage() {
-    getHistoryInstance().push(URL.PAGES);
+    this.props.history.push(URL.PAGES);
   }
 
   onAddPage() {
-    getHistoryInstance().push(`${URL.PAGES}/-1`);
+    this.props.history.push(`${URL.PAGES}/-1`);
   }
 
   render() {
@@ -38,9 +39,9 @@ export class PagesSidebar extends React.Component<Props, any> {
         {!activePage &&
           <SidebarList
             items={pages}
-            onBack={this.goBack}
             category="pages"
             subTitleKey="url"
+            onBack={() => this.goBack()}
             onAdd={() => this.onAddPage()}
           />
         }
@@ -48,7 +49,7 @@ export class PagesSidebar extends React.Component<Props, any> {
         {activePage &&
           <PageSettings
             page={activePage}
-            onBack={this.resetActivePage}
+            onBack={() => this.resetActivePage()}
             onEdit={prop => onEditSettings(activePage.id, prop)}
             onDelete={id => onDeletePage(id)}
           />

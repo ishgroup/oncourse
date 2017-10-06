@@ -13,45 +13,45 @@ interface Props {
   match: any;
   onEditSettings: (themeId, settings) => any;
   onDeleteTheme: (id) => any;
+  history: any;
 }
 
 class ThemesSidebar extends React.Component<Props, any> {
 
   goBack() {
-    getHistoryInstance().push(URL.CONTENT);
+    this.props.history.push(URL.DESIGN);
   }
 
   resetActiveTheme() {
-    getHistoryInstance().push(URL.THEMES);
+    this.props.history.push(URL.THEMES);
   }
 
   onAddTheme() {
-    getHistoryInstance().push(`${URL.THEMES}/-1`);
+    this.props.history.push(`${URL.THEMES}/-1`);
   }
 
   render() {
     const {themes, match, onEditSettings, onDeleteTheme} = this.props;
     const activeTheme = match.params.id && (themes.find(theme => theme.id == match.params.id) || getDefaultTheme());
 
-
     return (
       <div>
         {!activeTheme &&
-          <SidebarList
-            items={themes}
-            onBack={this.goBack}
-            category="themes"
-            onAdd={() => this.onAddTheme()}
-          />
+        <SidebarList
+          items={themes}
+          category="themes"
+          onBack={() => this.goBack()}
+          onAdd={() => this.onAddTheme()}
+        />
         }
 
         {activeTheme &&
-          <ThemeSettings
-            theme={activeTheme}
-            onBack={this.resetActiveTheme}
-            onEdit={prop => onEditSettings(activeTheme, prop)}
-            onDelete={id => onDeleteTheme(id)}
-          />
+        <ThemeSettings
+          theme={activeTheme}
+          onBack={() => this.resetActiveTheme()}
+          onEdit={prop => onEditSettings(activeTheme, prop)}
+          onDelete={id => onDeleteTheme(id)}
+        />
         }
       </div>
     );
