@@ -57,7 +57,7 @@ class History extends React.Component<Props, any> {
                     <Button color="primary" onClick={() => this.onPublish()}>Publish</Button>
                   }
                   {version.published &&
-                    <Button color="primary" onClick={() => this.onRevert()}>Revert</Button>
+                    <Button color="secondary" onClick={() => this.onRevert()}>Revert</Button>
                   }
                 </td>
               </tr>

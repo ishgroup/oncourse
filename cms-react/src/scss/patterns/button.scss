@@ -8,7 +8,7 @@
   font-family: 'roboto', sans-serif;
   font-weight: 300;
   padding: 7px 10px;
-  min-width: 60px;
+  min-width: 70px;
   
   &:active, &:focus, &:hover {
     outline: 0;
@@ -49,6 +49,19 @@
     
     &:active {
       background: $danger-active;
+    }
+  }
+  
+  &.btn-secondary {
+    background: $secondary;
+    color: $white;
+    
+    &:hover {
+      background: $secondary-hover;
+    }
+    
+    &:active {
+      background: $secondary-active;
     }
   }
 }
