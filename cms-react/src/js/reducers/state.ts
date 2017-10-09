@@ -3,6 +3,7 @@ import {AuthState} from "../containers/auth/reducers/State";
 import {PagesState} from "../containers/pages/reducers/State";
 import {BlocksState} from "../containers/blocks/reducers/State";
 import {ThemesState} from "../containers/themes/reducers/State";
+import {HistoryState} from "../containers/history/reducers/State";
 
 // global cms state
 export interface State {
@@ -12,5 +13,6 @@ export interface State {
   block: BlocksState;
   theme: ThemesState;
   notifications: any;
+  history: HistoryState;
 }
 

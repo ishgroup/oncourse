@@ -29,5 +29,5 @@ export const API = {
   DELETE_THEME: "/deleteTheme",
 
   // History
-  GET_HISTORY: "/getHistory",
+  GET_VERSIONS: "/getVersions",
 };

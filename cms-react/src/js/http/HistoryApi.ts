@@ -4,7 +4,7 @@ import {API} from "../constants/Config";
 export class HistoryApi {
   private http = new DefaultHttpService();
 
-  getHistory(): Promise<any> {
-    return this.http.GET(API.GET_HISTORY);
+  getVersions(): Promise<any> {
+    return this.http.GET(API.GET_VERSIONS);
   }
 }

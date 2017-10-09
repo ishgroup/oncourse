@@ -1,7 +1,7 @@
-import uuid from "uuid";
 import localForage from "localforage";
 import update from 'react/lib/update';
-import {Page, Block, MenuItem, Theme, User} from "../../js/model";
+import faker from 'faker';
+import {Page, Block, MenuItem, Theme, User, Version} from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
@@ -17,13 +17,12 @@ export const CreateMockDB = (): MockDB => {
 
 export class MockDB {
 
-  private id: string = uuid();
-
   users: User[];
   pages: Page[];
   blocks: Block[];
   menus: MenuItem[];
   themes: Theme[];
+  versions: Version[];
 
   constructor() {
     this.init();
@@ -35,6 +34,7 @@ export class MockDB {
     this.blocks = this.mockBlocks();
     this.menus = this.mockMenus();
     this.themes = this.mockThemes();
+    this.versions = this.mockVersions();
   }
 
   mockUser() {
@@ -211,6 +211,53 @@ export class MockDB {
             position: 2,
           }],
         },
+      },
+    ];
+  }
+
+  mockVersions() {
+    return [
+      {
+        id: 1,
+        published: false,
+        author: faker.name.findName(),
+        changes: 25,
+        date: '',
+      },
+      {
+        id: 2,
+        published: true,
+        author: faker.name.findName(),
+        changes: 27,
+        date: new Date('10/08/2017'),
+      },
+      {
+        id: 3,
+        published: true,
+        author: faker.name.findName(),
+        changes: 30,
+        date: new Date('05/05/2017'),
+      },
+      {
+        id: 4,
+        published: true,
+        author: faker.name.findName(),
+        changes: 43,
+        date: new Date('03/03/2017'),
+      },
+      {
+        id: 5,
+        published: true,
+        author: faker.name.findName(),
+        changes: 80,
+        date: new Date('12/12/2016'),
+      },
+      {
+        id: 6,
+        published: true,
+        author: faker.name.findName(),
+        changes: 88,
+        date: new Date('08/09/2016'),
       },
     ];
   }

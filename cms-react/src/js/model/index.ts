@@ -20,3 +20,4 @@ export {ThemeSchema} from "./ThemeSchema";
 
 // History
 export {History} from "./History";
+export {Version} from "./History";

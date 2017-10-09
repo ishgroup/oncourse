@@ -5,7 +5,7 @@ import {
   GET_THEMES_FULFILLED, SAVE_THEME_FULFILLED, UPDATE_THEME_STATE,
 } from "../actions";
 
-export const themesReducers = (state: ThemesState = new ThemesState(), action: IAction<any>): ThemesState => {
+export const themesReducer = (state: ThemesState = new ThemesState(), action: IAction<any>): ThemesState => {
   switch (action.type) {
 
     case GET_THEMES_FULFILLED:

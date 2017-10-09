@@ -75,6 +75,7 @@
     "react-select": "1.0.0-rc.5",
     "react-sortable-tree": "^1.2.0",
     "react-text-mask": "5.0.2",
+    "react-timeago": "^3.4.3",
     "reactstrap": "4.8.0",
     "redux": "3.7.2",
     "redux-form": "7.0.3",
