@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
+const ZipPlugin = require('zip-webpack-plugin');
 
 
 module.exports = function (options = {}) {
@@ -126,7 +127,24 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           moduleResolution: "node",
           module: "es6",
           out: "../docs" // relative to output
-        }, "./src/js/")
+        }, "./src/js/"),
+        new ZipPlugin({
+          path: '../distributive',
+          filename: 'cms.zip',
+
+          // OPTIONAL: defaults to excluding nothing
+          // can be a string, a RegExp, or an array of strings and RegExps
+          // if a file matches both include and exclude, exclude takes precedence
+          exclude: [/\.js$/, /\.map$/],
+
+          // OPTIONAL: see https://github.com/thejoshwolfe/yazl#addfilerealpath-metadatapath-options
+          fileOptions: {
+            mtime: new Date(),
+            mode: 0o100664,
+            compress: true,
+            forceZip64Format: false,
+          },
+        })
       );
       break;
     case "development":
