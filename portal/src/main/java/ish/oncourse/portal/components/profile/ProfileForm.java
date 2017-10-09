@@ -4,6 +4,7 @@ import ish.oncourse.components.AvetmissStrings;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.pages.Profile;
 import ish.oncourse.portal.pages.Timetable;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.util.GetCustomFieldTypeByKey;
 import ish.oncourse.portal.util.PortalContactValidator;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -42,6 +43,9 @@ public class ProfileForm {
 
 	@Inject
 	private ICayenneService cayenneService;
+
+	@Inject
+	private IPortalService portalService;
 
 	@Inject
 	private PreferenceController preferenceController;
@@ -95,10 +99,12 @@ public class ProfileForm {
 		DATE_FIELD_PARSE_FORMAT.setLenient(false);
 	}
 
-
 	@SetupRender
 	@OnEvent(value = EventConstants.PREPARE_FOR_SUBMIT)
 	void setupRender() {
+		if (contact == null) {
+			contact = portalService.getContact();
+		}
 		getCustomFieldType = GetCustomFieldTypeByKey.valueOf(contact.getCollege());
 		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
 			if (getContactFieldHelper().isCustomFieldTypeVisible(fieldType)) {

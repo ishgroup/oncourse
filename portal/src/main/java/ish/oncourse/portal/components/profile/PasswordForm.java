@@ -1,8 +1,10 @@
 package ish.oncourse.portal.components.profile;
 
 import ish.oncourse.model.Contact;
+import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.util.ValidateHandler;
 import org.apache.tapestry5.EventConstants;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.PasswordField;
@@ -18,7 +20,7 @@ import static org.apache.tapestry5.EventConstants.VALIDATE;
  */
 public class PasswordForm {
 
-    @Persist
+    @Persist(value = PersistenceConstants.CLIENT)
     @Property
     private boolean success;
 
@@ -54,11 +56,20 @@ public class PasswordForm {
     @Property
     private ValidateHandler validateHandler = new ValidateHandler();
 
+    @Inject
+    private IPortalService portalService;
+
     @AfterRender
     void afterRende(){
         success=false;
     }
 
+    @OnEvent(value = EventConstants.PREPARE_FOR_SUBMIT)
+    void setupRender() {
+        if (contact == null) {
+            contact = portalService.getContact();
+        }
+    }
     @OnEvent(component = "passwordForm",  value = EventConstants.SUCCESS)
     Object passwordSubmitted() {
         if (password != null) {

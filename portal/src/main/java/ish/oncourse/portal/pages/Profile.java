@@ -6,6 +6,7 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -29,39 +30,14 @@ public class Profile {
     @Inject
     private IPortalService portalService;
 
-    @Persist
     @Property
     private Contact contact;
 
-    @Property
-    @Persist
-    private String activeTabId;
-
-  @SetupRender
-  void setupRender()
+    @SetupRender
+    void setupRender()
     {
         ObjectContext context = cayenneService.newContext();
-
         contact = context.localObject(portalService.getContact());
-
-        if (activeTabId == null)
-            activeTabId = "tab_profile";
-    }
-
-    @OnEvent(value = "setActiveTab")
-    public void setActiveTab(String activeTabId)
-    {
-        this.activeTabId = activeTabId;
-    }
-	
-	Object onActivate(String activeTabId) {
-		this.activeTabId = activeTabId;
-		return null;
-	}
-	
-    public String getActiveClass(String tabId)
-    {
-        return tabId.equals(activeTabId) ? messages.get("class.active") : StringUtils.EMPTY;
     }
 
     public boolean showCensusTab() {
