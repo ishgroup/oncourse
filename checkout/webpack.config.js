@@ -129,7 +129,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           out: "../docs" // relative to output
         }, "./src/js/"),
         new ZipPlugin({
-          path: '../distributive',
+          path: '../distribution',
           filename: 'cms.zip',
 
           // OPTIONAL: defaults to excluding nothing

@@ -1,4 +1,5 @@
 const __common = require('./webpack/__common');
+const __common = require('./webpack/__common');
 
 const fs = require('fs');
 const path = require('path');
@@ -129,7 +130,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           out: "../docs" // relative to output
         }, "./src/js/"),
       new ZipPlugin({
-        path: '../distributive',
+        path: '../distribution',
         filename: 'cms.zip',
 
         // OPTIONAL: defaults to excluding nothing
