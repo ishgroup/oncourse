@@ -10,8 +10,10 @@ import ish.oncourse.services.mail.IMailService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.utils.SessionIdGenerator;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.SelectById;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.SetupRender;
@@ -29,9 +31,8 @@ public class SendResetPasswordLink {
 	 */
 	private static final int RECOVER_LINK_TTL = 24;
 
-
-	@Persist
-	private Contact user;
+	@Persist(value = PersistenceConstants.CLIENT)
+	private Long userId;
 
 	@Inject
 	private IMailService mailService;
@@ -45,14 +46,14 @@ public class SendResetPasswordLink {
 	@InjectPage
 	private Login login;
 
-	public void setUser(Contact user) {
-		this.user = user;
+	public void setUser(Long userId) {
+		this.userId = userId;
 	}
 
 
 	public Object onActivate()
 	{
-		if (user == null)
+		if (userId == null)
 			return Login.class.getSimpleName();
 		return null;
 	}
@@ -61,7 +62,8 @@ public class SendResetPasswordLink {
 	void setupRender() {
 		// creating expire link
 		ObjectContext ctx = cayenneService.newContext();
-		Contact c = ctx.localObject(user);
+		
+		Contact c = SelectById.query(Contact.class, userId).selectFirst(ctx);
 
 		java.util.Calendar calendar = java.util.Calendar.getInstance();
 
@@ -82,7 +84,7 @@ public class SendResetPasswordLink {
 		email.setSubject("Password reset.");
 
 		StringBuilder textBody = new StringBuilder();
-		textBody.append(String.format("Dear %s, <br/><br/>", user.getFullName()));
+		textBody.append(String.format("Dear %s, <br/><br/>", c.getFullName()));
 		textBody.append("To reset your SkillsOnCourse password, simply click the link below. That will take you to a web page where you can create a new password.<br/>");
 		textBody.append("Please note that the link will expire 24 hours after this email was sent.<br/><br/>");
 		textBody.append(String.format("<a href=\"%s\">%s</a><br/><br/>", recoveryLink, recoveryLink));
@@ -99,7 +101,7 @@ public class SendResetPasswordLink {
 	 * The method has been introduced to redirect users to login page when session expired
 	 */
 	public Object onException(Throwable cause){
-		if (user == null) {
+		if (userId == null) {
 			logger.warn("Persist properties have been cleared.", cause);
 		} else {
 			throw new IllegalArgumentException(cause);

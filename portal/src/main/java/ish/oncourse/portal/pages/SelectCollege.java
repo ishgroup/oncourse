@@ -110,7 +110,7 @@ public class SelectCollege {
 		}
 
 		if (passwordRecover) {
-			forgotPassword.setUser(c);
+			forgotPassword.setUser(c.getId());
 			return forgotPassword;
 		} else {
 			authService.storeCurrentUser(c);

@@ -322,10 +322,10 @@ public class Login {
 			return null;
 		} else if (users.size() == 1) {
 			if (firstTimeLogin) {
-				createAccount.setUser(users.get(0));
+				createAccount.setUser(users.get(0).getId());
 				return createAccount;
 			} else {
-				forgotPassword.setUser(users.get(0));
+				forgotPassword.setUser(users.get(0).getId());
 				return forgotPassword;
 			}
 		} else {
