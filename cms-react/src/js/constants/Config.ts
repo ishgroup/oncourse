@@ -30,4 +30,6 @@ export const API = {
 
   // History
   GET_VERSIONS: "/getVersions",
+  SET_VERSION: "/setVersion",
+  PUBLISH: "/publish",
 };

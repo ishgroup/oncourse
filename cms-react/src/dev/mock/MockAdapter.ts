@@ -8,7 +8,7 @@ import {menuApiMock} from "./api/MenuApiMock";
 import {pageApiMock} from "./api/PageApiMock";
 import {blockApiMock} from "./api/BlockApiMock";
 import {themeApiMock} from "./api/ThemeApiMock";
-import {historyApiMock} from "./api/HistoryApiMock";
+import {publishApiMock} from "./api/PublishApiMock";
 
 export class MockAdapter {
   public api = new axiosMockAdapter(defaultAxios);
@@ -20,7 +20,7 @@ export class MockAdapter {
     pageApiMock.apply(this);
     blockApiMock.apply(this);
     themeApiMock.apply(this);
-    historyApiMock.apply(this);
+    publishApiMock.apply(this);
   }
 
 }

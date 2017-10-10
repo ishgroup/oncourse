@@ -2,14 +2,14 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Table, Button} from 'reactstrap';
 import TimeAgo from 'react-timeago';
-import {getHistory} from "./actions";
+import {getHistory, publish, setVersion} from "./actions";
 import {Version} from "../../model/History";
 
 interface Props {
   versions: Version[];
   onInit: () => any;
   onPublish: () => any;
-  onRevert: () => any;
+  onRevert: (id) => any;
 }
 
 class History extends React.Component<Props, any> {
@@ -22,8 +22,8 @@ class History extends React.Component<Props, any> {
     this.props.onPublish();
   }
 
-  onRevert() {
-    this.props.onRevert();
+  onRevert(id) {
+    this.props.onRevert(id);
   }
 
   render() {
@@ -57,7 +57,7 @@ class History extends React.Component<Props, any> {
                     <Button color="primary" onClick={() => this.onPublish()}>Publish</Button>
                   }
                   {version.published &&
-                    <Button color="secondary" onClick={() => this.onRevert()}>Revert</Button>
+                    <Button color="secondary" onClick={() => this.onRevert(version.id)}>Revert</Button>
                   }
                 </td>
               </tr>
@@ -78,8 +78,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getHistory()),
-    onPublish: () => console.log('on publish'),
-    onRevert: () => console.log('on revert'),
+    onPublish: () => dispatch(publish()),
+    onRevert: id => dispatch(setVersion(id)),
   };
 };
 
