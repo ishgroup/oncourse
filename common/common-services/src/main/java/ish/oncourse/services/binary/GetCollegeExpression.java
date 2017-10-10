@@ -21,7 +21,7 @@ public class GetCollegeExpression {
 	private boolean isStudentLoggedIn;
 
 
-	GetCollegeExpression(College college, boolean hidePrivateAttachments, boolean isStudentLoggedIn) {
+	public GetCollegeExpression(College college, boolean hidePrivateAttachments, boolean isStudentLoggedIn) {
 		this.college = college;
 		this.hidePrivateAttachments = hidePrivateAttachments;
 		this.isStudentLoggedIn = isStudentLoggedIn;

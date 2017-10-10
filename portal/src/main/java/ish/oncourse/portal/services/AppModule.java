@@ -12,6 +12,7 @@ import ish.oncourse.portal.services.application.PortalApplicationServiceImpl;
 import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.portal.services.pageload.PortalPageRenderer;
+import ish.oncourse.portal.services.pageload.PortalPageResponseRenderer;
 import ish.oncourse.portal.services.site.PortalSiteService;
 import ish.oncourse.services.DisableJavaScriptStack;
 import ish.oncourse.services.ServiceModule;
@@ -76,6 +77,7 @@ import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.services.voucher.IVoucherService;
 import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.textile.services.TextileModule;
+import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.util.UIRequestExceptionHandler;
 import ish.oncourse.webservices.usi.USIService;
@@ -127,6 +129,7 @@ public class AppModule {
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(IWebContentService.class, WebContentService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
+		binder.bind(IComponentPageResponseRenderer.class, PortalPageResponseRenderer.class);
 		
 		binder.bind(ISessionManager.class, ZKSessionManager.class).scope(ScopeConstants.DEFAULT);
 		binder.bind(IAuthenticationService.class, AuthenticationService.class);
