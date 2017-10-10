@@ -6,24 +6,6 @@ goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
-function initProfile()
-{
-		$j('[id*=tab_]').click(function()
-		{
-			var actionLink = "/portal/profile:setactivetab/"+$j(this).attr('id');
-			$j.ajax({
-				url: actionLink,
-				async: false,
-				cache: false,
-				success:function(data){
-				},
-                error: function (jqXHR, textStatus,errorThrown) {
-                    window.location.reload();
-                }
-			});
-		});
-}
-
 
 function initAutocomplete(){if ($j("#suburb").length) {
 
@@ -51,7 +33,6 @@ function initAutocomplete(){if ($j("#suburb").length) {
 
 
 $j(document).ready(function() {
-	initProfile();
 	initAutocomplete();
 
     $j('.nav-tabs.header-tabs .toggle-tabs').on('click', function() {

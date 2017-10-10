@@ -118,6 +118,9 @@ public class CensusForm {
     @SetupRender
     @OnEvent(value = EventConstants.PREPARE_FOR_SUBMIT)
     void beforeRender() {
+        if (contact == null) {
+            contact = portalService.getContact();
+        }
         englishProficiencySelectModel = new ISHEnumSelectModel(
                 AvetmissStudentEnglishProficiency.class, getAvetmissMessages());
         indigenousStatusSelectModel = new ISHEnumSelectModel(
