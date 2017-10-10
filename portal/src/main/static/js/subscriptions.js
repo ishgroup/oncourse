@@ -4,24 +4,6 @@ goog.require('initialise');
 
 var $j = jQuery.noConflict();
 
-function initSubscriptions()
-{
-		$j('[id*=tab-]').click(function()
-		{
-			var actionLink = "/portal/subscriptions:setactivetab/"+$j(this).attr('id');
-			$j.ajax({	
-				url: actionLink,
-				async: false,
-				cache: false,
-				success:function(data){
-				},
-                error: function (jqXHR, textStatus,errorThrown) {
-                    window.location.reload();
-                }
-			});
-		});
-}
-
 function initSaveMalingLists() {
 
 	$j("input[name*='mailingList_']").click(function(){		
@@ -52,5 +34,4 @@ function initSaveMalingLists() {
 
 $j(document).ready(function() {
 	initSaveMalingLists();
-	initSubscriptions();
 });

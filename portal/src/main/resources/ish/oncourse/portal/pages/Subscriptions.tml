@@ -3,16 +3,16 @@
 	<div class="page-header clearfix zero-padding">
 		<ul class="nav nav-tabs header-tabs">
 			<i class="glyphicon glyphicon-chevron-down toggle-tabs"></i>
-			<li id='tab-mailing' class="${getActiveClass('tab-mailing')}"><a data-toggle="tab" href="#mailing-lists">Mailing Lists</a></li>
-			<li id='tab-waiting' class="${getActiveClass('tab-waiting')}"><a data-toggle="tab" href="#waiting-lists">Waiting Lists</a></li>
+			<li id='tab-mailing'><a data-toggle="tab" href="#mailing-lists">Mailing Lists</a></li>
+			<li id='tab-waiting' class="active"><a data-toggle="tab" href="#waiting-lists">Waiting Lists</a></li>
 		</ul>
 		<h1><a href="#">Subscriptions</a></h1>
 	</div>
 	<div class="tab-content">
-		<div class="tab-pane ${getActiveClass('tab-mailing')}" id="mailing-lists">
+		<div class="tab-pane" id="mailing-lists">
            <span t:type="subscriptions/mailinglists"/>
         </div>
-		<div class="tab-pane ${getActiveClass('tab-waiting')}" id="waiting-lists">
+		<div class="tab-pane active" id="waiting-lists">
               <span t:type="subscriptions/waitinglists"/>
 		</div>
 	</div>
