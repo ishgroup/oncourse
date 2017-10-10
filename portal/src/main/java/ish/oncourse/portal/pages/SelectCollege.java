@@ -8,6 +8,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.Cayenne;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.Messages;
@@ -23,7 +24,7 @@ public class SelectCollege {
     private static final Logger logger = LogManager.getLogger();
 
 	@Property
-	@Persist
+	@Persist(value = PersistenceConstants.CLIENT)
 	private List<String> users;
 
 	@Component
@@ -55,11 +56,11 @@ public class SelectCollege {
 	
 	@InjectPage
 	private PageNotFound pageNotFound;
-
-	@Persist
+	
+	@Persist(value = PersistenceConstants.CLIENT)
 	private ArrayList<String> collegesWithDuplicates;
 
-	@Persist
+	@Persist(value = PersistenceConstants.CLIENT)
 	private boolean passwordRecover;
 
     @InjectPage
@@ -105,7 +106,7 @@ public class SelectCollege {
 		if (collegesWithDuplicates.contains(String.valueOf(c.getCollege().getId()))) {
 			collegeForm
 					.recordError(messages.get("message-unableToLoginDuplicateContacts"));
-			return this;
+			return null;
 		}
 
 		if (passwordRecover) {
