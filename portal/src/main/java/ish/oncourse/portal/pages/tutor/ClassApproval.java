@@ -15,6 +15,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import org.apache.cayenne.ObjectContext;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextArea;
@@ -31,12 +32,14 @@ public class ClassApproval {
     private boolean approved;
 
     @Property
-    @Persist
+    @Persist(value = PersistenceConstants.CLIENT)
     private boolean messageSent;
 
     @Property
-    @Persist
     private CourseClass courseClass;
+
+    @Persist(value = PersistenceConstants.CLIENT)
+    private Long courseClassId;
 
     @Inject
     private ICourseClassService courseClassService;
@@ -72,15 +75,18 @@ public class ClassApproval {
     private Index indexPage;
 
     Object onActivate() {
-        if (courseClass == null)
+        if (courseClassId == null) {
             return indexPage;
-        else
+        } else {
+            this.courseClass = portalService.getCourseClassBy(courseClassId);
             return null;
+        }
     }
 
     Object onActivate(String id) {
         if (id != null && id.length() > 0 && id.matches("\\d+")) {
-            this.courseClass = portalService.getCourseClassBy(Long.parseLong(id));
+            courseClassId = Long.parseLong(id);
+            this.courseClass = portalService.getCourseClassBy(courseClassId);
             return this.courseClass == null ? indexPage : null;
         } else {
             return indexPage;
