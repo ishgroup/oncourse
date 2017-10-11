@@ -1050,20 +1050,22 @@
 }
 
 .session-table {
-  width: 100%;
-  font-size: 12px;
-  margin: 10px 20px;
-  color: #333;
+  width: $sessionTableWidth;
+  font-size: $sessionTableFontSize;
+  padding: $sessionTablePadding;
+  color: $sessionTableColor;
+  border-collapse: $sessionTableBorderCollapse;
+  border-spacing: $sessionTableBorderSpacing;
   thead tr th {
-    padding: 5px 8px;
-    font-weight: bold;
-    text-align: left
+    padding: $sessionTableHeaderPadding;
+    font-weight: $sessionTableHeaderFontWeight;
+    text-align: $sessionTableHeaderTextAlign;
   }
   td {
-    padding: 5px;
-    border-top: 1px solid #DDD;
-    padding: 7px 0;
-    text-align: left
+    padding: $sessionTableCellPadding;
+    border-top: $sessionTableCellBorderTop;
+    padding: $sessionTableCellPadding;
+    text-align: $sessionTableCellTextAlign;
   }
   a:link:hover, a:visited:hover {
     text-decoration: underline

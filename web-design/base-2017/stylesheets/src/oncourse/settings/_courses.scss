@@ -266,7 +266,6 @@ $classItemLinkHoverColor: $primaryColor!default;
 $classItemInfoLeftBorderRight: 1px solid #eee !default;
 
 //
-//
 // Following settings are handles confirmed checkout popup style
 //
 
@@ -379,6 +378,21 @@ $coursesClassItemPriceDisplay: block !default;
 $coursesClassItemFeeDiscountColor: $primaryColor !default;
 
 $coursesRelatedItemsLinkHoverColor: $primaryColor !default;
+
+
+$sessionTableWidth: 100% !default;
+$sessionTableFontSize: 12px !default;
+$sessionTablePadding: 10px 20px !default;
+$sessionTableColor: #333 !default;
+$sessionTableBorderCollapse: separate !default;
+$sessionTableBorderSpacing: 0 !default;
+$sessionTableHeaderPadding: 5px 8px !default;
+$sessionTableHeaderFontWeight: bold !default;
+$sessionTableHeaderTextAlign: left !default;
+$sessionTableCellPadding: 5px !default;
+$sessionTableCellBorderTop: 1px solid #DDD !default;
+$sessionTableCellPadding: 7px 0 !default;
+$sessionTableCellTextAlign: left !default;
 
 $coursesSessionTableLinkColor: $primaryColor !default;
 $coursesSessionTableLinkHoverColor: #444 !default;
