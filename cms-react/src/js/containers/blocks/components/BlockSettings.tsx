@@ -8,6 +8,7 @@ interface Props {
   onBack: () => void;
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
+  showModal?: (props) => any;
 }
 
 export class BlockSettings extends React.Component<Props, any> {
@@ -40,17 +41,19 @@ export class BlockSettings extends React.Component<Props, any> {
     }
   }
 
+  onClickDelete(e) {
+    e.preventDefault();
+    const {onDelete, block, showModal} = this.props;
+
+    showModal({
+      text: `You are want to delete block '${block.title}'. Are you sure?`,
+      onConfirm: () => onDelete(block.id),
+    });
+  }
+
   render () {
-    const {block, onDelete} = this.props;
+    const {block} = this.props;
     const {title} = this.state;
-
-    const clickRemove = e => {
-      e.preventDefault();
-
-      if (confirm('Are you sure?')) {
-        onDelete(block.id);
-      }
-    };
 
     return (
       <div>
@@ -79,7 +82,7 @@ export class BlockSettings extends React.Component<Props, any> {
             </FormGroup>
 
             <FormGroup>
-              <Button color="danger" onClick={e => clickRemove(e)}>
+              <Button color="danger" onClick={e => this.onClickDelete(e)}>
                 <span className="icon icon-delete"/>
                 Remove
               </Button>

@@ -5,12 +5,14 @@ import classnames from 'classnames';
 import SortableTree, {changeNodeAtPath, addNodeUnderParent, removeNodeAtPath} from 'react-sortable-tree';
 import {changeMenuTree, getMenuItems} from "./actions";
 import {MenuState} from "./reducers/State";
+import {showModal} from "../../common/containers/modal/actions";
 
 interface Props {
   menu: MenuState;
   onInit: () => any;
   onChangeTree: (treeData) => any;
   match: any;
+  showModal: (props) => any;
 }
 
 export class Menus extends React.Component<Props, any> {
@@ -53,7 +55,7 @@ export class Menus extends React.Component<Props, any> {
 
   removeNode(node, path) {
     const getNodeKey = ({treeIndex}) => treeIndex;
-    const {onChangeTree, menu} = this.props;
+    const {onChangeTree, menu, showModal} = this.props;
 
     const remove = () => {
       onChangeTree(removeNodeAtPath({
@@ -64,14 +66,13 @@ export class Menus extends React.Component<Props, any> {
     };
 
     if (node.children && node.children.length) {
-      if (confirm('Are you sure to delete item with sub-items?')) {
-        remove();
-      } else {
-        return;
-      }
+      showModal({
+        text: 'Are you sure to delete item with sub-items?',
+        onConfirm: () => remove(),
+      });
+    } else {
+      remove();
     }
-
-    remove();
   }
 
   addItem() {
@@ -110,22 +111,24 @@ export class Menus extends React.Component<Props, any> {
   }
 
   getButtons = (node, path) => {
+    // <Button
+    //   color="primary"
+    //   size="sm"
+    //   onClick={() => this.addNode(path)}
+    // >
+    //   <span className="icon icon-add_circle"/>
+    //   Add child
+    // </Button>,
     return (
       [
-        <Button
-          color="primary"
-          size="sm"
-          onClick={() => this.addNode(path)}
-        >
-          <span className="icon icon-add_circle"/>
-          Add child
-        </Button>,
         <Button
           color="danger"
           size="sm"
           onClick={() => this.removeNode(node, path)}
         >
-          <span className={classnames("icon", node.children && node.children.length ? "icon-delete_sweep" :"icon-delete")}/>
+          <span
+            className={classnames("icon", node.children && node.children.length ? "icon-delete_sweep" :"icon-delete")}
+          />
           Remove
         </Button>,
       ]
@@ -168,6 +171,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getMenuItems()),
     onChangeTree: treeData => dispatch(changeMenuTree(treeData)),
+    showModal: props => dispatch(showModal(props)),
   };
 };
 

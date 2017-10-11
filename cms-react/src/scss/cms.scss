@@ -5,7 +5,7 @@
 @import 'typography/fonts';
 
 // include all styles in .cms scope
-.cms {
+.cms-scope {
   // vendors
   @import 'vendors/bootstrap';
   @import 'vendors/normilize';
@@ -31,4 +31,5 @@
   @import 'components/editor-area';
   @import 'components/notifications';
   @import 'components/theme';
+  @import 'components/modal';
 }

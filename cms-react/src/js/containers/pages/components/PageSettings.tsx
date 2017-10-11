@@ -9,6 +9,7 @@ interface Props {
   onBack: () => void;
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
+  showModal?: (props) => any;
 }
 
 export class PageSettings extends React.Component<Props, any> {
@@ -45,17 +46,19 @@ export class PageSettings extends React.Component<Props, any> {
     }
   }
 
+  onClickDelete(e) {
+    e.preventDefault();
+    const {onDelete, page, showModal} = this.props;
+
+    showModal({
+      text: `You are want to delete page '${page.title}'. Are you sure?`,
+      onConfirm: () => onDelete(page.id),
+    });
+  }
+
   render () {
-    const {page, onDelete} = this.props;
+    const {page} = this.props;
     const {title, visible, layout, theme} = this.state;
-
-    const clickRemove = e => {
-      e.preventDefault();
-
-      if (confirm('Are you sure?')) {
-        onDelete(page.id);
-      }
-    };
 
     return (
       <div>
@@ -119,7 +122,7 @@ export class PageSettings extends React.Component<Props, any> {
             </FormGroup>
 
             <FormGroup>
-              <Button color="danger" onClick={e => clickRemove(e)}>
+              <Button color="danger" onClick={e => this.onClickDelete(e)}>
                 <span className="icon icon-delete"/>
                 Remove
               </Button>

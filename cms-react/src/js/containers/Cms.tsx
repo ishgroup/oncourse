@@ -7,9 +7,11 @@ import classnames from 'classnames';
 import {Layout} from '../components/Layout/Layout';
 import {Sidebar} from '../components/Layout/Sidebar';
 import {Content} from '../components/Layout/Content';
+import {Modal} from "../common/containers/modal/Modal";
 import {getHistoryInstance, setHistoryInstance} from "../history";
 import {URL} from "../routes";
 import {logout} from "./auth/actions";
+import {hideModal} from "../common/containers/modal/actions";
 
 export class Cms extends React.Component<any, any> {
 
@@ -24,7 +26,7 @@ export class Cms extends React.Component<any, any> {
   }
 
   render() {
-    const {logout, auth, notifications} = this.props;
+    const {logout, auth, notifications, modal, hideModal} = this.props;
     const {isAuthenticated, user} = auth;
     const viewMode: boolean = this.props.history.location.pathname === '/';
 
@@ -32,21 +34,23 @@ export class Cms extends React.Component<any, any> {
     const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: 4%}`}}/>);
 
     return (
-      <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
-        {globalSiteStyle}
-        <Notifications notifications={notifications} />
-
-        <Layout
-          sidebar={
-            isAuthenticated &&
-            <Sidebar
-              user={user}
-              slim={viewMode}
-              onLogout={() => logout()}
-          />}
-          content={<Content isAuthenticated={isAuthenticated}/>}
-          fullHeight={true}
-        />
+      <div className="cms">
+        <div className={classnames("cms__container", {"cms__container--view-mode": viewMode})}>
+          {globalSiteStyle}
+          <Notifications notifications={notifications} />
+          <Modal {...modal} onHide={hideModal}/>
+          <Layout
+            sidebar={
+              isAuthenticated &&
+              <Sidebar
+                user={user}
+                slim={viewMode}
+                onLogout={() => logout()}
+            />}
+            content={<Content isAuthenticated={isAuthenticated}/>}
+            fullHeight={true}
+          />
+        </div>
       </div>
     );
   }
@@ -55,11 +59,13 @@ export class Cms extends React.Component<any, any> {
 const mapStateToProps = state => ({
   auth: state.auth,
   notifications: state.notifications,
+  modal: state.modal,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     logout: () => dispatch(logout()),
+    hideModal: () => dispatch(hideModal()),
   };
 };
 

@@ -7,7 +7,7 @@ export const createRootComponent = () => {
 
   const rootDiv = document.createElement('div');
   rootDiv.id = cmsId;
-  rootDiv.className = 'cms';
+  rootDiv.className = 'cms-scope';
   document.body.appendChild(rootDiv);
 };
 

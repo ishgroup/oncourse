@@ -5,6 +5,7 @@ import {BlockSettings} from "../components/BlockSettings";
 import {URL} from "../../../routes";
 import {deleteBlock, saveBlock} from "../actions";
 import {SidebarList} from "../../../components/Sidebar/SidebarList";
+import {showModal} from "../../../common/containers/modal/actions";
 import {defaultBlock} from "../Blocks";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
   onEditSettings: (blockId, settings) => any;
   onDeleteBlock: (id) => any;
   history: any;
+  showModal: (props) => any;
 }
 
 export class BlockSidebar extends React.Component<Props, any> {
@@ -30,7 +32,7 @@ export class BlockSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {blocks, match, onEditSettings, onDeleteBlock} = this.props;
+    const {blocks, match, onEditSettings, onDeleteBlock, showModal} = this.props;
     const activeBlock = match.params.id && (blocks.find(block => block.id == match.params.id) || defaultBlock);
 
     return (
@@ -50,6 +52,7 @@ export class BlockSidebar extends React.Component<Props, any> {
             onBack={() => this.resetActiveBlock()}
             onEdit={prop => onEditSettings(activeBlock.id, prop)}
             onDelete={id => onDeleteBlock(id)}
+            showModal={showModal}
           />
         }
       </div>
@@ -65,6 +68,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (blockId, settings) => dispatch(saveBlock(blockId, settings)),
     onDeleteBlock: id => dispatch(deleteBlock(id)),
+    showModal: props => dispatch(showModal(props)),
   };
 };
 

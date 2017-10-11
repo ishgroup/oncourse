@@ -4,26 +4,39 @@ import {Table, Button} from 'reactstrap';
 import TimeAgo from 'react-timeago';
 import {getHistory, publish, setVersion} from "./actions";
 import {Version} from "../../model/History";
+import {showModal} from "../../common/containers/modal/actions/index";
 
 interface Props {
   versions: Version[];
   onInit: () => any;
   onPublish: () => any;
   onRevert: (id) => any;
+  showModal: (props) => any;
 }
 
 class History extends React.Component<Props, any> {
+
+  constructor(props) {
+    super(props);
+  }
 
   componentDidMount() {
     this.props.onInit();
   }
 
   onPublish() {
-    this.props.onPublish();
+    this.props.showModal({
+      text: 'You are about to push your changes onto the live site. Are you sure?',
+      onConfirm: () => this.props.onPublish(),
+    });
   }
 
   onRevert(id) {
-    this.props.onRevert(id);
+    this.props.showModal({
+      text: `You are about to revert live site to this version. Are you sure?`,
+      onConfirm: () => this.props.onRevert(id),
+    });
+
   }
 
   render() {
@@ -80,6 +93,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onInit: () => dispatch(getHistory()),
     onPublish: () => dispatch(publish()),
     onRevert: id => dispatch(setVersion(id)),
+    showModal: props => dispatch(showModal(props)),
   };
 };
 
