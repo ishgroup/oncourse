@@ -123,7 +123,7 @@ function toggleAdvancedSearch() {
 }
 
 function showAdvancedSearch() {
-	$j('a.show-advanced-search span').addClass('adv_search_active').text(searchFewerText);
+	$j('a.show-advanced-search span').addClass('adv_search_active').html(searchFewerText);
 
 	$j('form#search').ClearTypeFadeTo({ speed: 450, opacity: 0.4 });
 	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 0.4 });
@@ -147,7 +147,7 @@ function hideAdvancedSearch() {
 	$j('div#content').ClearTypeFadeTo({ speed: 450, opacity: 1 });
 	$j('#advanced_search').hide('slow');
 
-	$j('a.show-advanced-search span').removeClass('adv_search_active').text(searchMoreText);
+	$j('a.show-advanced-search span').removeClass('adv_search_active').html(searchMoreText);
 
 	advancedSearchCheck(false);
 
