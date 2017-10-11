@@ -18,7 +18,9 @@
     margin: $checkoutProgressStepListMargin;
     display: $checkoutProgressStepListDisplay;
     padding-right: $checkoutProgressStepListPaddingRight;
+    text-align: $checkoutProgressStepListTextAlign;
     background: $checkoutProgressStepListBackground;
+    vertical-align: top;
     &:hover {
       background: $checkoutProgressStepListBackgroundHover;
       a {

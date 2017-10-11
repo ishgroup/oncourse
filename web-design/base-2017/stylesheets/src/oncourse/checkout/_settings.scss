@@ -9,6 +9,7 @@
 // It is licensed to you under the Apache License, version 2.0
 //
 
+$checkoutWrapper: 'oncourse-checkout' !default;
 $checkout-media-default: $media-tablet !default;
 
 
@@ -96,6 +97,7 @@ $checkoutProgressStepListWidth: 31.33% !default;
 $checkoutProgressStepListMargin: 0 2% 0 0 !default;
 $checkoutProgressStepListDisplay: inline-block !default;
 $checkoutProgressStepListPaddingRight: 15px !default;
+$checkoutProgressStepListTextAlign: left !default;
 
 $checkoutProgressStepListBackground: url($imagePath + "progress-arrow-default.png") center right no-repeat !default;
 
@@ -236,7 +238,7 @@ $checkoutFormTooltipPointerPositionBottom: -8px !default;
 
 $checkoutFormInputBorder: 1px solid #D5D5D5 !default;
 $checkoutFormInputBorderColorHover: #D5D5D5 !default;
-$checkoutFormInputBorderColorFocus: #000 !default;
+$checkoutFormInputBorderColorFocus: #D5D5D5 !default;
 $checkoutFormInputColor: #333 !default;
 
 $checkoutFormInputErrorBackgroundColor: #FEF0F0 !important !default;
@@ -255,7 +257,7 @@ $checkoutFormInputWidthTablet: 190px !important !default;
 $checkoutFormInputMaxWidthTablet: 190px !important !default;
 
 $checkoutFormTextAreaHeight: 150px !default;
-$checkoutFormTextAreaWidthTablet: 50% !default;
+$checkoutFormTextAreaWidthTablet: 240px !important !default;
 
 
 //
