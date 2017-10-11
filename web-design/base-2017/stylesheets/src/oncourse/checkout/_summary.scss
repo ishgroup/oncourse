@@ -66,6 +66,9 @@
       margin-bottom: $checkoutPageEnrolItemMarginBottom;
       .enrolmentInfo {
         padding-left: 35px;
+        br {
+          display: none;
+        }
         .enrolmentSelect {
           margin-right: 6px;
           vertical-align: top;
@@ -97,6 +100,7 @@
         }
         >span {
           margin-left: 0px;
+          display: block;
         }
         span {
           >span {
