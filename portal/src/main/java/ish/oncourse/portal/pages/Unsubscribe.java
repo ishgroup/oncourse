@@ -6,6 +6,7 @@ import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.tag.ITagService;
+import org.apache.tapestry5.PersistenceConstants;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -16,18 +17,24 @@ public class Unsubscribe {
 	private static final String PARAM_DELIMETER = "-";
 	
 	@Property
-	@Persist
 	private Tag mailingList;
+
+	@Property
+	@Persist(value = PersistenceConstants.CLIENT)
+	private Long mailingListId;
 	
 	@Property
-	@Persist
 	private Contact contact;
+
+	@Property
+	@Persist(value = PersistenceConstants.CLIENT)
+	private String contactUniqueCode;
 	
 	@Property
 	private boolean isSubscribed;
 	
 	@Property
-	@Persist
+	@Persist(value = PersistenceConstants.CLIENT)
 	private boolean postUnsubscribe;
 
     @Inject ITagService tagService;
@@ -49,32 +56,24 @@ public class Unsubscribe {
 	Object onActivate(String param) {
         try {
 			parseContactAndMailingList(param);
-
+			initData();
             if (this.mailingList == null || this.contact == null) {
                 return pageNotFound;
             }
-
             return null;
         } catch (Exception e) {
             return pageNotFound;
         }
 	}
-
-	private void parseContactAndMailingList(String param) {
-		Long mailingListId = Long.parseLong(param.substring(0, param.indexOf(PARAM_DELIMETER)));
-		String contactUniqueCode = param.substring(param.indexOf(PARAM_DELIMETER) + 1);
-
-		List<Tag> tagList = tagService.loadByIds(mailingListId);
-		if (!tagList.isEmpty()) {
-            this.mailingList = tagList.get(0);
-        }
-		this.contact = contactService.findByUniqueCode(contactUniqueCode);
+	
+	public Object onActivate() {
+		if (mailingListId == null || contactUniqueCode == null ) {
+			return pageNotFound;
+		} else {
+			initData();
+			return null;
+		}
 	}
-
-	public Object onActivate()
-    {
-        return this.mailingList == null || this.contact == null ?  pageNotFound :  null;
-    }
 
 	@SetupRender
 	Object setupRender() {
@@ -93,15 +92,7 @@ public class Unsubscribe {
 	void afterRender() {
 		postUnsubscribe = false;
 	}
-	
-	void onSelectedFromUnsubscribeAction() {
-		unsubscribe = true;
-	}
-	
-	void onSelectedFromRemainAction() {
-		unsubscribe = false;
-	}
-	
+
 	@OnEvent(component="unsubscribeForm", value="success")
 	Object submitted() {
 		if (unsubscribe) {
@@ -109,5 +100,26 @@ public class Unsubscribe {
 			postUnsubscribe = true;
 		}
 		return null;
+	}
+
+	private void parseContactAndMailingList(String param) {
+		mailingListId = Long.parseLong(param.substring(0, param.indexOf(PARAM_DELIMETER)));
+		contactUniqueCode = param.substring(param.indexOf(PARAM_DELIMETER) + 1);
+	}
+	
+	private void initData() {
+		contact =  contactService.findByUniqueCode(contactUniqueCode);
+		List<Tag> tagList = tagService.loadByIds(mailingListId);
+		if (!tagList.isEmpty()) {
+			this.mailingList = tagList.get(0);
+		}
+	}
+	
+	void onSelectedFromUnsubscribeAction() {
+		unsubscribe = true;
+	}
+	
+	void onSelectedFromRemainAction() {
+		unsubscribe = false;
 	}
 }
