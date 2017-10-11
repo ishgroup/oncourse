@@ -155,8 +155,6 @@ public interface IPortalService {
 	 * returns student-default.png (see portal resourses) by default
 	 */
 	public String getProfilePictureUrl(Contact contact);
-
-    public UsiController getUsiController();
-	
+    
 	public List<Session> getContactSessionsFrom(Date start, Contact contact);
 }

@@ -10,6 +10,7 @@ CensusForm = function () {
 };
 CensusForm.prototype = {
     data: 0,
+    step: 0,
     usiEnable: true,
 
     initialize: function () {
@@ -20,16 +21,18 @@ CensusForm.prototype = {
                 return obj.key === "usi";
             })[0].value;
             var newUsi = $j('.form-control[name=usi]').val();
-            if (self.data.values['usiStatus'] != 'VERIFIED' &&
-                (self.data.step == 'usi' || self.data.step == 'usiFailed') &&
-                oldUsi != newUsi) {
+            if (self.data.values['usiStatus'] !== 'VERIFIED' &&
+                (self.step === 'usi' || self.step === 'usiFailed') &&
+                oldUsi !== newUsi) {
                 self.verifyUsi();
-                self.reloadByTimeout();
             }
         });
     },
 
     verifyUsi: function () {
+      this.step = 'wait';
+      this.data.step = 'wait';
+			var self = this;
         var actionLink = "/portal/profile.censusform:usiVerify";
         $j('.form-control[name=usi]').attr('disabled', false);
         var data = $j(".form-control[name=usi]").serialize();
@@ -40,6 +43,9 @@ CensusForm.prototype = {
             cache: false,
             data: data,
             success: function (data) {
+							self.data = data;
+							self.step = data.step;
+							self.showData();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus);
@@ -47,12 +53,6 @@ CensusForm.prototype = {
                 window.location.reload();
             }
         });
-    },
-    reloadByTimeout: function () {
-        var self = this;
-        setTimeout(function () {
-            self.loadData();
-        }, 5000);
     },
 
     loadData: function () {
@@ -66,6 +66,7 @@ CensusForm.prototype = {
             cache: false,
             success: function (data) {
                 self.data = data;
+							  self.step = data.step;
                 self.showData();
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -90,9 +91,8 @@ CensusForm.prototype = {
         });
 
 
-        if (this.data.step == 'wait') {
+        if (this.step === 'wait') {
             this.usiEnable = false;
-            self.reloadByTimeout();
         }
         $j('.form-control[name=usi]').attr('disabled', !this.usiEnable);
     },

@@ -11,11 +11,14 @@ import ish.oncourse.portal.usi.*;
 import ish.oncourse.selectutils.BooleanSelection;
 import ish.oncourse.selectutils.ISHEnumSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.services.reference.ILanguageService;
+import ish.oncourse.services.usi.IUSIVerificationService;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
+import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.annotations.*;
@@ -81,6 +84,12 @@ public class CensusForm {
     @Inject
     private Request request;
 
+    @Inject
+    private IUSIVerificationService usiVerificationService;
+
+    @Inject
+    private PreferenceController preferenceController;
+    
     /**
      * template properties
      */
@@ -296,7 +305,7 @@ public class CensusForm {
 
     @OnEvent(value = "usiVerify")
     public Object usiVerify() {
-        UsiController usiController = portalService.getUsiController();
+        UsiController usiController = getUsiController();
         Map<String, Value> inputValues = JSONUtils.getValuesFrom(request);
 
         Contact contact = usiController.getContact();
@@ -310,27 +319,26 @@ public class CensusForm {
 
         usiController.next(inputValues);
         Result result = usiController.next(inputValues);
-        JSONObject jsonResult = getJSONResult(result);
+        JSONObject jsonResult = getJSONResult(result,usiController);
         return new TextStreamResponse("text/json", jsonResult.toString());
     }
 
     @OnEvent(value = "value")
     public Object usiValue() {
-        UsiController usiController = portalService.getUsiController();
+        UsiController usiController = getUsiController();
         Result result = usiController.getValue();
-        JSONObject jsonResult = getJSONResult(result);
+        JSONObject jsonResult = getJSONResult(result, usiController);
 
         return new TextStreamResponse("text/json", jsonResult.toString());
     }
 
 
-    private JSONObject getJSONResult(Result result) {
-        UsiController usiController = portalService.getUsiController();
+    private JSONObject getJSONResult(Result result, UsiController usiController) {
         JSONObject jsonResult = new JSONObject();
         JSONArray jsonArray = JSONUtils.getJSONValues(result.getValue());
         jsonResult.put("values", jsonArray);
         jsonResult.put("hasErrors", result.hasErrors());
-        jsonResult.put("step", portalService.getUsiController().getStep().name());
+        jsonResult.put("step", usiController.getStep().name());
         if (result.hasErrors() || usiController.getValidationResult().hasErrors())
         {
             jsonResult.put("message", usiController.getMessages().format("message-usiVerificationFailed"));
@@ -341,5 +349,13 @@ public class CensusForm {
             jsonResult.put("message", usiController.getMessages().format("message-usiVerificationMessage"));
         }
         return jsonResult;
+    }
+
+
+    public UsiController getUsiController() {
+        ObjectContext context = cayenneService.newContext();
+        UsiControllerModel usiControllerModel = UsiControllerModel.valueOf(context.localObject(portalService.getContact()));
+        usiControllerModel.setStep(Step.usi);
+        return UsiController.valueOf(usiControllerModel, countryService, languageService, preferenceController, usiVerificationService);
     }
 }

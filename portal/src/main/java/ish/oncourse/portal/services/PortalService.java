@@ -55,10 +55,6 @@ public class PortalService implements IPortalService {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static final String ATTR_usiControllerModel = "portal.usiControllerModel";
-    private static final String ATTR_selectedContact = "portal.selectedContact";
-    private static final String ATTR_usiController = "portal.usiController";
-
     @Inject
     private IAuthenticationService authenticationService;
 
@@ -788,15 +784,10 @@ public class PortalService implements IPortalService {
     }
 
     public void selectContact(Contact contact) {
-        org.apache.tapestry5.services.Session session = request.getSession(false);
-        if (session != null) {
-            authenticationService.selectUser(contact);
-            session.setAttribute(ATTR_usiController, null);
-            session.setAttribute(ATTR_usiControllerModel, null);
-        }
+        authenticationService.selectUser(contact);
     }
 
-    @Override
+        @Override
     public void logout() {
         authenticationService.logout();
     }
@@ -904,19 +895,6 @@ public class PortalService implements IPortalService {
         return DateUtils.truncate(DateUtils.addMonths(new Date(), -1), Calendar.DAY_OF_MONTH);
     }
 
-    @Override
-    public UsiController getUsiController() {
-        org.apache.tapestry5.services.Session session = request.getSession(false);
-
-        UsiControllerModel usiControllerModel = (UsiControllerModel) session.getAttribute(ATTR_usiControllerModel);
-        if (usiControllerModel == null) {
-            ObjectContext context = cayenneService.newContext();
-            usiControllerModel = UsiControllerModel.valueOf(context.localObject(getContact()));
-            usiControllerModel.setStep(Step.usi);
-            session.setAttribute(ATTR_usiControllerModel, usiControllerModel);
-        }
-        return UsiController.valueOf(usiControllerModel, countryService, languageService, preferenceController, usiVerificationService);
-    }
 
     public List<Session> getContactSessionsFrom(Date start, Contact contact) {
 
