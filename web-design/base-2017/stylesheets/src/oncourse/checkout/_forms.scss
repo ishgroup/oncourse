@@ -175,7 +175,7 @@ fieldset, #tabable-container .tab-content {
       }
     }
 
-    input[type="text"], input[type="password"], select {
+    @include elements(false) {
       border: $checkoutFormInputBorder;
       padding: $checkoutFormInputPadding;
       background-color: $checkoutFormInputBackgroundColor;
@@ -202,6 +202,14 @@ fieldset, #tabable-container .tab-content {
         width: $checkoutFormTextAreaWidthTablet;
         min-width: $checkoutFormInputWidthTablet;
       }
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      @include appearance(none);
+      margin: 0;
+    }
+    input[type="number"] {
+      @include appearance(textfield);
     }
     .radio-list {
       top: 0;
@@ -323,6 +331,20 @@ fieldset, #tabable-container .tab-content {
         @include responsive($checkout-media-default) {
           min-width: 143px;
           max-width: 143px;
+        }
+      }
+    }
+
+    &.is-searchable {
+      .Select-control span {
+        &.Select-multi-value-wrapper {
+          width: 100%;
+          .Select-value, .Select-placeholder {
+            padding-right: 10px;
+          }
+        }
+        &.Select-arrow-zone {
+          display: none;
         }
       }
     }

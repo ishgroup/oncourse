@@ -69,6 +69,11 @@ $btnFontSize: 14px !default;
 // Button font weight
 $btnFontWeight: 700 !default;
 
+$btnTextTransform: uppercase !default;
+$btnMarginBottom: 0 !default;
+$btnLineHeight: 1.42857143 !default;
+$btnBorder: 1px solid transparent !default;
+
 // Button type 2 background color
 $btnType2BackgroundColor: $secondaryColor !default;
 // Button type 2 text color

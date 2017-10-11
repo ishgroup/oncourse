@@ -6,20 +6,14 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
+//
 
 
 //
 // Following all the style handles all input elements, dropdown box, and textarea
 //
 
-input[type="text"], input[type="password"],
-input[type="date"], input[type="datetime"],
-input[type="datetime-local"], input[type="month"],
-input[type="week"], input[type="email"],
-input[type="number"], input[type="search"],
-input[type="tel"], input[type="time"],
-input[type="url"], select, textarea {
+@include elements {
   @include border-radius($inputBorderRadius);
   background: $inputBackground;
   border: $inputBorder;
@@ -37,24 +31,24 @@ input[type="url"], select, textarea {
 .btn, form button.form-submit-button {
   background: $btnBackgroundColor;
   color: $btnColor;
-  text-transform: uppercase;
+  text-transform: $btnTextTransform;
   display: inline-block;
   padding: $btnPadding;
-  margin-bottom: 0;
+  margin-bottom: $btnMarginBottom;
   font-size: $btnFontSize;
   font-weight: $btnFontWeight;
-  line-height: 1.42857143;
+  line-height: $btnLineHeight;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
   -ms-touch-action: manipulation;
-    touch-action: manipulation;
+  touch-action: manipulation;
   cursor: pointer;
 
   // Prevent to user from select text of button
   @include user-select(none);
   background-image: none;
-  border: 1px solid transparent;
+  border: $btnBorder;
 
   // Button curved
   @include border-radius($btnBorderRadius);
