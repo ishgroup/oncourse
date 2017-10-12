@@ -15,6 +15,11 @@ import Login from "./containers/auth/Login";
 
 import History from './containers/history/History';
 
+import Skills from './containers/settings/containers/Skills';
+import Checkout from './containers/settings/containers/Checkout';
+import Redirect from './containers/settings/containers/Redirect';
+import Website from './containers/settings/containers/Website';
+
 export const URL = {
   SITE: '/',
   CONTENT: '/content',
@@ -24,6 +29,10 @@ export const URL = {
   DESIGN: '/design',
   THEMES: '/themes',
   SETTINGS: '/settings',
+  SETTINGS_SKILLS: '/settings/skills',
+  SETTINGS_CHECKOUT: '/settings/checkout',
+  SETTINGS_WEBSITE: '/settings/website',
+  SETTINGS_REDIRECT: '/settings/redirect',
   HISTORY: '/history',
   LOGIN: '/login',
 };
@@ -63,6 +72,7 @@ export const routes: Route[] = [
   {
     title: 'Settings',
     root: true,
+    exact: true,
     path: '/settings',
     url: URL.SETTINGS,
     icon: 'icon-settings',
@@ -110,6 +120,36 @@ export const routes: Route[] = [
     url: URL.THEMES,
     main: props => <Themes {...props}/>,
     sidebar: props => <ThemesSidebar {...props}/>,
+  },
+
+  // Settings
+  {
+    title: 'Skills On Course',
+    path: URL.SETTINGS_SKILLS,
+    url: URL.SETTINGS_SKILLS,
+    parent: URL.SETTINGS,
+    main: props => <Skills {...props}/>,
+  },
+  {
+    title: 'Website',
+    path: URL.SETTINGS_WEBSITE,
+    url: URL.SETTINGS_WEBSITE,
+    parent: URL.SETTINGS,
+    main: props => <Website {...props}/>,
+  },
+  {
+    title: 'Checkout',
+    path: URL.SETTINGS_CHECKOUT,
+    url: URL.SETTINGS_CHECKOUT,
+    parent: URL.SETTINGS,
+    main: props => <Checkout {...props}/>,
+  },
+  {
+    title: 'Redirect',
+    path: URL.SETTINGS_REDIRECT,
+    url: URL.SETTINGS_REDIRECT,
+    parent: URL.SETTINGS,
+    main: props => <Redirect {...props}/>,
   },
 
   // History
