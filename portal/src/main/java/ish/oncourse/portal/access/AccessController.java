@@ -5,6 +5,7 @@ import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
 import ish.oncourse.portal.annotations.UserRole;
 import ish.oncourse.portal.services.IPortalService;
 import ish.oncourse.portal.services.PageLinkTransformer;
+import ish.oncourse.services.cookies.ICookiesOverride;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -43,7 +44,10 @@ public class AccessController implements Dispatcher {
 
 	@Inject
 	private ICookiesService cookieService;
-
+	
+	@Inject
+	private ICookiesOverride cookie;
+	
     @Inject
     private IPortalService portalService;
 
@@ -129,7 +133,7 @@ public class AccessController implements Dispatcher {
 
 		boolean processed = ProcessSignedRequest.valueOf(authenticationService, accessLinksValidatorFactory, cayenneService.newContext(),
 				httpRequest,
-				request).process();
+				request, cookie).process();
 
 		if (processed) {
 			return false;

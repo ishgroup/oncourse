@@ -31,8 +31,9 @@ public class AuthenticationService implements IAuthenticationService {
 
 	@Inject
 	private ICookiesService cookieService;
-
-	private static final String SESSION_TOKEN = "PORTAL_SESSION";
+	
+	private static final String LOGGED_OUT = "LOGGED_OUT";
+	public static final String SESSION_TOKEN = "PORTAL_SESSION";
 	private static final String TOKEN_DELIMITER = "&";
 	private static final String TOKEN_PATTERN = "%s&%s";
 
@@ -137,7 +138,18 @@ public class AuthenticationService implements IAuthenticationService {
 	 * @see IAuthenticationService#getUser()
 	 */
 	public Contact getUser() {
-		String token = cookieService.getCookieValue(SESSION_TOKEN);
+
+		Boolean isLoggedOut = (Boolean) request.getAttribute(LOGGED_OUT);
+
+		if (isLoggedOut != null && isLoggedOut) {
+			return null;
+		}
+
+		String token = (String) request.getAttribute(SESSION_TOKEN); 
+		if (StringUtils.trimToNull(token) == null) {
+			token = cookieService.getCookieValue(SESSION_TOKEN);
+		}
+
 		if (StringUtils.trimToNull(token) == null) {
 			return null;
 		}
@@ -161,7 +173,12 @@ public class AuthenticationService implements IAuthenticationService {
 		if (authenticatedContact == null) {
 			return null;
 		}
-		String token = cookieService.getCookieValue(SESSION_TOKEN);
+
+		String token = (String) request.getAttribute(SESSION_TOKEN);
+		if (StringUtils.trimToNull(token) == null) {
+			token = cookieService.getCookieValue(SESSION_TOKEN);
+		}
+		
 		String[] nodePath = token.split(TOKEN_DELIMITER);
 		
 		Long childId =  sessionManager.getSelectedChildId(nodePath[0], nodePath[1]);
@@ -209,14 +226,18 @@ public class AuthenticationService implements IAuthenticationService {
 		localUser.setLastLoginTime(new Date());
 		context.commitChanges();
 		String contactId = user.getId().toString();
-		cookieService.writeCookieValue(SESSION_TOKEN, String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId)), SESSION_ID_MAX_AGE);
+		String token = String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId));
+		cookieService.writeCookieValue(SESSION_TOKEN, token, SESSION_ID_MAX_AGE);
+		request.setAttribute(AuthenticationService.SESSION_TOKEN, token);
 	}
 
 	/**
 	 * @see IAuthenticationService#logout()
 	 */
 	public void logout() {
+		request.setAttribute(LOGGED_OUT, true);
 		cookieService.writeCookieValue(SESSION_TOKEN, null, 0);
+		request.setAttribute(SESSION_TOKEN, null);
 		Session session = request.getSession(false);
 
 		if (session != null) {

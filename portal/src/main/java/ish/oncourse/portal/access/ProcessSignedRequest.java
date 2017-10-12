@@ -2,13 +2,15 @@ package ish.oncourse.portal.access;
 
 import ish.oncourse.model.Contact;
 import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
+import ish.oncourse.services.cookies.ICookiesOverride;
+import ish.oncourse.services.cookies.ICookiesService;
 import ish.util.UrlUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.Session;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -24,14 +26,13 @@ public class ProcessSignedRequest {
 
 	private final static String PARAM_contactId = "contactId";
 
-	private final static String SESSION_ATTR_currentSignedPath = "prevSignedPath";
+	public final static String SESSION_ATTR_currentSignedPath = "prevSignedPath";
 	private IAuthenticationService authenticationService;
 	private AccessLinksValidatorFactory accessLinksValidatorFactory;
-
+	private ICookiesOverride cookiesService;
 	private ObjectContext context;
 	private HttpServletRequest httpRequest;
 	private Request request;
-	private Session session;
 
 	private String prevPath;
 	private Contact prevContact;
@@ -61,22 +62,20 @@ public class ProcessSignedRequest {
 		Case c = GetCase.valueOf(accessLinksValidatorFactory, prevPath, prevContact, currentPath, currentContact, request).getCase();
 		switch (c) {
 			case FIRST:
-				session = request.getSession(true);
 				authenticationService.storeCurrentUser(currentContact);
-				session.setAttribute(SESSION_ATTR_currentSignedPath, currentPath);
+				cookiesService.writeCookieValue(SESSION_ATTR_currentSignedPath, currentPath);
 				return true;
 			case REFRESH:
 			case LINKED:
 				return true;
 			case ANOTHER:
 				authenticationService.logout();
-				session = request.getSession(true);
 				authenticationService.storeCurrentUser(currentContact);
-				session.setAttribute(SESSION_ATTR_currentSignedPath, currentPath);
+				cookiesService.writeCookieValue(SESSION_ATTR_currentSignedPath, currentPath);
 				return true;
 			case INVALID:
 				authenticationService.logout();
-				session = request.getSession(true);
+				cookiesService.removeCookieValue(ProcessSignedRequest.SESSION_ATTR_currentSignedPath);
 				return false;
 			case REGULAR:
 			case AJAX:
@@ -92,15 +91,16 @@ public class ProcessSignedRequest {
 											   AccessLinksValidatorFactory accessLinksValidatorFactory,
 	                                           ObjectContext context,
 	                                           HttpServletRequest httpRequest,
-	                                           Request request) {
+	                                           Request request,
+											   ICookiesOverride cookiesService) {
 		ProcessSignedRequest result = new ProcessSignedRequest();
+		result.cookiesService = cookiesService;
 		result.accessLinksValidatorFactory = accessLinksValidatorFactory;
 		result.authenticationService = authenticationService;
 		result.context = context;
 		result.httpRequest = httpRequest;
 		result.request = request;
-		result.session = request.getSession(false);
-		result.prevPath = result.session != null ? (String) result.session.getAttribute(SESSION_ATTR_currentSignedPath) : null;
+		result.prevPath = StringUtils.trimToNull(cookiesService.readCookieValue(SESSION_ATTR_currentSignedPath));
 		result.prevContact = authenticationService.getUser();
 		result.parseRequest();
 		return result;
