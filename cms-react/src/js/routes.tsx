@@ -117,7 +117,6 @@ export const routes: Route[] = [
     title: 'History',
     path: '/history',
     url: URL.HISTORY,
-    parent: URL.SETTINGS,
     main: props => <History {...props}/>,
   },
 

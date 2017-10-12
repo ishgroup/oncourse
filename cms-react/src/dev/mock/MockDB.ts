@@ -351,6 +351,10 @@ export class MockDB {
     this.themes = this.themes.map(item => item.id === theme.id ? {...item, ...theme} : item);
   }
 
+  saveMenu(items: MenuItem[]) {
+    this.menus = items;
+  }
+
   addContact(contact) {
     // const nc = normalize([contact], ContactsSchema);
     // this.contacts.result = [...this.contacts.result, ...nc.result];

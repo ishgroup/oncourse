@@ -7,6 +7,10 @@ class MenuService {
   public getMenuItems(): Promise<MenuItem[]> {
     return this.menuApi.getMenuItems();
   }
+
+  public saveMenuItems(items: MenuItem[]): Promise<MenuItem[]> {
+    return this.menuApi.saveMenuItems(items);
+  }
 }
 
 export default new MenuService;

@@ -7,4 +7,8 @@ export class MenuApi {
   getMenuItems(): Promise<any> {
     return this.http.GET(API.GET_MENU);
   }
+
+  saveMenuItems(items): Promise<any> {
+    return this.http.POST(API.SAVE_MENU, {items});
+  }
 }

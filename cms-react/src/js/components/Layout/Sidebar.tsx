@@ -11,6 +11,8 @@ interface Props {
   slim?: boolean;
   user: User;
   onLogout: () => void;
+  onPublish: () => void;
+  showModal: (props) => any;
 }
 
 const firstChar = (str: string) => (
@@ -22,6 +24,15 @@ export class Sidebar extends React.Component<Props, any> {
     super(props);
 
     this.state = {activeUrl: 'site'};
+  }
+
+  onClickPublish() {
+    const {showModal, onPublish} = this.props;
+
+    showModal({
+      text: `You are about to push your changes onto the live site. Are you sure?`,
+      onConfirm: () => onPublish(),
+    });
   }
 
   onClickMenu(url) {
@@ -91,11 +102,13 @@ export class Sidebar extends React.Component<Props, any> {
 
           <div className="sidebar__footer">
             <Row className="center">
-              <Col md="6"><Button size="sm" color="primary">Publish</Button></Col>
               <Col md="6">
-                <span onClick={() => this.onClickHistory()}>
+                <Button size="sm" color="primary" onClick={() => this.onClickPublish()}>Publish</Button>
+              </Col>
+              <Col md="6">
+                <Button color="link" onClick={() => this.onClickHistory()}>
                   25 Edits
-               </span>
+               </Button>
               </Col>
             </Row>
 

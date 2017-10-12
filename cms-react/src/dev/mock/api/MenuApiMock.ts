@@ -6,4 +6,14 @@ export function menuApiMock() {
     config,
     this.db.menus,
   ));
+
+  this.api.onPost(API.SAVE_MENU).reply(config => {
+    const items = JSON.parse(config.data).items;
+    this.db.saveMenu(items);
+
+    return promiseResolve(
+      config,
+      items,
+    );
+  });
 }

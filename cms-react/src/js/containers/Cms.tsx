@@ -11,9 +11,23 @@ import {Modal} from "../common/containers/modal/Modal";
 import {getHistoryInstance, setHistoryInstance} from "../history";
 import {URL} from "../routes";
 import {logout} from "./auth/actions";
-import {hideModal} from "../common/containers/modal/actions";
+import {publish} from "./history/actions";
+import {hideModal, showModal} from "../common/containers/modal/actions";
+import {AuthState} from "./auth/reducers/State";
+import {ModalState} from "../common/containers/modal/reducers/State";
 
-export class Cms extends React.Component<any, any> {
+interface Props {
+  auth: AuthState;
+  notifications: any;
+  modal: ModalState;
+  logout: () => any;
+  hideModal: () => any;
+  onPublish: () => any;
+  showModal: () => any;
+  history: any;
+}
+
+export class Cms extends React.Component<Props, any> {
 
   componentDidMount() {
     setHistoryInstance(this.props.history);
@@ -26,7 +40,7 @@ export class Cms extends React.Component<any, any> {
   }
 
   render() {
-    const {logout, auth, notifications, modal, hideModal} = this.props;
+    const {logout, auth, notifications, modal, hideModal, onPublish, showModal} = this.props;
     const {isAuthenticated, user} = auth;
     const viewMode: boolean = this.props.history.location.pathname === '/';
 
@@ -42,11 +56,14 @@ export class Cms extends React.Component<any, any> {
           <Layout
             sidebar={
               isAuthenticated &&
-              <Sidebar
-                user={user}
-                slim={viewMode}
-                onLogout={() => logout()}
-            />}
+                <Sidebar
+                  user={user}
+                  slim={viewMode}
+                  onLogout={() => logout()}
+                  onPublish={() => onPublish()}
+                  showModal={showModal}
+                />
+            }
             content={<Content isAuthenticated={isAuthenticated}/>}
             fullHeight={true}
           />
@@ -66,6 +83,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     logout: () => dispatch(logout()),
     hideModal: () => dispatch(hideModal()),
+    onPublish: () => dispatch(publish()),
+    showModal: props => dispatch(showModal(props)),
   };
 };
 

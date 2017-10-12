@@ -3,7 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button} from 'reactstrap';
 import classnames from 'classnames';
 import SortableTree, {changeNodeAtPath, addNodeUnderParent, removeNodeAtPath} from 'react-sortable-tree';
-import {changeMenuTree, getMenuItems} from "./actions";
+import {changeMenuTree, getMenuItems, saveMenuTree} from "./actions";
 import {MenuState} from "./reducers/State";
 import {showModal} from "../../common/containers/modal/actions";
 
@@ -11,6 +11,7 @@ interface Props {
   menu: MenuState;
   onInit: () => any;
   onChangeTree: (treeData) => any;
+  onSaveTree: (treeData) => any;
   match: any;
   showModal: (props) => any;
 }
@@ -19,6 +20,11 @@ export class Menus extends React.Component<Props, any> {
 
   componentDidMount() {
     this.props.onInit();
+  }
+
+  save() {
+    const {onSaveTree, menu} = this.props;
+    onSaveTree(menu.items);
   }
 
   changeNode(props, node, path) {
@@ -140,6 +146,14 @@ export class Menus extends React.Component<Props, any> {
 
     return (
       <div style={{height: '700px'}} className="rst">
+        <Button
+          size="md"
+          color="primary"
+          onClick={() => this.addItem()}
+        >
+          <span className="icon icon-add_circle"/>
+          Add new item
+        </Button>
         <SortableTree
           treeData={menu.items}
           rowHeight={48}
@@ -150,13 +164,13 @@ export class Menus extends React.Component<Props, any> {
             buttons: this.getButtons(node, path),
           })}
         />
+
         <Button
           size="md"
           color="primary"
-          onClick={() => this.addItem()}
+          onClick={() => this.save()}
         >
-          <span className="icon icon-add_circle"/>
-          Add more
+          Save
         </Button>
       </div>
     );
@@ -171,6 +185,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onInit: () => dispatch(getMenuItems()),
     onChangeTree: treeData => dispatch(changeMenuTree(treeData)),
+    onSaveTree: treeData => dispatch(saveMenuTree(treeData)),
     showModal: props => dispatch(showModal(props)),
   };
 };

@@ -12,6 +12,7 @@ export const API = {
 
   // Menu page
   GET_MENU: "/getMenuItems",
+  SAVE_MENU: "/saveMenuItems",
 
   // Pages
   GET_PAGES: "/getPages",
