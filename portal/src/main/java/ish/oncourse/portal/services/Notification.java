@@ -8,6 +8,12 @@ public class Notification implements Serializable{
     private int newResultsCount = 0;
     private int newHistoryCount = 0;
 
+    public Notification(int newHistoryCount, int newResultsCount, int newResourcesCount) {
+        this.newResourcesCount = newResourcesCount;
+        this.newResultsCount = newResultsCount;
+        this.newHistoryCount = newHistoryCount;
+    }
+    
     public boolean hasNewResources() {
         return newResourcesCount > 0;
     }

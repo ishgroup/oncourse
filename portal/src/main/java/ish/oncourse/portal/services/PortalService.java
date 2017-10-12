@@ -7,9 +7,7 @@ import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.*;
 import ish.oncourse.portal.access.IAuthenticationService;
-import ish.oncourse.portal.usi.Step;
-import ish.oncourse.portal.usi.UsiController;
-import ish.oncourse.portal.usi.UsiControllerModel;
+import ish.oncourse.portal.services.attendance.AttendanceUtils;
 import ish.oncourse.services.binary.IBinaryDataService;
 import ish.oncourse.services.cookies.ICookiesService;
 import ish.oncourse.services.courseclass.CourseClassFilter;
@@ -33,12 +31,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.Request;
 
+import javax.cache.Cache;
+import javax.cache.CacheManager;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -77,19 +78,15 @@ public class PortalService implements IPortalService {
     private ICookiesService cookiesService;
 
     @Inject
-    private ICountryService countryService;
-
-    @Inject
-    private ILanguageService languageService;
-
-    @Inject
-    private IUSIVerificationService usiVerificationService;
-
-    @Inject
-    private ApplicationStateManager applicationStateManager;
-
+    private CacheManager cacheManager;
+    
     @Inject
     private Request request;
+
+    private static final String NOTIFICATION_CACHE =  "notification";
+    private static final String NOTIFICATION_CACHE_KEY =  "%s-%s";
+    private static final String NOTIFICATION_CACHE_VALUE =  "%d/%d/%d";
+    private static final String NOTIFICATION_CACHE_DELIMITER =  "/";
 
     @Override
     public Contact getContact() {
@@ -102,14 +99,25 @@ public class PortalService implements IPortalService {
     }
 
     public Notification getNotification() {
-        if (!applicationStateManager.exists(Notification.class)) {
-            Notification notification = new Notification();
-            notification.setNewHistoryCount(getNewPaymentsCount() + getNewInvoicesCount() + getNewEnrolmentsCount());
-            notification.setNewResultsCount(getNewResultsCount());
-            notification.setNewResourcesCount(getNewResourcesCount());
-            applicationStateManager.set(Notification.class, notification);
+        Contact contact = getContact();
+        Date lastLoginTime = getLastLoginTime();
+        Cache<String, String> cache = cacheManager.getCache(NOTIFICATION_CACHE, String.class, String.class);
+        String cacheKey = String.format(NOTIFICATION_CACHE_KEY, contact.getId().toString(), lastLoginTime.toString());
+        int historyCount, resultsCount, resourcesCount;
+        
+        String value = cache.get(cacheKey);
+        if (value == null) {
+            historyCount = getNewPaymentsCount() + getNewInvoicesCount() + getNewEnrolmentsCount();
+            resultsCount = getNewResultsCount();
+            resourcesCount = getNewResourcesCount();
+            cache.put(cacheKey, String.format(NOTIFICATION_CACHE_VALUE, historyCount, resultsCount, resourcesCount));
+        } else {
+            String[] values = value.split(NOTIFICATION_CACHE_DELIMITER);
+            historyCount = Integer.parseInt(values[0]);
+            resultsCount = Integer.parseInt(values[1]);
+            resourcesCount = Integer.parseInt(values[2]);
         }
-        return applicationStateManager.get(Notification.class);
+        return new Notification(historyCount, resultsCount, resourcesCount);
     }
 
     @Override
