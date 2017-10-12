@@ -9,7 +9,7 @@ var $j = jQuery.noConflict();
 
 function initAutocomplete(){if ($j("#suburb").length) {
 
-        $j("#suburb").autocomplete({source: '/ish/internal/autocomplete.sub',
+        $j("#suburb").autocomplete({source: '/portal/profile:sub',
 	    minLength: 3,
             select: function(event, ui) {
                 var value = ui.item.value;

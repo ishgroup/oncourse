@@ -73,9 +73,9 @@ public class SearchService implements ISearchService {
     @Symbol(ALIAS_SUFFIX_PROPERTY)
     private String aliasSuffix;
 
-    private Map<SolrCore, SolrClient> solrClients = new HashMap<>();
+    protected Map<SolrCore, SolrClient> solrClients = new HashMap<>();
 
-    private SolrClient getSolrClient(SolrCore core) {
+    protected SolrClient getSolrClient(SolrCore core) {
         SolrClient solrClient = null;
         if (solrClients.keySet().contains(core)) {
             solrClient = solrClients.get(core);
@@ -321,7 +321,7 @@ public class SearchService implements ISearchService {
         }
     }
 
-    enum SolrCore {
+    protected enum SolrCore {
         courses, suburbs, tags
     }
 }

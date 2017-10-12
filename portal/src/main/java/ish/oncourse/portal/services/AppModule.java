@@ -9,6 +9,7 @@ import ish.oncourse.portal.access.*;
 import ish.oncourse.portal.access.validate.AccessLinksValidatorFactory;
 import ish.oncourse.portal.services.application.IPortalApplicationService;
 import ish.oncourse.portal.services.application.PortalApplicationServiceImpl;
+import ish.oncourse.portal.services.application.PortalSearchService;
 import ish.oncourse.portal.services.discussion.DiscussionServiceImpl;
 import ish.oncourse.portal.services.discussion.IDiscussionService;
 import ish.oncourse.portal.services.pageload.PortalPageRenderer;
@@ -42,6 +43,8 @@ import ish.oncourse.services.environment.IEnvironmentService;
 import ish.oncourse.services.html.IPlainTextExtractor;
 import ish.oncourse.services.html.JerichoPlainTextExtractor;
 import ish.oncourse.services.jmx.IJMXInitService;
+import ish.oncourse.services.jndi.ILookupService;
+import ish.oncourse.services.jndi.LookupService;
 import ish.oncourse.services.location.IPostCodeDbService;
 import ish.oncourse.services.location.PostCodeDbService;
 import ish.oncourse.services.mail.IMailService;
@@ -53,6 +56,8 @@ import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
+import ish.oncourse.services.property.IPropertyService;
+import ish.oncourse.services.property.PropertyService;
 import ish.oncourse.services.reference.*;
 import ish.oncourse.services.room.IRoomService;
 import ish.oncourse.services.room.RoomService;
@@ -139,8 +144,7 @@ public class AppModule {
 		binder.bind(IPageRenderer.class, PortalPageRenderer.class);
 		binder.bind(IPortalService.class, PortalService.class).scope(ScopeConstants.PERTHREAD);
 		binder.bind(IPortalApplicationService.class, PortalApplicationServiceImpl.class);
-
-//		binder.bind(ExpiredSessionController.class).withId("ExpiredSessionController");
+		
 		binder.bind(TapestrySessionFactory.class, ISHTapestrySessionFactoryImpl.class).withId("ISHTapestrySessionFactoryImpl");
 		binder.bind(AccessLinksValidatorFactory.class, AccessLinksValidatorFactory.class);
 		binder.bind(CacheManager.class, new CacheManagerBuilder());
@@ -173,8 +177,9 @@ public class AppModule {
 
 		binder.bind(IS3Service.class, S3Service.class);
 
-		binder.bind(ISearchService.class, SearchService.class);
-
+		binder.bind(ISearchService.class, PortalSearchService.class);
+		binder.bind(IPropertyService.class, PropertyService.class);
+		binder.bind(ILookupService.class, LookupService.class);
 		binder.bind(IJMXInitService.class, new JMXInitServiceBuilder());
 	}
 
@@ -224,9 +229,7 @@ public class AppModule {
 
 	public void contributeMasterDispatcher(OrderedConfiguration<Dispatcher> configuration,
 										   @InjectService("AccessController") Dispatcher accessController) {
-//										   @InjectService("ExpiredSessionController") Dispatcher expiredSessionController) {
 		configuration.add("AccessController", accessController, "before:PageRender");
-//		configuration.add("ExpiredSessionController", expiredSessionController, "before:ComponentEvent");
 	}
 
 	public void contributeApplicationDefaults(MappedConfiguration<String, String> configuration) {

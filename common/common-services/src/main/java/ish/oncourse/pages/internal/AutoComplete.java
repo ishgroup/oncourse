@@ -4,12 +4,11 @@ import ish.oncourse.model.Country;
 import ish.oncourse.model.WebContent;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.search.ISearchService;
+import ish.oncourse.services.search.SuburbsAutocomplete;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.commons.lang.StringUtils;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.tapestry5.StreamResponse;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONArray;
@@ -18,13 +17,10 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.util.TextStreamResponse;
 
 import java.util.List;
-
-import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_postcode;
-import static ish.oncourse.services.search.SolrQueryBuilder.FIELD_suburb;
+import static ish.oncourse.services.search.SuburbsAutocomplete.REQUEST_PARAM_term;
 
 public class AutoComplete {
 
-    private final static String REQUEST_PARAM_term = "term";
     @Inject
     private Request request;
 
@@ -35,35 +31,7 @@ public class AutoComplete {
 	private ICayenneService cayenneService;
 
     StreamResponse onActionFromSub() {
-        String term = StringUtils.trimToNull(request.getParameter(REQUEST_PARAM_term));
-        final JSONArray array = new JSONArray();
-
-        //this is incorrect state which mean that next js code not able to evaluate input item value in some browser or pass less then 3 characters
-        // so we should return empty result.Used to avoid search fail in #14742 task.
-        /*
-           * $j(".suburb-autocomplete").autocomplete({source: '/ish/internal/autocomplete.sub', minLength: 3,
-           *	select: function(event, ui) {
-           *	setPostcodeAndStateFromSuburb(this.form, ui.item.value);
-           *	}
-           *	});
-        */
-        if (term != null && term.length() >= 3) {
-            SolrDocumentList responseResults = searchService.searchSuburbs(term);
-
-            for (SolrDocument doc : responseResults) {
-                String val = doc.getFieldValue(FIELD_suburb) + " "
-                        + doc.getFieldValue(FIELD_postcode);
-
-                JSONObject obj = new JSONObject();
-
-                obj.put("id", val);
-                obj.put("label", val);
-                obj.put("value", val);
-
-                array.put(obj);
-            }
-        }
-        return new TextStreamResponse("text/json", array.toString());
+        return SuburbsAutocomplete.valueOf(request, searchService).getResult();
     }
 
 	StreamResponse onActionFromCountry() {
