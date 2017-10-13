@@ -95,6 +95,6 @@ public class Profile {
 
     @OnEvent(value = "sub")
     StreamResponse getSuburbs() {
-       return SuburbsAutocomplete.valueOf(request, searchService).getResult();
+       return SuburbsAutocomplete.valueOf(request, searchService, null).getResult();
     }
 }

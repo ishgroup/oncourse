@@ -268,6 +268,11 @@ public class SearchService implements ISearchService {
     }
 
     public SolrDocumentList searchSuburbs(String term) {
+        return searchSuburbs(term, null);
+    }
+
+
+    public SolrDocumentList searchSuburbs(String term, String state) {
         try {
             SolrQuery q = new SolrQuery();
 
@@ -278,7 +283,11 @@ public class SearchService implements ISearchService {
                 if (StringUtils.trimToNull(terms[i]) != null) {
                     String t = SolrQueryBuilder.replaceSOLRSyntaxisCharacters(terms[i].toLowerCase().trim()) + SOLR_ANYTHING_AFTER_CHARACTER;
 
-                    query.append(String.format("(doctype:suburb AND (suburb:%s || postcode:%s)) ", t, t));
+                    if (state != null) {
+                        query.append(String.format("(doctype:suburb AND (suburb:%s || postcode:%s) AND state:%s)", t, t, state));
+                    } else {
+                        query.append(String.format("(doctype:suburb AND (suburb:%s || postcode:%s)) ", t, t));
+                    }
 
                     if (i + 1 != terms.length) {
                         query.append(TERMS_SEPARATOR_STRING);

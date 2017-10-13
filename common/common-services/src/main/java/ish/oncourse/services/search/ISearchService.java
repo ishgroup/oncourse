@@ -12,7 +12,9 @@ public interface ISearchService {
 	SearchResult searchCourses(SearchParams searchParams, int start, Integer rows);
 
     SolrDocumentList searchSuburbs(String term);
-
+    
+    SolrDocumentList searchSuburbs(String term, String state);
+    
     SolrDocumentList searchSuburb(String location);
 
     Map<Long, Long> getCountersForTags(SearchParams searchParams, List<Tag> counts);

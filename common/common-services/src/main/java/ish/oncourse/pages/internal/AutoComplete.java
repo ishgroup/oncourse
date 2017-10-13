@@ -2,9 +2,12 @@ package ish.oncourse.pages.internal;
 
 import ish.oncourse.model.Country;
 import ish.oncourse.model.WebContent;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.GetAutoCompleteState;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SuburbsAutocomplete;
+import ish.oncourse.services.site.IWebSiteService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
@@ -30,8 +33,17 @@ public class AutoComplete {
 	@Inject
 	private ICayenneService cayenneService;
 
+
+	@Inject
+	private IWebSiteService webSiteService;
+
     StreamResponse onActionFromSub() {
-        return SuburbsAutocomplete.valueOf(request, searchService).getResult();
+		String stateQualifier = null;
+		WebSite webSite = webSiteService.getCurrentWebSite();
+		if (webSite != null) {
+			stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.sharedContext(), webSite).get();
+		}
+        return SuburbsAutocomplete.valueOf(request, searchService, stateQualifier).getResult();
     }
 
 	StreamResponse onActionFromCountry() {

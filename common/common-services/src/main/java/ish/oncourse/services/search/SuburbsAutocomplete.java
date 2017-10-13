@@ -19,14 +19,16 @@ public class SuburbsAutocomplete {
 
     private Request request;
     private ISearchService searchService;
+    private String stateQualifier;
     public final static String REQUEST_PARAM_term = "term";
 
     private SuburbsAutocomplete(){}
     
-    public static SuburbsAutocomplete valueOf(Request request, ISearchService searchService) {
+    public static SuburbsAutocomplete valueOf(Request request, ISearchService searchService, String stateQualifier) {
         SuburbsAutocomplete autocomplite = new SuburbsAutocomplete();
         autocomplite.request = request;
         autocomplite.searchService = searchService;
+        autocomplite.stateQualifier = stateQualifier;
         return autocomplite;
     }
 
@@ -44,7 +46,13 @@ public class SuburbsAutocomplete {
            *	});
         */
         if (term != null && term.length() >= 3) {
-            SolrDocumentList responseResults = searchService.searchSuburbs(term);
+            SolrDocumentList responseResults;
+                    
+            if (StringUtils.trimToNull(stateQualifier) != null) {
+                responseResults = searchService.searchSuburbs(term, stateQualifier);
+            } else {
+                responseResults = searchService.searchSuburbs(term);
+            }
 
             for (SolrDocument doc : responseResults) {
                 String val = doc.getFieldValue(FIELD_suburb) + " "
