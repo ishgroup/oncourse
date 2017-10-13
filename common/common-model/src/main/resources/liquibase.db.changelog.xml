@@ -4566,5 +4566,27 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="311" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">				
+			<indexExists tableName="Preference" indexName="collegeId_name_uniq_idx"/>
+		</preConditions>
+		<sql>
+			ALTER TABLE Preference DROP INDEX collegeId_name_uniq_idx;
+		</sql>
+	</changeSet>
+
+
+	<changeSet id="312" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<indexExists tableName="Preference" indexName="collegeId_name_webSiteId_uniq_idx"/>
+			</not>
+		</preConditions>
+		<sql>
+			CREATE UNIQUE INDEX collegeId_name_webSiteId_uniq_idx ON Preference (collegeId, name, webSiteId);
+		</sql>
+	</changeSet>
+
+
 
 </databaseChangeLog>
