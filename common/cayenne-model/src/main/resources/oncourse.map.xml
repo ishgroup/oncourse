@@ -922,6 +922,7 @@
 		<db-attribute name="sqlType" type="INTEGER" length="10"/>
 		<db-attribute name="value" type="LONGVARBINARY" length="65535"/>
 		<db-attribute name="value_string" type="LONGVARCHAR" length="32000"/>
+		<db-attribute name="webSiteId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="PriorLearning">
 		<db-attribute name="angelId" type="BIGINT"/>
@@ -3671,6 +3672,9 @@
 	<db-relationship name="college" source="Preference" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="webSite" source="Preference" target="WebSite" toMany="false">
+		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="PriorLearning" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -4079,6 +4083,9 @@
 	<db-relationship name="licenseFees" source="WebSite" target="LicenseFee" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
+	<db-relationship name="preferences" source="WebSite" target="Preference" toMany="true">
+		<db-attribute-pair source="id" target="webSiteId"/>
+	</db-relationship>
 	<db-relationship name="versions" source="WebSite" target="WebSiteVersion" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
@@ -4433,6 +4440,7 @@
 	<obj-relationship name="paymentOut" source="PaymentOutTransaction" target="PaymentOut" deleteRule="Nullify" db-relationship-path="paymentOut"/>
 	<obj-relationship name="payment" source="PaymentTransaction" target="PaymentIn" deleteRule="Nullify" db-relationship-path="payment"/>
 	<obj-relationship name="college" source="Preference" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="webSite" source="Preference" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="PriorLearning" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="outcomes" source="PriorLearning" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="qualification" source="PriorLearning" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
@@ -4564,6 +4572,7 @@
 	<obj-relationship name="collegeDomains" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="invoices" source="WebSite" target="Invoice" deleteRule="Nullify" db-relationship-path="invoices"/>
 	<obj-relationship name="licenseFees" source="WebSite" target="LicenseFee" deleteRule="Deny" db-relationship-path="licenseFees"/>
+	<obj-relationship name="preferences" source="WebSite" target="Preference" deleteRule="Deny" db-relationship-path="preferences"/>
 	<obj-relationship name="versions" source="WebSite" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="versions"/>
 	<obj-relationship name="templates" source="WebSiteLayout" target="WebTemplate" deleteRule="Deny" db-relationship-path="templates"/>
 	<obj-relationship name="webNodeTypes" source="WebSiteLayout" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>

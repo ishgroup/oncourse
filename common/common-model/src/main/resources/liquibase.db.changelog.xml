@@ -4554,5 +4554,17 @@
 		</sql>
 	</changeSet>
 
+	<changeSet id="310" author="artyom" runOnChange="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="Preference" columnName="webSiteId"/>
+			</not>
+		</preConditions>
+		<sql>
+			ALTER TABLE Preference ADD COLUMN webSiteId BIGINT NULL,
+			ADD CONSTRAINT fk_Preference_WebSite FOREIGN KEY (webSiteId) REFERENCES WebSite (id);
+		</sql>
+	</changeSet>
+
 
 </databaseChangeLog>

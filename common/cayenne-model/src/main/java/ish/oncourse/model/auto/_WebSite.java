@@ -9,6 +9,7 @@ import org.apache.cayenne.exp.Property;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.LicenseFee;
+import ish.oncourse.model.Preference;
 import ish.oncourse.model.WebHostName;
 import ish.oncourse.model.WebSiteVersion;
 
@@ -33,22 +34,24 @@ public abstract class _WebSite extends CayenneDataObject {
     public static final String COLLEGE_DOMAINS_PROPERTY = "collegeDomains";
     public static final String INVOICES_PROPERTY = "invoices";
     public static final String LICENSE_FEES_PROPERTY = "licenseFees";
+    public static final String PREFERENCES_PROPERTY = "preferences";
     public static final String VERSIONS_PROPERTY = "versions";
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> COURSES_ROOT_TAG_NAME = new Property<String>("coursesRootTagName");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> GOOGLE_DIRECTIONS_FROM = new Property<String>("googleDirectionsFrom");
-    public static final Property<String> GOOGLE_TAGMANAGER_ACCOUNT = new Property<String>("googleTagmanagerAccount");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<String> SITE_KEY = new Property<String>("siteKey");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<WebHostName>> COLLEGE_DOMAINS = new Property<List<WebHostName>>("collegeDomains");
-    public static final Property<List<Invoice>> INVOICES = new Property<List<Invoice>>("invoices");
-    public static final Property<List<LicenseFee>> LICENSE_FEES = new Property<List<LicenseFee>>("licenseFees");
-    public static final Property<List<WebSiteVersion>> VERSIONS = new Property<List<WebSiteVersion>>("versions");
+    public static final Property<String> COURSES_ROOT_TAG_NAME = Property.create("coursesRootTagName", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> GOOGLE_DIRECTIONS_FROM = Property.create("googleDirectionsFrom", String.class);
+    public static final Property<String> GOOGLE_TAGMANAGER_ACCOUNT = Property.create("googleTagmanagerAccount", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<String> SITE_KEY = Property.create("siteKey", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<WebHostName>> COLLEGE_DOMAINS = Property.create("collegeDomains", List.class);
+    public static final Property<List<Invoice>> INVOICES = Property.create("invoices", List.class);
+    public static final Property<List<LicenseFee>> LICENSE_FEES = Property.create("licenseFees", List.class);
+    public static final Property<List<Preference>> PREFERENCES = Property.create("preferences", List.class);
+    public static final Property<List<WebSiteVersion>> VERSIONS = Property.create("versions", List.class);
 
     public void setCoursesRootTagName(String coursesRootTagName) {
         writeProperty("coursesRootTagName", coursesRootTagName);
@@ -141,6 +144,18 @@ public abstract class _WebSite extends CayenneDataObject {
     @SuppressWarnings("unchecked")
     public List<LicenseFee> getLicenseFees() {
         return (List<LicenseFee>)readProperty("licenseFees");
+    }
+
+
+    public void addToPreferences(Preference obj) {
+        addToManyTarget("preferences", obj, true);
+    }
+    public void removeFromPreferences(Preference obj) {
+        removeToManyTarget("preferences", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<Preference> getPreferences() {
+        return (List<Preference>)readProperty("preferences");
     }
 
 
