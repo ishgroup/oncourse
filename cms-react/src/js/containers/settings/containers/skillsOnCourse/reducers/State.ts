@@ -1,3 +1,5 @@
 export class SkillsOnCourseState {
-  setting: any;
+  hideStudentDetails: boolean;
+  enableOutcomeMarking: boolean;
+  tutorFeedbackEmail: string;
 }

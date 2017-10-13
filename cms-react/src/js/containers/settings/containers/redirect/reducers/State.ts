@@ -1,3 +1,5 @@
+import {RedirectSettings} from "../../../../../model/settings/RedirectSettings";
+
 export class RedirectSettingsState {
-  setting: any;
+  rules: RedirectSettings[] = [];
 }

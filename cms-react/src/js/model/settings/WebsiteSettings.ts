@@ -1,4 +1,4 @@
-export class WebsiteSettingsState {
+export class WebsiteSettings {
   enableSocialMedia: boolean;
   addThisId: string;
   enableForCourse: boolean;

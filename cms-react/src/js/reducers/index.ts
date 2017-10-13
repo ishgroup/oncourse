@@ -7,6 +7,12 @@ import {blockReducer} from "../containers/content/containers/blocks/reducers";
 import {themesReducer} from "../containers/design/containers/themes/reducers";
 import {historyReducer} from "../containers/history/reducers";
 import {modalReducer} from "../common/containers/modal/reducers";
+
+import {checkoutSettingsReducer} from "../containers/settings/containers/checkout/reducers";
+import {websiteSettingsReducer} from "../containers/settings/containers/website/reducers";
+import {redirectSettingsReducer} from "../containers/settings/containers/redirect/reducers";
+import {skillsOnCourseReducer} from "../containers/settings/containers/skillsOnCourse/reducers";
+
 import {configReducer} from "../common/reducers";
 
 export const combinedReducers = combineReducers({
@@ -19,4 +25,10 @@ export const combinedReducers = combineReducers({
   theme: themesReducer,
   history: historyReducer,
   modal: modalReducer,
+  settings: combineReducers({
+    checkoutSettings: checkoutSettingsReducer,
+    websiteSettings: websiteSettingsReducer,
+    redirectSettings: redirectSettingsReducer,
+    skillsOnCourseSettings: skillsOnCourseReducer,
+  }),
 });

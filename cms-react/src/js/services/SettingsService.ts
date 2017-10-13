@@ -1,4 +1,8 @@
 import {SettingsApi} from "../http/SettingsApi";
+import {CheckoutSettings} from "../model/settings/CheckoutSettings";
+import {SkillsOnCourseSettings} from "../model/settings/SkillsOnCourseSettings";
+import {RedirectSettings} from "../model/settings/RedirectSettings";
+import {WebsiteSettings} from "../model/settings/WebsiteSettings";
 
 class SettingsService {
   readonly settingsApi = new SettingsApi();
@@ -7,31 +11,31 @@ class SettingsService {
     return this.settingsApi.getCheckoutSettings();
   }
 
-  public setCheckoutSettings(settings: any): Promise<any> {
+  public setCheckoutSettings(settings: CheckoutSettings): Promise<CheckoutSettings> {
     return this.settingsApi.setCheckoutSettings(settings);
   }
 
-  public getSkillsOnCourseSettings(): Promise<any> {
+  public getSkillsOnCourseSettings(): Promise<CheckoutSettings> {
     return this.settingsApi.getSkillsOnCourseSettings();
   }
 
-  public setSkillsOnCourseSettings(settings: any): Promise<any> {
+  public setSkillsOnCourseSettings(settings: SkillsOnCourseSettings): Promise<SkillsOnCourseSettings> {
     return this.settingsApi.setSkillsOnCourseSettings(settings);
   }
 
-  public getRedirectSettings(): Promise<any> {
+  public getRedirectSettings(): Promise<SkillsOnCourseSettings> {
     return this.settingsApi.getRedirectSettings();
   }
 
-  public setRedirectSettings(settings: any): Promise<any> {
+  public setRedirectSettings(settings: RedirectSettings): Promise<any> {
     return this.settingsApi.setRedirectSettings(settings);
   }
 
-  public getWebsiteSettings(): Promise<any> {
+  public getWebsiteSettings(): Promise<WebsiteSettings> {
     return this.settingsApi.getWebsiteSettings();
   }
 
-  public setWebsiteSettings(settings: any): Promise<any> {
+  public setWebsiteSettings(settings: WebsiteSettings): Promise<WebsiteSettings> {
     return this.settingsApi.setWebsiteSettings(settings);
   }
 

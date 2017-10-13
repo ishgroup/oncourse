@@ -21,3 +21,9 @@ export {ThemeSchema} from "./ThemeSchema";
 // History
 export {History} from "./History";
 export {Version} from "./History";
+
+// Settings
+export {SkillsOnCourseSettings} from "./settings/SkillsOnCourseSettings";
+export {CheckoutSettings} from "./settings/CheckoutSettings";
+export {RedirectSettings} from "./settings/RedirectSettings";
+export {WebsiteSettings} from "./settings/WebsiteSettings";

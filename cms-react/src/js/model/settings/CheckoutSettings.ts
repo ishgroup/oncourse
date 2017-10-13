@@ -1,4 +1,4 @@
-export class CheckoutSettingsState {
+export class CheckoutSettings {
   successUrl?: string;
   refundPolicy?: string;
 }
