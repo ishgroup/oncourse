@@ -13,6 +13,6 @@ public class Preference extends _Preference implements Queueable {
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return !CommonPreferenceController.SERVICES_SECURITYKEY.equals(getName());
+		return getWebSite() == null && !CommonPreferenceController.SERVICES_SECURITYKEY.equals(getName());
 	}
 }
