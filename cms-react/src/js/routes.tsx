@@ -1,24 +1,23 @@
 import React from 'react';
-import {Content} from './containers/content/Content';
 
-import Blocks from './containers/blocks/Blocks';
-import BlockSidebar from './containers/blocks/containers/BlockSidebar';
+import Blocks from './containers/content/containers/blocks/Blocks';
+import BlockSidebar from './containers/content/containers/blocks/containers/BlockSidebar';
 
-import Pages from './containers/pages/Pages';
-import PagesSidebar from './containers/pages/containers/PagesSidebar';
+import Pages from './containers/content/containers/pages/Pages';
+import PagesSidebar from './containers/content/containers/pages/containers/PagesSidebar';
 
-import Themes from './containers/themes/Themes';
-import ThemesSidebar from "./containers/themes/containers/ThemesSidebar";
+import Themes from './containers/design/containers/themes/Themes';
+import ThemesSidebar from "./containers/design/containers/themes/containers/ThemesSidebar";
 
-import Menus from './containers/menus/Menus';
+import Menus from './containers/content/containers/menus/Menus';
 import Login from "./containers/auth/Login";
 
 import History from './containers/history/History';
 
-import Skills from './containers/settings/containers/Skills';
-import Checkout from './containers/settings/containers/Checkout';
-import Redirect from './containers/settings/containers/Redirect';
-import Website from './containers/settings/containers/Website';
+import Skills from './containers/settings/containers/skillsOnCourse/Skills';
+import Checkout from './containers/settings/containers/checkout/Checkout';
+import Redirect from './containers/settings/containers/redirect/Redirect';
+import Website from './containers/settings/containers/website/Website';
 
 export const URL = {
   SITE: '/',
@@ -59,7 +58,7 @@ export const routes: Route[] = [
     exact: true,
     root: true,
     icon: 'icon-airplay',
-    main: props => <Content props/>,
+    main: props => <span/>,
   },
   {
     title: 'Content',

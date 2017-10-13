@@ -33,4 +33,14 @@ export const API = {
   GET_VERSIONS: "/getVersions",
   SET_VERSION: "/setVersion",
   PUBLISH: "/publish",
+
+  // Settings
+  GET_CHECKOUT_SETTINGS: "/getCheckoutSettings",
+  SET_CHECKOUT_SETTINGS: "/setCheckoutSettings",
+  GET_SKILLS_ON_COURSE_SETTINGS: "/getSkillsOnCourseSettings",
+  SET_SKILLS_ON_COURSE_SETTINGS: "/setSkillsOnCourseSettings",
+  GET_REDIRECT_SETTINGS: "/getRedirectSettings",
+  SET_REDIRECT_SETTINGS: "/setRedirectSettings",
+  GET_WEBSITE_SETTINGS: "/getWebsiteSettings",
+  SET_WEBSITE_SETTINGS: "/setWebsiteSettings",
 };
