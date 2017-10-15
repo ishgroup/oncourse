@@ -1,6 +1,9 @@
 apply plugin: 'cayenne'
 
 dependencies {
+	// Needed by Java 9 and above
+	compile 'javax.xml.bind:jaxb-api:2.3.0'
+
 	compile (project(':common')) {
         exclude group: 'org.apache.cayenne', module: 'cayenne-server'
     }
