@@ -2301,10 +2301,6 @@ pre code {
   cursor: not-allowed;
 }
 
-select.form-control:not([size]):not([multiple]) {
-  height: calc(2.25rem + 2px);
-}
-
 select.form-control:focus::-ms-value {
   color: #464a4c;
   background-color: #fff;

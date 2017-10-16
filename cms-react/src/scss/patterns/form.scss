@@ -1,3 +1,15 @@
+form {
+  h6 {
+    padding-top: 7px;
+  }
+}
+
+.form-inline {
+  label {
+    margin: 0 8px;
+  }
+}
+
 .form-control {
   padding: 5px 10px;
   font-size: 14px;
@@ -14,6 +26,16 @@
   }
   &:-moz-placeholder {
     color: $gray;
+  }
+  
+  &.xs {
+    max-width: 80px;
+  }
+}
+
+select {
+  &.form-control {
+    height: 29px;
   }
 }
 

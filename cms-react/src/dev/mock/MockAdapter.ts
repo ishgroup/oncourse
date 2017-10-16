@@ -9,6 +9,7 @@ import {pageApiMock} from "./api/PageApiMock";
 import {blockApiMock} from "./api/BlockApiMock";
 import {themeApiMock} from "./api/ThemeApiMock";
 import {publishApiMock} from "./api/PublishApiMock";
+import {settingsApiMock} from "./api/SettingsApiMock";
 
 export class MockAdapter {
   public api = new axiosMockAdapter(defaultAxios);
@@ -21,6 +22,7 @@ export class MockAdapter {
     blockApiMock.apply(this);
     themeApiMock.apply(this);
     publishApiMock.apply(this);
+    settingsApiMock.apply(this);
   }
 
 }

@@ -7,7 +7,7 @@ import {WebsiteSettings} from "../model/settings/WebsiteSettings";
 class SettingsService {
   readonly settingsApi = new SettingsApi();
 
-  public getCheckoutSettings(): Promise<any> {
+  public getCheckoutSettings(): Promise<CheckoutSettings> {
     return this.settingsApi.getCheckoutSettings();
   }
 
@@ -15,7 +15,7 @@ class SettingsService {
     return this.settingsApi.setCheckoutSettings(settings);
   }
 
-  public getSkillsOnCourseSettings(): Promise<CheckoutSettings> {
+  public getSkillsOnCourseSettings(): Promise<SkillsOnCourseSettings> {
     return this.settingsApi.getSkillsOnCourseSettings();
   }
 
@@ -23,7 +23,7 @@ class SettingsService {
     return this.settingsApi.setSkillsOnCourseSettings(settings);
   }
 
-  public getRedirectSettings(): Promise<SkillsOnCourseSettings> {
+  public getRedirectSettings(): Promise<RedirectSettings> {
     return this.settingsApi.getRedirectSettings();
   }
 

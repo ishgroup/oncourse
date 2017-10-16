@@ -23,6 +23,12 @@ export class MockDB {
   menus: MenuItem[];
   themes: Theme[];
   versions: Version[];
+  settings: {
+    skillsOnCourse: any;
+    checkout: any;
+    website: any;
+    redirect: any;
+  };
 
   constructor() {
     this.init();
@@ -35,6 +41,7 @@ export class MockDB {
     this.menus = this.mockMenus();
     this.themes = this.mockThemes();
     this.versions = this.mockVersions();
+    this.settings = this.mockSettings();
   }
 
   mockUser() {
@@ -260,6 +267,33 @@ export class MockDB {
         date: new Date('08/09/2016'),
       },
     ];
+  }
+
+  mockSettings() {
+    return {
+      skillsOnCourse: {
+        hideStudentDetails: false,
+        enableOutcomeMarking: true,
+        tutorFeedbackEmail: '',
+      },
+      checkout: {
+        successUrl: '',
+        refundPolicy: '',
+      },
+      website: {
+        enableSocialMedia: false,
+        addThisId: '',
+        enableForCourse: false,
+        enableForWebpage: false,
+        classAge: {
+          hideClassDays: 0,
+          hideClassCondition: 2,
+          stopWebEnrolmentDays: 0,
+          stopWebEnrolmentCondition: 1,
+        },
+      },
+      redirect: {},
+    };
   }
 
   deleteThemeById(id: number) {

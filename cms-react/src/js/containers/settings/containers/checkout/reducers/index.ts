@@ -10,6 +10,7 @@ export const checkoutSettingsReducer = (state: CheckoutSettingsState = new Check
     case GET_CHECKOUT_SETTINGS_FULFILLED:
       return {
         ...state,
+        ...action.payload,
       };
 
     default:

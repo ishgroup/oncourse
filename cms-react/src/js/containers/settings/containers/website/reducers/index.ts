@@ -10,6 +10,7 @@ export const websiteSettingsReducer = (state: WebsiteSettingsState = new Website
     case GET_WEBSITE_SETTINGS_FULFILLED:
       return {
         ...state,
+        ...action.payload,
       };
 
     default:

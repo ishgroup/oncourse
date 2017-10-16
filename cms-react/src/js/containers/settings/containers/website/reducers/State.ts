@@ -1,10 +1,9 @@
+import {ClassAge} from "../../../../../model/ClassAge";
+
 export class WebsiteSettingsState {
   enableSocialMedia: boolean;
   addThisId: string;
   enableForCourse: boolean;
   enableForWebpage: boolean;
-  hideClassDays: number;
-  hideClassCondition: any;
-  stopWebEnrolmentsDays: number;
-  stopWebEnrolmentsCondition: any;
+  classAge: ClassAge;
 }
