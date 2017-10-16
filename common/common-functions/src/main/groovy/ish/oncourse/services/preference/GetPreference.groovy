@@ -31,9 +31,9 @@ class GetPreference {
     }
 
     Preference getPreference() {
-        Expression exception = Preference.NAME.eq(key) & Preference.COLLEGE.eq(college)
+        Expression exception = Preference.NAME.eq(key).andExp(Preference.COLLEGE.eq(college))
         if (webSite) {
-            exception = exception & Preference.WEB_SITE.eq(webSite)
+            exception = exception.andExp(Preference.WEB_SITE.eq(webSite))
         }
         
         return ObjectSelect.query(Preference)
