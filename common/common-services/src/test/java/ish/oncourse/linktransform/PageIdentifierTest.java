@@ -145,6 +145,8 @@ public class PageIdentifierTest {
 		urls.put(WaitingListForm, value);
 	
 		urls.put(Sitemap, forExectMattcher("/sitemap.xml",true));
+		
+		urls.put(Robots, forExectMattcher("/robots.txt",true));
 
 		urls.put(AdvancedKeyword, forExectMattcher("/advanced/keyword",true));
 
