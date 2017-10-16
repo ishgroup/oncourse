@@ -61,6 +61,10 @@ public enum PageIdentifier
 	 */
 	Sitemap("/sitemap.xml", "ui/SitemapXML"),
 	/**
+	 * /robots.txt W3C specific robots file.
+	 */
+	Robots("/robots.txt", "ui/RobotsTXT"),
+	/**
 	 * Path of the search autocomplete
 	 */
 	AdvancedKeyword("/advanced/keyword", "ui/QuickSearchView"),

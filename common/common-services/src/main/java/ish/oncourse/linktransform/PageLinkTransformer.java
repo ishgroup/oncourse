@@ -285,6 +285,7 @@ public class PageLinkTransformer implements PageRenderLinkTransformer {
 			}
 			break;
 		case Sitemap:
+		case Robots:	
 		case AdvancedKeyword:
 		case AdvancedSuburbs:
 		case Shortlist:
