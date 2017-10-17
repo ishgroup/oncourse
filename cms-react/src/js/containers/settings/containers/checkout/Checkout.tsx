@@ -1,13 +1,14 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
-import {CheckoutSettings} from "../../../../model/settings/CheckoutSettings";
 import {getCheckoutSettings, setCheckoutSettings} from "./actions";
+import {State} from "../../../../reducers/state";
+import {CheckoutSettingsState} from "./reducers/State";
 
 interface Props {
   onInit: () => any;
   onSave: (settings) => any;
-  checkout: CheckoutSettings;
+  checkout: CheckoutSettingsState;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -83,7 +84,7 @@ export class Checkout extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   checkout: state.settings.checkoutSettings,
 });
 

@@ -5,6 +5,18 @@ import {BlocksState} from "../containers/content/containers/blocks/reducers/Stat
 import {ThemesState} from "../containers/design/containers/themes/reducers/State";
 import {HistoryState} from "../containers/history/reducers/State";
 
+import {RedirectSettingsState} from "../containers/settings/containers/redirect/reducers/State";
+import {CheckoutSettingsState} from "../containers/settings/containers/checkout/reducers/State";
+import {WebsiteSettingsState} from "../containers/settings/containers/website/reducers/State";
+import {SkillsOnCourseState} from "../containers/settings/containers/skillsOnCourse/reducers/State";
+
+interface SettingsState {
+  redirectSettings: RedirectSettingsState;
+  checkoutSettings: CheckoutSettingsState;
+  websiteSettings: WebsiteSettingsState;
+  skillsOnCourseSettings: SkillsOnCourseState;
+}
+
 // global cms state
 export interface State {
   auth: AuthState;
@@ -14,5 +26,7 @@ export interface State {
   theme: ThemesState;
   notifications: any;
   history: HistoryState;
+  settings: SettingsState;
+  modal: any;
 }
 

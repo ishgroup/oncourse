@@ -15,6 +15,7 @@ import {publish} from "./history/actions";
 import {hideModal, showModal} from "../common/containers/modal/actions";
 import {AuthState} from "./auth/reducers/State";
 import {ModalState} from "../common/containers/modal/reducers/State";
+import {State} from "../reducers/state";
 
 interface Props {
   auth: AuthState;
@@ -73,7 +74,7 @@ export class Cms extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   auth: state.auth,
   notifications: state.notifications,
   modal: state.modal,

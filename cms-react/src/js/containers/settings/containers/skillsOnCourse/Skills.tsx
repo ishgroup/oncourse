@@ -3,12 +3,13 @@ import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {getSkillsOnCourseSettings, setSkillsOnCourseSettings} from "./actions";
 import {Checkbox} from "../../../../common/components/Checkbox";
-import {SkillsOnCourseSettings} from "../../../../model";
+import {State} from "../../../../reducers/state";
+import {SkillsOnCourseState} from "./reducers/State";
 
 interface Props {
   onInit: () => any;
   onSave: (settings) => any;
-  skillsOnCourse: SkillsOnCourseSettings;
+  skillsOnCourse: SkillsOnCourseState;
 }
 
 export class Skills extends React.Component<Props, any> {
@@ -87,7 +88,7 @@ export class Skills extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   skillsOnCourse: state.settings.skillsOnCourseSettings,
 });
 

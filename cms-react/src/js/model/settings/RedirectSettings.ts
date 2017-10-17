@@ -1,7 +1,6 @@
 export class RedirectItem {
-  id?: number;
-  from?: boolean;
-  to?: boolean;
+  from?: string;
+  to?: string;
 }
 
 export class RedirectSettings {

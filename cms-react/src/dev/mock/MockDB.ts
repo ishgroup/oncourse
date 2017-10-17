@@ -1,7 +1,10 @@
 import localForage from "localforage";
 import update from 'react/lib/update';
 import faker from 'faker';
-import {Page, Block, MenuItem, Theme, User, Version} from "../../js/model";
+import {
+  Page, Block, MenuItem, Theme, User, Version, CheckoutSettings, WebsiteSettings, RedirectSettings,
+  SkillsOnCourseSettings,
+} from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
@@ -24,10 +27,10 @@ export class MockDB {
   themes: Theme[];
   versions: Version[];
   settings: {
-    skillsOnCourse: any;
-    checkout: any;
-    website: any;
-    redirect: any;
+    skillsOnCourse: SkillsOnCourseSettings;
+    checkout: CheckoutSettings;
+    website: WebsiteSettings;
+    redirect: RedirectSettings;
   };
 
   constructor() {
@@ -292,7 +295,18 @@ export class MockDB {
           stopWebEnrolmentCondition: 1,
         },
       },
-      redirect: {},
+      redirect: {
+        rules: [
+          {
+            from: '/page1',
+            to: '/page2',
+          },
+          {
+            from: '/page3',
+            to: '/page4',
+          },
+        ],
+      },
     };
   }
 

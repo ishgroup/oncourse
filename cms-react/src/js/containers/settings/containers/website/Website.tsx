@@ -2,14 +2,15 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
-import {WebsiteSettings} from "../../../../model";
 import {Checkbox} from "../../../../common/components/Checkbox";
 import {ClassCondition, ClassEnrolmentCondition} from "../../../../model/ClassAge";
+import {State} from "../../../../reducers/state";
+import {WebsiteSettingsState} from "./reducers/State";
 
 interface Props {
   onInit: () => any;
   onSave: (settings) => any;
-  website: WebsiteSettings;
+  website: WebsiteSettingsState;
 }
 
 export class Website extends React.Component<Props, any> {
@@ -167,7 +168,7 @@ export class Website extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   website: state.settings.websiteSettings,
 });
 

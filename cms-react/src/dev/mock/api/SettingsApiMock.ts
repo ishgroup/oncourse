@@ -50,4 +50,20 @@ export function settingsApiMock() {
       settings,
     );
   });
+
+  // Redirect settings
+  this.api.onGet(API.GET_REDIRECT_SETTINGS).reply(config => promiseResolve(
+    config,
+    this.db.settings.redirect,
+  ));
+
+  this.api.onPost(API.SET_REDIRECT_SETTINGS).reply(config => {
+    const settings = JSON.parse(config.data);
+    this.db.saveSettings(settings, 'redirect');
+
+    return promiseResolve(
+      config,
+      settings,
+    );
+  });
 }
