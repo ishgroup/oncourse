@@ -612,6 +612,31 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /isCorporatePassEnabledFor:
+    post:
+      x-filter:  
+      - CollegeInfo 
+      summary: Check if any corporate pass applicable for purchases list
+      operationId: isCorporatePassEnabledFor
+      description: Check if any corporate pass applicable for purchases list
+      tags:
+      - CorporatePass
+      parameters:
+        - name: checkoutModelRequest
+          in: body
+          description: purchases list
+          required: true
+          schema:
+            $ref: '#/definitions/checkout.CheckoutModelRequest'
+      responses:
+        200:
+          description: Enabled flag
+          schema:
+            type: boolean
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /getCorporatePass:
     post:
       x-filter:  

@@ -5,17 +5,21 @@ import ish.common.types.EnrolmentStatus
 import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.model.*
+import ish.oncourse.willow.checkout.corporatepass.CorporatePassApiImpl
 import ish.oncourse.willow.checkout.corporatepass.CreateCorpPassModel
 import ish.oncourse.willow.checkout.corporatepass.ProcessCorporatePassRequest
+import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Voucher
 import ish.oncourse.willow.model.checkout.corporatepass.MakeCorporatePassRequest
+import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.junit.Test
+
 
 import static org.junit.Assert.*
 
@@ -168,6 +172,56 @@ class CorporatePassTest extends ApiTest {
         assertEquals(1, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == Contact.simpleName}.size())
         assertEquals(1, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == CorporatePass.simpleName}.size())
         assertEquals(0, queuedTransaction.queuedRecords.findAll {it.entityIdentifier == PaymentIn.simpleName}.size())
+
+    }
+
+    @Test
+    void isAvailable() {
+        RequestFilter.ThreadLocalXOrigin.set('mammoth.oncourse.cc')
+        CorporatePassApiImpl api = new CorporatePassApiImpl(cayenneService, new CollegeService(cayenneService))
+        CheckoutModelRequest modelRequest = new CheckoutModelRequest().with { r ->
+            r.contactNodes << new ContactNode().with { n ->
+                n.enrolments += [ new ish.oncourse.willow.model.checkout.Enrolment().with { e ->
+                    e.classId = '1001'
+                    e.selected = true
+                    e
+                }, new  ish.oncourse.willow.model.checkout.Enrolment().with { e ->
+                    e.classId = '1002'
+                    e.selected = true
+                    e
+                }, new ish.oncourse.willow.model.checkout.Enrolment().with { e ->
+                    e.classId = '1003'
+                    e.selected = true
+                    e
+                },]
+                n
+            }
+            r
+        }
+        
+        assertTrue(api.isCorporatePassEnabledFor(modelRequest))
+
+        modelRequest.contactNodes[0].memberships<< new ish.oncourse.willow.model.checkout.Membership().with { m ->
+            m.productId = '1002'
+            m.selected = true
+            m
+        }
+        modelRequest.contactNodes[0].vouchers << new Voucher().with { v ->
+            v.productId = '1001'
+            v.selected = true
+            v
+        }
+        
+        assertTrue(api.isCorporatePassEnabledFor(modelRequest))
+        
+        modelRequest.contactNodes[0].enrolments << new ish.oncourse.willow.model.checkout.Enrolment().with { e ->
+            e.classId = '1004'
+            e.selected = true
+            e
+        }
+        
+        assertFalse(api.isCorporatePassEnabledFor(modelRequest))
+
 
     }
     

@@ -1,5 +1,6 @@
 package ish.oncourse.willow.service;
 
+import ish.oncourse.willow.model.checkout.CheckoutModelRequest;
 import ish.oncourse.willow.model.checkout.corporatepass.CorporatePass;
 import ish.oncourse.willow.model.checkout.corporatepass.GetCorporatePassRequest;
 import ish.oncourse.willow.model.checkout.corporatepass.MakeCorporatePassRequest;
@@ -28,6 +29,12 @@ public interface CorporatePassApi  {
     @Produces({ "application/json" })
     @CollegeInfo
     Boolean isCorporatePassEnabled();
+
+    @POST
+    @Path("/isCorporatePassEnabledFor")
+    @Produces({ "application/json" })
+    @CollegeInfo
+    Boolean isCorporatePassEnabledFor(CheckoutModelRequest checkoutModelRequest);
 
     @POST
     @Path("/makeCorporatePass")
