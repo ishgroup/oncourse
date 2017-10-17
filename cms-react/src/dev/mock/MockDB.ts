@@ -389,6 +389,10 @@ export class MockDB {
     this.menus = items;
   }
 
+  saveSettings(settings, category) {
+    this.settings[category] = settings;
+  }
+
   addContact(contact) {
     // const nc = normalize([contact], ContactsSchema);
     // this.contacts.result = [...this.contacts.result, ...nc.result];

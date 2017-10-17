@@ -17,16 +17,18 @@ export class Website extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
+    const website = props.website;
+
     this.state = {
-      enableSocialMedia: props.enableSocialMedia,
-      addThisId: props.addThisId,
-      enableForCourse: props.enableForCourse,
-      enableForWebpage: props.enableForWebpage,
+      enableSocialMedia: website.enableSocialMedia,
+      addThisId: website.addThisId,
+      enableForCourse: website.enableForCourse,
+      enableForWebpage: website.enableForWebpage,
       classAge: {
-        hideClassDays: props.classAge && props.classAge.hideClassDays,
-        hideClassCondition: props.classAge && props.classAge.hideClassCondition,
-        stopWebEnrolmentDays: props.classAge && props.classAge.stopWebEnrolmentDays,
-        stopWebEnrolmentCondition: props.classAge && props.classAge.stopWebEnrolmentCondition,
+        hideClassDays: website.classAge && website.classAge.hideClassDays,
+        hideClassCondition: website.classAge && website.classAge.hideClassCondition,
+        stopWebEnrolmentDays: website.classAge && website.classAge.stopWebEnrolmentDays,
+        stopWebEnrolmentCondition: website.classAge && website.classAge.stopWebEnrolmentCondition,
       },
     };
   }
@@ -152,7 +154,7 @@ export class Website extends React.Component<Props, any> {
                 >
                 <option value={ClassEnrolmentCondition.afterClassStarts}>after class starts</option>
                 <option value={ClassEnrolmentCondition.beforeClassStarts}>before class starts</option>
-                <option value={ClassEnrolmentCondition.beforeClassEnds}>before class ends</option>
+                <option value={ClassCondition.beforeClassEnds}>before class ends</option>
               </Input>
             </div>
           </FormGroup>

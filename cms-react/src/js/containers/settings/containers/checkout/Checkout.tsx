@@ -16,8 +16,8 @@ export class Checkout extends React.Component<Props, any> {
     super(props);
 
     this.state = {
-      successUrl: props.successUrl,
-      refundPolicy: props.refundPolicy,
+      successUrl: props.checkout.successUrl,
+      refundPolicy: props.checkout.refundPolicy,
     };
   }
 
