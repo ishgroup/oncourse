@@ -1,5 +1,4 @@
 const __common = require('./webpack/__common');
-const __common = require('./webpack/__common');
 
 const fs = require('fs');
 const path = require('path');
