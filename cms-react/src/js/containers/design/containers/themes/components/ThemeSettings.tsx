@@ -2,7 +2,6 @@ import React from 'react';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {Theme} from "../../../../../model";
 import {IconBack} from "../../../../../common/components/IconBack";
-import {showModal} from "../../../../../common/containers/modal/actions/index";
 
 interface Props {
   theme: Theme;

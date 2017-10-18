@@ -31,6 +31,10 @@ form {
   &.xs {
     max-width: 80px;
   }
+  
+  &.invalid {
+    border-color: $danger;
+  }
 }
 
 select {

@@ -27,9 +27,18 @@ export class Redirect extends React.Component<Props, any> {
     this.props.onInit();
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({
+      rules: props.redirect.rules,
+    });
+  }
+
   onChange(e, index, key) {
     this.setState(update(this.state, {
-      rules: {[index]: {[key]: {$set: e.target.value}}},
+      rules: {[index]: {
+        [key]: {$set: e.target.value},
+        submitted: {$set: false},
+      }},
     }));
   }
 
@@ -43,25 +52,18 @@ export class Redirect extends React.Component<Props, any> {
 
   onSave() {
     const {onSave} = this.props;
-
-    this.validate();
+    this.setState({
+      rules: this.state.rules.map(rule => ({...rule, submitted: true})),
+    });
 
     const state = this.state;
     state.rules = state.rules
       .filter(rule => rule.from || rule.to)
       .map(rule => ({from: rule.from, to: rule.to}));
 
-
-    if (this.state.rules.filter(rule => rule.error).length) return;
+    if (state.rules.filter(rule => (rule.from && !rule.to) || (!rule.from && rule.to)).length) return;
 
     onSave(state);
-  }
-
-  validate() {
-    this.setState({
-      rules: this.state.rules
-        .map(rule => ({...rule, error: rule.from && !rule.to && 'to' || !rule.from && rule.to && 'from' || null})),
-    });
   }
 
   onRemove(index) {
@@ -76,8 +78,6 @@ export class Redirect extends React.Component<Props, any> {
 
   render() {
     const {rules} = this.state;
-
-    console.log(this.state);
 
     return (
       <div>
@@ -99,7 +99,7 @@ export class Redirect extends React.Component<Props, any> {
 
               <Label>From: </Label>
               <Input
-                className={classnames({invalid: rule.error && rule.error.from})}
+                className={classnames({invalid: rule.submitted && rule.to && !rule.from})}
                 type="text"
                 name={`from-${index}`}
                 id={`from-${index}`}
@@ -108,6 +108,7 @@ export class Redirect extends React.Component<Props, any> {
               />
               <Label>To: </Label>
               <Input
+                className={classnames({invalid: rule.submitted && !rule.to && rule.from})}
                 type="text"
                 name={`to-${index}`}
                 id={`to-${index}`}
