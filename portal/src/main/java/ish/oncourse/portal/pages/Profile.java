@@ -60,6 +60,11 @@ public class Profile {
     @Inject
     private ISearchService searchService;
 
+    Object onActivate(String activeTabId) {
+        this.tab = activeTabId;
+        return null;
+    }
+    
     @SetupRender
     void setupRender()
     {
