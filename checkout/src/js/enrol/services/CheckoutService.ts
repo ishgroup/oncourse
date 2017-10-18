@@ -166,8 +166,8 @@ export class CheckoutService {
     this.corporatePassApi.getCorporatePass(BuildGetCorporatePassRequest.fromState(state, code))
   )
 
-  public checkIfCorporatePassEnabled = (): Promise<any> => (
-    this.corporatePassApi.isCorporatePassEnabled()
+  public checkIfCorporatePassAvailable = (state: IshState): Promise<any> => (
+    this.corporatePassApi.isCorporatePassEnabledFor(BuildCheckoutModelRequest.fromState(state))
   )
 
   public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {

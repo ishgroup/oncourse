@@ -1,4 +1,4 @@
-import {_toRequestType} from "../../../../common/actions/ActionUtils";
+import {_toRequestType, FULFILLED} from "../../../../common/actions/ActionUtils";
 import {IAction} from "../../../../actions/IshAction";
 import {PaymentResponse} from "../../../../model";
 import {CreditCardFormValues, CorporatePassFormValues} from "../services/PaymentService";
@@ -20,6 +20,8 @@ export const GET_PAYMENT_STATUS = "checkout/payment/get/payment/status";
 export const RESET_PAYMENT_STATE = "checkout/payment/reset/payment/state";
 export const RESET_PAYMENT_STATE_ON_INIT: string = "checkout/payment/reset/payment/onInit";
 
+export const CHECK_CORPORATE_PASS_AVAILABILITY_REQUEST: string = "checkout/payment/available/corporatePass";
+export const CHECK_CORPORATE_PASS_AVAILABILITY_FULFILLED: string = FULFILLED(CHECK_CORPORATE_PASS_AVAILABILITY_REQUEST);
 
 export const GET_CORPORATE_PASS_REQUEST = "checkout/payment/get/corporatePass";
 export const APPLY_CORPORATE_PASS = "checkout/payment/apply/corporatePass";
@@ -60,8 +62,8 @@ export const updatePaymentStatus = (response: PaymentResponse): IAction<PaymentR
     type: UPDATE_PAYMENT_STATUS,
     payload: response,
     meta: {
-      analytics: GABuilder.purchaseItems(response)
-    }
+      analytics: GABuilder.purchaseItems(response),
+    },
   };
 };
 
@@ -92,11 +94,15 @@ export const resetCorporatePass = () => ({
   type: RESET_CORPORATE_PASS,
 });
 
+export const checkCorporatePassAvailability = () => ({
+  type: CHECK_CORPORATE_PASS_AVAILABILITY_REQUEST,
+});
+
 export const changeTab = tab => ({
   type: CHANGE_TAB,
   payload: tab,
   meta: {
-    analytics: GABuilder.setCheckoutStep(Phase.Payment, tab)
-  }
+    analytics: GABuilder.setCheckoutStep(Phase.Payment, tab),
+  },
 });
 

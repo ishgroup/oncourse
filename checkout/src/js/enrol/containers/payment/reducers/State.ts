@@ -6,6 +6,7 @@ export class State {
   currentTab: Tabs = Tabs.creditCard;
   fetching?: boolean;
   resetOnInit?: boolean = false;
+  corporateTabAvailable?: boolean;
 }
 
 export enum Tabs {

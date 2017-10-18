@@ -1,7 +1,7 @@
 import {State} from "./State";
 import {
   APPLY_CORPORATE_PASS, CHANGE_TAB, GET_CORPORATE_PASS_REQUEST, RESET_CORPORATE_PASS, RESET_PAYMENT_STATE,
-  RESET_PAYMENT_STATE_ON_INIT,
+  RESET_PAYMENT_STATE_ON_INIT, CHECK_CORPORATE_PASS_AVAILABILITY_FULFILLED,
   UPDATE_PAYMENT_STATUS,
 } from "../actions/Actions";
 import {IAction} from "../../../../actions/IshAction";
@@ -27,6 +27,12 @@ export const Reducer = (state: State = new State(), action: IAction<any>): State
       return {
         ...state,
         corporatePass: {},
+      };
+
+    case CHECK_CORPORATE_PASS_AVAILABILITY_FULFILLED:
+      return {
+        ...state,
+        corporateTabAvailable: action.payload,
       };
 
     case CHANGE_TAB:
