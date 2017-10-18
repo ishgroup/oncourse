@@ -94,6 +94,7 @@ public class WaitHandler extends AbstractStepHandler {
                         nextStep.set(Step.done);
                     } else {
                         nextStep.set(Step.usiFailed);
+                        result.addValue(Value.valueOf(Student.USI.getName(), contact.getStudent().getUsi()));
                         contact.getStudent().setUsiStatus(UsiStatus.NON_VERIFIED);
                         getUsiController().getValidationResult().addError("message-personalDetailsNotMatch", getUsiController().getMessages());
                     }
