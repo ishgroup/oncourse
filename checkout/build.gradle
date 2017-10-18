@@ -1,13 +1,1 @@
 apply from: "$rootDir/buildJSApp.gradle"
-
-publishing {
-    publications {
-        executables(MavenPublication) {
-            artifact(file("${buildDir}/distribution/checkout.zip")) {
-                classifier "executable"
-                extension "zip"
-                builtBy build
-            }
-        }
-    }
-}

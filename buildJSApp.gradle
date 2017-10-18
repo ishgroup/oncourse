@@ -22,3 +22,15 @@ sourceSets { main { resources { srcDirs 'src/js', 'src/dev'  } } }
 test.dependsOn(jest)
 
 build.dependsOn(webpack)
+
+publishing {
+    publications {
+        executables(MavenPublication) {
+            artifact(file("${buildDir}/distribution/${project.name}.zip")) {
+                classifier "executable"
+                extension "zip"
+                builtBy build
+            }
+        }
+    }
+}
