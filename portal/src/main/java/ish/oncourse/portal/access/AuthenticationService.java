@@ -229,6 +229,7 @@ public class AuthenticationService implements IAuthenticationService {
 		String token = String.format(TOKEN_PATTERN, contactId, sessionManager.createContactSession(contactId));
 		cookieService.writeCookieValue(SESSION_TOKEN, token, SESSION_ID_MAX_AGE);
 		request.setAttribute(AuthenticationService.SESSION_TOKEN, token);
+		request.setAttribute(LOGGED_OUT, null);
 	}
 
 	/**
