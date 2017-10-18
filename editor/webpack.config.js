@@ -130,7 +130,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
         }, "./src/js/"),
       new ZipPlugin({
         path: '../distribution',
-        filename: 'cms.zip',
+        filename: 'editor.zip',
 
         // OPTIONAL: defaults to excluding nothing
         // can be a string, a RegExp, or an array of strings and RegExps
