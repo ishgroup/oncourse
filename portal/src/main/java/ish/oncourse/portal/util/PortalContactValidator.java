@@ -84,6 +84,17 @@ public class PortalContactValidator extends WillowContactValidator {
 		if (emailErrorMessage != null) {
 			errors.putIfAbsent(ContactInterface.EMAIL_KEY, emailErrorMessage);
 		}
+		
+		if (StringUtils.isBlank(contact.getStreet())) {
+			if (contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.street, contact)) {
+				errors.putIfAbsent(PreferenceController.FieldDescriptor.street.name(), getRequiredMessage(PreferenceController.FieldDescriptor.street));
+			}
+		} else {
+			String streetMessage = ValidateLength.valueOf(PreferenceController.FieldDescriptor.street, ContactValidator.Property.street.getLength(), errorCodes.get(ContactValidator.Property.street.name()), contactDetailMessages).getMessage();
+			if (streetMessage != null) {
+				errors.putIfAbsent(PreferenceController.FieldDescriptor.street.name(), streetMessage);
+			}
+		}
 
 		if (StringUtils.isBlank(contact.getSuburb())) {
 			if (contactFieldHelper.isRequiredField(PreferenceController.FieldDescriptor.suburb, contact)) {
