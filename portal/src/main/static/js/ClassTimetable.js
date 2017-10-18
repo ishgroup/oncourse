@@ -363,7 +363,7 @@ ClassTimetable.prototype = {
     },
 
     scrollTo: function (element) {
-        $j(document.body).animate({
+        $j('html, body').animate({
             scrollTop: element.offset().top
         }, 800);
     },
