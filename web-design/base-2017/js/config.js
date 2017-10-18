@@ -44,7 +44,7 @@ checkout_config = {
 }
 
 // Load the javascript for the checkout. This file is called dynamic.js
-window.loadjs("/s/oncourse/checkout/dynamic.js");
+window.loadjs("/assets/dynamic.js");
 
 
 
