@@ -45,6 +45,7 @@ public class WaitingLists {
     {
         ObjectContext objectContext = cayenneService.newContext();
         WaitingList waitingList = Cayenne.objectForPK(objectContext, WaitingList.class, id);
+        objectContext.deleteObjects(waitingList.getCustomFields());
         objectContext.deleteObjects(waitingList);
         objectContext.commitChanges();
     }
