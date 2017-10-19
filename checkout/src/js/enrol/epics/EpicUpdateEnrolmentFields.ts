@@ -18,12 +18,12 @@ export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObserv
     const result = [];
 
     // form name `[contactId]-[classId]` format. The same as enrolmentId in ContactNodes
-    const form = action.payload;
+    const {form, type} = action.payload;
 
     if (state.form[form] && state.form[form].values) {
 
       const values = state.form[form].values;
-      const headings = state.checkout.summary.entities.enrolments[form].fieldHeadings;
+      const headings = state.checkout.summary.entities[type][form].fieldHeadings;
 
       headings.forEach(h => {
         h.fields.forEach((f: Field) => {
@@ -37,7 +37,7 @@ export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObserv
       });
 
       const newState = L.cloneDeep(state.checkout.summary);
-      newState.entities.enrolments[form].fieldHeadings = headings;
+      newState.entities[type][form].fieldHeadings = headings;
 
 
       result.push({

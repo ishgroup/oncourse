@@ -24,7 +24,7 @@ config.init((config:MockConfig) => {
 
 const render = config => ReactDOM.render(
   <Provider store={config.store}>
-    <div>
+    <div id="oncourse-checkout">
       <Checkout/>
       <MockControl config={config}/>
     </div>

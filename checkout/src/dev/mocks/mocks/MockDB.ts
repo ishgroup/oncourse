@@ -5,7 +5,7 @@ import localForage from "localforage";
 
 import {
   CourseClass, Enrolment, Contact, Field, DataType, FieldHeading, Item,
-  Voucher, Product, Membership, Article, Application
+  Voucher, Product, Membership, Article, Application,
 } from "../../../js/model";
 import {mockChoiceField, mockContact, mockCourseClass, mockEnumField, mockField, mockProduct} from "./MockFunctions";
 import {normalize} from "normalizr";
@@ -65,7 +65,7 @@ export class MockDB {
       mockProduct(),
       mockProduct(),
       mockProduct(),
-    ], ProductsListSchema);
+    ],                        ProductsListSchema);
 
     this.fields = [
       mockField("Street", "street", DataType.STRING, false, 'Kirova'),
@@ -95,7 +95,7 @@ export class MockDB {
         "MPP",
       ),
       mockEnumField("Citizenship", "citizenship", "StudentCitizenship",
-        [{key: "1", value: "Australian citizen"},
+                    [{key: "1", value: "Australian citizen"},
           {key: "2", value: "New Zealand citizen"},
           {key: "3", value: "Students/Applicants with permanent visa"},
           {key: "4", value: "Student/Applicant has a temporary entry permit"},
@@ -108,19 +108,19 @@ export class MockDB {
       mockField("Language spoken at Home", "languageHome", DataType.LANGUAGE, false, 'English'),
       mockField("Year school completed", "yearSchoolCompleted", DataType.INTEGER, false, 1980),
       mockEnumField("English proficiency", "englishProficiency", "AvetmissStudentEnglishProficiency",
-        [{key: "0", value: "not stated"},
+                    [{key: "0", value: "not stated"},
           {key: "1", value: "Very Well"},
           {key: "2", value: "Well"},
           {key: "3", value: "Not Well"},
           {key: "4", value: "Not at all"}]),
       mockEnumField("Indigenous Status", "indigenousStatus", "AvetmissStudentIndigenousStatus",
-        [{key: "0", value: "not stated"},
+                    [{key: "0", value: "not stated"},
           {key: "1", value: "Aboriginal"},
           {key: "2", value: "Torres Strait Islander"},
           {key: "3", value: "Aboriginal and Torres Strait Islander"},
           {key: "4", value: "Neither"}]),
       mockEnumField("Highest school level", "highestSchoolLevel", "AvetmissStudentSchoolLevel",
-        [{key: "0", value: "not stated"}, {key: "1", value: "Did not go to school"},
+                    [{key: "0", value: "not stated"}, {key: "1", value: "Did not go to school"},
           {key: "2", value: "Year 8 or below"},
           {key: "3", value: "Year 9"},
           {key: "4", value: "Year 10"},
@@ -151,7 +151,7 @@ export class MockDB {
         {key: "7", value: "Unemployed - seeking part-time work"},
         {key: "8", value: "Not employed - not seeking employment"}]),
       mockEnumField("Disability type", "disabilityType", "AvetmissStudentDisabilityType",
-        [{key: "0", value: "not stated"},
+                    [{key: "0", value: "not stated"},
           {key: "100", value: "none"},
           {key: "1", value: "Hearing/Deaf"},
           {key: "2", value: "Physical"},
@@ -742,7 +742,7 @@ export class MockDB {
 
   getContactByDetails(firstName: String, lastName: String, email: String): Contact {
     return L.find(this.contacts.entities.contact,
-      (c: Contact) => c.firstName === firstName && c.lastName == lastName && c.email == email);
+                  (c: Contact) => c.firstName === firstName && c.lastName == lastName && c.email == email);
   }
 
 

@@ -26,7 +26,7 @@ export interface Props {
   concessions?: Concession[];
   studentMemberships?: StudentMembership[];
   onChangeParent?: (contactId) => void;
-  onChangeEnrolmentFields?: (form) => any;
+  onChangeEnrolmentFields?: (form, type) => any;
 }
 
 class ContactComp extends React.Component<Props, any> {
@@ -59,6 +59,7 @@ class ContactComp extends React.Component<Props, any> {
             props.courseClass && <ApplicationComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Application(), props.application), !props.application.selected)}
+              onChangeFields={onChangeEnrolmentFields}
             />,
           )}
 

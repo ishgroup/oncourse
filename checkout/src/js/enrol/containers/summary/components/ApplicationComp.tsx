@@ -4,18 +4,36 @@ import {Contact, CourseClass, Application} from "../../../../model";
 import moment from "moment";
 import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
-
+import {toFormKey} from "../../../../components/form/FieldFactory";
+import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
 
 export interface Props {
   contact: Contact;
   application: Application;
   courseClass: CourseClass;
   onChange?: (item, contact) => void;
+  onChangeFields?: (form, type) => any;
 }
 
 class ApplicationComp extends React.Component<Props, any> {
+  getFieldInitialValues(headings) {
+    const initialValues = {};
+
+    if (headings && headings.length) {
+      headings
+        .map(h => h.fields
+          .filter(f => f.defaultValue)
+          .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
+        );
+
+      return initialValues;
+    }
+
+    return null;
+  }
+
   public render(): JSX.Element {
-    const {application, courseClass, contact, onChange} = this.props;
+    const {application, courseClass, contact, onChange, onChangeFields} = this.props;
     const divClass = classnames("row", "enrolmentItem", {disabled: !application.selected});
     const name = `application-${contact.id}-${application.classId}`;
     const title: string = `${courseClass.course.name}`;
@@ -32,11 +50,19 @@ class ApplicationComp extends React.Component<Props, any> {
                      onChange={onChange}>
           <span className="applicationOnly">(Application only)</span>
         </ItemWrapper>
+
+        <EnrolmentFieldsForm
+          headings={application.fieldHeadings}
+          classId={application.classId}
+          selected={application.selected}
+          form={`${application.contactId}-${application.classId}`}
+          onSubmit={() => undefined}
+          initialValues={this.getFieldInitialValues(application.fieldHeadings)}
+          onUpdate={form => onChangeFields(form, 'applications')}
+        />
       </div>
     );
   }
 }
 
 export default ApplicationComp;
-
-

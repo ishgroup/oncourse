@@ -158,8 +158,8 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onToggleVoucher: (redeemVoucher, enabled) => {
       dispatch(toggleRedeemVoucher(redeemVoucher, enabled));
     },
-    onChangeEnrolmentFields: form => {
-      dispatch(updateEnrolmentFields(form));
+    onChangeEnrolmentFields: (form, type) => {
+      dispatch(updateEnrolmentFields(form, type));
     },
   };
 };

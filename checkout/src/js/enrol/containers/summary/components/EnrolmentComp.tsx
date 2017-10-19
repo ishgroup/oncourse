@@ -9,7 +9,6 @@ import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
 import {toFormKey} from "../../../../components/form/FieldFactory";
 import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
-import {Course} from "../../../../model/web/Course";
 
 
 export interface Props {
@@ -17,7 +16,7 @@ export interface Props {
   enrolment: Enrolment;
   courseClass: CourseClass;
   onChange?: (item, contact) => void;
-  onChangeFields?: (form) => any;
+  onChangeFields?: (form, type) => any;
 }
 
 class EnrolmentComp extends React.Component<Props, any> {
@@ -72,7 +71,7 @@ class EnrolmentComp extends React.Component<Props, any> {
           form={`${enrolment.contactId}-${enrolment.classId}`}
           onSubmit={() => undefined}
           initialValues={this.getFieldInitialValues(enrolment.fieldHeadings)}
-          onUpdate={form => onChangeFields(form)}
+          onUpdate={form => onChangeFields(form, 'enrolments')}
         />
       </div>
     );

@@ -28,7 +28,7 @@ export interface Props {
   onUpdatePayNow?: (val, validate?: boolean) => void;
   needParent?: boolean;
   fetching?: boolean;
-  onChangeEnrolmentFields?: (form) => any;
+  onChangeEnrolmentFields?: (form, type) => any;
   forms?: any;
 }
 

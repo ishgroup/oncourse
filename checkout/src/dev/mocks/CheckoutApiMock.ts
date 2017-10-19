@@ -26,6 +26,7 @@ export class CheckoutApiMock extends CheckoutApi {
     const classes: CourseClass[] = request.classIds.map(id => this.config.db.getCourseClassById(id));
 
     result.enrolments = this.createEnrolmentsBy([contact], classes);
+    // result.applications = this.createApplicationBy([contact], classes);
 
     const products: Product[] = request.productIds.map(id => this.config.db.getProductClassById(id));
     result.vouchers = this.createVouchersBy([contact], products);
@@ -98,6 +99,7 @@ export class CheckoutApiMock extends CheckoutApi {
 
     result.contactNodes = L.cloneDeep(request.contactNodes);
     result.contactNodes.map(node => node.enrolments.map(enrolment => enrolment.fieldHeadings = mockHeadings()));
+    result.contactNodes.map(node => node.applications.map(application => application.fieldHeadings = mockHeadings()));
 
     result.amount = mockAmount();
     result.payerId = request.payerId;

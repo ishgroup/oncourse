@@ -94,10 +94,10 @@ export const changeChildParent = (childId: string, parentId: string) => {
   };
 };
 
-export const updateEnrolmentFields = form => {
+export const updateEnrolmentFields = (form, type) => {
   return {
     type: UPDATE_ENROLMENT_FIELDS,
-    payload: form,
+    payload: {form, type},
   };
 };
 
