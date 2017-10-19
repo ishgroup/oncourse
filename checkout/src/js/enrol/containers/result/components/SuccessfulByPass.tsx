@@ -11,7 +11,6 @@ export class SuccessfulByPass extends React.Component<Props, any> {
     return (
       <div>
         <h2>Payment <span>»</span> Successful</h2>
-        <p>Thank you for enrolling, applying or purchasing from omega.</p>
         <p>Your transaction was <strong>SUCCESSFUL</strong> and recorded in our system .</p>
         <p>Each student will shortly receive an enrolment or application confirmation, if a fee was incurred a tax
           invoice will also be sent. If you don't receive these within 24 hours, please contact us.</p>
