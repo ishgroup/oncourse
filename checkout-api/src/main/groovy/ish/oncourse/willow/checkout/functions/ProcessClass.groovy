@@ -8,6 +8,7 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Tax
 import ish.oncourse.services.application.FindOfferedApplication
+import ish.oncourse.willow.functions.field.GetApplicationFields
 import ish.oncourse.willow.functions.field.GetEnrolmentFields
 import ish.oncourse.willow.model.checkout.Application
 import ish.oncourse.willow.model.checkout.Enrolment
@@ -63,6 +64,7 @@ class ProcessClass {
                 ValidateApplication validateApplication = new ValidateApplication(context, college).validate(persistentClass.course, contact.student)
                 a.errors += validateApplication.errors
                 a.warnings += validateApplication.warnings
+                a.fieldHeadings = new GetApplicationFields(persistentClass).get()
                 a
             }
         } else {

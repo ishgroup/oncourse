@@ -1,5 +1,6 @@
 package ish.oncourse.willow.model.checkout;
 
+import ish.oncourse.willow.model.field.FieldHeading;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class Application  {
     private List<String> warnings = new ArrayList<String>();
     private List<String> errors = new ArrayList<String>();
     private Boolean selected = null;
+    private List<FieldHeading> fieldHeadings = new ArrayList<FieldHeading>();
 
     /**
      * Get contactId
@@ -106,6 +108,28 @@ public class Application  {
       return this;
     }
 
+    /**
+     * Get fieldHeadings
+     * @return fieldHeadings
+     */
+    public List<FieldHeading> getFieldHeadings() {
+        return fieldHeadings;
+    }
+
+    public void setFieldHeadings(List<FieldHeading> fieldHeadings) {
+       this.fieldHeadings = fieldHeadings;
+    }
+
+    public Application fieldHeadings(List<FieldHeading> fieldHeadings) {
+      this.fieldHeadings = fieldHeadings;
+      return this;
+    }
+
+    public Application addFieldHeadingsItem(FieldHeading fieldHeadingsItem) {
+      this.fieldHeadings.add(fieldHeadingsItem);
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -117,6 +141,7 @@ public class Application  {
       sb.append("    warnings: ").append(toIndentedString(warnings)).append("\n");
       sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
       sb.append("    selected: ").append(toIndentedString(selected)).append("\n");
+      sb.append("    fieldHeadings: ").append(toIndentedString(fieldHeadings)).append("\n");
       sb.append("}");
       return sb.toString();
     }

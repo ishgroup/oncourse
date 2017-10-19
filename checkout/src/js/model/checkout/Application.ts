@@ -1,3 +1,4 @@
+import {FieldHeading} from "../field/FieldHeading";
 
 export class Application {
   contactId?: string;
@@ -5,5 +6,6 @@ export class Application {
   warnings?: string[];
   errors?: string[];
   selected?: boolean;
+  fieldHeadings?: FieldHeading[];
 }
 
