@@ -57,6 +57,7 @@ class FieldBuilder {
                     break
                 case CUSTOM_FIELD_CONTACT:
                 case CUSTOM_FIELD_ENROLMENT:
+                case CUSTOM_FIELD_APPLICATION:
                     ProcessCustomFieldType processor = new ProcessCustomFieldType(field).process()
                     f.dataType = processor.dataType
                     f.defaultValue = processor.defaultValue
