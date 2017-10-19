@@ -53,6 +53,16 @@ class GetFieldConfigurations {
                 
                 break
             case FieldSet.WAITINGLIST:
+                if (classes.size() != 1) {
+                    logger.error("More than one class in waiting list, classes: ${classes*.id}, contactId: ${contact.id}")
+                    throw new IllegalArgumentException('More than one class in waiting list')  
+                }
+                if (classes[0].course.fieldConfigurationScheme) {
+                    configurations << classes[0].course.fieldConfigurationScheme.waitingListFieldConfiguration
+                } else {
+                    configurations <<  new GetDefaultFieldConfiguration(college, context).get()
+                }
+                break
             case FieldSet.MAILINGLIST:
                 logger.error("$fieldSet processing not supported yet")
                 throw new UnsupportedOperationException("$fieldSet processing not supported yet")
