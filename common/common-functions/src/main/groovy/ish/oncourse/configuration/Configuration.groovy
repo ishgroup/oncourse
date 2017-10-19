@@ -16,6 +16,9 @@ class Configuration {
             Properties prop = new Properties()
             prop.load(new FileInputStream(propFile))
             
+            if (!LOGS_PATH.init(prop)) {
+                System.setProperty(LOGS_PATH.systemProperty, "${userDir}/logs/")
+            }
             PORT.init(prop)
             HOST.init(prop)
             PATH.init(prop)
@@ -28,10 +31,7 @@ class Configuration {
                 String zkHostPort = prop.get(ZK_HOST.key) as String
                 InitZKRootNode.valueOf(zkHostPort).init()
             }
-            
-            if (!LOGS_PATH.init(prop)) {
-                System.setProperty(LOGS_PATH.systemProperty, "${userDir}/logs/")
-            }
+           
         } else {
             throw new IllegalArgumentException("application.properties file not found")
         }
