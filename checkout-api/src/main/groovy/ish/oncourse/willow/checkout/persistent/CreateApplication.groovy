@@ -9,7 +9,9 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.checkout.functions.GetCourseClass
+import ish.oncourse.willow.model.field.Field
 import org.apache.cayenne.ObjectContext
+import org.apache.commons.lang3.StringUtils
 
 class CreateApplication {
 
@@ -34,6 +36,13 @@ class CreateApplication {
         application.status = ApplicationStatus.NEW
         application.source = PaymentSource.SOURCE_WEB
         application.confirmationStatus = ConfirmationStatus.NOT_SENT
+
+        (a.fieldHeadings.fields.flatten() as List<Field>).each { f  ->
+            String value = StringUtils.trimToNull(f.value)
+            if (value) {
+                application.setCustomFieldValue(f.key.split("\\.")[2], value)
+            }
+        }
         application
     }
     

@@ -10,7 +10,7 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Product
 import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
-import ish.oncourse.willow.functions.field.ValidateEnrolmentFields
+import ish.oncourse.willow.functions.field.ValidateCustomFields
 import ish.oncourse.willow.functions.voucher.ProcessRedeemedVouchers
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.Application
@@ -183,12 +183,12 @@ class ProcessCheckoutModel {
             }
             
             if (e.errors.empty) {
-                ValidateEnrolmentFields validateEnrolmentFields = ValidateEnrolmentFields.valueOf(e.fieldHeadings, processClass.enrolment.fieldHeadings, className)
-                validateEnrolmentFields.validate()
-                if (validateEnrolmentFields.commonError) {
-                    model.error = validateEnrolmentFields.commonError
+                ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(e.fieldHeadings, processClass.enrolment.fieldHeadings, className, 'Enrolment')
+                validateCustomFields.validate()
+                if (validateCustomFields.commonError) {
+                    model.error = validateCustomFields.commonError
                 }
-                validateEnrolmentFields.fieldErrors.each { fieldError -> 
+                validateCustomFields.fieldErrors.each { fieldError -> 
                     model.validationErrors.formErrors << fieldError.error
                     model.validationErrors.fieldsErrors << fieldError
                 }
@@ -215,14 +215,25 @@ class ProcessCheckoutModel {
         if (a.selected) {
             ProcessClass processClass = new ProcessClass(context, contact, college, a.classId, taxOverridden).process()
             CourseClass courseClass = processClass.persistentClass
+            String className = "$courseClass.course.name ($courseClass.course.code - $courseClass.code)"
 
             if (processClass.application == null) {
-                a.errors << "Application for $contact.fullName on $courseClass.course.name ($courseClass.course.code - $courseClass.code) is wrong".toString()
+                a.errors << "Application for $contact.fullName on $className is wrong".toString()
             } else {
                 a.errors += processClass.application.errors
                 a.warnings += processClass.application.warnings
                 if (!a.errors.empty) {
                     a.selected = false
+                } else {
+                    ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(a.fieldHeadings, processClass.application.fieldHeadings, className, 'Application')
+                    validateCustomFields.validate()
+                    if (validateCustomFields.commonError) {
+                        model.error = validateCustomFields.commonError
+                    }
+                    validateCustomFields.fieldErrors.each { fieldError ->
+                        model.validationErrors.formErrors << fieldError.error
+                        model.validationErrors.fieldsErrors << fieldError
+                    }
                 }
             }
         }
