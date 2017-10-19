@@ -734,6 +734,32 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /waitingListFields/{classId}:
+    post:
+      x-filter: 
+        - CollegeInfo
+      summary: Get Waiting List's fields that should be filled based on classes configs
+      operationId: waitingListFields
+      description: Get Waiting List's fields
+      tags:
+      - WaitingList
+      parameters:
+      - name: classId
+        in: path
+        description: class id
+        required: true
+        type: string
+      responses:
+        200:
+          description: Waiting List's fields
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/field.FieldHeading'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
 parameters:
   XOrigin:
     name: X-Origin

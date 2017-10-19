@@ -3,6 +3,7 @@ package ish.oncourse.willow.service;
 import ish.oncourse.willow.model.checkout.waitinglist.WaitingListRequest;
 import ish.oncourse.willow.model.common.CommonError;
 import ish.oncourse.willow.model.common.ValidationError;
+import ish.oncourse.willow.model.field.FieldHeading;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,5 +21,11 @@ public interface WaitingListApi  {
     @Produces({ "application/json" })
     @CollegeInfo
     void submitWaitingList(WaitingListRequest request);
+
+    @POST
+    @Path("/waitingListFields/{classId}")
+    @Produces({ "application/json" })
+    @CollegeInfo
+    List<FieldHeading> waitingListFields(@PathParam("classId") String classId);
 }
 
