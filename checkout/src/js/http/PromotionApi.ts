@@ -1,5 +1,8 @@
 import {HttpService} from "../common/services/HttpService";
-import {CodeResponse, Promotion} from "../model";
+import {CodeResponse} from "../model/checkout/CodeResponse";
+import {CommonError} from "../model/common/CommonError";
+import {Promotion} from "../model/web/Promotion";
+import {PromotionNotFound} from "../model/web/PromotionNotFound";
 
 export class PromotionApi {
   constructor(private http: HttpService) {
