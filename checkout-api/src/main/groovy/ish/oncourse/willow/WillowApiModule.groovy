@@ -22,7 +22,6 @@ import ish.oncourse.willow.preference.PreferenceApiImpl
 import ish.oncourse.willow.search.SearchApiImpl
 import ish.oncourse.willow.search.SearchService
 import ish.oncourse.willow.service.impl.*
-import ish.oncourse.willow.waitinglist.WaitingListApiImpl
 import org.apache.cayenne.configuration.ObjectContextFactory
 import org.apache.cayenne.configuration.server.ServerModule
 import org.apache.cayenne.di.Module
@@ -52,7 +51,6 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(CheckoutApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(CorporatePassApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(PreferenceApiImpl)
-        CXFModule.contributeResources(binder).addBinding().to(WaitingListApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(CayenneService)
     }
 
