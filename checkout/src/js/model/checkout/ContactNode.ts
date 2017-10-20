@@ -1,8 +1,9 @@
-import {Application} from "./Application";
-import {Article} from "./Article";
-import {Enrolment} from "./Enrolment";
-import {Membership} from "./Membership";
-import {Voucher} from "./Voucher";
+import {Application} from "./../checkout/Application";
+import {Article} from "./../checkout/Article";
+import {Enrolment} from "./../checkout/Enrolment";
+import {Membership} from "./../checkout/Membership";
+import {Voucher} from "./../checkout/Voucher";
+import {WaitingList} from "./../checkout/WaitingList";
 
 export class ContactNode {
   contactId?: string;
@@ -11,5 +12,6 @@ export class ContactNode {
   articles?: Article[];
   memberships?: Membership[];
   vouchers?: Voucher[];
+  waitingLists?: WaitingList[];
 }
 

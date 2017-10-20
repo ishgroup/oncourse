@@ -1076,6 +1076,7 @@ definitions:
     - contactId
     - classIds
     - productIds
+    - waitingCourseIds
     - mandatoryOnly
     - fieldSet
     properties:
@@ -1092,6 +1093,11 @@ definitions:
         items: 
           type: string
         description: Requested product's ids
+      waitingCourseIds: 
+        type: array
+        items: 
+          type: string
+        description: Requested waiting list courses ids
       mandatoryOnly:
         type: boolean
         description: Flag to show only mandatory fields 
@@ -1369,12 +1375,47 @@ definitions:
         type: boolean
       isEditablePrice:
         type: boolean
+  checkout.WaitingList:
+    type: object
+    requred:
+    - contactId
+    - courseId
+    - studentsCount
+    - detail
+    - warnings
+    - errors
+    - selected
+    - fieldHeadings
+    properties:
+      contactId:
+        type: string
+      courseId:
+        type: string
+      studentsCount:
+        type: number
+      detail:
+        type: string
+      warnings:
+        type: array
+        items:
+         type: string
+      errors:
+        type: array
+        items:
+         type: string
+      selected:
+        type: boolean
+      fieldHeadings:
+        type: array
+        items:
+          $ref: '#/definitions/field.FieldHeading'
   checkout.request.ContactNodeRequest:
       type: object
       requred:
       - contactId
       - classIds
       - productIds
+      - waitingCourseIds
       - promotionIds
       properties:
         contactId:
@@ -1383,6 +1424,10 @@ definitions:
           type: array
           items:
            type: string
+        waitingCourseIds:
+          type: array
+          items:
+            type: string
         productIds:
           type: array
           items: 
@@ -1400,6 +1445,7 @@ definitions:
     - articles
     - memberships
     - vouchers
+    - waitingLists
     properties:
       contactId:
         type: string
@@ -1423,6 +1469,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/checkout.Voucher'
+      waitingLists:
+        type: array
+        items:
+          $ref: '#/definitions/checkout.WaitingList'
   checkout.VoucherPayment:
     type: object
     properties:

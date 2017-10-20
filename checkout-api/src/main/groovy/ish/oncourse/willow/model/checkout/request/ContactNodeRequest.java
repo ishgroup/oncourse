@@ -7,6 +7,7 @@ public class ContactNodeRequest  {
   
     private String contactId = null;
     private List<String> classIds = new ArrayList<String>();
+    private List<String> waitingCourseIds = new ArrayList<String>();
     private List<String> productIds = new ArrayList<String>();
     private List<String> promotionIds = new ArrayList<String>();
 
@@ -46,6 +47,28 @@ public class ContactNodeRequest  {
 
     public ContactNodeRequest addClassIdsItem(String classIdsItem) {
       this.classIds.add(classIdsItem);
+      return this;
+    }
+
+    /**
+     * Get waitingCourseIds
+     * @return waitingCourseIds
+     */
+    public List<String> getWaitingCourseIds() {
+        return waitingCourseIds;
+    }
+
+    public void setWaitingCourseIds(List<String> waitingCourseIds) {
+       this.waitingCourseIds = waitingCourseIds;
+    }
+
+    public ContactNodeRequest waitingCourseIds(List<String> waitingCourseIds) {
+      this.waitingCourseIds = waitingCourseIds;
+      return this;
+    }
+
+    public ContactNodeRequest addWaitingCourseIdsItem(String waitingCourseIdsItem) {
+      this.waitingCourseIds.add(waitingCourseIdsItem);
       return this;
     }
 
@@ -101,6 +124,7 @@ public class ContactNodeRequest  {
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classIds: ").append(toIndentedString(classIds)).append("\n");
+      sb.append("    waitingCourseIds: ").append(toIndentedString(waitingCourseIds)).append("\n");
       sb.append("    productIds: ").append(toIndentedString(productIds)).append("\n");
       sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
       sb.append("}");

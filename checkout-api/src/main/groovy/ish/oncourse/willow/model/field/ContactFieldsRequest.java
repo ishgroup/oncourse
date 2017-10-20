@@ -9,6 +9,7 @@ public class ContactFieldsRequest  {
     private String contactId = null;
     private List<String> classIds = new ArrayList<String>();
     private List<String> productIds = new ArrayList<String>();
+    private List<String> waitingCourseIds = new ArrayList<String>();
     private Boolean mandatoryOnly = null;
     private FieldSet fieldSet = null;
 
@@ -74,6 +75,28 @@ public class ContactFieldsRequest  {
     }
 
     /**
+     * Requested waiting list courses ids
+     * @return waitingCourseIds
+     */
+    public List<String> getWaitingCourseIds() {
+        return waitingCourseIds;
+    }
+
+    public void setWaitingCourseIds(List<String> waitingCourseIds) {
+       this.waitingCourseIds = waitingCourseIds;
+    }
+
+    public ContactFieldsRequest waitingCourseIds(List<String> waitingCourseIds) {
+      this.waitingCourseIds = waitingCourseIds;
+      return this;
+    }
+
+    public ContactFieldsRequest addWaitingCourseIdsItem(String waitingCourseIdsItem) {
+      this.waitingCourseIds.add(waitingCourseIdsItem);
+      return this;
+    }
+
+    /**
      * Flag to show only mandatory fields
      * @return mandatoryOnly
      */
@@ -116,6 +139,7 @@ public class ContactFieldsRequest  {
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
       sb.append("    classIds: ").append(toIndentedString(classIds)).append("\n");
       sb.append("    productIds: ").append(toIndentedString(productIds)).append("\n");
+      sb.append("    waitingCourseIds: ").append(toIndentedString(waitingCourseIds)).append("\n");
       sb.append("    mandatoryOnly: ").append(toIndentedString(mandatoryOnly)).append("\n");
       sb.append("    fieldSet: ").append(toIndentedString(fieldSet)).append("\n");
       sb.append("}");

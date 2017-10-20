@@ -18,6 +18,11 @@ export class ContactFieldsRequest {
   productIds?: string[];
 
   /**
+   * Requested waiting list courses ids
+   */
+  waitingCourseIds?: string[];
+
+  /**
    * Flag to show only mandatory fields
    */
   mandatoryOnly?: boolean;
