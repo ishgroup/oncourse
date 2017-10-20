@@ -707,59 +707,6 @@ paths:
             description: Unexpected error
             schema:
               $ref: '#/definitions/common.CommonError'
-  /submitWaitingList:
-    post:
-      x-filter:  
-      - CollegeInfo
-      summary: Save Waiting List
-      operationId: submitWaitingList
-      description: Get set of college's preferences
-      tags:
-      - WaitingList
-      parameters:
-      - name: request
-        in: body
-        description: Save Waiting List request
-        required: true
-        schema:
-          $ref: '#/definitions/checkout.waitinglist.WaitingListRequest'
-      responses:
-        200:
-          description: Ok response
-        400:
-          description: Validation error
-          schema:
-            $ref: '#/definitions/common.ValidationError'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
-  /waitingListFields/{classId}:
-    post:
-      x-filter: 
-        - CollegeInfo
-      summary: Get Waiting List's fields that should be filled based on classes configs
-      operationId: waitingListFields
-      description: Get Waiting List's fields
-      tags:
-      - WaitingList
-      parameters:
-      - name: classId
-        in: path
-        description: class id
-        required: true
-        type: string
-      responses:
-        200:
-          description: Waiting List's fields
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/field.FieldHeading'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/common.CommonError'
 parameters:
   XOrigin:
     name: X-Origin
@@ -1695,20 +1642,3 @@ definitions:
         type: string
       message:
         type: string
-  checkout.waitinglist.WaitingListRequest:
-    type: object
-    properties:
-      contactId:
-        type: string
-      contactId:
-        type: string
-      classId:
-        type: string
-      comments:
-        type: string
-      numberOfStudents:
-        type: number
-      fieldHeadings:
-        type: array
-        items:
-          $ref: '#/definitions/field.FieldHeading'
