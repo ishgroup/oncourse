@@ -2,11 +2,17 @@ package ish.oncourse.willow.functions.field
 
 import groovy.transform.CompileStatic
 import ish.oncourse.model.Contact
+import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
+import ish.oncourse.model.FieldConfigurationScheme
+import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.FieldSet
+import org.apache.cayenne.exp.ExpressionFactory
+import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.QueryCacheStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -14,26 +20,26 @@ import org.slf4j.LoggerFactory
 class GetContactFields {
     
     final static Logger logger = LoggerFactory.getLogger(GetContactFields.class)
-
     
     private Contact contact
-    private List<CourseClass> classes
-    private boolean mergeDefault
-    private FieldSet fieldSet
+    private List<String> classIds
+    private List<String> courseIds
+    private boolean hasProducts
     private boolean mandatoryOnly
 
-
-    GetContactFields(Contact contact, List<CourseClass> classes, boolean mergeDefault, FieldSet fieldSet, boolean mandatoryOnly) {
+    GetContactFields(Contact contact, List<String> classIds, List<String> courseIds, List<String> productIds,  boolean mandatoryOnly) {
         this.contact = contact
-        this.classes = classes
-        this.mergeDefault = mergeDefault
-        this.fieldSet = fieldSet
+        this.hasProducts = !productIds.empty
         this.mandatoryOnly = mandatoryOnly
+        this.classIds = classIds
+        this.courseIds = courseIds
+
     }
     
     ContactFields getContactFields() {
         //get corresponded field configuration for all classes 
-        Set<FieldConfiguration> configurations =  new GetFieldConfigurations(classes: classes, contact: contact, college: contact.college, mergeDefault: mergeDefault, fieldSet: fieldSet, context: contact.objectContext).get()
+        Set<FieldConfiguration> configurations = getFieldConfigurations()
+        
         Set<Field> fields = mergeFieldConfigurations(configurations)
         
         ContactFields result = new ContactFields()
@@ -48,5 +54,43 @@ class GetContactFields {
                 .values()                                                               // get list of lists 
                 .collect { List<Field> list ->  list.sort { !it.mandatory }[0] }         // get first mandatory field (if mandatory field there) from each list
                 .toSet()
+    }
+    
+    private Set<FieldConfiguration> getFieldConfigurations() {
+        Set<FieldConfiguration> configurations = []
+        if (!classIds.empty) {
+            List<CourseClass> classes = (ObjectSelect.query(CourseClass)
+                    .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, classIds))
+                    & CourseClass.COLLEGE.eq(contact.college))
+                    .prefetch(CourseClass.COURSE.joint())
+                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                    .cacheGroup(CourseClass.class.simpleName)
+                    .select(contact.objectContext)
+
+            classes*.course.findAll { c -> c.fieldConfigurationScheme }.unique().each { c ->
+                if (new FindOfferedApplication(c, contact.student, contact.objectContext).applcation) {
+                    configurations << c.fieldConfigurationScheme.applicationFieldConfiguration
+                } else {
+                    configurations << c.fieldConfigurationScheme.enrolFieldConfiguration
+                }
+            }
+        }
+
+        if (!courseIds.empty) {
+            (ObjectSelect.query(Course)
+                    .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, courseIds))
+                    & Course.COLLEGE.eq(contact.college)
+                    & Course.FIELD_CONFIGURATION_SCHEME.isNotNull())
+                    .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
+                    .cacheGroup(Course.class.simpleName)
+                    .select(contact.objectContext).each { c ->
+                configurations << c.fieldConfigurationScheme.waitingListFieldConfiguration
+            }
+        }
+        
+        if (hasProducts || configurations.empty) {
+            configurations << new GetDefaultFieldConfiguration(contact.college, contact.objectContext).get()
+        }
+        configurations
     }
 }

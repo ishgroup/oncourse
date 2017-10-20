@@ -103,7 +103,9 @@ class ContactApiServiceImpl implements ContactApi{
             return new GetCompanyFields(contact, college, context, contactFieldsRequest.mandatoryOnly).get()
         } else {
             
-            if (contactFieldsRequest.classIds.empty &&  contactFieldsRequest.productIds.empty) {
+            if (contactFieldsRequest.classIds.empty 
+                    && contactFieldsRequest.productIds.empty 
+                    && contactFieldsRequest.waitingCourseIds.empty) {
                 logger.error("classesIds required, request param: $contactFieldsRequest")
                 throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'classesIds required')).build())
             }
@@ -111,19 +113,7 @@ class ContactApiServiceImpl implements ContactApi{
                 logger.error("fieldSet required, request param: $contactFieldsRequest")
                 throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
             }
-            
-            List<CourseClass> classes = []
-
-            if (!contactFieldsRequest.classIds.empty) {
-                classes = (ObjectSelect.query(CourseClass)
-                        .where(ExpressionFactory.inDbExp(CourseClass.ID_PK_COLUMN, contactFieldsRequest.classIds))
-                        & CourseClass.COLLEGE.eq(college))
-                        .prefetch(CourseClass.COURSE.joint())
-                        .cacheStrategy(QueryCacheStrategy.SHARED_CACHE)
-                        .cacheGroup(CourseClass.class.simpleName)
-                        .select(context)
-            }
-            new GetContactFields(contact, classes, !contactFieldsRequest.productIds.empty, contactFieldsRequest.fieldSet, contactFieldsRequest.mandatoryOnly).contactFields
+            new GetContactFields(contact, contactFieldsRequest.classIds, contactFieldsRequest.productIds,contactFieldsRequest.waitingCourseIds, contactFieldsRequest.mandatoryOnly).contactFields
         }
     }
     
