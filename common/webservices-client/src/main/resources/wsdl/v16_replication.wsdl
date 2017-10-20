@@ -921,8 +921,6 @@
                             <xs:element name="type" type="xs:int" />
                             <xs:element name="contactId" type="xs:long" />
                             <xs:element name="messageId" type="xs:long" />
-                            <xs:element name="studentId" type="xs:long" />
-                            <xs:element name="tutorId" type="xs:long" />
                         </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>

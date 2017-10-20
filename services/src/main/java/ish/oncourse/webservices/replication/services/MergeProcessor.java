@@ -147,10 +147,6 @@ public class MergeProcessor {
 			for (Attendance attendance : new ArrayList<>(tutorToDelete.getAttendances())) {
 				attendance.setMarkedByTutor(tutorToUpdate);
 			}
-
-			for (MessagePerson person : new ArrayList<>(tutorToDelete.getMessagePeople())) {
-				person.setTutor(tutorToUpdate);
-			}
 			
 			List<Outcome> outcomes = ObjectSelect.query(Outcome.class).where(Outcome.MARKED_BY_TUTOR.eq(tutorToDelete)).select(context);
 			for (Outcome outcome : new ArrayList<>(outcomes)) {
@@ -186,9 +182,6 @@ public class MergeProcessor {
 			}
 			for (WaitingList waitingList : new ArrayList<>(studentToDelet.getWaitingLists())) {
 				waitingList.setStudent(studentToUpdate);
-			}
-			for (MessagePerson person : new ArrayList<>(studentToDelet.getMessagePeople())) {
-				person.setStudent(studentToUpdate);
 			}
 			mergeDocumentRelation(STUDENT_IDENTIFIER, contactToDelete.getId(), contactToUpdate.getId(), contactToUpdate.getAngelId());
 			context.deleteObject(studentToDelet);

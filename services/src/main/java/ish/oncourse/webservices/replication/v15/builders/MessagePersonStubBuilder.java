@@ -18,11 +18,6 @@ public class MessagePersonStubBuilder extends AbstractWillowStubBuilder<MessageP
 		stub.setModified(entity.getModified());
 		stub.setResponse(entity.getResponse());
 		stub.setStatus(entity.getStatus().getDatabaseValue());
-		if (entity.getStudent() != null) {
-			stub.setStudentId(entity.getStudent().getId());
-		} else if (entity.getTutor() != null) {
-			stub.setTutorId(entity.getTutor().getId());
-		}
 		stub.setTimeOfDelivery(entity.getTimeOfDelivery());
 		stub.setType(entity.getType().getDatabaseValue());
 		return stub;

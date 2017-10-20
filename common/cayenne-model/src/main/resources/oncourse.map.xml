@@ -3585,12 +3585,6 @@
 	<db-relationship name="message" source="MessagePerson" target="Message" toMany="false">
 		<db-attribute-pair source="messageId" target="id"/>
 	</db-relationship>
-	<db-relationship name="student" source="MessagePerson" target="Student" toMany="false">
-		<db-attribute-pair source="studentId" target="id"/>
-	</db-relationship>
-	<db-relationship name="tutor" source="MessagePerson" target="Tutor" toMany="false">
-		<db-attribute-pair source="tutorId" target="id"/>
-	</db-relationship>
 	<db-relationship name="college" source="MessageTemplate" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -3843,9 +3837,6 @@
 	<db-relationship name="languageHome" source="Student" target="Language" toMany="false">
 		<db-attribute-pair source="languageId" target="id"/>
 	</db-relationship>
-	<db-relationship name="messagePeople" source="Student" target="MessagePerson" toMany="true">
-		<db-attribute-pair source="id" target="studentId"/>
-	</db-relationship>
 	<db-relationship name="priorLearnings" source="Student" target="PriorLearning" toMany="true">
 		<db-attribute-pair source="id" target="studentId"/>
 	</db-relationship>
@@ -3944,9 +3935,6 @@
 	</db-relationship>
 	<db-relationship name="markedOutcomes" source="Tutor" target="Outcome" toMany="true">
 		<db-attribute-pair source="id" target="markedByTutorId"/>
-	</db-relationship>
-	<db-relationship name="messagePeople" source="Tutor" target="MessagePerson" toMany="true">
-		<db-attribute-pair source="id" target="tutorId"/>
 	</db-relationship>
 	<db-relationship name="sessionTutors" source="Tutor" target="SessionTutor" toMany="true">
 		<db-attribute-pair source="id" target="tutorId"/>
@@ -4411,8 +4399,6 @@
 	<obj-relationship name="college" source="MessagePerson" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="MessagePerson" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="message" source="MessagePerson" target="Message" deleteRule="Nullify" db-relationship-path="message"/>
-	<obj-relationship name="student" source="MessagePerson" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
-	<obj-relationship name="tutor" source="MessagePerson" target="Tutor" deleteRule="Nullify" db-relationship-path="tutor"/>
 	<obj-relationship name="college" source="MessageTemplate" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
 	<obj-relationship name="moduleCourses" source="Module" target="CourseModule" deleteRule="Deny" db-relationship-path="moduleCourses"/>
@@ -4491,7 +4477,6 @@
 	<obj-relationship name="enrolments" source="Student" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="language" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="language"/>
 	<obj-relationship name="languageHome" source="Student" target="Language" deleteRule="Nullify" db-relationship-path="languageHome"/>
-	<obj-relationship name="messagePeople" source="Student" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
 	<obj-relationship name="priorLearnings" source="Student" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="studentConcessions" source="Student" target="StudentConcession" deleteRule="Deny" db-relationship-path="studentConcessions"/>
 	<obj-relationship name="waitingLists" source="Student" target="WaitingList" deleteRule="Cascade" db-relationship-path="waitingLists"/>
@@ -4522,7 +4507,6 @@
 	<obj-relationship name="attendances" source="Tutor" target="Attendance" deleteRule="Deny" db-relationship-path="attendances"/>
 	<obj-relationship name="college" source="Tutor" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Tutor" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
-	<obj-relationship name="messagePeople" source="Tutor" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="sessionTutors" source="Tutor" target="SessionTutor" deleteRule="Deny" db-relationship-path="sessionTutors"/>
 	<obj-relationship name="sessions" source="Tutor" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="tutorRoles" source="Tutor" target="TutorRole" deleteRule="Deny" db-relationship-path="tutorRoles"/>

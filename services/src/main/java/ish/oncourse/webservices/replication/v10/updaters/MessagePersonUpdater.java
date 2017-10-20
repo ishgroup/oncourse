@@ -32,11 +32,6 @@ public class MessagePersonUpdater extends AbstractWillowUpdater<MessagePersonStu
 		entity.setNumberOfAttempts(stub.getNumberOfAttempts());
 		entity.setResponse(stub.getResponse());
 		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), MessageStatus.class));
-		if (stub.getStudentId() != null) {
-			entity.setStudent(callback.updateRelationShip(stub.getStudentId(), Student.class));
-		} else {
-			entity.setTutor(callback.updateRelationShip(stub.getTutorId(), Tutor.class));
-		}
 		entity.setTimeOfDelivery(stub.getTimeOfDelivery());
 		entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), MessageType.class));
 	}
