@@ -12,6 +12,7 @@ import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
 import ish.oncourse.willow.checkout.functions.ProcessClasses
 import ish.oncourse.willow.checkout.functions.ProcessProducts
+import ish.oncourse.willow.checkout.functions.ProcessWaitingLists
 import ish.oncourse.willow.checkout.functions.ValidatePaymentRequest
 import ish.oncourse.willow.checkout.payment.CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.GetPaymentStatus
@@ -74,21 +75,24 @@ class CheckoutApiImpl implements CheckoutApi {
         
         Contact contact = new GetContact(context, college, contactNodeRequest.contactId).get(false)
 
-        ContactNode items = new ContactNode()
-        items.contactId = contact.id.toString()
+        ContactNode node = new ContactNode()
+        node.contactId = contact.id.toString()
         
         if (!contact.isCompany) {
             ProcessClasses processClasses = new ProcessClasses(context, contact, college, contactNodeRequest.classIds, contactNodeRequest.promotionIds).process()
-            items.enrolments = processClasses.enrolments
-            items.applications = processClasses.applications
+            node.enrolments = processClasses.enrolments
+            node.applications = processClasses.applications
+            
+            ProcessWaitingLists processWaitingLists = new ProcessWaitingLists(context, contact, college, contactNodeRequest.waitingCourseIds).process()
+            node.waitingLists += processWaitingLists.waitingLists
         }
-        
+
         ProcessProducts processProducts = new ProcessProducts(context, contact, college, contactNodeRequest.productIds).process()
-        items.articles += processProducts.articles
-        items.memberships += processProducts.memberships
-        items.vouchers += processProducts.vouchers
-        
-        items
+        node.articles += processProducts.articles
+        node.memberships += processProducts.memberships
+        node.vouchers += processProducts.vouchers
+
+        node
     }
 
     @Override
