@@ -34,18 +34,18 @@ class ValidateCustomFields {
         for (Field f : expected.fields.flatten() as List<Field>) { 
             List<Field> correspondingFields = actualFields.findAll { it.key == f.key }
             if (correspondingFields.empty) {
-                commonError = new CommonError(message: "$formName form for $className class doesn't contain followed field: $f.key")
+                commonError = new CommonError(message: "$formName form for $className doesn't contain followed field: $f.key")
                 return this
             } else if (correspondingFields.size() > 1) {
-                commonError = new CommonError(message: "$formName form for $className class contains more than on followed fields: $f.key")
+                commonError = new CommonError(message: "$formName form for $className contains more than one followed fields: $f.key")
                 return this
             }
             Field correspondingField = correspondingFields[0]
             String value = correspondingField.value
             if (value && f.dataType == DataType.ENUM && !f.enumItems.collect { it.value }.contains(value)) {
-                fieldErrors << new FieldError(name: f.key, error: "Please select ${f.name} value for $className class from the drop-down list")
+                fieldErrors << new FieldError(name: f.key, error: "Please select ${f.name} value for $className from the drop-down list")
             } else if (f.mandatory) {
-                fieldErrors << new FieldError(name: f.key, error: "${f.name} for class $className is required")
+                fieldErrors << new FieldError(name: f.key, error: "${f.name} for $className is required")
             }
         }
         return this

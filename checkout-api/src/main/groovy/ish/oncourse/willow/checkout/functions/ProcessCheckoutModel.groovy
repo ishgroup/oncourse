@@ -6,10 +6,12 @@ import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.CorporatePass
+import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Product
 import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
+import ish.oncourse.willow.functions.field.GetWaitingListFields
 import ish.oncourse.willow.functions.field.ValidateCustomFields
 import ish.oncourse.willow.functions.voucher.ProcessRedeemedVouchers
 import ish.oncourse.willow.model.checkout.Amount
@@ -21,8 +23,10 @@ import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
+import ish.oncourse.willow.model.checkout.WaitingList
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
+import ish.oncourse.willow.model.field.FieldHeading
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
@@ -145,6 +149,11 @@ class ProcessCheckoutModel {
                 contactNode.applications.each { a ->
                     node.applications << processApplication(a, contact)
                 }
+
+                contactNode.waitingLists.each { w ->
+                    node.waitingLists << processWaitingList(w)
+                }
+                
             } else if (!contactNode.enrolments.empty || !contactNode.applications.empty ) {
                 model.error = new CommonError(message: 'Purchase items are not valid')
             }
@@ -238,6 +247,32 @@ class ProcessCheckoutModel {
             }
         }
         return a
+    }
+
+    WaitingList processWaitingList(WaitingList w) {
+        w.errors.clear()
+        w.warnings.clear()
+        if (w.selected) {
+            ValidateWaitingList validate = new ValidateWaitingList(context, college).validate(w)
+            w.errors += validate.errors
+            w.warnings += validate.warnings
+            if (w.errors.empty) {
+                Course course = new GetCourse(context, college, w.courseId).get()
+                List<FieldHeading> expectedHeadings = new GetWaitingListFields(course).get()
+                ValidateCustomFields validateCustomFields = ValidateCustomFields.valueOf(w.fieldHeadings, expectedHeadings, course.name, 'Waiting List').validate()
+                if (validateCustomFields.commonError) {
+                    model.error = validateCustomFields.commonError
+                }
+                validateCustomFields.fieldErrors.each { fieldError ->
+                    model.validationErrors.formErrors << fieldError.error
+                    model.validationErrors.fieldsErrors << fieldError
+                }
+            } else {
+                w.selected = false
+            }
+
+        }
+        return w
     }
 
 
