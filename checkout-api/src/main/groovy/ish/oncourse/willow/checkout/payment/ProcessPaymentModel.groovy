@@ -46,8 +46,8 @@ class ProcessPaymentModel {
     
     @CompileStatic(TypeCheckingMode.SKIP)
     ProcessPaymentModel process() {
-        if (createPaymentModel.applicationsOnly) {
-            saveApplications()
+        if (createPaymentModel.noPayment) {
+            saveItems()
         } else {
             Money actualAmount = createPaymentModel.paymentIn.amount
             if (actualAmount != paymentRequest.payNow.toMoney()) {
@@ -62,12 +62,14 @@ class ProcessPaymentModel {
         }
     }
 
-    private ProcessPaymentModel saveApplications() {
+    private ProcessPaymentModel saveItems() {
         context.commitChanges()
 
         response =  new PaymentResponse().with { r ->
             r.status = PaymentStatus.SUCCESSFUL
-            r.reference =  createPaymentModel.applications.collect { it.id.toString() }.join(', ')
+            List<String> ids = createPaymentModel.applications.collect { it.id.toString() }
+            ids += createPaymentModel.waitingLists.collect { it.id.toString() }
+            r.reference = ids.join(', ')
             r
         }
         this

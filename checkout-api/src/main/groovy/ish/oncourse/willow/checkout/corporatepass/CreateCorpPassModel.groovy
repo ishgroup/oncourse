@@ -23,6 +23,7 @@ import ish.oncourse.willow.checkout.persistent.CreateArticle
 import ish.oncourse.willow.checkout.persistent.CreateEnrolment
 import ish.oncourse.willow.checkout.persistent.CreateMembership
 import ish.oncourse.willow.checkout.persistent.CreateVoucher
+import ish.oncourse.willow.checkout.persistent.CreateWaitingList
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.persistence.CommonPreferenceController
 import org.apache.cayenne.ObjectContext
@@ -41,7 +42,6 @@ class CreateCorpPassModel {
     private CorporatePass pass
     private CheckoutModel checkoutModel
 
-    private List<Application> applications = []
     private Invoice mainInvoice
     private List<Invoice> paymentPlan = []
 
@@ -77,7 +77,7 @@ class CreateCorpPassModel {
             }
 
             node.applications.findAll{it.selected}.each { a ->
-                applications << new CreateApplication(context, college, a, contact).create()
+                new CreateApplication(context, college, a, contact).create()
             }
             node.articles.findAll{it.selected}.each { a ->
                 new CreateArticle(context, college, a, contact, getInvoice(), ProductStatus.ACTIVE, pass.contact.taxOverride).create()
@@ -87,6 +87,9 @@ class CreateCorpPassModel {
             }
             node.vouchers.findAll{it.selected}.each { v ->
                 new CreateVoucher(context, college, v, contact, getInvoice(), ProductStatus.ACTIVE,  ConfirmationStatus.NOT_SENT).create()
+            }
+            node.waitingLists.findAll { it.selected }.each { w ->
+                new CreateWaitingList(context, college, w, contact).create()
             }
         }
     }

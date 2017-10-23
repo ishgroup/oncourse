@@ -30,6 +30,7 @@ import ish.oncourse.model.PaymentIn
 import ish.oncourse.model.PaymentInLine
 import ish.oncourse.model.Voucher
 import ish.oncourse.model.VoucherProduct
+import ish.oncourse.model.WaitingList
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.util.payment.CreditCardValidator
@@ -43,6 +44,7 @@ import ish.oncourse.willow.checkout.persistent.CreateArticle
 import ish.oncourse.willow.checkout.persistent.CreateEnrolment
 import ish.oncourse.willow.checkout.persistent.CreateMembership
 import ish.oncourse.willow.checkout.persistent.CreateVoucher
+import ish.oncourse.willow.checkout.persistent.CreateWaitingList
 import ish.oncourse.willow.functions.voucher.GetVoucher
 import ish.oncourse.willow.functions.voucher.VoucherRedemptionHelper
 import ish.oncourse.willow.model.checkout.CheckoutModel
@@ -65,7 +67,8 @@ class CreatePaymentModel {
     PaymentRequest paymentRequest
 
     List<Application> applications = []
-    
+    List<WaitingList> waitingLists = []
+
     PaymentIn paymentIn
     Invoice mainInvoice
     Contact payer
@@ -127,6 +130,9 @@ class CreatePaymentModel {
             }
             node.vouchers.findAll{it.selected}.each { v ->
                 new CreateVoucher(context, college, v, contact, getInvoice(), ProductStatus.NEW, ConfirmationStatus.DO_NOT_SEND).create()
+            }
+            node.waitingLists.findAll { it.selected }.each { w ->
+                waitingLists << new CreateWaitingList(context, college, w, contact).create()
             }
         }
     }
@@ -302,8 +308,8 @@ class CreatePaymentModel {
         }
     }
     
-    boolean isApplicationsOnly() {
-       return paymentIn == null && mainInvoice == null && paymentPlan.empty && !applications.empty
+    boolean isNoPayment() {
+       return paymentIn == null && mainInvoice == null && paymentPlan.empty && (!applications.empty || !waitingLists.empty)
     }
 
     private void createModel() {

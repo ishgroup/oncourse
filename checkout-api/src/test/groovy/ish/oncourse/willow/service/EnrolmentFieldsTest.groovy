@@ -81,13 +81,13 @@ class EnrolmentFieldsTest extends ApiTest {
         assertEquals(3, model.validationErrors.fieldsErrors.size())
         
         assertEquals('customField.enrolment.enrolmentNotes', model.validationErrors.fieldsErrors[0].name)
-        assertEquals('Enrolment Notes for class Managerial Accounting (AAV - 1) is required', model.validationErrors.fieldsErrors[0].error)
+        assertEquals('Enrolment Notes for Managerial Accounting (AAV - 1) is required', model.validationErrors.fieldsErrors[0].error)
 
         assertEquals('customField.enrolment.enrolmentKey', model.validationErrors.fieldsErrors[1].name)
-        assertEquals('Enrolment Key for class Managerial Accounting (AAV - 1) is required', model.validationErrors.fieldsErrors[1].error)
+        assertEquals('Enrolment Key for Managerial Accounting (AAV - 1) is required', model.validationErrors.fieldsErrors[1].error)
 
         assertEquals('customField.enrolment.enrolmentFee', model.validationErrors.fieldsErrors[2].name)
-        assertEquals('Enrolment Fee for class Managerial Accounting (AAV - 1) is required', model.validationErrors.fieldsErrors[2].error)
+        assertEquals('Enrolment Fee for Managerial Accounting (AAV - 1) is required', model.validationErrors.fieldsErrors[2].error)
 
         headings[0].fields[0].value = 'notes value'
         headings[1].fields[0].value = 'key value'

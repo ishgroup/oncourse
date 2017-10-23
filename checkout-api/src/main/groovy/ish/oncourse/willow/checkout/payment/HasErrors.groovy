@@ -20,6 +20,7 @@ class HasErrors {
           !nodes.articles.errors.flatten().empty ||
           !nodes.memberships.errors.flatten().empty ||
           !nodes.vouchers.errors.flatten().empty || 
+          !nodes.waitingLists.errors.flatten().empty || 
           !checkoutModel.validationErrors.formErrors.empty || 
           !checkoutModel.validationErrors.fieldsErrors.empty
     }

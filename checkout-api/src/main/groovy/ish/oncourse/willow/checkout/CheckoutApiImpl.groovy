@@ -108,7 +108,7 @@ class CheckoutApiImpl implements CheckoutApi {
         College college = webSite.college
         
         CheckoutModel checkoutModel = getCheckoutModel(paymentRequest.checkoutModelRequest)
-        ValidatePaymentRequest validatePaymentRequest = new ValidatePaymentRequest(checkoutModel, paymentRequest, context)
+        ValidatePaymentRequest validatePaymentRequest = new ValidatePaymentRequest(checkoutModel, paymentRequest, context).validate()
         
         if (validatePaymentRequest.commonError) {
             throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
