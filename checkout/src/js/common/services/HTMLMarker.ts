@@ -76,7 +76,7 @@ export class HTMLMarkers {
    * Renders checkout button.
    *
    * Corresponding React Component: {@link EnrolButton}
-   * Example Usage: <div data-cid="checkout-button"  data-prop-id="${id}"></div>
+   * Example Usage: <div data-cid="enrol-button"  data-prop-id="${id}"></div>
    * Tapestry template to use: CourseClassItem.tml
    */
   static ENROL_BUTTON: HTMLMarker = {
@@ -84,17 +84,6 @@ export class HTMLMarkers {
     component: EnrolButton,
     props: {
       id: "string",
-      courseId: "string",
-      courseCode: "string",
-      courseName: "string",
-      courseDescription: "string",
-      code: "string",
-      hasAvailablePlaces: "boolean",
-      availableEnrolmentPlaces: "number",
-      isFinished: "boolean",
-      isCancelled: "boolean",
-      isAllowByApplication: "boolean",
-      isPaymentGatewayEnabled: "boolean",
     },
   };
 
