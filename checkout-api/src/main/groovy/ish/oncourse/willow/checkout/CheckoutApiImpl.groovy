@@ -65,7 +65,9 @@ class CheckoutApiImpl implements CheckoutApi {
     @Override
     ContactNode getContactNode(ContactNodeRequest contactNodeRequest) {
 
-        if (contactNodeRequest.classIds.empty && contactNodeRequest.productIds.empty) {
+        if (contactNodeRequest.classIds.empty 
+                && contactNodeRequest.productIds.empty
+                && contactNodeRequest.waitingCourseIds.empty) {
             logger.error('There are not selected items for purchase')
             throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'there are not selected items for purchase')).build())
         }
