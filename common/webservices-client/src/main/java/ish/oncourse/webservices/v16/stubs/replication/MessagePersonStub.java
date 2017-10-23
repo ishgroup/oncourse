@@ -28,8 +28,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="contactId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="messageId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="studentId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="tutorId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -47,9 +45,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "timeOfDelivery",
     "type",
     "contactId",
-    "messageId",
-    "studentId",
-    "tutorId"
+    "messageId"
 })
 public class MessagePersonStub
     extends ReplicationStub
@@ -83,14 +79,6 @@ public class MessagePersonStub
     @XmlJavaTypeAdapter(Adapter2 .class)
     @XmlSchemaType(name = "long")
     protected Long messageId;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
-    @XmlSchemaType(name = "long")
-    protected Long studentId;
-    @XmlElement(required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter2 .class)
-    @XmlSchemaType(name = "long")
-    protected Long tutorId;
 
     /**
      * Gets the value of the destinationAddress property.
@@ -282,54 +270,6 @@ public class MessagePersonStub
      */
     public void setMessageId(Long value) {
         this.messageId = value;
-    }
-
-    /**
-     * Gets the value of the studentId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Long getStudentId() {
-        return studentId;
-    }
-
-    /**
-     * Sets the value of the studentId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setStudentId(Long value) {
-        this.studentId = value;
-    }
-
-    /**
-     * Gets the value of the tutorId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public Long getTutorId() {
-        return tutorId;
-    }
-
-    /**
-     * Sets the value of the tutorId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTutorId(Long value) {
-        this.tutorId = value;
     }
 
 }
