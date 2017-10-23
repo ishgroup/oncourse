@@ -109,10 +109,17 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
         new CompressionPlugin({
           asset: "[path].gz[query]",
           algorithm: "gzip",
-          test: /\.(js|html)$/,
+          test: /\.(js|html|css)$/,
           threshold: 10240,
           minRatio: 0.8
         }),
+        // new CompressionPlugin({
+        //   asset: "[path].gz[query]",
+        //   algorithm: "gzip",
+        //   test: /\.(css)$/,
+        //   threshold: 10240,
+        //   minRatio: 0.8
+        // }),
         new TypedocWebpackPlugin({
           jsx: "react",
           target: "es6",
@@ -135,7 +142,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           // OPTIONAL: defaults to excluding nothing
           // can be a string, a RegExp, or an array of strings and RegExps
           // if a file matches both include and exclude, exclude takes precedence
-          exclude: [/\.js$/, /\.map$/],
+          exclude: [/\.js$/, /\.map$/, /\.css$/],
 
           // OPTIONAL: see https://github.com/thejoshwolfe/yazl#addfilerealpath-metadatapath-options
           fileOptions: {
