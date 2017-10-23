@@ -3,11 +3,11 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.ExpandableCayenneDataObject;
 import ish.oncourse.model.Student;
 import ish.oncourse.model.WaitingListCustomField;
 import ish.oncourse.model.WaitingListSite;
@@ -18,7 +18,7 @@ import ish.oncourse.model.WaitingListSite;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _WaitingList extends CayenneDataObject {
+public abstract class _WaitingList extends ExpandableCayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
@@ -35,16 +35,16 @@ public abstract class _WaitingList extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DETAIL = new Property<String>("detail");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Integer> POTENTIAL_STUDENTS = new Property<Integer>("potentialStudents");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Course> COURSE = new Property<Course>("course");
-    public static final Property<List<WaitingListCustomField>> CUSTOM_FIELDS = new Property<List<WaitingListCustomField>>("customFields");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
-    public static final Property<List<WaitingListSite>> WAITING_LIST_SITES = new Property<List<WaitingListSite>>("waitingListSites");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DETAIL = Property.create("detail", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Integer> POTENTIAL_STUDENTS = Property.create("potentialStudents", Integer.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Course> COURSE = Property.create("course", Course.class);
+    public static final Property<List<WaitingListCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
+    public static final Property<Student> STUDENT = Property.create("student", Student.class);
+    public static final Property<List<WaitingListSite>> WAITING_LIST_SITES = Property.create("waitingListSites", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

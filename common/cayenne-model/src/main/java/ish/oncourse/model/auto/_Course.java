@@ -3,7 +3,6 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.CourseEnrolmentType;
@@ -13,6 +12,7 @@ import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.CourseCourseRelation;
 import ish.oncourse.model.CourseCustomField;
 import ish.oncourse.model.CourseModule;
+import ish.oncourse.model.ExpandableCayenneDataObject;
 import ish.oncourse.model.FieldConfigurationScheme;
 import ish.oncourse.model.Qualification;
 import ish.oncourse.model.VoucherProductCourse;
@@ -24,7 +24,7 @@ import ish.oncourse.model.WaitingList;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Course extends CayenneDataObject {
+public abstract class _Course extends ExpandableCayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
@@ -57,32 +57,32 @@ public abstract class _Course extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Boolean> ALLOW_WAITING_LIST = new Property<Boolean>("allowWaitingList");
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<String> CODE = new Property<String>("code");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DETAIL = new Property<String>("detail");
-    public static final Property<String> DETAIL_TEXTILE = new Property<String>("detailTextile");
-    public static final Property<CourseEnrolmentType> ENROLMENT_TYPE = new Property<CourseEnrolmentType>("enrolmentType");
-    public static final Property<String> FIELD_OF_EDUCATION = new Property<String>("fieldOfEducation");
-    public static final Property<Boolean> IS_SUFFICIENT_FOR_QUALIFICATION = new Property<Boolean>("isSufficientForQualification");
-    public static final Property<Boolean> IS_VETCOURSE = new Property<Boolean>("isVETCourse");
-    public static final Property<Boolean> IS_WEB_VISIBLE = new Property<Boolean>("isWebVisible");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<Float> NOMINAL_HOURS = new Property<Float>("nominalHours");
-    public static final Property<String> SEARCH_TEXT = new Property<String>("searchText");
-    public static final Property<List<Application>> APPLICATIONS = new Property<List<Application>>("applications");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<CourseClass>> COURSE_CLASSES = new Property<List<CourseClass>>("courseClasses");
-    public static final Property<List<CourseModule>> COURSE_MODULES = new Property<List<CourseModule>>("courseModules");
-    public static final Property<List<CourseCustomField>> CUSTOM_FIELDS = new Property<List<CourseCustomField>>("customFields");
-    public static final Property<FieldConfigurationScheme> FIELD_CONFIGURATION_SCHEME = new Property<FieldConfigurationScheme>("fieldConfigurationScheme");
-    public static final Property<List<CourseCourseRelation>> FROM_COURSES = new Property<List<CourseCourseRelation>>("fromCourses");
-    public static final Property<Qualification> QUALIFICATION = new Property<Qualification>("qualification");
-    public static final Property<List<CourseCourseRelation>> TO_COURSES = new Property<List<CourseCourseRelation>>("toCourses");
-    public static final Property<List<VoucherProductCourse>> VOUCHER_PRODUCT_COURSES = new Property<List<VoucherProductCourse>>("voucherProductCourses");
-    public static final Property<List<WaitingList>> WAITING_LISTS = new Property<List<WaitingList>>("waitingLists");
+    public static final Property<Boolean> ALLOW_WAITING_LIST = Property.create("allowWaitingList", Boolean.class);
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<String> CODE = Property.create("code", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DETAIL = Property.create("detail", String.class);
+    public static final Property<String> DETAIL_TEXTILE = Property.create("detailTextile", String.class);
+    public static final Property<CourseEnrolmentType> ENROLMENT_TYPE = Property.create("enrolmentType", CourseEnrolmentType.class);
+    public static final Property<String> FIELD_OF_EDUCATION = Property.create("fieldOfEducation", String.class);
+    public static final Property<Boolean> IS_SUFFICIENT_FOR_QUALIFICATION = Property.create("isSufficientForQualification", Boolean.class);
+    public static final Property<Boolean> IS_VETCOURSE = Property.create("isVETCourse", Boolean.class);
+    public static final Property<Boolean> IS_WEB_VISIBLE = Property.create("isWebVisible", Boolean.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<Float> NOMINAL_HOURS = Property.create("nominalHours", Float.class);
+    public static final Property<String> SEARCH_TEXT = Property.create("searchText", String.class);
+    public static final Property<List<Application>> APPLICATIONS = Property.create("applications", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<CourseClass>> COURSE_CLASSES = Property.create("courseClasses", List.class);
+    public static final Property<List<CourseModule>> COURSE_MODULES = Property.create("courseModules", List.class);
+    public static final Property<List<CourseCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
+    public static final Property<FieldConfigurationScheme> FIELD_CONFIGURATION_SCHEME = Property.create("fieldConfigurationScheme", FieldConfigurationScheme.class);
+    public static final Property<List<CourseCourseRelation>> FROM_COURSES = Property.create("fromCourses", List.class);
+    public static final Property<Qualification> QUALIFICATION = Property.create("qualification", Qualification.class);
+    public static final Property<List<CourseCourseRelation>> TO_COURSES = Property.create("toCourses", List.class);
+    public static final Property<List<VoucherProductCourse>> VOUCHER_PRODUCT_COURSES = Property.create("voucherProductCourses", List.class);
+    public static final Property<List<WaitingList>> WAITING_LISTS = Property.create("waitingLists", List.class);
 
     public void setAllowWaitingList(Boolean allowWaitingList) {
         writeProperty("allowWaitingList", allowWaitingList);

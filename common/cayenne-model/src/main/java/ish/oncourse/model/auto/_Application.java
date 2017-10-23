@@ -3,7 +3,6 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.ApplicationStatus;
@@ -13,6 +12,7 @@ import ish.math.Money;
 import ish.oncourse.model.ApplicationCustomField;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.ExpandableCayenneDataObject;
 import ish.oncourse.model.Student;
 
 /**
@@ -21,7 +21,7 @@ import ish.oncourse.model.Student;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Application extends CayenneDataObject {
+public abstract class _Application extends ExpandableCayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
@@ -41,19 +41,19 @@ public abstract class _Application extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = new Property<ConfirmationStatus>("confirmationStatus");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> ENROL_BY = new Property<Date>("enrolBy");
-    public static final Property<Money> FEE_OVERRIDE = new Property<Money>("feeOverride");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> REASON = new Property<String>("reason");
-    public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
-    public static final Property<ApplicationStatus> STATUS = new Property<ApplicationStatus>("status");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Course> COURSE = new Property<Course>("course");
-    public static final Property<List<ApplicationCustomField>> CUSTOM_FIELDS = new Property<List<ApplicationCustomField>>("customFields");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = Property.create("confirmationStatus", ConfirmationStatus.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> ENROL_BY = Property.create("enrolBy", Date.class);
+    public static final Property<Money> FEE_OVERRIDE = Property.create("feeOverride", Money.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> REASON = Property.create("reason", String.class);
+    public static final Property<PaymentSource> SOURCE = Property.create("source", PaymentSource.class);
+    public static final Property<ApplicationStatus> STATUS = Property.create("status", ApplicationStatus.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Course> COURSE = Property.create("course", Course.class);
+    public static final Property<List<ApplicationCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
+    public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

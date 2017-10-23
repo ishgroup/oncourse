@@ -4,7 +4,6 @@ import ish.common.types.AvetmissStudentEnglishProficiency;
 import ish.common.types.AvetmissStudentIndigenousStatus;
 import ish.common.types.AvetmissStudentPriorEducation;
 import ish.common.types.AvetmissStudentSchoolLevel;
-import ish.oncourse.cayenne.IExpandable;
 import ish.oncourse.common.field.ContextType;
 import ish.oncourse.common.field.FieldProperty;
 import ish.oncourse.common.field.Property;
@@ -12,21 +11,14 @@ import ish.oncourse.common.field.PropertyGetSetFactory;
 import ish.oncourse.common.field.Type;
 import ish.oncourse.model.auto._Contact;
 import ish.oncourse.utils.ContactDelegator;
-import ish.oncourse.utils.PhoneValidator;
 import ish.oncourse.utils.QueueableObjectUtils;
 import ish.util.SecurityUtil;
 import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataObject;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.map.ObjRelationship;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.validation.ValidationResult;
-import org.apache.commons.lang.StringUtils;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +26,7 @@ import java.util.Map;
 
 
 @Type(value = ContextType.CONTACT)
-public class Contact extends _Contact implements Queueable, IExpandable {
+public class Contact extends _Contact implements Queueable {
 	
 	private static final long serialVersionUID = -7158531319889954101L;
 
@@ -72,38 +64,9 @@ public class Contact extends _Contact implements Queueable, IExpandable {
 		return  field == null ? null : field.getValue();
 	}
 	
-	
 	@Property(value = FieldProperty.CUSTOM_FIELD_CONTACT, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
 	public void setCustomFieldValue(String key, String value){
-		CustomField field = getCustomField(key);
-		if (field != null) {
-			field.setValue(value);
-		} else {
-			ObjectContext context = getObjectContext();
-			CustomFieldType customFieldType = ObjectSelect.query(CustomFieldType.class)
-					.where(CustomFieldType.COLLEGE.eq(getCollege()))
-					.and(CustomFieldType.KEY.eq(key))
-					.selectFirst(context);
-			
-			if (customFieldType == null) {
-				return;
-			}
-			ContactCustomField customField = context.newObject(ContactCustomField.class);
-			customField.setValue(value);
-			customField.setRelatedObject(this);
-			customField.setCustomFieldType(customFieldType);
-			customField.setCollege(getCollege());
-		}
-	}
-	
-	private CustomField getCustomField(String key) {
-		for (CustomField customField : getCustomFields()) {
-			String customFieldKey = customField.getCustomFieldType().getKey();
-			if (customFieldKey != null && customFieldKey .equalsIgnoreCase(key)) {
-				return customField;
-			}
-		}
-		return null;
+		setCustomFieldValue(key, value, ContactCustomField.class);
 	}
 	
 	@Override

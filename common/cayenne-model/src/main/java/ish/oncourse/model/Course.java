@@ -1,6 +1,5 @@
 package ish.oncourse.model;
 
-import ish.oncourse.cayenne.IExpandable;
 import ish.oncourse.model.auto._Course;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
@@ -12,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Course extends _Course implements Queueable, IExpandable {
+public class Course extends _Course implements Queueable {
 	
 	private static final long serialVersionUID = 254942637990278217L;
 	private static final Logger logger = LogManager.getLogger();
@@ -81,5 +80,10 @@ public class Course extends _Course implements Queueable, IExpandable {
 	@Override
 	public boolean isAsyncReplicationAllowed() {
 		return true;
+	}
+
+	@Override
+	public void setCustomFieldValue(String key, String value) {
+		setCustomFieldValue(key, value, CourseCustomField.class);
 	}
 }

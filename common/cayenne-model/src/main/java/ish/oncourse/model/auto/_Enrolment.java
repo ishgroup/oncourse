@@ -3,7 +3,6 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.common.types.ClassFundingSource;
@@ -21,6 +20,7 @@ import ish.oncourse.model.AssessmentSubmission;
 import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.EnrolmentCustomField;
+import ish.oncourse.model.ExpandableCayenneDataObject;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.Outcome;
 import ish.oncourse.model.Student;
@@ -32,7 +32,7 @@ import ish.oncourse.model.Survey;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Enrolment extends CayenneDataObject {
+public abstract class _Enrolment extends ExpandableCayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 
@@ -66,33 +66,33 @@ public abstract class _Enrolment extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = new Property<ConfirmationStatus>("confirmationStatus");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> CREDIT_FOEID = new Property<String>("creditFOEId");
-    public static final Property<CreditLevel> CREDIT_LEVEL = new Property<CreditLevel>("creditLevel");
-    public static final Property<String> CREDIT_OFFERED_VALUE = new Property<String>("creditOfferedValue");
-    public static final Property<String> CREDIT_PROVIDER = new Property<String>("creditProvider");
-    public static final Property<CreditProviderType> CREDIT_PROVIDER_TYPE = new Property<CreditProviderType>("creditProviderType");
-    public static final Property<RecognitionOfPriorLearningIndicator> CREDIT_TOTAL = new Property<RecognitionOfPriorLearningIndicator>("creditTotal");
-    public static final Property<CreditType> CREDIT_TYPE = new Property<CreditType>("creditType");
-    public static final Property<String> CREDIT_USED_VALUE = new Property<String>("creditUsedValue");
-    public static final Property<Money> FEE_HELP_AMOUNT = new Property<Money>("feeHelpAmount");
-    public static final Property<EnrolmentVETFeeHelpStatus> FEE_HELP_STATUS = new Property<EnrolmentVETFeeHelpStatus>("feeHelpStatus");
-    public static final Property<StudentStatusForUnitOfStudy> FEE_STATUS = new Property<StudentStatusForUnitOfStudy>("feeStatus");
-    public static final Property<ClassFundingSource> FUNDING_SOURCE = new Property<ClassFundingSource>("fundingSource");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Integer> REASON_FOR_STUDY = new Property<Integer>("reasonForStudy");
-    public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
-    public static final Property<EnrolmentStatus> STATUS = new Property<EnrolmentStatus>("status");
-    public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = new Property<List<AssessmentSubmission>>("assessmentSubmissions");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
-    public static final Property<List<EnrolmentCustomField>> CUSTOM_FIELDS = new Property<List<EnrolmentCustomField>>("customFields");
-    public static final Property<List<InvoiceLine>> INVOICE_LINES = new Property<List<InvoiceLine>>("invoiceLines");
-    public static final Property<List<Outcome>> OUTCOMES = new Property<List<Outcome>>("outcomes");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
-    public static final Property<List<Survey>> SURVEYS = new Property<List<Survey>>("surveys");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = Property.create("confirmationStatus", ConfirmationStatus.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> CREDIT_FOEID = Property.create("creditFOEId", String.class);
+    public static final Property<CreditLevel> CREDIT_LEVEL = Property.create("creditLevel", CreditLevel.class);
+    public static final Property<String> CREDIT_OFFERED_VALUE = Property.create("creditOfferedValue", String.class);
+    public static final Property<String> CREDIT_PROVIDER = Property.create("creditProvider", String.class);
+    public static final Property<CreditProviderType> CREDIT_PROVIDER_TYPE = Property.create("creditProviderType", CreditProviderType.class);
+    public static final Property<RecognitionOfPriorLearningIndicator> CREDIT_TOTAL = Property.create("creditTotal", RecognitionOfPriorLearningIndicator.class);
+    public static final Property<CreditType> CREDIT_TYPE = Property.create("creditType", CreditType.class);
+    public static final Property<String> CREDIT_USED_VALUE = Property.create("creditUsedValue", String.class);
+    public static final Property<Money> FEE_HELP_AMOUNT = Property.create("feeHelpAmount", Money.class);
+    public static final Property<EnrolmentVETFeeHelpStatus> FEE_HELP_STATUS = Property.create("feeHelpStatus", EnrolmentVETFeeHelpStatus.class);
+    public static final Property<StudentStatusForUnitOfStudy> FEE_STATUS = Property.create("feeStatus", StudentStatusForUnitOfStudy.class);
+    public static final Property<ClassFundingSource> FUNDING_SOURCE = Property.create("fundingSource", ClassFundingSource.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Integer> REASON_FOR_STUDY = Property.create("reasonForStudy", Integer.class);
+    public static final Property<PaymentSource> SOURCE = Property.create("source", PaymentSource.class);
+    public static final Property<EnrolmentStatus> STATUS = Property.create("status", EnrolmentStatus.class);
+    public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = Property.create("assessmentSubmissions", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
+    public static final Property<List<EnrolmentCustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
+    public static final Property<List<InvoiceLine>> INVOICE_LINES = Property.create("invoiceLines", List.class);
+    public static final Property<List<Outcome>> OUTCOMES = Property.create("outcomes", List.class);
+    public static final Property<Student> STUDENT = Property.create("student", Student.class);
+    public static final Property<List<Survey>> SURVEYS = Property.create("surveys", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

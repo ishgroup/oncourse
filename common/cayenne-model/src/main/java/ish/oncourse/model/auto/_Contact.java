@@ -3,7 +3,6 @@ package ish.oncourse.model.auto;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
 import ish.oncourse.model.AssessmentSubmission;
@@ -13,6 +12,7 @@ import ish.oncourse.model.ContactRelation;
 import ish.oncourse.model.CorporatePass;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.DiscussionCommentContact;
+import ish.oncourse.model.ExpandableCayenneDataObject;
 import ish.oncourse.model.Invoice;
 import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.PaymentIn;
@@ -29,7 +29,7 @@ import ish.oncourse.model.Tutor;
  * since it may be overwritten next time code is regenerated.
  * If you need to make any customizations, please use subclass.
  */
-public abstract class _Contact extends CayenneDataObject {
+public abstract class _Contact extends ExpandableCayenneDataObject {
 
     private static final long serialVersionUID = 1L; 
 

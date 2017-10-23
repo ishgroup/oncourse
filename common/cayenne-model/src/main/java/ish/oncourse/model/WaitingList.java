@@ -1,10 +1,9 @@
 package ish.oncourse.model;
 
-import ish.oncourse.cayenne.IExpandable;
 import ish.oncourse.model.auto._WaitingList;
 import ish.oncourse.utils.QueueableObjectUtils;
 
-public class WaitingList extends _WaitingList implements Queueable, IExpandable {
+public class WaitingList extends _WaitingList implements Queueable {
 	
 	private static final long serialVersionUID = 8659761513629004303L;
 
@@ -15,5 +14,10 @@ public class WaitingList extends _WaitingList implements Queueable, IExpandable 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
 		return true;
+	}
+
+	@Override
+	public void setCustomFieldValue(String key, String value) {
+		setCustomFieldValue(key, value, WaitingListCustomField.class);
 	}
 }
