@@ -19,7 +19,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.text.ParseException;
 import java.util.*;
 
-import static ish.oncourse.enrol.utils.EnrolContactValidator.*;
 import static ish.oncourse.services.preference.Preferences.ContactFieldSet.enrolment;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import static org.junit.Assert.*;
@@ -31,7 +30,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 	private Contact contact;
 	private ICountryService countryService;
 	private ContactFieldHelper contactFieldHelper;
-	private CustomFieldHolder customFieldHolder;
+	private ContactCustomFieldHolder contactCustomFieldHolder;
 	private Request request;
 	private Messages messages;
 
@@ -102,7 +101,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
         }
 		ContactEditorParser parser = ContactEditorParser.valueOf(request,
 				contact, fields,
-				messages, countryService, contactFieldHelper, customFieldHolder);
+				messages, countryService, contactFieldHelper, contactCustomFieldHolder);
         parser.parse();
         assertNotNull(parser.getErrors());
 
@@ -113,7 +112,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(request.getParameter(Contact.COUNTRY.getName())).thenReturn(null);
 		parser = ContactEditorParser.valueOf(request,
 				contact, fields,
-				messages, countryService, contactFieldHelper, customFieldHolder);
+				messages, countryService, contactFieldHelper, contactCustomFieldHolder);
 		//clean the errors before parse
 		parser.parse();
 
@@ -181,8 +180,8 @@ public class ContactEditorParserTest extends ACheckoutTest{
 			.thenReturn(ContactDetailStrings.KEY_ERROR_dateOfBirth_shouldBeInPast);
 		when(messages.get(ContactDetailStrings.KEY_ERROR_MESSAGE_birthdate_old)).
 			thenReturn(ContactDetailStrings.KEY_ERROR_MESSAGE_birthdate_old);
-		customFieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, false);
-		customFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
+		contactCustomFieldHolder = ContactCustomFieldHolder.valueOf(contactFieldHelper, contact, false);
+		contactCustomFieldHolder.setCustomFieldValue(customField.getCustomFieldType().getName(), customField.getValue());
 	}
 
 	@Test
@@ -192,7 +191,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 		ContactEditorParser parser = ContactEditorParser.valueOf(request,
 				contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()),
-				messages, countryService, contactFieldHelper, customFieldHolder);
+				messages, countryService, contactFieldHelper, contactCustomFieldHolder);
 		//additional check for birth date validation
 		parser.getErrors().clear();
 		assertTrue("No errors should appears", parser.getErrors().isEmpty());
@@ -205,7 +204,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 
 		parser = ContactEditorParser.valueOf(request,
 				contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()),
-				messages, countryService, contactFieldHelper, customFieldHolder);
+				messages, countryService, contactFieldHelper, contactCustomFieldHolder);
 		parser.parse();
 		assertNull("No date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH.getName()));
 
@@ -215,7 +214,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(request.getParameter(Contact.DATE_OF_BIRTH.getName())).thenReturn(testDate);
 		parser = ContactEditorParser.valueOf(request,
 				contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()),
-				messages, countryService, contactFieldHelper, customFieldHolder);
+				messages, countryService, contactFieldHelper, contactCustomFieldHolder);
 		parser.parse();
 		assertNull("No date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH.getName()));
 
@@ -227,7 +226,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		when(contact.getDateOfBirth()).thenReturn(cal.getTime());
 		parser = ContactEditorParser.valueOf(request,
 				contact, Collections.singletonList(Contact.DATE_OF_BIRTH.getName()),
-				messages, countryService, contactFieldHelper, customFieldHolder);
+				messages, countryService, contactFieldHelper, contactCustomFieldHolder);
 		parser.parse();
 		assertNotNull("Date of birth validation errors should be found", parser.getErrors().get(Contact.DATE_OF_BIRTH.getName()));
 	}
@@ -286,7 +285,7 @@ public class ContactEditorParserTest extends ACheckoutTest{
 		ICountryService countryService = getService(ICountryService.class);
 
 		ContactFieldHelper contactFieldHelper = new ContactFieldHelper(preferenceController, enrolment);
-		CustomFieldHolder fieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, false);
+		ContactCustomFieldHolder fieldHolder = ContactCustomFieldHolder.valueOf(contactFieldHelper, contact, false);
 
 		Request request = mock(Request.class);
 		when(request.getParameter(Contact.DATE_OF_BIRTH.getName())).thenReturn("11/11/2011");

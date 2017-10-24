@@ -127,7 +127,7 @@ public class Mail {
                     contactEditorFieldSet.getMessages(),
                     countryService,
                     controller.getContactFieldHelper(),
-                    controller.getCustomFieldHolder()
+                    controller.getContactCustomFieldHolder()
             );
             parser.parse();
             controller.setErrors(parser.getErrors());

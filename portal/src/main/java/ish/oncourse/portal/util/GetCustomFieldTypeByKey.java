@@ -14,13 +14,13 @@ public class GetCustomFieldTypeByKey {
 
     private static Logger logger = LogManager.getLogger();
 
-    private College college;
+    private long collegeId;
     private List<CustomFieldType> customFieldTypes;
 
-    public static GetCustomFieldTypeByKey valueOf(List<CustomFieldType> customFieldTypes, College college) {
+    public static GetCustomFieldTypeByKey valueOf(List<CustomFieldType> customFieldTypes, long collegeId) {
         GetCustomFieldTypeByKey container = new GetCustomFieldTypeByKey();
         container.customFieldTypes = customFieldTypes;
-        container.college = college;
+        container.collegeId = collegeId;
         return container;
     }
 
@@ -32,7 +32,7 @@ public class GetCustomFieldTypeByKey {
             }
         }
         if (res == null) {
-            logger.error("Custom field with key '{}' not found on college id : {}", key, college.getId());
+            logger.error("Custom field with key '{}' not found on college id : {}", key, collegeId);
         }
 
         return res;

@@ -7,7 +7,6 @@ import ish.oncourse.enrol.components.checkout.contact.ContactEditorFieldSet;
 import ish.oncourse.enrol.services.student.IStudentService;
 import ish.oncourse.enrol.waitinglist.WaitingListController;
 import ish.oncourse.model.Course;
-import ish.oncourse.model.CourseClass;
 import ish.oncourse.model.WaitingList;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -202,7 +201,7 @@ public class WaitingListForm {
 					contactEditorFieldSet.getMessages(),
 					countryService,
 					controller.getContactFieldHelper(),
-					controller.getCustomFieldHolder()
+					controller.getContactCustomFieldHolder()
 			);
 			parser.parse();
 			controller.setErrors(parser.getErrors());

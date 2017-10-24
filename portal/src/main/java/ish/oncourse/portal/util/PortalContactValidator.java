@@ -57,10 +57,11 @@ public class PortalContactValidator extends WillowContactValidator {
 		portalContactValidator.defaultCountry = ICountryService.DEFAULT_COUNTRY_NAME.equals(contact.getCountry().getName());
 		
 		List<CustomFieldType> customFieldTypes = ObjectSelect.query(CustomFieldType.class)
-				.where(CustomFieldType.COLLEGE.eq(contact.getCollege()))
+				.where(CustomFieldType.COLLEGE.eq(contact.getCollege())
+						.andExp(CustomFieldType.ENTITY_NAME.eq(Contact.class.getSimpleName())))
 				.select(contact.getObjectContext());
 		
-		portalContactValidator.getCustomFieldType = GetCustomFieldTypeByKey.valueOf(customFieldTypes, contact.getCollege());
+		portalContactValidator.getCustomFieldType = GetCustomFieldTypeByKey.valueOf(customFieldTypes, contact.getCollege().getId());
 		return portalContactValidator;
 	}
 

@@ -25,7 +25,7 @@ public interface ContactEditorDelegate extends IDelegate {
 
 	ConcessionDelegate  getConcessionDelegate();
 
-	CustomFieldHolder getCustomFieldHolder();
+	ContactCustomFieldHolder getContactCustomFieldHolder();
 
 	String getSpecialNeeds();
 }

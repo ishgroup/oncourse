@@ -100,7 +100,7 @@ public class ContactEditor {
 					contactEditorFieldSet.getMessages(),
 					countryService,
 					delegate.getContactFieldHelper(),
-					delegate.getCustomFieldHolder());
+					delegate.getContactCustomFieldHolder());
 			contactEditorParser.parse();
 			Map<String,String> errors = new HashMap<>(contactEditorParser.getErrors());
 

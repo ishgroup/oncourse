@@ -10,19 +10,18 @@ import ish.oncourse.model.Pair;
 import ish.oncourse.services.preference.ContactFieldHelper;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 
 import java.util.TreeSet;
 
-public class CustomFieldHolder {
+public class ContactCustomFieldHolder {
 
 	private ContactFieldHelper contactFieldHelper;
 
 	private HashMap<String, Pair<CustomFieldType, String>> fieldContainer = new HashMap<>();
 
-	private CustomFieldHolder(){
+	private ContactCustomFieldHolder(){
 	}
 
 	private void addType(String fieldName, CustomFieldType type, String value) {
@@ -59,20 +58,21 @@ public class CustomFieldHolder {
 		this.contactFieldHelper = contactFieldHelper;
 	}
 	
-	public static CustomFieldHolder valueOf(ContactFieldHelper contactFieldHelper, Contact contact, boolean fillRequaredFieldOnly) {
-		CustomFieldHolder fieldHolder = new CustomFieldHolder();
+	public static ContactCustomFieldHolder valueOf(ContactFieldHelper contactFieldHelper, Contact contact, boolean fillRequaredFieldOnly) {
+		ContactCustomFieldHolder fieldHolder = new ContactCustomFieldHolder();
 		fieldHolder.setContactFieldHelper(contactFieldHelper);
 
 		if (fillRequaredFieldOnly) {
 			for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
 				if (contactFieldHelper.isCustomFieldTypeRequired(fieldType) &&
+						Contact.class.getSimpleName().equals(fieldType.getEntityName()) &&
 						CustomField.CUSTOM_FIELD_TYPE.eq(fieldType).andExp(CustomField.VALUE.isNotNull()).filterObjects(contact.getCustomFields()).isEmpty()) {
 					fieldHolder.addType(fieldType.getName(), fieldType, null);
 				}
 			}
 		} else {
 			for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
-				if (contactFieldHelper.isCustomFieldTypeVisible(fieldType)) {
+				if (contactFieldHelper.isCustomFieldTypeVisible(fieldType) && Contact.class.getSimpleName().equals(fieldType.getEntityName())) {
 					fieldHolder.addType(fieldType.getName(), fieldType, null);
 				}
 			}

@@ -27,7 +27,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	private PreferenceController preferenceController;
 	private ContactFieldHelper contactFieldHelper;
 	private ContactFieldSet contactFieldSet;
-	private CustomFieldHolder customFieldHolder;
+	private ContactCustomFieldHolder contactCustomFieldHolder;
 
 	private College college;
 
@@ -157,7 +157,7 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 
 	@Override
 	public void saveContact() {
-		CustomFieldsBuilder.valueOf(getCustomFieldHolder(), contact).build();
+		CustomFieldsBuilder.valueOf(getContactCustomFieldHolder(), contact).build();
 		applyMarketingValues();
 		objectContext.commitChanges();
 		state = State.FINISHED;
@@ -286,11 +286,11 @@ public abstract class AContactController implements AddContactDelegate, ContactE
 	}
 
 	@Override
-	public CustomFieldHolder getCustomFieldHolder() {
-		if (customFieldHolder == null) {
-			customFieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, isFillRequiredProperties);
+	public ContactCustomFieldHolder getContactCustomFieldHolder() {
+		if (contactCustomFieldHolder == null) {
+			contactCustomFieldHolder = ContactCustomFieldHolder.valueOf(contactFieldHelper, contact, isFillRequiredProperties);
 		}
-		return customFieldHolder;
+		return contactCustomFieldHolder;
 	}
 
 	public static enum State {

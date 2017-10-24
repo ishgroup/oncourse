@@ -113,23 +113,23 @@ public class ContactEditorFieldSet {
 	}
 	
 	public Set<String> getCustomFieldNames() {
-		return delegate.getCustomFieldHolder().getCustomFieldNames();
+		return delegate.getContactCustomFieldHolder().getCustomFieldNames();
 	}
 	
 	public String getCurrentCustomFieldValue() {
-		return delegate.getCustomFieldHolder().getCustomFieldValue(customFieldName);
+		return delegate.getContactCustomFieldHolder().getCustomFieldValue(customFieldName);
 	}
 
 	public String getDefaultCustomFieldValue() {
-		return delegate.getCustomFieldHolder().getDefaultCustomFieldValue(customFieldName);
+		return delegate.getContactCustomFieldHolder().getDefaultCustomFieldValue(customFieldName);
 	}
 
 	public void setCurrentCustomFieldValue(String value) {
-		delegate.getCustomFieldHolder().setCustomFieldValue(customFieldName, value);
+		delegate.getContactCustomFieldHolder().setCustomFieldValue(customFieldName, value);
 	}
 
 	public boolean isCustomFieldRequared() {
-		return delegate.getCustomFieldHolder().isCustomFieldRequared(customFieldName);
+		return delegate.getContactCustomFieldHolder().isCustomFieldRequared(customFieldName);
 	}
 
 	public String getSpecialNeeds() {

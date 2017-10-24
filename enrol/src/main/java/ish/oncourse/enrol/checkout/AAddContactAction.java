@@ -3,7 +3,6 @@ package ish.oncourse.enrol.checkout;
 import ish.oncourse.enrol.checkout.contact.*;
 import ish.oncourse.model.*;
 import ish.oncourse.services.preference.ContactFieldHelper;
-import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.Preferences;
 import org.apache.cayenne.ObjectContext;
 
@@ -100,8 +99,8 @@ public abstract class AAddContactAction extends APurchaseAction {
 
     protected void commitContact() {
 
-		if (getParameter().hasValue(CustomFieldHolder.class)) {
-			CustomFieldsBuilder.valueOf(getParameter().getValue(CustomFieldHolder.class), contact).build();
+		if (getParameter().hasValue(ContactCustomFieldHolder.class)) {
+			CustomFieldsBuilder.valueOf(getParameter().getValue(ContactCustomFieldHolder.class), contact).build();
 		}
 
         contact.getObjectContext().commitChanges();

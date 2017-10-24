@@ -1,6 +1,7 @@
 package ish.oncourse.cms.components;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.Contact;
 import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.selectutils.StringSelectModel;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -9,6 +10,7 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.ui.pages.internal.Page;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.*;
@@ -251,7 +253,10 @@ public class ContactEntrySettings {
         ObjectContext objectContext = cayenneService.newContext();
         College college = objectContext.localObject(webSiteService.getCurrentCollege());
 
-		this.customFieldTypes = college.getCustomFieldTypes();
+		this.customFieldTypes = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.COLLEGE.eq(college)
+						.andExp(CustomFieldType.ENTITY_NAME.eq(Contact.class.getSimpleName())))
+				.select(objectContext);
 
 		// order custom field types alphabetically by name
 		Ordering.orderList(customFieldTypes, CustomFieldType.NAME.ascInsensitives());

@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static ish.oncourse.enrol.services.Constants.DATE_FIELD_PARSE_FORMAT;
-import static ish.oncourse.enrol.utils.EnrolContactValidator.*;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
 public class ContactEditorParser {
@@ -32,7 +31,7 @@ public class ContactEditorParser {
     private Messages messages;
     private ICountryService countryService;
     private ContactFieldHelper contactFieldHelper;
-    private CustomFieldHolder customFieldHolder;
+    private ContactCustomFieldHolder contactCustomFieldHolder;
 
     private DateFormat dateFormat = new SimpleDateFormat(DATE_FIELD_PARSE_FORMAT);
 
@@ -109,9 +108,9 @@ public class ContactEditorParser {
         }
 
         // validate custom fields
-        for (String name : customFieldHolder.getCustomFieldNames()) {
-            if (customFieldHolder.isCustomFieldRequared(name)
-                    && StringUtils.trimToNull(customFieldHolder.getCustomFieldValue(name)) == null) {
+        for (String name : contactCustomFieldHolder.getCustomFieldNames()) {
+            if (contactCustomFieldHolder.isCustomFieldRequared(name)
+                    && StringUtils.trimToNull(contactCustomFieldHolder.getCustomFieldValue(name)) == null) {
                 errors.put(name,
                         messages.format(ContactDetailStrings.KEY_ERROR_MESSAGE_fieldRequired, name));
             }
@@ -161,7 +160,7 @@ public class ContactEditorParser {
 
     public static ContactEditorParser valueOf(Request request, Contact contact , List<String> visibleFields,
                                               Messages messages, ICountryService countryService, ContactFieldHelper contactFieldHelper,
-                                              CustomFieldHolder customFieldHolder) {
+                                              ContactCustomFieldHolder contactCustomFieldHolder) {
         ContactEditorParser result = new ContactEditorParser();
         result.request = request;
         result.contact = contact;
@@ -170,7 +169,7 @@ public class ContactEditorParser {
         result.messages = messages;
         result.countryService = countryService;
         result.contactFieldHelper = contactFieldHelper;
-        result.customFieldHolder = customFieldHolder;
+        result.contactCustomFieldHolder = contactCustomFieldHolder;
         return result;
     }
 

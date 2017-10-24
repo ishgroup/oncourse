@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomFieldsBuilder {
-	private CustomFieldHolder fieldHolder;
+	private ContactCustomFieldHolder fieldHolder;
 	private Contact contact;
 	
 	private CustomFieldsBuilder() {
 	}
 	
-	public static CustomFieldsBuilder valueOf(CustomFieldHolder fieldHolder, Contact contact) {
+	public static CustomFieldsBuilder valueOf(ContactCustomFieldHolder fieldHolder, Contact contact) {
 		CustomFieldsBuilder builder = new CustomFieldsBuilder();
 		builder.fieldHolder = fieldHolder;
 		builder.contact = contact;

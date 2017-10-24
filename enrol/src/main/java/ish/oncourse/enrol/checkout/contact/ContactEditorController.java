@@ -31,7 +31,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 
 	private String specialNeeds;
 	
-	private CustomFieldHolder customFieldHolder;
+	private ContactCustomFieldHolder contactCustomFieldHolder;
 
 	@Override
 	public Contact getContact() {
@@ -58,7 +58,7 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
 		PurchaseController.ActionParameter actionParameter = new PurchaseController.ActionParameter(addAction);
 		actionParameter.setErrors(getErrors());
 		actionParameter.setValue(contact);
-		actionParameter.setValue(getCustomFieldHolder());
+		actionParameter.setValue(getContactCustomFieldHolder());
 		getPurchaseController().performAction(actionParameter);
 	}
 
@@ -131,11 +131,11 @@ public class ContactEditorController extends ADelegate implements ContactEditorD
     }
 
 	@Override
-	public CustomFieldHolder getCustomFieldHolder() {
-		if (customFieldHolder == null) {
-			customFieldHolder = CustomFieldHolder.valueOf(contactFieldHelper, contact, fillRequiredProperties);
+	public ContactCustomFieldHolder getContactCustomFieldHolder() {
+		if (contactCustomFieldHolder == null) {
+			contactCustomFieldHolder = ContactCustomFieldHolder.valueOf(contactFieldHelper, contact, fillRequiredProperties);
 		}
-		return customFieldHolder;
+		return contactCustomFieldHolder;
 	}
 
 	@Override
