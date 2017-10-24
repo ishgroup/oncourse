@@ -4,6 +4,7 @@ package ish.oncourse.portal.util;
 import ish.oncourse.cayenne.ContactInterface;
 import ish.oncourse.components.ContactDetailStrings;
 import ish.oncourse.model.Contact;
+import ish.oncourse.model.CustomFieldType;
 import ish.oncourse.services.preference.ContactFieldHelper;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.reference.ICountryService;
@@ -15,10 +16,12 @@ import ish.oncourse.util.contact.WillowContactValidator;
 import ish.oncourse.utils.ContactDelegator;
 import ish.validation.ContactErrorCode;
 import ish.validation.ContactValidator;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -52,7 +55,12 @@ public class PortalContactValidator extends WillowContactValidator {
 		portalContactValidator.contactFieldHelper = contactFieldHelper;
 		portalContactValidator.validateHandler = validateHandler;
 		portalContactValidator.defaultCountry = ICountryService.DEFAULT_COUNTRY_NAME.equals(contact.getCountry().getName());
-		portalContactValidator.getCustomFieldType = GetCustomFieldTypeByKey.valueOf(contact.getCollege());
+		
+		List<CustomFieldType> customFieldTypes = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.COLLEGE.eq(contact.getCollege()))
+				.select(contact.getObjectContext());
+		
+		portalContactValidator.getCustomFieldType = GetCustomFieldTypeByKey.valueOf(customFieldTypes, contact.getCollege());
 		return portalContactValidator;
 	}
 

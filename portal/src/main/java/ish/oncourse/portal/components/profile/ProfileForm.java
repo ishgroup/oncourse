@@ -15,6 +15,7 @@ import ish.oncourse.services.reference.ICountryService;
 import ish.oncourse.util.FormatUtils;
 import ish.oncourse.util.MessagesNamingConvention;
 import ish.oncourse.util.ValidateHandler;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.annotations.*;
@@ -26,10 +27,7 @@ import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 import static org.apache.tapestry5.EventConstants.VALIDATE;
@@ -105,8 +103,14 @@ public class ProfileForm {
 		if (contact == null) {
 			contact = portalService.getContact();
 		}
-		getCustomFieldType = GetCustomFieldTypeByKey.valueOf(contact.getCollege());
-		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
+
+		List<CustomFieldType> customFieldTypes = ObjectSelect.query(CustomFieldType.class)
+				.where(CustomFieldType.COLLEGE.eq(contact.getCollege()))
+				.select(contact.getObjectContext());
+		
+		getCustomFieldType = GetCustomFieldTypeByKey.valueOf(customFieldTypes, contact.getCollege());
+
+		for (CustomFieldType fieldType : customFieldTypes) {
 			if (getContactFieldHelper().isCustomFieldTypeVisible(fieldType)) {
 				customFieldContainer.put(fieldType.getKey(), null);
 			}
