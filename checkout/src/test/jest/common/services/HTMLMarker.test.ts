@@ -20,16 +20,6 @@ test('test parse for enrol-button marker', () => {
 
   const result: { [key: string]: any } = HtmlUtils.parse(container, marker);
   expect(true).toBe(typeof result.id == "string");
-  expect('2222222').toBe(result.courseId);
-  expect('COURSE').toBe(result.courseCode);
-  expect('course name').toBe(result.courseName);
-  expect('course description').toBe(result.courseDescription);
-  expect(true).toBe(result.hasAvailablePlaces);
-  expect(10).toBe(result.availableEnrolmentPlaces);
-  expect(false).toBe(result.isFinished);
-  expect(false).toBe(result.isCancelled);
-  expect(true).toBe(result.isAllowByApplication);
-  expect(true).toBe(result.isPaymentGatewayEnabled);
 });
 
 
