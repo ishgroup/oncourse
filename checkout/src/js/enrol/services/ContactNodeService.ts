@@ -7,7 +7,7 @@ export class ContactNodeService {
    * We do it to get an possibility to use 'instanceof' expression for purchase items.
    * className can accept the following values:
    */
-  static getPurchaseItem = (node: models.ContactNode, original: models.PurchaseItem): models.PurchaseItem => {
+  static getPurchaseItem = (node: models.ContactNode, original: any): models.PurchaseItem => {
 
     if (original instanceof models.Application) {
       return Object.assign(new models.Application(), node.applications[0]);
