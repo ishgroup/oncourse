@@ -19,6 +19,7 @@ import ish.oncourse.services.s3.IS3Service;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.tapestry5.MetaDataConstants;
+import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.EagerLoad;
@@ -53,10 +54,16 @@ public class AppModule {
 		return jmxService;
 	}
 
-	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
-		configuration.add(MetaDataConstants.SECURE_PAGE, "true");
+	public static void contributeApplicationDefaults(
+			MappedConfiguration<String, String> configuration) {
+		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
+		configuration.add(SymbolConstants.SECURE_ENABLED, "false");
 	}
-	
+
+	public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration) {
+		configuration.add(MetaDataConstants.SECURE_PAGE, "false");
+	}
+
 	public void contributeServiceOverride(MappedConfiguration<Class<?>, Object> configuration, @Local IWebSiteService webSiteService) {
 		configuration.add(IWebSiteService.class, webSiteService);
 	}
