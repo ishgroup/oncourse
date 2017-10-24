@@ -9,6 +9,7 @@ import {
 import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
 import {mockAmount} from "./mocks/MockFunctions";
 import {FieldName} from "../../js/enrol/containers/payment/services/PaymentService";
+import {WaitingList} from "../../js/model/checkout/WaitingList";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;
@@ -30,6 +31,18 @@ export class CheckoutApiMock extends CheckoutApi {
 
     const products: Product[] = request.productIds.map(id => this.config.db.getProductClassById(id));
     result.vouchers = this.createVouchersBy([contact], products);
+
+    const waitingCourses: WaitingList[] = request.waitingCourseIds.map(id => ({
+      contactId: contact.id,
+      courseId: this.config.db.classes.entities.classes[this.config.db.classes.result[0]].course.id,
+      studentsCount: 1,
+      detail: '',
+      warnings: [],
+      errors: [],
+      selected: true,
+    // fieldHeadings: FieldHeading[];
+    }));
+    result.waitingLists = waitingCourses;
 
     return this.config.createResponse(result);
   }

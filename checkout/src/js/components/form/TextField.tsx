@@ -18,7 +18,7 @@ function inputComponent(props: TextFieldProps) {
     placeholder,
     type,
   } = props;
-  const isShowError = showError(props);
+  const isShowError = showError({...props, meta: props.meta || {}});
 
   return (
     <div>
@@ -38,7 +38,7 @@ function inputComponent(props: TextFieldProps) {
           placeholder={placeholder}
           type={type}
         />
-        <ValidateText {...props}/>
+        <ValidateText {...props} meta={props.meta || {}}/>
       </span>
     </div>
   );

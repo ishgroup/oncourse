@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
 import {IshAction} from "../../actions/IshAction";
-import {ContactState, CourseClassCartState, ProductCartState} from "../../services/IshState";
+import {ContactState, CourseClassCartState, ProductCartState, WaitingCourseClassState} from "../../services/IshState";
 import {Contact} from "../../model";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../actions/Actions";
@@ -128,6 +128,47 @@ function promotionsById(state = {}, action: IshAction<ProductCartState>) {
   }
 }
 
+function waitingCourseAllIds(state = [], action: IshAction<WaitingCourseClassState>) {
+  switch (action.type) {
+    case FULFILLED(Actions.ADD_WAITING_COURSE_TO_CART):
+      return [
+        ...state,
+        ...[action.payload.result]
+          .filter(t => !state.includes(t)), // dedup
+      ];
+
+    // case FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART):
+    //   return state.filter(it => it !== action.payload.result);
+
+    case RESET_CHECKOUT_STATE:
+      return [];
+
+    default:
+      return state;
+  }
+}
+
+function waitingCoursesById(state = {}, action: IshAction<WaitingCourseClassState>) {
+  switch (action.type) {
+    case FULFILLED(Actions.ADD_WAITING_COURSE_TO_CART):
+      return {
+        ...state,
+        ...action.payload.entities.waitingCourses,
+      };
+
+    // case FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART):
+    //   const nextState = {...state};
+    //   delete nextState[action.payload.result];
+    //   return nextState;
+
+    case RESET_CHECKOUT_STATE:
+      return {};
+
+    default:
+      return state;
+  }
+}
+
 function contactReducer(state:ContactState = {}, action: IshAction<Contact>) {
   switch (action.type) {
     case FULFILLED(Actions.REQUEST_CONTACT):
@@ -153,6 +194,10 @@ export const cartReducer = combineReducers({
   promotions: combineReducers({
     entities: promotionsById,
     result: promotionsAllIds,
+  }),
+  waitingCourses: combineReducers({
+    entities: waitingCoursesById,
+    result: waitingCourseAllIds,
   }),
   contact: contactReducer,
 });

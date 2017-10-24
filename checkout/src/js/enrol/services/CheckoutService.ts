@@ -1,7 +1,7 @@
 import * as L from "lodash";
 import {
   ContactFields, ContactFieldsRequest, SubmitFieldsRequest, CreateContactParams, Field, CheckoutModel, Amount,
-  ContactNode, CheckoutModelRequest, ContactNodeRequest, PaymentResponse, PaymentRequest, DataType,
+  ContactNode, CheckoutModelRequest, ContactNodeRequest, PaymentResponse, PaymentRequest, DataType, Suburb,
   GetCorporatePassRequest, ContactId, PaymentStatus, Contact, Concession, CodeResponse, FieldSet, PurchaseItem,
 } from "../../model";
 
@@ -26,7 +26,6 @@ import {ContactNodeService} from "./ContactNodeService";
 import {PromotionApi} from "../../http/PromotionApi";
 import {CorporatePassApi} from "../../http/CorporatePassApi";
 import {toFormKey} from "../../components/form/FieldFactory";
-import {Suburb} from "../../model";
 
 const DELAY_NEXT_PAYMENT_STATUS: number = 5000;
 
@@ -39,7 +38,13 @@ export class CheckoutService {
   }
 
   public cartIsEmpty = (cart: CartState): boolean => {
-    return L.isEmpty(cart.courses.result) && L.isEmpty(cart.products.result);
+    return L.isEmpty(cart.courses.result) && L.isEmpty(cart.products.result) && L.isEmpty(cart.waitingCourses.result);
+  }
+
+  public isOnlyWaitingCoursesInCart = (cart: CartState) => {
+    return cart.waitingCourses.result.length &&
+      !cart.courses.result.length &&
+      !cart.products.result.length;
   }
 
   public ifCodeExist = (code, state): boolean => {
@@ -73,8 +78,8 @@ export class CheckoutService {
     return this.contactApi.submitContactDetails(BuildSubmitFieldsRequest.fromValues(fields, values));
   }
 
-  public createOrGetContact = (values: ContactValues): Promise<ContactId> => {
-    return this.contactApi.createOrGetContact(BuildCreateContactParams.fromValues(values));
+  public createOrGetContact = (values: ContactValues, fieldset?: FieldSet): Promise<ContactId> => {
+    return this.contactApi.createOrGetContact(BuildCreateContactParams.fromValues(values, fieldset));
   }
 
 
@@ -208,6 +213,7 @@ export class BuildContactNodeRequest {
     result.classIds = item.classId ? [item.classId] : [];
     result.productIds = item.productId ? [item.productId] : [];
     result.promotionIds = state.cart.promotions.result;
+    result.waitingCourseIds = state.cart.waitingCourses.result;
     return result;
   }
 
@@ -217,6 +223,7 @@ export class BuildContactNodeRequest {
     result.classIds = cart.courses.result;
     result.productIds = cart.products.result;
     result.promotionIds = cart.promotions.result;
+    result.waitingCourseIds = cart.waitingCourses.result;
     return result;
   }
 
@@ -226,6 +233,7 @@ export class BuildContactNodeRequest {
     result.classIds = cart.courses.result;
     result.productIds = cart.products.result;
     result.promotionIds = cart.promotions.result;
+    result.waitingCourseIds = cart.waitingCourses.result;
     return result;
   }
 }
@@ -297,12 +305,12 @@ export class BuildSubmitFieldsRequest {
 }
 
 export class BuildCreateContactParams {
-  static fromValues = (values: ContactValues) => {
+  static fromValues = (values: ContactValues, fieldset: FieldSet) => {
     const result: CreateContactParams = new CreateContactParams();
     result.firstName = values.firstName;
     result.lastName = values.lastName;
     result.email = values.email;
-    result.fieldSet = FieldSet.ENROLMENT;
+    result.fieldSet = fieldset || FieldSet.ENROLMENT;
     result.company = values.company || false;
     return result;
   }
@@ -323,6 +331,7 @@ export class BuildContactNodes {
     result.memberships = storage.memberships ? storage.memberships.map(id => state.entities.memberships[id]) : [];
     result.articles = storage.articles ? storage.articles.map(id => state.entities.articles[id]) : [];
     result.vouchers = storage.vouchers ? storage.vouchers.map(id => state.entities.vouchers[id]) : [];
+    result.waitingLists = storage.waitingLists ? storage.waitingLists.map(id => state.entities.waitingLists[id]) : [];
     return result;
   }
 }

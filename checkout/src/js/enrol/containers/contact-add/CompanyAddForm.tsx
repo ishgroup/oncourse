@@ -12,13 +12,13 @@ import CheckoutService from "../../services/CheckoutService";
 
 class CompanyAddForm extends React.Component<any, any> {
   render() {
-    const {handleSubmit, onCancel, pristine, submitting, fetching} = this.props;
+    const {handleSubmit, onCancel, pristine, submitting, fetching, fieldset} = this.props;
 
     return (
       <div>
         <h2>Add a company</h2>
         <form
-          onSubmit={handleSubmit(values => CheckoutService.createOrGetContact({...values, company: true}))}
+          onSubmit={handleSubmit(values => CheckoutService.createOrGetContact({...values, company: true}, fieldset))}
           className={classnames({submitting: submitting || fetching})}
           id="contactEditorForm"
         >

@@ -40,6 +40,16 @@ export class MockControl extends React.Component<Props, any> {
     });
   }
 
+  private addWaitingCourseToCart = i => {
+    this.props.config.store.dispatch({
+      type: Actions.ADD_WAITING_COURSE_TO_CART,
+      payload: {id: this.props.config.db.classes.result[i]},
+      // meta: {
+      //   analytics: GABuilder.addCourseClassToCart('Course Class', this.props.config.db.classes.entities.classes[this.props.config.db.classes.result[i]]),
+      // },
+    });
+  }
+
   private loadVoucher = () => {
     this.props.config.store.dispatch({
       type: Actions.REQUEST_PRODUCT,
@@ -86,13 +96,17 @@ export class MockControl extends React.Component<Props, any> {
         {this.renderProperty("checkoutApi.makePayment.result.undefined")}
         <button className="btn" onClick={() => this.loadCourseClasses(0)}>Load Classes 1</button>
         <button className="btn" onClick={() => this.addCourseClass(0)}>Add Classes 1</button>
+        <button className="btn" onClick={() => this.addWaitingCourseToCart(0)}>Add To Waiting list</button>
         <br/>
         <button className="btn" onClick={() => this.loadCourseClasses(1)}>Load Classes 2</button>
         <button className="btn" onClick={() => this.addCourseClass(1)}>Add Classes 2</button>
         <br/>
         <button className="btn" onClick={this.removeCourseClass}>Remove Classes</button>
+        <br/>
         <button className="btn" onClick={this.loadVoucher}>Load Voucher</button>
         <button className="btn" onClick={this.addVoucher}>Add Voucher</button>
+        <br/>
+
         <button className="btn" onClick={this.resetLocalForage}>Reset LocalForage</button>
       </fieldset>
       <fieldset>

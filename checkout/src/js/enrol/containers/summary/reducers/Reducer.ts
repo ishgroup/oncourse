@@ -19,6 +19,7 @@ export const Reducer = (state: State = ContactNodeToState([]), action: IAction<S
         stateNode.memberships = Array.from(new Set([...stateNode.memberships || [], ...payloadNode.memberships]));
         stateNode.articles = Array.from(new Set([...stateNode.articles || [], ...payloadNode.articles]));
         stateNode.vouchers = Array.from(new Set([...stateNode.vouchers || [], ...payloadNode.vouchers]));
+        stateNode.waitingLists = Array.from(new Set([...stateNode.waitingLists || [], ...payloadNode.waitingLists]));
       });
       mergePurchases(ns, action.payload, false);
       return ns;
@@ -75,5 +76,8 @@ const mergePurchases = (ns: State, payload: State, leaveExisting: boolean): Stat
   ns.entities.vouchers = leaveExisting
     ? {...payload.entities.vouchers, ...ns.entities.vouchers}
     : {...ns.entities.vouchers, ...payload.entities.vouchers};
+  ns.entities.waitingLists = leaveExisting
+    ? {...payload.entities.waitingLists, ...ns.entities.waitingLists}
+    : {...ns.entities.waitingLists, ...payload.entities.waitingLists};
   return ns;
 };

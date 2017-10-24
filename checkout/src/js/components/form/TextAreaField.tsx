@@ -18,7 +18,7 @@ function inputComponent(props: TextAreaFieldProps) {
     rows,
     classes,
   } = props;
-  const isShowError = showError(props);
+  const isShowError = showError({...props, meta: props.meta || {}});
 
   return (
     <div>
@@ -37,7 +37,7 @@ function inputComponent(props: TextAreaFieldProps) {
                   className={classnames(classes, 'input-fixed', {'t-error': isShowError})}
                   rows={rows}
         />
-        <ValidateText {...props}/>
+        <ValidateText {...props} meta={props.meta || {}}/>
       </span>
     </div>
   );

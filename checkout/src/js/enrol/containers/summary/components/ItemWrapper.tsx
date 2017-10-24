@@ -1,5 +1,6 @@
 import * as React from "react";
 import {isNil} from "lodash";
+import classnames from "classnames";
 
 export interface Props {
   name: string;
@@ -10,14 +11,15 @@ export interface Props {
   item: any;
   contact: any;
   onChange: (item, contact) => void;
+  fullWidth?: boolean;
 }
 
 export class ItemWrapper extends React.Component<Props, any> {
   public render(): JSX.Element {
-    const {name, title, selected, error, warning, onChange, item, contact, children} = this.props;
+    const {name, title, selected, error, warning, onChange, item, contact, children, fullWidth} = this.props;
 
     return (
-      <div className="col-xs-16 col-md-17 enrolmentInfo">
+      <div className={classnames("enrolmentInfo", {"col-xs-16 col-md-17": !fullWidth, "col-md-24": fullWidth})}>
         <label>
           <input className="enrolmentSelect"
                  type="checkbox"

@@ -11,7 +11,7 @@ import {
   ClassesSchema,
   ProductsListSchema,
   ProductsSchema,
-  PromotionsSchema,
+  PromotionsSchema, WaitingCoursesSchema,
 } from "../../NormalizeSchema";
 import {Injector} from "../../injector";
 import {PromotionParams, ContactParams} from "../../model";
@@ -43,6 +43,7 @@ export const WebEpic = combineEpics(
   createRemoveProductFromCartEpic(),
   createAddPromotionToCartEpic(),
   createRemovePromotionFromCartEpic(),
+  createAddWaitingCourseToCartEpic(),
 );
 
 function createCoursesEpic() {
@@ -167,6 +168,15 @@ function createRemoveClassFromCartEpic() {
     }));
 }
 
+function createAddWaitingCourseToCartEpic() {
+  return (action$, store: Store<IshState>) => action$
+    .ofType(Actions.ADD_WAITING_COURSE_TO_CART)
+    .map(action => ({
+      type: FULFILLED(Actions.ADD_WAITING_COURSE_TO_CART),
+      payload: normalize(store.getState().courses.entities[action.payload.id].course, WaitingCoursesSchema),
+    }));
+}
+
 function createAddProductToCartEpic() {
   return (action$, store: Store<IshState>) => action$
     .ofType(Actions.ADD_PRODUCT_TO_CART)
@@ -174,7 +184,8 @@ function createAddProductToCartEpic() {
       return {
         type: FULFILLED(Actions.ADD_PRODUCT_TO_CART),
         payload: normalize(store.getState().products.entities[action.payload.id], ProductsSchema),
-    };});
+      };
+    });
 }
 
 function createRemoveProductFromCartEpic() {

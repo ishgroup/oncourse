@@ -4,6 +4,9 @@ import {ContactState} from "./services/IshState";
 export const ClassesSchema = new schema.Entity('classes');
 export const ClassesListSchema = new schema.Array(ClassesSchema);
 
+export const WaitingCoursesSchema = new schema.Entity('waitingCourses');
+export const WaitingCoursesListSchema = new schema.Array(WaitingCoursesSchema);
+
 export const ProductsSchema = new schema.Entity('products');
 export const ProductsListSchema = new schema.Array(ProductsSchema);
 

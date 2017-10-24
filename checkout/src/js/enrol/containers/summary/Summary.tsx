@@ -24,6 +24,7 @@ import {updateConcessionContact, getContactConcessions} from "../concession/acti
 import {Phase} from "../../reducers/State";
 import {SummaryService} from "./services/SummaryService";
 import CheckoutService from "../../services/CheckoutService";
+import {WaitingList} from "../../../model/checkout/WaitingList";
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => {
   return {
@@ -65,18 +66,28 @@ export const ArticlePropsBy = (a: Article, state: IshState): ArticleProps => {
   };
 };
 
+export const WaitingListPropsBy = (w: WaitingList, state: IshState): any => {
+  return {
+    contact: state.checkout.contacts.entities.contact[w.contactId],
+    product: state.cart.waitingCourses.entities[w.courseId],
+    waitingList: w,
+  };
+};
+
 export const ContactPropsBy = (contactId: string, state: IshState): ContactProps => {
   const enrolmentIds = state.checkout.summary.entities.contactNodes[contactId].enrolments || [];
   const applicationIds = state.checkout.summary.entities.contactNodes[contactId].applications || [];
   const voucherIds = state.checkout.summary.entities.contactNodes[contactId].vouchers || [];
   const membershipIds = state.checkout.summary.entities.contactNodes[contactId].memberships || [];
   const articleIds = state.checkout.summary.entities.contactNodes[contactId].articles || [];
+  const waitingListIds = state.checkout.summary.entities.contactNodes[contactId].waitingLists || [];
 
   const enrolments = state.checkout.summary.entities.enrolments || [];
   const vouchers = state.checkout.summary.entities.vouchers || [];
   const applications = state.checkout.summary.entities.applications || [];
   const memberships = state.checkout.summary.entities.memberships || [];
   const articles = state.checkout.summary.entities.articles || [];
+  const waitingLists = state.checkout.summary.entities.waitingLists || [];
 
   return {
     contact: state.checkout.contacts.entities.contact[contactId],
@@ -85,6 +96,7 @@ export const ContactPropsBy = (contactId: string, state: IshState): ContactProps
     vouchers: voucherIds.map((id: string): VoucherProps => VoucherPropsBy(vouchers[id], state)),
     memberships: membershipIds.map((id: string): MembershipProps => MembershipPropsBy(memberships[id], state)),
     articles: articleIds.map((id: string): ArticleProps => ArticlePropsBy(articles[id], state)),
+    waitingLists: waitingListIds.map((id: string): any => WaitingListPropsBy(waitingLists[id], state)),
   };
 };
 
@@ -139,6 +151,9 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onAddCode: (code: string): void => {
       dispatch(addCode(code));
+    },
+    onUpdateWaitingCourse: (waitingCourse, prop) => {
+      dispatch(updateItem(Object.assign(waitingCourse, prop)));
     },
     onPriceValueChange: (productItem: PurchaseItem, val: any): void => {
       const item = Object.assign(productItem, {value: val, price: val});

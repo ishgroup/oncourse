@@ -1,4 +1,6 @@
 // Web models
+import {WaitingList} from "./checkout/WaitingList";
+
 export {ContactId} from './web/ContactId';
 export {Contact} from './web/Contact';
 export {ContactParams} from './web/ContactParams';
@@ -69,6 +71,7 @@ export {VoucherPayment} from "./checkout/VoucherPayment";
 export {ConcessionsAndMemberships} from "./checkout/ConcessionsAndMemberships";
 export {StudentMembership} from "./checkout/StudentMembership";
 export {ChangeParentRequest} from "./checkout/ChangeParentRequest";
+export {WaitingList} from './checkout/WaitingList';
 
 // PurchaseItem model
 import {Enrolment} from "./checkout/Enrolment";
@@ -77,4 +80,4 @@ import {Membership} from "./checkout/Membership";
 import {Article} from "./checkout/Article";
 import {Voucher} from "./checkout/Voucher";
 
-export type PurchaseItem = Enrolment | Application | Membership | Article | Voucher;
+export type PurchaseItem = Enrolment | Application | Membership | Article | Voucher | WaitingList;

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {
-  Enrolment, Membership, Article, Voucher, Application, PurchaseItem, Concession, StudentMembership,
+  Enrolment, Membership, Article, Voucher, Application, PurchaseItem, Concession, StudentMembership, WaitingList,
 } from "../../../../model";
 
 import EnrolmentComp, {Props as EnrolmentProps} from "./EnrolmentComp";
@@ -10,6 +10,7 @@ import MembershipComp, {Props as MembershipProps} from "./MembershipComp";
 import ArticleComp, {Props as ArticleProps} from "./ArticleComp";
 import {ContactInfo} from "../../../components/ContactInfo";
 import VoucherComp, {Props as VoucherProps} from "./VoucherComp";
+import WaitingListComp, {Props as WaitingListProps} from "./WaitingListComp";
 import {ContactState} from "../../../../services/IshState";
 
 
@@ -20,6 +21,8 @@ export interface Props {
   vouchers: VoucherProps[];
   memberships: MembershipProps[];
   articles: ArticleProps[];
+  waitingLists: any;
+  onUpdateWaitingCourse?: (waitingCourse, prop) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onAddConcession?: () => void;
@@ -33,7 +36,8 @@ class ContactComp extends React.Component<Props, any> {
   render() {
     const {
       contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
-      articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent,
+      articles, onSelect, onPriceValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
+      onUpdateWaitingCourse,
     } = this.props;
 
     return (
@@ -82,6 +86,15 @@ class ContactComp extends React.Component<Props, any> {
             props.product && <ArticleComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Article(), props.article), !props.article.selected)}
+            />,
+          )}
+
+          {waitingLists.map((props, index) =>
+            props.waitingList && <WaitingListComp
+              key={index} {...props}
+              onChange={() => onSelect(Object.assign(new WaitingList(), props.waitingList), !props.waitingList.selected)}
+              onUpdate={prop => onUpdateWaitingCourse(Object.assign(new WaitingList(), props.waitingList), prop)}
+              onChangeFields={onChangeEnrolmentFields}
             />,
           )}
 

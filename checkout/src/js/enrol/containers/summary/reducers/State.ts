@@ -1,12 +1,14 @@
 import {normalize, schema} from "normalizr";
 
 import {Enrolment, Application, ContactNode, Membership, Voucher, Article, PurchaseItem} from "../../../../model";
+import {WaitingList} from "../../../../model/checkout/WaitingList";
 
 const SEnrolments = new schema.Entity('enrolments', {}, {idAttribute: (e: Enrolment) => `${e.contactId}-${e.classId}`});
 const SApplications = new schema.Entity('applications', {}, {idAttribute: (a: Application) => `${a.contactId}-${a.classId}`});
 const SMemberships = new schema.Entity('memberships', {}, {idAttribute: (m: Membership) => `${m.contactId}-${m.productId}`});
 const SArticles = new schema.Entity('articles', {}, {idAttribute: (a: Article) => `${a.contactId}-${a.productId}`});
 const SVouchers = new schema.Entity('vouchers', {}, {idAttribute: (v: Voucher) => `${v.contactId}-${v.productId}`});
+const SWaitingLists = new schema.Entity('waitingLists', {}, {idAttribute: (v: WaitingList) => `${v.contactId}-${v.courseId}`});
 
 const SContactNodes = new schema.Entity('contactNodes', {
   enrolments: [SEnrolments],
@@ -14,7 +16,8 @@ const SContactNodes = new schema.Entity('contactNodes', {
   memberships: [SMemberships],
   articles: [SArticles],
   vouchers: [SVouchers],
-}, {idAttribute: "contactId"});
+  waitingLists: [SWaitingLists],
+},                                      {idAttribute: "contactId"});
 
 const Schema = new schema.Array(SContactNodes);
 
@@ -25,8 +28,10 @@ export interface ContactNodeStorage {
   vouchers: string[];
   articles: string[];
   memberships: string[];
+  waitingLists: string[];
 }
-export interface ContactNodesStorage {[key: string]: ContactNodeStorage
+export interface ContactNodesStorage {
+  [key: string]: ContactNodeStorage;
 }
 
 export interface State {
@@ -38,6 +43,7 @@ export interface State {
     articles: { [key: string]: Article }
     memberships: { [key: string]: Membership }
     contactNodes: ContactNodesStorage;
+    waitingLists: { [key: string]: WaitingList }
   };
   fetching?: boolean;
 }
@@ -55,6 +61,7 @@ export const ItemToState = (input: PurchaseItem): State => {
   node.memberships = input instanceof Membership ? [input] : [];
   node.articles = input instanceof Article ? [input] : [];
   node.vouchers = input instanceof Voucher ? [input] : [];
+  node.waitingLists = input instanceof WaitingList ? [input] : [];
 
   return ContactNodeToState([node]);
 };

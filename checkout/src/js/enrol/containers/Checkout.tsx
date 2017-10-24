@@ -12,6 +12,8 @@ import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
 import {changePhase, sendInitRequest} from "../actions/Actions";
 import {submitAddContact} from "./contact-add/actions/Actions";
+import CheckoutService from "../services/CheckoutService";
+import {FieldSet} from "../../model/field/FieldSet";
 
 interface Props {
   phase: Phase;
@@ -22,6 +24,7 @@ interface Props {
   isNewContact: boolean;
   fetching: boolean;
   childName: any;
+  fieldset: FieldSet;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -31,7 +34,7 @@ export class Checkout extends React.Component<Props, any> {
   }
 
   render() {
-    const {phase, page, isNewContact, fetching, childName} = this.props;
+    const {phase, page, isNewContact, fetching, childName, fieldset} = this.props;
 
     return (
       <div>
@@ -46,6 +49,7 @@ export class Checkout extends React.Component<Props, any> {
           onSuccess={submitAddContact}
           onCancel={!isNewContact ? () => this.props.changePhase(page) : undefined}
           fetching={fetching}
+          fieldset={fieldset}
         />
         }
         {phase === Phase.AddContactAsCompany &&
@@ -53,6 +57,7 @@ export class Checkout extends React.Component<Props, any> {
           onSuccess={submitAddContact}
           onCancel={() => this.props.changePhase(page)}
           fetching={fetching}
+          fieldset={fieldset}
         />
         }
 
@@ -84,6 +89,7 @@ const mapStateToProps = state => ({
   isNewContact: !state.checkout.contacts.result.length,
   fetching: state.checkout.fetching,
   childName: getChildFromProps(state.checkout),
+  fieldset: CheckoutService.isOnlyWaitingCoursesInCart(state.cart) ? FieldSet.WAITINGLIST : FieldSet.ENROLMENT,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

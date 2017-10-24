@@ -35,6 +35,7 @@ export const mockCourseClass = (): CourseClass => {
     id: faker.random.number() as string,
     code: faker.random.number() as string,
     course: {
+      id: faker.random.number(),
       code: faker.random.alphaNumeric(5).toUpperCase(),
       name: faker.commerce.productName(),
     },

@@ -29,6 +29,10 @@ export class ContactNodeService {
       return Object.assign(new models.Voucher(), node.vouchers[0]);
     }
 
+    if (original instanceof models.WaitingList) {
+      return Object.assign(new models.WaitingList(), node.waitingLists[0]);
+    }
+
     throw new Error(`Unsupported purchase item: ${inspect(original, true, 10, true)}`);
   }
 }

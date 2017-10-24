@@ -13,7 +13,7 @@ import {Phase} from "../../reducers/State";
 
 class ContactAddForm extends React.Component<any, any> {
   render() {
-    const {handleSubmit, onCancel, pristine, invalid, submitting, fetching, phase, childName} = this.props;
+    const {handleSubmit, onCancel, pristine, invalid, submitting, fetching, phase, childName, fieldset} = this.props;
 
     const getFormLabel = () => (
       phase === Phase.ChangeParent && childName && `Change guardian or parent for ${childName}` ||
@@ -27,7 +27,7 @@ class ContactAddForm extends React.Component<any, any> {
       <div>
         <h2>{getFormLabel()}</h2>
         <form
-          onSubmit={handleSubmit(values => CheckoutService.createOrGetContact(values))}
+          onSubmit={handleSubmit(values => CheckoutService.createOrGetContact(values, fieldset))}
           id="contactEditorForm"
           className={classnames({submitting: submitting || fetching})}
         >

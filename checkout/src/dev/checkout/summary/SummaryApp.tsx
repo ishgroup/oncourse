@@ -75,6 +75,7 @@ const createContactProps = (contact: Contact): ContactProps => {
     enrolments: enrolments.filter(e => e.contactId === contact.id).map(createEnrolmentProps),
     applications: applications.filter(a => a.contactId === contact.id).map(createApplicationProps),
     vouchers: vouchers.filter(e => e.contactId === contact.id).map(createVoucherProps),
+    waitingLists: [],
     memberships: [],
     articles: [],
   };

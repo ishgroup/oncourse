@@ -766,6 +766,12 @@ export class MockDB {
     return this.products.entities.products[id];
   }
 
+  createWaitingCourse(contacts, id: string): Product {
+    return {
+
+    }
+  }
+
   getFieldByKey(key: string): Field {
     return this.fields.find((f: Field) => f.key === key);
   }
