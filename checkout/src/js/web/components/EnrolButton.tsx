@@ -13,11 +13,11 @@ export class EnrolButton extends React.Component<Props, State> {
     this.state = {
       showedPopup: false,
       isAlreadyAdded: false,
-      pending: false
+      pending: false,
     };
   }
 
-  add = (e) => {
+  add = e => {
     if (this.state.pending) {
       return;
     }
@@ -26,27 +26,27 @@ export class EnrolButton extends React.Component<Props, State> {
       stopPropagation(e);
       this.setState({
         showedPopup: true,
-        isAlreadyAdded: true
+        isAlreadyAdded: true,
       });
     } else {
-      //ToDo how to handle error?
+      // ToDo how to handle error?
       this.setState({
-        pending: true
+        pending: true,
       });
       this.props.addToCart(this.props.courseClass);
       this.setState({
         showedPopup: true,
         isAlreadyAdded: false,
-        pending: false
+        pending: false,
       });
     }
-  };
+  }
 
   closePopup = () => {
     this.setState({
-      showedPopup: false
+      showedPopup: false,
     });
-  };
+  }
 
   componentDidMount() {
     const {id, loadById} = this.props;
@@ -62,7 +62,7 @@ export class EnrolButton extends React.Component<Props, State> {
       isCancelled,
       isFinished,
       isAllowByApplication,
-      availableEnrolmentPlaces
+      availableEnrolmentPlaces,
     } = this.props.courseClass;
 
     const {isAdded, checkoutPath} = this.props;
@@ -73,7 +73,7 @@ export class EnrolButton extends React.Component<Props, State> {
     let text = '';
 
     if (isCancelled) {
-      text = 'Cancelled'
+      text = 'Cancelled';
     } else if (isActive) {
       if (isAdded) {
         text = 'Added';
@@ -88,25 +88,30 @@ export class EnrolButton extends React.Component<Props, State> {
       text = 'Finished';
     }
 
-    let elements = [
+    const elements = [
       isPaymentGatewayEnabled && <button key="enrol_button" className={classnames('enrolAction', {
         'enrol-added-class': isAdded,
-        'disabled': !isActive
+        disabled: !isActive,
       })} title={text} onClick={isActive ? this.add : null}>
         {text}
       </button>,
       showedPlaces && <div key="free_places" className="classStatus">
         {this.availablePlacesText(availableEnrolmentPlaces)}
-      </div>
+      </div>,
     ];
 
     return (
       <div className="classAction">
         {reverseElements ? elements.reverse() : elements}
-        {this.state.showedPopup && <ConfirmOrderDialog id={id} name={course.name}
-                                                       isAlreadyAdded={this.state.isAlreadyAdded}
-                                                       close={this.closePopup}
-                                                       checkoutPath={checkoutPath}/>}
+        {this.state.showedPopup &&
+        <ConfirmOrderDialog
+          id={id}
+          name={course.name}
+          isAlreadyAdded={this.state.isAlreadyAdded}
+          close={this.closePopup}
+          checkoutPath={checkoutPath}
+        />
+        }
       </div>
     );
   }
@@ -120,16 +125,16 @@ export class EnrolButton extends React.Component<Props, State> {
 
 export interface Props {
   readonly id: string;
-  readonly isAdded: boolean,
+  readonly isAdded: boolean;
   readonly courseClass: CourseClass;
   readonly checkoutPath: string;
   readonly loadById: (id: string) => void;
-  readonly addToCart?: (item: CourseClass) => void,
+  readonly addToCart?: (item: CourseClass) => void;
 }
 
 interface State {
-  showedPopup: boolean,
-  isAlreadyAdded: boolean,
-  pending: boolean
+  showedPopup: boolean;
+  isAlreadyAdded: boolean;
+  pending: boolean;
 }
 

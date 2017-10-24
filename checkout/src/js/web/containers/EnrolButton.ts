@@ -29,8 +29,8 @@ const mapDispatchToProps = dispatch => {
         type: Actions.ADD_CLASS_TO_CART,
         payload: courseClass,
         meta: {
-          analytics: GABuilder.addCourseClassToCart('Course Class', courseClass)
-        }
+          analytics: GABuilder.addCourseClassToCart('Course Class', courseClass),
+        },
       });
     },
     loadById: (id: string) => {

@@ -7,6 +7,7 @@ import BuyButton from "../../web/containers/BuyButton";
 import PopupContainer from "../../web/containers/PopupContainer";
 import Promotions from "../../web/containers/Promotions";
 import {LegacyModal} from "../../web/components/modal/LegacyModal";
+import JoinButton from "../../web/containers/JoinButton";
 
 export const ATTR_DATA_PROP_PREFIX: string = "data-prop-";
 export const ATTR_DATA_CID: string = "data-cid";
@@ -82,6 +83,21 @@ export class HTMLMarkers {
   static ENROL_BUTTON: HTMLMarker = {
     id: "enrol-button",
     component: EnrolButton,
+    props: {
+      id: "string",
+    },
+  };
+
+  /**
+   * Renders join button.
+   *
+   * Corresponding React Component: {@link JoinButton}
+   * Example Usage: <div data-cid="enrol-button"  data-prop-id="${id}"></div>
+   * Tapestry template to use: CourseClassItem.tml
+   */
+  static JOIN_BUTTON: HTMLMarker = {
+    id: "join-button",
+    component: JoinButton,
     props: {
       id: "string",
     },
