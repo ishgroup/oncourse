@@ -175,7 +175,8 @@ public class AppModule {
 		binder.bind(ICookiesService.class, CookiesService.class);
 		binder.bind(ICookiesOverride.class, CookiesImplOverride.class);
 
-		binder.bind(IS3Service.class, S3Service.class);
+		binder.bind(IS3Service.class, S3Service.class).scope(PERTHREAD);
+
 
 		binder.bind(ISearchService.class, PortalSearchService.class);
 		binder.bind(IPropertyService.class, PropertyService.class);
