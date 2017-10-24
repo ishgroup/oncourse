@@ -28,7 +28,7 @@ class CreateWaitingList {
         waitingList.student = contact.student
         waitingList.course = new GetCourse(context, college, w.courseId).get()
         waitingList.detail = w.detail
-        waitingList.potentialStudents = w.studentsCount
+        waitingList.potentialStudents = w.studentsCount.intValue()
 
         (w.fieldHeadings.fields.flatten() as List<Field>).each { f  ->
             String value = StringUtils.trimToNull(f.value)
