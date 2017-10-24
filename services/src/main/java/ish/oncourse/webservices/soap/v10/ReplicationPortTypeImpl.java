@@ -169,11 +169,16 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		return new ArrayList<>();
 	}
 
-	static ReplicationFault createReplicationFaultForException(final InternalReplicationFault exception) {
-		FaultReason faultReason = new FaultReason();
-		faultReason.setDetailMessage(exception.getFaultReasonMessage());
-		faultReason.setFaultCode(exception.getFaultCode());
-		return new ReplicationFault(exception.getMessage(), faultReason);
+	static ReplicationFault createReplicationFaultForException(final Exception exception) {
+		if (exception instanceof InternalReplicationFault) {
+			InternalReplicationFault fault = (InternalReplicationFault) exception;
+			FaultReason faultReason = new FaultReason();
+			faultReason.setDetailMessage(fault.getFaultReasonMessage());
+			faultReason.setFaultCode(fault.getFaultCode());
+			return new ReplicationFault(exception.getMessage(), faultReason);
+		} else {
+			return new ReplicationFault(exception.getMessage());
+		}
 	}
 
 	static AuthFailure createAuthFailureForException(final InternalAuthenticationException exception) {

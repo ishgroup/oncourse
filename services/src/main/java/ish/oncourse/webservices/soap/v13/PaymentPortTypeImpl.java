@@ -55,7 +55,7 @@ public class PaymentPortTypeImpl implements PaymentPortType {
 	public ParametersMap verifyUSI(ParametersMap parametersMap) throws ReplicationFault {
 		try {
 			return (ParametersMap) paymentPort.verifyUSI(parametersMap);
-		} catch (InternalReplicationFault e) {
+		} catch (Exception e) {
 			throw ReplicationPortTypeImpl.createReplicationFaultForException(e);
 		}
 	}
