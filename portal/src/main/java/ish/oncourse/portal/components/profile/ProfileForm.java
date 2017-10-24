@@ -100,6 +100,7 @@ public class ProfileForm {
 	@SetupRender
 	@OnEvent(value = EventConstants.PREPARE_FOR_SUBMIT)
 	void setupRender() {
+		customFieldContainer.clear();
 		if (contact == null) {
 			contact = portalService.getContact();
 		}
