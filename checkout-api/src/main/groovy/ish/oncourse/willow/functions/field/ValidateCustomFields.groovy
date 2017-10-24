@@ -5,6 +5,7 @@ import ish.oncourse.willow.model.common.FieldError
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.FieldHeading
+import org.apache.commons.lang3.StringUtils
 
 class ValidateCustomFields {
 
@@ -41,10 +42,10 @@ class ValidateCustomFields {
                 return this
             }
             Field correspondingField = correspondingFields[0]
-            String value = correspondingField.value
+            String value = StringUtils.trimToNull(correspondingField.value)
             if (value && f.dataType == DataType.ENUM && !f.enumItems.collect { it.value }.contains(value)) {
                 fieldErrors << new FieldError(name: f.key, error: "Please select ${f.name} value for $className from the drop-down list")
-            } else if (f.mandatory) {
+            } else if (!value && f.mandatory) {
                 fieldErrors << new FieldError(name: f.key, error: "${f.name} for $className is required")
             }
         }
