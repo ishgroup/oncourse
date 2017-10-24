@@ -4588,11 +4588,6 @@
 	</changeSet>
 
 	<changeSet id="313" author="pnikanovich" runOnChange="false" context="production">
-		<dropForeignKeyConstraint baseTableName="MessagePerson" constraintName="MessagePerson_ibfk_4"/>
-		<dropForeignKeyConstraint baseTableName="MessagePerson" constraintName="MessagePerson_ibfk_5"/>
-	</changeSet>
-
-	<changeSet id="313" author="pnikanovich" runOnChange="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<or>
 				<foreignKeyConstraintExists foreignKeyTableName="MessagePerson" foreignKeyName="MessagePerson_ibfk_4"/>
