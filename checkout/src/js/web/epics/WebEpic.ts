@@ -76,8 +76,6 @@ function createWaitingCoursesEpic() {
       return Observable
         .fromPromise(courseClassesApi.getCourses({
           coursesIds: uniq(ids),
-          contact: createContactParams(store.getState()),
-          promotions: createPromotionParams(store.getState()),
         }))
         .map(payload => normalize(payload, WaitingCoursesListSchema))
         .map(mapPayload(Actions.REQUEST_WAITING_COURSE))
