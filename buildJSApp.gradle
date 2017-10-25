@@ -1,8 +1,8 @@
 apply plugin: 'com.moowork.node'
 
 node {
-    version = '8.4.0'
-    npmVersion = '5.4.1'
+    version = '8.7.0'
+    npmVersion = '5.5.1'
     download = true
 }
 
