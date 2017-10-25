@@ -244,6 +244,7 @@ export class BuildContactFieldsRequest {
     result.contactId = contact.id;
     result.classIds = cart.courses.result;
     result.productIds = cart.products.result;
+    result.waitingCourseIds = cart.waitingCourses.result;
     result.fieldSet = FieldSet.ENROLMENT;
     result.mandatoryOnly = !newContact;
     return result;
