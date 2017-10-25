@@ -10,7 +10,7 @@ export const TextField = props => (
   <MouseHover component={inputComponent} componentProps={props}/>
 );
 
-function inputComponent(props: TextFieldProps) {
+function inputComponent(props: any) {
   const {
     input,
     required,
