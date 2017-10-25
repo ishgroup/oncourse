@@ -1,4 +1,4 @@
-import {CoursesState} from "../../services/IshState";
+import {CoursesState, WaitingCoursesState} from "../../services/IshState";
 import {IshAction} from "../../actions/IshAction";
 import {combineReducers} from "redux";
 import {FULFILLED} from "../../common/actions/ActionUtils";
@@ -9,7 +9,7 @@ export const waitingCoursesReducer = combineReducers({
   result: allIds,
 });
 
-function allIds(state = [], action: IshAction<CoursesState>) {
+function allIds(state = [], action: IshAction<WaitingCoursesState>) {
   switch (action.type) {
     case FULFILLED(Actions.REQUEST_WAITING_COURSE):
       return [
@@ -22,12 +22,12 @@ function allIds(state = [], action: IshAction<CoursesState>) {
   }
 }
 
-function byId(state = {}, action: IshAction<CoursesState>) {
+function byId(state = {}, action: IshAction<WaitingCoursesState>) {
   switch (action.type) {
     case FULFILLED(Actions.REQUEST_WAITING_COURSE):
       return {
         ...state,
-        ...action.payload.entities.classes,
+        ...action.payload.entities.waitingCourses,
       };
     default:
       return state;
