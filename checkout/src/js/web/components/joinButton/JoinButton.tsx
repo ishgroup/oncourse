@@ -43,7 +43,9 @@ export class JoinButton extends React.Component<Props, State> {
     loadById(id);
   }
 
-  onAdd() {
+  onAdd(e) {
+    e.preventDefault();
+
     const {addToCart, checkoutPath, course} = this.props;
     addToCart(course);
     document.location.href = `/${checkoutPath}`;
@@ -66,7 +68,7 @@ export class JoinButton extends React.Component<Props, State> {
             <span>This course has no current classes. Please</span>
           }
           If there isn't a class to suit you, please
-          <button onClick={() => this.onAdd()} type="button" className="join-btn">Join</button> the waiting list.
+          <button onClick={e => this.onAdd(e)} type="button" className="join-btn"> Join </button> the waiting list.
         </a>
       </p>
     );

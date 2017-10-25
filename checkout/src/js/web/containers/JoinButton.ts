@@ -41,7 +41,7 @@ const mapDispatchToProps = dispatch => {
     },
     loadById: (id: string) => {
       dispatch({
-        type: Actions.REQUEST_COURSE_CLASS,
+        type: Actions.REQUEST_WAITING_COURSE,
         payload: id,
       });
     },
