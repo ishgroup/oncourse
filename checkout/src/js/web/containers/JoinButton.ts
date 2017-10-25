@@ -23,6 +23,8 @@ const mapStateToProps = (state: IshState, props) => {
     course: state.waitingCourses.entities[course.id] || {},
     isAdded: isAdded(state.cart.waitingCourses, props.id),
     checkoutPath: state.config.checkoutPath,
+    enrollableClassesEmpty: props.enrollableClassesEmpty,
+    hasMoreAvailablePlaces: props.hasMoreAvailablePlaces,
   };
 };
 

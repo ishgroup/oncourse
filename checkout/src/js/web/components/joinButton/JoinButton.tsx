@@ -50,13 +50,24 @@ export class JoinButton extends React.Component<Props, State> {
   }
 
   render() {
-    const {course, isAdded, checkoutPath} = this.props;
+    const {course, isAdded, checkoutPath, enrollableClassesEmpty, hasMoreAvailablePlaces} = this.props;
+    console.log(this.props);
 
     return (
       <p className="waiting-list-title">
         <a href="#" className="actionLink">
+          {!enrollableClassesEmpty && hasMoreAvailablePlaces &&
+            <span>If there isn't a class to suit you, please </span>
+          }
+          {!enrollableClassesEmpty && !hasMoreAvailablePlaces &&
+            <span>Classes are full. Please </span>
+          }
+          {enrollableClassesEmpty &&
+            <span>This course has no current classes. Please</span>
+          }
           If there isn't a class to suit you, please
-          <button onClick={() => this.onAdd()} type="button" className="join-btn">Join</button> the waiting list. </a>
+          <button onClick={() => this.onAdd()} type="button" className="join-btn">Join</button> the waiting list.
+        </a>
       </p>
     );
   }
@@ -65,6 +76,8 @@ export class JoinButton extends React.Component<Props, State> {
 export interface Props {
   readonly id: string;
   readonly isAdded: boolean;
+  readonly enrollableClassesEmpty?: boolean;
+  readonly hasMoreAvailablePlaces?: boolean;
   readonly course: Course;
   readonly checkoutPath: string;
   readonly loadById: (id: string) => void;
