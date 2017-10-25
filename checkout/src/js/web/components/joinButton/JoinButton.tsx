@@ -48,7 +48,7 @@ export class JoinButton extends React.Component<Props, State> {
 
     const {addToCart, checkoutPath, course} = this.props;
     addToCart(course);
-    document.location.href = `/${checkoutPath}`;
+    document.location.href = `${checkoutPath}`;
   }
 
   render() {

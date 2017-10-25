@@ -191,7 +191,7 @@ function createAddWaitingCourseToCartEpic() {
     .ofType(Actions.ADD_WAITING_COURSE_TO_CART)
     .map(action => ({
       type: FULFILLED(Actions.ADD_WAITING_COURSE_TO_CART),
-      payload: normalize(store.getState().courses.entities[action.payload.id].course, WaitingCoursesSchema),
+      payload: normalize(store.getState().waitingCourses.entities[action.payload.id], WaitingCoursesSchema),
     }));
 }
 
