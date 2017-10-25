@@ -14,6 +14,7 @@ import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.checkout.functions.BuildClassPrice
 import ish.oncourse.willow.cayenne.CayenneService
+import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.model.web.*
 import ish.oncourse.willow.service.CourseClassesApi
 import org.apache.cayenne.ObjectContext
@@ -132,7 +133,24 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
         }
         result
     }
-    
+
+    @Override
+    List<Course> getCourses(CoursesParams coursesParams) {
+        College college = collegeService.college
+        ObjectContext context = cayenneService.newContext()
+        List<Course> result = []
+        coursesParams.coursesIds.each { id ->
+            ish.oncourse.model.Course course = new GetCourse(context, college, id).get()
+            result << new Course().with {
+                it.id = course.id.toString()
+                it.code = course.code
+                it.name = course.name
+                it
+            }
+        }
+        result
+    }
+
     private static boolean hasAvailablePlaces(ish.oncourse.model.CourseClass courseClass) {
         String  age = new GetPreference(courseClass.college, Preferences.STOP_WEB_ENROLMENTS_AGE, courseClass.objectContext).getValue()
         String type = new GetPreference(courseClass.college, Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, courseClass.objectContext).getValue()

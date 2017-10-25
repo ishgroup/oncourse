@@ -1,6 +1,9 @@
 import {HttpService} from "../common/services/HttpService";
 import {CommonError} from "../model/common/CommonError";
-import {CourseParams, Course, CourseClassesParams, CourseClass} from "../model";
+import {Course} from "../model/web/Course";
+import {CourseClass} from "../model/web/CourseClass";
+import {CourseClassesParams} from "../model/web/CourseClassesParams";
+import {CoursesParams} from "../model/web/CoursesParams";
 
 export class CourseClassesApi {
   constructor(private http: HttpService) {
@@ -9,8 +12,7 @@ export class CourseClassesApi {
   getCourseClasses(courseClassesParams: CourseClassesParams): Promise<CourseClass[]> {
     return this.http.POST(`/classes`, courseClassesParams);
   }
-
-  getCourses(courseParams: CourseParams): Promise<Course[]> {
-    return this.http.POST('/courses', courseParams);
+  getCourses(coursesParams: CoursesParams): Promise<Course[]> {
+    return this.http.POST(`/courses`, coursesParams);
   }
 }

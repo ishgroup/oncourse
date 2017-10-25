@@ -171,6 +171,35 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /courses:
+    post:
+      x-filter:
+        - CollegeInfo
+      summary: Get list of Courses
+      operationId: getCourses
+      description: Get list of courses based on current shopping cart state
+      tags:
+       - CourseClasses
+      consumes:
+       - application/json
+      parameters:
+      - name: coursesParams
+        in: body
+        description: Params for request list of courses
+        required: true
+        schema:
+          $ref: '#/definitions/web.CoursesParams'
+      responses:
+        200:
+          description: List of cources
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/web.Course'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /contact:
     put:
       x-filter: 
@@ -988,6 +1017,14 @@ definitions:
         description: List of applied promotions
       contact:
         $ref: '#/definitions/web.ContactParams'
+  web.CoursesParams:
+    type: object
+    properties:
+      coursesIds:
+        type: array
+        items:
+          type: string
+        description: List of requested courses
   web.ProductsParams:
     type: object
     properties:
