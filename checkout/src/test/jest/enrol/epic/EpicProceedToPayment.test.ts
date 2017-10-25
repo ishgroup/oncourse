@@ -27,6 +27,7 @@ const node1: ContactNode = {
   articles: [],
   vouchers: [],
   memberships: [],
+  waitingLists: [],
 };
 
 

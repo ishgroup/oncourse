@@ -36,6 +36,7 @@ const start = store => {
     .register(HTMLMarkers.FEES)
     .register(HTMLMarkers.ENROL_BUTTON)
     .register(HTMLMarkers.BUY_BUTTON)
+    .register(HTMLMarkers.JOIN_BUTTON)
     .register(HTMLMarkers.CART)
     .register(HTMLMarkers.MODAL)
     .register(HTMLMarkers.POPUP)
