@@ -84,6 +84,9 @@ public class PaymentInUtil {
 							&& CourseEnrolmentType.ENROLMENT_BY_APPLICATION.equals(enrol.getCourseClass().getCourse().getEnrolmentType())) {
 						updateApplicationStatusToAcceptedByEnrolment(enrol);
 					}
+					for (EnrolmentCustomField customField : enrol.getCustomFields()) {
+						customField.setModified(new Date());
+					}
 				}
 			}
 

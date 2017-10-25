@@ -98,7 +98,7 @@ class ProcessPaymentModel {
             r.sessionId = paymentRequest.sessionId
             r.name = paymentRequest.creditCardName
             r.number = paymentRequest.creditCardNumber
-            r.cvv = paymentRequest.creditCardCvv
+            r.cvv = paymentRequest.creditCardCvv.trim()
             r.year = paymentRequest.expiryYear
             r.month = paymentRequest.expiryMonth
             r

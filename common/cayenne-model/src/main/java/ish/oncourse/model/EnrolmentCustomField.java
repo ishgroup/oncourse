@@ -11,4 +11,9 @@ public class EnrolmentCustomField extends _EnrolmentCustomField {
     public void setRelatedObject(IExpandable relatedObject) {
         setRelatedObject((Enrolment) relatedObject);
     }
+    
+    @Override
+    public boolean isAsyncReplicationAllowed() {
+        return getRelatedObject().isAsyncReplicationAllowed();
+    }
 }

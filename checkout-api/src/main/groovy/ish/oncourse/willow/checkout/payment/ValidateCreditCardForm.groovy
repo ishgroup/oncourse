@@ -35,7 +35,7 @@ class ValidateCreditCardForm {
                 validationError.fieldsErrors << new FieldError(name: 'creditCardNumber', error: cardNumberErrorMessage)
             }
             
-            if (!CreditCardValidator.validCvv(paymentRequest.creditCardCvv)) {
+            if (!CreditCardValidator.validCvv(StringUtils.trimToNull(paymentRequest.creditCardCvv))) {
                 validationError.fieldsErrors << new FieldError(name: 'creditCardCvv', error: 'A valid credit card CVV must be supplied.')
             }
             
