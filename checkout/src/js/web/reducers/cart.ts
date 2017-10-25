@@ -137,8 +137,8 @@ function waitingCourseAllIds(state = [], action: IshAction<WaitingCourseClassSta
           .filter(t => !state.includes(t)), // dedup
       ];
 
-    // case FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART):
-    //   return state.filter(it => it !== action.payload.result);
+    case FULFILLED(Actions.REMOVE_WAITING_COURSE_FROM_CART):
+      return state.filter(it => it !== action.payload.result);
 
     case RESET_CHECKOUT_STATE:
       return [];
@@ -156,10 +156,10 @@ function waitingCoursesById(state = {}, action: IshAction<WaitingCourseClassStat
         ...action.payload.entities.waitingCourses,
       };
 
-    // case FULFILLED(Actions.REMOVE_PROMOTION_FROM_CART):
-    //   const nextState = {...state};
-    //   delete nextState[action.payload.result];
-    //   return nextState;
+    case FULFILLED(Actions.REMOVE_WAITING_COURSE_FROM_CART):
+      const nextState = {...state};
+      delete nextState[action.payload.result];
+      return nextState;
 
     case RESET_CHECKOUT_STATE:
       return {};

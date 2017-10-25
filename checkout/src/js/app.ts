@@ -9,14 +9,19 @@ import {HTMLMarkers} from "./common/services/HTMLMarker";
 
 import "../scss/index.scss";
 import {getPreferences} from "./common/actions/Actions";
+import {MockConfig} from "../dev/mocks/mocks/MockConfig";
 
 const appStart = () => {
-  const store = CreateStore();
+  const config = new MockConfig();
 
-  configLoader(store);
+  config.init((config:MockConfig) => {
+    const store = config.store;
 
-  RestoreState(store, () => {
-    start(store);
+    configLoader(store);
+
+    RestoreState(store, () => {
+      start(store);
+    });
   });
 };
 

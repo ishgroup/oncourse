@@ -1,13 +1,13 @@
-import {CourseClassPrice, Promotion, CourseClass, Product, Contact, Discount, WaitingList} from "../model";
+import {CourseClassPrice, Course, Preferences, Promotion, CourseClass, Product, Contact, Discount, WaitingList} from "../model";
 import {CheckoutState} from "../enrol/reducers/State";
 import {WillowConfig} from "../configLoader";
-import {Preferences} from "../model/common/Preferences";
 
 export interface IshState {
   readonly form: any;
   readonly cart: CartState;
   readonly popup: PopupState;
   readonly courses: CoursesState;
+  readonly waitingCourses: WaitingCoursesState;
   readonly products: ProductsState;
   readonly checkout: CheckoutState;
   readonly config: WillowConfig;
@@ -28,6 +28,7 @@ export interface PopupState {
 }
 
 export type CoursesState = Normalized<CourseClass>;
+export type WaitingCoursesState = Normalized<Course>;
 export type ProductsState = Normalized<Product>;
 
 /**

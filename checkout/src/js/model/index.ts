@@ -5,6 +5,7 @@ export {ContactId} from './web/ContactId';
 export {Contact} from './web/Contact';
 export {ContactParams} from './web/ContactParams';
 export {Course} from './web/Course';
+export {CourseParams} from './web/CourseParams';
 export {CourseClass} from './web/CourseClass';
 export {CourseClassesParams} from './web/CourseClassesParams';
 export {CourseClassPrice} from './web/CourseClassPrice';

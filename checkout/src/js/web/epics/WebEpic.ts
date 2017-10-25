@@ -11,7 +11,7 @@ import {
   ClassesSchema,
   ProductsListSchema,
   ProductsSchema,
-  PromotionsSchema, WaitingCoursesSchema,
+  PromotionsSchema, WaitingCoursesListSchema, WaitingCoursesSchema,
 } from "../../NormalizeSchema";
 import {Injector} from "../../injector";
 import {PromotionParams, ContactParams} from "../../model";
@@ -29,6 +29,7 @@ const {
 
 export const WebEpic = combineEpics(
   createCoursesEpic(),
+  createWaitingCoursesEpic(),
   createUpdateCoursesEpic(),
   createProductsEpic(),
   createUpdateProductsEpic(),
@@ -62,6 +63,25 @@ function createCoursesEpic() {
         .map(payload => normalize(payload, ClassesListSchema))
         .map(mapPayload(Actions.REQUEST_COURSE_CLASS))
         .catch(mapError(Actions.REQUEST_COURSE_CLASS));
+    });
+}
+
+function createWaitingCoursesEpic() {
+  return (action$, store: Store<IshState>) => action$
+    .ofType(Actions.REQUEST_WAITING_COURSE)
+    .bufferTime(100) // batch actions
+    .filter(actions => actions.length)
+    .mergeMap(actions => {
+      const ids: string[] = actions.map(action => action.payload);
+      return Observable
+        .fromPromise(courseClassesApi.getCourses({
+          coursesIds: uniq(ids),
+          contact: createContactParams(store.getState()),
+          promotions: createPromotionParams(store.getState()),
+        }))
+        .map(payload => normalize(payload, WaitingCoursesListSchema))
+        .map(mapPayload(Actions.REQUEST_WAITING_COURSE))
+        .catch(mapError(Actions.REQUEST_WAITING_COURSE));
     });
 }
 

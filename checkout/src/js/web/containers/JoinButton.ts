@@ -20,7 +20,7 @@ const mapStateToProps = (state: IshState, props) => {
 
   return {
     id: course.id,
-    course: state.courses.entities[course.id] || {},
+    course: state.waitingCourses.entities[course.id] || {},
     isAdded: isAdded(state.cart.waitingCourses, props.id),
     checkoutPath: state.config.checkoutPath,
   };
