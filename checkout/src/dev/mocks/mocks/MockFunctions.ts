@@ -9,6 +9,7 @@ import {normalize} from "normalizr";
 import {ClassesListSchema, ContactsSchema} from "../../../js/NormalizeSchema";
 import {ContactNodeToState} from "../../../js/enrol/containers/summary/reducers/State";
 import {Phase} from "../../../js/enrol/reducers/State";
+import {Course} from "../../../js/model/web/Course";
 
 
 export const mockDiscount = (): Discount => {
@@ -51,6 +52,14 @@ export const mockCourseClass = (): CourseClass => {
     isPaymentGatewayEnabled: true,
     availableEnrolmentPlaces: faker.random.number(),
     timezone: 'Australia/Sydney',
+  };
+};
+
+export const mockWaitingCourse = (): Course => {
+  return {
+    id: faker.random.number() as string,
+    code: faker.random.number() as string,
+    name: faker.commerce.productName(),
   };
 };
 

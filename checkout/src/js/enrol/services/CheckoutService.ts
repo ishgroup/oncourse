@@ -181,6 +181,7 @@ export class CheckoutService {
         return of(getPaymentStatus()).delay(DELAY_NEXT_PAYMENT_STATUS);
       case PaymentStatus.SUCCESSFUL:
       case PaymentStatus.SUCCESSFUL_BY_PASS:
+      case PaymentStatus.SUCCESSFUL_WAITING_COURSES:
       case PaymentStatus.UNDEFINED:
         return [
           changePhase(Phase.Result),

@@ -20,7 +20,7 @@ export class SummaryService {
         .concat(state.entities.memberships ? membershipsIds.map(id => state.entities.memberships[id]) : [])
         .concat(state.entities.articles ? articlesIds.map(id => state.entities.articles[id]) : [])
         .concat(state.entities.waitingLists ? waitingListsIds.map(id => state.entities.waitingLists[id]) : [])
-        .find(e => (e.selected && e.errors.length === 0));
+        .find(e => (e && e.selected && e.errors.length === 0));
 
     return !!items;
   }

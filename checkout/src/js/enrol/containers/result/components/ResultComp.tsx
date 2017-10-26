@@ -7,6 +7,7 @@ import {Failed} from "./Failed";
 import {Undefined} from "./Undefined";
 import {InProgress} from "./InProgress";
 import {SuccessfulByPass} from "./SuccessfulByPass";
+import {SuccessfulWaitingCourses} from "./SuccessfulWaitingCourses";
 
 export interface Props {
   response: PaymentResponse;
@@ -40,6 +41,12 @@ export class ResultComp extends React.Component<Props, any> {
           }
           {response.status === PaymentStatus.SUCCESSFUL_BY_PASS &&
           <SuccessfulByPass
+            successLink={successLink}
+          />
+          }
+
+          {response.status === PaymentStatus.SUCCESSFUL_WAITING_COURSES &&
+          <SuccessfulWaitingCourses
             successLink={successLink}
           />
           }

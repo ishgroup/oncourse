@@ -10,6 +10,7 @@ export const OpenPaymentRequest: string = _toRequestType(OpenPayment);
 
 export const SUBMIT_PAYMENT_CREDIT_CARD: string = "checkout/payment/submit/creditCard";
 export const SUBMIT_PAYMENT_CORPORATE_PASS: string = "checkout/payment/submit/corporatePass";
+export const SUBMIT_PAYMENT_FOR_WAITING_COURSES: string = "checkout/payment/submit/waitingCourses";
 export const PROCESS_PAYMENT: string = "checkout/payment/process/payment";
 
 
@@ -32,6 +33,13 @@ export const CHANGE_TAB = "checkout/payment/change/tab";
 export const submitPaymentCreditCard = (values: CreditCardFormValues): IAction<CreditCardFormValues> => {
   return {
     type: SUBMIT_PAYMENT_CREDIT_CARD,
+    payload: values,
+  };
+};
+
+export const submitPaymentForWaitingCourses = (values: CreditCardFormValues): IAction<CreditCardFormValues> => {
+  return {
+    type: SUBMIT_PAYMENT_FOR_WAITING_COURSES,
     payload: values,
   };
 };

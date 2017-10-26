@@ -18,11 +18,11 @@ export const FieldName = createStringEnum([
 export type FieldName = keyof typeof FieldName;
 
 export interface CreditCardFormValues {
-  creditCardName: string;
-  creditCardNumber: string;
-  expiryMonth: string;
-  expiryYear: string;
-  creditCardCvv: string;
+  creditCardName?: string;
+  creditCardNumber?: string;
+  expiryMonth?: string;
+  expiryYear?: string;
+  creditCardCvv?: string;
   agreementFlag: boolean;
 }
 

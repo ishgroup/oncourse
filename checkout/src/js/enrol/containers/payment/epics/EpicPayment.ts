@@ -15,6 +15,7 @@ import {
   processPayment,
   resetPaymentState,
   updatePaymentStatus,
+  SUBMIT_PAYMENT_FOR_WAITING_COURSES,
 } from "../actions/Actions";
 
 import CheckoutService from "../../../services/CheckoutService";
@@ -70,6 +71,21 @@ const SubmitPaymentCreditCard: Epic<any, any> = (action$: ActionsObservable<any>
 };
 
 /**
+ * Init PaymentState and join to waiting course
+ */
+const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
+  type: SUBMIT_PAYMENT_FOR_WAITING_COURSES,
+  getData: (payload: any, state: IshState): Promise<any> => {
+    return CheckoutService.makePayment(payload, state);
+  },
+  processData: (response: any, state: IshState): IAction<any>[] | Observable<any> => {
+    return CheckoutService.processPaymentResponse({status: PaymentStatus.SUCCESSFUL_WAITING_COURSES});
+  },
+};
+
+const SubmitPaymentForWaitingCourses: Epic<any, any> = Create(SubmitPaymentForWaitingCoursesRequest);
+
+/**
  * Init PaymentState and Start Payment Process by Corporate Pass
  */
 const SubmitPaymentCorporatePassRequest: Request<any, IshState> = {
@@ -105,6 +121,7 @@ const GetCorporatePass: Epic<any, any> = Create(corporatePassRequest);
 export const EpicPayment = combineEpics(
   SubmitPaymentCreditCard,
   SubmitPaymentCorporatePass,
+  SubmitPaymentForWaitingCourses,
   ProcessPayment,
   GetPaymentStatus,
   GetCorporatePass,

@@ -19,6 +19,7 @@ export interface Props {
   redeemVouchers?: RedeemVoucher[];
   onToggleVoucher?: (redeemVoucher: RedeemVoucher, enabled) => void;
   onProceedToPayment?: (forms) => void;
+  onProceedToJoin?: (forms) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
   onPriceValueChange?: (productItem: PurchaseItem, val: any) => void;
   onUpdateWaitingCourse?: () => void;
@@ -31,6 +32,7 @@ export interface Props {
   fetching?: boolean;
   onChangeEnrolmentFields?: (form, type) => any;
   forms?: any;
+  isOnlyWaitingLists?: boolean;
 }
 
 
@@ -66,8 +68,16 @@ export class SummaryComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent, forms,
-      redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent} = this.props;
+    const {
+      contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent, forms, onProceedToJoin,
+      redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent, isOnlyWaitingLists,
+    } = this.props;
+
+    const buttonLabel = needParent && !isOnlyWaitingLists ? 'Add Guardian' :
+      isOnlyWaitingLists ? 'Add to waiting list' : 'Proceed to Payment';
+
+    const onProceed = needParent && !isOnlyWaitingLists ? () => onAddParent() :
+      isOnlyWaitingLists ? () => onProceedToJoin(forms) : () => onProceedToPayment(forms);
 
     return (
       <div className="payment-summary">
@@ -88,9 +98,9 @@ export class SummaryComp extends React.Component<Props, any> {
                 promotions={promotions}
               />
               <ProceedToPayment
-                needParent={needParent}
+                buttonLabel={buttonLabel}
                 disabled={!hasSelected}
-                onProceedToPayment={() => needParent ? onAddParent() : onProceedToPayment(forms)}
+                onProceedToPayment={onProceed}
               />
             </div>
           </div>
@@ -102,7 +112,7 @@ export class SummaryComp extends React.Component<Props, any> {
 }
 
 const ProceedToPayment = props => {
-  const {disabled, onProceedToPayment, needParent} = props;
+  const {disabled, onProceedToPayment, buttonLabel} = props;
   const className = classnames("btn", "btn-primary", {disabled});
 
   const onClick = e => {
@@ -112,7 +122,7 @@ const ProceedToPayment = props => {
 
   return (
     <button className={className} onClick={onClick} disabled={disabled}>
-      {needParent ? 'Add Guardian' : 'Proceed to Payment'}
+      {buttonLabel}
     </button>
   );
 };

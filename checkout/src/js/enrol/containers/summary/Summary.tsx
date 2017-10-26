@@ -14,9 +14,8 @@ import {
 } from "./components/Index";
 
 import {SummaryComp} from "./components/SummaryComp";
-import {
-  proceedToPayment, selectItem, updateEnrolmentFields, updateItem,
-} from "./actions/Actions";
+import {proceedToPayment, selectItem, updateEnrolmentFields, updateItem} from "./actions/Actions";
+import {processPayment, submitPaymentForWaitingCourses} from "../payment/actions/Actions";
 import {
   changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow, updateContactAddProcess,
 } from "../../actions/Actions";
@@ -105,6 +104,7 @@ export const SummaryPropsBy = (state: IshState): any => {
     const contactsArray: ContactProps[] = state.checkout.summary.result.map(id => {
       return ContactPropsBy(id, state);
     });
+
     return {
       amount: state.checkout.amount,
       contacts: contactsArray,
@@ -116,6 +116,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       needParent: !!CheckoutService.getAllSingleChildIds(state.checkout).length,
       fetching: state.checkout.summary.fetching,
       forms: state.form,
+      isOnlyWaitingLists: CheckoutService.isOnlyWaitingCoursesInCart(state.cart),
     };
   } catch (e) {
     console.log(e);
@@ -148,6 +149,15 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
       if (errors && errors.length) return;
 
       dispatch(proceedToPayment());
+    },
+    onProceedToJoin: (forms): void => {
+      forms && Object.keys(forms).map(form => dispatch(submit(form)));
+
+      const errors = Object.values(forms).filter(f => f.syncErrors);
+      if (errors && errors.length) return;
+
+      dispatch(submitPaymentForWaitingCourses({agreementFlag: true}));
+
     },
     onAddCode: (code: string): void => {
       dispatch(addCode(code));

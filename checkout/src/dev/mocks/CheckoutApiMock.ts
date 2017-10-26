@@ -10,6 +10,7 @@ import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
 import {mockAmount} from "./mocks/MockFunctions";
 import {FieldName} from "../../js/enrol/containers/payment/services/PaymentService";
 import {WaitingList} from "../../js/model/checkout/WaitingList";
+import {Course} from "../../js/model/web/Course";
 
 export class CheckoutApiMock extends CheckoutApi {
   public config: MockConfig;
@@ -32,17 +33,8 @@ export class CheckoutApiMock extends CheckoutApi {
     const products: Product[] = request.productIds.map(id => this.config.db.getProductClassById(id));
     result.vouchers = this.createVouchersBy([contact], products);
 
-    const waitingCourses: WaitingList[] = request.waitingCourseIds.map(id => ({
-      contactId: contact.id,
-      courseId: this.config.db.classes.entities.classes[this.config.db.classes.result[0]].course.id,
-      studentsCount: 1,
-      detail: '',
-      warnings: [],
-      errors: [],
-      selected: true,
-    // fieldHeadings: FieldHeading[];
-    }));
-    result.waitingLists = waitingCourses;
+    const courses = request.waitingCourseIds.map(id => this.config.db.getWaitingCourseById(id));
+    result.waitingLists = this.createWaitingListsBy([contact], courses);
 
     return this.config.createResponse(result);
   }
@@ -84,6 +76,14 @@ export class CheckoutApiMock extends CheckoutApi {
     return L.flatten(contacts.map((c: Contact) => {
       return classes.map((cc: CourseClass) => {
         return this.config.db.createArticle(c.id, cc.id);
+      });
+    }));
+  }
+
+  public createWaitingListsBy(contacts: Contact[], courses: Course[]): WaitingList[] {
+    return L.flatten(contacts.map((c: Contact) => {
+      return courses.map((cc: Course) => {
+        return this.config.db.createWaitingList(c.id, cc.id);
       });
     }));
   }
