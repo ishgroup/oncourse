@@ -7,6 +7,8 @@ public class Course  {
     private String code = null;
     private String name = null;
     private String description = null;
+    private Boolean hasCurrentClasses = null;
+    private Boolean hasMoreAvailablePlaces = null;
 
     /**
      * Internal Unique identifier of course
@@ -76,6 +78,40 @@ public class Course  {
       return this;
     }
 
+    /**
+     * Has enrollable classes
+     * @return hasCurrentClasses
+     */
+    public Boolean getHasCurrentClasses() {
+        return hasCurrentClasses;
+    }
+
+    public void setHasCurrentClasses(Boolean hasCurrentClasses) {
+       this.hasCurrentClasses = hasCurrentClasses;
+    }
+
+    public Course hasCurrentClasses(Boolean hasCurrentClasses) {
+      this.hasCurrentClasses = hasCurrentClasses;
+      return this;
+    }
+
+    /**
+     * Has more available places
+     * @return hasMoreAvailablePlaces
+     */
+    public Boolean getHasMoreAvailablePlaces() {
+        return hasMoreAvailablePlaces;
+    }
+
+    public void setHasMoreAvailablePlaces(Boolean hasMoreAvailablePlaces) {
+       this.hasMoreAvailablePlaces = hasMoreAvailablePlaces;
+    }
+
+    public Course hasMoreAvailablePlaces(Boolean hasMoreAvailablePlaces) {
+      this.hasMoreAvailablePlaces = hasMoreAvailablePlaces;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -86,6 +122,8 @@ public class Course  {
       sb.append("    code: ").append(toIndentedString(code)).append("\n");
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
       sb.append("    description: ").append(toIndentedString(description)).append("\n");
+      sb.append("    hasCurrentClasses: ").append(toIndentedString(hasCurrentClasses)).append("\n");
+      sb.append("    hasMoreAvailablePlaces: ").append(toIndentedString(hasMoreAvailablePlaces)).append("\n");
       sb.append("}");
       return sb.toString();
     }

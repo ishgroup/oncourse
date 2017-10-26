@@ -7,6 +7,8 @@ import ish.oncourse.model.Application
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.services.application.FindOfferedApplication
+import ish.oncourse.services.course.GetCurrentClasses
+import ish.oncourse.services.course.GetEnrollableClasses
 import ish.oncourse.services.courseclass.CheckClassAge
 import ish.oncourse.services.courseclass.ClassAge
 import ish.oncourse.services.preference.GetPreference
@@ -120,7 +122,7 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
 
                         it.start = c.startDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
                         it.end = c.endDateTime?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
-                        it.hasAvailablePlaces = hasAvailablePlaces(c)
+                        it.hasAvailablePlaces = c.hasAvailableEnrolmentPlaces && new CheckClassAge().college(college).courseClass(c).check()
                         it.isFinished = !c.cancelled && c.hasEnded()
                         it.isCancelled = c.cancelled
                         it.distantLearning = c.isDistantLearningCourse
@@ -145,16 +147,14 @@ class CourseClassesApiServiceImpl implements CourseClassesApi {
                 it.id = course.id.toString()
                 it.code = course.code
                 it.name = course.name
+                List<ish.oncourse.model.CourseClass> classes = new GetCurrentClasses(course).get()
+                it.hasCurrentClasses = !classes.empty
+                it.hasMoreAvailablePlaces = classes.find { it.hasAvailableEnrolmentPlaces } != null
                 it
             }
         }
         result
     }
-
-    private static boolean hasAvailablePlaces(ish.oncourse.model.CourseClass courseClass) {
-        String  age = new GetPreference(courseClass.college, Preferences.STOP_WEB_ENROLMENTS_AGE, courseClass.objectContext).getValue()
-        String type = new GetPreference(courseClass.college, Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, courseClass.objectContext).getValue()
-        return courseClass.isHasAvailableEnrolmentPlaces() && new CheckClassAge().courseClass(courseClass).classAge(ClassAge.valueOf(age, type)).check()
-    }
+    
 }
 

@@ -1,6 +1,9 @@
 package ish.oncourse.services.courseclass;
 
+import ish.oncourse.model.College;
 import ish.oncourse.model.CourseClass;
+import ish.oncourse.services.preference.GetPreference;
+import ish.oncourse.services.preference.Preferences;
 import ish.oncourse.utils.TimestampUtilities;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -54,4 +57,9 @@ public class CheckClassAge {
         return result;
     }
 
+    public CheckClassAge college(College college) {
+        String  age = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE, college.getObjectContext()).getValue();
+        String type = new GetPreference(college, Preferences.STOP_WEB_ENROLMENTS_AGE_TYPE, college.getObjectContext()).getValue();
+        return classAge(ClassAge.valueOf(age, type));
+    }
 }

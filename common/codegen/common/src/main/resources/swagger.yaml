@@ -828,6 +828,12 @@ definitions:
       description:
         type: string
         description: Description of course
+      hasCurrentClasses:
+        type: boolean
+        description: Has enrollable classes
+      hasMoreAvailablePlaces:
+        type: boolean
+        description: Has more available places
   web.Site:
     type: object
     properties:

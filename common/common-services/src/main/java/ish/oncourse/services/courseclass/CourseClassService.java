@@ -3,6 +3,8 @@ package ish.oncourse.services.courseclass;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.model.*;
 import ish.oncourse.services.cookies.ICookiesService;
+import ish.oncourse.services.course.GetCurrentClasses;
+import ish.oncourse.services.course.GetEnrollableClasses;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.site.IWebSiteService;
@@ -366,31 +368,11 @@ public class CourseClassService implements ICourseClassService {
 	}
 
     public List<CourseClass> getEnrollableClasses(Course course) {
-        List<CourseClass> currentClasses = getCurrentClasses(course);
-        List<CourseClass> list = new ArrayList<>();
-
-        for (CourseClass courseClass : currentClasses) {
-            if (courseClass.isHasAvailableEnrolmentPlaces()) {
-                list.add(courseClass);
-            }
-        }
-
-        return list;
+        return new GetEnrollableClasses(course).get();
     }
 
     public List<CourseClass> getCurrentClasses(Course course) {
-        List<CourseClass> courseClasses = course.getCourseClasses();
-        List<CourseClass> list = new ArrayList<>();
-		CheckClassAge classAge = new CheckClassAge().classAge(preferenceController.getStopWebEnrolmentsAge());
-        for (CourseClass courseClass : courseClasses) {
-            if (Boolean.TRUE.equals(courseClass.getIsWebVisible())
-                    && !courseClass.isCancelled()
-                    && classAge.courseClass(courseClass).check()) {
-                list.add(courseClass);
-            }
-        }
-
-        return list;
+        return new GetCurrentClasses(course).get();
     }
 
     public List<CourseClass> getFullClasses(Course course) {
