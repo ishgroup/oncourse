@@ -36,7 +36,7 @@ class ApplicationComp extends React.Component<Props, any> {
     const {application, courseClass, contact, onChange, onChangeFields} = this.props;
     const divClass = classnames("row", "enrolmentItem", {disabled: !application.selected});
     const name = `application-${contact.id}-${application.classId}`;
-    const title: string = `${courseClass.course.name}`;
+    const title = <span><span className="checkout-course-type">Application for</span> {courseClass.course.name}</span>;
 
     let warning = application.warnings && application.warnings.length ? this.props.application.warnings[0] : null;
     const error = application.warnings && application.errors.length ? this.props.application.errors[0] : null;
@@ -48,7 +48,6 @@ class ApplicationComp extends React.Component<Props, any> {
         <ItemWrapper title={title} name={name} error={error} warning={warning} selected={application.selected}
                      item={application} contact={contact}
                      onChange={onChange}>
-          <span className="applicationOnly">(Application only)</span>
         </ItemWrapper>
 
         <EnrolmentFieldsForm

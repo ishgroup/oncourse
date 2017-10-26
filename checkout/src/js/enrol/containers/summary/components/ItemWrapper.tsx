@@ -4,7 +4,7 @@ import classnames from "classnames";
 
 export interface Props {
   name: string;
-  title: string;
+  title: any;
   selected: boolean;
   error: string;
   warning: string;

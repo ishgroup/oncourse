@@ -70,15 +70,13 @@ class WaitingListComp extends React.Component<Props, any> {
 
     const divClass = classnames("row", {disabled: !waitingList.selected});
     const name = `application-${contact.id}-${waitingList.courseId}`;
-    const title: string = `${product.name}`;
+    const title = <span><span className="checkout-course-type">Waiting Course for</span> {product.name}</span>;
 
     const warning = waitingList.warnings && waitingList.warnings.length ? this.props.waitingList.warnings[0] : null;
     const error = waitingList.warnings && waitingList.errors.length ? this.props.waitingList.errors[0] : null;
 
     return (
       <div className={divClass}>
-        <div className="col-xs-24">Waiting course:</div>
-
         <ItemWrapper
           title={title}
           name={name}
