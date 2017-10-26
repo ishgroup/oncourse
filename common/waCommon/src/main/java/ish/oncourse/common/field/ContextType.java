@@ -24,7 +24,7 @@ public enum ContextType {
 	public static ContextType getByIdentifier(String identifier) {
 		
 		for (ContextType context : ContextType.values()) {
-			if (context.identifier.equals(identifier)) {
+			if (context.identifier.equalsIgnoreCase(identifier)) {
 				return context;
 			}
 		}
