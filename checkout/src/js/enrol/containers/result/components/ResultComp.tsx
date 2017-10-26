@@ -16,6 +16,7 @@ export interface Props {
   onInit?: () => void;
   successLink?: string;
   resetOnInit?: boolean;
+  result?: any;
 }
 
 export class ResultComp extends React.Component<Props, any> {
@@ -28,7 +29,7 @@ export class ResultComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {response, onAnotherCard, onCancel, successLink} = this.props;
+    const {response, onAnotherCard, onCancel, successLink, result} = this.props;
     return (
       <div>
         {response &&
@@ -48,6 +49,7 @@ export class ResultComp extends React.Component<Props, any> {
           {response.status === PaymentStatus.SUCCESSFUL_WAITING_COURSES &&
           <SuccessfulWaitingCourses
             successLink={successLink}
+            contacts={result}
           />
           }
 

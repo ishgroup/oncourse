@@ -11,6 +11,7 @@ const PropsBy = (state: IshState): any => {
     response: state.checkout.payment.value,
     successLink: state.config.paymentSuccessURL,
     resetOnInit: state.checkout.payment.resetOnInit,
+    result: state.checkout.payment.result,
   };
 };
 

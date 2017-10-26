@@ -48,11 +48,11 @@ export class CheckoutService {
   }
 
   public isOnlyWaitingCourseSelected = (summary: State) => {
-    return Object.values(summary.entities.waitingLists).find(e => e.selected)
-      && !Object.values(summary.entities.enrolments).find(e => e.selected)
-      && !Object.values(summary.entities.vouchers).find(e => e.selected)
-      && !Object.values(summary.entities.articles).find(e => e.selected)
-      && !Object.values(summary.entities.memberships).find(e => e.selected);
+    return summary.entities.waitingLists && Object.values(summary.entities.waitingLists).find(e => e.selected)
+      && summary.entities.enrolments && !Object.values(summary.entities.enrolments).find(e => e.selected)
+      && summary.entities.vouchers && !Object.values(summary.entities.vouchers).find(e => e.selected)
+      && summary.entities.articles && !Object.values(summary.entities.articles).find(e => e.selected)
+      && summary.entities.memberships && !Object.values(summary.entities.memberships).find(e => e.selected);
   }
 
   public ifCodeExist = (code, state): boolean => {
@@ -184,7 +184,7 @@ export class CheckoutService {
     this.corporatePassApi.isCorporatePassEnabledFor(BuildCheckoutModelRequest.fromState(state))
   )
 
-  public processPaymentResponse = (response: PaymentResponse): IAction<any>[] | Observable<any> => {
+  public processPaymentResponse = (response: PaymentResponse, actions?: any[]): IAction<any>[] | Observable<any> => {
     switch (response.status) {
       case PaymentStatus.IN_PROGRESS:
         return of(getPaymentStatus()).delay(DELAY_NEXT_PAYMENT_STATUS);
@@ -193,6 +193,7 @@ export class CheckoutService {
       case PaymentStatus.SUCCESSFUL_WAITING_COURSES:
       case PaymentStatus.UNDEFINED:
         return [
+          ...actions,
           changePhase(Phase.Result),
           updatePaymentStatus(response),
           finishCheckoutProcess(response),
@@ -377,6 +378,33 @@ export class BuildGetCorporatePassRequest {
     result.classIds = classIds;
     result.productIds = productIds;
     result.code = code;
+
+    return result;
+  }
+}
+
+export class BuildWaitingCoursesResult {
+  static fromState = (state: IshState): any => {
+    const result = [];
+    const nodes = Object.values(state.checkout.summary.entities.contactNodes)
+      .map(item => ({
+        contactId: item.contactId,
+        coursesIds: item.waitingLists,
+      }));
+
+    const filteredNodes = nodes
+      .map(node => ({
+        name: `${state.checkout.contacts.entities.contact[node.contactId].firstName} ${state.checkout.contacts.entities.contact[node.contactId].lastName}`,
+        courses: node.coursesIds.map(id => state.checkout.summary.entities.waitingLists[id]).filter(c => c.selected),
+      }))
+
+    filteredNodes.map(n => result.push({
+      name: n.name,
+      courses: n.courses.map(c => ({
+        name: state.cart.waitingCourses.entities[c.courseId].name,
+        count: c.studentsCount,
+      })),
+    }));
 
     return result;
   }

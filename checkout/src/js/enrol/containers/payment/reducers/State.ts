@@ -7,6 +7,7 @@ export class State {
   fetching?: boolean;
   resetOnInit?: boolean = false;
   corporateTabAvailable?: boolean;
+  result: any = [];
 }
 
 export enum Tabs {

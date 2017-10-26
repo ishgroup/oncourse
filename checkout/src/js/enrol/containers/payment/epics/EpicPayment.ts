@@ -16,9 +16,10 @@ import {
   resetPaymentState,
   updatePaymentStatus,
   SUBMIT_PAYMENT_FOR_WAITING_COURSES,
+  generateWaitingCoursesResultData,
 } from "../actions/Actions";
 
-import CheckoutService from "../../../services/CheckoutService";
+import CheckoutService, {BuildWaitingCoursesResult} from "../../../services/CheckoutService";
 
 import {PaymentResponse, CheckoutModel, PaymentStatus, CorporatePass} from "../../../../model";
 import {IshState} from "../../../../services/IshState";
@@ -79,7 +80,10 @@ const SubmitPaymentForWaitingCoursesRequest: Request<any, IshState> = {
     return CheckoutService.makePayment(payload, state);
   },
   processData: (response: any, state: IshState): IAction<any>[] | Observable<any> => {
-    return CheckoutService.processPaymentResponse({status: PaymentStatus.SUCCESSFUL_WAITING_COURSES});
+    return CheckoutService.processPaymentResponse(
+      {status: PaymentStatus.SUCCESSFUL_WAITING_COURSES},
+      [generateWaitingCoursesResultData(BuildWaitingCoursesResult.fromState(state))]
+    );
   },
 };
 

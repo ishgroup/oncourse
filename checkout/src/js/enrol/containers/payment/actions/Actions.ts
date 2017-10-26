@@ -13,6 +13,7 @@ export const SUBMIT_PAYMENT_CORPORATE_PASS: string = "checkout/payment/submit/co
 export const SUBMIT_PAYMENT_FOR_WAITING_COURSES: string = "checkout/payment/submit/waitingCourses";
 export const PROCESS_PAYMENT: string = "checkout/payment/process/payment";
 
+export const GENERATE_WAITING_COURSES_RESULT_DATA = "checkout/payment/result/waitingCourses/data";
 
 export const UPDATE_PAYMENT_STATUS = "checkout/payment/update/payment/status";
 
@@ -87,6 +88,12 @@ export const resetPaymentStateOnInit = () => {
   };
 };
 
+export const generateWaitingCoursesResultData = data => {
+  return {
+    type: GENERATE_WAITING_COURSES_RESULT_DATA,
+    payload: data,
+  }; 
+};
 
 export const getCorporatePass = (code: string) => ({
   type: GET_CORPORATE_PASS_REQUEST,

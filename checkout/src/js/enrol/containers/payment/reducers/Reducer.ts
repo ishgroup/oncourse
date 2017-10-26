@@ -2,7 +2,7 @@ import {State} from "./State";
 import {
   APPLY_CORPORATE_PASS, CHANGE_TAB, GET_CORPORATE_PASS_REQUEST, RESET_CORPORATE_PASS, RESET_PAYMENT_STATE,
   RESET_PAYMENT_STATE_ON_INIT, CHECK_CORPORATE_PASS_AVAILABILITY_FULFILLED,
-  UPDATE_PAYMENT_STATUS,
+  UPDATE_PAYMENT_STATUS, GENERATE_WAITING_COURSES_RESULT_DATA,
 } from "../actions/Actions";
 import {IAction} from "../../../../actions/IshAction";
 import {FULFILLED} from "../../../../common/actions/ActionUtils";
@@ -62,6 +62,12 @@ export const Reducer = (state: State = new State(), action: IAction<any>): State
       return {
         ...state,
         resetOnInit: true,
+      };
+
+    case GENERATE_WAITING_COURSES_RESULT_DATA:
+      return {
+        ...state,
+        result: action.payload,
       };
 
     default:
