@@ -10,14 +10,15 @@ class CartProductItem extends CartItem {
     return extend.render.apply({
       props: {
         product: this.props.item,
-        pending: this.state.pending
+        pending: this.state.pending,
       },
       methods: {
-        remove: this.remove
+        remove: this.remove,
       },
-      utils: {classnames}
+      utils: {classnames},
     });
   }
 }
 
 export default CartProductItem;
+

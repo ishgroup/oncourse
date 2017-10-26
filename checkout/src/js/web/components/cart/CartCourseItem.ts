@@ -1,15 +1,15 @@
 import classnames from "classnames";
 import CartItem from "./CartItem";
-import nativeExtend from "./CartClassItem.extend";
+import nativeExtend from "./CartCourseItem.extend";
 
 const extend = Object.assign({}, nativeExtend);
 
-class CartClassItem extends CartItem {
+class CartCourseItem extends CartItem {
 
   render() {
     return extend.render.apply({
       props: {
-        courseClass: this.props.item,
+        course: this.props.item,
         pending: this.state.pending,
       },
       methods: {
@@ -20,4 +20,4 @@ class CartClassItem extends CartItem {
   }
 }
 
-export default CartClassItem;
+export default CartCourseItem;

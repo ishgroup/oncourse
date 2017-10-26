@@ -34,12 +34,12 @@ export type ProductsState = Normalized<Product>;
 /**
  * @deprecated we will use separate classes
  */
-export type CommonCartItem = CourseClassCart | ProductCart | PromotionCart;
+export type CommonCartItem = CourseClassCart | ProductCart | PromotionCart | WaitingCourseCart;
 
 export type CourseClassCartState = Normalized<CourseClassCart>;
 export type ProductCartState = Normalized<ProductCart>;
 export type PromotionCartState = Normalized<PromotionCart>;
-export type WaitingCourseClassState = Normalized<WaitingListCart>;
+export type WaitingCourseClassState = Normalized<WaitingCourseCart>;
 
 // --- Extend backend model
 export interface DiscountState extends Discount {
@@ -51,14 +51,15 @@ export interface CourseClassPriceState extends CourseClassPrice {
 export interface CourseClassCart extends CourseClass {
 }
 
-export interface WaitingListCart extends WaitingList {
-}
 
 export interface ContactState extends Contact {
   parent?: Contact;
 }
 
 export interface ProductCart extends Product {
+}
+
+export interface WaitingCourseCart extends Course {
 }
 
 export interface PromotionCart extends Promotion {

@@ -1,9 +1,12 @@
 import * as React from "react";
 import CartClassItem from "./CartClassItem";
 import CartProductItem from "./CartProductItem";
+import CartCourseItem from "./CartCourseItem";
 import classnames from "classnames";
 import {plural} from "../../../common/utils/HtmlUtils";
-import {CourseClassCart, CourseClassCartState, ProductCart, ProductCartState} from "../../../services/IshState";
+import {
+  CourseClassCart, CourseClassCartState, ProductCart, ProductCartState, WaitingCourseCart, WaitingCourseClassState,
+} from "../../../services/IshState";
 
 class Cart extends React.Component<Props, State> {
 
@@ -30,9 +33,9 @@ class Cart extends React.Component<Props, State> {
   }
 
   render() {
-    const {removeClass, removeProduct, classes, products, checkoutPath} = this.props;
+    const {removeClass, removeProduct, classes, products, waitingCourses, checkoutPath, removeWaitingCourse} = this.props;
     const countClasses = classes.result.length;
-    const count = countClasses + products.result.length;
+    const count = countClasses + products.result.length + waitingCourses.result.length;
 
     return (
       <div className="short-list" id="shortlist">
@@ -52,6 +55,9 @@ class Cart extends React.Component<Props, State> {
               })}
               {products.result.map(productId => {
                 return <CartProductItem key={productId} item={products.entities[productId]} remove={removeProduct}/>;
+              })}
+              {waitingCourses.result.map(courseId => {
+                return <CartCourseItem key={courseId} item={waitingCourses.entities[courseId]} remove={removeWaitingCourse}/>;
               })}
               <li className="shortListOrderEnrol">
                 <a className="shortlistLinkEnrol" href={checkoutPath}>{countClasses ? "Enrol" : "Purchase"}</a>
@@ -82,8 +88,10 @@ export interface Props {
   readonly checkoutPath?: string;
   readonly classes?: CourseClassCartState;
   readonly products?: ProductCartState;
+  readonly waitingCourses?: WaitingCourseClassState;
   readonly removeClass?: (courseClass: CourseClassCart) => void;
   readonly removeProduct?: (product: ProductCart) => void;
+  readonly removeWaitingCourse?: (wCourse: WaitingCourseCart) => void;
 }
 
 interface State {

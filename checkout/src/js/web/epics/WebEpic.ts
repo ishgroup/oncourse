@@ -45,6 +45,7 @@ export const WebEpic = combineEpics(
   createAddPromotionToCartEpic(),
   createRemovePromotionFromCartEpic(),
   createAddWaitingCourseToCartEpic(),
+  createRemoveWaitingCourseFromCartEpic(),
 );
 
 function createCoursesEpic() {
@@ -212,6 +213,15 @@ function createRemoveProductFromCartEpic() {
     .map(action => ({
       type: FULFILLED(Actions.REMOVE_PRODUCT_FROM_CART),
       payload: normalize(action.payload, ProductsSchema),
+    }));
+}
+
+function createRemoveWaitingCourseFromCartEpic() {
+  return (action$, store: Store<IshState>) => action$
+    .ofType(Actions.REMOVE_WAITING_COURSE_FROM_CART)
+    .map(action => ({
+      type: FULFILLED(Actions.REMOVE_WAITING_COURSE_FROM_CART),
+      payload: normalize(action.payload, WaitingCoursesSchema),
     }));
 }
 

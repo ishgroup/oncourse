@@ -7,7 +7,7 @@ export default class CartItem extends React.Component<CartItemProps, CartItemSta
     super();
 
     this.state = {
-      pending: false
+      pending: false,
     };
   }
 
@@ -19,7 +19,7 @@ export default class CartItem extends React.Component<CartItemProps, CartItemSta
     this.setState({pending: true});
     this.props.remove(this.props.item);
     this.setState({pending: false});
-  };
+  }
 }
 
 interface CartItemProps {
