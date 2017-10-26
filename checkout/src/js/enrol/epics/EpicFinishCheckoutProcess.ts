@@ -11,7 +11,6 @@ import {checkoutFinishEvent} from "../../services/TagManagerService";
  */
 export const FinishCheckoutProcess: Epic<any, any> = (action$: ActionsObservable<any>, store: MiddlewareAPI<IshState>): Observable<any> => {
   return action$.ofType(FINISH_CHECKOUT_PROCESS).flatMap(action => {
-    // TODO need to remove purchased items from card
 
     // TagManager event
     // checkoutFinishEvent(action.payload);

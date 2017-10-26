@@ -116,7 +116,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       needParent: !!CheckoutService.getAllSingleChildIds(state.checkout).length,
       fetching: state.checkout.summary.fetching,
       forms: state.form,
-      isOnlyWaitingLists: CheckoutService.isOnlyWaitingCoursesInCart(state.cart),
+      isOnlyWaitingLists: CheckoutService.isOnlyWaitingCourseSelected(state.checkout.summary),
     };
   } catch (e) {
     console.log(e);

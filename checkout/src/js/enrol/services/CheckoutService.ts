@@ -47,6 +47,14 @@ export class CheckoutService {
       !cart.products.result.length;
   }
 
+  public isOnlyWaitingCourseSelected = (summary: State) => {
+    return Object.values(summary.entities.waitingLists).find(e => e.selected)
+      && !Object.values(summary.entities.enrolments).find(e => e.selected)
+      && !Object.values(summary.entities.vouchers).find(e => e.selected)
+      && !Object.values(summary.entities.articles).find(e => e.selected)
+      && !Object.values(summary.entities.memberships).find(e => e.selected);
+  }
+
   public ifCodeExist = (code, state): boolean => {
     const promotions = state.cart.promotions.entities;
     const inPromotions = Object.keys(promotions).filter(key => promotions[key].code === code).length;
@@ -140,6 +148,7 @@ export class CheckoutService {
     return (
       value.status === PaymentStatus.SUCCESSFUL ||
       value.status === PaymentStatus.SUCCESSFUL_BY_PASS ||
+      value.status === PaymentStatus.SUCCESSFUL_WAITING_COURSES ||
       value.status === PaymentStatus.UNDEFINED
     );
   }
