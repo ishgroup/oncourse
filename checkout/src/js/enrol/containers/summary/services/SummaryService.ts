@@ -11,6 +11,7 @@ export class SummaryService {
     const applicationsIds = [].concat(...state.result.map(id => state.entities.contactNodes[id].applications));
     const membershipsIds = [].concat(...state.result.map(id => state.entities.contactNodes[id].memberships));
     const articlesIds = [].concat(...state.result.map(id => state.entities.contactNodes[id].articles));
+    const waitingListsIds = [].concat(...state.result.map(id => state.entities.contactNodes[id].waitingLists));
 
     const items: PurchaseItem[] =
       [].concat(state.entities.enrolments ? enrolmentsIds.map(id => state.entities.enrolments[id]) : [])
@@ -18,6 +19,7 @@ export class SummaryService {
         .concat(state.entities.applications ? applicationsIds.map(id => state.entities.applications[id]) : [])
         .concat(state.entities.memberships ? membershipsIds.map(id => state.entities.memberships[id]) : [])
         .concat(state.entities.articles ? articlesIds.map(id => state.entities.articles[id]) : [])
+        .concat(state.entities.waitingLists ? waitingListsIds.map(id => state.entities.waitingLists[id]) : [])
         .find(e => (e.selected && e.errors.length === 0));
 
     return !!items;
