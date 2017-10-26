@@ -72,7 +72,8 @@ dependencies {
 
 	compile 'org.apache.poi:poi:3.11-beta3'
 	compile 'org.apache.poi:poi-ooxml:3.11-beta3'
-	compile "mysql:mysql-connector-java:$mysqlVersion"
+	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
+//	compile "mysql:mysql-connector-java:$mysqlVersion"
 
 
     testCompile 'wsdl4j:wsdl4j:1.6.3'
