@@ -13,17 +13,12 @@
   height: 100vh;
   width: 16.666667%; // col-2 bootstrap width
   
-  
-
-  
   li {
     &.sub {
       a {
         padding: 10px 20px 10px 40px;
       }
     }
-    //transition: all .3s;
-    //height:46px;
     
     &.hidden {
       display: none;
@@ -102,6 +97,10 @@
       text-align: center;
     }
   
+    .logout-link {
+      font-size: 12px;
+    }
+  
     .sidebar__footer {
       font-size: 10px;
       
@@ -117,8 +116,6 @@
         padding-left: 0;
         padding-right: 0;
       }
-      
-      
     }
   }
   
@@ -138,6 +135,16 @@
     
     &.active {
       color: $primary;
+    }
+  }
+  
+  .logout-link {
+    padding: 5px 0;
+    text-align: center;
+    
+    &:hover:not(.active) {
+      text-decoration: underline;
+      background-color: transparent;
     }
   }
   

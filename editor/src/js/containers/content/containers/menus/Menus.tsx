@@ -95,7 +95,7 @@ export class Menus extends React.Component<Props, any> {
   getTitleField = (node, path) => {
     return (
       <div className={classnames("rst__field", {invalid: node.errors && node.errors.title})}>
-        <span>Title: </span>
+        <span>Title</span>
         <input
           value={node.title}
           onChange={event => this.changeNode({title: event.target.value}, node, path)}
@@ -107,7 +107,7 @@ export class Menus extends React.Component<Props, any> {
   getSubTitleField = (node, path) => {
     return (
       <div className={classnames("rst__field", {invalid: node.errors && node.errors.url})}>
-        <span>Url: </span>
+        <span>Url</span>
         <input
           value={node.url}
           onChange={event => this.changeNode({url: event.target.value}, node, path)}

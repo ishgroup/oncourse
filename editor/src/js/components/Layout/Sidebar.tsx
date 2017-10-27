@@ -45,8 +45,15 @@ export class Sidebar extends React.Component<Props, any> {
     getHistoryInstance().push('/history');
   }
 
+  onClickLogout(e) {
+    e.preventDefault();
+    const {onLogout} = this.props;
+
+    onLogout();
+  }
+
   render() {
-    const {slim, user, onLogout} = this.props;
+    const {slim, user} = this.props;
     const userName = slim
       ? `${firstChar(user.firstName)}${firstChar(user.lastName)}`
       : `${user.firstName} ${user.lastName}`;
@@ -77,7 +84,10 @@ export class Sidebar extends React.Component<Props, any> {
               activeClassName="active"
               onClick={e => this.onClickMenu(route.url)}
             >
-              <span>{slim ? <span className={route.icon || ''}/> : route.title}</span>
+              <span>
+                <span className={route.icon || ''}/>
+                {!slim && <span> {route.title}</span>}
+              </span>
             </NavLink>
           </li>,
           getSubRoutes(route.url),
@@ -113,8 +123,11 @@ export class Sidebar extends React.Component<Props, any> {
             </Row>
 
             <Row className="center">
-              <Col md="6"><span className="user">{userName}</span></Col>
-              <Col md="6"><Button size="sm" color="secondary" onClick={onLogout}>Log out</Button></Col>
+              <Col md="12">
+                <a href="#" className="logout-link" onClick={e => this.onClickLogout(e)}>
+                  <span className="user">{userName}: logout</span>
+                </a>
+              </Col>
             </Row>
 
           </div>

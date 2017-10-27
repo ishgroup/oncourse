@@ -94,7 +94,7 @@ export class Website extends React.Component<Props, any> {
             </Row>
           </FormGroup>
 
-          <h6>Enable for these pages:</h6>
+          <h6>Enable for these pages</h6>
           <FormGroup>
             <Checkbox
               label="Course"
@@ -114,7 +114,7 @@ export class Website extends React.Component<Props, any> {
           </FormGroup>
 
           <FormGroup>
-            <h6>Hide class on website:</h6>
+            <h6>Hide class on website</h6>
             <div className="form-inline">
               <Input
                 type="number"
@@ -138,7 +138,7 @@ export class Website extends React.Component<Props, any> {
           </FormGroup>
 
           <FormGroup>
-            <h6>Stop web enrolments:</h6>
+            <h6>Stop web enrolments</h6>
             <div className="form-inline">
               <Input
                 type="number"

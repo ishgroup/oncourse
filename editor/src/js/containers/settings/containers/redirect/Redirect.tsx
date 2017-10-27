@@ -97,7 +97,7 @@ export class Redirect extends React.Component<Props, any> {
           <FormGroup key={index}>
             <div className="form-inline rules">
 
-              <Label>From: </Label>
+              <Label>From</Label>
               <Input
                 className={classnames({invalid: rule.submitted && rule.to && !rule.from})}
                 type="text"
@@ -106,7 +106,7 @@ export class Redirect extends React.Component<Props, any> {
                 value={rule.from}
                 onChange={e => this.onChange(e, index, 'from')}
               />
-              <Label>To: </Label>
+              <Label>To</Label>
               <Input
                 className={classnames({invalid: rule.submitted && !rule.to && rule.from})}
                 type="text"
