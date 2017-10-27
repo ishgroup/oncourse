@@ -1,5 +1,5 @@
 import React from 'react';
-import update from 'react/lib/update';
+import update from 'react-addons-update';
 import {connect, Dispatch} from "react-redux";
 import classnames from 'classnames';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';

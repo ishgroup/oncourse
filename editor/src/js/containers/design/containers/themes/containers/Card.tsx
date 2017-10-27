@@ -88,7 +88,7 @@ const cardTarget = {
   },
 };
 
-export default flow<any>(
+export default flow<any, any, any>(
   DropTarget("CARD", cardTarget, connect => ({
     connectDropTarget: connect.dropTarget(),
   })),

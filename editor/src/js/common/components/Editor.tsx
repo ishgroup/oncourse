@@ -4,9 +4,6 @@ import AceEditor from 'react-ace';
 import 'brace/mode/html';
 import 'brace/snippets/html';
 import 'brace/theme/tomorrow';
-import 'brace/ext/language_tools';
-
-const snippetManager = window['ace'].acequire("snippetManager", () => console.log('asdadsad'))
 
 interface Props {
   value?: string;
@@ -16,8 +13,6 @@ interface Props {
 export class Editor extends React.Component<Props, any> {
   render() {
     const {value, onChange} = this.props;
-
-    console.log(snippetManager);
 
     return (
       <div>

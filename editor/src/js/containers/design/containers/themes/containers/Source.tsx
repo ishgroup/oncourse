@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import update from 'react/lib/update';
+import update from 'react-addons-update';
 import classnames from 'classnames';
 import Card from "./Card";
 import {DropTarget} from 'react-dnd';

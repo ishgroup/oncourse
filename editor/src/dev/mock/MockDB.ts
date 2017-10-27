@@ -1,5 +1,5 @@
 import localForage from "localforage";
-import update from 'react/lib/update';
+import update from 'react-addons-update';
 import faker from 'faker';
 import {
   Page, Block, MenuItem, Theme, User, Version, CheckoutSettings, WebsiteSettings, RedirectSettings,
