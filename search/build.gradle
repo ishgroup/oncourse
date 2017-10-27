@@ -6,6 +6,7 @@ configurations {
 
 dependencies {
     testCompile project(':common:common-services')
+    testCompile project(':common:solr-index')
 
     // The odd next line is to work around gradle pulling in the wrong configuration
     // http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
@@ -20,8 +21,8 @@ dependencies {
         exclude group: 'org.apache.hadoop'
     }
 
+    testCompile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
     testCompile 'com.vividsolutions:jts:1.13'
-    testCompile "mysql:mysql-connector-java:$mysqlVersion"
     testCompile 'com.google.code.gson:gson:2.2.4'
     testCompile 'org.eclipse.jetty:jetty-jndi:9.2.13.v20150730'
 
@@ -30,7 +31,7 @@ dependencies {
 
 /**
  * We need add jenkins build properties for search job:
- * -PSOLR_TEST_DB_URL=jdbc:mysql://localhost:3306/db_name?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false
+ * -PSOLR_TEST_DB_URL=jdbc:mariadb://localhost:3306/db_name?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false
  * -PSOLR_TEST_DB_USER=db_user
  * -PSOLR_TEST_DB_PASSWORD=db_password
  * -PSOLR_TEST_CREATE_TABLES=true

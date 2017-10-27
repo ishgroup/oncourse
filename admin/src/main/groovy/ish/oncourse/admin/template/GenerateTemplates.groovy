@@ -68,7 +68,7 @@ class GenerateTemplates {
         BasicDataSource dataSource = new BasicDataSource()
         dataSource.setDriverClassName("com.mysql.jdbc.Driver")
         //dataSource.setDriverClassName("org.gjt.mm.mysql.Driver")
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/database?useSSL=false&serverTimezone=Australia/Sydney")
+        dataSource.setUrl("jdbc:mariadb://127.0.0.1:3306/database?useSSL=false&serverTimezone=Australia/Sydney")
         dataSource.setUsername("username")
         dataSource.setPassword("password")
         dataSource.setMaxActive(1)

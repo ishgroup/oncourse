@@ -38,7 +38,7 @@ dependencies {
 	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
 	testCompile project(path: ':common:common-test', configuration: 'testFixtures')
 
-	testCompile "mysql:mysql-connector-java:$mysqlVersion"
+	testCompile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
 }
 
 sourceSets.main.compileClasspath += configurations.providedCompile
