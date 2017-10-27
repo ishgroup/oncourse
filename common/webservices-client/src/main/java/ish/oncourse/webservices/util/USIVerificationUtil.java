@@ -7,6 +7,7 @@ import ish.common.types.USIFieldStatus;
 import ish.common.types.USIVerificationRequest;
 import ish.common.types.USIVerificationResult;
 import ish.common.types.USIVerificationStatus;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,6 +24,7 @@ public class USIVerificationUtil {
 	public static final String USI_BIRTH_DATE = "usi_birth_date";
 	public static final String USI_CODE = "usi_code";
 	public static final String USI_ORGCODE = "usi_orgcode";
+	public static final String ERROR_MESSAGE = "error_message";
 	
 	public static USIVerificationRequest parseVerificationRequest(GenericParametersMap parametersMap) {
 		Map<String, String> usiParams = parseParametersMap(parametersMap);
@@ -50,6 +52,10 @@ public class USIVerificationUtil {
 	public static USIVerificationResult parseVerificationResult(GenericParametersMap parametersMap) {
 		Map<String, String> usiParams = parseParametersMap(parametersMap);
 		
+		if (StringUtils.isNotBlank(usiParams.get(ERROR_MESSAGE))) {
+			return USIVerificationResult.valueOf(usiParams.get(ERROR_MESSAGE));
+		}
+
 		USIVerificationResult result = new USIVerificationResult();
 		
 		result.setUsiStatus(USIVerificationStatus.valueOf(usiParams.get(USI_CODE)));
@@ -81,6 +87,9 @@ public class USIVerificationUtil {
 		parametersMap.getGenericEntry().add(createEntry(USI_LAST_NAME, result.getLastNameStatus().name(), stubVersion));
 		parametersMap.getGenericEntry().add(createEntry(USI_BIRTH_DATE, result.getDateOfBirthStatus().name(), stubVersion));
 		parametersMap.getGenericEntry().add(createEntry(USI_CODE, result.getUsiStatus().name(), stubVersion));
+		if (result.hasError()) {
+			parametersMap.getGenericEntry().add(createEntry(ERROR_MESSAGE, result.getErrorMessage(), stubVersion));
+		}
 		
 		return parametersMap;
 	}
