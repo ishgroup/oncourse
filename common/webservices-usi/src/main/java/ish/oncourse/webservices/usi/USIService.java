@@ -58,7 +58,7 @@ public class USIService {
 			logger.error("Unable to verify USI code for {} {} in organisation code {}.", verifyUSIType.getFirstName(), 
 					verifyUSIType.getFamilyName(), verifyUSIType.getOrgCode(), e);
 
-			throw new RuntimeException("Error verifying USI.", e);
+			return USIVerificationResult.valueOf("Error verifying USI.");
 		}
 	}
 
