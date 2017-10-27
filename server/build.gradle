@@ -78,7 +78,7 @@ dependencies {
 	// can't go above 2.0.5 due to the bug in liquibase [https://liquibase.jira.com/browse/CORE-2265]
 	compile 'org.liquibase:liquibase-core:2.0.5-fix'
 
-	compile 'mysql:mysql-connector-java:5.1.36'
+	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
 	compile 'com.microsoft.sqlserver:mssql-jdbc:6.2.1.jre8'
 	
 	//log4j2 to slf4j1.7 bridge

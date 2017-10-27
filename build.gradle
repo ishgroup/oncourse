@@ -4,6 +4,7 @@ buildscript {
 		log4j2Version = '2.8.2'
 		cayenneVersion = '4.0.B2'
 		jettyVersion = '9.4.6.v20170531'
+		mariadbVersion = '2.1.2'
 	}
 	repositories {
 		maven {
@@ -60,7 +61,7 @@ allprojects {
 
 	dependencies {
 		testCompile 'junit:junit:4.12'
-		testCompile 'org.dbunit:dbunit:2.4.8'
+		testCompile 'org.dbunit:dbunit:2.4.9'
 
 		compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
 		compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
