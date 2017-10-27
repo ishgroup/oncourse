@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -443,6 +444,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 	}
 	
 	@Test
+	@Ignore //@see task OD-11229
 	public void testConcurentProcessing() throws Exception {
 		
 		ExecutorService asyncThreadExecutor = Executors.newFixedThreadPool(3);
