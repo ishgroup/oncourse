@@ -82,7 +82,7 @@
     "redux-form": "7.1.1",
     "redux-logger": "3.0.6",
     "redux-observable": "0.16.0",
-    "redux-persist": "5.0.0",
+    "redux-persist": "4.8.3",
     "rxjs": "5.5.0",
     "zip-webpack-plugin": "2.0.0"
   },

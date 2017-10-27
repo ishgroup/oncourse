@@ -1,6 +1,6 @@
 import {MiddlewareAPI} from "redux";
 import {ActionsObservable, Epic} from "redux-observable";
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs/Rx';
 import Notifications, {success, error} from 'react-notification-system-redux';
 import "rxjs";
 import {commonErrorToValidationError, toValidationError} from "../common/utils/ErrorUtils";
