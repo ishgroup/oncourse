@@ -31,4 +31,6 @@ public interface IWebSiteVersionService {
 	void removeOldWebSiteVersions(WebSite webSite);
 
 	WebSiteVersion getDeployedVersion(WebSite webSite);
+	
+	boolean isEditor();
 }

@@ -20,18 +20,25 @@ public class WebTemplateChangeTracker {
 	private IWebSiteVersionService webSiteVersionService;
 	private IWebSiteService webSiteService;
 	
-	private long lastCheckTimestamp;
-	
+	private long webLastCheckTimestamp;
+	private long editorLastCheckTimestamp;
+
+
 	public WebTemplateChangeTracker(ICayenneService cayenneService, IWebSiteService webSiteService, IWebSiteVersionService webSiteVersionService) {
 		this.cayenneService = cayenneService;
 		this.webSiteService = webSiteService;
 		this.webSiteVersionService = webSiteVersionService;
 		
-		this.lastCheckTimestamp = System.currentTimeMillis();
+		this.webLastCheckTimestamp = System.currentTimeMillis();
+		this.editorLastCheckTimestamp = System.currentTimeMillis();
+	}
+	
+	public void resetEditorTimestamp() {
+		this.editorLastCheckTimestamp = System.currentTimeMillis();
 	}
 
-	public void resetTimestamp() {
-		this.lastCheckTimestamp = System.currentTimeMillis();
+	public void resetWebTimestamp() {
+		this.webLastCheckTimestamp = System.currentTimeMillis();
 	}
 
 	public boolean containsChanges() {
@@ -43,7 +50,7 @@ public class WebTemplateChangeTracker {
 		return (ObjectSelect.query(WebTemplate.class)
 				.localCache(WebTemplate.class.getSimpleName())
 				.and(WebTemplate.LAYOUT.dot(WebSiteLayout.WEB_SITE_VERSION).eq(webSiteVersion))
-				.and(WebTemplate.MODIFIED.gt(new Date(lastCheckTimestamp)))
+				.and(WebTemplate.MODIFIED.gt(new Date(webSiteVersionService.isEditor() ? editorLastCheckTimestamp : webLastCheckTimestamp)))
 				.limit(1)
 				.selectFirst(cayenneService.sharedContext()) != null);
 	}

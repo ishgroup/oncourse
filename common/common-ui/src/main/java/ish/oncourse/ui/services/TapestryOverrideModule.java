@@ -39,10 +39,10 @@ public class TapestryOverrideModule {
 
 	public PageSource buildPageSourceOverride(PageLoader pageLoader, @ComponentTemplates InvalidationEventHub templatesHub,
 	                                          @ComponentMessages InvalidationEventHub messagesHub, @ComponentClasses InvalidationEventHub classesInvalidationEventHub,
-	                                          IWebNodeService webNodeService,
+	                                          IWebNodeService webNodeService, IWebSiteVersionService webSiteVersionService,
 	                                          Request request) {
 
-		PageSourceOverride service = new PageSourceOverride(pageLoader, webNodeService, request);
+		PageSourceOverride service = new PageSourceOverride(pageLoader, webNodeService, request, webSiteVersionService);
 		classesInvalidationEventHub.addInvalidationListener(service);
 
 		messagesHub.addInvalidationListener(service);
@@ -52,12 +52,12 @@ public class TapestryOverrideModule {
 	}
 
 	public ComponentTemplateSource buildComponentTemplateSourceOverride(TemplateParser parser, ComponentTemplateLocator locator,
-	                                                                    ClasspathURLConverter classpathURLConverter, UpdateListenerHub updateListenerHub, Request request,
-	                                                                    IResourceService resourceService, IWebNodeService webNodeService, IWebNodeTypeService webNodeTypeService,
+	                                                                    UpdateListenerHub updateListenerHub, Request request,
+	                                                                    IResourceService resourceService, IWebNodeService webNodeService,
 	                                                                    ICayenneService cayenneService, IWebSiteService webSiteService, IWebSiteVersionService webSiteVersionService) {
 
-		ComponentTemplateSourceOverride service = new ComponentTemplateSourceOverride(parser, locator, classpathURLConverter, request,
-				resourceService, webNodeService, webNodeTypeService, cayenneService, webSiteService, webSiteVersionService);
+		ComponentTemplateSourceOverride service = new ComponentTemplateSourceOverride(parser, locator, request,
+				resourceService, webNodeService, cayenneService, webSiteService, webSiteVersionService);
 
 		updateListenerHub.addUpdateListener(service);
 

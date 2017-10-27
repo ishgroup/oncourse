@@ -49,8 +49,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 
 	private IResourceService resourceService;
 	private IWebNodeService webNodeService;
-	private IWebNodeTypeService webNodeTypeService;
-
+	private IWebSiteVersionService webSiteVersionService;
 	private final TemplateParser parser;
 	private final ComponentTemplateLocator locator;
 	
@@ -63,11 +62,15 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 	 * "foo.tml" resource). The resource may end up being null, meaning the
 	 * template does not exist in any locale.
 	 */
-	private final Map<MultiKey, Resource> templateResources = CollectionFactory.newConcurrentMap();
+	private final Map<MultiKey, Resource> webTemplateResources = CollectionFactory.newConcurrentMap();
+	private final Map<MultiKey, Resource> editorTemplateResources = CollectionFactory.newConcurrentMap();
+
 	/**
 	 * Cache of parsed templates, keyed on resource.
 	 */
-	private final Map<Resource, ComponentTemplate> templates = CollectionFactory.newConcurrentMap();
+	private final Map<Resource, ComponentTemplate> webTemplates = CollectionFactory.newConcurrentMap();
+	private final Map<Resource, ComponentTemplate> editorTemplates = CollectionFactory.newConcurrentMap();
+
 	private final ComponentTemplate missingTemplate = new ComponentTemplate() {
 
 		public Map<String, Location> getComponentIds() {
@@ -96,18 +99,17 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 	};
 
 	public ComponentTemplateSourceOverride(TemplateParser parser, @Primary ComponentTemplateLocator locator,
-			ClasspathURLConverter classpathURLConverter, Request request, IResourceService resourceService, IWebNodeService webNodeService,
-			IWebNodeTypeService webNodeTypeService, ICayenneService cayenneService, IWebSiteService webSiteService, 
+			Request request, IResourceService resourceService, IWebNodeService webNodeService,
+			ICayenneService cayenneService, IWebSiteService webSiteService, 
 			IWebSiteVersionService webSiteVersionService) {
 
 		this.parser = parser;
 		this.locator = locator;
 		this.entityChangeTracker = new WebTemplateChangeTracker(cayenneService, webSiteService, webSiteVersionService);
-
+		this.webSiteVersionService = webSiteVersionService;
 		this.request = request;
 		this.resourceService = resourceService;
 		this.webNodeService = webNodeService;
-		this.webNodeTypeService = webNodeTypeService;
 	}
 
     /**
@@ -131,10 +133,20 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 		WebSiteLayout layout = webNodeService.getLayout();
         //we should use anouther key to cache Resource for component when user defines custom template
         MultiKey key = CustomTemplateDefinition.getMultiKeyBy(componentName, ctd, request.getServerName(), locale, layout != null ? layout.getLayoutKey() : null);
-
+		Map<MultiKey, Resource> templateResources;
+		Map<Resource, ComponentTemplate> templates;
+		
+        if (webSiteVersionService.isEditor()) {
+			templateResources = editorTemplateResources;
+			templates = editorTemplates;
+		} else {
+			templateResources = webTemplateResources;
+			templates = webTemplates;
+		}
+				
         // First cache is key to resource.
-
-        Resource resource = templateResources.get(key);
+		
+		Resource resource = templateResources.get(key);
 
         if (resource == null) {
 
@@ -253,11 +265,16 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 	 */
 	public void checkForUpdates() {
 		if (entityChangeTracker.containsChanges()) {
-			entityChangeTracker.resetTimestamp();
+			if (webSiteVersionService.isEditor()) {
+				entityChangeTracker.resetEditorTimestamp();
+				editorTemplateResources.clear();
+				editorTemplates.clear();
+			} else {
+				entityChangeTracker.resetWebTimestamp();
+				webTemplateResources.clear();
+				webTemplates.clear();
+			}
 			
-			templateResources.clear();
-			templates.clear();
-
 			fireInvalidationEvent();
 		}
 	}

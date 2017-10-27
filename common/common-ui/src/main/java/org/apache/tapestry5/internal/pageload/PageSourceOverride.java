@@ -3,6 +3,7 @@ package org.apache.tapestry5.internal.pageload;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.site.WebSiteService;
 import org.apache.tapestry5.internal.services.PageLoader;
 import org.apache.tapestry5.internal.services.PageSource;
@@ -18,20 +19,26 @@ import java.util.Map;
 public class PageSourceOverride implements PageSource, InvalidationListener {
 	private final PageLoader pageLoader;
 	private IWebNodeService webNodeService;
+	private IWebSiteVersionService webSiteVersionService;
 
 	private Request request;
+	
+	private final Map<MultiKey, Page> editorPageCache = CollectionFactory.newConcurrentMap();
+	private final Map<MultiKey, Page> webPageCache = CollectionFactory.newConcurrentMap();
 
-	private final Map<MultiKey, Page> pageCache = CollectionFactory
-			.newConcurrentMap();
-
-	public PageSourceOverride(PageLoader pageLoader, IWebNodeService webNodeService, Request request) {
+	public PageSourceOverride(PageLoader pageLoader, IWebNodeService webNodeService, Request request, IWebSiteVersionService webSiteVersionService) {
+		this.webSiteVersionService = webSiteVersionService;
 		this.pageLoader = pageLoader;
 		this.webNodeService = webNodeService;
 		this.request = request;
 	}
 
 	public synchronized void objectWasInvalidated() {
-		pageCache.clear();
+		if (webSiteVersionService.isEditor()) {
+			editorPageCache.clear();
+		} else {
+			webPageCache.clear();
+		}
 	}
 
 	public Page getPage(String canonicalPageName, Locale locale) {
@@ -41,7 +48,7 @@ public class PageSourceOverride implements PageSource, InvalidationListener {
 
 		MultiKey key = new MultiKey(canonicalPageName,
 				site != null ? site.getSiteKey() : request.getServerName(), layout != null ? layout.getLayoutKey() : null);
-
+		Map<MultiKey, Page> pageCache = webSiteVersionService.isEditor() ? editorPageCache : webPageCache;
 		if (!pageCache.containsKey(key)) {
 			// In rare race conditions, we may see the same page loaded multiple
 			// times across

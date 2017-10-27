@@ -91,4 +91,9 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 				.orderBy(WebSiteVersion.DEPLOYED_ON.desc())
 				.limit(1).selectFirst(webSite.getObjectContext());
 	}
+
+	@Override
+	public boolean isEditor() {
+		return false;
+	}
 }

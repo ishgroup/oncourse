@@ -2,6 +2,7 @@ package org.apache.tapestry5.internal.pageload;
 
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.services.node.IWebNodeService;
+import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
 import org.apache.tapestry5.*;
@@ -108,7 +109,8 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
         }
     };
 
-    private final Map<MultiKey, ComponentAssembler> cache = CollectionFactory.newConcurrentMap();
+    private final Map<MultiKey, ComponentAssembler> webCache = CollectionFactory.newConcurrentMap();
+    private final Map<MultiKey, ComponentAssembler> editorCache = CollectionFactory.newConcurrentMap();
 
     private final ComponentInstantiatorSource instantiatorSource;
 
@@ -133,14 +135,16 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
     private Request request;
 
 	private IWebNodeService webNodeService;
+    private IWebSiteVersionService webSiteVersionService;
 
     public PageLoaderOverride(ComponentInstantiatorSource instantiatorSource, ComponentTemplateSource templateSource,
             PageElementFactory elementFactory, ComponentPageElementResourcesSource resourcesSource,
             ComponentClassResolver componentClassResolver, PersistentFieldManager persistentFieldManager,
-            StringInterner interner, OperationTracker tracker, PerthreadManager perThreadManager,
+            StringInterner interner, OperationTracker tracker, PerthreadManager perThreadManager,IWebSiteVersionService webSiteVersionService,
             @Symbol(SymbolConstants.PAGE_POOL_ENABLED)
             boolean poolingEnabled)
     {
+        this.webSiteVersionService = webSiteVersionService;
         this.instantiatorSource = instantiatorSource;
         this.templateSource = templateSource;
         this.elementFactory = elementFactory;
@@ -161,9 +165,12 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
 		this.request = request;
 	}
 	
-	public void objectWasInvalidated()
-    {
-        cache.clear();
+	public void objectWasInvalidated() {
+        if (webSiteVersionService.isEditor()) { 
+            editorCache.clear();
+        } else { 
+            webCache.clear();
+        }
     }
 
     public Page loadPage(final String logicalPageName, final Locale locale)
@@ -200,6 +207,8 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
 		WebSiteLayout layout = webNodeService.getLayout();
     	MultiKey key = CustomTemplateDefinition.getMultiKeyBy(className, ctd, request.getServerName(), locale,  layout != null ? layout.getLayoutKey() : null);
 
+        Map<MultiKey, ComponentAssembler> cache = webSiteVersionService.isEditor() ? editorCache : webCache;
+                
         ComponentAssembler result = cache.get(key);
 
         if (result == null)
