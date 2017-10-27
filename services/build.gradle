@@ -1,108 +1,12 @@
-apply plugin: 'application'
-apply plugin: 'io.spring.dependency-management'
-
-ext {
-	tapestryVersion = '5.4.3'
-	springVersion = '3.0.5.RELEASE'
-	bootiqueVersion = '0.23'
-	jettyVersion = '9.3.6.v20151106'
-}
-
-
-dependencyManagement {
-	imports {
-		mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
-	}
-}
-
-configurations {
-	tapestryTest
-	all*.exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
-	all*.exclude group: 'org.eclipse.jetty' , module: 'jetty-webapp'
-	all*.exclude group: 'org.eclipse.jetty' , module: 'jetty-plus'
-}
-
-dependencies {
-
-	//bootique
-	compile 'io.bootique:bootique'
-	compile 'io.bootique.jetty:bootique-jetty'
-	compile 'io.bootique.jcache:bootique-jcache'
-	compile 'io.bootique.cayenne:bootique-cayenne'
-	compile 'io.bootique.tapestry:bootique-tapestry'
-
-
-	compile project(':common:common-model')
-	
-	compile (project(':common:common-services')) {
-		exclude group: 'axis', module: 'axis-wsdl4j'
-	}
-	
-    compile (project(':common:webservices-usi')) {
-		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
-	}
-
-	compile ("ish.oncourse.willow:webservices-client:$waCommonWebservicesClientVersion")
-	{
-		//we should exclude cayenne-server from waCommon because the cayenne-server is not compatable to willow code.
-		exclude group: 'org.apache.cayenne', module: 'cayenne-server'
-		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
-	}
-    compile ('org.apache.cxf:cxf-bundle:2.6.16') {
-		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
-		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
-		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
-	}
-
-	compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
-	compile "org.apache.tapestry:plastic:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry5-annotations:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-ioc:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-json:$tapestryVersion"
-	compile "org.apache.tapestry:tapestry-spring:$tapestryVersion"
-
-	compile "org.springframework:spring-core:$springVersion"
-	compile "org.springframework:spring-beans:$springVersion"
-	compile "org.springframework:spring-context:$springVersion"
-	compile "org.springframework:spring-web:$springVersion"
-
-
-	compile 'aopalliance:aopalliance:1.0'
-	compile 'commons-logging:commons-logging:1.1.1'
-
-	compile 'org.apache.poi:poi:3.11-beta3'
-	compile 'org.apache.poi:poi-ooxml:3.11-beta3'
-	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
-//	compile "mysql:mysql-connector-java:$mysqlVersion"
-
-
-    testCompile 'wsdl4j:wsdl4j:1.6.3'
-	testCompile 'org.jodd:jodd-http:+'
-	testCompile 'org.apache.derby:derby:10.13.1.1'
-
-	// The odd next line is to work around gradle pulling in the wrong configuration
-	// http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
-	testCompile (project(path: ':common:common-test', configuration: 'testFixtures')) {
-		exclude group: 'org.apache.tapestry', module: 'tapestry-test'
-	}
-
-	tapestryTest ("org.apache.tapestry:tapestry-test:$tapestryVersion")
-}
-
-//workaround: put org.apache.tapestry:tapestry-test to end of test classpath
-sourceSets.test.compileClasspath = sourceSets.test.compileClasspath + configurations.tapestryTest
-sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + configurations.tapestryTest
+apply from: "$rootDir/buildTapestryApp.gradle"
 
 sourceSets {
     main {
         java {
-            srcDir 'src/main/generated'
+            srcDirs 'src/main/java'
+            srcDirs 'src/main/generated'
         }
     }
-}
-
-processResources.doLast {
-	file("${buildDir}/resources/VERSION").text = version ?: "SNAPSHOT"
 }
 
 task generateSources(type: Copy) {
@@ -113,29 +17,3 @@ task generateSources(type: Copy) {
 
 
 mainClassName = 'ish.oncourse.webservices.ServicesApp'
-
-
-startScripts {
-	unixStartScriptGenerator.template = resources.text.fromFile("${project.rootDir}/buildSrc/src/main/resources/applicationStartScript.sh")
-}
-
-targetCompatibility = '1.8'
-sourceCompatibility = '1.8'
-
-distZip {
-	applicationDistribution.from( "${buildDir}/resources/VERSION" ) {
-		into('.')
-	}
-}
-
-publishing {
-// For deploying to our repo
-	publications {
-		executables(MavenPublication) {
-			artifact(distZip) {
-				classifier "executable"
-				extension "zip"
-			}
-		}
-	}
-}

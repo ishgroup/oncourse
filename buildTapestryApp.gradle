@@ -11,6 +11,9 @@ ext {
     jettyVersion = '9.3.6.v20151106'
 }
 
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'
+
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
 
@@ -45,7 +48,9 @@ dependencies {
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
     }
 
-    //bootique
+    /**
+     * bootique dependencies
+     */
     compile 'io.bootique:bootique'
     compile 'io.bootique.jetty:bootique-jetty'
     compile 'io.bootique.jcache:bootique-jcache'
@@ -55,12 +60,18 @@ dependencies {
     //cache
     compile 'org.ehcache:ehcache:3.4.0'
 
+    /**
+     * cxf dependencies
+     */
     compile('org.apache.cxf:cxf-bundle:2.6.16') {
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
         exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
     }
 
+    /**
+     * tapestry dependencies
+     */
     compile "org.apache.tapestry:tapestry-core:$tapestryVersion"
     compile "org.apache.tapestry:plastic:$tapestryVersion"
     compile "org.apache.tapestry:tapestry5-annotations:$tapestryVersion"
@@ -68,6 +79,9 @@ dependencies {
     compile "org.apache.tapestry:tapestry-json:$tapestryVersion"
     compile "org.apache.tapestry:tapestry-spring:$tapestryVersion"
 
+    /**
+     * spring dependencies
+     */
     compile "org.springframework:spring-core:$springVersion"
     compile "org.springframework:spring-beans:$springVersion"
     compile "org.springframework:spring-context:$springVersion"
@@ -77,9 +91,13 @@ dependencies {
     compile 'aopalliance:aopalliance:1.0'
     compile 'commons-logging:commons-logging:1.1.1'
 
+    /**
+     * poi dependencies
+     */
     compile 'org.apache.poi:poi:3.11-beta3'
     compile 'org.apache.poi:poi-ooxml:3.11-beta3'
-    compile "mysql:mysql-connector-java:$mysqlVersion"
+
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
 
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
@@ -103,9 +121,6 @@ sourceSets.test.runtimeClasspath = sourceSets.test.runtimeClasspath + configurat
 startScripts {
     unixStartScriptGenerator.template = resources.text.fromFile("${project.rootDir}/buildSrc/src/main/resources/applicationStartScript.sh")
 }
-
-targetCompatibility = '1.8'
-sourceCompatibility = '1.8'
 
 processResources.doLast {
     file("${buildDir}/resources/VERSION").text = version ?: "SNAPSHOT"

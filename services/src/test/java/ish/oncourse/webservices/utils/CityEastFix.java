@@ -78,8 +78,8 @@ public class CityEastFix extends AbstractUtil{
 	}
 
 
-	//private final static String URI = "jdbc:mysql://localhost:3306/w2live_college?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8";
-//	private String uri = "jdbc:mysql://localhost:3306/w2test_college?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8";
+	//private final static String URI = "jdbc:mariadb://localhost:3306/w2live_college?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8";
+//	private String uri = "jdbc:mariadb://localhost:3306/w2test_college?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8";
 
 	public static void main(String[] args) throws Exception {
 

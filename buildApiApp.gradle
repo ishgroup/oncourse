@@ -47,7 +47,7 @@ dependencies {
     //search
     compile "org.apache.solr:solr-solrj:6.6.0"
 
-    compile "mysql:mysql-connector-java:$mysqlVersion"
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
 
     testCompile 'org.dbunit:dbunit:2.5.3'
     testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
