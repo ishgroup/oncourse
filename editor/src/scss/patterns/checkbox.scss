@@ -15,6 +15,8 @@ $md-checkmark-color: $white;
   label {
     cursor: pointer;
     margin-bottom: 0;
+    color: black;
+    font-family: inherit;
 
     &:before, &:after {
       content: "";

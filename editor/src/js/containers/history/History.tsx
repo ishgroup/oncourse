@@ -33,7 +33,7 @@ class History extends React.Component<Props, any> {
 
   onRevert(id) {
     this.props.showModal({
-      text: `You are about to revert live site to this version. Are you sure?`,
+      text: `You are about to revert draft version to this revision. Are you sure?`,
       onConfirm: () => this.props.onRevert(id),
     });
 
