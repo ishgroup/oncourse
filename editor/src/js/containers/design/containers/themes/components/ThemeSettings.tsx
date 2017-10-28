@@ -96,7 +96,11 @@ export class ThemeSettings extends React.Component<Props, any> {
             </FormGroup>
 
             <FormGroup>
-              <Button color="danger" onClick={e => this.onClickDelete(e)}>
+              <Button
+                color="danger"
+                className="outline"
+                onClick={e => this.onClickDelete(e)}
+              >
                 <span className="icon icon-delete"/>
                 Remove
               </Button>

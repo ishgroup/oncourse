@@ -116,7 +116,14 @@ export class Redirect extends React.Component<Props, any> {
                 onChange={e => this.onChange(e, index, 'to')}
               />
 
-              <Button color="danger" onClick={() => this.onRemove(index)}>Remove</Button>
+              <Button
+                color="danger"
+                className="outline"
+                onClick={() => this.onRemove(index)}
+              >
+                <span className="icon icon-delete"/>
+                Remove
+              </Button>
             </div>
           </FormGroup>,
         )}
