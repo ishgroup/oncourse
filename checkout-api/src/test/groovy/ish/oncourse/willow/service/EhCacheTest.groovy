@@ -2,6 +2,7 @@ package ish.oncourse.willow.service
 
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.cayenne.cache.JCacheQueryCache
+import ish.oncourse.test.InitialContextFactoryMock
 import org.apache.cayenne.cache.QueryCache
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.junit.Test
