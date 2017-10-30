@@ -18,7 +18,10 @@
   
       .sidebar-wrapper {
         pointer-events: all;
-        max-width: 4%;
+        
+        &--slim {
+          max-width: 4%;
+        }
       }
     }
     

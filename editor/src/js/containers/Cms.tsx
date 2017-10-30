@@ -28,6 +28,14 @@ interface Props {
   history: any;
 }
 
+const checkSlimSidebar = history => (
+  history.location.pathname === '/'
+);
+
+const checkViewMode = history => (
+  history.location.pathname === '/' || history.location.pathname.indexOf('/pages/') === 0
+);
+
 export class Cms extends React.Component<Props, any> {
 
   componentDidMount() {
@@ -43,10 +51,12 @@ export class Cms extends React.Component<Props, any> {
   render() {
     const {logout, auth, notifications, modal, hideModal, onPublish, showModal} = this.props;
     const {isAuthenticated, user} = auth;
-    const viewMode: boolean = this.props.history.location.pathname === '/';
+    const viewMode: boolean = checkViewMode(this.props.history);
+    const slimSidebar: boolean = checkSlimSidebar(this.props.history);
+    const globalPadding = viewMode && slimSidebar ? '4%' : '16.666667%';
 
     // set left padding for site content (sidebar width)
-    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: 4%}`}}/>);
+    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: ${globalPadding}`}}/>);
 
     return (
       <div className="cms">
@@ -59,7 +69,7 @@ export class Cms extends React.Component<Props, any> {
               isAuthenticated &&
                 <Sidebar
                   user={user}
-                  slim={viewMode}
+                  slim={slimSidebar}
                   onLogout={() => logout()}
                   onPublish={() => onPublish()}
                   showModal={showModal}

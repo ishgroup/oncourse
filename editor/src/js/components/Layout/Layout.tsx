@@ -15,9 +15,7 @@ export const Layout = (props: Props) => {
     <Container fluid>
       <Row className={classnames({'full-height': fullHeight})}>
         {sidebar &&
-        <Col md="2" className="sidebar-wrapper">
-          {sidebar}
-        </Col>
+          sidebar
         }
 
         <Col md={sidebar ? 10 : 12} className="content-wrapper">

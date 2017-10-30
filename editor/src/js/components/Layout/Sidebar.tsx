@@ -97,43 +97,45 @@ export class Sidebar extends React.Component<Props, any> {
     );
 
     return (
-      <div className={classnames("sidebar", {"sidebar--slim": slim})}>
-        <div className="sidebar__content">
+      <Col md="2" className={classnames("sidebar-wrapper", {"sidebar-wrapper--slim": slim})}>
+        <div className={classnames("sidebar", {"sidebar--slim": slim})}>
+          <div className="sidebar__content">
 
-          {routes.map((route, index) => (
-            <RouteWrapper
-              key={index}
-              path={route.path}
-              exact={route.exact}
-              isPublic={route.isPublic}
-              component={route.sidebar || mainSidebar}
-            />
-          ))}
+            {routes.map((route, index) => (
+              <RouteWrapper
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                isPublic={route.isPublic}
+                component={route.sidebar || mainSidebar}
+              />
+            ))}
 
-          <div className="sidebar__footer">
-            <Row className="center">
-              <Col md="6">
-                <Button size="sm" color="primary" onClick={() => this.onClickPublish()}>Publish</Button>
-              </Col>
-              <Col md="6">
-                <Button color="link" onClick={() => this.onClickHistory()}>
-                  25 Edits
-               </Button>
-              </Col>
-            </Row>
+            <div className="sidebar__footer">
+              <Row className="center">
+                <Col md="6">
+                  <Button size="sm" color="primary" onClick={() => this.onClickPublish()}>Publish</Button>
+                </Col>
+                <Col md="6">
+                  <Button color="link" onClick={() => this.onClickHistory()}>
+                    25 Edits
+                 </Button>
+                </Col>
+              </Row>
 
-            <Row className="center">
-              <Col md="12">
-                <a href="#" className="logout-link" onClick={e => this.onClickLogout(e)}>
-                  <span className="user">{userName}: logout</span>
-                </a>
-              </Col>
-            </Row>
+              <Row className="center">
+                <Col md="12">
+                  <a href="#" className="logout-link" onClick={e => this.onClickLogout(e)}>
+                    <span className="user">{userName}: logout</span>
+                  </a>
+                </Col>
+              </Row>
 
+            </div>
           </div>
-        </div>
 
-      </div>
+        </div>
+      </Col>
     );
   }
 }
