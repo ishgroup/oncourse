@@ -4,10 +4,19 @@
 package ish.oncourse.test;
 
 import ish.oncourse.test.functions.Functions;
+import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.ext.mysql.MySqlDataTypeFactory;
+import org.dbunit.operation.DatabaseOperation;
 
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +57,17 @@ public class TestContext {
 	public BasicDataSource getDS() {
 		return dataSource;
 	}
-
+	
+	public void cleanInsert(String dataSetResource) throws DatabaseUnitException, SQLException {
+		InputStream st = TestContext.class.getClassLoader().getResourceAsStream(dataSetResource);
+		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
+		Functions.cleanDB(mariaDB,false);
+		DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null);
+		dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
+		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
+		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+	}
+	
 	public void close() {
 		try {
 			dataSource.close();
