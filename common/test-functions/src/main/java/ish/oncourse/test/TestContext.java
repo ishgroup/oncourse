@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,14 +18,19 @@ import java.util.Map;
  */
 public class TestContext {
 	private static final Logger logger = LogManager.getLogger();
+	public static final String SHOULD_CREATE_SCHEMA = "createSchema";
+	public static final String SHOULD_DROP_SCHEMA = "dropSchema";
 
-	private Map<String, Boolean> params;
+
+	private Map<String, Boolean> params = new HashMap<>();
 
 	private BasicDataSource dataSource;
 	private MariaDB mariaDB;
 
 	public TestContext params(Map<String, Boolean> params) {
-		this.params = params;
+		if (params != null) {
+			this.params = params;
+		}
 		return this;
 	}
 
@@ -32,7 +38,10 @@ public class TestContext {
 		mariaDB = MariaDB.valueOf();
 		dataSource = Functions.createDS(mariaDB);
 		Functions.initJNDI(dataSource);
-		new CreateTables(Functions.createRuntime(), params).create();
+		Boolean createSchema = params.get(SHOULD_CREATE_SCHEMA);
+		if (createSchema == null || createSchema) {
+			new CreateTables(Functions.createRuntime(), params).create();
+		}
 		return this;
 	}
 
@@ -46,7 +55,9 @@ public class TestContext {
 		} catch (SQLException e) {
 			logger.error(e);
 		}
-		Functions.cleanDB(mariaDB);
+
+		Boolean dropSchema = params.get(SHOULD_DROP_SCHEMA);
+		Functions.cleanDB(mariaDB,dropSchema == null || dropSchema);
 
 	}
 }
