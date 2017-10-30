@@ -69,6 +69,8 @@ import ish.oncourse.services.textile.ITextileConverter;
 import ish.oncourse.services.textile.TextileConverter;
 import ish.oncourse.services.tutor.ITutorService;
 import ish.oncourse.services.tutor.TutorService;
+import ish.oncourse.services.voucher.IVoucherService;
+import ish.oncourse.services.voucher.VoucherService;
 import ish.oncourse.util.ComponentPageResponseRenderer;
 import ish.oncourse.util.IComponentPageResponseRenderer;
 import ish.oncourse.util.IPageRenderer;
@@ -118,6 +120,7 @@ public class ServiceTestModule {
 		binder.bind(IWebContentService.class, WebContentService.class);
 		binder.bind(IWebMenuService.class, WebMenuService.class);
 		binder.bind(IWebNodeService.class, WebNodeService.class);
+		binder.bind(IVoucherService.class, VoucherService.class);
 		
 		binder.bind(IWebSiteVersionService.class, WebSiteVersionService.class);
 		binder.bind(IWebSiteService.class, new ServiceBuilder<IWebSiteService>() {
