@@ -1,4 +1,9 @@
+ext {
+    willowTest_db = 'willow_search_test'
+}
+
 apply from: "$rootDir/buildTapestryApp.gradle"
+apply from: "$rootDir/build.test.db.gradle"
 
 sourceSets {
     main {
@@ -22,6 +27,5 @@ task generateSources(type: Copy) {
     into 'src/main/generated'
     expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
 }
-
 
 mainClassName = 'ish.oncourse.webservices.ServicesApp'
