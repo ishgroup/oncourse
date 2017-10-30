@@ -56,7 +56,7 @@ export class Cms extends React.Component<Props, any> {
     const globalPadding = viewMode && slimSidebar ? '4%' : '16.666667%';
 
     // set left padding for site content (sidebar width)
-    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: ${globalPadding}`}}/>);
+    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: ${globalPadding}}`}}/>);
 
     return (
       <div className="cms">
