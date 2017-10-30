@@ -1,6 +1,7 @@
 package ish.oncourse.test
 
 import org.apache.commons.lang3.StringUtils
+import org.mariadb.jdbc.Driver
 
 /**
  * User: akoiro
@@ -12,7 +13,8 @@ class MariaDB {
     String user
     String password
     String dbName
-    String  driver = 'org.gjt.mm.mysql.Driver'
+    String driver = 'org.mariadb.jdbc.Driver'
+    Class driverClass = Driver
 
     static MariaDB valueOf(String url, String user, String password) {
         MariaDB result = new MariaDB()
@@ -23,6 +25,12 @@ class MariaDB {
         String[] urlParts = StringUtils.split(parts[0], "/")
         result.dbName = urlParts[2]
         return result
+    }
+
+    static MariaDB valueOf() {
+        return valueOf(System.getProperty("oncourse.jdbc.url"),
+                System.getProperty("oncourse.jdbc.user"),
+                System.getProperty("oncourse.jdbc.password"))
     }
 
 }

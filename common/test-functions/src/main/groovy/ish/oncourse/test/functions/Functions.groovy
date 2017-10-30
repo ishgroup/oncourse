@@ -4,7 +4,6 @@ import ish.math.MoneyType
 import ish.oncourse.test.InitialContextFactoryMock
 import ish.oncourse.test.MariaDB
 import org.apache.cayenne.access.DataNode
-import org.apache.cayenne.configuration.CayenneRuntime
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.commons.dbcp2.BasicDataSource
 
@@ -18,9 +17,7 @@ import java.sql.*
  */
 class Functions {
 
-    static Closure<CayenneRuntime> cayenneRuntime = { String cayenneXml = "cayenne-oncourse.xml", Closure initJNDI = initJNDI ->
-        initJNDI()
-
+    static ServerRuntime createRuntime(String cayenneXml = "cayenne-oncourse.xml") {
         ServerRuntime cayenneRuntime = new ServerRuntime(cayenneXml)
 
         for (DataNode dataNode : cayenneRuntime.getDataDomain().getDataNodes()) {
@@ -29,17 +26,16 @@ class Functions {
         return cayenneRuntime
     }
 
-
-    static Closure initJNDI = { Closure<DataSource> dataSource = createDataSource ->
+    static void initJNDI(DataSource dataSource) {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName())
         InitialContextFactoryMock.bind("java:comp/env", new InitialContext())
 
-        DataSource oncourse = dataSource()
-        InitialContextFactoryMock.bind("jdbc/oncourse", oncourse)
-        InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourse)
+        InitialContextFactoryMock.bind("jdbc/oncourse", dataSource)
+        InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", dataSource)
     }
 
-    static Closure<DataSource> createDataSource = { MariaDB mariaDB ->
+    static BasicDataSource createDS(MariaDB mariaDB) {
+        DriverManager.registerDriver(Class.forName(mariaDB.driver) as Driver)
         BasicDataSource dataSource = new BasicDataSource()
         dataSource.setDriverClassName(mariaDB.driver)
         dataSource.setUrl(mariaDB.url)
@@ -56,7 +52,7 @@ class Functions {
         Statement statement = null
         try {
             connection = DriverManager.getConnection(mariaDB.url, mariaDB.user, mariaDB.password)
-            preparedStatement = connection.prepareStatement(String.format("select Concat(table_schema,'.',TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES where  table_schema = '%s';", dbName))
+            preparedStatement = connection.prepareStatement(String.format("select Concat(table_schema,'.',TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES where  table_schema = '%s';", mariaDB.dbName))
             ResultSet resultSet = preparedStatement.executeQuery()
             statement = connection.createStatement();
             statement.addBatch("SET FOREIGN_KEY_CHECKS=0;")
