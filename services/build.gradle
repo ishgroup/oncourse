@@ -1,5 +1,5 @@
 ext {
-    willowTest_db = 'willow_search_test'
+    willowTest_db = 'willowTest_services'
 }
 
 apply from: "$rootDir/buildTapestryApp.gradle"
