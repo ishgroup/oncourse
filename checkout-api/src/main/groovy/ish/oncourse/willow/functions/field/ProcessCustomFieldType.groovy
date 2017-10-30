@@ -60,8 +60,8 @@ class ProcessCustomFieldType {
 
     private CustomFieldType selectCustomFieldType() {
         FieldProperty fieldProperty = FieldProperty.getByKey(fieldKey)
-        String customFieldKey = fieldKey.replace("${fieldProperty.key}.", '')
-
+        String customFieldKey = fieldKey.split("\\.")[2]
+        
         return ((ObjectSelect.query(CustomFieldType)
                 .where(CustomFieldType.ENTITY_NAME.eq(fieldProperty.contextType.identifier.capitalize())) 
                 & CustomFieldType.KEY.eq(customFieldKey)) 
