@@ -56,10 +56,18 @@ class WaitingListComp extends React.Component<Props, any> {
   onBlurField(key) {
     const {onUpdate} = this.props;
 
-    if (key === 'studentsCount' && !this.state[key]) {
-      this.setState({errors: {...this.state.errors, studentsCount: true}});
+    if (key === 'studentsCount' && !(this.state[key] > 0 && this.state[key] <= 30)) {
+      this.setState({
+        [key]: this.props.waitingList.studentsCount,
+        errors: {...this.state.errors, [key]: true},
+      });
+
       return;
     }
+
+    this.setState({
+      errors: {...this.state.errors, [key]: false},
+    });
 
     onUpdate({[key]: this.state[key]});
   }
@@ -68,9 +76,9 @@ class WaitingListComp extends React.Component<Props, any> {
     const {waitingList, product, contact, onChange, onChangeFields} = this.props;
     const {studentsCount, detail, errors} = this.state;
 
-    const divClass = classnames("row", {disabled: !waitingList.selected});
+    const divClass = classnames("row waitingList", {disabled: !waitingList.selected});
     const name = `application-${contact.id}-${waitingList.courseId}`;
-    const title = <span><span className="checkout-course-type">Waiting Course for</span> {product.name}</span>;
+    const title = <span><span className="checkout-course-type">Waiting List for</span> {product.name}</span>;
 
     const warning = waitingList.warnings && waitingList.warnings.length ? this.props.waitingList.warnings[0] : null;
     const error = waitingList.warnings && waitingList.errors.length ? this.props.waitingList.errors[0] : null;
@@ -89,31 +97,35 @@ class WaitingListComp extends React.Component<Props, any> {
           fullWidth={true}
         >
           {waitingList.selected &&
-          <fieldset>
-            <TextField
-              input={{
-                value: studentsCount,
-                name: `${waitingList.contactId}-${waitingList.courseId}-studentsCount`,
-                onChange: e => this.onChangeField(e, 'studentsCount'),
-                onBlur: () => this.onBlurField('studentsCount'),
-              }}
-              meta={{invalid: errors.studentsCount, touched: true, error: "field 'Students Count' is required"}}
-              required={true}
-              label="Students count"
-              type="number"
-            />
-            <TextAreaField
-              input={{
-                value: detail,
-                name: `${waitingList.contactId}-${waitingList.courseId}-detail`,
-                onChange: e => this.onChangeField(e, 'detail'),
-                onBlur: () => this.onBlurField('detail'),
-              }}
-              required={false}
-              label="Detail"
-              type="text"
-            />
-          </fieldset>
+            <fieldset>
+              <TextField
+                input={{
+                  value: studentsCount,
+                  name: `${waitingList.contactId}-${waitingList.courseId}-studentsCount`,
+                  onChange: e => this.onChangeField(e, 'studentsCount'),
+                  onBlur: () => this.onBlurField('studentsCount'),
+                }}
+                meta={{
+                  invalid: errors.studentsCount,
+                  touched: true,
+                  error: "You should enter numbers from 1 to 30. If you have larger groups please add the details in the notes.",
+                }}
+                required={true}
+                label="Students count"
+                type="number"
+              />
+              <TextAreaField
+                input={{
+                  value: detail,
+                  name: `${waitingList.contactId}-${waitingList.courseId}-detail`,
+                  onChange: e => this.onChangeField(e, 'detail'),
+                  onBlur: () => this.onBlurField('detail'),
+                }}
+                required={false}
+                label="Detail"
+                type="text"
+              />
+            </fieldset>
           }
 
         </ItemWrapper>

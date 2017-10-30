@@ -62,6 +62,7 @@ export const EpicInit: Epic<any, IshState> = (action$: ActionsObservable<any>, s
     Actions.INIT_REQUEST,
     WebActions.REMOVE_CLASS_FROM_CART,
     WebActions.REMOVE_PRODUCT_FROM_CART,
+    WebActions.REMOVE_WAITING_COURSE_FROM_CART,
   ).flatMap(action => {
     const state = store.getState();
 
