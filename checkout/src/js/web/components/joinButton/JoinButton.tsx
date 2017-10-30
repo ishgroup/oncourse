@@ -57,7 +57,7 @@ export class JoinButton extends React.Component<Props, State> {
 
     return (
       <p className="waiting-list-title">
-        <a href="#" className="actionLink">
+        <a href="#" className="actionLink" onClick={e => this.onAdd(e)}>
           {!enrollableClassesEmpty && hasMoreAvailablePlaces &&
             <span>If there isn't a class to suit you, please </span>
           }
@@ -68,7 +68,7 @@ export class JoinButton extends React.Component<Props, State> {
             <span>This course has no current classes. Please</span>
           }
           If there isn't a class to suit you, please
-          <button onClick={e => this.onAdd(e)} type="button" className="join-btn"> Join </button> the waiting list.
+          <button type="button" className="join-btn"> Join </button> the waiting list.
         </a>
       </p>
     );

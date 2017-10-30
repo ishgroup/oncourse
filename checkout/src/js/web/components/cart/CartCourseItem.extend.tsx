@@ -9,7 +9,7 @@ export default {
     const deleteClassName = classnames("deleteItem", {loading: pending});
     return (
       <li>
-        <a href={url}>Waiting Course: {course.name}</a>
+        <a href={url}>Waiting List: {course.name}</a>
         <span className={deleteClassName} title="Remove item">
             <a onClick={this.methods.remove}>X</a>
         </span>
