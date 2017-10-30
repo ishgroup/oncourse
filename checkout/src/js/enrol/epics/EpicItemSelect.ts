@@ -12,7 +12,6 @@ const request: EpicUtils.Request<Enrolment | Application, IshState> = {
   type: SELECT_ITEM_REQUEST,
   getData: CheckoutService.updateItem,
   processData: (value: PurchaseItem, state: IshState) => {
-    console.log(value);
     return [
       {type: FULFILLED(SELECT_ITEM_REQUEST)},
       updateItem(value),
