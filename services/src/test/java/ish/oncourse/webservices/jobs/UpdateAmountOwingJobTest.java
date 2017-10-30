@@ -35,7 +35,7 @@ public class UpdateAmountOwingJobTest extends ServiceTest {
                 "ish/oncourse/webservices/jobs/UpdateAmountOwingJobTest.xml");
 
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-        DataSource refDataSource = getDataSource("jdbc/oncourse");
+        DataSource refDataSource = testContext.getDS();
         DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
 
         this.cayenneService = getService(ICayenneService.class);

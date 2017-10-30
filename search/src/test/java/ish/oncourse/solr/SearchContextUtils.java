@@ -3,7 +3,6 @@
  */
 package ish.oncourse.solr;
 
-import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import ish.math.MoneyType;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataDomain;
@@ -146,7 +145,6 @@ public class SearchContextUtils {
 		String jdbcUser = System.getProperty("oncourse.jdbc.user");
 		String jdbcPassword = System.getProperty("oncourse.jdbc.password");
 
-		String driverClass = com.mysql.jdbc.Driver.class.getName();
 		createSchema = Boolean.valueOf(System.getProperty("testCreateSchema"));
 		createTables = Boolean.valueOf(System.getProperty("testCreateTables"));
 
@@ -159,7 +157,7 @@ public class SearchContextUtils {
 		}
 
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName(driverClass);
+		dataSource.setDriverClassName("");
 		dataSource.setUrl(mysql.jdbcUrl);
 		dataSource.setUsername(mysql.jdbcUser);
 		dataSource.setPassword(mysql.jdbcPassword);
@@ -179,7 +177,6 @@ public class SearchContextUtils {
 		if (dropSchema) {
 			dropMysqlSchema();
 		}
-		AbandonedConnectionCleanupThread.uncheckedShutdown();
 	}
 
 	private void dropMysqlSchema() throws SQLException {

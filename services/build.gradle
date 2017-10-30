@@ -8,6 +8,14 @@ sourceSets {
         }
     }
 }
+configurations {
+    all*.exclude group: 'org.apache.derby', module: 'derby'
+}
+
+
+dependencies {
+    testCompile project(':common:test-functions')
+}
 
 task generateSources(type: Copy) {
     from 'src/templates'

@@ -22,6 +22,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,6 +56,11 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		this.cayenneService = getService(ICayenneService.class);
 		this.prefFactory = getService(PreferenceControllerFactory.class);
 		this.job = new PaymentInExpireJob(cayenneService, getService(IPaymentService.class), prefFactory);
+	}
+
+	@After
+	public void after() {
+		testContext.close();
 	}
 
 	@Test

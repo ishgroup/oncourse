@@ -5,10 +5,10 @@ jetty:
     host: 127.0.0.1
 jdbc:
   willow:
-    url: "jdbc:derby:memory:oncourse;create=true"
-    username: user
-    password: password
-    driverClassName: org.apache.derby.jdbc.EmbeddedDriver
+    url: ""
+    username:
+    password:
+    driverClassName: org.mariadb.jdbc.Driver
     testWhileIdle: true
     validationQuery: SELECT 1
     validationInterval: 30000

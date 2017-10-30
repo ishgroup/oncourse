@@ -1,20 +1,12 @@
 package ish.oncourse.function;
 
-import ish.math.Money;
-import ish.oncourse.model.College;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.services.courseclass.CheckClassAge;
 import ish.oncourse.services.discount.IDiscountService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.test.ContextUtils;
-import ish.oncourse.test.ServiceTest;
+import ish.oncourse.test.TestContext;
 import ish.oncourse.util.IPageRenderer;
 import ish.oncourse.webservices.services.AppModule;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.ObjectSelect;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.tapestry5.internal.services.*;
+import org.apache.tapestry5.internal.services.HeartbeatImpl;
 import org.apache.tapestry5.internal.test.TestableRequest;
 import org.apache.tapestry5.internal.test.TestableResponse;
 import org.apache.tapestry5.services.*;
@@ -25,12 +17,8 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
-import javax.sql.DataSource;
 import java.io.InputStream;
-
-import static org.junit.Assert.assertTrue;
 
 public class GetCourseClassRenderedHtmlTest {
 
@@ -44,10 +32,12 @@ public class GetCourseClassRenderedHtmlTest {
 	private IDiscountService discountService;
 	private PreferenceController preferenceController;
 
+	private TestContext testContext;
+
 
 	@Before
 	public void setup() throws Exception {
-		ContextUtils.setupDataSources();
+		testContext = new TestContext().init();
 
 		tester = new PageTester("ish.oncourse.ui", "", PageTester.DEFAULT_CONTEXT_PATH, AppModule.class);
 
@@ -65,10 +55,8 @@ public class GetCourseClassRenderedHtmlTest {
 				"ish/oncourse/function/GetCourseClassRenderedHtmlTestDataSet.xml");
 
 
-
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().setColumnSensing(true).build(st);
-		DataSource refDataSource = ContextUtils.getDataSource("jdbc/oncourse");
-		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(refDataSource.getConnection(), null), dataSet);
+		DatabaseOperation.CLEAN_INSERT.execute(new DatabaseConnection(testContext.getDS().getConnection(), null), dataSet);
 	}
 
 	private void prepareRequestGlobals() {
@@ -81,8 +69,7 @@ public class GetCourseClassRenderedHtmlTest {
 
 	@After
 	public void tearDown() throws Exception {
-		ServiceTest.cleanDataSources();
-		
+		testContext.close();
 		if (tester != null && tester.getRegistry() != null) {
 			tester.getRegistry().shutdown();
 		}

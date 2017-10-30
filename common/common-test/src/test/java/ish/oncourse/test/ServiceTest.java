@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 
+@Deprecated //it should be replaced with test-functions module
 public class ServiceTest {
 
 	private PageTester tester;

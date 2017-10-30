@@ -6,7 +6,7 @@ class Configuration {
     
     static final String USER_DIR = 'user.dir'
     static final String CONFIG_FILE_NAME = 'application.properties'
-    static final String JDBC_URL_PROPERTY = 'bq.jdbc.willow.url'
+    public static final String JDBC_URL_PROPERTY = 'bq.jdbc.willow.url'
     static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
     
     static configure() {

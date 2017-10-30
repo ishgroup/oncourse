@@ -45,8 +45,7 @@ public class WaitingListDeletionTest extends ServiceTest {
         InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/updaters/WaitingListDeletionTest.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
 
-        DataSource onDataSource = getDataSource("jdbc/oncourse");
-        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
+        DatabaseConnection dbConnection = new DatabaseConnection(testContext.getDS().getConnection(), null);
         dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 
         DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);

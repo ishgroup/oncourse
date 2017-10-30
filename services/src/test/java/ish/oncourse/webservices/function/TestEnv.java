@@ -10,11 +10,14 @@ import io.bootique.BQRuntime;
 import io.bootique.jdbc.DataSourceFactory;
 import ish.common.types.CreditCardType;
 import ish.common.types.PaymentStatus;
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.services.payment.*;
 import ish.oncourse.services.paymentexpress.INewPaymentGatewayServiceBuilder;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.MariaDB;
+import ish.oncourse.test.TestContext;
 import ish.oncourse.webservices.ServicesApp;
 import ish.oncourse.webservices.ServicesModule;
 import ish.oncourse.webservices.soap.TestConstants;
@@ -62,6 +65,7 @@ public class TestEnv<T extends TransportConfig> {
 
 
 	//initialized
+	private TestContext testContext;
 	private T transportConfig;
 	private SupportedVersions supportedVersion;
 	private LoadDataSet loadDataSet;
@@ -86,7 +90,6 @@ public class TestEnv<T extends TransportConfig> {
 	public void start() {
 		init();
 
-		new CreateTables(serverRuntime.get(), null).create();
 		loadDataSet.load(getDataSource());
 
 		startRealServer();
@@ -116,6 +119,16 @@ public class TestEnv<T extends TransportConfig> {
 	}
 
 	private void init() {
+
+		MariaDB mariaDB = MariaDB.valueOf();
+
+		System.setProperty(Configuration.JDBC_URL_PROPERTY, mariaDB.getUrl());
+		System.setProperty(Configuration.AppProperty.DB_USER.getSystemProperty(), mariaDB.getUser());
+		System.setProperty(Configuration.AppProperty.DB_PASS.getSystemProperty(), mariaDB.getPassword());
+
+
+		testContext = new TestContext().init();
+
 		System.setProperty(USI_TEST_MODE, Boolean.TRUE.toString());
 
 		loadDataSet = new LoadDataSet(dataSetFile, replacements);
@@ -128,7 +141,7 @@ public class TestEnv<T extends TransportConfig> {
 	public void shutdown() {
 		runtime.shutdown();
 		pageTester.shutdown();
-		new DropDerbyDB("oncourse").drop();
+		testContext.close();
 	}
 
 	public URI getURI() {
@@ -366,9 +379,6 @@ public class TestEnv<T extends TransportConfig> {
 		assertTrue("Get status call should return empty response for in transaction payment",
 				transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
 	}
-
-
-
 
 
 	public static class TapestryTestModule {
