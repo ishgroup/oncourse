@@ -113,7 +113,7 @@ public abstract class ApiTest {
         String jdbcPassword = System.getProperty("oncourse.jdbc.password");
 
         
-        String driverClass = com.mysql.jdbc.Driver.class.getName();
+        String driverClass = org.mariadb.jdbc.Driver.class.getName();
         
         mysql = Mysql.valueOf(jdbcUrl, jdbcUser, jdbcPassword);
 
