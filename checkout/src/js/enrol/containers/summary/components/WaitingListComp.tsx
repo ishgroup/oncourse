@@ -49,9 +49,13 @@ class WaitingListComp extends React.Component<Props, any> {
 
   onChangeField(e, key) {
     this.setState({errors: {...this.state.errors, [key]: false}});
-    this.setState({
-      [key]: e.target.value,
-    });
+    const value = e.target.value;
+
+    if (key === 'studentsCount' && (value > 0 && value <= 30 || value === '')) {
+      this.setState({
+        [key]: value,
+      });
+    }
   }
   onBlurField(key) {
     const {onUpdate} = this.props;
