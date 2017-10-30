@@ -4,7 +4,6 @@
 package ish.oncourse.willow.service;
 
 
-import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import ish.math.MoneyType;
 import ish.oncourse.willow.WillowApiModule;
 import ish.oncourse.willow.cayenne.CayenneService;
