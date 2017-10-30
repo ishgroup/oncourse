@@ -46,4 +46,9 @@ public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 				.orderBy(WebSiteVersion.DEPLOYED_ON.desc())
 				.limit(1).selectFirst(webSite.getObjectContext());
 	}
+
+	@Override
+	public boolean isEditor() {
+		throw new UnsupportedOperationException("Unsupported operation for admin application");
+	}
 }
