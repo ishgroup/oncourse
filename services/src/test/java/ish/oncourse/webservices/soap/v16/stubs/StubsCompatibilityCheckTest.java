@@ -262,6 +262,7 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		invoiceParameters.add(new ReplicationStubFieldParameter("corporatePassId", Long.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("confirmationStatus", Integer.class));
 		invoiceParameters.add(new ReplicationStubFieldParameter("authorisedRebillingCardId", Long.class));
+		invoiceParameters.add(new ReplicationStubFieldParameter("type", Integer.class));
 		stubsPropertyMap.put(getStubName(InvoiceStub.class), invoiceParameters);
 		final List<ReplicationStubFieldParameter> messagePersonParameters = fillDefaultReplicationStubFields();
 		messagePersonParameters.add(new ReplicationStubFieldParameter("destinationAddress", String.class));
@@ -272,8 +273,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		messagePersonParameters.add(new ReplicationStubFieldParameter("type", Integer.class));
 		messagePersonParameters.add(new ReplicationStubFieldParameter("contactId", Long.class));
 		messagePersonParameters.add(new ReplicationStubFieldParameter("messageId", Long.class));
-		messagePersonParameters.add(new ReplicationStubFieldParameter("studentId", Long.class));
-		messagePersonParameters.add(new ReplicationStubFieldParameter("tutorId", Long.class));
 		stubsPropertyMap.put(getStubName(MessagePersonStub.class), messagePersonParameters);
 		final List<ReplicationStubFieldParameter> outcomeParameters = fillDefaultReplicationStubFields();
 		outcomeParameters.add(new ReplicationStubFieldParameter("deliveryMode", Integer.class));
@@ -519,6 +518,8 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		surveyParameters.add(new ReplicationStubFieldParameter("venueScore", Integer.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("enrolmentId", Long.class));
 		surveyParameters.add(new ReplicationStubFieldParameter("publicComment", Boolean.class));
+		surveyParameters.add(new ReplicationStubFieldParameter("testimonial", String.class));
+		surveyParameters.add(new ReplicationStubFieldParameter("netPromoterScore", Integer.class));
 		stubsPropertyMap.put(getStubName(SurveyStub.class), surveyParameters);
 
 		List<ReplicationStubFieldParameter> entityRelationParameters = fillDefaultReplicationStubFields();

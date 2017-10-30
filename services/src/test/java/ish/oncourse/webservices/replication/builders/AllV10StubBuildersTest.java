@@ -123,8 +123,7 @@ public class AllV10StubBuildersTest extends AbstractAllStubBuildersTest {
 
 	@Test
 	public void testMessagePersonStubBuilder() {
-		this.testStubBuilder(MessagePerson.class, new MessagePersonStubBuilder(), 1l, "tutorId");
-		this.testStubBuilder(MessagePerson.class, new MessagePersonStubBuilder(), 2l, "studentId");
+		this.testStubBuilder(MessagePerson.class, new MessagePersonStubBuilder(), 1l, "tutorId", "studentId");
 	}
 
 	@Test
