@@ -2,6 +2,7 @@ package ish.oncourse.test.functions
 
 import ish.math.MoneyType
 import ish.oncourse.test.InitialContextFactoryMock
+import ish.oncourse.test.MariaDB
 import org.apache.cayenne.access.DataNode
 import org.apache.cayenne.configuration.CayenneRuntime
 import org.apache.cayenne.configuration.server.ServerRuntime
@@ -10,6 +11,7 @@ import org.apache.commons.dbcp2.BasicDataSource
 import javax.naming.Context
 import javax.naming.InitialContext
 import javax.sql.DataSource
+import java.sql.*
 
 /**
  * Set of useful functions for tests
@@ -37,16 +39,43 @@ class Functions {
         InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourse)
     }
 
-    static Closure<DataSource> createDataSource = { String driverClass = 'org.gjt.mm.mysql.Driver',
-                                             String url = 'jdbc:mysql://127.0.0.1:3306/w2test_college?useSSL=false&serverTimezone=Australia/Sydney',
-                                             String userName = 'root',
-                                             String password = 'whatsup' ->
+    static Closure<DataSource> createDataSource = { MariaDB mariaDB ->
         BasicDataSource dataSource = new BasicDataSource()
-        dataSource.setDriverClassName(driverClass)
-        dataSource.setUrl(url)
-        dataSource.setUsername(userName)
-        dataSource.setPassword(password)
-        dataSource.setMaxTotal(1)
+        dataSource.setDriverClassName(mariaDB.driver)
+        dataSource.setUrl(mariaDB.url)
+        dataSource.setUsername(mariaDB.user)
+        dataSource.setPassword(mariaDB.password)
+        dataSource.setMaxTotal(100)
         return dataSource
     }
+
+
+    static void cleanDB(MariaDB mariaDB, boolean drop = true) {
+        Connection connection = null
+        PreparedStatement preparedStatement = null
+        Statement statement = null
+        try {
+            connection = DriverManager.getConnection(mariaDB.url, mariaDB.user, mariaDB.password)
+            preparedStatement = connection.prepareStatement(String.format("select Concat(table_schema,'.',TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES where  table_schema = '%s';", dbName))
+            ResultSet resultSet = preparedStatement.executeQuery()
+            statement = connection.createStatement();
+            statement.addBatch("SET FOREIGN_KEY_CHECKS=0;")
+            while (resultSet.next()) {
+                statement.addBatch(String.format(drop ? "DROP TABLE %s;" : "TRUNCATE TABLE %s;", resultSet.getString(1)))
+            }
+            statement.addBatch("SET FOREIGN_KEY_CHECKS=1;")
+            statement.executeBatch()
+        } finally {
+            if (statement != null) {
+                statement.close()
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close()
+            }
+            if (connection != null) {
+                connection.close()
+            }
+        }
+    }
 }
+
