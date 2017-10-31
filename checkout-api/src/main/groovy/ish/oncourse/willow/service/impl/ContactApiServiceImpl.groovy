@@ -113,7 +113,7 @@ class ContactApiServiceImpl implements ContactApi{
                 logger.error("fieldSet required, request param: $contactFieldsRequest")
                 throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'fieldSet required')).build())
             }
-            new GetContactFields(contact, contactFieldsRequest.classIds, contactFieldsRequest.productIds,contactFieldsRequest.waitingCourseIds, contactFieldsRequest.mandatoryOnly).contactFields
+            new GetContactFields(contact, contactFieldsRequest.classIds, contactFieldsRequest.waitingCourseIds, contactFieldsRequest.productIds, contactFieldsRequest.mandatoryOnly).contactFields
         }
     }
     

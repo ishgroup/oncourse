@@ -23,7 +23,7 @@ class FindOfferedApplication extends FindApplication {
     boolean isApplcation() {
         if (ENROLMENT_BY_APPLICATION == course.enrolmentType) {
             Application application = get()
-            application ? false : true
+            return application ? false : true
         }
         false
     }
