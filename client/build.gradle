@@ -34,6 +34,11 @@ dependencies {
 	testCompile project(':server')
 }
 
+test {
+	// the client tests can run in parallel
+	maxParallelForks = 4
+}
+
 jar {
 	manifest {
 		from sharedManifest

@@ -213,6 +213,9 @@ task run(dependsOn: [classes, processResources], type: JavaExec) {
 }
 
 test {
+	// the database tests interfere with each other if run in parallel
+	maxParallelForks = 1
+
 	ext.dbTests = project.hasProperty('database') ? project.database : "derby-test"
 
 	logger.lifecycle("will run tests in '"+dbTests+"' mode")
