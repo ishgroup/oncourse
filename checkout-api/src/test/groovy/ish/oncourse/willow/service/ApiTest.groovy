@@ -15,7 +15,7 @@ abstract class ApiTest {
 
     @Before
     void setup() throws Exception {
-        testContext = new TestContext().params([ (SHOULD_CREATE_SCHEMA) : false, (SHOULD_DROP_SCHEMA) : false]).open()
+        testContext = new TestContext().shouldCreateTables(false).open()
         testContext.cleanInsert(dataSetResource)
         cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowApiModule.WillowApiCayenneModule())
         cayenneService = new CayenneService(cayenneRuntime)
