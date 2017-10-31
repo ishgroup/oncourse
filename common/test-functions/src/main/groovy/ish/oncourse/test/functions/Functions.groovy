@@ -2,7 +2,6 @@ package ish.oncourse.test.functions
 
 import ish.math.MoneyType
 import ish.oncourse.test.MariaDB
-import ish.oncourse.test.TestContext
 import ish.oncourse.test.TestInitialContextFactory
 import org.apache.cayenne.access.DataNode
 import org.apache.cayenne.configuration.server.ServerRuntime
@@ -128,7 +127,7 @@ class Functions {
 
     static void main(String[] args) {
         Functions.cleanDB(MariaDB.valueOf(), true)
-        new TestContext().shouldCreateTables(true).open()
+//        new TestContext().shouldCreateTables(true).open()
     }
 
 

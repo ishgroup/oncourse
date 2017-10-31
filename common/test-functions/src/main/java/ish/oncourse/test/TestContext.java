@@ -24,7 +24,7 @@ import java.sql.SQLException;
 public class TestContext {
 	private static final Logger logger = LogManager.getLogger();
 
-	public static final String SHOULD_CREATE_TABLES = "createTables";
+	public static final String SHOULD_CREATE_TABLES = "shouldCreateTables";
 	public static final String SHOULD_CREATE_FK_CONSTRAINTS = "shouldCreateFKConstraints";
 
 
