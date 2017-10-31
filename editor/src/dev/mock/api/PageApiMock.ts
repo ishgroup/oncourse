@@ -8,6 +8,16 @@ export function pageApiMock() {
     this.db.pages,
   ));
 
+  this.api.onPost(API.GET_PAGE_BY_URL).reply(config => {
+    const request = JSON.parse(config.data);
+    const page = this.db.getPageByUrl(request.url);
+
+    return promiseResolve(
+      config,
+      page,
+    );
+  });
+
   this.api.onPost(API.SAVE_PAGE).reply(config => {
     const request = JSON.parse(config.data);
 
@@ -16,10 +26,8 @@ export function pageApiMock() {
     }
 
     if (!request.id) {
-
       request.id = faker.random.number();
       this.db.addPage(request);
-
     } else {
       this.db.editPage(request);
     }

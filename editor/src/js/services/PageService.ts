@@ -9,6 +9,10 @@ class PageService {
     return this.pageApi.getPages();
   }
 
+  public getPageByUrl(url): Promise<Page[]> {
+    return this.pageApi.getPageByUrl(url);
+  }
+
   public savePage(props, state: State): Promise<Page[]> {
     return this.pageApi.savePage(this.buildSavePageRequest(props, state));
   }

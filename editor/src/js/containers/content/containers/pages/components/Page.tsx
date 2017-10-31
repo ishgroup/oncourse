@@ -47,12 +47,10 @@ export class Page extends React.Component<PageProps, any> {
     });
   }
 
-  render() {
-    const {page} = this.props;
-
+  tmp(page) {
     return (
       <div>
-        {this.state.editMode &&
+      {this.state.editMode &&
         <div>
           <FormGroup>
             <Editor
@@ -66,14 +64,22 @@ export class Page extends React.Component<PageProps, any> {
             <Button onClick={() => this.onCancel()} color="secondary">Cancel</Button>
           </FormGroup>
         </div>
+      }
 
+      <div onClick={e => this.onClickArea(e)}>
+        {!this.state.editMode &&
+          <div className="editor-area" dangerouslySetInnerHTML={{__html: page.html}} />
         }
+      </div>
+    </div>
+    );
+  }
 
-        <div onClick={e => this.onClickArea(e)}>
-          {!this.state.editMode &&
-            <div className="editor-area" dangerouslySetInnerHTML={{__html: page.html}} />
-          }
-        </div>
+  render() {
+    const {page} = this.props;
+
+    return (
+      <div>
 
       </div>
     );

@@ -16,6 +16,7 @@ import {hideModal, showModal} from "../common/containers/modal/actions";
 import {AuthState} from "./auth/reducers/State";
 import {ModalState} from "../common/containers/modal/reducers/State";
 import {State} from "../reducers/state";
+import {getPageByUrl} from "./content/containers/pages/actions";
 
 interface Props {
   auth: AuthState;
@@ -25,6 +26,7 @@ interface Props {
   hideModal: () => any;
   onPublish: () => any;
   showModal: () => any;
+  getPageByUrl: (url) => any;
   history: any;
 }
 
@@ -40,6 +42,10 @@ export class Cms extends React.Component<Props, any> {
 
   componentDidMount() {
     setHistoryInstance(this.props.history);
+
+    if (this.props.auth.isAuthenticated) {
+      this.props.getPageByUrl(document.location.pathname);
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -96,6 +102,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     hideModal: () => dispatch(hideModal()),
     onPublish: () => dispatch(publish()),
     showModal: props => dispatch(showModal(props)),
+    getPageByUrl: url => dispatch(getPageByUrl(url)),
   };
 };
 

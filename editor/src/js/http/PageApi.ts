@@ -8,6 +8,10 @@ export class PageApi {
     return this.http.GET(API.GET_PAGES);
   }
 
+  getPageByUrl(url): Promise<any> {
+    return this.http.POST(API.GET_PAGE_BY_URL, {url});
+  }
+
   savePage(payload): Promise<any> {
     return this.http.POST(API.SAVE_PAGE, payload);
   }
