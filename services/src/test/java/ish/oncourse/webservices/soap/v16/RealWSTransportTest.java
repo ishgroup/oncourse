@@ -23,7 +23,7 @@ public abstract class RealWSTransportTest implements TestConstants {
 
 	@After
 	public void after() throws Exception {
-		testEnv.shutdown();
+		if (testEnv != null) testEnv.shutdown();
 	}
 
 	protected Long getCommunicationKey() {

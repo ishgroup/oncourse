@@ -1,6 +1,6 @@
 package ish.oncourse.webservices.soap;
 
-import ish.oncourse.test.InitialContextFactoryMock;
+import ish.oncourse.test.TestInitialContextFactory;
 import ish.oncourse.util.ContextUtil;
 import ish.oncourse.webservices.usi.TestUSIServiceEndpoint;
 import org.apache.cxf.transport.servlet.CXFServlet;
@@ -18,6 +18,8 @@ public class TestServer {
 	public static final String DEFAULT_HOST = "127.0.0.1";
 	public static final String DEFAULT_WEB_PATH = "src/test/webapp/WEB-INF";
 	public static final String DEFAULT_CONTEXT_PATH = "/services";
+	public static final String DEFAULT_SERVER_URL = "http://127.0.0.1:9091";
+
 	static final int DEFAULT_SERVER_PORT = 9091;
 	private static Logger logger = LogManager.getLogger();
 	private transient Server server;
@@ -28,7 +30,6 @@ public class TestServer {
 	private String host;
 	private String resourseBase;
 	private String webXmlFilePath;
-	public static final String DEFAULT_SERVER_URL = "http://127.0.0.1:9091";
 
 	private transient Exception exception;
 
@@ -70,7 +71,7 @@ public class TestServer {
 
 
 		try {
-			InitialContextFactoryMock.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
+			TestInitialContextFactory.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 			server.start();
 		} catch (Exception e) {
 			try {

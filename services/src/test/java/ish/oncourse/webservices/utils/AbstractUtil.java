@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.utils;
 
 import ish.math.MoneyType;
-import ish.oncourse.test.InitialContextFactoryMock;
+import ish.oncourse.test.TestInitialContextFactory;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.datasource.DataSourceBuilder;
@@ -31,16 +31,16 @@ public abstract class AbstractUtil {
 	}
 
 	public void init() throws NamingException, SQLException {
-		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
+		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, TestInitialContextFactory.class.getName());
 
 		// bind the initial context instance, because the JNDIDataSourceFactory
 		// looks for it.
-		InitialContextFactoryMock.bind("java:comp/env", new InitialContext());
+		TestInitialContextFactory.bind("java:comp/env", new InitialContext());
 
 		DataSource oncourse = createDataSource();
 
-		InitialContextFactoryMock.bind("jdbc/oncourse", oncourse);
-		InitialContextFactoryMock.bind("java:comp/env/jdbc/oncourse", oncourse);
+		TestInitialContextFactory.bind("jdbc/oncourse", oncourse);
+		TestInitialContextFactory.bind("java:comp/env/jdbc/oncourse", oncourse);
 
 		cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml");
 

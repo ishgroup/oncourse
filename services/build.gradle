@@ -1,9 +1,4 @@
-ext {
-    willowTest_db = 'willowTest_services'
-}
-
 apply from: "$rootDir/buildTapestryApp.gradle"
-apply from: "$rootDir/build.test.db.gradle"
 
 sourceSets {
     main {
@@ -26,6 +21,17 @@ task generateSources(type: Copy) {
     from 'src/templates'
     into 'src/main/generated'
     expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
+}
+
+
+test {
+    systemProperty 'oncourse.jdbc.url', "${project.property('willowTest_uri')}/willowTest_services?autoReconnect=true" +
+            "&zeroDateTimeBehavior=convertToNull" +
+            "&useUnicode=true" +
+            "&characterEncoding=utf8" +
+            "&sessionVariables=default_storage_engine=MEMORY"
+    systemProperty 'oncourse.jdbc.user', project.property("willowTest_user")
+    systemProperty 'oncourse.jdbc.password', project.property("willowTest_pass")
 }
 
 mainClassName = 'ish.oncourse.webservices.ServicesApp'

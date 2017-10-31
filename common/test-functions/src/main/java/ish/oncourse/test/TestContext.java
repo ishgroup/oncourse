@@ -4,11 +4,9 @@
 package ish.oncourse.test;
 
 import ish.oncourse.test.functions.Functions;
-import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -43,40 +41,44 @@ public class TestContext {
 		return this;
 	}
 
+	public TestContext mariaDB(MariaDB mariaDB) {
+		this.mariaDB = mariaDB;
+		return this;
+	}
+
 	public TestContext init() {
-		mariaDB = MariaDB.valueOf();
+		if (mariaDB == null) {
+			mariaDB = MariaDB.valueOf();
+		}
 		dataSource = Functions.createDS(mariaDB);
-		Functions.initJNDI(dataSource);
+		Functions.bindDS(dataSource);
 		Boolean createSchema = params.get(SHOULD_CREATE_SCHEMA);
-		if (createSchema == null || createSchema) {
+		if (createSchema != null && createSchema) {
 			new CreateTables(Functions.createRuntime(), params).create();
 		}
+		Functions.cleanDB(mariaDB, false);
 		return this;
 	}
 
 	public BasicDataSource getDS() {
 		return dataSource;
 	}
-	
-	public void cleanInsert(String dataSetResource) throws DatabaseUnitException, SQLException {
+
+	public void cleanInsert(String dataSetResource) throws Exception {
 		InputStream st = TestContext.class.getClassLoader().getResourceAsStream(dataSetResource);
 		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-		Functions.cleanDB(mariaDB,false);
-		DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection(), null);
+		DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection());
 		dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
 		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
 	}
-	
+
 	public void close() {
 		try {
 			dataSource.close();
+			Functions.unbindDS();
 		} catch (SQLException e) {
 			logger.error(e);
 		}
-
-		Boolean dropSchema = params.get(SHOULD_DROP_SCHEMA);
-		Functions.cleanDB(mariaDB,dropSchema == null || dropSchema);
-
 	}
 }

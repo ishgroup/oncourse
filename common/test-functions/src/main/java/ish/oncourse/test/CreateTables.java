@@ -3,6 +3,7 @@
  */
 package ish.oncourse.test;
 
+import ish.oncourse.test.functions.Functions;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DbGenerator;
 import org.apache.cayenne.configuration.CayenneRuntime;
@@ -11,6 +12,8 @@ import org.apache.cayenne.log.NoopJdbcEventLogger;
 import org.apache.cayenne.map.DataMap;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.cayenne.map.Relationship;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +25,8 @@ import java.util.Map;
  * Date: 27/8/17
  */
 public class CreateTables {
+	private static final Logger logger = LogManager.getLogger();
+
 	public static final String SHOULD_CREATE_TABLES = "createTables";
 	public static final String SHOULD_CREATE_FK_CONSTRAINTS = "createFKConstraints";
 	public static final String SHOULD_CREATE_PK_SUPPORT = "createPKSupport";
@@ -45,9 +50,11 @@ public class CreateTables {
 
 	public void create() {
 		try {
+			Functions.TimeLog timeLog = new Functions.TimeLog();
 			before();
 			createGenerator().runGenerator(serverRuntime.getDataSource());
 			after();
+			timeLog.log(logger, "CreateTables.create() timing:");
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
