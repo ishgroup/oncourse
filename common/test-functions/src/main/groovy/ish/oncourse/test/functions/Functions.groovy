@@ -1,8 +1,9 @@
 package ish.oncourse.test.functions
 
 import ish.math.MoneyType
-import ish.oncourse.test.TestInitialContextFactory
 import ish.oncourse.test.MariaDB
+import ish.oncourse.test.TestContext
+import ish.oncourse.test.TestInitialContextFactory
 import org.apache.cayenne.access.DataNode
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.commons.dbcp2.BasicDataSource
@@ -14,7 +15,8 @@ import javax.naming.InitialContext
 import javax.sql.DataSource
 import java.sql.*
 
-import static TestInitialContextFactory.*
+import static ish.oncourse.test.TestInitialContextFactory.bind
+import static ish.oncourse.test.TestInitialContextFactory.close
 
 /**
  * Set of useful functions for tests
@@ -109,17 +111,14 @@ class Functions {
     }
 
     static void main(String[] args) {
-        //createDB(MariaDB.valueOf())
-        bindDS(new BasicDataSource())
-        unbindDS()
-        bindDS(new BasicDataSource())
-        unbindDS()
-
+        Functions.cleanDB(MariaDB.valueOf(), true)
+        new TestContext().createTables(true).open()
     }
 
 
     static class TimeLog {
         private long start = System.currentTimeMillis()
+
         void log(Logger logger, String message) {
             logger.warn("$message: ${System.currentTimeMillis() - start}")
         }

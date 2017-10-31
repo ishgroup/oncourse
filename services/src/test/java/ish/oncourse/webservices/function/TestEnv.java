@@ -127,7 +127,7 @@ public class TestEnv<T extends TransportConfig> {
 		System.setProperty(Configuration.AppProperty.DB_PASS.getSystemProperty(), mariaDB.getPassword());
 
 
-		testContext = new TestContext().init();
+		testContext = new TestContext().open();
 
 		System.setProperty(USI_TEST_MODE, Boolean.TRUE.toString());
 

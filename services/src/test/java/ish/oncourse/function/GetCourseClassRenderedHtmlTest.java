@@ -17,6 +17,8 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.InputStream;
 
@@ -37,7 +39,7 @@ public class GetCourseClassRenderedHtmlTest {
 
 	@Before
 	public void setup() throws Exception {
-		testContext = new TestContext().init();
+		testContext = new TestContext().open();
 
 		tester = new PageTester("ish.oncourse.ui", "", PageTester.DEFAULT_CONTEXT_PATH, AppModule.class);
 
@@ -75,8 +77,9 @@ public class GetCourseClassRenderedHtmlTest {
 		}
 	}
 
-//	@Test
-//	public void testPageLoad() {
+	@Test
+	@Ignore
+	public void testPageLoad() {
 //		CourseClass courseClass = ObjectSelect.query(CourseClass.class)
 //				.where(ExpressionFactory.matchDbExp(College.ID_PK_COLUMN, 5137172))
 //				.selectOne(cayenneService.sharedContext());
@@ -87,5 +90,5 @@ public class GetCourseClassRenderedHtmlTest {
 //
 //		String result = GetCourseClassRenderedHtml.valueOf(pageRenderer, courseClass, true, false, false, Money.ZERO, courseContext).get();
 //		assertTrue(StringUtils.isNotBlank(result));
-//	}
+	}
 }

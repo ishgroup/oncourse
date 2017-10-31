@@ -154,7 +154,7 @@ public class PaymentInExpireJobTest extends ServiceTest {
 		// simulate EXPIRE_INTERVAL wait by directly updating enrolments with sql statement
 		Connection connection = null;
 		try {
-			connection = getDataSource("jdbc/oncourse").getConnection();
+			connection = testContext.getDS().getConnection();
 			
 			cal = Calendar.getInstance();
 			cal.add(Calendar.MONTH, -PaymentIn.EXPIRE_TIME_WINDOW + 1);

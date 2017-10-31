@@ -16,8 +16,6 @@ import org.dbunit.operation.DatabaseOperation;
 
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * User: akoiro
@@ -25,19 +23,18 @@ import java.util.Map;
  */
 public class TestContext {
 	private static final Logger logger = LogManager.getLogger();
-	public static final String SHOULD_CREATE_SCHEMA = "createSchema";
-	public static final String SHOULD_DROP_SCHEMA = "dropSchema";
+
+	public static final String SHOULD_CREATE_TABLES = "createTables";
+	public static final String SHOULD_DROP_TABLES = "dropTables";
 
 
-	private Map<String, Boolean> params = new HashMap<>();
+	private boolean createTables = false;
 
 	private BasicDataSource dataSource;
 	private MariaDB mariaDB;
 
-	public TestContext params(Map<String, Boolean> params) {
-		if (params != null) {
-			this.params = params;
-		}
+	public TestContext createTables(boolean value) {
+		this.createTables = value;
 		return this;
 	}
 
@@ -46,18 +43,27 @@ public class TestContext {
 		return this;
 	}
 
-	public TestContext init() {
+	public TestContext open() {
 		if (mariaDB == null) {
 			mariaDB = MariaDB.valueOf();
 		}
+		initParams();
+
 		dataSource = Functions.createDS(mariaDB);
 		Functions.bindDS(dataSource);
-		Boolean createSchema = params.get(SHOULD_CREATE_SCHEMA);
-		if (createSchema != null && createSchema) {
-			new CreateTables(Functions.createRuntime(), params).create();
+		if (createTables) {
+			Functions.cleanDB(mariaDB, true);
+			new CreateTables(Functions.createRuntime()).create();
+		} else {
+			Functions.cleanDB(mariaDB, false);
 		}
-		Functions.cleanDB(mariaDB, false);
 		return this;
+	}
+
+	private void initParams() {
+		if (System.getProperty(SHOULD_CREATE_TABLES) != null) {
+			createTables = Boolean.valueOf(System.getProperty(SHOULD_CREATE_TABLES));
+		}
 	}
 
 	public BasicDataSource getDS() {

@@ -3,7 +3,6 @@ package ish.oncourse.webservices.replication.updaters;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Student;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.test.CreateTables;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
@@ -22,9 +21,7 @@ import org.junit.Test;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -32,11 +29,7 @@ public class MergeContactTest extends ServiceTest {
 	
 	@Before
     public void setupDataSet() throws Exception {
-		final Map<String, Boolean> params = new HashMap<>(3);
-		params.put(CreateTables.SHOULD_CREATE_TABLES, true);
-		params.put(CreateTables.SHOULD_CREATE_PK_SUPPORT, true);
-		params.put(CreateTables.SHOULD_CREATE_FK_CONSTRAINTS, false);
-		initTestWithParams(params, "ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
+		initTest("ish.oncourse.webservices.services", StringUtils.EMPTY, ReplicationTestModule.class);
         
         InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/v6/updaters/MergeContactTest.xml");
         FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);

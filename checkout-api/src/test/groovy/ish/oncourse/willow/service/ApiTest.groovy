@@ -7,9 +7,6 @@ import org.apache.cayenne.configuration.server.ServerRuntime
 import org.junit.After
 import org.junit.Before
 
-import static ish.oncourse.test.TestContext.*
-
-
 abstract class ApiTest {
 
     protected ServerRuntime cayenneRuntime
@@ -18,7 +15,7 @@ abstract class ApiTest {
 
     @Before
     void setup() throws Exception {
-        testContext = new TestContext().params([ (SHOULD_CREATE_SCHEMA) : false, (SHOULD_DROP_SCHEMA) : false]).init()
+        testContext = new TestContext().params([ (SHOULD_CREATE_SCHEMA) : false, (SHOULD_DROP_SCHEMA) : false]).open()
         testContext.cleanInsert(dataSetResource)
         cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowApiModule.WillowApiCayenneModule())
         cayenneService = new CayenneService(cayenneRuntime)
