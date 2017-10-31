@@ -55,6 +55,10 @@ class WaitingListComp extends React.Component<Props, any> {
       this.setState({
         [key]: value,
       });
+    } else {
+      this.setState({
+        [key]: value,
+      });
     }
   }
   onBlurField(key) {
