@@ -66,7 +66,7 @@ class ProcessCheckoutModel {
     @CompileStatic(TypeCheckingMode.SKIP)
     ProcessCheckoutModel process() {
         processCorporatePass()
-        if (!corporatePass) {
+        if (!corporatePass && this.model.payerId) {
             taxOverridden = new GetContact(context, college, this.model.payerId).get(false).taxOverride
         }
         
@@ -135,7 +135,7 @@ class ProcessCheckoutModel {
                 node.memberships << processMembership(m, contact)
             }
 
-            if (model.payerId == node.contactId) {
+            if (model.payerId && model.payerId == node.contactId) {
                 contactNode.vouchers.each { v ->
                     node.vouchers << processVoucher(v)
                 }
