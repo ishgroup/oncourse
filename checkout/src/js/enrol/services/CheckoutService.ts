@@ -184,7 +184,7 @@ export class CheckoutService {
     this.corporatePassApi.isCorporatePassEnabledFor(BuildCheckoutModelRequest.fromState(state))
   )
 
-  public processPaymentResponse = (response: PaymentResponse, actions?: any[]): IAction<any>[] | Observable<any> => {
+  public processPaymentResponse = (response: PaymentResponse, actions: any[] = []): IAction<any>[] | Observable<any> => {
     switch (response.status) {
       case PaymentStatus.IN_PROGRESS:
         return of(getPaymentStatus()).delay(DELAY_NEXT_PAYMENT_STATUS);
