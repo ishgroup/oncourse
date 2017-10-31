@@ -40,7 +40,7 @@ const validate = values => {
 class LoginForm extends React.Component<any, any> {
 
   render() {
-    const {handleSubmit, pristine} = this.props;
+    const {handleSubmit, pristine, submitting} = this.props;
 
     return (
       <Form onSubmit={handleSubmit} className="login-form">
@@ -65,7 +65,7 @@ class LoginForm extends React.Component<any, any> {
           />
         </FormGroup>
 
-        <Button disabled={pristine} color="primary">Log in</Button>
+        <Button disabled={pristine || submitting} color="primary">Log in</Button>
 
       </Form>
     );

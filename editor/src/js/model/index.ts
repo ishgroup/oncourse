@@ -27,3 +27,6 @@ export {SkillsOnCourseSettings} from "./settings/SkillsOnCourseSettings";
 export {CheckoutSettings} from "./settings/CheckoutSettings";
 export {RedirectSettings} from "./settings/RedirectSettings";
 export {WebsiteSettings} from "./settings/WebsiteSettings";
+
+// Api
+export {LoginRequest} from "./api/LoginRequest";
