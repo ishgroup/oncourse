@@ -25,16 +25,22 @@ public class TestContext {
 	private static final Logger logger = LogManager.getLogger();
 
 	public static final String SHOULD_CREATE_TABLES = "createTables";
-	public static final String SHOULD_DROP_TABLES = "dropTables";
+	public static final String SHOULD_CREATE_FK_CONSTRAINTS = "shouldCreateFKConstraints";
 
 
-	private boolean createTables = false;
+	private boolean shouldCreateTables = false;
+	private boolean shouldCreateFKConstraints = true;
 
 	private BasicDataSource dataSource;
 	private MariaDB mariaDB;
 
-	public TestContext createTables(boolean value) {
-		this.createTables = value;
+	public TestContext shouldCreateFKConstraints(boolean value) {
+		this.shouldCreateFKConstraints = value;
+		return this;
+	}
+
+	public TestContext shouldCreateTables(boolean value) {
+		this.shouldCreateTables = value;
 		return this;
 	}
 
@@ -51,9 +57,9 @@ public class TestContext {
 
 		dataSource = Functions.createDS(mariaDB);
 		Functions.bindDS(dataSource);
-		if (createTables) {
+		if (shouldCreateTables) {
 			Functions.cleanDB(mariaDB, true);
-			new CreateTables(Functions.createRuntime()).create();
+			new CreateTables(Functions.createRuntime()).shouldCreateFKConstraints(shouldCreateFKConstraints).create();
 		} else {
 			Functions.cleanDB(mariaDB, false);
 		}
@@ -62,12 +68,19 @@ public class TestContext {
 
 	private void initParams() {
 		if (System.getProperty(SHOULD_CREATE_TABLES) != null) {
-			createTables = Boolean.valueOf(System.getProperty(SHOULD_CREATE_TABLES));
+			shouldCreateTables = Boolean.valueOf(System.getProperty(SHOULD_CREATE_TABLES));
+		}
+		if (System.getProperty(SHOULD_CREATE_FK_CONSTRAINTS) != null) {
+			shouldCreateFKConstraints = Boolean.valueOf(System.getProperty(SHOULD_CREATE_FK_CONSTRAINTS));
 		}
 	}
 
 	public BasicDataSource getDS() {
 		return dataSource;
+	}
+
+	public MariaDB getMariaDB() {
+		return mariaDB;
 	}
 
 	public void cleanInsert(String dataSetResource) throws Exception {

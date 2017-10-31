@@ -7,7 +7,7 @@ import org.junit.After;
 
 public class ServiceTest {
 
-	private PageTester tester;
+	protected PageTester tester;
 	protected TestContext testContext;
 
 	public void initTest(String appPackage, String appName, Class<?>... moduleClasses) throws Exception {

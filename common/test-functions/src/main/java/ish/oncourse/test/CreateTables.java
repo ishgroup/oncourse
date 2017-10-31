@@ -25,38 +25,80 @@ public class CreateTables {
 	private static final Logger logger = LogManager.getLogger();
 
 	private ServerRuntime serverRuntime;
+
 	private DataMap dataMap;
 	private DataDomain domain;
-	private List<Relationship> entityRelationshipsToRemove = new ArrayList<>();
-	private List<Relationship> customFieldRelationships = new ArrayList<>();
+	private DbGenerator generator;
 
+	private List<Relationship> entityRelations = new ArrayList<>();
+	private List<Relationship> customFields = new ArrayList<>();
+
+	private boolean shouldCreateFKConstraints = true;
 
 	public CreateTables(ServerRuntime serverRuntime) {
 		this.serverRuntime = serverRuntime;
 		this.dataMap = serverRuntime.getDataDomain().getDataMap("oncourse");
 		this.domain = serverRuntime.getDataDomain();
+		initGenerator();
+	}
+
+	private void initGenerator() {
+		generator = new DbGenerator(new MariaDbAdapter(domain.getDefaultNode().getAdapter()), dataMap, NoopJdbcEventLogger.getInstance(), Collections.emptyList());
+		generator.setShouldCreateTables(true);
+		generator.setShouldCreateFKConstraints(shouldCreateFKConstraints);
+		generator.setShouldCreatePKSupport(false);
+	}
+
+	public CreateTables shouldCreateFKConstraints(boolean value) {
+		shouldCreateFKConstraints = value;
+		return this;
 	}
 
 	public void create() {
 		try {
 			Functions.TimeLog timeLog = new Functions.TimeLog();
-			DbGenerator generator = createGenerator();
+			before();
+			initGenerator();
 			generator.runGenerator(serverRuntime.getDataSource());
 			if (generator.getFailures() != null && generator.getFailures().hasFailures()) {
 				logger.error(generator.getFailures().toString());
 				throw new IllegalArgumentException(generator.getFailures().toString());
 			}
+			after();
 			timeLog.log(logger, "CreateTables.create() timing:");
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private DbGenerator createGenerator() {
-		DbGenerator generator = new DbGenerator(new MariaDbAdapter(domain.getDefaultNode().getAdapter()), dataMap, NoopJdbcEventLogger.getInstance(), Collections.emptyList());
-		generator.setShouldCreateTables(true);
-		generator.setShouldCreateFKConstraints(true);
-		generator.setShouldCreatePKSupport(false);
-		return generator;
+	private void before() {
+		entityRelations.add(dataMap.getDbEntity("EntityRelation").getRelationship("relationToProduct"));
+		entityRelations.add(dataMap.getDbEntity("EntityRelation").getRelationship("relationFromProduct"));
+		entityRelations.add(dataMap.getDbEntity("EntityRelation").getRelationship("relationToCourse"));
+		entityRelations.add(dataMap.getDbEntity("EntityRelation").getRelationship("relationFromCourse"));
+		for (Relationship rel : entityRelations) {
+			dataMap.getDbEntity("EntityRelation").removeRelationship(rel.getName());
+		}
+
+		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedContact"));
+		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedEnrolment"));
+		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedCourse"));
+		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedApplication"));
+		customFields.add(dataMap.getDbEntity("CustomField").getRelationship("relatedWaitingList"));
+		for (Relationship rel : customFields) {
+			dataMap.getDbEntity("CustomField").removeRelationship(rel.getName());
+		}
 	}
+
+
+	private void after() {
+		for (Relationship rel : entityRelations) {
+			dataMap.getDbEntity("EntityRelation").addRelationship(rel);
+		}
+
+		for (Relationship rel : customFields) {
+			dataMap.getDbEntity("CustomField").addRelationship(rel);
+		}
+	}
+
 }

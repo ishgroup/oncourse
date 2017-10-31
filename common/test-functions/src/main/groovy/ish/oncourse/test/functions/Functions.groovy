@@ -110,9 +110,25 @@ class Functions {
 
     }
 
+    static void setForeignKeyChecks(boolean value, MariaDB mariaDB = MariaDB.valueOf()) {
+        Connection connection = null
+        PreparedStatement call = null
+        try {
+            connection = DriverManager.getConnection(mariaDB.url, mariaDB.user, mariaDB.password)
+            call = connection.prepareStatement(value ? "SET FOREIGN_KEY_CHECKS=1;" : "SET FOREIGN_KEY_CHECKS=0;")
+            call.execute()
+            connection.commit()
+        } finally {
+            if (call != null)
+                call.close()
+            if (connection != null)
+                connection.close()
+        }
+    }
+
     static void main(String[] args) {
         Functions.cleanDB(MariaDB.valueOf(), true)
-        new TestContext().createTables(true).open()
+        new TestContext().shouldCreateTables(true).open()
     }
 
 
