@@ -33,8 +33,6 @@ public class CreateTables {
 	private List<Relationship> entityRelations = new ArrayList<>();
 	private List<Relationship> customFields = new ArrayList<>();
 
-	private boolean shouldCreateFKConstraints = true;
-
 	public CreateTables(ServerRuntime serverRuntime) {
 		this.serverRuntime = serverRuntime;
 		this.dataMap = serverRuntime.getDataDomain().getDataMap("oncourse");
@@ -45,13 +43,8 @@ public class CreateTables {
 	private void initGenerator() {
 		generator = new DbGenerator(new MariaDbAdapter(domain.getDefaultNode().getAdapter()), dataMap, NoopJdbcEventLogger.getInstance(), Collections.emptyList());
 		generator.setShouldCreateTables(true);
-		generator.setShouldCreateFKConstraints(shouldCreateFKConstraints);
+		generator.setShouldCreateFKConstraints(true);
 		generator.setShouldCreatePKSupport(false);
-	}
-
-	public CreateTables shouldCreateFKConstraints(boolean value) {
-		shouldCreateFKConstraints = value;
-		return this;
 	}
 
 	public void create() {
