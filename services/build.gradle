@@ -32,6 +32,7 @@ test {
             "&sessionVariables=default_storage_engine=MEMORY"
     systemProperty 'oncourse.jdbc.user', project.property("willowTest_user")
     systemProperty 'oncourse.jdbc.password', project.property("willowTest_pass")
+    systemProperty 'shouldCreateTables', System.getProperty("shouldCreateTables")
 }
 
 mainClassName = 'ish.oncourse.webservices.ServicesApp'
