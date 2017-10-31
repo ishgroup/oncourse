@@ -1,5 +1,7 @@
 import {combineReducers} from "redux";
 import {reducer as notifications} from 'react-notification-system-redux';
+import {reducer as reduxFormReducer} from 'redux-form';
+
 import {menuReducer} from "../containers/content/containers/menus/reducers";
 import {authReducer} from "../containers/auth/reducers";
 import {pageReducer} from "../containers/content/containers/pages/reducers";
@@ -31,4 +33,5 @@ export const combinedReducers = combineReducers({
     redirectSettings: redirectSettingsReducer,
     skillsOnCourseSettings: skillsOnCourseReducer,
   }),
+  form: reduxFormReducer,
 });

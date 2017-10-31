@@ -6,6 +6,7 @@ import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} fr
 import {submitLoginForm} from "./actions";
 import {DefaultConfig} from "../../constants/Config";
 import {CookieService} from "../../services/CookieService";
+import LoginForm from "./components/LoginForm";
 
 interface Props {
   onSubmit: (form) => void;
@@ -17,35 +18,14 @@ export class Login extends React.Component<Props, any> {
     CookieService.delete(DefaultConfig.COOKIE_NAME);
   }
 
-  handleSubmit(e) {
-    const {onSubmit} = this.props;
-    e.preventDefault();
-    onSubmit({
-      email: e.target.email.value,
-      password: e.target.password.value,
-    });
-  }
-
   render() {
+    const {onSubmit} = this.props;
+
     return (
       <Container>
         <Row>
           <Col md="4" className="mx-auto">
-
-            <Form onSubmit={e => this.handleSubmit(e)} className="login-form">
-
-              <FormGroup>
-                <Input type="email" name="email" id="loginEmail" placeholder="Email" />
-              </FormGroup>
-
-              <FormGroup>
-                <Input type="password" name="password" id="loginPassword" placeholder="Password" />
-              </FormGroup>
-
-              <Button color="primary">Log in</Button>
-
-            </Form>
-
+            <LoginForm onSubmit={onSubmit}/>
           </Col>
         </Row>
       </Container>

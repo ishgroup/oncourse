@@ -58,3 +58,19 @@ label {
   font-weight: 300;
   font-family: 'Roboto', sans-serif;
 }
+
+.form-control-feedback {
+  font-weight: 300;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+}
+
+.form-error {
+  input {
+    border-bottom: 1px solid $danger !important;
+  }
+  
+  .form-control-feedback {
+    color: $danger;
+  }
+}
