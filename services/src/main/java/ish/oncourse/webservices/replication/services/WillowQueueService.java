@@ -37,11 +37,8 @@ public class WillowQueueService implements IWillowQueueService {
 		SQLTemplate q = new SQLTemplate(QueuedRecord.class, sql);
 		q.setFetchingDataRows(true);
 		
-		@SuppressWarnings("unchecked")
-		List<DataRow> rows = cayenneService.sharedContext().performQuery(q);
-		Integer size = (Integer) rows.get(0).get("SIZE");	
-
-		return size;
+		List<DataRow> rows = cayenneService.newContext().performQuery(q);
+		return  ((Number) rows.get(0).get("SIZE")).intValue();
 	}
 
 	/**
