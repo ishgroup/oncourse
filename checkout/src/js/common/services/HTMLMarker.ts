@@ -100,8 +100,6 @@ export class HTMLMarkers {
     component: JoinButton,
     props: {
       id: "string",
-      enrollableClassesEmpty: "boolean",
-      hasMoreAvailablePlaces: "boolean",
     },
   };
 
