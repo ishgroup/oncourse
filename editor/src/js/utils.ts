@@ -24,3 +24,15 @@ export const loadCmsCss = path => {
   link.media = 'all';
   head.appendChild(link);
 };
+
+export class DOM {
+  static findPage(id) {
+    const pageNode = document.querySelector('.cms-edit-area');
+
+    if (pageNode && pageNode.getAttribute('data-page') == id) {
+      return pageNode;
+    }
+
+    return null;
+  }
+}

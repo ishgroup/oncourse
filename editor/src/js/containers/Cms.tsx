@@ -28,14 +28,15 @@ interface Props {
   showModal: () => any;
   getPageByUrl: (url) => any;
   history: any;
+  pageEditMode: boolean;
 }
 
 const checkSlimSidebar = history => (
   history.location.pathname === '/'
 );
 
-const checkViewMode = history => (
-  history.location.pathname === '/' || history.location.pathname.indexOf('/pages/') === 0
+const checkViewMode = (history, pageEditMode) => (
+  history.location.pathname === '/' || (history.location.pathname.indexOf('/pages/') === 0 && !pageEditMode)
 );
 
 export class Cms extends React.Component<Props, any> {
@@ -55,14 +56,27 @@ export class Cms extends React.Component<Props, any> {
   }
 
   render() {
-    const {logout, auth, notifications, modal, hideModal, onPublish, showModal} = this.props;
+    const {logout, auth, notifications, modal, hideModal, onPublish, showModal, pageEditMode} = this.props;
     const {isAuthenticated, user} = auth;
-    const viewMode: boolean = checkViewMode(this.props.history);
+    const viewMode: boolean = checkViewMode(this.props.history, pageEditMode);
     const slimSidebar: boolean = checkSlimSidebar(this.props.history);
-    const globalPadding = viewMode && slimSidebar ? '4%' : '16.666667%';
+    const globalPadding = viewMode && slimSidebar ? '70px' : '16.666667%';
+
+    const styles = `
+      .site-wrapper {
+        padding-left:${globalPadding};
+      }
+      .cms-edit-area {
+        border: 1px solid transparent;
+        cursor: pointer;
+      }
+      .cms-edit-area:hover {
+        border: 1px solid red;
+      }
+    `;
 
     // set left padding for site content (sidebar width)
-    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: `.site-wrapper {padding-left: ${globalPadding}}`}}/>);
+    const globalSiteStyle = (<style dangerouslySetInnerHTML={{__html: styles}}/>);
 
     return (
       <div className="cms">
@@ -94,6 +108,7 @@ const mapStateToProps = (state: State) => ({
   auth: state.auth,
   notifications: state.notifications,
   modal: state.modal,
+  pageEditMode: state.page.editMode,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

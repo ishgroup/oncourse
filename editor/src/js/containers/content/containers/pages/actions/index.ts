@@ -12,6 +12,8 @@ export const DELETE_PAGE_FULFILLED = FULFILLED(DELETE_PAGE_REQUEST);
 export const GET_PAGE_BY_URL_REQUEST = _toRequestType("page/get/page/byUrl");
 export const GET_PAGE_BY_URL_FULFILLED = FULFILLED(GET_PAGE_BY_URL_REQUEST);
 
+export const TOGGLE_EDIT_MODE = "page/toggle/edit/mode";
+
 export const getPages = () => ({
   type: GET_PAGES_REQUEST,
 });
@@ -29,4 +31,9 @@ export const deletePage = id => ({
 export const getPageByUrl = url => ({
   type: GET_PAGE_BY_URL_REQUEST,
   payload: url,
+});
+
+export const toggleEditMode = flag => ({
+  type: TOGGLE_EDIT_MODE,
+  payload: flag,
 });

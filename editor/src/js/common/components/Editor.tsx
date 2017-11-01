@@ -1,6 +1,7 @@
 import React from 'react';
 import AceEditor from 'react-ace';
 
+import 'brace/ext/language_tools';
 import 'brace/mode/html';
 import 'brace/snippets/html';
 import 'brace/theme/tomorrow';
@@ -24,14 +25,14 @@ export class Editor extends React.Component<Props, any> {
           showGutter={true}
           highlightActiveLine={true}
           width="100%"
+          enableBasicAutocompletion={true}
+          enableLiveAutocompletion={true}
           setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
             enableSnippets: true,
             showLineNumbers: true,
             tabSize: 2,
           }}
-          editorProps={{$blockScrolling: true}}
+          editorProps={{$blockScrolling: Infinity}}
           value={value}
           onChange={val => onChange(val)}
         />
