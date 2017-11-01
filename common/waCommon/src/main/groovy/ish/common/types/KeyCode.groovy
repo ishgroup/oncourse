@@ -670,7 +670,15 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Allow to access private documents
 	 */
 	@API
-	PRIVATE_DOCUMENTS(105, "Private documents", NONE, PRINT + DELETE, VIEW + EDIT + CREATE)
+	PRIVATE_DOCUMENTS(105, "Private documents", NONE, PRINT + DELETE, VIEW + EDIT + CREATE),
+
+    /**
+     * Database value: 106
+     *
+     * Allow to access "Student feedback"
+     */
+    @API
+    SURVEYS(106, "Student feedback", VIEW, CREATE + DELETE,  EDIT + PRINT)
 
 	private int value
 	private String displayName
