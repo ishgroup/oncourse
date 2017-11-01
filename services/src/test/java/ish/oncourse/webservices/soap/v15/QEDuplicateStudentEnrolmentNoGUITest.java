@@ -1,10 +1,6 @@
 package ish.oncourse.webservices.soap.v15;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentSource;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.TypesUtil;
+import ish.common.types.*;
 import ish.math.Money;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Invoice;
@@ -12,17 +8,8 @@ import ish.oncourse.model.PaymentIn;
 import ish.oncourse.model.QueuedRecord;
 import ish.oncourse.webservices.replication.services.PaymentInModelValidator;
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericInvoiceStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
-import ish.oncourse.webservices.v15.stubs.replication.EnrolmentStub;
-import ish.oncourse.webservices.v15.stubs.replication.InvoiceLineStub;
-import ish.oncourse.webservices.v15.stubs.replication.InvoiceStub;
-import ish.oncourse.webservices.v15.stubs.replication.PaymentInLineStub;
-import ish.oncourse.webservices.v15.stubs.replication.PaymentInStub;
+import ish.oncourse.webservices.util.*;
+import ish.oncourse.webservices.v15.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.beanutils.BeanUtils;
@@ -197,7 +184,7 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 							((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
-				if (stub.getAngelId() == null && stub.getWillowId() == 2l) {
+				if (stub.getAngelId() == null && stub.getWillowId() == 7l) {
 					assertEquals("Incorrect reverse invoice amount", ((InvoiceStub) stub).getTotalGst(), new BigDecimal("-100.00"));
 				} else if (stub.getAngelId() == 10l) {
 					assertEquals("Incorrect original invoice amount", ((InvoiceStub) stub).getTotalGst(), new BigDecimal("100.00"));

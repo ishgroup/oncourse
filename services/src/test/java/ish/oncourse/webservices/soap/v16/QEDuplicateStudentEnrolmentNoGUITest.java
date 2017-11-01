@@ -184,7 +184,7 @@ public class QEDuplicateStudentEnrolmentNoGUITest extends QEVoucherRedeemNoGUITe
 							((GenericEnrolmentStub)stub).getStatus()), true);
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
-				if (stub.getAngelId() == null && stub.getWillowId() == 2l) {
+				if (stub.getAngelId() == null && stub.getWillowId() == 7l) {
 					assertEquals("Incorrect reverse invoice amount", ((InvoiceStub) stub).getTotalGst(), new BigDecimal("-100.00"));
 				} else if (stub.getAngelId() == 10l) {
 					assertEquals("Incorrect original invoice amount", ((InvoiceStub) stub).getTotalGst(), new BigDecimal("100.00"));
