@@ -92,8 +92,8 @@ export class HTMLMarkers {
    * Renders join button.
    *
    * Corresponding React Component: {@link JoinButton}
-   * Example Usage: <div data-cid="enrol-button"  data-prop-id="${id}"></div>
-   * Tapestry template to use: CourseClassItem.tml
+   * Example Usage: <div data-cid="join-button"  data-prop-id="${id}"></div>
+   * Tapestry template to use: CourseItem.tml
    */
   static JOIN_BUTTON: HTMLMarker = {
     id: "join-button",
