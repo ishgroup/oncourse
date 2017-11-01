@@ -66,7 +66,7 @@ public class QEMoneyVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedeem
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
 				GenericInvoiceStub invoiceStub = (GenericInvoiceStub) stub;
-				if (stub.getAngelId() == null && stub.getWillowId() == 7) {
+				if (stub.getAngelId() == null && stub.getWillowId() == 7l) {
 					assertEquals("Incorrect reverse invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("-100.00"));
 				} else if (stub.getAngelId() == 10l) {
 					assertEquals("Incorrect original invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("100.00"));

@@ -1,17 +1,7 @@
 package ish.oncourse.webservices.soap.v15;
 
-import ish.common.types.EnrolmentStatus;
-import ish.common.types.PaymentStatus;
-import ish.common.types.PaymentType;
-import ish.common.types.ProductStatus;
-import ish.common.types.TypesUtil;
-import ish.common.types.VoucherPaymentStatus;
-import ish.oncourse.webservices.util.GenericEnrolmentStub;
-import ish.oncourse.webservices.util.GenericInvoiceStub;
-import ish.oncourse.webservices.util.GenericParametersMap;
-import ish.oncourse.webservices.util.GenericPaymentInStub;
-import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.util.GenericTransactionGroup;
+import ish.common.types.*;
+import ish.oncourse.webservices.util.*;
 import ish.oncourse.webservices.v15.stubs.replication.VoucherStub;
 import org.apache.cayenne.ObjectContext;
 import org.junit.Before;
@@ -76,7 +66,7 @@ public class QEMoneyVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedeem
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
 				GenericInvoiceStub invoiceStub = (GenericInvoiceStub) stub;
-				if (stub.getAngelId() == null && stub.getWillowId() == 2l) {
+				if (stub.getAngelId() == null && stub.getWillowId() == 7l) {
 					assertEquals("Incorrect reverse invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("-100.00"));
 				} else if (stub.getAngelId() == 10l) {
 					assertEquals("Incorrect original invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("100.00"));
