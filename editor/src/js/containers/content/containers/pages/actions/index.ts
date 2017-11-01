@@ -6,6 +6,9 @@ export const GET_PAGES_FULFILLED = FULFILLED(GET_PAGES_REQUEST);
 export const SAVE_PAGE_REQUEST = _toRequestType("page/save");
 export const SAVE_PAGE_FULFILLED = FULFILLED(SAVE_PAGE_REQUEST);
 
+export const ADD_PAGE_REQUEST = _toRequestType("page/add");
+export const ADD_PAGE_FULFILLED = FULFILLED(ADD_PAGE_REQUEST);
+
 export const DELETE_PAGE_REQUEST = _toRequestType("page/delete");
 export const DELETE_PAGE_FULFILLED = FULFILLED(DELETE_PAGE_REQUEST);
 
@@ -21,6 +24,10 @@ export const getPages = () => ({
 export const savePage = (id, props) => ({
   type: SAVE_PAGE_REQUEST,
   payload: {id, ...props},
+});
+
+export const addPage = () => ({
+  type: ADD_PAGE_REQUEST,
 });
 
 export const deletePage = id => ({

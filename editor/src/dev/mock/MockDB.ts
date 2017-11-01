@@ -63,7 +63,7 @@ export class MockDB {
         visible: true,
         theme: 'first',
         layout: 'custom',
-        url: '/page1/',
+        urls: ['/page1/'],
         html: "<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>",
       },
       {
@@ -72,7 +72,7 @@ export class MockDB {
         visible: true,
         theme: 'first',
         layout: 'custom',
-        url: '/page2/',
+        urls: ['/page2/', '/myPage2'],
         html: "<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n",
       },
       {
@@ -81,7 +81,7 @@ export class MockDB {
         visible: false,
         theme: 'first',
         layout: 'custom',
-        url: '/page3/',
+        urls: ['/page3/'],
         html: "<div>\n  <h4>Page Html 3</h4>\n  <p>Page text 3</p>\n  <p>Other Page text 3</p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n  Beatae distinctio doloremque illum iure neque nisi perspiciatis quas quasi \n  repudiandae sed?\n  </p>\n</div>\n",
       },
     ];
@@ -408,7 +408,17 @@ export class MockDB {
   }
 
   getPageByUrl(url) {
-    return this.pages.find(page => page.url === url);
+    return this.pages.find(page => page.urls.includes(url));
+  }
+
+  createNewPage() {
+    const page = new Page();
+    const newId = Math.max(...this.pages.map(page => page.id)) + 1;
+    page.title = `New Page ${newId}`;
+    page.id = newId;
+
+    this.pages.push(page);
+    return page;
   }
 
   addContact(contact) {

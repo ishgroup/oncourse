@@ -3,7 +3,7 @@ import {connect, Dispatch} from "react-redux";
 import {Page} from "../../../../../model";
 import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../../../routes";
-import {deletePage, savePage} from "../actions";
+import {addPage, deletePage, savePage} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
 import {defaultPage} from "../Pages";
@@ -13,6 +13,7 @@ interface Props {
   match: any;
   onEditSettings: (pageId, settings) => any;
   onDeletePage: (id) => any;
+  onAddPage: () => any;
   history: any;
   showModal: (props) => any;
 }
@@ -28,7 +29,8 @@ export class PagesSidebar extends React.Component<Props, any> {
   }
 
   onAddPage() {
-    this.props.history.push(`${URL.PAGES}/-1`);
+    const {onAddPage} = this.props;
+    onAddPage();
   }
 
   render() {
@@ -69,6 +71,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (pageId, settings) => dispatch(savePage(pageId, settings)),
     onDeletePage: id => dispatch(deletePage(id)),
+    onAddPage: () => dispatch(addPage()),
     showModal: props => dispatch(showModal(props)),
   };
 };

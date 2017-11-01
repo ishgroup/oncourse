@@ -28,24 +28,21 @@ export class Page extends React.Component<PageProps, any> {
     const pageNode = DOM.findPage(page.id);
     toggleEditMode(false);
 
-    if (!pageNode) {
-      // openPage(page.url);
+    if (pageNode) {
+      pageNode.addEventListener('click', () => this.onClickArea());
+      return;
     }
 
-    pageNode.addEventListener('click', e => this.handleClickPage(e));
+    // openPage(page.url);
   }
 
   componentWillUnmount() {
     const {page} = this.props;
     const pageNode = DOM.findPage(page.id);
-    pageNode && pageNode.removeEventListener('click', e => this.handleClickPage(e));
+    pageNode && pageNode.removeEventListener('click', () => this.onClickArea());
   }
 
-  handleClickPage(e) {
-    this.onClickArea(e);
-  }
-
-  onClickArea(e) {
+  onClickArea() {
     const {page, toggleEditMode} = this.props;
 
     toggleEditMode(true);
@@ -98,7 +95,7 @@ export class Page extends React.Component<PageProps, any> {
         </div>
       }
 
-      <div onClick={e => this.onClickArea(e)}>
+      <div onClick={() => this.onClickArea()}>
         {!this.state.editMode &&
           <div className="editor-area" dangerouslySetInnerHTML={{__html: page.html}} />
         }
@@ -110,7 +107,6 @@ export class Page extends React.Component<PageProps, any> {
   render() {
     return (
       <div>
-        <div className="cms-edit-area" data-page="1">123</div>
         {this.state.editMode &&
         <div>
           <FormGroup>

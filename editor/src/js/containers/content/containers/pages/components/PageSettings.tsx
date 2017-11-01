@@ -12,13 +12,14 @@ interface Props {
   showModal?: (props) => any;
 }
 
-export class PageSettings extends React.Component<Props, any> {
+export class PageSettings extends React.PureComponent<Props, any> {
 
   constructor(props) {
     super(props);
 
     this.state = {
       title: props.page.title,
+      urls: props.page.urls,
       layout: props.page.layout,
       visible: props.page.visible,
       theme: props.page.theme,
@@ -58,7 +59,7 @@ export class PageSettings extends React.Component<Props, any> {
 
   render () {
     const {page} = this.props;
-    const {title, visible, layout, theme} = this.state;
+    const {title, visible, layout, theme, urls} = this.state;
 
     return (
       <div>
@@ -83,6 +84,19 @@ export class PageSettings extends React.Component<Props, any> {
                 value={title}
                 onChange={e => this.onChange(e, 'title')}
                 onBlur={e => this.onBlur('title')}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label htmlFor="pageUrl">Page Links (URLs)</Label>
+              <Input
+                type="text"
+                name="pageUrl"
+                id="pageUrl"
+                placeholder="Page Url"
+                value={urls}
+                onChange={e => this.onChange(e, 'urls')}
+                onBlur={e => this.onBlur('urls')}
               />
             </FormGroup>
 

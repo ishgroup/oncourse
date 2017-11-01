@@ -4,7 +4,7 @@ export class Page {
   theme: string;
   layout: string;
   html: string;
-  url: string;
+  urls: string[];
   visible: boolean;
 }
 

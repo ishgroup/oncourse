@@ -18,6 +18,7 @@ export const API = {
   GET_PAGES: "/getPages",
   GET_PAGE_BY_URL: "/getPageByUrl",
   SAVE_PAGE: "/savePage",
+  ADD_PAGE: "/addPage",
   DELETE_PAGE: "/deletePage",
 
   // Blocks

@@ -38,6 +38,13 @@ export function pageApiMock() {
     );
   });
 
+  this.api.onPost(API.ADD_PAGE).reply(config => {
+    return promiseResolve(
+      config,
+      this.db.createNewPage(),
+    );
+  });
+
 
   this.api.onPost(API.DELETE_PAGE).reply(config => {
 

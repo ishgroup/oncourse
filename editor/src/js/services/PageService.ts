@@ -17,6 +17,10 @@ class PageService {
     return this.pageApi.savePage(this.buildSavePageRequest(props, state));
   }
 
+  public addPage(): Promise<Page[]> {
+    return this.pageApi.addPage();
+  }
+
   public deletePage(id): Promise<Page[]> {
     return this.pageApi.deletePage(id);
   }
