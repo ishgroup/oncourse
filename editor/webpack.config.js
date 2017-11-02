@@ -25,7 +25,7 @@ module.exports = function (options = {}) {
 const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   return {
     entry: {
-      cms: [
+      editor: [
         // 'babel-polyfill',
         'react',
         'redux',
