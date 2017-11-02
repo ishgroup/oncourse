@@ -115,8 +115,7 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
             return filterChain.onSync(originatingContext, changes, syncType);
         } catch (Throwable e) {
             if (retryNum < 2) {
-                retryNum =+ 1;
-                return onSyncRetry(retryNum, filterChain, originatingContext, changes, syncType);
+                return onSyncRetry(retryNum + 1, filterChain, originatingContext, changes, syncType);
             } else {
                 logger.error("QueueableLifecycleListener thrown an exception", e);
                 throw e instanceof RuntimeException ? (RuntimeException) e: new CayenneRuntimeException(e);

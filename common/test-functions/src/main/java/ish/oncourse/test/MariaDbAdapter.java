@@ -24,6 +24,7 @@ import org.apache.cayenne.query.SelectQuery;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * User: akoiro
@@ -104,7 +105,11 @@ public class MariaDbAdapter implements DbAdapter {
 
 	@Override
 	public String createUniqueConstraint(DbEntity source, Collection<DbAttribute> columns) {
-		return delegate.createUniqueConstraint(source, columns);
+		Collection<DbAttribute> filtered = filterConstraintColumns(source.getName(), columns);
+		if (filtered.size() > 0)
+			return delegate.createUniqueConstraint(source, filtered);
+		else
+			return null;
 	}
 
 	@Override
@@ -178,4 +183,19 @@ public class MariaDbAdapter implements DbAdapter {
 		return delegate.getEjbqlTranslatorFactory();
 	}
 
+	/**
+	 * Filter not used constraints here
+	 * @param tableName table
+	 * @param columns source DbAttribute collection
+	 * @return filtered DbAttribute collection
+	 */
+	private Collection<DbAttribute> filterConstraintColumns(String tableName, Collection<DbAttribute> columns) {
+		if ("Contact".equals(tableName)) {
+			return columns.stream()
+					.filter(attr -> !"studentId".equals(attr.getName()))
+					.collect(Collectors.toList());
+		}
+
+		return columns;
+	}
 }
