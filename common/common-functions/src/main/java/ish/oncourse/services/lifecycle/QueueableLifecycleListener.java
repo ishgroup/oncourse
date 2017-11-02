@@ -101,24 +101,12 @@ public class QueueableLifecycleListener implements LifecycleListener, DataChanne
         }
         catch (Throwable e)
         {
-            return onSyncRetry(0, filterChain, originatingContext, changes, syncType);
+            logger.error("QueueableLifecycleListener thrown an exception", e);
+			throw e instanceof RuntimeException ? (RuntimeException) e: new CayenneRuntimeException(e);
         }
         finally {
             if (STACK_STORAGE.get() != null && STACK_STORAGE.get().isEmpty()) {
                 STACK_STORAGE.set(null);
-            }
-        }
-    }
-
-    private GraphDiff onSyncRetry(int retryNum, DataChannelFilterChain filterChain, ObjectContext originatingContext, GraphDiff changes,  int syncType) {
-        try {
-            return filterChain.onSync(originatingContext, changes, syncType);
-        } catch (Throwable e) {
-            if (retryNum < 2) {
-                return onSyncRetry(retryNum + 1, filterChain, originatingContext, changes, syncType);
-            } else {
-                logger.error("QueueableLifecycleListener thrown an exception", e);
-                throw e instanceof RuntimeException ? (RuntimeException) e: new CayenneRuntimeException(e);
             }
         }
     }
