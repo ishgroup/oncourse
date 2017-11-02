@@ -54,11 +54,11 @@ window.loadjs("/assets/dynamic.js");
 cms_config = {
 
   // The editor has its own styling, which you can adjust if you like
-  cssPath: "/s/oncourse/editor/cms.css"
+  cssPath: "/s/oncourse/editor/editor.css"
 }
 
 // The editor javascript should only be loaded when you are trying to login
 // or have already logged into the CMS
 if (document.location.hash === "#editor" || document.cookie.indexOf("editor=") != -1) {
-  window.loadjs("/s/oncourse/editor/cms.js");
+  window.loadjs("/s/oncourse/editor/editor.js");
 }
