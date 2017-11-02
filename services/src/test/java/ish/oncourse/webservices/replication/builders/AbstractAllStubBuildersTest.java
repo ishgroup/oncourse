@@ -5,41 +5,20 @@ package ish.oncourse.webservices.replication.builders;
 
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.test.functions.Functions;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.GenericReplicationStub;
 import org.apache.cayenne.Cayenne;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-
-import javax.sql.DataSource;
-import java.io.InputStream;
 
 public abstract class AbstractAllStubBuildersTest extends ServiceTest {
 	@Before
 	public void setupDataSet() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-		Functions.setForeignKeyChecks(false, testContext.getMariaDB());
-		initOncourseDataSet();
-	}
-
-	private void initOncourseDataSet() throws Exception {
-		InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/builders/oncourseDataSet.xml");
-		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-		builder.setColumnSensing(true);
-		FlatXmlDataSet dataSet = builder.build(st);
-
-		DataSource onDataSource = getDataSource("jdbc/oncourse");
-		DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-		dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-
-		DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+		new LoadDataSet("ish/oncourse/webservices/replication/builders/oncourseDataSet.xml", null).load(testContext.getDS());
 	}
 
 	protected <E extends Queueable, S extends GenericReplicationStub> S testStubBuilder(Class<E> entityClass,
