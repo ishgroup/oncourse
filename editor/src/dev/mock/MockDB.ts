@@ -63,7 +63,18 @@ export class MockDB {
         visible: true,
         theme: 'first',
         layout: 'custom',
-        urls: ['/page1/'],
+        urls: [
+          {
+            link: '/page/1/',
+            isBase: true,
+            isDefault: true,
+          },
+          {
+            link: '/page1/',
+            isBase: false,
+            isDefault: false,
+          },
+        ],
         html: "<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>",
       },
       {
@@ -72,7 +83,23 @@ export class MockDB {
         visible: true,
         theme: 'first',
         layout: 'custom',
-        urls: ['/page2/', '/myPage2'],
+        urls: [
+          {
+            link: '/page/2/',
+            isBase: true,
+            isDefault: true,
+          },
+          {
+            link: '/page2/',
+            isBase: false,
+            isDefault: false,
+          },
+          {
+            link: '/mypage2/',
+            isBase: false,
+            isDefault: false,
+          },
+        ],
         html: "<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n",
       },
       {
@@ -81,7 +108,23 @@ export class MockDB {
         visible: false,
         theme: 'first',
         layout: 'custom',
-        urls: ['/page3/'],
+        urls: [
+          {
+            link: '/page/3/',
+            isBase: true,
+            isDefault: true,
+          },
+          {
+            link: '/page3/',
+            isBase: false,
+            isDefault: false,
+          },
+          {
+            link: '/mypage3/',
+            isBase: false,
+            isDefault: false,
+          },
+        ],
         html: "<div>\n  <h4>Page Html 3</h4>\n  <p>Page text 3</p>\n  <p>Other Page text 3</p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n  Beatae distinctio doloremque illum iure neque nisi perspiciatis quas quasi \n  repudiandae sed?\n  </p>\n</div>\n",
       },
     ];
@@ -211,10 +254,10 @@ export class MockDB {
             id: 3,
             position: 1,
           },
-          {
-            id: 4,
-            position: 1,
-          }],
+            {
+              id: 4,
+              position: 1,
+            }],
           middle3: [],
           footer: [{
             id: 5,
@@ -408,7 +451,7 @@ export class MockDB {
   }
 
   getPageByUrl(url) {
-    return this.pages.find(page => page.urls.includes(url));
+    return this.pages.find(page => !!page.urls.find(l => l.link === url));
   }
 
   createNewPage() {

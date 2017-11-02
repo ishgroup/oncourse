@@ -65,6 +65,22 @@ label {
   font-size: 12px;
 }
 
+.input-icon {
+  position: relative;
+  
+  input {
+    width: calc(100% - 25px);
+  }
+  
+  .icon {
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    margin-top: -12px;
+  }
+  
+}
+
 .form-error {
   input {
     border-bottom: 1px solid $danger !important;

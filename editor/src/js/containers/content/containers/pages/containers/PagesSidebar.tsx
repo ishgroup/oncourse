@@ -43,7 +43,8 @@ export class PagesSidebar extends React.Component<Props, any> {
           <SidebarList
             items={pages}
             category="pages"
-            subTitleKey="url"
+            subTitleKey="urls"
+            subTitleFilter={(items => items.find(item => item.isDefault).link)}
             onBack={() => this.goBack()}
             onAdd={() => this.onAddPage()}
           />

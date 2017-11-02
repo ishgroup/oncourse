@@ -1,5 +1,6 @@
 import React from 'react';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import classnames from 'classnames';
 import {Checkbox} from "../../../../../common/components/Checkbox";
 import {IconBack} from "../../../../../common/components/IconBack";
 import {Page} from "../../../../../model";
@@ -23,6 +24,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
       layout: props.page.layout,
       visible: props.page.visible,
       theme: props.page.theme,
+      newLink: '',
     };
   }
 
@@ -47,6 +49,23 @@ export class PageSettings extends React.PureComponent<Props, any> {
     }
   }
 
+  onSetDefaultUrl(url) {
+    const {onEdit} = this.props;
+    const urls = this.state.urls
+      .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false});
+
+    this.setState({urls});
+    onEdit({urls});
+  }
+
+  onDeleteUrl(url) {
+    const {onEdit} = this.props;
+    const urls = this.state.urls.filter(item => item.link !== url.link);
+
+    this.setState({urls});
+    onEdit({urls});
+  }
+
   onClickDelete(e) {
     e.preventDefault();
     const {onDelete, page, showModal} = this.props;
@@ -57,9 +76,35 @@ export class PageSettings extends React.PureComponent<Props, any> {
     });
   }
 
+  onAddNewUrl() {
+    const {onEdit} = this.props;
+    const newLink = this.formatLink(this.state.newLink);
+
+    if (!this.state.newLink || !newLink || this.state.urls.find(i => i.link === newLink)) {
+      return;
+    }
+
+    const newUrl = {
+      link: newLink,
+      isDefault: false,
+      isBase: false,
+    };
+
+    const urls = this.state.urls.concat(newUrl);
+    this.setState({
+      urls,
+      newLink: '',
+    });
+    onEdit({urls});
+  }
+
+  formatLink(link) {
+    return (link.indexOf('/') !== 0 ? `/${link}` : link).replace(/ /g, '');
+  }
+
   render () {
     const {page} = this.props;
-    const {title, visible, layout, theme, urls} = this.state;
+    const {title, visible, layout, theme, urls, newLink} = this.state;
 
     return (
       <div>
@@ -89,15 +134,43 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
             <FormGroup>
               <Label htmlFor="pageUrl">Page Links (URLs)</Label>
-              <Input
-                type="text"
-                name="pageUrl"
-                id="pageUrl"
-                placeholder="Page Url"
-                value={urls}
-                onChange={e => this.onChange(e, 'urls')}
-                onBlur={e => this.onBlur('urls')}
-              />
+
+              <div className="links">
+                {urls.map((url, index) => (
+                  <div className="links__item" key={index}>
+                    <div
+                      onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
+                      className={classnames("links__title", {
+                        "links__title--default": url.isDefault,
+                        "links__title--base": url.isBase,
+                      })}
+                    >
+                      {url.link}
+                    </div>
+
+                    {!url.isBase && !url.isDefault &&
+                      <span
+                        className="links__remove icon-close"
+                        onClick={() => !url.isDefault && !url.isBase && this.onDeleteUrl(url)}
+                      />
+                    }
+                  </div>
+                ))}
+              </div>
+
+              <div className="input-icon">
+                <Input
+                  type="text"
+                  name="newLink"
+                  id="newLink"
+                  placeholder="New Page Url"
+                  value={newLink}
+                  onChange={e => this.onChange(e, 'newLink')}
+                  onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
+                />
+                <span className="icon icon-add btn-icon-add" onClick={() => this.onAddNewUrl()}/>
+              </div>
+
             </FormGroup>
 
             <FormGroup>

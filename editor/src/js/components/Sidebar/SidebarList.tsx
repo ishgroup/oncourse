@@ -9,6 +9,7 @@ interface Props {
   onBack: () => void;
   category: string;
   subTitleKey?: string;
+  subTitleFilter?: (items) => any;
   onAdd?: () => any;
 }
 
@@ -36,7 +37,7 @@ export class SidebarList extends React.Component<Props, any> {
   }
 
   render() {
-    const {items, category, subTitleKey, onAdd} = this.props;
+    const {items, category, subTitleKey, subTitleFilter, onAdd} = this.props;
     const reg = new RegExp(this.state.filter, 'gi');
 
     return (
@@ -85,7 +86,7 @@ export class SidebarList extends React.Component<Props, any> {
                 }
 
                 {item[subTitleKey] &&
-                  <small>{item[subTitleKey]}</small>
+                  <small>{subTitleFilter ? subTitleFilter(item[subTitleKey]) : item[subTitleKey]}</small>
                 }
               </NavLink>
             </li>
