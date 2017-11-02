@@ -40,9 +40,9 @@ public class QEPreviouslyKeepNonEnrolmentWithNewInvoiceTest extends QEPaymentPro
 		for (GenericReplicationStub stub : transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
 			if (stub instanceof GenericPaymentInStub) {
 				PaymentStatus status = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getStatus(), PaymentStatus.class);
-				if (stub.getWillowId() == 1l) {
+				if (stub.getWillowId() == 11l) {
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED_CARD_DECLINED, status);
-				} else if (stub.getWillowId() == 2l) {
+				} else if (stub.getWillowId() == 12l) {
 					PaymentType type = TypesUtil.getEnumForDatabaseValue(((GenericPaymentInStub) stub).getType(), PaymentType.class);
 					assertEquals("Payment type should be CC", PaymentType.CREDIT_CARD, type);
 					assertEquals("Payment status should be failed after expiration", PaymentStatus.FAILED, status);

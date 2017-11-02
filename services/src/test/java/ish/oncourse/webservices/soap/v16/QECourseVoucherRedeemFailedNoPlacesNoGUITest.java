@@ -37,7 +37,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedee
 			if (stub instanceof GenericPaymentInStub) {
 				GenericPaymentInStub paymentInStub = (GenericPaymentInStub) stub;
 				if (stub.getAngelId() == null) {
-					if (stub.getWillowId() == 3l || stub.getWillowId() == 4l) {
+					if (stub.getWillowId() == 2l || stub.getWillowId() == 3l) {
 						assertEquals("This should be 0 amount internal payment", PaymentType.REVERSE.getDatabaseValue(), paymentInStub.getType());
 						PaymentStatus status = TypesUtil.getEnumForDatabaseValue(paymentInStub.getStatus(), PaymentStatus.class);
 						assertEquals("Payment status should be success", PaymentStatus.SUCCESS, status);
@@ -67,7 +67,7 @@ public class QECourseVoucherRedeemFailedNoPlacesNoGUITest extends QEVoucherRedee
 				}
 			} else if (stub instanceof GenericInvoiceStub) {
 				GenericInvoiceStub invoiceStub = (GenericInvoiceStub) stub;
-				if (stub.getAngelId() == null && stub.getWillowId() == 2l) {
+				if (stub.getAngelId() == null && stub.getWillowId() == 7l) {
 					assertEquals("Incorrect reverse invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("-100.00"));
 				} else if (stub.getAngelId() == 10l) {
 					assertEquals("Incorrect original invoice amount", getInvoiceTotalGst(invoiceStub), new BigDecimal("100.00"));
