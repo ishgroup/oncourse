@@ -20,7 +20,9 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 	@Inject
 	private ICookiesService cookiesService;
 	
-	private static final String EDITOR_COOKIE_NAME = "editor";
+	private static final String EDITOR_PREFIX = "editor";
+	private static final String WEB_PREFIX = "web";
+
 
 	@Override
 	public WebSiteVersion getCurrentVersion() {
@@ -42,11 +44,19 @@ public class WebSiteVersionService extends AbstractWebSiteVersionService {
 	public void removeOldWebSiteVersions(WebSite webSite) {
 		throw new UnsupportedOperationException("WebSiteVersions can only be deleted from CMS.");
 	}
+	
+	private boolean isEditor() {
+		return cookiesService.getCookieValue(EDITOR_PREFIX) != null;
+	}
 
 	@Override
-	public boolean isEditor() {
-		return cookiesService.getCookieValue(EDITOR_COOKIE_NAME) != null;
-
+	public String getCacheKey() {
+		WebSite webSite = webSiteService.getCurrentWebSite();
+		if (webSite != null) {
+			String prefix = isEditor() ? EDITOR_PREFIX : WEB_PREFIX;
+			return String.format("%s-%s", prefix, webSite.getSiteKey());
+		}
+		return null;
 	}
 
 	private WebSiteVersion getDraftVersion(WebSite webSite) {

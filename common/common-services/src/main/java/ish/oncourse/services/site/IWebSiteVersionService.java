@@ -15,6 +15,9 @@ public interface IWebSiteVersionService {
     @RequestCached
 	WebSiteVersion getCurrentVersion();
 
+	@RequestCached
+	String getCacheKey();
+
 	/**
 	 * Create a copy of the staged web site version, sets deployedOn field to current time
 	 */
@@ -31,6 +34,4 @@ public interface IWebSiteVersionService {
 	void removeOldWebSiteVersions(WebSite webSite);
 
 	WebSiteVersion getDeployedVersion(WebSite webSite);
-	
-	boolean isEditor();
 }

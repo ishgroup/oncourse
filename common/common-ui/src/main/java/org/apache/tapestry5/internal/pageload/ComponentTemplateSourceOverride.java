@@ -2,7 +2,6 @@ package org.apache.tapestry5.internal.pageload;
 
 import ish.oncourse.model.WebSiteLayout;
 import ish.oncourse.services.node.IWebNodeService;
-import ish.oncourse.services.node.IWebNodeTypeService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.resource.IResourceService;
 import ish.oncourse.services.resource.WebTemplateChangeTracker;
@@ -10,6 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import ish.oncourse.services.textile.CustomTemplateDefinition;
 import ish.oncourse.services.textile.TextileUtil;
+import net.sf.ehcache.pool.sizeof.annotations.IgnoreSizeOf;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.TapestryConstants;
@@ -23,8 +23,6 @@ import org.apache.tapestry5.ioc.Location;
 import org.apache.tapestry5.ioc.Resource;
 import org.apache.tapestry5.ioc.annotations.Primary;
 import org.apache.tapestry5.ioc.internal.util.ClasspathResource;
-import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.model.ComponentModel;
 import org.apache.tapestry5.services.ExceptionReporter;
 import org.apache.tapestry5.services.InvalidationEventHub;
@@ -36,11 +34,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 
 /**
  * Service implementation that manages a cache of parsed component templates.
  */
+@IgnoreSizeOf
 public final class ComponentTemplateSourceOverride extends InvalidationEventHubImpl implements ComponentTemplateSource, UpdateListener {
 
 	private Request request;
@@ -52,25 +52,9 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 	private IWebSiteVersionService webSiteVersionService;
 	private final TemplateParser parser;
 	private final ComponentTemplateLocator locator;
-	
+	private transient WebCacheService webCacheService;
 	private final WebTemplateChangeTracker entityChangeTracker;
 	
-	/**
-	 * Caches from a key (combining component name and locale) to a resource.
-	 * Often, many different keys will point to the same resource (i.e.,
-	 * "foo:en_US", "foo:en_UK", and "foo:en" may all be parsed from the same
-	 * "foo.tml" resource). The resource may end up being null, meaning the
-	 * template does not exist in any locale.
-	 */
-	private final Map<MultiKey, Resource> webTemplateResources = CollectionFactory.newConcurrentMap();
-	private final Map<MultiKey, Resource> editorTemplateResources = CollectionFactory.newConcurrentMap();
-
-	/**
-	 * Cache of parsed templates, keyed on resource.
-	 */
-	private final Map<Resource, ComponentTemplate> webTemplates = CollectionFactory.newConcurrentMap();
-	private final Map<Resource, ComponentTemplate> editorTemplates = CollectionFactory.newConcurrentMap();
-
 	private final ComponentTemplate missingTemplate = new ComponentTemplate() {
 
 		public Map<String, Location> getComponentIds() {
@@ -101,7 +85,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 	public ComponentTemplateSourceOverride(TemplateParser parser, @Primary ComponentTemplateLocator locator,
 			Request request, IResourceService resourceService, IWebNodeService webNodeService,
 			ICayenneService cayenneService, IWebSiteService webSiteService, 
-			IWebSiteVersionService webSiteVersionService) {
+			IWebSiteVersionService webSiteVersionService, WebCacheService webCacheService) {
 
 		this.parser = parser;
 		this.locator = locator;
@@ -110,6 +94,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 		this.request = request;
 		this.resourceService = resourceService;
 		this.webNodeService = webNodeService;
+		this.webCacheService = webCacheService;
 	}
 
     /**
@@ -121,7 +106,7 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
      * returned.
      */
     @Override
-    public ComponentTemplate getTemplate(ComponentModel componentModel, Locale locale) {
+    public ComponentTemplate getTemplate(final ComponentModel componentModel, final Locale locale) {
         String componentName = componentModel.getComponentClassName();
 
         //it reads templateFileName attribute to get user defined template.
@@ -133,40 +118,25 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 		WebSiteLayout layout = webNodeService.getLayout();
         //we should use anouther key to cache Resource for component when user defines custom template
         MultiKey key = CustomTemplateDefinition.getMultiKeyBy(componentName, ctd, request.getServerName(), locale, layout != null ? layout.getLayoutKey() : null);
-		Map<MultiKey, Resource> templateResources;
-		Map<Resource, ComponentTemplate> templates;
-		
-        if (webSiteVersionService.isEditor()) {
-			templateResources = editorTemplateResources;
-			templates = editorTemplates;
-		} else {
-			templateResources = webTemplateResources;
-			templates = webTemplates;
-		}
-				
-        // First cache is key to resource.
-		
-		Resource resource = templateResources.get(key);
 
-        if (resource == null) {
+        String cacheKey = webSiteVersionService.getCacheKey();
+     
+		final CustomTemplateDefinition finalCtd = ctd;
+		final Resource resource = webCacheService.getTemplateResource(cacheKey, key,
+				new Callable<Resource>() {
+					@Override
+					public Resource call() throws Exception {
+						return locateSiteTemplateResource(componentModel, finalCtd, locale);
+					}
+				});
 
-			resource = locateSiteTemplateResource(componentModel, ctd, locale);
-
-            if (resource != null) {
-                templateResources.put(key, resource);
-            }
-        }
-
-        // If we haven't yet parsed the template into the cache, do so now.
-
-        ComponentTemplate result = templates.get(resource);
-
-        if (result == null) {
-            result = parseTemplate(resource);
-            templates.put(resource, result);
-        }
-
-        return result;
+		return webCacheService.getTemplate(cacheKey, resource,
+				new Callable<ComponentTemplate>() {
+					@Override
+					public ComponentTemplate call() throws Exception {
+						return parseTemplate(resource);
+					}
+				});
     }
 
 	private ComponentTemplate parseTemplate(Resource r) {
@@ -264,17 +234,10 @@ public final class ComponentTemplateSourceOverride extends InvalidationEventHubI
 	 * later.
 	 */
 	public void checkForUpdates() {
-		if (entityChangeTracker.containsChanges()) {
-			if (webSiteVersionService.isEditor()) {
-				entityChangeTracker.resetEditorTimestamp();
-				editorTemplateResources.clear();
-				editorTemplates.clear();
-			} else {
-				entityChangeTracker.resetWebTimestamp();
-				webTemplateResources.clear();
-				webTemplates.clear();
-			}
-			
+		String cacheKey = webSiteVersionService.getCacheKey();
+		if (entityChangeTracker.containsChanges(cacheKey)) {
+			entityChangeTracker.resetTimestamp(cacheKey);
+			webCacheService.cleanTemplatesCache(cacheKey);
 			fireInvalidationEvent();
 		}
 	}

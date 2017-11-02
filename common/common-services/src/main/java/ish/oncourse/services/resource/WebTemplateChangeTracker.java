@@ -10,9 +10,10 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.site.IWebSiteVersionService;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.QueryCacheStrategy;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WebTemplateChangeTracker {
 	
@@ -20,37 +21,37 @@ public class WebTemplateChangeTracker {
 	private IWebSiteVersionService webSiteVersionService;
 	private IWebSiteService webSiteService;
 	
-	private long webLastCheckTimestamp;
-	private long editorLastCheckTimestamp;
-
+	private Map<String, Long> lastCheckTimestamp = new HashMap<>();
 
 	public WebTemplateChangeTracker(ICayenneService cayenneService, IWebSiteService webSiteService, IWebSiteVersionService webSiteVersionService) {
 		this.cayenneService = cayenneService;
 		this.webSiteService = webSiteService;
 		this.webSiteVersionService = webSiteVersionService;
-		
-		this.webLastCheckTimestamp = System.currentTimeMillis();
-		this.editorLastCheckTimestamp = System.currentTimeMillis();
 	}
 	
-	public void resetEditorTimestamp() {
-		this.editorLastCheckTimestamp = System.currentTimeMillis();
+	public void resetTimestamp(String cacheKey) {
+		lastCheckTimestamp.put(cacheKey, System.currentTimeMillis());
 	}
 
-	public void resetWebTimestamp() {
-		this.webLastCheckTimestamp = System.currentTimeMillis();
+	public Date getTimestamp(String cacheKey) {
+		Long timestamp = lastCheckTimestamp.get(cacheKey);
+		if (timestamp == null) {
+			timestamp = System.currentTimeMillis();
+			lastCheckTimestamp.put(cacheKey, timestamp);
+		}
+		return new Date(timestamp);
 	}
-
-	public boolean containsChanges() {
+	
+	public boolean containsChanges(String cacheKey) {
 		//if the requested site is not exist - return false
-		if (webSiteService.getCurrentWebSite() == null) {
+		if (webSiteService.getCurrentWebSite() == null || cacheKey == null) {
 			return false;
 		}
 		WebSiteVersion webSiteVersion = webSiteVersionService.getCurrentVersion();
 		return (ObjectSelect.query(WebTemplate.class)
 				.localCache(WebTemplate.class.getSimpleName())
 				.and(WebTemplate.LAYOUT.dot(WebSiteLayout.WEB_SITE_VERSION).eq(webSiteVersion))
-				.and(WebTemplate.MODIFIED.gt(new Date(webSiteVersionService.isEditor() ? editorLastCheckTimestamp : webLastCheckTimestamp)))
+				.and(WebTemplate.MODIFIED.gt(getTimestamp(cacheKey)))
 				.limit(1)
 				.selectFirst(cayenneService.sharedContext()) != null);
 	}

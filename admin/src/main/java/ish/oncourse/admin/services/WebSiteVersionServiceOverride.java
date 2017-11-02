@@ -48,7 +48,7 @@ public class WebSiteVersionServiceOverride implements IWebSiteVersionService {
 	}
 
 	@Override
-	public boolean isEditor() {
+	public String getCacheKey() {
 		throw new UnsupportedOperationException("Unsupported operation for admin application");
 	}
 }

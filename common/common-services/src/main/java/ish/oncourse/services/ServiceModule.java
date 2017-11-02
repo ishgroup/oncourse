@@ -6,6 +6,7 @@ import ish.oncourse.services.application.ApplicationServiceImpl;
 import ish.oncourse.services.application.IApplicationService;
 import ish.oncourse.services.binary.BinaryDataService;
 import ish.oncourse.services.binary.IBinaryDataService;
+import org.apache.tapestry5.internal.pageload.WebCacheService;
 import ish.oncourse.services.contact.ContactServiceImpl;
 import ish.oncourse.services.contact.IContactService;
 import ish.oncourse.services.content.IWebContentService;
@@ -206,6 +207,7 @@ public class ServiceModule {
 		binder.bind(IContentCacheService.class, ContentEHCacheService.class);
 		binder.bind(IContentKeyFactory.class, WillowContentKeyFactory.class).scope(ScopeConstants.PERTHREAD);
 		binder.bind(CacheManager.class, new CacheManagerBuilder()).eagerLoad();
+		binder.bind(WebCacheService.class, WebCacheService.class);
 
 		binder.bind(IPaymentGatewayServiceBuilder.class, ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder.class);
 		binder.bind(IPaymentGatewayService.class, new PaymentGatewayServiceBuilder()).scope("perthread");

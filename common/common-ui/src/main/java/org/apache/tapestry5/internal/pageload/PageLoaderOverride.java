@@ -27,13 +27,13 @@ import org.apache.tapestry5.model.EmbeddedComponentModel;
 import org.apache.tapestry5.runtime.RenderCommand;
 import org.apache.tapestry5.runtime.RenderQueue;
 import org.apache.tapestry5.services.ComponentClassResolver;
-import org.apache.tapestry5.services.InvalidationListener;
 import org.apache.tapestry5.services.Request;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * There's still a lot of room to beef up {@link org.apache.tapestry5.internal.pageload.ComponentAssembler} and
@@ -51,7 +51,7 @@ import java.util.Map;
  * <p/>
  * And truly, <em>This is the Tapestry Heart, This is the Tapestry Soul...</em>
  */
-public class PageLoaderOverride implements PageLoader, InvalidationListener, ComponentAssemblerSource
+public class PageLoaderOverride implements PageLoader, ComponentAssemblerSource
 {
 	private static final class Key
     {
@@ -109,9 +109,6 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
         }
     };
 
-    private final Map<MultiKey, ComponentAssembler> webCache = CollectionFactory.newConcurrentMap();
-    private final Map<MultiKey, ComponentAssembler> editorCache = CollectionFactory.newConcurrentMap();
-
     private final ComponentInstantiatorSource instantiatorSource;
 
     private final ComponentTemplateSource templateSource;
@@ -136,14 +133,17 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
 
 	private IWebNodeService webNodeService;
     private IWebSiteVersionService webSiteVersionService;
+    private transient WebCacheService webCacheService;
 
     public PageLoaderOverride(ComponentInstantiatorSource instantiatorSource, ComponentTemplateSource templateSource,
             PageElementFactory elementFactory, ComponentPageElementResourcesSource resourcesSource,
             ComponentClassResolver componentClassResolver, PersistentFieldManager persistentFieldManager,
-            StringInterner interner, OperationTracker tracker, PerthreadManager perThreadManager,IWebSiteVersionService webSiteVersionService,
+            StringInterner interner, OperationTracker tracker, PerthreadManager perThreadManager,IWebSiteVersionService webSiteVersionService, 
+            WebCacheService webCacheService,
             @Symbol(SymbolConstants.PAGE_POOL_ENABLED)
             boolean poolingEnabled)
     {
+        this.webCacheService = webCacheService;
         this.webSiteVersionService = webSiteVersionService;
         this.instantiatorSource = instantiatorSource;
         this.templateSource = templateSource;
@@ -164,14 +164,6 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
 	public void setRequest(Request request) {
 		this.request = request;
 	}
-	
-	public void objectWasInvalidated() {
-        if (webSiteVersionService.isEditor()) { 
-            editorCache.clear();
-        } else { 
-            webCache.clear();
-        }
-    }
 
     public Page loadPage(final String logicalPageName, final Locale locale)
     {
@@ -201,27 +193,19 @@ public class PageLoaderOverride implements PageLoader, InvalidationListener, Com
         });
     }
 
-    public ComponentAssembler getAssembler(String className, Locale locale)
+    public ComponentAssembler getAssembler(final String className, final Locale locale)
     {
 		CustomTemplateDefinition ctd = (CustomTemplateDefinition) request.getAttribute(TextileUtil.CUSTOM_TEMPLATE_DEFINITION);
 		WebSiteLayout layout = webNodeService.getLayout();
     	MultiKey key = CustomTemplateDefinition.getMultiKeyBy(className, ctd, request.getServerName(), locale,  layout != null ? layout.getLayoutKey() : null);
-
-        Map<MultiKey, ComponentAssembler> cache = webSiteVersionService.isEditor() ? editorCache : webCache;
+        String cacheKey = webSiteVersionService.getCacheKey();
                 
-        ComponentAssembler result = cache.get(key);
-
-        if (result == null)
-        {
-            // There's a window here where two threads may create the same assembler simultaneously;
-            // the extra assembler will be discarded.
-
-            result = createAssembler(className, locale);
-
-            cache.put(key, result);
-        }
-
-        return result;
+        return webCacheService.getComponentAssembler(cacheKey, key, new Callable<ComponentAssembler>() {
+            @Override
+            public ComponentAssembler call() throws Exception {
+                return createAssembler(className, locale);
+            }
+        });
     }
 
     private ComponentAssembler createAssembler(final String className, final Locale locale)

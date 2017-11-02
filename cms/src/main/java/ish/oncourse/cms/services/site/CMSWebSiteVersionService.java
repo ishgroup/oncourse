@@ -93,7 +93,7 @@ public class CMSWebSiteVersionService extends AbstractWebSiteVersionService {
 	}
 
 	@Override
-	public boolean isEditor() {
-		return false;
+	public String getCacheKey() {
+		return null;
 	}
 }
