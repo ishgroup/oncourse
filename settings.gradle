@@ -25,6 +25,6 @@ include 'admin',
 	'web',
 	'cms',
 	'editor',
-	'cms-api',
+	'editor-api',
 	'checkout',
     'checkout-api'

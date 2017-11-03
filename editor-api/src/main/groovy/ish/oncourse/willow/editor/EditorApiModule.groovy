@@ -1,4 +1,4 @@
-package ish.oncourse.willow.cms
+package ish.oncourse.willow.editor
 
 import com.google.inject.*
 import io.bootique.ConfigModule
@@ -8,7 +8,7 @@ import io.bootique.jetty.MappedServlet
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.util.log.LogAppInfo
 
-class CmsApiModule extends ConfigModule {
+class EditorApiModule extends ConfigModule {
     private static final TypeLiteral<MappedServlet<ISHHealthCheckServlet>> ISH_HEALTH_CHECK_SERVLET =
             new TypeLiteral<MappedServlet<ISHHealthCheckServlet>>() {
             }
