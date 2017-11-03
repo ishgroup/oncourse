@@ -25,6 +25,10 @@ class PageService {
     return this.pageApi.deletePage(id);
   }
 
+  public getPageRender(request: {id: number}): Promise<any> {
+    return this.pageApi.getPageRender(request);
+  }
+
   public buildSavePageRequest(props, state: State): SavePageRequest {
     const page = state.page.items.find(p => p.id === props.id);
     const request: SavePageRequest = new SavePageRequest();

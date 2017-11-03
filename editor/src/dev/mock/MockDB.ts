@@ -471,6 +471,10 @@ export class MockDB {
     return page;
   }
 
+  getPageRender(id) {
+    return this.pages.find(page => page.id === id).html;
+  }
+
   addContact(contact) {
     // const nc = normalize([contact], ContactsSchema);
     // this.contacts.result = [...this.contacts.result, ...nc.result];

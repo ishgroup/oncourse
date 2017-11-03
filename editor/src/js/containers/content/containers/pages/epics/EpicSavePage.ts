@@ -3,7 +3,7 @@ import "rxjs";
 import {success} from 'react-notification-system-redux';
 
 import * as EpicUtils from "../../../../../epics/EpicUtils";
-import {SAVE_PAGE_FULFILLED, SAVE_PAGE_REQUEST} from "../actions";
+import {getPageRender, SAVE_PAGE_FULFILLED, SAVE_PAGE_REQUEST} from "../actions";
 import {Page} from "../../../../../model";
 import PageService from "../../../../../services/PageService";
 import {notificationParams} from "../../../../../common/utils/NotificationSettings";
@@ -23,6 +23,7 @@ const request: EpicUtils.Request<any, any> = {
         payload: page,
         type: SAVE_PAGE_FULFILLED,
       },
+      getPageRender(page.id),
     ];
   },
 };

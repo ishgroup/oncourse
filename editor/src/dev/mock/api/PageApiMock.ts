@@ -41,12 +41,22 @@ export function pageApiMock() {
 
 
   this.api.onPost(API.DELETE_PAGE).reply(config => {
-
     this.db.deletePageById(JSON.parse(config.data));
 
     return promiseResolve(
       config,
       null,
+    );
+  });
+
+  this.api.onPost(API.GET_PAGE_RENDER).reply(config => {
+    const request: {id: number} = JSON.parse(config.data);
+
+    const html = this.db.getPageRender(request.id);
+
+    return promiseResolve(
+      config,
+      html,
     );
   });
 }

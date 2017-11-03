@@ -2,7 +2,7 @@ import {IAction} from "../../../../../actions/IshAction";
 import {PagesState} from "./State";
 import {
   ADD_PAGE_FULFILLED,
-  DELETE_PAGE_FULFILLED,
+  DELETE_PAGE_FULFILLED, GET_PAGE_RENDER_FULFILLED,
   GET_PAGES_FULFILLED, SAVE_PAGE_FULFILLED, TOGGLE_EDIT_MODE,
 } from "../actions";
 
@@ -51,6 +51,15 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
       return {
         ...state,
         items: newPages,
+      };
+    }
+
+    case GET_PAGE_RENDER_FULFILLED: {
+      const {html, id} = action.payload;
+
+      return {
+        ...state,
+        items: state.items.map(item => item.id === id ? {...item, renderHtml: html} : item),
       };
     }
 

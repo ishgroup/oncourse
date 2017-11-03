@@ -24,4 +24,9 @@ export class PageApi {
   deletePage(id): Promise<any> {
     return this.http.POST(API.DELETE_PAGE, id);
   }
+
+  getPageRender(request): Promise<any> {
+    return this.http.POST(API.GET_PAGE_RENDER, request);
+  }
+
 }

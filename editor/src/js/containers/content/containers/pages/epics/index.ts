@@ -4,6 +4,7 @@ import {EpicDeletePage} from "./EpicDeletePage";
 import {EpicSavePage} from "./EpicSavePage";
 import {EpicGetPageByUrl} from "./EpicGetPageByUrl";
 import {EpicAddPage, EpicRedirect} from "./EpicAddPage";
+import {EpicGetPageRender} from "./EpicGetPageRender";
 
 export const EpicPages = combineEpics(
   EpicGetPages,
@@ -11,5 +12,6 @@ export const EpicPages = combineEpics(
   EpicSavePage,
   EpicAddPage,
   EpicDeletePage,
+  EpicGetPageRender,
   EpicRedirect(),
 );

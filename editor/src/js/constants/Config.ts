@@ -20,6 +20,7 @@ export const API = {
   SAVE_PAGE: "/savePage",
   ADD_PAGE: "/addPage",
   DELETE_PAGE: "/deletePage",
+  GET_PAGE_RENDER: "/getPageRender",
 
   // Blocks
   GET_BLOCKS: "/getBlocks",

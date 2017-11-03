@@ -1,12 +1,12 @@
 import React from 'react';
 import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
-import {Page as PageModel} from "../../../../../model";
+import {PageState} from "../reducers/State";
 import {Editor} from "../../../../../common/components/Editor";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
 
 interface PageProps {
-  page: PageModel;
+  page: PageState;
   onSave: (pageId, html) => void;
   openPage: (url) => void;
   toggleEditMode: (flag: boolean) => any;
@@ -44,6 +44,11 @@ export class Page extends React.PureComponent<PageProps, any> {
         html: props.page.html,
         draftHtml: props.page.html,
       });
+    }
+
+    if (props.page.renderHtml !== this.props.page.renderHtml) {
+      console.log('re render block & clear html');
+
     }
   }
 
