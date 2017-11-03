@@ -3,6 +3,7 @@ import {Container, Row, Col, Button, FormGroup} from 'reactstrap';
 import {Page as PageModel} from "../../../../../model";
 import {Editor} from "../../../../../common/components/Editor";
 import {DOM} from "../../../../../utils";
+import {getHistoryInstance} from "../../../../../history";
 
 interface PageProps {
   page: PageModel;
@@ -12,7 +13,7 @@ interface PageProps {
 }
 
 
-export class Page extends React.Component<PageProps, any> {
+export class Page extends React.PureComponent<PageProps, any> {
 
   constructor(props) {
     super(props);
@@ -36,6 +37,16 @@ export class Page extends React.Component<PageProps, any> {
     // openPage(page.url);
   }
 
+  componentWillReceiveProps(props) {
+    if (props.page.id !== this.props.page.id) {
+      this.setState({
+        editMode: true,
+        html: props.page.html,
+        draftHtml: props.page.html,
+      });
+    }
+  }
+
   componentWillUnmount() {
     const {page} = this.props;
     const pageNode = DOM.findPage(page.id);
@@ -45,8 +56,9 @@ export class Page extends React.Component<PageProps, any> {
   onClickArea() {
     const {page, toggleEditMode} = this.props;
 
-    toggleEditMode(true);
+    getHistoryInstance().push(`/pages/${page.id}`);
 
+    toggleEditMode(true);
     this.setState({
       editMode: true,
       html: page.html,
@@ -105,6 +117,7 @@ export class Page extends React.Component<PageProps, any> {
   }
 
   render() {
+
     return (
       <div>
         {this.state.editMode &&

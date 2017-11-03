@@ -27,12 +27,19 @@ class PageService {
 
   public buildSavePageRequest(props, state: State): SavePageRequest {
     const page = state.page.items.find(p => p.id === props.id);
+    const request: SavePageRequest = new SavePageRequest();
 
-    return {
-      ...page,
-      ...props,
-      id: props.id != -1 ? props.id : null,
-    };
+    const newPage = {...page, ...props};
+
+    request.id = newPage.id;
+    request.title = newPage.title;
+    request.theme = newPage.theme;
+    request.html = newPage.html;
+    request.layout = newPage.layout;
+    request.urls = newPage.urls;
+    request.visible = newPage.visible;
+
+    return request;
   }
 
 }

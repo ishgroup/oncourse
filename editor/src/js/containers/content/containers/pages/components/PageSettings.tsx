@@ -28,6 +28,19 @@ export class PageSettings extends React.PureComponent<Props, any> {
     };
   }
 
+  componentWillReceiveProps(props) {
+    if (props.page.id !== this.props.page.id) {
+      this.setState({
+        title: props.page.title,
+        urls: props.page.urls,
+        layout: props.page.layout,
+        visible: props.page.visible,
+        theme: props.page.theme,
+        newLink: '',
+      });
+    }
+  }
+
   clickBack(e) {
     const {onBack} = this.props;
     e.preventDefault();

@@ -459,6 +459,13 @@ export class MockDB {
     const newId = Math.max(...this.pages.map(page => page.id)) + 1;
     page.title = `New Page ${newId}`;
     page.id = newId;
+    page.urls = [
+      {
+        link: `/page/${newId}`,
+        isDefault: true,
+        isBase: true,
+      },
+    ];
 
     this.pages.push(page);
     return page;
