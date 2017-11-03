@@ -30,3 +30,4 @@ export {WebsiteSettings} from "./settings/WebsiteSettings";
 
 // Api
 export {LoginRequest} from "./api/LoginRequest";
+export {SavePageRequest} from "./api/SavePageRequest";

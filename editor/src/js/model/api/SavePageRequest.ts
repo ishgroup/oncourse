@@ -1,6 +1,6 @@
-import {Url} from "./PageUrl";
+import {Url} from "../PageUrl";
 
-export class Page {
+export class SavePageRequest {
   id: number;
   title: string;
   theme: string;
@@ -9,4 +9,3 @@ export class Page {
   urls: Url[];
   visible: boolean;
 }
-
