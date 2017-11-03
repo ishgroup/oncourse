@@ -6,4 +6,8 @@
         updateCheck="false" name="enrol" maxBytesLocalHeap="40M">
     <defaultCache timeToLiveSeconds="600"/>
     <cache name="CourseClass" timeToLiveSeconds="60"/>
+    <cache name="templateResources" eternal="true" />
+    <cache name="templates" eternal="true" />
+    <cache name="componentAssemblers" eternal="true" />
+    <cache name="pages" eternal="true" />
 </ehcache>
