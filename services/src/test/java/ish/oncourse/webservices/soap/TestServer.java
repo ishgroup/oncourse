@@ -71,7 +71,6 @@ public class TestServer {
 
 
 		try {
-			TestInitialContextFactory.bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE);
 			server.start();
 		} catch (Exception e) {
 			try {

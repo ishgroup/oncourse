@@ -3,6 +3,7 @@ package ish.oncourse.test.functions
 import ish.math.MoneyType
 import ish.oncourse.test.MariaDB
 import ish.oncourse.test.TestInitialContextFactory
+import ish.oncourse.util.ContextUtil
 import org.apache.cayenne.access.DataNode
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.commons.dbcp2.BasicDataSource
@@ -37,6 +38,7 @@ class Functions {
         bind("java:comp/env", new InitialContext())
         bind("jdbc/oncourse", dataSource)
         bind("java:comp/env/jdbc/oncourse", dataSource)
+        bind(ContextUtil.CACHE_ENABLED_PROPERTY_KEY, Boolean.FALSE)
     }
 
     static void unbindDS() {
