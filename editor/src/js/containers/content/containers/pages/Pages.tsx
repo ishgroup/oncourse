@@ -28,27 +28,9 @@ export class Pages extends React.Component<Props, any> {
     document.location.href = url;
   }
 
-  onClickArea() {
-    // this.setState({
-    //   editMode: true,
-    //   html: page.html,
-    //   draftHtml: page.html,
-    // });
-    // toggleEditMode(true);
-
-    // console.log(page);
-    // getHistoryInstance().push(`/pages/${page.id}`);
-  }
-
-
   render() {
     const {match, pages, onEditHtml, toggleEditMode, clearRenderHtml, editMode} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
-
-    // if (activePage) {
-    //   const pageNode = DOM.findPage(activePage.id);
-    //   pageNode.addEventListener('click', this.onClickArea.bind(this));
-    // }
 
     return (
       <div>

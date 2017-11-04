@@ -15,7 +15,7 @@ interface PageProps {
 }
 
 
-export class Page extends React.Component<PageProps, any> {
+export class Page extends React.PureComponent<PageProps, any> {
 
   constructor(props) {
     super(props);
