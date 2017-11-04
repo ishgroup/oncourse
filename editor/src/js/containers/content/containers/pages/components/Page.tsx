@@ -10,10 +10,12 @@ interface PageProps {
   onSave: (pageId, html) => void;
   openPage: (url) => void;
   toggleEditMode: (flag: boolean) => any;
+  clearRenderHtml?: (pageId: number) => void;
+  editMode?: any;
 }
 
 
-export class Page extends React.PureComponent<PageProps, any> {
+export class Page extends React.Component<PageProps, any> {
 
   constructor(props) {
     super(props);
@@ -27,10 +29,16 @@ export class Page extends React.PureComponent<PageProps, any> {
   componentDidMount() {
     const {page, openPage, toggleEditMode} = this.props;
     const pageNode = DOM.findPage(page.id);
+
     toggleEditMode(false);
+    this.setState({
+      editMode: false,
+      html: page.html,
+      draftHtml: page.html,
+    });
 
     if (pageNode) {
-      pageNode.addEventListener('click', () => this.onClickArea());
+      pageNode.addEventListener('click', this.onClickArea.bind(this));
       return;
     }
 
@@ -38,7 +46,11 @@ export class Page extends React.PureComponent<PageProps, any> {
   }
 
   componentWillReceiveProps(props) {
+    const {clearRenderHtml, page, toggleEditMode, editMode} = this.props;
+
     if (props.page.id !== this.props.page.id) {
+      toggleEditMode(true);
+
       this.setState({
         editMode: true,
         html: props.page.html,
@@ -46,29 +58,40 @@ export class Page extends React.PureComponent<PageProps, any> {
       });
     }
 
-    if (props.page.renderHtml !== this.props.page.renderHtml) {
-      console.log('re render block & clear html');
+    if (editMode === false && props.editMode === true) {
+      this.setState({
+        editMode: true,
+      });
+    }
 
+    if (props.page.renderHtml && props.page.renderHtml !== this.props.page.renderHtml) {
+      this.replacePageHtml(props.page.renderHtml);
+      clearRenderHtml(page.id);
     }
   }
 
   componentWillUnmount() {
     const {page} = this.props;
     const pageNode = DOM.findPage(page.id);
-    pageNode && pageNode.removeEventListener('click', () => this.onClickArea());
+    pageNode && pageNode.removeEventListener('click', this.onClickArea.bind(this));
+  }
+
+  replacePageHtml(html) {
+    const {page} = this.props;
+    const pageNode = DOM.findPage(page.id);
+    if (!pageNode) return;
+    pageNode.innerHTML = html;
   }
 
   onClickArea() {
     const {page, toggleEditMode} = this.props;
-
-    getHistoryInstance().push(`/pages/${page.id}`);
-
-    toggleEditMode(true);
     this.setState({
       editMode: true,
       html: page.html,
       draftHtml: page.html,
     });
+    toggleEditMode(true);
+    getHistoryInstance().push(`/pages/${page.id}`);
   }
 
   onChangeArea(val) {
@@ -86,43 +109,14 @@ export class Page extends React.PureComponent<PageProps, any> {
   onCancel() {
     const {page, toggleEditMode} = this.props;
 
-    toggleEditMode(false);
     this.setState({
       editMode: false,
       draftHtml: page.html,
     });
-  }
-
-  tmp(page) {
-    return (
-      <div>
-      {this.state.editMode &&
-        <div>
-          <FormGroup>
-            <Editor
-              value={this.state.draftHtml}
-              onChange={val => this.onChangeArea(val)}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <Button onClick={() => this.onSave()} color="primary">Save</Button>
-            <Button onClick={() => this.onCancel()} color="secondary">Cancel</Button>
-          </FormGroup>
-        </div>
-      }
-
-      <div onClick={() => this.onClickArea()}>
-        {!this.state.editMode &&
-          <div className="editor-area" dangerouslySetInnerHTML={{__html: page.html}} />
-        }
-      </div>
-    </div>
-    );
+    toggleEditMode(false);
   }
 
   render() {
-
     return (
       <div>
         {this.state.editMode &&

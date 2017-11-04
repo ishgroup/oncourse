@@ -12,19 +12,26 @@ import {URL} from "../../../../../routes";
 
 const request: EpicUtils.Request<any, any> = {
   type: SAVE_PAGE_REQUEST,
-  getData: (props, state) => PageService.savePage(props, state),
-  processData: (page: Page, state: any) => {
+  getData: (payload, state) => PageService.savePage(payload, state),
+  processData: (page: Page, state: any, payload) => {
 
     getHistoryInstance().push(`${URL.PAGES}/${page.id}`);
 
-    return [
-      success(notificationParams),
+    const result = [];
+    result.push(success(notificationParams));
+    result.push(
       {
         payload: page,
         type: SAVE_PAGE_FULFILLED,
       },
-      getPageRender(page.id),
-    ];
+    );
+
+    // get rendered html if raw html has been changed
+    if (payload.updateRender) {
+      result.push(getPageRender(page.id));
+    }
+
+    return result;
   },
 };
 

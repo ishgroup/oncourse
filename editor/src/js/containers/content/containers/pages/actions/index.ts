@@ -19,14 +19,15 @@ export const GET_PAGE_RENDER_REQUEST = _toRequestType("page/get/page/render");
 export const GET_PAGE_RENDER_FULFILLED = FULFILLED(GET_PAGE_RENDER_REQUEST);
 
 export const TOGGLE_EDIT_MODE = "page/toggle/edit/mode";
+export const CLEAR_RENDER_HTML = "page/clear/render/html";
 
 export const getPages = () => ({
   type: GET_PAGES_REQUEST,
 });
 
-export const savePage = (id, props) => ({
+export const savePage = (id, props, updateRender: boolean = false) => ({
   type: SAVE_PAGE_REQUEST,
-  payload: {id, ...props},
+  payload: {id, ...props, updateRender},
 });
 
 export const addPage = () => ({
@@ -51,4 +52,9 @@ export const toggleEditMode = flag => ({
 export const getPageRender = id => ({
   type: GET_PAGE_RENDER_REQUEST,
   payload: {id},
+});
+
+export const clearRenderHtml = id => ({
+  type: CLEAR_RENDER_HTML,
+  payload: id,
 });
