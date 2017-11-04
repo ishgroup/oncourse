@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ISearchService {
-	SolrDocumentList autoSuggest(String term);
+	SolrDocumentList autoSuggest(String term, String state);
 
 	SearchResult searchCourses(SearchParams searchParams, int start, Integer rows);
 

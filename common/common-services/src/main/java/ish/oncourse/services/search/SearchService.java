@@ -233,10 +233,10 @@ public class SearchService implements ISearchService {
         return query;
     }
 
-    public SolrDocumentList autoSuggest(String term) {
+    public SolrDocumentList autoSuggest(String term, String state) {
         try {
             College college = webSiteService.getCurrentCollege();
-            AutoSuggestQueriesBuilder builder = AutoSuggestQueriesBuilder.valueOf(term, college).build();
+            AutoSuggestQueriesBuilder builder = AutoSuggestQueriesBuilder.valueOf(term, college, state).build();
 
             SolrDocumentList results = new SolrDocumentList();
             SolrQuery solrQuery = builder.getCoursesQuery();

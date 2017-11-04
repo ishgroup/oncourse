@@ -18,7 +18,7 @@ public class AutoSuggestQueriesBuilder {
     private int index;
     private String searchWord;
     private String queryWord;
-
+    private String stateQualifier;
 
     private List<String> courseQueries = new ArrayList<>();
     private List<String> tagQueries = new ArrayList<>();
@@ -61,8 +61,13 @@ public class AutoSuggestQueriesBuilder {
     private void buildQueryForSuburbs() {
         //wildcard we should add only for last word of the search string.
         queryWord = index < (searchWords.length - 1) ? searchWord : queryWord;
-        suburbsQuery.add(String.format("suburb:%s", queryWord));
-        postcodesQuery.add(String.format("postcode:%s", queryWord));
+        if (stateQualifier != null) {
+            suburbsQuery.add(String.format("(suburb:%s AND state:%s)", queryWord, stateQualifier));
+            postcodesQuery.add(String.format("(postcode:%s AND state:%s)", queryWord, stateQualifier));
+        } else {
+            suburbsQuery.add(String.format("suburb:%s", queryWord));
+            postcodesQuery.add(String.format("postcode:%s", queryWord));
+        }
     }
 
     private void buildQueryForTags() {
@@ -74,11 +79,14 @@ public class AutoSuggestQueriesBuilder {
         courseQueries.add(String.format("(course_code:%s AND collegeId:%s)",
                 !queryWord.contains("\\-") ? queryWord : queryWord.substring(0, queryWord.indexOf("\\-")), collegeId));
     }
-
-
+    
     public static AutoSuggestQueriesBuilder valueOf(String searchString, College college) {
+       return valueOf(searchString, college, null);
+    }
+    public static AutoSuggestQueriesBuilder valueOf(String searchString, College college, String state) {
         AutoSuggestQueriesBuilder builder = new AutoSuggestQueriesBuilder();
         builder.collegeId = String.valueOf(college.getId());
+        builder.stateQualifier = state;
 
         searchString = SolrQueryBuilder.replaceSOLRSyntaxisCharacters(searchString.toLowerCase());
         builder.searchWords = searchString.split(SPACE_PATTERN);

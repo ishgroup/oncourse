@@ -4,10 +4,14 @@ import ish.oncourse.components.ISHCommon;
 import ish.oncourse.model.Course;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.model.Tag;
+import ish.oncourse.model.WebSite;
 import ish.oncourse.services.course.ICourseService;
 import ish.oncourse.services.location.IPostCodeDbService;
+import ish.oncourse.services.persistence.ICayenneService;
+import ish.oncourse.services.preference.GetAutoCompleteState;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
+import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -51,6 +55,12 @@ public class QuickSearchView extends ISHCommon {
 	@Inject
 	private IPostCodeDbService postCodeDbService;
 	
+	@Inject
+	private IWebSiteService webSiteService;
+
+	@Inject
+	private ICayenneService cayenneService;
+	
 	@Property
 	private String searchString;
 
@@ -86,7 +96,13 @@ public class QuickSearchView extends ISHCommon {
 		if (searchString != null) {
 			searchTerms = searchString.split("[\\s]+");
 			try {
-				SolrDocumentList suggestions = searchService.autoSuggest(searchString);
+
+				String stateQualifier = null;
+				WebSite webSite = webSiteService.getCurrentWebSite();
+				if (webSite != null) {
+					stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.sharedContext(), webSite).get();
+				}
+				SolrDocumentList suggestions = searchService.autoSuggest(searchString, stateQualifier);
 				setupLists(suggestions);
 				setupSearchingLocationsSearchString();
 				setupMatchingCourseList();
