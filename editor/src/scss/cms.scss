@@ -13,6 +13,7 @@
   // base
   @import 'base/theme';
   @import 'base/base';
+  @import 'base/mixins';
   
   // layout
   @import 'layout/layout';
@@ -24,6 +25,7 @@
   @import 'patterns/form';
   @import 'patterns/checkbox';
   @import 'patterns/table';
+  @import 'patterns/loader';
 
   // components
   @import 'components/login-form';

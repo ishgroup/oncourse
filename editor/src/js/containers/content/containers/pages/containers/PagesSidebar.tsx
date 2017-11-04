@@ -7,6 +7,7 @@ import {addPage, deletePage, savePage} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
 import {defaultPage} from "../Pages";
+import {State} from "../../../../../reducers/state";
 
 interface Props {
   pages: Page[];
@@ -15,6 +16,7 @@ interface Props {
   onDeletePage: (id) => any;
   onAddPage: () => any;
   history: any;
+  fetching: boolean;
   showModal: (props) => any;
 }
 
@@ -34,7 +36,7 @@ export class PagesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {pages, match, onEditSettings, onDeletePage, showModal} = this.props;
+    const {pages, match, onEditSettings, onDeletePage, showModal, fetching} = this.props;
     const activePage = match.params.id && (pages.find(page => page.id == match.params.id) || defaultPage);
 
     return (
@@ -52,6 +54,7 @@ export class PagesSidebar extends React.Component<Props, any> {
 
         {activePage &&
           <PageSettings
+            fetching={fetching}
             page={activePage}
             onBack={() => this.resetActivePage()}
             onEdit={prop => onEditSettings(activePage.id, prop)}
@@ -64,8 +67,9 @@ export class PagesSidebar extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   pages: state.page.items,
+  fetching: state.page.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

@@ -1,0 +1,6 @@
+.fetching {
+  opacity: .6;
+  pointer-events: none;
+  min-height: 400px;
+  @include spinner();
+}

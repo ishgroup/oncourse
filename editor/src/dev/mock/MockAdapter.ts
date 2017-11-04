@@ -12,7 +12,7 @@ import {publishApiMock} from "./api/PublishApiMock";
 import {settingsApiMock} from "./api/SettingsApiMock";
 
 export class MockAdapter {
-  public api = new axiosMockAdapter(defaultAxios);
+  public api = new axiosMockAdapter(defaultAxios, {delayResponse: 1000});
   public db: MockDB = CreateMockDB();
 
   constructor() {

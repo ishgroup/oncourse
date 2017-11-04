@@ -3,7 +3,7 @@ import {PagesState} from "./State";
 import {
   ADD_PAGE_FULFILLED, CLEAR_RENDER_HTML,
   DELETE_PAGE_FULFILLED, GET_PAGE_RENDER_FULFILLED,
-  GET_PAGES_FULFILLED, SAVE_PAGE_FULFILLED, TOGGLE_EDIT_MODE,
+  GET_PAGES_FULFILLED, SAVE_PAGE_FULFILLED, SAVE_PAGE_REQUEST, TOGGLE_EDIT_MODE,
 } from "../actions";
 
 export const pageReducer = (state: PagesState = new PagesState(), action: IAction<any>): PagesState => {
@@ -15,12 +15,17 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
         items: action.payload,
       };
 
+    case SAVE_PAGE_REQUEST: {
+      return {...state, fetching: true};
+    }
+
     case SAVE_PAGE_FULFILLED: {
       const {id, ...props} = action.payload;
 
       const ns = {
         ...state,
         items: state.items.map(page => page.id === id ? {...page, ...props} : page),
+        fetching: false,
       };
 
       if (!state.items.find(page => page.id === id)) {

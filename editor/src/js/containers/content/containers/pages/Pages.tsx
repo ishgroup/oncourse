@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
+import classnames from 'classnames';
 import {clearRenderHtml, getPages, savePage, toggleEditMode} from "./actions";
 import {Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
-import {DOM} from "../../../../utils";
 
 export const defaultPage = {...new PageModel(), id: -1};
 
@@ -16,6 +16,7 @@ interface Props {
   clearRenderHtml: (pageId: number) => any;
   history: any;
   editMode: any;
+  fetching: boolean;
 }
 
 export class Pages extends React.Component<Props, any> {
@@ -29,11 +30,11 @@ export class Pages extends React.Component<Props, any> {
   }
 
   render() {
-    const {match, pages, onEditHtml, toggleEditMode, clearRenderHtml, editMode} = this.props;
+    const {match, pages, onEditHtml, toggleEditMode, clearRenderHtml, editMode, fetching} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
         {activePage &&
         <Page
           page={activePage}
@@ -51,6 +52,7 @@ export class Pages extends React.Component<Props, any> {
 
 const mapStateToProps = state => ({
   pages: state.page.items,
+  fetching: state.page.fetching,
   editMode: state.page.editMode,
 });
 
