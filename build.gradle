@@ -26,7 +26,7 @@ plugins {
 
 	id 'findbugs'
 	id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
-	id 'com.github.ben-manes.versions' version '0.15.0' // adds the task 'dependencyUpdates -Drevision=release'
+	id 'com.github.ben-manes.versions' version '0.17.0' // adds the task 'dependencyUpdates -Drevision=release'
 }
 
 apply plugin: 'idea'
