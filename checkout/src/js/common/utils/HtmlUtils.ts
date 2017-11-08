@@ -14,6 +14,10 @@ export const parse = (container: HTMLElement, marker: HTMLMarker): { [key: strin
     result[key] = StringToTypedValue(marker.props[key], value);
   });
 
+  if (container.childElementCount === 1) {
+    result['children'] = container.innerHTML;
+  }
+
   return result;
 };
 

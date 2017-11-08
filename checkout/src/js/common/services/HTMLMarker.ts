@@ -99,7 +99,7 @@ export class HTMLMarkers {
     id: "join-button",
     component: JoinButton,
     props: {
-      id: "string",
+      courseId: "string",
     },
   };
 

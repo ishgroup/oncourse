@@ -13,7 +13,7 @@ const isAdded = (items: WaitingCourseClassState, id: string): boolean => {
 
 const mapStateToProps = (state: IshState, props) => {
   const course: Course = new Course();
-  course.id = props.id;
+  course.id = props.courseId;
   course.code = props.code;
   course.name = props.name;
   course.description = props.description;
