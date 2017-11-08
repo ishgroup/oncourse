@@ -11,10 +11,10 @@ ext {
 
     initTestDBConfig = { Project project, Test test ->
         String uri = project.hasProperty("willowTest_uri") ? project.property("willowTest_uri") : null
-        String dbName = project.hasProperty("willowTest_dbName") ? project.property("willowTest_dbName") : "willowTest_services"
+        String dbName = project.hasProperty("willowTest_dbName") ? project.property("willowTest_dbName") : "willowTest_${project.name}"
         String dbUser = project.hasProperty("willowTest_user") ? project.property("willowTest_user") : null
         String dbPassword = project.hasProperty("willowTest_pass") ? project.property("willowTest_pass") : null
-        String shouldCreateTables = project.hasProperty("shouldCreateTables") ? project.project("shouldCreateTables") : null
+        String shouldCreateTables = project.hasProperty("shouldCreateTables") ? project.property("shouldCreateTables") : null
 
         test.systemProperty('oncourse.jdbc.url', "${uri}/${dbName}?autoReconnect=true" +
                 "&zeroDateTimeBehavior=convertToNull" +
