@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
+import classnames from 'classnames';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {getCheckoutSettings, setCheckoutSettings} from "./actions";
 import {State} from "../../../../reducers/state";
@@ -9,6 +10,7 @@ interface Props {
   onInit: () => any;
   onSave: (settings) => any;
   checkout: CheckoutSettingsState;
+  fetching: boolean;
 }
 
 export class Checkout extends React.Component<Props, any> {
@@ -41,9 +43,12 @@ export class Checkout extends React.Component<Props, any> {
 
   render() {
     const {successUrl, refundPolicy} = this.state;
+    const {fetching} = this.props;
+
+    console.log(this.props);
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
         <Form>
           <FormGroup>
             <Label htmlFor="successUrl">After payment successful redirect user to URL</Label>
@@ -86,6 +91,7 @@ export class Checkout extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   checkout: state.settings.checkoutSettings,
+  fetching: state.settings.checkoutSettings.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

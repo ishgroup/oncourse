@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
+import classnames from "classnames";
 import {Block} from "../../../../../model";
 import {BlockSettings} from "../components/BlockSettings";
 import {URL} from "../../../../../routes";
@@ -14,6 +15,7 @@ interface Props {
   onEditSettings: (blockId, settings) => any;
   onDeleteBlock: (id) => any;
   history: any;
+  fetching: boolean;
   showModal: (props) => any;
 }
 
@@ -32,11 +34,11 @@ export class BlockSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {blocks, match, onEditSettings, onDeleteBlock, showModal} = this.props;
+    const {blocks, match, onEditSettings, onDeleteBlock, showModal, fetching} = this.props;
     const activeBlock = match.params.id && (blocks.find(block => block.id == match.params.id) || defaultBlock);
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
         {!activeBlock &&
           <SidebarList
             items={blocks}
@@ -62,6 +64,7 @@ export class BlockSidebar extends React.Component<Props, any> {
 
 const mapStateToProps = state => ({
   blocks: state.block.items,
+  fetching: state.block.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

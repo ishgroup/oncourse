@@ -6,6 +6,7 @@ import SortableTree, {changeNodeAtPath, addNodeUnderParent, removeNodeAtPath} fr
 import {changeMenuTree, getMenuItems, saveMenuTree} from "./actions";
 import {MenuState} from "./reducers/State";
 import {showModal} from "../../../../common/containers/modal/actions";
+import {State} from "../../../../reducers/state";
 
 interface Props {
   menu: MenuState;
@@ -13,6 +14,7 @@ interface Props {
   onChangeTree: (treeData) => any;
   onSaveTree: (treeData) => any;
   match: any;
+  fetching: boolean;
   showModal: (props) => any;
 }
 
@@ -142,10 +144,10 @@ export class Menus extends React.Component<Props, any> {
   }
 
   render() {
-    const {menu, onChangeTree} = this.props;
+    const {menu, onChangeTree, fetching} = this.props;
 
     return (
-      <div style={{height: '700px'}} className="rst">
+      <div style={{height: '700px'}} className={classnames("rst", {fetching})}>
         <Button
           size="md"
           color="primary"
@@ -177,8 +179,9 @@ export class Menus extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State) => ({
   menu: state.menu,
+  fetching: state.menu.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

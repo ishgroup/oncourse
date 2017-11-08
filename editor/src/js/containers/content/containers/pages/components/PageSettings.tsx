@@ -11,7 +11,6 @@ interface Props {
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
   showModal?: (props) => any;
-  fetching?: boolean;
 }
 
 export class PageSettings extends React.PureComponent<Props, any> {
@@ -117,11 +116,11 @@ export class PageSettings extends React.PureComponent<Props, any> {
   }
 
   render () {
-    const {page, fetching} = this.props;
+    const {page} = this.props;
     const {title, visible, layout, theme, urls, newLink} = this.state;
 
     return (
-      <div className={classnames({fetching})}>
+      <div>
 
         <ul>
           <li>

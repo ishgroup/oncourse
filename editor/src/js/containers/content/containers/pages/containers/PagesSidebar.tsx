@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
+import classnames from "classnames";
 import {Page} from "../../../../../model";
 import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../../../routes";
@@ -40,7 +41,7 @@ export class PagesSidebar extends React.Component<Props, any> {
     const activePage = match.params.id && (pages.find(page => page.id == match.params.id) || defaultPage);
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
         {!activePage &&
           <SidebarList
             items={pages}
@@ -54,7 +55,6 @@ export class PagesSidebar extends React.Component<Props, any> {
 
         {activePage &&
           <PageSettings
-            fetching={fetching}
             page={activePage}
             onBack={() => this.resetActivePage()}
             onEdit={prop => onEditSettings(activePage.id, prop)}

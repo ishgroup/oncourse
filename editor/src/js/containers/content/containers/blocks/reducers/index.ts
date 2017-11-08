@@ -1,16 +1,26 @@
 import {IAction} from "../../../../../actions/IshAction";
 import {BlocksState} from "./State";
 import {
-  DELETE_BLOCK_FULFILLED,
-  GET_BLOCKS_FULFILLED, SAVE_BLOCK_FULFILLED,
+  DELETE_BLOCK_FULFILLED, DELETE_BLOCK_REQUEST,
+  GET_BLOCKS_FULFILLED, GET_BLOCKS_REQUEST, SAVE_BLOCK_FULFILLED, SAVE_BLOCK_REQUEST,
 } from "../actions";
 
 export const blockReducer = (state: BlocksState = new BlocksState(), action: IAction<any>): BlocksState => {
   switch (action.type) {
 
+    case GET_BLOCKS_REQUEST:
+    case DELETE_BLOCK_REQUEST:
+    case SAVE_BLOCK_REQUEST: {
+      return {
+        ...state,
+        fetching: true,
+      };
+    }
+
     case GET_BLOCKS_FULFILLED:
       return {
         ...state,
+        fetching: false,
         items: action.payload,
       };
 
@@ -19,6 +29,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
 
       const ns = {
         ...state,
+        fetching: false,
         items: state.items.map(block => block.id === id ? {...block, ...props} : block),
       };
 
@@ -40,6 +51,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
 
       return {
         ...state,
+        fetching: false,
         items: newBlocks,
       };
     }

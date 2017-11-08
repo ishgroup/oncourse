@@ -8,18 +8,12 @@ export const skillsOnCourseReducer = (state: SkillsOnCourseState = new SkillsOnC
   switch (action.type) {
 
     case GET_SKILLS_SETTINGS_FULFILLED:
-
-      return {
-        ...state,
-        ...action.payload,
-      };
-
     case SET_SKILLS_SETTINGS_FULFILLED:
-
       return {
         ...state,
         ...action.payload,
       };
+
 
     default:
       return state;

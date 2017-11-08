@@ -11,6 +11,7 @@ interface Props {
   onInit: () => any;
   onSave: (settings) => any;
   redirect: RedirectSettingsState;
+  fetching: boolean;
 }
 
 export class Redirect extends React.Component<Props, any> {
@@ -78,9 +79,10 @@ export class Redirect extends React.Component<Props, any> {
 
   render() {
     const {rules} = this.state;
+    const {fetching} = this.props;
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
         <p>
           Add 301 redirects to your website by entering the local path on the left (starting with '/')
           and the destination on the right (either starting with '/' for another local page or starting with
@@ -138,6 +140,7 @@ export class Redirect extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   redirect: state.settings.redirectSettings,
+  fetching: state.settings.redirectSettings.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
