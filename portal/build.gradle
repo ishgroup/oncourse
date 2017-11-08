@@ -15,7 +15,12 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.5'
     compile (project(':common:common-textile')) {
         exclude group: 'axis', module: 'axis-wsdl4j'
-        exclude group:'org.apache.tapestry'
+        exclude group: 'org.apache.tapestry'
+    }
+    // The odd next line is to work around gradle pulling in the wrong configuration
+    // http://forums.gradle.org/gradle/topics/transitive_libraries_not_included_through_project_dependency
+    testCompile(project(path: ':common:common-test', configuration: 'testFixtures')) {
+        exclude group: 'org.apache.tapestry'
     }
 }
 

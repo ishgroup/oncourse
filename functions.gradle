@@ -1,0 +1,30 @@
+/**
+ * File contains common functions which can be used in any other gradle config
+ */
+
+ext {
+    /**
+     * Initialize db configuration for junits
+     * Use:
+     * test {*     initTestDBConfig(project, this)
+     *}*/
+
+    initTestDBConfig = { Project project, Test test ->
+        String uri = project.hasProperty("willowTest_uri") ? project.property("willowTest_uri") : null
+        String dbName = project.hasProperty("willowTest_dbName") ? project.property("willowTest_dbName") : "willowTest_services"
+        String dbUser = project.hasProperty("willowTest_user") ? project.property("willowTest_user") : null
+        String dbPassword = project.hasProperty("willowTest_pass") ? project.property("willowTest_pass") : null
+        String shouldCreateTables = project.hasProperty("shouldCreateTables") ? project.project("shouldCreateTables") : null
+
+        test.systemProperty('oncourse.jdbc.url', "${uri}/${dbName}?autoReconnect=true" +
+                "&zeroDateTimeBehavior=convertToNull" +
+                "&useUnicode=true" +
+                "&characterEncoding=utf8")
+        test.systemProperty('oncourse.jdbc.user', dbUser)
+        test.systemProperty('oncourse.jdbc.password', dbPassword)
+        test.systemProperty('shouldCreateTables', shouldCreateTables)
+    }
+}
+
+
+

@@ -1,3 +1,4 @@
+apply from: "$rootDir/functions.gradle"
 apply from: "$rootDir/buildTapestryApp.gradle"
 
 sourceSets {
@@ -25,13 +26,7 @@ task generateSources(type: Copy) {
 
 
 test {
-    systemProperty 'oncourse.jdbc.url', "${project.property('willowTest_uri')}/willowTest_services?autoReconnect=true" +
-            "&zeroDateTimeBehavior=convertToNull" +
-            "&useUnicode=true" +
-            "&characterEncoding=utf8"
-    systemProperty 'oncourse.jdbc.user', project.property("willowTest_user")
-    systemProperty 'oncourse.jdbc.password', project.property("willowTest_pass")
-    systemProperty 'shouldCreateTables', System.getProperty("shouldCreateTables")
+    initTestDBConfig(project, test)
 }
 
 mainClassName = 'ish.oncourse.webservices.ServicesApp'

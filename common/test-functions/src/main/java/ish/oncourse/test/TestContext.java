@@ -43,6 +43,7 @@ public class TestContext {
 		dataSource = Functions.createDS(mariaDB);
 		Functions.bindDS(dataSource);
 		if (shouldCreateTables) {
+			Functions.createIfNotExistsDB(mariaDB);
 			Functions.cleanDB(mariaDB, true);
 			new CreateTables(Functions.createRuntime()).create();
 		} else {

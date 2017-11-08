@@ -95,20 +95,27 @@ class Functions {
         }
     }
 
-    static void createDB(MariaDB mariaDB) {
+    static void changePassword(MariaDB mariaDB, String newPassword) {
+        executeStatement(mariaDB,  "ALTER USER 'root'@'localhost' IDENTIFIED BY '${newPassword}'")
+    }
+
+    static void createIfNotExistsDB(MariaDB mariaDB) {
+        executeStatement(mariaDB, "CREATE DATABASE IF NOT EXISTS $mariaDB.dbName CHARACTER SET = 'utf8' COLLATE = 'utf8_general_ci'")
+    }
+
+    private static void executeStatement(MariaDB mariaDB, String sql) {
         Connection c = null
         PreparedStatement s = null
         try {
             String url = mariaDB.url.replaceAll(mariaDB.dbName, "test")
             c = DriverManager.getConnection(url, mariaDB.user, mariaDB.password)
-            s = c.prepareStatement("CREATE DATABASE IF NOT EXISTS $mariaDB.dbName CHARACTER SET = 'utf8' COLLATE = 'utf8_general_ci'")
+            s = c.prepareStatement(sql)
             s.executeUpdate()
             c.commit()
         } finally {
             s.close()
             c.close()
         }
-
     }
 
     static void setForeignKeyChecks(boolean value, MariaDB mariaDB = MariaDB.valueOf()) {
@@ -128,7 +135,16 @@ class Functions {
     }
 
     static void main(String[] args) {
-        Functions.cleanDB(MariaDB.valueOf(), true)
+
+        MariaDB mariaDB = new MariaDB()
+        mariaDB.dbName = "willowTest_services"
+        mariaDB.url = "jdbc:mariadb://127.0.0.1:3310/willowTest_services?autoReconnect=true" +
+            "&zeroDateTimeBehavior=convertToNull" +
+            "&useUnicode=true" +
+            "&characterEncoding=utf8"
+
+        createIfNotExistsDB(mariaDB)
+
 //        new TestContext().shouldCreateTables(true).open()
     }
 
