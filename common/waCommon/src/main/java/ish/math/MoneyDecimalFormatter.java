@@ -15,7 +15,7 @@ public class MoneyDecimalFormatter {
 		xmlDecimal.setGroupingUsed(false);
 		xmlDecimal.setMinimumFractionDigits(scale);
 		xmlDecimal.setMaximumFractionDigits(scale);
-		return xmlDecimal.format(money.doubleValue());
+		return xmlDecimal.format(money.toBigDecimal());
 	}
 
 	public Money stringToValue(String value) {

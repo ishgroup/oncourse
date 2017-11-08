@@ -20,7 +20,7 @@ import java.text.NumberFormat;
  * 
  */
 @API
-public class Money extends Number implements Comparable<Money> {
+public class Money implements Comparable<Money> {
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LogManager.getLogger();
@@ -332,16 +332,7 @@ public class Money extends Number implements Comparable<Money> {
 
 	@Override
 	public String toString() {
-		try {
-			Class<?> formatterClass = Class.forName("ish.util.MoneyFormatter");
-			Object sharedInstance = formatterClass.getMethod("getSharedInstance", (Class<?>[]) null).invoke(null, (Object[]) null);
-
-			if (sharedInstance != null) {
-				return (String) formatterClass.getMethod("valueToString", Object.class).invoke(sharedInstance, this);
-			}
-		} catch (Exception e) {}
-
-		return NumberFormat.getCurrencyInstance().format(doubleValue());
+		return NumberFormat.getCurrencyInstance().format(decimalValue);
 	}
 	
 	/**
@@ -353,45 +344,7 @@ public class Money extends Number implements Comparable<Money> {
 	public String toPlainString() {
 		return new MoneyDecimalFormatter().valueToString(this, DEFAULT_SCALE);
 	}
-
-	//
-	// Implement required Number methods
-	//
-	/**
-	 * @see java.lang.Number#doubleValue()
-	 */
-	@Override
-	public double doubleValue() {
-		return this.decimalValue.doubleValue();
-	}
-
-	/**
-	 * @see java.lang.Number#floatValue()
-	 */
-	@Override
-	public float floatValue() {
-		return this.decimalValue.floatValue();
-	}
-
-	/**
-	 * @see java.lang.Number#intValue()
-	 */
-	@Override
-	public int intValue() {
-		return this.decimalValue.intValue();
-	}
-
-	/**
-	 * @see java.lang.Number#longValue()
-	 */
-	@Override
-	public long longValue() {
-		return this.decimalValue.longValue();
-	}
-
-	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
+	
 	public int compareTo(Money m) {
 		if (m == null) {
 			throw new IllegalArgumentException("cannot compare money to null object");
