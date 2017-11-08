@@ -11,6 +11,7 @@ import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.GetAutoCompleteState;
 import ish.oncourse.services.search.ISearchService;
 import ish.oncourse.services.search.SearchException;
+import ish.oncourse.services.search.Suburb;
 import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.services.tag.ITagService;
 import org.apache.commons.lang.StringUtils;
@@ -103,7 +104,7 @@ public class QuickSearchView extends ISHCommon {
 					stateQualifier = new GetAutoCompleteState(webSite.getCollege(), cayenneService.sharedContext(), webSite).get();
 				}
 				SolrDocumentList suggestions = searchService.autoSuggest(searchString, stateQualifier);
-				setupLists(suggestions);
+				setupLists(stateQualifier, suggestions);
 				setupSearchingLocationsSearchString();
 				setupMatchingCourseList();
 				setupCourseList();
@@ -120,7 +121,7 @@ public class QuickSearchView extends ISHCommon {
 	private void nullifySearch() {
 		searchString = "";
 		searchTerms = null;
-		setupLists(new SolrDocumentList());
+		setupLists(null, new SolrDocumentList());
 		matchingCourseList = new ArrayList<>();
 		setupCourseList();
 	}
@@ -128,7 +129,7 @@ public class QuickSearchView extends ISHCommon {
 	/**
 	 * @param suggestions
 	 */
-	private void setupLists(SolrDocumentList suggestions) {
+	private void setupLists(String state, SolrDocumentList suggestions) {
 		locationDetailList = new ArrayList<>();
 		List<String> courseIds = new ArrayList<>();
 		List<String> tagIds = new ArrayList<>();
@@ -147,7 +148,7 @@ public class QuickSearchView extends ISHCommon {
 
 		this.courses = courseService.loadByIds(courseIds);
 		this.tags = tagService.loadByIds(tagIds.toArray());
-		this.locationDetailList = postCodeDbService.findBySuburb(postCodes.toArray(new String[postCodes.size()]));
+		this.locationDetailList = postCodeDbService.findBySuburb(state, postCodes.toArray(new String[postCodes.size()]));
 	}
 
 	public boolean isHasResults() {

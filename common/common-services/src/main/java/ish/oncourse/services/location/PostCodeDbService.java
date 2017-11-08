@@ -3,6 +3,7 @@ package ish.oncourse.services.location;
 import ish.oncourse.model.PostcodeDb;
 import ish.oncourse.services.persistence.ICayenneService;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang.StringUtils;
@@ -17,12 +18,16 @@ public class PostCodeDbService implements IPostCodeDbService {
 	private ICayenneService cayenneService;
 
 	@SuppressWarnings("unchecked")
-	public List<PostcodeDb> findBySuburb(String... suburbs) {
-		SelectQuery q = new SelectQuery(PostcodeDb.class);
-		q.setCacheStrategy(QueryCacheStrategy.LOCAL_CACHE);
-		q.setCacheGroup(PostcodeDb.class.getSimpleName());
-		q.andQualifier(ExpressionFactory.inExp(PostcodeDb.SUBURB_PROPERTY, Arrays.asList(suburbs)));
-		return cayenneService.sharedContext().performQuery(q);
+	public List<PostcodeDb> findBySuburb(String state, String... suburbs) {
+
+		ObjectSelect objectSelect = ObjectSelect.query(PostcodeDb.class)
+				.where(PostcodeDb.SUBURB.in(Arrays.asList(suburbs)));
+		if (StringUtils.trimToNull(state) != null) {
+			objectSelect = objectSelect.and(PostcodeDb.STATE.eq(state));
+		}
+		return objectSelect.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE)
+				.cacheGroup(PostcodeDb.class.getSimpleName())
+				.select(cayenneService.sharedContext());
 	}
 	
 	@SuppressWarnings("unchecked")
