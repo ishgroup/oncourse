@@ -3,6 +3,7 @@ package ish.oncourse.webservices.replication.services;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
+import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
@@ -43,26 +44,17 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     @Before
     public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-
-		InputStream st = WillowStubBuilderTest.class.getClassLoader().getResourceAsStream("ish/oncourse/webservices/replication/services/TransactionGroupProcessorTest.xml");
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st);
-
-        DataSource onDataSource = getDataSource("jdbc/oncourse");
-        DatabaseConnection dbConnection = new DatabaseConnection(onDataSource.getConnection(), null);
-        dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-
-        DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+		new LoadDataSet("ish/oncourse/webservices/replication/services/TransactionGroupProcessorTest.xml")
+				.load(testContext.getDS());
         willowQueueService = new WillowQueueService(getObject(IWebSiteService.class, null), getService(ICayenneService.class));
         willowStubBuilder = getService(IWillowStubBuilder.class);
         transactionGroupProcessor = getService(ITransactionGroupProcessor.class);
         cayenneService = getService(ICayenneService.class);
-
     }
 	
 
 	@Test
 	public void testDeleteV14Object() throws Exception {
-		setup();
 		/**
 		 * Transaction with one Contact delete.
 		 */
