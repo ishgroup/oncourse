@@ -18,6 +18,11 @@ export const modalReducer = (state: ModalState = new ModalState(), action: IActi
         show: false,
       };
 
+    case `RNS_HIDE_NOTIFICATION`:
+      return {
+        ...state,
+      };
+
     default:
       return {
         ...state,

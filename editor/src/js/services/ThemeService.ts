@@ -13,6 +13,10 @@ class ThemeService {
     return this.themeApi.saveTheme(this.buildSaveThemeRequest(props, state));
   }
 
+  public addTheme(): Promise<Theme[]> {
+    return this.themeApi.addTheme();
+  }
+
   public deleteTheme(id): Promise<Theme[]> {
     return this.themeApi.deleteTheme(id);
   }

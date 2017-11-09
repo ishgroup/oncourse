@@ -4,16 +4,16 @@ import classnames from "classnames";
 import {URL} from "../../../../../routes";
 import {Theme} from "../../../../../model";
 import {ThemeSettings} from "../components/ThemeSettings";
-import {deleteTheme, saveTheme} from "../actions";
+import {addTheme, deleteTheme, saveTheme} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
-import {getDefaultTheme} from "../Themes";
 
 interface Props {
   themes: Theme[];
   match: any;
   onEditSettings: (themeId, settings) => any;
   onDeleteTheme: (id) => any;
+  onAddTheme: () => any;
   history: any;
   fetching: boolean;
   showModal: (props) => any;
@@ -30,12 +30,13 @@ class ThemesSidebar extends React.Component<Props, any> {
   }
 
   onAddTheme() {
-    this.props.history.push(`${URL.THEMES}/-1`);
+    const {onAddTheme} = this.props;
+    onAddTheme();
   }
 
   render() {
     const {themes, match, onEditSettings, onDeleteTheme, showModal, fetching} = this.props;
-    const activeTheme = match.params.id && (themes.find(theme => theme.id == match.params.id) || getDefaultTheme());
+    const activeTheme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
       <div className={classnames({fetching})}>
@@ -71,6 +72,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     onEditSettings: (theme, settings) => dispatch(saveTheme(theme.id, {...theme, ...settings})),
     onDeleteTheme: id => dispatch(deleteTheme(id)),
+    onAddTheme: () => dispatch(addTheme()),
     showModal: props => dispatch(showModal(props)),
   };
 };

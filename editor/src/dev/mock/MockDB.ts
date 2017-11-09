@@ -3,7 +3,7 @@ import update from 'react-addons-update';
 import faker from 'faker';
 import {
   Page, Block, MenuItem, Theme, User, Version, CheckoutSettings, WebsiteSettings, RedirectSettings,
-  SkillsOnCourseSettings,
+  SkillsOnCourseSettings, ThemeSchema,
 } from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
@@ -457,8 +457,8 @@ export class MockDB {
   createNewPage() {
     const page = new Page();
     const newId = Math.max(...this.pages.map(page => page.id)) + 1;
-    page.title = `New Page ${newId}`;
-    page.id = newId;
+    page.title = `New Page ${isFinite(newId) ? newId : 1}`;
+    page.id = isFinite(newId) ? newId : 1;
     page.urls = [
       {
         link: `/page/${newId}`,
@@ -474,11 +474,27 @@ export class MockDB {
   createNewBlock() {
     const block = new Block();
     const newId = Math.max(...this.blocks.map(block => block.id)) + 1;
-    block.title = `New Block ${newId}`;
-    block.id = newId;
+    block.title = `New Block ${isFinite(newId) ? newId : 1}`;
+    block.id = isFinite(newId) ? newId : 1;
 
     this.blocks.push(block);
     return block;
+  }
+
+  createNewTheme() {
+    const theme = new Theme();
+    const newId = Math.max(...this.themes.map(theme => theme.id)) + 1;
+    theme.title = `New Theme ${isFinite(newId) ? newId : 1}`;
+    theme.id = isFinite(newId) ? newId : 1;
+    theme.schema = new ThemeSchema();
+    theme.schema.top = [];
+    theme.schema.footer = [];
+    theme.schema.middle1 = [];
+    theme.schema.middle2 = [];
+    theme.schema.middle3 = [];
+
+    this.themes.push(theme);
+    return theme;
   }
 
   getPageRender(id) {

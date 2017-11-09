@@ -3,23 +3,10 @@ import {Container, Row, Col} from 'reactstrap';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
 import {getThemes, saveTheme, updateThemeState} from "./actions";
-import {Theme as ThemeModel, Block, ThemeSchema} from "../../../../model";
+import {Theme as ThemeModel, Block} from "../../../../model";
 import Theme from "./components/Theme";
 import {State} from "../../../../reducers/state";
 import {getBlocks} from "../../../content/containers/blocks/actions";
-
-export const getDefaultTheme = () => {
-  const defaultTheme = new ThemeModel();
-  defaultTheme.id = -1;
-  defaultTheme.schema = new ThemeSchema();
-  defaultTheme.schema.top = [];
-  defaultTheme.schema.footer = [];
-  defaultTheme.schema.middle1 = [];
-  defaultTheme.schema.middle2 = [];
-  defaultTheme.schema.middle3 = [];
-
-  return defaultTheme;
-};
 
 interface Props {
   themes: ThemeModel[];
@@ -39,7 +26,7 @@ export class Themes extends React.Component<Props, any> {
 
   render() {
     const {themes, match, onUpdateLayout, onSaveTheme, blocks, fetching} = this.props;
-    const theme = match.params.id && (themes.find(theme => theme.id == match.params.id) || getDefaultTheme());
+    const theme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
       <div>

@@ -23,7 +23,14 @@ export class Sidebar extends React.Component<Props, any> {
   constructor(props) {
     super(props);
 
-    this.state = {activeUrl: 'site'};
+    this.state = {activeUrl: '/'};
+  }
+
+  componentWillReceiveProps(props) {
+    const history = getHistoryInstance();
+    if (history.location.state && history.location.state.updateActiveUrl) {
+      this.setState({activeUrl: history.location.pathname});
+    }
   }
 
   onClickPublish() {
@@ -57,7 +64,6 @@ export class Sidebar extends React.Component<Props, any> {
     const userName = slim
       ? `${firstChar(user.firstName)}${firstChar(user.lastName)}`
       : `${user.firstName} ${user.lastName}`;
-
 
     const getSubRoutes = url => (
       routes.filter(route => !route.isPublic && route.parent === url).map((route: Route, index) => (

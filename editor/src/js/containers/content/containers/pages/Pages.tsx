@@ -5,8 +5,6 @@ import {clearRenderHtml, getPages, savePage, toggleEditMode} from "./actions";
 import {Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
 
-export const defaultPage = {...new PageModel(), id: -1};
-
 interface Props {
   pages: PageModel[];
   onInit: () => any;

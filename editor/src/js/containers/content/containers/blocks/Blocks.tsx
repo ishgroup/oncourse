@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
-import {addBlock, getBlocks, saveBlock} from "./actions";
+import {getBlocks, saveBlock} from "./actions";
 import {Block as BlockModel} from "../../../../model";
 import {Block} from "./components/Block";
 import {State} from "../../../../reducers/state";
@@ -13,8 +13,6 @@ interface Props {
   fetching: boolean;
   onEditHtml: (id, html) => any;
 }
-
-export const defaultBlock = {...new BlockModel(), id: -1};
 
 export class Blocks extends React.Component<Props, any> {
 

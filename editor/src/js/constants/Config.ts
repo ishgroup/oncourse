@@ -31,6 +31,7 @@ export const API = {
   // Themes
   GET_THEMES: "/getThemes",
   SAVE_THEME: "/saveTheme",
+  ADD_THEME: "/addTheme",
   DELETE_THEME: "/deleteTheme",
 
   // History

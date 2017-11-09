@@ -7,6 +7,9 @@ export const GET_THEMES_FULFILLED = FULFILLED(GET_THEMES_REQUEST);
 export const SAVE_THEME_REQUEST = _toRequestType("themes/save/theme");
 export const SAVE_THEME_FULFILLED = FULFILLED(SAVE_THEME_REQUEST);
 
+export const ADD_THEME_REQUEST = _toRequestType("themes/add/theme");
+export const ADD_THEME_FULFILLED = FULFILLED(ADD_THEME_REQUEST);
+
 export const DELETE_THEME_REQUEST = _toRequestType("themes/delete/theme");
 export const DELETE_THEME_FULFILLED = FULFILLED(DELETE_THEME_REQUEST);
 
@@ -20,6 +23,10 @@ export const getThemes = () => ({
 export const saveTheme = (id, props) => ({
   type: SAVE_THEME_REQUEST,
   payload: {id, ...props},
+});
+
+export const addTheme = () => ({
+  type: ADD_THEME_REQUEST,
 });
 
 export const updateThemeState = (theme: Theme) => ({

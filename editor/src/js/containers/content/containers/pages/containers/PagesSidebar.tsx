@@ -7,7 +7,6 @@ import {URL} from "../../../../../routes";
 import {addPage, deletePage, savePage} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
-import {defaultPage} from "../Pages";
 import {State} from "../../../../../reducers/state";
 
 interface Props {
@@ -24,7 +23,7 @@ interface Props {
 export class PagesSidebar extends React.Component<Props, any> {
 
   goBack() {
-    this.props.history.push(URL.CONTENT);
+    this.props.history.push(URL.CONTENT, {updateActiveUrl: true});
   }
 
   resetActivePage() {

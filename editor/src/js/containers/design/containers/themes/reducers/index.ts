@@ -1,6 +1,8 @@
 import {IAction} from "../../../../../actions/IshAction";
 import {ThemesState} from "./State";
 import {
+  ADD_THEME_FULFILLED,
+  ADD_THEME_REQUEST,
   DELETE_THEME_FULFILLED, DELETE_THEME_REQUEST,
   GET_THEMES_FULFILLED, GET_THEMES_REQUEST, SAVE_THEME_FULFILLED, SAVE_THEME_REQUEST, UPDATE_THEME_STATE,
 } from "../actions";
@@ -10,6 +12,7 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
 
     case GET_THEMES_REQUEST:
     case SAVE_THEME_REQUEST:
+    case ADD_THEME_REQUEST:
     case DELETE_THEME_REQUEST:
       return {
         ...state,
@@ -37,6 +40,16 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
       }
 
       return ns;
+    }
+
+    case ADD_THEME_FULFILLED: {
+      const theme = action.payload;
+
+      return {
+        ...state,
+        fetching: false,
+        items: state.items.concat(theme),
+      };
     }
 
     case UPDATE_THEME_STATE: {

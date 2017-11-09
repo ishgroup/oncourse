@@ -12,6 +12,10 @@ export class ThemeApi {
     return this.http.POST(API.SAVE_THEME, payload);
   }
 
+  addTheme(): Promise<any> {
+    return this.http.POST(API.ADD_THEME);
+  }
+
   deleteTheme(id): Promise<any> {
     return this.http.POST(API.DELETE_THEME, id);
   }
