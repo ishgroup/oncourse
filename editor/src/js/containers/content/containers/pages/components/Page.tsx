@@ -129,8 +129,8 @@ export class Page extends React.PureComponent<PageProps, any> {
           </FormGroup>
 
           <FormGroup>
+            <Button onClick={() => this.onCancel()} color="link">Cancel</Button>
             <Button onClick={() => this.onSave()} color="primary">Save</Button>
-            <Button onClick={() => this.onCancel()} color="secondary">Cancel</Button>
           </FormGroup>
         </div>
         }

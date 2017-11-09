@@ -37,12 +37,23 @@
     left: 50%;
     margin-top: -10px;
     margin-left: -10px;
-    @include prefixer(animation, Animation-spin 400ms infinite linear);
+    @include prefixer(animation, Animation-spin 600ms infinite linear);
     @include prefixer(box-sizing, border-box);
     border-radius: 50%;
     border: 2px solid #ccc;
     border-right-color: #333;
     display: inline-block;
     vertical-align: middle;
+  }
+}
+
+@keyframes Animation-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@-webkit-keyframes Animation-spin {
+  to {
+    -webkit-transform: rotate(1turn);
   }
 }

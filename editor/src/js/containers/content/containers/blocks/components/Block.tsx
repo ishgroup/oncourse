@@ -62,8 +62,8 @@ export class Block extends React.Component<Props, any> {
             </FormGroup>
 
             <FormGroup>
+              <Button onClick={() => this.onCancel()} color="link">Cancel</Button>
               <Button onClick={() => this.onSave()} color="primary">Save</Button>
-              <Button onClick={() => this.onCancel()} color="secondary">Cancel</Button>
             </FormGroup>
           </div>
 
@@ -72,7 +72,7 @@ export class Block extends React.Component<Props, any> {
         <div onClick={e => this.onClickArea(e)}>
           {!this.state.editMode &&
             <div
-              className={classnames("editor-area", {'editor-area--empty': block.id === -1})}
+              className={classnames("editor-area", {'editor-area--empty': !block.html})}
               dangerouslySetInnerHTML={{__html: block.html}}
             />
           }

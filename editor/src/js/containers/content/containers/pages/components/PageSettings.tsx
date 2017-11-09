@@ -47,6 +47,18 @@ export class PageSettings extends React.PureComponent<Props, any> {
     onBack();
   }
 
+  onSave() {
+    const {onEdit} = this.props;
+
+    onEdit({
+      title: this.state.title,
+      urls: this.state.urls,
+      layout: this.state.layout,
+      visible: this.state.visible,
+      theme: this.state.theme,
+    });
+  }
+
   onChange(event, key) {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState({
@@ -57,8 +69,9 @@ export class PageSettings extends React.PureComponent<Props, any> {
   onBlur(key) {
     const {onEdit, page} = this.props;
 
+    // TODO: add validations
     if (page[key] !== this.state[key] || key === 'visible') {
-      onEdit({[key]: this.state[key]});
+      // onEdit({[key]: this.state[key]});
     }
   }
 
@@ -68,7 +81,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
       .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false});
 
     this.setState({urls});
-    onEdit({urls});
+    // onEdit({urls});
   }
 
   onDeleteUrl(url) {
@@ -76,7 +89,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
     const urls = this.state.urls.filter(item => item.link !== url.link);
 
     this.setState({urls});
-    onEdit({urls});
+    // onEdit({urls});
   }
 
   onClickDelete(e) {
@@ -108,7 +121,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
       urls,
       newLink: '',
     });
-    onEdit({urls});
+    // onEdit({urls});
   }
 
   formatLink(link) {
@@ -221,16 +234,27 @@ export class PageSettings extends React.PureComponent<Props, any> {
               />
             </FormGroup>
 
-            <FormGroup>
-              <Button
-                color="danger"
-                className="outline"
-                onClick={e => this.onClickDelete(e)}
-              >
-                <span className="icon icon-delete"/>
-                Remove
-              </Button>
-            </FormGroup>
+
+              <FormGroup className="actions-group">
+                <div className="buttons-inline">
+                  <Button
+                    color="danger"
+                    className="outline"
+                    onClick={e => this.onClickDelete(e)}
+                  >
+                    <span className="icon icon-delete"/>
+                    Remove
+                  </Button>
+
+                  <Button
+                    color="primary"
+                    onClick={e => this.onSave()}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </FormGroup>
+
           </Form>
         </div>
 

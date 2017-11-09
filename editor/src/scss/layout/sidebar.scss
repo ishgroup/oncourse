@@ -119,6 +119,12 @@
     }
   }
   
+  .actions-group {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid $gray;
+  }
+  
   a {
     color: $black;
     display: block;

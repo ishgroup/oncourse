@@ -110,3 +110,13 @@
     color: $success-hover;
   }
 }
+
+.buttons-inline {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+  
+  .btn {
+    margin-right: 0;
+  }
+}
