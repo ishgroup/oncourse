@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <!--Syndey college-->
+    <College id="1" name="Sydney College" timezone="Australia/Sydney" firstRemoteAuthentication="2010-02-03 09:18:09" requiresAvetmiss="0" />
+
+    <Course id="11" collegeId="1" code="no classes, Sydney" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" allowWaitingList="1" name="Sydney no classes" enrolmentType="1"/>
+    <Course id="12" collegeId="1" code="selfpaced, Sydney" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" allowWaitingList="1" name="Sydney selfpaced" enrolmentType="1"/>
+    <Course id="13" collegeId="1" code="with sessions, Sydney" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" allowWaitingList="1" name="Sydney with sessions" enrolmentType="1"/>
+
+    <Site id="11" collegeId="1" isWebVisible="1" name="Sydney currentTimeZone" isVirtual="0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Site id="12" collegeId="1" isWebVisible="1" name="Sydney differentTimezone" isVirtual="0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Site id="13" collegeId="1" isWebVisible="0" name="Sydney noTimeZone" isVirtual="0"/> <!--web invisible-->
+
+    <Room id="11" collegeId="1" siteId="11" name="Sydney room"/>
+
+    <!--selfpaced-->
+    <CourseClass id="11" isActive="1" collegeId="1" code="selfpaced-1" courseId="12" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="1"/>
+    <CourseClass id="12" isActive="1" collegeId="1" code="selfpaced-2" courseId="12" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="1"/>
+    <!--with sessions-->
+    <CourseClass id="13" code="PAST, current timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2011-01-01 00:00:00.0" endDate="2012-01-01 00:00:00.0" timeZone="Australia/Sydney"/>
+    <Session id="11" collegeId="1" courseClassId="13" startDate="2021-01-01 10:00:00.0" endDate="2021-01-01 11:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="12" collegeId="1" courseClassId="13" startDate="2021-05-01 10:00:00.0" endDate="2021-05-01 11:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="13" collegeId="1" courseClassId="13" startDate="2021-11-01 10:00:00.0" endDate="2021-11-01 11:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="14" code="PAST, different timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2011-01-01 00:00:00.0" endDate="2012-01-01 00:00:00.0" timeZone="Australia/Perth"/>
+    <Session id="14" collegeId="1" courseClassId="14" startDate="2021-01-01 15:00:00.0" endDate="2021-01-01 16:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="15" collegeId="1" courseClassId="14" startDate="2021-05-01 15:00:00.0" endDate="2021-05-01 16:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="16" collegeId="1" courseClassId="14" startDate="2021-11-01 15:00:00.0" endDate="2021-11-01 16:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="15" code="PAST, NO timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2011-01-01 00:00:00.0" endDate="2012-01-01 00:00:00.0"/>
+    <Session id="17" collegeId="1" courseClassId="15" startDate="2021-01-01 20:00:00.0" endDate="2021-01-01 21:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="18" collegeId="1" courseClassId="15" startDate="2021-05-01 20:00:00.0" endDate="2021-05-01 21:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="19" collegeId="1" courseClassId="15" startDate="2021-11-01 20:00:00.0" endDate="2021-11-01 21:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="16" code="CURRENT, current timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2017-01-01 00:00:00.0" endDate="2018-01-01 00:00:00.0" timeZone="Australia/Sydney"/>
+    <Session id="110" collegeId="1" courseClassId="16" startDate="2021-01-01 10:00:00.0" endDate="2021-01-01 11:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="111" collegeId="1" courseClassId="16" startDate="2021-05-01 10:00:00.0" endDate="2021-05-01 11:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="112" collegeId="1" courseClassId="16" startDate="2021-11-01 10:00:00.0" endDate="2021-11-01 11:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="17" code="CURRENT, different timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2017-01-01 00:00:00.0" endDate="2018-01-01 00:00:00.0" timeZone="Australia/Perth"/>
+    <Session id="113" collegeId="1" courseClassId="17" startDate="2021-01-01 15:00:00.0" endDate="2021-01-01 16:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="114" collegeId="1" courseClassId="17" startDate="2021-05-01 15:00:00.0" endDate="2021-05-01 16:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="115" collegeId="1" courseClassId="17" startDate="2021-11-01 15:00:00.0" endDate="2021-11-01 16:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="18" code="CURRENT, NO timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2017-01-01 00:00:00.0" endDate="2018-01-01 00:00:00.0"/>
+    <Session id="116" collegeId="1" courseClassId="18" startDate="2021-01-01 20:00:00.0" endDate="2021-01-01 21:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="117" collegeId="1" courseClassId="18" startDate="2021-05-01 20:00:00.0" endDate="2021-05-01 21:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="118" collegeId="1" courseClassId="18" startDate="2021-11-01 20:00:00.0" endDate="2021-11-01 21:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="19" code="FUTURE, current timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2021-01-01 00:00:00.0" endDate="2022-01-01 00:00:00.0" timeZone="Australia/Sydney"/>
+    <Session id="119" collegeId="1" courseClassId="19" startDate="2021-01-01 10:00:00.0" endDate="2021-01-01 11:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="120" collegeId="1" courseClassId="19" startDate="2021-05-01 10:00:00.0" endDate="2021-05-01 11:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="121" collegeId="1" courseClassId="19" startDate="2021-11-01 10:00:00.0" endDate="2021-11-01 11:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="110" code="FUTURE, different timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2021-01-01 00:00:00.0" endDate="2022-01-01 00:00:00.0" timeZone="Australia/Perth"/>
+    <Session id="122" collegeId="1" courseClassId="110" startDate="2021-01-01 15:00:00.0" endDate="2021-01-01 16:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="123" collegeId="1" courseClassId="110" startDate="2021-05-01 15:00:00.0" endDate="2021-05-01 16:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="124" collegeId="1" courseClassId="110" startDate="2021-11-01 15:00:00.0" endDate="2021-11-01 16:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="111" code="FUTURE, NO timezone, Sydney" isActive="1" collegeId="1" courseId="13" roomId="11" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2021-01-01 00:00:00.0" endDate="2022-01-01 00:00:00.0"/>
+    <Session id="125" collegeId="1" courseClassId="111" startDate="2021-01-01 20:00:00.0" endDate="2021-01-01 21:00:00.0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Session id="126" collegeId="1" courseClassId="111" startDate="2021-05-01 20:00:00.0" endDate="2021-05-01 21:00:00.0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Session id="127" collegeId="1" courseClassId="111" startDate="2021-11-01 20:00:00.0" endDate="2021-11-01 21:00:00.0"/> <!--NO timezone-->
+
+
+    <!--Perth college-->
+    <College id="2" name="Perth College" timezone="Australia/Perth" requiresAvetmiss="0" firstRemoteAuthentication="2010-02-03 09:18:09"/>
+
+    <Course id="21" collegeId="2" code="no classes, Perth" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" allowWaitingList="1" name="Perth no classes" enrolmentType="1"/>
+    <Course id="22" collegeId="2" code="selfpaced, Perth" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" allowWaitingList="1" name="Perth selfpaced" enrolmentType="1"/>
+    <Course id="23" collegeId="2" code="with sessions, Perth" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" allowWaitingList="1" name="Perth with sessions" enrolmentType="1"/>
+
+    <Site id="21" collegeId="2" isWebVisible="1" name="Perth currentTimeZone" isVirtual="0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Site id="22" collegeId="2" isWebVisible="1" name="Perth differentTimezone" isVirtual="0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Site id="23" collegeId="2" isWebVisible="0" name="Perth noTimeZone" isVirtual="0"/> <!--web invisible-->
+
+    <Room id="21" collegeId="2" siteId="21" name="Perth room"/>
+
+    <!--selfpaced-->
+    <CourseClass id="21" isActive="1" collegeId="2" code="selfpaced-1, Perth" courseId="22" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="1"/>
+    <CourseClass id="22" isActive="1" collegeId="2" code="selfpaced-2, Perth" courseId="22" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="1"/>
+    <!--with sessions-->
+    <CourseClass id="23" code="PAST, current timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="3" startDate="2011-01-01 00:00:00.0" endDate="2012-01-01 00:00:00.0" timeZone="Australia/Perth"/>
+    <Session id="21" collegeId="2" courseClassId="23" startDate="2011-01-01 10:00:00.0" endDate="2011-01-01 11:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="22" collegeId="2" courseClassId="23" startDate="2011-05-01 10:00:00.0" endDate="2011-05-01 11:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="23" collegeId="2" courseClassId="23" startDate="2011-11-01 10:00:00.0" endDate="2011-11-01 11:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="24" code="PAST, different timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2011-01-01 00:00:00.0" endDate="2012-01-01 00:00:00.0" timeZone="Australia/Sydney"/>
+    <Session id="24" collegeId="2" courseClassId="24" startDate="2011-01-01 15:00:00.0" endDate="2011-01-01 16:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="25" collegeId="2" courseClassId="24" startDate="2011-05-01 15:00:00.0" endDate="2011-05-01 16:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="26" collegeId="2" courseClassId="24" startDate="2011-11-01 15:00:00.0" endDate="2011-11-01 16:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="25" code="PAST, NO timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2011-01-01 00:00:00.0" endDate="2012-01-01 00:00:00.0"/>
+    <Session id="27" collegeId="2" courseClassId="25" startDate="2011-01-01 20:00:00.0" endDate="2011-01-01 21:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="28" collegeId="2" courseClassId="25" startDate="2011-05-01 20:00:00.0" endDate="2011-05-01 21:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="29" collegeId="2" courseClassId="25" startDate="2011-11-01 20:00:00.0" endDate="2011-11-01 21:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="26" code="CURRENT, current timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2017-01-01 00:00:00.0" endDate="2018-01-01 00:00:00.0" timeZone="Australia/Perth"/>
+    <Session id="210" collegeId="2" courseClassId="26" startDate="2017-01-01 10:00:00.0" endDate="2017-01-01 11:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="211" collegeId="2" courseClassId="26" startDate="2017-05-01 10:00:00.0" endDate="2017-05-01 11:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="212" collegeId="2" courseClassId="26" startDate="2017-11-01 10:00:00.0" endDate="2017-11-01 11:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="27" code="CURRENT, different timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2017-01-01 00:00:00.0" endDate="2018-01-01 00:00:00.0" timeZone="Australia/Sydney"/>
+    <Session id="213" collegeId="2" courseClassId="27" startDate="2017-01-01 15:00:00.0" endDate="2017-01-01 16:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="214" collegeId="2" courseClassId="27" startDate="2017-05-01 15:00:00.0" endDate="2017-05-01 16:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="215" collegeId="2" courseClassId="27" startDate="2017-11-01 15:00:00.0" endDate="2017-11-01 16:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="28" code="CURRENT, NO timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2017-01-01 00:00:00.0" endDate="2018-01-01 00:00:00.0"/>
+    <Session id="216" collegeId="2" courseClassId="28" startDate="2017-01-01 20:00:00.0" endDate="2017-01-01 21:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="217" collegeId="2" courseClassId="28" startDate="2017-05-01 20:00:00.0" endDate="2017-05-01 21:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="218" collegeId="2" courseClassId="28" startDate="2017-11-01 20:00:00.0" endDate="2017-11-01 21:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="29" code="FUTURE, current timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2021-01-01 00:00:00.0" endDate="2022-01-01 00:00:00.0" timeZone="Australia/Perth"/>
+    <Session id="219" collegeId="2" courseClassId="29" startDate="2021-01-01 10:00:00.0" endDate="2021-01-01 11:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="220" collegeId="2" courseClassId="29" startDate="2021-05-01 10:00:00.0" endDate="2021-05-01 11:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="221" collegeId="2" courseClassId="29" startDate="2021-11-01 10:00:00.0" endDate="2021-11-01 11:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="210" code="FUTURE, different timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2021-01-01 00:00:00.0" endDate="2022-01-01 00:00:00.0" timeZone="Australia/Sydney"/>
+    <Session id="222" collegeId="2" courseClassId="210" startDate="2021-01-01 15:00:00.0" endDate="2021-01-01 16:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="223" collegeId="2" courseClassId="210" startDate="2021-05-01 15:00:00.0" endDate="2021-05-01 16:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="224" collegeId="2" courseClassId="210" startDate="2021-11-01 15:00:00.0" endDate="2021-11-01 16:00:00.0"/> <!--NO timezone-->
+
+    <CourseClass id="211" code="FUTURE, NO timezone, Perth" isActive="1" collegeId="2" courseId="23" roomId="21" isWebVisible="1" isCancelled="0" maximumPlaces="30" isDistantLearningCourse="0" countOfSessions="1" startDate="2021-01-01 00:00:00.0" endDate="2022-01-01 00:00:00.0"/>
+    <Session id="225" collegeId="2" courseClassId="211" startDate="2021-01-01 20:00:00.0" endDate="2021-01-01 21:00:00.0" timeZone="Australia/Perth"/> <!--current timezone-->
+    <Session id="226" collegeId="2" courseClassId="211" startDate="2021-05-01 20:00:00.0" endDate="2021-05-01 21:00:00.0" timeZone="Australia/Sydney"/> <!--different timezone-->
+    <Session id="227" collegeId="2" courseClassId="211" startDate="2021-11-01 20:00:00.0" endDate="2021-11-01 21:00:00.0"/> <!--NO timezone-->
+</dataset>
