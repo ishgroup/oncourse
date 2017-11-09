@@ -24,11 +24,13 @@ class CourseClassFunctions {
         return query(Contact).where(Contact.TUTOR.dot(TUTOR_ROLES).dot(TutorRole.COURSE_CLASS).eq(courseClass)).iterator(courseClass.objectContext)
     }
 
-    public static final Closure<ResultIterator<Site>> Sites = { CourseClass courseClass ->
-        query(Site).where(Site.IS_WEB_VISIBLE.eq(TRUE)).and(
-                ROOMS.outer().dot(COURSE_CLASSES).outer().eq(courseClass)
-                        .orExp(ROOMS.outer().dot(Room.SESSIONS).outer().dot(COURSE_CLASS).outer().eq(courseClass))
-        ).iterator(courseClass.objectContext)
+    public static final Closure<ResultIterator<Site>> CourseClassSites = { CourseClass courseClass ->
+        query(Site).where(Site.IS_WEB_VISIBLE.eq(TRUE)).and(ROOMS.dot(COURSE_CLASSES).eq(courseClass)).iterator(courseClass.objectContext)
 
     }
+
+    public static final Closure<ResultIterator<Site>> SessionSites = { CourseClass courseClass ->
+        query(Site).where(Site.IS_WEB_VISIBLE.eq(TRUE)).and(ROOMS.dot(Room.SESSIONS).dot(COURSE_CLASS).eq(courseClass)).iterator(courseClass.objectContext)
+    }
+
 }

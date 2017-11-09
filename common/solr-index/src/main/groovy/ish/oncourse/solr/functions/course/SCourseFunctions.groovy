@@ -30,21 +30,21 @@ class SCourseFunctions {
     }
 
 
-    public static final Closure<Observable<SCourse>> SolrCourses = {
+    public static final Closure<Observable<SCourse>> SCourses = {
         Closure<ObjectContext> context, Date current = new Date() ->
             Flowable.fromIterable(Courses(context()))
                     .parallel()
                     .runOn(Schedulers.io())
-                    .map({ Course c -> GetSolrCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
+                    .map({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
                     .sequential().toObservable()
     }
 
 
-    public static final Closure<SCourse> GetSolrCourse = { CourseContext context ->
+    public static final Closure<SCourse> GetSCourse = { CourseContext context ->
         SCourse result = BuildSolrCourse.call(context.course)
         ResultIterator<CourseClass> classes = context.courseClasses(context)
         result = Observable.fromIterable(classes).filter({ c -> c.hasAvailableEnrolmentPlaces })
-                .flatMap({ cc -> context.applyCourseClass(result, cc, context.current) })
+                .flatMap({ cc -> context.applyCourseClass(result, context.courseClassContext.call(cc, context.current)) })
                 .lastElement()
                 .defaultIfEmpty(result)
                 .blockingGet()
@@ -59,9 +59,9 @@ class SCourseFunctions {
     }
 
 
-    public static final Closure<Observable<SCourse>> ApplyCourseClass = {
-        SCourse sc, CourseClass cc, Date current ->
-            Observable.just(new GetSCourseClass(new CourseClassContext(courseClass: cc, current: current, context: cc.objectContext)).get()).map({ SCourseClass scc ->
+    static final Closure<Observable<SCourse>> ApplyCourseClass = {
+        SCourse sc, CourseClassContext cc ->
+            Observable.just(new GetSCourseClass(cc).get()).map({ SCourseClass scc ->
                 if (!sc.classStart.contains(scc.classStart)) sc.classStart.add(scc.classStart)
                 if (!sc.classEnd.contains(scc.classEnd)) sc.classEnd.add(scc.classEnd)
                 if (!sc.price.contains(scc.price)) sc.price.add(scc.price)

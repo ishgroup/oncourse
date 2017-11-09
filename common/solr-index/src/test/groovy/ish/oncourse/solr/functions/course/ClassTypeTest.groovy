@@ -5,11 +5,12 @@ import org.junit.Test
 import static ish.oncourse.solr.functions.course.ClassType.*
 import static org.junit.Assert.assertEquals
 
-class GetCourseStartDate_ClassType_Test {
-    private GetCourseTestData data = new GetCourseTestData().with {
-        it.current = new Date()
-        it
-    }
+/**
+ * User: akoiro
+ * Date: 9/11/17
+ */
+class ClassTypeTest {
+    private GetCourseTestData data = new GetCourseTestData()
 
     @Test
     void test_class_is_distantLearning() {
@@ -37,5 +38,3 @@ class GetCourseStartDate_ClassType_Test {
     }
 
 }
-
-

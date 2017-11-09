@@ -2,12 +2,15 @@ package ish.oncourse.solr.functions.course
 
 import com.github.javafaker.Faker
 import ish.math.Money
+import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Session
 
 import static ish.oncourse.solr.functions.course.ClassType.valueOf
 import static ish.oncourse.solr.functions.course.ClassType.withOutSessions
+import static ish.oncourse.solr.functions.course.CourseTestFunctions.courseClassContext
+import static ish.oncourse.solr.functions.course.CourseTestFunctions.resultIterator
 import static org.apache.commons.lang3.time.DateUtils.addDays
 import static org.apache.commons.lang3.time.DateUtils.addHours
 import static org.junit.Assert.assertEquals
@@ -21,18 +24,21 @@ class GetCourseTestData {
     Faker faker = new Faker()
     Date current = new Date()
     Course course = mock(Course)
+    College college = mock(College)
 
     GetCourseTestData() {
+        when(college.id).thenReturn(faker.number().numberBetween(1000L, 2000L))
+        when(course.college).thenReturn(college)
         when(course.code).thenReturn("COURSE")
     }
 
-    CourseClass getClass_is_distantLearning() {
+    CourseClassContext getClass_is_distantLearning() {
         CourseClass courseClass = mockCourseClass()
         when(courseClass.isDistantLearningCourse).thenReturn(true)
-        courseClass
+        return courseClassContext(courseClass, current)
     }
 
-    CourseClass getClass_is_distantLearning_but_has_actual_sessions() {
+    CourseClassContext getClass_is_distantLearning_but_has_actual_sessions() {
         CourseClass courseClass = mockCourseClass()
         when(courseClass.isDistantLearningCourse).thenReturn(true)
         List<Session> sessions = [
@@ -44,44 +50,46 @@ class GetCourseTestData {
         when(courseClass.startDate).thenReturn(start)
         Date end = sessions[0].endDate
         when(courseClass.endDate).thenReturn(end)
-        courseClass
+        return courseClassContext(courseClass, current)
     }
 
-    CourseClass getClass_does_not_have_any_sessions() {
+    CourseClassContext getClass_does_not_have_any_sessions() {
         //course class doesn't have any sessions
         CourseClass courseClass = mockCourseClass()
         when(courseClass.startDate).thenReturn(addDays(current, 1))
-        courseClass
+        return courseClassContext(courseClass, current)
     }
 
-    CourseClass getClass_has_all_sessions_in_the_past() {
+    CourseClassContext getClass_has_all_sessions_in_the_past() {
         //course class has  sessions in the past
-        CourseClass courseClass = mockClass(-48, -23)
+        CourseClassContext context = mockClass(-48, -23)
         List<Session> sessions = [
                 mockSession(-24, -23),
                 mockSession(-48, -47),
         ]
-        when(courseClass.sessions).thenReturn(sessions)
-        assertEquals(withOutSessions, valueOf(courseClass))
-        courseClass
+        when(context.courseClass.sessions).thenReturn(sessions)
+        assertEquals(withOutSessions, valueOf(context.courseClass))
+        context.sessions = {resultIterator(sessions)}
+        return context
     }
 
-    CourseClass getClass_has_an_actual_session_and_a_session_in_the_past() {
+    CourseClassContext getClass_has_an_actual_session_and_a_session_in_the_past() {
         //course class has  sessions in the past
-        CourseClass courseClass = mockClass(-5, 5)
+        CourseClassContext context = mockClass(-5, 5)
         List<Session> sessions = [
                 mockSession(-5, -1),
                 mockSession(1, 5),
         ]
-        when(courseClass.sessions).thenReturn(sessions)
-        courseClass
+        when(context.courseClass.sessions).thenReturn(sessions)
+        context.sessions = { resultIterator(sessions) }
+        return context
     }
 
-    CourseClass mockClass(int sHours, int eHours) {
+    CourseClassContext mockClass(int sHours, int eHours) {
         CourseClass courseClass = mockCourseClass()
         when(courseClass.startDate).thenReturn(addHours(current, sHours))
         when(courseClass.endDate).thenReturn(addHours(current, eHours))
-        courseClass
+        return courseClassContext(courseClass, current)
     }
 
     private CourseClass mockCourseClass() {
@@ -89,6 +97,7 @@ class GetCourseTestData {
         when(courseClass.course).thenReturn(course)
         when(courseClass.feeExGst).thenReturn(new Money(999, 99))
         when(courseClass.code).thenReturn("CLASS")
+        when(courseClass.isHasAvailableEnrolmentPlaces()).thenReturn(true)
         courseClass
     }
 

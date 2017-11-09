@@ -29,7 +29,7 @@ class RealSolrReindexCoursesJobTest {
 
         int i = 0;
 
-        SCourseFunctions.SolrCourses({template.runtime.newContext()}, DateUtils.addYears(new Date(), -40)).blockingSubscribe( {println(it.tutorId)})
+        SCourseFunctions.SCourses({template.runtime.newContext()}, DateUtils.addYears(new Date(), -40)).blockingSubscribe( {println(it.siteId)})
 
         println(System.currentTimeMillis() - start)
 

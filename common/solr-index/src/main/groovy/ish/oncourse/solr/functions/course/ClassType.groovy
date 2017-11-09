@@ -11,6 +11,10 @@ enum ClassType {
     withOutSessions,
     regular
 
+    static ClassType valueOf(CourseClassContext context) {
+        valueOf(context.courseClass, context.current)
+    }
+
     static ClassType valueOf(CourseClass courseClass, Date current = new Date()) {
 
         if (courseClass.startDate != null && courseClass.sessions.findAll {

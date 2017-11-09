@@ -1,11 +1,15 @@
 package ish.oncourse.solr.reindex
 
+import ish.oncourse.test.MariaDB
+import ish.oncourse.test.functions.Functions
 import org.apache.cayenne.configuration.CayenneRuntime
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.impl.CloudSolrClient
 import org.apache.solr.common.SolrDocumentList
 
-import static ish.oncourse.test.functions.Functions.getCayenneRuntime
+import javax.sql.DataSource
+
+import static ish.oncourse.test.functions.Functions.createRuntime
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
 
@@ -103,9 +107,11 @@ class RealSolrReindexTemplate<E> {
         conf.collectionName = collectionName
         conf.solrFullImportURL = "http://localhost:7001/solr/${collectionName}/dataimport?command=full-import".toString()
         conf.client = new CloudSolrClient(conf.zkHost)
-        conf.runtime = cayenneRuntime()
         conf.compareCollections = compareCollections
         conf.getEntities = getEntities
+        DataSource ds = Functions.createDS(MariaDB.valueOf())
+        Functions.bindDS(ds)
+        conf.runtime = createRuntime()
         return conf
     }
 

@@ -33,7 +33,9 @@ class GetSCourseClass {
 
         scc.sessions = toSSessions(context.courseClass, this.context.sessions)
         scc.contacts = toSContacts(context.courseClass, this.context.contacts)
-        scc.sites = toSSites(context.courseClass, this.context.sites)
+        scc.sites = toSSites(context.courseClass, this.context.courseClassSites)
+        scc.sites.addAll(toSSites(context.courseClass, this.context.sessionSites))
+        scc.sites.unique()
         return scc
     }
 

@@ -16,9 +16,9 @@ class SCourseClass {
 
     Date classStart
 
-    List<SSession> sessions
+    List<SSession> sessions = []
 
-    List<SContact> contacts
+    List<SContact> contacts = []
 
-    List<SSite> sites
+    List<SSite> sites = []
 }
