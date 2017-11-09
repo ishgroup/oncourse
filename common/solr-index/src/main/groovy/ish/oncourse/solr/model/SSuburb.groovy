@@ -6,7 +6,7 @@ import org.apache.solr.client.solrj.beans.Field
 
 @CompileStatic
 @EqualsAndHashCode
-class SolrSuburb {
+class SSuburb {
     @Field('id')
     String id
 

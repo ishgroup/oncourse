@@ -1,15 +1,15 @@
 package ish.oncourse.solr.functions.suburb
 
 import ish.oncourse.model.PostcodeDb
-import ish.oncourse.solr.model.SolrSuburb
+import ish.oncourse.solr.model.SSuburb
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ResultIterator
 
 import static org.apache.cayenne.query.ObjectSelect.query
 
 class Functions {
-    static Closure<SolrSuburb> getSolrSuburb = { PostcodeDb postcode ->
-        return new SolrSuburb().with {
+    static Closure<SSuburb> getSolrSuburb = { PostcodeDb postcode ->
+        return new SSuburb().with {
             it.id = "${postcode.postcode}${postcode.suburb}"
             it.suburb = postcode.suburb
             it.state = postcode.state
@@ -19,7 +19,7 @@ class Functions {
         }
     }
 
-    static Closure<Iterator<SolrSuburb>> getSolrSuburbs = { ObjectContext context ->
+    static Closure<Iterator<SSuburb>> getSolrSuburbs = { ObjectContext context ->
         ResultIterator<PostcodeDb> postcodeDbs = query(PostcodeDb).orderBy(PostcodeDb.POSTCODE.asc()).iterator(context)
         return [hasNext: { return postcodeDbs.hasNextRow() },
                 next   : { return getSolrSuburb.call(postcodeDbs.nextRow()) },

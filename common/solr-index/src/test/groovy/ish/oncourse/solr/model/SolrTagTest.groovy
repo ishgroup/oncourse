@@ -10,7 +10,7 @@ class SolrTagTest {
     void test() {
 
         ObjectMapper mapper = new ObjectMapper()
-        SolrTag s = new SolrTag().with {
+        STag s = new STag().with {
             id = 12
             collegeId = 44
             name = 'subject'
@@ -18,7 +18,7 @@ class SolrTagTest {
         }
 
         String json = mapper.writeValueAsString(s)
-        SolrTag r = mapper.readValue(json, SolrTag)
+        STag r = mapper.readValue(json, STag)
         Assert.assertEquals(s, r)
     }
 }

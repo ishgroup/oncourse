@@ -14,7 +14,7 @@ class SolrCourseTest {
 
         Date current = new Date()
         ObjectMapper mapper = new ObjectMapper()
-        SolrCourse course = new SolrCourse().with {
+        SCourse course = new SCourse().with {
             collegeId = 1
             id = 1
             name = 'Course'
@@ -26,7 +26,7 @@ class SolrCourseTest {
 
         String json = mapper.writeValueAsString(course)
 
-        SolrCourse rCourse = mapper.readValue(json, SolrCourse)
+        SCourse rCourse = mapper.readValue(json, SCourse)
         Assert.assertEquals(course, rCourse)
     }
 }

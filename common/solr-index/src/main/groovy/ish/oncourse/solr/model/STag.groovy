@@ -6,16 +6,18 @@ import org.apache.solr.client.solrj.beans.Field
 
 @CompileStatic
 @EqualsAndHashCode
-class SolrCourseClass {
-    @Field('price')
-    String price
+class STag {
+    
+    @Field('id')
+    String id
+    
+    @Field('collegeId')
+    long collegeId
+    
+    @Field('doctype')
+    String doctype = 'tag'
 
-    @Field('class_code')
-    String classCode
-
-    @Field('end')
-    Date classEnd
-
-    @Field('class_start')
-    Date classStart
+    @Field('name')
+    String name
+    
 }

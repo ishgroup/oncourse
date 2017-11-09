@@ -2,7 +2,7 @@ package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
-import ish.oncourse.solr.model.SolrCourse
+import ish.oncourse.solr.model.SCourse
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals
@@ -27,7 +27,7 @@ class Course2SolrCourseTest {
         when(course.code).thenReturn('COURSE1')
 
 
-        SolrCourse solrCourse = Functions.getSolrCourse(course)
+        SCourse solrCourse = CourseFunctions.getSolrCourse(course)
         assertEquals(String.valueOf(course.id), solrCourse.id)
         assertEquals(course.name, solrCourse.name)
         assertEquals(course.detail, solrCourse.detail)

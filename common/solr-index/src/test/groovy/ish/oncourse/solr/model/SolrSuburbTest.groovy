@@ -9,7 +9,7 @@ class SolrSuburbTest {
     void test() {
 
         ObjectMapper mapper = new ObjectMapper()
-        SolrSuburb s = new SolrSuburb().with {
+        SSuburb s = new SSuburb().with {
             id = '1'
             suburb = 'suburb1'
             state = 'state1'
@@ -19,7 +19,7 @@ class SolrSuburbTest {
         }
 
         String json = mapper.writeValueAsString(s)
-        SolrSuburb r = mapper.readValue(json, SolrSuburb)
+        SSuburb r = mapper.readValue(json, SSuburb)
         Assert.assertEquals(s, r)
     }
 }

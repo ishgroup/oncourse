@@ -2,11 +2,13 @@ package ish.oncourse.solr.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 import org.apache.solr.client.solrj.beans.Field
 
 @CompileStatic
 @EqualsAndHashCode
-class SolrCourse {
+@ToString
+class SCourse {
     @Field('id')
     String id
 
@@ -29,41 +31,43 @@ class SolrCourse {
     @Field('startDate')
     Date startDate
 
+    //course class fields
     @Field('price')
-    String[] price
+    List<String> price = []
 
     @Field('class_code')
-    String[] classCode
-
-    @Field('end')
-    Date[] classEnd
+    List<String> classCode = []
 
     @Field('class_start')
-    Date[] classStart
+    List<Date> classStart = []
 
-    //tutor
+    @Field('end')
+    List<Date> classEnd = []
+
+    //tutor fields
     @Field('tutorId')
-    Long[] tutorId
+    List<Long> tutorId = []
 
     @Field('tutor')
-    String[] tutor
+    List<String> tutor = []
 
     //session
     @Field('when')
-    String[] when
+    List<String> when = []
 
+    //site
     @Field('siteId')
-    Long[] siteId
+    List<Long> siteId = []
 
     @Field('course_loc')
-    String[] location
+    List<String> location = []
 
     @Field('course_postcode')
-    String[] postcode
+    List<String> postcode = []
 
     @Field('course_suburb')
-    String[] suburb
+    List<String> suburb = []
 
     @Field('tagId')
-    Long[] tagId
+    Long[] tagId = []
 }

@@ -1,7 +1,7 @@
 package ish.oncourse.solr.reindex
 
 import ish.oncourse.solr.functions.tag.Functions
-import ish.oncourse.solr.model.SolrTag
+import ish.oncourse.solr.model.STag
 import org.apache.solr.common.SolrDocumentList
 import org.junit.Before
 import org.junit.Ignore
@@ -11,7 +11,7 @@ import static org.junit.Assert.*
 
 class RealSolrReindexTagsJobTest {
 
-    private RealSolrReindexTemplate<SolrTag> template
+    private RealSolrReindexTemplate<STag> template
 
     @Before
     void before() {
