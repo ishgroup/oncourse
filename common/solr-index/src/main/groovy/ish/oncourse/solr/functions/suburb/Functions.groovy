@@ -1,5 +1,6 @@
 package ish.oncourse.solr.functions.suburb
 
+import io.reactivex.Observable
 import ish.oncourse.model.PostcodeDb
 import ish.oncourse.solr.model.SSuburb
 import org.apache.cayenne.ObjectContext
@@ -19,11 +20,8 @@ class Functions {
         }
     }
 
-    static Closure<Iterator<SSuburb>> getSolrSuburbs = { ObjectContext context ->
+    static Closure<Observable<SSuburb>> getSolrSuburbs = { ObjectContext context ->
         ResultIterator<PostcodeDb> postcodeDbs = query(PostcodeDb).orderBy(PostcodeDb.POSTCODE.asc()).iterator(context)
-        return [hasNext: { return postcodeDbs.hasNextRow() },
-                next   : { return getSolrSuburb.call(postcodeDbs.nextRow()) },
-                remove : { postcodeDbs.skipRow() }
-        ] as Iterator
+        return Observable.fromIterable(postcodeDbs).map({p -> getSolrSuburb.call(p)})
     }
 }

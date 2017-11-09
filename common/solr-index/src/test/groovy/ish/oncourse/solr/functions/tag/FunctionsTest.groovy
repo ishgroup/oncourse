@@ -21,7 +21,7 @@ class FunctionsTest {
         when(tag.college).thenReturn(college)
         when(tag.name).thenReturn('subject')
 
-        STag solrTag = Functions.getSolrTag(tag)
+        STag solrTag = Functions.getSTag(tag)
         assertEquals("${tag.id}".toString(), solrTag.id)
         assertEquals(tag.college.id, solrTag.collegeId)
         assertEquals(tag.name, solrTag.name)

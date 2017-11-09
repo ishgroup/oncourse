@@ -2,6 +2,8 @@ package ish.oncourse.solr.reindex
 
 import ish.oncourse.solr.functions.tag.Functions
 import ish.oncourse.solr.model.STag
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.apache.solr.common.SolrDocumentList
 import org.junit.Before
 import org.junit.Ignore
@@ -10,6 +12,8 @@ import org.junit.Test
 import static org.junit.Assert.*
 
 class RealSolrReindexTagsJobTest {
+    private static final Logger logger = LogManager.getLogger()
+
 
     private RealSolrReindexTemplate<STag> template
 

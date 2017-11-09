@@ -1,8 +1,12 @@
 package ish.oncourse.solr.reindex
 
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import ish.oncourse.test.MariaDB
 import ish.oncourse.test.functions.Functions
 import org.apache.cayenne.configuration.CayenneRuntime
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.impl.CloudSolrClient
 import org.apache.solr.common.SolrDocumentList
@@ -18,6 +22,8 @@ import static org.junit.Assert.assertTrue
  * Date: 2/10/17
  */
 class RealSolrReindexTemplate<E> {
+    private static final Logger logger = LogManager.getLogger()
+
     String solrFullImportURL
     String collectionName
 
@@ -31,24 +37,29 @@ class RealSolrReindexTemplate<E> {
     CayenneRuntime runtime
 
     Closure compareCollections
-    Closure<Iterator<E>> getEntities
+    Closure<Observable<E>> getEntities
 
 
     void test() {
-        getEntities.call(runtime.newContext()).each {
+        Functions.TimeLog timing = new Functions.TimeLog()
+        Disposable disposable = getEntities(runtime.newContext()).subscribe({
             client.addBean(collectionName, it)
+        })
+
+        while (!disposable.isDisposed()) {
+            Thread.sleep(100)
         }
+        timing.log(logger, "Processing time:")
 
         client.commit(collectionName)
+        timing.log(logger, "Committing time:")
 
         def result = client.query(collectionName,
                 new SolrQuery(allRecordsQuery).setRows(maxRows))
                 .getResults()
+        timing.log(logger, "Query time:")
 
         println "All records count : ${result.size()}"
-        result.each { row ->
-            println row
-        }
     }
 
     void testFullIntegration() {
@@ -90,18 +101,16 @@ class RealSolrReindexTemplate<E> {
 
 
     private void doReindex() {
-        getEntities.call(runtime.newContext()).each {
+        getEntities.subscribe({
             client.addBean(collectionName, it)
-        }
-
+        })
         client.commit(collectionName)
-
         assertFalse(getCollection().empty)
     }
 
 
     static <E> RealSolrReindexTemplate<E> valueOf(String collectionName,
-                                                  Closure<Iterator<E>> getEntities,
+                                                  Closure<Observable<E>> getEntities,
                                                   Closure compareCollections) {
         RealSolrReindexTemplate conf = new RealSolrReindexTemplate()
         conf.collectionName = collectionName

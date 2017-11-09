@@ -31,8 +31,8 @@ class SCourseFunctions {
 
 
     public static final Closure<Observable<SCourse>> SCourses = {
-        Closure<ObjectContext> context, Date current = new Date() ->
-            Flowable.fromIterable(Courses(context()))
+        ObjectContext context, Date current = new Date() ->
+            Flowable.fromIterable(Courses(context))
                     .parallel()
                     .runOn(Schedulers.io())
                     .map({ Course c -> GetSCourse.call(new CourseContext(course: c, context: c.objectContext, current: current)) })
@@ -75,7 +75,7 @@ class SCourseFunctions {
 
     static final SCourse addSessions(SCourse sc, List<SSession> sessions) {
         Observable.fromIterable(sessions).map({ SSession s -> sc.when.add("${s.dayName} ${s.dayType} ${s.dayTime}"); s }).blockingSubscribe()
-        sc.when.unique()
+        sc.when = sc.when.unique().findAll { it != null }
         sc
     }
 
@@ -85,8 +85,8 @@ class SCourseFunctions {
             sc.tutor.add(c.name)
             c
         }).blockingSubscribe()
-        sc.tutorId.unique()
-        sc.tutor.unique()
+        sc.tutorId = sc.tutorId.unique().findAll { it != null }
+        sc.tutor = sc.tutor.unique().findAll { it != null }
         sc
     }
 
@@ -97,10 +97,10 @@ class SCourseFunctions {
             sc.postcode.add(s.postcode)
             sc.location.add(s.location)
         }).blockingSubscribe()
-        sc.siteId.unique()
-        sc.suburb.unique()
-        sc.postcode.unique()
-        sc.location.unique()
+        sc.siteId = sc.siteId.unique().findAll { it != null }
+        sc.suburb = sc.suburb.unique().findAll { it != null }
+        sc.postcode = sc.postcode.unique().findAll { it != null }
+        sc.location = sc.location.unique().findAll { it != null }
         sc
     }
 }
