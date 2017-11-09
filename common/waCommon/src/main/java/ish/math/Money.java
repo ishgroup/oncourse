@@ -6,6 +6,7 @@
 package ish.math;
 
 import ish.oncourse.API;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +21,7 @@ import java.text.NumberFormat;
  * 
  */
 @API
-public class Money extends Number implements Comparable<Money> {
+public class Money extends BigDecimal {
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LogManager.getLogger();
@@ -41,11 +42,8 @@ public class Money extends Number implements Comparable<Money> {
 	 * @param val value to create
 	 */
 	public Money(BigDecimal val) {
-		if (val == null) {
-			setValue(BigDecimal.ZERO);
-		} else {
-			setValue(val);
-		}
+		super(val == null ? BigDecimal.ZERO.toString() : val.toString());
+		setValue(val == null ? BigDecimal.ZERO : val);
 	}
 
 	/**
@@ -55,11 +53,8 @@ public class Money extends Number implements Comparable<Money> {
 	 */
 	@API
 	public Money(String val) {
-		if (val == null || val.length() == 0) {
-			setValue(BigDecimal.ZERO);
-		} else {
-			setValue(new BigDecimal(val));
-		}
+		super(StringUtils.isBlank(val) ? BigDecimal.ZERO.toString() : val);
+		setValue(StringUtils.isBlank(val) ? BigDecimal.ZERO : new BigDecimal(val));
 	}
 
 	/**
@@ -70,6 +65,7 @@ public class Money extends Number implements Comparable<Money> {
 	 */
 	@API
 	public Money(int dollars, int cents) {
+		super(BigDecimal.valueOf(dollars).add(BigDecimal.valueOf(cents, DEFAULT_SCALE)).toString());
 		setValue(BigDecimal.valueOf(dollars).add(BigDecimal.valueOf(cents, DEFAULT_SCALE)));
 	}
 
@@ -185,6 +181,20 @@ public class Money extends Number implements Comparable<Money> {
 		return new Money(this.decimalValue.subtract(val.toBigDecimal()));
 	}
 
+	/**
+	 * returns difference, where object is minuend and param is subtrahend
+	 *
+	 * @param val subtrahend
+	 * @return new money object
+	 */
+	@API
+	public Money subtract(BigDecimal val) {
+		if (val == null) {
+			return new Money(decimalValue);
+		}
+		return new Money(decimalValue.subtract(val));
+	}
+	
 	/**
 	 * returns product
 	 * 
@@ -332,16 +342,7 @@ public class Money extends Number implements Comparable<Money> {
 
 	@Override
 	public String toString() {
-		try {
-			Class<?> formatterClass = Class.forName("ish.util.MoneyFormatter");
-			Object sharedInstance = formatterClass.getMethod("getSharedInstance", (Class<?>[]) null).invoke(null, (Object[]) null);
-
-			if (sharedInstance != null) {
-				return (String) formatterClass.getMethod("valueToString", Object.class).invoke(sharedInstance, this);
-			}
-		} catch (Exception e) {}
-
-		return NumberFormat.getCurrencyInstance().format(doubleValue());
+		return NumberFormat.getCurrencyInstance().format(decimalValue);
 	}
 	
 	/**
@@ -353,50 +354,39 @@ public class Money extends Number implements Comparable<Money> {
 	public String toPlainString() {
 		return new MoneyDecimalFormatter().valueToString(this, DEFAULT_SCALE);
 	}
-
-	//
-	// Implement required Number methods
-	//
-	/**
-	 * @see java.lang.Number#doubleValue()
-	 */
+	
 	@Override
 	public double doubleValue() {
-		return this.decimalValue.doubleValue();
+		return decimalValue.doubleValue();
 	}
 
-	/**
-	 * @see java.lang.Number#floatValue()
-	 */
 	@Override
 	public float floatValue() {
-		return this.decimalValue.floatValue();
+		return decimalValue.floatValue();
 	}
-
-	/**
-	 * @see java.lang.Number#intValue()
-	 */
+	
 	@Override
 	public int intValue() {
-		return this.decimalValue.intValue();
+		return decimalValue.intValue();
 	}
-
-	/**
-	 * @see java.lang.Number#longValue()
-	 */
+	
 	@Override
 	public long longValue() {
-		return this.decimalValue.longValue();
+		return decimalValue.longValue();
 	}
-
-	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Money m) {
-		if (m == null) {
+	
+	@Override
+	public int compareTo(BigDecimal value) {
+		if (value == null) {
 			throw new IllegalArgumentException("cannot compare money to null object");
 		}
-		return toBigDecimal().compareTo(m.toBigDecimal());
+		
+		BigDecimal val = value;
+		if (value instanceof Money) {
+			val = ((Money) value).decimalValue;
+		}
+		
+		return toBigDecimal().compareTo(val);
 	}
 
 	@Override
@@ -406,13 +396,16 @@ public class Money extends Number implements Comparable<Money> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (obj == null || !(obj instanceof BigDecimal)) {
 			return false;
 		}
-		if (!(obj instanceof Money)) {
-			return false;
+		
+		BigDecimal val = (BigDecimal) obj;
+		if (obj instanceof Money) {
+			val = ((Money) obj).decimalValue;
 		}
-		return this.decimalValue.equals(((Money) obj).decimalValue);
+		
+		return decimalValue.equals(val);
 	}
 
 }

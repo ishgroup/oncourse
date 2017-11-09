@@ -65,5 +65,24 @@ class MoneyTestGroovy {
         assertTrue(Money.ONE * 11.11 <= Money.ONE * 11.11)
         assertFalse(Money.ONE * 11.22 <= Money.ONE * 11.11)
         assertTrue(Money.ONE * 11.11 <= Money.ONE * 11.22)
+
+        assertTrue(Money.ONE == 1)
+        assertFalse(Money.ONE != 1)
+        assertFalse(Money.ONE > 1)
+        assertTrue(Money.ONE >= 1)
+        assertFalse(Money.ONE < 1)
+        assertTrue(Money.ONE <= 1)
+        
+        assertEquals(new Money('2.00'), Money.ONE + Money.ONE)
+        assertEquals(Money.ONE.add(Money.ONE), Money.ONE + Money.ONE)
+        
+        assertEquals(Money.ZERO, Money.ONE - Money.ONE)
+        assertEquals(Money.ONE.subtract(Money.ONE), Money.ONE - Money.ONE)
+        
+        assertEquals(new Money('5.5'), Money.ONE * 5.5)
+        assertEquals(Money.ONE.multiply(5.5), Money.ONE * 5.5)
+        
+        assertEquals(new Money('0.5'), Money.ONE / 2)
+        assertEquals(Money.ONE.divide(2), Money.ONE / 2)
     }
 }
