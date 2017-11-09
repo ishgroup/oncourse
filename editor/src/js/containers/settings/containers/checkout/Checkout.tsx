@@ -45,8 +45,6 @@ export class Checkout extends React.Component<Props, any> {
     const {successUrl, refundPolicy} = this.state;
     const {fetching} = this.props;
 
-    console.log(this.props);
-
     return (
       <div className={classnames({fetching})}>
         <Form>

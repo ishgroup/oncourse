@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import classnames from "classnames";
 import {getWebsiteSettings, setWebsiteSettings} from "./actions";
 import {Checkbox} from "../../../../common/components/Checkbox";
 import {ClassCondition, ClassEnrolmentCondition} from "../../../../model/ClassAge";
@@ -11,6 +12,7 @@ interface Props {
   onInit: () => any;
   onSave: (settings) => any;
   website: WebsiteSettingsState;
+  fetching: boolean;
 }
 
 export class Website extends React.Component<Props, any> {
@@ -65,9 +67,10 @@ export class Website extends React.Component<Props, any> {
 
   render() {
     const {enableSocialMedia, addThisId, enableForCourse, enableForWebpage, classAge} = this.state;
+    const {fetching} = this.props;
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
         <Form>
           <FormGroup>
             <Checkbox
@@ -170,6 +173,7 @@ export class Website extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   website: state.settings.websiteSettings,
+  fetching: state.settings.websiteSettings.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

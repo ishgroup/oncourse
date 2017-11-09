@@ -1,6 +1,7 @@
 import React from 'react';
 import {Container, Row, Col} from 'reactstrap';
 import {connect, Dispatch} from "react-redux";
+import classnames from "classnames";
 import {getThemes, saveTheme, updateThemeState} from "./actions";
 import {Theme as ThemeModel, Block, ThemeSchema} from "../../../../model";
 import Theme from "./components/Theme";
@@ -22,6 +23,7 @@ export const getDefaultTheme = () => {
 
 interface Props {
   themes: ThemeModel[];
+  fetching: boolean;
   blocks: Block[];
   onInit: () => any;
   match?: any;
@@ -36,13 +38,13 @@ export class Themes extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onUpdateLayout, onSaveTheme, blocks} = this.props;
+    const {themes, match, onUpdateLayout, onSaveTheme, blocks, fetching} = this.props;
     const theme = match.params.id && (themes.find(theme => theme.id == match.params.id) || getDefaultTheme());
 
     return (
       <div>
         {theme &&
-        <Col sm="12">
+        <Col sm="12" className={classnames({fetching})}>
           <Theme
             theme={theme}
             onUpdateLayout={(blockId, items) => onUpdateLayout(theme, blockId, items)}
@@ -59,6 +61,7 @@ export class Themes extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   themes: state.theme.items,
   blocks: state.block.items,
+  fetching: state.theme.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

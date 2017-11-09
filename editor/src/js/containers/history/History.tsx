@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import {Table, Button} from 'reactstrap';
+import classnames from "classnames";
 import TimeAgo from 'react-timeago';
 import {getHistory, publish, setVersion} from "./actions";
 import {Version} from "../../model/History";
@@ -12,6 +13,7 @@ interface Props {
   onPublish: () => any;
   onRevert: (id) => any;
   showModal: (props) => any;
+  fetching: boolean;
 }
 
 class History extends React.Component<Props, any> {
@@ -40,10 +42,10 @@ class History extends React.Component<Props, any> {
   }
 
   render() {
-    const {versions} = this.props;
+    const {versions, fetching} = this.props;
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
 
         <Table className="table table--row-center">
           <thead>
@@ -86,6 +88,7 @@ class History extends React.Component<Props, any> {
 
 const mapStateToProps = state => ({
   versions: state.history.versions,
+  fetching: state.history.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

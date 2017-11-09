@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
+import classnames from "classnames";
 import {URL} from "../../../../../routes";
 import {Theme} from "../../../../../model";
 import {ThemeSettings} from "../components/ThemeSettings";
@@ -14,6 +15,7 @@ interface Props {
   onEditSettings: (themeId, settings) => any;
   onDeleteTheme: (id) => any;
   history: any;
+  fetching: boolean;
   showModal: (props) => any;
 }
 
@@ -32,11 +34,11 @@ class ThemesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onEditSettings, onDeleteTheme, showModal} = this.props;
+    const {themes, match, onEditSettings, onDeleteTheme, showModal, fetching} = this.props;
     const activeTheme = match.params.id && (themes.find(theme => theme.id == match.params.id) || getDefaultTheme());
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
         {!activeTheme &&
         <SidebarList
           items={themes}
@@ -62,6 +64,7 @@ class ThemesSidebar extends React.Component<Props, any> {
 
 const mapStateToProps = state => ({
   themes: state.theme.items,
+  fetching: state.theme.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

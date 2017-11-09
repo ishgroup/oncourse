@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
+import classnames from "classnames";
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {getSkillsOnCourseSettings, setSkillsOnCourseSettings} from "./actions";
 import {Checkbox} from "../../../../common/components/Checkbox";
@@ -10,6 +11,7 @@ interface Props {
   onInit: () => any;
   onSave: (settings) => any;
   skillsOnCourse: SkillsOnCourseState;
+  fetching: boolean;
 }
 
 export class Skills extends React.Component<Props, any> {
@@ -42,9 +44,10 @@ export class Skills extends React.Component<Props, any> {
 
   render() {
     const {hideStudentDetails, enableOutcomeMarking, tutorFeedbackEmail} = this.state;
+    const {fetching} = this.props;
 
     return (
-      <div>
+      <div className={classnames({fetching})}>
 
         <Form>
           <FormGroup>
@@ -90,6 +93,7 @@ export class Skills extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   skillsOnCourse: state.settings.skillsOnCourseSettings,
+  fetching: state.settings.skillsOnCourseSettings.fetching,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {

@@ -16,7 +16,7 @@ const request: EpicUtils.Request<any, any> = {
   processData: (page: Page, state: any) => {
 
     return [
-      success(notificationParams),
+      success({...notificationParams, title: 'New page added'}),
       {
         payload: page,
         type: ADD_PAGE_FULFILLED,
