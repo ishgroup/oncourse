@@ -13,18 +13,24 @@ class BlockService {
     return this.blockApi.saveBlock(this.buildSaveBlockRequest(props, state));
   }
 
+  public addBlock(): Promise<Block> {
+    return this.blockApi.addBlock();
+  }
+
   public deleteBlock(id): Promise<Block[]> {
     return this.blockApi.deleteBlock(id);
   }
 
   public buildSaveBlockRequest(props, state: State) {
     const block = state.block.items.find(p => p.id === props.id);
+    const request: Block = new Block();
+    const newBlock = {...block, ...props};
 
-    return {
-      ...block,
-      ...props,
-      id: props.id != -1 ? props.id : null,
-    };
+    request.id = newBlock.id;
+    request.html = newBlock.html;
+    request.title = newBlock.title;
+
+    return request;
   }
 
 }

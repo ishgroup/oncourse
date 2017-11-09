@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
-import {getBlocks, saveBlock} from "./actions";
+import {addBlock, getBlocks, saveBlock} from "./actions";
 import {Block as BlockModel} from "../../../../model";
 import {Block} from "./components/Block";
 import {State} from "../../../../reducers/state";
@@ -24,7 +24,7 @@ export class Blocks extends React.Component<Props, any> {
 
   render() {
     const {match, blocks, onEditHtml, fetching} = this.props;
-    const activeBlock = match.params.id && (blocks.find(block => block.id == match.params.id) || defaultBlock);
+    const activeBlock = match.params.id && blocks.find(block => block.id == match.params.id);
 
     return (
       <div className={classnames({fetching})}>

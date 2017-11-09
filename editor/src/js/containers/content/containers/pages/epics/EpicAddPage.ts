@@ -15,6 +15,8 @@ const request: EpicUtils.Request<any, any> = {
   getData: (props, state) => PageService.addPage(),
   processData: (page: Page, state: any) => {
 
+    getHistoryInstance().push(`${URL.PAGES}/${page.id}`);
+
     return [
       success({...notificationParams, title: 'New page added'}),
       {
@@ -24,14 +26,5 @@ const request: EpicUtils.Request<any, any> = {
     ];
   },
 };
-
-export function EpicRedirect() {
-  return (action$, store) => action$.ofType(
-    ADD_PAGE_FULFILLED,
-  ).mergeMap(action => {
-    getHistoryInstance().push(`${URL.PAGES}/${action.payload.id}`);
-    return [];
-  });
-}
 
 export const EpicAddPage: Epic<any, any> = EpicUtils.Create(request);

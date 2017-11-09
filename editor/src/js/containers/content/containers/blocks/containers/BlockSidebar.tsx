@@ -4,15 +4,15 @@ import classnames from "classnames";
 import {Block} from "../../../../../model";
 import {BlockSettings} from "../components/BlockSettings";
 import {URL} from "../../../../../routes";
-import {deleteBlock, saveBlock} from "../actions";
+import {addBlock, deleteBlock, saveBlock} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
-import {defaultBlock} from "../Blocks";
 
 interface Props {
   blocks: Block[];
   match: any;
   onEditSettings: (blockId, settings) => any;
+  onAddBlock: () => any;
   onDeleteBlock: (id) => any;
   history: any;
   fetching: boolean;
@@ -30,12 +30,13 @@ export class BlockSidebar extends React.Component<Props, any> {
   }
 
   onAddBlock() {
-    this.props.history.push(`${URL.BLOCKS}/-1`);
+    const {onAddBlock} = this.props;
+    onAddBlock();
   }
 
   render() {
     const {blocks, match, onEditSettings, onDeleteBlock, showModal, fetching} = this.props;
-    const activeBlock = match.params.id && (blocks.find(block => block.id == match.params.id) || defaultBlock);
+    const activeBlock = match.params.id && blocks.find(block => block.id == match.params.id);
 
     return (
       <div className={classnames({fetching})}>
@@ -72,6 +73,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onEditSettings: (blockId, settings) => dispatch(saveBlock(blockId, settings)),
     onDeleteBlock: id => dispatch(deleteBlock(id)),
     showModal: props => dispatch(showModal(props)),
+    onAddBlock: () => dispatch(addBlock()),
   };
 };
 

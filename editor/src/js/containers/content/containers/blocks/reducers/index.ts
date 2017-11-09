@@ -1,6 +1,8 @@
 import {IAction} from "../../../../../actions/IshAction";
 import {BlocksState} from "./State";
 import {
+  ADD_BLOCK_FULFILLED,
+  ADD_BLOCK_REQUEST,
   DELETE_BLOCK_FULFILLED, DELETE_BLOCK_REQUEST,
   GET_BLOCKS_FULFILLED, GET_BLOCKS_REQUEST, SAVE_BLOCK_FULFILLED, SAVE_BLOCK_REQUEST,
 } from "../actions";
@@ -9,6 +11,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
   switch (action.type) {
 
     case GET_BLOCKS_REQUEST:
+    case ADD_BLOCK_REQUEST:
     case DELETE_BLOCK_REQUEST:
     case SAVE_BLOCK_REQUEST: {
       return {
@@ -38,6 +41,16 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
       }
 
       return ns;
+    }
+
+    case ADD_BLOCK_FULFILLED: {
+      const block = action.payload;
+
+      return {
+        ...state,
+        fetching: false,
+        items: state.items.concat(block),
+      };
     }
 
     case DELETE_BLOCK_FULFILLED: {

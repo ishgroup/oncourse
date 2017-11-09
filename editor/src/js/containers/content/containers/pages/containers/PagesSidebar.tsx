@@ -38,7 +38,7 @@ export class PagesSidebar extends React.Component<Props, any> {
 
   render() {
     const {pages, match, onEditSettings, onDeletePage, showModal, fetching} = this.props;
-    const activePage = match.params.id && (pages.find(page => page.id == match.params.id) || defaultPage);
+    const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
       <div className={classnames({fetching})}>

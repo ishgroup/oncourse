@@ -1,7 +1,6 @@
 import {Epic} from "redux-observable";
 import "rxjs";
 import {success} from 'react-notification-system-redux';
-
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import {DELETE_PAGE_FULFILLED, DELETE_PAGE_REQUEST} from "../actions";
 import PageService from "../../../../../services/PageService";

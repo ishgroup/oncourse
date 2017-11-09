@@ -471,6 +471,16 @@ export class MockDB {
     return page;
   }
 
+  createNewBlock() {
+    const block = new Block();
+    const newId = Math.max(...this.blocks.map(block => block.id)) + 1;
+    block.title = `New Block ${newId}`;
+    block.id = newId;
+
+    this.blocks.push(block);
+    return block;
+  }
+
   getPageRender(id) {
     return this.pages.find(page => page.id === id).html;
   }

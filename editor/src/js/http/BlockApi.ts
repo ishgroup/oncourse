@@ -1,5 +1,6 @@
 import {DefaultHttpService} from "../common/services/HttpService";
 import {API} from "../constants/Config";
+import {Block} from "../model";
 
 export class BlockApi {
   private http = new DefaultHttpService();
@@ -10,6 +11,10 @@ export class BlockApi {
 
   saveBlock(payload): Promise<any> {
     return this.http.POST(API.SAVE_BLOCK, payload);
+  }
+
+  addBlock(): Promise<Block> {
+    return this.http.POST(API.ADD_BLOCK);
   }
 
   deleteBlock(id): Promise<any> {

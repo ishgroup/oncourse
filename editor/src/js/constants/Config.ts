@@ -25,6 +25,7 @@ export const API = {
   // Blocks
   GET_BLOCKS: "/getBlocks",
   SAVE_BLOCK: "/saveBlock",
+  ADD_BLOCK: "/addBlock",
   DELETE_BLOCK: "/deleteBlock",
 
   // Themes

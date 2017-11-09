@@ -31,6 +31,13 @@ export function blockApiMock(mock) {
     );
   });
 
+  this.api.onPost(API.ADD_BLOCK).reply(config => {
+    return promiseResolve(
+      config,
+      this.db.createNewBlock(),
+    );
+  });
+
 
   this.api.onPost(API.DELETE_BLOCK).reply(config => {
 
