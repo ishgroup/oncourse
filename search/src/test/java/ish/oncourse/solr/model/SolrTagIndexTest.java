@@ -39,12 +39,12 @@ public class SolrTagIndexTest extends SolrTestCaseJ4 {
 		when(tag.getCollege()).thenReturn(college);
 		when(tag.getName()).thenReturn("Subject");
 
-		SolrTag solrTag = Functions.getGetSolrTag().call(tag);
+		STag solrTag = Functions.getGetSTag().call(tag);
 
 		solrClient.addBean(solrTag);
 		solrClient.commit();
 
-		SolrTag actual = solrClient.query("tags", new SolrQuery("*:*")).getBeans(SolrTag.class).get(0);
+		STag actual = solrClient.query("tags", new SolrQuery("*:*")).getBeans(STag.class).get(0);
 		assertEquals(solrTag, actual);
 
 	}

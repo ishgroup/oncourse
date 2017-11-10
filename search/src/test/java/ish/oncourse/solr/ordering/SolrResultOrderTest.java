@@ -3,7 +3,7 @@ package ish.oncourse.solr.ordering;
 import ish.oncourse.services.search.SearchParams;
 import ish.oncourse.services.search.SolrQueryBuilder;
 import ish.oncourse.solr.InitSolr;
-import ish.oncourse.solr.model.SolrCourse;
+import ish.oncourse.solr.model.SCourse;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.solr.SolrTestCaseJ4;
 import org.apache.solr.client.solrj.SolrClient;
@@ -37,17 +37,17 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 	public void test1() throws IOException, SolrServerException {
 		SolrClient solrClient = new EmbeddedSolrServer(h.getCore());
 		
-		List<SolrCourse> preparedData = getPreparedData1();
-		for (SolrCourse solrCourse : preparedData) {
+		List<SCourse> preparedData = getPreparedData1();
+		for (SCourse solrCourse : preparedData) {
 			solrClient.addBean(solrCourse);
 		}
 		
 		solrClient.commit();
 
-		List<SolrCourse> allCourses = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SolrCourse.class);
+		List<SCourse> allCourses = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SCourse.class);
 		assertEquals(7, allCourses.size());
 
-		List<SolrCourse> courses = solrClient.query("courses", getSolrQuery()).getBeans(SolrCourse.class);
+		List<SCourse> courses = solrClient.query("courses", getSolrQuery()).getBeans(SCourse.class);
 		
 		assertEquals(3, courses.size());
 		assertEquals("18", courses.get(0).getId());
@@ -59,17 +59,17 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 	public void test2() throws IOException, SolrServerException {
 		SolrClient solrClient = new EmbeddedSolrServer(h.getCore());
 
-		List<SolrCourse> preparedData = getPreparedData2();
-		for (SolrCourse solrCourse : preparedData) {
+		List<SCourse> preparedData = getPreparedData2();
+		for (SCourse solrCourse : preparedData) {
 			solrClient.addBean(solrCourse);
 		}
 
 		solrClient.commit();
 
-		List<SolrCourse> allCourses = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SolrCourse.class);
+		List<SCourse> allCourses = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SCourse.class);
 		assertEquals(7, allCourses.size());
 
-		List<SolrCourse> courses = solrClient.query("courses", getSolrQuery()).getBeans(SolrCourse.class);
+		List<SCourse> courses = solrClient.query("courses", getSolrQuery()).getBeans(SCourse.class);
 				
 		assertEquals(6, courses.size());
 		assertEquals("13", courses.get(0).getId());
@@ -84,17 +84,17 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 	public void test3() throws IOException, SolrServerException {
 		SolrClient solrClient = new EmbeddedSolrServer(h.getCore());
 
-		List<SolrCourse> preparedData = getPreparedData3();
-		for (SolrCourse solrCourse : preparedData) {
+		List<SCourse> preparedData = getPreparedData3();
+		for (SCourse solrCourse : preparedData) {
 			solrClient.addBean(solrCourse);
 		}
 
 		solrClient.commit();
 
-		List<SolrCourse> allCourses = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SolrCourse.class);
+		List<SCourse> allCourses = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SCourse.class);
 		assertEquals(7, allCourses.size());
 
-		List<SolrCourse> courses = solrClient.query("courses", getSolrQuery()).getBeans(SolrCourse.class);
+		List<SCourse> courses = solrClient.query("courses", getSolrQuery()).getBeans(SCourse.class);
 
 		assertEquals(6, courses.size());
 		assertEquals("17", courses.get(0).getId());
@@ -115,8 +115,8 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 		return builder.build();
 	}
 
-	public static List<SolrCourse> getPreparedData1() {
-		ArrayList<SolrCourse> courses = new ArrayList<>();
+	public static List<SCourse> getPreparedData1() {
+		ArrayList<SCourse> courses = new ArrayList<>();
 		courses.add(createSolrCourse(13L, "Test Cert 031", "test detail", "HTBFLM1"));
 		courses.add(createSolrCourse(14L, "Test Cert 021", "test detail care", "HTBFLM2"));
 		courses.add(createSolrCourse(15L, "Test Cert 011", "test detail aged", "HTBFLM3"));
@@ -127,8 +127,8 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 		return courses;
 	}
 
-	public static List<SolrCourse> getPreparedData2() {
-		ArrayList<SolrCourse> courses = new ArrayList<>();
+	public static List<SCourse> getPreparedData2() {
+		ArrayList<SCourse> courses = new ArrayList<>();
 		courses.add(createSolrCourse(13L, "Work in aged care", "test detail", "HTBFLM1"));
 		courses.add(createSolrCourse(14L, "Work in a facility for the aged where you care for residents.", "test detail", "HTBFLM2"));
 		courses.add(createSolrCourse(15L, "Certificate III in Child Care", "test detail", "HTBFLM3"));
@@ -139,8 +139,8 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 		return courses;
 	}
 	
-	public static List<SolrCourse> getPreparedData3() {
-		ArrayList<SolrCourse> courses = new ArrayList<>();
+	public static List<SCourse> getPreparedData3() {
+		ArrayList<SCourse> courses = new ArrayList<>();
 		courses.add(createSolrCourse(13L, "Diploma of Early Childhood Education and Care", "The CHC50113 Diploma of Early Childhood Education and Care is the national qualification for child care workers who want to train to be a Team Coordinator or Leader, a Child Development Worker or Children’s Services Director.\n" +
 				"\nAbout\nThis qualification reflects the role of early childhood educators who are responsible for designing and implementing curriculum in early childhood education and care services. In doing so, they work to implement an approved learning framework within the requirements of the Education and Care Services National Regulations and the National Quality Standard. They may have responsibility for supervision of volunteers or other staff. This is an ideal course for people wishing to advance their career in the Children’s Services sector."
 				, "DiplomaEarlyChildcare2017"));
@@ -165,12 +165,12 @@ public class SolrResultOrderTest extends SolrTestCaseJ4 {
 		return courses;
 	}
 	
-	public static SolrCourse createSolrCourse(Long id, String name, String detail, String code) {
+	public static SCourse createSolrCourse(Long id, String name, String detail, String code) {
 		return createSolrCourse(id, collegeId, name, detail, code, startDate);
 	}
 	
-	public static SolrCourse createSolrCourse(Long id, Long collegeId, String name, String detail, String code, Date startDate) {
-		SolrCourse solrCourse = new SolrCourse();
+	public static SCourse createSolrCourse(Long id, Long collegeId, String name, String detail, String code, Date startDate) {
+		SCourse solrCourse = new SCourse();
 		solrCourse.setId(id.toString());
 		solrCourse.setCollegeId(collegeId);
 		solrCourse.setName(name);

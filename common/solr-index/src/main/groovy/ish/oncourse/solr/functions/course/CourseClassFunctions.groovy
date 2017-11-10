@@ -19,7 +19,6 @@ class CourseClassFunctions {
         query(Session).where(COURSE_CLASS.eq(courseClass)).orderBy(Session.START_DATE.asc()).iterator(courseClass.objectContext)
     }
 
-
     public static final Closure<ResultIterator<Contact>> Contacts = { CourseClass courseClass ->
         return query(Contact).where(Contact.TUTOR.dot(TUTOR_ROLES).dot(TutorRole.COURSE_CLASS).eq(courseClass)).iterator(courseClass.objectContext)
     }

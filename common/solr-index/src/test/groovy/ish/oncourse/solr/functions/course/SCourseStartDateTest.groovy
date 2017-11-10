@@ -49,7 +49,7 @@ class SCourseStartDateTest {
         context.current = param.data.current
         context.course = param.data.course
         context.courseClasses = { resultIterator(param.contexts.collect { it.courseClass }) }
-        context.applyCourseClass = SCourseFunctions.ApplyCourseClass
+        context.applyCourseClass = SCourseFunctions.addCourseClass
         context.courseClassContext = { CourseClass c, Date current ->
             CourseClassContext ccc = emptyCourseClassContext()
             ccc.courseClass = c

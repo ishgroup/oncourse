@@ -24,15 +24,23 @@ import java.util.Map;
 public class LoadDataSet {
 	private String dataSetFile;
 	private Map<Object, Object> replacements;
+	private boolean clean = true;
+
 	private ReplacementDataSet dataSet;
 
-	public LoadDataSet(String dataSetFile) {
-		this(dataSetFile, null);
+	public LoadDataSet dataSetFile(String dataSetFile) {
+		this.dataSetFile = dataSetFile;
+		return this;
 	}
 
-	public LoadDataSet(String dataSetFile, Map<Object, Object> replacements) {
-		this.dataSetFile = dataSetFile;
+	public LoadDataSet replacements(Map<Object, Object> replacements) {
 		this.replacements = replacements == null ? Collections.emptyMap() : replacements;
+		return this;
+	}
+
+	public LoadDataSet clean(boolean clean) {
+		this.clean = clean;
+		return this;
 	}
 
 	public LoadDataSet load(DataSource dataSource) {
@@ -42,7 +50,10 @@ public class LoadDataSet {
 			DatabaseConnection dbConnection = new DatabaseConnection(dataSource.getConnection());
 			dbConnection.getConfig().setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 			dbConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
-			DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+			if (clean)
+				DatabaseOperation.CLEAN_INSERT.execute(dbConnection, dataSet);
+			else
+				DatabaseOperation.INSERT.execute(dbConnection, dataSet);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

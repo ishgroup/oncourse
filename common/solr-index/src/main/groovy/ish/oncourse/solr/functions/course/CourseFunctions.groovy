@@ -1,6 +1,7 @@
 package ish.oncourse.solr.functions.course
 
 import ish.oncourse.model.*
+import ish.oncourse.solr.model.SCourse
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ResultIterator
 
@@ -26,4 +27,16 @@ class CourseFunctions {
                 .and(Tag.TAGGABLE_TAGS.dot(TaggableTag.TAGGABLE).dot(Taggable.ENTITY_WILLOW_ID).eq(course.id))
                 .iterator(course.objectContext)
     }
+
+    public static final Closure<SCourse> BuildSCourse = { Course course ->
+        return new SCourse().with {
+            it.id = course.id
+            it.collegeId = course.college.id
+            it.code = course.code
+            it.name = course.name
+            it.detail = course.detail
+            it
+        }
+    }
+
 }

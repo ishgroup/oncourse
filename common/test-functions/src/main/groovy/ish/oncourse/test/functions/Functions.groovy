@@ -47,7 +47,6 @@ class Functions {
     }
 
     static BasicDataSource createDS(MariaDB mariaDB) {
-        DriverManager.registerDriver(Class.forName(mariaDB.driver) as Driver)
         BasicDataSource dataSource = new BasicDataSource()
         dataSource.setDriverClassName(mariaDB.driver)
         dataSource.setUrl(mariaDB.url)
@@ -154,6 +153,7 @@ class Functions {
 
         void log(Logger logger, String message) {
             logger.warn("$message: ${System.currentTimeMillis() - start}")
+            start = System.currentTimeMillis()
         }
     }
 }

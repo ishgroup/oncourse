@@ -7,33 +7,24 @@ import ish.oncourse.test.LoadDataSet;
 import ish.oncourse.test.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
-import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.soap.ReplicationTestModule;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v14.stubs.replication.*;
+import ish.oncourse.webservices.v14.stubs.replication.BinaryInfoRelationStub;
+import ish.oncourse.webservices.v14.stubs.replication.CourseStub;
+import ish.oncourse.webservices.v14.stubs.replication.DocumentStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.webservices.replication.services.TransactionGroupProcessorTestUtils.generateContactDuplicateV14Stub;
-import static ish.oncourse.webservices.replication.services.TransactionGroupProcessorTestUtils.generateContactV14Stub;
-import static ish.oncourse.webservices.replication.services.TransactionGroupProcessorTestUtils.generateDeleteV14Stub;
+import static ish.oncourse.webservices.replication.services.TransactionGroupProcessorTestUtils.*;
 import static ish.oncourse.webservices.util.SupportedVersions.V14;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class TransactionGroupProcessorTest extends ServiceTest {
 	WillowQueueService willowQueueService;
@@ -44,7 +35,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
     @Before
     public void setup() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-		new LoadDataSet("ish/oncourse/webservices/replication/services/TransactionGroupProcessorTest.xml")
+		new LoadDataSet().dataSetFile("ish/oncourse/webservices/replication/services/TransactionGroupProcessorTest.xml")
 				.load(testContext.getDS());
         willowQueueService = new WillowQueueService(getObject(IWebSiteService.class, null), getService(ICayenneService.class));
         willowStubBuilder = getService(IWillowStubBuilder.class);

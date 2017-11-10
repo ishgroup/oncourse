@@ -27,7 +27,7 @@ public class SolrCourseIndexTest extends SolrTestCaseJ4 {
     @Test
     public void test() throws IOException, SolrServerException {
         SolrClient solrClient = new EmbeddedSolrServer(h.getCore());
-        SolrCourse expected = new SolrCourse();
+        SCourse expected = new SCourse();
         expected.setId(Long.valueOf(1).toString());
         expected.setCollegeId(1);
         expected.setName("Course1");
@@ -38,7 +38,7 @@ public class SolrCourseIndexTest extends SolrTestCaseJ4 {
         solrClient.addBean(expected);
         solrClient.commit();
 
-        SolrCourse actual = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SolrCourse.class).get(0);
+        SCourse actual = solrClient.query("courses", new SolrQuery("*:*")).getBeans(SCourse.class).get(0);
         assertEquals(expected, actual);
     }
 }

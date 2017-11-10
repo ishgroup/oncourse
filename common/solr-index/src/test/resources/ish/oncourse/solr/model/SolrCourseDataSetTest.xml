@@ -7,9 +7,9 @@
     <Course id="12" collegeId="1" code="selfpaced, Sydney" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" allowWaitingList="1" name="Sydney selfpaced" enrolmentType="1"/>
     <Course id="13" collegeId="1" code="with sessions, Sydney" isWebVisible="1" isVETCourse="0" isSufficientForQualification="0" allowWaitingList="1" name="Sydney with sessions" enrolmentType="1"/>
 
-    <Site id="11" collegeId="1" isWebVisible="1" name="Sydney currentTimeZone" isVirtual="0" timeZone="Australia/Sydney"/> <!--current timezone-->
-    <Site id="12" collegeId="1" isWebVisible="1" name="Sydney differentTimezone" isVirtual="0" timeZone="Australia/Perth"/> <!--different timezone-->
-    <Site id="13" collegeId="1" isWebVisible="0" name="Sydney noTimeZone" isVirtual="0"/> <!--web invisible-->
+    <Site id="11" collegeId="1" isWebVisible="1" name="Sydney Australia/Sydney" isVirtual="0" timeZone="Australia/Sydney"/> <!--current timezone-->
+    <Site id="12" collegeId="1" isWebVisible="1" name="Sydney Australia/Perth" isVirtual="0" timeZone="Australia/Perth"/> <!--different timezone-->
+    <Site id="13" collegeId="1" isWebVisible="1" name="Sydney Without" isVirtual="0"/> <!--web invisible-->
 
     <Room id="11" collegeId="1" siteId="11" name="Sydney room"/>
 

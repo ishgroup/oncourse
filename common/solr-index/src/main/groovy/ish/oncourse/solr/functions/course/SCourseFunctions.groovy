@@ -18,18 +18,6 @@ import static ish.oncourse.solr.functions.course.CourseFunctions.Courses
  */
 class SCourseFunctions {
 
-    public static final Closure<SCourse> BuildSolrCourse = { Course course ->
-        return new SCourse().with {
-            it.id = course.id
-            it.collegeId = course.college.id
-            it.code = course.code
-            it.name = course.name
-            it.detail = course.detail
-            it
-        }
-    }
-
-
     public static final Closure<Observable<SCourse>> SCourses = {
         ObjectContext context, Date current = new Date() ->
             Flowable.fromIterable(Courses(context))
@@ -41,7 +29,7 @@ class SCourseFunctions {
 
 
     public static final Closure<SCourse> GetSCourse = { CourseContext context ->
-        SCourse result = BuildSolrCourse.call(context.course)
+        SCourse result = CourseFunctions.BuildSCourse.call(context.course)
         ResultIterator<CourseClass> classes = context.courseClasses(context)
         result = Observable.fromIterable(classes).filter({ c -> c.hasAvailableEnrolmentPlaces })
                 .flatMap({ cc -> context.applyCourseClass(result, context.courseClassContext.call(cc, context.current)) })
@@ -59,7 +47,7 @@ class SCourseFunctions {
     }
 
 
-    static final Closure<Observable<SCourse>> ApplyCourseClass = {
+    static final Closure<Observable<SCourse>> AddCourseClass = {
         SCourse sc, CourseClassContext cc ->
             Observable.just(new GetSCourseClass(cc).get()).map({ SCourseClass scc ->
                 if (!sc.classStart.contains(scc.classStart)) sc.classStart.add(scc.classStart)

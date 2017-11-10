@@ -17,7 +17,7 @@ class SolrCourseDataSetTest {
     void before() {
         context.shouldCreateTables(true)
         context.open()
-        new LoadDataSet("ish/oncourse/solr/model/SolrCourseDataSetTest.xml").load(context.getDS())
+        new LoadDataSet().dataSetFile("ish/oncourse/solr/model/SolrCourseDataSetTest.xml").load(context.getDS())
     }
 
     @Test

@@ -21,6 +21,7 @@ public class TestContext {
 
 
 	private boolean shouldCreateTables = false;
+	private boolean shouldCleanTables = true;
 	private BasicDataSource dataSource;
 	private MariaDB mariaDB;
 
@@ -28,6 +29,12 @@ public class TestContext {
 		this.shouldCreateTables = value;
 		return this;
 	}
+
+	public TestContext shouldCleanTables(boolean value) {
+		this.shouldCleanTables = value;
+		return this;
+	}
+
 
 	public TestContext mariaDB(MariaDB mariaDB) {
 		this.mariaDB = mariaDB;
@@ -47,7 +54,8 @@ public class TestContext {
 			Functions.cleanDB(mariaDB, true);
 			new CreateTables(Functions.createRuntime()).create();
 		} else {
-			Functions.cleanDB(mariaDB, false);
+			if (shouldCleanTables)
+				Functions.cleanDB(mariaDB, false);
 		}
 		return this;
 	}
@@ -71,7 +79,7 @@ public class TestContext {
 	 */
 	@Deprecated
 	public void cleanInsert(String dataSetResource) throws Exception {
-		new LoadDataSet(dataSetResource).load(dataSource);
+		new LoadDataSet().dataSetFile(dataSetResource).load(dataSource);
 	}
 
 	public void close() {
