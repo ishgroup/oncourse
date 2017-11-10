@@ -38,6 +38,8 @@
       display: block;
       color: $gray;
       padding-top: 3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   

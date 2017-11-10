@@ -18,6 +18,8 @@
   &__title {
     padding-right: 15px;
     transition: color .15s;
+    text-overflow: ellipsis;
+    overflow: hidden;
     
     &:after {
       display: block;

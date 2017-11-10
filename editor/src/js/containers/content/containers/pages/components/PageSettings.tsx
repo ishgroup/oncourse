@@ -161,6 +161,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
                         "links__title--default": url.isDefault,
                         "links__title--base": url.isBase,
                       })}
+                      title={url.link}
                     >
                       {url.link}
                     </div>
