@@ -45,7 +45,7 @@ dependencies {
     compile 'org.ehcache:ehcache:3.3.1'
 
     //search
-    compile "org.apache.solr:solr-solrj:6.6.0"
+    compile "org.apache.solr:solr-solrj:$solr6Version"
 
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
 

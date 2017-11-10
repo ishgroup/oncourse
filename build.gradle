@@ -4,6 +4,7 @@ buildscript {
 		log4j2Version = '2.8.2'
         waCommonWebservicesClientVersion = '9.4.10'
 		solrVersion = '5.5.4'
+		solr6Version = '6.6.2'
 		groovyVersion = '2.4.12'
 		mariadbVersion = '2.2.0'
 	}
