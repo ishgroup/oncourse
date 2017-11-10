@@ -9,7 +9,7 @@ class Configuration {
     public static final String JDBC_URL_PROPERTY = 'bq.jdbc.willow.url'
     static final String BD_URL = 'jdbc:mysql://%s:%s/%s?autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&useSSL=false'
     
-    static configure() {
+    static configure(IProperty... extendedProps = null) {
         String userDir = System.getProperties().get(USER_DIR) as String
         File propFile = new File("$userDir/$CONFIG_FILE_NAME")
         if (propFile.exists()) {
@@ -31,7 +31,9 @@ class Configuration {
                 String zkHostPort = prop.get(ZK_HOST.key) as String
                 InitZKRootNode.valueOf(zkHostPort).init()
             }
-           
+            if (extendedProps) {
+                extendedProps.each { it.init(prop) }
+            }
         } else {
             throw new IllegalArgumentException("application.properties file not found")
         }
@@ -40,42 +42,24 @@ class Configuration {
     /**
      * properties which supported into 'application.properties' files
      */
-    static enum AppProperty {
+    static enum AppProperty implements IProperty {
         
         PORT('port', 'bq.jetty.connector.port'),
         HOST('host', 'bq.jetty.connector.host'),
         DB_HOST('db_host', null),
-        DB_PORT('db_port',null),
-        DB_NAME('db_name',null),
-        DB_USER('db_user','bq.jdbc.willow.username'),
-        DB_PASS('db_pass','bq.jdbc.willow.password'),
+        DB_PORT('db_port', null),
+        DB_NAME('db_name', null),
+        DB_USER('db_user', 'bq.jdbc.willow.username'),
+        DB_PASS('db_pass', 'bq.jdbc.willow.password'),
         PATH('path', 'bq.jetty.context'),
-        ZK_HOST('zk_host','zk.host.property'),
-        LOGS_PATH('logs_path','logs.path'),
-        SMTP('smtp','mail.smtp.host')
+        ZK_HOST('zk_host', 'zk.host.property'),
+        LOGS_PATH('logs_path', 'logs.path'),
+        SMTP('smtp', 'mail.smtp.host')
         
-        private String key
-        private String systemProperty
-
         private AppProperty(String key, String systemProperty) {
             this.key = key
             this.systemProperty = systemProperty
         }
         
-        String getKey() {
-           key
-        }
-        
-        String getSystemProperty() {
-            systemProperty
-        }
-        
-        boolean init(Properties props) {
-            if (props.get(key)) {
-                System.setProperty(systemProperty, props.get(key) as String)
-                return true
-            }
-            return false
-        } 
     }
 }

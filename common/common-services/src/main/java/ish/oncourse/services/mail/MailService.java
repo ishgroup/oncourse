@@ -72,51 +72,6 @@ public class MailService implements IMailService {
 
 	@Override
 	public boolean sendEmail(EmailBuilder email, boolean asynchronous) {
-
-		final Message message;
-
-		try {
-			Session session = getSession();
-			message = email.toMessage(session);
-		} catch (MessagingException e) {
-			logger.warn("Failed to prepare message", e);
-			return false;
-		}
-
-		if (asynchronous) {
-			Runnable r = new Runnable() {
-				public void run() {
-					doSend(message);
-				}
-			};
-
-			Thread mailThread = new Thread(r, "email");
-			mailThread.setDaemon(true);
-			mailThread.start();
-			return true;
-
-		} else {
-			return doSend(message);
-		}
+		return SendEmail.valueOf(email, asynchronous).send();
 	}
-
-	private boolean doSend(Message message) {
-		try {
-			Transport.send(message);
-			logger.debug("Email sent successfully");
-			return true;
-		} catch (MessagingException e) {
-			logger.warn("Error sending email.", e);
-			return false;
-		}
-	}
-
-	private Session getSession() {
-		Properties props = System.getProperties();
-		if (!props.containsKey(SMTP.getSystemProperty())) {
-			logger.error("SMTP host is not defined!");
-		}
-		return Session.getDefaultInstance(props, null);
-	}
-
 }
