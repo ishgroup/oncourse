@@ -21,6 +21,7 @@ class DataContext {
 
             CollegeContext collegeContext = new CollegeContext()
             collegeContext.objectContext = objectContext
+            collegeContext.college = it
             colleges.put(name, collegeContext)
             objectContext.commitChanges()
             collegeContext
