@@ -4,13 +4,16 @@ import classnames from 'classnames';
 import {Checkbox} from "../../../../../common/components/Checkbox";
 import {IconBack} from "../../../../../common/components/IconBack";
 import {Page} from "../../../../../model";
+import PageService from "../../../../../services/PageService";
 
 interface Props {
   page: Page;
+  pages: Page[];
   onBack: () => void;
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
   showModal?: (props) => any;
+  showError?: (title) => any;
 }
 
 export class PageSettings extends React.PureComponent<Props, any> {
@@ -91,8 +94,11 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
   onAddNewUrl() {
     const newLink = this.formatLink(this.state.newLink);
+    const {pages, page, showError} = this.props;
+    const actualPages = pages.map(p => p.id === page.id ? {...p, urls: this.state.urls} : p);
 
-    if (!this.state.newLink || !newLink || this.state.urls.find(i => i.link === newLink)) {
+    if (!this.state.newLink || !PageService.isValidPageUrl(newLink, actualPages)) {
+      showError('This url already exist');
       return;
     }
 
@@ -115,7 +121,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
 
   render () {
     const {page} = this.props;
-    const {title, visible, layout, theme, urls, newLink} = this.state;
+    const {title, visible, theme, urls, newLink} = this.state;
 
     return (
       <div>

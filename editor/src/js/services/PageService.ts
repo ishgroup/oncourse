@@ -29,8 +29,8 @@ class PageService {
     return this.pageApi.getPageRender(request);
   }
 
-  public isValidPageUrl(url, pages) {
-
+  public isValidPageUrl(link, pages) {
+    return link && !pages.find(page => page.urls.find(i => i.link === link));
   }
 
   public buildSavePageRequest(props, state: State): SavePageRequest {
