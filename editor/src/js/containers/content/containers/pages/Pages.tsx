@@ -32,16 +32,18 @@ export class Pages extends React.Component<Props, any> {
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
-      <div className={classnames({fetching})}>
+      <div>
         {activePage &&
-        <Page
-          page={activePage}
-          onSave={onEditHtml}
-          openPage={url => this.openPage(url)}
-          toggleEditMode={flag => toggleEditMode(flag)}
-          clearRenderHtml={clearRenderHtml}
-          editMode={editMode}
-        />
+          <div className={classnames({fetching})}>
+            <Page
+              page={activePage}
+              onSave={onEditHtml}
+              openPage={url => this.openPage(url)}
+              toggleEditMode={flag => toggleEditMode(flag)}
+              clearRenderHtml={clearRenderHtml}
+              editMode={editMode}
+            />
+          </div>
         }
       </div>
     );

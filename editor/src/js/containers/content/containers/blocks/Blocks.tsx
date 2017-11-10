@@ -25,12 +25,14 @@ export class Blocks extends React.Component<Props, any> {
     const activeBlock = match.params.id && blocks.find(block => block.id == match.params.id);
 
     return (
-      <div className={classnames({fetching})}>
+      <div>
         {activeBlock &&
-          <Block
-            block={activeBlock}
-            onSave={onEditHtml}
-          />
+          <div className={classnames({fetching})}>
+            <Block
+              block={activeBlock}
+              onSave={onEditHtml}
+            />
+          </div>
         }
       </div>
     );
