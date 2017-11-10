@@ -1,3 +1,20 @@
 apply from: "$rootDir/buildApiApp.gradle"
 
 mainClassName = 'ish.oncourse.willow.cms.EditorApp'
+
+configurations {
+    closureCompiler
+}
+
+dependencies {
+    //webdav servlet 
+    compile 'io.milton:milton-api:2.6.0.1'
+    compile 'io.milton:milton-server-ce:2.6.0.1'
+    
+    compile 'org.apache.commons:commons-compress:1.9'
+    compile 'org.reflections:reflections:0.9.11'
+
+    //js compiler
+    compile 'com.google.javascript:closure-compiler:v20170218'
+    closureCompiler 'com.google.javascript:closure-compiler:v20170218'
+}
