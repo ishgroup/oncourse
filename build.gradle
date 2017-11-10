@@ -5,7 +5,7 @@ buildscript {
         waCommonWebservicesClientVersion = '9.4.10'
 		solrVersion = '5.5.4'
 		groovyVersion = '2.4.12'
-		mariadbVersion = '2.1.2'
+		mariadbVersion = '2.2.0'
 	}
 
 	repositories {
