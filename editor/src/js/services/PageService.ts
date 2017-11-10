@@ -29,6 +29,10 @@ class PageService {
     return this.pageApi.getPageRender(request);
   }
 
+  public isValidPageUrl(url, pages) {
+
+  }
+
   public buildSavePageRequest(props, state: State): SavePageRequest {
     const page = state.page.items.find(p => p.id === props.id);
     const request: SavePageRequest = new SavePageRequest();

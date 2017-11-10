@@ -21,7 +21,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
     this.state = {
       title: props.page.title,
       urls: props.page.urls,
-      layout: props.page.layout,
       visible: props.page.visible,
       theme: props.page.theme,
       newLink: '',
@@ -33,7 +32,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
       this.setState({
         title: props.page.title,
         urls: props.page.urls,
-        layout: props.page.layout,
         visible: props.page.visible,
         theme: props.page.theme,
         newLink: '',
@@ -53,7 +51,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
     onEdit({
       title: this.state.title,
       urls: this.state.urls,
-      layout: this.state.layout,
       visible: this.state.visible,
       theme: this.state.theme,
     });
@@ -208,20 +205,6 @@ export class PageSettings extends React.PureComponent<Props, any> {
                 onChange={e => {this.onChange(e, 'visible'); this.onBlur('visible');}}
               />
             </FormGroup>
-
-            <FormGroup>
-              <Label htmlFor="pageLayout">Layout</Label>
-              <Input
-                type="text"
-                name="pageLayout"
-                id="pageLayout"
-                placeholder="Page layout"
-                value={layout}
-                onChange={e => this.onChange(e, 'layout')}
-                onBlur={e => this.onBlur('layout')}
-              />
-            </FormGroup>
-
 
             <FormGroup className="actions-group">
               <div className="buttons-inline">

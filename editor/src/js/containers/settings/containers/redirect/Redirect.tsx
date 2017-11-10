@@ -14,7 +14,7 @@ interface Props {
   fetching: boolean;
 }
 
-export class Redirect extends React.Component<Props, any> {
+export class Redirect extends React.PureComponent<Props, any> {
 
   constructor(props) {
     super(props);
@@ -26,12 +26,6 @@ export class Redirect extends React.Component<Props, any> {
 
   componentDidMount() {
     this.props.onInit();
-  }
-
-  componentWillReceiveProps(props) {
-    this.setState({
-      rules: props.redirect.rules,
-    });
   }
 
   onChange(e, index, key) {
@@ -57,14 +51,14 @@ export class Redirect extends React.Component<Props, any> {
       rules: this.state.rules.map(rule => ({...rule, submitted: true})),
     });
 
-    const state = this.state;
-    state.rules = state.rules
+    const rules = this.state.rules
       .filter(rule => rule.from || rule.to)
       .map(rule => ({from: rule.from, to: rule.to}));
 
-    if (state.rules.filter(rule => (rule.from && !rule.to) || (!rule.from && rule.to)).length) return;
+    if (rules.filter(rule => (rule.from && !rule.to) || (!rule.from && rule.to)).length) return;
 
-    onSave(state);
+    this.setState({rules});
+    onSave({rules});
   }
 
   onRemove(index) {
