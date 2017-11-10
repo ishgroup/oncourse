@@ -4,8 +4,9 @@ buildscript {
 		log4j2Version = '2.8.2'
 		cayenneVersion = '4.0.B2'
 		jettyVersion = '9.4.6.v20170531'
-		mariadbVersion = '2.1.2'
+		mariadbVersion = '2.2.0'
 	}
+	
 	repositories {
 		maven {
 			url 'https://repo.ish.com.au/content/groups/public'
