@@ -33,12 +33,16 @@ export class BlockSettings extends React.Component<Props, any> {
     });
   }
 
-  onBlur(key) {
-    const {onEdit, block} = this.props;
+  onSave() {
+    const {onEdit} = this.props;
 
-    if (block[key] !== this.state[key]) {
-      onEdit({[key]: this.state[key]});
-    }
+    onEdit({
+      title: this.state.title,
+    });
+  }
+
+  onBlur(key) {
+
   }
 
   onClickDelete(e) {
@@ -81,15 +85,24 @@ export class BlockSettings extends React.Component<Props, any> {
               />
             </FormGroup>
 
-            <FormGroup>
-              <Button
-                color="danger"
-                className="outline"
-                onClick={e => this.onClickDelete(e)}
-              >
-                <span className="icon icon-delete"/>
-                Remove
-              </Button>
+            <FormGroup className="actions-group">
+              <div className="buttons-inline">
+                <Button
+                  color="danger"
+                  className="outline"
+                  onClick={e => this.onClickDelete(e)}
+                >
+                  <span className="icon icon-delete"/>
+                  Remove
+                </Button>
+
+                <Button
+                  color="primary"
+                  onClick={e => this.onSave()}
+                >
+                  Save
+                </Button>
+              </div>
             </FormGroup>
           </Form>
         </div>

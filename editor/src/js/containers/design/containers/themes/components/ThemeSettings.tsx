@@ -35,11 +35,16 @@ export class ThemeSettings extends React.Component<Props, any> {
   }
 
   onBlur(key) {
-    const {onEdit, theme} = this.props;
 
-    if (theme[key] !== this.state[key]) {
-      onEdit({[key]: this.state[key]});
-    }
+  }
+
+  onSave() {
+    const {onEdit} = this.props;
+
+    onEdit({
+      title: this.state.title,
+      layout: this.state.layout,
+    });
   }
 
   onClickDelete(e) {
@@ -95,15 +100,24 @@ export class ThemeSettings extends React.Component<Props, any> {
               />
             </FormGroup>
 
-            <FormGroup>
-              <Button
-                color="danger"
-                className="outline"
-                onClick={e => this.onClickDelete(e)}
-              >
-                <span className="icon icon-delete"/>
-                Remove
-              </Button>
+            <FormGroup className="actions-group">
+              <div className="buttons-inline">
+                <Button
+                  color="danger"
+                  className="outline"
+                  onClick={e => this.onClickDelete(e)}
+                >
+                  <span className="icon icon-delete"/>
+                  Remove
+                </Button>
+
+                <Button
+                  color="primary"
+                  onClick={e => this.onSave()}
+                >
+                  Save
+                </Button>
+              </div>
             </FormGroup>
           </Form>
         </div>
