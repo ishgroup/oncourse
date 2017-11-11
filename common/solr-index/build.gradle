@@ -11,7 +11,7 @@ dependencies {
     compile project(':common:cayenne-model')
     compile project(':common:job-scheduler')
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version: groovyVersion
-    compile group: 'org.apache.solr', name: 'solr-solrj', version: solr6Version
+    compile group: 'org.apache.solr', name: 'solr-solrj', version: solrVersion
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
     compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.6'
 

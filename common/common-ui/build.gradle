@@ -3,7 +3,6 @@ configurations { providedCompile }
 dependencies {
 	providedCompile 'javax.servlet:servlet-api:3.0'
 
-	compile project(':common:common-model')
 	compile project(':common:common-textile')
 	compile project(':common:common-services')
 	
