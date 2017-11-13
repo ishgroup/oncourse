@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import {clearRenderHtml, getPages, savePage, toggleEditMode} from "./actions";
 import {Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
+import {getThemes} from "../../../design/containers/themes/actions/index";
 
 interface Props {
   pages: PageModel[];
@@ -58,7 +59,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    onInit: () => dispatch(getPages()),
+    onInit: () => {
+      dispatch(getPages());
+      dispatch(getThemes());
+    },
     onEditHtml: (id, html) => dispatch(savePage(id, {html}, true)),
     toggleEditMode: flag => dispatch(toggleEditMode(flag)),
     clearRenderHtml: pageId => dispatch(clearRenderHtml(pageId)),

@@ -2,7 +2,7 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
 import {error} from 'react-notification-system-redux';
-import {Page} from "../../../../../model";
+import {Page, Theme} from "../../../../../model";
 import {PageSettings} from "../components/PageSettings";
 import {URL} from "../../../../../routes";
 import {addPage, deletePage, savePage} from "../actions";
@@ -13,6 +13,7 @@ import {notificationParams} from "../../../../../common/utils/NotificationSettin
 
 interface Props {
   pages: Page[];
+  themes: Theme[];
   match: any;
   onEditSettings: (pageId, settings) => any;
   onDeletePage: (id) => any;
@@ -39,7 +40,7 @@ export class PagesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {pages, match, onEditSettings, onDeletePage, showModal, fetching, showError} = this.props;
+    const {pages, match, onEditSettings, onDeletePage, showModal, fetching, showError, themes} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
@@ -59,6 +60,7 @@ export class PagesSidebar extends React.Component<Props, any> {
           <PageSettings
             page={activePage}
             pages={pages}
+            themes={themes}
             onBack={() => this.resetActivePage()}
             onEdit={prop => onEditSettings(activePage.id, prop)}
             onDelete={id => onDeletePage(id)}
@@ -73,6 +75,7 @@ export class PagesSidebar extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   pages: state.page.items,
+  themes: state.theme.items,
   fetching: state.page.fetching,
 });
 

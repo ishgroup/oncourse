@@ -61,8 +61,7 @@ export class MockDB {
         id: 1,
         title: 'Page - 1',
         visible: true,
-        theme: 'first',
-        layout: 'custom',
+        themeId: 1,
         urls: [
           {
             link: '/page/1/',
@@ -81,8 +80,7 @@ export class MockDB {
         id: 2,
         title: 'Page - 2',
         visible: true,
-        theme: 'first',
-        layout: 'custom',
+        themeId: 1,
         urls: [
           {
             link: '/page/2/',
@@ -106,8 +104,7 @@ export class MockDB {
         id: 3,
         title: 'Page - 3',
         visible: false,
-        theme: 'first',
-        layout: 'custom',
+        themeId: 1,
         urls: [
           {
             link: '/page/3/',
@@ -254,10 +251,10 @@ export class MockDB {
             id: 3,
             position: 1,
           },
-            {
-              id: 4,
-              position: 1,
-            }],
+          {
+            id: 4,
+            position: 1,
+          }],
           middle3: [],
           footer: [{
             id: 5,

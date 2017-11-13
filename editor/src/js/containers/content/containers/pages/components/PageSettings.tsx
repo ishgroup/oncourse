@@ -3,12 +3,13 @@ import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} fr
 import classnames from 'classnames';
 import {Checkbox} from "../../../../../common/components/Checkbox";
 import {IconBack} from "../../../../../common/components/IconBack";
-import {Page} from "../../../../../model";
+import {Page, Theme} from "../../../../../model";
 import PageService from "../../../../../services/PageService";
 
 interface Props {
   page: Page;
   pages: Page[];
+  themes: Theme[];
   onBack: () => void;
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
@@ -25,7 +26,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
       title: props.page.title,
       urls: props.page.urls,
       visible: props.page.visible,
-      theme: props.page.theme,
+      themeId: props.page.themeId,
       newLink: '',
     };
   }
@@ -36,7 +37,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
         title: props.page.title,
         urls: props.page.urls,
         visible: props.page.visible,
-        theme: props.page.theme,
+        themeId: props.page.themeId,
         newLink: '',
       });
     }
@@ -55,7 +56,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
       title: this.state.title,
       urls: this.state.urls,
       visible: this.state.visible,
-      theme: this.state.theme,
+      themeId: this.state.themeId,
     });
   }
 
@@ -120,8 +121,8 @@ export class PageSettings extends React.PureComponent<Props, any> {
   }
 
   render () {
-    const {page} = this.props;
-    const {title, visible, theme, urls, newLink} = this.state;
+    const {page, themes} = this.props;
+    const {title, visible, themeId, urls, newLink} = this.state;
 
     return (
       <div>
@@ -194,14 +195,18 @@ export class PageSettings extends React.PureComponent<Props, any> {
             <FormGroup>
               <Label htmlFor="pageTheme">Theme</Label>
               <Input
-                type="text"
+                type="select"
                 name="pageTheme"
                 id="pageTheme"
                 placeholder="Page theme"
-                value={theme}
-                onChange={e => this.onChange(e, 'theme')}
-                onBlur={e => this.onBlur('theme')}
-              />
+                value={themeId}
+                onChange={e => this.onChange(e, 'themeId')}
+                onBlur={e => this.onBlur('themeId')}
+              >
+                {themes.map(theme => (
+                  <option key={theme.id}>{theme.title}</option>
+                ))}
+              </Input>
             </FormGroup>
 
             <FormGroup>
