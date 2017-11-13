@@ -25,11 +25,11 @@ public abstract class _WebTemplate extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> CONTENT = new Property<String>("content");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<WebSiteLayout> LAYOUT = new Property<WebSiteLayout>("layout");
+    public static final Property<String> CONTENT = Property.create("content", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<WebSiteLayout> LAYOUT = Property.create("layout", WebSiteLayout.class);
 
     public void setContent(String content) {
         writeProperty("content", content);

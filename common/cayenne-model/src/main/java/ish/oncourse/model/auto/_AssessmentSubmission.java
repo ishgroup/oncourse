@@ -32,15 +32,15 @@ public abstract class _AssessmentSubmission extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> STUDENT_COMMENTS = new Property<String>("studentComments");
-    public static final Property<String> TUTOR_COMMENTS = new Property<String>("tutorComments");
-    public static final Property<AssessmentClass> ASSESSMENT_CLASS = new Property<AssessmentClass>("assessmentClass");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Enrolment> ENROLMENT = new Property<Enrolment>("enrolment");
-    public static final Property<Contact> SUBMITTED_BY = new Property<Contact>("submittedBy");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> STUDENT_COMMENTS = Property.create("studentComments", String.class);
+    public static final Property<String> TUTOR_COMMENTS = Property.create("tutorComments", String.class);
+    public static final Property<AssessmentClass> ASSESSMENT_CLASS = Property.create("assessmentClass", AssessmentClass.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
+    public static final Property<Contact> SUBMITTED_BY = Property.create("submittedBy", Contact.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

@@ -19,7 +19,7 @@ public abstract class _ContactCustomField extends CustomField {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Contact> RELATED_OBJECT = new Property<Contact>("relatedObject");
+    public static final Property<Contact> RELATED_OBJECT = Property.create("relatedObject", Contact.class);
 
     public void setRelatedObject(Contact relatedObject) {
         setToOneTarget("relatedObject", relatedObject, true);

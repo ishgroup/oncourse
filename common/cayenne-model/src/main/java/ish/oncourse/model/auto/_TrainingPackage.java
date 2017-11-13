@@ -30,18 +30,18 @@ public abstract class _TrainingPackage extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> COPYRIGHT_CATEGORY = new Property<String>("copyrightCategory");
-    public static final Property<String> COPYRIGHT_CONTACT = new Property<String>("copyrightContact");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DEVELOPER = new Property<String>("developer");
-    public static final Property<Date> ENDORSEMENT_FROM = new Property<Date>("endorsementFrom");
-    public static final Property<Date> ENDORSEMENT_TO = new Property<Date>("endorsementTo");
-    public static final Property<Long> ISH_VERSION = new Property<Long>("ishVersion");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NATIONAL_ISC = new Property<String>("nationalISC");
-    public static final Property<String> PURCHASE_FROM = new Property<String>("purchaseFrom");
-    public static final Property<String> TITLE = new Property<String>("title");
-    public static final Property<String> TYPE = new Property<String>("type");
+    public static final Property<String> COPYRIGHT_CATEGORY = Property.create("copyrightCategory", String.class);
+    public static final Property<String> COPYRIGHT_CONTACT = Property.create("copyrightContact", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DEVELOPER = Property.create("developer", String.class);
+    public static final Property<Date> ENDORSEMENT_FROM = Property.create("endorsementFrom", Date.class);
+    public static final Property<Date> ENDORSEMENT_TO = Property.create("endorsementTo", Date.class);
+    public static final Property<Long> ISH_VERSION = Property.create("ishVersion", Long.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NATIONAL_ISC = Property.create("nationalISC", String.class);
+    public static final Property<String> PURCHASE_FROM = Property.create("purchaseFrom", String.class);
+    public static final Property<String> TITLE = Property.create("title", String.class);
+    public static final Property<String> TYPE = Property.create("type", String.class);
 
     public void setCopyrightCategory(String copyrightCategory) {
         writeProperty("copyrightCategory", copyrightCategory);

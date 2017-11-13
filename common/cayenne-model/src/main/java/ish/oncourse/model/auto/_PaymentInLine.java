@@ -30,13 +30,13 @@ public abstract class _PaymentInLine extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Money> AMOUNT = new Property<Money>("amount");
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Invoice> INVOICE = new Property<Invoice>("invoice");
-    public static final Property<PaymentIn> PAYMENT_IN = new Property<PaymentIn>("paymentIn");
+    public static final Property<Money> AMOUNT = Property.create("amount", Money.class);
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Invoice> INVOICE = Property.create("invoice", Invoice.class);
+    public static final Property<PaymentIn> PAYMENT_IN = Property.create("paymentIn", PaymentIn.class);
 
     public void setAmount(Money amount) {
         writeProperty("amount", amount);

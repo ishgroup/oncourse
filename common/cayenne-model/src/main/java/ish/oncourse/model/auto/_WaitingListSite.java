@@ -24,10 +24,10 @@ public abstract class _WaitingListSite extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Site> SITE = new Property<Site>("site");
-    public static final Property<WaitingList> WAITING_LIST = new Property<WaitingList>("waitingList");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Site> SITE = Property.create("site", Site.class);
+    public static final Property<WaitingList> WAITING_LIST = Property.create("waitingList", WaitingList.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

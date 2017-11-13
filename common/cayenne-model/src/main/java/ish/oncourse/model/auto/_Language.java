@@ -24,12 +24,12 @@ public abstract class _Language extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> ABS_CODE = new Property<String>("absCode");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Byte> IS_ACTIVE = new Property<Byte>("isActive");
-    public static final Property<Long> ISH_VERSION = new Property<Long>("ishVersion");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
+    public static final Property<String> ABS_CODE = Property.create("absCode", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Byte> IS_ACTIVE = Property.create("isActive", Byte.class);
+    public static final Property<Long> ISH_VERSION = Property.create("ishVersion", Long.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
 
     public void setAbsCode(String absCode) {
         writeProperty("absCode", absCode);

@@ -23,8 +23,8 @@ public abstract class _Discussion extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
-    public static final Property<List<DiscussionThread>> DISCUSSION_THREAD = new Property<List<DiscussionThread>>("discussionThread");
+    public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
+    public static final Property<List<DiscussionThread>> DISCUSSION_THREAD = Property.create("discussionThread", List.class);
 
     public void setCourseClass(CourseClass courseClass) {
         setToOneTarget("courseClass", courseClass, true);

@@ -24,9 +24,9 @@ public abstract class _VoucherProduct extends Product {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Integer> MAX_COURSES_REDEMPTION = new Property<Integer>("maxCoursesRedemption");
-    public static final Property<Money> VALUE = new Property<Money>("value");
-    public static final Property<List<Course>> REDEMPTION_COURSES = new Property<List<Course>>("redemptionCourses");
+    public static final Property<Integer> MAX_COURSES_REDEMPTION = Property.create("maxCoursesRedemption", Integer.class);
+    public static final Property<Money> VALUE = Property.create("value", Money.class);
+    public static final Property<List<Course>> REDEMPTION_COURSES = Property.create("redemptionCourses", List.class);
 
     public void setMaxCoursesRedemption(Integer maxCoursesRedemption) {
         writeProperty("maxCoursesRedemption", maxCoursesRedemption);

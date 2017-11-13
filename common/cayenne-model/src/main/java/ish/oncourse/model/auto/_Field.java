@@ -34,18 +34,18 @@ public abstract class _Field extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DEFAULT_VALUE = new Property<String>("defaultValue");
-    public static final Property<String> DESCRIPTION = new Property<String>("description");
-    public static final Property<Boolean> MANDATORY = new Property<Boolean>("mandatory");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<Integer> ORDER = new Property<Integer>("order");
-    public static final Property<String> PROPERTY = new Property<String>("property");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<FieldConfiguration> FIELD_CONFIGURATION = new Property<FieldConfiguration>("fieldConfiguration");
-    public static final Property<FieldHeading> FIELD_HEADING = new Property<FieldHeading>("fieldHeading");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DEFAULT_VALUE = Property.create("defaultValue", String.class);
+    public static final Property<String> DESCRIPTION = Property.create("description", String.class);
+    public static final Property<Boolean> MANDATORY = Property.create("mandatory", Boolean.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<Integer> ORDER = Property.create("order", Integer.class);
+    public static final Property<String> PROPERTY = Property.create("property", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<FieldConfiguration> FIELD_CONFIGURATION = Property.create("fieldConfiguration", FieldConfiguration.class);
+    public static final Property<FieldHeading> FIELD_HEADING = Property.create("fieldHeading", FieldHeading.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

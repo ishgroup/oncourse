@@ -44,22 +44,22 @@ public abstract class _Outcome extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Integer> DELIVERY_MODE = new Property<Integer>("deliveryMode");
-    public static final Property<Date> END_DATE = new Property<Date>("endDate");
-    public static final Property<ClassFundingSource> FUNDING_SOURCE = new Property<ClassFundingSource>("fundingSource");
-    public static final Property<Date> MARKED_BY_TUTOR_DATE = new Property<Date>("markedByTutorDate");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Double> REPORTABLE_HOURS = new Property<Double>("reportableHours");
-    public static final Property<Date> START_DATE = new Property<Date>("startDate");
-    public static final Property<OutcomeStatus> STATUS = new Property<OutcomeStatus>("status");
-    public static final Property<List<CertificateOutcome>> CERTIFICATE_OUTCOMES = new Property<List<CertificateOutcome>>("certificateOutcomes");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Enrolment> ENROLMENT = new Property<Enrolment>("enrolment");
-    public static final Property<Tutor> MARKED_BY_TUTOR = new Property<Tutor>("markedByTutor");
-    public static final Property<Module> MODULE = new Property<Module>("module");
-    public static final Property<PriorLearning> PRIOR_LEARNING = new Property<PriorLearning>("priorLearning");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Integer> DELIVERY_MODE = Property.create("deliveryMode", Integer.class);
+    public static final Property<Date> END_DATE = Property.create("endDate", Date.class);
+    public static final Property<ClassFundingSource> FUNDING_SOURCE = Property.create("fundingSource", ClassFundingSource.class);
+    public static final Property<Date> MARKED_BY_TUTOR_DATE = Property.create("markedByTutorDate", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Double> REPORTABLE_HOURS = Property.create("reportableHours", Double.class);
+    public static final Property<Date> START_DATE = Property.create("startDate", Date.class);
+    public static final Property<OutcomeStatus> STATUS = Property.create("status", OutcomeStatus.class);
+    public static final Property<List<CertificateOutcome>> CERTIFICATE_OUTCOMES = Property.create("certificateOutcomes", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
+    public static final Property<Tutor> MARKED_BY_TUTOR = Property.create("markedByTutor", Tutor.class);
+    public static final Property<Module> MODULE = Property.create("module", Module.class);
+    public static final Property<PriorLearning> PRIOR_LEARNING = Property.create("priorLearning", PriorLearning.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

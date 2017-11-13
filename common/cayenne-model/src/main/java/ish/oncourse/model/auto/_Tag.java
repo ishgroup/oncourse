@@ -42,23 +42,23 @@ public abstract class _Tag extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DETAIL = new Property<String>("detail");
-    public static final Property<String> DETAIL_TEXTILE = new Property<String>("detailTextile");
-    public static final Property<Boolean> IS_TAG_GROUP = new Property<Boolean>("isTagGroup");
-    public static final Property<Boolean> IS_WEB_VISIBLE = new Property<Boolean>("isWebVisible");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<Integer> NODE_TYPE = new Property<Integer>("nodeType");
-    public static final Property<String> SHORT_NAME = new Property<String>("shortName");
-    public static final Property<NodeSpecialType> SPECIAL_TYPE = new Property<NodeSpecialType>("specialType");
-    public static final Property<Integer> WEIGHTING = new Property<Integer>("weighting");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Tag> PARENT = new Property<Tag>("parent");
-    public static final Property<List<TagGroupRequirement>> TAG_GROUP_REQUIREMENTS = new Property<List<TagGroupRequirement>>("tagGroupRequirements");
-    public static final Property<List<TaggableTag>> TAGGABLE_TAGS = new Property<List<TaggableTag>>("taggableTags");
-    public static final Property<List<Tag>> TAGS = new Property<List<Tag>>("tags");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DETAIL = Property.create("detail", String.class);
+    public static final Property<String> DETAIL_TEXTILE = Property.create("detailTextile", String.class);
+    public static final Property<Boolean> IS_TAG_GROUP = Property.create("isTagGroup", Boolean.class);
+    public static final Property<Boolean> IS_WEB_VISIBLE = Property.create("isWebVisible", Boolean.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<Integer> NODE_TYPE = Property.create("nodeType", Integer.class);
+    public static final Property<String> SHORT_NAME = Property.create("shortName", String.class);
+    public static final Property<NodeSpecialType> SPECIAL_TYPE = Property.create("specialType", NodeSpecialType.class);
+    public static final Property<Integer> WEIGHTING = Property.create("weighting", Integer.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Tag> PARENT = Property.create("parent", Tag.class);
+    public static final Property<List<TagGroupRequirement>> TAG_GROUP_REQUIREMENTS = Property.create("tagGroupRequirements", List.class);
+    public static final Property<List<TaggableTag>> TAGGABLE_TAGS = Property.create("taggableTags", List.class);
+    public static final Property<List<Tag>> TAGS = Property.create("tags", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

@@ -25,11 +25,11 @@ public abstract class _SupportPassword extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED_ON = new Property<Date>("createdOn");
-    public static final Property<Date> EXPIRES_ON = new Property<Date>("expiresOn");
-    public static final Property<Date> MODIFIED_ON = new Property<Date>("modifiedOn");
-    public static final Property<String> PASSWORD = new Property<String>("password");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
+    public static final Property<Date> CREATED_ON = Property.create("createdOn", Date.class);
+    public static final Property<Date> EXPIRES_ON = Property.create("expiresOn", Date.class);
+    public static final Property<Date> MODIFIED_ON = Property.create("modifiedOn", Date.class);
+    public static final Property<String> PASSWORD = Property.create("password", String.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
 
     public void setCreatedOn(Date createdOn) {
         writeProperty("createdOn", createdOn);

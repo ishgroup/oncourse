@@ -44,26 +44,26 @@ public abstract class _SystemUser extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Boolean> EDIT_CMS = new Property<Boolean>("editCMS");
-    public static final Property<Boolean> EDIT_TARA = new Property<Boolean>("editTara");
-    public static final Property<String> EMAIL = new Property<String>("email");
-    public static final Property<String> FIRST_NAME = new Property<String>("firstName");
-    public static final Property<Boolean> IS_ACTIVE = new Property<Boolean>("isActive");
-    public static final Property<Boolean> IS_ADMIN = new Property<Boolean>("isAdmin");
-    public static final Property<String> LAST_LOGIN_IP = new Property<String>("lastLoginIP");
-    public static final Property<Date> LAST_LOGIN_ON = new Property<Date>("lastLoginOn");
-    public static final Property<String> LOGIN = new Property<String>("login");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> PASSWORD = new Property<String>("password");
-    public static final Property<String> SURNAME = new Property<String>("surname");
-    public static final Property<String> TOKEN = new Property<String>("token");
-    public static final Property<String> TOKEN_SCRATCH_CODES = new Property<String>("tokenScratchCodes");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Site> DEFAULT_ADMINISTRATION_CENTRE = new Property<Site>("defaultAdministrationCentre");
-    public static final Property<List<DocumentVersion>> DOCUMENT_VERSIONS = new Property<List<DocumentVersion>>("documentVersions");
-    public static final Property<List<WebSiteVersion>> SITES_DEPLOYED = new Property<List<WebSiteVersion>>("sitesDeployed");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Boolean> EDIT_CMS = Property.create("editCMS", Boolean.class);
+    public static final Property<Boolean> EDIT_TARA = Property.create("editTara", Boolean.class);
+    public static final Property<String> EMAIL = Property.create("email", String.class);
+    public static final Property<String> FIRST_NAME = Property.create("firstName", String.class);
+    public static final Property<Boolean> IS_ACTIVE = Property.create("isActive", Boolean.class);
+    public static final Property<Boolean> IS_ADMIN = Property.create("isAdmin", Boolean.class);
+    public static final Property<String> LAST_LOGIN_IP = Property.create("lastLoginIP", String.class);
+    public static final Property<Date> LAST_LOGIN_ON = Property.create("lastLoginOn", Date.class);
+    public static final Property<String> LOGIN = Property.create("login", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> PASSWORD = Property.create("password", String.class);
+    public static final Property<String> SURNAME = Property.create("surname", String.class);
+    public static final Property<String> TOKEN = Property.create("token", String.class);
+    public static final Property<String> TOKEN_SCRATCH_CODES = Property.create("tokenScratchCodes", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Site> DEFAULT_ADMINISTRATION_CENTRE = Property.create("defaultAdministrationCentre", Site.class);
+    public static final Property<List<DocumentVersion>> DOCUMENT_VERSIONS = Property.create("documentVersions", List.class);
+    public static final Property<List<WebSiteVersion>> SITES_DEPLOYED = Property.create("sitesDeployed", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

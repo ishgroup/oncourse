@@ -27,17 +27,17 @@ public abstract class _Postcode extends CayenneDataObject {
 
     public static final String POSTCODE_PK_COLUMN = "postcode";
 
-    public static final Property<String> B_SPNAME = new Property<String>("bSPname");
-    public static final Property<Short> B_SPNUMBER = new Property<Short>("bSPnumber");
-    public static final Property<String> CATEGORY = new Property<String>("category");
-    public static final Property<String> COMMENTS = new Property<String>("comments");
-    public static final Property<String> DELIVERY_OFFICE = new Property<String>("deliveryOffice");
-    public static final Property<Long> ISH_VERSION = new Property<Long>("ishVersion");
-    public static final Property<String> LOCALITY = new Property<String>("locality");
-    public static final Property<String> PARCEL_ZONE = new Property<String>("parcelZone");
-    public static final Property<Short> POSTCODE = new Property<Short>("postcode");
-    public static final Property<Short> PRESORT_INDICATOR = new Property<Short>("presortIndicator");
-    public static final Property<String> STATE = new Property<String>("state");
+    public static final Property<String> B_SPNAME = Property.create("bSPname", String.class);
+    public static final Property<Short> B_SPNUMBER = Property.create("bSPnumber", Short.class);
+    public static final Property<String> CATEGORY = Property.create("category", String.class);
+    public static final Property<String> COMMENTS = Property.create("comments", String.class);
+    public static final Property<String> DELIVERY_OFFICE = Property.create("deliveryOffice", String.class);
+    public static final Property<Long> ISH_VERSION = Property.create("ishVersion", Long.class);
+    public static final Property<String> LOCALITY = Property.create("locality", String.class);
+    public static final Property<String> PARCEL_ZONE = Property.create("parcelZone", String.class);
+    public static final Property<Short> POSTCODE = Property.create("postcode", Short.class);
+    public static final Property<Short> PRESORT_INDICATOR = Property.create("presortIndicator", Short.class);
+    public static final Property<String> STATE = Property.create("state", String.class);
 
     public void setBSPname(String bSPname) {
         writeProperty("bSPname", bSPname);

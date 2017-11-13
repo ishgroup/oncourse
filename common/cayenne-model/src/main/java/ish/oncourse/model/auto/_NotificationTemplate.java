@@ -30,16 +30,16 @@ public abstract class _NotificationTemplate extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Boolean> ALLOW_WEBOBJECTS_TAGS = new Property<Boolean>("allowWebobjectsTags");
-    public static final Property<Boolean> ALLOWED_IN_TEXTILE_TAGS = new Property<Boolean>("allowedInTextileTags");
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> MESSAGE = new Property<String>("message");
-    public static final Property<String> MIME_TYPE = new Property<String>("mimeType");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<String> SUBJECT = new Property<String>("subject");
-    public static final Property<College> COLLEGE = new Property<College>("college");
+    public static final Property<Boolean> ALLOW_WEBOBJECTS_TAGS = Property.create("allowWebobjectsTags", Boolean.class);
+    public static final Property<Boolean> ALLOWED_IN_TEXTILE_TAGS = Property.create("allowedInTextileTags", Boolean.class);
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> MESSAGE = Property.create("message", String.class);
+    public static final Property<String> MIME_TYPE = Property.create("mimeType", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<String> SUBJECT = Property.create("subject", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
 
     public void setAllowWebobjectsTags(Boolean allowWebobjectsTags) {
         writeProperty("allowWebobjectsTags", allowWebobjectsTags);

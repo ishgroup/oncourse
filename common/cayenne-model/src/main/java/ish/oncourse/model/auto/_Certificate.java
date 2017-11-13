@@ -44,26 +44,26 @@ public abstract class _Certificate extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> AWARDED = new Property<Date>("awarded");
-    public static final Property<Long> CERTIFICATE_NUMBER = new Property<Long>("certificateNumber");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> END_DATE = new Property<Date>("endDate");
-    public static final Property<Integer> FUNDING_SOURCE = new Property<Integer>("fundingSource");
-    public static final Property<Boolean> IS_QUALIFICATION = new Property<Boolean>("isQualification");
-    public static final Property<Date> ISSUED = new Property<Date>("issued");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Date> PRINTED_WHEN = new Property<Date>("printedWhen");
-    public static final Property<String> PRIVATE_NOTES = new Property<String>("privateNotes");
-    public static final Property<String> PUBLIC_NOTES = new Property<String>("publicNotes");
-    public static final Property<Date> REVOKED_WHEN = new Property<Date>("revokedWhen");
-    public static final Property<String> STUDENT_FIRST_NAME = new Property<String>("studentFirstName");
-    public static final Property<String> STUDENT_LAST_NAME = new Property<String>("studentLastName");
-    public static final Property<String> UNIQUE_CODE = new Property<String>("uniqueCode");
-    public static final Property<List<CertificateOutcome>> CERTIFICATE_OUTCOMES = new Property<List<CertificateOutcome>>("certificateOutcomes");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Qualification> QUALIFICATION = new Property<Qualification>("qualification");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> AWARDED = Property.create("awarded", Date.class);
+    public static final Property<Long> CERTIFICATE_NUMBER = Property.create("certificateNumber", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> END_DATE = Property.create("endDate", Date.class);
+    public static final Property<Integer> FUNDING_SOURCE = Property.create("fundingSource", Integer.class);
+    public static final Property<Boolean> IS_QUALIFICATION = Property.create("isQualification", Boolean.class);
+    public static final Property<Date> ISSUED = Property.create("issued", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Date> PRINTED_WHEN = Property.create("printedWhen", Date.class);
+    public static final Property<String> PRIVATE_NOTES = Property.create("privateNotes", String.class);
+    public static final Property<String> PUBLIC_NOTES = Property.create("publicNotes", String.class);
+    public static final Property<Date> REVOKED_WHEN = Property.create("revokedWhen", Date.class);
+    public static final Property<String> STUDENT_FIRST_NAME = Property.create("studentFirstName", String.class);
+    public static final Property<String> STUDENT_LAST_NAME = Property.create("studentLastName", String.class);
+    public static final Property<String> UNIQUE_CODE = Property.create("uniqueCode", String.class);
+    public static final Property<List<CertificateOutcome>> CERTIFICATE_OUTCOMES = Property.create("certificateOutcomes", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Qualification> QUALIFICATION = Property.create("qualification", Qualification.class);
+    public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

@@ -28,12 +28,12 @@ public abstract class _DiscountMembershipRelationType extends CayenneDataObject 
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<ContactRelationType> CONTACT_RELATION_TYPE = new Property<ContactRelationType>("contactRelationType");
-    public static final Property<DiscountMembership> DISCOUNT_MEMBERSHIP = new Property<DiscountMembership>("discountMembership");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<ContactRelationType> CONTACT_RELATION_TYPE = Property.create("contactRelationType", ContactRelationType.class);
+    public static final Property<DiscountMembership> DISCOUNT_MEMBERSHIP = Property.create("discountMembership", DiscountMembership.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

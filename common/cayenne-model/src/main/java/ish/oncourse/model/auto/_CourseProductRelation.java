@@ -21,8 +21,8 @@ public abstract class _CourseProductRelation extends EntityRelation {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Course> COURSE = new Property<Course>("course");
-    public static final Property<Product> PRODUCT = new Property<Product>("product");
+    public static final Property<Course> COURSE = Property.create("course", Course.class);
+    public static final Property<Product> PRODUCT = Property.create("product", Product.class);
 
     public void setCourse(Course course) {
         setToOneTarget("course", course, true);

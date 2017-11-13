@@ -23,8 +23,8 @@ public abstract class _MembershipProduct extends Product {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<List<DiscountMembership>> DISCOUNT_MEMBERSHIP_PRODUCTS = new Property<List<DiscountMembership>>("discountMembershipProducts");
-    public static final Property<List<Discount>> DISCOUNTS_AVAILABLE = new Property<List<Discount>>("discountsAvailable");
+    public static final Property<List<DiscountMembership>> DISCOUNT_MEMBERSHIP_PRODUCTS = Property.create("discountMembershipProducts", List.class);
+    public static final Property<List<Discount>> DISCOUNTS_AVAILABLE = Property.create("discountsAvailable", List.class);
 
     public void addToDiscountMembershipProducts(DiscountMembership obj) {
         addToManyTarget("discountMembershipProducts", obj, true);

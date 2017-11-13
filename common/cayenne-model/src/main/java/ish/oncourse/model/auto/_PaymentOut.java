@@ -44,22 +44,22 @@ public abstract class _PaymentOut extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = new Property<ConfirmationStatus>("confirmationStatus");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> CREDIT_CARD_CVV = new Property<String>("creditCardCVV");
-    public static final Property<CreditCardType> CREDIT_CARD_TYPE = new Property<CreditCardType>("creditCardType");
-    public static final Property<Date> DATE_BANKED = new Property<Date>("dateBanked");
-    public static final Property<Date> DATE_PAID = new Property<Date>("datePaid");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> PAYMENT_IN_TXN_REFERENCE = new Property<String>("paymentInTxnReference");
-    public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
-    public static final Property<PaymentStatus> STATUS = new Property<PaymentStatus>("status");
-    public static final Property<String> STATUS_NOTES = new Property<String>("statusNotes");
-    public static final Property<Money> TOTAL_AMOUNT = new Property<Money>("totalAmount");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
-    public static final Property<List<PaymentOutTransaction>> PAYMENT_OUT_TRANSACTIONS = new Property<List<PaymentOutTransaction>>("paymentOutTransactions");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = Property.create("confirmationStatus", ConfirmationStatus.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> CREDIT_CARD_CVV = Property.create("creditCardCVV", String.class);
+    public static final Property<CreditCardType> CREDIT_CARD_TYPE = Property.create("creditCardType", CreditCardType.class);
+    public static final Property<Date> DATE_BANKED = Property.create("dateBanked", Date.class);
+    public static final Property<Date> DATE_PAID = Property.create("datePaid", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> PAYMENT_IN_TXN_REFERENCE = Property.create("paymentInTxnReference", String.class);
+    public static final Property<PaymentSource> SOURCE = Property.create("source", PaymentSource.class);
+    public static final Property<PaymentStatus> STATUS = Property.create("status", PaymentStatus.class);
+    public static final Property<String> STATUS_NOTES = Property.create("statusNotes", String.class);
+    public static final Property<Money> TOTAL_AMOUNT = Property.create("totalAmount", Money.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
+    public static final Property<List<PaymentOutTransaction>> PAYMENT_OUT_TRANSACTIONS = Property.create("paymentOutTransactions", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

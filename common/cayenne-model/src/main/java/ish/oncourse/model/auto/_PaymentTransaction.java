@@ -27,13 +27,13 @@ public abstract class _PaymentTransaction extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Boolean> IS_FINALISED = new Property<Boolean>("isFinalised");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> RESPONSE = new Property<String>("response");
-    public static final Property<String> SOAP_RESPONSE = new Property<String>("soapResponse");
-    public static final Property<String> TXN_REFERENCE = new Property<String>("txnReference");
-    public static final Property<PaymentIn> PAYMENT = new Property<PaymentIn>("payment");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Boolean> IS_FINALISED = Property.create("isFinalised", Boolean.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> RESPONSE = Property.create("response", String.class);
+    public static final Property<String> SOAP_RESPONSE = Property.create("soapResponse", String.class);
+    public static final Property<String> TXN_REFERENCE = Property.create("txnReference", String.class);
+    public static final Property<PaymentIn> PAYMENT = Property.create("payment", PaymentIn.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

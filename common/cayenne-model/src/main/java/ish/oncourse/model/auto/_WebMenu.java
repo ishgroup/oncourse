@@ -32,15 +32,15 @@ public abstract class _WebMenu extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<String> URL = new Property<String>("url");
-    public static final Property<Integer> WEIGHT = new Property<Integer>("weight");
-    public static final Property<List<WebMenu>> CHILDREN_MENUS = new Property<List<WebMenu>>("childrenMenus");
-    public static final Property<WebMenu> PARENT_WEB_MENU = new Property<WebMenu>("parentWebMenu");
-    public static final Property<WebNode> WEB_NODE = new Property<WebNode>("webNode");
-    public static final Property<WebSiteVersion> WEB_SITE_VERSION = new Property<WebSiteVersion>("webSiteVersion");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<String> URL = Property.create("url", String.class);
+    public static final Property<Integer> WEIGHT = Property.create("weight", Integer.class);
+    public static final Property<List<WebMenu>> CHILDREN_MENUS = Property.create("childrenMenus", List.class);
+    public static final Property<WebMenu> PARENT_WEB_MENU = Property.create("parentWebMenu", WebMenu.class);
+    public static final Property<WebNode> WEB_NODE = Property.create("webNode", WebNode.class);
+    public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

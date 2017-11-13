@@ -36,19 +36,19 @@ public abstract class _ConcessionType extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Integer> CREDENTIAL_EXPIRY_DAYS = new Property<Integer>("credentialExpiryDays");
-    public static final Property<Boolean> HAS_CONCESSION_NUMBER = new Property<Boolean>("hasConcessionNumber");
-    public static final Property<Boolean> HAS_EXPIRY_DATE = new Property<Boolean>("hasExpiryDate");
-    public static final Property<Boolean> IS_CONCESSION = new Property<Boolean>("isConcession");
-    public static final Property<Boolean> IS_ENABLED = new Property<Boolean>("isEnabled");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<Boolean> REQUIRES_CREDENTIAL_CHECK = new Property<Boolean>("requiresCredentialCheck");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<DiscountConcessionType>> DISCOUNT_CONCESSION_TYPES = new Property<List<DiscountConcessionType>>("discountConcessionTypes");
-    public static final Property<List<StudentConcession>> STUDENT_CONCESSIONS = new Property<List<StudentConcession>>("studentConcessions");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Integer> CREDENTIAL_EXPIRY_DAYS = Property.create("credentialExpiryDays", Integer.class);
+    public static final Property<Boolean> HAS_CONCESSION_NUMBER = Property.create("hasConcessionNumber", Boolean.class);
+    public static final Property<Boolean> HAS_EXPIRY_DATE = Property.create("hasExpiryDate", Boolean.class);
+    public static final Property<Boolean> IS_CONCESSION = Property.create("isConcession", Boolean.class);
+    public static final Property<Boolean> IS_ENABLED = Property.create("isEnabled", Boolean.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<Boolean> REQUIRES_CREDENTIAL_CHECK = Property.create("requiresCredentialCheck", Boolean.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<DiscountConcessionType>> DISCOUNT_CONCESSION_TYPES = Property.create("discountConcessionTypes", List.class);
+    public static final Property<List<StudentConcession>> STUDENT_CONCESSIONS = Property.create("studentConcessions", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

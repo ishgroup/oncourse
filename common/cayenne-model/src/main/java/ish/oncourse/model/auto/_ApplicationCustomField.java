@@ -19,7 +19,7 @@ public abstract class _ApplicationCustomField extends CustomField {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Application> RELATED_OBJECT = new Property<Application>("relatedObject");
+    public static final Property<Application> RELATED_OBJECT = Property.create("relatedObject", Application.class);
 
     public void setRelatedObject(Application relatedObject) {
         setToOneTarget("relatedObject", relatedObject, true);

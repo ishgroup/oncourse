@@ -21,9 +21,9 @@ public abstract class _InstructionParameter extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<String> VALUE = new Property<String>("value");
-    public static final Property<Instruction> INSTRUCTION = new Property<Instruction>("instruction");
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<String> VALUE = Property.create("value", String.class);
+    public static final Property<Instruction> INSTRUCTION = Property.create("instruction", Instruction.class);
 
     public void setName(String name) {
         writeProperty("name", name);

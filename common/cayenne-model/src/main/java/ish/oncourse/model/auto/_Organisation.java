@@ -28,16 +28,16 @@ public abstract class _Organisation extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> ABN = new Property<String>("abn");
-    public static final Property<String> CODE = new Property<String>("code");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Boolean> HAS_ACTIVE_REGISTRATION = new Property<Boolean>("hasActiveRegistration");
-    public static final Property<String> LEGAL_PERSON_NAME = new Property<String>("legalPersonName");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Date> REGISTRATION_END = new Property<Date>("registrationEnd");
-    public static final Property<Date> REGISTRATION_START = new Property<Date>("registrationStart");
-    public static final Property<String> TRADING_NAME = new Property<String>("tradingName");
-    public static final Property<String> WEB_ADDRESS = new Property<String>("webAddress");
+    public static final Property<String> ABN = Property.create("abn", String.class);
+    public static final Property<String> CODE = Property.create("code", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Boolean> HAS_ACTIVE_REGISTRATION = Property.create("hasActiveRegistration", Boolean.class);
+    public static final Property<String> LEGAL_PERSON_NAME = Property.create("legalPersonName", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Date> REGISTRATION_END = Property.create("registrationEnd", Date.class);
+    public static final Property<Date> REGISTRATION_START = Property.create("registrationStart", Date.class);
+    public static final Property<String> TRADING_NAME = Property.create("tradingName", String.class);
+    public static final Property<String> WEB_ADDRESS = Property.create("webAddress", String.class);
 
     public void setAbn(String abn) {
         writeProperty("abn", abn);

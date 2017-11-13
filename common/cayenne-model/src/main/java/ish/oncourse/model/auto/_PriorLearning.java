@@ -35,17 +35,17 @@ public abstract class _PriorLearning extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> EXTERNAL_REF = new Property<String>("externalRef");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NOTES = new Property<String>("notes");
-    public static final Property<String> OUTCOME_ID_TRAINING_ORG = new Property<String>("outcomeIdTrainingOrg");
-    public static final Property<String> TITLE = new Property<String>("title");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<Outcome>> OUTCOMES = new Property<List<Outcome>>("outcomes");
-    public static final Property<Qualification> QUALIFICATION = new Property<Qualification>("qualification");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> EXTERNAL_REF = Property.create("externalRef", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NOTES = Property.create("notes", String.class);
+    public static final Property<String> OUTCOME_ID_TRAINING_ORG = Property.create("outcomeIdTrainingOrg", String.class);
+    public static final Property<String> TITLE = Property.create("title", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<Outcome>> OUTCOMES = Property.create("outcomes", List.class);
+    public static final Property<Qualification> QUALIFICATION = Property.create("qualification", Qualification.class);
+    public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

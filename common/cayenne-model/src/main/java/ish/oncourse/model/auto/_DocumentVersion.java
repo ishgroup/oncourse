@@ -41,23 +41,23 @@ public abstract class _DocumentVersion extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Long> BYTE_SIZE = new Property<Long>("byteSize");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DESCRIPTION = new Property<String>("description");
-    public static final Property<String> FILE_NAME = new Property<String>("fileName");
-    public static final Property<String> FILE_PATH = new Property<String>("filePath");
-    public static final Property<String> MIME_TYPE = new Property<String>("mimeType");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Integer> PIXEL_HEIGHT = new Property<Integer>("pixelHeight");
-    public static final Property<Integer> PIXEL_WIDTH = new Property<Integer>("pixelWidth");
-    public static final Property<byte[]> THUMBNAIL = new Property<byte[]>("thumbnail");
-    public static final Property<Date> TIMESTAMP = new Property<Date>("timestamp");
-    public static final Property<String> VERSION_ID = new Property<String>("versionId");
-    public static final Property<List<BinaryInfoRelation>> BINARY_INFO_RELATIONS = new Property<List<BinaryInfoRelation>>("binaryInfoRelations");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<SystemUser> CREATED_BY_USER = new Property<SystemUser>("createdByUser");
-    public static final Property<Document> DOCUMENT = new Property<Document>("document");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Long> BYTE_SIZE = Property.create("byteSize", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DESCRIPTION = Property.create("description", String.class);
+    public static final Property<String> FILE_NAME = Property.create("fileName", String.class);
+    public static final Property<String> FILE_PATH = Property.create("filePath", String.class);
+    public static final Property<String> MIME_TYPE = Property.create("mimeType", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Integer> PIXEL_HEIGHT = Property.create("pixelHeight", Integer.class);
+    public static final Property<Integer> PIXEL_WIDTH = Property.create("pixelWidth", Integer.class);
+    public static final Property<byte[]> THUMBNAIL = Property.create("thumbnail", byte[].class);
+    public static final Property<Date> TIMESTAMP = Property.create("timestamp", Date.class);
+    public static final Property<String> VERSION_ID = Property.create("versionId", String.class);
+    public static final Property<List<BinaryInfoRelation>> BINARY_INFO_RELATIONS = Property.create("binaryInfoRelations", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<SystemUser> CREATED_BY_USER = Property.create("createdByUser", SystemUser.class);
+    public static final Property<Document> DOCUMENT = Property.create("document", Document.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

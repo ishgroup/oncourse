@@ -41,23 +41,23 @@ public abstract class _Product extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DESCRIPTION = new Property<String>("description");
-    public static final Property<Integer> EXPIRY_DAYS = new Property<Integer>("expiryDays");
-    public static final Property<ExpiryType> EXPIRY_TYPE = new Property<ExpiryType>("expiryType");
-    public static final Property<Boolean> IS_ON_SALE = new Property<Boolean>("isOnSale");
-    public static final Property<Boolean> IS_WEB_VISIBLE = new Property<Boolean>("isWebVisible");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<String> NOTES = new Property<String>("notes");
-    public static final Property<Money> PRICE_EX_TAX = new Property<Money>("priceExTax");
-    public static final Property<String> SKU = new Property<String>("sku");
-    public static final Property<Money> TAX_ADJUSTMENT = new Property<Money>("taxAdjustment");
-    public static final Property<Money> TAX_AMOUNT = new Property<Money>("taxAmount");
-    public static final Property<Integer> TYPE = new Property<Integer>("type");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<ProductItem>> PRODUCT_ITEMS = new Property<List<ProductItem>>("productItems");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DESCRIPTION = Property.create("description", String.class);
+    public static final Property<Integer> EXPIRY_DAYS = Property.create("expiryDays", Integer.class);
+    public static final Property<ExpiryType> EXPIRY_TYPE = Property.create("expiryType", ExpiryType.class);
+    public static final Property<Boolean> IS_ON_SALE = Property.create("isOnSale", Boolean.class);
+    public static final Property<Boolean> IS_WEB_VISIBLE = Property.create("isWebVisible", Boolean.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<String> NOTES = Property.create("notes", String.class);
+    public static final Property<Money> PRICE_EX_TAX = Property.create("priceExTax", Money.class);
+    public static final Property<String> SKU = Property.create("sku", String.class);
+    public static final Property<Money> TAX_ADJUSTMENT = Property.create("taxAdjustment", Money.class);
+    public static final Property<Money> TAX_AMOUNT = Property.create("taxAmount", Money.class);
+    public static final Property<Integer> TYPE = Property.create("type", Integer.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<ProductItem>> PRODUCT_ITEMS = Property.create("productItems", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

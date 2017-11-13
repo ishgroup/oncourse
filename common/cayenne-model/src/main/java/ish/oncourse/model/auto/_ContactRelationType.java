@@ -32,15 +32,15 @@ public abstract class _ContactRelationType extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Boolean> DELEGATED_ACCESS_TO_CONTACT = new Property<Boolean>("delegatedAccessToContact");
-    public static final Property<String> FROM_CONTACT_NAME = new Property<String>("fromContactName");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> TO_CONTACT_NAME = new Property<String>("toContactName");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<ContactRelation>> CONTACT_RELATIONS = new Property<List<ContactRelation>>("contactRelations");
-    public static final Property<List<DiscountMembershipRelationType>> MEMBESHIP_DISCOUNT_RELATIONS = new Property<List<DiscountMembershipRelationType>>("membeshipDiscountRelations");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Boolean> DELEGATED_ACCESS_TO_CONTACT = Property.create("delegatedAccessToContact", Boolean.class);
+    public static final Property<String> FROM_CONTACT_NAME = Property.create("fromContactName", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> TO_CONTACT_NAME = Property.create("toContactName", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<ContactRelation>> CONTACT_RELATIONS = Property.create("contactRelations", List.class);
+    public static final Property<List<DiscountMembershipRelationType>> MEMBESHIP_DISCOUNT_RELATIONS = Property.create("membeshipDiscountRelations", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

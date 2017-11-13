@@ -28,12 +28,12 @@ public abstract class _CorporatePassCourseClass extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<CorporatePass> CORPORATE_PASS = new Property<CorporatePass>("corporatePass");
-    public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<CorporatePass> CORPORATE_PASS = Property.create("corporatePass", CorporatePass.class);
+    public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

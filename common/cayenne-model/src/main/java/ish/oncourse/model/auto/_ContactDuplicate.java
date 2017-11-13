@@ -33,16 +33,16 @@ public abstract class _ContactDuplicate extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Long> CONTACT_TO_DELETE_ANGEL_ID = new Property<Long>("contactToDeleteAngelId");
-    public static final Property<Long> CONTACT_TO_DELETE_ID = new Property<Long>("contactToDeleteId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DESCRIPTION = new Property<String>("description");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<ContactDuplicateStatus> STATUS = new Property<ContactDuplicateStatus>("status");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> CONTACT_TO_UPDATE = new Property<Contact>("contactToUpdate");
-    public static final Property<SystemUser> CREATED_BY_USER = new Property<SystemUser>("createdByUser");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Long> CONTACT_TO_DELETE_ANGEL_ID = Property.create("contactToDeleteAngelId", Long.class);
+    public static final Property<Long> CONTACT_TO_DELETE_ID = Property.create("contactToDeleteId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DESCRIPTION = Property.create("description", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<ContactDuplicateStatus> STATUS = Property.create("status", ContactDuplicateStatus.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> CONTACT_TO_UPDATE = Property.create("contactToUpdate", Contact.class);
+    public static final Property<SystemUser> CREATED_BY_USER = Property.create("createdByUser", SystemUser.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

@@ -35,19 +35,19 @@ public abstract class _CustomFieldType extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DEFAULT_VALUE = new Property<String>("defaultValue");
-    public static final Property<String> ENTITY_NAME = new Property<String>("entityName");
-    public static final Property<Boolean> IS_MANDATORY = new Property<Boolean>("isMandatory");
-    public static final Property<String> KEY = new Property<String>("key");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<String> REQUIRE_FOR_ENROLMENT = new Property<String>("requireForEnrolment");
-    public static final Property<String> REQUIRE_FOR_MAILING_LIST = new Property<String>("requireForMailingList");
-    public static final Property<String> REQUIRE_FOR_WAITING_LIST = new Property<String>("requireForWaitingList");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<CustomField>> CUSTOM_FIELDS = new Property<List<CustomField>>("customFields");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DEFAULT_VALUE = Property.create("defaultValue", String.class);
+    public static final Property<String> ENTITY_NAME = Property.create("entityName", String.class);
+    public static final Property<Boolean> IS_MANDATORY = Property.create("isMandatory", Boolean.class);
+    public static final Property<String> KEY = Property.create("key", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<String> REQUIRE_FOR_ENROLMENT = Property.create("requireForEnrolment", String.class);
+    public static final Property<String> REQUIRE_FOR_MAILING_LIST = Property.create("requireForMailingList", String.class);
+    public static final Property<String> REQUIRE_FOR_WAITING_LIST = Property.create("requireForWaitingList", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<CustomField>> CUSTOM_FIELDS = Property.create("customFields", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

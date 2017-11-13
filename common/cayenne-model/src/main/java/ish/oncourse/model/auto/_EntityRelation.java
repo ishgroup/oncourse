@@ -29,14 +29,14 @@ public abstract class _EntityRelation extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<EntityRelationType> FROM_ENTITY_IDENTIFIER = new Property<EntityRelationType>("fromEntityIdentifier");
-    public static final Property<Long> FROM_ENTITY_WILLOW_ID = new Property<Long>("fromEntityWillowId");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<EntityRelationType> TO_ENTITY_IDENTIFIER = new Property<EntityRelationType>("toEntityIdentifier");
-    public static final Property<Long> TO_ENTITY_WILLOW_ID = new Property<Long>("toEntityWillowId");
-    public static final Property<College> COLLEGE = new Property<College>("college");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<EntityRelationType> FROM_ENTITY_IDENTIFIER = Property.create("fromEntityIdentifier", EntityRelationType.class);
+    public static final Property<Long> FROM_ENTITY_WILLOW_ID = Property.create("fromEntityWillowId", Long.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<EntityRelationType> TO_ENTITY_IDENTIFIER = Property.create("toEntityIdentifier", EntityRelationType.class);
+    public static final Property<Long> TO_ENTITY_WILLOW_ID = Property.create("toEntityWillowId", Long.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

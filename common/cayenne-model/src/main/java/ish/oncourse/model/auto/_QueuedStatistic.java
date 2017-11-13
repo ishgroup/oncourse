@@ -25,11 +25,11 @@ public abstract class _QueuedStatistic extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> ENTITY_IDENTIFIER = new Property<String>("entityIdentifier");
-    public static final Property<Date> RECEIVED_TIMESTAMP = new Property<Date>("receivedTimestamp");
-    public static final Property<Integer> STACKED_COUNT = new Property<Integer>("stackedCount");
-    public static final Property<Integer> STACKED_TRANSACTIONS_COUNT = new Property<Integer>("stackedTransactionsCount");
-    public static final Property<College> COLLEGE = new Property<College>("college");
+    public static final Property<String> ENTITY_IDENTIFIER = Property.create("entityIdentifier", String.class);
+    public static final Property<Date> RECEIVED_TIMESTAMP = Property.create("receivedTimestamp", Date.class);
+    public static final Property<Integer> STACKED_COUNT = Property.create("stackedCount", Integer.class);
+    public static final Property<Integer> STACKED_TRANSACTIONS_COUNT = Property.create("stackedTransactionsCount", Integer.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
 
     public void setEntityIdentifier(String entityIdentifier) {
         writeProperty("entityIdentifier", entityIdentifier);

@@ -37,15 +37,15 @@ public abstract class _WebSiteVersion extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> DEPLOYED_ON = new Property<Date>("deployedOn");
-    public static final Property<List<WebContent>> CONTENTS = new Property<List<WebContent>>("contents");
-    public static final Property<SystemUser> DEPLOYED_BY = new Property<SystemUser>("deployedBy");
-    public static final Property<List<WebSiteLayout>> LAYOUTS = new Property<List<WebSiteLayout>>("layouts");
-    public static final Property<List<WebMenu>> MENUS = new Property<List<WebMenu>>("menus");
-    public static final Property<List<WebNodeType>> WEB_NODE_TYPES = new Property<List<WebNodeType>>("webNodeTypes");
-    public static final Property<List<WebNode>> WEB_NODES = new Property<List<WebNode>>("webNodes");
-    public static final Property<WebSite> WEB_SITE = new Property<WebSite>("webSite");
-    public static final Property<List<WebUrlAlias>> WEB_URLALIASES = new Property<List<WebUrlAlias>>("webURLAliases");
+    public static final Property<Date> DEPLOYED_ON = Property.create("deployedOn", Date.class);
+    public static final Property<List<WebContent>> CONTENTS = Property.create("contents", List.class);
+    public static final Property<SystemUser> DEPLOYED_BY = Property.create("deployedBy", SystemUser.class);
+    public static final Property<List<WebSiteLayout>> LAYOUTS = Property.create("layouts", List.class);
+    public static final Property<List<WebMenu>> MENUS = Property.create("menus", List.class);
+    public static final Property<List<WebNodeType>> WEB_NODE_TYPES = Property.create("webNodeTypes", List.class);
+    public static final Property<List<WebNode>> WEB_NODES = Property.create("webNodes", List.class);
+    public static final Property<WebSite> WEB_SITE = Property.create("webSite", WebSite.class);
+    public static final Property<List<WebUrlAlias>> WEB_URLALIASES = Property.create("webURLAliases", List.class);
 
     public void setDeployedOn(Date deployedOn) {
         writeProperty("deployedOn", deployedOn);

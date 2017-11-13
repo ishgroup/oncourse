@@ -22,9 +22,9 @@ public abstract class _DiscussionCommentContact extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Boolean> IS_NEW = new Property<Boolean>("isNew");
-    public static final Property<DiscussionComment> COMMENT = new Property<DiscussionComment>("comment");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
+    public static final Property<Boolean> IS_NEW = Property.create("isNew", Boolean.class);
+    public static final Property<DiscussionComment> COMMENT = Property.create("comment", DiscussionComment.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
 
     public void setIsNew(Boolean isNew) {
         writeProperty("isNew", isNew);

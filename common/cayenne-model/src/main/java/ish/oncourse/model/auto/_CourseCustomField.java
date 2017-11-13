@@ -19,7 +19,7 @@ public abstract class _CourseCustomField extends CustomField {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Course> RELATED_OBJECT = new Property<Course>("relatedObject");
+    public static final Property<Course> RELATED_OBJECT = Property.create("relatedObject", Course.class);
 
     public void setRelatedObject(Course relatedObject) {
         setToOneTarget("relatedObject", relatedObject, true);

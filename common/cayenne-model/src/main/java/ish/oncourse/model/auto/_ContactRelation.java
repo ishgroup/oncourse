@@ -29,13 +29,13 @@ public abstract class _ContactRelation extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> FROM_CONTACT = new Property<Contact>("fromContact");
-    public static final Property<ContactRelationType> RELATION_TYPE = new Property<ContactRelationType>("relationType");
-    public static final Property<Contact> TO_CONTACT = new Property<Contact>("toContact");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> FROM_CONTACT = Property.create("fromContact", Contact.class);
+    public static final Property<ContactRelationType> RELATION_TYPE = Property.create("relationType", ContactRelationType.class);
+    public static final Property<Contact> TO_CONTACT = Property.create("toContact", Contact.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

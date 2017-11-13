@@ -27,12 +27,12 @@ public abstract class _Log extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> ACTION = new Property<String>("action");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> PAGE = new Property<String>("page");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<WillowUser> USER = new Property<WillowUser>("user");
+    public static final Property<String> ACTION = Property.create("action", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> PAGE = Property.create("page", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<WillowUser> USER = Property.create("user", WillowUser.class);
 
     public void setAction(String action) {
         writeProperty("action", action);

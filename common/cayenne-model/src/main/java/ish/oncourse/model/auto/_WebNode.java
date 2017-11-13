@@ -35,16 +35,16 @@ public abstract class _WebNode extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<Integer> NODE_NUMBER = new Property<Integer>("nodeNumber");
-    public static final Property<Boolean> PUBLISHED = new Property<Boolean>("published");
-    public static final Property<List<WebContentVisibility>> WEB_CONTENT_VISIBILITY = new Property<List<WebContentVisibility>>("webContentVisibility");
-    public static final Property<List<WebMenu>> WEB_MENUS = new Property<List<WebMenu>>("webMenus");
-    public static final Property<WebNodeType> WEB_NODE_TYPE = new Property<WebNodeType>("webNodeType");
-    public static final Property<WebSiteVersion> WEB_SITE_VERSION = new Property<WebSiteVersion>("webSiteVersion");
-    public static final Property<List<WebUrlAlias>> WEB_URL_ALIASES = new Property<List<WebUrlAlias>>("webUrlAliases");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<Integer> NODE_NUMBER = Property.create("nodeNumber", Integer.class);
+    public static final Property<Boolean> PUBLISHED = Property.create("published", Boolean.class);
+    public static final Property<List<WebContentVisibility>> WEB_CONTENT_VISIBILITY = Property.create("webContentVisibility", List.class);
+    public static final Property<List<WebMenu>> WEB_MENUS = Property.create("webMenus", List.class);
+    public static final Property<WebNodeType> WEB_NODE_TYPE = Property.create("webNodeType", WebNodeType.class);
+    public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
+    public static final Property<List<WebUrlAlias>> WEB_URL_ALIASES = Property.create("webUrlAliases", List.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

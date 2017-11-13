@@ -26,14 +26,14 @@ public abstract class _PostcodeDb extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> DC = new Property<String>("dc");
-    public static final Property<Long> ISH_VERSION = new Property<Long>("ishVersion");
-    public static final Property<Double> LAT = new Property<Double>("lat");
-    public static final Property<Double> LON = new Property<Double>("lon");
-    public static final Property<Long> POSTCODE = new Property<Long>("postcode");
-    public static final Property<String> STATE = new Property<String>("state");
-    public static final Property<String> SUBURB = new Property<String>("suburb");
-    public static final Property<PostcodeType> TYPE = new Property<PostcodeType>("type");
+    public static final Property<String> DC = Property.create("dc", String.class);
+    public static final Property<Long> ISH_VERSION = Property.create("ishVersion", Long.class);
+    public static final Property<Double> LAT = Property.create("lat", Double.class);
+    public static final Property<Double> LON = Property.create("lon", Double.class);
+    public static final Property<Long> POSTCODE = Property.create("postcode", Long.class);
+    public static final Property<String> STATE = Property.create("state", String.class);
+    public static final Property<String> SUBURB = Property.create("suburb", String.class);
+    public static final Property<PostcodeType> TYPE = Property.create("type", PostcodeType.class);
 
     public void setDc(String dc) {
         writeProperty("dc", dc);

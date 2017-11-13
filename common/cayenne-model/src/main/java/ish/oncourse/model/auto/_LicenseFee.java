@@ -31,15 +31,15 @@ public abstract class _LicenseFee extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Integer> BILLING_MONTH = new Property<Integer>("billingMonth");
-    public static final Property<BigDecimal> FEE = new Property<BigDecimal>("fee");
-    public static final Property<Integer> FREE_TRANSACTIONS = new Property<Integer>("freeTransactions");
-    public static final Property<String> KEY_CODE = new Property<String>("keyCode");
-    public static final Property<Date> PAID_UNTIL = new Property<Date>("paidUntil");
-    public static final Property<String> PLAN_NAME = new Property<String>("planName");
-    public static final Property<Date> VALID_UNTIL = new Property<Date>("validUntil");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<WebSite> WEB_SITE = new Property<WebSite>("webSite");
+    public static final Property<Integer> BILLING_MONTH = Property.create("billingMonth", Integer.class);
+    public static final Property<BigDecimal> FEE = Property.create("fee", BigDecimal.class);
+    public static final Property<Integer> FREE_TRANSACTIONS = Property.create("freeTransactions", Integer.class);
+    public static final Property<String> KEY_CODE = Property.create("keyCode", String.class);
+    public static final Property<Date> PAID_UNTIL = Property.create("paidUntil", Date.class);
+    public static final Property<String> PLAN_NAME = Property.create("planName", String.class);
+    public static final Property<Date> VALID_UNTIL = Property.create("validUntil", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<WebSite> WEB_SITE = Property.create("webSite", WebSite.class);
 
     public void setBillingMonth(Integer billingMonth) {
         writeProperty("billingMonth", billingMonth);

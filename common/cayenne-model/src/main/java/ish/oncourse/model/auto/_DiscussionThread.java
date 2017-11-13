@@ -17,7 +17,7 @@ public abstract class _DiscussionThread extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> TOPIC = new Property<String>("topic");
+    public static final Property<String> TOPIC = Property.create("topic", String.class);
 
     public void setTopic(String topic) {
         writeProperty("topic", topic);

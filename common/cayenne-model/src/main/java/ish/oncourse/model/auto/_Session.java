@@ -42,21 +42,21 @@ public abstract class _Session extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> END_DATE = new Property<Date>("endDate");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> PRIVATE_NOTES = new Property<String>("privateNotes");
-    public static final Property<String> PUBLIC_NOTES = new Property<String>("publicNotes");
-    public static final Property<Date> START_DATE = new Property<Date>("startDate");
-    public static final Property<String> TIME_ZONE = new Property<String>("timeZone");
-    public static final Property<List<Attendance>> ATTENDANCES = new Property<List<Attendance>>("attendances");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
-    public static final Property<Tutor> MARKER = new Property<Tutor>("marker");
-    public static final Property<Room> ROOM = new Property<Room>("room");
-    public static final Property<List<SessionModule>> SESSION_MODULES = new Property<List<SessionModule>>("sessionModules");
-    public static final Property<List<SessionTutor>> SESSION_TUTORS = new Property<List<SessionTutor>>("sessionTutors");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> END_DATE = Property.create("endDate", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> PRIVATE_NOTES = Property.create("privateNotes", String.class);
+    public static final Property<String> PUBLIC_NOTES = Property.create("publicNotes", String.class);
+    public static final Property<Date> START_DATE = Property.create("startDate", Date.class);
+    public static final Property<String> TIME_ZONE = Property.create("timeZone", String.class);
+    public static final Property<List<Attendance>> ATTENDANCES = Property.create("attendances", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
+    public static final Property<Tutor> MARKER = Property.create("marker", Tutor.class);
+    public static final Property<Room> ROOM = Property.create("room", Room.class);
+    public static final Property<List<SessionModule>> SESSION_MODULES = Property.create("sessionModules", List.class);
+    public static final Property<List<SessionTutor>> SESSION_TUTORS = Property.create("sessionTutors", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

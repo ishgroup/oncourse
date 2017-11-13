@@ -59,32 +59,32 @@ public abstract class _PaymentIn extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Money> AMOUNT = new Property<Money>("amount");
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<String> BILLING_ID = new Property<String>("billingId");
-    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = new Property<ConfirmationStatus>("confirmationStatus");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> CREDIT_CARD_CVV = new Property<String>("creditCardCVV");
-    public static final Property<String> CREDIT_CARD_EXPIRY = new Property<String>("creditCardExpiry");
-    public static final Property<String> CREDIT_CARD_NAME = new Property<String>("creditCardName");
-    public static final Property<String> CREDIT_CARD_NUMBER = new Property<String>("creditCardNumber");
-    public static final Property<CreditCardType> CREDIT_CARD_TYPE = new Property<CreditCardType>("creditCardType");
-    public static final Property<Date> DATE_BANKED = new Property<Date>("dateBanked");
-    public static final Property<String> GATEWAY_REFERENCE = new Property<String>("gatewayReference");
-    public static final Property<String> GATEWAY_RESPONSE = new Property<String>("gatewayResponse");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> SESSION_ID = new Property<String>("sessionId");
-    public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
-    public static final Property<PaymentStatus> STATUS = new Property<PaymentStatus>("status");
-    public static final Property<String> STATUS_NOTES = new Property<String>("statusNotes");
-    public static final Property<PaymentType> TYPE = new Property<PaymentType>("type");
-    public static final Property<List<Invoice>> AUTHORISED_INVOICES = new Property<List<Invoice>>("authorisedInvoices");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
-    public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = new Property<List<PaymentInLine>>("paymentInLines");
-    public static final Property<List<PaymentTransaction>> PAYMENT_TRANSACTIONS = new Property<List<PaymentTransaction>>("paymentTransactions");
-    public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENT_INS = new Property<List<VoucherPaymentIn>>("voucherPaymentIns");
-    public static final Property<List<Voucher>> VOUCHERS = new Property<List<Voucher>>("vouchers");
+    public static final Property<Money> AMOUNT = Property.create("amount", Money.class);
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<String> BILLING_ID = Property.create("billingId", String.class);
+    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = Property.create("confirmationStatus", ConfirmationStatus.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> CREDIT_CARD_CVV = Property.create("creditCardCVV", String.class);
+    public static final Property<String> CREDIT_CARD_EXPIRY = Property.create("creditCardExpiry", String.class);
+    public static final Property<String> CREDIT_CARD_NAME = Property.create("creditCardName", String.class);
+    public static final Property<String> CREDIT_CARD_NUMBER = Property.create("creditCardNumber", String.class);
+    public static final Property<CreditCardType> CREDIT_CARD_TYPE = Property.create("creditCardType", CreditCardType.class);
+    public static final Property<Date> DATE_BANKED = Property.create("dateBanked", Date.class);
+    public static final Property<String> GATEWAY_REFERENCE = Property.create("gatewayReference", String.class);
+    public static final Property<String> GATEWAY_RESPONSE = Property.create("gatewayResponse", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> SESSION_ID = Property.create("sessionId", String.class);
+    public static final Property<PaymentSource> SOURCE = Property.create("source", PaymentSource.class);
+    public static final Property<PaymentStatus> STATUS = Property.create("status", PaymentStatus.class);
+    public static final Property<String> STATUS_NOTES = Property.create("statusNotes", String.class);
+    public static final Property<PaymentType> TYPE = Property.create("type", PaymentType.class);
+    public static final Property<List<Invoice>> AUTHORISED_INVOICES = Property.create("authorisedInvoices", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
+    public static final Property<List<PaymentInLine>> PAYMENT_IN_LINES = Property.create("paymentInLines", List.class);
+    public static final Property<List<PaymentTransaction>> PAYMENT_TRANSACTIONS = Property.create("paymentTransactions", List.class);
+    public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENT_INS = Property.create("voucherPaymentIns", List.class);
+    public static final Property<List<Voucher>> VOUCHERS = Property.create("vouchers", List.class);
 
     public void setAmount(Money amount) {
         writeProperty("amount", amount);

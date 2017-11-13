@@ -20,8 +20,8 @@ public abstract class _CourseCourseRelation extends EntityRelation {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Course> FROM_COURSE = new Property<Course>("fromCourse");
-    public static final Property<Course> TO_COURSE = new Property<Course>("toCourse");
+    public static final Property<Course> FROM_COURSE = Property.create("fromCourse", Course.class);
+    public static final Property<Course> TO_COURSE = Property.create("toCourse", Course.class);
 
     public void setFromCourse(Course fromCourse) {
         setToOneTarget("fromCourse", fromCourse, true);

@@ -35,18 +35,18 @@ public abstract class _Module extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DISCIPLINE_CODE = new Property<String>("disciplineCode");
-    public static final Property<String> FIELD_OF_EDUCATION = new Property<String>("fieldOfEducation");
-    public static final Property<Byte> IS_MODULE = new Property<Byte>("isModule");
-    public static final Property<Long> ISH_VERSION = new Property<Long>("ishVersion");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NATIONAL_CODE = new Property<String>("nationalCode");
-    public static final Property<String> TITLE = new Property<String>("title");
-    public static final Property<Long> TRAINING_PACKAGE_ID = new Property<Long>("trainingPackageId");
-    public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = new Property<List<AssessmentClassModule>>("assessmentClassModules");
-    public static final Property<List<CourseModule>> MODULE_COURSES = new Property<List<CourseModule>>("moduleCourses");
-    public static final Property<List<SessionModule>> SESSION_MODULES = new Property<List<SessionModule>>("sessionModules");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DISCIPLINE_CODE = Property.create("disciplineCode", String.class);
+    public static final Property<String> FIELD_OF_EDUCATION = Property.create("fieldOfEducation", String.class);
+    public static final Property<Byte> IS_MODULE = Property.create("isModule", Byte.class);
+    public static final Property<Long> ISH_VERSION = Property.create("ishVersion", Long.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NATIONAL_CODE = Property.create("nationalCode", String.class);
+    public static final Property<String> TITLE = Property.create("title", String.class);
+    public static final Property<Long> TRAINING_PACKAGE_ID = Property.create("trainingPackageId", Long.class);
+    public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = Property.create("assessmentClassModules", List.class);
+    public static final Property<List<CourseModule>> MODULE_COURSES = Property.create("moduleCourses", List.class);
+    public static final Property<List<SessionModule>> SESSION_MODULES = Property.create("sessionModules", List.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

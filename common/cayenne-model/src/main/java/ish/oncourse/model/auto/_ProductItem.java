@@ -36,17 +36,17 @@ public abstract class _ProductItem extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = new Property<ConfirmationStatus>("confirmationStatus");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> EXPIRY_DATE = new Property<Date>("expiryDate");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<ProductStatus> STATUS = new Property<ProductStatus>("status");
-    public static final Property<Integer> TYPE = new Property<Integer>("type");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
-    public static final Property<InvoiceLine> INVOICE_LINE = new Property<InvoiceLine>("invoiceLine");
-    public static final Property<Product> PRODUCT = new Property<Product>("product");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<ConfirmationStatus> CONFIRMATION_STATUS = Property.create("confirmationStatus", ConfirmationStatus.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> EXPIRY_DATE = Property.create("expiryDate", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<ProductStatus> STATUS = Property.create("status", ProductStatus.class);
+    public static final Property<Integer> TYPE = Property.create("type", Integer.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
+    public static final Property<InvoiceLine> INVOICE_LINE = Property.create("invoiceLine", InvoiceLine.class);
+    public static final Property<Product> PRODUCT = Property.create("product", Product.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

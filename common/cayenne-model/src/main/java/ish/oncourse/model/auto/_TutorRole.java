@@ -31,15 +31,15 @@ public abstract class _TutorRole extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CONFIRMED_DATE = new Property<Date>("confirmedDate");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Boolean> IN_PUBLICITY = new Property<Boolean>("inPublicity");
-    public static final Property<Boolean> IS_CONFIRMED = new Property<Boolean>("isConfirmed");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
-    public static final Property<Tutor> TUTOR = new Property<Tutor>("tutor");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CONFIRMED_DATE = Property.create("confirmedDate", Date.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Boolean> IN_PUBLICITY = Property.create("inPublicity", Boolean.class);
+    public static final Property<Boolean> IS_CONFIRMED = Property.create("isConfirmed", Boolean.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
+    public static final Property<Tutor> TUTOR = Property.create("tutor", Tutor.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

@@ -47,24 +47,24 @@ public abstract class _InvoiceLine extends InvoicePayableLine {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DESCRIPTION = new Property<String>("description");
-    public static final Property<Money> DISCOUNT_EACH_EX_TAX = new Property<Money>("discountEachExTax");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Money> PRICE_EACH_EX_TAX = new Property<Money>("priceEachExTax");
-    public static final Property<BigDecimal> QUANTITY = new Property<BigDecimal>("quantity");
-    public static final Property<Integer> SORT_ORDER = new Property<Integer>("sortOrder");
-    public static final Property<Money> TAX_EACH = new Property<Money>("taxEach");
-    public static final Property<String> TITLE = new Property<String>("title");
-    public static final Property<String> UNIT = new Property<String>("unit");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
-    public static final Property<Enrolment> ENROLMENT = new Property<Enrolment>("enrolment");
-    public static final Property<Invoice> INVOICE = new Property<Invoice>("invoice");
-    public static final Property<List<InvoiceLineDiscount>> INVOICE_LINE_DISCOUNTS = new Property<List<InvoiceLineDiscount>>("invoiceLineDiscounts");
-    public static final Property<List<ProductItem>> PRODUCT_ITEMS = new Property<List<ProductItem>>("productItems");
-    public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENTS_IN = new Property<List<VoucherPaymentIn>>("voucherPaymentsIn");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DESCRIPTION = Property.create("description", String.class);
+    public static final Property<Money> DISCOUNT_EACH_EX_TAX = Property.create("discountEachExTax", Money.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Money> PRICE_EACH_EX_TAX = Property.create("priceEachExTax", Money.class);
+    public static final Property<BigDecimal> QUANTITY = Property.create("quantity", BigDecimal.class);
+    public static final Property<Integer> SORT_ORDER = Property.create("sortOrder", Integer.class);
+    public static final Property<Money> TAX_EACH = Property.create("taxEach", Money.class);
+    public static final Property<String> TITLE = Property.create("title", String.class);
+    public static final Property<String> UNIT = Property.create("unit", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
+    public static final Property<Enrolment> ENROLMENT = Property.create("enrolment", Enrolment.class);
+    public static final Property<Invoice> INVOICE = Property.create("invoice", Invoice.class);
+    public static final Property<List<InvoiceLineDiscount>> INVOICE_LINE_DISCOUNTS = Property.create("invoiceLineDiscounts", List.class);
+    public static final Property<List<ProductItem>> PRODUCT_ITEMS = Property.create("productItems", List.class);
+    public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENTS_IN = Property.create("voucherPaymentsIn", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

@@ -35,17 +35,17 @@ public abstract class _BinaryInfoRelation extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Long> ENTITY_ANGEL_ID = new Property<Long>("entityAngelId");
-    public static final Property<String> ENTITY_IDENTIFIER = new Property<String>("entityIdentifier");
-    public static final Property<Long> ENTITY_WILLOW_ID = new Property<Long>("entityWillowId");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<AttachmentSpecialType> SPECIAL_TYPE = new Property<AttachmentSpecialType>("specialType");
-    public static final Property<BinaryInfo> BINARY_INFO = new Property<BinaryInfo>("binaryInfo");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Document> DOCUMENT = new Property<Document>("document");
-    public static final Property<DocumentVersion> DOCUMENT_VERSION = new Property<DocumentVersion>("documentVersion");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Long> ENTITY_ANGEL_ID = Property.create("entityAngelId", Long.class);
+    public static final Property<String> ENTITY_IDENTIFIER = Property.create("entityIdentifier", String.class);
+    public static final Property<Long> ENTITY_WILLOW_ID = Property.create("entityWillowId", Long.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<AttachmentSpecialType> SPECIAL_TYPE = Property.create("specialType", AttachmentSpecialType.class);
+    public static final Property<BinaryInfo> BINARY_INFO = Property.create("binaryInfo", BinaryInfo.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Document> DOCUMENT = Property.create("document", Document.class);
+    public static final Property<DocumentVersion> DOCUMENT_VERSION = Property.create("documentVersion", DocumentVersion.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

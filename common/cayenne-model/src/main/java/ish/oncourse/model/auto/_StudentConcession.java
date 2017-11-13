@@ -33,17 +33,17 @@ public abstract class _StudentConcession extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> AUTHORISATION_EXPIRES_ON = new Property<Date>("authorisationExpiresOn");
-    public static final Property<Date> AUTHORISED_ON = new Property<Date>("authorisedOn");
-    public static final Property<String> CONCESSION_NUMBER = new Property<String>("concessionNumber");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> EXPIRES_ON = new Property<Date>("expiresOn");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> TIME_ZONE = new Property<String>("timeZone");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<ConcessionType> CONCESSION_TYPE = new Property<ConcessionType>("concessionType");
-    public static final Property<Student> STUDENT = new Property<Student>("student");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> AUTHORISATION_EXPIRES_ON = Property.create("authorisationExpiresOn", Date.class);
+    public static final Property<Date> AUTHORISED_ON = Property.create("authorisedOn", Date.class);
+    public static final Property<String> CONCESSION_NUMBER = Property.create("concessionNumber", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> EXPIRES_ON = Property.create("expiresOn", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> TIME_ZONE = Property.create("timeZone", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<ConcessionType> CONCESSION_TYPE = Property.create("concessionType", ConcessionType.class);
+    public static final Property<Student> STUDENT = Property.create("student", Student.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

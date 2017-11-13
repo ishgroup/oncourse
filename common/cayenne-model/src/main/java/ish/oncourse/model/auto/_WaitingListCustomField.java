@@ -19,7 +19,7 @@ public abstract class _WaitingListCustomField extends CustomField {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<WaitingList> RELATED_OBJECT = new Property<WaitingList>("relatedObject");
+    public static final Property<WaitingList> RELATED_OBJECT = Property.create("relatedObject", WaitingList.class);
 
     public void setRelatedObject(WaitingList relatedObject) {
         setToOneTarget("relatedObject", relatedObject, true);

@@ -27,15 +27,15 @@ public abstract class _Country extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> ASCCSS_CODE = new Property<String>("asccssCode");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Long> ISH_VERSION = new Property<Long>("ishVersion");
-    public static final Property<String> ISO_CODE_ALPHA2 = new Property<String>("isoCodeAlpha2");
-    public static final Property<String> ISO_CODE_ALPHA3 = new Property<String>("isoCodeAlpha3");
-    public static final Property<Integer> ISO_CODE_NUMERIC = new Property<Integer>("isoCodeNumeric");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<Integer> SACC_CODE = new Property<Integer>("saccCode");
+    public static final Property<String> ASCCSS_CODE = Property.create("asccssCode", String.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Long> ISH_VERSION = Property.create("ishVersion", Long.class);
+    public static final Property<String> ISO_CODE_ALPHA2 = Property.create("isoCodeAlpha2", String.class);
+    public static final Property<String> ISO_CODE_ALPHA3 = Property.create("isoCodeAlpha3", String.class);
+    public static final Property<Integer> ISO_CODE_NUMERIC = Property.create("isoCodeNumeric", Integer.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<Integer> SACC_CODE = Property.create("saccCode", Integer.class);
 
     public void setAsccssCode(String asccssCode) {
         writeProperty("asccssCode", asccssCode);

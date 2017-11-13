@@ -28,13 +28,13 @@ public abstract class _WebUrlAlias extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Boolean> DEFAULT = new Property<Boolean>("default");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> REDIRECT_TO = new Property<String>("redirectTo");
-    public static final Property<String> URL_PATH = new Property<String>("urlPath");
-    public static final Property<WebNode> WEB_NODE = new Property<WebNode>("webNode");
-    public static final Property<WebSiteVersion> WEB_SITE_VERSION = new Property<WebSiteVersion>("webSiteVersion");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Boolean> DEFAULT = Property.create("default", Boolean.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> REDIRECT_TO = Property.create("redirectTo", String.class);
+    public static final Property<String> URL_PATH = Property.create("urlPath", String.class);
+    public static final Property<WebNode> WEB_NODE = Property.create("webNode", WebNode.class);
+    public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

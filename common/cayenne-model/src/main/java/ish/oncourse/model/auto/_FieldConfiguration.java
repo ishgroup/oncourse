@@ -34,16 +34,16 @@ public abstract class _FieldConfiguration extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<List<FieldConfigurationScheme>> APPLICATION_FIELD_CONFIGURATION_SCHEMES = new Property<List<FieldConfigurationScheme>>("applicationFieldConfigurationSchemes");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<FieldConfigurationScheme>> ENROL_FIELD_CONFIGURATION_SCHEMES = new Property<List<FieldConfigurationScheme>>("enrolFieldConfigurationSchemes");
-    public static final Property<List<FieldHeading>> FIELD_HEADINGS = new Property<List<FieldHeading>>("fieldHeadings");
-    public static final Property<List<Field>> FIELDS = new Property<List<Field>>("fields");
-    public static final Property<List<FieldConfigurationScheme>> WAITING_LIST_FIELD_CONFIGURATION_SCHEMES = new Property<List<FieldConfigurationScheme>>("waitingListFieldConfigurationSchemes");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<List<FieldConfigurationScheme>> APPLICATION_FIELD_CONFIGURATION_SCHEMES = Property.create("applicationFieldConfigurationSchemes", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<FieldConfigurationScheme>> ENROL_FIELD_CONFIGURATION_SCHEMES = Property.create("enrolFieldConfigurationSchemes", List.class);
+    public static final Property<List<FieldHeading>> FIELD_HEADINGS = Property.create("fieldHeadings", List.class);
+    public static final Property<List<Field>> FIELDS = Property.create("fields", List.class);
+    public static final Property<List<FieldConfigurationScheme>> WAITING_LIST_FIELD_CONFIGURATION_SCHEMES = Property.create("waitingListFieldConfigurationSchemes", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

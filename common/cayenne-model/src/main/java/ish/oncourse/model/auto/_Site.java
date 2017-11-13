@@ -51,31 +51,31 @@ public abstract class _Site extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Long> COUNTRY_ID = new Property<Long>("countryId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DRIVING_DIRECTIONS = new Property<String>("drivingDirections");
-    public static final Property<String> DRIVING_DIRECTIONS_TEXTILE = new Property<String>("drivingDirectionsTextile");
-    public static final Property<Boolean> IS_VIRTUAL = new Property<Boolean>("isVirtual");
-    public static final Property<Boolean> IS_WEB_VISIBLE = new Property<Boolean>("isWebVisible");
-    public static final Property<BigDecimal> LATITUDE = new Property<BigDecimal>("latitude");
-    public static final Property<BigDecimal> LONGITUDE = new Property<BigDecimal>("longitude");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<String> POSTCODE = new Property<String>("postcode");
-    public static final Property<String> PUBLIC_TRANSPORT_DIRECTIONS = new Property<String>("publicTransportDirections");
-    public static final Property<String> PUBLIC_TRANSPORT_DIRECTIONS_TEXTILE = new Property<String>("publicTransportDirectionsTextile");
-    public static final Property<String> SPECIAL_INSTRUCTIONS = new Property<String>("specialInstructions");
-    public static final Property<String> SPECIAL_INSTRUCTIONS_TEXTILE = new Property<String>("specialInstructionsTextile");
-    public static final Property<String> STATE = new Property<String>("state");
-    public static final Property<String> STREET = new Property<String>("street");
-    public static final Property<String> SUBURB = new Property<String>("suburb");
-    public static final Property<String> TIME_ZONE = new Property<String>("timeZone");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Country> COUNTRY = new Property<Country>("country");
-    public static final Property<List<Room>> ROOMS = new Property<List<Room>>("rooms");
-    public static final Property<List<SystemUser>> SYSTEM_USERS = new Property<List<SystemUser>>("systemUsers");
-    public static final Property<List<WaitingListSite>> WAITING_LIST_SITES = new Property<List<WaitingListSite>>("waitingListSites");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Long> COUNTRY_ID = Property.create("countryId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DRIVING_DIRECTIONS = Property.create("drivingDirections", String.class);
+    public static final Property<String> DRIVING_DIRECTIONS_TEXTILE = Property.create("drivingDirectionsTextile", String.class);
+    public static final Property<Boolean> IS_VIRTUAL = Property.create("isVirtual", Boolean.class);
+    public static final Property<Boolean> IS_WEB_VISIBLE = Property.create("isWebVisible", Boolean.class);
+    public static final Property<BigDecimal> LATITUDE = Property.create("latitude", BigDecimal.class);
+    public static final Property<BigDecimal> LONGITUDE = Property.create("longitude", BigDecimal.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<String> POSTCODE = Property.create("postcode", String.class);
+    public static final Property<String> PUBLIC_TRANSPORT_DIRECTIONS = Property.create("publicTransportDirections", String.class);
+    public static final Property<String> PUBLIC_TRANSPORT_DIRECTIONS_TEXTILE = Property.create("publicTransportDirectionsTextile", String.class);
+    public static final Property<String> SPECIAL_INSTRUCTIONS = Property.create("specialInstructions", String.class);
+    public static final Property<String> SPECIAL_INSTRUCTIONS_TEXTILE = Property.create("specialInstructionsTextile", String.class);
+    public static final Property<String> STATE = Property.create("state", String.class);
+    public static final Property<String> STREET = Property.create("street", String.class);
+    public static final Property<String> SUBURB = Property.create("suburb", String.class);
+    public static final Property<String> TIME_ZONE = Property.create("timeZone", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Country> COUNTRY = Property.create("country", Country.class);
+    public static final Property<List<Room>> ROOMS = Property.create("rooms", List.class);
+    public static final Property<List<SystemUser>> SYSTEM_USERS = Property.create("systemUsers", List.class);
+    public static final Property<List<WaitingListSite>> WAITING_LIST_SITES = Property.create("waitingListSites", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

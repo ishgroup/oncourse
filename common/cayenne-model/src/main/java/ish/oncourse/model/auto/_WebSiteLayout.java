@@ -26,10 +26,10 @@ public abstract class _WebSiteLayout extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> LAYOUT_KEY = new Property<String>("layoutKey");
-    public static final Property<List<WebTemplate>> TEMPLATES = new Property<List<WebTemplate>>("templates");
-    public static final Property<List<WebNodeType>> WEB_NODE_TYPES = new Property<List<WebNodeType>>("webNodeTypes");
-    public static final Property<WebSiteVersion> WEB_SITE_VERSION = new Property<WebSiteVersion>("webSiteVersion");
+    public static final Property<String> LAYOUT_KEY = Property.create("layoutKey", String.class);
+    public static final Property<List<WebTemplate>> TEMPLATES = Property.create("templates", List.class);
+    public static final Property<List<WebNodeType>> WEB_NODE_TYPES = Property.create("webNodeTypes", List.class);
+    public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
     public void setLayoutKey(String layoutKey) {
         writeProperty("layoutKey", layoutKey);

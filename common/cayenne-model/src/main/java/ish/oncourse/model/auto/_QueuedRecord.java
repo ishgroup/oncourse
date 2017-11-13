@@ -31,15 +31,15 @@ public abstract class _QueuedRecord extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<QueuedRecordAction> ACTION = new Property<QueuedRecordAction>("action");
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<String> ENTITY_IDENTIFIER = new Property<String>("entityIdentifier");
-    public static final Property<Long> ENTITY_WILLOW_ID = new Property<Long>("entityWillowId");
-    public static final Property<String> ERROR_MESSAGE = new Property<String>("errorMessage");
-    public static final Property<Date> LAST_ATTEMPT_TIMESTAMP = new Property<Date>("lastAttemptTimestamp");
-    public static final Property<Integer> NUMBER_OF_ATTEMPTS = new Property<Integer>("numberOfAttempts");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<QueuedTransaction> QUEUED_TRANSACTION = new Property<QueuedTransaction>("queuedTransaction");
+    public static final Property<QueuedRecordAction> ACTION = Property.create("action", QueuedRecordAction.class);
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<String> ENTITY_IDENTIFIER = Property.create("entityIdentifier", String.class);
+    public static final Property<Long> ENTITY_WILLOW_ID = Property.create("entityWillowId", Long.class);
+    public static final Property<String> ERROR_MESSAGE = Property.create("errorMessage", String.class);
+    public static final Property<Date> LAST_ATTEMPT_TIMESTAMP = Property.create("lastAttemptTimestamp", Date.class);
+    public static final Property<Integer> NUMBER_OF_ATTEMPTS = Property.create("numberOfAttempts", Integer.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<QueuedTransaction> QUEUED_TRANSACTION = Property.create("queuedTransaction", QueuedTransaction.class);
 
     public void setAction(QueuedRecordAction action) {
         writeProperty("action", action);

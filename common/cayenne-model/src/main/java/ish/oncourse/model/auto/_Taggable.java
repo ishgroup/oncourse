@@ -30,14 +30,14 @@ public abstract class _Taggable extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Long> ENTITY_ANGEL_ID = new Property<Long>("entityAngelId");
-    public static final Property<String> ENTITY_IDENTIFIER = new Property<String>("entityIdentifier");
-    public static final Property<Long> ENTITY_WILLOW_ID = new Property<Long>("entityWillowId");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<TaggableTag>> TAGGABLE_TAGS = new Property<List<TaggableTag>>("taggableTags");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Long> ENTITY_ANGEL_ID = Property.create("entityAngelId", Long.class);
+    public static final Property<String> ENTITY_IDENTIFIER = Property.create("entityIdentifier", String.class);
+    public static final Property<Long> ENTITY_WILLOW_ID = Property.create("entityWillowId", Long.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<TaggableTag>> TAGGABLE_TAGS = Property.create("taggableTags", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

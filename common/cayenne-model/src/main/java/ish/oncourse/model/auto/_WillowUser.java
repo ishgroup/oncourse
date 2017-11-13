@@ -32,17 +32,17 @@ public abstract class _WillowUser extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> EMAIL = new Property<String>("email");
-    public static final Property<Integer> FAILED_LOGIN_COUNT = new Property<Integer>("failedLoginCount");
-    public static final Property<String> FIRST_NAME = new Property<String>("firstName");
-    public static final Property<Boolean> IS_ACTIVE = new Property<Boolean>("isActive");
-    public static final Property<Date> LAST_FAILED_LOGIN = new Property<Date>("lastFailedLogin");
-    public static final Property<Date> LAST_LOGIN = new Property<Date>("lastLogin");
-    public static final Property<String> LAST_NAME = new Property<String>("lastName");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> PASSWORD = new Property<String>("password");
-    public static final Property<List<Log>> LOGS = new Property<List<Log>>("logs");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> EMAIL = Property.create("email", String.class);
+    public static final Property<Integer> FAILED_LOGIN_COUNT = Property.create("failedLoginCount", Integer.class);
+    public static final Property<String> FIRST_NAME = Property.create("firstName", String.class);
+    public static final Property<Boolean> IS_ACTIVE = Property.create("isActive", Boolean.class);
+    public static final Property<Date> LAST_FAILED_LOGIN = Property.create("lastFailedLogin", Date.class);
+    public static final Property<Date> LAST_LOGIN = Property.create("lastLogin", Date.class);
+    public static final Property<String> LAST_NAME = Property.create("lastName", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> PASSWORD = Property.create("password", String.class);
+    public static final Property<List<Log>> LOGS = Property.create("logs", List.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

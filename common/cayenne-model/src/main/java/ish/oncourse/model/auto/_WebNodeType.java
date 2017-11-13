@@ -31,13 +31,13 @@ public abstract class _WebNodeType extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<List<WebContentVisibility>> WEB_CONTENT_VISIBILITIES = new Property<List<WebContentVisibility>>("webContentVisibilities");
-    public static final Property<List<WebNode>> WEB_NODES = new Property<List<WebNode>>("webNodes");
-    public static final Property<WebSiteLayout> WEB_SITE_LAYOUT = new Property<WebSiteLayout>("webSiteLayout");
-    public static final Property<WebSiteVersion> WEB_SITE_VERSION = new Property<WebSiteVersion>("webSiteVersion");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<List<WebContentVisibility>> WEB_CONTENT_VISIBILITIES = Property.create("webContentVisibilities", List.class);
+    public static final Property<List<WebNode>> WEB_NODES = Property.create("webNodes", List.class);
+    public static final Property<WebSiteLayout> WEB_SITE_LAYOUT = Property.create("webSiteLayout", WebSiteLayout.class);
+    public static final Property<WebSiteVersion> WEB_SITE_VERSION = Property.create("webSiteVersion", WebSiteVersion.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

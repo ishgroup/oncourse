@@ -28,13 +28,13 @@ public abstract class _CustomField extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> ENTITY_NAME = new Property<String>("entityName");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> VALUE = new Property<String>("value");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<CustomFieldType> CUSTOM_FIELD_TYPE = new Property<CustomFieldType>("customFieldType");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> ENTITY_NAME = Property.create("entityName", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> VALUE = Property.create("value", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<CustomFieldType> CUSTOM_FIELD_TYPE = Property.create("customFieldType", CustomFieldType.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

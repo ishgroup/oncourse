@@ -26,11 +26,11 @@ public abstract class _CustomFee extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> CODE = new Property<String>("code");
-    public static final Property<BigDecimal> FEE = new Property<BigDecimal>("fee");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<Date> PAID_UNTIL = new Property<Date>("paidUntil");
-    public static final Property<College> COLLEGE = new Property<College>("college");
+    public static final Property<String> CODE = Property.create("code", String.class);
+    public static final Property<BigDecimal> FEE = Property.create("fee", BigDecimal.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<Date> PAID_UNTIL = Property.create("paidUntil", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
 
     public void setCode(String code) {
         writeProperty("code", code);

@@ -26,11 +26,11 @@ public abstract class _WebContentVisibility extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<RegionKey> REGION_KEY = new Property<RegionKey>("regionKey");
-    public static final Property<Integer> WEIGHT = new Property<Integer>("weight");
-    public static final Property<WebContent> WEB_CONTENT = new Property<WebContent>("webContent");
-    public static final Property<WebNode> WEB_NODE = new Property<WebNode>("webNode");
-    public static final Property<WebNodeType> WEB_NODE_TYPE = new Property<WebNodeType>("webNodeType");
+    public static final Property<RegionKey> REGION_KEY = Property.create("regionKey", RegionKey.class);
+    public static final Property<Integer> WEIGHT = Property.create("weight", Integer.class);
+    public static final Property<WebContent> WEB_CONTENT = Property.create("webContent", WebContent.class);
+    public static final Property<WebNode> WEB_NODE = Property.create("webNode", WebNode.class);
+    public static final Property<WebNodeType> WEB_NODE_TYPE = Property.create("webNodeType", WebNodeType.class);
 
     public void setRegionKey(RegionKey regionKey) {
         writeProperty("regionKey", regionKey);

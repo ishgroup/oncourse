@@ -29,13 +29,13 @@ public abstract class _Instruction extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> EXECUTED = new Property<Date>("executed");
-    public static final Property<String> MESSAGE = new Property<String>("message");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> RESPONSE = new Property<String>("response");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<InstructionParameter>> PARAMETERS = new Property<List<InstructionParameter>>("parameters");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> EXECUTED = Property.create("executed", Date.class);
+    public static final Property<String> MESSAGE = Property.create("message", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> RESPONSE = Property.create("response", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<InstructionParameter>> PARAMETERS = Property.create("parameters", List.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

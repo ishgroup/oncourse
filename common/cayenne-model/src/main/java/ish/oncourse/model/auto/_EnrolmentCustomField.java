@@ -19,7 +19,7 @@ public abstract class _EnrolmentCustomField extends CustomField {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Enrolment> RELATED_OBJECT = new Property<Enrolment>("relatedObject");
+    public static final Property<Enrolment> RELATED_OBJECT = Property.create("relatedObject", Enrolment.class);
 
     public void setRelatedObject(Enrolment relatedObject) {
         setToOneTarget("relatedObject", relatedObject, true);

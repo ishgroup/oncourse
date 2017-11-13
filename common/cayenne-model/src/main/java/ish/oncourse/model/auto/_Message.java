@@ -30,14 +30,14 @@ public abstract class _Message extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> EMAIL_BODY = new Property<String>("emailBody");
-    public static final Property<String> EMAIL_SUBJECT = new Property<String>("emailSubject");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> SMS_TEXT = new Property<String>("smsText");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = new Property<List<MessagePerson>>("messagePeople");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> EMAIL_BODY = Property.create("emailBody", String.class);
+    public static final Property<String> EMAIL_SUBJECT = Property.create("emailSubject", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> SMS_TEXT = Property.create("smsText", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = Property.create("messagePeople", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

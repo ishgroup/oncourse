@@ -32,14 +32,14 @@ public abstract class _DiscountMembership extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Boolean> APPLY_TO_MEMBER_ONLY = new Property<Boolean>("applyToMemberOnly");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Discount> DISCOUNT = new Property<Discount>("discount");
-    public static final Property<List<DiscountMembershipRelationType>> DISCOUNT_MEMBERSHIP_RELATION_TYPES = new Property<List<DiscountMembershipRelationType>>("discountMembershipRelationTypes");
-    public static final Property<MembershipProduct> MEMBERSHIP_PRODUCT = new Property<MembershipProduct>("membershipProduct");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Boolean> APPLY_TO_MEMBER_ONLY = Property.create("applyToMemberOnly", Boolean.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Discount> DISCOUNT = Property.create("discount", Discount.class);
+    public static final Property<List<DiscountMembershipRelationType>> DISCOUNT_MEMBERSHIP_RELATION_TYPES = Property.create("discountMembershipRelationTypes", List.class);
+    public static final Property<MembershipProduct> MEMBERSHIP_PRODUCT = Property.create("membershipProduct", MembershipProduct.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

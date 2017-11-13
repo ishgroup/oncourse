@@ -26,11 +26,11 @@ public abstract class _WebHostName extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<WebSite> WEB_SITE = new Property<WebSite>("webSite");
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<WebSite> WEB_SITE = Property.create("webSite", WebSite.class);
 
     public void setCreated(Date created) {
         writeProperty("created", created);

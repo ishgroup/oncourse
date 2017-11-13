@@ -38,18 +38,18 @@ public abstract class _CorporatePass extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> EXPIRY_DATE = new Property<Date>("expiryDate");
-    public static final Property<String> INVOICE_EMAIL = new Property<String>("invoiceEmail");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> PASSWORD = new Property<String>("password");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
-    public static final Property<List<CorporatePassDiscount>> CORPORATE_PASS_DISCOUNTS = new Property<List<CorporatePassDiscount>>("corporatePassDiscounts");
-    public static final Property<List<Invoice>> INVOICE = new Property<List<Invoice>>("invoice");
-    public static final Property<List<CourseClass>> VALID_CLASSES = new Property<List<CourseClass>>("validClasses");
-    public static final Property<List<Product>> VALID_PRODUCTS = new Property<List<Product>>("validProducts");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> EXPIRY_DATE = Property.create("expiryDate", Date.class);
+    public static final Property<String> INVOICE_EMAIL = Property.create("invoiceEmail", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> PASSWORD = Property.create("password", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
+    public static final Property<List<CorporatePassDiscount>> CORPORATE_PASS_DISCOUNTS = Property.create("corporatePassDiscounts", List.class);
+    public static final Property<List<Invoice>> INVOICE = Property.create("invoice", List.class);
+    public static final Property<List<CourseClass>> VALID_CLASSES = Property.create("validClasses", List.class);
+    public static final Property<List<Product>> VALID_PRODUCTS = Property.create("validProducts", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

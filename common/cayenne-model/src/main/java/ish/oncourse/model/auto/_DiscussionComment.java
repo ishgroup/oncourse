@@ -19,9 +19,9 @@ public abstract class _DiscussionComment extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> BODY = new Property<String>("body");
-    public static final Property<Long> DISCUSSION_THREAD_ID = new Property<Long>("discussionThreadId");
-    public static final Property<Boolean> IS_DELETED = new Property<Boolean>("isDeleted");
+    public static final Property<String> BODY = Property.create("body", String.class);
+    public static final Property<Long> DISCUSSION_THREAD_ID = Property.create("discussionThreadId", Long.class);
+    public static final Property<Boolean> IS_DELETED = Property.create("isDeleted", Boolean.class);
 
     public void setBody(String body) {
         writeProperty("body", body);

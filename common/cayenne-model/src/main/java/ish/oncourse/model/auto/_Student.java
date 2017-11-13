@@ -21,7 +21,6 @@ import ish.oncourse.model.Contact;
 import ish.oncourse.model.Country;
 import ish.oncourse.model.Enrolment;
 import ish.oncourse.model.Language;
-import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.PriorLearning;
 import ish.oncourse.model.StudentConcession;
 import ish.oncourse.model.WaitingList;
@@ -66,47 +65,45 @@ public abstract class _Student extends CayenneDataObject {
     public static final String ENROLMENTS_PROPERTY = "enrolments";
     public static final String LANGUAGE_PROPERTY = "language";
     public static final String LANGUAGE_HOME_PROPERTY = "languageHome";
-    public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
     public static final String PRIOR_LEARNINGS_PROPERTY = "priorLearnings";
     public static final String STUDENT_CONCESSIONS_PROPERTY = "studentConcessions";
     public static final String WAITING_LISTS_PROPERTY = "waitingLists";
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<String> CHESSN = new Property<String>("chessn");
-    public static final Property<StudentCitizenship> CITIZENSHIP = new Property<StudentCitizenship>("citizenship");
-    public static final Property<Integer> CONCESSION_TYPE = new Property<Integer>("concessionType");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<AvetmissStudentDisabilityType> DISABILITY_TYPE = new Property<AvetmissStudentDisabilityType>("disabilityType");
-    public static final Property<AvetmissStudentEnglishProficiency> ENGLISH_PROFICIENCY = new Property<AvetmissStudentEnglishProficiency>("englishProficiency");
-    public static final Property<Boolean> FEE_HELP_ELIGIBLE = new Property<Boolean>("feeHelpEligible");
-    public static final Property<AvetmissStudentSchoolLevel> HIGHEST_SCHOOL_LEVEL = new Property<AvetmissStudentSchoolLevel>("highestSchoolLevel");
-    public static final Property<AvetmissStudentIndigenousStatus> INDIGENOUS_STATUS = new Property<AvetmissStudentIndigenousStatus>("indigenousStatus");
-    public static final Property<Boolean> IS_OVERSEAS_CLIENT = new Property<Boolean>("isOverseasClient");
-    public static final Property<Boolean> IS_STILL_AT_SCHOOL = new Property<Boolean>("isStillAtSchool");
-    public static final Property<Integer> LABOUR_FORCE_TYPE = new Property<Integer>("labourForceType");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<AvetmissStudentPriorEducation> PRIOR_EDUCATION_CODE = new Property<AvetmissStudentPriorEducation>("priorEducationCode");
-    public static final Property<String> SPECIAL_NEEDS = new Property<String>("specialNeeds");
-    public static final Property<Boolean> SPECIAL_NEEDS_ASSISTANCE = new Property<Boolean>("specialNeedsAssistance");
-    public static final Property<String> TOWN_OF_BIRTH = new Property<String>("townOfBirth");
-    public static final Property<String> USI = new Property<String>("usi");
-    public static final Property<UsiStatus> USI_STATUS = new Property<UsiStatus>("usiStatus");
-    public static final Property<Integer> YEAR_SCHOOL_COMPLETED = new Property<Integer>("yearSchoolCompleted");
-    public static final Property<List<Application>> APPLICATIONS = new Property<List<Application>>("applications");
-    public static final Property<List<Attendance>> ATTENDANCES = new Property<List<Attendance>>("attendances");
-    public static final Property<List<Certificate>> CERTIFICATES = new Property<List<Certificate>>("certificates");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
-    public static final Property<Country> COUNTRY_OF_BIRTH = new Property<Country>("countryOfBirth");
-    public static final Property<List<Enrolment>> ENROLMENTS = new Property<List<Enrolment>>("enrolments");
-    public static final Property<Language> LANGUAGE = new Property<Language>("language");
-    public static final Property<Language> LANGUAGE_HOME = new Property<Language>("languageHome");
-    public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = new Property<List<MessagePerson>>("messagePeople");
-    public static final Property<List<PriorLearning>> PRIOR_LEARNINGS = new Property<List<PriorLearning>>("priorLearnings");
-    public static final Property<List<StudentConcession>> STUDENT_CONCESSIONS = new Property<List<StudentConcession>>("studentConcessions");
-    public static final Property<List<WaitingList>> WAITING_LISTS = new Property<List<WaitingList>>("waitingLists");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<String> CHESSN = Property.create("chessn", String.class);
+    public static final Property<StudentCitizenship> CITIZENSHIP = Property.create("citizenship", StudentCitizenship.class);
+    public static final Property<Integer> CONCESSION_TYPE = Property.create("concessionType", Integer.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<AvetmissStudentDisabilityType> DISABILITY_TYPE = Property.create("disabilityType", AvetmissStudentDisabilityType.class);
+    public static final Property<AvetmissStudentEnglishProficiency> ENGLISH_PROFICIENCY = Property.create("englishProficiency", AvetmissStudentEnglishProficiency.class);
+    public static final Property<Boolean> FEE_HELP_ELIGIBLE = Property.create("feeHelpEligible", Boolean.class);
+    public static final Property<AvetmissStudentSchoolLevel> HIGHEST_SCHOOL_LEVEL = Property.create("highestSchoolLevel", AvetmissStudentSchoolLevel.class);
+    public static final Property<AvetmissStudentIndigenousStatus> INDIGENOUS_STATUS = Property.create("indigenousStatus", AvetmissStudentIndigenousStatus.class);
+    public static final Property<Boolean> IS_OVERSEAS_CLIENT = Property.create("isOverseasClient", Boolean.class);
+    public static final Property<Boolean> IS_STILL_AT_SCHOOL = Property.create("isStillAtSchool", Boolean.class);
+    public static final Property<Integer> LABOUR_FORCE_TYPE = Property.create("labourForceType", Integer.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<AvetmissStudentPriorEducation> PRIOR_EDUCATION_CODE = Property.create("priorEducationCode", AvetmissStudentPriorEducation.class);
+    public static final Property<String> SPECIAL_NEEDS = Property.create("specialNeeds", String.class);
+    public static final Property<Boolean> SPECIAL_NEEDS_ASSISTANCE = Property.create("specialNeedsAssistance", Boolean.class);
+    public static final Property<String> TOWN_OF_BIRTH = Property.create("townOfBirth", String.class);
+    public static final Property<String> USI = Property.create("usi", String.class);
+    public static final Property<UsiStatus> USI_STATUS = Property.create("usiStatus", UsiStatus.class);
+    public static final Property<Integer> YEAR_SCHOOL_COMPLETED = Property.create("yearSchoolCompleted", Integer.class);
+    public static final Property<List<Application>> APPLICATIONS = Property.create("applications", List.class);
+    public static final Property<List<Attendance>> ATTENDANCES = Property.create("attendances", List.class);
+    public static final Property<List<Certificate>> CERTIFICATES = Property.create("certificates", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
+    public static final Property<Country> COUNTRY_OF_BIRTH = Property.create("countryOfBirth", Country.class);
+    public static final Property<List<Enrolment>> ENROLMENTS = Property.create("enrolments", List.class);
+    public static final Property<Language> LANGUAGE = Property.create("language", Language.class);
+    public static final Property<Language> LANGUAGE_HOME = Property.create("languageHome", Language.class);
+    public static final Property<List<PriorLearning>> PRIOR_LEARNINGS = Property.create("priorLearnings", List.class);
+    public static final Property<List<StudentConcession>> STUDENT_CONCESSIONS = Property.create("studentConcessions", List.class);
+    public static final Property<List<WaitingList>> WAITING_LISTS = Property.create("waitingLists", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);
@@ -345,18 +342,6 @@ public abstract class _Student extends CayenneDataObject {
 
     public Language getLanguageHome() {
         return (Language)readProperty("languageHome");
-    }
-
-
-    public void addToMessagePeople(MessagePerson obj) {
-        addToManyTarget("messagePeople", obj, true);
-    }
-    public void removeFromMessagePeople(MessagePerson obj) {
-        removeToManyTarget("messagePeople", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<MessagePerson> getMessagePeople() {
-        return (List<MessagePerson>)readProperty("messagePeople");
     }
 
 

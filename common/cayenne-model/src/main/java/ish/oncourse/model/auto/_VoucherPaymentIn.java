@@ -33,15 +33,15 @@ public abstract class _VoucherPaymentIn extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Integer> ENROLMENTS_COUNT = new Property<Integer>("enrolmentsCount");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<VoucherPaymentStatus> STATUS = new Property<VoucherPaymentStatus>("status");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<InvoiceLine> INVOICE_LINE = new Property<InvoiceLine>("invoiceLine");
-    public static final Property<PaymentIn> PAYMENT = new Property<PaymentIn>("payment");
-    public static final Property<Voucher> VOUCHER = new Property<Voucher>("voucher");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Integer> ENROLMENTS_COUNT = Property.create("enrolmentsCount", Integer.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<VoucherPaymentStatus> STATUS = Property.create("status", VoucherPaymentStatus.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<InvoiceLine> INVOICE_LINE = Property.create("invoiceLine", InvoiceLine.class);
+    public static final Property<PaymentIn> PAYMENT = Property.create("payment", PaymentIn.class);
+    public static final Property<Voucher> VOUCHER = Property.create("voucher", Voucher.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

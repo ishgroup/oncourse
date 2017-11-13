@@ -31,14 +31,14 @@ public abstract class _Voucher extends ProductItem {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<String> CODE = new Property<String>("code");
-    public static final Property<String> ID_KEY = new Property<String>("idKey");
-    public static final Property<Integer> REDEEMED_COURSES_COUNT = new Property<Integer>("redeemedCoursesCount");
-    public static final Property<Money> REDEMPTION_VALUE = new Property<Money>("redemptionValue");
-    public static final Property<PaymentSource> SOURCE = new Property<PaymentSource>("source");
-    public static final Property<Money> VALUE_ON_PURCHASE = new Property<Money>("valueOnPurchase");
-    public static final Property<List<PaymentIn>> PAYMENTS = new Property<List<PaymentIn>>("payments");
-    public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENT_INS = new Property<List<VoucherPaymentIn>>("voucherPaymentIns");
+    public static final Property<String> CODE = Property.create("code", String.class);
+    public static final Property<String> ID_KEY = Property.create("idKey", String.class);
+    public static final Property<Integer> REDEEMED_COURSES_COUNT = Property.create("redeemedCoursesCount", Integer.class);
+    public static final Property<Money> REDEMPTION_VALUE = Property.create("redemptionValue", Money.class);
+    public static final Property<PaymentSource> SOURCE = Property.create("source", PaymentSource.class);
+    public static final Property<Money> VALUE_ON_PURCHASE = Property.create("valueOnPurchase", Money.class);
+    public static final Property<List<PaymentIn>> PAYMENTS = Property.create("payments", List.class);
+    public static final Property<List<VoucherPaymentIn>> VOUCHER_PAYMENT_INS = Property.create("voucherPaymentIns", List.class);
 
     public void setCode(String code) {
         writeProperty("code", code);

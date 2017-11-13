@@ -37,20 +37,20 @@ public abstract class _Script extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DESCRIPTION = new Property<String>("description");
-    public static final Property<Boolean> ENABLED = new Property<Boolean>("enabled");
-    public static final Property<String> ENTITY_CLASS = new Property<String>("entityClass");
-    public static final Property<EntityEvent> ENTITY_EVENT_TYPE = new Property<EntityEvent>("entityEventType");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<String> RESULT = new Property<String>("result");
-    public static final Property<String> SCHEDULE = new Property<String>("schedule");
-    public static final Property<String> SCRIPT = new Property<String>("script");
-    public static final Property<SystemEventType> SYSTEM_EVENT_TYPE = new Property<SystemEventType>("systemEventType");
-    public static final Property<TriggerType> TRIGGER_TYPE = new Property<TriggerType>("triggerType");
-    public static final Property<College> COLLEGE = new Property<College>("college");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DESCRIPTION = Property.create("description", String.class);
+    public static final Property<Boolean> ENABLED = Property.create("enabled", Boolean.class);
+    public static final Property<String> ENTITY_CLASS = Property.create("entityClass", String.class);
+    public static final Property<EntityEvent> ENTITY_EVENT_TYPE = Property.create("entityEventType", EntityEvent.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<String> RESULT = Property.create("result", String.class);
+    public static final Property<String> SCHEDULE = Property.create("schedule", String.class);
+    public static final Property<String> SCRIPT = Property.create("script", String.class);
+    public static final Property<SystemEventType> SYSTEM_EVENT_TYPE = Property.create("systemEventType", SystemEventType.class);
+    public static final Property<TriggerType> TRIGGER_TYPE = Property.create("triggerType", TriggerType.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

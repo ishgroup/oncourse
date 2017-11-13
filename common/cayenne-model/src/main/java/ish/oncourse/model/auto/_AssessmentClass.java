@@ -37,17 +37,17 @@ public abstract class _AssessmentClass extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> DUE_DATE = new Property<Date>("dueDate");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<Date> RELEASE_DATE = new Property<Date>("releaseDate");
-    public static final Property<Assessment> ASSESSMENT = new Property<Assessment>("assessment");
-    public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = new Property<List<AssessmentClassModule>>("assessmentClassModules");
-    public static final Property<List<AssessmentClassTutor>> ASSESSMENT_CLASS_TUTORS = new Property<List<AssessmentClassTutor>>("assessmentClassTutors");
-    public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = new Property<List<AssessmentSubmission>>("assessmentSubmissions");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<CourseClass> COURSE_CLASS = new Property<CourseClass>("courseClass");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> DUE_DATE = Property.create("dueDate", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<Date> RELEASE_DATE = Property.create("releaseDate", Date.class);
+    public static final Property<Assessment> ASSESSMENT = Property.create("assessment", Assessment.class);
+    public static final Property<List<AssessmentClassModule>> ASSESSMENT_CLASS_MODULES = Property.create("assessmentClassModules", List.class);
+    public static final Property<List<AssessmentClassTutor>> ASSESSMENT_CLASS_TUTORS = Property.create("assessmentClassTutors", List.class);
+    public static final Property<List<AssessmentSubmission>> ASSESSMENT_SUBMISSIONS = Property.create("assessmentSubmissions", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<CourseClass> COURSE_CLASS = Property.create("courseClass", CourseClass.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

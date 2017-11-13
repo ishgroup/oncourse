@@ -37,19 +37,19 @@ public abstract class _Room extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Integer> CAPACITY = new Property<Integer>("capacity");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<String> DIRECTIONS = new Property<String>("directions");
-    public static final Property<String> DIRECTIONS_TEXTILE = new Property<String>("directionsTextile");
-    public static final Property<String> FACILITIES = new Property<String>("facilities");
-    public static final Property<String> FACILITIES_TEXTILE = new Property<String>("facilitiesTextile");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<List<CourseClass>> COURSE_CLASSES = new Property<List<CourseClass>>("courseClasses");
-    public static final Property<List<Session>> SESSIONS = new Property<List<Session>>("sessions");
-    public static final Property<Site> SITE = new Property<Site>("site");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Integer> CAPACITY = Property.create("capacity", Integer.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<String> DIRECTIONS = Property.create("directions", String.class);
+    public static final Property<String> DIRECTIONS_TEXTILE = Property.create("directionsTextile", String.class);
+    public static final Property<String> FACILITIES = Property.create("facilities", String.class);
+    public static final Property<String> FACILITIES_TEXTILE = Property.create("facilitiesTextile", String.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> NAME = Property.create("name", String.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<List<CourseClass>> COURSE_CLASSES = Property.create("courseClasses", List.class);
+    public static final Property<List<Session>> SESSIONS = Property.create("sessions", List.class);
+    public static final Property<Site> SITE = Property.create("site", Site.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);

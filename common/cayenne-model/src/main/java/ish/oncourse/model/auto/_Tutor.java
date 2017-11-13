@@ -10,7 +10,6 @@ import ish.oncourse.model.AssessmentClassTutor;
 import ish.oncourse.model.Attendance;
 import ish.oncourse.model.College;
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.MessagePerson;
 import ish.oncourse.model.Session;
 import ish.oncourse.model.SessionTutor;
 import ish.oncourse.model.TutorRole;
@@ -36,28 +35,26 @@ public abstract class _Tutor extends CayenneDataObject {
     public static final String ATTENDANCES_PROPERTY = "attendances";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String CONTACT_PROPERTY = "contact";
-    public static final String MESSAGE_PEOPLE_PROPERTY = "messagePeople";
     public static final String SESSION_TUTORS_PROPERTY = "sessionTutors";
     public static final String SESSIONS_PROPERTY = "sessions";
     public static final String TUTOR_ROLES_PROPERTY = "tutorRoles";
 
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Long> ANGEL_ID = new Property<Long>("angelId");
-    public static final Property<Date> CREATED = new Property<Date>("created");
-    public static final Property<Date> FINISH_DATE = new Property<Date>("finishDate");
-    public static final Property<Date> MODIFIED = new Property<Date>("modified");
-    public static final Property<String> RESUME = new Property<String>("resume");
-    public static final Property<String> RESUME_TEXTILE = new Property<String>("resumeTextile");
-    public static final Property<Date> START_DATE = new Property<Date>("startDate");
-    public static final Property<List<AssessmentClassTutor>> ASSESSMENT_CLASS_TUTORS = new Property<List<AssessmentClassTutor>>("assessmentClassTutors");
-    public static final Property<List<Attendance>> ATTENDANCES = new Property<List<Attendance>>("attendances");
-    public static final Property<College> COLLEGE = new Property<College>("college");
-    public static final Property<Contact> CONTACT = new Property<Contact>("contact");
-    public static final Property<List<MessagePerson>> MESSAGE_PEOPLE = new Property<List<MessagePerson>>("messagePeople");
-    public static final Property<List<SessionTutor>> SESSION_TUTORS = new Property<List<SessionTutor>>("sessionTutors");
-    public static final Property<List<Session>> SESSIONS = new Property<List<Session>>("sessions");
-    public static final Property<List<TutorRole>> TUTOR_ROLES = new Property<List<TutorRole>>("tutorRoles");
+    public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
+    public static final Property<Date> CREATED = Property.create("created", Date.class);
+    public static final Property<Date> FINISH_DATE = Property.create("finishDate", Date.class);
+    public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
+    public static final Property<String> RESUME = Property.create("resume", String.class);
+    public static final Property<String> RESUME_TEXTILE = Property.create("resumeTextile", String.class);
+    public static final Property<Date> START_DATE = Property.create("startDate", Date.class);
+    public static final Property<List<AssessmentClassTutor>> ASSESSMENT_CLASS_TUTORS = Property.create("assessmentClassTutors", List.class);
+    public static final Property<List<Attendance>> ATTENDANCES = Property.create("attendances", List.class);
+    public static final Property<College> COLLEGE = Property.create("college", College.class);
+    public static final Property<Contact> CONTACT = Property.create("contact", Contact.class);
+    public static final Property<List<SessionTutor>> SESSION_TUTORS = Property.create("sessionTutors", List.class);
+    public static final Property<List<Session>> SESSIONS = Property.create("sessions", List.class);
+    public static final Property<List<TutorRole>> TUTOR_ROLES = Property.create("tutorRoles", List.class);
 
     public void setAngelId(Long angelId) {
         writeProperty("angelId", angelId);
@@ -147,18 +144,6 @@ public abstract class _Tutor extends CayenneDataObject {
 
     public Contact getContact() {
         return (Contact)readProperty("contact");
-    }
-
-
-    public void addToMessagePeople(MessagePerson obj) {
-        addToManyTarget("messagePeople", obj, true);
-    }
-    public void removeFromMessagePeople(MessagePerson obj) {
-        removeToManyTarget("messagePeople", obj, true);
-    }
-    @SuppressWarnings("unchecked")
-    public List<MessagePerson> getMessagePeople() {
-        return (List<MessagePerson>)readProperty("messagePeople");
     }
 
 
