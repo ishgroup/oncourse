@@ -74,7 +74,7 @@ class FieldBuilder {
                     break
                 case IS_STILL_AT_SCHOOL:
                     f.dataType = DataType.ENUM
-                    f.enumType = YesNoOptions.simpleName
+                    f.enumType = YesNoOptions.class.simpleName
                     YesNoOptions.enumConstants.each { DisplayableExtendedEnumeration item ->
                         f.enumItems  << new Item(value: item.displayName, key: item.databaseValue.toString())
                     }
