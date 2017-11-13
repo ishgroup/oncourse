@@ -98,7 +98,8 @@ export class PageSettings extends React.PureComponent<Props, any> {
     const {pages, page, showError} = this.props;
     const actualPages = pages.map(p => p.id === page.id ? {...p, urls: this.state.urls} : p);
 
-    if (!this.state.newLink || !PageService.isValidPageUrl(newLink, actualPages)) {
+    if (!this.state.newLink) return;
+    if (!PageService.isValidPageUrl(newLink, actualPages)) {
       showError('This url already exist');
       return;
     }

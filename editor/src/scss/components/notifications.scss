@@ -5,9 +5,19 @@
     height: 38px;
     
     h4 {
-      color: $white !important;;
+      color: $white !important;
       font-family: 'roboto', arial, sans-serif !important;
-      font-weight: 300 !important;;
+      font-weight: 300 !important;
+    }
+  }
+  
+  .notification-error {
+    height: 38px;
+  
+    h4 {
+      color: $danger !important;
+      font-family: 'roboto', arial, sans-serif !important;
+      font-weight: 400 !important;
     }
   }
   
