@@ -1185,7 +1185,7 @@
 		<db-attribute name="deliverySchedule" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
-		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="16777215"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="richText" type="LONGVARCHAR"/>
 		<db-attribute name="source" type="SMALLINT" isMandatory="true"/>
 	</db-entity>
