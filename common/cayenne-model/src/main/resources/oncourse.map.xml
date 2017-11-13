@@ -1173,9 +1173,21 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="netPromoterScore" type="INTEGER"/>
 		<db-attribute name="publicComment" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="surveyTypeId" type="BIGINT"/>
 		<db-attribute name="testimonial" type="LONGVARCHAR"/>
 		<db-attribute name="tutorScore" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="venueScore" type="INTEGER" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="SurveyType">
+		<db-attribute name="angelId" type="BIGINT"/>
+		<db-attribute name="collegeId " type="BIGINT" isMandatory="true"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="deliverySchedule" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="16777215"/>
+		<db-attribute name="richText" type="LONGVARCHAR"/>
+		<db-attribute name="source" type="SMALLINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="SystemUser">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -2442,6 +2454,15 @@
 		<obj-attribute name="venueScore" type="java.lang.Integer" db-attribute-path="venueScore"/>
 		<post-add method-name="onPostAdd"/>
 	</obj-entity>
+	<obj-entity name="SurveyType" className="ish.oncourse.model.SurveyType" dbEntityName="SurveyType">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="deliverySchedule" type="ish.common.types.DeliverySchedule" lock="true" db-attribute-path="deliverySchedule"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="richText" type="java.lang.String" db-attribute-path="richText"/>
+		<obj-attribute name="source" type="ish.common.types.SurveyTypeSource" lock="true" db-attribute-path="source"/>
+	</obj-entity>
 	<obj-entity name="SystemUser" className="ish.oncourse.model.SystemUser" dbEntityName="SystemUser">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2996,6 +3017,9 @@
 	</db-relationship>
 	<db-relationship name="students" source="College" target="Student" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
+	<db-relationship name="surveyTypes" source="College" target="SurveyType" toMany="true">
+		<db-attribute-pair source="id" target="collegeId "/>
 	</db-relationship>
 	<db-relationship name="surveys" source="College" target="Survey" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
@@ -3864,6 +3888,15 @@
 	<db-relationship name="enrolment" source="Survey" target="Enrolment" toMany="false">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
+	<db-relationship name="surveyType" source="Survey" target="SurveyType" toMany="false">
+		<db-attribute-pair source="surveyTypeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="college" source="SurveyType" target="College" toMany="false">
+		<db-attribute-pair source="collegeId " target="id"/>
+	</db-relationship>
+	<db-relationship name="surveys" source="SurveyType" target="Survey" toMany="true">
+		<db-attribute-pair source="id" target="surveyTypeId"/>
+	</db-relationship>
 	<db-relationship name="college" source="SystemUser" target="College" toMany="false">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -4486,6 +4519,9 @@
 	<obj-relationship name="contact" source="SupportPassword" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="college" source="Survey" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="enrolment" source="Survey" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
+	<obj-relationship name="surveyType" source="Survey" target="SurveyType" deleteRule="Nullify" db-relationship-path="surveyType"/>
+	<obj-relationship name="college" source="SurveyType" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="surveys" source="SurveyType" target="Survey" deleteRule="Deny" db-relationship-path="surveys"/>
 	<obj-relationship name="college" source="SystemUser" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="defaultAdministrationCentre" source="SystemUser" target="Site" deleteRule="Nullify" db-relationship-path="defaultAdministrationCentre"/>
 	<obj-relationship name="documentVersions" source="SystemUser" target="DocumentVersion" deleteRule="Deny" db-relationship-path="documentVersions"/>
