@@ -1,8 +1,9 @@
 package ish.oncourse.willow.service
 
+import ish.oncourse.api.cayenne.WillowApiCayenneModule
+import ish.oncourse.test.LoadDataSet
 import ish.oncourse.test.TestContext
-import ish.oncourse.willow.WillowApiModule
-import ish.oncourse.willow.cayenne.CayenneService
+import ish.oncourse.api.cayenne.CayenneService
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.junit.After
 import org.junit.Before
@@ -16,8 +17,8 @@ abstract class ApiTest {
     @Before
     void setup() throws Exception {
         testContext = new TestContext().shouldCreateTables(false).open()
-        testContext.cleanInsert(dataSetResource)
-        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowApiModule.WillowApiCayenneModule())
+        new LoadDataSet().dataSetFile(dataSetResource).replacements(["[null]":null]).load(testContext.DS)
+        cayenneRuntime = new ServerRuntime("cayenne-oncourse.xml", new WillowApiCayenneModule())
         cayenneService = new CayenneService(cayenneRuntime)
     }
 
