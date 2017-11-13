@@ -132,7 +132,7 @@ public class TestEnv<T extends TransportConfig> {
 
 		System.setProperty(USI_TEST_MODE, Boolean.TRUE.toString());
 
-		loadDataSet = new LoadDataSet(dataSetFile, replacements);
+		loadDataSet = new LoadDataSet().dataSetFile(dataSetFile).replacements(replacements);
 		runtime = ServicesApp.init(new String[]{}).createRuntime();
 		dataSourceFactory.set(runtime.getInstance(DataSourceFactory.class));
 		serverRuntime.set(runtime.getInstance(ServerRuntime.class));

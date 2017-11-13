@@ -18,7 +18,7 @@ public abstract class AbstractAllStubBuildersTest extends ServiceTest {
 	@Before
 	public void setupDataSet() throws Exception {
 		initTest("ish.oncourse.webservices.services", "", ReplicationTestModule.class);
-		new LoadDataSet("ish/oncourse/webservices/replication/builders/oncourseDataSet.xml", null).load(testContext.getDS());
+		new LoadDataSet().dataSetFile("ish/oncourse/webservices/replication/builders/oncourseDataSet.xml").load(testContext.getDS());
 	}
 
 	protected <E extends Queueable, S extends GenericReplicationStub> S testStubBuilder(Class<E> entityClass,

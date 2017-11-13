@@ -19,7 +19,7 @@ class FunctionsTest {
         when(postcodeDb.lat).thenReturn(-33.9036972D)
         when(postcodeDb.lon).thenReturn(151.1986751D)
 
-        SSuburb suburb = Functions.getSolrSuburb(postcodeDb)
+        SSuburb suburb = Functions.getSSuburb(postcodeDb)
         assertEquals("${postcodeDb.postcode}${postcodeDb.suburb}".toString(), suburb.id)
         assertEquals(postcodeDb.postcode.toString(), suburb.postcode)
         assertEquals(postcodeDb.suburb, suburb.suburb)

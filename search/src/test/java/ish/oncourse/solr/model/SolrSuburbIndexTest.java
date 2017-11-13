@@ -36,7 +36,7 @@ public class SolrSuburbIndexTest extends SolrTestCaseJ4 {
         when(postcodeDb.getLat()).thenReturn(-33.9036972D);
         when(postcodeDb.getLon()).thenReturn(151.1986751D);
 
-        SSuburb suburb = Functions.getGetSolrSuburb().call(postcodeDb);
+        SSuburb suburb = Functions.getGetSSuburb().call(postcodeDb);
 
         solrClient.addBean(suburb);
         solrClient.commit();
