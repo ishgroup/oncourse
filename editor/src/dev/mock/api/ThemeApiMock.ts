@@ -46,4 +46,9 @@ export function themeApiMock() {
       null,
     );
   });
+
+  this.api.onGet(API.GET_LAYOUTS).reply(config => promiseResolve(
+    config,
+    this.db.layouts,
+  ));
 }

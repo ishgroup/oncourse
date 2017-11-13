@@ -2,7 +2,7 @@ import React from 'react';
 import {Container, Row, Col} from 'reactstrap';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
-import {getThemes, saveTheme, updateThemeState} from "./actions";
+import {getLayouts, getThemes, saveTheme, updateThemeState} from "./actions";
 import {Theme as ThemeModel, Block} from "../../../../model";
 import Theme from "./components/Theme";
 import {State} from "../../../../reducers/state";
@@ -56,6 +56,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onInit: () => {
       dispatch(getThemes());
       dispatch(getBlocks());
+      dispatch(getLayouts());
     },
     onUpdateLayout: (theme, blockId, items) => {
       dispatch(updateThemeState(

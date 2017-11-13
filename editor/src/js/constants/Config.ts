@@ -30,6 +30,7 @@ export const API = {
 
   // Themes
   GET_THEMES: "/getThemes",
+  GET_LAYOUTS: "/getLayouts",
   SAVE_THEME: "/saveTheme",
   ADD_THEME: "/addTheme",
   DELETE_THEME: "/deleteTheme",

@@ -1,10 +1,11 @@
 import React from 'react';
 import {Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
-import {Theme} from "../../../../../model";
+import {Theme, Layout} from "../../../../../model";
 import {IconBack} from "../../../../../common/components/IconBack";
 
 interface Props {
   theme: Theme;
+  layouts: Layout[];
   onBack: () => void;
   onEdit?: (settings) => void;
   onDelete?: (id) => void;
@@ -18,7 +19,7 @@ export class ThemeSettings extends React.Component<Props, any> {
 
     this.state = {
       title: props.theme.title,
-      layout: props.theme.layout,
+      layoutId: props.theme.layoutId,
     };
   }
 
@@ -43,7 +44,7 @@ export class ThemeSettings extends React.Component<Props, any> {
 
     onEdit({
       title: this.state.title,
-      layout: this.state.layout,
+      layoutId: this.state.layoutId,
     });
   }
 
@@ -58,8 +59,8 @@ export class ThemeSettings extends React.Component<Props, any> {
   }
 
   render () {
-    const {theme} = this.props;
-    const {title, layout} = this.state;
+    const {theme, layouts} = this.props;
+    const {title, layoutId} = this.state;
 
     return (
       <div>
@@ -90,14 +91,18 @@ export class ThemeSettings extends React.Component<Props, any> {
             <FormGroup>
               <Label for="themeLayout">Layout</Label>
               <Input
-                type="text"
+                type="select"
                 name="themeLayout"
                 id="themeLayout"
                 placeholder="Theme layout"
-                value={layout}
-                onChange={e => this.onChange(e, 'layout')}
-                onBlur={e => this.onBlur('layout')}
-              />
+                value={layoutId}
+                onChange={e => this.onChange(e, 'layoutId')}
+                onBlur={e => this.onBlur('layoutId')}
+              >
+                {layouts.map(layout => (
+                  <option key={layout.id} value={layout.id}>{layout.layoutKey}</option>
+                ))}
+              </Input>
             </FormGroup>
 
             <FormGroup className="actions-group">

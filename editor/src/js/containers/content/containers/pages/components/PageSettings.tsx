@@ -204,7 +204,7 @@ export class PageSettings extends React.PureComponent<Props, any> {
                 onBlur={e => this.onBlur('themeId')}
               >
                 {themes.map(theme => (
-                  <option key={theme.id}>{theme.title}</option>
+                  <option key={theme.id} value={theme.id}>{theme.title}</option>
                 ))}
               </Input>
             </FormGroup>

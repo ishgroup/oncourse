@@ -1,5 +1,5 @@
 import {ThemeApi} from "../http/ThemeApi";
-import {Theme} from "../model";
+import {Theme, Layout} from "../model";
 import {State} from "../reducers/state";
 
 class ThemeService {
@@ -9,11 +9,15 @@ class ThemeService {
     return this.themeApi.getThemes();
   }
 
+  public getLayouts(): Promise<Layout[]> {
+    return this.themeApi.getLayouts();
+  }
+
   public saveTheme(props, state: State): Promise<Theme[]> {
     return this.themeApi.saveTheme(this.buildSaveThemeRequest(props, state));
   }
 
-  public addTheme(): Promise<Theme[]> {
+  public addTheme(): Promise<Theme> {
     return this.themeApi.addTheme();
   }
 
@@ -26,7 +30,6 @@ class ThemeService {
     return {
       ...theme,
       ...props,
-      id: props.id != -1 ? props.id : null,
     };
   }
 

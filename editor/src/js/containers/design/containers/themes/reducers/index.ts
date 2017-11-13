@@ -3,7 +3,7 @@ import {ThemesState} from "./State";
 import {
   ADD_THEME_FULFILLED,
   ADD_THEME_REQUEST,
-  DELETE_THEME_FULFILLED, DELETE_THEME_REQUEST,
+  DELETE_THEME_FULFILLED, DELETE_THEME_REQUEST, GET_LAYOUTS_FULFILLED, GET_LAYOUTS_REQUEST,
   GET_THEMES_FULFILLED, GET_THEMES_REQUEST, SAVE_THEME_FULFILLED, SAVE_THEME_REQUEST, UPDATE_THEME_STATE,
 } from "../actions";
 
@@ -14,6 +14,7 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
     case SAVE_THEME_REQUEST:
     case ADD_THEME_REQUEST:
     case DELETE_THEME_REQUEST:
+    case GET_LAYOUTS_REQUEST:
       return {
         ...state,
         fetching: true,
@@ -23,6 +24,13 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
       return {
         ...state,
         items: action.payload,
+        fetching: false,
+      };
+
+    case GET_LAYOUTS_FULFILLED:
+      return {
+        ...state,
+        layouts: action.payload,
         fetching: false,
       };
 

@@ -3,7 +3,7 @@ import update from 'react-addons-update';
 import faker from 'faker';
 import {
   Page, Block, MenuItem, Theme, User, Version, CheckoutSettings, WebsiteSettings, RedirectSettings,
-  SkillsOnCourseSettings, ThemeSchema,
+  SkillsOnCourseSettings, ThemeSchema, Layout,
 } from "../../js/model";
 
 export const CreateMockDB = (): MockDB => {
@@ -25,6 +25,7 @@ export class MockDB {
   blocks: Block[];
   menus: MenuItem[];
   themes: Theme[];
+  layouts: Layout[];
   versions: Version[];
   settings: {
     skillsOnCourse: SkillsOnCourseSettings;
@@ -43,6 +44,7 @@ export class MockDB {
     this.blocks = this.mockBlocks();
     this.menus = this.mockMenus();
     this.themes = this.mockThemes();
+    this.layouts = this.mockLayouts();
     this.versions = this.mockVersions();
     this.settings = this.mockSettings();
   }
@@ -61,7 +63,7 @@ export class MockDB {
         id: 1,
         title: 'Page - 1',
         visible: true,
-        themeId: 1,
+        themeId: 2,
         urls: [
           {
             link: '/page/1/',
@@ -80,7 +82,7 @@ export class MockDB {
         id: 2,
         title: 'Page - 2',
         visible: true,
-        themeId: 1,
+        themeId: 2,
         urls: [
           {
             link: '/page/2/',
@@ -104,7 +106,7 @@ export class MockDB {
         id: 3,
         title: 'Page - 3',
         visible: false,
-        themeId: 1,
+        themeId: 2,
         urls: [
           {
             link: '/page/3/',
@@ -225,7 +227,7 @@ export class MockDB {
       {
         id: 1,
         title: 'Custom Theme',
-        layout: 'Custom',
+        layoutId: 1,
         schema: {
           top: [{
             id: 1,
@@ -243,7 +245,7 @@ export class MockDB {
       {
         id: 2,
         title: 'Default Theme',
-        layout: 'User',
+        layoutId: 3,
         schema: {
           top: [],
           middle1: [],
@@ -261,6 +263,23 @@ export class MockDB {
             position: 2,
           }],
         },
+      },
+    ];
+  }
+
+  mockLayouts() {
+    return [
+      {
+        id: 1,
+        layoutKey: 'Default Layout',
+      },
+      {
+        id: 2,
+        layoutKey: 'Custom Layout',
+      },
+      {
+        id: 3,
+        layoutKey: 'Common Layout',
       },
     ];
   }

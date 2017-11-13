@@ -2,7 +2,7 @@ import React from 'react';
 import {connect, Dispatch} from "react-redux";
 import classnames from "classnames";
 import {URL} from "../../../../../routes";
-import {Theme} from "../../../../../model";
+import {Theme, Layout} from "../../../../../model";
 import {ThemeSettings} from "../components/ThemeSettings";
 import {addTheme, deleteTheme, saveTheme} from "../actions";
 import {SidebarList} from "../../../../../components/Sidebar/SidebarList";
@@ -10,6 +10,7 @@ import {showModal} from "../../../../../common/containers/modal/actions";
 
 interface Props {
   themes: Theme[];
+  layouts: Layout[];
   match: any;
   onEditSettings: (themeId, settings) => any;
   onDeleteTheme: (id) => any;
@@ -35,7 +36,7 @@ class ThemesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onEditSettings, onDeleteTheme, showModal, fetching} = this.props;
+    const {themes, match, onEditSettings, onDeleteTheme, showModal, fetching, layouts} = this.props;
     const activeTheme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
@@ -52,6 +53,7 @@ class ThemesSidebar extends React.Component<Props, any> {
         {activeTheme &&
         <ThemeSettings
           theme={activeTheme}
+          layouts={layouts}
           onBack={() => this.resetActiveTheme()}
           onEdit={prop => onEditSettings(activeTheme, prop)}
           onDelete={id => onDeleteTheme(id)}
@@ -65,6 +67,7 @@ class ThemesSidebar extends React.Component<Props, any> {
 
 const mapStateToProps = state => ({
   themes: state.theme.items,
+  layouts: state.theme.layouts,
   fetching: state.theme.fetching,
 });
 
