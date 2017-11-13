@@ -5,7 +5,6 @@ import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.model.Field
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.field.DataType
-import YesNoOptions
 
 import static ish.oncourse.common.field.FieldProperty.*
 
