@@ -1184,9 +1184,9 @@
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="deliverySchedule" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="instruction" type="LONGVARCHAR"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
-		<db-attribute name="richText" type="LONGVARCHAR"/>
 		<db-attribute name="source" type="SMALLINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="SystemUser">
@@ -2457,11 +2457,11 @@
 	<obj-entity name="SurveyType" className="ish.oncourse.model.SurveyType" dbEntityName="SurveyType">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="deliverySchedule" type="ish.common.types.DeliverySchedule" lock="true" db-attribute-path="deliverySchedule"/>
+		<obj-attribute name="deliverySchedule" type="ish.common.types.DeliverySchedule" db-attribute-path="deliverySchedule"/>
+		<obj-attribute name="instruction" type="java.lang.String" db-attribute-path="instruction"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="richText" type="java.lang.String" db-attribute-path="richText"/>
-		<obj-attribute name="source" type="ish.common.types.SurveyTypeSource" lock="true" db-attribute-path="source"/>
+		<obj-attribute name="source" type="ish.common.types.SurveyTypeSource" db-attribute-path="source"/>
 	</obj-entity>
 	<obj-entity name="SystemUser" className="ish.oncourse.model.SystemUser" dbEntityName="SystemUser">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

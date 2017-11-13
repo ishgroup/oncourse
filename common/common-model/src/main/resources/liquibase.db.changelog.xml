@@ -4614,7 +4614,7 @@
 			modified DATETIME NOT NULL,
 			deliverySchedule INTEGER NOT NULL,
 			name VARCHAR(200) NOT NULL,
-			richText MEDIUMTEXT NOT NULL,
+			instruction MEDIUMTEXT NOT NULL,
 			source INTEGER NOT NULL,
 			PRIMARY KEY (id),
 			CONSTRAINT fk_SurveyType_College FOREIGN KEY (collegeId) REFERENCES College(id),

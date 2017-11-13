@@ -24,9 +24,9 @@ public abstract class _SurveyType extends CayenneDataObject {
     public static final String ANGEL_ID_PROPERTY = "angelId";
     public static final String CREATED_PROPERTY = "created";
     public static final String DELIVERY_SCHEDULE_PROPERTY = "deliverySchedule";
+    public static final String INSTRUCTION_PROPERTY = "instruction";
     public static final String MODIFIED_PROPERTY = "modified";
     public static final String NAME_PROPERTY = "name";
-    public static final String RICH_TEXT_PROPERTY = "richText";
     public static final String SOURCE_PROPERTY = "source";
     public static final String COLLEGE_PROPERTY = "college";
     public static final String SURVEYS_PROPERTY = "surveys";
@@ -36,9 +36,9 @@ public abstract class _SurveyType extends CayenneDataObject {
     public static final Property<Long> ANGEL_ID = Property.create("angelId", Long.class);
     public static final Property<Date> CREATED = Property.create("created", Date.class);
     public static final Property<DeliverySchedule> DELIVERY_SCHEDULE = Property.create("deliverySchedule", DeliverySchedule.class);
+    public static final Property<String> INSTRUCTION = Property.create("instruction", String.class);
     public static final Property<Date> MODIFIED = Property.create("modified", Date.class);
     public static final Property<String> NAME = Property.create("name", String.class);
-    public static final Property<String> RICH_TEXT = Property.create("richText", String.class);
     public static final Property<SurveyTypeSource> SOURCE = Property.create("source", SurveyTypeSource.class);
     public static final Property<College> COLLEGE = Property.create("college", College.class);
     public static final Property<List<Survey>> SURVEYS = Property.create("surveys", List.class);
@@ -64,6 +64,13 @@ public abstract class _SurveyType extends CayenneDataObject {
         return (DeliverySchedule)readProperty("deliverySchedule");
     }
 
+    public void setInstruction(String instruction) {
+        writeProperty("instruction", instruction);
+    }
+    public String getInstruction() {
+        return (String)readProperty("instruction");
+    }
+
     public void setModified(Date modified) {
         writeProperty("modified", modified);
     }
@@ -76,13 +83,6 @@ public abstract class _SurveyType extends CayenneDataObject {
     }
     public String getName() {
         return (String)readProperty("name");
-    }
-
-    public void setRichText(String richText) {
-        writeProperty("richText", richText);
-    }
-    public String getRichText() {
-        return (String)readProperty("richText");
     }
 
     public void setSource(SurveyTypeSource source) {
