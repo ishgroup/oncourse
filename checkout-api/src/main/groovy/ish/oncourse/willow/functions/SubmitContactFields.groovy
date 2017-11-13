@@ -2,6 +2,7 @@ package ish.oncourse.willow.functions
 
 import groovy.transform.CompileStatic
 import ish.common.types.TypesUtil
+import ish.common.types.YesNoOptions
 import ish.oncourse.cayenne.FieldInterface
 import ish.oncourse.cayenne.StudentInterface
 import ish.oncourse.common.field.FieldProperty
@@ -155,6 +156,9 @@ class SubmitContactFields {
                         result = f.value
                     } else if (org.apache.commons.lang.StringUtils.isNumeric(f.value)) {
                         result = TypesUtil.getEnumForDatabaseValue(f.value, this.class.classLoader.loadClass("ish.common.types.$f.enumType"))
+                        if (FieldProperty.IS_STILL_AT_SCHOOL.key == f.key) {
+                            result = (result as YesNoOptions).booleanValue
+                        }
                     } else {
                         errors.fieldsErrors << new FieldError(name: f.key, error: "${f.name} is incorrect")
                     }

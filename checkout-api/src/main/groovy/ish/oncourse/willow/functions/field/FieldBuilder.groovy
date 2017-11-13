@@ -1,9 +1,12 @@
 package ish.oncourse.willow.functions.field
 
+import ish.common.types.YesNoOptions
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.model.Field
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.model.field.DataType
+import YesNoOptions
+
 import static ish.oncourse.common.field.FieldProperty.*
 
 class FieldBuilder {
@@ -69,6 +72,13 @@ class FieldBuilder {
                 case IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY:
                     f.defaultValue = Boolean.TRUE.toString()
                     f.dataType = DataType.BOOLEAN
+                    break
+                case IS_STILL_AT_SCHOOL:
+                    f.dataType = DataType.ENUM
+                    f.enumType = YesNoOptions.simpleName
+                    YesNoOptions.enumConstants.each { DisplayableExtendedEnumeration item ->
+                        f.enumItems  << new Item(value: item.displayName, key: item.databaseValue.toString())
+                    }
                     break
                 default:
                     f.dataType = DataType.fromValue(aClass.simpleName.toUpperCase())

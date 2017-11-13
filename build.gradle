@@ -2,7 +2,7 @@ buildscript {
 	ext {
 		cayenneVersion = '4.0.B1'
 		log4j2Version = '2.8.2'
-        waCommonWebservicesClientVersion = '9.5.1'
+        waCommonWebservicesClientVersion = '9.5.2'
 		solrVersion = '6.6.2'
 		groovyVersion = '2.4.12'
 		mariadbVersion = '2.2.0'
