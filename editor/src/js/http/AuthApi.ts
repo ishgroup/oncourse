@@ -1,11 +1,11 @@
 import {DefaultHttpService, HttpService} from "../common/services/HttpService";
 import {API} from "../constants/Config";
-import {LoginRequest} from "../model";
+import {LoginRequest, User} from "../model";
 
 export class AuthApi {
   private http = new DefaultHttpService();
 
-  submitUser(values: LoginRequest): Promise<any> {
+  submitUser(values: LoginRequest): Promise<User> {
     return this.http.POST(API.LOGIN, values);
   }
 

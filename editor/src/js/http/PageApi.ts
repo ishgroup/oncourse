@@ -10,7 +10,7 @@ export class PageApi {
   }
 
   getPageByUrl(url): Promise<Page> {
-    return this.http.POST(API.GET_PAGE_BY_URL, {url});
+    return this.http.GET(API.GET_PAGE_BY_URL, {params: {searchText: url}});
   }
 
   savePage(payload: SavePageRequest): Promise<any> {

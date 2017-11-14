@@ -7,9 +7,9 @@ export function pageApiMock() {
     this.db.pages,
   ));
 
-  this.api.onPost(API.GET_PAGE_BY_URL).reply(config => {
-    const request = JSON.parse(config.data);
-    const page = this.db.getPageByUrl(request.url);
+  this.api.onGet(API.GET_PAGE_BY_URL).reply(config => {
+    const url = config.params.searchText;
+    const page = this.db.getPageByUrl(url);
 
     return promiseResolve(
       config,
