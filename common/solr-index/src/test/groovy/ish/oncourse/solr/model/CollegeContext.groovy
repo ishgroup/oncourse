@@ -17,14 +17,13 @@ class CollegeContext {
 
 
     Tag tag(String name, boolean webVisible = true) {
-        return objectContext.newObject(Tag).with {
-            it.name = name
-            it.isWebVisible = webVisible
-            it.college = it.objectContext.localObject(college)
-            tags.put(it.name, it)
-            objectContext.commitChanges()
-            it
-        }
+        Tag tag = objectContext.newObject(Tag)
+        tag.name = name
+        tag.isWebVisible = webVisible
+        tag.college = objectContext.localObject(college)
+        objectContext.commitChanges()
+        tags.put(tag.name, tag)
+        tag
     }
 
     void addTag(String parent, String... child) {
@@ -45,15 +44,14 @@ class CollegeContext {
     }
 
     Course course(String name, String code) {
-        objectContext.newObject(Course).with {
-            it.college = college
-            it.name = name
-            it.code = code
-            it.enrolmentType = CourseEnrolmentType.OPEN_FOR_ENROLMENT
-            courses.put(it.code, it)
-            objectContext.commitChanges()
-            it
-        }
+        Course course = objectContext.newObject(Course)
+        course.college = objectContext.localObject(college)
+        course.name = name
+        course.code = code
+        course.enrolmentType = CourseEnrolmentType.OPEN_FOR_ENROLMENT
+        courses.put(course.code, course)
+        objectContext.commitChanges()
+        course
     }
 
     void tagCourse(String courseCode, String tagName) {
