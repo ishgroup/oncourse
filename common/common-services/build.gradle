@@ -14,7 +14,12 @@ compileTestGroovy.options.encoding = 'UTF-8'
 
 dependencies {
 	compile project(':common:common-model')
-	compile project(':common:common-functions')
+
+	//web and cms application use java 7, and cannot use solr 6+
+	compile (project(':common:common-functions')) {
+		exclude group: 'org.apache.solr'
+	}
+	compile group: 'org.apache.solr', name: 'solr-solrj', version: '5.5.4'
 
 	compile 'commons-collections:commons-collections:3.2.1'
 	compile 'commons-logging:commons-logging:1.1.1'
