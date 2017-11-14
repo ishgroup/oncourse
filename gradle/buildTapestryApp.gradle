@@ -2,12 +2,11 @@
  * Common build file for projects which use boutique-tapestry-java8 stack
  */
 apply plugin: 'application'
-apply plugin: 'io.spring.dependency-management'
+apply from: "$rootDir/gradle/bootique.gradle"
 
 ext {
     tapestryVersion = '5.4.3'
     springVersion = '3.0.5.RELEASE'
-    bootiqueVersion = '0.23'
     jettyVersion = '9.3.6.v20151106'
 }
 
@@ -20,12 +19,6 @@ sourceSets.main.groovy.srcDir 'src/main/java'
 sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDir 'src/test/java'
 
-dependencyManagement {
-    imports {
-        mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
-    }
-}
-
 configurations {
     tapestryTest
     all*.exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_2.5_spec'
@@ -35,7 +28,7 @@ configurations {
 
 
 dependencies {
-    compile project(':common:common-model')
+    compile project(':common:common-functions')
     compile(project(':common:common-services')) {
         exclude group: 'axis', module: 'axis-wsdl4j'
     }
@@ -51,10 +44,6 @@ dependencies {
     /**
      * bootique dependencies
      */
-    compile 'io.bootique:bootique'
-    compile 'io.bootique.jetty:bootique-jetty'
-    compile 'io.bootique.jcache:bootique-jcache'
-    compile 'io.bootique.cayenne:bootique-cayenne'
     compile 'io.bootique.tapestry:bootique-tapestry'
 
     //cache
