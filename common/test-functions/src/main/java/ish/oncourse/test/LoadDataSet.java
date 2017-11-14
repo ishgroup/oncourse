@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class LoadDataSet {
 	private String dataSetFile;
-	private Map<Object, Object> replacements;
+	private Map<Object, Object> replacements = Collections.emptyMap();
 	private boolean clean = true;
 
 	private ReplacementDataSet dataSet;
