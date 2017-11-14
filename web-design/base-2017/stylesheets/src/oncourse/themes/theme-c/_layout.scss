@@ -60,12 +60,13 @@
   }
 
   .square-btn {
+    background: $squareBtnBackground;
     margin: $squareBtnMargin;
     display: $squareBtnDisplay;
     color: $squareBtnColor;
     padding: $squareBtnPadding;
     font-size: $squareBtnFontSize;
-    border: 2px solid $squareBtnBorderColor;
+    border: $squareBtnBorder;
     width: $squareBtnWidth;
     font-weight: $squareBtnFontWeight;
     text-transform: $squareBtnTextTransform;
@@ -74,7 +75,9 @@
     text-decoration: none;
     text-align: $squareBtnTextAlign;
     &:hover {
+      color: $squareBtnColorHover;
       border-color: $squareBtnBorderColorHover;
+      background: $squareBtnBackgroundHover;
     }
   }
 
@@ -102,21 +105,21 @@
     }
   }
   .title-one {
-    font-weight: 400;
-    text-align: center;
-    font-size: 15px;
-    color: #d7d9da;
-    text-transform: uppercase;
-    display: block;
+    font-weight: $titleOneFontWeight;
+    text-align: $titleOneTextAlign;
+    font-size: $titleOneFontSize;
+    color: $titleOneColor;
+    text-transform: $titleOneTextTransform;
+    display: $titleOneDisplay;
   }
   .title-two {
-    font-weight: 300;
-    text-align: center;
-    font-size: 28px;
-    color: #434343;
-    padding-bottom: 50px;
-    margin-top: 10px;
-    display: block;
+    font-weight: $titleTwoFontWeight;
+    text-align: $titleTwoTextAlign;
+    font-size: $titleTwoFontSize;
+    color: $titleTwoColor;
+    padding-bottom: $titleTwoPaddingBottom;
+    margin-top: $titleTwoMarginTop;
+    display: $titleTwoDisplay;
   }
   #container {
     .slider-wrapper {
@@ -125,61 +128,58 @@
 
     #content {
       .main-title {
-        color: $secondaryColor;
+        color: $contentMainTitle;
       }
       .sub-title {
-        color: #0a3a4a;
+        color: $contentSubTitle;
       }
     }
     %ff-featured {
-      height: 520px;
+      height: $featuredCoursesHeight;
       >p, .ff-tags, .ff-tags-content {
-        display: none;
+        display: $featuredCoursesTagsDisplay;
       }
       .nav-featured {
-        margin: 80px auto;
-        height: 57px;
-        max-width: 455px;
+        margin: $featuredCoursesNavMargin;
+        height: $featuredCoursesNavHeight;
+        max-width: $featuredCoursesNavMaxWidth;
         >div {
-          float: left;
+          float: $featuredCoursesNavDivFloat;
           cursor: pointer;
         }
         .app-btn {
-          margin-top: 6px;
+          margin-top: $featuredCoursesNavAppBtnMarginTop;
         }
         .prev-featured, .next-featured {
-          margin-right: 20px;
-          margin-left: 20px;
-          background-color: #e1e1e1;
+          margin-right: $featuredCoursesNavButtonMarginRight;
+          margin-left: $featuredCoursesNavButtonMarginLeft;
+          background-color: $featuredCoursesNavButtonBackgroundColor;
           &:hover {
-            background-color: $theme-color;
+            background-color: $featuredCoursesNavButtonBackgroundColorHover;
           }
         }
         .next-featured {
-          float: right;
+          float: $featuredCoursesNavNextFloat;
         }
       }
-      .ih-overlay {
-        background: $black;
+      .ih-overlay, .f-icon-mail {
         position: absolute;
         left: 0;
         top: 0;
+        right: 0;
         @include opacity(0);
-        height: 100%;
-        width: 100%;
-        zoom: 1;
-        z-index: 11;
         @include transition(all 0.2s ease-out);
       }
+      .ih-overlay {
+        background: $black;
+        height: 100%;
+        zoom: 1;
+        z-index: 11;
+      }
       .f-icon-mail {
-        position: absolute;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
         top: 20%;
+        margin: 0 auto;
         z-index: 20;
-        @include opacity(0);
-        @include transition(all 0.2s ease-out);
       }
       .f-icon-plus, .f-icon-mail {
         &::after {

@@ -62,7 +62,10 @@ $h1InnerFontFamily: $bodyFontFamily !default;
 $h1InnerTextColor: $primaryColor !default;
 
 $discountBlockDisplay: block !default;
+$discountBlockDisplaySmall: none !default;
+
 $discountBlockActionLinkDisplay: block !default;
+$discountBlockTitleDisplay: none !default;
 
 $h1LinkColor: $primaryColor !default;
 $h1LinkHoverColor: $secondaryColor !default;
@@ -111,3 +114,282 @@ $classItemLinkHoverColor: $primaryColor !default;
 
 $contentMainTitle: $secondaryColor !default;
 $contentSubTitle: #0a3a4a !default;
+
+
+$boxGreenBackground: $colorTypeOne !default;
+$boxGreenBorderBottom: 8px solid $colorTypeTwo !default;
+
+$boxYellowBackground: $colorTypeThree !default;
+$boxYellowBorderBottom: 8px solid $colorTypeFour !default;
+
+$boxBlueBackground: $colorTypeFive !default;
+$boxBlueBorderBottom: 8px solid $colorTypeSix !default;
+
+//
+// Content Blocks
+//
+
+$contentBlocksPositionTop: 0px !default;
+$contentBlocksMargin: 25px 0px !default;
+$contentBlocksZIndex: 8 !default;
+
+$contentBlocksPositionTopMediaSmall: -78px !default;
+$contentBlocksMarginMediaSmall: 0px !default;
+$contentBlocksMarginMediaTablet: 0 0 22px 0 !default;
+
+$contentBlocksItemBackground: $colorTypeOne !default;
+$contentBlocksItemBorderBottom: 8px solid $colorTypeTwo !default;
+$contentBlocksItemPadding: 0 !default;
+
+$contentBlocksItemAppBtnBackground: none !default;
+$contentBlocksItemAppBtnColor: $black !default;
+$contentBlocksItemAppBtnBorderColor: $white !default;
+$contentBlocksItemAppBtnFontWeight: normal !default;
+$contentBlocksItemAppBtnColorHover: $white !default;
+$contentBlocksItemAppBtnBackgroundHover: $colorTypeTwo !default;
+$contentBlocksItemAppBtnBorderColorHover: darken($colorTypeTwo, 5%) !default;
+
+$contentBlocksItemTwoBackground: $colorTypeThree !default;
+$contentBlocksItemTwoBorderBottom: 8px solid $colorTypeFour !default;
+$contentBlocksItemTwoBackgroundHover: $colorTypeFour !default;
+$contentBlocksItemTwoBorderColorHover: darken($colorTypeFour, 5%) !default;
+
+$contentBlocksItemThreeBackground: $colorTypeFive !default;
+$contentBlocksItemThreeBorderBottom: 8px solid $colorTypeSix !default;
+$contentBlocksItemThreeBackgroundHover: $colorTypeSix !default;
+$contentBlocksItemThreeBorderBottomHover: darken($colorTypeSix, 5%) !default;
+
+$contentBlocksItemDivBorder: 0px !default;
+$contentBlocksItemDivPadding: 21px 44px 24px !default;
+$contentBlocksItemDivColor: $black !default;
+
+$contentBlocksItemTitlePadding: 4px 0 6px !default;
+$contentBlocksItemTitleFontWeight: bold !default;
+$contentBlocksItemTitleFontSize: 20px !default;
+$contentBlocksItemTitleFontSizeTablet: 24px !default;
+$contentBlocksItemTitleFontSizeDesktop: 28px !default;
+
+$contentBlocksItemTextFontSize: 12px !default;
+$contentBlocksItemTextMargin: 0 0 15px 0 !default;
+$contentBlocksItemTextLineHeight: 1.4 !default;
+
+$contentBlocksItemTextFontSizeSmall: 14px !default;
+$contentBlocksItemTextMarginSmall: 0 0 25px 0 !default;
+
+$contentBlocksItemTextFontSizeTablet: 16px !default;
+$contentBlocksItemTextFontSizeDesktop: 18px !default;
+
+//
+// Home Design Starting
+//
+
+$homeDesignStartingPaddingTablet: 0px 25px 0 30px !default;
+$homeDesignStartingPaddingDesktop: 0px 25px 0 72px !default;
+
+$homeDesignStartingHeadingFontSize: 24px !default;
+$homeDesignStartingHeadingFontWeight: bold !default;
+$homeDesignStartingHeadingMarginBottom: 6px !default;
+$homeDesignStartingHeadingLineHeight: 1.2 !default;
+
+$homeDesignStartingHeadingFontSizeSmall: 28px !default;
+$homeDesignStartingHeadingFontSizeTablet: 35px !default;
+$homeDesignStartingHeadingFontSizeDesktop: 37px !default;
+
+$homeDesignStartingSubHeadingFontSize: 20px !default;
+$homeDesignStartingSubHeadingFontWeight: 300 !default;
+$homeDesignStartingSubHeadingLineHeight: 1.2 !default;
+
+$homeDesignStartingSubHeadingFontSizeSmall: 23px !default;
+$homeDesignStartingSubHeadingFontSizeTablet: 28.5px !default;
+$homeDesignStartingSubHeadingFontSizeDesktop: 30px !default;
+
+$homeDesignStartingAppBtnFontFamily: $fontFamilyOne !default;
+$homeDesignStartingAppBtnBackground: $colorTypeFive !default;
+$homeDesignStartingAppBtnColor: $white !default;
+$homeDesignStartingAppBtnBorderColor: $colorTypeFive !default;
+
+$homeDesignStartingAppBtnBackgroundHover: $colorTypeFiveHover !default;
+$homeDesignStartingAppBtnBorderColorHover: $colorTypeFiveBorderColorHover !default;
+$homeDesignStartingAppBtnColorHover: $homeDesignStartingAppBtnColor !default;
+
+$homeDesignStartingLeftWidth: 100% !default;
+$homeDesignStartingLeftFloat: left !default;
+
+$homeDesignStartingLeftWidthTablet: 54.644% !default;
+$homeDesignStartingLeftPaddingRightTablet: 10px !default;
+$homeDesignStartingLeftWidthDesktop: 52% !default;
+
+$homeDesignStartingLeftTextFontSize: 15px !default;
+$homeDesignStartingLeftTextLineHeight: 1.2 !default;
+
+$homeDesignStartingLeftTextFontSizeSmall: 18px !default;
+$homeDesignStartingLeftTextFontSizeTablet: 20px !default;
+
+$homeDesignStartingLeftAppBtnMarginTop: 12px !default;
+
+$homeDesignStartingRightWidth: 100% !default;
+$homeDesignStartingRightFloat: right !default;
+$homeDesignStartingRightMarginTop: 15px !default;
+$homeDesignStartingRightBorderTop: 8px solid $colorTypeTwo !default;
+$homeDesignStartingRightPaddingTop: 20px !default;
+
+$homeDesignStartingRightWidthTablet: 36% !default;
+$homeDesignStartingRightMarginTopTablet: 0px !default;
+$homeDesignStartingRightBorderTopTablet: 0px !default;
+$homeDesignStartingRightPaddingTopTablet: 0px !default;
+
+$homeDesignStartingListMargin: 0px !default;
+$homeDesignStartingListItemMarginBottom: 40px !default;
+$homeDesignStartingListDisplay: table !default;
+
+$homeDesignStartingListItemDisplay: table-cell !default;
+$homeDesignStartingListItemFontSize: 12px !default;
+$homeDesignStartingListItemFontSizeSmall: 13px !default;
+
+$homeDesignStartingListDateDisplay: table-cell !default;
+$homeDesignStartingListDateColor: $white !default;
+$homeDesignStartingListDatePaddingRight: 23px !default;
+$homeDesignStartingListDateFontFamily: $fontFamilyOne !default;
+
+$homeDesignStartingListDateItemBorderRadius: 5em !default;
+$homeDesignStartingListDateItemWidth: 55px !default;
+$homeDesignStartingListDateItemHeight: 55px !default;
+$homeDesignStartingListDateItemPadding: 12px !default;
+$homeDesignStartingListDateItemTextAlign: center !default;
+$homeDesignStartingListDateItemLineHeight: 1 !default;
+$homeDesignStartingListDateItemTextTransform: uppercase !default;
+
+$homeDesignStartingListDateItemWidthSmall: 63px !default;
+$homeDesignStartingListDateItemHeightSmall: 63px !default;
+$homeDesignStartingListDateItemPaddingSmall: 14px !default;
+
+$homeDesignStartingListDateItemTextFontSize: 18px !default;
+$homeDesignStartingListDateItemTextFontWeight: bold !default;
+
+$homeDesignStartingListDateItemTextFontSizeSmall: 20px !default;
+
+$homeDesignStartingListDateBackgroundRed: #ef5c51 !default;
+$homeDesignStartingListDateBackgroundOrange: #f37d50 !default;
+$homeDesignStartingListDateBackgroundYellow: #fbb94d !default;
+
+$homeDesignStartingListHeadingFontSize: 14px !default;
+$homeDesignStartingListHeadingLetterSpacing: -0.5px !default;
+$homeDesignStartingListHeadingFontWeight: bold !default;
+$homeDesignStartingListHeadingLineHeight: 0.8 !default;
+$homeDesignStartingListHeadingLetterSpacingSmall: -0.6px !default;
+$homeDesignStartingListHeadingFontSizeSmall: 18px !default;
+$homeDesignStartingListHeadingLetterSpacingTablet: -1px !default;
+$homeDesignStartingListHeadingFontSizeTablet: 20px !default;
+
+$homeDesignStartingListMoreLinkFontSize: 15px !default;
+$homeDesignStartingListMoreLinkColor: #f37d50 !default;
+$homeDesignStartingListMoreLinkFontWeight: 700 !default;
+
+$homeDesignStartingListMoreLinkFontSizeSmall: 18px !default;
+$homeDesignStartingListMoreLinkFontSizeTablet: 20px !default;
+
+$homeDesignStartingListTextWidth: 100% !default;
+$homeDesignStartingListTextFontSize: 12px !default;
+$homeDesignStartingListTextLineHeight: 1.2 !default;
+$homeDesignStartingListTextLetterSpacing: 0 !default;
+$homeDesignStartingListTextMarginBottom: 6px !default;
+$homeDesignStartingListTextMarginTop: 6px !default;
+
+$homeDesignStartingListTextFontSizeSmall: 13px !default;
+$homeDesignStartingListTextWidthTablet: 230px !default;
+
+//
+// Home Info
+//
+
+$homeInfoBorderTop: 8px solid $colorTypeTwo !default;
+$homeInfoPaddingTop: 35px !default;
+$homeInfoBorderTopTablet: 0px !default;
+$homeInfoPaddingTopTablet: 0px !default;
+
+$homeInfoImageWidth: 100% !default;
+$homeInfoImageMinHeight: 110px !default;
+
+$homeInfoTitleFontSize: 70% !default;
+$homeInfoTitleFontWeight: bold !default;
+$homeInfoTitleColor: $white !default;
+$homeInfoTitleBorderTop: 2px solid $white !default;
+$homeInfoTitleBorderBottom: 2px solid $white !default;
+$homeInfoTitlePosition: absolute !default;
+$homeInfoTitlePositionBottom: 15% !default;
+$homeInfoTitlePositionRight: 3.8% !default;
+
+$homeInfoTitleFontSizeSmall: 19.5px !default;
+$homeInfoTitleBorderTopSmall: 5px solid $white !default;
+$homeInfoTitleBorderBottomSmall: 5px solid $white !default;
+
+$homeInfoTitleFontSizeTablet: 30.5px !default;
+$homeInfoTitlePositionBottomTablet: 43px !default;
+$homeInfoTitlePositionRightTablet: 30px !default;
+
+$homeInfoTitleFontSizeDesktop: 41.28px !default;
+
+//
+// Our Courses
+//
+
+$ourCoursesBorderTop: 8px solid $colorTypeTwo !default;
+$ourCoursesMarginTop: 30px !default;
+$ourCoursesMarginBottom: 64px !default;
+$ourCoursesBorderTopTablet: 0px !default;
+$ourCoursesMarginTopTablet: 0px !default;
+
+$ourCoursesTitleFontSize: 27px !default;
+$ourCoursesTitleFontWeight: bold !default;
+$ourCoursesTitleMarginTop: 15px !default;
+$ourCoursesTitleMarginLeft: 15px !default;
+$ourCoursesTitleMarginBottom: 24px !default;
+
+$ourCoursesTitleFontSizeSmall: 37px !default;
+$ourCoursesTitleMarginTopSmall: 40px !default;
+$ourCoursesTitleMarginLeftSmall: 70px !default;
+
+$ourCoursesListMarginBottom: 0 !default;
+$ourCoursesListItemTextAlign: center !default;
+$ourCoursesListItemVerticalAlign: middle !default;
+$ourCoursesListItemPaddingBottom: 20px !default;
+
+$ourCoursesListItemWidth: 100% !default;
+$ourCoursesListItemMaxWidth: 299px !default;
+$ourCoursesListItemHeight: 206px !default;
+$ourCoursesListItemMargin: 0 auto !default;
+$ourCoursesListItemBorderBottom: 6px solid $colorTypeTwo !default;
+
+$ourCoursesListItemTypeTwoBorderColor: $colorTypeFour !default;
+$ourCoursesListItemTypeThreeBorderColor: $colorTypeSix !default;
+
+$ourCoursesListItemHeightSmall: 286px !default;
+$ourCoursesListItemMaxWidthSmall: 399px !default;
+
+$ourCoursesListItemImageHeight: 200px !default;
+$ourCoursesListItemImageHeightSmall: 280px !default;
+
+$ourCoursesListItemLinkDisplay: table !default;
+
+$ourCoursesListItemLinkTextDisplay: table-cell !default;
+$ourCoursesListItemLinkTextVerticalAlign: bottom !default;
+$ourCoursesListItemLinkTextPosition: relative !default;
+
+$ourCoursesListItemLinkTextContentPosition: relative !default;
+$ourCoursesListItemLinkTextContentPositionBottom: 28px !default;
+$ourCoursesListItemLinkTextContentPositionLeft: 0 !default;
+$ourCoursesListItemLinkTextContentPositionRight: 0 !default;
+$ourCoursesListItemLinkTextContentBackground: $black !default;
+$ourCoursesListItemLinkTextContentBackgroundRgba: rgba(0,0,0,0.55) !default;
+$ourCoursesListItemLinkTextContentWidth: 150px !default;
+$ourCoursesListItemLinkTextContentColor: #fff !default;
+$ourCoursesListItemLinkTextContentFontSize: 16px !default;
+$ourCoursesListItemLinkTextContentFontWeight: bold !default;
+$ourCoursesListItemLinkTextContentPadding: 10px !default;
+$ourCoursesListItemLinkTextContentDisplay: block !default;
+$ourCoursesListItemLinkTextContentMargin: 0 auto !default;
+$ourCoursesListItemLinkTextContentTextAlign: center !default;
+
+$ourCoursesListItemLinkTextContentPositionBottomSmall: 50px !default;
+$ourCoursesListItemLinkTextContentWidthSmall: 266px !default;
+$ourCoursesListItemLinkTextContentFontSizeSmall: 30px !default;

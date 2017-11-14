@@ -30,16 +30,16 @@
   }
 
   .box-green {
-    background: $colorTypeOne;
-    border-bottom: 8px solid $colorTypeTwo;
+    background: $boxGreenBackground;
+    border-bottom: $boxGreenBorderBottom;
   }
   .box-yellow {
-    background: $colorTypeThree;
-    border-bottom: 8px solid $colorTypeFour;
+    background: $boxYellowBackground;
+    border-bottom: $boxYellowBorderBottom;
   }
   .box-blue {
-    background: $colorTypeFive;
-    border-bottom: 8px solid $colorTypeSix;
+    background: $boxBlueBackground;
+    border-bottom: $boxBlueBorderBottom;
   }
 
   // App Button */
@@ -70,85 +70,85 @@
     .content-blocks {
       width: 100%;
       position: relative;
-      top: 0px;
+      top: $contentBlocksPositionTop;
       list-style: none;
-      margin: 25px 0px;
-      z-index: 8;
+      margin: $contentBlocksMargin;
+      z-index: $contentBlocksZIndex;
       @include responsive($media-small) {
-        top: -78px;
-        margin: 0px;
+        top: $contentBlocksPositionTopMediaSmall;
+        margin: $contentBlocksMarginMediaSmall;
       }
       @include responsive($media-tablet) {
-        margin: 0 0 22px 0;
+        margin: $contentBlocksMarginMediaTablet;
       }
       > li {
         text-align: center;
-        background: $colorTypeOne;
-        border-bottom: 8px solid $colorTypeTwo;
-        padding: 0;
+        background: $contentBlocksItemBackground;
+        border-bottom: $contentBlocksItemBorderBottom;
+        padding: $contentBlocksItemPadding;
         vertical-align: top;
 
         .app-btn {
-          background: none;
-          color: $black;
-          border-color: $white;
-          font-weight: normal;
+          background: $contentBlocksItemAppBtnBackground;
+          color: $contentBlocksItemAppBtnColor;
+          border-color: $contentBlocksItemAppBtnBorderColor;
+          font-weight: $contentBlocksItemAppBtnFontWeight;
           &:hover {
-            color: $white;
-            background: $colorTypeTwo;
-            border-color: darken($colorTypeTwo, 5%);
+            color: $contentBlocksItemAppBtnColorHover;
+            background: $contentBlocksItemAppBtnBackgroundHover;
+            border-color: $contentBlocksItemAppBtnBorderColorHover;
           }
         }
 
         &:nth-child(2) {
-          background: $colorTypeThree;
-          border-bottom: 8px solid $colorTypeFour;
+          background: $contentBlocksItemTwoBackground;
+          border-bottom: $contentBlocksItemTwoBorderBottom;
 
           .app-btn:hover {
-            background: $colorTypeFour;
-            border-color: darken($colorTypeFour, 5%);
+            background: $contentBlocksItemTwoBackgroundHover;
+            border-color: $contentBlocksItemTwoBorderColorHover;
           }
         }
 
         &:nth-child(3) {
-          background: $colorTypeFive;
-          border-bottom: 8px solid $colorTypeSix;
+          background: $contentBlocksItemThreeBackground;
+          border-bottom: $contentBlocksItemThreeBorderBottom;
 
           .app-btn:hover {
-            background: $colorTypeSix;
-            border-color: darken($colorTypeSix, 5%);
+            background: $contentBlocksItemThreeBackgroundHover;
+            border-color: $contentBlocksItemThreeBorderBottomHover;
           }
         }
 
         >div {
-          border: 0px;
-          padding: 21px 44px 24px;
-          color: $black;
+          border: $contentBlocksItemDivBorder;
+          padding: $contentBlocksItemDivPadding;
+          color: $contentBlocksItemDivColor;
           > span {
             display: block;
-            padding: 4px 0 6px;
-            font-weight: bold;
-            font-size: 20px;
+            padding: $contentBlocksItemTitlePadding;
+            font-weight: $contentBlocksItemTitleFontWeight;
+            font-size: $contentBlocksItemTitleFontSize;
             @include responsive($media-tablet) {
-              font-size: 24px;
+              font-size: $contentBlocksItemTitleFontSizeTablet;
             }
             @include responsive($media-desktop) {
-              font-size: 28px;
+              font-size: $contentBlocksItemTitleFontSizeDesktop;
             }
           }
           >p {
-            font-size: 12px;
-            margin-bottom: 15px;
-            line-height: 1.4;
+            font-size: $contentBlocksItemTextFontSize;
+            margin: $contentBlocksItemTextMargin;
+            line-height: $contentBlocksItemTextLineHeight;
             @include responsive($media-small) {
-              font-size: 14px;
-              margin-bottom: 25px;
+              font-size: $contentBlocksItemTextFontSizeSmall;
+              margin: $contentBlocksItemTextMargin;
             }
             @include responsive($media-tablet) {
-              font-size: 16px;
+              font-size: $contentBlocksItemTextFontSizeTablet;
             }
             @include responsive($media-desktop) {
-              font-size: 18px;
+              font-size: $contentBlocksItemTextFontSizeDesktop;
             }
           }
         }
@@ -164,175 +164,177 @@
       }
       .home-design-starting {
         @include responsive($media-tablet) {
-          padding: 0px 25px 0 30px;
+          padding: $homeDesignStartingPaddingTablet;
         }
         @include responsive($media-desktop) {
-          padding: 0px 25px 0 72px;
+          padding: $homeDesignStartingPaddingDesktop;
         }
         h1 {
-          font-size: 24px;
-          font-weight: bold;
-          margin-bottom: 6px;
-          line-height: 1.2;
+          font-size: $homeDesignStartingHeadingFontSize;
+          font-weight: $homeDesignStartingHeadingFontWeight;
+          margin-bottom: $homeDesignStartingHeadingMarginBottom;
+          line-height: $homeDesignStartingHeadingLineHeight;
           @include responsive($media-small) {
-            font-size: 28px;
+            font-size: $homeDesignStartingHeadingFontSizeSmall;
           }
           @include responsive($media-tablet) {
-            font-size: 35px;
+            font-size: $homeDesignStartingHeadingFontSizeTablet;
           }
           @include responsive($media-desktop) {
-            font-size: 37px;
+            font-size: $homeDesignStartingHeadingFontSizeDesktop;
           }
         }
         h3 {
-          font-size: 20px;
-          font-weight: 300;
-          line-height: 1.2;
+          font-size: $homeDesignStartingSubHeadingFontSize;
+          font-weight: $homeDesignStartingSubHeadingFontWeight;
+          line-height: $homeDesignStartingSubHeadingLineHeight;
           @include responsive($media-small) {
-            font-size: 23px;
+            font-size: $homeDesignStartingSubHeadingFontSizeSmall;
           }
           @include responsive($media-tablet) {
-            font-size: 28.5px;
+            font-size: $homeDesignStartingSubHeadingFontSizeTablet;
           }
           @include responsive($media-desktop) {
-            font-size: 30px;
+            font-size: $homeDesignStartingSubHeadingFontSizeDesktop;
           }
         }
         .app-btn {
-          font-family: $fontFamilyOne;
-          background: $colorTypeFive;
-          color: $white;
-          border-color: $colorTypeFive;
+          font-family: $homeDesignStartingAppBtnFontFamily;
+          background: $homeDesignStartingAppBtnBackground;
+          color: $homeDesignStartingAppBtnColor;
+          border-color: $homeDesignStartingAppBtnBorderColor;
           &:hover {
-            background: $colorTypeFiveHover;
-            border-color: $colorTypeFiveBorderColorHover;
+            background: $homeDesignStartingAppBtnBackgroundHover;
+            border-color: $homeDesignStartingAppBtnBorderColorHover;
+            color: $homeDesignStartingAppBtnColorHover;
           }
         }
         .left {
-          width: 100%;
-          float: left;
+          width: $homeDesignStartingLeftWidth;
+          float: $homeDesignStartingLeftFloat;
           @include responsive($media-tablet) {
-            width: 54.644%;
-            padding-right: 10px;
+            width: $homeDesignStartingLeftWidthTablet;
+            padding-right: $homeDesignStartingLeftPaddingRightTablet;
           }
           @include responsive($media-desktop) {
-            width: 52%;
+            width: $homeDesignStartingLeftWidthDesktop;
           }
           p {
-            font-size: 15px;
-            line-height: 1.2;
+            font-size: $homeDesignStartingLeftTextFontSize;
+            line-height: $homeDesignStartingLeftTextLineHeight;
             @include responsive($media-small) {
-              font-size: 18px;
+              font-size: $homeDesignStartingLeftTextFontSizeSmall;
             }
             @include responsive($media-tablet) {
-              font-size: 20px;
+              font-size: $homeDesignStartingLeftTextFontSizeTablet;
             }
           }
           .app-btn {
-            margin-top: 12px;
+            margin-top: $homeDesignStartingLeftAppBtnMarginTop;
           }
         }
         .right {
-          width: 100%;
-          float: right;
-          margin-top: 15px;
-          border-top: 8px solid $colorTypeTwo;
-          padding-top: 20px;
+          width: $homeDesignStartingRightWidth;
+          float: $homeDesignStartingRightFloat;
+          margin-top: $homeDesignStartingRightMarginTop;
+          border-top: $homeDesignStartingRightBorderTop;
+          padding-top: $homeDesignStartingRightPaddingTop;
           @include responsive($media-tablet) {
-            width: 36%;
-            margin-top: 0px;
-            border-top: 0px;
-            padding-top: 0px;
+            width: $homeDesignStartingRightWidthTablet;
+            margin-top: $homeDesignStartingRightMarginTopTablet;
+            border-top: $homeDesignStartingRightBorderTopTablet;
+            padding-top: $homeDesignStartingRightPaddingTopTablet;
           }
           .starting-soon {
             list-style: none;
-            margin: 0px;
+            margin: $homeDesignStartingListMargin;
             li {
-              margin-bottom: 40px;
+              margin-bottom: $homeDesignStartingListItemMarginBottom;
             }
             .block {
-              display: table;
+              display: $homeDesignStartingListDisplay;
               .date, .text-content {
-                display: table-cell;
-                font-size: 12px;
+                display: $homeDesignStartingListItemDisplay;
+                font-size: $homeDesignStartingListItemFontSize;
                 @include responsive($media-small) {
-                  font-size: 13px;
+                  font-size: $homeDesignStartingListItemFontSizeSmall;
                 }
               }
               .date {
-                color: $white;
-                padding-right: 23px;
+                display: $homeDesignStartingListDateDisplay;
+                color: $homeDesignStartingListDateColor;
+                padding-right: $homeDesignStartingListDatePaddingRight;
                 vertical-align: top;
-                font-family: $fontFamilyOne;
+                font-family: $homeDesignStartingListDateFontFamily;
                 >div {
-                  border-radius: 5em;
-                  width: 55px;
-                  height: 55px;
-                  padding: 12px;
-                  text-align: center;
-                  line-height: 1;
-                  text-transform: uppercase;
+                  border-radius: $homeDesignStartingListDateItemBorderRadius;
+                  width: $homeDesignStartingListDateItemWidth;
+                  height: $homeDesignStartingListDateItemHeight;
+                  padding: $homeDesignStartingListDateItemPadding;
+                  text-align: $homeDesignStartingListDateItemTextAlign;
+                  line-height: $homeDesignStartingListDateItemLineHeight;
+                  text-transform: $homeDesignStartingListDateItemTextTransform;
                   @include responsive($media-small) {
-                    width: 63px;
-                    height: 63px;
-                    padding: 14px;
+                    width: $homeDesignStartingListDateItemWidthSmall;
+                    height: $homeDesignStartingListDateItemHeightSmall;
+                    padding: $homeDesignStartingListDateItemPaddingSmall;
                   }
                   >span {
-                    font-size: 18px;
-                    font-weight: bold;
+                    font-size: $homeDesignStartingListDateItemTextFontSize;
+                    font-weight: $homeDesignStartingListDateItemTextFontWeight;
                     @include responsive($media-small) {
-                      font-size: 20px;
+                      font-size: $homeDesignStartingListDateItemTextFontSizeSmall;
                     }
                   }
                   &.red {
-                    background: #ef5c51;
+                    background: $homeDesignStartingListDateBackgroundRed;
                   }
                   &.orange {
-                    background: #f37d50;
+                    background: $homeDesignStartingListDateBackgroundOrange;
                   }
                   &.yellow {
-                    background: #fbb94d;
+                    background: $homeDesignStartingListDateBackgroundYellow;
                   }
                 }
               }
               .text-content {
                 >span {
-                  font-size: 14px;
-                  letter-spacing: -0.5px;
-                  font-weight: bold;
-                  line-height: 0.8;
+                  font-size: $homeDesignStartingListHeadingFontSize;
+                  letter-spacing: $homeDesignStartingListHeadingLetterSpacing;
+                  font-weight: $homeDesignStartingListHeadingFontWeight;
+                  line-height: $homeDesignStartingListHeadingLineHeight;
                   @include responsive($media-small) {
-                    letter-spacing: -0.6px;
-                    font-size: 18px;
+                    letter-spacing: $homeDesignStartingListHeadingLetterSpacingSmall;
+                    font-size: $homeDesignStartingListHeadingFontSizeSmall;
                   }
                   @include responsive($media-tablet) {
-                    letter-spacing: -1px;
-                    font-size: 20px;
+                    letter-spacing: $homeDesignStartingListHeadingLetterSpacingTablet;
+                    font-size: $homeDesignStartingListHeadingFontSizeTablet;
                   }
                 }
                 a {
-                  font-size: 15px;
-                  color: #f37d50;
-                  font-weight: 700;
+                  font-size: $homeDesignStartingListMoreLinkFontSize;
+                  color: $homeDesignStartingListMoreLinkColor;
+                  font-weight: $homeDesignStartingListMoreLinkFontWeight;
                   @include responsive($media-small) {
-                    font-size: 18px;
+                    font-size: $homeDesignStartingListMoreLinkFontSizeSmall;
                   }
                   @include responsive($media-tablet) {
-                    font-size: 20px;
+                    font-size: $homeDesignStartingListMoreLinkFontSizeTablet;
                   }
                 }
                 p {
-                  width: 100%;
-                  font-size: 12px;
-                  line-height: 1.2;
-                  letter-spacing: 0;
-                  margin-bottom: 6px;
-                  margin-top: 6px;
+                  width: $homeDesignStartingListTextWidth;
+                  font-size: $homeDesignStartingListTextFontSize;
+                  line-height: $homeDesignStartingListTextLineHeight;
+                  letter-spacing: $homeDesignStartingListTextLetterSpacing;
+                  margin-bottom: $homeDesignStartingListTextMarginBottom;
+                  margin-top: $homeDesignStartingListTextMarginTop;
                   @include responsive($media-small) {
-                    font-size: 13px;
+                    font-size: $homeDesignStartingListTextFontSizeSmall;
                   }
                   @include responsive($media-tablet) {
-                    width: 230px;
+                    width: $homeDesignStartingListTextWidthTablet;
                   }
                 }
               }
@@ -395,129 +397,129 @@
       }
       .home-info {
         position: relative;
-        border-top: 8px solid $colorTypeTwo;
-        padding-top: 35px;
+        border-top: $homeInfoBorderTop;
+        padding-top: $homeInfoPaddingTop;
         @include responsive($media-tablet) {
-          border-top: 0px;
-          padding-top: 0px;
+          border-top: $homeInfoBorderTopTablet;
+          padding-top: $homeInfoPaddingTopTablet;
         }
         >img {
-          width: 100%;
-          min-height: 110px;
+          width: $homeInfoImageWidth;
+          min-height: $homeInfoImageMinHeight;
         }
         >span {
-          font-size: 70%;
-          font-weight: bold;
-          color: $white;
-          border-top: 2px solid $white;
-          border-bottom: 2px solid $white;
-          position: absolute;
-          bottom: 15%;
-          right: 3.8%;
+          font-size: $homeInfoTitleFontSize;
+          font-weight: $homeInfoTitleFontWeight;
+          color: $homeInfoTitleColor;
+          border-top: $homeInfoTitleBorderTop;
+          border-bottom: $homeInfoTitleBorderBottom;
+          position: $homeInfoTitlePosition;
+          bottom: $homeInfoTitlePositionBottom;
+          right: $homeInfoTitlePositionRight;
           @include responsive($media-small) {
-            font-size: 19.5px;
-            border-top: 5px solid $white;
-            border-bottom: 5px solid $white;
+            font-size: $homeInfoTitleFontSizeSmall;
+            border-top: $homeInfoTitleBorderTopSmall;
+            border-bottom: $homeInfoTitleBorderBottomSmall;
           }
           @include responsive($media-tablet) {
-            font-size: 30.5px;
-            bottom: 43px;
-            right: 30px;
+            font-size: $homeInfoTitleFontSizeTablet;
+            bottom: $homeInfoTitlePositionBottomTablet;
+            right: $homeInfoTitlePositionRightTablet;
           }
           @include responsive($media-desktop) {
-            font-size: 41.28px;
+            font-size: $homeInfoTitleFontSizeDesktop;
           }
         }
       }
       .our-courses {
-        border-top: 8px solid $colorTypeTwo;
-        margin-top: 30px;
-        margin-bottom: 64px;
+        border-top: $ourCoursesBorderTop;
+        margin-top: $ourCoursesMarginTop;
+        margin-bottom: $ourCoursesMarginBottom;
         @include responsive($media-tablet) {
-          border-top: 0px;
-          margin-top: 0px;
+          border-top: $ourCoursesBorderTopTablet;
+          margin-top: $ourCoursesMarginTopTablet;
         }
 
         h1 {
-          font-size: 27px;
-          font-weight: bold;
-          margin-top: 15px;
-          margin-left: 15px;
-          margin-bottom: 24px;
+          font-size: $ourCoursesTitleFontSize;
+          font-weight: $ourCoursesTitleFontWeight;
+          margin-top: $ourCoursesTitleMarginTop;
+          margin-left: $ourCoursesTitleMarginLeft;
+          margin-bottom: $ourCoursesTitleMarginBottom;
           @include responsive($media-small) {
-            font-size: 37px;
-            margin-top: 40px;
-            margin-left: 70px;
+            font-size: $ourCoursesTitleFontSizeSmall;
+            margin-top: $ourCoursesTitleMarginTopSmall;
+            margin-left: $ourCoursesTitleMarginLeftSmall;
           }
         }
         ul {
           list-style: none;
-          margin-bottom: 0;
+          margin-bottom: $ourCoursesListMarginBottom;
           li {
             list-style: none;
-            text-align: center;
-            vertical-align: middle;
-            padding-bottom: 20px;
+            text-align: $ourCoursesListItemTextAlign;
+            vertical-align: $ourCoursesListItemVerticalAlign;
+            padding-bottom: $ourCoursesListItemPaddingBottom;
             .block {
               position: relative;
-              width: 100%;
-              max-width: 299px;
-              height: 206px;
-              margin: 0 auto;
-              border-bottom: 6px solid $colorTypeTwo;
+              width: $ourCoursesListItemWidth;
+              max-width: $ourCoursesListItemMaxWidth;
+              height: $ourCoursesListItemHeight;
+              margin: $ourCoursesListItemMargin;
+              border-bottom: $ourCoursesListItemBorderBottom;
               @include transition(all 0.5s);
               &.type-2 {
-                border-color: $colorTypeFour;
+                border-color: $ourCoursesListItemTypeTwoBorderColor;
               }
               &.type-3 {
-                border-color: $colorTypeSix;
+                border-color: $ourCoursesListItemTypeThreeBorderColor;
               }
               @include responsive($media-small) {
-                height: 286px;
-                max-width: 399px;
+                height: $ourCoursesListItemHeightSmall;
+                max-width: $ourCoursesListItemMaxWidthSmall;
               }
               >a {
-                display: table;
+                display: $ourCoursesListItemLinkDisplay;
                 position: relative;
                 width: 100%;
                 height: 100%;
                 img {
-                  width: 100%;
-                  max-width: 299px;
-                  height: 200px;
+                  width: $ourCoursesListItemWidth;
+                  max-width: $ourCoursesListItemMaxWidth;
+                  height: $ourCoursesListItemImageHeight;
                   position: absolute;
                   left: 0;
                   right: 0;
                   @include transition(all 0.5s);
                   @include responsive($media-small) {
-                    height: 280px;
-                    max-width: 399px;
+                    height: $ourCoursesListItemImageHeightSmall;
+                    max-width: $ourCoursesListItemMaxWidthSmall;
                   }
                 }
                 >span {
-                  display: table-cell;
-                  vertical-align: bottom;
-                  position: relative;
+                  display: $ourCoursesListItemLinkTextDisplay;
+                  vertical-align: $ourCoursesListItemLinkTextVerticalAlign;
+                  position: $ourCoursesListItemLinkTextPosition;
                   >span {
-                    position: relative;
-                    bottom: 28px;
-                    left: 0;
-                    right: 0;
-                    background: $black;
-                    background: rgba(0,0,0,0.55);
-                    width: 150px;
-                    color: #fff;
-                    font-size: 16px;
-                    font-weight: bold;
-                    padding: 10px;
-                    display: block;
-                    margin: 0 auto;
-                    text-align: center;
+                    position: $ourCoursesListItemLinkTextContentPosition;
+                    bottom: $ourCoursesListItemLinkTextContentPositionBottom;
+                    left: $ourCoursesListItemLinkTextContentPositionLeft;
+                    right: $ourCoursesListItemLinkTextContentPositionRight;
+                    background: $ourCoursesListItemLinkTextContentBackground;
+                    background: $ourCoursesListItemLinkTextContentBackgroundRgba;
+                    width: $ourCoursesListItemLinkTextContentWidth;
+                    color: $ourCoursesListItemLinkTextContentColor;
+                    font-size: $ourCoursesListItemLinkTextContentFontSize;
+                    font-weight: $ourCoursesListItemLinkTextContentFontWeight;
+                    padding: $ourCoursesListItemLinkTextContentPadding;
+                    display: $ourCoursesListItemLinkTextContentDisplay;
+                    margin: $ourCoursesListItemLinkTextContentMargin;
+                    text-align: $ourCoursesListItemLinkTextContentTextAlign;
                     @include transition(all 0.5s);
                     @include responsive($media-small) {
-                      bottom: 50px;
-                      width: 266px;
-                      font-size: 30px;
+                      bottom: $ourCoursesListItemLinkTextContentPositionBottomSmall;
+                      width: $ourCoursesListItemLinkTextContentWidthSmall;
+                      font-size: $ourCoursesListItemLinkTextContentFontSizeSmall;
                     }
                   }
                 }

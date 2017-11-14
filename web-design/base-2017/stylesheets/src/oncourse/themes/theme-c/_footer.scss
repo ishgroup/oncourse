@@ -11,14 +11,13 @@
 @include theme('c', 'footer') {
   #footer {
     position: relative;
-    font-weight: 300;
-    font-size: 15px;
+    font-weight: $footerFontWeight;
     .address {
-      line-height: 2;
+      line-height: $footerAddressLineHeight;
     }
     .info-links {
       background: $footerInfoLinksBackground;
-      margin-top: 20px;
+      margin-top: $footerInfoLinksMarginTop;
       .container {
         color: $footerInfoLinksTextColor;
         a {
@@ -28,37 +27,34 @@
           }
         }
         .footer-info {
-          width: 100%;
-          text-align: center;
+          width: $footerInfoWidth;
+          text-align: $footerInfoTextAlign;
         }
       }
     }
     .contact-courses {
       .address-info .title, .courses-tags>li:first-child, .quicklinks>li {
-        color: $white;
-        font-weight: bold;
-        text-transform: uppercase;
+        color: $footerContactTitleColor;
+        font-weight: $footerContactTitleFontWeight;
+        text-transform: $footerContactTitleTextTransform;
       }
       .address-info >p {
         color: $footerInfoColor;
-        line-height: 2;
+        line-height: $footerInfoLineHeight;
       }
       ul ul li a {
         color: $footerInfoColor;
-        line-height: 2;
+        line-height: $footerInfoLineHeight;
         &:hover {
           color: $footerInfoHoverColor;
         }
       }
-      .address-info .title, .courses-tags>li:first-child, .quicklinks>li {
-        font-weight: 300;
-      }
       .social-links {
         li {
-          margin-left: 6px;
-          padding: 0;
-          width: auto;
-          float: left;
+          margin-left: $footerSocialLinksListMarginLeft;
+          padding: $footerSocialLinksListPadding;
+          width: $footerSocialLinksListWidth;
+          float: $footerSocialLinksListFloat;
         }
       }
     }
@@ -73,7 +69,7 @@
       }
     }
     ul.footer-info {
-      margin: 0px;
+      margin: $footerInfoMargin;
       list-style: none;
     }
     .container {
@@ -84,93 +80,85 @@
         }
       }
       .footer-container {
-        margin-top: 15px;
-        margin-bottom: 14px;
         .footer-logo {
           width: 100%;
-          text-align: center;
         }
       }
       .contact-courses {
         .top {
           border-bottom: $footerContactBorderBottom;
-          padding: 30px 0px;
-          margin-bottom: 40px;
+          padding: $footerContactPadding;
+          margin-bottom: $footerContactMarginBottom;
           .links {
-            margin-bottom: 20px;
+            margin-bottom: $footerContactLinkMarginBottom;
             @include responsive($media-tablet) {
-              float: left;
-              margin-bottom: 0px;
+              float: $footerContactLinkFloatTablet;
+              margin-bottom: $footerContactLinkMarginBottomTablet;
             }
             >a {
-              font-size: 17px;
+              font-size: $footerContactLinkFontSize;
               color: $footerContactLinkColor;
-              display: block;
+              display: $footerContactLinkDisplay;
               &:hover {
                 color: $footerContactLinkHoverColor;
               }
               @include responsive($media-small) {
-                display: initial;
-                padding-right: 26px;
+                display: $footerContactLinkDisplaySmall;
+                padding-right: $footerContactLinkPaddingRightSmall;
               }
             }
           }
           >ul {
-            width: 100px;
-            margin: 0 auto;
+            width: $footerTopListWidth;
+            margin: $footerTopListMargin;
             @include responsive($media-tablet) {
-              width: auto;
-              float: right;
+              width: $footerTopListWidthTablet;
+              float: $footerTopListFloat;
             }
           }
         }
       }
       .pull-left {
-        text-align: center;
-        .social-content {
-          float: none;
-          width: 100%;
-          margin-top: 20px;
-          margin-bottom: 30px;
-          @include responsive($media-tablet) {
-            margin-top: 45px;
-            margin-bottom: 0px;
-          }
-        }
+        text-align: $footerLeftTextAlign;
         @include responsive($media-tablet) {
-          width: 35%;
+          width: $footerLeftWidthTablet;
+        }
+        .social-content {
+          float: $footerLeftSocialContentFloat;
+          width: $footerLeftSocialContentWidth;
+          margin-top: $footerLeftSocialContentMarginTop;
+          margin-bottom: $footerLeftSocialContentMarginBottom;
+          @include responsive($media-tablet) {
+            margin-top: $footerLeftSocialContentMarginTopTablet;
+            margin-bottom: $footerLeftSocialContentMarginBottomTablet;
+          }
         }
       }
       .pull-right {
-        display: block;
+        display: $footerRightDisplay;
         @include responsive($media-tablet) {
-          display: table;
+          display: $footerRightDisplayTablet;
         }
-
+        @include responsive($media-tablet) {
+          width: $footerRightWidthTablet;
+        }
         >ul {
           vertical-align: top;
         }
-        @include responsive($media-tablet) {
-          width: 65%;
-        }
-        .courses-tags {
-          float: left;
-          width: 100%;
-          margin-top: 30px;
+        .courses-tags, .quicklinks {
+          float: $footerRightCoursesTagsFloat;
+          width: $footerRightCoursesTagsWidth;
+          margin-top: $footerRightCoursesTagsMarginTop;
           @include responsive($media-tablet) {
-            float: none;
-            width: auto;
-            margin-top: 0px;
+            float: $footerRightCoursesTagsFloatTablet;
+            width: $footerRightCoursesTagsWidthTablet;
+            margin-top: $footerRightCoursesTagsMarginTopTablet;
           }
         }
         .quicklinks {
-          float: left;
-          width: 100%;
-          margin-top: 10px;
+          margin-top: $footerRightQuickLinksMarginTop;
           @include responsive($media-tablet) {
-            float: none;
-            width: auto;
-            margin-top: 0px;
+            margin-top: $footerRightQuickLinksMarginTopTablet;
           }
         }
       }

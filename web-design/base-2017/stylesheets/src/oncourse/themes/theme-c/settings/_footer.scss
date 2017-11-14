@@ -11,16 +11,79 @@
 $footer-theme: "c";
 
 $footerBG: #fff no-repeat center top !default;
+$footerFontSize: 15px !default;
+$footerFontWeight: 300 !default;
 $footerTextColor: #434343 !default;
 
+$footerAddressLineHeight: 2 !default;
+
 $footerInfoLinksBackground: $white !default;
+$footerInfoLinksMarginTop: 20px !default;
 $footerInfoLinksTextColor: #aaa !default;
 $footerInfoLinksAnchorColor: #aaa !default;
 $footerInfoLinksAnchorHoverColor: $theme-color !default;
 
 $footerInfoColor: #8da1a9 !default;
+$footerInfoLineHeight: 2 !default;
 $footerInfoHoverColor: $theme-color !default;
 
+$footerInfoWidth: 100% !default;
+$footerInfoTextAlign: center !default;
+$footerInfoMargin: 0px !default;
+
+$footerContactTitleColor: $white !default;
+$footerContactTitleFontWeight: bold !default;
+$footerContactTitleTextTransform: uppercase !default;
+
 $footerContactBorderBottom: 2px solid #124953 !default;
+$footerContactPadding: 30px 0px !default;
+$footerContactMarginBottom: 40px !default;
+
+$footerContactLinkMarginBottom: 20px !default;
+$footerContactLinkFloatTablet: left !default;
+$footerContactLinkMarginBottomTablet: 0px !default;
+$footerContactLinkFontSize: 17px !default;
+$footerContactLinkDisplay: block !default;
 $footerContactLinkColor: #17616f !default;
 $footerContactLinkHoverColor: $white !default;
+
+$footerContactLinkDisplaySmall: initial !default;
+$footerContactLinkPaddingRightSmall: 26px !default;
+
+$footerSocialLinksListMarginLeft: 6px !default;
+$footerSocialLinksListPadding: 0 !default;
+$footerSocialLinksListWidth: auto !default;
+$footerSocialLinksListFloat: left !default;
+
+$footerContainerMargin: 15px 0 14px 0 !default;
+
+$footerContainerLogoTextAlign: center !default;
+
+$footerTopListWidth: 100px !default;
+$footerTopListMargin: 0 auto !default;
+$footerTopListWidthTablet: auto !default;
+$footerTopListFloat: right !default;
+
+$footerLeftTextAlign: center !default;
+$footerLeftWidthTablet: 35% !default;
+
+$footerLeftSocialContentFloat: none !default;
+$footerLeftSocialContentWidth: 100% !default;
+$footerLeftSocialContentMarginTop: 20px !default;
+$footerLeftSocialContentMarginBottom: 30px !default;
+$footerLeftSocialContentMarginTopTablet: 45px !default;
+$footerLeftSocialContentMarginBottomTablet: 0px !default;
+
+$footerRightDisplay: block !default;
+$footerRightDisplayTablet: table !default;
+$footerRightWidthTablet: 65% !default;
+
+$footerRightCoursesTagsFloat: left !default;
+$footerRightCoursesTagsWidth: 100% !default;
+$footerRightCoursesTagsMarginTop: 30px !default;
+$footerRightCoursesTagsFloatTablet: none !default;
+$footerRightCoursesTagsWidthTablet: auto !default;
+$footerRightCoursesTagsMarginTopTablet: 0px !default;
+
+$footerRightQuickLinksMarginTop: 10px !default;
+$footerRightQuickLinksMarginTopTablet: 0px !default;

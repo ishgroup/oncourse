@@ -22,7 +22,10 @@ $contentImageBackgroundSize: 100% !default;
 $headerContainerPosition: relative !default;
 $headerContainerMarginBottom: 0px !default;
 $headerContainerMarginBottom-Internal: 0px !default;
+
 $headerGroupPosition: relative !default;
+$headerGroupSiteLogoFloatPosition: none !default;
+$headerGroupSiteLogoZIndex: 0 !default;
 
 $headerTopBarFloat: none !default;
 $headerTopBarBG: #fbfbfb !default;
@@ -35,8 +38,12 @@ $headerTopBarPhoneTextColor: $bodyFontColor !default;
 
 $headerTopBarPaddingTop: 0px !default;
 $headerTopBarHeight: 57px !default;
-$headerGroupSiteLogoFloatPosition: none !default;
-$headerGroupSiteLogoZIndex: 0 !default;
+
+$headerTopBarNavLogoFloat: left !default;
+$headerTopBarNavLogoMargin: 15px 35px 14px 20px !default;
+$headerTopBarNavLogoMarginTablet: 12px 35px 12px 20px !default;
+$headerTopBarNavLogoImageMaxWidth: 88% !default;
+$headerTopBarNavLogoImageMaxWidthTablet: 100% !default;
 
 $headerContainerBackground: $white !default;
 $headerContainerBackground-Internal: none !default;
@@ -96,15 +103,31 @@ $navToggleIconHoverColor: $secondaryColor !default;
 $navBGSmall: #EBEBEB !default;
 $navBoxShadowSmall: 1px 1px 6px 2px #ddd !default;
 
+$headerTopBarNavToggleMargin: 0px 10px 0px 0px !default;
+$headerTopBarNavToggleWidth: 40px !default;
+$headerTopBarNavTogglePadding: 4px 15px !default;
+$headerTopBarNavToggleFloat: right !default;
+$headerTopBarNavToggleOverflow: hidden !default;
+$headerTopBarNavTogglePosition: relative !default;
+$headerTopBarNavTogglePositionTop: 0px !default;
+$headerTopBarNavTogglePositionRight: 0 !default;
+
 // Short list
+$shortListBeforeDisplay: block !default;
+$shortListBeforeDisplayTablet: block !default;
+
+$shortListTextTransform: uppercase !default;
+$shortListMarginRightTablet: 5px !default;
+$shortListMarginLeftTablet: 30px !default;
+
 $shortListOrderLinkFontSize: $bodyFontSize !default;
 $shortListInfoSpanColor: #6d6d6d !default;
 $shortListInfoSpanFontSize: 14px !default;
 $shortListInfoSpanLineHeight: 2 !default;
 $shortListInfoSpanMargin: 0 5px 0 0 !default;
+$shortListInfoSpanFontWeight: bold !default;
 
 // Search
-$advancedSearchOpenFromLeft: "off" !default;
 $advancedSearchOpenFromRight: "on" !default;
 $searchTopHeight: 28px !default;
 $searchButtonPadding: 3.5px 7px 3.5px !default;
@@ -133,7 +156,15 @@ $searchActiveButtonBG: $advanceSearchButtonBG !default;
 
 $toggleSearchActiveBackground: #9ac836 !default;
 
+$headerToolbarMarginTop: 14px !default;
+$headerToolbarPosition: relative !default;
+$headerToolbarPaddingRight: 0px !default;
+
 // Advanced search
+$advanceSearchMaxWidth: 410px !default;
+$advanceSearchMinWidth: 285px !default;
+$advanceSearchZIndex: 9999 !default;
+
 $advanceSearchBG: #fbfbfb !default;
 $advanceSearchBG-Internal: #9ac836 !default;
 $advanceSearchBGRGB: $advanceSearchBG !default;
@@ -146,6 +177,10 @@ $advanceSearchInputBG-Internal: #f1fed4 !default;
 $advanceSearchInputBG-Home: #cecece !default;
 $advanceSearchTitleColor: $secondaryColor !default;
 
+$advanceSearchTitleFontSize: 30px !default;
+$advanceSearchTitleFontWeight: bold !default;
+$advanceSearchTitleMarginBottom: 25px !default;
+
 $searchBoxWidth: 190px !default;
 $searchBoxBorder: 1px solid #ddd !default;
 $searchBoxBorderRadius: 14px !default;
@@ -156,6 +191,16 @@ $searchBoxInputHeight: $searchTopHeight !default;
 $searchBoxInputBorder: 0px !default;
 $searchBoxInputBorderRadius: 14px 0px 0px 14px !default;
 
+$searchBoxQuickSearchFontSize: 13px !default;
+
+$advancedSearchFormLabelFontSize: 17px !default;
+
+$advanceSearchFormInputWrapperPaddingVerticalTablet: 10px !default;
+
+$advanceSearchFormInputCheckBox: 25px !default;
+
+$advancedSearchContainerPosition: initial !default;
+
 $searchMoreOptions: transparent !default;
 $searchMoreOptionsWidth: 12px !default;
 $searchMoreOptionsHeight: $searchTopHeight !default;
@@ -164,6 +209,12 @@ $searchMoreOptionsMinWidth: $searchMoreOptionsWidth !default;
 $searchMoreOptionsDisplay: block !default;
 $searchMoreOptionBorderTopColor: #a0a0a0 !default;
 $searchMoreOptionBorderTopColorHover: #656565 !default;
+
+$discountBlockFloat: left !default;
+$discountBlockLineHeight: 1.38095 !default;
+$discountBlockMarginTop: 6px !default;
+$discountBlockMarginRight: 16px !default;
+$discountBlockTextTransform: uppercase !default;
 
 $sliderPagerItemBackground: transparent !default;
 $sliderPagerItemWidth: 13px !default;

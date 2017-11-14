@@ -131,6 +131,10 @@
       @extend .responsive-image-h;
       >span {
         height: 100%;
+        img {
+          height: auto;
+          min-height: 100%;
+        }
       }
       .bc-content {
         position: relative;

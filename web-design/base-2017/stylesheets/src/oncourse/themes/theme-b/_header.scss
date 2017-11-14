@@ -66,12 +66,14 @@
                 #adv_search_submit {
                   button, a {
                     background: $advanceSearchButtonBG-Internal;
+                    border-color: darken($advanceSearchButtonBG-Internal, 5%);
                     &:hover {
                       background: darken($advanceSearchButtonBG-Internal, 10%);
                     }
                   }
                   a {
                     background: $advanceSearchButtonClearBackground-Internal;
+                    border-color: darken($advanceSearchButtonClearBackground-Internal, 5%);
                     &:hover {
                       background: darken($advanceSearchButtonClearBackground-Internal, 10%);
                     }
@@ -122,117 +124,90 @@
       }
       .top-bar {
         a.nav-logo {
-          float: left;
-          margin: 15px 35px 14px 20px;
+          float: $headerTopBarNavLogoFloat;
+          margin: $headerTopBarNavLogoMargin;
           @include responsive($media-tablet) {
-            margin: 12px 35px 12px 20px;
+            margin: $headerTopBarNavLogoMarginTablet;
           }
           img {
-            max-width: 88%;
+            max-width: $headerTopBarNavLogoImageMaxWidth;
             @include responsive($media-tablet) {
-              max-width: 100%;
+              max-width: $headerTopBarNavLogoImageMaxWidthTablet;
             }
           }
         }
         .nav-toggle {
-          margin: 0px 10px 0px 0px;
-          width: 40px;
-          //text-indent: -9999px;
-          padding: 4px 15px;
-          float: right;
-          overflow: hidden;
-          position: relative;
-          top: 0px;
-          right: 0;
+          margin: $headerTopBarNavToggleMargin;
+          width: $headerTopBarNavToggleWidth;
+          padding: $headerTopBarNavTogglePadding;
+          float: $headerTopBarNavToggleFloat;
+          overflow: $headerTopBarNavToggleOverflow;
+          position: $headerTopBarNavTogglePosition;
+          top: $headerTopBarNavTogglePositionTop;
+          right: $headerTopBarNavTogglePositionRight;
         }
         #headerToolbar {
-          margin-top: 14px;
-          position: relative;
-          padding-right: 0px;
+          margin-top: $headerToolbarMarginTop;
+          position: $headerToolbarPosition;
+          padding-right: $headerToolbarPaddingRight;
           .discount-block {
-            display: none;
-            float: left;
-            line-height: 1.38095;
-            margin-top: 6px;
-            margin-right: 16px;
-            text-transform: uppercase;
+            display: $discountBlockDisplaySmall;
+            float: $discountBlockFloat;
+            line-height: $discountBlockLineHeight;
+            margin-top: $discountBlockMarginTop;
+            margin-right: $discountBlockMarginRight;
+            text-transform: $discountBlockTextTransform;
             @include responsive($media-small) {
               display: $discountBlockDisplay;
             }
-            .title-block, .nyromodalreload.actionLink {
-              display: none;
-            }
           }
           #shortlist {
-            text-transform: uppercase;
-            .shortlistInfo span {
-              font-weight: bold;
-            }
+            text-transform: $shortListTextTransform;
             @include responsive($media-tablet) {
-              margin-right: 5px;
-              margin-left: 30px;
+              margin-left: $shortListMarginLeftTablet;
             }
-            &::before {
-              background-image: $defaultSpriteImage;
-              background-position: -33px -12px;
-              background-repeat: no-repeat;
-              content: '';
-              display: block;
-              position: absolute;
-              top: 6px;
-              left: -12px;
-              width: 17px;
-              height: 16px;
+            .shortlistInfo span {
+              font-weight: $shortListInfoSpanFontWeight;
             }
           }
 
           #search_box {
             #advanced_search {
-              max-width: 410px;
-              min-width: 285px;
-              z-index: 9999;
+              max-width: $advanceSearchMaxWidth;
+              min-width: $advanceSearchMinWidth;
+              z-index: $advanceSearchZIndex;
               .advanced-search-form {
                 input[type="text"], select, input[type="checkbox"] {
                   background: $advanceSearchInputBG-Home;
                 }
                 .search-title {
-                  font-size: 30px;
-                  font-weight: bold;
+                  font-size: $advanceSearchTitleFontSize;
+                  font-weight: $advanceSearchTitleFontWeight;
                   color: $advanceSearchTitleColor;
-                  margin-bottom: 25px;
+                  margin-bottom: $advanceSearchTitleMarginBottom;
                 }
                 >div {
-                  label {
-                    font-size: 17px;
-                  }
                   &#adv_search_location, &#adv_search_time {
                     @include responsive($media-tablet) {
-                      padding-right: 10px;
+                      padding-right: $advanceSearchFormInputWrapperPaddingVerticalTablet;
                     }
                   }
                   &#adv_search_price, &#adv_search_day {
                     @include responsive($media-tablet) {
-                      padding-left: 10px;
+                      padding-left: $advanceSearchFormInputWrapperPaddingVerticalTablet;
                     }
                   }
                 }
 
                 #adv_search_time , #adv_search_day {
                   .checkbox>input {
-                    width: 25px;
-                    height: 25px;
+                    width: $advanceSearchFormInputCheckBox;
+                    height: $advanceSearchFormInputCheckBox;
                   }
                 }
               }
             }
 
-            #advanced_search_container {
-              position: initial;
-              #advanced_search {
-                right: 0px;
-                left: auto;
-              }
-            }
             .advanced-search-button.more-options {
               text-indent: -9999px;
               position: relative;
@@ -260,7 +235,7 @@
               }
             }
             #search .quicksearch {
-              font-size: 13px;
+              font-size: $searchBoxQuickSearchFontSize;
             }
           }
         }

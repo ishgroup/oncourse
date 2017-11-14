@@ -12,7 +12,7 @@
 @include theme('c', 'header') {
   body {
     &.header-fixed {
-      padding-top: 74px;
+      padding-top: $headerFixedPaddingTop;
     }
     .content-images {
       display: none;
@@ -77,124 +77,107 @@
     }
     .header-container {
       background: $headerTopBarBG;
-      padding-bottom: 16px;
-      padding-top: 16px;
+      padding-bottom: $headerTopBarPaddingBottom;
       .top-bar {
         a.nav-logo {
-          float: left;
-          margin: 12px 35px 12px 20px;
+          float: $headerTopBarNavLogoFloat;
+          margin: $headerTopBarNavLogoMargin;
+          @include responsive($media-tablet) {
+            margin: $headerTopBarNavLogoMarginTablet;
+          }
+          img {
+            max-width: $headerTopBarNavLogoImageMaxWidth;
+            @include responsive($media-tablet) {
+              max-width: $headerTopBarNavLogoImageMaxWidthTablet;
+            }
+          }
         }
         .nav-toggle {
-          margin: 0px 10px 0px 0px;
-          width: 40px;
-          padding: 4px 10px;
-          float: right;
-          overflow: hidden;
+          margin: $headerTopBarNavToggleMargin;
+          width: $headerTopBarNavToggleWidth;
+          padding: $headerTopBarNavTogglePadding;
+          float: $headerTopBarNavToggleFloat;
+          overflow: $headerTopBarNavToggleOverflow;
+          position: $headerTopBarNavTogglePosition;
+          top: $headerTopBarNavTogglePositionTop;
+          right: $headerTopBarNavTogglePositionRight;
         }
         #headerToolbar {
-          margin-top: 6px;
-          position: relative;
+          margin-top: $headerToolbarMarginTop;
+          position: $headerToolbarPosition;
           .discount-block {
-            display: $discountBlockDisplay;
-            float: left;
-            line-height: 1.38095;
-            margin-top: 6px;
-            margin-right: 16px;
-            text-transform: uppercase;
-            .title-block, .nyromodalreload.actionLink {
-              display: none;
+            display: $discountBlockDisplaySmall;
+            float: $discountBlockFloat;
+            line-height: $discountBlockLineHeight;
+            margin-top: $discountBlockMarginTop;
+            margin-right: $discountBlockMarginRight;
+            text-transform: $discountBlockTextTransform;
+            @include responsive($media-small) {
+              display: $discountBlockDisplay;
             }
           }
           #shortlist {
-            text-transform: uppercase;
+            text-transform: $shortListTextTransform;
             @include responsive($media-tablet) {
-              margin-right: 5px;
-              margin-left: 30px;
-            }
-            &::before {
-              background-image: $defaultSpriteImage;
-              background-position: -33px -12px;
-              background-repeat: no-repeat;
-              content: '';
-              display: block;
-              position: absolute;
-              top: 6px;
-              left: -12px;
-              width: 17px;
-              height: 16px;
+              margin-left: $shortListMarginLeftTablet;
             }
             .shortlistInfo {
               span {
-                width: 20px;
-                height: 20px;
-                padding: 7.5px 0;
-                line-height: 0.5;
-                border-radius: 100%;
-                margin-top: 3px;
-                text-align: center;
+                width: $shortListInfoSpanWidth;
+                height: $shortListInfoSpanHeight;
+                padding: $shortListInfoSpanPadding;
+                border-radius: $shortListInfoSpanBorderRadius;
+                text-align: $shortListInfoSpanTextAlign;
                 overflow: hidden;
-                font-weight: bold;
-              }
-              p {
-                display: none;
+                font-weight: $shortListInfoSpanFontWeight;
               }
             }
           }
 
           #search_box {
             #advanced_search {
-              max-width: 410px;
-              min-width: 285px;
-              z-index: 9999;
+              max-width: $advanceSearchMaxWidth;
+              min-width: $advanceSearchMinWidth;
+              z-index: $advanceSearchZIndex;
               .advanced-search-form {
                 input[type="text"], select, input[type="checkbox"] {
                   background: $advanceSearchInputBG-Home;
                 }
                 .search-title {
-                  font-size: 30px;
-                  font-weight: bold;
+                  font-size: $advanceSearchTitleFontSize;
+                  font-weight: $advanceSearchTitleFontWeight;
                   color: $advanceSearchTitleColor;
-                  margin-bottom: 25px;
+                  margin-bottom: $advanceSearchTitleMarginBottom;
                 }
                 >div {
-                  label {
-                    font-size: 17px;
-                  }
                   &#adv_search_location, &#adv_search_time {
                     @include responsive($media-tablet) {
-                      padding-right: 10px;
+                      padding-right: $advanceSearchFormInputWrapperPaddingVerticalTablet;
                     }
                   }
                   &#adv_search_price, &#adv_search_day {
                     @include responsive($media-tablet) {
-                      padding-left: 10px;
+                      padding-left: $advanceSearchFormInputWrapperPaddingVerticalTablet;
                     }
                   }
                 }
 
                 #adv_search_time , #adv_search_day {
                   .checkbox>input {
-                    width: 25px;
-                    height: 25px;
+                    width: $advanceSearchFormInputCheckBox;
+                    height: $advanceSearchFormInputCheckBox;
                   }
                 }
               }
             }
 
-            #advanced_search_container {
-              position: initial;
-              #advanced_search {
-                right: 0px;
-                left: auto;
-              }
-            }
             .advanced-search-button.more-options {
               text-indent: -9999px;
               position: relative;
               &::before {
                 content: "";
                 border-right: 6px solid transparent;
-                border-top: 7px solid #a0a0a0;
+                border-top: 7px solid $searchMoreOptionBorderTopColor;
                 border-left: 6px solid transparent;
                 position: absolute;
                 left: 0px;
@@ -202,7 +185,7 @@
               }
               &:hover {
                 &::before {
-                  border-top: 7px solid #656565;
+                  border-top: 7px solid $searchMoreOptionBorderTopColorHover;
                 }
               }
               .show-advanced-search span {
@@ -217,43 +200,33 @@
             #search {
               background: $searchBoxBackground;
               .quicksearch {
-                font-size: 13px;
+                font-size: $searchBoxQuickSearchFontSize;
               }
             }
           }
         }
         .navbar {
-          position: absolute;
-          top: 15px;
-          left: 0;
-          right: 0;
-          text-align: center;
-          display: none;
-          margin: 0 auto;
+          top: $navbarPositionTop;
+          left: $navbarPositionLeft;
+          right: $navbarPositionRight;
+          text-align: $navbarTextAlign;
+          display: $navbarDisplay;
+          margin: $navbarMargin;
           background: $navbarBackgroundColor;
-          z-index: 99;
-          box-shadow: 1px 1px 3px 1px #cacaca;
+          box-shadow: $navbarBoxShadow;
           @include responsive($media-tablet) {
-            background: none;
-            display: block !important;
-            box-shadow: none;
-            top: -49px;
-            width: 60%;
+            background: $navbarBackgroundColorTablet;
+            display: $navbarDisplayTablet;
+            box-shadow: $navbarBoxShadowTablet;
+            top: $navbarPositionTopTablet;
+            width: $navbarWidthTablet;
           }
           #nav {
-            float: none;
             >ul {
-              float: none;
-              text-align: center;
               a {
-                letter-spacing: 1px;
+                letter-spacing: $navAnchorItemLetterSpacing;
               }
               >li {
-                @include responsive($media-tablet) {
-                  float: none;
-                  display: inline-block !important;
-                  margin-right: 0;
-                }
                 >a, &:first-child>a, &:last-child>a {
                   padding: 10px 8px;
                   @include responsive($media-custom, $custom-screen) {
@@ -266,47 +239,46 @@
         }
       }
       .header-hgroup {
-        padding: 3px 15px;
+        padding: $headerGroupPadding;
         #siteLogo {
-          float: left;
-          margin-bottom: 0;
-          font-size: 20px;
-          text-transform: uppercase;
-          font-weight: bold;
-          line-height: 35px;
+          margin-bottom: $headerGroupSiteLogoMarginBottom;
+          font-size: $headerGroupSiteLogoFontSize;
+          text-transform: $headerGroupSiteLogoTextTransform;
+          font-weight: $headerGroupSiteLogoFontWeight;
+          line-height: $headerGroupSiteLogoLineHeight;
           >a {
-            color: #000;
+            color: $headerGroupSiteLogoColor;
             &:hover {
               span {
-                background: lighten($theme-color, 10%);
-                background: rgba($theme-color, 0.7);
+                background: $headerGroupSiteLogoSpanBackgroundHover;
+                background: $headerGroupSiteLogoSpanBackgroundRgbaHover;
                 &:after {
-                  background: darken($theme-color, 15%);
+                  background: $headerGroupSiteLogoSpanAfterBackgroundHover;
                 }
               }
             }
           }
           img {
-            width: 20px;
+            max-width: $headerGroupSiteLogoImageMaxWidth;
           }
           span {
-            width: 20px;
-            height: 20px;
-            margin-top: -4px;
-            margin-right: 3px;
-            background: lighten($theme-color, 10%);
-            background: rgba($theme-color, 0.5);
+            width: $headerGroupSiteLogoSpanWidth;
+            height: $headerGroupSiteLogoSpanWidth;
+            margin-top: $headerGroupSiteLogoSpanMarginTop;
+            margin-right: $headerGroupSiteLogoSpanMarginRight;
+            background: $headerGroupSiteLogoSpanBackground;
+            background: $headerGroupSiteLogoSpanBackgroundRgba;
             position: relative;
-            display: inline-block;
-            vertical-align: middle;
+            display: $headerGroupSiteLogoSpanDisplay;
+            vertical-align: $headerGroupSiteLogoSpanVerticalAlign;
             &::after {
               content: "";
               position: absolute;
               left: 0;
               bottom: 0;
-              width: 10px;
-              height: 10px;
-              background: $theme-color;
+              width: $headerGroupSiteLogoSpanAfterWidth;
+              height: $headerGroupSiteLogoSpanAfterWidth;
+              background: $headerGroupSiteLogoSpanAfterBackground;
             }
           }
         }
@@ -336,41 +308,6 @@
               }
             }
           }
-        }
-      }
-    }
-  }
-  #Main.main-page {
-    #header {
-      .header-container {
-        .top-bar {
-          a.nav-logo {
-            display: none;
-          }
-        }
-        .header-hgroup {
-          #siteLogo {
-            display: block;
-          }
-        }
-      }
-    }
-  }
-
-  .internal-page {
-    #header {
-      .top-bar {
-        .navbar {
-          .site-nav {
-            .list-horizontal {
-              >li:first-child {
-                display: none !important;
-              }
-            }
-          }
-        }
-        .nav-logo {
-          display: block;
         }
       }
     }

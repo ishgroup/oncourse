@@ -49,30 +49,31 @@ $h1InnerFontFamily: $bodyFontFamily !default;
 $h1InnerTextColor: $primaryColor !default;
 
 $discountBlockDisplay: none !default;
+$discountBlockDisplaySmall: none !default;
 $discountBlockActionLinkDisplay: none !default;
+$discountBlockTitleDisplay: none !default;
 
-
-$h1FontSize: 37px;
+$h1FontSize: 37px !default;
 $h1LinkColor: $primaryColor !default;
 $h1LinkHoverColor: $secondaryColor !default;
 
-$h2FontSize: 28px;
+$h2FontSize: 28px !default;
 $h2LinkColor: $primaryColor !default;
 $h2LinkHoverColor: $secondaryColor !default;
 
-$h3FontSize: 22px;
+$h3FontSize: 22px !default;
 $h3LinkColor: $primaryColor !default;
 $h3LinkHoverColor: $secondaryColor !default;
 
-$h4FontSize: 18px;
+$h4FontSize: 18px !default;
 $h4LinkColor: $primaryColor !default;
 $h4LinkHoverColor: $secondaryColor !default;
 
-$h5FontSize: 15px;
+$h5FontSize: 15px !default;
 $h5LinkColor: $primaryColor !default;
 $h5LinkHoverColor: $secondaryColor !default;
 
-$h6FontSize: 12px;
+$h6FontSize: 12px !default;
 $h6LinkColor: $primaryColor !default;
 $h6LinkHoverColor: $secondaryColor !default;
 
@@ -111,12 +112,15 @@ $appBtnPaddingSmall: 13px 25px !default;
 $appBtnLetterSpacing: 1px !default;
 $appBtnFontSizeSmall: 14px !default;
 
+$squareBtnBackground: none !default;
+$squareBtnBackgroundHover: none !default;
 $squareBtnMargin: 35px auto 0 !default;
 $squareBtnDisplay: block !default;
 $squareBtnColor: $white !default;
+$squareBtnColorHover: $white !default;
 $squareBtnPadding: 10px 25px 10px !default;
 $squareBtnFontSize: 15px !default;
-$squareBtnBorderColor: $theme-color !default;
+$squareBtnBorder: 2px solid $theme-color !default;
 $squareBtnBorderColorHover: $white !default;
 $squareBtnWidth: 189px !default;
 $squareBtnFontWeight: 700 !default;
@@ -127,3 +131,38 @@ $squareBtnTextAlign: center !default;
 
 
 $classItemLinkHoverColor: $primaryColor !default;
+
+$contentMainTitle: $secondaryColor !default;
+$contentSubTitle: #0a3a4a !default;
+
+$titleOneFontWeight: 400 !default;
+$titleOneTextAlign: center !default;
+$titleOneFontSize: 15px !default;
+$titleOneColor: #d7d9da !default;
+$titleOneTextTransform: uppercase !default;
+$titleOneDisplay: block !default;
+
+$titleTwoFontWeight: 300 !default;
+$titleTwoTextAlign: center !default;
+$titleTwoFontSize: 28px !default;
+$titleTwoColor: #434343 !default;
+$titleTwoPaddingBottom: 50px !default;
+$titleTwoMarginTop: 10px !default;
+$titleTwoDisplay: block !default;
+
+$featuredCoursesHeight: 520px !default;
+$featuredCoursesTagsDisplay: none !default;
+
+$featuredCoursesNavMargin: 80px auto !default;
+$featuredCoursesNavHeight: 57px !default;
+$featuredCoursesNavMaxWidth: 455px !default;
+
+$featuredCoursesNavDivFloat: left !default;
+$featuredCoursesNavNextFloat: right !default;
+
+$featuredCoursesNavAppBtnMarginTop: 6px !default;
+
+$featuredCoursesNavButtonMarginRight: 20px !default;
+$featuredCoursesNavButtonMarginLeft: 20px !default;
+$featuredCoursesNavButtonBackgroundColor: #e1e1e1 !default;
+$featuredCoursesNavButtonBackgroundColorHover: $theme-color !default;
