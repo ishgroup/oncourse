@@ -211,7 +211,7 @@
       li {
         padding: $shortlistActionLinkListPadding;
         line-height: $shortlistActionLinkListLineHeight;
-        &:first-child:hover, &.active {
+        &:first-child:hover, &.shortlistActionHide {
           background-color: $shortlistActionLinkListFirstChildBackground;
           color: $shortlistActionLinkListFirstChildTextColor;
           a {

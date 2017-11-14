@@ -6,7 +6,7 @@
 //
 // Copyright ish group (Australia) and part of ish onCourse.
 // It is licensed to you under the Apache License, version 2.0
-
+//
 
 
 //
@@ -98,7 +98,7 @@ header {
     // Header group site logo
     .header-hgroup {
       #siteLogo {
-        float: none;
+        float: $headerGroupSiteLogoFloat;
         text-align: $headerGroupSiteLogoTextAlign;
         z-index: $headerGroupSiteLogoZIndex;
         @include responsive($media-small) {

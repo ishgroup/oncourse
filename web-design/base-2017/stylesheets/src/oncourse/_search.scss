@@ -99,7 +99,7 @@
       }
     }
     #advanced_search_container {
-      position: relative
+      position: $advancedSearchContainerPosition;
     }
 
     // Advanced search wrapper
@@ -145,11 +145,11 @@
           }
 
           label {
-            font-size: 13px;
-            vertical-align: middle;
-            margin-bottom: 5px;
-            margin-top: 0;
-            font-weight: normal;
+            font-size: $advancedSearchFormLabelFontSize;
+            vertical-align: $advancedSearchFormLabelVerticalAlign;
+            margin-bottom: $advancedSearchFormLabelMarginBottom;
+            margin-top: $advancedSearchFormLabelMarginTop;
+            font-weight: $advancedSearchFormLabelFontWeight;
             >input {
               position: relative;
             }
@@ -192,8 +192,10 @@
           vertical-align: middle;
         }
         input[type="text"], select {
-          height: 32px;
-          width: 100%;
+          height: $advancedSearchFormInputHeight;
+          width: $advancedSearchFormInputWidth;
+          padding: $advancedSearchFormInputPadding;
+          font-size: $advancedSearchFormInputFontSize;
         }
         #adv_search_time, #adv_search_day {
           padding-bottom: 6px;
@@ -227,6 +229,8 @@
             background: $advanceSearchButtonBG;
             @include border-radius($advanceSearchButtonBorderRadius);
             border-color: darken($advanceSearchButtonBG, 5%);
+            text-transform: $advanceSearchButtonTextTransform;
+            color: $advanceSearchButtonColor;
             &:hover {
               background: darken($advanceSearchButtonBG, 5%);
               color: $advanceSearchButtonColorHover;
@@ -240,6 +244,7 @@
             border-color: darken($advanceSearchButtonClearBackground, 5%);
             display: $advanceSearchButtonClearDisplay;
             float: $advanceSearchButtonClearPosition;
+            color: $advanceSearchButtonClearColor;
             margin: 0;
             &:hover {
               background: darken($advanceSearchButtonClearBackground, 5%);

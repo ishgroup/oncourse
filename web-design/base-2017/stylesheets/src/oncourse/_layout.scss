@@ -101,7 +101,7 @@ ul {
     display: none;
   }
   h1 {
-    font-weight: bold;
+    font-weight: $h1FontWeight;
     font-family: $h1InnerFontFamily;
     padding: 0;
     margin: 0 0 15px;

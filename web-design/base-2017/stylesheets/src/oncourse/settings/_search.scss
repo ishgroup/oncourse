@@ -107,6 +107,8 @@ $advancedSearchOpenFromLeft: "" !default;
 // Advanced search box open from right side
 $advancedSearchOpenFromRight: "" !default;
 
+$advancedSearchContainerPosition: relative !default;
+
 $advanceSearchDisplay: none !default;
 // Advanced search box background color
 $advanceSearchBG: #f89a1d !default;
@@ -128,6 +130,8 @@ $advanceSearchLeft: 0px !default;
 $advanceSearchRight: 0px !default;
 @if $advancedSearchOpenFromRight == "on" {
 	$advanceSearchLeft: auto;
+} @else if $advancedSearchOpenFromLeft == "on" {
+  $advanceSearchRight: auto;
 }
 // Advanced search box position
 $advanceSearchPosition: absolute !default;
@@ -149,13 +153,17 @@ $advanceSearchButtonPadding: $btnPadding !default;
 $advanceSearchSubmitButtonWidth: 100% !default;
 // Advanced search button background
 $advanceSearchButtonBG: #69524a !default;
+$advanceSearchButtonColor: $white !default;
 // Advanced search button text color changed on mouse over
 $advanceSearchButtonColorHover: $white !default;
 // Advanced search clear button background color
 $advanceSearchButtonClearBackground: $advanceSearchButtonBG !default;
 // Advanced search clear button background color changed on mouse over
+$advanceSearchButtonClearColor: $advanceSearchButtonColor !default;
 $advanceSearchButtonClearColorHover: $advanceSearchButtonColorHover !default;
 // Advanced search clear button visibility
+
+$advanceSearchButtonTextTransform: $btnTextTransform !default;
 $advanceSearchButtonClearDisplay: block !default;
 // Advanced search clear button position
 $advanceSearchButtonClearPosition: left !default;
@@ -215,6 +223,17 @@ $advancedSearchFormBlocksTabletWidth: 100% !default;
 $advancedSearchFormBlocksTabletPadding: 0 !default;
 // Visibility of advanced search input blocks
 $advancedSearchFormBlocksDisplay: block !default;
+
+$advancedSearchFormLabelFontSize: 13px !default;
+$advancedSearchFormLabelVerticalAlign: middle !default;
+$advancedSearchFormLabelMarginBottom: 5px !default;
+$advancedSearchFormLabelMarginTop: 0 !default;
+$advancedSearchFormLabelFontWeight: normal !default;
+
+$advancedSearchFormInputHeight: 32px !default;
+$advancedSearchFormInputWidth: 100% !default;
+$advancedSearchFormInputPadding: $inputPadding !default;
+$advancedSearchFormInputFontSize: $inputFontSize !default;
 
 //
 // Advanced search location box style
