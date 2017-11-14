@@ -74,4 +74,4 @@
 //= require shortlist.js
 //= require forms.js
 //= require socialMedia.js
-//= require CoursesFilter.js
+//= require coursesFilter.js
