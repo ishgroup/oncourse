@@ -34,7 +34,7 @@ class RunEditScript {
 
         scriptCommand << scriptPath
         scriptCommand << '-p'
-        scriptCommand << "\"$filePath\""
+        scriptCommand << "\"$filePath\"".toString()
 
         String userEmail = authenticationService.userEmail
 
@@ -52,7 +52,7 @@ class RunEditScript {
 
             Future<Integer> scriptCallFuture = executorService.submit({process.waitFor()} as Callable)
             scriptCallFuture.get(EDIT_FILE_SCRIPT_WAIT_TIMEOUT, TimeUnit.SECONDS)
-            time = Math.round((System.currentTimeMillis() - time) / 1000.0)
+            time = Math.round((System.currentTimeMillis() - time) / 1000.0d)
             logger.debug("script '{}' for file '{}' is finished. Time: '{}' sec", scriptPath, filePath, time)
         } catch (Exception e) {
             logger.error("Error executing script '{}' for file '{}'", scriptPath, filePath, e)

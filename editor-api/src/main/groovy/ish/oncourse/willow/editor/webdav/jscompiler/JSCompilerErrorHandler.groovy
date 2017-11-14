@@ -8,7 +8,7 @@ class JSCompilerErrorHandler {
     private List<String> errors = []
     
     void logError(Logger logger, Exception e) {
-        errors << "Unexpected exception: ${ExceptionUtils.getStackTrace(e)}"
+        errors << "Unexpected exception: ${ExceptionUtils.getStackTrace(e)}".toString()
         logger.error(e.message, e)
     }
 

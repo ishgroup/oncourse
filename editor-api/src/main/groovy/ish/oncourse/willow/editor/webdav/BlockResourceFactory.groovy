@@ -117,7 +117,7 @@ class BlockResourceFactory implements ResourceFactory {
 
         context.commitChanges()
 
-        return new WebContentResource(block, cayenneService, webContentService, textileConverter, securityManager);
+        return new WebContentResource(block, cayenneService, securityManager)
     }
 
     WebContentResource createNewBlock(String name, String content) {

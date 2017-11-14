@@ -8,6 +8,22 @@ class JSSource {
     private SourceFile sourceFile
     private JSSource parent
 
+    void setFileName(String fileName) {
+        this.fileName = fileName
+    }
+
+    void setFile(File file) {
+        this.file = file
+    }
+
+    void setSourceFile(SourceFile sourceFile) {
+        this.sourceFile = sourceFile
+    }
+
+    void setParent(JSSource parent) {
+        this.parent = parent
+    }
+
     String getFileName() {
         return fileName
     }

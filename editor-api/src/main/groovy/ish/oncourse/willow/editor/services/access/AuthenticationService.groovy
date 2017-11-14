@@ -5,6 +5,7 @@ import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WillowUser
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebSiteFunctions
 import ish.security.AuthenticationUtil
 import org.apache.cayenne.ObjectContext
@@ -12,8 +13,6 @@ import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang.StringUtils
-import org.eclipse.jetty.server.Request
-import org.eclipse.jetty.server.SessionManager
 
 import javax.servlet.http.Cookie
 
@@ -21,18 +20,17 @@ import static ish.oncourse.willow.editor.services.access.AuthenticationStatus.*
 
 class AuthenticationService {
     
-    @Inject
     private ICayenneService cayenneService
-    
-    @Inject
-    private Request request
-    
-    @Inject
-    private CookieStore cookieStore
+    private RequestService requestService
 
+    @Inject
+    AuthenticationService(ICayenneService cayenneService, RequestService requestService) {
+        this.cayenneService = cayenneService
+        this.requestService = requestService
+    }
     
     private AuthenticationStatus succedAuthentication(Class ssoClass, PersistentObject user) {
-        request.cookies = [new Cookie('SESSIONID', "${ssoClass.simpleName}-${user.objectId.properties['id']}")]
+        requestService.request.cookies = [new Cookie('SESSIONID', "${ssoClass.simpleName}-${user.objectId.properties['id']}")] as Cookie[]
         return SUCCESS
     }
 
@@ -81,7 +79,7 @@ class AuthenticationService {
 
     private AuthenticationStatus authenticateByEmail(String email, String password) {
 
-        College college = WebSiteFunctions.getCurrentCollege(request, cayenneService.sharedContext())
+        College college = WebSiteFunctions.getCurrentCollege(requestService.request, cayenneService.sharedContext())
 
         List<SystemUser> systemUsers = (ObjectSelect.query(SystemUser).
                 where(SystemUser.COLLEGE.eq(college)) & SystemUser.EMAIL.eq(email)).
@@ -106,7 +104,7 @@ class AuthenticationService {
 
     private AuthenticationStatus authenticateByLogin(String login, String password) {
 
-        College college = WebSiteFunctions.getCurrentCollege(request, cayenneService.sharedContext())
+        College college = WebSiteFunctions.getCurrentCollege(requestService.request, cayenneService.sharedContext())
 
 
         List<SystemUser> systemUsers = (ObjectSelect.query(SystemUser).
@@ -142,7 +140,7 @@ class AuthenticationService {
     }
     
     WillowUser getUser() {
-        Cookie sessionCookie = request.cookies.find {it.name == 'SESSIONID'}
+        Cookie sessionCookie = requestService.request.cookies.find {it.name == 'SESSIONID'}
         if (sessionCookie && sessionCookie.value.split('-')[0] == WillowUser.simpleName) {
             SelectById.query(WillowUser, sessionCookie.value.split('-')[1]).selectOne(cayenneService.sharedContext())
         } else {
@@ -151,13 +149,13 @@ class AuthenticationService {
     }
 
     SystemUser getSystemUser() {
-        Cookie sessionCookie = request.cookies.find {it.name == 'SESSIONID'}
+        Cookie sessionCookie = requestService.request.cookies.find {it.name == 'SESSIONID'}
 
         if (sessionCookie && sessionCookie.value.split('-')[0] == SystemUser.simpleName) {
             ObjectContext context = cayenneService.sharedContext()
             SystemUser user = SelectById.query(SystemUser, sessionCookie.value.split('-')[1])
                     .selectOne(context)
-            if (user && user.college == WebSiteFunctions.getCurrentCollege(request, context)) {
+            if (user && user.college == WebSiteFunctions.getCurrentCollege(requestService.request, context)) {
                 return user
             } else {
                 return null
@@ -169,7 +167,7 @@ class AuthenticationService {
     }
 
     void logout() {
-        request.cookies = []
+        requestService.request.cookies = [] as Cookie[]
     }
 
 

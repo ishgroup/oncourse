@@ -1,6 +1,6 @@
 package ish.oncourse.willow.editor.webdav
 
-import com.google.inject.Inject
+import com.google.inject.Injector
 import io.milton.http.Auth
 import io.milton.http.HttpManager
 import io.milton.http.Request
@@ -15,13 +15,10 @@ import javax.servlet.ServletException
 
 class Configurator extends DefaultMiltonConfigurator {
     
-    @Inject
-    AuthenticationService authenticationService
-    
-    
     @Override
     HttpManager configure(Config config) throws ServletException {
-        
+        Injector injector = config.servletContext.getAttribute('injector') as Injector
+        AuthenticationService authenticationService = injector.getInstance(AuthenticationService)
         builder.mainResourceFactory = new RootResourceFactory(new EditorSecurityManager(authenticationService), authenticationService)
         builder.enableCookieAuth = false
         builder.enabledJson = false

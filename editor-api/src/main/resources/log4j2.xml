@@ -15,11 +15,17 @@
             <SizeBasedTriggeringPolicy size="10M"/>
             <DefaultRolloverStrategy/>
         </RollingFile>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>[%d{dd/MMM/yyyy:HH:mm:ss}] %t %x %-5p %c{1}: %m%n</Pattern>
+            </PatternLayout>
+        </Console>
     </Appenders>
     <Loggers>
         <Root level="warn">
             <AppenderRef ref="FILE_ERROR" level="error"/>
             <AppenderRef ref="FILE" level="warn"/>
+            <AppenderRef ref="STDOUT" level="warn"/>
         </Root>
         <Logger name="ish.oncourse.util.log.LogAppInfo" level="info">
             <AppenderRef ref="FILE"/>
