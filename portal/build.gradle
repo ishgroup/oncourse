@@ -1,7 +1,7 @@
 apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'com.github.robfletcher.compass'
 
-apply from: "$rootDir/buildTapestryApp.gradle"
+apply from: "$rootDir/gradle/buildTapestryApp.gradle"
 ext {
     staticSrcPath = "src/main/static"
     staticBuildPath = "${buildDir}/resource-assemble/static"

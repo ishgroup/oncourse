@@ -1,5 +1,5 @@
-apply from: "$rootDir/bootiqueBom.gradle"
-apply from: "$rootDir/buildApiApp.gradle"
+apply from: "$rootDir/gradle/bootique.gradle"
+apply from: "$rootDir/gradle/buildApiApp.gradle"
 
 mainClassName = 'ish.oncourse.willow.WillowApp'
 

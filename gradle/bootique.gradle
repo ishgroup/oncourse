@@ -1,3 +1,7 @@
+/**
+ * File contains bootique related  dependencies, managed by dependency-management plugin. 
+ */
+
 apply plugin: 'io.spring.dependency-management'
 
 ext {

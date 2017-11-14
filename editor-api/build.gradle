@@ -1,4 +1,5 @@
-apply from: "$rootDir/buildApiApp.gradle"
+apply from: "$rootDir/gradle/bootique.gradle"
+apply from: "$rootDir/gradle/buildApiApp.gradle"
 
 mainClassName = 'ish.oncourse.willow.cms.EditorApp'
 
@@ -7,6 +8,8 @@ configurations {
 }
 
 dependencies {
+    compile project(':common:common-api')
+    
     //webdav servlet 
     compile 'io.milton:milton-api:2.6.0.1'
     compile 'io.milton:milton-server-ce:2.6.0.1'

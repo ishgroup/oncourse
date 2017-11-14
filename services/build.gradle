@@ -1,5 +1,5 @@
-apply from: "$rootDir/functions.gradle"
-apply from: "$rootDir/buildTapestryApp.gradle"
+apply from: "$rootDir/gradle/functions.gradle"
+apply from: "$rootDir/gradle/buildTapestryApp.gradle"
 
 sourceSets {
     main {

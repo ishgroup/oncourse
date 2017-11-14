@@ -1,4 +1,4 @@
-apply from: "$rootDir/bootiqueBom.gradle"
+apply from: "$rootDir/gradle/bootique.gradle"
 
 apply plugin: 'groovy'
 apply plugin: 'java'

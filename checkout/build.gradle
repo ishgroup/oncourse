@@ -1,1 +1,1 @@
-apply from: "$rootDir/buildJSApp.gradle"
+apply from: "$rootDir/gradle/buildJSApp.gradle"

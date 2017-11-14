@@ -187,7 +187,7 @@ allprojects {
 	}
 }
 
-apply from: "$rootDir/buildStaticResources.gradle"
+apply from: "$rootDir/gradle/buildStaticResources.gradle"
 
 task wrapper(type: Wrapper) {
 	gradleVersion = "4.3.1"
