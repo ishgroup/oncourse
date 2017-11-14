@@ -13,6 +13,8 @@ $checkoutWrapper: 'oncourse-checkout' !default;
 $checkout-media-default: $media-tablet !default;
 
 
+$checkoutFormControlsTextAlign: right !default;
+
 //
 // Form submit button
 //
@@ -28,6 +30,7 @@ $checkoutSubmitButtonHeight: 32px !default;
 $checkoutSubmitButtonPadding: 6px 20px 6px 20px !default;
 $checkoutSubmitButtonTextAlign: center !default;
 $checkoutSubmitButtonFontSize: 14px !default;
+$checkoutSubmitButtonVerticalAlign: middle !default;
 $checkoutSubmitButtonDisplay: inline-block !default;
 $checkoutSubmitButtonLineHeight: 1.5 !default;
 $checkoutSubmitButtonMargin: 0 3px !default;
@@ -49,10 +52,11 @@ $checkoutCancelButtonBackground: none !default;
 $checkoutCancelButtonFontWeight: 700 !default;
 $checkoutCancelButtonTextTransform: uppercase !default;
 $checkoutCancelButtonBackgroundHover: none !default;
-$checkoutCancelButtonMarginBottom: 15px !default;
 $checkoutCancelButtonColor: #252d30 !default;
 $checkoutCancelButtonColorHover: darken(#252d30, 15%) !default;
+$checkoutCancelButtonPadding: $checkoutSubmitButtonPadding !default;
 $checkoutCancelButtonPaddingLeft: 0 !default;
+$checkoutCancelButtonMargin: 0 3px 15px !default;
 
 
 //
@@ -83,6 +87,8 @@ $checkoutCorporatePassButtonMarginMedia: 0 0px 0 30.5% !important !default;
 //
 
 $checkoutProgressStepShowDefaultArrows: false !default;
+$checkoutProgressStepMarginLeft: 0 !default;
+$checkoutProgressStepPaddingLeft: 0 !default;
 $checkoutProgressStepBackground: none !default;
 $checkoutProgressStepListPadding: 4px 0px 5px 10px !default;
 $checkoutProgressStepListColor: #6B6B6B !default;
@@ -136,6 +142,22 @@ $checkoutProgressStepArrowAfterPositionRightMedia: 2px !default;
 
 $checkoutProgressStepListLastChildContent: none !default;
 
+$checkoutProgressStepLastChildActiveBackground: none !default;
+
+$checkoutProgressStepArrowNextLinkActiveAfterWidth: 40px !default;
+
+$checkoutProgressStepArrowNextLinkAfterWidth: 9.5px !default;
+$checkoutProgressStepArrowNextLinkAfterWidthMedia: 13.5px !default;
+
+$checkoutProgressStepArrowNextLinkAfterPositionTop: 0px !default;
+$checkoutProgressStepArrowNextLinkAfterPositionTopMedia: 0px !default;
+
+$checkoutProgressStepArrowNextLinkAfterPositionLeft: -14.5px !default;
+$checkoutProgressStepArrowNextLinkAfterPositionLeftMedia: -14.5px !default;
+
+$checkoutProgressStepArrowNextLinkAfterPositionRight: -17.5% !default;
+$checkoutProgressStepArrowNextLinkAfterPositionRightMedia: -17.5% !default;
+
 
 @if($checkoutProgressStepShowDefaultArrows == false) {
   $checkoutProgressStepListBackground: none;
@@ -161,7 +183,16 @@ $checkoutFormLabelPaddingTablet: 4px 20px 3px 0 !important !default;
 $checkoutFormLabelWidthTablet: 26% !important !default;
 $checkoutFormLabelMaxWidthTablet: 180px !important !default;
 $checkoutFormLabelMarginBottomTablet: 0px !important !default;
+$checkoutFormLabelTextAlignTablet: right !important !default;
 
+$checkoutFormLabelMarketingWidthSmall: 90% !important !default;
+$checkoutFormLabelMarketingMaxWidthSmall: none !important !default;
+$checkoutFormLabelMarketingPaddingLeftSmall: 10px !important !default;
+
+$checkoutFormInputMarketingFloatSmall: left !default;
+$checkoutFormInputMarketingMarginSmall: 7px 0 0 10px !default;
+$checkoutFormInputMarketingFloatTablet: none !default;
+$checkoutFormInputMarketingMarginTablet: 4px 0 0 10px !default;
 
 //
 // Form small tags
@@ -357,6 +388,14 @@ $checkoutPageListMarginBottom: 7px !default;
 
 $checkoutPageEnrolItemMarginBottom: 10px !default;
 
+$checkoutPageEnrolInfoPaddingLeft: 35px !default;
+
+$checkoutPageEnrolInfoSelectMarginRight: 6px !default;
+$checkoutPageEnrolInfoSelectMarginTop: 1px !default;
+$checkoutPageEnrolInfoSelectPosition: absolute !default;
+$checkoutPageEnrolInfoSelectPositionLeft: -19px !default;
+$checkoutPageEnrolInfoSelectPositionTop: 0 !default;
+
 $checkoutPageEnrolItemLabelFontWeight: bold !default;
 $checkoutPageEnrolItemLabelLineHeight: 16px !default;
 
@@ -424,3 +463,12 @@ $checkoutPageTabBorder: 1px solid silver !default;
 $checkoutPageTabBorderRadius: 8px !default;
 $checkoutPageTabBackground: #fcfcfc !default;
 
+//
+// Payer selection
+//
+
+$checkoutPayerPositionTop: 70px !default;
+$checkoutPayerPositionRight: 0px !default;
+$checkoutPayerZIndex: 2 !default;
+$checkoutPayerPositionTopMedia: 50px !default;
+$checkoutPayerPositionRightMedia: 20px !default;

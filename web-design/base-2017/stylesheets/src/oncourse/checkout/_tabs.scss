@@ -121,12 +121,12 @@
 
     .payer-selection {
       position: absolute;
-      top: 70px;
-      right: 0px;
-      z-index: 2;
+      top: $checkoutPayerPositionTop;
+      right: $checkoutPayerPositionRight;
+      z-index: $checkoutPayerZIndex;
       @include responsive($checkout-media-default) {
-        top: 50px;
-        right: 20px;
+        top: $checkoutPayerPositionTopMedia;
+        right: $checkoutPayerPositionRightMedia;
       }
       > a.button {
         float: none;

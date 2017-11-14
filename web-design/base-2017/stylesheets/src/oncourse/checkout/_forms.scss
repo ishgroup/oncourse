@@ -8,9 +8,15 @@
 // It is licensed to you under the Apache License, version 2.0
 //
 
-fieldset legend {
-  width: auto;
-  // display: none;
+fieldset {
+  clear: both;
+  legend {
+    width: auto;
+    // display: none;
+  }
+  >br {
+    display: none;
+  }
 }
 fieldset, #tabable-container .tab-content {
   >div>div, >div>div>div, .form-details >div>div, .form-group, .form-group > div > div, .form-details > p {
@@ -30,7 +36,7 @@ fieldset, #tabable-container .tab-content {
         width: $checkoutFormLabelWidthTablet;
         max-width: $checkoutFormLabelMaxWidthTablet;
         margin-bottom: $checkoutFormLabelMarginBottomTablet;
-        text-align: right !important;
+        text-align: $checkoutFormLabelTextAlignTablet;
       }
       > small {
         color: $checkoutFormSmallTagColor;
@@ -398,9 +404,9 @@ fieldset, #tabable-container .tab-content {
       &[for="isMarketingViaEmailAllowed"],
       &[for="isMarketingViaPostAllowed"],
       &[for="isMarketingViaSMSAllowed"] {
-        width: 90% !important;
-        max-width: none !important;
-        padding-left: 10px !important;
+        width: $checkoutFormLabelMarketingWidthSmall;
+        max-width: $checkoutFormLabelMarketingMaxWidthSmall;
+        padding-left: $checkoutFormLabelMarketingPaddingLeftSmall;
         @include responsive($checkout-media-default) {
           width: $checkoutFormLabelWidthTablet;
           max-width: $checkoutFormLabelMaxWidthTablet;
@@ -412,11 +418,11 @@ fieldset, #tabable-container .tab-content {
       &[name="isMarketingViaEmailAllowed"],
       &[name="isMarketingViaPostAllowed"],
       &[name="isMarketingViaSMSAllowed"] {
-        float: left;
-        margin-top: 7px;
+        float: $checkoutFormInputMarketingFloatSmall;
+        margin: $checkoutFormInputMarketingMarginSmall;
         @include responsive($checkout-media-default) {
-          float: none;
-          margin-top: 4px;
+          float: $checkoutFormInputMarketingFloatTablet;
+          margin: $checkoutFormInputMarketingMarginTablet;
         }
       }
     }

@@ -11,6 +11,7 @@
 & {
   font-size: $checkoutPageFontSize;
   margin-bottom: $checkoutPageMarginBottom;
+  text-align: left;
 
   form.submitting, .fetching {
     @include spinner();

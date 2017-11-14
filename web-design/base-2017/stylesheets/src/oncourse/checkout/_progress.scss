@@ -10,8 +10,10 @@
 
 .progress-steps ul {
   list-style: none;
-  margin-left: 0;
+  margin-left: $checkoutProgressStepMarginLeft;
+  padding-left: $checkoutProgressStepPaddingLeft;
   background: $checkoutProgressStepBackground;
+  font-size: 0;
   li {
     position: relative;
     width: $checkoutProgressStepListWidth;
@@ -50,12 +52,56 @@
         &:hover, &:focus {
           color: $checkoutProgressStepListLinkColorActive;
         }
+        &::before {
+          content: $checkoutProgressStepArrowBeforeContent;
+          position: absolute;
+          width: $checkoutProgressStepArrowNextLinkActiveAfterWidth;
+          border: $checkoutProgressStepArrowNextLinkAfterWidth solid $checkoutProgressStepListLinkBackgroundActive;
+          border-left: $checkoutProgressStepArrowNextLinkAfterWidth solid transparent;
+          top: $checkoutProgressStepArrowNextLinkAfterPositionTop;
+          left: $checkoutProgressStepArrowNextLinkAfterPositionLeft;
+
+          @include responsive($checkout-media-default) {
+            border-width: $checkoutProgressStepArrowNextLinkAfterWidthMedia;
+            top: $checkoutProgressStepArrowNextLinkAfterPositionTopMedia;
+            left: $checkoutProgressStepArrowNextLinkAfterPositionLeftMedia;
+          }
+        }
       }
       &::after {
         border-left-color: $checkoutProgressStepListLinkBackgroundActive;
       }
+      &.last {
+        @if $checkoutProgressStepArrowBeforeContent != none {
+          background: $checkoutProgressStepLastChildActiveBackground;
+        }
+        &::before {
+          content: $checkoutProgressStepArrowBeforeContent;
+          position: absolute;
+          width: auto;
+          border: $checkoutProgressStepArrowNextLinkAfterWidth solid $checkoutProgressStepListLinkBackgroundActive;
+          border-left: $checkoutProgressStepArrowNextLinkAfterWidth solid transparent;
+          top: $checkoutProgressStepArrowNextLinkAfterPositionTop;
+          left: $checkoutProgressStepArrowNextLinkAfterPositionLeft;
+
+          right: $checkoutProgressStepArrowNextLinkAfterPositionRight;
+
+          @include responsive($checkout-media-default) {
+            border-width: $checkoutProgressStepArrowNextLinkAfterWidthMedia;
+            top: $checkoutProgressStepArrowNextLinkAfterPositionTopMedia;
+            left: $checkoutProgressStepArrowNextLinkAfterPositionLeftMedia;
+
+            right: $checkoutProgressStepArrowNextLinkAfterPositionRightMedia;
+          }
+        }
+      }
     }
 
+    &:first-child {
+      a::before {
+        content: none;
+      }
+    }
     &:last-child {
       margin: 0;
       padding: 0;
@@ -74,6 +120,7 @@
     }
     a {
       display: block;
+      position: relative;
       padding: $checkoutProgressStepListPadding;
       color: $checkoutProgressStepListColor;
       text-decoration: none;
@@ -97,8 +144,7 @@
       right: $checkoutProgressStepArrowBeforePositionRight;
 
       @include responsive($checkout-media-default) {
-        @include arrow('left', $checkoutProgressStepArrowBeforeWidthMedia, $checkoutProgressStepArrowBeforeColor);
-        content: $checkoutProgressStepArrowBeforeContent;
+        border-width: $checkoutProgressStepArrowBeforeWidthMedia;
         top: $checkoutProgressStepArrowBeforePositionTopMedia;
         right: $checkoutProgressStepArrowBeforePositionRightMedia;
       }
@@ -110,8 +156,7 @@
       right: $checkoutProgressStepArrowAfterPositionRight;
 
       @include responsive($checkout-media-default) {
-        @include arrow('left', $checkoutProgressStepArrowAfterWidthMedia, $checkoutProgressStepArrowAfterColor);
-        content: $checkoutProgressStepArrowAfterContent;
+        border-width: $checkoutProgressStepArrowAfterWidthMedia;
         top: $checkoutProgressStepArrowAfterPositionTopMedia;
         right: $checkoutProgressStepArrowAfterPositionRightMedia;
       }

@@ -65,17 +65,17 @@
     .enrolmentItem {
       margin-bottom: $checkoutPageEnrolItemMarginBottom;
       .enrolmentInfo {
-        padding-left: 35px;
+        padding-left: $checkoutPageEnrolInfoPaddingLeft;
         br {
           display: none;
         }
         .enrolmentSelect {
-          margin-right: 6px;
+          margin-right: $checkoutPageEnrolInfoSelectMarginRight;
           vertical-align: top;
-          margin-top: 1px;
-          position: absolute;
-          left: -19px;
-          top: 0;
+          margin-top: $checkoutPageEnrolInfoSelectMarginTop;
+          position: $checkoutPageEnrolInfoSelectPosition;
+          left: $checkoutPageEnrolInfoSelectPositionLeft;
+          top: $checkoutPageEnrolInfoSelectPositionTop;
         }
         label {
           width: 100%;

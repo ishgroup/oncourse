@@ -18,7 +18,7 @@
   padding: $checkoutSubmitButtonPadding;
   text-align: $checkoutSubmitButtonTextAlign;
   font-size: $checkoutSubmitButtonFontSize;
-  vertical-align: middle;
+  vertical-align: $checkoutSubmitButtonVerticalAlign;
   display: $checkoutSubmitButtonDisplay;
   line-height: $checkoutSubmitButtonLineHeight;
   margin: $checkoutSubmitButtonMargin;
@@ -46,9 +46,10 @@
   background: $checkoutCancelButtonBackground;
   font-weight: $checkoutCancelButtonFontWeight;
   text-transform: $checkoutCancelButtonTextTransform;
-  margin-bottom: $checkoutCancelButtonMarginBottom;
   color: $checkoutCancelButtonColor;
+  padding: $checkoutCancelButtonPadding;
   padding-left: $checkoutCancelButtonPaddingLeft;
+  margin: $checkoutCancelButtonMargin;
   &:hover, &:focus, &:active {
     background: $checkoutCancelButtonBackgroundHover;
     color: $checkoutCancelButtonColorHover;
@@ -60,7 +61,7 @@
   margin: 0;
   padding: 0;
   display: block;
-  text-align: right;
+  text-align: $checkoutFormControlsTextAlign;
 
   input#submitContact {
     padding: $checkoutSubmitContactPadding;
