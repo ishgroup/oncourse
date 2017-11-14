@@ -98,7 +98,7 @@ public class TapestryFormatUtils {
         String formatted = StringUtils.EMPTY;
         try {
             NumberFormat format = new DecimalFormat(pattern);
-            formatted = format.format(money);
+            formatted = format.format(money.toBigDecimal());
         } catch (Exception ex) {
             logger.error(
                     String.format("in Tapestry component during money formatting (money: %s; pattern: %s).", money, pattern),
