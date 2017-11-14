@@ -3,19 +3,15 @@ package ish.oncourse.willow.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.math.Money
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.Application
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.services.application.FindOfferedApplication
 import ish.oncourse.services.course.GetCurrentClasses
-import ish.oncourse.services.course.GetEnrollableClasses
 import ish.oncourse.services.courseclass.CheckClassAge
-import ish.oncourse.services.courseclass.ClassAge
-import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
-import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.checkout.functions.BuildClassPrice
-import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.model.web.*
 import ish.oncourse.willow.service.CourseClassesApi
@@ -25,10 +21,7 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.apache.cayenne.query.SelectById
 
-import java.time.ZoneId
 import java.time.ZoneOffset
-import java.time.ZonedDateTime
-import java.time.temporal.TemporalAccessor
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 

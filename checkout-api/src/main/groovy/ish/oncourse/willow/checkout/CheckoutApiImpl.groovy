@@ -3,11 +3,10 @@ package ish.oncourse.willow.checkout
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import ish.math.Money
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.WebSite
-import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
 import ish.oncourse.willow.checkout.functions.ProcessClasses

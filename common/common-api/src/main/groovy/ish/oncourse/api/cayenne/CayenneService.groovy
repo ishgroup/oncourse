@@ -1,4 +1,4 @@
-package ish.oncourse.willow.cayenne
+package ish.oncourse.api.cayenne
 
 import com.google.inject.Inject
 import com.google.inject.Singleton

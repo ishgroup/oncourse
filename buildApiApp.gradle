@@ -1,54 +1,6 @@
 apply plugin: 'application'
-apply plugin: 'io.spring.dependency-management'
-
-ext {
-    bootiqueVersion = "0.23"
-}
-
-dependencyManagement {
-    imports {
-        mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
-    }
-}
 
 dependencies {
-    compile (project(':common:common-functions')) {
-        exclude group: 'org.apache.logging.log4j'
-    }
-
-    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-
-    //cxf
-    compile 'org.apache.cxf:cxf-core:3.1.10'
-    compile 'org.apache.cxf:cxf-rt-frontend-jaxrs:3.1.10'
-    compile 'org.apache.cxf:cxf-rt-transports-http-jetty:3.1.10'
-    compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7'
-
-    //bean validation
-    compile 'javax.validation:validation-api:1.1.0.Final'
-    compile 'org.apache.bval:org.apache.bval.bundle:1.1.2'
-
-    //bootique
-    compile 'io.bootique:bootique'
-    compile 'io.bootique.jetty:bootique-jetty'
-    compile 'io.bootique.jcache:bootique-jcache'
-    compile 'io.bootique.cayenne:bootique-cayenne'
-
-    //cayenne
-    compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
-    compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
-    compile "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"
-    compile "org.apache.cayenne:cayenne-di:$cayenneVersion"
-
-    //cache
-    compile 'org.ehcache:ehcache:3.3.1'
-
-    //search
-    compile group: 'org.apache.solr', name: 'solr-solrj', version: solrVersion
-
-    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
-
     testCompile 'org.apache.commons:commons-dbcp2:2.1.1'
     testCompile 'org.apache.commons:commons-pool2:2.4.2'
     testCompile project(':common:test-functions')

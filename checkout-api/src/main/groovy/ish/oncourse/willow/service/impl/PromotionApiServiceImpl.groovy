@@ -2,15 +2,13 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
-import ish.oncourse.model.Discount
-import ish.oncourse.willow.cayenne.CayenneService
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.willow.functions.promo.GetPromoByCode
 import ish.oncourse.willow.functions.promo.SearchByCode
 import ish.oncourse.willow.model.checkout.CodeResponse
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.web.Promotion
 import ish.oncourse.willow.service.PromotionApi
-import org.apache.cayenne.query.ObjectSelect
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response

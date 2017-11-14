@@ -1,11 +1,11 @@
 package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.site.GetWebSite
 import ish.oncourse.willow.filters.RequestFilter
-import ish.oncourse.willow.cayenne.CayenneService
 
 class CollegeService {
 

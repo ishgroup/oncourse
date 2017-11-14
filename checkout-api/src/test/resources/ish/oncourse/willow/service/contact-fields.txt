@@ -294,12 +294,21 @@ class ContactFields {
             name: Favorite car maker22
             description: Favorite car maker
             mandatory: true
-            dataType: BOOLEAN
-            enumType: null
+            dataType: ENUM
+            enumType: YesNoOptions
             value: null
             itemValue: null
             defaultValue: BMW
-            enumItems: []
+            enumItems: [class Item {
+                key: 0
+                value: Not stated
+            }, class Item {
+                key: 1
+                value: Yes
+            }, class Item {
+                key: 2
+                value: No
+            }]
             ordering: 22
         }, class Field {
             id: 23

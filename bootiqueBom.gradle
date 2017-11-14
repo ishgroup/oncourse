@@ -1,0 +1,21 @@
+apply plugin: 'io.spring.dependency-management'
+
+ext {
+    bootiqueVersion = "0.23"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("io.bootique.bom:bootique-bom:$bootiqueVersion")
+    }
+}
+
+dependencies {
+    //bootique
+    compile 'io.bootique:bootique'
+    compile 'io.bootique.jetty:bootique-jetty'
+    compile 'io.bootique.jcache:bootique-jcache'
+    compile 'io.bootique.cayenne:bootique-cayenne'
+}
+
+

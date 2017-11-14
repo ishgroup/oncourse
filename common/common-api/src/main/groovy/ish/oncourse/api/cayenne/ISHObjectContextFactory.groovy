@@ -1,4 +1,4 @@
-package ish.oncourse.willow.cayenne
+package ish.oncourse.api.cayenne
 
 import ish.oncourse.services.persistence.ISHObjectContext
 import org.apache.cayenne.DataChannel

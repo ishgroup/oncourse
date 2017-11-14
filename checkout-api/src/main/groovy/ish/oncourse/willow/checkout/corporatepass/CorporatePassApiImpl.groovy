@@ -1,16 +1,11 @@
 package ish.oncourse.willow.checkout.corporatepass
 
 import com.google.inject.Inject
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
-import ish.oncourse.model.CourseClass
-import ish.oncourse.model.Product
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.IsCorporatePassEnabled
-import ish.oncourse.willow.cayenne.CayenneService
-import ish.oncourse.willow.checkout.functions.GetCourseClass
-import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
-import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.corporatepass.CorporatePass
 import ish.oncourse.willow.model.checkout.corporatepass.GetCorporatePassRequest
 import ish.oncourse.willow.model.checkout.corporatepass.MakeCorporatePassRequest
@@ -18,7 +13,6 @@ import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.service.CorporatePassApi
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

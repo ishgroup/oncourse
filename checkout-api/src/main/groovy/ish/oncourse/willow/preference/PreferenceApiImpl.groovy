@@ -1,12 +1,12 @@
 package ish.oncourse.willow.preference
 
 import com.google.inject.Inject
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.services.preference.GetEnrolSuccessUrl
 import ish.oncourse.services.preference.GetFeatureEnrolmentDisclosure
 import ish.oncourse.services.preference.GetRefundPolicyUrl
 import ish.oncourse.services.preference.IsCorporatePassEnabled
-import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.common.Preferences
 import ish.oncourse.willow.service.PreferenceApi
 import ish.oncourse.willow.service.impl.CollegeService

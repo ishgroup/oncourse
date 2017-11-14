@@ -1,0 +1,41 @@
+apply from: "$rootDir/bootiqueBom.gradle"
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+
+compileGroovy.options.encoding = 'UTF-8'
+compileTestGroovy.options.encoding = 'UTF-8'
+
+dependencies {
+    compile(project(':common:common-functions')) {
+        exclude group: 'org.apache.logging.log4j'
+    }
+
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+
+//cxf
+    compile 'org.apache.cxf:cxf-core:3.1.10'
+    compile 'org.apache.cxf:cxf-rt-frontend-jaxrs:3.1.10'
+    compile 'org.apache.cxf:cxf-rt-transports-http-jetty:3.1.10'
+    compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.7'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.7'
+
+//bean validation
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'org.apache.bval:org.apache.bval.bundle:1.1.2'
+
+//cayenne
+    compile "org.apache.cayenne:cayenne-server:$cayenneVersion"
+    compile "org.apache.cayenne:cayenne-lifecycle:$cayenneVersion"
+    compile "org.apache.cayenne:cayenne-cache-invalidation:$cayenneVersion"
+    compile "org.apache.cayenne:cayenne-di:$cayenneVersion"
+
+//cache
+    compile 'org.ehcache:ehcache:3.3.1'
+
+//search
+    compile group: 'org.apache.solr', name: 'solr-solrj', version: solrVersion
+
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: mariadbVersion
+}

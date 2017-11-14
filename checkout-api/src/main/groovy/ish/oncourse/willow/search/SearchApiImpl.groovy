@@ -2,13 +2,11 @@ package ish.oncourse.willow.search
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.Country
 import ish.oncourse.model.Language
-import ish.oncourse.services.preference.GetAutoCompleteState
-import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.model.common.Item
 import ish.oncourse.willow.service.SearchApi
-import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 
@@ -21,7 +19,7 @@ class SearchApiImpl implements SearchApi {
     SearchService searchService
 
     @Inject
-    ContactApiServiceImpl(CayenneService cayenneService, SearchService searchService, CollegeService collegeService) {
+    SearchApiImpl(CayenneService cayenneService, SearchService searchService) {
         this.cayenneService = cayenneService
         this.searchService = searchService
     }

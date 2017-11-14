@@ -2,8 +2,8 @@ package ish.oncourse.willow.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
-import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.functions.ChangeParent
 import ish.oncourse.willow.functions.CheckParent
@@ -12,7 +12,6 @@ import ish.oncourse.willow.functions.CreateParentChildrenRelation
 import ish.oncourse.willow.functions.field.GetCompanyFields
 import ish.oncourse.willow.functions.field.GetContactFields
 import ish.oncourse.willow.functions.SubmitContactFields
-import ish.oncourse.willow.cayenne.CayenneService
 import ish.oncourse.willow.functions.concession.AddConcession
 import ish.oncourse.willow.functions.concession.GetConcessionTypes
 import ish.oncourse.willow.functions.concession.GetConcessionsAndMemberships
@@ -31,7 +30,6 @@ import ish.oncourse.willow.model.web.ContactId
 import ish.oncourse.willow.model.web.CreateContactParams
 import ish.oncourse.willow.service.ContactApi
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 import org.slf4j.Logger
