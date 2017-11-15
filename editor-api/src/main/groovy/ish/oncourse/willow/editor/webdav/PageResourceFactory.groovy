@@ -63,7 +63,7 @@ class PageResourceFactory implements ResourceFactory {
                     String content = writer.toString()
 
                     // check if there is an existing page with similar name
-                    WebNode page = WebNodeFunctions.getNodeForName(newName, requestService.request, cayenneService.sharedContext())
+                    WebNode page = WebNodeFunctions.getNodeForName(newName, requestService.request, cayenneService.newContext())
 
                     if (page) {
                         return changePage(page, newName, content)
@@ -87,14 +87,14 @@ class PageResourceFactory implements ResourceFactory {
 
     List<WebNodeResource> listPages() {
         List<WebNodeResource> pages = new ArrayList<>()
-        WebNodeFunctions.getNodes(requestService.request, cayenneService.sharedContext()).each { page ->
+        WebNodeFunctions.getNodes(requestService.request, cayenneService.newContext()).each { page ->
             pages.add(new WebNodeResource(page, cayenneService, securityManager, requestService))
         }
         return pages
     }
 
     WebNodeResource getWebNodeResource(String name) {
-        WebNode page = WebNodeFunctions.getNodeForName(name, requestService.request, cayenneService.sharedContext())
+        WebNode page = WebNodeFunctions.getNodeForName(name, requestService.request, cayenneService.newContext())
         if (page == null) {
             return null
         }
@@ -116,11 +116,10 @@ class PageResourceFactory implements ResourceFactory {
     }
 
     WebNodeResource createNewPage(String name, String content) {
-        ObjectContext sharedContext = cayenneService.sharedContext()
         ObjectContext ctx = cayenneService.newContext()
-        WebSiteVersion webSiteVersion = ctx.localObject(WebSiteVersionFunctions.getCurrentVersion(requestService.request, sharedContext))
-        WebNodeType webNodeType = ctx.localObject(WebNodeFunctions.getDefaultWebNodeType(requestService.request, sharedContext))
-        WebNode webNode = WebNodeFunctions.createNewNodeBy(webSiteVersion, webNodeType, name, content, WebNodeFunctions.getNextNodeNumber(requestService.request, sharedContext))
+        WebSiteVersion webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(requestService.request, ctx)
+        WebNodeType webNodeType = WebNodeFunctions.getDefaultWebNodeType(requestService.request, ctx)
+        WebNode webNode = WebNodeFunctions.createNewNodeBy(webSiteVersion, webNodeType, name, content, WebNodeFunctions.getNextNodeNumber(requestService.request, ctx))
         ctx.commitChanges()
         return new WebNodeResource(webNode, cayenneService, securityManager, requestService)
     }

@@ -31,7 +31,7 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
 
     @Override
     void sendContent(OutputStream out, Range range, Map<String, String> params, String contentType) throws IOException, NotAuthorizedException, BadRequestException, NotFoundException {
-        List<WebUrlAlias> urlAliases = WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.sharedContext())
+        List<WebUrlAlias> urlAliases = WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.newContext())
         urlAliases.each { urlAlias -> out.write("${urlAlias.urlPath}\t${urlAlias.redirectTo}\n".bytes) }
        
     }
@@ -48,7 +48,7 @@ class RedirectsResource extends AbstractResource implements GetableResource,Prop
 
     @Override
     Long getContentLength() {
-        List<WebUrlAlias> urlAliases = WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.sharedContext())
+        List<WebUrlAlias> urlAliases = WebUrlAliasFunctions.getRedirects(requestService.request, cayenneService.newContext())
 
         StringBuilder value = new StringBuilder()
         urlAliases.each { urlAlias -> value.append("${urlAlias.urlPath}\t${ urlAlias.redirectTo}\n") }

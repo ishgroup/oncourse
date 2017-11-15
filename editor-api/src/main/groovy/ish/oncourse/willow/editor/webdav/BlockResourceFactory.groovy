@@ -61,7 +61,7 @@ class BlockResourceFactory implements ResourceFactory {
                     String content = writer.toString()
 
                     // check if there is an existing block with similar name
-                    WebContent block = WebContentFunctions.getWebContent(requestService.request, cayenneService.sharedContext(), WebContent.NAME, newName)
+                    WebContent block = WebContentFunctions.getWebContent(requestService.request, cayenneService.newContext(), WebContent.NAME, newName)
 
                     if (block) {
                         return changeBlock(block, newName, content)
@@ -85,7 +85,7 @@ class BlockResourceFactory implements ResourceFactory {
     List<WebContentResource> listBlocks() {
         List<WebContentResource> blocks = []
         
-        WebContentFunctions.getBlocks(requestService.request, cayenneService.sharedContext()).each {
+        WebContentFunctions.getBlocks(requestService.request, cayenneService.newContext()).each {
             blocks << new WebContentResource(it, cayenneService, requestService, securityManager)
         }
 
@@ -93,7 +93,7 @@ class BlockResourceFactory implements ResourceFactory {
     }
 
     WebContentResource getBlockByName(String name) {
-        WebContent block = WebContentFunctions.getWebContent(requestService.request, cayenneService.sharedContext(), WebContent.NAME, name)
+        WebContent block = WebContentFunctions.getWebContent(requestService.request, cayenneService.newContext(), WebContent.NAME, name)
 
         if (block) {
             return new WebContentResource(block, cayenneService, requestService, securityManager)
@@ -129,7 +129,7 @@ class BlockResourceFactory implements ResourceFactory {
         visibility.regionKey = RegionKey.unassigned
         visibility.webContent = block
 
-        block.webSiteVersion = ctx.localObject(ctx.localObject(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.sharedContext())))
+        block.webSiteVersion = WebSiteVersionFunctions.getCurrentVersion(requestService.request, ctx)
 
         ctx.commitChanges()
 

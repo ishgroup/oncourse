@@ -23,28 +23,24 @@ class CayenneService implements ICayenneService {
         this.runtime.channel.entityResolver.callbackRegistry.addDefaultListener(listener)
     }
 
-    ObjectContext newContext() {
-        runtime.newContext()
+    ISHObjectContext newContext() {
+        runtime.newContext() as ISHObjectContext
     }
     
     @Override
-    ObjectContext newNonReplicatingContext() {
-        ObjectContext dc = newContext()
-        if (dc instanceof ISHObjectContext) {
-            (dc as ISHObjectContext).recordQueueingEnabled = false
-        } else {
-            throw new IllegalStateException("$ISHObjectContextFactory.name +  not installed as DataContext factory")
-        }
+    ISHObjectContext newNonReplicatingContext() {
+        ISHObjectContext dc = newContext()
+        dc.recordQueueingEnabled = false
         return dc
     }
 
     @Override
-    ObjectContext newContext(DataChannel parentChannel) {
+    ISHObjectContext newContext(DataChannel parentChannel) {
         throw new UnsupportedOperationException()
     }
 
     @Override
-    ObjectContext sharedContext() {
+    ISHObjectContext sharedContext() {
         throw new UnsupportedOperationException()
     }
 

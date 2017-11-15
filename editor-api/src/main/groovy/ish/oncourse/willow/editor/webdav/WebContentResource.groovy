@@ -95,7 +95,7 @@ class WebContentResource  extends AbstractResource implements CopyableResource, 
 
         ObjectContext context = cayenneService.newContext()
 
-        WebContent existingBlock = WebContentFunctions.getBlockByName(requestService.request, cayenneService.sharedContext(), newName)
+        WebContent existingBlock = WebContentFunctions.getBlockByName(requestService.request, context, newName)
 
         // if there is no existing record with such name and we are not renaming current record to the same name
         // then just change name of the block
@@ -105,7 +105,7 @@ class WebContentResource  extends AbstractResource implements CopyableResource, 
             WebContent localBlock = context.localObject(webContent)
             localBlock.name = newName
         } else {
-            WebContent localBlock = context.localObject(existingBlock)
+            WebContent localBlock = existingBlock
             localBlock.contentTextile = webContent.contentTextile
             localBlock.content = webContent.content
             context.deleteObjects(context.localObject(webContent))

@@ -71,7 +71,7 @@ class StaticResourceFactory  implements ResourceFactory {
 
     @Override
     Resource getResource(String host, String path) throws NotAuthorizedException, BadRequestException {
-        String siteKey = WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.sharedContext()).siteKey
+        String siteKey = WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.newContext()).siteKey
         String rootDirName = "$sRoot/$siteKey"
 
         fsResourceFactory.root = new File(rootDirName)
@@ -102,7 +102,7 @@ class StaticResourceFactory  implements ResourceFactory {
                     EmailBuilder emailBuilder = GetEmailBuilder.valueOf(compiler.errorEmailTemplate,
                             userEmail,
                             userEmail,
-                            WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.sharedContext()).siteKey,
+                            WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.newContext()).siteKey,
                             file.absolutePath,
                             compiler.errors.join('\n')).get()
                     SendEmail.valueOf(emailBuilder, true).send()
@@ -115,7 +115,7 @@ class StaticResourceFactory  implements ResourceFactory {
     
     private ICompiler getCompiler(File file) {
         if (isJavaScript(file)) {
-            return JSCompiler.valueOf(sRoot, defaultJsStackPath, WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.sharedContext()))
+            return JSCompiler.valueOf(sRoot, defaultJsStackPath, WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.newContext()))
         } else {
             return null
         }

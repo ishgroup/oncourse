@@ -103,7 +103,7 @@ class WebNodeResource  extends AbstractResource implements CopyableResource, Del
 
         ObjectContext context = cayenneService.newContext()
 
-        WebNode existingNode = WebNodeFunctions.getNodeForName(newName, requestService.request, cayenneService.sharedContext())
+        WebNode existingNode = WebNodeFunctions.getNodeForName(newName, requestService.request, context)
 
         // if there is no existing record with such name and we are not renaming current record to the same name
         // then just change name of the page
@@ -113,8 +113,7 @@ class WebNodeResource  extends AbstractResource implements CopyableResource, Del
             WebNode localNode = context.localObject(webNode)
             localNode.name = newName
         } else {
-            WebNode localNode = context.localObject(existingNode)
-            WebContent webContent = localNode.webContentVisibility[0].webContent
+            WebContent webContent = existingNode.webContentVisibility[0].webContent
 
             webContent.contentTextile = getWebContent().contentTextile
             webContent.content = getWebContent().content

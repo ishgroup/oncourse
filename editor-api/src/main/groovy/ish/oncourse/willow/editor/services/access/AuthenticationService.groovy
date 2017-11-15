@@ -80,12 +80,12 @@ class AuthenticationService {
     }
 
     private AuthenticationStatus authenticateByEmail(String email, String password) {
-
-        College college = WebSiteFunctions.getCurrentCollege(requestService.request, cayenneService.sharedContext())
+        ObjectContext context = cayenneService.newContext()
+        College college = WebSiteFunctions.getCurrentCollege(requestService.request,context)
 
         List<SystemUser> systemUsers = (ObjectSelect.query(SystemUser).
                 where(SystemUser.COLLEGE.eq(college)) & SystemUser.EMAIL.eq(email)).
-                select(cayenneService.newContext())
+                select(context)
 
         if (systemUsers.empty) {
             return NO_MATCHING_USER
@@ -106,13 +106,14 @@ class AuthenticationService {
 
     private AuthenticationStatus authenticateByLogin(String login, String password) {
 
-        College college = WebSiteFunctions.getCurrentCollege(requestService.request, cayenneService.sharedContext())
+        ObjectContext context = cayenneService.newContext()
+        College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
 
 
         List<SystemUser> systemUsers = (ObjectSelect.query(SystemUser).
                 where(SystemUser.COLLEGE.eq(college))
                 & SystemUser.LOGIN.eq(login)).
-                select(cayenneService.newContext())
+                select(context)
 
         if (systemUsers.empty) {
             return NO_MATCHING_USER
@@ -144,7 +145,7 @@ class AuthenticationService {
     WillowUser getUser() {
         Cookie sessionCookie = requestService.request.cookies.find {it.name == 'SESSIONID'}
         if (sessionCookie && sessionCookie.value.split('-')[0] == WillowUser.simpleName) {
-            SelectById.query(WillowUser, sessionCookie.value.split('-')[1]).selectOne(cayenneService.sharedContext())
+            SelectById.query(WillowUser, sessionCookie.value.split('-')[1]).selectOne(cayenneService.newContext())
         } else {
             return null
         }
@@ -154,7 +155,7 @@ class AuthenticationService {
         Cookie sessionCookie = requestService.request.cookies.find {it.name == 'SESSIONID'}
 
         if (sessionCookie && sessionCookie.value.split('-')[0] == SystemUser.simpleName) {
-            ObjectContext context = cayenneService.sharedContext()
+            ObjectContext context = cayenneService.newContext()
             SystemUser user = SelectById.query(SystemUser, sessionCookie.value.split('-')[1])
                     .selectOne(context)
             if (user && user.college == WebSiteFunctions.getCurrentCollege(requestService.request, context)) {

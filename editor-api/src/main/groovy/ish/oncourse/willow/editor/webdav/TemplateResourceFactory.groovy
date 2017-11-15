@@ -116,7 +116,7 @@ class TemplateResourceFactory implements ResourceFactory {
         ObjectContext context = cayenneService.newContext()
 
         List<WebSiteLayout> layouts = ObjectSelect.query(WebSiteLayout.class).
-                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.sharedContext()))).
+                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.newContext()))).
                 select(context)
 
         List<DirectoryResource> directoryResources = []
@@ -150,14 +150,14 @@ class TemplateResourceFactory implements ResourceFactory {
         ObjectContext context = cayenneService.newContext()
 
         return ObjectSelect.query(WebSiteLayout).
-                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.sharedContext()))).
+                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.newContext()))).
                 and(WebSiteLayout.LAYOUT_KEY.eq(name)).
                 selectOne(context)
     }
 
     private WebSiteLayout createLayout(String name) {
         ObjectContext context = cayenneService.newContext()
-        WebSiteVersion siteVersion = context.localObject(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.sharedContext()))
+        WebSiteVersion siteVersion = WebSiteVersionFunctions.getCurrentVersion(requestService.request, context)
         WebSiteLayout layout = context.newObject(WebSiteLayout)
         layout.layoutKey = name
         layout.webSiteVersion = siteVersion
