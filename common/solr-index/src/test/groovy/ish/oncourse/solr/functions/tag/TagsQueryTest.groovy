@@ -11,6 +11,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static ish.oncourse.test.functions.Functions.createRuntime
+import static org.junit.Assert.*
 
 /**
  * User: akoiro
@@ -34,25 +35,21 @@ class TagsQueryTest {
 
     @Test
     void test() {
-        List<Tag> allTags = new ArrayList<>()
         CollegeContext collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
-        allTags.add(collegeContext.tag("Tag1"))
-        allTags.add(collegeContext.tag("Tag2"))
-        allTags.add(collegeContext.tag("Tag11", false))
-        allTags.add(collegeContext.tag("Tag12"))
 
-        collegeContext.addTag("Tag1", "Tag11", "Tag12")
+        collegeContext.addTag("Tag1", "Tag11Invisible", "Tag12")
         collegeContext.course("Course1")
         collegeContext.tagCourse("COURSE1", "Tag2")
-        collegeContext.tagCourse("COURSE1", "Tag11")
+        collegeContext.tagCourse("COURSE1", "Tag11Invisible")
         collegeContext.tagCourse("COURSE1", "Tag12")
 
-        List<Tag> expectedTags = allTags.findAll {t -> t.name == "Tag2" || t.name == "Tag12" }
         List<Tag> actualTags = Functions.TagsQuery.select(serverRuntime.newContext())
 
-        Assert.assertTrue(expectedTags.size() == actualTags.size())
-        for (int i = 0; i < expectedTags.size(); i++)
-            Assert.assertTrue(expectedTags.get(i).name.equals(actualTags.get(i).name))
+        assertEquals(2, actualTags.size())
+        assertNotNull(actualTags.find {tag -> (tag.name == "Tag2") })
+        assertNotNull(actualTags.find {tag -> (tag.name == "Tag12") })
+        assertNull("only VISIBLE tags can be selected", actualTags.find {tag -> (tag.name == "Tag11Invisible") })
+        assertNull("only tags, related to course, can be selected", actualTags.find {tag -> (tag.name == "Tag1") })
     }
 
 

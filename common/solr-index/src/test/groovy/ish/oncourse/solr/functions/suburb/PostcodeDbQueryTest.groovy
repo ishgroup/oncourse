@@ -30,16 +30,11 @@ class PostcodeDbQueryTest {
 
     @Test
     void test() {
-        List<PostcodeDb> expectedList = new ArrayList<>()
-        expectedList.add(postcodeDbContext.postcodeDb(1))
-        expectedList.add(postcodeDbContext.postcodeDb(3))
-        expectedList.add(postcodeDbContext.postcodeDb(2))
-
-        List<PostcodeDb> actualList = Functions.PostcodesQuery.select(serverRuntime.newContext())
-        Assert.assertTrue(expectedList.size() == actualList.size())
-        Assert.assertTrue(expectedList.get(0).postcode == actualList.get(0).postcode)
-        Assert.assertTrue(expectedList.get(1).postcode == actualList.get(2).postcode)
-        Assert.assertTrue(expectedList.get(2).postcode == actualList.get(1).postcode)
+        List<PostcodeDb> actualOrderedList = Functions.PostcodesQuery.select(serverRuntime.newContext())
+        Assert.assertEquals(3, actualOrderedList.size())
+        for (int i = 1; i < actualOrderedList.size(); i++) {
+            Assert.assertTrue("query returns tags ordered by postcode in asc, each item's postcode must be not bigger that next one", actualOrderedList.get(i).postcode >= actualOrderedList.get(i-1).postcode)
+        }
     }
 
     @After
