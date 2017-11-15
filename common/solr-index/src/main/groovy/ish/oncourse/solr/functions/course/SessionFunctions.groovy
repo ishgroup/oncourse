@@ -15,12 +15,21 @@ import java.time.ZonedDateTime
  */
 class SessionFunctions {
 
+    private static final String DEFAULT_IME_ZONE = 'Australia/Sydney'
     private static final int MORNING_TIME = 6
     private static final int EVENING_TIME = 17
 
+    private static enum DayType {
+        weekday, weekend
+    }
+
+    private static enum DayTime {
+        daytime, evening
+    }
+
     static ZonedDateTime convertToDateTime(Date date, String timeZone) {
         Instant instant = date.toInstant()
-        ZonedDateTime dtSydney = ZonedDateTime.ofInstant(instant, ZoneId.of('Australia/Sydney'))
+        ZonedDateTime dtSydney = ZonedDateTime.ofInstant(instant, ZoneId.of(DEFAULT_IME_ZONE))
         return timeZone == null ? dtSydney : dtSydney.withZoneSameInstant(ZoneId.of(timeZone))
     }
 
@@ -36,10 +45,10 @@ class SessionFunctions {
             case DayOfWeek.WEDNESDAY:
             case DayOfWeek.THURSDAY:
             case DayOfWeek.FRIDAY:
-                return "weekday"
+                return DayType.weekday.name()
             case DayOfWeek.SATURDAY:
             case DayOfWeek.SUNDAY:
-                return "weekend"
+                return DayType.weekend.name()
             default:
                 throw new IllegalAccessException()
         }
@@ -47,7 +56,7 @@ class SessionFunctions {
 
     static String getDayTime(Session session) {
         int time = convertToDateTime(session.startDate, session.timeZone).hour
-        return time > MORNING_TIME && time < EVENING_TIME ? "daytime" : "evening"
+        return time > MORNING_TIME && time < EVENING_TIME ? DayTime.daytime.name() : DayTime.evening.name()
     }
 
 
