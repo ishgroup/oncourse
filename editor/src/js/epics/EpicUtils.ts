@@ -6,6 +6,7 @@ import "rxjs";
 import {commonErrorToValidationError, toValidationError} from "../common/utils/ErrorUtils";
 import {AxiosResponse} from "axios";
 import {IAction} from "../actions/IshAction";
+import {UNHANDLED_ERROR} from "../common/actions";
 
 
 export interface Request<V, S> {
@@ -29,13 +30,18 @@ export const showCommonError = (error: any): { type: string, payload: any } => {
 
 export const ProcessError = (data: AxiosResponse): { type: string, payload?: any }[] => {
   console.log(data);
-  return [error({
-    // uid: 'once-please', // you can specify your own uid if required
-    title: 'Save failed',
-    message: (data.data && data.data.message) || 'Something went wrong',
-    position: 'tr',
-    autoDismiss: 3,
-  })];
+  return [
+    {
+      type: UNHANDLED_ERROR,
+    },
+    error({
+      // uid: 'once-please', // you can specify your own uid if required
+      title: 'Save failed',
+      message: (data.data && data.data.message) || 'Something went wrong',
+      position: 'tr',
+      autoDismiss: 3,
+    })
+  ];
   // return [{type: 'SHOW_MESSAGES', payload: toValidationError(data)}];
 };
 

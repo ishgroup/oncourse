@@ -6,6 +6,7 @@ import {
   DELETE_THEME_FULFILLED, DELETE_THEME_REQUEST, GET_LAYOUTS_FULFILLED, GET_LAYOUTS_REQUEST,
   GET_THEMES_FULFILLED, GET_THEMES_REQUEST, SAVE_THEME_FULFILLED, SAVE_THEME_REQUEST, UPDATE_THEME_STATE,
 } from "../actions";
+import {UNHANDLED_ERROR} from "../../../../../common/actions";
 
 export const themesReducer = (state: ThemesState = new ThemesState(), action: IAction<any>): ThemesState => {
   switch (action.type) {
@@ -18,6 +19,12 @@ export const themesReducer = (state: ThemesState = new ThemesState(), action: IA
       return {
         ...state,
         fetching: true,
+      };
+
+    case UNHANDLED_ERROR:
+      return {
+        ...state,
+        fetching: false,
       };
 
     case GET_THEMES_FULFILLED:

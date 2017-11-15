@@ -4,6 +4,7 @@ import {
   CHANGE_MENU_TREE, GET_MENU_ITEMS_FULFILLED, GET_MENU_ITEMS_REQUEST, SAVE_MENU_TREE_FULFILLED,
   SAVE_MENU_TREE_REQUEST
 } from "../actions";
+import {UNHANDLED_ERROR} from "../../../../../common/actions";
 
 export const menuReducer = (state: MenuState = new MenuState(), action: IAction<any>): MenuState => {
   switch (action.type) {
@@ -15,6 +16,12 @@ export const menuReducer = (state: MenuState = new MenuState(), action: IAction<
         fetching: true,
       };
     }
+
+    case UNHANDLED_ERROR:
+      return {
+        ...state,
+        fetching: false,
+      };
 
     case SAVE_MENU_TREE_FULFILLED: {
       return {

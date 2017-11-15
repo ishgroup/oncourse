@@ -4,6 +4,7 @@ import {
   GET_CHECKOUT_SETTINGS_FULFILLED, GET_CHECKOUT_SETTINGS_REQUEST, SET_CHECKOUT_SETTINGS_FULFILLED,
   SET_CHECKOUT_SETTINGS_REQUEST,
 } from "../actions";
+import {UNHANDLED_ERROR} from "../../../../../common/actions";
 
 export const checkoutSettingsReducer = (state: CheckoutSettingsState = new CheckoutSettingsState(), action: IAction<any>): CheckoutSettingsState => {
   switch (action.type) {
@@ -13,6 +14,12 @@ export const checkoutSettingsReducer = (state: CheckoutSettingsState = new Check
       return {
         ...state,
         fetching: true,
+      };
+
+    case UNHANDLED_ERROR:
+      return {
+        ...state,
+        fetching: false,
       };
 
     case GET_CHECKOUT_SETTINGS_FULFILLED:

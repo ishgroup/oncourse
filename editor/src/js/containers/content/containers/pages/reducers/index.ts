@@ -5,6 +5,7 @@ import {
   DELETE_PAGE_FULFILLED, DELETE_PAGE_REQUEST, GET_PAGE_RENDER_FULFILLED, GET_PAGE_RENDER_REQUEST,
   GET_PAGES_FULFILLED, GET_PAGES_REQUEST, SAVE_PAGE_FULFILLED, SAVE_PAGE_REQUEST, TOGGLE_EDIT_MODE,
 } from "../actions";
+import {UNHANDLED_ERROR} from "../../../../../common/actions";
 
 export const pageReducer = (state: PagesState = new PagesState(), action: IAction<any>): PagesState => {
   switch (action.type) {
@@ -23,6 +24,12 @@ export const pageReducer = (state: PagesState = new PagesState(), action: IActio
     case ADD_PAGE_REQUEST: {
       return {...state, fetching: true};
     }
+
+    case UNHANDLED_ERROR:
+      return {
+        ...state,
+        fetching: false,
+      };
 
     case SAVE_PAGE_FULFILLED: {
       const {id, ...props} = action.payload;

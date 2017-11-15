@@ -6,6 +6,7 @@ import {
   DELETE_BLOCK_FULFILLED, DELETE_BLOCK_REQUEST,
   GET_BLOCKS_FULFILLED, GET_BLOCKS_REQUEST, SAVE_BLOCK_FULFILLED, SAVE_BLOCK_REQUEST,
 } from "../actions";
+import {UNHANDLED_ERROR} from "../../../../../common/actions";
 
 export const blockReducer = (state: BlocksState = new BlocksState(), action: IAction<any>): BlocksState => {
   switch (action.type) {
@@ -19,6 +20,12 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
         fetching: true,
       };
     }
+
+    case UNHANDLED_ERROR:
+      return {
+        ...state,
+        fetching: false,
+      };
 
     case GET_BLOCKS_FULFILLED:
       return {
