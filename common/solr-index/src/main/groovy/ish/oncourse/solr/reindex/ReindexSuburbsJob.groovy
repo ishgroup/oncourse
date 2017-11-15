@@ -28,6 +28,7 @@ class ReindexSuburbsJob implements IJob {
 
     @Override
     void run() {
-        getSolrSuburbs(objectContext).each { solrClient.addBean(it) }
+        getSolrSuburbs(objectContext).subscribe({ solrClient.addBean(it) })
+        solrClient.commit()
     }
 }

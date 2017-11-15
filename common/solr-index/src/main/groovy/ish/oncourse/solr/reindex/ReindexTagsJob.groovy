@@ -29,6 +29,7 @@ class ReindexTagsJob implements IJob {
 
     @Override
     void run() {
-        getSolrTags(objectContext).each { solrClient.addBean(it) }
+        getSolrTags(objectContext).subscribe({ solrClient.addBean(it) })
+        solrClient.commit()
     }
 }
