@@ -8,7 +8,7 @@ export function pageApiMock() {
   ));
 
   this.api.onGet(API.GET_PAGE_BY_URL).reply(config => {
-    const url = config.params.searchText;
+    const url = config.params.url;
     const page = this.db.getPageByUrl(url);
 
     return promiseResolve(
@@ -49,10 +49,10 @@ export function pageApiMock() {
     );
   });
 
-  this.api.onGet(API.GET_PAGE_RENDER).reply(config => {
-    const id = config.params.searchText;
+  // this.api.onGet(/getPageRender\/\d+/).reply(config => {
+  this.api.onGet(new RegExp(`${API.GET_PAGE_RENDER.replace('/','')}/\\d+`)).reply(config => {
+    const id = Number(config.url.split('/')[1]);
     const html = this.db.getPageRender(id);
-
     return promiseResolve(
       config,
       html,

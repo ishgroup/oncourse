@@ -10,11 +10,12 @@ export class PageApi {
   }
 
   getPageByUrl(url): Promise<Page> {
-    return this.http.GET(API.GET_PAGE_BY_URL, {params: {searchText: url}});
+    return this.http.GET(API.GET_PAGE_BY_URL, {params: {url: url}});
   }
 
   savePage(payload: SavePageRequest): Promise<any> {
     return this.http.POST(API.SAVE_PAGE, payload);
+
   }
 
   addPage(): Promise<any> {
@@ -26,7 +27,7 @@ export class PageApi {
   }
 
   getPageRender(request): Promise<any> {
-    return this.http.GET(API.GET_PAGE_RENDER, {params: {searchText: request.id}});
+    return this.http.GET(`${API.GET_PAGE_RENDER}/${request.id}`);
   }
 
 }
