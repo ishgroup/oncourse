@@ -30,6 +30,10 @@ class PostcodeDbQueryTest {
 
     @Test
     void test() {
+        postcodeDbContext.postcodeDb(1)
+        postcodeDbContext.postcodeDb(3)
+        postcodeDbContext.postcodeDb(2)
+
         List<PostcodeDb> actualOrderedList = Functions.PostcodesQuery.select(serverRuntime.newContext())
         Assert.assertEquals(3, actualOrderedList.size())
         for (int i = 1; i < actualOrderedList.size(); i++) {
