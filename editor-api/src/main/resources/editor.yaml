@@ -108,7 +108,7 @@ paths:
       summary: Get pages
       description: Get pages
       tags:
-        - Pages
+        - Page
       responses:
         '200':
           description: response with array of pages
@@ -126,7 +126,7 @@ paths:
       operationId: getPageByUrl
       description: Get page object by provided page url
       tags:
-        - Pages
+        - Page
       parameters:
         - name: pageUrl
           in: path
@@ -148,7 +148,7 @@ paths:
       operationId: getPageRender
       description: Get page rendered html by provided page id
       tags:
-        - Pages
+        - Page
       parameters:
         - name: pageId
           in: path
@@ -173,7 +173,7 @@ paths:
       operationId: savePage
       description: Save page parameters
       tags:
-        - Pages
+        - Page
       consumes:
         - application/json
       parameters:
@@ -198,7 +198,7 @@ paths:
       operationId: addPage
       description: Add new page
       tags:
-        - Pages
+        - Page
       consumes:
         - application/json
       responses:
@@ -216,7 +216,7 @@ paths:
       operationId: deletePage
       description: Remove page
       tags:
-        - Pages
+        - Page
       consumes:
         - application/json
       responses:
@@ -232,7 +232,7 @@ paths:
       operationId: getBlocks
       description: Get array of blocks
       tags:
-        - Blocks
+        - Block
       responses:
         '200':
           description: response with array of blocks
@@ -251,7 +251,7 @@ paths:
       operationId: saveBlock
       description: Save block params
       tags:
-        - Blocks
+        - Block
       consumes:
         - application/json
       parameters:
@@ -276,7 +276,7 @@ paths:
       operationId: addBlock
       description: Add new block
       tags:
-        - Blocks
+        - Block
       consumes:
         - application/json
       responses:
@@ -294,7 +294,7 @@ paths:
       operationId: deleteBlock
       description: Remove block
       tags:
-        - Blocks
+        - Block
       consumes:
         - application/json
       responses:
@@ -310,7 +310,7 @@ paths:
       operationId: getThemes
       description: Get array of themes
       tags:
-        - Themes
+        - Theme
       responses:
         '200':
           description: response with array of themes
@@ -326,7 +326,7 @@ paths:
       operationId: getLayouts
       description: Get array of layouts
       tags:
-        - Themes
+        - Theme
       responses:
         '200':
           description: response with array of layouts
@@ -343,7 +343,7 @@ paths:
       operationId: saveTheme
       description: Save theme params
       tags:
-        - Themes
+        - Theme
       consumes:
         - application/json
       parameters:
@@ -368,7 +368,7 @@ paths:
       operationId: addTheme
       description: Add new theme
       tags:
-        - Themes
+        - Theme
       consumes:
         - application/json
       responses:
@@ -386,7 +386,7 @@ paths:
       operationId: deleteTheme
       description: Remove theme
       tags:
-        - Themes
+        - Theme
       consumes:
         - application/json
       responses:
@@ -402,7 +402,7 @@ paths:
       operationId: getVersions
       description: Get array of published versions
       tags:
-        - History
+        - Publish
       responses:
         '200':
           description: response with array of published versions
@@ -421,7 +421,7 @@ paths:
       operationId: setVersion
       description: Change current published version
       tags:
-        - History
+        - Publish
       consumes:
         - application/json
       parameters:
@@ -448,7 +448,7 @@ paths:
       operationId: publish
       description: Publish current draft changes to live site
       tags:
-        - History
+        - Publish
       consumes:
         - application/json
       responses:
@@ -801,8 +801,6 @@ definitions:
             type: boolean
           url:
             type: boolean
-      schema:
-        $ref: '#/definitions/ThemeSchema'
   User:
     type: object
     properties:
