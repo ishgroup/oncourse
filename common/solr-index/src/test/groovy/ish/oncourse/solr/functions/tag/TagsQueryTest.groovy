@@ -37,6 +37,11 @@ class TagsQueryTest {
     void test() {
         CollegeContext collegeContext = dataContext.college("College-Australia/Sydney", "Australia/Sydney")
 
+        collegeContext.tag("Tag1")
+        collegeContext.tag("Tag12")
+        collegeContext.tag("Tag11Invisible", false)
+        collegeContext.tag("Tag2")
+
         collegeContext.addTag("Tag1", "Tag11Invisible", "Tag12")
         collegeContext.course("Course1")
         collegeContext.tagCourse("COURSE1", "Tag2")

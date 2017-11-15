@@ -3,6 +3,7 @@ package ish.oncourse.solr.functions.course
 import ish.oncourse.entityBuilder.CourseClassBuilder
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.Tag
 import ish.oncourse.solr.model.CollegeContext
 import ish.oncourse.solr.model.DataContext
 import ish.oncourse.test.TestContext
@@ -40,50 +41,50 @@ class CourseFunctionsTest {
         Course targetCourse = collegeContext.course("Target course")
         Course otherCourse = collegeContext.course("Other course")
 
-        CourseClass expected1 = new CourseClassBuilder("objectContext" : objectContext)
+        CourseClass expected1 = new CourseClassBuilder(objectContext : objectContext)
                 .createDefaultClass("expected1", collegeContext.college)
                 .addToCourse(targetCourse)
                 .setStartDate(new Date().plus(1))
                 .build()
-        CourseClass expected2 = new CourseClassBuilder("objectContext" : objectContext)
+        CourseClass expected2 = new CourseClassBuilder(objectContext : objectContext)
                 .createDefaultClass("expected2", collegeContext.college)
                 .addToCourse(targetCourse)
                 .setStartDate(new Date().plus(1))
                 .build()
-        CourseClass expected3Distant = new CourseClassBuilder("objectContext" : objectContext)
+        CourseClass expected3Distant = new CourseClassBuilder(objectContext : objectContext)
                 .createDefaultClass("expected3Distant", collegeContext.college)
                 .addToCourse(targetCourse)
                 .setDistantLearning(true)
                 .build()
-        CourseClass invisible = new CourseClassBuilder("objectContext" : objectContext)
+        CourseClass invisible = new CourseClassBuilder(objectContext : objectContext)
                 .createDefaultClass("invisible", collegeContext.college)
                 .addToCourse(targetCourse)
                 .setStartDate(new Date().plus(1))
                 .setVisible(false)
                 .build()
-        CourseClass cancelled = new CourseClassBuilder("objectContext" : objectContext)
+        CourseClass cancelled = new CourseClassBuilder(objectContext : objectContext)
                 .createDefaultClass("cancelled", collegeContext.college)
                 .addToCourse(targetCourse)
                 .setStartDate(new Date().plus(1))
                 .setCancelled(true)
                 .build()
-        CourseClass notFuture = new CourseClassBuilder("objectContext" : objectContext)
+        CourseClass notFuture = new CourseClassBuilder(objectContext : objectContext)
                 .createDefaultClass("notFuture", collegeContext.college)
                 .addToCourse(targetCourse)
                 .setStartDate(new Date())
                 .build()
-        CourseClass otherCourse1 = new CourseClassBuilder("objectContext" : objectContext)
+        CourseClass otherCourse1 = new CourseClassBuilder(objectContext : objectContext)
                 .createDefaultClass("otherCourse1", collegeContext.college)
                 .addToCourse(otherCourse)
                 .setStartDate(new Date().plus(1))
                 .build()
-        CourseClass otherCourse2 = new CourseClassBuilder("objectContext" : objectContext)
+        CourseClass otherCourse2 = new CourseClassBuilder(objectContext : objectContext)
                 .createDefaultClass("otherCourse2", collegeContext.college)
                 .addToCourse(otherCourse)
                 .setDistantLearning(true)
                 .build()
 
-        CourseContext courseContext = new CourseContext("course" : targetCourse, "context" : objectContext)
+        CourseContext courseContext = new CourseContext(course : targetCourse, context : objectContext)
         List<CourseClass> actualClasses = CourseFunctions.courseClassQuery(courseContext).select(objectContext)
         Assert.assertEquals(3, actualClasses.size())
         assertNotNull(actualClasses.find {cc -> (cc.code == expected1.code) })
@@ -99,6 +100,33 @@ class CourseFunctionsTest {
 
     @Test
     void testCourseTagsQuery(){
+        collegeContext.tag("Tag1")
+        collegeContext.tag("Tag11", false)
+        collegeContext.tag("Tag12")
+        collegeContext.tag("Tag2")
+        collegeContext.tag("Tag21")
+        collegeContext.tag("Tag22")
+
+        collegeContext.addTag("Tag1", "Tag11", "Tag12")
+        collegeContext.addTag("Tag2", "Tag21")
+
+        collegeContext.course("Other course")
+        collegeContext.tagCourse("OTHER COURSE", "Tag2")
+        collegeContext.tagCourse("OTHER COURSE", "Tag21")
+
+        Course targetCourse = collegeContext.course("Target course")
+        collegeContext.tagCourse("TARGET COURSE", "Tag1")
+        collegeContext.tagCourse("TARGET COURSE", "Tag11")
+        collegeContext.tagCourse("TARGET COURSE", "Tag22")
+
+        List<Tag> actualCourseTags = CourseFunctions.courseTagsQuery(targetCourse).select(objectContext)
+        assertNotNull(actualCourseTags.find {tag -> tag.name == "Tag1"})
+        assertNotNull("tag is related to target course and must be selected regardless of it's visibility", actualCourseTags.find {tag -> tag.name == "Tag11"})
+        assertNotNull("tag is related to target course and must be selected regardless of it's parent", actualCourseTags.find {tag -> tag.name == "Tag22"})
+        assertNull("tag isn't related with course regardless of it's parent tag", actualCourseTags.find {tag -> tag.name == "Tag12"})
+        assertNull("tag isn't related to any course", actualCourseTags.find {tag -> tag.name == "Tag2"})
+        assertNull("tag isn't related to other course", actualCourseTags.find {tag -> tag.name == "Tag21"})
+
     }
 
     @After
