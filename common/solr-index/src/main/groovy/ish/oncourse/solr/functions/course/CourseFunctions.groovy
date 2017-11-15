@@ -19,7 +19,7 @@ class CourseFunctions {
         query(CourseClass).where(COURSE.eq(context.course))
                 .and(IS_WEB_VISIBLE.eq(true))
                 .and(CANCELLED.eq(false))
-                .and(START_DATE.gt(context.current).andExp(IS_DISTANT_LEARNING_COURSE.eq(false)).orExp(IS_DISTANT_LEARNING_COURSE.eq(true))
+                .and(END_DATE.gt(context.current).andExp(IS_DISTANT_LEARNING_COURSE.eq(false)).orExp(IS_DISTANT_LEARNING_COURSE.eq(true))
         ).orderBy(START_DATE.asc())
     }
 
