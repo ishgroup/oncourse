@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.webdav
 
-import com.google.inject.Inject
 import io.milton.common.Path
 import io.milton.http.Auth
 import io.milton.http.Request
@@ -15,25 +14,23 @@ import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebContentVisibility
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.io.IOUtils
-import org.apache.commons.lang3.ArrayUtils
 
 import java.nio.charset.Charset
 
 class BlockResourceFactory implements ResourceFactory {
     
-    @Inject
     private ICayenneService cayenneService
-
-    @Inject
-    private org.eclipse.jetty.server.Request request
-    
+    private RequestService requestService
     private SecurityManager securityManager
 
-    void setSecurityManager(SecurityManager securityManager) {
+    BlockResourceFactory(ICayenneService cayenneService, RequestService requestService, SecurityManager securityManager) {
+        this.cayenneService = cayenneService
+        this.requestService = requestService
         this.securityManager = securityManager
     }
 
@@ -64,7 +61,7 @@ class BlockResourceFactory implements ResourceFactory {
                     String content = writer.toString()
 
                     // check if there is an existing block with similar name
-                    WebContent block = WebContentFunctions.getWebContent(request, cayenneService.sharedContext(), WebContent.NAME, newName)
+                    WebContent block = WebContentFunctions.getWebContent(requestService.request, cayenneService.sharedContext(), WebContent.NAME, newName)
 
                     if (block) {
                         return changeBlock(block, newName, content)
@@ -88,18 +85,18 @@ class BlockResourceFactory implements ResourceFactory {
     List<WebContentResource> listBlocks() {
         List<WebContentResource> blocks = []
         
-        WebContentFunctions.getBlocks(request, cayenneService.sharedContext()).each {
-            blocks << new WebContentResource(it, cayenneService, securityManager)
+        WebContentFunctions.getBlocks(requestService.request, cayenneService.sharedContext()).each {
+            blocks << new WebContentResource(it, cayenneService, requestService, securityManager)
         }
 
         return blocks
     }
 
     WebContentResource getBlockByName(String name) {
-        WebContent block = WebContentFunctions.getWebContent(request, cayenneService.sharedContext(), WebContent.NAME, name)
+        WebContent block = WebContentFunctions.getWebContent(requestService.request, cayenneService.sharedContext(), WebContent.NAME, name)
 
         if (block) {
-            return new WebContentResource(block, cayenneService, securityManager)
+            return new WebContentResource(block, cayenneService, requestService, securityManager)
         }
 
         return null
@@ -107,9 +104,9 @@ class BlockResourceFactory implements ResourceFactory {
 
     WebContentResource changeBlock(WebContent blockToChange, String name, String content) {
 
-        ObjectContext context = cayenneService.newContext();
+        ObjectContext context = cayenneService.newContext()
 
-        WebContent block = context.localObject(blockToChange);
+        WebContent block = context.localObject(blockToChange)
 
         block.name = name
         block.contentTextile = content
@@ -117,7 +114,7 @@ class BlockResourceFactory implements ResourceFactory {
 
         context.commitChanges()
 
-        return new WebContentResource(block, cayenneService, securityManager)
+        return new WebContentResource(block, cayenneService, requestService, securityManager)
     }
 
     WebContentResource createNewBlock(String name, String content) {
@@ -132,10 +129,10 @@ class BlockResourceFactory implements ResourceFactory {
         visibility.regionKey = RegionKey.unassigned
         visibility.webContent = block
 
-        block.webSiteVersion = ctx.localObject(ctx.localObject(WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.sharedContext())))
+        block.webSiteVersion = ctx.localObject(ctx.localObject(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.sharedContext())))
 
         ctx.commitChanges()
 
-        return new WebContentResource(block, cayenneService, securityManager)
+        return new WebContentResource(block, cayenneService, requestService, securityManager)
     }
 }

@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.webdav
 
-import com.google.inject.Inject
 import io.milton.common.ContentTypeUtils
 import io.milton.http.Auth
 import io.milton.http.Range
@@ -20,25 +19,25 @@ import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNode
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.io.IOUtils
-import org.eclipse.jetty.server.Request
 
 import java.nio.charset.Charset
 
 class WebNodeResource  extends AbstractResource implements CopyableResource, DeletableResource, GetableResource, MoveableResource, PropFindableResource, ReplaceableResource {
 
     private WebNode webNode
+    
     private ICayenneService cayenneService
+    private RequestService requestService
 
-    @Inject
-    private Request request
-
-    WebNodeResource(WebNode webNode, ICayenneService cayenneService, SecurityManager securityManager) {
+    WebNodeResource(WebNode webNode, ICayenneService cayenneService, SecurityManager securityManager, RequestService requestService) {
         super(securityManager)
         this.webNode = webNode
         this.cayenneService = cayenneService
+        this.requestService = requestService
     }
 
     private WebContent getWebContent() {
@@ -104,7 +103,7 @@ class WebNodeResource  extends AbstractResource implements CopyableResource, Del
 
         ObjectContext context = cayenneService.newContext()
 
-        WebNode existingNode = WebNodeFunctions.getNodeForName(newName, request, cayenneService.sharedContext())
+        WebNode existingNode = WebNodeFunctions.getNodeForName(newName, requestService.request, cayenneService.sharedContext())
 
         // if there is no existing record with such name and we are not renaming current record to the same name
         // then just change name of the page

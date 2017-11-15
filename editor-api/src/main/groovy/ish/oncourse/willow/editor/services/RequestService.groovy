@@ -1,8 +1,10 @@
 package ish.oncourse.willow.editor.services
 
+import com.google.inject.Singleton
 import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.Response
 
+@Singleton
 class RequestService {
 
     static final ThreadLocal<Request> ThreadLocalRequest = new ThreadLocal<Request>()

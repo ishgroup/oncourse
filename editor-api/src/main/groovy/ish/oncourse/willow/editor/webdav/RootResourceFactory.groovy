@@ -9,6 +9,8 @@ import io.milton.http.exceptions.BadRequestException
 import io.milton.http.exceptions.ConflictException
 import io.milton.http.exceptions.NotAuthorizedException
 import io.milton.resource.Resource
+import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import org.apache.commons.lang3.ArrayUtils
 
@@ -25,22 +27,22 @@ class RootResourceFactory implements ResourceFactory {
     private StaticResourceFactory staticResourceFactory
 
     private SecurityManager securityManager
+    private ICayenneService cayenneService
+    private RequestService requestService
 
     private String sRoot
 
-    RootResourceFactory(SecurityManager securityManager, AuthenticationService authenticationService) {
+    RootResourceFactory(SecurityManager securityManager, AuthenticationService authenticationService, ICayenneService cayenneService, RequestService requestService) {
         this.securityManager = securityManager
+        this.cayenneService = cayenneService
+        this.requestService = requestService
         
         this.sRoot = S_ROOT.value
                 
-        this.blockResourceFactory = new BlockResourceFactory()
-        this.pageResourceFactory = new PageResourceFactory()
-        this.templateResourceFactory = new TemplateResourceFactory()
-        this.staticResourceFactory = new StaticResourceFactory(sRoot, authenticationService, securityManager)
-
-        this.blockResourceFactory.setSecurityManager(securityManager)
-        this.pageResourceFactory.setSecurityManager(securityManager)
-        this.templateResourceFactory.setSecurityManager(securityManager)
+        this.blockResourceFactory = new BlockResourceFactory(cayenneService, requestService, securityManager)
+        this.pageResourceFactory = new PageResourceFactory(cayenneService, requestService, securityManager)
+        this.templateResourceFactory = new TemplateResourceFactory(cayenneService, requestService, securityManager)
+        this.staticResourceFactory = new StaticResourceFactory(sRoot, authenticationService, securityManager, cayenneService, requestService)
 
         this.templateResourceFactory.initDefaultResources()
     }
@@ -65,7 +67,7 @@ class RootResourceFactory implements ResourceFactory {
                         switch (childName)
                         {
                             case RedirectsResource.FILE_NAME:
-                                return new RedirectsResource(securityManager)
+                                return new RedirectsResource(securityManager, cayenneService, requestService)
                             default:
                                 return getDirectoryByName(valueOf(childName), host, path.stripFirst.toPath())
                         }
@@ -79,7 +81,7 @@ class RootResourceFactory implements ResourceFactory {
                             resources.add(getDirectoryByName(dir, host, path.stripFirst.toPath()))
                         }
 
-                        resources.add(new RedirectsResource(securityManager))
+                        resources.add(new RedirectsResource(securityManager, cayenneService, requestService))
                         return resources
                     }
 
@@ -95,7 +97,7 @@ class RootResourceFactory implements ResourceFactory {
             }
             else if (RedirectsResource.FILE_NAME == path.first)
             {
-                return new RedirectsResource(securityManager)
+                return new RedirectsResource(securityManager, cayenneService, requestService)
             }
         }
 

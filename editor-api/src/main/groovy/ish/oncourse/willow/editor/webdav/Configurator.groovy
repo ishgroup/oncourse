@@ -8,6 +8,8 @@ import io.milton.http.http11.auth.DigestResponse
 import io.milton.resource.Resource
 import io.milton.servlet.Config
 import io.milton.servlet.DefaultMiltonConfigurator
+import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.services.access.AuthenticationStatus
 
@@ -19,7 +21,10 @@ class Configurator extends DefaultMiltonConfigurator {
     HttpManager configure(Config config) throws ServletException {
         Injector injector = config.servletContext.getAttribute('injector') as Injector
         AuthenticationService authenticationService = injector.getInstance(AuthenticationService)
-        builder.mainResourceFactory = new RootResourceFactory(new EditorSecurityManager(authenticationService), authenticationService)
+        ICayenneService cayenneService =  injector.getInstance(ICayenneService)
+        RequestService requestService =  injector.getInstance(RequestService)
+
+        builder.mainResourceFactory = new RootResourceFactory(new EditorSecurityManager(authenticationService), authenticationService, cayenneService, requestService)
         builder.enableCookieAuth = false
         builder.enabledJson = false
 

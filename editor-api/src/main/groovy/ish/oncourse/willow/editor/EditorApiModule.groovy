@@ -8,18 +8,15 @@ import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedFilter
 import io.bootique.jetty.MappedServlet
 import io.milton.servlet.MiltonFilter
-import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cayenne.WillowApiCayenneModule
 import ish.oncourse.cayenne.cache.JCacheModule
 import ish.oncourse.configuration.ISHHealthCheckServlet
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.log.LogAppInfo
+import ish.oncourse.willow.editor.cayenne.EditorCayenneService
 import ish.oncourse.willow.editor.services.RequestFilter
 import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
-import ish.oncourse.willow.editor.webdav.Configurator
-import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
-import org.eclipse.jetty.server.Request
 
 import javax.servlet.FilterConfig
 import javax.servlet.ServletException
@@ -51,9 +48,8 @@ class EditorApiModule extends ConfigModule {
                 .addMappedFilter(MILTON_FILTER)
         
         binder.bind(RequestService)
-        binder.bind(ICayenneService).to(CayenneService)
+        binder.bind(ICayenneService).to(EditorCayenneService)
         binder.bind(AuthenticationService)
-
     }
 
     @Singleton

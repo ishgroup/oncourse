@@ -19,6 +19,7 @@ import io.milton.resource.ReplaceableResource
 import ish.oncourse.model.WebContent
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.textile.ConvertCoreTextile
+import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebContentFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.io.IOUtils
@@ -31,14 +32,13 @@ class WebContentResource  extends AbstractResource implements CopyableResource, 
     private WebContent webContent
 
     private ICayenneService cayenneService
-
-    @Inject
-    private Request request
+    private RequestService requestService
     
-    WebContentResource(WebContent webContent, ICayenneService cayenneService, SecurityManager securityManager) {
+    WebContentResource(WebContent webContent, ICayenneService cayenneService, RequestService requestService, SecurityManager securityManager) {
         super(securityManager)
         this.webContent = webContent
         this.cayenneService = cayenneService
+        this.requestService = requestService
     }
 
     @Override
@@ -95,7 +95,7 @@ class WebContentResource  extends AbstractResource implements CopyableResource, 
 
         ObjectContext context = cayenneService.newContext()
 
-        WebContent existingBlock = WebContentFunctions.getBlockByName(request, cayenneService.sharedContext(), newName)
+        WebContent existingBlock = WebContentFunctions.getBlockByName(requestService.request, cayenneService.sharedContext(), newName)
 
         // if there is no existing record with such name and we are not renaming current record to the same name
         // then just change name of the block

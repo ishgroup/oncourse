@@ -1,6 +1,7 @@
 package ish.oncourse.willow.editor.services.access
 
 import com.google.inject.Inject
+import com.google.inject.Singleton
 import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WillowUser
@@ -18,6 +19,7 @@ import javax.servlet.http.Cookie
 
 import static ish.oncourse.willow.editor.services.access.AuthenticationStatus.*
 
+@Singleton
 class AuthenticationService {
     
     private ICayenneService cayenneService

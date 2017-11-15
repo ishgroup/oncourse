@@ -1,6 +1,5 @@
 package ish.oncourse.willow.editor.webdav
 
-import com.google.inject.Inject
 import io.milton.common.Path
 import io.milton.http.Auth
 import io.milton.http.Request
@@ -16,6 +15,7 @@ import ish.oncourse.model.WebSiteLayout
 import ish.oncourse.model.WebSiteVersion
 import ish.oncourse.model.WebTemplate
 import ish.oncourse.services.persistence.ICayenneService
+import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.website.WebSiteVersionFunctions
 import ish.oncourse.willow.editor.website.WebTemplateFunctions
 import org.apache.cayenne.ObjectContext
@@ -39,18 +39,16 @@ class TemplateResourceFactory implements ResourceFactory {
 
     private static final String TEMPLATE_DIR_NAME = 'templates'
     private static final String DEFAULT_TEMPLATES_PACKAGE = 'ish.oncourse.ui'
-
-    @Inject
-    private ICayenneService cayenneService
     
-    @Inject
-    private org.eclipse.jetty.server.Request request
-
+    private ICayenneService cayenneService
+    private RequestService requestService
     private SecurityManager securityManager
 
     private Map<String, String> defaultTemplatesMap
 
-    void setSecurityManager(SecurityManager securityManager) {
+    TemplateResourceFactory(ICayenneService cayenneService, RequestService requestService, SecurityManager securityManager) {
+        this.cayenneService = cayenneService
+        this.requestService = requestService
         this.securityManager = securityManager
     }
 
@@ -118,7 +116,7 @@ class TemplateResourceFactory implements ResourceFactory {
         ObjectContext context = cayenneService.newContext()
 
         List<WebSiteLayout> layouts = ObjectSelect.query(WebSiteLayout.class).
-                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.sharedContext()))).
+                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.sharedContext()))).
                 select(context)
 
         List<DirectoryResource> directoryResources = []
@@ -152,14 +150,14 @@ class TemplateResourceFactory implements ResourceFactory {
         ObjectContext context = cayenneService.newContext()
 
         return ObjectSelect.query(WebSiteLayout).
-                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.sharedContext()))).
+                where(WebSiteLayout.WEB_SITE_VERSION.eq(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.sharedContext()))).
                 and(WebSiteLayout.LAYOUT_KEY.eq(name)).
                 selectOne(context)
     }
 
     private WebSiteLayout createLayout(String name) {
         ObjectContext context = cayenneService.newContext()
-        WebSiteVersion siteVersion = context.localObject(WebSiteVersionFunctions.getCurrentVersion(request, cayenneService.sharedContext()))
+        WebSiteVersion siteVersion = context.localObject(WebSiteVersionFunctions.getCurrentVersion(requestService.request, cayenneService.sharedContext()))
         WebSiteLayout layout = context.newObject(WebSiteLayout)
         layout.layoutKey = name
         layout.webSiteVersion = siteVersion

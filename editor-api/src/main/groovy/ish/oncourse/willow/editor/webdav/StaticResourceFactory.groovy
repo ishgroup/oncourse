@@ -19,6 +19,7 @@ import ish.oncourse.services.mail.EmailBuilder
 import ish.oncourse.services.mail.SendEmail
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.util.StaticResourcePath
+import ish.oncourse.willow.editor.services.RequestService
 import ish.oncourse.willow.editor.services.access.AuthenticationService
 import ish.oncourse.willow.editor.webdav.jscompiler.JSCompiler
 import ish.oncourse.willow.editor.website.WebSiteFunctions
@@ -38,11 +39,8 @@ class StaticResourceFactory  implements ResourceFactory {
 
     private String defaultJsStackPath
 
-    @Inject
     private ICayenneService cayenneService
-
-    @Inject
-    private org.eclipse.jetty.server.Request request
+    private RequestService requestService
 
     private static final String SCSS_FILE_PATTERN = '^%s/stylesheets/src/(.*)\\.scss$'
     private static final String JS_FILE_PATTERN = '^%s/js/(.*)\\.js$'
@@ -55,8 +53,10 @@ class StaticResourceFactory  implements ResourceFactory {
     private String sRoot
 
     StaticResourceFactory(String sRoot, AuthenticationService authenticationService,
-                                 SecurityManager securityManager) {
+                                 SecurityManager securityManager, ICayenneService cayenneService, RequestService requestService) {
         this.authenticationService = authenticationService
+        this.cayenneService = cayenneService
+        this.requestService = requestService
         this.sRoot = sRoot
         this.fsResourceFactory = new FileSystemResourceFactory(new File(sRoot), securityManager, sRoot)
         this.executorService = Executors.newCachedThreadPool()
@@ -71,7 +71,7 @@ class StaticResourceFactory  implements ResourceFactory {
 
     @Override
     Resource getResource(String host, String path) throws NotAuthorizedException, BadRequestException {
-        String siteKey = WebSiteFunctions.getCurrentWebSite(request, cayenneService.sharedContext()).siteKey
+        String siteKey = WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.sharedContext()).siteKey
         String rootDirName = "$sRoot/$siteKey"
 
         fsResourceFactory.root = new File(rootDirName)
@@ -102,7 +102,7 @@ class StaticResourceFactory  implements ResourceFactory {
                     EmailBuilder emailBuilder = GetEmailBuilder.valueOf(compiler.errorEmailTemplate,
                             userEmail,
                             userEmail,
-                            WebSiteFunctions.getCurrentWebSite(request, cayenneService.sharedContext()).siteKey,
+                            WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.sharedContext()).siteKey,
                             file.absolutePath,
                             compiler.errors.join('\n')).get()
                     SendEmail.valueOf(emailBuilder, true).send()
@@ -115,7 +115,7 @@ class StaticResourceFactory  implements ResourceFactory {
     
     private ICompiler getCompiler(File file) {
         if (isJavaScript(file)) {
-            return JSCompiler.valueOf(sRoot, defaultJsStackPath, WebSiteFunctions.getCurrentWebSite(request, cayenneService.sharedContext()))
+            return JSCompiler.valueOf(sRoot, defaultJsStackPath, WebSiteFunctions.getCurrentWebSite(requestService.request, cayenneService.sharedContext()))
         } else {
             return null
         }
