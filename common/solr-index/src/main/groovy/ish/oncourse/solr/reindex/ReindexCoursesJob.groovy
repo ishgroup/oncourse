@@ -1,6 +1,5 @@
 package ish.oncourse.solr.reindex
 
-import groovy.transform.CompileStatic
 import ish.oncourse.scheduler.ScheduleConfig
 import ish.oncourse.scheduler.job.IJob
 import ish.oncourse.solr.functions.course.SCourseFunctions
@@ -9,7 +8,6 @@ import org.apache.solr.client.solrj.SolrClient
 
 import java.util.concurrent.TimeUnit
 
-@CompileStatic
 class ReindexCoursesJob implements IJob {
     private ObjectContext objectContext
     private SolrClient solrClient
@@ -27,7 +25,7 @@ class ReindexCoursesJob implements IJob {
 
     @Override
     void run() {
-        SCourseFunctions.SCourses.call(objectContext).subscribe({
+        SCourseFunctions.SCourses(objectContext).subscribe({
             solrClient.addBean(it)
         })
         solrClient.commit()

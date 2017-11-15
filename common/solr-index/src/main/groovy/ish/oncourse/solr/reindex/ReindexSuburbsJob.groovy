@@ -1,6 +1,5 @@
 package ish.oncourse.solr.reindex
 
-import groovy.transform.CompileStatic
 import ish.oncourse.scheduler.ScheduleConfig
 import ish.oncourse.scheduler.job.IJob
 import org.apache.cayenne.ObjectContext
@@ -10,7 +9,6 @@ import java.util.concurrent.TimeUnit
 
 import static ish.oncourse.solr.functions.suburb.Functions.getSolrSuburbs
 
-@CompileStatic
 class ReindexSuburbsJob implements IJob {
     private ObjectContext objectContext
     private SolrClient solrClient
