@@ -16,6 +16,8 @@ import "../scss/cms.scss";
 export const initApp = () => {
   const store = CreateStore();
 
+  new MockAdapter();
+
   /**
    *  Load CMS config
    *  Create cms root element
