@@ -13,31 +13,32 @@ import {DefaultConfig} from "./constants/Config";
 
 import "../scss/cms.scss";
 
-// Enable in develop mode (move init to webpack)
-new MockAdapter();
+export const initApp = () => {
+  const store = CreateStore();
 
-const store = CreateStore();
+  /**
+   *  Load CMS config
+   *  Create cms root element
+   *  Load cms styles
+   **/
+  configLoader(store);
+  createRootComponent();
+  loadCmsCss(store.getState().config.cssPath);
 
-/**
- *  Load CMS config
- *  Create cms root element
- *  Load cms styles
-**/
-configLoader(store);
-createRootComponent();
-loadCmsCss(store.getState().config.cssPath);
+  RestoreState(store, () => {
+    start(store);
+  });
 
-RestoreState(store, () => {
-  start(store);
-});
-
-const start = store => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <Router>
-        <Cms/>
-      </Router>
-    </Provider>,
-    document.getElementById(DefaultConfig.CONTAINER_ID),
-  );
+  const start = store => {
+    ReactDOM.render(
+      <Provider store={store}>
+        <Router>
+          <Cms/>
+        </Router>
+      </Provider>,
+      document.getElementById(DefaultConfig.CONTAINER_ID),
+    );
+  }
 }
+
+initApp();

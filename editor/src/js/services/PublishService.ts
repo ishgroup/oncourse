@@ -8,11 +8,11 @@ class PublishService {
         return this.publishApi.getVersions();
     }
 
-    public setVersion(id): Promise<History> {
+    public setVersion(id): Promise<any> {
         return this.publishApi.setVersion(id);
     }
 
-    public publish(): Promise<History> {
+    public publish(): Promise<any> {
         return this.publishApi.publish();
     }
 }
